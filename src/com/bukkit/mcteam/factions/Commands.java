@@ -537,9 +537,9 @@ public class Commands {
 			// Inform all players
 			for (Follower follower : Follower.getAll()) {
 				if (follower.factionId == me.factionId) {
-					follower.sendMessage(Conf.colorMember+me.getFullName()+Conf.colorSystem+" gave "+Conf.colorMember+targetFollower.getFullName()+" the leadership of your faction.");
+					follower.sendMessage(Conf.colorMember+me.getFullName()+Conf.colorSystem+" gave "+Conf.colorMember+targetFollower.getFullName()+Conf.colorSystem+" the leadership of your faction.");
 				} else {
-					follower.sendMessage(me.getFullName(follower)+Conf.colorSystem+" gave "+targetFollower.getFullName(follower)+" the leadership of "+me.getFaction().getName(follower));
+					follower.sendMessage(me.getFullName(follower)+Conf.colorSystem+" gave "+targetFollower.getFullName(follower)+Conf.colorSystem+" the leadership of "+me.getFaction().getName(follower));
 				}
 			}
 		} else if (targetRole == Role.MODERATOR) {
@@ -629,7 +629,7 @@ public class Commands {
 		}
 		
 		Board.unclaim(coord);
-		me.sendMessage(Conf.colorAction+"Successfully unclaimed");
+		me.getFaction().sendMessage(Conf.colorMember+me.getFullName()+Conf.colorSystem+" unclaimed some land...");
 	}
 	
 	public static void relation(Follower me, Relation whishedRelation, String otherFactionName) {

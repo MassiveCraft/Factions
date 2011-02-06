@@ -259,7 +259,7 @@ public class Follower {
 			return errors;
 		}
 		
-		return follower.getFaction().deinvite(follower);
+		return this.getFaction().deinvite(follower);
 	}
 	
 	public ArrayList<String> kick(Follower follower) {

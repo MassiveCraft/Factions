@@ -142,7 +142,7 @@ public class Faction {
 	public ArrayList<String> deinvite(Follower follower) {
 		ArrayList<String> errors = new ArrayList<String>();
 		
-		if (follower.getFaction().equals(this)) {
+		if (follower.getFaction() == this) {
 			errors.add(Conf.colorSystem+follower.getFullName()+" is already a member of "+this.getName());
 			errors.add(Conf.colorSystem+"You might want to "+Conf.colorCommand+Conf.aliasBase.get(0)+" "+Conf.aliasKick.get(0)+Conf.colorParameter+" "+follower.getName());
 		}
