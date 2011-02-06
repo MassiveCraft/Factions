@@ -53,8 +53,8 @@ public class Commands {
 		pageLines.add(Conf.colorSystem+"Set which relation your WHISH you had to another faction.");
 		pageLines.add(Conf.colorSystem+"Per default your relation to another faction will be neutral.");
 		pageLines.add("");
-		pageLines.add(Conf.colorSystem+"If BOTH factions whishes \"ally\" you will be allies.");
-		pageLines.add(Conf.colorSystem+"If ONE faction whishes \"enemy\" you will be enemies.");
+		pageLines.add(Conf.colorSystem+"If BOTH factions wishes \"ally\" you will be allies.");
+		pageLines.add(Conf.colorSystem+"If ONE faction wishes \"enemy\" you will be enemies.");
 		
 		helpPages.add(pageLines);
 		pageLines = new ArrayList<String>();

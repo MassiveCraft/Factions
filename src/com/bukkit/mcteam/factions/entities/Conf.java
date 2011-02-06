@@ -95,7 +95,7 @@ public class Conf {
 		mapHeight = 8;
 		mapWidth = 49;
 		
-		territoryShieldFactor = 0.33;
+		territoryShieldFactor = 0.5;
 
 		useRelationColoredChat = true;
 		
@@ -179,7 +179,7 @@ public class Conf {
 		
 		powerPerLand = 1; // 1 power grants one land Perhaps this should not even be a config value...
 		powerPerPlayer = 10; // One player has 10 power
-		powerPerMinute = 0.2; // Default health rate... it takes 10 min to heal one death
+		powerPerMinute = 0.2; // Default health rate... it takes 5 min to heal one power
 		powerPerDeath = 2; //A death makes you loose 2 power
 		powerDefaultBonus = 0; //A faction normally has a power bonus
 		
