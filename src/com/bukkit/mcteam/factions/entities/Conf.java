@@ -70,6 +70,8 @@ public class Conf {
 	
 	public static List<String> aliasDescription = new ArrayList<String>();
 	
+	public static List<String> aliasVersion = new ArrayList<String>();
+	
 	// Value aliases
 	public static List<String> aliasTrue = new ArrayList<String>();
 	
@@ -165,6 +167,8 @@ public class Conf {
 		aliasRelationEnemy.add("enemy");
 		
 		aliasDescription.add("desc");
+		
+		aliasVersion.add("version");
 		
 		aliasTrue.add("true");
 		aliasTrue.add("yes");

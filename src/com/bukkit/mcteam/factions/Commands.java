@@ -81,6 +81,12 @@ public class Commands {
 		pageLines.add(Conf.colorSystem+"also use this to create member only areas.");
 		pageLines.add(Conf.colorSystem+"As dispensers are protected you can create traps without");
 		pageLines.add(Conf.colorSystem+"worrying about those arrows getting stolen.");
+
+		helpPages.add(pageLines);
+		pageLines = new ArrayList<String>();
+		
+		pageLines.add(TextUtil.commandHelp(Conf.aliasVersion, "", "Wich version are you using"));
+		
 		helpPages.add(pageLines);
 	}
 	
@@ -204,7 +210,9 @@ public class Commands {
 			relation(me, Relation.ENEMY, TextUtil.implode(tokens));
 		} else if (Conf.aliasDescription.contains(command)) {
 			description(me, TextUtil.implode(tokens));
-		} else {
+		} else if (Conf.aliasVersion.contains(command)) {
+			version(me);
+		}  else {
 			//me.sendMessage(Conf.colorSystem+"Unknown faction command"+Conf.colorCommand+" "+command);
 			me.sendMessage(Conf.colorSystem+"Unknown faction command"+Conf.colorCommand+" "+command);
 			//me.getPlayer().sendMessage(TextUtil.repeat(tokens.get(0), Integer.parseInt(tokens.get(1))));
@@ -691,6 +699,9 @@ public class Commands {
 		}
 	}
 	
+	public static void version(Follower me) {
+		me.sendMessage(Conf.colorSystem+"You are running "+Factions.desc.getFullName());
+	}
 }
 
 
