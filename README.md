@@ -2,14 +2,16 @@ Factions - Guilding and user-controlled antigrief plugin for Minecraft
 ====================
 This plugin will allow the players on the server to create factions/guilds. The factions can claim territory that will be protected from non-members. Factions can forge alliances and declare themselves enemies with others. Land may be taken from other factions through war.
 
-With this plugin...
+The goals of this plugin:
 
-* The players will effectively take care of anti-griefing themselves.
-* There will be politics and intrigues on your server.
-* The players can enjoy guilding and team spirit.
+ * The players should be able to take care of anti-griefing themselves.
+ * Inspire politics and intrigues on your server.
+ * Guilding and team spirit! :)
 
 Usage
 ---------
+Read the full userguide here: [http://mcteam.org/factions](http://mcteam.org/factions)
+
 The chat console command is:
 
  * `/f`
@@ -21,8 +23,6 @@ This command has subcommands like:
 * `/f claim`
 * `/f map`
 * ... etc
-
-Read the full userguide here: [http://mcteam.org/factions](http://mcteam.org/factions)
 
 You may also read the documentation ingame as the plugin ships with an ingame help manual. Read the help pages like this:
 
@@ -36,9 +36,9 @@ Note that you may optionally skip the slash and just write
 
 Installing
 ---------
-1. Download the latest release: [latest.zip](https://github.com/oloflarsson/Factions/raw/master/releases/latest.zip)
-1. Put the included gson.jar here `/your_server_folder/gson.jar`
-1. Put the included Factions.jar here `/your_server_folder/plugins/Factions.jar`
+1. Download the latest release: [https://github.com/oloflarsson/Factions/tree/master/releases?raw=true](https://github.com/oloflarsson/Factions/tree/master/releases?raw=true)
+1. Put the included gson.jar here `your_minecraft_server/gson.jar`
+1. Put the included Factions.jar here `your_minecraft_server/plugins/Factions.jar`
 
 Compiling
 ---------
