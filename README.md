@@ -36,7 +36,7 @@ Note that you may optionally skip the slash and just write
 
 Installing
 ---------
-1. Download the latest release: [https://github.com/oloflarsson/Factions/tree/master/releases?raw=true](https://github.com/oloflarsson/Factions/tree/master/releases?raw=true)
+1. Download the latest release: [https://github.com/oloflarsson/Factions/tree/master/releases](https://github.com/oloflarsson/Factions/tree/master/releases)
 1. Put the included gson.jar here `your_minecraft_server/gson.jar`
 1. Put the included Factions.jar here `your_minecraft_server/plugins/Factions.jar`
 
