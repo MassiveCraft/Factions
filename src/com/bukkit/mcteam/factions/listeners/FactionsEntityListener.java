@@ -1,4 +1,4 @@
-package com.bukkit.mcteam.factions;
+package com.bukkit.mcteam.factions.listeners;
 
 import java.text.DecimalFormat;
 
@@ -9,6 +9,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityListener;
 
+import com.bukkit.mcteam.factions.Factions;
 import com.bukkit.mcteam.factions.entities.Conf;
 import com.bukkit.mcteam.factions.entities.Follower;
 import com.bukkit.mcteam.factions.struct.Relation;

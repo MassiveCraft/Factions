@@ -72,19 +72,15 @@ public class Faction {
 	// Power
 	//----------------------------------------------//
 	public double getPower() {
-		double ret = this.getPowerBonus();
+		double ret = 0;
 		for (Follower follower : this.getFollowersAll()) {
 			ret += follower.getPower();
 		}
 		return ret;
 	}
 	
-	public double getPowerBonus() {
-		return Conf.powerDefaultBonus; // TODO this could be modified by commands later on
-	}
-	
 	public double getPowerMax() {
-		double ret = this.getPowerBonus();
+		double ret = 0;
 		for (Follower follower : this.getFollowersAll()) {
 			ret += follower.getPowerMax();
 		}
@@ -104,7 +100,7 @@ public class Faction {
 	}
 	
 	public double getLandMax() {
-		return this.getPower() / Conf.powerPerLand;
+		return this.getPower();
 	}
 	
 	public int getLandMaxRounded() {

@@ -1,4 +1,4 @@
-package com.bukkit.mcteam.factions;
+package com.bukkit.mcteam.factions.listeners;
 
 import java.util.*;
 
@@ -10,6 +10,8 @@ import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.event.player.PlayerListener;
 import org.bukkit.event.player.PlayerMoveEvent;
 
+import com.bukkit.mcteam.factions.Commands;
+import com.bukkit.mcteam.factions.Factions;
 import com.bukkit.mcteam.factions.entities.*;
 import com.bukkit.mcteam.factions.util.*;
 

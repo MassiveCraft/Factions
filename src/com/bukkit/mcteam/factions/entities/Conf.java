@@ -30,7 +30,6 @@ public class Conf {
 	public static ChatColor colorEnemy;
 	
 	public static ChatColor colorSystem;
-	public static ChatColor colorAction;
 	public static ChatColor colorChrome;
 	public static ChatColor colorCommand;
 	public static ChatColor colorParameter;
@@ -43,8 +42,6 @@ public class Conf {
 	public static List<String> aliasShow = new ArrayList<String>();
 	
 	public static List<String> aliasMap = new ArrayList<String>();
-	public static List<String> aliasHere = new ArrayList<String>();
-	
 	
 	public static List<String> aliasJoin = new ArrayList<String>();
 	public static List<String> aliasLeave = new ArrayList<String>();
@@ -76,11 +73,9 @@ public class Conf {
 	public static List<String> aliasTrue = new ArrayList<String>();
 	
 	// Power
-	public static double powerPerLand;
 	public static double powerPerPlayer;
 	public static double powerPerMinute; // Default health rate
 	public static double powerPerDeath;
-	public static double powerDefaultBonus;
 	
 	// Protected blocks
 	public static List<Material> territoryProtectedMaterials = new ArrayList<Material>();
@@ -89,15 +84,18 @@ public class Conf {
 		logThreshold = 10;
 		prefixAdmin = "**";
 		prefixMod = "*";
-		factionNameMinLength = 3;
-		factionNameMaxLength = 40;
+		useRelationColoredChat = true;
 		
-		mapHeight = 8;
-		mapWidth = 49;
+		powerPerPlayer = 10; // One player has 10 power
+		powerPerMinute = 0.2; // Default health rate... it takes 5 min to heal one power
+		powerPerDeath = 2; //A death makes you loose 2 power
 		
 		territoryShieldFactor = 0.5;
-
-		useRelationColoredChat = true;
+		
+		territoryProtectedMaterials.add(Material.WOODEN_DOOR);
+		territoryProtectedMaterials.add(Material.DISPENSER);
+		territoryProtectedMaterials.add(Material.CHEST);
+		territoryProtectedMaterials.add(Material.FURNACE);
 		
 		colorMember = ChatColor.GREEN;
 		colorAlly = ChatColor.LIGHT_PURPLE;
@@ -105,7 +103,6 @@ public class Conf {
 		colorEnemy = ChatColor.RED;
 		
 		colorSystem = ChatColor.YELLOW;
-		colorAction = ChatColor.LIGHT_PURPLE;
 		colorChrome = ChatColor.GOLD;
 		colorCommand = ChatColor.AQUA;
 		colorParameter = ChatColor.DARK_AQUA;
@@ -128,7 +125,6 @@ public class Conf {
 		aliasShow.add("who");
 		
 		aliasMap.add("map");
-		aliasHere.add("here");
 		
 		aliasJoin.add("join");
 		
@@ -177,16 +173,11 @@ public class Conf {
 		aliasTrue.add("on");
 		aliasTrue.add("+");
 		
-		powerPerLand = 1; // 1 power grants one land Perhaps this should not even be a config value...
-		powerPerPlayer = 10; // One player has 10 power
-		powerPerMinute = 0.2; // Default health rate... it takes 5 min to heal one power
-		powerPerDeath = 2; //A death makes you loose 2 power
-		powerDefaultBonus = 0; //A faction normally has a power bonus
+		factionNameMinLength = 3;
+		factionNameMaxLength = 40;
 		
-		territoryProtectedMaterials.add(Material.WOODEN_DOOR);
-		territoryProtectedMaterials.add(Material.DISPENSER);
-		territoryProtectedMaterials.add(Material.CHEST);
-		territoryProtectedMaterials.add(Material.FURNACE);
+		mapHeight = 8;
+		mapWidth = 49;
 	}
 	
 	//----------------------------------------------//

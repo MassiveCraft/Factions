@@ -9,7 +9,6 @@ public enum Relation {
 	ALLY(2, "ally"),
 	NEUTRAL(1, "neutral"),
 	ENEMY(0, "enemy");
-	//UNKNOWN(-1, "unknown");
 	
 	public final int value;
 	public final String nicename;
@@ -27,22 +26,4 @@ public enum Relation {
 	public ChatColor getColor() {
 		return Conf.relationColor(this);
 	}
-	
-	/*public String getChartDot() {
-		return Conf.chartDot(this);
-	}
-	
-	public static Relation from(String str) {
-		if (str.equalsIgnoreCase("member")) {
-			return Relation.MEMBER;
-		} else if (str.equalsIgnoreCase("ally")) {
-			return Relation.ALLY;
-		} else if (str.equalsIgnoreCase("neutral")) {
-			return Relation.NEUTRAL;
-		} else if (str.equalsIgnoreCase("enemy")) {
-			return Relation.ENEMY;
-		}
-		
-		return Relation.UNKNOWN;
-	}*/
 }

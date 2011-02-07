@@ -10,6 +10,9 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.bukkit.mcteam.factions.entities.*;
+import com.bukkit.mcteam.factions.listeners.FactionsBlockListener;
+import com.bukkit.mcteam.factions.listeners.FactionsEntityListener;
+import com.bukkit.mcteam.factions.listeners.FactionsPlayerListener;
 import com.bukkit.mcteam.factions.util.Log;
 
 public class Factions extends JavaPlugin {

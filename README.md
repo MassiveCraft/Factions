@@ -47,7 +47,7 @@ You can download it here: [http://bamboo.lukegb.com/browse/BUKKIT-BUKKITMAIN/](h
 
 <b>You will also need Google GSON in your build path.</b><br/>
 You can download it here: [http://code.google.com/p/google-gson/](http://code.google.com/p/google-gson/)<br/>
-<b>OR</b> you can use the file in this repo `/packaging/gson.jar`<br/>
+<b>OR</b> you can use the file in this repo `/packaging/your_minecraft_server/gson.jar`<br/>
 However you won't get javadocs and source that way.
 
 You will need to include the MANIFEST.MF and plugin.yml in your jar. All bukkit plugins need a plugin.yml and the MANIFEST.MF is needed for the plugin to find the gson.jar (wich should be in the same folder as the main server jar when running the server).

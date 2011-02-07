@@ -203,33 +203,6 @@ public class Follower {
 		return errors;
 	}
 	
-	public ArrayList<String> createFaction(String name) {
-		ArrayList<String> errors = new ArrayList<String>();
-		
-		if (this.factionId != 0) {
-			errors.add(Conf.colorSystem+"You must leave your current faction first.");
-		}
-		
-		if (Faction.isNameTaken(name)) {
-			errors.add(Conf.colorSystem+"That name is already in use.");
-		}
-		
-		errors.addAll(Faction.validateName(name));
-		
-		if (errors.size() > 0) {
-			return errors;
-		}
-		
-		Faction faction = EM.factionCreate();
-		faction.setName(name);
-		faction.save();
-		this.join(faction);
-		this.role = Role.ADMIN;
-		this.save();
-		
-		return errors;
-	}
-	
 	public ArrayList<String> invite(Follower follower) {
 		ArrayList<String> errors = new ArrayList<String>();
 		

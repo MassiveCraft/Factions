@@ -24,7 +24,7 @@ public class Commands {
 		pageLines.add(TextUtil.commandHelp(Conf.aliasHelp, "[page]", "Display this, or the next help page"));
 		pageLines.add(TextUtil.commandHelp(Conf.aliasList, "", "List all factions"));
 		pageLines.add(TextUtil.commandHelp(Conf.aliasShow, "*[faction name]", "Show faction information")); // TODO display relations!
-		pageLines.add(TextUtil.commandHelp(Conf.aliasMap, "*[on|off]", "Show territory map, set optional auto update.")); // TODO COMPASS
+		pageLines.add(TextUtil.commandHelp(Conf.aliasMap, "*[on|off]", "Show territory map, set optional auto update."));
 		pageLines.add(TextUtil.commandHelp(Conf.aliasJoin, "[faction name]", "Join a faction"));
 		pageLines.add(TextUtil.commandHelp(Conf.aliasLeave, "", "Leave your faction"));
 		pageLines.add(TextUtil.commandHelp(Conf.aliasCreate, "[faction name]", "Create new faction"));
@@ -38,8 +38,8 @@ public class Commands {
 		pageLines.add(TextUtil.commandHelp(Conf.aliasInvite, "[player name]", "Invite player"));
 		pageLines.add(TextUtil.commandHelp(Conf.aliasDeinvite, "[player name]", "Remove a pending invitation"));
 		pageLines.add(TextUtil.commandHelp(Conf.aliasKick, "[player name]", "Kick a player from the faction"));
-		pageLines.add(TextUtil.commandHelp(Conf.aliasModerator, "[player name]", "Give or revoke moderator rights")); // TODO
-		pageLines.add(TextUtil.commandHelp(Conf.aliasAdmin, "[player name]", "Hand over your admin rights")); // TODO
+		pageLines.add(TextUtil.commandHelp(Conf.aliasModerator, "[player name]", "Give or revoke moderator rights"));
+		pageLines.add(TextUtil.commandHelp(Conf.aliasAdmin, "[player name]", "Hand over your admin rights"));
 		pageLines.add(TextUtil.commandHelp(Conf.aliasClaim, "", "Claim the land where you are standing"));
 		pageLines.add(TextUtil.commandHelp(Conf.aliasUnclaim, "", "Unclaim the land where you are standing"));
 		
@@ -213,9 +213,7 @@ public class Commands {
 		} else if (Conf.aliasVersion.contains(command)) {
 			version(me);
 		}  else {
-			//me.sendMessage(Conf.colorSystem+"Unknown faction command"+Conf.colorCommand+" "+command);
 			me.sendMessage(Conf.colorSystem+"Unknown faction command"+Conf.colorCommand+" "+command);
-			//me.getPlayer().sendMessage(TextUtil.repeat(tokens.get(0), Integer.parseInt(tokens.get(1))));
 		}
 	}
 	
@@ -243,14 +241,14 @@ public class Commands {
 		me.sendMessage(errors);
 		
 		if (errors.size() == 0) {
-			faction.sendMessage(me.getFullName(faction)+Conf.colorAction+" left your faction.");
+			faction.sendMessage(me.getFullName(faction)+Conf.colorSystem+" left your faction.");
 			me.sendMessage("You left "+faction.getName(me));
 		}
 		
 		if (faction.getFollowersAll().size() == 0) {
 			// Remove this faction
 			for (Follower follower : Follower.getAll()) {
-				follower.sendMessage(Conf.colorAction+"The faction "+faction.getName(follower)+Conf.colorAction+" was disbandoned.");
+				follower.sendMessage(Conf.colorSystem+"The faction "+faction.getName(follower)+Conf.colorSystem+" was disbandoned.");
 			}
 			EM.factionDelete(faction.id);
 		}
@@ -268,18 +266,38 @@ public class Commands {
 		if (errors.size() > 0) {
 			faction.sendMessage(me.getFullName(faction)+Conf.colorSystem+" tried to join your faction.");
 		} else {
-			me.sendMessage(Conf.colorAction+"You successfully joined "+faction.getName(me));
-			faction.sendMessage(me.getFullName(faction)+Conf.colorAction+" joined your faction.");
+			me.sendMessage(Conf.colorSystem+"You successfully joined "+faction.getName(me));
+			faction.sendMessage(me.getFullName(faction)+Conf.colorSystem+" joined your faction.");
 		}
 	}
 	
-	// TODO MOVE OUT
 	public static void create(Follower me, String name) {
-		ArrayList<String> errors = me.createFaction(name);
-		me.sendMessage(errors);
-
-		if (errors.size() == 0) {
-			me.sendMessage(Conf.colorAction+"Faction created!");
+		ArrayList<String> errors = new ArrayList<String>();
+		
+		if (me.factionId != 0) {
+			errors.add(Conf.colorSystem+"You must leave your current faction first.");
+		}
+		
+		if (Faction.isNameTaken(name)) {
+			errors.add(Conf.colorSystem+"That name is already in use.");
+		}
+		
+		errors.addAll(Faction.validateName(name));
+		
+		if (errors.size() > 0) {
+			me.sendMessage(errors);
+			return;
+		}
+		
+		Faction faction = EM.factionCreate();
+		faction.setName(name);
+		faction.save();
+		me.join(faction);
+		me.role = Role.ADMIN;
+		me.save();
+		
+		for (Follower follower : Follower.getAll()) {
+			follower.sendMessage(me.getFullName(follower)+Conf.colorSystem+" created a new faction "+faction.getName(follower));
 		}
 	}
 	
@@ -392,11 +410,11 @@ public class Commands {
 			if (Conf.aliasTrue.contains(mapAutoUpdating.toLowerCase())) {
 				// Turn on
 				me.setMapAutoUpdating(true);
-				me.sendMessage(Conf.colorAction + "Map auto update ENABLED.");
+				me.sendMessage(Conf.colorSystem + "Map auto update ENABLED.");
 			} else {
 				// Turn off
 				me.setMapAutoUpdating(false);
-				me.sendMessage(Conf.colorAction + "Map auto update DISABLED.");
+				me.sendMessage(Conf.colorSystem + "Map auto update DISABLED.");
 			}
 		} else {
 			me.sendMessage(Board.getMap(me.getFaction(), Coord.from(me), me.getPlayer().getLocation().getYaw()), false);
@@ -416,7 +434,6 @@ public class Commands {
 			ChatColor relationColor = me.getRelationColor(follower);
 			follower.sendMessage(relationColor+me.getFullName()+Conf.colorSystem+" invited you to "+relationColor+me.getFaction().getName());
 			me.getFaction().sendMessage(me.getFullName(me)+Conf.colorSystem+" invited "+follower.getFullName(me)+Conf.colorSystem+" to your faction.");
-			//me.sendMessage(Conf.colorAction+"You invited "+relationColor+follower.getFullName()+Conf.colorAction+" to "+Relation.MEMBER.getColor()+me.getFaction().getName());
 		}
 	}
 	
@@ -690,7 +707,7 @@ public class Commands {
 		
 		me.getFaction().setDescription(desc);
 		
-		me.sendMessage(Conf.colorAction+"The new decription was set :D");
+		me.sendMessage(Conf.colorSystem+"The new decription was set :D");
 		
 		// Broadcast the description to everyone
 		for (Follower follower : EM.followerGetAll()) {

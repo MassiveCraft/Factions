@@ -36,6 +36,7 @@ public class EM {
 	.create();
 
 	public static void loadAll() {
+		folderBase.mkdirs();
 		configLoad();
 		Log.threshold = Conf.logThreshold;
 		boardLoad();
@@ -59,11 +60,12 @@ public class EM {
 			}
 		}
 		Log.info("No conf.json found! Creating a new one with the default values");
-		//configSave(); // FOR DEBUGGING...
+		configSave();
 		return true;		
 	}
 	
 	public static boolean configSave() {
+		folderBase.mkdirs();
 		try {
 			DiscUtil.write(fileConfig, gson.toJson(new Conf()));
 			Log.debug("Config was saved to disc");
@@ -91,11 +93,12 @@ public class EM {
 			}
 		}
 		Log.info("No board.json found! Creating a new one with the default values");
-		//boardSave(); // FOR DEBUGGING...
+		boardSave();
 		return true;		
 	}
 	
 	public static boolean boardSave() {
+		folderBase.mkdirs();
 		try {
 			DiscUtil.write(fileBoard, gson.toJson(new Board()));
 			Log.debug("Board was saved to disc");

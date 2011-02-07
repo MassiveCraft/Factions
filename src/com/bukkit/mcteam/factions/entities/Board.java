@@ -114,10 +114,7 @@ public class Board {
 		
 		// Get the compass
 		ArrayList<String> asciiCompass = AsciiCompass.getAsciiCompass(inDegrees, ChatColor.RED, Conf.colorChrome);
-		// Pad the compass some
-		asciiCompass.set(0, asciiCompass.get(0));
-		asciiCompass.set(1, asciiCompass.get(1));
-		asciiCompass.set(2, asciiCompass.get(2));
+
 		// Add the compass
 		ret.set(1, asciiCompass.get(0)+ret.get(1).substring(3*3));
 		ret.set(2, asciiCompass.get(1)+ret.get(2).substring(3*3));

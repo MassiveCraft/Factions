@@ -1,4 +1,4 @@
-package com.bukkit.mcteam.factions;
+package com.bukkit.mcteam.factions.listeners;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -9,8 +9,9 @@ import org.bukkit.event.block.BlockInteractEvent;
 import org.bukkit.event.block.BlockListener;
 import org.bukkit.event.block.BlockPlaceEvent;
 
+import com.bukkit.mcteam.factions.Factions;
 import com.bukkit.mcteam.factions.entities.*;
-import com.bukkit.mcteam.factions.util.TextUtil;
+import com.bukkit.mcteam.factions.util.*;
 
 public class FactionsBlockListener extends BlockListener {
 	public Factions plugin;
