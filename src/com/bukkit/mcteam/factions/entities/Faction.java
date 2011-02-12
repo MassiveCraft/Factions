@@ -45,7 +45,10 @@ public class Faction {
 		return this.getTag(otherFollower.getRelationColor(this).toString());
 	}
 	public void setTag(String str) {
-		this.tag = str.toUpperCase();
+		if (Conf.factionTagForceUpperCase) {
+			str = str.toUpperCase();
+		}
+		this.tag = str;
 		this.save();
 	}
 	

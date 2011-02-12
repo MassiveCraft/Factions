@@ -28,6 +28,7 @@ public class Conf {
 	
 	public static int factionTagLengthMin = 3;
 	public static int factionTagLengthMax = 3;
+	public static boolean factionTagForceUpperCase = true;
 	
 	// Configuration on the Faction tag in chat messages.
 	
@@ -35,7 +36,7 @@ public class Conf {
 	public static boolean chatTagRelationColored = true;
 	public static int chatTagInsertIndex = 1;
 	public static String chatTagFormat = "%s"+ChatColor.WHITE+" ";
-	public static String factionChatFormat = colorMember+"%s"+ChatColor.WHITE+" %s";
+	public static String factionChatFormat = "%s"+ChatColor.WHITE+" %s";
 	
 	public static int mapHeight = 8;
 	public static int mapWidth = 49;
