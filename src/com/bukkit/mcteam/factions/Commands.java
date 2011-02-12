@@ -347,7 +347,11 @@ public class Commands {
 	public static void list(Follower me) {
 		me.sendMessage(TextUtil.titleize("Faction List"), false);
 		for (Faction faction : Faction.getAll()) {
-			me.sendMessage(faction.getTag(me)+Conf.colorSystem+" ("+faction.getFollowersWhereOnline(true).size()+" / "+faction.getFollowersAll().size()+" online)");
+			if (faction.id == 0) {
+				me.sendMessage(faction.getTag(me)+Conf.colorSystem+" "+faction.getFollowersWhereOnline(true).size() + " online");
+			} else {
+				me.sendMessage(faction.getTag(me)+Conf.colorSystem+" "+faction.getFollowersWhereOnline(true).size()+"/"+faction.getFollowersAll().size()+" online, "+faction.getLandRounded()+"/"+faction.getPowerRounded()+"/"+faction.getPowerMaxRounded());
+			}
 		}
 	}
 	
