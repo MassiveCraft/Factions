@@ -1,8 +1,8 @@
 package com.bukkit.mcteam.factions.listeners;
 
 import java.util.*;
+import java.util.logging.Logger;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.*;
 import org.bukkit.event.player.PlayerChatEvent;
@@ -37,17 +37,54 @@ public class FactionsPlayerListener extends PlayerListener{
 	
 	@Override
 	public void onPlayerChat(PlayerChatEvent event) {
-		Player player = event.getPlayer();
+		if (event.isCancelled()) {
+			return; // Some other plugin ate this...
+		}
+		
+		Player talkingPlayer = event.getPlayer();
 		String msg = event.getMessage();
 		
-		// Process the command or 
-		if ( ! handleCommandOrChat(player, msg) && Conf.useRelationColoredChat) {
-			for (Player receiver : Factions.server.getOnlinePlayers()) {
-				Follower follower = Follower.get(player);
-				receiver.sendMessage("<"+follower.getFullName(Follower.get(receiver))+ChatColor.WHITE+"> "+msg);
-			}
+		// Is this a faction command?...
+		if ( handleCommandOrChat(talkingPlayer, msg) ) {
+			// ... Yes it was! We should choke the chat message.
+			event.setCancelled(true);
+			return;
 		}
-		event.setCancelled(true);
+		
+		// ... it was not a command. This means that it is a chat message!
+		
+		// Are we to insert the Faction tag into the format?
+		// If we are not to insert it - we are done.
+		if ( ! Conf.chatTagEnabled) {
+			return;
+		}
+		
+		Follower me = Follower.get(talkingPlayer);
+		
+		String formatStart = event.getFormat().substring(0, Conf.chatTagInsertIndex);
+		String formatEnd = event.getFormat().substring(Conf.chatTagInsertIndex);
+		
+		String nonColoredMsgFormat = formatStart + me.getChatTag() + formatEnd;
+		
+		// Relation Colored?
+		if (Conf.chatTagRelationColored) {
+			// We must choke the standard message and send out individual messages to all players
+			// Why? Because the relations will differ.
+			event.setCancelled(true);
+			
+			for (Player listeningPlayer : Factions.server.getOnlinePlayers()) {
+				Follower you = Follower.get(listeningPlayer);
+				String yourFormat = formatStart + me.getChatTag(you) + formatEnd;
+				listeningPlayer.sendMessage(String.format(yourFormat, talkingPlayer.getDisplayName(), msg));
+			}
+			
+			// Write to the log... We will write the non colored message.
+			String nonColoredMsg = String.format(nonColoredMsgFormat, talkingPlayer.getDisplayName(), msg);
+			Logger.getLogger("Minecraft").info(nonColoredMsg);
+		} else {
+			// No relation color.
+			event.setFormat(nonColoredMsgFormat);
+		}
 	}
 	
 	public boolean handleCommandOrChat(Player player, String msg) {
@@ -63,16 +100,14 @@ public class FactionsPlayerListener extends PlayerListener{
 	
 	@Override
 	public void onPlayerJoin(PlayerEvent event) {
-		EM.onPlayerLogin(event.getPlayer());
 		//Follower.get(event.getPlayer()).sendJoinInfo();
 	}
 	
 	@Override
 	public void onPlayerQuit(PlayerEvent event) {
 		Follower follower = Follower.get(event.getPlayer()); 
-		Log.debug("Saved follower on player quit: "+follower.getFullName());
+		Log.debug("Saved follower on player quit: "+follower.getName());
 		follower.save(); // We save the followers on logout in order to save their non autosaved state like power.
-		EM.onPlayerLogout(event.getPlayer()); // Remove the player link.
 	}
 	
 	@Override

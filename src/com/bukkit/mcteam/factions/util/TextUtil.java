@@ -58,6 +58,26 @@ public class TextUtil {
 		ret = ret.toLowerCase();
 		return ret.substring(0, 1).toUpperCase()+ret.substring(1);
 	}
+	
+	/// TODO create tag whitelist!!
+	public  static ArrayList<String> substanceChars = new ArrayList<String>(Arrays.asList(new String []{
+			"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F", "G", "H", 
+			"I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", 
+			"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", 
+			"s", "t", "u", "v", "w", "x", "y", "z"
+			}));
+			
+	public static String getComparisonString(String str) {
+		String ret = "";
+		
+		for (char c : str.toCharArray()) {
+			if (substanceChars.contains(String.valueOf(c))) {
+				ret += c;
+			}
+		}
+		
+		return ret.toLowerCase();
+	}
 }
 
 

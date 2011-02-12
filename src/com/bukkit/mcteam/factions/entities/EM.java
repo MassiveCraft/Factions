@@ -115,18 +115,6 @@ public class EM {
 	//----------------------------------------------//
 	
 	/**
-	 * This method will create a follower entity and assign the link to the corresponding player.
-	 */
-	public static void onPlayerLogin(Player player) {
-		Follower follower = followerGet(player);
-		follower.player = player;
-	}
-	
-	public static void onPlayerLogout(Player player) {
-		followers.get(player.getName()).player = null;
-	}
-	
-	/**
 	 * This method loads all followers from disc into memory.
 	 */
 	public static void followerLoadAll() {
@@ -256,7 +244,7 @@ public class EM {
 		// Make sure the default neutral faction exists
 		if ( ! factions.containsKey(0)) {
 			Faction faction = new Faction();
-			faction.name = "*No faction*";
+			faction.tag = "*No faction*";
 			faction.description = "\"The faction for the factionless :P\"";
 			faction.id = 0;
 			factions.put(faction.id, faction);
@@ -271,7 +259,7 @@ public class EM {
 		return factions.values();
 	}
 	
-	public static Faction factionCreate(){
+	public static Faction factionCreate() {
 		Faction faction = new Faction();
 		faction.id = nextFactionId;
 		nextFactionId += 1;

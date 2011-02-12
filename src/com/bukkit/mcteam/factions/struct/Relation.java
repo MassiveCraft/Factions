@@ -24,6 +24,14 @@ public enum Relation {
 	}
 	
 	public ChatColor getColor() {
-		return Conf.relationColor(this);
+		if (this == Relation.MEMBER) {
+			return Conf.colorMember;
+		} else if (this == Relation.ALLY) {
+			return Conf.colorAlly;
+		} else if (this == Relation.NEUTRAL) {
+			return Conf.colorNeutral;
+		} else { //if (relation == FactionRelation.ENEMY) {
+			return Conf.colorEnemy;
+		}
 	}
 }

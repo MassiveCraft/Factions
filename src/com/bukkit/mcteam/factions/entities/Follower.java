@@ -5,13 +5,13 @@ import java.util.*;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
+import com.bukkit.mcteam.factions.Factions;
 import com.bukkit.mcteam.factions.struct.*;
 import com.bukkit.mcteam.factions.util.Log;
 import com.bukkit.mcteam.util.ChatFixUtil;
 
 public class Follower {
 	public transient String id; // The is the name of the player
-	public transient Player player; // The is the name of the player
 	
 	public int factionId;
 	public Role role;
@@ -34,7 +34,7 @@ public class Follower {
 	}
 	
 	public Player getPlayer() {
-		return this.player;
+		return Factions.server.getPlayer(this.getName());
 	}
 	
 	public boolean isOnline() {
@@ -48,7 +48,13 @@ public class Follower {
 	public void setMapAutoUpdating(boolean mapAutoUpdating) {
 		this.mapAutoUpdating = mapAutoUpdating;
 	}
-
+	
+	//----------------------------------------------//
+	// Title, Name, Faction Tag and Chat
+	//----------------------------------------------//
+	
+	// Base:
+	
 	public String getTitle() {
 		return title;
 	}
@@ -57,6 +63,117 @@ public class Follower {
 		this.title = title;
 		this.save();
 	}
+	
+	public String getName() {
+		return this.id;
+	}
+	
+	public String getTag() {
+		if (this.withoutFaction()) {
+			return "";
+		}
+		return this.getFaction().getTag();
+	}
+	
+	// Base concatenations:
+	
+	public String getNameAndSomething(String something) {
+		String ret = this.role.getPrefix();
+		if (something.length() > 0) {
+			ret += something+" ";
+		}
+		ret += this.getName();
+		return ret;
+	}
+	
+	public String getNameAndTitle() {
+		return this.getNameAndSomething(this.getTitle());
+	}
+	
+	public String getNameAndTag() {
+		return this.getNameAndSomething(this.getTag());
+	}
+	
+	// Colored concatenations:
+	// These are used in information messages
+	
+	public String getNameAndTitle(Faction faction) {
+		return this.getRelationColor(faction)+this.getNameAndTitle();
+	}
+	public String getNameAndTitle(Follower follower) {
+		return this.getRelationColor(follower)+this.getNameAndTitle();
+	}
+	
+	public String getNameAndTag(Faction faction) {
+		return this.getRelationColor(faction)+this.getNameAndTag();
+	}
+	public String getNameAndTag(Follower follower) {
+		return this.getRelationColor(follower)+this.getNameAndTag();
+	}
+	
+	public String getNameAndRelevant(Faction faction) {
+		// Which relation?
+		Relation rel = this.getRelation(faction);
+		
+		// For member we show title
+		if (rel == Relation.MEMBER) {
+			return rel.getColor() + this.getNameAndTitle();
+		}
+		
+		// For non members we show tag
+		return rel.getColor() + this.getNameAndTag();
+	}
+	public String getNameAndRelevant(Follower follower) {
+		return getNameAndRelevant(follower.getFaction());
+	}
+	
+	// Chat Tag: 
+	// These are injected into the format of global chat messages.
+	
+	public String getChatTag() {
+		if (this.withoutFaction()) {
+			return "";
+		}
+		
+		return String.format(Conf.chatTagFormat, this.role.getPrefix()+this.getTag());
+	}
+	
+	// Colored Chat Tag
+	public String getChatTag(Faction faction) {
+		if (this.withoutFaction()) {
+			return "";
+		}
+		
+		return this.getRelation(faction).getColor()+getChatTag();
+	}
+	public String getChatTag(Follower follower) {
+		if (this.withoutFaction()) {
+			return "";
+		}
+		
+		return this.getRelation(follower).getColor()+getChatTag();
+	}
+	
+	// -------------------------------
+	// Relation and relation colors
+	// -------------------------------
+	
+	public Relation getRelation(Faction faction) {
+		return faction.getRelation(this);
+	}
+	
+	public Relation getRelation(Follower follower) {
+		return this.getFaction().getRelation(follower);
+	}
+	
+	public ChatColor getRelationColor(Faction faction) {
+		return faction.getRelationColor(this);
+	}
+	
+	public ChatColor getRelationColor(Follower follower) {
+		return this.getRelation(follower).getColor();
+	}
+	
 	
 	//----------------------------------------------//
 	// Health
@@ -85,15 +202,15 @@ public class Follower {
 		} else if (this.power < this.getPowerMin()) {
 			this.power = this.getPowerMin();
 		}
-		Log.debug("Power of "+this.getFullName()+" is now: "+this.power);
+		Log.debug("Power of "+this.getName()+" is now: "+this.power);
 	}
 	
 	public double getPowerMax() {
-		return Conf.powerPerPlayer;
+		return Conf.powerPlayerMax;
 	}
 	
 	public double getPowerMin() {
-		return -Conf.powerPerPlayer;
+		return Conf.powerPlayerMin;
 	}
 	
 	public int getPowerRounded() {
@@ -141,7 +258,10 @@ public class Follower {
 	
 	public void sendFactionHereMessage() {
 		Faction factionHere = Board.getFactionAt(this.getCoord());
-		String msg = Conf.colorSystem+" ~ "+factionHere.getName(this);
+		String msg = Conf.colorSystem+" ~ "+factionHere.getTag(this);
+		if (factionHere.id != 0) {
+			msg += " - "+factionHere.getDescription();
+		}
 		this.sendMessage(msg);
 	}
 	
@@ -152,17 +272,24 @@ public class Follower {
 		return EM.factionGet(factionId);
 	}
 	
+	public boolean hasFaction() {
+		return factionId != 0;
+	}
+	public boolean withoutFaction() {
+		return factionId == 0;
+	}
+	
 	public ArrayList<String> join(Faction faction) {
 		ArrayList<String> errors = new ArrayList<String>();
 		if (faction.id == this.factionId) {
-			errors.add(Conf.colorSystem+"You are already a member of "+faction.getRelationColor(this)+faction.getName());
+			errors.add(Conf.colorSystem+"You are already a member of "+faction.getRelationColor(this)+faction.getTag());
 		}
 		
 		if( ! faction.getOpen() && ! faction.isInvited(this)) {
 			errors.add(Conf.colorSystem+"This guild requires invitation.");
 		}
 		
-		if (this.factionId != 0) {
+		if (this.hasFaction()) {
 			errors.add(Conf.colorSystem+"You must leave your current faction first.");
 		}
 		
@@ -189,7 +316,7 @@ public class Follower {
 			errors.add(Conf.colorSystem+"You must give the admin role to someone else first.");
 		}
 		
-		if(this.factionId == 0) {
+		if(this.withoutFaction()) {
 			errors.add(Conf.colorSystem+"You are not member of any faction.");
 		}
 		
@@ -239,7 +366,7 @@ public class Follower {
 		ArrayList<String> errors = new ArrayList<String>();
 		
 		if ( ! follower.getFaction().equals(this.getFaction())) {
-			errors.add(this.getRelationColor(follower)+follower.getFullName()+Conf.colorSystem+" is not a member of "+Conf.colorMember+this.getFaction().getName());
+			errors.add(follower.getNameAndRelevant(this)+Conf.colorSystem+" is not a member of "+Conf.colorMember+this.getFaction().getTag());
 		} else if (follower.equals(this)) {
 			errors.add(Conf.colorSystem+"You can not kick yourself.");
 			errors.add(Conf.colorSystem+"You might want to "+Conf.colorCommand+Conf.aliasBase.get(0)+" "+Conf.aliasLeave.get(0));
@@ -295,65 +422,6 @@ public class Follower {
 		
 		return null;
 	}
-	
-	// -------------------------------
-	// Relation and relation colors
-	// -------------------------------
-	
-	public Relation getRelation(Faction faction) {
-		return faction.getRelation(this);
-	}
-	
-	public Relation getRelation(Follower follower) {
-		return this.getFaction().getRelation(follower);
-	}
-	
-	public ChatColor getRelationColor(Faction faction) {
-		return faction.getRelationColor(this);
-	}
-	
-	public ChatColor getRelationColor(Follower follower) {
-		return this.getRelation(follower).getColor();
-	}
-	
-	//----------------------------------------------//
-	// Display the name of this follower
-	//----------------------------------------------//
-	
-	public String getName() {
-		return this.id;
-	}
-	
-	public String getFullName() {
-		return getFullName("");
-	}
-	
-	public String getFullName(Faction otherFaction) {
-		return getFullName(otherFaction.getRelationColor(this).toString());
-	}
-	
-	public String getFullName(Follower otherFollower) {
-		return getFullName(otherFollower.getRelationColor(this).toString());
-	}
-	
-	public String getFullName(String prefix) {
-		String ret = prefix;
-		if (this.role.equals(Role.ADMIN)) {
-			ret += Conf.prefixAdmin;
-		} else if (this.role.equals(Role.MODERATOR)) {
-			ret += Conf.prefixMod;
-		}
-		
-		if (this.title.length() > 0) {
-			ret += this.title + " ";
-		}
-		
-		ret += this.getName();
-		
-		return ret;
-	}
-	
-	
 	
 	//----------------------------------------------//
 	// Persistance and entity management

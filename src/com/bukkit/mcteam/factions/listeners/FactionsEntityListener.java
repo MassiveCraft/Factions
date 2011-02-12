@@ -69,15 +69,15 @@ public class FactionsEntityListener extends EntityListener {
 		
 		// You can never hurt faction members or allies
 		if (relation == Relation.MEMBER || relation == Relation.ALLY) {
-			attacker.sendMessage(Conf.colorSystem+"You can't hurt "+relation.getColor()+defender.getFullName());
+			attacker.sendMessage(Conf.colorSystem+"You can't hurt "+defender.getNameAndRelevant(attacker));
 			event.setCancelled(true);
 			return;
 		}
 		
 		// You can not hurt neutrals in their own territory.
 		if (relation == Relation.NEUTRAL && defender.isInOwnTerritory()) {
-			attacker.sendMessage(Conf.colorSystem+"You can't hurt "+relation.getColor()+defender.getFullName()+" in their own territory.");
-			defender.sendMessage(relation.getColor()+attacker.getFullName()+Conf.colorSystem+" tried to hurt you.");
+			attacker.sendMessage(Conf.colorSystem+"You can't hurt "+relation.getColor()+defender.getNameAndRelevant(attacker)+" in their own territory.");
+			defender.sendMessage(attacker.getNameAndRelevant(defender)+Conf.colorSystem+" tried to hurt you.");
 			event.setCancelled(true);
 			return;
 		}
@@ -85,7 +85,7 @@ public class FactionsEntityListener extends EntityListener {
 		// Damage will be dealt. However check if the damage should be reduced.
 		if (defender.isInOwnTerritory()) {
 			int damage = event.getDamage();
-			int toHeal = (int)Math.round(damage * Conf.territoryShieldFactor);
+			int toHeal = (int)(damage * Conf.territoryShieldFactor);
 			defender.heal(toHeal);
 			
 			// Send message

@@ -21,15 +21,16 @@ public class Commands {
 		
 
 		pageLines = new ArrayList<String>();
-		pageLines.add(TextUtil.commandHelp(Conf.aliasHelp, "[page]", "Display this, or the next help page"));
+		pageLines.add(TextUtil.commandHelp(Conf.aliasHelp, "*[page]", "Display a help page"));
 		pageLines.add(TextUtil.commandHelp(Conf.aliasList, "", "List all factions"));
 		pageLines.add(TextUtil.commandHelp(Conf.aliasShow, "*[faction name]", "Show faction information")); // TODO display relations!
 		pageLines.add(TextUtil.commandHelp(Conf.aliasMap, "*[on|off]", "Show territory map, set optional auto update."));
 		pageLines.add(TextUtil.commandHelp(Conf.aliasJoin, "[faction name]", "Join a faction"));
 		pageLines.add(TextUtil.commandHelp(Conf.aliasLeave, "", "Leave your faction"));
-		pageLines.add(TextUtil.commandHelp(Conf.aliasCreate, "[faction name]", "Create new faction"));
-		pageLines.add(TextUtil.commandHelp(Conf.aliasName, "[faction name]", "Rename your faction"));
-		pageLines.add(TextUtil.commandHelp(Conf.aliasDescription, "[description]", "Set the description for your faction"));
+		pageLines.add(TextUtil.commandHelp(Conf.aliasChat, "[message]", "Send message to your faction only."));
+		pageLines.add(TextUtil.commandHelp(Conf.aliasCreate, "[faction tag]", "Create new faction"));
+		pageLines.add(TextUtil.commandHelp(Conf.aliasTag, "[faction tag]", "Change the faction tag"));
+		pageLines.add(TextUtil.commandHelp(Conf.aliasDescription, "[description]", "Change the faction description"));
 		
 		helpPages.add(pageLines);
 		pageLines = new ArrayList<String>();
@@ -37,11 +38,11 @@ public class Commands {
 		pageLines.add(TextUtil.commandHelp(Conf.aliasTitle, "[player name] *[title]", "Set or remove a players title"));
 		pageLines.add(TextUtil.commandHelp(Conf.aliasInvite, "[player name]", "Invite player"));
 		pageLines.add(TextUtil.commandHelp(Conf.aliasDeinvite, "[player name]", "Remove a pending invitation"));
+		pageLines.add(TextUtil.commandHelp(Conf.aliasClaim, "", "Claim the land where you are standing"));
+		pageLines.add(TextUtil.commandHelp(Conf.aliasUnclaim, "", "Unclaim the land where you are standing"));
 		pageLines.add(TextUtil.commandHelp(Conf.aliasKick, "[player name]", "Kick a player from the faction"));
 		pageLines.add(TextUtil.commandHelp(Conf.aliasModerator, "[player name]", "Give or revoke moderator rights"));
 		pageLines.add(TextUtil.commandHelp(Conf.aliasAdmin, "[player name]", "Hand over your admin rights"));
-		pageLines.add(TextUtil.commandHelp(Conf.aliasClaim, "", "Claim the land where you are standing"));
-		pageLines.add(TextUtil.commandHelp(Conf.aliasUnclaim, "", "Unclaim the land where you are standing"));
 		
 		helpPages.add(pageLines);
 		pageLines = new ArrayList<String>();
@@ -95,6 +96,8 @@ public class Commands {
 	// Some utils
 	//----------------------------------------------//
 	
+	// Update to work with tag and follower names
+	
 	public static Follower findFollower(Follower me, String name, boolean defaultsToMe) {
 		if (name.length() == 0 && defaultsToMe) {
 			return me;
@@ -121,7 +124,7 @@ public class Commands {
 		}
 		
 		// Then faction names
-		Faction faction = Faction.find(name);
+		Faction faction = Faction.findByTag(name);
 		if (faction != null) {
 			return faction;
 		}
@@ -132,7 +135,7 @@ public class Commands {
 	
 	public static boolean canIAdministerYou(Follower i, Follower you) {
 		if ( ! i.getFaction().equals(you.getFaction())) {
-			i.sendMessage(you.getFullName(i)+Conf.colorSystem+" is not in the same faction as you.");
+			i.sendMessage(you.getNameAndRelevant(i)+Conf.colorSystem+" is not in the same faction as you.");
 			return false;
 		}
 		
@@ -176,8 +179,12 @@ public class Commands {
 			join(me, TextUtil.implode(tokens));
 		} else if (Conf.aliasCreate.contains(command)) {
 			create(me, TextUtil.implode(tokens));
-		} else if (Conf.aliasName.contains(command)) {
+		} else if (Conf.aliasTag.contains(command)) {
 			name(me, TextUtil.implode(tokens));
+		} else if (Conf.aliasDescription.contains(command)) {
+			description(me, TextUtil.implode(tokens));
+		} else if (Conf.aliasChat.contains(command)) {
+			chat(me, TextUtil.implode(tokens));
 		} else if (Conf.aliasList.contains(command)) {
 			list(me);
 		} else if (Conf.aliasShow.contains(command)) {
@@ -208,8 +215,6 @@ public class Commands {
 			relation(me, Relation.NEUTRAL, TextUtil.implode(tokens));
 		} else if (Conf.aliasRelationEnemy.contains(command)) {
 			relation(me, Relation.ENEMY, TextUtil.implode(tokens));
-		} else if (Conf.aliasDescription.contains(command)) {
-			description(me, TextUtil.implode(tokens));
 		} else if (Conf.aliasVersion.contains(command)) {
 			version(me);
 		}  else {
@@ -241,14 +246,14 @@ public class Commands {
 		me.sendMessage(errors);
 		
 		if (errors.size() == 0) {
-			faction.sendMessage(me.getFullName(faction)+Conf.colorSystem+" left your faction.");
-			me.sendMessage("You left "+faction.getName(me));
+			faction.sendMessage(me.getNameAndRelevant(faction)+Conf.colorSystem+" left your faction.");
+			me.sendMessage("You left "+faction.getTag(me));
 		}
 		
 		if (faction.getFollowersAll().size() == 0) {
 			// Remove this faction
 			for (Follower follower : Follower.getAll()) {
-				follower.sendMessage(Conf.colorSystem+"The faction "+faction.getName(follower)+Conf.colorSystem+" was disbandoned.");
+				follower.sendMessage(Conf.colorSystem+"The faction "+faction.getTag(follower)+Conf.colorSystem+" was disbandoned.");
 			}
 			EM.factionDelete(faction.id);
 		}
@@ -264,25 +269,25 @@ public class Commands {
 		me.sendMessage(errors);
 		
 		if (errors.size() > 0) {
-			faction.sendMessage(me.getFullName(faction)+Conf.colorSystem+" tried to join your faction.");
+			faction.sendMessage(me.getNameAndRelevant(faction)+Conf.colorSystem+" tried to join your faction.");
 		} else {
-			me.sendMessage(Conf.colorSystem+"You successfully joined "+faction.getName(me));
-			faction.sendMessage(me.getFullName(faction)+Conf.colorSystem+" joined your faction.");
+			me.sendMessage(Conf.colorSystem+"You successfully joined "+faction.getTag(me));
+			faction.sendMessage(me.getNameAndRelevant(faction)+Conf.colorSystem+" joined your faction.");
 		}
 	}
 	
-	public static void create(Follower me, String name) {
+	public static void create(Follower me, String tag) {
 		ArrayList<String> errors = new ArrayList<String>();
 		
-		if (me.factionId != 0) {
+		if (me.hasFaction()) {
 			errors.add(Conf.colorSystem+"You must leave your current faction first.");
 		}
 		
-		if (Faction.isNameTaken(name)) {
-			errors.add(Conf.colorSystem+"That name is already in use.");
+		if (Faction.isTagTaken(tag)) {
+			errors.add(Conf.colorSystem+"That tag is already in use.");
 		}
 		
-		errors.addAll(Faction.validateName(name));
+		errors.addAll(Faction.validateTag(tag));
 		
 		if (errors.size() > 0) {
 			me.sendMessage(errors);
@@ -290,31 +295,34 @@ public class Commands {
 		}
 		
 		Faction faction = EM.factionCreate();
-		faction.setName(name);
+		faction.setTag(tag);
 		faction.save();
 		me.join(faction);
 		me.role = Role.ADMIN;
 		me.save();
 		
 		for (Follower follower : Follower.getAll()) {
-			follower.sendMessage(me.getFullName(follower)+Conf.colorSystem+" created a new faction "+faction.getName(follower));
+			follower.sendMessage(me.getNameAndRelevant(follower)+Conf.colorSystem+" created a new faction "+faction.getTag(follower));
 		}
+		
+		me.sendMessage(Conf.colorSystem+"Now update your faction description. Use:");
+		me.sendMessage(Conf.colorCommand+Conf.aliasBase.get(0)+" "+Conf.aliasDescription.get(0)+" "+"[description]");
 	}
 	
 	public static void name(Follower me, String name) {
 		ArrayList<String> errors = new ArrayList<String>();
 		
-		if (me.factionId == 0) {
+		if (me.withoutFaction()) {
 			errors.add(Conf.colorSystem+"You are not part of any faction");
 		} else if (me.role.value < Role.MODERATOR.value) {
 			errors.add(Conf.colorSystem+"You must be moderator to rename your faction");
 		} 
 		
-		if (Faction.isNameTaken(name) && ! Faction.toComparisonName(name).equals(me.getFaction().getComparisonName())) {
+		if (Faction.isTagTaken(name) && ! TextUtil.getComparisonString(name).equals(me.getFaction().getComparisonTag())) {
 			errors.add(Conf.colorSystem+"That name is already taken");
 		}
 		
-		errors.addAll(Faction.validateName(name));
+		errors.addAll(Faction.validateTag(name));
 		
 		if (errors.size() > 0) {
 			me.sendMessage(errors);
@@ -323,23 +331,23 @@ public class Commands {
 
 		Faction myFaction = me.getFaction();
 		
-		String oldname = myFaction.getName();
-		myFaction.setName(name);
+		String oldname = myFaction.getTag();
+		myFaction.setTag(name);
 		
 		// Inform
-		myFaction.sendMessage(me.getFullName(myFaction)+Conf.colorSystem+" changed the name of your faction to "+Conf.colorMember+name);
+		myFaction.sendMessage(me.getNameAndRelevant(myFaction)+Conf.colorSystem+" changed your faction tag to "+Conf.colorMember+name);
 		for (Faction faction : Faction.getAll()) {
 			if (faction.id == me.factionId) {
 				continue;
 			}
-			faction.sendMessage(Conf.colorSystem+"The faction "+me.getRelationColor(faction)+oldname+Conf.colorSystem+" renamed themselves to "+me.getRelationColor(faction)+name);
+			faction.sendMessage(Conf.colorSystem+"The faction "+me.getRelationColor(faction)+oldname+Conf.colorSystem+" chainged their name to "+me.getRelationColor(faction)+name);
 		}
 	}
 	
 	public static void list(Follower me) {
 		me.sendMessage(TextUtil.titleize("Faction List"), false);
 		for (Faction faction : Faction.getAll()) {
-			me.sendMessage(faction.getName(me)+Conf.colorSystem+" ("+faction.getFollowersWhereOnline(true).size()+" / "+faction.getFollowersAll().size()+" online)");
+			me.sendMessage(faction.getTag(me)+Conf.colorSystem+" ("+faction.getFollowersWhereOnline(true).size()+" / "+faction.getFollowersAll().size()+" online)");
 		}
 	}
 	
@@ -352,12 +360,10 @@ public class Commands {
 		Collection<Follower> mods = faction.getFollowersWhereRole(Role.MODERATOR);
 		Collection<Follower> normals = faction.getFollowersWhereRole(Role.NORMAL);
 		
-		me.sendMessage(TextUtil.titleize(faction.getName(me)), false);
+		me.sendMessage(TextUtil.titleize(faction.getTag(me)), false);
 		me.sendMessage(Conf.colorChrome+"Description: "+Conf.colorSystem+faction.getDescription());
 		if (faction.id != 0) {
-			me.sendMessage(Conf.colorChrome+"Power: "+Conf.colorSystem+faction.getPowerRounded()+" / "+faction.getPowerMaxRounded()); // TODO this is not so easy to understand
-			me.sendMessage(Conf.colorChrome+"Land: "+Conf.colorSystem+faction.getLandRounded()+" / "+faction.getLandMaxRounded());
-		
+			me.sendMessage(Conf.colorChrome+"Land / Power / Maxpower: "+Conf.colorSystem+ faction.getLandRounded()+" / "+faction.getPowerRounded()+" / "+faction.getPowerMaxRounded());
 			if(faction.getOpen()) {
 				me.sendMessage(Conf.colorChrome+"Joining: "+Conf.colorSystem+"no invitation is needed");
 			} else {
@@ -369,7 +375,7 @@ public class Commands {
 		String offlineList = Conf.colorChrome+"Members offline: ";
 		String listpart;
 		for (Follower follower : admins) {
-			listpart = follower.getFullName(me)+Conf.colorSystem+", ";
+			listpart = follower.getNameAndTitle(me)+Conf.colorSystem+", ";
 			if (follower.isOnline()) {
 				onlineList += listpart;
 			} else {
@@ -377,7 +383,7 @@ public class Commands {
 			}
 		}
 		for (Follower follower : mods) {
-			listpart = follower.getFullName(me)+Conf.colorSystem+", ";
+			listpart = follower.getNameAndTitle(me)+Conf.colorSystem+", ";
 			if (follower.isOnline()) {
 				onlineList += listpart;
 			} else {
@@ -385,7 +391,7 @@ public class Commands {
 			}
 		}
 		for (Follower follower : normals) {
-			listpart = follower.getFullName(me)+Conf.colorSystem+", ";
+			listpart = follower.getNameAndTitle(me)+Conf.colorSystem+", ";
 			if (follower.isOnline()) {
 				onlineList += listpart;
 			} else {
@@ -411,6 +417,9 @@ public class Commands {
 				// Turn on
 				me.setMapAutoUpdating(true);
 				me.sendMessage(Conf.colorSystem + "Map auto update ENABLED.");
+				
+				// And show the map once
+				showMap(me,"");
 			} else {
 				// Turn off
 				me.setMapAutoUpdating(false);
@@ -431,9 +440,8 @@ public class Commands {
 		me.sendMessage(errors);
 		
 		if (errors.size() == 0) {
-			ChatColor relationColor = me.getRelationColor(follower);
-			follower.sendMessage(relationColor+me.getFullName()+Conf.colorSystem+" invited you to "+relationColor+me.getFaction().getName());
-			me.getFaction().sendMessage(me.getFullName(me)+Conf.colorSystem+" invited "+follower.getFullName(me)+Conf.colorSystem+" to your faction.");
+			follower.sendMessage(me.getNameAndRelevant(follower)+Conf.colorSystem+" invited you to "+me.getFaction().getTag(follower));
+			me.getFaction().sendMessage(me.getNameAndRelevant(me)+Conf.colorSystem+" invited "+follower.getNameAndRelevant(me)+Conf.colorSystem+" to your faction.");
 		}
 	}
 	
@@ -447,8 +455,8 @@ public class Commands {
 		me.sendMessage(errors);
 		
 		if (errors.size() == 0) {
-			follower.sendMessage(me.getFullName(follower)+Conf.colorSystem+" revoked your invitation to "+me.getFaction().getName(follower));
-			me.getFaction().sendMessage(me.getFullName(me)+Conf.colorSystem+" revoked "+follower.getFullName(me)+"'s"+Conf.colorSystem+" invitation.");
+			follower.sendMessage(me.getNameAndRelevant(follower)+Conf.colorSystem+" revoked your invitation to "+me.getFaction().getTag(follower));
+			me.getFaction().sendMessage(me.getNameAndRelevant(me)+Conf.colorSystem+" revoked "+follower.getNameAndRelevant(me)+"'s"+Conf.colorSystem+" invitation.");
 		}
 	}
 	
@@ -463,12 +471,12 @@ public class Commands {
 		String open = myFaction.getOpen() ? "open" : "closed";
 		
 		// Inform
-		myFaction.sendMessage(me.getFullName(myFaction)+Conf.colorSystem+" changed the faction to "+open);
+		myFaction.sendMessage(me.getNameAndRelevant(myFaction)+Conf.colorSystem+" changed the faction to "+open);
 		for (Faction faction : Faction.getAll()) {
 			if (faction.id == me.factionId) {
 				continue;
 			}
-			faction.sendMessage(Conf.colorSystem+"The faction "+myFaction.getName(faction)+Conf.colorSystem+" is now "+open);
+			faction.sendMessage(Conf.colorSystem+"The faction "+myFaction.getTag(faction)+Conf.colorSystem+" is now "+open);
 		}
 	}
 	
@@ -496,7 +504,7 @@ public class Commands {
 		
 		// Inform
 		Faction myFaction = me.getFaction();
-		myFaction.sendMessage(me.getFullName(myFaction)+Conf.colorSystem+" changed a title: "+you.getFullName(myFaction));
+		myFaction.sendMessage(me.getNameAndRelevant(myFaction)+Conf.colorSystem+" changed a title: "+you.getNameAndRelevant(myFaction));
 	}
 	
 	public static void kick(Follower me, String name) {
@@ -515,8 +523,8 @@ public class Commands {
 		
 		if (errors.size() == 0) {
 			Faction myFaction = me.getFaction();
-			myFaction.sendMessage(me.getFullName(myFaction)+Conf.colorSystem+" kicked "+you.getFullName(myFaction)+Conf.colorSystem+" from the faction! :O");
-			you.sendMessage(me.getFullName(you)+Conf.colorSystem+" kicked you from "+myFaction.getName(you)+Conf.colorSystem+"! :O");
+			myFaction.sendMessage(me.getNameAndRelevant(myFaction)+Conf.colorSystem+" kicked "+you.getNameAndRelevant(myFaction)+Conf.colorSystem+" from the faction! :O");
+			you.sendMessage(me.getNameAndRelevant(you)+Conf.colorSystem+" kicked you from "+myFaction.getTag(you)+Conf.colorSystem+"! :O");
 		}
 	}
 	
@@ -537,8 +545,7 @@ public class Commands {
 		}
 		
 		if (targetFollower.factionId != me.factionId) {
-			ChatColor relationColor = me.getRelationColor(targetFollower);
-			me.sendMessage(relationColor+targetFollower.getFullName()+Conf.colorSystem+" is not a member in your faction.");
+			me.sendMessage(targetFollower.getNameAndRelevant(me)+Conf.colorSystem+" is not a member in your faction.");
 			return;
 		}
 		
@@ -554,26 +561,26 @@ public class Commands {
 			// Inform all players
 			for (Follower follower : Follower.getAll()) {
 				if (follower.factionId == me.factionId) {
-					follower.sendMessage(Conf.colorMember+me.getFullName()+Conf.colorSystem+" gave "+Conf.colorMember+targetFollower.getFullName()+Conf.colorSystem+" the leadership of your faction.");
+					follower.sendMessage(me.getNameAndRelevant(me)+Conf.colorSystem+" gave "+targetFollower.getNameAndRelevant(me)+Conf.colorSystem+" the leadership of your faction.");
 				} else {
-					follower.sendMessage(me.getFullName(follower)+Conf.colorSystem+" gave "+targetFollower.getFullName(follower)+Conf.colorSystem+" the leadership of "+me.getFaction().getName(follower));
+					follower.sendMessage(me.getNameAndRelevant(follower)+Conf.colorSystem+" gave "+targetFollower.getNameAndRelevant(follower)+Conf.colorSystem+" the leadership of "+me.getFaction().getTag(follower));
 				}
 			}
 		} else if (targetRole == Role.MODERATOR) {
 			if (targetFollower.role == Role.MODERATOR) {
 				// Revoke
 				targetFollower.role = Role.NORMAL;
-				me.getFaction().sendMessage(Conf.colorMember+targetFollower.getName()+Conf.colorSystem+" is no longer moderator in your faction.");
+				me.getFaction().sendMessage(targetFollower.getNameAndRelevant(me.getFaction())+Conf.colorSystem+" is no longer moderator in your faction.");
 			} else {
 				// Give
 				targetFollower.role = Role.MODERATOR;
-				me.getFaction().sendMessage(Conf.colorMember+targetFollower.getName()+Conf.colorSystem+" was promoted to moderator in your faction.");
+				me.getFaction().sendMessage(targetFollower.getNameAndRelevant(me.getFaction())+Conf.colorSystem+" was promoted to moderator in your faction.");
 			}
 		}
 	}
 	
 	public static void claim(Follower me) {
-		if (me.factionId == 0) {
+		if (me.withoutFaction()) {
 			me.sendMessage(Conf.colorSystem+"You are not part of any faction.");
 			return;
 		}
@@ -592,7 +599,7 @@ public class Commands {
 			return;
 		}
 		
-		if (myFaction.getLandRounded() >= myFaction.getLandMaxRounded()) {
+		if (myFaction.getLandRounded() >= myFaction.getPowerRounded()) {
 			me.sendMessage(Conf.colorSystem+"You can't claim more land! You need more power!");
 			return;
 		}
@@ -603,8 +610,8 @@ public class Commands {
 		}
 		
 		if (otherFaction.id != 0) {
-			if ( ! otherFaction.hasLandInflation()) { // TODO more messages
-				me.sendMessage(me.getRelationColor(otherFaction)+otherFaction.getName()+Conf.colorSystem+" owns this land and are strong enough to keep it.");
+			if ( ! otherFaction.hasLandInflation()) { // TODO more messages WARN current faction most importantly
+				me.sendMessage(me.getRelationColor(otherFaction)+otherFaction.getTag()+Conf.colorSystem+" owns this land and are strong enough to keep it.");
 				return;
 			}
 			
@@ -615,20 +622,19 @@ public class Commands {
 		}
 		
 		if (otherFaction.id == 0) {
-			myFaction.sendMessage(Conf.colorMember+me.getFullName()+Conf.colorSystem+" claimed some new land :D");
+			myFaction.sendMessage(me.getNameAndRelevant(myFaction)+Conf.colorSystem+" claimed some new land :D");
 		} else {
 			// ASDF claimed some of your land 450 blocks NNW of you.
 			// ASDf claimed some land from FACTION NAME
-			ChatColor relcolor = myFaction.getRelationColor(otherFaction);
-			otherFaction.sendMessage(relcolor+me.getFullName()+Conf.colorSystem+" from "+relcolor+myFaction.getName()+Conf.colorSystem+" stole some of your land :O");
-			myFaction.sendMessage(Conf.colorMember+me.getFullName()+Conf.colorSystem+" claimed some land from "+relcolor+otherFaction.getName());
+			otherFaction.sendMessage(me.getNameAndRelevant(otherFaction)+Conf.colorSystem+" stole some of your land :O");
+			myFaction.sendMessage(me.getNameAndRelevant(myFaction)+Conf.colorSystem+" claimed some land from "+otherFaction.getTag(myFaction));
 		}
 		
 		Board.claim(coord, myFaction);
 	}
 	
 	public static void unclaim(Follower me) {
-		if (me.factionId == 0) {
+		if (me.withoutFaction()) {
 			me.sendMessage(Conf.colorSystem+"You are not part of any faction");
 			return;
 		}
@@ -646,11 +652,11 @@ public class Commands {
 		}
 		
 		Board.unclaim(coord);
-		me.getFaction().sendMessage(Conf.colorMember+me.getFullName()+Conf.colorSystem+" unclaimed some land...");
+		me.getFaction().sendMessage(me.getNameAndRelevant(me)+Conf.colorSystem+" unclaimed some land.");
 	}
 	
 	public static void relation(Follower me, Relation whishedRelation, String otherFactionName) {
-		if (me.factionId == 0) {
+		if (me.withoutFaction()) {
 			me.sendMessage(Conf.colorSystem+"You are not part of any faction.");
 			return;
 		}
@@ -685,17 +691,17 @@ public class Commands {
 		Relation currentRelation = myFaction.getRelation(otherFaction);
 		ChatColor currentRelationColor = currentRelation.getColor();
 		if (whishedRelation == currentRelation) {
-			otherFaction.sendMessage(Conf.colorSystem+"Your faction is now "+currentRelationColor+whishedRelation.toString()+Conf.colorSystem+" to "+currentRelationColor+myFaction.getName());
-			myFaction.sendMessage(Conf.colorSystem+"Your faction is now "+currentRelationColor+whishedRelation.toString()+Conf.colorSystem+" to "+currentRelationColor+otherFaction.getName());
+			otherFaction.sendMessage(Conf.colorSystem+"Your faction is now "+currentRelationColor+whishedRelation.toString()+Conf.colorSystem+" to "+currentRelationColor+myFaction.getTag());
+			myFaction.sendMessage(Conf.colorSystem+"Your faction is now "+currentRelationColor+whishedRelation.toString()+Conf.colorSystem+" to "+currentRelationColor+otherFaction.getTag());
 		} else {
-			otherFaction.sendMessage(currentRelationColor+myFaction.getName()+Conf.colorSystem+ " whishes to be your "+whishedRelation.getColor()+whishedRelation.toString());
-			otherFaction.sendMessage(Conf.colorSystem+"Type "+Conf.colorCommand+Conf.aliasBase.get(0)+" "+whishedRelation+" "+myFaction.getName()+Conf.colorSystem+" to accept.");
-			myFaction.sendMessage(currentRelationColor+otherFaction.getName()+Conf.colorSystem+ " were informed you wishes to be "+whishedRelation.getColor()+whishedRelation);
+			otherFaction.sendMessage(currentRelationColor+myFaction.getTag()+Conf.colorSystem+ " whishes to be your "+whishedRelation.getColor()+whishedRelation.toString());
+			otherFaction.sendMessage(Conf.colorSystem+"Type "+Conf.colorCommand+Conf.aliasBase.get(0)+" "+whishedRelation+" "+myFaction.getTag()+Conf.colorSystem+" to accept.");
+			myFaction.sendMessage(currentRelationColor+otherFaction.getTag()+Conf.colorSystem+ " were informed you wishes to be "+whishedRelation.getColor()+whishedRelation);
 		}
 	}
 	
 	public static void description(Follower me, String desc) {
-		if (me.factionId == 0) {
+		if (me.withoutFaction()) {
 			me.sendMessage(Conf.colorSystem+"You are not part of any faction");
 			return;
 		}
@@ -711,9 +717,18 @@ public class Commands {
 		
 		// Broadcast the description to everyone
 		for (Follower follower : EM.followerGetAll()) {
-			follower.sendMessage(Conf.colorSystem+"The faction "+follower.getRelationColor(me)+me.getFaction().getName()+Conf.colorSystem+" changed their description to:");
+			follower.sendMessage(Conf.colorSystem+"The faction "+follower.getRelationColor(me)+me.getFaction().getTag()+Conf.colorSystem+" changed their description to:");
 			follower.sendMessage(Conf.colorSystem+desc);
 		}
+	}
+	
+	public static void chat(Follower me, String msg) {
+		if (me.withoutFaction()) {
+			me.sendMessage(Conf.colorSystem+"You are not part of any faction");
+			return;
+		}
+		
+		me.getFaction().sendMessage(String.format(Conf.factionChatFormat, me.getNameAndRelevant(me), msg), false);
 	}
 	
 	public static void version(Follower me) {

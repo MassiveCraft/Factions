@@ -8,7 +8,7 @@ public class AsciiCompass {
 	public enum Point {
 		N('N'),
 		NE('/'),
-		E('W'),
+		E('E'),
 		SE('\\'),
 		S('S'),
 		SW('/'),

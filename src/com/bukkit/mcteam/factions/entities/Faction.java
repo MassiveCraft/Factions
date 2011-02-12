@@ -9,6 +9,7 @@ import com.bukkit.mcteam.factions.Factions;
 import com.bukkit.mcteam.factions.struct.Relation;
 import com.bukkit.mcteam.factions.struct.Role;
 import com.bukkit.mcteam.factions.util.Log;
+import com.bukkit.mcteam.factions.util.TextUtil;
 import com.bukkit.mcteam.util.ChatFixUtil;
 
 public class Faction {
@@ -17,36 +18,34 @@ public class Faction {
 	protected Map<Integer, Relation> relationWish;
 	protected Set<String> invites; // Where string is a follower id (lower case name)
 	protected boolean open;
-	protected String name;
+	protected String tag;
 	protected String description;
 	
 	public Faction() {
 		this.relationWish = new HashMap<Integer, Relation>();
 		this.invites = new HashSet<String>();
 		this.open = true;
-		this.name = "Untitled Faction :(";
+		this.tag = "???";
 		this.description = "Default faction description :(";
 	}
 	
 	// -------------------------------
 	// Information
 	// -------------------------------
-	public String getName() {
-		return this.getName("");
+	public String getTag() {
+		return this.getTag("");
 	}
-	public String getName(String prefix) {
-		return prefix+this.name;
+	public String getTag(String prefix) {
+		return prefix+this.tag;
 	}
-	public String getName(Faction otherFaction) {
-		return this.getName(otherFaction.getRelationColor(this).toString());
+	public String getTag(Faction otherFaction) {
+		return this.getTag(otherFaction.getRelationColor(this).toString());
 	}
-
-	public String getName(Follower otherFollower) {
-		return this.getName(otherFollower.getRelationColor(this).toString());
+	public String getTag(Follower otherFollower) {
+		return this.getTag(otherFollower.getRelationColor(this).toString());
 	}
-	
-	public void setName(String newName) {
-		this.name = newName;
+	public void setTag(String str) {
+		this.tag = str.toUpperCase();
 		this.save();
 	}
 	
@@ -99,16 +98,8 @@ public class Faction {
 		return Board.getFactionCoordCount(this);
 	}
 	
-	public double getLandMax() {
-		return this.getPower();
-	}
-	
-	public int getLandMaxRounded() {
-		return (int) Math.round(this.getLandMax());
-	}
-	
 	public boolean hasLandInflation() {
-		return Board.getFactionCoordCount(this) > this.getLandMaxRounded();
+		return this.getLandRounded() > this.getPowerRounded();
 	}
 	
 	// -------------------------------
@@ -116,14 +107,14 @@ public class Faction {
 	// -------------------------------
 	
 	
-	public ArrayList<String> invite(Follower follower) {
+	public ArrayList<String> invite(Follower follower) { // TODO Move out
 		ArrayList<String> errors = new ArrayList<String>();
 		
 		Log.debug("follower.getFaction().id"+follower.getFaction().id);
 		Log.debug("this.id"+this.id);
 		
 		if (follower.getFaction().equals(this)) { // error här?
-			errors.add(Conf.colorSystem+follower.getFullName()+" is already a member of "+this.getName());
+			errors.add(Conf.colorSystem+follower.getName()+" is already a member of "+this.getTag());
 		}
 		
 		if(errors.size() > 0) {
@@ -135,11 +126,11 @@ public class Faction {
 		return errors;
 	}
 	
-	public ArrayList<String> deinvite(Follower follower) {
+	public ArrayList<String> deinvite(Follower follower) { // TODO move out!
 		ArrayList<String> errors = new ArrayList<String>();
 		
 		if (follower.getFaction() == this) {
-			errors.add(Conf.colorSystem+follower.getFullName()+" is already a member of "+this.getName());
+			errors.add(Conf.colorSystem+follower.getName()+" is already a member of "+this.getTag());
 			errors.add(Conf.colorSystem+"You might want to "+Conf.colorCommand+Conf.aliasBase.get(0)+" "+Conf.aliasKick.get(0)+Conf.colorParameter+" "+follower.getName());
 		}
 		
@@ -222,58 +213,45 @@ public class Faction {
 	}
 	
 	//----------------------------------------------//
-	// Faction name
+	// Faction tag
 	//----------------------------------------------//
 	
-	private transient static ArrayList<String> nameWhitelist = new ArrayList<String>(Arrays.asList(new String []{
-	"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F", "G", "H", 
-	"I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", 
-	"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", 
-	"s", "t", "u", "v", "w", "x", "y", "z"
-	}));
-	
-	public static String toComparisonName(String name) {
-		String ret = "";
-		
-		for (char c : name.toCharArray()) {
-			if (nameWhitelist.contains(String.valueOf(c))) {
-				ret += c;
-			}
-		}
-		
-		return ret.toLowerCase();
+	public String getComparisonTag() {
+		return TextUtil.getComparisonString(this.tag);
 	}
 	
-	public static ArrayList<String> validateName(String name) {
+	public static ArrayList<String> validateTag(String str) {
 		ArrayList<String> errors = new ArrayList<String>();
 		
-		if(Faction.toComparisonName(name).length() < Conf.factionNameMinLength) {
-			errors.add(Conf.colorSystem+"That name is to short");
+		if(TextUtil.getComparisonString(str).length() < Conf.factionTagLengthMin) {
+			errors.add(Conf.colorSystem+"The faction tag can't be shorter than "+Conf.factionTagLengthMin+ " chars.");
 		}
 		
-		if(name.length() > Conf.factionNameMaxLength) {
-			errors.add(Conf.colorSystem+"That name is to long");
+		if(str.length() > Conf.factionTagLengthMax) {
+			errors.add(Conf.colorSystem+"The faction tag can't be longer than "+Conf.factionTagLengthMax+ " chars.");
+		}
+		
+		for (char c : str.toCharArray()) {
+			if ( ! TextUtil.substanceChars.contains(String.valueOf(c))) {
+				errors.add(Conf.colorSystem+"Faction tag must be alphanumeric. \""+c+"\" is not allowed.");
+			}
 		}
 		
 		return errors;
 	}
 	
-	public String getComparisonName() {
-		return Faction.toComparisonName(this.name);
-	}
-	
-	public static Faction find(String name) {
-		String compName = Faction.toComparisonName(name);
+	public static Faction findByTag(String str) {
+		String compStr = TextUtil.getComparisonString(str);
 		for (Faction faction : Faction.getAll()) {
-			if (faction.getComparisonName().equals(compName)) {
+			if (faction.getComparisonTag().equals(compStr)) {
 				return faction;
 			}
 		}
 		return null;
 	}
 	
-	public static boolean isNameTaken(String name) {
-		return Faction.find(name) != null;
+	public static boolean isTagTaken(String str) {
+		return Faction.findByTag(str) != null;
 	}
 	
 	//----------------------------------------------//
@@ -306,9 +284,10 @@ public class Faction {
 	public void setRelationWish(Faction otherFaction, Relation relation) {
 		if (this.relationWish.containsKey(otherFaction.id) && relation.equals(Relation.NEUTRAL)){
 			this.relationWish.remove(otherFaction.id);
-			return;
+		} else {
+			this.relationWish.put(otherFaction.id, relation);
 		}
-		this.relationWish.put(otherFaction.id, relation);
+		this.save();
 	}
 	
 	public Relation getRelation(Faction otherFaction) {

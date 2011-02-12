@@ -38,13 +38,16 @@ public class Board {
 		save();
 	}
 	
+	
+	// Is this coord NOT completely surrounded by coords claimed by the same faction?
+	// Simpler: Is there any nearby coord with a faction other than the faction here?
 	public static boolean isBorderCoord(Coord coord) {
 		Faction faction = Board.getFactionAt(coord);
 		Coord a = coord.getRelative(1, 0);
 		Coord b = coord.getRelative(-1, 0);
 		Coord c = coord.getRelative(0, 1);
 		Coord d = coord.getRelative(0, -1);
-		return faction != a.getFaction() && faction != b.getFaction() && faction != c.getFaction() && faction != d.getFaction(); 
+		return faction != a.getFaction() || faction != b.getFaction() || faction != c.getFaction() || faction != d.getFaction(); 
 	}
 	
 	public static void purgeFaction(Faction faction) {
@@ -84,7 +87,7 @@ public class Board {
 	 */
 	public static ArrayList<String> getMap(Faction faction, Coord coord, double inDegrees) {
 		ArrayList<String> ret = new ArrayList<String>();
-		ret.add(TextUtil.titleize("("+coord+") "+coord.getFaction().getName(faction)));
+		ret.add(TextUtil.titleize("("+coord+") "+coord.getFaction().getTag(faction)));
 		
 		int halfWidth = Conf.mapWidth / 2;
 		int halfHeight = Conf.mapHeight / 2;

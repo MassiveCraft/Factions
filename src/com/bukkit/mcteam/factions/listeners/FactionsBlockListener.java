@@ -52,8 +52,8 @@ public class FactionsBlockListener extends BlockListener {
 		
 		// Cancel if we are not in our own territory
 		if (myFaction != otherFaction) {
-			me.sendMessage(Conf.colorSystem+"You can't "+action+" in the territory of "+otherFaction.getName(myFaction));
-			otherFaction.sendMessage(me.getFullName(otherFaction)+Conf.colorSystem+" tried to "+action+" "+TextUtil.getMaterialName(block.getType())+" in your territory");
+			me.sendMessage(Conf.colorSystem+"You can't "+action+" in the territory of "+otherFaction.getTag(myFaction));
+			otherFaction.sendMessage(me.getNameAndRelevant(otherFaction)+Conf.colorSystem+" tried to "+action+" "+TextUtil.getMaterialName(block.getType())+" in your territory");
 			return false;
 		}
 		
@@ -93,8 +93,8 @@ public class FactionsBlockListener extends BlockListener {
 		Faction otherFaction = blockCoord.getFaction();
 		
 		if (otherFaction.id != 0 && myFaction != otherFaction) {
-			me.sendMessage(Conf.colorSystem+"You can't use "+TextUtil.getMaterialName(material)+" in the territory of "+otherFaction.getName(myFaction));
-			otherFaction.sendMessage(me.getFullName(otherFaction)+Conf.colorSystem+" tried to use "+TextUtil.getMaterialName(material)+" in your territory");
+			me.sendMessage(Conf.colorSystem+"You can't use "+TextUtil.getMaterialName(material)+" in the territory of "+otherFaction.getTag(myFaction));
+			otherFaction.sendMessage(me.getNameAndRelevant(otherFaction)+Conf.colorSystem+" tried to use "+TextUtil.getMaterialName(material)+" in your territory");
 			return false;
 		}
 		return true;
