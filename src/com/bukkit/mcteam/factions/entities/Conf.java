@@ -27,8 +27,8 @@ public class Conf {
 	public static String prefixMod = "*";
 	
 	public static int factionTagLengthMin = 3;
-	public static int factionTagLengthMax = 3;
-	public static boolean factionTagForceUpperCase = true;
+	public static int factionTagLengthMax = 10;
+	public static boolean factionTagForceUpperCase = false;
 	
 	// Configuration on the Faction tag in chat messages.
 	
