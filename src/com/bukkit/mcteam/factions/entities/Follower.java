@@ -257,11 +257,11 @@ public class Follower {
 	// Territory
 	//----------------------------------------------//
 	public boolean isInOwnTerritory() {
-		return Board.getFactionAt(this.getCoord()) == this.getFaction();
+		return Board.get(this.getPlayer().getWorld()).getFactionAt(this.getCoord()) == this.getFaction();
 	}
 	
 	public boolean isInOthersTerritory() {
-		Faction factionHere = Board.getFactionAt(this.getCoord());
+		Faction factionHere = Board.get(this.getPlayer().getWorld()).getFactionAt(this.getCoord());
 		return factionHere.id != 0 && factionHere != this.getFaction();
 	}
 	
@@ -270,7 +270,7 @@ public class Follower {
 	}
 	
 	public void sendFactionHereMessage() {
-		Faction factionHere = Board.getFactionAt(this.getCoord());
+		Faction factionHere = Board.get(this.getPlayer().getWorld()).getFactionAt(this.getCoord());
 		String msg = Conf.colorSystem+" ~ "+factionHere.getTag(this);
 		if (factionHere.id != 0) {
 			msg += " - "+factionHere.getDescription();

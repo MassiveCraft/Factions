@@ -444,6 +444,7 @@ public class Commands {
 	
 	
 	public static void showMap(Follower me, String mapAutoUpdating) {
+		Board board = Board.get(me.getPlayer().getWorld());
 		if (mapAutoUpdating.length() > 0) {
 			if (Conf.aliasTrue.contains(mapAutoUpdating.toLowerCase())) {
 				// Turn on
@@ -458,7 +459,7 @@ public class Commands {
 				me.sendMessage(Conf.colorSystem + "Map auto update DISABLED.");
 			}
 		} else {
-			me.sendMessage(Board.getMap(me.getFaction(), Coord.from(me), me.getPlayer().getLocation().getYaw()), false);
+			me.sendMessage(board.getMap(me.getFaction(), Coord.from(me), me.getPlayer().getLocation().getYaw()), false);
 		}
 	}
 	
@@ -618,7 +619,8 @@ public class Commands {
 		}
 		
 		Coord coord = Coord.from(me);
-		Faction otherFaction = coord.getFaction();
+		Board board = Board.get(me.getPlayer().getWorld());
+		Faction otherFaction = board.getFactionAt(coord);
 		Faction myFaction = me.getFaction();
 		
 		if (myFaction.equals(otherFaction)) {
@@ -647,7 +649,7 @@ public class Commands {
 				return;
 			}
 			
-			if ( ! Board.isBorderCoord(coord)) {
+			if ( ! board.isBorderCoord(coord)) {
 				me.sendMessage(Conf.colorSystem+"You must start claiming land at the border of the territory.");
 				return;
 			}
@@ -662,7 +664,7 @@ public class Commands {
 			myFaction.sendMessage(me.getNameAndRelevant(myFaction)+Conf.colorSystem+" claimed some land from "+otherFaction.getTag(myFaction));
 		}
 		
-		Board.claim(coord, myFaction);
+		board.claim(coord, myFaction);
 	}
 	
 	public static void unclaim(Follower me) {
@@ -677,13 +679,14 @@ public class Commands {
 		}
 		
 		Coord coord = Coord.from(me.getPlayer());
+		Board board = Board.get(me.getPlayer().getWorld());
 		
-		if ( ! me.getFaction().equals(coord.getFaction())) {
+		if ( me.getFaction() != board.getFactionAt(coord)) {
 			me.sendMessage(Conf.colorSystem+"You don't own this land.");
 			return;
 		}
 		
-		Board.unclaim(coord);
+		board.unclaim(coord);
 		me.getFaction().sendMessage(me.getNameAndRelevant(me)+Conf.colorSystem+" unclaimed some land.");
 	}
 	

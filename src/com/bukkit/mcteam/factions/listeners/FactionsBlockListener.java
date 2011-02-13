@@ -41,7 +41,7 @@ public class FactionsBlockListener extends BlockListener {
 	
 	public boolean playerCanBuildDestroyBlock(Player player, Block block, String action) {
 		Coord coord = Coord.parseCoord(block);
-		Faction otherFaction = coord.getFaction();
+		Faction otherFaction = Board.get(player.getWorld()).getFactionAt(coord);
 		
 		if (otherFaction.id == 0) {
 			return true; // This is no faction territory. You may build or break stuff here.
@@ -90,7 +90,7 @@ public class FactionsBlockListener extends BlockListener {
 		Follower me = Follower.get(player);
 		Faction myFaction = me.getFaction();
 		Coord blockCoord = Coord.from(block.getLocation());
-		Faction otherFaction = blockCoord.getFaction();
+		Faction otherFaction = Board.get(player.getWorld()).getFactionAt(blockCoord);
 		
 		if (otherFaction.id != 0 && myFaction != otherFaction) {
 			me.sendMessage(Conf.colorSystem+"You can't use "+TextUtil.getMaterialName(material)+" in the territory of "+otherFaction.getTag(myFaction));

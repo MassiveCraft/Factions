@@ -98,7 +98,7 @@ public class Faction {
 	}
 	
 	public int getLandRounded() {
-		return Board.getFactionCoordCount(this);
+		return Board.getFactionCoordCountAllBoards(this);
 	}
 	
 	public boolean hasLandInflation() {

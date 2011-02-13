@@ -46,10 +46,6 @@ public class Coord {
 	public static Coord parseCoord(Block block) {
 		return from(block.getX(), block.getZ());
 	}
-	
-	public Faction getFaction() {
-		return Board.getFactionAt(this);
-	}
 
 	@Override
 	public String toString() {

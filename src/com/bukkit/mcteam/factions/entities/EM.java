@@ -4,6 +4,7 @@ import java.io.*;
 import java.lang.reflect.Modifier;
 import java.util.*;
 
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import com.bukkit.mcteam.factions.Factions;
@@ -19,6 +20,7 @@ import com.google.gson.*;
 public class EM {
 	protected static Map<String, Follower> followers = new HashMap<String, Follower>(); // Where String is a lowercase playername
 	protected static Map<Integer, Faction> factions = new HashMap<Integer, Faction>(); // Where Integer is a primary auto increment key
+	protected static Map<Long, Board> boards = new HashMap<Long, Board>(); // Where Long is the semi (sadly) unique world id.
 	protected static int nextFactionId;
 	
 	// hardcoded config
@@ -26,8 +28,8 @@ public class EM {
 	protected final static File folderBase = Factions.folder;
 	protected final static File folderFaction = new File(folderBase, "faction");
 	protected final static File folderFollower = new File(folderBase, "follower");
+	protected final static File folderBoard = new File(folderBase, "board");
 	protected final static File fileConfig = new File(folderBase, "conf"+ext);
-	protected final static File fileBoard = new File(folderBase, "board"+ext);
 	
 	public final static Gson gson = new GsonBuilder()
 	.setPrettyPrinting()
@@ -39,7 +41,7 @@ public class EM {
 		folderBase.mkdirs();
 		configLoad();
 		Log.threshold = Conf.logThreshold;
-		boardLoad();
+		boardLoadAll();
 		followerLoadAll();
 		factionLoadAll();
 	}
@@ -80,7 +82,7 @@ public class EM {
 	//----------------------------------------------//
 	// Board methods (load, save)
 	//----------------------------------------------//
-	public static boolean boardLoad() {
+	/*public static boolean boardLoad() {
 		if (fileBoard.exists()) {
 			try {
 				gson.fromJson(DiscUtil.read(fileBoard), Board.class);
@@ -108,6 +110,85 @@ public class EM {
 			Log.warn("Failed to save the board");
 			return false;
 		}
+	}*/
+	
+	//----------------------------------------------//
+	// Board methods (loadAll, get, save)
+	//----------------------------------------------//
+	
+	/**
+	 * This method loads all boards from disc into memory.
+	 */
+	public static void boardLoadAll() {
+		Log.info("Loading all boards from disc...");
+		folderBoard.mkdirs();
+				
+		class jsonFileFilter implements FileFilter {
+			public boolean accept(File file) {
+				return (file.getName().toLowerCase().endsWith(ext) && file.isFile());
+			}
+		}
+
+		File[] jsonFiles = folderBoard.listFiles(new jsonFileFilter());
+		
+		for (File jsonFile : jsonFiles) {
+			// Extract the name from the filename. The name is filename minus ".json"
+			String name = jsonFile.getName();
+			name = name.substring(0, name.length() - ext.length());
+			try {
+				Board board = gson.fromJson(DiscUtil.read(jsonFile), Board.class);
+				board.id = Long.parseLong(name);
+				boards.put(board.id, board);
+				Log.debug("loaded board "+name);
+			} catch (Exception e) {
+				e.printStackTrace();
+				Log.warn("failed to load board "+name);
+			}
+		}
+	}
+	
+	public static Collection<Board> boardGetAll() {
+		return boards.values();
+	}
+	
+	/**
+	 * This method returns the board object for a world
+	 * A new Board will be created if the world did not have one
+	 */
+	public static Board boardGet(World world) {
+		if (boards.containsKey(world.getId())) {
+			return boards.get(world.getId());
+		}
+		
+		return boardCreate(world);
+	}
+	
+	public static boolean boardSave(long id) {
+		Object obj = boards.get(id);
+		if (obj == null) {
+			Log.warn("Could not save board "+id+" as it was not loaded");
+			return false;
+		}
+		folderBoard.mkdirs();
+		File file = new File(folderBoard, id+ext);
+		try {
+			DiscUtil.write(file, gson.toJson(obj));
+			Log.debug("Saved the board "+id);
+			return true;
+		} catch (IOException e) {
+			e.printStackTrace();
+			Log.warn("Failed to save the board "+id);
+			return false;
+		}		
+	}
+	
+	protected static Board boardCreate(World world) {
+		Log.debug("Creating new board "+world.getId());
+		Board board = new Board();
+		board.id = world.getId();
+		boards.put(board.id, board);
+		board.save();
+		return board;
 	}
 	
 	//----------------------------------------------//
@@ -273,8 +354,8 @@ public class EM {
 		// NOTE that this does not do any security checks.
 		// Follower might get orphaned foreign id's
 		
-		// purge from board
-		Board.purgeFaction(id);
+		// purge from all boards
+		Board.purgeFactionFromAllBoards(id);
 		
 		// Remove the file
 		File file = new File(folderFaction, id+ext);

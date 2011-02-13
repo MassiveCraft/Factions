@@ -131,13 +131,16 @@ public class FactionsPlayerListener extends PlayerListener{
 		
 		// Yes we did change coord (:
 		Follower me = Follower.get(event.getPlayer());
+		Board board = Board.get(event.getPlayer().getWorld());
+		
+		Log.debug("Player "+me.getName()+" is in world: "+board.id);
 		
 		if (me.isMapAutoUpdating()) {
-			me.sendMessage(Board.getMap(me.getFaction(), Coord.from(me), me.getPlayer().getLocation().getYaw()), false);
+			me.sendMessage(board.getMap(me.getFaction(), Coord.from(me), me.getPlayer().getLocation().getYaw()), false);
 		} else {
 			// Did we change "host"(faction)?
-			Faction factionFrom = Board.getFactionAt(coordFrom);
-			Faction factionTo = Board.getFactionAt(coordTo);
+			Faction factionFrom = board.getFactionAt(coordFrom);
+			Faction factionTo = board.getFactionAt(coordTo);
 			if ( factionFrom != factionTo) {
 				me.sendFactionHereMessage();
 			}

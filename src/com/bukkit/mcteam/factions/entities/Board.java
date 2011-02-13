@@ -4,6 +4,7 @@ import java.util.*;
 import java.util.Map.Entry;
 
 import org.bukkit.ChatColor;
+import org.bukkit.World;
 
 import com.bukkit.mcteam.factions.util.TextUtil;
 import com.bukkit.mcteam.util.AsciiCompass;
@@ -11,16 +12,17 @@ import com.bukkit.mcteam.util.AsciiCompass;
 //import com.bukkit.mcteam.factions.util.*;
 
 public class Board {
-	protected static Map<Coord, Integer> coordFactionIds;
+	public transient Long id;
+	protected Map<Coord, Integer> coordFactionIds;
 	
-	static {
+	public Board() {
 		coordFactionIds = new HashMap<Coord, Integer>();
 	}
 	
-	public static Faction getFactionAt(Coord coord) {
+	public Faction getFactionAt(Coord coord) {
 		return Faction.get(getFactionIdAt(coord));
 	}
-	public static int getFactionIdAt(Coord coord) {
+	public int getFactionIdAt(Coord coord) {
 		Integer factionId = coordFactionIds.get(coord);
 		if (factionId == null) {
 			return 0; // No faction
@@ -28,12 +30,12 @@ public class Board {
 		return factionId;
 	}
 	
-	public static void unclaim(Coord coord) {
+	public void unclaim(Coord coord) {
 		coordFactionIds.remove(coord);
 		save();
 	}
 	
-	public static void claim(Coord coord, Faction faction) {
+	public void claim(Coord coord, Faction faction) {
 		coordFactionIds.put(coord, faction.id);
 		save();
 	}
@@ -41,19 +43,20 @@ public class Board {
 	
 	// Is this coord NOT completely surrounded by coords claimed by the same faction?
 	// Simpler: Is there any nearby coord with a faction other than the faction here?
-	public static boolean isBorderCoord(Coord coord) {
-		Faction faction = Board.getFactionAt(coord);
+	public boolean isBorderCoord(Coord coord) {
+		Faction faction = getFactionAt(coord);
 		Coord a = coord.getRelative(1, 0);
 		Coord b = coord.getRelative(-1, 0);
 		Coord c = coord.getRelative(0, 1);
 		Coord d = coord.getRelative(0, -1);
-		return faction != a.getFaction() || faction != b.getFaction() || faction != c.getFaction() || faction != d.getFaction(); 
+		return faction != this.getFactionAt(a) || faction != this.getFactionAt(b) || faction != this.getFactionAt(c) || faction != this.getFactionAt(d); 
 	}
 	
-	public static void purgeFaction(Faction faction) {
-		purgeFaction(faction.id);
-	}
-	public static void purgeFaction(int factionId) {
+	//----------------------------------------------//
+	// Purge faction
+	//----------------------------------------------//
+	
+	public void purgeFaction(int factionId) {
 		Iterator<Entry<Coord, Integer>> iter = coordFactionIds.entrySet().iterator();
 		while (iter.hasNext()) {
 			Entry<Coord, Integer> entry = iter.next();
@@ -62,11 +65,24 @@ public class Board {
 			}
 		}
 	}
-	
-	public static int getFactionCoordCount(Faction faction) {
-		return getFactionCoordCount(faction.id);
+	public void purgeFaction(Faction faction) {
+		purgeFaction(faction.id);
 	}
-	public static int getFactionCoordCount(int factionId) {
+	
+	public static void purgeFactionFromAllBoards(int factionId) {
+		for (Board board : getAll()) {
+			board.purgeFaction(factionId);
+		}
+	}
+	public static void purgeFactionFromAllBoards(Faction faction) {
+		purgeFactionFromAllBoards(faction.id);
+	}
+	
+	//----------------------------------------------//
+	// Coord count
+	//----------------------------------------------//
+	
+	public int getFactionCoordCount(int factionId) {
 		int ret = 0;
 		for (int thatFactionId : coordFactionIds.values()) {
 			if(thatFactionId == factionId) {
@@ -75,6 +91,21 @@ public class Board {
 		}
 		return ret;
 	}
+	public int getFactionCoordCount(Faction faction) {
+		return getFactionCoordCount(faction.id);
+	}
+	
+	public static int getFactionCoordCountAllBoards(int factionId) {
+		int ret = 0;
+		for (Board board : getAll()) {
+			ret += board.getFactionCoordCount(factionId);
+		}
+		return ret;
+	}
+	public static int getFactionCoordCountAllBoards(Faction faction) {
+		return getFactionCoordCountAllBoards(faction.id);
+	}
+	
 	
 	//----------------------------------------------//
 	// Map generation
@@ -85,9 +116,9 @@ public class Board {
 	 * north is in the direction of decreasing x
 	 * east is in the direction of decreasing z
 	 */
-	public static ArrayList<String> getMap(Faction faction, Coord coord, double inDegrees) {
+	public ArrayList<String> getMap(Faction faction, Coord coord, double inDegrees) {
 		ArrayList<String> ret = new ArrayList<String>();
-		ret.add(TextUtil.titleize("("+coord+") "+coord.getFaction().getTag(faction)));
+		ret.add(TextUtil.titleize("("+coord+") "+this.getFactionAt(coord).getTag(faction)));
 		
 		int halfWidth = Conf.mapWidth / 2;
 		int halfHeight = Conf.mapHeight / 2;
@@ -104,7 +135,7 @@ public class Board {
 					row += ChatColor.AQUA+"+";
 				} else {
 					Coord coordHere = topLeft.getRelative(dx, dz);
-					Faction factionHere = coordHere.getFaction();
+					Faction factionHere = this.getFactionAt(coordHere);
 					if (factionHere.id == 0) {
 						row += ChatColor.GRAY+"-";
 					} else {
@@ -131,8 +162,16 @@ public class Board {
 	// Persistance
 	//----------------------------------------------//
 	
-	public static boolean save() {
-		return EM.boardSave();
+	public boolean save() {
+		return EM.boardSave(this.id);
+	}
+	
+	public static Board get(World world) {
+		return EM.boardGet(world);
+	}
+	
+	public static Collection<Board> getAll() {
+		return EM.boardGetAll();
 	}
 }
 
