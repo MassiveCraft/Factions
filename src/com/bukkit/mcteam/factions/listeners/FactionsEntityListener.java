@@ -42,50 +42,66 @@ public class FactionsEntityListener extends EntityListener {
 	 */
 	@Override
 	public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
-		if (event.isCancelled()) {
+		if ( event.isCancelled()) {
 			return; // Some other plugin decided. Alright then.
 		}
 		
-		Entity entity = event.getEntity();
-		if ( ! (entity instanceof Player)) {
-			return;
+		if ( ! this.canDamagerHurtDamagee(event.getDamager(), event.getEntity(), event.getDamage())) {
+			event.setCancelled(true);
+		}
+	}
+	
+	@Override
+	public void onEntityDamageByProjectile(EntityDamageByProjectileEvent event) {
+		//DamageCause dc = event.getCause();
+		//Log.debug("dc.toString(): "+dc.toString());
+		//Log.debug("event.getDamager().getClass(): "+event.getDamager().getClass());
+		//Log.debug("event.getEntity().getClass(): "+event.getEntity().getClass());
+		
+		if ( event.isCancelled()) {
+			return; // Some other plugin decided. Alright then.
 		}
 		
-		Entity damager = event.getDamager();
+		if ( ! this.canDamagerHurtDamagee(event.getDamager(), event.getEntity(), event.getDamage())) {
+			event.setCancelled(true);
+		}
+	}
+	
+	public boolean canDamagerHurtDamagee(Entity damager, Entity damagee, int damage) {
 		if ( ! (damager instanceof Player)) {
-			return;
+			return true;
 		}
 		
-		Log.debug(((Player)entity).getName()+ " is the defender");
-		Log.debug(((Player)damager).getName()+ " is the damager");
+		if ( ! (damagee instanceof Player)) {
+			return true;
+		}
 		
-		Follower defender = Follower.get((Player)entity);
+		Follower defender = Follower.get((Player)damagee);
 		Follower attacker = Follower.get((Player)damager);
 		Relation relation = defender.getRelation(attacker);
 		
+		Log.debug(attacker.getName() + " attacked " + defender.getName());
+		
 		// Players without faction may be hurt anywhere
 		if (defender.factionId == 0) {
-			return;
+			return true;
 		}
 		
 		// You can never hurt faction members or allies
 		if (relation == Relation.MEMBER || relation == Relation.ALLY) {
 			attacker.sendMessage(Conf.colorSystem+"You can't hurt "+defender.getNameAndRelevant(attacker));
-			event.setCancelled(true);
-			return;
+			return false;
 		}
 		
 		// You can not hurt neutrals in their own territory.
 		if (relation == Relation.NEUTRAL && defender.isInOwnTerritory()) {
 			attacker.sendMessage(Conf.colorSystem+"You can't hurt "+relation.getColor()+defender.getNameAndRelevant(attacker)+" in their own territory.");
 			defender.sendMessage(attacker.getNameAndRelevant(defender)+Conf.colorSystem+" tried to hurt you.");
-			event.setCancelled(true);
-			return;
+			return false;
 		}
 		
 		// Damage will be dealt. However check if the damage should be reduced.
-		if (defender.isInOwnTerritory()) {
-			int damage = event.getDamage();
+		if (defender.isInOwnTerritory() && Conf.territoryShieldFactor > 0) {
 			int toHeal = (int)(damage * Conf.territoryShieldFactor);
 			defender.heal(toHeal);
 			
@@ -95,10 +111,6 @@ public class FactionsEntityListener extends EntityListener {
 		    defender.sendMessage(Conf.colorSystem+"Enemy damage reduced by "+ChatColor.RED+hearts+Conf.colorSystem+" hearts.");
 		}
 		
+		return true;
 	}
-	
-	/*@Override
-	public void onEntityDamageByProjectile(EntityDamageByProjectileEvent event) {
-		event.
-	}*/
 }

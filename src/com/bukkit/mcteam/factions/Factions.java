@@ -52,9 +52,10 @@ public class Factions extends JavaPlugin {
 		pm.registerEvent(Event.Type.PLAYER_QUIT, this.playerListener, Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.ENTITY_DEATH, this.entityListener, Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.ENTITY_DAMAGEDBY_ENTITY, this.entityListener, Event.Priority.Normal, this);
+		pm.registerEvent(Event.Type.ENTITY_DAMAGEDBY_PROJECTILE, this.entityListener, Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.BLOCK_DAMAGED, this.blockListener, Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.BLOCK_PLACED, this.blockListener, Event.Priority.Normal, this);
-		pm.registerEvent(Event.Type.BLOCK_INTERACT, this.blockListener, Event.Priority.Normal, this);
+		pm.registerEvent(Event.Type.BLOCK_INTERACT, this.blockListener, Event.Priority.Normal, this);		
 		
 		Log.info("=== INIT DONE (Took "+(System.currentTimeMillis()-timeInitStart)+"ms) ===");
 		Log.threshold = Conf.logThreshold;
