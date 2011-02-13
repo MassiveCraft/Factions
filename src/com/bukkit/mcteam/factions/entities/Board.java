@@ -6,6 +6,7 @@ import java.util.Map.Entry;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 
+import com.bukkit.mcteam.factions.util.Log;
 import com.bukkit.mcteam.factions.util.TextUtil;
 import com.bukkit.mcteam.util.AsciiCompass;
 
@@ -53,9 +54,33 @@ public class Board {
 	}
 	
 	//----------------------------------------------//
-	// Purge faction
+	// Clean boards
 	//----------------------------------------------//
 	
+	// These functions search boards for orphaned foreign keys
+	
+	public void clean() {
+		Iterator<Entry<Coord, Integer>> iter = coordFactionIds.entrySet().iterator();
+		while (iter.hasNext()) {
+			Entry<Coord, Integer> entry = iter.next();
+			if ( ! EM.factionExists(entry.getValue())) {
+				Log.debug("Cleaner removed coord with non existing factionId "+entry.getValue());
+				iter.remove();
+			}
+		}
+	}
+	
+	public static void cleanAll() {
+		for (Board board : getAll()) {
+			Log.debug("Cleaning board: "+board.id);
+			board.clean();
+		}
+	}	
+	
+	//----------------------------------------------//
+	// Purge faction Currently skipped and we use clean instead as that will solve orphaned keys to :)
+	//----------------------------------------------//
+	/*
 	public void purgeFaction(int factionId) {
 		Iterator<Entry<Coord, Integer>> iter = coordFactionIds.entrySet().iterator();
 		while (iter.hasNext()) {
@@ -76,7 +101,7 @@ public class Board {
 	}
 	public static void purgeFactionFromAllBoards(Faction faction) {
 		purgeFactionFromAllBoards(faction.id);
-	}
+	}*/
 	
 	//----------------------------------------------//
 	// Coord count
@@ -105,7 +130,6 @@ public class Board {
 	public static int getFactionCoordCountAllBoards(Faction faction) {
 		return getFactionCoordCountAllBoards(faction.id);
 	}
-	
 	
 	//----------------------------------------------//
 	// Map generation

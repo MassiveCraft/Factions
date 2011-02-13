@@ -133,8 +133,6 @@ public class FactionsPlayerListener extends PlayerListener{
 		Follower me = Follower.get(event.getPlayer());
 		Board board = Board.get(event.getPlayer().getWorld());
 		
-		Log.debug("Player "+me.getName()+" is in world: "+board.id);
-		
 		if (me.isMapAutoUpdating()) {
 			me.sendMessage(board.getMap(me.getFaction(), Coord.from(me), me.getPlayer().getLocation().getYaw()), false);
 		} else {

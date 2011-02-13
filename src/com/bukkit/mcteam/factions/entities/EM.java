@@ -41,9 +41,10 @@ public class EM {
 		folderBase.mkdirs();
 		configLoad();
 		Log.threshold = Conf.logThreshold;
-		boardLoadAll();
-		followerLoadAll();
 		factionLoadAll();
+		followerLoadAll();
+		boardLoadAll();
+		Board.cleanAll();
 	}
 	
 	//----------------------------------------------//
@@ -333,7 +334,15 @@ public class EM {
 	}
 	
 	public static Faction factionGet(Integer factionId) {
+		if ( ! factions.containsKey(factionId)) {
+			Log.warn("Non existing factionId "+factionId+" requested from EM! Issuing board cleaning!");
+			Board.cleanAll();
+		}
 		return factions.get(factionId);
+	}
+	
+	public static boolean factionExists(Integer factionId) {
+		return factions.containsKey(factionId);
 	}
 	
 	public static Collection<Faction> factionGetAll() {
@@ -355,7 +364,8 @@ public class EM {
 		// Follower might get orphaned foreign id's
 		
 		// purge from all boards
-		Board.purgeFactionFromAllBoards(id);
+		//Board.purgeFactionFromAllBoards(id);
+		Board.cleanAll();
 		
 		// Remove the file
 		File file = new File(folderFaction, id+ext);
