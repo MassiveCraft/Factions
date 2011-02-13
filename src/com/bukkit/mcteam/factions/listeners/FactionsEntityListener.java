@@ -14,7 +14,6 @@ import com.bukkit.mcteam.factions.Factions;
 import com.bukkit.mcteam.factions.entities.Conf;
 import com.bukkit.mcteam.factions.entities.Follower;
 import com.bukkit.mcteam.factions.struct.Relation;
-import com.bukkit.mcteam.factions.util.Log;
 
 public class FactionsEntityListener extends EntityListener {
 	public Factions plugin;
@@ -80,7 +79,7 @@ public class FactionsEntityListener extends EntityListener {
 		Follower attacker = Follower.get((Player)damager);
 		Relation relation = defender.getRelation(attacker);
 		
-		Log.debug(attacker.getName() + " attacked " + defender.getName());
+		//Log.debug(attacker.getName() + " attacked " + defender.getName());
 		
 		// Players without faction may be hurt anywhere
 		if (defender.factionId == 0) {
@@ -95,7 +94,7 @@ public class FactionsEntityListener extends EntityListener {
 		
 		// You can not hurt neutrals in their own territory.
 		if (relation == Relation.NEUTRAL && defender.isInOwnTerritory()) {
-			attacker.sendMessage(Conf.colorSystem+"You can't hurt "+relation.getColor()+defender.getNameAndRelevant(attacker)+" in their own territory.");
+			attacker.sendMessage(Conf.colorSystem+"You can't hurt "+relation.getColor()+defender.getNameAndRelevant(attacker)+Conf.colorSystem+" in their own territory.");
 			defender.sendMessage(attacker.getNameAndRelevant(defender)+Conf.colorSystem+" tried to hurt you.");
 			return false;
 		}

@@ -13,7 +13,9 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import com.bukkit.mcteam.factions.Commands;
 import com.bukkit.mcteam.factions.Factions;
 import com.bukkit.mcteam.factions.entities.*;
-import com.bukkit.mcteam.factions.util.*;
+import com.bukkit.mcteam.factions.util.TextUtil;
+import com.bukkit.mcteam.factions.util.Log;
+
 
 public class FactionsPlayerListener extends PlayerListener{
 	public Factions plugin;

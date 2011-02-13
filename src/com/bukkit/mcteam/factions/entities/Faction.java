@@ -8,8 +8,7 @@ import org.bukkit.entity.Player;
 import com.bukkit.mcteam.factions.Factions;
 import com.bukkit.mcteam.factions.struct.Relation;
 import com.bukkit.mcteam.factions.struct.Role;
-import com.bukkit.mcteam.factions.util.Log;
-import com.bukkit.mcteam.factions.util.TextUtil;
+import com.bukkit.mcteam.factions.util.*;
 import com.bukkit.mcteam.util.ChatFixUtil;
 
 public class Faction {
@@ -112,9 +111,6 @@ public class Faction {
 	
 	public ArrayList<String> invite(Follower follower) { // TODO Move out
 		ArrayList<String> errors = new ArrayList<String>();
-		
-		Log.debug("follower.getFaction().id"+follower.getFaction().id);
-		Log.debug("this.id"+this.id);
 		
 		if (follower.getFaction().equals(this)) { // error här?
 			errors.add(Conf.colorSystem+follower.getName()+" is already a member of "+this.getTag());

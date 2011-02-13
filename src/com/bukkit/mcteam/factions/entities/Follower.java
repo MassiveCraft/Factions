@@ -7,7 +7,6 @@ import org.bukkit.entity.Player;
 
 import com.bukkit.mcteam.factions.Factions;
 import com.bukkit.mcteam.factions.struct.*;
-import com.bukkit.mcteam.factions.util.Log;
 import com.bukkit.mcteam.util.ChatFixUtil;
 
 public class Follower {
@@ -215,7 +214,7 @@ public class Follower {
 		} else if (this.power < this.getPowerMin()) {
 			this.power = this.getPowerMin();
 		}
-		Log.debug("Power of "+this.getName()+" is now: "+this.power);
+		//Log.debug("Power of "+this.getName()+" is now: "+this.power);
 	}
 	
 	public double getPowerMax() {
