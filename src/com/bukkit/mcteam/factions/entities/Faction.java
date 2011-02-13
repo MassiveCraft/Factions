@@ -202,7 +202,7 @@ public class Faction {
 	
 	public ArrayList<Player> getOnlinePlayers() {
 		ArrayList<Player> ret = new ArrayList<Player>();
-		for (Player player: Factions.server.getOnlinePlayers()) {
+		for (Player player: Factions.factions.getServer().getOnlinePlayers()) {
 			Follower follower = Follower.get(player);
 			if (follower.factionId == this.id) {
 				ret.add(player);

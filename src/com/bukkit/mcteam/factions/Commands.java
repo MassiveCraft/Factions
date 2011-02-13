@@ -775,7 +775,7 @@ public class Commands {
 	}
 	
 	public static void version(Follower me) {
-		me.sendMessage(Conf.colorSystem+"You are running "+Factions.desc.getFullName());
+		me.sendMessage(Conf.colorSystem+"You are running "+Factions.factions.getDescription().getFullName());
 	}
 }
 

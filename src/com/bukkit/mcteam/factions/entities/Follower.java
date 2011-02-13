@@ -11,6 +11,7 @@ import com.bukkit.mcteam.util.ChatFixUtil;
 
 public class Follower {
 	public transient String id; // The is the name of the player
+	public transient Coord lastStoodInCoord = new Coord(); // Where did this player stand the last time we checked?
 	
 	public int factionId;
 	public Role role;
@@ -46,7 +47,7 @@ public class Follower {
 	}
 	
 	public Player getPlayer() {
-		return Factions.server.getPlayer(this.getName());
+		return Factions.factions.getServer().getPlayer(this.getName());
 	}
 	
 	public boolean isOnline() {

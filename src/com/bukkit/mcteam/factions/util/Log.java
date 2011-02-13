@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 import com.bukkit.mcteam.factions.Factions;
 
 public class Log {
-	public static String prefix = Factions.desc.getName();
+	public static String prefix = Factions.factions.getDescription().getName();
 	public static ArrayList<Player> debuggers = new ArrayList<Player>();
 	public static int threshold = 10;
 	

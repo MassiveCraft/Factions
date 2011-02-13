@@ -3,7 +3,6 @@ package com.bukkit.mcteam.factions.listeners;
 import java.util.*;
 import java.util.logging.Logger;
 
-import org.bukkit.Location;
 import org.bukkit.entity.*;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerEvent;
@@ -82,7 +81,7 @@ public class FactionsPlayerListener extends PlayerListener{
 			// Why? Because the relations will differ.
 			event.setCancelled(true);
 			
-			for (Player listeningPlayer : Factions.server.getOnlinePlayers()) {
+			for (Player listeningPlayer : Factions.factions.getServer().getOnlinePlayers()) {
 				Follower you = Follower.get(listeningPlayer);
 				String yourFormat = formatStart + me.getChatTag(you) + formatEnd;
 				listeningPlayer.sendMessage(String.format(yourFormat, talkingPlayer.getDisplayName(), msg));
@@ -122,17 +121,17 @@ public class FactionsPlayerListener extends PlayerListener{
 	
 	@Override
 	public void onPlayerMove(PlayerMoveEvent event) {
+		Follower me = Follower.get(event.getPlayer());
+		
 		// Did we change coord?
-		Location from = event.getFrom();
-		Location to = event.getTo();
-		Coord coordFrom = Coord.from(from);
-		Coord coordTo   = Coord.from(to);
+		Coord coordFrom = me.lastStoodInCoord;
+		Coord coordTo = Coord.from(event.getTo());
 		if (coordFrom.equals(coordTo)) {
 			return;
 		}
 		
 		// Yes we did change coord (:
-		Follower me = Follower.get(event.getPlayer());
+		me.lastStoodInCoord = coordTo;
 		Board board = Board.get(event.getPlayer().getWorld());
 		
 		if (me.isMapAutoUpdating()) {

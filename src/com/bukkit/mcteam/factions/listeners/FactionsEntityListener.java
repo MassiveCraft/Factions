@@ -7,6 +7,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageByProjectileEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityListener;
 
@@ -33,6 +34,7 @@ public class FactionsEntityListener extends EntityListener {
 		follower.onDeath();
 		follower.sendMessage(Conf.colorSystem+"Your power is now "+follower.getPowerRounded()+" / "+follower.getPowerMaxRounded());
 	}
+	
 	/**
 	 * Who can I hurt?
 	 * I can never hurt members or allies.
@@ -40,30 +42,22 @@ public class FactionsEntityListener extends EntityListener {
 	 * I can hurt neutrals as long as they are outside their own territory.
 	 */
 	@Override
-	public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
+	public void onEntityDamage(EntityDamageEvent event) {
 		if ( event.isCancelled()) {
 			return; // Some other plugin decided. Alright then.
 		}
 		
-		if ( ! this.canDamagerHurtDamagee(event.getDamager(), event.getEntity(), event.getDamage())) {
-			event.setCancelled(true);
-		}
-	}
-	
-	@Override
-	public void onEntityDamageByProjectile(EntityDamageByProjectileEvent event) {
-		//DamageCause dc = event.getCause();
-		//Log.debug("dc.toString(): "+dc.toString());
-		//Log.debug("event.getDamager().getClass(): "+event.getDamager().getClass());
-		//Log.debug("event.getEntity().getClass(): "+event.getEntity().getClass());
-		
-		if ( event.isCancelled()) {
-			return; // Some other plugin decided. Alright then.
-		}
-		
-		if ( ! this.canDamagerHurtDamagee(event.getDamager(), event.getEntity(), event.getDamage())) {
-			event.setCancelled(true);
-		}
+		if (event instanceof EntityDamageByEntityEvent) {
+            EntityDamageByEntityEvent sub = (EntityDamageByEntityEvent)event;
+            if ( ! this.canDamagerHurtDamagee(sub.getDamager(), sub.getEntity(), sub.getDamage())) {
+    			event.setCancelled(true);
+    		}
+        } else if (event instanceof EntityDamageByProjectileEvent) {
+        	EntityDamageByProjectileEvent sub = (EntityDamageByProjectileEvent)event;
+            if ( ! this.canDamagerHurtDamagee(sub.getDamager(), sub.getEntity(), sub.getDamage())) {
+    			event.setCancelled(true);
+    		}
+        }
 	}
 	
 	public boolean canDamagerHurtDamagee(Entity damager, Entity damagee, int damage) {

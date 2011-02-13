@@ -25,7 +25,7 @@ public class EM {
 	
 	// hardcoded config
 	protected final static String ext = ".json";
-	protected final static File folderBase = Factions.folder;
+	protected final static File folderBase = Factions.factions.getDataFolder();
 	protected final static File folderFaction = new File(folderBase, "faction");
 	protected final static File folderFollower = new File(folderBase, "follower");
 	protected final static File folderBoard = new File(folderBase, "board");
