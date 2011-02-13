@@ -52,14 +52,22 @@ public class FactionsPlayerListener extends PlayerListener{
 		}
 		
 		// ... it was not a command. This means that it is a chat message!
+		Follower me = Follower.get(talkingPlayer);
+		
+		// Is it a faction chat message?
+		if (me.isFactionChatting()) {
+			String message = String.format(Conf.factionChatFormat, me.getNameAndRelevant(me), msg);
+			me.getFaction().sendMessage(message, false);
+			Logger.getLogger("Minecraft").info("FactionChat "+me.getFaction().getTag()+": "+message);
+			event.setCancelled(true);
+			return;
+		}
 		
 		// Are we to insert the Faction tag into the format?
 		// If we are not to insert it - we are done.
 		if ( ! Conf.chatTagEnabled) {
 			return;
 		}
-		
-		Follower me = Follower.get(talkingPlayer);
 		
 		String formatStart = event.getFormat().substring(0, Conf.chatTagInsertIndex);
 		String formatEnd = event.getFormat().substring(Conf.chatTagInsertIndex);

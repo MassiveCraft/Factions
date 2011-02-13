@@ -28,7 +28,7 @@ public class Commands {
 		pageLines.add(TextUtil.commandHelp(Conf.aliasMap, "*[on|off]", "Show territory map, set optional auto update."));
 		pageLines.add(TextUtil.commandHelp(Conf.aliasJoin, "[faction name]", "Join a faction"));
 		pageLines.add(TextUtil.commandHelp(Conf.aliasLeave, "", "Leave your faction"));
-		pageLines.add(TextUtil.commandHelp(Conf.aliasChat, "[message]", "Send message to your faction only."));
+		pageLines.add(TextUtil.commandHelp(Conf.aliasChat, "", "Switch faction only chat on and off."));
 		pageLines.add(TextUtil.commandHelp(Conf.aliasCreate, "[faction tag]", "Create new faction"));
 		pageLines.add(TextUtil.commandHelp(Conf.aliasTag, "[faction tag]", "Change the faction tag"));
 		pageLines.add(TextUtil.commandHelp(Conf.aliasDescription, "[description]", "Change the faction description"));
@@ -87,7 +87,7 @@ public class Commands {
 		helpPages.add(pageLines);
 		pageLines = new ArrayList<String>();
 		
-		pageLines.add(TextUtil.commandHelp(Conf.aliasVersion, "", "Wich version are you using"));
+		pageLines.add(TextUtil.commandHelp(Conf.aliasVersion, "", "Which version are you using?"));
 		
 		helpPages.add(pageLines);
 	}
@@ -760,10 +760,16 @@ public class Commands {
 			me.sendMessage(Conf.colorSystem+"You are not part of any faction");
 			return;
 		}
-		String message = String.format(Conf.factionChatFormat, me.getNameAndRelevant(me), msg);
 		
-		me.getFaction().sendMessage(message, false);
-		Logger.getLogger("Minecraft").info("FactionChat "+me.getFaction().getTag()+": "+message);
+		if ( ! me.isFactionChatting()) {
+			// Turn on
+			me.setFactionChatting(true);
+			me.sendMessage(Conf.colorSystem + "Faction only chat ENABLED.");
+		} else {
+			// Turn off
+			me.setFactionChatting(false);
+			me.sendMessage(Conf.colorSystem + "Faction only chat DISABLED.");
+		}
 	}
 	
 	public static void version(Follower me) {

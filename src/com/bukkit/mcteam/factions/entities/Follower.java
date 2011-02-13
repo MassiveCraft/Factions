@@ -18,8 +18,20 @@ public class Follower {
 	private String title;
 	private double power;
 	private long lastPowerUpdateTime;
-	private boolean mapAutoUpdating; 
+	private boolean mapAutoUpdating;
+	private boolean factionChatting; 
 	
+	public boolean isFactionChatting() {
+		if (this.factionId == 0) {
+			return false;
+		}
+		return factionChatting;
+	}
+
+	public void setFactionChatting(boolean factionChatting) {
+		this.factionChatting = factionChatting;
+	}
+
 	public Follower() {
 		this.resetFactionData();
 		this.power = this.getPowerMax();
@@ -29,6 +41,7 @@ public class Follower {
 	
 	protected void resetFactionData() {
 		this.factionId = 0; // The default neutral faction
+		this.factionChatting = false;
 		this.role = Role.NORMAL;
 		this.title = "";
 	}

@@ -90,10 +90,6 @@ public class Conf {
 		
 		aliasBase.add("/f");
 		aliasBase.add("f");
-		aliasBase.add("/faction");
-		aliasBase.add("faction");
-		aliasBase.add("/factions");
-		aliasBase.add("factions");
 		
 		aliasHelp.add("help");
 		aliasHelp.add("h");
