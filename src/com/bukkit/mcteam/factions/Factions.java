@@ -36,29 +36,6 @@ public class Factions extends JavaPlugin {
 		Factions.folder = folder;
 		Factions.plugin = plugin;
 		Factions.cLoader = cLoader;
-		
-		Log.info("=== INIT START ===");
-		long timeInitStart = System.currentTimeMillis();
-		Log.info("You are running version: "+desc.getVersion());
-		
-		EM.loadAll();
-		
-		// Register events
-		PluginManager pm = instance.getPluginManager();
-		pm.registerEvent(Event.Type.PLAYER_CHAT, this.playerListener, Event.Priority.Highest, this);
-		pm.registerEvent(Event.Type.PLAYER_COMMAND, this.playerListener, Event.Priority.Normal, this);
-		pm.registerEvent(Event.Type.PLAYER_JOIN, this.playerListener, Event.Priority.Normal, this);
-		pm.registerEvent(Event.Type.PLAYER_MOVE, this.playerListener, Event.Priority.Normal, this);
-		pm.registerEvent(Event.Type.PLAYER_QUIT, this.playerListener, Event.Priority.Normal, this);
-		pm.registerEvent(Event.Type.ENTITY_DEATH, this.entityListener, Event.Priority.Normal, this);
-		pm.registerEvent(Event.Type.ENTITY_DAMAGEDBY_ENTITY, this.entityListener, Event.Priority.Normal, this);
-		pm.registerEvent(Event.Type.ENTITY_DAMAGEDBY_PROJECTILE, this.entityListener, Event.Priority.Normal, this);
-		pm.registerEvent(Event.Type.BLOCK_DAMAGED, this.blockListener, Event.Priority.Normal, this);
-		pm.registerEvent(Event.Type.BLOCK_PLACED, this.blockListener, Event.Priority.Normal, this);
-		pm.registerEvent(Event.Type.BLOCK_INTERACT, this.blockListener, Event.Priority.Normal, this);		
-		
-		Log.info("=== INIT DONE (Took "+(System.currentTimeMillis()-timeInitStart)+"ms) ===");
-		Log.threshold = Conf.logThreshold;
 	}
 
 	@Override
@@ -69,8 +46,26 @@ public class Factions extends JavaPlugin {
 
 	@Override
 	public void onEnable() {
-		// TODO Auto-generated method stub
-		
-	}
+		Log.info("=== INIT START ===");
+		long timeInitStart = System.currentTimeMillis();
+		Log.info("You are running version: "+desc.getVersion());
 
+		EM.loadAll();
+
+		// Register events
+		PluginManager pm = getServer().getPluginManager();
+		pm.registerEvent(Event.Type.PLAYER_CHAT, this.playerListener, Event.Priority.Highest, this);
+		pm.registerEvent(Event.Type.PLAYER_COMMAND, this.playerListener, Event.Priority.Normal, this);
+		pm.registerEvent(Event.Type.PLAYER_JOIN, this.playerListener, Event.Priority.Normal, this);
+		pm.registerEvent(Event.Type.PLAYER_MOVE, this.playerListener, Event.Priority.Normal, this);
+		pm.registerEvent(Event.Type.PLAYER_QUIT, this.playerListener, Event.Priority.Normal, this);
+		pm.registerEvent(Event.Type.ENTITY_DEATH, this.entityListener, Event.Priority.Normal, this);
+		pm.registerEvent(Event.Type.ENTITY_DAMAGED, this.entityListener, Event.Priority.Normal, this);
+		pm.registerEvent(Event.Type.BLOCK_DAMAGED, this.blockListener, Event.Priority.Normal, this);
+		pm.registerEvent(Event.Type.BLOCK_PLACED, this.blockListener, Event.Priority.Normal, this);
+		pm.registerEvent(Event.Type.BLOCK_INTERACT, this.blockListener, Event.Priority.Normal, this);
+
+		Log.info("=== INIT DONE (Took "+(System.currentTimeMillis()-timeInitStart)+"ms) ===");
+		Log.threshold = Conf.logThreshold;
+	}
 }

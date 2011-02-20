@@ -7,6 +7,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageByProjectileEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityListener;
 
@@ -14,6 +15,7 @@ import com.bukkit.mcteam.factions.Factions;
 import com.bukkit.mcteam.factions.entities.Conf;
 import com.bukkit.mcteam.factions.entities.Follower;
 import com.bukkit.mcteam.factions.struct.Relation;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
 public class FactionsEntityListener extends EntityListener {
 	public Factions plugin;
@@ -33,36 +35,22 @@ public class FactionsEntityListener extends EntityListener {
 		follower.onDeath();
 		follower.sendMessage(Conf.colorSystem+"Your power is now "+follower.getPowerRounded()+" / "+follower.getPowerMaxRounded());
 	}
-	/**
-	 * Who can I hurt?
-	 * I can never hurt members or allies.
-	 * I can always hurt enemies.
-	 * I can hurt neutrals as long as they are outside their own territory.
-	 */
+
 	@Override
-	public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
+	public void onEntityDamage(EntityDamageEvent event) {
 		if ( event.isCancelled()) {
 			return; // Some other plugin decided. Alright then.
 		}
-		
-		if ( ! this.canDamagerHurtDamagee(event.getDamager(), event.getEntity(), event.getDamage())) {
-			event.setCancelled(true);
+		try
+		{
+			if ( event.getCause() == DamageCause.ENTITY_ATTACK ) {
+				if ( ! this.canDamagerHurtDamagee(((EntityDamageByEntityEvent)event).getDamager(), event.getEntity(), event.getDamage())) {
+					event.setCancelled(true);
+				}
+			}
 		}
-	}
-	
-	@Override
-	public void onEntityDamageByProjectile(EntityDamageByProjectileEvent event) {
-		//DamageCause dc = event.getCause();
-		//Log.debug("dc.toString(): "+dc.toString());
-		//Log.debug("event.getDamager().getClass(): "+event.getDamager().getClass());
-		//Log.debug("event.getEntity().getClass(): "+event.getEntity().getClass());
-		
-		if ( event.isCancelled()) {
-			return; // Some other plugin decided. Alright then.
-		}
-		
-		if ( ! this.canDamagerHurtDamagee(event.getDamager(), event.getEntity(), event.getDamage())) {
-			event.setCancelled(true);
+		catch (Throwable ex)
+		{
 		}
 	}
 	
