@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.gson;
+package com.bukkit.mcteam.gson;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -45,9 +45,9 @@ import java.util.Map;
  * But GSON is unable to deserialize this value because the JSON string name is
  * just the {@link Object#toString() toString()} of the map key. Attempting to
  * convert the above JSON to an object fails with a parse exception:
- * <pre>com.google.gson.JsonParseException: Expecting object found: "(5,6)"
- *   at com.google.gson.JsonObjectDeserializationVisitor.visitFieldUsingCustomHandler
- *   at com.google.gson.ObjectNavigator.navigateClassFields
+ * <pre>com.bukkit.mcteam.gson.JsonParseException: Expecting object found: "(5,6)"
+ *   at com.bukkit.mcteam.gson.JsonObjectDeserializationVisitor.visitFieldUsingCustomHandler
+ *   at com.bukkit.mcteam.gson.ObjectNavigator.navigateClassFields
  *   ...</pre>
  *
  * <h3>Maps as JSON arrays</h3>
