@@ -27,7 +27,7 @@ public class FactionsPlayerListener extends PlayerListener{
 	 * we handle that command.
 	 */
 	@Override
-	public void onPlayerCommand(PlayerChatEvent event) {
+	public void onPlayerCommandPreprocess(PlayerChatEvent event) {
 		Player player = event.getPlayer();
 		String msg = event.getMessage();
 		
