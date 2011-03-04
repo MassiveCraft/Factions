@@ -170,7 +170,12 @@ public class Commands {
 		if (Conf.aliasHelp.contains(command)) {
 			int page = 1;
 			if (tokens.size() > 0) {
-				page = Integer.parseInt(tokens.get(0));
+				try {
+					page = Integer.parseInt(tokens.get(0));
+				}
+				catch (NumberFormatException e) {
+					// wasn't an integer
+				}
 			}
 			help(me, page);
 		} else if (Conf.aliasLeave.contains(command)) {

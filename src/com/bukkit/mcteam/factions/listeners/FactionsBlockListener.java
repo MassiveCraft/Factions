@@ -43,7 +43,7 @@ public class FactionsBlockListener extends BlockListener {
 		Coord coord = Coord.parseCoord(block);
 		Faction otherFaction = Board.get(player.getWorld()).getFactionAt(coord);
 		
-		if (otherFaction.id == 0) {
+		if (otherFaction == null || otherFaction.id == 0) {
 			return true; // This is no faction territory. You may build or break stuff here.
 		}
 		
@@ -92,7 +92,7 @@ public class FactionsBlockListener extends BlockListener {
 		Coord blockCoord = Coord.from(block.getLocation());
 		Faction otherFaction = Board.get(player.getWorld()).getFactionAt(blockCoord);
 		
-		if (otherFaction.id != 0 && myFaction != otherFaction) {
+		if (otherFaction != null && otherFaction.id != 0 && myFaction != otherFaction) {
 			me.sendMessage(Conf.colorSystem+"You can't use "+TextUtil.getMaterialName(material)+" in the territory of "+otherFaction.getTag(myFaction));
 			//otherFaction.sendMessage(me.getNameAndRelevant(otherFaction)+Conf.colorSystem+" tried to use "+TextUtil.getMaterialName(material)+" in your territory");
 			return false;
