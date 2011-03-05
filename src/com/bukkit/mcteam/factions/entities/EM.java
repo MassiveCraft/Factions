@@ -221,7 +221,7 @@ public class EM {
 				Follower follower = gson.fromJson(DiscUtil.read(jsonFile), Follower.class);
 				follower.id = name;
 				followers.put(follower.id, follower);
-				Log.debug("loaded follower "+name);
+				//Log.debug("loaded follower "+name);
 			} catch (Exception e) {
 				e.printStackTrace();
 				Log.warn("failed to load follower "+name);
@@ -317,7 +317,7 @@ public class EM {
 				Faction faction = gson.fromJson(DiscUtil.read(jsonFile), Faction.class);
 				faction.id = id;
 				factions.put(faction.id, faction);
-				Log.debug("loaded faction "+id);
+				//Log.debug("loaded faction "+id);
 			} catch (Exception e) {
 				e.printStackTrace();
 				Log.warn("Failed to load faction "+id);
