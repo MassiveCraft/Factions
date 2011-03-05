@@ -13,7 +13,7 @@ import com.bukkit.mcteam.util.AsciiCompass;
 //import com.bukkit.mcteam.factions.util.*;
 
 public class Board {
-	public transient Long id;
+	public transient String worldName;
 	protected Map<Coord, Integer> coordFactionIds;
 	
 	public Board() {
@@ -72,7 +72,7 @@ public class Board {
 	
 	public static void cleanAll() {
 		for (Board board : getAll()) {
-			Log.debug("Cleaning board: "+board.id);
+			Log.debug("Cleaning board for world "+board.worldName);
 			board.clean();
 		}
 	}	
@@ -187,7 +187,7 @@ public class Board {
 	//----------------------------------------------//
 	
 	public boolean save() {
-		return EM.boardSave(this.id);
+		return EM.boardSave(this.worldName);
 	}
 	
 	public static Board get(World world) {

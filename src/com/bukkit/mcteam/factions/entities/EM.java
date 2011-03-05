@@ -20,7 +20,7 @@ import com.bukkit.mcteam.gson.*;
 public class EM {
 	protected static Map<String, Follower> followers = new HashMap<String, Follower>(); // Where String is a lowercase playername
 	protected static Map<Integer, Faction> factions = new HashMap<Integer, Faction>(); // Where Integer is a primary auto increment key
-	protected static Map<Long, Board> boards = new HashMap<Long, Board>(); // Where Long is the semi (sadly) unique world id.
+	protected static Map<String, Board> boards = new HashMap<String, Board>(); // Where Long is the semi (sadly) unique world id.
 	protected static int nextFactionId;
 	
 	// hardcoded config
@@ -139,8 +139,8 @@ public class EM {
 			name = name.substring(0, name.length() - ext.length());
 			try {
 				Board board = gson.fromJson(DiscUtil.read(jsonFile), Board.class);
-				board.id = Long.parseLong(name);
-				boards.put(board.id, board);
+				board.worldName = name;
+				boards.put(board.worldName, board);
 				Log.debug("loaded board "+name);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -158,37 +158,37 @@ public class EM {
 	 * A new Board will be created if the world did not have one
 	 */
 	public static Board boardGet(World world) {
-		if (boards.containsKey(world.getId())) {
-			return boards.get(world.getId());
+		if (boards.containsKey(world.getName())) {
+			return boards.get(world.getName());
 		}
 		
 		return boardCreate(world);
 	}
 	
-	public static boolean boardSave(long id) {
-		Object obj = boards.get(id);
+	public static boolean boardSave(String worldName) {
+		Object obj = boards.get(worldName);
 		if (obj == null) {
-			Log.warn("Could not save board "+id+" as it was not loaded");
+			Log.warn("Could not save board "+worldName+" as it was not loaded");
 			return false;
 		}
 		folderBoard.mkdirs();
-		File file = new File(folderBoard, id+ext);
+		File file = new File(folderBoard, worldName+ext);
 		try {
 			DiscUtil.write(file, gson.toJson(obj));
-			Log.debug("Saved the board "+id);
+			Log.debug("Saved the board "+worldName);
 			return true;
 		} catch (IOException e) {
 			e.printStackTrace();
-			Log.warn("Failed to save the board "+id);
+			Log.warn("Failed to save the board "+worldName);
 			return false;
 		}		
 	}
 	
 	protected static Board boardCreate(World world) {
-		Log.debug("Creating new board "+world.getId());
+		Log.debug("Creating new board for "+world.getName());
 		Board board = new Board();
-		board.id = world.getId();
-		boards.put(board.id, board);
+		board.worldName = world.getName();
+		boards.put(board.worldName, board);
 		board.save();
 		return board;
 	}
