@@ -10,7 +10,7 @@ The goals of this plugin:
 
 Usage
 ---------
-Read the full userguide here: [http://mcteam.org/factions](http://mcteam.org/factions)
+<b>Read the full userguide here: [http://mcteam.org/factions](http://mcteam.org/factions)</b>
 
 The chat console command is:
 
@@ -18,8 +18,8 @@ The chat console command is:
 
 This command has subcommands like:
 
-* `/f create My faction name`
-* `/f invite my friends name`
+* `/f create MyFactionName`
+* `/f invite MyFriendsName`
 * `/f claim`
 * `/f map`
 * ... etc
@@ -35,19 +35,14 @@ Note that you may optionally skip the slash and just write
 * `f`
 
 Installing
----------
-1. Download the latest release: [https://github.com/oloflarsson/Factions/tree/master/releases](https://github.com/oloflarsson/Factions/tree/master/releases)
-1. Put the included gson.jar here `your_minecraft_server/gson.jar`
-1. Put the included Factions.jar here `your_minecraft_server/plugins/Factions.jar`
+----------
+1. Download the latest release: [https://github.com/oloflarsson/Factions/tree/master/releases](https://github.com/oloflarsson/Factions/tree/master/releases)<br/>
+1. Put Factions.jar in the plugins folder.
 
-Compiling
----------
-<b>You will need the Bukkit library to compile (Bukkit.jar)</b><br/>
-You can download it here: [http://bamboo.lukegb.com/browse/BUKKIT-BUKKITMAIN/](http://bamboo.lukegb.com/browse/BUKKIT-BUKKITMAIN/)
+A default config file will be created on the first run.
 
-<b>You will also need Google GSON in your build path.</b><br/>
-You can download it here: [http://code.google.com/p/google-gson/](http://code.google.com/p/google-gson/)<br/>
-<b>OR</b> you can use the file in this repo `/packaging/your_minecraft_server/gson.jar`<br/>
-However you won't get javadocs and source that way.
+License
+----------
+This project has a LGPL license just like the Bukkit project.
+This project uses [GSON](http://code.google.com/p/google-gson/) which has a [Apache 2.0 license](http://www.apache.org/licenses/LICENSE-2.0 ).
 
-You will need to include the MANIFEST.MF and plugin.yml in your jar. All bukkit plugins need a plugin.yml and the MANIFEST.MF is needed for the plugin to find the gson.jar (wich should be in the same folder as the main server jar when running the server).
