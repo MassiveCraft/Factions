@@ -22,7 +22,7 @@ public class Commands {
 
 		pageLines = new ArrayList<String>();
 		pageLines.add(TextUtil.commandHelp(Conf.aliasHelp, "*[page]", "Display a help page"));
-		pageLines.add(TextUtil.commandHelp(Conf.aliasList, "", "List all factions"));
+		pageLines.add(TextUtil.commandHelp(Conf.aliasList, "*[page]", "List all factions, paginated"));
 		pageLines.add(TextUtil.commandHelp(Conf.aliasShow, "*[faction name]", "Show faction information")); // TODO display relations!
 		pageLines.add(TextUtil.commandHelp(Conf.aliasMap, "*[on|off]", "Show territory map, set optional auto update."));
 		pageLines.add(TextUtil.commandHelp(Conf.aliasJoin, "[faction name]", "Join a faction"));
@@ -191,7 +191,7 @@ public class Commands {
 		} else if (Conf.aliasChat.contains(command)) {
 			chat(me, TextUtil.implode(tokens));
 		} else if (Conf.aliasList.contains(command)) {
-			list(me);
+			list(me, TextUtil.implode(tokens));
 		} else if (Conf.aliasShow.contains(command)) {
 			showFaction(me, TextUtil.implode(tokens));
 		} else if (Conf.aliasMap.contains(command)) {
@@ -349,9 +349,64 @@ public class Commands {
 		}
 	}
 	
-	public static void list(Follower me) {
-		me.sendMessage(TextUtil.titleize("Faction List"), false);
-		for (Faction faction : Faction.getAll()) {
+	public static void list(Follower me, String inPage) {
+		ArrayList<Faction> FactionList = new ArrayList<Faction>(Faction.getAll());
+
+		int page = 1;
+		try {
+			page = Integer.parseInt(inPage);
+		}
+		catch (NumberFormatException e) {
+			// wasn't an integer
+		}
+		page -= 1;
+
+		// Sort by total followers first
+		Collections.sort(FactionList, new Comparator(){
+			@Override
+			public int compare(Object o1, Object o2) {
+				Faction f1 = (Faction) o1;
+				Faction f2 = (Faction) o2;
+				if (f1.id == 0)
+					return 1;
+				else if (f2.id == 0)
+					return -1;
+				else if (f1.getFollowersAll().size() < f2.getFollowersAll().size())
+					return 1;
+				else if (f1.getFollowersAll().size() > f2.getFollowersAll().size())
+					return -1;
+				return 0;
+			}
+		});
+
+		// Then sort by how many members are online now
+		Collections.sort(FactionList, new Comparator(){
+			@Override
+			public int compare(Object o1, Object o2) {
+				Faction f1 = (Faction) o1;
+				Faction f2 = (Faction) o2;
+				if (f1.getFollowersWhereOnline(true).size() < f2.getFollowersWhereOnline(true).size())
+					return 1;
+				else if (f1.getFollowersWhereOnline(true).size() > f2.getFollowersWhereOnline(true).size())
+					return -1;
+				return 0;
+			}
+		});
+
+		int maxPage = (int)Math.floor((double)FactionList.size() / 9D);
+		if (page < 0 || page > maxPage) {
+			me.sendMessage(Conf.colorSystem+"The faction list is only " + (maxPage+1) + " page(s) long");
+			return;
+		}
+
+		String header = "Faction List";
+		if (maxPage > 1) header += " (page " + (page+1) + " of " + (maxPage+1) + ")";
+		me.sendMessage(TextUtil.titleize(header), false);
+
+		int maxPos = (page+1) * 9;
+		if (maxPos > FactionList.size()) maxPos = FactionList.size();
+		for (int pos = page * 9; pos < maxPos; pos++) {
+			Faction faction = FactionList.get(pos);
 			if (faction.id == 0) {
 				me.sendMessage(faction.getTag(me)+Conf.colorSystem+" "+faction.getFollowersWhereOnline(true).size() + " online");
 			} else {
