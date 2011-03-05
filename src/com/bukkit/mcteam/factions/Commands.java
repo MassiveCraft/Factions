@@ -361,12 +361,13 @@ public class Commands {
 		}
 		page -= 1;
 
+		
+		// TODO Doesn't the second sort bellow completely overwrite the first??
+		
 		// Sort by total followers first
-		Collections.sort(FactionList, new Comparator(){
+		Collections.sort(FactionList, new Comparator<Faction>(){
 			@Override
-			public int compare(Object o1, Object o2) {
-				Faction f1 = (Faction) o1;
-				Faction f2 = (Faction) o2;
+			public int compare(Faction f1, Faction f2) {
 				if (f1.id == 0)
 					return 1;
 				else if (f2.id == 0)
@@ -380,11 +381,9 @@ public class Commands {
 		});
 
 		// Then sort by how many members are online now
-		Collections.sort(FactionList, new Comparator(){
+		Collections.sort(FactionList, new Comparator<Faction>(){
 			@Override
-			public int compare(Object o1, Object o2) {
-				Faction f1 = (Faction) o1;
-				Faction f2 = (Faction) o2;
+			public int compare(Faction f1, Faction f2) {
 				if (f1.getFollowersWhereOnline(true).size() < f2.getFollowersWhereOnline(true).size())
 					return 1;
 				else if (f1.getFollowersWhereOnline(true).size() > f2.getFollowersWhereOnline(true).size())
