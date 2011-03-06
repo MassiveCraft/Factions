@@ -4,15 +4,19 @@ import java.text.DecimalFormat;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageByProjectileEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntityListener;
 
 import com.bukkit.mcteam.factions.Factions;
+import com.bukkit.mcteam.factions.entities.Board;
 import com.bukkit.mcteam.factions.entities.Conf;
+import com.bukkit.mcteam.factions.entities.Coord;
 import com.bukkit.mcteam.factions.entities.Follower;
 import com.bukkit.mcteam.factions.struct.Relation;
 
@@ -59,7 +63,20 @@ public class FactionsEntityListener extends EntityListener {
     		}
         }
 	}
-	
+
+	@Override
+	public void onEntityExplode(EntityExplodeEvent event)
+	{
+		if (Conf.territoryBlockCreepers && event.getEntity() instanceof LivingEntity)
+		{	// creeper which might need prevention, if inside faction territory
+			if (Board.get(event.getLocation().getWorld()).getFactionIdAt(Coord.from(event.getLocation())) > 0)
+			{
+				event.setCancelled(true);
+				return;
+			}
+		}
+	}
+
 	public boolean canDamagerHurtDamagee(Entity damager, Entity damagee, int damage) {
 		if ( ! (damager instanceof Player)) {
 			return true;

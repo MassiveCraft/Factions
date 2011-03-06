@@ -42,6 +42,7 @@ public class Conf {
 	public static int mapWidth = 49;
 
 	public static double territoryShieldFactor = 0.5;
+	public static boolean territoryBlockCreepers = false;
 	public static List<Material> territoryProtectedMaterials = new ArrayList<Material>();
 	
 	// Command names / aliases	
