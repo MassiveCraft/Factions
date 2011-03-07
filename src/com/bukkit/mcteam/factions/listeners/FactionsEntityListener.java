@@ -1,6 +1,6 @@
 package com.bukkit.mcteam.factions.listeners;
 
-import java.text.DecimalFormat;
+import java.text.MessageFormat;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
@@ -53,12 +53,12 @@ public class FactionsEntityListener extends EntityListener {
 		
 		if (event instanceof EntityDamageByEntityEvent) {
             EntityDamageByEntityEvent sub = (EntityDamageByEntityEvent)event;
-            if ( ! this.canDamagerHurtDamagee(sub.getDamager(), sub.getEntity(), sub.getDamage())) {
+            if ( ! this.canDamagerHurtDamagee(sub)) {
     			event.setCancelled(true);
     		}
         } else if (event instanceof EntityDamageByProjectileEvent) {
         	EntityDamageByProjectileEvent sub = (EntityDamageByProjectileEvent)event;
-            if ( ! this.canDamagerHurtDamagee(sub.getDamager(), sub.getEntity(), sub.getDamage())) {
+            if ( ! this.canDamagerHurtDamagee(sub)) {
     			event.setCancelled(true);
     		}
         }
@@ -77,7 +77,10 @@ public class FactionsEntityListener extends EntityListener {
 		}
 	}
 
-	public boolean canDamagerHurtDamagee(Entity damager, Entity damagee, int damage) {
+	public boolean canDamagerHurtDamagee(EntityDamageByEntityEvent sub) {
+		Entity damager = sub.getDamager();
+		Entity damagee = sub.getEntity();
+		int damage = sub.getDamage();
 		if ( ! (damager instanceof Player)) {
 			return true;
 		}
@@ -112,13 +115,12 @@ public class FactionsEntityListener extends EntityListener {
 		
 		// Damage will be dealt. However check if the damage should be reduced.
 		if (defender.isInOwnTerritory() && Conf.territoryShieldFactor > 0) {
-			int toHeal = (int)(damage * Conf.territoryShieldFactor);
-			defender.heal(toHeal);
+			int newDamage = (int)(damage * Conf.territoryShieldFactor);
+			sub.setDamage(newDamage);
 			
 			// Send message
-			DecimalFormat formatter = new DecimalFormat("#.#");
-		    String hearts = formatter.format(toHeal / 2.0);
-		    defender.sendMessage(Conf.colorSystem+"Enemy damage reduced by "+ChatColor.RED+hearts+Conf.colorSystem+" hearts.");
+		    String perc = MessageFormat.format("{0,number,#%}", (1.0 - Conf.territoryShieldFactor));
+		    defender.sendMessage(Conf.colorSystem+"Enemy damage reduced by "+ChatColor.RED+perc+Conf.colorSystem+".");
 		}
 		
 		return true;
