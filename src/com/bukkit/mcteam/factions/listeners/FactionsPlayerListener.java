@@ -3,9 +3,11 @@ package com.bukkit.mcteam.factions.listeners;
 import java.util.*;
 import java.util.logging.Logger;
 
+import org.bukkit.block.Block;
 import org.bukkit.entity.*;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerEvent;
+import org.bukkit.event.player.PlayerItemEvent;
 import org.bukkit.event.player.PlayerListener;
 import org.bukkit.event.player.PlayerMoveEvent;
 
@@ -21,7 +23,7 @@ public class FactionsPlayerListener extends PlayerListener{
 	public FactionsPlayerListener(Factions plugin) {
 		this.plugin = plugin;
 	}
-	
+
 	/**
 	 * If someone says something that starts with the factions base command
 	 * we handle that command.
@@ -145,6 +147,47 @@ public class FactionsPlayerListener extends PlayerListener{
 			}
 		}
 	}
-	
-	
+
+    @Override
+    public void onPlayerItem(PlayerItemEvent event) {
+		if (event.isCancelled())
+			return;
+
+		if (!this.playerCanUseItemHere(event.getPlayer(), event.getBlockClicked(), event.getItem().getTypeId()))
+		{
+			event.setCancelled(true);
+			return;
+		}
+
+	}
+
+	//currently checking placement/use of: redstone, sign, flint&steel, beds (not detected properly by Bukkit yet), buckets (empty, water, lava), repeater
+	private static Set<Integer> badItems = new HashSet(Arrays.asList(
+		 new Integer[] {331, 323, 259, 355, 325, 326, 327, 356}
+	));
+
+	public boolean playerCanUseItemHere(Player player, Block block, int itemId) {
+
+		if (!badItems.contains(new Integer(itemId))) {
+			return true; // Item isn't one we're preventing.
+		}
+
+		Coord coord = Coord.parseCoord(block);
+		Faction otherFaction = Board.get(player.getWorld()).getFactionAt(coord);
+
+		if (otherFaction == null || otherFaction.id == 0) {
+			return true; // This is not faction territory. Use whatever you like here.
+		}
+
+		Follower me = Follower.get(player);
+		Faction myFaction = me.getFaction();
+
+		// Cancel if we are not in our own territory
+		if (myFaction != otherFaction) {
+			me.sendMessage(Conf.colorSystem+"You can't use that in the territory of "+otherFaction.getTag(myFaction));
+			return false;
+		}
+
+		return true;
+	}
 }
