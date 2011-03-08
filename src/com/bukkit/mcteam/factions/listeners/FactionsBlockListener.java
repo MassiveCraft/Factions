@@ -1,5 +1,7 @@
 package com.bukkit.mcteam.factions.listeners;
 
+import java.util.*;
+
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockDamageLevel;
@@ -28,13 +30,19 @@ public class FactionsBlockListener extends BlockListener {
 			event.setCancelled(true);
 		}
 	}
+
+	//special cases, check for destruction of: torch, redstone torch (on & off), repeater (on & off), redstonewire, sapling
+	private static Set<Integer> specialBlocks = new HashSet(Arrays.asList(
+		 new Integer[] {50, 75, 76, 93, 94, 55, 6}
+	));
 	
 	@Override
 	public void onBlockDamage(BlockDamageEvent event) {
 		if (event.isCancelled()) {
 			return; // Alright. lets listen to that.
 		}
-		if (event.getDamageLevel() == BlockDamageLevel.STOPPED && ! this.playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock(), "destroy")) {
+		boolean badBlock = event.getDamageLevel() == BlockDamageLevel.STOPPED || specialBlocks.contains(new Integer(event.getBlock().getTypeId()));
+		if (badBlock && ! this.playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock(), "destroy")) {
 			event.setCancelled(true);
 		}
 	}
