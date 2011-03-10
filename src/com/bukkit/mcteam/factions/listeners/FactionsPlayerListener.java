@@ -153,6 +153,9 @@ public class FactionsPlayerListener extends PlayerListener{
 		if (event.isCancelled())
 			return;
 
+		if (event.getBlockClicked() == null)
+			return;  // right-clicked on air, not a block; no worries then
+
 		if (!this.playerCanUseItemHere(event.getPlayer(), event.getBlockClicked(), event.getItem().getTypeId()))
 		{
 			event.setCancelled(true);
