@@ -5,7 +5,7 @@ import com.bukkit.mcteam.factions.entities.Conf;
 public enum Role {
 	ADMIN(2, "admin"),
 	MODERATOR(1, "moderator"),
-	NORMAL(0, "normal player");
+	NORMAL(0, "normal member");
 	
 	public final int value;
 	public final String nicename;

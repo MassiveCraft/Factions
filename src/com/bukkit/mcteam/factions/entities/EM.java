@@ -54,7 +54,7 @@ public class EM {
 		if (fileConfig.exists()) {
 			try {
 				gson.fromJson(DiscUtil.read(fileConfig), Conf.class);
-				Log.info("Config was loaded from disc");
+				Log.info("Config was loaded from disk");
 				return true;
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -121,7 +121,7 @@ public class EM {
 	 * This method loads all boards from disc into memory.
 	 */
 	public static void boardLoadAll() {
-		Log.info("Loading all boards from disc...");
+		Log.info("Loading all boards from disk...");
 		folderBoard.mkdirs();
 				
 		class jsonFileFilter implements FileFilter {
@@ -201,7 +201,7 @@ public class EM {
 	 * This method loads all followers from disc into memory.
 	 */
 	public static void followerLoadAll() {
-		Log.info("Loading all followers from disc...");
+		Log.info("Loading all followers from disk...");
 		folderFollower.mkdirs();
 				
 		class jsonFileFilter implements FileFilter {
@@ -289,7 +289,7 @@ public class EM {
 	 * This method loads all followers from disc into memory.
 	 */
 	public static void factionLoadAll() {
-		Log.info("Loading all factions from disc...");
+		Log.info("Loading all factions from disk...");
 		folderFaction.mkdirs();
 				
 		class jsonFileFilter implements FileFilter

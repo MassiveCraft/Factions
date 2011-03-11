@@ -24,10 +24,10 @@ public class Commands {
 		pageLines.add(TextUtil.commandHelp(Conf.aliasHelp, "*[page]", "Display a help page"));
 		pageLines.add(TextUtil.commandHelp(Conf.aliasList, "*[page]", "List all factions, paginated"));
 		pageLines.add(TextUtil.commandHelp(Conf.aliasShow, "*[faction name]", "Show faction information")); // TODO display relations!
-		pageLines.add(TextUtil.commandHelp(Conf.aliasMap, "*[on|off]", "Show territory map, set optional auto update."));
+		pageLines.add(TextUtil.commandHelp(Conf.aliasMap, "*[on|off]", "Show territory map, set optional auto update"));
 		pageLines.add(TextUtil.commandHelp(Conf.aliasJoin, "[faction name]", "Join a faction"));
 		pageLines.add(TextUtil.commandHelp(Conf.aliasLeave, "", "Leave your faction"));
-		pageLines.add(TextUtil.commandHelp(Conf.aliasChat, "", "Switch faction only chat on and off."));
+		pageLines.add(TextUtil.commandHelp(Conf.aliasChat, "", "Switch faction only chat on and off"));
 		pageLines.add(TextUtil.commandHelp(Conf.aliasCreate, "[faction tag]", "Create new faction"));
 		pageLines.add(TextUtil.commandHelp(Conf.aliasTag, "[faction tag]", "Change the faction tag"));
 		pageLines.add(TextUtil.commandHelp(Conf.aliasDescription, "[description]", "Change the faction description"));
@@ -51,11 +51,11 @@ public class Commands {
 		pageLines.add(TextUtil.commandHelp(Conf.aliasRelationNeutral, "[faction name]", " "));
 		pageLines.add(TextUtil.commandHelp(Conf.aliasRelationEnemy, "[faction name]", " "));
 		pageLines.add("");
-		pageLines.add(Conf.colorSystem+"Set which relation your WHISH you had to another faction.");
-		pageLines.add(Conf.colorSystem+"Per default your relation to another faction will be neutral.");
+		pageLines.add(Conf.colorSystem+"Set the relation you WISH to have with another faction.");
+		pageLines.add(Conf.colorSystem+"Your default relation with other factions will be neutral.");
 		pageLines.add("");
-		pageLines.add(Conf.colorSystem+"If BOTH factions wishes \"ally\" you will be allies.");
-		pageLines.add(Conf.colorSystem+"If ONE faction wishes \"enemy\" you will be enemies.");
+		pageLines.add(Conf.colorSystem+"If BOTH factions choose \"ally\" you will be allies.");
+		pageLines.add(Conf.colorSystem+"If ONE faction chooses \"enemy\" you will be enemies.");
 		
 		helpPages.add(pageLines);
 		pageLines = new ArrayList<String>();
@@ -64,11 +64,11 @@ public class Commands {
 		pageLines.add(Conf.colorSystem+"You can not hurt neutrals in their own territory.");
 		pageLines.add(Conf.colorSystem+"You can always hurt enemies and players without faction.");
 		pageLines.add("");
-		pageLines.add(Conf.colorSystem+"Damage from enemies are reduced in your own territory.");
-		pageLines.add(Conf.colorSystem+"When you die you loose power. It is restored over time.");
+		pageLines.add(Conf.colorSystem+"Damage from enemies is reduced in your own territory.");
+		pageLines.add(Conf.colorSystem+"When you die you lose power. It is restored over time.");
 		pageLines.add(Conf.colorSystem+"The power of a faction is the sum of all member power.");
 		pageLines.add(Conf.colorSystem+"The power of a faction determines how much land it can hold.");
-		pageLines.add(Conf.colorSystem+"You can claim land from a faction if it has to low power.");
+		pageLines.add(Conf.colorSystem+"You can claim land from factions with too little power.");
 		
 		helpPages.add(pageLines);
 		pageLines = new ArrayList<String>();
@@ -80,7 +80,7 @@ public class Commands {
 		pageLines.add(Conf.colorSystem+"Make sure to put pressure plates in front of doors for your");
 		pageLines.add(Conf.colorSystem+"guest visitors. Otherwise they can't get through. You can ");
 		pageLines.add(Conf.colorSystem+"also use this to create member only areas.");
-		pageLines.add(Conf.colorSystem+"As dispensers are protected you can create traps without");
+		pageLines.add(Conf.colorSystem+"As dispensers are protected, you can create traps without");
 		pageLines.add(Conf.colorSystem+"worrying about those arrows getting stolen.");
 
 		helpPages.add(pageLines);
@@ -146,7 +146,7 @@ public class Commands {
 		if (you.role.equals(Role.ADMIN)) {
 			i.sendMessage(Conf.colorSystem+"Only the faction admin can do that.");
 		} else if (i.role.equals(Role.MODERATOR)) {
-			i.sendMessage(Conf.colorSystem+"Moderators can't controll eachother...");
+			i.sendMessage(Conf.colorSystem+"Moderators can't control each other...");
 		} else {
 			i.sendMessage(Conf.colorSystem+"You must be a faction moderator to do that.");
 		}
@@ -223,7 +223,7 @@ public class Commands {
 		} else if (Conf.aliasVersion.contains(command)) {
 			version(me);
 		}  else {
-			me.sendMessage(Conf.colorSystem+"Unknown faction command"+Conf.colorCommand+" "+command);
+			me.sendMessage(Conf.colorSystem+"Unknown faction command "+Conf.colorCommand+command);
 		}
 	}
 	
@@ -258,7 +258,7 @@ public class Commands {
 		if (faction.getFollowersAll().size() == 0) {
 			// Remove this faction
 			for (Follower follower : Follower.getAll()) {
-				follower.sendMessage(Conf.colorSystem+"The faction "+faction.getTag(follower)+Conf.colorSystem+" was disbandoned.");
+				follower.sendMessage(Conf.colorSystem+"The faction "+faction.getTag(follower)+Conf.colorSystem+" was disbanded.");
 			}
 			EM.factionDelete(faction.id);
 		}
@@ -704,7 +704,7 @@ public class Commands {
 		
 		if (otherFaction.id != 0) {
 			if ( ! otherFaction.hasLandInflation()) { // TODO more messages WARN current faction most importantly
-				me.sendMessage(me.getRelationColor(otherFaction)+otherFaction.getTag()+Conf.colorSystem+" owns this land and are strong enough to keep it.");
+				me.sendMessage(me.getRelationColor(otherFaction)+otherFaction.getTag()+Conf.colorSystem+" owns this land and is strong enough to keep it.");
 				return;
 			}
 			
@@ -788,9 +788,9 @@ public class Commands {
 			otherFaction.sendMessage(Conf.colorSystem+"Your faction is now "+currentRelationColor+whishedRelation.toString()+Conf.colorSystem+" to "+currentRelationColor+myFaction.getTag());
 			myFaction.sendMessage(Conf.colorSystem+"Your faction is now "+currentRelationColor+whishedRelation.toString()+Conf.colorSystem+" to "+currentRelationColor+otherFaction.getTag());
 		} else {
-			otherFaction.sendMessage(currentRelationColor+myFaction.getTag()+Conf.colorSystem+ " whishes to be your "+whishedRelation.getColor()+whishedRelation.toString());
+			otherFaction.sendMessage(currentRelationColor+myFaction.getTag()+Conf.colorSystem+ " wishes to be your "+whishedRelation.getColor()+whishedRelation.toString());
 			otherFaction.sendMessage(Conf.colorSystem+"Type "+Conf.colorCommand+Conf.aliasBase.get(0)+" "+whishedRelation+" "+myFaction.getTag()+Conf.colorSystem+" to accept.");
-			myFaction.sendMessage(currentRelationColor+otherFaction.getTag()+Conf.colorSystem+ " were informed you wishes to be "+whishedRelation.getColor()+whishedRelation);
+			myFaction.sendMessage(currentRelationColor+otherFaction.getTag()+Conf.colorSystem+ " were informed that you wish to be "+whishedRelation.getColor()+whishedRelation);
 		}
 	}
 	
@@ -807,7 +807,7 @@ public class Commands {
 		
 		me.getFaction().setDescription(desc);
 		
-		me.sendMessage(Conf.colorSystem+"The new decription was set :D");
+		me.sendMessage(Conf.colorSystem+"The new description was set :D");
 		
 		// Broadcast the description to everyone
 		for (Follower follower : EM.followerGetAll()) {
@@ -825,11 +825,11 @@ public class Commands {
 		if ( ! me.isFactionChatting()) {
 			// Turn on
 			me.setFactionChatting(true);
-			me.sendMessage(Conf.colorSystem + "Faction only chat ENABLED.");
+			me.sendMessage(Conf.colorSystem + "Faction-only chat ENABLED.");
 		} else {
 			// Turn off
 			me.setFactionChatting(false);
-			me.sendMessage(Conf.colorSystem + "Faction only chat DISABLED.");
+			me.sendMessage(Conf.colorSystem + "Faction-only chat DISABLED.");
 		}
 	}
 	

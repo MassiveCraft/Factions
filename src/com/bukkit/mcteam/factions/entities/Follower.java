@@ -351,7 +351,7 @@ public class Follower {
 		//Log.debug("FactionRole.MODERATOR.value: "+FactionRole.MODERATOR.value);
 		
 		if (this.role.value < Role.MODERATOR.value) {
-			errors.add(Conf.colorSystem+"You must me be a moderator to invite.");
+			errors.add(Conf.colorSystem+"You must be a moderator to invite.");
 		}
 		
 		if(errors.size() > 0) {
@@ -365,7 +365,7 @@ public class Follower {
 		ArrayList<String> errors = new ArrayList<String>();
 		
 		if (this.role.value < Role.MODERATOR.value) {
-			errors.add(Conf.colorSystem+"You must me be a moderator to deinvite.");
+			errors.add(Conf.colorSystem+"You must be a moderator to deinvite.");
 		}
 		
 		if(errors.size() > 0) {
@@ -381,10 +381,10 @@ public class Follower {
 		if ( ! follower.getFaction().equals(this.getFaction())) {
 			errors.add(follower.getNameAndRelevant(this)+Conf.colorSystem+" is not a member of "+Conf.colorMember+this.getFaction().getTag());
 		} else if (follower.equals(this)) {
-			errors.add(Conf.colorSystem+"You can not kick yourself.");
+			errors.add(Conf.colorSystem+"You cannot kick yourself.");
 			errors.add(Conf.colorSystem+"You might want to "+Conf.colorCommand+Conf.aliasBase.get(0)+" "+Conf.aliasLeave.get(0));
 		} else if (follower.role.value >= this.role.value) { // TODO add more informative messages.
-			errors.add(Conf.colorSystem+"Your rank is to low to kick this player.");
+			errors.add(Conf.colorSystem+"Your rank is too low to kick this player.");
 		}
 		
 		if(errors.size() > 0) {
