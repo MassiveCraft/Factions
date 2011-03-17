@@ -150,6 +150,9 @@ public class FactionsPlayerListener extends PlayerListener{
 
     @Override
     public void onPlayerItem(PlayerItemEvent event) {
+		// debug
+		//event.getPlayer().sendMessage("Item in hand: " + event.getItem().getTypeId() + "  Block clicked: " + event.getBlockClicked().getTypeId() + "(" + event.getBlockClicked().getType().toString() + ")");
+
 		if (event.isCancelled())
 			return;
 
@@ -164,7 +167,7 @@ public class FactionsPlayerListener extends PlayerListener{
 
 	}
 
-	//currently checking placement/use of: redstone, sign, flint&steel, beds (not detected properly by Bukkit yet), buckets (empty, water, lava), repeater
+	//currently checking placement/use of: redstone, sign, flint&steel, beds (not currently detected by Bukkit), buckets (empty, water, lava), repeater (not currently detected by Bukkit)
 	private static Set<Integer> badItems = new HashSet(Arrays.asList(
 		 new Integer[] {331, 323, 259, 355, 325, 326, 327, 356}
 	));

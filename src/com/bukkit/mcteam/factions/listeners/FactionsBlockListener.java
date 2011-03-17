@@ -23,6 +23,9 @@ public class FactionsBlockListener extends BlockListener {
 	
 	@Override
 	public void onBlockPlace(BlockPlaceEvent event) {
+		// debug
+		//event.getPlayer().sendMessage("Block placed: " + event.getBlockPlaced().getTypeId() + "  Block clicked: " + event.getBlock().getTypeId() + "(" + event.getBlock().getType().toString() + ")");
+
 		if (event.isCancelled()) {
 			return; // Alright. lets listen to that.
 		}
@@ -31,16 +34,20 @@ public class FactionsBlockListener extends BlockListener {
 		}
 	}
 
-	//special cases, check for destruction of: torch, redstone torch (on & off), repeater (on & off), redstonewire, sapling
+	//special cases, check for destruction of: torch, redstone torch (on & off), repeater (on & off), redstonewire, sapling, crops, sugar cane
 	private static Set<Integer> specialBlocks = new HashSet(Arrays.asList(
-		 new Integer[] {50, 75, 76, 93, 94, 55, 6}
+		 new Integer[] {50, 75, 76, 93, 94, 55, 6, 59, 83}
 	));
 	
 	@Override
 	public void onBlockDamage(BlockDamageEvent event) {
+		// debug
+		//event.getPlayer().sendMessage("Block damaged: " + event.getBlock().getTypeId() + " (" + event.getBlock().getType().toString() + ")");
+
 		if (event.isCancelled()) {
 			return; // Alright. lets listen to that.
 		}
+
 		boolean badBlock = event.getDamageLevel() == BlockDamageLevel.STOPPED || specialBlocks.contains(new Integer(event.getBlock().getTypeId()));
 		if (badBlock && ! this.playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock(), "destroy")) {
 			event.setCancelled(true);
@@ -82,6 +89,9 @@ public class FactionsBlockListener extends BlockListener {
 		Block block = event.getBlock();
 		Player player = (Player) event.getEntity();
 		
+		// debug
+		//player.sendMessage("Block interacted: " + event.getBlock().getTypeId() + "(" + event.getBlock().getType().toString() + ")");
+
 		if ( ! canPlayerUseRightclickBlock(player, block)) {
 			event.setCancelled(true);
 		}
