@@ -43,6 +43,8 @@ public class Conf {
 
 	public static double territoryShieldFactor = 0.5;
 	public static boolean territoryBlockCreepers = false;
+	public static boolean territoryBlockFireballs = false;
+	
 	public static List<Material> territoryProtectedMaterials = new ArrayList<Material>();
 	
 	// Command names / aliases	

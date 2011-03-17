@@ -361,9 +361,6 @@ public class Commands {
 		}
 		page -= 1;
 
-		
-		// TODO Doesn't the second sort bellow completely overwrite the first??
-		
 		// Sort by total followers first
 		Collections.sort(FactionList, new Comparator<Faction>(){
 			@Override

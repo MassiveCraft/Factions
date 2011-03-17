@@ -4,6 +4,7 @@ import java.text.MessageFormat;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Fireball;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -69,6 +70,14 @@ public class FactionsEntityListener extends EntityListener {
 	{
 		if (Conf.territoryBlockCreepers && event.getEntity() instanceof LivingEntity)
 		{	// creeper which might need prevention, if inside faction territory
+			if (Board.get(event.getLocation().getWorld()).getFactionIdAt(Coord.from(event.getLocation())) > 0)
+			{
+				event.setCancelled(true);
+				return;
+			}
+		}
+		else if (Conf.territoryBlockFireballs && event.getEntity() instanceof Fireball)
+		{	// ghast fireball which might need prevention, if inside faction territory
 			if (Board.get(event.getLocation().getWorld()).getFactionIdAt(Coord.from(event.getLocation())) > 0)
 			{
 				event.setCancelled(true);
