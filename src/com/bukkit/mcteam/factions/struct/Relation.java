@@ -2,7 +2,7 @@ package com.bukkit.mcteam.factions.struct;
 
 import org.bukkit.ChatColor;
 
-import com.bukkit.mcteam.factions.entities.*;
+import com.bukkit.mcteam.factions.Conf;
 
 public enum Relation {
 	MEMBER(3, "member"),

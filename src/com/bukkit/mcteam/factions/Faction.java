@@ -1,17 +1,26 @@
-package com.bukkit.mcteam.factions.entities;
+package com.bukkit.mcteam.factions;
 
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.*;
+import java.util.Map.Entry;
+import java.util.logging.Level;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-import com.bukkit.mcteam.factions.Factions;
+import com.bukkit.mcteam.factions.entities.EM;
 import com.bukkit.mcteam.factions.struct.Relation;
 import com.bukkit.mcteam.factions.struct.Role;
 import com.bukkit.mcteam.factions.util.*;
-import com.bukkit.mcteam.util.ChatFixUtil;
+import com.bukkit.mcteam.gson.reflect.TypeToken;
+import com.bukkit.mcteam.util.DiscUtil;
 
 public class Faction {
+	public static transient Map<Integer, Faction> instances = new HashMap<Integer, Faction>();
+	public static transient File file = new File(Factions.instance.getDataFolder(), "factions.json");
+	public static transient int nextId;
 	
 	public transient int id;
 	protected Map<Integer, Relation> relationWish;
@@ -40,7 +49,7 @@ public class Faction {
 	public String getTag(Faction otherFaction) {
 		return this.getTag(otherFaction.getRelationColor(this).toString());
 	}
-	public String getTag(Follower otherFollower) {
+	public String getTag(FPlayer otherFollower) {
 		return this.getTag(otherFollower.getRelationColor(this).toString());
 	}
 	public void setTag(String str) {
@@ -74,7 +83,7 @@ public class Faction {
 	//----------------------------------------------//
 	public double getPower() {
 		double ret = 0;
-		for (Follower follower : this.getFollowersAll()) {
+		for (FPlayer follower : this.getFollowersAll()) {
 			ret += follower.getPower();
 		}
 		return ret;
@@ -82,7 +91,7 @@ public class Faction {
 	
 	public double getPowerMax() {
 		double ret = 0;
-		for (Follower follower : this.getFollowersAll()) {
+		for (FPlayer follower : this.getFollowersAll()) {
 			ret += follower.getPowerMax();
 		}
 		return ret;
@@ -109,7 +118,7 @@ public class Faction {
 	// -------------------------------
 	
 	
-	public ArrayList<String> invite(Follower follower) { // TODO Move out
+	public ArrayList<String> invite(FPlayer follower) { // TODO Move out
 		ArrayList<String> errors = new ArrayList<String>();
 		
 		if (follower.getFaction().equals(this)) { // error här?
@@ -125,7 +134,7 @@ public class Faction {
 		return errors;
 	}
 	
-	public ArrayList<String> deinvite(Follower follower) { // TODO move out!
+	public ArrayList<String> deinvite(FPlayer follower) { // TODO move out!
 		ArrayList<String> errors = new ArrayList<String>();
 		
 		if (follower.getFaction() == this) {
@@ -142,14 +151,14 @@ public class Faction {
 		return errors;
 	}
 	
-	public ArrayList<String> kick(Follower follower) {
+	public ArrayList<String> kick(FPlayer follower) {
 		ArrayList<String> errors = new ArrayList<String>();
 		removeFollower(follower);
 		return errors;
 	}
 	
 	
-	public boolean isInvited(Follower follower) {
+	public boolean isInvited(FPlayer follower) {
 		return invites.contains(follower.id);
 	}
 	
@@ -157,9 +166,9 @@ public class Faction {
 	// Followers
 	// -------------------------------
 	
-	public ArrayList<Follower> getFollowersAll() {
-		ArrayList<Follower> ret = new ArrayList<Follower>();
-		for (Follower follower : Follower.getAll()) {
+	public ArrayList<FPlayer> getFollowersAll() {
+		ArrayList<FPlayer> ret = new ArrayList<FPlayer>();
+		for (FPlayer follower : FPlayer.getAll()) {
 			if (follower.factionId == this.id) {
 				ret.add(follower);
 			}
@@ -167,9 +176,9 @@ public class Faction {
 		return ret;
 	}
 	
-	public ArrayList<Follower> getFollowersWhereOnline(boolean online) {
-		ArrayList<Follower> ret = new ArrayList<Follower>();
-		for (Follower follower : Follower.getAll()) {
+	public ArrayList<FPlayer> getFollowersWhereOnline(boolean online) {
+		ArrayList<FPlayer> ret = new ArrayList<FPlayer>();
+		for (FPlayer follower : FPlayer.getAll()) {
 			if (follower.factionId == this.id && follower.isOnline() == online) {
 				ret.add(follower);
 			}
@@ -177,10 +186,10 @@ public class Faction {
 		return ret;
 	}
 	
-	public ArrayList<Follower> getFollowersWhereRole(Role role) {
-		ArrayList<Follower> ret = new ArrayList<Follower>();
+	public ArrayList<FPlayer> getFollowersWhereRole(Role role) {
+		ArrayList<FPlayer> ret = new ArrayList<FPlayer>();
 		
-		for (Follower follower : Follower.getAll()) {
+		for (FPlayer follower : FPlayer.getAll()) {
 			if (follower.factionId == this.id && follower.role.equals(role)) {
 				ret.add(follower);
 			}
@@ -189,7 +198,7 @@ public class Faction {
 		return ret;
 	}
 	
-	public void removeFollower(Follower follower) {
+	public void removeFollower(FPlayer follower) {
 		if (this.id != follower.factionId) {
 			return; // safety check
 		}
@@ -202,8 +211,8 @@ public class Faction {
 	
 	public ArrayList<Player> getOnlinePlayers() {
 		ArrayList<Player> ret = new ArrayList<Player>();
-		for (Player player: Factions.factions.getServer().getOnlinePlayers()) {
-			Follower follower = Follower.get(player);
+		for (Player player: Factions.instance.getServer().getOnlinePlayers()) {
+			FPlayer follower = FPlayer.get(player);
 			if (follower.factionId == this.id) {
 				ret.add(player);
 			}
@@ -302,7 +311,7 @@ public class Faction {
 		return this.getRelationWish(otherFaction);
 	}
 	
-	public Relation getRelation(Follower follower) {
+	public Relation getRelation(FPlayer follower) {
 		return getRelation(follower.getFaction());
 	}
 	
@@ -310,7 +319,7 @@ public class Faction {
 		return this.getRelation(otherFaction).getColor();
 	}
 	
-	public ChatColor getRelationColor(Follower follower) {
+	public ChatColor getRelationColor(FPlayer follower) {
 		return this.getRelation(follower).getColor();
 	}
 	
@@ -318,6 +327,109 @@ public class Faction {
 	// Persistance and entity management
 	//----------------------------------------------//
 	
+	public static boolean save() {
+		Factions.log("Saving factions to disk");
+		
+		try {
+			DiscUtil.write(file, Factions.gson.toJson(instances));
+		} catch (IOException e) {
+			Factions.log("Failed to save the factions to disk.");
+			e.printStackTrace();
+			return false;
+		}
+		
+		return true;
+	}
+	
+	public static boolean load() {
+		if ( ! file.exists()) {
+			Factions.log("No factions to load from disk. Creating new file.");
+			save();
+			return true;
+		}
+		
+		try {
+			Type type = new TypeToken<Map<String, Faction>>(){}.getType();
+			instances = Factions.gson.fromJson(DiscUtil.read(file), type);
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
+		
+		fillIds();
+		
+		// Make sure the default neutral faction exists
+		if ( ! instances.containsKey(0)) {
+			Faction faction = new Faction();
+			faction.tag = "*No faction*";
+			faction.description = "\"The faction for the factionless :P\"";
+			faction.id = 0;
+			instances.put(faction.id, faction);
+		}
+			
+		return true;
+	}
+	
+	public static void fillIds() {
+		nextId = 1;
+		for(Entry<Integer, Faction> entry : instances.entrySet()) {
+			entry.getValue().id = entry.getKey();
+			if (nextId < entry.getKey()) {
+				nextId = entry.getKey();
+			}
+		}
+		nextId += 1; // make it the next id and not the current highest.
+	}
+	
+	public static Faction get(Integer factionId) {
+		if ( ! instances.containsKey(factionId)) {
+			Factions.log(Level.WARNING, "Non existing factionId "+factionId+" requested! Issuing board cleaning!");
+			Board.cleanAll();
+		}
+		return instances.get(factionId);
+	}
+	
+	public static boolean exists(Integer factionId) {
+		return instances.containsKey(factionId);
+	}
+	
+	public static Collection<Faction> getAll() {
+		return instances.values();
+	}
+	
+	//TODO ta parametrar här. All info som behövs ska matas in här och så sparar vi i denna method.
+	public static Faction create() {
+		Faction faction = new Faction();
+		faction.id = nextId;
+		nextId += 1;
+		instances.put(faction.id, faction);
+		Factions.log("created new faction "+faction.id);
+		//faction.save();
+		return faction;
+	}
+	
+	public static boolean delete(Integer id) {
+		// NOTE that this does not do any security checks.
+		// Follower might get orphaned foreign id's
+		
+		// purge from all boards
+		// Board.purgeFactionFromAllBoards(id);
+		Board.cleanAll();
+		
+		// Remove the file
+		//File file = new File(folderFaction, id+ext);
+		//file.delete();
+		
+		// Remove the faction
+		instances.remove(id);
+		
+		// TODO REMOVE ALL MEMBERS!
+		
+		// TODO SAVE files
+		return true; // TODO
+	}
+	
+	/*
 	public static Faction create() {
 		return EM.factionCreate();
 	}
@@ -333,5 +445,5 @@ public class Faction {
 	public boolean save() {
 		return EM.factionSave(this.id);
 	}
-	
+	*/
 }

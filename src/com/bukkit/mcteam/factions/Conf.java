@@ -1,9 +1,15 @@
-package com.bukkit.mcteam.factions.entities;
+package com.bukkit.mcteam.factions;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 import org.bukkit.*;
 
+import com.bukkit.mcteam.util.DiscUtil;
+
 public class Conf {
+	public static transient File file = new File(Factions.instance.getDataFolder(), "conf.json");
+	
 	// Colors
 	public static ChatColor colorMember = ChatColor.GREEN;
 	public static ChatColor colorAlly = ChatColor.LIGHT_PURPLE;
@@ -14,8 +20,6 @@ public class Conf {
 	public static ChatColor colorChrome = ChatColor.GOLD;
 	public static ChatColor colorCommand = ChatColor.AQUA;
 	public static ChatColor colorParameter = ChatColor.DARK_AQUA;
-
-	public static Integer logThreshold = 10;
 	
 	// Power
 	public static double powerPlayerMax = 10;
@@ -154,11 +158,37 @@ public class Conf {
 		aliasTrue.add("+");
 	}
 	
-	//----------------------------------------------//
+	// -------------------------------------------- //
 	// Persistance
-	//----------------------------------------------//
+	// -------------------------------------------- //
 	
 	public static boolean save() {
-		return EM.configSave();
+		Factions.log("Saving config to disk.");
+		try {
+			DiscUtil.write(file, Factions.gson.toJson(new Conf()));
+		} catch (IOException e) {
+			e.printStackTrace();
+			Factions.log("Failed to save the config to disk.");
+			return false;
+		}
+		return true;
+	}
+	
+	public static boolean load() {
+		if ( ! file.exists()) {
+			Factions.log("No conf to load from disk. Creating new file.");
+			save();
+			return true;
+		}
+		
+		try {
+			Factions.gson.fromJson(DiscUtil.read(file), Conf.class);
+		} catch (IOException e) {
+			e.printStackTrace();
+			Factions.log("Failed to load the config from disk.");
+			return false;
+		}
+		
+		return true;
 	}
 }

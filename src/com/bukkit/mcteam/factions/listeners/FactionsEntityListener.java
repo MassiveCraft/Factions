@@ -14,11 +14,11 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntityListener;
 
+import com.bukkit.mcteam.factions.Board;
+import com.bukkit.mcteam.factions.Conf;
+import com.bukkit.mcteam.factions.Coord;
+import com.bukkit.mcteam.factions.FPlayer;
 import com.bukkit.mcteam.factions.Factions;
-import com.bukkit.mcteam.factions.entities.Board;
-import com.bukkit.mcteam.factions.entities.Conf;
-import com.bukkit.mcteam.factions.entities.Coord;
-import com.bukkit.mcteam.factions.entities.Follower;
 import com.bukkit.mcteam.factions.struct.Relation;
 
 public class FactionsEntityListener extends EntityListener {
@@ -35,7 +35,7 @@ public class FactionsEntityListener extends EntityListener {
 		}
 	
 		Player player = (Player) entity;
-		Follower follower = Follower.get(player);
+		FPlayer follower = FPlayer.get(player);
 		follower.onDeath();
 		follower.sendMessage(Conf.colorSystem+"Your power is now "+follower.getPowerRounded()+" / "+follower.getPowerMaxRounded());
 	}
@@ -98,8 +98,8 @@ public class FactionsEntityListener extends EntityListener {
 			return true;
 		}
 		
-		Follower defender = Follower.get((Player)damagee);
-		Follower attacker = Follower.get((Player)damager);
+		FPlayer defender = FPlayer.get((Player)damagee);
+		FPlayer attacker = FPlayer.get((Player)damager);
 		Relation relation = defender.getRelation(attacker);
 		
 		//Log.debug(attacker.getName() + " attacked " + defender.getName());

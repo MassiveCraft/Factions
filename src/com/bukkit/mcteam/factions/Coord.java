@@ -1,8 +1,9 @@
-package com.bukkit.mcteam.factions.entities;
+package com.bukkit.mcteam.factions;
 
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+
 
 public class Coord {
 	protected static transient int cellSize = 16;
@@ -35,7 +36,7 @@ public class Coord {
 		return from(player.getLocation());
 	}
 	
-	public static Coord from(Follower follower) {
+	public static Coord from(FPlayer follower) {
 		return from(follower.getPlayer());
 	}
 

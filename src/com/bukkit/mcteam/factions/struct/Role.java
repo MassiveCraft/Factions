@@ -1,6 +1,6 @@
 package com.bukkit.mcteam.factions.struct;
 
-import com.bukkit.mcteam.factions.entities.Conf;
+import com.bukkit.mcteam.factions.Conf;
 
 public enum Role {
 	ADMIN(2, "admin"),

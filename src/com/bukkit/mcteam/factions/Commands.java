@@ -98,12 +98,12 @@ public class Commands {
 	
 	// Update to work with tag and follower names
 	
-	public static Follower findFollower(Follower me, String name, boolean defaultsToMe) {
+	public static FPlayer findFollower(FPlayer me, String name, boolean defaultsToMe) {
 		if (name.length() == 0 && defaultsToMe) {
 			return me;
 		}
 		
-		Follower follower = Follower.find(name);
+		FPlayer follower = FPlayer.find(name);
 		if (follower != null) {
 			return follower;
 		}
@@ -112,13 +112,13 @@ public class Commands {
 		return null;
 	}
 	
-	public static Faction findFaction(Follower me, String name, boolean defaultsToMe) {
+	public static Faction findFaction(FPlayer me, String name, boolean defaultsToMe) {
 		if (name.length() == 0 && defaultsToMe) {
 			return me.getFaction();
 		}
 		
 		// Search player names
-		Follower follower = Follower.find(name);
+		FPlayer follower = FPlayer.find(name);
 		if (follower != null) {
 			return follower.getFaction();
 		}
@@ -133,7 +133,7 @@ public class Commands {
 		return null;
 	}
 	
-	public static boolean canIAdministerYou(Follower i, Follower you) {
+	public static boolean canIAdministerYou(FPlayer i, FPlayer you) {
 		if ( ! i.getFaction().equals(you.getFaction())) {
 			i.sendMessage(you.getNameAndRelevant(i)+Conf.colorSystem+" is not in the same faction as you.");
 			return false;
@@ -158,7 +158,7 @@ public class Commands {
 	// The base command
 	//----------------------------------------------//
 	
-	public static void base(Follower me, ArrayList<String> tokens) {
+	public static void base(FPlayer me, ArrayList<String> tokens) {
 		if (tokens.size() == 0) {
 			help(me);
 			return;
@@ -230,11 +230,11 @@ public class Commands {
 	//----------------------------------------------//
 	// The other commands
 	//----------------------------------------------//
-	public static void help(Follower me) {
+	public static void help(FPlayer me) {
 		help(me, 1);
 	}
 	
-	public static void help(Follower me, Integer page) {
+	public static void help(FPlayer me, Integer page) {
 		me.sendMessage(TextUtil.titleize("Factions Help ("+page+"/"+helpPages.size()+")"), false);
 		page -= 1;
 		if (page < 0 || page >= helpPages.size()) {
@@ -244,7 +244,7 @@ public class Commands {
 		me.sendMessage(helpPages.get(page), false);
 	}
 	
-	public static void leave(Follower me) {
+	public static void leave(FPlayer me) {
 		Faction faction = me.getFaction();
 		
 		ArrayList<String> errors = me.leave();
@@ -257,14 +257,14 @@ public class Commands {
 		
 		if (faction.getFollowersAll().size() == 0) {
 			// Remove this faction
-			for (Follower follower : Follower.getAll()) {
+			for (FPlayer follower : FPlayer.getAll()) {
 				follower.sendMessage(Conf.colorSystem+"The faction "+faction.getTag(follower)+Conf.colorSystem+" was disbanded.");
 			}
 			EM.factionDelete(faction.id);
 		}
 	}
 	
-	public static void join(Follower me, String name) {
+	public static void join(FPlayer me, String name) {
 		Faction faction = findFaction(me, name, false);
 		if (faction == null) {
 			return;
@@ -281,7 +281,7 @@ public class Commands {
 		}
 	}
 	
-	public static void create(Follower me, String tag) {
+	public static void create(FPlayer me, String tag) {
 		ArrayList<String> errors = new ArrayList<String>();
 		
 		if (me.hasFaction()) {
@@ -306,7 +306,7 @@ public class Commands {
 		me.role = Role.ADMIN;
 		me.save();
 		
-		for (Follower follower : Follower.getAll()) {
+		for (FPlayer follower : FPlayer.getAll()) {
 			follower.sendMessage(me.getNameAndRelevant(follower)+Conf.colorSystem+" created a new faction "+faction.getTag(follower));
 		}
 		
@@ -314,7 +314,7 @@ public class Commands {
 		me.sendMessage(Conf.colorCommand+Conf.aliasBase.get(0)+" "+Conf.aliasDescription.get(0)+" "+"[description]");
 	}
 	
-	public static void tag(Follower me, String tag) {
+	public static void tag(FPlayer me, String tag) {
 		ArrayList<String> errors = new ArrayList<String>();
 		
 		if (me.withoutFaction()) {
@@ -349,7 +349,7 @@ public class Commands {
 		}
 	}
 	
-	public static void list(Follower me, String inPage) {
+	public static void list(FPlayer me, String inPage) {
 		ArrayList<Faction> FactionList = new ArrayList<Faction>(Faction.getAll());
 
 		int page = 1;
@@ -411,14 +411,14 @@ public class Commands {
 		}
 	}
 	
-	public static void showFaction(Follower me, String name) {
+	public static void showFaction(FPlayer me, String name) {
 		Faction faction = findFaction(me, name, true);
 		if (faction == null) {
 			return;
 		}
-		Collection<Follower> admins = faction.getFollowersWhereRole(Role.ADMIN);
-		Collection<Follower> mods = faction.getFollowersWhereRole(Role.MODERATOR);
-		Collection<Follower> normals = faction.getFollowersWhereRole(Role.NORMAL);
+		Collection<FPlayer> admins = faction.getFollowersWhereRole(Role.ADMIN);
+		Collection<FPlayer> mods = faction.getFollowersWhereRole(Role.MODERATOR);
+		Collection<FPlayer> normals = faction.getFollowersWhereRole(Role.NORMAL);
 		
 		me.sendMessage(TextUtil.titleize(faction.getTag(me)), false);
 		me.sendMessage(Conf.colorChrome+"Description: "+Conf.colorSystem+faction.getDescription());
@@ -462,7 +462,7 @@ public class Commands {
 		// List the members...
 		String onlineList = Conf.colorChrome+"Members online: ";
 		String offlineList = Conf.colorChrome+"Members offline: ";
-		for (Follower follower : admins) {
+		for (FPlayer follower : admins) {
 			listpart = follower.getNameAndTitle(me)+Conf.colorSystem+", ";
 			if (follower.isOnline()) {
 				onlineList += listpart;
@@ -470,7 +470,7 @@ public class Commands {
 				offlineList += listpart;
 			}
 		}
-		for (Follower follower : mods) {
+		for (FPlayer follower : mods) {
 			listpart = follower.getNameAndTitle(me)+Conf.colorSystem+", ";
 			if (follower.isOnline()) {
 				onlineList += listpart;
@@ -478,7 +478,7 @@ public class Commands {
 				offlineList += listpart;
 			}
 		}
-		for (Follower follower : normals) {
+		for (FPlayer follower : normals) {
 			listpart = follower.getNameAndTitle(me)+Conf.colorSystem+", ";
 			if (follower.isOnline()) {
 				onlineList += listpart;
@@ -499,7 +499,7 @@ public class Commands {
 	}
 	
 	
-	public static void showMap(Follower me, String mapAutoUpdating) {
+	public static void showMap(FPlayer me, String mapAutoUpdating) {
 		Board board = Board.get(me.getPlayer().getWorld());
 		if (mapAutoUpdating.length() > 0) {
 			if (Conf.aliasTrue.contains(mapAutoUpdating.toLowerCase())) {
@@ -519,8 +519,8 @@ public class Commands {
 		}
 	}
 	
-	public static void invite(Follower me, String name) {
-		Follower follower = findFollower(me, name, false);
+	public static void invite(FPlayer me, String name) {
+		FPlayer follower = findFollower(me, name, false);
 		if (follower == null) {
 			return;
 		}
@@ -534,8 +534,8 @@ public class Commands {
 		}
 	}
 	
-	public static void deinvite(Follower me, String name) { // TODO Move out!
-		Follower follower = findFollower(me, name, false);
+	public static void deinvite(FPlayer me, String name) { // TODO Move out!
+		FPlayer follower = findFollower(me, name, false);
 		if (follower == null) {
 			return;
 		}
@@ -549,7 +549,7 @@ public class Commands {
 		}
 	}
 	
-	public static void open(Follower me) {
+	public static void open(FPlayer me) {
 		if (me.role.value < Role.MODERATOR.value) {
 			me.sendMessage(Conf.colorSystem+"You must be moderator to do this");
 			return;
@@ -569,7 +569,7 @@ public class Commands {
 		}
 	}
 	
-	public static void title(Follower me, ArrayList<String> tokens) {
+	public static void title(FPlayer me, ArrayList<String> tokens) {
 		if (tokens.size() == 0) {
 			me.sendMessage(Conf.colorSystem+"You must specify a player name");
 			return;
@@ -578,7 +578,7 @@ public class Commands {
 		String name = tokens.get(0);
 		tokens.remove(0);
 		
-		Follower you = findFollower(me, name, true);
+		FPlayer you = findFollower(me, name, true);
 		if (you == null) {
 			return;
 		}
@@ -596,13 +596,13 @@ public class Commands {
 		myFaction.sendMessage(me.getNameAndRelevant(myFaction)+Conf.colorSystem+" changed a title: "+you.getNameAndRelevant(myFaction));
 	}
 	
-	public static void kick(Follower me, String name) {
+	public static void kick(FPlayer me, String name) {
 		if (name.length() == 0) {
 			me.sendMessage(Conf.colorSystem+"You must specify a player name.");
 			return;
 		}
 		
-		Follower you = findFollower(me, name, false);
+		FPlayer you = findFollower(me, name, false);
 		if (you == null) {
 			return;
 		}
@@ -617,7 +617,7 @@ public class Commands {
 		}
 	}
 	
-	public static void roleChange(Follower me, Role targetRole, String name) {
+	public static void roleChange(FPlayer me, Role targetRole, String name) {
 		if (me.role.value < Role.ADMIN.value) {
 			me.sendMessage(Conf.colorSystem+"You must be faction admin to do this");
 			return;
@@ -628,7 +628,7 @@ public class Commands {
 			return;
 		}
 		
-		Follower targetFollower = findFollower(me, name, false);
+		FPlayer targetFollower = findFollower(me, name, false);
 		if (targetFollower == null) {
 			return;
 		}
@@ -648,7 +648,7 @@ public class Commands {
 			targetFollower.role = Role.ADMIN;
 			
 			// Inform all players
-			for (Follower follower : Follower.getAll()) {
+			for (FPlayer follower : FPlayer.getAll()) {
 				if (follower.factionId == me.factionId) {
 					follower.sendMessage(me.getNameAndRelevant(me)+Conf.colorSystem+" gave "+targetFollower.getNameAndRelevant(me)+Conf.colorSystem+" the leadership of your faction.");
 				} else {
@@ -668,7 +668,7 @@ public class Commands {
 		}
 	}
 	
-	public static void claim(Follower me) {
+	public static void claim(FPlayer me) {
 		if (me.withoutFaction()) {
 			me.sendMessage(Conf.colorSystem+"You are not part of any faction.");
 			return;
@@ -723,7 +723,7 @@ public class Commands {
 		board.claim(coord, myFaction);
 	}
 	
-	public static void unclaim(Follower me) {
+	public static void unclaim(FPlayer me) {
 		if (me.withoutFaction()) {
 			me.sendMessage(Conf.colorSystem+"You are not part of any faction");
 			return;
@@ -746,7 +746,7 @@ public class Commands {
 		me.getFaction().sendMessage(me.getNameAndRelevant(me)+Conf.colorSystem+" unclaimed some land.");
 	}
 	
-	public static void relation(Follower me, Relation whishedRelation, String otherFactionName) {
+	public static void relation(FPlayer me, Relation whishedRelation, String otherFactionName) {
 		if (me.withoutFaction()) {
 			me.sendMessage(Conf.colorSystem+"You are not part of any faction.");
 			return;
@@ -791,7 +791,7 @@ public class Commands {
 		}
 	}
 	
-	public static void description(Follower me, String desc) {
+	public static void description(FPlayer me, String desc) {
 		if (me.withoutFaction()) {
 			me.sendMessage(Conf.colorSystem+"You are not part of any faction");
 			return;
@@ -807,13 +807,13 @@ public class Commands {
 		me.sendMessage(Conf.colorSystem+"The new description was set :D");
 		
 		// Broadcast the description to everyone
-		for (Follower follower : EM.followerGetAll()) {
+		for (FPlayer follower : EM.followerGetAll()) {
 			follower.sendMessage(Conf.colorSystem+"The faction "+follower.getRelationColor(me)+me.getFaction().getTag()+Conf.colorSystem+" changed their description to:");
 			follower.sendMessage(Conf.colorSystem+desc);
 		}
 	}
 	
-	public static void chat(Follower me, String msg) {
+	public static void chat(FPlayer me, String msg) {
 		if (me.withoutFaction()) {
 			me.sendMessage(Conf.colorSystem+"You are not part of any faction");
 			return;
@@ -830,8 +830,8 @@ public class Commands {
 		}
 	}
 	
-	public static void version(Follower me) {
-		me.sendMessage(Conf.colorSystem+"You are running "+Factions.factions.getDescription().getFullName());
+	public static void version(FPlayer me) {
+		me.sendMessage(Conf.colorSystem+"You are running "+Factions.instance.getDescription().getFullName());
 	}
 }
 

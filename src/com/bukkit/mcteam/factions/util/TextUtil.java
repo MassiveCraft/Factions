@@ -3,7 +3,7 @@ import java.util.*;
 
 import org.bukkit.Material;
 
-import com.bukkit.mcteam.factions.entities.*;
+import com.bukkit.mcteam.factions.Conf;
 
 public class TextUtil {
 	public static String titleize(String str) {

@@ -1,16 +1,23 @@
-package com.bukkit.mcteam.factions.entities;
+package com.bukkit.mcteam.factions;
 
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.*;
+import java.util.Map.Entry;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-import com.bukkit.mcteam.factions.Factions;
-import com.bukkit.mcteam.factions.struct.*;
-import com.bukkit.mcteam.util.ChatFixUtil;
+import com.bukkit.mcteam.factions.entities.EM;
+import com.bukkit.mcteam.gson.reflect.TypeToken;
+import com.bukkit.mcteam.util.DiscUtil;
 
-public class Follower {
-	public transient String id; // The is the name of the player
+public class FPlayer {
+	public static transient Map<String, FPlayer> instances = new HashMap<String, FPlayer>();
+	public static transient File file = new File(Factions.instance.getDataFolder(), "players.json");
+	
+	public transient String playername;
 	public transient Coord lastStoodInCoord = new Coord(); // Where did this player stand the last time we checked?
 	
 	public int factionId;
@@ -20,6 +27,43 @@ public class Follower {
 	private long lastPowerUpdateTime;
 	private boolean mapAutoUpdating;
 	private boolean factionChatting; 
+	
+	public FPlayer(Player player) {
+		this.playername = player.getName();
+	}
+	
+	public FPlayer(String playername) {
+		this.playername = playername;
+	}
+	
+	// GSON need this noarg constructor.
+	public FPlayer() {
+		
+	}
+	
+	public Player getPlayer() {
+		return Factions.instance.getServer().getPlayer(playername);
+	}
+	
+	public String getPlayerName() {
+		return this.playername;
+	}
+	
+	// -------------------------------------------- //
+	// Online / Offline State Checking
+	// -------------------------------------------- //
+	
+	public boolean isOnline() {
+		return Factions.instance.getServer().getPlayer(playername) != null;
+	}
+	
+	public boolean isOffline() {
+		return ! isOnline();
+	}
+	
+	
+	
+	
 	
 	public boolean isFactionChatting() {
 		if (this.factionId == 0) {
@@ -32,7 +76,7 @@ public class Follower {
 		this.factionChatting = factionChatting;
 	}
 
-	public Follower() {
+	public FPlayer() {
 		this.resetFactionData();
 		this.power = this.getPowerMax();
 		this.lastPowerUpdateTime = System.currentTimeMillis();
@@ -44,14 +88,6 @@ public class Follower {
 		this.factionChatting = false;
 		this.role = Role.NORMAL;
 		this.title = "";
-	}
-	
-	public Player getPlayer() {
-		return Factions.factions.getServer().getPlayer(this.getName());
-	}
-	
-	public boolean isOnline() {
-		return this.getPlayer() != null;
 	}
 	
 	public boolean isMapAutoUpdating() {
@@ -113,14 +149,14 @@ public class Follower {
 	public String getNameAndTitle(Faction faction) {
 		return this.getRelationColor(faction)+this.getNameAndTitle();
 	}
-	public String getNameAndTitle(Follower follower) {
+	public String getNameAndTitle(FPlayer follower) {
 		return this.getRelationColor(follower)+this.getNameAndTitle();
 	}
 	
 	public String getNameAndTag(Faction faction) {
 		return this.getRelationColor(faction)+this.getNameAndTag();
 	}
-	public String getNameAndTag(Follower follower) {
+	public String getNameAndTag(FPlayer follower) {
 		return this.getRelationColor(follower)+this.getNameAndTag();
 	}
 	
@@ -136,7 +172,7 @@ public class Follower {
 		// For non members we show tag
 		return rel.getColor() + this.getNameAndTag();
 	}
-	public String getNameAndRelevant(Follower follower) {
+	public String getNameAndRelevant(FPlayer follower) {
 		return getNameAndRelevant(follower.getFaction());
 	}
 	
@@ -159,7 +195,7 @@ public class Follower {
 		
 		return this.getRelation(faction).getColor()+getChatTag();
 	}
-	public String getChatTag(Follower follower) {
+	public String getChatTag(FPlayer follower) {
 		if (this.withoutFaction()) {
 			return "";
 		}
@@ -175,7 +211,7 @@ public class Follower {
 		return faction.getRelation(this);
 	}
 	
-	public Relation getRelation(Follower follower) {
+	public Relation getRelation(FPlayer follower) {
 		return this.getFaction().getRelation(follower);
 	}
 	
@@ -183,7 +219,7 @@ public class Follower {
 		return faction.getRelationColor(this);
 	}
 	
-	public ChatColor getRelationColor(Follower follower) {
+	public ChatColor getRelationColor(FPlayer follower) {
 		return this.getRelation(follower).getColor();
 	}
 	
@@ -343,7 +379,7 @@ public class Follower {
 		return errors;
 	}
 	
-	public ArrayList<String> invite(Follower follower) {
+	public ArrayList<String> invite(FPlayer follower) {
 		ArrayList<String> errors = new ArrayList<String>();
 		
 		//Log.debug("this.role: "+this.role);
@@ -361,7 +397,7 @@ public class Follower {
 		return this.getFaction().invite(follower);
 	}
 	
-	public ArrayList<String> deinvite(Follower follower) {
+	public ArrayList<String> deinvite(FPlayer follower) {
 		ArrayList<String> errors = new ArrayList<String>();
 		
 		if (this.role.value < Role.MODERATOR.value) {
@@ -375,7 +411,7 @@ public class Follower {
 		return this.getFaction().deinvite(follower);
 	}
 	
-	public ArrayList<String> kick(Follower follower) {
+	public ArrayList<String> kick(FPlayer follower) {
 		ArrayList<String> errors = new ArrayList<String>();
 		
 		if ( ! follower.getFaction().equals(this.getFaction())) {
@@ -404,30 +440,10 @@ public class Follower {
 	}
 	
 	//----------------------------------------------//
-	// Messages - Directly connected to ChatFixUtil
-	//----------------------------------------------//
-	public void sendMessage(String message, boolean fix) {
-		Player player = this.getPlayer();
-		ChatFixUtil.sendMessage(player, message, fix);
-	}
-	public void sendMessage(List<String> messages, boolean fix) {
-		Player player = this.getPlayer();
-		ChatFixUtil.sendMessage(player, messages, fix);
-	}
-	public void sendMessage(String message) {
-		Player player = this.getPlayer();
-		ChatFixUtil.sendMessage(player, message, true);
-	}
-	public void sendMessage(List<String> messages) {
-		Player player = this.getPlayer();
-		ChatFixUtil.sendMessage(player, messages, true);
-	}
-	
-	//----------------------------------------------//
 	// Search
 	//----------------------------------------------//
-	public static Follower find(String name) {
-		for (Follower follower : EM.followerGetAll()) {
+	public static FPlayer find(String name) { // TODO felaktig!
+		for (FPlayer follower : EM.followerGetAll()) {
 			if (follower.getName().equalsIgnoreCase(name.trim())) {
 				return follower;
 			}
@@ -436,19 +452,110 @@ public class Follower {
 		return null;
 	}
 	
+	// -------------------------------------------- //
+	// Get
+	// You can only get a "skin" for online players.
+	// The same object is always returned for the same player.
+	// This means you can use the == operator. No .equals method necessary.
+	// -------------------------------------------- //
+	public static FPlayer get(String playername) {
+		if (instances.containsKey(playername)) {
+			return instances.get(playername);
+		}
+		
+		FPlayer vplayer = new FPlayer(playername);
+		instances.put(playername, vplayer);
+		return vplayer;
+	}
+	
+	// You should use this one to be sure you do not spell the player name wrong.
+	public static FPlayer get(Player player) {
+		return get(player.getName());
+	}
+	
+	// -------------------------------------------- //
+	// Messages
+	// -------------------------------------------- //
+	public void sendMessage(String message) {
+		this.getPlayer().sendMessage(Conf.colorSystem + message);
+	}
+	
+	public void sendMessage(List<String> messages) {
+		for(String message : messages) {
+			this.sendMessage(message);
+		}
+	}
+	
+	
 	//----------------------------------------------//
 	// Persistance and entity management
 	//----------------------------------------------//
-	
+	/*
 	public boolean save() {
 		return EM.followerSave(this.id);
 	}
 	
-	public static Follower get(Player player) {
+	public static FPlayer get(Player player) {
 		return EM.followerGet(player);
 	}
 	
-	public static Collection<Follower> getAll() {
+	public static Collection<FPlayer> getAll() {
 		return EM.followerGetAll();
 	}
+	*/
+	// -------------------------------------------- //
+	// Persistance
+	// -------------------------------------------- //
+	
+	public boolean shouldBeSaved() {
+		return this.factionId != 0;
+	}
+	
+	public static boolean save() {
+		Factions.log("Saving players to disk");
+		
+		// We only wan't to save the vplayers with non default values
+		Map<String, FPlayer> vplayersToSave = new HashMap<String, FPlayer>();
+		for (Entry<String, FPlayer> entry : instances.entrySet()) {
+			if (entry.getValue().shouldBeSaved()) {
+				vplayersToSave.put(entry.getKey(), entry.getValue());
+			}
+		}
+		
+		try {
+			DiscUtil.write(file, Factions.gson.toJson(vplayersToSave));
+		} catch (IOException e) {
+			Factions.log("Failed to save the players to disk.");
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
+	public static boolean load() {
+		if ( ! file.exists()) {
+			Factions.log("No players to load from disk. Creating new file.");
+			save();
+			return true;
+		}
+		
+		try {
+			Type type = new TypeToken<Map<String, FPlayer>>(){}.getType();
+			instances = Factions.gson.fromJson(DiscUtil.read(file), type);
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
+		
+		fillPlayernames();
+			
+		return true;
+	}
+	
+	public static void fillPlayernames() {
+		for(Entry<String, FPlayer> entry : instances.entrySet()) {
+			entry.getValue().playername = entry.getKey();
+		}
+	}
+	
 }

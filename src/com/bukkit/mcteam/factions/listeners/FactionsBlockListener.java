@@ -11,6 +11,11 @@ import org.bukkit.event.block.BlockInteractEvent;
 import org.bukkit.event.block.BlockListener;
 import org.bukkit.event.block.BlockPlaceEvent;
 
+import com.bukkit.mcteam.factions.Board;
+import com.bukkit.mcteam.factions.Conf;
+import com.bukkit.mcteam.factions.Coord;
+import com.bukkit.mcteam.factions.FPlayer;
+import com.bukkit.mcteam.factions.Faction;
 import com.bukkit.mcteam.factions.Factions;
 import com.bukkit.mcteam.factions.entities.*;
 import com.bukkit.mcteam.factions.util.*;
@@ -35,7 +40,7 @@ public class FactionsBlockListener extends BlockListener {
 	}
 
 	//special cases, check for destruction of: torch, redstone torch (on & off), repeater (on & off), redstonewire, sapling, crops, sugar cane
-	private static Set<Integer> specialBlocks = new HashSet(Arrays.asList(
+	private static Set<Integer> specialBlocks = new HashSet<Integer>(Arrays.asList(
 		 new Integer[] {50, 75, 76, 93, 94, 55, 6, 59, 83}
 	));
 	
@@ -62,7 +67,7 @@ public class FactionsBlockListener extends BlockListener {
 			return true; // This is no faction territory. You may build or break stuff here.
 		}
 		
-		Follower me = Follower.get(player);
+		FPlayer me = FPlayer.get(player);
 		Faction myFaction = me.getFaction();
 		
 		// Cancel if we are not in our own territory
@@ -105,7 +110,7 @@ public class FactionsBlockListener extends BlockListener {
 			return true;
 		}
 		
-		Follower me = Follower.get(player);
+		FPlayer me = FPlayer.get(player);
 		Faction myFaction = me.getFaction();
 		Coord blockCoord = Coord.from(block.getLocation());
 		Faction otherFaction = Board.get(player.getWorld()).getFactionAt(blockCoord);

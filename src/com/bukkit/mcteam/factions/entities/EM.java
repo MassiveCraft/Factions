@@ -7,6 +7,10 @@ import java.util.*;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
+import com.bukkit.mcteam.factions.Board;
+import com.bukkit.mcteam.factions.Conf;
+import com.bukkit.mcteam.factions.FPlayer;
+import com.bukkit.mcteam.factions.Faction;
 import com.bukkit.mcteam.factions.Factions;
 import com.bukkit.mcteam.factions.util.*;
 import com.bukkit.mcteam.util.DiscUtil;
@@ -18,14 +22,14 @@ import com.bukkit.mcteam.gson.*;
  * The methods assume that all on disc is loaded into memory.
  */
 public class EM {
-	protected static Map<String, Follower> followers = new HashMap<String, Follower>(); // Where String is a lowercase playername
+	protected static Map<String, FPlayer> followers = new HashMap<String, FPlayer>(); // Where String is a lowercase playername
 	protected static Map<Integer, Faction> factions = new HashMap<Integer, Faction>(); // Where Integer is a primary auto increment key
 	protected static Map<String, Board> boards = new HashMap<String, Board>(); // Where Long is the semi (sadly) unique world id.
 	protected static int nextFactionId;
 	
 	// hardcoded config
 	protected final static String ext = ".json";
-	protected final static File folderBase = Factions.factions.getDataFolder();
+	protected final static File folderBase = Factions.instance.getDataFolder();
 	protected final static File folderFaction = new File(folderBase, "faction");
 	protected final static File folderFollower = new File(folderBase, "follower");
 	protected final static File folderBoard = new File(folderBase, "board");
@@ -218,7 +222,7 @@ public class EM {
 			String name = jsonFile.getName();
 			name = name.substring(0, name.length() - ext.length());
 			try {
-				Follower follower = gson.fromJson(DiscUtil.read(jsonFile), Follower.class);
+				FPlayer follower = gson.fromJson(DiscUtil.read(jsonFile), FPlayer.class);
 				follower.id = name;
 				followers.put(follower.id, follower);
 				//Log.debug("loaded follower "+name);
@@ -229,7 +233,7 @@ public class EM {
 		}
 	}
 	
-	public static Collection<Follower> followerGetAll() {
+	public static Collection<FPlayer> followerGetAll() {
 		return followers.values();
 	}
 	
@@ -237,7 +241,7 @@ public class EM {
 	 * This method returns the follower object for a player
 	 * A new Follower will be created if the player did not have one
 	 */
-	public static Follower followerGet(Player player) {
+	public static FPlayer followerGet(Player player) {
 		String key = followerKey(player);
 		
 		if (followers.containsKey(key)) {
@@ -272,9 +276,9 @@ public class EM {
 		return player.getName();
 	}
 	
-	protected static Follower followerCreate(Player player) {
+	protected static FPlayer followerCreate(Player player) {
 		Log.debug("Creating new follower "+followerKey(player));
-		Follower follower = new Follower();
+		FPlayer follower = new FPlayer();
 		follower.id = followerKey(player);
 		followers.put(follower.id, follower);
 		follower.save();

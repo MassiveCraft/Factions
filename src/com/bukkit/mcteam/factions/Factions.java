@@ -1,37 +1,84 @@
 package com.bukkit.mcteam.factions;
 
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+
+
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 import org.bukkit.event.Event;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.bukkit.mcteam.factions.entities.*;
+import com.bukkit.mcteam.factions.commands.FCommand;
 import com.bukkit.mcteam.factions.listeners.FactionsBlockListener;
 import com.bukkit.mcteam.factions.listeners.FactionsEntityListener;
 import com.bukkit.mcteam.factions.listeners.FactionsPlayerListener;
-import com.bukkit.mcteam.factions.util.Log;
+import com.bukkit.mcteam.gson.Gson;
+import com.bukkit.mcteam.gson.GsonBuilder;
+import com.bukkit.mcteam.gson.MapAsArrayTypeAdapter;
+
+import com.nijiko.permissions.PermissionHandler;
+import com.nijikokun.bukkit.Permissions.Permissions;
+
+import me.taylorkelly.help.Help;
 
 public class Factions extends JavaPlugin {
-	public static Factions factions;
+	// -------------------------------------------- //
+	// Fields
+	// -------------------------------------------- //
+	public static Factions instance;
+	
+	public final static Gson gson = new GsonBuilder()
+	.setPrettyPrinting()
+	.excludeFieldsWithModifiers(Modifier.TRANSIENT, Modifier.VOLATILE)
+	.registerTypeAdapter(Map.class, new MapAsArrayTypeAdapter()) // a "must have" adapter for GSON 
+	.create();
 	
 	private final FactionsPlayerListener playerListener = new FactionsPlayerListener(this);
 	private final FactionsEntityListener entityListener = new FactionsEntityListener(this);
 	private final FactionsBlockListener blockListener = new FactionsBlockListener(this);
+	
+	public static PermissionHandler Permissions;
+	public static Help helpPlugin;
 
-	@Override
-	public void onDisable() {
-		// TODO Auto-generated method stub
-		
+	// Commands
+	public List<FCommand> commands = new ArrayList<FCommand>();
+	
+	public Factions() {
+		Factions.instance = this;
 	}
-
+	
+	
 	@Override
 	public void onEnable() {
-		Factions.factions = this;
+		// Add the commands
+		/*commands.add(new VCommandBlood());
+		commands.add(new VCommandInfect());
+		commands.add(new VCommandLoad());
+		commands.add(new VCommandSave());
+		commands.add(new VCommandTime());
+		commands.add(new VCommandTurn());
+		commands.add(new VCommandCure());
+		commands.add(new VCommandList());
+		commands.add(new VCommandVersion());*/
 		
-		Log.info("=== INIT START ===");
+		setupPermissions();
+		setupHelp();
+		
+		log("=== INIT START ===");
 		long timeInitStart = System.currentTimeMillis();
-		Log.info("You are running version: "+this.getDescription().getVersion());
 		
-		EM.loadAll();
+		FPlayer.load();
+		Faction.load();
+		Board.load();
 		
 		// Register events
 		PluginManager pm = this.getServer().getPluginManager();
@@ -48,8 +95,94 @@ public class Factions extends JavaPlugin {
 		pm.registerEvent(Event.Type.BLOCK_PLACED, this.blockListener, Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.BLOCK_INTERACT, this.blockListener, Event.Priority.Normal, this);		
 		
-		Log.info("=== INIT DONE (Took "+(System.currentTimeMillis()-timeInitStart)+"ms) ===");
-		Log.threshold = Conf.logThreshold;
+		log("=== INIT DONE (Took "+(System.currentTimeMillis()-timeInitStart)+"ms) ===");
+	}
+
+	@Override
+	public void onDisable() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	// -------------------------------------------- //
+	// Integration with other plugins
+	// -------------------------------------------- //
+	
+	private void setupPermissions() {
+		Plugin test = this.getServer().getPluginManager().getPlugin("Permissions");
+
+		if (Permissions != null) {
+			return;
+		}
+		
+		if (test != null) {
+			Permissions = ((Permissions)test).getHandler();
+			Factions.log("Found and will use plugin "+((Permissions)test).getDescription().getFullName());
+		} else {
+			Factions.log("Permission system not detected, defaulting to OP");
+		}
+	}
+	
+	private void setupHelp() {
+		Plugin test = this.getServer().getPluginManager().getPlugin("Help");
+		
+		if (helpPlugin != null) {
+			return;
+		}
+		
+		if (test != null) {
+			helpPlugin = ((Help) test);
+			Factions.log("Found and will use plugin "+helpPlugin.getDescription().getFullName());
+			for(FCommand fcommand : commands) {
+				fcommand.helpRegister();
+			}
+			helpPlugin.registerCommand("help vampire", "help for the vampire plugin.", helpPlugin, true);
+		} else {
+			Factions.log(Level.WARNING, "'Help' plugin isn't detected. No /help support.");
+		}
+	}
+
+	
+	// -------------------------------------------- //
+	// Commands
+	// -------------------------------------------- //
+	
+	@Override
+	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
+		List<String> parameters = new ArrayList<String>(Arrays.asList(args));
+		this.handleCommand(sender, parameters);
+		return true;
+	}
+	
+	public void handleCommand(CommandSender sender, List<String> parameters) {
+		if (parameters.size() == 0) {
+			this.commands.get(0).execute(sender, parameters);
+			return;
+		}
+		
+		String commandName = parameters.get(0).toLowerCase();
+		parameters.remove(0);
+		
+		for (FCommand fcommand : this.commands) {
+			if (fcommand.getAliases().contains(commandName)) {
+				fcommand.execute(sender, parameters);
+				return;
+			}
+		}
+		
+		sender.sendMessage(Conf.colorSystem+"Unknown faction command \""+commandName+"\". Try /help faction"); // TODO test help messages exists....
+		//TODO should we use internal help system instead?
+	}
+	
+	// -------------------------------------------- //
+	// Logging
+	// -------------------------------------------- //
+	public static void log(String msg) {
+		log(Level.INFO, msg);
+	}
+	
+	public static void log(Level level, String msg) {
+		Logger.getLogger("Minecraft").log(level, "["+instance.getDescription().getFullName()+"] "+msg);
 	}
 
 }

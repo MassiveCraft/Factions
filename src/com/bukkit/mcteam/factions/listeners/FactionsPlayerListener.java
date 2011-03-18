@@ -11,7 +11,12 @@ import org.bukkit.event.player.PlayerItemEvent;
 import org.bukkit.event.player.PlayerListener;
 import org.bukkit.event.player.PlayerMoveEvent;
 
+import com.bukkit.mcteam.factions.Board;
 import com.bukkit.mcteam.factions.Commands;
+import com.bukkit.mcteam.factions.Conf;
+import com.bukkit.mcteam.factions.Coord;
+import com.bukkit.mcteam.factions.FPlayer;
+import com.bukkit.mcteam.factions.Faction;
 import com.bukkit.mcteam.factions.Factions;
 import com.bukkit.mcteam.factions.entities.*;
 import com.bukkit.mcteam.factions.util.TextUtil;
@@ -55,7 +60,7 @@ public class FactionsPlayerListener extends PlayerListener{
 		}
 		
 		// ... it was not a command. This means that it is a chat message!
-		Follower me = Follower.get(talkingPlayer);
+		FPlayer me = FPlayer.get(talkingPlayer);
 		
 		// Is it a faction chat message?
 		if (me.isFactionChatting()) {
@@ -83,8 +88,8 @@ public class FactionsPlayerListener extends PlayerListener{
 			// Why? Because the relations will differ.
 			event.setCancelled(true);
 			
-			for (Player listeningPlayer : Factions.factions.getServer().getOnlinePlayers()) {
-				Follower you = Follower.get(listeningPlayer);
+			for (Player listeningPlayer : Factions.instance.getServer().getOnlinePlayers()) {
+				FPlayer you = FPlayer.get(listeningPlayer);
 				String yourFormat = formatStart + me.getChatTag(you) + formatEnd;
 				listeningPlayer.sendMessage(String.format(yourFormat, talkingPlayer.getDisplayName(), msg));
 			}
@@ -102,7 +107,7 @@ public class FactionsPlayerListener extends PlayerListener{
 		ArrayList<String> tokens = TextUtil.split(msg.trim());
 		if (Conf.aliasBase.contains(tokens.get(0))) {
 			tokens.remove(0);
-			Follower follower = Follower.get(player);
+			FPlayer follower = FPlayer.get(player);
 			Commands.base(follower, tokens);
 			return true;
 		}
@@ -116,14 +121,14 @@ public class FactionsPlayerListener extends PlayerListener{
 	
 	@Override
 	public void onPlayerQuit(PlayerEvent event) {
-		Follower follower = Follower.get(event.getPlayer()); 
+		FPlayer follower = FPlayer.get(event.getPlayer()); 
 		Log.debug("Saved follower on player quit: "+follower.getName());
 		follower.save(); // We save the followers on logout in order to save their non autosaved state like power.
 	}
 	
 	@Override
 	public void onPlayerMove(PlayerMoveEvent event) {
-		Follower me = Follower.get(event.getPlayer());
+		FPlayer me = FPlayer.get(event.getPlayer());
 		
 		// Did we change coord?
 		Coord coordFrom = me.lastStoodInCoord;
@@ -168,7 +173,7 @@ public class FactionsPlayerListener extends PlayerListener{
 	}
 
 	//currently checking placement/use of: redstone, sign, flint&steel, beds (not currently detected by Bukkit), buckets (empty, water, lava), repeater (not currently detected by Bukkit)
-	private static Set<Integer> badItems = new HashSet(Arrays.asList(
+	private static Set<Integer> badItems = new HashSet<Integer>(Arrays.asList(
 		 new Integer[] {331, 323, 259, 355, 325, 326, 327, 356}
 	));
 
@@ -185,7 +190,7 @@ public class FactionsPlayerListener extends PlayerListener{
 			return true; // This is not faction territory. Use whatever you like here.
 		}
 
-		Follower me = Follower.get(player);
+		FPlayer me = FPlayer.get(player);
 		Faction myFaction = me.getFaction();
 
 		// Cancel if we are not in our own territory
