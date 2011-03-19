@@ -2,11 +2,10 @@ package com.bukkit.mcteam.factions.commands;
 
 import java.util.ArrayList;
 
-import org.bukkit.entity.Player;
-
 import com.bukkit.mcteam.factions.Conf;
 import com.bukkit.mcteam.factions.FPlayer;
 import com.bukkit.mcteam.factions.Faction;
+import com.bukkit.mcteam.factions.struct.Role;
 
 public class FCommandLeave extends FCommand {
 	
@@ -23,20 +22,26 @@ public class FCommandLeave extends FCommand {
 	}
 	
 	public void perform() {
-		Faction faction = fplayer.getFaction();
-		
-		ArrayList<String> errors = fplayer.leave();
-		fplayer.sendMessage(errors);
-		
-		if (errors.size() == 0) {
-			faction.sendMessage(fplayer.getNameAndRelevant(faction)+Conf.colorSystem+" left your faction.");
-			fplayer.sendMessage("You left "+faction.getTag(fplayer));
+		if ( ! me.hasFaction()) {
+			sendMessage("You are not member of any faction.");
+			return;
 		}
 		
-		if (faction.getFollowersAll().size() == 0) {
+		Faction faction = me.getFaction();
+		
+		if (me.role == Role.ADMIN && faction.getFPlayers().size() > 1) {
+			sendMessage("You must give the admin role to someone else first.");
+			return;
+		}
+		
+		faction.sendMessage(me.getNameAndRelevant(faction) + Conf.colorSystem + " left your faction.");
+		me.resetFactionData();
+		FPlayer.save();
+		
+		if (faction.getFPlayers().size() == 0) {
 			// Remove this faction
-			for (FPlayer follower : FPlayer.getAll()) {
-				follower.sendMessage(Conf.colorSystem+"The faction "+faction.getTag(follower)+Conf.colorSystem+" was disbanded.");
+			for (FPlayer fplayer : FPlayer.getAllOnline()) {
+				fplayer.sendMessage("The faction "+faction.getTag(fplayer)+Conf.colorSystem+" was disbanded.");
 			}
 			Faction.delete(faction.id);
 		}

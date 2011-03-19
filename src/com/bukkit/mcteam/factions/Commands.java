@@ -243,7 +243,7 @@ public class Commands {
 		}
 		me.sendMessage(helpPages.get(page), false);
 	}
-	
+	/*
 	public static void leave(FPlayer me) {
 		Faction faction = me.getFaction();
 		
@@ -255,7 +255,7 @@ public class Commands {
 			me.sendMessage("You left "+faction.getTag(me));
 		}
 		
-		if (faction.getFollowersAll().size() == 0) {
+		if (faction.getFPlayers().size() == 0) {
 			// Remove this faction
 			for (FPlayer follower : FPlayer.getAll()) {
 				follower.sendMessage(Conf.colorSystem+"The faction "+faction.getTag(follower)+Conf.colorSystem+" was disbanded.");
@@ -313,6 +313,7 @@ public class Commands {
 		me.sendMessage(Conf.colorSystem+"Now update your faction description. Use:");
 		me.sendMessage(Conf.colorCommand+Conf.aliasBase.get(0)+" "+Conf.aliasDescription.get(0)+" "+"[description]");
 	}
+	*/
 	
 	public static void tag(FPlayer me, String tag) {
 		ArrayList<String> errors = new ArrayList<String>();
@@ -369,9 +370,9 @@ public class Commands {
 					return 1;
 				else if (f2.id == 0)
 					return -1;
-				else if (f1.getFollowersAll().size() < f2.getFollowersAll().size())
+				else if (f1.getFPlayers().size() < f2.getFPlayers().size())
 					return 1;
-				else if (f1.getFollowersAll().size() > f2.getFollowersAll().size())
+				else if (f1.getFPlayers().size() > f2.getFPlayers().size())
 					return -1;
 				return 0;
 			}
@@ -381,9 +382,9 @@ public class Commands {
 		Collections.sort(FactionList, new Comparator<Faction>(){
 			@Override
 			public int compare(Faction f1, Faction f2) {
-				if (f1.getFollowersWhereOnline(true).size() < f2.getFollowersWhereOnline(true).size())
+				if (f1.getFPlayersWhereOnline(true).size() < f2.getFPlayersWhereOnline(true).size())
 					return 1;
-				else if (f1.getFollowersWhereOnline(true).size() > f2.getFollowersWhereOnline(true).size())
+				else if (f1.getFPlayersWhereOnline(true).size() > f2.getFPlayersWhereOnline(true).size())
 					return -1;
 				return 0;
 			}
@@ -404,9 +405,9 @@ public class Commands {
 		for (int pos = page * 9; pos < maxPos; pos++) {
 			Faction faction = FactionList.get(pos);
 			if (faction.id == 0) {
-				me.sendMessage(faction.getTag(me)+Conf.colorSystem+" "+faction.getFollowersWhereOnline(true).size() + " online");
+				me.sendMessage(faction.getTag(me)+Conf.colorSystem+" "+faction.getFPlayersWhereOnline(true).size() + " online");
 			} else {
-				me.sendMessage(faction.getTag(me)+Conf.colorSystem+" "+faction.getFollowersWhereOnline(true).size()+"/"+faction.getFollowersAll().size()+" online, "+faction.getLandRounded()+"/"+faction.getPowerRounded()+"/"+faction.getPowerMaxRounded());
+				me.sendMessage(faction.getTag(me)+Conf.colorSystem+" "+faction.getFPlayersWhereOnline(true).size()+"/"+faction.getFPlayers().size()+" online, "+faction.getLandRounded()+"/"+faction.getPowerRounded()+"/"+faction.getPowerMaxRounded());
 			}
 		}
 	}
@@ -416,9 +417,9 @@ public class Commands {
 		if (faction == null) {
 			return;
 		}
-		Collection<FPlayer> admins = faction.getFollowersWhereRole(Role.ADMIN);
-		Collection<FPlayer> mods = faction.getFollowersWhereRole(Role.MODERATOR);
-		Collection<FPlayer> normals = faction.getFollowersWhereRole(Role.NORMAL);
+		Collection<FPlayer> admins = faction.getFPlayersWhereRole(Role.ADMIN);
+		Collection<FPlayer> mods = faction.getFPlayersWhereRole(Role.MODERATOR);
+		Collection<FPlayer> normals = faction.getFPlayersWhereRole(Role.NORMAL);
 		
 		me.sendMessage(TextUtil.titleize(faction.getTag(me)), false);
 		me.sendMessage(Conf.colorChrome+"Description: "+Conf.colorSystem+faction.getDescription());

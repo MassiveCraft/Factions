@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -12,7 +11,6 @@ import java.util.Map.Entry;
 
 import org.bukkit.ChatColor;
 
-import com.bukkit.mcteam.factions.entities.EM;
 import com.bukkit.mcteam.factions.util.TextUtil;
 import com.bukkit.mcteam.gson.reflect.TypeToken;
 import com.bukkit.mcteam.util.AsciiCompass;
@@ -21,74 +19,79 @@ import com.bukkit.mcteam.util.DiscUtil;
 //import com.bukkit.mcteam.factions.util.*;
 
 public class Board {
-	protected static transient Map<String, Board> instances = new HashMap<String, Board>();
-	protected static transient File file = new File(Factions.instance.getDataFolder(), "boards.json");
+	protected static transient File file = new File(Factions.instance.getDataFolder(), "board.json");
+	private static Map<String,Map<String,Integer>> worldCoordIds = new HashMap<String,Map<String,Integer>>(); 
 	
-	public transient String worldName;
-	protected Map<Coord, Integer> coordFactionIds = new HashMap<Coord, Integer>();
-	
-	public Board() {
-
-	}
-	
-	public Board(String worldName) {
-		this.worldName = worldName;
-	}
-	
-	public Faction getFactionAt(Coord coord) {
-		return Faction.get(getFactionIdAt(coord));
-	}
-	public int getFactionIdAt(Coord coord) {
-		Integer factionId = coordFactionIds.get(coord);
-		if (factionId == null) {
-			return 0; // No faction
+	//----------------------------------------------//
+	// Get and Set
+	//----------------------------------------------//
+	public static int getIdAt(FLocation flocation) {
+		if ( ! worldCoordIds.containsKey(flocation.getWorldName())) {
+			return 0;
 		}
-		return factionId;
+		
+		if ( ! worldCoordIds.get(flocation.getWorldName()).containsKey(flocation.getCoordString()) ) {
+			return 0;
+		}
+		
+		return worldCoordIds.get(flocation.getWorldName()).get(flocation.getCoordString());
 	}
 	
-	public void unclaim(Coord coord) {
-		coordFactionIds.remove(coord);
+	public static Faction getFactionAt(FLocation flocation) {
+		return Faction.get(getIdAt(flocation));
+	}
+	
+	public static void setIdAt(int id, FLocation flocation) {
+		if (id == 0) {
+			removeAt(flocation);
+		}
+		
+		if ( ! worldCoordIds.containsKey(flocation.getWorldName())) {
+			worldCoordIds.put(flocation.getWorldName(), new HashMap<String,Integer>());
+		}
+		
+		worldCoordIds.get(flocation.getWorldName()).put(flocation.getCoordString(), id);
 		save();
 	}
 	
-	public void claim(Coord coord, Faction faction) {
-		coordFactionIds.put(coord, faction.id);
-		save();
+	public static void setFactionAt(Faction faction, FLocation flocation) {
+		setIdAt(faction.id, flocation);
 	}
 	
-	
+	public static void removeAt(FLocation flocation) {
+		if ( ! worldCoordIds.containsKey(flocation.getWorldName())) {
+			return;
+		}
+		worldCoordIds.get(flocation.getWorldName()).remove(flocation.getCoordString());
+		save();
+	}
+
 	// Is this coord NOT completely surrounded by coords claimed by the same faction?
 	// Simpler: Is there any nearby coord with a faction other than the faction here?
-	public boolean isBorderCoord(Coord coord) {
-		Faction faction = getFactionAt(coord);
-		Coord a = coord.getRelative(1, 0);
-		Coord b = coord.getRelative(-1, 0);
-		Coord c = coord.getRelative(0, 1);
-		Coord d = coord.getRelative(0, -1);
-		return faction != this.getFactionAt(a) || faction != this.getFactionAt(b) || faction != this.getFactionAt(c) || faction != this.getFactionAt(d); 
+	public static boolean isBorderLocation(FLocation flocation) {
+		Faction faction = getFactionAt(flocation);
+		FLocation a = flocation.getRelative(1, 0);
+		FLocation b = flocation.getRelative(-1, 0);
+		FLocation c = flocation.getRelative(0, 1);
+		FLocation d = flocation.getRelative(0, -1);
+		return faction != getFactionAt(a) || faction != getFactionAt(b) || faction != getFactionAt(c) || faction != getFactionAt(d);
 	}
 	
+	
 	//----------------------------------------------//
-	// Clean boards
+	// Cleaner. Remove orphaned foreign keys
 	//----------------------------------------------//
 	
-	// These functions search boards for orphaned foreign keys
-	
-	public void clean() {
-		Iterator<Entry<Coord, Integer>> iter = coordFactionIds.entrySet().iterator();
-		while (iter.hasNext()) {
-			Entry<Coord, Integer> entry = iter.next();
-			if ( ! EM.factionExists(entry.getValue())) {
-				Factions.log("Cleaner removed coord with non existing factionId "+entry.getValue());
-				iter.remove();
+	public static void clean() {
+		for (String worldName : worldCoordIds.keySet()) {
+			Iterator<Entry<String, Integer>> iter = worldCoordIds.get(worldName).entrySet().iterator();
+			while (iter.hasNext()) {
+				Entry<String, Integer> entry = iter.next();
+				if ( ! Faction.exists(entry.getValue())) {
+					Factions.log("Board cleaner removed non existing faction id "+entry.getValue()+" from "+worldName+" "+entry.getKey());
+					iter.remove();
+				}
 			}
-		}
-	}
-	
-	public static void cleanAll() {
-		for (Board board : getAll()) {
-			Factions.log("Cleaning board for world "+board.worldName);
-			board.clean();
 		}
 	}	
 	
@@ -96,28 +99,20 @@ public class Board {
 	// Coord count
 	//----------------------------------------------//
 	
-	public int getFactionCoordCount(int factionId) {
+	public static int getFactionCoordCount(int factionId) {
 		int ret = 0;
-		for (int thatFactionId : coordFactionIds.values()) {
-			if(thatFactionId == factionId) {
-				ret += 1;
+		for (Map<String, Integer> coordIds : worldCoordIds.values()) {
+			for (int thatFactionId : coordIds.values()) {
+				if(thatFactionId == factionId) {
+					ret += 1;
+				}
 			}
 		}
 		return ret;
 	}
-	public int getFactionCoordCount(Faction faction) {
-		return getFactionCoordCount(faction.id);
-	}
 	
-	public static int getFactionCoordCountAllBoards(int factionId) {
-		int ret = 0;
-		for (Board board : getAll()) {
-			ret += board.getFactionCoordCount(factionId);
-		}
-		return ret;
-	}
-	public static int getFactionCoordCountAllBoards(Faction faction) {
-		return getFactionCoordCountAllBoards(faction.id);
+	public static int getFactionCoordCount(Faction faction) {
+		return getFactionCoordCount(faction.id);
 	}
 	
 	//----------------------------------------------//
@@ -129,13 +124,13 @@ public class Board {
 	 * north is in the direction of decreasing x
 	 * east is in the direction of decreasing z
 	 */
-	public ArrayList<String> getMap(Faction faction, Coord coord, double inDegrees) {
+	public ArrayList<String> getMap(Faction faction, FLocation flocation, double inDegrees) {
 		ArrayList<String> ret = new ArrayList<String>();
-		ret.add(TextUtil.titleize("("+coord+") "+this.getFactionAt(coord).getTag(faction)));
+		ret.add(TextUtil.titleize("("+flocation+") "+getFactionAt(flocation).getTag(faction)));
 		
 		int halfWidth = Conf.mapWidth / 2;
 		int halfHeight = Conf.mapHeight / 2;
-		Coord topLeft = coord.getRelative(-halfHeight, halfWidth);
+		FLocation topLeft = flocation.getRelative(-halfHeight, halfWidth);
 		int width = halfWidth * 2 + 1;
 		int height = halfHeight * 2 + 1;
 		
@@ -147,8 +142,8 @@ public class Board {
 				if(dz == -(halfWidth) && dx == halfHeight) {
 					row += ChatColor.AQUA+"+";
 				} else {
-					Coord coordHere = topLeft.getRelative(dx, dz);
-					Faction factionHere = this.getFactionAt(coordHere);
+					FLocation flocationHere = topLeft.getRelative(dx, dz);
+					Faction factionHere = getFactionAt(flocationHere);
 					if (factionHere.id == 0) {
 						row += ChatColor.GRAY+"-";
 					} else {
@@ -171,45 +166,17 @@ public class Board {
 	}
 	
 	
-	//----------------------------------------------//
-	// Persistance
-	//----------------------------------------------//
-	
-	/*public boolean save() {
-		return EM.boardSave(this.worldName);
-	}
-	
-	public static Board get(World world) {
-		return EM.boardGet(world);
-	}
-	
-	public static Collection<Board> getAll() {
-		return EM.boardGetAll();
-	}*/
-	
-	
 	// -------------------------------------------- //
 	// Persistance
 	// -------------------------------------------- //
-	
-	public boolean shouldBeSaved() {
-		return this.coordFactionIds.size() > 0;
-	}
 	
 	public static boolean save() {
-		Factions.log("Saving boards to disk");
-		
-		Map<String, Board> instancesToSave = new HashMap<String, Board>();
-		for (Entry<String, Board> entry : instances.entrySet()) {
-			if (entry.getValue().shouldBeSaved()) {
-				instancesToSave.put(entry.getKey(), entry.getValue());
-			}
-		}
+		Factions.log("Saving board to disk");
 		
 		try {
-			DiscUtil.write(file, Factions.gson.toJson(instancesToSave));
+			DiscUtil.write(file, Factions.gson.toJson(worldCoordIds));
 		} catch (IOException e) {
-			Factions.log("Failed to save the boards to disk.");
+			Factions.log("Failed to save the board to disk.");
 			e.printStackTrace();
 			return false;
 		}
@@ -218,47 +185,21 @@ public class Board {
 	
 	public static boolean load() {
 		if ( ! file.exists()) {
-			Factions.log("No boards to load from disk. Creating new file.");
+			Factions.log("No board to load from disk. Creating new file.");
 			save();
 			return true;
 		}
 		
 		try {
-			Type type = new TypeToken<Map<String, Board>>(){}.getType();
-			instances = Factions.gson.fromJson(DiscUtil.read(file), type);
+			Type type = new TypeToken<Map<String,Map<String,Integer>>>(){}.getType();
+			worldCoordIds = Factions.gson.fromJson(DiscUtil.read(file), type);
 		} catch (IOException e) {
+			Factions.log("Failed to load the board from disk.");
 			e.printStackTrace();
 			return false;
 		}
-		
-		fillNames();
 			
 		return true;
-	}
-	
-	public static void fillNames() {
-		for(Entry<String, Board> entry : instances.entrySet()) {
-			entry.getValue().worldName = entry.getKey();
-		}
-	}
-	
-	public static Board get(String worldName) {
-		if (instances.containsKey(worldName)) {
-			return instances.get(worldName);
-		}
-		
-		Board board = new Board(worldName);
-		instances.put(worldName, board);
-		return board;
-	}
-	
-	// You should use this one to be sure you do not spell the player name wrong.
-	public static Board get(Board board) {
-		return get(board.worldName);
-	}
-	
-	public static Collection<Board> getAll() {
-		return instances.values();
 	}
 }
 

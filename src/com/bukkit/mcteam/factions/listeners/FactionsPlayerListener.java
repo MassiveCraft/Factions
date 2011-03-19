@@ -131,14 +131,14 @@ public class FactionsPlayerListener extends PlayerListener{
 		FPlayer me = FPlayer.get(event.getPlayer());
 		
 		// Did we change coord?
-		Coord coordFrom = me.lastStoodInCoord;
+		Coord coordFrom = me.lastStoodAt;
 		Coord coordTo = Coord.from(event.getTo());
 		if (coordFrom.equals(coordTo)) {
 			return;
 		}
 		
 		// Yes we did change coord (:
-		me.lastStoodInCoord = coordTo;
+		me.lastStoodAt = coordTo;
 		Board board = Board.get(event.getPlayer().getWorld());
 		
 		if (me.isMapAutoUpdating()) {

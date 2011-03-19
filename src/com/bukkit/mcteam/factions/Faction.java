@@ -83,7 +83,7 @@ public class Faction {
 	//----------------------------------------------//
 	public double getPower() {
 		double ret = 0;
-		for (FPlayer follower : this.getFollowersAll()) {
+		for (FPlayer follower : this.getFPlayers()) {
 			ret += follower.getPower();
 		}
 		return ret;
@@ -91,7 +91,7 @@ public class Faction {
 	
 	public double getPowerMax() {
 		double ret = 0;
-		for (FPlayer follower : this.getFollowersAll()) {
+		for (FPlayer follower : this.getFPlayers()) {
 			ret += follower.getPowerMax();
 		}
 		return ret;
@@ -166,7 +166,7 @@ public class Faction {
 	// Followers
 	// -------------------------------
 	
-	public ArrayList<FPlayer> getFollowersAll() {
+	public ArrayList<FPlayer> getFPlayers() {
 		ArrayList<FPlayer> ret = new ArrayList<FPlayer>();
 		for (FPlayer follower : FPlayer.getAll()) {
 			if (follower.factionId == this.id) {
@@ -176,7 +176,7 @@ public class Faction {
 		return ret;
 	}
 	
-	public ArrayList<FPlayer> getFollowersWhereOnline(boolean online) {
+	public ArrayList<FPlayer> getFPlayersWhereOnline(boolean online) {
 		ArrayList<FPlayer> ret = new ArrayList<FPlayer>();
 		for (FPlayer follower : FPlayer.getAll()) {
 			if (follower.factionId == this.id && follower.isOnline() == online) {
@@ -186,7 +186,7 @@ public class Faction {
 		return ret;
 	}
 	
-	public ArrayList<FPlayer> getFollowersWhereRole(Role role) {
+	public ArrayList<FPlayer> getFPlayersWhereRole(Role role) {
 		ArrayList<FPlayer> ret = new ArrayList<FPlayer>();
 		
 		for (FPlayer follower : FPlayer.getAll()) {

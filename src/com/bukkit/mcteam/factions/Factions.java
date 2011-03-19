@@ -4,7 +4,6 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -23,7 +22,6 @@ import com.bukkit.mcteam.factions.listeners.FactionsEntityListener;
 import com.bukkit.mcteam.factions.listeners.FactionsPlayerListener;
 import com.bukkit.mcteam.gson.Gson;
 import com.bukkit.mcteam.gson.GsonBuilder;
-import com.bukkit.mcteam.gson.MapAsArrayTypeAdapter;
 
 import com.nijiko.permissions.PermissionHandler;
 import com.nijikokun.bukkit.Permissions.Permissions;
@@ -39,7 +37,6 @@ public class Factions extends JavaPlugin {
 	public final static Gson gson = new GsonBuilder()
 	.setPrettyPrinting()
 	.excludeFieldsWithModifiers(Modifier.TRANSIENT, Modifier.VOLATILE)
-	.registerTypeAdapter(Map.class, new MapAsArrayTypeAdapter()) // a "must have" adapter for GSON 
 	.create();
 	
 	private final FactionsPlayerListener playerListener = new FactionsPlayerListener(this);

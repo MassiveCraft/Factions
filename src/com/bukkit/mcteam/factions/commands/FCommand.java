@@ -8,7 +8,9 @@ import org.bukkit.entity.Player;
 
 import com.bukkit.mcteam.factions.Conf;
 import com.bukkit.mcteam.factions.FPlayer;
+import com.bukkit.mcteam.factions.Faction;
 import com.bukkit.mcteam.factions.Factions;
+import com.bukkit.mcteam.factions.struct.Role;
 
 public class FCommand {
 	public List<String> requiredParameters;
@@ -22,7 +24,7 @@ public class FCommand {
 	public CommandSender sender;
 	public boolean senderMustBePlayer;
 	public Player player;
-	public FPlayer fplayer;
+	public FPlayer me;
 	
 	public List<String> parameters;
 	
@@ -69,7 +71,7 @@ public class FCommand {
 		
 		if (this.senderMustBePlayer) {
 			this.player = (Player)sender;
-			this.fplayer = FPlayer.get(this.player);
+			this.me = FPlayer.get(this.player);
 		}
 		
 		perform();
@@ -138,5 +140,73 @@ public class FCommand {
 		
 		Player player = (Player)sender;
 		return Factions.Permissions.has(player, this.permissions);		
+	}
+	
+	// -------------------------------------------- //
+	// Commonly used logic
+	// -------------------------------------------- //
+	
+	public FPlayer findFPlayer(String playerName, boolean defaultToMe) {
+		FPlayer fp = FPlayer.find(playerName);
+		
+		if (fp == null) {
+			if (defaultToMe) {
+				return me;
+			}
+			sendMessage("The player \""+playerName+"\" could not be found");
+		}
+		
+		return fp;
+	}
+	
+	public FPlayer findFPlayer(String playerName) {
+		return findFPlayer(playerName, false);
+	}
+	
+	
+	public Faction findFaction(String factionName, boolean defaultToMine) {
+		// First we search player names
+		FPlayer fp = FPlayer.find(factionName);
+		if (fp != null) {
+			return fp.getFaction();
+		}
+		
+		// Secondly we search faction names
+		Faction faction = Faction.findByTag(factionName);
+		if (faction != null) {
+			return faction;
+		}
+		
+		if (defaultToMine) {
+			return me.getFaction();
+		}
+		
+		me.sendMessage(Conf.colorSystem+"No faction or player \""+factionName+"\" was found");
+		return null;
+	}
+	
+	public Faction findFaction(String factionName) {
+		return findFaction(factionName, false);
+	}
+	
+	public boolean canIAdministerYou(FPlayer i, FPlayer you) {
+		if ( ! i.getFaction().equals(you.getFaction())) {
+			i.sendMessage(you.getNameAndRelevant(i)+Conf.colorSystem+" is not in the same faction as you.");
+			return false;
+		}
+		
+		if (i.role.value > you.role.value || i.role.equals(Role.ADMIN) ) {
+			return true;
+		}
+		
+		if (you.role.equals(Role.ADMIN)) {
+			i.sendMessage(Conf.colorSystem+"Only the faction admin can do that.");
+		} else if (i.role.equals(Role.MODERATOR)) {
+			i.sendMessage(Conf.colorSystem+"Moderators can't control each other...");
+		} else {
+			i.sendMessage(Conf.colorSystem+"You must be a faction moderator to do that.");
+		}
+		
+		return false;
 	}
 }

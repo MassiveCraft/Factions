@@ -5,22 +5,22 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
 
-public class Coord {
+public class CoordOld {
 	protected static transient int cellSize = 16;
 	public int x, z;
 	
-	public Coord(int x, int z) {
+	public CoordOld(int x, int z) {
 		this.x = x;
 		this.z = z;
 	}
 	
 	// TODO implements cloneable
-	public Coord(Coord coord) {
+	public CoordOld(Coord coord) {
 		this.x = coord.x;
 		this.z = coord.z;
 	}
 	
-	public Coord() {
+	public CoordOld() {
 		// Noarg constructor for google gson.
 	}
 	

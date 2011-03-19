@@ -9,7 +9,8 @@ import java.util.Map.Entry;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-import com.bukkit.mcteam.factions.entities.EM;
+import com.bukkit.mcteam.factions.struct.Relation;
+import com.bukkit.mcteam.factions.struct.Role;
 import com.bukkit.mcteam.gson.reflect.TypeToken;
 import com.bukkit.mcteam.util.DiscUtil;
 
@@ -18,7 +19,7 @@ public class FPlayer {
 	public static transient File file = new File(Factions.instance.getDataFolder(), "players.json");
 	
 	public transient String playername;
-	public transient Coord lastStoodInCoord = new Coord(); // Where did this player stand the last time we checked?
+	public transient FLocation lastStoodAt = new FLocation(); // Where did this player stand the last time we checked?
 	
 	public int factionId;
 	public Role role;
@@ -38,7 +39,17 @@ public class FPlayer {
 	
 	// GSON need this noarg constructor.
 	public FPlayer() {
-		
+		this.resetFactionData();
+		this.power = this.getPowerMax();
+		this.lastPowerUpdateTime = System.currentTimeMillis();
+		this.mapAutoUpdating = false;
+	}
+	
+	public void resetFactionData() {
+		this.factionId = 0; // The default neutral faction
+		this.factionChatting = false;
+		this.role = Role.NORMAL;
+		this.title = "";
 	}
 	
 	public Player getPlayer() {
@@ -61,10 +72,6 @@ public class FPlayer {
 		return ! isOnline();
 	}
 	
-	
-	
-	
-	
 	public boolean isFactionChatting() {
 		if (this.factionId == 0) {
 			return false;
@@ -76,19 +83,7 @@ public class FPlayer {
 		this.factionChatting = factionChatting;
 	}
 
-	public FPlayer() {
-		this.resetFactionData();
-		this.power = this.getPowerMax();
-		this.lastPowerUpdateTime = System.currentTimeMillis();
-		this.mapAutoUpdating = false;
-	}
-	
-	protected void resetFactionData() {
-		this.factionId = 0; // The default neutral faction
-		this.factionChatting = false;
-		this.role = Role.NORMAL;
-		this.title = "";
-	}
+
 	
 	public boolean isMapAutoUpdating() {
 		return mapAutoUpdating;
@@ -110,15 +105,15 @@ public class FPlayer {
 
 	public void setTitle(String title) {
 		this.title = title;
-		this.save();
+		save();
 	}
 	
 	public String getName() {
-		return this.id;
+		return this.playername;
 	}
 	
 	public String getTag() {
-		if (this.withoutFaction()) {
+		if ( ! this.hasFaction()) {
 			return "";
 		}
 		return this.getFaction().getTag();
@@ -180,7 +175,7 @@ public class FPlayer {
 	// These are injected into the format of global chat messages.
 	
 	public String getChatTag() {
-		if (this.withoutFaction()) {
+		if ( ! this.hasFaction()) {
 			return "";
 		}
 		
@@ -189,14 +184,14 @@ public class FPlayer {
 	
 	// Colored Chat Tag
 	public String getChatTag(Faction faction) {
-		if (this.withoutFaction()) {
+		if ( ! this.hasFaction()) {
 			return "";
 		}
 		
 		return this.getRelation(faction).getColor()+getChatTag();
 	}
 	public String getChatTag(FPlayer follower) {
-		if (this.withoutFaction()) {
+		if ( ! this.hasFaction()) {
 			return "";
 		}
 		
@@ -293,20 +288,16 @@ public class FPlayer {
 	// Territory
 	//----------------------------------------------//
 	public boolean isInOwnTerritory() {
-		return Board.get(this.getPlayer().getWorld()).getFactionAt(this.getCoord()) == this.getFaction();
+		return Board.getIdAt(new FLocation(this)) == this.factionId;
 	}
 	
 	public boolean isInOthersTerritory() {
-		Faction factionHere = Board.get(this.getPlayer().getWorld()).getFactionAt(this.getCoord());
-		return factionHere.id != 0 && factionHere != this.getFaction();
-	}
-	
-	public Coord getCoord() {
-		return Coord.from(this);
+		int idHere = Board.getIdAt(new FLocation(this));
+		return idHere != 0 && idHere != this.factionId;
 	}
 	
 	public void sendFactionHereMessage() {
-		Faction factionHere = Board.get(this.getPlayer().getWorld()).getFactionAt(this.getCoord());
+		Faction factionHere = Board.getFactionAt(new FLocation(this));
 		String msg = Conf.colorSystem+" ~ "+factionHere.getTag(this);
 		if (factionHere.id != 0) {
 			msg += " - "+factionHere.getDescription();
@@ -318,65 +309,11 @@ public class FPlayer {
 	// Faction management
 	//----------------------------------------------//
 	public Faction getFaction() {
-		return EM.factionGet(factionId);
+		return Faction.get(factionId);
 	}
 	
 	public boolean hasFaction() {
 		return factionId != 0;
-	}
-	public boolean withoutFaction() {
-		return factionId == 0;
-	}
-	
-	public ArrayList<String> join(Faction faction) {
-		ArrayList<String> errors = new ArrayList<String>();
-		if (faction.id == this.factionId) {
-			errors.add(Conf.colorSystem+"You are already a member of "+faction.getRelationColor(this)+faction.getTag());
-		}
-		
-		if( ! faction.getOpen() && ! faction.isInvited(this)) {
-			errors.add(Conf.colorSystem+"This guild requires invitation.");
-		}
-		
-		if (this.hasFaction()) {
-			errors.add(Conf.colorSystem+"You must leave your current faction first.");
-		}
-		
-		if (errors.size() > 0) {
-			return errors;
-		}
-
-		this.resetFactionData();
-		if(faction.getFollowersAll().size() == 0) {
-			this.role = Role.ADMIN;
-		} else {
-			this.role = Role.NORMAL;
-		}
-		this.factionId = faction.id;
-		faction.deinvite(this);
-		this.save();
-		
-		return errors;
-	}
-	
-	public ArrayList<String> leave() {
-		ArrayList<String> errors = new ArrayList<String>();
-		if (this.role == Role.ADMIN && this.getFaction().getFollowersAll().size() > 1) {
-			errors.add(Conf.colorSystem+"You must give the admin role to someone else first.");
-		}
-		
-		if(this.withoutFaction()) {
-			errors.add(Conf.colorSystem+"You are not member of any faction.");
-		}
-		
-		if (errors.size() > 0) {
-			return errors;
-		}
-		
-		this.resetFactionData();
-		this.save();
-		
-		return errors;
 	}
 	
 	public ArrayList<String> invite(FPlayer follower) {
@@ -430,30 +367,8 @@ public class FPlayer {
 		return follower.getFaction().kick(follower);
 	}
 	
-	//----------------------------------------------//
-	// Login info
-	//----------------------------------------------//
-	public void sendJoinInfo() { // TODO Missplaced!?
-		// Do we even whant to use message of the day...
-		// Perhaps that is up to another plugin...
-		//this.getPlayer().sendMessage(ChatColor.GREEN + "This is a faction server! Type "+Conf.colorCommand+"/f"+ChatColor.GREEN +" for more info :D");
-	}
-	
-	//----------------------------------------------//
-	// Search
-	//----------------------------------------------//
-	public static FPlayer find(String name) { // TODO felaktig!
-		for (FPlayer follower : EM.followerGetAll()) {
-			if (follower.getName().equalsIgnoreCase(name.trim())) {
-				return follower;
-			}
-		}
-		
-		return null;
-	}
-	
 	// -------------------------------------------- //
-	// Get
+	// Get and search
 	// You can only get a "skin" for online players.
 	// The same object is always returned for the same player.
 	// This means you can use the == operator. No .equals method necessary.
@@ -473,6 +388,27 @@ public class FPlayer {
 		return get(player.getName());
 	}
 	
+	public static Set<FPlayer> getAllOnline() {
+		Set<FPlayer> fplayers = new HashSet<FPlayer>();
+		for (Player player : Factions.instance.getServer().getOnlinePlayers()) {
+			fplayers.add(FPlayer.get(player));
+		}
+		return fplayers;
+	}
+	
+	public static Collection<FPlayer> getAll() {
+		return instances.values();
+	}
+	
+	public static FPlayer find(String playername) {
+		for (Entry<String, FPlayer> entry : instances.entrySet()) {
+			if (entry.getKey().equalsIgnoreCase(playername)) {
+				return entry.getValue();
+			}
+		}
+		return null;
+	}
+	
 	// -------------------------------------------- //
 	// Messages
 	// -------------------------------------------- //
@@ -486,23 +422,6 @@ public class FPlayer {
 		}
 	}
 	
-	
-	//----------------------------------------------//
-	// Persistance and entity management
-	//----------------------------------------------//
-	/*
-	public boolean save() {
-		return EM.followerSave(this.id);
-	}
-	
-	public static FPlayer get(Player player) {
-		return EM.followerGet(player);
-	}
-	
-	public static Collection<FPlayer> getAll() {
-		return EM.followerGetAll();
-	}
-	*/
 	// -------------------------------------------- //
 	// Persistance
 	// -------------------------------------------- //

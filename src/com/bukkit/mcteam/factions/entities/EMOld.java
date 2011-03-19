@@ -21,7 +21,7 @@ import com.bukkit.mcteam.gson.*;
  * Before using the the EM you should always EM.loadAll().
  * The methods assume that all on disc is loaded into memory.
  */
-public class EM {
+public class EMOld {
 	protected static Map<String, FPlayer> followers = new HashMap<String, FPlayer>(); // Where String is a lowercase playername
 	protected static Map<Integer, Faction> factions = new HashMap<Integer, Faction>(); // Where Integer is a primary auto increment key
 	protected static Map<String, Board> boards = new HashMap<String, Board>(); // Where Long is the semi (sadly) unique world id.
