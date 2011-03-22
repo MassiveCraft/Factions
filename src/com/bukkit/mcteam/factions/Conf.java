@@ -53,6 +53,8 @@ public class Conf {
 
 	public static boolean allowNoSlashCommand = true;
 	
+	public static double autoLeaveFactionAfterDaysOfInactivity = 14;
+	
 	static {
 		territoryProtectedMaterials.add(Material.WOODEN_DOOR);
 		territoryProtectedMaterials.add(Material.DISPENSER);

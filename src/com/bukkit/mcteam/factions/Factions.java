@@ -77,6 +77,13 @@ public class Factions extends JavaPlugin {
 	
 	public Factions() {
 		Factions.instance = this;
+	}
+	
+	
+	@Override
+	public void onEnable() {
+		log("=== INIT START ===");
+		long timeInitStart = System.currentTimeMillis();
 		
 		// Add the commands
 		commands.add(new FCommandHelp());
@@ -102,23 +109,17 @@ public class Factions extends JavaPlugin {
 		commands.add(new FCommandTitle());
 		commands.add(new FCommandUnclaim());
 		commands.add(new FCommandVersion());
-	}
-	
-	
-	@Override
-	public void onEnable() {
-		log("=== INIT START ===");
-		long timeInitStart = System.currentTimeMillis();
-		
-		setupHelp();
-		setupPermissions();
 		
 		// Ensure basefolder exists!
 		this.getDataFolder().mkdirs();
 		
+		Conf.load();
 		FPlayer.load();
 		Faction.load();
 		Board.load();
+		
+		setupHelp();
+		setupPermissions();
 		
 		// Register events
 		PluginManager pm = this.getServer().getPluginManager();

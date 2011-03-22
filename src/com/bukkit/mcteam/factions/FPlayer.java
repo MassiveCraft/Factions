@@ -43,6 +43,7 @@ public class FPlayer {
 	private String title;
 	private double power;
 	private long lastPowerUpdateTime;
+	private long lastLoginTime;
 	private transient boolean mapAutoUpdating;
 	private boolean factionChatting; 
 	
@@ -55,6 +56,7 @@ public class FPlayer {
 		this.resetFactionData();
 		this.power = this.getPowerMax();
 		this.lastPowerUpdateTime = System.currentTimeMillis();
+		this.lastLoginTime = System.currentTimeMillis();
 		this.mapAutoUpdating = false;
 	}
 	
@@ -126,6 +128,14 @@ public class FPlayer {
 		this.factionChatting = factionChatting;
 	}
 	
+	public long getLastLoginTime() {
+		return lastLoginTime;
+	}
+
+	public void setLastLoginTime(long lastLoginTime) {
+		this.lastLoginTime = lastLoginTime;
+	}
+
 	public boolean isMapAutoUpdating() {
 		return mapAutoUpdating;
 	}
@@ -354,6 +364,32 @@ public class FPlayer {
 		this.sendMessage(msg);
 	}
 	
+	// -------------------------------
+	// Actions
+	// -------------------------------
+	
+	public void leave() {
+		Faction myFaction = this.getFaction();
+		
+		if (this.getRole() == Role.ADMIN && myFaction.getFPlayers().size() > 1) {
+			sendMessage("You must give the admin role to someone else first.");
+			return;
+		}
+		
+		myFaction.sendMessage(this.getNameAndRelevant(myFaction) + Conf.colorSystem + " left your faction.");
+		this.resetFactionData();
+		
+		if (myFaction.getFPlayers().size() == 0) {
+			// Remove this faction
+			for (FPlayer fplayer : FPlayer.getAllOnline()) {
+				fplayer.sendMessage("The faction "+myFaction.getTag(fplayer)+Conf.colorSystem+" was disbanded.");
+			}
+			Faction.delete(myFaction.getId());
+		}
+		FPlayer.save();
+		FPlayer.save();
+	}
+	
 	// -------------------------------------------- //
 	// Messages
 	// -------------------------------------------- //
@@ -476,6 +512,17 @@ public class FPlayer {
 				fplayer.resetFactionData();
 			}
 		}
-	}	
+	}
+	
+	public static void autoLeaveOnInactivityRoutine() {
+		long now = System.currentTimeMillis();
+		double toleranceMillis = Conf.autoLeaveFactionAfterDaysOfInactivity * 24 * 60 * 60 * 1000;
+		
+		for (FPlayer fplayer : FPlayer.getAll()) {
+			if (now - fplayer.getLastLoginTime() > toleranceMillis) {
+				fplayer.leave();
+			}
+		}
+	}
 	
 }

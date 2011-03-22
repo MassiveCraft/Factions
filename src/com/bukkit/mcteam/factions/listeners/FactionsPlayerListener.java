@@ -91,8 +91,16 @@ public class FactionsPlayerListener extends PlayerListener{
 	@Override
 	public void onPlayerJoin(PlayerEvent event) {
 		// Make sure that all online players do have a fplayer.
-		FPlayer.get(event.getPlayer());
+		FPlayer me = FPlayer.get(event.getPlayer());
+		
+		// Update the lastLoginTime for this fplayer
+		me.setLastLoginTime(System.currentTimeMillis());
+		
+		// Run the member auto kick routine. Twice to getToTheAdmins...
+		FPlayer.autoLeaveOnInactivityRoutine();
+		FPlayer.autoLeaveOnInactivityRoutine();
 	}
+	
 	
 	@Override
 	public void onPlayerQuit(PlayerEvent event) {
