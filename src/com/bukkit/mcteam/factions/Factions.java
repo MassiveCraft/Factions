@@ -16,7 +16,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.bukkit.mcteam.factions.commands.FCommand;
+import com.bukkit.mcteam.factions.commands.FBaseCommand;
 import com.bukkit.mcteam.factions.listeners.FactionsBlockListener;
 import com.bukkit.mcteam.factions.listeners.FactionsEntityListener;
 import com.bukkit.mcteam.factions.listeners.FactionsPlayerListener;
@@ -47,7 +47,7 @@ public class Factions extends JavaPlugin {
 	public static Help helpPlugin;
 
 	// Commands
-	public List<FCommand> commands = new ArrayList<FCommand>();
+	public List<FBaseCommand> commands = new ArrayList<FBaseCommand>();
 	
 	public Factions() {
 		Factions.instance = this;
@@ -106,11 +106,11 @@ public class Factions extends JavaPlugin {
 	// -------------------------------------------- //
 	
 	private void setupPermissions() {
-		Plugin test = this.getServer().getPluginManager().getPlugin("Permissions");
-
 		if (Permissions != null) {
 			return;
 		}
+		
+		Plugin test = this.getServer().getPluginManager().getPlugin("Permissions");
 		
 		if (test != null) {
 			Permissions = ((Permissions)test).getHandler();
@@ -121,21 +121,18 @@ public class Factions extends JavaPlugin {
 	}
 	
 	private void setupHelp() {
-		Plugin test = this.getServer().getPluginManager().getPlugin("Help");
-		
 		if (helpPlugin != null) {
 			return;
 		}
 		
+		Plugin test = this.getServer().getPluginManager().getPlugin("Help");
+		
 		if (test != null) {
 			helpPlugin = ((Help) test);
 			Factions.log("Found and will use plugin "+helpPlugin.getDescription().getFullName());
-			for(FCommand fcommand : commands) {
-				fcommand.helpRegister();
-			}
-			helpPlugin.registerCommand("help vampire", "help for the vampire plugin.", helpPlugin, true);
-		} else {
-			Factions.log(Level.WARNING, "'Help' plugin isn't detected. No /help support.");
+			
+			// TODO not hardcoded:
+			helpPlugin.registerCommand("f help *[page]", "Factions plugin help.", helpPlugin, true);
 		}
 	}
 
@@ -160,7 +157,7 @@ public class Factions extends JavaPlugin {
 		String commandName = parameters.get(0).toLowerCase();
 		parameters.remove(0);
 		
-		for (FCommand fcommand : this.commands) {
+		for (FBaseCommand fcommand : this.commands) {
 			if (fcommand.getAliases().contains(commandName)) {
 				fcommand.execute(sender, parameters);
 				return;

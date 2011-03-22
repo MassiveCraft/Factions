@@ -7,7 +7,7 @@ import com.bukkit.mcteam.factions.FPlayer;
 import com.bukkit.mcteam.factions.Faction;
 import com.bukkit.mcteam.factions.struct.Role;
 
-public class FCommandCreate extends FCommand {
+public class FCommandCreate extends FBaseCommand {
 	
 	public FCommandCreate() {
 		requiredParameters = new ArrayList<String>();
@@ -18,8 +18,7 @@ public class FCommandCreate extends FCommand {
 		
 		senderMustBePlayer = true;
 		
-		helpNameAndParams = "create [faction tag]";
-		helpDescription = "Create new faction";
+		helpDescription = "Create a new faction";
 	}
 	
 	public void perform() {

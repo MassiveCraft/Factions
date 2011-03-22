@@ -24,7 +24,7 @@ public class Faction {
 	
 	public transient int id;
 	protected Map<Integer, Relation> relationWish;
-	protected Set<String> invites; // Where string is a follower id (lower case name)
+	public Set<String> invites; // Where string is a follower id (lower case name)
 	protected boolean open;
 	protected String tag;
 	protected String description;
@@ -118,7 +118,7 @@ public class Faction {
 	// -------------------------------
 	
 	
-	public ArrayList<String> invite(FPlayer follower) { // TODO Move out
+	/*public ArrayList<String> invite(FPlayer follower) { // TODO Move out
 		ArrayList<String> errors = new ArrayList<String>();
 		
 		if (follower.getFaction().equals(this)) { // error här?
@@ -149,7 +149,7 @@ public class Faction {
 		this.invites.remove(follower.id);
 		this.save();
 		return errors;
-	}
+	}*/
 	
 	public ArrayList<String> kick(FPlayer follower) {
 		ArrayList<String> errors = new ArrayList<String>();
@@ -198,6 +198,7 @@ public class Faction {
 		return ret;
 	}
 	
+	/*
 	public void removeFollower(FPlayer follower) {
 		if (this.id != follower.factionId) {
 			return; // safety check
@@ -207,7 +208,7 @@ public class Faction {
 		follower.resetFactionData();
 		follower.save();
 		this.save();		
-	}
+	}*/
 	
 	public ArrayList<Player> getOnlinePlayers() {
 		ArrayList<Player> ret = new ArrayList<Player>();

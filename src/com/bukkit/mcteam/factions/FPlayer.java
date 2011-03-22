@@ -14,11 +14,23 @@ import com.bukkit.mcteam.factions.struct.Role;
 import com.bukkit.mcteam.gson.reflect.TypeToken;
 import com.bukkit.mcteam.util.DiscUtil;
 
+/**
+ * Logged in players always have exactly one FPlayer instance.
+ * Logged out players may or may not have an FPlayer instance. They will always have one if they are part of a faction.
+ * This is because only players with a faction are saved to disk (in order to not waste disk space).
+ * 
+ * The FPlayer is linked to a minecraft player using the player name in lowercase form.
+ * Lowercase is enforced while loading from disk TODO
+ * 
+ * The same instance is always returned for the same player.
+ * This means you can use the == operator. No .equals method necessary.
+ */
+
 public class FPlayer {
 	public static transient Map<String, FPlayer> instances = new HashMap<String, FPlayer>();
 	public static transient File file = new File(Factions.instance.getDataFolder(), "players.json");
 	
-	public transient String playername;
+	public transient String playerName;
 	public transient FLocation lastStoodAt = new FLocation(); // Where did this player stand the last time we checked?
 	
 	public int factionId;
@@ -26,15 +38,15 @@ public class FPlayer {
 	private String title;
 	private double power;
 	private long lastPowerUpdateTime;
-	private boolean mapAutoUpdating;
+	private transient boolean mapAutoUpdating;
 	private boolean factionChatting; 
 	
 	public FPlayer(Player player) {
-		this.playername = player.getName();
+		this.playerName = player.getName().toLowerCase();
 	}
 	
-	public FPlayer(String playername) {
-		this.playername = playername;
+	public FPlayer(String playerName) {
+		this.playerName = playerName.toLowerCase();
 	}
 	
 	// GSON need this noarg constructor.
@@ -53,11 +65,11 @@ public class FPlayer {
 	}
 	
 	public Player getPlayer() {
-		return Factions.instance.getServer().getPlayer(playername);
+		return Factions.instance.getServer().getPlayer(playerName);
 	}
 	
 	public String getPlayerName() {
-		return this.playername;
+		return this.playerName;
 	}
 	
 	// -------------------------------------------- //
@@ -65,7 +77,7 @@ public class FPlayer {
 	// -------------------------------------------- //
 	
 	public boolean isOnline() {
-		return Factions.instance.getServer().getPlayer(playername) != null;
+		return Factions.instance.getServer().getPlayer(playerName) != null;
 	}
 	
 	public boolean isOffline() {
@@ -109,7 +121,7 @@ public class FPlayer {
 	}
 	
 	public String getName() {
-		return this.playername;
+		return this.playerName;
 	}
 	
 	public String getTag() {
@@ -316,70 +328,17 @@ public class FPlayer {
 		return factionId != 0;
 	}
 	
-	public ArrayList<String> invite(FPlayer follower) {
-		ArrayList<String> errors = new ArrayList<String>();
-		
-		//Log.debug("this.role: "+this.role);
-		//Log.debug("this.role.value: "+this.role.value);
-		//Log.debug("FactionRole.MODERATOR.value: "+FactionRole.MODERATOR.value);
-		
-		if (this.role.value < Role.MODERATOR.value) {
-			errors.add(Conf.colorSystem+"You must be a moderator to invite.");
-		}
-		
-		if(errors.size() > 0) {
-			return errors;
-		}
-		
-		return this.getFaction().invite(follower);
-	}
-	
-	public ArrayList<String> deinvite(FPlayer follower) {
-		ArrayList<String> errors = new ArrayList<String>();
-		
-		if (this.role.value < Role.MODERATOR.value) {
-			errors.add(Conf.colorSystem+"You must be a moderator to deinvite.");
-		}
-		
-		if(errors.size() > 0) {
-			return errors;
-		}
-		
-		return this.getFaction().deinvite(follower);
-	}
-	
-	public ArrayList<String> kick(FPlayer follower) {
-		ArrayList<String> errors = new ArrayList<String>();
-		
-		if ( ! follower.getFaction().equals(this.getFaction())) {
-			errors.add(follower.getNameAndRelevant(this)+Conf.colorSystem+" is not a member of "+Conf.colorMember+this.getFaction().getTag());
-		} else if (follower.equals(this)) {
-			errors.add(Conf.colorSystem+"You cannot kick yourself.");
-			errors.add(Conf.colorSystem+"You might want to "+Conf.colorCommand+Conf.aliasBase.get(0)+" "+Conf.aliasLeave.get(0));
-		} else if (follower.role.value >= this.role.value) { // TODO add more informative messages.
-			errors.add(Conf.colorSystem+"Your rank is too low to kick this player.");
-		}
-		
-		if(errors.size() > 0) {
-			return errors;
-		}
-		
-		return follower.getFaction().kick(follower);
-	}
-	
 	// -------------------------------------------- //
 	// Get and search
-	// You can only get a "skin" for online players.
-	// The same object is always returned for the same player.
-	// This means you can use the == operator. No .equals method necessary.
 	// -------------------------------------------- //
-	public static FPlayer get(String playername) {
-		if (instances.containsKey(playername)) {
-			return instances.get(playername);
+	public static FPlayer get(String playerName) {
+		playerName = playerName.toLowerCase();
+		if (instances.containsKey(playerName)) {
+			return instances.get(playerName);
 		}
 		
-		FPlayer vplayer = new FPlayer(playername);
-		instances.put(playername, vplayer);
+		FPlayer vplayer = new FPlayer(playerName);
+		instances.put(playerName, vplayer);
 		return vplayer;
 	}
 	
@@ -460,7 +419,12 @@ public class FPlayer {
 		
 		try {
 			Type type = new TypeToken<Map<String, FPlayer>>(){}.getType();
-			instances = Factions.gson.fromJson(DiscUtil.read(file), type);
+			Map<String, FPlayer> instancesFromFile = Factions.gson.fromJson(DiscUtil.read(file), type);
+			
+			instances = new HashMap<String, FPlayer>();
+			for (Entry<String, FPlayer> instanceFromFile : instancesFromFile.entrySet()) {
+				instances.put(instanceFromFile.getKey().toLowerCase(), instanceFromFile.getValue());
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 			return false;
@@ -473,7 +437,7 @@ public class FPlayer {
 	
 	public static void fillPlayernames() {
 		for(Entry<String, FPlayer> entry : instances.entrySet()) {
-			entry.getValue().playername = entry.getKey();
+			entry.getValue().playerName = entry.getKey();
 		}
 	}
 	

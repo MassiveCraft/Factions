@@ -1,4 +1,4 @@
-package com.bukkit.mcteam.factions;
+package com.bukkit.mcteam.factions.entities;
 
 import java.util.*;
 
@@ -8,7 +8,7 @@ import com.bukkit.mcteam.factions.entities.*;
 import com.bukkit.mcteam.factions.struct.*;
 import com.bukkit.mcteam.factions.util.*;
 
-public class Commands {
+public class CommandsOld {
 	public static ArrayList<ArrayList<String>> helpPages;
 	
 	//----------------------------------------------//
@@ -18,7 +18,6 @@ public class Commands {
 	static {
 		helpPages = new ArrayList<ArrayList<String>>();
 		ArrayList<String> pageLines;
-		
 
 		pageLines = new ArrayList<String>();
 		pageLines.add(TextUtil.commandHelp(Conf.aliasHelp, "*[page]", "Display a help page"));
@@ -313,7 +312,7 @@ public class Commands {
 		me.sendMessage(Conf.colorSystem+"Now update your faction description. Use:");
 		me.sendMessage(Conf.colorCommand+Conf.aliasBase.get(0)+" "+Conf.aliasDescription.get(0)+" "+"[description]");
 	}
-	*/
+	
 	
 	public static void tag(FPlayer me, String tag) {
 		ArrayList<String> errors = new ArrayList<String>();
@@ -356,8 +355,7 @@ public class Commands {
 		int page = 1;
 		try {
 			page = Integer.parseInt(inPage);
-		}
-		catch (NumberFormatException e) {
+		} catch (NumberFormatException e) {
 			// wasn't an integer
 		}
 		page -= 1;
@@ -833,7 +831,7 @@ public class Commands {
 	
 	public static void version(FPlayer me) {
 		me.sendMessage(Conf.colorSystem+"You are running "+Factions.instance.getDescription().getFullName());
-	}
+	}*/
 }
 
 

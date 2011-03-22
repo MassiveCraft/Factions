@@ -124,7 +124,7 @@ public class Board {
 	 * north is in the direction of decreasing x
 	 * east is in the direction of decreasing z
 	 */
-	public ArrayList<String> getMap(Faction faction, FLocation flocation, double inDegrees) {
+	public static ArrayList<String> getMap(Faction faction, FLocation flocation, double inDegrees) {
 		ArrayList<String> ret = new ArrayList<String>();
 		ret.add(TextUtil.titleize("("+flocation+") "+getFactionAt(flocation).getTag(faction)));
 		

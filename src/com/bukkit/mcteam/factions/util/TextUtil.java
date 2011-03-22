@@ -38,7 +38,7 @@ public class TextUtil {
 		return implode(list, " ");
 	}
 		
-	public static String commandHelp(List<String> aliases, String param, String desc) {
+	/*public static String commandHelp(List<String> aliases, String param, String desc) {
 		ArrayList<String> parts = new ArrayList<String>();
 		parts.add(Conf.colorCommand+Conf.aliasBase.get(0));
 		parts.add(TextUtil.implode(aliases, ", "));
@@ -50,7 +50,7 @@ public class TextUtil {
 		}
 		//Log.debug(TextUtil.implode(parts, " "));
 		return TextUtil.implode(parts, " ");
-	}
+	}*/
 	
 	public static String getMaterialName(Material material) {
 		String ret = material.toString();

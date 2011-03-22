@@ -11,8 +11,9 @@ import com.bukkit.mcteam.factions.FPlayer;
 import com.bukkit.mcteam.factions.Faction;
 import com.bukkit.mcteam.factions.Factions;
 import com.bukkit.mcteam.factions.struct.Role;
+import com.bukkit.mcteam.factions.util.TextUtil;
 
-public class FCommand {
+public class FBaseCommand {
 	public List<String> requiredParameters;
 	public List<String> optionalParameters;
 	
@@ -29,7 +30,7 @@ public class FCommand {
 	public List<String> parameters;
 	
 	
-	public FCommand() {
+	public FBaseCommand() {
 		requiredParameters = new ArrayList<String>();
 		optionalParameters = new ArrayList<String>();
 		
@@ -81,10 +82,6 @@ public class FCommand {
 		
 	}
 	
-	public void helpRegister() {
-		Factions.helpPlugin.registerCommand(this.getBaseName()+ " " +this.helpNameAndParams, this.helpDescription, Factions.instance, false, permissions);
-	}
-	
 	public void sendMessage(String message) {
 		sender.sendMessage(Conf.colorSystem+message);
 	}
@@ -96,6 +93,7 @@ public class FCommand {
 	}
 	
 	// Test if the number of params is correct.
+	// TODO print usage
 	public boolean validateCall() {
 		if( ! testPermission(sender)) {
 			sendMessage("You do not have sufficient permissions to use this command.");
@@ -108,13 +106,7 @@ public class FCommand {
 		}
 		
 		if (parameters.size() < requiredParameters.size()) {
-			int missing = requiredParameters.size() - parameters.size();
-			sendMessage("Missing parameters. You must enter "+missing+" more.");
-			return false;
-		}
-		
-		if (parameters.size() > requiredParameters.size() + optionalParameters.size()) {
-			sendMessage("To many parameters.");
+			sendMessage("Usage: "+this.getUseageTemplate(true));
 			return false;
 		}
 		
@@ -140,6 +132,65 @@ public class FCommand {
 		
 		Player player = (Player)sender;
 		return Factions.Permissions.has(player, this.permissions);		
+	}
+	
+	// -------------------------------------------- //
+	// Help and usage description
+	// -------------------------------------------- //
+	public String getUseageTemplate(boolean withColor) {
+		String ret = "";
+		
+		if (withColor) {
+			ret += Conf.colorCommand;
+		}
+		
+		ret += this.getBaseName()+ " " +TextUtil.implode(this.getAliases(), ",")+" ";
+		
+		List<String> parts = new ArrayList<String>();
+		
+		for (String requiredParameter : this.requiredParameters) {
+			parts.add("["+requiredParameter+"]");
+		}
+		
+		for (String optionalParameter : this.optionalParameters) {
+			parts.add("*["+optionalParameter+"]");
+		}
+		
+		if (withColor) {
+			ret += Conf.colorParameter;
+		}
+		
+		ret += TextUtil.implode(parts, " ");
+		return ret;
+	}
+	
+	public String getUseageTemplate() {
+		return getUseageTemplate(true);
+	}
+	
+	public void helpRegister() {
+		Factions.helpPlugin.registerCommand(this.getUseageTemplate(false), this.helpDescription, Factions.instance, false, permissions);
+	}
+	
+	// -------------------------------------------- //
+	// Assertions
+	// -------------------------------------------- //
+	
+	public boolean assertHasFaction() {
+		if ( ! me.hasFaction()) {
+			sendMessage("You are not member of any faction.");
+			return false;
+		}
+		return true;
+	}
+	
+	public boolean assertMinRole(Role role) {
+		if (me.role.value < role.value) {
+			sendMessage("You must be "+role+" to "+this.helpDescription+".");
+			return false;
+		}
+		
+		return true;
 	}
 	
 	// -------------------------------------------- //

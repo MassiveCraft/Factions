@@ -7,7 +7,7 @@ import com.bukkit.mcteam.factions.FPlayer;
 import com.bukkit.mcteam.factions.Faction;
 import com.bukkit.mcteam.factions.struct.Role;
 
-public class FCommandLeave extends FCommand {
+public class FCommandLeave extends FBaseCommand {
 	
 	public FCommandLeave() {
 		requiredParameters = new ArrayList<String>();
@@ -17,13 +17,11 @@ public class FCommandLeave extends FCommand {
 		
 		senderMustBePlayer = true;
 		
-		helpNameAndParams = "leave";
 		helpDescription = "Leave your faction";
 	}
 	
 	public void perform() {
-		if ( ! me.hasFaction()) {
-			sendMessage("You are not member of any faction.");
+		if ( ! assertHasFaction()) {
 			return;
 		}
 		

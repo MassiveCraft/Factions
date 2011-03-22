@@ -6,7 +6,7 @@ import com.bukkit.mcteam.factions.Conf;
 import com.bukkit.mcteam.factions.FPlayer;
 import com.bukkit.mcteam.factions.Faction;
 
-public class FCommandJoin extends FCommand {
+public class FCommandJoin extends FBaseCommand {
 	
 	public FCommandJoin() {
 		requiredParameters = new ArrayList<String>();
@@ -17,7 +17,6 @@ public class FCommandJoin extends FCommand {
 		
 		senderMustBePlayer = true;
 		
-		helpNameAndParams = "join [faction name]";
 		helpDescription = "Join a faction";
 	}
 	
@@ -50,7 +49,7 @@ public class FCommandJoin extends FCommand {
 		
 		me.resetFactionData();
 		me.factionId = faction.id;
-		faction.deinvite(me);
+		faction.invites.remove(me.playerName);
 		FPlayer.save();
 	}
 	

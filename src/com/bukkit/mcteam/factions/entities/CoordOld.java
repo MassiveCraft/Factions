@@ -1,4 +1,4 @@
-package com.bukkit.mcteam.factions;
+package com.bukkit.mcteam.factions.entities;
 
 import org.bukkit.Location;
 import org.bukkit.block.Block;
