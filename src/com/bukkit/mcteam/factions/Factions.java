@@ -52,6 +52,9 @@ import com.nijikokun.bukkit.Permissions.Permissions;
 
 import me.taylorkelly.help.Help;
 
+/**
+ * The data is saved to disk every 30min and on plugin disable.
+ */
 public class Factions extends JavaPlugin {
 	// -------------------------------------------- //
 	// Fields
@@ -134,16 +137,18 @@ public class Factions extends JavaPlugin {
 		pm.registerEvent(Event.Type.ENTITY_EXPLODE, this.entityListener, Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.BLOCK_DAMAGED, this.blockListener, Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.BLOCK_PLACED, this.blockListener, Event.Priority.Normal, this);
-		pm.registerEvent(Event.Type.BLOCK_INTERACT, this.blockListener, Event.Priority.Normal, this);		
+		pm.registerEvent(Event.Type.BLOCK_INTERACT, this.blockListener, Event.Priority.Normal, this);
+		
+		// Register recurring tasks
+		long saveTicks = 20 * 60 * 30; // Approximately every 30 min
+		this.getServer().getScheduler().scheduleSyncRepeatingTask(this, new SaveTask(), saveTicks, saveTicks);
 		
 		log("=== INIT DONE (Took "+(System.currentTimeMillis()-timeInitStart)+"ms) ===");
 	}
 
 	@Override
 	public void onDisable() {
-		FPlayer.save();
-		Faction.save();
-		Board.save();
+		saveAll();
 		log("Disabled");
 	}
 
@@ -231,6 +236,16 @@ public class Factions extends JavaPlugin {
 	
 	public static void log(Level level, String msg) {
 		Logger.getLogger("Minecraft").log(level, "["+instance.getDescription().getFullName()+"] "+msg);
+	}
+	
+	// -------------------------------------------- //
+	// Save all
+	// -------------------------------------------- //
+	
+	public static void saveAll() {
+		FPlayer.save();
+		Faction.save();
+		Board.save();
 	}
 
 }

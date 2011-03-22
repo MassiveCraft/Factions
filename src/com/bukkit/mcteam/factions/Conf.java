@@ -67,7 +67,8 @@ public class Conf {
 	// -------------------------------------------- //
 	
 	public static boolean save() {
-		Factions.log("Saving config to disk.");
+		//Factions.log("Saving config to disk.");
+		
 		try {
 			DiscUtil.write(file, Factions.gson.toJson(new Conf()));
 		} catch (IOException e) {

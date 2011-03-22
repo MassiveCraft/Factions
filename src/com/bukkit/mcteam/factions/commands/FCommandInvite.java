@@ -50,7 +50,6 @@ public class FCommandInvite extends FBaseCommand {
 		}
 		
 		myFaction.invite(you);
-		Faction.save();
 		
 		you.sendMessage(me.getNameAndRelevant(you)+Conf.colorSystem+" invited you to "+myFaction.getTag(you));
 		myFaction.sendMessage(me.getNameAndRelevant(me)+Conf.colorSystem+" invited "+you.getNameAndRelevant(me)+Conf.colorSystem+" to your faction.");

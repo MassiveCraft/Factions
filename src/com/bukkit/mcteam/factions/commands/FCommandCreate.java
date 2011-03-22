@@ -47,8 +47,6 @@ public class FCommandCreate extends FBaseCommand {
 		faction.setTag(tag);
 		me.setRole(Role.ADMIN);
 		me.setFaction(faction);
-		Faction.save();
-		FPlayer.save();
 		
 		for (FPlayer follower : FPlayer.getAllOnline()) {
 			follower.sendMessage(me.getNameAndRelevant(follower)+Conf.colorSystem+" created a new faction "+faction.getTag(follower));

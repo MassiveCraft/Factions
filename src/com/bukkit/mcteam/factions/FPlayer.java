@@ -164,7 +164,6 @@ public class FPlayer {
 
 	public void setTitle(String title) {
 		this.title = title;
-		save();
 	}
 	
 	public String getName() {
@@ -335,7 +334,6 @@ public class FPlayer {
 		
 		int millisPerMinute = 60*1000;
 		this.alterPower(millisPassed * Conf.powerPerMinute / millisPerMinute);
-		//this.save(); // This would save to often. So we save this on player quit instead.
 	}
 	
 	public void onDeath() {
@@ -386,8 +384,6 @@ public class FPlayer {
 			}
 			Faction.delete(myFaction.getId());
 		}
-		FPlayer.save();
-		FPlayer.save();
 	}
 	
 	// -------------------------------------------- //
@@ -454,7 +450,7 @@ public class FPlayer {
 	}
 	
 	public static boolean save() {
-		Factions.log("Saving players to disk");
+		//Factions.log("Saving players to disk");
 		
 		// We only wan't to save the vplayers with non default values
 		Map<String, FPlayer> vplayersToSave = new HashMap<String, FPlayer>();

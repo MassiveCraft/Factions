@@ -51,8 +51,6 @@ public class FCommandKick extends FBaseCommand {
 		
 		myFaction.deinvite(you);
 		you.resetFactionData();
-		FPlayer.save();
-		Faction.save();	
 		
 		myFaction.sendMessage(me.getNameAndRelevant(myFaction)+Conf.colorSystem+" kicked "+you.getNameAndRelevant(myFaction)+Conf.colorSystem+" from the faction! :O");
 		you.sendMessage(me.getNameAndRelevant(you)+Conf.colorSystem+" kicked you from "+myFaction.getTag(you)+Conf.colorSystem+"! :O");

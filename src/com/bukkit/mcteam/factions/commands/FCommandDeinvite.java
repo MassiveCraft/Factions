@@ -50,7 +50,6 @@ public class FCommandDeinvite extends FBaseCommand {
 		}
 		
 		myFaction.deinvite(you);
-		Faction.save();
 		
 		you.sendMessage(me.getNameAndRelevant(you)+Conf.colorSystem+" revoked your invitation to "+myFaction.getTag(you));
 		myFaction.sendMessage(me.getNameAndRelevant(me)+Conf.colorSystem+" revoked "+you.getNameAndRelevant(me)+"'s"+Conf.colorSystem+" invitation.");

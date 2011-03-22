@@ -59,7 +59,6 @@ public class Faction {
 	
 	public void setOpen(boolean isOpen) {
 		open = isOpen;
-		save();
 	}
 	
 	public String getTag() {
@@ -79,7 +78,6 @@ public class Faction {
 			str = str.toUpperCase();
 		}
 		this.tag = str;
-		save();
 	}
 	
 	public String getDescription() {
@@ -88,7 +86,6 @@ public class Faction {
 	
 	public void setDescription(String value) {
 		this.description = value;
-		save();
 	}
 	
 	// -------------------------------
@@ -124,7 +121,6 @@ public class Faction {
 		} else {
 			this.relationWish.put(otherFaction.getId(), relation);
 		}
-		Faction.save();
 	}
 	
 	public Relation getRelation(Faction otherFaction) {
@@ -215,18 +211,6 @@ public class Faction {
 		return ret;
 	}
 	
-	/*
-	public void removeFollower(FPlayer follower) {
-		if (this.id != follower.factionId) {
-			return; // safety check
-		}
-		
-		this.invites.remove(follower.id);
-		follower.resetFactionData();
-		follower.save();
-		this.save();		
-	}*/
-	
 	public ArrayList<Player> getOnlinePlayers() {
 		ArrayList<Player> ret = new ArrayList<Player>();
 		for (Player player: Factions.instance.getServer().getOnlinePlayers()) {
@@ -314,7 +298,7 @@ public class Faction {
 	//----------------------------------------------//
 	
 	public static boolean save() {
-		Factions.log("Saving factions to disk");
+		//Factions.log("Saving factions to disk");
 		
 		try {
 			DiscUtil.write(file, Factions.gson.toJson(instances));
@@ -403,9 +387,5 @@ public class Faction {
 		
 		// Clean the fplayers
 		FPlayer.clean();
-		
-		// SAVE files
-		Board.save();
-		FPlayer.save();
 	}
 }

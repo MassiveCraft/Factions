@@ -51,7 +51,6 @@ public class Board {
 		}
 		
 		worldCoordIds.get(flocation.getWorldName()).put(flocation.getCoordString(), id);
-		save();
 	}
 	
 	public static void setFactionAt(Faction faction, FLocation flocation) {
@@ -63,7 +62,6 @@ public class Board {
 			return;
 		}
 		worldCoordIds.get(flocation.getWorldName()).remove(flocation.getCoordString());
-		save();
 	}
 
 	// Is this coord NOT completely surrounded by coords claimed by the same faction?
@@ -171,7 +169,7 @@ public class Board {
 	// -------------------------------------------- //
 	
 	public static boolean save() {
-		Factions.log("Saving board to disk");
+		//Factions.log("Saving board to disk");
 		
 		try {
 			DiscUtil.write(file, Factions.gson.toJson(worldCoordIds));

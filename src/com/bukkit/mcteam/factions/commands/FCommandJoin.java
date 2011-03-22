@@ -3,7 +3,6 @@ package com.bukkit.mcteam.factions.commands;
 import java.util.ArrayList;
 
 import com.bukkit.mcteam.factions.Conf;
-import com.bukkit.mcteam.factions.FPlayer;
 import com.bukkit.mcteam.factions.Faction;
 
 public class FCommandJoin extends FBaseCommand {
@@ -53,7 +52,6 @@ public class FCommandJoin extends FBaseCommand {
 		me.resetFactionData();
 		me.setFaction(faction);
 		faction.deinvite(me);
-		FPlayer.save();
 	}
 	
 }

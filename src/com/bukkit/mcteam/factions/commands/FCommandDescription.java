@@ -34,6 +34,7 @@ public class FCommandDescription extends FBaseCommand {
 		}
 		
 		me.getFaction().setDescription(TextUtil.implode(parameters));
+		
 		// Broadcast the description to everyone
 		for (FPlayer fplayer : FPlayer.getAllOnline()) {
 			fplayer.sendMessage("The faction "+fplayer.getRelationColor(me)+me.getFaction().getTag()+Conf.colorSystem+" changed their description to:");
