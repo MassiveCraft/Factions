@@ -7,6 +7,9 @@ import com.bukkit.mcteam.factions.Factions;
 public class FCommandVersion extends FBaseCommand {
 	
 	public FCommandVersion() {
+		aliases = new ArrayList<String>();
+		aliases.add("version");
+		
 		requiredParameters = new ArrayList<String>();
 		optionalParameters = new ArrayList<String>();
 		

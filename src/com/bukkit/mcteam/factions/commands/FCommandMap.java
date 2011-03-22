@@ -3,12 +3,14 @@ package com.bukkit.mcteam.factions.commands;
 import java.util.ArrayList;
 
 import com.bukkit.mcteam.factions.Board;
-import com.bukkit.mcteam.factions.Conf;
 import com.bukkit.mcteam.factions.FLocation;
 
 public class FCommandMap extends FBaseCommand {
 	
 	public FCommandMap() {
+		aliases = new ArrayList<String>();
+		aliases.add("map");
+		
 		requiredParameters = new ArrayList<String>();
 		optionalParameters = new ArrayList<String>();
 		optionalParameters.add("on|off");
@@ -23,7 +25,7 @@ public class FCommandMap extends FBaseCommand {
 	public void perform() {
 		if (parameters.size() > 0) {
 			String mapAutoUpdating = parameters.get(0);
-			if (Conf.aliasTrue.contains(mapAutoUpdating.toLowerCase())) {
+			if (parseBool(mapAutoUpdating)) {
 				// Turn on
 				me.setMapAutoUpdating(true);
 				sendMessage("Map auto update ENABLED.");

@@ -6,6 +6,7 @@ import org.bukkit.ChatColor;
 
 import com.bukkit.mcteam.factions.Conf;
 import com.bukkit.mcteam.factions.Faction;
+import com.bukkit.mcteam.factions.Factions;
 import com.bukkit.mcteam.factions.struct.Relation;
 import com.bukkit.mcteam.factions.struct.Role;
 
@@ -15,7 +16,7 @@ public class FRelationCommand extends FBaseCommand {
 		requiredParameters = new ArrayList<String>();
 		optionalParameters = new ArrayList<String>();
 		requiredParameters.add("faction tag");
-		helpDescription = "Declare your factions relation wish to another faction";
+		helpDescription = "Set relation wish to another faction";
 		permissions = "";
 		
 		senderMustBePlayer = true;
@@ -54,7 +55,7 @@ public class FRelationCommand extends FBaseCommand {
 			myFaction.sendMessage(Conf.colorSystem+"Your faction is now "+currentRelationColor+whishedRelation.toString()+Conf.colorSystem+" to "+currentRelationColor+otherFaction.getTag());
 		} else {
 			otherFaction.sendMessage(currentRelationColor+myFaction.getTag()+Conf.colorSystem+ " wishes to be your "+whishedRelation.getColor()+whishedRelation.toString());
-			otherFaction.sendMessage(Conf.colorSystem+"Type "+Conf.colorCommand+Conf.aliasBase.get(0)+" "+whishedRelation+" "+myFaction.getTag()+Conf.colorSystem+" to accept.");
+			otherFaction.sendMessage(Conf.colorSystem+"Type "+Conf.colorCommand+Factions.instance.getBaseCommand()+" "+whishedRelation+" "+myFaction.getTag()+Conf.colorSystem+" to accept.");
 			myFaction.sendMessage(currentRelationColor+otherFaction.getTag()+Conf.colorSystem+ " were informed that you wish to be "+whishedRelation.getColor()+whishedRelation);
 		}
 	}

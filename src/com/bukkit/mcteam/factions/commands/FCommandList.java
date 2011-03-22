@@ -11,6 +11,10 @@ import com.bukkit.mcteam.factions.util.TextUtil;
 public class FCommandList extends FBaseCommand {
 	
 	public FCommandList() {
+		aliases = new ArrayList<String>();
+		aliases.add("list");
+		aliases.add("ls");
+		
 		requiredParameters = new ArrayList<String>();
 		optionalParameters = new ArrayList<String>();
 		optionalParameters.add("page");

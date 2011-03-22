@@ -13,6 +13,10 @@ import com.bukkit.mcteam.factions.util.TextUtil;
 public class FCommandShow extends FBaseCommand {
 	
 	public FCommandShow() {
+		aliases = new ArrayList<String>();
+		aliases.add("show");
+		aliases.add("who");
+		
 		requiredParameters = new ArrayList<String>();
 		optionalParameters = new ArrayList<String>();
 		optionalParameters.add("faction tag");

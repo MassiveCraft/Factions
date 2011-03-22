@@ -14,6 +14,8 @@ import com.bukkit.mcteam.factions.struct.Role;
 import com.bukkit.mcteam.factions.util.TextUtil;
 
 public class FBaseCommand {
+	public List<String> aliases;
+	
 	public List<String> requiredParameters;
 	public List<String> optionalParameters;
 	
@@ -42,17 +44,7 @@ public class FBaseCommand {
 		helpDescription = "no description";
 	}
 	
-	public ArrayList<String> getAliases() {
-		String name = this.getClass().getName().toLowerCase();
-		if (name.lastIndexOf('.') > 0) {
-		    name = name.substring(name.lastIndexOf('.')+1);
-		}
-		
-		name = name.substring(8);
-		
-		ArrayList<String> aliases = new ArrayList<String>();
-		aliases.add(name);
-		
+	public List<String> getAliases() {
 		return aliases;
 	}
 	
@@ -66,7 +58,6 @@ public class FBaseCommand {
 		this.parameters = parameters;
 		
 		if ( ! validateCall()) {
-			sendMessage("try /help factions");
 			return;
 		}
 		
@@ -137,7 +128,7 @@ public class FBaseCommand {
 	// -------------------------------------------- //
 	// Help and usage description
 	// -------------------------------------------- //
-	public String getUseageTemplate(boolean withColor) {
+	public String getUseageTemplate(boolean withColor, boolean withDescription) {
 		String ret = "";
 		
 		if (withColor) {
@@ -161,7 +152,15 @@ public class FBaseCommand {
 		}
 		
 		ret += TextUtil.implode(parts, " ");
+		
+		if (withDescription) {
+			ret += "  "+Conf.colorSystem + this.helpDescription;
+		}
 		return ret;
+	}
+	
+	public String getUseageTemplate(boolean withColor) {
+		return getUseageTemplate(withColor, false);
 	}
 	
 	public String getUseageTemplate() {
@@ -259,5 +258,17 @@ public class FBaseCommand {
 		}
 		
 		return false;
+	}
+	
+	public boolean parseBool(String str) {
+		List<String> aliasTrue = new ArrayList<String>();
+		aliasTrue.add("true");
+		aliasTrue.add("yes");
+		aliasTrue.add("y");
+		aliasTrue.add("ok");
+		aliasTrue.add("on");
+		aliasTrue.add("+");
+		
+		return aliasTrue.contains(str.toLowerCase());
 	}
 }

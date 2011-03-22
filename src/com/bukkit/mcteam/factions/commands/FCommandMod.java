@@ -10,6 +10,9 @@ import com.bukkit.mcteam.factions.struct.Role;
 public class FCommandMod extends FBaseCommand {
 	
 	public FCommandMod() {
+		aliases = new ArrayList<String>();
+		aliases.add("mod");
+		
 		requiredParameters = new ArrayList<String>();
 		optionalParameters = new ArrayList<String>();
 		requiredParameters.add("player name");

@@ -8,6 +8,11 @@ import com.bukkit.mcteam.factions.util.TextUtil;
 public class FCommandHelp extends FBaseCommand {
 	
 	public FCommandHelp() {
+		aliases = new ArrayList<String>();
+		aliases.add("help");
+		aliases.add("h");
+		aliases.add("?");
+		
 		requiredParameters = new ArrayList<String>();
 		optionalParameters = new ArrayList<String>();
 		optionalParameters.add("page");
@@ -48,36 +53,36 @@ public class FCommandHelp extends FBaseCommand {
 		ArrayList<String> pageLines;
 
 		pageLines = new ArrayList<String>();
-		pageLines.add( new FCommandHelp().getUseageTemplate() );
-		pageLines.add( new FCommandList().getUseageTemplate() );
-		pageLines.add( new FCommandShow().getUseageTemplate() );
-		pageLines.add( new FCommandMap().getUseageTemplate() );
-		pageLines.add( new FCommandJoin().getUseageTemplate() );
-		pageLines.add( new FCommandLeave().getUseageTemplate() );
-		pageLines.add( new FCommandChat().getUseageTemplate() );
-		pageLines.add( new FCommandCreate().getUseageTemplate() );
-		pageLines.add( new FCommandTag().getUseageTemplate() );
-		pageLines.add( new FCommandDescription().getUseageTemplate() );
+		pageLines.add( new FCommandHelp().getUseageTemplate(true, true) );
+		pageLines.add( new FCommandList().getUseageTemplate(true, true) );
+		pageLines.add( new FCommandShow().getUseageTemplate(true, true) );
+		pageLines.add( new FCommandMap().getUseageTemplate(true, true) );
+		pageLines.add( new FCommandJoin().getUseageTemplate(true, true) );
+		pageLines.add( new FCommandLeave().getUseageTemplate(true, true) );
+		pageLines.add( new FCommandChat().getUseageTemplate(true, true) );
+		pageLines.add( new FCommandCreate().getUseageTemplate(true, true) );
+		pageLines.add( new FCommandTag().getUseageTemplate(true, true) );
+		pageLines.add( new FCommandDescription().getUseageTemplate(true, true) );
 		
 		helpPages.add(pageLines);
 		pageLines = new ArrayList<String>();
 		
-		pageLines.add( new FCommandOpen().getUseageTemplate() );
-		pageLines.add( new FCommandTitle().getUseageTemplate() );
-		pageLines.add( new FCommandInvite().getUseageTemplate() );
-		pageLines.add( new FCommandDeinvite().getUseageTemplate() );
-		pageLines.add( new FCommandClaim().getUseageTemplate() );
-		pageLines.add( new FCommandUnclaim().getUseageTemplate() );
-		pageLines.add( new FCommandKick().getUseageTemplate() );
-		pageLines.add( new FCommandMod().getUseageTemplate() );
-		pageLines.add( new FCommandAdmin().getUseageTemplate() );
+		pageLines.add( new FCommandOpen().getUseageTemplate(true, true) );
+		pageLines.add( new FCommandTitle().getUseageTemplate(true, true) );
+		pageLines.add( new FCommandInvite().getUseageTemplate(true, true) );
+		pageLines.add( new FCommandDeinvite().getUseageTemplate(true, true) );
+		pageLines.add( new FCommandClaim().getUseageTemplate(true, true) );
+		pageLines.add( new FCommandUnclaim().getUseageTemplate(true, true) );
+		pageLines.add( new FCommandKick().getUseageTemplate(true, true) );
+		pageLines.add( new FCommandMod().getUseageTemplate(true, true) );
+		pageLines.add( new FCommandAdmin().getUseageTemplate(true, true) );
 		
 		helpPages.add(pageLines);
 		pageLines = new ArrayList<String>();
 		
-		pageLines.add( new FCommandRelationAlly().getUseageTemplate() );
-		pageLines.add( new FCommandRelationNeutral().getUseageTemplate() );
-		pageLines.add( new FCommandRelationEnemy().getUseageTemplate() );
+		pageLines.add( new FCommandRelationAlly().getUseageTemplate(true, true) );
+		pageLines.add( new FCommandRelationNeutral().getUseageTemplate(true, true) );
+		pageLines.add( new FCommandRelationEnemy().getUseageTemplate(true, true) );
 		pageLines.add("");
 		pageLines.add(Conf.colorSystem+"Set the relation you WISH to have with another faction.");
 		pageLines.add(Conf.colorSystem+"Your default relation with other factions will be neutral.");
@@ -114,7 +119,7 @@ public class FCommandHelp extends FBaseCommand {
 		helpPages.add(pageLines);
 		pageLines = new ArrayList<String>();
 		
-		pageLines.add( new FCommandVersion().getUseageTemplate() );
+		pageLines.add( new FCommandVersion().getUseageTemplate(true, true) );
 		
 		helpPages.add(pageLines);
 	}

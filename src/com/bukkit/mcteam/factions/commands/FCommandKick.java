@@ -9,6 +9,9 @@ import com.bukkit.mcteam.factions.Faction;
 public class FCommandKick extends FBaseCommand {
 	
 	public FCommandKick() {
+		aliases = new ArrayList<String>();
+		aliases.add("kick");
+		
 		requiredParameters = new ArrayList<String>();
 		optionalParameters = new ArrayList<String>();
 		requiredParameters.add("player name");
@@ -37,7 +40,8 @@ public class FCommandKick extends FBaseCommand {
 		
 		if (me == you) {
 			sendMessage("You cannot kick yourself.");
-			sendMessage("You might want to "+Conf.colorCommand+Conf.aliasBase.get(0)+" "+Conf.aliasLeave.get(0));
+			sendMessage("You might want to:");
+			sendMessage(new FCommandLeave().getUseageTemplate());
 			return;
 		}
 		

@@ -10,6 +10,10 @@ import com.bukkit.mcteam.factions.struct.Role;
 public class FCommandDeinvite extends FBaseCommand {
 	
 	public FCommandDeinvite() {
+		aliases = new ArrayList<String>();
+		aliases.add("deinvite");
+		aliases.add("deinv");
+		
 		requiredParameters = new ArrayList<String>();
 		optionalParameters = new ArrayList<String>();
 		requiredParameters.add("player name");
@@ -41,6 +45,7 @@ public class FCommandDeinvite extends FBaseCommand {
 		
 		if (you.getFaction() == myFaction) {
 			sendMessage(you.getName()+" is already a member of "+myFaction.getTag());
+			sendMessage(new FCommandKick().getUseageTemplate());
 			return;
 		}
 		

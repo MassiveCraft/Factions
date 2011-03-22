@@ -53,6 +53,44 @@ public class Faction {
 		return this.id;
 	}
 	
+	public boolean getOpen() {
+		return open;
+	}
+	
+	public void setOpen(boolean isOpen) {
+		open = isOpen;
+		save();
+	}
+	
+	public String getTag() {
+		return this.getTag("");
+	}
+	public String getTag(String prefix) {
+		return prefix+this.tag;
+	}
+	public String getTag(Faction otherFaction) {
+		return this.getTag(otherFaction.getRelationColor(this).toString());
+	}
+	public String getTag(FPlayer otherFollower) {
+		return this.getTag(otherFollower.getRelationColor(this).toString());
+	}
+	public void setTag(String str) {
+		if (Conf.factionTagForceUpperCase) {
+			str = str.toUpperCase();
+		}
+		this.tag = str;
+		save();
+	}
+	
+	public String getDescription() {
+		return this.description;
+	}
+	
+	public void setDescription(String value) {
+		this.description = value;
+		save();
+	}
+	
 	// -------------------------------
 	// Invites
 	// -------------------------------
@@ -104,49 +142,6 @@ public class Faction {
 	
 	public Relation getRelation(FPlayer follower) {
 		return getRelation(follower.getFaction());
-	}
-	
-	
-	
-	// -------------------------------
-	// Information
-	// -------------------------------
-	public String getTag() {
-		return this.getTag("");
-	}
-	public String getTag(String prefix) {
-		return prefix+this.tag;
-	}
-	public String getTag(Faction otherFaction) {
-		return this.getTag(otherFaction.getRelationColor(this).toString());
-	}
-	public String getTag(FPlayer otherFollower) {
-		return this.getTag(otherFollower.getRelationColor(this).toString());
-	}
-	public void setTag(String str) {
-		if (Conf.factionTagForceUpperCase) {
-			str = str.toUpperCase();
-		}
-		this.tag = str;
-		this.save();
-	}
-	
-	public String getDescription() {
-		return this.description;
-	}
-	
-	public void setDescription(String value) {
-		this.description = value;
-		this.save();
-	}
-	
-	public boolean getOpen() {
-		return open;
-	}
-	
-	public void setOpen(boolean isOpen) {
-		open = isOpen;
-		this.save();
 	}
 	
 	//----------------------------------------------//
@@ -336,11 +331,10 @@ public class Faction {
 		if ( ! file.exists()) {
 			Factions.log("No factions to load from disk. Creating new file.");
 			save();
-			return true;
 		}
 		
 		try {
-			Type type = new TypeToken<Map<String, Faction>>(){}.getType();
+			Type type = new TypeToken<Map<Integer, Faction>>(){}.getType();
 			instances = Factions.gson.fromJson(DiscUtil.read(file), type);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -357,7 +351,7 @@ public class Faction {
 			faction.id = 0;
 			instances.put(faction.id, faction);
 		}
-			
+		
 		return true;
 	}
 	

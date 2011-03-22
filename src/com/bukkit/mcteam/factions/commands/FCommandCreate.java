@@ -10,6 +10,9 @@ import com.bukkit.mcteam.factions.struct.Role;
 public class FCommandCreate extends FBaseCommand {
 	
 	public FCommandCreate() {
+		aliases = new ArrayList<String>();
+		aliases.add("create");
+		
 		requiredParameters = new ArrayList<String>();
 		optionalParameters = new ArrayList<String>();
 		requiredParameters.add("faction tag");
@@ -51,8 +54,8 @@ public class FCommandCreate extends FBaseCommand {
 			follower.sendMessage(me.getNameAndRelevant(follower)+Conf.colorSystem+" created a new faction "+faction.getTag(follower));
 		}
 		
-		sendMessage("Now update your faction description. Use:");
-		sendMessage(Conf.colorCommand+Conf.aliasBase.get(0)+" "+Conf.aliasDescription.get(0)+" "+"[description]");
+		sendMessage("You should now:");
+		sendMessage( new FCommandDescription().getUseageTemplate() );
 	}
 	
 }

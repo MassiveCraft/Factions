@@ -10,6 +10,9 @@ import com.bukkit.mcteam.factions.struct.Role;
 public class FCommandAdmin extends FBaseCommand {
 	
 	public FCommandAdmin() {
+		aliases = new ArrayList<String>();
+		aliases.add("admin");
+		
 		requiredParameters = new ArrayList<String>();
 		optionalParameters = new ArrayList<String>();
 		requiredParameters.add("player name");

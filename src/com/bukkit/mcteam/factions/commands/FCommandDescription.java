@@ -10,9 +10,12 @@ import com.bukkit.mcteam.factions.util.TextUtil;
 public class FCommandDescription extends FBaseCommand {
 	
 	public FCommandDescription() {
+		aliases = new ArrayList<String>();
+		aliases.add("desc");
+		
 		requiredParameters = new ArrayList<String>();
 		optionalParameters = new ArrayList<String>();
-		requiredParameters.add("description");
+		requiredParameters.add("desc");
 		
 		permissions = "";
 		

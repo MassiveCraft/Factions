@@ -9,6 +9,10 @@ import com.bukkit.mcteam.factions.struct.Role;
 public class FCommandOpen extends FBaseCommand {
 	
 	public FCommandOpen() {
+		aliases = new ArrayList<String>();
+		aliases.add("open");
+		aliases.add("close");
+		
 		requiredParameters = new ArrayList<String>();
 		optionalParameters = new ArrayList<String>();
 		

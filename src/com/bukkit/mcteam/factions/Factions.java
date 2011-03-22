@@ -4,6 +4,7 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -17,6 +18,29 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.bukkit.mcteam.factions.commands.FBaseCommand;
+import com.bukkit.mcteam.factions.commands.FCommandAdmin;
+import com.bukkit.mcteam.factions.commands.FCommandChat;
+import com.bukkit.mcteam.factions.commands.FCommandClaim;
+import com.bukkit.mcteam.factions.commands.FCommandCreate;
+import com.bukkit.mcteam.factions.commands.FCommandDeinvite;
+import com.bukkit.mcteam.factions.commands.FCommandDescription;
+import com.bukkit.mcteam.factions.commands.FCommandHelp;
+import com.bukkit.mcteam.factions.commands.FCommandInvite;
+import com.bukkit.mcteam.factions.commands.FCommandJoin;
+import com.bukkit.mcteam.factions.commands.FCommandKick;
+import com.bukkit.mcteam.factions.commands.FCommandLeave;
+import com.bukkit.mcteam.factions.commands.FCommandList;
+import com.bukkit.mcteam.factions.commands.FCommandMap;
+import com.bukkit.mcteam.factions.commands.FCommandMod;
+import com.bukkit.mcteam.factions.commands.FCommandOpen;
+import com.bukkit.mcteam.factions.commands.FCommandRelationAlly;
+import com.bukkit.mcteam.factions.commands.FCommandRelationEnemy;
+import com.bukkit.mcteam.factions.commands.FCommandRelationNeutral;
+import com.bukkit.mcteam.factions.commands.FCommandShow;
+import com.bukkit.mcteam.factions.commands.FCommandTag;
+import com.bukkit.mcteam.factions.commands.FCommandTitle;
+import com.bukkit.mcteam.factions.commands.FCommandUnclaim;
+import com.bukkit.mcteam.factions.commands.FCommandVersion;
 import com.bukkit.mcteam.factions.listeners.FactionsBlockListener;
 import com.bukkit.mcteam.factions.listeners.FactionsEntityListener;
 import com.bukkit.mcteam.factions.listeners.FactionsPlayerListener;
@@ -48,30 +72,49 @@ public class Factions extends JavaPlugin {
 
 	// Commands
 	public List<FBaseCommand> commands = new ArrayList<FBaseCommand>();
+
+	private String baseCommand;
 	
 	public Factions() {
 		Factions.instance = this;
+		
+		// Add the commands
+		commands.add(new FCommandHelp());
+		commands.add(new FCommandAdmin());
+		commands.add(new FCommandChat());
+		commands.add(new FCommandClaim());
+		commands.add(new FCommandCreate());
+		commands.add(new FCommandDeinvite());
+		commands.add(new FCommandDescription());
+		commands.add(new FCommandInvite());
+		commands.add(new FCommandJoin());
+		commands.add(new FCommandKick());
+		commands.add(new FCommandLeave());
+		commands.add(new FCommandList());
+		commands.add(new FCommandMap());
+		commands.add(new FCommandMod());
+		commands.add(new FCommandOpen());
+		commands.add(new FCommandRelationAlly());
+		commands.add(new FCommandRelationEnemy());
+		commands.add(new FCommandRelationNeutral());
+		commands.add(new FCommandShow());
+		commands.add(new FCommandTag());
+		commands.add(new FCommandTitle());
+		commands.add(new FCommandUnclaim());
+		commands.add(new FCommandVersion());
 	}
 	
 	
 	@Override
 	public void onEnable() {
-		// Add the commands
-		/*commands.add(new VCommandBlood());
-		commands.add(new VCommandInfect());
-		commands.add(new VCommandLoad());
-		commands.add(new VCommandSave());
-		commands.add(new VCommandTime());
-		commands.add(new VCommandTurn());
-		commands.add(new VCommandCure());
-		commands.add(new VCommandList());
-		commands.add(new VCommandVersion());*/
-		
-		setupPermissions();
-		setupHelp();
-		
 		log("=== INIT START ===");
 		long timeInitStart = System.currentTimeMillis();
+		
+		setupHelp();
+		setupPermissions();
+		
+		// Ensure basefolder exists!
+		this.getDataFolder().mkdirs();
 		
 		FPlayer.load();
 		Faction.load();
@@ -97,8 +140,10 @@ public class Factions extends JavaPlugin {
 
 	@Override
 	public void onDisable() {
-		// TODO Auto-generated method stub
-		
+		FPlayer.save();
+		Faction.save();
+		Board.save();
+		log("Disabled");
 	}
 
 	// -------------------------------------------- //
@@ -130,9 +175,7 @@ public class Factions extends JavaPlugin {
 		if (test != null) {
 			helpPlugin = ((Help) test);
 			Factions.log("Found and will use plugin "+helpPlugin.getDescription().getFullName());
-			
-			// TODO not hardcoded:
-			helpPlugin.registerCommand("f help *[page]", "Factions plugin help.", helpPlugin, true);
+			helpPlugin.registerCommand(this.getBaseCommand()+" help *[page]", "Factions plugin help.", helpPlugin, true);
 		}
 	}
 
@@ -140,6 +183,17 @@ public class Factions extends JavaPlugin {
 	// -------------------------------------------- //
 	// Commands
 	// -------------------------------------------- //
+	
+	@SuppressWarnings("unchecked")
+	public String getBaseCommand() {
+		if (this.baseCommand != null) {
+			return this.baseCommand;
+		}
+		
+		Map<String, Object> Commands = (Map<String, Object>)this.getDescription().getCommands();
+		this.baseCommand = Commands.keySet().iterator().next();
+		return this.baseCommand;
+	}
 	
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
@@ -164,8 +218,7 @@ public class Factions extends JavaPlugin {
 			}
 		}
 		
-		sender.sendMessage(Conf.colorSystem+"Unknown faction command \""+commandName+"\". Try /help faction"); // TODO test help messages exists....
-		//TODO should we use internal help system instead?
+		sender.sendMessage(Conf.colorSystem+"Unknown faction command \""+commandName+"\". Try "+Conf.colorCommand+"/f help");
 	}
 	
 	// -------------------------------------------- //

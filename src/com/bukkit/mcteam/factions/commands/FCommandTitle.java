@@ -10,6 +10,9 @@ import com.bukkit.mcteam.factions.util.TextUtil;
 public class FCommandTitle extends FBaseCommand {
 	
 	public FCommandTitle() {
+		aliases = new ArrayList<String>();
+		aliases.add("title");
+		
 		requiredParameters = new ArrayList<String>();
 		optionalParameters = new ArrayList<String>();
 		requiredParameters.add("player name");

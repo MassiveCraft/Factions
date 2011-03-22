@@ -1,10 +1,14 @@
 package com.bukkit.mcteam.factions.listeners;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import org.bukkit.block.Block;
-import org.bukkit.entity.*;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.event.player.PlayerItemEvent;
@@ -13,6 +17,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 
 import com.bukkit.mcteam.factions.Board;
 import com.bukkit.mcteam.factions.Conf;
+import com.bukkit.mcteam.factions.FLocation;
 import com.bukkit.mcteam.factions.FPlayer;
 import com.bukkit.mcteam.factions.Faction;
 import com.bukkit.mcteam.factions.Factions;
@@ -21,35 +26,23 @@ import com.bukkit.mcteam.factions.util.TextUtil;
 
 public class FactionsPlayerListener extends PlayerListener{
 
-	/**
-	 * If someone says something that starts with the factions base command
-	 * we handle that command.
-	 */
-	@Override
-	public void onPlayerCommandPreprocess(PlayerChatEvent event) {
-		Player player = event.getPlayer();
-		String msg = event.getMessage();
-		
-		if (handleCommandOrChat(player, msg)) {
-			event.setCancelled(true);
-		}
-	}
-	
 	@Override
 	public void onPlayerChat(PlayerChatEvent event) {
+		if ((event.getMessage().startsWith(Factions.instance.getBaseCommand()+" ") || event.getMessage().equals(Factions.instance.getBaseCommand())) && Conf.allowNoSlashCommand) {
+			List<String> parameters = TextUtil.split(event.getMessage().trim());
+			parameters.remove(0);
+			CommandSender sender = event.getPlayer();			
+			Factions.instance.handleCommand(sender, parameters);
+			event.setCancelled(true);
+			return;
+		}
+		
 		if (event.isCancelled()) {
-			return; // Some other plugin ate this...
+			return;
 		}
 		
 		Player talkingPlayer = event.getPlayer();
 		String msg = event.getMessage();
-		
-		// Is this a faction command?...
-		if ( handleCommandOrChat(talkingPlayer, msg) ) {
-			// ... Yes it was! We should choke the chat message.
-			event.setCancelled(true);
-			return;
-		}
 		
 		// ... it was not a command. This means that it is a chat message!
 		FPlayer me = FPlayer.get(talkingPlayer);
@@ -57,7 +50,7 @@ public class FactionsPlayerListener extends PlayerListener{
 		// Is it a faction chat message?
 		if (me.isFactionChatting()) {
 			String message = String.format(Conf.factionChatFormat, me.getNameAndRelevant(me), msg);
-			me.getFaction().sendMessage(message, false);
+			me.getFaction().sendMessage(message);
 			Logger.getLogger("Minecraft").info("FactionChat "+me.getFaction().getTag()+": "+message);
 			event.setCancelled(true);
 			return;
@@ -95,27 +88,16 @@ public class FactionsPlayerListener extends PlayerListener{
 		}
 	}
 	
-	public boolean handleCommandOrChat(Player player, String msg) {
-		ArrayList<String> tokens = TextUtil.split(msg.trim());
-		if (Conf.aliasBase.contains(tokens.get(0))) {
-			tokens.remove(0);
-			FPlayer follower = FPlayer.get(player);
-			Commands.base(follower, tokens);
-			return true;
-		}
-		return false;
-	}
-	
 	@Override
 	public void onPlayerJoin(PlayerEvent event) {
-		//Follower.get(event.getPlayer()).sendJoinInfo();
+		// Make sure that all online players do have a fplayer.
+		FPlayer.get(event.getPlayer());
 	}
 	
 	@Override
 	public void onPlayerQuit(PlayerEvent event) {
-		FPlayer follower = FPlayer.get(event.getPlayer()); 
-		Log.debug("Saved follower on player quit: "+follower.getName());
-		follower.save(); // We save the followers on logout in order to save their non autosaved state like power.
+		// Save all players on player quit.
+		FPlayer.save();
 	}
 	
 	@Override
@@ -123,22 +105,23 @@ public class FactionsPlayerListener extends PlayerListener{
 		FPlayer me = FPlayer.get(event.getPlayer());
 		
 		// Did we change coord?
-		Coord coordFrom = me.lastStoodAt;
-		Coord coordTo = Coord.from(event.getTo());
-		if (coordFrom.equals(coordTo)) {
+		FLocation from = me.getLastStoodAt();
+		FLocation to = new FLocation(event.getTo());
+		
+		if (from.equals(to)) {
 			return;
 		}
 		
 		// Yes we did change coord (:
-		me.lastStoodAt = coordTo;
-		Board board = Board.get(event.getPlayer().getWorld());
+		
+		me.setLastStoodAt(to);
 		
 		if (me.isMapAutoUpdating()) {
-			me.sendMessage(board.getMap(me.getFaction(), Coord.from(me), me.getPlayer().getLocation().getYaw()), false);
+			me.sendMessage(Board.getMap(me.getFaction(), to, me.getPlayer().getLocation().getYaw()));
 		} else {
 			// Did we change "host"(faction)?
-			Faction factionFrom = board.getFactionAt(coordFrom);
-			Faction factionTo = board.getFactionAt(coordTo);
+			Faction factionFrom = Board.getFactionAt(from);
+			Faction factionTo = Board.getFactionAt(to);
 			if ( factionFrom != factionTo) {
 				me.sendFactionHereMessage();
 			}
@@ -147,17 +130,15 @@ public class FactionsPlayerListener extends PlayerListener{
 
     @Override
     public void onPlayerItem(PlayerItemEvent event) {
-		// debug
-		//event.getPlayer().sendMessage("Item in hand: " + event.getItem().getTypeId() + "  Block clicked: " + event.getBlockClicked().getTypeId() + "(" + event.getBlockClicked().getType().toString() + ")");
-
-		if (event.isCancelled())
+		if (event.isCancelled()) {
 			return;
-
-		if (event.getBlockClicked() == null)
+		}
+			
+		if (event.getBlockClicked() == null) {
 			return;  // right-clicked on air, not a block; no worries then
+		}
 
-		if (!this.playerCanUseItemHere(event.getPlayer(), event.getBlockClicked(), event.getItem().getTypeId()))
-		{
+		if ( ! this.playerCanUseItemHere(event.getPlayer(), event.getBlockClicked(), event.getItem().getTypeId())) {
 			event.setCancelled(true);
 			return;
 		}
@@ -171,14 +152,13 @@ public class FactionsPlayerListener extends PlayerListener{
 
 	public boolean playerCanUseItemHere(Player player, Block block, int itemId) {
 
-		if (!badItems.contains(new Integer(itemId))) {
+		if ( ! badItems.contains(new Integer(itemId))) {
 			return true; // Item isn't one we're preventing.
 		}
 
-		Coord coord = Coord.parseCoord(block);
-		Faction otherFaction = Board.get(player.getWorld()).getFactionAt(coord);
+		Faction otherFaction = Board.getFactionAt(new FLocation(block));
 
-		if (otherFaction == null || otherFaction.id == 0) {
+		if (otherFaction == null || otherFaction.getId() == 0) {
 			return true; // This is not faction territory. Use whatever you like here.
 		}
 
@@ -187,7 +167,7 @@ public class FactionsPlayerListener extends PlayerListener{
 
 		// Cancel if we are not in our own territory
 		if (myFaction != otherFaction) {
-			me.sendMessage(Conf.colorSystem+"You can't use that in the territory of "+otherFaction.getTag(myFaction));
+			me.sendMessage("You can't use that in the territory of "+otherFaction.getTag(myFaction));
 			return false;
 		}
 

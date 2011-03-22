@@ -12,6 +12,9 @@ import com.bukkit.mcteam.factions.struct.Role;
 public class FCommandClaim extends FBaseCommand {
 	
 	public FCommandClaim() {
+		aliases = new ArrayList<String>();
+		aliases.add("claim");
+		
 		requiredParameters = new ArrayList<String>();
 		optionalParameters = new ArrayList<String>();
 		

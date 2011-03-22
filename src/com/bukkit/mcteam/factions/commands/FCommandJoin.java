@@ -9,6 +9,9 @@ import com.bukkit.mcteam.factions.Faction;
 public class FCommandJoin extends FBaseCommand {
 	
 	public FCommandJoin() {
+		aliases = new ArrayList<String>();
+		aliases.add("join");
+		
 		requiredParameters = new ArrayList<String>();
 		optionalParameters = new ArrayList<String>();
 		requiredParameters.add("faction name");

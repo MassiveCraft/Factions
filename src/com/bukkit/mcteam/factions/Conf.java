@@ -50,112 +50,14 @@ public class Conf {
 	public static boolean territoryBlockFireballs = false;
 	
 	public static List<Material> territoryProtectedMaterials = new ArrayList<Material>();
-	
-	// Command names / aliases	
-	public static List<String> aliasBase = new ArrayList<String>();
-	public static List<String> aliasHelp = new ArrayList<String>();
-	
-	public static List<String> aliasList = new ArrayList<String>();
-	public static List<String> aliasShow = new ArrayList<String>();
-	
-	public static List<String> aliasMap = new ArrayList<String>();
-	
-	public static List<String> aliasJoin = new ArrayList<String>();
-	public static List<String> aliasLeave = new ArrayList<String>();
-	
-	public static List<String> aliasCreate = new ArrayList<String>();
-	public static List<String> aliasTag = new ArrayList<String>();
-	public static List<String> aliasDescription = new ArrayList<String>();
-	public static List<String> aliasChat = new ArrayList<String>();
-	
-	public static List<String> aliasTitle = new ArrayList<String>();
-	public static List<String> aliasInvite = new ArrayList<String>();
-	public static List<String> aliasDeinvite = new ArrayList<String>();
-	public static List<String> aliasOpen = new ArrayList<String>();
-	
-	public static List<String> aliasKick = new ArrayList<String>();
-	public static List<String> aliasModerator = new ArrayList<String>();
-	public static List<String> aliasAdmin = new ArrayList<String>();
-	
-	public static List<String> aliasClaim = new ArrayList<String>();
-	public static List<String> aliasUnclaim = new ArrayList<String>();
-	
-	public static List<String> aliasRelationAlly = new ArrayList<String>();
-	public static List<String> aliasRelationNeutral = new ArrayList<String>();
-	public static List<String> aliasRelationEnemy = new ArrayList<String>();
-	
-	public static List<String> aliasVersion = new ArrayList<String>();
-	
-	// Value aliases
-	public static List<String> aliasTrue = new ArrayList<String>();
+
+	public static boolean allowNoSlashCommand = true;
 	
 	static {
 		territoryProtectedMaterials.add(Material.WOODEN_DOOR);
 		territoryProtectedMaterials.add(Material.DISPENSER);
 		territoryProtectedMaterials.add(Material.CHEST);
 		territoryProtectedMaterials.add(Material.FURNACE);
-		
-		aliasBase.add("/f");
-		aliasBase.add("f");
-		
-		aliasHelp.add("help");
-		aliasHelp.add("h");
-		aliasHelp.add("?");
-		
-		aliasList.add("list");
-		aliasList.add("ls");
-		
-		aliasShow.add("show");
-		aliasShow.add("who");
-		
-		aliasMap.add("map");
-		
-		aliasJoin.add("join");
-		
-		aliasLeave.add("leave");
-		
-		aliasCreate.add("create");
-		aliasCreate.add("new");
-		aliasTag.add("tag");
-		aliasDescription.add("desc");
-		
-		aliasChat.add("chat");
-		aliasChat.add("c");
-		
-		aliasTitle.add("title");
-		
-		aliasInvite.add("invite");
-		aliasInvite.add("inv");
-		
-		aliasDeinvite.add("deinvite");
-		aliasDeinvite.add("deinv");
-		
-		aliasOpen.add("open");
-		aliasOpen.add("close");
-		
-		aliasKick.add("kick");
-		
-		aliasModerator.add("mod");
-		
-		aliasAdmin.add("admin");
-		
-		aliasClaim.add("claim");
-		
-		aliasUnclaim.add("unclaim");
-		aliasUnclaim.add("declaim");
-		
-		aliasRelationAlly.add("ally");
-		aliasRelationNeutral.add("neutral");
-		aliasRelationEnemy.add("enemy");
-		
-		aliasVersion.add("version");
-		
-		aliasTrue.add("true");
-		aliasTrue.add("yes");
-		aliasTrue.add("y");
-		aliasTrue.add("ok");
-		aliasTrue.add("on");
-		aliasTrue.add("+");
 	}
 	
 	// -------------------------------------------- //

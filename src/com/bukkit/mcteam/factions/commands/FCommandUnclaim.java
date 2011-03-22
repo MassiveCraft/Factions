@@ -11,6 +11,10 @@ import com.bukkit.mcteam.factions.struct.Role;
 public class FCommandUnclaim extends FBaseCommand {
 	
 	public FCommandUnclaim() {
+		aliases = new ArrayList<String>();
+		aliases.add("unclaim");
+		aliases.add("declaim");
+		
 		requiredParameters = new ArrayList<String>();
 		optionalParameters = new ArrayList<String>();
 		
