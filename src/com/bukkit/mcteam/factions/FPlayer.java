@@ -50,14 +50,6 @@ public class FPlayer {
 	// Construct
 	// -------------------------------------------- //
 	
-	public FPlayer(Player player) {
-		this.playerName = player.getName().toLowerCase();
-	}
-	
-	public FPlayer(String playerName) {
-		this.playerName = playerName.toLowerCase();
-	}
-	
 	// GSON need this noarg constructor.
 	public FPlayer() {
 		this.resetFactionData();
@@ -101,6 +93,10 @@ public class FPlayer {
 	
 	public Faction getFaction() {
 		return Faction.get(factionId);
+	}
+	
+	private int getFactionId() {
+		return factionId;
 	}
 	
 	public void setFaction(Faction faction) {
@@ -153,7 +149,7 @@ public class FPlayer {
 	// Base:
 	
 	public String getTitle() {
-		return title;
+		return this.title;
 	}
 
 	public void setTitle(String title) {
@@ -380,7 +376,9 @@ public class FPlayer {
 			return instances.get(playerName);
 		}
 		
-		FPlayer vplayer = new FPlayer(playerName);
+		FPlayer vplayer = new FPlayer();
+		vplayer.playerName = playerName;
+		
 		instances.put(playerName, vplayer);
 		return vplayer;
 	}
@@ -470,5 +468,14 @@ public class FPlayer {
 			entry.getValue().playerName = entry.getKey();
 		}
 	}
+	
+	public static void clean() {
+		for (FPlayer fplayer : instances.values()) {
+			if ( ! Faction.exists(fplayer.getFactionId())) {
+				Factions.log("Reset faction data (invalid faction) for player "+fplayer.getName());
+				fplayer.resetFactionData();
+			}
+		}
+	}	
 	
 }

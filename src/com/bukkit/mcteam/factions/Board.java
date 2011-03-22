@@ -126,7 +126,7 @@ public class Board {
 	 */
 	public static ArrayList<String> getMap(Faction faction, FLocation flocation, double inDegrees) {
 		ArrayList<String> ret = new ArrayList<String>();
-		ret.add(TextUtil.titleize("("+flocation+") "+getFactionAt(flocation).getTag(faction)));
+		ret.add(TextUtil.titleize("("+flocation.getCoordString()+") "+getFactionAt(flocation).getTag(faction)));
 		
 		int halfWidth = Conf.mapWidth / 2;
 		int halfHeight = Conf.mapHeight / 2;

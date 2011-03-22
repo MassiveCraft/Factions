@@ -40,8 +40,7 @@ public class FCommandKick extends FBaseCommand {
 		
 		if (me == you) {
 			sendMessage("You cannot kick yourself.");
-			sendMessage("You might want to:");
-			sendMessage(new FCommandLeave().getUseageTemplate());
+			sendMessage("You might want to: " + new FCommandLeave().getUseageTemplate());
 			return;
 		}
 		

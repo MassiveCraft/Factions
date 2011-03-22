@@ -368,8 +368,9 @@ public class Faction {
 	
 	public static Faction get(Integer factionId) {
 		if ( ! instances.containsKey(factionId)) {
-			Factions.log(Level.WARNING, "Non existing factionId "+factionId+" requested! Issuing board cleaning!");
+			Factions.log(Level.WARNING, "Non existing factionId "+factionId+" requested! Issuing cleaning!");
 			Board.clean();
+			FPlayer.clean();
 		}
 		return instances.get(factionId);
 	}
@@ -393,24 +394,18 @@ public class Faction {
 		return faction;
 	}
 	
-	public static boolean delete(Integer id) {
-		// NOTE that this does not do any security checks.
-		// Follower might get orphaned foreign id's
-		
-		// purge from all boards
-		// Board.purgeFactionFromAllBoards(id);
-		Board.clean();
-		
-		// Remove the file
-		//File file = new File(folderFaction, id+ext);
-		//file.delete();
-		
+	public static void delete(Integer id) {
 		// Remove the faction
 		instances.remove(id);
 		
-		// TODO REMOVE ALL MEMBERS!
+		// Clean the board
+		Board.clean();
 		
-		// TODO SAVE files
-		return true; // TODO
+		// Clean the fplayers
+		FPlayer.clean();
+		
+		// SAVE files
+		Board.save();
+		FPlayer.save();
 	}
 }

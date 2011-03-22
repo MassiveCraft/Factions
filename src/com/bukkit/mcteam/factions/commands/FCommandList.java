@@ -29,6 +29,7 @@ public class FCommandList extends FBaseCommand {
 	// TODO put the 0 faction at the highest position
 	public void perform() {
 		ArrayList<Faction> FactionList = new ArrayList<Faction>(Faction.getAll());
+		FactionList.remove(Faction.get(0));
 
 		int page = 1;
 		if (parameters.size() > 0) {
@@ -44,11 +45,7 @@ public class FCommandList extends FBaseCommand {
 		Collections.sort(FactionList, new Comparator<Faction>(){
 			@Override
 			public int compare(Faction f1, Faction f2) {
-				if (f1.getId() == 0)
-					return 1;
-				else if (f2.getId() == 0)
-					return -1;
-				else if (f1.getFPlayers().size() < f2.getFPlayers().size())
+				if (f1.getFPlayers().size() < f2.getFPlayers().size())
 					return 1;
 				else if (f1.getFPlayers().size() > f2.getFPlayers().size())
 					return -1;
@@ -68,6 +65,8 @@ public class FCommandList extends FBaseCommand {
 			}
 		});
 
+		FactionList.add(0, Faction.get(0));
+		
 		int maxPage = (int)Math.floor((double)FactionList.size() / 9D);
 		if (page < 0 || page > maxPage) {
 			sendMessage("The faction list is only " + (maxPage+1) + " page(s) long");
