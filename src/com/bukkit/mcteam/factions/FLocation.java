@@ -7,8 +7,8 @@ import org.bukkit.entity.Player;
 public class FLocation {
 
 	private String worldName = "world";
-	private long x = 0;
-	private long z = 0;
+	private int x = 0;
+	private int z = 0;
 	
 	private final static transient double cellSize = 16;
 	
@@ -20,14 +20,14 @@ public class FLocation {
 		
 	}
 	
-	public FLocation(String worldName, long x, long z) {
+	public FLocation(String worldName, int x, int z) {
 		this.worldName = worldName;
 		this.x = x;
 		this.z = z;
 	}
 	
 	public FLocation(Location location) {
-		this(location.getWorld().getName(), (long) Math.floor(location.getX() / cellSize) , (long) Math.floor(location.getZ() / cellSize));
+		this(location.getWorld().getName(), (int) Math.floor(location.getX() / cellSize) , (int) Math.floor(location.getZ() / cellSize));
 	}
 	
 	public FLocation(Player player) {
@@ -58,7 +58,7 @@ public class FLocation {
 		return x;
 	}
 
-	public void setX(long x) {
+	public void setX(int x) {
 		this.x = x;
 	}
 
@@ -66,7 +66,7 @@ public class FLocation {
 		return z;
 	}
 
-	public void setZ(long z) {
+	public void setZ(int z) {
 		this.z = z;
 	}
 	
@@ -85,8 +85,6 @@ public class FLocation {
 	//----------------------------------------------//
 	// Comparison
 	//----------------------------------------------//
-	
-	// TODO hash code
 	
 	@Override
 	public boolean equals(Object obj) {

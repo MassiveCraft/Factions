@@ -27,19 +27,28 @@ import com.bukkit.mcteam.util.DiscUtil;
  */
 
 public class FPlayer {
-	public static transient Map<String, FPlayer> instances = new HashMap<String, FPlayer>();
-	public static transient File file = new File(Factions.instance.getDataFolder(), "players.json");
 	
-	public transient String playerName;
-	public transient FLocation lastStoodAt = new FLocation(); // Where did this player stand the last time we checked?
+	// -------------------------------------------- //
+	// Fields
+	// -------------------------------------------- //
 	
-	public int factionId;
-	public Role role;
+	private static transient Map<String, FPlayer> instances = new HashMap<String, FPlayer>();
+	private static transient File file = new File(Factions.instance.getDataFolder(), "players.json");
+	
+	private transient String playerName;
+	private transient FLocation lastStoodAt = new FLocation(); // Where did this player stand the last time we checked?
+	
+	private int factionId;
+	private Role role;
 	private String title;
 	private double power;
 	private long lastPowerUpdateTime;
 	private transient boolean mapAutoUpdating;
 	private boolean factionChatting; 
+	
+	// -------------------------------------------- //
+	// Construct
+	// -------------------------------------------- //
 	
 	public FPlayer(Player player) {
 		this.playerName = player.getName().toLowerCase();
@@ -64,17 +73,19 @@ public class FPlayer {
 		this.title = "";
 	}
 	
+	// -------------------------------------------- //
+	// Minecraft Player
+	// -------------------------------------------- //
+	
 	public Player getPlayer() {
 		return Factions.instance.getServer().getPlayer(playerName);
 	}
 	
+	
+	// TODO lowercase vs mixedcase for logged in chars...
 	public String getPlayerName() {
 		return this.playerName;
 	}
-	
-	// -------------------------------------------- //
-	// Online / Offline State Checking
-	// -------------------------------------------- //
 	
 	public boolean isOnline() {
 		return Factions.instance.getServer().getPlayer(playerName) != null;
@@ -82,6 +93,30 @@ public class FPlayer {
 	
 	public boolean isOffline() {
 		return ! isOnline();
+	}
+	
+	// -------------------------------------------- //
+	// Getters And Setters
+	// -------------------------------------------- //
+	
+	public Faction getFaction() {
+		return Faction.get(factionId);
+	}
+	
+	public void setFaction(Faction faction) {
+		this.factionId = faction.getId();
+	}
+	
+	public boolean hasFaction() {
+		return factionId != 0;
+	}
+	
+	public Role getRole() {
+		return this.role;
+	}
+	
+	public void setRole(Role role) {
+		this.role = role;
 	}
 	
 	public boolean isFactionChatting() {
@@ -94,8 +129,6 @@ public class FPlayer {
 	public void setFactionChatting(boolean factionChatting) {
 		this.factionChatting = factionChatting;
 	}
-
-
 	
 	public boolean isMapAutoUpdating() {
 		return mapAutoUpdating;
@@ -103,6 +136,14 @@ public class FPlayer {
 
 	public void setMapAutoUpdating(boolean mapAutoUpdating) {
 		this.mapAutoUpdating = mapAutoUpdating;
+	}
+	
+	public FLocation getLastStoodAt() {
+		return this.lastStoodAt;
+	}
+	
+	public void setLastStoodAt(FLocation flocation) {
+		this.lastStoodAt = flocation;
 	}
 	
 	//----------------------------------------------//
@@ -300,7 +341,7 @@ public class FPlayer {
 	// Territory
 	//----------------------------------------------//
 	public boolean isInOwnTerritory() {
-		return Board.getIdAt(new FLocation(this)) == this.factionId;
+		return Board.getFactionAt(new FLocation(this)) == this.getFaction();
 	}
 	
 	public boolean isInOthersTerritory() {
@@ -311,23 +352,25 @@ public class FPlayer {
 	public void sendFactionHereMessage() {
 		Faction factionHere = Board.getFactionAt(new FLocation(this));
 		String msg = Conf.colorSystem+" ~ "+factionHere.getTag(this);
-		if (factionHere.id != 0) {
+		if (factionHere.getId() != 0) {
 			msg += " - "+factionHere.getDescription();
 		}
 		this.sendMessage(msg);
 	}
 	
-	//----------------------------------------------//
-	// Faction management
-	//----------------------------------------------//
-	public Faction getFaction() {
-		return Faction.get(factionId);
+	// -------------------------------------------- //
+	// Messages
+	// -------------------------------------------- //
+	public void sendMessage(String message) {
+		this.getPlayer().sendMessage(Conf.colorSystem + message);
 	}
 	
-	public boolean hasFaction() {
-		return factionId != 0;
+	public void sendMessage(List<String> messages) {
+		for(String message : messages) {
+			this.sendMessage(message);
+		}
 	}
-	
+
 	// -------------------------------------------- //
 	// Get and search
 	// -------------------------------------------- //
@@ -366,19 +409,6 @@ public class FPlayer {
 			}
 		}
 		return null;
-	}
-	
-	// -------------------------------------------- //
-	// Messages
-	// -------------------------------------------- //
-	public void sendMessage(String message) {
-		this.getPlayer().sendMessage(Conf.colorSystem + message);
-	}
-	
-	public void sendMessage(List<String> messages) {
-		for(String message : messages) {
-			this.sendMessage(message);
-		}
 	}
 	
 	// -------------------------------------------- //

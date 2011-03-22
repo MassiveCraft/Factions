@@ -28,7 +28,7 @@ public class FCommandJoin extends FBaseCommand {
 			return;
 		}
 
-		if (faction.id == me.factionId) {
+		if (faction == me.getFaction()) {
 			sendMessage("You are already a member of "+faction.getTag(me));
 			return;
 		}
@@ -48,8 +48,8 @@ public class FCommandJoin extends FBaseCommand {
 		faction.sendMessage(me.getNameAndRelevant(faction)+Conf.colorSystem+" joined your faction.");
 		
 		me.resetFactionData();
-		me.factionId = faction.id;
-		faction.invites.remove(me.playerName);
+		me.setFaction(faction);
+		faction.deinvite(me);
 		FPlayer.save();
 	}
 	

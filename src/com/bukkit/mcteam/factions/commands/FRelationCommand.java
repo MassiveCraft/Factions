@@ -36,7 +36,7 @@ public class FRelationCommand extends FBaseCommand {
 			return;
 		}
 		
-		if (otherFaction.id == 0) {
+		if (otherFaction.getId() == 0) {
 			sendMessage("Nope! You can't :) The default faction is not a real faction.");
 			return;
 		}

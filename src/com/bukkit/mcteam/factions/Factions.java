@@ -39,9 +39,9 @@ public class Factions extends JavaPlugin {
 	.excludeFieldsWithModifiers(Modifier.TRANSIENT, Modifier.VOLATILE)
 	.create();
 	
-	private final FactionsPlayerListener playerListener = new FactionsPlayerListener(this);
-	private final FactionsEntityListener entityListener = new FactionsEntityListener(this);
-	private final FactionsBlockListener blockListener = new FactionsBlockListener(this);
+	private final FactionsPlayerListener playerListener = new FactionsPlayerListener();
+	private final FactionsEntityListener entityListener = new FactionsEntityListener();
+	private final FactionsBlockListener blockListener = new FactionsBlockListener();
 	
 	public static PermissionHandler Permissions;
 	public static Help helpPlugin;

@@ -42,8 +42,8 @@ public class FCommandCreate extends FBaseCommand {
 		
 		Faction faction = Faction.create();
 		faction.setTag(tag);
-		me.role = Role.ADMIN;
-		me.factionId = faction.id;
+		me.setRole(Role.ADMIN);
+		me.setFaction(faction);
 		Faction.save();
 		FPlayer.save();
 		

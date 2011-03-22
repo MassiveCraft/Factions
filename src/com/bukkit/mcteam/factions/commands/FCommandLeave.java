@@ -27,7 +27,7 @@ public class FCommandLeave extends FBaseCommand {
 		
 		Faction faction = me.getFaction();
 		
-		if (me.role == Role.ADMIN && faction.getFPlayers().size() > 1) {
+		if (me.getRole() == Role.ADMIN && faction.getFPlayers().size() > 1) {
 			sendMessage("You must give the admin role to someone else first.");
 			return;
 		}
@@ -41,7 +41,7 @@ public class FCommandLeave extends FBaseCommand {
 			for (FPlayer fplayer : FPlayer.getAllOnline()) {
 				fplayer.sendMessage("The faction "+faction.getTag(fplayer)+Conf.colorSystem+" was disbanded.");
 			}
-			Faction.delete(faction.id);
+			Faction.delete(faction.getId());
 		}
 	}
 	

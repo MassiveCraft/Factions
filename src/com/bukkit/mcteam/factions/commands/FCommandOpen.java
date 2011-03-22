@@ -36,7 +36,7 @@ public class FCommandOpen extends FBaseCommand {
 		// Inform
 		myFaction.sendMessage(me.getNameAndRelevant(myFaction)+Conf.colorSystem+" changed the faction to "+open);
 		for (Faction faction : Faction.getAll()) {
-			if (faction.id == me.factionId) {
+			if (faction == me.getFaction()) {
 				continue;
 			}
 			faction.sendMessage(Conf.colorSystem+"The faction "+myFaction.getTag(faction)+Conf.colorSystem+" is now "+open);

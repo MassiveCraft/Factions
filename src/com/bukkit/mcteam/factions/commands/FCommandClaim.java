@@ -51,7 +51,7 @@ public class FCommandClaim extends FBaseCommand {
 			return;
 		}
 		
-		if (otherFaction.id != 0) {
+		if (otherFaction.getId() != 0) {
 			if ( ! otherFaction.hasLandInflation()) { // TODO more messages WARN current faction most importantly
 				sendMessage(me.getRelationColor(otherFaction)+otherFaction.getTag()+Conf.colorSystem+" owns this land and is strong enough to keep it.");
 				return;
@@ -63,7 +63,7 @@ public class FCommandClaim extends FBaseCommand {
 			}
 		}
 		
-		if (otherFaction.id == 0) {
+		if (otherFaction.getId() == 0) {
 			myFaction.sendMessage(me.getNameAndRelevant(myFaction)+Conf.colorSystem+" claimed some new land :D");
 		} else {
 			// ASDF claimed some of your land 450 blocks NNW of you.

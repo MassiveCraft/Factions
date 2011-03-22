@@ -41,12 +41,12 @@ public class FCommandKick extends FBaseCommand {
 			return;
 		}
 		
-		if (you.role.value >= me.role.value) { // TODO add more informative messages.
+		if (you.getRole().value >= me.getRole().value) { // TODO add more informative messages.
 			sendMessage("Your rank is too low to kick this player.");
 			return;
 		}
 		
-		myFaction.invites.remove(you.playerName);
+		myFaction.deinvite(you);
 		you.resetFactionData();
 		FPlayer.save();
 		Faction.save();	

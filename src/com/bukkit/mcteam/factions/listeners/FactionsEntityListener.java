@@ -3,9 +3,9 @@ package com.bukkit.mcteam.factions.listeners;
 import java.text.MessageFormat;
 
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Creeper;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Fireball;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageByProjectileEvent;
@@ -16,16 +16,11 @@ import org.bukkit.event.entity.EntityListener;
 
 import com.bukkit.mcteam.factions.Board;
 import com.bukkit.mcteam.factions.Conf;
-import com.bukkit.mcteam.factions.Coord;
+import com.bukkit.mcteam.factions.FLocation;
 import com.bukkit.mcteam.factions.FPlayer;
-import com.bukkit.mcteam.factions.Factions;
 import com.bukkit.mcteam.factions.struct.Relation;
 
 public class FactionsEntityListener extends EntityListener {
-	public Factions plugin;
-	public FactionsEntityListener(Factions plugin) {
-		this.plugin = plugin;
-	}
 	
 	@Override
 	public void onEntityDeath(EntityDeathEvent event) {
@@ -37,7 +32,7 @@ public class FactionsEntityListener extends EntityListener {
 		Player player = (Player) entity;
 		FPlayer follower = FPlayer.get(player);
 		follower.onDeath();
-		follower.sendMessage(Conf.colorSystem+"Your power is now "+follower.getPowerRounded()+" / "+follower.getPowerMaxRounded());
+		follower.sendMessage("Your power is now "+follower.getPowerRounded()+" / "+follower.getPowerMaxRounded());
 	}
 	
 	/**
@@ -49,7 +44,7 @@ public class FactionsEntityListener extends EntityListener {
 	@Override
 	public void onEntityDamage(EntityDamageEvent event) {
 		if ( event.isCancelled()) {
-			return; // Some other plugin decided. Alright then.
+			return;
 		}
 		
 		if (event instanceof EntityDamageByEntityEvent) {
@@ -65,24 +60,26 @@ public class FactionsEntityListener extends EntityListener {
         }
 	}
 
+	
+	// TODO what happens with the creeper or fireball then?
 	@Override
 	public void onEntityExplode(EntityExplodeEvent event)
 	{
-		if (Conf.territoryBlockCreepers && event.getEntity() instanceof LivingEntity)
-		{	// creeper which might need prevention, if inside faction territory
-			if (Board.get(event.getLocation().getWorld()).getFactionIdAt(Coord.from(event.getLocation())) > 0)
-			{
-				event.setCancelled(true);
-				return;
-			}
+		if ( event.isCancelled()) {
+			return;
 		}
-		else if (Conf.territoryBlockFireballs && event.getEntity() instanceof Fireball)
-		{	// ghast fireball which might need prevention, if inside faction territory
-			if (Board.get(event.getLocation().getWorld()).getFactionIdAt(Coord.from(event.getLocation())) > 0)
-			{
-				event.setCancelled(true);
-				return;
-			}
+		
+		// Explosions may happen in the wilderness
+		if (Board.getIdAt(new FLocation(event.getLocation())) == 0) {
+			return;
+		}
+		
+		if (Conf.territoryBlockCreepers && event.getEntity() instanceof Creeper) {
+			// creeper which might need prevention, if inside faction territory
+			event.setCancelled(true);
+		} else if (Conf.territoryBlockFireballs && event.getEntity() instanceof Fireball) {
+			// ghast fireball which might need prevention, if inside faction territory
+			event.setCancelled(true);
 		}
 	}
 
@@ -105,7 +102,7 @@ public class FactionsEntityListener extends EntityListener {
 		//Log.debug(attacker.getName() + " attacked " + defender.getName());
 		
 		// Players without faction may be hurt anywhere
-		if (defender.factionId == 0) {
+		if (defender.getFaction().getId() == 0) {
 			return true;
 		}
 		

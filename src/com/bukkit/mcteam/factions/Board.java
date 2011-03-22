@@ -55,7 +55,7 @@ public class Board {
 	}
 	
 	public static void setFactionAt(Faction faction, FLocation flocation) {
-		setIdAt(faction.id, flocation);
+		setIdAt(faction.getId(), flocation);
 	}
 	
 	public static void removeAt(FLocation flocation) {
@@ -112,7 +112,7 @@ public class Board {
 	}
 	
 	public static int getFactionCoordCount(Faction faction) {
-		return getFactionCoordCount(faction.id);
+		return getFactionCoordCount(faction.getId());
 	}
 	
 	//----------------------------------------------//
@@ -144,7 +144,7 @@ public class Board {
 				} else {
 					FLocation flocationHere = topLeft.getRelative(dx, dz);
 					Faction factionHere = getFactionAt(flocationHere);
-					if (factionHere.id == 0) {
+					if (factionHere.getId() == 0) {
 						row += ChatColor.GRAY+"-";
 					} else {
 						row += factionHere.getRelation(faction).getColor()+"+";

@@ -44,7 +44,7 @@ public class FCommandDeinvite extends FBaseCommand {
 			return;
 		}
 		
-		myFaction.invites.remove(you.playerName);
+		myFaction.deinvite(you);
 		Faction.save();
 		
 		you.sendMessage(me.getNameAndRelevant(you)+Conf.colorSystem+" revoked your invitation to "+myFaction.getTag(you));

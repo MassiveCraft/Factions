@@ -10,7 +10,6 @@ import java.util.logging.Level;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-import com.bukkit.mcteam.factions.entities.EM;
 import com.bukkit.mcteam.factions.struct.Relation;
 import com.bukkit.mcteam.factions.struct.Role;
 import com.bukkit.mcteam.factions.util.*;
@@ -18,16 +17,25 @@ import com.bukkit.mcteam.gson.reflect.TypeToken;
 import com.bukkit.mcteam.util.DiscUtil;
 
 public class Faction {
-	public static transient Map<Integer, Faction> instances = new HashMap<Integer, Faction>();
-	public static transient File file = new File(Factions.instance.getDataFolder(), "factions.json");
-	public static transient int nextId;
 	
-	public transient int id;
-	protected Map<Integer, Relation> relationWish;
-	public Set<String> invites; // Where string is a follower id (lower case name)
-	protected boolean open;
-	protected String tag;
-	protected String description;
+	// -------------------------------------------- //
+	// Fields
+	// -------------------------------------------- //
+	
+	private static transient Map<Integer, Faction> instances = new HashMap<Integer, Faction>();
+	private static transient File file = new File(Factions.instance.getDataFolder(), "factions.json");
+	private static transient int nextId;
+	
+	private transient int id;
+	private Map<Integer, Relation> relationWish;
+	private Set<String> invites; // Where string is a follower id (lower case name)
+	private boolean open;
+	private String tag;
+	private String description;
+	
+	// -------------------------------------------- //
+	// Construct
+	// -------------------------------------------- //
 	
 	public Faction() {
 		this.relationWish = new HashMap<Integer, Relation>();
@@ -36,6 +44,69 @@ public class Faction {
 		this.tag = "???";
 		this.description = "Default faction description :(";
 	}
+	
+	// -------------------------------------------- //
+	// Getters And Setters
+	// -------------------------------------------- //
+	
+	public int getId() {
+		return this.id;
+	}
+	
+	// -------------------------------
+	// Invites
+	// -------------------------------
+	
+	public void invite(FPlayer fplayer) {
+		this.invites.add(fplayer.getName()); //TODO Lowercase paradigm shit....
+	}
+	
+	public void deinvite(FPlayer fplayer) {
+		this.invites.remove(fplayer.getName()); //TODO Lowercase paradigm shit....
+	}
+	
+	public boolean isInvited(FPlayer fplayer) {
+		return this.invites.contains(fplayer.getName()); //TODO Lowercase paradigm shit....
+	}
+	
+	// -------------------------------
+	// Relation and relation colors TODO
+	// -------------------------------
+	
+	public Relation getRelationWish(Faction otherFaction) {
+		if (this.relationWish.containsKey(otherFaction.getId())){
+			return this.relationWish.get(otherFaction.getId());
+		}
+		return Relation.NEUTRAL;
+	}
+	
+	public void setRelationWish(Faction otherFaction, Relation relation) {
+		if (this.relationWish.containsKey(otherFaction.getId()) && relation.equals(Relation.NEUTRAL)){
+			this.relationWish.remove(otherFaction.getId());
+		} else {
+			this.relationWish.put(otherFaction.getId(), relation);
+		}
+		Faction.save();
+	}
+	
+	public Relation getRelation(Faction otherFaction) {
+		if (otherFaction.getId() == 0 || this.getId() == 0) {
+			return Relation.NEUTRAL;
+		}
+		if (otherFaction.equals(this)) {
+			return Relation.MEMBER;
+		}
+		if(this.getRelationWish(otherFaction).value >= otherFaction.getRelationWish(this).value) {
+			return otherFaction.getRelationWish(this);
+		}
+		return this.getRelationWish(otherFaction);
+	}
+	
+	public Relation getRelation(FPlayer follower) {
+		return getRelation(follower.getFaction());
+	}
+	
+	
 	
 	// -------------------------------
 	// Information
@@ -106,60 +177,11 @@ public class Faction {
 	}
 	
 	public int getLandRounded() {
-		return Board.getFactionCoordCountAllBoards(this);
+		return Board.getFactionCoordCount(this);
 	}
 	
 	public boolean hasLandInflation() {
 		return this.getLandRounded() > this.getPowerRounded();
-	}
-	
-	// -------------------------------
-	// Membership management
-	// -------------------------------
-	
-	
-	/*public ArrayList<String> invite(FPlayer follower) { // TODO Move out
-		ArrayList<String> errors = new ArrayList<String>();
-		
-		if (follower.getFaction().equals(this)) { // error här?
-			errors.add(Conf.colorSystem+follower.getName()+" is already a member of "+this.getTag());
-		}
-		
-		if(errors.size() > 0) {
-			return errors;
-		}
-		
-		this.invites.add(follower.id);
-		this.save();
-		return errors;
-	}
-	
-	public ArrayList<String> deinvite(FPlayer follower) { // TODO move out!
-		ArrayList<String> errors = new ArrayList<String>();
-		
-		if (follower.getFaction() == this) {
-			errors.add(Conf.colorSystem+follower.getName()+" is already a member of "+this.getTag());
-			errors.add(Conf.colorSystem+"You might want to "+Conf.colorCommand+Conf.aliasBase.get(0)+" "+Conf.aliasKick.get(0)+Conf.colorParameter+" "+follower.getName());
-		}
-		
-		if(errors.size() > 0) {
-			return errors;
-		}
-		
-		this.invites.remove(follower.id);
-		this.save();
-		return errors;
-	}*/
-	
-	public ArrayList<String> kick(FPlayer follower) {
-		ArrayList<String> errors = new ArrayList<String>();
-		removeFollower(follower);
-		return errors;
-	}
-	
-	
-	public boolean isInvited(FPlayer follower) {
-		return invites.contains(follower.id);
 	}
 	
 	// -------------------------------
@@ -169,7 +191,7 @@ public class Faction {
 	public ArrayList<FPlayer> getFPlayers() {
 		ArrayList<FPlayer> ret = new ArrayList<FPlayer>();
 		for (FPlayer follower : FPlayer.getAll()) {
-			if (follower.factionId == this.id) {
+			if (follower.getFaction() == this) {
 				ret.add(follower);
 			}
 		}
@@ -178,9 +200,9 @@ public class Faction {
 	
 	public ArrayList<FPlayer> getFPlayersWhereOnline(boolean online) {
 		ArrayList<FPlayer> ret = new ArrayList<FPlayer>();
-		for (FPlayer follower : FPlayer.getAll()) {
-			if (follower.factionId == this.id && follower.isOnline() == online) {
-				ret.add(follower);
+		for (FPlayer fplayer : FPlayer.getAll()) {
+			if (fplayer.getFaction() == this && fplayer.isOnline() == online) {
+				ret.add(fplayer);
 			}
 		}
 		return ret;
@@ -189,9 +211,9 @@ public class Faction {
 	public ArrayList<FPlayer> getFPlayersWhereRole(Role role) {
 		ArrayList<FPlayer> ret = new ArrayList<FPlayer>();
 		
-		for (FPlayer follower : FPlayer.getAll()) {
-			if (follower.factionId == this.id && follower.role.equals(role)) {
-				ret.add(follower);
+		for (FPlayer fplayer : FPlayer.getAll()) {
+			if (fplayer.getFaction() == this && fplayer.getRole() == role) {
+				ret.add(fplayer);
 			}
 		}
 		
@@ -214,7 +236,7 @@ public class Faction {
 		ArrayList<Player> ret = new ArrayList<Player>();
 		for (Player player: Factions.instance.getServer().getOnlinePlayers()) {
 			FPlayer follower = FPlayer.get(player);
-			if (follower.factionId == this.id) {
+			if (follower.getFaction() == this) {
 				ret.add(player);
 			}
 		}
@@ -264,57 +286,23 @@ public class Faction {
 	}
 	
 	//----------------------------------------------//
-	// Messages - Directly connected to ChatFixUtil
+	// Messages
 	//----------------------------------------------//
-	public void sendMessage(String message, boolean fix) {
-		ChatFixUtil.sendMessage(this.getOnlinePlayers(), message, fix);
-	}
-	public void sendMessage(List<String> messages, boolean fix) {
-		ChatFixUtil.sendMessage(this.getOnlinePlayers(), messages, fix);
-	}
 	public void sendMessage(String message) {
-		ChatFixUtil.sendMessage(this.getOnlinePlayers(), message, true);
+		for (FPlayer fplayer : this.getFPlayersWhereOnline(true)) {
+			fplayer.sendMessage(message);
+		}
 	}
+	
 	public void sendMessage(List<String> messages) {
-		ChatFixUtil.sendMessage(this.getOnlinePlayers(), messages, true);
+		for (FPlayer fplayer : this.getFPlayersWhereOnline(true)) {
+			fplayer.sendMessage(messages);
+		}
 	}
 	
-	// -------------------------------
-	// Relation and relation colors
-	// -------------------------------
-	
-	public Relation getRelationWish(Faction otherFaction) {
-		if (this.relationWish.containsKey(otherFaction.id)){
-			return this.relationWish.get(otherFaction.id);
-		}
-		return Relation.NEUTRAL;
-	}
-	
-	public void setRelationWish(Faction otherFaction, Relation relation) {
-		if (this.relationWish.containsKey(otherFaction.id) && relation.equals(Relation.NEUTRAL)){
-			this.relationWish.remove(otherFaction.id);
-		} else {
-			this.relationWish.put(otherFaction.id, relation);
-		}
-		this.save();
-	}
-	
-	public Relation getRelation(Faction otherFaction) {
-		if (otherFaction.id == 0 || this.id == 0) {
-			return Relation.NEUTRAL;
-		}
-		if (otherFaction.equals(this)) {
-			return Relation.MEMBER;
-		}
-		if(this.getRelationWish(otherFaction).value >= otherFaction.getRelationWish(this).value) {
-			return otherFaction.getRelationWish(this);
-		}
-		return this.getRelationWish(otherFaction);
-	}
-	
-	public Relation getRelation(FPlayer follower) {
-		return getRelation(follower.getFaction());
-	}
+	//----------------------------------------------//
+	// Mudd TODO
+	//----------------------------------------------//
 	
 	public ChatColor getRelationColor(Faction otherFaction) {
 		return this.getRelation(otherFaction).getColor();
@@ -323,6 +311,8 @@ public class Faction {
 	public ChatColor getRelationColor(FPlayer follower) {
 		return this.getRelation(follower).getColor();
 	}
+	
+
 	
 	//----------------------------------------------//
 	// Persistance and entity management
@@ -385,7 +375,7 @@ public class Faction {
 	public static Faction get(Integer factionId) {
 		if ( ! instances.containsKey(factionId)) {
 			Factions.log(Level.WARNING, "Non existing factionId "+factionId+" requested! Issuing board cleaning!");
-			Board.cleanAll();
+			Board.clean();
 		}
 		return instances.get(factionId);
 	}
@@ -415,7 +405,7 @@ public class Faction {
 		
 		// purge from all boards
 		// Board.purgeFactionFromAllBoards(id);
-		Board.cleanAll();
+		Board.clean();
 		
 		// Remove the file
 		//File file = new File(folderFaction, id+ext);
@@ -429,22 +419,4 @@ public class Faction {
 		// TODO SAVE files
 		return true; // TODO
 	}
-	
-	/*
-	public static Faction create() {
-		return EM.factionCreate();
-	}
-	
-	public static Faction get(Integer factionId) {
-		return EM.factionGet(factionId);
-	}
-	
-	public static Collection<Faction> getAll() {
-		return EM.factionGetAll();
-	}
-	
-	public boolean save() {
-		return EM.factionSave(this.id);
-	}
-	*/
 }

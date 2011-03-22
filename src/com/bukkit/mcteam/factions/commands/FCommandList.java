@@ -40,9 +40,9 @@ public class FCommandList extends FBaseCommand {
 		Collections.sort(FactionList, new Comparator<Faction>(){
 			@Override
 			public int compare(Faction f1, Faction f2) {
-				if (f1.id == 0)
+				if (f1.getId() == 0)
 					return 1;
-				else if (f2.id == 0)
+				else if (f2.getId() == 0)
 					return -1;
 				else if (f1.getFPlayers().size() < f2.getFPlayers().size())
 					return 1;
@@ -78,7 +78,7 @@ public class FCommandList extends FBaseCommand {
 		if (maxPos > FactionList.size()) maxPos = FactionList.size();
 		for (int pos = page * 9; pos < maxPos; pos++) {
 			Faction faction = FactionList.get(pos);
-			if (faction.id == 0) {
+			if (faction.getId() == 0) {
 				sendMessage(faction.getTag(me)+Conf.colorSystem+" "+faction.getFPlayersWhereOnline(true).size() + " online");
 			} else {
 				sendMessage(faction.getTag(me)+Conf.colorSystem+" "+faction.getFPlayersWhereOnline(true).size()+"/"+faction.getFPlayers().size()+" online, "+faction.getLandRounded()+"/"+faction.getPowerRounded()+"/"+faction.getPowerMaxRounded());

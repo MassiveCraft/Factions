@@ -49,13 +49,13 @@ public class FCommandMod extends FBaseCommand {
 			return;
 		}
 
-		if (you.role == Role.MODERATOR) {
+		if (you.getRole() == Role.MODERATOR) {
 			// Revoke
-			you.role = Role.NORMAL;
+			you.setRole(Role.NORMAL);
 			myFaction.sendMessage(you.getNameAndRelevant(myFaction)+Conf.colorSystem+" is no longer moderator in your faction.");
 		} else {
 			// Give
-			you.role = Role.MODERATOR;
+			you.setRole(Role.MODERATOR);
 			myFaction.sendMessage(you.getNameAndRelevant(myFaction)+Conf.colorSystem+" was promoted to moderator in your faction.");
 		}
 	}

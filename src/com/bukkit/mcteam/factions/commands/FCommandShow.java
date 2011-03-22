@@ -38,7 +38,7 @@ public class FCommandShow extends FBaseCommand {
 		
 		sendMessage(TextUtil.titleize(faction.getTag(me)));
 		sendMessage(Conf.colorChrome+"Description: "+Conf.colorSystem+faction.getDescription());
-		if (faction.id == 0) {
+		if (faction.getId() == 0) {
 			return;
 		}
 		

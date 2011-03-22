@@ -185,7 +185,7 @@ public class FBaseCommand {
 	}
 	
 	public boolean assertMinRole(Role role) {
-		if (me.role.value < role.value) {
+		if (me.getRole().value < role.value) {
 			sendMessage("You must be "+role+" to "+this.helpDescription+".");
 			return false;
 		}
@@ -246,13 +246,13 @@ public class FBaseCommand {
 			return false;
 		}
 		
-		if (i.role.value > you.role.value || i.role.equals(Role.ADMIN) ) {
+		if (i.getRole().value > you.getRole().value || i.getRole().equals(Role.ADMIN) ) {
 			return true;
 		}
 		
-		if (you.role.equals(Role.ADMIN)) {
+		if (you.getRole().equals(Role.ADMIN)) {
 			i.sendMessage(Conf.colorSystem+"Only the faction admin can do that.");
-		} else if (i.role.equals(Role.MODERATOR)) {
+		} else if (i.getRole().equals(Role.MODERATOR)) {
 			i.sendMessage(Conf.colorSystem+"Moderators can't control each other...");
 		} else {
 			i.sendMessage(Conf.colorSystem+"You must be a faction moderator to do that.");

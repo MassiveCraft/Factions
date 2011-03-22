@@ -50,12 +50,12 @@ public class FCommandAdmin extends FBaseCommand {
 		}
 
 		
-		me.role = Role.MODERATOR;
-		you.role = Role.ADMIN;
+		me.setRole(Role.MODERATOR);
+		you.setRole(Role.ADMIN);
 		
 		// Inform all players
 		for (FPlayer fplayer : FPlayer.getAllOnline()) {
-			if (fplayer.factionId == me.factionId) {
+			if (fplayer.getFaction() == me.getFaction()) {
 				fplayer.sendMessage(me.getNameAndRelevant(me)+Conf.colorSystem+" gave "+you.getNameAndRelevant(me)+Conf.colorSystem+" the leadership of your faction.");
 			} else {
 				fplayer.sendMessage(me.getNameAndRelevant(fplayer)+Conf.colorSystem+" gave "+you.getNameAndRelevant(fplayer)+Conf.colorSystem+" the leadership of "+myFaction.getTag(fplayer));

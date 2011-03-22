@@ -12,22 +12,14 @@ import org.bukkit.event.player.PlayerListener;
 import org.bukkit.event.player.PlayerMoveEvent;
 
 import com.bukkit.mcteam.factions.Board;
-import com.bukkit.mcteam.factions.Commands;
 import com.bukkit.mcteam.factions.Conf;
-import com.bukkit.mcteam.factions.Coord;
 import com.bukkit.mcteam.factions.FPlayer;
 import com.bukkit.mcteam.factions.Faction;
 import com.bukkit.mcteam.factions.Factions;
-import com.bukkit.mcteam.factions.entities.*;
 import com.bukkit.mcteam.factions.util.TextUtil;
-import com.bukkit.mcteam.factions.util.Log;
 
 
 public class FactionsPlayerListener extends PlayerListener{
-	public Factions plugin;
-	public FactionsPlayerListener(Factions plugin) {
-		this.plugin = plugin;
-	}
 
 	/**
 	 * If someone says something that starts with the factions base command
