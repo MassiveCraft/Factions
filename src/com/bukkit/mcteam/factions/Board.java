@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.TreeMap;
 
 import org.bukkit.ChatColor;
 
@@ -16,25 +17,19 @@ import com.bukkit.mcteam.gson.reflect.TypeToken;
 import com.bukkit.mcteam.util.AsciiCompass;
 import com.bukkit.mcteam.util.DiscUtil;
 
-// TODO rework to use single layer hash map and convert from and to the formay while saving and loading!!
-
 public class Board {
-	protected static transient File file = new File(Factions.instance.getDataFolder(), "board.json");
-	private static Map<String,Map<String,Integer>> worldCoordIds = new HashMap<String,Map<String,Integer>>(); 
+	private static transient File file = new File(Factions.instance.getDataFolder(), "board.json");
+	private static transient HashMap<FLocation, Integer> flocationIds = new HashMap<FLocation, Integer>();
 	
 	//----------------------------------------------//
 	// Get and Set
 	//----------------------------------------------//
 	public static int getIdAt(FLocation flocation) {
-		if ( ! worldCoordIds.containsKey(flocation.getWorldName())) {
+		if ( ! flocationIds.containsKey(flocation)) {
 			return 0;
 		}
 		
-		if ( ! worldCoordIds.get(flocation.getWorldName()).containsKey(flocation.getCoordString()) ) {
-			return 0;
-		}
-		
-		return worldCoordIds.get(flocation.getWorldName()).get(flocation.getCoordString());
+		return flocationIds.get(flocation);
 	}
 	
 	public static Faction getFactionAt(FLocation flocation) {
@@ -46,11 +41,7 @@ public class Board {
 			removeAt(flocation);
 		}
 		
-		if ( ! worldCoordIds.containsKey(flocation.getWorldName())) {
-			worldCoordIds.put(flocation.getWorldName(), new HashMap<String,Integer>());
-		}
-		
-		worldCoordIds.get(flocation.getWorldName()).put(flocation.getCoordString(), id);
+		flocationIds.put(flocation, id);
 	}
 	
 	public static void setFactionAt(Faction faction, FLocation flocation) {
@@ -58,10 +49,7 @@ public class Board {
 	}
 	
 	public static void removeAt(FLocation flocation) {
-		if ( ! worldCoordIds.containsKey(flocation.getWorldName())) {
-			return;
-		}
-		worldCoordIds.get(flocation.getWorldName()).remove(flocation.getCoordString());
+		flocationIds.remove(flocation);
 	}
 
 	// Is this coord NOT completely surrounded by coords claimed by the same faction?
@@ -81,14 +69,12 @@ public class Board {
 	//----------------------------------------------//
 	
 	public static void clean() {
-		for (String worldName : worldCoordIds.keySet()) {
-			Iterator<Entry<String, Integer>> iter = worldCoordIds.get(worldName).entrySet().iterator();
-			while (iter.hasNext()) {
-				Entry<String, Integer> entry = iter.next();
-				if ( ! Faction.exists(entry.getValue())) {
-					Factions.log("Board cleaner removed non existing faction id "+entry.getValue()+" from "+worldName+" "+entry.getKey());
-					iter.remove();
-				}
+		Iterator<Entry<FLocation, Integer>> iter = flocationIds.entrySet().iterator();
+		while (iter.hasNext()) {
+			Entry<FLocation, Integer> entry = iter.next();
+			if ( ! Faction.exists(entry.getValue())) {
+				Factions.log("Board cleaner removed "+entry.getValue()+" from "+entry.getKey());
+				iter.remove();
 			}
 		}
 	}	
@@ -99,11 +85,9 @@ public class Board {
 	
 	public static int getFactionCoordCount(int factionId) {
 		int ret = 0;
-		for (Map<String, Integer> coordIds : worldCoordIds.values()) {
-			for (int thatFactionId : coordIds.values()) {
-				if(thatFactionId == factionId) {
-					ret += 1;
-				}
+		for (int thatFactionId : flocationIds.values()) {
+			if(thatFactionId == factionId) {
+				ret += 1;
 			}
 		}
 		return ret;
@@ -168,16 +152,49 @@ public class Board {
 	// Persistance
 	// -------------------------------------------- //
 	
+	public static Map<String,Map<String,Integer>> dumpAsSaveFormat() {
+		Map<String,Map<String,Integer>> worldCoordIds = new HashMap<String,Map<String,Integer>>(); 
+		
+		for (Entry<FLocation, Integer> entry : flocationIds.entrySet()) {
+			String worldName = entry.getKey().getWorldName();
+			String coords = entry.getKey().getCoordString();
+			Integer id = entry.getValue();
+			if ( ! worldCoordIds.containsKey(worldName)) {
+				worldCoordIds.put(worldName, new TreeMap<String,Integer>());
+			}
+			
+			worldCoordIds.get(worldName).put(coords, id);
+		}
+		
+		return worldCoordIds;
+	}
+	
+	public static void loadFromSaveFormat(Map<String,Map<String,Integer>> worldCoordIds) {
+		flocationIds.clear();
+		
+		for (Entry<String,Map<String,Integer>> entry : worldCoordIds.entrySet()) {
+			String worldName = entry.getKey();
+			for (Entry<String,Integer> entry2 : entry.getValue().entrySet()) {
+				String[] coords = entry2.getKey().trim().split("[,\\s]+");
+				int x = Integer.parseInt(coords[0]);
+				int z = Integer.parseInt(coords[1]);
+				int factionId = entry2.getValue();
+				flocationIds.put(new FLocation(worldName, x, z), factionId);
+			}
+		}
+	}
+	
 	public static boolean save() {
 		//Factions.log("Saving board to disk");
 		
 		try {
-			DiscUtil.write(file, Factions.gson.toJson(worldCoordIds));
+			DiscUtil.write(file, Factions.gson.toJson(dumpAsSaveFormat()));
 		} catch (IOException e) {
 			Factions.log("Failed to save the board to disk.");
 			e.printStackTrace();
 			return false;
 		}
+		
 		return true;
 	}
 	
@@ -192,7 +209,8 @@ public class Board {
 		
 		try {
 			Type type = new TypeToken<Map<String,Map<String,Integer>>>(){}.getType();
-			worldCoordIds = Factions.gson.fromJson(DiscUtil.read(file), type);
+			Map<String,Map<String,Integer>> worldCoordIds = Factions.gson.fromJson(DiscUtil.read(file), type);
+			loadFromSaveFormat(worldCoordIds);
 		} catch (IOException e) {
 			Factions.log("Failed to load the board from disk.");
 			e.printStackTrace();

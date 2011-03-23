@@ -150,8 +150,7 @@ public class FactionsPlayerListener extends PlayerListener{
 		}
 
 	}
-
-	//currently checking placement/use of: redstone, sign, flint&steel, beds (not currently detected by Bukkit), buckets (empty, water, lava), repeater (not currently detected by Bukkit)
+    
 	public boolean playerCanUseItemHere(Player player, Block block, Material material) {
 
 		if ( ! Conf.territoryDenyUseageMaterials.contains(material)) {

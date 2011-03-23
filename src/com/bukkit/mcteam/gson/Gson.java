@@ -20,6 +20,7 @@ import com.bukkit.mcteam.gson.stream.JsonReader;
 import com.bukkit.mcteam.gson.stream.JsonToken;
 import com.bukkit.mcteam.gson.stream.JsonWriter;
 import com.bukkit.mcteam.gson.stream.MalformedJsonException;
+import com.bukkit.mcteam.gson.JsonSerializationContextDefault;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;

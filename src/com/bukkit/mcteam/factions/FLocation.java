@@ -73,6 +73,11 @@ public class FLocation {
 	public String getCoordString() {
 		return ""+x+","+z;
 	}
+	
+	@Override
+	public String toString() {
+		return "["+this.getWorldName()+","+this.getCoordString()+"]";
+	}
 
 	//----------------------------------------------//
 	// Misc
