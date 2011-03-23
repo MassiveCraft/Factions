@@ -1,7 +1,5 @@
 package com.bukkit.mcteam.factions.commands;
 
-import java.util.ArrayList;
-
 import com.bukkit.mcteam.factions.Conf;
 import com.bukkit.mcteam.factions.FPlayer;
 import com.bukkit.mcteam.factions.Faction;
@@ -9,16 +7,9 @@ import com.bukkit.mcteam.factions.Faction;
 public class FCommandKick extends FBaseCommand {
 	
 	public FCommandKick() {
-		aliases = new ArrayList<String>();
 		aliases.add("kick");
 		
-		requiredParameters = new ArrayList<String>();
-		optionalParameters = new ArrayList<String>();
 		requiredParameters.add("player name");
-		
-		permissions = "";
-		
-		senderMustBePlayer = true;
 		
 		helpDescription = "Kick a player from the faction";
 	}

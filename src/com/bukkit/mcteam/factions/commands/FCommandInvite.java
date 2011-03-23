@@ -1,7 +1,5 @@
 package com.bukkit.mcteam.factions.commands;
 
-import java.util.ArrayList;
-
 import com.bukkit.mcteam.factions.Conf;
 import com.bukkit.mcteam.factions.FPlayer;
 import com.bukkit.mcteam.factions.Faction;
@@ -10,17 +8,10 @@ import com.bukkit.mcteam.factions.struct.Role;
 public class FCommandInvite extends FBaseCommand {
 	
 	public FCommandInvite() {
-		aliases = new ArrayList<String>();
 		aliases.add("invite");
 		aliases.add("inv");
 		
-		requiredParameters = new ArrayList<String>();
-		optionalParameters = new ArrayList<String>();
 		requiredParameters.add("player name");
-		
-		permissions = "";
-		
-		senderMustBePlayer = true;
 		
 		helpDescription = "Invite a player";
 	}

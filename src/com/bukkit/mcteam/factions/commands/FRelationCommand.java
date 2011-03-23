@@ -1,7 +1,5 @@
 package com.bukkit.mcteam.factions.commands;
 
-import java.util.ArrayList;
-
 import org.bukkit.ChatColor;
 
 import com.bukkit.mcteam.factions.Conf;
@@ -13,13 +11,9 @@ import com.bukkit.mcteam.factions.struct.Role;
 public class FRelationCommand extends FBaseCommand {
 	
 	public FRelationCommand() {
-		requiredParameters = new ArrayList<String>();
-		optionalParameters = new ArrayList<String>();
 		requiredParameters.add("faction tag");
-		helpDescription = "Set relation wish to another faction";
-		permissions = "";
 		
-		senderMustBePlayer = true;
+		helpDescription = "Set relation wish to another faction";
 	}
 	
 	public void relation(Relation whishedRelation, String otherFactionName) {

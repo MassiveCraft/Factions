@@ -15,11 +15,8 @@ import com.bukkit.mcteam.factions.util.TextUtil;
 
 public class FBaseCommand {
 	public List<String> aliases;
-	
 	public List<String> requiredParameters;
 	public List<String> optionalParameters;
-	
-	public String permissions;
 	
 	public String helpNameAndParams;
 	public String helpDescription;
@@ -33,12 +30,11 @@ public class FBaseCommand {
 	
 	
 	public FBaseCommand() {
+		aliases = new ArrayList<String>();
 		requiredParameters = new ArrayList<String>();
 		optionalParameters = new ArrayList<String>();
 		
-		permissions = "";
-		
-		senderMustBePlayer = false;
+		senderMustBePlayer = true;
 		
 		helpNameAndParams = "fail!";
 		helpDescription = "no description";
@@ -47,12 +43,7 @@ public class FBaseCommand {
 	public List<String> getAliases() {
 		return aliases;
 	}
-	
-	public String getBaseName() {
-		// TODO fetch from the plugin.yaml or something...
-		return "f";
-	}
-	
+		
 	public void execute(CommandSender sender, List<String> parameters) {
 		this.sender = sender;
 		this.parameters = parameters;
@@ -83,16 +74,14 @@ public class FBaseCommand {
 		}
 	}
 	
-	// Test if the number of params is correct.
-	// TODO print usage
 	public boolean validateCall() {
-		if( ! testPermission(sender)) {
-			sendMessage("You do not have sufficient permissions to use this command.");
+		if ( this.senderMustBePlayer && ! (sender instanceof Player)) {
+			sendMessage("This command can only be used by ingame players.");
 			return false;
 		}
 		
-		if ( this.senderMustBePlayer && ! (sender instanceof Player)) {
-			sendMessage("This command can only be used by ingame players.");
+		if( ! hasPermission(sender)) {
+			sendMessage("You lack the permissions to "+this.helpDescription.toLowerCase()+".");
 			return false;
 		}
 		
@@ -104,26 +93,29 @@ public class FBaseCommand {
 		return true;
 	}
 	
-	public boolean testPermission(CommandSender sender) {
-		if (sender.isOp()) {
-			return true;
+	public boolean hasPermission(CommandSender sender) {
+		return Factions.hasPermParticipate(sender);
+	}
+	
+	/*public boolean testPermission(CommandSender sender) {
+		// There are two cases where we default to op:
+		// 1. Permissions is not installed
+		// 2. The sender is not a player
+		if ( Factions.Permissions == null || (! (sender instanceof Player))) {
+			if (this.opOnly && sender.isOp()) {
+				return true;
+			}
+			return false;
 		}
 		
+		// No permissions are needed to use this command.
 		if (this.permissions.length() == 0) {
 			return true;
 		}
 		
-		if ( ! (sender instanceof Player)) {
-			return false;
-		}
-		
-		if (Factions.Permissions == null) {
-			return false;
-		}
-		
 		Player player = (Player)sender;
 		return Factions.Permissions.has(player, this.permissions);		
-	}
+	}*/
 	
 	// -------------------------------------------- //
 	// Help and usage description
@@ -135,7 +127,7 @@ public class FBaseCommand {
 			ret += Conf.colorCommand;
 		}
 		
-		ret += this.getBaseName()+ " " +TextUtil.implode(this.getAliases(), ",")+" ";
+		ret += Factions.instance.getBaseCommand()+ " " +TextUtil.implode(this.getAliases(), ",")+" ";
 		
 		List<String> parts = new ArrayList<String>();
 		
@@ -165,10 +157,6 @@ public class FBaseCommand {
 	
 	public String getUseageTemplate() {
 		return getUseageTemplate(true);
-	}
-	
-	public void helpRegister() {
-		Factions.helpPlugin.registerCommand(this.getUseageTemplate(false), this.helpDescription, Factions.instance, false, permissions);
 	}
 	
 	// -------------------------------------------- //

@@ -1,23 +1,14 @@
 package com.bukkit.mcteam.factions.commands;
 
-import java.util.ArrayList;
-
 import com.bukkit.mcteam.factions.Conf;
 import com.bukkit.mcteam.factions.Faction;
 
 public class FCommandJoin extends FBaseCommand {
 	
 	public FCommandJoin() {
-		aliases = new ArrayList<String>();
 		aliases.add("join");
 		
-		requiredParameters = new ArrayList<String>();
-		optionalParameters = new ArrayList<String>();
 		requiredParameters.add("faction name");
-		
-		permissions = "";
-		
-		senderMustBePlayer = true;
 		
 		helpDescription = "Join a faction";
 	}
@@ -30,6 +21,11 @@ public class FCommandJoin extends FBaseCommand {
 			return;
 		}
 
+		if ( ! faction.isNormal()) {
+			sendMessage("You may only join normal factions. This is a system faction.");
+			return;
+		}
+		
 		if (faction == me.getFaction()) {
 			sendMessage("You are already a member of "+faction.getTag(me));
 			return;

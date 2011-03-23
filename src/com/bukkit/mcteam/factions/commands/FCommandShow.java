@@ -1,7 +1,8 @@
 package com.bukkit.mcteam.factions.commands;
 
-import java.util.ArrayList;
 import java.util.Collection;
+
+import org.bukkit.command.CommandSender;
 
 import com.bukkit.mcteam.factions.Conf;
 import com.bukkit.mcteam.factions.FPlayer;
@@ -13,19 +14,17 @@ import com.bukkit.mcteam.factions.util.TextUtil;
 public class FCommandShow extends FBaseCommand {
 	
 	public FCommandShow() {
-		aliases = new ArrayList<String>();
 		aliases.add("show");
 		aliases.add("who");
 		
-		requiredParameters = new ArrayList<String>();
-		optionalParameters = new ArrayList<String>();
 		optionalParameters.add("faction tag");
 		
-		permissions = "";
-		
-		senderMustBePlayer = true;
-		
 		helpDescription = "Show faction information";
+	}
+	
+	@Override
+	public boolean hasPermission(CommandSender sender) {
+		return true;
 	}
 	
 	public void perform() {
@@ -42,7 +41,7 @@ public class FCommandShow extends FBaseCommand {
 		
 		sendMessage(TextUtil.titleize(faction.getTag(me)));
 		sendMessage(Conf.colorChrome+"Description: "+Conf.colorSystem+faction.getDescription());
-		if (faction.getId() == 0) {
+		if ( ! faction.isNormal()) {
 			return;
 		}
 		

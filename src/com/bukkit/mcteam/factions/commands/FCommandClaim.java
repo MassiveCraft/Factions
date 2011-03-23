@@ -1,7 +1,5 @@
 package com.bukkit.mcteam.factions.commands;
 
-import java.util.ArrayList;
-
 import com.bukkit.mcteam.factions.Board;
 import com.bukkit.mcteam.factions.Conf;
 import com.bukkit.mcteam.factions.FLocation;
@@ -12,15 +10,7 @@ import com.bukkit.mcteam.factions.struct.Role;
 public class FCommandClaim extends FBaseCommand {
 	
 	public FCommandClaim() {
-		aliases = new ArrayList<String>();
 		aliases.add("claim");
-		
-		requiredParameters = new ArrayList<String>();
-		optionalParameters = new ArrayList<String>();
-		
-		permissions = "";
-		
-		senderMustBePlayer = true;
 		
 		helpDescription = "Claim the land where you are standing";
 	}
@@ -54,8 +44,17 @@ public class FCommandClaim extends FBaseCommand {
 			return;
 		}
 		
-		if (otherFaction.getId() != 0) {
-			if ( ! otherFaction.hasLandInflation()) { // TODO more messages WARN current faction most importantly
+		if (otherFaction.isSafeZone()) {
+			sendMessage("You can not claim a SafeZone.");
+			return;
+		}
+		
+		if (otherFaction.isNone()) {
+			myFaction.sendMessage(me.getNameAndRelevant(myFaction)+Conf.colorSystem+" claimed some new land :D");
+		} else { //if (otherFaction.isNormal()) {
+			
+			if ( ! otherFaction.hasLandInflation()) {
+				 // TODO more messages WARN current faction most importantly
 				sendMessage(me.getRelationColor(otherFaction)+otherFaction.getTag()+Conf.colorSystem+" owns this land and is strong enough to keep it.");
 				return;
 			}
@@ -64,11 +63,7 @@ public class FCommandClaim extends FBaseCommand {
 				sendMessage("You must start claiming land at the border of the territory.");
 				return;
 			}
-		}
-		
-		if (otherFaction.getId() == 0) {
-			myFaction.sendMessage(me.getNameAndRelevant(myFaction)+Conf.colorSystem+" claimed some new land :D");
-		} else {
+			
 			// ASDF claimed some of your land 450 blocks NNW of you.
 			// ASDf claimed some land from FACTION NAME
 			otherFaction.sendMessage(me.getNameAndRelevant(otherFaction)+Conf.colorSystem+" stole some of your land :O");

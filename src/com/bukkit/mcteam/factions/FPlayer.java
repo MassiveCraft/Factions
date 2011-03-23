@@ -353,7 +353,7 @@ public class FPlayer {
 	public void sendFactionHereMessage() {
 		Faction factionHere = Board.getFactionAt(new FLocation(this));
 		String msg = Conf.colorSystem+" ~ "+factionHere.getTag(this);
-		if (factionHere.getId() != 0) {
+		if (factionHere.getDescription().length() > 0) {
 			msg += " - "+factionHere.getDescription();
 		}
 		this.sendMessage(msg);
@@ -507,9 +507,16 @@ public class FPlayer {
 	
 	public static void autoLeaveOnInactivityRoutine() {
 		long now = System.currentTimeMillis();
-		double toleranceMillis = Conf.autoLeaveFactionAfterDaysOfInactivity * 24 * 60 * 60 * 1000;
+		double toleranceMillis = Conf.autoLeaveAfterDaysOfInactivity * 24 * 60 * 60 * 1000;
 		
 		for (FPlayer fplayer : FPlayer.getAll()) {
+			// Test if the player is immune
+			if (Factions.Permissions != null) {
+				if (Factions.Permissions.has(fplayer.getPlayer(), "factions.autoLeaveImmunity")) {
+					continue;
+				}
+			}
+			
 			if (now - fplayer.getLastLoginTime() > toleranceMillis) {
 				fplayer.leave();
 			}

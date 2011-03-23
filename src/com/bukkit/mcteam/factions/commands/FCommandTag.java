@@ -10,16 +10,9 @@ import com.bukkit.mcteam.factions.util.TextUtil;
 public class FCommandTag extends FBaseCommand {
 	
 	public FCommandTag() {
-		aliases = new ArrayList<String>();
 		aliases.add("tag");
 		
-		requiredParameters = new ArrayList<String>();
-		optionalParameters = new ArrayList<String>();
 		requiredParameters.add("faction tag");
-		
-		permissions = "";
-		
-		senderMustBePlayer = true;
 		
 		helpDescription = "Change the faction tag";
 	}

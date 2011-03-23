@@ -1,7 +1,5 @@
 package com.bukkit.mcteam.factions.commands;
 
-import java.util.ArrayList;
-
 import com.bukkit.mcteam.factions.Conf;
 import com.bukkit.mcteam.factions.FPlayer;
 import com.bukkit.mcteam.factions.Faction;
@@ -10,16 +8,9 @@ import com.bukkit.mcteam.factions.struct.Role;
 public class FCommandAdmin extends FBaseCommand {
 	
 	public FCommandAdmin() {
-		aliases = new ArrayList<String>();
 		aliases.add("admin");
 		
-		requiredParameters = new ArrayList<String>();
-		optionalParameters = new ArrayList<String>();
 		requiredParameters.add("player name");
-		
-		permissions = "";
-		
-		senderMustBePlayer = true;
 		
 		helpDescription = "Hand over your admin rights";
 	}

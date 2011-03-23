@@ -2,26 +2,25 @@ package com.bukkit.mcteam.factions.commands;
 
 import java.util.ArrayList;
 
-import com.bukkit.mcteam.factions.Conf;
+import org.bukkit.command.CommandSender;
+
 import com.bukkit.mcteam.factions.util.TextUtil;
 
 public class FCommandHelp extends FBaseCommand {
 	
 	public FCommandHelp() {
-		aliases = new ArrayList<String>();
 		aliases.add("help");
 		aliases.add("h");
 		aliases.add("?");
 		
-		requiredParameters = new ArrayList<String>();
-		optionalParameters = new ArrayList<String>();
-		optionalParameters.add("page");
-		
-		permissions = "";
-		
-		senderMustBePlayer = false;
+		optionalParameters.add("page");		
 		
 		helpDescription = "Display a help page";
+	}
+	
+	@Override
+	public boolean hasPermission(CommandSender sender) {
+		return true;
 	}
 	
 	public void perform() {
@@ -60,67 +59,74 @@ public class FCommandHelp extends FBaseCommand {
 		pageLines.add( new FCommandJoin().getUseageTemplate(true, true) );
 		pageLines.add( new FCommandLeave().getUseageTemplate(true, true) );
 		pageLines.add( new FCommandChat().getUseageTemplate(true, true) );
-		pageLines.add( new FCommandCreate().getUseageTemplate(true, true) );
-		pageLines.add( new FCommandTag().getUseageTemplate(true, true) );
-		pageLines.add( new FCommandDescription().getUseageTemplate(true, true) );
-		
+		pageLines.add( new FCommandHome().getUseageTemplate(true, true) );
+		pageLines.add( "Learn how to create a faction on the next page." );
 		helpPages.add(pageLines);
-		pageLines = new ArrayList<String>();
 		
+		pageLines = new ArrayList<String>();
+		pageLines.add( "Create a faction using these two commands:" );
+		pageLines.add( new FCommandCreate().getUseageTemplate(true, true) );
+		pageLines.add( new FCommandDescription().getUseageTemplate(true, true) );
+		pageLines.add( "You might wan't to close it and use invitations:" );
 		pageLines.add( new FCommandOpen().getUseageTemplate(true, true) );
-		pageLines.add( new FCommandTitle().getUseageTemplate(true, true) );
 		pageLines.add( new FCommandInvite().getUseageTemplate(true, true) );
 		pageLines.add( new FCommandDeinvite().getUseageTemplate(true, true) );
+		pageLines.add( "And don't forget to set your home:" );
+		pageLines.add( new FCommandSethome().getUseageTemplate(true, true) );
+		helpPages.add(pageLines);
+		
+		pageLines = new ArrayList<String>();
+		pageLines.add( "Faction can claim land that will be protected." );
 		pageLines.add( new FCommandClaim().getUseageTemplate(true, true) );
 		pageLines.add( new FCommandUnclaim().getUseageTemplate(true, true) );
+		pageLines.add( new FCommandTag().getUseageTemplate(true, true) );
 		pageLines.add( new FCommandKick().getUseageTemplate(true, true) );
 		pageLines.add( new FCommandMod().getUseageTemplate(true, true) );
 		pageLines.add( new FCommandAdmin().getUseageTemplate(true, true) );
-		
+		pageLines.add( new FCommandTitle().getUseageTemplate(true, true) );
+		pageLines.add( "Player titles are just for fun. No rules connected to them." );
 		helpPages.add(pageLines);
-		pageLines = new ArrayList<String>();
 		
+		pageLines = new ArrayList<String>();
 		pageLines.add( new FCommandRelationAlly().getUseageTemplate(true, true) );
 		pageLines.add( new FCommandRelationNeutral().getUseageTemplate(true, true) );
 		pageLines.add( new FCommandRelationEnemy().getUseageTemplate(true, true) );
 		pageLines.add("");
-		pageLines.add(Conf.colorSystem+"Set the relation you WISH to have with another faction.");
-		pageLines.add(Conf.colorSystem+"Your default relation with other factions will be neutral.");
+		pageLines.add("Set the relation you WISH to have with another faction.");
+		pageLines.add("Your default relation with other factions will be neutral.");
 		pageLines.add("");
-		pageLines.add(Conf.colorSystem+"If BOTH factions choose \"ally\" you will be allies.");
-		pageLines.add(Conf.colorSystem+"If ONE faction chooses \"enemy\" you will be enemies.");
-		
+		pageLines.add("If BOTH factions choose \"ally\" you will be allies.");
+		pageLines.add("If ONE faction chooses \"enemy\" you will be enemies.");
 		helpPages.add(pageLines);
-		pageLines = new ArrayList<String>();
 		
-		pageLines.add(Conf.colorSystem+"You can never hurt members or allies.");
-		pageLines.add(Conf.colorSystem+"You can not hurt neutrals in their own territory.");
-		pageLines.add(Conf.colorSystem+"You can always hurt enemies and players without faction.");
+		pageLines = new ArrayList<String>();
+		pageLines.add("You can never hurt members or allies.");
+		pageLines.add("You can not hurt neutrals in their own territory.");
+		pageLines.add("You can always hurt enemies and players without faction.");
 		pageLines.add("");
-		pageLines.add(Conf.colorSystem+"Damage from enemies is reduced in your own territory.");
-		pageLines.add(Conf.colorSystem+"When you die you lose power. It is restored over time.");
-		pageLines.add(Conf.colorSystem+"The power of a faction is the sum of all member power.");
-		pageLines.add(Conf.colorSystem+"The power of a faction determines how much land it can hold.");
-		pageLines.add(Conf.colorSystem+"You can claim land from factions with too little power.");
-		
+		pageLines.add("Damage from enemies is reduced in your own territory.");
+		pageLines.add("When you die you lose power. It is restored over time.");
+		pageLines.add("The power of a faction is the sum of all member power.");
+		pageLines.add("The power of a faction determines how much land it can hold.");
+		pageLines.add("You can claim land from factions with too little power.");
 		helpPages.add(pageLines);
-		pageLines = new ArrayList<String>();
 		
-		pageLines.add(Conf.colorSystem+"Only faction members can build and destroy in their own");
-		pageLines.add(Conf.colorSystem+"territory. Usage of the following items is also restricted:");
-		pageLines.add(Conf.colorSystem+"Door, Chest, Furnace and Dispenser.");
-		pageLines.add(" ");
-		pageLines.add(Conf.colorSystem+"Make sure to put pressure plates in front of doors for your");
-		pageLines.add(Conf.colorSystem+"guest visitors. Otherwise they can't get through. You can ");
-		pageLines.add(Conf.colorSystem+"also use this to create member only areas.");
-		pageLines.add(Conf.colorSystem+"As dispensers are protected, you can create traps without");
-		pageLines.add(Conf.colorSystem+"worrying about those arrows getting stolen.");
-
+		pageLines = new ArrayList<String>();
+		pageLines.add("Only faction members can build and destroy in their own");
+		pageLines.add("territory. Usage of the following items is also restricted:");
+		pageLines.add("Door, Chest, Furnace and Dispenser.");
+		pageLines.add("");
+		pageLines.add("Make sure to put pressure plates in front of doors for your");
+		pageLines.add("guest visitors. Otherwise they can't get through. You can");
+		pageLines.add("also use this to create member only areas.");
+		pageLines.add("As dispensers are protected, you can create traps without");
+		pageLines.add("worrying about those arrows getting stolen.");
 		helpPages.add(pageLines);
-		pageLines = new ArrayList<String>();
 		
+		pageLines = new ArrayList<String>();
+		pageLines.add("Finally some commands for the server admins:");
 		pageLines.add( new FCommandVersion().getUseageTemplate(true, true) );
-		
+		pageLines.add( new FCommandSafeclaim().getUseageTemplate(true, true) );
 		helpPages.add(pageLines);
 	}
 	

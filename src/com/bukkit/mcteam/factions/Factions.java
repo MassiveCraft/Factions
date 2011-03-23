@@ -10,8 +10,10 @@ import java.util.logging.Logger;
 
 
 
+import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
@@ -25,6 +27,7 @@ import com.bukkit.mcteam.factions.commands.FCommandCreate;
 import com.bukkit.mcteam.factions.commands.FCommandDeinvite;
 import com.bukkit.mcteam.factions.commands.FCommandDescription;
 import com.bukkit.mcteam.factions.commands.FCommandHelp;
+import com.bukkit.mcteam.factions.commands.FCommandHome;
 import com.bukkit.mcteam.factions.commands.FCommandInvite;
 import com.bukkit.mcteam.factions.commands.FCommandJoin;
 import com.bukkit.mcteam.factions.commands.FCommandKick;
@@ -36,6 +39,8 @@ import com.bukkit.mcteam.factions.commands.FCommandOpen;
 import com.bukkit.mcteam.factions.commands.FCommandRelationAlly;
 import com.bukkit.mcteam.factions.commands.FCommandRelationEnemy;
 import com.bukkit.mcteam.factions.commands.FCommandRelationNeutral;
+import com.bukkit.mcteam.factions.commands.FCommandSafeclaim;
+import com.bukkit.mcteam.factions.commands.FCommandSethome;
 import com.bukkit.mcteam.factions.commands.FCommandShow;
 import com.bukkit.mcteam.factions.commands.FCommandTag;
 import com.bukkit.mcteam.factions.commands.FCommandTitle;
@@ -64,6 +69,7 @@ public class Factions extends JavaPlugin {
 	public final static Gson gson = new GsonBuilder()
 	.setPrettyPrinting()
 	.excludeFieldsWithModifiers(Modifier.TRANSIENT, Modifier.VOLATILE)
+	.registerTypeAdapter(Location.class, new MyLocationTypeAdapter())
 	.create();
 	
 	private final FactionsPlayerListener playerListener = new FactionsPlayerListener();
@@ -96,6 +102,7 @@ public class Factions extends JavaPlugin {
 		commands.add(new FCommandCreate());
 		commands.add(new FCommandDeinvite());
 		commands.add(new FCommandDescription());
+		commands.add(new FCommandHome());
 		commands.add(new FCommandInvite());
 		commands.add(new FCommandJoin());
 		commands.add(new FCommandKick());
@@ -107,6 +114,8 @@ public class Factions extends JavaPlugin {
 		commands.add(new FCommandRelationAlly());
 		commands.add(new FCommandRelationEnemy());
 		commands.add(new FCommandRelationNeutral());
+		commands.add(new FCommandSafeclaim());
+		commands.add(new FCommandSethome());
 		commands.add(new FCommandShow());
 		commands.add(new FCommandTag());
 		commands.add(new FCommandTitle());
@@ -127,14 +136,15 @@ public class Factions extends JavaPlugin {
 		// Register events
 		PluginManager pm = this.getServer().getPluginManager();
 		pm.registerEvent(Event.Type.PLAYER_CHAT, this.playerListener, Event.Priority.Highest, this);
-		pm.registerEvent(Event.Type.PLAYER_COMMAND_PREPROCESS, this.playerListener, Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.PLAYER_ITEM, this.playerListener, Event.Priority.Normal, this);
-		pm.registerEvent(Event.Type.PLAYER_JOIN, this.playerListener, Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.PLAYER_MOVE, this.playerListener, Event.Priority.Normal, this);
-		pm.registerEvent(Event.Type.PLAYER_QUIT, this.playerListener, Event.Priority.Normal, this);
+		pm.registerEvent(Event.Type.PLAYER_JOIN, this.playerListener, Event.Priority.Normal, this);
+		pm.registerEvent(Event.Type.PLAYER_RESPAWN, this.playerListener, Event.Priority.High, this);
 		pm.registerEvent(Event.Type.ENTITY_DEATH, this.entityListener, Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.ENTITY_DAMAGED, this.entityListener, Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.ENTITY_EXPLODE, this.entityListener, Event.Priority.Normal, this);
+		pm.registerEvent(Event.Type.CREATURE_SPAWN, this.entityListener, Event.Priority.Normal, this);
+		pm.registerEvent(Event.Type.ENTITY_TARGET, this.entityListener, Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.BLOCK_DAMAGED, this.blockListener, Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.BLOCK_PLACED, this.blockListener, Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.BLOCK_INTERACT, this.blockListener, Event.Priority.Normal, this);
@@ -156,6 +166,21 @@ public class Factions extends JavaPlugin {
 	// Integration with other plugins
 	// -------------------------------------------- //
 	
+	private void setupHelp() {
+		if (helpPlugin != null) {
+			return;
+		}
+		
+		Plugin test = this.getServer().getPluginManager().getPlugin("Help");
+		
+		if (test != null) {
+			helpPlugin = ((Help) test);
+			Factions.log("Found and will use plugin "+helpPlugin.getDescription().getFullName());
+			helpPlugin.registerCommand(this.getBaseCommand()+" help *[page]", "Factions plugin help.", this, false);
+			helpPlugin.registerCommand("help factions", "instead use: /f help", helpPlugin, true);
+		}
+	}
+	
 	private void setupPermissions() {
 		if (Permissions != null) {
 			return;
@@ -171,21 +196,38 @@ public class Factions extends JavaPlugin {
 		}
 	}
 	
-	private void setupHelp() {
-		if (helpPlugin != null) {
-			return;
-		}
-		
-		Plugin test = this.getServer().getPluginManager().getPlugin("Help");
-		
-		if (test != null) {
-			helpPlugin = ((Help) test);
-			Factions.log("Found and will use plugin "+helpPlugin.getDescription().getFullName());
-			helpPlugin.registerCommand(this.getBaseCommand()+" help *[page]", "Factions plugin help.", this, false);
-			helpPlugin.registerCommand("help factions", "instead use: /f help", helpPlugin, true);
-		}
+	// -------------------------------------------- //
+	// Test rights
+	// -------------------------------------------- //
+	
+	public static boolean hasPermParticipate(CommandSender sender) {
+		return hasPerm(sender, "factions.participate", false);
 	}
-
+	
+	public static boolean hasPermCreate(CommandSender sender) {
+		return hasPerm(sender, "factions.create", false);
+	}
+	
+	public static boolean hasPermManageSafeZone(CommandSender sender) {
+		return hasPerm(sender, "factions.manageSafeZone", true);
+	}
+	
+	public static boolean hasPermAutoLeaveImmunity(CommandSender sender) {
+		return hasPerm(sender, "factions.autoLeaveImmunity", true);
+	}
+	
+	private static boolean hasPerm(CommandSender sender, String permNode, boolean fallbackOnlyOp) {
+		if (Factions.Permissions == null || ! (sender instanceof Player)) {
+			return fallbackOnlyOp == false || sender.isOp();
+		}
+		
+		if (sender instanceof Player) {
+			Player player = (Player)sender;
+			return Factions.Permissions.has(player, permNode); 
+		}
+		
+		return false;
+	}
 	
 	// -------------------------------------------- //
 	// Commands
@@ -247,6 +289,7 @@ public class Factions extends JavaPlugin {
 		FPlayer.save();
 		Faction.save();
 		Board.save();
+		Conf.save();
 	}
 
 }

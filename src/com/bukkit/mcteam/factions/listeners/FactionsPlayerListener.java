@@ -3,6 +3,7 @@ package com.bukkit.mcteam.factions.listeners;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
@@ -12,6 +13,7 @@ import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.event.player.PlayerItemEvent;
 import org.bukkit.event.player.PlayerListener;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 
 import com.bukkit.mcteam.factions.Board;
 import com.bukkit.mcteam.factions.Conf;
@@ -99,13 +101,6 @@ public class FactionsPlayerListener extends PlayerListener{
 		FPlayer.autoLeaveOnInactivityRoutine();
 	}
 	
-	
-	@Override
-	public void onPlayerQuit(PlayerEvent event) {
-		// Save all players on player quit.
-		FPlayer.save();
-	}
-	
 	@Override
 	public void onPlayerMove(PlayerMoveEvent event) {
 		FPlayer me = FPlayer.get(event.getPlayer());
@@ -159,7 +154,7 @@ public class FactionsPlayerListener extends PlayerListener{
 
 		Faction otherFaction = Board.getFactionAt(new FLocation(block));
 
-		if (otherFaction.getId() == 0) {
+		if (otherFaction.isNone()) {
 			return true; // This is not faction territory. Use whatever you like here.
 		}
 
@@ -173,5 +168,14 @@ public class FactionsPlayerListener extends PlayerListener{
 		}
 
 		return true;
+	}
+	
+	@Override
+	public void onPlayerRespawn(PlayerRespawnEvent event) {
+		FPlayer me = FPlayer.get(event.getPlayer());
+		Location home = me.getFaction().getHome();
+		if (Conf.homesEnabled && Conf.homesTeleportToOnDeath && home != null) {
+			event.setRespawnLocation(home);
+		}
 	}
 }

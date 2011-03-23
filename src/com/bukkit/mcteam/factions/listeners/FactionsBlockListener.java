@@ -14,6 +14,7 @@ import com.bukkit.mcteam.factions.Conf;
 import com.bukkit.mcteam.factions.FLocation;
 import com.bukkit.mcteam.factions.FPlayer;
 import com.bukkit.mcteam.factions.Faction;
+import com.bukkit.mcteam.factions.Factions;
 import com.bukkit.mcteam.factions.util.TextUtil;
 
 public class FactionsBlockListener extends BlockListener {
@@ -45,11 +46,20 @@ public class FactionsBlockListener extends BlockListener {
 	public boolean playerCanBuildDestroyBlock(Player player, Block block, String action) {
 		Faction otherFaction = Board.getFactionAt(new FLocation(block));
 		
-		if (otherFaction.getId() == 0) {
-			return true; // This is no faction territory. You may build or break stuff here.
+		if (otherFaction.isNone()) {
+			return true;
 		}
 		
 		FPlayer me = FPlayer.get(player);
+		
+		if (otherFaction.isSafeZone()) {
+			if (Factions.hasPermManageSafeZone(player)) {
+				return true;
+			}
+			me.sendMessage("You can't "+action+" in a safe zone.");
+			return false;
+		}
+		
 		Faction myFaction = me.getFaction();
 		
 		// Cancel if we are not in our own territory
@@ -92,11 +102,12 @@ public class FactionsBlockListener extends BlockListener {
 		Faction myFaction = me.getFaction();
 		Faction otherFaction = Board.getFactionAt(new FLocation(block));
 		
-		if (otherFaction != null && otherFaction.getId() != 0 && myFaction != otherFaction) {
-			me.sendMessage(Conf.colorSystem+"You can't use "+TextUtil.getMaterialName(material)+" in the territory of "+otherFaction.getTag(myFaction));
-			//otherFaction.sendMessage(me.getNameAndRelevant(otherFaction)+Conf.colorSystem+" tried to use "+TextUtil.getMaterialName(material)+" in your territory");
+		if (otherFaction.isNormal() && myFaction != otherFaction) {
+			me.sendMessage("You can't use "+TextUtil.getMaterialName(material)+" in the territory of "+otherFaction.getTag(myFaction));
 			return false;
 		}
+		
+		// You may use doors in both safeZone and wilderness
 		return true;
 	}
 }

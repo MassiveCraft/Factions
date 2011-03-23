@@ -1,7 +1,5 @@
 package com.bukkit.mcteam.factions.commands;
 
-import java.util.ArrayList;
-
 import com.bukkit.mcteam.factions.Conf;
 import com.bukkit.mcteam.factions.FPlayer;
 import com.bukkit.mcteam.factions.Faction;
@@ -10,16 +8,9 @@ import com.bukkit.mcteam.factions.struct.Role;
 public class FCommandMod extends FBaseCommand {
 	
 	public FCommandMod() {
-		aliases = new ArrayList<String>();
 		aliases.add("mod");
 		
-		requiredParameters = new ArrayList<String>();
-		optionalParameters = new ArrayList<String>();
 		requiredParameters.add("player name");
-		
-		permissions = "";
-		
-		senderMustBePlayer = true;
 		
 		helpDescription = "Give or revoke moderator rights";
 	}

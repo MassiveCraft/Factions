@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+import org.bukkit.command.CommandSender;
+
 import com.bukkit.mcteam.factions.Conf;
 import com.bukkit.mcteam.factions.Faction;
 import com.bukkit.mcteam.factions.util.TextUtil;
@@ -11,25 +13,23 @@ import com.bukkit.mcteam.factions.util.TextUtil;
 public class FCommandList extends FBaseCommand {
 	
 	public FCommandList() {
-		aliases = new ArrayList<String>();
 		aliases.add("list");
 		aliases.add("ls");
 		
-		requiredParameters = new ArrayList<String>();
-		optionalParameters = new ArrayList<String>();
 		optionalParameters.add("page");
-		
-		permissions = "";
-		
-		senderMustBePlayer = true;
 		
 		helpDescription = "Show a list of the factions";
 	}
 	
-	// TODO put the 0 faction at the highest position
+	@Override
+	public boolean hasPermission(CommandSender sender) {
+		return true;
+	}
+
 	public void perform() {
 		ArrayList<Faction> FactionList = new ArrayList<Faction>(Faction.getAll());
-		FactionList.remove(Faction.get(0));
+		FactionList.remove(Faction.getNone());
+		FactionList.remove(Faction.getSafeZone());
 
 		int page = 1;
 		if (parameters.size() > 0) {
@@ -65,7 +65,7 @@ public class FCommandList extends FBaseCommand {
 			}
 		});
 
-		FactionList.add(0, Faction.get(0));
+		FactionList.add(0, Faction.getNone());
 		
 		int maxPage = (int)Math.floor((double)FactionList.size() / 9D);
 		if (page < 0 || page > maxPage) {

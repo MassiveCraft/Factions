@@ -126,8 +126,10 @@ public class Board {
 				} else {
 					FLocation flocationHere = topLeft.getRelative(dx, dz);
 					Faction factionHere = getFactionAt(flocationHere);
-					if (factionHere.getId() == 0) {
+					if (factionHere.isNone()) {
 						row += ChatColor.GRAY+"-";
+					} else if (factionHere.isSafeZone()) {
+						row += ChatColor.GOLD+"+";
 					} else {
 						row += factionHere.getRelation(faction).getColor()+"+";
 					}

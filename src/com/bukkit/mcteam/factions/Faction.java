@@ -8,6 +8,7 @@ import java.util.Map.Entry;
 import java.util.logging.Level;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import com.bukkit.mcteam.factions.struct.Relation;
@@ -32,6 +33,7 @@ public class Faction {
 	private boolean open;
 	private String tag;
 	private String description;
+	private Location home;
 	
 	// -------------------------------------------- //
 	// Construct
@@ -88,6 +90,34 @@ public class Faction {
 		this.description = value;
 	}
 	
+	public void setHome(Location home) {
+		this.home = home;
+	}
+
+	public Location getHome() {
+		return home;
+	}
+	
+	public boolean hasHome() {
+		return this.home != null;
+	}
+	
+	// -------------------------------
+	// Understand the types
+	// -------------------------------
+	
+	public boolean isNormal() {
+		return this.getId() > 0;
+	}
+	
+	public boolean isNone() {
+		return this.getId() == 0;
+	}
+	
+	public boolean isSafeZone() {
+		return this.getId() == -1;
+	}
+	
 	// -------------------------------
 	// Invites - uses lowercase name
 	// -------------------------------
@@ -124,7 +154,7 @@ public class Faction {
 	}
 	
 	public Relation getRelation(Faction otherFaction) {
-		if (otherFaction.getId() == 0 || this.getId() == 0) {
+		if (otherFaction.isNone() || this.isNone()) {
 			return Relation.NEUTRAL;
 		}
 		if (otherFaction.equals(this)) {
@@ -340,6 +370,15 @@ public class Faction {
 			instances.put(faction.id, faction);
 		}
 		
+		// Make sure the safe zone faciton exists
+		if ( ! instances.containsKey(-1)) {
+			Faction faction = new Faction();
+			faction.tag = ChatColor.GOLD+"Safe Zone";
+			faction.description = "Free from PVP and monsters";
+			faction.id = -1;
+			instances.put(faction.id, faction);
+		}
+		
 		return true;
 	}
 	
@@ -361,6 +400,14 @@ public class Faction {
 			FPlayer.clean();
 		}
 		return instances.get(factionId);
+	}
+	
+	public static Faction getNone() {
+		return instances.get(0);
+	}
+	
+	public static Faction getSafeZone() {
+		return instances.get(-1);
 	}
 	
 	public static boolean exists(Integer factionId) {

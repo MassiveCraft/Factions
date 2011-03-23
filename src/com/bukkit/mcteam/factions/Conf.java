@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 import org.bukkit.*;
+import org.bukkit.entity.CreatureType;
 
 import com.bukkit.mcteam.util.DiscUtil;
 
@@ -42,8 +43,12 @@ public class Conf {
 	public static String chatTagFormat = "%s"+ChatColor.WHITE+" ";
 	public static String factionChatFormat = "%s"+ChatColor.WHITE+" %s";
 	
-	public static int mapHeight = 8;
-	public static int mapWidth = 49;
+	public static boolean allowNoSlashCommand = true;
+	
+	public static double autoLeaveAfterDaysOfInactivity = 14;
+	
+	public static boolean homesEnabled = true;
+	public static boolean homesTeleportToOnDeath = true;
 
 	public static double territoryShieldFactor = 0.5;
 	public static boolean territoryBlockCreepers = false;
@@ -51,11 +56,12 @@ public class Conf {
 	
 	public static Set<Material> territoryProtectedMaterials = new HashSet<Material>();
 	public static Set<Material> territoryDenyUseageMaterials = new HashSet<Material>();
-	public static transient Set<Material> instaDestroyMaterials = new HashSet<Material>(); // This one is not really configuration therefore transient
-
-	public static boolean allowNoSlashCommand = true;
 	
-	public static double autoLeaveFactionAfterDaysOfInactivity = 14;
+	public static transient Set<CreatureType> safeZoneNerfedCreatureTypes = new HashSet<CreatureType>();
+	
+	public static transient Set<Material> instaDestroyMaterials = new HashSet<Material>(); // This one is not really configuration therefore transient
+	public static transient int mapHeight = 8;
+	public static transient int mapWidth = 49;
 	
 	static {
 		territoryProtectedMaterials.add(Material.WOODEN_DOOR);
@@ -81,6 +87,14 @@ public class Conf {
 		instaDestroyMaterials.add(Material.SUGAR_CANE_BLOCK);
 		instaDestroyMaterials.add(Material.DIODE_BLOCK_OFF);
 		instaDestroyMaterials.add(Material.DIODE_BLOCK_ON);
+		
+		safeZoneNerfedCreatureTypes.add(CreatureType.CREEPER);
+		safeZoneNerfedCreatureTypes.add(CreatureType.GHAST);
+		safeZoneNerfedCreatureTypes.add(CreatureType.PIG_ZOMBIE);
+		safeZoneNerfedCreatureTypes.add(CreatureType.SKELETON);
+		safeZoneNerfedCreatureTypes.add(CreatureType.SPIDER);
+		safeZoneNerfedCreatureTypes.add(CreatureType.SLIME);
+		safeZoneNerfedCreatureTypes.add(CreatureType.ZOMBIE);
 	}
 	
 	// -------------------------------------------- //

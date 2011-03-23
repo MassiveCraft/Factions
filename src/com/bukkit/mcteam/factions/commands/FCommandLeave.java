@@ -1,21 +1,18 @@
 package com.bukkit.mcteam.factions.commands;
 
-import java.util.ArrayList;
+import org.bukkit.command.CommandSender;
 
 public class FCommandLeave extends FBaseCommand {
 	
 	public FCommandLeave() {
-		aliases = new ArrayList<String>();
 		aliases.add("leave");
 		
-		requiredParameters = new ArrayList<String>();
-		optionalParameters = new ArrayList<String>();
-		
-		permissions = "";
-		
-		senderMustBePlayer = true;
-		
 		helpDescription = "Leave your faction";
+	}
+	
+	@Override
+	public boolean hasPermission(CommandSender sender) {
+		return true;
 	}
 	
 	public void perform() {

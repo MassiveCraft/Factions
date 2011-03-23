@@ -2,26 +2,27 @@ package com.bukkit.mcteam.factions.commands;
 
 import java.util.ArrayList;
 
+import org.bukkit.command.CommandSender;
+
 import com.bukkit.mcteam.factions.Conf;
 import com.bukkit.mcteam.factions.FPlayer;
 import com.bukkit.mcteam.factions.Faction;
+import com.bukkit.mcteam.factions.Factions;
 import com.bukkit.mcteam.factions.struct.Role;
 
 public class FCommandCreate extends FBaseCommand {
 	
 	public FCommandCreate() {
-		aliases = new ArrayList<String>();
 		aliases.add("create");
 		
-		requiredParameters = new ArrayList<String>();
-		optionalParameters = new ArrayList<String>();
 		requiredParameters.add("faction tag");
-		
-		permissions = "";
-		
-		senderMustBePlayer = true;
-		
+
 		helpDescription = "Create a new faction";
+	}
+	
+	@Override
+	public boolean hasPermission(CommandSender sender) {
+		return Factions.hasPermCreate(sender);
 	}
 	
 	public void perform() {
@@ -52,8 +53,7 @@ public class FCommandCreate extends FBaseCommand {
 			follower.sendMessage(me.getNameAndRelevant(follower)+Conf.colorSystem+" created a new faction "+faction.getTag(follower));
 		}
 		
-		sendMessage("You should now:");
-		sendMessage( new FCommandDescription().getUseageTemplate() );
+		sendMessage("You should now: " + new FCommandDescription().getUseageTemplate(true, true));
 	}
 	
 }

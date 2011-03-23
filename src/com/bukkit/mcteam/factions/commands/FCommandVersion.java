@@ -1,24 +1,24 @@
 package com.bukkit.mcteam.factions.commands;
 
-import java.util.ArrayList;
+import org.bukkit.command.CommandSender;
 
 import com.bukkit.mcteam.factions.Factions;
 
 public class FCommandVersion extends FBaseCommand {
 	
 	public FCommandVersion() {
-		aliases = new ArrayList<String>();
 		aliases.add("version");
-		
-		requiredParameters = new ArrayList<String>();
-		optionalParameters = new ArrayList<String>();
-		
-		permissions = "";
 		
 		senderMustBePlayer = false;
 		
 		helpDescription = "Which version are you using?";
 	}
+	
+	@Override
+	public boolean hasPermission(CommandSender sender) {
+		return true;
+	}
+	
 	
 	public void perform() {
 		sendMessage("You are running "+Factions.instance.getDescription().getFullName());

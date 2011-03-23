@@ -1,6 +1,6 @@
 package com.bukkit.mcteam.factions.commands;
 
-import java.util.ArrayList;
+import org.bukkit.command.CommandSender;
 
 import com.bukkit.mcteam.factions.Board;
 import com.bukkit.mcteam.factions.FLocation;
@@ -8,18 +8,16 @@ import com.bukkit.mcteam.factions.FLocation;
 public class FCommandMap extends FBaseCommand {
 	
 	public FCommandMap() {
-		aliases = new ArrayList<String>();
 		aliases.add("map");
 		
-		requiredParameters = new ArrayList<String>();
-		optionalParameters = new ArrayList<String>();
 		optionalParameters.add("on|off");
 		
-		permissions = "";
-		
-		senderMustBePlayer = true;
-		
 		helpDescription = "Show territory map, set optional auto update";
+	}
+	
+	@Override
+	public boolean hasPermission(CommandSender sender) {
+		return true;
 	}
 	
 	public void perform() {

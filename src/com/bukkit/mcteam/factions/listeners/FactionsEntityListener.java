@@ -7,18 +7,22 @@ import org.bukkit.entity.Creeper;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Fireball;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageByProjectileEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntityListener;
+import org.bukkit.event.entity.EntityTargetEvent;
 
 import com.bukkit.mcteam.factions.Board;
 import com.bukkit.mcteam.factions.Conf;
 import com.bukkit.mcteam.factions.FLocation;
 import com.bukkit.mcteam.factions.FPlayer;
+import com.bukkit.mcteam.factions.Faction;
 import com.bukkit.mcteam.factions.struct.Relation;
+import com.bukkit.mcteam.util.EntityUtil;
 
 public class FactionsEntityListener extends EntityListener {
 	
@@ -30,9 +34,9 @@ public class FactionsEntityListener extends EntityListener {
 		}
 	
 		Player player = (Player) entity;
-		FPlayer follower = FPlayer.get(player);
-		follower.onDeath();
-		follower.sendMessage("Your power is now "+follower.getPowerRounded()+" / "+follower.getPowerMaxRounded());
+		FPlayer fplayer = FPlayer.get(player);
+		fplayer.onDeath();
+		fplayer.sendMessage("Your power is now "+fplayer.getPowerRounded()+" / "+fplayer.getPowerMaxRounded());
 	}
 	
 	/**
@@ -61,7 +65,7 @@ public class FactionsEntityListener extends EntityListener {
 	}
 
 	
-	// TODO what happens with the creeper or fireball then?
+	// TODO what happens with the creeper or fireball then? Must we delete them manually?
 	@Override
 	public void onEntityExplode(EntityExplodeEvent event)
 	{
@@ -69,15 +73,17 @@ public class FactionsEntityListener extends EntityListener {
 			return;
 		}
 		
+		Faction faction = Board.getFactionAt(new FLocation(event.getLocation()));
+		
 		// Explosions may happen in the wilderness
-		if (Board.getIdAt(new FLocation(event.getLocation())) == 0) {
+		if (faction.isNone()) {
 			return;
 		}
 		
-		if (Conf.territoryBlockCreepers && event.getEntity() instanceof Creeper) {
+		if ((Conf.territoryBlockCreepers || faction.isSafeZone()) && event.getEntity() instanceof Creeper) {
 			// creeper which might need prevention, if inside faction territory
 			event.setCancelled(true);
-		} else if (Conf.territoryBlockFireballs && event.getEntity() instanceof Fireball) {
+		} else if ((Conf.territoryBlockFireballs || faction.isSafeZone()) && event.getEntity() instanceof Fireball) {
 			// ghast fireball which might need prevention, if inside faction territory
 			event.setCancelled(true);
 		}
@@ -87,22 +93,32 @@ public class FactionsEntityListener extends EntityListener {
 		Entity damager = sub.getDamager();
 		Entity damagee = sub.getEntity();
 		int damage = sub.getDamage();
-		if ( ! (damager instanceof Player)) {
-			return true;
-		}
 		
 		if ( ! (damagee instanceof Player)) {
 			return true;
 		}
 		
 		FPlayer defender = FPlayer.get((Player)damagee);
+		
+		// Players can not take attack damage in a SafeZone
+		if (Board.getFactionAt(new FLocation(defender)).isSafeZone()) {
+			if (damager instanceof Player) {
+				FPlayer attacker = FPlayer.get((Player)damager);
+				attacker.sendMessage("You cant hurt other players in a SafeZone.");
+				defender.sendMessage(attacker.getNameAndRelevant(defender)+Conf.colorSystem+" tried to hurt you.");
+			}
+			return false;
+		}
+		
+		if ( ! (damager instanceof Player)) {
+			return true;
+		}
+		
 		FPlayer attacker = FPlayer.get((Player)damager);
 		Relation relation = defender.getRelation(attacker);
 		
-		//Log.debug(attacker.getName() + " attacked " + defender.getName());
-		
 		// Players without faction may be hurt anywhere
-		if (defender.getFaction().getId() == 0) {
+		if (defender.getFaction().isNone()) {
 			return true;
 		}
 		
@@ -121,14 +137,47 @@ public class FactionsEntityListener extends EntityListener {
 		
 		// Damage will be dealt. However check if the damage should be reduced.
 		if (defender.isInOwnTerritory() && Conf.territoryShieldFactor > 0) {
-			int newDamage = (int)(damage * Conf.territoryShieldFactor);
+			int newDamage = (int)Math.ceil(damage * (1D - Conf.territoryShieldFactor));
 			sub.setDamage(newDamage);
 			
 			// Send message
-		    String perc = MessageFormat.format("{0,number,#%}", (1.0 - Conf.territoryShieldFactor));
-		    defender.sendMessage(Conf.colorSystem+"Enemy damage reduced by "+ChatColor.RED+perc+Conf.colorSystem+".");
+		    String perc = MessageFormat.format("{0,number,#%}", (Conf.territoryShieldFactor)); // TODO does this display correctly??
+		    defender.sendMessage("Enemy damage reduced by "+ChatColor.RED+perc+Conf.colorSystem+".");
 		}
 		
 		return true;
+	}
+	
+	public void onCreatureSpawn(CreatureSpawnEvent event) {
+		if (event.isCancelled()) {
+			return;
+		}
+		
+		if (Conf.safeZoneNerfedCreatureTypes.contains(event.getCreatureType()) && Board.getFactionAt(new FLocation(event.getLocation())).isSafeZone()) {
+			event.setCancelled(true);
+		}
+	}
+	
+	@Override
+	public void onEntityTarget(EntityTargetEvent event) {
+		if (event.isCancelled()) {
+			return;
+		}
+		
+		// if there is a target
+		Entity target = event.getTarget();
+		if (target == null) {
+			return;
+		}
+		
+		// We are interested in blocking targeting for certain mobs:
+		if ( ! Conf.safeZoneNerfedCreatureTypes.contains(EntityUtil.creatureTypeFromEntity(event.getEntity()))) {
+			return;
+		}
+		
+		// in case the target is in a safe zone.
+		if (Board.getFactionAt(new FLocation(target.getLocation())).isSafeZone()) {
+			event.setCancelled(true);
+		}
 	}
 }
