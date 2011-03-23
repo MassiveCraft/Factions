@@ -49,7 +49,9 @@ public class Conf {
 	public static boolean territoryBlockCreepers = false;
 	public static boolean territoryBlockFireballs = false;
 	
-	public static List<Material> territoryProtectedMaterials = new ArrayList<Material>();
+	public static Set<Material> territoryProtectedMaterials = new HashSet<Material>();
+	public static Set<Material> territoryDenyUseageMaterials = new HashSet<Material>();
+	public static transient Set<Material> instaDestroyMaterials = new HashSet<Material>(); // This one is not really configuration therefore transient
 
 	public static boolean allowNoSlashCommand = true;
 	
@@ -60,6 +62,25 @@ public class Conf {
 		territoryProtectedMaterials.add(Material.DISPENSER);
 		territoryProtectedMaterials.add(Material.CHEST);
 		territoryProtectedMaterials.add(Material.FURNACE);
+		
+		territoryDenyUseageMaterials.add(Material.REDSTONE);
+		territoryDenyUseageMaterials.add(Material.SIGN);
+		territoryDenyUseageMaterials.add(Material.FLINT_AND_STEEL);
+		territoryDenyUseageMaterials.add(Material.BED);
+		territoryDenyUseageMaterials.add(Material.BUCKET);
+		territoryDenyUseageMaterials.add(Material.WATER_BUCKET);
+		territoryDenyUseageMaterials.add(Material.DIODE);
+		territoryDenyUseageMaterials.add(Material.SUGAR_CANE);
+		
+		instaDestroyMaterials.add(Material.SAPLING);
+		instaDestroyMaterials.add(Material.TORCH);
+		instaDestroyMaterials.add(Material.REDSTONE_WIRE);
+		instaDestroyMaterials.add(Material.CROPS);
+		instaDestroyMaterials.add(Material.REDSTONE_TORCH_OFF);
+		instaDestroyMaterials.add(Material.REDSTONE_TORCH_ON);
+		instaDestroyMaterials.add(Material.SUGAR_CANE_BLOCK);
+		instaDestroyMaterials.add(Material.DIODE_BLOCK_OFF);
+		instaDestroyMaterials.add(Material.DIODE_BLOCK_ON);
 	}
 	
 	// -------------------------------------------- //
@@ -80,6 +101,8 @@ public class Conf {
 	}
 	
 	public static boolean load() {
+		Factions.log("Loading conf from disk");
+		
 		if ( ! file.exists()) {
 			Factions.log("No conf to load from disk. Creating new file.");
 			save();
@@ -97,3 +120,4 @@ public class Conf {
 		return true;
 	}
 }
+

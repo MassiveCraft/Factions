@@ -28,7 +28,7 @@ public class Faction {
 	
 	private transient int id;
 	private Map<Integer, Relation> relationWish;
-	private Set<String> invites; // Where string is a follower id (lower case name)
+	private Set<String> invites; // Where string is a lowercase player name
 	private boolean open;
 	private String tag;
 	private String description;
@@ -70,8 +70,8 @@ public class Faction {
 	public String getTag(Faction otherFaction) {
 		return this.getTag(otherFaction.getRelationColor(this).toString());
 	}
-	public String getTag(FPlayer otherFollower) {
-		return this.getTag(otherFollower.getRelationColor(this).toString());
+	public String getTag(FPlayer otherFplayer) {
+		return this.getTag(otherFplayer.getRelationColor(this).toString());
 	}
 	public void setTag(String str) {
 		if (Conf.factionTagForceUpperCase) {
@@ -89,19 +89,19 @@ public class Faction {
 	}
 	
 	// -------------------------------
-	// Invites
+	// Invites - uses lowercase name
 	// -------------------------------
 	
 	public void invite(FPlayer fplayer) {
-		this.invites.add(fplayer.getName()); //TODO Lowercase paradigm shit....
+		this.invites.add(fplayer.getName().toLowerCase());
 	}
 	
 	public void deinvite(FPlayer fplayer) {
-		this.invites.remove(fplayer.getName()); //TODO Lowercase paradigm shit....
+		this.invites.remove(fplayer.getName().toLowerCase());
 	}
 	
 	public boolean isInvited(FPlayer fplayer) {
-		return this.invites.contains(fplayer.getName()); //TODO Lowercase paradigm shit....
+		return this.invites.contains(fplayer.getName().toLowerCase());
 	}
 	
 	// -------------------------------
@@ -136,8 +136,8 @@ public class Faction {
 		return this.getRelationWish(otherFaction);
 	}
 	
-	public Relation getRelation(FPlayer follower) {
-		return getRelation(follower.getFaction());
+	public Relation getRelation(FPlayer fplayer) {
+		return getRelation(fplayer.getFaction());
 	}
 	
 	//----------------------------------------------//
@@ -145,16 +145,16 @@ public class Faction {
 	//----------------------------------------------//
 	public double getPower() {
 		double ret = 0;
-		for (FPlayer follower : this.getFPlayers()) {
-			ret += follower.getPower();
+		for (FPlayer fplayer : this.getFPlayers()) {
+			ret += fplayer.getPower();
 		}
 		return ret;
 	}
 	
 	public double getPowerMax() {
 		double ret = 0;
-		for (FPlayer follower : this.getFPlayers()) {
-			ret += follower.getPowerMax();
+		for (FPlayer fplayer : this.getFPlayers()) {
+			ret += fplayer.getPowerMax();
 		}
 		return ret;
 	}
@@ -176,14 +176,14 @@ public class Faction {
 	}
 	
 	// -------------------------------
-	// Followers
+	// Fplayers
 	// -------------------------------
 	
 	public ArrayList<FPlayer> getFPlayers() {
 		ArrayList<FPlayer> ret = new ArrayList<FPlayer>();
-		for (FPlayer follower : FPlayer.getAll()) {
-			if (follower.getFaction() == this) {
-				ret.add(follower);
+		for (FPlayer fplayer : FPlayer.getAll()) {
+			if (fplayer.getFaction() == this) {
+				ret.add(fplayer);
 			}
 		}
 		return ret;
@@ -214,8 +214,8 @@ public class Faction {
 	public ArrayList<Player> getOnlinePlayers() {
 		ArrayList<Player> ret = new ArrayList<Player>();
 		for (Player player: Factions.instance.getServer().getOnlinePlayers()) {
-			FPlayer follower = FPlayer.get(player);
-			if (follower.getFaction() == this) {
+			FPlayer fplayer = FPlayer.get(player);
+			if (fplayer.getFaction() == this) {
 				ret.add(player);
 			}
 		}
@@ -287,8 +287,8 @@ public class Faction {
 		return this.getRelation(otherFaction).getColor();
 	}
 	
-	public ChatColor getRelationColor(FPlayer follower) {
-		return this.getRelation(follower).getColor();
+	public ChatColor getRelationColor(FPlayer fplayer) {
+		return this.getRelation(fplayer).getColor();
 	}
 	
 
@@ -312,6 +312,8 @@ public class Faction {
 	}
 	
 	public static boolean load() {
+		Factions.log("Loading factions from disk");
+		
 		if ( ! file.exists()) {
 			Factions.log("No factions to load from disk. Creating new file.");
 			save();
@@ -319,7 +321,9 @@ public class Faction {
 		
 		try {
 			Type type = new TypeToken<Map<Integer, Faction>>(){}.getType();
-			instances = Factions.gson.fromJson(DiscUtil.read(file), type);
+			Map<Integer, Faction> instancesFromFile = Factions.gson.fromJson(DiscUtil.read(file), type);
+			instances.clear();
+			instances.putAll(instancesFromFile);
 		} catch (IOException e) {
 			e.printStackTrace();
 			return false;

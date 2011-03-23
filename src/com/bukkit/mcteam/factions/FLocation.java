@@ -86,6 +86,14 @@ public class FLocation {
 	// Comparison
 	//----------------------------------------------//
 	
+	public int hashCode() {
+		int hash = 3;
+        hash = 19 * hash + (this.worldName != null ? this.worldName.hashCode() : 0);
+        hash = 19 * hash + this.x;
+        hash = 19 * hash + this.z;
+        return hash;
+	};
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == this)
@@ -93,7 +101,7 @@ public class FLocation {
 		if (!(obj instanceof FLocation))
 			return false;
 
-		FLocation o = (FLocation) obj;
-		return this.x == o.x && this.z == o.z && this.worldName.equals(o.worldName);
+		FLocation that = (FLocation) obj;
+		return this.x == that.x && this.z == that.z && ( this.worldName==null ? that.worldName==null : this.worldName.equals(that.worldName) );
 	}
 }

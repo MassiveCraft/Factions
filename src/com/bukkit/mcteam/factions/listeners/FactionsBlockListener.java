@@ -1,10 +1,5 @@
 package com.bukkit.mcteam.factions.listeners;
 
-import java.util.Arrays;
-import java.util.Set;
-import java.util.HashSet;
-
-
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockDamageLevel;
@@ -34,22 +29,15 @@ public class FactionsBlockListener extends BlockListener {
 		}
 	}
 
-	//special cases, check for destruction of: torch, redstone torch (on & off), repeater (on & off), redstonewire, sapling, crops, sugar cane
-	private static Set<Integer> specialBlocks = new HashSet<Integer>(Arrays.asList(
-		 new Integer[] {50, 75, 76, 93, 94, 55, 6, 59, 83}
-	));
-	
 	@Override
 	public void onBlockDamage(BlockDamageEvent event) {
-		// debug
-		//event.getPlayer().sendMessage("Block damaged: " + event.getBlock().getTypeId() + " (" + event.getBlock().getType().toString() + ")");
-
 		if (event.isCancelled()) {
-			return; // Alright. lets listen to that.
+			return;
 		}
 
-		boolean badBlock = event.getDamageLevel() == BlockDamageLevel.STOPPED || specialBlocks.contains(new Integer(event.getBlock().getTypeId()));
-		if (badBlock && ! this.playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock(), "destroy")) {
+		boolean blockDestroyed = event.getDamageLevel() == BlockDamageLevel.STOPPED || Conf.instaDestroyMaterials.contains(event.getBlock().getType());
+		
+		if (blockDestroyed && ! this.playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock(), "destroy")) {
 			event.setCancelled(true);
 		}
 	}
@@ -57,7 +45,7 @@ public class FactionsBlockListener extends BlockListener {
 	public boolean playerCanBuildDestroyBlock(Player player, Block block, String action) {
 		Faction otherFaction = Board.getFactionAt(new FLocation(block));
 		
-		if (otherFaction == null || otherFaction.getId() == 0) {
+		if (otherFaction.getId() == 0) {
 			return true; // This is no faction territory. You may build or break stuff here.
 		}
 		

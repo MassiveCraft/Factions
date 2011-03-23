@@ -19,8 +19,7 @@ import com.bukkit.mcteam.util.DiscUtil;
  * Logged out players may or may not have an FPlayer instance. They will always have one if they are part of a faction.
  * This is because only players with a faction are saved to disk (in order to not waste disk space).
  * 
- * The FPlayer is linked to a minecraft player using the player name in lowercase form.
- * Lowercase is enforced while loading from disk TODO
+ * The FPlayer is linked to a minecraft player using the player name.
  * 
  * The same instance is always returned for the same player.
  * This means you can use the == operator. No .equals method necessary.
@@ -32,7 +31,7 @@ public class FPlayer {
 	// Fields
 	// -------------------------------------------- //
 	
-	private static transient Map<String, FPlayer> instances = new HashMap<String, FPlayer>();
+	private static transient TreeMap<String, FPlayer> instances = new TreeMap<String, FPlayer>(String.CASE_INSENSITIVE_ORDER);
 	private static transient File file = new File(Factions.instance.getDataFolder(), "players.json");
 	
 	private transient String playerName;
@@ -75,8 +74,6 @@ public class FPlayer {
 		return Factions.instance.getServer().getPlayer(playerName);
 	}
 	
-	
-	// TODO lowercase vs mixedcase for logged in chars...
 	public String getPlayerName() {
 		return this.playerName;
 	}
@@ -202,15 +199,15 @@ public class FPlayer {
 	public String getNameAndTitle(Faction faction) {
 		return this.getRelationColor(faction)+this.getNameAndTitle();
 	}
-	public String getNameAndTitle(FPlayer follower) {
-		return this.getRelationColor(follower)+this.getNameAndTitle();
+	public String getNameAndTitle(FPlayer fplayer) {
+		return this.getRelationColor(fplayer)+this.getNameAndTitle();
 	}
 	
 	public String getNameAndTag(Faction faction) {
 		return this.getRelationColor(faction)+this.getNameAndTag();
 	}
-	public String getNameAndTag(FPlayer follower) {
-		return this.getRelationColor(follower)+this.getNameAndTag();
+	public String getNameAndTag(FPlayer fplayer) {
+		return this.getRelationColor(fplayer)+this.getNameAndTag();
 	}
 	
 	public String getNameAndRelevant(Faction faction) {
@@ -225,8 +222,8 @@ public class FPlayer {
 		// For non members we show tag
 		return rel.getColor() + this.getNameAndTag();
 	}
-	public String getNameAndRelevant(FPlayer follower) {
-		return getNameAndRelevant(follower.getFaction());
+	public String getNameAndRelevant(FPlayer fplayer) {
+		return getNameAndRelevant(fplayer.getFaction());
 	}
 	
 	// Chat Tag: 
@@ -248,12 +245,12 @@ public class FPlayer {
 		
 		return this.getRelation(faction).getColor()+getChatTag();
 	}
-	public String getChatTag(FPlayer follower) {
+	public String getChatTag(FPlayer fplayer) {
 		if ( ! this.hasFaction()) {
 			return "";
 		}
 		
-		return this.getRelation(follower).getColor()+getChatTag();
+		return this.getRelation(fplayer).getColor()+getChatTag();
 	}
 	
 	// -------------------------------
@@ -264,16 +261,16 @@ public class FPlayer {
 		return faction.getRelation(this);
 	}
 	
-	public Relation getRelation(FPlayer follower) {
-		return this.getFaction().getRelation(follower);
+	public Relation getRelation(FPlayer fplayer) {
+		return this.getFaction().getRelation(fplayer);
 	}
 	
 	public ChatColor getRelationColor(Faction faction) {
 		return faction.getRelationColor(this);
 	}
 	
-	public ChatColor getRelationColor(FPlayer follower) {
-		return this.getRelation(follower).getColor();
+	public ChatColor getRelationColor(FPlayer fplayer) {
+		return this.getRelation(fplayer).getColor();
 	}
 	
 	
@@ -402,8 +399,13 @@ public class FPlayer {
 	// -------------------------------------------- //
 	// Get and search
 	// -------------------------------------------- //
-	public static FPlayer get(String playerName) {
-		playerName = playerName.toLowerCase();
+	
+	// You should use this one to be sure you do not spell the player name wrong.
+	public static FPlayer get(Player player) {
+		return get(player.getName());
+	}
+	
+	private static FPlayer get(String playerName) {
 		if (instances.containsKey(playerName)) {
 			return instances.get(playerName);
 		}
@@ -413,11 +415,6 @@ public class FPlayer {
 		
 		instances.put(playerName, vplayer);
 		return vplayer;
-	}
-	
-	// You should use this one to be sure you do not spell the player name wrong.
-	public static FPlayer get(Player player) {
-		return get(player.getName());
 	}
 	
 	public static Set<FPlayer> getAllOnline() {
@@ -452,16 +449,16 @@ public class FPlayer {
 	public static boolean save() {
 		//Factions.log("Saving players to disk");
 		
-		// We only wan't to save the vplayers with non default values
-		Map<String, FPlayer> vplayersToSave = new HashMap<String, FPlayer>();
+		// We only wan't to save the players with non default values
+		Map<String, FPlayer> playersToSave = new HashMap<String, FPlayer>();
 		for (Entry<String, FPlayer> entry : instances.entrySet()) {
 			if (entry.getValue().shouldBeSaved()) {
-				vplayersToSave.put(entry.getKey(), entry.getValue());
+				playersToSave.put(entry.getKey(), entry.getValue());
 			}
 		}
 		
 		try {
-			DiscUtil.write(file, Factions.gson.toJson(vplayersToSave));
+			DiscUtil.write(file, Factions.gson.toJson(playersToSave));
 		} catch (IOException e) {
 			Factions.log("Failed to save the players to disk.");
 			e.printStackTrace();
@@ -471,6 +468,7 @@ public class FPlayer {
 	}
 	
 	public static boolean load() {
+		Factions.log("Loading players from disk");
 		if ( ! file.exists()) {
 			Factions.log("No players to load from disk. Creating new file.");
 			save();
@@ -480,11 +478,8 @@ public class FPlayer {
 		try {
 			Type type = new TypeToken<Map<String, FPlayer>>(){}.getType();
 			Map<String, FPlayer> instancesFromFile = Factions.gson.fromJson(DiscUtil.read(file), type);
-			
-			instances = new HashMap<String, FPlayer>();
-			for (Entry<String, FPlayer> instanceFromFile : instancesFromFile.entrySet()) {
-				instances.put(instanceFromFile.getKey().toLowerCase(), instanceFromFile.getValue());
-			}
+			instances.clear();
+			instances.putAll(instancesFromFile);
 		} catch (IOException e) {
 			e.printStackTrace();
 			return false;

@@ -16,7 +16,7 @@ import com.bukkit.mcteam.gson.reflect.TypeToken;
 import com.bukkit.mcteam.util.AsciiCompass;
 import com.bukkit.mcteam.util.DiscUtil;
 
-//import com.bukkit.mcteam.factions.util.*;
+// TODO rework to use single layer hash map and convert from and to the formay while saving and loading!!
 
 public class Board {
 	protected static transient File file = new File(Factions.instance.getDataFolder(), "board.json");
@@ -182,6 +182,8 @@ public class Board {
 	}
 	
 	public static boolean load() {
+		Factions.log("Loading board from disk");
+		
 		if ( ! file.exists()) {
 			Factions.log("No board to load from disk. Creating new file.");
 			save();

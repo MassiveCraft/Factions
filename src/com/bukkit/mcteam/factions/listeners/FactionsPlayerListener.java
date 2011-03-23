@@ -1,11 +1,9 @@
 package com.bukkit.mcteam.factions.listeners;
 
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.logging.Logger;
 
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -96,7 +94,7 @@ public class FactionsPlayerListener extends PlayerListener{
 		// Update the lastLoginTime for this fplayer
 		me.setLastLoginTime(System.currentTimeMillis());
 		
-		// Run the member auto kick routine. Twice to getToTheAdmins...
+		// Run the member auto kick routine. Twice to get to the admins...
 		FPlayer.autoLeaveOnInactivityRoutine();
 		FPlayer.autoLeaveOnInactivityRoutine();
 	}
@@ -146,7 +144,7 @@ public class FactionsPlayerListener extends PlayerListener{
 			return;  // right-clicked on air, not a block; no worries then
 		}
 
-		if ( ! this.playerCanUseItemHere(event.getPlayer(), event.getBlockClicked(), event.getItem().getTypeId())) {
+		if ( ! this.playerCanUseItemHere(event.getPlayer(), event.getBlockClicked(), event.getMaterial())) {
 			event.setCancelled(true);
 			return;
 		}
@@ -154,19 +152,15 @@ public class FactionsPlayerListener extends PlayerListener{
 	}
 
 	//currently checking placement/use of: redstone, sign, flint&steel, beds (not currently detected by Bukkit), buckets (empty, water, lava), repeater (not currently detected by Bukkit)
-	private static Set<Integer> badItems = new HashSet<Integer>(Arrays.asList(
-		 new Integer[] {331, 323, 259, 355, 325, 326, 327, 356}
-	));
+	public boolean playerCanUseItemHere(Player player, Block block, Material material) {
 
-	public boolean playerCanUseItemHere(Player player, Block block, int itemId) {
-
-		if ( ! badItems.contains(new Integer(itemId))) {
+		if ( ! Conf.territoryDenyUseageMaterials.contains(material)) {
 			return true; // Item isn't one we're preventing.
 		}
 
 		Faction otherFaction = Board.getFactionAt(new FLocation(block));
 
-		if (otherFaction == null || otherFaction.getId() == 0) {
+		if (otherFaction.getId() == 0) {
 			return true; // This is not faction territory. Use whatever you like here.
 		}
 

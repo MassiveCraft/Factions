@@ -181,7 +181,8 @@ public class Factions extends JavaPlugin {
 		if (test != null) {
 			helpPlugin = ((Help) test);
 			Factions.log("Found and will use plugin "+helpPlugin.getDescription().getFullName());
-			helpPlugin.registerCommand(this.getBaseCommand()+" help *[page]", "Factions plugin help.", helpPlugin, true);
+			helpPlugin.registerCommand(this.getBaseCommand()+" help *[page]", "Factions plugin help.", this, false);
+			helpPlugin.registerCommand("help factions", "instead use: /f help", helpPlugin, true);
 		}
 	}
 
