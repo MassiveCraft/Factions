@@ -510,13 +510,6 @@ public class FPlayer {
 		double toleranceMillis = Conf.autoLeaveAfterDaysOfInactivity * 24 * 60 * 60 * 1000;
 		
 		for (FPlayer fplayer : FPlayer.getAll()) {
-			// Test if the player is immune
-			if (Factions.Permissions != null) {
-				if (Factions.Permissions.has(fplayer.getPlayer(), "factions.autoLeaveImmunity")) {
-					continue;
-				}
-			}
-			
 			if (now - fplayer.getLastLoginTime() > toleranceMillis) {
 				fplayer.leave();
 			}

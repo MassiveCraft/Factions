@@ -212,10 +212,6 @@ public class Factions extends JavaPlugin {
 		return hasPerm(sender, "factions.manageSafeZone", true);
 	}
 	
-	public static boolean hasPermAutoLeaveImmunity(CommandSender sender) {
-		return hasPerm(sender, "factions.autoLeaveImmunity", true);
-	}
-	
 	private static boolean hasPerm(CommandSender sender, String permNode, boolean fallbackOnlyOp) {
 		if (Factions.Permissions == null || ! (sender instanceof Player)) {
 			return fallbackOnlyOp == false || sender.isOp();
