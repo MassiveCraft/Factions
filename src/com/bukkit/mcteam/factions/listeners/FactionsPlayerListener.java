@@ -159,11 +159,20 @@ public class FactionsPlayerListener extends PlayerListener{
 		}
 
 		FPlayer me = FPlayer.get(player);
+		
+		if (otherFaction.isSafeZone()) {
+			if (Factions.hasPermManageSafeZone(player)) {
+				return true;
+			}
+			me.sendMessage("You can't use "+TextUtil.getMaterialName(material)+" in a safe zone.");
+			return false;
+		}
+		
 		Faction myFaction = me.getFaction();
 
 		// Cancel if we are not in our own territory
 		if (myFaction != otherFaction) {
-			me.sendMessage("You can't use that in the territory of "+otherFaction.getTag(myFaction));
+			me.sendMessage("You can't use "+TextUtil.getMaterialName(material)+" in the territory of "+otherFaction.getTag(myFaction));
 			return false;
 		}
 

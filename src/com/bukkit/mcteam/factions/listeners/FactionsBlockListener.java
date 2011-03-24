@@ -102,6 +102,7 @@ public class FactionsBlockListener extends BlockListener {
 		Faction myFaction = me.getFaction();
 		Faction otherFaction = Board.getFactionAt(new FLocation(block));
 		
+		// In safe zones you may use any block...
 		if (otherFaction.isNormal() && myFaction != otherFaction) {
 			me.sendMessage("You can't use "+TextUtil.getMaterialName(material)+" in the territory of "+otherFaction.getTag(myFaction));
 			return false;
