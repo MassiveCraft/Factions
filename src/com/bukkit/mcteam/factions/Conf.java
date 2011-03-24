@@ -87,6 +87,9 @@ public class Conf {
 		instaDestroyMaterials.add(Material.SUGAR_CANE_BLOCK);
 		instaDestroyMaterials.add(Material.DIODE_BLOCK_OFF);
 		instaDestroyMaterials.add(Material.DIODE_BLOCK_ON);
+		instaDestroyMaterials.add(Material.PAINTING);
+		instaDestroyMaterials.add(Material.RED_ROSE);
+		instaDestroyMaterials.add(Material.YELLOW_FLOWER);
 		
 		safeZoneNerfedCreatureTypes.add(CreatureType.CREEPER);
 		safeZoneNerfedCreatureTypes.add(CreatureType.GHAST);
