@@ -1,9 +1,9 @@
 package com.bukkit.mcteam.factions;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.lang.reflect.Type;
 import java.util.*;
+import java.util.logging.Level;
 import java.util.Map.Entry;
 
 import org.bukkit.ChatColor;
@@ -470,7 +470,8 @@ public class FPlayer {
 	public static boolean load() {
 		Factions.log("Loading players from disk");
 		if ( ! file.exists()) {
-			Factions.log("No players to load from disk. Creating new file.");
+			if ( ! loadOld())
+				Factions.log("No players to load from disk. Creating new file.");
 			save();
 			return true;
 		}
@@ -515,5 +516,41 @@ public class FPlayer {
 			}
 		}
 	}
-	
+
+	private static boolean loadOld() {
+		File folderFollower = new File(Factions.instance.getDataFolder(), "follower");
+
+		if ( ! folderFollower.isDirectory())
+			return false;
+
+		Factions.log("Players file doesn't exist, attempting to load old pre-1.1 data.");
+
+		String ext = ".json";
+
+		class jsonFileFilter implements FileFilter {
+			@Override
+			public boolean accept(File file) {
+				return (file.getName().toLowerCase().endsWith(".json") && file.isFile());
+			}
+		}
+
+		File[] jsonFiles = folderFollower.listFiles(new jsonFileFilter());
+
+		for (File jsonFile : jsonFiles) {
+			// Extract the name from the filename. The name is filename minus ".json"
+			String name = jsonFile.getName();
+			name = name.substring(0, name.length() - ext.length());
+			try {
+				FPlayer follower = Factions.gson.fromJson(DiscUtil.read(jsonFile), FPlayer.class);
+				follower.playerName = name;
+				follower.lastLoginTime = System.currentTimeMillis();
+				instances.put(follower.playerName, follower);
+				Factions.log("loaded pre-1.1 follower "+name);
+			} catch (Exception e) {
+				e.printStackTrace();
+				Factions.log(Level.WARNING, "failed to load follower "+name);
+			}
+		}
+		return true;
+	}
 }

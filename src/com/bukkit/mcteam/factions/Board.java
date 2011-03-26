@@ -1,11 +1,11 @@
 package com.bukkit.mcteam.factions;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.logging.Level;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
@@ -14,6 +14,9 @@ import org.bukkit.ChatColor;
 
 import com.bukkit.mcteam.factions.util.TextUtil;
 import com.bukkit.mcteam.gson.reflect.TypeToken;
+import com.bukkit.mcteam.gson.JsonArray;
+import com.bukkit.mcteam.gson.JsonObject;
+import com.bukkit.mcteam.gson.JsonParser;
 import com.bukkit.mcteam.util.AsciiCompass;
 import com.bukkit.mcteam.util.DiscUtil;
 
@@ -204,7 +207,8 @@ public class Board {
 		Factions.log("Loading board from disk");
 		
 		if ( ! file.exists()) {
-			Factions.log("No board to load from disk. Creating new file.");
+			if ( ! loadOld())
+				Factions.log("No board to load from disk. Creating new file.");
 			save();
 			return true;
 		}
@@ -219,6 +223,50 @@ public class Board {
 			return false;
 		}
 			
+		return true;
+	}
+
+	private static boolean loadOld() {
+		File folderBoard = new File(Factions.instance.getDataFolder(), "board");
+
+		if ( ! folderBoard.isDirectory())
+			return false;
+
+		Factions.log("Board file doesn't exist, attempting to load old pre-1.1 data.");
+
+		String ext = ".json";
+
+		class jsonFileFilter implements FileFilter {
+			@Override
+			public boolean accept(File file) {
+				return (file.getName().toLowerCase().endsWith(".json") && file.isFile());
+			}
+		}
+
+		File[] jsonFiles = folderBoard.listFiles(new jsonFileFilter());
+		for (File jsonFile : jsonFiles) {
+			// Extract the name from the filename. The name is filename minus ".json"
+			String name = jsonFile.getName();
+			name = name.substring(0, name.length() - ext.length());
+			try {
+				JsonParser parser = new JsonParser();
+				JsonObject json = (JsonObject) parser.parse(DiscUtil.read(jsonFile));
+				JsonArray coords = json.getAsJsonArray("coordFactionIds");
+				Iterator coordSet = coords.iterator();
+				while(coordSet.hasNext()) {
+					JsonArray coordDat = (JsonArray) coordSet.next();
+					JsonObject coord = coordDat.get(0).getAsJsonObject();
+					int coordX = coord.get("x").getAsInt();
+					int coordZ = coord.get("z").getAsInt();
+					int factionId = coordDat.get(1).getAsInt();
+					flocationIds.put(new FLocation(name, coordX, coordZ), factionId);
+				}
+				Factions.log("loaded pre-1.1 board "+name);
+			} catch (Exception e) {
+				e.printStackTrace();
+				Factions.log(Level.WARNING, "failed to load board "+name);
+			}
+		}
 		return true;
 	}
 }

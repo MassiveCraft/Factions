@@ -1,7 +1,6 @@
 package com.bukkit.mcteam.factions;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.lang.reflect.Type;
 import java.util.*;
 import java.util.Map.Entry;
@@ -345,7 +344,8 @@ public class Faction {
 		Factions.log("Loading factions from disk");
 		
 		if ( ! file.exists()) {
-			Factions.log("No factions to load from disk. Creating new file.");
+			if ( ! loadOld())
+				Factions.log("No factions to load from disk. Creating new file.");
 			save();
 		}
 		
@@ -392,7 +392,7 @@ public class Faction {
 		}
 		nextId += 1; // make it the next id and not the current highest.
 	}
-	
+
 	public static Faction get(Integer factionId) {
 		if ( ! instances.containsKey(factionId)) {
 			Factions.log(Level.WARNING, "Non existing factionId "+factionId+" requested! Issuing cleaning!");
@@ -438,5 +438,42 @@ public class Faction {
 		
 		// Clean the fplayers
 		FPlayer.clean();
+	}
+
+	private static boolean loadOld() {
+		File folderFaction = new File(Factions.instance.getDataFolder(), "faction");
+
+		if ( ! folderFaction.isDirectory())
+			return false;
+
+		Factions.log("Factions file doesn't exist, attempting to load old pre-1.1 data.");
+
+		String ext = ".json";
+
+		class jsonFileFilter implements FileFilter {
+			@Override
+			public boolean accept(File file) {
+				return (file.getName().toLowerCase().endsWith(".json") && file.isFile());
+			}
+		}
+
+		File[] jsonFiles = folderFaction.listFiles(new jsonFileFilter());
+		for (File jsonFile : jsonFiles) {
+			// Extract the name from the filename. The name is filename minus ".json"
+			String name = jsonFile.getName();
+			name = name.substring(0, name.length() - ext.length());
+			int id = Integer.parseInt(name);
+
+			try {
+				Faction faction = Factions.gson.fromJson(DiscUtil.read(jsonFile), Faction.class);
+				faction.id = id;
+				instances.put(faction.id, faction);
+				Factions.log("loaded pre-1.1 faction "+id);
+			} catch (Exception e) {
+				e.printStackTrace();
+				Factions.log(Level.WARNING, "Failed to load faction "+id);
+			}
+		}
+		return true;
 	}
 }
