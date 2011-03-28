@@ -38,7 +38,18 @@ public class MyLocationTypeAdapter implements JsonDeserializer<Location>, JsonSe
 	@Override
 	public JsonElement serialize(Location src, Type typeOfSrc, JsonSerializationContext context) {
 		JsonObject obj = new JsonObject();
-		
+
+		if (src == null)
+		{
+			Factions.log("Passed location is null in MyLocationTypeAdapter.");
+			return obj;
+		}
+		else if (src.getWorld() == null)
+		{
+			Factions.log("Passed location's world is null in MyLocationTypeAdapter.");
+			return obj;
+		}
+
 		obj.addProperty(WORLD, src.getWorld().getName());
 		obj.addProperty(X, src.getX());
 		obj.addProperty(Y, src.getY());

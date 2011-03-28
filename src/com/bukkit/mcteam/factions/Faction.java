@@ -332,7 +332,11 @@ public class Faction {
 		try {
 			DiscUtil.write(file, Factions.gson.toJson(instances));
 		} catch (IOException e) {
-			Factions.log("Failed to save the factions to disk.");
+			Factions.log("Failed to save the factions to disk due to I/O exception.");
+			e.printStackTrace();
+			return false;
+		} catch (NullPointerException e) {
+			Factions.log("Failed to save the factions to disk due to NPE.");
 			e.printStackTrace();
 			return false;
 		}
