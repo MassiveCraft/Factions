@@ -9,6 +9,8 @@ import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerBucketEmptyEvent;
+import org.bukkit.event.player.PlayerBucketFillEvent;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -146,6 +148,8 @@ public class FactionsPlayerListener extends PlayerListener{
 			event.setCancelled(true);
 			return;
 		}
+		// this check below might no longer be needed... bucket detection is now necessarily handled separately in onPlayerBucketXXX() events, and
+		// Flint&Steel is somehow detected before this in onBlockPlace(), and that's currently it for the default territoryDenyUseageMaterials
 		if ( ! this.playerCanUseItemHere(player, block, event.getMaterial())) {
 			event.setCancelled(true);
 			return;
@@ -213,6 +217,37 @@ public class FactionsPlayerListener extends PlayerListener{
 		Location home = me.getFaction().getHome();
 		if (Conf.homesEnabled && Conf.homesTeleportToOnDeath && home != null) {
 			event.setRespawnLocation(home);
+		}
+	}
+
+	// For some reason onPlayerInteract() sometimes misses bucket events depending on distance (something like 2-3 blocks away isn't detected),
+	// but these separate bucket events below always fire without fail
+	@Override
+	public void onPlayerBucketEmpty(PlayerBucketEmptyEvent event) {
+		if (event.isCancelled()) {
+			return;
+		}
+
+		Block block = event.getBlockClicked();
+		Player player = event.getPlayer();
+
+		if ( ! this.playerCanUseItemHere(player, block, event.getBucket())) {
+			event.setCancelled(true);
+			return;
+		}
+	}
+	@Override
+	public void onPlayerBucketFill(PlayerBucketFillEvent event) {
+		if (event.isCancelled()) {
+			return;
+		}
+
+		Block block = event.getBlockClicked();
+		Player player = event.getPlayer();
+
+		if ( ! this.playerCanUseItemHere(player, block, event.getBucket())) {
+			event.setCancelled(true);
+			return;
 		}
 	}
 }
