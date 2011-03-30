@@ -3,6 +3,7 @@ package com.bukkit.mcteam.factions.listeners;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -83,7 +84,7 @@ public class FactionsPlayerListener extends PlayerListener{
 			}
 			
 			// Write to the log... We will write the non colored message.
-			String nonColoredMsg = String.format(nonColoredMsgFormat, talkingPlayer.getDisplayName(), msg);
+			String nonColoredMsg = ChatColor.stripColor(String.format(nonColoredMsgFormat, talkingPlayer.getDisplayName(), msg));
 			Logger.getLogger("Minecraft").info(nonColoredMsg);
 		} else {
 			// No relation color.
