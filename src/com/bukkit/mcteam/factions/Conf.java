@@ -68,29 +68,12 @@ public class Conf {
 		territoryProtectedMaterials.add(Material.DISPENSER);
 		territoryProtectedMaterials.add(Material.CHEST);
 		territoryProtectedMaterials.add(Material.FURNACE);
-		
-		territoryDenyUseageMaterials.add(Material.REDSTONE);
-		territoryDenyUseageMaterials.add(Material.SIGN);
+
 		territoryDenyUseageMaterials.add(Material.FLINT_AND_STEEL);
-		territoryDenyUseageMaterials.add(Material.BED);
 		territoryDenyUseageMaterials.add(Material.BUCKET);
 		territoryDenyUseageMaterials.add(Material.WATER_BUCKET);
-		territoryDenyUseageMaterials.add(Material.DIODE);
-		territoryDenyUseageMaterials.add(Material.SUGAR_CANE);
-		
-		instaDestroyMaterials.add(Material.SAPLING);
-		instaDestroyMaterials.add(Material.TORCH);
-		instaDestroyMaterials.add(Material.REDSTONE_WIRE);
-		instaDestroyMaterials.add(Material.CROPS);
-		instaDestroyMaterials.add(Material.REDSTONE_TORCH_OFF);
-		instaDestroyMaterials.add(Material.REDSTONE_TORCH_ON);
-		instaDestroyMaterials.add(Material.SUGAR_CANE_BLOCK);
-		instaDestroyMaterials.add(Material.DIODE_BLOCK_OFF);
-		instaDestroyMaterials.add(Material.DIODE_BLOCK_ON);
-		instaDestroyMaterials.add(Material.PAINTING);
-		instaDestroyMaterials.add(Material.RED_ROSE);
-		instaDestroyMaterials.add(Material.YELLOW_FLOWER);
-		
+		territoryDenyUseageMaterials.add(Material.LAVA_BUCKET);
+
 		safeZoneNerfedCreatureTypes.add(CreatureType.CREEPER);
 		safeZoneNerfedCreatureTypes.add(CreatureType.GHAST);
 		safeZoneNerfedCreatureTypes.add(CreatureType.PIG_ZOMBIE);

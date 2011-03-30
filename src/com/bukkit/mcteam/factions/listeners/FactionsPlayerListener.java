@@ -8,9 +8,10 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerChatEvent;
-import org.bukkit.event.player.PlayerEvent;
-import org.bukkit.event.player.PlayerItemEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerListener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
@@ -89,7 +90,7 @@ public class FactionsPlayerListener extends PlayerListener{
 	}
 	
 	@Override
-	public void onPlayerJoin(PlayerEvent event) {
+	public void onPlayerJoin(PlayerJoinEvent event) {
 		// Make sure that all online players do have a fplayer.
 		FPlayer me = FPlayer.get(event.getPlayer());
 		
@@ -130,22 +131,27 @@ public class FactionsPlayerListener extends PlayerListener{
 	}
 
     @Override
-    public void onPlayerItem(PlayerItemEvent event) {
+    public void onPlayerInteract(PlayerInteractEvent event) {
 		if (event.isCancelled()) {
 			return;
 		}
-			
-		if (event.getBlockClicked() == null) {
-			return;  // right-clicked on air, not a block; no worries then
+		if (event.getAction() != Action.RIGHT_CLICK_BLOCK) {
+			return;  // only interested on right-clicks on blocks, whether player is using an item or interacting with a block
 		}
 
-		if ( ! this.playerCanUseItemHere(event.getPlayer(), event.getBlockClicked(), event.getMaterial())) {
+		Block block = event.getClickedBlock();
+		Player player = event.getPlayer();
+
+		if ( ! canPlayerUseRightclickBlock(player, block)) {
 			event.setCancelled(true);
 			return;
 		}
-
+		if ( ! this.playerCanUseItemHere(player, block, event.getMaterial())) {
+			event.setCancelled(true);
+			return;
+		}
 	}
-    
+
 	public boolean playerCanUseItemHere(Player player, Block block, Material material) {
 
 		if ( ! Conf.territoryDenyUseageMaterials.contains(material)) {
@@ -178,7 +184,29 @@ public class FactionsPlayerListener extends PlayerListener{
 
 		return true;
 	}
-	
+
+	public boolean canPlayerUseRightclickBlock(Player player, Block block) {
+		Material material = block.getType();
+
+		// We only care about some material types.
+		if ( ! Conf.territoryProtectedMaterials.contains(material)) {
+			return true;
+		}
+
+		FPlayer me = FPlayer.get(player);
+		Faction myFaction = me.getFaction();
+		Faction otherFaction = Board.getFactionAt(new FLocation(block));
+
+		// In safe zones you may use any block...
+		if (otherFaction.isNormal() && myFaction != otherFaction) {
+			me.sendMessage("You can't use "+TextUtil.getMaterialName(material)+" in the territory of "+otherFaction.getTag(myFaction));
+			return false;
+		}
+
+		// You may use doors in both safeZone and wilderness
+		return true;
+	}
+
 	@Override
 	public void onPlayerRespawn(PlayerRespawnEvent event) {
 		FPlayer me = FPlayer.get(event.getPlayer());

@@ -2,10 +2,9 @@ package com.bukkit.mcteam.factions.listeners;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockDamageLevel;
 import org.bukkit.entity.Player;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockDamageEvent;
-import org.bukkit.event.block.BlockInteractEvent;
 import org.bukkit.event.block.BlockListener;
 import org.bukkit.event.block.BlockPlaceEvent;
 
@@ -24,8 +23,22 @@ public class FactionsBlockListener extends BlockListener {
 		if (event.isCancelled()) {
 			return;
 		}
-		
+		if (!event.canBuild()) {
+			return;
+		}
+
 		if ( ! this.playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock(), "build")) {
+			event.setCancelled(true);
+		}
+	}
+
+	@Override
+	public void onBlockBreak(BlockBreakEvent event) {
+		if (event.isCancelled()) {
+			return;
+		}
+
+		if ( ! this.playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock(), "destroy")) {
 			event.setCancelled(true);
 		}
 	}
@@ -36,9 +49,7 @@ public class FactionsBlockListener extends BlockListener {
 			return;
 		}
 
-		boolean blockDestroyed = event.getDamageLevel() == BlockDamageLevel.STOPPED || Conf.instaDestroyMaterials.contains(event.getBlock().getType());
-		
-		if (blockDestroyed && ! this.playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock(), "destroy")) {
+		if (event.getInstaBreak() && ! this.playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock(), "destroy")) {
 			event.setCancelled(true);
 		}
 	}
@@ -68,47 +79,6 @@ public class FactionsBlockListener extends BlockListener {
 			return false;
 		}
 		
-		return true;
-	}
-	
-	@Override
-	public void onBlockInteract(BlockInteractEvent event) {
-		if (event.isCancelled()) {
-			return;
-		}
-		
-		if ( ! (event.getEntity() instanceof Player)) {
-			// So far mobs does not interact with the environment :P
-			return;
-		}
-	
-		Block block = event.getBlock();
-		Player player = (Player) event.getEntity();
-
-		if ( ! canPlayerUseRightclickBlock(player, block)) {
-			event.setCancelled(true);
-		}
-	}
-	
-	public boolean canPlayerUseRightclickBlock(Player player, Block block) {
-		Material material = block.getType();
-
-		// We only care about some material types.
-		if ( ! Conf.territoryProtectedMaterials.contains(material)) {
-			return true;
-		}
-		
-		FPlayer me = FPlayer.get(player);
-		Faction myFaction = me.getFaction();
-		Faction otherFaction = Board.getFactionAt(new FLocation(block));
-		
-		// In safe zones you may use any block...
-		if (otherFaction.isNormal() && myFaction != otherFaction) {
-			me.sendMessage("You can't use "+TextUtil.getMaterialName(material)+" in the territory of "+otherFaction.getTag(myFaction));
-			return false;
-		}
-		
-		// You may use doors in both safeZone and wilderness
 		return true;
 	}
 }
