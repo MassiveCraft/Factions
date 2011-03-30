@@ -59,7 +59,6 @@ public class Conf {
 	
 	public static transient Set<CreatureType> safeZoneNerfedCreatureTypes = new HashSet<CreatureType>();
 	
-	public static transient Set<Material> instaDestroyMaterials = new HashSet<Material>(); // This one is not really configuration therefore transient
 	public static transient int mapHeight = 8;
 	public static transient int mapWidth = 49;
 	

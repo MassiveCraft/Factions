@@ -387,7 +387,8 @@ public class FPlayer {
 	// Messages
 	// -------------------------------------------- //
 	public void sendMessage(String message) {
-		this.getPlayer().sendMessage(Conf.colorSystem + message);
+		if (this.getPlayer() != null)
+			this.getPlayer().sendMessage(Conf.colorSystem + message);
 	}
 	
 	public void sendMessage(List<String> messages) {
