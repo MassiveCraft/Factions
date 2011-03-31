@@ -15,6 +15,7 @@ import org.bukkit.ChatColor;
 import com.bukkit.mcteam.factions.util.TextUtil;
 import com.bukkit.mcteam.gson.reflect.TypeToken;
 import com.bukkit.mcteam.gson.JsonArray;
+import com.bukkit.mcteam.gson.JsonElement;
 import com.bukkit.mcteam.gson.JsonObject;
 import com.bukkit.mcteam.gson.JsonParser;
 import com.bukkit.mcteam.util.AsciiCompass;
@@ -252,7 +253,7 @@ public class Board {
 				JsonParser parser = new JsonParser();
 				JsonObject json = (JsonObject) parser.parse(DiscUtil.read(jsonFile));
 				JsonArray coords = json.getAsJsonArray("coordFactionIds");
-				Iterator coordSet = coords.iterator();
+				Iterator<JsonElement> coordSet = coords.iterator();
 				while(coordSet.hasNext()) {
 					JsonArray coordDat = (JsonArray) coordSet.next();
 					JsonObject coord = coordDat.get(0).getAsJsonObject();
