@@ -8,6 +8,7 @@ import org.bukkit.event.block.BlockListener;
 import org.bukkit.event.block.BlockPlaceEvent;
 
 import com.bukkit.mcteam.factions.Board;
+import com.bukkit.mcteam.factions.Conf;
 import com.bukkit.mcteam.factions.FLocation;
 import com.bukkit.mcteam.factions.FPlayer;
 import com.bukkit.mcteam.factions.Faction;
