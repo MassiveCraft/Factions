@@ -138,17 +138,23 @@ public class FactionsPlayerListener extends PlayerListener{
 		if (event.isCancelled()) {
 			return;
 		}
-		if (event.getAction() != Action.RIGHT_CLICK_BLOCK) {
-			return;  // only interested on right-clicks on blocks, whether player is using an item or interacting with a block
-		}
 
 		Block block = event.getClickedBlock();
 		Player player = event.getPlayer();
 
-		if ( ! canPlayerUseRightclickBlock(player, block)) {
+		if (block == null) {
+			return;  // clicked in air, apparently
+		}
+
+		if ( ! canPlayerUseBlock(player, block)) {
 			event.setCancelled(true);
 			return;
 		}
+
+		if (event.getAction() != Action.RIGHT_CLICK_BLOCK) {
+			return;  // only interested on right-clicks for below
+		}
+
 		// this check below might no longer be needed... bucket detection is now necessarily handled separately in onPlayerBucketXXX() events, and
 		// Flint&Steel is somehow detected before this in onBlockPlace(), and that's currently it for the default territoryDenyUseageMaterials
 		if ( ! this.playerCanUseItemHere(player, block, event.getMaterial())) {
@@ -194,7 +200,7 @@ public class FactionsPlayerListener extends PlayerListener{
 		return true;
 	}
 
-	public boolean canPlayerUseRightclickBlock(Player player, Block block) {
+	public boolean canPlayerUseBlock(Player player, Block block) {
 
 		if (Factions.hasPermAdminBypass(player)) {
 			return true;
