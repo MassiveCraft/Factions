@@ -159,6 +159,10 @@ public class FactionsPlayerListener extends PlayerListener{
 
 	public boolean playerCanUseItemHere(Player player, Block block, Material material) {
 
+		if (Factions.hasPermAdminBypass(player)) {
+			return true;
+		}
+
 		if ( ! Conf.territoryDenyUseageMaterials.contains(material)) {
 			return true; // Item isn't one we're preventing.
 		}
@@ -191,6 +195,11 @@ public class FactionsPlayerListener extends PlayerListener{
 	}
 
 	public boolean canPlayerUseRightclickBlock(Player player, Block block) {
+
+		if (Factions.hasPermAdminBypass(player)) {
+			return true;
+		}
+
 		Material material = block.getType();
 
 		// We only care about some material types.

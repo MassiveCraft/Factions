@@ -53,6 +53,11 @@ public class FactionsBlockListener extends BlockListener {
 	}
 	
 	public boolean playerCanBuildDestroyBlock(Player player, Block block, String action) {
+
+		if (Factions.hasPermAdminBypass(player)) {
+			return true;
+		}
+
 		Faction otherFaction = Board.getFactionAt(new FLocation(block));
 		
 		if (otherFaction.isNone()) {

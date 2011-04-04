@@ -24,6 +24,9 @@ public class MyLocationTypeAdapter implements JsonDeserializer<Location>, JsonSe
 	@Override
 	public Location deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
 		JsonObject obj = json.getAsJsonObject();
+
+		if (obj.isJsonNull() || obj.get(WORLD).isJsonNull())
+			return null;
 		
 		World world = Factions.instance.getServer().getWorld(obj.get(WORLD).getAsString());
 		double x = obj.get(X).getAsDouble();

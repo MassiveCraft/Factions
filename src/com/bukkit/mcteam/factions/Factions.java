@@ -213,6 +213,10 @@ public class Factions extends JavaPlugin {
 	public static boolean hasPermManageSafeZone(CommandSender sender) {
 		return hasPerm(sender, "factions.manageSafeZone", true);
 	}
+
+	public static boolean hasPermAdminBypass(CommandSender sender) {
+		return hasPerm(sender, "factions.adminBypass", true);
+	}
 	
 	private static boolean hasPerm(CommandSender sender, String permNode, boolean fallbackOnlyOp) {
 		if (Factions.Permissions == null || ! (sender instanceof Player)) {
