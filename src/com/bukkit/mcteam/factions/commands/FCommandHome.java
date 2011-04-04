@@ -30,7 +30,7 @@ public class FCommandHome extends FBaseCommand {
 			return;
 		}
 		
-		player.teleportTo(myFaction.getHome());
+		player.teleport(myFaction.getHome());
 	}
 	
 }

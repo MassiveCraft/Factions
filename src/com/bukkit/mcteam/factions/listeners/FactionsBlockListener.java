@@ -1,6 +1,5 @@
 package com.bukkit.mcteam.factions.listeners;
 
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -9,12 +8,10 @@ import org.bukkit.event.block.BlockListener;
 import org.bukkit.event.block.BlockPlaceEvent;
 
 import com.bukkit.mcteam.factions.Board;
-import com.bukkit.mcteam.factions.Conf;
 import com.bukkit.mcteam.factions.FLocation;
 import com.bukkit.mcteam.factions.FPlayer;
 import com.bukkit.mcteam.factions.Faction;
 import com.bukkit.mcteam.factions.Factions;
-import com.bukkit.mcteam.factions.util.TextUtil;
 
 public class FactionsBlockListener extends BlockListener {
 	
