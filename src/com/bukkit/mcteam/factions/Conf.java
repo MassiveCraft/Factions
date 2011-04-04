@@ -53,6 +53,11 @@ public class Conf {
 	public static double territoryShieldFactor = 0.5;
 	public static boolean territoryBlockCreepers = false;
 	public static boolean territoryBlockFireballs = false;
+	public static boolean territoryBlockTNT = false;
+
+	public static boolean safeZoneDenyBuild = true;
+	public static boolean safeZoneDenyUseage = true;
+	public static boolean safeZoneBlockTNT = true;
 	
 	public static Set<Material> territoryProtectedMaterials = new HashSet<Material>();
 	public static Set<Material> territoryDenyUseageMaterials = new HashSet<Material>();

@@ -64,7 +64,7 @@ public class FactionsBlockListener extends BlockListener {
 		FPlayer me = FPlayer.get(player);
 		
 		if (otherFaction.isSafeZone()) {
-			if (Factions.hasPermManageSafeZone(player)) {
+			if (Factions.hasPermManageSafeZone(player) || !Conf.safeZoneDenyBuild) {
 				return true;
 			}
 			me.sendMessage("You can't "+action+" in a safe zone.");

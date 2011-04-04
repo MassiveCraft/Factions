@@ -171,7 +171,7 @@ public class FactionsPlayerListener extends PlayerListener{
 
 		FPlayer me = FPlayer.get(player);
 		
-		if (otherFaction.isSafeZone()) {
+		if (otherFaction.isSafeZone() && Conf.safeZoneDenyUseage) {
 			if (Factions.hasPermManageSafeZone(player)) {
 				return true;
 			}

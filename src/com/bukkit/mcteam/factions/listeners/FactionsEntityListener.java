@@ -65,7 +65,6 @@ public class FactionsEntityListener extends EntityListener {
 	}
 
 	
-	// TODO what happens with the creeper or fireball then? Must we delete them manually?
 	@Override
 	public void onEntityExplode(EntityExplodeEvent event)
 	{
@@ -85,6 +84,9 @@ public class FactionsEntityListener extends EntityListener {
 			event.setCancelled(true);
 		} else if ((Conf.territoryBlockFireballs || faction.isSafeZone()) && event.getEntity() instanceof Fireball) {
 			// ghast fireball which might need prevention, if inside faction territory
+			event.setCancelled(true);
+		} else if (Conf.territoryBlockTNT || (faction.isSafeZone() && Conf.safeZoneBlockTNT)) {
+			// we'll assume it's TNT, which might need prevention, if inside faction territory or safe zone
 			event.setCancelled(true);
 		}
 	}
