@@ -21,6 +21,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.bukkit.mcteam.factions.commands.FBaseCommand;
 import com.bukkit.mcteam.factions.commands.FCommandAdmin;
+import com.bukkit.mcteam.factions.commands.FCommandBypass;
 import com.bukkit.mcteam.factions.commands.FCommandChat;
 import com.bukkit.mcteam.factions.commands.FCommandClaim;
 import com.bukkit.mcteam.factions.commands.FCommandCreate;
@@ -65,6 +66,7 @@ public class Factions extends JavaPlugin {
 	// Fields
 	// -------------------------------------------- //
 	public static Factions instance;
+	private Integer saveTask = null;
 	
 	public final static Gson gson = new GsonBuilder()
 	.setPrettyPrinting()
@@ -97,6 +99,7 @@ public class Factions extends JavaPlugin {
 		// Add the commands
 		commands.add(new FCommandHelp());
 		commands.add(new FCommandAdmin());
+		commands.add(new FCommandBypass());
 		commands.add(new FCommandChat());
 		commands.add(new FCommandClaim());
 		commands.add(new FCommandCreate());
@@ -153,13 +156,18 @@ public class Factions extends JavaPlugin {
 		
 		// Register recurring tasks
 		long saveTicks = 20 * 60 * 30; // Approximately every 30 min
-		this.getServer().getScheduler().scheduleSyncRepeatingTask(this, new SaveTask(), saveTicks, saveTicks);
+		if (saveTask == null)
+			saveTask = this.getServer().getScheduler().scheduleSyncRepeatingTask(this, new SaveTask(), saveTicks, saveTicks);
 		
 		log("=== INIT DONE (Took "+(System.currentTimeMillis()-timeInitStart)+"ms) ===");
 	}
 
 	@Override
 	public void onDisable() {
+		if (saveTask != null) {
+			this.getServer().getScheduler().cancelTask(saveTask);
+			saveTask = null;
+		}
 		saveAll();
 		log("Disabled");
 	}

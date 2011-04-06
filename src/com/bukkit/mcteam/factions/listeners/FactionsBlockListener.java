@@ -54,7 +54,7 @@ public class FactionsBlockListener extends BlockListener {
 	
 	public boolean playerCanBuildDestroyBlock(Player player, Block block, String action) {
 
-		if (Factions.hasPermAdminBypass(player)) {
+		if (Conf.adminBypassPlayers.contains(player.getName())) {
 			return true;
 		}
 

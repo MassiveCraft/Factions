@@ -165,7 +165,7 @@ public class FactionsPlayerListener extends PlayerListener{
 
 	public boolean playerCanUseItemHere(Player player, Block block, Material material) {
 
-		if (Factions.hasPermAdminBypass(player)) {
+		if (Conf.adminBypassPlayers.contains(player.getName())) {
 			return true;
 		}
 
@@ -202,7 +202,7 @@ public class FactionsPlayerListener extends PlayerListener{
 
 	public boolean canPlayerUseBlock(Player player, Block block) {
 
-		if (Factions.hasPermAdminBypass(player)) {
+		if (Conf.adminBypassPlayers.contains(player.getName())) {
 			return true;
 		}
 
