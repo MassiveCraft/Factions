@@ -460,9 +460,9 @@ public class FPlayer {
 		
 		try {
 			DiscUtil.write(file, Factions.gson.toJson(playersToSave));
-		} catch (IOException e) {
-			Factions.log("Failed to save the players to disk.");
+		} catch (Exception e) {
 			e.printStackTrace();
+			Factions.log("Failed to save the players to disk.");
 			return false;
 		}
 		return true;
@@ -482,8 +482,9 @@ public class FPlayer {
 			Map<String, FPlayer> instancesFromFile = Factions.gson.fromJson(DiscUtil.read(file), type);
 			instances.clear();
 			instances.putAll(instancesFromFile);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
+			Factions.log("Failed to load the players from disk.");
 			return false;
 		}
 		

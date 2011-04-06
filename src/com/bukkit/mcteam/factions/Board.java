@@ -195,9 +195,9 @@ public class Board {
 		
 		try {
 			DiscUtil.write(file, Factions.gson.toJson(dumpAsSaveFormat()));
-		} catch (IOException e) {
-			Factions.log("Failed to save the board to disk.");
+		} catch (Exception e) {
 			e.printStackTrace();
+			Factions.log("Failed to save the board to disk.");
 			return false;
 		}
 		
@@ -218,9 +218,9 @@ public class Board {
 			Type type = new TypeToken<Map<String,Map<String,Integer>>>(){}.getType();
 			Map<String,Map<String,Integer>> worldCoordIds = Factions.gson.fromJson(DiscUtil.read(file), type);
 			loadFromSaveFormat(worldCoordIds);
-		} catch (IOException e) {
-			Factions.log("Failed to load the board from disk.");
+		} catch (Exception e) {
 			e.printStackTrace();
+			Factions.log("Failed to load the board from disk.");
 			return false;
 		}
 			

@@ -332,12 +332,12 @@ public class Faction {
 		try {
 			DiscUtil.write(file, Factions.gson.toJson(instances));
 		} catch (IOException e) {
+			e.printStackTrace();
 			Factions.log("Failed to save the factions to disk due to I/O exception.");
-			e.printStackTrace();
 			return false;
-		} catch (NullPointerException e) {
-			Factions.log("Failed to save the factions to disk due to NPE.");
+		} catch (Exception e) {
 			e.printStackTrace();
+			Factions.log("Failed to save the factions to disk.");
 			return false;
 		}
 		
@@ -358,8 +358,9 @@ public class Faction {
 			Map<Integer, Faction> instancesFromFile = Factions.gson.fromJson(DiscUtil.read(file), type);
 			instances.clear();
 			instances.putAll(instancesFromFile);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
+			Factions.log("Failed to load the factions from disk.");
 			return false;
 		}
 		

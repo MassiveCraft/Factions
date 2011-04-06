@@ -7,6 +7,7 @@ import org.bukkit.*;
 import org.bukkit.entity.CreatureType;
 
 import com.bukkit.mcteam.util.DiscUtil;
+import com.bukkit.mcteam.gson.JsonParseException;
 
 public class Conf {
 	public static transient File file = new File(Factions.instance.getDataFolder(), "conf.json");
@@ -96,7 +97,7 @@ public class Conf {
 		
 		try {
 			DiscUtil.write(file, Factions.gson.toJson(new Conf()));
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			Factions.log("Failed to save the config to disk.");
 			return false;
@@ -115,7 +116,7 @@ public class Conf {
 		
 		try {
 			Factions.gson.fromJson(DiscUtil.read(file), Conf.class);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			Factions.log("Failed to load the config from disk.");
 			return false;

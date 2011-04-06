@@ -27,7 +27,13 @@ public class MyLocationTypeAdapter implements JsonDeserializer<Location>, JsonSe
 		try {
 			JsonObject obj = json.getAsJsonObject();
 
-			World world = Factions.instance.getServer().getWorld(obj.get(WORLD).getAsString());
+			String worldname = obj.get(WORLD).getAsString();
+			World world = Factions.instance.getServer().getWorld(worldname);
+			if (world == null) {
+				Factions.log(Level.WARNING, "Stored location's world \"" + worldname + "\" not found on server; dropping the location.");
+				return null;
+			}
+
 			double x = obj.get(X).getAsDouble();
 			double y = obj.get(Y).getAsDouble();
 			double z = obj.get(Z).getAsDouble();
@@ -36,8 +42,9 @@ public class MyLocationTypeAdapter implements JsonDeserializer<Location>, JsonSe
 
 			return new Location(world, x, y, z, yaw, pitch);
 
-		} catch (NullPointerException ex) {
-			Factions.log(Level.SEVERE, "NPE encountered while deserializing a location");
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			Factions.log(Level.WARNING, "Error encountered while deserializing a location.");
 			return null;
 		}
 	}
@@ -47,14 +54,9 @@ public class MyLocationTypeAdapter implements JsonDeserializer<Location>, JsonSe
 		JsonObject obj = new JsonObject();
 
 		try {
-			if (src == null)
+			if (src.getWorld() == null)
 			{
-				Factions.log("Passed location is null in MyLocationTypeAdapter.");
-				return obj;
-			}
-			else if (src.getWorld() == null)
-			{
-				Factions.log("Passed location's world is null in MyLocationTypeAdapter.");
+				Factions.log(Level.WARNING, "Passed location's world was not found on the server. Dropping the location.");
 				return obj;
 			}
 
@@ -67,8 +69,9 @@ public class MyLocationTypeAdapter implements JsonDeserializer<Location>, JsonSe
 
 			return obj;
 
-		} catch (NullPointerException ex) {
-			Factions.log(Level.SEVERE, "NPE encountered while serializing a location");
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			Factions.log(Level.WARNING, "Error encountered while serializing a location.");
 			return obj;
 		}
 	}
