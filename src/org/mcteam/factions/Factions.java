@@ -45,6 +45,7 @@ import org.mcteam.factions.commands.FCommandShow;
 import org.mcteam.factions.commands.FCommandTag;
 import org.mcteam.factions.commands.FCommandTitle;
 import org.mcteam.factions.commands.FCommandUnclaim;
+import org.mcteam.factions.commands.FCommandUnclaimall;
 import org.mcteam.factions.commands.FCommandVersion;
 import org.mcteam.factions.gson.Gson;
 import org.mcteam.factions.gson.GsonBuilder;
@@ -120,6 +121,7 @@ public class Factions extends JavaPlugin {
 		commands.add(new FCommandTag());
 		commands.add(new FCommandTitle());
 		commands.add(new FCommandUnclaim());
+		commands.add(new FCommandUnclaimall());
 		commands.add(new FCommandVersion());
 		
 		// Ensure basefolder exists!

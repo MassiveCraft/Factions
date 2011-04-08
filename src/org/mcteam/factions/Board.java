@@ -55,6 +55,16 @@ public class Board {
 	public static void removeAt(FLocation flocation) {
 		flocationIds.remove(flocation);
 	}
+	
+	public static void unclaimAll(int factionId) {
+		Iterator<Entry<FLocation, Integer>> iter = flocationIds.entrySet().iterator();
+		while (iter.hasNext()) {
+			Entry<FLocation, Integer> entry = iter.next();
+			if (entry.getValue().equals(factionId)) {
+				iter.remove();
+			}
+		}
+	}
 
 	// Is this coord NOT completely surrounded by coords claimed by the same faction?
 	// Simpler: Is there any nearby coord with a faction other than the faction here?

@@ -76,9 +76,9 @@ public class FCommandHelp extends FBaseCommand {
 		helpPages.add(pageLines);
 		
 		pageLines = new ArrayList<String>();
-		pageLines.add( "Faction can claim land that will be protected." );
 		pageLines.add( new FCommandClaim().getUseageTemplate() );
 		pageLines.add( new FCommandUnclaim().getUseageTemplate() );
+		pageLines.add( new FCommandUnclaimall().getUseageTemplate() );
 		pageLines.add( new FCommandTag().getUseageTemplate() );
 		pageLines.add( new FCommandKick().getUseageTemplate() );
 		pageLines.add( new FCommandMod().getUseageTemplate() );
