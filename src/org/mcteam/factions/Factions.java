@@ -56,8 +56,6 @@ import org.mcteam.factions.listeners.FactionsPlayerListener;
 import com.nijiko.permissions.PermissionHandler;
 import com.nijikokun.bukkit.Permissions.Permissions;
 
-import me.taylorkelly.help.Help;
-
 /**
  * The data is saved to disk every 30min and on plugin disable.
  */
@@ -79,7 +77,6 @@ public class Factions extends JavaPlugin {
 	private final FactionsBlockListener blockListener = new FactionsBlockListener();
 	
 	public static PermissionHandler Permissions;
-	public static Help helpPlugin;
 
 	// Commands
 	public List<FBaseCommand> commands = new ArrayList<FBaseCommand>();
@@ -133,7 +130,6 @@ public class Factions extends JavaPlugin {
 		Faction.load();
 		Board.load();
 		
-		setupHelp();
 		setupPermissions();
 		
 		// Register events
@@ -175,21 +171,6 @@ public class Factions extends JavaPlugin {
 	// -------------------------------------------- //
 	// Integration with other plugins
 	// -------------------------------------------- //
-	
-	private void setupHelp() {
-		if (helpPlugin != null) {
-			return;
-		}
-		
-		Plugin test = this.getServer().getPluginManager().getPlugin("Help");
-		
-		if (test != null) {
-			helpPlugin = ((Help) test);
-			Factions.log("Found and will use plugin "+helpPlugin.getDescription().getFullName());
-			helpPlugin.registerCommand(this.getBaseCommand()+" help *[page]", "Factions plugin help.", this, false);
-			helpPlugin.registerCommand("help factions", "instead use: /f help", helpPlugin, true);
-		}
-	}
 	
 	private void setupPermissions() {
 		if (Permissions != null) {
@@ -277,7 +258,7 @@ public class Factions extends JavaPlugin {
 			}
 		}
 		
-		sender.sendMessage(Conf.colorSystem+"Unknown faction command \""+commandName+"\". Try "+Conf.colorCommand+"/f help");
+		sender.sendMessage(Conf.colorSystem+"Unknown faction command \""+commandName+"\". Try "+Conf.colorCommand+"/"+this.getBaseCommand()+" help");
 	}
 	
 	// -------------------------------------------- //

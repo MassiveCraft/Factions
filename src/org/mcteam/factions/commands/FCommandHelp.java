@@ -52,45 +52,45 @@ public class FCommandHelp extends FBaseCommand {
 		ArrayList<String> pageLines;
 
 		pageLines = new ArrayList<String>();
-		pageLines.add( new FCommandHelp().getUseageTemplate(true, true) );
-		pageLines.add( new FCommandList().getUseageTemplate(true, true) );
-		pageLines.add( new FCommandShow().getUseageTemplate(true, true) );
-		pageLines.add( new FCommandMap().getUseageTemplate(true, true) );
-		pageLines.add( new FCommandJoin().getUseageTemplate(true, true) );
-		pageLines.add( new FCommandLeave().getUseageTemplate(true, true) );
-		pageLines.add( new FCommandChat().getUseageTemplate(true, true) );
-		pageLines.add( new FCommandHome().getUseageTemplate(true, true) );
+		pageLines.add( new FCommandHelp().getUseageTemplate() );
+		pageLines.add( new FCommandList().getUseageTemplate() );
+		pageLines.add( new FCommandShow().getUseageTemplate() );
+		pageLines.add( new FCommandMap().getUseageTemplate() );
+		pageLines.add( new FCommandJoin().getUseageTemplate() );
+		pageLines.add( new FCommandLeave().getUseageTemplate() );
+		pageLines.add( new FCommandChat().getUseageTemplate() );
+		pageLines.add( new FCommandHome().getUseageTemplate() );
 		pageLines.add( "Learn how to create a faction on the next page." );
 		helpPages.add(pageLines);
 		
 		pageLines = new ArrayList<String>();
 		pageLines.add( "Create a faction using these two commands:" );
-		pageLines.add( new FCommandCreate().getUseageTemplate(true, true) );
-		pageLines.add( new FCommandDescription().getUseageTemplate(true, true) );
+		pageLines.add( new FCommandCreate().getUseageTemplate() );
+		pageLines.add( new FCommandDescription().getUseageTemplate() );
 		pageLines.add( "You might wan't to close it and use invitations:" );
-		pageLines.add( new FCommandOpen().getUseageTemplate(true, true) );
-		pageLines.add( new FCommandInvite().getUseageTemplate(true, true) );
-		pageLines.add( new FCommandDeinvite().getUseageTemplate(true, true) );
+		pageLines.add( new FCommandOpen().getUseageTemplate() );
+		pageLines.add( new FCommandInvite().getUseageTemplate() );
+		pageLines.add( new FCommandDeinvite().getUseageTemplate() );
 		pageLines.add( "And don't forget to set your home:" );
-		pageLines.add( new FCommandSethome().getUseageTemplate(true, true) );
+		pageLines.add( new FCommandSethome().getUseageTemplate() );
 		helpPages.add(pageLines);
 		
 		pageLines = new ArrayList<String>();
 		pageLines.add( "Faction can claim land that will be protected." );
-		pageLines.add( new FCommandClaim().getUseageTemplate(true, true) );
-		pageLines.add( new FCommandUnclaim().getUseageTemplate(true, true) );
-		pageLines.add( new FCommandTag().getUseageTemplate(true, true) );
-		pageLines.add( new FCommandKick().getUseageTemplate(true, true) );
-		pageLines.add( new FCommandMod().getUseageTemplate(true, true) );
-		pageLines.add( new FCommandAdmin().getUseageTemplate(true, true) );
-		pageLines.add( new FCommandTitle().getUseageTemplate(true, true) );
+		pageLines.add( new FCommandClaim().getUseageTemplate() );
+		pageLines.add( new FCommandUnclaim().getUseageTemplate() );
+		pageLines.add( new FCommandTag().getUseageTemplate() );
+		pageLines.add( new FCommandKick().getUseageTemplate() );
+		pageLines.add( new FCommandMod().getUseageTemplate() );
+		pageLines.add( new FCommandAdmin().getUseageTemplate() );
+		pageLines.add( new FCommandTitle().getUseageTemplate() );
 		pageLines.add( "Player titles are just for fun. No rules connected to them." );
 		helpPages.add(pageLines);
 		
 		pageLines = new ArrayList<String>();
-		pageLines.add( new FCommandRelationAlly().getUseageTemplate(true, true) );
-		pageLines.add( new FCommandRelationNeutral().getUseageTemplate(true, true) );
-		pageLines.add( new FCommandRelationEnemy().getUseageTemplate(true, true) );
+		pageLines.add( new FCommandRelationAlly().getUseageTemplate() );
+		pageLines.add( new FCommandRelationNeutral().getUseageTemplate() );
+		pageLines.add( new FCommandRelationEnemy().getUseageTemplate() );
 		pageLines.add("");
 		pageLines.add("Set the relation you WISH to have with another faction.");
 		pageLines.add("Your default relation with other factions will be neutral.");
@@ -125,9 +125,9 @@ public class FCommandHelp extends FBaseCommand {
 		
 		pageLines = new ArrayList<String>();
 		pageLines.add("Finally some commands for the server admins:");
-		pageLines.add( new FCommandVersion().getUseageTemplate(true, true) );
-		pageLines.add( new FCommandSafeclaim().getUseageTemplate(true, true) );
-		pageLines.add( new FCommandBypass().getUseageTemplate(true, true) );
+		pageLines.add( new FCommandVersion().getUseageTemplate() );
+		pageLines.add( new FCommandSafeclaim().getUseageTemplate() );
+		pageLines.add( new FCommandBypass().getUseageTemplate() );
 		helpPages.add(pageLines);
 	}
 	

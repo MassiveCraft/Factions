@@ -1,11 +1,9 @@
 package org.mcteam.factions.commands;
 
 import org.bukkit.command.CommandSender;
+import org.mcteam.factions.Conf;
+import org.mcteam.factions.Factions;
 
-import com.bukkit.mcteam.factions.Conf;
-import com.bukkit.mcteam.factions.Faction;
-import com.bukkit.mcteam.factions.Factions;
-import com.bukkit.mcteam.factions.struct.Role;
 
 public class FCommandBypass extends FBaseCommand {
 	

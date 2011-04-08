@@ -26,7 +26,7 @@ public class FCommandHome extends FBaseCommand {
 		
 		if ( ! myFaction.hasHome()) {
 			me.sendMessage("You faction does not have a home. " + (me.getRole().value < Role.MODERATOR.value ? " Ask your leader to:" : "You should:"));
-			me.sendMessage(new FCommandSethome().getUseageTemplate(true, true));
+			me.sendMessage(new FCommandSethome().getUseageTemplate());
 			return;
 		}
 		

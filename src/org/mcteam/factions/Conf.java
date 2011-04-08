@@ -1,11 +1,9 @@
 package org.mcteam.factions;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.*;
 import org.bukkit.*;
 import org.bukkit.entity.CreatureType;
-import org.mcteam.factions.gson.JsonParseException;
 import org.mcteam.factions.util.DiscUtil;
 
 

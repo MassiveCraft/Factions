@@ -36,7 +36,7 @@ public class FCommandDeinvite extends FBaseCommand {
 		
 		if (you.getFaction() == myFaction) {
 			sendMessage(you.getName()+" is already a member of "+myFaction.getTag());
-			sendMessage("You might want to: " + new FCommandKick().getUseageTemplate());
+			sendMessage("You might want to: " + new FCommandKick().getUseageTemplate(false));
 			return;
 		}
 		

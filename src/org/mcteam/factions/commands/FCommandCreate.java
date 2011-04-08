@@ -53,7 +53,7 @@ public class FCommandCreate extends FBaseCommand {
 			follower.sendMessage(me.getNameAndRelevant(follower)+Conf.colorSystem+" created a new faction "+faction.getTag(follower));
 		}
 		
-		sendMessage("You should now: " + new FCommandDescription().getUseageTemplate(true, true));
+		sendMessage("You should now: " + new FCommandDescription().getUseageTemplate());
 	}
 	
 }

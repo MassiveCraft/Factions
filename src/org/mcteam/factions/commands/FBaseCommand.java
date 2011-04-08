@@ -86,7 +86,7 @@ public class FBaseCommand {
 		}
 		
 		if (parameters.size() < requiredParameters.size()) {
-			sendMessage("Usage: "+this.getUseageTemplate(true));
+			sendMessage("Usage: "+this.getUseageTemplate(false));
 			return false;
 		}
 		
@@ -97,35 +97,14 @@ public class FBaseCommand {
 		return Factions.hasPermParticipate(sender);
 	}
 	
-	/*public boolean testPermission(CommandSender sender) {
-		// There are two cases where we default to op:
-		// 1. Permissions is not installed
-		// 2. The sender is not a player
-		if ( Factions.Permissions == null || (! (sender instanceof Player))) {
-			if (this.opOnly && sender.isOp()) {
-				return true;
-			}
-			return false;
-		}
-		
-		// No permissions are needed to use this command.
-		if (this.permissions.length() == 0) {
-			return true;
-		}
-		
-		Player player = (Player)sender;
-		return Factions.Permissions.has(player, this.permissions);		
-	}*/
-	
 	// -------------------------------------------- //
 	// Help and usage description
 	// -------------------------------------------- //
-	public String getUseageTemplate(boolean withColor, boolean withDescription) {
+	
+	public String getUseageTemplate(boolean withDescription) {
 		String ret = "";
 		
-		if (withColor) {
-			ret += Conf.colorCommand;
-		}
+		ret += Conf.colorCommand;
 		
 		ret += Factions.instance.getBaseCommand()+ " " +TextUtil.implode(this.getAliases(), ",")+" ";
 		
@@ -139,9 +118,7 @@ public class FBaseCommand {
 			parts.add("*["+optionalParameter+"]");
 		}
 		
-		if (withColor) {
-			ret += Conf.colorParameter;
-		}
+		ret += Conf.colorParameter;
 		
 		ret += TextUtil.implode(parts, " ");
 		
@@ -149,10 +126,6 @@ public class FBaseCommand {
 			ret += "  "+Conf.colorSystem + this.helpDescription;
 		}
 		return ret;
-	}
-	
-	public String getUseageTemplate(boolean withColor) {
-		return getUseageTemplate(withColor, false);
 	}
 	
 	public String getUseageTemplate() {

@@ -32,7 +32,7 @@ public class FCommandSethome extends FBaseCommand {
 		myFaction.setHome(player.getLocation());
 		
 		myFaction.sendMessage(me.getNameAndRelevant(myFaction)+Conf.colorSystem+" set the home for your faction. You can now use:");
-		myFaction.sendMessage(new FCommandHome().getUseageTemplate(true, true));
+		myFaction.sendMessage(new FCommandHome().getUseageTemplate());
 	}
 	
 }
