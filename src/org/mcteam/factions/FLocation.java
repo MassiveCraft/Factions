@@ -1,8 +1,11 @@
 package org.mcteam.factions;
 
+import java.util.HashSet;
+
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.mcteam.factions.util.MiscUtil;
 
 public class FLocation {
 
@@ -80,11 +83,23 @@ public class FLocation {
 	}
 
 	//----------------------------------------------//
-	// Misc
+	// Misc Geometry
 	//----------------------------------------------//
 	
 	public FLocation getRelative(int dx, int dz) {
 		return new FLocation(this.worldName, this.x + dx, this.z + dz);
+	}
+	
+	public static HashSet<FLocation> getArea(FLocation from, FLocation to) {
+		HashSet<FLocation> ret = new HashSet<FLocation>();
+		
+		for (long x : MiscUtil.range(from.getX(), to.getX())) {
+			for (long z : MiscUtil.range(from.getZ(), to.getZ())) {
+				ret.add(new FLocation(from.getWorldName(), (int)x, (int)z));
+			}
+		}
+		
+		return ret;
 	}
 	
 	//----------------------------------------------//

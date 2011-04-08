@@ -52,6 +52,7 @@ import org.mcteam.factions.gson.GsonBuilder;
 import org.mcteam.factions.listeners.FactionsBlockListener;
 import org.mcteam.factions.listeners.FactionsEntityListener;
 import org.mcteam.factions.listeners.FactionsPlayerListener;
+import org.mcteam.factions.util.MiscUtil;
 
 
 import com.nijiko.permissions.PermissionHandler;
@@ -93,6 +94,8 @@ public class Factions extends JavaPlugin {
 	public void onEnable() {
 		log("=== INIT START ===");
 		long timeInitStart = System.currentTimeMillis();
+		
+		log("asdfasdas"+MiscUtil.range(-1, 1));
 		
 		// Add the commands
 		commands.add(new FCommandHelp());
