@@ -368,8 +368,8 @@ public class Faction {
 		// Make sure the default neutral faction exists
 		if ( ! instances.containsKey(0)) {
 			Faction faction = new Faction();
-			faction.tag = "*No faction*";
-			faction.description = "\"The faction for the factionless :P\"";
+			faction.tag = ChatColor.DARK_GREEN+"Wilderness";
+			faction.description = "";
 			faction.id = 0;
 			instances.put(faction.id, faction);
 		}
