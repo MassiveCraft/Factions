@@ -1,0 +1,33 @@
+package org.mcteam.factions.commands;
+
+import org.bukkit.command.CommandSender;
+
+import com.bukkit.mcteam.factions.Conf;
+import com.bukkit.mcteam.factions.Faction;
+import com.bukkit.mcteam.factions.Factions;
+import com.bukkit.mcteam.factions.struct.Role;
+
+public class FCommandBypass extends FBaseCommand {
+	
+	public FCommandBypass() {
+		aliases.add("bypass");
+		
+		helpDescription = "Enable admin bypass mode; build/destroy anywhere";
+	}
+
+	@Override
+	public boolean hasPermission(CommandSender sender) {
+		return Factions.hasPermAdminBypass(sender);
+	}
+	
+	@Override
+	public void perform() {
+		if ( ! Conf.adminBypassPlayers.contains(player.getName())) {
+			Conf.adminBypassPlayers.add(player.getName());
+			me.sendMessage("You have enabled admin bypass mode. You will be able to build or destroy anywhere.");
+		} else {
+			Conf.adminBypassPlayers.remove(player.getName());
+			me.sendMessage("You have disabled admin bypass mode.");
+		}
+	}
+}
