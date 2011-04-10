@@ -34,6 +34,9 @@ public class Conf {
 	public static int factionTagLengthMax = 10;
 	public static boolean factionTagForceUpperCase = false;
 	
+	// Disallow joining/leaving/kicking while power is negative
+	public static boolean negativerestrict = false;
+
 	// Configuration on the Faction tag in chat messages.
 	
 	public static boolean chatTagEnabled = true;

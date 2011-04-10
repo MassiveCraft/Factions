@@ -371,6 +371,11 @@ public class FPlayer {
 			return;
 		}
 		
+		if (Conf.negativerestrict && this.getPower() < 0) {
+			sendMessage("You cannot leave until your power is positive.");
+			return;
+		}
+
 		myFaction.sendMessage(this.getNameAndRelevant(myFaction) + Conf.colorSystem + " left your faction.");
 		this.resetFactionData();
 		
