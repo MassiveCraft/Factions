@@ -65,9 +65,13 @@ public class FactionsPlayerListener extends PlayerListener{
 		if ( ! Conf.chatTagEnabled) {
 			return;
 		}
-		
-		String formatStart = event.getFormat().substring(0, Conf.chatTagInsertIndex);
-		String formatEnd = event.getFormat().substring(Conf.chatTagInsertIndex);
+
+		int InsertIndex = Conf.chatTagInsertIndex;
+		if (InsertIndex > event.getFormat().length())
+			return;
+
+		String formatStart = event.getFormat().substring(0, InsertIndex);
+		String formatEnd = event.getFormat().substring(InsertIndex);
 		
 		String nonColoredMsgFormat = formatStart + me.getChatTag() + formatEnd;
 		

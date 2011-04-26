@@ -95,7 +95,7 @@ public class Factions extends JavaPlugin {
 		log("=== INIT START ===");
 		long timeInitStart = System.currentTimeMillis();
 		
-		log("asdfasdas"+MiscUtil.range(-1, 1));
+//		log("asdfasdas"+MiscUtil.range(-1, 1));
 		
 		// Add the commands
 		commands.add(new FCommandHelp());
