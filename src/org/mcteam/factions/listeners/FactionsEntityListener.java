@@ -15,8 +15,12 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntityListener;
 import org.bukkit.event.entity.EntityTargetEvent;
+import org.bukkit.event.painting.PaintingBreakByEntityEvent;
+import org.bukkit.event.painting.PaintingBreakEvent;
+import org.bukkit.event.painting.PaintingPlaceEvent;
 import org.mcteam.factions.Board;
 import org.mcteam.factions.Conf;
+import org.mcteam.factions.Factions;
 import org.mcteam.factions.FLocation;
 import org.mcteam.factions.FPlayer;
 import org.mcteam.factions.Faction;
@@ -96,7 +100,7 @@ public class FactionsEntityListener extends EntityListener {
 		Entity damagee = sub.getEntity();
 		int damage = sub.getDamage();
 		
-		if ( ! (damagee instanceof Player)) {
+		if ( ! (damagee instanceof Player) || damagee.getLocation() == null) {
 			return true;
 		}
 		
@@ -181,5 +185,72 @@ public class FactionsEntityListener extends EntityListener {
 		if (Board.getFactionAt(new FLocation(target.getLocation())).isSafeZone()) {
 			event.setCancelled(true);
 		}
+	}
+
+	@Override
+	public void onPaintingBreak(PaintingBreakEvent event)
+	{
+		if (event.isCancelled()) {
+			return;
+		}
+		if (! (event instanceof PaintingBreakByEntityEvent)) {
+			return;
+		}
+
+		Entity breaker = ((PaintingBreakByEntityEvent)event).getRemover();
+		if (! (breaker instanceof Player)) {
+			return;
+		}
+
+		FLocation loc = new FLocation(event.getPainting().getLocation());
+
+		if ( ! this.playerCanDoPaintings((Player)breaker, loc, "remove")) {
+			event.setCancelled(true);
+		}
+	}
+
+	@Override
+	public void onPaintingPlace(PaintingPlaceEvent event)
+	{
+		if (event.isCancelled()) {
+			return;
+		}
+
+		if ( ! this.playerCanDoPaintings(event.getPlayer(), new FLocation(event.getBlock()), "place")) {
+			event.setCancelled(true);
+		}
+	}
+
+	public boolean playerCanDoPaintings(Player player, FLocation loc, String action) {
+
+		if (Conf.adminBypassPlayers.contains(player.getName())) {
+			return true;
+		}
+
+		Faction otherFaction = Board.getFactionAt(loc);
+
+		if (otherFaction.isNone()) {
+			return true;
+		}
+
+		FPlayer me = FPlayer.get(player);
+
+		if (otherFaction.isSafeZone()) {
+			if (Factions.hasPermManageSafeZone(player) || !Conf.safeZoneDenyBuild) {
+				return true;
+			}
+			me.sendMessage("You can't "+action+" paintings in a safe zone.");
+			return false;
+		}
+
+		Faction myFaction = me.getFaction();
+
+		// Cancel if we are not in our own territory
+		if (myFaction != otherFaction) {
+			me.sendMessage("You can't "+action+" paintings in the territory of "+otherFaction.getTag(myFaction));
+			return false;
+		}
+
+		return true;
 	}
 }

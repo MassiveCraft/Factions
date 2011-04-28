@@ -64,7 +64,7 @@ public class Conf {
 	public static transient Set<CreatureType> safeZoneNerfedCreatureTypes = new HashSet<CreatureType>();
 	
 	public static transient int mapHeight = 8;
-	public static transient int mapWidth = 49;
+	public static transient int mapWidth = 39;
 	
 	static {
 		territoryProtectedMaterials.add(Material.WOODEN_DOOR);

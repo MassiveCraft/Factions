@@ -370,11 +370,14 @@ public class FPlayer {
 			sendMessage("You must give the admin role to someone else first.");
 			return;
 		}
-		
-		myFaction.sendMessage(this.getNameAndRelevant(myFaction) + Conf.colorSystem + " left your faction.");
+
+		if (myFaction.isNormal()) {
+			myFaction.sendMessage(this.getNameAndRelevant(myFaction) + Conf.colorSystem + " left your faction.");
+		}
+
 		this.resetFactionData();
-		
-		if (myFaction.getFPlayers().size() == 0) {
+
+		if (myFaction.isNormal() && myFaction.getFPlayers().size() == 0) {
 			// Remove this faction
 			for (FPlayer fplayer : FPlayer.getAllOnline()) {
 				fplayer.sendMessage("The faction "+myFaction.getTag(fplayer)+Conf.colorSystem+" was disbanded.");
