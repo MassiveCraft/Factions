@@ -22,6 +22,11 @@ public class FCommandTitle extends FBaseCommand {
 			return;
 		}
 		
+		if( isLocked() ) {
+			sendLockMessage();
+			return;
+		}
+		
 		String playerName = parameters.get(0);
 		parameters.remove(0);
 		String title = TextUtil.implode(parameters);

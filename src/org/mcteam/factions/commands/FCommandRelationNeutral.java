@@ -9,6 +9,12 @@ public class FCommandRelationNeutral extends FRelationCommand {
 	}
 	
 	public void perform() {
+		
+		if( isLocked() ) {
+			sendLockMessage();
+			return;
+		}
+		
 		relation(Relation.NEUTRAL, parameters.get(0));
 	}
 	

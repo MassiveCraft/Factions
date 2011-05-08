@@ -33,13 +33,16 @@ import org.mcteam.factions.commands.FCommandJoin;
 import org.mcteam.factions.commands.FCommandKick;
 import org.mcteam.factions.commands.FCommandLeave;
 import org.mcteam.factions.commands.FCommandList;
+import org.mcteam.factions.commands.FCommandLock;
 import org.mcteam.factions.commands.FCommandMap;
 import org.mcteam.factions.commands.FCommandMod;
 import org.mcteam.factions.commands.FCommandOpen;
 import org.mcteam.factions.commands.FCommandRelationAlly;
 import org.mcteam.factions.commands.FCommandRelationEnemy;
 import org.mcteam.factions.commands.FCommandRelationNeutral;
+import org.mcteam.factions.commands.FCommandReload;
 import org.mcteam.factions.commands.FCommandSafeclaim;
+import org.mcteam.factions.commands.FCommandSaveAll;
 import org.mcteam.factions.commands.FCommandSethome;
 import org.mcteam.factions.commands.FCommandShow;
 import org.mcteam.factions.commands.FCommandTag;
@@ -85,6 +88,8 @@ public class Factions extends JavaPlugin {
 
 	private String baseCommand;
 	
+	private static boolean lock = false;
+	
 	public Factions() {
 		Factions.instance = this;
 	}
@@ -94,8 +99,6 @@ public class Factions extends JavaPlugin {
 	public void onEnable() {
 		log("=== INIT START ===");
 		long timeInitStart = System.currentTimeMillis();
-		
-//		log("asdfasdas"+MiscUtil.range(-1, 1));
 		
 		// Add the commands
 		commands.add(new FCommandHelp());
@@ -112,12 +115,15 @@ public class Factions extends JavaPlugin {
 		commands.add(new FCommandKick());
 		commands.add(new FCommandLeave());
 		commands.add(new FCommandList());
+		commands.add(new FCommandLock());
 		commands.add(new FCommandMap());
 		commands.add(new FCommandMod());
 		commands.add(new FCommandOpen());
 		commands.add(new FCommandRelationAlly());
 		commands.add(new FCommandRelationEnemy());
 		commands.add(new FCommandRelationNeutral());
+		commands.add(new FCommandReload());
+		commands.add(new FCommandSaveAll());
 		commands.add(new FCommandSafeclaim());
 		commands.add(new FCommandSethome());
 		commands.add(new FCommandShow());
@@ -127,7 +133,7 @@ public class Factions extends JavaPlugin {
 		commands.add(new FCommandUnclaimall());
 		commands.add(new FCommandVersion());
 		
-		// Ensure basefolder exists!
+		// Ensure base folder exists!
 		this.getDataFolder().mkdirs();
 		
 		Conf.load();
@@ -214,6 +220,18 @@ public class Factions extends JavaPlugin {
 		return hasPerm(sender, "factions.adminBypass", true);
 	}
 	
+	public static boolean hasPermReload(CommandSender sender) {
+		return hasPerm(sender, "factions.reload", true);
+	}
+	
+	public static boolean hasPermSaveAll(CommandSender sender) {
+		return hasPerm(sender, "factions.saveall", true);
+	}
+	
+	public static boolean hasPermLock(CommandSender sender) {
+		return hasPerm(sender, "factions.lock", true);
+	}
+	
 	private static boolean hasPerm(CommandSender sender, String permNode, boolean fallbackOnlyOp) {
 		if (Factions.Permissions == null || ! (sender instanceof Player)) {
 			return fallbackOnlyOp == false || sender.isOp();
@@ -289,5 +307,5 @@ public class Factions extends JavaPlugin {
 		Board.save();
 		Conf.save();
 	}
-
+	
 }

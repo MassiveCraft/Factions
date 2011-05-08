@@ -21,6 +21,11 @@ public class FRelationCommand extends FBaseCommand {
 			return;
 		}
 		
+		if( isLocked() ) {
+			sendLockMessage();
+			return;
+		}
+		
 		if ( ! assertMinRole(Role.MODERATOR)) {
 			return;
 		}

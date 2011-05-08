@@ -20,6 +20,11 @@ public class FCommandDescription extends FBaseCommand {
 			return;
 		}
 		
+		if( isLocked() ) {
+			sendLockMessage();
+			return;
+		}
+		
 		if ( ! assertMinRole(Role.MODERATOR)) {
 			return;
 		}

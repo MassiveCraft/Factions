@@ -28,6 +28,7 @@ public class FBaseCommand {
 	
 	public List<String> parameters;
 	
+	private static boolean lock = false;
 	
 	public FBaseCommand() {
 		aliases = new ArrayList<String>();
@@ -231,5 +232,23 @@ public class FBaseCommand {
 		aliasTrue.add("+");
 		
 		return aliasTrue.contains(str.toLowerCase());
+	}
+	
+	public void setLock(boolean newLock) {
+		if( newLock ) {
+			me.sendMessage("Factions is now locked");
+		} else {
+			me.sendMessage("Factions in now unlocked");
+		}
+		
+		lock = newLock;
+	}
+	
+	public boolean isLocked() {
+		return lock;
+	}
+	
+	public void sendLockMessage() {
+		me.sendMessage("Factions is locked. Please try again later");
 	}
 }

@@ -23,6 +23,11 @@ public class FCommandTag extends FBaseCommand {
 			return;
 		}
 		
+		if( isLocked() ) {
+			sendLockMessage();
+			return;
+		}
+		
 		if ( ! assertMinRole(Role.MODERATOR)) {
 			return;
 		}
