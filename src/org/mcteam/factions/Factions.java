@@ -26,6 +26,7 @@ import org.mcteam.factions.commands.FCommandClaim;
 import org.mcteam.factions.commands.FCommandCreate;
 import org.mcteam.factions.commands.FCommandDeinvite;
 import org.mcteam.factions.commands.FCommandDescription;
+import org.mcteam.factions.commands.FCommandDisband;
 import org.mcteam.factions.commands.FCommandHelp;
 import org.mcteam.factions.commands.FCommandHome;
 import org.mcteam.factions.commands.FCommandInvite;
@@ -109,6 +110,7 @@ public class Factions extends JavaPlugin {
 		commands.add(new FCommandCreate());
 		commands.add(new FCommandDeinvite());
 		commands.add(new FCommandDescription());
+		commands.add(new FCommandDisband());
 		commands.add(new FCommandHome());
 		commands.add(new FCommandInvite());
 		commands.add(new FCommandJoin());
@@ -230,6 +232,10 @@ public class Factions extends JavaPlugin {
 	
 	public static boolean hasPermLock(CommandSender sender) {
 		return hasPerm(sender, "factions.lock", true);
+	}
+	
+	public static boolean hasPermDisband(CommandSender sender) {
+		return hasPerm(sender, "factions.disband", true);
 	}
 	
 	private static boolean hasPerm(CommandSender sender, String permNode, boolean fallbackOnlyOp) {
