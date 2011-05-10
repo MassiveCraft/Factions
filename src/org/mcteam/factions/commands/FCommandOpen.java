@@ -18,6 +18,11 @@ public class FCommandOpen extends FBaseCommand {
 			return;
 		}
 		
+		if( isLocked() ) {
+			sendLockMessage();
+			return;
+		}
+		
 		if ( ! assertMinRole(Role.MODERATOR)) {
 			return;
 		}

@@ -20,6 +20,11 @@ public class FCommandAdmin extends FBaseCommand {
 			return;
 		}
 		
+		if( isLocked() ) {
+			sendLockMessage();
+			return;
+		}
+		
 		if ( ! assertMinRole(Role.ADMIN)) {
 			return;
 		}

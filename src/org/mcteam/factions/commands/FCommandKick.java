@@ -15,6 +15,12 @@ public class FCommandKick extends FBaseCommand {
 	}
 	
 	public void perform() {
+		
+		if( isLocked() ) {
+			sendLockMessage();
+			return;
+		}
+		
 		String playerName = parameters.get(0);
 		
 		FPlayer you = findFPlayer(playerName, false);

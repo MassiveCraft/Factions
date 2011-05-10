@@ -17,6 +17,12 @@ public class FCommandUnclaim extends FBaseCommand {
 	}
 	
 	public void perform() {
+		
+		if( isLocked() ) {
+			sendLockMessage();
+			return;
+		}
+		
 		FLocation flocation = new FLocation(me);
 		Faction otherFaction = Board.getFactionAt(flocation);
 		

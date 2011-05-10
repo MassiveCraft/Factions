@@ -14,6 +14,12 @@ public class FCommandJoin extends FBaseCommand {
 	}
 	
 	public void perform() {
+		
+		if( isLocked() ) {
+			sendLockMessage();
+			return;
+		}
+		
 		String factionName = parameters.get(0);
 		
 		Faction faction = findFaction(factionName);

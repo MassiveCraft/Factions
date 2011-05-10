@@ -20,6 +20,11 @@ public class FCommandLeave extends FBaseCommand {
 			return;
 		}
 		
+		if( isLocked() ) {
+			sendLockMessage();
+			return;
+		}
+		
 		me.leave();
 	}
 	
