@@ -23,6 +23,12 @@ public class FCommandSafeclaim extends FBaseCommand {
 	}
 	
 	public void perform() {
+		
+		if( isLocked() ) {
+			sendLockMessage();
+			return;
+		}
+		
 		// The current location of the player
 		FLocation playerFlocation = new FLocation(me);
 		

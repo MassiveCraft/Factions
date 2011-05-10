@@ -26,6 +26,12 @@ public class FCommandCreate extends FBaseCommand {
 	}
 	
 	public void perform() {
+		
+		if( isLocked() ) {
+			sendLockMessage();
+			return;
+		}
+		
 		String tag = parameters.get(0);
 		
 		if (me.hasFaction()) {

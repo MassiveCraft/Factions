@@ -21,6 +21,11 @@ public class FCommandDeinvite extends FBaseCommand {
 			return;
 		}
 		
+		if( isLocked() ) {
+			sendLockMessage();
+			return;
+		}
+		
 		String playerName = parameters.get(0);
 		
 		FPlayer you = findFPlayer(playerName, false);

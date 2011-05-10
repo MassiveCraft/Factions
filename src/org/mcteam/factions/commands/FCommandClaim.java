@@ -20,6 +20,11 @@ public class FCommandClaim extends FBaseCommand {
 			return;
 		}
 		
+		if( isLocked() ) {
+			sendLockMessage();
+			return;
+		}
+		
 		Faction myFaction = me.getFaction();
 		FLocation flocation = new FLocation(me);
 		Faction otherFaction = Board.getFactionAt(flocation);

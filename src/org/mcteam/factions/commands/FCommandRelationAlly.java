@@ -9,6 +9,12 @@ public class FCommandRelationAlly extends FRelationCommand {
 	}
 	
 	public void perform() {
+		
+		if( isLocked() ) {
+			sendLockMessage();
+			return;
+		}
+		
 		relation(Relation.ALLY, parameters.get(0));
 	}
 	
