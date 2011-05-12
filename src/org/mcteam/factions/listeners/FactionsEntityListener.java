@@ -100,17 +100,21 @@ public class FactionsEntityListener extends EntityListener {
 		Entity damagee = sub.getEntity();
 		int damage = sub.getDamage();
 		
-		if ( ! (damagee instanceof Player) || damagee.getLocation() == null) {
+		if ( ! (damagee instanceof Player)) {
 			return true;
 		}
 		
 		FPlayer defender = FPlayer.get((Player)damagee);
 		
+		if (defender == null || defender.getPlayer() == null) {
+			return true;
+		}
+		
 		// Players can not take attack damage in a SafeZone
 		if (Board.getFactionAt(new FLocation(defender)).isSafeZone()) {
 			if (damager instanceof Player) {
 				FPlayer attacker = FPlayer.get((Player)damager);
-				attacker.sendMessage("You cant hurt other players in a SafeZone.");
+				attacker.sendMessage("You can't hurt other players in a SafeZone.");
 				defender.sendMessage(attacker.getNameAndRelevant(defender)+Conf.colorSystem+" tried to hurt you.");
 			}
 			return false;
@@ -121,6 +125,11 @@ public class FactionsEntityListener extends EntityListener {
 		}
 		
 		FPlayer attacker = FPlayer.get((Player)damager);
+		
+		if (attacker == null || attacker.getPlayer() == null) {
+			return true;
+		}
+		
 		Relation relation = defender.getRelation(attacker);
 		
 		// Players without faction may be hurt anywhere
