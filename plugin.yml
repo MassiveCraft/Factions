@@ -1,5 +1,5 @@
 name: Factions
-version: 1.1.7
+version: 1.1.8
 main: org.mcteam.factions.Factions
 commands:
   f:
