@@ -58,7 +58,7 @@ public class FCommandTag extends FBaseCommand {
 			if (faction == me.getFaction()) {
 				continue;
 			}
-			faction.sendMessage(Conf.colorSystem+"The faction "+me.getRelationColor(faction)+oldtag+Conf.colorSystem+" chainged their name to "+myFaction.getTag(faction));
+			faction.sendMessage(Conf.colorSystem+"The faction "+me.getRelationColor(faction)+oldtag+Conf.colorSystem+" changed their name to "+myFaction.getTag(faction));
 		}
 	}
 	
