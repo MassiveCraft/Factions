@@ -39,6 +39,20 @@ public class FCommandClaim extends FBaseCommand {
 		}
 		
 		
+		if (Conf.worldsNoClaiming.contains(flocation.getWorldName())) {
+			sendMessage("Sorry, this world has land claiming disabled.");
+			return;
+		}
+		
+		if (otherFaction.isSafeZone()) {
+			sendMessage("You can not claim a Safe Zone.");
+			return;
+		}
+		else if (otherFaction.isWarZone()) {
+			sendMessage("You can not claim a War Zone.");
+			return;
+		}
+		
 		if (myFaction.getLandRounded() >= myFaction.getPowerRounded()) {
 			sendMessage("You can't claim more land! You need more power!");
 			return;
@@ -46,11 +60,6 @@ public class FCommandClaim extends FBaseCommand {
 		
 		if (otherFaction.getRelation(me) == Relation.ALLY) {
 			sendMessage("You can't claim the land of your allies.");
-			return;
-		}
-		
-		if (otherFaction.isSafeZone()) {
-			sendMessage("You can not claim a SafeZone.");
 			return;
 		}
 		

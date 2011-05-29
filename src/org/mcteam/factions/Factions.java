@@ -18,39 +18,7 @@ import org.bukkit.event.Event;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.mcteam.factions.commands.FBaseCommand;
-import org.mcteam.factions.commands.FCommandAdmin;
-import org.mcteam.factions.commands.FCommandBypass;
-import org.mcteam.factions.commands.FCommandChat;
-import org.mcteam.factions.commands.FCommandClaim;
-import org.mcteam.factions.commands.FCommandCreate;
-import org.mcteam.factions.commands.FCommandDeinvite;
-import org.mcteam.factions.commands.FCommandDescription;
-import org.mcteam.factions.commands.FCommandDisband;
-import org.mcteam.factions.commands.FCommandHelp;
-import org.mcteam.factions.commands.FCommandHome;
-import org.mcteam.factions.commands.FCommandInvite;
-import org.mcteam.factions.commands.FCommandJoin;
-import org.mcteam.factions.commands.FCommandKick;
-import org.mcteam.factions.commands.FCommandLeave;
-import org.mcteam.factions.commands.FCommandList;
-import org.mcteam.factions.commands.FCommandLock;
-import org.mcteam.factions.commands.FCommandMap;
-import org.mcteam.factions.commands.FCommandMod;
-import org.mcteam.factions.commands.FCommandOpen;
-import org.mcteam.factions.commands.FCommandRelationAlly;
-import org.mcteam.factions.commands.FCommandRelationEnemy;
-import org.mcteam.factions.commands.FCommandRelationNeutral;
-import org.mcteam.factions.commands.FCommandReload;
-import org.mcteam.factions.commands.FCommandSafeclaim;
-import org.mcteam.factions.commands.FCommandSaveAll;
-import org.mcteam.factions.commands.FCommandSethome;
-import org.mcteam.factions.commands.FCommandShow;
-import org.mcteam.factions.commands.FCommandTag;
-import org.mcteam.factions.commands.FCommandTitle;
-import org.mcteam.factions.commands.FCommandUnclaim;
-import org.mcteam.factions.commands.FCommandUnclaimall;
-import org.mcteam.factions.commands.FCommandVersion;
+import org.mcteam.factions.commands.*;
 import org.mcteam.factions.gson.Gson;
 import org.mcteam.factions.gson.GsonBuilder;
 import org.mcteam.factions.listeners.FactionsBlockListener;
@@ -125,8 +93,9 @@ public class Factions extends JavaPlugin {
 		commands.add(new FCommandRelationEnemy());
 		commands.add(new FCommandRelationNeutral());
 		commands.add(new FCommandReload());
-		commands.add(new FCommandSaveAll());
 		commands.add(new FCommandSafeclaim());
+		commands.add(new FCommandSafeunclaimall());
+		commands.add(new FCommandSaveAll());
 		commands.add(new FCommandSethome());
 		commands.add(new FCommandShow());
 		commands.add(new FCommandTag());
@@ -134,6 +103,10 @@ public class Factions extends JavaPlugin {
 		commands.add(new FCommandUnclaim());
 		commands.add(new FCommandUnclaimall());
 		commands.add(new FCommandVersion());
+		commands.add(new FCommandWarclaim());
+		commands.add(new FCommandWarunclaimall());
+		commands.add(new FCommandWorldNoClaim());
+		commands.add(new FCommandWorldNoPowerLoss());
 		
 		// Ensure base folder exists!
 		this.getDataFolder().mkdirs();
@@ -151,6 +124,7 @@ public class Factions extends JavaPlugin {
 		pm.registerEvent(Event.Type.PLAYER_INTERACT, this.playerListener, Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.PLAYER_MOVE, this.playerListener, Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.PLAYER_JOIN, this.playerListener, Event.Priority.Normal, this);
+		pm.registerEvent(Event.Type.PLAYER_QUIT, this.playerListener, Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.PLAYER_RESPAWN, this.playerListener, Event.Priority.High, this);
 		pm.registerEvent(Event.Type.PLAYER_BUCKET_EMPTY, this.playerListener, Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.PLAYER_BUCKET_FILL, this.playerListener, Event.Priority.Normal, this);
@@ -217,6 +191,10 @@ public class Factions extends JavaPlugin {
 	public static boolean hasPermManageSafeZone(CommandSender sender) {
 		return hasPerm(sender, "factions.manageSafeZone", true);
 	}
+	
+	public static boolean hasPermManageWarZone(CommandSender sender) {
+		return hasPerm(sender, "factions.manageWarZone", true);
+	}
 
 	public static boolean hasPermAdminBypass(CommandSender sender) {
 		return hasPerm(sender, "factions.adminBypass", true);
@@ -236,6 +214,10 @@ public class Factions extends JavaPlugin {
 	
 	public static boolean hasPermDisband(CommandSender sender) {
 		return hasPerm(sender, "factions.disband", true);
+	}
+	
+	public static boolean hasPermWorlds(CommandSender sender) {
+		return hasPerm(sender, "factions.worldOptions", true);
 	}
 	
 	private static boolean hasPerm(CommandSender sender, String permNode, boolean fallbackOnlyOp) {

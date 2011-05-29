@@ -127,7 +127,19 @@ public class FCommandHelp extends FBaseCommand {
 		pageLines.add("Finally some commands for the server admins:");
 		pageLines.add( new FCommandVersion().getUseageTemplate() );
 		pageLines.add( new FCommandSafeclaim().getUseageTemplate() );
+		pageLines.add( new FCommandSafeunclaimall().getUseageTemplate() );
+		pageLines.add( new FCommandWarclaim().getUseageTemplate() );
+		pageLines.add( new FCommandWarunclaimall().getUseageTemplate() );
+		pageLines.add( new FCommandWorldNoClaim().getUseageTemplate() );
+		pageLines.add( new FCommandWorldNoPowerLoss().getUseageTemplate() );
 		pageLines.add( new FCommandBypass().getUseageTemplate() );
+		helpPages.add(pageLines);
+		
+		pageLines = new ArrayList<String>();
+		pageLines.add("More commands for server admins:");
+		pageLines.add( new FCommandLock().getUseageTemplate() );
+		pageLines.add( new FCommandReload().getUseageTemplate() );
+		pageLines.add( new FCommandSaveAll().getUseageTemplate() );
 		helpPages.add(pageLines);
 	}
 	

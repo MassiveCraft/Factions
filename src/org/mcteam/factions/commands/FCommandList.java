@@ -30,6 +30,7 @@ public class FCommandList extends FBaseCommand {
 		ArrayList<Faction> FactionList = new ArrayList<Faction>(Faction.getAll());
 		FactionList.remove(Faction.getNone());
 		FactionList.remove(Faction.getSafeZone());
+		FactionList.remove(Faction.getWarZone());
 
 		int page = 1;
 		if (parameters.size() > 0) {

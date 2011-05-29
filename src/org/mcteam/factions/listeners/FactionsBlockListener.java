@@ -73,6 +73,13 @@ public class FactionsBlockListener extends BlockListener {
 			me.sendMessage("You can't "+action+" in a safe zone.");
 			return false;
 		}
+		else if (otherFaction.isWarZone()) {
+			if (Factions.hasPermManageWarZone(player) || !Conf.warZoneDenyBuild) {
+				return true;
+			}
+			me.sendMessage("You can't "+action+" in a war zone.");
+			return false;
+		}
 		
 		Faction myFaction = me.getFaction();
 		

@@ -36,9 +36,22 @@ public class FactionsEntityListener extends EntityListener {
 		if ( ! (entity instanceof Player)) {
 			return;
 		}
-	
+		
 		Player player = (Player) entity;
 		FPlayer fplayer = FPlayer.get(player);
+		Faction faction = Board.getFactionAt(new FLocation(player.getLocation()));
+		if (faction.isWarZone()) {  // war zones always override worldsNoPowerLoss either way, thus this layout
+			if (! Conf.warZonePowerLoss) {
+				fplayer.sendMessage("You didn't lose any power since you were in a war zone.");
+				return;
+			}
+			if (Conf.worldsNoPowerLoss.contains(player.getWorld().getName())) {
+				fplayer.sendMessage("The world you are in has power loss normally disabled, but you still lost power since you were in a war zone.");
+			}
+		} else if (Conf.worldsNoPowerLoss.contains(player.getWorld().getName())) {
+			fplayer.sendMessage("You didn't lose any power due to the world you died in.");
+			return;
+		}
 		fplayer.onDeath();
 		fplayer.sendMessage("Your power is now "+fplayer.getPowerRounded()+" / "+fplayer.getPowerMaxRounded());
 	}
@@ -83,18 +96,30 @@ public class FactionsEntityListener extends EntityListener {
 			return;
 		}
 		
-		if ((Conf.territoryBlockCreepers || faction.isSafeZone()) && event.getEntity() instanceof Creeper) {
-			// creeper which might need prevention, if inside faction territory
+		if (event.getEntity() instanceof Creeper && (
+				(faction.isNormal() && Conf.territoryBlockCreepers) ||
+				(faction.isWarZone() && Conf.warZoneBlockCreepers) ||
+				faction.isSafeZone()
+				)) {
+			// creeper which needs prevention
 			event.setCancelled(true);
-		} else if ((Conf.territoryBlockFireballs || faction.isSafeZone()) && event.getEntity() instanceof Fireball) {
-			// ghast fireball which might need prevention, if inside faction territory
+		} else if (event.getEntity() instanceof Fireball && (
+				(faction.isNormal() && Conf.territoryBlockFireballs) ||
+				(faction.isWarZone() && Conf.warZoneBlockFireballs) ||
+				faction.isSafeZone()
+				)) {
+			// ghast fireball which needs prevention
 			event.setCancelled(true);
-		} else if (Conf.territoryBlockTNT || (faction.isSafeZone() && Conf.safeZoneBlockTNT)) {
-			// we'll assume it's TNT, which might need prevention, if inside faction territory or safe zone
+		} else if (
+				(faction.isNormal() && Conf.territoryBlockTNT) ||
+				(faction.isWarZone() && Conf.warZoneBlockTNT) ||
+				(faction.isSafeZone() && Conf.safeZoneBlockTNT)
+				) {
+			// we'll assume it's TNT, which needs prevention
 			event.setCancelled(true);
 		}
 	}
-
+	
 	public boolean canDamagerHurtDamagee(EntityDamageByEntityEvent sub) {
 		Entity damager = sub.getDamager();
 		Entity damagee = sub.getEntity();
@@ -249,6 +274,13 @@ public class FactionsEntityListener extends EntityListener {
 				return true;
 			}
 			me.sendMessage("You can't "+action+" paintings in a safe zone.");
+			return false;
+		}
+		else if (otherFaction.isWarZone()) {
+			if (Factions.hasPermManageWarZone(player) || !Conf.warZoneDenyBuild) {
+				return true;
+			}
+			me.sendMessage("You can't "+action+" paintings in a war zone.");
 			return false;
 		}
 

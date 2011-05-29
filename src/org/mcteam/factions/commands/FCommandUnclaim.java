@@ -35,6 +35,23 @@ public class FCommandUnclaim extends FBaseCommand {
 			}
 			return;
 		}
+		else if (otherFaction.isWarZone()) {
+			if (Factions.hasPermManageWarZone(sender)) {
+				Board.removeAt(flocation);
+				sendMessage("War zone was unclaimed.");
+			} else {
+				sendMessage("This is a war zone. You lack permissions to unclaim.");
+			}
+			return;
+		}
+		
+		if (Conf.adminBypassPlayers.contains(player.getName())) {
+			Board.removeAt(flocation);
+
+			otherFaction.sendMessage(me.getNameAndRelevant(otherFaction)+Conf.colorSystem+" unclaimed some of your land.");
+			sendMessage("You unclaimed this land.");
+			return;
+		}
 		
 		if ( ! assertHasFaction()) {
 			return;

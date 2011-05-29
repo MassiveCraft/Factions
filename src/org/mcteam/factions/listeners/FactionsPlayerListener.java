@@ -17,6 +17,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerListener;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.mcteam.factions.Board;
 import org.mcteam.factions.Conf;
@@ -109,6 +110,13 @@ public class FactionsPlayerListener extends PlayerListener{
 		FPlayer.autoLeaveOnInactivityRoutine();
 	}
 	
+    @Override
+    public void onPlayerQuit(PlayerQuitEvent event) {
+		// Make sure player's power is up to date when they log off.
+		FPlayer me = FPlayer.get(event.getPlayer());
+		me.getPower();
+	}
+	
 	@Override
 	public void onPlayerMove(PlayerMoveEvent event) {
 		FPlayer me = FPlayer.get(event.getPlayer());
@@ -190,6 +198,13 @@ public class FactionsPlayerListener extends PlayerListener{
 				return true;
 			}
 			me.sendMessage("You can't use "+TextUtil.getMaterialName(material)+" in a safe zone.");
+			return false;
+		}
+		else if (otherFaction.isWarZone() && Conf.warZoneDenyUseage) {
+			if (Factions.hasPermManageWarZone(player)) {
+				return true;
+			}
+			me.sendMessage("You can't use "+TextUtil.getMaterialName(material)+" in a war zone.");
 			return false;
 		}
 		

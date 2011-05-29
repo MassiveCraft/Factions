@@ -40,7 +40,7 @@ public class Faction {
 	public Faction() {
 		this.relationWish = new HashMap<Integer, Relation>();
 		this.invites = new HashSet<String>();
-		this.open = true;
+		this.open = Conf.newFactionsDefaultOpen;
 		this.tag = "???";
 		this.description = "Default faction description :(";
 	}
@@ -114,6 +114,10 @@ public class Faction {
 	
 	public boolean isSafeZone() {
 		return this.getId() == -1;
+	}
+	
+	public boolean isWarZone() {
+		return this.getId() == -2;
 	}
 	
 	// -------------------------------
@@ -374,12 +378,21 @@ public class Faction {
 			instances.put(faction.id, faction);
 		}
 		
-		// Make sure the safe zone faciton exists
+		// Make sure the safe zone faction exists
 		if ( ! instances.containsKey(-1)) {
 			Faction faction = new Faction();
 			faction.tag = ChatColor.GOLD+"Safe Zone";
 			faction.description = "Free from PVP and monsters";
 			faction.id = -1;
+			instances.put(faction.id, faction);
+		}
+		
+		// Make sure the war zone faction exists
+		if ( ! instances.containsKey(-2)) {
+			Faction faction = new Faction();
+			faction.tag = ChatColor.DARK_RED+"War Zone";
+			faction.description = "Not the safest place to be";
+			faction.id = -2;
 			instances.put(faction.id, faction);
 		}
 		
@@ -412,6 +425,10 @@ public class Faction {
 	
 	public static Faction getSafeZone() {
 		return instances.get(-1);
+	}
+	
+	public static Faction getWarZone() {
+		return instances.get(-2);
 	}
 	
 	public static boolean exists(Integer factionId) {

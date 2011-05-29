@@ -34,6 +34,10 @@ public class Conf {
 	public static int factionTagLengthMax = 10;
 	public static boolean factionTagForceUpperCase = false;
 	
+	public static boolean newFactionsDefaultOpen = true;
+
+	public static boolean showMapFactionKey = true;
+	
 	// Configuration on the Faction tag in chat messages.
 	
 	public static boolean chatTagEnabled = true;
@@ -48,6 +52,7 @@ public class Conf {
 	
 	public static boolean homesEnabled = true;
 	public static boolean homesTeleportToOnDeath = true;
+	public static double homesTeleportAllowedEnemyDistance = 32;
 
 	public static double territoryShieldFactor = 0.5;
 	public static boolean territoryBlockCreepers = false;
@@ -58,13 +63,24 @@ public class Conf {
 	public static boolean safeZoneDenyUseage = true;
 	public static boolean safeZoneBlockTNT = true;
 	
+	public static boolean warZoneBlockCreepers = false;
+	public static boolean warZoneBlockFireballs = false;
+	public static boolean warZoneBlockTNT = true;
+	public static boolean warZoneDenyBuild = true;
+	public static boolean warZoneDenyUseage = true;
+	public static boolean warZonePowerLoss = true;
+	
 	public static Set<Material> territoryProtectedMaterials = new HashSet<Material>();
 	public static Set<Material> territoryDenyUseageMaterials = new HashSet<Material>();
 	
 	public static transient Set<CreatureType> safeZoneNerfedCreatureTypes = new HashSet<CreatureType>();
 	
+	public static Set<String> worldsNoClaiming = new HashSet<String>();
+	public static Set<String> worldsNoPowerLoss = new HashSet<String>();
+	
 	public static transient int mapHeight = 8;
 	public static transient int mapWidth = 39;
+	public static transient char[] mapKeyChrs = "\\/#?$%=&^ABCDEFGHJKLMNOPQRSTUVWXYZ1234567890abcdeghjmnopqrsuvwxyz".toCharArray();
 	
 	static {
 		territoryProtectedMaterials.add(Material.WOODEN_DOOR);

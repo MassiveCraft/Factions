@@ -131,6 +131,7 @@ public class FPlayer {
 
 	public void setLastLoginTime(long lastLoginTime) {
 		this.lastLoginTime = lastLoginTime;
+		this.lastPowerUpdateTime = lastLoginTime;
 	}
 
 	public boolean isMapAutoUpdating() {
@@ -325,6 +326,9 @@ public class FPlayer {
 	}
 	
 	protected void updatePower() {
+		if (this.isOffline()) {
+			return;
+		}
 		long now = System.currentTimeMillis();
 		long millisPassed = now - this.lastPowerUpdateTime;
 		this.lastPowerUpdateTime = now;

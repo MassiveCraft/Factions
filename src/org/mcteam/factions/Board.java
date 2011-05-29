@@ -130,6 +130,13 @@ public class Board {
 		int width = halfWidth * 2 + 1;
 		int height = halfHeight * 2 + 1;
 		
+		if (Conf.showMapFactionKey) {
+			height--;
+		}
+		
+		Map<String, Character> fList = new HashMap<String, Character>();
+		int chrIdx = 0;
+		
 		// For each row
 		for (int dx = 0; dx < height; dx++) {
 			// Draw and add that row
@@ -144,8 +151,13 @@ public class Board {
 						row += ChatColor.GRAY+"-";
 					} else if (factionHere.isSafeZone()) {
 						row += ChatColor.GOLD+"+";
+					} else if (factionHere.isWarZone()) {
+						row += ChatColor.DARK_RED+"+";
 					} else {
-						row += factionHere.getRelation(faction).getColor()+"+";
+						if (!fList.containsKey(factionHere.getTag()))
+							fList.put(factionHere.getTag(), Conf.mapKeyChrs[chrIdx++]);
+						char tag = fList.get(factionHere.getTag());
+						row += factionHere.getRelation(faction).getColor() + "" + tag;
 					}
 				}
 			}
@@ -159,6 +171,15 @@ public class Board {
 		ret.set(1, asciiCompass.get(0)+ret.get(1).substring(3*3));
 		ret.set(2, asciiCompass.get(1)+ret.get(2).substring(3*3));
 		ret.set(3, asciiCompass.get(2)+ret.get(3).substring(3*3));
+		
+		// Add the faction key
+		if (Conf.showMapFactionKey) {
+			String fRow = "";
+			for(String key : fList.keySet()) {
+				fRow += String.format("%s%s: %s ", ChatColor.GRAY, fList.get(key), key);
+			}
+			ret.add(fRow);
+		}
 		
 		return ret;
 	}
