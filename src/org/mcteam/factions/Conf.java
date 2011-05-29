@@ -38,6 +38,9 @@ public class Conf {
 
 	public static boolean showMapFactionKey = true;
 	
+	// Disallow joining/leaving/kicking while power is negative
+	public static boolean CanLeaveWithNegativePower = true;
+	
 	// Configuration on the Faction tag in chat messages.
 	
 	public static boolean chatTagEnabled = true;

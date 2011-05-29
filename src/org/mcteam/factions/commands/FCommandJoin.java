@@ -42,6 +42,11 @@ public class FCommandJoin extends FBaseCommand {
 			return;
 		}
 		
+		if (!Conf.CanLeaveWithNegativePower && me.getPower() < 0) {
+			sendMessage("You cannot join a faction until your power is positive.");
+			return;
+		}
+		
 		if( ! faction.getOpen() && ! faction.isInvited(me)) {
 			sendMessage("This guild requires invitation.");
 			faction.sendMessage(me.getNameAndRelevant(faction)+Conf.colorSystem+" tried to join your faction.");

@@ -46,6 +46,11 @@ public class FCommandKick extends FBaseCommand {
 			return;
 		}
 		
+		if (!Conf.CanLeaveWithNegativePower && you.getPower() < 0) {
+			sendMessage("You cannot kick that member until their power is positive.");
+			return;
+		}
+		
 		myFaction.deinvite(you);
 		you.resetFactionData();
 		
