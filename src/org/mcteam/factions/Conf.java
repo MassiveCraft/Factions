@@ -60,6 +60,8 @@ public class Conf {
 	public static double homesTeleportAllowedEnemyDistance = 32;
 
 	public static double territoryShieldFactor = 0.5;
+	public static boolean territoryDenyBuild = true;
+	public static boolean territoryDenyUseage = true;
 	public static boolean territoryBlockCreepers = false;
 	public static boolean territoryBlockFireballs = false;
 	public static boolean territoryBlockTNT = false;
@@ -89,6 +91,7 @@ public class Conf {
 	
 	static {
 		territoryProtectedMaterials.add(Material.WOODEN_DOOR);
+		territoryProtectedMaterials.add(Material.TRAP_DOOR);
 		territoryProtectedMaterials.add(Material.DISPENSER);
 		territoryProtectedMaterials.add(Material.CHEST);
 		territoryProtectedMaterials.add(Material.FURNACE);

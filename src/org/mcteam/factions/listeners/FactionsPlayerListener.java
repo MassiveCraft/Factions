@@ -211,7 +211,7 @@ public class FactionsPlayerListener extends PlayerListener{
 		Faction myFaction = me.getFaction();
 
 		// Cancel if we are not in our own territory
-		if (myFaction != otherFaction) {
+		if (myFaction != otherFaction && Conf.territoryDenyUseage) {
 			me.sendMessage("You can't use "+TextUtil.getMaterialName(material)+" in the territory of "+otherFaction.getTag(myFaction));
 			return false;
 		}
