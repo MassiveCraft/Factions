@@ -48,6 +48,9 @@ public class FactionsEntityListener extends EntityListener {
 			if (Conf.worldsNoPowerLoss.contains(player.getWorld().getName())) {
 				fplayer.sendMessage("The world you are in has power loss normally disabled, but you still lost power since you were in a war zone.");
 			}
+		} else if (faction.isNone() && !Conf.wildernessPowerLoss) {
+			fplayer.sendMessage("You didn't lose any power since you were in the wilderness.");
+			return;
 		} else if (Conf.worldsNoPowerLoss.contains(player.getWorld().getName())) {
 			fplayer.sendMessage("You didn't lose any power due to the world you died in.");
 			return;
@@ -97,6 +100,7 @@ public class FactionsEntityListener extends EntityListener {
 		}
 		
 		if (event.getEntity() instanceof Creeper && (
+				(faction.isNone() && Conf.wildernessBlockCreepers) ||
 				(faction.isNormal() && Conf.territoryBlockCreepers) ||
 				(faction.isWarZone() && Conf.warZoneBlockCreepers) ||
 				faction.isSafeZone()
@@ -104,6 +108,7 @@ public class FactionsEntityListener extends EntityListener {
 			// creeper which needs prevention
 			event.setCancelled(true);
 		} else if (event.getEntity() instanceof Fireball && (
+				(faction.isNone() && Conf.wildernessBlockFireballs) ||
 				(faction.isNormal() && Conf.territoryBlockFireballs) ||
 				(faction.isWarZone() && Conf.warZoneBlockFireballs) ||
 				faction.isSafeZone()
@@ -111,6 +116,7 @@ public class FactionsEntityListener extends EntityListener {
 			// ghast fireball which needs prevention
 			event.setCancelled(true);
 		} else if (
+				(faction.isNone() && Conf.wildernessBlockTNT) ||
 				(faction.isNormal() && Conf.territoryBlockTNT) ||
 				(faction.isWarZone() && Conf.warZoneBlockTNT) ||
 				(faction.isSafeZone() && Conf.safeZoneBlockTNT)
@@ -263,11 +269,15 @@ public class FactionsEntityListener extends EntityListener {
 
 		Faction otherFaction = Board.getFactionAt(loc);
 
-		if (otherFaction.isNone()) {
-			return true;
-		}
-
 		FPlayer me = FPlayer.get(player);
+
+		if (otherFaction.isNone()) {
+			if (!Conf.wildernessDenyBuild) {
+				return true; // This is not faction territory. Use whatever you like here.
+			}
+			me.sendMessage("You can't "+action+" paintings in the wilderness.");
+			return false;
+		}
 
 		if (otherFaction.isSafeZone()) {
 			if (Factions.hasPermManageSafeZone(player) || !Conf.safeZoneDenyBuild) {

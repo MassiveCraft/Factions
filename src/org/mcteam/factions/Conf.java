@@ -59,7 +59,7 @@ public class Conf {
 	public static boolean homesTeleportToOnDeath = true;
 	public static double homesTeleportAllowedEnemyDistance = 32;
 
-	public static double territoryShieldFactor = 0.5;
+	public static double territoryShieldFactor = 0.3;
 	public static boolean territoryDenyBuild = true;
 	public static boolean territoryDenyUseage = true;
 	public static boolean territoryBlockCreepers = false;
@@ -76,6 +76,13 @@ public class Conf {
 	public static boolean warZoneBlockFireballs = false;
 	public static boolean warZoneBlockTNT = true;
 	public static boolean warZonePowerLoss = true;
+	
+	public static boolean wildernessDenyBuild = false;
+	public static boolean wildernessDenyUseage = false;
+	public static boolean wildernessBlockCreepers = false;
+	public static boolean wildernessBlockFireballs = false;
+	public static boolean wildernessBlockTNT = false;
+	public static boolean wildernessPowerLoss = true;
 	
 	public static Set<Material> territoryProtectedMaterials = new HashSet<Material>();
 	public static Set<Material> territoryDenyUseageMaterials = new HashSet<Material>();

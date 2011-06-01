@@ -60,11 +60,15 @@ public class FactionsBlockListener extends BlockListener {
 
 		Faction otherFaction = Board.getFactionAt(new FLocation(block));
 		
-		if (otherFaction.isNone()) {
-			return true;
-		}
-		
 		FPlayer me = FPlayer.get(player);
+		
+		if (otherFaction.isNone()) {
+			if (!Conf.wildernessDenyBuild) {
+				return true; // This is not faction territory. Use whatever you like here.
+			}
+			me.sendMessage("You can't "+action+" in the wilderness.");
+			return false;
+		}
 		
 		if (otherFaction.isSafeZone()) {
 			if (Factions.hasPermManageSafeZone(player) || !Conf.safeZoneDenyBuild) {

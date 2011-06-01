@@ -187,11 +187,15 @@ public class FactionsPlayerListener extends PlayerListener{
 
 		Faction otherFaction = Board.getFactionAt(new FLocation(block));
 
-		if (otherFaction.isNone()) {
-			return true; // This is not faction territory. Use whatever you like here.
-		}
-
 		FPlayer me = FPlayer.get(player);
+
+		if (otherFaction.isNone()) {
+			if (!Conf.wildernessDenyUseage) {
+				return true; // This is not faction territory. Use whatever you like here.
+			}
+			me.sendMessage("You can't use "+TextUtil.getMaterialName(material)+" in the wilderness.");
+			return false;
+		}
 		
 		if (otherFaction.isSafeZone() && Conf.safeZoneDenyUseage) {
 			if (Factions.hasPermManageSafeZone(player)) {
