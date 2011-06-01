@@ -118,6 +118,13 @@ public class Factions extends JavaPlugin {
 		
 		setupPermissions();
 		
+		// preload some chat plugins if they're on the server to prevent potential conflicts
+		if (Conf.preloadChatPlugins) {
+			preloadPlugin("EssentialsChat");
+			preloadPlugin("HeroChat");
+			preloadPlugin("iChat");
+		}
+		
 		// Register events
 		PluginManager pm = this.getServer().getPluginManager();
 		pm.registerEvent(Event.Type.PLAYER_CHAT, this.playerListener, Event.Priority.Highest, this);
@@ -173,6 +180,16 @@ public class Factions extends JavaPlugin {
 			Factions.log("Found and will use plugin "+((Permissions)test).getDescription().getFullName());
 		} else {
 			Factions.log("Permission system not detected, defaulting to OP");
+		}
+	}
+	
+	private void preloadPlugin(String pluginName) {
+		PluginManager pm = this.getServer().getPluginManager();
+		Plugin prePlug = pm.getPlugin(pluginName);
+		
+		if (prePlug != null && !pm.isPluginEnabled(prePlug)) {
+			Factions.log("Preloading \"" + pluginName + "\" plugin to prevent conflicts.");
+			pm.enablePlugin(prePlug);
 		}
 	}
 	

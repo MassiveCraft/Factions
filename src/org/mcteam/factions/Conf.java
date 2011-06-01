@@ -43,6 +43,7 @@ public class Conf {
 	
 	// Configuration on the Faction tag in chat messages.
 	
+	public static boolean preloadChatPlugins = true;
 	public static boolean chatTagEnabled = true;
 	public static boolean chatTagRelationColored = true;
 	public static int chatTagInsertIndex = 1;
@@ -66,11 +67,11 @@ public class Conf {
 	public static boolean safeZoneDenyUseage = true;
 	public static boolean safeZoneBlockTNT = true;
 	
+	public static boolean warZoneDenyBuild = true;
+	public static boolean warZoneDenyUseage = true;
 	public static boolean warZoneBlockCreepers = false;
 	public static boolean warZoneBlockFireballs = false;
 	public static boolean warZoneBlockTNT = true;
-	public static boolean warZoneDenyBuild = true;
-	public static boolean warZoneDenyUseage = true;
 	public static boolean warZonePowerLoss = true;
 	
 	public static Set<Material> territoryProtectedMaterials = new HashSet<Material>();
