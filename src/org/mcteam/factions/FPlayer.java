@@ -326,7 +326,7 @@ public class FPlayer {
 	}
 	
 	protected void updatePower() {
-		if (this.isOffline()) {
+		if (this.isOffline() && !Conf.powerRegenOffline) {
 			return;
 		}
 		long now = System.currentTimeMillis();
