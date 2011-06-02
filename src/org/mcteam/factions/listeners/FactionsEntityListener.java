@@ -272,7 +272,7 @@ public class FactionsEntityListener extends EntityListener {
 		FPlayer me = FPlayer.get(player);
 
 		if (otherFaction.isNone()) {
-			if (!Conf.wildernessDenyBuild) {
+			if (!Conf.wildernessDenyBuild || Factions.hasPermAdminBypass(player)) {
 				return true; // This is not faction territory. Use whatever you like here.
 			}
 			me.sendMessage("You can't "+action+" paintings in the wilderness.");

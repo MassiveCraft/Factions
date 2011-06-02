@@ -190,7 +190,7 @@ public class FactionsPlayerListener extends PlayerListener{
 		FPlayer me = FPlayer.get(player);
 
 		if (otherFaction.isNone()) {
-			if (!Conf.wildernessDenyUseage) {
+			if (!Conf.wildernessDenyUseage || Factions.hasPermAdminBypass(player)) {
 				return true; // This is not faction territory. Use whatever you like here.
 			}
 			me.sendMessage("You can't use "+TextUtil.getMaterialName(material)+" in the wilderness.");
