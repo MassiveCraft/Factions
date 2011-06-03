@@ -67,7 +67,7 @@ public class FCommandHelp extends FBaseCommand {
 		pageLines.add( "Create a faction using these two commands:" );
 		pageLines.add( new FCommandCreate().getUseageTemplate() );
 		pageLines.add( new FCommandDescription().getUseageTemplate() );
-		pageLines.add( "You might wan't to close it and use invitations:" );
+		pageLines.add( "You might want to close it and use invitations:" );
 		pageLines.add( new FCommandOpen().getUseageTemplate() );
 		pageLines.add( new FCommandInvite().getUseageTemplate() );
 		pageLines.add( new FCommandDeinvite().getUseageTemplate() );
