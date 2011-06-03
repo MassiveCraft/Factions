@@ -146,7 +146,7 @@ public class FactionsEntityListener extends EntityListener {
 			if (damager instanceof Player) {
 				FPlayer attacker = FPlayer.get((Player)damager);
 				attacker.sendMessage("You can't hurt other players in a SafeZone.");
-				defender.sendMessage(attacker.getNameAndRelevant(defender)+Conf.colorSystem+" tried to hurt you.");
+//				defender.sendMessage(attacker.getNameAndRelevant(defender)+Conf.colorSystem+" tried to hurt you.");
 			}
 			return false;
 		}
