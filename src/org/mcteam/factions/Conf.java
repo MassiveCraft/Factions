@@ -43,12 +43,16 @@ public class Conf {
 	public static boolean CanLeaveWithNegativePower = true;
 	
 	// Configuration on the Faction tag in chat messages.
-	
 	public static boolean preloadChatPlugins = true;
 	public static boolean chatTagEnabled = true;
 	public static boolean chatTagRelationColored = true;
+	public static String chatTagReplaceString = "{FACTION}";
+	public static String chatTagInsertAfterString = "";
+	public static String chatTagInsertBeforeString = "";
 	public static int chatTagInsertIndex = 1;
-	public static String chatTagFormat = "%s"+ChatColor.WHITE+" ";
+	public static boolean chatTagPadBefore = false;
+	public static boolean chatTagPadAfter = true;
+	public static String chatTagFormat = "%s"+ChatColor.WHITE;
 	public static String factionChatFormat = "%s"+ChatColor.WHITE+" %s";
 	
 	public static boolean allowNoSlashCommand = true;

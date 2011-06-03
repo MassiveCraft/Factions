@@ -67,14 +67,35 @@ public class FactionsPlayerListener extends PlayerListener{
 			return;
 		}
 
-		int InsertIndex = Conf.chatTagInsertIndex;
-		if (InsertIndex > event.getFormat().length())
-			return;
-
-		String formatStart = event.getFormat().substring(0, InsertIndex);
-		String formatEnd = event.getFormat().substring(InsertIndex);
+		int InsertIndex = 0;
+		String eventFormat = event.getFormat();
 		
-		String nonColoredMsgFormat = formatStart + me.getChatTag() + formatEnd;
+		if (!Conf.chatTagReplaceString.isEmpty() && eventFormat.contains(Conf.chatTagReplaceString)) {
+			// we're using the "replace" method of inserting the faction tags
+			InsertIndex = eventFormat.indexOf(Conf.chatTagReplaceString);
+			eventFormat = eventFormat.replace(Conf.chatTagReplaceString, "");
+			Conf.chatTagPadAfter = false;
+			Conf.chatTagPadBefore = false;
+		}
+		else if (!Conf.chatTagInsertAfterString.isEmpty() && eventFormat.contains(Conf.chatTagInsertAfterString)) {
+			// we're using the "insert after string" method
+			InsertIndex = eventFormat.indexOf(Conf.chatTagInsertAfterString) + Conf.chatTagInsertAfterString.length();
+		}
+		else if (!Conf.chatTagInsertBeforeString.isEmpty() && eventFormat.contains(Conf.chatTagInsertBeforeString)) {
+			// we're using the "insert before string" method
+			InsertIndex = eventFormat.indexOf(Conf.chatTagInsertBeforeString);
+		}
+		else {
+			// we'll fall back to using the index place method
+			InsertIndex = Conf.chatTagInsertIndex;
+			if (InsertIndex > eventFormat.length())
+				return;
+		}
+		
+		String formatStart = eventFormat.substring(0, InsertIndex) + (Conf.chatTagPadBefore ? " " : "");
+		String formatEnd = (Conf.chatTagPadAfter ? " " : "") + eventFormat.substring(InsertIndex);
+		
+		String nonColoredMsgFormat = formatStart + me.getChatTag().trim() + formatEnd;
 		
 		// Relation Colored?
 		if (Conf.chatTagRelationColored) {
@@ -84,7 +105,7 @@ public class FactionsPlayerListener extends PlayerListener{
 			
 			for (Player listeningPlayer : Factions.instance.getServer().getOnlinePlayers()) {
 				FPlayer you = FPlayer.get(listeningPlayer);
-				String yourFormat = formatStart + me.getChatTag(you) + formatEnd;
+				String yourFormat = formatStart + me.getChatTag(you).trim() + formatEnd;
 				listeningPlayer.sendMessage(String.format(yourFormat, talkingPlayer.getDisplayName(), msg));
 			}
 			
