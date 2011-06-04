@@ -265,7 +265,7 @@ public class FactionsPlayerListener extends PlayerListener{
 			if ( ! Conf.territoryProtectedMaterials.contains(material)) {
 				return true;
 			}
-		}else{
+		} else {
 			if ( ! Conf.territoryProtectedMaterialsWhenOffline.contains(material)) {
 				return true;
 			}
