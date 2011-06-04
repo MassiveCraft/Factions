@@ -202,11 +202,17 @@ public class FactionsPlayerListener extends PlayerListener{
 			return true;
 		}
 
-		if ( ! Conf.territoryDenyUseageMaterials.contains(material)) {
-			return true; // Item isn't one we're preventing.
-		}
-
 		Faction otherFaction = Board.getFactionAt(new FLocation(block));
+
+		if (otherFaction.getOnlinePlayers()!=null){
+			if ( ! Conf.territoryDenyUseageMaterials.contains(material)) {
+				return true; // Item isn't one we're preventing for online factions.
+			}
+		}else{
+			if ( ! Conf.territoryDenyUseageMaterialsWhenOffline.contains(material)) {
+				return true; // Item isn't one we're preventing for offline factions.
+			}
+		}
 
 		FPlayer me = FPlayer.get(player);
 
