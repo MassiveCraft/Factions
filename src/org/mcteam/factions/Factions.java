@@ -24,7 +24,6 @@ import org.mcteam.factions.gson.GsonBuilder;
 import org.mcteam.factions.listeners.FactionsBlockListener;
 import org.mcteam.factions.listeners.FactionsEntityListener;
 import org.mcteam.factions.listeners.FactionsPlayerListener;
-import org.mcteam.factions.util.MiscUtil;
 
 
 import com.nijiko.permissions.PermissionHandler;
@@ -56,8 +55,6 @@ public class Factions extends JavaPlugin {
 	public List<FBaseCommand> commands = new ArrayList<FBaseCommand>();
 
 	private String baseCommand;
-	
-	private static boolean lock = false;
 	
 	public Factions() {
 		Factions.instance = this;
