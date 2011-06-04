@@ -120,6 +120,7 @@ public class Factions extends JavaPlugin {
 		
 		// preload some chat plugins if they're on the server to prevent potential conflicts
 		if (Conf.preloadChatPlugins) {
+			preloadPlugin("Essentials");
 			preloadPlugin("EssentialsChat");
 			preloadPlugin("HeroChat");
 			preloadPlugin("iChat");
