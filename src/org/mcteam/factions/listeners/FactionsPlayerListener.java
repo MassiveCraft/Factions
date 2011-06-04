@@ -202,11 +202,17 @@ public class FactionsPlayerListener extends PlayerListener{
 			return true;
 		}
 
-		if ( ! Conf.territoryDenyUseageMaterials.contains(material)) {
-			return true; // Item isn't one we're preventing.
-		}
-
 		Faction otherFaction = Board.getFactionAt(new FLocation(block));
+
+		if (otherFaction.getOnlinePlayers()!=null){
+			if ( ! Conf.territoryDenyUseageMaterials.contains(material)) {
+				return true; // Item isn't one we're preventing for online factions.
+			}
+		}else{
+			if ( ! Conf.territoryDenyUseageMaterialsWhenOffline.contains(material)) {
+				return true; // Item isn't one we're preventing for offline factions.
+			}
+		}
 
 		FPlayer me = FPlayer.get(player);
 
@@ -252,14 +258,21 @@ public class FactionsPlayerListener extends PlayerListener{
 
 		Material material = block.getType();
 
+		Faction otherFaction = Board.getFactionAt(new FLocation(block));
+		
 		// We only care about some material types.
-		if ( ! Conf.territoryProtectedMaterials.contains(material)) {
-			return true;
+		if (otherFaction.getOnlinePlayers()!=null){
+			if ( ! Conf.territoryProtectedMaterials.contains(material)) {
+				return true;
+			}
+		} else {
+			if ( ! Conf.territoryProtectedMaterialsWhenOffline.contains(material)) {
+				return true;
+			}
 		}
 
 		FPlayer me = FPlayer.get(player);
 		Faction myFaction = me.getFaction();
-		Faction otherFaction = Board.getFactionAt(new FLocation(block));
 
 		// In safe zones you may use any block...
 		if (otherFaction.isNormal() && myFaction != otherFaction) {

@@ -90,6 +90,8 @@ public class Conf {
 	
 	public static Set<Material> territoryProtectedMaterials = new HashSet<Material>();
 	public static Set<Material> territoryDenyUseageMaterials = new HashSet<Material>();
+	public static Set<Material> territoryProtectedMaterialsWhenOffline = new HashSet<Material>();
+	public static Set<Material> territoryDenyUseageMaterialsWhenOffline = new HashSet<Material>();
 	
 	public static transient Set<CreatureType> safeZoneNerfedCreatureTypes = new HashSet<CreatureType>();
 	
@@ -111,6 +113,17 @@ public class Conf {
 		territoryDenyUseageMaterials.add(Material.BUCKET);
 		territoryDenyUseageMaterials.add(Material.WATER_BUCKET);
 		territoryDenyUseageMaterials.add(Material.LAVA_BUCKET);
+		
+		territoryProtectedMaterialsWhenOffline.add(Material.WOODEN_DOOR);
+		territoryProtectedMaterialsWhenOffline.add(Material.TRAP_DOOR);
+		territoryProtectedMaterialsWhenOffline.add(Material.DISPENSER);
+		territoryProtectedMaterialsWhenOffline.add(Material.CHEST);
+		territoryProtectedMaterialsWhenOffline.add(Material.FURNACE);
+
+		territoryDenyUseageMaterialsWhenOffline.add(Material.FLINT_AND_STEEL);
+		territoryDenyUseageMaterialsWhenOffline.add(Material.BUCKET);
+		territoryDenyUseageMaterialsWhenOffline.add(Material.WATER_BUCKET);
+		territoryDenyUseageMaterialsWhenOffline.add(Material.LAVA_BUCKET);
 
 		safeZoneNerfedCreatureTypes.add(CreatureType.CREEPER);
 		safeZoneNerfedCreatureTypes.add(CreatureType.GHAST);
