@@ -92,8 +92,8 @@ public class FactionsPlayerListener extends PlayerListener{
 				return;
 		}
 		
-		String formatStart = eventFormat.substring(0, InsertIndex) + (Conf.chatTagPadBefore ? " " : "");
-		String formatEnd = (Conf.chatTagPadAfter ? " " : "") + eventFormat.substring(InsertIndex);
+		String formatStart = eventFormat.substring(0, InsertIndex) + ((Conf.chatTagPadBefore && !me.getChatTag().isEmpty()) ? " " : "");
+		String formatEnd = ((Conf.chatTagPadAfter && !me.getChatTag().isEmpty()) ? " " : "") + eventFormat.substring(InsertIndex);
 		
 		String nonColoredMsgFormat = formatStart + me.getChatTag().trim() + formatEnd;
 		
