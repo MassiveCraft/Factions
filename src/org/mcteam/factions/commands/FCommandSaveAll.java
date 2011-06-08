@@ -9,6 +9,8 @@ public class FCommandSaveAll extends FBaseCommand {
 		aliases.add("saveall");
 		aliases.add("save");
 		
+		senderMustBePlayer = false;
+		
 		helpDescription = "save factions to disk";
 	}
 	

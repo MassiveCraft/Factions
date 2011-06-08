@@ -12,6 +12,8 @@ public class FCommandReload extends FBaseCommand {
 	public FCommandReload() {
 		aliases.add("reload");
 		
+		senderMustBePlayer = false;
+		
 		optionalParameters.add("file");
 		
 		helpDescription = "reloads all json files, or a specific one";
