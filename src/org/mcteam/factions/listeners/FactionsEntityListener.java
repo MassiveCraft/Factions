@@ -94,11 +94,6 @@ public class FactionsEntityListener extends EntityListener {
 		
 		Faction faction = Board.getFactionAt(new FLocation(event.getLocation()));
 		
-		// Explosions may happen in the wilderness
-		if (faction.isNone()) {
-			return;
-		}
-		
 		if (event.getEntity() instanceof Creeper && (
 				(faction.isNone() && Conf.wildernessBlockCreepers) ||
 				(faction.isNormal() && Conf.territoryBlockCreepers) ||
@@ -159,6 +154,12 @@ public class FactionsEntityListener extends EntityListener {
 		
 		if (attacker == null || attacker.getPlayer() == null) {
 			return true;
+		}
+		
+		// so we know from above that the defender isn't in a safezone... what about the attacker, sneaky dog that he might be?
+		if (Board.getFactionAt(new FLocation(attacker)).isSafeZone()) {
+			attacker.sendMessage("You can't hurt other players while you are in a SafeZone.");
+			return false;
 		}
 		
 		Relation relation = defender.getRelation(attacker);
