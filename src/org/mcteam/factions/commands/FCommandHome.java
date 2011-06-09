@@ -43,27 +43,29 @@ public class FCommandHome extends FBaseCommand {
 		if (Conf.homesTeleportAllowedEnemyDistance > 0 && ! faction.isSafeZone() && ! me.isInOwnTerritory()) {
 			Location loc = player.getLocation();
 			World w = loc.getWorld();
-			int x = loc.getBlockX();
-			int y = loc.getBlockY();
-			int z = loc.getBlockZ();
+			double x = loc.getX();
+			double y = loc.getY();
+			double z = loc.getZ();
 
 			for (Player p : player.getServer().getOnlinePlayers())
 			{
 				if (p == null || !p.isOnline() || p.isDead() || p == player || p.getWorld() != w)
 					continue;
-				
+
 				FPlayer fp = FPlayer.get(p);
 				if (me.getRelation(fp) != Relation.ENEMY)
 					continue;
-				
+
 				Location l = p.getLocation();
-				int dx = Math.abs(x - l.getBlockX());
-				int dy = Math.abs(y - l.getBlockY());
-				int dz = Math.abs(z - l.getBlockZ());
-				int delta = dx + dy + dz;
-				if (delta > Conf.homesTeleportAllowedEnemyDistance)
+				double dx = Math.abs(x - l.getX());
+				double dy = Math.abs(y - l.getY());
+				double dz = Math.abs(z - l.getZ());
+				double max = Conf.homesTeleportAllowedEnemyDistance;
+
+				// box-shaped distance check
+				if (dx > max || dy > max || dz > max)
 					continue;
-				
+
 				me.sendMessage("You cannot teleport to your faction home while an enemy is within " + Conf.homesTeleportAllowedEnemyDistance + " blocks of you.");
 				return;
 			}
