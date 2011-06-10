@@ -68,8 +68,11 @@ public class Conf {
 	public static boolean territoryDenyBuildWhenOffline = true;
 	public static boolean territoryDenyUseage = true;
 	public static boolean territoryBlockCreepers = false;
+	public static boolean territoryBlockCreepersWhenOffline = false;
 	public static boolean territoryBlockFireballs = false;
+	public static boolean territoryBlockFireballsWhenOffline = false;
 	public static boolean territoryBlockTNT = false;
+	public static boolean territoryBlockTNTWhenOffline = false;
 
 	public static boolean safeZoneDenyBuild = true;
 	public static boolean safeZoneDenyUseage = true;

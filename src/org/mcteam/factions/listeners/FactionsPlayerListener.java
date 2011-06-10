@@ -186,7 +186,7 @@ public class FactionsPlayerListener extends PlayerListener{
 				me.attemptClaim(false);
 		}
 		else if (me.autoSafeZoneEnabled()) {
-			if (!Factions.hasPermManageSafeZone((CommandSender)me)) {
+			if (!Factions.hasPermManageSafeZone((CommandSender)event.getPlayer())) {
 				me.enableAutoSafeZone(false);
 			} else {
 				FLocation playerFlocation = new FLocation(me);
@@ -198,7 +198,7 @@ public class FactionsPlayerListener extends PlayerListener{
 			}
 		}
 		else if (me.autoWarZoneEnabled()) {
-			if (!Factions.hasPermManageWarZone((CommandSender)me)) {
+			if (!Factions.hasPermManageWarZone((CommandSender)event.getPlayer())) {
 				me.enableAutoWarZone(false);
 			} else {
 				FLocation playerFlocation = new FLocation(me);

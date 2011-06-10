@@ -93,10 +93,12 @@ public class FactionsEntityListener extends EntityListener {
 		}
 		
 		Faction faction = Board.getFactionAt(new FLocation(event.getLocation()));
+		boolean online = faction.HasPlayersOnline();
 		
 		if (event.getEntity() instanceof Creeper && (
 				(faction.isNone() && Conf.wildernessBlockCreepers) ||
-				(faction.isNormal() && Conf.territoryBlockCreepers) ||
+				(faction.isNormal() && online && Conf.territoryBlockCreepers) ||
+				(faction.isNormal() && !online && Conf.territoryBlockCreepersWhenOffline) ||
 				(faction.isWarZone() && Conf.warZoneBlockCreepers) ||
 				faction.isSafeZone()
 				)) {
@@ -104,7 +106,8 @@ public class FactionsEntityListener extends EntityListener {
 			event.setCancelled(true);
 		} else if (event.getEntity() instanceof Fireball && (
 				(faction.isNone() && Conf.wildernessBlockFireballs) ||
-				(faction.isNormal() && Conf.territoryBlockFireballs) ||
+				(faction.isNormal() && online && Conf.territoryBlockFireballs) ||
+				(faction.isNormal() && !online && Conf.territoryBlockFireballsWhenOffline) ||
 				(faction.isWarZone() && Conf.warZoneBlockFireballs) ||
 				faction.isSafeZone()
 				)) {
@@ -112,7 +115,8 @@ public class FactionsEntityListener extends EntityListener {
 			event.setCancelled(true);
 		} else if (
 				(faction.isNone() && Conf.wildernessBlockTNT) ||
-				(faction.isNormal() && Conf.territoryBlockTNT) ||
+				(faction.isNormal() && online && Conf.territoryBlockTNT) ||
+				(faction.isNormal() && !online && Conf.territoryBlockTNTWhenOffline) ||
 				(faction.isWarZone() && Conf.warZoneBlockTNT) ||
 				(faction.isSafeZone() && Conf.safeZoneBlockTNT)
 				) {
