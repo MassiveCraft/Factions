@@ -90,12 +90,12 @@ public class Conf {
 	public static boolean wildernessBlockTNT = false;
 	public static boolean wildernessPowerLoss = true;
 	
-	public static Set<Material> territoryProtectedMaterials = new HashSet<Material>();
-	public static Set<Material> territoryDenyUseageMaterials = new HashSet<Material>();
-	public static Set<Material> territoryProtectedMaterialsWhenOffline = new HashSet<Material>();
-	public static Set<Material> territoryDenyUseageMaterialsWhenOffline = new HashSet<Material>();
+	public static Set<Material> territoryProtectedMaterials = EnumSet.noneOf(Material.class);
+	public static Set<Material> territoryDenyUseageMaterials = EnumSet.noneOf(Material.class);
+	public static Set<Material> territoryProtectedMaterialsWhenOffline = EnumSet.noneOf(Material.class);
+	public static Set<Material> territoryDenyUseageMaterialsWhenOffline = EnumSet.noneOf(Material.class);
 	
-	public static transient Set<CreatureType> safeZoneNerfedCreatureTypes = new HashSet<CreatureType>();
+	public static transient Set<CreatureType> safeZoneNerfedCreatureTypes = EnumSet.noneOf(CreatureType.class);
 	
 	public static Set<String> worldsNoClaiming = new HashSet<String>();
 	public static Set<String> worldsNoPowerLoss = new HashSet<String>();
