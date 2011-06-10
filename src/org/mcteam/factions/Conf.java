@@ -80,6 +80,7 @@ public class Conf {
 	public static boolean warZoneBlockFireballs = false;
 	public static boolean warZoneBlockTNT = true;
 	public static boolean warZonePowerLoss = true;
+	public static boolean warZoneFriendlyFire = false;
 	
 	public static boolean wildernessDenyBuild = false;
 	public static boolean wildernessDenyUseage = false;

@@ -156,10 +156,15 @@ public class FactionsEntityListener extends EntityListener {
 			return true;
 		}
 		
+		Faction locFaction = Board.getFactionAt(new FLocation(attacker));
+		
 		// so we know from above that the defender isn't in a safezone... what about the attacker, sneaky dog that he might be?
-		if (Board.getFactionAt(new FLocation(attacker)).isSafeZone()) {
+		if (locFaction.isSafeZone()) {
 			attacker.sendMessage("You can't hurt other players while you are in a SafeZone.");
 			return false;
+		}
+		else if (locFaction.isWarZone() && Conf.warZoneFriendlyFire) {
+			return true;
 		}
 		
 		Relation relation = defender.getRelation(attacker);
