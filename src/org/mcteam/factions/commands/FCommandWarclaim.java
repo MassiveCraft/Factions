@@ -47,7 +47,7 @@ public class FCommandWarclaim extends FBaseCommand {
 			
 		} else {
 			Board.setFactionAt(Faction.getWarZone(), playerFlocation);
-			sendMessage("This land is now a war zone");
+			sendMessage("This land is now a war zone.");
 		}
 	}
 	

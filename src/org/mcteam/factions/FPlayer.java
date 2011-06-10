@@ -44,6 +44,9 @@ public class FPlayer {
 	private long lastPowerUpdateTime;
 	private long lastLoginTime;
 	private transient boolean mapAutoUpdating;
+	private transient boolean autoClaimEnabled;
+	private transient boolean autoSafeZoneEnabled;
+	private transient boolean autoWarZoneEnabled;
 	private boolean factionChatting; 
 	
 	// -------------------------------------------- //
@@ -127,6 +130,45 @@ public class FPlayer {
 	
 	public long getLastLoginTime() {
 		return lastLoginTime;
+	}
+
+	public boolean autoClaimEnabled() {
+		if (this.factionId == 0)
+			return false;
+		return autoClaimEnabled;
+	}
+	public void enableAutoClaim(boolean enabled) {
+		this.autoClaimEnabled = enabled;
+		if (enabled) {
+			this.autoSafeZoneEnabled = false;
+			this.autoWarZoneEnabled = false;
+		}
+	}
+
+	public boolean autoSafeZoneEnabled() {
+		if (this.factionId == 0)
+			return false;
+		return autoSafeZoneEnabled;
+	}
+	public void enableAutoSafeZone(boolean enabled) {
+		this.autoSafeZoneEnabled = enabled;
+		if (enabled) {
+			this.autoClaimEnabled = false;
+			this.autoWarZoneEnabled = false;
+		}
+	}
+
+	public boolean autoWarZoneEnabled() {
+		if (this.factionId == 0)
+			return false;
+		return autoWarZoneEnabled;
+	}
+	public void enableAutoWarZone(boolean enabled) {
+		this.autoWarZoneEnabled = enabled;
+		if (enabled) {
+			this.autoClaimEnabled = false;
+			this.autoSafeZoneEnabled = false;
+		}
 	}
 
 	public void setLastLoginTime(long lastLoginTime) {
@@ -393,6 +435,77 @@ public class FPlayer {
 			}
 			Faction.delete(myFaction.getId());
 		}
+	}
+	
+	public boolean attemptClaim(boolean notifyFailure) {
+		// notifyFailure is false if called by auto-claim; not need to notify on every failure for it
+		// return value is false on failure, true on success
+
+		Faction myFaction = getFaction();
+		FLocation flocation = new FLocation(this);
+		Faction otherFaction = Board.getFactionAt(flocation);
+
+		if (myFaction == otherFaction) {
+			if (notifyFailure)
+				sendMessage("You already own this land.");
+			return false;
+		}
+
+		if (this.getRole().value < Role.MODERATOR.value) {
+			sendMessage("You must be "+Role.MODERATOR+" to claim land.");
+			return false;
+		}
+
+		if (Conf.worldsNoClaiming.contains(flocation.getWorldName())) {
+			sendMessage("Sorry, this world has land claiming disabled.");
+			return false;
+		}
+
+		if (otherFaction.isSafeZone()) {
+			if (notifyFailure)
+				sendMessage("You can not claim a Safe Zone.");
+			return false;
+		}
+		else if (otherFaction.isWarZone()) {
+			if (notifyFailure)
+				sendMessage("You can not claim a War Zone.");
+			return false;
+		}
+
+		if (myFaction.getLandRounded() >= myFaction.getPowerRounded()) {
+			sendMessage("You can't claim more land! You need more power!");
+			return false;
+		}
+
+		if (otherFaction.getRelation(this) == Relation.ALLY) {
+			if (notifyFailure)
+				sendMessage("You can't claim the land of your allies.");
+			return false;
+		}
+
+		if (otherFaction.isNone()) {
+			myFaction.sendMessage(this.getNameAndRelevant(myFaction)+Conf.colorSystem+" claimed some new land :D");
+		} else { //if (otherFaction.isNormal()) {
+
+			if ( ! otherFaction.hasLandInflation()) {
+				 // TODO more messages WARN current faction most importantly
+				sendMessage(this.getRelationColor(otherFaction)+otherFaction.getTag()+Conf.colorSystem+" owns this land and is strong enough to keep it.");
+				return false;
+			}
+
+			if ( ! Board.isBorderLocation(flocation)) {
+				sendMessage("You must start claiming land at the border of the territory.");
+				return false;
+			}
+
+			// ASDF claimed some of your land 450 blocks NNW of you.
+			// ASDf claimed some land from FACTION NAME
+			otherFaction.sendMessage(this.getNameAndRelevant(otherFaction)+Conf.colorSystem+" stole some of your land :O");
+			myFaction.sendMessage(this.getNameAndRelevant(myFaction)+Conf.colorSystem+" claimed some land from "+otherFaction.getTag(myFaction));
+		}
+
+		Board.setFactionAt(myFaction, flocation);
+		return true;
 	}
 	
 	// -------------------------------------------- //

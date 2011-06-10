@@ -64,9 +64,9 @@ public class FCommandHelp extends FBaseCommand {
 		helpPages.add(pageLines);
 		
 		pageLines = new ArrayList<String>();
-		pageLines.add( "Create a faction using these two commands:" );
 		pageLines.add( new FCommandCreate().getUseageTemplate() );
 		pageLines.add( new FCommandDescription().getUseageTemplate() );
+		pageLines.add( new FCommandTag().getUseageTemplate() );
 		pageLines.add( "You might want to close it and use invitations:" );
 		pageLines.add( new FCommandOpen().getUseageTemplate() );
 		pageLines.add( new FCommandInvite().getUseageTemplate() );
@@ -77,9 +77,9 @@ public class FCommandHelp extends FBaseCommand {
 		
 		pageLines = new ArrayList<String>();
 		pageLines.add( new FCommandClaim().getUseageTemplate() );
+		pageLines.add( new FCommandAutoClaim().getUseageTemplate() );
 		pageLines.add( new FCommandUnclaim().getUseageTemplate() );
 		pageLines.add( new FCommandUnclaimall().getUseageTemplate() );
-		pageLines.add( new FCommandTag().getUseageTemplate() );
 		pageLines.add( new FCommandKick().getUseageTemplate() );
 		pageLines.add( new FCommandMod().getUseageTemplate() );
 		pageLines.add( new FCommandAdmin().getUseageTemplate() );
@@ -127,16 +127,18 @@ public class FCommandHelp extends FBaseCommand {
 		pageLines.add("Finally some commands for the server admins:");
 		pageLines.add( new FCommandVersion().getUseageTemplate() );
 		pageLines.add( new FCommandSafeclaim().getUseageTemplate() );
+		pageLines.add( new FCommandAutoSafeclaim().getUseageTemplate() );
 		pageLines.add( new FCommandSafeunclaimall().getUseageTemplate() );
 		pageLines.add( new FCommandWarclaim().getUseageTemplate() );
+		pageLines.add( new FCommandAutoWarclaim().getUseageTemplate() );
 		pageLines.add( new FCommandWarunclaimall().getUseageTemplate() );
-		pageLines.add( new FCommandWorldNoClaim().getUseageTemplate() );
-		pageLines.add( new FCommandWorldNoPowerLoss().getUseageTemplate() );
 		pageLines.add( new FCommandBypass().getUseageTemplate() );
 		helpPages.add(pageLines);
 		
 		pageLines = new ArrayList<String>();
 		pageLines.add("More commands for server admins:");
+		pageLines.add( new FCommandWorldNoClaim().getUseageTemplate() );
+		pageLines.add( new FCommandWorldNoPowerLoss().getUseageTemplate() );
 		pageLines.add( new FCommandLock().getUseageTemplate() );
 		pageLines.add( new FCommandReload().getUseageTemplate() );
 		pageLines.add( new FCommandSaveAll().getUseageTemplate() );

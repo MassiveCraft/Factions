@@ -69,6 +69,9 @@ public class Factions extends JavaPlugin {
 		// Add the commands
 		commands.add(new FCommandHelp());
 		commands.add(new FCommandAdmin());
+		commands.add(new FCommandAutoClaim());
+		commands.add(new FCommandAutoSafeclaim());
+		commands.add(new FCommandAutoWarclaim());
 		commands.add(new FCommandBypass());
 		commands.add(new FCommandChat());
 		commands.add(new FCommandClaim());

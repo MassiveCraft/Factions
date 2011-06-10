@@ -25,6 +25,7 @@ import org.mcteam.factions.FLocation;
 import org.mcteam.factions.FPlayer;
 import org.mcteam.factions.Faction;
 import org.mcteam.factions.Factions;
+import org.mcteam.factions.struct.Role;
 import org.mcteam.factions.util.TextUtil;
 
 
@@ -162,6 +163,50 @@ public class FactionsPlayerListener extends PlayerListener{
 			Faction factionTo = Board.getFactionAt(to);
 			if ( factionFrom != factionTo) {
 				me.sendFactionHereMessage();
+			}
+		}
+		
+		if (me.autoClaimEnabled()) {
+			Faction myFaction = me.getFaction();
+			FLocation flocation = new FLocation(me);
+
+			if (me.getRole().value < Role.MODERATOR.value) {
+				me.sendMessage("You must be "+Role.MODERATOR+" to claim land.");
+				me.enableAutoClaim(false);
+			}
+			else if (Conf.worldsNoClaiming.contains(flocation.getWorldName())) {
+				me.sendMessage("Sorry, this world has land claiming disabled.");
+				me.enableAutoClaim(false);
+			}
+			else if (myFaction.getLandRounded() >= myFaction.getPowerRounded()) {
+				me.sendMessage("You can't claim more land! You need more power!");
+				me.enableAutoClaim(false);
+			}
+			else
+				me.attemptClaim(false);
+		}
+		else if (me.autoSafeZoneEnabled()) {
+			if (!Factions.hasPermManageSafeZone((CommandSender)me)) {
+				me.enableAutoSafeZone(false);
+			} else {
+				FLocation playerFlocation = new FLocation(me);
+
+				if (!Board.getFactionAt(playerFlocation).isSafeZone()) {
+					Board.setFactionAt(Faction.getSafeZone(), playerFlocation);
+					me.sendMessage("This land is now a safe zone.");
+				}
+			}
+		}
+		else if (me.autoWarZoneEnabled()) {
+			if (!Factions.hasPermManageWarZone((CommandSender)me)) {
+				me.enableAutoWarZone(false);
+			} else {
+				FLocation playerFlocation = new FLocation(me);
+
+				if (!Board.getFactionAt(playerFlocation).isWarZone()) {
+					Board.setFactionAt(Faction.getWarZone(), playerFlocation);
+					me.sendMessage("This land is now a war zone.");
+				}
 			}
 		}
 	}

@@ -47,7 +47,7 @@ public class FCommandSafeclaim extends FBaseCommand {
 			
 		} else {
 			Board.setFactionAt(Faction.getSafeZone(), playerFlocation);
-			sendMessage("This land is now a safe zone");
+			sendMessage("This land is now a safe zone.");
 		}
 	}
 	
