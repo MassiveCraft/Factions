@@ -236,9 +236,9 @@ public class FBaseCommand {
 	
 	public void setLock(boolean newLock) {
 		if( newLock ) {
-			me.sendMessage("Factions is now locked");
+			sendMessage("Factions is now locked");
 		} else {
-			me.sendMessage("Factions in now unlocked");
+			sendMessage("Factions in now unlocked");
 		}
 		
 		lock = newLock;

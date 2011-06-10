@@ -54,7 +54,7 @@ public class FCommandReload extends FBaseCommand {
 			}
 			else {
 				Factions.log("RELOAD CANCELLED - SPECIFIED FILE INVALID");
-				me.sendMessage("Invalid file specified. Valid files: conf, board, factions, players.");
+				sendMessage("Invalid file specified. Valid files: conf, board, factions, players.");
 				return;
 			}
 		}
@@ -69,7 +69,7 @@ public class FCommandReload extends FBaseCommand {
 		long timeReload = (System.currentTimeMillis()-timeInitStart);
 		Factions.log("=== RELOAD DONE (Took "+timeReload+"ms) ===");
 		
-		me.sendMessage("Factions file" + fileName + " reloaded from disk, took " + timeReload + "ms");
+		sendMessage("Factions file" + fileName + " reloaded from disk, took " + timeReload + "ms");
 	}
 	
 }

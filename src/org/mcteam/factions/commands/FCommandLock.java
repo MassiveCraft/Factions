@@ -8,6 +8,8 @@ public class FCommandLock extends FBaseCommand {
 	public FCommandLock() {
 		aliases.add("lock");
 		
+		senderMustBePlayer = false;
+		
 		optionalParameters.add("on|off");
 		
 		helpDescription = "lock all write stuff";
@@ -23,9 +25,9 @@ public class FCommandLock extends FBaseCommand {
 			setLock( parseBool( parameters.get(0) ));
 		} else {
 			if( isLocked() ) {
-				me.sendMessage("Factions is locked");
+				sendMessage("Factions is locked");
 			} else {
-				me.sendMessage("Factions is not locked");
+				sendMessage("Factions is not locked");
 			}
 		}
 	}
