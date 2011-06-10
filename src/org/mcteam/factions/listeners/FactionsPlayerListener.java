@@ -204,7 +204,7 @@ public class FactionsPlayerListener extends PlayerListener{
 
 		Faction otherFaction = Board.getFactionAt(new FLocation(block));
 
-		if (otherFaction.getOnlinePlayers()!=null){
+		if (otherFaction.HasPlayersOnline()){
 			if ( ! Conf.territoryDenyUseageMaterials.contains(material)) {
 				return true; // Item isn't one we're preventing for online factions.
 			}
@@ -261,7 +261,7 @@ public class FactionsPlayerListener extends PlayerListener{
 		Faction otherFaction = Board.getFactionAt(new FLocation(block));
 		
 		// We only care about some material types.
-		if (otherFaction.getOnlinePlayers()!=null){
+		if (otherFaction.HasPlayersOnline()){
 			if ( ! Conf.territoryProtectedMaterials.contains(material)) {
 				return true;
 			}
@@ -274,13 +274,12 @@ public class FactionsPlayerListener extends PlayerListener{
 		FPlayer me = FPlayer.get(player);
 		Faction myFaction = me.getFaction();
 
-		// In safe zones you may use any block...
+		// You may use any block unless it is another faction's territory...
 		if (otherFaction.isNormal() && myFaction != otherFaction) {
 			me.sendMessage("You can't use "+TextUtil.getMaterialName(material)+" in the territory of "+otherFaction.getTag(myFaction));
 			return false;
 		}
 
-		// You may use doors in both safeZone and wilderness
 		return true;
 	}
 

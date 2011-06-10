@@ -213,26 +213,36 @@ public class Faction {
 	
 	public ArrayList<FPlayer> getFPlayers() {
 		ArrayList<FPlayer> ret = new ArrayList<FPlayer>();
+		if (id <= 0)
+			return ret;
+
 		for (FPlayer fplayer : FPlayer.getAll()) {
 			if (fplayer.getFaction() == this) {
 				ret.add(fplayer);
 			}
 		}
+
 		return ret;
 	}
 	
 	public ArrayList<FPlayer> getFPlayersWhereOnline(boolean online) {
 		ArrayList<FPlayer> ret = new ArrayList<FPlayer>();
+		if (id <= 0)
+			return ret;
+
 		for (FPlayer fplayer : FPlayer.getAll()) {
 			if (fplayer.getFaction() == this && fplayer.isOnline() == online) {
 				ret.add(fplayer);
 			}
 		}
+
 		return ret;
 	}
 	
 	public ArrayList<FPlayer> getFPlayersWhereRole(Role role) {
 		ArrayList<FPlayer> ret = new ArrayList<FPlayer>();
+		if (id <= 0)
+			return ret;
 		
 		for (FPlayer fplayer : FPlayer.getAll()) {
 			if (fplayer.getFaction() == this && fplayer.getRole() == role) {
@@ -245,13 +255,32 @@ public class Faction {
 	
 	public ArrayList<Player> getOnlinePlayers() {
 		ArrayList<Player> ret = new ArrayList<Player>();
+		if (id <= 0)
+			return ret;
+
 		for (Player player: Factions.instance.getServer().getOnlinePlayers()) {
 			FPlayer fplayer = FPlayer.get(player);
 			if (fplayer.getFaction() == this) {
 				ret.add(player);
 			}
 		}
+
 		return ret;
+	}
+	
+	// slightly faster check than getOnlinePlayers() if you just want to see if there are any players online
+	public boolean HasPlayersOnline() {
+		// only real factions can have players online, not wilderness / safe zone / war zone
+		if (id <= 0)
+			return false;
+		
+		for (Player player: Factions.instance.getServer().getOnlinePlayers()) {
+			FPlayer fplayer = FPlayer.get(player);
+			if (fplayer.getFaction() == this) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	//----------------------------------------------//

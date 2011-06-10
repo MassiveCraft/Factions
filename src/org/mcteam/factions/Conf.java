@@ -65,6 +65,7 @@ public class Conf {
 
 	public static double territoryShieldFactor = 0.3;
 	public static boolean territoryDenyBuild = true;
+	public static boolean territoryDenyBuildWhenOffline = true;
 	public static boolean territoryDenyUseage = true;
 	public static boolean territoryBlockCreepers = false;
 	public static boolean territoryBlockFireballs = false;
