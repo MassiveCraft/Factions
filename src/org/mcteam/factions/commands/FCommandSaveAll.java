@@ -22,7 +22,7 @@ public class FCommandSaveAll extends FBaseCommand {
 	public void perform() {
 		Factions.saveAll();
 		
-		me.sendMessage("Factions saved to disk!");
+		sendMessage("Factions saved to disk!");
 	}
 	
 }
