@@ -1,5 +1,6 @@
 package org.mcteam.factions.listeners;
 
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -22,6 +23,10 @@ public class FactionsBlockListener extends BlockListener {
 			return;
 		}
 		if (!event.canBuild()) {
+			return;
+		}
+		// special case for flint&steel, which should only be prevented by DenyUsage list
+		if (event.getBlockPlaced().getType() == Material.FIRE) {
 			return;
 		}
 
