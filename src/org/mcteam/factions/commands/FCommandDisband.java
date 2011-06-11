@@ -23,7 +23,7 @@ public class FCommandDisband extends FBaseCommand {
 		if( parameters.size() >  0) {
 			Faction faction = Faction.findByTag(parameters.get(0));
 			
-			if( faction.getId() > 0 ) {
+			if( faction != null && faction.getId() > 0 ) {
 				me.sendMessage("Faction " + faction.getTag() + " got disbanded");
 				Faction.delete( faction.getId() );
 			} else {
