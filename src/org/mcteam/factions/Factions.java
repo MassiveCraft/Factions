@@ -193,7 +193,48 @@ public class Factions extends JavaPlugin {
 			pm.enablePlugin(prePlug);
 		}
 	}
-	
+
+	// -------------------------------------------- //
+	// Functions for other plugins to hook into
+	// -------------------------------------------- //
+
+	// Does player have Faction Chat enabled? If so, chat plugins should preferably not do channels,
+	// local chat, or anything else which targets individual recipients, so Faction Chat can be done
+	public static boolean isPlayerFactionChatting(Player player) {
+		if (player == null)
+			return false;
+		FPlayer me = FPlayer.get(player);
+		if (me == null)
+			return false;
+		return me.isFactionChatting();
+	}
+
+	// Get a player's faction tag (faction name), mainly for usage by chat plugins for local/channel chat
+	public static String getPlayerFactionTag(Player player) {
+		return getPlayerFactionTagRelation(player, null);
+	}
+
+	// Same as above, but with relation (enemy/neutral/ally) coloring potentially added to the tag
+	public static String getPlayerFactionTagRelation(Player speaker, Player listener) {
+		if (speaker == null)
+			return "";
+
+		FPlayer me = FPlayer.get(speaker);
+		if (me == null)
+			return "";
+
+		// if listener isn't set, or config option is disabled, give back uncolored tag
+		if (listener == null || !Conf.chatTagRelationColored)
+			return me.getChatTag().trim();
+
+		FPlayer you = FPlayer.get(listener);
+		if (you == null)
+			return me.getChatTag().trim();
+
+		// everything checks out, give the colored tag
+		return me.getChatTag(you).trim();
+	}
+
 	// -------------------------------------------- //
 	// Test rights
 	// -------------------------------------------- //
