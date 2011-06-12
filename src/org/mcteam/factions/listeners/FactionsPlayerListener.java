@@ -64,7 +64,7 @@ public class FactionsPlayerListener extends PlayerListener{
 		
 		// Are we to insert the Faction tag into the format?
 		// If we are not to insert it - we are done.
-		if ( ! Conf.chatTagEnabled) {
+		if ( ! Conf.chatTagEnabled || Conf.chatTagHandledByAnotherPlugin) {
 			return;
 		}
 

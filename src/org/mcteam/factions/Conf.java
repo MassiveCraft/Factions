@@ -45,6 +45,7 @@ public class Conf {
 	// Configuration on the Faction tag in chat messages.
 	public static boolean preloadChatPlugins = true;
 	public static boolean chatTagEnabled = true;
+	public static transient boolean chatTagHandledByAnotherPlugin = false;
 	public static boolean chatTagRelationColored = true;
 	public static String chatTagReplaceString = "{FACTION}";
 	public static String chatTagInsertAfterString = "";

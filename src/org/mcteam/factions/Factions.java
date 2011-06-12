@@ -209,6 +209,11 @@ public class Factions extends JavaPlugin {
 		return me.isFactionChatting();
 	}
 
+	// If another plugin is handling insertion of chat tags, this should be used to notify Factions
+	public static void handleFactionTagExternally(boolean notByFactions) {
+		Conf.chatTagHandledByAnotherPlugin = notByFactions;
+	}
+
 	// Get a player's faction tag (faction name), mainly for usage by chat plugins for local/channel chat
 	public static String getPlayerFactionTag(Player player) {
 		return getPlayerFactionTagRelation(player, null);
