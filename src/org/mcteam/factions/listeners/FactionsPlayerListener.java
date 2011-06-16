@@ -233,8 +233,6 @@ public class FactionsPlayerListener extends PlayerListener{
 			return;  // only interested on right-clicks for below
 		}
 
-		// this check below might no longer be needed... bucket detection is now necessarily handled separately in onPlayerBucketXXX() events, and
-		// Flint&Steel is somehow detected before this in onBlockPlace(), and that's currently it for the default territoryDenyUseageMaterials
 		if ( ! this.playerCanUseItemHere(player, block, event.getMaterial())) {
 			event.setCancelled(true);
 			return;
@@ -268,16 +266,15 @@ public class FactionsPlayerListener extends PlayerListener{
 			me.sendMessage("You can't use "+TextUtil.getMaterialName(material)+" in the wilderness.");
 			return false;
 		}
-		
-		if (otherFaction.isSafeZone() && Conf.safeZoneDenyUseage) {
-			if (Factions.hasPermManageSafeZone(player)) {
+		else if (otherFaction.isSafeZone()) {
+			if (!Conf.safeZoneDenyUseage || Factions.hasPermManageSafeZone(player)) {
 				return true;
 			}
 			me.sendMessage("You can't use "+TextUtil.getMaterialName(material)+" in a safe zone.");
 			return false;
 		}
-		else if (otherFaction.isWarZone() && Conf.warZoneDenyUseage) {
-			if (Factions.hasPermManageWarZone(player)) {
+		else if (otherFaction.isWarZone()) {
+			if (!Conf.warZoneDenyUseage || Factions.hasPermManageWarZone(player)) {
 				return true;
 			}
 			me.sendMessage("You can't use "+TextUtil.getMaterialName(material)+" in a war zone.");

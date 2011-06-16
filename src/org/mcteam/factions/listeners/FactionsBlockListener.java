@@ -74,16 +74,15 @@ public class FactionsBlockListener extends BlockListener {
 			me.sendMessage("You can't "+action+" in the wilderness.");
 			return false;
 		}
-		
-		if (otherFaction.isSafeZone()) {
-			if (Factions.hasPermManageSafeZone(player) || !Conf.safeZoneDenyBuild) {
+		else if (otherFaction.isSafeZone()) {
+			if (!Conf.safeZoneDenyBuild || Factions.hasPermManageSafeZone(player)) {
 				return true;
 			}
 			me.sendMessage("You can't "+action+" in a safe zone.");
 			return false;
 		}
 		else if (otherFaction.isWarZone()) {
-			if (Factions.hasPermManageWarZone(player) || !Conf.warZoneDenyBuild) {
+			if (!Conf.warZoneDenyBuild || Factions.hasPermManageWarZone(player)) {
 				return true;
 			}
 			me.sendMessage("You can't "+action+" in a war zone.");
