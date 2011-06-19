@@ -132,11 +132,12 @@ public class FCommandHelp extends FBaseCommand {
 		pageLines.add( new FCommandWarclaim().getUseageTemplate() );
 		pageLines.add( new FCommandAutoWarclaim().getUseageTemplate() );
 		pageLines.add( new FCommandWarunclaimall().getUseageTemplate() );
-		pageLines.add( new FCommandBypass().getUseageTemplate() );
+		pageLines.add("Note: /f unclaim works on safe/war zones as well.");
 		helpPages.add(pageLines);
 		
 		pageLines = new ArrayList<String>();
 		pageLines.add("More commands for server admins:");
+		pageLines.add( new FCommandBypass().getUseageTemplate() );
 		pageLines.add( new FCommandWorldNoClaim().getUseageTemplate() );
 		pageLines.add( new FCommandWorldNoPowerLoss().getUseageTemplate() );
 		pageLines.add( new FCommandLock().getUseageTemplate() );

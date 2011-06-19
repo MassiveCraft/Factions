@@ -61,7 +61,9 @@ public class Conf {
 	public static double autoLeaveAfterDaysOfInactivity = 14;
 	
 	public static boolean homesEnabled = true;
+	public static boolean homesMustBeInClaimedTerritory = true;
 	public static boolean homesTeleportToOnDeath = true;
+	public static boolean homesTeleportAllowedFromEnemyTerritory = true;
 	public static double homesTeleportAllowedEnemyDistance = 32;
 
 	public static boolean disablePVPForFactionlessPlayers = false;

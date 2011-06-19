@@ -393,7 +393,11 @@ public class FPlayer {
 	
 	public boolean isInOthersTerritory() {
 		int idHere = Board.getIdAt(new FLocation(this));
-		return idHere != 0 && idHere != this.factionId;
+		return idHere > 0 && idHere != this.factionId;
+	}
+
+	public boolean isInEnemyTerritory() {
+		return Board.getFactionAt(new FLocation(this)).getRelation(this) == Relation.ENEMY;
 	}
 	
 	public void sendFactionHereMessage() {
@@ -557,7 +561,8 @@ public class FPlayer {
 	
 	public static FPlayer find(String playername) {
 		for (Entry<String, FPlayer> entry : instances.entrySet()) {
-			if (entry.getKey().equalsIgnoreCase(playername)) {
+//			if (entry.getKey().equalsIgnoreCase(playername)) {
+			if (entry.getKey().startsWith(playername)) {
 				return entry.getValue();
 			}
 		}

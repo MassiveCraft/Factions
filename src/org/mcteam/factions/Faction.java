@@ -156,7 +156,7 @@ public class Faction {
 	}
 	
 	public Relation getRelation(Faction otherFaction) {
-		if (otherFaction.isNone() || this.isNone()) {
+		if (!otherFaction.isNormal() || !this.isNormal()) {
 			return Relation.NEUTRAL;
 		}
 		if (otherFaction.equals(this)) {
