@@ -160,6 +160,15 @@ public class FactionsEntityListener extends EntityListener {
 			return true;
 		}
 		
+		if (!attacker.hasFaction() && Conf.disablePVPForFactionlessPlayers) {
+			attacker.sendMessage("You can't hurt other players until you join a faction.");
+			return false;
+		}
+		else if (!defender.hasFaction() && Conf.disablePVPForFactionlessPlayers) {
+			attacker.sendMessage("You can't hurt players who are not currently in a faction.");
+			return false;
+		}
+		
 		Faction locFaction = Board.getFactionAt(new FLocation(attacker));
 		
 		// so we know from above that the defender isn't in a safezone... what about the attacker, sneaky dog that he might be?
