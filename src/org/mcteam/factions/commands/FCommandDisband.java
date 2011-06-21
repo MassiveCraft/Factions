@@ -19,6 +19,7 @@ public class FCommandDisband extends FBaseCommand {
 		return Factions.hasPermDisband(sender);
 	}
 	
+	@Override
 	public void perform() {
 		if( parameters.size() >  0) {
 			Faction faction = Faction.findByTag(parameters.get(0));

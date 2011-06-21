@@ -8,6 +8,7 @@ public class FCommandRelationEnemy extends FRelationCommand {
 		aliases.add("enemy");
 	}
 	
+	@Override
 	public void perform() {
 		
 		if( isLocked() ) {

@@ -15,6 +15,7 @@ public class FCommandAdmin extends FBaseCommand {
 		helpDescription = "Hand over your admin rights";
 	}
 	
+	@Override
 	public void perform() {
 		if ( ! assertHasFaction()) {
 			return;

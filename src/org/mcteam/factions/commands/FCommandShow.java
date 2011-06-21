@@ -27,6 +27,7 @@ public class FCommandShow extends FBaseCommand {
 		return true;
 	}
 	
+	@Override
 	public void perform() {
 		Faction faction;
 		if (parameters.size() > 0) {

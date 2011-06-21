@@ -8,6 +8,7 @@ public class FCommandRelationNeutral extends FRelationCommand {
 		aliases.add("neutral");
 	}
 	
+	@Override
 	public void perform() {
 		
 		if( isLocked() ) {

@@ -19,7 +19,7 @@ public class FCommandVersion extends FBaseCommand {
 		return true;
 	}
 	
-	
+	@Override
 	public void perform() {
 		sendMessage("You are running "+Factions.instance.getDescription().getFullName());
 	}

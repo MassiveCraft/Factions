@@ -18,6 +18,7 @@ public class FCommandTag extends FBaseCommand {
 		helpDescription = "Change the faction tag";
 	}
 	
+	@Override
 	public void perform() {
 		if ( ! assertHasFaction()) {
 			return;

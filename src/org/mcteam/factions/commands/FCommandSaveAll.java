@@ -19,6 +19,7 @@ public class FCommandSaveAll extends FBaseCommand {
 		return Factions.hasPermSaveAll(sender);
 	}
 	
+	@Override
 	public void perform() {
 		Factions.saveAll();
 		

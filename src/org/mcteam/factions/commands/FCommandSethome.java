@@ -1,9 +1,7 @@
 package org.mcteam.factions.commands;
 
-import org.mcteam.factions.Board;
 import org.mcteam.factions.Conf;
 import org.mcteam.factions.Faction;
-import org.mcteam.factions.FLocation;
 import org.mcteam.factions.struct.Role;
 
 public class FCommandSethome extends FBaseCommand {
@@ -14,6 +12,7 @@ public class FCommandSethome extends FBaseCommand {
 		helpDescription = "Set the faction home";
 	}
 	
+	@Override
 	public void perform() {
 		if ( ! assertHasFaction()) {
 			return;

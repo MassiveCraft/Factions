@@ -8,6 +8,7 @@ public class FCommandClaim extends FBaseCommand {
 		helpDescription = "Claim the land where you are standing";
 	}
 	
+	@Override
 	public void perform() {
 		if ( ! assertHasFaction()) {
 			return;

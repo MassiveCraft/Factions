@@ -15,6 +15,7 @@ public class FCommandLeave extends FBaseCommand {
 		return true;
 	}
 	
+	@Override
 	public void perform() {
 		if ( ! assertHasFaction()) {
 			return;

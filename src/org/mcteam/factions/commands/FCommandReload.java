@@ -24,6 +24,7 @@ public class FCommandReload extends FBaseCommand {
 		return Factions.hasPermReload(sender);
 	}
 	
+	@Override
 	public void perform() {
 		Factions.log("=== RELOAD START ===");
 		long timeInitStart = System.currentTimeMillis();

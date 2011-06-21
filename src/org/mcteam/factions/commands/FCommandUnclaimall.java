@@ -14,6 +14,7 @@ public class FCommandUnclaimall extends FBaseCommand {
 		helpDescription = "Unclaim all of your factions land";
 	}
 	
+	@Override
 	public void perform() {
 		if ( ! assertHasFaction()) {
 			return;

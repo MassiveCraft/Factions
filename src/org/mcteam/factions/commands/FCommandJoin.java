@@ -13,6 +13,7 @@ public class FCommandJoin extends FBaseCommand {
 		helpDescription = "Join a faction";
 	}
 	
+	@Override
 	public void perform() {
 		
 		if( isLocked() ) {

@@ -20,6 +20,7 @@ public class FCommandLock extends FBaseCommand {
 		return Factions.hasPermLock(sender);
 	}
 	
+	@Override
 	public void perform() {
 		if( parameters.size() > 0 ) {
 			setLock( parseBool( parameters.get(0) ));

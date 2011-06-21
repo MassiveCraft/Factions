@@ -14,6 +14,7 @@ public class FCommandKick extends FBaseCommand {
 		helpDescription = "Kick a player from the faction";
 	}
 	
+	@Override
 	public void perform() {
 		
 		if( isLocked() ) {

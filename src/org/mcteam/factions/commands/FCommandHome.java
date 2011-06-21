@@ -19,6 +19,7 @@ public class FCommandHome extends FBaseCommand {
 		helpDescription = "Teleport to the faction home";
 	}
 	
+	@Override
 	public void perform() {
 		if ( ! assertHasFaction()) {
 			return;

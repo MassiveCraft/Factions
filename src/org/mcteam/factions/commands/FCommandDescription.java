@@ -15,6 +15,7 @@ public class FCommandDescription extends FBaseCommand {
 		helpDescription = "Change the faction description";
 	}
 	
+	@Override
 	public void perform() {
 		if ( ! assertHasFaction()) {
 			return;

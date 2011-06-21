@@ -60,6 +60,9 @@ public class FPlayer {
 		this.lastPowerUpdateTime = System.currentTimeMillis();
 		this.lastLoginTime = System.currentTimeMillis();
 		this.mapAutoUpdating = false;
+		this.autoClaimEnabled = false;
+		this.autoSafeZoneEnabled = false;
+		this.autoWarZoneEnabled = false;
 	}
 	
 	public void resetFactionData() {

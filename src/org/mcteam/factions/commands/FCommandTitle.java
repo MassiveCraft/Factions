@@ -17,6 +17,7 @@ public class FCommandTitle extends FBaseCommand {
 		helpDescription = "Set or remove a players title";
 	}
 	
+	@Override
 	public void perform() {
 		if ( ! assertHasFaction()) {
 			return;

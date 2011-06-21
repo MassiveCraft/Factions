@@ -22,6 +22,7 @@ public class FCommandSafeclaim extends FBaseCommand {
 		return Factions.hasPermManageSafeZone(sender);
 	}
 	
+	@Override
 	public void perform() {
 		
 		if( isLocked() ) {

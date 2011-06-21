@@ -20,6 +20,7 @@ public class FCommandMap extends FBaseCommand {
 		return true;
 	}
 	
+	@Override
 	public void perform() {
 		if (parameters.size() > 0) {
 			String mapAutoUpdating = parameters.get(0);

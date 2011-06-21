@@ -3,6 +3,7 @@ package org.mcteam.factions.commands;
 import java.util.ArrayList;
 
 import org.bukkit.command.CommandSender;
+import org.mcteam.factions.Conf;
 import org.mcteam.factions.util.TextUtil;
 
 
@@ -23,6 +24,7 @@ public class FCommandHelp extends FBaseCommand {
 		return true;
 	}
 	
+	@Override
 	public void perform() {
 		int page = 1;
 		if (parameters.size() > 0) {
@@ -45,7 +47,7 @@ public class FCommandHelp extends FBaseCommand {
 	// Build the help pages
 	//----------------------------------------------//
 	
-	public static ArrayList<ArrayList<String>> helpPages;
+	public static final ArrayList<ArrayList<String>> helpPages;
 	
 	static {
 		helpPages = new ArrayList<ArrayList<String>>();
@@ -132,7 +134,7 @@ public class FCommandHelp extends FBaseCommand {
 		pageLines.add( new FCommandWarclaim().getUseageTemplate() );
 		pageLines.add( new FCommandAutoWarclaim().getUseageTemplate() );
 		pageLines.add( new FCommandWarunclaimall().getUseageTemplate() );
-		pageLines.add("Note: /f unclaim works on safe/war zones as well.");
+		pageLines.add("Note: " + Conf.colorCommand + "f unclaim" + Conf.colorSystem + " works on safe/war zones as well.");
 		helpPages.add(pageLines);
 		
 		pageLines = new ArrayList<String>();

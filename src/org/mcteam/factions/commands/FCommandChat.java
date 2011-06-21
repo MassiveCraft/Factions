@@ -9,6 +9,7 @@ public class FCommandChat extends FBaseCommand {
 		helpDescription = "Switch faction only chat on and off";
 	}
 	
+	@Override
 	public void perform() {
 		if ( ! assertHasFaction()) {
 			return;

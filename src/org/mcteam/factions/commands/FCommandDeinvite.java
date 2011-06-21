@@ -16,6 +16,7 @@ public class FCommandDeinvite extends FBaseCommand {
 		helpDescription = "Remove a pending invitation";
 	}
 	
+	@Override
 	public void perform() {
 		if ( ! assertHasFaction()) {
 			return;

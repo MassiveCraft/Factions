@@ -13,6 +13,7 @@ public class FCommandOpen extends FBaseCommand {
 		helpDescription = "Switch if invitation is required to join";
 	}
 	
+	@Override
 	public void perform() {
 		if ( ! assertHasFaction()) {
 			return;

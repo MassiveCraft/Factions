@@ -15,6 +15,7 @@ public class FCommandMod extends FBaseCommand {
 		helpDescription = "Give or revoke moderator rights";
 	}
 	
+	@Override
 	public void perform() {
 		if ( ! assertHasFaction()) {
 			return;

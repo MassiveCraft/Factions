@@ -16,6 +16,7 @@ public class FCommandInvite extends FBaseCommand {
 		helpDescription = "Invite a player";
 	}
 	
+	@Override
 	public void perform() {
 		if ( ! assertHasFaction()) {
 			return;
