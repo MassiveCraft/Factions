@@ -70,6 +70,8 @@ public class Conf {
 	
 	public static boolean claimsMustBeConnected = false;
 	
+	public static double considerFactionsReallyOfflineAfterXMinutes = 0;
+	
 	public static double territoryShieldFactor = 0.3;
 	public static boolean territoryDenyBuild = true;
 	public static boolean territoryDenyBuildWhenOffline = true;

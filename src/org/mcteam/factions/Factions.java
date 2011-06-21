@@ -240,6 +240,18 @@ public class Factions extends JavaPlugin {
 		return me.getChatTag(you).trim();
 	}
 
+	// Get a player's title within their faction, mainly for usage by chat plugins for local/channel chat
+	public static String getPlayerTitle(Player player) {
+		if (player == null)
+			return "";
+
+		FPlayer me = FPlayer.get(player);
+		if (me == null)
+			return "";
+
+		return me.getTitle().trim();
+	}
+
 	// -------------------------------------------- //
 	// Test rights
 	// -------------------------------------------- //

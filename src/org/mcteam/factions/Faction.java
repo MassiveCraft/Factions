@@ -32,6 +32,7 @@ public class Faction {
 	private String tag;
 	private String description;
 	private Location home;
+	private transient long lastPlayerLoggedOffTime;
 	
 	// -------------------------------------------- //
 	// Construct
@@ -43,6 +44,7 @@ public class Faction {
 		this.open = Conf.newFactionsDefaultOpen;
 		this.tag = "???";
 		this.description = "Default faction description :(";
+		this.lastPlayerLoggedOffTime = 0;
 	}
 	
 	// -------------------------------------------- //
@@ -269,8 +271,8 @@ public class Faction {
 	}
 	
 	// slightly faster check than getOnlinePlayers() if you just want to see if there are any players online
-	public boolean HasPlayersOnline() {
-		// only real factions can have players online, not wilderness / safe zone / war zone
+	public boolean hasPlayersOnline() {
+		// only real factions can have players online, not safe zone / war zone
 		if (id < 0)
 			return false;
 		
@@ -280,7 +282,19 @@ public class Faction {
 				return true;
 			}
 		}
+		
+		// even if all players are technically logged off, maybe someone was on recently enough to not consider them officially offline yet
+		if (Conf.considerFactionsReallyOfflineAfterXMinutes > 0 &&
+				System.currentTimeMillis() < lastPlayerLoggedOffTime + (Conf.considerFactionsReallyOfflineAfterXMinutes * 60000)) {
+			return true;
+		}
 		return false;
+	}
+	
+	public void memberLoggedOff() {
+		if (this.isNormal()) {
+			lastPlayerLoggedOffTime = System.currentTimeMillis();
+		}
 	}
 	
 	//----------------------------------------------//

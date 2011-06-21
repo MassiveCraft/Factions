@@ -141,6 +141,7 @@ public class FactionsPlayerListener extends PlayerListener{
 		// Make sure player's power is up to date when they log off.
 		FPlayer me = FPlayer.get(event.getPlayer());
 		me.getPower();
+		me.getFaction().memberLoggedOff();
 	}
 	
 	@Override
@@ -251,7 +252,7 @@ public class FactionsPlayerListener extends PlayerListener{
 
 		Faction otherFaction = Board.getFactionAt(new FLocation(block));
 
-		if (otherFaction.HasPlayersOnline()){
+		if (otherFaction.hasPlayersOnline()){
 			if ( ! Conf.territoryDenyUseageMaterials.contains(material)) {
 				return true; // Item isn't one we're preventing for online factions.
 			}
@@ -307,7 +308,7 @@ public class FactionsPlayerListener extends PlayerListener{
 		Faction otherFaction = Board.getFactionAt(new FLocation(block));
 		
 		// We only care about some material types.
-		if (otherFaction.HasPlayersOnline()){
+		if (otherFaction.hasPlayersOnline()){
 			if ( ! Conf.territoryProtectedMaterials.contains(material)) {
 				return true;
 			}

@@ -93,7 +93,7 @@ public class FactionsBlockListener extends BlockListener {
 		
 		// Cancel if we are not in our own territory
 		if (myFaction != otherFaction) {
-			boolean online = otherFaction.HasPlayersOnline();
+			boolean online = otherFaction.hasPlayersOnline();
 			if ((online && Conf.territoryDenyBuild) || (!online && Conf.territoryDenyBuildWhenOffline)) {
 				me.sendMessage("You can't "+action+" in the territory of "+otherFaction.getTag(myFaction));
 				return false;

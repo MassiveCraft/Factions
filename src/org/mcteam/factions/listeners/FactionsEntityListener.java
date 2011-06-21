@@ -93,7 +93,7 @@ public class FactionsEntityListener extends EntityListener {
 		}
 		
 		Faction faction = Board.getFactionAt(new FLocation(event.getLocation()));
-		boolean online = faction.HasPlayersOnline();
+		boolean online = faction.hasPlayersOnline();
 		
 		if (event.getEntity() instanceof Creeper && (
 				(faction.isNone() && Conf.wildernessBlockCreepers) ||
@@ -317,7 +317,7 @@ public class FactionsEntityListener extends EntityListener {
 
 		// Cancel if we are not in our own territory
 		if (myFaction != otherFaction) {
-			boolean online = otherFaction.HasPlayersOnline();
+			boolean online = otherFaction.hasPlayersOnline();
 			if ((online && Conf.territoryDenyBuild) || (!online && Conf.territoryDenyBuildWhenOffline)) {
 				me.sendMessage("You can't "+action+" paintings in the territory of "+otherFaction.getTag(myFaction));
 				return false;
