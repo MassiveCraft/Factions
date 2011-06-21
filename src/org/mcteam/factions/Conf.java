@@ -65,9 +65,11 @@ public class Conf {
 	public static boolean homesTeleportToOnDeath = true;
 	public static boolean homesTeleportAllowedFromEnemyTerritory = true;
 	public static double homesTeleportAllowedEnemyDistance = 32;
-
+	
 	public static boolean disablePVPForFactionlessPlayers = false;
-
+	
+	public static boolean claimsMustBeConnected = false;
+	
 	public static double territoryShieldFactor = 0.3;
 	public static boolean territoryDenyBuild = true;
 	public static boolean territoryDenyBuildWhenOffline = true;

@@ -487,6 +487,11 @@ public class FPlayer {
 			return false;
 		}
 
+		if (Conf.claimsMustBeConnected && !Board.isConnectedLocation(flocation, myFaction)) {
+			sendMessage("You can only claim additional land which is connected to your first claim!");
+			return false;
+		}
+
 		if (otherFaction.isNone()) {
 			myFaction.sendMessage(this.getNameAndRelevant(myFaction)+Conf.colorSystem+" claimed some new land :D");
 		} else { //if (otherFaction.isNormal()) {

@@ -76,6 +76,15 @@ public class Board {
 		FLocation d = flocation.getRelative(0, -1);
 		return faction != getFactionAt(a) || faction != getFactionAt(b) || faction != getFactionAt(c) || faction != getFactionAt(d);
 	}
+
+	// Is this coord connected to any coord claimed by the specified faction?
+	public static boolean isConnectedLocation(FLocation flocation, Faction faction) {
+		FLocation a = flocation.getRelative(1, 0);
+		FLocation b = flocation.getRelative(-1, 0);
+		FLocation c = flocation.getRelative(0, 1);
+		FLocation d = flocation.getRelative(0, -1);
+		return faction == getFactionAt(a) || faction == getFactionAt(b) || faction == getFactionAt(c) || faction == getFactionAt(d);
+	}
 	
 	
 	//----------------------------------------------//
