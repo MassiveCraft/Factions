@@ -16,6 +16,8 @@
 
 package org.mcteam.factions.gson;
 
+import org.mcteam.factions.gson.internal.$Gson$Preconditions;
+
 import java.util.Stack;
 
 /**
@@ -35,8 +37,7 @@ final class MemoryRefStack {
    * @return the object that was added
    */
   public ObjectTypePair push(ObjectTypePair obj) {
-    Preconditions.checkNotNull(obj);
-
+    $Gson$Preconditions.checkNotNull(obj);
     return stack.push(obj);
   }
 

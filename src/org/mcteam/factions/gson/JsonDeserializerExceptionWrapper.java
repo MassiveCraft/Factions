@@ -16,6 +16,8 @@
 
 package org.mcteam.factions.gson;
 
+import org.mcteam.factions.gson.internal.$Gson$Preconditions;
+
 import java.lang.reflect.Type;
 
 /**
@@ -28,7 +30,7 @@ import java.lang.reflect.Type;
  * @author Inderjeet Singh
  * @author Joel Leitch
  */
-class JsonDeserializerExceptionWrapper<T> implements JsonDeserializer<T> {
+final class JsonDeserializerExceptionWrapper<T> implements JsonDeserializer<T> {
 
   private final JsonDeserializer<T> delegate;
 
@@ -40,8 +42,7 @@ class JsonDeserializerExceptionWrapper<T> implements JsonDeserializer<T> {
    * @throws IllegalArgumentException if {@code delegate} is {@code null}.
    */
   JsonDeserializerExceptionWrapper(JsonDeserializer<T> delegate) {
-    Preconditions.checkNotNull(delegate);
-    this.delegate = delegate;
+    this.delegate = $Gson$Preconditions.checkNotNull(delegate);
   }
 
   public T deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
@@ -56,14 +57,14 @@ class JsonDeserializerExceptionWrapper<T> implements JsonDeserializer<T> {
       StringBuilder errorMsg = new StringBuilder()
           .append("The JsonDeserializer ")
           .append(delegate)
-          .append(" failed to deserialized json object ")
+          .append(" failed to deserialize json object ")
           .append(json)
           .append(" given the type ")
           .append(typeOfT);
       throw new JsonParseException(errorMsg.toString(), e);
     }
   }
-  
+
   @Override
   public String toString() {
     return delegate.toString();

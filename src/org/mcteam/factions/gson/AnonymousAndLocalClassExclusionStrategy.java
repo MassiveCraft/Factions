@@ -16,7 +16,6 @@
 
 package org.mcteam.factions.gson;
 
-
 /**
  * Strategy for excluding anonymous and local classes.
  *

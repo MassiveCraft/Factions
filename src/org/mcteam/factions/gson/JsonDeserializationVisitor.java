@@ -16,6 +16,8 @@
 
 package org.mcteam.factions.gson;
 
+import org.mcteam.factions.gson.internal.$Gson$Preconditions;
+
 import java.lang.reflect.Type;
 
 /**
@@ -28,7 +30,8 @@ import java.lang.reflect.Type;
  */
 abstract class JsonDeserializationVisitor<T> implements ObjectNavigator.Visitor {
 
-  protected final ObjectNavigatorFactory factory;
+  protected final ObjectNavigator objectNavigator;
+  protected final FieldNamingStrategy2 fieldNamingPolicy;
   protected final ObjectConstructor objectConstructor;
   protected final ParameterizedTypeHandlerMap<JsonDeserializer<?>> deserializers;
   protected T target;
@@ -37,16 +40,17 @@ abstract class JsonDeserializationVisitor<T> implements ObjectNavigator.Visitor 
   protected final JsonDeserializationContext context;
   protected boolean constructed;
 
-  public JsonDeserializationVisitor(JsonElement json, Type targetType,
-      ObjectNavigatorFactory factory, ObjectConstructor objectConstructor,
+  JsonDeserializationVisitor(JsonElement json, Type targetType,
+      ObjectNavigator objectNavigator, FieldNamingStrategy2 fieldNamingPolicy,
+      ObjectConstructor objectConstructor,
       ParameterizedTypeHandlerMap<JsonDeserializer<?>> deserializers,
       JsonDeserializationContext context) {
-    Preconditions.checkNotNull(json);
     this.targetType = targetType;
-    this.factory = factory;
+    this.objectNavigator = objectNavigator;
+    this.fieldNamingPolicy = fieldNamingPolicy;
     this.objectConstructor = objectConstructor;
     this.deserializers = deserializers;
-    this.json = json;
+    this.json = $Gson$Preconditions.checkNotNull(json);
     this.context = context;
     this.constructed = false;
   }
@@ -72,14 +76,14 @@ abstract class JsonDeserializationVisitor<T> implements ObjectNavigator.Visitor 
     Pair<JsonDeserializer<?>, ObjectTypePair> pair = objTypePair.getMatchingHandler(deserializers);
     if (pair == null) {
       return false;
-    }    
+    }
     Object value = invokeCustomDeserializer(json, pair);
     target = (T) value;
     constructed = true;
     return true;
   }
 
-  protected Object invokeCustomDeserializer(JsonElement element, 
+  protected Object invokeCustomDeserializer(JsonElement element,
       Pair<JsonDeserializer<?>, ObjectTypePair> pair) {
     if (element == null || element.isJsonNull()) {
       return null;
@@ -91,20 +95,19 @@ abstract class JsonDeserializationVisitor<T> implements ObjectNavigator.Visitor 
   final Object visitChildAsObject(Type childType, JsonElement jsonChild) {
     JsonDeserializationVisitor<?> childVisitor =
         new JsonObjectDeserializationVisitor<Object>(jsonChild, childType,
-            factory, objectConstructor, deserializers, context);
+            objectNavigator, fieldNamingPolicy, objectConstructor, deserializers, context);
     return visitChild(childType, childVisitor);
   }
 
   final Object visitChildAsArray(Type childType, JsonArray jsonChild) {
     JsonDeserializationVisitor<?> childVisitor =
         new JsonArrayDeserializationVisitor<Object>(jsonChild.getAsJsonArray(), childType,
-            factory, objectConstructor, deserializers, context);
+            objectNavigator, fieldNamingPolicy, objectConstructor, deserializers, context);
     return visitChild(childType, childVisitor);
   }
 
   private Object visitChild(Type type, JsonDeserializationVisitor<?> childVisitor) {
-    ObjectNavigator on = factory.create(new ObjectTypePair(null, type, false));
-    on.accept(childVisitor);
+    objectNavigator.accept(new ObjectTypePair(null, type, false), childVisitor);
     // the underlying object may have changed during the construction phase
     // This happens primarily because of custom deserializers
     return childVisitor.getTarget();

@@ -16,6 +16,7 @@
 
 package org.mcteam.factions.gson;
 
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -23,7 +24,7 @@ import java.util.Map;
  * An implementation of the {@link Cache} interface that evict objects from the cache using an
  * LRU (least recently used) algorithm.  Object start getting evicted from the cache once the
  * {@code maxCapacity} is reached.
- * 
+ *
  * @author Inderjeet Singh
  * @author Joel Leitch
  */
@@ -32,33 +33,23 @@ final class LruCache<K, V> extends LinkedHashMap<K, V> implements Cache<K, V> {
 
   private final int maxCapacity;
 
-  LruCache(int maxCapacity) {
+  public LruCache(int maxCapacity) {
     super(maxCapacity, 0.7F, true);
     this.maxCapacity = maxCapacity;
   }
 
-  public void addElement(K key, V value) {
+  public synchronized void addElement(K key, V value) {
     put(key, value);
   }
 
-  @Override
-  public void clear() {
-    super.clear();
-  }
-
-  public V getElement(K key) {
+  public synchronized V getElement(K key) {
     return get(key);
   }
 
-  public V removeElement(K key) {
+  public synchronized V removeElement(K key) {
     return remove(key);
   }
 
-  @Override
-  public int size() {
-    return super.size();
-  }
-  
   @Override
   protected boolean removeEldestEntry(Map.Entry<K, V> entry) {
     return size() > maxCapacity;

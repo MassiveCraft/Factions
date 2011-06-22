@@ -16,6 +16,8 @@
 
 package org.mcteam.factions.gson;
 
+import org.mcteam.factions.gson.internal.$Gson$Types;
+
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,10 +29,10 @@ import java.util.logging.Logger;
 /**
  * A map that provides ability to associate handlers for a specific type or all
  * of its sub-types
- * 
+ *
  * @author Inderjeet Singh
  * @author Joel Leitch
- * 
+ *
  * @param <T> The handler that will be looked up by type
  */
 final class ParameterizedTypeHandlerMap<T> {
@@ -105,6 +107,21 @@ final class ParameterizedTypeHandlerMap<T> {
     }
   }
 
+  public synchronized void register(ParameterizedTypeHandlerMap<T> other) {
+    if (!modifiable) {
+      throw new IllegalStateException("Attempted to modify an unmodifiable map.");
+    }
+    for (Map.Entry<Type, T> entry : other.map.entrySet()) {
+      register(entry.getKey(), entry.getValue());
+    }
+    // Quite important to traverse the typeHierarchyList from stack bottom first since
+    // we want to register the handlers in the same order to preserve priority order
+    for (int i = other.typeHierarchyList.size()-1; i >= 0; --i) {
+      Pair<Class<?>, T> entry = other.typeHierarchyList.get(i);
+      registerForTypeHierarchy(entry);
+    }
+  }
+
   public synchronized void registerIfAbsent(Type typeOfT, T value) {
     if (!modifiable) {
       throw new IllegalStateException("Attempted to modify an unmodifiable map.");
@@ -121,7 +138,7 @@ final class ParameterizedTypeHandlerMap<T> {
   public synchronized T getHandlerFor(Type type) {
     T handler = map.get(type);
     if (handler == null) {
-      Class<?> rawClass = TypeUtils.toRawClass(type);
+      Class<?> rawClass = $Gson$Types.getRawType(type);
       if (rawClass != type) {
         handler = getHandlerFor(rawClass);
       }
@@ -157,12 +174,10 @@ final class ParameterizedTypeHandlerMap<T> {
 
   public synchronized ParameterizedTypeHandlerMap<T> copyOf() {
     ParameterizedTypeHandlerMap<T> copy = new ParameterizedTypeHandlerMap<T>();
-    for (Map.Entry<Type, T> entry : map.entrySet()) {
-      copy.register(entry.getKey(), entry.getValue());
-    }
-    for (Pair<Class<?>, T> entry : typeHierarchyList) {
-      copy.registerForTypeHierarchy(entry);
-    }
+    // Instead of individually registering entries in the map, make an efficient copy
+    // of the list and map
+    copy.map.putAll(map);
+    copy.typeHierarchyList.addAll(typeHierarchyList);
     return copy;
   }
 
@@ -195,6 +210,6 @@ final class ParameterizedTypeHandlerMap<T> {
   }
 
   private String typeToString(Type type) {
-    return TypeUtils.toRawClass(type).getSimpleName();
+    return $Gson$Types.getRawType(type).getSimpleName();
   }
 }

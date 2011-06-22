@@ -16,6 +16,9 @@
 
 package org.mcteam.factions.gson;
 
+import org.mcteam.factions.gson.internal.$Gson$Preconditions;
+import org.mcteam.factions.gson.internal.$Gson$Types;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
@@ -35,7 +38,7 @@ import java.util.Collections;
  */
 public final class FieldAttributes {
   private static final String MAX_CACHE_PROPERTY_NAME =
-      "com.bukkit.mcteam.gson.annotation_cache_size_hint";
+      "org.mcteam.factions.gson.annotation_cache_size_hint";
 
   private static final Cache<Pair<Class<?>, String>, Collection<Annotation>> ANNOTATION_CACHE =
       new LruCache<Pair<Class<?>,String>, Collection<Annotation>>(getMaxCacheSize());
@@ -46,6 +49,7 @@ public final class FieldAttributes {
   private final boolean isSynthetic;
   private final int modifiers;
   private final String name;
+  private final Type resolvedType;
 
   // Fields used for lazy initialization
   private Type genericType;
@@ -55,15 +59,16 @@ public final class FieldAttributes {
    * Constructs a Field Attributes object from the {@code f}.
    *
    * @param f the field to pull attributes from
+   * @param declaringType The type in which the field is declared
    */
-  FieldAttributes(final Class<?> declaringClazz, final Field f) {
-    Preconditions.checkNotNull(declaringClazz);
-    this.declaringClazz = declaringClazz;
-    name = f.getName();
-    declaredType = f.getType();
-    isSynthetic = f.isSynthetic();
-    modifiers = f.getModifiers();
-    field = f;
+  FieldAttributes(Class<?> declaringClazz, Field f, Type declaringType) {
+    this.declaringClazz = $Gson$Preconditions.checkNotNull(declaringClazz);
+    this.name = f.getName();
+    this.declaredType = f.getType();
+    this.isSynthetic = f.isSynthetic();
+    this.modifiers = f.getModifiers();
+    this.field = f;
+    this.resolvedType = getTypeInfoForField(f, declaringType);
   }
 
   private static int getMaxCacheSize() {
@@ -216,6 +221,10 @@ public final class FieldAttributes {
     return field;
   }
 
+  Type getResolvedType() {
+    return resolvedType;
+  }
+
   @SuppressWarnings("unchecked")
   private static <T extends Annotation> T getAnnotationFromArray(
       Collection<Annotation> annotations, Class<T> annotation) {
@@ -225,5 +234,22 @@ public final class FieldAttributes {
       }
     }
     return null;
+  }
+
+  /**
+   * Evaluates the "actual" type for the field.  If the field is a "TypeVariable" or has a
+   * "TypeVariable" in a parameterized type then it evaluates the real type.
+   *
+   * @param f the actual field object to retrieve the type from
+   * @param typeDefiningF the type that contains the field {@code f}
+   * @return the type information for the field
+   */
+  static Type getTypeInfoForField(Field f, Type typeDefiningF) {
+    Class<?> rawType = $Gson$Types.getRawType(typeDefiningF);
+    if (!f.getDeclaringClass().isAssignableFrom(rawType)) {
+      // this field is unrelated to the type; the user probably omitted type information
+      return f.getGenericType();
+    }
+    return $Gson$Types.resolve(typeDefiningF, rawType, f.getGenericType());
   }
 }

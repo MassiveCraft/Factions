@@ -19,7 +19,6 @@ package org.mcteam.factions.gson;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -45,9 +44,9 @@ import java.util.Map;
  * But GSON is unable to deserialize this value because the JSON string name is
  * just the {@link Object#toString() toString()} of the map key. Attempting to
  * convert the above JSON to an object fails with a parse exception:
- * <pre>com.bukkit.mcteam.gson.JsonParseException: Expecting object found: "(5,6)"
- *   at com.bukkit.mcteam.gson.JsonObjectDeserializationVisitor.visitFieldUsingCustomHandler
- *   at com.bukkit.mcteam.gson.ObjectNavigator.navigateClassFields
+ * <pre>org.mcteam.factions.gson.JsonParseException: Expecting object found: "(5,6)"
+ *   at org.mcteam.factions.gson.JsonObjectDeserializationVisitor.visitFieldUsingCustomHandler
+ *   at org.mcteam.factions.gson.ObjectNavigator.navigateClassFields
  *   ...</pre>
  *
  * <h3>Maps as JSON arrays</h3>
@@ -90,12 +89,13 @@ import java.util.Map;
  * complex. A key is complex if its JSON-serialized form is an array or an
  * object.
  */
-public final class MapAsArrayTypeAdapter
+final class MapAsArrayTypeAdapter
+    extends BaseMapTypeAdapter
     implements JsonSerializer<Map<?, ?>>, JsonDeserializer<Map<?, ?>> {
 
   public Map<?, ?> deserialize(JsonElement json, Type typeOfT,
       JsonDeserializationContext context) throws JsonParseException {
-    Map<Object, Object> result = new LinkedHashMap<Object, Object>();
+    Map<Object, Object> result = constructMapType(typeOfT, context);
     Type[] keyAndValueType = typeToTypeArguments(typeOfT);
     if (json.isJsonArray()) {
       JsonArray array = json.getAsJsonArray();
@@ -123,10 +123,10 @@ public final class MapAsArrayTypeAdapter
     boolean serializeAsArray = false;
     List<JsonElement> keysAndValues = new ArrayList<JsonElement>();
     for (Map.Entry<?, ?> entry : src.entrySet()) {
-      JsonElement key = context.serialize(entry.getKey(), keyAndValueType[0]);
+      JsonElement key = serialize(context, entry.getKey(), keyAndValueType[0]);
       serializeAsArray |= key.isJsonObject() || key.isJsonArray();
       keysAndValues.add(key);
-      keysAndValues.add(context.serialize(entry.getValue(), keyAndValueType[1]));
+      keysAndValues.add(serialize(context, entry.getValue(), keyAndValueType[1]));
     }
 
     if (serializeAsArray) {

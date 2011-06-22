@@ -16,22 +16,22 @@
 
 package org.mcteam.factions.gson;
 
+import org.mcteam.factions.gson.internal.$Gson$Preconditions;
+
 /**
- * Adapts the old "deprecated" {@link FieldNamingStrategy} to the new {@link FieldNamingStrategy2}
- * type. 
- * 
+ * Adapts the old FieldNamingStrategy to the new {@link FieldNamingStrategy2}
+ * type.
+ *
  * @author Inderjeet Singh
  * @author Joel Leitch
  */
 final class FieldNamingStrategy2Adapter implements FieldNamingStrategy2 {
   private final FieldNamingStrategy adaptee;
 
-  public FieldNamingStrategy2Adapter(FieldNamingStrategy adaptee) {
-    Preconditions.checkNotNull(adaptee);
-    this.adaptee = adaptee;
+  FieldNamingStrategy2Adapter(FieldNamingStrategy adaptee) {
+    this.adaptee = $Gson$Preconditions.checkNotNull(adaptee);
   }
-  
-  @SuppressWarnings("deprecation")
+
   public String translateName(FieldAttributes f) {
     return adaptee.translateName(f.getFieldObject());
   }

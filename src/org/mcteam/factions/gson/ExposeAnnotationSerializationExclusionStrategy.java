@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 Google Inc.
+ * Copyright (C) 2011 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,11 +21,9 @@ import org.mcteam.factions.gson.annotations.Expose;
 /**
  * Excludes fields that do not have the {@link Expose} annotation
  *
- * @author Inderjeet Singh
  * @author Joel Leitch
  */
 final class ExposeAnnotationSerializationExclusionStrategy implements ExclusionStrategy {
-
   public boolean shouldSkipClass(Class<?> clazz) {
     return false;
   }

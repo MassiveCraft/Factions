@@ -16,6 +16,7 @@
 
 package org.mcteam.factions.gson;
 
+
 import java.lang.reflect.Type;
 
 /**
@@ -25,14 +26,17 @@ import java.lang.reflect.Type;
  */
 final class JsonSerializationContextDefault implements JsonSerializationContext {
 
-  private final ObjectNavigatorFactory factory;
+  private final ObjectNavigator objectNavigator;
+  private final FieldNamingStrategy2 fieldNamingPolicy;
   private final ParameterizedTypeHandlerMap<JsonSerializer<?>> serializers;
   private final boolean serializeNulls;
   private final MemoryRefStack ancestors;
 
-  JsonSerializationContextDefault(ObjectNavigatorFactory factory, boolean serializeNulls,
+  JsonSerializationContextDefault(ObjectNavigator objectNavigator,
+      FieldNamingStrategy2 fieldNamingPolicy, boolean serializeNulls,
       ParameterizedTypeHandlerMap<JsonSerializer<?>> serializers) {
-    this.factory = factory;
+    this.objectNavigator = objectNavigator;
+    this.fieldNamingPolicy = fieldNamingPolicy;
     this.serializeNulls = serializeNulls;
     this.serializers = serializers;
     this.ancestors = new MemoryRefStack();
@@ -42,18 +46,20 @@ final class JsonSerializationContextDefault implements JsonSerializationContext 
     if (src == null) {
       return JsonNull.createJsonNull();
     }
-    return serialize(src, src.getClass(), true);
+    return serialize(src, src.getClass(), false);
   }
 
   public JsonElement serialize(Object src, Type typeOfSrc) {
     return serialize(src, typeOfSrc, true);
   }
 
-  public JsonElement serialize(Object src, Type typeOfSrc, boolean preserveType) {
-    ObjectNavigator on = factory.create(new ObjectTypePair(src, typeOfSrc, preserveType));
-    JsonSerializationVisitor visitor =
-        new JsonSerializationVisitor(factory, serializeNulls, serializers, this, ancestors);
-    on.accept(visitor);
+  JsonElement serialize(Object src, Type typeOfSrc, boolean preserveType) {
+    if (src == null) {
+      return JsonNull.createJsonNull();
+    }
+    JsonSerializationVisitor visitor = new JsonSerializationVisitor(
+        objectNavigator, fieldNamingPolicy, serializeNulls, serializers, this, ancestors);
+    objectNavigator.accept(new ObjectTypePair(src, typeOfSrc, preserveType), visitor);
     return visitor.getJsonElement();
   }
 }

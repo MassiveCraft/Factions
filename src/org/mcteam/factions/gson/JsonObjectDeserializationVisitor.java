@@ -16,6 +16,7 @@
 
 package org.mcteam.factions.gson;
 
+
 import java.lang.reflect.Type;
 
 /**
@@ -28,10 +29,11 @@ import java.lang.reflect.Type;
 final class JsonObjectDeserializationVisitor<T> extends JsonDeserializationVisitor<T> {
 
   JsonObjectDeserializationVisitor(JsonElement json, Type type,
-      ObjectNavigatorFactory factory, ObjectConstructor objectConstructor,
+      ObjectNavigator objectNavigator, FieldNamingStrategy2 fieldNamingPolicy,
+      ObjectConstructor objectConstructor,
       ParameterizedTypeHandlerMap<JsonDeserializer<?>> deserializers,
       JsonDeserializationContext context) {
-    super(json, type, factory, objectConstructor, deserializers, context);
+    super(json, type, objectNavigator, fieldNamingPolicy, objectConstructor, deserializers, context);
   }
 
   @Override
@@ -52,7 +54,7 @@ final class JsonObjectDeserializationVisitor<T> extends JsonDeserializationVisit
   public void visitObjectField(FieldAttributes f, Type typeOfF, Object obj) {
     try {
       if (!json.isJsonObject()) {
-        throw new JsonParseException("Expecting object found: " + json); 
+        throw new JsonParseException("Expecting object found: " + json);
       }
       JsonObject jsonObject = json.getAsJsonObject();
       String fName = getFieldName(f);
@@ -71,7 +73,7 @@ final class JsonObjectDeserializationVisitor<T> extends JsonDeserializationVisit
   public void visitArrayField(FieldAttributes f, Type typeOfF, Object obj) {
     try {
       if (!json.isJsonObject()) {
-        throw new JsonParseException("Expecting object found: " + json); 
+        throw new JsonParseException("Expecting object found: " + json);
       }
       JsonObject jsonObject = json.getAsJsonObject();
       String fName = getFieldName(f);
@@ -88,22 +90,21 @@ final class JsonObjectDeserializationVisitor<T> extends JsonDeserializationVisit
   }
 
   private String getFieldName(FieldAttributes f) {
-    FieldNamingStrategy2 namingPolicy = factory.getFieldNamingPolicy();
-    return namingPolicy.translateName(f);
+    return fieldNamingPolicy.translateName(f);
   }
 
   public boolean visitFieldUsingCustomHandler(FieldAttributes f, Type declaredTypeOfField, Object parent) {
     try {
       String fName = getFieldName(f);
       if (!json.isJsonObject()) {
-        throw new JsonParseException("Expecting object found: " + json); 
+        throw new JsonParseException("Expecting object found: " + json);
       }
       JsonElement child = json.getAsJsonObject().get(fName);
-      TypeInfo typeInfo = new TypeInfo(declaredTypeOfField);
+      boolean isPrimitive = Primitives.isPrimitive(declaredTypeOfField);
       if (child == null) { // Child will be null if the field wasn't present in Json
         return true;
       } else if (child.isJsonNull()) {
-        if (!typeInfo.isPrimitive()) {
+        if (!isPrimitive) {
           f.set(parent, null);
         }
         return true;
@@ -112,9 +113,9 @@ final class JsonObjectDeserializationVisitor<T> extends JsonDeserializationVisit
       Pair<JsonDeserializer<?>, ObjectTypePair> pair = objTypePair.getMatchingHandler(deserializers);
       if (pair == null) {
         return false;
-      }      
+      }
       Object value = invokeCustomDeserializer(child, pair);
-      if (value != null || !typeInfo.isPrimitive()) {
+      if (value != null || !isPrimitive) {
         f.set(parent, value);
       }
       return true;

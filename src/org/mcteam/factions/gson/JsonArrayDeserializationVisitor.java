@@ -16,6 +16,8 @@
 
 package org.mcteam.factions.gson;
 
+import org.mcteam.factions.gson.internal.$Gson$Types;
+
 import java.lang.reflect.Array;
 import java.lang.reflect.Type;
 
@@ -29,39 +31,35 @@ import java.lang.reflect.Type;
 final class JsonArrayDeserializationVisitor<T> extends JsonDeserializationVisitor<T> {
 
   JsonArrayDeserializationVisitor(JsonArray jsonArray, Type arrayType,
-      ObjectNavigatorFactory factory, ObjectConstructor objectConstructor,
+      ObjectNavigator objectNavigator, FieldNamingStrategy2 fieldNamingPolicy,
+      ObjectConstructor objectConstructor,
       ParameterizedTypeHandlerMap<JsonDeserializer<?>> deserializers,
       JsonDeserializationContext context) {
-    super(jsonArray, arrayType, factory, objectConstructor, deserializers, context);
+    super(jsonArray, arrayType, objectNavigator, fieldNamingPolicy, objectConstructor, deserializers, context);
   }
 
   @Override
   @SuppressWarnings("unchecked")
   protected T constructTarget() {
-
-    TypeInfo typeInfo = new TypeInfo(targetType);
-
     if (!json.isJsonArray()) {
-      throw new JsonParseException("Expecting array found: " + json); 
+      throw new JsonParseException("Expecting array found: " + json);
     }
     JsonArray jsonArray = json.getAsJsonArray();
-    if (typeInfo.isArray()) {
-      TypeInfoArray arrayTypeInfo = TypeInfoFactory.getTypeInfoForArray(targetType);
+    if ($Gson$Types.isArray(targetType)) {
       // We know that we are getting back an array of the required type, so
       // this typecasting is safe.
-      return (T) objectConstructor.constructArray(arrayTypeInfo.getSecondLevelType(),
+      return (T) objectConstructor.constructArray($Gson$Types.getArrayComponentType(targetType),
           jsonArray.size());
     }
     // is a collection
-    return (T) objectConstructor.construct(typeInfo.getRawClass());
+    return (T) objectConstructor.construct($Gson$Types.getRawType(targetType));
   }
 
   public void visitArray(Object array, Type arrayType) {
     if (!json.isJsonArray()) {
-      throw new JsonParseException("Expecting array found: " + json); 
+      throw new JsonParseException("Expecting array found: " + json);
     }
     JsonArray jsonArray = json.getAsJsonArray();
-    TypeInfoArray arrayTypeInfo = TypeInfoFactory.getTypeInfoForArray(arrayType);
     for (int i = 0; i < jsonArray.size(); i++) {
       JsonElement jsonChild = jsonArray.get(i);
       Object child;
@@ -69,11 +67,12 @@ final class JsonArrayDeserializationVisitor<T> extends JsonDeserializationVisito
       if (jsonChild == null || jsonChild.isJsonNull()) {
         child = null;
       } else if (jsonChild instanceof JsonObject) {
-        child = visitChildAsObject(arrayTypeInfo.getComponentRawType(), jsonChild);
+        child = visitChildAsObject($Gson$Types.getArrayComponentType(arrayType), jsonChild);
       } else if (jsonChild instanceof JsonArray) {
-        child = visitChildAsArray(arrayTypeInfo.getSecondLevelType(), jsonChild.getAsJsonArray());
+        child = visitChildAsArray($Gson$Types.getArrayComponentType(arrayType),
+            jsonChild.getAsJsonArray());
       } else if (jsonChild instanceof JsonPrimitive) {
-        child = visitChildAsObject(arrayTypeInfo.getComponentRawType(),
+        child = visitChildAsObject($Gson$Types.getArrayComponentType(arrayType),
             jsonChild.getAsJsonPrimitive());
       } else {
         throw new IllegalStateException();
@@ -96,12 +95,12 @@ final class JsonArrayDeserializationVisitor<T> extends JsonDeserializationVisito
   }
 
   public void visitObjectField(FieldAttributes f, Type typeOfF, Object obj) {
-    throw new JsonParseException("Expecting array but found object field " + f.getName() + ": " 
+    throw new JsonParseException("Expecting array but found object field " + f.getName() + ": "
         + obj);
   }
 
   public boolean visitFieldUsingCustomHandler(FieldAttributes f, Type actualTypeOfField, Object parent) {
-    throw new JsonParseException("Expecting array but found field " + f.getName() + ": " 
+    throw new JsonParseException("Expecting array but found field " + f.getName() + ": "
         + parent);
   }
 

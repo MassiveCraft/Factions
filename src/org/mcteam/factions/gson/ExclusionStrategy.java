@@ -72,10 +72,24 @@ package org.mcteam.factions.gson;
  *     .create();
  * </pre>
  *
+ * <p>For certain model classes, you may only want to serialize a field, but exclude it for
+ * deserialization. To do that, you can write an {@code ExclusionStrategy} as per normal;
+ * however, you would register it with the
+ * {@link GsonBuilder#addDeserializationExclusionStrategy(ExclusionStrategy)} method.
+ * For example:
+ * <pre class="code">
+ * ExclusionStrategy excludeStrings = new UserDefinedExclusionStrategy(String.class);
+ * Gson gson = new GsonBuilder()
+ *     .addDeserializationExclusionStrategy(excludeStrings)
+ *     .create();
+ * </pre>
+ *
  * @author Inderjeet Singh
  * @author Joel Leitch
  *
  * @see GsonBuilder#setExclusionStrategies(ExclusionStrategy...)
+ * @see GsonBuilder#addDeserializationExclusionStrategy(ExclusionStrategy)
+ * @see GsonBuilder#addSerializationExclusionStrategy(ExclusionStrategy)
  *
  * @since 1.4
  */

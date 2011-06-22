@@ -16,16 +16,19 @@
 
 package org.mcteam.factions.gson;
 
+import org.mcteam.factions.gson.DefaultTypeAdapters.DefaultDateTypeAdapter;
+import org.mcteam.factions.gson.internal.$Gson$Preconditions;
+
 import java.lang.reflect.Type;
+import java.sql.Timestamp;
 import java.text.DateFormat;
-import java.util.Collection;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-
-import org.mcteam.factions.gson.DefaultTypeAdapters.DefaultDateTypeAdapter;
-
+import java.util.Map;
+import java.util.Set;
 
 /**
  * <p>Use this builder to construct a {@link Gson} instance when you need to set configuration
@@ -39,6 +42,7 @@ import org.mcteam.factions.gson.DefaultTypeAdapters.DefaultDateTypeAdapter;
  * <pre>
  * Gson gson = new GsonBuilder()
  *     .registerTypeAdapter(Id.class, new IdTypeAdapter())
+ *     .enableComplexMapKeySerialization()
  *     .serializeNulls()
  *     .setDateFormat(DateFormat.LONG)
  *     .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
@@ -47,22 +51,33 @@ import org.mcteam.factions.gson.DefaultTypeAdapters.DefaultDateTypeAdapter;
  *     .create();
  * </pre></p>
  *
- * <p>NOTE: the order of invocation of configuration methods does not matter.</p>
+ * <p>NOTES:
+ * <ul>
+ * <li> the order of invocation of configuration methods does not matter.</li>
+ * <li> The default serialization of {@link Date} and its subclasses in Gson does
+ *  not contain time-zone information. So, if you are using date/time instances,
+ *  use {@code GsonBuilder} and its {@code setDateFormat} methods.</li>
+ *  </ul>
+ * </p>
  *
  * @author Inderjeet Singh
  * @author Joel Leitch
  */
 public final class GsonBuilder {
+  private static final MapAsArrayTypeAdapter COMPLEX_KEY_MAP_TYPE_ADAPTER =
+      new MapAsArrayTypeAdapter();
   private static final InnerClassExclusionStrategy innerClassExclusionStrategy =
       new InnerClassExclusionStrategy();
-  private static final ExposeAnnotationSerializationExclusionStrategy
-    exposeAnnotationSerializationExclusionStrategy =
-      new ExposeAnnotationSerializationExclusionStrategy();
   private static final ExposeAnnotationDeserializationExclusionStrategy
-    exposeAnnotationDeserializationExclusionStrategy =
+  exposeAnnotationDeserializationExclusionStrategy =
       new ExposeAnnotationDeserializationExclusionStrategy();
+  private static final ExposeAnnotationSerializationExclusionStrategy
+  exposeAnnotationSerializationExclusionStrategy =
+      new ExposeAnnotationSerializationExclusionStrategy();
 
-  private final Collection<ExclusionStrategy> exclusionStrategies =
+  private final Set<ExclusionStrategy> serializeExclusionStrategies =
+      new HashSet<ExclusionStrategy>();
+  private final Set<ExclusionStrategy> deserializeExclusionStrategies =
       new HashSet<ExclusionStrategy>();
 
   private double ignoreVersionsAfter;
@@ -91,8 +106,10 @@ public final class GsonBuilder {
    */
   public GsonBuilder() {
     // add default exclusion strategies
-    exclusionStrategies.add(Gson.DEFAULT_ANON_LOCAL_CLASS_EXCLUSION_STRATEGY);
-    exclusionStrategies.add(Gson.DEFAULT_SYNTHETIC_FIELD_EXCLUSION_STRATEGY);
+    deserializeExclusionStrategies.add(Gson.DEFAULT_ANON_LOCAL_CLASS_EXCLUSION_STRATEGY);
+    deserializeExclusionStrategies.add(Gson.DEFAULT_SYNTHETIC_FIELD_EXCLUSION_STRATEGY);
+    serializeExclusionStrategies.add(Gson.DEFAULT_ANON_LOCAL_CLASS_EXCLUSION_STRATEGY);
+    serializeExclusionStrategies.add(Gson.DEFAULT_SYNTHETIC_FIELD_EXCLUSION_STRATEGY);
 
     // setup default values
     ignoreVersionsAfter = VersionConstants.IGNORE_VERSIONS;
@@ -179,6 +196,87 @@ public final class GsonBuilder {
   }
 
   /**
+   * Enabling this feature will only change the serialized form if the map key is
+   * a complex type (i.e. non-primitive) in its <strong>serialized</strong> JSON
+   * form. The default implementation of map serialization uses {@code toString()}
+   * on the key; however, when this is called then one of the following cases
+   * apply:
+   *
+   * <h3>Maps as JSON objects</h3>
+   * For this case, assume that a type adapter is registered to serialize and
+   * deserialize some {@code Point} class, which contains an x and y coordinate,
+   * to/from the JSON Primitive string value {@code "(x,y)"}. The Java map would
+   * then be serialized as a {@link JsonObject}.
+   *
+   * <p>Below is an example:
+   * <pre>  {@code
+   *   Gson gson = new GsonBuilder()
+   *       .register(Point.class, new MyPointTypeAdapter())
+   *       .enableComplexMapKeySerialization()
+   *       .create();
+   *
+   *   Map<Point, String> original = new LinkedHashMap<Point, String>();
+   *   original.put(new Point(5, 6), "a");
+   *   original.put(new Point(8, 8), "b");
+   *   System.out.println(gson.toJson(original, type));
+   * }</pre>
+   * The above code prints this JSON object:<pre>  {@code
+   *   {
+   *     "(5,6)": "a",
+   *     "(8,8)": "b"
+   *   }
+   * }</pre>
+   *
+   * <h3>Maps as JSON arrays</h3>
+   * For this case, assume that a type adapter was NOT registered for some
+   * {@code Point} class, but rather the default Gson serialization is applied.
+   * In this case, some {@code new Point(2,3)} would serialize as {@code
+   * {"x":2,"y":5}}.
+   *
+   * <p>Given the assumption above, a {@code Map<Point, String>} will be
+   * serialize as an array of arrays (can be viewed as an entry set of pairs).
+   *
+   * <p>Below is an example of serializing complex types as JSON arrays:
+   * <pre> {@code
+   *   Gson gson = new GsonBuilder()
+   *       .enableComplexMapKeySerialization()
+   *       .create();
+   *
+   *   Map<Point, String> original = new LinkedHashMap<Point, String>();
+   *   original.put(new Point(5, 6), "a");
+   *   original.put(new Point(8, 8), "b");
+   *   System.out.println(gson.toJson(original, type));
+   * }
+   *
+   * The JSON output would look as follows:
+   * <pre>   {@code
+   *   [
+   *     [
+   *       {
+   *         "x": 5,
+   *         "y": 6
+   *       },
+   *       "a"
+   *     ],
+   *     [
+   *       {
+   *         "x": 8,
+   *         "y": 8
+   *       },
+   *       "b"
+   *     ]
+   *   ]
+   * }</pre>
+   *
+   * @return a reference to this {@code GsonBuilder} object to fulfill the "Builder" pattern
+   * @since 1.7
+   */
+  public GsonBuilder enableComplexMapKeySerialization() {
+    registerTypeHierarchyAdapter(Map.class, COMPLEX_KEY_MAP_TYPE_ADAPTER);
+    return this;
+  }
+
+  /**
    * Configures Gson to exclude inner classes during serialization.
    *
    * @return a reference to this {@code GsonBuilder} object to fulfill the "Builder" pattern
@@ -250,12 +348,45 @@ public final class GsonBuilder {
    * @since 1.4
    */
   public GsonBuilder setExclusionStrategies(ExclusionStrategy... strategies) {
-    for (ExclusionStrategy strategy : strategies) {
-      exclusionStrategies.add(strategy);
-    }
+    List<ExclusionStrategy> strategyList = Arrays.asList(strategies);
+    serializeExclusionStrategies.addAll(strategyList);
+    deserializeExclusionStrategies.addAll(strategyList);
     return this;
   }
 
+  /**
+   * Configures Gson to apply the passed in exclusion strategy during serialization.
+   * If this method is invoked numerous times with different exclusion strategy objects
+   * then the exclusion strategies that were added will be applied as a disjunction rule.
+   * This means that if one of the added exclusion strategies suggests that a field (or
+   * class) should be skipped then that field (or object) is skipped during its
+   * serialization.
+   *
+   * @param strategy an exclusion strategy to apply during serialization.
+   * @return a reference to this {@code GsonBuilder} object to fulfill the "Builder" pattern
+   * @since 1.7
+   */
+  public GsonBuilder addSerializationExclusionStrategy(ExclusionStrategy strategy) {
+    serializeExclusionStrategies.add(strategy);
+    return this;
+  }
+
+  /**
+   * Configures Gson to apply the passed in exclusion strategy during deserialization.
+   * If this method is invoked numerous times with different exclusion strategy objects
+   * then the exclusion strategies that were added will be applied as a disjunction rule.
+   * This means that if one of the added exclusion strategies suggests that a field (or
+   * class) should be skipped then that field (or object) is skipped during its
+   * deserialization.
+   *
+   * @param strategy an exclusion strategy to apply during deserialization.
+   * @return a reference to this {@code GsonBuilder} object to fulfill the "Builder" pattern
+   * @since 1.7
+   */
+  public GsonBuilder addDeserializationExclusionStrategy(ExclusionStrategy strategy) {
+    deserializeExclusionStrategies.add(strategy);
+    return this;
+  }
   /**
    * Configures Gson to output Json that fits in a page for pretty printing. This option only
    * affects Json serialization.
@@ -283,6 +414,9 @@ public final class GsonBuilder {
    * Configures Gson to serialize {@code Date} objects according to the pattern provided. You can
    * call this method or {@link #setDateFormat(int)} multiple times, but only the last invocation
    * will be used to decide the serialization format.
+   *
+   * <p>The date format will be used to serialize and deserialize {@link java.util.Date}, {@link
+   * java.sql.Timestamp} and {@link java.sql.Date}.
    *
    * <p>Note that this pattern must abide by the convention provided by {@code SimpleDateFormat}
    * class. See the documentation in {@link java.text.SimpleDateFormat} for more information on
@@ -354,8 +488,8 @@ public final class GsonBuilder {
    * @return a reference to this {@code GsonBuilder} object to fulfill the "Builder" pattern
    */
   public GsonBuilder registerTypeAdapter(Type type, Object typeAdapter) {
-    Preconditions.checkArgument(typeAdapter instanceof JsonSerializer<?>
-        || typeAdapter instanceof JsonDeserializer<?> || typeAdapter instanceof InstanceCreator<?>);
+    $Gson$Preconditions.checkArgument(typeAdapter instanceof JsonSerializer<?>
+            || typeAdapter instanceof JsonDeserializer<?> || typeAdapter instanceof InstanceCreator<?>);
     if (typeAdapter instanceof InstanceCreator<?>) {
       registerInstanceCreator(type, (InstanceCreator<?>) typeAdapter);
     }
@@ -432,9 +566,9 @@ public final class GsonBuilder {
    * @return a reference to this {@code GsonBuilder} object to fulfill the "Builder" pattern
    * @since 1.7
    */
-  GsonBuilder registerTypeHierarchyAdapter(Class<?> baseType, Object typeAdapter) {
-    Preconditions.checkArgument(typeAdapter instanceof JsonSerializer<?>
-    || typeAdapter instanceof JsonDeserializer<?> || typeAdapter instanceof InstanceCreator<?>);
+  public GsonBuilder registerTypeHierarchyAdapter(Class<?> baseType, Object typeAdapter) {
+    $Gson$Preconditions.checkArgument(typeAdapter instanceof JsonSerializer<?>
+            || typeAdapter instanceof JsonDeserializer<?> || typeAdapter instanceof InstanceCreator<?>);
     if (typeAdapter instanceof InstanceCreator<?>) {
       registerInstanceCreatorForTypeHierarchy(baseType, (InstanceCreator<?>) typeAdapter);
     }
@@ -498,33 +632,34 @@ public final class GsonBuilder {
    * @return an instance of Gson configured with the options currently set in this builder
    */
   public Gson create() {
-    List<ExclusionStrategy> serializationStrategies =
-        new LinkedList<ExclusionStrategy>(exclusionStrategies);
     List<ExclusionStrategy> deserializationStrategies =
-        new LinkedList<ExclusionStrategy>(exclusionStrategies);
-
-    serializationStrategies.add(modifierBasedExclusionStrategy);
+        new LinkedList<ExclusionStrategy>(deserializeExclusionStrategies);
+    List<ExclusionStrategy> serializationStrategies =
+        new LinkedList<ExclusionStrategy>(serializeExclusionStrategies);
     deserializationStrategies.add(modifierBasedExclusionStrategy);
+    serializationStrategies.add(modifierBasedExclusionStrategy);
 
     if (!serializeInnerClasses) {
-      serializationStrategies.add(innerClassExclusionStrategy);
       deserializationStrategies.add(innerClassExclusionStrategy);
+      serializationStrategies.add(innerClassExclusionStrategy);
     }
     if (ignoreVersionsAfter != VersionConstants.IGNORE_VERSIONS) {
-      serializationStrategies.add(new VersionExclusionStrategy(ignoreVersionsAfter));
-      deserializationStrategies.add(new VersionExclusionStrategy(ignoreVersionsAfter));
+      VersionExclusionStrategy versionExclusionStrategy =
+          new VersionExclusionStrategy(ignoreVersionsAfter);
+      deserializationStrategies.add(versionExclusionStrategy);
+      serializationStrategies.add(versionExclusionStrategy);
     }
     if (excludeFieldsWithoutExposeAnnotation) {
-      serializationStrategies.add(exposeAnnotationSerializationExclusionStrategy);
       deserializationStrategies.add(exposeAnnotationDeserializationExclusionStrategy);
+      serializationStrategies.add(exposeAnnotationSerializationExclusionStrategy);
     }
-    ExclusionStrategy serializationExclusionStrategy =
-      new DisjunctionExclusionStrategy(serializationStrategies);
-    ExclusionStrategy deserializationExclusionStrategy =
-      new DisjunctionExclusionStrategy(deserializationStrategies);
 
-    ParameterizedTypeHandlerMap<JsonSerializer<?>> customSerializers = serializers.copyOf();
-    ParameterizedTypeHandlerMap<JsonDeserializer<?>> customDeserializers = deserializers.copyOf();
+    ParameterizedTypeHandlerMap<JsonSerializer<?>> customSerializers =
+        DefaultTypeAdapters.DEFAULT_HIERARCHY_SERIALIZERS.copyOf();
+    customSerializers.register(serializers.copyOf());
+    ParameterizedTypeHandlerMap<JsonDeserializer<?>> customDeserializers =
+        DefaultTypeAdapters.DEFAULT_HIERARCHY_DESERIALIZERS.copyOf();
+    customDeserializers.register(deserializers.copyOf());
     addTypeAdaptersForDate(datePattern, dateStyle, timeStyle, customSerializers,
         customDeserializers);
 
@@ -543,9 +678,11 @@ public final class GsonBuilder {
 
     MappedObjectConstructor objConstructor = new MappedObjectConstructor(customInstanceCreators);
 
-    Gson gson = new Gson(serializationExclusionStrategy, deserializationExclusionStrategy,
-        fieldNamingPolicy, objConstructor, serializeNulls, customSerializers,
-        customDeserializers, generateNonExecutableJson, escapeHtmlChars, prettyPrinting);
+    Gson gson = new Gson(new DisjunctionExclusionStrategy(deserializationStrategies),
+        new DisjunctionExclusionStrategy(serializationStrategies),
+        fieldNamingPolicy, objConstructor, serializeNulls,
+        customSerializers, customDeserializers, generateNonExecutableJson, escapeHtmlChars,
+        prettyPrinting);
     return gson;
   }
 
@@ -560,12 +697,19 @@ public final class GsonBuilder {
     }
 
     if (dateTypeAdapter != null) {
-      if (!serializers.hasSpecificHandlerFor(Date.class)) {
-        serializers.register(Date.class, dateTypeAdapter);
-      }
-      if (!deserializers.hasSpecificHandlerFor(Date.class)) {
-        deserializers.register(Date.class, dateTypeAdapter);
-      }
+      registerIfAbsent(Date.class, serializers, dateTypeAdapter);
+      registerIfAbsent(Date.class, deserializers, dateTypeAdapter);
+      registerIfAbsent(Timestamp.class, serializers, dateTypeAdapter);
+      registerIfAbsent(Timestamp.class, deserializers, dateTypeAdapter);
+      registerIfAbsent(java.sql.Date.class, serializers, dateTypeAdapter);
+      registerIfAbsent(java.sql.Date.class, deserializers, dateTypeAdapter);
+    }
+  }
+
+  private static <T> void registerIfAbsent(Class<?> type,
+      ParameterizedTypeHandlerMap<T> adapters, T adapter) {
+    if (!adapters.hasSpecificHandlerFor(type)) {
+      adapters.register(type, adapter);
     }
   }
 }

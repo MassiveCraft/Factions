@@ -15,14 +15,13 @@
  */
 package org.mcteam.factions.gson;
 
+import org.mcteam.factions.gson.stream.JsonReader;
+import org.mcteam.factions.gson.stream.JsonToken;
+import org.mcteam.factions.gson.stream.MalformedJsonException;
 import java.io.EOFException;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
-
-import org.mcteam.factions.gson.stream.JsonReader;
-import org.mcteam.factions.gson.stream.JsonToken;
-import org.mcteam.factions.gson.stream.MalformedJsonException;
 
 /**
  * A parser to parse Json into a parse tree of {@link JsonElement}s

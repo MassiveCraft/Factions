@@ -16,6 +16,8 @@
 
 package org.mcteam.factions.gson;
 
+import org.mcteam.factions.gson.internal.$Gson$Preconditions;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.util.Collection;
@@ -51,8 +53,8 @@ final class CamelCaseSeparatorNamingPolicy extends RecursiveFieldNamingPolicy {
    *         is null or empty.
    */
   public CamelCaseSeparatorNamingPolicy(String separatorString) {
-    Preconditions.checkNotNull(separatorString);
-    Preconditions.checkArgument(!"".equals(separatorString));
+    $Gson$Preconditions.checkNotNull(separatorString);
+    $Gson$Preconditions.checkArgument(!"".equals(separatorString));
     this.separatorString = separatorString;
   }
 

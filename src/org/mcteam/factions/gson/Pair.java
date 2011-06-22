@@ -26,11 +26,10 @@ package org.mcteam.factions.gson;
  * @param <SECOND>
  */
 final class Pair<FIRST, SECOND> {
+  public final FIRST first;
+  public final SECOND second;
 
-  final FIRST first;
-  final SECOND second;
-
-  Pair(FIRST first, SECOND second) {
+  public Pair(FIRST first, SECOND second) {
     this.first = first;
     this.second = second;
   }

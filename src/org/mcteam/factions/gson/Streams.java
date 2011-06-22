@@ -16,14 +16,13 @@
 
 package org.mcteam.factions.gson;
 
+import org.mcteam.factions.gson.stream.JsonReader;
+import org.mcteam.factions.gson.stream.JsonWriter;
+import org.mcteam.factions.gson.stream.MalformedJsonException;
 import java.io.EOFException;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Map;
-
-import org.mcteam.factions.gson.stream.JsonReader;
-import org.mcteam.factions.gson.stream.JsonWriter;
-import org.mcteam.factions.gson.stream.MalformedJsonException;
 
 /**
  * Reads and writes GSON parse trees over streams.

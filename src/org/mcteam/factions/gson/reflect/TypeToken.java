@@ -16,7 +16,8 @@
 
 package org.mcteam.factions.gson.reflect;
 
-import java.lang.reflect.Array;
+import org.mcteam.factions.gson.internal.$Gson$Types;
+import org.mcteam.factions.gson.internal.$Gson$Preconditions;
 import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -25,135 +26,101 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Represents a generic type {@code T}.
+ * Represents a generic type {@code T}. Java doesn't yet provide a way to
+ * represent generic types, so this class does. Forces clients to create a
+ * subclass of this class which enables retrieval the type information even at
+ * runtime.
  *
- * You can use this class to get the generic type for a class. For example,
- * to get the generic type for <code>Collection&lt;Foo&gt;</code>, you can use:
+ * <p>For example, to create a type literal for {@code List<String>}, you can
+ * create an empty anonymous inner class:
+ *
  * <p>
- * <code>Type typeOfCollectionOfFoo = new TypeToken&lt;Collection&lt;Foo&gt;&gt;(){}.getType()
- * </code>
- * 
- * <p>Assumes {@code Type} implements {@code equals()} and {@code hashCode()}
- * as a value (as opposed to identity) comparison.
+ * {@code TypeToken<List<String>> list = new TypeToken<List<String>>() {};}
  *
- * Also implements {@link #isAssignableFrom(Type)} to check type-safe
- * assignability.
+ * <p>This syntax cannot be used to create type literals that have wildcard
+ * parameters, such as {@code Class<?>} or {@code List<? extends CharSequence>}.
  *
  * @author Bob Lee
  * @author Sven Mawson
+ * @author Jesse Wilson
  */
-public abstract class TypeToken<T> {
+public class TypeToken<T> {
 
   final Class<? super T> rawType;
   final Type type;
+  final int hashCode;
 
   /**
-   * Constructs a new type token. Derives represented class from type
+   * Constructs a new type literal. Derives represented class from type
    * parameter.
    *
    * <p>Clients create an empty anonymous subclass. Doing so embeds the type
-   * parameter in the anonymous class's type hierarchy so we can reconstitute
-   * it at runtime despite erasure.
-   *
-   * <p>For example:
-   * <code>
-   * {@literal TypeToken<List<String>> t = new TypeToken<List<String>>}(){}
-   * </code>
+   * parameter in the anonymous class's type hierarchy so we can reconstitute it
+   * at runtime despite erasure.
    */
   @SuppressWarnings("unchecked")
   protected TypeToken() {
     this.type = getSuperclassTypeParameter(getClass());
-    this.rawType = (Class<? super T>) getRawType(type);
+    this.rawType = (Class<? super T>) $Gson$Types.getRawType(type);
+    this.hashCode = type.hashCode();
   }
 
   /**
-   * Unsafe. Constructs a type token manually.
+   * Unsafe. Constructs a type literal manually.
    */
-  @SuppressWarnings({"unchecked"})
-  private TypeToken(Type type) {
-    this.rawType = (Class<? super T>) getRawType(nonNull(type, "type"));
-    this.type = type;
+  @SuppressWarnings("unchecked")
+  TypeToken(Type type) {
+    this.type = $Gson$Types.canonicalize($Gson$Preconditions.checkNotNull(type));
+    this.rawType = (Class<? super T>) $Gson$Types.getRawType(this.type);
+    this.hashCode = this.type.hashCode();
   }
 
-  private static <T> T nonNull(T o, String message) {
-    if (o == null) {
-      throw new NullPointerException(message);
-    }
-    return o;
-  }
-  
   /**
-   * Gets type from super class's type parameter.
+   * Returns the type from super class's type parameter in {@link $Gson$Types#canonicalize
+   * canonical form}.
    */
+  @SuppressWarnings("unchecked")
   static Type getSuperclassTypeParameter(Class<?> subclass) {
     Type superclass = subclass.getGenericSuperclass();
-    if (superclass instanceof Class<?>) {
+    if (superclass instanceof Class) {
       throw new RuntimeException("Missing type parameter.");
     }
-    return ((ParameterizedType) superclass).getActualTypeArguments()[0];
+    ParameterizedType parameterized = (ParameterizedType) superclass;
+    return $Gson$Types.canonicalize(parameterized.getActualTypeArguments()[0]);
   }
 
   /**
-   * Gets type token from super class's type parameter.
+   * Returns the raw (non-generic) type for this type.
    */
-  static TypeToken<?> fromSuperclassTypeParameter(Class<?> subclass) {
-    return new SimpleTypeToken<Object>(subclass);
-  }
-
-  private static Class<?> getRawType(Type type) {
-    if (type instanceof Class<?>) {
-      // type is a normal class.
-      return (Class<?>) type;
-    } else if (type instanceof ParameterizedType) {
-      ParameterizedType parameterizedType = (ParameterizedType) type;
-
-      // I'm not exactly sure why getRawType() returns Type instead of Class.
-      // Neal isn't either but suspects some pathological case related
-      // to nested classes exists.
-      Type rawType = parameterizedType.getRawType();
-      if (rawType instanceof Class<?>) {
-        return (Class<?>) rawType;
-      }
-      throw buildUnexpectedTypeError(rawType, Class.class);
-    } else if (type instanceof GenericArrayType) {
-      GenericArrayType genericArrayType = (GenericArrayType) type;
-
-      // TODO(jleitch): This is not the most efficient way to handle generic
-      // arrays, but is there another way to extract the array class in a
-      // non-hacky way (i.e. using String value class names- "[L...")?
-      Object rawArrayType = Array.newInstance(
-          getRawType(genericArrayType.getGenericComponentType()), 0);
-      return rawArrayType.getClass();
-    } else {
-      throw buildUnexpectedTypeError(
-          type, ParameterizedType.class, GenericArrayType.class);
-    }
-  }
-
-  /**
-   * Gets the raw type.
-   */
-  public Class<? super T> getRawType() {
+  public final Class<? super T> getRawType() {
     return rawType;
   }
 
   /**
    * Gets underlying {@code Type} instance.
    */
-  public Type getType() {
+  public final Type getType() {
     return type;
   }
 
   /**
    * Check if this type is assignable from the given class object.
+   *
+   * @deprecated this implementation may be inconsistent with javac for types
+   *     with wildcards.
    */
+  @Deprecated
   public boolean isAssignableFrom(Class<?> cls) {
     return isAssignableFrom((Type) cls);
   }
 
   /**
    * Check if this type is assignable from the given Type.
+   *
+   * @deprecated this implementation may be inconsistent with javac for types
+   *     with wildcards.
    */
+  @Deprecated
   public boolean isAssignableFrom(Type from) {
     if (from == null) {
       return false;
@@ -164,12 +131,12 @@ public abstract class TypeToken<T> {
     }
 
     if (type instanceof Class<?>) {
-      return rawType.isAssignableFrom(getRawType(from));
+      return rawType.isAssignableFrom($Gson$Types.getRawType(from));
     } else if (type instanceof ParameterizedType) {
       return isAssignableFrom(from, (ParameterizedType) type,
           new HashMap<String, Type>());
     } else if (type instanceof GenericArrayType) {
-      return rawType.isAssignableFrom(getRawType(from))
+      return rawType.isAssignableFrom($Gson$Types.getRawType(from))
           && isAssignableFrom(from, (GenericArrayType) type);
     } else {
       throw buildUnexpectedTypeError(
@@ -179,7 +146,11 @@ public abstract class TypeToken<T> {
 
   /**
    * Check if this type is assignable from the given type token.
+   *
+   * @deprecated this implementation may be inconsistent with javac for types
+   *     with wildcards.
    */
+  @Deprecated
   public boolean isAssignableFrom(TypeToken<?> token) {
     return isAssignableFrom(token.getType());
   }
@@ -225,7 +196,7 @@ public abstract class TypeToken<T> {
     }
 
     // First figure out the class and any type information.
-    Class<?> clazz = getRawType(from);
+    Class<?> clazz = $Gson$Types.getRawType(from);
     ParameterizedType ptype = null;
     if (from instanceof ParameterizedType) {
       ptype = (ParameterizedType) from;
@@ -259,11 +230,7 @@ public abstract class TypeToken<T> {
 
     // Interfaces didn't work, try the superclass.
     Type sType = clazz.getGenericSuperclass();
-    if (isAssignableFrom(sType, to, new HashMap<String, Type>(typeVarMap))) {
-      return true;
-    }
-
-    return false;
+    return isAssignableFrom(sType, to, new HashMap<String, Type>(typeVarMap));
   }
 
   /**
@@ -285,55 +252,6 @@ public abstract class TypeToken<T> {
     return false;
   }
 
-  /**
-   * Checks if two types are the same or are equivalent under a variable mapping
-   * given in the type map that was provided.
-   */
-  private static boolean matches(Type from, Type to,
-      Map<String, Type> typeMap) {
-    if (to.equals(from)) return true;
-
-    if (from instanceof TypeVariable<?>) {
-      return to.equals(typeMap.get(((TypeVariable<?>)from).getName()));
-    }
-
-    return false;
-  }
-
-  /**
-   * Hashcode for this object.
-   * @return hashcode for this object.
-   */
-  @Override public int hashCode() {
-    return type.hashCode();
-  }
-
-  /**
-   * Method to test equality. 
-   * 
-   * @return true if this object is logically equal to the specified object, false otherwise.
-   */
-  @Override public boolean equals(Object o) {
-    if (o == this) {
-      return true;
-    }
-    if (!(o instanceof TypeToken<?>)) {
-      return false;
-    }
-    TypeToken<?> t = (TypeToken<?>) o;
-    return type.equals(t.type);
-  }
-
-  /**
-   * Returns a string representation of this object.
-   * @return a string representation of this object.
-   */
-  @Override public String toString() {
-    return type instanceof Class<?>
-        ? ((Class<?>) type).getName()
-        : type.toString();
-  }
-
   private static AssertionError buildUnexpectedTypeError(
       Type token, Class<?>... expected) {
 
@@ -350,26 +268,41 @@ public abstract class TypeToken<T> {
   }
 
   /**
-   * Gets type token for the given {@code Type} instance.
+   * Checks if two types are the same or are equivalent under a variable mapping
+   * given in the type map that was provided.
+   */
+  @SuppressWarnings("unchecked")
+  private static boolean matches(Type from, Type to, Map<String, Type> typeMap) {
+    return to.equals(from)
+        || (from instanceof TypeVariable
+        && to.equals(typeMap.get(((TypeVariable<?>) from).getName())));
+
+  }
+
+  @Override public final int hashCode() {
+    return this.hashCode;
+  }
+
+  @Override public final boolean equals(Object o) {
+    return o instanceof TypeToken<?>
+        && $Gson$Types.equals(type, ((TypeToken<?>) o).type);
+  }
+
+  @Override public final String toString() {
+    return $Gson$Types.typeToString(type);
+  }
+
+  /**
+   * Gets type literal for the given {@code Type} instance.
    */
   public static TypeToken<?> get(Type type) {
-    return new SimpleTypeToken<Object>(type);
+    return new TypeToken<Object>(type);
   }
 
   /**
-   * Gets type token for the given {@code Class} instance.
+   * Gets type literal for the given {@code Class} instance.
    */
   public static <T> TypeToken<T> get(Class<T> type) {
-    return new SimpleTypeToken<T>(type);
-  }
-
-  /**
-   * Private static class to not create more anonymous classes than
-   * necessary.
-   */
-  private static class SimpleTypeToken<T> extends TypeToken<T> {
-    public SimpleTypeToken(Type type) {
-      super(type);
-    }
+    return new TypeToken<T>(type);
   }
 }

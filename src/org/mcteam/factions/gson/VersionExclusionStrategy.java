@@ -18,6 +18,7 @@ package org.mcteam.factions.gson;
 
 import org.mcteam.factions.gson.annotations.Since;
 import org.mcteam.factions.gson.annotations.Until;
+import org.mcteam.factions.gson.internal.$Gson$Preconditions;
 
 /**
  * This strategy will exclude any files and/or class that are passed the
@@ -28,8 +29,8 @@ import org.mcteam.factions.gson.annotations.Until;
 final class VersionExclusionStrategy implements ExclusionStrategy {
   private final double version;
 
-  public VersionExclusionStrategy(double version) {
-    Preconditions.checkArgument(version >= 0.0D);
+  VersionExclusionStrategy(double version) {
+    $Gson$Preconditions.checkArgument(version >= 0.0D);
     this.version = version;
   }
 

@@ -16,6 +16,8 @@
 
 package org.mcteam.factions.gson;
 
+import org.mcteam.factions.gson.internal.$Gson$Preconditions;
+
 import java.util.Collection;
 
 /**
@@ -27,9 +29,8 @@ import java.util.Collection;
 final class DisjunctionExclusionStrategy implements ExclusionStrategy {
   private final Collection<ExclusionStrategy> strategies;
 
-  public DisjunctionExclusionStrategy(Collection<ExclusionStrategy> strategies) {
-    Preconditions.checkNotNull(strategies);
-    this.strategies = strategies;
+  DisjunctionExclusionStrategy(Collection<ExclusionStrategy> strategies) {
+    this.strategies = $Gson$Preconditions.checkNotNull(strategies);
   }
 
   public boolean shouldSkipField(FieldAttributes f) {

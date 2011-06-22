@@ -16,7 +16,6 @@
 
 package org.mcteam.factions.gson;
 
-
 /**
  * This acts as a "Null Object" pattern for the {@link ExclusionStrategy}.
  * Passing an instance of this class into the {@link ObjectNavigator} will

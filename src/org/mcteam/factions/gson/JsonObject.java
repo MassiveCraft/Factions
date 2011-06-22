@@ -16,6 +16,8 @@
 
 package org.mcteam.factions.gson;
 
+import org.mcteam.factions.gson.internal.$Gson$Preconditions;
+
 import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -52,11 +54,10 @@ public final class JsonObject extends JsonElement {
    * @param value the member object.
    */
   public void add(String property, JsonElement value) {
-    Preconditions.checkNotNull(property);
     if (value == null) {
       value = JsonNull.createJsonNull();
     }
-    members.put(property, value);
+    members.put($Gson$Preconditions.checkNotNull(property), value);
   }
 
   /**
@@ -186,6 +187,17 @@ public final class JsonObject extends JsonElement {
    */
   public JsonObject getAsJsonObject(String memberName) {
     return (JsonObject) members.get(memberName);
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    return (o == this) || (o instanceof JsonObject
+        && ((JsonObject) o).members.equals(members));
+  }
+
+  @Override
+  public int hashCode() {
+    return members.hashCode();
   }
 
   @Override

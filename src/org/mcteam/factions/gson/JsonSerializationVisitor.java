@@ -16,6 +16,9 @@
 
 package org.mcteam.factions.gson;
 
+import org.mcteam.factions.gson.internal.$Gson$Types;
+import org.mcteam.factions.gson.internal.$Gson$Preconditions;
+
 import java.lang.reflect.Array;
 import java.lang.reflect.Type;
 
@@ -27,17 +30,19 @@ import java.lang.reflect.Type;
  */
 final class JsonSerializationVisitor implements ObjectNavigator.Visitor {
 
-  private final ObjectNavigatorFactory factory;
+  private final ObjectNavigator objectNavigator;
+  private final FieldNamingStrategy2 fieldNamingPolicy;
   private final ParameterizedTypeHandlerMap<JsonSerializer<?>> serializers;
   private final boolean serializeNulls;
   private final JsonSerializationContext context;
   private final MemoryRefStack ancestors;
   private JsonElement root;
 
-  JsonSerializationVisitor(ObjectNavigatorFactory factory, boolean serializeNulls,
-      ParameterizedTypeHandlerMap<JsonSerializer<?>> serializers, JsonSerializationContext context,
-      MemoryRefStack ancestors) {
-    this.factory = factory;
+  JsonSerializationVisitor(ObjectNavigator objectNavigator, FieldNamingStrategy2 fieldNamingPolicy,
+      boolean serializeNulls, ParameterizedTypeHandlerMap<JsonSerializer<?>> serializers,
+      JsonSerializationContext context, MemoryRefStack ancestors) {
+    this.objectNavigator = objectNavigator;
+    this.fieldNamingPolicy = fieldNamingPolicy;
     this.serializeNulls = serializeNulls;
     this.serializers = serializers;
     this.context = context;
@@ -71,15 +76,12 @@ final class JsonSerializationVisitor implements ObjectNavigator.Visitor {
   public void visitArray(Object array, Type arrayType) {
     assignToRoot(new JsonArray());
     int length = Array.getLength(array);
-    TypeInfoArray fieldTypeInfo = TypeInfoFactory.getTypeInfoForArray(arrayType);
-    Type componentType = fieldTypeInfo.getSecondLevelType();
+    Type componentType = $Gson$Types.getArrayComponentType(arrayType);
     for (int i = 0; i < length; ++i) {
       Object child = Array.get(array, i);
-      Type childType = componentType;
       // we should not get more specific component type yet since it is possible
-      // that a custom
-      // serializer is registered for the componentType
-      addAsArrayElement(new ObjectTypePair(child, childType, false));
+      // that a custom serializer is registered for the componentType
+      addAsArrayElement(new ObjectTypePair(child, componentType, false));
     }
   }
 
@@ -127,8 +129,7 @@ final class JsonSerializationVisitor implements ObjectNavigator.Visitor {
   }
 
   private void addChildAsElement(FieldAttributes f, JsonElement childElement) {
-    FieldNamingStrategy2 namingPolicy = factory.getFieldNamingPolicy();
-    root.getAsJsonObject().add(namingPolicy.translateName(f), childElement);
+    root.getAsJsonObject().add(fieldNamingPolicy.translateName(f), childElement);
   }
 
   private void addAsArrayElement(ObjectTypePair elementTypePair) {
@@ -141,10 +142,9 @@ final class JsonSerializationVisitor implements ObjectNavigator.Visitor {
   }
 
   private JsonElement getJsonElementForChild(ObjectTypePair fieldValueTypePair) {
-    ObjectNavigator on = factory.create(fieldValueTypePair);
-    JsonSerializationVisitor childVisitor =
-        new JsonSerializationVisitor(factory, serializeNulls, serializers, context, ancestors);
-    on.accept(childVisitor);
+    JsonSerializationVisitor childVisitor = new JsonSerializationVisitor(
+        objectNavigator, fieldNamingPolicy, serializeNulls, serializers, context, ancestors);
+    objectNavigator.accept(fieldValueTypePair, childVisitor);
     return childVisitor.getJsonElement();
   }
 
@@ -171,7 +171,7 @@ final class JsonSerializationVisitor implements ObjectNavigator.Visitor {
   /**
    * objTypePair.getObject() must not be null
    */
-  @SuppressWarnings({"unchecked", "rawtypes"})
+  @SuppressWarnings("unchecked")
   private JsonElement findAndInvokeCustomSerializer(ObjectTypePair objTypePair) {
     Pair<JsonSerializer<?>,ObjectTypePair> pair = objTypePair.getMatchingHandler(serializers);
     if (pair == null) {
@@ -189,9 +189,10 @@ final class JsonSerializationVisitor implements ObjectNavigator.Visitor {
     }
   }
 
-  public boolean visitFieldUsingCustomHandler(FieldAttributes f, Type declaredTypeOfField, Object parent) {
+  public boolean visitFieldUsingCustomHandler(
+      FieldAttributes f, Type declaredTypeOfField, Object parent) {
     try {
-      Preconditions.checkState(root.isJsonObject());
+      $Gson$Preconditions.checkState(root.isJsonObject());
       Object obj = f.get(parent);
       if (obj == null) {
         if (serializeNulls) {
@@ -214,8 +215,7 @@ final class JsonSerializationVisitor implements ObjectNavigator.Visitor {
   }
 
   private void assignToRoot(JsonElement newRoot) {
-    Preconditions.checkNotNull(newRoot);
-    root = newRoot;
+    root = $Gson$Preconditions.checkNotNull(newRoot);
   }
 
   private boolean isFieldNull(FieldAttributes f, Object obj) {

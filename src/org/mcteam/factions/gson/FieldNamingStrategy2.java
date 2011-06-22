@@ -32,7 +32,6 @@ interface FieldNamingStrategy2 {
    *
    * @param f the field that is being translated
    * @return the translated field name.
-   * @since 1.3
    */
   public String translateName(FieldAttributes f);
 }

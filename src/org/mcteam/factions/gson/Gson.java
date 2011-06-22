@@ -16,6 +16,10 @@
 
 package org.mcteam.factions.gson;
 
+import org.mcteam.factions.gson.stream.JsonReader;
+import org.mcteam.factions.gson.stream.JsonToken;
+import org.mcteam.factions.gson.stream.JsonWriter;
+import org.mcteam.factions.gson.stream.MalformedJsonException;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
@@ -26,12 +30,6 @@ import java.lang.reflect.Type;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
-import org.mcteam.factions.gson.JsonSerializationContextDefault;
-import org.mcteam.factions.gson.stream.JsonReader;
-import org.mcteam.factions.gson.stream.JsonToken;
-import org.mcteam.factions.gson.stream.JsonWriter;
-import org.mcteam.factions.gson.stream.MalformedJsonException;
 
 /**
  * This is the main class for using Gson. Gson is typically used by first constructing a
@@ -80,8 +78,6 @@ public final class Gson {
   //TODO(inder): get rid of all the registerXXX methods and take all such parameters in the
   // constructor instead. At the minimum, mark those methods private.
 
-  private static final String NULL_STRING = "null";
-
   static final boolean DEFAULT_JSON_NON_EXECUTABLE = false;
 
   // Default instances of plug-ins
@@ -94,15 +90,12 @@ public final class Gson {
   static final FieldNamingStrategy2 DEFAULT_NAMING_POLICY =
       new SerializedNameAnnotationInterceptingNamingPolicy(new JavaFieldNamingPolicy());
 
-  private static final ExclusionStrategy DEFAULT_EXCLUSION_STRATEGY =
-      createExclusionStrategy(VersionConstants.IGNORE_VERSIONS);
+  private static final ExclusionStrategy DEFAULT_EXCLUSION_STRATEGY = createExclusionStrategy();
 
   private static final String JSON_NON_EXECUTABLE_PREFIX = ")]}'\n";
 
-  private final ExclusionStrategy serializationStrategy;
-
-  private final ExclusionStrategy deserializationStrategy;
-
+  private final ExclusionStrategy deserializationExclusionStrategy;
+  private final ExclusionStrategy serializationExclusionStrategy;
   private final FieldNamingStrategy2 fieldNamingPolicy;
   private final MappedObjectConstructor objectConstructor;
 
@@ -154,17 +147,18 @@ public final class Gson {
   public Gson() {
     this(DEFAULT_EXCLUSION_STRATEGY, DEFAULT_EXCLUSION_STRATEGY, DEFAULT_NAMING_POLICY,
     new MappedObjectConstructor(DefaultTypeAdapters.getDefaultInstanceCreators()),
-    false, DefaultTypeAdapters.getDefaultSerializers(),
-    DefaultTypeAdapters.getDefaultDeserializers(), DEFAULT_JSON_NON_EXECUTABLE, true, false);
+    false, DefaultTypeAdapters.getAllDefaultSerializers(),
+    DefaultTypeAdapters.getAllDefaultDeserializers(), DEFAULT_JSON_NON_EXECUTABLE, true, false);
   }
 
-  Gson(ExclusionStrategy serializationStrategy, ExclusionStrategy deserializationStrategy,
-       FieldNamingStrategy2 fieldNamingPolicy, MappedObjectConstructor objectConstructor,
-       boolean serializeNulls, ParameterizedTypeHandlerMap<JsonSerializer<?>> serializers,
-       ParameterizedTypeHandlerMap<JsonDeserializer<?>> deserializers,
-       boolean generateNonExecutableGson, boolean htmlSafe, boolean prettyPrinting) {
-    this.serializationStrategy = serializationStrategy;
-    this.deserializationStrategy = deserializationStrategy;
+  Gson(ExclusionStrategy deserializationExclusionStrategy,
+      ExclusionStrategy serializationExclusionStrategy, FieldNamingStrategy2 fieldNamingPolicy,
+      MappedObjectConstructor objectConstructor, boolean serializeNulls,
+      ParameterizedTypeHandlerMap<JsonSerializer<?>> serializers,
+      ParameterizedTypeHandlerMap<JsonDeserializer<?>> deserializers,
+      boolean generateNonExecutableGson, boolean htmlSafe, boolean prettyPrinting) {
+    this.deserializationExclusionStrategy = deserializationExclusionStrategy;
+    this.serializationExclusionStrategy = serializationExclusionStrategy;
     this.fieldNamingPolicy = fieldNamingPolicy;
     this.objectConstructor = objectConstructor;
     this.serializeNulls = serializeNulls;
@@ -175,18 +169,11 @@ public final class Gson {
     this.prettyPrinting = prettyPrinting;
   }
 
-  private ObjectNavigatorFactory createDefaultObjectNavigatorFactory(ExclusionStrategy strategy) {
-    return new ObjectNavigatorFactory(strategy, fieldNamingPolicy);
-  }
-
-  private static ExclusionStrategy createExclusionStrategy(double version) {
+  private static ExclusionStrategy createExclusionStrategy() {
     List<ExclusionStrategy> strategies = new LinkedList<ExclusionStrategy>();
     strategies.add(DEFAULT_ANON_LOCAL_CLASS_EXCLUSION_STRATEGY);
     strategies.add(DEFAULT_SYNTHETIC_FIELD_EXCLUSION_STRATEGY);
     strategies.add(DEFAULT_MODIFIER_BASED_EXCLUSION_STRATEGY);
-    if (version != VersionConstants.IGNORE_VERSIONS) {
-      strategies.add(new VersionExclusionStrategy(version));
-    }
     return new DisjunctionExclusionStrategy(strategies);
   }
 
@@ -227,12 +214,10 @@ public final class Gson {
    * @since 1.4
    */
   public JsonElement toJsonTree(Object src, Type typeOfSrc) {
-    if (src == null) {
-      return JsonNull.createJsonNull();
-    }
     JsonSerializationContextDefault context = new JsonSerializationContextDefault(
-        createDefaultObjectNavigatorFactory(serializationStrategy), serializeNulls, serializers);
-    return context.serialize(src, typeOfSrc, true);
+        new ObjectNavigator(serializationExclusionStrategy), fieldNamingPolicy,
+        serializeNulls, serializers);
+    return context.serialize(src, typeOfSrc);
   }
 
   /**
@@ -250,7 +235,7 @@ public final class Gson {
    */
   public String toJson(Object src) {
     if (src == null) {
-      return serializeNulls ? NULL_STRING : "";
+      return toJson(JsonNull.createJsonNull());
     }
     return toJson(src, src.getClass());
   }
@@ -291,14 +276,10 @@ public final class Gson {
    * @since 1.2
    */
   public void toJson(Object src, Appendable writer) throws JsonIOException {
-    try {
-      if (src != null) {
-        toJson(src, src.getClass(), writer);
-      } else if (serializeNulls) {
-        writeOutNullString(writer);
-      }
-    } catch (IOException ioe) {
-      throw new RuntimeException(ioe);
+    if (src != null) {
+      toJson(src, src.getClass(), writer);
+    } else {
+      toJson(JsonNull.createJsonNull(), writer);
     }
   }
 
@@ -565,19 +546,10 @@ public final class Gson {
       return null;
     }
     JsonDeserializationContext context = new JsonDeserializationContextDefault(
-        createDefaultObjectNavigatorFactory(deserializationStrategy), deserializers,
-        objectConstructor);
+        new ObjectNavigator(deserializationExclusionStrategy), fieldNamingPolicy,
+        deserializers, objectConstructor);
     T target = (T) context.deserialize(json, typeOfT);
     return target;
-  }
-
-  /**
-   * Appends the {@link #NULL_STRING} to the {@code writer} object.
-   *
-   * @param writer the object to append the null value to
-   */
-  private void writeOutNullString(Appendable writer) throws IOException {
-    writer.append(NULL_STRING);
   }
 
   @Override

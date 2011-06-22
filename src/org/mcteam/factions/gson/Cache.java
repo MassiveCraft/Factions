@@ -18,7 +18,7 @@ package org.mcteam.factions.gson;
 
 /**
  * Defines generic cache interface.
- * 
+ *
  * @author Inderjeet Singh
  * @author Joel Leitch
  */
@@ -40,22 +40,12 @@ interface Cache<K, V> {
    * @return the cached value for the given {@code key}
    */
   V getElement(K key);
-  
+
   /**
    * Removes the value from the cache for the given key.
-   * 
+   *
    * @param key the key identifying the value to remove
    * @return the value for the given {@code key}
    */
   V removeElement(K key);
-
-  /**
-   * Removes everything from this cache.
-   */
-  void clear();
-  
-  /**
-   * @return the number of objects in this cache
-   */
-  int size();
 }

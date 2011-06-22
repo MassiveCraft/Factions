@@ -16,13 +16,10 @@
 
 package org.mcteam.factions.gson;
 
-import java.lang.reflect.AccessibleObject;
+import org.mcteam.factions.gson.internal.$Gson$Types;
+
 import java.lang.reflect.Array;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * This class contains a mapping of all the application specific
@@ -35,10 +32,12 @@ import java.util.logging.Logger;
  * @author Joel Leitch
  */
 final class MappedObjectConstructor implements ObjectConstructor {
-  private static final Logger log = Logger.getLogger(MappedObjectConstructor.class.getName());
+  private static final UnsafeAllocator unsafeAllocator = UnsafeAllocator.create();
+  private static final DefaultConstructorAllocator defaultConstructorAllocator =
+      new DefaultConstructorAllocator(500);
 
   private final ParameterizedTypeHandlerMap<InstanceCreator<?>> instanceCreatorMap;
-  
+
   public MappedObjectConstructor(
       ParameterizedTypeHandlerMap<InstanceCreator<?>> instanceCreators) {
     instanceCreatorMap = instanceCreators;
@@ -50,61 +49,27 @@ final class MappedObjectConstructor implements ObjectConstructor {
     if (creator != null) {
       return creator.createInstance(typeOfT);
     }
-    return (T) constructWithNoArgConstructor(typeOfT);
+    return (T) constructWithAllocators(typeOfT);
   }
 
   public Object constructArray(Type type, int length) {
-    return Array.newInstance(TypeUtils.toRawClass(type), length);
-  }
-
-  private <T> T constructWithNoArgConstructor(Type typeOfT) {
-    try {
-      Constructor<T> constructor = getNoArgsConstructor(typeOfT);
-      if (constructor == null) {
-        throw new RuntimeException(("No-args constructor for " + typeOfT + " does not exist. "
-            + "Register an InstanceCreator with Gson for this type to fix this problem."));
-      }
-      return constructor.newInstance();
-    } catch (InstantiationException e) {
-      throw new RuntimeException(("Unable to invoke no-args constructor for " + typeOfT + ". "
-          + "Register an InstanceCreator with Gson for this type may fix this problem."), e);
-    } catch (IllegalAccessException e) {
-      throw new RuntimeException(("Unable to invoke no-args constructor for " + typeOfT + ". "
-          + "Register an InstanceCreator with Gson for this type may fix this problem."), e);
-    } catch (InvocationTargetException e) {
-      throw new RuntimeException(("Unable to invoke no-args constructor for " + typeOfT + ". "
-          + "Register an InstanceCreator with Gson for this type may fix this problem."), e);
-    }
+    return Array.newInstance($Gson$Types.getRawType(type), length);
   }
 
   @SuppressWarnings({"unchecked", "cast"})
-  private <T> Constructor<T> getNoArgsConstructor(Type typeOfT) {
-    TypeInfo typeInfo = new TypeInfo(typeOfT);
-    Class<T> clazz = (Class<T>) typeInfo.getRawClass();
-    Constructor<T>[] declaredConstructors = (Constructor<T>[]) clazz.getDeclaredConstructors();
-    AccessibleObject.setAccessible(declaredConstructors, true);
-    for (Constructor<T> constructor : declaredConstructors) {
-      if (constructor.getParameterTypes().length == 0) {
-        return constructor;
-      }
+  private <T> T constructWithAllocators(Type typeOfT) {
+    try {
+      Class<T> clazz = (Class<T>) $Gson$Types.getRawType(typeOfT);
+      T obj = defaultConstructorAllocator.newInstance(clazz);
+      return (obj == null)
+          ? unsafeAllocator.newInstance(clazz)
+          : obj;
+    } catch (Exception e) {
+      throw new RuntimeException(("Unable to invoke no-args constructor for " + typeOfT + ". "
+          + "Register an InstanceCreator with Gson for this type may fix this problem."), e);
     }
-    return null;
   }
 
-  /**
-   * Use this methods to register an {@link InstanceCreator} for a new type.
-   *
-   * @param <T> the type of class to be mapped with its "creator"
-   * @param typeOfT the instance type that will be created
-   * @param creator the {@link InstanceCreator} instance to register
-   */
-  <T> void register(Type typeOfT, InstanceCreator<? extends T> creator) {
-    if (instanceCreatorMap.hasSpecificHandlerFor(typeOfT)) {
-      log.log(Level.WARNING, "Overriding the existing InstanceCreator for {0}", typeOfT);
-    }
-    instanceCreatorMap.register(typeOfT, creator);
-  }
-  
   @Override
   public String toString() {
     return instanceCreatorMap.toString();

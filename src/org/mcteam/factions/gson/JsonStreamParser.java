@@ -26,7 +26,6 @@ import org.mcteam.factions.gson.stream.JsonReader;
 import org.mcteam.factions.gson.stream.JsonToken;
 import org.mcteam.factions.gson.stream.MalformedJsonException;
 
-
 /**
  * A streaming parser that allows reading of multiple {@link JsonElement}s from the specified reader
  * asynchronously.

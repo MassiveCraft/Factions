@@ -16,6 +16,8 @@
 
 package org.mcteam.factions.gson;
 
+import org.mcteam.factions.gson.internal.$Gson$Preconditions;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.util.Collection;
@@ -62,9 +64,8 @@ final class ModifyFirstLetterNamingPolicy extends RecursiveFieldNamingPolicy {
    * @param modifier the type of modification that should be performed
    * @throws IllegalArgumentException if {@code modifier} is null
    */
-  public ModifyFirstLetterNamingPolicy(LetterModifier modifier) {
-    Preconditions.checkNotNull(modifier);
-    this.letterModifier = modifier;
+  ModifyFirstLetterNamingPolicy(LetterModifier modifier) {
+    this.letterModifier = $Gson$Preconditions.checkNotNull(modifier);
   }
 
   @Override
@@ -100,8 +101,8 @@ final class ModifyFirstLetterNamingPolicy extends RecursiveFieldNamingPolicy {
   }
 
   private String modifyString(char firstCharacter, String srcString, int indexOfSubstring) {
-    return indexOfSubstring < srcString.length() ?
-        firstCharacter + srcString.substring(indexOfSubstring)
+    return (indexOfSubstring < srcString.length())
+        ? firstCharacter + srcString.substring(indexOfSubstring)
         : String.valueOf(firstCharacter);
   }
 }

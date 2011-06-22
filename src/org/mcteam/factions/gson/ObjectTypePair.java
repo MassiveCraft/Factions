@@ -15,6 +15,7 @@
  */
 package org.mcteam.factions.gson;
 
+
 import java.lang.reflect.Type;
 
 /**
@@ -55,7 +56,7 @@ final class ObjectTypePair {
     HANDLER handler = null;
     if (!preserveType && obj != null) {
       // First try looking up the handler for the actual type
-      ObjectTypePair moreSpecificType = toMoreSpecificType();    
+      ObjectTypePair moreSpecificType = toMoreSpecificType();
       handler = handlers.getHandlerFor(moreSpecificType.type);
       if (handler != null) {
         return new Pair<HANDLER, ObjectTypePair>(handler, moreSpecificType);
@@ -66,7 +67,7 @@ final class ObjectTypePair {
     return handler == null ? null : new Pair<HANDLER, ObjectTypePair>(handler, this);
   }
 
-  ObjectTypePair toMoreSpecificType() {    
+  ObjectTypePair toMoreSpecificType() {
     if (preserveType || obj == null) {
       return this;
     }
@@ -77,9 +78,16 @@ final class ObjectTypePair {
     return new ObjectTypePair(obj, actualType, preserveType);
   }
 
+  Type getMoreSpecificType() {
+    if (preserveType || obj == null) {
+      return type;
+    }
+    return getActualTypeIfMoreSpecific(type, obj.getClass());
+  }
+
   // This takes care of situations where the field was declared as an Object, but the
   // actual value contains something more specific. See Issue 54.
-  // TODO (inder): This solution will not work if the field is of a generic type, but 
+  // TODO (inder): This solution will not work if the field is of a generic type, but
   // the actual object is of a raw type (which is a sub-class of the generic type).
   static Type getActualTypeIfMoreSpecific(Type type, Class<?> actualClass) {
     if (type instanceof Class<?>) {
@@ -89,7 +97,7 @@ final class ObjectTypePair {
       }
       if (type == Object.class) {
         type = actualClass;
-      } 
+      }
     }
     return type;
   }

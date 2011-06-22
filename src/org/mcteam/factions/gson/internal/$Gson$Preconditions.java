@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.mcteam.factions.gson;
+package org.mcteam.factions.gson.internal;
 
 /**
  * A simple utility class used to check method Preconditions.
@@ -29,20 +29,23 @@ package org.mcteam.factions.gson;
  * @author Inderjeet Singh
  * @author Joel Leitch
  */
-final class Preconditions {
-  public static void checkNotNull(Object obj) {
-    checkArgument(obj != null);
+public final class $Gson$Preconditions {
+  public static <T> T checkNotNull(T obj) {
+    if (obj == null) {
+      throw new NullPointerException();
+    }
+    return obj;
   }
 
   public static void checkArgument(boolean condition) {
     if (!condition) {
-      throw new IllegalArgumentException("condition failed: " + condition);
+      throw new IllegalArgumentException();
     }
   }
-  
+
   public static void checkState(boolean condition) {
     if (!condition) {
-      throw new IllegalArgumentException("condition failed: " + condition);
+      throw new IllegalStateException();
     }
   }
 }
