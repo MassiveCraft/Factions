@@ -67,6 +67,7 @@ public class Conf {
 	public static double homesTeleportAllowedEnemyDistance = 32;
 	
 	public static boolean disablePVPForFactionlessPlayers = false;
+	public static int noPVPDamageToOthersForXSecondsAfterLogin = 3;
 	
 	public static boolean claimsMustBeConnected = false;
 	

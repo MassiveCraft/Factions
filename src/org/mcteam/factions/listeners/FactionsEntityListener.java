@@ -169,6 +169,11 @@ public class FactionsEntityListener extends EntityListener {
 			return false;
 		}
 		
+		if (attacker.hasLoginPvpDisabled()) {
+			attacker.sendMessage("You can't hurt other players for " + Conf.noPVPDamageToOthersForXSecondsAfterLogin + " seconds after logging in.");
+			return false;
+		}
+		
 		Faction locFaction = Board.getFactionAt(new FLocation(attacker));
 		
 		// so we know from above that the defender isn't in a safezone... what about the attacker, sneaky dog that he might be?

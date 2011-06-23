@@ -47,6 +47,7 @@ public class FPlayer {
 	private transient boolean autoClaimEnabled;
 	private transient boolean autoSafeZoneEnabled;
 	private transient boolean autoWarZoneEnabled;
+	private transient boolean loginPvpDisabled; 
 	private boolean factionChatting; 
 	
 	// -------------------------------------------- //
@@ -63,6 +64,7 @@ public class FPlayer {
 		this.autoClaimEnabled = false;
 		this.autoSafeZoneEnabled = false;
 		this.autoWarZoneEnabled = false;
+		this.loginPvpDisabled = (Conf.noPVPDamageToOthersForXSecondsAfterLogin > 0) ? true : false;
 	}
 	
 	public void resetFactionData() {
@@ -177,6 +179,9 @@ public class FPlayer {
 	public void setLastLoginTime(long lastLoginTime) {
 		this.lastLoginTime = lastLoginTime;
 		this.lastPowerUpdateTime = lastLoginTime;
+		if (Conf.noPVPDamageToOthersForXSecondsAfterLogin > 0) {
+			this.loginPvpDisabled = true;
+		}
 	}
 
 	public boolean isMapAutoUpdating() {
@@ -185,6 +190,17 @@ public class FPlayer {
 
 	public void setMapAutoUpdating(boolean mapAutoUpdating) {
 		this.mapAutoUpdating = mapAutoUpdating;
+	}
+
+	public boolean hasLoginPvpDisabled() {
+		if (!loginPvpDisabled) {
+			return false;
+		}
+		if (this.lastLoginTime + (Conf.noPVPDamageToOthersForXSecondsAfterLogin * 1000) < System.currentTimeMillis()) {
+			this.loginPvpDisabled = false;
+			return false;
+		}
+		return true;
 	}
 	
 	public FLocation getLastStoodAt() {
@@ -490,7 +506,7 @@ public class FPlayer {
 			return false;
 		}
 
-		if (Conf.claimsMustBeConnected && !Board.isConnectedLocation(flocation, myFaction)) {
+		if (Conf.claimsMustBeConnected && myFaction.getLandRounded() > 0 && !Board.isConnectedLocation(flocation, myFaction)) {
 			sendMessage("You can only claim additional land which is connected to your first claim!");
 			return false;
 		}
