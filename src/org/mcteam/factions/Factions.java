@@ -119,6 +119,7 @@ public class Factions extends JavaPlugin {
 		setupPermissions();
 		
 		// preload some chat plugins if they're on the server to prevent potential conflicts
+		// probably no longer necessary with softdepend list added to plugin.yml, but...
 		if (Conf.preloadChatPlugins) {
 			preloadPlugin("Essentials");
 			preloadPlugin("EssentialsChat");
@@ -200,7 +201,7 @@ public class Factions extends JavaPlugin {
 
 	// Does player have Faction Chat enabled? If so, chat plugins should preferably not do channels,
 	// local chat, or anything else which targets individual recipients, so Faction Chat can be done
-	public static boolean isPlayerFactionChatting(Player player) {
+	public boolean isPlayerFactionChatting(Player player) {
 		if (player == null)
 			return false;
 		FPlayer me = FPlayer.get(player);
@@ -210,17 +211,22 @@ public class Factions extends JavaPlugin {
 	}
 
 	// If another plugin is handling insertion of chat tags, this should be used to notify Factions
-	public static void handleFactionTagExternally(boolean notByFactions) {
+	public void handleFactionTagExternally(boolean notByFactions) {
 		Conf.chatTagHandledByAnotherPlugin = notByFactions;
 	}
 
+	// Is this chat message actually a Factions command, and thus should be left alone by other plugins?
+	public boolean isFactionsCommand(String check) {
+		return ((check.startsWith(instance.getBaseCommand()+" ") || check.equals(instance.getBaseCommand())) && Conf.allowNoSlashCommand);
+	}
+
 	// Get a player's faction tag (faction name), mainly for usage by chat plugins for local/channel chat
-	public static String getPlayerFactionTag(Player player) {
+	public String getPlayerFactionTag(Player player) {
 		return getPlayerFactionTagRelation(player, null);
 	}
 
 	// Same as above, but with relation (enemy/neutral/ally) coloring potentially added to the tag
-	public static String getPlayerFactionTagRelation(Player speaker, Player listener) {
+	public String getPlayerFactionTagRelation(Player speaker, Player listener) {
 		if (speaker == null)
 			return "";
 
@@ -241,7 +247,7 @@ public class Factions extends JavaPlugin {
 	}
 
 	// Get a player's title within their faction, mainly for usage by chat plugins for local/channel chat
-	public static String getPlayerTitle(Player player) {
+	public String getPlayerTitle(Player player) {
 		if (player == null)
 			return "";
 
