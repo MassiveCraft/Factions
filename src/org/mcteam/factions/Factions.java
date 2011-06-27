@@ -15,6 +15,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
+import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -182,6 +183,17 @@ public class Factions extends JavaPlugin {
 	// Functions for other plugins to hook into
 	// -------------------------------------------- //
 
+	// If another plugin is handling insertion of chat tags, this should be used to notify Factions
+	public void handleFactionTagExternally(boolean notByFactions) {
+		Conf.chatTagHandledByAnotherPlugin = notByFactions;
+	}
+
+	// Simply put, should this chat event be left for Factions to handle? For now, that means players with Faction Chat
+	// enabled or use of the Factions f command without a slash; combination of isPlayerFactionChatting() and isFactionsCommand()
+	public boolean ShouldLetFactionsHandleThisChat(PlayerChatEvent event) {
+		return (isPlayerFactionChatting(event.getPlayer()) || isFactionsCommand(event.getMessage()));
+	}
+
 	// Does player have Faction Chat enabled? If so, chat plugins should preferably not do channels,
 	// local chat, or anything else which targets individual recipients, so Faction Chat can be done
 	public boolean isPlayerFactionChatting(Player player) {
@@ -191,11 +203,6 @@ public class Factions extends JavaPlugin {
 		if (me == null)
 			return false;
 		return me.isFactionChatting();
-	}
-
-	// If another plugin is handling insertion of chat tags, this should be used to notify Factions
-	public void handleFactionTagExternally(boolean notByFactions) {
-		Conf.chatTagHandledByAnotherPlugin = notByFactions;
 	}
 
 	// Is this chat message actually a Factions command, and thus should be left alone by other plugins?
