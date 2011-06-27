@@ -118,14 +118,7 @@ public class Factions extends JavaPlugin {
 		
 		setupPermissions();
 		
-		// preload some chat plugins if they're on the server to prevent potential conflicts
-		// probably no longer necessary with softdepend list added to plugin.yml, but...
-		if (Conf.preloadChatPlugins) {
-			preloadPlugin("Essentials");
-			preloadPlugin("EssentialsChat");
-			preloadPlugin("HeroChat");
-			preloadPlugin("iChat");
-		}
+		// preload could apparently cause issues; removed since "softdepend" is now available
 		
 		// Register events
 		PluginManager pm = this.getServer().getPluginManager();
@@ -182,16 +175,6 @@ public class Factions extends JavaPlugin {
 			Factions.log("Found and will use plugin "+((Permissions)test).getDescription().getFullName());
 		} else {
 			Factions.log("Permission system not detected, defaulting to OP");
-		}
-	}
-	
-	private void preloadPlugin(String pluginName) {
-		PluginManager pm = this.getServer().getPluginManager();
-		Plugin prePlug = pm.getPlugin(pluginName);
-		
-		if (prePlug != null && !pm.isPluginEnabled(prePlug)) {
-			Factions.log("Preloading \"" + pluginName + "\" plugin to prevent conflicts.");
-			pm.enablePlugin(prePlug);
 		}
 	}
 
