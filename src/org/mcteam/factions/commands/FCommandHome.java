@@ -29,6 +29,11 @@ public class FCommandHome extends FBaseCommand {
 			me.sendMessage("Sorry, Faction homes are disabled on this server.");
 			return;
 		}
+
+		if ( ! Conf.homesTeleportCommandEnabled) {
+			me.sendMessage("Sorry, the ability to teleport to Faction homes is disabled on this server.");
+			return;
+		}
 		
 		Faction myFaction = me.getFaction();
 		
