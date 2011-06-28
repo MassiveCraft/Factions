@@ -3,8 +3,8 @@
 /.project
 /.settings
 
-# netbeans
-/nbproject
+# NetBeans private folder
+/nbproject/private
 
 # vim
 .*.sw[a-p]
