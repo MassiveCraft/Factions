@@ -183,6 +183,11 @@ public class Factions extends JavaPlugin {
 	// Functions for other plugins to hook into
 	// -------------------------------------------- //
 
+	// This value will be updated whenever new hooks are added
+	public int hookSupportVersion() {
+		return 1;
+	}
+
 	// If another plugin is handling insertion of chat tags, this should be used to notify Factions
 	public void handleFactionTagExternally(boolean notByFactions) {
 		Conf.chatTagHandledByAnotherPlugin = notByFactions;
@@ -191,6 +196,8 @@ public class Factions extends JavaPlugin {
 	// Simply put, should this chat event be left for Factions to handle? For now, that means players with Faction Chat
 	// enabled or use of the Factions f command without a slash; combination of isPlayerFactionChatting() and isFactionsCommand()
 	public boolean ShouldLetFactionsHandleThisChat(PlayerChatEvent event) {
+		if (event == null)
+			return false;
 		return (isPlayerFactionChatting(event.getPlayer()) || isFactionsCommand(event.getMessage()));
 	}
 
@@ -207,6 +214,8 @@ public class Factions extends JavaPlugin {
 
 	// Is this chat message actually a Factions command, and thus should be left alone by other plugins?
 	public boolean isFactionsCommand(String check) {
+		if (check == null)
+			return false;
 		return ((check.startsWith(instance.getBaseCommand()+" ") || check.equals(instance.getBaseCommand())) && Conf.allowNoSlashCommand);
 	}
 
