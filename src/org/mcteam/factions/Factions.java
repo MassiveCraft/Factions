@@ -195,7 +195,7 @@ public class Factions extends JavaPlugin {
 
 	// Simply put, should this chat event be left for Factions to handle? For now, that means players with Faction Chat
 	// enabled or use of the Factions f command without a slash; combination of isPlayerFactionChatting() and isFactionsCommand()
-	public boolean ShouldLetFactionsHandleThisChat(PlayerChatEvent event) {
+	public boolean shouldLetFactionsHandleThisChat(PlayerChatEvent event) {
 		if (event == null)
 			return false;
 		return (isPlayerFactionChatting(event.getPlayer()) || isFactionsCommand(event.getMessage()));
@@ -214,9 +214,9 @@ public class Factions extends JavaPlugin {
 
 	// Is this chat message actually a Factions command, and thus should be left alone by other plugins?
 	public boolean isFactionsCommand(String check) {
-		if (check == null)
+		if (check == null || check.isEmpty())
 			return false;
-		return ((check.startsWith(instance.getBaseCommand()+" ") || check.equals(instance.getBaseCommand())) && Conf.allowNoSlashCommand);
+		return (Conf.allowNoSlashCommand && (check.startsWith(instance.getBaseCommand()+" ") || check.equals(instance.getBaseCommand())));
 	}
 
 	// Get a player's faction tag (faction name), mainly for usage by chat plugins for local/channel chat
@@ -226,23 +226,29 @@ public class Factions extends JavaPlugin {
 
 	// Same as above, but with relation (enemy/neutral/ally) coloring potentially added to the tag
 	public String getPlayerFactionTagRelation(Player speaker, Player listener) {
+		String tag = "~";
+
 		if (speaker == null)
-			return "";
+			return tag;
 
 		FPlayer me = FPlayer.get(speaker);
 		if (me == null)
-			return "";
+			return tag;
 
 		// if listener isn't set, or config option is disabled, give back uncolored tag
-		if (listener == null || !Conf.chatTagRelationColored)
-			return me.getChatTag().trim();
+		if (listener == null || !Conf.chatTagRelationColored) {
+			tag = me.getChatTag().trim();
+		} else {
+			FPlayer you = FPlayer.get(listener);
+			if (you == null)
+				tag = me.getChatTag().trim();
+			else  // everything checks out, give the colored tag
+				tag = me.getChatTag(you).trim();
+		}
+		if (tag.isEmpty())
+			tag = "~";
 
-		FPlayer you = FPlayer.get(listener);
-		if (you == null)
-			return me.getChatTag().trim();
-
-		// everything checks out, give the colored tag
-		return me.getChatTag(you).trim();
+		return tag;
 	}
 
 	// Get a player's title within their faction, mainly for usage by chat plugins for local/channel chat

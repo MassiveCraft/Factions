@@ -57,7 +57,7 @@ public class FactionsPlayerListener extends PlayerListener{
 		if (me.isFactionChatting()) {
 			String message = String.format(Conf.factionChatFormat, me.getNameAndRelevant(me), msg);
 			me.getFaction().sendMessage(message);
-			Logger.getLogger("Minecraft").info("FactionChat "+me.getFaction().getTag()+": "+message);
+			Logger.getLogger("Minecraft").info(ChatColor.stripColor("FactionChat "+me.getFaction().getTag()+": "+message));
 			event.setCancelled(true);
 			return;
 		}
