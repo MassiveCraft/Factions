@@ -120,6 +120,19 @@ public class Board {
 		return getFactionCoordCount(faction.getId());
 	}
 	
+	public static int getFactionCoordCountInWorld(Faction faction, String worldName) {
+		int factionId = faction.getId();
+		int ret = 0;
+		Iterator<Entry<FLocation, Integer>> iter = flocationIds.entrySet().iterator();
+		while (iter.hasNext()) {
+			Entry<FLocation, Integer> entry = iter.next();
+			if (entry.getValue() == factionId && entry.getKey().getWorldName().equals(worldName)) {
+				ret += 1;
+			}
+		}
+		return ret;
+	}
+	
 	//----------------------------------------------//
 	// Map generation
 	//----------------------------------------------//

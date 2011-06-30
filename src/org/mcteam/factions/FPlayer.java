@@ -506,7 +506,7 @@ public class FPlayer {
 			return false;
 		}
 
-		if (Conf.claimsMustBeConnected && myFaction.getLandRounded() > 0 && !Board.isConnectedLocation(flocation, myFaction)) {
+		if (Conf.claimsMustBeConnected && myFaction.getLandRoundedInWorld(flocation.getWorldName()) > 0 && !Board.isConnectedLocation(flocation, myFaction)) {
 			sendMessage("You can only claim additional land which is connected to your first claim!");
 			return false;
 		}

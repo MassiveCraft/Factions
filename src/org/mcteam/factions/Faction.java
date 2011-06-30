@@ -225,6 +225,10 @@ public class Faction {
 		return Board.getFactionCoordCount(this);
 	}
 	
+	public int getLandRoundedInWorld(String worldName) {
+		return Board.getFactionCoordCountInWorld(this, worldName);
+	}
+	
 	public boolean hasLandInflation() {
 		return this.getLandRounded() > this.getPowerRounded();
 	}
