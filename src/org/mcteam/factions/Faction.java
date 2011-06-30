@@ -95,11 +95,22 @@ public class Faction {
 	}
 
 	public Location getHome() {
+		confirmValidHome();
 		return home;
 	}
 	
 	public boolean hasHome() {
+		confirmValidHome();
 		return this.home != null;
+	}
+
+	public void confirmValidHome() {
+		if (!Conf.homesMustBeInClaimedTerritory || Board.getFactionAt(new FLocation(this.home)) == this) {
+			return;
+		}
+
+		sendMessage("Your faction home has been un-set since it is no longer in your territory.");
+		this.home = null;
 	}
 	
 	// -------------------------------
