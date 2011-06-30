@@ -189,11 +189,11 @@ public class FBaseCommand {
 			return faction;
 		}
 		
-		if (defaultToMine) {
+		if (defaultToMine && sender instanceof Player) {
 			return me.getFaction();
 		}
 		
-		me.sendMessage(Conf.colorSystem+"No faction or player \""+factionName+"\" was found");
+		sendMessage(Conf.colorSystem+"No faction or player \""+factionName+"\" was found");
 		return null;
 	}
 	

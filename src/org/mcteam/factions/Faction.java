@@ -70,10 +70,16 @@ public class Faction {
 		return prefix+this.tag;
 	}
 	public String getTag(Faction otherFaction) {
-		return this.getTag(otherFaction.getRelationColor(this).toString());
+		if (otherFaction == null)
+			return getTag();
+		else
+			return this.getTag(otherFaction.getRelationColor(this).toString());
 	}
 	public String getTag(FPlayer otherFplayer) {
-		return this.getTag(otherFplayer.getRelationColor(this).toString());
+		if (otherFplayer == null)
+			return getTag();
+		else
+			return this.getTag(otherFplayer.getRelationColor(this).toString());
 	}
 	public void setTag(String str) {
 		if (Conf.factionTagForceUpperCase) {
@@ -182,7 +188,10 @@ public class Faction {
 	}
 	
 	public Relation getRelation(FPlayer fplayer) {
-		return getRelation(fplayer.getFaction());
+		if (fplayer == null)
+			return Relation.NEUTRAL;
+		else
+			return getRelation(fplayer.getFaction());
 	}
 	
 	//----------------------------------------------//

@@ -3,6 +3,7 @@ package org.mcteam.factions.commands;
 import java.util.Collection;
 
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.mcteam.factions.Conf;
 import org.mcteam.factions.FPlayer;
 import org.mcteam.factions.Faction;
@@ -16,6 +17,8 @@ public class FCommandShow extends FBaseCommand {
 	public FCommandShow() {
 		aliases.add("show");
 		aliases.add("who");
+		
+		senderMustBePlayer = false;
 		
 		optionalParameters.add("faction tag");
 		
@@ -32,8 +35,15 @@ public class FCommandShow extends FBaseCommand {
 		Faction faction;
 		if (parameters.size() > 0) {
 			faction = findFaction(parameters.get(0), true);
+		} else if (!(sender instanceof Player)) {
+			sendMessage("From the command line, you must specify a faction tag (f who <faction tag>).");
+			return;
 		} else {
 			faction = me.getFaction();
+		}
+
+		if (faction == null) {
+			return;
 		}
 		
 		Collection<FPlayer> admins = faction.getFPlayersWhereRole(Role.ADMIN);

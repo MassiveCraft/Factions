@@ -9,6 +9,8 @@ public class FCommandDisband extends FBaseCommand {
 	public FCommandDisband() {
 		aliases.add("disband");
 		
+		senderMustBePlayer = false;
+		
 		requiredParameters.add("faction tag");
 		
 		helpDescription = "Disband a faction";
@@ -25,10 +27,10 @@ public class FCommandDisband extends FBaseCommand {
 			Faction faction = Faction.findByTag(parameters.get(0));
 			
 			if( faction != null && faction.getId() > 0 ) {
-				me.sendMessage("Faction " + faction.getTag() + " got disbanded");
+				sendMessage("Faction " + faction.getTag() + " got disbanded");
 				Faction.delete( faction.getId() );
 			} else {
-				me.sendMessage("Faction " + parameters.get(0) + "not found");
+				sendMessage("Faction " + parameters.get(0) + "not found");
 			}
 		}
 	}

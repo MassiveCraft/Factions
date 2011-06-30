@@ -16,6 +16,8 @@ public class FCommandList extends FBaseCommand {
 		aliases.add("list");
 		aliases.add("ls");
 		
+		senderMustBePlayer = false;
+		
 		optionalParameters.add("page");
 		
 		helpDescription = "Show a list of the factions";
@@ -84,7 +86,7 @@ public class FCommandList extends FBaseCommand {
 		for (int pos = page * 9; pos < maxPos; pos++) {
 			Faction faction = FactionList.get(pos);
 			if (faction.getId() == 0) {
-				sendMessage(faction.getTag(me)+Conf.colorSystem+" "+faction.getFPlayersWhereOnline(true).size() + " online");
+				sendMessage("Factionless"+Conf.colorSystem+" "+faction.getFPlayersWhereOnline(true).size() + " online");
 			} else {
 				sendMessage(faction.getTag(me)+Conf.colorSystem+" "+faction.getFPlayersWhereOnline(true).size()+"/"+faction.getFPlayers().size()+" online, "+faction.getLandRounded()+"/"+faction.getPowerRounded()+"/"+faction.getPowerMaxRounded());
 			}
