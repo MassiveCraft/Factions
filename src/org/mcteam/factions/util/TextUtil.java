@@ -12,7 +12,11 @@ public class TextUtil {
 		int pivot = line.length() / 2;
 		int eatLeft = center.length() / 2;
 		int eatRight = center.length() - eatLeft;
-		return line.substring(0, pivot - eatLeft) + center + line.substring(pivot + eatRight);
+
+		if (eatLeft < pivot)
+			return line.substring(0, pivot - eatLeft) + center + line.substring(pivot + eatRight);
+		else
+			return center;
 	}
 	
 	public static String repeat(String s, int times) {
