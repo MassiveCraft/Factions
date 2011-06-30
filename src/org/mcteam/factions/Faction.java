@@ -111,7 +111,7 @@ public class Faction {
 	}
 
 	public void confirmValidHome() {
-		if (!Conf.homesMustBeInClaimedTerritory || Board.getFactionAt(new FLocation(this.home)) == this) {
+		if (!Conf.homesMustBeInClaimedTerritory || this.home == null || Board.getFactionAt(new FLocation(this.home)) == this) {
 			return;
 		}
 
