@@ -334,7 +334,9 @@ public class FactionsPlayerListener extends PlayerListener{
 	public void onPlayerRespawn(PlayerRespawnEvent event) {
 		FPlayer me = FPlayer.get(event.getPlayer());
 		Location home = me.getFaction().getHome();
-		if (Conf.homesEnabled && Conf.homesTeleportToOnDeath && home != null && !Conf.worldsNoPowerLoss.contains(event.getPlayer().getWorld().getName())) {
+		if (	Conf.homesEnabled && Conf.homesTeleportToOnDeath && home != null &&
+				(Conf.homesRespawnFromNoPowerLossWorlds || !Conf.worldsNoPowerLoss.contains(event.getPlayer().getWorld().getName()))
+			) {
 			event.setRespawnLocation(home);
 		}
 	}
