@@ -53,7 +53,7 @@ public class FBaseCommand {
 			return;
 		}
 		
-		if (this.senderMustBePlayer) {
+		if (sender instanceof Player) {
 			this.player = (Player)sender;
 			this.me = FPlayer.get(this.player);
 		}
