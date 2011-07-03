@@ -150,7 +150,7 @@ public class FactionsPlayerListener extends PlayerListener{
 		
 		// Did we change coord?
 		FLocation from = me.getLastStoodAt();
-		FLocation to = new FLocation(event.getTo());
+		FLocation to = new FLocation(event.getPlayer().getLocation());
 		
 		if (from.equals(to)) {
 			return;
