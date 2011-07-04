@@ -151,8 +151,6 @@ public class FPlayer {
 	}
 
 	public boolean autoSafeZoneEnabled() {
-		if (this.factionId == 0)
-			return false;
 		return autoSafeZoneEnabled;
 	}
 	public void enableAutoSafeZone(boolean enabled) {
@@ -164,8 +162,6 @@ public class FPlayer {
 	}
 
 	public boolean autoWarZoneEnabled() {
-		if (this.factionId == 0)
-			return false;
 		return autoWarZoneEnabled;
 	}
 	public void enableAutoWarZone(boolean enabled) {
