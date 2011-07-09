@@ -8,7 +8,7 @@ import org.mcteam.factions.util.DiscUtil;
 
 
 public class Conf {
-	public static transient File file = new File(Factions.instance.getDataFolder(), "conf.json");
+	public static final transient File file = new File(Factions.instance.getDataFolder(), "conf.json");
 	
 	// Colors
 	public static ChatColor colorMember = ChatColor.GREEN;
@@ -124,6 +124,7 @@ public class Conf {
 		territoryProtectedMaterials.add(Material.DISPENSER);
 		territoryProtectedMaterials.add(Material.CHEST);
 		territoryProtectedMaterials.add(Material.FURNACE);
+		territoryProtectedMaterials.add(Material.BURNING_FURNACE);
 
 		territoryDenyUseageMaterials.add(Material.FLINT_AND_STEEL);
 		territoryDenyUseageMaterials.add(Material.BUCKET);
@@ -135,6 +136,7 @@ public class Conf {
 		territoryProtectedMaterialsWhenOffline.add(Material.DISPENSER);
 		territoryProtectedMaterialsWhenOffline.add(Material.CHEST);
 		territoryProtectedMaterialsWhenOffline.add(Material.FURNACE);
+		territoryProtectedMaterialsWhenOffline.add(Material.BURNING_FURNACE);
 
 		territoryDenyUseageMaterialsWhenOffline.add(Material.FLINT_AND_STEEL);
 		territoryDenyUseageMaterialsWhenOffline.add(Material.BUCKET);
