@@ -7,7 +7,6 @@ import org.bukkit.entity.Player;
 import org.mcteam.factions.Conf;
 import org.mcteam.factions.FPlayer;
 import org.mcteam.factions.Faction;
-import org.mcteam.factions.struct.Relation;
 import org.mcteam.factions.struct.Role;
 import org.mcteam.factions.util.TextUtil;
 
@@ -73,9 +72,9 @@ public class FCommandShow extends FBaseCommand {
 				continue;
 			}
 			listpart = otherFaction.getTag(me)+Conf.colorSystem+", ";
-			if (otherFaction.getRelation(faction) == Relation.ALLY) {
+			if (otherFaction.getRelation(faction).isAlly()) {
 				allyList += listpart;
-			} else if (otherFaction.getRelation(faction) == Relation.ENEMY) {
+			} else if (otherFaction.getRelation(faction).isEnemy()) {
 				enemyList += listpart;
 			}
 		}

@@ -23,6 +23,22 @@ public enum Relation {
 		return this.nicename;
 	}
 	
+	public boolean isMember() {
+		return this == Relation.MEMBER;
+	}
+	
+	public boolean isAlly() {
+		return this == Relation.ALLY;
+	}
+	
+	public boolean isNeutral() {
+		return this == Relation.NEUTRAL;
+	}
+	
+	public boolean isEnemy() {
+		return this == Relation.ENEMY;
+	}
+	
 	public ChatColor getColor() {
 		if (this == Relation.MEMBER) {
 			return Conf.colorMember;

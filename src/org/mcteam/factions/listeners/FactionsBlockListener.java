@@ -88,13 +88,17 @@ public class FactionsBlockListener extends BlockListener {
 			me.sendMessage("You can't "+action+" in a war zone.");
 			return false;
 		}
-		
+
 		Faction myFaction = me.getFaction();
-		
+		boolean areEnemies = myFaction.getRelation(otherFaction).isEnemy();
+
 		// Cancel if we are not in our own territory
 		if (myFaction != otherFaction) {
 			boolean online = otherFaction.hasPlayersOnline();
-			if ((online && Conf.territoryDenyBuild) || (!online && Conf.territoryDenyBuildWhenOffline)) {
+			if (
+				   (online && (areEnemies ? Conf.territoryEnemyDenyBuild : Conf.territoryDenyBuild))
+				|| (!online && (areEnemies ? Conf.territoryEnemyDenyBuildWhenOffline : Conf.territoryDenyBuildWhenOffline))
+				) {
 				me.sendMessage("You can't "+action+" in the territory of "+otherFaction.getTag(myFaction));
 				return false;
 			}

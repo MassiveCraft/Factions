@@ -193,13 +193,13 @@ public class FactionsEntityListener extends EntityListener {
 		}
 		
 		// You can never hurt faction members or allies
-		if (relation == Relation.MEMBER || relation == Relation.ALLY) {
+		if (relation.isMember() || relation.isAlly()) {
 			attacker.sendMessage(Conf.colorSystem+"You can't hurt "+defender.getNameAndRelevant(attacker));
 			return false;
 		}
 		
 		// You can not hurt neutrals in their own territory.
-		if (relation == Relation.NEUTRAL && defender.isInOwnTerritory()) {
+		if (relation.isNeutral() && defender.isInOwnTerritory()) {
 			attacker.sendMessage(Conf.colorSystem+"You can't hurt "+relation.getColor()+defender.getNameAndRelevant(attacker)+Conf.colorSystem+" in their own territory.");
 			defender.sendMessage(attacker.getNameAndRelevant(defender)+Conf.colorSystem+" tried to hurt you.");
 			return false;
@@ -319,11 +319,15 @@ public class FactionsEntityListener extends EntityListener {
 		}
 
 		Faction myFaction = me.getFaction();
+		boolean areEnemies = myFaction.getRelation(otherFaction).isEnemy();
 
 		// Cancel if we are not in our own territory
 		if (myFaction != otherFaction) {
 			boolean online = otherFaction.hasPlayersOnline();
-			if ((online && Conf.territoryDenyBuild) || (!online && Conf.territoryDenyBuildWhenOffline)) {
+			if (
+				   (online && (areEnemies ? Conf.territoryEnemyDenyBuild : Conf.territoryDenyBuild))
+				|| (!online && (areEnemies ? Conf.territoryEnemyDenyBuildWhenOffline : Conf.territoryDenyBuildWhenOffline))
+				) {
 				me.sendMessage("You can't "+action+" paintings in the territory of "+otherFaction.getTag(myFaction));
 				return false;
 			}
