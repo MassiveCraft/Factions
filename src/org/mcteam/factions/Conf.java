@@ -65,6 +65,7 @@ public class Conf {
 	public static boolean homesRespawnFromNoPowerLossWorlds = true;
 	public static boolean homesTeleportCommandEnabled = true;
 	public static boolean homesTeleportAllowedFromEnemyTerritory = true;
+	public static boolean homesTeleportAllowedFromDifferentWorld = true;
 	public static double homesTeleportAllowedEnemyDistance = 32;
 	
 	public static boolean disablePVPForFactionlessPlayers = false;
