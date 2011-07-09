@@ -581,8 +581,7 @@ public class FPlayer {
 	
 	public static FPlayer find(String playername) {
 		for (Entry<String, FPlayer> entry : instances.entrySet()) {
-//			if (entry.getKey().equalsIgnoreCase(playername)) {
-			if (entry.getKey().startsWith(playername)) {
+			if (entry.getKey().equalsIgnoreCase(playername) || entry.getKey().startsWith(playername)) {
 				return entry.getValue();
 			}
 		}
