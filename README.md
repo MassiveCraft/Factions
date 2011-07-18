@@ -36,7 +36,7 @@ Note that you may optionally skip the slash and just write
 
 Installing
 ----------
-1. Download the latest release: [https://github.com/oloflarsson/Factions/tree/master/releases](https://github.com/oloflarsson/Factions/tree/master/releases)<br>
+1. Download the latest release: [https://github.com/MassiveCraft/Factions/downloads](https://github.com/MassiveCraft/Factions/downloads)<br>
 1. Put Factions.jar in the plugins folder.
 
 A default config file will be created on the first run.
