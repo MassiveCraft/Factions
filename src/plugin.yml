@@ -7,7 +7,52 @@ softdepend:
   - EssentialsChat
   - HeroChat
   - iChat
+  - LocalAreaChat
 commands:
   f:
     description: All of the Factions commands
     usage: See documentation.
+permissions:
+  factions.*:
+    description: Grants all Factions permissions
+    children:
+      factions.participate: true
+      factions.create: true
+      factions.manageSafeZone: true
+      factions.manageWarZone: true
+      factions.adminBypass: true
+      factions.reload: true
+      factions.saveall: true
+      factions.lock: true
+      factions.disband: true
+      factions.worldOptions: true
+  factions.participate:
+    description: Allows the player to participate in a faction
+    default: true
+  factions.create:
+    description: Allows the player to create a new faction
+    default: true
+  factions.manageSafeZone:
+    description: Allows the player to claim land as a safe zone, and to build/destroy within safe zones
+    default: op
+  factions.manageWarZone:
+    description: Allows the player to claim land as a war zone, and to build/destroy within war zones
+    default: op
+  factions.adminBypass:
+    description: Allows the player to bypass many normal restrictions, and use the bypass command
+    default: op
+  factions.reload:
+    description: Can use the /f reload command to reload data file(s) from disk
+    default: op
+  factions.saveall:
+    description: Can use the /f saveall command to save all data to disk
+    default: op
+  factions.lock:
+    description: Can use the /f lock [on/off] command to temporarily lock the data files from being overwritten
+    default: op
+  factions.disband:
+    description: Can use the /f disband <faction> command to disband any faction
+    default: op
+  factions.worldOptions:
+    description: Can use the /f worldnoclaim and /f worldnopowerloss commands
+    default: op

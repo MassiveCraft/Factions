@@ -268,56 +268,52 @@ public class Factions extends JavaPlugin {
 	// -------------------------------------------- //
 	
 	public static boolean hasPermParticipate(CommandSender sender) {
-		return hasPerm(sender, "factions.participate", false);
+		return hasPerm(sender, "factions.participate");
 	}
 	
 	public static boolean hasPermCreate(CommandSender sender) {
-		return hasPerm(sender, "factions.create", false);
+		return hasPerm(sender, "factions.create");
 	}
 	
 	public static boolean hasPermManageSafeZone(CommandSender sender) {
-		return hasPerm(sender, "factions.manageSafeZone", true);
+		return hasPerm(sender, "factions.manageSafeZone");
 	}
 	
 	public static boolean hasPermManageWarZone(CommandSender sender) {
-		return hasPerm(sender, "factions.manageWarZone", true);
+		return hasPerm(sender, "factions.manageWarZone");
 	}
 
 	public static boolean hasPermAdminBypass(CommandSender sender) {
-		return hasPerm(sender, "factions.adminBypass", true);
+		return hasPerm(sender, "factions.adminBypass");
 	}
 	
 	public static boolean hasPermReload(CommandSender sender) {
-		return hasPerm(sender, "factions.reload", true);
+		return hasPerm(sender, "factions.reload");
 	}
 	
 	public static boolean hasPermSaveAll(CommandSender sender) {
-		return hasPerm(sender, "factions.saveall", true);
+		return hasPerm(sender, "factions.saveall");
 	}
 	
 	public static boolean hasPermLock(CommandSender sender) {
-		return hasPerm(sender, "factions.lock", true);
+		return hasPerm(sender, "factions.lock");
 	}
 	
 	public static boolean hasPermDisband(CommandSender sender) {
-		return hasPerm(sender, "factions.disband", true);
+		return hasPerm(sender, "factions.disband");
 	}
 	
 	public static boolean hasPermWorlds(CommandSender sender) {
-		return hasPerm(sender, "factions.worldOptions", true);
+		return hasPerm(sender, "factions.worldOptions");
 	}
 	
-	private static boolean hasPerm(CommandSender sender, String permNode, boolean fallbackOnlyOp) {
+	private static boolean hasPerm(CommandSender sender, String permNode) {
 		if (Factions.Permissions == null || ! (sender instanceof Player)) {
-			return fallbackOnlyOp == false || sender.isOp();
+			return sender.isOp() || sender.hasPermission(permNode);
 		}
 		
-		if (sender instanceof Player) {
-			Player player = (Player)sender;
-			return Factions.Permissions.has(player, permNode); 
-		}
-		
-		return false;
+		Player player = (Player)sender;
+		return Factions.Permissions.has(player, permNode); 
 	}
 	
 	// -------------------------------------------- //
