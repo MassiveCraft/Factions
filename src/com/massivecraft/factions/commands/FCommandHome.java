@@ -57,7 +57,11 @@ public class FCommandHome extends FBaseCommand {
 		Faction faction = Board.getFactionAt(new FLocation(player.getLocation()));
 		
 		// if player is not in a safe zone or their own faction territory, only allow teleport if no enemies are nearby
-		if (Conf.homesTeleportAllowedEnemyDistance > 0 && ! faction.isSafeZone() && ! me.isInOwnTerritory()) {
+		if (
+				   Conf.homesTeleportAllowedEnemyDistance > 0
+				&& !faction.isSafeZone()
+				&& (!me.isInOwnTerritory() || (me.isInOwnTerritory() && !Conf.homesTeleportIgnoreEnemiesIfInOwnTerritory))
+			) {
 			Location loc = player.getLocation();
 			World w = loc.getWorld();
 			double x = loc.getX();

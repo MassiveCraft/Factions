@@ -68,6 +68,7 @@ public class Conf {
 	public static boolean homesTeleportAllowedFromEnemyTerritory = true;
 	public static boolean homesTeleportAllowedFromDifferentWorld = true;
 	public static double homesTeleportAllowedEnemyDistance = 32;
+	public static boolean homesTeleportIgnoreEnemiesIfInOwnTerritory = true;
 	
 	public static boolean disablePVPForFactionlessPlayers = false;
 	public static int noPVPDamageToOthersForXSecondsAfterLogin = 3;
