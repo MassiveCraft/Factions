@@ -8,8 +8,6 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
-
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -20,15 +18,17 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-
 import com.massivecraft.factions.commands.*;
 import com.massivecraft.factions.gson.Gson;
 import com.massivecraft.factions.gson.GsonBuilder;
 import com.massivecraft.factions.listeners.FactionsBlockListener;
 import com.massivecraft.factions.listeners.FactionsEntityListener;
 import com.massivecraft.factions.listeners.FactionsPlayerListener;
+
 import com.nijiko.permissions.PermissionHandler;
 import com.nijikokun.bukkit.Permissions.Permissions;
+import com.earth2me.essentials.chat.EssentialsChat;
+import com.earth2me.essentials.chat.IEssentialsChatListener;
 
 /**
  * The data is saved to disk every 30min and on plugin disable.
@@ -51,6 +51,7 @@ public class Factions extends JavaPlugin {
 	private final FactionsBlockListener blockListener = new FactionsBlockListener();
 	
 	public static PermissionHandler Permissions;
+	public static EssentialsChat essChat;
 
 	// Commands
 	public List<FBaseCommand> commands = new ArrayList<FBaseCommand>();
@@ -118,6 +119,7 @@ public class Factions extends JavaPlugin {
 		Board.load();
 		
 		setupPermissions();
+		integrateEssentialsChat();
 		
 		// preload could apparently cause issues; removed since "softdepend" is now available
 		
@@ -157,6 +159,7 @@ public class Factions extends JavaPlugin {
 			saveTask = null;
 		}
 		saveAll();
+		unhookEssentialsChat();
 		log("Disabled");
 	}
 
@@ -176,6 +179,34 @@ public class Factions extends JavaPlugin {
 			Factions.log("Found and will use plugin "+((Permissions)test).getDescription().getFullName());
 		} else {
 			Factions.log("Permission system not detected, defaulting to OP");
+		}
+	}
+
+	private void integrateEssentialsChat() {
+		if (essChat != null) {
+			return;
+		}
+
+		Plugin test = this.getServer().getPluginManager().getPlugin("EssentialsChat");
+
+		if (test != null) {
+			essChat = (EssentialsChat)test;
+			essChat.addEssentialsChatListener("Factions", new IEssentialsChatListener() {
+				public boolean shouldHandleThisChat(PlayerChatEvent event)
+				{
+					return shouldLetFactionsHandleThisChat(event);
+				}
+				public String modifyMessage(PlayerChatEvent event, Player target, String message)
+				{
+					return message.replace("{FACTION}", getPlayerFactionTagRelation(event.getPlayer(), target)).replace("{FACTION_TITLE}", getPlayerTitle(event.getPlayer()));
+				}
+			});
+			Factions.log("Found and will integrate chat with "+test.getDescription().getFullName());
+		}
+	}
+	private void unhookEssentialsChat() {
+		if (essChat != null) {
+			essChat.removeEssentialsChatListener("Factions");
 		}
 	}
 
