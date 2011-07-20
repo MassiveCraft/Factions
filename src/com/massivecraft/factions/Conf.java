@@ -73,6 +73,7 @@ public class Conf {
 	public static int noPVPDamageToOthersForXSecondsAfterLogin = 3;
 	
 	public static boolean claimsMustBeConnected = false;
+	public static boolean claimsCanBeUnconnectedIfOwnedByOtherFaction = true;
 	
 	public static double considerFactionsReallyOfflineAfterXMinutes = 0;
 	

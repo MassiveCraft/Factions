@@ -503,8 +503,16 @@ public class FPlayer {
 			return false;
 		}
 
-		if (Conf.claimsMustBeConnected && myFaction.getLandRoundedInWorld(flocation.getWorldName()) > 0 && !Board.isConnectedLocation(flocation, myFaction)) {
-			sendMessage("You can only claim additional land which is connected to your first claim!");
+		if (
+				   Conf.claimsMustBeConnected
+				&& myFaction.getLandRoundedInWorld(flocation.getWorldName()) > 0
+				&& !Board.isConnectedLocation(flocation, myFaction)
+				&& (!Conf.claimsCanBeUnconnectedIfOwnedByOtherFaction || !otherFaction.isNormal())
+			) {
+			if (Conf.claimsCanBeUnconnectedIfOwnedByOtherFaction)
+				sendMessage("You can only claim additional land which is connected to your first claim or controlled by another faction!");
+			else
+				sendMessage("You can only claim additional land which is connected to your first claim!");
 			return false;
 		}
 
