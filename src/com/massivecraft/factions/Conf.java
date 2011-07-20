@@ -134,6 +134,8 @@ public class Conf {
 		territoryProtectedMaterials.add(Material.CHEST);
 		territoryProtectedMaterials.add(Material.FURNACE);
 		territoryProtectedMaterials.add(Material.BURNING_FURNACE);
+		territoryProtectedMaterials.add(Material.DIODE_BLOCK_OFF);
+		territoryProtectedMaterials.add(Material.DIODE_BLOCK_ON);
 
 		territoryDenyUseageMaterials.add(Material.FLINT_AND_STEEL);
 		territoryDenyUseageMaterials.add(Material.BUCKET);
@@ -146,6 +148,8 @@ public class Conf {
 		territoryProtectedMaterialsWhenOffline.add(Material.CHEST);
 		territoryProtectedMaterialsWhenOffline.add(Material.FURNACE);
 		territoryProtectedMaterialsWhenOffline.add(Material.BURNING_FURNACE);
+		territoryProtectedMaterialsWhenOffline.add(Material.DIODE_BLOCK_OFF);
+		territoryProtectedMaterialsWhenOffline.add(Material.DIODE_BLOCK_ON);
 
 		territoryDenyUseageMaterialsWhenOffline.add(Material.FLINT_AND_STEEL);
 		territoryDenyUseageMaterialsWhenOffline.add(Material.BUCKET);
