@@ -1,5 +1,6 @@
 package com.massivecraft.factions.listeners;
 
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -7,6 +8,8 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockDamageEvent;
 import org.bukkit.event.block.BlockListener;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.block.BlockPistonExtendEvent;
+import org.bukkit.event.block.BlockPistonRetractEvent;
 
 import com.massivecraft.factions.Board;
 import com.massivecraft.factions.Conf;
@@ -57,7 +60,93 @@ public class FactionsBlockListener extends BlockListener {
 			event.setCancelled(true);
 		}
 	}
-	
+
+	@Override
+	public void onBlockPistonExtend(BlockPistonExtendEvent event) {
+		if (event.isCancelled() || !Conf.pistonProtectionThroughDenyBuild) {
+			return;
+		}
+
+		Faction pistonFaction = Board.getFactionAt(new FLocation(event.getBlock()));
+
+		// target end-of-the-line empty (air) block which is being pushed into, including if piston itself would extend into air
+		Block targetBlock = event.getBlock().getRelative(event.getDirection(), event.getLength() + 1);
+
+		// if potentially pushing into air in another territory, we need to check it out
+		if (targetBlock.isEmpty() && !canPistonMoveBlock(pistonFaction, targetBlock.getLocation())) {
+			event.setCancelled(true);
+			return;
+		}
+
+		/*
+		 * note that I originally was testing the territory of each affected block, but since I found that pistons can only push
+		 * up to 12 blocks and the width of any territory is 16 blocks, it should be safe (and much more lightweight) to test
+		 * only the final target block as done above
+		 */
+	}
+
+	@Override
+	public void onBlockPistonRetract(BlockPistonRetractEvent event) {
+		// if not a sticky piston, retraction should be fine
+		if (event.isCancelled() || !event.isSticky() || !Conf.pistonProtectionThroughDenyBuild) {
+			return;
+		}
+
+		Location targetLoc = event.getRetractLocation();
+
+		// if potentially retracted block is just air, no worries
+		if (targetLoc.getBlock().isEmpty()) {
+			return;
+		}
+
+		Faction pistonFaction = Board.getFactionAt(new FLocation(event.getBlock()));
+
+		if (!canPistonMoveBlock(pistonFaction, targetLoc)) {
+			event.setCancelled(true);
+			return;
+		}
+	}
+
+	private boolean canPistonMoveBlock(Faction pistonFaction, Location target) {
+
+		Faction otherFaction = Board.getFactionAt(new FLocation(target));
+
+		if (pistonFaction == otherFaction) {
+			return true;
+		}
+
+		if (otherFaction.isNone()) {
+			if (!Conf.wildernessDenyBuild) {
+				return true;
+			}
+			return false;
+		}
+		else if (otherFaction.isSafeZone()) {
+			if (!Conf.safeZoneDenyBuild) {
+				return true;
+			}
+			return false;
+		}
+		else if (otherFaction.isWarZone()) {
+			if (!Conf.warZoneDenyBuild) {
+				return true;
+			}
+			return false;
+		}
+
+		boolean areEnemies = pistonFaction.getRelation(otherFaction).isEnemy();
+		boolean online = otherFaction.hasPlayersOnline();
+
+		if (
+			   (online && (areEnemies ? Conf.territoryEnemyDenyBuild : Conf.territoryDenyBuild))
+			|| (!online && (areEnemies ? Conf.territoryEnemyDenyBuildWhenOffline : Conf.territoryDenyBuildWhenOffline))
+			) {
+			return false;
+		}
+
+		return true;
+	}
+
 	public boolean playerCanBuildDestroyBlock(Player player, Block block, String action) {
 
 		if (Conf.adminBypassPlayers.contains(player.getName())) {

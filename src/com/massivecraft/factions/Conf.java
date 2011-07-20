@@ -109,7 +109,9 @@ public class Conf {
 	public static boolean wildernessBlockFireballs = false;
 	public static boolean wildernessBlockTNT = false;
 	public static boolean wildernessPowerLoss = true;
-	
+
+	public static boolean pistonProtectionThroughDenyBuild = true;
+
 	public static Set<Material> territoryProtectedMaterials = EnumSet.noneOf(Material.class);
 	public static Set<Material> territoryDenyUseageMaterials = EnumSet.noneOf(Material.class);
 	public static Set<Material> territoryProtectedMaterialsWhenOffline = EnumSet.noneOf(Material.class);
