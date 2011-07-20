@@ -26,6 +26,7 @@ permissions:
       factions.lock: true
       factions.disband: true
       factions.worldOptions: true
+      factions.commandDisable.none: true
   factions.participate:
     description: Allows the player to participate in a faction
     default: true
@@ -56,3 +57,126 @@ permissions:
   factions.worldOptions:
     description: Can use the /f worldnoclaim and /f worldnopowerloss commands
     default: op
+  factions.commandDisable.none:
+    description: no commands disabled (ignore all other commandDisable permissions)
+    default: op
+  factions.commandDisable.admin:
+    description: admin command disabled
+    default: false
+  factions.commandDisable.autoclaim:
+    description: autoclaim command disabled
+    default: false
+  factions.commandDisable.autosafe:
+    description: autosafe command disabled
+    default: false
+  factions.commandDisable.autowar:
+    description: autowar command disabled
+    default: false
+  factions.commandDisable.bypass:
+    description: bypass command disabled
+    default: false
+  factions.commandDisable.chat:
+    description: chat command disabled
+    default: false
+  factions.commandDisable.claim:
+    description: claim command disabled
+    default: false
+  factions.commandDisable.create:
+    description: create command disabled
+    default: false
+  factions.commandDisable.deinvite:
+    description: deinvite command disabled
+    default: false
+  factions.commandDisable.desc:
+    description: desc command disabled
+    default: false
+  factions.commandDisable.disband:
+    description: disband command disabled
+    default: false
+  factions.commandDisable.help:
+    description: help command disabled
+    default: false
+  factions.commandDisable.home:
+    description: home command disabled
+    default: false
+  factions.commandDisable.invite:
+    description: invite command disabled
+    default: false
+  factions.commandDisable.join:
+    description: join command disabled
+    default: false
+  factions.commandDisable.kick:
+    description: kick command disabled
+    default: false
+  factions.commandDisable.leave:
+    description: leave command disabled
+    default: false
+  factions.commandDisable.list:
+    description: list command disabled
+    default: false
+  factions.commandDisable.lock:
+    description: lock command disabled
+    default: false
+  factions.commandDisable.map:
+    description: map command disabled
+    default: false
+  factions.commandDisable.mod:
+    description: mod command disabled
+    default: false
+  factions.commandDisable.open:
+    description: open command disabled
+    default: false
+  factions.commandDisable.ally:
+    description: ally command disabled
+    default: false
+  factions.commandDisable.enemy:
+    description: enemy command disabled
+    default: false
+  factions.commandDisable.neutral:
+    description: neutral command disabled
+    default: false
+  factions.commandDisable.reload:
+    description: reload command disabled
+    default: false
+  factions.commandDisable.safeclaim:
+    description: safeclaim command disabled
+    default: false
+  factions.commandDisable.safeunclaimall:
+    description: safeunclaimall command disabled
+    default: false
+  factions.commandDisable.saveall:
+    description: saveall command disabled
+    default: false
+  factions.commandDisable.sethome:
+    description: sethome command disabled
+    default: false
+  factions.commandDisable.show:
+    description: show command disabled
+    default: false
+  factions.commandDisable.tag:
+    description: tag command disabled
+    default: false
+  factions.commandDisable.title:
+    description: title command disabled
+    default: false
+  factions.commandDisable.unclaim:
+    description: unclaim command disabled
+    default: false
+  factions.commandDisable.unclaimall:
+    description: unclaimall command disabled
+    default: false
+  factions.commandDisable.version:
+    description: version command disabled
+    default: false
+  factions.commandDisable.warclaim:
+    description: warclaim command disabled
+    default: false
+  factions.commandDisable.warunclaimall:
+    description: warunclaimall command disabled
+    default: false
+  factions.commandDisable.worldnoclaim:
+    description: worldnoclaim command disabled
+    default: false
+  factions.commandDisable.worldnopowerloss:
+    description: worldnopowerloss command disabled
+    default: false

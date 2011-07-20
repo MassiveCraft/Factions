@@ -87,6 +87,12 @@ public class FBaseCommand {
 			return false;
 		}
 		
+		// make sure player doesn't have their access to the command revoked
+		if (Factions.isCommandDisabled(sender, aliases.get(0))) {
+			sendMessage("You lack the permissions to "+this.helpDescription.toLowerCase()+".");
+			return false;
+		}
+		
 		if (parameters.size() < requiredParameters.size()) {
 			sendMessage("Usage: "+this.getUseageTemplate(false));
 			return false;

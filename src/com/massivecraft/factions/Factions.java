@@ -340,6 +340,10 @@ public class Factions extends JavaPlugin {
 		return hasPerm(sender, "factions.worldOptions");
 	}
 	
+	public static boolean isCommandDisabled(CommandSender sender, String command) {
+		return (hasPerm(sender, "factions.commandDisable."+command) && !hasPerm(sender, "factions.commandDisable.none"));
+	}
+	
 	private static boolean hasPerm(CommandSender sender, String permNode) {
 		if (Factions.Permissions == null || ! (sender instanceof Player)) {
 			return sender.isOp() || sender.hasPermission(permNode);
