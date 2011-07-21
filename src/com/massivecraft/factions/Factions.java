@@ -192,18 +192,23 @@ public class Factions extends JavaPlugin {
 		Plugin test = this.getServer().getPluginManager().getPlugin("EssentialsChat");
 
 		if (test != null) {
-			essChat = (EssentialsChat)test;
-			essChat.addEssentialsChatListener("Factions", new IEssentialsChatListener() {
-				public boolean shouldHandleThisChat(PlayerChatEvent event)
-				{
-					return shouldLetFactionsHandleThisChat(event);
-				}
-				public String modifyMessage(PlayerChatEvent event, Player target, String message)
-				{
-					return message.replace("{FACTION}", getPlayerFactionTagRelation(event.getPlayer(), target)).replace("{FACTION_TITLE}", getPlayerTitle(event.getPlayer()));
-				}
-			});
-			Factions.log("Found and will integrate chat with "+test.getDescription().getFullName());
+			try {
+				essChat = (EssentialsChat)test;
+				essChat.addEssentialsChatListener("Factions", new IEssentialsChatListener() {
+					public boolean shouldHandleThisChat(PlayerChatEvent event)
+					{
+						return shouldLetFactionsHandleThisChat(event);
+					}
+					public String modifyMessage(PlayerChatEvent event, Player target, String message)
+					{
+						return message.replace("{FACTION}", getPlayerFactionTagRelation(event.getPlayer(), target)).replace("{FACTION_TITLE}", getPlayerTitle(event.getPlayer()));
+					}
+				});
+				Factions.log("Found and will integrate chat with "+test.getDescription().getFullName());
+			}
+			catch (NoSuchMethodError ex) {
+				essChat = null;
+			}
 		}
 	}
 	private void unhookEssentialsChat() {
