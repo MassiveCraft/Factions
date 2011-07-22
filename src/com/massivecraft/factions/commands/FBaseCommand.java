@@ -1,6 +1,7 @@
 package com.massivecraft.factions.commands;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.bukkit.command.CommandSender;
@@ -229,15 +230,10 @@ public class FBaseCommand {
 		return false;
 	}
 	
+	public static final List<String> aliasTrue = new ArrayList<String>(Arrays.asList("true", "yes", "y", "ok", "on", "+"));
+	public static final List<String> aliasFalse = new ArrayList<String>(Arrays.asList("false", "no", "n", "off", "-"));
+	
 	public boolean parseBool(String str) {
-		List<String> aliasTrue = new ArrayList<String>();
-		aliasTrue.add("true");
-		aliasTrue.add("yes");
-		aliasTrue.add("y");
-		aliasTrue.add("ok");
-		aliasTrue.add("on");
-		aliasTrue.add("+");
-		
 		return aliasTrue.contains(str.toLowerCase());
 	}
 	

@@ -77,6 +77,7 @@ public class Factions extends JavaPlugin {
 		commands.add(new FCommandBypass());
 		commands.add(new FCommandChat());
 		commands.add(new FCommandClaim());
+		commands.add(new FCommandConfig());
 		commands.add(new FCommandCreate());
 		commands.add(new FCommandDeinvite());
 		commands.add(new FCommandDescription());
@@ -335,6 +336,10 @@ public class Factions extends JavaPlugin {
 	
 	public static boolean hasPermLock(CommandSender sender) {
 		return hasPerm(sender, "factions.lock");
+	}
+	
+	public static boolean hasPermConfigure(CommandSender sender) {
+		return hasPerm(sender, "factions.config");
 	}
 	
 	public static boolean hasPermDisband(CommandSender sender) {

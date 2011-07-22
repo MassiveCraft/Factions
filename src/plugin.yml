@@ -27,6 +27,7 @@ permissions:
       factions.disband: true
       factions.worldOptions: true
       factions.commandDisable.none: true
+      factions.config: true
   factions.participate:
     description: Allows the player to participate in a faction
     default: true
@@ -56,6 +57,9 @@ permissions:
     default: op
   factions.worldOptions:
     description: Can use the /f worldnoclaim and /f worldnopowerloss commands
+    default: op
+  factions.config:
+    description: Can use /f config command to change conf.json options
     default: op
   factions.commandDisable.none:
     description: no commands disabled (ignore all other commandDisable permissions)

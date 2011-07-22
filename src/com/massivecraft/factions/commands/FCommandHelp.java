@@ -147,6 +147,7 @@ public class FCommandHelp extends FBaseCommand {
 		pageLines.add( new FCommandReload().getUseageTemplate() );
 		pageLines.add( new FCommandSaveAll().getUseageTemplate() );
 		pageLines.add( new FCommandVersion().getUseageTemplate() );
+		pageLines.add( new FCommandConfig().getUseageTemplate() );
 		helpPages.add(pageLines);
 	}
 	
