@@ -458,7 +458,7 @@ public class FPlayer {
 	}
 	
 	public boolean attemptClaim(boolean notifyFailure) {
-		// notifyFailure is false if called by auto-claim; not need to notify on every failure for it
+		// notifyFailure is false if called by auto-claim; no need to notify on every failure for it
 		// return value is false on failure, true on success
 
 		Faction myFaction = getFaction();
@@ -505,6 +505,7 @@ public class FPlayer {
 
 		if (
 				   Conf.claimsMustBeConnected
+				&& !Conf.adminBypassPlayers.contains(this.playerName)
 				&& myFaction.getLandRoundedInWorld(flocation.getWorldName()) > 0
 				&& !Board.isConnectedLocation(flocation, myFaction)
 				&& (!Conf.claimsCanBeUnconnectedIfOwnedByOtherFaction || !otherFaction.isNormal())
