@@ -91,7 +91,7 @@ public class FactionsPlayerListener extends PlayerListener{
 			// Why? Because the relations will differ.
 			event.setCancelled(true);
 			
-			for (Player listeningPlayer : Factions.instance.getServer().getOnlinePlayers()) {
+			for (Player listeningPlayer : event.getRecipients()) {
 				FPlayer you = FPlayer.get(listeningPlayer);
 				String yourFormat = formatStart + me.getChatTag(you).trim() + formatEnd;
 				listeningPlayer.sendMessage(String.format(yourFormat, talkingPlayer.getDisplayName(), msg));

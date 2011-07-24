@@ -117,7 +117,7 @@ public class FCommandHelp extends FBaseCommand {
 		pageLines = new ArrayList<String>();
 		pageLines.add("Only faction members can build and destroy in their own");
 		pageLines.add("territory. Usage of the following items is also restricted:");
-		pageLines.add("Door, Chest, Furnace and Dispenser.");
+		pageLines.add("Door, Chest, Furnace, Dispenser, Diode.");
 		pageLines.add("");
 		pageLines.add("Make sure to put pressure plates in front of doors for your");
 		pageLines.add("guest visitors. Otherwise they can't get through. You can");
