@@ -203,6 +203,9 @@ public class Faction {
 		for (FPlayer fplayer : this.getFPlayers()) {
 			ret += fplayer.getPower();
 		}
+		if (Conf.powerFactionMax > 0 && ret > Conf.powerFactionMax) {
+			ret = Conf.powerFactionMax;
+		}
 		return ret;
 	}
 	
@@ -210,6 +213,9 @@ public class Faction {
 		double ret = 0;
 		for (FPlayer fplayer : this.getFPlayers()) {
 			ret += fplayer.getPowerMax();
+		}
+		if (Conf.powerFactionMax > 0 && ret > Conf.powerFactionMax) {
+			ret = Conf.powerFactionMax;
 		}
 		return ret;
 	}
