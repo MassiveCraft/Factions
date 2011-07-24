@@ -35,15 +35,6 @@ public class FactionsPlayerListener extends PlayerListener{
 
 	@Override
 	public void onPlayerChat(PlayerChatEvent event) {
-		if ((event.getMessage().startsWith(Factions.instance.getBaseCommand()+" ") || event.getMessage().equals(Factions.instance.getBaseCommand())) && Conf.allowNoSlashCommand) {
-			List<String> parameters = TextUtil.split(event.getMessage().trim());
-			parameters.remove(0);
-			CommandSender sender = event.getPlayer();			
-			Factions.instance.handleCommand(sender, parameters);
-			event.setCancelled(true);
-			return;
-		}
-		
 		if (event.isCancelled()) {
 			return;
 		}
@@ -53,15 +44,6 @@ public class FactionsPlayerListener extends PlayerListener{
 		
 		// ... it was not a command. This means that it is a chat message!
 		FPlayer me = FPlayer.get(talkingPlayer);
-		
-		// Is it a faction chat message?
-		if (me.isFactionChatting()) {
-			String message = String.format(Conf.factionChatFormat, me.getNameAndRelevant(me), msg);
-			me.getFaction().sendMessage(message);
-			Logger.getLogger("Minecraft").info(ChatColor.stripColor("FactionChat "+me.getFaction().getTag()+": "+message));
-			event.setCancelled(true);
-			return;
-		}
 		
 		// Are we to insert the Faction tag into the format?
 		// If we are not to insert it - we are done.

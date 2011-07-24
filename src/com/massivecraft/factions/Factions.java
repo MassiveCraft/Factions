@@ -22,6 +22,7 @@ import com.massivecraft.factions.commands.*;
 import com.massivecraft.factions.gson.Gson;
 import com.massivecraft.factions.gson.GsonBuilder;
 import com.massivecraft.factions.listeners.FactionsBlockListener;
+import com.massivecraft.factions.listeners.FactionsChatEarlyListener;
 import com.massivecraft.factions.listeners.FactionsEntityListener;
 import com.massivecraft.factions.listeners.FactionsPlayerListener;
 
@@ -47,6 +48,7 @@ public class Factions extends JavaPlugin {
 	.create();
 	
 	private final FactionsPlayerListener playerListener = new FactionsPlayerListener();
+	private final FactionsChatEarlyListener chatEarlyListener = new FactionsChatEarlyListener();
 	private final FactionsEntityListener entityListener = new FactionsEntityListener();
 	private final FactionsBlockListener blockListener = new FactionsBlockListener();
 	
@@ -127,6 +129,7 @@ public class Factions extends JavaPlugin {
 		// Register events
 		PluginManager pm = this.getServer().getPluginManager();
 		pm.registerEvent(Event.Type.PLAYER_CHAT, this.playerListener, Event.Priority.Highest, this);
+		pm.registerEvent(Event.Type.PLAYER_CHAT, this.chatEarlyListener, Event.Priority.Lowest, this);
 		pm.registerEvent(Event.Type.PLAYER_INTERACT, this.playerListener, Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.PLAYER_MOVE, this.playerListener, Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.PLAYER_JOIN, this.playerListener, Event.Priority.Normal, this);
