@@ -476,6 +476,11 @@ public class FPlayer {
 			return false;
 		}
 
+		if (myFaction.getFPlayers().size() < Conf.claimsRequireMinFactionMembers && !Conf.adminBypassPlayers.contains(this.playerName)) {
+			sendMessage("Your faction must have at least "+Conf.claimsRequireMinFactionMembers+" members to claim land.");
+			return false;
+		}
+
 		if (Conf.worldsNoClaiming.contains(flocation.getWorldName())) {
 			sendMessage("Sorry, this world has land claiming disabled.");
 			return false;
