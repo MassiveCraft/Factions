@@ -18,6 +18,7 @@ permissions:
     children:
       factions.participate: true
       factions.create: true
+      factions.viewAnyPower: true
       factions.manageSafeZone: true
       factions.manageWarZone: true
       factions.adminBypass: true
@@ -33,6 +34,9 @@ permissions:
     default: true
   factions.create:
     description: Allows the player to create a new faction
+    default: true
+  factions.viewAnyPower:
+    description: Allows the player to view the power level of anyone else
     default: true
   factions.manageSafeZone:
     description: Allows the player to claim land as a safe zone, and to build/destroy within safe zones
@@ -129,6 +133,9 @@ permissions:
     default: false
   factions.commandDisable.open:
     description: open command disabled
+    default: false
+  factions.commandDisable.power:
+    description: power command disabled
     default: false
   factions.commandDisable.ally:
     description: ally command disabled

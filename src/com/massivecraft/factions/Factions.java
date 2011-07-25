@@ -94,6 +94,7 @@ public class Factions extends JavaPlugin {
 		commands.add(new FCommandMap());
 		commands.add(new FCommandMod());
 		commands.add(new FCommandOpen());
+		commands.add(new FCommandPower());
 		commands.add(new FCommandRelationAlly());
 		commands.add(new FCommandRelationEnemy());
 		commands.add(new FCommandRelationNeutral());
@@ -351,6 +352,10 @@ public class Factions extends JavaPlugin {
 	
 	public static boolean hasPermWorlds(CommandSender sender) {
 		return hasPerm(sender, "factions.worldOptions");
+	}
+	
+	public static boolean hasPermViewAnyPower(CommandSender sender) {
+		return hasPerm(sender, "factions.viewAnyPower");
 	}
 	
 	public static boolean isCommandDisabled(CommandSender sender, String command) {
