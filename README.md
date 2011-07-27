@@ -38,6 +38,7 @@ Installing
 ----------
 1. Download the latest release: [https://github.com/MassiveCraft/Factions/downloads](https://github.com/MassiveCraft/Factions/downloads)<br>
 1. Put Factions.jar in the plugins folder.
+1. [Download gson.jar to your lib folder](http://massivecraft.com/plugins/libraries)
 
 A default config file will be created on the first run.
 
