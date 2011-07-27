@@ -32,15 +32,15 @@ public class JarLoader {
 	
 	public static boolean load(URL url) {
 		// If the file already is loaded we can skip it
-        for (URL otherUrl : sysloader.getURLs()) {
-        	if (otherUrl.sameFile(url)) {
-                return true;
-            }
-        }
-        
-        try {
-        	Method addURLMethod = URLClassLoader.class.getDeclaredMethod("addURL", new Class[]{ URL.class });
-        	addURLMethod.setAccessible(true);
+		for (URL otherUrl : sysloader.getURLs()) {
+			if (otherUrl.sameFile(url)) {
+				return true;
+			}
+		}
+		
+		try {
+			Method addURLMethod = URLClassLoader.class.getDeclaredMethod("addURL", new Class[]{ URL.class });
+			addURLMethod.setAccessible(true);
 			addURLMethod.invoke(sysloader, new Object[]{ url });
 			return true;
 		} catch (Exception e) {
