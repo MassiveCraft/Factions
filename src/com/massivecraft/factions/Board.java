@@ -12,11 +12,11 @@ import java.util.TreeMap;
 
 import org.bukkit.ChatColor;
 
-import com.massivecraft.factions.gson.JsonArray;
-import com.massivecraft.factions.gson.JsonElement;
-import com.massivecraft.factions.gson.JsonObject;
-import com.massivecraft.factions.gson.JsonParser;
-import com.massivecraft.factions.gson.reflect.TypeToken;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.reflect.TypeToken;
 import com.massivecraft.factions.util.AsciiCompass;
 import com.massivecraft.factions.util.DiscUtil;
 import com.massivecraft.factions.util.TextUtil;
@@ -248,7 +248,7 @@ public class Board {
 		//Factions.log("Saving board to disk");
 		
 		try {
-			DiscUtil.write(file, Factions.gson.toJson(dumpAsSaveFormat()));
+			DiscUtil.write(file, Factions.instance.gson.toJson(dumpAsSaveFormat()));
 		} catch (Exception e) {
 			e.printStackTrace();
 			Factions.log("Failed to save the board to disk.");
@@ -270,7 +270,7 @@ public class Board {
 		
 		try {
 			Type type = new TypeToken<Map<String,Map<String,Integer>>>(){}.getType();
-			Map<String,Map<String,Integer>> worldCoordIds = Factions.gson.fromJson(DiscUtil.read(file), type);
+			Map<String,Map<String,Integer>> worldCoordIds = Factions.instance.gson.fromJson(DiscUtil.read(file), type);
 			loadFromSaveFormat(worldCoordIds);
 		} catch (Exception e) {
 			e.printStackTrace();

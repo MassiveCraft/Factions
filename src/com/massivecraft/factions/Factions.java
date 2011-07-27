@@ -1,5 +1,6 @@
 package com.massivecraft.factions;
 
+import java.io.File;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,17 +20,18 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.massivecraft.factions.commands.*;
-import com.massivecraft.factions.gson.Gson;
-import com.massivecraft.factions.gson.GsonBuilder;
 import com.massivecraft.factions.listeners.FactionsBlockListener;
 import com.massivecraft.factions.listeners.FactionsChatEarlyListener;
 import com.massivecraft.factions.listeners.FactionsEntityListener;
 import com.massivecraft.factions.listeners.FactionsPlayerListener;
+import com.massivecraft.factions.util.JarLoader;
 
 import com.nijiko.permissions.PermissionHandler;
 import com.nijikokun.bukkit.Permissions.Permissions;
 import com.earth2me.essentials.chat.EssentialsChat;
 import com.earth2me.essentials.chat.IEssentialsChatListener;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 /**
  * The data is saved to disk every 30min and on plugin disable.
@@ -41,11 +43,7 @@ public class Factions extends JavaPlugin {
 	public static Factions instance;
 	private Integer saveTask = null;
 	
-	public final static Gson gson = new GsonBuilder()
-	.setPrettyPrinting()
-	.excludeFieldsWithModifiers(Modifier.TRANSIENT, Modifier.VOLATILE)
-	.registerTypeAdapter(Location.class, new MyLocationTypeAdapter())
-	.create();
+	public Gson gson;
 	
 	private final FactionsPlayerListener playerListener = new FactionsPlayerListener();
 	private final FactionsChatEarlyListener chatEarlyListener = new FactionsChatEarlyListener();
@@ -67,8 +65,22 @@ public class Factions extends JavaPlugin {
 	
 	@Override
 	public void onEnable() {
-		log("=== INIT START ===");
+		log("=== ENABLE START ===");
 		long timeInitStart = System.currentTimeMillis();
+		
+		// Load the gson library we require
+		File gsonfile = new File("./lib/gson.jar");
+		if ( ! JarLoader.load(gsonfile)) {
+			log(Level.SEVERE, "Disabling myself as "+gsonfile+" is missing.");
+			this.getServer().getPluginManager().disablePlugin(this);
+			return;
+		}
+		
+		gson = new GsonBuilder()
+		.setPrettyPrinting()
+		.excludeFieldsWithModifiers(Modifier.TRANSIENT, Modifier.VOLATILE)
+		.registerTypeAdapter(Location.class, new MyLocationTypeAdapter())
+		.create();
 		
 		// Add the commands
 		commands.add(new FCommandHelp());
@@ -156,7 +168,7 @@ public class Factions extends JavaPlugin {
 		if (saveTask == null)
 			saveTask = this.getServer().getScheduler().scheduleSyncRepeatingTask(this, new SaveTask(), saveTicks, saveTicks);
 		
-		log("=== INIT DONE (Took "+(System.currentTimeMillis()-timeInitStart)+"ms) ===");
+		log("=== ENABLE DONE (Took "+(System.currentTimeMillis()-timeInitStart)+"ms) ===");
 	}
 
 	@Override
@@ -167,7 +179,6 @@ public class Factions extends JavaPlugin {
 		}
 		saveAll();
 		unhookEssentialsChat();
-		log("Disabled");
 	}
 
 	// -------------------------------------------- //

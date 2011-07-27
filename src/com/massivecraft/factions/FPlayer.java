@@ -9,7 +9,7 @@ import java.util.Map.Entry;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-import com.massivecraft.factions.gson.reflect.TypeToken;
+import com.google.gson.reflect.TypeToken;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.DiscUtil;
@@ -623,7 +623,7 @@ public class FPlayer {
 		}
 		
 		try {
-			DiscUtil.write(file, Factions.gson.toJson(playersToSave));
+			DiscUtil.write(file, Factions.instance.gson.toJson(playersToSave));
 		} catch (Exception e) {
 			e.printStackTrace();
 			Factions.log("Failed to save the players to disk.");
@@ -643,7 +643,7 @@ public class FPlayer {
 		
 		try {
 			Type type = new TypeToken<Map<String, FPlayer>>(){}.getType();
-			Map<String, FPlayer> instancesFromFile = Factions.gson.fromJson(DiscUtil.read(file), type);
+			Map<String, FPlayer> instancesFromFile = Factions.instance.gson.fromJson(DiscUtil.read(file), type);
 			instances.clear();
 			instances.putAll(instancesFromFile);
 		} catch (Exception e) {
@@ -707,7 +707,7 @@ public class FPlayer {
 			String name = jsonFile.getName();
 			name = name.substring(0, name.length() - ext.length());
 			try {
-				FPlayer follower = Factions.gson.fromJson(DiscUtil.read(jsonFile), FPlayer.class);
+				FPlayer follower = Factions.instance.gson.fromJson(DiscUtil.read(jsonFile), FPlayer.class);
 				follower.playerName = name;
 				follower.lastLoginTime = System.currentTimeMillis();
 				instances.put(follower.playerName, follower);

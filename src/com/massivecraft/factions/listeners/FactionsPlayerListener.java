@@ -1,6 +1,5 @@
 package com.massivecraft.factions.listeners;
 
-import java.util.List;
 import java.util.logging.Logger;
 
 import org.bukkit.ChatColor;

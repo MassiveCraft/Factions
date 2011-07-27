@@ -156,6 +156,7 @@ public class FCommandConfig extends FBaseCommand {
 						return;
 					}
 
+					@SuppressWarnings("unchecked")
 					Set<Material> matSet = (Set<Material>)target.get(null);
 
 					// Material already present, so remove it
@@ -174,6 +175,7 @@ public class FCommandConfig extends FBaseCommand {
 
 				// Set<String>
 				else if (innerType == String.class) {
+					@SuppressWarnings("unchecked")
 					Set<String> stringSet = (Set<String>)target.get(null);
 
 					// String already present, so remove it

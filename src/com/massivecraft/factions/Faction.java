@@ -10,7 +10,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import com.massivecraft.factions.gson.reflect.TypeToken;
+import com.google.gson.reflect.TypeToken;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.*;
@@ -407,7 +407,7 @@ public class Faction {
 		//Factions.log("Saving factions to disk");
 		
 		try {
-			DiscUtil.write(file, Factions.gson.toJson(instances));
+			DiscUtil.write(file, Factions.instance.gson.toJson(instances));
 		} catch (IOException e) {
 			e.printStackTrace();
 			Factions.log("Failed to save the factions to disk due to I/O exception.");
@@ -432,7 +432,7 @@ public class Faction {
 		
 		try {
 			Type type = new TypeToken<Map<Integer, Faction>>(){}.getType();
-			Map<Integer, Faction> instancesFromFile = Factions.gson.fromJson(DiscUtil.read(file), type);
+			Map<Integer, Faction> instancesFromFile = Factions.instance.gson.fromJson(DiscUtil.read(file), type);
 			instances.clear();
 			instances.putAll(instancesFromFile);
 		} catch (Exception e) {
@@ -560,7 +560,7 @@ public class Faction {
 			int id = Integer.parseInt(name);
 
 			try {
-				Faction faction = Factions.gson.fromJson(DiscUtil.read(jsonFile), Faction.class);
+				Faction faction = Factions.instance.gson.fromJson(DiscUtil.read(jsonFile), Faction.class);
 				faction.id = id;
 				instances.put(faction.id, faction);
 				Factions.log("loaded pre-1.1 faction "+id);

@@ -180,7 +180,7 @@ public class Conf {
 		//Factions.log("Saving config to disk.");
 		
 		try {
-			DiscUtil.write(file, Factions.gson.toJson(new Conf()));
+			DiscUtil.write(file, Factions.instance.gson.toJson(new Conf()));
 		} catch (Exception e) {
 			e.printStackTrace();
 			Factions.log("Failed to save the config to disk.");
@@ -199,7 +199,7 @@ public class Conf {
 		}
 		
 		try {
-			Factions.gson.fromJson(DiscUtil.read(file), Conf.class);
+			Factions.instance.gson.fromJson(DiscUtil.read(file), Conf.class);
 		} catch (Exception e) {
 			e.printStackTrace();
 			Factions.log("Failed to load the config from disk.");

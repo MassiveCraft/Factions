@@ -6,13 +6,13 @@ import java.util.logging.Level;
 import org.bukkit.Location;
 import org.bukkit.World;
 
-import com.massivecraft.factions.gson.JsonDeserializationContext;
-import com.massivecraft.factions.gson.JsonDeserializer;
-import com.massivecraft.factions.gson.JsonElement;
-import com.massivecraft.factions.gson.JsonObject;
-import com.massivecraft.factions.gson.JsonParseException;
-import com.massivecraft.factions.gson.JsonSerializationContext;
-import com.massivecraft.factions.gson.JsonSerializer;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
 
 
 public class MyLocationTypeAdapter implements JsonDeserializer<Location>, JsonSerializer<Location> {
