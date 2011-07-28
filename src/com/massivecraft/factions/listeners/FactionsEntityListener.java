@@ -188,6 +188,12 @@ public class FactionsEntityListener extends EntityListener {
 		
 		Relation relation = defender.getRelation(attacker);
 		
+		// You can not hurt neutral factions
+		if (relation.isNeutral() && Conf.disablePVPBetweenNeutralFaction) {
+		attacker.sendMessage("You can't hurt neutral factions");
+		return false;
+		}
+		
 		// Players without faction may be hurt anywhere
 		if (defender.getFaction().isNone()) {
 			return true;
