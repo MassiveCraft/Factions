@@ -99,6 +99,7 @@ public class Conf {
 	public static boolean safeZoneDenyBuild = true;
 	public static boolean safeZoneDenyUseage = true;
 	public static boolean safeZoneBlockTNT = true;
+	public static boolean safeZonePreventAllDamageToPlayers = false;
 	
 	public static boolean warZoneDenyBuild = true;
 	public static boolean warZoneDenyUseage = true;

@@ -73,18 +73,20 @@ public class FactionsEntityListener extends EntityListener {
 		}
 		
 		if (event instanceof EntityDamageByEntityEvent) {
-            EntityDamageByEntityEvent sub = (EntityDamageByEntityEvent)event;
-            if ( ! this.canDamagerHurtDamagee(sub)) {
+			EntityDamageByEntityEvent sub = (EntityDamageByEntityEvent)event;
+			if ( ! this.canDamagerHurtDamagee(sub)) {
     			event.setCancelled(true);
     		}
-        } else if (event instanceof EntityDamageByProjectileEvent) {
-        	EntityDamageByProjectileEvent sub = (EntityDamageByProjectileEvent)event;
-            if ( ! this.canDamagerHurtDamagee(sub)) {
+		} else if (event instanceof EntityDamageByProjectileEvent) {
+			EntityDamageByProjectileEvent sub = (EntityDamageByProjectileEvent)event;
+			if ( ! this.canDamagerHurtDamagee(sub)) {
     			event.setCancelled(true);
     		}
-        }
+		} else if (Conf.safeZonePreventAllDamageToPlayers && isPlayerInSafeZone(event.getEntity())) {
+			// Players can not take any damage in a Safe Zone
+			event.setCancelled(true);
+		}
 	}
-
 	
 	@Override
 	public void onEntityExplode(EntityExplodeEvent event)
@@ -125,7 +127,17 @@ public class FactionsEntityListener extends EntityListener {
 			event.setCancelled(true);
 		}
 	}
-	
+
+	public boolean isPlayerInSafeZone(Entity damagee) {
+		if ( ! (damagee instanceof Player)) {
+			return false;
+		}
+		if (Board.getFactionAt(new FLocation(damagee.getLocation())).isSafeZone()) {
+			return true;
+		}
+		return false;
+	}
+
 	public boolean canDamagerHurtDamagee(EntityDamageByEntityEvent sub) {
 		Entity damager = sub.getDamager();
 		Entity damagee = sub.getEntity();
