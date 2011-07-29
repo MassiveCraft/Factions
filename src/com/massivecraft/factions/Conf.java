@@ -71,7 +71,7 @@ public class Conf {
 	public static double homesTeleportAllowedEnemyDistance = 32;
 	public static boolean homesTeleportIgnoreEnemiesIfInOwnTerritory = true;
 	
-	public static boolean disablePVPBetweenNeutralFaction = false;
+	public static boolean disablePVPBetweenNeutralFactions = false;
 	public static boolean disablePVPForFactionlessPlayers = false;
 	public static int noPVPDamageToOthersForXSecondsAfterLogin = 3;
 	

@@ -673,6 +673,10 @@ public class FPlayer {
 	}
 	
 	public static void autoLeaveOnInactivityRoutine() {
+		if (Conf.autoLeaveAfterDaysOfInactivity <= 0.0) {
+			return;
+		}
+
 		long now = System.currentTimeMillis();
 		double toleranceMillis = Conf.autoLeaveAfterDaysOfInactivity * 24 * 60 * 60 * 1000;
 		
