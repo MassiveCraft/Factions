@@ -69,6 +69,11 @@ public class FPlayer {
 	}
 	
 	public void resetFactionData() {
+		// clean up any territory ownership in old faction, if there is one
+		if (this.factionId > 0 && Faction.exists(this.factionId)) {
+			Faction.get(factionId).clearClaimOwnership(playerName);
+		}
+		
 		this.factionId = 0; // The default neutral faction
 		this.factionChatting = false;
 		this.role = Role.NORMAL;
@@ -103,7 +108,7 @@ public class FPlayer {
 		return Faction.get(factionId);
 	}
 	
-	private int getFactionId() {
+	public int getFactionId() {
 		return factionId;
 	}
 	

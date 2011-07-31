@@ -28,6 +28,7 @@ public class Faction {
 	
 	private transient int id;
 	private Map<Integer, Relation> relationWish;
+	private Map<FLocation, Set<String>> claimOwnership;
 	private Set<String> invites; // Where string is a lowercase player name
 	private boolean open;
 	private String tag;
@@ -397,6 +398,152 @@ public class Faction {
 		return this.getRelation(fplayer).getColor();
 	}
 	
+	//----------------------------------------------//
+	// Ownership of specific claims
+	//----------------------------------------------//
+
+	private boolean isClaimOwnershipEmpty() {
+		if (claimOwnership == null) {
+			claimOwnership = new HashMap<FLocation, Set<String>>();
+			return true;
+		}
+		return claimOwnership.isEmpty();
+	}
+
+	public void clearAllClaimOwnership() {
+		claimOwnership.clear();
+	}
+
+	public void clearClaimOwnership(FLocation loc) {
+		claimOwnership.remove(loc);
+	}
+
+	public void clearClaimOwnership(String playerName) {
+		if (playerName == null || playerName.isEmpty()) {
+			return;
+		}
+
+		isClaimOwnershipEmpty();
+
+		Set<String> ownerData;
+		String player = playerName.toLowerCase();
+
+		for (Entry<FLocation, Set<String>> entry : claimOwnership.entrySet()) {
+			ownerData = entry.getValue();
+
+			if (ownerData == null) {
+				continue;
+			}
+
+			Iterator<String> iter = ownerData.iterator();
+			while (iter.hasNext()) {
+				if (iter.next().equals(player)) {
+					iter.remove();
+				}
+			}
+
+			if (ownerData.isEmpty()) {
+				claimOwnership.remove(entry.getKey());
+			}
+		}
+	}
+
+	public int getCountOfClaimsWithOwners() {
+		return isClaimOwnershipEmpty() ? 0 : claimOwnership.size();
+	}
+
+	public boolean doesLocationHaveOwnersSet(FLocation loc) {
+		if (isClaimOwnershipEmpty() || !claimOwnership.containsKey(loc)) {
+			return false;
+		}
+		Set<String> ownerData = claimOwnership.get(loc);
+		return ownerData != null && !ownerData.isEmpty();
+	}
+
+	public boolean isPlayerInOwnerList(String playerName, FLocation loc) {
+		if (isClaimOwnershipEmpty()) {
+			return false;
+		}
+		Set<String> ownerData = claimOwnership.get(loc);
+		if (ownerData == null) {
+			return false;
+		}
+		if (ownerData.contains(playerName.toLowerCase())) {
+			return true;
+		}
+		return false;
+	}
+
+	public void setPlayerAsOwner(String playerName, FLocation loc) {
+		isClaimOwnershipEmpty();
+		Set<String> ownerData = claimOwnership.get(loc);
+		if (ownerData == null) {
+			ownerData = new HashSet<String>();
+		}
+		ownerData.add(playerName.toLowerCase());
+		claimOwnership.put(loc, ownerData);
+	}
+
+	public void removePlayerAsOwner(String playerName, FLocation loc) {
+		isClaimOwnershipEmpty();
+		Set<String> ownerData = claimOwnership.get(loc);
+		if (ownerData == null) {
+			return;
+		}
+		ownerData.remove(playerName.toLowerCase());
+		claimOwnership.put(loc, ownerData);
+	}
+
+	public Set<String> getOwnerList(FLocation loc) {
+		isClaimOwnershipEmpty();
+		return claimOwnership.get(loc);
+	}
+
+	public String getOwnerListString(FLocation loc) {
+		isClaimOwnershipEmpty();
+		Set<String> ownerData = claimOwnership.get(loc);
+		if (ownerData == null || ownerData.isEmpty()) {
+			return "";
+		}
+
+		String ownerList = "";
+
+		Iterator<String> iter = ownerData.iterator();
+		while (iter.hasNext()) {
+			if (!ownerList.isEmpty()) {
+				ownerList += ", ";
+			}
+			ownerList += iter.next();
+		}
+		return ownerList;
+	}
+
+	public boolean playerHasOwnershipRights(FPlayer fplayer, FLocation loc) {
+		// different faction?
+		if (fplayer.getFactionId() != id) {
+			return false;
+		}
+
+		// sufficient role to bypass ownership?
+		if (fplayer.getRole() == (Conf.ownedAreaModeratorsBypass ? Role.MODERATOR : Role.ADMIN)) {
+			return true;
+		}
+
+		// make sure claimOwnership is initialized
+		if (isClaimOwnershipEmpty()) {
+			return true;
+		}
+
+		// need to check the ownership list, then
+		Set<String> ownerData = claimOwnership.get(loc);
+
+		// if no owner list, owner list is empty, or player is in owner list, they're allowed
+		if (ownerData == null || ownerData.isEmpty() || ownerData.contains(fplayer.getName().toLowerCase())) {
+			return true;
+		}
+
+		return false;
+	}
 
 	
 	//----------------------------------------------//

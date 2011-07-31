@@ -14,7 +14,7 @@ public class FLocation {
 	private int x = 0;
 	private int z = 0;
 	
-	private final static transient double cellSize = 16;
+//	private final static transient double cellSize = 16;
 	
 	//----------------------------------------------//
 	// Constructors
@@ -31,7 +31,9 @@ public class FLocation {
 	}
 	
 	public FLocation(Location location) {
-		this(location.getWorld().getName(), (int) Math.floor(location.getX() / cellSize) , (int) Math.floor(location.getZ() / cellSize));
+//		this(location.getWorld().getName(), (int) Math.floor(location.getX() / cellSize) , (int) Math.floor(location.getZ() / cellSize));
+		// handy dandy rapid bitshifting instead of division
+		this(location.getWorld().getName(), location.getBlockX() >> 4, location.getBlockZ() >> 4);
 	}
 	
 	public FLocation(Player player) {
@@ -107,6 +109,7 @@ public class FLocation {
 	// Comparison
 	//----------------------------------------------//
 	
+	@Override
 	public int hashCode() {
 		int hash = 3;
         hash = 19 * hash + (this.worldName != null ? this.worldName.hashCode() : 0);

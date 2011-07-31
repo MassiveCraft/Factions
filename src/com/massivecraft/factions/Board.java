@@ -42,6 +42,8 @@ public class Board {
 	}
 	
 	public static void setIdAt(int id, FLocation flocation) {
+		clearOwnershipAt(flocation);
+
 		if (id == 0) {
 			removeAt(flocation);
 		}
@@ -54,10 +56,24 @@ public class Board {
 	}
 	
 	public static void removeAt(FLocation flocation) {
+		clearOwnershipAt(flocation);
 		flocationIds.remove(flocation);
 	}
 	
+	// not to be confused with claims, ownership referring to further member-specific ownership of a claim
+	public static void clearOwnershipAt(FLocation flocation) {
+		Faction faction = getFactionAt(flocation);
+		if (faction != null && faction.isNormal()) {
+			faction.clearClaimOwnership(flocation);
+		}
+	}
+	
 	public static void unclaimAll(int factionId) {
+		Faction faction = Faction.get(factionId);
+		if (faction != null && faction.isNormal()) {
+			faction.clearAllClaimOwnership();
+		}
+
 		Iterator<Entry<FLocation, Integer>> iter = flocationIds.entrySet().iterator();
 		while (iter.hasNext()) {
 			Entry<FLocation, Integer> entry = iter.next();
@@ -215,10 +231,13 @@ public class Board {
 	public static Map<String,Map<String,Integer>> dumpAsSaveFormat() {
 		Map<String,Map<String,Integer>> worldCoordIds = new HashMap<String,Map<String,Integer>>(); 
 		
+		String worldName, coords;
+		Integer id;
+		
 		for (Entry<FLocation, Integer> entry : flocationIds.entrySet()) {
-			String worldName = entry.getKey().getWorldName();
-			String coords = entry.getKey().getCoordString();
-			Integer id = entry.getValue();
+			worldName = entry.getKey().getWorldName();
+			coords = entry.getKey().getCoordString();
+			id = entry.getValue();
 			if ( ! worldCoordIds.containsKey(worldName)) {
 				worldCoordIds.put(worldName, new TreeMap<String,Integer>());
 			}
@@ -232,13 +251,17 @@ public class Board {
 	public static void loadFromSaveFormat(Map<String,Map<String,Integer>> worldCoordIds) {
 		flocationIds.clear();
 		
+		String worldName;
+		String[] coords;
+		int x, z, factionId;
+		
 		for (Entry<String,Map<String,Integer>> entry : worldCoordIds.entrySet()) {
-			String worldName = entry.getKey();
+			worldName = entry.getKey();
 			for (Entry<String,Integer> entry2 : entry.getValue().entrySet()) {
-				String[] coords = entry2.getKey().trim().split("[,\\s]+");
-				int x = Integer.parseInt(coords[0]);
-				int z = Integer.parseInt(coords[1]);
-				int factionId = entry2.getValue();
+				coords = entry2.getKey().trim().split("[,\\s]+");
+				x = Integer.parseInt(coords[0]);
+				z = Integer.parseInt(coords[1]);
+				factionId = entry2.getValue();
 				flocationIds.put(new FLocation(worldName, x, z), factionId);
 			}
 		}

@@ -96,6 +96,15 @@ public class Conf {
 	public static boolean territoryBlockTNT = false;
 	public static boolean territoryBlockTNTWhenOffline = false;
 
+	// for claimed areas where further faction-member ownership can be defined
+	public static boolean ownedAreasEnabled = true;
+	public static int ownedAreasLimitPerFaction = 0;
+	public static boolean ownedAreasModeratorsCanSet = false;
+	public static boolean ownedAreaModeratorsBypass = true;
+	public static boolean ownedAreaDenyBuild = true;
+	public static boolean ownedAreaProtectMaterials = true;
+	public static boolean ownedAreaDenyUseage = true;
+
 	public static boolean safeZoneDenyBuild = true;
 	public static boolean safeZoneDenyUseage = true;
 	public static boolean safeZoneBlockTNT = true;

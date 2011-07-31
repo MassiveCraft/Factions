@@ -2,10 +2,12 @@ package com.massivecraft.factions;
 
 import java.io.File;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -25,6 +27,8 @@ import com.massivecraft.factions.listeners.FactionsChatEarlyListener;
 import com.massivecraft.factions.listeners.FactionsEntityListener;
 import com.massivecraft.factions.listeners.FactionsPlayerListener;
 import com.massivecraft.factions.util.JarLoader;
+import com.massivecraft.factions.util.MapFLocToStringSetTypeAdapter;
+import com.massivecraft.factions.util.MyLocationTypeAdapter;
 
 import com.nijiko.permissions.PermissionHandler;
 import com.nijikokun.bukkit.Permissions.Permissions;
@@ -32,6 +36,7 @@ import com.earth2me.essentials.chat.EssentialsChat;
 import com.earth2me.essentials.chat.IEssentialsChatListener;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
 /**
  * The data is saved to disk every 30min and on plugin disable.
@@ -71,15 +76,18 @@ public class Factions extends JavaPlugin {
 		// Load the gson library we require
 		File gsonfile = new File("./lib/gson.jar");
 		if ( ! JarLoader.load(gsonfile)) {
-			log(Level.SEVERE, "Disabling myself as "+gsonfile+" is missing.");
+			log(Level.SEVERE, "Disabling myself as "+gsonfile.getPath()+" is missing from the root Minecraft server folder.");
 			this.getServer().getPluginManager().disablePlugin(this);
 			return;
 		}
+		
+		Type mapFLocToStringSetType = new TypeToken<Map<FLocation, Set<String>>>(){}.getType();
 		
 		gson = new GsonBuilder()
 		.setPrettyPrinting()
 		.excludeFieldsWithModifiers(Modifier.TRANSIENT, Modifier.VOLATILE)
 		.registerTypeAdapter(Location.class, new MyLocationTypeAdapter())
+		.registerTypeAdapter(mapFLocToStringSetType, new MapFLocToStringSetTypeAdapter())
 		.create();
 		
 		// Add the commands
@@ -106,6 +114,8 @@ public class Factions extends JavaPlugin {
 		commands.add(new FCommandMap());
 		commands.add(new FCommandMod());
 		commands.add(new FCommandOpen());
+		commands.add(new FCommandOwner());
+		commands.add(new FCommandOwnerList());
 		commands.add(new FCommandPower());
 		commands.add(new FCommandRelationAlly());
 		commands.add(new FCommandRelationEnemy());
@@ -136,8 +146,6 @@ public class Factions extends JavaPlugin {
 		
 		setupPermissions();
 		integrateEssentialsChat();
-		
-		// preload could apparently cause issues; removed since "softdepend" is now available
 		
 		// Register events
 		PluginManager pm = this.getServer().getPluginManager();
@@ -177,7 +185,9 @@ public class Factions extends JavaPlugin {
 			this.getServer().getScheduler().cancelTask(saveTask);
 			saveTask = null;
 		}
-		saveAll();
+		if (gson != null) {
+			saveAll();
+		}
 		unhookEssentialsChat();
 	}
 
@@ -367,6 +377,10 @@ public class Factions extends JavaPlugin {
 	
 	public static boolean hasPermViewAnyPower(CommandSender sender) {
 		return hasPerm(sender, "factions.viewAnyPower");
+	}
+	
+	public static boolean hasPermOwnershipBypass(CommandSender sender) {
+		return hasPerm(sender, "factions.ownershipBypass");
 	}
 	
 	public static boolean isCommandDisabled(CommandSender sender, String command) {

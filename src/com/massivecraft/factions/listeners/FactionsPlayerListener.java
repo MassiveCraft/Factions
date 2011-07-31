@@ -123,16 +123,20 @@ public class FactionsPlayerListener extends PlayerListener{
 		// Make sure player's power is up to date when they log off.
 		FPlayer me = FPlayer.get(event.getPlayer());
 		me.getPower();
-		me.getFaction().memberLoggedOff();
+		Faction myFaction = me.getFaction();
+		if (myFaction != null) {
+			myFaction.memberLoggedOff();
+		}
 	}
 	
 	@Override
 	public void onPlayerMove(PlayerMoveEvent event) {
-		FPlayer me = FPlayer.get(event.getPlayer());
+		Player player = event.getPlayer();
+		FPlayer me = FPlayer.get(player);
 		
 		// Did we change coord?
 		FLocation from = me.getLastStoodAt();
-		FLocation to = new FLocation(event.getPlayer().getLocation());
+		FLocation to = new FLocation(player.getLocation());
 		
 		if (from.equals(to)) {
 			return;
@@ -143,7 +147,7 @@ public class FactionsPlayerListener extends PlayerListener{
 		me.setLastStoodAt(to);
 		
 		if (me.isMapAutoUpdating()) {
-			me.sendMessage(Board.getMap(me.getFaction(), to, me.getPlayer().getLocation().getYaw()));
+			me.sendMessage(Board.getMap(me.getFaction(), to, player.getLocation().getYaw()));
 		} else {
 			// Did we change "host"(faction)?
 			Faction factionFrom = Board.getFactionAt(from);
@@ -173,7 +177,7 @@ public class FactionsPlayerListener extends PlayerListener{
 				me.attemptClaim(false);
 		}
 		else if (me.autoSafeZoneEnabled()) {
-			if (!Factions.hasPermManageSafeZone((CommandSender)event.getPlayer())) {
+			if (!Factions.hasPermManageSafeZone((CommandSender)player)) {
 				me.enableAutoSafeZone(false);
 			} else {
 				FLocation playerFlocation = new FLocation(me);
@@ -185,7 +189,7 @@ public class FactionsPlayerListener extends PlayerListener{
 			}
 		}
 		else if (me.autoWarZoneEnabled()) {
-			if (!Factions.hasPermManageWarZone((CommandSender)event.getPlayer())) {
+			if (!Factions.hasPermManageWarZone((CommandSender)player)) {
 				me.enableAutoWarZone(false);
 			} else {
 				FLocation playerFlocation = new FLocation(me);
@@ -232,7 +236,8 @@ public class FactionsPlayerListener extends PlayerListener{
 			return true;
 		}
 
-		Faction otherFaction = Board.getFactionAt(new FLocation(block));
+		FLocation loc = new FLocation(block);
+		Faction otherFaction = Board.getFactionAt(loc);
 
 		if (otherFaction.hasPlayersOnline()){
 			if ( ! Conf.territoryDenyUseageMaterials.contains(material)) {
@@ -272,8 +277,20 @@ public class FactionsPlayerListener extends PlayerListener{
 		boolean areEnemies = myFaction.getRelation(otherFaction).isEnemy();
 
 		// Cancel if we are not in our own territory
-		if (myFaction != otherFaction && (areEnemies ? Conf.territoryEnemyDenyUseage : Conf.territoryDenyUseage)) {
-			me.sendMessage("You can't use "+TextUtil.getMaterialName(material)+" in the territory of "+otherFaction.getTag(myFaction));
+		if (myFaction != otherFaction) {
+			if (areEnemies ? Conf.territoryEnemyDenyUseage : Conf.territoryDenyUseage) {
+				me.sendMessage("You can't use "+TextUtil.getMaterialName(material)+" in the territory of "+otherFaction.getTag(myFaction));
+				return false;
+			}
+		}
+		// Also cancel if player doesn't have ownership rights for this claim
+		else if (
+			   Conf.ownedAreasEnabled
+			&& Conf.ownedAreaDenyUseage
+			&& !myFaction.playerHasOwnershipRights(me, loc)
+			&& !Factions.hasPermOwnershipBypass(player)
+			) {
+			me.sendMessage("You can't use "+TextUtil.getMaterialName(material)+" in this territory, it is owned by: "+myFaction.getOwnerListString(loc));
 			return false;
 		}
 
@@ -287,8 +304,8 @@ public class FactionsPlayerListener extends PlayerListener{
 		}
 
 		Material material = block.getType();
-
-		Faction otherFaction = Board.getFactionAt(new FLocation(block));
+		FLocation loc = new FLocation(block);
+		Faction otherFaction = Board.getFactionAt(loc);
 		
 		// We only care about some material types.
 		if (otherFaction.hasPlayersOnline()){
@@ -311,6 +328,17 @@ public class FactionsPlayerListener extends PlayerListener{
 		// You may use any block unless it is another faction's territory...
 		if (otherFaction.isNormal() && myFaction != otherFaction) {
 			me.sendMessage("You can't use "+TextUtil.getMaterialName(material)+" in the territory of "+otherFaction.getTag(myFaction));
+			return false;
+		}
+		// Also cancel if player doesn't have ownership rights for this claim
+		else if (
+			   myFaction == otherFaction
+			&& Conf.ownedAreasEnabled
+			&& Conf.ownedAreaProtectMaterials
+			&& !myFaction.playerHasOwnershipRights(me, loc)
+			&& !Factions.hasPermOwnershipBypass(player)
+			) {
+			me.sendMessage("You can't use "+TextUtil.getMaterialName(material)+" in this territory, it is owned by: "+myFaction.getOwnerListString(loc));
 			return false;
 		}
 

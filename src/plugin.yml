@@ -19,16 +19,17 @@ permissions:
       factions.participate: true
       factions.create: true
       factions.viewAnyPower: true
+      factions.adminBypass: true
+      factions.config: true
+      factions.disband: true
+      factions.lock: true
       factions.manageSafeZone: true
       factions.manageWarZone: true
-      factions.adminBypass: true
+      factions.ownershipBypass: true
       factions.reload: true
       factions.saveall: true
-      factions.lock: true
-      factions.disband: true
       factions.worldOptions: true
       factions.commandDisable.none: true
-      factions.config: true
   factions.participate:
     description: Allows the player to participate in a faction
     default: true
@@ -38,14 +39,26 @@ permissions:
   factions.viewAnyPower:
     description: Allows the player to view the power level of anyone else
     default: true
+  factions.adminBypass:
+    description: Allows the player to bypass many normal restrictions, and use the bypass command
+    default: op
+  factions.config:
+    description: Can use /f config command to change conf.json options
+    default: op
+  factions.disband:
+    description: Can use the /f disband <faction> command to disband any faction
+    default: op
+  factions.lock:
+    description: Can use the /f lock [on/off] command to temporarily lock the data files from being overwritten
+    default: op
   factions.manageSafeZone:
     description: Allows the player to claim land as a safe zone, and to build/destroy within safe zones
     default: op
   factions.manageWarZone:
     description: Allows the player to claim land as a war zone, and to build/destroy within war zones
     default: op
-  factions.adminBypass:
-    description: Allows the player to bypass many normal restrictions, and use the bypass command
+  factions.ownershipBypass:
+    description: Allows the player to bypass ownership restrictions within own faction's territory
     default: op
   factions.reload:
     description: Can use the /f reload command to reload data file(s) from disk
@@ -53,17 +66,8 @@ permissions:
   factions.saveall:
     description: Can use the /f saveall command to save all data to disk
     default: op
-  factions.lock:
-    description: Can use the /f lock [on/off] command to temporarily lock the data files from being overwritten
-    default: op
-  factions.disband:
-    description: Can use the /f disband <faction> command to disband any faction
-    default: op
   factions.worldOptions:
     description: Can use the /f worldnoclaim and /f worldnopowerloss commands
-    default: op
-  factions.config:
-    description: Can use /f config command to change conf.json options
     default: op
   factions.commandDisable.none:
     description: no commands disabled (ignore all other commandDisable permissions)
@@ -86,6 +90,9 @@ permissions:
   factions.commandDisable.chat:
     description: chat command disabled
     default: false
+  factions.commandDisable.c:
+    description: chat command disabled
+    default: false
   factions.commandDisable.claim:
     description: claim command disabled
     default: false
@@ -93,6 +100,9 @@ permissions:
     description: create command disabled
     default: false
   factions.commandDisable.deinvite:
+    description: deinvite command disabled
+    default: false
+  factions.commandDisable.deinv:
     description: deinvite command disabled
     default: false
   factions.commandDisable.desc:
@@ -104,10 +114,19 @@ permissions:
   factions.commandDisable.help:
     description: help command disabled
     default: false
+  factions.commandDisable.h:
+    description: help command disabled
+    default: false
+  factions.commandDisable.?:
+    description: help command disabled
+    default: false
   factions.commandDisable.home:
     description: home command disabled
     default: false
   factions.commandDisable.invite:
+    description: invite command disabled
+    default: false
+  factions.commandDisable.inv:
     description: invite command disabled
     default: false
   factions.commandDisable.join:
@@ -122,6 +141,9 @@ permissions:
   factions.commandDisable.list:
     description: list command disabled
     default: false
+  factions.commandDisable.ls:
+    description: list command disabled
+    default: false
   factions.commandDisable.lock:
     description: lock command disabled
     default: false
@@ -134,7 +156,19 @@ permissions:
   factions.commandDisable.open:
     description: open command disabled
     default: false
+  factions.commandDisable.close:
+    description: open command disabled
+    default: false
+  factions.commandDisable.owner:
+    description: owner command disabled
+    default: false
+  factions.commandDisable.ownerlist:
+    description: ownerlist command disabled
+    default: false
   factions.commandDisable.power:
+    description: power command disabled
+    default: false
+  factions.commandDisable.pow:
     description: power command disabled
     default: false
   factions.commandDisable.ally:
@@ -152,16 +186,28 @@ permissions:
   factions.commandDisable.safeclaim:
     description: safeclaim command disabled
     default: false
+  factions.commandDisable.safe:
+    description: safeclaim command disabled
+    default: false
   factions.commandDisable.safeunclaimall:
     description: safeunclaimall command disabled
     default: false
+  factions.commandDisable.safedeclaimall:
+    description: safeunclaimall command disabled
+    default: false
   factions.commandDisable.saveall:
+    description: saveall command disabled
+    default: false
+  factions.commandDisable.save:
     description: saveall command disabled
     default: false
   factions.commandDisable.sethome:
     description: sethome command disabled
     default: false
   factions.commandDisable.show:
+    description: show command disabled
+    default: false
+  factions.commandDisable.who:
     description: show command disabled
     default: false
   factions.commandDisable.tag:
@@ -173,7 +219,13 @@ permissions:
   factions.commandDisable.unclaim:
     description: unclaim command disabled
     default: false
+  factions.commandDisable.declaim:
+    description: unclaim command disabled
+    default: false
   factions.commandDisable.unclaimall:
+    description: unclaimall command disabled
+    default: false
+  factions.commandDisable.declaimall:
     description: unclaimall command disabled
     default: false
   factions.commandDisable.version:
@@ -182,7 +234,13 @@ permissions:
   factions.commandDisable.warclaim:
     description: warclaim command disabled
     default: false
+  factions.commandDisable.war:
+    description: warclaim command disabled
+    default: false
   factions.commandDisable.warunclaimall:
+    description: warunclaimall command disabled
+    default: false
+  factions.commandDisable.wardeclaimall:
     description: warunclaimall command disabled
     default: false
   factions.commandDisable.worldnoclaim:

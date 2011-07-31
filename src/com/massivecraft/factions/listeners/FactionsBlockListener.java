@@ -153,10 +153,10 @@ public class FactionsBlockListener extends BlockListener {
 			return true;
 		}
 
-		Faction otherFaction = Board.getFactionAt(new FLocation(block));
-		
+		FLocation loc = new FLocation(block);
+		Faction otherFaction = Board.getFactionAt(loc);
 		FPlayer me = FPlayer.get(player);
-		
+
 		if (otherFaction.isNone()) {
 			if (!Conf.wildernessDenyBuild || Factions.hasPermAdminBypass(player)) {
 				return true; // This is not faction territory. Use whatever you like here.
@@ -192,6 +192,16 @@ public class FactionsBlockListener extends BlockListener {
 				me.sendMessage("You can't "+action+" in the territory of "+otherFaction.getTag(myFaction));
 				return false;
 			}
+		}
+		// Also cancel if player doesn't have ownership rights for this claim
+		else if (
+			   Conf.ownedAreasEnabled
+			&& Conf.ownedAreaDenyBuild
+			&& !myFaction.playerHasOwnershipRights(me, loc)
+			&& !Factions.hasPermOwnershipBypass(player)
+			) {
+			me.sendMessage("You can't "+action+" in this territory, it is owned by: "+myFaction.getOwnerListString(loc));
+			return false;
 		}
 		
 		return true;

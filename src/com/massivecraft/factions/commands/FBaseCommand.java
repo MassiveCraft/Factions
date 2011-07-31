@@ -2,6 +2,7 @@ package com.massivecraft.factions.commands;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 import org.bukkit.command.CommandSender;
@@ -89,9 +90,12 @@ public class FBaseCommand {
 		}
 		
 		// make sure player doesn't have their access to the command revoked
-		if (Factions.isCommandDisabled(sender, aliases.get(0))) {
-			sendMessage("You lack the permissions to "+this.helpDescription.toLowerCase()+".");
-			return false;
+		Iterator<String> iter = aliases.iterator();
+		while (iter.hasNext()) {
+			if (Factions.isCommandDisabled(sender, iter.next())) {
+				sendMessage("You lack the permissions to "+this.helpDescription.toLowerCase()+".");
+				return false;
+			}
 		}
 		
 		if (parameters.size() < requiredParameters.size()) {

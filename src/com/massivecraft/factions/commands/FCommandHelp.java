@@ -92,9 +92,21 @@ public class FCommandHelp extends FBaseCommand {
 		
 		pageLines = new ArrayList<String>();
 		pageLines.add( new FCommandMap().getUseageTemplate() );
+		pageLines.add("");
+		pageLines.add("");
+		pageLines.add( new FCommandOwner().getUseageTemplate() );
+		pageLines.add( new FCommandOwnerList().getUseageTemplate() );
+		pageLines.add("");
+		pageLines.add("Claimed land with ownership set is further protected so");
+		pageLines.add("that only the owner(s), faction admin, and possibly the");
+		pageLines.add("faction moderators have full access.");
+		helpPages.add(pageLines);
+		
+		pageLines = new ArrayList<String>();
 		pageLines.add( new FCommandRelationAlly().getUseageTemplate() );
 		pageLines.add( new FCommandRelationNeutral().getUseageTemplate() );
 		pageLines.add( new FCommandRelationEnemy().getUseageTemplate() );
+		pageLines.add("");
 		pageLines.add("");
 		pageLines.add("Set the relation you WISH to have with another faction.");
 		pageLines.add("Your default relation with other factions will be neutral.");
