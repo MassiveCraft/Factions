@@ -173,15 +173,6 @@ public class FactionsEntityListener extends EntityListener {
 			return true;
 		}
 		
-		if (!attacker.hasFaction() && Conf.disablePVPForFactionlessPlayers) {
-			attacker.sendMessage("You can't hurt other players until you join a faction.");
-			return false;
-		}
-		else if (!defender.hasFaction() && Conf.disablePVPForFactionlessPlayers) {
-			attacker.sendMessage("You can't hurt players who are not currently in a faction.");
-			return false;
-		}
-		
 		if (attacker.hasLoginPvpDisabled()) {
 			attacker.sendMessage("You can't hurt other players for " + Conf.noPVPDamageToOthersForXSecondsAfterLogin + " seconds after logging in.");
 			return false;
@@ -196,6 +187,15 @@ public class FactionsEntityListener extends EntityListener {
 		}
 		else if (locFaction.isWarZone() && Conf.warZoneFriendlyFire) {
 			return true;
+		}
+		
+		if (!attacker.hasFaction() && Conf.disablePVPForFactionlessPlayers) {
+			attacker.sendMessage("You can't hurt other players until you join a faction.");
+			return false;
+		}
+		else if (!defender.hasFaction() && Conf.disablePVPForFactionlessPlayers) {
+			attacker.sendMessage("You can't hurt players who are not currently in a faction.");
+			return false;
 		}
 		
 		Relation relation = defender.getRelation(attacker);
