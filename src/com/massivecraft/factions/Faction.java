@@ -273,6 +273,18 @@ public class Faction {
 		return ret;
 	}
 	
+	public FPlayer getFPlayerAdmin() {
+		if (id <= 0)
+			return null;
+		
+		for (FPlayer fplayer : FPlayer.getAll()) {
+			if (fplayer.getFaction() == this && fplayer.getRole() == Role.ADMIN) {
+				return fplayer;
+			}
+		}
+		return null;
+	}
+	
 	public ArrayList<FPlayer> getFPlayersWhereRole(Role role) {
 		ArrayList<FPlayer> ret = new ArrayList<FPlayer>();
 		if (id <= 0)
@@ -411,10 +423,12 @@ public class Faction {
 	}
 
 	public void clearAllClaimOwnership() {
+		isClaimOwnershipEmpty();
 		claimOwnership.clear();
 	}
 
 	public void clearClaimOwnership(FLocation loc) {
+		isClaimOwnershipEmpty();
 		claimOwnership.remove(loc);
 	}
 
