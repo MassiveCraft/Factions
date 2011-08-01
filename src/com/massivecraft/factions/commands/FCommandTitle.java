@@ -40,7 +40,12 @@ public class FCommandTitle extends FBaseCommand {
 		if ( ! canIAdministerYou(me, you)) {
 			return;
 		}
-		
+
+		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
+		if (!payForCommand(Conf.econCostTitle)) {
+			return;
+		}
+
 		you.setTitle(title);
 		
 		// Inform

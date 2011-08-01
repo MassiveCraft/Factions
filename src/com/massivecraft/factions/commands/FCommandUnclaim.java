@@ -2,6 +2,7 @@ package com.massivecraft.factions.commands;
 
 import com.massivecraft.factions.Board;
 import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.Econ;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
@@ -69,10 +70,31 @@ public class FCommandUnclaim extends FBaseCommand {
 			sendMessage("You don't own this land.");
 			return;
 		}
-		
+
+		String moneyBack = "";
+		if (Econ.enabled()) {
+			double refund = Econ.calculateClaimRefund(myFaction.getLandRounded());
+			// a real refund
+			if (refund > 0.0) {
+				Econ.addMoney(player.getName(), refund);
+				moneyBack = " They received a refund of "+Econ.moneyString(refund)+".";
+			}
+			// wait, you're charging people to unclaim land? outrageous
+			else if (refund < 0.0) {
+				if (!Econ.deductMoney(player.getName(), -refund)) {
+					sendMessage("Unclaiming this land will cost "+Econ.moneyString(-refund)+", which you can't currently afford.");
+					return;
+				}
+				moneyBack = " It cost them "+Econ.moneyString(refund)+".";
+			}
+			// no refund
+			else {
+				moneyBack = "";
+			}
+		}
+
 		Board.removeAt(flocation);
-		
-		myFaction.sendMessage(me.getNameAndRelevant(myFaction)+Conf.colorSystem+" unclaimed some land.");
+		myFaction.sendMessage(me.getNameAndRelevant(myFaction)+Conf.colorSystem+" unclaimed some land."+moneyBack);
 	}
 	
 }

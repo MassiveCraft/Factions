@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.bukkit.command.CommandSender;
 
 import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.Econ;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
@@ -51,7 +52,12 @@ public class FCommandCreate extends FBaseCommand {
 			sendMessage(tagValidationErrors);
 			return;
 		}
-		
+
+		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
+		if (!payForCommand(Conf.econCostCreate)) {
+			return;
+		}
+
 		Faction faction = Faction.create();
 		faction.setTag(tag);
 		me.setRole(Role.ADMIN);

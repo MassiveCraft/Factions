@@ -21,6 +21,7 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 
 import com.massivecraft.factions.Board;
 import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.Econ;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
@@ -159,18 +160,24 @@ public class FactionsPlayerListener extends PlayerListener{
 		
 		if (me.autoClaimEnabled()) {
 			Faction myFaction = me.getFaction();
-			FLocation flocation = new FLocation(me);
+			Faction otherFaction = Board.getFactionAt(to);
+			double cost = Econ.calculateClaimCost(myFaction.getLandRounded(), otherFaction.isNormal());
 
 			if (me.getRole().value < Role.MODERATOR.value) {
 				me.sendMessage("You must be "+Role.MODERATOR+" to claim land.");
 				me.enableAutoClaim(false);
 			}
-			else if (Conf.worldsNoClaiming.contains(flocation.getWorldName())) {
+			else if (Conf.worldsNoClaiming.contains(to.getWorldName())) {
 				me.sendMessage("Sorry, this world has land claiming disabled.");
 				me.enableAutoClaim(false);
 			}
 			else if (myFaction.getLandRounded() >= myFaction.getPowerRounded()) {
 				me.sendMessage("You can't claim more land! You need more power!");
+				me.enableAutoClaim(false);
+			}
+			else if (!Econ.canAfford(player.getName(), cost)) {
+				String costString = Econ.moneyString(cost);
+				me.sendMessage("Claiming this land will cost "+costString+", which you can't currently afford.");
 				me.enableAutoClaim(false);
 			}
 			else

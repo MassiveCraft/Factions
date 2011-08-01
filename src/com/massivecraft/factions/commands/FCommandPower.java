@@ -36,7 +36,7 @@ public class FCommandPower extends FBaseCommand {
 			}
 			target = findFPlayer(parameters.get(0), false);
 		} else if (!(sender instanceof Player)) {
-			sendMessage("From the command line, you must specify a player (f power <player name>).");
+			sendMessage("From the console, you must specify a player (f power <player name>).");
 			return;
 		} else {
 			target = me;
@@ -45,7 +45,12 @@ public class FCommandPower extends FBaseCommand {
 		if (target == null) {
 			return;
 		}
-		
+
+		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
+		if (!payForCommand(Conf.econCostPower)) {
+			return;
+		}
+
 		sendMessage(target.getNameAndRelevant(me)+Conf.colorChrome+" - Power / Maxpower: "+Conf.colorSystem+target.getPowerRounded()+" / "+target.getPowerMaxRounded());
 	}
 	

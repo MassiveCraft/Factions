@@ -29,7 +29,12 @@ public class FCommandDescription extends FBaseCommand {
 		if ( ! assertMinRole(Role.MODERATOR)) {
 			return;
 		}
-		
+
+		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
+		if (!payForCommand(Conf.econCostDesc)) {
+			return;
+		}
+
 		me.getFaction().setDescription(TextUtil.implode(parameters));
 		
 		// Broadcast the description to everyone

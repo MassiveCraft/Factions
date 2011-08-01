@@ -54,6 +54,11 @@ public class FCommandJoin extends FBaseCommand {
 			return;
 		}
 
+		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
+		if (!payForCommand(Conf.econCostJoin)) {
+			return;
+		}
+
 		me.sendMessage(Conf.colorSystem+"You successfully joined "+faction.getTag(me));
 		faction.sendMessage(me.getNameAndRelevant(faction)+Conf.colorSystem+" joined your faction.");
 		

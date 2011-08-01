@@ -26,7 +26,7 @@ public class FCommandLeave extends FBaseCommand {
 			return;
 		}
 		
-		me.leave();
+		me.leave(true);
 	}
 	
 }

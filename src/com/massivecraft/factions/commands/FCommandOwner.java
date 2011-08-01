@@ -94,6 +94,11 @@ public class FCommandOwner extends FBaseCommand {
 			return;
 		}
 
+		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
+		if (!payForCommand(Conf.econCostOwner)) {
+			return;
+		}
+
 		myFaction.setPlayerAsOwner(playerName, flocation);
 		me.sendMessage("You have added "+playerName+" to the owner list for this claimed land.");
 	}

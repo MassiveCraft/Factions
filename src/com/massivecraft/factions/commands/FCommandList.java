@@ -36,6 +36,11 @@ public class FCommandList extends FBaseCommand {
 		FactionList.remove(Faction.getSafeZone());
 		FactionList.remove(Faction.getWarZone());
 
+		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
+		if (!payForCommand(Conf.econCostList)) {
+			return;
+		}
+
 		int page = 1;
 		if (parameters.size() > 0) {
 			try {

@@ -23,12 +23,12 @@ public class Conf {
 	public static ChatColor colorParameter = ChatColor.DARK_AQUA;
 	
 	// Power
-	public static double powerPlayerMax = 10;
-	public static double powerPlayerMin = -10;
+	public static double powerPlayerMax = 10.0;
+	public static double powerPlayerMin = -10.0;
 	public static double powerPerMinute = 0.2; // Default health rate... it takes 5 min to heal one power
-	public static double powerPerDeath = 4; // A death makes you lose 4 power
+	public static double powerPerDeath = 4.0; // A death makes you lose 4 power
 	public static boolean powerRegenOffline = false;  // does player power regenerate even while they're offline?
-	public static double powerFactionMax = 0;  // if greater than 0, the cap on how much power a faction can have (additional power from players beyond that will act as a "buffer" of sorts)
+	public static double powerFactionMax = 0.0;  // if greater than 0, the cap on how much power a faction can have (additional power from players beyond that will act as a "buffer" of sorts)
 	
 	public static String prefixAdmin = "**";
 	public static String prefixMod = "*";
@@ -59,7 +59,7 @@ public class Conf {
 	
 	public static boolean allowNoSlashCommand = true;
 	
-	public static double autoLeaveAfterDaysOfInactivity = 14;
+	public static double autoLeaveAfterDaysOfInactivity = 14.0;
 	
 	public static boolean homesEnabled = true;
 	public static boolean homesMustBeInClaimedTerritory = true;
@@ -68,7 +68,7 @@ public class Conf {
 	public static boolean homesTeleportCommandEnabled = true;
 	public static boolean homesTeleportAllowedFromEnemyTerritory = true;
 	public static boolean homesTeleportAllowedFromDifferentWorld = true;
-	public static double homesTeleportAllowedEnemyDistance = 32;
+	public static double homesTeleportAllowedEnemyDistance = 32.0;
 	public static boolean homesTeleportIgnoreEnemiesIfInOwnTerritory = true;
 	
 	public static boolean disablePVPBetweenNeutralFactions = false;
@@ -79,7 +79,7 @@ public class Conf {
 	public static boolean claimsCanBeUnconnectedIfOwnedByOtherFaction = true;
 	public static int claimsRequireMinFactionMembers = 1;
 	
-	public static double considerFactionsReallyOfflineAfterXMinutes = 0;
+	public static double considerFactionsReallyOfflineAfterXMinutes = 0.0;
 	
 	public static double territoryShieldFactor = 0.3;
 	public static boolean territoryDenyBuild = true;
@@ -133,6 +133,32 @@ public class Conf {
 	public static Set<Material> territoryDenyUseageMaterialsWhenOffline = EnumSet.noneOf(Material.class);
 	
 	public static transient Set<CreatureType> safeZoneNerfedCreatureTypes = EnumSet.noneOf(CreatureType.class);
+
+	// Economy settings
+	public static boolean econIConomyEnabled = false;
+	public static double econCostClaimWilderness = 30.0;
+	public static double econCostClaimFromFactionBonus = 30.0;
+	public static double econClaimAdditionalMultiplier = 0.5;
+	public static double econClaimRefundMultiplier = 0.7;
+	public static double econCostCreate = 100.0;
+	public static double econCostOwner = 15.0;
+	public static double econCostSethome = 30.0;
+	public static double econCostJoin = 0.0;
+	public static double econCostLeave = 0.0;
+	public static double econCostKick = 0.0;
+	public static double econCostInvite = 0.0;
+	public static double econCostHome = 0.0;
+	public static double econCostTag = 0.0;
+	public static double econCostDesc = 0.0;
+	public static double econCostTitle = 0.0;
+	public static double econCostList = 0.0;
+	public static double econCostMap = 0.0;
+	public static double econCostPower = 0.0;
+	public static double econCostShow = 0.0;
+	public static double econCostOpen = 0.0;
+	public static double econCostAlly = 0.0;
+	public static double econCostEnemy = 0.0;
+	public static double econCostNeutral = 0.0;
 	
 	public static Set<String> worldsNoClaiming = new HashSet<String>();
 	public static Set<String> worldsNoPowerLoss = new HashSet<String>();
@@ -182,7 +208,7 @@ public class Conf {
 	// track players with admin access who have enabled "admin bypass" mode, and should therefore be able to build anywhere
 	// not worth saving between server restarts, I think
 	public static transient Set<String> adminBypassPlayers = Collections.synchronizedSet(new HashSet<String>());
-	
+
 	// -------------------------------------------- //
 	// Persistance
 	// -------------------------------------------- //

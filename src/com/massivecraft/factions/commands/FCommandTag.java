@@ -48,6 +48,11 @@ public class FCommandTag extends FBaseCommand {
 			return;
 		}
 
+		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
+		if (!payForCommand(Conf.econCostTag)) {
+			return;
+		}
+
 		Faction myFaction = me.getFaction();
 		
 		String oldtag = myFaction.getTag();

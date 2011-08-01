@@ -9,6 +9,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.Econ;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
@@ -232,6 +233,32 @@ public class FBaseCommand {
 		}
 		
 		return false;
+	}
+	
+	// if economy is enabled and they're not on the bypass list, make 'em pay; returns true unless person can't afford the cost
+	public boolean payForCommand(double cost) {
+		if (!Econ.enabled() || this.me == null || cost == 0.0 || Conf.adminBypassPlayers.contains(me.getName())) {
+			return true;
+		}
+
+		String desc = this.helpDescription.toLowerCase();
+
+		// pay up
+		if (cost > 0.0) {
+			String costString = Econ.moneyString(cost);
+			if (!Econ.deductMoney(me.getName(), cost)) {
+				sendMessage("It costs "+costString+" to "+desc+", which you can't currently afford.");
+				return false;
+			}
+			sendMessage("You have paid "+costString+" to "+desc+".");
+		}
+		// wait... we pay you to use this command?
+		else {
+			String costString = Econ.moneyString(-cost);
+			Econ.addMoney(me.getName(), -cost);
+			sendMessage("You have been paid "+costString+" to "+desc+".");
+		}
+		return true;
 	}
 	
 	public static final List<String> aliasTrue = new ArrayList<String>(Arrays.asList("true", "yes", "y", "ok", "on", "+"));

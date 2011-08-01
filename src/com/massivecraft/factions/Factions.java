@@ -147,6 +147,8 @@ public class Factions extends JavaPlugin {
 		setupPermissions();
 		integrateEssentialsChat();
 		
+		Econ.monitorPlugins();
+		
 		// Register events
 		PluginManager pm = this.getServer().getPluginManager();
 		pm.registerEvent(Event.Type.PLAYER_CHAT, this.playerListener, Event.Priority.Highest, this);

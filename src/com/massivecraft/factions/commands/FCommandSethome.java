@@ -55,7 +55,12 @@ public class FCommandSethome extends FBaseCommand {
 			me.sendMessage("Sorry, your faction home can only be set inside your own claimed territory.");
 			return;
 		}
-		
+
+		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
+		if (!payForCommand(Conf.econCostSethome)) {
+			return;
+		}
+
 		myFaction.setHome(player.getLocation());
 		
 		myFaction.sendMessage(me.getNameAndRelevant(myFaction)+Conf.colorSystem+" set the home for your faction. You can now use:");

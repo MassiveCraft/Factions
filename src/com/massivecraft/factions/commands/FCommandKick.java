@@ -57,6 +57,11 @@ public class FCommandKick extends FBaseCommand {
 			}
 		}
 
+		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
+		if (!payForCommand(Conf.econCostKick)) {
+			return;
+		}
+
 		yourFaction.sendMessage(me.getNameAndRelevant(yourFaction)+Conf.colorSystem+" kicked "+you.getNameAndRelevant(yourFaction)+Conf.colorSystem+" from the faction! :O");
 		you.sendMessage(me.getNameAndRelevant(you)+Conf.colorSystem+" kicked you from "+yourFaction.getTag(you)+Conf.colorSystem+"! :O");
 		if (yourFaction != myFaction) {

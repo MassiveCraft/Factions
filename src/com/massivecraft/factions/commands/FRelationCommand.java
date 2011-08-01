@@ -46,7 +46,13 @@ public class FRelationCommand extends FBaseCommand {
 			sendMessage("Nope! You can't declare a relation to yourself :)");
 			return;
 		}
-		
+
+		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
+		double cost = whishedRelation.isAlly() ? Conf.econCostAlly : (whishedRelation.isEnemy() ? Conf.econCostEnemy : Conf.econCostNeutral);
+		if (!payForCommand(cost)) {
+			return;
+		}
+
 		myFaction.setRelationWish(otherFaction, whishedRelation);
 		Relation currentRelation = myFaction.getRelation(otherFaction);
 		ChatColor currentRelationColor = currentRelation.getColor();

@@ -8,6 +8,7 @@ softdepend:
   - HeroChat
   - iChat
   - LocalAreaChat
+  - iConomy
 commands:
   f:
     description: All of the Factions commands

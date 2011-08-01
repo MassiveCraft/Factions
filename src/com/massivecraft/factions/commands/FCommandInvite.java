@@ -45,7 +45,12 @@ public class FCommandInvite extends FBaseCommand {
 			sendMessage("You might want to: " + new FCommandKick().getUseageTemplate(false));
 			return;
 		}
-		
+
+		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
+		if (!payForCommand(Conf.econCostInvite)) {
+			return;
+		}
+
 		myFaction.invite(you);
 		
 		you.sendMessage(me.getNameAndRelevant(you)+Conf.colorSystem+" invited you to "+myFaction.getTag(you));

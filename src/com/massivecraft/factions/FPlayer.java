@@ -434,7 +434,7 @@ public class FPlayer {
 	// Actions
 	// -------------------------------
 	
-	public void leave() {
+	public void leave(boolean makePay) {
 		Faction myFaction = this.getFaction();
 		
 		if (this.getRole() == Role.ADMIN && myFaction.getFPlayers().size() > 1) {
@@ -446,7 +446,27 @@ public class FPlayer {
 			sendMessage("You cannot leave until your power is positive.");
 			return;
 		}
-		
+
+		// if economy is enabled and they're not on the bypass list, make 'em pay
+		if (makePay && Econ.enabled() && !Conf.adminBypassPlayers.contains(this.playerName)) {
+			double cost = Conf.econCostLeave;
+			// pay up
+			if (cost > 0.0) {
+				String costString = Econ.moneyString(cost);
+				if (!Econ.deductMoney(this.getName(), cost)) {
+					sendMessage("It costs "+costString+" to leave your faction, which you can't currently afford.");
+					return;
+				}
+				sendMessage("You have paid "+costString+" to leave your faction.");
+			}
+			// wait... we pay you to leave?
+			else if (cost < 0.0) {
+				String costString = Econ.moneyString(-cost);
+				Econ.addMoney(this.getName(), -cost);
+				sendMessage("You have been paid "+costString+" for leaving your faction.");
+			}
+		}
+
 		if (myFaction.isNormal()) {
 			myFaction.sendMessage(this.getNameAndRelevant(myFaction) + Conf.colorSystem + " left your faction.");
 		}
@@ -502,7 +522,8 @@ public class FPlayer {
 			return false;
 		}
 
-		if (myFaction.getLandRounded() >= myFaction.getPowerRounded()) {
+		int ownedLand = myFaction.getLandRounded();
+		if (ownedLand >= myFaction.getPowerRounded()) {
 			sendMessage("You can't claim more land! You need more power!");
 			return false;
 		}
@@ -527,10 +548,7 @@ public class FPlayer {
 			return false;
 		}
 
-		if (otherFaction.isNone()) {
-			myFaction.sendMessage(this.getNameAndRelevant(myFaction)+Conf.colorSystem+" claimed some new land :D");
-		} else { //if (otherFaction.isNormal()) {
-
+		if (otherFaction.isNormal()) {
 			if ( ! otherFaction.hasLandInflation()) {
 				 // TODO more messages WARN current faction most importantly
 				sendMessage(this.getRelationColor(otherFaction)+otherFaction.getTag()+Conf.colorSystem+" owns this land and is strong enough to keep it.");
@@ -541,11 +559,28 @@ public class FPlayer {
 				sendMessage("You must start claiming land at the border of the territory.");
 				return false;
 			}
+		}
 
+		// if economy is enabled and they're not on the bypass list, make 'em pay
+		if (Econ.enabled() && !Conf.adminBypassPlayers.contains(this.playerName)) {
+			double cost = Econ.calculateClaimCost(ownedLand, otherFaction.isNormal());
+			String costString = Econ.moneyString(cost);
+			if (!Econ.deductMoney(this.playerName, cost)) {
+				sendMessage("Claiming this land will cost "+costString+", which you can't currently afford.");
+				return false;
+			}
+			sendMessage("You have paid "+costString+" to claim this land.");
+		}
+
+		// announce success
+		if (otherFaction.isNormal()) {
 			// ASDF claimed some of your land 450 blocks NNW of you.
 			// ASDf claimed some land from FACTION NAME
 			otherFaction.sendMessage(this.getNameAndRelevant(otherFaction)+Conf.colorSystem+" stole some of your land :O");
 			myFaction.sendMessage(this.getNameAndRelevant(myFaction)+Conf.colorSystem+" claimed some land from "+otherFaction.getTag(myFaction));
+		}
+		else {
+			myFaction.sendMessage(this.getNameAndRelevant(myFaction)+Conf.colorSystem+" claimed some new land :D");
 		}
 
 		Board.setFactionAt(myFaction, flocation);
@@ -687,7 +722,7 @@ public class FPlayer {
 		
 		for (FPlayer fplayer : FPlayer.getAll()) {
 			if (now - fplayer.getLastLoginTime() > toleranceMillis) {
-				fplayer.leave();
+				fplayer.leave(false);
 			}
 		}
 	}

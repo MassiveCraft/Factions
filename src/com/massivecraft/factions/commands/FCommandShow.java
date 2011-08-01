@@ -6,6 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.Econ;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.struct.Role;
@@ -45,7 +46,12 @@ public class FCommandShow extends FBaseCommand {
 		if (faction == null) {
 			return;
 		}
-		
+
+		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
+		if (!payForCommand(Conf.econCostShow)) {
+			return;
+		}
+
 		Collection<FPlayer> admins = faction.getFPlayersWhereRole(Role.ADMIN);
 		Collection<FPlayer> mods = faction.getFPlayersWhereRole(Role.MODERATOR);
 		Collection<FPlayer> normals = faction.getFPlayersWhereRole(Role.NORMAL);
@@ -62,7 +68,18 @@ public class FCommandShow extends FBaseCommand {
 			sendMessage(Conf.colorChrome+"Joining: "+Conf.colorSystem+"invitation is required");
 		}
 		sendMessage(Conf.colorChrome+"Land / Power / Maxpower: "+Conf.colorSystem+ faction.getLandRounded()+" / "+faction.getPowerRounded()+" / "+faction.getPowerMaxRounded());
-	
+
+		// show the land value
+		if (Econ.enabled()) {
+			double value = Econ.calculateTotalLandValue(faction.getLandRounded());
+			double refund = value * Conf.econClaimRefundMultiplier;
+			if (value > 0) {
+				String stringValue = Econ.moneyString(value);
+				String stringRefund = (refund > 0.0) ? (" ("+Econ.moneyString(refund)+" depreciated)") : "";
+				sendMessage(Conf.colorChrome+"Total land value: " + Conf.colorSystem + stringValue + stringRefund);
+			}
+		}
+
 		String listpart;
 		
 		// List relation
