@@ -40,6 +40,14 @@ public enum Relation {
 		return this == Relation.ENEMY;
 	}
 	
+	public boolean isAtLeast(Relation relation) {
+		return this.value >= relation.value;
+	}
+	
+	public boolean isAtMost(Relation relation) {
+		return this.value <= relation.value;
+	}
+	
 	public ChatColor getColor() {
 		if (this == Relation.MEMBER) {
 			return Conf.colorMember;
@@ -47,7 +55,7 @@ public enum Relation {
 			return Conf.colorAlly;
 		} else if (this == Relation.NEUTRAL) {
 			return Conf.colorNeutral;
-		} else { //if (relation == FactionRelation.ENEMY) {
+		} else {
 			return Conf.colorEnemy;
 		}
 	}

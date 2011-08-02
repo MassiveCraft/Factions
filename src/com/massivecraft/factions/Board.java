@@ -17,6 +17,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
+import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.util.AsciiCompass;
 import com.massivecraft.factions.util.DiscUtil;
 import com.massivecraft.factions.util.TextUtil;
@@ -161,7 +162,8 @@ public class Board {
 	 */
 	public static ArrayList<String> getMap(Faction faction, FLocation flocation, double inDegrees) {
 		ArrayList<String> ret = new ArrayList<String>();
-		ret.add(TextUtil.titleize("("+flocation.getCoordString()+") "+getFactionAt(flocation).getTag(faction)));
+		Faction factionLoc = getFactionAt(flocation);
+		ret.add(TextUtil.titleize("("+flocation.getCoordString()+") "+factionLoc.getTag(faction)));
 		
 		int halfWidth = Conf.mapWidth / 2;
 		int halfHeight = Conf.mapHeight / 2;
@@ -186,17 +188,26 @@ public class Board {
 				} else {
 					FLocation flocationHere = topLeft.getRelative(dx, dz);
 					Faction factionHere = getFactionAt(flocationHere);
+					Relation relation = faction.getRelation(factionHere);
 					if (factionHere.isNone()) {
 						row += ChatColor.GRAY+"-";
 					} else if (factionHere.isSafeZone()) {
 						row += ChatColor.GOLD+"+";
 					} else if (factionHere.isWarZone()) {
 						row += ChatColor.DARK_RED+"+";
-					} else {
+					} else if (
+						   factionHere == faction
+						|| factionHere == factionLoc
+						|| relation.isAtLeast(Relation.ALLY)
+						|| (Conf.showNeutralFactionsOnMap && relation.equals(Relation.NEUTRAL))
+						|| (Conf.showEnemyFactionsOnMap && relation.equals(Relation.ENEMY))
+						) {
 						if (!fList.containsKey(factionHere.getTag()))
 							fList.put(factionHere.getTag(), Conf.mapKeyChrs[chrIdx++]);
 						char tag = fList.get(factionHere.getTag());
 						row += factionHere.getRelation(faction).getColor() + "" + tag;
+					} else {
+						row += ChatColor.GRAY+"-";
 					}
 				}
 			}
