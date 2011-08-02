@@ -3,6 +3,7 @@ package com.massivecraft.factions.listeners;
 import java.text.MessageFormat;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.entity.Creeper;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Fireball;
@@ -153,12 +154,17 @@ public class FactionsEntityListener extends EntityListener {
 			return true;
 		}
 		
+		Location defenderLoc = defender.getPlayer().getLocation();
+		
+		if (Conf.worldsIgnorePvP.contains(defenderLoc.getWorld().getName())) {
+			return true;
+		}
+		
 		// Players can not take attack damage in a SafeZone
-		if (Board.getFactionAt(new FLocation(defender)).isSafeZone()) {
+		if (Board.getFactionAt(new FLocation(defenderLoc)).isSafeZone()) {
 			if (damager instanceof Player) {
 				FPlayer attacker = FPlayer.get((Player)damager);
 				attacker.sendMessage("You can't hurt other players in a SafeZone.");
-//				defender.sendMessage(attacker.getNameAndRelevant(defender)+Conf.colorSystem+" tried to hurt you.");
 			}
 			return false;
 		}
@@ -237,6 +243,7 @@ public class FactionsEntityListener extends EntityListener {
 		return true;
 	}
 	
+	@Override
 	public void onCreatureSpawn(CreatureSpawnEvent event) {
 		if (event.isCancelled()) {
 			return;
