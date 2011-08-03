@@ -36,7 +36,15 @@ public class FCommandSafeclaim extends FBaseCommand {
 		
 		// Was a radius set?
 		if (parameters.size() > 0) {
-			int radius = Integer.parseInt(parameters.get(0));
+			int radius;
+			try {
+				radius = Integer.parseInt(parameters.get(0));
+			}
+			catch(NumberFormatException ex) {
+				sendMessage("Usage: " + getUseageTemplate(false));
+				sendMessage("The radius value must be an integer.");
+				return;
+			}
 			
 			FLocation from = playerFlocation.getRelative(radius, radius);
 			FLocation to = playerFlocation.getRelative(-radius, -radius);
