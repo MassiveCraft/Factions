@@ -192,16 +192,30 @@ public class FactionsBlockListener extends BlockListener {
 				me.sendMessage("You can't "+action+" in the territory of "+otherFaction.getTag(myFaction));
 				return false;
 			}
+			//added by Bladedpenguin@gmail.com
+			//if not denybuild, hurt the player for building?
+			else if (
+					   (online && (areEnemies ? Conf.territoryEnemyPainBuild : Conf.territoryPainBuild))
+					|| (!online && (areEnemies ? Conf.territoryEnemyPainBuildWhenOffline : Conf.territoryPainBuildWhenOffline))
+					) {
+					me.sendMessage("You are hurt for "+action+" in the territory of "+otherFaction.getTag(myFaction));
+					player.damage(1);
+				}
 		}
 		// Also cancel if player doesn't have ownership rights for this claim
+		// Also restructured by bladedpenguin/locutus
 		else if (
 			   Conf.ownedAreasEnabled
-			&& Conf.ownedAreaDenyBuild
 			&& !myFaction.playerHasOwnershipRights(me, loc)
 			&& !Factions.hasPermOwnershipBypass(player)
 			) {
-			me.sendMessage("You can't "+action+" in this territory, it is owned by: "+myFaction.getOwnerListString(loc));
-			return false;
+			if (Conf.ownedAreaDenyBuild){
+				me.sendMessage("You can't "+action+" in this territory, it is owned by: "+myFaction.getOwnerListString(loc));
+				return false;
+			} else if (Conf.ownedAreaPainBuild){
+				me.sendMessage("You are hurt for "+action+" in this territory, it is owned by: "+myFaction.getOwnerListString(loc));
+				player.damage(1);
+			}
 		}
 		
 		return true;
