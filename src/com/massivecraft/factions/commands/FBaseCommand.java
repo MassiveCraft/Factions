@@ -190,16 +190,16 @@ public class FBaseCommand {
 	
 	
 	public Faction findFaction(String factionName, boolean defaultToMine) {
-		// First we search player names
-		FPlayer fp = FPlayer.find(factionName);
-		if (fp != null) {
-			return fp.getFaction();
-		}
-		
-		// Secondly we search faction names
+		// First we search faction names
 		Faction faction = Faction.findByTag(factionName);
 		if (faction != null) {
 			return faction;
+		}
+
+		// Next we search player names
+		FPlayer fp = FPlayer.find(factionName);
+		if (fp != null) {
+			return fp.getFaction();
 		}
 		
 		if (defaultToMine && sender instanceof Player) {

@@ -208,7 +208,7 @@ public class Factions extends JavaPlugin {
 			Permissions = ((Permissions)test).getHandler();
 			Factions.log("Found and will use plugin "+((Permissions)test).getDescription().getFullName());
 		} else {
-			Factions.log("Permission system not detected, defaulting to OP");
+			Factions.log("Permissions plugin not detected, defaulting to Bukkit superperms system");
 		}
 	}
 
