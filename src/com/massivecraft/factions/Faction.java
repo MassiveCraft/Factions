@@ -28,7 +28,7 @@ public class Faction {
 	
 	private transient int id;
 	private Map<Integer, Relation> relationWish;
-	private Map<FLocation, Set<String>> claimOwnership;
+	private Map<FLocation, Set<String>> claimOwnership = new HashMap<FLocation, Set<String>>();
 	private Set<String> invites; // Where string is a lowercase player name
 	private boolean open;
 	private String tag;
@@ -414,21 +414,11 @@ public class Faction {
 	// Ownership of specific claims
 	//----------------------------------------------//
 
-	private boolean isClaimOwnershipEmpty() {
-		if (claimOwnership == null) {
-			claimOwnership = new HashMap<FLocation, Set<String>>();
-			return true;
-		}
-		return claimOwnership.isEmpty();
-	}
-
 	public void clearAllClaimOwnership() {
-		isClaimOwnershipEmpty();
 		claimOwnership.clear();
 	}
 
 	public void clearClaimOwnership(FLocation loc) {
-		isClaimOwnershipEmpty();
 		claimOwnership.remove(loc);
 	}
 
@@ -436,8 +426,6 @@ public class Faction {
 		if (playerName == null || playerName.isEmpty()) {
 			return;
 		}
-
-		isClaimOwnershipEmpty();
 
 		Set<String> ownerData;
 		String player = playerName.toLowerCase();
@@ -463,11 +451,11 @@ public class Faction {
 	}
 
 	public int getCountOfClaimsWithOwners() {
-		return isClaimOwnershipEmpty() ? 0 : claimOwnership.size();
+		return claimOwnership.isEmpty() ? 0 : claimOwnership.size();
 	}
 
 	public boolean doesLocationHaveOwnersSet(FLocation loc) {
-		if (isClaimOwnershipEmpty() || !claimOwnership.containsKey(loc)) {
+		if (claimOwnership.isEmpty() || !claimOwnership.containsKey(loc)) {
 			return false;
 		}
 		Set<String> ownerData = claimOwnership.get(loc);
@@ -475,7 +463,7 @@ public class Faction {
 	}
 
 	public boolean isPlayerInOwnerList(String playerName, FLocation loc) {
-		if (isClaimOwnershipEmpty()) {
+		if (claimOwnership.isEmpty()) {
 			return false;
 		}
 		Set<String> ownerData = claimOwnership.get(loc);
@@ -489,7 +477,6 @@ public class Faction {
 	}
 
 	public void setPlayerAsOwner(String playerName, FLocation loc) {
-		isClaimOwnershipEmpty();
 		Set<String> ownerData = claimOwnership.get(loc);
 		if (ownerData == null) {
 			ownerData = new HashSet<String>();
@@ -499,7 +486,6 @@ public class Faction {
 	}
 
 	public void removePlayerAsOwner(String playerName, FLocation loc) {
-		isClaimOwnershipEmpty();
 		Set<String> ownerData = claimOwnership.get(loc);
 		if (ownerData == null) {
 			return;
@@ -509,12 +495,10 @@ public class Faction {
 	}
 
 	public Set<String> getOwnerList(FLocation loc) {
-		isClaimOwnershipEmpty();
 		return claimOwnership.get(loc);
 	}
 
 	public String getOwnerListString(FLocation loc) {
-		isClaimOwnershipEmpty();
 		Set<String> ownerData = claimOwnership.get(loc);
 		if (ownerData == null || ownerData.isEmpty()) {
 			return "";
@@ -544,7 +528,7 @@ public class Faction {
 		}
 
 		// make sure claimOwnership is initialized
-		if (isClaimOwnershipEmpty()) {
+		if (claimOwnership.isEmpty()) {
 			return true;
 		}
 
