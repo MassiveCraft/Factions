@@ -185,36 +185,39 @@ public class FactionsBlockListener extends BlockListener {
 		// Cancel if we are not in our own territory
 		if (myFaction != otherFaction) {
 			boolean online = otherFaction.hasPlayersOnline();
-			if (
-				   (online && (areEnemies ? Conf.territoryEnemyDenyBuild : Conf.territoryDenyBuild))
-				|| (!online && (areEnemies ? Conf.territoryEnemyDenyBuildWhenOffline : Conf.territoryDenyBuildWhenOffline))
-				) {
+			boolean pain = (online && (areEnemies ? Conf.territoryEnemyPainBuild : Conf.territoryPainBuild)) 
+						|| (!online && (areEnemies ? Conf.territoryEnemyPainBuildWhenOffline : Conf.territoryPainBuildWhenOffline));
+			boolean deny = (online && (areEnemies ? Conf.territoryEnemyDenyBuild : Conf.territoryDenyBuild))
+						|| (!online && (areEnemies ? Conf.territoryEnemyDenyBuildWhenOffline : Conf.territoryDenyBuildWhenOffline));
+			//added by Bladedpenguin@gmail.com
+			//hurt the player for building/destroying?
+			if (pain) {
+				player.damage(Conf.actionDeniedPainAmount);
+				if (!deny) {
+					me.sendMessage("You are hurt for "+action+" in the territory of "+otherFaction.getTag(myFaction));
+				}
+			}
+			if (deny) {
 				me.sendMessage("You can't "+action+" in the territory of "+otherFaction.getTag(myFaction));
 				return false;
 			}
-			//added by Bladedpenguin@gmail.com
-			//if not denybuild, hurt the player for building?
-			else if (
-					   (online && (areEnemies ? Conf.territoryEnemyPainBuild : Conf.territoryPainBuild))
-					|| (!online && (areEnemies ? Conf.territoryEnemyPainBuildWhenOffline : Conf.territoryPainBuildWhenOffline))
-					) {
-					me.sendMessage("You are hurt for "+action+" in the territory of "+otherFaction.getTag(myFaction));
-					player.damage(1);
-				}
 		}
 		// Also cancel if player doesn't have ownership rights for this claim
-		// Also restructured by bladedpenguin/locutus
 		else if (
 			   Conf.ownedAreasEnabled
+			&& (Conf.ownedAreaDenyBuild || Conf.ownedAreaPainBuild)
 			&& !myFaction.playerHasOwnershipRights(me, loc)
 			&& !Factions.hasPermOwnershipBypass(player)
 			) {
+			if (Conf.ownedAreaPainBuild){
+				player.damage(Conf.actionDeniedPainAmount);
+				if (!Conf.ownedAreaDenyBuild) {
+					me.sendMessage("You are hurt for "+action+" in this territory, it is owned by: "+myFaction.getOwnerListString(loc));
+				}
+			}
 			if (Conf.ownedAreaDenyBuild){
 				me.sendMessage("You can't "+action+" in this territory, it is owned by: "+myFaction.getOwnerListString(loc));
 				return false;
-			} else if (Conf.ownedAreaPainBuild){
-				me.sendMessage("You are hurt for "+action+" in this territory, it is owned by: "+myFaction.getOwnerListString(loc));
-				player.damage(1);
 			}
 		}
 		

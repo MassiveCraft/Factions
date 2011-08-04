@@ -83,16 +83,18 @@ public class Conf {
 	
 	public static double considerFactionsReallyOfflineAfterXMinutes = 0.0;
 	
+	public static int actionDeniedPainAmount = 1;
+	
 	public static double territoryShieldFactor = 0.3;
 	public static boolean territoryDenyBuild = true;
 	public static boolean territoryDenyBuildWhenOffline = true;
-	public static boolean territoryPainBuild = true;
-	public static boolean territoryPainBuildWhenOffline = true;
+	public static boolean territoryPainBuild = false;
+	public static boolean territoryPainBuildWhenOffline = false;
 	public static boolean territoryDenyUseage = true;
 	public static boolean territoryEnemyDenyBuild = true;
 	public static boolean territoryEnemyDenyBuildWhenOffline = true;
-	public static boolean territoryEnemyPainBuild = true;
-	public static boolean territoryEnemyPainBuildWhenOffline = true;
+	public static boolean territoryEnemyPainBuild = false;
+	public static boolean territoryEnemyPainBuildWhenOffline = false;
 	public static boolean territoryEnemyDenyUseage = true;
 	public static boolean territoryEnemyProtectMaterials = true;
 	public static boolean territoryBlockCreepers = false;
@@ -108,7 +110,7 @@ public class Conf {
 	public static boolean ownedAreasModeratorsCanSet = false;
 	public static boolean ownedAreaModeratorsBypass = true;
 	public static boolean ownedAreaDenyBuild = true;
-	public static boolean ownedAreaPainBuild = true;
+	public static boolean ownedAreaPainBuild = false;
 	public static boolean ownedAreaProtectMaterials = true;
 	public static boolean ownedAreaDenyUseage = true;
 
