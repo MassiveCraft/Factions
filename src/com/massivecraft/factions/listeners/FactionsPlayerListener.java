@@ -399,22 +399,31 @@ public class FactionsPlayerListener extends PlayerListener{
 
 	@Override
 	public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
-		if (event.isCancelled() || (Conf.territoryNeutralDenyCommands.isEmpty() && Conf.territoryNeutralDenyCommands.isEmpty())) {
+		if (event.isCancelled()) {
 			return;
 		}
 
-		FPlayer me = FPlayer.get(event.getPlayer());
+		if (preventCommand(event.getMessage().toLowerCase(), event.getPlayer())) {
+			event.setCancelled(true);
+		}
+	}
+
+	public static boolean preventCommand(String fullCmd, Player player) {
+		if ((Conf.territoryNeutralDenyCommands.isEmpty() && Conf.territoryEnemyDenyCommands.isEmpty())) {
+			return false;
+		}
+
+		FPlayer me = FPlayer.get(player);
 
 		if (!me.isInOthersTerritory()) {
-			return;
+			return false;
 		}
 
 		Relation rel = me.getRelationToLocation();
 		if (rel.isAtLeast(Relation.ALLY)) {
-			return;
+			return false;
 		}
 
-		String fullCmd = event.getMessage().toLowerCase();
 		String shortCmd = fullCmd.substring(1);	// Get rid of the slash at the beginning
 		
 		if (
@@ -428,8 +437,7 @@ public class FactionsPlayerListener extends PlayerListener{
 				cmdCheck = iter.next().toLowerCase();
 				if (fullCmd.startsWith(cmdCheck) || shortCmd.startsWith(cmdCheck)) {
 					me.sendMessage("You can't use the command \""+fullCmd+"\" in neutral territory.");
-					event.setCancelled(true);
-					return;
+					return true;
 				}
 			}
 		}
@@ -444,10 +452,11 @@ public class FactionsPlayerListener extends PlayerListener{
 				cmdCheck = iter.next().toLowerCase();
 				if (fullCmd.startsWith(cmdCheck) || shortCmd.startsWith(cmdCheck)) {
 					me.sendMessage("You can't use the command \""+fullCmd+"\" in enemy territory.");
-					event.setCancelled(true);
-					return;
+					return true;
 				}
 			}
 		}
+		return false;
 	}
+
 }

@@ -21,10 +21,14 @@ public class FactionsChatEarlyListener extends PlayerListener{
 	@Override
 	public void onPlayerChat(PlayerChatEvent event) {
 		if ((event.getMessage().startsWith(Factions.instance.getBaseCommand()+" ") || event.getMessage().equals(Factions.instance.getBaseCommand())) && Conf.allowNoSlashCommand) {
-			List<String> parameters = TextUtil.split(event.getMessage().trim());
-			parameters.remove(0);
-			CommandSender sender = event.getPlayer();			
-			Factions.instance.handleCommand(sender, parameters);
+			String msg = event.getMessage().trim();
+			// make sure command isn't denied due to being in enemy/neutral territory
+			if (!FactionsPlayerListener.preventCommand("/" + msg.toLowerCase(), event.getPlayer())) {
+				List<String> parameters = TextUtil.split(msg);
+				parameters.remove(0);
+				CommandSender sender = event.getPlayer();
+				Factions.instance.handleCommand(sender, parameters);
+			}
 			event.setCancelled(true);
 			return;
 		}
