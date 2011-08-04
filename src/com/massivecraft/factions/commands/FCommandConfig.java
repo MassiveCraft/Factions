@@ -51,7 +51,11 @@ public class FCommandConfig extends FBaseCommand {
 			}
 		}
 
-		String fieldName = properFieldNames.get(parameters.get(0).toLowerCase());
+		String field = parameters.get(0).toLowerCase();
+		if (field.startsWith("\"") && field.endsWith("\"")) {
+			field = field.substring(1, field.length() - 1);
+		}
+		String fieldName = properFieldNames.get(field);
 
 		if (fieldName == null || fieldName.isEmpty()) {
 			sendMessage("No configuration setting \""+parameters.get(0)+"\" exists.");
