@@ -329,6 +329,10 @@ public class FPlayer {
 		return this.getFaction().getRelation(fplayer);
 	}
 	
+	public Relation getRelationToLocation() {
+		return Board.getFactionAt(new FLocation(this)).getRelation(this);
+	}
+	
 	public ChatColor getRelationColor(Faction faction) {
 		return faction.getRelationColor(this);
 	}
@@ -417,10 +421,18 @@ public class FPlayer {
 		return idHere > 0 && idHere != this.factionId;
 	}
 
-	public boolean isInEnemyTerritory() {
-		return Board.getFactionAt(new FLocation(this)).getRelation(this) == Relation.ENEMY;
+	public boolean isInAllyTerritory() {
+		return Board.getFactionAt(new FLocation(this)).getRelation(this).isAlly();
 	}
-	
+
+	public boolean isInNeutralTerritory() {
+		return Board.getFactionAt(new FLocation(this)).getRelation(this).isNeutral();
+	}
+
+	public boolean isInEnemyTerritory() {
+		return Board.getFactionAt(new FLocation(this)).getRelation(this).isEnemy();
+	}
+
 	public void sendFactionHereMessage() {
 		Faction factionHere = Board.getFactionAt(new FLocation(this));
 		String msg = Conf.colorSystem+" ~ "+factionHere.getTag(this);

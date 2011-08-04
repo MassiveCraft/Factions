@@ -1,6 +1,7 @@
 package com.massivecraft.factions.listeners;
 
 import java.util.logging.Logger;
+import java.util.Iterator;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -12,6 +13,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerBucketFillEvent;
 import org.bukkit.event.player.PlayerChatEvent;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerListener;
@@ -27,6 +29,7 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.util.TextUtil;
 
 
@@ -391,6 +394,60 @@ public class FactionsPlayerListener extends PlayerListener{
 		if ( ! this.playerCanUseItemHere(player, block, event.getBucket())) {
 			event.setCancelled(true);
 			return;
+		}
+	}
+
+	@Override
+	public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
+		if (event.isCancelled() || (Conf.territoryNeutralDenyCommands.isEmpty() && Conf.territoryNeutralDenyCommands.isEmpty())) {
+			return;
+		}
+
+		FPlayer me = FPlayer.get(event.getPlayer());
+
+		if (!me.isInOthersTerritory()) {
+			return;
+		}
+
+		Relation rel = me.getRelationToLocation();
+		if (rel.isAtLeast(Relation.ALLY)) {
+			return;
+		}
+
+		String fullCmd = event.getMessage().toLowerCase();
+		String shortCmd = fullCmd.substring(1);	// Get rid of the slash at the beginning
+		
+		if (
+			   rel.isNeutral()
+			&& !Conf.territoryNeutralDenyCommands.isEmpty()
+			&& !Conf.adminBypassPlayers.contains(me.getName())
+			) {
+			Iterator<String> iter = Conf.territoryNeutralDenyCommands.iterator();
+			String cmdCheck;
+			while (iter.hasNext()) {
+				cmdCheck = iter.next().toLowerCase();
+				if (fullCmd.startsWith(cmdCheck) || shortCmd.startsWith(cmdCheck)) {
+					me.sendMessage("You can't use the command \""+fullCmd+"\" in neutral territory.");
+					event.setCancelled(true);
+					return;
+				}
+			}
+		}
+		else if (
+			   rel.isEnemy()
+			&& !Conf.territoryEnemyDenyCommands.isEmpty()
+			&& !Conf.adminBypassPlayers.contains(me.getName())
+			) {
+			Iterator<String> iter = Conf.territoryEnemyDenyCommands.iterator();
+			String cmdCheck;
+			while (iter.hasNext()) {
+				cmdCheck = iter.next().toLowerCase();
+				if (fullCmd.startsWith(cmdCheck) || shortCmd.startsWith(cmdCheck)) {
+					me.sendMessage("You can't use the command \""+fullCmd+"\" in enemy territory.");
+					event.setCancelled(true);
+					return;
+				}
+			}
 		}
 	}
 }

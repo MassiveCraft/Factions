@@ -85,6 +85,10 @@ public class Conf {
 	
 	public static int actionDeniedPainAmount = 1;
 	
+	// commands which will be prevented when in claimed territory of another faction
+	public static Set<String> territoryNeutralDenyCommands = new HashSet<String>();
+	public static Set<String> territoryEnemyDenyCommands = new HashSet<String>();
+	
 	public static double territoryShieldFactor = 0.3;
 	public static boolean territoryDenyBuild = true;
 	public static boolean territoryDenyBuildWhenOffline = true;
