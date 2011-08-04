@@ -29,7 +29,6 @@ permissions:
       factions.ownershipBypass: true
       factions.reload: true
       factions.saveall: true
-      factions.worldOptions: true
       factions.commandDisable.none: true
   factions.participate:
     description: Allows the player to participate in a faction
@@ -66,9 +65,6 @@ permissions:
     default: op
   factions.saveall:
     description: Can use the /f saveall command to save all data to disk
-    default: op
-  factions.worldOptions:
-    description: Can use the /f worldnoclaim and /f worldnopowerloss commands
     default: op
   factions.commandDisable.none:
     description: no commands disabled (ignore all other commandDisable permissions)

@@ -133,8 +133,6 @@ public class Factions extends JavaPlugin {
 		commands.add(new FCommandVersion());
 		commands.add(new FCommandWarclaim());
 		commands.add(new FCommandWarunclaimall());
-		commands.add(new FCommandWorldNoClaim());
-		commands.add(new FCommandWorldNoPowerLoss());
 		
 		// Ensure base folder exists!
 		this.getDataFolder().mkdirs();
@@ -392,10 +390,6 @@ public class Factions extends JavaPlugin {
 	
 	public static boolean hasPermDisband(CommandSender sender) {
 		return hasPerm(sender, "factions.disband");
-	}
-	
-	public static boolean hasPermWorlds(CommandSender sender) {
-		return hasPerm(sender, "factions.worldOptions");
 	}
 	
 	public static boolean hasPermViewAnyPower(CommandSender sender) {
