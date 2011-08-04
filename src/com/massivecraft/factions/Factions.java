@@ -146,6 +146,7 @@ public class Factions extends JavaPlugin {
 		
 		setupPermissions();
 		integrateEssentialsChat();
+		setupEcon();
 		
 		Econ.monitorPlugins();
 		
@@ -211,6 +212,25 @@ public class Factions extends JavaPlugin {
 		} else {
 			Factions.log("Permissions plugin not detected, defaulting to Bukkit superperms system");
 		}
+	}
+	
+	private void setupEcon() {
+		if (Econ.enabled()) {
+			return;
+		}
+		
+        if (!Econ.iConomyHooked()) {
+			Plugin plug = this.getServer().getPluginManager().getPlugin("iConomy");
+			if (plug != null && plug.getClass().getName().equals("com.iConomy.iConomy")) {
+				Econ.iConomySet(true);
+			}
+		}
+		if (!Econ.essentialsEcoHooked()) {
+			Plugin plug = this.getServer().getPluginManager().getPlugin("Essentials");
+			if (plug != null) {
+				Econ.essentialsEcoSet(true);
+			}
+        }
 	}
 
 	private void integrateEssentialsChat() {

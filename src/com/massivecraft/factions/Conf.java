@@ -149,6 +149,7 @@ public class Conf {
 
 	// Economy settings
 	public static boolean econIConomyEnabled = false;
+	public static boolean econEssentialsEcoEnabled = false;
 	public static double econCostClaimWilderness = 30.0;
 	public static double econCostClaimFromFactionBonus = 30.0;
 	public static double econClaimAdditionalMultiplier = 0.5;

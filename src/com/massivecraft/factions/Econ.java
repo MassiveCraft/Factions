@@ -4,29 +4,51 @@ import org.bukkit.event.Event;
 
 import com.massivecraft.factions.listeners.FactionsServerListener;
 
+import com.earth2me.essentials.api.Economy;
 import com.iConomy.*;
 import com.iConomy.system.*;
 
 
 public class Econ {
-	private static iConomy iConomyPlugin;
+	private static boolean iConomyUse = false;
+	private static boolean essEcoUse = false;
 
 	public static void monitorPlugins() {
 		Factions.instance.getServer().getPluginManager().registerEvent(Event.Type.PLUGIN_ENABLE, new FactionsServerListener(), Event.Priority.Monitor, Factions.instance);
 		Factions.instance.getServer().getPluginManager().registerEvent(Event.Type.PLUGIN_DISABLE, new FactionsServerListener(), Event.Priority.Monitor, Factions.instance);
 	}
 
-	public static void iConomySet(iConomy instance) {
-		iConomyPlugin = instance;
+	public static void iConomySet(boolean enable) {
+		iConomyUse = enable;
+		if (enable) {
+			Factions.log("Hooked into iConomy, "+(Conf.econIConomyEnabled ? "and interface is enabled" : "but interface is currently disabled (\"econIConomyEnabled\": false)")+".");
+		}
+		else {
+			Factions.log("Un-hooked from iConomy.");
+		}
+	}
+
+	public static void essentialsEcoSet(boolean enable) {
+		essEcoUse = enable;
+		if (enable) {
+			Factions.log("Hooked into EssentialsEco, "+(Conf.econEssentialsEcoEnabled ? "and interface is enabled" : "but interface is currently disabled (\"econEssentialsEcoEnabled\": false)")+".");
+		}
+		else {
+			Factions.log("Un-hooked from EssentialsEco.");
+		}
 	}
 
 	public static boolean iConomyHooked() {
-		return iConomyPlugin != null;
+		return iConomyUse;
+	}
+
+	public static boolean essentialsEcoHooked() {
+		return essEcoUse;
 	}
 
 	// If economy is enabled in conf.json, and we're successfully hooked into an economy plugin
 	public static boolean enabled() {
-		return Conf.econIConomyEnabled && iConomyPlugin != null;
+		return (Conf.econIConomyEnabled && iConomyUse) || (Conf.econEssentialsEcoEnabled && essEcoUse);
 	}
 
 	// mainly for internal use, for a little less code repetition
@@ -46,7 +68,7 @@ public class Econ {
 
 	// format money string based on server's set currency type, like "24 gold" or "$24.50"
 	public static String moneyString(double amount) {
-		return iConomy.format(amount);
+		return iConomyUse ? iConomy.format(amount) : Economy.format(amount);
 	}
 
 	// whether a player can afford specified amount
@@ -56,12 +78,22 @@ public class Econ {
 			return true;
 		}
 
-		Holdings holdings = getIconomyHoldings(playerName);
-		if (holdings == null) {
-			return false;
-		}
+		if (iConomyUse) {
+			Holdings holdings = getIconomyHoldings(playerName);
+			if (holdings == null) {
+				return false;
+			}
 
-		return holdings.hasEnough(amount);
+			return holdings.hasEnough(amount);
+		}
+		else {
+			try {
+				return Economy.hasEnough(playerName, amount);
+			}
+			catch (Exception ex) {
+				return false;
+			}
+		}
 	}
 
 	// deduct money from their account; returns true if successful
@@ -70,13 +102,27 @@ public class Econ {
 			return true;
 		}
 
-		Holdings holdings = getIconomyHoldings(playerName);
-		if (holdings == null || !holdings.hasEnough(amount)) {
-			return false;
-		}
+		if (iConomyUse) {
+			Holdings holdings = getIconomyHoldings(playerName);
+			if (holdings == null || !holdings.hasEnough(amount)) {
+				return false;
+			}
 
-		holdings.subtract(amount);
-		return true;
+			holdings.subtract(amount);
+			return true;
+		}
+		else {
+			try {
+				if (!Economy.hasEnough(playerName, amount)) {
+					return false;
+				}
+				Economy.subtract(playerName, amount);
+				return true;
+			}
+			catch (Exception ex) {
+				return false;
+			}
+		}
 	}
 
 	// add money to their account; returns true if successful
@@ -85,13 +131,24 @@ public class Econ {
 			return true;
 		}
 
-		Holdings holdings = getIconomyHoldings(playerName);
-		if (holdings == null) {
-			return false;
-		}
+		if (iConomyUse) {
+			Holdings holdings = getIconomyHoldings(playerName);
+			if (holdings == null) {
+				return false;
+			}
 
-		holdings.add(amount);
-		return true;
+			holdings.add(amount);
+			return true;
+		}
+		else {
+			try {
+				Economy.add(playerName, amount);
+				return true;
+			}
+			catch (Exception ex) {
+				return false;
+			}
+		}
 	}
 
 
