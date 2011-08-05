@@ -434,7 +434,12 @@ public class FactionsPlayerListener extends PlayerListener{
 			Iterator<String> iter = Conf.territoryNeutralDenyCommands.iterator();
 			String cmdCheck;
 			while (iter.hasNext()) {
-				cmdCheck = iter.next().toLowerCase();
+				cmdCheck = iter.next();
+				if (cmdCheck == null) {
+					continue;
+				}
+
+				cmdCheck = cmdCheck.toLowerCase();
 				if (fullCmd.startsWith(cmdCheck) || shortCmd.startsWith(cmdCheck)) {
 					me.sendMessage("You can't use the command \""+fullCmd+"\" in neutral territory.");
 					return true;
@@ -449,7 +454,12 @@ public class FactionsPlayerListener extends PlayerListener{
 			Iterator<String> iter = Conf.territoryEnemyDenyCommands.iterator();
 			String cmdCheck;
 			while (iter.hasNext()) {
-				cmdCheck = iter.next().toLowerCase();
+				cmdCheck = iter.next();
+				if (cmdCheck == null) {
+					continue;
+				}
+
+				cmdCheck = cmdCheck.toLowerCase();
 				if (fullCmd.startsWith(cmdCheck) || shortCmd.startsWith(cmdCheck)) {
 					me.sendMessage("You can't use the command \""+fullCmd+"\" in enemy territory.");
 					return true;
