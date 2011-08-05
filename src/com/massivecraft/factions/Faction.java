@@ -31,6 +31,8 @@ public class Faction {
 	private Map<FLocation, Set<String>> claimOwnership = new HashMap<FLocation, Set<String>>();
 	private Set<String> invites; // Where string is a lowercase player name
 	private boolean open;
+	private boolean peaceful;
+	private boolean peacefulExplosionsEnabled;
 	private String tag;
 	private String description;
 	private Location home;
@@ -120,7 +122,34 @@ public class Faction {
 		sendMessage("Your faction home has been un-set since it is no longer in your territory.");
 		this.home = null;
 	}
-	
+
+	// "peaceful" status can only be set by server admins/moderators/ops, and prevents PvP and land capture to/from the faction
+	public boolean isPeaceful() {
+		return peaceful;
+	}
+	public void setPeaceful(boolean isPeaceful) {
+		peaceful = isPeaceful;
+	}
+
+	public void setPeacefulExplosions(boolean disable) {
+		peacefulExplosionsEnabled = disable;
+	}
+	public void setPeacefulExplosions() {
+		setPeacefulExplosions(!peacefulExplosionsEnabled);
+	}
+
+	public boolean noPvPInTerritory() {
+		return isSafeZone() || (peaceful && Conf.peacefulTerritoryDisablePVP);
+	}
+
+	public boolean noMonstersInTerritory() {
+		return isSafeZone() || (peaceful && Conf.peacefulTerritoryDisableMonsters);
+	}
+
+	public boolean noExplosionsInTerritory() {
+		return peaceful && !peacefulExplosionsEnabled;
+	}
+
 	// -------------------------------
 	// Understand the types
 	// -------------------------------
@@ -177,11 +206,18 @@ public class Faction {
 	}
 	
 	public Relation getRelation(Faction otherFaction) {
+		return getRelation(otherFaction, false);
+	}
+	
+	public Relation getRelation(Faction otherFaction, boolean ignorePeaceful) {
 		if (!otherFaction.isNormal() || !this.isNormal()) {
 			return Relation.NEUTRAL;
 		}
 		if (otherFaction.equals(this)) {
 			return Relation.MEMBER;
+		}
+		if (!ignorePeaceful && (this.peaceful || otherFaction.isPeaceful())) {
+			return Relation.NEUTRAL;
 		}
 		if(this.getRelationWish(otherFaction).value >= otherFaction.getRelationWish(this).value) {
 			return otherFaction.getRelationWish(this);

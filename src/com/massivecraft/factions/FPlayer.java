@@ -561,6 +561,15 @@ public class FPlayer {
 		}
 
 		if (otherFaction.isNormal()) {
+			if (myFaction.isPeaceful()) {
+				sendMessage(this.getRelationColor(otherFaction)+otherFaction.getTag()+Conf.colorSystem+" owns this land. Your faction is peaceful, so you cannot claim land from other factions.");
+				return false;
+			}
+			if (otherFaction.isPeaceful()) {
+				sendMessage(this.getRelationColor(otherFaction)+otherFaction.getTag()+Conf.colorSystem+" owns this land, and is a peaceful faction. You cannot claim land from them.");
+				return false;
+			}
+
 			if ( ! otherFaction.hasLandInflation()) {
 				 // TODO more messages WARN current faction most importantly
 				sendMessage(this.getRelationColor(otherFaction)+otherFaction.getTag()+Conf.colorSystem+" owns this land and is strong enough to keep it.");

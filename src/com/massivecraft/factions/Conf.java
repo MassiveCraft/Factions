@@ -76,6 +76,10 @@ public class Conf {
 	public static boolean disablePVPBetweenNeutralFactions = false;
 	public static boolean disablePVPForFactionlessPlayers = false;
 	public static int noPVPDamageToOthersForXSecondsAfterLogin = 3;
+
+	public static boolean peacefulTerritoryDisablePVP = true;
+	public static boolean peacefulTerritoryDisableMonsters = false;
+	public static boolean peacefulMembersDisablePowerLoss = true;
 	
 	public static boolean claimsMustBeConnected = false;
 	public static boolean claimsCanBeUnconnectedIfOwnedByOtherFaction = true;
@@ -173,6 +177,7 @@ public class Conf {
 	public static double econCostAlly = 0.0;
 	public static double econCostEnemy = 0.0;
 	public static double econCostNeutral = 0.0;
+	public static double econCostNoBoom = 0.0;
 	
 	public static Set<String> worldsNoClaiming = new HashSet<String>();
 	public static Set<String> worldsNoPowerLoss = new HashSet<String>();
@@ -196,7 +201,7 @@ public class Conf {
 		territoryDenyUseageMaterials.add(Material.BUCKET);
 		territoryDenyUseageMaterials.add(Material.WATER_BUCKET);
 		territoryDenyUseageMaterials.add(Material.LAVA_BUCKET);
-		
+
 		territoryProtectedMaterialsWhenOffline.add(Material.WOODEN_DOOR);
 		territoryProtectedMaterialsWhenOffline.add(Material.TRAP_DOOR);
 		territoryProtectedMaterialsWhenOffline.add(Material.DISPENSER);

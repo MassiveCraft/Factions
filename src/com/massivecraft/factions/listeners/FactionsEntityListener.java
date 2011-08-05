@@ -56,6 +56,9 @@ public class FactionsEntityListener extends EntityListener {
 		} else if (Conf.worldsNoPowerLoss.contains(player.getWorld().getName())) {
 			fplayer.sendMessage("You didn't lose any power due to the world you died in.");
 			return;
+		} else if (Conf.peacefulMembersDisablePowerLoss && fplayer.hasFaction() && fplayer.getFaction().isPeaceful()) {
+			fplayer.sendMessage("You didn't lose any power since you are in a peaceful faction.");
+			return;
 		}
 		fplayer.onDeath();
 		fplayer.sendMessage("Your power is now "+fplayer.getPowerRounded()+" / "+fplayer.getPowerMaxRounded());
@@ -99,10 +102,13 @@ public class FactionsEntityListener extends EntityListener {
 		Faction faction = Board.getFactionAt(new FLocation(event.getLocation()));
 		boolean online = faction.hasPlayersOnline();
 		
-		if (event.getEntity() instanceof Creeper && (
+		if (faction.noExplosionsInTerritory()) {
+			// faction is peaceful and has explosions set to disabled
+			event.setCancelled(true);
+		}
+		else if (event.getEntity() instanceof Creeper && (
 				(faction.isNone() && Conf.wildernessBlockCreepers) ||
-				(faction.isNormal() && online && Conf.territoryBlockCreepers) ||
-				(faction.isNormal() && !online && Conf.territoryBlockCreepersWhenOffline) ||
+				(faction.isNormal() && (online ? Conf.territoryBlockCreepers : Conf.territoryBlockCreepersWhenOffline)) ||
 				(faction.isWarZone() && Conf.warZoneBlockCreepers) ||
 				faction.isSafeZone()
 				)) {
@@ -110,8 +116,7 @@ public class FactionsEntityListener extends EntityListener {
 			event.setCancelled(true);
 		} else if (event.getEntity() instanceof Fireball && (
 				(faction.isNone() && Conf.wildernessBlockFireballs) ||
-				(faction.isNormal() && online && Conf.territoryBlockFireballs) ||
-				(faction.isNormal() && !online && Conf.territoryBlockFireballsWhenOffline) ||
+				(faction.isNormal() && (online ? Conf.territoryBlockFireballs : Conf.territoryBlockFireballsWhenOffline)) ||
 				(faction.isWarZone() && Conf.warZoneBlockFireballs) ||
 				faction.isSafeZone()
 				)) {
@@ -119,8 +124,7 @@ public class FactionsEntityListener extends EntityListener {
 			event.setCancelled(true);
 		} else if (
 				(faction.isNone() && Conf.wildernessBlockTNT) ||
-				(faction.isNormal() && online && Conf.territoryBlockTNT) ||
-				(faction.isNormal() && !online && Conf.territoryBlockTNTWhenOffline) ||
+				(faction.isNormal() && (online ? Conf.territoryBlockTNT : Conf.territoryBlockTNTWhenOffline)) ||
 				(faction.isWarZone() && Conf.warZoneBlockTNT) ||
 				(faction.isSafeZone() && Conf.safeZoneBlockTNT)
 				) {
@@ -160,13 +164,16 @@ public class FactionsEntityListener extends EntityListener {
 			return true;
 		}
 		
-		// Players can not take attack damage in a SafeZone
-		if (Board.getFactionAt(new FLocation(defenderLoc)).isSafeZone()) {
+		Faction defLocFaction = Board.getFactionAt(new FLocation(defenderLoc));
+		
+		// Players can not take attack damage in a SafeZone, or possibly peaceful territory
+		if (defLocFaction.noPvPInTerritory()) {
 			if (damager instanceof Player) {
 				FPlayer attacker = FPlayer.get((Player)damager);
-				attacker.sendMessage("You can't hurt other players in a SafeZone.");
+				attacker.sendMessage("You can't hurt other players in "+(defLocFaction.isSafeZone() ? "a SafeZone." : "peaceful territory."));
+				return false;
 			}
-			return false;
+			return !defLocFaction.noMonstersInTerritory();
 		}
 		
 		if ( ! (damager instanceof Player)) {
@@ -187,8 +194,8 @@ public class FactionsEntityListener extends EntityListener {
 		Faction locFaction = Board.getFactionAt(new FLocation(attacker));
 		
 		// so we know from above that the defender isn't in a safezone... what about the attacker, sneaky dog that he might be?
-		if (locFaction.isSafeZone()) {
-			attacker.sendMessage("You can't hurt other players while you are in a SafeZone.");
+		if (locFaction.noPvPInTerritory()) {
+			attacker.sendMessage("You can't hurt other players while you are in "+(locFaction.isSafeZone() ? "a SafeZone." : "peaceful territory."));
 			return false;
 		}
 		else if (locFaction.isWarZone() && Conf.warZoneFriendlyFire) {
@@ -204,7 +211,19 @@ public class FactionsEntityListener extends EntityListener {
 			return false;
 		}
 		
-		Relation relation = defender.getRelation(attacker);
+		Faction defendFaction = defender.getFaction();
+		Faction attackFaction = attacker.getFaction();
+		
+		if (defendFaction.isPeaceful()) {
+			attacker.sendMessage("You can't hurt players who are in a peaceful faction.");
+			return false;
+		}
+		else if (attackFaction.isPeaceful()) {
+			attacker.sendMessage("You can't hurt players while you are in a peaceful faction.");
+			return false;
+		}
+		
+		Relation relation = defendFaction.getRelation(attackFaction);
 		
 		// You can not hurt neutral factions
 		if (Conf.disablePVPBetweenNeutralFactions && relation.isNeutral()) {
@@ -223,15 +242,17 @@ public class FactionsEntityListener extends EntityListener {
 			return false;
 		}
 		
+		boolean ownTerritory = defender.isInOwnTerritory();
+		
 		// You can not hurt neutrals in their own territory.
-		if (relation.isNeutral() && defender.isInOwnTerritory()) {
+		if (ownTerritory && relation.isNeutral()) {
 			attacker.sendMessage(Conf.colorSystem+"You can't hurt "+relation.getColor()+defender.getNameAndRelevant(attacker)+Conf.colorSystem+" in their own territory.");
 			defender.sendMessage(attacker.getNameAndRelevant(defender)+Conf.colorSystem+" tried to hurt you.");
 			return false;
 		}
 		
 		// Damage will be dealt. However check if the damage should be reduced.
-		if (defender.isInOwnTerritory() && Conf.territoryShieldFactor > 0) {
+		if (ownTerritory && Conf.territoryShieldFactor > 0) {
 			int newDamage = (int)Math.ceil(damage * (1D - Conf.territoryShieldFactor));
 			sub.setDamage(newDamage);
 			
@@ -245,11 +266,11 @@ public class FactionsEntityListener extends EntityListener {
 	
 	@Override
 	public void onCreatureSpawn(CreatureSpawnEvent event) {
-		if (event.isCancelled()) {
+		if (event.isCancelled() || event.getLocation() == null) {
 			return;
 		}
 		
-		if (Conf.safeZoneNerfedCreatureTypes.contains(event.getCreatureType()) && Board.getFactionAt(new FLocation(event.getLocation())).isSafeZone()) {
+		if (Conf.safeZoneNerfedCreatureTypes.contains(event.getCreatureType()) && Board.getFactionAt(new FLocation(event.getLocation())).noMonstersInTerritory()) {
 			event.setCancelled(true);
 		}
 	}
@@ -272,7 +293,7 @@ public class FactionsEntityListener extends EntityListener {
 		}
 		
 		// in case the target is in a safe zone.
-		if (Board.getFactionAt(new FLocation(target.getLocation())).isSafeZone()) {
+		if (Board.getFactionAt(new FLocation(target.getLocation())).noMonstersInTerritory()) {
 			event.setCancelled(true);
 		}
 	}

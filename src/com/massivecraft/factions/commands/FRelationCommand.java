@@ -54,15 +54,23 @@ public class FRelationCommand extends FBaseCommand {
 		}
 
 		myFaction.setRelationWish(otherFaction, whishedRelation);
-		Relation currentRelation = myFaction.getRelation(otherFaction);
+		Relation currentRelation = myFaction.getRelation(otherFaction, true);
 		ChatColor currentRelationColor = currentRelation.getColor();
-		if (whishedRelation == currentRelation) {
+		if (whishedRelation.value == currentRelation.value) {
 			otherFaction.sendMessage(Conf.colorSystem+"Your faction is now "+currentRelationColor+whishedRelation.toString()+Conf.colorSystem+" to "+currentRelationColor+myFaction.getTag());
 			myFaction.sendMessage(Conf.colorSystem+"Your faction is now "+currentRelationColor+whishedRelation.toString()+Conf.colorSystem+" to "+currentRelationColor+otherFaction.getTag());
 		} else {
 			otherFaction.sendMessage(currentRelationColor+myFaction.getTag()+Conf.colorSystem+ " wishes to be your "+whishedRelation.getColor()+whishedRelation.toString());
 			otherFaction.sendMessage(Conf.colorSystem+"Type "+Conf.colorCommand+Factions.instance.getBaseCommand()+" "+whishedRelation+" "+myFaction.getTag()+Conf.colorSystem+" to accept.");
 			myFaction.sendMessage(currentRelationColor+otherFaction.getTag()+Conf.colorSystem+ " were informed that you wish to be "+whishedRelation.getColor()+whishedRelation);
+		}
+		if (!whishedRelation.isNeutral() && otherFaction.isPeaceful()) {
+			otherFaction.sendMessage(Conf.colorSystem+"This will have no effect while your faction is peaceful.");
+			myFaction.sendMessage(Conf.colorSystem+"This will have no effect while their faction is peaceful.");
+		}
+		if (!whishedRelation.isNeutral() && myFaction.isPeaceful()) {
+			otherFaction.sendMessage(Conf.colorSystem+"This will have no effect while their faction is peaceful.");
+			myFaction.sendMessage(Conf.colorSystem+"This will have no effect while your faction is peaceful.");
 		}
 	}
 }

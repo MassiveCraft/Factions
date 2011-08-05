@@ -62,11 +62,12 @@ public class FCommandShow extends FBaseCommand {
 			return;
 		}
 		
-		if(faction.getOpen()) {
-			sendMessage(Conf.colorChrome+"Joining: "+Conf.colorSystem+"no invitation is needed");
-		} else {
-			sendMessage(Conf.colorChrome+"Joining: "+Conf.colorSystem+"invitation is required");
+		String peaceStatus = "";
+		if (faction.isPeaceful()) {
+			peaceStatus = "     "+Conf.colorNeutral+"This faction is Peaceful";
 		}
+		
+		sendMessage(Conf.colorChrome+"Joining: "+Conf.colorSystem+(faction.getOpen() ? "no invitation is needed" : "invitation is required")+peaceStatus);
 		sendMessage(Conf.colorChrome+"Land / Power / Maxpower: "+Conf.colorSystem+ faction.getLandRounded()+" / "+faction.getPowerRounded()+" / "+faction.getPowerMaxRounded());
 
 		// show the land value

@@ -113,10 +113,12 @@ public class Factions extends JavaPlugin {
 		commands.add(new FCommandLock());
 		commands.add(new FCommandMap());
 		commands.add(new FCommandMod());
+		commands.add(new FCommandNoBoom());
 		commands.add(new FCommandOpen());
 		commands.add(new FCommandOwner());
 		commands.add(new FCommandOwnerList());
 		commands.add(new FCommandPower());
+		commands.add(new FCommandPeaceful());
 		commands.add(new FCommandRelationAlly());
 		commands.add(new FCommandRelationEnemy());
 		commands.add(new FCommandRelationNeutral());
@@ -398,6 +400,14 @@ public class Factions extends JavaPlugin {
 	
 	public static boolean hasPermOwnershipBypass(CommandSender sender) {
 		return hasPerm(sender, "factions.ownershipBypass");
+	}
+	
+	public static boolean hasPermSetPeaceful(CommandSender sender) {
+		return hasPerm(sender, "factions.setPeaceful");
+	}
+	
+	public static boolean hasPermPeacefulExplosionToggle(CommandSender sender) {
+		return hasPerm(sender, "factions.peacefulExplosionToggle");
 	}
 	
 	public static boolean isCommandDisabled(CommandSender sender, String command) {

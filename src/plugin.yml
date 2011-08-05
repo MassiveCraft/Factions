@@ -20,6 +20,7 @@ permissions:
       factions.participate: true
       factions.create: true
       factions.viewAnyPower: true
+      factions.peacefulExplosionToggle: true
       factions.adminBypass: true
       factions.config: true
       factions.disband: true
@@ -29,6 +30,7 @@ permissions:
       factions.ownershipBypass: true
       factions.reload: true
       factions.saveall: true
+      factions.setPeaceful: true
       factions.commandDisable.none: true
   factions.participate:
     description: Allows the player to participate in a faction
@@ -38,6 +40,9 @@ permissions:
     default: true
   factions.viewAnyPower:
     description: Allows the player to view the power level of anyone else
+    default: true
+  factions.peacefulExplosionToggle:
+    description: Allows peaceful faction admins and moderators to disable explosions in their territory
     default: true
   factions.adminBypass:
     description: Allows the player to bypass many normal restrictions, and use the bypass command
@@ -65,6 +70,9 @@ permissions:
     default: op
   factions.saveall:
     description: Can use the /f saveall command to save all data to disk
+    default: op
+  factions.setPeaceful:
+    description: Can designate specific factions as "peaceful" (no PvP, no land stealing, etc.)
     default: op
   factions.commandDisable.none:
     description: no commands disabled (ignore all other commandDisable permissions)
@@ -150,6 +158,9 @@ permissions:
   factions.commandDisable.mod:
     description: mod command disabled
     default: false
+  factions.commandDisable.noboom:
+    description: noboom command disabled
+    default: false
   factions.commandDisable.open:
     description: open command disabled
     default: false
@@ -161,6 +172,9 @@ permissions:
     default: false
   factions.commandDisable.ownerlist:
     description: ownerlist command disabled
+    default: false
+  factions.commandDisable.peaceful:
+    description: peaceful command disabled
     default: false
   factions.commandDisable.power:
     description: power command disabled
