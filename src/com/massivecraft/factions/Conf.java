@@ -188,6 +188,10 @@ public class Conf {
 	public static transient char[] mapKeyChrs = "\\/#?$%=&^ABCDEFGHJKLMNOPQRSTUVWXYZ1234567890abcdeghjmnopqrsuvwxyz".toCharArray();
 	
 	static {
+		territoryEnemyDenyCommands.add("home");
+		territoryEnemyDenyCommands.add("sethome");
+		territoryEnemyDenyCommands.add("spawn");
+
 		territoryProtectedMaterials.add(Material.WOODEN_DOOR);
 		territoryProtectedMaterials.add(Material.TRAP_DOOR);
 		territoryProtectedMaterials.add(Material.DISPENSER);
