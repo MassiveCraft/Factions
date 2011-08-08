@@ -55,8 +55,8 @@ public class Factions extends JavaPlugin {
 	private final FactionsEntityListener entityListener = new FactionsEntityListener();
 	private final FactionsBlockListener blockListener = new FactionsBlockListener();
 	
-	public static PermissionHandler Permissions;
-	public static EssentialsChat essChat;
+	private static PermissionHandler Permissions;
+	private static EssentialsChat essChat;
 
 	// Commands
 	public List<FBaseCommand> commands = new ArrayList<FBaseCommand>();
@@ -146,8 +146,7 @@ public class Factions extends JavaPlugin {
 		
 		setupPermissions();
 		integrateEssentialsChat();
-		setupEcon();
-		
+		Econ.setup(this);
 		Econ.monitorPlugins();
 		
 		// Register events
@@ -212,25 +211,6 @@ public class Factions extends JavaPlugin {
 		} else {
 			Factions.log("Permissions plugin not detected, defaulting to Bukkit superperms system");
 		}
-	}
-	
-	private void setupEcon() {
-		if (Econ.enabled()) {
-			return;
-		}
-		
-        if (!Econ.iConomyHooked()) {
-			Plugin plug = this.getServer().getPluginManager().getPlugin("iConomy");
-			if (plug != null && plug.getClass().getName().equals("com.iConomy.iConomy")) {
-				Econ.iConomySet(true);
-			}
-		}
-		if (!Econ.essentialsEcoHooked()) {
-			Plugin plug = this.getServer().getPluginManager().getPlugin("Essentials");
-			if (plug != null) {
-				Econ.essentialsEcoSet(true);
-			}
-        }
 	}
 
 	private void integrateEssentialsChat() {

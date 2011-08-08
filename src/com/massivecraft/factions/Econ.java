@@ -1,6 +1,7 @@
 package com.massivecraft.factions;
 
 import org.bukkit.event.Event;
+import org.bukkit.plugin.Plugin;
 
 import com.massivecraft.factions.listeners.FactionsServerListener;
 
@@ -16,6 +17,25 @@ public class Econ {
 	public static void monitorPlugins() {
 		Factions.instance.getServer().getPluginManager().registerEvent(Event.Type.PLUGIN_ENABLE, new FactionsServerListener(), Event.Priority.Monitor, Factions.instance);
 		Factions.instance.getServer().getPluginManager().registerEvent(Event.Type.PLUGIN_DISABLE, new FactionsServerListener(), Event.Priority.Monitor, Factions.instance);
+	}
+
+	public static void setup(Factions factions) {
+		if (enabled()) {
+			return;
+		}
+		
+        if (!iConomyHooked()) {
+			Plugin plug = factions.getServer().getPluginManager().getPlugin("iConomy");
+			if (plug != null && plug.getClass().getName().equals("com.iConomy.iConomy") && plug.isEnabled()) {
+				iConomySet(true);
+			}
+		}
+		if (!essentialsEcoHooked()) {
+			Plugin plug = factions.getServer().getPluginManager().getPlugin("Essentials");
+			if (plug != null && plug.isEnabled()) {
+				essentialsEcoSet(true);
+			}
+        }
 	}
 
 	public static void iConomySet(boolean enable) {
