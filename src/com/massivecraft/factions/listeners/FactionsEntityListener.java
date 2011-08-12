@@ -206,6 +206,10 @@ public class FactionsEntityListener extends EntityListener {
 			attacker.sendMessage("You can't hurt other players until you join a faction.");
 			return false;
 		}
+		else if (defLocFaction == attacker.getFaction() && Conf.enablePVPAgainstFactionlessInAttackersLand) {
+			// Allow PVP vs. Factionless in attacker's faction territory
+			return true;
+		}
 		else if (!defender.hasFaction() && Conf.disablePVPForFactionlessPlayers) {
 			attacker.sendMessage("You can't hurt players who are not currently in a faction.");
 			return false;
