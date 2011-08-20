@@ -6,6 +6,7 @@ import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.event.server.PluginEnableEvent;
 
 import com.massivecraft.factions.Econ;
+import com.massivecraft.factions.SpoutFeatures;
 
 
 public class FactionsServerListener extends ServerListener {
@@ -15,8 +16,11 @@ public class FactionsServerListener extends ServerListener {
         if (Econ.iConomyHooked() && name.equals("iConomy")) {
 			Econ.iConomySet(false);
         }
-		if (Econ.essentialsEcoHooked() && name.equals("Essentials")) {
+		else if (Econ.essentialsEcoHooked() && name.equals("Essentials")) {
 			Econ.essentialsEcoSet(false);
+		}
+		else if (name.equals("Spout")) {
+			SpoutFeatures.setAvailable(false, "");
 		}
 	}
 
@@ -30,5 +34,8 @@ public class FactionsServerListener extends ServerListener {
 		else if (!Econ.essentialsEcoHooked() && name.equals("Essentials")) {
 			Econ.essentialsEcoSet(true);
         }
+		else if (name.equals("Spout")) {
+			SpoutFeatures.setAvailable(true, plug.getDescription().getFullName());
+		}
     }
 }

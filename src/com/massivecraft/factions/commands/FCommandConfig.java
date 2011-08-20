@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.SpoutFeatures;
 
 public class FCommandConfig extends FBaseCommand {
 
@@ -226,6 +227,9 @@ public class FCommandConfig extends FBaseCommand {
 		}
 		// save change to disk
 		Conf.save();
+
+		// in case some Spout related setting was changed
+		SpoutFeatures.updateAppearances();
 	}
 	
 }

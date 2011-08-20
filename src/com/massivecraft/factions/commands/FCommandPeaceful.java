@@ -2,8 +2,11 @@ package com.massivecraft.factions.commands;
 
 import org.bukkit.command.CommandSender;
 
+import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.SpoutFeatures;
 
 public class FCommandPeaceful extends FBaseCommand {
 	
@@ -32,13 +35,24 @@ public class FCommandPeaceful extends FBaseCommand {
 				return;
 			}
 
-			if( faction != null && faction.isPeaceful() ) {
-				sendMessage("Faction \"" + parameters.get(0) + "\" peaceful designation removed");
+			String change;
+			if(faction.isPeaceful()) {
+				change = "removed peaceful status from";
 				faction.setPeaceful(false);
 			} else {
-				sendMessage("Faction \"" + faction.getTag() + "\" has been designated as peaceful");
+				change = "granted peaceful status to";
 				faction.setPeaceful(true);
 			}
+			// Inform all players
+			for (FPlayer fplayer : FPlayer.getAllOnline()) {
+				if (fplayer.getFaction() == faction) {
+					fplayer.sendMessage(me.getNameAndRelevant(fplayer)+Conf.colorSystem+" has "+change+" your faction.");
+				} else {
+					fplayer.sendMessage(me.getNameAndRelevant(fplayer)+Conf.colorSystem+" has "+change+" the faction \"" + faction.getTag(fplayer) + "\".");
+				}
+			}
+
+			SpoutFeatures.updateAppearances(faction);
 		}
 	}
 	

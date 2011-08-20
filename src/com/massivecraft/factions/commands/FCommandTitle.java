@@ -3,6 +3,7 @@ package com.massivecraft.factions.commands;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.SpoutFeatures;
 import com.massivecraft.factions.util.TextUtil;
 
 public class FCommandTitle extends FBaseCommand {
@@ -51,6 +52,10 @@ public class FCommandTitle extends FBaseCommand {
 		// Inform
 		Faction myFaction = me.getFaction();
 		myFaction.sendMessage(me.getNameAndRelevant(myFaction)+Conf.colorSystem+" changed a title: "+you.getNameAndRelevant(myFaction));
+
+		if (Conf.spoutFactionTitlesOverNames) {
+			SpoutFeatures.updateAppearances(player);
+		}
 	}
 	
 }

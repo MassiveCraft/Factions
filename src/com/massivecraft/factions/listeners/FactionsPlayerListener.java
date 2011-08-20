@@ -2,6 +2,7 @@ package com.massivecraft.factions.listeners;
 
 import java.util.logging.Logger;
 import java.util.Iterator;
+import java.util.UnknownFormatConversionException;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -28,9 +29,11 @@ import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.SpoutFeatures;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.util.TextUtil;
+import java.util.logging.Level;
 
 
 
@@ -97,7 +100,16 @@ public class FactionsPlayerListener extends PlayerListener{
 			for (Player listeningPlayer : event.getRecipients()) {
 				FPlayer you = FPlayer.get(listeningPlayer);
 				String yourFormat = formatStart + me.getChatTag(you).trim() + formatEnd;
-				listeningPlayer.sendMessage(String.format(yourFormat, talkingPlayer.getDisplayName(), msg));
+				try {
+					listeningPlayer.sendMessage(String.format(yourFormat, talkingPlayer.getDisplayName(), msg));
+				}
+				catch (UnknownFormatConversionException ex) {
+					Factions.log(Level.SEVERE, "Critical error in chat message formatting! Complete format string: "+yourFormat);
+					Factions.log(Level.SEVERE, "First half of event.getFormat() string: "+formatStart);
+					Factions.log(Level.SEVERE, "Second half of event.getFormat() string: "+formatEnd);
+					ex.printStackTrace();
+					return;
+				}
 			}
 			
 			// Write to the log... We will write the non colored message.
@@ -120,6 +132,8 @@ public class FactionsPlayerListener extends PlayerListener{
 		// Run the member auto kick routine. Twice to get to the admins...
 		FPlayer.autoLeaveOnInactivityRoutine();
 		FPlayer.autoLeaveOnInactivityRoutine();
+
+		SpoutFeatures.updateAppearances(event.getPlayer());
 	}
 	
     @Override
@@ -436,6 +450,7 @@ public class FactionsPlayerListener extends PlayerListener{
 			while (iter.hasNext()) {
 				cmdCheck = iter.next();
 				if (cmdCheck == null) {
+					iter.remove();
 					continue;
 				}
 
@@ -456,6 +471,7 @@ public class FactionsPlayerListener extends PlayerListener{
 			while (iter.hasNext()) {
 				cmdCheck = iter.next();
 				if (cmdCheck == null) {
+					iter.remove();
 					continue;
 				}
 

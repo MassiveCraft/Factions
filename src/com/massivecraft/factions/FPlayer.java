@@ -78,6 +78,10 @@ public class FPlayer {
 		this.factionChatting = false;
 		this.role = Role.NORMAL;
 		this.title = "";
+
+		if (playerName != null && !playerName.isEmpty()) {
+			SpoutFeatures.updateAppearances(this.getPlayer());
+		}
 	}
 	
 	// -------------------------------------------- //
@@ -114,6 +118,7 @@ public class FPlayer {
 	
 	public void setFaction(Faction faction) {
 		this.factionId = faction.getId();
+		SpoutFeatures.updateAppearances(this.getPlayer());
 	}
 	
 	public boolean hasFaction() {
@@ -126,6 +131,7 @@ public class FPlayer {
 	
 	public void setRole(Role role) {
 		this.role = role;
+		SpoutFeatures.updateAppearances(this.getPlayer());
 	}
 	
 	public boolean isFactionChatting() {
@@ -485,7 +491,7 @@ public class FPlayer {
 
 		this.resetFactionData();
 
-		if (myFaction.isNormal() && myFaction.getFPlayers().size() == 0) {
+		if (myFaction.isNormal() && myFaction.getFPlayers().isEmpty()) {
 			// Remove this faction
 			for (FPlayer fplayer : FPlayer.getAllOnline()) {
 				fplayer.sendMessage("The faction "+myFaction.getTag(fplayer)+Conf.colorSystem+" was disbanded.");

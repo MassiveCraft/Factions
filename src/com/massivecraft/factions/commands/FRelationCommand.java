@@ -5,6 +5,7 @@ import org.bukkit.ChatColor;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.SpoutFeatures;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 
@@ -72,5 +73,7 @@ public class FRelationCommand extends FBaseCommand {
 			otherFaction.sendMessage(Conf.colorSystem+"This will have no effect while their faction is peaceful.");
 			myFaction.sendMessage(Conf.colorSystem+"This will have no effect while your faction is peaceful.");
 		}
+
+		SpoutFeatures.updateAppearances(myFaction, otherFaction);
 	}
 }

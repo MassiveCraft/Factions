@@ -151,6 +151,17 @@ public class Conf {
 	
 	public static transient Set<CreatureType> safeZoneNerfedCreatureTypes = EnumSet.noneOf(CreatureType.class);
 
+	// Spout features
+	public static boolean spoutFactionTagsOverNames = true;
+	public static boolean spoutFactionTitlesOverNames = true;
+	public static boolean spoutFactionAdminCapes = true;
+	public static boolean spoutFactionModeratorCapes = true;
+	public static String capeAlly = "http://www.wimbli.com/minecraft/factions_capes/capeAlly.png";
+	public static String capeEnemy = "http://www.wimbli.com/minecraft/factions_capes/capeEnemy.png";
+	public static String capeMember = "http://www.wimbli.com/minecraft/factions_capes/capeMember.png";
+	public static String capeNeutral = "http://www.wimbli.com/minecraft/factions_capes/capeNeutral.png";
+	public static String capePeaceful = "http://www.wimbli.com/minecraft/factions_capes/capePeaceful.png";
+	
 	// Economy settings
 	public static boolean econIConomyEnabled = false;
 	public static boolean econEssentialsEcoEnabled = false;

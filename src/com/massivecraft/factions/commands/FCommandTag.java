@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.SpoutFeatures;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.TextUtil;
 
@@ -65,6 +66,10 @@ public class FCommandTag extends FBaseCommand {
 				continue;
 			}
 			faction.sendMessage(Conf.colorSystem+"The faction "+me.getRelationColor(faction)+oldtag+Conf.colorSystem+" changed their name to "+myFaction.getTag(faction));
+		}
+
+		if (Conf.spoutFactionTagsOverNames) {
+			SpoutFeatures.updateAppearances(myFaction);
 		}
 	}
 	

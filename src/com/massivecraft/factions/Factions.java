@@ -146,6 +146,7 @@ public class Factions extends JavaPlugin {
 		
 		setupPermissions();
 		integrateEssentialsChat();
+		SpoutFeatures.setup(this);
 		Econ.setup(this);
 		Econ.monitorPlugins();
 		
@@ -207,7 +208,7 @@ public class Factions extends JavaPlugin {
 		
 		if (test != null) {
 			Permissions = ((Permissions)test).getHandler();
-			Factions.log("Found and will use plugin "+((Permissions)test).getDescription().getFullName());
+			Factions.log("Found and will use "+test.getDescription().getFullName()+" for permissions");
 		} else {
 			Factions.log("Permissions plugin not detected, defaulting to Bukkit superperms system");
 		}
