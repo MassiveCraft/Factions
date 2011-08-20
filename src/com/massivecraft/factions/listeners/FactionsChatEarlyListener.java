@@ -20,6 +20,7 @@ public class FactionsChatEarlyListener extends PlayerListener{
 
 	@Override
 	public void onPlayerChat(PlayerChatEvent event) {
+		// Is it a slashless Factions command?
 		if ((event.getMessage().startsWith(Factions.instance.getBaseCommand()+" ") || event.getMessage().equals(Factions.instance.getBaseCommand())) && Conf.allowNoSlashCommand) {
 			String msg = event.getMessage().trim();
 			// make sure command isn't denied due to being in enemy/neutral territory

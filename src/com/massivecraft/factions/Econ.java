@@ -23,8 +23,8 @@ public class Econ {
 		if (enabled()) {
 			return;
 		}
-		
-        if (!iConomyHooked()) {
+
+		if (!iConomyHooked()) {
 			Plugin plug = factions.getServer().getPluginManager().getPlugin("iConomy");
 			if (plug != null && plug.getClass().getName().equals("com.iConomy.iConomy") && plug.isEnabled()) {
 				iConomySet(true);
@@ -35,13 +35,13 @@ public class Econ {
 			if (plug != null && plug.isEnabled()) {
 				essentialsEcoSet(true);
 			}
-        }
+		}
 	}
 
 	public static void iConomySet(boolean enable) {
 		iConomyUse = enable;
 		if (enable) {
-			Factions.log("Hooked into iConomy, "+(Conf.econIConomyEnabled ? "and interface is enabled" : "but interface is currently disabled (\"econIConomyEnabled\": false)")+".");
+			Factions.log("iConomy hook available, "+(Conf.econIConomyEnabled ? "and interface is enabled" : "but disabled (\"econIConomyEnabled\": false)")+".");
 		}
 		else {
 			Factions.log("Un-hooked from iConomy.");
@@ -51,7 +51,7 @@ public class Econ {
 	public static void essentialsEcoSet(boolean enable) {
 		essEcoUse = enable;
 		if (enable) {
-			Factions.log("Hooked into EssentialsEco, "+(Conf.econEssentialsEcoEnabled ? "and interface is enabled" : "but interface is currently disabled (\"econEssentialsEcoEnabled\": false)")+".");
+			Factions.log("EssentialsEco hook available, "+(Conf.econEssentialsEcoEnabled ? "and interface is enabled" : "but disabled (\"econEssentialsEcoEnabled\": false)")+".");
 		}
 		else {
 			Factions.log("Un-hooked from EssentialsEco.");
