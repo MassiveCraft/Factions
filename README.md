@@ -28,7 +28,7 @@ You may also read the documentation ingame as the plugin ships with an ingame he
 
 * `/f help 1`
 * `/f help 2`
-* `/f help 1`
+* `/f help 3`
 
 Note that you may optionally skip the slash and just write
 
