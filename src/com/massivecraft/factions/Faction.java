@@ -3,6 +3,7 @@ package com.massivecraft.factions;
 import java.io.*;
 import java.lang.reflect.Type;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.Map.Entry;
 import java.util.logging.Level;
 
@@ -28,7 +29,7 @@ public class Faction {
 	
 	private transient int id;
 	private Map<Integer, Relation> relationWish;
-	private Map<FLocation, Set<String>> claimOwnership = new HashMap<FLocation, Set<String>>();
+	private Map<FLocation, Set<String>> claimOwnership = new ConcurrentHashMap<FLocation, Set<String>>();
 	private Set<String> invites; // Where string is a lowercase player name
 	private boolean open;
 	private boolean peaceful;
@@ -559,7 +560,7 @@ public class Faction {
 		}
 
 		// sufficient role to bypass ownership?
-		if (fplayer.getRole() == (Conf.ownedAreaModeratorsBypass ? Role.MODERATOR : Role.ADMIN)) {
+		if (fplayer.getRole().isAtLeast(Conf.ownedAreaModeratorsBypass ? Role.MODERATOR : Role.ADMIN)) {
 			return true;
 		}
 

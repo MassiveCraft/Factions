@@ -15,6 +15,14 @@ public enum Role {
         this.nicename = nicename;
     }
 	
+	public boolean isAtLeast(Role role) {
+		return this.value >= role.value;
+	}
+	
+	public boolean isAtMost(Role role) {
+		return this.value <= role.value;
+	}
+
 	@Override
 	public String toString() {
 		return this.nicename;

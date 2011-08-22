@@ -1,7 +1,7 @@
 package com.massivecraft.factions.util;
 
 import java.lang.reflect.Type;
-import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
@@ -32,7 +32,7 @@ public class MapFLocToStringSetTypeAdapter implements JsonDeserializer<Map<FLoca
 				return null;
 			}
 
-			Map<FLocation, Set<String>> locationMap = new HashMap<FLocation, Set<String>>();
+			Map<FLocation, Set<String>> locationMap = new ConcurrentHashMap<FLocation, Set<String>>();
 			Set<String> nameSet;
 			Iterator<JsonElement> iter;
 			String worldName;
