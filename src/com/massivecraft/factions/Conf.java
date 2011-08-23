@@ -201,6 +201,7 @@ public class Conf {
 	public static Set<String> worldsNoClaiming = new HashSet<String>();
 	public static Set<String> worldsNoPowerLoss = new HashSet<String>();
 	public static Set<String> worldsIgnorePvP = new HashSet<String>();
+	public static Set<String> worldsNoWildernessProtection = new HashSet<String>();
 	
 	public static transient int mapHeight = 8;
 	public static transient int mapWidth = 39;

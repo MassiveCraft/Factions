@@ -116,7 +116,7 @@ public class FactionsBlockListener extends BlockListener {
 		}
 
 		if (otherFaction.isNone()) {
-			if (!Conf.wildernessDenyBuild) {
+			if (!Conf.wildernessDenyBuild || Conf.worldsNoWildernessProtection.contains(target.getWorld().getName())) {
 				return true;
 			}
 			return false;
@@ -158,7 +158,7 @@ public class FactionsBlockListener extends BlockListener {
 		FPlayer me = FPlayer.get(player);
 
 		if (otherFaction.isNone()) {
-			if (!Conf.wildernessDenyBuild || Factions.hasPermAdminBypass(player)) {
+			if (!Conf.wildernessDenyBuild || Factions.hasPermAdminBypass(player) || Conf.worldsNoWildernessProtection.contains(block.getWorld().getName())) {
 				return true; // This is not faction territory. Use whatever you like here.
 			}
 			me.sendMessage("You can't "+action+" in the wilderness.");
