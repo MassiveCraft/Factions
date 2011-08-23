@@ -5,6 +5,7 @@ import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -253,7 +254,7 @@ public class Factions extends JavaPlugin {
 
 	// This value will be updated whenever new hooks are added
 	public int hookSupportVersion() {
-		return 1;
+		return 2;
 	}
 
 	// If another plugin is handling insertion of chat tags, this should be used to notify Factions
@@ -329,6 +330,39 @@ public class Factions extends JavaPlugin {
 			return "";
 
 		return me.getTitle().trim();
+	}
+
+	// Get a list of all faction tags (names)
+	public Set<String> getFactionTags() {
+		Set<String> tags = new HashSet<String>();
+		for (Faction faction : Faction.getAll()) {
+			tags.add(faction.getTag());
+		}
+		return tags;
+	}
+
+	// Get a list of all players in the specified faction
+	public Set<String> getPlayersInFaction(String factionTag) {
+		Set<String> players = new HashSet<String>();
+		Faction faction = Faction.findByTag(factionTag);
+		if (faction != null) {
+			for (FPlayer fplayer : faction.getFPlayers()) {
+				players.add(fplayer.getName());
+			}
+		}
+		return players;
+	}
+
+	// Get a list of all online players in the specified faction
+	public Set<String> getOnlinePlayersInFaction(String factionTag) {
+		Set<String> players = new HashSet<String>();
+		Faction faction = Faction.findByTag(factionTag);
+		if (faction != null) {
+			for (FPlayer fplayer : faction.getFPlayersWhereOnline(true)) {
+				players.add(fplayer.getName());
+			}
+		}
+		return players;
 	}
 
 	// -------------------------------------------- //
