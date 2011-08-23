@@ -123,8 +123,10 @@ public class FactionsPlayerListener extends PlayerListener{
 	
 	@Override
 	public void onPlayerJoin(PlayerJoinEvent event) {
+		final Player player = event.getPlayer();
+
 		// Make sure that all online players do have a fplayer.
-		FPlayer me = FPlayer.get(event.getPlayer());
+		FPlayer me = FPlayer.get(player);
 		
 		// Update the lastLoginTime for this fplayer
 		me.setLastLoginTime(System.currentTimeMillis());
@@ -133,7 +135,12 @@ public class FactionsPlayerListener extends PlayerListener{
 		FPlayer.autoLeaveOnInactivityRoutine();
 		FPlayer.autoLeaveOnInactivityRoutine();
 
-		SpoutFeatures.updateAppearances(event.getPlayer());
+		// Appearance updates which are run when a player joins don't apply properly for other clients, so they need to be delayed slightly
+		Factions.instance.getServer().getScheduler().scheduleSyncDelayedTask(Factions.instance, new Runnable() {
+			public void run() {
+				SpoutFeatures.updateAppearances(player);
+			}
+		});
 	}
 	
     @Override
