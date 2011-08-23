@@ -170,8 +170,24 @@ public class FactionsPlayerListener extends PlayerListener{
 			// Did we change "host"(faction)?
 			Faction factionFrom = Board.getFactionAt(from);
 			Faction factionTo = Board.getFactionAt(to);
-			if ( factionFrom != factionTo) {
+			Faction myFaction = me.getFaction();
+			String ownersTo = myFaction.getOwnerListString(to);
+			if (factionFrom != factionTo) {
 				me.sendFactionHereMessage();
+				if (Conf.ownedAreasEnabled && Conf.ownedMessageOnBorder && myFaction == factionTo && !ownersTo.isEmpty()) {
+					me.sendMessage(Conf.ownedLandMessage+ownersTo);
+				}
+			}
+			else if (Conf.ownedAreasEnabled && Conf.ownedMessageInsideTerritory && factionFrom == factionTo && myFaction == factionTo) {
+				String ownersFrom = myFaction.getOwnerListString(from);
+				if (Conf.ownedMessageByChunk || !ownersFrom.equals(ownersTo)) {
+					if (!ownersTo.isEmpty()) {
+						me.sendMessage(Conf.ownedLandMessage+ownersTo);
+					}
+					else if (!Conf.publicLandMessage.isEmpty()) {
+						me.sendMessage(Conf.publicLandMessage);
+					}
+				}
 			}
 		}
 		
