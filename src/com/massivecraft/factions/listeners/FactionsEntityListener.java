@@ -371,14 +371,14 @@ public class FactionsEntityListener extends EntityListener {
 		}
 
 		Faction myFaction = me.getFaction();
-		boolean areEnemies = myFaction.getRelation(otherFaction).isEnemy();
+		Relation rel = myFaction.getRelation(otherFaction);
 
 		// Cancel if we are not in our own territory
 		if (myFaction != otherFaction) {
 			boolean online = otherFaction.hasPlayersOnline();
 			if (
-				   (online && (areEnemies ? Conf.territoryEnemyDenyBuild : Conf.territoryDenyBuild))
-				|| (!online && (areEnemies ? Conf.territoryEnemyDenyBuildWhenOffline : Conf.territoryDenyBuildWhenOffline))
+				   (online && (rel.isEnemy() ? Conf.territoryEnemyDenyBuild : (rel.isAlly() ? Conf.territoryAllyDenyBuild : Conf.territoryDenyBuild)))
+				|| (!online && (rel.isEnemy() ? Conf.territoryEnemyDenyBuildWhenOffline : (rel.isAlly() ? Conf.territoryAllyDenyBuildWhenOffline : Conf.territoryDenyBuildWhenOffline)))
 				) {
 				me.sendMessage("You can't "+action+" paintings in the territory of "+otherFaction.getTag(myFaction));
 				return false;

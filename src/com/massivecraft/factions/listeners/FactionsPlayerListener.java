@@ -321,11 +321,11 @@ public class FactionsPlayerListener extends PlayerListener{
 		}
 		
 		Faction myFaction = me.getFaction();
-		boolean areEnemies = myFaction.getRelation(otherFaction).isEnemy();
+		Relation rel = myFaction.getRelation(otherFaction);
 
 		// Cancel if we are not in our own territory
 		if (myFaction != otherFaction) {
-			if (areEnemies ? Conf.territoryEnemyDenyUseage : Conf.territoryDenyUseage) {
+			if (rel.isEnemy() ? Conf.territoryEnemyDenyUseage : (rel.isAlly() ? Conf.territoryAllyDenyUseage : Conf.territoryDenyUseage)) {
 				me.sendMessage("You can't use "+TextUtil.getMaterialName(material)+" in the territory of "+otherFaction.getTag(myFaction));
 				return false;
 			}
@@ -367,8 +367,9 @@ public class FactionsPlayerListener extends PlayerListener{
 
 		FPlayer me = FPlayer.get(player);
 		Faction myFaction = me.getFaction();
+		Relation rel = myFaction.getRelation(otherFaction);
 
-		if (myFaction.getRelation(otherFaction).isEnemy() && !Conf.territoryEnemyProtectMaterials) {
+		if ((rel.isEnemy() && !Conf.territoryEnemyProtectMaterials) || (rel.isAlly() && !Conf.territoryAllyProtectMaterials)) {
 			return true;
 		}
 

@@ -17,6 +17,7 @@ import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.struct.Relation;
 
 
 public class FactionsBlockListener extends BlockListener {
@@ -134,12 +135,12 @@ public class FactionsBlockListener extends BlockListener {
 			return false;
 		}
 
-		boolean areEnemies = pistonFaction.getRelation(otherFaction).isEnemy();
+		Relation rel = pistonFaction.getRelation(otherFaction);
 		boolean online = otherFaction.hasPlayersOnline();
 
 		if (
-			   (online && (areEnemies ? Conf.territoryEnemyDenyBuild : Conf.territoryDenyBuild))
-			|| (!online && (areEnemies ? Conf.territoryEnemyDenyBuildWhenOffline : Conf.territoryDenyBuildWhenOffline))
+			   (online && (rel.isEnemy() ? Conf.territoryEnemyDenyBuild : (rel.isAlly() ? Conf.territoryAllyDenyBuild : Conf.territoryDenyBuild)))
+			|| (!online && (rel.isEnemy() ? Conf.territoryEnemyDenyBuildWhenOffline : (rel.isAlly() ? Conf.territoryAllyDenyBuildWhenOffline : Conf.territoryDenyBuildWhenOffline)))
 			) {
 			return false;
 		}
@@ -180,15 +181,15 @@ public class FactionsBlockListener extends BlockListener {
 		}
 
 		Faction myFaction = me.getFaction();
-		boolean areEnemies = myFaction.getRelation(otherFaction).isEnemy();
+		Relation rel = myFaction.getRelation(otherFaction);
 
 		// Cancel if we are not in our own territory
 		if (myFaction != otherFaction) {
 			boolean online = otherFaction.hasPlayersOnline();
-			boolean pain = (online && (areEnemies ? Conf.territoryEnemyPainBuild : Conf.territoryPainBuild)) 
-						|| (!online && (areEnemies ? Conf.territoryEnemyPainBuildWhenOffline : Conf.territoryPainBuildWhenOffline));
-			boolean deny = (online && (areEnemies ? Conf.territoryEnemyDenyBuild : Conf.territoryDenyBuild))
-						|| (!online && (areEnemies ? Conf.territoryEnemyDenyBuildWhenOffline : Conf.territoryDenyBuildWhenOffline));
+			boolean pain = (online && (rel.isEnemy() ? Conf.territoryEnemyPainBuild : (rel.isAlly() ? Conf.territoryAllyPainBuild : Conf.territoryPainBuild))) 
+						|| (!online && (rel.isEnemy() ? Conf.territoryEnemyPainBuildWhenOffline : (rel.isAlly() ? Conf.territoryAllyPainBuildWhenOffline : Conf.territoryPainBuildWhenOffline)));
+			boolean deny = (online && (rel.isEnemy() ? Conf.territoryEnemyDenyBuild : (rel.isAlly() ? Conf.territoryAllyDenyBuild : Conf.territoryDenyBuild)))
+						|| (!online && (rel.isEnemy() ? Conf.territoryEnemyDenyBuildWhenOffline : (rel.isAlly() ? Conf.territoryAllyDenyBuildWhenOffline : Conf.territoryDenyBuildWhenOffline)));
 			//added by Bladedpenguin@gmail.com
 			//hurt the player for building/destroying?
 			if (pain) {
