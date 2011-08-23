@@ -75,6 +75,8 @@ public class Conf {
 	
 	public static boolean disablePVPBetweenNeutralFactions = false;
 	public static boolean disablePVPForFactionlessPlayers = false;
+	public static boolean enablePVPAgainstFactionlessInAttackersLand = false;
+	
 	public static int noPVPDamageToOthersForXSecondsAfterLogin = 3;
 
 	public static boolean peacefulTerritoryDisablePVP = true;
