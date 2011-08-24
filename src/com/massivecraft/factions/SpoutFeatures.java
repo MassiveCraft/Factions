@@ -169,7 +169,15 @@ public class SpoutFeatures {
 			else if (relation.isAlly()) {
 				cape = Conf.capeAlly;
 			}
-			spoutApp.setPlayerCloak(sPlayer, viewed, cape);
+
+			if (cape.isEmpty()) {
+				spoutApp.resetPlayerCloak(sPlayer, viewed);
+			} else {
+				spoutApp.setPlayerCloak(sPlayer, viewed, cape);
+			}
+		}
+		else if (Conf.spoutFactionAdminCapes || Conf.spoutFactionModeratorCapes) {
+			spoutApp.resetPlayerCloak(sPlayer, viewed);
 		}
 	}
 

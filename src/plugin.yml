@@ -1,5 +1,5 @@
 name: Factions
-version: 1.4.6
+version: 1.4.7
 main: com.massivecraft.factions.Factions
 softdepend:
   - Permissions
