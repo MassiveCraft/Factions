@@ -9,6 +9,7 @@ softdepend:
   - iChat
   - LocalAreaChat
   - nChat
+  - AuthMe
   - iConomy
   - Spout
 commands:

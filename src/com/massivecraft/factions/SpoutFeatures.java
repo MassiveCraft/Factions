@@ -135,15 +135,20 @@ public class SpoutFeatures {
 		SpoutPlayer sPlayer = SpoutManager.getPlayer(viewer);
 
 		if (Conf.spoutFactionTagsOverNames || Conf.spoutFactionTitlesOverNames) {
-			String addTag = "";
-			if (Conf.spoutFactionTagsOverNames) {
-				addTag += !viewedFaction.isNormal() ? "Factionless" : viewedFaction.getTag(relation.getColor().toString() + "[") + "]";
+			if (viewedFaction.isNormal()) {
+				String addTag = "";
+				if (Conf.spoutFactionTagsOverNames) {
+					addTag += viewedFaction.getTag(relation.getColor().toString() + "[") + "]";
+				}
+				String rolePrefix = viewedRole.getPrefix();
+				if (Conf.spoutFactionTitlesOverNames && (!viewedTitle.isEmpty() || !rolePrefix.isEmpty())) {
+					addTag += (addTag.isEmpty() ? "" : " ") + viewedRole.getPrefix() + viewedTitle;
+				}
+				spoutApp.setPlayerTitle(sPlayer, viewed, addTag + "\n" + viewed.getDisplayName());
 			}
-			String rolePrefix = viewedRole.getPrefix();
-			if (Conf.spoutFactionTitlesOverNames && (!viewedTitle.isEmpty() || !rolePrefix.isEmpty())) {
-				addTag += (addTag.isEmpty() ? "" : " ") + viewedRole.getPrefix() + viewedTitle;
+			else {
+				spoutApp.resetPlayerTitle(sPlayer, viewed);
 			}
-			spoutApp.setPlayerTitle(sPlayer, viewed, addTag + "\n" + viewed.getDisplayName());
 		}
 
 		if (
