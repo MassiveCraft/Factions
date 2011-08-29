@@ -508,6 +508,12 @@ public class FPlayer {
 		FLocation flocation = new FLocation(this);
 		Faction otherFaction = Board.getFactionAt(flocation);
 
+		if (Worldguard.checkForRegions(this.getPlayer().getLocation())) {
+			// Checks for WorldGuard regions in the chunk attempting to be claimed
+			sendMessage("This land is protected");
+			return false;
+		}
+
 		if (myFaction == otherFaction) {
 			if (notifyFailure)
 				sendMessage("You already own this land.");
