@@ -16,7 +16,9 @@ import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import com.sk89q.worldedit.Vector;
 import com.sk89q.worldedit.BlockVector;
 
-import org.bukkit.*;
+import org.bukkit.World;
+import org.bukkit.Chunk;
+import org.bukkit.Location;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.entity.Player;
 
@@ -71,21 +73,21 @@ public class Worldguard {
 	//   False: No regions found within chunk
 	public static boolean checkForRegionsInChunk(Location loc) {
 		if(isEnabled()) {
-			int plocX = loc.getBlockX();
-			int plocZ = loc.getBlockZ();
 			World world = loc.getWorld();
+			Chunk chunk = world.getChunkAt(loc);
+			int minChunkX = chunk.getX() * 16;
+			int minChunkZ = chunk.getZ() * 16;
+			int maxChunkX = minChunkX + 15;
+			int maxChunkZ = minChunkZ + 15;
 
-			Chunk chunk = world.getChunkAt(plocX, plocZ);
-			int chunkX = chunk.getX();
-			int chunkZ = chunk.getZ();
+			int worldHeight = world.getMaxHeight(); // Allow for heights other than default
 
-			BlockVector minChunk = new BlockVector(chunkX, 0, chunkZ);
-			BlockVector maxChunk = new BlockVector(chunkX+15, 128, chunkZ+15);
+			BlockVector minChunk = new BlockVector(minChunkX, 0, minChunkZ);
+			BlockVector maxChunk = new BlockVector(maxChunkX, worldHeight, maxChunkZ);
 
 			RegionManager regionManager = wg.getRegionManager(world);
 			ProtectedCuboidRegion region = new ProtectedCuboidRegion("wgfactionoverlapcheck", minChunk, maxChunk);
 			Map<String, ProtectedRegion> allregions = regionManager.getRegions(); 
-
 			List<ProtectedRegion> allregionslist = new ArrayList<ProtectedRegion>(allregions.values());
 			List<ProtectedRegion> overlaps;
 			boolean foundregions = false;
