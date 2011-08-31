@@ -10,9 +10,9 @@ import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.UnsupportedIntersectionException;
 import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
-
 import static com.sk89q.worldguard.bukkit.BukkitUtil.*;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
+
 import com.sk89q.worldedit.Vector;
 import com.sk89q.worldedit.BlockVector;
 
