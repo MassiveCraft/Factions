@@ -179,23 +179,25 @@ public class FactionsBlockListener extends BlockListener {
 			me.sendMessage("You can't "+action+" in a war zone.");
 			return false;
 		}
-
+		
 		Faction myFaction = me.getFaction();
 		Relation rel = myFaction.getRelation(otherFaction);
-
-		// Cancel if we are not in our own territory
-		if (myFaction != otherFaction) {
+		boolean ownershipFail = Conf.ownedAreasEnabled && (Conf.ownedAreaDenyBuild || Conf.ownedAreaPainBuild) && !otherFaction.playerHasOwnershipRights(me, loc);
+		
+		// Cancel and/or cause pain (depending on configuration) if we are not in our own territory
+		if (!rel.isMember()) {
 			boolean online = otherFaction.hasPlayersOnline();
-			boolean pain = (online && (rel.isEnemy() ? Conf.territoryEnemyPainBuild : (rel.isAlly() ? Conf.territoryAllyPainBuild : Conf.territoryPainBuild))) 
-						|| (!online && (rel.isEnemy() ? Conf.territoryEnemyPainBuildWhenOffline : (rel.isAlly() ? Conf.territoryAllyPainBuildWhenOffline : Conf.territoryPainBuildWhenOffline)));
-			boolean deny = (online && (rel.isEnemy() ? Conf.territoryEnemyDenyBuild : (rel.isAlly() ? Conf.territoryAllyDenyBuild : Conf.territoryDenyBuild)))
-						|| (!online && (rel.isEnemy() ? Conf.territoryEnemyDenyBuildWhenOffline : (rel.isAlly() ? Conf.territoryAllyDenyBuildWhenOffline : Conf.territoryDenyBuildWhenOffline)));
-			//added by Bladedpenguin@gmail.com
+			boolean pain = rel.confPainBuild(online);
+			boolean deny = rel.confDenyBuild(online);
+
 			//hurt the player for building/destroying?
 			if (pain) {
 				player.damage(Conf.actionDeniedPainAmount);
 				if (!deny) {
 					me.sendMessage("You are hurt for "+action+" in the territory of "+otherFaction.getTag(myFaction));
+					if (!Conf.ownedAreaDenyBuild) {
+						return true;
+					}
 				}
 			}
 			if (deny) {
@@ -203,12 +205,8 @@ public class FactionsBlockListener extends BlockListener {
 				return false;
 			}
 		}
-		// Also cancel if player doesn't have ownership rights for this claim
-		else if (
-			   Conf.ownedAreasEnabled
-			&& (Conf.ownedAreaDenyBuild || Conf.ownedAreaPainBuild)
-			&& !myFaction.playerHasOwnershipRights(me, loc)
-			&& !Factions.hasPermOwnershipBypass(player)
+		// Also cancel and/or cause pain if player doesn't have ownership rights for this claim
+		if (ownershipFail && !Factions.hasPermOwnershipBypass(player)
 			) {
 			if (Conf.ownedAreaPainBuild){
 				player.damage(Conf.actionDeniedPainAmount);

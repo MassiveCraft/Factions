@@ -372,26 +372,16 @@ public class FactionsEntityListener extends EntityListener {
 
 		Faction myFaction = me.getFaction();
 		Relation rel = myFaction.getRelation(otherFaction);
+		boolean ownershipFail = Conf.ownedAreasEnabled && Conf.ownedAreaDenyBuild && !otherFaction.playerHasOwnershipRights(me, loc);
 
-		// Cancel if we are not in our own territory
-		if (myFaction != otherFaction) {
-			boolean online = otherFaction.hasPlayersOnline();
-			if (
-				   (online && (rel.isEnemy() ? Conf.territoryEnemyDenyBuild : (rel.isAlly() ? Conf.territoryAllyDenyBuild : Conf.territoryDenyBuild)))
-				|| (!online && (rel.isEnemy() ? Conf.territoryEnemyDenyBuildWhenOffline : (rel.isAlly() ? Conf.territoryAllyDenyBuildWhenOffline : Conf.territoryDenyBuildWhenOffline)))
-				) {
-				me.sendMessage("You can't "+action+" paintings in the territory of "+otherFaction.getTag(myFaction));
-				return false;
-			}
+		// Cancel if we are not in our own territory and building should be denied
+		if (!rel.isMember() && rel.confDenyBuild(otherFaction.hasPlayersOnline())) {
+			me.sendMessage("You can't "+action+" paintings in the territory of "+otherFaction.getTag(myFaction));
+			return false;
 		}
 		// Also cancel if player doesn't have ownership rights for this claim
-		else if (
-			   Conf.ownedAreasEnabled
-			&& Conf.ownedAreaDenyBuild
-			&& !myFaction.playerHasOwnershipRights(me, loc)
-			&& !Factions.hasPermOwnershipBypass(player)
-			) {
-			me.sendMessage("You can't "+action+" paintings in this territory, it is owned by: "+myFaction.getOwnerListString(loc));
+		else if (ownershipFail && (!rel.isMember() || !Factions.hasPermOwnershipBypass(player))) {
+			me.sendMessage("You can't "+action+" paintings in this territory, it is owned by: "+otherFaction.getOwnerListString(loc));
 			return false;
 		}
 

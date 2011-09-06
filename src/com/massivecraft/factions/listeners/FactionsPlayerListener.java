@@ -322,25 +322,19 @@ public class FactionsPlayerListener extends PlayerListener{
 		
 		Faction myFaction = me.getFaction();
 		Relation rel = myFaction.getRelation(otherFaction);
-
+		boolean ownershipFail = Conf.ownedAreasEnabled && Conf.ownedAreaDenyUseage && !otherFaction.playerHasOwnershipRights(me, loc);
+		
 		// Cancel if we are not in our own territory
-		if (myFaction != otherFaction) {
-			if (rel.isEnemy() ? Conf.territoryEnemyDenyUseage : (rel.isAlly() ? Conf.territoryAllyDenyUseage : Conf.territoryDenyUseage)) {
-				me.sendMessage("You can't use "+TextUtil.getMaterialName(material)+" in the territory of "+otherFaction.getTag(myFaction));
-				return false;
-			}
+		if (!rel.isMember() && rel.confDenyUseage()) {
+			me.sendMessage("You can't use "+TextUtil.getMaterialName(material)+" in the territory of "+otherFaction.getTag(myFaction));
+			return false;
 		}
 		// Also cancel if player doesn't have ownership rights for this claim
-		else if (
-			   Conf.ownedAreasEnabled
-			&& Conf.ownedAreaDenyUseage
-			&& !myFaction.playerHasOwnershipRights(me, loc)
-			&& !Factions.hasPermOwnershipBypass(player)
-			) {
+		else if (ownershipFail && (!rel.isMember() || !Factions.hasPermOwnershipBypass(player))) {
 			me.sendMessage("You can't use "+TextUtil.getMaterialName(material)+" in this territory, it is owned by: "+myFaction.getOwnerListString(loc));
 			return false;
 		}
-
+		
 		return true;
 	}
 
@@ -364,28 +358,19 @@ public class FactionsPlayerListener extends PlayerListener{
 				return true;
 			}
 		}
-
+		
 		FPlayer me = FPlayer.get(player);
 		Faction myFaction = me.getFaction();
 		Relation rel = myFaction.getRelation(otherFaction);
-
-		if ((rel.isEnemy() && !Conf.territoryEnemyProtectMaterials) || (rel.isAlly() && !Conf.territoryAllyProtectMaterials)) {
-			return true;
-		}
-
+		boolean ownershipFail = Conf.ownedAreasEnabled && Conf.ownedAreaProtectMaterials && !otherFaction.playerHasOwnershipRights(me, loc);
+		
 		// You may use any block unless it is another faction's territory...
-		if (otherFaction.isNormal() && myFaction != otherFaction) {
+		if ((rel.isEnemy() && Conf.territoryEnemyProtectMaterials) || (rel.isAlly() && Conf.territoryAllyProtectMaterials)) {
 			me.sendMessage("You can't use "+TextUtil.getMaterialName(material)+" in the territory of "+otherFaction.getTag(myFaction));
 			return false;
 		}
 		// Also cancel if player doesn't have ownership rights for this claim
-		else if (
-			   myFaction == otherFaction
-			&& Conf.ownedAreasEnabled
-			&& Conf.ownedAreaProtectMaterials
-			&& !myFaction.playerHasOwnershipRights(me, loc)
-			&& !Factions.hasPermOwnershipBypass(player)
-			) {
+		else if (ownershipFail && (!rel.isMember() || !Factions.hasPermOwnershipBypass(player))) {
 			me.sendMessage("You can't use "+TextUtil.getMaterialName(material)+" in this territory, it is owned by: "+myFaction.getOwnerListString(loc));
 			return false;
 		}
