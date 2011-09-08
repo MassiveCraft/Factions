@@ -151,6 +151,10 @@ public class Factions extends JavaPlugin {
 		Econ.setup(this);
 		Econ.monitorPlugins();
 		
+		if(Conf.worldGuardChecking) {
+			Worldguard.init(this);			
+		}
+		
 		// Register events
 		PluginManager pm = this.getServer().getPluginManager();
 		pm.registerEvent(Event.Type.PLAYER_CHAT, this.playerListener, Event.Priority.Highest, this);
