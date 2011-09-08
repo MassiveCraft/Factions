@@ -9,9 +9,12 @@ softdepend:
   - iChat
   - LocalAreaChat
   - nChat
+  - ChatManager
   - AuthMe
   - iConomy
   - Spout
+  - WorldEdit
+  - WorldGuard
 commands:
   f:
     description: All of the Factions commands

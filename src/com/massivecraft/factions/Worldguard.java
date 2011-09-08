@@ -36,11 +36,11 @@ public class Worldguard {
 		if (wgplug == null || !(wgplug instanceof WorldGuardPlugin)) {
 			enabled = false;
 			wg = null;
-			System.out.println("[Factions] Could not hook to WorldGuard. WorldGuard checks are disabled.");
+			Factions.log("Could not hook to WorldGuard. WorldGuard checks are disabled.");
 		} else {
 			wg = (WorldGuardPlugin) wgplug;
 			enabled = true;
-			System.out.println("[Factions] Successfully hooked to WorldGuard.");
+			Factions.log("Successfully hooked to WorldGuard.");
 		}
 	}
 
@@ -53,18 +53,18 @@ public class Worldguard {
 	//   True: PVP is allowed
 	//   False: PVP is disallowed
 	public static boolean isPVP(Player player) {
-		if(isEnabled()) {
-			Location loc = player.getLocation();
-			World world = loc.getWorld();
-			Vector pt = toVector(loc);
-
-			RegionManager regionManager = wg.getRegionManager(world);
-			ApplicableRegionSet set = regionManager.getApplicableRegions(pt);
-			return set.allows(DefaultFlag.PVP);
-		} else {
+		if(!enabled) {
 			// No WG hooks so we'll always bypass this check.
 			return true;
 		}
+
+		Location loc = player.getLocation();
+		World world = loc.getWorld();
+		Vector pt = toVector(loc);
+
+		RegionManager regionManager = wg.getRegionManager(world);
+		ApplicableRegionSet set = regionManager.getApplicableRegions(pt);
+		return set.allows(DefaultFlag.PVP);
 	}
 
 	// Check for Regions in chunk the chunk
@@ -72,44 +72,45 @@ public class Worldguard {
 	//   True: Regions found within chunk
 	//   False: No regions found within chunk
 	public static boolean checkForRegionsInChunk(Location loc) {
-		if(isEnabled()) {
-			World world = loc.getWorld();
-			Chunk chunk = world.getChunkAt(loc);
-			int minChunkX = chunk.getX() * 16;
-			int minChunkZ = chunk.getZ() * 16;
-			int maxChunkX = minChunkX + 15;
-			int maxChunkZ = minChunkZ + 15;
-
-			int worldHeight = world.getMaxHeight(); // Allow for heights other than default
-
-			BlockVector minChunk = new BlockVector(minChunkX, 0, minChunkZ);
-			BlockVector maxChunk = new BlockVector(maxChunkX, worldHeight, maxChunkZ);
-
-			RegionManager regionManager = wg.getRegionManager(world);
-			ProtectedCuboidRegion region = new ProtectedCuboidRegion("wgfactionoverlapcheck", minChunk, maxChunk);
-			Map<String, ProtectedRegion> allregions = regionManager.getRegions(); 
-			List<ProtectedRegion> allregionslist = new ArrayList<ProtectedRegion>(allregions.values());
-			List<ProtectedRegion> overlaps;
-			boolean foundregions = false;
-
-			try {
-				overlaps = region.getIntersectingRegions(allregionslist);
-				if(overlaps.isEmpty() || overlaps == null) {
-					foundregions = false;
-				} else {
-					foundregions = true;
-				}
-			} catch (UnsupportedIntersectionException e) {
-				e.printStackTrace();
-			}
-
-			region = null;
-			allregionslist = null;
-			overlaps = null;
-
-			return foundregions;
-		} else {
+		if(!enabled) {
+			// No WG hooks so we'll always bypass this check.
 			return false;
 		}
+
+		World world = loc.getWorld();
+		Chunk chunk = world.getChunkAt(loc);
+		int minChunkX = chunk.getX() << 4;
+		int minChunkZ = chunk.getZ() << 4;
+		int maxChunkX = minChunkX + 15;
+		int maxChunkZ = minChunkZ + 15;
+
+		int worldHeight = world.getMaxHeight(); // Allow for heights other than default
+
+		BlockVector minChunk = new BlockVector(minChunkX, 0, minChunkZ);
+		BlockVector maxChunk = new BlockVector(maxChunkX, worldHeight, maxChunkZ);
+
+		RegionManager regionManager = wg.getRegionManager(world);
+		ProtectedCuboidRegion region = new ProtectedCuboidRegion("wgfactionoverlapcheck", minChunk, maxChunk);
+		Map<String, ProtectedRegion> allregions = regionManager.getRegions(); 
+		List<ProtectedRegion> allregionslist = new ArrayList<ProtectedRegion>(allregions.values());
+		List<ProtectedRegion> overlaps;
+		boolean foundregions = false;
+
+		try {
+			overlaps = region.getIntersectingRegions(allregionslist);
+			if(overlaps == null || overlaps.isEmpty()) {
+				foundregions = false;
+			} else {
+				foundregions = true;
+			}
+		} catch (UnsupportedIntersectionException e) {
+			e.printStackTrace();
+		}
+
+		region = null;
+		allregionslist = null;
+		overlaps = null;
+
+		return foundregions;
 	}
 }

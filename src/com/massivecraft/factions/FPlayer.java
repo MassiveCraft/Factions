@@ -7,6 +7,7 @@ import java.util.logging.Level;
 import java.util.Map.Entry;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import com.google.gson.reflect.TypeToken;
@@ -505,10 +506,11 @@ public class FPlayer {
 		// return value is false on failure, true on success
 
 		Faction myFaction = getFaction();
-		FLocation flocation = new FLocation(this);
+		Location loc = this.getPlayer().getLocation();
+		FLocation flocation = new FLocation(loc);
 		Faction otherFaction = Board.getFactionAt(flocation);
 
-		if (Worldguard.checkForRegionsInChunk(this.getPlayer().getLocation())) {
+		if (Conf.worldGuardChecking && Worldguard.checkForRegionsInChunk(loc)) {
 			// Checks for WorldGuard regions in the chunk attempting to be claimed
 			sendMessage("This land is protected");
 			return false;
