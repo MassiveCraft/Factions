@@ -8,9 +8,9 @@ import org.bukkit.entity.Creeper;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Fireball;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageByProjectileEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
@@ -78,11 +78,6 @@ public class FactionsEntityListener extends EntityListener {
 		
 		if (event instanceof EntityDamageByEntityEvent) {
 			EntityDamageByEntityEvent sub = (EntityDamageByEntityEvent)event;
-			if ( ! this.canDamagerHurtDamagee(sub)) {
-    			event.setCancelled(true);
-    		}
-		} else if (event instanceof EntityDamageByProjectileEvent) {
-			EntityDamageByProjectileEvent sub = (EntityDamageByProjectileEvent)event;
 			if ( ! this.canDamagerHurtDamagee(sub)) {
     			event.setCancelled(true);
     		}
@@ -167,7 +162,12 @@ public class FactionsEntityListener extends EntityListener {
 		}
 		
 		Faction defLocFaction = Board.getFactionAt(new FLocation(defenderLoc));
-		
+
+		// for damage caused by projectiles, getDamager() returns the projectile... what we need to know is the source
+		if (damager instanceof Projectile) {
+			damager = ((Projectile)damager).getShooter();
+		}
+
 		// Players can not take attack damage in a SafeZone, or possibly peaceful territory
 		if (defLocFaction.noPvPInTerritory()) {
 			if (damager instanceof Player) {
