@@ -147,7 +147,7 @@ public class SpoutFeatures {
 				spoutApp.setPlayerTitle(sPlayer, viewed, addTag + "\n" + viewed.getDisplayName());
 			}
 			else {
-				spoutApp.resetPlayerTitle(sPlayer, viewed);
+				spoutApp.setPlayerTitle(sPlayer, viewed, viewed.getDisplayName());
 			}
 		}
 

@@ -63,6 +63,8 @@ public class Conf {
 	
 	public static double autoLeaveAfterDaysOfInactivity = 14.0;
 	
+	public static boolean worldGuardChecking = true;
+	
 	public static boolean homesEnabled = true;
 	public static boolean homesMustBeInClaimedTerritory = true;
 	public static boolean homesTeleportToOnDeath = true;
