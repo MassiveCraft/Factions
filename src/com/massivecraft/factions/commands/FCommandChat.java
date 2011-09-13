@@ -13,8 +13,8 @@ public class FCommandChat extends FBaseCommand {
 	
 	@Override
 	public void perform() {
-		if ( ! Conf.factionOnlyChat )
-		{
+		if ( ! Conf.factionOnlyChat ) {
+			sendMessage("Faction-only chat is disabled on this server.");
 			return;
 		}
 		if ( ! assertHasFaction()) {

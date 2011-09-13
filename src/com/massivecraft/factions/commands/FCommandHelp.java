@@ -103,11 +103,11 @@ public class FCommandHelp extends FBaseCommand {
 		helpPages.add(pageLines);
 		
 		pageLines = new ArrayList<String>();
+		pageLines.add( new FCommandDisband().getUseageTemplate() );
+		pageLines.add("");
 		pageLines.add( new FCommandRelationAlly().getUseageTemplate() );
 		pageLines.add( new FCommandRelationNeutral().getUseageTemplate() );
 		pageLines.add( new FCommandRelationEnemy().getUseageTemplate() );
-		pageLines.add("");
-		pageLines.add("");
 		pageLines.add("Set the relation you WISH to have with another faction.");
 		pageLines.add("Your default relation with other factions will be neutral.");
 		pageLines.add("If BOTH factions choose \"ally\" you will be allies.");
@@ -140,7 +140,6 @@ public class FCommandHelp extends FBaseCommand {
 		
 		pageLines = new ArrayList<String>();
 		pageLines.add("Finally some commands for the server admins:");
-		pageLines.add( new FCommandDisband().getUseageTemplate() );
 		pageLines.add( new FCommandSafeclaim().getUseageTemplate() );
 		pageLines.add( new FCommandAutoSafeclaim().getUseageTemplate() );
 		pageLines.add( new FCommandSafeunclaimall().getUseageTemplate() );
