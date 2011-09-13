@@ -46,6 +46,8 @@ public class Conf {
 	// Disallow joining/leaving/kicking while power is negative
 	public static boolean CanLeaveWithNegativePower = true;
 	
+	// Configuration for faction-only chat
+	public static boolean factionOnlyChat = true;
 	// Configuration on the Faction tag in chat messages.
 	public static boolean chatTagEnabled = true;
 	public static transient boolean chatTagHandledByAnotherPlugin = false;
