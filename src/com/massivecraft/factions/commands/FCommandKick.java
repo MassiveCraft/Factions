@@ -71,7 +71,7 @@ public class FCommandKick extends FBaseCommand {
 		yourFaction.deinvite(you);
 		you.resetFactionData();
 
-		if (yourFaction.getFPlayers().isEmpty()) {
+		if (yourFaction.getFPlayers().isEmpty() && !yourFaction.isPermanent()) {
 			// Remove this faction
 			for (FPlayer fplayer : FPlayer.getAllOnline()) {
 				fplayer.sendMessage("The faction "+yourFaction.getTag(fplayer)+Conf.colorSystem+" was disbanded.");

@@ -70,6 +70,10 @@ public class FCommandShow extends FBaseCommand {
 		sendMessage(Conf.colorChrome+"Joining: "+Conf.colorSystem+(faction.getOpen() ? "no invitation is needed" : "invitation is required")+peaceStatus);
 		sendMessage(Conf.colorChrome+"Land / Power / Maxpower: "+Conf.colorSystem+ faction.getLandRounded()+" / "+faction.getPowerRounded()+" / "+faction.getPowerMaxRounded());
 
+		if (faction.isPermanent()) {
+			sendMessage(Conf.colorChrome+"This faction is permanent, remaining even with no members.");
+		}
+
 		// show the land value
 		if (Econ.enabled()) {
 			double value = Econ.calculateTotalLandValue(faction.getLandRounded());

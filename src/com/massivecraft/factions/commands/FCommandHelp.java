@@ -140,6 +140,7 @@ public class FCommandHelp extends FBaseCommand {
 		
 		pageLines = new ArrayList<String>();
 		pageLines.add("Finally some commands for the server admins:");
+		pageLines.add( new FCommandBypass().getUseageTemplate() );
 		pageLines.add( new FCommandSafeclaim().getUseageTemplate() );
 		pageLines.add( new FCommandAutoSafeclaim().getUseageTemplate() );
 		pageLines.add( new FCommandSafeunclaimall().getUseageTemplate() );
@@ -151,8 +152,8 @@ public class FCommandHelp extends FBaseCommand {
 		
 		pageLines = new ArrayList<String>();
 		pageLines.add("More commands for server admins:");
-		pageLines.add( new FCommandBypass().getUseageTemplate() );
 		pageLines.add( new FCommandPeaceful().getUseageTemplate() );
+		pageLines.add( new FCommandPermanent().getUseageTemplate() );
 		pageLines.add("Peaceful factions are protected from PvP and land capture.");
 		pageLines.add( new FCommandLock().getUseageTemplate() );
 		pageLines.add( new FCommandReload().getUseageTemplate() );

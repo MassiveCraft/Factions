@@ -120,6 +120,7 @@ public class Factions extends JavaPlugin {
 		commands.add(new FCommandOwnerList());
 		commands.add(new FCommandPower());
 		commands.add(new FCommandPeaceful());
+		commands.add(new FCommandPermanent());
 		commands.add(new FCommandRelationAlly());
 		commands.add(new FCommandRelationEnemy());
 		commands.add(new FCommandRelationNeutral());
@@ -423,6 +424,10 @@ public class Factions extends JavaPlugin {
 	
 	public static boolean hasPermSetPeaceful(CommandSender sender) {
 		return hasPerm(sender, "factions.setPeaceful");
+	}
+	
+	public static boolean hasPermSetPermanent(CommandSender sender) {
+		return hasPerm(sender, "factions.setPermanent");
 	}
 	
 	public static boolean hasPermPeacefulExplosionToggle(CommandSender sender) {

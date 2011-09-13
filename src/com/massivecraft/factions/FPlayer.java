@@ -459,8 +459,9 @@ public class FPlayer {
 	
 	public void leave(boolean makePay) {
 		Faction myFaction = this.getFaction();
+		boolean perm = myFaction.isPermanent();
 		
-		if (this.getRole() == Role.ADMIN && myFaction.getFPlayers().size() > 1) {
+		if (!perm && this.getRole() == Role.ADMIN && myFaction.getFPlayers().size() > 1) {
 			sendMessage("You must give the admin role to someone else first.");
 			return;
 		}
@@ -496,7 +497,7 @@ public class FPlayer {
 
 		this.resetFactionData();
 
-		if (myFaction.isNormal() && myFaction.getFPlayers().isEmpty()) {
+		if (myFaction.isNormal() && !perm && myFaction.getFPlayers().isEmpty()) {
 			// Remove this faction
 			for (FPlayer fplayer : FPlayer.getAllOnline()) {
 				fplayer.sendMessage("The faction "+myFaction.getTag(fplayer)+Conf.colorSystem+" was disbanded.");
@@ -687,7 +688,9 @@ public class FPlayer {
 	// -------------------------------------------- //
 	
 	public boolean shouldBeSaved() {
-		return this.factionId != 0;
+//		return this.factionId != 0;
+		// we now need to track all players, so they don't get stuck back into a default faction if factionless; also to keep track of lost power and such
+		return true;
 	}
 	
 	public static boolean save() {

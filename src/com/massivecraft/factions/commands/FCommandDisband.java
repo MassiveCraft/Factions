@@ -52,6 +52,11 @@ public class FCommandDisband extends FBaseCommand {
 			}
 
 			faction = me.getFaction();
+
+			if (faction.isPermanent() && !Factions.hasPermDisband(sender)) {
+				sendMessage("Your faction is designated as permanent, so you cannot disband it.");
+				return;
+			}
 		}
 
 		// Inform all players

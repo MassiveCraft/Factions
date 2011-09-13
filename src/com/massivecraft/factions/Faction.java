@@ -34,6 +34,7 @@ public class Faction {
 	private boolean open;
 	private boolean peaceful;
 	private boolean peacefulExplosionsEnabled;
+	private boolean permanent;
 	private String tag;
 	private String description;
 	private Location home;
@@ -50,6 +51,9 @@ public class Faction {
 		this.tag = "???";
 		this.description = "Default faction description :(";
 		this.lastPlayerLoggedOffTime = 0;
+		this.peaceful = false;
+		this.peacefulExplosionsEnabled = false;
+		this.permanent = false;
 	}
 	
 	// -------------------------------------------- //
@@ -130,6 +134,14 @@ public class Faction {
 	}
 	public void setPeaceful(boolean isPeaceful) {
 		peaceful = isPeaceful;
+	}
+
+	// "permanent" status can only be set by server admins/moderators/ops, and allows the faction to remain even with 0 members
+	public boolean isPermanent() {
+		return permanent;
+	}
+	public void setPermanent(boolean isPermanent) {
+		permanent = isPermanent;
 	}
 
 	public void setPeacefulExplosions(boolean disable) {
