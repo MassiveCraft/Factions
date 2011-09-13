@@ -39,6 +39,9 @@ public class Conf {
 	
 	public static boolean newFactionsDefaultOpen = true;
 
+	// what faction ID to start new players in when they first join the server; default is 0, "no faction"
+	public static int newPlayerStartingFactionID = 0;
+
 	public static boolean showMapFactionKey = true;
 	public static boolean showNeutralFactionsOnMap = true;
 	public static boolean showEnemyFactionsOnMap = true;

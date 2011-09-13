@@ -67,6 +67,10 @@ public class FPlayer {
 		this.autoSafeZoneEnabled = false;
 		this.autoWarZoneEnabled = false;
 		this.loginPvpDisabled = (Conf.noPVPDamageToOthersForXSecondsAfterLogin > 0) ? true : false;
+
+		if (Conf.newPlayerStartingFactionID > 0 && Faction.exists(Conf.newPlayerStartingFactionID)) {
+			this.factionId = Conf.newPlayerStartingFactionID;
+		}
 	}
 	
 	public void resetFactionData() {
