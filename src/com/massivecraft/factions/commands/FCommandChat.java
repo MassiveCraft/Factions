@@ -1,5 +1,7 @@
 package com.massivecraft.factions.commands;
 
+import com.massivecraft.factions.Conf;
+
 public class FCommandChat extends FBaseCommand {
 	
 	public FCommandChat() {
@@ -11,6 +13,10 @@ public class FCommandChat extends FBaseCommand {
 	
 	@Override
 	public void perform() {
+		if ( ! Conf.factionOnlyChat )
+		{
+			return;
+		}
 		if ( ! assertHasFaction()) {
 			return;
 		}
