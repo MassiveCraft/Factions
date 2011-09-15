@@ -347,7 +347,12 @@ public class FactionsPlayerListener extends PlayerListener{
 		Material material = block.getType();
 		FLocation loc = new FLocation(block);
 		Faction otherFaction = Board.getFactionAt(loc);
-		
+
+		// no door/chest/whatever protection in wilderness, war zones, or safe zones
+		if (!otherFaction.isNormal()) {
+			return true;
+		}
+
 		// We only care about some material types.
 		if (otherFaction.hasPlayersOnline()){
 			if ( ! Conf.territoryProtectedMaterials.contains(material)) {
