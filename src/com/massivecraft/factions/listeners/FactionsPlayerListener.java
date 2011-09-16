@@ -107,6 +107,8 @@ public class FactionsPlayerListener extends PlayerListener{
 					Factions.log(Level.SEVERE, "Critical error in chat message formatting! Complete format string: "+yourFormat);
 					Factions.log(Level.SEVERE, "First half of event.getFormat() string: "+formatStart);
 					Factions.log(Level.SEVERE, "Second half of event.getFormat() string: "+formatEnd);
+					Factions.log(Level.SEVERE, "NOTE: To fix this quickly, running this command should work: f config chatTagInsertIndex 0");
+					Factions.log(Level.SEVERE, "For a more proper fix, please read the chat configuration notes on the configuration page of the Factions user guide.");
 					ex.printStackTrace();
 					return;
 				}
