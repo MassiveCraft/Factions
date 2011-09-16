@@ -204,21 +204,23 @@ public class FactionsEntityListener extends EntityListener {
 			return true;
 		}
 		
-		if (!attacker.hasFaction() && Conf.disablePVPForFactionlessPlayers) {
+		Faction defendFaction = defender.getFaction();
+		Faction attackFaction = attacker.getFaction();
+		
+		if (attackFaction.isNone() && Conf.disablePVPForFactionlessPlayers) {
 			attacker.sendMessage("You can't hurt other players until you join a faction.");
 			return false;
 		}
-		else if (defLocFaction == attacker.getFaction() && Conf.enablePVPAgainstFactionlessInAttackersLand) {
-			// Allow PVP vs. Factionless in attacker's faction territory
-			return true;
+		else if (defendFaction.isNone()) {
+			if (defLocFaction == attackFaction && Conf.enablePVPAgainstFactionlessInAttackersLand) {
+				// Allow PVP vs. Factionless in attacker's faction territory
+				return true;
+			}
+			else if (Conf.disablePVPForFactionlessPlayers) {
+				attacker.sendMessage("You can't hurt players who are not currently in a faction.");
+				return false;
+			}
 		}
-		else if (!defender.hasFaction() && Conf.disablePVPForFactionlessPlayers) {
-			attacker.sendMessage("You can't hurt players who are not currently in a faction.");
-			return false;
-		}
-		
-		Faction defendFaction = defender.getFaction();
-		Faction attackFaction = attacker.getFaction();
 		
 		if (defendFaction.isPeaceful()) {
 			attacker.sendMessage("You can't hurt players who are in a peaceful faction.");
