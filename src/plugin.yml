@@ -12,6 +12,7 @@ softdepend:
   - ChatManager
   - AuthMe
   - iConomy
+  - Register
   - Spout
   - WorldEdit
   - WorldGuard

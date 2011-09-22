@@ -184,6 +184,7 @@ public class Conf {
 	public static String capePeaceful = "https://github.com/MassiveCraft/Factions/raw/master/capes/peaceful.png";
 	
 	// Economy settings
+	public static boolean econRegisterEnabled = false;
 	public static boolean econIConomyEnabled = false;
 	public static boolean econEssentialsEcoEnabled = false;
 	public static double econCostClaimWilderness = 30.0;

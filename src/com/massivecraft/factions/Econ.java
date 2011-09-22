@@ -6,11 +6,14 @@ import org.bukkit.plugin.Plugin;
 import com.massivecraft.factions.listeners.FactionsServerListener;
 
 import com.earth2me.essentials.api.Economy;
+import com.nijikokun.register.payment.Methods;
+import com.nijikokun.register.payment.Method.MethodAccount;
 import com.iConomy.*;
 import com.iConomy.system.*;
 
 
 public class Econ {
+	private static boolean registerUse = false;
 	private static boolean iConomyUse = false;
 	private static boolean essEcoUse = false;
 
@@ -24,6 +27,12 @@ public class Econ {
 			return;
 		}
 
+		if (!registerHooked()) {
+			Plugin plug = factions.getServer().getPluginManager().getPlugin("Register");
+			if (plug != null && plug.getClass().getName().equals("com.nijikokun.register.Register") && plug.isEnabled()) {
+				registerSet(true);
+			}
+		}
 		if (!iConomyHooked()) {
 			Plugin plug = factions.getServer().getPluginManager().getPlugin("iConomy");
 			if (plug != null && plug.getClass().getName().equals("com.iConomy.iConomy") && plug.isEnabled()) {
@@ -38,9 +47,19 @@ public class Econ {
 		}
 	}
 
+	public static void registerSet(boolean enable) {
+		registerUse = enable;
+		if (enable) {
+			Factions.log("Register hook available, "+(Conf.econRegisterEnabled ? "and interface is enabled" : "but disabled (\"econRegisterEnabled\": false)")+".");
+		}
+		else {
+			Factions.log("Un-hooked from Register.");
+		}
+	}
+
 	public static void iConomySet(boolean enable) {
 		iConomyUse = enable;
-		if (enable) {
+		if (enable && !registerUse) {
 			Factions.log("iConomy hook available, "+(Conf.econIConomyEnabled ? "and interface is enabled" : "but disabled (\"econIConomyEnabled\": false)")+".");
 		}
 		else {
@@ -50,12 +69,16 @@ public class Econ {
 
 	public static void essentialsEcoSet(boolean enable) {
 		essEcoUse = enable;
-		if (enable) {
+		if (enable && !registerUse) {
 			Factions.log("EssentialsEco hook available, "+(Conf.econEssentialsEcoEnabled ? "and interface is enabled" : "but disabled (\"econEssentialsEcoEnabled\": false)")+".");
 		}
 		else {
 			Factions.log("Un-hooked from EssentialsEco.");
 		}
+	}
+
+	public static boolean registerHooked() {
+		return registerUse;
 	}
 
 	public static boolean iConomyHooked() {
@@ -66,9 +89,15 @@ public class Econ {
 		return essEcoUse;
 	}
 
+	public static boolean registerAvailable() {
+		return Conf.econRegisterEnabled && registerUse && Methods.hasMethod();
+	}
+
 	// If economy is enabled in conf.json, and we're successfully hooked into an economy plugin
 	public static boolean enabled() {
-		return (Conf.econIConomyEnabled && iConomyUse) || (Conf.econEssentialsEcoEnabled && essEcoUse);
+		return    (Conf.econRegisterEnabled && registerUse && Methods.hasMethod())
+			   || (Conf.econIConomyEnabled && iConomyUse)
+			   || (Conf.econEssentialsEcoEnabled && essEcoUse);
 	}
 
 	// mainly for internal use, for a little less code repetition
@@ -84,11 +113,23 @@ public class Econ {
 		Holdings holdings = account.getHoldings();
 		return holdings;
 	}
+	public static MethodAccount getRegisterAccount(String playerName) {
+		if (!enabled()) {
+			return null;
+		}
+		if (!Methods.getMethod().hasAccount(playerName)) {
+			return null;
+		}
+
+		MethodAccount account = Methods.getMethod().getAccount(playerName);
+		return account;
+	}
 
 
 	// format money string based on server's set currency type, like "24 gold" or "$24.50"
 	public static String moneyString(double amount) {
-		return iConomyUse ? iConomy.format(amount) : Economy.format(amount);
+		return registerAvailable() ? Methods.getMethod().format(amount)
+			   : (iConomyUse ? iConomy.format(amount) : Economy.format(amount));
 	}
 
 	// whether a player can afford specified amount
@@ -98,7 +139,15 @@ public class Econ {
 			return true;
 		}
 
-		if (iConomyUse) {
+		if (registerAvailable()) {
+			MethodAccount holdings = getRegisterAccount(playerName);
+			if (holdings == null) {
+				return false;
+			}
+
+			return holdings.hasEnough(amount);
+		}
+		else if (iConomyUse) {
 			Holdings holdings = getIconomyHoldings(playerName);
 			if (holdings == null) {
 				return false;
@@ -122,7 +171,15 @@ public class Econ {
 			return true;
 		}
 
-		if (iConomyUse) {
+		if (registerAvailable()) {
+			MethodAccount holdings = getRegisterAccount(playerName);
+			if (holdings == null || !holdings.hasEnough(amount)) {
+				return false;
+			}
+
+			return holdings.subtract(amount);
+		}
+		else if (iConomyUse) {
 			Holdings holdings = getIconomyHoldings(playerName);
 			if (holdings == null || !holdings.hasEnough(amount)) {
 				return false;
@@ -151,7 +208,15 @@ public class Econ {
 			return true;
 		}
 
-		if (iConomyUse) {
+		if (registerAvailable()) {
+			MethodAccount holdings = getRegisterAccount(playerName);
+			if (holdings == null) {
+				return false;
+			}
+
+			return holdings.add(amount);
+		}
+		else if (iConomyUse) {
 			Holdings holdings = getIconomyHoldings(playerName);
 			if (holdings == null) {
 				return false;
