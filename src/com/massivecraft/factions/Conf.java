@@ -126,11 +126,13 @@ public class Conf {
 	public static boolean territoryBlockFireballsWhenOffline = false;
 	public static boolean territoryBlockTNT = false;
 	public static boolean territoryBlockTNTWhenOffline = false;
+	public static boolean territoryDenyEndermanBlocks = true;
 
 	public static boolean safeZoneDenyBuild = true;
 	public static boolean safeZoneDenyUseage = true;
 	public static boolean safeZoneBlockTNT = true;
 	public static boolean safeZonePreventAllDamageToPlayers = false;
+	public static boolean safeZoneDenyEndermanBlocks = true;
 	
 	public static boolean warZoneDenyBuild = true;
 	public static boolean warZoneDenyUseage = true;
@@ -139,6 +141,7 @@ public class Conf {
 	public static boolean warZoneBlockTNT = true;
 	public static boolean warZonePowerLoss = true;
 	public static boolean warZoneFriendlyFire = false;
+	public static boolean warZoneDenyEndermanBlocks = true;
 	
 	public static boolean wildernessDenyBuild = false;
 	public static boolean wildernessDenyUseage = false;
@@ -146,6 +149,7 @@ public class Conf {
 	public static boolean wildernessBlockFireballs = false;
 	public static boolean wildernessBlockTNT = false;
 	public static boolean wildernessPowerLoss = true;
+	public static boolean wildernessDenyEndermanBlocks = false;
 
 	// for claimed areas where further faction-member ownership can be defined
 	public static boolean ownedAreasEnabled = true;

@@ -10,6 +10,8 @@ import org.bukkit.entity.Fireball;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.entity.EndermanPickupEvent;
+import org.bukkit.event.entity.EndermanPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
@@ -388,5 +390,59 @@ public class FactionsEntityListener extends EntityListener {
 		}
 
 		return true;
+	}
+
+	@Override
+	public void onEndermanPickup(EndermanPickupEvent event) {
+		if (event.isCancelled()) {
+			return;
+		}
+
+		if (stopEndermanBlockManipulation(event.getBlock().getLocation())) {
+			event.setCancelled(true);
+		}
+	}
+
+	@Override
+	public void onEndermanPlace(EndermanPlaceEvent event) {
+		if (event.isCancelled()) {
+			return;
+		}
+
+		if (stopEndermanBlockManipulation(event.getLocation())) {
+			event.setCancelled(true);
+		}
+	}
+
+	private boolean stopEndermanBlockManipulation(Location loc) {
+		if (loc == null) {
+			return false;
+		}
+		// quick check to see if all Enderman deny options are enabled; if so, no need to check location
+		if (   Conf.wildernessDenyEndermanBlocks
+			&& Conf.territoryDenyEndermanBlocks
+			&& Conf.safeZoneDenyEndermanBlocks
+			&& Conf.warZoneDenyEndermanBlocks
+			) {
+			return true;
+		}
+
+		FLocation fLoc = new FLocation(loc);
+		Faction claimFaction = Board.getFactionAt(fLoc);
+
+		if (claimFaction.isNone()) {
+			return Conf.wildernessDenyEndermanBlocks;
+		}
+		else if (claimFaction.isNormal()) {
+			return Conf.territoryDenyEndermanBlocks;
+		}
+		else if (claimFaction.isSafeZone()) {
+			return Conf.safeZoneDenyEndermanBlocks;
+		}
+		else if (claimFaction.isWarZone()) {
+			return Conf.warZoneDenyEndermanBlocks;
+		}
+
+		return false;
 	}
 }
