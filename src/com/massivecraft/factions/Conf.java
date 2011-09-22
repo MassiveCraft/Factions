@@ -28,6 +28,8 @@ public class Conf {
 	public static double powerPerMinute = 0.2; // Default health rate... it takes 5 min to heal one power
 	public static double powerPerDeath = 4.0; // A death makes you lose 4 power
 	public static boolean powerRegenOffline = false;  // does player power regenerate even while they're offline?
+	public static double powerOfflineLossPerDay = 1.0;  // players will lose this much power per day offline
+	public static double powerOfflineLossLimit = 0.0;  // players will no longer lose power from being offline once their power drops to this amount or less
 	public static double powerFactionMax = 0.0;  // if greater than 0, the cap on how much power a faction can have (additional power from players beyond that will act as a "buffer" of sorts)
 	
 	public static String prefixAdmin = "**";

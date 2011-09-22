@@ -190,6 +190,7 @@ public class FPlayer {
 	}
 
 	public void setLastLoginTime(long lastLoginTime) {
+		losePowerFromBeingOffline();
 		this.lastLoginTime = lastLoginTime;
 		this.lastPowerUpdateTime = lastLoginTime;
 		if (Conf.noPVPDamageToOthersForXSecondsAfterLogin > 0) {
@@ -404,8 +405,11 @@ public class FPlayer {
 	}
 	
 	protected void updatePower() {
-		if (this.isOffline() && !Conf.powerRegenOffline) {
-			return;
+		if (this.isOffline()) {
+			losePowerFromBeingOffline();
+			if (!Conf.powerRegenOffline) {
+				return;
+			}
 		}
 		long now = System.currentTimeMillis();
 		long millisPassed = now - this.lastPowerUpdateTime;
@@ -413,6 +417,20 @@ public class FPlayer {
 		
 		int millisPerMinute = 60*1000;
 		this.alterPower(millisPassed * Conf.powerPerMinute / millisPerMinute);
+	}
+
+	protected void losePowerFromBeingOffline() {
+		if (Conf.powerOfflineLossPerDay > 0.0 && this.power > Conf.powerOfflineLossLimit) {
+			long now = System.currentTimeMillis();
+			long millisPassed = now - this.lastPowerUpdateTime;
+			this.lastPowerUpdateTime = now;
+
+			double loss = millisPassed * Conf.powerOfflineLossPerDay / (24*60*60*1000);
+			if (this.power - loss < Conf.powerOfflineLossLimit) {
+				loss = this.power;
+			}
+			this.alterPower(-loss);
+		}
 	}
 	
 	public void onDeath() {
