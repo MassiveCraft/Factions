@@ -206,8 +206,7 @@ public class FactionsBlockListener extends BlockListener {
 			}
 		}
 		// Also cancel and/or cause pain if player doesn't have ownership rights for this claim
-		if (ownershipFail && !Factions.hasPermOwnershipBypass(player)
-			) {
+		else if (rel.isMember() && ownershipFail && !Factions.hasPermOwnershipBypass(player)) {
 			if (Conf.ownedAreaPainBuild){
 				player.damage(Conf.actionDeniedPainAmount);
 				if (!Conf.ownedAreaDenyBuild) {

@@ -384,7 +384,7 @@ public class FactionsEntityListener extends EntityListener {
 			return false;
 		}
 		// Also cancel if player doesn't have ownership rights for this claim
-		else if (ownershipFail && (!rel.isMember() || !Factions.hasPermOwnershipBypass(player))) {
+		else if (rel.isMember() && ownershipFail && !Factions.hasPermOwnershipBypass(player)) {
 			me.sendMessage("You can't "+action+" paintings in this territory, it is owned by: "+otherFaction.getOwnerListString(loc));
 			return false;
 		}

@@ -332,7 +332,7 @@ public class FactionsPlayerListener extends PlayerListener{
 			return false;
 		}
 		// Also cancel if player doesn't have ownership rights for this claim
-		else if (ownershipFail && (!rel.isMember() || !Factions.hasPermOwnershipBypass(player))) {
+		else if (rel.isMember() && ownershipFail && !Factions.hasPermOwnershipBypass(player)) {
 			me.sendMessage("You can't use "+TextUtil.getMaterialName(material)+" in this territory, it is owned by: "+myFaction.getOwnerListString(loc));
 			return false;
 		}
@@ -372,12 +372,12 @@ public class FactionsPlayerListener extends PlayerListener{
 		boolean ownershipFail = Conf.ownedAreasEnabled && Conf.ownedAreaProtectMaterials && !otherFaction.playerHasOwnershipRights(me, loc);
 		
 		// You may use any block unless it is another faction's territory...
-		if ((rel.isEnemy() && Conf.territoryEnemyProtectMaterials) || (rel.isAlly() && Conf.territoryAllyProtectMaterials)) {
+		if (rel.isNeutral() || (rel.isEnemy() && Conf.territoryEnemyProtectMaterials) || (rel.isAlly() && Conf.territoryAllyProtectMaterials)) {
 			me.sendMessage("You can't use "+TextUtil.getMaterialName(material)+" in the territory of "+otherFaction.getTag(myFaction));
 			return false;
 		}
 		// Also cancel if player doesn't have ownership rights for this claim
-		else if (ownershipFail && (!rel.isMember() || !Factions.hasPermOwnershipBypass(player))) {
+		else if (rel.isMember() && ownershipFail && !Factions.hasPermOwnershipBypass(player)) {
 			me.sendMessage("You can't use "+TextUtil.getMaterialName(material)+" in this territory, it is owned by: "+myFaction.getOwnerListString(loc));
 			return false;
 		}
