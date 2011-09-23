@@ -39,6 +39,7 @@ public class Faction {
 	private String description;
 	private Location home;
 	private transient long lastPlayerLoggedOffTime;
+	private double money;
 	
 	// -------------------------------------------- //
 	// Construct
@@ -54,6 +55,7 @@ public class Faction {
 		this.peaceful = false;
 		this.peacefulExplosionsEnabled = false;
 		this.permanent = false;
+		this.money = 0.0;
 	}
 	
 	// -------------------------------------------- //
@@ -592,6 +594,30 @@ public class Faction {
 		return false;
 	}
 
+	public double getMoney() {
+		return this.money;
+	}
+	
+	public boolean addMoney(double amount)	{
+		if ( amount > 0.0 )
+		{
+			this.money += amount;
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean removeMoney( double amount )	{
+		if (amount <= 0.0 )
+			return false;
+		
+		if (amount > this.money )
+			return false;
+		
+		this.money -= amount;
+		return true;
+	}
+	
 	
 	//----------------------------------------------//
 	// Persistance and entity management

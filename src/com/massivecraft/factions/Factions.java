@@ -97,12 +97,14 @@ public class Factions extends JavaPlugin {
 		commands.add(new FCommandAutoClaim());
 		commands.add(new FCommandAutoSafeclaim());
 		commands.add(new FCommandAutoWarclaim());
+		commands.add(new FCommandBalance());
 		commands.add(new FCommandBypass());
 		commands.add(new FCommandChat());
 		commands.add(new FCommandClaim());
 		commands.add(new FCommandConfig());
 		commands.add(new FCommandCreate());
 		commands.add(new FCommandDeinvite());
+		commands.add(new FCommandDeposit());
 		commands.add(new FCommandDescription());
 		commands.add(new FCommandDisband());
 		commands.add(new FCommandHome());
@@ -118,6 +120,7 @@ public class Factions extends JavaPlugin {
 		commands.add(new FCommandOpen());
 		commands.add(new FCommandOwner());
 		commands.add(new FCommandOwnerList());
+		commands.add(new FCommandPay());
 		commands.add(new FCommandPower());
 		commands.add(new FCommandPeaceful());
 		commands.add(new FCommandPermanent());
@@ -137,6 +140,7 @@ public class Factions extends JavaPlugin {
 		commands.add(new FCommandVersion());
 		commands.add(new FCommandWarclaim());
 		commands.add(new FCommandWarunclaimall());
+		commands.add(new FCommandWithdraw());
 		
 		// Ensure base folder exists!
 		this.getDataFolder().mkdirs();

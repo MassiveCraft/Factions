@@ -247,19 +247,40 @@ public class FBaseCommand {
 
 		String desc = this.helpDescription.toLowerCase();
 
+		Faction faction = me.getFaction();
+		
 		// pay up
 		if (cost > 0.0) {
 			String costString = Econ.moneyString(cost);
-			if (!Econ.deductMoney(me.getName(), cost)) {
-				sendMessage("It costs "+costString+" to "+desc+", which you can't currently afford.");
-				return false;
+			if(Conf.bankFactionPaysCosts) {
+				if(!faction.removeMoney(cost)) {
+					sendMessage("It costs "+costString+" to "+desc+", which your faction can't currently afford.");
+					return false;
+				} else {
+					sendMessage(faction.getTag()+" has paid "+costString+" to "+desc+".");
+				}
+					
+			} else {
+				if (!Econ.deductMoney(me.getName(), cost)) {
+					sendMessage("It costs "+costString+" to "+desc+", which you can't currently afford.");
+					return false;
+				}
+				sendMessage("You have paid "+costString+" to "+desc+".");
 			}
-			sendMessage("You have paid "+costString+" to "+desc+".");
 		}
 		// wait... we pay you to use this command?
 		else {
+			
 			String costString = Econ.moneyString(-cost);
-			Econ.addMoney(me.getName(), -cost);
+			
+			if(Conf.bankFactionPaysCosts) {
+				faction.addMoney(-cost);
+				sendMessage(faction.getTag()+" has been paid "+costString+" to "+desc+".");
+			} else {
+				Econ.addMoney(me.getName(), -cost);
+			}
+			
+			
 			sendMessage("You have been paid "+costString+" to "+desc+".");
 		}
 		return true;
