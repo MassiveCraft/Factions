@@ -65,7 +65,7 @@ public class Conf {
 	public static boolean chatTagPadAfter = true;
 	public static String chatTagFormat = "%s"+ChatColor.WHITE;
 	public static String factionChatFormat = "%s"+ChatColor.WHITE+" %s";
-	public static String allianceChatFormat = "%s"+colorAlly+" %s";
+	public static String allianceChatFormat = "%s"+ChatColor.WHITE+" %s";
 	
 	public static boolean allowNoSlashCommand = true;
 	
