@@ -58,7 +58,9 @@ public class FactionsChatEarlyListener extends PlayerListener{
 			
 		} else if (me.getChatMode() == ChatMode.ALLIANCE ) {
 			Faction myFaction = me.getFaction();
-			String message = String.format(Conf.allianceChatFormat, Conf.colorAlly+"["+myFaction.getTag()+"] "+me.getName(), msg);			
+			
+			String factionAndName = ChatColor.stripColor(me.getNameAndTag());
+			String message = Conf.colorAlly+factionAndName+ChatColor.WHITE+" "+msg;
 			
 			//Send message to our own faction
 			myFaction.sendMessage(message);
