@@ -11,6 +11,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import com.google.gson.reflect.TypeToken;
+import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.DiscUtil;
@@ -49,8 +50,8 @@ public class FPlayer {
 	private transient boolean autoClaimEnabled;
 	private transient boolean autoSafeZoneEnabled;
 	private transient boolean autoWarZoneEnabled;
-	private transient boolean loginPvpDisabled; 
-	private boolean factionChatting; 
+	private transient boolean loginPvpDisabled;
+	private ChatMode chatMode;
 	
 	// -------------------------------------------- //
 	// Construct
@@ -80,7 +81,7 @@ public class FPlayer {
 		}
 		
 		this.factionId = 0; // The default neutral faction
-		this.factionChatting = false;
+		this.chatMode = ChatMode.PUBLIC;
 		this.role = Role.NORMAL;
 		this.title = "";
 
@@ -139,15 +140,15 @@ public class FPlayer {
 		SpoutFeatures.updateAppearances(this.getPlayer());
 	}
 	
-	public boolean isFactionChatting() {
-		if (this.factionId == 0) {
-			return false;
+	public ChatMode getChatMode() {
+		if(this.factionId == 0 ) {
+			return ChatMode.PUBLIC;
 		}
-		return factionChatting;
+		return chatMode;
 	}
 
-	public void setFactionChatting(boolean factionChatting) {
-		this.factionChatting = factionChatting;
+	public void setChatMode(ChatMode chatMode) {
+		this.chatMode = chatMode;
 	}
 	
 	public long getLastLoginTime() {

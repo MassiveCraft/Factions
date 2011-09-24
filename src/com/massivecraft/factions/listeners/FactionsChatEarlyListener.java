@@ -11,7 +11,10 @@ import org.bukkit.event.player.PlayerListener;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.struct.ChatMode;
+import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.util.TextUtil;
 
 
@@ -45,10 +48,27 @@ public class FactionsChatEarlyListener extends PlayerListener{
 		FPlayer me = FPlayer.get(talkingPlayer);
 		
 		// Is it a faction chat message?
-		if (me.isFactionChatting()) {
+		if (me.getChatMode() == ChatMode.FACTION) {
+			
 			String message = String.format(Conf.factionChatFormat, me.getNameAndRelevant(me), msg);
 			me.getFaction().sendMessage(message);
 			Logger.getLogger("Minecraft").info(ChatColor.stripColor("FactionChat "+me.getFaction().getTag()+": "+message));
+			event.setCancelled(true);
+			return;
+			
+		} else if (me.getChatMode() == ChatMode.ALLIANCE ) {
+			String message = String.format(Conf.allianceChatFormat, me.getNameAndRelevant(me), msg);
+			Faction myFaction = me.getFaction();
+			
+			//Send message to our own faction
+			myFaction.sendMessage(message);
+			for (FPlayer fplayer : FPlayer.getAllOnline()) {
+				if(myFaction.getRelation(fplayer) == Relation.ALLY) {
+					//Send to all our allies
+					fplayer.sendMessage(message);	
+				}
+			}
+			Logger.getLogger("Minecraft").info(ChatColor.stripColor("AllianceChat "+me.getFaction().getTag()+": "+message));
 			event.setCancelled(true);
 			return;
 		}
