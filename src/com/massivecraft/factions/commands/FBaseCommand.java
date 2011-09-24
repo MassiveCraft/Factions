@@ -248,7 +248,7 @@ public class FBaseCommand {
 		// pay up
 		if (cost > 0.0) {
 			String costString = Econ.moneyString(cost);
-			if(Conf.bankFactionPaysCosts) {
+			if(Conf.bankFactionPaysCosts && me.hasFaction() ) {
 				if(!faction.removeMoney(cost)) {
 					sendMessage("It costs "+costString+" to "+desc+", which your faction can't currently afford.");
 					return false;
@@ -269,7 +269,7 @@ public class FBaseCommand {
 			
 			String costString = Econ.moneyString(-cost);
 			
-			if(Conf.bankFactionPaysCosts) {
+			if(Conf.bankFactionPaysCosts && me.hasFaction() ) {
 				faction.addMoney(-cost);
 				sendMessage(faction.getTag()+" has been paid "+costString+" to "+desc+".");
 			} else {
