@@ -1,6 +1,7 @@
 package com.massivecraft.factions.commands;
 
 import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.Econ;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.FPlayer;
@@ -67,6 +68,11 @@ public class FCommandDisband extends FBaseCommand {
 				fplayer.sendMessage(me.getNameAndRelevant(fplayer)+Conf.colorSystem+" disbanded the faction "+faction.getTag(fplayer)+".");
 			}
 		}
+		
+		if (Conf.bankEnabled) {
+			Econ.addMoney(me.getName(), me.getFaction().getMoney() ); //Give all the faction's money to the disbander
+		}		
+		
 		Faction.delete( faction.getId() );
 		SpoutFeatures.updateAppearances();
 
