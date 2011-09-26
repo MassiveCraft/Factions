@@ -10,7 +10,9 @@ public class FCommandBalance extends FBaseCommand {
 		aliases.add("balance");
 		aliases.add("money");
 		
-		helpDescription = "Shows the faction's current balance";
+		optionalParameters.add("faction name");
+		
+		helpDescription = "Shows a faction's current balance";
 	}
 	
 	@Override
@@ -23,9 +25,10 @@ public class FCommandBalance extends FBaseCommand {
 			return;
 		}
 		
-		Faction faction = me.getFaction();
+		String factionName = parameters.get(0);
+		Faction faction = findFaction(factionName, true);
 		
-		sendMessage(Conf.colorChrome+"Balance: "+ Econ.moneyString(faction.getMoney()));
+		sendMessage(Conf.colorChrome+faction.getTag()+"'s balance: "+ Econ.moneyString(faction.getMoney()));
 	}
 	
 }
