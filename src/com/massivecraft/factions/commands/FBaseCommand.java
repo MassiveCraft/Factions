@@ -227,7 +227,11 @@ public class FBaseCommand {
 		if (you.getRole().equals(Role.ADMIN)) {
 			i.sendMessage(Conf.colorSystem+"Only the faction admin can do that.");
 		} else if (i.getRole().equals(Role.MODERATOR)) {
-			i.sendMessage(Conf.colorSystem+"Moderators can't control each other...");
+			if ( i == you ) {
+				return true; //Moderators can control themselves
+			} else {
+				i.sendMessage(Conf.colorSystem+"Moderators can't control each other...");
+			}
 		} else {
 			i.sendMessage(Conf.colorSystem+"You must be a faction moderator to do that.");
 		}
