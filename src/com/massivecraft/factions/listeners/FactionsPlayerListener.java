@@ -217,11 +217,6 @@ public class FactionsPlayerListener extends PlayerListener{
 				me.sendMessage("You can't claim more land! You need more power!");
 				me.enableAutoClaim(false);
 			}
-			else if (!Econ.canAfford(player.getName(), cost)) {
-				String costString = Econ.moneyString(cost);
-				me.sendMessage("Claiming this land will cost "+costString+", which you can't currently afford.");
-				me.enableAutoClaim(false);
-			}
 			else
 				me.attemptClaim(false);
 		}
