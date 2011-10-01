@@ -27,6 +27,7 @@ import com.massivecraft.factions.listeners.FactionsBlockListener;
 import com.massivecraft.factions.listeners.FactionsChatEarlyListener;
 import com.massivecraft.factions.listeners.FactionsEntityListener;
 import com.massivecraft.factions.listeners.FactionsPlayerListener;
+import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.util.JarLoader;
 import com.massivecraft.factions.util.MapFLocToStringSetTypeAdapter;
 import com.massivecraft.factions.util.MyLocationTypeAdapter;
@@ -285,7 +286,7 @@ public class Factions extends JavaPlugin {
 		FPlayer me = FPlayer.get(player);
 		if (me == null)
 			return false;
-		return me.isFactionChatting();
+		return me.getChatMode().isAtLeast(ChatMode.ALLIANCE);
 	}
 
 	// Is this chat message actually a Factions command, and thus should be left alone by other plugins?
