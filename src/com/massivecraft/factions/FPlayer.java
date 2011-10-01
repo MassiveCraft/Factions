@@ -84,6 +84,7 @@ public class FPlayer {
 		this.chatMode = ChatMode.PUBLIC;
 		this.role = Role.NORMAL;
 		this.title = "";
+		this.autoClaimEnabled = false;
 
 		if (playerName != null && !playerName.isEmpty()) {
 			SpoutFeatures.updateAppearances(this.getPlayer());

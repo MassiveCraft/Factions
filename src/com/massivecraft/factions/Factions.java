@@ -441,6 +441,10 @@ public class Factions extends JavaPlugin {
 		return hasPerm(sender, "factions.peacefulExplosionToggle");
 	}
 	
+	public static boolean hasPermViewAnyFactionBalance(CommandSender sender) {
+		return hasPerm(sender, "factions.viewAnyFactionBalance");
+	}
+	
 	public static boolean isCommandDisabled(CommandSender sender, String command) {
 		return (hasPerm(sender, "factions.commandDisable."+command) && !hasPerm(sender, "factions.commandDisable.none"));
 	}
