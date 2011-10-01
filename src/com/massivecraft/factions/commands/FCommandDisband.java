@@ -62,9 +62,9 @@ public class FCommandDisband extends FBaseCommand {
 		// Inform all players
 		for (FPlayer fplayer : FPlayer.getAllOnline()) {
 			if (fplayer.getFaction() == faction) {
-				fplayer.sendMessage(me.getNameAndRelevant(fplayer)+Conf.colorSystem+" disbanded your faction.");
+				fplayer.sendMessage((senderIsConsole ? "A server admin" : me.getNameAndRelevant(fplayer))+Conf.colorSystem+" disbanded your faction.");
 			} else {
-				fplayer.sendMessage(me.getNameAndRelevant(fplayer)+Conf.colorSystem+" disbanded the faction "+faction.getTag(fplayer)+".");
+				fplayer.sendMessage((senderIsConsole ? "A server admin" : me.getNameAndRelevant(fplayer))+Conf.colorSystem+" disbanded the faction "+faction.getTag(fplayer)+".");
 			}
 		}
 		Faction.delete( faction.getId() );

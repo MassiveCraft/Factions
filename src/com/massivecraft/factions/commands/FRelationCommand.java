@@ -38,8 +38,8 @@ public class FRelationCommand extends FBaseCommand {
 			return;
 		}
 		
-		if (otherFaction.getId() == 0) {
-			sendMessage("Nope! You can't :) The default faction is not a real faction.");
+		if (!otherFaction.isNormal()) {
+			sendMessage("Nope! You can't :) You can only ally with player factions.");
 			return;
 		}
 		

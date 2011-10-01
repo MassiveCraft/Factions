@@ -27,6 +27,7 @@ public class FBaseCommand {
 	
 	public CommandSender sender;
 	public boolean senderMustBePlayer;
+	public boolean senderIsConsole;
 	public Player player;
 	public FPlayer me;
 	
@@ -40,6 +41,7 @@ public class FBaseCommand {
 		optionalParameters = new ArrayList<String>();
 		
 		senderMustBePlayer = true;
+		senderIsConsole = false;
 		
 		helpNameAndParams = "fail!";
 		helpDescription = "no description";
@@ -60,6 +62,10 @@ public class FBaseCommand {
 		if (sender instanceof Player) {
 			this.player = (Player)sender;
 			this.me = FPlayer.get(this.player);
+			senderIsConsole = false;
+		}
+		else {
+			senderIsConsole = true;
 		}
 		
 		perform();
@@ -80,7 +86,7 @@ public class FBaseCommand {
 	}
 	
 	public boolean validateCall() {
-		if ( this.senderMustBePlayer && ! (sender instanceof Player)) {
+		if ( this.senderMustBePlayer && senderIsConsole ) {
 			sendMessage("This command can only be used by ingame players.");
 			return false;
 		}
@@ -202,7 +208,7 @@ public class FBaseCommand {
 			return fp.getFaction();
 		}
 		
-		if (defaultToMine && sender instanceof Player) {
+		if (defaultToMine && !senderIsConsole) {
 			return me.getFaction();
 		}
 		
