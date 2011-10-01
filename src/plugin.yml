@@ -1,5 +1,5 @@
 name: Factions
-version: 1.5.1
+version: 1.5.1_dev
 main: com.massivecraft.factions.Factions
 softdepend:
   - Permissions
@@ -27,6 +27,7 @@ permissions:
       factions.participate: true
       factions.create: true
       factions.viewAnyPower: true
+      factions.viewAnyFactionBalance: true
       factions.peacefulExplosionToggle: true
       factions.adminBypass: true
       factions.config: true
@@ -48,6 +49,9 @@ permissions:
     default: true
   factions.viewAnyPower:
     description: Allows the player to view the power level of anyone else
+    default: true
+  factions.viewAnyFactionBalance:
+    description: Allows the player to view the faction bank balance for any faction
     default: true
   factions.peacefulExplosionToggle:
     description: Allows peaceful faction admins and moderators to disable explosions in their territory
@@ -100,6 +104,9 @@ permissions:
   factions.commandDisable.autowar:
     description: autowar command disabled
     default: false
+  factions.commandDisable.balance:
+    description: balance/money command disabled
+    default: false
   factions.commandDisable.bypass:
     description: bypass command disabled
     default: false
@@ -120,6 +127,9 @@ permissions:
     default: false
   factions.commandDisable.deinv:
     description: deinvite command disabled
+    default: false
+  factions.commandDisable.deposit:
+    description: deposit command disabled
     default: false
   factions.commandDisable.desc:
     description: desc command disabled
@@ -169,6 +179,9 @@ permissions:
   factions.commandDisable.mod:
     description: mod command disabled
     default: false
+  factions.commandDisable.money:
+    description: balance/money command disabled
+    default: false
   factions.commandDisable.noboom:
     description: noboom command disabled
     default: false
@@ -184,8 +197,14 @@ permissions:
   factions.commandDisable.ownerlist:
     description: ownerlist command disabled
     default: false
+  factions.commandDisable.pay:
+    description: pay command disabled
+    default: false
   factions.commandDisable.peaceful:
     description: peaceful command disabled
+    default: false
+  factions.commandDisable.permanent:
+    description: permanent command disabled
     default: false
   factions.commandDisable.power:
     description: power command disabled
@@ -264,6 +283,9 @@ permissions:
     default: false
   factions.commandDisable.wardeclaimall:
     description: warunclaimall command disabled
+    default: false
+  factions.commandDisable.withdraw:
+    description: withdraw command disabled
     default: false
   factions.commandDisable.worldnoclaim:
     description: worldnoclaim command disabled

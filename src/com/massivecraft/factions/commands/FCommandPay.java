@@ -2,16 +2,18 @@ package com.massivecraft.factions.commands;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.Econ;
-import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.struct.Role;
+
 
 public class FCommandPay extends FBaseCommand {
 	
 	public FCommandPay() {
 		aliases.add("pay");
 		
-		helpDescription = "Pay another faction money from your faction's bank";
+		helpDescription = "Pay another faction from your bank";
 		requiredParameters.add("faction");
 		requiredParameters.add("amount");
 	}
@@ -46,13 +48,13 @@ public class FCommandPay extends FBaseCommand {
 		}
 		
 		if(them == null) {
-			sendMessage(parameters.get(0)+" could not be found.");
+			sendMessage("Faction "+parameters.get(0)+" could not be found.");
 			return;
 		}
-		
-		String amountString = Econ.moneyString(amount);
-		
+
 		if( amount > 0.0 ) {
+			String amountString = Econ.moneyString(amount);
+
 			if( amount > us.getMoney() ) {
 				amount = us.getMoney();
 			}
@@ -61,6 +63,7 @@ public class FCommandPay extends FBaseCommand {
 			them.addMoney(amount);
 			sendMessage("You have paid "+amountString+" from "+us.getTag()+"'s bank to "+them.getTag()+"'s bank.");
 			sendMessage(us.getTag()+" now has "+Econ.moneyString(us.getMoney()));
+			Factions.log(player.getName() + " paid "+amountString+" from "+us.getTag()+"'s bank to "+them.getTag()+"'s bank.");
 			
 			for (FPlayer fplayer : FPlayer.getAllOnline()) {
 				if (fplayer.getFaction() == us || fplayer.getFaction() == them) {

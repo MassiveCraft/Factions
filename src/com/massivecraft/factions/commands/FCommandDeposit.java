@@ -2,8 +2,10 @@ package com.massivecraft.factions.commands;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.Econ;
-import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.FPlayer;
+
 
 public class FCommandDeposit extends FBaseCommand {
 	
@@ -36,9 +38,9 @@ public class FCommandDeposit extends FBaseCommand {
 			}
 		}
 		
-		String amountString = Econ.moneyString(amount);
-		
 		if( amount > 0.0 ) {
+			String amountString = Econ.moneyString(amount);
+			
 			if( !Econ.deductMoney(me.getName(), amount ) ) {
 				sendMessage("You cannot afford to deposit that much.");
 			}
@@ -47,6 +49,7 @@ public class FCommandDeposit extends FBaseCommand {
 				faction.addMoney(amount);
 				sendMessage("You have deposited "+amountString+" into "+faction.getTag()+"'s bank.");
 				sendMessage(faction.getTag()+" now has "+Econ.moneyString(faction.getMoney()));
+				Factions.log(player.getName() + " deposited "+amountString+" into "+faction.getTag()+"'s bank.");
 				
 				for (FPlayer fplayer : FPlayer.getAllOnline()) {
 					if (fplayer.getFaction() == faction) {

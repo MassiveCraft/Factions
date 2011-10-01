@@ -70,7 +70,13 @@ public class FCommandDisband extends FBaseCommand {
 		}
 		
 		if (Conf.bankEnabled) {
-			Econ.addMoney(me.getName(), me.getFaction().getMoney() ); //Give all the faction's money to the disbander
+			double amount = faction.getMoney();
+			Econ.addMoney(me.getName(), amount ); //Give all the faction's money to the disbander
+			if (amount > 0.0) {
+				String amountString = Econ.moneyString(amount);
+				sendMessage("You have been given the disbanded faction's bank, totaling "+amountString+".");
+				Factions.log(player.getName() + " has been given bank holdings of "+amountString+" from disbanding "+faction.getTag()+".");
+			}
 		}		
 		
 		Faction.delete( faction.getId() );

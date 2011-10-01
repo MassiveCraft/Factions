@@ -4,6 +4,7 @@ import org.bukkit.event.Event;
 import org.bukkit.plugin.Plugin;
 
 import com.massivecraft.factions.listeners.FactionsServerListener;
+import com.massivecraft.factions.commands.FCommandHelp;
 
 import com.earth2me.essentials.api.Economy;
 import com.nijikokun.register.payment.Methods;
@@ -55,6 +56,7 @@ public class Econ {
 		else {
 			Factions.log("Un-hooked from Register.");
 		}
+		FCommandHelp.updateHelp();
 	}
 
 	public static void iConomySet(boolean enable) {
@@ -65,6 +67,7 @@ public class Econ {
 		else {
 			Factions.log("Un-hooked from iConomy.");
 		}
+		FCommandHelp.updateHelp();
 	}
 
 	public static void essentialsEcoSet(boolean enable) {
@@ -75,6 +78,7 @@ public class Econ {
 		else {
 			Factions.log("Un-hooked from EssentialsEco.");
 		}
+		FCommandHelp.updateHelp();
 	}
 
 	public static boolean registerHooked() {
