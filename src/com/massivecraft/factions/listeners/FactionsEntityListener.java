@@ -421,6 +421,7 @@ public class FactionsEntityListener extends EntityListener {
 		// quick check to see if all Enderman deny options are enabled; if so, no need to check location
 		if (   Conf.wildernessDenyEndermanBlocks
 			&& Conf.territoryDenyEndermanBlocks
+			&& Conf.territoryDenyEndermanBlocksWhenOffline
 			&& Conf.safeZoneDenyEndermanBlocks
 			&& Conf.warZoneDenyEndermanBlocks
 			) {
@@ -434,7 +435,7 @@ public class FactionsEntityListener extends EntityListener {
 			return Conf.wildernessDenyEndermanBlocks;
 		}
 		else if (claimFaction.isNormal()) {
-			return Conf.territoryDenyEndermanBlocks;
+			return claimFaction.hasPlayersOnline() ? Conf.territoryDenyEndermanBlocks : Conf.territoryDenyEndermanBlocksWhenOffline;
 		}
 		else if (claimFaction.isSafeZone()) {
 			return Conf.safeZoneDenyEndermanBlocks;

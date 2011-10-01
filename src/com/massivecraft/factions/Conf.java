@@ -130,6 +130,7 @@ public class Conf {
 	public static boolean territoryBlockTNT = false;
 	public static boolean territoryBlockTNTWhenOffline = false;
 	public static boolean territoryDenyEndermanBlocks = true;
+	public static boolean territoryDenyEndermanBlocksWhenOffline = true;
 
 	public static boolean safeZoneDenyBuild = true;
 	public static boolean safeZoneDenyUseage = true;
