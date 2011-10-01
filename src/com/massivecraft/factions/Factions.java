@@ -109,6 +109,7 @@ public class Factions extends JavaPlugin {
 		commands.add(new FCommandDescription());
 		commands.add(new FCommandDisband());
 		commands.add(new FCommandHome());
+		commands.add(new FCommandInfo());
 		commands.add(new FCommandInvite());
 		commands.add(new FCommandJoin());
 		commands.add(new FCommandKick());
