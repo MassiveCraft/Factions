@@ -624,11 +624,23 @@ public class FPlayer {
 		if (Econ.enabled() && !Conf.adminBypassPlayers.contains(this.playerName)) {
 			double cost = Econ.calculateClaimCost(ownedLand, otherFaction.isNormal());
 			String costString = Econ.moneyString(cost);
-			if (!Econ.deductMoney(this.playerName, cost)) {
-				sendMessage("Claiming this land will cost "+costString+", which you can't currently afford.");
-				return false;
+			
+			if(Conf.bankFactionPaysLandCosts && this.hasFaction()) {
+				Faction faction = this.getFaction();
+				
+				if(!faction.removeMoney(cost)) {
+					sendMessage("It costs "+costString+" to claim this land, which your faction can't currently afford.");
+					return false;
+				} else {
+					sendMessage(faction.getTag()+" has paid "+costString+" to claim some land.");
+				}
+			} else {
+				if (!Econ.deductMoney(this.playerName, cost)) {
+					sendMessage("Claiming this land will cost "+costString+", which you can't currently afford.");
+					return false;
+				}
+				sendMessage("You have paid "+costString+" to claim this land.");
 			}
-			sendMessage("You have paid "+costString+" to claim this land.");
 		}
 
 		// announce success

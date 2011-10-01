@@ -79,6 +79,13 @@ public class FCommandHelp extends FBaseCommand {
 		helpPages.add(pageLines);
 		
 		pageLines = new ArrayList<String>();
+		pageLines.add( new FCommandBalance().getUseageTemplate() );
+		pageLines.add( new FCommandDeposit().getUseageTemplate() );
+		pageLines.add( new FCommandWithdraw().getUseageTemplate() );
+		pageLines.add( new FCommandPay().getUseageTemplate() );
+		helpPages.add(pageLines);
+		
+		pageLines = new ArrayList<String>();
 		pageLines.add( new FCommandClaim().getUseageTemplate() );
 		pageLines.add( new FCommandAutoClaim().getUseageTemplate() );
 		pageLines.add( new FCommandUnclaim().getUseageTemplate() );

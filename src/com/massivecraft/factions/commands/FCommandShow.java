@@ -83,6 +83,11 @@ public class FCommandShow extends FBaseCommand {
 				String stringRefund = (refund > 0.0) ? (" ("+Econ.moneyString(refund)+" depreciated)") : "";
 				sendMessage(Conf.colorChrome+"Total land value: " + Conf.colorSystem + stringValue + stringRefund);
 			}
+			
+			//Show bank contents
+			if(Conf.bankEnabled) {
+				sendMessage(Conf.colorChrome+"Bank contains: " + Conf.colorSystem + Econ.moneyString(faction.getMoney()));
+			}
 		}
 
 		String listpart;
