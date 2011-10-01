@@ -38,6 +38,7 @@ permissions:
       factions.reload: true
       factions.saveall: true
       factions.setPeaceful: true
+      factions.setPermanent: true
       factions.commandDisable.none: true
   factions.participate:
     description: Allows the player to participate in a faction
@@ -80,6 +81,9 @@ permissions:
     default: op
   factions.setPeaceful:
     description: Can designate specific factions as "peaceful" (no PvP, no land stealing, etc.)
+    default: op
+  factions.setPermanent:
+    description: Can designate specific factions as permanent (not disbanded even with no members)
     default: op
   factions.commandDisable.none:
     description: no commands disabled (ignore all other commandDisable permissions)
