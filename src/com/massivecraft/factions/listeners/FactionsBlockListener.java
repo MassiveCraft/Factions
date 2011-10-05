@@ -35,7 +35,7 @@ public class FactionsBlockListener extends BlockListener {
 			return;
 		}
 
-		if ( ! this.playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock(), "build")) {
+		if ( ! this.playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock().getLocation(), "build", false)) {
 			event.setCancelled(true);
 		}
 	}
@@ -46,7 +46,7 @@ public class FactionsBlockListener extends BlockListener {
 			return;
 		}
 
-		if ( ! this.playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock(), "destroy")) {
+		if ( ! this.playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock().getLocation(), "destroy", false)) {
 			event.setCancelled(true);
 		}
 	}
@@ -57,7 +57,7 @@ public class FactionsBlockListener extends BlockListener {
 			return;
 		}
 
-		if (event.getInstaBreak() && ! this.playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock(), "destroy")) {
+		if (event.getInstaBreak() && ! this.playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock().getLocation(), "destroy", false)) {
 			event.setCancelled(true);
 		}
 	}
@@ -148,35 +148,41 @@ public class FactionsBlockListener extends BlockListener {
 		return true;
 	}
 
-	public boolean playerCanBuildDestroyBlock(Player player, Block block, String action) {
+	public static boolean playerCanBuildDestroyBlock(Player player, Location location, String action, boolean justCheck) {
 
 		if (Conf.adminBypassPlayers.contains(player.getName())) {
 			return true;
 		}
 
-		FLocation loc = new FLocation(block);
+		FLocation loc = new FLocation(location);
 		Faction otherFaction = Board.getFactionAt(loc);
 		FPlayer me = FPlayer.get(player);
 
 		if (otherFaction.isNone()) {
-			if (!Conf.wildernessDenyBuild || Factions.hasPermAdminBypass(player) || Conf.worldsNoWildernessProtection.contains(block.getWorld().getName())) {
+			if (!Conf.wildernessDenyBuild || Factions.hasPermAdminBypass(player) || Conf.worldsNoWildernessProtection.contains(location.getWorld().getName())) {
 				return true; // This is not faction territory. Use whatever you like here.
 			}
-			me.sendMessage("You can't "+action+" in the wilderness.");
+			if (!justCheck) {
+				me.sendMessage("You can't "+action+" in the wilderness.");
+			}
 			return false;
 		}
 		else if (otherFaction.isSafeZone()) {
 			if (!Conf.safeZoneDenyBuild || Factions.hasPermManageSafeZone(player)) {
 				return true;
 			}
-			me.sendMessage("You can't "+action+" in a safe zone.");
+			if (!justCheck) {
+				me.sendMessage("You can't "+action+" in a safe zone.");
+			}
 			return false;
 		}
 		else if (otherFaction.isWarZone()) {
 			if (!Conf.warZoneDenyBuild || Factions.hasPermManageWarZone(player)) {
 				return true;
 			}
-			me.sendMessage("You can't "+action+" in a war zone.");
+			if (!justCheck) {
+				me.sendMessage("You can't "+action+" in a war zone.");
+			}
 			return false;
 		}
 		
@@ -187,7 +193,7 @@ public class FactionsBlockListener extends BlockListener {
 		// Cancel and/or cause pain (depending on configuration) if we are not in our own territory
 		if (!rel.isMember()) {
 			boolean online = otherFaction.hasPlayersOnline();
-			boolean pain = rel.confPainBuild(online);
+			boolean pain = (!justCheck) && rel.confPainBuild(online);
 			boolean deny = rel.confDenyBuild(online);
 
 			//hurt the player for building/destroying?
@@ -201,20 +207,24 @@ public class FactionsBlockListener extends BlockListener {
 				}
 			}
 			if (deny) {
-				me.sendMessage("You can't "+action+" in the territory of "+otherFaction.getTag(myFaction));
+				if (!justCheck) {
+					me.sendMessage("You can't "+action+" in the territory of "+otherFaction.getTag(myFaction));
+				}
 				return false;
 			}
 		}
 		// Also cancel and/or cause pain if player doesn't have ownership rights for this claim
 		else if (rel.isMember() && ownershipFail && !Factions.hasPermOwnershipBypass(player)) {
-			if (Conf.ownedAreaPainBuild){
+			if (Conf.ownedAreaPainBuild && !justCheck){
 				player.damage(Conf.actionDeniedPainAmount);
 				if (!Conf.ownedAreaDenyBuild) {
 					me.sendMessage("You are hurt for "+action+" in this territory, it is owned by: "+myFaction.getOwnerListString(loc));
 				}
 			}
 			if (Conf.ownedAreaDenyBuild){
-				me.sendMessage("You can't "+action+" in this territory, it is owned by: "+myFaction.getOwnerListString(loc));
+				if (!justCheck) {
+					me.sendMessage("You can't "+action+" in this territory, it is owned by: "+myFaction.getOwnerListString(loc));
+				}
 				return false;
 			}
 		}
