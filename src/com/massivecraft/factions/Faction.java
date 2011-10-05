@@ -593,7 +593,12 @@ public class Faction {
 
 		return false;
 	}
-
+	
+	
+	//----------------------------------------------//
+	// Bank functions
+	//----------------------------------------------//
+	
 	public double getMoney() {
 		return this.money;
 	}

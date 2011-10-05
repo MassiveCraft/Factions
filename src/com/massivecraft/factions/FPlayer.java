@@ -51,6 +51,7 @@ public class FPlayer {
 	private transient boolean autoSafeZoneEnabled;
 	private transient boolean autoWarZoneEnabled;
 	private transient boolean loginPvpDisabled;
+	private transient boolean deleteMe;
 	private ChatMode chatMode;
 	
 	// -------------------------------------------- //
@@ -68,6 +69,7 @@ public class FPlayer {
 		this.autoSafeZoneEnabled = false;
 		this.autoWarZoneEnabled = false;
 		this.loginPvpDisabled = (Conf.noPVPDamageToOthersForXSecondsAfterLogin > 0) ? true : false;
+		this.deleteMe = false;
 
 		if (Conf.newPlayerStartingFactionID > 0 && Faction.exists(Conf.newPlayerStartingFactionID)) {
 			this.factionId = Conf.newPlayerStartingFactionID;
@@ -225,6 +227,10 @@ public class FPlayer {
 	
 	public void setLastStoodAt(FLocation flocation) {
 		this.lastStoodAt = flocation;
+	}
+
+	public void markForDeletion(boolean delete) {
+		deleteMe = delete;
 	}
 	
 	//----------------------------------------------//
@@ -720,9 +726,7 @@ public class FPlayer {
 	// -------------------------------------------- //
 	
 	public boolean shouldBeSaved() {
-//		return this.factionId != 0;
-		// we now need to track all players, so they don't get stuck back into a default faction if factionless; also to keep track of lost power and such
-		return true;
+		return !deleteMe;
 	}
 	
 	public static boolean save() {
@@ -797,6 +801,7 @@ public class FPlayer {
 		for (FPlayer fplayer : FPlayer.getAll()) {
 			if (now - fplayer.getLastLoginTime() > toleranceMillis) {
 				fplayer.leave(false);
+				fplayer.markForDeletion(true);
 			}
 		}
 	}
