@@ -25,12 +25,12 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 
 import com.massivecraft.factions.Board;
 import com.massivecraft.factions.Conf;
-import com.massivecraft.factions.Econ;
+import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
-import com.massivecraft.factions.SpoutFeatures;
+import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.util.TextUtil;
@@ -126,10 +126,8 @@ public class FactionsPlayerListener extends PlayerListener{
 	
 	@Override
 	public void onPlayerJoin(PlayerJoinEvent event) {
-		final Player player = event.getPlayer();
-
 		// Make sure that all online players do have a fplayer.
-		FPlayer me = FPlayer.get(player);
+		final FPlayer me = FPlayer.get(event.getPlayer());
 		
 		// Update the lastLoginTime for this fplayer
 		me.setLastLoginTime(System.currentTimeMillis());
@@ -138,12 +136,15 @@ public class FactionsPlayerListener extends PlayerListener{
 		FPlayer.autoLeaveOnInactivityRoutine();
 		FPlayer.autoLeaveOnInactivityRoutine();
 
+		SpoutFeatures.updateTerritoryDisplay(me);
+
 		// Appearance updates which are run when a player joins don't apply properly for other clients, so they need to be delayed slightly
 		Factions.instance.getServer().getScheduler().scheduleSyncDelayedTask(Factions.instance, new Runnable() {
 			public void run() {
-				SpoutFeatures.updateAppearances(player);
+				SpoutFeatures.updateAppearances(me.getPlayer());
+				SpoutFeatures.updateTerritoryDisplay(me);
 			}
-		});
+		}, 20);
 	}
 	
     @Override
@@ -155,6 +156,7 @@ public class FactionsPlayerListener extends PlayerListener{
 		if (myFaction != null) {
 			myFaction.memberLoggedOff();
 		}
+		SpoutFeatures.playerDisconnect(me);
 	}
 	
 	@Override
@@ -517,13 +519,15 @@ public class FactionsPlayerListener extends PlayerListener{
 			return;
 		}
 
+		FPlayer badGuy = FPlayer.get(event.getPlayer());
+		if (badGuy == null) {
+			return;
+		}
+
+		SpoutFeatures.playerDisconnect(badGuy);
+
 		// if player was banned (not just kicked), get rid of their stored info
 		if (event.getReason().equals("Banned by admin.")) {
-			FPlayer badGuy = FPlayer.get(event.getPlayer());
-			if (badGuy == null) {
-				return;
-			}
-
 			badGuy.leave(false);
 			badGuy.markForDeletion(true);
 		}

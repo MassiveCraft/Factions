@@ -5,8 +5,8 @@ import org.bukkit.event.server.ServerListener;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.event.server.PluginEnableEvent;
 
-import com.massivecraft.factions.Econ;
-import com.massivecraft.factions.SpoutFeatures;
+import com.massivecraft.factions.integration.Econ;
+import com.massivecraft.factions.integration.SpoutFeatures;
 
 
 public class FactionsServerListener extends ServerListener {

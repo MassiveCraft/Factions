@@ -3,7 +3,7 @@ package com.massivecraft.factions.commands;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.SpoutFeatures;
+import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.util.TextUtil;
 
 public class FCommandTitle extends FBaseCommand {

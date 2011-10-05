@@ -1,32 +1,33 @@
-package com.massivecraft.factions;
+package com.massivecraft.factions.integration;
 
+import com.massivecraft.factions.Board;
+import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.FLocation;
+import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.Factions;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
-import org.bukkit.plugin.Plugin;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 
+import org.getspout.spoutapi.gui.Color;
+import org.getspout.spoutapi.gui.GenericLabel;
 import org.getspout.spoutapi.player.AppearanceManager;
 import org.getspout.spoutapi.player.SpoutPlayer;
 import org.getspout.spoutapi.SpoutManager;
+import org.getspout.spoutapi.gui.WidgetAnchor;
 
 
 public class SpoutFeatures {
 	private transient static AppearanceManager spoutApp;
 	private transient static boolean spoutMe = false;
-
-	public static void setup(Factions factions) {
-		Plugin test = factions.getServer().getPluginManager().getPlugin("Spout");
-
-		if (test != null && test.isEnabled()) {
-			setAvailable(true, test.getDescription().getFullName());
-		}
-		else {
-			setAvailable(false, "");
-		}
-	}
+	private transient static Map<String, GenericLabel> territoryLabels = new HashMap<String, GenericLabel>();
 
 	// set integration availability
 	public static void setAvailable(boolean enable, String pluginName) {
@@ -47,7 +48,54 @@ public class SpoutFeatures {
 				|| Conf.spoutFactionTitlesOverNames
 				|| Conf.spoutFactionAdminCapes
 				|| Conf.spoutFactionModeratorCapes
+				|| Conf.spoutTerritoryDisplayPosition > 0
 				);
+	}
+
+
+	// update displayed current territory for specified player; returns false if unsuccessful
+	public static boolean updateTerritoryDisplay(FPlayer player) {
+		if (!spoutMe || Conf.spoutTerritoryDisplayPosition == 0) {
+			return false;
+		}
+
+		SpoutPlayer sPlayer = SpoutManager.getPlayer(player.getPlayer());
+		if (!sPlayer.isSpoutCraftEnabled()) {
+			return false;
+		}
+
+		GenericLabel label; 
+		if (territoryLabels.containsKey(player.getName())) {
+			label = territoryLabels.get(player.getName());
+		}
+		else {
+			label = new GenericLabel();
+			sPlayer.getMainScreen().attachWidget(Factions.instance, label);
+			switch (Conf.spoutTerritoryDisplayPosition) {
+				case 1: label.setAlign(WidgetAnchor.TOP_LEFT).setAnchor(WidgetAnchor.TOP_LEFT); break;
+				case 2: label.setAlign(WidgetAnchor.TOP_CENTER).setAnchor(WidgetAnchor.TOP_CENTER); break;
+				default: label.setAlign(WidgetAnchor.TOP_RIGHT).setAnchor(WidgetAnchor.TOP_RIGHT);
+			}
+			territoryLabels.put(player.getName(), label);
+		}
+
+		Faction factionHere = Board.getFactionAt(new FLocation(player));
+		String msg = factionHere.getTag();
+		if (factionHere.getDescription().length() > 0) {
+			msg += " - "+factionHere.getDescription();
+		}
+		label.setTextColor(getSpoutColor(player.getRelationColor(factionHere), 0));
+		label.setText(msg);
+		label.setDirty(true);
+		
+		return true;
+	}
+
+	public static void playerDisconnect(FPlayer player) {
+		if (!enabled()) {
+			return;
+		}
+		territoryLabels.remove(player.getName());
 	}
 
 
@@ -186,4 +234,28 @@ public class SpoutFeatures {
 		}
 	}
 
+	// method to convert a Bukkit ChatColor to a Spout Color
+	private static Color getSpoutColor(ChatColor inColor, int alpha) {
+		if (inColor == null) {
+			return new Color(191, 191, 191, alpha);
+		}
+		switch (inColor.getCode()) {
+			case 0x1:	return new Color(0, 0, 191, alpha);
+			case 0x2:	return new Color(0, 191, 0, alpha);
+			case 0x3:	return new Color(0, 191, 191, alpha);
+			case 0x4:	return new Color(191, 0, 0, alpha);
+			case 0x5:	return new Color(191, 0, 191, alpha);
+			case 0x6:	return new Color(191, 191, 0, alpha);
+			case 0x7:	return new Color(191, 191, 191, alpha);
+			case 0x8:	return new Color(64, 64, 64, alpha);
+			case 0x9:	return new Color(64, 64, 255, alpha);
+			case 0xA:	return new Color(64, 255, 64, alpha);
+			case 0xB:	return new Color(64, 255, 255, alpha);
+			case 0xC:	return new Color(255, 64, 64, alpha);
+			case 0xD:	return new Color(255, 64, 255, alpha);
+			case 0xE:	return new Color(255, 255, 64, alpha);
+			case 0xF:	return new Color(255, 255, 255, alpha);
+			default:	return new Color(0, 0, 0, alpha);
+		}
+	}
 }

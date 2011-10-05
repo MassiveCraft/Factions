@@ -1,4 +1,4 @@
-package com.massivecraft.factions;
+package com.massivecraft.factions.integration;
 
 import org.bukkit.event.Event;
 import org.bukkit.plugin.Plugin;
@@ -11,6 +11,8 @@ import com.nijikokun.register.payment.Methods;
 import com.nijikokun.register.payment.Method.MethodAccount;
 import com.iConomy.*;
 import com.iConomy.system.*;
+import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.Factions;
 
 
 public class Econ {

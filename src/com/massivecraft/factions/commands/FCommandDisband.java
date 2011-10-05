@@ -1,11 +1,11 @@
 package com.massivecraft.factions.commands;
 
 import com.massivecraft.factions.Conf;
-import com.massivecraft.factions.Econ;
+import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.SpoutFeatures;
+import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.struct.Role;
 
 

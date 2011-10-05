@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import org.bukkit.command.CommandSender;
 
 import com.massivecraft.factions.Conf;
-import com.massivecraft.factions.Econ;
+import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.util.TextUtil;
 
 

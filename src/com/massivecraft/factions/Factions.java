@@ -25,6 +25,9 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.massivecraft.factions.commands.*;
+import com.massivecraft.factions.integration.Econ;
+import com.massivecraft.factions.integration.SpoutFeatures;
+import com.massivecraft.factions.integration.Worldguard;
 import com.massivecraft.factions.listeners.FactionsBlockListener;
 import com.massivecraft.factions.listeners.FactionsChatEarlyListener;
 import com.massivecraft.factions.listeners.FactionsEntityListener;
@@ -37,10 +40,10 @@ import com.massivecraft.factions.util.MyLocationTypeAdapter;
 import com.nijiko.permissions.PermissionHandler;
 import com.nijikokun.bukkit.Permissions.Permissions;
 import com.earth2me.essentials.chat.EssentialsChat;
-import com.earth2me.essentials.chat.IEssentialsChatListener;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import com.massivecraft.factions.integration.EssentialsFeatures;
 
 /**
  * The data is saved to disk every 30min and on plugin disable.
@@ -155,7 +158,7 @@ public class Factions extends JavaPlugin {
 		
 		setupPermissions();
 		integrateEssentialsChat();
-		SpoutFeatures.setup(this);
+		setupSpout(this);
 		Econ.setup(this);
 		Econ.monitorPlugins();
 		
@@ -230,6 +233,14 @@ public class Factions extends JavaPlugin {
 		}
 	}
 
+	private void setupSpout(Factions factions) {
+		Plugin test = factions.getServer().getPluginManager().getPlugin("Spout");
+
+		if (test != null && test.isEnabled()) {
+			SpoutFeatures.setAvailable(true, test.getDescription().getFullName());
+		}
+	}
+
 	private void integrateEssentialsChat() {
 		if (essChat != null) {
 			return;
@@ -237,29 +248,14 @@ public class Factions extends JavaPlugin {
 
 		Plugin test = this.getServer().getPluginManager().getPlugin("EssentialsChat");
 
-		if (test != null) {
-			try {
-				essChat = (EssentialsChat)test;
-				essChat.addEssentialsChatListener("Factions", new IEssentialsChatListener() {
-					public boolean shouldHandleThisChat(PlayerChatEvent event)
-					{
-						return shouldLetFactionsHandleThisChat(event);
-					}
-					public String modifyMessage(PlayerChatEvent event, Player target, String message)
-					{
-						return message.replace("{FACTION}", getPlayerFactionTagRelation(event.getPlayer(), target)).replace("{FACTION_TITLE}", getPlayerTitle(event.getPlayer()));
-					}
-				});
-				Factions.log("Found and will integrate chat with "+test.getDescription().getFullName());
-			}
-			catch (NoSuchMethodError ex) {
-				essChat = null;
-			}
+		if (test != null && test.isEnabled()) {
+			essChat = (EssentialsChat)test;
+			EssentialsFeatures.integrateChat(essChat);
 		}
 	}
 	private void unhookEssentialsChat() {
 		if (essChat != null) {
-			essChat.removeEssentialsChatListener("Factions");
+			EssentialsFeatures.unhookChat();
 		}
 	}
 

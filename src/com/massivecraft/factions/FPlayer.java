@@ -11,6 +11,9 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import com.google.gson.reflect.TypeToken;
+import com.massivecraft.factions.integration.Econ;
+import com.massivecraft.factions.integration.SpoutFeatures;
+import com.massivecraft.factions.integration.Worldguard;
 import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
@@ -471,6 +474,9 @@ public class FPlayer {
 	}
 
 	public void sendFactionHereMessage() {
+		if (SpoutFeatures.updateTerritoryDisplay(this)) {
+			return;
+		}
 		Faction factionHere = Board.getFactionAt(new FLocation(this));
 		String msg = Conf.colorSystem+" ~ "+factionHere.getTag(this);
 		if (factionHere.getDescription().length() > 0) {

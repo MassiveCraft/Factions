@@ -1,5 +1,6 @@
-package com.massivecraft.factions;
+package com.massivecraft.factions.integration;
 
+import com.massivecraft.factions.Factions;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;

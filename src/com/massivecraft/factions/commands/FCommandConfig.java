@@ -13,7 +13,7 @@ import org.bukkit.entity.Player;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.Factions;
-import com.massivecraft.factions.SpoutFeatures;
+import com.massivecraft.factions.integration.SpoutFeatures;
 
 public class FCommandConfig extends FBaseCommand {
 

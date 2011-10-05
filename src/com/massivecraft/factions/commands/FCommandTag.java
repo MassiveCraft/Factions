@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.SpoutFeatures;
+import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.TextUtil;
 
