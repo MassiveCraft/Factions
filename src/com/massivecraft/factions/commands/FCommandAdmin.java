@@ -5,7 +5,7 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.struct.Role;
 
-public class FCommandAdmin extends FBaseCommand {
+public class FCommandAdmin extends FCommand {
 	
 	public FCommandAdmin() {
 		aliases.add("admin");

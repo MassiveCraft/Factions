@@ -5,7 +5,7 @@ import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Role;
 
-public class FCommandSethome extends FBaseCommand {
+public class FCommandSethome extends FCommand {
 	
 	public FCommandSethome() {
 		aliases.add("sethome");
@@ -38,7 +38,7 @@ public class FCommandSethome extends FBaseCommand {
 		Faction myFaction = me.getFaction();
 		
 		if (parameters.size() > 0) {
-			if (!P.hasPermAdminBypass(player)) {
+			if (!P.hasPermAdminBypass(me)) {
 				me.sendMessage("You cannot set the home of another faction without adminBypass permission.");
 				return;
 			}
@@ -51,7 +51,7 @@ public class FCommandSethome extends FBaseCommand {
 			}
 		}
 		
-		if (Conf.homesMustBeInClaimedTerritory && !me.isInOwnTerritory() && !P.hasPermAdminBypass(player)) {
+		if (Conf.homesMustBeInClaimedTerritory && !me.isInOwnTerritory() && !P.hasPermAdminBypass(me)) {
 			me.sendMessage("Sorry, your faction home can only be set inside your own claimed territory.");
 			return;
 		}
@@ -61,7 +61,7 @@ public class FCommandSethome extends FBaseCommand {
 			return;
 		}
 
-		myFaction.setHome(player.getLocation());
+		myFaction.setHome(me.getLocation());
 		
 		myFaction.sendMessage(me.getNameAndRelevant(myFaction)+Conf.colorSystem+" set the home for your faction. You can now use:");
 		myFaction.sendMessage(new FCommandHome().getUseageTemplate());

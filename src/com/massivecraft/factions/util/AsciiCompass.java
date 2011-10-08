@@ -26,7 +26,7 @@ public class AsciiCompass {
 			return String.valueOf(this.asciiChar);
 		}
 		
-		public String toString(boolean isActive, ChatColor colorActive, ChatColor colorDefault) {
+		public String toString(boolean isActive, ChatColor colorActive, String colorDefault) {
 			return (isActive ? colorActive : colorDefault)+String.valueOf(this.asciiChar);
 		}
 	}
@@ -58,7 +58,7 @@ public class AsciiCompass {
 			return null;
     }
 	
-	public static ArrayList<String> getAsciiCompass(Point point, ChatColor colorActive, ChatColor colorDefault) {
+	public static ArrayList<String> getAsciiCompass(Point point, ChatColor colorActive, String colorDefault) {
 		ArrayList<String> ret = new ArrayList<String>();
 		String row;
 		
@@ -83,7 +83,7 @@ public class AsciiCompass {
 		return ret;
 	}
 	
-	public static ArrayList<String> getAsciiCompass(double inDegrees, ChatColor colorActive, ChatColor colorDefault) {
+	public static ArrayList<String> getAsciiCompass(double inDegrees, ChatColor colorActive, String colorDefault) {
 		return getAsciiCompass(getCompassPointForDirection(inDegrees), colorActive, colorDefault);
 	}
 }

@@ -11,7 +11,7 @@ import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.util.TextUtil;
 
 
-public class FCommandList extends FBaseCommand {
+public class FCommandList extends FCommand {
 	
 	public FCommandList() {
 		aliases.add("list");

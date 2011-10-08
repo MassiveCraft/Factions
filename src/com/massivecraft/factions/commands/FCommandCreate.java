@@ -11,7 +11,7 @@ import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Role;
 
 
-public class FCommandCreate extends FBaseCommand {
+public class FCommandCreate extends FCommand {
 	
 	public FCommandCreate() {
 		aliases.add("create");

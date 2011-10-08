@@ -5,7 +5,7 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.P;
 
-public class FCommandKick extends FBaseCommand {
+public class FCommandKick extends FCommand {
 	
 	public FCommandKick() {
 		aliases.add("kick");

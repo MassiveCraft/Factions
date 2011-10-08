@@ -4,7 +4,7 @@ import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.struct.Role;
 
-public class FCommandOpen extends FBaseCommand {
+public class FCommandOpen extends FCommand {
 	
 	public FCommandOpen() {
 		aliases.add("open");

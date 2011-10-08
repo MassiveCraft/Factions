@@ -10,7 +10,7 @@ import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 
 
-public class FRelationCommand extends FBaseCommand {
+public class FRelationCommand extends FCommand {
 	
 	public FRelationCommand() {
 		requiredParameters.add("faction tag");

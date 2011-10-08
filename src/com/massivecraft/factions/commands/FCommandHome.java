@@ -12,7 +12,7 @@ import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 
-public class FCommandHome extends FBaseCommand {
+public class FCommandHome extends FCommand {
 	
 	public FCommandHome() {
 		aliases.add("home");
@@ -49,12 +49,12 @@ public class FCommandHome extends FBaseCommand {
 			return;
 		}
 		
-		if (!Conf.homesTeleportAllowedFromDifferentWorld && player.getWorld().getUID() != myFaction.getHome().getWorld().getUID()) {
+		if (!Conf.homesTeleportAllowedFromDifferentWorld && me.getWorld().getUID() != myFaction.getHome().getWorld().getUID()) {
 			me.sendMessage("You cannot teleport to your faction home while in a different world.");
 			return;
 		}
 		
-		Faction faction = Board.getFactionAt(new FLocation(player.getLocation()));
+		Faction faction = Board.getFactionAt(new FLocation(me.getLocation()));
 		
 		// if player is not in a safe zone or their own faction territory, only allow teleport if no enemies are nearby
 		if (
@@ -62,15 +62,15 @@ public class FCommandHome extends FBaseCommand {
 			&& !faction.isSafeZone()
 			&& (!me.isInOwnTerritory() || (me.isInOwnTerritory() && !Conf.homesTeleportIgnoreEnemiesIfInOwnTerritory))
 			) {
-			Location loc = player.getLocation();
+			Location loc = me.getLocation();
 			World w = loc.getWorld();
 			double x = loc.getX();
 			double y = loc.getY();
 			double z = loc.getZ();
 
-			for (Player p : player.getServer().getOnlinePlayers())
+			for (Player p : me.getServer().getOnlinePlayers())
 			{
-				if (p == null || !p.isOnline() || p.isDead() || p == player || p.getWorld() != w)
+				if (p == null || !p.isOnline() || p.isDead() || p == me || p.getWorld() != w)
 					continue;
 
 				FPlayer fp = FPlayer.get(p);
@@ -97,7 +97,7 @@ public class FCommandHome extends FBaseCommand {
 			return;
 		}
 
-		player.teleport(myFaction.getHome());
+		me.teleport(myFaction.getHome());
 	}
 	
 }

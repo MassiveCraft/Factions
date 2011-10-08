@@ -7,7 +7,7 @@ import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Role;
 
-public class FCommandNoBoom extends FBaseCommand {
+public class FCommandNoBoom extends FCommand {
 
 	public FCommandNoBoom() {
 		aliases.add("noboom");

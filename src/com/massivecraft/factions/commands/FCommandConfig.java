@@ -15,7 +15,7 @@ import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.integration.SpoutFeatures;
 
-public class FCommandConfig extends FBaseCommand {
+public class FCommandConfig extends FCommand {
 
 	private static HashMap<String, String> properFieldNames = new HashMap<String, String>();
 
@@ -222,7 +222,7 @@ public class FCommandConfig extends FBaseCommand {
 		if (!success.isEmpty()) {
 			sendMessage(success);
 			if (sender instanceof Player) {
-				P.log(success + " Command was run by "+player.getName()+".");
+				P.log(success + " Command was run by "+me.getName()+".");
 			}
 		}
 		// save change to disk

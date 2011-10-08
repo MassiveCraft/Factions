@@ -33,30 +33,57 @@ import com.massivecraft.factions.zcore.persist.PlayerEntity;
  */
 
 public class FPlayer extends PlayerEntity
-{
-	
-	// -------------------------------------------- //
-	// Fields
-	// -------------------------------------------- //
-	
-	//private static transient TreeMap<String, FPlayer> instances = new TreeMap<String, FPlayer>(String.CASE_INSENSITIVE_ORDER);
-	//private static transient File file = new File(P.p.getDataFolder(), "players.json");
-	
+{	
 	//private transient String playerName;
 	private transient FLocation lastStoodAt = new FLocation(); // Where did this player stand the last time we checked?
 	
+	// FIELD: factionId
 	private String factionId;
+	public Faction getFaction() { return Factions.i.get(this.factionId); }
+	public String getFactionId() { return this.factionId; }
+	public boolean hasFaction() { return ! factionId.equals("0"); }
+	public void setFaction(Faction faction)
+	{
+		this.factionId = faction.getId();
+		SpoutFeatures.updateAppearances(this.getPlayer());
+	}
+	
+	// FIELD: role
 	private Role role;
+	public Role getRole() { return this.role; }
+	public void setRole(Role role) { this.role = role; SpoutFeatures.updateAppearances(this.getPlayer()); }
+	
+	// FIELD: title
 	private String title;
+	
+	// FIELD: power
 	private double power;
+	
+	// FIELD: lastPowerUpdateTime
 	private long lastPowerUpdateTime;
+	
+	// FIELD: lastLoginTime
 	private long lastLoginTime;
+	
+	// FIELD: mapAutoUpdating
 	private transient boolean mapAutoUpdating;
+	
+	// FIELD: autoClaimEnabled
 	private transient boolean autoClaimEnabled;
+	
+	// FIELD: autoSafeZoneEnabled
 	private transient boolean autoSafeZoneEnabled;
+	
+	// FIELD: autoWarZoneEnabled
 	private transient boolean autoWarZoneEnabled;
+	
+	// FIELD: loginPvpDisabled
 	private transient boolean loginPvpDisabled;
+	
+	// FIELD: deleteMe
 	private transient boolean deleteMe;
+	
+	// FIELD: chatMode
 	private ChatMode chatMode;
 	
 	// -------------------------------------------- //
@@ -105,37 +132,10 @@ public class FPlayer extends PlayerEntity
 	// Getters And Setters
 	// -------------------------------------------- //
 	
-	public Faction getFaction()
-	{
-		return Faction.get(factionId);
-	}
 	
-	public String getFactionId()
-	{
-		return this.factionId;
-	}
 	
-	public void setFaction(Faction faction)
-	{
-		this.factionId = faction.getId();
-		SpoutFeatures.updateAppearances(this.getPlayer());
-	}
 	
-	public boolean hasFaction()
-	{
-		return ! factionId.equals("0");
-	}
 	
-	public Role getRole()
-	{
-		return this.role;
-	}
-	
-	public void setRole(Role role)
-	{
-		this.role = role;
-		SpoutFeatures.updateAppearances(this.getPlayer());
-	}
 	
 	public ChatMode getChatMode()
 	{
@@ -513,7 +513,7 @@ public class FPlayer extends PlayerEntity
 	
 	public boolean isInOthersTerritory()
 	{
-		int idHere = Board.getIdAt(new FLocation(this));
+		String idHere = Board.getIdAt(new FLocation(this));
 		return idHere > 0 && idHere != this.factionId;
 	}
 

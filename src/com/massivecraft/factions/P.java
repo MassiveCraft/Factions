@@ -93,7 +93,7 @@ public class P extends MPlugin
 			Worldguard.init(this);			
 		}
 		
-		Type mapFLocToStringSetType = new TypeToken<Map<FLocation, Set<String>>>(){}.getType();
+		//Type mapFLocToStringSetType = new TypeToken<Map<FLocation, Set<String>>>(){}.getType();
 		
 		// Add the commands
 		commands.add(new FCommandHelp());
@@ -383,7 +383,7 @@ public class P extends MPlugin
 	// -------------------------------------------- //
 	// Test rights
 	// -------------------------------------------- //
-	
+	/*
 	public static boolean hasPermParticipate(CommandSender sender) {
 		return hasPerm(sender, "factions.participate");
 	}
@@ -460,7 +460,7 @@ public class P extends MPlugin
 		Player player = (Player)sender;
 		return P.Permissions.has(player, permNode); 
 	}
-	
+	*/
 	// -------------------------------------------- //
 	// Commands
 	// -------------------------------------------- //
@@ -496,6 +496,7 @@ public class P extends MPlugin
 		sender.sendMessage(Conf.colorSystem+"Unknown faction command \""+commandName+"\". Try "+Conf.colorCommand+"/"+this.getBaseCommand()+" help");
 	}
 	*/
+	
 	// -------------------------------------------- //
 	// Save all
 	// -------------------------------------------- //

@@ -6,7 +6,7 @@ import com.massivecraft.factions.Board;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.P;
 
-public class FCommandSafeunclaimall extends FBaseCommand {
+public class FCommandSafeunclaimall extends FCommand {
 	
 	public FCommandSafeunclaimall() {
 		aliases.add("safeunclaimall");

@@ -18,6 +18,7 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.P;
+import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 
 
@@ -185,7 +186,7 @@ public class FactionsBlockListener extends BlockListener
 
 		if (otherFaction.isNone())
 		{
-			if (!Conf.wildernessDenyBuild || P.hasPermAdminBypass(player) || Conf.worldsNoWildernessProtection.contains(location.getWorld().getName()))
+			if (!Conf.wildernessDenyBuild || Permission.ADMIN_BYPASS.has(player) || Conf.worldsNoWildernessProtection.contains(location.getWorld().getName()))
 			{
 				return true; // This is not faction territory. Use whatever you like here.
 			}
@@ -197,7 +198,7 @@ public class FactionsBlockListener extends BlockListener
 		}
 		else if (otherFaction.isSafeZone())
 		{
-			if (!Conf.safeZoneDenyBuild || P.hasPermManageSafeZone(player))
+			if (!Conf.safeZoneDenyBuild || Permission.MANAGE_SAFE_ZONE.has(player))
 			{
 				return true;
 			}
@@ -208,7 +209,7 @@ public class FactionsBlockListener extends BlockListener
 		}
 		else if (otherFaction.isWarZone())
 		{
-			if (!Conf.warZoneDenyBuild || P.hasPermManageWarZone(player))
+			if (!Conf.warZoneDenyBuild || Permission.MANAGE_WAR_ZONE.has(player))
 			{
 				return true;
 			}
@@ -253,7 +254,7 @@ public class FactionsBlockListener extends BlockListener
 			}
 		}
 		// Also cancel and/or cause pain if player doesn't have ownership rights for this claim
-		else if (rel.isMember() && ownershipFail && !P.hasPermOwnershipBypass(player))
+		else if (rel.isMember() && ownershipFail && ! Permission.OWNERSHIP_BYPASS.has(player))
 		{
 			if (Conf.ownedAreaPainBuild && !justCheck)
 			{

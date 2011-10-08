@@ -7,7 +7,7 @@ import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.P;
 
-public class FCommandAutoSafeclaim extends FBaseCommand {
+public class FCommandAutoSafeclaim extends FCommand {
 
 	public FCommandAutoSafeclaim() {
 		aliases.add("autosafe");

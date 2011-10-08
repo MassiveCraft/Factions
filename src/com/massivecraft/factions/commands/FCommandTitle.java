@@ -6,7 +6,7 @@ import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.util.TextUtil;
 
-public class FCommandTitle extends FBaseCommand {
+public class FCommandTitle extends FCommand {
 	
 	public FCommandTitle() {
 		aliases.add("title");
@@ -54,7 +54,7 @@ public class FCommandTitle extends FBaseCommand {
 		myFaction.sendMessage(me.getNameAndRelevant(myFaction)+Conf.colorSystem+" changed a title: "+you.getNameAndRelevant(myFaction));
 
 		if (Conf.spoutFactionTitlesOverNames) {
-			SpoutFeatures.updateAppearances(player);
+			SpoutFeatures.updateAppearances(me);
 		}
 	}
 	

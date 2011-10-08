@@ -3,7 +3,7 @@ package com.massivecraft.factions.commands;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.struct.ChatMode;
 
-public class FCommandChat extends FBaseCommand {
+public class FCommandChat extends FCommand {
 	
 	public FCommandChat() {
 		aliases.add("chat");

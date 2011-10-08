@@ -13,7 +13,7 @@ import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.TextUtil;
 
 
-public class FCommandShow extends FBaseCommand {
+public class FCommandShow extends FCommand {
 	
 	public FCommandShow() {
 		aliases.add("show");

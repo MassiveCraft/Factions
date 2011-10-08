@@ -7,7 +7,7 @@ import com.massivecraft.factions.P;
 import com.massivecraft.factions.FPlayer;
 
 
-public class FCommandDeposit extends FBaseCommand {
+public class FCommandDeposit extends FCommand {
 	
 	public FCommandDeposit() {
 		aliases.add("deposit");
@@ -49,7 +49,7 @@ public class FCommandDeposit extends FBaseCommand {
 				faction.addMoney(amount);
 				sendMessage("You have deposited "+amountString+" into "+faction.getTag()+"'s bank.");
 				sendMessage(faction.getTag()+" now has "+Econ.moneyString(faction.getMoney()));
-				P.log(player.getName() + " deposited "+amountString+" into "+faction.getTag()+"'s bank.");
+				P.log(me.getName() + " deposited "+amountString+" into "+faction.getTag()+"'s bank.");
 				
 				for (FPlayer fplayer : FPlayer.getAllOnline()) {
 					if (fplayer.getFaction() == faction) {

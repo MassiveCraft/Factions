@@ -4,7 +4,7 @@ import org.bukkit.command.CommandSender;
 
 import com.massivecraft.factions.P;
 
-public class FCommandLock extends FBaseCommand {
+public class FCommandLock extends FCommand {
 	
 	public FCommandLock() {
 		aliases.add("lock");

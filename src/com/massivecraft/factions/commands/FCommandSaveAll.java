@@ -4,7 +4,7 @@ import org.bukkit.command.CommandSender;
 
 import com.massivecraft.factions.P;
 
-public class FCommandSaveAll extends FBaseCommand {
+public class FCommandSaveAll extends FCommand {
 	
 	public FCommandSaveAll() {
 		aliases.add("saveall");

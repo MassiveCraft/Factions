@@ -8,7 +8,7 @@ import com.massivecraft.factions.P;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.integration.SpoutFeatures;
 
-public class FCommandPeaceful extends FBaseCommand {
+public class FCommandPeaceful extends FCommand {
 	
 	public FCommandPeaceful() {
 		aliases.add("peaceful");

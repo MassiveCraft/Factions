@@ -9,7 +9,7 @@ import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.TextUtil;
 
 
-public class FCommandTag extends FBaseCommand {
+public class FCommandTag extends FCommand {
 	
 	public FCommandTag() {
 		aliases.add("tag");

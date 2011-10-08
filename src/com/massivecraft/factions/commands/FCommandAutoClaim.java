@@ -5,7 +5,7 @@ import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.struct.Role;
 
-public class FCommandAutoClaim extends FBaseCommand {
+public class FCommandAutoClaim extends FCommand {
 
 	public FCommandAutoClaim() {
 		aliases.add("autoclaim");

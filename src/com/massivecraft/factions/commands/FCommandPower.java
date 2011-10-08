@@ -8,7 +8,7 @@ import com.massivecraft.factions.P;
 import com.massivecraft.factions.FPlayer;
 
 
-public class FCommandPower extends FBaseCommand {
+public class FCommandPower extends FCommand {
 	
 	public FCommandPower() {
 		aliases.add("power");
@@ -30,7 +30,7 @@ public class FCommandPower extends FBaseCommand {
 	public void perform() {
 		FPlayer target;
 		if (parameters.size() > 0) {
-			if (!P.hasPermViewAnyPower(player)) {
+			if (!P.hasPermViewAnyPower(me)) {
 				me.sendMessage("You do not have the appropriate permission to view another player's power level.");
 				return;
 			}

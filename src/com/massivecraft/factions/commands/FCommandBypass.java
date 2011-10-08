@@ -6,7 +6,7 @@ import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.P;
 
 
-public class FCommandBypass extends FBaseCommand {
+public class FCommandBypass extends FCommand {
 	
 	public FCommandBypass() {
 		aliases.add("bypass");
@@ -21,14 +21,14 @@ public class FCommandBypass extends FBaseCommand {
 	
 	@Override
 	public void perform() {
-		if ( ! Conf.adminBypassPlayers.contains(player.getName())) {
-			Conf.adminBypassPlayers.add(player.getName());
+		if ( ! Conf.adminBypassPlayers.contains(me.getName())) {
+			Conf.adminBypassPlayers.add(me.getName());
 			me.sendMessage("You have enabled admin bypass mode. You will be able to build or destroy anywhere.");
-			P.log(player.getName() + " has ENABLED admin bypass mode.");
+			P.log(me.getName() + " has ENABLED admin bypass mode.");
 		} else {
-			Conf.adminBypassPlayers.remove(player.getName());
+			Conf.adminBypassPlayers.remove(me.getName());
 			me.sendMessage("You have disabled admin bypass mode.");
-			P.log(player.getName() + " DISABLED admin bypass mode.");
+			P.log(me.getName() + " DISABLED admin bypass mode.");
 		}
 	}
 }

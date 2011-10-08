@@ -7,7 +7,7 @@ import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.P;
 
-public class FCommandWarclaim extends FBaseCommand {
+public class FCommandWarclaim extends FCommand {
 	
 	public FCommandWarclaim() {
 		aliases.add("warclaim");

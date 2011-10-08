@@ -29,6 +29,7 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.P;
+import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.util.MiscUtil;
 
@@ -449,7 +450,7 @@ public class FactionsEntityListener extends EntityListener
 
 		if (otherFaction.isNone())
 		{
-			if (!Conf.wildernessDenyBuild || P.hasPermAdminBypass(player) || Conf.worldsNoWildernessProtection.contains(player.getWorld().getName()))
+			if (!Conf.wildernessDenyBuild || Permission.ADMIN_BYPASS.has(player) || Conf.worldsNoWildernessProtection.contains(player.getWorld().getName()))
 			{
 				return true; // This is not faction territory. Use whatever you like here.
 			}
@@ -459,7 +460,7 @@ public class FactionsEntityListener extends EntityListener
 
 		if (otherFaction.isSafeZone())
 		{
-			if (P.hasPermManageSafeZone(player) || !Conf.safeZoneDenyBuild)
+			if (Permission.MANAGE_SAFE_ZONE.has(player) || !Conf.safeZoneDenyBuild)
 			{
 				return true;
 			}
@@ -468,7 +469,7 @@ public class FactionsEntityListener extends EntityListener
 		}
 		else if (otherFaction.isWarZone())
 		{
-			if (P.hasPermManageWarZone(player) || !Conf.warZoneDenyBuild)
+			if (Permission.MANAGE_WAR_ZONE.has(player) || !Conf.warZoneDenyBuild)
 			{
 				return true;
 			}
@@ -487,7 +488,7 @@ public class FactionsEntityListener extends EntityListener
 			return false;
 		}
 		// Also cancel if player doesn't have ownership rights for this claim
-		else if (rel.isMember() && ownershipFail && !P.hasPermOwnershipBypass(player))
+		else if (rel.isMember() && ownershipFail && !Permission.OWNERSHIP_BYPASS.has(player))
 		{
 			me.sendMessage("You can't "+action+" paintings in this territory, it is owned by: "+otherFaction.getOwnerListString(loc));
 			return false;

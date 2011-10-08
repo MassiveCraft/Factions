@@ -8,7 +8,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
@@ -32,6 +31,7 @@ import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.integration.SpoutFeatures;
+import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.zcore.util.TextUtil;
@@ -264,7 +264,7 @@ public class FactionsPlayerListener extends PlayerListener
 		}
 		else if (me.autoSafeZoneEnabled())
 		{
-			if (!P.hasPermManageSafeZone((CommandSender)player))
+			if ( ! Permission.MANAGE_SAFE_ZONE.has(player))
 			{
 				me.enableAutoSafeZone(false);
 			}
@@ -281,7 +281,7 @@ public class FactionsPlayerListener extends PlayerListener
 		}
 		else if (me.autoWarZoneEnabled())
 		{
-			if (!P.hasPermManageWarZone((CommandSender)player))
+			if ( ! Permission.MANAGE_WAR_ZONE.has(player))
 			{
 				me.enableAutoWarZone(false);
 			}
@@ -358,7 +358,7 @@ public class FactionsPlayerListener extends PlayerListener
 
 		if (otherFaction.isNone())
 		{
-			if (!Conf.wildernessDenyUseage || P.hasPermAdminBypass(player) || Conf.worldsNoWildernessProtection.contains(location.getWorld().getName()))
+			if (!Conf.wildernessDenyUseage || Permission.ADMIN_BYPASS.has(player) || Conf.worldsNoWildernessProtection.contains(location.getWorld().getName()))
 			{
 				return true; // This is not faction territory. Use whatever you like here.
 			}
@@ -371,7 +371,7 @@ public class FactionsPlayerListener extends PlayerListener
 		}
 		else if (otherFaction.isSafeZone())
 		{
-			if (!Conf.safeZoneDenyUseage || P.hasPermManageSafeZone(player))
+			if (!Conf.safeZoneDenyUseage || Permission.MANAGE_SAFE_ZONE.has(player))
 			{
 				return true;
 			}
@@ -383,7 +383,7 @@ public class FactionsPlayerListener extends PlayerListener
 		}
 		else if (otherFaction.isWarZone())
 		{
-			if (!Conf.warZoneDenyUseage || P.hasPermManageWarZone(player))
+			if (!Conf.warZoneDenyUseage || Permission.MANAGE_WAR_ZONE.has(player))
 			{
 				return true;
 			}
@@ -408,7 +408,7 @@ public class FactionsPlayerListener extends PlayerListener
 			return false;
 		}
 		// Also cancel if player doesn't have ownership rights for this claim
-		else if (rel.isMember() && ownershipFail && !P.hasPermOwnershipBypass(player))
+		else if (rel.isMember() && ownershipFail && ! Permission.OWNERSHIP_BYPASS.has(player))
 		{
 			if (!justCheck)
 			{
@@ -469,7 +469,7 @@ public class FactionsPlayerListener extends PlayerListener
 			return false;
 		}
 		// Also cancel if player doesn't have ownership rights for this claim
-		else if (rel.isMember() && ownershipFail && !P.hasPermOwnershipBypass(player))
+		else if (rel.isMember() && ownershipFail && ! Permission.OWNERSHIP_BYPASS.has(player))
 		{
 			if (!justCheck)
 			{

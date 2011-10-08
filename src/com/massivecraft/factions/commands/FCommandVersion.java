@@ -5,7 +5,7 @@ import org.bukkit.command.CommandSender;
 import com.massivecraft.factions.P;
 
 
-public class FCommandVersion extends FBaseCommand {
+public class FCommandVersion extends FCommand {
 	
 	public FCommandVersion() {
 		aliases.add("version");

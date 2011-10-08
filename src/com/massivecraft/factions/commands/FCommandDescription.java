@@ -5,7 +5,7 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.TextUtil;
 
-public class FCommandDescription extends FBaseCommand {
+public class FCommandDescription extends FCommand {
 	
 	public FCommandDescription() {
 		aliases.add("desc");

@@ -7,7 +7,7 @@ import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.P;
 
-public class FCommandAutoWarclaim extends FBaseCommand {
+public class FCommandAutoWarclaim extends FCommand {
 
 	public FCommandAutoWarclaim() {
 		aliases.add("autowar");

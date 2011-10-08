@@ -2,7 +2,7 @@ package com.massivecraft.factions.commands;
 
 import org.bukkit.command.CommandSender;
 
-public class FCommandLeave extends FBaseCommand {
+public class FCommandLeave extends FCommand {
 	
 	public FCommandLeave() {
 		aliases.add("leave");

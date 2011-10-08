@@ -8,7 +8,7 @@ import com.massivecraft.factions.P;
 import com.massivecraft.factions.FPlayer;
 
 
-public class FCommandPermanent extends FBaseCommand {
+public class FCommandPermanent extends FCommand {
 	
 	public FCommandPermanent() {
 		aliases.add("permanent");

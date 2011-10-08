@@ -38,7 +38,7 @@ public abstract class MCommand<T extends MPlugin>
 	
 	// Information available on execution of the command
 	public CommandSender sender; // Will always be set
-	public Player player; // Will only be set when the sender is a player
+	public Player me; // Will only be set when the sender is a player
 	public List<String> args; // Will contain the arguments, or and empty list if there are none.
 	public List<MCommand<?>> commandChain; // The command chain used to execute this command
 	
@@ -68,11 +68,11 @@ public abstract class MCommand<T extends MPlugin>
 		this.sender = sender;
 		if (sender instanceof Player)
 		{
-			this.player = (Player)sender;
+			this.me = (Player)sender;
 		}
 		else
 		{
-			this.player = null;
+			this.me = null;
 		}
 		this.args = args;
 		this.commandChain = commandChain;
@@ -255,7 +255,7 @@ public abstract class MCommand<T extends MPlugin>
 	// Message Sending Helpers
 	// -------------------------------------------- //
 	
-	public void msg(String msg, boolean parseColors)
+	public void sendMessage(String msg, boolean parseColors)
 	{
 		if (parseColors)
 		{
@@ -265,22 +265,22 @@ public abstract class MCommand<T extends MPlugin>
 		sender.sendMessage(msg);
 	}
 	
-	public void msg(String msg)
+	public void sendMessage(String msg)
 	{
-		this.msg(msg, false);
+		this.sendMessage(msg, false);
 	}
 	
-	public void msg(List<String> msgs, boolean parseColors)
+	public void sendMessage(List<String> msgs, boolean parseColors)
 	{
 		for(String msg : msgs)
 		{
-			this.msg(msg, parseColors);
+			this.sendMessage(msg, parseColors);
 		}
 	}
 	
-	public void msg(List<String> msgs)
+	public void sendMessage(List<String> msgs)
 	{
-		msg(msgs, false);
+		sendMessage(msgs, false);
 	}
 	
 	// -------------------------------------------- //
@@ -377,7 +377,7 @@ public abstract class MCommand<T extends MPlugin>
 		if (msg && ret == null)
 		{
 			// TODO: Fix this injection risk!
-			this.msg(p.txt.tags("<b>The player \"<p>"+name+"<b>\" could not be found."));
+			this.sendMessage(p.txt.tags("<b>The player \"<p>"+name+"<b>\" could not be found."));
 		}
 		
 		return ret;
@@ -409,7 +409,7 @@ public abstract class MCommand<T extends MPlugin>
 		if (msg && ret == null)
 		{
 			// TODO: Fix this injection risk!
-			this.msg(p.txt.tags("<b>No player match found for \"<p>"+name+"<b>\"."));
+			this.sendMessage(p.txt.tags("<b>No player match found for \"<p>"+name+"<b>\"."));
 		}
 		
 		return ret;

@@ -5,7 +5,7 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.struct.Role;
 
-public class FCommandDeinvite extends FBaseCommand {
+public class FCommandDeinvite extends FCommand {
 	
 	public FCommandDeinvite() {
 		aliases.add("deinvite");

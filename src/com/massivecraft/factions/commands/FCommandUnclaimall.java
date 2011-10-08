@@ -6,7 +6,7 @@ import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.struct.Role;
 
-public class FCommandUnclaimall extends FBaseCommand {
+public class FCommandUnclaimall extends FCommand {
 	
 	public FCommandUnclaimall() {
 		aliases.add("unclaimall");
@@ -42,7 +42,7 @@ public class FCommandUnclaimall extends FBaseCommand {
 					faction.addMoney(refund);
 					moneyBack = " "+faction.getTag()+" received a refund of "+Econ.moneyString(refund)+".";
 				} else {
-					Econ.addMoney(player.getName(), refund);
+					Econ.addMoney(me.getName(), refund);
 					moneyBack = " They received a refund of "+Econ.moneyString(refund)+".";
 				}
 			}
@@ -56,7 +56,7 @@ public class FCommandUnclaimall extends FBaseCommand {
 					}
 					moneyBack = " It cost "+faction.getTag()+" "+Econ.moneyString(refund)+".";
 				} else {
-					if (!Econ.deductMoney(player.getName(), -refund)) {
+					if (!Econ.deductMoney(me.getName(), -refund)) {
 						sendMessage("Unclaiming all faction land will cost "+Econ.moneyString(-refund)+", which you can't currently afford.");
 						return;
 					}

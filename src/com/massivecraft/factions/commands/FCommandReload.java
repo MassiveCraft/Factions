@@ -8,7 +8,7 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.P;
 
-public class FCommandReload extends FBaseCommand {
+public class FCommandReload extends FCommand {
 	
 	public FCommandReload() {
 		aliases.add("reload");

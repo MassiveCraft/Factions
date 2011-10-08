@@ -3,7 +3,7 @@ package com.massivecraft.factions.commands;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.Faction;
 
-public class FCommandJoin extends FBaseCommand {
+public class FCommandJoin extends FCommand {
 	
 	public FCommandJoin() {
 		aliases.add("join");

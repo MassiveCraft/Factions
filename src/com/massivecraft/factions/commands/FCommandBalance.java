@@ -6,7 +6,7 @@ import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.P;
 
 
-public class FCommandBalance extends FBaseCommand {
+public class FCommandBalance extends FCommand {
 	
 	public FCommandBalance() {
 		aliases.add("balance");

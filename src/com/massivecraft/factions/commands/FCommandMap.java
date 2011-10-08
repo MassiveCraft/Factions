@@ -7,7 +7,7 @@ import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FLocation;
 
 
-public class FCommandMap extends FBaseCommand {
+public class FCommandMap extends FCommand {
 	
 	public FCommandMap() {
 		aliases.add("map");

@@ -1,6 +1,6 @@
 package com.massivecraft.factions.commands;
 
-public class FCommandClaim extends FBaseCommand {
+public class FCommandClaim extends FCommand {
 	
 	public FCommandClaim() {
 		aliases.add("claim");

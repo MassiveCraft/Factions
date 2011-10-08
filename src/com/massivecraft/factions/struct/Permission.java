@@ -1,9 +1,8 @@
 package com.massivecraft.factions.struct;
 
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
-import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.P;
 
 public enum Permission
 {
@@ -30,7 +29,17 @@ public enum Permission
 		this.node = node;
     }
 	
+	public boolean has(CommandSender sender, boolean informSenderIfNot)
+	{
+		return P.p.perm.has(sender, this.node, informSenderIfNot);
+	}
+	
 	public boolean has(CommandSender sender)
+	{
+		return has(sender, false);
+	}
+	
+	/*public boolean has(CommandSender sender)
 	{
 		//return CreativeGates.p.perm.has(sender, this.node);
 	}
@@ -49,7 +58,7 @@ public enum Permission
 		
 		Player player = (Player)sender;
 		return Factions.Permissions.has(player, permNode); 
-	}
+	}*/
 	
 	
 }

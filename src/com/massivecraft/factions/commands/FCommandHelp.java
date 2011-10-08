@@ -9,7 +9,7 @@ import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.util.TextUtil;
 
 
-public class FCommandHelp extends FBaseCommand {
+public class FCommandHelp extends FCommand {
 	
 	public FCommandHelp() {
 		aliases.add("help");

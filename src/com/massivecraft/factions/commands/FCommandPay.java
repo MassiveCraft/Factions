@@ -8,9 +8,11 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.struct.Role;
 
 
-public class FCommandPay extends FBaseCommand {
+public class FCommandPay extends FCommand
+{
 	
-	public FCommandPay() {
+	public FCommandPay()
+	{
 		aliases.add("pay");
 		
 		helpDescription = "Pay another faction from your bank";
@@ -63,7 +65,7 @@ public class FCommandPay extends FBaseCommand {
 			them.addMoney(amount);
 			sendMessage("You have paid "+amountString+" from "+us.getTag()+"'s bank to "+them.getTag()+"'s bank.");
 			sendMessage(us.getTag()+" now has "+Econ.moneyString(us.getMoney()));
-			P.log(player.getName() + " paid "+amountString+" from "+us.getTag()+"'s bank to "+them.getTag()+"'s bank.");
+			P.log(me.getName() + " paid "+amountString+" from "+us.getTag()+"'s bank to "+them.getTag()+"'s bank.");
 			
 			for (FPlayer fplayer : FPlayer.getAllOnline()) {
 				if (fplayer.getFaction() == us || fplayer.getFaction() == them) {

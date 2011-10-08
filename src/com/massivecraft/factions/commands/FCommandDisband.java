@@ -9,7 +9,7 @@ import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.struct.Role;
 
 
-public class FCommandDisband extends FBaseCommand {
+public class FCommandDisband extends FCommand {
 	
 	public FCommandDisband() {
 		aliases.add("disband");
@@ -75,7 +75,7 @@ public class FCommandDisband extends FBaseCommand {
 			if (amount > 0.0) {
 				String amountString = Econ.moneyString(amount);
 				sendMessage("You have been given the disbanded faction's bank, totaling "+amountString+".");
-				P.log(player.getName() + " has been given bank holdings of "+amountString+" from disbanding "+faction.getTag()+".");
+				P.log(me.getName() + " has been given bank holdings of "+amountString+" from disbanding "+faction.getTag()+".");
 			}
 		}		
 		
