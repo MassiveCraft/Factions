@@ -56,7 +56,7 @@ public class Factions extends JavaPlugin {
 	private final FactionsEntityListener entityListener = new FactionsEntityListener();
 	private final FactionsBlockListener blockListener = new FactionsBlockListener();
 	
-	private static PermissionHandler Permissions;
+	public static PermissionHandler Permissions;
 	private static EssentialsChat essChat;
 
 	// Commands
