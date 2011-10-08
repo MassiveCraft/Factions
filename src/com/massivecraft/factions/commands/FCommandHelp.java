@@ -59,12 +59,12 @@ public class FCommandHelp extends FBaseCommand {
 		pageLines.add( new FCommandHelp().getUseageTemplate() );
 		pageLines.add( new FCommandList().getUseageTemplate() );
 		pageLines.add( new FCommandShow().getUseageTemplate() );
+		pageLines.add( new FCommandInfo().getUseageTemplate() );
 		pageLines.add( new FCommandPower().getUseageTemplate() );
 		pageLines.add( new FCommandJoin().getUseageTemplate() );
 		pageLines.add( new FCommandLeave().getUseageTemplate() );
 		pageLines.add( new FCommandChat().getUseageTemplate() );
 		pageLines.add( new FCommandHome().getUseageTemplate() );
-		pageLines.add( "Learn how to create a faction on the next page." );
 		helpPages.add(pageLines);
 		
 		pageLines = new ArrayList<String>();
