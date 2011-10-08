@@ -11,6 +11,10 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import com.google.gson.reflect.TypeToken;
+import com.massivecraft.factions.integration.Econ;
+import com.massivecraft.factions.integration.SpoutFeatures;
+import com.massivecraft.factions.integration.Worldguard;
+import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.DiscUtil;
@@ -49,8 +53,9 @@ public class FPlayer {
 	private transient boolean autoClaimEnabled;
 	private transient boolean autoSafeZoneEnabled;
 	private transient boolean autoWarZoneEnabled;
-	private transient boolean loginPvpDisabled; 
-	private boolean factionChatting; 
+	private transient boolean loginPvpDisabled;
+	private transient boolean deleteMe;
+	private ChatMode chatMode;
 	
 	// -------------------------------------------- //
 	// Construct
@@ -67,6 +72,7 @@ public class FPlayer {
 		this.autoSafeZoneEnabled = false;
 		this.autoWarZoneEnabled = false;
 		this.loginPvpDisabled = (Conf.noPVPDamageToOthersForXSecondsAfterLogin > 0) ? true : false;
+		this.deleteMe = false;
 
 		if (Conf.newPlayerStartingFactionID > 0 && Faction.exists(Conf.newPlayerStartingFactionID)) {
 			this.factionId = Conf.newPlayerStartingFactionID;
@@ -80,9 +86,10 @@ public class FPlayer {
 		}
 		
 		this.factionId = 0; // The default neutral faction
-		this.factionChatting = false;
+		this.chatMode = ChatMode.PUBLIC;
 		this.role = Role.NORMAL;
 		this.title = "";
+		this.autoClaimEnabled = false;
 
 		if (playerName != null && !playerName.isEmpty()) {
 			SpoutFeatures.updateAppearances(this.getPlayer());
@@ -139,15 +146,15 @@ public class FPlayer {
 		SpoutFeatures.updateAppearances(this.getPlayer());
 	}
 	
-	public boolean isFactionChatting() {
-		if (this.factionId == 0) {
-			return false;
+	public ChatMode getChatMode() {
+		if(this.factionId == 0 ) {
+			return ChatMode.PUBLIC;
 		}
-		return factionChatting;
+		return chatMode;
 	}
 
-	public void setFactionChatting(boolean factionChatting) {
-		this.factionChatting = factionChatting;
+	public void setChatMode(ChatMode chatMode) {
+		this.chatMode = chatMode;
 	}
 	
 	public long getLastLoginTime() {
@@ -190,6 +197,7 @@ public class FPlayer {
 	}
 
 	public void setLastLoginTime(long lastLoginTime) {
+		losePowerFromBeingOffline();
 		this.lastLoginTime = lastLoginTime;
 		this.lastPowerUpdateTime = lastLoginTime;
 		if (Conf.noPVPDamageToOthersForXSecondsAfterLogin > 0) {
@@ -222,6 +230,10 @@ public class FPlayer {
 	
 	public void setLastStoodAt(FLocation flocation) {
 		this.lastStoodAt = flocation;
+	}
+
+	public void markForDeletion(boolean delete) {
+		deleteMe = delete;
 	}
 	
 	//----------------------------------------------//
@@ -404,8 +416,11 @@ public class FPlayer {
 	}
 	
 	protected void updatePower() {
-		if (this.isOffline() && !Conf.powerRegenOffline) {
-			return;
+		if (this.isOffline()) {
+			losePowerFromBeingOffline();
+			if (!Conf.powerRegenOffline) {
+				return;
+			}
 		}
 		long now = System.currentTimeMillis();
 		long millisPassed = now - this.lastPowerUpdateTime;
@@ -413,6 +428,20 @@ public class FPlayer {
 		
 		int millisPerMinute = 60*1000;
 		this.alterPower(millisPassed * Conf.powerPerMinute / millisPerMinute);
+	}
+
+	protected void losePowerFromBeingOffline() {
+		if (Conf.powerOfflineLossPerDay > 0.0 && this.power > Conf.powerOfflineLossLimit) {
+			long now = System.currentTimeMillis();
+			long millisPassed = now - this.lastPowerUpdateTime;
+			this.lastPowerUpdateTime = now;
+
+			double loss = millisPassed * Conf.powerOfflineLossPerDay / (24*60*60*1000);
+			if (this.power - loss < Conf.powerOfflineLossLimit) {
+				loss = this.power;
+			}
+			this.alterPower(-loss);
+		}
 	}
 	
 	public void onDeath() {
@@ -445,6 +474,9 @@ public class FPlayer {
 	}
 
 	public void sendFactionHereMessage() {
+		if (SpoutFeatures.updateTerritoryDisplay(this)) {
+			return;
+		}
 		Faction factionHere = Board.getFactionAt(new FLocation(this));
 		String msg = Conf.colorSystem+" ~ "+factionHere.getTag(this);
 		if (factionHere.getDescription().length() > 0) {
@@ -605,11 +637,23 @@ public class FPlayer {
 		if (Econ.enabled() && !Conf.adminBypassPlayers.contains(this.playerName)) {
 			double cost = Econ.calculateClaimCost(ownedLand, otherFaction.isNormal());
 			String costString = Econ.moneyString(cost);
-			if (!Econ.deductMoney(this.playerName, cost)) {
-				sendMessage("Claiming this land will cost "+costString+", which you can't currently afford.");
-				return false;
+			
+			if(Conf.bankFactionPaysLandCosts && this.hasFaction()) {
+				Faction faction = this.getFaction();
+				
+				if(!faction.removeMoney(cost)) {
+					sendMessage("It costs "+costString+" to claim this land, which your faction can't currently afford.");
+					return false;
+				} else {
+					sendMessage(faction.getTag()+" has paid "+costString+" to claim some land.");
+				}
+			} else {
+				if (!Econ.deductMoney(this.playerName, cost)) {
+					sendMessage("Claiming this land will cost "+costString+", which you can't currently afford.");
+					return false;
+				}
+				sendMessage("You have paid "+costString+" to claim this land.");
 			}
-			sendMessage("You have paid "+costString+" to claim this land.");
 		}
 
 		// announce success
@@ -688,9 +732,7 @@ public class FPlayer {
 	// -------------------------------------------- //
 	
 	public boolean shouldBeSaved() {
-//		return this.factionId != 0;
-		// we now need to track all players, so they don't get stuck back into a default faction if factionless; also to keep track of lost power and such
-		return true;
+		return !deleteMe;
 	}
 	
 	public static boolean save() {
@@ -765,6 +807,7 @@ public class FPlayer {
 		for (FPlayer fplayer : FPlayer.getAll()) {
 			if (now - fplayer.getLastLoginTime() > toleranceMillis) {
 				fplayer.leave(false);
+				fplayer.markForDeletion(true);
 			}
 		}
 	}

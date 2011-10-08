@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.bukkit.command.CommandSender;
 
 import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.util.TextUtil;
 
 
@@ -48,9 +49,9 @@ public class FCommandHelp extends FBaseCommand {
 	// Build the help pages
 	//----------------------------------------------//
 	
-	public static final ArrayList<ArrayList<String>> helpPages;
+	public static ArrayList<ArrayList<String>> helpPages;
 	
-	static {
+	public static void updateHelp() {
 		helpPages = new ArrayList<ArrayList<String>>();
 		ArrayList<String> pageLines;
 
@@ -77,6 +78,20 @@ public class FCommandHelp extends FBaseCommand {
 		pageLines.add( "And don't forget to set your home:" );
 		pageLines.add( new FCommandSethome().getUseageTemplate() );
 		helpPages.add(pageLines);
+		
+		if (Econ.enabled() && Conf.bankEnabled) {
+			pageLines = new ArrayList<String>();
+			pageLines.add( "" );
+			pageLines.add( "Your faction has a bank which is used to pay for certain" );
+			pageLines.add( "things, so it will need to have money deposited into it." );
+			pageLines.add( "" );
+			pageLines.add( new FCommandBalance().getUseageTemplate() );
+			pageLines.add( new FCommandDeposit().getUseageTemplate() );
+			pageLines.add( new FCommandWithdraw().getUseageTemplate() );
+			pageLines.add( new FCommandPay().getUseageTemplate() );
+			pageLines.add( "" );
+			helpPages.add(pageLines);
+		}
 		
 		pageLines = new ArrayList<String>();
 		pageLines.add( new FCommandClaim().getUseageTemplate() );
@@ -162,6 +177,9 @@ public class FCommandHelp extends FBaseCommand {
 		pageLines.add( new FCommandConfig().getUseageTemplate() );
 		helpPages.add(pageLines);
 	}
-	
+
+	static {
+		updateHelp();
+	}
 }
 

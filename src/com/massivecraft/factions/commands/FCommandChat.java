@@ -1,6 +1,7 @@
 package com.massivecraft.factions.commands;
 
 import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.struct.ChatMode;
 
 public class FCommandChat extends FBaseCommand {
 	
@@ -8,7 +9,9 @@ public class FCommandChat extends FBaseCommand {
 		aliases.add("chat");
 		aliases.add("c");
 		
-		helpDescription = "Switch faction only chat on and off";
+		optionalParameters.add("mode");
+		
+		helpDescription = "Change chat mode";
 	}
 	
 	@Override
@@ -21,15 +24,34 @@ public class FCommandChat extends FBaseCommand {
 			return;
 		}
 		
-		if ( ! me.isFactionChatting()) {
-			// Turn on
-			me.setFactionChatting(true);
-			sendMessage("Faction-only chat ENABLED.");
+		if( this.parameters.size() >= 1 ) {
+			String mode = this.parameters.get(0);
+			
+			if(mode.startsWith("p")) {
+				me.setChatMode(ChatMode.PUBLIC);
+				sendMessage("Public chat mode.");
+			} else if(mode.startsWith("a")) {
+				me.setChatMode(ChatMode.ALLIANCE);
+				sendMessage("Alliance only chat mode.");
+			} else if(mode.startsWith("f")) {
+				me.setChatMode(ChatMode.FACTION);
+				sendMessage("Faction only chat mode.");
+			} else {
+				sendMessage("Unrecognised chat mode. Please enter either 'a','f' or 'p'");
+			}
+			
 		} else {
-			// Turn off
-			me.setFactionChatting(false);
-			sendMessage("Faction-only chat DISABLED.");
+		
+			if(me.getChatMode() == ChatMode.PUBLIC) {
+				me.setChatMode(ChatMode.ALLIANCE);
+				sendMessage("Alliance only chat mode.");
+			} else if (me.getChatMode() == ChatMode.ALLIANCE ) {
+				me.setChatMode(ChatMode.FACTION);
+				sendMessage("Faction only chat mode.");
+			} else {
+				me.setChatMode(ChatMode.PUBLIC);
+				sendMessage("Public chat mode.");
+			}
 		}
 	}
-	
 }

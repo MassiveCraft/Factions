@@ -24,9 +24,11 @@ public class FCommandBypass extends FBaseCommand {
 		if ( ! Conf.adminBypassPlayers.contains(player.getName())) {
 			Conf.adminBypassPlayers.add(player.getName());
 			me.sendMessage("You have enabled admin bypass mode. You will be able to build or destroy anywhere.");
+			Factions.log(player.getName() + " has ENABLED admin bypass mode.");
 		} else {
 			Conf.adminBypassPlayers.remove(player.getName());
 			me.sendMessage("You have disabled admin bypass mode.");
+			Factions.log(player.getName() + " DISABLED admin bypass mode.");
 		}
 	}
 }

@@ -1,10 +1,11 @@
 package com.massivecraft.factions.commands;
 
 import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.SpoutFeatures;
+import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.struct.Role;
 
 
@@ -62,11 +63,22 @@ public class FCommandDisband extends FBaseCommand {
 		// Inform all players
 		for (FPlayer fplayer : FPlayer.getAllOnline()) {
 			if (fplayer.getFaction() == faction) {
-				fplayer.sendMessage(me.getNameAndRelevant(fplayer)+Conf.colorSystem+" disbanded your faction.");
+				fplayer.sendMessage((senderIsConsole ? "A server admin" : me.getNameAndRelevant(fplayer))+Conf.colorSystem+" disbanded your faction.");
 			} else {
-				fplayer.sendMessage(me.getNameAndRelevant(fplayer)+Conf.colorSystem+" disbanded the faction "+faction.getTag(fplayer)+".");
+				fplayer.sendMessage((senderIsConsole ? "A server admin" : me.getNameAndRelevant(fplayer))+Conf.colorSystem+" disbanded the faction "+faction.getTag(fplayer)+".");
 			}
 		}
+		
+		if (Conf.bankEnabled) {
+			double amount = faction.getMoney();
+			Econ.addMoney(me.getName(), amount ); //Give all the faction's money to the disbander
+			if (amount > 0.0) {
+				String amountString = Econ.moneyString(amount);
+				sendMessage("You have been given the disbanded faction's bank, totaling "+amountString+".");
+				Factions.log(player.getName() + " has been given bank holdings of "+amountString+" from disbanding "+faction.getTag()+".");
+			}
+		}		
+		
 		Faction.delete( faction.getId() );
 		SpoutFeatures.updateAppearances();
 

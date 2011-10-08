@@ -10,6 +10,8 @@ import org.bukkit.entity.Fireball;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.entity.EndermanPickupEvent;
+import org.bukkit.event.entity.EndermanPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
@@ -204,21 +206,23 @@ public class FactionsEntityListener extends EntityListener {
 			return true;
 		}
 		
-		if (!attacker.hasFaction() && Conf.disablePVPForFactionlessPlayers) {
+		Faction defendFaction = defender.getFaction();
+		Faction attackFaction = attacker.getFaction();
+		
+		if (attackFaction.isNone() && Conf.disablePVPForFactionlessPlayers) {
 			attacker.sendMessage("You can't hurt other players until you join a faction.");
 			return false;
 		}
-		else if (defLocFaction == attacker.getFaction() && Conf.enablePVPAgainstFactionlessInAttackersLand) {
-			// Allow PVP vs. Factionless in attacker's faction territory
-			return true;
+		else if (defendFaction.isNone()) {
+			if (defLocFaction == attackFaction && Conf.enablePVPAgainstFactionlessInAttackersLand) {
+				// Allow PVP vs. Factionless in attacker's faction territory
+				return true;
+			}
+			else if (Conf.disablePVPForFactionlessPlayers) {
+				attacker.sendMessage("You can't hurt players who are not currently in a faction.");
+				return false;
+			}
 		}
-		else if (!defender.hasFaction() && Conf.disablePVPForFactionlessPlayers) {
-			attacker.sendMessage("You can't hurt players who are not currently in a faction.");
-			return false;
-		}
-		
-		Faction defendFaction = defender.getFaction();
-		Faction attackFaction = attacker.getFaction();
 		
 		if (defendFaction.isPeaceful()) {
 			attacker.sendMessage("You can't hurt players who are in a peaceful faction.");
@@ -380,11 +384,66 @@ public class FactionsEntityListener extends EntityListener {
 			return false;
 		}
 		// Also cancel if player doesn't have ownership rights for this claim
-		else if (ownershipFail && (!rel.isMember() || !Factions.hasPermOwnershipBypass(player))) {
+		else if (rel.isMember() && ownershipFail && !Factions.hasPermOwnershipBypass(player)) {
 			me.sendMessage("You can't "+action+" paintings in this territory, it is owned by: "+otherFaction.getOwnerListString(loc));
 			return false;
 		}
 
 		return true;
+	}
+
+	@Override
+	public void onEndermanPickup(EndermanPickupEvent event) {
+		if (event.isCancelled()) {
+			return;
+		}
+
+		if (stopEndermanBlockManipulation(event.getBlock().getLocation())) {
+			event.setCancelled(true);
+		}
+	}
+
+	@Override
+	public void onEndermanPlace(EndermanPlaceEvent event) {
+		if (event.isCancelled()) {
+			return;
+		}
+
+		if (stopEndermanBlockManipulation(event.getLocation())) {
+			event.setCancelled(true);
+		}
+	}
+
+	private boolean stopEndermanBlockManipulation(Location loc) {
+		if (loc == null) {
+			return false;
+		}
+		// quick check to see if all Enderman deny options are enabled; if so, no need to check location
+		if (   Conf.wildernessDenyEndermanBlocks
+			&& Conf.territoryDenyEndermanBlocks
+			&& Conf.territoryDenyEndermanBlocksWhenOffline
+			&& Conf.safeZoneDenyEndermanBlocks
+			&& Conf.warZoneDenyEndermanBlocks
+			) {
+			return true;
+		}
+
+		FLocation fLoc = new FLocation(loc);
+		Faction claimFaction = Board.getFactionAt(fLoc);
+
+		if (claimFaction.isNone()) {
+			return Conf.wildernessDenyEndermanBlocks;
+		}
+		else if (claimFaction.isNormal()) {
+			return claimFaction.hasPlayersOnline() ? Conf.territoryDenyEndermanBlocks : Conf.territoryDenyEndermanBlocksWhenOffline;
+		}
+		else if (claimFaction.isSafeZone()) {
+			return Conf.safeZoneDenyEndermanBlocks;
+		}
+		else if (claimFaction.isWarZone()) {
+			return Conf.warZoneDenyEndermanBlocks;
+		}
+
+		return false;
 	}
 }

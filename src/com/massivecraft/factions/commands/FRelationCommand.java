@@ -5,7 +5,7 @@ import org.bukkit.ChatColor;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
-import com.massivecraft.factions.SpoutFeatures;
+import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 
@@ -38,8 +38,8 @@ public class FRelationCommand extends FBaseCommand {
 			return;
 		}
 		
-		if (otherFaction.getId() == 0) {
-			sendMessage("Nope! You can't :) The default faction is not a real faction.");
+		if (!otherFaction.isNormal()) {
+			sendMessage("Nope! You can't :) You can only ally with player factions.");
 			return;
 		}
 		

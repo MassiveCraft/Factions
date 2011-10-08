@@ -12,7 +12,9 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.bukkit.block.Block;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -23,10 +25,14 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.massivecraft.factions.commands.*;
+import com.massivecraft.factions.integration.Econ;
+import com.massivecraft.factions.integration.SpoutFeatures;
+import com.massivecraft.factions.integration.Worldguard;
 import com.massivecraft.factions.listeners.FactionsBlockListener;
 import com.massivecraft.factions.listeners.FactionsChatEarlyListener;
 import com.massivecraft.factions.listeners.FactionsEntityListener;
 import com.massivecraft.factions.listeners.FactionsPlayerListener;
+import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.util.JarLoader;
 import com.massivecraft.factions.util.MapFLocToStringSetTypeAdapter;
 import com.massivecraft.factions.util.MyLocationTypeAdapter;
@@ -34,10 +40,10 @@ import com.massivecraft.factions.util.MyLocationTypeAdapter;
 import com.nijiko.permissions.PermissionHandler;
 import com.nijikokun.bukkit.Permissions.Permissions;
 import com.earth2me.essentials.chat.EssentialsChat;
-import com.earth2me.essentials.chat.IEssentialsChatListener;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import com.massivecraft.factions.integration.EssentialsFeatures;
 
 /**
  * The data is saved to disk every 30min and on plugin disable.
@@ -97,12 +103,14 @@ public class Factions extends JavaPlugin {
 		commands.add(new FCommandAutoClaim());
 		commands.add(new FCommandAutoSafeclaim());
 		commands.add(new FCommandAutoWarclaim());
+		commands.add(new FCommandBalance());
 		commands.add(new FCommandBypass());
 		commands.add(new FCommandChat());
 		commands.add(new FCommandClaim());
 		commands.add(new FCommandConfig());
 		commands.add(new FCommandCreate());
 		commands.add(new FCommandDeinvite());
+		commands.add(new FCommandDeposit());
 		commands.add(new FCommandDescription());
 		commands.add(new FCommandDisband());
 		commands.add(new FCommandHome());
@@ -118,6 +126,7 @@ public class Factions extends JavaPlugin {
 		commands.add(new FCommandOpen());
 		commands.add(new FCommandOwner());
 		commands.add(new FCommandOwnerList());
+		commands.add(new FCommandPay());
 		commands.add(new FCommandPower());
 		commands.add(new FCommandPeaceful());
 		commands.add(new FCommandPermanent());
@@ -137,6 +146,7 @@ public class Factions extends JavaPlugin {
 		commands.add(new FCommandVersion());
 		commands.add(new FCommandWarclaim());
 		commands.add(new FCommandWarunclaimall());
+		commands.add(new FCommandWithdraw());
 		
 		// Ensure base folder exists!
 		this.getDataFolder().mkdirs();
@@ -148,7 +158,7 @@ public class Factions extends JavaPlugin {
 		
 		setupPermissions();
 		integrateEssentialsChat();
-		SpoutFeatures.setup(this);
+		setupSpout(this);
 		Econ.setup(this);
 		Econ.monitorPlugins();
 		
@@ -168,6 +178,9 @@ public class Factions extends JavaPlugin {
 		pm.registerEvent(Event.Type.PLAYER_RESPAWN, this.playerListener, Event.Priority.High, this);
 		pm.registerEvent(Event.Type.PLAYER_BUCKET_EMPTY, this.playerListener, Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.PLAYER_BUCKET_FILL, this.playerListener, Event.Priority.Normal, this);
+		pm.registerEvent(Event.Type.PLAYER_KICK, this.playerListener, Event.Priority.Normal, this);
+		pm.registerEvent(Event.Type.ENDERMAN_PICKUP, this.entityListener, Event.Priority.Normal, this);
+		pm.registerEvent(Event.Type.ENDERMAN_PLACE, this.entityListener, Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.ENTITY_DEATH, this.entityListener, Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.ENTITY_DAMAGE, this.entityListener, Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.ENTITY_EXPLODE, this.entityListener, Event.Priority.Normal, this);
@@ -220,6 +233,14 @@ public class Factions extends JavaPlugin {
 		}
 	}
 
+	private void setupSpout(Factions factions) {
+		Plugin test = factions.getServer().getPluginManager().getPlugin("Spout");
+
+		if (test != null && test.isEnabled()) {
+			SpoutFeatures.setAvailable(true, test.getDescription().getFullName());
+		}
+	}
+
 	private void integrateEssentialsChat() {
 		if (essChat != null) {
 			return;
@@ -227,29 +248,14 @@ public class Factions extends JavaPlugin {
 
 		Plugin test = this.getServer().getPluginManager().getPlugin("EssentialsChat");
 
-		if (test != null) {
-			try {
-				essChat = (EssentialsChat)test;
-				essChat.addEssentialsChatListener("Factions", new IEssentialsChatListener() {
-					public boolean shouldHandleThisChat(PlayerChatEvent event)
-					{
-						return shouldLetFactionsHandleThisChat(event);
-					}
-					public String modifyMessage(PlayerChatEvent event, Player target, String message)
-					{
-						return message.replace("{FACTION}", getPlayerFactionTagRelation(event.getPlayer(), target)).replace("{FACTION_TITLE}", getPlayerTitle(event.getPlayer()));
-					}
-				});
-				Factions.log("Found and will integrate chat with "+test.getDescription().getFullName());
-			}
-			catch (NoSuchMethodError ex) {
-				essChat = null;
-			}
+		if (test != null && test.isEnabled()) {
+			essChat = (EssentialsChat)test;
+			EssentialsFeatures.integrateChat(essChat);
 		}
 	}
 	private void unhookEssentialsChat() {
 		if (essChat != null) {
-			essChat.removeEssentialsChatListener("Factions");
+			EssentialsFeatures.unhookChat();
 		}
 	}
 
@@ -259,7 +265,7 @@ public class Factions extends JavaPlugin {
 
 	// This value will be updated whenever new hooks are added
 	public int hookSupportVersion() {
-		return 2;
+		return 3;
 	}
 
 	// If another plugin is handling insertion of chat tags, this should be used to notify Factions
@@ -283,7 +289,7 @@ public class Factions extends JavaPlugin {
 		FPlayer me = FPlayer.get(player);
 		if (me == null)
 			return false;
-		return me.isFactionChatting();
+		return me.getChatMode().isAtLeast(ChatMode.ALLIANCE);
 	}
 
 	// Is this chat message actually a Factions command, and thus should be left alone by other plugins?
@@ -370,6 +376,21 @@ public class Factions extends JavaPlugin {
 		return players;
 	}
 
+	// check if player is allowed to build/destroy in a particular location
+	public boolean isPlayerAllowedToBuildHere(Player player, Location location) {
+		return FactionsBlockListener.playerCanBuildDestroyBlock(player, location, "", true);
+	}
+
+	// check if player is allowed to interact with the specified block (doors/chests/whatever)
+	public boolean isPlayerAllowedToInteractWith(Player player, Block block) {
+		return FactionsPlayerListener.canPlayerUseBlock(player, block, true);
+	}
+
+	// check if player is allowed to use a specified item (flint&steel, buckets, etc) in a particular location
+	public boolean isPlayerAllowedToUseThisHere(Player player, Location location, Material material) {
+		return FactionsPlayerListener.playerCanUseItemHere(player, location, material, true);
+	}
+
 	// -------------------------------------------- //
 	// Test rights
 	// -------------------------------------------- //
@@ -432,6 +453,10 @@ public class Factions extends JavaPlugin {
 	
 	public static boolean hasPermPeacefulExplosionToggle(CommandSender sender) {
 		return hasPerm(sender, "factions.peacefulExplosionToggle");
+	}
+	
+	public static boolean hasPermViewAnyFactionBalance(CommandSender sender) {
+		return hasPerm(sender, "factions.viewAnyFactionBalance");
 	}
 	
 	public static boolean isCommandDisabled(CommandSender sender, String command) {

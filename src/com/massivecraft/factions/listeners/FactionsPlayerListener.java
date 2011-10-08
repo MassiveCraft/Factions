@@ -17,6 +17,7 @@ import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerListener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -24,12 +25,12 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 
 import com.massivecraft.factions.Board;
 import com.massivecraft.factions.Conf;
-import com.massivecraft.factions.Econ;
+import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
-import com.massivecraft.factions.SpoutFeatures;
+import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.util.TextUtil;
@@ -107,6 +108,8 @@ public class FactionsPlayerListener extends PlayerListener{
 					Factions.log(Level.SEVERE, "Critical error in chat message formatting! Complete format string: "+yourFormat);
 					Factions.log(Level.SEVERE, "First half of event.getFormat() string: "+formatStart);
 					Factions.log(Level.SEVERE, "Second half of event.getFormat() string: "+formatEnd);
+					Factions.log(Level.SEVERE, "NOTE: To fix this quickly, running this command should work: f config chatTagInsertIndex 0");
+					Factions.log(Level.SEVERE, "For a more proper fix, please read the chat configuration notes on the configuration page of the Factions user guide.");
 					ex.printStackTrace();
 					return;
 				}
@@ -123,10 +126,8 @@ public class FactionsPlayerListener extends PlayerListener{
 	
 	@Override
 	public void onPlayerJoin(PlayerJoinEvent event) {
-		final Player player = event.getPlayer();
-
 		// Make sure that all online players do have a fplayer.
-		FPlayer me = FPlayer.get(player);
+		final FPlayer me = FPlayer.get(event.getPlayer());
 		
 		// Update the lastLoginTime for this fplayer
 		me.setLastLoginTime(System.currentTimeMillis());
@@ -135,12 +136,15 @@ public class FactionsPlayerListener extends PlayerListener{
 		FPlayer.autoLeaveOnInactivityRoutine();
 		FPlayer.autoLeaveOnInactivityRoutine();
 
+		SpoutFeatures.updateTerritoryDisplay(me);
+
 		// Appearance updates which are run when a player joins don't apply properly for other clients, so they need to be delayed slightly
 		Factions.instance.getServer().getScheduler().scheduleSyncDelayedTask(Factions.instance, new Runnable() {
 			public void run() {
-				SpoutFeatures.updateAppearances(player);
+				SpoutFeatures.updateAppearances(me.getPlayer());
+				SpoutFeatures.updateTerritoryDisplay(me);
 			}
-		});
+		}, 20);
 	}
 	
     @Override
@@ -152,6 +156,7 @@ public class FactionsPlayerListener extends PlayerListener{
 		if (myFaction != null) {
 			myFaction.memberLoggedOff();
 		}
+		SpoutFeatures.playerDisconnect(me);
 	}
 	
 	@Override
@@ -215,11 +220,6 @@ public class FactionsPlayerListener extends PlayerListener{
 				me.sendMessage("You can't claim more land! You need more power!");
 				me.enableAutoClaim(false);
 			}
-			else if (!Econ.canAfford(player.getName(), cost)) {
-				String costString = Econ.moneyString(cost);
-				me.sendMessage("Claiming this land will cost "+costString+", which you can't currently afford.");
-				me.enableAutoClaim(false);
-			}
 			else
 				me.attemptClaim(false);
 		}
@@ -262,7 +262,7 @@ public class FactionsPlayerListener extends PlayerListener{
 			return;  // clicked in air, apparently
 		}
 
-		if ( ! canPlayerUseBlock(player, block)) {
+		if ( ! canPlayerUseBlock(player, block, false)) {
 			event.setCancelled(true);
 			return;
 		}
@@ -271,19 +271,19 @@ public class FactionsPlayerListener extends PlayerListener{
 			return;  // only interested on right-clicks for below
 		}
 
-		if ( ! this.playerCanUseItemHere(player, block, event.getMaterial())) {
+		if ( ! this.playerCanUseItemHere(player, block.getLocation(), event.getMaterial(), false)) {
 			event.setCancelled(true);
 			return;
 		}
 	}
 
-	public boolean playerCanUseItemHere(Player player, Block block, Material material) {
+	public static boolean playerCanUseItemHere(Player player, Location location, Material material, boolean justCheck) {
 
 		if (Conf.adminBypassPlayers.contains(player.getName())) {
 			return true;
 		}
 
-		FLocation loc = new FLocation(block);
+		FLocation loc = new FLocation(location);
 		Faction otherFaction = Board.getFactionAt(loc);
 
 		if (otherFaction.hasPlayersOnline()){
@@ -299,24 +299,30 @@ public class FactionsPlayerListener extends PlayerListener{
 		FPlayer me = FPlayer.get(player);
 
 		if (otherFaction.isNone()) {
-			if (!Conf.wildernessDenyUseage || Factions.hasPermAdminBypass(player) || Conf.worldsNoWildernessProtection.contains(block.getWorld().getName())) {
+			if (!Conf.wildernessDenyUseage || Factions.hasPermAdminBypass(player) || Conf.worldsNoWildernessProtection.contains(location.getWorld().getName())) {
 				return true; // This is not faction territory. Use whatever you like here.
 			}
-			me.sendMessage("You can't use "+TextUtil.getMaterialName(material)+" in the wilderness.");
+			if (!justCheck) {
+				me.sendMessage("You can't use "+TextUtil.getMaterialName(material)+" in the wilderness.");
+			}
 			return false;
 		}
 		else if (otherFaction.isSafeZone()) {
 			if (!Conf.safeZoneDenyUseage || Factions.hasPermManageSafeZone(player)) {
 				return true;
 			}
-			me.sendMessage("You can't use "+TextUtil.getMaterialName(material)+" in a safe zone.");
+			if (!justCheck) {
+				me.sendMessage("You can't use "+TextUtil.getMaterialName(material)+" in a safe zone.");
+			}
 			return false;
 		}
 		else if (otherFaction.isWarZone()) {
 			if (!Conf.warZoneDenyUseage || Factions.hasPermManageWarZone(player)) {
 				return true;
 			}
-			me.sendMessage("You can't use "+TextUtil.getMaterialName(material)+" in a war zone.");
+			if (!justCheck) {
+				me.sendMessage("You can't use "+TextUtil.getMaterialName(material)+" in a war zone.");
+			}
 			return false;
 		}
 		
@@ -326,19 +332,23 @@ public class FactionsPlayerListener extends PlayerListener{
 		
 		// Cancel if we are not in our own territory
 		if (!rel.isMember() && rel.confDenyUseage()) {
-			me.sendMessage("You can't use "+TextUtil.getMaterialName(material)+" in the territory of "+otherFaction.getTag(myFaction));
+			if (!justCheck) {
+				me.sendMessage("You can't use "+TextUtil.getMaterialName(material)+" in the territory of "+otherFaction.getTag(myFaction));
+			}
 			return false;
 		}
 		// Also cancel if player doesn't have ownership rights for this claim
-		else if (ownershipFail && (!rel.isMember() || !Factions.hasPermOwnershipBypass(player))) {
-			me.sendMessage("You can't use "+TextUtil.getMaterialName(material)+" in this territory, it is owned by: "+myFaction.getOwnerListString(loc));
+		else if (rel.isMember() && ownershipFail && !Factions.hasPermOwnershipBypass(player)) {
+			if (!justCheck) {
+				me.sendMessage("You can't use "+TextUtil.getMaterialName(material)+" in this territory, it is owned by: "+myFaction.getOwnerListString(loc));
+			}
 			return false;
 		}
 		
 		return true;
 	}
 
-	public boolean canPlayerUseBlock(Player player, Block block) {
+	public static boolean canPlayerUseBlock(Player player, Block block, boolean justCheck) {
 
 		if (Conf.adminBypassPlayers.contains(player.getName())) {
 			return true;
@@ -347,7 +357,12 @@ public class FactionsPlayerListener extends PlayerListener{
 		Material material = block.getType();
 		FLocation loc = new FLocation(block);
 		Faction otherFaction = Board.getFactionAt(loc);
-		
+
+		// no door/chest/whatever protection in wilderness, war zones, or safe zones
+		if (!otherFaction.isNormal()) {
+			return true;
+		}
+
 		// We only care about some material types.
 		if (otherFaction.hasPlayersOnline()){
 			if ( ! Conf.territoryProtectedMaterials.contains(material)) {
@@ -365,13 +380,17 @@ public class FactionsPlayerListener extends PlayerListener{
 		boolean ownershipFail = Conf.ownedAreasEnabled && Conf.ownedAreaProtectMaterials && !otherFaction.playerHasOwnershipRights(me, loc);
 		
 		// You may use any block unless it is another faction's territory...
-		if ((rel.isEnemy() && Conf.territoryEnemyProtectMaterials) || (rel.isAlly() && Conf.territoryAllyProtectMaterials)) {
-			me.sendMessage("You can't use "+TextUtil.getMaterialName(material)+" in the territory of "+otherFaction.getTag(myFaction));
+		if (rel.isNeutral() || (rel.isEnemy() && Conf.territoryEnemyProtectMaterials) || (rel.isAlly() && Conf.territoryAllyProtectMaterials)) {
+			if (!justCheck) {
+				me.sendMessage("You can't use "+TextUtil.getMaterialName(material)+" in the territory of "+otherFaction.getTag(myFaction));
+			}
 			return false;
 		}
 		// Also cancel if player doesn't have ownership rights for this claim
-		else if (ownershipFail && (!rel.isMember() || !Factions.hasPermOwnershipBypass(player))) {
-			me.sendMessage("You can't use "+TextUtil.getMaterialName(material)+" in this territory, it is owned by: "+myFaction.getOwnerListString(loc));
+		else if (rel.isMember() && ownershipFail && !Factions.hasPermOwnershipBypass(player)) {
+			if (!justCheck) {
+				me.sendMessage("You can't use "+TextUtil.getMaterialName(material)+" in this territory, it is owned by: "+myFaction.getOwnerListString(loc));
+			}
 			return false;
 		}
 
@@ -400,7 +419,7 @@ public class FactionsPlayerListener extends PlayerListener{
 		Block block = event.getBlockClicked();
 		Player player = event.getPlayer();
 
-		if ( ! this.playerCanUseItemHere(player, block, event.getBucket())) {
+		if ( ! this.playerCanUseItemHere(player, block.getLocation(), event.getBucket(), false)) {
 			event.setCancelled(true);
 			return;
 		}
@@ -414,7 +433,7 @@ public class FactionsPlayerListener extends PlayerListener{
 		Block block = event.getBlockClicked();
 		Player player = event.getPlayer();
 
-		if ( ! this.playerCanUseItemHere(player, block, event.getBucket())) {
+		if ( ! this.playerCanUseItemHere(player, block.getLocation(), event.getBucket(), false)) {
 			event.setCancelled(true);
 			return;
 		}
@@ -494,4 +513,23 @@ public class FactionsPlayerListener extends PlayerListener{
 		return false;
 	}
 
+	@Override
+	public void onPlayerKick(PlayerKickEvent event) {
+		if (event.isCancelled()) {
+			return;
+		}
+
+		FPlayer badGuy = FPlayer.get(event.getPlayer());
+		if (badGuy == null) {
+			return;
+		}
+
+		SpoutFeatures.playerDisconnect(badGuy);
+
+		// if player was banned (not just kicked), get rid of their stored info
+		if (event.getReason().equals("Banned by admin.")) {
+			badGuy.leave(false);
+			badGuy.markForDeletion(true);
+		}
+	}
 }

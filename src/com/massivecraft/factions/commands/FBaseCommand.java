@@ -9,7 +9,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.massivecraft.factions.Conf;
-import com.massivecraft.factions.Econ;
+import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
@@ -27,6 +27,7 @@ public class FBaseCommand {
 	
 	public CommandSender sender;
 	public boolean senderMustBePlayer;
+	public boolean senderIsConsole;
 	public Player player;
 	public FPlayer me;
 	
@@ -40,6 +41,7 @@ public class FBaseCommand {
 		optionalParameters = new ArrayList<String>();
 		
 		senderMustBePlayer = true;
+		senderIsConsole = false;
 		
 		helpNameAndParams = "fail!";
 		helpDescription = "no description";
@@ -60,6 +62,10 @@ public class FBaseCommand {
 		if (sender instanceof Player) {
 			this.player = (Player)sender;
 			this.me = FPlayer.get(this.player);
+			senderIsConsole = false;
+		}
+		else {
+			senderIsConsole = true;
 		}
 		
 		perform();
@@ -80,7 +86,7 @@ public class FBaseCommand {
 	}
 	
 	public boolean validateCall() {
-		if ( this.senderMustBePlayer && ! (sender instanceof Player)) {
+		if ( this.senderMustBePlayer && senderIsConsole ) {
 			sendMessage("This command can only be used by ingame players.");
 			return false;
 		}
@@ -202,7 +208,7 @@ public class FBaseCommand {
 			return fp.getFaction();
 		}
 		
-		if (defaultToMine && sender instanceof Player) {
+		if (defaultToMine && !senderIsConsole) {
 			return me.getFaction();
 		}
 		
@@ -227,7 +233,11 @@ public class FBaseCommand {
 		if (you.getRole().equals(Role.ADMIN)) {
 			i.sendMessage(Conf.colorSystem+"Only the faction admin can do that.");
 		} else if (i.getRole().equals(Role.MODERATOR)) {
-			i.sendMessage(Conf.colorSystem+"Moderators can't control each other...");
+			if ( i == you ) {
+				return true; //Moderators can control themselves
+			} else {
+				i.sendMessage(Conf.colorSystem+"Moderators can't control each other...");
+			}
 		} else {
 			i.sendMessage(Conf.colorSystem+"You must be a faction moderator to do that.");
 		}
@@ -243,19 +253,40 @@ public class FBaseCommand {
 
 		String desc = this.helpDescription.toLowerCase();
 
+		Faction faction = me.getFaction();
+		
 		// pay up
 		if (cost > 0.0) {
 			String costString = Econ.moneyString(cost);
-			if (!Econ.deductMoney(me.getName(), cost)) {
-				sendMessage("It costs "+costString+" to "+desc+", which you can't currently afford.");
-				return false;
+			if(Conf.bankFactionPaysCosts && me.hasFaction() ) {
+				if(!faction.removeMoney(cost)) {
+					sendMessage("It costs "+costString+" to "+desc+", which your faction can't currently afford.");
+					return false;
+				} else {
+					sendMessage(faction.getTag()+" has paid "+costString+" to "+desc+".");
+				}
+					
+			} else {
+				if (!Econ.deductMoney(me.getName(), cost)) {
+					sendMessage("It costs "+costString+" to "+desc+", which you can't currently afford.");
+					return false;
+				}
+				sendMessage("You have paid "+costString+" to "+desc+".");
 			}
-			sendMessage("You have paid "+costString+" to "+desc+".");
 		}
 		// wait... we pay you to use this command?
 		else {
+			
 			String costString = Econ.moneyString(-cost);
-			Econ.addMoney(me.getName(), -cost);
+			
+			if(Conf.bankFactionPaysCosts && me.hasFaction() ) {
+				faction.addMoney(-cost);
+				sendMessage(faction.getTag()+" has been paid "+costString+" to "+desc+".");
+			} else {
+				Econ.addMoney(me.getName(), -cost);
+			}
+			
+			
 			sendMessage("You have been paid "+costString+" to "+desc+".");
 		}
 		return true;

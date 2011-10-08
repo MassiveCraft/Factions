@@ -6,7 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.massivecraft.factions.Conf;
-import com.massivecraft.factions.Econ;
+import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.struct.Role;
@@ -82,6 +82,11 @@ public class FCommandShow extends FBaseCommand {
 				String stringValue = Econ.moneyString(value);
 				String stringRefund = (refund > 0.0) ? (" ("+Econ.moneyString(refund)+" depreciated)") : "";
 				sendMessage(Conf.colorChrome+"Total land value: " + Conf.colorSystem + stringValue + stringRefund);
+			}
+			
+			//Show bank contents
+			if(Conf.bankEnabled) {
+				sendMessage(Conf.colorChrome+"Bank contains: " + Conf.colorSystem + Econ.moneyString(faction.getMoney()));
 			}
 		}
 

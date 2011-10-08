@@ -28,6 +28,8 @@ public class Conf {
 	public static double powerPerMinute = 0.2; // Default health rate... it takes 5 min to heal one power
 	public static double powerPerDeath = 4.0; // A death makes you lose 4 power
 	public static boolean powerRegenOffline = false;  // does player power regenerate even while they're offline?
+	public static double powerOfflineLossPerDay = 1.0;  // players will lose this much power per day offline
+	public static double powerOfflineLossLimit = 0.0;  // players will no longer lose power from being offline once their power drops to this amount or less
 	public static double powerFactionMax = 0.0;  // if greater than 0, the cap on how much power a faction can have (additional power from players beyond that will act as a "buffer" of sorts)
 	
 	public static String prefixAdmin = "**";
@@ -63,6 +65,7 @@ public class Conf {
 	public static boolean chatTagPadAfter = true;
 	public static String chatTagFormat = "%s"+ChatColor.WHITE;
 	public static String factionChatFormat = "%s"+ChatColor.WHITE+" %s";
+	public static String allianceChatFormat = "%s"+ChatColor.WHITE+" %s";
 	
 	public static boolean allowNoSlashCommand = true;
 	
@@ -126,11 +129,14 @@ public class Conf {
 	public static boolean territoryBlockFireballsWhenOffline = false;
 	public static boolean territoryBlockTNT = false;
 	public static boolean territoryBlockTNTWhenOffline = false;
+	public static boolean territoryDenyEndermanBlocks = true;
+	public static boolean territoryDenyEndermanBlocksWhenOffline = true;
 
 	public static boolean safeZoneDenyBuild = true;
 	public static boolean safeZoneDenyUseage = true;
 	public static boolean safeZoneBlockTNT = true;
 	public static boolean safeZonePreventAllDamageToPlayers = false;
+	public static boolean safeZoneDenyEndermanBlocks = true;
 	
 	public static boolean warZoneDenyBuild = true;
 	public static boolean warZoneDenyUseage = true;
@@ -139,6 +145,7 @@ public class Conf {
 	public static boolean warZoneBlockTNT = true;
 	public static boolean warZonePowerLoss = true;
 	public static boolean warZoneFriendlyFire = false;
+	public static boolean warZoneDenyEndermanBlocks = true;
 	
 	public static boolean wildernessDenyBuild = false;
 	public static boolean wildernessDenyUseage = false;
@@ -146,6 +153,7 @@ public class Conf {
 	public static boolean wildernessBlockFireballs = false;
 	public static boolean wildernessBlockTNT = false;
 	public static boolean wildernessPowerLoss = true;
+	public static boolean wildernessDenyEndermanBlocks = false;
 
 	// for claimed areas where further faction-member ownership can be defined
 	public static boolean ownedAreasEnabled = true;
@@ -177,6 +185,7 @@ public class Conf {
 	public static boolean spoutFactionTitlesOverNames = true;
 	public static boolean spoutFactionAdminCapes = true;
 	public static boolean spoutFactionModeratorCapes = true;
+	public static int spoutTerritoryDisplayPosition = 3;
 	public static String capeAlly = "https://github.com/MassiveCraft/Factions/raw/master/capes/ally.png";
 	public static String capeEnemy = "https://github.com/MassiveCraft/Factions/raw/master/capes/enemy.png";
 	public static String capeMember = "https://github.com/MassiveCraft/Factions/raw/master/capes/member.png";
@@ -184,6 +193,7 @@ public class Conf {
 	public static String capePeaceful = "https://github.com/MassiveCraft/Factions/raw/master/capes/peaceful.png";
 	
 	// Economy settings
+	public static boolean econRegisterEnabled = false;
 	public static boolean econIConomyEnabled = false;
 	public static boolean econEssentialsEcoEnabled = false;
 	public static double econCostClaimWilderness = 30.0;
@@ -210,6 +220,12 @@ public class Conf {
 	public static double econCostEnemy = 0.0;
 	public static double econCostNeutral = 0.0;
 	public static double econCostNoBoom = 0.0;
+	
+	//Faction banks, to pay for land claiming and other costs instead of individuals paying for them
+	public static boolean bankEnabled = true;
+	public static boolean bankMembersCanWithdraw = false; //Have to be at least moderator to withdraw or pay money to another faction
+	public static boolean bankFactionPaysCosts = true; //The faction pays for faction command costs, such as sethome
+	public static boolean bankFactionPaysLandCosts = true; //The faction pays for land claiming costs.
 	
 	public static Set<String> worldsNoClaiming = new HashSet<String>();
 	public static Set<String> worldsNoPowerLoss = new HashSet<String>();
@@ -253,9 +269,12 @@ public class Conf {
 		territoryDenyUseageMaterialsWhenOffline.add(Material.WATER_BUCKET);
 		territoryDenyUseageMaterialsWhenOffline.add(Material.LAVA_BUCKET);
 
+		safeZoneNerfedCreatureTypes.add(CreatureType.CAVE_SPIDER);
 		safeZoneNerfedCreatureTypes.add(CreatureType.CREEPER);
+		safeZoneNerfedCreatureTypes.add(CreatureType.ENDERMAN);
 		safeZoneNerfedCreatureTypes.add(CreatureType.GHAST);
 		safeZoneNerfedCreatureTypes.add(CreatureType.PIG_ZOMBIE);
+		safeZoneNerfedCreatureTypes.add(CreatureType.SILVERFISH);
 		safeZoneNerfedCreatureTypes.add(CreatureType.SKELETON);
 		safeZoneNerfedCreatureTypes.add(CreatureType.SPIDER);
 		safeZoneNerfedCreatureTypes.add(CreatureType.SLIME);
