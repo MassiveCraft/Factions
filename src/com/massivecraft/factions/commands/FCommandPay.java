@@ -3,7 +3,7 @@ package com.massivecraft.factions.commands;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.P;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.struct.Role;
 
@@ -63,7 +63,7 @@ public class FCommandPay extends FBaseCommand {
 			them.addMoney(amount);
 			sendMessage("You have paid "+amountString+" from "+us.getTag()+"'s bank to "+them.getTag()+"'s bank.");
 			sendMessage(us.getTag()+" now has "+Econ.moneyString(us.getMoney()));
-			Factions.log(player.getName() + " paid "+amountString+" from "+us.getTag()+"'s bank to "+them.getTag()+"'s bank.");
+			P.log(player.getName() + " paid "+amountString+" from "+us.getTag()+"'s bank to "+them.getTag()+"'s bank.");
 			
 			for (FPlayer fplayer : FPlayer.getAllOnline()) {
 				if (fplayer.getFaction() == us || fplayer.getFaction() == them) {

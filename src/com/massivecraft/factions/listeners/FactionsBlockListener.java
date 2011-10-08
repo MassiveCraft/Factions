@@ -15,58 +15,65 @@ import com.massivecraft.factions.Board;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Relation;
 
 
-public class FactionsBlockListener extends BlockListener {
+public class FactionsBlockListener extends BlockListener
+{
+	public P p;
+	public FactionsBlockListener(P p)
+	{
+		this.p = p;
+	}
 	
 	@Override
-	public void onBlockPlace(BlockPlaceEvent event) {
-		if (event.isCancelled()) {
-			return;
-		}
-		if (!event.canBuild()) {
-			return;
-		}
+	public void onBlockPlace(BlockPlaceEvent event)
+	{
+		if (event.isCancelled()) return;
+		if ( ! event.canBuild()) return;
+		
 		// special case for flint&steel, which should only be prevented by DenyUsage list
-		if (event.getBlockPlaced().getType() == Material.FIRE) {
+		if (event.getBlockPlaced().getType() == Material.FIRE)
+		{
 			return;
 		}
 
-		if ( ! this.playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock().getLocation(), "build", false)) {
+		if ( ! playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock().getLocation(), "build", false))
+		{
 			event.setCancelled(true);
 		}
 	}
 
 	@Override
-	public void onBlockBreak(BlockBreakEvent event) {
-		if (event.isCancelled()) {
-			return;
-		}
+	public void onBlockBreak(BlockBreakEvent event)
+	{
+		if (event.isCancelled()) return;
 
-		if ( ! this.playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock().getLocation(), "destroy", false)) {
+		if ( ! playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock().getLocation(), "destroy", false))
+		{
 			event.setCancelled(true);
 		}
 	}
 
 	@Override
-	public void onBlockDamage(BlockDamageEvent event) {
-		if (event.isCancelled()) {
-			return;
-		}
+	public void onBlockDamage(BlockDamageEvent event)
+	{
+		if (event.isCancelled()) return;
 
-		if (event.getInstaBreak() && ! this.playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock().getLocation(), "destroy", false)) {
+		if (event.getInstaBreak() && ! playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock().getLocation(), "destroy", false))
+		{
 			event.setCancelled(true);
 		}
 	}
 
 	@Override
-	public void onBlockPistonExtend(BlockPistonExtendEvent event) {
-		if (event.isCancelled() || !Conf.pistonProtectionThroughDenyBuild) {
-			return;
-		}
+	public void onBlockPistonExtend(BlockPistonExtendEvent event)
+	{
+		if (event.isCancelled()) return;
+		if ( ! Conf.pistonProtectionThroughDenyBuild) return;
 
 		Faction pistonFaction = Board.getFactionAt(new FLocation(event.getBlock()));
 
@@ -74,7 +81,8 @@ public class FactionsBlockListener extends BlockListener {
 		Block targetBlock = event.getBlock().getRelative(event.getDirection(), event.getLength() + 1);
 
 		// if potentially pushing into air in another territory, we need to check it out
-		if (targetBlock.isEmpty() && !canPistonMoveBlock(pistonFaction, targetBlock.getLocation())) {
+		if (targetBlock.isEmpty() && !canPistonMoveBlock(pistonFaction, targetBlock.getLocation()))
+		{
 			event.setCancelled(true);
 			return;
 		}
@@ -87,49 +95,61 @@ public class FactionsBlockListener extends BlockListener {
 	}
 
 	@Override
-	public void onBlockPistonRetract(BlockPistonRetractEvent event) {
+	public void onBlockPistonRetract(BlockPistonRetractEvent event)
+	{
 		// if not a sticky piston, retraction should be fine
-		if (event.isCancelled() || !event.isSticky() || !Conf.pistonProtectionThroughDenyBuild) {
+		if (event.isCancelled() || !event.isSticky() || !Conf.pistonProtectionThroughDenyBuild)
+		{
 			return;
 		}
 
 		Location targetLoc = event.getRetractLocation();
 
 		// if potentially retracted block is just air, no worries
-		if (targetLoc.getBlock().isEmpty()) {
+		if (targetLoc.getBlock().isEmpty())
+		{
 			return;
 		}
 
 		Faction pistonFaction = Board.getFactionAt(new FLocation(event.getBlock()));
 
-		if (!canPistonMoveBlock(pistonFaction, targetLoc)) {
+		if (!canPistonMoveBlock(pistonFaction, targetLoc))
+		{
 			event.setCancelled(true);
 			return;
 		}
 	}
 
-	private boolean canPistonMoveBlock(Faction pistonFaction, Location target) {
+	private boolean canPistonMoveBlock(Faction pistonFaction, Location target)
+	{
 
 		Faction otherFaction = Board.getFactionAt(new FLocation(target));
 
-		if (pistonFaction == otherFaction) {
+		if (pistonFaction == otherFaction)
+		{
 			return true;
 		}
 
-		if (otherFaction.isNone()) {
-			if (!Conf.wildernessDenyBuild || Conf.worldsNoWildernessProtection.contains(target.getWorld().getName())) {
+		if (otherFaction.isNone())
+		{
+			if (!Conf.wildernessDenyBuild || Conf.worldsNoWildernessProtection.contains(target.getWorld().getName()))
+			{
 				return true;
 			}
 			return false;
 		}
-		else if (otherFaction.isSafeZone()) {
-			if (!Conf.safeZoneDenyBuild) {
+		else if (otherFaction.isSafeZone())
+		{
+			if ( ! Conf.safeZoneDenyBuild)
+			{
 				return true;
 			}
 			return false;
 		}
-		else if (otherFaction.isWarZone()) {
-			if (!Conf.warZoneDenyBuild) {
+		else if (otherFaction.isWarZone())
+		{
+			if ( ! Conf.warZoneDenyBuild)
+			{
 				return true;
 			}
 			return false;
@@ -138,37 +158,47 @@ public class FactionsBlockListener extends BlockListener {
 		Relation rel = pistonFaction.getRelation(otherFaction);
 		boolean online = otherFaction.hasPlayersOnline();
 
-		if (
-			   (online && (rel.isEnemy() ? Conf.territoryEnemyDenyBuild : (rel.isAlly() ? Conf.territoryAllyDenyBuild : Conf.territoryDenyBuild)))
-			|| (!online && (rel.isEnemy() ? Conf.territoryEnemyDenyBuildWhenOffline : (rel.isAlly() ? Conf.territoryAllyDenyBuildWhenOffline : Conf.territoryDenyBuildWhenOffline)))
-			) {
+		if
+		(
+			(online && (rel.isEnemy() ? Conf.territoryEnemyDenyBuild : (rel.isAlly() ? Conf.territoryAllyDenyBuild : Conf.territoryDenyBuild)))
+			||
+			(!online && (rel.isEnemy() ? Conf.territoryEnemyDenyBuildWhenOffline : (rel.isAlly() ? Conf.territoryAllyDenyBuildWhenOffline : Conf.territoryDenyBuildWhenOffline)))
+		)
+		{
 			return false;
 		}
 
 		return true;
 	}
 
-	public static boolean playerCanBuildDestroyBlock(Player player, Location location, String action, boolean justCheck) {
+	public static boolean playerCanBuildDestroyBlock(Player player, Location location, String action, boolean justCheck)
+	{
 
-		if (Conf.adminBypassPlayers.contains(player.getName())) {
+		if (Conf.adminBypassPlayers.contains(player.getName()))
+		{
 			return true;
 		}
 
 		FLocation loc = new FLocation(location);
 		Faction otherFaction = Board.getFactionAt(loc);
-		FPlayer me = FPlayer.get(player);
+		FPlayer me = FPlayers.i.get(player);
 
-		if (otherFaction.isNone()) {
-			if (!Conf.wildernessDenyBuild || Factions.hasPermAdminBypass(player) || Conf.worldsNoWildernessProtection.contains(location.getWorld().getName())) {
+		if (otherFaction.isNone())
+		{
+			if (!Conf.wildernessDenyBuild || P.hasPermAdminBypass(player) || Conf.worldsNoWildernessProtection.contains(location.getWorld().getName()))
+			{
 				return true; // This is not faction territory. Use whatever you like here.
 			}
-			if (!justCheck) {
+			if (!justCheck)
+			{
 				me.sendMessage("You can't "+action+" in the wilderness.");
 			}
 			return false;
 		}
-		else if (otherFaction.isSafeZone()) {
-			if (!Conf.safeZoneDenyBuild || Factions.hasPermManageSafeZone(player)) {
+		else if (otherFaction.isSafeZone())
+		{
+			if (!Conf.safeZoneDenyBuild || P.hasPermManageSafeZone(player))
+			{
 				return true;
 			}
 			if (!justCheck) {
@@ -176,11 +206,14 @@ public class FactionsBlockListener extends BlockListener {
 			}
 			return false;
 		}
-		else if (otherFaction.isWarZone()) {
-			if (!Conf.warZoneDenyBuild || Factions.hasPermManageWarZone(player)) {
+		else if (otherFaction.isWarZone())
+		{
+			if (!Conf.warZoneDenyBuild || P.hasPermManageWarZone(player))
+			{
 				return true;
 			}
-			if (!justCheck) {
+			if (!justCheck)
+			{
 				me.sendMessage("You can't "+action+" in a war zone.");
 			}
 			return false;
@@ -191,38 +224,49 @@ public class FactionsBlockListener extends BlockListener {
 		boolean ownershipFail = Conf.ownedAreasEnabled && (Conf.ownedAreaDenyBuild || Conf.ownedAreaPainBuild) && !otherFaction.playerHasOwnershipRights(me, loc);
 		
 		// Cancel and/or cause pain (depending on configuration) if we are not in our own territory
-		if (!rel.isMember()) {
+		if (!rel.isMember())
+		{
 			boolean online = otherFaction.hasPlayersOnline();
 			boolean pain = (!justCheck) && rel.confPainBuild(online);
 			boolean deny = rel.confDenyBuild(online);
 
 			//hurt the player for building/destroying?
-			if (pain) {
+			if (pain)
+			{
 				player.damage(Conf.actionDeniedPainAmount);
-				if (!deny) {
+				if (!deny)
+				{
 					me.sendMessage("You are hurt for "+action+" in the territory of "+otherFaction.getTag(myFaction));
-					if (!Conf.ownedAreaDenyBuild) {
+					if (!Conf.ownedAreaDenyBuild)
+					{
 						return true;
 					}
 				}
 			}
-			if (deny) {
-				if (!justCheck) {
+			if (deny)
+			{
+				if (!justCheck)
+				{
 					me.sendMessage("You can't "+action+" in the territory of "+otherFaction.getTag(myFaction));
 				}
 				return false;
 			}
 		}
 		// Also cancel and/or cause pain if player doesn't have ownership rights for this claim
-		else if (rel.isMember() && ownershipFail && !Factions.hasPermOwnershipBypass(player)) {
-			if (Conf.ownedAreaPainBuild && !justCheck){
+		else if (rel.isMember() && ownershipFail && !P.hasPermOwnershipBypass(player))
+		{
+			if (Conf.ownedAreaPainBuild && !justCheck)
+			{
 				player.damage(Conf.actionDeniedPainAmount);
-				if (!Conf.ownedAreaDenyBuild) {
+				if (!Conf.ownedAreaDenyBuild)
+				{
 					me.sendMessage("You are hurt for "+action+" in this territory, it is owned by: "+myFaction.getOwnerListString(loc));
 				}
 			}
-			if (Conf.ownedAreaDenyBuild){
-				if (!justCheck) {
+			if (Conf.ownedAreaDenyBuild)
+			{
+				if (!justCheck)
+				{
 					me.sendMessage("You can't "+action+" in this territory, it is owned by: "+myFaction.getOwnerListString(loc));
 				}
 				return false;

@@ -5,7 +5,7 @@ import org.bukkit.command.CommandSender;
 import com.massivecraft.factions.Board;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.P;
 
 public class FCommandAutoSafeclaim extends FBaseCommand {
 
@@ -19,7 +19,7 @@ public class FCommandAutoSafeclaim extends FBaseCommand {
 
 	@Override
 	public boolean hasPermission(CommandSender sender) {
-		return Factions.hasPermManageSafeZone(sender);
+		return P.hasPermManageSafeZone(sender);
 	}
 
 	@Override

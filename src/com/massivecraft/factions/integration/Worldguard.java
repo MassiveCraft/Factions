@@ -1,6 +1,6 @@
 package com.massivecraft.factions.integration;
 
-import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.P;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -28,24 +28,30 @@ import org.bukkit.entity.Player;
  *  Author: Spathizilla
  */
 
-public class Worldguard {
+public class Worldguard
+{
 	private static WorldGuardPlugin wg;
 	private static boolean enabled = false;
 
-	public static void init(Plugin plugin) {
+	public static void init(Plugin plugin)
+	{
 		Plugin wgplug = plugin.getServer().getPluginManager().getPlugin("WorldGuard");
-		if (wgplug == null || !(wgplug instanceof WorldGuardPlugin)) {
+		if (wgplug == null || !(wgplug instanceof WorldGuardPlugin))
+		{
 			enabled = false;
 			wg = null;
-			Factions.log("Could not hook to WorldGuard. WorldGuard checks are disabled.");
-		} else {
+			P.p.log("Could not hook to WorldGuard. WorldGuard checks are disabled.");
+		}
+		else
+		{
 			wg = (WorldGuardPlugin) wgplug;
 			enabled = true;
-			Factions.log("Successfully hooked to WorldGuard.");
+			P.p.log("Successfully hooked to WorldGuard.");
 		}
 	}
 
-	public static boolean isEnabled() {
+	public static boolean isEnabled()
+	{
 		return enabled;
 	}
 
@@ -53,8 +59,10 @@ public class Worldguard {
 	// Returns:
 	//   True: PVP is allowed
 	//   False: PVP is disallowed
-	public static boolean isPVP(Player player) {
-		if(!enabled) {
+	public static boolean isPVP(Player player)
+	{
+		if( ! enabled)
+		{
 			// No WG hooks so we'll always bypass this check.
 			return true;
 		}
@@ -72,8 +80,10 @@ public class Worldguard {
 	// Returns:
 	//   True: Regions found within chunk
 	//   False: No regions found within chunk
-	public static boolean checkForRegionsInChunk(Location loc) {
-		if(!enabled) {
+	public static boolean checkForRegionsInChunk(Location loc)
+	{
+		if( ! enabled)
+		{
 			// No WG hooks so we'll always bypass this check.
 			return false;
 		}
@@ -97,14 +107,20 @@ public class Worldguard {
 		List<ProtectedRegion> overlaps;
 		boolean foundregions = false;
 
-		try {
+		try
+		{
 			overlaps = region.getIntersectingRegions(allregionslist);
-			if(overlaps == null || overlaps.isEmpty()) {
+			if(overlaps == null || overlaps.isEmpty())
+			{
 				foundregions = false;
-			} else {
+			}
+			else
+			{
 				foundregions = true;
 			}
-		} catch (UnsupportedIntersectionException e) {
+		}
+		catch (UnsupportedIntersectionException e)
+		{
 			e.printStackTrace();
 		}
 

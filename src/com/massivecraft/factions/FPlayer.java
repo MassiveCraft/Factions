@@ -17,7 +17,8 @@ import com.massivecraft.factions.integration.Worldguard;
 import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
-import com.massivecraft.factions.util.DiscUtil;
+import com.massivecraft.factions.zcore.persist.Entity;
+import com.massivecraft.factions.zcore.persist.PlayerEntity;
 
 
 /**
@@ -31,19 +32,20 @@ import com.massivecraft.factions.util.DiscUtil;
  * This means you can use the == operator. No .equals method necessary.
  */
 
-public class FPlayer {
+public class FPlayer extends PlayerEntity
+{
 	
 	// -------------------------------------------- //
 	// Fields
 	// -------------------------------------------- //
 	
-	private static transient TreeMap<String, FPlayer> instances = new TreeMap<String, FPlayer>(String.CASE_INSENSITIVE_ORDER);
-	private static transient File file = new File(Factions.instance.getDataFolder(), "players.json");
+	//private static transient TreeMap<String, FPlayer> instances = new TreeMap<String, FPlayer>(String.CASE_INSENSITIVE_ORDER);
+	//private static transient File file = new File(P.p.getDataFolder(), "players.json");
 	
-	private transient String playerName;
+	//private transient String playerName;
 	private transient FLocation lastStoodAt = new FLocation(); // Where did this player stand the last time we checked?
 	
-	private int factionId;
+	private String factionId;
 	private Role role;
 	private String title;
 	private double power;
@@ -62,7 +64,8 @@ public class FPlayer {
 	// -------------------------------------------- //
 	
 	// GSON need this noarg constructor.
-	public FPlayer() {
+	public FPlayer()
+	{
 		this.resetFactionData();
 		this.power = this.getPowerMax();
 		this.lastPowerUpdateTime = System.currentTimeMillis();
@@ -74,165 +77,175 @@ public class FPlayer {
 		this.loginPvpDisabled = (Conf.noPVPDamageToOthersForXSecondsAfterLogin > 0) ? true : false;
 		this.deleteMe = false;
 
-		if (Conf.newPlayerStartingFactionID > 0 && Faction.exists(Conf.newPlayerStartingFactionID)) {
+		if ( ! Conf.newPlayerStartingFactionID.equals("0") && Factions.i.exists(Conf.newPlayerStartingFactionID))
+		{
 			this.factionId = Conf.newPlayerStartingFactionID;
 		}
 	}
 	
-	public void resetFactionData() {
+	public void resetFactionData()
+	{
 		// clean up any territory ownership in old faction, if there is one
-		if (this.factionId > 0 && Faction.exists(this.factionId)) {
-			Faction.get(factionId).clearClaimOwnership(playerName);
+		if (this.factionId > 0 && Factions.i.exists(this.factionId))
+		{
+			// TODO: Get faction function...			
+			Factions.i.get(factionId).clearClaimOwnership(this.getId());
 		}
 		
-		this.factionId = 0; // The default neutral faction
+		this.factionId = "0"; // The default neutral faction
 		this.chatMode = ChatMode.PUBLIC;
 		this.role = Role.NORMAL;
 		this.title = "";
 		this.autoClaimEnabled = false;
 
-		if (playerName != null && !playerName.isEmpty()) {
-			SpoutFeatures.updateAppearances(this.getPlayer());
-		}
-	}
-	
-	// -------------------------------------------- //
-	// Minecraft Player
-	// -------------------------------------------- //
-	
-	public Player getPlayer() {
-		return Factions.instance.getServer().getPlayer(playerName);
-	}
-	
-	public String getPlayerName() {
-		return this.playerName;
-	}
-	
-	public boolean isOnline() {
-		return Factions.instance.getServer().getPlayer(playerName) != null;
-	}
-	
-	public boolean isOffline() {
-		return ! isOnline();
+		SpoutFeatures.updateAppearances(this.getPlayer());
 	}
 	
 	// -------------------------------------------- //
 	// Getters And Setters
 	// -------------------------------------------- //
 	
-	public Faction getFaction() {
+	public Faction getFaction()
+	{
 		return Faction.get(factionId);
 	}
 	
-	public int getFactionId() {
-		return factionId;
+	public String getFactionId()
+	{
+		return this.factionId;
 	}
 	
-	public void setFaction(Faction faction) {
+	public void setFaction(Faction faction)
+	{
 		this.factionId = faction.getId();
 		SpoutFeatures.updateAppearances(this.getPlayer());
 	}
 	
-	public boolean hasFaction() {
-		return factionId != 0;
+	public boolean hasFaction()
+	{
+		return ! factionId.equals("0");
 	}
 	
-	public Role getRole() {
+	public Role getRole()
+	{
 		return this.role;
 	}
 	
-	public void setRole(Role role) {
+	public void setRole(Role role)
+	{
 		this.role = role;
 		SpoutFeatures.updateAppearances(this.getPlayer());
 	}
 	
-	public ChatMode getChatMode() {
-		if(this.factionId == 0 ) {
+	public ChatMode getChatMode()
+	{
+		if(this.factionId.equals("0"))
+		{
 			return ChatMode.PUBLIC;
 		}
 		return chatMode;
 	}
 
-	public void setChatMode(ChatMode chatMode) {
+	public void setChatMode(ChatMode chatMode)
+	{
 		this.chatMode = chatMode;
 	}
 	
-	public long getLastLoginTime() {
+	public long getLastLoginTime()
+	{
 		return lastLoginTime;
 	}
 
-	public boolean autoClaimEnabled() {
-		if (this.factionId == 0)
-			return false;
+	public boolean autoClaimEnabled()
+	{
+		if (this.factionId.equals("0")) return false;
 		return autoClaimEnabled;
 	}
-	public void enableAutoClaim(boolean enabled) {
+	public void enableAutoClaim(boolean enabled)
+	{
 		this.autoClaimEnabled = enabled;
-		if (enabled) {
+		if (enabled)
+		{
 			this.autoSafeZoneEnabled = false;
 			this.autoWarZoneEnabled = false;
 		}
 	}
 
-	public boolean autoSafeZoneEnabled() {
+	public boolean autoSafeZoneEnabled()
+	{
 		return autoSafeZoneEnabled;
 	}
-	public void enableAutoSafeZone(boolean enabled) {
+	public void enableAutoSafeZone(boolean enabled)
+	{
 		this.autoSafeZoneEnabled = enabled;
-		if (enabled) {
+		if (enabled)
+		{
 			this.autoClaimEnabled = false;
 			this.autoWarZoneEnabled = false;
 		}
 	}
 
-	public boolean autoWarZoneEnabled() {
+	public boolean autoWarZoneEnabled()
+	{
 		return autoWarZoneEnabled;
 	}
-	public void enableAutoWarZone(boolean enabled) {
+	public void enableAutoWarZone(boolean enabled)
+	{
 		this.autoWarZoneEnabled = enabled;
-		if (enabled) {
+		if (enabled)
+		{
 			this.autoClaimEnabled = false;
 			this.autoSafeZoneEnabled = false;
 		}
 	}
 
-	public void setLastLoginTime(long lastLoginTime) {
+	public void setLastLoginTime(long lastLoginTime)
+	{
 		losePowerFromBeingOffline();
 		this.lastLoginTime = lastLoginTime;
 		this.lastPowerUpdateTime = lastLoginTime;
-		if (Conf.noPVPDamageToOthersForXSecondsAfterLogin > 0) {
+		if (Conf.noPVPDamageToOthersForXSecondsAfterLogin > 0)
+		{
 			this.loginPvpDisabled = true;
 		}
 	}
 
-	public boolean isMapAutoUpdating() {
+	public boolean isMapAutoUpdating()
+	{
 		return mapAutoUpdating;
 	}
 
-	public void setMapAutoUpdating(boolean mapAutoUpdating) {
+	public void setMapAutoUpdating(boolean mapAutoUpdating)
+	{
 		this.mapAutoUpdating = mapAutoUpdating;
 	}
 
-	public boolean hasLoginPvpDisabled() {
-		if (!loginPvpDisabled) {
+	public boolean hasLoginPvpDisabled()
+	{
+		if (!loginPvpDisabled)
+		{
 			return false;
 		}
-		if (this.lastLoginTime + (Conf.noPVPDamageToOthersForXSecondsAfterLogin * 1000) < System.currentTimeMillis()) {
+		if (this.lastLoginTime + (Conf.noPVPDamageToOthersForXSecondsAfterLogin * 1000) < System.currentTimeMillis())
+		{
 			this.loginPvpDisabled = false;
 			return false;
 		}
 		return true;
 	}
 	
-	public FLocation getLastStoodAt() {
+	public FLocation getLastStoodAt()
+	{
 		return this.lastStoodAt;
 	}
 	
-	public void setLastStoodAt(FLocation flocation) {
+	public void setLastStoodAt(FLocation flocation)
+	{
 		this.lastStoodAt = flocation;
 	}
 
-	public void markForDeletion(boolean delete) {
+	public void markForDeletion(boolean delete)
+	{
 		deleteMe = delete;
 	}
 	
@@ -242,20 +255,25 @@ public class FPlayer {
 	
 	// Base:
 	
-	public String getTitle() {
+	public String getTitle()
+	{
 		return this.title;
 	}
 
-	public void setTitle(String title) {
+	public void setTitle(String title)
+	{
 		this.title = title;
 	}
 	
-	public String getName() {
-		return this.playerName;
+	public String getName()
+	{
+		return this.getId(); // TODO: ... display name or remove completeley
 	}
 	
-	public String getTag() {
-		if ( ! this.hasFaction()) {
+	public String getTag()
+	{
+		if ( ! this.hasFaction())
+		{
 			return "";
 		}
 		return this.getFaction().getTag();
@@ -263,7 +281,8 @@ public class FPlayer {
 	
 	// Base concatenations:
 	
-	public String getNameAndSomething(String something) {
+	public String getNameAndSomething(String something)
+	{
 		String ret = this.role.getPrefix();
 		if (something.length() > 0) {
 			ret += something+" ";
@@ -272,32 +291,39 @@ public class FPlayer {
 		return ret;
 	}
 	
-	public String getNameAndTitle() {
+	public String getNameAndTitle()
+	{
 		return this.getNameAndSomething(this.getTitle());
 	}
 	
-	public String getNameAndTag() {
+	public String getNameAndTag()
+	{
 		return this.getNameAndSomething(this.getTag());
 	}
 	
 	// Colored concatenations:
 	// These are used in information messages
 	
-	public String getNameAndTitle(Faction faction) {
+	public String getNameAndTitle(Faction faction)
+	{
 		return this.getRelationColor(faction)+this.getNameAndTitle();
 	}
-	public String getNameAndTitle(FPlayer fplayer) {
+	public String getNameAndTitle(FPlayer fplayer)
+	{
 		return this.getRelationColor(fplayer)+this.getNameAndTitle();
 	}
 	
-	public String getNameAndTag(Faction faction) {
+	public String getNameAndTag(Faction faction)
+	{
 		return this.getRelationColor(faction)+this.getNameAndTag();
 	}
-	public String getNameAndTag(FPlayer fplayer) {
+	public String getNameAndTag(FPlayer fplayer)
+	{
 		return this.getRelationColor(fplayer)+this.getNameAndTag();
 	}
 	
-	public String getNameAndRelevant(Faction faction) {
+	public String getNameAndRelevant(Faction faction)
+	{
 		// Which relation?
 		Relation rel = this.getRelation(faction);
 		
@@ -309,14 +335,16 @@ public class FPlayer {
 		// For non members we show tag
 		return rel.getColor() + this.getNameAndTag();
 	}
-	public String getNameAndRelevant(FPlayer fplayer) {
+	public String getNameAndRelevant(FPlayer fplayer)
+	{
 		return getNameAndRelevant(fplayer.getFaction());
 	}
 	
 	// Chat Tag: 
 	// These are injected into the format of global chat messages.
 	
-	public String getChatTag() {
+	public String getChatTag()
+	{
 		if ( ! this.hasFaction()) {
 			return "";
 		}
@@ -325,14 +353,17 @@ public class FPlayer {
 	}
 	
 	// Colored Chat Tag
-	public String getChatTag(Faction faction) {
+	public String getChatTag(Faction faction)
+	{
 		if ( ! this.hasFaction()) {
 			return "";
 		}
 		
 		return this.getRelation(faction).getColor()+getChatTag();
 	}
-	public String getChatTag(FPlayer fplayer) {
+	
+	public String getChatTag(FPlayer fplayer)
+	{
 		if ( ! this.hasFaction()) {
 			return "";
 		}
@@ -344,23 +375,28 @@ public class FPlayer {
 	// Relation and relation colors
 	// -------------------------------
 	
-	public Relation getRelation(Faction faction) {
+	public Relation getRelation(Faction faction)
+	{
 		return faction.getRelation(this);
 	}
 	
-	public Relation getRelation(FPlayer fplayer) {
+	public Relation getRelation(FPlayer fplayer)
+	{
 		return this.getFaction().getRelation(fplayer);
 	}
 	
-	public Relation getRelationToLocation() {
+	public Relation getRelationToLocation()
+	{
 		return Board.getFactionAt(new FLocation(this)).getRelation(this);
 	}
 	
-	public ChatColor getRelationColor(Faction faction) {
+	public ChatColor getRelationColor(Faction faction)
+	{
 		return faction.getRelationColor(this);
 	}
 	
-	public ChatColor getRelationColor(FPlayer fplayer) {
+	public ChatColor getRelationColor(FPlayer fplayer)
+	{
 		return this.getRelation(fplayer).getColor();
 	}
 	
@@ -368,9 +404,11 @@ public class FPlayer {
 	//----------------------------------------------//
 	// Health
 	//----------------------------------------------//
-	public void heal(int amnt) {
+	public void heal(int amnt)
+	{
 		Player player = this.getPlayer();
-		if (player == null) {
+		if (player == null)
+		{
 			return;
 		}
 		player.setHealth(player.getHealth() + amnt);
@@ -380,45 +418,57 @@ public class FPlayer {
 	//----------------------------------------------//
 	// Power
 	//----------------------------------------------//
-	public double getPower() {
+	public double getPower()
+	{
 		this.updatePower();
 		return this.power;
 	}
 	
-	protected void alterPower(double delta) {
+	protected void alterPower(double delta)
+	{
 		this.power += delta;
-		if (this.power > this.getPowerMax()) {
+		if (this.power > this.getPowerMax())
+		{
 			this.power = this.getPowerMax();
-		} else if (this.power < this.getPowerMin()) {
+		} else if (this.power < this.getPowerMin())
+		{
 			this.power = this.getPowerMin();
 		}
 		//Log.debug("Power of "+this.getName()+" is now: "+this.power);
 	}
 	
-	public double getPowerMax() {
+	public double getPowerMax()
+	{
 		return Conf.powerPlayerMax;
 	}
 	
-	public double getPowerMin() {
+	public double getPowerMin()
+	{
 		return Conf.powerPlayerMin;
 	}
 	
-	public int getPowerRounded() {
+	public int getPowerRounded()
+	{
 		return (int) Math.round(this.getPower());
 	}
 	
-	public int getPowerMaxRounded() {
+	public int getPowerMaxRounded()
+	{
 		return (int) Math.round(this.getPowerMax());
 	}
 	
-	public int getPowerMinRounded() {
+	public int getPowerMinRounded()
+	{
 		return (int) Math.round(this.getPowerMin());
 	}
 	
-	protected void updatePower() {
-		if (this.isOffline()) {
+	protected void updatePower()
+	{
+		if (this.isOffline())
+		{
 			losePowerFromBeingOffline();
-			if (!Conf.powerRegenOffline) {
+			if (!Conf.powerRegenOffline)
+			{
 				return;
 			}
 		}
@@ -430,21 +480,25 @@ public class FPlayer {
 		this.alterPower(millisPassed * Conf.powerPerMinute / millisPerMinute);
 	}
 
-	protected void losePowerFromBeingOffline() {
-		if (Conf.powerOfflineLossPerDay > 0.0 && this.power > Conf.powerOfflineLossLimit) {
+	protected void losePowerFromBeingOffline()
+	{
+		if (Conf.powerOfflineLossPerDay > 0.0 && this.power > Conf.powerOfflineLossLimit)
+		{
 			long now = System.currentTimeMillis();
 			long millisPassed = now - this.lastPowerUpdateTime;
 			this.lastPowerUpdateTime = now;
 
 			double loss = millisPassed * Conf.powerOfflineLossPerDay / (24*60*60*1000);
-			if (this.power - loss < Conf.powerOfflineLossLimit) {
+			if (this.power - loss < Conf.powerOfflineLossLimit)
+			{
 				loss = this.power;
 			}
 			this.alterPower(-loss);
 		}
 	}
 	
-	public void onDeath() {
+	public void onDeath()
+	{
 		this.updatePower();
 		this.alterPower(-Conf.powerPerDeath);
 	}
@@ -452,34 +506,42 @@ public class FPlayer {
 	//----------------------------------------------//
 	// Territory
 	//----------------------------------------------//
-	public boolean isInOwnTerritory() {
+	public boolean isInOwnTerritory()
+	{
 		return Board.getFactionAt(new FLocation(this)) == this.getFaction();
 	}
 	
-	public boolean isInOthersTerritory() {
+	public boolean isInOthersTerritory()
+	{
 		int idHere = Board.getIdAt(new FLocation(this));
 		return idHere > 0 && idHere != this.factionId;
 	}
 
-	public boolean isInAllyTerritory() {
+	public boolean isInAllyTerritory()
+	{
 		return Board.getFactionAt(new FLocation(this)).getRelation(this).isAlly();
 	}
 
-	public boolean isInNeutralTerritory() {
+	public boolean isInNeutralTerritory()
+	{
 		return Board.getFactionAt(new FLocation(this)).getRelation(this).isNeutral();
 	}
 
-	public boolean isInEnemyTerritory() {
+	public boolean isInEnemyTerritory()
+	{
 		return Board.getFactionAt(new FLocation(this)).getRelation(this).isEnemy();
 	}
 
-	public void sendFactionHereMessage() {
-		if (SpoutFeatures.updateTerritoryDisplay(this)) {
+	public void sendFactionHereMessage()
+	{
+		if (SpoutFeatures.updateTerritoryDisplay(this))
+		{
 			return;
 		}
 		Faction factionHere = Board.getFactionAt(new FLocation(this));
-		String msg = Conf.colorSystem+" ~ "+factionHere.getTag(this);
-		if (factionHere.getDescription().length() > 0) {
+		String msg = P.p.txt.parse("<i>")+" ~ "+factionHere.getTag(this);
+		if (factionHere.getDescription().length() > 0)
+		{
 			msg += " - "+factionHere.getDescription();
 		}
 		this.sendMessage(msg);
@@ -489,22 +551,26 @@ public class FPlayer {
 	// Actions
 	// -------------------------------
 	
-	public void leave(boolean makePay) {
+	public void leave(boolean makePay)
+	{
 		Faction myFaction = this.getFaction();
 		boolean perm = myFaction.isPermanent();
 		
-		if (!perm && this.getRole() == Role.ADMIN && myFaction.getFPlayers().size() > 1) {
+		if (!perm && this.getRole() == Role.ADMIN && myFaction.getFPlayers().size() > 1)
+		{
 			sendMessage("You must give the admin role to someone else first.");
 			return;
 		}
 
-		if (!Conf.CanLeaveWithNegativePower && this.getPower() < 0) {
+		if (!Conf.CanLeaveWithNegativePower && this.getPower() < 0)
+		{
 			sendMessage("You cannot leave until your power is positive.");
 			return;
 		}
 
 		// if economy is enabled and they're not on the bypass list, make 'em pay
-		if (makePay && Econ.enabled() && !Conf.adminBypassPlayers.contains(this.playerName)) {
+		if (makePay && Econ.enabled() && !Conf.adminBypassPlayers.contains(this.getId()))
+		{
 			double cost = Conf.econCostLeave;
 			// pay up
 			if (cost > 0.0) {
@@ -516,29 +582,35 @@ public class FPlayer {
 				sendMessage("You have paid "+costString+" to leave your faction.");
 			}
 			// wait... we pay you to leave?
-			else if (cost < 0.0) {
+			else if (cost < 0.0)
+			{
 				String costString = Econ.moneyString(-cost);
 				Econ.addMoney(this.getName(), -cost);
 				sendMessage("You have been paid "+costString+" for leaving your faction.");
 			}
 		}
 
-		if (myFaction.isNormal()) {
-			myFaction.sendMessage(this.getNameAndRelevant(myFaction) + Conf.colorSystem + " left your faction.");
+		if (myFaction.isNormal())
+		{
+			myFaction.sendMessage(P.p.txt.parse(this.getNameAndRelevant(myFaction) + "<i> left your faction."));
 		}
 
 		this.resetFactionData();
 
-		if (myFaction.isNormal() && !perm && myFaction.getFPlayers().isEmpty()) {
+		if (myFaction.isNormal() && !perm && myFaction.getFPlayers().isEmpty())
+		{
 			// Remove this faction
-			for (FPlayer fplayer : FPlayer.getAllOnline()) {
-				fplayer.sendMessage("The faction "+myFaction.getTag(fplayer)+Conf.colorSystem+" was disbanded.");
+			for (FPlayer fplayer : FPlayers.i.getOnline())
+			{
+				fplayer.sendMessage(P.p.txt.parse("The faction "+myFaction.getTag(fplayer)+"<i> was disbanded."));
 			}
-			Faction.delete(myFaction.getId());
+			//Faction.delete(myFaction.getId());
+			this.detach();
 		}
 	}
 	
-	public boolean attemptClaim(boolean notifyFailure) {
+	public boolean attemptClaim(boolean notifyFailure)
+	{
 		// notifyFailure is false if called by auto-claim; no need to notify on every failure for it
 		// return value is false on failure, true on success
 
@@ -547,63 +619,74 @@ public class FPlayer {
 		FLocation flocation = new FLocation(loc);
 		Faction otherFaction = Board.getFactionAt(flocation);
 
-		if (Conf.worldGuardChecking && Worldguard.checkForRegionsInChunk(loc)) {
+		if (Conf.worldGuardChecking && Worldguard.checkForRegionsInChunk(loc))
+		{
 			// Checks for WorldGuard regions in the chunk attempting to be claimed
 			sendMessage("This land is protected");
 			return false;
 		}
 
-		if (myFaction == otherFaction) {
+		if (myFaction == otherFaction)
+		{
 			if (notifyFailure)
 				sendMessage("You already own this land.");
 			return false;
 		}
 
-		if (this.getRole().value < Role.MODERATOR.value) {
+		if (this.getRole().value < Role.MODERATOR.value)
+		{
 			sendMessage("You must be "+Role.MODERATOR+" to claim land.");
 			return false;
 		}
 
-		if (myFaction.getFPlayers().size() < Conf.claimsRequireMinFactionMembers && !Conf.adminBypassPlayers.contains(this.playerName)) {
+		if (myFaction.getFPlayers().size() < Conf.claimsRequireMinFactionMembers && !Conf.adminBypassPlayers.contains(this.getId()))
+		{
 			sendMessage("Your faction must have at least "+Conf.claimsRequireMinFactionMembers+" members to claim land.");
 			return false;
 		}
 
-		if (Conf.worldsNoClaiming.contains(flocation.getWorldName())) {
+		if (Conf.worldsNoClaiming.contains(flocation.getWorldName()))
+		{
 			sendMessage("Sorry, this world has land claiming disabled.");
 			return false;
 		}
-
-		if (otherFaction.isSafeZone()) {
+		
+		if (otherFaction.isSafeZone())
+		{
 			if (notifyFailure)
 				sendMessage("You can not claim a Safe Zone.");
 			return false;
 		}
-		else if (otherFaction.isWarZone()) {
+		else if (otherFaction.isWarZone())
+		{
 			if (notifyFailure)
 				sendMessage("You can not claim a War Zone.");
 			return false;
 		}
 
 		int ownedLand = myFaction.getLandRounded();
-		if (ownedLand >= myFaction.getPowerRounded()) {
+		if (ownedLand >= myFaction.getPowerRounded())
+		{
 			sendMessage("You can't claim more land! You need more power!");
 			return false;
 		}
 
-		if (otherFaction.getRelation(this) == Relation.ALLY) {
+		if (otherFaction.getRelation(this) == Relation.ALLY)
+		{
 			if (notifyFailure)
 				sendMessage("You can't claim the land of your allies.");
 			return false;
 		}
 
-		if (
-				   Conf.claimsMustBeConnected
-				&& !Conf.adminBypassPlayers.contains(this.playerName)
-				&& myFaction.getLandRoundedInWorld(flocation.getWorldName()) > 0
-				&& !Board.isConnectedLocation(flocation, myFaction)
-				&& (!Conf.claimsCanBeUnconnectedIfOwnedByOtherFaction || !otherFaction.isNormal())
-			) {
+		if
+		(
+			Conf.claimsMustBeConnected
+			&& !Conf.adminBypassPlayers.contains(this.getId())
+			&& myFaction.getLandRoundedInWorld(flocation.getWorldName()) > 0
+			&& !Board.isConnectedLocation(flocation, myFaction)
+			&& (!Conf.claimsCanBeUnconnectedIfOwnedByOtherFaction || !otherFaction.isNormal())
+		)
+		{
 			if (Conf.claimsCanBeUnconnectedIfOwnedByOtherFaction)
 				sendMessage("You can only claim additional land which is connected to your first claim or controlled by another faction!");
 			else
@@ -611,44 +694,58 @@ public class FPlayer {
 			return false;
 		}
 
-		if (otherFaction.isNormal()) {
-			if (myFaction.isPeaceful()) {
-				sendMessage(this.getRelationColor(otherFaction)+otherFaction.getTag()+Conf.colorSystem+" owns this land. Your faction is peaceful, so you cannot claim land from other factions.");
+		if (otherFaction.isNormal())
+		{
+			if (myFaction.isPeaceful())
+			{
+				sendMessage(P.p.txt.parse(this.getRelationColor(otherFaction)+otherFaction.getTag()+"<i> owns this land. Your faction is peaceful, so you cannot claim land from other factions."));
 				return false;
 			}
-			if (otherFaction.isPeaceful()) {
-				sendMessage(this.getRelationColor(otherFaction)+otherFaction.getTag()+Conf.colorSystem+" owns this land, and is a peaceful faction. You cannot claim land from them.");
+			
+			if (otherFaction.isPeaceful())
+			{
+				sendMessage(P.p.txt.parse(this.getRelationColor(otherFaction)+otherFaction.getTag()+"<i> owns this land, and is a peaceful faction. You cannot claim land from them."));
 				return false;
 			}
 
-			if ( ! otherFaction.hasLandInflation()) {
+			if ( ! otherFaction.hasLandInflation())
+			{
 				 // TODO more messages WARN current faction most importantly
-				sendMessage(this.getRelationColor(otherFaction)+otherFaction.getTag()+Conf.colorSystem+" owns this land and is strong enough to keep it.");
+				sendMessage(P.p.txt.parse(this.getRelationColor(otherFaction)+otherFaction.getTag()+"<i> owns this land and is strong enough to keep it."));
 				return false;
 			}
 
-			if ( ! Board.isBorderLocation(flocation)) {
+			if ( ! Board.isBorderLocation(flocation))
+			{
 				sendMessage("You must start claiming land at the border of the territory.");
 				return false;
 			}
 		}
 
 		// if economy is enabled and they're not on the bypass list, make 'em pay
-		if (Econ.enabled() && !Conf.adminBypassPlayers.contains(this.playerName)) {
+		if (Econ.enabled() && !Conf.adminBypassPlayers.contains(this.getId()))
+		{
 			double cost = Econ.calculateClaimCost(ownedLand, otherFaction.isNormal());
 			String costString = Econ.moneyString(cost);
 			
-			if(Conf.bankFactionPaysLandCosts && this.hasFaction()) {
+			if(Conf.bankFactionPaysLandCosts && this.hasFaction())
+			{
 				Faction faction = this.getFaction();
 				
-				if(!faction.removeMoney(cost)) {
+				if(!faction.removeMoney(cost))
+				{
 					sendMessage("It costs "+costString+" to claim this land, which your faction can't currently afford.");
 					return false;
-				} else {
+				}
+				else
+				{
 					sendMessage(faction.getTag()+" has paid "+costString+" to claim some land.");
 				}
-			} else {
-				if (!Econ.deductMoney(this.playerName, cost)) {
+			}
+			else
+			{
+				if (!Econ.deductMoney(this.getId(), cost))
+				{
 					sendMessage("Claiming this land will cost "+costString+", which you can't currently afford.");
 					return false;
 				}
@@ -657,45 +754,30 @@ public class FPlayer {
 		}
 
 		// announce success
-		if (otherFaction.isNormal()) {
+		if (otherFaction.isNormal())
+		{
 			// ASDF claimed some of your land 450 blocks NNW of you.
 			// ASDf claimed some land from FACTION NAME
-			otherFaction.sendMessage(this.getNameAndRelevant(otherFaction)+Conf.colorSystem+" stole some of your land :O");
-			myFaction.sendMessage(this.getNameAndRelevant(myFaction)+Conf.colorSystem+" claimed some land from "+otherFaction.getTag(myFaction));
+			otherFaction.sendMessage(P.p.txt.parse(this.getNameAndRelevant(otherFaction)+"<i> stole some of your land :O"));
+			myFaction.sendMessage(P.p.txt.parse(this.getNameAndRelevant(myFaction)+"<i> claimed some land from "+otherFaction.getTag(myFaction)));
 		}
-		else {
-			myFaction.sendMessage(this.getNameAndRelevant(myFaction)+Conf.colorSystem+" claimed some new land :D");
+		else
+		{
+			myFaction.sendMessage(P.p.txt.parse(this.getNameAndRelevant(myFaction)+"<i> claimed some new land :D"));
 		}
 
 		Board.setFactionAt(myFaction, flocation);
 		return true;
-	}
-	
-	// -------------------------------------------- //
-	// Messages
-	// -------------------------------------------- //
-	public void sendMessage(String message) {
-		if (this.getPlayer() != null)
-			this.getPlayer().sendMessage(Conf.colorSystem + message);
-	}
-	
-	public void sendMessage(List<String> messages) {
-		for(String message : messages) {
-			this.sendMessage(message);
-		}
 	}
 
 	// -------------------------------------------- //
 	// Get and search
 	// -------------------------------------------- //
 	
-	// You should use this one to be sure you do not spell the player name wrong.
-	public static FPlayer get(Player player) {
-		return get(player.getName());
-	}
-	
-	private static FPlayer get(String playerName) {
-		if (instances.containsKey(playerName)) {
+	/*private static FPlayer get(String playerName)
+	{
+		if (instances.containsKey(playerName))
+		{
 			return instances.get(playerName);
 		}
 		
@@ -704,38 +786,21 @@ public class FPlayer {
 		
 		instances.put(playerName, vplayer);
 		return vplayer;
-	}
-	
-	public static Set<FPlayer> getAllOnline() {
-		Set<FPlayer> fplayers = new HashSet<FPlayer>();
-		for (Player player : Factions.instance.getServer().getOnlinePlayers()) {
-			fplayers.add(FPlayer.get(player));
-		}
-		return fplayers;
-	}
-	
-	public static Collection<FPlayer> getAll() {
-		return instances.values();
-	}
-	
-	public static FPlayer find(String playername) {
-		for (Entry<String, FPlayer> entry : instances.entrySet()) {
-			if (entry.getKey().equalsIgnoreCase(playername) || entry.getKey().startsWith(playername)) {
-				return entry.getValue();
-			}
-		}
-		return null;
-	}
+	}*/
 	
 	// -------------------------------------------- //
 	// Persistance
 	// -------------------------------------------- //
 	
-	public boolean shouldBeSaved() {
-		return !deleteMe;
+	@Override
+	public boolean shouldBeSaved()
+	{
+		return ! this.deleteMe;
 	}
 	
-	public static boolean save() {
+	/*
+	public static boolean save()
+	{
 		//Factions.log("Saving players to disk");
 		
 		// We only wan't to save the players with non default values
@@ -747,32 +812,32 @@ public class FPlayer {
 		}
 		
 		try {
-			DiscUtil.write(file, Factions.instance.gson.toJson(playersToSave));
+			DiscUtil.write(file, P.p.gson.toJson(playersToSave));
 		} catch (Exception e) {
 			e.printStackTrace();
-			Factions.log("Failed to save the players to disk.");
+			P.log("Failed to save the players to disk.");
 			return false;
 		}
 		return true;
 	}
 	
 	public static boolean load() {
-		Factions.log("Loading players from disk");
+		P.log("Loading players from disk");
 		if ( ! file.exists()) {
 			if ( ! loadOld())
-				Factions.log("No players to load from disk. Creating new file.");
+				P.log("No players to load from disk. Creating new file.");
 			save();
 			return true;
 		}
 		
 		try {
 			Type type = new TypeToken<Map<String, FPlayer>>(){}.getType();
-			Map<String, FPlayer> instancesFromFile = Factions.instance.gson.fromJson(DiscUtil.read(file), type);
+			Map<String, FPlayer> instancesFromFile = P.p.gson.fromJson(DiscUtil.read(file), type);
 			instances.clear();
 			instances.putAll(instancesFromFile);
 		} catch (Exception e) {
 			e.printStackTrace();
-			Factions.log("Failed to load the players from disk.");
+			P.log("Failed to load the players from disk.");
 			return false;
 		}
 		
@@ -786,45 +851,24 @@ public class FPlayer {
 			entry.getValue().playerName = entry.getKey();
 		}
 	}
+	*/
 	
-	public static void clean() {
-		for (FPlayer fplayer : instances.values()) {
-			if ( ! Faction.exists(fplayer.getFactionId())) {
-				Factions.log("Reset faction data (invalid faction) for player "+fplayer.getName());
-				fplayer.resetFactionData();
-			}
-		}
-	}
-	
-	public static void autoLeaveOnInactivityRoutine() {
-		if (Conf.autoLeaveAfterDaysOfInactivity <= 0.0) {
-			return;
-		}
 
-		long now = System.currentTimeMillis();
-		double toleranceMillis = Conf.autoLeaveAfterDaysOfInactivity * 24 * 60 * 60 * 1000;
-		
-		for (FPlayer fplayer : FPlayer.getAll()) {
-			if (now - fplayer.getLastLoginTime() > toleranceMillis) {
-				fplayer.leave(false);
-				fplayer.markForDeletion(true);
-			}
-		}
-	}
+	/*private static boolean loadOld()
+	{
+		File folderFollower = new File(P.p.getDataFolder(), "follower");
 
-	private static boolean loadOld() {
-		File folderFollower = new File(Factions.instance.getDataFolder(), "follower");
+		if ( ! folderFollower.isDirectory()) return false;
 
-		if ( ! folderFollower.isDirectory())
-			return false;
-
-		Factions.log("Players file doesn't exist, attempting to load old pre-1.1 data.");
+		p.log("Players file doesn't exist, attempting to load old pre-1.1 data.");
 
 		String ext = ".json";
 
-		class jsonFileFilter implements FileFilter {
+		class jsonFileFilter implements FileFilter
+		{
 			@Override
-			public boolean accept(File file) {
+			public boolean accept(File file)
+			{
 				return (file.getName().toLowerCase().endsWith(".json") && file.isFile());
 			}
 		}
@@ -836,16 +880,16 @@ public class FPlayer {
 			String name = jsonFile.getName();
 			name = name.substring(0, name.length() - ext.length());
 			try {
-				FPlayer follower = Factions.instance.gson.fromJson(DiscUtil.read(jsonFile), FPlayer.class);
+				FPlayer follower = P.p.gson.fromJson(DiscUtil.read(jsonFile), FPlayer.class);
 				follower.playerName = name;
 				follower.lastLoginTime = System.currentTimeMillis();
 				instances.put(follower.playerName, follower);
-				Factions.log("loaded pre-1.1 follower "+name);
+				P.log("loaded pre-1.1 follower "+name);
 			} catch (Exception e) {
 				e.printStackTrace();
-				Factions.log(Level.WARNING, "failed to load follower "+name);
+				P.log(Level.WARNING, "failed to load follower "+name);
 			}
 		}
 		return true;
-	}
+	}*/
 }

@@ -5,7 +5,7 @@ import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Role;
 
 public class FCommandUnclaim extends FBaseCommand {
@@ -29,7 +29,7 @@ public class FCommandUnclaim extends FBaseCommand {
 		Faction otherFaction = Board.getFactionAt(flocation);
 		
 		if (otherFaction.isSafeZone()) {
-			if (Factions.hasPermManageSafeZone(sender)) {
+			if (P.hasPermManageSafeZone(sender)) {
 				Board.removeAt(flocation);
 				sendMessage("Safe zone was unclaimed.");
 			} else {
@@ -38,7 +38,7 @@ public class FCommandUnclaim extends FBaseCommand {
 			return;
 		}
 		else if (otherFaction.isWarZone()) {
-			if (Factions.hasPermManageWarZone(sender)) {
+			if (P.hasPermManageWarZone(sender)) {
 				Board.removeAt(flocation);
 				sendMessage("War zone was unclaimed.");
 			} else {

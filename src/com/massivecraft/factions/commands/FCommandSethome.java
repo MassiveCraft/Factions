@@ -2,7 +2,7 @@ package com.massivecraft.factions.commands;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Role;
 
 public class FCommandSethome extends FBaseCommand {
@@ -38,7 +38,7 @@ public class FCommandSethome extends FBaseCommand {
 		Faction myFaction = me.getFaction();
 		
 		if (parameters.size() > 0) {
-			if (!Factions.hasPermAdminBypass(player)) {
+			if (!P.hasPermAdminBypass(player)) {
 				me.sendMessage("You cannot set the home of another faction without adminBypass permission.");
 				return;
 			}
@@ -51,7 +51,7 @@ public class FCommandSethome extends FBaseCommand {
 			}
 		}
 		
-		if (Conf.homesMustBeInClaimedTerritory && !me.isInOwnTerritory() && !Factions.hasPermAdminBypass(player)) {
+		if (Conf.homesMustBeInClaimedTerritory && !me.isInOwnTerritory() && !P.hasPermAdminBypass(player)) {
 			me.sendMessage("Sorry, your faction home can only be set inside your own claimed territory.");
 			return;
 		}

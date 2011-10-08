@@ -2,7 +2,7 @@ package com.massivecraft.factions.commands;
 
 import org.bukkit.command.CommandSender;
 
-import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.P;
 
 public class FCommandSaveAll extends FBaseCommand {
 	
@@ -17,12 +17,12 @@ public class FCommandSaveAll extends FBaseCommand {
 	
 	@Override
 	public boolean hasPermission(CommandSender sender) {
-		return Factions.hasPermSaveAll(sender);
+		return P.hasPermSaveAll(sender);
 	}
 	
 	@Override
 	public void perform() {
-		Factions.saveAll();
+		P.saveAll();
 		
 		sendMessage("Factions saved to disk!");
 	}

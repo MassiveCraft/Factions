@@ -12,7 +12,7 @@ import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.TextUtil;
 
@@ -99,7 +99,7 @@ public class FBaseCommand {
 		// make sure player doesn't have their access to the command revoked
 		Iterator<String> iter = aliases.iterator();
 		while (iter.hasNext()) {
-			if (Factions.isCommandDisabled(sender, iter.next())) {
+			if (P.isCommandDisabled(sender, iter.next())) {
 				sendMessage("You lack the permissions to "+this.helpDescription.toLowerCase()+".");
 				return false;
 			}
@@ -114,7 +114,7 @@ public class FBaseCommand {
 	}
 	
 	public boolean hasPermission(CommandSender sender) {
-		return Factions.hasPermParticipate(sender);
+		return P.hasPermParticipate(sender);
 	}
 	
 	// -------------------------------------------- //
@@ -126,7 +126,7 @@ public class FBaseCommand {
 		
 		ret += Conf.colorCommand;
 		
-		ret += Factions.instance.getBaseCommand()+ " " +TextUtil.implode(this.getAliases(), ",")+" ";
+		ret += P.p.getBaseCommand()+ " " +TextUtil.implode(this.getAliases(), ",")+" ";
 		
 		List<String> parts = new ArrayList<String>();
 		

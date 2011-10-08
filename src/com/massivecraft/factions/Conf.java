@@ -1,26 +1,27 @@
 package com.massivecraft.factions;
 
-import java.io.File;
 import java.util.*;
 import org.bukkit.*;
 import org.bukkit.entity.CreatureType;
 
-import com.massivecraft.factions.util.DiscUtil;
-
-
-public class Conf {
-	public static final transient File file = new File(Factions.instance.getDataFolder(), "conf.json");
+public class Conf
+{
+	// track players with admin access who have enabled "admin bypass" mode, and should therefore be able to build anywhere
+	// not worth saving between server restarts, I think
+	public static transient Set<String> adminBypassPlayers = Collections.synchronizedSet(new HashSet<String>());
 	
 	// Colors
 	public static ChatColor colorMember = ChatColor.GREEN;
 	public static ChatColor colorAlly = ChatColor.LIGHT_PURPLE;
 	public static ChatColor colorNeutral = ChatColor.WHITE;
 	public static ChatColor colorEnemy = ChatColor.RED;
-	
+	/*
 	public static ChatColor colorSystem = ChatColor.YELLOW;
 	public static ChatColor colorChrome = ChatColor.GOLD;
 	public static ChatColor colorCommand = ChatColor.AQUA;
 	public static ChatColor colorParameter = ChatColor.DARK_AQUA;
+	
+	*/
 	
 	// Power
 	public static double powerPlayerMax = 10.0;
@@ -39,10 +40,10 @@ public class Conf {
 	public static int factionTagLengthMax = 10;
 	public static boolean factionTagForceUpperCase = false;
 	
-	public static boolean newFactionsDefaultOpen = true;
+	public static boolean newFactionsDefaultOpen = false;
 
 	// what faction ID to start new players in when they first join the server; default is 0, "no faction"
-	public static int newPlayerStartingFactionID = 0;
+	public static String newPlayerStartingFactionID = "0";
 
 	public static boolean showMapFactionKey = true;
 	public static boolean showNeutralFactionsOnMap = true;
@@ -183,7 +184,7 @@ public class Conf {
 	// Spout features
 	public static boolean spoutFactionTagsOverNames = true;
 	public static boolean spoutFactionTitlesOverNames = true;
-	public static boolean spoutFactionAdminCapes = true;
+	public static boolean spoutFactionAdminCapes = true; // TODO: What are these for?
 	public static boolean spoutFactionModeratorCapes = true;
 	public static int spoutTerritoryDisplayPosition = 3;
 	public static String capeAlly = "https://github.com/MassiveCraft/Factions/raw/master/capes/ally.png";
@@ -236,7 +237,8 @@ public class Conf {
 	public static transient int mapWidth = 39;
 	public static transient char[] mapKeyChrs = "\\/#?$%=&^ABCDEFGHJKLMNOPQRSTUVWXYZ1234567890abcdeghjmnopqrsuvwxyz".toCharArray();
 	
-	static {
+	static
+	{
 		territoryEnemyDenyCommands.add("home");
 		territoryEnemyDenyCommands.add("sethome");
 		territoryEnemyDenyCommands.add("spawn");
@@ -281,45 +283,17 @@ public class Conf {
 		safeZoneNerfedCreatureTypes.add(CreatureType.ZOMBIE);
 	}
 
-	// track players with admin access who have enabled "admin bypass" mode, and should therefore be able to build anywhere
-	// not worth saving between server restarts, I think
-	public static transient Set<String> adminBypassPlayers = Collections.synchronizedSet(new HashSet<String>());
-
 	// -------------------------------------------- //
 	// Persistance
 	// -------------------------------------------- //
-	
-	public static boolean save() {
-		//Factions.log("Saving config to disk.");
-		
-		try {
-			DiscUtil.write(file, Factions.instance.gson.toJson(new Conf()));
-		} catch (Exception e) {
-			e.printStackTrace();
-			Factions.log("Failed to save the config to disk.");
-			return false;
-		}
-		return true;
+	private static transient Conf i = new Conf();
+	public static void load()
+	{
+		P.p.persist.loadOrSaveDefault(i, Conf.class, "conf");
 	}
-	
-	public static boolean load() {
-		Factions.log("Loading conf from disk");
-		
-		if ( ! file.exists()) {
-			Factions.log("No conf to load from disk. Creating new file.");
-			save();
-			return true;
-		}
-		
-		try {
-			Factions.instance.gson.fromJson(DiscUtil.read(file), Conf.class);
-		} catch (Exception e) {
-			e.printStackTrace();
-			Factions.log("Failed to load the config from disk.");
-			return false;
-		}
-		
-		return true;
+	public static void save()
+	{
+		P.p.persist.save(i);
 	}
 }
 

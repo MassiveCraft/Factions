@@ -1,7 +1,8 @@
 name: Factions
-version: 1.5.1_dev
-main: com.massivecraft.factions.Factions
+version: 1.6.0_dev
+main: com.massivecraft.factions.P
 softdepend:
+  - PermissionsEx
   - Permissions
   - Essentials
   - EssentialsChat
@@ -16,10 +17,6 @@ softdepend:
   - Spout
   - WorldEdit
   - WorldGuard
-commands:
-  f:
-    description: All of the Factions commands
-    usage: See documentation.
 permissions:
   factions.*:
     description: Grants all Factions permissions

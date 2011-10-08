@@ -7,7 +7,7 @@ import com.massivecraft.factions.Board;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.P;
 
 
 public class FCommandOwnerList extends FBaseCommand {
@@ -20,7 +20,7 @@ public class FCommandOwnerList extends FBaseCommand {
 	
 	@Override
 	public void perform() {
-		boolean hasBypass = Factions.hasPermAdminBypass(player);
+		boolean hasBypass = P.hasPermAdminBypass(player);
 
 		if ( ! hasBypass && ! assertHasFaction()) {
 			return;

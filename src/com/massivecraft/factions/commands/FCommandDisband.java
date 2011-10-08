@@ -3,7 +3,7 @@ package com.massivecraft.factions.commands;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.P;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.struct.Role;
@@ -34,7 +34,7 @@ public class FCommandDisband extends FBaseCommand {
 				return;
 			}
 
-			if ( ! Factions.hasPermDisband(sender)) {
+			if ( ! P.hasPermDisband(sender)) {
 				if (me.getFaction() == faction) {
 					parameters.clear();
 				}
@@ -54,7 +54,7 @@ public class FCommandDisband extends FBaseCommand {
 
 			faction = me.getFaction();
 
-			if (faction.isPermanent() && !Factions.hasPermDisband(sender)) {
+			if (faction.isPermanent() && !P.hasPermDisband(sender)) {
 				sendMessage("Your faction is designated as permanent, so you cannot disband it.");
 				return;
 			}
@@ -75,7 +75,7 @@ public class FCommandDisband extends FBaseCommand {
 			if (amount > 0.0) {
 				String amountString = Econ.moneyString(amount);
 				sendMessage("You have been given the disbanded faction's bank, totaling "+amountString+".");
-				Factions.log(player.getName() + " has been given bank holdings of "+amountString+" from disbanding "+faction.getTag()+".");
+				P.log(player.getName() + " has been given bank holdings of "+amountString+" from disbanding "+faction.getTag()+".");
 			}
 		}		
 		

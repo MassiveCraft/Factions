@@ -4,7 +4,7 @@ import org.bukkit.command.CommandSender;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Role;
 
 public class FCommandNoBoom extends FBaseCommand {
@@ -17,7 +17,7 @@ public class FCommandNoBoom extends FBaseCommand {
 
 	@Override
 	public boolean hasPermission(CommandSender sender) {
-		return Factions.hasPermPeacefulExplosionToggle(sender);
+		return P.hasPermPeacefulExplosionToggle(sender);
 	}
 
 	@Override

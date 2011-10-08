@@ -4,7 +4,7 @@ import org.bukkit.ChatColor;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.P;
 import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
@@ -62,7 +62,7 @@ public class FRelationCommand extends FBaseCommand {
 			myFaction.sendMessage(Conf.colorSystem+"Your faction is now "+currentRelationColor+whishedRelation.toString()+Conf.colorSystem+" to "+currentRelationColor+otherFaction.getTag());
 		} else {
 			otherFaction.sendMessage(currentRelationColor+myFaction.getTag()+Conf.colorSystem+ " wishes to be your "+whishedRelation.getColor()+whishedRelation.toString());
-			otherFaction.sendMessage(Conf.colorSystem+"Type "+Conf.colorCommand+Factions.instance.getBaseCommand()+" "+whishedRelation+" "+myFaction.getTag()+Conf.colorSystem+" to accept.");
+			otherFaction.sendMessage(Conf.colorSystem+"Type "+Conf.colorCommand+P.p.getBaseCommand()+" "+whishedRelation+" "+myFaction.getTag()+Conf.colorSystem+" to accept.");
 			myFaction.sendMessage(currentRelationColor+otherFaction.getTag()+Conf.colorSystem+ " were informed that you wish to be "+whishedRelation.getColor()+whishedRelation);
 		}
 		if (!whishedRelation.isNeutral() && otherFaction.isPeaceful()) {

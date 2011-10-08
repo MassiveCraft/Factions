@@ -5,42 +5,60 @@ import org.bukkit.event.server.ServerListener;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.event.server.PluginEnableEvent;
 
+import com.massivecraft.factions.P;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.integration.SpoutFeatures;
 
 
-public class FactionsServerListener extends ServerListener {
+public class FactionsServerListener extends ServerListener
+{
+	public P p;
+	public FactionsServerListener(P p)
+	{
+		this.p = p;
+	}
+	
 	@Override
-	public void onPluginDisable(PluginDisableEvent event) {
+	public void onPluginDisable(PluginDisableEvent event)
+	{
 		String name = event.getPlugin().getDescription().getName();
-		if (Econ.registerHooked() && name.equals("Register")) {
+		if (Econ.registerHooked() && name.equals("Register"))
+		{
 			Econ.registerSet(false);
 		}
-		else if (Econ.iConomyHooked() && name.equals("iConomy")) {
+		else if (Econ.iConomyHooked() && name.equals("iConomy"))
+		{
 			Econ.iConomySet(false);
 		}
-		else if (Econ.essentialsEcoHooked() && name.equals("Essentials")) {
+		else if (Econ.essentialsEcoHooked() && name.equals("Essentials"))
+		{
 			Econ.essentialsEcoSet(false);
 		}
-		else if (name.equals("Spout")) {
+		else if (name.equals("Spout"))
+		{
 			SpoutFeatures.setAvailable(false, "");
 		}
 	}
 
 	@Override
-	public void onPluginEnable(PluginEnableEvent event) {
+	public void onPluginEnable(PluginEnableEvent event)
+	{
 		Plugin plug = event.getPlugin();
 		String name = plug.getDescription().getName();
-		if (!Econ.registerHooked() && name.equals("Register") && plug.getClass().getName().equals("com.nijikokun.register.Register")) {
+		if ( ! Econ.registerHooked() && name.equals("Register") && plug.getClass().getName().equals("com.nijikokun.register.Register"))
+		{
 			Econ.registerSet(true);
 		}
-		else if (!Econ.iConomyHooked() && name.equals("iConomy") && plug.getClass().getName().equals("com.iConomy.iConomy")) {
+		else if ( ! Econ.iConomyHooked() && name.equals("iConomy") && plug.getClass().getName().equals("com.iConomy.iConomy"))
+		{
 			Econ.iConomySet(true);
 		}
-		else if (!Econ.essentialsEcoHooked() && name.equals("Essentials")) {
+		else if ( ! Econ.essentialsEcoHooked() && name.equals("Essentials"))
+		{
 			Econ.essentialsEcoSet(true);
 		}
-		else if (name.equals("Spout")) {
+		else if (name.equals("Spout"))
+		{
 			SpoutFeatures.setAvailable(true, plug.getDescription().getFullName());
 		}
 	}

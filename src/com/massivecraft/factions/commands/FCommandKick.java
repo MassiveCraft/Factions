@@ -3,7 +3,7 @@ package com.massivecraft.factions.commands;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.P;
 
 public class FCommandKick extends FBaseCommand {
 	
@@ -40,7 +40,7 @@ public class FCommandKick extends FBaseCommand {
 		Faction myFaction = me.getFaction();
 
 		// players with admin-level "disband" permission can bypass these requirements
-		if (!Factions.hasPermDisband(sender)) {
+		if (!P.hasPermDisband(sender)) {
 			if (yourFaction != myFaction) {
 				sendMessage(you.getNameAndRelevant(me)+Conf.colorSystem+" is not a member of "+myFaction.getTag(me));
 				return;

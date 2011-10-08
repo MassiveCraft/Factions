@@ -3,7 +3,7 @@ package com.massivecraft.factions.commands;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.P;
 
 
 public class FCommandBalance extends FBaseCommand {
@@ -30,7 +30,7 @@ public class FCommandBalance extends FBaseCommand {
 		Faction faction;
 		
 		if (parameters.size() > 0) {
-			if (!Factions.hasPermViewAnyFactionBalance(sender)) {
+			if (!P.hasPermViewAnyFactionBalance(sender)) {
 				sendMessage("You do not have sufficient permissions to view the bank balance of other factions.");
 				return;
 			}

@@ -2,7 +2,7 @@ package com.massivecraft.factions.commands;
 
 import org.bukkit.command.CommandSender;
 
-import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.P;
 
 public class FCommandLock extends FBaseCommand {
 	
@@ -18,7 +18,7 @@ public class FCommandLock extends FBaseCommand {
 	
 	@Override
 	public boolean hasPermission(CommandSender sender) {
-		return Factions.hasPermLock(sender);
+		return P.hasPermLock(sender);
 	}
 	
 	@Override

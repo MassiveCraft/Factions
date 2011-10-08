@@ -23,8 +23,9 @@ import com.massivecraft.factions.util.DiscUtil;
 import com.massivecraft.factions.util.TextUtil;
 
 
-public class Board {
-	private static transient File file = new File(Factions.instance.getDataFolder(), "board.json");
+public class Board
+{
+	private static transient File file = new File(P.p.getDataFolder(), "board.json");
 	private static transient HashMap<FLocation, Integer> flocationIds = new HashMap<FLocation, Integer>();
 	
 	//----------------------------------------------//
@@ -114,7 +115,7 @@ public class Board {
 		while (iter.hasNext()) {
 			Entry<FLocation, Integer> entry = iter.next();
 			if ( ! Faction.exists(entry.getValue())) {
-				Factions.log("Board cleaner removed "+entry.getValue()+" from "+entry.getKey());
+				P.log("Board cleaner removed "+entry.getValue()+" from "+entry.getKey());
 				iter.remove();
 			}
 		}
@@ -282,10 +283,10 @@ public class Board {
 		//Factions.log("Saving board to disk");
 		
 		try {
-			DiscUtil.write(file, Factions.instance.gson.toJson(dumpAsSaveFormat()));
+			DiscUtil.write(file, P.p.gson.toJson(dumpAsSaveFormat()));
 		} catch (Exception e) {
 			e.printStackTrace();
-			Factions.log("Failed to save the board to disk.");
+			P.log("Failed to save the board to disk.");
 			return false;
 		}
 		
@@ -293,35 +294,35 @@ public class Board {
 	}
 	
 	public static boolean load() {
-		Factions.log("Loading board from disk");
+		P.log("Loading board from disk");
 		
 		if ( ! file.exists()) {
 			if ( ! loadOld())
-				Factions.log("No board to load from disk. Creating new file.");
+				P.log("No board to load from disk. Creating new file.");
 			save();
 			return true;
 		}
 		
 		try {
 			Type type = new TypeToken<Map<String,Map<String,Integer>>>(){}.getType();
-			Map<String,Map<String,Integer>> worldCoordIds = Factions.instance.gson.fromJson(DiscUtil.read(file), type);
+			Map<String,Map<String,Integer>> worldCoordIds = P.p.gson.fromJson(DiscUtil.read(file), type);
 			loadFromSaveFormat(worldCoordIds);
 		} catch (Exception e) {
 			e.printStackTrace();
-			Factions.log("Failed to load the board from disk.");
+			P.log("Failed to load the board from disk.");
 			return false;
 		}
 			
 		return true;
 	}
 
-	private static boolean loadOld() {
-		File folderBoard = new File(Factions.instance.getDataFolder(), "board");
+	/*private static boolean loadOld() {
+		File folderBoard = new File(P.p.getDataFolder(), "board");
 
 		if ( ! folderBoard.isDirectory())
 			return false;
 
-		Factions.log("Board file doesn't exist, attempting to load old pre-1.1 data.");
+		P.log("Board file doesn't exist, attempting to load old pre-1.1 data.");
 
 		String ext = ".json";
 
@@ -350,14 +351,14 @@ public class Board {
 					int factionId = coordDat.get(1).getAsInt();
 					flocationIds.put(new FLocation(name, coordX, coordZ), factionId);
 				}
-				Factions.log("loaded pre-1.1 board "+name);
+				P.log("loaded pre-1.1 board "+name);
 			} catch (Exception e) {
 				e.printStackTrace();
-				Factions.log(Level.WARNING, "failed to load board "+name);
+				P.log(Level.WARNING, "failed to load board "+name);
 			}
 		}
 		return true;
-	}
+	}*/
 }
 
 

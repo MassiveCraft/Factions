@@ -4,7 +4,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.massivecraft.factions.Conf;
-import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.P;
 import com.massivecraft.factions.FPlayer;
 
 
@@ -30,7 +30,7 @@ public class FCommandPower extends FBaseCommand {
 	public void perform() {
 		FPlayer target;
 		if (parameters.size() > 0) {
-			if (!Factions.hasPermViewAnyPower(player)) {
+			if (!P.hasPermViewAnyPower(player)) {
 				me.sendMessage("You do not have the appropriate permission to view another player's power level.");
 				return;
 			}

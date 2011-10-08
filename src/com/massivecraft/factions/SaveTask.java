@@ -6,7 +6,7 @@ public class SaveTask implements Runnable {
 	
 	@Override
 	public void run() {
-		Factions.saveAll();
+		P.saveAll();
 	}
 
 }

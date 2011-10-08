@@ -2,7 +2,7 @@ package com.massivecraft.factions.commands;
 
 import org.bukkit.command.CommandSender;
 
-import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.P;
 
 
 public class FCommandVersion extends FBaseCommand {
@@ -22,7 +22,7 @@ public class FCommandVersion extends FBaseCommand {
 	
 	@Override
 	public void perform() {
-		sendMessage("You are running "+Factions.instance.getDescription().getFullName());
+		sendMessage("You are running "+P.p.getDescription().getFullName());
 	}
 	
 }

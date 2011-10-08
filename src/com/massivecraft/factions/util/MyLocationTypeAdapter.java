@@ -13,10 +13,11 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
-import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.P;
 
 
-public class MyLocationTypeAdapter implements JsonDeserializer<Location>, JsonSerializer<Location> {
+public class MyLocationTypeAdapter implements JsonDeserializer<Location>, JsonSerializer<Location>
+{
 	private static final String WORLD = "world";
 	private static final String X = "x";
 	private static final String Y = "y";
@@ -25,14 +26,16 @@ public class MyLocationTypeAdapter implements JsonDeserializer<Location>, JsonSe
 	private static final String PITCH = "pitch";
 	
 	@Override
-	public Location deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-		try {
+	public Location deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException
+	{
+		try
+		{
 			JsonObject obj = json.getAsJsonObject();
 
 			String worldname = obj.get(WORLD).getAsString();
-			World world = Factions.instance.getServer().getWorld(worldname);
+			World world = P.p.getServer().getWorld(worldname);
 			if (world == null) {
-				Factions.log(Level.WARNING, "Stored location's world \"" + worldname + "\" not found on server; dropping the location.");
+				P.p.log(Level.WARNING, "Stored location's world \"" + worldname + "\" not found on server; dropping the location.");
 				return null;
 			}
 
@@ -44,9 +47,11 @@ public class MyLocationTypeAdapter implements JsonDeserializer<Location>, JsonSe
 
 			return new Location(world, x, y, z, yaw, pitch);
 
-		} catch (Exception ex) {
+		}
+		catch (Exception ex)
+		{
 			ex.printStackTrace();
-			Factions.log(Level.WARNING, "Error encountered while deserializing a location.");
+			P.p.log(Level.WARNING, "Error encountered while deserializing a location.");
 			return null;
 		}
 	}
@@ -55,10 +60,11 @@ public class MyLocationTypeAdapter implements JsonDeserializer<Location>, JsonSe
 	public JsonElement serialize(Location src, Type typeOfSrc, JsonSerializationContext context) {
 		JsonObject obj = new JsonObject();
 
-		try {
+		try
+		{
 			if (src.getWorld() == null)
 			{
-				Factions.log(Level.WARNING, "Passed location's world was not found on the server. Dropping the location.");
+				P.p.log(Level.WARNING, "Passed location's world was not found on the server. Dropping the location.");
 				return obj;
 			}
 
@@ -71,9 +77,11 @@ public class MyLocationTypeAdapter implements JsonDeserializer<Location>, JsonSe
 
 			return obj;
 
-		} catch (Exception ex) {
+		}
+		catch (Exception ex)
+		{
 			ex.printStackTrace();
-			Factions.log(Level.WARNING, "Error encountered while serializing a location.");
+			P.p.log(Level.WARNING, "Error encountered while serializing a location.");
 			return obj;
 		}
 	}
