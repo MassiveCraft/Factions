@@ -33,8 +33,12 @@ public class CmdShow extends FCommand
 	@Override
 	public void perform()
 	{
-		Faction faction = this.argAsFaction(0, myFaction);
-		if (faction == null) return;
+		Faction faction = myFaction;
+		if (this.argIsSet(0))
+		{
+			faction = this.argAsFaction(0);
+			if (faction == null) return;
+		}
 
 		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
 		if ( ! payForCommand(Conf.econCostShow)) return;

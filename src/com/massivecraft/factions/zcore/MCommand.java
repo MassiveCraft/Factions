@@ -331,9 +331,8 @@ public abstract class MCommand<T extends MPlugin>
 	}
 	
 	// INT ======================
-	public int argAsInt(int idx, int def)
+	public int strAsInt(String str, int def)
 	{
-		String str = this.argAsString(idx);
 		if (str == null) return def;
 		try
 		{
@@ -345,15 +344,18 @@ public abstract class MCommand<T extends MPlugin>
 			return def;
 		}
 	}
+	public int argAsInt(int idx, int def)
+	{
+		return strAsInt(this.argAsString(idx), def);
+	}
 	public int argAsInt(int idx)
 	{
 		return this.argAsInt(idx, -1);
 	}
 	
 	// Double ======================
-	public double argAsDouble(int idx, double def)
+	public double strAsDouble(String str, double def)
 	{
-		String str = this.argAsString(idx);
 		if (str == null) return def;
 		try
 		{
@@ -364,6 +366,10 @@ public abstract class MCommand<T extends MPlugin>
 		{
 			return def;
 		}
+	}
+	public double argAsDouble(int idx, double def)
+	{
+		return strAsDouble(this.argAsString(idx), def);
 	}
 	public double argAsDouble(int idx)
 	{
@@ -381,7 +387,6 @@ public abstract class MCommand<T extends MPlugin>
 		}
 		return false;
 	}
-	
 	public Boolean argAsBool(int idx, boolean def)
 	{
 		String str = this.argAsString(idx);
@@ -395,12 +400,10 @@ public abstract class MCommand<T extends MPlugin>
 	}
 	
 	// PLAYER ======================
-	
-	public Player argAsPlayer(int idx, Player def, boolean msg)
+	public Player strAsPlayer(String name, Player def, boolean msg)
 	{
 		Player ret = def;
 		
-		String name = this.argAsString(idx);
 		if (name != null)
 		{
 			Player player = Bukkit.getServer().getPlayer(name);
@@ -417,6 +420,11 @@ public abstract class MCommand<T extends MPlugin>
 		
 		return ret;
 	}
+	
+	public Player argAsPlayer(int idx, Player def, boolean msg)
+	{
+		return this.strAsPlayer(this.argAsString(idx), def, msg);
+	}
 	public Player argAsPlayer(int idx, Player def)
 	{
 		return this.argAsPlayer(idx, def, true);
@@ -427,11 +435,10 @@ public abstract class MCommand<T extends MPlugin>
 	}
 	
 	// BEST PLAYER MATCH ======================
-	public Player argAsBestPlayerMatch(int idx, Player def, boolean msg)
+	public Player strAsBestPlayerMatch(String name, Player def, boolean msg)
 	{
 		Player ret = def;
 		
-		String name = this.argAsString(idx);
 		if (name != null)
 		{
 			List<Player> players = Bukkit.getServer().matchPlayer(name);
@@ -448,6 +455,10 @@ public abstract class MCommand<T extends MPlugin>
 		
 		return ret;
 	}
+	public Player argAsBestPlayerMatch(int idx, Player def, boolean msg)
+	{
+		return this.strAsBestPlayerMatch(this.argAsString(idx), def, msg);
+	}
 	public Player argAsBestPlayerMatch(int idx, Player def)
 	{
 		return this.argAsBestPlayerMatch(idx, def, true);
@@ -456,8 +467,4 @@ public abstract class MCommand<T extends MPlugin>
 	{
 		return this.argAsPlayer(idx, null);
 	}
-	
-	
-	
-	
 }
