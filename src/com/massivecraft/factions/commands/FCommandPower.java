@@ -30,8 +30,8 @@ public class FCommandPower extends FCommand {
 	public void perform() {
 		FPlayer target;
 		if (parameters.size() > 0) {
-			if (!P.hasPermViewAnyPower(me)) {
-				me.sendMessage("You do not have the appropriate permission to view another player's power level.");
+			if (!P.hasPermViewAnyPower(fme)) {
+				fme.sendMessage("You do not have the appropriate permission to view another player's power level.");
 				return;
 			}
 			target = findFPlayer(parameters.get(0), false);
@@ -39,7 +39,7 @@ public class FCommandPower extends FCommand {
 			sendMessage("From the console, you must specify a player (f power <player name>).");
 			return;
 		} else {
-			target = me;
+			target = fme;
 		}
 
 		if (target == null) {
@@ -51,7 +51,7 @@ public class FCommandPower extends FCommand {
 			return;
 		}
 
-		sendMessage(target.getNameAndRelevant(me)+Conf.colorChrome+" - Power / Maxpower: "+Conf.colorSystem+target.getPowerRounded()+" / "+target.getPowerMaxRounded());
+		sendMessage(target.getNameAndRelevant(fme)+Conf.colorChrome+" - Power / Maxpower: "+Conf.colorSystem+target.getPowerRounded()+" / "+target.getPowerMaxRounded());
 	}
 	
 }

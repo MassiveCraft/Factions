@@ -37,7 +37,7 @@ public class FCommandTag extends FCommand {
 		String tag = parameters.get(0);
 		
 		// TODO does not first test cover selfcase?
-		if (Faction.isTagTaken(tag) && ! TextUtil.getComparisonString(tag).equals(me.getFaction().getComparisonTag())) {
+		if (Faction.isTagTaken(tag) && ! TextUtil.getComparisonString(tag).equals(fme.getFaction().getComparisonTag())) {
 			sendMessage("That tag is already taken");
 			return;
 		}
@@ -54,18 +54,18 @@ public class FCommandTag extends FCommand {
 			return;
 		}
 
-		Faction myFaction = me.getFaction();
+		Faction myFaction = fme.getFaction();
 		
 		String oldtag = myFaction.getTag();
 		myFaction.setTag(tag);
 		
 		// Inform
-		myFaction.sendMessage(me.getNameAndRelevant(myFaction)+Conf.colorSystem+" changed your faction tag to "+Conf.colorMember+myFaction.getTag());
+		myFaction.sendMessage(fme.getNameAndRelevant(myFaction)+Conf.colorSystem+" changed your faction tag to "+Conf.colorMember+myFaction.getTag());
 		for (Faction faction : Faction.getAll()) {
-			if (faction == me.getFaction()) {
+			if (faction == fme.getFaction()) {
 				continue;
 			}
-			faction.sendMessage(Conf.colorSystem+"The faction "+me.getRelationColor(faction)+oldtag+Conf.colorSystem+" changed their name to "+myFaction.getTag(faction));
+			faction.sendMessage(Conf.colorSystem+"The faction "+fme.getRelationColor(faction)+oldtag+Conf.colorSystem+" changed their name to "+myFaction.getTag(faction));
 		}
 
 		if (Conf.spoutFactionTagsOverNames) {

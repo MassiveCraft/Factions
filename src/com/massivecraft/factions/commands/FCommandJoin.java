@@ -2,69 +2,80 @@ package com.massivecraft.factions.commands;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.struct.Permission;
 
-public class FCommandJoin extends FCommand {
-	
-	public FCommandJoin() {
-		aliases.add("join");
+public class FCommandJoin extends FCommand
+{
+	public FCommandJoin()
+	{
+		super();
+		this.aliases.add("join");
 		
-		requiredParameters.add("faction name");
+		this.requiredArgs.add("faction name");
+		//this.optionalArgs.put("", "");
 		
-		helpDescription = "Join a faction";
+		this.permission = Permission.COMMAND_JOIN.node;
+		
+		senderMustBePlayer = true;
+		senderMustBeMember = false;
+		senderMustBeModerator = false;
+		senderMustBeAdmin = false;
 	}
 	
 	@Override
-	public void perform() {
-		
-		if( isLocked() ) {
+	public void perform()
+	{
+		if( isLocked() )
+		{
 			sendLockMessage();
 			return;
 		}
 		
-		String factionName = parameters.get(0);
-		
-		Faction faction = findFaction(factionName);
-		if (faction == null) {
-			return;
-		}
+		Faction faction = this.argAsFaction(0);
+		if (faction == null) return;
 
-		if ( ! faction.isNormal()) {
-			sendMessage("You may only join normal factions. This is a system faction.");
+		if ( ! faction.isNormal())
+		{
+			sendMessageParsed("<b>You may only join normal factions. This is a system faction.");
 			return;
 		}
 		
-		if (faction == me.getFaction()) {
-			sendMessage("You are already a member of "+faction.getTag(me));
+		if (faction == fme.getFaction())
+		{
+			sendMessageParsed("<b>You are already a member of %s", faction.getTag(fme));
 			return;
 		}
 		
-		if (me.hasFaction()) {
-			sendMessage("You must leave your current faction first.");
+		if (fme.hasFaction())
+		{
+			sendMessageParsed("<b>You must leave your current faction first.");
 			return;
 		}
 		
-		if (!Conf.CanLeaveWithNegativePower && me.getPower() < 0) {
-			sendMessage("You cannot join a faction until your power is positive.");
+		if (!Conf.CanLeaveWithNegativePower && fme.getPower() < 0)
+		{
+			sendMessageParsed("<b>You cannot join a faction until your power is positive.");
 			return;
 		}
 		
-		if( ! faction.getOpen() && ! faction.isInvited(me)) {
-			sendMessage("This guild requires invitation.");
-			faction.sendMessage(me.getNameAndRelevant(faction)+Conf.colorSystem+" tried to join your faction.");
+		if( ! faction.getOpen() && ! faction.isInvited(fme))
+		{
+			sendMessageParsed("<i>This guild requires invitation.");
+			faction.sendMessageParsed("%s<i> tried to join your faction.", fme.getNameAndRelevant(faction));
 			return;
 		}
 
 		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-		if (!payForCommand(Conf.econCostJoin)) {
+		if (!payForCommand(Conf.econCostJoin))
+		{
 			return;
 		}
 
-		me.sendMessage(Conf.colorSystem+"You successfully joined "+faction.getTag(me));
-		faction.sendMessage(me.getNameAndRelevant(faction)+Conf.colorSystem+" joined your faction.");
+		fme.sendMessageParsed("<i>You successfully joined %s", faction.getTag(fme));
+		faction.sendMessageParsed("<i>%s joined your faction.", fme.getNameAndRelevant(faction));
 		
-		me.resetFactionData();
-		me.setFaction(faction);
-		faction.deinvite(me);
+		fme.resetFactionData();
+		fme.setFaction(faction);
+		faction.deinvite(fme);
 	}
-	
 }

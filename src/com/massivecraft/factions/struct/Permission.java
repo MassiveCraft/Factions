@@ -6,27 +6,53 @@ import com.massivecraft.factions.P;
 
 public enum Permission
 {
-	PARTICIPATE("factions.participate"),
-	CREATE("factions.create"),
-	VIEW_ANY_POWER("factions.viewAnyPower"),
-	PEACEFUL_EXPLOTION_TOGGLE("factions.peacefulExplosionToggle"),
-	ADMIN_BYPASS("factions.adminBypass"),
-	CONFIG("factions.config"),
-	DISBAN("factions.disband"),
-	LOCK("factions.lock"),
-	MANAGE_SAFE_ZONE("factions.manageSafeZone"),
-	MANAGE_WAR_ZONE("factions.manageWarZone"),
-	OWNERSHIP_BYPASS("factions.ownershipBypass"),
-	RELOAD("factions.reload"),
-	SAVE_ALL("factions.saveall"),
-	SET_PEACEFUL("factions.setPeaceful"),
+	PARTICIPATE("participate"),
+	CREATE("create"),
+	VIEW_ANY_POWER("viewAnyPower"),
+	VIEW_ANY_FACTION_BALANCE("viewAnyFactionBalance"),
+	PEACEFUL_EXPLOTION_TOGGLE("peacefulExplosionToggle"),
+	ADMIN_BYPASS("adminBypass"),
+	CONFIG("config"),
+	DISBAND("disband"),
+	LOCK("lock"),
+	MANAGE_SAFE_ZONE("manageSafeZone"),
+	MANAGE_WAR_ZONE("manageWarZone"),
+	OWNERSHIP_BYPASS("ownershipBypass"),
+	RELOAD("reload"),
+	SAVE_ALL("saveall"),
+	SET_PEACEFUL("setPeaceful"),
+	SET_PERMANENT("setPermanent"),
+	COMMAND_ADMIN("command.admin"),
+	COMMAND_AUTOCLAIM("command.autoClaim"),
+	COMMAND_BALANCE("command.balance"),
+	COMMAND_WITHDRAW("command.withdraw"),
+	COMMAND_PAY("command.pay"),
+	COMMAND_CHAT("command.chat"),
+	COMMAND_CLAIM("command.claim"),
+	COMMAND_CONFIG("command.config"),
+	COMMAND_DEINVITE("command.deinvite"),
+	COMMAND_DEPOSIT("command.deposit"),
+	COMMAND_DESCRIPTION("command.description"),
+	COMMAND_DISBAND("command.disband"),
+	COMMAND_DISBAND_ANY("command.disband.any"),
+	COMMAND_HELP("command.help"),
+	COMMAND_HOME("command.home"),
+	COMMAND_INVITE("command.invite"),
+	COMMAND_JOIN("command.join"),
+	COMMAND_KICK("command.kick"),
+	COMMAND_KICK_ANY("command.kick.any"),
+	COMMAND_LEAVE("command.leave"),
+	COMMAND_LIST("command.list"),
+	COMMAND_LOCK("command.lock"),
+	COMMAND_MAP("command.map"),
+	COMMAND_MOD("command.mod"),
 	;
 	
 	public final String node;
 	
 	Permission(final String node)
 	{
-		this.node = node;
+		this.node = "factions."+node;
     }
 	
 	public boolean has(CommandSender sender, boolean informSenderIfNot)

@@ -20,29 +20,29 @@ public class FCommandOwnerList extends FCommand {
 	
 	@Override
 	public void perform() {
-		boolean hasBypass = P.hasPermAdminBypass(me);
+		boolean hasBypass = P.hasPermAdminBypass(fme);
 
 		if ( ! hasBypass && ! assertHasFaction()) {
 			return;
 		}
 
 		if ( ! Conf.ownedAreasEnabled) {
-			me.sendMessage("Owned areas are disabled on this server.");
+			fme.sendMessage("Owned areas are disabled on this server.");
 			return;
 		}
 
-		Faction myFaction = me.getFaction();
-		FLocation flocation = new FLocation(me);
+		Faction myFaction = fme.getFaction();
+		FLocation flocation = new FLocation(fme);
 
 		if (Board.getIdAt(flocation) != myFaction.getId()) {
 			if (!hasBypass) {
-				me.sendMessage("This land is not claimed by your faction.");
+				fme.sendMessage("This land is not claimed by your faction.");
 				return;
 			}
 
 			myFaction = Board.getFactionAt(flocation);
 			if (!myFaction.isNormal()) {
-				me.sendMessage("This land is not claimed by any faction, thus no owners.");
+				fme.sendMessage("This land is not claimed by any faction, thus no owners.");
 				return;
 			}
 		}
@@ -50,10 +50,10 @@ public class FCommandOwnerList extends FCommand {
 		String owners = myFaction.getOwnerListString(flocation);
 
 		if (owners == null || owners.isEmpty()) {
-			me.sendMessage("No owners are set here; everyone in the faction has access.");
+			fme.sendMessage("No owners are set here; everyone in the faction has access.");
 			return;
 		}
 
-		me.sendMessage("Current owner(s) of this land: "+owners);
+		fme.sendMessage("Current owner(s) of this land: "+owners);
 	}
 }

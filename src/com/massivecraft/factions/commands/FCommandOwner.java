@@ -21,7 +21,7 @@ public class FCommandOwner extends FCommand {
 	
 	@Override
 	public void perform() {
-		boolean hasBypass = P.hasPermAdminBypass(me);
+		boolean hasBypass = P.hasPermAdminBypass(fme);
 
 		if ( ! hasBypass && ! assertHasFaction()) {
 			return;
@@ -33,14 +33,14 @@ public class FCommandOwner extends FCommand {
 		}
 
 		if ( ! Conf.ownedAreasEnabled) {
-			me.sendMessage("Sorry, but owned areas are disabled on this server.");
+			fme.sendMessage("Sorry, but owned areas are disabled on this server.");
 			return;
 		}
 
-		Faction myFaction = me.getFaction();
+		Faction myFaction = fme.getFaction();
 
 		if (!hasBypass && Conf.ownedAreasLimitPerFaction > 0 && myFaction.getCountOfClaimsWithOwners() >= Conf.ownedAreasLimitPerFaction) {
-			me.sendMessage("Sorry, but you have reached the server's limit of "+Conf.ownedAreasLimitPerFaction+" owned areas per faction.");
+			fme.sendMessage("Sorry, but you have reached the server's limit of "+Conf.ownedAreasLimitPerFaction+" owned areas per faction.");
 			return;
 		}
 
@@ -48,17 +48,17 @@ public class FCommandOwner extends FCommand {
 			return;
 		}
 
-		FLocation flocation = new FLocation(me);
+		FLocation flocation = new FLocation(fme);
 
 		if (Board.getIdAt(flocation) != myFaction.getId()) {
 			if (!hasBypass) {
-				me.sendMessage("This land is not claimed by your faction, so you can't set ownership of it.");
+				fme.sendMessage("This land is not claimed by your faction, so you can't set ownership of it.");
 				return;
 			}
 
 			myFaction = Board.getFactionAt(flocation);
 			if (!myFaction.isNormal()) {
-				me.sendMessage("This land is not claimed by a faction. Ownership is not possible.");
+				fme.sendMessage("This land is not claimed by a faction. Ownership is not possible.");
 				return;
 			}
 		}
@@ -68,7 +68,7 @@ public class FCommandOwner extends FCommand {
 		if (parameters.size() > 0) {
 			target = findFPlayer(parameters.get(0), false);
 		} else {
-			target = me;
+			target = fme;
 		}
 		if (target == null) {
 			return;
@@ -77,20 +77,20 @@ public class FCommandOwner extends FCommand {
 		String playerName = target.getName();
 
 		if (target.getFaction().getId() != myFaction.getId()) {
-			me.sendMessage(playerName + " is not a member of this faction.");
+			fme.sendMessage(playerName + " is not a member of this faction.");
 			return;
 		}
 
 		// if no player name was passed, and this claim does already have owners set, clear them
 		if (parameters.isEmpty() && myFaction.doesLocationHaveOwnersSet(flocation)) {
 			myFaction.clearClaimOwnership(flocation);
-			me.sendMessage("You have cleared ownership for this claimed area.");
+			fme.sendMessage("You have cleared ownership for this claimed area.");
 			return;
 		}
 
 		if (myFaction.isPlayerInOwnerList(playerName, flocation)) {
 			myFaction.removePlayerAsOwner(playerName, flocation);
-			me.sendMessage("You have removed ownership of this claimed land from "+playerName+".");
+			fme.sendMessage("You have removed ownership of this claimed land from "+playerName+".");
 			return;
 		}
 
@@ -100,6 +100,6 @@ public class FCommandOwner extends FCommand {
 		}
 
 		myFaction.setPlayerAsOwner(playerName, flocation);
-		me.sendMessage("You have added "+playerName+" to the owner list for this claimed land.");
+		fme.sendMessage("You have added "+playerName+" to the owner list for this claimed land.");
 	}
 }

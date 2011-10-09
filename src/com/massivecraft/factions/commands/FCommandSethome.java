@@ -31,28 +31,28 @@ public class FCommandSethome extends FCommand {
 		}
 		
 		if ( ! Conf.homesEnabled) {
-			me.sendMessage("Sorry, Faction homes are disabled on this server.");
+			fme.sendMessage("Sorry, Faction homes are disabled on this server.");
 			return;
 		}
 		
-		Faction myFaction = me.getFaction();
+		Faction myFaction = fme.getFaction();
 		
 		if (parameters.size() > 0) {
-			if (!P.hasPermAdminBypass(me)) {
-				me.sendMessage("You cannot set the home of another faction without adminBypass permission.");
+			if (!P.hasPermAdminBypass(fme)) {
+				fme.sendMessage("You cannot set the home of another faction without adminBypass permission.");
 				return;
 			}
 			
 			myFaction = findFaction(parameters.get(0), true);
 			
 			if (myFaction == null) {
-				me.sendMessage("No such faction seems to exist.");
+				fme.sendMessage("No such faction seems to exist.");
 				return;
 			}
 		}
 		
-		if (Conf.homesMustBeInClaimedTerritory && !me.isInOwnTerritory() && !P.hasPermAdminBypass(me)) {
-			me.sendMessage("Sorry, your faction home can only be set inside your own claimed territory.");
+		if (Conf.homesMustBeInClaimedTerritory && !fme.isInOwnTerritory() && !P.hasPermAdminBypass(fme)) {
+			fme.sendMessage("Sorry, your faction home can only be set inside your own claimed territory.");
 			return;
 		}
 
@@ -61,12 +61,12 @@ public class FCommandSethome extends FCommand {
 			return;
 		}
 
-		myFaction.setHome(me.getLocation());
+		myFaction.setHome(fme.getLocation());
 		
-		myFaction.sendMessage(me.getNameAndRelevant(myFaction)+Conf.colorSystem+" set the home for your faction. You can now use:");
+		myFaction.sendMessage(fme.getNameAndRelevant(myFaction)+Conf.colorSystem+" set the home for your faction. You can now use:");
 		myFaction.sendMessage(new FCommandHome().getUseageTemplate());
-		if (myFaction != me.getFaction()) {
-			me.sendMessage("You have set the home for the "+myFaction.getTag(me)+Conf.colorSystem+" faction.");
+		if (myFaction != fme.getFaction()) {
+			fme.sendMessage("You have set the home for the "+myFaction.getTag(fme)+Conf.colorSystem+" faction.");
 		}
 	}
 	

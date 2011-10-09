@@ -44,9 +44,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.massivecraft.factions.integration.EssentialsFeatures;
 
-/**
- * The data is saved to disk every 30min and on plugin disable.
- */
 public class P extends MPlugin
 {
 	// Our single plugin instance
@@ -57,6 +54,8 @@ public class P extends MPlugin
 	public final FactionsChatEarlyListener chatEarlyListener;
 	public final FactionsEntityListener entityListener;
 	public final FactionsBlockListener blockListener;
+	
+	public CmdBase cmdBase;
 	
 	public P()
 	{
@@ -82,6 +81,10 @@ public class P extends MPlugin
 		Factions.i.loadFromDisc();
 		Board.load();
 		
+		// Add Base Commands
+		this.cmdBase = new CmdBase();
+		this.getBaseCommands().add(cmdBase);
+		
 		//setupPermissions();
 		integrateEssentialsChat();
 		setupSpout(this);
@@ -96,7 +99,7 @@ public class P extends MPlugin
 		//Type mapFLocToStringSetType = new TypeToken<Map<FLocation, Set<String>>>(){}.getType();
 		
 		// Add the commands
-		commands.add(new FCommandHelp());
+		/*commands.add(new FCommandHelp());
 		commands.add(new FCommandAdmin());
 		commands.add(new FCommandAutoClaim());
 		commands.add(new FCommandAutoSafeclaim());
@@ -144,7 +147,7 @@ public class P extends MPlugin
 		commands.add(new FCommandVersion());
 		commands.add(new FCommandWarclaim());
 		commands.add(new FCommandWarunclaimall());
-		commands.add(new FCommandWithdraw());
+		commands.add(new FCommandWithdraw());*/
 		
 		// Register events
 		PluginManager pm = this.getServer().getPluginManager();

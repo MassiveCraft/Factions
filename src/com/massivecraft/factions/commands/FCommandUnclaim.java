@@ -25,7 +25,7 @@ public class FCommandUnclaim extends FCommand {
 			return;
 		}
 		
-		FLocation flocation = new FLocation(me);
+		FLocation flocation = new FLocation(fme);
 		Faction otherFaction = Board.getFactionAt(flocation);
 		
 		if (otherFaction.isSafeZone()) {
@@ -47,10 +47,10 @@ public class FCommandUnclaim extends FCommand {
 			return;
 		}
 		
-		if (Conf.adminBypassPlayers.contains(me.getName())) {
+		if (Conf.adminBypassPlayers.contains(fme.getName())) {
 			Board.removeAt(flocation);
 
-			otherFaction.sendMessage(me.getNameAndRelevant(otherFaction)+Conf.colorSystem+" unclaimed some of your land.");
+			otherFaction.sendMessage(fme.getNameAndRelevant(otherFaction)+Conf.colorSystem+" unclaimed some of your land.");
 			sendMessage("You unclaimed this land.");
 			return;
 		}
@@ -63,7 +63,7 @@ public class FCommandUnclaim extends FCommand {
 			return;
 		}
 		
-		Faction myFaction = me.getFaction();
+		Faction myFaction = fme.getFaction();
 		
 		
 		if ( myFaction != otherFaction) {
@@ -77,25 +77,25 @@ public class FCommandUnclaim extends FCommand {
 			// a real refund
 			if (refund > 0.0) {
 				if(Conf.bankFactionPaysLandCosts) {
-					Faction faction = me.getFaction();
+					Faction faction = fme.getFaction();
 					faction.addMoney(refund);
 					moneyBack = " "+faction.getTag()+" received a refund of "+Econ.moneyString(refund)+".";
 				} else {
-					Econ.addMoney(me.getName(), refund);
+					Econ.addMoney(fme.getName(), refund);
 					moneyBack = " They received a refund of "+Econ.moneyString(refund)+".";
 				}
 			}
 			// wait, you're charging people to unclaim land? outrageous
 			else if (refund < 0.0) {
 				if(Conf.bankFactionPaysLandCosts) {
-					Faction faction = me.getFaction();
+					Faction faction = fme.getFaction();
 					if(!faction.removeMoney(-refund)) {
 						sendMessage("Unclaiming this land will cost "+Econ.moneyString(-refund)+", which your faction can't currently afford.");
 						return;
 					}
 					moneyBack = " It cost "+faction.getTag()+" "+Econ.moneyString(refund)+".";
 				} else {
-					if (!Econ.deductMoney(me.getName(), -refund)) {
+					if (!Econ.deductMoney(fme.getName(), -refund)) {
 						sendMessage("Unclaiming this land will cost "+Econ.moneyString(-refund)+", which you can't currently afford.");
 						return;
 					}
@@ -109,7 +109,7 @@ public class FCommandUnclaim extends FCommand {
 		}
 
 		Board.removeAt(flocation);
-		myFaction.sendMessage(me.getNameAndRelevant(myFaction)+Conf.colorSystem+" unclaimed some land."+moneyBack);
+		myFaction.sendMessage(fme.getNameAndRelevant(myFaction)+Conf.colorSystem+" unclaimed some land."+moneyBack);
 	}
 	
 }

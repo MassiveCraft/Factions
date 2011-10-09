@@ -236,7 +236,7 @@ public class FactionsPlayerListener extends PlayerListener
 			}
 		}
 		
-		if (me.autoClaimEnabled())
+		if (me.isAutoClaimEnabled())
 		{
 			Faction myFaction = me.getFaction();
 			// TODO: Why is this ("cost") here and unused??? Should it be used somewhere Brettflan? :)
@@ -247,26 +247,26 @@ public class FactionsPlayerListener extends PlayerListener
 			if (me.getRole().value < Role.MODERATOR.value)
 			{
 				me.sendMessage("You must be "+Role.MODERATOR+" to claim land.");
-				me.enableAutoClaim(false);
+				me.setIsAutoClaimEnabled(false);
 			}
 			else if (Conf.worldsNoClaiming.contains(to.getWorldName()))
 			{
 				me.sendMessage("Sorry, this world has land claiming disabled.");
-				me.enableAutoClaim(false);
+				me.setIsAutoClaimEnabled(false);
 			}
 			else if (myFaction.getLandRounded() >= myFaction.getPowerRounded())
 			{
 				me.sendMessage("You can't claim more land! You need more power!");
-				me.enableAutoClaim(false);
+				me.setIsAutoClaimEnabled(false);
 			}
 			else
 				me.attemptClaim(false);
 		}
-		else if (me.autoSafeZoneEnabled())
+		else if (me.isAutoSafeClaimEnabled())
 		{
 			if ( ! Permission.MANAGE_SAFE_ZONE.has(player))
 			{
-				me.enableAutoSafeZone(false);
+				me.setIsAutoSafeClaimEnabled(false);
 			}
 			else
 			{
@@ -279,11 +279,11 @@ public class FactionsPlayerListener extends PlayerListener
 				}
 			}
 		}
-		else if (me.autoWarZoneEnabled())
+		else if (me.isAutoWarClaimEnabled())
 		{
 			if ( ! Permission.MANAGE_WAR_ZONE.has(player))
 			{
-				me.enableAutoWarZone(false);
+				me.setIsAutoWarClaimEnabled(false);
 			}
 			else
 			{

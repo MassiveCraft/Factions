@@ -1,64 +1,68 @@
 package com.massivecraft.factions.commands;
 
-import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
 
-public class FCommandAdmin extends FCommand {
-	
-	public FCommandAdmin() {
-		aliases.add("admin");
+public class FCommandAdmin extends FCommand
+{	
+	public FCommandAdmin()
+	{
+		super();
+		this.aliases.add("admin");
 		
-		requiredParameters.add("player name");
+		this.requiredArgs.add("player name");
+		//this.optionalArgs.put("", "");
 		
-		helpDescription = "Hand over your admin rights";
+		this.permission = Permission.COMMAND_ADMIN.node;
+		
+		senderMustBePlayer = true;
+		senderMustBeMember = false;
+		senderMustBeModerator = false;
+		senderMustBeAdmin = true;
 	}
 	
 	@Override
-	public void perform() {
-		if ( ! assertHasFaction()) {
-			return;
-		}
-		
-		if( isLocked() ) {
+	public void perform()
+	{
+		if( isLocked() )
+		{
 			sendLockMessage();
 			return;
 		}
 		
-		if ( ! assertMinRole(Role.ADMIN)) {
+		FPlayer fyou = this.argAsBestFPlayerMatch(0);
+		if (fyou == null) return;
+		
+		Faction myFaction = fme.getFaction();
+		
+		if (fyou.getFaction() != myFaction)
+		{
+			sendMessageParsed("%s<i> is not a member in your faction.", fyou.getNameAndRelevant(fme));
 			return;
 		}
 		
-		String playerName = parameters.get(0);
-		
-		FPlayer you = findFPlayer(playerName, false);
-		if (you == null) {
+		if (fyou == fme)
+		{
+			sendMessageParsed("<b>The target player musn't be yourself.");
 			return;
 		}
 		
-		Faction myFaction = me.getFaction();
-		
-		if (you.getFaction() != myFaction) {
-			sendMessage(you.getNameAndRelevant(me)+Conf.colorSystem+" is not a member in your faction.");
-			return;
-		}
-		
-		if (you == me) {
-			sendMessage("The target player musn't be yourself.");
-			return;
-		}
-
-		
-		me.setRole(Role.MODERATOR);
-		you.setRole(Role.ADMIN);
+		fme.setRole(Role.MODERATOR);
+		fyou.setRole(Role.ADMIN);
 		
 		// Inform all players
-		for (FPlayer fplayer : FPlayer.getAllOnline()) {
-			if (fplayer.getFaction() == me.getFaction()) {
-				fplayer.sendMessage(me.getNameAndRelevant(me)+Conf.colorSystem+" gave "+you.getNameAndRelevant(me)+Conf.colorSystem+" the leadership of your faction.");
-			} else {
-				fplayer.sendMessage(me.getNameAndRelevant(fplayer)+Conf.colorSystem+" gave "+you.getNameAndRelevant(fplayer)+Conf.colorSystem+" the leadership of "+myFaction.getTag(fplayer));
+		for (FPlayer fplayer : FPlayers.i.getOnline())
+		{
+			if (fplayer.getFaction() == myFaction)
+			{
+				fplayer.sendMessageParsed("%s<i> gave %s<i> the leadership of your faction.", fme.getNameAndRelevant(fme), fyou.getNameAndRelevant(fme));
+			}
+			else
+			{
+				fplayer.sendMessageParsed("%s<i> gave %s<i> the leadership of %s", fme.getNameAndRelevant(fplayer), fyou.getNameAndRelevant(fplayer), myFaction.getTag(fplayer));
 			}
 		}
 	}

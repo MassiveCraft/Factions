@@ -30,7 +30,7 @@ public class FCommandUnclaimall extends FCommand {
 			return;
 		}
 
-		Faction myFaction = me.getFaction();
+		Faction myFaction = fme.getFaction();
 
 		String moneyBack = "";
 		if (Econ.enabled()) {
@@ -38,25 +38,25 @@ public class FCommandUnclaimall extends FCommand {
 			// a real refund
 			if (refund > 0.0) {
 				if(Conf.bankFactionPaysLandCosts) {
-					Faction faction = me.getFaction();
+					Faction faction = fme.getFaction();
 					faction.addMoney(refund);
 					moneyBack = " "+faction.getTag()+" received a refund of "+Econ.moneyString(refund)+".";
 				} else {
-					Econ.addMoney(me.getName(), refund);
+					Econ.addMoney(fme.getName(), refund);
 					moneyBack = " They received a refund of "+Econ.moneyString(refund)+".";
 				}
 			}
 			// wait, you're charging people to unclaim land? outrageous
 			else if (refund < 0.0) {
 				if(Conf.bankFactionPaysLandCosts) {
-					Faction faction = me.getFaction();
+					Faction faction = fme.getFaction();
 					if(!faction.removeMoney(-refund)) {
 						sendMessage("Unclaiming all faction land will cost "+Econ.moneyString(-refund)+", which your faction can't currently afford.");
 						return;
 					}
 					moneyBack = " It cost "+faction.getTag()+" "+Econ.moneyString(refund)+".";
 				} else {
-					if (!Econ.deductMoney(me.getName(), -refund)) {
+					if (!Econ.deductMoney(fme.getName(), -refund)) {
 						sendMessage("Unclaiming all faction land will cost "+Econ.moneyString(-refund)+", which you can't currently afford.");
 						return;
 					}
@@ -71,7 +71,7 @@ public class FCommandUnclaimall extends FCommand {
 		}
 
 		Board.unclaimAll(myFaction.getId());
-		myFaction.sendMessage(me.getNameAndRelevant(myFaction)+Conf.colorSystem+" unclaimed ALL of your faction's land."+moneyBack);
+		myFaction.sendMessage(fme.getNameAndRelevant(myFaction)+Conf.colorSystem+" unclaimed ALL of your faction's land."+moneyBack);
 	}
 	
 }

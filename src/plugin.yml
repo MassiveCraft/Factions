@@ -39,254 +39,114 @@ permissions:
       factions.setPermanent: true
       factions.commandDisable.none: true
   factions.participate:
-    description: Allows the player to participate in a faction
+    description: participate in a faction
     default: true
   factions.create:
-    description: Allows the player to create a new faction
+    description: create a new faction
     default: true
   factions.viewAnyPower:
-    description: Allows the player to view the power level of anyone else
+    description: view the power level of anyone else
     default: true
   factions.viewAnyFactionBalance:
-    description: Allows the player to view the faction bank balance for any faction
+    description: view the faction bank balance for any faction
     default: true
   factions.peacefulExplosionToggle:
-    description: Allows peaceful faction admins and moderators to disable explosions in their territory
+    description: disable explosions in your territory as a peaceful faction admin or moderator
     default: true
   factions.adminBypass:
-    description: Allows the player to bypass many normal restrictions, and use the bypass command
+    description: enable admin bypass mode (build/destroy anywhere)
     default: op
   factions.config:
-    description: Can use /f config command to change conf.json options
-    default: op
-  factions.disband:
-    description: Can use the /f disband <faction> command to disband any faction
-    default: op
-  factions.lock:
-    description: Can use the /f lock [on/off] command to temporarily lock the data files from being overwritten
+    description: use /f config command to change conf.json options
     default: op
   factions.manageSafeZone:
-    description: Allows the player to claim land as a safe zone, and to build/destroy within safe zones
+    description: claim land as a safe zone and build/destroy within safe zones
     default: op
   factions.manageWarZone:
-    description: Allows the player to claim land as a war zone, and to build/destroy within war zones
+    description: claim land as a war zone and build/destroy within war zones
     default: op
   factions.ownershipBypass:
-    description: Allows the player to bypass ownership restrictions within own faction's territory
+    description: bypass ownership restrictions within own faction's territory
     default: op
   factions.reload:
-    description: Can use the /f reload command to reload data file(s) from disk
+    description: use the /f reload command to reload data file(s) from disk
     default: op
   factions.saveall:
-    description: Can use the /f saveall command to save all data to disk
+    description: use the /f saveall command to save all data to disk
     default: op
   factions.setPeaceful:
-    description: Can designate specific factions as "peaceful" (no PvP, no land stealing, etc.)
+    description: designate specific factions as "peaceful" (no PvP, no land stealing, etc.)
     default: op
   factions.setPermanent:
-    description: Can designate specific factions as permanent (not disbanded even with no members)
+    description: designate specific factions as permanent (not disbanded even with no members)
     default: op
-  factions.commandDisable.none:
-    description: no commands disabled (ignore all other commandDisable permissions)
+	
+  factions.command.admin:
+    description: hand over your admin rights
+    default: true
+  factions.command.autoClaim:
+    description: auto-claim land as you walk around
+    default: true
+  factions.command.balance:
+    description: show current faction balance
+    default: true
+  factions.command.withdraw:
+    description: withdraw money from your faction bank
+    default: true
+  factions.command.pay:
+    description: pay another faction from your bank
+    default: true
+  factions.command.chat:
+    description: change chat mode
+    default: true
+  factions.command.claim:
+    description: claim the land where you are standing
+    default: true
+  factions.command.config:
+    description: change a conf.json setting
     default: op
-  factions.commandDisable.admin:
-    description: admin command disabled
-    default: false
-  factions.commandDisable.autoclaim:
-    description: autoclaim command disabled
-    default: false
-  factions.commandDisable.autosafe:
-    description: autosafe command disabled
-    default: false
-  factions.commandDisable.autowar:
-    description: autowar command disabled
-    default: false
-  factions.commandDisable.balance:
-    description: balance/money command disabled
-    default: false
-  factions.commandDisable.bypass:
-    description: bypass command disabled
-    default: false
-  factions.commandDisable.chat:
-    description: chat command disabled
-    default: false
-  factions.commandDisable.c:
-    description: chat command disabled
-    default: false
-  factions.commandDisable.claim:
-    description: claim command disabled
-    default: false
-  factions.commandDisable.create:
-    description: create command disabled
-    default: false
-  factions.commandDisable.deinvite:
-    description: deinvite command disabled
-    default: false
-  factions.commandDisable.deinv:
-    description: deinvite command disabled
-    default: false
-  factions.commandDisable.deposit:
-    description: deposit command disabled
-    default: false
-  factions.commandDisable.desc:
-    description: desc command disabled
-    default: false
-  factions.commandDisable.disband:
-    description: disband command disabled
-    default: false
-  factions.commandDisable.help:
-    description: help command disabled
-    default: false
-  factions.commandDisable.h:
-    description: help command disabled
-    default: false
-  factions.commandDisable.?:
-    description: help command disabled
-    default: false
-  factions.commandDisable.home:
-    description: home command disabled
-    default: false
-  factions.commandDisable.invite:
-    description: invite command disabled
-    default: false
-  factions.commandDisable.inv:
-    description: invite command disabled
-    default: false
-  factions.commandDisable.join:
-    description: join command disabled
-    default: false
-  factions.commandDisable.kick:
-    description: kick command disabled
-    default: false
-  factions.commandDisable.leave:
-    description: leave command disabled
-    default: false
-  factions.commandDisable.list:
-    description: list command disabled
-    default: false
-  factions.commandDisable.ls:
-    description: list command disabled
-    default: false
-  factions.commandDisable.lock:
-    description: lock command disabled
-    default: false
-  factions.commandDisable.map:
-    description: map command disabled
-    default: false
-  factions.commandDisable.mod:
-    description: mod command disabled
-    default: false
-  factions.commandDisable.money:
-    description: balance/money command disabled
-    default: false
-  factions.commandDisable.noboom:
-    description: noboom command disabled
-    default: false
-  factions.commandDisable.open:
-    description: open command disabled
-    default: false
-  factions.commandDisable.close:
-    description: open command disabled
-    default: false
-  factions.commandDisable.owner:
-    description: owner command disabled
-    default: false
-  factions.commandDisable.ownerlist:
-    description: ownerlist command disabled
-    default: false
-  factions.commandDisable.pay:
-    description: pay command disabled
-    default: false
-  factions.commandDisable.peaceful:
-    description: peaceful command disabled
-    default: false
-  factions.commandDisable.permanent:
-    description: permanent command disabled
-    default: false
-  factions.commandDisable.power:
-    description: power command disabled
-    default: false
-  factions.commandDisable.pow:
-    description: power command disabled
-    default: false
-  factions.commandDisable.ally:
-    description: ally command disabled
-    default: false
-  factions.commandDisable.enemy:
-    description: enemy command disabled
-    default: false
-  factions.commandDisable.neutral:
-    description: neutral command disabled
-    default: false
-  factions.commandDisable.reload:
-    description: reload command disabled
-    default: false
-  factions.commandDisable.safeclaim:
-    description: safeclaim command disabled
-    default: false
-  factions.commandDisable.safe:
-    description: safeclaim command disabled
-    default: false
-  factions.commandDisable.safeunclaimall:
-    description: safeunclaimall command disabled
-    default: false
-  factions.commandDisable.safedeclaimall:
-    description: safeunclaimall command disabled
-    default: false
-  factions.commandDisable.saveall:
-    description: saveall command disabled
-    default: false
-  factions.commandDisable.save:
-    description: saveall command disabled
-    default: false
-  factions.commandDisable.sethome:
-    description: sethome command disabled
-    default: false
-  factions.commandDisable.show:
-    description: show command disabled
-    default: false
-  factions.commandDisable.who:
-    description: show command disabled
-    default: false
-  factions.commandDisable.tag:
-    description: tag command disabled
-    default: false
-  factions.commandDisable.title:
-    description: title command disabled
-    default: false
-  factions.commandDisable.unclaim:
-    description: unclaim command disabled
-    default: false
-  factions.commandDisable.declaim:
-    description: unclaim command disabled
-    default: false
-  factions.commandDisable.unclaimall:
-    description: unclaimall command disabled
-    default: false
-  factions.commandDisable.declaimall:
-    description: unclaimall command disabled
-    default: false
-  factions.commandDisable.version:
-    description: version command disabled
-    default: false
-  factions.commandDisable.warclaim:
-    description: warclaim command disabled
-    default: false
-  factions.commandDisable.war:
-    description: warclaim command disabled
-    default: false
-  factions.commandDisable.warunclaimall:
-    description: warunclaimall command disabled
-    default: false
-  factions.commandDisable.wardeclaimall:
-    description: warunclaimall command disabled
-    default: false
-  factions.commandDisable.withdraw:
-    description: withdraw command disabled
-    default: false
-  factions.commandDisable.worldnoclaim:
-    description: worldnoclaim command disabled
-    default: false
-  factions.commandDisable.worldnopowerloss:
-    description: worldnopowerloss command disabled
-    default: false
+  factions.command.deinvite:
+    description: remove a pending invitation
+    default: true
+  factions.command.deposit:
+    description: deposit money into your faction bank
+    default: true
+  factions.command.description:
+    description: change the faction description
+    default: true
+  factions.command.disband:
+    description: disband a faction
+    default: true
+  factions.command.disband.any:
+    description: disband an other faction
+    default: op
+  factions.command.help:
+    description: display a help page
+    default: true
+  factions.command.home:
+    description: teleport to the faction home
+    default: true
+  factions.command.join:
+    description: join a faction
+    default: true
+  factions.command.kick:
+    description: kick a player from the faction
+    default: true
+  factions.command.kick.any:
+    description: kick anyone from any faction
+    default: op
+  factions.command.leave:
+    description: leave your faction
+    default: true
+  factions.command.list:
+    description: see a list of the factions
+    default: true
+  factions.command.lock:
+    description: lock all write stuff
+    default: op
+  factions.command.map:
+    description: show territory map, set optional auto update
+    default: true
+  factions.command.mod:
+    description: give or revoke moderator rights
+    default: true

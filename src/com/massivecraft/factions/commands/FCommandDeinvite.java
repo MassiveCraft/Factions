@@ -1,55 +1,54 @@
 package com.massivecraft.factions.commands;
 
-import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.struct.Permission;
 
-public class FCommandDeinvite extends FCommand {
+public class FCommandDeinvite extends FCommand
+{
 	
-	public FCommandDeinvite() {
-		aliases.add("deinvite");
-		aliases.add("deinv");
+	public FCommandDeinvite()
+	{
+		super();
+		this.aliases.add("deinvite");
+		this.aliases.add("deinv");
 		
-		requiredParameters.add("player name");
+		this.requiredArgs.add("player name");
+		//this.optionalArgs.put("", "");
 		
-		helpDescription = "Remove a pending invitation";
+		this.permission = Permission.COMMAND_DEINVITE.node;
+		
+		senderMustBePlayer = true;
+		senderMustBeMember = false;
+		senderMustBeModerator = true;
+		senderMustBeAdmin = false;
 	}
 	
 	@Override
-	public void perform() {
-		if ( ! assertHasFaction()) {
-			return;
-		}
-		
-		if( isLocked() ) {
+	public void perform()
+	{
+		if( isLocked() )
+		{
 			sendLockMessage();
 			return;
 		}
 		
-		String playerName = parameters.get(0);
+		FPlayer you = this.argAsBestFPlayerMatch(0);
+		if (you == null) return;
 		
-		FPlayer you = findFPlayer(playerName, false);
-		if (you == null) {
-			return;
-		}
+		Faction myFaction = fme.getFaction();
 		
-		Faction myFaction = me.getFaction();
-		
-		if ( ! assertMinRole(Role.MODERATOR)) {
-			return;
-		}
-		
-		if (you.getFaction() == myFaction) {
-			sendMessage(you.getName()+" is already a member of "+myFaction.getTag());
-			sendMessage("You might want to: " + new FCommandKick().getUseageTemplate(false));
+		if (you.getFaction() == myFaction)
+		{
+			sendMessageParsed("%s<i> is already a member of %s", you.getName(), myFaction.getTag());
+			sendMessageParsed("<i>You might want to: %s", new FCommandKick().getUseageTemplate(false));
 			return;
 		}
 		
 		myFaction.deinvite(you);
 		
-		you.sendMessage(me.getNameAndRelevant(you)+Conf.colorSystem+" revoked your invitation to "+myFaction.getTag(you));
-		myFaction.sendMessage(me.getNameAndRelevant(me)+Conf.colorSystem+" revoked "+you.getNameAndRelevant(me)+"'s"+Conf.colorSystem+" invitation.");
+		you.sendMessageParsed("%s<i> revoked your invitation to %s", fme.getNameAndRelevant(you), myFaction.getTag(you));
+		myFaction.sendMessageParsed("%s<i> revoked %s's<i> invitation.", fme.getNameAndRelevant(fme), you.getNameAndRelevant(fme));
 	}
 	
 }

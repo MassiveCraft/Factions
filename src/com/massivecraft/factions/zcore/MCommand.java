@@ -27,8 +27,25 @@ public abstract class MCommand<T extends MPlugin>
 	public List<String> requiredArgs;
 	public LinkedHashMap<String, String> optionalArgs;
 	
-	// Help info
-	public String helpShort;
+	// FIELD: Help Short
+	// This field may be left blank and will in such case be loaded from the permissions node instead.
+	// Thus make sure the permissions node description is an action description like "eat hamburgers" or "do admin stuff".
+	private String helpShort;
+	public void setHelpShort(String val) { this.helpShort = val; }
+	public String getHelpShort()
+	{
+		if (this.helpShort == null)
+		{
+			String pdesc = p.perm.getPermissionDescription(this.permission);
+			if (pdesc != null)
+			{
+				return pdesc;
+			}
+			return "*no short help available*";
+		}
+		return this.helpShort;
+	}
+	
 	public List<String> helpLong;
 	public CommandVisibility visibility;
 	
@@ -39,6 +56,7 @@ public abstract class MCommand<T extends MPlugin>
 	// Information available on execution of the command
 	public CommandSender sender; // Will always be set
 	public Player me; // Will only be set when the sender is a player
+	public boolean senderIsConsole;
 	public List<String> args; // Will contain the arguments, or and empty list if there are none.
 	public List<MCommand<?>> commandChain; // The command chain used to execute this command
 	
@@ -56,7 +74,7 @@ public abstract class MCommand<T extends MPlugin>
 		this.requiredArgs = new ArrayList<String>();
 		this.optionalArgs = new LinkedHashMap<String, String>();
 		
-		this.helpShort = "*Default helpShort*";
+		this.helpShort = null;
 		this.helpLong = new ArrayList<String>();
 		this.visibility = CommandVisibility.VISIBLE;
 	}
@@ -69,10 +87,12 @@ public abstract class MCommand<T extends MPlugin>
 		if (sender instanceof Player)
 		{
 			this.me = (Player)sender;
+			this.senderIsConsole = false;
 		}
 		else
 		{
 			this.me = null;
+			this.senderIsConsole = true;
 		}
 		this.args = args;
 		this.commandChain = commandChain;
@@ -255,37 +275,37 @@ public abstract class MCommand<T extends MPlugin>
 	// Message Sending Helpers
 	// -------------------------------------------- //
 	
-	public void sendMessage(String msg, boolean parseColors)
+	public void sendMessageParsed(String str, Object... args)
 	{
-		if (parseColors)
-		{
-			sender.sendMessage(p.txt.tags(msg));
-			return;
-		}
-		sender.sendMessage(msg);
+		sender.sendMessage(p.txt.parse(str, args));
 	}
 	
 	public void sendMessage(String msg)
 	{
-		this.sendMessage(msg, false);
-	}
-	
-	public void sendMessage(List<String> msgs, boolean parseColors)
-	{
-		for(String msg : msgs)
-		{
-			this.sendMessage(msg, parseColors);
-		}
+		sender.sendMessage(msg);
 	}
 	
 	public void sendMessage(List<String> msgs)
 	{
-		sendMessage(msgs, false);
+		for(String msg : msgs)
+		{
+			this.sendMessage(msg);
+		}
 	}
 	
 	// -------------------------------------------- //
 	// Argument Readers
 	// -------------------------------------------- //
+	
+	// Is set?
+	public boolean argIsSet(int idx)
+	{
+		if (this.args.size() < idx+1)
+		{
+			return false;
+		}
+		return true;
+	}
 	
 	// STRING
 	public String argAsString(int idx, String def)

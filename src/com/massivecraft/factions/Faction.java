@@ -409,6 +409,16 @@ public class Faction extends Entity
 	//----------------------------------------------//
 	// Messages
 	//----------------------------------------------//
+	public void sendMessageParsed(String message, Object... args)
+	{
+		message = P.p.txt.parse(message, args);
+		
+		for (FPlayer fplayer : this.getFPlayersWhereOnline(true))
+		{
+			fplayer.sendMessage(message);
+		}
+	}
+	
 	public void sendMessage(String message)
 	{
 		for (FPlayer fplayer : this.getFPlayersWhereOnline(true))

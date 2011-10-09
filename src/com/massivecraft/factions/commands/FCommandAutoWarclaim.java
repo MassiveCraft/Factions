@@ -1,54 +1,61 @@
 package com.massivecraft.factions.commands;
 
-import org.bukkit.command.CommandSender;
 
 import com.massivecraft.factions.Board;
 import com.massivecraft.factions.FLocation;
-import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.struct.Permission;
 
-public class FCommandAutoWarclaim extends FCommand {
+public class FCommandAutoWarclaim extends FCommand
+{
 
-	public FCommandAutoWarclaim() {
+	public FCommandAutoWarclaim()
+	{
+		super();
+		this.aliases.add("autosafe");
+		
+		//this.requiredArgs.add("");
+		this.optionalArgs.put("on/off", "flipp");
+		
+		this.permission = Permission.MANAGE_WAR_ZONE.node;
+		
+		senderMustBePlayer = true;
+		senderMustBeMember = false;
+		senderMustBeModerator = true;
+		senderMustBeAdmin = false;
+		
 		aliases.add("autowar");
 
-		optionalParameters.add("on|off");
-
-		helpDescription = "Auto-claim land for the warzone";
-	}
-
-	@Override
-	public boolean hasPermission(CommandSender sender) {
-		return P.hasPermManageWarZone(sender);
+		this.setHelpShort("Auto-claim land for the warzone");
 	}
 
 	@Override
 	public void perform() {
 
-		if( isLocked() ) {
+		if ( isLocked() )
+		{
 			sendLockMessage();
 			return;
 		}
 
-		boolean enable = !me.autoWarZoneEnabled();
+		boolean enabled = this.argAsBool(0, ! fme.isAutoWarClaimEnabled());
 
-		if (parameters.size() > 0)
-			enable = parseBool(parameters.get(0));
+		fme.setIsAutoWarClaimEnabled(enabled);
 
-		me.enableAutoWarZone(enable);
-
-		if (!enable) {
-			sendMessage("Auto-claiming of war zone disabled.");
+		if ( ! enabled)
+		{
+			sendMessageParsed("<i>Auto-claiming of war zone disabled.");
 			return;
 		}
 
-		sendMessage("Auto-claiming of war zone enabled.");
+		sendMessageParsed("<i>Auto-claiming of war zone enabled.");
 
-		FLocation playerFlocation = new FLocation(me);
+		FLocation playerFlocation = new FLocation(fme);
 		
-		if (!Board.getFactionAt(playerFlocation).isWarZone()) {
-			Board.setFactionAt(Faction.getWarZone(), playerFlocation);
-			sendMessage("This land is now a war zone.");
+		if (!Board.getFactionAt(playerFlocation).isWarZone())
+		{
+			Board.setFactionAt(Factions.i.getWarZone(), playerFlocation);
+			sendMessageParsed("<i>This land is now a war zone.");
 		}
 	}
 	

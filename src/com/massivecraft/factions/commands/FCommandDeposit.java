@@ -2,58 +2,61 @@ package com.massivecraft.factions.commands;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.integration.Econ;
+import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.FPlayer;
 
 
-public class FCommandDeposit extends FCommand {
+public class FCommandDeposit extends FCommand
+{
 	
-	public FCommandDeposit() {
-		aliases.add("deposit");
+	public FCommandDeposit()
+	{
+		super();
+		this.aliases.add("deposit");
 		
-		helpDescription = "Deposit money into your faction's bank";
-		requiredParameters.add("amount");
+		this.requiredArgs.add("amount");
+		//this.optionalArgs
+		
+		this.permission = Permission.COMMAND_DEPOSIT.node;
+		
+		senderMustBePlayer = true;
+		senderMustBeMember = true;
+		senderMustBeModerator = false;
+		senderMustBeAdmin = false;
 	}
 	
 	@Override
-	public void perform() {
-		if ( ! assertHasFaction()) {
-			return;
-		}
+	public void perform()
+	{
+		if ( ! Conf.bankEnabled) return;
 		
-		if (!Conf.bankEnabled) {
-			return;
-		}
+		Faction faction = fme.getFaction();
 		
-		double amount = 0.0;
-		
-		Faction faction = me.getFaction();
-		
-		if (parameters.size() == 1) {
-			try {
-				amount = Double.parseDouble(parameters.get(0));
-			} catch (NumberFormatException e) {
-				// wasn't valid
-			}
-		}
-		
-		if( amount > 0.0 ) {
+		double amount = this.argAsDouble(0, 0);
+				
+		if( amount > 0.0 )
+		{
 			String amountString = Econ.moneyString(amount);
 			
-			if( !Econ.deductMoney(me.getName(), amount ) ) {
-				sendMessage("You cannot afford to deposit that much.");
+			if( ! Econ.deductMoney(fme.getName(), amount ) )
+			{
+				sendMessageParsed("<b>You cannot afford to deposit that much.");
 			}
 			else
 			{
 				faction.addMoney(amount);
 				sendMessage("You have deposited "+amountString+" into "+faction.getTag()+"'s bank.");
 				sendMessage(faction.getTag()+" now has "+Econ.moneyString(faction.getMoney()));
-				P.log(me.getName() + " deposited "+amountString+" into "+faction.getTag()+"'s bank.");
+				P.p.log(fme.getName() + " deposited "+amountString+" into "+faction.getTag()+"'s bank.");
 				
-				for (FPlayer fplayer : FPlayer.getAllOnline()) {
-					if (fplayer.getFaction() == faction) {
-						fplayer.sendMessage(me.getNameAndRelevant(fplayer)+Conf.colorSystem+" has deposited "+amountString);
+				for (FPlayer fplayer : FPlayers.i.getOnline())
+				{
+					if (fplayer.getFaction() == faction)
+					{
+						fplayer.sendMessageParsed("%s has deposited %s", fme.getNameAndRelevant(fplayer), amountString);
 					}
 				}
 			}

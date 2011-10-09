@@ -38,7 +38,7 @@ public class FCommandTitle extends FCommand {
 			return;
 		}
 		
-		if ( ! canIAdministerYou(me, you)) {
+		if ( ! canIAdministerYou(fme, you)) {
 			return;
 		}
 
@@ -50,11 +50,11 @@ public class FCommandTitle extends FCommand {
 		you.setTitle(title);
 		
 		// Inform
-		Faction myFaction = me.getFaction();
-		myFaction.sendMessage(me.getNameAndRelevant(myFaction)+Conf.colorSystem+" changed a title: "+you.getNameAndRelevant(myFaction));
+		Faction myFaction = fme.getFaction();
+		myFaction.sendMessage(fme.getNameAndRelevant(myFaction)+Conf.colorSystem+" changed a title: "+you.getNameAndRelevant(myFaction));
 
 		if (Conf.spoutFactionTitlesOverNames) {
-			SpoutFeatures.updateAppearances(me);
+			SpoutFeatures.updateAppearances(fme);
 		}
 	}
 	

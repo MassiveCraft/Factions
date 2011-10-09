@@ -1,36 +1,44 @@
 package com.massivecraft.factions.commands;
 
-import org.bukkit.command.CommandSender;
-
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.struct.Permission;
 
 public class FCommandLock extends FCommand {
 	
-	public FCommandLock() {
-		aliases.add("lock");
+	// TODO: This solution needs refactoring.
+	/*
+	   factions.lock:
+    description: use the /f lock [on/off] command to temporarily lock the data files from being overwritten
+    default: op
+	 */
+	
+	public FCommandLock()
+	{
+		super();
+		this.aliases.add("lock");
+		
+		//this.requiredArgs.add("");
+		this.optionalArgs.put("on/off", "flipp");
+		
+		this.permission = Permission.COMMAND_LOCK.node;
 		
 		senderMustBePlayer = false;
-		
-		optionalParameters.add("on|off");
-		
-		helpDescription = "lock all write stuff";
+		senderMustBeMember = false;
+		senderMustBeModerator = false;
+		senderMustBeAdmin = false;
 	}
 	
 	@Override
-	public boolean hasPermission(CommandSender sender) {
-		return P.hasPermLock(sender);
-	}
-	
-	@Override
-	public void perform() {
-		if( parameters.size() > 0 ) {
-			setLock( parseBool( parameters.get(0) ));
-		} else {
-			if( isLocked() ) {
-				sendMessage("Factions is locked");
-			} else {
-				sendMessage("Factions is not locked");
-			}
+	public void perform()
+	{
+		setIsLocked(this.argAsBool(0, ! isLocked()));
+		
+		if( isLocked() )
+		{
+			sendMessageParsed("<i>Factions is now locked");
+		}
+		else
+		{
+			sendMessageParsed("<i>Factions in now unlocked");
 		}
 	}
 	

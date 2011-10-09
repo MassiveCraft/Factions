@@ -1,25 +1,38 @@
 package com.massivecraft.factions.commands;
 
-public class FCommandClaim extends FCommand {
+import com.massivecraft.factions.struct.Permission;
+
+public class FCommandClaim extends FCommand
+{
 	
-	public FCommandClaim() {
-		aliases.add("claim");
+	public FCommandClaim()
+	{
+		super();
+		this.aliases.add("claim");
 		
-		helpDescription = "Claim the land where you are standing";
+		//this.requiredArgs.add("");
+		//this.optionalArgs.put("", "");
+		
+		this.permission = Permission.COMMAND_CLAIM.node;
+		
+		senderMustBePlayer = true;
+		senderMustBeMember = true;
+		senderMustBeModerator = false;
+		senderMustBeAdmin = false;
+		
+		aliases.add("claim");
 	}
 	
 	@Override
-	public void perform() {
-		if ( ! assertHasFaction()) {
-			return;
-		}
-		
-		if( isLocked() ) {
+	public void perform()
+	{
+		if( isLocked() )
+		{
 			sendLockMessage();
 			return;
 		}
 		
-		me.attemptClaim(true);
+		fme.attemptClaim(true);
 	}
 	
 }

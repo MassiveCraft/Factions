@@ -1,6 +1,7 @@
 package com.massivecraft.factions;
 
 import java.util.*;
+
 import org.bukkit.*;
 import org.bukkit.entity.CreatureType;
 
@@ -9,6 +10,9 @@ public class Conf
 	// track players with admin access who have enabled "admin bypass" mode, and should therefore be able to build anywhere
 	// not worth saving between server restarts, I think
 	public static transient Set<String> adminBypassPlayers = Collections.synchronizedSet(new HashSet<String>());
+	
+	public static List<String> baseCommandAliases = new ArrayList<String>();
+	public static boolean allowNoSlashCommand = true;
 	
 	// Colors
 	public static ChatColor colorMember = ChatColor.GREEN;
@@ -67,8 +71,6 @@ public class Conf
 	public static String chatTagFormat = "%s"+ChatColor.WHITE;
 	public static String factionChatFormat = "%s"+ChatColor.WHITE+" %s";
 	public static String allianceChatFormat = "%s"+ChatColor.WHITE+" %s";
-	
-	public static boolean allowNoSlashCommand = true;
 	
 	public static double autoLeaveAfterDaysOfInactivity = 14.0;
 	
@@ -239,6 +241,8 @@ public class Conf
 	
 	static
 	{
+		baseCommandAliases.add("f");
+		
 		territoryEnemyDenyCommands.add("home");
 		territoryEnemyDenyCommands.add("sethome");
 		territoryEnemyDenyCommands.add("spawn");

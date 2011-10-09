@@ -31,7 +31,7 @@ public class FCommandWarclaim extends FCommand {
 		}
 		
 		// The current location of the player
-		FLocation playerFlocation = new FLocation(me);
+		FLocation playerFlocation = new FLocation(fme);
 		
 		// Was a radius set?
 		if (parameters.size() > 0) {

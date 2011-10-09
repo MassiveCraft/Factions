@@ -1,32 +1,35 @@
 package com.massivecraft.factions.commands;
 
-import org.bukkit.command.CommandSender;
+import com.massivecraft.factions.struct.Permission;
 
 public class FCommandLeave extends FCommand {
 	
-	public FCommandLeave() {
-		aliases.add("leave");
+	public FCommandLeave()
+	{
+		super();
+		this.aliases.add("leave");
 		
-		helpDescription = "Leave your faction";
+		//this.requiredArgs.add("");
+		//this.optionalArgs.put("", "");
+		
+		this.permission = Permission.COMMAND_LEAVE.node;
+		
+		senderMustBePlayer = true;
+		senderMustBeMember = true;
+		senderMustBeModerator = false;
+		senderMustBeAdmin = false;
 	}
 	
 	@Override
-	public boolean hasPermission(CommandSender sender) {
-		return true;
-	}
-	
-	@Override
-	public void perform() {
-		if ( ! assertHasFaction()) {
-			return;
-		}
-		
-		if( isLocked() ) {
+	public void perform()
+	{
+		if ( isLocked() )
+		{
 			sendLockMessage();
 			return;
 		}
 		
-		me.leave(true);
+		fme.leave(true);
 	}
 	
 }

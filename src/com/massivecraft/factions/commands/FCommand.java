@@ -19,9 +19,16 @@ import com.massivecraft.factions.zcore.MCommand;
 public abstract class FCommand extends MCommand<P>
 {
 	//TODO: Legacy to handle
-	//public boolean senderIsConsole;	
-	//private static boolean lock = false;
-	
+	private static boolean lock = false;
+	// TODO: Move these messages to the locked command??
+	// TODO: I lost the check for this code somewhere as well :/
+	public void setIsLocked(boolean isLocked) { lock = isLocked; }
+	public boolean isLocked() { return lock; }
+	public void sendLockMessage()
+	{
+		// TODO: CCOLOR!!!
+		me.sendMessage("Factions is locked. Please try again later");
+	}
 	
 	public FPlayer fme;
 	public boolean senderMustBeMember;
@@ -70,16 +77,44 @@ public abstract class FCommand extends MCommand<P>
 		
 		if (this.senderMustBeModerator && ! fplayer.getRole().isAtLeast(Role.MODERATOR))
 		{
-			sender.sendMessage(p.txt.parse("<b>Only faction moderators can %s.", this.helpShort));
+			sender.sendMessage(p.txt.parse("<b>Only faction moderators can %s.", this.getHelpShort()));
 			return false;
 		}
 		
 		if (this.senderMustBeAdmin && ! fplayer.getRole().isAtLeast(Role.ADMIN))
 		{
-			sender.sendMessage(p.txt.parse("<b>Only faction admins can %s.", this.helpShort));
+			sender.sendMessage(p.txt.parse("<b>Only faction admins can %s.", this.getHelpShort()));
 			return false;
 		}
 			
+		return true;
+	}
+	
+	// -------------------------------------------- //
+	// Assertions
+	// -------------------------------------------- //
+
+	public boolean assertHasFaction()
+	{
+		if (me == null) return true;
+		
+		if ( ! fme.hasFaction())
+		{
+			sendMessage("You are not member of any faction.");
+			return false;
+		}
+		return true;
+	}
+
+	public boolean assertMinRole(Role role)
+	{
+		if (me == null) return true;
+		
+		if (fme.getRole().value < role.value)
+		{
+			sendMessageParsed("<b>You <h>must be "+role+"<b> to "+this.getHelpShort()+".");
+			return false;
+		}
 		return true;
 	}
 	
@@ -232,12 +267,12 @@ public abstract class FCommand extends MCommand<P>
 	// if economy is enabled and they're not on the bypass list, make 'em pay; returns true unless person can't afford the cost
 	public boolean payForCommand(double cost)
 	{
-		if ( ! Econ.enabled() || this.me == null || cost == 0.0 || Conf.adminBypassPlayers.contains(me.getName()))
+		if ( ! Econ.enabled() || this.fme == null || cost == 0.0 || Conf.adminBypassPlayers.contains(fme.getName()))
 		{
 			return true;
 		}
 
-		String desc = this.helpShort.toLowerCase();
+		String desc = this.getHelpShort().toLowerCase();
 
 		Faction faction = fme.getFaction();
 		
@@ -260,7 +295,7 @@ public abstract class FCommand extends MCommand<P>
 			}
 			else
 			{
-				if (!Econ.deductMoney(me.getName(), cost))
+				if (!Econ.deductMoney(fme.getName(), cost))
 				{
 					sendMessage("It costs "+costString+" to "+desc+", which you can't currently afford.");
 					return false;
@@ -280,39 +315,12 @@ public abstract class FCommand extends MCommand<P>
 			}
 			else
 			{
-				Econ.addMoney(me.getName(), -cost);
+				Econ.addMoney(fme.getName(), -cost);
 			}
 			
 			
 			sendMessage("You have been paid "+costString+" to "+desc+".");
 		}
 		return true;
-	}
-	
-	
-	// TODO: Move these messages to the locked command??
-	// TODO: I lost the check for this code somewhere as well :/
-	public void setIsLocked(boolean isLocked)
-	{
-		if( isLocked )
-		{
-			sendMessage("Factions is now locked");
-		}
-		else
-		{
-			sendMessage("Factions in now unlocked");
-		}
-		
-		lock = isLocked;
-	}
-	
-	public boolean isLocked()
-	{
-		return lock;
-	}
-	
-	public void sendLockMessage()
-	{
-		me.sendMessage("Factions is locked. Please try again later");
 	}
 }

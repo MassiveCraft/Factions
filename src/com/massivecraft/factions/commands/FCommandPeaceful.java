@@ -46,9 +46,9 @@ public class FCommandPeaceful extends FCommand {
 			// Inform all players
 			for (FPlayer fplayer : FPlayer.getAllOnline()) {
 				if (fplayer.getFaction() == faction) {
-					fplayer.sendMessage(me.getNameAndRelevant(fplayer)+Conf.colorSystem+" has "+change+" your faction.");
+					fplayer.sendMessage(fme.getNameAndRelevant(fplayer)+Conf.colorSystem+" has "+change+" your faction.");
 				} else {
-					fplayer.sendMessage(me.getNameAndRelevant(fplayer)+Conf.colorSystem+" has "+change+" the faction \"" + faction.getTag(fplayer) + "\".");
+					fplayer.sendMessage(fme.getNameAndRelevant(fplayer)+Conf.colorSystem+" has "+change+" the faction \"" + faction.getTag(fplayer) + "\".");
 				}
 			}
 

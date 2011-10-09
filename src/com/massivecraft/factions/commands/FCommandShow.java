@@ -40,7 +40,7 @@ public class FCommandShow extends FCommand {
 			sendMessage("From the command line, you must specify a faction tag (f who <faction tag>).");
 			return;
 		} else {
-			faction = me.getFaction();
+			faction = fme.getFaction();
 		}
 
 		if (faction == null) {
@@ -56,7 +56,7 @@ public class FCommandShow extends FCommand {
 		Collection<FPlayer> mods = faction.getFPlayersWhereRole(Role.MODERATOR);
 		Collection<FPlayer> normals = faction.getFPlayersWhereRole(Role.NORMAL);
 		
-		sendMessage(TextUtil.titleize(faction.getTag(me)));
+		sendMessage(TextUtil.titleize(faction.getTag(fme)));
 		sendMessage(Conf.colorChrome+"Description: "+Conf.colorSystem+faction.getDescription());
 		if ( ! faction.isNormal()) {
 			return;
@@ -99,7 +99,7 @@ public class FCommandShow extends FCommand {
 			if (otherFaction == faction) {
 				continue;
 			}
-			listpart = otherFaction.getTag(me)+Conf.colorSystem+", ";
+			listpart = otherFaction.getTag(fme)+Conf.colorSystem+", ";
 			if (otherFaction.getRelation(faction).isAlly()) {
 				allyList += listpart;
 			} else if (otherFaction.getRelation(faction).isEnemy()) {
@@ -120,7 +120,7 @@ public class FCommandShow extends FCommand {
 		String onlineList = Conf.colorChrome+"Members online: ";
 		String offlineList = Conf.colorChrome+"Members offline: ";
 		for (FPlayer follower : admins) {
-			listpart = follower.getNameAndTitle(me)+Conf.colorSystem+", ";
+			listpart = follower.getNameAndTitle(fme)+Conf.colorSystem+", ";
 			if (follower.isOnline()) {
 				onlineList += listpart;
 			} else {
@@ -128,7 +128,7 @@ public class FCommandShow extends FCommand {
 			}
 		}
 		for (FPlayer follower : mods) {
-			listpart = follower.getNameAndTitle(me)+Conf.colorSystem+", ";
+			listpart = follower.getNameAndTitle(fme)+Conf.colorSystem+", ";
 			if (follower.isOnline()) {
 				onlineList += listpart;
 			} else {
@@ -136,7 +136,7 @@ public class FCommandShow extends FCommand {
 			}
 		}
 		for (FPlayer follower : normals) {
-			listpart = follower.getNameAndTitle(me)+Conf.colorSystem+", ";
+			listpart = follower.getNameAndTitle(fme)+Conf.colorSystem+", ";
 			if (follower.isOnline()) {
 				onlineList += listpart;
 			} else {

@@ -1,23 +1,15 @@
 package com.massivecraft.factions;
 
-import java.io.*;
-import java.lang.reflect.Type;
-import java.util.*;
-import java.util.logging.Level;
-import java.util.Map.Entry;
-
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import com.google.gson.reflect.TypeToken;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.integration.Worldguard;
 import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
-import com.massivecraft.factions.zcore.persist.Entity;
 import com.massivecraft.factions.zcore.persist.PlayerEntity;
 
 
@@ -70,12 +62,46 @@ public class FPlayer extends PlayerEntity
 	
 	// FIELD: autoClaimEnabled
 	private transient boolean autoClaimEnabled;
+	public boolean isAutoClaimEnabled()
+	{
+		if (this.factionId.equals("0")) return false;
+		return autoClaimEnabled;
+	}
+	public void setIsAutoClaimEnabled(boolean enabled)
+	{
+		this.autoClaimEnabled = enabled;
+		if (enabled)
+		{
+			this.autoSafeZoneEnabled = false;
+			this.autoWarZoneEnabled = false;
+		}
+	}
 	
 	// FIELD: autoSafeZoneEnabled
 	private transient boolean autoSafeZoneEnabled;
-	
+	public boolean isAutoSafeClaimEnabled() { return autoSafeZoneEnabled; }
+	public void setIsAutoSafeClaimEnabled(boolean enabled)
+	{
+		this.autoSafeZoneEnabled = enabled;
+		if (enabled)
+		{
+			this.autoClaimEnabled = false;
+			this.autoWarZoneEnabled = false;
+		}
+	}
+
 	// FIELD: autoWarZoneEnabled
 	private transient boolean autoWarZoneEnabled;
+	public boolean isAutoWarClaimEnabled() { return autoWarZoneEnabled; }
+	public void setIsAutoWarClaimEnabled(boolean enabled)
+	{
+		this.autoWarZoneEnabled = enabled;
+		if (enabled)
+		{
+			this.autoClaimEnabled = false;
+			this.autoSafeZoneEnabled = false;
+		}
+	}
 	
 	// FIELD: loginPvpDisabled
 	private transient boolean loginPvpDisabled;
@@ -113,10 +139,11 @@ public class FPlayer extends PlayerEntity
 	public void resetFactionData()
 	{
 		// clean up any territory ownership in old faction, if there is one
-		if (this.factionId > 0 && Factions.i.exists(this.factionId))
+		Faction currentFaction = this.getFaction();
+		
+		if (currentFaction != null && currentFaction.isNormal())
 		{
-			// TODO: Get faction function...			
-			Factions.i.get(factionId).clearClaimOwnership(this.getId());
+			currentFaction.clearClaimOwnership(this.getId());
 		}
 		
 		this.factionId = "0"; // The default neutral faction
@@ -156,48 +183,7 @@ public class FPlayer extends PlayerEntity
 		return lastLoginTime;
 	}
 
-	public boolean autoClaimEnabled()
-	{
-		if (this.factionId.equals("0")) return false;
-		return autoClaimEnabled;
-	}
-	public void enableAutoClaim(boolean enabled)
-	{
-		this.autoClaimEnabled = enabled;
-		if (enabled)
-		{
-			this.autoSafeZoneEnabled = false;
-			this.autoWarZoneEnabled = false;
-		}
-	}
-
-	public boolean autoSafeZoneEnabled()
-	{
-		return autoSafeZoneEnabled;
-	}
-	public void enableAutoSafeZone(boolean enabled)
-	{
-		this.autoSafeZoneEnabled = enabled;
-		if (enabled)
-		{
-			this.autoClaimEnabled = false;
-			this.autoWarZoneEnabled = false;
-		}
-	}
-
-	public boolean autoWarZoneEnabled()
-	{
-		return autoWarZoneEnabled;
-	}
-	public void enableAutoWarZone(boolean enabled)
-	{
-		this.autoWarZoneEnabled = enabled;
-		if (enabled)
-		{
-			this.autoClaimEnabled = false;
-			this.autoSafeZoneEnabled = false;
-		}
-	}
+	
 
 	public void setLastLoginTime(long lastLoginTime)
 	{
@@ -513,8 +499,8 @@ public class FPlayer extends PlayerEntity
 	
 	public boolean isInOthersTerritory()
 	{
-		String idHere = Board.getIdAt(new FLocation(this));
-		return idHere > 0 && idHere != this.factionId;
+		Faction factionHere = Board.getFactionAt(new FLocation(this));
+		return factionHere != null && factionHere.isNormal() && factionHere != this.getFaction();
 	}
 
 	public boolean isInAllyTerritory()
@@ -892,4 +878,9 @@ public class FPlayer extends PlayerEntity
 		}
 		return true;
 	}*/
+	
+	public void sendMessageParsed(String str, Object... args)
+	{
+		this.sendMessage(P.p.txt.parse(str, args));
+	}
 }

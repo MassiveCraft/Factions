@@ -2,49 +2,52 @@ package com.massivecraft.factions.commands;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.integration.Econ;
+import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.P;
 
-
-public class FCommandBalance extends FCommand {
-	
-	public FCommandBalance() {
-		aliases.add("balance");
-		aliases.add("money");
+public class FCommandBalance extends FCommand
+{
+	public FCommandBalance()
+	{
+		super();
+		this.aliases.add("balance");
+		this.aliases.add("money");
 		
-		optionalParameters.add("faction tag");
+		//this.requiredArgs.add("player name");
+		this.optionalArgs.put("factiontag", "yours");
 		
-		helpDescription = "Show faction's current balance";
+		this.permission = Permission.COMMAND_BALANCE.node;
+		
+		senderMustBePlayer = true;
+		senderMustBeMember = true;
+		senderMustBeModerator = false;
+		senderMustBeAdmin = false;
 	}
 	
 	@Override
-	public void perform() {
-		if ( ! assertHasFaction()) {
+	public void perform()
+	{
+		if ( ! Conf.bankEnabled)
+		{
 			return;
 		}
 		
-		if (!Conf.bankEnabled) {
+		Faction faction = this.argAsFaction(0, fme.getFaction());
+		
+		// TODO MAKE HIERARCHIAL COMMAND STRUCTURE HERE
+		if ( faction != fme.getFaction() && ! Permission.VIEW_ANY_FACTION_BALANCE.has(sender))
+		{
+			sendMessageParsed("<b>You do not have sufficient permissions to view the bank balance of other factions.");
 			return;
 		}
 		
-		Faction faction;
-		
-		if (parameters.size() > 0) {
-			if (!P.hasPermViewAnyFactionBalance(sender)) {
-				sendMessage("You do not have sufficient permissions to view the bank balance of other factions.");
-				return;
-			}
-			faction = findFaction(parameters.get(0), true);
-		} else {
-			faction = me.getFaction();
-		}
-		
-		if(faction == null) {
-			sendMessage("Faction "+parameters.get(0)+" could not be found.");
+		if (faction == null)
+		{
+			sendMessageParsed("<b>Faction %s<b> could not be found.", args.get(0));
 			return;
 		}
 	
-		sendMessage(Conf.colorChrome+faction.getTag()+" balance: "+ Econ.moneyString(faction.getMoney()));
+		sendMessageParsed("<a>%s balance: %s", faction.getTag(), Econ.moneyString(faction.getMoney()));
 	}
 	
 }

@@ -2,45 +2,50 @@ package com.massivecraft.factions.commands;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.struct.Role;
-import com.massivecraft.factions.util.TextUtil;
+import com.massivecraft.factions.FPlayers;
+import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.zcore.util.TextUtil;
 
-public class FCommandDescription extends FCommand {
-	
-	public FCommandDescription() {
-		aliases.add("desc");
+public class FCommandDescription extends FCommand
+{
+	public FCommandDescription()
+	{
+		super();
+		this.aliases.add("desc");
 		
-		requiredParameters.add("desc");
+		this.requiredArgs.add("desc");
+		//this.optionalArgs
 		
-		helpDescription = "Change the faction description";
+		this.permission = Permission.COMMAND_DESCRIPTION.node;
+		
+		senderMustBePlayer = true;
+		senderMustBeMember = false;
+		senderMustBeModerator = true;
+		senderMustBeAdmin = false;
 	}
 	
 	@Override
-	public void perform() {
-		if ( ! assertHasFaction()) {
-			return;
-		}
-		
-		if( isLocked() ) {
+	public void perform()
+	{
+		if( isLocked() )
+		{
 			sendLockMessage();
-			return;
-		}
-		
-		if ( ! assertMinRole(Role.MODERATOR)) {
 			return;
 		}
 
 		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-		if (!payForCommand(Conf.econCostDesc)) {
+		if ( ! payForCommand(Conf.econCostDesc))
+		{
 			return;
 		}
 
-		me.getFaction().setDescription(TextUtil.implode(parameters));
+		fme.getFaction().setDescription(TextUtil.implode(args, " "));
 		
 		// Broadcast the description to everyone
-		for (FPlayer fplayer : FPlayer.getAllOnline()) {
-			fplayer.sendMessage("The faction "+fplayer.getRelationColor(me)+me.getFaction().getTag()+Conf.colorSystem+" changed their description to:");
-			fplayer.sendMessage(me.getFaction().getDescription());
+		for (FPlayer fplayer : FPlayers.i.getOnline())
+		{
+			fplayer.sendMessageParsed("The faction "+fplayer.getRelationColor(fme)+fme.getFaction().getTag()+"<i> changed their description to:");
+			fplayer.sendMessageParsed("<i>"+fme.getFaction().getDescription());
 		}
 	}
 	

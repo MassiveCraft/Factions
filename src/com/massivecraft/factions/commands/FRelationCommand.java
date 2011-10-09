@@ -32,7 +32,7 @@ public class FRelationCommand extends FCommand {
 			return;
 		}
 		
-		Faction myFaction = me.getFaction();
+		Faction myFaction = fme.getFaction();
 		Faction otherFaction = findFaction(otherFactionName, false);
 		if (otherFaction == null) {
 			return;

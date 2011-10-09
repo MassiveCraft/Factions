@@ -8,60 +8,88 @@ import com.massivecraft.factions.Board;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 
-public class FCommandHome extends FCommand {
+public class FCommandHome extends FCommand
+{
 	
-	public FCommandHome() {
-		aliases.add("home");
+	public FCommandHome()
+	{
+		super();
+		this.aliases.add("home");
 		
-		helpDescription = "Teleport to the faction home";
+		//this.requiredArgs.add("");
+		//this.optionalArgs.put("", "");
+		
+		this.permission = Permission.COMMAND_HOME.node;
+		
+		senderMustBePlayer = true;
+		senderMustBeMember = true;
+		senderMustBeModerator = false;
+		senderMustBeAdmin = false;
 	}
 	
 	@Override
-	public void perform() {
-		if ( ! assertHasFaction()) {
-			return;
-		}
-		
-		if ( ! Conf.homesEnabled) {
-			me.sendMessage("Sorry, Faction homes are disabled on this server.");
+	public void perform()
+	{
+		// TODO: Hide this command on help also.
+		if ( ! Conf.homesEnabled)
+		{
+			fme.sendMessage("Sorry, Faction homes are disabled on this server.");
 			return;
 		}
 
-		if ( ! Conf.homesTeleportCommandEnabled) {
-			me.sendMessage("Sorry, the ability to teleport to Faction homes is disabled on this server.");
+		if ( ! Conf.homesTeleportCommandEnabled)
+		{
+			fme.sendMessage("Sorry, the ability to teleport to Faction homes is disabled on this server.");
 			return;
 		}
 		
-		Faction myFaction = me.getFaction();
+		Faction myFaction = fme.getFaction();
 		
-		if ( ! myFaction.hasHome()) {
-			me.sendMessage("You faction does not have a home. " + (me.getRole().value < Role.MODERATOR.value ? " Ask your leader to:" : "You should:"));
-			me.sendMessage(new FCommandSethome().getUseageTemplate());
+		if ( ! myFaction.hasHome())
+		{
+			fme.sendMessage("You faction does not have a home. " + (fme.getRole().value < Role.MODERATOR.value ? " Ask your leader to:" : "You should:"));
+			fme.sendMessage(new FCommandSethome().getUseageTemplate());
 			return;
 		}
 		
-		if (!Conf.homesTeleportAllowedFromEnemyTerritory && me.isInEnemyTerritory()) {
-			me.sendMessage("You cannot teleport to your faction home while in the territory of an enemy faction.");
+		if ( ! Conf.homesTeleportAllowedFromEnemyTerritory && fme.isInEnemyTerritory())
+		{
+			fme.sendMessage("You cannot teleport to your faction home while in the territory of an enemy faction.");
 			return;
 		}
 		
-		if (!Conf.homesTeleportAllowedFromDifferentWorld && me.getWorld().getUID() != myFaction.getHome().getWorld().getUID()) {
-			me.sendMessage("You cannot teleport to your faction home while in a different world.");
+		if ( ! Conf.homesTeleportAllowedFromDifferentWorld && me.getWorld().getUID() != myFaction.getHome().getWorld().getUID())
+		{
+			fme.sendMessage("You cannot teleport to your faction home while in a different world.");
 			return;
 		}
 		
 		Faction faction = Board.getFactionAt(new FLocation(me.getLocation()));
 		
 		// if player is not in a safe zone or their own faction territory, only allow teleport if no enemies are nearby
-		if (
-			   Conf.homesTeleportAllowedEnemyDistance > 0
-			&& !faction.isSafeZone()
-			&& (!me.isInOwnTerritory() || (me.isInOwnTerritory() && !Conf.homesTeleportIgnoreEnemiesIfInOwnTerritory))
-			) {
+		if
+		(
+			Conf.homesTeleportAllowedEnemyDistance > 0
+			&&
+			! faction.isSafeZone()
+			&&
+			(
+				! fme.isInOwnTerritory()
+				||
+				(
+					fme.isInOwnTerritory()
+					&&
+					! Conf.homesTeleportIgnoreEnemiesIfInOwnTerritory
+				)
+			)
+		)
+		{
 			Location loc = me.getLocation();
 			World w = loc.getWorld();
 			double x = loc.getX();
@@ -70,11 +98,11 @@ public class FCommandHome extends FCommand {
 
 			for (Player p : me.getServer().getOnlinePlayers())
 			{
-				if (p == null || !p.isOnline() || p.isDead() || p == me || p.getWorld() != w)
+				if (p == null || !p.isOnline() || p.isDead() || p == fme || p.getWorld() != w)
 					continue;
 
-				FPlayer fp = FPlayer.get(p);
-				if (me.getRelation(fp) != Relation.ENEMY)
+				FPlayer fp = FPlayers.i.get(p);
+				if (fme.getRelation(fp) != Relation.ENEMY)
 					continue;
 
 				Location l = p.getLocation();
@@ -87,13 +115,14 @@ public class FCommandHome extends FCommand {
 				if (dx > max || dy > max || dz > max)
 					continue;
 
-				me.sendMessage("You cannot teleport to your faction home while an enemy is within " + Conf.homesTeleportAllowedEnemyDistance + " blocks of you.");
+				fme.sendMessage("You cannot teleport to your faction home while an enemy is within " + Conf.homesTeleportAllowedEnemyDistance + " blocks of you.");
 				return;
 			}
 		}
 
 		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-		if (!payForCommand(Conf.econCostHome)) {
+		if ( ! payForCommand(Conf.econCostHome))
+		{
 			return;
 		}
 

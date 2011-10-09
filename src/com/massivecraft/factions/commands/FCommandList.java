@@ -4,55 +4,45 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import org.bukkit.command.CommandSender;
-
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.util.TextUtil;
+import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.struct.Permission;
 
 
-public class FCommandList extends FCommand {
+public class FCommandList extends FCommand
+{
 	
-	public FCommandList() {
-		aliases.add("list");
-		aliases.add("ls");
+	public FCommandList()
+	{
+		super();
+		this.aliases.add("list");
+		this.aliases.add("ls");
+		
+		//this.requiredArgs.add("");
+		this.optionalArgs.put("page", "1");
+		
+		this.permission = Permission.COMMAND_LIST.node;
 		
 		senderMustBePlayer = false;
-		
-		optionalParameters.add("page");
-		
-		helpDescription = "Show a list of the factions";
-	}
-	
-	@Override
-	public boolean hasPermission(CommandSender sender) {
-		return true;
+		senderMustBeMember = false;
+		senderMustBeModerator = false;
+		senderMustBeAdmin = false;
 	}
 
 	@Override
-	public void perform() {
-		ArrayList<Faction> FactionList = new ArrayList<Faction>(Faction.getAll());
-		FactionList.remove(Faction.getNone());
-		FactionList.remove(Faction.getSafeZone());
-		FactionList.remove(Faction.getWarZone());
-
+	public void perform()
+	{
 		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-		if (!payForCommand(Conf.econCostList)) {
-			return;
-		}
-
-		int page = 1;
-		if (parameters.size() > 0) {
-			try {
-				page = Integer.parseInt(parameters.get(0));
-			} catch (NumberFormatException e) {
-				// wasn't an integer
-			}
-		}
-		page -= 1;
-
+		if ( ! payForCommand(Conf.econCostList)) return;
+		
+		ArrayList<Faction> factionList = new ArrayList<Faction>(Factions.i.get());
+		factionList.remove(Factions.i.getNone());
+		factionList.remove(Factions.i.getSafeZone());
+		factionList.remove(Factions.i.getWarZone());
+		
 		// Sort by total followers first
-		Collections.sort(FactionList, new Comparator<Faction>(){
+		Collections.sort(factionList, new Comparator<Faction>(){
 			@Override
 			public int compare(Faction f1, Faction f2) {
 				if (f1.getFPlayers().size() < f2.getFPlayers().size())
@@ -64,7 +54,7 @@ public class FCommandList extends FCommand {
 		});
 
 		// Then sort by how many members are online now
-		Collections.sort(FactionList, new Comparator<Faction>(){
+		Collections.sort(factionList, new Comparator<Faction>(){
 			@Override
 			public int compare(Faction f1, Faction f2) {
 				if (f1.getFPlayersWhereOnline(true).size() < f2.getFPlayersWhereOnline(true).size())
@@ -74,29 +64,22 @@ public class FCommandList extends FCommand {
 				return 0;
 			}
 		});
-
-		FactionList.add(0, Faction.getNone());
 		
-		int maxPage = (int)Math.floor((double)FactionList.size() / 9D);
-		if (page < 0 || page > maxPage) {
-			sendMessage("The faction list is only " + (maxPage+1) + " page(s) long");
-			return;
+		ArrayList<String> lines = new ArrayList<String>();
+		lines.add(p.txt.parse("Factionless <i> %d online", Factions.i.getNone().getFPlayersWhereOnline(true).size()));
+		for (Faction faction : factionList)
+		{
+			lines.add(p.txt.parse("%s<i> %d/%d online, %d/%d/%d",
+				faction.getTag(fme),
+				faction.getFPlayersWhereOnline(true).size(),
+				faction.getFPlayers().size(),
+				faction.getLandRounded(),
+				faction.getPowerRounded(),
+				faction.getPowerMaxRounded())
+			);
 		}
-
-		String header = "Faction List";
-		if (maxPage > 1) header += " (page " + (page+1) + " of " + (maxPage+1) + ")";
-		sendMessage(TextUtil.titleize(header));
-
-		int maxPos = (page+1) * 9;
-		if (maxPos > FactionList.size()) maxPos = FactionList.size();
-		for (int pos = page * 9; pos < maxPos; pos++) {
-			Faction faction = FactionList.get(pos);
-			if (faction.getId() == 0) {
-				sendMessage("Factionless"+Conf.colorSystem+" "+faction.getFPlayersWhereOnline(true).size() + " online");
-			} else {
-				sendMessage(faction.getTag(me)+Conf.colorSystem+" "+faction.getFPlayersWhereOnline(true).size()+"/"+faction.getFPlayers().size()+" online, "+faction.getLandRounded()+"/"+faction.getPowerRounded()+"/"+faction.getPowerMaxRounded());
-			}
-		}
+		
+		sendMessage(p.txt.getPage(lines, this.argAsInt(0, 1), "Faction List"));
 	}
 	
 }

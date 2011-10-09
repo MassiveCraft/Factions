@@ -1,54 +1,58 @@
 package com.massivecraft.factions.commands;
 
-import org.bukkit.command.CommandSender;
-
 import com.massivecraft.factions.Board;
 import com.massivecraft.factions.FLocation;
-import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.struct.Permission;
 
-public class FCommandAutoSafeclaim extends FCommand {
+public class FCommandAutoSafeclaim extends FCommand
+{
 
-	public FCommandAutoSafeclaim() {
-		aliases.add("autosafe");
-
-		optionalParameters.add("on|off");
-
-		helpDescription = "Auto-claim land for the safezone";
+	public FCommandAutoSafeclaim()
+	{
+		super();
+		this.aliases.add("autosafe");
+		
+		//this.requiredArgs.add("");
+		this.optionalArgs.put("on/off", "flipp");
+		
+		this.permission = Permission.MANAGE_SAFE_ZONE.node;
+		
+		senderMustBePlayer = true;
+		senderMustBeMember = false;
+		senderMustBeModerator = true;
+		senderMustBeAdmin = false;
+		
+		this.setHelpShort("Auto-claim land for the safezone");
 	}
 
 	@Override
-	public boolean hasPermission(CommandSender sender) {
-		return P.hasPermManageSafeZone(sender);
-	}
-
-	@Override
-	public void perform() {
-
-		if( isLocked() ) {
+	public void perform()
+	{
+		if( isLocked() )
+		{
 			sendLockMessage();
 			return;
 		}
 
-		boolean enable = !me.autoSafeZoneEnabled();
+		boolean enabled = this.argAsBool(0, ! fme.isAutoSafeClaimEnabled());
+		
+		fme.setIsAutoSafeClaimEnabled(enabled);
 
-		if (parameters.size() > 0)
-			enable = parseBool(parameters.get(0));
-
-		me.enableAutoSafeZone(enable);
-
-		if (!enable) {
-			sendMessage("Auto-claiming of safe zone disabled.");
+		if ( ! enabled)
+		{
+			sendMessageParsed("<i>Auto-claiming of safe zone disabled.");
 			return;
 		}
 
-		sendMessage("Auto-claiming of safe zone enabled.");
+		sendMessageParsed("<i>Auto-claiming of safe zone enabled.");
 
-		FLocation playerFlocation = new FLocation(me);
+		FLocation playerFlocation = new FLocation(fme);
 		
-		if (!Board.getFactionAt(playerFlocation).isSafeZone()) {
-			Board.setFactionAt(Faction.getSafeZone(), playerFlocation);
-			sendMessage("This land is now a safe zone.");
+		if (!Board.getFactionAt(playerFlocation).isSafeZone())
+		{
+			Board.setFactionAt(Factions.i.getSafeZone(), playerFlocation);
+			sendMessageParsed("<i>This land is now a safe zone.");
 		}
 	}
 	

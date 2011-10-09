@@ -1,61 +1,66 @@
 package com.massivecraft.factions.commands;
 
-import org.bukkit.command.CommandSender;
-
 import com.massivecraft.factions.Board;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FLocation;
+import com.massivecraft.factions.struct.Permission;
 
 
-public class FCommandMap extends FCommand {
-	
-	public FCommandMap() {
-		aliases.add("map");
+public class FCommandMap extends FCommand
+{
+	public FCommandMap()
+	{
+		super();
+		this.aliases.add("map");
 		
-		optionalParameters.add("on|off");
+		//this.requiredArgs.add("");
+		this.optionalArgs.put("on/off", "once");
 		
-		helpDescription = "Show territory map, set optional auto update";
+		this.permission = Permission.COMMAND_MAP.node;
+		
+		senderMustBePlayer = true;
+		senderMustBeMember = false;
+		senderMustBeModerator = false;
+		senderMustBeAdmin = false;
 	}
 	
 	@Override
-	public boolean hasPermission(CommandSender sender) {
-		return true;
-	}
-	
-	@Override
-	public void perform() {
-		if (parameters.size() > 0) {
-			String mapAutoUpdating = parameters.get(0);
-			if (parseBool(mapAutoUpdating)) {
+	public void perform()
+	{
+		if (this.argIsSet(0))
+		{
+			if (this.argAsBool(0, ! fme.isMapAutoUpdating()))
+			{
 				// Turn on
 
 				// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-				if (!payForCommand(Conf.econCostMap)) {
-					return;
-				}
+				if ( ! payForCommand(Conf.econCostMap)) return;
 
-				me.setMapAutoUpdating(true);
-				sendMessage("Map auto update ENABLED.");
+				fme.setMapAutoUpdating(true);
+				sendMessageParsed("<i>Map auto update <green>ENABLED.");
 				
 				// And show the map once
 				showMap();
-			} else {
+			}
+			else
+			{
 				// Turn off
-				me.setMapAutoUpdating(false);
-				sendMessage("Map auto update DISABLED.");
+				fme.setMapAutoUpdating(false);
+				sendMessageParsed("<i>Map auto update <red>DISABLED.");
 			}
-		} else {
+		}
+		else
+		{
 			// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-			if (!payForCommand(Conf.econCostMap)) {
-				return;
-			}
+			if ( ! payForCommand(Conf.econCostMap)) return;
 
 			showMap();
 		}
 	}
 	
-	public void showMap() {
-		sendMessage(Board.getMap(me.getFaction(), new FLocation(me), me.getPlayer().getLocation().getYaw()));
+	public void showMap()
+	{
+		sendMessage(Board.getMap(fme.getFaction(), new FLocation(fme), fme.getPlayer().getLocation().getYaw()));
 	}
 	
 }

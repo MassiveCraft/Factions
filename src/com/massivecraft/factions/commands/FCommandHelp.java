@@ -2,44 +2,45 @@ package com.massivecraft.factions.commands;
 
 import java.util.ArrayList;
 
-import org.bukkit.command.CommandSender;
-
 import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.P;
 import com.massivecraft.factions.integration.Econ;
-import com.massivecraft.factions.util.TextUtil;
+import com.massivecraft.factions.struct.Permission;
 
 
-public class FCommandHelp extends FCommand {
+public class FCommandHelp extends FCommand
+{
 	
-	public FCommandHelp() {
-		aliases.add("help");
-		aliases.add("h");
-		aliases.add("?");
+	public FCommandHelp()
+	{
+		super();
+		this.aliases.add("help");
+		this.aliases.add("h");
+		this.aliases.add("?");
 		
-		optionalParameters.add("page");		
+		//this.requiredArgs.add("");
+		this.optionalArgs.put("page", "1");
 		
-		helpDescription = "Display a help page";
-	}
+		this.permission = Permission.COMMAND_HELP.node;
+		
+		senderMustBePlayer = false;
+		senderMustBeMember = false;
+		senderMustBeModerator = false;
+		senderMustBeAdmin = false;
+	}	
 	
 	@Override
-	public boolean hasPermission(CommandSender sender) {
-		return true;
-	}
-	
-	@Override
-	public void perform() {
-		int page = 1;
-		if (parameters.size() > 0) {
-			try {
-				page = Integer.parseInt(parameters.get(0));
-			} catch (NumberFormatException e) {
-				// wasn't an integer
-			}
-		}
-		sendMessage(TextUtil.titleize("Factions Help ("+page+"/"+helpPages.size()+")"));
+	public void perform()
+	{
+		int page = this.argAsInt(0, 1);
+		
+		sendMessage(p.txt.titleize("Factions Help ("+page+"/"+helpPages.size()+")"));
+		
 		page -= 1;
-		if (page < 0 || page >= helpPages.size()) {
-			sendMessage("This page does not exist");
+		
+		if (page < 0 || page >= helpPages.size())
+		{
+			sendMessageParsed("<b>This page does not exist");
 			return;
 		}
 		sendMessage(helpPages.get(page));
@@ -51,7 +52,8 @@ public class FCommandHelp extends FCommand {
 	
 	public static ArrayList<ArrayList<String>> helpPages;
 	
-	public static void updateHelp() {
+	public static void updateHelp()
+	{
 		helpPages = new ArrayList<ArrayList<String>>();
 		ArrayList<String> pageLines;
 
@@ -79,7 +81,8 @@ public class FCommandHelp extends FCommand {
 		pageLines.add( new FCommandSethome().getUseageTemplate() );
 		helpPages.add(pageLines);
 		
-		if (Econ.enabled() && Conf.bankEnabled) {
+		if (Econ.enabled() && Conf.bankEnabled)
+		{
 			pageLines = new ArrayList<String>();
 			pageLines.add( "" );
 			pageLines.add( "Your faction has a bank which is used to pay for certain" );
@@ -162,7 +165,7 @@ public class FCommandHelp extends FCommand {
 		pageLines.add( new FCommandWarclaim().getUseageTemplate() );
 		pageLines.add( new FCommandAutoWarclaim().getUseageTemplate() );
 		pageLines.add( new FCommandWarunclaimall().getUseageTemplate() );
-		pageLines.add("Note: " + Conf.colorCommand + "f unclaim" + Conf.colorSystem + " works on safe/war zones as well.");
+		pageLines.add("Note: " + new FCommandUnclaim().getUseageTemplate(false) + P.p.txt.parse("<i>") + " works on safe/war zones as well.");
 		helpPages.add(pageLines);
 		
 		pageLines = new ArrayList<String>();
@@ -178,7 +181,8 @@ public class FCommandHelp extends FCommand {
 		helpPages.add(pageLines);
 	}
 
-	static {
+	static
+	{
 		updateHelp();
 	}
 }

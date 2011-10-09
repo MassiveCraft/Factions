@@ -26,6 +26,14 @@ public class PlayerEntity extends Entity
 	// Message Sending Helpers
 	// -------------------------------------------- //
 	
+	/*
+	public void sendMessageParsed(String str, Object... args)
+	{
+		this.sendMessage(p.txt.parse(str, args));
+	}
+	Refference issue!!
+	*/
+	
 	public void sendMessage(String msg)
 	{
 		Player player = this.getPlayer();

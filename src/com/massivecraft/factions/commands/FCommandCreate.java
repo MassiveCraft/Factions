@@ -2,68 +2,77 @@ package com.massivecraft.factions.commands;
 
 import java.util.ArrayList;
 
-import org.bukkit.command.CommandSender;
-
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
 
 
-public class FCommandCreate extends FCommand {
-	
-	public FCommandCreate() {
-		aliases.add("create");
+public class FCommandCreate extends FCommand
+{
+	public FCommandCreate()
+	{
+		super();
+		this.aliases.add("create");
 		
-		requiredParameters.add("faction tag");
-
-		helpDescription = "Create a new faction";
+		this.requiredArgs.add("faction tag");
+		//this.optionalArgs.put("", "");
+		
+		this.permission = Permission.CREATE.node;
+		
+		senderMustBePlayer = true;
+		senderMustBeMember = false;
+		senderMustBeModerator = false;
+		senderMustBeAdmin = false;
 	}
 	
 	@Override
-	public boolean hasPermission(CommandSender sender) {
-		return P.hasPermCreate(sender);
-	}
-	
-	@Override
-	public void perform() {
-		
-		if( isLocked() ) {
+	public void perform()
+	{
+		if( isLocked() )
+		{
 			sendLockMessage();
 			return;
 		}
 		
-		String tag = parameters.get(0);
+		String tag = this.argAsString(0);
 		
-		if (me.hasFaction()) {
+		if (fme.hasFaction())
+		{
 			sendMessage("You must leave your current faction first.");
 			return;
 		}
 		
-		if (Faction.isTagTaken(tag)) {
+		if (Factions.i.isTagTaken(tag))
+		{
 			sendMessage("That tag is already in use.");
 			return;
 		}
 		
-		ArrayList<String> tagValidationErrors = Faction.validateTag(tag);
-		if (tagValidationErrors.size() > 0) {
+		ArrayList<String> tagValidationErrors = Factions.validateTag(tag);
+		if (tagValidationErrors.size() > 0)
+		{
 			sendMessage(tagValidationErrors);
 			return;
 		}
 
 		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-		if (!payForCommand(Conf.econCostCreate)) {
+		if (!payForCommand(Conf.econCostCreate))
+		{
 			return;
 		}
 
-		Faction faction = Faction.create();
+		Faction faction = Factions.i.create();
 		faction.setTag(tag);
-		me.setRole(Role.ADMIN);
-		me.setFaction(faction);
+		fme.setRole(Role.ADMIN);
+		fme.setFaction(faction);
 
-		for (FPlayer follower : FPlayer.getAllOnline()) {
-			follower.sendMessage(me.getNameAndRelevant(follower)+Conf.colorSystem+" created a new faction "+faction.getTag(follower));
+		for (FPlayer follower : FPlayers.i.getOnline())
+		{
+			follower.sendMessageParsed("%s<i> created a new faction %s", fme.getNameAndRelevant(follower), faction.getTag(follower));
 		}
 		
 		sendMessage("You should now: " + new FCommandDescription().getUseageTemplate());

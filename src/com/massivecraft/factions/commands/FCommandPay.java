@@ -2,77 +2,70 @@ package com.massivecraft.factions.commands;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.integration.Econ;
+import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
 
 
 public class FCommandPay extends FCommand
 {
-	
 	public FCommandPay()
 	{
-		aliases.add("pay");
+		this.aliases.add("pay");
 		
-		helpDescription = "Pay another faction from your bank";
-		requiredParameters.add("faction");
-		requiredParameters.add("amount");
+		this.requiredArgs.add("faction");
+		this.requiredArgs.add("amount");
+		//this.optionalArgs.put("factiontag", "yours");
+		
+		this.permission = Permission.COMMAND_PAY.node;
+		
+		senderMustBePlayer = true;
+		senderMustBeMember = true;
+		senderMustBeModerator = false;
+		senderMustBeAdmin = false;
 	}
 	
 	@Override
 	public void perform() {
-		if ( ! assertHasFaction()) {
+		if ( ! Conf.bankEnabled) return;
+		
+		if ( ! Conf.bankMembersCanWithdraw && ! assertMinRole(Role.MODERATOR))
+		{
+			sendMessageParsed("<b>Only faction moderators or admins are able to pay another faction.");
 			return;
 		}
 		
-		if (!Conf.bankEnabled) {
-			return;
-		}
-		
-		if ( !Conf.bankMembersCanWithdraw && !assertMinRole(Role.MODERATOR)) {
-			sendMessage("Only faction moderators or admins are able to pay another faction.");
-			return;
-		}
-		
-		double amount = 0.0;
-		
-		Faction us = me.getFaction();
-		Faction them = null;
-		
-		if (parameters.size() == 2) {
-			try {
-				them = Faction.findByTag(parameters.get(0));
-				amount = Double.parseDouble(parameters.get(1));
-			} catch (NumberFormatException e) {
-				// wasn't valid
-			}
-		}
-		
-		if(them == null) {
-			sendMessage("Faction "+parameters.get(0)+" could not be found.");
-			return;
-		}
+		Faction us = fme.getFaction();
+		Faction them = this.argAsFaction(0);
+		if ( them == null ) return;
+		double amount = this.argAsDouble(1, 0d);
 
-		if( amount > 0.0 ) {
+		if( amount > 0.0 )
+		{
 			String amountString = Econ.moneyString(amount);
 
-			if( amount > us.getMoney() ) {
+			if( amount > us.getMoney() )
+			{
 				amount = us.getMoney();
 			}
 			
 			us.removeMoney(amount);
 			them.addMoney(amount);
-			sendMessage("You have paid "+amountString+" from "+us.getTag()+"'s bank to "+them.getTag()+"'s bank.");
-			sendMessage(us.getTag()+" now has "+Econ.moneyString(us.getMoney()));
-			P.log(me.getName() + " paid "+amountString+" from "+us.getTag()+"'s bank to "+them.getTag()+"'s bank.");
 			
-			for (FPlayer fplayer : FPlayer.getAllOnline()) {
-				if (fplayer.getFaction() == us || fplayer.getFaction() == them) {
-					fplayer.sendMessage(me.getNameAndRelevant(fplayer)+Conf.colorSystem+" has sent "+amountString+" from "+us.getTag()+" to "+them.getTag() );
+			sendMessageParsed("<i>You have paid "+amountString+" from "+us.getTag()+"'s bank to "+them.getTag()+"'s bank.");
+			sendMessageParsed("<i>"+us.getTag()+" now has "+Econ.moneyString(us.getMoney()));
+			P.p.log(fme.getName() + " paid "+amountString+" from "+us.getTag()+"'s bank to "+them.getTag()+"'s bank.");
+			
+			for (FPlayer fplayer : FPlayers.i.getOnline())
+			{
+				if (fplayer.getFaction() == us || fplayer.getFaction() == them)
+				{
+					fplayer.sendMessageParsed(fme.getNameAndRelevant(fplayer)+"<i> has sent "+amountString+" from "+us.getTag()+" to "+them.getTag());
 				}
 			}
 		}
 	}
-	
 }

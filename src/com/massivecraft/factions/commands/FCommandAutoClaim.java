@@ -3,65 +3,64 @@ package com.massivecraft.factions.commands;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.struct.Permission;
 
-public class FCommandAutoClaim extends FCommand {
-
-	public FCommandAutoClaim() {
-		aliases.add("autoclaim");
-
-		optionalParameters.add("on|off");
-
-		helpDescription = "Auto-claim land as you walk around";
+public class FCommandAutoClaim extends FCommand
+{
+	public FCommandAutoClaim()
+	{
+		super();
+		this.aliases.add("autoclaim");
+		
+		//this.requiredArgs.add("");
+		this.optionalArgs.put("on/off", "flipp");
+		
+		this.permission = Permission.COMMAND_AUTOCLAIM.node;
+		
+		senderMustBePlayer = true;
+		senderMustBeMember = false;
+		senderMustBeModerator = true;
+		senderMustBeAdmin = false;
 	}
 
 	@Override
-	public void perform() {
-		if ( ! assertHasFaction()) {
-			return;
-		}
-
-		if( isLocked() ) {
+	public void perform()
+	{
+		if( isLocked() )
+		{
 			sendLockMessage();
 			return;
 		}
 
-		// default: toggle existing value
-		boolean enable = !me.autoClaimEnabled();
+		boolean enabled = this.argAsBool(0, ! fme.isAutoClaimEnabled());
+		
+		fme.setIsAutoClaimEnabled(enabled);
 
-		// if on|off is specified, use that instead
-		if (parameters.size() > 0)
-			enable = parseBool(parameters.get(0));
-
-		me.enableAutoClaim(enable);
-
-		if (!enable) {
-			sendMessage("Auto-claiming of land disabled.");
+		if ( ! enabled)
+		{
+			sendMessageParsed("<i>Auto-claiming of land disabled.");
 			return;
 		}
 
-		Faction myFaction = me.getFaction();
-		FLocation flocation = new FLocation(me);
+		Faction myFaction = fme.getFaction();
+		FLocation flocation = new FLocation(fme);
 
-		if ( ! assertMinRole(Role.MODERATOR)) {
-			me.enableAutoClaim(false);
+		if (Conf.worldsNoClaiming.contains(flocation.getWorldName()))
+		{
+			sendMessageParsed("<b>Sorry, this world has land claiming disabled.");
+			fme.setIsAutoClaimEnabled(false);
 			return;
 		}
 
-		if (Conf.worldsNoClaiming.contains(flocation.getWorldName())) {
-			sendMessage("Sorry, this world has land claiming disabled.");
-			me.enableAutoClaim(false);
+		if (myFaction.getLandRounded() >= myFaction.getPowerRounded())
+		{
+			sendMessageParsed("<b>You can't claim more land! You need more power!");
+			fme.setIsAutoClaimEnabled(false);
 			return;
 		}
 
-		if (myFaction.getLandRounded() >= myFaction.getPowerRounded()) {
-			sendMessage("You can't claim more land! You need more power!");
-			me.enableAutoClaim(false);
-			return;
-		}
-
-		sendMessage("Auto-claiming of land enabled.");
-		me.attemptClaim(false);
+		sendMessageParsed("<i>Auto-claiming of land enabled.");
+		fme.attemptClaim(false);
 	}
 	
 }

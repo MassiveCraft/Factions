@@ -1,62 +1,66 @@
 package com.massivecraft.factions.commands;
 
-import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
 
-public class FCommandMod extends FCommand {
+public class FCommandMod extends FCommand
+{
 	
-	public FCommandMod() {
-		aliases.add("mod");
+	public FCommandMod()
+	{
+		super();
+		this.aliases.add("mod");
 		
-		requiredParameters.add("player name");
+		this.requiredArgs.add("player name");
+		//this.optionalArgs.put("", "");
 		
-		helpDescription = "Give or revoke moderator rights";
+		this.permission = Permission.COMMAND_MOD.node;
+		
+		senderMustBePlayer = true;
+		senderMustBeMember = false;
+		senderMustBeModerator = false;
+		senderMustBeAdmin = true;
 	}
 	
 	@Override
-	public void perform() {
-		if ( ! assertHasFaction()) {
-			return;
-		}
-		
-		if( isLocked() ) {
+	public void perform()
+	{
+		if( isLocked() )
+		{
 			sendLockMessage();
 			return;
 		}
 		
-		if ( ! assertMinRole(Role.ADMIN)) {
+		FPlayer you = this.argAsBestFPlayerMatch(0);
+		if (you == null) return;
+		
+		Faction myFaction = fme.getFaction();
+		
+		if (you.getFaction() != myFaction)
+		{
+			sendMessageParsed("%s<b> is not a member in your faction.", you.getNameAndRelevant(fme));
 			return;
 		}
 		
-		String playerName = parameters.get(0);
-		
-		FPlayer you = findFPlayer(playerName, false);
-		if (you == null) {
-			return;
-		}
-		
-		Faction myFaction = me.getFaction();
-		
-		if (you.getFaction() != myFaction) {
-			sendMessage(you.getNameAndRelevant(me)+Conf.colorSystem+" is not a member in your faction.");
-			return;
-		}
-		
-		if (you == me) {
-			sendMessage("The target player musn't be yourself.");
+		if (you == fme)
+		{
+			sendMessageParsed("<b>The target player musn't be yourself.");
 			return;
 		}
 
-		if (you.getRole() == Role.MODERATOR) {
+		if (you.getRole() == Role.MODERATOR)
+		{
 			// Revoke
 			you.setRole(Role.NORMAL);
-			myFaction.sendMessage(you.getNameAndRelevant(myFaction)+Conf.colorSystem+" is no longer moderator in your faction.");
-		} else {
+			myFaction.sendMessageParsed("%s<i> is no longer moderator in your faction.", you.getNameAndRelevant(myFaction));
+		}
+		else
+		{
 			// Give
 			you.setRole(Role.MODERATOR);
-			myFaction.sendMessage(you.getNameAndRelevant(myFaction)+Conf.colorSystem+" was promoted to moderator in your faction.");
+			myFaction.sendMessageParsed("%s<i> was promoted to moderator in your faction.", you.getNameAndRelevant(myFaction));
 		}
 	}
 	
