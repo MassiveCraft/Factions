@@ -1,17 +1,13 @@
 package com.massivecraft.factions;
 
-import java.io.*;
-import java.lang.reflect.Type;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.Map.Entry;
-import java.util.logging.Level;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import com.google.gson.reflect.TypeToken;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.*;
@@ -185,6 +181,11 @@ public class Faction extends Entity
 		return this.getId().equals("-2");
 	}
 	
+	public boolean isPlayerFreeType()
+	{
+		return this.isSafeZone() || this.isWarZone();
+	}
+	
 	
 	// -------------------------------
 	// Relation and relation colors TODO
@@ -302,7 +303,7 @@ public class Faction extends Entity
 	public ArrayList<FPlayer> getFPlayers()
 	{
 		ArrayList<FPlayer> ret = new ArrayList<FPlayer>();
-		if (id < 0) return ret;
+		if (this.isPlayerFreeType()) return ret;
 
 		for (FPlayer fplayer : FPlayers.i.get())
 		{
@@ -318,7 +319,7 @@ public class Faction extends Entity
 	public ArrayList<FPlayer> getFPlayersWhereOnline(boolean online)
 	{
 		ArrayList<FPlayer> ret = new ArrayList<FPlayer>();
-		if (id < 0) return ret;
+		if (this.isPlayerFreeType()) return ret;
 
 		for (FPlayer fplayer : FPlayers.i.get())
 		{
@@ -333,7 +334,7 @@ public class Faction extends Entity
 	
 	public FPlayer getFPlayerAdmin()
 	{
-		if (id <= 0) return null;
+		if ( ! this.isNormal()) return null;
 		
 		for (FPlayer fplayer : FPlayers.i.get())
 		{
@@ -347,7 +348,7 @@ public class Faction extends Entity
 	
 	public ArrayList<FPlayer> getFPlayersWhereRole(Role role) {
 		ArrayList<FPlayer> ret = new ArrayList<FPlayer>();
-		if (id <= 0) return ret;
+		if ( ! this.isNormal()) return ret;
 		
 		for (FPlayer fplayer : FPlayers.i.get()) {
 			if (fplayer.getFaction() == this && fplayer.getRole() == role) {
@@ -361,7 +362,7 @@ public class Faction extends Entity
 	public ArrayList<Player> getOnlinePlayers()
 	{
 		ArrayList<Player> ret = new ArrayList<Player>();
-		if (id < 0) return ret;
+		if (this.isPlayerFreeType()) return ret;
 
 		for (Player player: P.p.getServer().getOnlinePlayers())
 		{
@@ -379,7 +380,7 @@ public class Faction extends Entity
 	public boolean hasPlayersOnline()
 	{
 		// only real factions can have players online, not safe zone / war zone
-		if (id < 0) return false;
+		if (this.isPlayerFreeType()) return false;
 		
 		for (Player player: P.p.getServer().getOnlinePlayers())
 		{

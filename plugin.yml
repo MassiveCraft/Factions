@@ -1,0 +1,172 @@
+name: Factions
+version: 1.6.0_dev
+main: com.massivecraft.factions.P
+softdepend:
+  - PermissionsEx
+  - Permissions
+  - Essentials
+  - EssentialsChat
+  - HeroChat
+  - iChat
+  - LocalAreaChat
+  - nChat
+  - ChatManager
+  - AuthMe
+  - iConomy
+  - Register
+  - Spout
+  - WorldEdit
+  - WorldGuard
+permissions:
+  factions.*:
+    description: Grants all Factions permissions
+    children:
+  factions.*:
+    description: Grants all Factions permissions
+    children:
+	
+
+  factions.managesafezone:
+    description: claim land as a safe zone and build/destroy within safe zones
+    default: op
+  factions.managewarzone:
+    description: claim land as a war zone and build/destroy within war zones
+    default: op
+  factions.ownershipbypass:
+    description: bypass ownership restrictions within own faction's territory
+    default: op
+  factions.command.admin:
+    description: hand over your admin rights
+    default: true
+  factions.command.autoclaim:
+    description: auto-claim land as you walk around
+    default: true
+  factions.command.balance:
+    description: show current faction balance
+    default: true
+  factions.command.balance.any:
+    description: show on other factions balance
+    default: true
+  factions.command.withdraw:
+    description: withdraw money from your faction bank
+    default: true
+  factions.command.pay:
+    description: pay another faction from your bank
+    default: true
+  factions.command.bypass:
+    description: enable admin bypass mode
+    default: op
+  factions.command.chat:
+    description: change chat mode
+    default: true
+  factions.command.claim:
+    description: claim the land where you are standing
+    default: true
+  factions.command.config:
+    description: change a conf.json setting
+    default: op
+  factions.create:
+    description: create a new faction
+    default: true
+  factions.command.deinvite:
+    description: remove a pending invitation
+    default: true
+  factions.command.deposit:
+    description: deposit money into your faction bank
+    default: true
+  factions.command.description:
+    description: change the faction description
+    default: true
+  factions.command.disband:
+    description: disband a faction
+    default: true
+  factions.command.disband.any:
+    description: disband an other faction
+    default: op
+  factions.command.help:
+    description: display a help page
+    default: true
+  factions.command.home:
+    description: teleport to the faction home
+    default: true
+  factions.command.join:
+    description: join a faction
+    default: true
+  factions.command.kick:
+    description: kick a player from the faction
+    default: true
+  factions.command.kick.any:
+    description: kick anyone from any faction
+    default: op
+  factions.command.leave:
+    description: leave your faction
+    default: true
+  factions.command.list:
+    description: see a list of the factions
+    default: true
+  factions.command.lock:
+    description: lock all write stuff
+    default: op
+  factions.command.map:
+    description: show territory map, set optional auto update
+    default: true
+  factions.command.mod:
+    description: give or revoke moderator rights
+    default: true
+  factions.command.noboom:
+    description: toggle explosions (peaceful factions only)
+    default: true
+  factions.command.open:
+    description: switch if invitation is required to join
+    default: true
+  factions.command.owner:
+    description: set ownership of claimed land
+    default: true
+  factions.command.ownerlist:
+    description: list owner(s) of this claimed land
+    default: true
+  factions.command.setpeaceful:
+    description: designate a faction as peaceful
+    default: op
+  factions.command.setpermanent:
+    description: designate a faction as permanent
+    default: op
+  factions.command.power:
+    description: show player power info
+    default: true
+  factions.command.power.any:
+    description: view an other players power level
+    default: true
+  factions.command.relation:
+    description: set relation wish to another faction
+    default: true
+  factions.command.reload:
+    description: reload data file(s) from disk
+    default: op
+  factions.command.save:
+    description: save all data to disk
+    default: op
+  factions.command.sethome:
+    description: set the faction home
+    default: true
+  factions.command.sethome.any:
+    description: set any faction home
+    default: op
+  factions.command.show:
+    description: chow faction information
+    default: true
+  factions.command.tag:
+    description: change the faction tag
+    default: true
+  factions.command.title:
+    description: set or remove a players title
+    default: true
+  factions.command.version:
+    description: see the version of the plugin
+    default: true
+  factions.command.unclaim:
+    description: unclaim the land where you are standing
+    default: true
+  factions.command.unclaimall:
+    description: unclaim all of your factions land
+    default: true

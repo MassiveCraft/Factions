@@ -1,22 +1,12 @@
 package com.massivecraft.factions;
 
-import java.io.File;
 import java.lang.reflect.Modifier;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.bukkit.block.Block;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.player.PlayerChatEvent;
@@ -32,16 +22,11 @@ import com.massivecraft.factions.listeners.FactionsChatEarlyListener;
 import com.massivecraft.factions.listeners.FactionsEntityListener;
 import com.massivecraft.factions.listeners.FactionsPlayerListener;
 import com.massivecraft.factions.struct.ChatMode;
-import com.massivecraft.factions.util.MapFLocToStringSetTypeAdapter;
-import com.massivecraft.factions.util.MyLocationTypeAdapter;
 import com.massivecraft.factions.zcore.MPlugin;
 
 import com.nijiko.permissions.PermissionHandler;
-import com.nijikokun.bukkit.Permissions.Permissions;
 import com.earth2me.essentials.chat.EssentialsChat;
-import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 import com.massivecraft.factions.integration.EssentialsFeatures;
 
 public class P extends MPlugin
@@ -55,7 +40,7 @@ public class P extends MPlugin
 	public final FactionsEntityListener entityListener;
 	public final FactionsBlockListener blockListener;
 	
-	public CmdBase cmdBase;
+	public FCmdRoot cmdBase;
 	
 	public P()
 	{
@@ -82,7 +67,7 @@ public class P extends MPlugin
 		Board.load();
 		
 		// Add Base Commands
-		this.cmdBase = new CmdBase();
+		this.cmdBase = new FCmdRoot();
 		this.getBaseCommands().add(cmdBase);
 		
 		//setupPermissions();
@@ -95,59 +80,6 @@ public class P extends MPlugin
 		{
 			Worldguard.init(this);			
 		}
-		
-		//Type mapFLocToStringSetType = new TypeToken<Map<FLocation, Set<String>>>(){}.getType();
-		
-		// Add the commands
-		/*commands.add(new FCommandHelp());
-		commands.add(new FCommandAdmin());
-		commands.add(new FCommandAutoClaim());
-		commands.add(new FCommandAutoSafeclaim());
-		commands.add(new FCommandAutoWarclaim());
-		commands.add(new FCommandBalance());
-		commands.add(new FCommandBypass());
-		commands.add(new FCommandChat());
-		commands.add(new FCommandClaim());
-		commands.add(new FCommandConfig());
-		commands.add(new FCommandCreate());
-		commands.add(new FCommandDeinvite());
-		commands.add(new FCommandDeposit());
-		commands.add(new FCommandDescription());
-		commands.add(new FCommandDisband());
-		commands.add(new FCommandHome());
-		commands.add(new FCommandInvite());
-		commands.add(new FCommandJoin());
-		commands.add(new FCommandKick());
-		commands.add(new FCommandLeave());
-		commands.add(new FCommandList());
-		commands.add(new FCommandLock());
-		commands.add(new FCommandMap());
-		commands.add(new FCommandMod());
-		commands.add(new FCommandNoBoom());
-		commands.add(new FCommandOpen());
-		commands.add(new FCommandOwner());
-		commands.add(new FCommandOwnerList());
-		commands.add(new FCommandPay());
-		commands.add(new FCommandPower());
-		commands.add(new FCommandPeaceful());
-		commands.add(new FCommandPermanent());
-		commands.add(new FCommandRelationAlly());
-		commands.add(new FCommandRelationEnemy());
-		commands.add(new FCommandRelationNeutral());
-		commands.add(new FCommandReload());
-		commands.add(new FCommandSafeclaim());
-		commands.add(new FCommandSafeunclaimall());
-		commands.add(new FCommandSaveAll());
-		commands.add(new FCommandSethome());
-		commands.add(new FCommandShow());
-		commands.add(new FCommandTag());
-		commands.add(new FCommandTitle());
-		commands.add(new FCommandUnclaim());
-		commands.add(new FCommandUnclaimall());
-		commands.add(new FCommandVersion());
-		commands.add(new FCommandWarclaim());
-		commands.add(new FCommandWarunclaimall());
-		commands.add(new FCommandWithdraw());*/
 		
 		// Register events
 		PluginManager pm = this.getServer().getPluginManager();
@@ -177,11 +109,6 @@ public class P extends MPlugin
 		pm.registerEvent(Event.Type.BLOCK_PISTON_EXTEND, this.blockListener, Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.BLOCK_PISTON_RETRACT, this.blockListener, Event.Priority.Normal, this);
 		
-		// Register recurring tasks
-		/*long saveTicks = 20 * 60 * 30; // Approximately every 30 min
-		if (saveTask == null)
-			saveTask = this.getServer().getScheduler().scheduleSyncRepeatingTask(this, new SaveTask(), saveTicks, saveTicks);
-		*/
 		postEnable();
 	}
 	
@@ -239,7 +166,8 @@ public class P extends MPlugin
 	
 	private void unhookEssentialsChat()
 	{
-		if (essChat != null) {
+		if (essChat != null)
+		{
 			EssentialsFeatures.unhookChat();
 		}
 	}
@@ -262,6 +190,8 @@ public class P extends MPlugin
 
 	// Simply put, should this chat event be left for Factions to handle? For now, that means players with Faction Chat
 	// enabled or use of the Factions f command without a slash; combination of isPlayerFactionChatting() and isFactionsCommand()
+	
+	
 	public boolean shouldLetFactionsHandleThisChat(PlayerChatEvent event)
 	{
 		if (event == null) return false;
@@ -280,10 +210,13 @@ public class P extends MPlugin
 	}
 
 	// Is this chat message actually a Factions command, and thus should be left alone by other plugins?
+	
+	// TODO: GET THIS BACK AND WORKING
+	
 	public boolean isFactionsCommand(String check)
 	{
 		if (check == null || check.isEmpty()) return false;
-		return (Conf.allowNoSlashCommand && (check.startsWith(p.getBaseCommand()+" ") || check.equals(p.getBaseCommand())));
+		return this.handleCommand(null, check, true);
 	}
 
 	// Get a player's faction tag (faction name), mainly for usage by chat plugins for local/channel chat

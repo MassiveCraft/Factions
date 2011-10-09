@@ -193,7 +193,7 @@ public abstract class MPlugin extends JavaPlugin
 	// COMMAND HANDLING
 	// -------------------------------------------- //
 
-	public boolean handleCommand(CommandSender sender, String commandString)
+	public boolean handleCommand(CommandSender sender, String commandString, boolean testOnly)
 	{
 		boolean noSlash = false;
 		if (commandString.startsWith("/"))
@@ -212,12 +212,18 @@ public abstract class MPlugin extends JavaPlugin
 				{
 					List<String> args = new ArrayList<String>(Arrays.asList(commandString.split("\\s+")));
 					args.remove(0);
+					if (testOnly) return true;
 					command.execute(sender, args);
 					return true;
 				}
 			}
 		}
 		return false;
+	}
+	
+	public boolean handleCommand(CommandSender sender, String commandString)
+	{
+		return this.handleCommand(sender, commandString, false);
 	}
 	
 	// -------------------------------------------- //

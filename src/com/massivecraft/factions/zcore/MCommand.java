@@ -297,7 +297,7 @@ public abstract class MCommand<T extends MPlugin>
 	// Argument Readers
 	// -------------------------------------------- //
 	
-	// Is set?
+	// Is set? ======================
 	public boolean argIsSet(int idx)
 	{
 		if (this.args.size() < idx+1)
@@ -307,7 +307,7 @@ public abstract class MCommand<T extends MPlugin>
 		return true;
 	}
 	
-	// STRING
+	// STRING ======================
 	public String argAsString(int idx, String def)
 	{
 		if (this.args.size() < idx+1)
@@ -321,7 +321,7 @@ public abstract class MCommand<T extends MPlugin>
 		return this.argAsString(idx, null);
 	}
 	
-	// INT
+	// INT ======================
 	public int argAsInt(int idx, int def)
 	{
 		String str = this.argAsString(idx);
@@ -341,7 +341,7 @@ public abstract class MCommand<T extends MPlugin>
 		return this.argAsInt(idx, -1);
 	}
 	
-	// Double
+	// Double ======================
 	public double argAsDouble(int idx, double def)
 	{
 		String str = this.argAsString(idx);
@@ -361,12 +361,10 @@ public abstract class MCommand<T extends MPlugin>
 		return this.argAsDouble(idx, -1d);
 	}
 	
-	// Boolean
-	public boolean argAsBool(int idx, boolean def)
+	// TODO: Go through the str conversion for the other arg-readers as well.
+	// Boolean ======================
+	public Boolean strAsBool(String str)
 	{
-		String str = this.argAsString(idx);
-		if (str == null) return def;
-		
 		str = str.toLowerCase();
 		if (str.startsWith("y") || str.startsWith("t") || str.startsWith("on") || str.startsWith("+") || str.startsWith("1"))
 		{
@@ -374,12 +372,21 @@ public abstract class MCommand<T extends MPlugin>
 		}
 		return false;
 	}
-	public boolean argAsBool(int idx)
+	
+	public Boolean argAsBool(int idx, boolean def)
+	{
+		String str = this.argAsString(idx);
+		if (str == null) return def;
+		
+		return strAsBool(str);
+	}
+	public Boolean argAsBool(int idx)
 	{
 		return this.argAsBool(idx, false);
 	}
 	
-	// PLAYER
+	// PLAYER ======================
+	
 	public Player argAsPlayer(int idx, Player def, boolean msg)
 	{
 		Player ret = def;
@@ -396,8 +403,7 @@ public abstract class MCommand<T extends MPlugin>
 		
 		if (msg && ret == null)
 		{
-			// TODO: Fix this injection risk!
-			this.sendMessage(p.txt.tags("<b>The player \"<p>"+name+"<b>\" could not be found."));
+			this.sendMessageParsed("<b>No player \"<p>%s<b>\" could not be found.", name);			
 		}
 		
 		return ret;
@@ -411,7 +417,7 @@ public abstract class MCommand<T extends MPlugin>
 		return this.argAsPlayer(idx, null);
 	}
 	
-	// BEST PLAYER MATCH
+	// BEST PLAYER MATCH ======================
 	public Player argAsBestPlayerMatch(int idx, Player def, boolean msg)
 	{
 		Player ret = def;
@@ -428,8 +434,7 @@ public abstract class MCommand<T extends MPlugin>
 		
 		if (msg && ret == null)
 		{
-			// TODO: Fix this injection risk!
-			this.sendMessage(p.txt.tags("<b>No player match found for \"<p>"+name+"<b>\"."));
+			this.sendMessageParsed("<b>No player match found for \"<p>%s<b>\".", name);
 		}
 		
 		return ret;
