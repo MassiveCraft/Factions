@@ -1,72 +1,81 @@
 package com.massivecraft.factions.commands;
 
+import com.massivecraft.factions.Board;
 import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
 
-public class FCommandSethome extends FCommand {
-	
-	public FCommandSethome() {
-		aliases.add("sethome");
+public class FCommandSethome extends FCommand
+{
+	public FCommandSethome()
+	{
+		this.aliases.add("sethome");
 		
-		optionalParameters.add("faction tag");
+		//this.requiredArgs.add("");
+		this.optionalArgs.put("faction tag", "mine");
 		
-		helpDescription = "Set the faction home";
+		this.permission = Permission.COMMAND_SETHOME.node;
+		
+		senderMustBePlayer = true;
+		senderMustBeMember = false;
+		senderMustBeModerator = false;
+		senderMustBeAdmin = false;
 	}
 	
 	@Override
-	public void perform() {
-		if ( ! assertHasFaction()) {
-			return;
-		}
-		
-		if( isLocked() ) {
+	public void perform()
+	{
+		if( isLocked() )
+		{
 			sendLockMessage();
 			return;
 		}
 		
-		if ( ! assertMinRole(Role.MODERATOR)) {
+		if ( ! Conf.homesEnabled)
+		{
+			fme.sendMessageParsed("<b>Sorry, Faction homes are disabled on this server.");
 			return;
 		}
 		
-		if ( ! Conf.homesEnabled) {
-			fme.sendMessage("Sorry, Faction homes are disabled on this server.");
-			return;
+		Faction faction = this.argAsFaction(0, myFaction);
+		if (faction == null) return;
+		
+		// Can the player set the home for this faction?
+		if (faction == myFaction)
+		{
+			if ( ! Permission.COMMAND_SETHOME_ANY.has(sender) && ! assertMinRole(Role.MODERATOR)) return;
+		}
+		else
+		{
+			if (Permission.COMMAND_SETHOME_ANY.has(sender, true)) return;
 		}
 		
-		Faction myFaction = fme.getFaction();
-		
-		if (parameters.size() > 0) {
-			if (!P.hasPermAdminBypass(fme)) {
-				fme.sendMessage("You cannot set the home of another faction without adminBypass permission.");
-				return;
-			}
-			
-			myFaction = findFaction(parameters.get(0), true);
-			
-			if (myFaction == null) {
-				fme.sendMessage("No such faction seems to exist.");
-				return;
-			}
-		}
-		
-		if (Conf.homesMustBeInClaimedTerritory && !fme.isInOwnTerritory() && !P.hasPermAdminBypass(fme)) {
-			fme.sendMessage("Sorry, your faction home can only be set inside your own claimed territory.");
+		// Can the player set the faction home HERE?
+		if
+		(
+			! Permission.COMMAND_BYPASS.has(me)
+			&&
+			Conf.homesMustBeInClaimedTerritory
+			&& 
+			Board.getFactionAt(new FLocation(me)) != faction
+		)
+		{
+			fme.sendMessageParsed("<b>Sorry, your faction home can only be set inside your own claimed territory.");
 			return;
 		}
 
 		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-		if (!payForCommand(Conf.econCostSethome)) {
-			return;
-		}
+		if ( ! payForCommand(Conf.econCostSethome)) return;
 
-		myFaction.setHome(fme.getLocation());
+		faction.setHome(me.getLocation());
 		
-		myFaction.sendMessage(fme.getNameAndRelevant(myFaction)+Conf.colorSystem+" set the home for your faction. You can now use:");
-		myFaction.sendMessage(new FCommandHome().getUseageTemplate());
-		if (myFaction != fme.getFaction()) {
-			fme.sendMessage("You have set the home for the "+myFaction.getTag(fme)+Conf.colorSystem+" faction.");
+		faction.sendMessage(fme.getNameAndRelevant(myFaction)+"<i> set the home for your faction. You can now use:");
+		faction.sendMessage(new FCommandHome().getUseageTemplate());
+		if (faction != myFaction)
+		{
+			fme.sendMessageParsed("<b>You have set the home for the "+faction.getTag(fme)+"<i> faction.");
 		}
 	}
 	

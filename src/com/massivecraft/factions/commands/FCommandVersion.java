@@ -1,28 +1,29 @@
 package com.massivecraft.factions.commands;
 
-import org.bukkit.command.CommandSender;
-
 import com.massivecraft.factions.P;
+import com.massivecraft.factions.struct.Permission;
 
 
-public class FCommandVersion extends FCommand {
-	
-	public FCommandVersion() {
-		aliases.add("version");
+public class FCommandVersion extends FCommand
+{
+	public FCommandVersion()
+	{
+		this.aliases.add("version");
+		
+		//this.requiredArgs.add("");
+		//this.optionalArgs.put("", "");
+		
+		this.permission = Permission.COMMAND_VERSION.node;
 		
 		senderMustBePlayer = false;
-		
-		helpDescription = "Which version are you using?";
+		senderMustBeMember = false;
+		senderMustBeModerator = false;
+		senderMustBeAdmin = false;
 	}
-	
+
 	@Override
-	public boolean hasPermission(CommandSender sender) {
-		return true;
+	public void perform()
+	{
+		sendMessageParsed("<i>You are running "+P.p.getDescription().getFullName());
 	}
-	
-	@Override
-	public void perform() {
-		sendMessage("You are running "+P.p.getDescription().getFullName());
-	}
-	
 }

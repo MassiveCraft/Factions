@@ -79,7 +79,7 @@ public abstract class MPlugin extends JavaPlugin
 		long saveTicks = 20 * 60 * 30; // Approximately every 30 min
 		if (saveTask == null)
 		{
-			saveTask = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, new SaveTask(), saveTicks, saveTicks);
+			saveTask = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, new SaveTask(this), saveTicks, saveTicks);
 		}
 		
 		return true;
@@ -220,6 +220,18 @@ public abstract class MPlugin extends JavaPlugin
 		return false;
 	}
 	
+	// -------------------------------------------- //
+	// HOOKS
+	// -------------------------------------------- //
+	public void preSaveTask()
+	{
+		
+	}
+	
+	public void postSaveTask()
+	{
+		
+	}
 	
 	// -------------------------------------------- //
 	// LOGGING

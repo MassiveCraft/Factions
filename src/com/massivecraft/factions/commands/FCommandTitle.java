@@ -2,59 +2,55 @@ package com.massivecraft.factions.commands;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.integration.SpoutFeatures;
-import com.massivecraft.factions.util.TextUtil;
+import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.zcore.util.TextUtil;
 
-public class FCommandTitle extends FCommand {
-	
-	public FCommandTitle() {
-		aliases.add("title");
+public class FCommandTitle extends FCommand
+{
+	public FCommandTitle()
+	{
+		this.aliases.add("title");
 		
-		requiredParameters.add("player name");
+		this.requiredArgs.add("player name");
+		this.optionalArgs.put("title", "");
 		
-		optionalParameters.add("title");
+		this.permission = Permission.COMMAND_TITLE.node;
 		
-		helpDescription = "Set or remove a players title";
+		senderMustBePlayer = true;
+		senderMustBeMember = false;
+		senderMustBeModerator = true;
+		senderMustBeAdmin = false;
 	}
 	
 	@Override
-	public void perform() {
-		if ( ! assertHasFaction()) {
-			return;
-		}
-		
-		if( isLocked() ) {
+	public void perform()
+	{
+		if( isLocked() )
+		{
 			sendLockMessage();
 			return;
 		}
 		
-		String playerName = parameters.get(0);
-		parameters.remove(0);
-		String title = TextUtil.implode(parameters);
+		FPlayer you = this.argAsBestFPlayerMatch(0);
+		if (you == null) return;
 		
-		FPlayer you = findFPlayer(playerName, false);
-		if (you == null) {
-			return;
-		}
+		args.remove(0);
+		String title = TextUtil.implode(args, " ");
 		
-		if ( ! canIAdministerYou(fme, you)) {
-			return;
-		}
+		if ( ! canIAdministerYou(fme, you)) return;
 
 		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-		if (!payForCommand(Conf.econCostTitle)) {
-			return;
-		}
+		if ( ! payForCommand(Conf.econCostTitle)) return;
 
 		you.setTitle(title);
 		
 		// Inform
-		Faction myFaction = fme.getFaction();
-		myFaction.sendMessage(fme.getNameAndRelevant(myFaction)+Conf.colorSystem+" changed a title: "+you.getNameAndRelevant(myFaction));
+		myFaction.sendMessageParsed("%s<i> changed a title: %s", fme.getNameAndRelevant(myFaction), you.getNameAndRelevant(myFaction));
 
-		if (Conf.spoutFactionTitlesOverNames) {
-			SpoutFeatures.updateAppearances(fme);
+		if (Conf.spoutFactionTitlesOverNames)
+		{
+			SpoutFeatures.updateAppearances(me);
 		}
 	}
 	

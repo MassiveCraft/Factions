@@ -1,30 +1,39 @@
 package com.massivecraft.factions.commands;
 
-import org.bukkit.command.CommandSender;
+import com.massivecraft.factions.Board;
+import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.FPlayers;
+import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.struct.Permission;
 
-import com.massivecraft.factions.P;
-
-public class FCommandSaveAll extends FCommand {
+public class FCommandSaveAll extends FCommand
+{
 	
-	public FCommandSaveAll() {
-		aliases.add("saveall");
-		aliases.add("save");
+	public FCommandSaveAll()
+	{
+		super();
+		this.aliases.add("saveall");
+		this.aliases.add("save");
+		
+		//this.requiredArgs.add("");
+		//this.optionalArgs.put("", "");
+		
+		this.permission = Permission.COMMAND_SAVE.node;
 		
 		senderMustBePlayer = false;
-		
-		helpDescription = "save factions to disk";
+		senderMustBeMember = false;
+		senderMustBeModerator = false;
+		senderMustBeAdmin = false;
 	}
 	
 	@Override
-	public boolean hasPermission(CommandSender sender) {
-		return P.hasPermSaveAll(sender);
-	}
-	
-	@Override
-	public void perform() {
-		P.saveAll();
-		
-		sendMessage("Factions saved to disk!");
+	public void perform()
+	{
+		FPlayers.i.saveToDisc();
+		Factions.i.saveToDisc();
+		Board.save();
+		Conf.save();
+		sendMessageParsed("<i>Factions saved to disk!");
 	}
 	
 }

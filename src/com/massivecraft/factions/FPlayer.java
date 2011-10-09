@@ -103,6 +103,10 @@ public class FPlayer extends PlayerEntity
 		}
 	}
 	
+	private transient boolean isAdminBypassing = false;
+	public boolean isAdminBypassing() { return this.isAdminBypassing; }
+	public void setIsAdminBypassing(boolean val) { this.isAdminBypassing = val; }
+	
 	// FIELD: loginPvpDisabled
 	private transient boolean loginPvpDisabled;
 	
@@ -555,7 +559,7 @@ public class FPlayer extends PlayerEntity
 		}
 
 		// if economy is enabled and they're not on the bypass list, make 'em pay
-		if (makePay && Econ.enabled() && !Conf.adminBypassPlayers.contains(this.getId()))
+		if (makePay && Econ.enabled() && ! this.isAdminBypassing())
 		{
 			double cost = Conf.econCostLeave;
 			// pay up
@@ -625,7 +629,7 @@ public class FPlayer extends PlayerEntity
 			return false;
 		}
 
-		if (myFaction.getFPlayers().size() < Conf.claimsRequireMinFactionMembers && !Conf.adminBypassPlayers.contains(this.getId()))
+		if (myFaction.getFPlayers().size() < Conf.claimsRequireMinFactionMembers && ! this.isAdminBypassing())
 		{
 			sendMessage("Your faction must have at least "+Conf.claimsRequireMinFactionMembers+" members to claim land.");
 			return false;
@@ -667,7 +671,7 @@ public class FPlayer extends PlayerEntity
 		if
 		(
 			Conf.claimsMustBeConnected
-			&& !Conf.adminBypassPlayers.contains(this.getId())
+			&& ! this.isAdminBypassing()
 			&& myFaction.getLandRoundedInWorld(flocation.getWorldName()) > 0
 			&& !Board.isConnectedLocation(flocation, myFaction)
 			&& (!Conf.claimsCanBeUnconnectedIfOwnedByOtherFaction || !otherFaction.isNormal())
@@ -709,7 +713,7 @@ public class FPlayer extends PlayerEntity
 		}
 
 		// if economy is enabled and they're not on the bypass list, make 'em pay
-		if (Econ.enabled() && !Conf.adminBypassPlayers.contains(this.getId()))
+		if (Econ.enabled() && ! this.isAdminBypassing())
 		{
 			double cost = Econ.calculateClaimCost(ownedLand, otherFaction.isNormal());
 			String costString = Econ.moneyString(cost);

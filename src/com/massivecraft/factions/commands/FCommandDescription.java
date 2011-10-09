@@ -39,13 +39,13 @@ public class FCommandDescription extends FCommand
 			return;
 		}
 
-		fme.getFaction().setDescription(TextUtil.implode(args, " "));
+		myFaction.setDescription(TextUtil.implode(args, " "));
 		
 		// Broadcast the description to everyone
 		for (FPlayer fplayer : FPlayers.i.getOnline())
 		{
-			fplayer.sendMessageParsed("The faction "+fplayer.getRelationColor(fme)+fme.getFaction().getTag()+"<i> changed their description to:");
-			fplayer.sendMessageParsed("<i>"+fme.getFaction().getDescription());
+			fplayer.sendMessageParsed("The faction "+fplayer.getRelationColor(fme)+myFaction.getTag()+"<i> changed their description to:");
+			fplayer.sendMessageParsed("<i>"+myFaction.getDescription());
 		}
 	}
 	

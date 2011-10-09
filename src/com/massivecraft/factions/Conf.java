@@ -7,10 +7,6 @@ import org.bukkit.entity.CreatureType;
 
 public class Conf
 {
-	// track players with admin access who have enabled "admin bypass" mode, and should therefore be able to build anywhere
-	// not worth saving between server restarts, I think
-	public static transient Set<String> adminBypassPlayers = Collections.synchronizedSet(new HashSet<String>());
-	
 	public static List<String> baseCommandAliases = new ArrayList<String>();
 	public static boolean allowNoSlashCommand = true;
 	

@@ -1,57 +1,41 @@
 package com.massivecraft.factions.commands;
 
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
 import com.massivecraft.factions.Conf;
-import com.massivecraft.factions.P;
 import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.struct.Permission;
 
-
-public class FCommandPower extends FCommand {
+public class FCommandPower extends FCommand
+{
 	
-	public FCommandPower() {
-		aliases.add("power");
-		aliases.add("pow");
+	public FCommandPower()
+	{
+		super();
+		this.aliases.add("power");
+		this.aliases.add("pow");
+		
+		//this.requiredArgs.add("faction tag");
+		this.optionalArgs.put("player name", "you");
+		
+		this.permission = Permission.COMMAND_POWER.node;
 		
 		senderMustBePlayer = false;
-		
-		optionalParameters.add("player name");
-		
-		helpDescription = "show player power info";
+		senderMustBeMember = false;
+		senderMustBeModerator = false;
+		senderMustBeAdmin = false;
 	}
 	
 	@Override
-	public boolean hasPermission(CommandSender sender) {
-		return true;
-	}
-	
-	@Override
-	public void perform() {
-		FPlayer target;
-		if (parameters.size() > 0) {
-			if (!P.hasPermViewAnyPower(fme)) {
-				fme.sendMessage("You do not have the appropriate permission to view another player's power level.");
-				return;
-			}
-			target = findFPlayer(parameters.get(0), false);
-		} else if (!(sender instanceof Player)) {
-			sendMessage("From the console, you must specify a player (f power <player name>).");
-			return;
-		} else {
-			target = fme;
-		}
-
-		if (target == null) {
-			return;
-		}
+	public void perform()
+	{
+		FPlayer target = this.argAsBestFPlayerMatch(0, fme);
+		if (target == null) return;
+		
+		if (target != me && ! Permission.COMMAND_POWER_ANY.has(sender, true)) return;
 
 		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-		if (!payForCommand(Conf.econCostPower)) {
-			return;
-		}
+		if ( ! payForCommand(Conf.econCostPower)) return;
 
-		sendMessage(target.getNameAndRelevant(fme)+Conf.colorChrome+" - Power / Maxpower: "+Conf.colorSystem+target.getPowerRounded()+" / "+target.getPowerMaxRounded());
+		sendMessageParsed("%s<a> - Power / Maxpower: <i>%d / %d", target.getNameAndRelevant(fme), target.getPowerRounded(), target.getPowerMaxRounded());
 	}
 	
 }

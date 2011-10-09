@@ -197,8 +197,17 @@ public class P extends MPlugin
 	@Override
 	public void onDisable()
 	{
+		Board.save();
+		Conf.save();
 		unhookEssentialsChat();
 		super.onDisable();
+	}
+	
+	@Override
+	public void postSaveTask()
+	{
+		Board.save();
+		Conf.save();
 	}
 
 	// -------------------------------------------- //
@@ -499,18 +508,5 @@ public class P extends MPlugin
 		sender.sendMessage(Conf.colorSystem+"Unknown faction command \""+commandName+"\". Try "+Conf.colorCommand+"/"+this.getBaseCommand()+" help");
 	}
 	*/
-	
-	// -------------------------------------------- //
-	// Save all
-	// -------------------------------------------- //
-	
-	// TODO: Add a hook to this??
-	public static void saveAll()
-	{
-		// FPlayer.save();
-		// Faction.save();
-		Board.save();
-		Conf.save();
-	}
 	
 }

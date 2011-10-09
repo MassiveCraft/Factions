@@ -44,21 +44,12 @@ permissions:
   factions.create:
     description: create a new faction
     default: true
-  factions.viewAnyPower:
-    description: view the power level of anyone else
-    default: true
   factions.viewAnyFactionBalance:
     description: view the faction bank balance for any faction
     default: true
   factions.peacefulExplosionToggle:
     description: disable explosions in your territory as a peaceful faction admin or moderator
     default: true
-  factions.adminBypass:
-    description: enable admin bypass mode (build/destroy anywhere)
-    default: op
-  factions.config:
-    description: use /f config command to change conf.json options
-    default: op
   factions.manageSafeZone:
     description: claim land as a safe zone and build/destroy within safe zones
     default: op
@@ -68,18 +59,7 @@ permissions:
   factions.ownershipBypass:
     description: bypass ownership restrictions within own faction's territory
     default: op
-  factions.reload:
-    description: use the /f reload command to reload data file(s) from disk
-    default: op
-  factions.saveall:
-    description: use the /f saveall command to save all data to disk
-    default: op
-  factions.setPeaceful:
-    description: designate specific factions as "peaceful" (no PvP, no land stealing, etc.)
-    default: op
-  factions.setPermanent:
-    description: designate specific factions as permanent (not disbanded even with no members)
-    default: op
+
 	
   factions.command.admin:
     description: hand over your admin rights
@@ -96,6 +76,9 @@ permissions:
   factions.command.pay:
     description: pay another faction from your bank
     default: true
+  factions.command.bypass:
+    description: enable admin bypass mode
+    default: op
   factions.command.chat:
     description: change chat mode
     default: true
@@ -150,3 +133,59 @@ permissions:
   factions.command.mod:
     description: give or revoke moderator rights
     default: true
+  factions.command.noBoom:
+    description: toggle explosions (peaceful factions only)
+    default: true
+  factions.command.open:
+    description: switch if invitation is required to join
+    default: true
+  factions.command.owner:
+    description: set ownership of claimed land
+    default: true
+  factions.command.ownerlist:
+    description: list owner(s) of this claimed land
+    default: true
+  factions.command.setPeaceful:
+    description: designate a faction as peaceful
+    default: op
+  factions.command.setPermanent:
+    description: designate a faction as permanent
+    default: op
+  factions.command.power:
+    description: show player power info
+    default: true
+  factions.command.power.any:
+    description: view an other players power level
+    default: true
+  factions.command.relation:
+    description: set relation wish to another faction
+    default: true
+  factions.command.reload:
+    description: reload data file(s) from disk
+    default: op
+  factions.command.save:
+    description: save all data to disk
+    default: op
+  factions.command.sethome:
+    description: set the faction home
+    default: true
+  factions.command.sethome.any:
+    description: set any faction home
+    default: op
+  factions.command.show:
+    description: chow faction information
+    default: true
+  factions.command.tag:
+    description: change the faction tag
+    default: true
+  factions.command.title:
+    description: set or remove a players title
+    default: true
+  factions.command.version:
+    description: see the version of the plugin
+    default: true
+  factions.command.unclaim:
+    description: unclaim the land where you are standing
+    default: true
+	
+	

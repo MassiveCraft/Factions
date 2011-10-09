@@ -30,15 +30,13 @@ public class FCommandUnclaimall extends FCommand {
 			return;
 		}
 
-		Faction myFaction = fme.getFaction();
-
 		String moneyBack = "";
 		if (Econ.enabled()) {
 			double refund = Econ.calculateTotalLandRefund(myFaction.getLandRounded());
 			// a real refund
 			if (refund > 0.0) {
 				if(Conf.bankFactionPaysLandCosts) {
-					Faction faction = fme.getFaction();
+					Faction faction = myFaction;
 					faction.addMoney(refund);
 					moneyBack = " "+faction.getTag()+" received a refund of "+Econ.moneyString(refund)+".";
 				} else {
@@ -49,7 +47,7 @@ public class FCommandUnclaimall extends FCommand {
 			// wait, you're charging people to unclaim land? outrageous
 			else if (refund < 0.0) {
 				if(Conf.bankFactionPaysLandCosts) {
-					Faction faction = fme.getFaction();
+					Faction faction = myFaction;
 					if(!faction.removeMoney(-refund)) {
 						sendMessage("Unclaiming all faction land will cost "+Econ.moneyString(-refund)+", which your faction can't currently afford.");
 						return;

@@ -49,8 +49,6 @@ public class FCommandHome extends FCommand
 			return;
 		}
 		
-		Faction myFaction = fme.getFaction();
-		
 		if ( ! myFaction.hasHome())
 		{
 			fme.sendMessage("You faction does not have a home. " + (fme.getRole().value < Role.MODERATOR.value ? " Ask your leader to:" : "You should:"));

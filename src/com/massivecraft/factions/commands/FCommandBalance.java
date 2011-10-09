@@ -32,10 +32,10 @@ public class FCommandBalance extends FCommand
 			return;
 		}
 		
-		Faction faction = this.argAsFaction(0, fme.getFaction());
+		Faction faction = this.argAsFaction(0, myFaction);
 		
 		// TODO MAKE HIERARCHIAL COMMAND STRUCTURE HERE
-		if ( faction != fme.getFaction() && ! Permission.VIEW_ANY_FACTION_BALANCE.has(sender))
+		if ( faction != myFaction && ! Permission.VIEW_ANY_FACTION_BALANCE.has(sender))
 		{
 			sendMessageParsed("<b>You do not have sufficient permissions to view the bank balance of other factions.");
 			return;

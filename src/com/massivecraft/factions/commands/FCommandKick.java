@@ -45,7 +45,6 @@ public class FCommandKick extends FCommand
 		}
 
 		Faction yourFaction = you.getFaction();
-		Faction myFaction = fme.getFaction();
 
 		// players with admin-level "disband" permission can bypass these requirements
 		if ( ! Permission.COMMAND_KICK_ANY.has(sender))

@@ -331,8 +331,8 @@ public class FactionsPlayerListener extends PlayerListener
 
 	public static boolean playerCanUseItemHere(Player player, Location location, Material material, boolean justCheck)
 	{
-
-		if (Conf.adminBypassPlayers.contains(player.getName()))
+		FPlayer me = FPlayers.i.get(player);
+		if (me.isAdminBypassing())
 		{
 			return true;
 		}
@@ -354,11 +354,11 @@ public class FactionsPlayerListener extends PlayerListener
 			}
 		}
 
-		FPlayer me = FPlayers.i.get(player);
+		
 
 		if (otherFaction.isNone())
 		{
-			if (!Conf.wildernessDenyUseage || Permission.ADMIN_BYPASS.has(player) || Conf.worldsNoWildernessProtection.contains(location.getWorld().getName()))
+			if (!Conf.wildernessDenyUseage || Conf.worldsNoWildernessProtection.contains(location.getWorld().getName()))
 			{
 				return true; // This is not faction territory. Use whatever you like here.
 			}
@@ -422,8 +422,8 @@ public class FactionsPlayerListener extends PlayerListener
 
 	public static boolean canPlayerUseBlock(Player player, Block block, boolean justCheck)
 	{
-
-		if (Conf.adminBypassPlayers.contains(player.getName()))
+		FPlayer me = FPlayers.i.get(player);
+		if (me.isAdminBypassing())
 		{
 			return true;
 		}
@@ -454,7 +454,7 @@ public class FactionsPlayerListener extends PlayerListener
 			}
 		}
 		
-		FPlayer me = FPlayers.i.get(player);
+		
 		Faction myFaction = me.getFaction();
 		Relation rel = myFaction.getRelation(otherFaction);
 		boolean ownershipFail = Conf.ownedAreasEnabled && Conf.ownedAreaProtectMaterials && !otherFaction.playerHasOwnershipRights(me, loc);
@@ -575,7 +575,7 @@ public class FactionsPlayerListener extends PlayerListener
 			&&
 			! Conf.territoryNeutralDenyCommands.isEmpty()
 			&&
-			! Conf.adminBypassPlayers.contains(me.getName())
+			! me.isAdminBypassing()
 		)
 		{
 			Iterator<String> iter = Conf.territoryNeutralDenyCommands.iterator();
@@ -603,7 +603,7 @@ public class FactionsPlayerListener extends PlayerListener
 			&&
 			! Conf.territoryEnemyDenyCommands.isEmpty()
 			&&
-			! Conf.adminBypassPlayers.contains(me.getName())
+			! me.isAdminBypassing()
 		)
 		{
 			Iterator<String> iter = Conf.territoryEnemyDenyCommands.iterator();

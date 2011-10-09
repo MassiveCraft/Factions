@@ -40,7 +40,7 @@ public class FCommandJoin extends FCommand
 			return;
 		}
 		
-		if (faction == fme.getFaction())
+		if (faction == myFaction)
 		{
 			sendMessageParsed("<b>You are already a member of %s", faction.getTag(fme));
 			return;

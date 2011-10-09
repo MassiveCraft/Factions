@@ -31,6 +31,7 @@ public abstract class FCommand extends MCommand<P>
 	}
 	
 	public FPlayer fme;
+	public Faction myFaction;
 	public boolean senderMustBeMember;
 	public boolean senderMustBeModerator;
 	public boolean senderMustBeAdmin;
@@ -49,10 +50,12 @@ public abstract class FCommand extends MCommand<P>
 		if (sender instanceof Player)
 		{
 			this.fme = FPlayers.i.get((Player)sender);
+			this.myFaction = this.fme.getFaction();
 		}
 		else
 		{
 			this.fme = null;
+			this.myFaction = null;
 		}
 		super.execute(sender, args, commandChain);
 	}
@@ -267,7 +270,7 @@ public abstract class FCommand extends MCommand<P>
 	// if economy is enabled and they're not on the bypass list, make 'em pay; returns true unless person can't afford the cost
 	public boolean payForCommand(double cost)
 	{
-		if ( ! Econ.enabled() || this.fme == null || cost == 0.0 || Conf.adminBypassPlayers.contains(fme.getName()))
+		if ( ! Econ.enabled() || this.fme == null || cost == 0.0 || fme.isAdminBypassing())
 		{
 			return true;
 		}

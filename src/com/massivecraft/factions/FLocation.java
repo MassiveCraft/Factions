@@ -8,7 +8,8 @@ import org.bukkit.entity.Player;
 
 import com.massivecraft.factions.util.MiscUtil;
 
-public class FLocation {
+public class FLocation
+{
 
 	private String worldName = "world";
 	private int x = 0;
@@ -20,31 +21,37 @@ public class FLocation {
 	// Constructors
 	//----------------------------------------------//
 	
-	public FLocation() {
+	public FLocation()
+	{
 		
 	}
 	
-	public FLocation(String worldName, int x, int z) {
+	public FLocation(String worldName, int x, int z)
+	{
 		this.worldName = worldName;
 		this.x = x;
 		this.z = z;
 	}
 	
-	public FLocation(Location location) {
+	public FLocation(Location location)
+	{
 //		this(location.getWorld().getName(), (int) Math.floor(location.getX() / cellSize) , (int) Math.floor(location.getZ() / cellSize));
 		// handy dandy rapid bitshifting instead of division
 		this(location.getWorld().getName(), location.getBlockX() >> 4, location.getBlockZ() >> 4);
 	}
 	
-	public FLocation(Player player) {
+	public FLocation(Player player)
+	{
 		this(player.getLocation());
 	}
 	
-	public FLocation(FPlayer fplayer) {
+	public FLocation(FPlayer fplayer)
+	{
 		this(fplayer.getPlayer());
 	}
 	
-	public FLocation(Block block) {
+	public FLocation(Block block)
+	{
 		this(block.getLocation());
 	}
 	
@@ -52,31 +59,38 @@ public class FLocation {
 	// Getters and Setters
 	//----------------------------------------------//
 	
-	public String getWorldName() {
+	public String getWorldName()
+	{
 		return worldName;
 	}
 
-	public void setWorldName(String worldName) {
+	public void setWorldName(String worldName)
+	{
 		this.worldName = worldName;
 	}
 	
-	public long getX() {
+	public long getX()
+	{
 		return x;
 	}
 
-	public void setX(int x) {
+	public void setX(int x)
+	{
 		this.x = x;
 	}
 
-	public long getZ() {
+	public long getZ()
+	{
 		return z;
 	}
 
-	public void setZ(int z) {
+	public void setZ(int z)
+	{
 		this.z = z;
 	}
 	
-	public String getCoordString() {
+	public String getCoordString()
+	{
 		return ""+x+","+z;
 	}
 	
@@ -93,11 +107,14 @@ public class FLocation {
 		return new FLocation(this.worldName, this.x + dx, this.z + dz);
 	}
 	
-	public static HashSet<FLocation> getArea(FLocation from, FLocation to) {
+	public static HashSet<FLocation> getArea(FLocation from, FLocation to)
+	{
 		HashSet<FLocation> ret = new HashSet<FLocation>();
 		
-		for (long x : MiscUtil.range(from.getX(), to.getX())) {
-			for (long z : MiscUtil.range(from.getZ(), to.getZ())) {
+		for (long x : MiscUtil.range(from.getX(), to.getX()))
+		{
+			for (long z : MiscUtil.range(from.getZ(), to.getZ()))
+			{
 				ret.add(new FLocation(from.getWorldName(), (int)x, (int)z));
 			}
 		}
@@ -110,7 +127,8 @@ public class FLocation {
 	//----------------------------------------------//
 	
 	@Override
-	public int hashCode() {
+	public int hashCode()
+	{
 		int hash = 3;
         hash = 19 * hash + (this.worldName != null ? this.worldName.hashCode() : 0);
         hash = 19 * hash + this.x;
@@ -119,7 +137,8 @@ public class FLocation {
 	};
 	
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(Object obj)
+	{
 		if (obj == this)
 			return true;
 		if (!(obj instanceof FLocation))

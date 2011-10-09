@@ -46,8 +46,10 @@ public class Faction extends Entity
 	
 	// FIELD: peacefulExplosionsEnabled
 	private boolean peacefulExplosionsEnabled;
-	public void setPeacefulExplosions(boolean disable) { peacefulExplosionsEnabled = disable; } //TODO: Convert to argswitch in command!!
-	public void setPeacefulExplosions() { setPeacefulExplosions(!peacefulExplosionsEnabled); }
+	public void setPeacefulExplosionsEnabled(boolean val) { peacefulExplosionsEnabled = val; }
+	public boolean getPeacefulExplosionsEnabled(){ return this.peacefulExplosionsEnabled; }
+	
+	public boolean noExplosionsInTerritory() { return this.peaceful && ! peacefulExplosionsEnabled; }
 
 	// FIELD: permanent
 	// "permanent" status can only be set by server admins/moderators/ops, and allows the faction to remain even with 0 members
@@ -157,7 +159,7 @@ public class Faction extends Entity
 
 	public boolean noMonstersInTerritory() { return isSafeZone() || (peaceful && Conf.peacefulTerritoryDisableMonsters); }
 
-	public boolean noExplosionsInTerritory() { return peaceful && !peacefulExplosionsEnabled; }
+	
 
 	// -------------------------------
 	// Understand the types

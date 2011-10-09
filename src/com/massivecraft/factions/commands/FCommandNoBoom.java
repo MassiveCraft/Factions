@@ -1,58 +1,49 @@
 package com.massivecraft.factions.commands;
 
-import org.bukkit.command.CommandSender;
-
 import com.massivecraft.factions.Conf;
-import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.P;
-import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.struct.Permission;
 
-public class FCommandNoBoom extends FCommand {
-
-	public FCommandNoBoom() {
-		aliases.add("noboom");
+public class FCommandNoBoom extends FCommand
+{
+	public FCommandNoBoom()
+	{
+		super();
+		this.aliases.add("noboom");
 		
-		helpDescription = "Peaceful factions only: toggle explosions";
+		//this.requiredArgs.add("");
+		this.optionalArgs.put("on/off", "flipp");
+		
+		this.permission = Permission.COMMAND_NO_BOOM.node;
+		
+		senderMustBePlayer = true;
+		senderMustBeMember = false;
+		senderMustBeModerator = true;
+		senderMustBeAdmin = false;
 	}
 
 	@Override
-	public boolean hasPermission(CommandSender sender) {
-		return P.hasPermPeacefulExplosionToggle(sender);
-	}
-
-	@Override
-	public void perform() {
-		if ( ! assertHasFaction()) {
-			return;
-		}
-
-		if( isLocked() ) {
+	public void perform()
+	{
+		if( isLocked() )
+		{
 			sendLockMessage();
 			return;
 		}
 
-		if ( ! assertMinRole(Role.MODERATOR)) {
-			return;
-		}
-
-		Faction myFaction = fme.getFaction();
-
-		if (!myFaction.isPeaceful()) {
-			fme.sendMessage("This command is only usable by factions which are specially designated as peaceful.");
+		if ( ! myFaction.isPeaceful())
+		{
+			fme.sendMessageParsed("<b>This command is only usable by factions which are specially designated as peaceful.");
 			return;
 		}
 
 		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-		if (!payForCommand(Conf.econCostNoBoom)) {
-			return;
-		}
+		if ( ! payForCommand(Conf.econCostNoBoom)) return;
 
-		myFaction.setPeacefulExplosions();
+		myFaction.setPeacefulExplosionsEnabled(this.argAsBool(0, ! myFaction.getPeacefulExplosionsEnabled()));
 
 		String enabled = myFaction.noExplosionsInTerritory() ? "disabled" : "enabled";
 
 		// Inform
-		myFaction.sendMessage(fme.getNameAndRelevant(myFaction)+Conf.colorSystem+" has "+enabled+" explosions in your faction's territory.");
+		myFaction.sendMessageParsed("%s<i> has "+enabled+" explosions in your faction's territory.", fme.getNameAndRelevant(myFaction));
 	}
-
 }

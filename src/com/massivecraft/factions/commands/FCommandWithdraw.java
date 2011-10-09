@@ -39,7 +39,7 @@ public class FCommandWithdraw extends FCommand
 			return;
 		}
 		
-		Faction faction = fme.getFaction();
+		Faction faction = myFaction;
 		
 		double amount = this.argAsDouble(0, 0d);
 		

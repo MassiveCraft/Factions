@@ -163,4 +163,20 @@ public enum Relation
 			return Conf.territoryDenyUseage;
 		}
 	}
+	
+	public double getRelationCost()
+	{
+		if (isEnemy())
+		{
+			return Conf.econCostEnemy;
+		}
+		else if (isAlly())
+		{
+			return Conf.econCostAlly;
+		}
+		else
+		{
+			return Conf.econCostNeutral;
+		}
+	}
 }

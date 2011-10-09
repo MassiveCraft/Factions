@@ -33,7 +33,7 @@ public class FCommandDeposit extends FCommand
 	{
 		if ( ! Conf.bankEnabled) return;
 		
-		Faction faction = fme.getFaction();
+		Faction faction = myFaction;
 		
 		double amount = this.argAsDouble(0, 0);
 				

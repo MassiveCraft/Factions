@@ -1,77 +1,77 @@
 package com.massivecraft.factions.commands;
 
-import org.bukkit.command.CommandSender;
-
 import com.massivecraft.factions.Board;
 import com.massivecraft.factions.Conf;
-import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.FPlayers;
+import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.P;
+import com.massivecraft.factions.struct.Permission;
 
-public class FCommandReload extends FCommand {
+public class FCommandReload extends FCommand
+{
 	
-	public FCommandReload() {
-		aliases.add("reload");
+	public FCommandReload()
+	{
+		super();
+		this.aliases.add("reload");
+		
+		//this.requiredArgs.add("");
+		this.optionalArgs.put("file", "all");
+		
+		this.permission = Permission.COMMAND_RELOAD.node;
 		
 		senderMustBePlayer = false;
-		
-		optionalParameters.add("file");
-		
-		helpDescription = "reloads all json files, or a specific one";
+		senderMustBeMember = false;
+		senderMustBeModerator = false;
+		senderMustBeAdmin = false;
 	}
 	
 	@Override
-	public boolean hasPermission(CommandSender sender) {
-		return P.hasPermReload(sender);
-	}
-	
-	@Override
-	public void perform() {
-		P.log("=== RELOAD START ===");
+	public void perform()
+	{
 		long timeInitStart = System.currentTimeMillis();
-		String fileName = "s";
+		String file = this.argAsString(0, "all").toLowerCase();
 		
-		// Was a single file specified?
-		if (parameters.size() > 0) {
-			String file = parameters.get(0);
-			if (file.equalsIgnoreCase("conf") || file.equalsIgnoreCase("conf.json")) {
-				P.log("RELOADING CONF.JSON");
-				Conf.load();
-				fileName = " conf.json";
-			}
-			else if (file.equalsIgnoreCase("board") || file.equalsIgnoreCase("board.json")) {
-				P.log("RELOADING BOARD.JSON");
-				Board.load();
-				fileName = " board.json";
-			}
-			else if (file.equalsIgnoreCase("factions") || file.equalsIgnoreCase("factions.json")) {
-				P.log("RELOADING FACTIONS.JSON");
-				Faction.load();
-				fileName = " factions.json";
-			}
-			else if (file.equalsIgnoreCase("players") || file.equalsIgnoreCase("players.json")) {
-				P.log("RELOADING PLAYERS.JSON");
-				FPlayer.load();
-				fileName = " players.json";
-			}
-			else {
-				P.log("RELOAD CANCELLED - SPECIFIED FILE INVALID");
-				sendMessage("Invalid file specified. Valid files: conf, board, factions, players.");
-				return;
-			}
-		}
-		else {
-			P.log("RELOADING ALL FILES");
+		String fileName;
+		
+		if (file.startsWith("c"))
+		{
 			Conf.load();
-			FPlayer.load();
-			Faction.load();
+			fileName = "conf.json";
+		}
+		else if (file.startsWith("b"))
+		{
 			Board.load();
+			fileName = "board.json";
+		}
+		else if (file.startsWith("f"))
+		{
+			Factions.i.loadFromDisc();
+			fileName = "factions.json";
+		}
+		else if (file.startsWith("p"))
+		{
+			FPlayers.i.loadFromDisc();
+			fileName = "players.json";
+		}
+		else if (file.startsWith("a"))
+		{
+			fileName = "all";
+			Conf.load();
+			FPlayers.i.loadFromDisc();
+			Factions.i.loadFromDisc();
+			Board.load();
+		}
+		else
+		{
+			P.p.log("RELOAD CANCELLED - SPECIFIED FILE INVALID");
+			sendMessageParsed("<b>Invalid file specified. <i>Valid files: all, conf, board, factions, players");
+			return;
 		}
 		
 		long timeReload = (System.currentTimeMillis()-timeInitStart);
-		P.log("=== RELOAD DONE (Took "+timeReload+"ms) ===");
 		
-		sendMessage("Factions file" + fileName + " reloaded from disk, took " + timeReload + "ms");
+		sendMessageParsed("reloaded %s from disk, took %dms", fileName, timeReload);
 	}
 	
 }

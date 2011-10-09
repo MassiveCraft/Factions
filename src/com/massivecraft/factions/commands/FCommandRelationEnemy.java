@@ -2,21 +2,11 @@ package com.massivecraft.factions.commands;
 
 import com.massivecraft.factions.struct.Relation;
 
-public class FCommandRelationEnemy extends FRelationCommand {
-	
-	public FCommandRelationEnemy() {
+public class FCommandRelationEnemy extends FRelationCommand
+{
+	public FCommandRelationEnemy()
+	{
 		aliases.add("enemy");
+		targetRelation = Relation.ENEMY;
 	}
-	
-	@Override
-	public void perform() {
-		
-		if( isLocked() ) {
-			sendLockMessage();
-			return;
-		}
-		
-		relation(Relation.ENEMY, parameters.get(0));
-	}
-	
 }

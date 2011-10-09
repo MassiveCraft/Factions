@@ -1,59 +1,62 @@
 package com.massivecraft.factions.commands;
 
-import org.bukkit.command.CommandSender;
-
-import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.P;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.integration.SpoutFeatures;
+import com.massivecraft.factions.struct.Permission;
 
-public class FCommandPeaceful extends FCommand {
+public class FCommandPeaceful extends FCommand
+{
 	
-	public FCommandPeaceful() {
-		aliases.add("peaceful");
+	public FCommandPeaceful()
+	{
+		super();
+		this.aliases.add("peaceful");
+		
+		this.requiredArgs.add("faction tag");
+		//this.optionalArgs.put("", "");
+		
+		this.permission = Permission.COMMAND_SET_PEACEFUL.node;
 		
 		senderMustBePlayer = false;
-		
-		requiredParameters.add("faction tag");
-		
-		helpDescription = "Designate a faction as peaceful";
+		senderMustBeMember = false;
+		senderMustBeModerator = false;
+		senderMustBeAdmin = false;
 	}
 	
 	@Override
-	public boolean hasPermission(CommandSender sender) {
-		return P.hasPermSetPeaceful(sender);
-	}
-	
-	@Override
-	public void perform() {
-		if( parameters.size() >  0) {
-			Faction faction = Faction.findByTag(parameters.get(0));
-			
-			if (faction == null) {
-				sendMessage("No faction found with the tag \"" + parameters.get(0) + "\"");
-				return;
-			}
+	public void perform()
+	{
+		Faction faction = this.argAsFaction(0);
+		if (faction == null) return;
 
-			String change;
-			if(faction.isPeaceful()) {
-				change = "removed peaceful status from";
-				faction.setPeaceful(false);
-			} else {
-				change = "granted peaceful status to";
-				faction.setPeaceful(true);
-			}
-			// Inform all players
-			for (FPlayer fplayer : FPlayer.getAllOnline()) {
-				if (fplayer.getFaction() == faction) {
-					fplayer.sendMessage(fme.getNameAndRelevant(fplayer)+Conf.colorSystem+" has "+change+" your faction.");
-				} else {
-					fplayer.sendMessage(fme.getNameAndRelevant(fplayer)+Conf.colorSystem+" has "+change+" the faction \"" + faction.getTag(fplayer) + "\".");
-				}
-			}
-
-			SpoutFeatures.updateAppearances(faction);
+		String change;
+		if (faction.isPeaceful())
+		{
+			change = "removed peaceful status from";
+			faction.setPeaceful(false);
 		}
+		else
+		{
+			change = "granted peaceful status to";
+			faction.setPeaceful(true);
+		}
+		
+		// Inform all players
+		for (FPlayer fplayer : FPlayers.i.getOnline())
+		{
+			if (fplayer.getFaction() == faction)
+			{
+				fplayer.sendMessageParsed(fme.getNameAndRelevant(fplayer)+"<i> has "+change+" your faction.");
+			}
+			else
+			{
+				fplayer.sendMessageParsed(fme.getNameAndRelevant(fplayer)+"<i> has "+change+" the faction \"" + faction.getTag(fplayer) + "\".");
+			}
+		}
+
+		SpoutFeatures.updateAppearances(faction);
 	}
 	
 }

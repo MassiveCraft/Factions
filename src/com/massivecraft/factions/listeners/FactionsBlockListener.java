@@ -174,19 +174,20 @@ public class FactionsBlockListener extends BlockListener
 
 	public static boolean playerCanBuildDestroyBlock(Player player, Location location, String action, boolean justCheck)
 	{
-
-		if (Conf.adminBypassPlayers.contains(player.getName()))
+		FPlayer me = FPlayers.i.get(player);
+		
+		if (me.isAdminBypassing())
 		{
 			return true;
 		}
 
 		FLocation loc = new FLocation(location);
 		Faction otherFaction = Board.getFactionAt(loc);
-		FPlayer me = FPlayers.i.get(player);
+		
 
 		if (otherFaction.isNone())
 		{
-			if (!Conf.wildernessDenyBuild || Permission.ADMIN_BYPASS.has(player) || Conf.worldsNoWildernessProtection.contains(location.getWorld().getName()))
+			if (!Conf.wildernessDenyBuild || Conf.worldsNoWildernessProtection.contains(location.getWorld().getName()))
 			{
 				return true; // This is not faction territory. Use whatever you like here.
 			}

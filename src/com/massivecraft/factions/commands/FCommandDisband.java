@@ -33,10 +33,10 @@ public class FCommandDisband extends FCommand
 	public void perform()
 	{
 		// The faction, default to your own.. but null if console sender.
-		Faction faction = this.argAsFaction(0, fme == null ? null : fme.getFaction());
+		Faction faction = this.argAsFaction(0, fme == null ? null : myFaction);
 		if (faction == null) return;
 		
-		boolean isMyFaction = fme == null ? false : faction == fme.getFaction();
+		boolean isMyFaction = fme == null ? false : faction == myFaction;
 		
 		if (isMyFaction)
 		{

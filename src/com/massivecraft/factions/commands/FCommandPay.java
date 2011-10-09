@@ -18,7 +18,7 @@ public class FCommandPay extends FCommand
 		
 		this.requiredArgs.add("faction");
 		this.requiredArgs.add("amount");
-		//this.optionalArgs.put("factiontag", "yours");
+		//this.optionalArgs.put("", "");
 		
 		this.permission = Permission.COMMAND_PAY.node;
 		

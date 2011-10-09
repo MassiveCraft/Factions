@@ -1,35 +1,41 @@
 package com.massivecraft.factions.commands;
 
-import org.bukkit.command.CommandSender;
-
 import com.massivecraft.factions.Board;
-import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.struct.Permission;
 
-public class FCommandSafeunclaimall extends FCommand {
+public class FCommandSafeunclaimall extends FCommand
+{
 	
-	public FCommandSafeunclaimall() {
-		aliases.add("safeunclaimall");
-		aliases.add("safedeclaimall");
+	public FCommandSafeunclaimall()
+	{
+		this.aliases.add("safeunclaimall");
+		this.aliases.add("safedeclaimall");
 		
-		helpDescription = "Unclaim all safezone land";
+		//this.requiredArgs.add("");
+		this.optionalArgs.put("radius", "0");
+		
+		this.permission = Permission.MANAGE_SAFE_ZONE.node;
+		
+		senderMustBePlayer = false;
+		senderMustBeMember = false;
+		senderMustBeModerator = false;
+		senderMustBeAdmin = false;
+		
+		this.setHelpShort("Unclaim all safezone land");
 	}
 	
 	@Override
-	public boolean hasPermission(CommandSender sender) {
-		return P.hasPermManageSafeZone(sender);
-	}
-	
-	@Override
-	public void perform() {
-		
-		if( isLocked() ) {
+	public void perform()
+	{
+		if( isLocked() )
+		{
 			sendLockMessage();
 			return;
 		}
 		
-		Board.unclaimAll(Faction.getSafeZone().getId());
-		sendMessage("You unclaimed ALL safe zone land.");
+		Board.unclaimAll(Factions.i.getSafeZone().getId());
+		sendMessageParsed("<i>You unclaimed ALL safe zone land.");
 	}
 	
 }

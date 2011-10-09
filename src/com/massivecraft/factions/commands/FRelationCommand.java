@@ -4,76 +4,82 @@ import org.bukkit.ChatColor;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.P;
 import com.massivecraft.factions.integration.SpoutFeatures;
+import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
-import com.massivecraft.factions.struct.Role;
 
-
-public class FRelationCommand extends FCommand {
+public abstract class FRelationCommand extends FCommand
+{
+	public Relation targetRelation;
 	
-	public FRelationCommand() {
-		requiredParameters.add("faction tag");
+	public FRelationCommand()
+	{
+		super();
+		this.requiredArgs.add("faction tag");
+		//this.optionalArgs.put("player name", "you");
 		
-		helpDescription = "Set relation wish to another faction";
+		this.permission = Permission.COMMAND_RELATION.node;
+		
+		senderMustBePlayer = true;
+		senderMustBeMember = false;
+		senderMustBeModerator = true;
+		senderMustBeAdmin = false;
 	}
 	
-	public void relation(Relation whishedRelation, String otherFactionName) {
-		if ( ! assertHasFaction()) {
-			return;
-		}
-		
-		if( isLocked() ) {
+	@Override
+	public void perform()
+	{
+		if( isLocked() )
+		{
 			sendLockMessage();
 			return;
 		}
 		
-		if ( ! assertMinRole(Role.MODERATOR)) {
+		Faction them = this.argAsFaction(0);
+		
+		if ( ! them.isNormal())
+		{
+			sendMessageParsed("<b>Nope! You can't.");
 			return;
 		}
 		
-		Faction myFaction = fme.getFaction();
-		Faction otherFaction = findFaction(otherFactionName, false);
-		if (otherFaction == null) {
-			return;
-		}
-		
-		if (!otherFaction.isNormal()) {
-			sendMessage("Nope! You can't :) You can only ally with player factions.");
-			return;
-		}
-		
-		if (otherFaction == myFaction) {
-			sendMessage("Nope! You can't declare a relation to yourself :)");
+		if (them == myFaction)
+		{
+			sendMessageParsed("<b>Nope! You can't declare a relation to yourself :)");
 			return;
 		}
 
 		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-		double cost = whishedRelation.isAlly() ? Conf.econCostAlly : (whishedRelation.isEnemy() ? Conf.econCostEnemy : Conf.econCostNeutral);
-		if (!payForCommand(cost)) {
-			return;
-		}
+		if ( ! payForCommand(targetRelation.getRelationCost())) return;
 
-		myFaction.setRelationWish(otherFaction, whishedRelation);
-		Relation currentRelation = myFaction.getRelation(otherFaction, true);
+		myFaction.setRelationWish(them, targetRelation);
+		Relation currentRelation = myFaction.getRelation(them, true);
 		ChatColor currentRelationColor = currentRelation.getColor();
-		if (whishedRelation.value == currentRelation.value) {
-			otherFaction.sendMessage(Conf.colorSystem+"Your faction is now "+currentRelationColor+whishedRelation.toString()+Conf.colorSystem+" to "+currentRelationColor+myFaction.getTag());
-			myFaction.sendMessage(Conf.colorSystem+"Your faction is now "+currentRelationColor+whishedRelation.toString()+Conf.colorSystem+" to "+currentRelationColor+otherFaction.getTag());
-		} else {
-			otherFaction.sendMessage(currentRelationColor+myFaction.getTag()+Conf.colorSystem+ " wishes to be your "+whishedRelation.getColor()+whishedRelation.toString());
-			otherFaction.sendMessage(Conf.colorSystem+"Type "+Conf.colorCommand+P.p.getBaseCommand()+" "+whishedRelation+" "+myFaction.getTag()+Conf.colorSystem+" to accept.");
-			myFaction.sendMessage(currentRelationColor+otherFaction.getTag()+Conf.colorSystem+ " were informed that you wish to be "+whishedRelation.getColor()+whishedRelation);
+		if (targetRelation.value == currentRelation.value)
+		{
+			them.sendMessageParsed("<i>Your faction is now "+currentRelationColor+targetRelation.toString()+"<i> to "+currentRelationColor+myFaction.getTag());
+			myFaction.sendMessageParsed("<i>Your faction is now "+currentRelationColor+targetRelation.toString()+"<i> to "+currentRelationColor+them.getTag());
 		}
-		if (!whishedRelation.isNeutral() && otherFaction.isPeaceful()) {
-			otherFaction.sendMessage(Conf.colorSystem+"This will have no effect while your faction is peaceful.");
-			myFaction.sendMessage(Conf.colorSystem+"This will have no effect while their faction is peaceful.");
+		else
+		{
+			them.sendMessageParsed(currentRelationColor+myFaction.getTag()+"<i> wishes to be your "+targetRelation.getColor()+targetRelation.toString());
+			them.sendMessageParsed("<i>Type <c>/"+Conf.baseCommandAliases.get(0)+" "+targetRelation+" "+myFaction.getTag()+"<i> to accept.");
+			myFaction.sendMessageParsed(currentRelationColor+them.getTag()+"<i> were informed that you wish to be "+targetRelation.getColor()+targetRelation);
 		}
-		if (!whishedRelation.isNeutral() && myFaction.isPeaceful()) {
-			otherFaction.sendMessage(Conf.colorSystem+"This will have no effect while their faction is peaceful.");
-			myFaction.sendMessage(Conf.colorSystem+"This will have no effect while your faction is peaceful.");
+		
+		if ( ! targetRelation.isNeutral() && them.isPeaceful())
+		{
+			them.sendMessageParsed("<i>This will have no effect while your faction is peaceful.");
+			myFaction.sendMessageParsed("<i>This will have no effect while their faction is peaceful.");
+		}
+		
+		if ( ! targetRelation.isNeutral() && myFaction.isPeaceful())
+		{
+			them.sendMessageParsed("<i>This will have no effect while their faction is peaceful.");
+			myFaction.sendMessageParsed("<i>This will have no effect while your faction is peaceful.");
 		}
 
-		SpoutFeatures.updateAppearances(myFaction, otherFaction);
+		SpoutFeatures.updateAppearances(myFaction, them);
+		
 	}
 }

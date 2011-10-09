@@ -1,7 +1,6 @@
 package com.massivecraft.factions.commands;
 
 import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.struct.Permission;
 
 public class FCommandDeinvite extends FCommand
@@ -35,8 +34,6 @@ public class FCommandDeinvite extends FCommand
 		
 		FPlayer you = this.argAsBestFPlayerMatch(0);
 		if (you == null) return;
-		
-		Faction myFaction = fme.getFaction();
 		
 		if (you.getFaction() == myFaction)
 		{

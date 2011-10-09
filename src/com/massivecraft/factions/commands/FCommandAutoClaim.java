@@ -2,7 +2,6 @@ package com.massivecraft.factions.commands;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FLocation;
-import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.struct.Permission;
 
 public class FCommandAutoClaim extends FCommand
@@ -42,7 +41,6 @@ public class FCommandAutoClaim extends FCommand
 			return;
 		}
 
-		Faction myFaction = fme.getFaction();
 		FLocation flocation = new FLocation(fme);
 
 		if (Conf.worldsNoClaiming.contains(flocation.getWorldName()))

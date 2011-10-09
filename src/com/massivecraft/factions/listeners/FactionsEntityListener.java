@@ -439,18 +439,17 @@ public class FactionsEntityListener extends EntityListener
 
 	public boolean playerCanDoPaintings(Player player, FLocation loc, String action)
 	{
-
-		if (Conf.adminBypassPlayers.contains(player.getName()))
+		FPlayer me = FPlayers.i.get(player);
+		if (me.isAdminBypassing())
 		{
 			return true;
 		}
 
 		Faction otherFaction = Board.getFactionAt(loc);
-		FPlayer me = FPlayers.i.get(player);
 
 		if (otherFaction.isNone())
 		{
-			if (!Conf.wildernessDenyBuild || Permission.ADMIN_BYPASS.has(player) || Conf.worldsNoWildernessProtection.contains(player.getWorld().getName()))
+			if (!Conf.wildernessDenyBuild || Conf.worldsNoWildernessProtection.contains(player.getWorld().getName()))
 			{
 				return true; // This is not faction territory. Use whatever you like here.
 			}

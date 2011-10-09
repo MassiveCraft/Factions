@@ -1,57 +1,58 @@
 package com.massivecraft.factions.commands;
 
-import org.bukkit.command.CommandSender;
-
-import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.P;
 import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.struct.Permission;
 
 
-public class FCommandPermanent extends FCommand {
-	
-	public FCommandPermanent() {
-		aliases.add("permanent");
+public class FCommandPermanent extends FCommand
+{
+	public FCommandPermanent()
+	{
+		super();
+		this.aliases.add("permanent");
+		
+		this.requiredArgs.add("faction tag");
+		//this.optionalArgs.put("", "");
+		
+		this.permission = Permission.COMMAND_SET_PERMANENT.node;
 		
 		senderMustBePlayer = false;
-		
-		requiredParameters.add("faction tag");
-		
-		helpDescription = "Designate a faction as permanent";
+		senderMustBeMember = false;
+		senderMustBeModerator = false;
+		senderMustBeAdmin = false;
 	}
 	
 	@Override
-	public boolean hasPermission(CommandSender sender) {
-		return P.hasPermSetPermanent(sender);
-	}
-	
-	@Override
-	public void perform() {
-		if( parameters.size() >  0) {
-			Faction faction = Faction.findByTag(parameters.get(0));
-			
-			if (faction == null) {
-				sendMessage("No faction found with the tag \"" + parameters.get(0) + "\"");
-				return;
+	public void perform()
+	{
+		Faction faction = this.argAsFaction(0);
+		if (faction == null) return;
+		
+		String change;
+		if(faction.isPermanent())
+		{
+			change = "removed permanent status from";
+			faction.setPermanent(false);
+		}
+		else
+		{
+			change = "added permanent status to";
+			faction.setPermanent(true);
+		}
+		
+		// Inform all players
+		for (FPlayer fplayer : FPlayers.i.getOnline())
+		{
+			if (fplayer.getFaction() == faction)
+			{
+				fplayer.sendMessageParsed(fme.getNameAndRelevant(fplayer)+"<i> has "+change+" your faction.");
 			}
-
-			String change;
-			if(faction.isPermanent()) {
-				change = "removed permanent status from";
-				faction.setPermanent(false);
-			} else {
-				change = "added permanent status to";
-				faction.setPermanent(true);
-			}
-			// Inform all players
-			for (FPlayer fplayer : FPlayer.getAllOnline()) {
-				if (fplayer.getFaction() == faction) {
-					fplayer.sendMessage(fme.getNameAndRelevant(fplayer)+Conf.colorSystem+" has "+change+" your faction.");
-				} else {
-					fplayer.sendMessage(fme.getNameAndRelevant(fplayer)+Conf.colorSystem+" has "+change+" the faction \"" + faction.getTag(fplayer) + "\".");
-				}
+			else
+			{
+				fplayer.sendMessageParsed(fme.getNameAndRelevant(fplayer)+"<i> has "+change+" the faction \"" + faction.getTag(fplayer) + "\".");
 			}
 		}
 	}
-	
 }
