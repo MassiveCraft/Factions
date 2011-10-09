@@ -44,6 +44,12 @@ public class FactionsChatEarlyListener extends PlayerListener
 		
 		if (event.isCancelled()) return;
 		
+		if (p.handleCommand(event.getPlayer(), event.getMessage()))
+		{
+			event.setCancelled(true);
+			return;
+		}
+		
 		Player talkingPlayer = event.getPlayer();
 		String msg = event.getMessage();
 		

@@ -31,7 +31,7 @@ public class FPlayer extends PlayerEntity
 	
 	// FIELD: factionId
 	private String factionId;
-	public Faction getFaction() { return Factions.i.get(this.factionId); }
+	public Faction getFaction() { if(this.factionId == null) {return null;} return Factions.i.get(this.factionId); }
 	public String getFactionId() { return this.factionId; }
 	public boolean hasFaction() { return ! factionId.equals("0"); }
 	public void setFaction(Faction faction)
@@ -123,7 +123,7 @@ public class FPlayer extends PlayerEntity
 	// GSON need this noarg constructor.
 	public FPlayer()
 	{
-		this.resetFactionData();
+		this.resetFactionData(false);
 		this.power = this.getPowerMax();
 		this.lastPowerUpdateTime = System.currentTimeMillis();
 		this.lastLoginTime = System.currentTimeMillis();
@@ -140,14 +140,16 @@ public class FPlayer extends PlayerEntity
 		}
 	}
 	
-	public void resetFactionData()
+	public void resetFactionData(boolean doSpotUpdate)
 	{
 		// clean up any territory ownership in old faction, if there is one
-		Faction currentFaction = this.getFaction();
-		
-		if (currentFaction != null && currentFaction.isNormal())
+		if (Factions.i.exists(this.getFactionId()))
 		{
-			currentFaction.clearClaimOwnership(this.getId());
+			Faction currentFaction = this.getFaction();
+			if (currentFaction.isNormal())
+			{
+				currentFaction.clearClaimOwnership(this.getId());
+			}
 		}
 		
 		this.factionId = "0"; // The default neutral faction
@@ -156,7 +158,15 @@ public class FPlayer extends PlayerEntity
 		this.title = "";
 		this.autoClaimEnabled = false;
 
-		SpoutFeatures.updateAppearances(this.getPlayer());
+		if (doSpotUpdate)
+		{
+			SpoutFeatures.updateAppearances(this.getPlayer());
+		}
+	}
+	
+	public void resetFactionData()
+	{
+		this.resetFactionData(true);
 	}
 	
 	// -------------------------------------------- //
@@ -548,13 +558,13 @@ public class FPlayer extends PlayerEntity
 		
 		if (!perm && this.getRole() == Role.ADMIN && myFaction.getFPlayers().size() > 1)
 		{
-			sendMessage("You must give the admin role to someone else first.");
+			sendMessageParsed("<b>You must give the admin role to someone else first.");
 			return;
 		}
 
 		if (!Conf.CanLeaveWithNegativePower && this.getPower() < 0)
 		{
-			sendMessage("You cannot leave until your power is positive.");
+			sendMessageParsed("<b>You cannot leave until your power is positive.");
 			return;
 		}
 
@@ -566,23 +576,23 @@ public class FPlayer extends PlayerEntity
 			if (cost > 0.0) {
 				String costString = Econ.moneyString(cost);
 				if (!Econ.deductMoney(this.getName(), cost)) {
-					sendMessage("It costs "+costString+" to leave your faction, which you can't currently afford.");
+					sendMessageParsed("<b>It costs <h>%s<b> to leave your faction, which you can't currently afford.", costString);
 					return;
 				}
-				sendMessage("You have paid "+costString+" to leave your faction.");
+				sendMessageParsed("<i>You have paid <h>%s<i> to leave your faction.", costString);
 			}
 			// wait... we pay you to leave?
 			else if (cost < 0.0)
 			{
 				String costString = Econ.moneyString(-cost);
 				Econ.addMoney(this.getName(), -cost);
-				sendMessage("You have been paid "+costString+" for leaving your faction.");
+				sendMessageParsed("<i>You have been paid <h>%s<i> for leaving your faction.", costString);
 			}
 		}
 
 		if (myFaction.isNormal())
 		{
-			myFaction.sendMessage(P.p.txt.parse(this.getNameAndRelevant(myFaction) + "<i> left your faction."));
+			myFaction.sendMessageParsed("%s<i> left your faction.", this.getNameAndRelevant(myFaction));
 		}
 
 		this.resetFactionData();
@@ -592,10 +602,10 @@ public class FPlayer extends PlayerEntity
 			// Remove this faction
 			for (FPlayer fplayer : FPlayers.i.getOnline())
 			{
-				fplayer.sendMessage(P.p.txt.parse("The faction "+myFaction.getTag(fplayer)+"<i> was disbanded."));
+				fplayer.sendMessageParsed("<i>The faction %s<i> was disbanded.", myFaction.getTag(fplayer));
 			}
 			//Faction.delete(myFaction.getId());
-			this.detach();
+			myFaction.detach();
 		}
 	}
 	
@@ -612,59 +622,59 @@ public class FPlayer extends PlayerEntity
 		if (Conf.worldGuardChecking && Worldguard.checkForRegionsInChunk(loc))
 		{
 			// Checks for WorldGuard regions in the chunk attempting to be claimed
-			sendMessage("This land is protected");
+			sendMessageParsed("<b>This land is protected");
 			return false;
 		}
 
 		if (myFaction == otherFaction)
 		{
 			if (notifyFailure)
-				sendMessage("You already own this land.");
+				sendMessageParsed("<i>You already own this land.");
 			return false;
 		}
 
 		if (this.getRole().value < Role.MODERATOR.value)
 		{
-			sendMessage("You must be "+Role.MODERATOR+" to claim land.");
+			sendMessageParsed("<i>You must be "+Role.MODERATOR+" to claim land.");
 			return false;
 		}
 
 		if (myFaction.getFPlayers().size() < Conf.claimsRequireMinFactionMembers && ! this.isAdminBypassing())
 		{
-			sendMessage("Your faction must have at least "+Conf.claimsRequireMinFactionMembers+" members to claim land.");
+			sendMessageParsed("<b>Your faction must have at least <h>%s<b> members to claim land.", Conf.claimsRequireMinFactionMembers);
 			return false;
 		}
 
 		if (Conf.worldsNoClaiming.contains(flocation.getWorldName()))
 		{
-			sendMessage("Sorry, this world has land claiming disabled.");
+			sendMessageParsed("<b>Sorry, this world has land claiming disabled.");
 			return false;
 		}
 		
 		if (otherFaction.isSafeZone())
 		{
 			if (notifyFailure)
-				sendMessage("You can not claim a Safe Zone.");
+				sendMessageParsed("<b>You can not claim a Safe Zone.");
 			return false;
 		}
 		else if (otherFaction.isWarZone())
 		{
 			if (notifyFailure)
-				sendMessage("You can not claim a War Zone.");
+				sendMessageParsed("<b>You can not claim a War Zone.");
 			return false;
 		}
 
 		int ownedLand = myFaction.getLandRounded();
 		if (ownedLand >= myFaction.getPowerRounded())
 		{
-			sendMessage("You can't claim more land! You need more power!");
+			sendMessageParsed("<b>You can't claim more land! You need more power!");
 			return false;
 		}
 
 		if (otherFaction.getRelation(this) == Relation.ALLY)
 		{
 			if (notifyFailure)
-				sendMessage("You can't claim the land of your allies.");
+				sendMessageParsed("<b>You can't claim the land of your allies.");
 			return false;
 		}
 
@@ -678,9 +688,9 @@ public class FPlayer extends PlayerEntity
 		)
 		{
 			if (Conf.claimsCanBeUnconnectedIfOwnedByOtherFaction)
-				sendMessage("You can only claim additional land which is connected to your first claim or controlled by another faction!");
+				sendMessageParsed("<b>You can only claim additional land which is connected to your first claim or controlled by another faction!");
 			else
-				sendMessage("You can only claim additional land which is connected to your first claim!");
+				sendMessageParsed("<b>You can only claim additional land which is connected to your first claim!");
 			return false;
 		}
 
@@ -688,26 +698,26 @@ public class FPlayer extends PlayerEntity
 		{
 			if (myFaction.isPeaceful())
 			{
-				sendMessage(P.p.txt.parse(this.getRelationColor(otherFaction)+otherFaction.getTag()+"<i> owns this land. Your faction is peaceful, so you cannot claim land from other factions."));
+				sendMessageParsed("%s<i> owns this land. Your faction is peaceful, so you cannot claim land from other factions.", otherFaction.getTag(this));
 				return false;
 			}
 			
 			if (otherFaction.isPeaceful())
 			{
-				sendMessage(P.p.txt.parse(this.getRelationColor(otherFaction)+otherFaction.getTag()+"<i> owns this land, and is a peaceful faction. You cannot claim land from them."));
+				sendMessageParsed("%s<i> owns this land, and is a peaceful faction. You cannot claim land from them.", otherFaction.getTag(this));
 				return false;
 			}
 
 			if ( ! otherFaction.hasLandInflation())
 			{
 				 // TODO more messages WARN current faction most importantly
-				sendMessage(P.p.txt.parse(this.getRelationColor(otherFaction)+otherFaction.getTag()+"<i> owns this land and is strong enough to keep it."));
+				sendMessageParsed("%s<i> owns this land and is strong enough to keep it.", otherFaction.getTag(this));
 				return false;
 			}
 
 			if ( ! Board.isBorderLocation(flocation))
 			{
-				sendMessage("You must start claiming land at the border of the territory.");
+				sendMessageParsed("<b>You must start claiming land at the border of the territory.");
 				return false;
 			}
 		}
@@ -722,21 +732,22 @@ public class FPlayer extends PlayerEntity
 			{
 				Faction faction = this.getFaction();
 				
-				if(!faction.removeMoney(cost))
+				if( ! faction.removeMoney(cost))
 				{
-					sendMessage("It costs "+costString+" to claim this land, which your faction can't currently afford.");
+					sendMessageParsed("<b>It costs <h>%s<b> to claim this land, which your faction can't currently afford.", costString);
 					return false;
 				}
 				else
 				{
-					sendMessage(faction.getTag()+" has paid "+costString+" to claim some land.");
+					// TODO: Only I can see this right?
+					sendMessageParsed("%s<i> has paid <h>%s<i> to claim some land.", faction.getTag(this), costString);
 				}
 			}
 			else
 			{
-				if (!Econ.deductMoney(this.getId(), cost))
+				if ( ! Econ.deductMoney(this.getId(), cost))
 				{
-					sendMessage("Claiming this land will cost "+costString+", which you can't currently afford.");
+					sendMessageParsed("<b>Claiming this land will cost <h>%s<b>, which you can't currently afford.", costString);
 					return false;
 				}
 				sendMessage("You have paid "+costString+" to claim this land.");

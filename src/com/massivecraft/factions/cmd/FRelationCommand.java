@@ -31,6 +31,7 @@ public abstract class FRelationCommand extends FCommand
 	public void perform()
 	{
 		Faction them = this.argAsFaction(0);
+		if (them == null) return;
 		
 		if ( ! them.isNormal())
 		{

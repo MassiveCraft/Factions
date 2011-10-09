@@ -4,7 +4,6 @@ import org.bukkit.event.Event;
 import org.bukkit.plugin.Plugin;
 
 import com.massivecraft.factions.listeners.FactionsServerListener;
-import com.massivecraft.factions.cmd.CmdHelp;
 
 import com.earth2me.essentials.api.Economy;
 import com.nijikokun.register.payment.Methods;
@@ -15,36 +14,47 @@ import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.P;
 
 
-public class Econ {
+public class Econ
+{
 	private static boolean registerUse = false;
 	private static boolean iConomyUse = false;
 	private static boolean essEcoUse = false;
 
-	public static void monitorPlugins() {
+	// TODO: WHY put this here instead of at the same place as the other listeners?
+	public static void monitorPlugins()
+	{
 		P.p.getServer().getPluginManager().registerEvent(Event.Type.PLUGIN_ENABLE, new FactionsServerListener(P.p), Event.Priority.Monitor, P.p);
 		P.p.getServer().getPluginManager().registerEvent(Event.Type.PLUGIN_DISABLE, new FactionsServerListener(P.p), Event.Priority.Monitor, P.p);
 	}
 
-	public static void setup(P factions) {
-		if (enabled()) {
+	public static void setup(P factions)
+	{
+		if (enabled())
+		{
 			return;
 		}
 
-		if (!registerHooked()) {
+		if (!registerHooked())
+		{
 			Plugin plug = factions.getServer().getPluginManager().getPlugin("Register");
-			if (plug != null && plug.getClass().getName().equals("com.nijikokun.register.Register") && plug.isEnabled()) {
+			if (plug != null && plug.getClass().getName().equals("com.nijikokun.register.Register") && plug.isEnabled())
+			{
 				registerSet(true);
 			}
 		}
-		if (!iConomyHooked()) {
+		if (!iConomyHooked())
+		{
 			Plugin plug = factions.getServer().getPluginManager().getPlugin("iConomy");
-			if (plug != null && plug.getClass().getName().equals("com.iConomy.iConomy") && plug.isEnabled()) {
+			if (plug != null && plug.getClass().getName().equals("com.iConomy.iConomy") && plug.isEnabled())
+			{
 				iConomySet(true);
 			}
 		}
-		if (!essentialsEcoHooked()) {
+		if (!essentialsEcoHooked())
+		{
 			Plugin plug = factions.getServer().getPluginManager().getPlugin("Essentials");
-			if (plug != null && plug.isEnabled()) {
+			if (plug != null && plug.isEnabled())
+			{
 				essentialsEcoSet(true);
 			}
 		}
@@ -59,7 +69,7 @@ public class Econ {
 		else {
 			P.p.log("Un-hooked from Register.");
 		}
-		CmdHelp.updateHelp();
+		P.p.cmdBase.cmdHelp.updateHelp();
 	}
 
 	public static void iConomySet(boolean enable)
@@ -71,7 +81,7 @@ public class Econ {
 		else {
 			P.p.log("Un-hooked from iConomy.");
 		}
-		CmdHelp.updateHelp();
+		P.p.cmdBase.cmdHelp.updateHelp();
 	}
 
 	public static void essentialsEcoSet(boolean enable)
@@ -85,7 +95,7 @@ public class Econ {
 		{
 			P.p.log("Un-hooked from EssentialsEco.");
 		}
-		CmdHelp.updateHelp();
+		P.p.cmdBase.cmdHelp.updateHelp();
 	}
 
 	public static boolean registerHooked()

@@ -34,11 +34,12 @@ public class CmdChat extends FCommand
 			return;
 		}
 		
-		String modeString = this.argAsString(0).toLowerCase();
+		String modeString = this.argAsString(0);
 		ChatMode modeTarget = fme.getChatMode().getNext();
 		
 		if (modeString != null)
 		{
+			modeString.toLowerCase();
 			if(modeString.startsWith("p"))
 			{
 				modeTarget = ChatMode.PUBLIC;
@@ -51,8 +52,11 @@ public class CmdChat extends FCommand
 			{
 				modeTarget = ChatMode.FACTION;
 			}
-			sendMessageParsed("<b>Unrecognised chat mode. <i>Please enter either 'a','f' or 'p'");
-			return;
+			else
+			{
+				sendMessageParsed("<b>Unrecognised chat mode. <i>Please enter either 'a','f' or 'p'");
+				return;
+			}
 		}
 		
 		fme.setChatMode(modeTarget);

@@ -41,7 +41,7 @@ public class P extends MPlugin
 	public final FactionsBlockListener blockListener;
 	
 	// Persistance related
-	private boolean locked = true;
+	private boolean locked = false;
 	public boolean getLocked() {return this.locked;}
 	public void setLocked(boolean val) {this.locked = val; this.setAutoSave(val);}
 	

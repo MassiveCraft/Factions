@@ -67,7 +67,7 @@ public class CmdList extends FCommand
 		});
 		
 		ArrayList<String> lines = new ArrayList<String>();
-		lines.add(p.txt.parse("Factionless <i> %d online", Factions.i.getNone().getFPlayersWhereOnline(true).size()));
+		lines.add(p.txt.parse("<i>Factionless<i> %d online", Factions.i.getNone().getFPlayersWhereOnline(true).size()));
 		for (Faction faction : factionList)
 		{
 			lines.add(p.txt.parse("%s<i> %d/%d online, %d/%d/%d",

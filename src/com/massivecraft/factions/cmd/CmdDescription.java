@@ -39,8 +39,8 @@ public class CmdDescription extends FCommand
 		// Broadcast the description to everyone
 		for (FPlayer fplayer : FPlayers.i.getOnline())
 		{
-			fplayer.sendMessageParsed("The faction "+fplayer.getRelationColor(fme)+myFaction.getTag()+"<i> changed their description to:");
-			fplayer.sendMessageParsed("<i>"+myFaction.getDescription());
+			fplayer.sendMessageParsed("<i>The faction "+fplayer.getRelationColor(fme)+myFaction.getTag()+"<i> changed their description to:");
+			fplayer.sendMessageParsed("<h>"+myFaction.getDescription());
 		}
 	}
 	

@@ -211,7 +211,7 @@ public abstract class MPlugin extends JavaPlugin
 			
 			for (String alias : command.aliases)
 			{
-				if (commandString.startsWith(alias) || commandString.equals(alias+" "))
+				if (commandString.startsWith(alias+" ") || commandString.equals(alias))
 				{
 					List<String> args = new ArrayList<String>(Arrays.asList(commandString.split("\\s+")));
 					args.remove(0);

@@ -72,7 +72,7 @@ public class CmdReload extends FCommand
 		
 		long timeReload = (System.currentTimeMillis()-timeInitStart);
 		
-		sendMessageParsed("reloaded %s from disk, took %dms", fileName, timeReload);
+		sendMessageParsed("<i>Reloaded <h>%s <i>from disk, took <h>%dms<i>.", fileName, timeReload);
 	}
 	
 }

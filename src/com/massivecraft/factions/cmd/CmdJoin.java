@@ -55,7 +55,7 @@ public class CmdJoin extends FCommand
 		
 		if( ! faction.getOpen() && ! faction.isInvited(fme))
 		{
-			sendMessageParsed("<i>This guild requires invitation.");
+			sendMessageParsed("<i>This faction requires invitation.");
 			faction.sendMessageParsed("%s<i> tried to join your faction.", fme.getNameAndRelevant(faction));
 			return;
 		}

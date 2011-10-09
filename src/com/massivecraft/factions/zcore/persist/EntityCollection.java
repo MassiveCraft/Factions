@@ -90,6 +90,7 @@ public abstract class EntityCollection<E extends Entity>
 	
 	public boolean exists(String id)
 	{
+		if (id == null) return false;
 		return id2entity.get(id) != null;
 	}
 	
@@ -110,7 +111,9 @@ public abstract class EntityCollection<E extends Entity>
 		try
 		{
 			e = this.entityClass.newInstance();
-		} catch (Exception ignored) {}
+		} catch (Exception ignored) {
+			ignored.printStackTrace();
+		}
 		
 		e.setId(id);
 		this.entities.add(e);

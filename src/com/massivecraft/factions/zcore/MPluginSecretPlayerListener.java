@@ -51,5 +51,4 @@ public class MPluginSecretPlayerListener extends PlayerListener
 			}
 		}
 	}
-	
 }

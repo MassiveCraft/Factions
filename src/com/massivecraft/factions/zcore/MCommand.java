@@ -18,6 +18,12 @@ public abstract class MCommand<T extends MPlugin>
 	
 	// The sub-commands to this command
 	public List<MCommand<?>> subCommands;
+	public void addSubCommand(MCommand<?> subCommand)
+	{
+		subCommand.commandChain.addAll(this.commandChain);
+		subCommand.commandChain.add(this);
+		this.subCommands.add(subCommand);
+	}
 	
 	// The different names this commands will react to  
 	public List<String> aliases;
@@ -58,7 +64,7 @@ public abstract class MCommand<T extends MPlugin>
 	public Player me; // Will only be set when the sender is a player
 	public boolean senderIsConsole;
 	public List<String> args; // Will contain the arguments, or and empty list if there are none.
-	public List<MCommand<?>> commandChain; // The command chain used to execute this command
+	public List<MCommand<?>> commandChain = new ArrayList<MCommand<?>>(); // The command chain used to execute this command
 	
 	public MCommand(T p)
 	{

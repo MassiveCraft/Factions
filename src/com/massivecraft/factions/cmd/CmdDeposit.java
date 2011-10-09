@@ -49,15 +49,15 @@ public class CmdDeposit extends FCommand
 			else
 			{
 				faction.addMoney(amount);
-				sendMessage("You have deposited "+amountString+" into "+faction.getTag()+"'s bank.");
-				sendMessage(faction.getTag()+" now has "+Econ.moneyString(faction.getMoney()));
+				sendMessageParsed("<i>You have deposited <h>%s<i> into <h>%s's<i> bank.", amountString, faction.getTag());
+				sendMessageParsed("%s<i> now has <h>%s", faction.getTag(fme), Econ.moneyString(faction.getMoney()));
 				P.p.log(fme.getName() + " deposited "+amountString+" into "+faction.getTag()+"'s bank.");
 				
 				for (FPlayer fplayer : FPlayers.i.getOnline())
 				{
 					if (fplayer.getFaction() == faction)
 					{
-						fplayer.sendMessageParsed("%s has deposited %s", fme.getNameAndRelevant(fplayer), amountString);
+						fplayer.sendMessageParsed("%s<i> has deposited <h>%s", fme.getNameAndRelevant(fplayer), amountString);
 					}
 				}
 			}

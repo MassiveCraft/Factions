@@ -51,6 +51,7 @@ permissions:
       factions.disband: true
       factions.help: true
       factions.home: true
+      factions.invite: true
       factions.join: true
       factions.kick: true
       factions.leave: true
@@ -107,6 +108,8 @@ permissions:
     description: display a help page
   factions.home:
     description: teleport to the faction home
+  factions.invite:
+    description: invite a player to your faction
   factions.join:
     description: join a faction
   factions.kick:
@@ -154,7 +157,7 @@ permissions:
   factions.sethome:
     description: set the faction home
   factions.sethome.any:
-    description: set any faction home
+    description: set faction home for another faction
   factions.show:
     description: show faction information
   factions.tag:
