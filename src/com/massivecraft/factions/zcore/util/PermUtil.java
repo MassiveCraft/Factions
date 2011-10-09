@@ -12,6 +12,7 @@ import org.bukkit.plugin.Plugin;
 import ru.tehkode.permissions.PermissionManager;
 import ru.tehkode.permissions.bukkit.PermissionsEx;
 
+import com.massivecraft.factions.zcore.Lang;
 import com.massivecraft.factions.zcore.MPlugin;
 import com.nijiko.permissions.PermissionHandler;
 import com.nijikokun.bukkit.Permissions.Permissions;
@@ -33,7 +34,7 @@ public class PermUtil {
 	
 	public String getForbiddenMessage(String perm)
 	{
-		return p.txt.get("perm.forbidden", getPermissionDescription(perm));
+		return p.txt.parse(Lang.permForbidden, getPermissionDescription(perm));
 	}
 	
 	/**
@@ -69,7 +70,7 @@ public class PermUtil {
 		String desc = permissionDescriptions.get(perm);
 		if (desc == null)
 		{
-			return p.txt.get("perm.dothat");
+			return Lang.permDoThat;
 		}
 		return desc;
 	}

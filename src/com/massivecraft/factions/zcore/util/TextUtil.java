@@ -10,24 +10,18 @@ import org.bukkit.Material;
 public class TextUtil
 {
 	private Map<String, String> tags = new HashMap<String, String>();
-	private Map<String, String> lang = new HashMap<String, String>();
 	
-	public TextUtil(Map<String, String> tags, Map<String, String> lang)
+	public TextUtil(Map<String, String> tags)
 	{
 		if (tags != null)
 		{
 			this.tags.putAll(tags);
 		}
-		
-		if (lang != null)
-		{
-			this.lang.putAll(lang);
-		}
 	}
 	
 	// Get is supposed to be the way we reach registered lang
 	// TODO: Is the parse
-	public String get(String name)
+	/*public String get(String name)
 	{
 		String str = lang.get(name);
 		if (str == null) str = name;
@@ -41,7 +35,7 @@ public class TextUtil
 		if (str == null) str = name;
 		
 		return this.parse(str, args);
-	}
+	}*/
 	
 	// Parse is used to handle non registered text
 	public String parse(String str, Object... args)
@@ -57,11 +51,6 @@ public class TextUtil
 	public Map<String, String> getTags()
 	{
 		return tags;
-	}
-
-	public Map<String, String> getLang()
-	{
-		return lang;
 	}
 	
 	public String tags(String str)

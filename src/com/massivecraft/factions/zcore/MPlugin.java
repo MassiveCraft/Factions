@@ -132,16 +132,6 @@ public abstract class MPlugin extends JavaPlugin
 	// These are not supposed to be used directly.
 	// They are loaded and used through the TextUtil instance for the plugin.
 	public Map<String, String> tags = new LinkedHashMap<String, String>();
-	public Map<String, String> lang = new LinkedHashMap<String, String>();
-	
-	public void addLang()
-	{
-		this.lang.put("perm.forbidden", "<b>You don't have permission to %s.");
-		this.lang.put("perm.dothat", "do that");
-		this.lang.put("command.sender_must_me_player", "<b>This command can only be used by ingame players.");
-		this.lang.put("command.to_few_args", "<b>To few arguments. <i>Use like this:");
-		this.lang.put("command.to_many_args", "<b>Strange argument \"<p>%s<b>\". <i>Use the command like this:");
-	}
 	
 	public void addTags()
 	{
@@ -175,20 +165,15 @@ public abstract class MPlugin extends JavaPlugin
 	
 	public void initTXT()
 	{
-		this.addLang();
 		this.addTags();
 		
 		Type type = new TypeToken<Map<String, String>>(){}.getType();
-		
-		Map<String, String> langFromFile = this.persist.load(type, "lang");
-		if (langFromFile != null) this.lang.putAll(langFromFile);
-		this.persist.save(this.lang, "lang");
 		
 		Map<String, String> tagsFromFile = this.persist.load(type, "tags");
 		if (tagsFromFile != null) this.tags.putAll(tagsFromFile);
 		this.persist.save(this.tags, "tags");
 		
-		this.txt = new TextUtil(this.tags, this.lang);
+		this.txt = new TextUtil(this.tags);
 	}
 	
 	

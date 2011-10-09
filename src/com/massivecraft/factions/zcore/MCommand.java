@@ -173,7 +173,7 @@ public abstract class MCommand<T extends MPlugin>
 		{
 			if (informSenderIfNot)
 			{
-				sender.sendMessage(p.txt.get("command.sender_must_me_player"));
+				sendMessageParsed(Lang.commandSenderMustBePlayer);
 			}
 			return false;
 		}
@@ -192,7 +192,7 @@ public abstract class MCommand<T extends MPlugin>
 		{
 			if (sender != null)
 			{
-				sender.sendMessage(p.txt.get("command.to_few_args"));
+				sendMessageParsed(Lang.commandToFewArgs);
 				sender.sendMessage(this.getUseageTemplate());
 			}
 			return false;
@@ -204,7 +204,7 @@ public abstract class MCommand<T extends MPlugin>
 			{
 				// Get the to many string slice
 				List<String> theToMany = args.subList(this.requiredArgs.size() + this.optionalArgs.size(), args.size());
-				sender.sendMessage(String.format(p.txt.get("command.to_many_args"), TextUtil.implode(theToMany, " ")));
+				sendMessageParsed(Lang.commandToManyArgs, TextUtil.implode(theToMany, " "));
 				sender.sendMessage(this.getUseageTemplate());
 			}
 			return false;
