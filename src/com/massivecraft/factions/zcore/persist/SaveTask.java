@@ -12,8 +12,9 @@ public class SaveTask implements Runnable
 	
 	public void run()
 	{
-		p.preSaveTask();
+		if ( ! p.getAutoSave()) return;
+		p.preAutoSave();
 		EM.saveAllToDisc();
-		p.postSaveTask();
+		p.postAutoSave();
 	}
 }

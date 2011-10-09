@@ -4,7 +4,7 @@ import org.bukkit.event.Event;
 import org.bukkit.plugin.Plugin;
 
 import com.massivecraft.factions.listeners.FactionsServerListener;
-import com.massivecraft.factions.commands.CmdHelp;
+import com.massivecraft.factions.cmd.CmdHelp;
 
 import com.earth2me.essentials.api.Economy;
 import com.nijikokun.register.payment.Methods;

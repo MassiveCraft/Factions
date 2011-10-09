@@ -34,6 +34,9 @@ public abstract class MPlugin extends JavaPlugin
 	// Persist related
 	public Gson gson;	
 	private Integer saveTask = null;
+	private boolean autoSave = true;
+	public boolean getAutoSave() {return this.autoSave;}
+	public void setAutoSave(boolean val) {this.autoSave = val;}
 	
 	// Listeners
 	private MPluginSecretPlayerListener mPluginSecretPlayerListener; 
@@ -229,12 +232,12 @@ public abstract class MPlugin extends JavaPlugin
 	// -------------------------------------------- //
 	// HOOKS
 	// -------------------------------------------- //
-	public void preSaveTask()
+	public void preAutoSave()
 	{
 		
 	}
 	
-	public void postSaveTask()
+	public void postAutoSave()
 	{
 		
 	}

@@ -112,10 +112,9 @@ public abstract class MCommand<T extends MPlugin>
 			}
 		}
 		
-		if ( ! validCall(this.sender, this.args))
-		{
-			return;
-		}
+		if ( ! validCall(this.sender, this.args)) return;
+		
+		if ( ! this.isEnabled()) return;
 		
 		perform();
 	}
@@ -136,7 +135,6 @@ public abstract class MCommand<T extends MPlugin>
 	/**
 	 * In this method we validate that all prerequisites to perform this command has been met.
 	 */
-	
 	// TODO: There should be a boolean for silence 
 	public boolean validCall(CommandSender sender, List<String> args)
 	{
@@ -155,6 +153,11 @@ public abstract class MCommand<T extends MPlugin>
 			return false;
 		}
 		
+		return true;
+	}
+	
+	public boolean isEnabled()
+	{
 		return true;
 	}
 	

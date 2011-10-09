@@ -13,7 +13,7 @@ import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 
-import com.massivecraft.factions.commands.*;
+import com.massivecraft.factions.cmd.*;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.integration.Worldguard;
@@ -40,6 +40,12 @@ public class P extends MPlugin
 	public final FactionsEntityListener entityListener;
 	public final FactionsBlockListener blockListener;
 	
+	// Persistance related
+	private boolean locked = true;
+	public boolean getLocked() {return this.locked;}
+	public void setLocked(boolean val) {this.locked = val; this.setAutoSave(val);}
+	
+	// Commands
 	public FCmdRoot cmdBase;
 	
 	public P()
@@ -131,7 +137,7 @@ public class P extends MPlugin
 	}
 	
 	@Override
-	public void postSaveTask()
+	public void postAutoSave()
 	{
 		Board.save();
 		Conf.save();
