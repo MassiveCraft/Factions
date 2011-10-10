@@ -9,56 +9,36 @@ import org.bukkit.Material;
 
 public class TextUtil
 {
-	private Map<String, String> tags = new HashMap<String, String>();
-	
-	public TextUtil(Map<String, String> tags)
+	public Map<String, String> tags;
+	public TextUtil()
 	{
-		if (tags != null)
-		{
-			this.tags.putAll(tags);
-		}
+		this.tags = new HashMap<String, String>();
 	}
 	
-	// Get is supposed to be the way we reach registered lang
-	// TODO: Is the parse
-	/*public String get(String name)
-	{
-		String str = lang.get(name);
-		if (str == null) str = name;
-		
-		return this.parse(str);
-	}
+	// -------------------------------------------- //
+	// Top-level parsing functions.
+	// -------------------------------------------- //
 	
-	public String get(String name, Object... args)
-	{
-		String str = lang.get(name);
-		if (str == null) str = name;
-		
-		return this.parse(str, args);
-	}*/
-	
-	// Parse is used to handle non registered text
 	public String parse(String str, Object... args)
 	{
-		return String.format(this.tags(str), args);
+		return String.format(this.parse(str), args);
 	}
 	
 	public String parse(String str)
 	{
-		return this.tags(str);
+		return this.parseTags(parseColor(str));
 	}
 	
-	public Map<String, String> getTags()
-	{
-		return tags;
-	}
+	// -------------------------------------------- //
+	// Tag parsing
+	// -------------------------------------------- //
 	
-	public String tags(String str)
+	public String parseTags(String str)
 	{
 		return replaceTags(str, this.tags);
 	}
 	
-	public static final transient Pattern patternTag = Pattern.compile("<([^<>]*)>");
+	public static final transient Pattern patternTag = Pattern.compile("<([a-zA-Z0-9_]*)>");
 	public static String replaceTags(String str, Map<String, String> tags)
 	{
 		StringBuffer ret = new StringBuffer();
@@ -78,6 +58,69 @@ public class TextUtil
 		}
 		matcher.appendTail(ret);
 		return ret.toString();
+	}
+	
+	// -------------------------------------------- //
+	// Color parsing
+	// -------------------------------------------- //
+	
+	public static String parseColor(String string)
+	{
+		string = parseColorAmp(string);
+		string = parseColorAcc(string);
+		string = parseColorTags(string);
+		return string;
+	}
+	
+	public static String parseColorAmp(String string)
+	{
+		string = string.replaceAll("(§([a-z0-9]))", "\u00A7$2");
+	    string = string.replaceAll("(&([a-z0-9]))", "\u00A7$2");
+	    string = string.replace("&&", "&");
+	    return string;
+	}
+	
+    public static String parseColorAcc(String string)
+    {
+        return string.replace("`e", "")
+		.replace("`r", ChatColor.RED.toString()) .replace("`R", ChatColor.DARK_RED.toString())
+		.replace("`y", ChatColor.YELLOW.toString()) .replace("`Y", ChatColor.GOLD.toString())
+		.replace("`g", ChatColor.GREEN.toString()) .replace("`G", ChatColor.DARK_GREEN.toString())
+		.replace("`a", ChatColor.AQUA.toString()) .replace("`A", ChatColor.DARK_AQUA.toString())
+		.replace("`b", ChatColor.BLUE.toString()) .replace("`B", ChatColor.DARK_BLUE.toString())
+		.replace("`p", ChatColor.LIGHT_PURPLE.toString()) .replace("`P", ChatColor.DARK_PURPLE.toString())
+		.replace("`k", ChatColor.BLACK.toString()) .replace("`s", ChatColor.GRAY.toString())
+		.replace("`S", ChatColor.DARK_GRAY.toString()) .replace("`w", ChatColor.WHITE.toString());
+    }
+	
+	public static String parseColorTags(String string)
+	{
+        return string.replace("<empty>", "")
+        .replace("<black>", "\u00A70")
+        .replace("<navy>", "\u00A71")
+        .replace("<green>", "\u00A72")
+        .replace("<teal>", "\u00A73")
+        .replace("<red>", "\u00A74")
+        .replace("<purple>", "\u00A75")
+        .replace("<gold>", "\u00A76")
+        .replace("<silver>", "\u00A77")
+        .replace("<gray>", "\u00A78")
+        .replace("<blue>", "\u00A79")
+        .replace("<lime>", "\u00A7a")
+        .replace("<aqua>", "\u00A7b")
+        .replace("<rose>", "\u00A7c")
+        .replace("<pink>", "\u00A7d")
+        .replace("<yellow>", "\u00A7e")
+        .replace("<white>", "\u00A7f");
+	}
+	
+	// -------------------------------------------- //
+	// Standard utils like UCFirst, implode and repeat.
+	// -------------------------------------------- //
+	
+	public static String upperCaseFirst(String string)
+	{
+		return string.substring(0, 1).toUpperCase()+string.substring(1);
 	}
 	
 	public static String implode(List<String> list, String glue)
@@ -100,6 +143,10 @@ public class TextUtil
 	    else return s + repeat(s, times-1);
 	}
 	
+	// -------------------------------------------- //
+	// Material name tools
+	// -------------------------------------------- //
+	
 	public static String getMaterialName(Material material)
 	{
 		return material.toString().replace('_', ' ').toLowerCase();
@@ -110,26 +157,24 @@ public class TextUtil
 		return getMaterialName(Material.getMaterial(materialId));
 	}
 	
-	public static String upperCaseFirst(String string)
-	{
-		return string.substring(0, 1).toUpperCase()+string.substring(1);
-	}
+	// -------------------------------------------- //
+	// Paging and chrome-tools like titleize
+	// -------------------------------------------- //
 	
-	// TODO: Make part of layout configuration.
 	private final static String titleizeLine = repeat("_", 52);
 	private final static int titleizeBalance = -1;
 	public String titleize(String str)
 	{
-		String center = ".[ "+ tags("<l>") + str + tags("<a>")+ " ].";
+		String center = ".[ "+ parseTags("<l>") + str + parseTags("<a>")+ " ].";
 		int centerlen = ChatColor.stripColor(center).length();
 		int pivot = titleizeLine.length() / 2;
 		int eatLeft = (centerlen / 2) - titleizeBalance;
 		int eatRight = (centerlen - eatLeft) + titleizeBalance;
 
 		if (eatLeft < pivot)
-			return tags("<a>")+titleizeLine.substring(0, pivot - eatLeft) + center + titleizeLine.substring(pivot + eatRight);
+			return parseTags("<a>")+titleizeLine.substring(0, pivot - eatLeft) + center + titleizeLine.substring(pivot + eatRight);
 		else
-			return tags("<a>")+center;
+			return parseTags("<a>")+center;
 	}
 	
 	public ArrayList<String> getPage(List<String> lines, int pageHumanBased, String title)
@@ -143,12 +188,12 @@ public class TextUtil
 		
 		if (pagecount == 0)
 		{
-			ret.add(this.tags("<i>Sorry. No Pages available."));
+			ret.add(this.parseTags("<i>Sorry. No Pages available."));
 			return ret;
 		}
 		else if (pageZeroBased < 0 || pageHumanBased > pagecount)
 		{
-			ret.add(this.tags("<i>Invalid page. Must be between 1 and "+pagecount));
+			ret.add(this.parseTags("<i>Invalid page. Must be between 1 and "+pagecount));
 			return ret;
 		}
 		
@@ -163,6 +208,10 @@ public class TextUtil
 		
 		return ret;
 	}
+	
+	// -------------------------------------------- //
+	// Describing Time
+	// -------------------------------------------- //
 	
 	/**
 	 * Using this function you transform a delta in milliseconds

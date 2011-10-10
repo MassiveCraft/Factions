@@ -3,6 +3,7 @@ package com.massivecraft.factions.zcore;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
 import java.util.*;
+import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -66,6 +67,7 @@ public abstract class MPlugin extends JavaPlugin
 		if ( ! lib.require("gson.jar", "http://search.maven.org/remotecontent?filepath=com/google/code/gson/gson/1.7.1/gson-1.7.1.jar")) return false;
 		this.gson = this.getGsonBuilder().create();
 		
+		this.txt = new TextUtil();
 		initTXT();
 		
 		// Create and register listeners
@@ -131,51 +133,36 @@ public abstract class MPlugin extends JavaPlugin
 	
 	// These are not supposed to be used directly.
 	// They are loaded and used through the TextUtil instance for the plugin.
-	public Map<String, String> tags = new LinkedHashMap<String, String>();
+	public Map<String, String> rawTags = new LinkedHashMap<String, String>();
 	
-	public void addTags()
+	public void addRawTags()
 	{
-		this.tags.put("black", "§0");
-		this.tags.put("navy", "§1");
-		this.tags.put("green", "§2");
-		this.tags.put("teal", "§3");
-		this.tags.put("red", "§4");
-		this.tags.put("purple", "§5");
-		this.tags.put("gold", "§6");
-		this.tags.put("silver", "§7");
-		this.tags.put("gray", "§8");
-		this.tags.put("blue", "§9");
-		this.tags.put("white", "§f");
-		this.tags.put("lime", "§a");
-		this.tags.put("aqua", "§b");
-		this.tags.put("rose", "§c");
-		this.tags.put("pink", "§d");
-		this.tags.put("yellow", "§e");
-		
-		this.tags.put("l", "§2"); // logo
-		this.tags.put("a", "§6"); // art
-		this.tags.put("n", "§7"); // notice
-		this.tags.put("i", "§e"); // info
-		this.tags.put("g", "§a"); // good
-		this.tags.put("b", "§c"); // bad
-		this.tags.put("h", "§d"); // highligh
-		this.tags.put("c", "§b"); // command
-		this.tags.put("p", "§3"); // parameter
+		this.rawTags.put("l", "<green>"); // logo
+		this.rawTags.put("a", "<gold>"); // art
+		this.rawTags.put("n", "<silver>"); // notice
+		this.rawTags.put("i", "<yellow>"); // info
+		this.rawTags.put("g", "<lime>"); // good
+		this.rawTags.put("b", "<rose>"); // bad
+		this.rawTags.put("h", "<pink>"); // highligh
+		this.rawTags.put("c", "<aqua>"); // command
+		this.rawTags.put("p", "<teal>"); // parameter
 	}
 	
 	public void initTXT()
 	{
-		this.addTags();
+		this.addRawTags();
 		
 		Type type = new TypeToken<Map<String, String>>(){}.getType();
 		
 		Map<String, String> tagsFromFile = this.persist.load(type, "tags");
-		if (tagsFromFile != null) this.tags.putAll(tagsFromFile);
-		this.persist.save(this.tags, "tags");
+		if (tagsFromFile != null) this.rawTags.putAll(tagsFromFile);
+		this.persist.save(this.rawTags, "tags");
 		
-		this.txt = new TextUtil(this.tags);
+		for (Entry<String, String> rawTag : this.rawTags.entrySet())
+		{
+			this.txt.tags.put(rawTag.getKey(), TextUtil.parseColor(rawTag.getValue()));
+		}
 	}
-	
 	
 	// -------------------------------------------- //
 	// COMMAND HANDLING

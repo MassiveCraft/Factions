@@ -223,7 +223,7 @@ public abstract class MCommand<T extends MPlugin>
 	public String getUseageTemplate(List<MCommand<?>> commandChain, boolean addShortHelp)
 	{
 		StringBuilder ret = new StringBuilder();
-		ret.append(p.txt.tags("<c>"));
+		ret.append(p.txt.parseTags("<c>"));
 		ret.append('/');
 		
 		for (MCommand<?> mc : commandChain)
@@ -257,13 +257,13 @@ public abstract class MCommand<T extends MPlugin>
 		
 		if (args.size() > 0)
 		{
-			ret.append(p.txt.tags("<p> "));
+			ret.append(p.txt.parseTags("<p> "));
 			ret.append(TextUtil.implode(args, " "));
 		}
 		
 		if (addShortHelp)
 		{
-			ret.append(p.txt.tags(" <i>"));
+			ret.append(p.txt.parseTags(" <i>"));
 			ret.append(this.helpShort);
 		}
 		
