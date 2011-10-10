@@ -53,7 +53,7 @@ public class CmdDisband extends FCommand
 
 		if (faction.isPermanent())
 		{
-			sendMessageParsed("<i>This faction is designated as permanent, so you cannot disband it.");
+			msg("<i>This faction is designated as permanent, so you cannot disband it.");
 			return;
 		}
 
@@ -63,11 +63,11 @@ public class CmdDisband extends FCommand
 			String who = senderIsConsole ? "A server admin" : fme.getNameAndRelevant(fplayer);
 			if (fplayer.getFaction() == faction)
 			{
-				fplayer.sendMessageParsed("<h>%s<i> disbanded your faction.", who);
+				fplayer.msg("<h>%s<i> disbanded your faction.", who);
 			}
 			else
 			{
-				fplayer.sendMessageParsed("<h>%s<i> disbanded the faction %s.", who, faction.getTag(fplayer));
+				fplayer.msg("<h>%s<i> disbanded the faction %s.", who, faction.getTag(fplayer));
 			}
 		}
 		
@@ -78,7 +78,7 @@ public class CmdDisband extends FCommand
 			if (amount > 0.0)
 			{
 				String amountString = Econ.moneyString(amount);
-				sendMessageParsed("<i>You have been given the disbanded faction's bank, totaling %s.", amountString);
+				msg("<i>You have been given the disbanded faction's bank, totaling %s.", amountString);
 				P.p.log(fme.getName() + " has been given bank holdings of "+amountString+" from disbanding "+faction.getTag()+".");
 			}
 		}		

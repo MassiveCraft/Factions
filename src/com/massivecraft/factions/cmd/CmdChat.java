@@ -30,7 +30,7 @@ public class CmdChat extends FCommand
 	{
 		if ( ! Conf.factionOnlyChat )
 		{
-			sendMessageParsed("<b>Faction-only chat is disabled on this server.");
+			msg("<b>Faction-only chat is disabled on this server.");
 			return;
 		}
 		
@@ -54,7 +54,7 @@ public class CmdChat extends FCommand
 			}
 			else
 			{
-				sendMessageParsed("<b>Unrecognised chat mode. <i>Please enter either 'a','f' or 'p'");
+				msg("<b>Unrecognised chat mode. <i>Please enter either 'a','f' or 'p'");
 				return;
 			}
 		}
@@ -63,15 +63,15 @@ public class CmdChat extends FCommand
 		
 		if(fme.getChatMode() == ChatMode.PUBLIC)
 		{
-			sendMessageParsed("<i>Public chat mode.");
+			msg("<i>Public chat mode.");
 		}
 		else if (fme.getChatMode() == ChatMode.ALLIANCE )
 		{
-			sendMessageParsed("<i>Alliance only chat mode.");
+			msg("<i>Alliance only chat mode.");
 		}
 		else
 		{
-			sendMessageParsed("<i>Faction only chat mode.");
+			msg("<i>Faction only chat mode.");
 		}
 	}
 }

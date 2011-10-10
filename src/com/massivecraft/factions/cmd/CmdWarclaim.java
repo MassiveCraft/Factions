@@ -43,6 +43,6 @@ public class CmdWarclaim extends FCommand
 			Board.setFactionAt(Factions.i.getWarZone(), locToClaim);
 		}
 		
-		sendMessageParsed("<i>You claimed <h>%d chunks<i> for the <a>war zone<i>.", (1+radius*2)*(1+radius*2));
+		msg("<i>You claimed <h>%d chunks<i> for the <a>war zone<i>.", (1+radius*2)*(1+radius*2));
 	}
 }

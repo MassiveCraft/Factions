@@ -30,7 +30,7 @@ public class CmdSafeunclaimall extends FCommand
 	public void perform()
 	{
 		Board.unclaimAll(Factions.i.getSafeZone().getId());
-		sendMessageParsed("<i>You unclaimed ALL safe zone land.");
+		msg("<i>You unclaimed ALL safe zone land.");
 	}
 	
 }

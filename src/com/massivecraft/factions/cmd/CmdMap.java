@@ -38,7 +38,7 @@ public class CmdMap extends FCommand
 				if ( ! payForCommand(Conf.econCostMap)) return;
 
 				fme.setMapAutoUpdating(true);
-				sendMessageParsed("<i>Map auto update <green>ENABLED.");
+				msg("<i>Map auto update <green>ENABLED.");
 				
 				// And show the map once
 				showMap();
@@ -47,7 +47,7 @@ public class CmdMap extends FCommand
 			{
 				// Turn off
 				fme.setMapAutoUpdating(false);
-				sendMessageParsed("<i>Map auto update <red>DISABLED.");
+				msg("<i>Map auto update <red>DISABLED.");
 			}
 		}
 		else

@@ -30,7 +30,7 @@ public class CmdWarunclaimall extends FCommand
 	public void perform()
 	{
 		Board.unclaimAll(Factions.i.getWarZone().getId());
-		sendMessageParsed("<i>You unclaimed ALL war zone land.");
+		msg("<i>You unclaimed ALL war zone land.");
 	}
 	
 }

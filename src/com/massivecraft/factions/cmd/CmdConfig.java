@@ -61,7 +61,7 @@ public class CmdConfig extends FCommand
 
 		if (fieldName == null || fieldName.isEmpty())
 		{
-			sendMessageParsed("<b>No configuration setting \"<h>%s<b>\" exists.", field);
+			msg("<b>No configuration setting \"<h>%s<b>\" exists.", field);
 			return;
 		}
 

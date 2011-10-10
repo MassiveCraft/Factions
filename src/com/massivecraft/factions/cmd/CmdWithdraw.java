@@ -36,7 +36,7 @@ public class CmdWithdraw extends FCommand
 		
 		if ( ! Conf.bankMembersCanWithdraw && ! assertMinRole(Role.MODERATOR))
 		{
-			sendMessageParsed("<b>Only faction moderators or admins are able to withdraw from the bank.");
+			msg("<b>Only faction moderators or admins are able to withdraw from the bank.");
 			return;
 		}
 		
@@ -57,8 +57,8 @@ public class CmdWithdraw extends FCommand
 			
 			faction.removeMoney(amount);
 			Econ.addMoney(fme.getName(), amount);
-			sendMessageParsed("<i>You have withdrawn "+amountString+" from "+faction.getTag()+"'s bank.");
-			sendMessageParsed("<i>"+faction.getTag()+" now has "+Econ.moneyString(faction.getMoney()));
+			msg("<i>You have withdrawn "+amountString+" from "+faction.getTag()+"'s bank.");
+			msg("<i>"+faction.getTag()+" now has "+Econ.moneyString(faction.getMoney()));
 			P.p.log(fme.getName() + " withdrew "+amountString+" from "+faction.getTag()+"'s bank.");
 			
 			// TODO: FAction.getOnlineMembers().
@@ -66,7 +66,7 @@ public class CmdWithdraw extends FCommand
 			{
 				if (fplayer.getFaction() == faction)
 				{
-					fplayer.sendMessageParsed("%s<i> has withdrawn %s", fme.getNameAndRelevant(fplayer), amountString);
+					fplayer.msg("%s<i> has withdrawn %s", fme.getNameAndRelevant(fplayer), amountString);
 				}
 			}
 		}

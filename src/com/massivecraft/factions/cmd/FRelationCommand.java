@@ -35,13 +35,13 @@ public abstract class FRelationCommand extends FCommand
 		
 		if ( ! them.isNormal())
 		{
-			sendMessageParsed("<b>Nope! You can't.");
+			msg("<b>Nope! You can't.");
 			return;
 		}
 		
 		if (them == myFaction)
 		{
-			sendMessageParsed("<b>Nope! You can't declare a relation to yourself :)");
+			msg("<b>Nope! You can't declare a relation to yourself :)");
 			return;
 		}
 
@@ -53,26 +53,26 @@ public abstract class FRelationCommand extends FCommand
 		ChatColor currentRelationColor = currentRelation.getColor();
 		if (targetRelation.value == currentRelation.value)
 		{
-			them.sendMessageParsed("<i>Your faction is now "+currentRelationColor+targetRelation.toString()+"<i> to "+currentRelationColor+myFaction.getTag());
-			myFaction.sendMessageParsed("<i>Your faction is now "+currentRelationColor+targetRelation.toString()+"<i> to "+currentRelationColor+them.getTag());
+			them.msg("<i>Your faction is now "+currentRelationColor+targetRelation.toString()+"<i> to "+currentRelationColor+myFaction.getTag());
+			myFaction.msg("<i>Your faction is now "+currentRelationColor+targetRelation.toString()+"<i> to "+currentRelationColor+them.getTag());
 		}
 		else
 		{
-			them.sendMessageParsed(currentRelationColor+myFaction.getTag()+"<i> wishes to be your "+targetRelation.getColor()+targetRelation.toString());
-			them.sendMessageParsed("<i>Type <c>/"+Conf.baseCommandAliases.get(0)+" "+targetRelation+" "+myFaction.getTag()+"<i> to accept.");
-			myFaction.sendMessageParsed(currentRelationColor+them.getTag()+"<i> were informed that you wish to be "+targetRelation.getColor()+targetRelation);
+			them.msg(currentRelationColor+myFaction.getTag()+"<i> wishes to be your "+targetRelation.getColor()+targetRelation.toString());
+			them.msg("<i>Type <c>/"+Conf.baseCommandAliases.get(0)+" "+targetRelation+" "+myFaction.getTag()+"<i> to accept.");
+			myFaction.msg(currentRelationColor+them.getTag()+"<i> were informed that you wish to be "+targetRelation.getColor()+targetRelation);
 		}
 		
 		if ( ! targetRelation.isNeutral() && them.isPeaceful())
 		{
-			them.sendMessageParsed("<i>This will have no effect while your faction is peaceful.");
-			myFaction.sendMessageParsed("<i>This will have no effect while their faction is peaceful.");
+			them.msg("<i>This will have no effect while your faction is peaceful.");
+			myFaction.msg("<i>This will have no effect while their faction is peaceful.");
 		}
 		
 		if ( ! targetRelation.isNeutral() && myFaction.isPeaceful())
 		{
-			them.sendMessageParsed("<i>This will have no effect while their faction is peaceful.");
-			myFaction.sendMessageParsed("<i>This will have no effect while your faction is peaceful.");
+			them.msg("<i>This will have no effect while their faction is peaceful.");
+			myFaction.msg("<i>This will have no effect while your faction is peaceful.");
 		}
 
 		SpoutFeatures.updateAppearances(myFaction, them);

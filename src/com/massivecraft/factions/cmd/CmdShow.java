@@ -47,8 +47,8 @@ public class CmdShow extends FCommand
 		Collection<FPlayer> mods = faction.getFPlayersWhereRole(Role.MODERATOR);
 		Collection<FPlayer> normals = faction.getFPlayersWhereRole(Role.NORMAL);
 		
-		sendMessageParsed(p.txt.titleize(faction.getTag(fme)));
-		sendMessageParsed("<a>Description: <i>%s", faction.getDescription());
+		msg(p.txt.titleize(faction.getTag(fme)));
+		msg("<a>Description: <i>%s", faction.getDescription());
 		if ( ! faction.isNormal())
 		{
 			return;
@@ -60,12 +60,12 @@ public class CmdShow extends FCommand
 			peaceStatus = "     "+Conf.colorNeutral+"This faction is Peaceful";
 		}
 		
-		sendMessageParsed("<a>Joining: <i>"+(faction.getOpen() ? "no invitation is needed" : "invitation is required")+peaceStatus);
-		sendMessageParsed("<a>Land / Power / Maxpower: <i> %d/%d/%d", faction.getLandRounded(), faction.getPowerRounded(), faction.getPowerMaxRounded());
+		msg("<a>Joining: <i>"+(faction.getOpen() ? "no invitation is needed" : "invitation is required")+peaceStatus);
+		msg("<a>Land / Power / Maxpower: <i> %d/%d/%d", faction.getLandRounded(), faction.getPowerRounded(), faction.getPowerMaxRounded());
 
 		if (faction.isPermanent())
 		{
-			sendMessageParsed("<a>This faction is permanent, remaining even with no members.");
+			msg("<a>This faction is permanent, remaining even with no members.");
 		}
 
 		// show the land value
@@ -77,12 +77,12 @@ public class CmdShow extends FCommand
 			{
 				String stringValue = Econ.moneyString(value);
 				String stringRefund = (refund > 0.0) ? (" ("+Econ.moneyString(refund)+" depreciated)") : "";
-				sendMessageParsed("<a>Total land value: <i>" + stringValue + stringRefund);
+				msg("<a>Total land value: <i>" + stringValue + stringRefund);
 			}
 			
 			//Show bank contents
 			if(Conf.bankEnabled) {
-				sendMessageParsed("<a>Bank contains: <i>"+Econ.moneyString(faction.getMoney()));
+				msg("<a>Bank contains: <i>"+Econ.moneyString(faction.getMoney()));
 			}
 		}
 

@@ -39,18 +39,18 @@ public class CmdAutoWarclaim extends FCommand
 
 		if ( ! enabled)
 		{
-			sendMessageParsed("<i>Auto-claiming of war zone disabled.");
+			msg("<i>Auto-claiming of war zone disabled.");
 			return;
 		}
 
-		sendMessageParsed("<i>Auto-claiming of war zone enabled.");
+		msg("<i>Auto-claiming of war zone enabled.");
 
 		FLocation playerFlocation = new FLocation(fme);
 		
 		if (!Board.getFactionAt(playerFlocation).isWarZone())
 		{
 			Board.setFactionAt(Factions.i.getWarZone(), playerFlocation);
-			sendMessageParsed("<i>This land is now a war zone.");
+			msg("<i>This land is now a war zone.");
 		}
 	}
 	

@@ -49,11 +49,11 @@ public class CmdPeaceful extends FCommand
 		{
 			if (fplayer.getFaction() == faction)
 			{
-				fplayer.sendMessageParsed(fme.getNameAndRelevant(fplayer)+"<i> has "+change+" your faction.");
+				fplayer.msg(fme.getNameAndRelevant(fplayer)+"<i> has "+change+" your faction.");
 			}
 			else
 			{
-				fplayer.sendMessageParsed(fme.getNameAndRelevant(fplayer)+"<i> has "+change+" the faction \"" + faction.getTag(fplayer) + "\".");
+				fplayer.msg(fme.getNameAndRelevant(fplayer)+"<i> has "+change+" the faction \"" + faction.getTag(fplayer) + "\".");
 			}
 		}
 

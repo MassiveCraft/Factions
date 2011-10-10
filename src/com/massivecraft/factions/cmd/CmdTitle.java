@@ -41,7 +41,7 @@ public class CmdTitle extends FCommand
 		you.setTitle(title);
 		
 		// Inform
-		myFaction.sendMessageParsed("%s<i> changed a title: %s", fme.getNameAndRelevant(myFaction), you.getNameAndRelevant(myFaction));
+		myFaction.msg("%s<i> changed a title: %s", fme.getNameAndRelevant(myFaction), you.getNameAndRelevant(myFaction));
 
 		if (Conf.spoutFactionTitlesOverNames)
 		{

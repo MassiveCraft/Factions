@@ -34,7 +34,7 @@ public class CmdSaveAll extends FCommand
 		Factions.i.saveToDisc();
 		Board.save();
 		Conf.save();
-		sendMessageParsed("<i>Factions saved to disk!");
+		msg("<i>Factions saved to disk!");
 	}
 	
 }

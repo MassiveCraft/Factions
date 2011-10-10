@@ -31,32 +31,32 @@ public class CmdJoin extends FCommand
 
 		if ( ! faction.isNormal())
 		{
-			sendMessageParsed("<b>You may only join normal factions. This is a system faction.");
+			msg("<b>You may only join normal factions. This is a system faction.");
 			return;
 		}
 		
 		if (faction == myFaction)
 		{
-			sendMessageParsed("<b>You are already a member of %s", faction.getTag(fme));
+			msg("<b>You are already a member of %s", faction.getTag(fme));
 			return;
 		}
 		
 		if (fme.hasFaction())
 		{
-			sendMessageParsed("<b>You must leave your current faction first.");
+			msg("<b>You must leave your current faction first.");
 			return;
 		}
 		
 		if (!Conf.CanLeaveWithNegativePower && fme.getPower() < 0)
 		{
-			sendMessageParsed("<b>You cannot join a faction until your power is positive.");
+			msg("<b>You cannot join a faction until your power is positive.");
 			return;
 		}
 		
 		if( ! faction.getOpen() && ! faction.isInvited(fme))
 		{
-			sendMessageParsed("<i>This faction requires invitation.");
-			faction.sendMessageParsed("%s<i> tried to join your faction.", fme.getNameAndRelevant(faction));
+			msg("<i>This faction requires invitation.");
+			faction.msg("%s<i> tried to join your faction.", fme.getNameAndRelevant(faction));
 			return;
 		}
 
@@ -66,8 +66,8 @@ public class CmdJoin extends FCommand
 			return;
 		}
 
-		fme.sendMessageParsed("<i>You successfully joined %s", faction.getTag(fme));
-		faction.sendMessageParsed("<i>%s joined your faction.", fme.getNameAndRelevant(faction));
+		fme.msg("<i>You successfully joined %s", faction.getTag(fme));
+		faction.msg("<i>%s joined your faction.", fme.getNameAndRelevant(faction));
 		
 		fme.resetFactionData();
 		fme.setFaction(faction);

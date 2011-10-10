@@ -36,7 +36,7 @@ public class CmdPower extends FCommand
 		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
 		if ( ! payForCommand(Conf.econCostPower)) return;
 
-		sendMessageParsed("%s<a> - Power / Maxpower: <i>%d / %d", target.getNameAndRelevant(fme), target.getPowerRounded(), target.getPowerMaxRounded());
+		msg("%s<a> - Power / Maxpower: <i>%d / %d", target.getNameAndRelevant(fme), target.getPowerRounded(), target.getPowerMaxRounded());
 	}
 	
 }

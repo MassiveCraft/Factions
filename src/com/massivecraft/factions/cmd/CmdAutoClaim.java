@@ -32,7 +32,7 @@ public class CmdAutoClaim extends FCommand
 
 		if ( ! enabled)
 		{
-			sendMessageParsed("<i>Auto-claiming of land disabled.");
+			msg("<i>Auto-claiming of land disabled.");
 			return;
 		}
 
@@ -40,19 +40,19 @@ public class CmdAutoClaim extends FCommand
 
 		if (Conf.worldsNoClaiming.contains(flocation.getWorldName()))
 		{
-			sendMessageParsed("<b>Sorry, this world has land claiming disabled.");
+			msg("<b>Sorry, this world has land claiming disabled.");
 			fme.setIsAutoClaimEnabled(false);
 			return;
 		}
 
 		if (myFaction.getLandRounded() >= myFaction.getPowerRounded())
 		{
-			sendMessageParsed("<b>You can't claim more land! You need more power!");
+			msg("<b>You can't claim more land! You need more power!");
 			fme.setIsAutoClaimEnabled(false);
 			return;
 		}
 
-		sendMessageParsed("<i>Auto-claiming of land enabled.");
+		msg("<i>Auto-claiming of land enabled.");
 		fme.attemptClaim(false);
 	}
 	

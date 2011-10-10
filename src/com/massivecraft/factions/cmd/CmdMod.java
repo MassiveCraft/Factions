@@ -32,13 +32,13 @@ public class CmdMod extends FCommand
 		
 		if (you.getFaction() != myFaction)
 		{
-			sendMessageParsed("%s<b> is not a member in your faction.", you.getNameAndRelevant(fme));
+			msg("%s<b> is not a member in your faction.", you.getNameAndRelevant(fme));
 			return;
 		}
 		
 		if (you == fme)
 		{
-			sendMessageParsed("<b>The target player musn't be yourself.");
+			msg("<b>The target player musn't be yourself.");
 			return;
 		}
 
@@ -46,13 +46,13 @@ public class CmdMod extends FCommand
 		{
 			// Revoke
 			you.setRole(Role.NORMAL);
-			myFaction.sendMessageParsed("%s<i> is no longer moderator in your faction.", you.getNameAndRelevant(myFaction));
+			myFaction.msg("%s<i> is no longer moderator in your faction.", you.getNameAndRelevant(myFaction));
 		}
 		else
 		{
 			// Give
 			you.setRole(Role.MODERATOR);
-			myFaction.sendMessageParsed("%s<i> was promoted to moderator in your faction.", you.getNameAndRelevant(myFaction));
+			myFaction.msg("%s<i> was promoted to moderator in your faction.", you.getNameAndRelevant(myFaction));
 		}
 	}
 	

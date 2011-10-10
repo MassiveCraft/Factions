@@ -38,11 +38,11 @@ public class CmdUnclaim extends FCommand
 			if (Permission.MANAGE_SAFE_ZONE.has(sender))
 			{
 				Board.removeAt(flocation);
-				sendMessageParsed("<i>Safe zone was unclaimed.");
+				msg("<i>Safe zone was unclaimed.");
 			}
 			else
 			{
-				sendMessageParsed("<b>This is a safe zone. You lack permissions to unclaim.");
+				msg("<b>This is a safe zone. You lack permissions to unclaim.");
 			}
 			return;
 		}
@@ -51,11 +51,11 @@ public class CmdUnclaim extends FCommand
 			if (Permission.MANAGE_WAR_ZONE.has(sender))
 			{
 				Board.removeAt(flocation);
-				sendMessageParsed("<i>War zone was unclaimed.");
+				msg("<i>War zone was unclaimed.");
 			}
 			else
 			{
-				sendMessageParsed("<b>This is a war zone. You lack permissions to unclaim.");
+				msg("<b>This is a war zone. You lack permissions to unclaim.");
 			}
 			return;
 		}
@@ -64,8 +64,8 @@ public class CmdUnclaim extends FCommand
 		{
 			Board.removeAt(flocation);
 
-			otherFaction.sendMessageParsed("%s<i> unclaimed some of your land.", fme.getNameAndRelevant(otherFaction));
-			sendMessageParsed("<i>You unclaimed this land.");
+			otherFaction.msg("%s<i> unclaimed some of your land.", fme.getNameAndRelevant(otherFaction));
+			msg("<i>You unclaimed this land.");
 			return;
 		}
 		
@@ -82,7 +82,7 @@ public class CmdUnclaim extends FCommand
 		
 		if ( myFaction != otherFaction)
 		{
-			sendMessageParsed("<b>You don't own this land.");
+			msg("<b>You don't own this land.");
 			return;
 		}
 
@@ -113,7 +113,7 @@ public class CmdUnclaim extends FCommand
 					Faction faction = myFaction;
 					if(!faction.removeMoney(-refund))
 					{
-						sendMessageParsed("<b>Unclaiming this land will cost <h>%s<b> which your faction can't currently afford.", Econ.moneyString(-refund));
+						msg("<b>Unclaiming this land will cost <h>%s<b> which your faction can't currently afford.", Econ.moneyString(-refund));
 						return;
 					}
 					moneyBack = " It cost "+faction.getTag()+" <h>"+Econ.moneyString(refund)+"<i>.";
@@ -122,7 +122,7 @@ public class CmdUnclaim extends FCommand
 				{
 					if (!Econ.deductMoney(fme.getName(), -refund))
 					{
-						sendMessageParsed("<b>Unclaiming this land will cost <h>%s<b> which you can't currently afford.", Econ.moneyString(-refund));
+						msg("<b>Unclaiming this land will cost <h>%s<b> which you can't currently afford.", Econ.moneyString(-refund));
 						return;
 					}
 					moneyBack = " It cost them <h>"+Econ.moneyString(refund)+"<i>.";
@@ -136,7 +136,7 @@ public class CmdUnclaim extends FCommand
 		}
 
 		Board.removeAt(flocation);
-		myFaction.sendMessageParsed("%s<i> unclaimed some land."+moneyBack, fme.getNameAndRelevant(myFaction));
+		myFaction.msg("%s<i> unclaimed some land."+moneyBack, fme.getNameAndRelevant(myFaction));
 	}
 	
 }

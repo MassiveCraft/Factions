@@ -38,17 +38,17 @@ public class CmdBalance extends FCommand
 		// TODO MAKE HIERARCHIAL COMMAND STRUCTURE HERE
 		if ( faction != myFaction && ! Permission.BALANCE_ANY.has(sender))
 		{
-			sendMessageParsed("<b>You do not have sufficient permissions to view the bank balance of other factions.");
+			msg("<b>You do not have sufficient permissions to view the bank balance of other factions.");
 			return;
 		}
 		
 		if (faction == null)
 		{
-			sendMessageParsed("<b>Faction %s<b> could not be found.", args.get(0));
+			msg("<b>Faction %s<b> could not be found.", args.get(0));
 			return;
 		}
 	
-		sendMessageParsed("<a>%s balance: %s", faction.getTag(fme), Econ.moneyString(faction.getMoney()));
+		msg("<a>%s balance: %s", faction.getTag(fme), Econ.moneyString(faction.getMoney()));
 	}
 	
 }

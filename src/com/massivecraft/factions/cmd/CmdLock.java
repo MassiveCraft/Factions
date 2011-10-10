@@ -35,11 +35,11 @@ public class CmdLock extends FCommand {
 		
 		if( p.getLocked())
 		{
-			sendMessageParsed("<i>Factions is now locked");
+			msg("<i>Factions is now locked");
 		}
 		else
 		{
-			sendMessageParsed("<i>Factions in now unlocked");
+			msg("<i>Factions in now unlocked");
 		}
 	}
 	

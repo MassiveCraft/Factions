@@ -55,7 +55,7 @@ public class CmdUnclaimall extends FCommand
 					Faction faction = myFaction;
 					if(!faction.removeMoney(-refund))
 					{
-						sendMessageParsed("<b>Unclaiming all faction land will cost <h>"+Econ.moneyString(-refund)+"<b>, which your faction can't currently afford.");
+						msg("<b>Unclaiming all faction land will cost <h>"+Econ.moneyString(-refund)+"<b>, which your faction can't currently afford.");
 						return;
 					}
 					moneyBack = " It cost "+faction.getTag()+" "+Econ.moneyString(refund)+".";
@@ -64,7 +64,7 @@ public class CmdUnclaimall extends FCommand
 				{
 					if (!Econ.deductMoney(fme.getName(), -refund))
 					{
-						sendMessageParsed("<b>Unclaiming all faction land will cost <h>"+Econ.moneyString(-refund)+"<b>, which you can't currently afford.");
+						msg("<b>Unclaiming all faction land will cost <h>"+Econ.moneyString(-refund)+"<b>, which you can't currently afford.");
 						return;
 					}
 					moneyBack = "<i> It cost them <h>"+Econ.moneyString(refund)+"<i>.";
@@ -79,7 +79,7 @@ public class CmdUnclaimall extends FCommand
 		}
 
 		Board.unclaimAll(myFaction.getId());
-		myFaction.sendMessageParsed("%s<i> unclaimed ALL of your faction's land."+moneyBack, fme.getNameAndRelevant(myFaction));
+		myFaction.msg("%s<i> unclaimed ALL of your faction's land."+moneyBack, fme.getNameAndRelevant(myFaction));
 	}
 	
 }

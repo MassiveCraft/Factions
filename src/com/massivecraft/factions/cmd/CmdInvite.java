@@ -32,8 +32,8 @@ public class CmdInvite extends FCommand
 		
 		if (you.getFaction() == myFaction)
 		{
-			sendMessageParsed("%s<i> is already a member of %s", you.getName(), myFaction.getTag());
-			sendMessageParsed("<i>You might want to: " + new CmdKick().getUseageTemplate(false));
+			msg("%s<i> is already a member of %s", you.getName(), myFaction.getTag());
+			msg("<i>You might want to: " + new CmdKick().getUseageTemplate(false));
 			return;
 		}
 
@@ -45,8 +45,8 @@ public class CmdInvite extends FCommand
 
 		myFaction.invite(you);
 		
-		you.sendMessageParsed("%s<i> invited you to %s", fme.getNameAndRelevant(you), myFaction.getTag(you));
-		myFaction.sendMessageParsed("%s<i> invited %s<i> to your faction.", fme.getNameAndRelevant(fme), you.getNameAndRelevant(fme));
+		you.msg("%s<i> invited you to %s", fme.getNameAndRelevant(you), myFaction.getTag(you));
+		myFaction.msg("%s<i> invited %s<i> to your faction.", fme.getNameAndRelevant(fme), you.getNameAndRelevant(fme));
 	}
 	
 }

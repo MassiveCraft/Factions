@@ -412,7 +412,7 @@ public class Faction extends Entity
 	//----------------------------------------------//
 	// Messages
 	//----------------------------------------------//
-	public void sendMessageParsed(String message, Object... args)
+	public void msg(String message, Object... args)
 	{
 		message = P.p.txt.parse(message, args);
 		

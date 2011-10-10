@@ -36,18 +36,18 @@ public class CmdAutoSafeclaim extends FCommand
 
 		if ( ! enabled)
 		{
-			sendMessageParsed("<i>Auto-claiming of safe zone disabled.");
+			msg("<i>Auto-claiming of safe zone disabled.");
 			return;
 		}
 
-		sendMessageParsed("<i>Auto-claiming of safe zone enabled.");
+		msg("<i>Auto-claiming of safe zone enabled.");
 
 		FLocation playerFlocation = new FLocation(fme);
 		
 		if (!Board.getFactionAt(playerFlocation).isSafeZone())
 		{
 			Board.setFactionAt(Factions.i.getSafeZone(), playerFlocation);
-			sendMessageParsed("<i>This land is now a safe zone.");
+			msg("<i>This land is now a safe zone.");
 		}
 	}
 	

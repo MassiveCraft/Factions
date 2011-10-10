@@ -32,13 +32,13 @@ public class CmdAdmin extends FCommand
 		
 		if (fyou.getFaction() != myFaction)
 		{
-			sendMessageParsed("%s<i> is not a member in your faction.", fyou.getNameAndRelevant(fme));
+			msg("%s<i> is not a member in your faction.", fyou.getNameAndRelevant(fme));
 			return;
 		}
 		
 		if (fyou == fme)
 		{
-			sendMessageParsed("<b>The target player musn't be yourself.");
+			msg("<b>The target player musn't be yourself.");
 			return;
 		}
 		
@@ -50,11 +50,11 @@ public class CmdAdmin extends FCommand
 		{
 			if (fplayer.getFaction() == myFaction)
 			{
-				fplayer.sendMessageParsed("%s<i> gave %s<i> the leadership of your faction.", fme.getNameAndRelevant(fme), fyou.getNameAndRelevant(fme));
+				fplayer.msg("%s<i> gave %s<i> the leadership of your faction.", fme.getNameAndRelevant(fme), fyou.getNameAndRelevant(fme));
 			}
 			else
 			{
-				fplayer.sendMessageParsed("%s<i> gave %s<i> the leadership of %s", fme.getNameAndRelevant(fplayer), fyou.getNameAndRelevant(fplayer), myFaction.getTag(fplayer));
+				fplayer.msg("%s<i> gave %s<i> the leadership of %s", fme.getNameAndRelevant(fplayer), fyou.getNameAndRelevant(fplayer), myFaction.getTag(fplayer));
 			}
 		}
 	}

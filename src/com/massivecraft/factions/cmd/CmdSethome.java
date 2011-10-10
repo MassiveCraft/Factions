@@ -30,7 +30,7 @@ public class CmdSethome extends FCommand
 	{
 		if ( ! Conf.homesEnabled)
 		{
-			fme.sendMessageParsed("<b>Sorry, Faction homes are disabled on this server.");
+			fme.msg("<b>Sorry, Faction homes are disabled on this server.");
 			return;
 		}
 		
@@ -57,7 +57,7 @@ public class CmdSethome extends FCommand
 			Board.getFactionAt(new FLocation(me)) != faction
 		)
 		{
-			fme.sendMessageParsed("<b>Sorry, your faction home can only be set inside your own claimed territory.");
+			fme.msg("<b>Sorry, your faction home can only be set inside your own claimed territory.");
 			return;
 		}
 
@@ -66,11 +66,11 @@ public class CmdSethome extends FCommand
 
 		faction.setHome(me.getLocation());
 		
-		faction.sendMessageParsed("%s<i> set the home for your faction. You can now use:", fme.getNameAndRelevant(myFaction));
+		faction.msg("%s<i> set the home for your faction. You can now use:", fme.getNameAndRelevant(myFaction));
 		faction.sendMessage(p.cmdBase.cmdHome.getUseageTemplate());
 		if (faction != myFaction)
 		{
-			fme.sendMessageParsed("<b>You have set the home for the "+faction.getTag(fme)+"<i> faction.");
+			fme.msg("<b>You have set the home for the "+faction.getTag(fme)+"<i> faction.");
 		}
 	}
 	

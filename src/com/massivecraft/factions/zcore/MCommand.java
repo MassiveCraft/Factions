@@ -173,7 +173,7 @@ public abstract class MCommand<T extends MPlugin>
 		{
 			if (informSenderIfNot)
 			{
-				sendMessageParsed(Lang.commandSenderMustBePlayer);
+				msg(Lang.commandSenderMustBePlayer);
 			}
 			return false;
 		}
@@ -192,7 +192,7 @@ public abstract class MCommand<T extends MPlugin>
 		{
 			if (sender != null)
 			{
-				sendMessageParsed(Lang.commandToFewArgs);
+				msg(Lang.commandToFewArgs);
 				sender.sendMessage(this.getUseageTemplate());
 			}
 			return false;
@@ -204,7 +204,7 @@ public abstract class MCommand<T extends MPlugin>
 			{
 				// Get the to many string slice
 				List<String> theToMany = args.subList(this.requiredArgs.size() + this.optionalArgs.size(), args.size());
-				sendMessageParsed(Lang.commandToManyArgs, TextUtil.implode(theToMany, " "));
+				msg(Lang.commandToManyArgs, TextUtil.implode(theToMany, " "));
 				sender.sendMessage(this.getUseageTemplate());
 			}
 			return false;
@@ -284,7 +284,7 @@ public abstract class MCommand<T extends MPlugin>
 	// Message Sending Helpers
 	// -------------------------------------------- //
 	
-	public void sendMessageParsed(String str, Object... args)
+	public void msg(String str, Object... args)
 	{
 		sender.sendMessage(p.txt.parse(str, args));
 	}
@@ -415,7 +415,7 @@ public abstract class MCommand<T extends MPlugin>
 		
 		if (msg && ret == null)
 		{
-			this.sendMessageParsed("<b>No player \"<p>%s<b>\" could not be found.", name);			
+			this.msg("<b>No player \"<p>%s<b>\" could not be found.", name);			
 		}
 		
 		return ret;
@@ -450,7 +450,7 @@ public abstract class MCommand<T extends MPlugin>
 		
 		if (msg && ret == null)
 		{
-			this.sendMessageParsed("<b>No player match found for \"<p>%s<b>\".", name);
+			this.msg("<b>No player match found for \"<p>%s<b>\".", name);
 		}
 		
 		return ret;

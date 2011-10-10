@@ -44,7 +44,7 @@ public class CmdSafeclaim extends FCommand
 			Board.setFactionAt(Factions.i.getSafeZone(), locToClaim);
 		}
 		
-		sendMessageParsed("<i>You claimed <h>%d chunks<i> for the <a>safe zone<i>.", (1+radius*2)*(1+radius*2));
+		msg("<i>You claimed <h>%d chunks<i> for the <a>safe zone<i>.", (1+radius*2)*(1+radius*2));
 	}
 	
 }

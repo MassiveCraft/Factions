@@ -59,7 +59,7 @@ public abstract class FCommand extends MCommand<P>
 	{
 		if (p.getLocked() && this.disableOnLock)
 		{
-			sendMessageParsed("<b>Factions was locked by an admin. Please try again later.");
+			msg("<b>Factions was locked by an admin. Please try again later.");
 			return false;
 		}
 		return true;
@@ -120,7 +120,7 @@ public abstract class FCommand extends MCommand<P>
 		
 		if (fme.getRole().value < role.value)
 		{
-			sendMessageParsed("<b>You <h>must be "+role+"<b> to "+this.getHelpShort()+".");
+			msg("<b>You <h>must be "+role+"<b> to "+this.getHelpShort()+".");
 			return false;
 		}
 		return true;

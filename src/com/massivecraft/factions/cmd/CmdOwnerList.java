@@ -38,7 +38,7 @@ public class CmdOwnerList extends FCommand
 
 		if ( ! Conf.ownedAreasEnabled)
 		{
-			fme.sendMessageParsed("<b>Owned areas are disabled on this server.");
+			fme.msg("<b>Owned areas are disabled on this server.");
 			return;
 		}
 
@@ -48,14 +48,14 @@ public class CmdOwnerList extends FCommand
 		{
 			if (!hasBypass)
 			{
-				fme.sendMessageParsed("<b>This land is not claimed by your faction.");
+				fme.msg("<b>This land is not claimed by your faction.");
 				return;
 			}
 
 			myFaction = Board.getFactionAt(flocation);
 			if (!myFaction.isNormal())
 			{
-				fme.sendMessageParsed("<i>This land is not claimed by any faction, thus no owners.");
+				fme.msg("<i>This land is not claimed by any faction, thus no owners.");
 				return;
 			}
 		}
@@ -64,10 +64,10 @@ public class CmdOwnerList extends FCommand
 
 		if (owners == null || owners.isEmpty())
 		{
-			fme.sendMessageParsed("<i>No owners are set here; everyone in the faction has access.");
+			fme.msg("<i>No owners are set here; everyone in the faction has access.");
 			return;
 		}
 
-		fme.sendMessageParsed("<i>Current owner(s) of this land: %s", owners);
+		fme.msg("<i>Current owner(s) of this land: %s", owners);
 	}
 }

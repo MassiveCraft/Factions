@@ -27,7 +27,7 @@ public class CmdBoom extends FCommand
 	{
 		if ( ! myFaction.isPeaceful())
 		{
-			fme.sendMessageParsed("<b>This command is only usable by factions which are specially designated as peaceful.");
+			fme.msg("<b>This command is only usable by factions which are specially designated as peaceful.");
 			return;
 		}
 
@@ -39,6 +39,6 @@ public class CmdBoom extends FCommand
 		String enabled = myFaction.noExplosionsInTerritory() ? "disabled" : "enabled";
 
 		// Inform
-		myFaction.sendMessageParsed("%s<i> has "+enabled+" explosions in your faction's territory.", fme.getNameAndRelevant(myFaction));
+		myFaction.msg("%s<i> has "+enabled+" explosions in your faction's territory.", fme.getNameAndRelevant(myFaction));
 	}
 }

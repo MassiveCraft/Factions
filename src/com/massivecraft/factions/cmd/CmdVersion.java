@@ -25,6 +25,6 @@ public class CmdVersion extends FCommand
 	@Override
 	public void perform()
 	{
-		sendMessageParsed("<i>You are running "+P.p.getDescription().getFullName());
+		msg("<i>You are running "+P.p.getDescription().getFullName());
 	}
 }

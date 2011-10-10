@@ -42,13 +42,13 @@ public class CmdOwner extends FCommand
 
 		if ( ! Conf.ownedAreasEnabled)
 		{
-			fme.sendMessageParsed("<b>Sorry, but owned areas are disabled on this server.");
+			fme.msg("<b>Sorry, but owned areas are disabled on this server.");
 			return;
 		}
 
 		if ( ! hasBypass && Conf.ownedAreasLimitPerFaction > 0 && myFaction.getCountOfClaimsWithOwners() >= Conf.ownedAreasLimitPerFaction)
 		{
-			fme.sendMessageParsed("<b>Sorry, but you have reached the server's <h>limit of %d <b>owned areas per faction.", Conf.ownedAreasLimitPerFaction);
+			fme.msg("<b>Sorry, but you have reached the server's <h>limit of %d <b>owned areas per faction.", Conf.ownedAreasLimitPerFaction);
 			return;
 		}
 
@@ -64,13 +64,13 @@ public class CmdOwner extends FCommand
 		{
 			if ( ! hasBypass)
 			{
-				fme.sendMessageParsed("<b>This land is not claimed by your faction, so you can't set ownership of it.");
+				fme.msg("<b>This land is not claimed by your faction, so you can't set ownership of it.");
 				return;
 			}
 
 			if ( ! factionHere.isNormal())
 			{
-				fme.sendMessageParsed("<b>This land is not claimed by a faction. Ownership is not possible.");
+				fme.msg("<b>This land is not claimed by a faction. Ownership is not possible.");
 				return;
 			}
 		}
@@ -82,7 +82,7 @@ public class CmdOwner extends FCommand
 
 		if (target.getFaction() != myFaction)
 		{
-			fme.sendMessageParsed("%s<i> is not a member of this faction.", playerName);
+			fme.msg("%s<i> is not a member of this faction.", playerName);
 			return;
 		}
 
@@ -90,14 +90,14 @@ public class CmdOwner extends FCommand
 		if (args.isEmpty() && myFaction.doesLocationHaveOwnersSet(flocation))
 		{
 			myFaction.clearClaimOwnership(flocation);
-			fme.sendMessageParsed("<i>You have cleared ownership for this claimed area.");
+			fme.msg("<i>You have cleared ownership for this claimed area.");
 			return;
 		}
 
 		if (myFaction.isPlayerInOwnerList(playerName, flocation))
 		{
 			myFaction.removePlayerAsOwner(playerName, flocation);
-			fme.sendMessageParsed("<i>You have removed ownership of this claimed land from %s<i>.", playerName);
+			fme.msg("<i>You have removed ownership of this claimed land from %s<i>.", playerName);
 			return;
 		}
 
@@ -105,6 +105,6 @@ public class CmdOwner extends FCommand
 		if ( ! payForCommand(Conf.econCostOwner)) return;
 
 		myFaction.setPlayerAsOwner(playerName, flocation);
-		fme.sendMessageParsed("<i>You have added %s<i> to the owner list for this claimed land.", playerName);
+		fme.msg("<i>You have added %s<i> to the owner list for this claimed land.", playerName);
 	}
 }

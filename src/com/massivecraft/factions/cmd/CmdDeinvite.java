@@ -32,15 +32,15 @@ public class CmdDeinvite extends FCommand
 		
 		if (you.getFaction() == myFaction)
 		{
-			sendMessageParsed("%s<i> is already a member of %s", you.getName(), myFaction.getTag());
-			sendMessageParsed("<i>You might want to: %s", new CmdKick().getUseageTemplate(false));
+			msg("%s<i> is already a member of %s", you.getName(), myFaction.getTag());
+			msg("<i>You might want to: %s", new CmdKick().getUseageTemplate(false));
 			return;
 		}
 		
 		myFaction.deinvite(you);
 		
-		you.sendMessageParsed("%s<i> revoked your invitation to %s", fme.getNameAndRelevant(you), myFaction.getTag(you));
-		myFaction.sendMessageParsed("%s<i> revoked %s's<i> invitation.", fme.getNameAndRelevant(fme), you.getNameAndRelevant(fme));
+		you.msg("%s<i> revoked your invitation to %s", fme.getNameAndRelevant(you), myFaction.getTag(you));
+		myFaction.msg("%s<i> revoked %s's<i> invitation.", fme.getNameAndRelevant(fme), you.getNameAndRelevant(fme));
 	}
 	
 }

@@ -36,7 +36,7 @@ public class CmdPay extends FCommand
 		
 		if ( ! Conf.bankMembersCanWithdraw && ! assertMinRole(Role.MODERATOR))
 		{
-			sendMessageParsed("<b>Only faction moderators or admins are able to pay another faction.");
+			msg("<b>Only faction moderators or admins are able to pay another faction.");
 			return;
 		}
 		
@@ -57,15 +57,15 @@ public class CmdPay extends FCommand
 			us.removeMoney(amount);
 			them.addMoney(amount);
 			
-			sendMessageParsed("<i>You have paid "+amountString+" from "+us.getTag()+"'s bank to "+them.getTag()+"'s bank.");
-			sendMessageParsed("<i>"+us.getTag()+" now has "+Econ.moneyString(us.getMoney()));
+			msg("<i>You have paid "+amountString+" from "+us.getTag()+"'s bank to "+them.getTag()+"'s bank.");
+			msg("<i>"+us.getTag()+" now has "+Econ.moneyString(us.getMoney()));
 			P.p.log(fme.getName() + " paid "+amountString+" from "+us.getTag()+"'s bank to "+them.getTag()+"'s bank.");
 			
 			for (FPlayer fplayer : FPlayers.i.getOnline())
 			{
 				if (fplayer.getFaction() == us || fplayer.getFaction() == them)
 				{
-					fplayer.sendMessageParsed(fme.getNameAndRelevant(fplayer)+"<i> has sent "+amountString+" from "+us.getTag()+" to "+them.getTag());
+					fplayer.msg(fme.getNameAndRelevant(fplayer)+"<i> has sent "+amountString+" from "+us.getTag()+" to "+them.getTag());
 				}
 			}
 		}

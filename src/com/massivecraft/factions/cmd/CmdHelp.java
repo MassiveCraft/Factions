@@ -43,7 +43,7 @@ public class CmdHelp extends FCommand
 		
 		if (page < 0 || page >= helpPages.size())
 		{
-			sendMessageParsed("<b>This page does not exist");
+			msg("<b>This page does not exist");
 			return;
 		}
 		sendMessage(helpPages.get(page));

@@ -37,13 +37,13 @@ public class CmdCreate extends FCommand
 		
 		if (fme.hasFaction())
 		{
-			sendMessageParsed("<b>You must leave your current faction first.");
+			msg("<b>You must leave your current faction first.");
 			return;
 		}
 		
 		if (Factions.i.isTagTaken(tag))
 		{
-			sendMessageParsed("<b>That tag is already in use.");
+			msg("<b>That tag is already in use.");
 			return;
 		}
 		
@@ -67,10 +67,10 @@ public class CmdCreate extends FCommand
 
 		for (FPlayer follower : FPlayers.i.getOnline())
 		{
-			follower.sendMessageParsed("%s<i> created a new faction %s", fme.getNameAndRelevant(follower), faction.getTag(follower));
+			follower.msg("%s<i> created a new faction %s", fme.getNameAndRelevant(follower), faction.getTag(follower));
 		}
 		
-		sendMessageParsed("<i>You should now: %s", p.cmdBase.cmdDescription.getUseageTemplate());
+		msg("<i>You should now: %s", p.cmdBase.cmdDescription.getUseageTemplate());
 	}
 	
 }

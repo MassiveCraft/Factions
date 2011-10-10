@@ -34,8 +34,8 @@ public class CmdKick extends FCommand
 		
 		if (fme == you)
 		{
-			sendMessageParsed("<b>You cannot kick yourself.");
-			sendMessageParsed("<i>You might want to: %s", new CmdLeave().getUseageTemplate(false));
+			msg("<b>You cannot kick yourself.");
+			msg("<i>You might want to: %s", new CmdLeave().getUseageTemplate(false));
 			return;
 		}
 
@@ -46,20 +46,20 @@ public class CmdKick extends FCommand
 		{
 			if (yourFaction != myFaction)
 			{
-				sendMessageParsed("%s<b> is not a member of %s", you.getNameAndRelevant(fme), myFaction.getTag(fme));
+				msg("%s<b> is not a member of %s", you.getNameAndRelevant(fme), myFaction.getTag(fme));
 				return;
 			}
 
 			if (you.getRole().value >= fme.getRole().value)
 			{
 				// TODO add more informative messages.
-				sendMessageParsed("<b>Your rank is too low to kick this player.");
+				msg("<b>Your rank is too low to kick this player.");
 				return;
 			}
 
 			if ( ! Conf.CanLeaveWithNegativePower && you.getPower() < 0)
 			{
-				sendMessageParsed("<b>You cannot kick that member until their power is positive.");
+				msg("<b>You cannot kick that member until their power is positive.");
 				return;
 			}
 		}
@@ -70,11 +70,11 @@ public class CmdKick extends FCommand
 			return;
 		}
 
-		yourFaction.sendMessageParsed("%s<i> kicked %s<i> from the faction! :O", fme.getNameAndRelevant(yourFaction), you.getNameAndRelevant(yourFaction));
-		you.sendMessageParsed("%s<i> kicked you from %s<i>! :O", fme.getNameAndRelevant(you), yourFaction.getTag(you));
+		yourFaction.msg("%s<i> kicked %s<i> from the faction! :O", fme.getNameAndRelevant(yourFaction), you.getNameAndRelevant(yourFaction));
+		you.msg("%s<i> kicked you from %s<i>! :O", fme.getNameAndRelevant(you), yourFaction.getTag(you));
 		if (yourFaction != myFaction)
 		{
-			fme.sendMessageParsed("<i>You kicked %s<i> from the faction %s<i>!", you.getNameAndRelevant(myFaction), yourFaction.getTag(fme));
+			fme.msg("<i>You kicked %s<i> from the faction %s<i>!", you.getNameAndRelevant(myFaction), yourFaction.getTag(fme));
 		}
 
 		yourFaction.deinvite(you);
@@ -85,7 +85,7 @@ public class CmdKick extends FCommand
 			// Remove this faction
 			for (FPlayer fplayer : FPlayers.i.getOnline())
 			{
-				fplayer.sendMessageParsed("The faction %s<i> was disbanded.", yourFaction.getTag(fplayer));
+				fplayer.msg("The faction %s<i> was disbanded.", yourFaction.getTag(fplayer));
 			}
 			yourFaction.detach();
 		}
