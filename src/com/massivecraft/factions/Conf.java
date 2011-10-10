@@ -242,6 +242,9 @@ public class Conf
 		territoryEnemyDenyCommands.add("home");
 		territoryEnemyDenyCommands.add("sethome");
 		territoryEnemyDenyCommands.add("spawn");
+		territoryEnemyDenyCommands.add("tpahere");
+		territoryEnemyDenyCommands.add("tpaccept");
+		territoryEnemyDenyCommands.add("tpa");
 
 		territoryProtectedMaterials.add(Material.WOODEN_DOOR);
 		territoryProtectedMaterials.add(Material.TRAP_DOOR);
