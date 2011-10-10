@@ -35,7 +35,7 @@ public class CmdKick extends FCommand
 		if (fme == you)
 		{
 			msg("<b>You cannot kick yourself.");
-			msg("<i>You might want to: %s", new CmdLeave().getUseageTemplate(false));
+			msg("<i>You might want to: %s", p.cmdBase.cmdLeave.getUseageTemplate(false));
 			return;
 		}
 

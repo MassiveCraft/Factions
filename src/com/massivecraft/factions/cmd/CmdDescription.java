@@ -14,6 +14,7 @@ public class CmdDescription extends FCommand
 		this.aliases.add("desc");
 		
 		this.requiredArgs.add("desc");
+		this.errorOnToManyArgs = false;
 		//this.optionalArgs
 		
 		this.permission = Permission.DESCRIPTION.node;

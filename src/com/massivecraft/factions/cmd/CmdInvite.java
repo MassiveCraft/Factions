@@ -33,7 +33,7 @@ public class CmdInvite extends FCommand
 		if (you.getFaction() == myFaction)
 		{
 			msg("%s<i> is already a member of %s", you.getName(), myFaction.getTag());
-			msg("<i>You might want to: " + new CmdKick().getUseageTemplate(false));
+			msg("<i>You might want to: " +  p.cmdBase.cmdKick.getUseageTemplate(false));
 			return;
 		}
 

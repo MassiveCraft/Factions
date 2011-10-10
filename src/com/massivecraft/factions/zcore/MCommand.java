@@ -32,6 +32,7 @@ public abstract class MCommand<T extends MPlugin>
 	// Information on the args
 	public List<String> requiredArgs;
 	public LinkedHashMap<String, String> optionalArgs;
+	public boolean errorOnToManyArgs = true;
 	
 	// FIELD: Help Short
 	// This field may be left blank and will in such case be loaded from the permissions node instead.
@@ -198,7 +199,7 @@ public abstract class MCommand<T extends MPlugin>
 			return false;
 		}
 		
-		if (args.size() > this.requiredArgs.size() + this.optionalArgs.size())
+		if (args.size() > this.requiredArgs.size() + this.optionalArgs.size() && this.errorOnToManyArgs)
 		{
 			if (sender != null)
 			{

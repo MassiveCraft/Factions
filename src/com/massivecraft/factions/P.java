@@ -1,7 +1,9 @@
 package com.massivecraft.factions;
 
 import java.lang.reflect.Modifier;
+import java.lang.reflect.Type;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.bukkit.block.Block;
@@ -22,11 +24,14 @@ import com.massivecraft.factions.listeners.FactionsChatEarlyListener;
 import com.massivecraft.factions.listeners.FactionsEntityListener;
 import com.massivecraft.factions.listeners.FactionsPlayerListener;
 import com.massivecraft.factions.struct.ChatMode;
+import com.massivecraft.factions.util.MapFLocToStringSetTypeAdapter;
+import com.massivecraft.factions.util.MyLocationTypeAdapter;
 import com.massivecraft.factions.zcore.MPlugin;
 
 import com.nijiko.permissions.PermissionHandler;
 import com.earth2me.essentials.chat.EssentialsChat;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import com.massivecraft.factions.integration.EssentialsFeatures;
 
 public class P extends MPlugin
@@ -121,10 +126,14 @@ public class P extends MPlugin
 	@Override
 	public GsonBuilder getGsonBuilder()
 	{
+		Type mapFLocToStringSetType = new TypeToken<Map<FLocation, Set<String>>>(){}.getType();
+
 		return new GsonBuilder()
 		.setPrettyPrinting()
 		.disableHtmlEscaping()
-		.excludeFieldsWithModifiers(Modifier.TRANSIENT, Modifier.VOLATILE);
+		.excludeFieldsWithModifiers(Modifier.TRANSIENT, Modifier.VOLATILE)
+		.registerTypeAdapter(Location.class, new MyLocationTypeAdapter())
+		.registerTypeAdapter(mapFLocToStringSetType, new MapFLocToStringSetTypeAdapter());
 	}
 
 	@Override
@@ -330,122 +339,4 @@ public class P extends MPlugin
 	{
 		return FactionsPlayerListener.playerCanUseItemHere(player, location, material, true);
 	}
-
-	// -------------------------------------------- //
-	// Test rights
-	// -------------------------------------------- //
-	/*
-	public static boolean hasPermParticipate(CommandSender sender) {
-		return hasPerm(sender, "factions.participate");
-	}
-	
-	public static boolean hasPermCreate(CommandSender sender) {
-		return hasPerm(sender, "factions.create");
-	}
-	
-	public static boolean hasPermManageSafeZone(CommandSender sender) {
-		return hasPerm(sender, "factions.manageSafeZone");
-	}
-	
-	public static boolean hasPermManageWarZone(CommandSender sender) {
-		return hasPerm(sender, "factions.manageWarZone");
-	}
-
-	public static boolean hasPermAdminBypass(CommandSender sender) {
-		return hasPerm(sender, "factions.adminBypass");
-	}
-	
-	public static boolean hasPermReload(CommandSender sender) {
-		return hasPerm(sender, "factions.reload");
-	}
-	
-	public static boolean hasPermSaveAll(CommandSender sender) {
-		return hasPerm(sender, "factions.saveall");
-	}
-	
-	public static boolean hasPermLock(CommandSender sender) {
-		return hasPerm(sender, "factions.lock");
-	}
-	
-	public static boolean hasPermConfigure(CommandSender sender) {
-		return hasPerm(sender, "factions.config");
-	}
-	
-	public static boolean hasPermDisband(CommandSender sender) {
-		return hasPerm(sender, "factions.disband");
-	}
-	
-	public static boolean hasPermViewAnyPower(CommandSender sender) {
-		return hasPerm(sender, "factions.viewAnyPower");
-	}
-	
-	public static boolean hasPermOwnershipBypass(CommandSender sender) {
-		return hasPerm(sender, "factions.ownershipBypass");
-	}
-	
-	public static boolean hasPermSetPeaceful(CommandSender sender) {
-		return hasPerm(sender, "factions.setPeaceful");
-	}
-	
-	public static boolean hasPermSetPermanent(CommandSender sender) {
-		return hasPerm(sender, "factions.setPermanent");
-	}
-	
-	public static boolean hasPermPeacefulExplosionToggle(CommandSender sender) {
-		return hasPerm(sender, "factions.peacefulExplosionToggle");
-	}
-	
-	public static boolean hasPermViewAnyFactionBalance(CommandSender sender) {
-		return hasPerm(sender, "factions.viewAnyFactionBalance");
-	}
-	
-	public static boolean isCommandDisabled(CommandSender sender, String command) {
-		return (hasPerm(sender, "factions.commandDisable."+command) && !hasPerm(sender, "factions.commandDisable.none"));
-	}
-	
-	private static boolean hasPerm(CommandSender sender, String permNode) {
-		if (P.Permissions == null || ! (sender instanceof Player)) {
-			return sender.isOp() || sender.hasPermission(permNode);
-		}
-		
-		Player player = (Player)sender;
-		return P.Permissions.has(player, permNode); 
-	}
-	*/
-	// -------------------------------------------- //
-	// Commands
-	// -------------------------------------------- //
-	/*
-	@Override
-	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args)
-	{
-		List<String> parameters = new ArrayList<String>(Arrays.asList(args));
-		this.handleCommand(sender, parameters);
-		return true;
-	}
-	
-	public void handleCommand(CommandSender sender, List<String> parameters)
-	{
-		if (parameters.size() == 0)
-		{
-			this.commands.get(0).execute(sender, parameters);
-			return;
-		}
-		
-		String commandName = parameters.get(0).toLowerCase();
-		parameters.remove(0);
-		
-		for (FBaseCommand fcommand : this.commands)
-		{
-			if (fcommand.getAliases().contains(commandName))
-			{
-				fcommand.execute(sender, parameters);
-				return;
-			}
-		}
-		
-		sender.sendMessage(Conf.colorSystem+"Unknown faction command \""+commandName+"\". Try "+Conf.colorCommand+"/"+this.getBaseCommand()+" help");
-	}
-	*/
-	
 }
