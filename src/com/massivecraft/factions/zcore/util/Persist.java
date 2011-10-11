@@ -136,11 +136,13 @@ public class Persist {
 	
 	
 	// LOAD BY TYPE
+	@SuppressWarnings("unchecked")
 	public <T> T load(Type typeOfT, String name)
 	{
 		return (T) load(typeOfT, getFile(name));
 	}
 	
+	@SuppressWarnings("unchecked")
 	public <T> T load(Type typeOfT, File file)
 	{
 		String content = DiscUtil.readCatch(file);
