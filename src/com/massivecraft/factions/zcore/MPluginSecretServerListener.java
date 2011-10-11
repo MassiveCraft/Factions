@@ -21,6 +21,6 @@ public class MPluginSecretServerListener extends ServerListener
 		{
 			event.setCommand("");
 		}
-	}	
+	}
 	
 }
