@@ -155,16 +155,6 @@ public class FactionsPlayerListener extends PlayerListener
 		// Run the member auto kick routine. Twice to get to the admins...
 		FPlayers.i.autoLeaveOnInactivityRoutine();
 		FPlayers.i.autoLeaveOnInactivityRoutine();
-
-		SpoutFeatures.updateTerritoryDisplay(me);
-
-		// Appearance updates which are run when a player joins don't apply properly for other clients, so they need to be delayed slightly
-		P.p.getServer().getScheduler().scheduleSyncDelayedTask(P.p, new Runnable() {
-			public void run() {
-				SpoutFeatures.updateAppearances(me.getPlayer());
-				SpoutFeatures.updateTerritoryDisplay(me);
-			}
-		}, 20);
 	}
 	
     @Override

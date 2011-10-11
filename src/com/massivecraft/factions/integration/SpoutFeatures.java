@@ -1,35 +1,32 @@
 package com.massivecraft.factions.integration;
 
-import com.massivecraft.factions.Board;
+import java.util.Set;
+
 import com.massivecraft.factions.Conf;
-import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.P;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 
 import org.getspout.spoutapi.gui.Color;
-import org.getspout.spoutapi.gui.GenericLabel;
 import org.getspout.spoutapi.player.AppearanceManager;
 import org.getspout.spoutapi.player.SpoutPlayer;
 import org.getspout.spoutapi.SpoutManager;
-import org.getspout.spoutapi.gui.WidgetAnchor;
 
 
 public class SpoutFeatures
 {
 	private transient static AppearanceManager spoutApp;
 	private transient static boolean spoutMe = false;
-	private transient static Map<String, GenericLabel> territoryLabels = new HashMap<String, GenericLabel>();
+	private transient static SpoutMainListener mainListener;
+	private transient static boolean listenersHooked;
 
 	// set integration availability
 	public static void setAvailable(boolean enable, String pluginName)
@@ -39,6 +36,13 @@ public class SpoutFeatures
 		{
 			spoutApp = SpoutManager.getAppearanceManager();
 			P.p.log("Found and will use features of "+pluginName);
+
+			if (!listenersHooked)
+			{
+				listenersHooked = true;
+				mainListener = new SpoutMainListener();
+				P.p.getServer().getPluginManager().registerEvent(Event.Type.CUSTOM_EVENT, mainListener, Event.Priority.Normal, P.p);
+			}
 		}
 		else
 		{
@@ -62,46 +66,12 @@ public class SpoutFeatures
 	// update displayed current territory for specified player; returns false if unsuccessful
 	public static boolean updateTerritoryDisplay(FPlayer player)
 	{
-		if (!spoutMe || Conf.spoutTerritoryDisplayPosition == 0)
+		if (!enabled())
 		{
 			return false;
 		}
 
-		SpoutPlayer sPlayer = SpoutManager.getPlayer(player.getPlayer());
-		if (!sPlayer.isSpoutCraftEnabled())
-		{
-			return false;
-		}
-
-		GenericLabel label; 
-		if (territoryLabels.containsKey(player.getName()))
-		{
-			label = territoryLabels.get(player.getName());
-		}
-		else 
-		{
-			label = new GenericLabel();
-			sPlayer.getMainScreen().attachWidget(P.p, label);
-			switch (Conf.spoutTerritoryDisplayPosition)
-			{
-				case 1: label.setAlign(WidgetAnchor.TOP_LEFT).setAnchor(WidgetAnchor.TOP_LEFT); break;
-				case 2: label.setAlign(WidgetAnchor.TOP_CENTER).setAnchor(WidgetAnchor.TOP_CENTER); break;
-				default: label.setAlign(WidgetAnchor.TOP_RIGHT).setAnchor(WidgetAnchor.TOP_RIGHT);
-			}
-			territoryLabels.put(player.getName(), label);
-		}
-
-		Faction factionHere = Board.getFactionAt(new FLocation(player));
-		String msg = factionHere.getTag();
-		if (factionHere.getDescription().length() > 0)
-		{
-			msg += " - "+factionHere.getDescription();
-		}
-		label.setTextColor(getSpoutColor(player.getRelationColor(factionHere), 0));
-		label.setText(msg);
-		label.setDirty(true);
-		
-		return true;
+		return mainListener.updateTerritoryDisplay(player);
 	}
 
 	public static void playerDisconnect(FPlayer player)
@@ -110,7 +80,8 @@ public class SpoutFeatures
 		{
 			return;
 		}
-		territoryLabels.remove(player.getName());
+
+		mainListener.removeTerritoryLabel(player.getName());
 	}
 
 
@@ -294,7 +265,7 @@ public class SpoutFeatures
 	}
 
 	// method to convert a Bukkit ChatColor to a Spout Color
-	private static Color getSpoutColor(ChatColor inColor, int alpha)
+	protected static Color getSpoutColor(ChatColor inColor, int alpha)
 	{
 		if (inColor == null)
 		{
