@@ -185,6 +185,8 @@ public class Conf
 	public static boolean spoutFactionAdminCapes = true; // TODO: What are these for?
 	public static boolean spoutFactionModeratorCapes = true;
 	public static int spoutTerritoryDisplayPosition = 3;
+	public static float spoutTerritoryDisplaySize = 1.0f;
+	public static boolean spoutTerritoryDisplayShowDescription = true;
 	public static String capeAlly = "https://github.com/MassiveCraft/Factions/raw/master/capes/ally.png";
 	public static String capeEnemy = "https://github.com/MassiveCraft/Factions/raw/master/capes/enemy.png";
 	public static String capeMember = "https://github.com/MassiveCraft/Factions/raw/master/capes/member.png";
