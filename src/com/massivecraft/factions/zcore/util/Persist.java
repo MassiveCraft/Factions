@@ -138,7 +138,7 @@ public class Persist {
 	// LOAD BY TYPE
 	public <T> T load(Type typeOfT, String name)
 	{
-		return load(typeOfT, getFile(name));
+		return (T) load(typeOfT, getFile(name));
 	}
 	
 	public <T> T load(Type typeOfT, File file)
@@ -148,7 +148,7 @@ public class Persist {
 			return null;
 		}
 		
-		return p.gson.fromJson(content, typeOfT);
+		return (T) p.gson.fromJson(content, typeOfT);
 	}
 	
 }
