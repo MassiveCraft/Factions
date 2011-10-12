@@ -615,21 +615,29 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 
 		if (myFaction.isNormal())
 		{
-			myFaction.msg("%s<i> left your faction.", this.getNameAndRelevant(myFaction));
+			//myFaction.msg("%s<i> left your faction.", this.getNameAndRelevant(myFaction));
+			for (FPlayer fplayer : myFaction.getFPlayersWhereOnline(true))
+			{
+				fplayer.msg("%s<i> left your faction.", this.describeTo(fplayer, true));
+			}
 		}
-
-		this.resetFactionData();
 
 		if (myFaction.isNormal() && !perm && myFaction.getFPlayers().isEmpty())
 		{
+			// Transfer all money
+			Econ.transferMoney(this, myFaction, this, myFaction.getAccount().balance());
+			
 			// Remove this faction
 			for (FPlayer fplayer : FPlayers.i.getOnline())
 			{
-				fplayer.msg("<i>The faction %s<i> was disbanded.", myFaction.getTag(fplayer));
+				fplayer.msg("<i>%s<i> was disbanded.", myFaction.describeTo(fplayer, true));
 			}
 			//Faction.delete(myFaction.getId());
+			
 			myFaction.detach();
 		}
+		
+		this.resetFactionData();
 	}
 	
 	public boolean attemptClaim(boolean notifyFailure)
