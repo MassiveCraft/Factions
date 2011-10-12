@@ -621,14 +621,8 @@ public class Faction extends Entity implements EconomyParticipator
 
 	public boolean playerHasOwnershipRights(FPlayer fplayer, FLocation loc)
 	{
-		// different faction?
-		if (fplayer.getFactionId() != this.getId())
-		{
-			return false;
-		}
-
 		// sufficient role to bypass ownership?
-		if (fplayer.getRole().isAtLeast(Conf.ownedAreaModeratorsBypass ? Role.MODERATOR : Role.ADMIN))
+		if (fplayer.getFaction() == this && fplayer.getRole().isAtLeast(Conf.ownedAreaModeratorsBypass ? Role.MODERATOR : Role.ADMIN))
 		{
 			return true;
 		}
