@@ -101,7 +101,7 @@ public class CmdHome extends FCommand
 					continue;
 
 				FPlayer fp = FPlayers.i.get(p);
-				if (fme.getRelation(fp) != Relation.ENEMY)
+				if (fme.getRelationTo(fp) != Relation.ENEMY)
 					continue;
 
 				Location l = p.getLocation();

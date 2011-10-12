@@ -49,16 +49,16 @@ public class CmdPay extends FCommand
 		{
 			String amountString = Econ.moneyString(amount);
 
-			if( amount > us.getMoney() )
+			if( amount > us.getAccount().balance() )
 			{
-				amount = us.getMoney();
+				amount = us.getAccount().balance();
 			}
 			
-			us.removeMoney(amount);
-			them.addMoney(amount);
+			us.getAccount().subtract(amount);
+			them.getAccount().add(amount);
 			
 			msg("<i>You have paid "+amountString+" from "+us.getTag()+"'s bank to "+them.getTag()+"'s bank.");
-			msg("<i>"+us.getTag()+" now has "+Econ.moneyString(us.getMoney()));
+			msg("<i>"+us.getTag()+" now has "+Econ.moneyString(us.getAccount().balance()));
 			P.p.log(fme.getName() + " paid "+amountString+" from "+us.getTag()+"'s bank to "+them.getTag()+"'s bank.");
 			
 			for (FPlayer fplayer : FPlayers.i.getOnline())

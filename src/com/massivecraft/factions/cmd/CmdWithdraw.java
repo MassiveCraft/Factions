@@ -2,12 +2,7 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.integration.Econ;
-import com.massivecraft.factions.FPlayers;
-import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.P;
-import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.struct.Role;
 
 
 public class CmdWithdraw extends FCommand
@@ -34,7 +29,9 @@ public class CmdWithdraw extends FCommand
 	{
 		if ( ! Conf.bankEnabled) return;
 		
-		if ( ! Conf.bankMembersCanWithdraw && ! assertMinRole(Role.MODERATOR))
+		Econ.transferMoney(fme, myFaction, fme, this.argAsDouble(0, 0));
+		
+		/*if ( ! Conf.bankMembersCanWithdraw && ! assertMinRole(Role.MODERATOR))
 		{
 			msg("<b>Only faction moderators or admins are able to withdraw from the bank.");
 			return;
@@ -69,7 +66,7 @@ public class CmdWithdraw extends FCommand
 					fplayer.msg("%s<i> has withdrawn %s", fme.getNameAndRelevant(fplayer), amountString);
 				}
 			}
-		}
+		}*/
 	}
 	
 }

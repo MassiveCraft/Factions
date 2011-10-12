@@ -101,7 +101,7 @@ public class SpoutFeatures
 			factionA = playerA.getFaction();
 			for (FPlayer playerB : players)
 			{
-				updateSingle(playerB.getPlayer(), playerA.getPlayer(), factionA.getRelation(playerB), factionA, playerA.getTitle(), playerA.getRole());
+				updateSingle(playerB.getPlayer(), playerA.getPlayer(), factionA.getRelationTo(playerB), factionA, playerA.getTitle(), playerA.getRole());
 			}
 		}
 	}
@@ -121,7 +121,7 @@ public class SpoutFeatures
 		for (FPlayer playerB : players)
 		{
 			Player player2 = playerB.getPlayer();
-			Relation rel = factionA.getRelation(playerB);
+			Relation rel = factionA.getRelationTo(playerB);
 			updateSingle(player2, player, rel, factionA, playerA.getTitle(), playerA.getRole());
 			updateSingle(player, player2, rel, playerB.getFaction(), playerB.getTitle(), playerB.getRole());
 		}
@@ -149,7 +149,7 @@ public class SpoutFeatures
 				{
 					continue;
 				}
-				updateSingle(playerB.getPlayer(), playerA.getPlayer(), factionA.getRelation(factionB), factionA, playerA.getTitle(), playerA.getRole());
+				updateSingle(playerB.getPlayer(), playerA.getPlayer(), factionA.getRelationTo(factionB), factionA, playerA.getTitle(), playerA.getRole());
 			}
 		}
 	}
@@ -168,7 +168,7 @@ public class SpoutFeatures
 			{
 				Player player1 = playerA.getPlayer();
 				Player player2 = playerB.getPlayer();
-				Relation rel = factionA.getRelation(factionB);
+				Relation rel = factionA.getRelationTo(factionB);
 				updateSingle(player2, player1, rel, factionA, playerA.getTitle(), playerA.getRole());
 				updateSingle(player1, player2, rel, factionB, playerB.getTitle(), playerB.getRole());
 			}

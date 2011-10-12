@@ -22,6 +22,7 @@ import com.massivecraft.factions.listeners.FactionsBlockListener;
 import com.massivecraft.factions.listeners.FactionsChatEarlyListener;
 import com.massivecraft.factions.listeners.FactionsEntityListener;
 import com.massivecraft.factions.listeners.FactionsPlayerListener;
+import com.massivecraft.factions.listeners.FactionsServerListener;
 import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.util.MapFLocToStringSetTypeAdapter;
 import com.massivecraft.factions.util.MyLocationTypeAdapter;
@@ -43,6 +44,7 @@ public class P extends MPlugin
 	public final FactionsChatEarlyListener chatEarlyListener;
 	public final FactionsEntityListener entityListener;
 	public final FactionsBlockListener blockListener;
+	public final FactionsServerListener serverListener;
 	
 	// Persistance related
 	private boolean locked = false;
@@ -59,7 +61,10 @@ public class P extends MPlugin
 		this.chatEarlyListener = new FactionsChatEarlyListener(this);
 		this.entityListener = new FactionsEntityListener(this);
 		this.blockListener = new FactionsBlockListener(this);
+		this.serverListener = new FactionsServerListener(this);
 	}
+	
+	
 	
 	public static PermissionHandler Permissions;
 	private static EssentialsChat essChat;
@@ -83,15 +88,15 @@ public class P extends MPlugin
 		//setupPermissions();
 		integrateEssentialsChat();
 		setupSpout(this);
-		Econ.setup(this);
-		Econ.monitorPlugins();
+		Econ.doSetup();
+		Econ.oldMoneyDoTransfer();
 		
 		if(Conf.worldGuardChecking)
 		{
 			Worldguard.init(this);			
 		}
 		
-		// Register events
+		// Player Events
 		this.registerEvent(Event.Type.PLAYER_CHAT, this.playerListener, Event.Priority.Highest);
 		this.registerEvent(Event.Type.PLAYER_CHAT, this.chatEarlyListener, Event.Priority.Lowest);
 		this.registerEvent(Event.Type.PLAYER_COMMAND_PREPROCESS, this.playerListener, Event.Priority.Normal);
@@ -103,6 +108,8 @@ public class P extends MPlugin
 		this.registerEvent(Event.Type.PLAYER_BUCKET_EMPTY, this.playerListener, Event.Priority.Normal);
 		this.registerEvent(Event.Type.PLAYER_BUCKET_FILL, this.playerListener, Event.Priority.Normal);
 		this.registerEvent(Event.Type.PLAYER_KICK, this.playerListener, Event.Priority.Normal);
+		
+		// Entity Events
 		this.registerEvent(Event.Type.ENDERMAN_PICKUP, this.entityListener, Event.Priority.Normal);
 		this.registerEvent(Event.Type.ENDERMAN_PLACE, this.entityListener, Event.Priority.Normal);
 		this.registerEvent(Event.Type.ENTITY_DEATH, this.entityListener, Event.Priority.Normal);
@@ -112,11 +119,17 @@ public class P extends MPlugin
 		this.registerEvent(Event.Type.ENTITY_TARGET, this.entityListener, Event.Priority.Normal);
 		this.registerEvent(Event.Type.PAINTING_BREAK, this.entityListener, Event.Priority.Normal);
 		this.registerEvent(Event.Type.PAINTING_PLACE, this.entityListener, Event.Priority.Normal);
+		
+		// Block Events
 		this.registerEvent(Event.Type.BLOCK_BREAK, this.blockListener, Event.Priority.Normal);
 		this.registerEvent(Event.Type.BLOCK_DAMAGE, this.blockListener, Event.Priority.Normal);
 		this.registerEvent(Event.Type.BLOCK_PLACE, this.blockListener, Event.Priority.Normal);
 		this.registerEvent(Event.Type.BLOCK_PISTON_EXTEND, this.blockListener, Event.Priority.Normal);
 		this.registerEvent(Event.Type.BLOCK_PISTON_RETRACT, this.blockListener, Event.Priority.Normal);
+		
+		// Server Events
+		this.registerEvent(Event.Type.PLUGIN_ENABLE, this.serverListener, Event.Priority.Monitor);
+		this.registerEvent(Event.Type.PLUGIN_DISABLE, this.serverListener, Event.Priority.Monitor);
 		
 		postEnable();
 	}

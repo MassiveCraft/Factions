@@ -8,13 +8,17 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
+import com.massivecraft.factions.iface.EconomyParticipator;
+import com.massivecraft.factions.iface.RelationParticipator;
+import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.*;
 import com.massivecraft.factions.zcore.persist.Entity;
+import com.nijikokun.register.payment.Method.MethodAccount;
 
 
-public class Faction extends Entity
+public class Faction extends Entity implements EconomyParticipator
 {
 	// FIELD: relationWish
 	private Map<String, Relation> relationWish;
@@ -106,10 +110,15 @@ public class Faction extends Entity
 	// FIELD: lastPlayerLoggedOffTime
 	private transient long lastPlayerLoggedOffTime;
 	
-	// FIELD: money
+	// FIELD: account (fake field)
 	// Bank functions
-	private double money;
-	public double getMoney() { return this.money; }
+	public double money; // Deprecated TODO: Hantera.
+	public MethodAccount getAccount()
+	{
+		return Econ.getMethod().getAccount("faction-"+this.getId());
+	}
+	
+	/*public double getMoney() { return this.money; }
 	public boolean addMoney(double amount)
 	{
 		if ( amount > 0.0 )
@@ -127,7 +136,7 @@ public class Faction extends Entity
 		
 		this.money -= amount;
 		return true;
-	}
+	}*/
 	
 	// -------------------------------------------- //
 	// Construct
@@ -191,6 +200,36 @@ public class Faction extends Entity
 	// Relation and relation colors TODO
 	// -------------------------------
 	
+	@Override
+	public String describeTo(RelationParticipator that, boolean ucfirst)
+	{
+		return RelationUtil.describeThatToMe(that, this, ucfirst);
+	}
+	
+	@Override
+	public String describeTo(RelationParticipator that)
+	{
+		return RelationUtil.describeThatToMe(that, this);
+	}
+	
+	@Override
+	public Relation getRelationTo(RelationParticipator rp)
+	{
+		return RelationUtil.getRelationTo(rp, this);
+	}
+	
+	@Override
+	public Relation getRelationTo(RelationParticipator rp, boolean ignorePeaceful)
+	{
+		return RelationUtil.getRelationTo(rp, this, ignorePeaceful);
+	}
+	
+	@Override
+	public ChatColor getRelationColor(RelationParticipator rp)
+	{
+		return RelationUtil.getRelationColor(this, rp);
+	}
+	
 	public Relation getRelationWish(Faction otherFaction)
 	{
 		if (this.relationWish.containsKey(otherFaction.getId()))
@@ -212,12 +251,12 @@ public class Faction extends Entity
 		}
 	}
 	
-	public Relation getRelation(Faction otherFaction)
+	/*public Relation getRelationTo(Faction otherFaction)
 	{
-		return getRelation(otherFaction, false);
+		return getRelationTo(otherFaction, false);
 	}
 	
-	public Relation getRelation(Faction otherFaction, boolean ignorePeaceful)
+	public Relation getRelationTo(Faction otherFaction, boolean ignorePeaceful)
 	{
 		if (!otherFaction.isNormal() || !this.isNormal())
 		{
@@ -242,13 +281,13 @@ public class Faction extends Entity
 		return this.getRelationWish(otherFaction);
 	}
 	
-	public Relation getRelation(FPlayer fplayer)
+	public Relation getRelationTo(FPlayer fplayer)
 	{
 		if (fplayer == null)
 			return Relation.NEUTRAL;
 		else
-			return getRelation(fplayer.getFaction());
-	}
+			return getRelationTo(fplayer.getFaction());
+	}*/
 	
 	//----------------------------------------------//
 	// Power
@@ -444,12 +483,12 @@ public class Faction extends Entity
 	
 	public ChatColor getRelationColor(Faction otherFaction)
 	{
-		return this.getRelation(otherFaction).getColor();
+		return this.getRelationTo(otherFaction).getColor();
 	}
 	
 	public ChatColor getRelationColor(FPlayer fplayer)
 	{
-		return this.getRelation(fplayer).getColor();
+		return this.getRelationTo(fplayer).getColor();
 	}
 	
 	//----------------------------------------------//

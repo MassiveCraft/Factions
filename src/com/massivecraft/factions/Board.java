@@ -208,7 +208,7 @@ public class Board
 				} else {
 					FLocation flocationHere = topLeft.getRelative(dx, dz);
 					Faction factionHere = getFactionAt(flocationHere);
-					Relation relation = faction.getRelation(factionHere);
+					Relation relation = faction.getRelationTo(factionHere);
 					if (factionHere.isNone()) {
 						row += ChatColor.GRAY+"-";
 					} else if (factionHere.isSafeZone()) {
@@ -225,7 +225,7 @@ public class Board
 						if (!fList.containsKey(factionHere.getTag()))
 							fList.put(factionHere.getTag(), Conf.mapKeyChrs[chrIdx++]);
 						char tag = fList.get(factionHere.getTag());
-						row += factionHere.getRelation(faction).getColor() + "" + tag;
+						row += factionHere.getRelationTo(faction).getColor() + "" + tag;
 					} else {
 						row += ChatColor.GRAY+"-";
 					}

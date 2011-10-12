@@ -385,7 +385,7 @@ public class FactionsPlayerListener extends PlayerListener
 		}
 		
 		Faction myFaction = me.getFaction();
-		Relation rel = myFaction.getRelation(otherFaction);
+		Relation rel = myFaction.getRelationTo(otherFaction);
 		boolean ownershipFail = Conf.ownedAreasEnabled && Conf.ownedAreaDenyUseage && !otherFaction.playerHasOwnershipRights(me, loc);
 		
 		// Cancel if we are not in our own territory
@@ -446,7 +446,7 @@ public class FactionsPlayerListener extends PlayerListener
 		
 		
 		Faction myFaction = me.getFaction();
-		Relation rel = myFaction.getRelation(otherFaction);
+		Relation rel = myFaction.getRelationTo(otherFaction);
 		boolean ownershipFail = Conf.ownedAreasEnabled && Conf.ownedAreaProtectMaterials && !otherFaction.playerHasOwnershipRights(me, loc);
 		
 		// You may use any block unless it is another faction's territory...

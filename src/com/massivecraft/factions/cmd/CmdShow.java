@@ -69,7 +69,7 @@ public class CmdShow extends FCommand
 		}
 
 		// show the land value
-		if (Econ.enabled())
+		if (Econ.shouldBeUsed())
 		{
 			double value = Econ.calculateTotalLandValue(faction.getLandRounded());
 			double refund = value * Conf.econClaimRefundMultiplier;
@@ -82,7 +82,7 @@ public class CmdShow extends FCommand
 			
 			//Show bank contents
 			if(Conf.bankEnabled) {
-				msg("<a>Bank contains: <i>"+Econ.moneyString(faction.getMoney()));
+				msg("<a>Bank contains: <i>"+Econ.moneyString(faction.getAccount().balance()));
 			}
 		}
 
@@ -98,11 +98,11 @@ public class CmdShow extends FCommand
 				continue;
 			}
 			listpart = otherFaction.getTag(fme)+p.txt.parse("<i>")+", ";
-			if (otherFaction.getRelation(faction).isAlly())
+			if (otherFaction.getRelationTo(faction).isAlly())
 			{
 				allyList += listpart;
 			}
-			else if (otherFaction.getRelation(faction).isEnemy())
+			else if (otherFaction.getRelationTo(faction).isEnemy())
 			{
 				enemyList += listpart;
 			}

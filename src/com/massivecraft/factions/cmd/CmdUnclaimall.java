@@ -29,7 +29,7 @@ public class CmdUnclaimall extends FCommand
 	public void perform()
 	{
 		String moneyBack = "<i>";
-		if (Econ.enabled())
+		if (Econ.shouldBeUsed())
 		{
 			double refund = Econ.calculateTotalLandRefund(myFaction.getLandRounded());
 			// a real refund

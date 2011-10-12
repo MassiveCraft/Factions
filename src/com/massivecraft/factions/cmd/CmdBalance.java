@@ -48,7 +48,7 @@ public class CmdBalance extends FCommand
 			return;
 		}
 	
-		msg("<a>%s balance: %s", faction.getTag(fme), Econ.moneyString(faction.getMoney()));
+		msg("<a>%s balance: %s", faction.getTag(fme), Econ.moneyString(faction.getAccount().balance()));
 	}
 	
 }

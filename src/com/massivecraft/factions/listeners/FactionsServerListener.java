@@ -6,7 +6,6 @@ import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.event.server.PluginEnableEvent;
 
 import com.massivecraft.factions.P;
-import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.integration.SpoutFeatures;
 
 
@@ -22,19 +21,7 @@ public class FactionsServerListener extends ServerListener
 	public void onPluginDisable(PluginDisableEvent event)
 	{
 		String name = event.getPlugin().getDescription().getName();
-		if (Econ.registerHooked() && name.equals("Register"))
-		{
-			Econ.registerSet(false);
-		}
-		else if (Econ.iConomyHooked() && name.equals("iConomy"))
-		{
-			Econ.iConomySet(false);
-		}
-		else if (Econ.essentialsEcoHooked() && name.equals("Essentials"))
-		{
-			Econ.essentialsEcoSet(false);
-		}
-		else if (name.equals("Spout"))
+		if (name.equals("Spout"))
 		{
 			SpoutFeatures.setAvailable(false, "");
 		}
@@ -45,19 +32,7 @@ public class FactionsServerListener extends ServerListener
 	{
 		Plugin plug = event.getPlugin();
 		String name = plug.getDescription().getName();
-		if ( ! Econ.registerHooked() && name.equals("Register") && plug.getClass().getName().equals("com.nijikokun.register.Register"))
-		{
-			Econ.registerSet(true);
-		}
-		else if ( ! Econ.iConomyHooked() && name.equals("iConomy") && plug.getClass().getName().equals("com.iConomy.iConomy"))
-		{
-			Econ.iConomySet(true);
-		}
-		else if ( ! Econ.essentialsEcoHooked() && name.equals("Essentials"))
-		{
-			Econ.essentialsEcoSet(true);
-		}
-		else if (name.equals("Spout"))
+		if (name.equals("Spout"))
 		{
 			SpoutFeatures.setAvailable(true, plug.getDescription().getFullName());
 		}

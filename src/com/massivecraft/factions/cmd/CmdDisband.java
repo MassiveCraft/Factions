@@ -1,6 +1,5 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
@@ -71,10 +70,13 @@ public class CmdDisband extends FCommand
 			}
 		}
 		
-		if (Conf.bankEnabled)
+		if (Econ.shouldBeUsed())
 		{
-			double amount = faction.getMoney();
-			Econ.addMoney(fme.getId(), amount); //Give all the faction's money to the disbander
+			//Give all the faction's money to the disbander
+			double amount = faction.getAccount().balance();
+			fme.getAccount().add(amount);
+			faction.getAccount().remove();
+			
 			if (amount > 0.0)
 			{
 				String amountString = Econ.moneyString(amount);

@@ -4,13 +4,17 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
+import com.massivecraft.factions.iface.EconomyParticipator;
+import com.massivecraft.factions.iface.RelationParticipator;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.integration.Worldguard;
 import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.util.RelationUtil;
 import com.massivecraft.factions.zcore.persist.PlayerEntity;
+import com.nijikokun.register.payment.Method.MethodAccount;
 
 
 /**
@@ -24,7 +28,7 @@ import com.massivecraft.factions.zcore.persist.PlayerEntity;
  * This means you can use the == operator. No .equals method necessary.
  */
 
-public class FPlayer extends PlayerEntity
+public class FPlayer extends PlayerEntity implements EconomyParticipator
 {	
 	//private transient String playerName;
 	private transient FLocation lastStoodAt = new FLocation(); // Where did this player stand the last time we checked?
@@ -115,6 +119,13 @@ public class FPlayer extends PlayerEntity
 	
 	// FIELD: chatMode
 	private ChatMode chatMode;
+	
+	// FIELD: account
+	public MethodAccount getAccount()
+	{
+		if ( ! Econ.shouldBeUsed()) return null;
+		return Econ.getMethod().getAccount(this.getId());
+	}
 	
 	// -------------------------------------------- //
 	// Construct
@@ -325,7 +336,7 @@ public class FPlayer extends PlayerEntity
 	public String getNameAndRelevant(Faction faction)
 	{
 		// Which relation?
-		Relation rel = this.getRelation(faction);
+		Relation rel = this.getRelationTo(faction);
 		
 		// For member we show title
 		if (rel == Relation.MEMBER) {
@@ -359,7 +370,7 @@ public class FPlayer extends PlayerEntity
 			return "";
 		}
 		
-		return this.getRelation(faction).getColor()+getChatTag();
+		return this.getRelationTo(faction).getColor()+getChatTag();
 	}
 	
 	public String getChatTag(FPlayer fplayer)
@@ -368,38 +379,47 @@ public class FPlayer extends PlayerEntity
 			return "";
 		}
 		
-		return this.getRelation(fplayer).getColor()+getChatTag();
+		return this.getRelationTo(fplayer).getColor()+getChatTag();
 	}
 	
 	// -------------------------------
 	// Relation and relation colors
 	// -------------------------------
 	
-	public Relation getRelation(Faction faction)
+	@Override
+	public String describeTo(RelationParticipator that, boolean ucfirst)
 	{
-		return faction.getRelation(this);
+		return RelationUtil.describeThatToMe(that, this, ucfirst);
 	}
 	
-	public Relation getRelation(FPlayer fplayer)
+	@Override
+	public String describeTo(RelationParticipator that)
 	{
-		return this.getFaction().getRelation(fplayer);
+		return RelationUtil.describeThatToMe(that, this);
+	}
+	
+	@Override
+	public Relation getRelationTo(RelationParticipator rp)
+	{
+		return RelationUtil.getRelationTo(this, rp);
+	}
+	
+	@Override
+	public Relation getRelationTo(RelationParticipator rp, boolean ignorePeaceful)
+	{
+		return RelationUtil.getRelationTo(this, rp, ignorePeaceful);
 	}
 	
 	public Relation getRelationToLocation()
 	{
-		return Board.getFactionAt(new FLocation(this)).getRelation(this);
+		return Board.getFactionAt(new FLocation(this)).getRelationTo(this);
 	}
 	
-	public ChatColor getRelationColor(Faction faction)
+	@Override
+	public ChatColor getRelationColor(RelationParticipator rp)
 	{
-		return faction.getRelationColor(this);
+		return RelationUtil.getRelationColor(this, rp);
 	}
-	
-	public ChatColor getRelationColor(FPlayer fplayer)
-	{
-		return this.getRelation(fplayer).getColor();
-	}
-	
 	
 	//----------------------------------------------//
 	// Health
@@ -519,17 +539,17 @@ public class FPlayer extends PlayerEntity
 
 	public boolean isInAllyTerritory()
 	{
-		return Board.getFactionAt(new FLocation(this)).getRelation(this).isAlly();
+		return Board.getFactionAt(new FLocation(this)).getRelationTo(this).isAlly();
 	}
 
 	public boolean isInNeutralTerritory()
 	{
-		return Board.getFactionAt(new FLocation(this)).getRelation(this).isNeutral();
+		return Board.getFactionAt(new FLocation(this)).getRelationTo(this).isNeutral();
 	}
 
 	public boolean isInEnemyTerritory()
 	{
-		return Board.getFactionAt(new FLocation(this)).getRelation(this).isEnemy();
+		return Board.getFactionAt(new FLocation(this)).getRelationTo(this).isEnemy();
 	}
 
 	public void sendFactionHereMessage()
@@ -569,13 +589,15 @@ public class FPlayer extends PlayerEntity
 		}
 
 		// if economy is enabled and they're not on the bypass list, make 'em pay
-		if (makePay && Econ.enabled() && ! this.isAdminBypassing())
+		if (makePay && Econ.shouldBeUsed() && ! this.isAdminBypassing())
 		{
 			double cost = Conf.econCostLeave;
+			if ( ! Econ.modifyMoney(this, -cost, "to leave your faction.", "for leaving your faction.")) return;
+			/*
 			// pay up
 			if (cost > 0.0) {
 				String costString = Econ.moneyString(cost);
-				if (!Econ.deductMoney(this.getName(), cost)) {
+				if ( ! Econ.deductMoney(this.getName(), cost)) {
 					msg("<b>It costs <h>%s<b> to leave your faction, which you can't currently afford.", costString);
 					return;
 				}
@@ -587,7 +609,7 @@ public class FPlayer extends PlayerEntity
 				String costString = Econ.moneyString(-cost);
 				Econ.addMoney(this.getName(), -cost);
 				msg("<i>You have been paid <h>%s<i> for leaving your faction.", costString);
-			}
+			}*/
 		}
 
 		if (myFaction.isNormal())
@@ -671,7 +693,7 @@ public class FPlayer extends PlayerEntity
 			return false;
 		}
 
-		if (otherFaction.getRelation(this) == Relation.ALLY)
+		if (otherFaction.getRelationTo(this) == Relation.ALLY)
 		{
 			if (notifyFailure)
 				msg("<b>You can't claim the land of your allies.");
@@ -723,15 +745,16 @@ public class FPlayer extends PlayerEntity
 		}
 
 		// if economy is enabled and they're not on the bypass list, make 'em pay
-		if (Econ.enabled() && ! this.isAdminBypassing())
+		if (Econ.shouldBeUsed() && ! this.isAdminBypassing())
 		{
 			double cost = Econ.calculateClaimCost(ownedLand, otherFaction.isNormal());
-			String costString = Econ.moneyString(cost);
+			//String costString = Econ.moneyString(cost);
 			
 			if(Conf.bankFactionPaysLandCosts && this.hasFaction())
 			{
 				Faction faction = this.getFaction();
-				
+				if ( ! Econ.modifyMoney(faction, -cost, "to claim this land", "for claiming this land")) return false;
+				/*
 				if( ! faction.removeMoney(cost))
 				{
 					msg("<b>It costs <h>%s<b> to claim this land, which your faction can't currently afford.", costString);
@@ -741,16 +764,17 @@ public class FPlayer extends PlayerEntity
 				{
 					// TODO: Only I can see this right?
 					msg("%s<i> has paid <h>%s<i> to claim some land.", faction.getTag(this), costString);
-				}
+				}*/
 			}
 			else
 			{
-				if ( ! Econ.deductMoney(this.getId(), cost))
+				if ( ! Econ.modifyMoney(this, -cost, "to claim this land", "for claiming this land")) return false;
+				/*if ( ! Econ.deductMoney(this.getId(), cost))
 				{
 					msg("<b>Claiming this land will cost <h>%s<b>, which you can't currently afford.", costString);
 					return false;
 				}
-				sendMessage("You have paid "+costString+" to claim this land.");
+				sendMessage("You have paid "+costString+" to claim this land.");*/
 			}
 		}
 

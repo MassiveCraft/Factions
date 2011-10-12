@@ -2,7 +2,6 @@ package com.massivecraft.factions.cmd;
 
 import java.util.ArrayList;
 
-import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Permission;
@@ -84,7 +83,7 @@ public class CmdHelp extends FCommand
 		pageLines.add( p.cmdBase.cmdSethome.getUseageTemplate() );
 		helpPages.add(pageLines);
 		
-		if (Econ.enabled() && Conf.bankEnabled)
+		if (Econ.shouldBeUsed())
 		{
 			pageLines = new ArrayList<String>();
 			pageLines.add( "" );

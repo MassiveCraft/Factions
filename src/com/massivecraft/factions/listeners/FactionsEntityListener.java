@@ -317,7 +317,7 @@ public class FactionsEntityListener extends EntityListener
 			return false;
 		}
 		
-		Relation relation = defendFaction.getRelation(attackFaction);
+		Relation relation = defendFaction.getRelationTo(attackFaction);
 		
 		// You can not hurt neutral factions
 		if (Conf.disablePVPBetweenNeutralFactions && relation.isNeutral())
@@ -477,7 +477,7 @@ public class FactionsEntityListener extends EntityListener
 		}
 
 		Faction myFaction = me.getFaction();
-		Relation rel = myFaction.getRelation(otherFaction);
+		Relation rel = myFaction.getRelationTo(otherFaction);
 		boolean ownershipFail = Conf.ownedAreasEnabled && Conf.ownedAreaDenyBuild && !otherFaction.playerHasOwnershipRights(me, loc);
 
 		// Cancel if we are not in our own territory and building should be denied

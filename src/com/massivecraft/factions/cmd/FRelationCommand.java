@@ -49,7 +49,7 @@ public abstract class FRelationCommand extends FCommand
 		if ( ! payForCommand(targetRelation.getRelationCost())) return;
 
 		myFaction.setRelationWish(them, targetRelation);
-		Relation currentRelation = myFaction.getRelation(them, true);
+		Relation currentRelation = myFaction.getRelationTo(them, true);
 		ChatColor currentRelationColor = currentRelation.getColor();
 		if (targetRelation.value == currentRelation.value)
 		{

@@ -156,7 +156,7 @@ public class FactionsBlockListener extends BlockListener
 			return false;
 		}
 
-		Relation rel = pistonFaction.getRelation(otherFaction);
+		Relation rel = pistonFaction.getRelationTo(otherFaction);
 		boolean online = otherFaction.hasPlayersOnline();
 
 		if
@@ -222,7 +222,7 @@ public class FactionsBlockListener extends BlockListener
 		}
 		
 		Faction myFaction = me.getFaction();
-		Relation rel = myFaction.getRelation(otherFaction);
+		Relation rel = myFaction.getRelationTo(otherFaction);
 		boolean ownershipFail = Conf.ownedAreasEnabled && (Conf.ownedAreaDenyBuild || Conf.ownedAreaPainBuild) && !otherFaction.playerHasOwnershipRights(me, loc);
 		
 		// Cancel and/or cause pain (depending on configuration) if we are not in our own territory

@@ -80,7 +80,7 @@ public class FactionsChatEarlyListener extends PlayerListener
 			myFaction.sendMessage(message);
 			for (FPlayer fplayer : FPlayers.i.getOnline())
 			{
-				if(myFaction.getRelation(fplayer) == Relation.ALLY)
+				if(myFaction.getRelationTo(fplayer) == Relation.ALLY)
 				{
 					//Send to all our allies
 					fplayer.sendMessage(message);	

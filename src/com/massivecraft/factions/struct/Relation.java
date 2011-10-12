@@ -15,7 +15,8 @@ public enum Relation
 	public final int value;
 	public final String nicename;
 	
-	private Relation(final int value, final String nicename) {
+	private Relation(final int value, final String nicename)
+	{
         this.value = value;
         this.nicename = nicename;
     }
@@ -29,22 +30,22 @@ public enum Relation
 	// TODO: Insane way to use enums!!!?
 	public boolean isMember()
 	{
-		return this.value == MEMBER.value;
+		return this == MEMBER;
 	}
 	
 	public boolean isAlly()
 	{
-		return this.value == ALLY.value;
+		return this == ALLY;
 	}
 	
 	public boolean isNeutral()
 	{
-		return this.value == NEUTRAL.value;
+		return this == NEUTRAL;
 	}
 	
 	public boolean isEnemy()
 	{
-		return this.value == ENEMY.value;
+		return this == ENEMY;
 	}
 	
 	public boolean isAtLeast(Relation relation)
@@ -59,15 +60,15 @@ public enum Relation
 	
 	public ChatColor getColor()
 	{
-		if (this.value == MEMBER.value)
+		if (this == MEMBER)
 		{
 			return Conf.colorMember;
 		}
-		else if (this.value == ALLY.value)
+		else if (this == ALLY)
 		{
 			return Conf.colorAlly;
 		}
-		else if (this.value == NEUTRAL.value)
+		else if (this == NEUTRAL)
 		{
 			return Conf.colorNeutral;
 		}

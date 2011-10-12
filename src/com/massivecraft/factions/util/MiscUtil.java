@@ -8,8 +8,7 @@ import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.Entity;
 
 public class MiscUtil
-{
-	
+{	
 	public static CreatureType creatureTypeFromEntity(Entity entity)
 	{
 		if ( ! (entity instanceof Creature))

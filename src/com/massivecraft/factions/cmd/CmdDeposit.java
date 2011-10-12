@@ -3,10 +3,6 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.FPlayers;
-import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.P;
-import com.massivecraft.factions.FPlayer;
 
 
 public class CmdDeposit extends FCommand
@@ -33,11 +29,8 @@ public class CmdDeposit extends FCommand
 	public void perform()
 	{
 		if ( ! Conf.bankEnabled) return;
-		
-		Faction faction = myFaction;
-		
-		double amount = this.argAsDouble(0, 0);
-				
+		Econ.transferMoney(fme, fme, myFaction, this.argAsDouble(0, 0));
+		/*
 		if( amount > 0.0 )
 		{
 			String amountString = Econ.moneyString(amount);
@@ -61,7 +54,7 @@ public class CmdDeposit extends FCommand
 					}
 				}
 			}
-		}
+		}*/
 	}
 	
 }

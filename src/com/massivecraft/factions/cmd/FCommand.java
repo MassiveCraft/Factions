@@ -275,14 +275,25 @@ public abstract class FCommand extends MCommand<P>
 	// if economy is enabled and they're not on the bypass list, make 'em pay; returns true unless person can't afford the cost
 	public boolean payForCommand(double cost)
 	{
-		if ( ! Econ.enabled() || this.fme == null || cost == 0.0 || fme.isAdminBypassing())
+		if ( ! Econ.shouldBeUsed() || this.fme == null || cost == 0.0 || fme.isAdminBypassing())
 		{
 			return true;
 		}
 
 		String desc = this.getHelpShort().toLowerCase();
 
-		Faction faction = fme.getFaction();
+		if(Conf.bankFactionPaysLandCosts && fme.hasFaction())
+		{
+			if ( ! Econ.modifyMoney(myFaction, -cost, "to "+desc, "for "+desc)) return false;
+		}
+		else
+		{
+			if ( ! Econ.modifyMoney(fme, -cost, "to "+desc, "for "+desc)) return false;
+		}
+		return true;
+		/*
+		
+		
 		
 		// pay up
 		if (cost > 0.0)
@@ -290,7 +301,7 @@ public abstract class FCommand extends MCommand<P>
 			String costString = Econ.moneyString(cost);
 			if(Conf.bankFactionPaysCosts && fme.hasFaction() )
 			{
-				if(!faction.removeMoney(cost))
+				if( ! faction.getAccount().subtract(cost))
 				{
 					sendMessage("It costs "+costString+" to "+desc+", which your faction can't currently afford.");
 					return false;
@@ -303,7 +314,7 @@ public abstract class FCommand extends MCommand<P>
 			}
 			else
 			{
-				if (!Econ.deductMoney(fme.getName(), cost))
+				if ( ! Econ.deductMoney(fme.getName(), cost))
 				{
 					sendMessage("It costs "+costString+" to "+desc+", which you can't currently afford.");
 					return false;
@@ -318,7 +329,7 @@ public abstract class FCommand extends MCommand<P>
 			
 			if(Conf.bankFactionPaysCosts && fme.hasFaction() )
 			{
-				faction.addMoney(-cost);
+				faction.getAccount().add(-cost);
 				sendMessage(faction.getTag()+" has been paid "+costString+" to "+desc+".");
 			}
 			else
@@ -329,6 +340,6 @@ public abstract class FCommand extends MCommand<P>
 			
 			sendMessage("You have been paid "+costString+" to "+desc+".");
 		}
-		return true;
+		return true;*/
 	}
 }
