@@ -86,10 +86,21 @@ public class CmdUnclaim extends FCommand
 			return;
 		}
 
-		String moneyBack = "<i>";
-		if (Econ.enabled())
+		//String moneyBack = "<i>";
+		if (Econ.shouldBeUsed())
 		{
 			double refund = Econ.calculateClaimRefund(myFaction.getLandRounded());
+			
+			if(Conf.bankFactionPaysLandCosts)
+			{
+				if ( ! Econ.modifyMoney(myFaction, refund, "to unclaim this land", "for unclaiming this land")) return;
+			}
+			else
+			{
+				if ( ! Econ.modifyMoney(fme      , refund, "to unclaim this land", "for unclaiming this land")) return;
+			}
+			
+			/*
 			// a real refund
 			if (refund > 0.0)
 			{
@@ -133,10 +144,11 @@ public class CmdUnclaim extends FCommand
 			{
 				moneyBack = "";
 			}
+			*/
 		}
 
 		Board.removeAt(flocation);
-		myFaction.msg("%s<i> unclaimed some land."+moneyBack, fme.getNameAndRelevant(myFaction));
+		myFaction.msg("%s<i> unclaimed some land.", fme.getNameAndRelevant(myFaction));
 	}
 	
 }

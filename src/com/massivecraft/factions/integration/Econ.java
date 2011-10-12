@@ -28,12 +28,12 @@ public class Econ
 	
 	public static boolean shouldBeUsed()
 	{
-		return Conf.econEnabled && getMethod() != null;
+		return Conf.econEnabled && register != null && register.isEnabled() && getMethod() != null;
 	}
 	
 	public static boolean isSetup()
 	{
-		return register != null && register.isEnabled();
+		return register != null;
 	}
 	
 	public static void doSetup()
@@ -41,17 +41,20 @@ public class Econ
 		if (isSetup()) return;
 		
 		Plugin plug = Bukkit.getServer().getPluginManager().getPlugin("Register");
-		if (plug != null && plug.getClass().getName().equals("com.nijikokun.register.Register") && plug.isEnabled())
+		
+		if (plug != null && plug.getClass().getName().equals("com.nijikokun.register.Register"))
 		{
-			P.p.log("Integration with Register (economy): successful");
+			register = (Register)plug;
+				
+			P.p.log("Economy integration through register successful.");
 			if ( ! Conf.econEnabled)
 			{
-				P.p.log("NOTE: Economy is disabled. Enable in conf \"econRegisterEnabled\": true");
+				P.p.log("NOTE: Economy is disabled. Enable in conf \"econEnabled\": true");
 			}
 		}
 		else
 		{
-			P.p.log("Integration with Register (economy): failed");
+			P.p.log("Economy integration failed. The plugin \"Register\" is not installed.");
 		}
 		
 		P.p.cmdBase.cmdHelp.updateHelp();
@@ -118,6 +121,10 @@ public class Econ
 		//Faction fInvoker = RelationUtil.getFaction(invoker);
 		
 		// Is there enough money for the transaction to happen?
+		
+		P.p.log("from "+from);
+		P.p.log("from.getAccount() "+from.getAccount());
+		
 		if ( ! from.getAccount().hasEnough(amount))
 		{
 			// There was not enough money to pay
@@ -140,13 +147,13 @@ public class Econ
 		}
 		else if (invoker == from || invoker == to)
 		{
-			from.msg("<h>%s<i> transfered <h>%s<i> to <h>%s<i>.", from.describeTo(from), moneyString(amount), to.describeTo(from));
-			to.msg  ("<h>%s<i> transfered <h>%s<i> to <h>%s<i>.", from.describeTo(to), moneyString(amount), to.describeTo(to));
+			from.msg("<h>%s<i> transfered <h>%s<i> to <h>%s<i>.", from.describeTo(from, true), moneyString(amount), to.describeTo(from));
+			to.msg  ("<h>%s<i> transfered <h>%s<i> to <h>%s<i>.", from.describeTo(to, true), moneyString(amount), to.describeTo(to));
 		}
 		else
 		{
-			from.msg("<h>%s<b> was transfered from <h>%s<b> to <h>%s<b> by <h>%s<g>.", moneyString(amount), from.describeTo(from), to.describeTo(from), invoker.describeTo(from));
-			to.msg  ("<h>%s<g> was transfered from <h>%s<g> to <h>%s<g> by <h>%s<g>.", moneyString(amount), from.describeTo(to), to.describeTo(to), invoker.describeTo(to));
+			from.msg("<h>%s<i> was transfered from <h>%s<i> to <h>%s<i> by <h>%s<i>.", moneyString(amount), from.describeTo(from), to.describeTo(from), invoker.describeTo(from));
+			to.msg  ("<h>%s<i> was transfered from <h>%s<i> to <h>%s<i> by <h>%s<i>.", moneyString(amount), from.describeTo(to), to.describeTo(to), invoker.describeTo(to));
 		}
 		
 		return true;
@@ -163,7 +170,7 @@ public class Econ
 			// There is no risk of failure
 			acc.add(delta);
 			modifyUniverseMoney(-delta);
-			ep.msg("<h>%<g> gained %s<i> %s.", You, moneyString(delta), forDoingThis);
+			ep.msg("<h>%s<i> gained <h>%s<i> %s.", You, moneyString(delta), forDoingThis);
 			return true;
 		}
 		else
@@ -176,13 +183,13 @@ public class Econ
 				// There is enough money to pay
 				acc.add(delta);
 				modifyUniverseMoney(-delta);
-				ep.msg("<h>%<b> lost %s<i> %s.", You, moneyString(-delta), forDoingThis);
+				ep.msg("<h>%s<i> lost <h>%s<i> %s.", You, moneyString(-delta), forDoingThis);
 				return true;
 			}
 			else
 			{
 				// There was not enough money to pay
-				ep.msg("<h>%<g> can't afford %s<i> %s.", You, moneyString(-delta), toDoThis);
+				ep.msg("<h>%s<i> can't afford <h>%s<i> %s.", You, moneyString(-delta), toDoThis);
 				return false;
 			}
 		}

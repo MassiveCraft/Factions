@@ -113,9 +113,19 @@ public class Faction extends Entity implements EconomyParticipator
 	// FIELD: account (fake field)
 	// Bank functions
 	public double money; // Deprecated TODO: Hantera.
+	public String getAccountId() { return "faction-"+this.getId(); }
 	public MethodAccount getAccount()
 	{
-		return Econ.getMethod().getAccount("faction-"+this.getId());
+		String aid = this.getAccountId();
+
+		// We need to override the default money given to players.
+		if ( ! Econ.getMethod().hasAccount(aid))
+		{
+			MethodAccount acc = Econ.getMethod().getAccount(aid);
+			acc.set(0); 
+		}
+		
+		return Econ.getMethod().getAccount(aid);
 	}
 	
 	/*public double getMoney() { return this.money; }
@@ -727,6 +737,13 @@ public class Faction extends Entity implements EconomyParticipator
 	@Override
 	public void postDetach()
 	{
+		if (Econ.shouldBeUsed())
+		{
+			Econ.getMethod().getAccount(getAccountId()).remove();
+		}
+		
+		this.getAccountId();
+		
 		// Clean the board
 		Board.clean();
 		

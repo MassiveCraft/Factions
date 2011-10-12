@@ -49,7 +49,7 @@ public class CmdTag extends FCommand
 		}
 
 		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-		if ( ! payForCommand(Conf.econCostTag)) return;
+		if ( ! payForCommand(Conf.econCostTag, "to change the faction tag", "for changing the faction tag")) return;
 		
 		String oldtag = myFaction.getTag();
 		myFaction.setTag(tag);

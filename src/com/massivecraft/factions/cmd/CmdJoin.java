@@ -61,10 +61,7 @@ public class CmdJoin extends FCommand
 		}
 
 		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-		if (!payForCommand(Conf.econCostJoin))
-		{
-			return;
-		}
+		if ( ! payForCommand(Conf.econCostJoin, "to join a faction", "for joining a faction")) return;
 
 		fme.msg("<i>You successfully joined %s", faction.getTag(fme));
 		faction.msg("<i>%s joined your faction.", fme.getNameAndRelevant(faction));

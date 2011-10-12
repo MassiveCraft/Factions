@@ -62,7 +62,7 @@ public class CmdSethome extends FCommand
 		}
 
 		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-		if ( ! payForCommand(Conf.econCostSethome)) return;
+		if ( ! payForCommand(Conf.econCostSethome, "to set the faction home", "for setting the faction home")) return;
 
 		faction.setHome(me.getLocation());
 		

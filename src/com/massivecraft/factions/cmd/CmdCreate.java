@@ -55,10 +55,7 @@ public class CmdCreate extends FCommand
 		}
 
 		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-		if (!payForCommand(Conf.econCostCreate))
-		{
-			return;
-		}
+		if ( ! payForCommand(Conf.econCostCreate, "to create a new faction", "for creating a new faction")) return;
 
 		Faction faction = Factions.i.create();
 		faction.setTag(tag);

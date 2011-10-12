@@ -41,7 +41,7 @@ public class CmdShow extends FCommand
 		}
 
 		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-		if ( ! payForCommand(Conf.econCostShow)) return;
+		if ( ! payForCommand(Conf.econCostShow, "to show faction information", "for showing faction information")) return;
 
 		Collection<FPlayer> admins = faction.getFPlayersWhereRole(Role.ADMIN);
 		Collection<FPlayer> mods = faction.getFPlayersWhereRole(Role.MODERATOR);

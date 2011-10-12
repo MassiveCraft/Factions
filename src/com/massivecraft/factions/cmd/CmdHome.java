@@ -120,10 +120,7 @@ public class CmdHome extends FCommand
 		}
 
 		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-		if ( ! payForCommand(Conf.econCostHome))
-		{
-			return;
-		}
+		if ( ! payForCommand(Conf.econCostHome, "to change faction home", "for changing faction home")) return;
 
 		me.teleport(myFaction.getHome());
 	}

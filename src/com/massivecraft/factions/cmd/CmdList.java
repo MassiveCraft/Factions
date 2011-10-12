@@ -35,7 +35,7 @@ public class CmdList extends FCommand
 	public void perform()
 	{
 		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-		if ( ! payForCommand(Conf.econCostList)) return;
+		if ( ! payForCommand(Conf.econCostList, "to list the factions", "for listing the factions")) return;
 		
 		ArrayList<Faction> factionList = new ArrayList<Faction>(Factions.i.get());
 		factionList.remove(Factions.i.getNone());

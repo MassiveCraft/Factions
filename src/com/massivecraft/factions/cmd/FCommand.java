@@ -273,22 +273,17 @@ public abstract class FCommand extends MCommand<P>
 	}
 	
 	// if economy is enabled and they're not on the bypass list, make 'em pay; returns true unless person can't afford the cost
-	public boolean payForCommand(double cost)
+	public boolean payForCommand(double cost, String toDoThis, String forDoingThis)
 	{
-		if ( ! Econ.shouldBeUsed() || this.fme == null || cost == 0.0 || fme.isAdminBypassing())
-		{
-			return true;
-		}
-
-		String desc = this.getHelpShort().toLowerCase();
+		if ( ! Econ.shouldBeUsed() || this.fme == null || cost == 0.0 || fme.isAdminBypassing()) return true;
 
 		if(Conf.bankFactionPaysLandCosts && fme.hasFaction())
 		{
-			if ( ! Econ.modifyMoney(myFaction, -cost, "to "+desc, "for "+desc)) return false;
+			if ( ! Econ.modifyMoney(myFaction, -cost, toDoThis, forDoingThis)) return false;
 		}
 		else
 		{
-			if ( ! Econ.modifyMoney(fme, -cost, "to "+desc, "for "+desc)) return false;
+			if ( ! Econ.modifyMoney(fme, -cost, toDoThis, forDoingThis)) return false;
 		}
 		return true;
 		/*

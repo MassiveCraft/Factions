@@ -102,7 +102,7 @@ public class CmdOwner extends FCommand
 		}
 
 		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-		if ( ! payForCommand(Conf.econCostOwner)) return;
+		if ( ! payForCommand(Conf.econCostOwner, "to set ownership of claimed land", "for setting ownership of claimed land")) return;
 
 		myFaction.setPlayerAsOwner(playerName, flocation);
 		fme.msg("<i>You have added %s<i> to the owner list for this claimed land.", playerName);

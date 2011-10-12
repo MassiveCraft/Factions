@@ -3,7 +3,6 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.Board;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.integration.Econ;
-import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.struct.Permission;
 
 public class CmdUnclaimall extends FCommand
@@ -28,8 +27,18 @@ public class CmdUnclaimall extends FCommand
 	@Override
 	public void perform()
 	{
-		String moneyBack = "<i>";
-		if (Econ.shouldBeUsed())
+		double refund = Econ.calculateTotalLandRefund(myFaction.getLandRounded());
+		if(Conf.bankFactionPaysLandCosts)
+		{
+			if ( ! Econ.modifyMoney(myFaction, refund, "to unclaim all faction land", "for unclaiming all faction land")) return;
+		}
+		else
+		{
+			if ( ! Econ.modifyMoney(fme      , refund, "to unclaim all faction land", "for unclaiming all faction land")) return;
+		}
+		
+		//String moneyBack = "<i>";
+		/*if (Econ.shouldBeUsed())
 		{
 			double refund = Econ.calculateTotalLandRefund(myFaction.getLandRounded());
 			// a real refund
@@ -76,10 +85,10 @@ public class CmdUnclaimall extends FCommand
 			{
 				moneyBack = "";
 			}
-		}
+		}*/
 
 		Board.unclaimAll(myFaction.getId());
-		myFaction.msg("%s<i> unclaimed ALL of your faction's land."+moneyBack, fme.getNameAndRelevant(myFaction));
+		myFaction.msg("%s<i> unclaimed ALL of your faction's land.", fme.getNameAndRelevant(myFaction));
 	}
 	
 }

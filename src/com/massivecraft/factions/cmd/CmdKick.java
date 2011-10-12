@@ -65,10 +65,7 @@ public class CmdKick extends FCommand
 		}
 
 		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-		if ( ! payForCommand(Conf.econCostKick))
-		{
-			return;
-		}
+		if ( ! payForCommand(Conf.econCostKick, "to kick someone from the faction", "for kicking someone from the faction")) return;
 
 		yourFaction.msg("%s<i> kicked %s<i> from the faction! :O", fme.getNameAndRelevant(yourFaction), you.getNameAndRelevant(yourFaction));
 		you.msg("%s<i> kicked you from %s<i>! :O", fme.getNameAndRelevant(you), yourFaction.getTag(you));
