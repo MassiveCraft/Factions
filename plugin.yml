@@ -127,7 +127,7 @@ permissions:
   factions.managewarzone:
     description: claim land as a war zone and build/destroy within war zones
   factions.map:
-    description: show territory map, set optional auto update
+    description: show the territory map, and set optional auto update
   factions.mod:
     description: give or revoke moderator rights
   factions.noboom:

@@ -44,7 +44,7 @@ public class CmdOwnerList extends FCommand
 
 		FLocation flocation = new FLocation(fme);
 
-		if (Board.getIdAt(flocation) != myFaction.getId())
+		if (Board.getFactionAt(flocation) != myFaction)
 		{
 			if (!hasBypass)
 			{
