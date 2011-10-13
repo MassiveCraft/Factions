@@ -8,7 +8,6 @@ public class FCmdRoot extends FCommand
 	public CmdAutoClaim cmdAutoClaim = new CmdAutoClaim();
 	public CmdAutoSafeclaim cmdAutoSafeclaim = new CmdAutoSafeclaim();
 	public CmdAutoWarclaim cmdAutoWarclaim = new CmdAutoWarclaim();
-	public CmdBalance cmdBalance = new CmdBalance();
 	public CmdBoom cmdBoom = new CmdBoom();
 	public CmdBypass cmdBypass = new CmdBypass();
 	public CmdChat cmdChat = new CmdChat();
@@ -16,7 +15,6 @@ public class FCmdRoot extends FCommand
 	public CmdConfig cmdConfig = new CmdConfig();
 	public CmdCreate cmdCreate = new CmdCreate();
 	public CmdDeinvite cmdDeinvite = new CmdDeinvite();
-	public CmdDeposit cmdDeposit = new CmdDeposit();
 	public CmdDescription cmdDescription = new CmdDescription();
 	public CmdDisband cmdDisband = new CmdDisband();
 	public CmdHelp cmdHelp = new CmdHelp();
@@ -29,10 +27,10 @@ public class FCmdRoot extends FCommand
 	public CmdLock cmdLock = new CmdLock();
 	public CmdMap cmdMap = new CmdMap();
 	public CmdMod cmdMod = new CmdMod();
+	public CmdMoney cmdMoney = new CmdMoney();
 	public CmdOpen cmdOpen = new CmdOpen();
 	public CmdOwner cmdOwner = new CmdOwner();
 	public CmdOwnerList cmdOwnerList = new CmdOwnerList();
-	public CmdPay cmdPay = new CmdPay();
 	public CmdPeaceful cmdPeaceful = new CmdPeaceful();
 	public CmdPermanent cmdPermanent = new CmdPermanent();
 	public CmdPower cmdPower = new CmdPower();
@@ -52,13 +50,15 @@ public class FCmdRoot extends FCommand
 	public CmdVersion cmdVersion = new CmdVersion();
 	public CmdWarclaim cmdWarclaim = new CmdWarclaim();
 	public CmdWarunclaimall cmdWarunclaimall = new CmdWarunclaimall();
-	public CmdWithdraw cmdWithdraw = new CmdWithdraw();
 	
 	public FCmdRoot()
 	{
 		super();
 		this.aliases.addAll(Conf.baseCommandAliases);
 		this.allowNoSlashAccess = Conf.allowNoSlashCommand;
+		
+		//this.requiredArgs.add("");
+		//this.optionalArgs.put("","")
 		
 		senderMustBePlayer = false;
 		senderMustBeMember = false;
@@ -76,7 +76,6 @@ public class FCmdRoot extends FCommand
 		this.addSubCommand(this.cmdAutoClaim);
 		this.addSubCommand(this.cmdAutoSafeclaim);
 		this.addSubCommand(this.cmdAutoWarclaim);
-		this.addSubCommand(this.cmdBalance);
 		this.addSubCommand(this.cmdBoom);
 		this.addSubCommand(this.cmdBypass);
 		this.addSubCommand(this.cmdChat);
@@ -84,7 +83,6 @@ public class FCmdRoot extends FCommand
 		this.addSubCommand(this.cmdConfig);
 		this.addSubCommand(this.cmdCreate);
 		this.addSubCommand(this.cmdDeinvite);
-		this.addSubCommand(this.cmdDeposit);
 		this.addSubCommand(this.cmdDescription);
 		this.addSubCommand(this.cmdDisband);
 		this.addSubCommand(this.cmdHelp);
@@ -97,10 +95,10 @@ public class FCmdRoot extends FCommand
 		this.addSubCommand(this.cmdLock);
 		this.addSubCommand(this.cmdMap);
 		this.addSubCommand(this.cmdMod);
+		this.addSubCommand(this.cmdMoney);
 		this.addSubCommand(this.cmdOpen);
 		this.addSubCommand(this.cmdOwner);
 		this.addSubCommand(this.cmdOwnerList);
-		this.addSubCommand(this.cmdPay);
 		this.addSubCommand(this.cmdPeaceful);
 		this.addSubCommand(this.cmdPermanent);
 		this.addSubCommand(this.cmdPower);
@@ -120,7 +118,6 @@ public class FCmdRoot extends FCommand
 		this.addSubCommand(this.cmdVersion);
 		this.addSubCommand(this.cmdWarclaim);
 		this.addSubCommand(this.cmdWarunclaimall);
-		this.addSubCommand(this.cmdWithdraw);
 	}
 	
 	@Override

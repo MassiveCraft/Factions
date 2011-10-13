@@ -20,6 +20,7 @@ permissions:
       factions.setpermanent: true
       factions.setpeaceful: true
       factions.sethome.any: true
+      factions.money.withdraw.any: true
   factions.kit.halfmod:
     description: Zones, bypassing, and kicking
     children:
@@ -39,14 +40,9 @@ permissions:
     children:
       factions.admin: true
       factions.autoclaim: true
-      factions.balance: true
-      factions.balance.any: true
-      factions.withdraw: true
-      factions.pay: true
       factions.chat: true
       factions.claim: true
       factions.deinvite: true
-      factions.deposit: true
       factions.description: true
       factions.disband: true
       factions.help: true
@@ -58,6 +54,11 @@ permissions:
       factions.list: true
       factions.map: true
       factions.mod: true
+      factions.money.balance: true
+      factions.money.balance.any: true
+      factions.money.deposit: true
+      factions.money.pay: true
+      factions.money.withdraw: true
       factions.noboom: true
       factions.open: true
       factions.owner: true
@@ -76,14 +77,6 @@ permissions:
     description: hand over your admin rights
   factions.autoclaim:
     description: auto-claim land as you walk around
-  factions.balance:
-    description: show current faction balance
-  factions.balance.any:
-    description: show on other factions balance
-  factions.withdraw:
-    description: withdraw money from your faction bank
-  factions.pay:
-    description: pay another faction from your bank
   factions.bypass:
     description: enable admin bypass mode
   factions.chat:
@@ -96,8 +89,6 @@ permissions:
     description: create a new faction
   factions.deinvite:
     description: remove a pending invitation
-  factions.deposit:
-    description: deposit money into your faction bank
   factions.description:
     description: change the faction description
   factions.disband:
@@ -130,6 +121,26 @@ permissions:
     description: show the territory map, and set optional auto update
   factions.mod:
     description: give or revoke moderator rights
+  factions.money.*:
+    children:
+      factions.money.balance: true
+      factions.money.balance.any: true
+      factions.money.deposit: true
+      factions.money.pay: true
+      factions.money.withdraw: true
+      factions.money.withdraw.any: true
+  factions.money.balance:
+    description: show your factions current money balance
+  factions.money.balance.any:
+    description: show money balance for factions other than your own
+  factions.money.deposit:
+    description: deposit money into a faction bank
+  factions.money.pay:
+    description: pay another faction from your bank
+  factions.money.withdraw:
+    description: withdraw money from your faction bank
+  factions.money.withdraw.any:
+    description: withdraw money from your factions other than your own
   factions.noboom:
     description: toggle explosions (peaceful factions only)
   factions.open:

@@ -53,6 +53,7 @@ public class P extends MPlugin
 	
 	// Commands
 	public FCmdRoot cmdBase;
+	public CmdAutoHelp cmdAutoHelp;
 	
 	public P()
 	{
@@ -83,6 +84,7 @@ public class P extends MPlugin
 		
 		// Add Base Commands
 		this.cmdBase = new FCmdRoot();
+		this.cmdAutoHelp = new CmdAutoHelp();
 		this.getBaseCommands().add(cmdBase);
 		
 		//setupPermissions();

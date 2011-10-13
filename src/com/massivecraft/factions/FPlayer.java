@@ -123,7 +123,6 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 	// FIELD: account
 	public MethodAccount getAccount()
 	{
-		P.p.log("Econ.shouldBeUsed() "+Econ.shouldBeUsed());
 		if ( ! Econ.shouldBeUsed()) return null;
 		return Econ.getMethod().getAccount(this.getId());
 	}

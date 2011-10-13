@@ -26,12 +26,19 @@ public abstract class FCommand extends MCommand<P>
 	public boolean senderMustBeModerator;
 	public boolean senderMustBeAdmin;
 	
+	public boolean isMoneyCommand;
+	public boolean isBankCommand;
+	
 	public FCommand()
 	{
 		super(P.p);
 		
 		// Due to safety reasons it defaults to disable on lock.
 		disableOnLock = true;
+		
+		// The money commands must be disabled if money should not be used.
+		isMoneyCommand = false;
+		isBankCommand = false;
 		
 		senderMustBeMember = false;
 		senderMustBeModerator = false;
@@ -62,6 +69,19 @@ public abstract class FCommand extends MCommand<P>
 			msg("<b>Factions was locked by an admin. Please try again later.");
 			return false;
 		}
+		
+		if (this.isMoneyCommand && ! Conf.econEnabled)
+		{
+			msg("<b>Faction economy features are diabled on this server.");
+			return false;
+		}
+		
+		if (this.isBankCommand && ! Conf.bankEnabled)
+		{
+			msg("<b>The faction bank system is diabled on this server.");
+			return false;
+		}
+		
 		return true;
 	}
 	

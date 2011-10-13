@@ -1,25 +1,25 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Permission;
 
-
-public class CmdWithdraw extends FCommand
+public class CmdMoneyWithdraw extends FCommand
 {
 	
-	public CmdWithdraw()
+	public CmdMoneyWithdraw()
 	{
 		this.aliases.add("withdraw");
 		
 		this.requiredArgs.add("amount");
-		//this.optionalArgs.put("factiontag", "yours");
+		this.optionalArgs.put("faction", "yours");
 		
-		this.permission = Permission.WITHDRAW.node;
-		this.disableOnLock = true;
+		this.permission = Permission.MONEY_WITHDRAW.node;
+		this.isMoneyCommand = true;
+		this.isBankCommand = true;
 		
 		senderMustBePlayer = true;
-		senderMustBeMember = true;
+		senderMustBeMember = false;
 		senderMustBeModerator = false;
 		senderMustBeAdmin = false;
 	}
@@ -27,9 +27,10 @@ public class CmdWithdraw extends FCommand
 	@Override
 	public void perform()
 	{
-		if ( ! Conf.bankEnabled) return;
-		
-		Econ.transferMoney(fme, myFaction, fme, this.argAsDouble(0, 0));
+		double amount = this.argAsDouble(0, 0);
+		Faction faction = this.argAsFaction(1, myFaction);
+		if (faction == null) return;
+		Econ.transferMoney(fme, faction, fme, amount);
 		
 		/*if ( ! Conf.bankMembersCanWithdraw && ! assertMinRole(Role.MODERATOR))
 		{

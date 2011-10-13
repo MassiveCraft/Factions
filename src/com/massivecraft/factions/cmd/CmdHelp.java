@@ -89,11 +89,11 @@ public class CmdHelp extends FCommand
 			pageLines.add( "" );
 			pageLines.add( p.txt.parse("<i>Your faction has a bank which is used to pay for certain" ));
 			pageLines.add( p.txt.parse("<i>things, so it will need to have money deposited into it." ));
+			pageLines.add( p.txt.parse("<i>To lear more use the money command." ));
 			pageLines.add( "" );
-			pageLines.add( p.cmdBase.cmdBalance.getUseageTemplate() );
-			pageLines.add( p.cmdBase.cmdDeposit.getUseageTemplate() );
-			pageLines.add( p.cmdBase.cmdWithdraw.getUseageTemplate() );
-			pageLines.add( p.cmdBase.cmdPay.getUseageTemplate() );
+			pageLines.add( p.cmdBase.cmdMoney.getUseageTemplate() );
+			pageLines.add( "" );
+			pageLines.add( "" );
 			pageLines.add( "" );
 			helpPages.add(pageLines);
 		}

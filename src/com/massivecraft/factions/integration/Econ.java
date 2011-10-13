@@ -1,5 +1,8 @@
 package com.massivecraft.factions.integration;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 
@@ -76,30 +79,35 @@ public class Econ
 		acc.add(delta);
 	}
 	
-	public static boolean canInvokerTransferFrom(EconomyParticipator invoker, EconomyParticipator from)
+	public static void sendBalanceInfo(FPlayer to, EconomyParticipator about)
 	{
-		Faction fInvoker = RelationUtil.getFaction(invoker);
-		Faction fFrom = RelationUtil.getFaction(from);
+		to.msg("<a>%s's<i> balance is <h>%s<i>.", about.describeTo(to, true), Econ.moneyString(about.getAccount().balance()));
+	}
+	
+	public static boolean canIControllYou(EconomyParticipator i, EconomyParticipator you)
+	{
+		Faction fInvoker = RelationUtil.getFaction(i);
+		Faction fFrom = RelationUtil.getFaction(you);
 		
 		// This is a system invoker. Accept it.
 		if (fInvoker == null) return true;
 		
 		// Bypassing players can do any kind of transaction
-		if (invoker instanceof FPlayer && ((FPlayer)invoker).isAdminBypassing()) return true;
+		if (i instanceof FPlayer && ((FPlayer)i).isAdminBypassing()) return true;
 		
 		// You can deposit to anywhere you feel like. It's your loss if you can't withdraw it again.
-		if (invoker == from) return true;
+		if (i == you) return true;
 		
 		// A faction can always transfer away the money of it's members and its own money...
 		// This will however probably never happen as a faction does not have free will.
 		// Ohh by the way... Yes it could. For daily rent to the faction.
-		if (invoker == fInvoker && fInvoker == fFrom) return true;
+		if (i == fInvoker && fInvoker == fFrom) return true;
 		
 		// If you are part of the same faction as from and members can withdraw or you are at least moderator... then it is ok.
-		if (fInvoker == fFrom && (Conf.bankMembersCanWithdraw || ((FPlayer)invoker).getRole().value < Role.MODERATOR.value)) return true;
+		if (fInvoker == fFrom && (Conf.bankMembersCanWithdraw || ((FPlayer)i).getRole().value >= Role.MODERATOR.value)) return true;
 		
 		// Otherwise you may not! ;,,;
-		invoker.msg("<h>%s<b> don't have the right to transfer money from <h>%s<b>.", invoker.describeTo(invoker, true), from.describeTo(invoker));
+		i.msg("<h>%s<i> lack permission to controll <h>%s's<i> money.", i.describeTo(i, true), you.describeTo(i));
 		return false;
 	}
 	
@@ -118,23 +126,15 @@ public class Econ
 		}
 		
 		// Check the rights
-		if ( ! canInvokerTransferFrom(invoker, from)) return false;
-		
-		//Faction fFrom = RelationUtil.getFaction(from);
-		//Faction fTo = RelationUtil.getFaction(to);
-		//Faction fInvoker = RelationUtil.getFaction(invoker);
+		if ( ! canIControllYou(invoker, from)) return false;
 		
 		// Is there enough money for the transaction to happen?
-		
-		P.p.log("from "+from);
-		P.p.log("from.getAccount() "+from.getAccount());
-		
 		if ( ! from.getAccount().hasEnough(amount))
 		{
 			// There was not enough money to pay
 			if (invoker != null)
 			{
-				invoker.msg("<h>%s<b> can't afford to transfer <h>%s<b> to %s.", from.describeTo(invoker, true), moneyString(amount), to.describeTo(invoker));
+				invoker.msg("<h>%s<b> can't afford to transfer <h>%s<b> to %s<b>.", from.describeTo(invoker, true), moneyString(amount), to.describeTo(invoker));
 			}
 			return false;
 		}
@@ -144,23 +144,66 @@ public class Econ
 		to.getAccount().add(amount);
 		
 		// Inform
+		sendTransferInfo(invoker, from, to, amount);
+		
+		return true;
+	}
+	
+	public static Set<FPlayer> getFplayers(EconomyParticipator ep)
+	{
+		Set<FPlayer> fplayers = new HashSet<FPlayer>();
+		
+		if (ep == null)
+		{
+			// Add nothing
+		}
+		else if (ep instanceof FPlayer)
+		{
+			fplayers.add((FPlayer)ep);
+		}
+		else if (ep instanceof Faction)
+		{
+			fplayers.addAll(((Faction)ep).getFPlayers());
+		}
+		
+		return fplayers;
+	}
+	
+	public static void sendTransferInfo(EconomyParticipator invoker, EconomyParticipator from, EconomyParticipator to, double amount)
+	{
+		Set<FPlayer> recipients = new HashSet<FPlayer>();
+		recipients.addAll(getFplayers(invoker));
+		recipients.addAll(getFplayers(from));
+		recipients.addAll(getFplayers(to));
+		
 		if (invoker == null)
 		{
-			from.msg("<h>%s<i> was transfered from <h>%s<i> to <h>%s<i>.", moneyString(amount), from.describeTo(from), to.describeTo(from));
-			to.msg  ("<h>%s<i> was transfered from <h>%s<i> to <h>%s<i>.", moneyString(amount), from.describeTo(to), to.describeTo(to));
+			for (FPlayer recipient : recipients)
+			{
+				recipient.msg("<h>%s<i> was transfered from <h>%s<i> to <h>%s<i>.", moneyString(amount), from.describeTo(recipient), to.describeTo(recipient));
+			}
 		}
-		else if (invoker == from || invoker == to)
+		else if (invoker == from)
 		{
-			from.msg("<h>%s<i> transfered <h>%s<i> to <h>%s<i>.", from.describeTo(from, true), moneyString(amount), to.describeTo(from));
-			to.msg  ("<h>%s<i> transfered <h>%s<i> to <h>%s<i>.", from.describeTo(to, true), moneyString(amount), to.describeTo(to));
+			for (FPlayer recipient : recipients)
+			{
+				recipient.msg("<h>%s<i> <h>gave %s<i> to <h>%s<i>.", from.describeTo(recipient, true), moneyString(amount), to.describeTo(recipient));
+			}
+		}
+		else if (invoker == to)
+		{
+			for (FPlayer recipient : recipients)
+			{
+				recipient.msg("<h>%s<i> <h>took %s<i> from <h>%s<i>.", to.describeTo(recipient, true), moneyString(amount), from.describeTo(recipient));
+			}
 		}
 		else
 		{
-			from.msg("<h>%s<i> was transfered from <h>%s<i> to <h>%s<i> by <h>%s<i>.", moneyString(amount), from.describeTo(from), to.describeTo(from), invoker.describeTo(from));
-			to.msg  ("<h>%s<i> was transfered from <h>%s<i> to <h>%s<i> by <h>%s<i>.", moneyString(amount), from.describeTo(to), to.describeTo(to), invoker.describeTo(to));
+			for (FPlayer recipient : recipients)
+			{
+				recipient.msg("<h>%s<i> transfered <h>%s<i> from <h>%s<i> to <h>%s<i>.", invoker.describeTo(recipient, true), moneyString(amount), from.describeTo(recipient), to.describeTo(recipient));
+			}
 		}
-		
-		return true;
 	}
 	
 	public static boolean modifyMoney(EconomyParticipator ep, double delta, String toDoThis, String forDoingThis)
@@ -201,8 +244,6 @@ public class Econ
 		}
 	}
 
-	
-
 	// format money string based on server's set currency type, like "24 gold" or "$24.50"
 	public static String moneyString(double amount)
 	{
@@ -219,138 +260,6 @@ public class Econ
 			faction.money = 0;
 		}
 	}
-
-	// whether a player can afford specified amount
-	/*public static boolean canAfford(String playerName, double amount) {
-		// if Economy support is not enabled, they can certainly afford to pay nothing
-		if (!enabled())
-		{
-			return true;
-		}
-
-		if (registerAvailable())
-		{
-			MethodAccount holdings = getRegisterAccount(playerName);
-			if (holdings == null)
-			{
-				return false;
-			}
-
-			return holdings.hasEnough(amount);
-		}
-		else if (iConomyUse)
-		{
-			Holdings holdings = getIconomyHoldings(playerName);
-			if (holdings == null)
-			{
-				return false;
-			}
-
-			return holdings.hasEnough(amount);
-		}
-		else
-		{
-			try
-			{
-				return Economy.hasEnough(playerName, amount);
-			}
-			catch (Exception ex)
-			{
-				return false;
-			}
-		}
-	}*/
-
-	// deduct money from their account; returns true if successful
-	/*public static boolean deductMoney(String playerName, double amount)
-	{
-		if (!enabled())
-		{
-			return true;
-		}
-
-		if (registerAvailable())
-		{
-			MethodAccount holdings = getRegisterAccount(playerName);
-			if (holdings == null || !holdings.hasEnough(amount))
-			{
-				return false;
-			}
-
-			return holdings.subtract(amount);
-		}
-		else if (iConomyUse)
-		{
-			Holdings holdings = getIconomyHoldings(playerName);
-			if (holdings == null || !holdings.hasEnough(amount))
-			{
-				return false;
-			}
-
-			holdings.subtract(amount);
-			return true;
-		}
-		else
-		{
-			try
-			{
-				if (!Economy.hasEnough(playerName, amount))
-				{
-					return false;
-				}
-				Economy.subtract(playerName, amount);
-				return true;
-			}
-			catch (Exception ex)
-			{
-				return false;
-			}
-		}
-	}*/
-
-	// add money to their account; returns true if successful
-	/*public static boolean addMoney(String playerName, double amount)
-	{
-		if (!enabled())
-		{
-			return true;
-		}
-
-		if (registerAvailable())
-		{
-			MethodAccount holdings = getRegisterAccount(playerName);
-			if (holdings == null)
-			{
-				return false;
-			}
-
-			return holdings.add(amount);
-		}
-		else if (iConomyUse) 
-		{
-			Holdings holdings = getIconomyHoldings(playerName);
-			if (holdings == null)
-			{
-				return false;
-			}
-
-			holdings.add(amount);
-			return true;
-		}
-		else
-		{
-			try
-			{
-				Economy.add(playerName, amount);
-				return true;
-			}
-			catch (Exception ex)
-			{
-				return false;
-			}
-		}
-	}*/
-
 
 	// calculate the cost for claiming land
 	public static double calculateClaimCost(int ownedLand, boolean takingFromAnotherFaction)

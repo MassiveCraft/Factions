@@ -104,7 +104,7 @@ public class Faction extends Entity implements EconomyParticipator
 			return;
 		}
 
-		sendMessage("Your faction home has been un-set since it is no longer in your territory.");
+		msg("<b>Your faction home has been un-set since it is no longer in your territory.");
 		this.home = null;
 	}
 	
@@ -113,7 +113,7 @@ public class Faction extends Entity implements EconomyParticipator
 	
 	// FIELD: account (fake field)
 	// Bank functions
-	public double money; // Deprecated TODO: Hantera.
+	public double money;
 	public String getAccountId() { return "faction-"+this.getId(); }
 	public MethodAccount getAccount()
 	{
@@ -128,26 +128,6 @@ public class Faction extends Entity implements EconomyParticipator
 		
 		return Econ.getMethod().getAccount(aid);
 	}
-	
-	/*public double getMoney() { return this.money; }
-	public boolean addMoney(double amount)
-	{
-		if ( amount > 0.0 )
-		{
-			this.money += amount;
-			return true;
-		}
-		return false;
-	}
-	public boolean removeMoney( double amount )
-	{
-		if (amount <= 0.0 ) return false;
-		
-		if (amount > this.money ) return false;
-		
-		this.money -= amount;
-		return true;
-	}*/
 	
 	// -------------------------------------------- //
 	// Construct
@@ -214,25 +194,25 @@ public class Faction extends Entity implements EconomyParticipator
 	@Override
 	public String describeTo(RelationParticipator that, boolean ucfirst)
 	{
-		return RelationUtil.describeThatToMe(that, this, ucfirst);
+		return RelationUtil.describeThatToMe(this, that, ucfirst);
 	}
 	
 	@Override
 	public String describeTo(RelationParticipator that)
 	{
-		return RelationUtil.describeThatToMe(that, this);
+		return RelationUtil.describeThatToMe(this, that);
 	}
 	
 	@Override
 	public Relation getRelationTo(RelationParticipator rp)
 	{
-		return RelationUtil.getRelationTo(rp, this);
+		return RelationUtil.getRelationTo(this, rp);
 	}
 	
 	@Override
 	public Relation getRelationTo(RelationParticipator rp, boolean ignorePeaceful)
 	{
-		return RelationUtil.getRelationTo(rp, this, ignorePeaceful);
+		return RelationUtil.getRelationTo(this, rp, ignorePeaceful);
 	}
 	
 	@Override
@@ -261,44 +241,6 @@ public class Faction extends Entity implements EconomyParticipator
 			this.relationWish.put(otherFaction.getId(), relation);
 		}
 	}
-	
-	/*public Relation getRelationTo(Faction otherFaction)
-	{
-		return getRelationTo(otherFaction, false);
-	}
-	
-	public Relation getRelationTo(Faction otherFaction, boolean ignorePeaceful)
-	{
-		if (!otherFaction.isNormal() || !this.isNormal())
-		{
-			return Relation.NEUTRAL;
-		}
-		
-		if (otherFaction.equals(this))
-		{
-			return Relation.MEMBER;
-		}
-		
-		if (!ignorePeaceful && (this.peaceful || otherFaction.isPeaceful()))
-		{
-			return Relation.NEUTRAL;
-		}
-		
-		if(this.getRelationWish(otherFaction).value >= otherFaction.getRelationWish(this).value)
-		{
-			return otherFaction.getRelationWish(this);
-		}
-		
-		return this.getRelationWish(otherFaction);
-	}
-	
-	public Relation getRelationTo(FPlayer fplayer)
-	{
-		if (fplayer == null)
-			return Relation.NEUTRAL;
-		else
-			return getRelationTo(fplayer.getFaction());
-	}*/
 	
 	//----------------------------------------------//
 	// Power
@@ -662,82 +604,9 @@ public class Faction extends Entity implements EconomyParticipator
 	}
 	
 	
-	
-	
-	
 	//----------------------------------------------//
 	// Persistance and entity management
 	//----------------------------------------------//
-	
-	/*public static boolean save() {
-		//Factions.log("Saving factions to disk");
-		
-		try {
-			DiscUtil.write(file, P.p.gson.toJson(instances));
-		} catch (IOException e) {
-			e.printStackTrace();
-			P.log("Failed to save the factions to disk due to I/O exception.");
-			return false;
-		} catch (Exception e) {
-			e.printStackTrace();
-			P.log("Failed to save the factions to disk.");
-			return false;
-		}
-		
-		return true;
-	}
-	*/
-	/*public static boolean load() {
-		P.log("Loading factions from disk");
-		
-		if ( ! file.exists()) {
-			if ( ! loadOld())
-				P.log("No factions to load from disk. Creating new file.");
-			save();
-		}
-		
-		try {
-			Type type = new TypeToken<Map<Integer, Faction>>(){}.getType();
-			Map<Integer, Faction> instancesFromFile = P.p.gson.fromJson(DiscUtil.read(file), type);
-			instances.clear();
-			instances.putAll(instancesFromFile);
-		} catch (Exception e) {
-			e.printStackTrace();
-			P.log("Failed to load the factions from disk.");
-			return false;
-		}
-		
-		fillIds();
-		
-		// Make sure the default neutral faction exists
-		if ( ! instances.containsKey(0)) {
-			Faction faction = new Faction();
-			faction.tag = ChatColor.DARK_GREEN+"Wilderness";
-			faction.description = "";
-			faction.id = 0;
-			instances.put(faction.id, faction);
-		}
-		
-		// Make sure the safe zone faction exists
-		if ( ! instances.containsKey(-1)) {
-			Faction faction = new Faction();
-			faction.tag = ChatColor.GOLD+"Safe Zone";
-			faction.description = "Free from PVP and monsters";
-			faction.id = -1;
-			instances.put(faction.id, faction);
-		}
-		
-		// Make sure the war zone faction exists
-		if ( ! instances.containsKey(-2)) {
-			Faction faction = new Faction();
-			faction.tag = ChatColor.DARK_RED+"War Zone";
-			faction.description = "Not the safest place to be";
-			faction.id = -2;
-			instances.put(faction.id, faction);
-		}
-		
-		return true;
-	}*/
 
 	
 	@Override
@@ -756,94 +625,4 @@ public class Faction extends Entity implements EconomyParticipator
 		// Clean the fplayers
 		FPlayers.i.clean();
 	}
-	
-	/*public static Faction get(Integer factionId)
-	{
-		if ( ! instances.containsKey(factionId))
-		{
-			P.log(Level.WARNING, "Non existing factionId "+factionId+" requested! Issuing cleaning!");
-			Board.clean();
-			FPlayer.clean();
-		}
-		return instances.get(factionId);
-	}*/
-	
-	/*
-	public static Faction getNone() {
-		return instances.get(0);
-	}
-	
-	public static Faction getSafeZone() {
-		return instances.get(-1);
-	}
-	
-	public static Faction getWarZone() {
-		return instances.get(-2);
-	}*/
-	
-	/*
-	public static boolean exists(Integer factionId) {
-		return instances.containsKey(factionId);
-	}
-	
-	
-	//TODO ta parametrar här. All info som behövs ska matas in här och så sparar vi i denna method.
-	public static Faction create()
-	{
-		Faction faction = new Faction();
-		faction.id = nextId;
-		nextId += 1;
-		instances.put(faction.id, faction);
-		P.log("created new faction "+faction.id);
-		//faction.save();
-		return faction;
-	}
-	
-	public static void delete(Integer id) {
-		// Remove the faction
-		instances.remove(id);
-		
-		// Clean the board
-		Board.clean();
-		
-		// Clean the fplayers
-		FPlayer.clean();
-	}
-
-	private static boolean loadOld() {
-		File folderFaction = new File(P.p.getDataFolder(), "faction");
-
-		if ( ! folderFaction.isDirectory())
-			return false;
-
-		P.log("Factions file doesn't exist, attempting to load old pre-1.1 data.");
-
-		String ext = ".json";
-
-		class jsonFileFilter implements FileFilter {
-			@Override
-			public boolean accept(File file) {
-				return (file.getName().toLowerCase().endsWith(".json") && file.isFile());
-			}
-		}
-
-		File[] jsonFiles = folderFaction.listFiles(new jsonFileFilter());
-		for (File jsonFile : jsonFiles) {
-			// Extract the name from the filename. The name is filename minus ".json"
-			String name = jsonFile.getName();
-			name = name.substring(0, name.length() - ext.length());
-			int id = Integer.parseInt(name);
-
-			try {
-				Faction faction = P.p.gson.fromJson(DiscUtil.read(jsonFile), Faction.class);
-				faction.id = id;
-				instances.put(faction.id, faction);
-				P.log("loaded pre-1.1 faction "+id);
-			} catch (Exception e) {
-				e.printStackTrace();
-				P.log(Level.WARNING, "Failed to load faction "+id);
-			}
-		}
-		return true;
-	}*/
 }
