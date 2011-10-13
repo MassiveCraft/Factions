@@ -69,6 +69,8 @@ public class Econ
 	
 	public static void modifyUniverseMoney(double delta)
 	{
+		if (!shouldBeUsed()) return;
+
 		MethodAccount acc = getUniverseAccount();
 		if (acc == null) return;
 		acc.add(delta);
@@ -103,6 +105,8 @@ public class Econ
 	
 	public static boolean transferMoney(EconomyParticipator invoker, EconomyParticipator from, EconomyParticipator to, double amount)
 	{
+		if ( ! shouldBeUsed()) return false;
+
 		// The amount must be positive.
 		// If the amount is negative we must flip and multiply amount with -1.
 		if (amount < 0)
@@ -161,6 +165,8 @@ public class Econ
 	
 	public static boolean modifyMoney(EconomyParticipator ep, double delta, String toDoThis, String forDoingThis)
 	{
+		if ( ! shouldBeUsed()) return false;
+
 		MethodAccount acc = ep.getAccount();
 		String You = ep.describeTo(ep, true);
 		

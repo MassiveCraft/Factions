@@ -622,22 +622,22 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 			}
 		}
 
+		this.resetFactionData();
+
 		if (myFaction.isNormal() && !perm && myFaction.getFPlayers().isEmpty())
 		{
 			// Transfer all money
-			Econ.transferMoney(this, myFaction, this, myFaction.getAccount().balance());
-			
+			if (Econ.shouldBeUsed())
+				Econ.transferMoney(this, myFaction, this, myFaction.getAccount().balance());
+
 			// Remove this faction
 			for (FPlayer fplayer : FPlayers.i.getOnline())
 			{
 				fplayer.msg("<i>%s<i> was disbanded.", myFaction.describeTo(fplayer, true));
 			}
-			//Faction.delete(myFaction.getId());
-			
+
 			myFaction.detach();
 		}
-		
-		this.resetFactionData();
 	}
 	
 	public boolean attemptClaim(boolean notifyFailure)
