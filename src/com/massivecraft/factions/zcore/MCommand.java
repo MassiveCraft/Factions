@@ -48,7 +48,7 @@ public abstract class MCommand<T extends MPlugin>
 			{
 				return pdesc;
 			}
-			return "*no short help available*";
+			return "*info unavailable*";
 		}
 		return this.helpShort;
 	}
@@ -265,7 +265,7 @@ public abstract class MCommand<T extends MPlugin>
 		if (addShortHelp)
 		{
 			ret.append(p.txt.parseTags(" <i>"));
-			ret.append(this.helpShort);
+			ret.append(this.getHelpShort());
 		}
 		
 		return ret.toString();
@@ -332,12 +332,12 @@ public abstract class MCommand<T extends MPlugin>
 	}
 	
 	// INT ======================
-	public int strAsInt(String str, int def)
+	public Integer strAsInt(String str, Integer def)
 	{
 		if (str == null) return def;
 		try
 		{
-			int ret = Integer.parseInt(str);
+			Integer ret = Integer.parseInt(str);
 			return ret;
 		}
 		catch (Exception e)
@@ -345,22 +345,22 @@ public abstract class MCommand<T extends MPlugin>
 			return def;
 		}
 	}
-	public int argAsInt(int idx, int def)
+	public Integer argAsInt(int idx, Integer def)
 	{
 		return strAsInt(this.argAsString(idx), def);
 	}
-	public int argAsInt(int idx)
+	public Integer argAsInt(int idx)
 	{
-		return this.argAsInt(idx, -1);
+		return this.argAsInt(idx, null);
 	}
 	
 	// Double ======================
-	public double strAsDouble(String str, double def)
+	public Double strAsDouble(String str, Double def)
 	{
 		if (str == null) return def;
 		try
 		{
-			double ret = Double.parseDouble(str);
+			Double ret = Double.parseDouble(str);
 			return ret;
 		}
 		catch (Exception e)
@@ -368,13 +368,13 @@ public abstract class MCommand<T extends MPlugin>
 			return def;
 		}
 	}
-	public double argAsDouble(int idx, double def)
+	public Double argAsDouble(int idx, Double def)
 	{
 		return strAsDouble(this.argAsString(idx), def);
 	}
-	public double argAsDouble(int idx)
+	public Double argAsDouble(int idx)
 	{
-		return this.argAsDouble(idx, -1d);
+		return this.argAsDouble(idx, null);
 	}
 	
 	// TODO: Go through the str conversion for the other arg-readers as well.

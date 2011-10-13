@@ -7,7 +7,9 @@ public class CmdMoney extends FCommand
 	public CmdMoneyBalance cmdMoneyBalance = new CmdMoneyBalance();
 	public CmdMoneyDeposit cmdMoneyDeposit = new CmdMoneyDeposit();
 	public CmdMoneyWithdraw cmdMoneyWithdraw = new CmdMoneyWithdraw();
-	public CmdMoneyPay cmdMoneyPay = new CmdMoneyPay();
+	public CmdMoneyTransferFf cmdMoneyTransferFf = new CmdMoneyTransferFf();
+	public CmdMoneyTransferFp cmdMoneyTransferFp = new CmdMoneyTransferFp();
+	public CmdMoneyTransferPf cmdMoneyTransferPf = new CmdMoneyTransferPf();
 	
 	public CmdMoney()
 	{
@@ -18,7 +20,6 @@ public class CmdMoney extends FCommand
 		//this.optionalArgs.put("","")
 		
 		this.isMoneyCommand = true;
-		this.isBankCommand = false;
 		
 		senderMustBePlayer = false;
 		senderMustBeMember = false;
@@ -31,7 +32,9 @@ public class CmdMoney extends FCommand
 		this.addSubCommand(this.cmdMoneyBalance);
 		this.addSubCommand(this.cmdMoneyDeposit);
 		this.addSubCommand(this.cmdMoneyWithdraw);
-		this.addSubCommand(this.cmdMoneyPay);
+		this.addSubCommand(this.cmdMoneyTransferFf);
+		this.addSubCommand(this.cmdMoneyTransferFp);
+		this.addSubCommand(this.cmdMoneyTransferPf);
 	}
 	
 	@Override

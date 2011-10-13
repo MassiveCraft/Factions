@@ -74,7 +74,7 @@ public class FPlayers extends PlayerEntityCollection<FPlayer>
 	{
 		for (FPlayer fplayer : this.get())
 		{
-			if (fplayer.getId().equalsIgnoreCase(playername) || fplayer.getId().startsWith(playername))
+			if (fplayer.getId().equalsIgnoreCase(playername) || fplayer.getId().toLowerCase().startsWith(playername.toLowerCase()))
 			{
 				return fplayer;
 			}

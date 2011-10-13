@@ -27,7 +27,6 @@ public abstract class FCommand extends MCommand<P>
 	public boolean senderMustBeAdmin;
 	
 	public boolean isMoneyCommand;
-	public boolean isBankCommand;
 	
 	public FCommand()
 	{
@@ -38,7 +37,6 @@ public abstract class FCommand extends MCommand<P>
 		
 		// The money commands must be disabled if money should not be used.
 		isMoneyCommand = false;
-		isBankCommand = false;
 		
 		senderMustBeMember = false;
 		senderMustBeModerator = false;
@@ -76,7 +74,7 @@ public abstract class FCommand extends MCommand<P>
 			return false;
 		}
 		
-		if (this.isBankCommand && ! Conf.bankEnabled)
+		if (this.isMoneyCommand && ! Conf.bankEnabled)
 		{
 			msg("<b>The faction bank system is diabled on this server.");
 			return false;

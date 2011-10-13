@@ -12,6 +12,10 @@ permissions:
       factions.lock: true
       factions.reload: true
       factions.save: true
+  factions.*:
+    description: This is just an alias for factions.kit.admin
+    children:
+      factions.kit.admin: true
   factions.kit.mod:
     description: All faction permissions but configuration and persistance.
     children:
@@ -20,7 +24,7 @@ permissions:
       factions.setpermanent: true
       factions.setpeaceful: true
       factions.sethome.any: true
-      factions.money.withdraw.any: true
+      factions.money.*: true
   factions.kit.halfmod:
     description: Zones, bypassing, and kicking
     children:
@@ -31,6 +35,7 @@ permissions:
       factions.kick.any: true
       factions.ownershipbypass: true
   factions.kit.fullplayer:
+    default: true
     description: Can also create new factions.
     children:
       factions.kit.halfplayer: true
@@ -54,11 +59,7 @@ permissions:
       factions.list: true
       factions.map: true
       factions.mod: true
-      factions.money.balance: true
-      factions.money.balance.any: true
-      factions.money.deposit: true
-      factions.money.pay: true
-      factions.money.withdraw: true
+      factions.money.kit.standard: true
       factions.noboom: true
       factions.open: true
       factions.owner: true
@@ -121,26 +122,41 @@ permissions:
     description: show the territory map, and set optional auto update
   factions.mod:
     description: give or revoke moderator rights
-  factions.money.*:
-    children:
-      factions.money.balance: true
-      factions.money.balance.any: true
-      factions.money.deposit: true
-      factions.money.pay: true
-      factions.money.withdraw: true
-      factions.money.withdraw.any: true
   factions.money.balance:
     description: show your factions current money balance
   factions.money.balance.any:
     description: show money balance for factions other than your own
   factions.money.deposit:
     description: deposit money into a faction bank
-  factions.money.pay:
-    description: pay another faction from your bank
   factions.money.withdraw:
     description: withdraw money from your faction bank
   factions.money.withdraw.any:
     description: withdraw money from your factions other than your own
+  factions.money.f2f:
+    description: transfer money from faction to faction
+  factions.money.f2p:
+    description: transfer money from faction to player
+  factions.money.p2f:
+    description: transfer money from player to faction
+  factions.money.kit.standard:
+    children:
+      factions.money.balance: true
+      factions.money.balance.any: true
+      factions.money.deposit: true
+      factions.money.withdraw: true
+      factions.money.f2f: true
+      factions.money.f2p: true
+      factions.money.p2f: true
+  factions.money.*:
+    children:
+      factions.money.kit.standard: true
+      factions.money.balance.any: true
+      factions.money.deposit: true
+      factions.money.withdraw: true
+      factions.money.withdraw.any: true
+      factions.money.f2f: true
+      factions.money.f2p: true
+      factions.money.p2f: true
   factions.noboom:
     description: toggle explosions (peaceful factions only)
   factions.open:

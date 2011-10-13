@@ -16,8 +16,7 @@ public class CmdMoneyBalance extends FCommand
 		this.optionalArgs.put("faction", "yours");
 		
 		this.permission = Permission.MONEY_BALANCE.node;
-		this.isMoneyCommand = true;
-		this.isBankCommand = true;
+		this.setHelpShort("show faction balance");
 		
 		senderMustBePlayer = false;
 		senderMustBeMember = false;

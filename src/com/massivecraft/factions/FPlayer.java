@@ -1,5 +1,7 @@
 package com.massivecraft.factions;
 
+import java.util.ArrayList;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -593,42 +595,29 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		{
 			double cost = Conf.econCostLeave;
 			if ( ! Econ.modifyMoney(this, -cost, "to leave your faction.", "for leaving your faction.")) return;
-			/*
-			// pay up
-			if (cost > 0.0) {
-				String costString = Econ.moneyString(cost);
-				if ( ! Econ.deductMoney(this.getName(), cost)) {
-					msg("<b>It costs <h>%s<b> to leave your faction, which you can't currently afford.", costString);
-					return;
-				}
-				msg("<i>You have paid <h>%s<i> to leave your faction.", costString);
-			}
-			// wait... we pay you to leave?
-			else if (cost < 0.0)
-			{
-				String costString = Econ.moneyString(-cost);
-				Econ.addMoney(this.getName(), -cost);
-				msg("<i>You have been paid <h>%s<i> for leaving your faction.", costString);
-			}*/
 		}
 
-		if (myFaction.isNormal())
-		{
-			//myFaction.msg("%s<i> left your faction.", this.getNameAndRelevant(myFaction));
-			for (FPlayer fplayer : myFaction.getFPlayersWhereOnline(true))
-			{
-				fplayer.msg("%s<i> left your faction.", this.describeTo(fplayer, true));
-			}
-		}
-
-		this.resetFactionData();
-
-		if (myFaction.isNormal() && !perm && myFaction.getFPlayers().isEmpty())
+		// Am I the last one in the faction?
+		ArrayList<FPlayer> fplayers = myFaction.getFPlayers();
+		if (fplayers.size() == 1 && fplayers.get(0) == this)
 		{
 			// Transfer all money
 			if (Econ.shouldBeUsed())
 				Econ.transferMoney(this, myFaction, this, myFaction.getAccount().balance());
+		}
+		
+		if (myFaction.isNormal())
+		{
+			for (FPlayer fplayer : myFaction.getFPlayersWhereOnline(true))
+			{
+				fplayer.msg("%s<i> left %s<i>.", this.describeTo(fplayer, true), myFaction.describeTo(fplayer));
+			}
+		}
+		
+		this.resetFactionData();
 
+		if (myFaction.isNormal() && !perm && myFaction.getFPlayers().isEmpty())
+		{
 			// Remove this faction
 			for (FPlayer fplayer : FPlayers.i.getOnline())
 			{

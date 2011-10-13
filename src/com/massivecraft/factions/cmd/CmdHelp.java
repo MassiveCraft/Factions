@@ -60,27 +60,27 @@ public class CmdHelp extends FCommand
 		ArrayList<String> pageLines;
 
 		pageLines = new ArrayList<String>();
-		pageLines.add( p.cmdBase.cmdHelp.getUseageTemplate() );
-		pageLines.add( p.cmdBase.cmdList.getUseageTemplate() );
-		pageLines.add( p.cmdBase.cmdShow.getUseageTemplate() );
-		pageLines.add( p.cmdBase.cmdPower.getUseageTemplate() );
-		pageLines.add( p.cmdBase.cmdJoin.getUseageTemplate() );
-		pageLines.add( p.cmdBase.cmdLeave.getUseageTemplate() );
-		pageLines.add( p.cmdBase.cmdChat.getUseageTemplate() );
-		pageLines.add( p.cmdBase.cmdHome.getUseageTemplate() );
+		pageLines.add( p.cmdBase.cmdHelp.getUseageTemplate(true) );
+		pageLines.add( p.cmdBase.cmdList.getUseageTemplate(true) );
+		pageLines.add( p.cmdBase.cmdShow.getUseageTemplate(true) );
+		pageLines.add( p.cmdBase.cmdPower.getUseageTemplate(true) );
+		pageLines.add( p.cmdBase.cmdJoin.getUseageTemplate(true) );
+		pageLines.add( p.cmdBase.cmdLeave.getUseageTemplate(true) );
+		pageLines.add( p.cmdBase.cmdChat.getUseageTemplate(true) );
+		pageLines.add( p.cmdBase.cmdHome.getUseageTemplate(true) );
 		pageLines.add( p.txt.parse("<i>Learn how to create a faction on the next page.") );
 		helpPages.add(pageLines);
 		
 		pageLines = new ArrayList<String>();
-		pageLines.add( p.cmdBase.cmdCreate.getUseageTemplate() );
-		pageLines.add( p.cmdBase.cmdDescription.getUseageTemplate() );
-		pageLines.add( p.cmdBase.cmdTag.getUseageTemplate() );
+		pageLines.add( p.cmdBase.cmdCreate.getUseageTemplate(true) );
+		pageLines.add( p.cmdBase.cmdDescription.getUseageTemplate(true) );
+		pageLines.add( p.cmdBase.cmdTag.getUseageTemplate(true) );
 		pageLines.add( p.txt.parse("<i>You might want to close it and use invitations:" ));
-		pageLines.add( p.cmdBase.cmdOpen.getUseageTemplate() );
-		pageLines.add( p.cmdBase.cmdInvite.getUseageTemplate() );
-		pageLines.add( p.cmdBase.cmdDeinvite.getUseageTemplate() );
+		pageLines.add( p.cmdBase.cmdOpen.getUseageTemplate(true) );
+		pageLines.add( p.cmdBase.cmdInvite.getUseageTemplate(true) );
+		pageLines.add( p.cmdBase.cmdDeinvite.getUseageTemplate(true) );
 		pageLines.add( p.txt.parse("<i>And don't forget to set your home:" ));
-		pageLines.add( p.cmdBase.cmdSethome.getUseageTemplate() );
+		pageLines.add( p.cmdBase.cmdSethome.getUseageTemplate(true) );
 		helpPages.add(pageLines);
 		
 		if (Econ.shouldBeUsed())
@@ -91,7 +91,7 @@ public class CmdHelp extends FCommand
 			pageLines.add( p.txt.parse("<i>things, so it will need to have money deposited into it." ));
 			pageLines.add( p.txt.parse("<i>To lear more use the money command." ));
 			pageLines.add( "" );
-			pageLines.add( p.cmdBase.cmdMoney.getUseageTemplate() );
+			pageLines.add( p.cmdBase.cmdMoney.getUseageTemplate(true) );
 			pageLines.add( "" );
 			pageLines.add( "" );
 			pageLines.add( "" );
@@ -99,23 +99,23 @@ public class CmdHelp extends FCommand
 		}
 		
 		pageLines = new ArrayList<String>();
-		pageLines.add( p.cmdBase.cmdClaim.getUseageTemplate() );
-		pageLines.add( p.cmdBase.cmdAutoClaim.getUseageTemplate() );
-		pageLines.add( p.cmdBase.cmdUnclaim.getUseageTemplate() );
-		pageLines.add( p.cmdBase.cmdUnclaimall.getUseageTemplate() );
-		pageLines.add( p.cmdBase.cmdKick.getUseageTemplate() );
-		pageLines.add( p.cmdBase.cmdMod.getUseageTemplate() );
-		pageLines.add( p.cmdBase.cmdAdmin.getUseageTemplate() );
-		pageLines.add( p.cmdBase.cmdTitle.getUseageTemplate() );
+		pageLines.add( p.cmdBase.cmdClaim.getUseageTemplate(true) );
+		pageLines.add( p.cmdBase.cmdAutoClaim.getUseageTemplate(true) );
+		pageLines.add( p.cmdBase.cmdUnclaim.getUseageTemplate(true) );
+		pageLines.add( p.cmdBase.cmdUnclaimall.getUseageTemplate(true) );
+		pageLines.add( p.cmdBase.cmdKick.getUseageTemplate(true) );
+		pageLines.add( p.cmdBase.cmdMod.getUseageTemplate(true) );
+		pageLines.add( p.cmdBase.cmdAdmin.getUseageTemplate(true) );
+		pageLines.add( p.cmdBase.cmdTitle.getUseageTemplate(true) );
 		pageLines.add( p.txt.parse("<i>Player titles are just for fun. No rules connected to them." ));
 		helpPages.add(pageLines);
 		
 		pageLines = new ArrayList<String>();
-		pageLines.add( p.cmdBase.cmdMap.getUseageTemplate() );
-		pageLines.add( p.cmdBase.cmdBoom.getUseageTemplate() );
+		pageLines.add( p.cmdBase.cmdMap.getUseageTemplate(true) );
+		pageLines.add( p.cmdBase.cmdBoom.getUseageTemplate(true) );
 		pageLines.add("");
-		pageLines.add( p.cmdBase.cmdOwner.getUseageTemplate() );
-		pageLines.add( p.cmdBase.cmdOwnerList.getUseageTemplate() );
+		pageLines.add( p.cmdBase.cmdOwner.getUseageTemplate(true) );
+		pageLines.add( p.cmdBase.cmdOwnerList.getUseageTemplate(true) );
 		pageLines.add("");
 		pageLines.add(p.txt.parse("<i>Claimed land with ownership set is further protected so"));
 		pageLines.add(p.txt.parse("<i>that only the owner(s), faction admin, and possibly the"));
@@ -123,11 +123,11 @@ public class CmdHelp extends FCommand
 		helpPages.add(pageLines);
 		
 		pageLines = new ArrayList<String>();
-		pageLines.add( p.cmdBase.cmdDisband.getUseageTemplate() );
+		pageLines.add( p.cmdBase.cmdDisband.getUseageTemplate(true) );
 		pageLines.add("");
-		pageLines.add( p.cmdBase.cmdRelationAlly.getUseageTemplate() );
-		pageLines.add( p.cmdBase.cmdRelationNeutral.getUseageTemplate() );
-		pageLines.add( p.cmdBase.cmdRelationEnemy.getUseageTemplate() );
+		pageLines.add( p.cmdBase.cmdRelationAlly.getUseageTemplate(true) );
+		pageLines.add( p.cmdBase.cmdRelationNeutral.getUseageTemplate(true) );
+		pageLines.add( p.cmdBase.cmdRelationEnemy.getUseageTemplate(true) );
 		pageLines.add(p.txt.parse("<i>Set the relation you WISH to have with another faction."));
 		pageLines.add(p.txt.parse("<i>Your default relation with other factions will be neutral."));
 		pageLines.add(p.txt.parse("<i>If BOTH factions choose \"ally\" you will be allies."));
@@ -160,26 +160,26 @@ public class CmdHelp extends FCommand
 		
 		pageLines = new ArrayList<String>();
 		pageLines.add("Finally some commands for the server admins:");
-		pageLines.add( p.cmdBase.cmdBypass.getUseageTemplate() );
-		pageLines.add( p.cmdBase.cmdSafeclaim.getUseageTemplate() );
-		pageLines.add( p.cmdBase.cmdAutoSafeclaim.getUseageTemplate() );
-		pageLines.add( p.cmdBase.cmdSafeunclaimall.getUseageTemplate() );
-		pageLines.add( p.cmdBase.cmdWarclaim.getUseageTemplate() );
-		pageLines.add( p.cmdBase.cmdAutoWarclaim.getUseageTemplate() );
-		pageLines.add( p.cmdBase.cmdWarunclaimall.getUseageTemplate() );
+		pageLines.add( p.cmdBase.cmdBypass.getUseageTemplate(true) );
+		pageLines.add( p.cmdBase.cmdSafeclaim.getUseageTemplate(true) );
+		pageLines.add( p.cmdBase.cmdAutoSafeclaim.getUseageTemplate(true) );
+		pageLines.add( p.cmdBase.cmdSafeunclaimall.getUseageTemplate(true) );
+		pageLines.add( p.cmdBase.cmdWarclaim.getUseageTemplate(true) );
+		pageLines.add( p.cmdBase.cmdAutoWarclaim.getUseageTemplate(true) );
+		pageLines.add( p.cmdBase.cmdWarunclaimall.getUseageTemplate(true) );
 		pageLines.add(p.txt.parse("<i>Note: " + p.cmdBase.cmdUnclaim.getUseageTemplate(false) + P.p.txt.parse("<i>") + " works on safe/war zones as well."));
 		helpPages.add(pageLines);
 		
 		pageLines = new ArrayList<String>();
 		pageLines.add(p.txt.parse("<i>More commands for server admins:"));
-		pageLines.add( p.cmdBase.cmdPeaceful.getUseageTemplate() );
-		pageLines.add( p.cmdBase.cmdPermanent.getUseageTemplate() );
+		pageLines.add( p.cmdBase.cmdPeaceful.getUseageTemplate(true) );
+		pageLines.add( p.cmdBase.cmdPermanent.getUseageTemplate(true) );
 		pageLines.add(p.txt.parse("<i>Peaceful factions are protected from PvP and land capture."));
-		pageLines.add( p.cmdBase.cmdLock.getUseageTemplate() );
-		pageLines.add( p.cmdBase.cmdReload.getUseageTemplate() );
-		pageLines.add( p.cmdBase.cmdSaveAll.getUseageTemplate() );
-		pageLines.add( p.cmdBase.cmdVersion.getUseageTemplate() );
-		pageLines.add( p.cmdBase.cmdConfig.getUseageTemplate() );
+		pageLines.add( p.cmdBase.cmdLock.getUseageTemplate(true) );
+		pageLines.add( p.cmdBase.cmdReload.getUseageTemplate(true) );
+		pageLines.add( p.cmdBase.cmdSaveAll.getUseageTemplate(true) );
+		pageLines.add( p.cmdBase.cmdVersion.getUseageTemplate(true) );
+		pageLines.add( p.cmdBase.cmdConfig.getUseageTemplate(true) );
 		helpPages.add(pageLines);
 	}
 }
