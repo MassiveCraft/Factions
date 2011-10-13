@@ -123,6 +123,22 @@ public class CmdConfig extends FCommand
 				}
 			}
 
+			// float
+			else if (target.getType() == float.class)
+			{
+				try
+				{
+					float floatVal = Float.parseFloat(value);
+					target.setFloat(null, floatVal);
+					success = "\""+fieldName+"\" option set to "+floatVal+".";
+				}
+				catch(NumberFormatException ex)
+				{
+					sendMessage("Cannot set \""+fieldName+"\": float (numeric) value required.");
+					return;
+				}
+			}
+
 			// String
 			else if (target.getType() == String.class)
 			{

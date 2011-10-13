@@ -201,27 +201,53 @@ public class FactionsPlayerListener extends PlayerListener
 			Faction factionTo = Board.getFactionAt(to);
 			Faction myFaction = me.getFaction();
 			String ownersTo = myFaction.getOwnerListString(to);
+			boolean spoutClient = SpoutFeatures.availableFor(player);
+
 			if (factionFrom != factionTo)
 			{
 				me.sendFactionHereMessage();
-				if (Conf.ownedAreasEnabled && Conf.ownedMessageOnBorder && myFaction == factionTo && !ownersTo.isEmpty())
+				if
+				(
+					Conf.ownedAreasEnabled
+					&&
+					Conf.ownedMessageOnBorder
+					&&
+					(
+						!spoutClient
+						||
+						!Conf.spoutTerritoryOwnersShow
+					)
+					&&
+					myFaction == factionTo
+					&&
+					!ownersTo.isEmpty()
+				)
 				{
 					me.sendMessage(Conf.ownedLandMessage+ownersTo);
 				}
 			}
-			else if (Conf.ownedAreasEnabled && Conf.ownedMessageInsideTerritory && factionFrom == factionTo && myFaction == factionTo)
+			else if (spoutClient && Conf.spoutTerritoryOwnersShow)
+			{
+				SpoutFeatures.updateOwnerList(me);
+			}
+			else if
+			(
+				Conf.ownedAreasEnabled
+				&&
+				Conf.ownedMessageInsideTerritory
+				&&
+				factionFrom == factionTo
+				&&
+				myFaction == factionTo
+			)
 			{
 				String ownersFrom = myFaction.getOwnerListString(from);
 				if (Conf.ownedMessageByChunk || !ownersFrom.equals(ownersTo))
 				{
 					if (!ownersTo.isEmpty())
-					{
 						me.sendMessage(Conf.ownedLandMessage+ownersTo);
-					}
 					else if (!Conf.publicLandMessage.isEmpty())
-					{
 						me.sendMessage(Conf.publicLandMessage);
-					}
 				}
 			}
 		}
