@@ -56,20 +56,17 @@ public class RelationUtil
 		return "" + getRelationColor(me, that) + ret;
 	}
 
-	public static String describeThatToMe(RelationParticipator that,
-			RelationParticipator me)
+	public static String describeThatToMe(RelationParticipator that, RelationParticipator me)
 	{
 		return describeThatToMe(that, me, false);
 	}
 
-	public static Relation getRelationTo(RelationParticipator me,
-			RelationParticipator that)
+	public static Relation getRelationTo(RelationParticipator me, RelationParticipator that)
 	{
 		return getRelationTo(that, me, false);
 	}
 
-	public static Relation getRelationTo(RelationParticipator me,
-			RelationParticipator that, boolean ignorePeaceful)
+	public static Relation getRelationTo(RelationParticipator me, RelationParticipator that, boolean ignorePeaceful)
 	{
 		Faction fthat = getFaction(that);
 		if (fthat == null) return Relation.NEUTRAL; // ERROR

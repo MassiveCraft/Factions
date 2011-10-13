@@ -391,13 +391,13 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 	@Override
 	public String describeTo(RelationParticipator that, boolean ucfirst)
 	{
-		return RelationUtil.describeThatToMe(that, this, ucfirst);
+		return RelationUtil.describeThatToMe(this, that, ucfirst);
 	}
 	
 	@Override
 	public String describeTo(RelationParticipator that)
 	{
-		return RelationUtil.describeThatToMe(that, this);
+		return RelationUtil.describeThatToMe(this, that);
 	}
 	
 	@Override

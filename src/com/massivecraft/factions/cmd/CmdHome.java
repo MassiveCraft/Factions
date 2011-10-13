@@ -131,9 +131,9 @@ public class CmdHome extends FCommand
 		{
 			List<Location> smokeLocations = new ArrayList<Location>();
 			smokeLocations.add(me.getLocation());
-			smokeLocations.add(me.getLocation().add(0, 1, 0));
+			smokeLocations.add(me.getLocation().clone().add(0, 1, 0));
 			smokeLocations.add(myFaction.getHome());
-			smokeLocations.add(myFaction.getHome().add(0, 1, 0));
+			smokeLocations.add(myFaction.getHome().clone().add(0, 1, 0));
 			SmokeUtil.spawnCloudRandom(smokeLocations, Conf.homesTeleportCommandSmokeEffectThickness);
 		}
 		

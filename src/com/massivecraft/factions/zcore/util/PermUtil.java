@@ -82,6 +82,8 @@ public class PermUtil {
 	 */
 	public boolean has (CommandSender me, String perm)
 	{
+		if (me == null) return false;
+		
 		if ( ! (me instanceof Player))
 		{
 			return me.hasPermission(perm);
@@ -108,7 +110,7 @@ public class PermUtil {
 		{
 			return true;
 		}
-		else if (informSenderIfNot)
+		else if (informSenderIfNot && me != null)
 		{
 			me.sendMessage(this.getForbiddenMessage(perm));
 		}
