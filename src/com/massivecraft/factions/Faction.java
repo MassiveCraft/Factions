@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.iface.RelationParticipator;
 import com.massivecraft.factions.integration.Econ;
+import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.*;
@@ -631,26 +632,31 @@ public class Faction extends Entity implements EconomyParticipator
 
 	public boolean playerHasOwnershipRights(FPlayer fplayer, FLocation loc)
 	{
-		// sufficient role to bypass ownership?
-		if (fplayer.getFaction() == this && fplayer.getRole().isAtLeast(Conf.ownedAreaModeratorsBypass ? Role.MODERATOR : Role.ADMIN))
+		// in own faction, with sufficient role or permission to bypass ownership?
+		if
+		(
+			fplayer.getFaction() == this
+			&&
+			(
+				fplayer.getRole().isAtLeast(Conf.ownedAreaModeratorsBypass ? Role.MODERATOR : Role.ADMIN)
+				||
+				Permission.OWNERSHIP_BYPASS.has(fplayer.getPlayer())
+			)
+		)
 		{
 			return true;
 		}
 
 		// make sure claimOwnership is initialized
 		if (claimOwnership.isEmpty())
-		{
 			return true;
-		}
 
 		// need to check the ownership list, then
 		Set<String> ownerData = claimOwnership.get(loc);
 
 		// if no owner list, owner list is empty, or player is in owner list, they're allowed
 		if (ownerData == null || ownerData.isEmpty() || ownerData.contains(fplayer.getName().toLowerCase()))
-		{
 			return true;
-		}
 
 		return false;
 	}

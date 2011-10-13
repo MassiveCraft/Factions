@@ -231,6 +231,9 @@ public class FactionsPlayerListener extends PlayerListener
 			Faction myFaction = me.getFaction();
 			// TODO: Why is this ("cost") here and unused??? Should it be used somewhere Brettflan? :)
 			// Olof just commented it out to avoid the error.
+			// So sayeth Brettflan, answered in a comment since you asked in a comment:
+			// NOTHING MORE TODO: it was used, but apparently not needed after some changes including this commit: https://github.com/MassiveCraft/Factions/commit/5eaf9c68358c6076bb856baf80fd6496e2ab02ce
+			//
 			//Faction otherFaction = Board.getFactionAt(to);
 			//double cost = Econ.calculateClaimCost(myFaction.getLandRounded(), otherFaction.isNormal());
 
@@ -323,90 +326,74 @@ public class FactionsPlayerListener extends PlayerListener
 	{
 		FPlayer me = FPlayers.i.get(player);
 		if (me.isAdminBypassing())
-		{
 			return true;
-		}
 
 		FLocation loc = new FLocation(location);
 		Faction otherFaction = Board.getFactionAt(loc);
 
-		if (otherFaction.hasPlayersOnline()){
+		if (otherFaction.hasPlayersOnline())
+		{
 			if ( ! Conf.territoryDenyUseageMaterials.contains(material))
-			{
 				return true; // Item isn't one we're preventing for online factions.
-			}
 		}
 		else
 		{
 			if ( ! Conf.territoryDenyUseageMaterialsWhenOffline.contains(material))
-			{
 				return true; // Item isn't one we're preventing for offline factions.
-			}
 		}
-
-		
 
 		if (otherFaction.isNone())
 		{
 			if (!Conf.wildernessDenyUseage || Conf.worldsNoWildernessProtection.contains(location.getWorld().getName()))
-			{
 				return true; // This is not faction territory. Use whatever you like here.
-			}
 			
 			if (!justCheck)
-			{
 				me.sendMessage("You can't use "+TextUtil.getMaterialName(material)+" in the wilderness.");
-			}
+
 			return false;
 		}
 		else if (otherFaction.isSafeZone())
 		{
 			if (!Conf.safeZoneDenyUseage || Permission.MANAGE_SAFE_ZONE.has(player))
-			{
 				return true;
-			}
+
 			if (!justCheck)
-			{
 				me.sendMessage("You can't use "+TextUtil.getMaterialName(material)+" in a safe zone.");
-			}
+
 			return false;
 		}
 		else if (otherFaction.isWarZone())
 		{
 			if (!Conf.warZoneDenyUseage || Permission.MANAGE_WAR_ZONE.has(player))
-			{
 				return true;
-			}
+
 			if (!justCheck)
-			{
 				me.sendMessage("You can't use "+TextUtil.getMaterialName(material)+" in a war zone.");
-			}
+
 			return false;
 		}
-		
+
 		Faction myFaction = me.getFaction();
 		Relation rel = myFaction.getRelationTo(otherFaction);
-		boolean ownershipFail = Conf.ownedAreasEnabled && Conf.ownedAreaDenyUseage && !otherFaction.playerHasOwnershipRights(me, loc);
-		
+
 		// Cancel if we are not in our own territory
-		if (!rel.isMember() && rel.confDenyUseage())
+		if (rel.confDenyUseage())
 		{
 			if (!justCheck)
-			{
 				me.sendMessage("You can't use "+TextUtil.getMaterialName(material)+" in the territory of "+otherFaction.getTag(myFaction));
-			}
+
 			return false;
 		}
+
 		// Also cancel if player doesn't have ownership rights for this claim
-		else if (rel.isMember() && ownershipFail && ! Permission.OWNERSHIP_BYPASS.has(player))
+		if (Conf.ownedAreasEnabled && Conf.ownedAreaDenyUseage && !otherFaction.playerHasOwnershipRights(me, loc))
 		{
 			if (!justCheck)
-			{
-				me.sendMessage("You can't use "+TextUtil.getMaterialName(material)+" in this territory, it is owned by: "+myFaction.getOwnerListString(loc));
-			}
+				me.sendMessage("You can't use "+TextUtil.getMaterialName(material)+" in this territory, it is owned by: "+otherFaction.getOwnerListString(loc));
+
 			return false;
 		}
-		
+
 		return true;
 	}
 
@@ -414,9 +401,7 @@ public class FactionsPlayerListener extends PlayerListener
 	{
 		FPlayer me = FPlayers.i.get(player);
 		if (me.isAdminBypassing())
-		{
 			return true;
-		}
 
 		Material material = block.getType();
 		FLocation loc = new FLocation(block);
@@ -424,47 +409,38 @@ public class FactionsPlayerListener extends PlayerListener
 
 		// no door/chest/whatever protection in wilderness, war zones, or safe zones
 		if (!otherFaction.isNormal())
-		{
 			return true;
-		}
 
 		// We only care about some material types.
 		if (otherFaction.hasPlayersOnline())
 		{
 			if ( ! Conf.territoryProtectedMaterials.contains(material))
-			{
 				return true;
-			}
 		}
 		else
 		{
 			if ( ! Conf.territoryProtectedMaterialsWhenOffline.contains(material))
-			{
 				return true;
-			}
 		}
-		
-		
+
 		Faction myFaction = me.getFaction();
 		Relation rel = myFaction.getRelationTo(otherFaction);
-		boolean ownershipFail = Conf.ownedAreasEnabled && Conf.ownedAreaProtectMaterials && !otherFaction.playerHasOwnershipRights(me, loc);
-		
+
 		// You may use any block unless it is another faction's territory...
 		if (rel.isNeutral() || (rel.isEnemy() && Conf.territoryEnemyProtectMaterials) || (rel.isAlly() && Conf.territoryAllyProtectMaterials))
 		{
 			if (!justCheck)
-			{
 				me.sendMessage("You can't use "+TextUtil.getMaterialName(material)+" in the territory of "+otherFaction.getTag(myFaction));
-			}
+
 			return false;
 		}
+
 		// Also cancel if player doesn't have ownership rights for this claim
-		else if (rel.isMember() && ownershipFail && ! Permission.OWNERSHIP_BYPASS.has(player))
+		if (Conf.ownedAreasEnabled && Conf.ownedAreaProtectMaterials && !otherFaction.playerHasOwnershipRights(me, loc))
 		{
 			if (!justCheck)
-			{
-				me.sendMessage("You can't use "+TextUtil.getMaterialName(material)+" in this territory, it is owned by: "+myFaction.getOwnerListString(loc));
-			}
+				me.sendMessage("You can't use "+TextUtil.getMaterialName(material)+" in this territory, it is owned by: "+otherFaction.getOwnerListString(loc));
+
 			return false;
 		}
 

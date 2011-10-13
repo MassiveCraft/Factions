@@ -117,14 +117,17 @@ public class FactionsEntityListener extends EntityListener
 		Location loc = event.getLocation();
 		
 		Faction faction = Board.getFactionAt(new FLocation(loc));
-		boolean online = faction.hasPlayersOnline();
-		
+
 		if (faction.noExplosionsInTerritory())
 		{
 			// faction is peaceful and has explosions set to disabled
 			event.setCancelled(true);
+			return;
 		}
-		else if
+
+		boolean online = faction.hasPlayersOnline();
+
+		if
 		(
 			event.getEntity() instanceof Creeper
 			&&
@@ -418,9 +421,7 @@ public class FactionsEntityListener extends EntityListener
 			return;
 		}
 
-		FLocation loc = new FLocation(event.getPainting().getLocation());
-
-		if ( ! this.playerCanDoPaintings((Player)breaker, loc, "remove"))
+		if ( ! FactionsBlockListener.playerCanBuildDestroyBlock((Player)breaker, event.getPainting().getLocation(), "remove paintings", false))
 		{
 			event.setCancelled(true);
 		}
@@ -431,69 +432,10 @@ public class FactionsEntityListener extends EntityListener
 	{
 		if (event.isCancelled()) return;
 
-		if ( ! this.playerCanDoPaintings(event.getPlayer(), new FLocation(event.getBlock()), "place"))
+		if ( ! FactionsBlockListener.playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock().getLocation(), "place paintings", false) )
 		{
 			event.setCancelled(true);
 		}
-	}
-
-	public boolean playerCanDoPaintings(Player player, FLocation loc, String action)
-	{
-		FPlayer me = FPlayers.i.get(player);
-		if (me.isAdminBypassing())
-		{
-			return true;
-		}
-
-		Faction otherFaction = Board.getFactionAt(loc);
-
-		if (otherFaction.isNone())
-		{
-			if (!Conf.wildernessDenyBuild || Conf.worldsNoWildernessProtection.contains(player.getWorld().getName()))
-			{
-				return true; // This is not faction territory. Use whatever you like here.
-			}
-			me.sendMessage("You can't "+action+" paintings in the wilderness.");
-			return false;
-		}
-
-		if (otherFaction.isSafeZone())
-		{
-			if (Permission.MANAGE_SAFE_ZONE.has(player) || !Conf.safeZoneDenyBuild)
-			{
-				return true;
-			}
-			me.sendMessage("You can't "+action+" paintings in a safe zone.");
-			return false;
-		}
-		else if (otherFaction.isWarZone())
-		{
-			if (Permission.MANAGE_WAR_ZONE.has(player) || !Conf.warZoneDenyBuild)
-			{
-				return true;
-			}
-			me.sendMessage("You can't "+action+" paintings in a war zone.");
-			return false;
-		}
-
-		Faction myFaction = me.getFaction();
-		Relation rel = myFaction.getRelationTo(otherFaction);
-		boolean ownershipFail = Conf.ownedAreasEnabled && Conf.ownedAreaDenyBuild && !otherFaction.playerHasOwnershipRights(me, loc);
-
-		// Cancel if we are not in our own territory and building should be denied
-		if (!rel.isMember() && rel.confDenyBuild(otherFaction.hasPlayersOnline()))
-		{
-			me.sendMessage("You can't "+action+" paintings in the territory of "+otherFaction.getTag(myFaction));
-			return false;
-		}
-		// Also cancel if player doesn't have ownership rights for this claim
-		else if (rel.isMember() && ownershipFail && !Permission.OWNERSHIP_BYPASS.has(player))
-		{
-			me.sendMessage("You can't "+action+" paintings in this territory, it is owned by: "+otherFaction.getOwnerListString(loc));
-			return false;
-		}
-
-		return true;
 	}
 
 	@Override
