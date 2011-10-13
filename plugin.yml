@@ -12,6 +12,10 @@ permissions:
       factions.lock: true
       factions.reload: true
       factions.save: true
+  factions.*:
+    description: This is just an alias for factions.kit.admin
+    children:
+      factions.kit.admin: true
   factions.kit.mod:
     description: All faction permissions but configuration and persistance.
     children:
@@ -20,7 +24,7 @@ permissions:
       factions.setpermanent: true
       factions.setpeaceful: true
       factions.sethome.any: true
-      factions.money.withdraw.any: true
+      factions.money.*: true
   factions.kit.halfmod:
     description: Zones, bypassing, and kicking
     children:
@@ -55,13 +59,7 @@ permissions:
       factions.list: true
       factions.map: true
       factions.mod: true
-      factions.money.balance: true
-      factions.money.balance.any: true
-      factions.money.deposit: true
-      factions.money.withdraw: true
-      factions.money.f2f: true
-      factions.money.f2p: true
-      factions.money.p2f: true
+      factions.money.kit.standard: true
       factions.noboom: true
       factions.open: true
       factions.owner: true
@@ -140,9 +138,18 @@ permissions:
     description: transfer money from faction to player
   factions.money.p2f:
     description: transfer money from player to faction
-  factions.money.*:
+  factions.money.kit.standard:
     children:
       factions.money.balance: true
+      factions.money.balance.any: true
+      factions.money.deposit: true
+      factions.money.withdraw: true
+      factions.money.f2f: true
+      factions.money.f2p: true
+      factions.money.p2f: true
+  factions.money.*:
+    children:
+      factions.money.kit.standard: true
       factions.money.balance.any: true
       factions.money.deposit: true
       factions.money.withdraw: true
