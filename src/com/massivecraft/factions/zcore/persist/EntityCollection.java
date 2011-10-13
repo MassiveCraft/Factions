@@ -217,8 +217,13 @@ public abstract class EntityCollection<E extends Entity>
 	
 	public String getNextId()
 	{
-		this.nextId += 1;
-		return "" + (nextId - 1);
+		String next = Integer.toString(this.nextId);
+		do
+		{
+			this.nextId += 1;
+		} while ( ! isIdFree(Integer.toString(this.nextId)) );
+
+		return next;
 	}
 	
 	public boolean isIdFree(String id)

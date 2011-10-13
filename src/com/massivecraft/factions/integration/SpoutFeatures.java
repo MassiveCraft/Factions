@@ -41,7 +41,7 @@ public class SpoutFeatures
 			{
 				listenersHooked = true;
 				mainListener = new SpoutMainListener();
-				P.p.getServer().getPluginManager().registerEvent(Event.Type.CUSTOM_EVENT, mainListener, Event.Priority.Normal, P.p);
+				P.p.registerEvent(Event.Type.CUSTOM_EVENT, mainListener, Event.Priority.Normal);
 			}
 		}
 		else

@@ -44,7 +44,7 @@ public class CmdDisband extends FCommand
 		}
 		else
 		{
-			if ( ! Permission.DISBAND_ANY.has(me, true))
+			if ( ! Permission.DISBAND_ANY.has(sender, true))
 			{
 				return;
 			}
@@ -69,7 +69,8 @@ public class CmdDisband extends FCommand
 				fplayer.msg("<h>%s<i> disbanded the faction %s.", who, faction.getTag(fplayer));
 			}
 		}
-		
+		P.p.log("The faction "+faction.getTag()+" ("+faction.getId()+") was disbanded by "+(senderIsConsole ? "console command" : fme.getName())+".");
+
 		if (Econ.shouldBeUsed())
 		{
 			//Give all the faction's money to the disbander
