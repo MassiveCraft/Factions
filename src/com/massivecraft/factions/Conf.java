@@ -182,13 +182,19 @@ public class Conf
 	public static transient Set<CreatureType> safeZoneNerfedCreatureTypes = EnumSet.noneOf(CreatureType.class);
 
 	// Spout features
-	public static boolean spoutFactionTagsOverNames = true;
-	public static boolean spoutFactionTitlesOverNames = true;
-	public static boolean spoutFactionAdminCapes = true; // TODO: What are these for?
-	public static boolean spoutFactionModeratorCapes = true;
-	public static int spoutTerritoryDisplayPosition = 3;
-	public static float spoutTerritoryDisplaySize = 1.0f;
-	public static boolean spoutTerritoryDisplayShowDescription = true;
+	public static boolean spoutFactionTagsOverNames = true;  // show faction tags over names over player heads
+	public static boolean spoutFactionTitlesOverNames = true;  // whether to include player's title in that
+	public static boolean spoutFactionAdminCapes = true;  // Show capes on faction admins, colored based on the viewer's relation to the target player
+	public static boolean spoutFactionModeratorCapes = true;  // same, but for faction moderators
+	public static int spoutTerritoryDisplayPosition = 3;  // permanent territory display, instead of by chat; 0 = disabled, 1 = top left, 2 = top center, 3+ = top right
+	public static float spoutTerritoryDisplaySize = 1.0f;  // text scale (size) for territory display
+	public static boolean spoutTerritoryDisplayShowDescription = true;  // whether to show the faction description, not just the faction tag
+	public static boolean spoutTerritoryOwnersShow = true;  // show territory owner list as well
+	public static boolean spoutTerritoryNoticeShow = true;  // show additional brief territory notice near center of screen, to be sure player notices transition
+	public static int spoutTerritoryNoticeTop = 40;  // how far down the screen to place the additional notice
+	public static boolean spoutTerritoryNoticeShowDescription = false;  // whether to show the faction description in the notice, not just the faction tag
+	public static float spoutTerritoryNoticeSize = 1.5f;  // text scale (size) for notice
+	public static float spoutTerritoryNoticeLeaveAfterSeconds = 2.00f;  // how many seconds before the notice goes away
 	public static String capeAlly = "https://github.com/MassiveCraft/Factions/raw/master/capes/ally.png";
 	public static String capeEnemy = "https://github.com/MassiveCraft/Factions/raw/master/capes/enemy.png";
 	public static String capeMember = "https://github.com/MassiveCraft/Factions/raw/master/capes/member.png";

@@ -53,13 +53,7 @@ public class SpoutFeatures
 	// If any Spout feature is enabled in conf.json, and we're successfully hooked into it
 	public static boolean enabled()
 	{
-		return spoutMe && (
-				   Conf.spoutFactionTagsOverNames
-				|| Conf.spoutFactionTitlesOverNames
-				|| Conf.spoutFactionAdminCapes
-				|| Conf.spoutFactionModeratorCapes
-				|| Conf.spoutTerritoryDisplayPosition > 0
-				);
+		return spoutMe;
 	}
 
 
@@ -67,21 +61,26 @@ public class SpoutFeatures
 	public static boolean updateTerritoryDisplay(FPlayer player)
 	{
 		if (!enabled())
-		{
 			return false;
-		}
 
 		return mainListener.updateTerritoryDisplay(player);
+	}
+
+	// update owner list for specified player
+	public static void updateOwnerList(FPlayer player)
+	{
+		if (!enabled())
+			return;
+
+		mainListener.updateOwnerList(player);
 	}
 
 	public static void playerDisconnect(FPlayer player)
 	{
 		if (!enabled())
-		{
 			return;
-		}
 
-		mainListener.removeTerritoryLabel(player.getName());
+		mainListener.removeTerritoryLabels(player.getName());
 	}
 
 
@@ -267,26 +266,30 @@ public class SpoutFeatures
 	{
 		if (inColor == null)
 		{
-			return new Color(191, 191, 191, alpha);
+			return SpoutFixedColor(191, 191, 191, alpha);
 		}
 		switch (inColor.getCode())
 		{
-			case 0x1:	return new Color(0, 0, 191, alpha);
-			case 0x2:	return new Color(0, 191, 0, alpha);
-			case 0x3:	return new Color(0, 191, 191, alpha);
-			case 0x4:	return new Color(191, 0, 0, alpha);
-			case 0x5:	return new Color(191, 0, 191, alpha);
-			case 0x6:	return new Color(191, 191, 0, alpha);
-			case 0x7:	return new Color(191, 191, 191, alpha);
-			case 0x8:	return new Color(64, 64, 64, alpha);
-			case 0x9:	return new Color(64, 64, 255, alpha);
-			case 0xA:	return new Color(64, 255, 64, alpha);
-			case 0xB:	return new Color(64, 255, 255, alpha);
-			case 0xC:	return new Color(255, 64, 64, alpha);
-			case 0xD:	return new Color(255, 64, 255, alpha);
-			case 0xE:	return new Color(255, 255, 64, alpha);
-			case 0xF:	return new Color(255, 255, 255, alpha);
-			default:	return new Color(0, 0, 0, alpha);
+			case 0x1:	return SpoutFixedColor(0, 0, 191, alpha);
+			case 0x2:	return SpoutFixedColor(0, 191, 0, alpha);
+			case 0x3:	return SpoutFixedColor(0, 191, 191, alpha);
+			case 0x4:	return SpoutFixedColor(191, 0, 0, alpha);
+			case 0x5:	return SpoutFixedColor(191, 0, 191, alpha);
+			case 0x6:	return SpoutFixedColor(191, 191, 0, alpha);
+			case 0x7:	return SpoutFixedColor(191, 191, 191, alpha);
+			case 0x8:	return SpoutFixedColor(64, 64, 64, alpha);
+			case 0x9:	return SpoutFixedColor(64, 64, 255, alpha);
+			case 0xA:	return SpoutFixedColor(64, 255, 64, alpha);
+			case 0xB:	return SpoutFixedColor(64, 255, 255, alpha);
+			case 0xC:	return SpoutFixedColor(255, 64, 64, alpha);
+			case 0xD:	return SpoutFixedColor(255, 64, 255, alpha);
+			case 0xE:	return SpoutFixedColor(255, 255, 64, alpha);
+			case 0xF:	return SpoutFixedColor(255, 255, 255, alpha);
+			default:	return SpoutFixedColor(0, 0, 0, alpha);
 		}
+	}
+	private static Color SpoutFixedColor(int r, int g, int b, int a)
+	{
+		return new Color(r/255.0f, g/255.0f, b/255.0f, a/255.0f);
 	}
 }

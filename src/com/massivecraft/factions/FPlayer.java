@@ -151,7 +151,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		}
 	}
 	
-	public void resetFactionData(boolean doSpotUpdate)
+	public final void resetFactionData(boolean doSpotUpdate)
 	{
 		// clean up any territory ownership in old faction, if there is one
 		if (Factions.i.exists(this.getFactionId()))

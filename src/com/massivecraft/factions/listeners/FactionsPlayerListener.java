@@ -204,24 +204,48 @@ public class FactionsPlayerListener extends PlayerListener
 			if (factionFrom != factionTo)
 			{
 				me.sendFactionHereMessage();
-				if (Conf.ownedAreasEnabled && Conf.ownedMessageOnBorder && myFaction == factionTo && !ownersTo.isEmpty())
+				if
+				(
+					Conf.ownedAreasEnabled
+					&&
+					Conf.ownedMessageOnBorder
+					&&
+					(
+						!SpoutFeatures.enabled()
+						||
+						!Conf.spoutTerritoryOwnersShow
+					)
+					&&
+					myFaction == factionTo
+					&&
+					!ownersTo.isEmpty()
+				)
 				{
 					me.sendMessage(Conf.ownedLandMessage+ownersTo);
 				}
 			}
-			else if (Conf.ownedAreasEnabled && Conf.ownedMessageInsideTerritory && factionFrom == factionTo && myFaction == factionTo)
+			else if (SpoutFeatures.enabled() && Conf.spoutTerritoryOwnersShow)
+			{
+				SpoutFeatures.updateOwnerList(me);
+			}
+			else if
+			(
+				Conf.ownedAreasEnabled
+				&&
+				Conf.ownedMessageInsideTerritory
+				&&
+				factionFrom == factionTo
+				&&
+				myFaction == factionTo
+			)
 			{
 				String ownersFrom = myFaction.getOwnerListString(from);
 				if (Conf.ownedMessageByChunk || !ownersFrom.equals(ownersTo))
 				{
 					if (!ownersTo.isEmpty())
-					{
 						me.sendMessage(Conf.ownedLandMessage+ownersTo);
-					}
 					else if (!Conf.publicLandMessage.isEmpty())
-					{
 						me.sendMessage(Conf.publicLandMessage);
-					}
 				}
 			}
 		}
