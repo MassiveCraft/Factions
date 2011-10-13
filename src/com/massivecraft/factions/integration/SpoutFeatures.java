@@ -180,13 +180,11 @@ public class SpoutFeatures
 	private static void updateSingle(Player viewer, Player viewed, Relation relation, Faction viewedFaction, String viewedTitle, Role viewedRole)
 	{
 		if (viewer == null || viewed == null)
-		{
 			return;
-		}
 
 		SpoutPlayer sPlayer = SpoutManager.getPlayer(viewer);
 
-		if (Conf.spoutFactionTagsOverNames || Conf.spoutFactionTitlesOverNames)
+		if ((Conf.spoutFactionTagsOverNames || Conf.spoutFactionTitlesOverNames) && viewer != viewed)
 		{
 			if (viewedFaction.isNormal())
 			{
