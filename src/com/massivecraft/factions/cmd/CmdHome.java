@@ -1,5 +1,8 @@
 package com.massivecraft.factions.cmd;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -13,6 +16,7 @@ import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.zcore.util.SmokeUtil;
 
 public class CmdHome extends FCommand
 {
@@ -122,6 +126,17 @@ public class CmdHome extends FCommand
 		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
 		if ( ! payForCommand(Conf.econCostHome, "to change faction home", "for changing faction home")) return;
 
+		// Create a smoke effect
+		if (Conf.homesTeleportCommandSmokeEffectEnabled)
+		{
+			List<Location> smokeLocations = new ArrayList<Location>();
+			smokeLocations.add(me.getLocation());
+			smokeLocations.add(me.getLocation().add(0, 1, 0));
+			smokeLocations.add(myFaction.getHome());
+			smokeLocations.add(myFaction.getHome().add(0, 1, 0));
+			SmokeUtil.spawnCloudRandom(smokeLocations, Conf.homesTeleportCommandSmokeEffectThickness);
+		}
+		
 		me.teleport(myFaction.getHome());
 	}
 	
