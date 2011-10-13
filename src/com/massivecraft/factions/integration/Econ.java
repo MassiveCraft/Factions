@@ -16,6 +16,7 @@ import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.iface.EconomyParticipator;
+import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.RelationUtil;
 
@@ -94,6 +95,9 @@ public class Econ
 		
 		// Bypassing players can do any kind of transaction
 		if (i instanceof FPlayer && ((FPlayer)i).isAdminBypassing()) return true;
+		
+		// Players with the any withdraw can to.
+		if (i instanceof FPlayer && Permission.MONEY_WITHDRAW_ANY.has(((FPlayer)i).getPlayer())) return true;
 		
 		// You can deposit to anywhere you feel like. It's your loss if you can't withdraw it again.
 		if (i == you) return true;

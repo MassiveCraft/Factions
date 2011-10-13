@@ -44,6 +44,7 @@ public class PermUtil {
 	{
 		for(Permission permission : p.getDescription().getPermissions())
 		{
+			//p.log("\""+permission.getName()+"\" = \""+permission.getDescription()+"\"");
 			this.permissionDescriptions.put(permission.getName(), permission.getDescription());
 		}
 		

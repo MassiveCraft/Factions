@@ -11,14 +11,14 @@ public class CmdMoneyDeposit extends FCommand
 	public CmdMoneyDeposit()
 	{
 		super();
+		this.aliases.add("d");
 		this.aliases.add("deposit");
 		
 		this.requiredArgs.add("amount");
 		this.optionalArgs.put("faction", "yours");
 		
 		this.permission = Permission.MONEY_DEPOSIT.node;
-		this.isMoneyCommand = true;
-		this.isBankCommand = true;
+		this.setHelpShort("deposit money");
 		
 		senderMustBePlayer = true;
 		senderMustBeMember = false;
@@ -29,7 +29,7 @@ public class CmdMoneyDeposit extends FCommand
 	@Override
 	public void perform()
 	{
-		double amount = this.argAsDouble(0, 0);
+		double amount = this.argAsDouble(0, 0d);
 		Faction faction = this.argAsFaction(1, myFaction);
 		if (faction == null) return;
 		Econ.transferMoney(fme, fme, faction, amount);
