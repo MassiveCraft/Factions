@@ -50,10 +50,16 @@ public class SpoutFeatures
 		}
 	}
 
-	// If any Spout feature is enabled in conf.json, and we're successfully hooked into it
+	// If we're successfully hooked into Spout
 	public static boolean enabled()
 	{
 		return spoutMe;
+	}
+
+	// If Spout is available and the specified Player is running the Spoutcraft client
+	public static boolean availableFor(Player player)
+	{
+		return spoutMe && SpoutManager.getPlayer(player).isSpoutCraftEnabled();
 	}
 
 

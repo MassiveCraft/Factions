@@ -201,6 +201,8 @@ public class FactionsPlayerListener extends PlayerListener
 			Faction factionTo = Board.getFactionAt(to);
 			Faction myFaction = me.getFaction();
 			String ownersTo = myFaction.getOwnerListString(to);
+			boolean spoutClient = SpoutFeatures.availableFor(player);
+
 			if (factionFrom != factionTo)
 			{
 				me.sendFactionHereMessage();
@@ -211,7 +213,7 @@ public class FactionsPlayerListener extends PlayerListener
 					Conf.ownedMessageOnBorder
 					&&
 					(
-						!SpoutFeatures.enabled()
+						!spoutClient
 						||
 						!Conf.spoutTerritoryOwnersShow
 					)
@@ -224,7 +226,7 @@ public class FactionsPlayerListener extends PlayerListener
 					me.sendMessage(Conf.ownedLandMessage+ownersTo);
 				}
 			}
-			else if (SpoutFeatures.enabled() && Conf.spoutTerritoryOwnersShow)
+			else if (spoutClient && Conf.spoutTerritoryOwnersShow)
 			{
 				SpoutFeatures.updateOwnerList(me);
 			}
