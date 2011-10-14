@@ -121,6 +121,15 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 	
 	// FIELD: chatMode
 	private ChatMode chatMode;
+	public void setChatMode(ChatMode chatMode) { this.chatMode = chatMode; }
+	public ChatMode getChatMode()
+	{
+		if(this.factionId.equals("0") || ! Conf.factionOnlyChat)
+		{
+			this.chatMode = ChatMode.PUBLIC;
+		}
+		return chatMode;
+	}
 	
 	// FIELD: account
 	public MethodAccount getAccount()
@@ -188,22 +197,6 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 	
 	
 	
-	
-	
-	
-	public ChatMode getChatMode()
-	{
-		if(this.factionId.equals("0"))
-		{
-			return ChatMode.PUBLIC;
-		}
-		return chatMode;
-	}
-
-	public void setChatMode(ChatMode chatMode)
-	{
-		this.chatMode = chatMode;
-	}
 	
 	public long getLastLoginTime()
 	{

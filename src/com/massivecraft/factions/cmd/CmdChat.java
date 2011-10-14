@@ -30,7 +30,7 @@ public class CmdChat extends FCommand
 	{
 		if ( ! Conf.factionOnlyChat )
 		{
-			msg("<b>Faction-only chat is disabled on this server.");
+			msg("<b>The built in chat chat channels are disabled on this server.");
 			return;
 		}
 		
