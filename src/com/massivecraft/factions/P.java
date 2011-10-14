@@ -33,6 +33,7 @@ import com.earth2me.essentials.chat.EssentialsChat;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.massivecraft.factions.integration.EssentialsFeatures;
+import com.massivecraft.factions.integration.capi.CapiFeatures;
 
 public class P extends MPlugin
 {
@@ -92,6 +93,7 @@ public class P extends MPlugin
 		setupSpout(this);
 		Econ.doSetup();
 		Econ.oldMoneyDoTransfer();
+		CapiFeatures.setup();
 		
 		if(Conf.worldGuardChecking)
 		{

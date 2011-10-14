@@ -180,10 +180,10 @@ public abstract class MPlugin extends JavaPlugin
 
 	public boolean handleCommand(CommandSender sender, String commandString, boolean testOnly)
 	{
-		boolean noSlash = false;
+		boolean noSlash = true;
 		if (commandString.startsWith("/"))
 		{
-			noSlash = true;
+			noSlash = false;
 			commandString = commandString.substring(1);
 		}
 		
