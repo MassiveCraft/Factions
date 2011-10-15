@@ -13,7 +13,7 @@ public class CmdSafeunclaimall extends FCommand
 		this.aliases.add("safedeclaimall");
 		
 		//this.requiredArgs.add("");
-		this.optionalArgs.put("radius", "0");
+		//this.optionalArgs.put("radius", "0");
 		
 		this.permission = Permission.MANAGE_SAFE_ZONE.node;
 		this.disableOnLock = true;

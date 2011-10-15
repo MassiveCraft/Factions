@@ -17,7 +17,7 @@ public class CmdLock extends FCommand {
 		this.aliases.add("lock");
 		
 		//this.requiredArgs.add("");
-		this.optionalArgs.put("on/off", "flipp");
+		this.optionalArgs.put("on/off", "flip");
 		
 		this.permission = Permission.LOCK.node;
 		this.disableOnLock = false;

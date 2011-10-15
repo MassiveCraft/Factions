@@ -58,7 +58,7 @@ public class Econ
 		}
 		else
 		{
-			P.p.log("Economy integration failed. The plugin \"Register\" is not installed.");
+			P.p.log("Economy integration is "+(Conf.econEnabled ? "enabled, but" : "disabled, and")+" the plugin \"Register\" is not installed.");
 		}
 		
 		P.p.cmdBase.cmdHelp.updateHelp();

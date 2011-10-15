@@ -12,10 +12,10 @@ public class CmdAutoWarclaim extends FCommand
 	public CmdAutoWarclaim()
 	{
 		super();
-		this.aliases.add("autosafe");
+		aliases.add("autowar");
 		
 		//this.requiredArgs.add("");
-		this.optionalArgs.put("on/off", "flipp");
+		this.optionalArgs.put("on/off", "flip");
 		
 		this.permission = Permission.MANAGE_WAR_ZONE.node;
 		this.disableOnLock = true;
@@ -24,8 +24,6 @@ public class CmdAutoWarclaim extends FCommand
 		senderMustBeMember = false;
 		senderMustBeModerator = true;
 		senderMustBeAdmin = false;
-		
-		aliases.add("autowar");
 
 		this.setHelpShort("Auto-claim land for the warzone");
 	}

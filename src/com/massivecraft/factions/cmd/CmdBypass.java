@@ -11,7 +11,7 @@ public class CmdBypass extends FCommand
 		this.aliases.add("bypass");
 		
 		//this.requiredArgs.add("");
-		this.optionalArgs.put("on/off", "flipp");
+		this.optionalArgs.put("on/off", "flip");
 		
 		this.permission = Permission.BYPASS.node;
 		this.disableOnLock = false;

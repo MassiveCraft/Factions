@@ -11,7 +11,7 @@ public class CmdBoom extends FCommand
 		this.aliases.add("noboom");
 		
 		//this.requiredArgs.add("");
-		this.optionalArgs.put("on/off", "flipp");
+		this.optionalArgs.put("on/off", "flip");
 		
 		this.permission = Permission.NO_BOOM.node;
 		this.disableOnLock = true;

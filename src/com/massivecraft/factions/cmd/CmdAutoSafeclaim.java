@@ -14,7 +14,7 @@ public class CmdAutoSafeclaim extends FCommand
 		this.aliases.add("autosafe");
 		
 		//this.requiredArgs.add("");
-		this.optionalArgs.put("on/off", "flipp");
+		this.optionalArgs.put("on/off", "flip");
 		
 		this.permission = Permission.MANAGE_SAFE_ZONE.node;
 		this.disableOnLock = true;
