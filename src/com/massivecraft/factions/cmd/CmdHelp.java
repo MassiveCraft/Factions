@@ -2,6 +2,7 @@ package com.massivecraft.factions.cmd;
 
 import java.util.ArrayList;
 
+import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Permission;
@@ -83,13 +84,13 @@ public class CmdHelp extends FCommand
 		pageLines.add( p.cmdBase.cmdSethome.getUseageTemplate(true) );
 		helpPages.add(pageLines);
 		
-		if (Econ.shouldBeUsed())
+		if (Econ.isSetup() && Conf.bankEnabled)
 		{
 			pageLines = new ArrayList<String>();
 			pageLines.add( "" );
 			pageLines.add( p.txt.parse("<i>Your faction has a bank which is used to pay for certain" ));
 			pageLines.add( p.txt.parse("<i>things, so it will need to have money deposited into it." ));
-			pageLines.add( p.txt.parse("<i>To lear more use the money command." ));
+			pageLines.add( p.txt.parse("<i>To learn more, use the money command." ));
 			pageLines.add( "" );
 			pageLines.add( p.cmdBase.cmdMoney.getUseageTemplate(true) );
 			pageLines.add( "" );

@@ -50,11 +50,10 @@ public class Econ
 		{
 			register = (Register)plug;
 				
-			P.p.log("Economy integration through register successful.");
+			P.p.log("Economy integration through Register plugin successful.");
+
 			if ( ! Conf.econEnabled)
-			{
 				P.p.log("NOTE: Economy is disabled. Enable in conf \"econEnabled\": true");
-			}
 		}
 		else
 		{

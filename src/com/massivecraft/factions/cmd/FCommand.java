@@ -70,13 +70,13 @@ public abstract class FCommand extends MCommand<P>
 		
 		if (this.isMoneyCommand && ! Conf.econEnabled)
 		{
-			msg("<b>Faction economy features are diabled on this server.");
+			msg("<b>Faction economy features are disabled on this server.");
 			return false;
 		}
 		
 		if (this.isMoneyCommand && ! Conf.bankEnabled)
 		{
-			msg("<b>The faction bank system is diabled on this server.");
+			msg("<b>The faction bank system is disabled on this server.");
 			return false;
 		}
 		
