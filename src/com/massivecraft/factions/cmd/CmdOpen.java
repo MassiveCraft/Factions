@@ -13,7 +13,7 @@ public class CmdOpen extends FCommand
 		this.aliases.add("open");
 		
 		//this.requiredArgs.add("");
-		this.optionalArgs.put("yes/no", "flipp");
+		this.optionalArgs.put("yes/no", "flip");
 		
 		this.permission = Permission.OPEN.node;
 		this.disableOnLock = false;

@@ -43,7 +43,7 @@ public class Conf
 	public static boolean showEnemyFactionsOnMap = true;
 	
 	// Disallow joining/leaving/kicking while power is negative
-	public static boolean CanLeaveWithNegativePower = true;
+	public static boolean canLeaveWithNegativePower = true;
 	
 	// Configuration for faction-only chat
 	public static boolean factionOnlyChat = true;
@@ -250,6 +250,7 @@ public class Conf
 
 		territoryProtectedMaterials.add(Material.WOODEN_DOOR);
 		territoryProtectedMaterials.add(Material.TRAP_DOOR);
+		territoryProtectedMaterials.add(Material.FENCE_GATE);
 		territoryProtectedMaterials.add(Material.DISPENSER);
 		territoryProtectedMaterials.add(Material.CHEST);
 		territoryProtectedMaterials.add(Material.FURNACE);
@@ -264,6 +265,7 @@ public class Conf
 
 		territoryProtectedMaterialsWhenOffline.add(Material.WOODEN_DOOR);
 		territoryProtectedMaterialsWhenOffline.add(Material.TRAP_DOOR);
+		territoryProtectedMaterialsWhenOffline.add(Material.FENCE_GATE);
 		territoryProtectedMaterialsWhenOffline.add(Material.DISPENSER);
 		territoryProtectedMaterialsWhenOffline.add(Material.CHEST);
 		territoryProtectedMaterialsWhenOffline.add(Material.FURNACE);

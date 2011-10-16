@@ -577,7 +577,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 			return;
 		}
 
-		if (!Conf.CanLeaveWithNegativePower && this.getPower() < 0)
+		if (!Conf.canLeaveWithNegativePower && this.getPower() < 0)
 		{
 			msg("<b>You cannot leave until your power is positive.");
 			return;

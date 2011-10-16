@@ -12,7 +12,7 @@ public class CmdAutoClaim extends FCommand
 		this.aliases.add("autoclaim");
 		
 		//this.requiredArgs.add("");
-		this.optionalArgs.put("on/off", "flipp");
+		this.optionalArgs.put("on/off", "flip");
 		
 		this.permission = Permission.AUTOCLAIM.node;
 		this.disableOnLock = true;

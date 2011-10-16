@@ -47,7 +47,7 @@ public class CmdJoin extends FCommand
 			return;
 		}
 		
-		if (!Conf.CanLeaveWithNegativePower && fme.getPower() < 0)
+		if (!Conf.canLeaveWithNegativePower && fme.getPower() < 0)
 		{
 			msg("<b>You cannot join a faction until your power is positive.");
 			return;
