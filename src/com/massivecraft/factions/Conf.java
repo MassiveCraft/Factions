@@ -58,8 +58,8 @@ public class Conf
 	public static boolean chatTagPadBefore = false;
 	public static boolean chatTagPadAfter = true;
 	public static String chatTagFormat = "%s"+ChatColor.WHITE;
-	public static String factionChatFormat = "%s"+ChatColor.WHITE+" %s";
-	public static String allianceChatFormat = "%s"+ChatColor.WHITE+" %s";
+	public static String factionChatFormat = "%s:"+ChatColor.WHITE+" %s";
+	public static String allianceChatFormat = ChatColor.LIGHT_PURPLE+"%s:"+ChatColor.WHITE+" %s";
 	
 	public static double autoLeaveAfterDaysOfInactivity = 14.0;
 	

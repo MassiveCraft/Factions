@@ -73,21 +73,19 @@ public class FactionsChatEarlyListener extends PlayerListener
 		{
 			Faction myFaction = me.getFaction();
 			
-			String factionAndName = ChatColor.stripColor(me.getNameAndTag());
-			String message = Conf.colorAlly+factionAndName+ChatColor.WHITE+" "+msg;
+			String message = String.format(Conf.allianceChatFormat, ChatColor.stripColor(me.getNameAndTag()), msg);
 			
 			//Send message to our own faction
 			myFaction.sendMessage(message);
+
+			//Send to all our allies
 			for (FPlayer fplayer : FPlayers.i.getOnline())
 			{
 				if(myFaction.getRelationTo(fplayer) == Relation.ALLY)
-				{
-					//Send to all our allies
 					fplayer.sendMessage(message);	
-				}
 			}
 			
-			P.p.log(Level.INFO, ChatColor.stripColor("AllianceChat "+me.getFaction().getTag()+": "+message));
+			P.p.log(Level.INFO, ChatColor.stripColor("AllianceChat: "+message));
 			
 			event.setCancelled(true);
 			return;
