@@ -3,6 +3,10 @@ version: 1.6.0_dev
 main: com.massivecraft.factions.P
 authors: [Olof Larsson, Brett Flannigan]
 softdepend: [PermissionsEx, Permissions, Essentials, EssentialsChat, HeroChat, iChat, LocalAreaChat, nChat, ChatManager, CAPI, AuthMe, Register, Spout, WorldEdit, WorldGuard]
+commands:
+  factions:
+    description: Reference command for Factions.
+    aliases: [f]
 permissions:
   factions.kit.admin:
     description: All faction permissions.
