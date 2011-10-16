@@ -119,7 +119,12 @@ public abstract class MPlugin extends JavaPlugin
 	
 	public void registerEvent(Event.Type type, Listener listener, Event.Priority priority)
 	{
-		Bukkit.getServer().getPluginManager().registerEvent(type, listener, priority, this);	
+		Bukkit.getServer().getPluginManager().registerEvent(type, listener, priority, this);
+	}
+	
+	public void registerEvent(Event.Type type, Listener listener)
+	{
+		registerEvent(type, listener, Event.Priority.Normal);
 	}
 	
 	// -------------------------------------------- //
