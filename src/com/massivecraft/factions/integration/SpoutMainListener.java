@@ -3,6 +3,8 @@ package com.massivecraft.factions.integration;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.bukkit.entity.Player;
+
 import com.massivecraft.factions.Board;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FLocation;
@@ -44,7 +46,11 @@ public class SpoutMainListener extends SpoutListener
 
 	public boolean updateTerritoryDisplay(FPlayer player)
 	{
-		SpoutPlayer sPlayer = SpoutManager.getPlayer(player.getPlayer());
+		Player p = player.getPlayer();
+		if (p == null)
+			return false;
+
+		SpoutPlayer sPlayer = SpoutManager.getPlayer(p);
 		if (!sPlayer.isSpoutCraftEnabled() || (Conf.spoutTerritoryDisplaySize <= 0 && ! Conf.spoutTerritoryNoticeShow))
 			return false;
 

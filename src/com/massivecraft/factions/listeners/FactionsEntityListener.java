@@ -324,7 +324,7 @@ public class FactionsEntityListener extends EntityListener
 		// You can not hurt neutral factions
 		if (Conf.disablePVPBetweenNeutralFactions && relation.isNeutral())
 		{
-			attacker.sendMessage("You can't hurt neutral factions");
+			attacker.sendMessage("You can't hurt neutral factions. Declare them as an enemy.");
 			return false;
 		}
 		
@@ -346,7 +346,7 @@ public class FactionsEntityListener extends EntityListener
 		// You can not hurt neutrals in their own territory.
 		if (ownTerritory && relation.isNeutral())
 		{
-			attacker.sendMessage(p.txt.parse("<i>You can't hurt "+relation.getColor()+defender.getNameAndRelevant(attacker)+"<i> in their own territory."));
+			attacker.sendMessage(p.txt.parse("<i>You can't hurt "+relation.getColor()+defender.getNameAndRelevant(attacker)+"<i> in their own territory unless you declare them as an enemy."));
 			defender.sendMessage(p.txt.parse(attacker.getNameAndRelevant(defender)+"<i> tried to hurt you."));
 			return false;
 		}

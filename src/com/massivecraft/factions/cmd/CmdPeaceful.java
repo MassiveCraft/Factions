@@ -49,11 +49,11 @@ public class CmdPeaceful extends FCommand
 		{
 			if (fplayer.getFaction() == faction)
 			{
-				fplayer.msg(fme.getNameAndRelevant(fplayer)+"<i> has "+change+" your faction.");
+				fplayer.msg((fme == null ? "A server admin" : fme.getNameAndRelevant(fplayer))+"<i> has "+change+" your faction.");
 			}
 			else
 			{
-				fplayer.msg(fme.getNameAndRelevant(fplayer)+"<i> has "+change+" the faction \"" + faction.getTag(fplayer) + "\".");
+				fplayer.msg((fme == null ? "A server admin" : fme.getNameAndRelevant(fplayer))+"<i> has "+change+" the faction \"" + faction.getTag(fplayer) + "\".");
 			}
 		}
 
