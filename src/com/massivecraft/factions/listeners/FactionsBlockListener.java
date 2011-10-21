@@ -175,7 +175,7 @@ public class FactionsBlockListener extends BlockListener
 				return true; // This is not faction territory. Use whatever you like here.
 
 			if (!justCheck)
-				me.sendMessage("You can't "+action+" in the wilderness.");
+				me.msg("<b>You can't "+action+" in the wilderness.");
 
 			return false;
 		}
@@ -185,7 +185,7 @@ public class FactionsBlockListener extends BlockListener
 				return true;
 
 			if (!justCheck)
-				me.sendMessage("You can't "+action+" in a safe zone.");
+				me.msg("<b>You can't "+action+" in a safe zone.");
 
 			return false;
 		}
@@ -195,7 +195,7 @@ public class FactionsBlockListener extends BlockListener
 				return true;
 
 			if (!justCheck)
-				me.sendMessage("You can't "+action+" in a war zone.");
+				me.msg("<b>You can't "+action+" in a war zone.");
 
 			return false;
 		}
@@ -212,14 +212,14 @@ public class FactionsBlockListener extends BlockListener
 			player.damage(Conf.actionDeniedPainAmount);
 
 			if (!deny)
-				me.sendMessage("It is painful to try to "+action+" in the territory of "+otherFaction.getTag(myFaction));
+				me.msg("<b>It is painful to try to "+action+" in the territory of "+otherFaction.getTag(myFaction));
 		}
 
 		// cancel building/destroying in other territory?
 		if (deny)
 		{
 			if (!justCheck)
-				me.sendMessage("You can't "+action+" in the territory of "+otherFaction.getTag(myFaction));
+				me.msg("<b>You can't "+action+" in the territory of "+otherFaction.getTag(myFaction));
 
 			return false;
  		}
@@ -232,12 +232,12 @@ public class FactionsBlockListener extends BlockListener
 				player.damage(Conf.actionDeniedPainAmount);
 
 				if (!Conf.ownedAreaDenyBuild)
-					me.sendMessage("It is painful to try to "+action+" in this territory, it is owned by: "+otherFaction.getOwnerListString(loc));
+					me.msg("<b>It is painful to try to "+action+" in this territory, it is owned by: "+otherFaction.getOwnerListString(loc));
 			}
 			if (Conf.ownedAreaDenyBuild)
 			{
 				if (!justCheck)
-					me.sendMessage("You can't "+action+" in this territory, it is owned by: "+otherFaction.getOwnerListString(loc));
+					me.msg("<b>You can't "+action+" in this territory, it is owned by: "+otherFaction.getOwnerListString(loc));
 
 				return false;
 			}

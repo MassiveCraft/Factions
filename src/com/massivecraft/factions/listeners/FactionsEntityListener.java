@@ -58,31 +58,31 @@ public class FactionsEntityListener extends EntityListener
 			// war zones always override worldsNoPowerLoss either way, thus this layout
 			if (! Conf.warZonePowerLoss)
 			{
-				fplayer.sendMessage("You didn't lose any power since you were in a war zone.");
+				fplayer.msg("<i>You didn't lose any power since you were in a war zone.");
 				return;
 			}
 			if (Conf.worldsNoPowerLoss.contains(player.getWorld().getName()))
 			{
-				fplayer.sendMessage("The world you are in has power loss normally disabled, but you still lost power since you were in a war zone.");
+				fplayer.msg("<b>The world you are in has power loss normally disabled, but you still lost power since you were in a war zone.");
 			}
 		}
 		else if (faction.isNone() && !Conf.wildernessPowerLoss && !Conf.worldsNoWildernessProtection.contains(player.getWorld().getName()))
 		{
-			fplayer.sendMessage("You didn't lose any power since you were in the wilderness.");
+			fplayer.msg("<i>You didn't lose any power since you were in the wilderness.");
 			return;
 		}
 		else if (Conf.worldsNoPowerLoss.contains(player.getWorld().getName()))
 		{
-			fplayer.sendMessage("You didn't lose any power due to the world you died in.");
+			fplayer.msg("<i>You didn't lose any power due to the world you died in.");
 			return;
 		}
 		else if (Conf.peacefulMembersDisablePowerLoss && fplayer.hasFaction() && fplayer.getFaction().isPeaceful())
 		{
-			fplayer.sendMessage("You didn't lose any power since you are in a peaceful faction.");
+			fplayer.msg("<i>You didn't lose any power since you are in a peaceful faction.");
 			return;
 		}
 		fplayer.onDeath();
-		fplayer.sendMessage("Your power is now "+fplayer.getPowerRounded()+" / "+fplayer.getPowerMaxRounded());
+		fplayer.msg("<i>Your power is now <h>"+fplayer.getPowerRounded()+" / "+fplayer.getPowerMaxRounded());
 	}
 	
 	/**
@@ -92,17 +92,20 @@ public class FactionsEntityListener extends EntityListener
 	 * I can hurt neutrals as long as they are outside their own territory.
 	 */
 	@Override
-	public void onEntityDamage(EntityDamageEvent event) {
-		if ( event.isCancelled()) {
-			return;
-		}
+	public void onEntityDamage(EntityDamageEvent event)
+	{
+		if ( event.isCancelled()) return;
 		
-		if (event instanceof EntityDamageByEntityEvent) {
+		if (event instanceof EntityDamageByEntityEvent)
+		{
 			EntityDamageByEntityEvent sub = (EntityDamageByEntityEvent)event;
-			if ( ! this.canDamagerHurtDamagee(sub)) {
+			if ( ! this.canDamagerHurtDamagee(sub))
+			{
     			event.setCancelled(true);
     		}
-		} else if (Conf.safeZonePreventAllDamageToPlayers && isPlayerInSafeZone(event.getEntity())) {
+		}
+		else if (Conf.safeZonePreventAllDamageToPlayers && isPlayerInSafeZone(event.getEntity()))
+		{
 			// Players can not take any damage in a Safe Zone
 			event.setCancelled(true);
 		}
@@ -249,7 +252,7 @@ public class FactionsEntityListener extends EntityListener
 			if (damager instanceof Player)
 			{
 				FPlayer attacker = FPlayers.i.get((Player)damager);
-				attacker.sendMessage("You can't hurt other players in "+(defLocFaction.isSafeZone() ? "a SafeZone." : "peaceful territory."));
+				attacker.msg("<i>You can't hurt other players in "+(defLocFaction.isSafeZone() ? "a SafeZone." : "peaceful territory."));
 				return false;
 			}
 			return !defLocFaction.noMonstersInTerritory();
@@ -269,7 +272,7 @@ public class FactionsEntityListener extends EntityListener
 		
 		if (attacker.hasLoginPvpDisabled())
 		{
-			attacker.sendMessage("You can't hurt other players for " + Conf.noPVPDamageToOthersForXSecondsAfterLogin + " seconds after logging in.");
+			attacker.msg("<i>You can't hurt other players for " + Conf.noPVPDamageToOthersForXSecondsAfterLogin + " seconds after logging in.");
 			return false;
 		}
 		
@@ -278,7 +281,7 @@ public class FactionsEntityListener extends EntityListener
 		// so we know from above that the defender isn't in a safezone... what about the attacker, sneaky dog that he might be?
 		if (locFaction.noPvPInTerritory())
 		{
-			attacker.sendMessage("You can't hurt other players while you are in "+(locFaction.isSafeZone() ? "a SafeZone." : "peaceful territory."));
+			attacker.msg("<i>You can't hurt other players while you are in "+(locFaction.isSafeZone() ? "a SafeZone." : "peaceful territory."));
 			return false;
 		}
 		else if (locFaction.isWarZone() && Conf.warZoneFriendlyFire)
@@ -291,7 +294,7 @@ public class FactionsEntityListener extends EntityListener
 		
 		if (attackFaction.isNone() && Conf.disablePVPForFactionlessPlayers)
 		{
-			attacker.sendMessage("You can't hurt other players until you join a faction.");
+			attacker.msg("<i>You can't hurt other players until you join a faction.");
 			return false;
 		}
 		else if (defendFaction.isNone())
@@ -303,19 +306,19 @@ public class FactionsEntityListener extends EntityListener
 			}
 			else if (Conf.disablePVPForFactionlessPlayers)
 			{
-				attacker.sendMessage("You can't hurt players who are not currently in a faction.");
+				attacker.msg("<i>You can't hurt players who are not currently in a faction.");
 				return false;
 			}
 		}
 		
 		if (defendFaction.isPeaceful())
 		{
-			attacker.sendMessage("You can't hurt players who are in a peaceful faction.");
+			attacker.msg("<i>You can't hurt players who are in a peaceful faction.");
 			return false;
 		}
 		else if (attackFaction.isPeaceful())
 		{
-			attacker.sendMessage("You can't hurt players while you are in a peaceful faction.");
+			attacker.msg("<i>You can't hurt players while you are in a peaceful faction.");
 			return false;
 		}
 		
@@ -324,7 +327,7 @@ public class FactionsEntityListener extends EntityListener
 		// You can not hurt neutral factions
 		if (Conf.disablePVPBetweenNeutralFactions && relation.isNeutral())
 		{
-			attacker.sendMessage("You can't hurt neutral factions. Declare them as an enemy.");
+			attacker.msg("<i>You can't hurt neutral factions. Declare them as an enemy.");
 			return false;
 		}
 		
@@ -337,7 +340,7 @@ public class FactionsEntityListener extends EntityListener
 		// You can never hurt faction members or allies
 		if (relation.isMember() || relation.isAlly())
 		{
-			attacker.sendMessage(p.txt.parse("<i>You can't hurt "+defender.getNameAndRelevant(attacker)));
+			attacker.msg("<i>You can't hurt "+defender.getNameAndRelevant(attacker));
 			return false;
 		}
 		
@@ -346,8 +349,8 @@ public class FactionsEntityListener extends EntityListener
 		// You can not hurt neutrals in their own territory.
 		if (ownTerritory && relation.isNeutral())
 		{
-			attacker.sendMessage(p.txt.parse("<i>You can't hurt "+relation.getColor()+defender.getNameAndRelevant(attacker)+"<i> in their own territory unless you declare them as an enemy."));
-			defender.sendMessage(p.txt.parse(attacker.getNameAndRelevant(defender)+"<i> tried to hurt you."));
+			attacker.msg("<i>You can't hurt "+relation.getColor()+defender.getNameAndRelevant(attacker)+"<i> in their own territory unless you declare them as an enemy.");
+			defender.msg(attacker.getNameAndRelevant(defender)+"<i> tried to hurt you.");
 			return false;
 		}
 		
@@ -359,7 +362,7 @@ public class FactionsEntityListener extends EntityListener
 			
 			// Send message
 		    String perc = MessageFormat.format("{0,number,#%}", (Conf.territoryShieldFactor)); // TODO does this display correctly??
-		    defender.sendMessage(p.txt.parse("<i>Enemy damage reduced by "+ChatColor.RED+perc+"<i>."));
+		    defender.msg("<i>Enemy damage reduced by "+ChatColor.RED+perc+"<i>.");
 		}
 		
 		return true;

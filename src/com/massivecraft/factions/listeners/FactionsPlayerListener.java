@@ -265,17 +265,17 @@ public class FactionsPlayerListener extends PlayerListener
 
 			if (me.getRole().value < Role.MODERATOR.value)
 			{
-				me.sendMessage("You must be "+Role.MODERATOR+" to claim land.");
+				me.msg("<b>You must be <h>%s<b> to claim land.", Role.MODERATOR.toString());
 				me.setIsAutoClaimEnabled(false);
 			}
 			else if (Conf.worldsNoClaiming.contains(to.getWorldName()))
 			{
-				me.sendMessage("Sorry, this world has land claiming disabled.");
+				me.msg("<b>Sorry, this world has land claiming disabled.");
 				me.setIsAutoClaimEnabled(false);
 			}
 			else if (myFaction.getLandRounded() >= myFaction.getPowerRounded())
 			{
-				me.sendMessage("You can't claim more land! You need more power!");
+				me.msg("<b>You can't claim more land! You need more power!");
 				me.setIsAutoClaimEnabled(false);
 			}
 			else
@@ -294,7 +294,7 @@ public class FactionsPlayerListener extends PlayerListener
 				if (!Board.getFactionAt(playerFlocation).isSafeZone())
 				{
 					Board.setFactionAt(Factions.i.getSafeZone(), playerFlocation);
-					me.sendMessage("This land is now a safe zone.");
+					me.msg("<i>This land is now a safe zone.");
 				}
 			}
 		}
@@ -311,7 +311,7 @@ public class FactionsPlayerListener extends PlayerListener
 				if (!Board.getFactionAt(playerFlocation).isWarZone())
 				{
 					Board.setFactionAt(Factions.i.getWarZone(), playerFlocation);
-					me.sendMessage("This land is now a war zone.");
+					me.msg("<i>This land is now a war zone.");
 				}
 			}
 		}
@@ -374,7 +374,7 @@ public class FactionsPlayerListener extends PlayerListener
 				return true; // This is not faction territory. Use whatever you like here.
 			
 			if (!justCheck)
-				me.sendMessage("You can't use "+TextUtil.getMaterialName(material)+" in the wilderness.");
+				me.msg("<b>You can't use <h>%s<b> in the wilderness.", TextUtil.getMaterialName(material));
 
 			return false;
 		}
@@ -384,7 +384,7 @@ public class FactionsPlayerListener extends PlayerListener
 				return true;
 
 			if (!justCheck)
-				me.sendMessage("You can't use "+TextUtil.getMaterialName(material)+" in a safe zone.");
+				me.msg("<b>You can't use <h>%s<b> in a safe zone.", TextUtil.getMaterialName(material));
 
 			return false;
 		}
@@ -394,7 +394,7 @@ public class FactionsPlayerListener extends PlayerListener
 				return true;
 
 			if (!justCheck)
-				me.sendMessage("You can't use "+TextUtil.getMaterialName(material)+" in a war zone.");
+				me.msg("<b>You can't use <h>%s<b> in a war zone.", TextUtil.getMaterialName(material));
 
 			return false;
 		}
@@ -406,7 +406,7 @@ public class FactionsPlayerListener extends PlayerListener
 		if (rel.confDenyUseage())
 		{
 			if (!justCheck)
-				me.sendMessage("You can't use "+TextUtil.getMaterialName(material)+" in the territory of "+otherFaction.getTag(myFaction));
+				me.msg("<b>You can't use <h>%s<b> in the territory of <h>%s<b>.", TextUtil.getMaterialName(material), otherFaction.getTag(myFaction));
 
 			return false;
 		}
@@ -415,7 +415,7 @@ public class FactionsPlayerListener extends PlayerListener
 		if (Conf.ownedAreasEnabled && Conf.ownedAreaDenyUseage && !otherFaction.playerHasOwnershipRights(me, loc))
 		{
 			if (!justCheck)
-				me.sendMessage("You can't use "+TextUtil.getMaterialName(material)+" in this territory, it is owned by: "+otherFaction.getOwnerListString(loc));
+				me.msg("<b>You can't use <h>%s<b> in this territory, it is owned by: %s<b>.", TextUtil.getMaterialName(material), otherFaction.getOwnerListString(loc));
 
 			return false;
 		}
@@ -456,7 +456,7 @@ public class FactionsPlayerListener extends PlayerListener
 		if (rel.isNeutral() || (rel.isEnemy() && Conf.territoryEnemyProtectMaterials) || (rel.isAlly() && Conf.territoryAllyProtectMaterials))
 		{
 			if (!justCheck)
-				me.sendMessage("You can't use "+TextUtil.getMaterialName(material)+" in the territory of "+otherFaction.getTag(myFaction));
+				me.msg("<b>You can't use <h>%s<b> in the territory of <h>%s<b>.", TextUtil.getMaterialName(material), otherFaction.getTag(myFaction));
 
 			return false;
 		}
@@ -465,8 +465,8 @@ public class FactionsPlayerListener extends PlayerListener
 		if (Conf.ownedAreasEnabled && Conf.ownedAreaProtectMaterials && !otherFaction.playerHasOwnershipRights(me, loc))
 		{
 			if (!justCheck)
-				me.sendMessage("You can't use "+TextUtil.getMaterialName(material)+" in this territory, it is owned by: "+otherFaction.getOwnerListString(loc));
-
+				me.msg("<b>You can't use <h>%s<b> in this territory, it is owned by: %s<b>.", TextUtil.getMaterialName(material), otherFaction.getOwnerListString(loc));
+			
 			return false;
 		}
 
@@ -584,7 +584,7 @@ public class FactionsPlayerListener extends PlayerListener
 				cmdCheck = cmdCheck.toLowerCase();
 				if (fullCmd.startsWith(cmdCheck) || shortCmd.startsWith(cmdCheck))
 				{
-					me.sendMessage("You can't use the command \""+fullCmd+"\" in neutral territory.");
+					me.msg("<b>You can't use the command \""+fullCmd+"\" in neutral territory.");
 					return true;
 				}
 			}
@@ -612,7 +612,7 @@ public class FactionsPlayerListener extends PlayerListener
 				cmdCheck = cmdCheck.toLowerCase();
 				if (fullCmd.startsWith(cmdCheck) || shortCmd.startsWith(cmdCheck))
 				{
-					me.sendMessage("You can't use the command \""+fullCmd+"\" in enemy territory.");
+					me.msg("<b>You can't use the command \""+fullCmd+"\" in enemy territory.");
 					return true;
 				}
 			}

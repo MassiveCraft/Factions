@@ -784,24 +784,6 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		Board.setFactionAt(myFaction, flocation);
 		return true;
 	}
-
-	// -------------------------------------------- //
-	// Get and search
-	// -------------------------------------------- //
-	
-	/*private static FPlayer get(String playerName)
-	{
-		if (instances.containsKey(playerName))
-		{
-			return instances.get(playerName);
-		}
-		
-		FPlayer vplayer = new FPlayer();
-		vplayer.playerName = playerName;
-		
-		instances.put(playerName, vplayer);
-		return vplayer;
-	}*/
 	
 	// -------------------------------------------- //
 	// Persistance
@@ -812,101 +794,6 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 	{
 		return ! this.deleteMe;
 	}
-	
-	/*
-	public static boolean save()
-	{
-		//Factions.log("Saving players to disk");
-		
-		// We only wan't to save the players with non default values
-		Map<String, FPlayer> playersToSave = new HashMap<String, FPlayer>();
-		for (Entry<String, FPlayer> entry : instances.entrySet()) {
-			if (entry.getValue().shouldBeSaved()) {
-				playersToSave.put(entry.getKey(), entry.getValue());
-			}
-		}
-		
-		try {
-			DiscUtil.write(file, P.p.gson.toJson(playersToSave));
-		} catch (Exception e) {
-			e.printStackTrace();
-			P.log("Failed to save the players to disk.");
-			return false;
-		}
-		return true;
-	}
-	
-	public static boolean load() {
-		P.log("Loading players from disk");
-		if ( ! file.exists()) {
-			if ( ! loadOld())
-				P.log("No players to load from disk. Creating new file.");
-			save();
-			return true;
-		}
-		
-		try {
-			Type type = new TypeToken<Map<String, FPlayer>>(){}.getType();
-			Map<String, FPlayer> instancesFromFile = P.p.gson.fromJson(DiscUtil.read(file), type);
-			instances.clear();
-			instances.putAll(instancesFromFile);
-		} catch (Exception e) {
-			e.printStackTrace();
-			P.log("Failed to load the players from disk.");
-			return false;
-		}
-		
-		fillPlayernames();
-			
-		return true;
-	}
-	
-	public static void fillPlayernames() {
-		for(Entry<String, FPlayer> entry : instances.entrySet()) {
-			entry.getValue().playerName = entry.getKey();
-		}
-	}
-	*/
-	
-
-	/*private static boolean loadOld()
-	{
-		File folderFollower = new File(P.p.getDataFolder(), "follower");
-
-		if ( ! folderFollower.isDirectory()) return false;
-
-		p.log("Players file doesn't exist, attempting to load old pre-1.1 data.");
-
-		String ext = ".json";
-
-		class jsonFileFilter implements FileFilter
-		{
-			@Override
-			public boolean accept(File file)
-			{
-				return (file.getName().toLowerCase().endsWith(".json") && file.isFile());
-			}
-		}
-
-		File[] jsonFiles = folderFollower.listFiles(new jsonFileFilter());
-
-		for (File jsonFile : jsonFiles) {
-			// Extract the name from the filename. The name is filename minus ".json"
-			String name = jsonFile.getName();
-			name = name.substring(0, name.length() - ext.length());
-			try {
-				FPlayer follower = P.p.gson.fromJson(DiscUtil.read(jsonFile), FPlayer.class);
-				follower.playerName = name;
-				follower.lastLoginTime = System.currentTimeMillis();
-				instances.put(follower.playerName, follower);
-				P.log("loaded pre-1.1 follower "+name);
-			} catch (Exception e) {
-				e.printStackTrace();
-				P.log(Level.WARNING, "failed to load follower "+name);
-			}
-		}
-		return true;
-	}*/
 	
 	public void msg(String str, Object... args)
 	{
