@@ -39,6 +39,6 @@ public class CmdBoom extends FCommand
 		String enabled = myFaction.noExplosionsInTerritory() ? "disabled" : "enabled";
 
 		// Inform
-		myFaction.msg("%s<i> has "+enabled+" explosions in your faction's territory.", fme.getNameAndRelevant(myFaction));
+		myFaction.msg("%s<i> has "+enabled+" explosions in your faction's territory.", fme.describeTo(myFaction));
 	}
 }
