@@ -645,7 +645,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 			return false;
 		}
 
-		if (this.getRole().value < Role.MODERATOR.value)
+		if (this.getRole().value < Role.MODERATOR.value && ! this.isAdminBypassing())
 		{
 			msg("<i>You must be "+Role.MODERATOR+" to claim land.");
 			return false;
