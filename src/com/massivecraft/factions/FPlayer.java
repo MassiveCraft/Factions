@@ -312,11 +312,11 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 	
 	public String getNameAndTitle(Faction faction)
 	{
-		return this.getRelationColor(faction)+this.getNameAndTitle();
+		return this.getColorTo(faction)+this.getNameAndTitle();
 	}
 	public String getNameAndTitle(FPlayer fplayer)
 	{
-		return this.getRelationColor(fplayer)+this.getNameAndTitle();
+		return this.getColorTo(fplayer)+this.getNameAndTitle();
 	}
 	
 	/*public String getNameAndTag(Faction faction)
@@ -372,11 +372,12 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 	
 	public String getChatTag(FPlayer fplayer)
 	{
-		if ( ! this.hasFaction()) {
+		if ( ! this.hasFaction())
+		{
 			return "";
 		}
 		
-		return this.getRelationTo(fplayer).getColor()+getChatTag();
+		return this.getColorTo(fplayer)+getChatTag();
 	}
 	
 	// -------------------------------
@@ -413,9 +414,9 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 	}
 	
 	@Override
-	public ChatColor getRelationColor(RelationParticipator rp)
+	public ChatColor getColorTo(RelationParticipator rp)
 	{
-		return RelationUtil.getRelationColor(this, rp);
+		return RelationUtil.getColorOfThatToMe(this, rp);
 	}
 	
 	//----------------------------------------------//

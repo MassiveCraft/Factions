@@ -12,5 +12,5 @@ public interface RelationParticipator
 	public Relation getRelationTo(RelationParticipator that);
 	public Relation getRelationTo(RelationParticipator that, boolean ignorePeaceful);
 	
-	public ChatColor getRelationColor(RelationParticipator to);
+	public ChatColor getColorTo(RelationParticipator to);
 }

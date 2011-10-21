@@ -68,14 +68,14 @@ public class Faction extends Entity implements EconomyParticipator
 		{
 			return getTag();
 		}
-		return this.getTag(otherFaction.getRelationColor(this).toString());
+		return this.getTag(otherFaction.getColorTo(this).toString());
 	}
 	public String getTag(FPlayer otherFplayer) {
 		if (otherFplayer == null)
 		{
 			return getTag();
 		}
-		return this.getTag(otherFplayer.getRelationColor(this).toString());
+		return this.getTag(this.getColorTo(otherFplayer).toString());
 	}
 	public void setTag(String str)
 	{
@@ -216,9 +216,9 @@ public class Faction extends Entity implements EconomyParticipator
 	}
 	
 	@Override
-	public ChatColor getRelationColor(RelationParticipator rp)
+	public ChatColor getColorTo(RelationParticipator rp)
 	{
-		return RelationUtil.getRelationColor(this, rp);
+		return RelationUtil.getColorOfThatToMe(this, rp);
 	}
 	
 	public Relation getRelationWish(Faction otherFaction)
@@ -248,31 +248,38 @@ public class Faction extends Entity implements EconomyParticipator
 	public double getPower()
 	{
 		double ret = 0;
-		for (FPlayer fplayer : this.getFPlayers()) {
+		for (FPlayer fplayer : this.getFPlayers())
+		{
 			ret += fplayer.getPower();
 		}
-		if (Conf.powerFactionMax > 0 && ret > Conf.powerFactionMax) {
+		if (Conf.powerFactionMax > 0 && ret > Conf.powerFactionMax)
+		{
 			ret = Conf.powerFactionMax;
 		}
 		return ret;
 	}
 	
-	public double getPowerMax() {
+	public double getPowerMax()
+	{
 		double ret = 0;
-		for (FPlayer fplayer : this.getFPlayers()) {
+		for (FPlayer fplayer : this.getFPlayers())
+		{
 			ret += fplayer.getPowerMax();
 		}
-		if (Conf.powerFactionMax > 0 && ret > Conf.powerFactionMax) {
+		if (Conf.powerFactionMax > 0 && ret > Conf.powerFactionMax)
+		{
 			ret = Conf.powerFactionMax;
 		}
 		return ret;
 	}
 	
-	public int getPowerRounded() {
+	public int getPowerRounded()
+	{
 		return (int) Math.round(this.getPower());
 	}
 	
-	public int getPowerMaxRounded() {
+	public int getPowerMaxRounded()
+	{
 		return (int) Math.round(this.getPowerMax());
 	}
 	
@@ -280,11 +287,13 @@ public class Faction extends Entity implements EconomyParticipator
 		return Board.getFactionCoordCount(this);
 	}
 	
-	public int getLandRoundedInWorld(String worldName) {
+	public int getLandRoundedInWorld(String worldName)
+	{
 		return Board.getFactionCoordCountInWorld(this, worldName);
 	}
 	
-	public boolean hasLandInflation() {
+	public boolean hasLandInflation()
+	{
 		return this.getLandRounded() > this.getPowerRounded();
 	}
 	
@@ -431,20 +440,6 @@ public class Faction extends Entity implements EconomyParticipator
 	}
 	
 	//----------------------------------------------//
-	// Mudd TODO
-	//----------------------------------------------//
-	
-	public ChatColor getRelationColor(Faction otherFaction)
-	{
-		return this.getRelationTo(otherFaction).getColor();
-	}
-	
-	public ChatColor getRelationColor(FPlayer fplayer)
-	{
-		return this.getRelationTo(fplayer).getColor();
-	}
-	
-	//----------------------------------------------//
 	// Ownership of specific claims
 	//----------------------------------------------//
 
@@ -539,7 +534,8 @@ public class Faction extends Entity implements EconomyParticipator
 	public void removePlayerAsOwner(String playerName, FLocation loc)
 	{
 		Set<String> ownerData = claimOwnership.get(loc);
-		if (ownerData == null) {
+		if (ownerData == null)
+		{
 			return;
 		}
 		ownerData.remove(playerName.toLowerCase());

@@ -2,6 +2,7 @@ package com.massivecraft.factions.util;
 
 import org.bukkit.ChatColor;
 
+import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.iface.RelationParticipator;
@@ -53,7 +54,7 @@ public class RelationUtil
 			ret = TextUtil.upperCaseFirst(ret);
 		}
 
-		return "" + getRelationColor(me, that) + ret;
+		return "" + getColorOfThatToMe(that, me) + ret;
 	}
 
 	public static String describeThatToMe(RelationParticipator that, RelationParticipator me)
@@ -113,8 +114,12 @@ public class RelationUtil
 		return null;
 	}
 
-	public static ChatColor getRelationColor(RelationParticipator me, RelationParticipator that)
+	public static ChatColor getColorOfThatToMe(RelationParticipator that, RelationParticipator me)
 	{
+		if (getFaction(that) != null && getFaction(that).isPeaceful() && getFaction(that) != getFaction(me))
+		{
+			return Conf.colorPeaceful;
+		}
 		return getRelationTo(that, me).getColor();
 	}
 }

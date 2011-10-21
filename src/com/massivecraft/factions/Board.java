@@ -212,7 +212,7 @@ public class Board
 					if (factionHere.isNone()) {
 						row += ChatColor.GRAY+"-";
 					} else if (factionHere.isSafeZone()) {
-						row += ChatColor.GOLD+"+";
+						row += Conf.colorPeaceful+"+";
 					} else if (factionHere.isWarZone()) {
 						row += ChatColor.DARK_RED+"+";
 					} else if (
@@ -225,7 +225,7 @@ public class Board
 						if (!fList.containsKey(factionHere.getTag()))
 							fList.put(factionHere.getTag(), Conf.mapKeyChrs[chrIdx++]);
 						char tag = fList.get(factionHere.getTag());
-						row += factionHere.getRelationTo(faction).getColor() + "" + tag;
+						row += factionHere.getColorTo(faction) + "" + tag;
 					} else {
 						row += ChatColor.GRAY+"-";
 					}
@@ -243,9 +243,11 @@ public class Board
 		ret.set(3, asciiCompass.get(2)+ret.get(3).substring(3*3));
 		
 		// Add the faction key
-		if (Conf.showMapFactionKey) {
+		if (Conf.showMapFactionKey)
+		{
 			String fRow = "";
-			for(String key : fList.keySet()) {
+			for(String key : fList.keySet())
+			{
 				fRow += String.format("%s%s: %s ", ChatColor.GRAY, fList.get(key), key);
 			}
 			ret.add(fRow);

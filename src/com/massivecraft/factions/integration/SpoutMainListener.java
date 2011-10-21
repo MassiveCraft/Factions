@@ -32,7 +32,6 @@ public class SpoutMainListener extends SpoutListener
 		updateTerritoryDisplay(me);
 	}
 
-
 	//-----------------------------------------------------------------------------------------//
 	// Everything below this is handled in here to prevent errors on servers not running Spout
 	//-----------------------------------------------------------------------------------------//
