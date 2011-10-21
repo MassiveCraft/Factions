@@ -81,30 +81,4 @@ public class FPlayers extends PlayerEntityCollection<FPlayer>
 		}
 		return null;
 	}
-	
-	/*public Set<VPlayer> findAllOnlineInfected()
-	{
-		Set<VPlayer> vplayers = new HashSet<VPlayer>();
-		for (VPlayer vplayer : this.getOnline())
-		{
-			if (vplayer.isInfected())
-			{
-				vplayers.add(vplayer);
-			}
-		}
-		return vplayers;
-	}
-	
-	public Set<VPlayer> findAllOnlineVampires()
-	{
-		Set<VPlayer> vplayers = new HashSet<VPlayer>();
-		for (VPlayer vplayer : this.getOnline())
-		{
-			if (vplayer.isVampire())
-			{
-				vplayers.add(vplayer);
-			}
-		}
-		return vplayers;
-	}*/
 }

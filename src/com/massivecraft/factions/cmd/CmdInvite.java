@@ -42,8 +42,8 @@ public class CmdInvite extends FCommand
 
 		myFaction.invite(you);
 		
-		you.msg("%s<i> invited you to %s", fme.getNameAndRelevant(you), myFaction.getTag(you));
-		myFaction.msg("%s<i> invited %s<i> to your faction.", fme.getNameAndRelevant(fme), you.getNameAndRelevant(fme));
+		you.msg("%s<i> invited you to %s", fme.describeTo(you, true), myFaction.describeTo(you));
+		myFaction.msg("%s<i> invited %s<i> to your faction.", fme.describeTo(myFaction, true), you.describeTo(myFaction));
 	}
 	
 }

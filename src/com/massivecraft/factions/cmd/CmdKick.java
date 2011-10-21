@@ -46,7 +46,7 @@ public class CmdKick extends FCommand
 		{
 			if (yourFaction != myFaction)
 			{
-				msg("%s<b> is not a member of %s", you.getNameAndRelevant(fme), myFaction.getTag(fme));
+				msg("%s<b> is not a member of %s", you.describeTo(fme, true), myFaction.describeTo(fme));
 				return;
 			}
 
@@ -67,11 +67,11 @@ public class CmdKick extends FCommand
 		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
 		if ( ! payForCommand(Conf.econCostKick, "to kick someone from the faction", "for kicking someone from the faction")) return;
 
-		yourFaction.msg("%s<i> kicked %s<i> from the faction! :O", fme.getNameAndRelevant(yourFaction), you.getNameAndRelevant(yourFaction));
-		you.msg("%s<i> kicked you from %s<i>! :O", fme.getNameAndRelevant(you), yourFaction.getTag(you));
+		yourFaction.msg("%s<i> kicked %s<i> from the faction! :O", fme.describeTo(yourFaction, true), you.describeTo(yourFaction, true));
+		you.msg("%s<i> kicked you from %s<i>! :O", fme.describeTo(you, true), yourFaction.describeTo(you));
 		if (yourFaction != myFaction)
 		{
-			fme.msg("<i>You kicked %s<i> from the faction %s<i>!", you.getNameAndRelevant(myFaction), yourFaction.getTag(fme));
+			fme.msg("<i>You kicked %s<i> from the faction %s<i>!", you.describeTo(fme), yourFaction.describeTo(fme));
 		}
 
 		yourFaction.deinvite(you);

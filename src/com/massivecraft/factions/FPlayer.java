@@ -319,16 +319,18 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		return this.getRelationColor(fplayer)+this.getNameAndTitle();
 	}
 	
-	public String getNameAndTag(Faction faction)
+	/*public String getNameAndTag(Faction faction)
 	{
 		return this.getRelationColor(faction)+this.getNameAndTag();
 	}
 	public String getNameAndTag(FPlayer fplayer)
 	{
 		return this.getRelationColor(fplayer)+this.getNameAndTag();
-	}
+	}*/
 	
-	public String getNameAndRelevant(Faction faction)
+	// TODO: REmovded for refactoring.
+	
+	/*public String getNameAndRelevant(Faction faction)
 	{
 		// Which relation?
 		Relation rel = this.getRelationTo(faction);
@@ -344,7 +346,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 	public String getNameAndRelevant(FPlayer fplayer)
 	{
 		return getNameAndRelevant(fplayer.getFaction());
-	}
+	}*/
 	
 	// Chat Tag: 
 	// These are injected into the format of global chat messages.
@@ -773,12 +775,12 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		{
 			// ASDF claimed some of your land 450 blocks NNW of you.
 			// ASDf claimed some land from FACTION NAME
-			otherFaction.sendMessage(P.p.txt.parse(this.getNameAndRelevant(otherFaction)+"<i> stole some of your land :O"));
-			myFaction.sendMessage(P.p.txt.parse(this.getNameAndRelevant(myFaction)+"<i> claimed some land from "+otherFaction.getTag(myFaction)));
+			otherFaction.msg("%s<i> stole some of your land :O", this.describeTo(otherFaction, true));
+			myFaction.msg("%s<i> claimed some land from %s.", this.describeTo(myFaction, true), otherFaction.describeTo(myFaction));
 		}
 		else
 		{
-			myFaction.sendMessage(P.p.txt.parse(this.getNameAndRelevant(myFaction)+"<i> claimed some new land :D"));
+			myFaction.msg("%s<i> claimed some new land :D", this.describeTo(myFaction));
 		}
 
 		Board.setFactionAt(myFaction, flocation);

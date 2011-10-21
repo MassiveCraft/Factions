@@ -66,7 +66,7 @@ public class CmdSethome extends FCommand
 
 		faction.setHome(me.getLocation());
 		
-		faction.msg("%s<i> set the home for your faction. You can now use:", fme.getNameAndRelevant(myFaction));
+		faction.msg("%s<i> set the home for your faction. You can now use:", fme.describeTo(myFaction, true));
 		faction.sendMessage(p.cmdBase.cmdHome.getUseageTemplate());
 		if (faction != myFaction)
 		{

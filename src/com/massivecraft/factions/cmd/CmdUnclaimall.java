@@ -88,7 +88,7 @@ public class CmdUnclaimall extends FCommand
 		}*/
 
 		Board.unclaimAll(myFaction.getId());
-		myFaction.msg("%s<i> unclaimed ALL of your faction's land.", fme.getNameAndRelevant(myFaction));
+		myFaction.msg("%s<i> unclaimed ALL of your faction's land.", fme.describeTo(myFaction, true));
 	}
 	
 }

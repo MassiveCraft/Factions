@@ -340,7 +340,7 @@ public class FactionsEntityListener extends EntityListener
 		// You can never hurt faction members or allies
 		if (relation.isMember() || relation.isAlly())
 		{
-			attacker.msg("<i>You can't hurt "+defender.getNameAndRelevant(attacker));
+			attacker.msg("<i>You can't hurt %s<i>.", defender.describeTo(attacker));
 			return false;
 		}
 		
@@ -349,8 +349,8 @@ public class FactionsEntityListener extends EntityListener
 		// You can not hurt neutrals in their own territory.
 		if (ownTerritory && relation.isNeutral())
 		{
-			attacker.msg("<i>You can't hurt "+relation.getColor()+defender.getNameAndRelevant(attacker)+"<i> in their own territory unless you declare them as an enemy.");
-			defender.msg(attacker.getNameAndRelevant(defender)+"<i> tried to hurt you.");
+			attacker.msg("<i>You can't hurt %s<i> in their own territory unless you declare them as an enemy.", defender.describeTo(attacker));
+			defender.msg("%s<i> tried to hurt you.", attacker.describeTo(defender, true));
 			return false;
 		}
 		

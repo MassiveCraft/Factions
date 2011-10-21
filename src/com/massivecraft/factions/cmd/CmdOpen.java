@@ -35,7 +35,7 @@ public class CmdOpen extends FCommand
 		String open = myFaction.getOpen() ? "open" : "closed";
 		
 		// Inform
-		myFaction.msg("%s<i> changed the faction to <h>%s<i>.", fme.getNameAndRelevant(myFaction), open);
+		myFaction.msg("%s<i> changed the faction to <h>%s<i>.", fme.describeTo(myFaction, true), open);
 		for (Faction faction : Factions.i.get())
 		{
 			if (faction == myFaction)

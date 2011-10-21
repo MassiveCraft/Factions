@@ -64,7 +64,7 @@ public class CmdUnclaim extends FCommand
 		{
 			Board.removeAt(flocation);
 
-			otherFaction.msg("%s<i> unclaimed some of your land.", fme.getNameAndRelevant(otherFaction));
+			otherFaction.msg("%s<i> unclaimed some of your land.", fme.describeTo(otherFaction, true));
 			msg("<i>You unclaimed this land.");
 			return;
 		}
@@ -148,7 +148,7 @@ public class CmdUnclaim extends FCommand
 		}
 
 		Board.removeAt(flocation);
-		myFaction.msg("%s<i> unclaimed some land.", fme.getNameAndRelevant(myFaction));
+		myFaction.msg("%s<i> unclaimed some land.", fme.describeTo(myFaction, true));
 	}
 	
 }

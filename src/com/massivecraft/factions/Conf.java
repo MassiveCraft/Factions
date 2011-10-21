@@ -16,6 +16,11 @@ public class Conf
 	public static ChatColor colorNeutral = ChatColor.WHITE;
 	public static ChatColor colorEnemy = ChatColor.RED;
 	
+	// TODO: We need to change the relation color system.
+	// I would like peaceful factions to have the relation color gold.
+	// For this to be possible some refactoring needs to be done.
+	public static ChatColor colorPeaceful = ChatColor.GOLD;
+	
 	// Power
 	public static double powerPlayerMax = 10.0;
 	public static double powerPlayerMin = -10.0;

@@ -59,6 +59,7 @@ public class CmdCreate extends FCommand
 
 		Faction faction = Factions.i.create();
 
+		// TODO: Why would this even happen???
 		if (faction == null)
 		{
 			msg("<b>There was an internal error while trying to create your faction. Please try again.");
@@ -71,7 +72,7 @@ public class CmdCreate extends FCommand
 
 		for (FPlayer follower : FPlayers.i.getOnline())
 		{
-			follower.msg("%s<i> created a new faction %s", fme.getNameAndRelevant(follower), faction.getTag(follower));
+			follower.msg("%s<i> created a new faction %s", fme.describeTo(follower, true), faction.getTag(follower));
 		}
 		
 		msg("<i>You should now: %s", p.cmdBase.cmdDescription.getUseageTemplate());

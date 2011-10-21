@@ -56,7 +56,7 @@ public class CmdJoin extends FCommand
 		if( ! (faction.getOpen() || faction.isInvited(fme) || fme.isAdminBypassing()))
 		{
 			msg("<i>This faction requires invitation.");
-			faction.msg("%s<i> tried to join your faction.", fme.getNameAndRelevant(faction));
+			faction.msg("%s<i> tried to join your faction.", fme.describeTo(faction, true));
 			return;
 		}
 
@@ -64,7 +64,7 @@ public class CmdJoin extends FCommand
 		if ( ! payForCommand(Conf.econCostJoin, "to join a faction", "for joining a faction")) return;
 
 		fme.msg("<i>You successfully joined %s", faction.getTag(fme));
-		faction.msg("<i>%s joined your faction.", fme.getNameAndRelevant(faction));
+		faction.msg("<i>%s joined your faction.", fme.describeTo(faction, true));
 		
 		fme.resetFactionData();
 		fme.setFaction(faction);

@@ -32,7 +32,7 @@ public class CmdAdmin extends FCommand
 		
 		if (fyou.getFaction() != myFaction)
 		{
-			msg("%s<i> is not a member in your faction.", fyou.getNameAndRelevant(fme));
+			msg("%s<i> is not a member in your faction.", fyou.describeTo(fme, true));
 			return;
 		}
 		
@@ -48,14 +48,7 @@ public class CmdAdmin extends FCommand
 		// Inform all players
 		for (FPlayer fplayer : FPlayers.i.getOnline())
 		{
-			if (fplayer.getFaction() == myFaction)
-			{
-				fplayer.msg("%s<i> gave %s<i> the leadership of your faction.", fme.getNameAndRelevant(fme), fyou.getNameAndRelevant(fme));
-			}
-			else
-			{
-				fplayer.msg("%s<i> gave %s<i> the leadership of %s", fme.getNameAndRelevant(fplayer), fyou.getNameAndRelevant(fplayer), myFaction.getTag(fplayer));
-			}
+			fplayer.msg("%s<i> gave %s<i> the leadership of %s", fme.describeTo(fplayer, true), fyou.describeTo(fplayer), myFaction.describeTo(fplayer));
 		}
 	}
 	

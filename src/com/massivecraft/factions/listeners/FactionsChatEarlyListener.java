@@ -46,7 +46,7 @@ public class FactionsChatEarlyListener extends PlayerListener
 		if (me.getChatMode() == ChatMode.FACTION)
 		{
 			
-			String message = String.format(Conf.factionChatFormat, me.getNameAndRelevant(me), msg);
+			String message = String.format(Conf.factionChatFormat, me.describeTo(me), msg);
 			me.getFaction().sendMessage(message);
 			
 			P.p.log(Level.INFO, ChatColor.stripColor("FactionChat "+me.getFaction().getTag()+": "+message));

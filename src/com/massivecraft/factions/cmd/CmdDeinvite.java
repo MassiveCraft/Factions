@@ -39,8 +39,9 @@ public class CmdDeinvite extends FCommand
 		
 		myFaction.deinvite(you);
 		
-		you.msg("%s<i> revoked your invitation to %s", fme.getNameAndRelevant(you), myFaction.getTag(you));
-		myFaction.msg("%s<i> revoked %s's<i> invitation.", fme.getNameAndRelevant(fme), you.getNameAndRelevant(fme));
+		you.msg("%s<i> revoked your invitation to <h>%s<i>.", fme.describeTo(you), myFaction.describeTo(you));
+		
+		myFaction.msg("%s<i> revoked %s's<i> invitation.", fme.describeTo(myFaction), you.describeTo(myFaction));
 	}
 	
 }

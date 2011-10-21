@@ -55,7 +55,7 @@ public class CmdTag extends FCommand
 		myFaction.setTag(tag);
 		
 		// Inform
-		myFaction.msg("%s<i> changed your faction tag to %s", fme.getNameAndRelevant(myFaction), myFaction.getTag(myFaction));
+		myFaction.msg("%s<i> changed your faction tag to %s", fme.describeTo(myFaction, true), myFaction.getTag(myFaction));
 		for (Faction faction : Factions.i.get())
 		{
 			if (faction == myFaction)

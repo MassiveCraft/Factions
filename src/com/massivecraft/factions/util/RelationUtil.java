@@ -113,8 +113,7 @@ public class RelationUtil
 		return null;
 	}
 
-	public static ChatColor getRelationColor(RelationParticipator me,
-			RelationParticipator that)
+	public static ChatColor getRelationColor(RelationParticipator me, RelationParticipator that)
 	{
 		return getRelationTo(that, me).getColor();
 	}
