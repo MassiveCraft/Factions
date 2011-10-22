@@ -199,34 +199,53 @@ public class Board
 		int chrIdx = 0;
 		
 		// For each row
-		for (int dx = 0; dx < height; dx++) {
+		for (int dx = 0; dx < height; dx++)
+		{
 			// Draw and add that row
 			String row = "";
-			for (int dz = 0; dz > -width; dz--) {
-				if(dz == -(halfWidth) && dx == halfHeight) {
+			for (int dz = 0; dz > -width; dz--)
+			{
+				if(dz == -(halfWidth) && dx == halfHeight)
+				{
 					row += ChatColor.AQUA+"+";
-				} else {
+				}
+				else
+				{
 					FLocation flocationHere = topLeft.getRelative(dx, dz);
 					Faction factionHere = getFactionAt(flocationHere);
 					Relation relation = faction.getRelationTo(factionHere);
-					if (factionHere.isNone()) {
+					if (factionHere.isNone())
+					{
 						row += ChatColor.GRAY+"-";
-					} else if (factionHere.isSafeZone()) {
+					}
+					else if (factionHere.isSafeZone())
+					{
 						row += Conf.colorPeaceful+"+";
-					} else if (factionHere.isWarZone()) {
+					}
+					else if (factionHere.isWarZone())
+					{
 						row += ChatColor.DARK_RED+"+";
-					} else if (
-						   factionHere == faction
-						|| factionHere == factionLoc
-						|| relation.isAtLeast(Relation.ALLY)
-						|| (Conf.showNeutralFactionsOnMap && relation.equals(Relation.NEUTRAL))
-						|| (Conf.showEnemyFactionsOnMap && relation.equals(Relation.ENEMY))
-						) {
+					}
+					else if
+					(
+						factionHere == faction
+						||
+						factionHere == factionLoc
+						||
+						relation.isAtLeast(Relation.ALLY)
+						||
+						(Conf.showNeutralFactionsOnMap && relation.equals(Relation.NEUTRAL))
+						||
+						(Conf.showEnemyFactionsOnMap && relation.equals(Relation.ENEMY))
+					)
+					{
 						if (!fList.containsKey(factionHere.getTag()))
 							fList.put(factionHere.getTag(), Conf.mapKeyChrs[chrIdx++]);
 						char tag = fList.get(factionHere.getTag());
 						row += factionHere.getColorTo(faction) + "" + tag;
-					} else {
+					}
+					else
+					{
 						row += ChatColor.GRAY+"-";
 					}
 				}
@@ -261,17 +280,20 @@ public class Board
 	// Persistance
 	// -------------------------------------------- //
 	
-	public static Map<String,Map<String,String>> dumpAsSaveFormat() {
+	public static Map<String,Map<String,String>> dumpAsSaveFormat()
+	{
 		Map<String,Map<String,String>> worldCoordIds = new HashMap<String,Map<String,String>>(); 
 		
 		String worldName, coords;
 		String id;
 		
-		for (Entry<FLocation, String> entry : flocationIds.entrySet()) {
+		for (Entry<FLocation, String> entry : flocationIds.entrySet())
+		{
 			worldName = entry.getKey().getWorldName();
 			coords = entry.getKey().getCoordString();
 			id = entry.getValue();
-			if ( ! worldCoordIds.containsKey(worldName)) {
+			if ( ! worldCoordIds.containsKey(worldName))
+			{
 				worldCoordIds.put(worldName, new TreeMap<String,String>());
 			}
 			
@@ -348,50 +370,6 @@ public class Board
 			
 		return true;
 	}
-
-	/*private static boolean loadOld() {
-		File folderBoard = new File(P.p.getDataFolder(), "board");
-
-		if ( ! folderBoard.isDirectory())
-			return false;
-
-		P.log("Board file doesn't exist, attempting to load old pre-1.1 data.");
-
-		String ext = ".json";
-
-		class jsonFileFilter implements FileFilter {
-			@Override
-			public boolean accept(File file) {
-				return (file.getName().toLowerCase().endsWith(".json") && file.isFile());
-			}
-		}
-
-		File[] jsonFiles = folderBoard.listFiles(new jsonFileFilter());
-		for (File jsonFile : jsonFiles) {
-			// Extract the name from the filename. The name is filename minus ".json"
-			String name = jsonFile.getName();
-			name = name.substring(0, name.length() - ext.length());
-			try {
-				JsonParser parser = new JsonParser();
-				JsonObject json = (JsonObject) parser.parse(DiscUtil.read(jsonFile));
-				JsonArray coords = json.getAsJsonArray("coordFactionIds");
-				Iterator<JsonElement> coordSet = coords.iterator();
-				while(coordSet.hasNext()) {
-					JsonArray coordDat = (JsonArray) coordSet.next();
-					JsonObject coord = coordDat.get(0).getAsJsonObject();
-					int coordX = coord.get("x").getAsInt();
-					int coordZ = coord.get("z").getAsInt();
-					int factionId = coordDat.get(1).getAsInt();
-					flocationIds.put(new FLocation(name, coordX, coordZ), factionId);
-				}
-				P.log("loaded pre-1.1 board "+name);
-			} catch (Exception e) {
-				e.printStackTrace();
-				P.log(Level.WARNING, "failed to load board "+name);
-			}
-		}
-		return true;
-	}*/
 }
 
 
