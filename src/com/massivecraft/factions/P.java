@@ -311,7 +311,7 @@ public class P extends MPlugin
 	public Set<String> getPlayersInFaction(String factionTag)
 	{
 		Set<String> players = new HashSet<String>();
-		Faction faction = Factions.i.findByTag(factionTag);
+		Faction faction = Factions.i.getByTag(factionTag);
 		if (faction != null)
 		{
 			for (FPlayer fplayer : faction.getFPlayers())
@@ -326,7 +326,7 @@ public class P extends MPlugin
 	public Set<String> getOnlinePlayersInFaction(String factionTag)
 	{
 		Set<String> players = new HashSet<String>();
-		Faction faction = Factions.i.findByTag(factionTag);
+		Faction faction = Factions.i.getByTag(factionTag);
 		if (faction != null)
 		{
 			for (FPlayer fplayer : faction.getFPlayersWhereOnline(true))

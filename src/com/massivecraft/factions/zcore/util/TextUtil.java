@@ -280,4 +280,36 @@ public class TextUtil
 		
 		return ""+num+" "+unit+" "+agofromnow;
 	}
+	
+	// -------------------------------------------- //
+	// String comparison
+	// -------------------------------------------- //
+	
+	public static int commonStartLength(String a, String b)
+	{
+		int len = a.length() > b.length() ? a.length() : b.length();
+		int i;
+		for (i = 0; i < len; i++)
+		{
+			if (a.charAt(i) != b.charAt(i)) break;
+		}
+		return i;
+	}
+	
+	public static String getWhereLongestCommonStartCI(Collection<String> candidates, String pattern)
+	{
+		String ret = null;
+		int best = 0;
+		pattern = pattern.toLowerCase();
+		for (String candidate : candidates)
+		{
+			int csl = commonStartLength(pattern, candidate.toLowerCase());
+			if (csl > best)
+			{
+				best = csl;
+				ret = candidate;
+			}
+		}
+		return ret;
+	}
 }

@@ -12,6 +12,7 @@ import org.bukkit.ChatColor;
 import com.google.gson.reflect.TypeToken;
 import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.factions.zcore.persist.EntityCollection;
+import com.massivecraft.factions.zcore.util.TextUtil;
 
 public class Factions extends EntityCollection<Faction>
 {
@@ -132,7 +133,7 @@ public class Factions extends EntityCollection<Faction>
 		return errors;
 	}
 	
-	public Faction findByTag(String str)
+	public Faction getByTag(String str)
 	{
 		String compStr = MiscUtil.getComparisonString(str);
 		for (Faction faction : this.get())
@@ -145,9 +146,24 @@ public class Factions extends EntityCollection<Faction>
 		return null;
 	}
 	
+	public Faction getBestTagMatch(String pattern)
+	{
+		Map<String, Faction> tag2faction = new HashMap<String, Faction>();
+		
+		// TODO: Slow index building
+		for (Faction faction : this.get())
+		{
+			tag2faction.put(faction.getTag(), faction);
+		}
+		
+		String tag = TextUtil.getWhereLongestCommonStartCI(tag2faction.keySet(), pattern);
+		if (tag == null) return null;
+		return tag2faction.get(tag);
+	}
+	
 	public boolean isTagTaken(String str)
 	{
-		return this.findByTag(str) != null;
+		return this.getByTag(str) != null;
 	}
 
 }

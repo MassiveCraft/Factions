@@ -42,5 +42,4 @@ public abstract class PlayerEntityCollection<E extends Entity> extends EntityCol
 		}
 		return entities;
 	}
-	
 }

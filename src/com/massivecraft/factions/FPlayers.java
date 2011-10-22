@@ -66,19 +66,4 @@ public class FPlayers extends PlayerEntityCollection<FPlayer>
 			}
 		}
 	}
-	
-	
-	// TODO: Intressant.... denna skulle jag kanske behöva undersöka lite mer... lägga till i core?
-	// En form av match player name...
-	public FPlayer find(String playername)
-	{
-		for (FPlayer fplayer : this.get())
-		{
-			if (fplayer.getId().equalsIgnoreCase(playername) || fplayer.getId().toLowerCase().startsWith(playername.toLowerCase()))
-			{
-				return fplayer;
-			}
-		}
-		return null;
-	}
 }

@@ -148,15 +148,14 @@ public abstract class FCommand extends MCommand<P>
 	// Argument Readers
 	// -------------------------------------------- //
 	
-	// ARG AS FPLAYER
-	public FPlayer argAsFPlayer(int idx, FPlayer def, boolean msg)
+	// FPLAYER ======================
+	public FPlayer strAsFPlayer(String name, FPlayer def, boolean msg)
 	{
 		FPlayer ret = def;
 		
-		String name = this.argAsString(idx);
 		if (name != null)
 		{
-			FPlayer fplayer = FPlayers.i.get(name); 
+			FPlayer fplayer = FPlayers.i.get(name);
 			if (fplayer != null)
 			{
 				ret = fplayer;
@@ -165,10 +164,14 @@ public abstract class FCommand extends MCommand<P>
 		
 		if (msg && ret == null)
 		{
-			this.sendMessage(p.txt.parse("<b>The player \"<p>%s<b>\" could not be found.", name));
+			this.msg("<b>No player \"<p>%s<b>\" could not be found.", name);			
 		}
 		
 		return ret;
+	}
+	public FPlayer argAsFPlayer(int idx, FPlayer def, boolean msg)
+	{
+		return this.strAsFPlayer(this.argAsString(idx), def, msg);
 	}
 	public FPlayer argAsFPlayer(int idx, FPlayer def)
 	{
@@ -179,15 +182,14 @@ public abstract class FCommand extends MCommand<P>
 		return this.argAsFPlayer(idx, null);
 	}
 	
-	// ARG AS BEST FPLAYER MATCH
-	public FPlayer argAsBestFPlayerMatch(int idx, FPlayer def, boolean msg)
+	// BEST FPLAYER MATCH ======================
+	public FPlayer strAsBestFPlayerMatch(String name, FPlayer def, boolean msg)
 	{
 		FPlayer ret = def;
 		
-		String name = this.argAsString(idx);
 		if (name != null)
 		{
-			FPlayer fplayer = FPlayers.i.find(name);
+			FPlayer fplayer = FPlayers.i.getBestIdMatch(name);
 			if (fplayer != null)
 			{
 				ret = fplayer;
@@ -196,10 +198,14 @@ public abstract class FCommand extends MCommand<P>
 		
 		if (msg && ret == null)
 		{
-			this.sendMessage(p.txt.parse("<b>The player \"<p>%s<b>\" could not be found.", name));
+			this.msg("<b>No player match found for \"<p>%s<b>\".", name);
 		}
 		
 		return ret;
+	}
+	public FPlayer argAsBestFPlayerMatch(int idx, FPlayer def, boolean msg)
+	{
+		return this.strAsBestFPlayerMatch(this.argAsString(idx), def, msg);
 	}
 	public FPlayer argAsBestFPlayerMatch(int idx, FPlayer def)
 	{
@@ -210,36 +216,42 @@ public abstract class FCommand extends MCommand<P>
 		return this.argAsBestFPlayerMatch(idx, null);
 	}
 	
-	// ARG AS FACTION
-	public Faction argAsFaction(int idx, Faction def, boolean msg)
+	// FACTION ======================
+	public Faction strAsFaction(String name, Faction def, boolean msg)
 	{
 		Faction ret = def;
 		
-		String name = this.argAsString(idx);
 		if (name != null)
 		{
-			// First we search faction names
-			Faction faction = Factions.i.findByTag(name);
+			// First we match faction tags
+			Faction faction = Factions.i.getBestTagMatch(name);
+			
+			// Next we match player names
+			if (faction == null)
+			{
+				FPlayer fplayer = FPlayers.i.getBestIdMatch(name);
+				if (fplayer != null)
+				{
+					faction = fplayer.getFaction();
+				}
+			}
+			
 			if (faction != null)
 			{
 				ret = faction;
 			}
-
-			// Next we search player names
-			FPlayer fplayer = FPlayers.i.find(name);
-			if (fplayer != null)
-			{
-				ret = fplayer.getFaction();
-			}
-			
 		}
 		
 		if (msg && ret == null)
 		{
-			this.sendMessage(p.txt.parse("<b>The faction or player \"<p>%s<b>\" could not be found.", name));
+			this.msg("<b>The faction or player \"<p>%s<b>\" could not be found.", name);
 		}
 		
 		return ret;
+	}
+	public Faction argAsFaction(int idx, Faction def, boolean msg)
+	{
+		return this.strAsFaction(this.argAsString(idx), def, msg);
 	}
 	public Faction argAsFaction(int idx, Faction def)
 	{

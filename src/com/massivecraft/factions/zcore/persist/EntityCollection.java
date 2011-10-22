@@ -7,6 +7,7 @@ import java.util.Map.Entry;
 
 import com.google.gson.Gson;
 import com.massivecraft.factions.zcore.util.DiscUtil;
+import com.massivecraft.factions.zcore.util.TextUtil;
 
 public abstract class EntityCollection<E extends Entity>
 {	
@@ -16,7 +17,7 @@ public abstract class EntityCollection<E extends Entity>
 	
 	// These must be instantiated in order to allow for different configuration (orders, comparators etc)
 	private Collection<E> entities;
-	private Map<String, E> id2entity;
+	protected Map<String, E> id2entity;
 	
 	// If the entities are creative they will create a new instance if a non existent id was requested
 	private boolean creative;
@@ -92,6 +93,13 @@ public abstract class EntityCollection<E extends Entity>
 	{
 		if (id == null) return false;
 		return id2entity.get(id) != null;
+	}
+	
+	public E getBestIdMatch(String pattern)
+	{
+		String id = TextUtil.getWhereLongestCommonStartCI(this.id2entity.keySet(), pattern);
+		if (id == null) return null;
+		return this.id2entity.get(id);
 	}
 	
 	// -------------------------------------------- //
