@@ -53,6 +53,7 @@ public class MiscUtil
 		String ret = "";
 		
 		str = ChatColor.stripColor(str);
+		str = str.toLowerCase();
 		
 		for (char c : str.toCharArray())
 		{

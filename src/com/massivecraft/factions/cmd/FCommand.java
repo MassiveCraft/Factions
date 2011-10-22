@@ -223,9 +223,20 @@ public abstract class FCommand extends MCommand<P>
 		
 		if (name != null)
 		{
-			// First we match faction tags
-			Faction faction = Factions.i.getBestTagMatch(name);
+			Faction faction = null;
 			
+			// First we try an exact match
+			if (faction == null)
+			{
+				faction = Factions.i.getByTag(name);
+			}
+			
+			// Next we match faction tags
+			if (faction == null)
+			{
+				faction = Factions.i.getBestTagMatch(name);
+			}
+				
 			// Next we match player names
 			if (faction == null)
 			{

@@ -188,7 +188,7 @@ public class Faction extends Entity implements EconomyParticipator
 	
 	
 	// -------------------------------
-	// Relation and relation colors TODO
+	// Relation and relation colors
 	// -------------------------------
 	
 	@Override
@@ -298,7 +298,7 @@ public class Faction extends Entity implements EconomyParticipator
 	}
 	
 	// -------------------------------
-	// Fplayers
+	// FPlayers
 	// -------------------------------
 	
 	public ArrayList<FPlayer> getFPlayers()
@@ -347,12 +347,15 @@ public class Faction extends Entity implements EconomyParticipator
 		return null;
 	}
 	
-	public ArrayList<FPlayer> getFPlayersWhereRole(Role role) {
+	public ArrayList<FPlayer> getFPlayersWhereRole(Role role)
+	{
 		ArrayList<FPlayer> ret = new ArrayList<FPlayer>();
 		if ( ! this.isNormal()) return ret;
 		
-		for (FPlayer fplayer : FPlayers.i.get()) {
-			if (fplayer.getFaction() == this && fplayer.getRole() == role) {
+		for (FPlayer fplayer : FPlayers.i.get())
+		{
+			if (fplayer.getFaction() == this && fplayer.getRole() == role)
+			{
 				ret.add(fplayer);
 			}
 		}
