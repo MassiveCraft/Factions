@@ -129,6 +129,12 @@ public class Faction extends Entity implements EconomyParticipator
 		return Econ.getMethod().getAccount(aid);
 	}
 	
+	// FIELD: permanentPower
+	private Integer permanentPower;
+	public Integer getPermanentPower() { return this.permanentPower; }
+	public void setPermanentPower(Integer permanentPower) { this.permanentPower = permanentPower; }
+	public boolean hasPermanentPower() { return this.permanentPower != null; }
+	
 	// -------------------------------------------- //
 	// Construct
 	// -------------------------------------------- //
@@ -247,6 +253,11 @@ public class Faction extends Entity implements EconomyParticipator
 	//----------------------------------------------//
 	public double getPower()
 	{
+		if (this.hasPermanentPower())
+		{
+			return this.getPermanentPower();
+		}
+		
 		double ret = 0;
 		for (FPlayer fplayer : this.getFPlayers())
 		{
@@ -261,6 +272,11 @@ public class Faction extends Entity implements EconomyParticipator
 	
 	public double getPowerMax()
 	{
+		if (this.hasPermanentPower())
+		{
+			return this.getPermanentPower();
+		}
+		
 		double ret = 0;
 		for (FPlayer fplayer : this.getFPlayers())
 		{

@@ -26,6 +26,7 @@ permissions:
       factions.kit.halfmod: true
       factions.disband.any: true
       factions.setpermanent: true
+      factions.setpermanentpower: true
       factions.setpeaceful: true
       factions.sethome.any: true
       factions.money.*: true
@@ -175,6 +176,8 @@ permissions:
     description: designate a faction as peaceful
   factions.setpermanent:
     description: designate a faction as permanent
+  factions.setpermanentpower:
+    description: set permanent power for a faction
   factions.power:
     description: show player power info
   factions.power.any:

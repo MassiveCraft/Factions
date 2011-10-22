@@ -45,6 +45,7 @@ public enum Permission
 	OWNERLIST("ownerlist"),
 	SET_PEACEFUL("setpeaceful"),
 	SET_PERMANENT("setpermanent"),
+	SET_PERMANENTPOWER("setpermanentpower"),
 	POWER("power"),
 	POWER_ANY("power.any"),
 	RELATION("relation"),
