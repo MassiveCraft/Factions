@@ -1,7 +1,6 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.Conf;
-import com.massivecraft.factions.FLocation;
+import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.struct.Permission;
 
 public class CmdAutoClaim extends FCommand
@@ -12,48 +11,32 @@ public class CmdAutoClaim extends FCommand
 		this.aliases.add("autoclaim");
 		
 		//this.requiredArgs.add("");
-		this.optionalArgs.put("on/off", "flip");
+		this.optionalArgs.put("faction", "your");
 		
 		this.permission = Permission.AUTOCLAIM.node;
 		this.disableOnLock = true;
 		
 		senderMustBePlayer = true;
 		senderMustBeMember = false;
-		senderMustBeModerator = true;
+		senderMustBeModerator = false;
 		senderMustBeAdmin = false;
 	}
 
 	@Override
 	public void perform()
 	{
-		boolean enabled = this.argAsBool(0, ! fme.isAutoClaimEnabled());
-		
-		fme.setIsAutoClaimEnabled(enabled);
-
-		if ( ! enabled)
+		Faction forFaction = this.argAsFaction(0, myFaction);
+		if (forFaction == null || (forFaction == myFaction && fme.getAutoClaimFor() == myFaction))
 		{
+			fme.setAutoClaimFor(null);
 			msg("<i>Auto-claiming of land disabled.");
 			return;
 		}
-
-		FLocation flocation = new FLocation(fme);
-
-		if (Conf.worldsNoClaiming.contains(flocation.getWorldName()))
-		{
-			msg("<b>Sorry, this world has land claiming disabled.");
-			fme.setIsAutoClaimEnabled(false);
-			return;
-		}
-
-		if (myFaction.getLandRounded() >= myFaction.getPowerRounded())
-		{
-			msg("<b>You can't claim more land! You need more power!");
-			fme.setIsAutoClaimEnabled(false);
-			return;
-		}
-
-		msg("<i>Auto-claiming of land enabled.");
-		fme.attemptClaim(myFaction, me.getLocation(), false);
+		
+		fme.setAutoClaimFor(forFaction);
+		
+		msg("<i>Now auto-claiming land for <h>%s<i>.", forFaction.describeTo(fme));
+		fme.attemptClaim(forFaction, me.getLocation(), true);
 	}
 	
 }

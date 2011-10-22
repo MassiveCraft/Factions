@@ -116,10 +116,25 @@ public class RelationUtil
 
 	public static ChatColor getColorOfThatToMe(RelationParticipator that, RelationParticipator me)
 	{
-		if (getFaction(that) != null && getFaction(that).isPeaceful() && getFaction(that) != getFaction(me))
+		Faction thatFaction = getFaction(that);
+		if (thatFaction != null)
 		{
-			return Conf.colorPeaceful;
+			if (thatFaction.isPeaceful() && thatFaction != getFaction(me))
+			{
+				return Conf.colorPeaceful;
+			}
+			
+			if (thatFaction.isSafeZone() && thatFaction != getFaction(me))
+			{
+				return Conf.colorPeaceful;
+			}
+			
+			if (thatFaction.isWarZone() && thatFaction != getFaction(me))
+			{
+				return Conf.colorWar;
+			}
 		}
+		
 		return getRelationTo(that, me).getColor();
 	}
 }

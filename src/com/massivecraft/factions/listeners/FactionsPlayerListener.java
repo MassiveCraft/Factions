@@ -32,7 +32,6 @@ import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.zcore.util.TextUtil;
 
@@ -252,34 +251,9 @@ public class FactionsPlayerListener extends PlayerListener
 			}
 		}
 		
-		if (me.isAutoClaimEnabled())
+		if (me.getAutoClaimFor() != null)
 		{
-			Faction myFaction = me.getFaction();
-			// TODO: Why is this ("cost") here and unused??? Should it be used somewhere Brettflan? :)
-			// Olof just commented it out to avoid the error.
-			// So sayeth Brettflan, answered in a comment since you asked in a comment:
-			// NOTHING MORE TODO: it was used, but apparently not needed after some changes including this commit: https://github.com/MassiveCraft/Factions/commit/5eaf9c68358c6076bb856baf80fd6496e2ab02ce
-			//
-			//Faction otherFaction = Board.getFactionAt(to);
-			//double cost = Econ.calculateClaimCost(myFaction.getLandRounded(), otherFaction.isNormal());
-
-			if (me.getRole().value < Role.MODERATOR.value)
-			{
-				me.msg("<b>You must be <h>%s<b> to claim land.", Role.MODERATOR.toString());
-				me.setIsAutoClaimEnabled(false);
-			}
-			else if (Conf.worldsNoClaiming.contains(to.getWorldName()))
-			{
-				me.msg("<b>Sorry, this world has land claiming disabled.");
-				me.setIsAutoClaimEnabled(false);
-			}
-			else if (myFaction.getLandRounded() >= myFaction.getPowerRounded())
-			{
-				me.msg("<b>You can't claim more land! You need more power!");
-				me.setIsAutoClaimEnabled(false);
-			}
-			else
-				me.attemptClaim(myFaction, player.getLocation(), false);
+			me.attemptClaim(me.getAutoClaimFor(), player.getLocation(), true);
 		}
 		else if (me.isAutoSafeClaimEnabled())
 		{

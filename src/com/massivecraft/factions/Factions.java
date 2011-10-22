@@ -55,7 +55,7 @@ public class Factions extends EntityCollection<Faction>
 		if ( ! this.exists("-1"))
 		{
 			Faction faction = this.create("-1");
-			faction.setTag(ChatColor.GOLD+"Safe Zone");
+			faction.setTag("SafeZone");
 			faction.setDescription("Free from PVP and monsters");
 		}
 		
@@ -63,7 +63,7 @@ public class Factions extends EntityCollection<Faction>
 		if ( ! this.exists("-2"))
 		{
 			Faction faction = this.create("-2");
-			faction.setTag(ChatColor.DARK_RED+"War Zone");
+			faction.setTag("WarZone");
 			faction.setDescription("Not the safest place to be");
 		}
 		
@@ -153,7 +153,7 @@ public class Factions extends EntityCollection<Faction>
 		// TODO: Slow index building
 		for (Faction faction : this.get())
 		{
-			tag2faction.put(faction.getTag(), faction);
+			tag2faction.put(ChatColor.stripColor(faction.getTag()), faction);
 		}
 		
 		String tag = TextUtil.getWhereLongestCommonStartCI(tag2faction.keySet(), pattern);

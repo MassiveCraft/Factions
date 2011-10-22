@@ -160,11 +160,7 @@ public class CmdHelp extends FCommand
 		pageLines = new ArrayList<String>();
 		pageLines.add("Finally some commands for the server admins:");
 		pageLines.add( p.cmdBase.cmdBypass.getUseageTemplate(true) );
-		pageLines.add( p.cmdBase.cmdSafeclaim.getUseageTemplate(true) );
-		pageLines.add( p.cmdBase.cmdAutoSafeclaim.getUseageTemplate(true) );
 		pageLines.add( p.cmdBase.cmdSafeunclaimall.getUseageTemplate(true) );
-		pageLines.add( p.cmdBase.cmdWarclaim.getUseageTemplate(true) );
-		pageLines.add( p.cmdBase.cmdAutoWarclaim.getUseageTemplate(true) );
 		pageLines.add( p.cmdBase.cmdWarunclaimall.getUseageTemplate(true) );
 		pageLines.add(p.txt.parse("<i>Note: " + p.cmdBase.cmdUnclaim.getUseageTemplate(false) + P.p.txt.parse("<i>") + " works on safe/war zones as well."));
 		helpPages.add(pageLines);

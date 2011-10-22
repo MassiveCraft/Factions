@@ -8,8 +8,6 @@ public class FCmdRoot extends FCommand
 {
 	public CmdAdmin cmdAdmin = new CmdAdmin();
 	public CmdAutoClaim cmdAutoClaim = new CmdAutoClaim();
-	public CmdAutoSafeclaim cmdAutoSafeclaim = new CmdAutoSafeclaim();
-	public CmdAutoWarclaim cmdAutoWarclaim = new CmdAutoWarclaim();
 	public CmdBoom cmdBoom = new CmdBoom();
 	public CmdBypass cmdBypass = new CmdBypass();
 	public CmdChat cmdChat = new CmdChat();
@@ -40,7 +38,6 @@ public class FCmdRoot extends FCommand
 	public CmdRelationEnemy cmdRelationEnemy = new CmdRelationEnemy();
 	public CmdRelationNeutral cmdRelationNeutral = new CmdRelationNeutral();
 	public CmdReload cmdReload = new CmdReload();
-	public CmdSafeclaim cmdSafeclaim = new CmdSafeclaim();
 	public CmdSafeunclaimall cmdSafeunclaimall = new CmdSafeunclaimall();
 	public CmdSaveAll cmdSaveAll = new CmdSaveAll();
 	public CmdSethome cmdSethome = new CmdSethome();
@@ -50,7 +47,6 @@ public class FCmdRoot extends FCommand
 	public CmdUnclaim cmdUnclaim = new CmdUnclaim();
 	public CmdUnclaimall cmdUnclaimall = new CmdUnclaimall();
 	public CmdVersion cmdVersion = new CmdVersion();
-	public CmdWarclaim cmdWarclaim = new CmdWarclaim();
 	public CmdWarunclaimall cmdWarunclaimall = new CmdWarunclaimall();
 	
 	public FCmdRoot()
@@ -77,8 +73,6 @@ public class FCmdRoot extends FCommand
 		
 		this.addSubCommand(this.cmdAdmin);
 		this.addSubCommand(this.cmdAutoClaim);
-		this.addSubCommand(this.cmdAutoSafeclaim);
-		this.addSubCommand(this.cmdAutoWarclaim);
 		this.addSubCommand(this.cmdBoom);
 		this.addSubCommand(this.cmdBypass);
 		this.addSubCommand(this.cmdChat);
@@ -109,7 +103,6 @@ public class FCmdRoot extends FCommand
 		this.addSubCommand(this.cmdRelationEnemy);
 		this.addSubCommand(this.cmdRelationNeutral);
 		this.addSubCommand(this.cmdReload);
-		this.addSubCommand(this.cmdSafeclaim);
 		this.addSubCommand(this.cmdSafeunclaimall);
 		this.addSubCommand(this.cmdSaveAll);
 		this.addSubCommand(this.cmdSethome);
@@ -119,7 +112,6 @@ public class FCmdRoot extends FCommand
 		this.addSubCommand(this.cmdUnclaim);
 		this.addSubCommand(this.cmdUnclaimall);
 		this.addSubCommand(this.cmdVersion);
-		this.addSubCommand(this.cmdWarclaim);
 		this.addSubCommand(this.cmdWarunclaimall);
 	}
 	

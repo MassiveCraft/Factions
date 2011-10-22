@@ -14,6 +14,7 @@ import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.integration.Worldguard;
 import com.massivecraft.factions.struct.ChatMode;
+import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.RelationUtil;
@@ -69,17 +70,17 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 	private transient boolean mapAutoUpdating;
 	
 	// FIELD: autoClaimEnabled
-	private transient boolean autoClaimEnabled;
-	public boolean isAutoClaimEnabled()
+	private transient Faction autoClaimFor;
+	public Faction getAutoClaimFor()
 	{
-		if (this.factionId.equals("0")) return false;
-		return autoClaimEnabled;
+		return autoClaimFor;
 	}
-	public void setIsAutoClaimEnabled(boolean enabled)
+	public void setAutoClaimFor(Faction faction)
 	{
-		this.autoClaimEnabled = enabled;
-		if (enabled)
+		this.autoClaimFor = faction;
+		if (this.autoClaimFor != null)
 		{
+			// TODO: merge these into same autoclaim
 			this.autoSafeZoneEnabled = false;
 			this.autoWarZoneEnabled = false;
 		}
@@ -93,7 +94,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		this.autoSafeZoneEnabled = enabled;
 		if (enabled)
 		{
-			this.autoClaimEnabled = false;
+			this.autoClaimFor = null;
 			this.autoWarZoneEnabled = false;
 		}
 	}
@@ -106,7 +107,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		this.autoWarZoneEnabled = enabled;
 		if (enabled)
 		{
-			this.autoClaimEnabled = false;
+			this.autoClaimFor = null;
 			this.autoSafeZoneEnabled = false;
 		}
 	}
@@ -152,7 +153,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		this.lastPowerUpdateTime = System.currentTimeMillis();
 		this.lastLoginTime = System.currentTimeMillis();
 		this.mapAutoUpdating = false;
-		this.autoClaimEnabled = false;
+		this.autoClaimFor = null;
 		this.autoSafeZoneEnabled = false;
 		this.autoWarZoneEnabled = false;
 		this.loginPvpDisabled = (Conf.noPVPDamageToOthersForXSecondsAfterLogin > 0) ? true : false;
@@ -180,7 +181,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		this.chatMode = ChatMode.PUBLIC;
 		this.role = Role.NORMAL;
 		this.title = "";
-		this.autoClaimEnabled = false;
+		this.autoClaimFor = null;
 
 		if (doSpotUpdate)
 		{
@@ -647,6 +648,14 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		{
 			return true;
 		}
+		else if (forFaction.isSafeZone() && Permission.MANAGE_SAFE_ZONE.has(getPlayer()))
+		{
+			return true;
+		}
+		else if (forFaction.isWarZone() && Permission.MANAGE_WAR_ZONE.has(getPlayer()))
+		{
+			return true;
+		}
 		else if (myFaction != forFaction)
 		{
 			error = P.p.txt.parse("<b>You can't claim land for <h>%s<b>.", forFaction.describeTo(this));
@@ -734,7 +743,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		if ( ! this.canClaimForFactionAtLocation(forFaction, location, notifyFailure)) return false;
 		
 		// if economy is enabled and they're not on the bypass list, make 'em pay
-		if (Econ.shouldBeUsed() && ! this.isAdminBypassing())
+		if (Econ.shouldBeUsed() && ! this.isAdminBypassing() && ! forFaction.isSafeZone() && ! forFaction.isWarZone())
 		{
 			double cost = Econ.calculateClaimCost(ownedLand, currentFaction.isNormal());
 			//String costString = Econ.moneyString(cost);
