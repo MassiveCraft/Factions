@@ -287,7 +287,7 @@ public class TextUtil
 	
 	public static int commonStartLength(String a, String b)
 	{
-		int len = a.length() > b.length() ? a.length() : b.length();
+		int len = a.length() < b.length() ? a.length() : b.length();
 		int i;
 		for (i = 0; i < len; i++)
 		{

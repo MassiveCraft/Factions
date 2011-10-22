@@ -279,7 +279,7 @@ public class FactionsPlayerListener extends PlayerListener
 				me.setIsAutoClaimEnabled(false);
 			}
 			else
-				me.attemptClaim(false);
+				me.attemptClaim(myFaction, player.getLocation(), false);
 		}
 		else if (me.isAutoSafeClaimEnabled())
 		{

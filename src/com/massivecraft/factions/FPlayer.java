@@ -1,6 +1,8 @@
 package com.massivecraft.factions;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -624,167 +626,142 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		}
 	}
 	
-	public boolean attemptClaim(boolean notifyFailure)
+	public boolean canClaimForFactionAtLocation(Faction forFaction, Location location, boolean notifyFailure)
 	{
-		// notifyFailure is false if called by auto-claim; no need to notify on every failure for it
-		// return value is false on failure, true on success
-
+		String error = null;
+		FLocation flocation = new FLocation(location);
 		Faction myFaction = getFaction();
-		Location loc = this.getPlayer().getLocation();
-		FLocation flocation = new FLocation(loc);
-		Faction otherFaction = Board.getFactionAt(flocation);
-
-		if (Conf.worldGuardChecking && Worldguard.checkForRegionsInChunk(loc))
+		Faction currentFaction = Board.getFactionAt(flocation);
+		int ownedLand = forFaction.getLandRounded();
+		
+		if (Conf.worldGuardChecking && Worldguard.checkForRegionsInChunk(location))
 		{
 			// Checks for WorldGuard regions in the chunk attempting to be claimed
-			msg("<b>This land is protected");
-			return false;
+			error = P.p.txt.parse("<b>This land is protected");
 		}
-
-		if (myFaction == otherFaction)
+		else if (Conf.worldsNoClaiming.contains(flocation.getWorldName()))
 		{
-			if (notifyFailure)
-				msg("<i>You already own this land.");
-			return false;
+			error = P.p.txt.parse("<b>Sorry, this world has land claiming disabled.");
 		}
-
-		if (this.getRole().value < Role.MODERATOR.value && ! this.isAdminBypassing())
+		else if (this.isAdminBypassing())
 		{
-			msg("<i>You must be "+Role.MODERATOR+" to claim land.");
-			return false;
+			return true;
 		}
-
-		if (myFaction.getFPlayers().size() < Conf.claimsRequireMinFactionMembers && ! this.isAdminBypassing())
+		else if (myFaction != forFaction)
 		{
-			msg("<b>Your faction must have at least <h>%s<b> members to claim land.", Conf.claimsRequireMinFactionMembers);
-			return false;
+			error = P.p.txt.parse("<b>You can't claim land for <h>%s<b>.", forFaction.describeTo(this));
 		}
-
-		if (Conf.worldsNoClaiming.contains(flocation.getWorldName()))
+		else if (forFaction == currentFaction)
 		{
-			msg("<b>Sorry, this world has land claiming disabled.");
-			return false;
+			error = P.p.txt.parse("%s<i> already own this land.", forFaction.describeTo(this, true));
 		}
-		
-		if (otherFaction.isSafeZone())
+		else if (this.getRole().value < Role.MODERATOR.value)
 		{
-			if (notifyFailure)
-				msg("<b>You can not claim a Safe Zone.");
-			return false;
+			error = P.p.txt.parse("<b>You must be <h>%s<b> to claim land.", Role.MODERATOR.toString());
 		}
-		else if (otherFaction.isWarZone())
+		else if (forFaction.getFPlayers().size() < Conf.claimsRequireMinFactionMembers)
 		{
-			if (notifyFailure)
-				msg("<b>You can not claim a War Zone.");
-			return false;
+			error = P.p.txt.parse("Factions must have at least <h>%s<b> members to claim land.", Conf.claimsRequireMinFactionMembers);
 		}
-
-		int ownedLand = myFaction.getLandRounded();
-		if (ownedLand >= myFaction.getPowerRounded())
+		else if (currentFaction.isSafeZone())
 		{
-			msg("<b>You can't claim more land! You need more power!");
-			return false;
+			error = P.p.txt.parse("<b>You can not claim a Safe Zone.");
 		}
-
-		if (otherFaction.getRelationTo(this) == Relation.ALLY)
+		else if (currentFaction.isWarZone())
 		{
-			if (notifyFailure)
-				msg("<b>You can't claim the land of your allies.");
-			return false;
+			error = P.p.txt.parse("<b>You can not claim a War Zone.");
 		}
-
-		if
+		else if (ownedLand >= forFaction.getPowerRounded())
+		{
+			error = P.p.txt.parse("<b>You can't claim more land! You need more power!");
+		}
+		else if (currentFaction.getRelationTo(forFaction) == Relation.ALLY)
+		{
+			error = P.p.txt.parse("<b>You can't claim the land of your allies.");
+		}
+		else if
 		(
 			Conf.claimsMustBeConnected
 			&& ! this.isAdminBypassing()
 			&& myFaction.getLandRoundedInWorld(flocation.getWorldName()) > 0
 			&& !Board.isConnectedLocation(flocation, myFaction)
-			&& (!Conf.claimsCanBeUnconnectedIfOwnedByOtherFaction || !otherFaction.isNormal())
+			&& (!Conf.claimsCanBeUnconnectedIfOwnedByOtherFaction || !currentFaction.isNormal())
 		)
 		{
 			if (Conf.claimsCanBeUnconnectedIfOwnedByOtherFaction)
-				msg("<b>You can only claim additional land which is connected to your first claim or controlled by another faction!");
+				error = P.p.txt.parse("<b>You can only claim additional land which is connected to your first claim or controlled by another faction!");
 			else
-				msg("<b>You can only claim additional land which is connected to your first claim!");
-			return false;
+				error = P.p.txt.parse("<b>You can only claim additional land which is connected to your first claim!");
 		}
-
-		if (otherFaction.isNormal())
+		else if (currentFaction.isNormal())
 		{
 			if (myFaction.isPeaceful())
 			{
-				msg("%s<i> owns this land. Your faction is peaceful, so you cannot claim land from other factions.", otherFaction.getTag(this));
-				return false;
+				error = P.p.txt.parse("%s<i> owns this land. Your faction is peaceful, so you cannot claim land from other factions.", currentFaction.getTag(this));
 			}
-			
-			if (otherFaction.isPeaceful())
+			else if (currentFaction.isPeaceful())
 			{
-				msg("%s<i> owns this land, and is a peaceful faction. You cannot claim land from them.", otherFaction.getTag(this));
-				return false;
+				error = P.p.txt.parse("%s<i> owns this land, and is a peaceful faction. You cannot claim land from them.", currentFaction.getTag(this));
 			}
-
-			if ( ! otherFaction.hasLandInflation())
+			else if ( ! currentFaction.hasLandInflation())
 			{
 				 // TODO more messages WARN current faction most importantly
-				msg("%s<i> owns this land and is strong enough to keep it.", otherFaction.getTag(this));
-				return false;
+				error = P.p.txt.parse("%s<i> owns this land and is strong enough to keep it.", currentFaction.getTag(this));
 			}
-
-			if ( ! Board.isBorderLocation(flocation))
+			else if ( ! Board.isBorderLocation(flocation))
 			{
-				msg("<b>You must start claiming land at the border of the territory.");
-				return false;
+				error = P.p.txt.parse("<b>You must start claiming land at the border of the territory.");
 			}
 		}
-
+		
+		if (notifyFailure && error != null)
+		{
+			msg(error);
+		}
+		return error == null;
+	}
+	
+	public boolean attemptClaim(Faction forFaction, Location location, boolean notifyFailure)
+	{
+		// notifyFailure is false if called by auto-claim; no need to notify on every failure for it
+		// return value is false on failure, true on success
+		
+		FLocation flocation = new FLocation(location);
+		Faction currentFaction = Board.getFactionAt(flocation);
+		
+		int ownedLand = forFaction.getLandRounded();
+		
+		if ( ! this.canClaimForFactionAtLocation(forFaction, location, notifyFailure)) return false;
+		
 		// if economy is enabled and they're not on the bypass list, make 'em pay
 		if (Econ.shouldBeUsed() && ! this.isAdminBypassing())
 		{
-			double cost = Econ.calculateClaimCost(ownedLand, otherFaction.isNormal());
+			double cost = Econ.calculateClaimCost(ownedLand, currentFaction.isNormal());
 			//String costString = Econ.moneyString(cost);
 			
 			if(Conf.bankFactionPaysLandCosts && this.hasFaction())
 			{
 				Faction faction = this.getFaction();
 				if ( ! Econ.modifyMoney(faction, -cost, "to claim this land", "for claiming this land")) return false;
-				/*
-				if( ! faction.removeMoney(cost))
-				{
-					msg("<b>It costs <h>%s<b> to claim this land, which your faction can't currently afford.", costString);
-					return false;
-				}
-				else
-				{
-					// TODO: Only I can see this right?
-					msg("%s<i> has paid <h>%s<i> to claim some land.", faction.getTag(this), costString);
-				}*/
+				
 			}
 			else
 			{
 				if ( ! Econ.modifyMoney(this, -cost, "to claim this land", "for claiming this land")) return false;
-				/*if ( ! Econ.deductMoney(this.getId(), cost))
-				{
-					msg("<b>Claiming this land will cost <h>%s<b>, which you can't currently afford.", costString);
-					return false;
-				}
-				sendMessage("You have paid "+costString+" to claim this land.");*/
+
 			}
 		}
-
+		
 		// announce success
-		if (otherFaction.isNormal())
+		Set<FPlayer> informTheseFPlayers = new HashSet<FPlayer>();
+		informTheseFPlayers.add(this);
+		informTheseFPlayers.addAll(forFaction.getFPlayersWhereOnline(true));
+		for (FPlayer fp : informTheseFPlayers)
 		{
-			// ASDF claimed some of your land 450 blocks NNW of you.
-			// ASDf claimed some land from FACTION NAME
-			otherFaction.msg("%s<i> stole some of your land :O", this.describeTo(otherFaction, true));
-			myFaction.msg("%s<i> claimed some land from %s.", this.describeTo(myFaction, true), otherFaction.describeTo(myFaction));
+			fp.msg("<h>%s<i> claimed land for <h>%s<i> from <h>%s<i>.", this.describeTo(fp, true), forFaction.describeTo(fp), currentFaction.describeTo(fp));
 		}
-		else
-		{
-			myFaction.msg("%s<i> claimed some new land :D", this.describeTo(myFaction));
-		}
-
-		Board.setFactionAt(myFaction, flocation);
+		
+		Board.setFactionAt(forFaction, flocation);
 		return true;
 	}
 	

@@ -68,7 +68,7 @@ public class Faction extends Entity implements EconomyParticipator
 		{
 			return getTag();
 		}
-		return this.getTag(otherFaction.getColorTo(this).toString());
+		return this.getTag(this.getColorTo(otherFaction).toString());
 	}
 	public String getTag(FPlayer otherFplayer) {
 		if (otherFplayer == null)

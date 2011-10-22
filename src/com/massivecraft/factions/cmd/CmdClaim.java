@@ -1,5 +1,6 @@
 package com.massivecraft.factions.cmd;
 
+import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.struct.Permission;
 
 public class CmdClaim extends FCommand
@@ -11,7 +12,7 @@ public class CmdClaim extends FCommand
 		this.aliases.add("claim");
 		
 		//this.requiredArgs.add("");
-		//this.optionalArgs.put("", "");
+		this.optionalArgs.put("faction", "your");
 		
 		this.permission = Permission.CLAIM.node;
 		this.disableOnLock = true;
@@ -27,7 +28,8 @@ public class CmdClaim extends FCommand
 	@Override
 	public void perform()
 	{
-		fme.attemptClaim(true);
+		Faction forFaction = this.argAsFaction(0, myFaction);
+		fme.attemptClaim(forFaction, me.getLocation(), true);
 	}
 	
 }

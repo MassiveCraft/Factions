@@ -29,7 +29,7 @@ public class RelationUtil
 			}
 			else
 			{
-				ret = "the faction " + thatFaction.getTag();
+				ret = thatFaction.getTag();
 			}
 		}
 		else if (that instanceof FPlayer)

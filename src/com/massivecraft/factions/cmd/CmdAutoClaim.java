@@ -53,7 +53,7 @@ public class CmdAutoClaim extends FCommand
 		}
 
 		msg("<i>Auto-claiming of land enabled.");
-		fme.attemptClaim(false);
+		fme.attemptClaim(myFaction, me.getLocation(), false);
 	}
 	
 }
