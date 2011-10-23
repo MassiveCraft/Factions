@@ -17,7 +17,7 @@ import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.struct.Rel;
 import com.massivecraft.factions.util.RelationUtil;
 
 public class Econ
@@ -107,7 +107,7 @@ public class Econ
 		if (i == fI && fI == fYou) return true;
 		
 		// Factions can be controlled by members that are moderators... or any member if any member can withdraw.
-		if (you instanceof Faction && fI == fYou && (Conf.bankMembersCanWithdraw || ((FPlayer)i).getRole().value >= Role.MODERATOR.value)) return true;
+		if (you instanceof Faction && fI == fYou && (Conf.bankMembersCanWithdraw || ((FPlayer)i).getRole().isAtLeast(Rel.OFFICER))) return true;
 		
 		// Otherwise you may not! ;,,;
 		i.msg("<h>%s<i> lack permission to controll <h>%s's<i> money.", i.describeTo(i, true), you.describeTo(i));

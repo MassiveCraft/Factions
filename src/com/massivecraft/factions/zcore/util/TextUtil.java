@@ -314,7 +314,7 @@ public class TextUtil
 			{
 				return candidate;
 			}
-			if (lendiff < best ||best == 0)
+			if (lendiff < best || best == 0)
 			{
 				best = lendiff;
 				ret = candidate;

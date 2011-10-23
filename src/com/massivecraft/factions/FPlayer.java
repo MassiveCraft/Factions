@@ -15,8 +15,7 @@ import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.integration.Worldguard;
 import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.struct.Relation;
-import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.struct.Rel;
 import com.massivecraft.factions.util.RelationUtil;
 import com.massivecraft.factions.zcore.persist.PlayerEntity;
 import com.nijikokun.register.payment.Method.MethodAccount;
@@ -50,9 +49,9 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 	}
 	
 	// FIELD: role
-	private Role role;
-	public Role getRole() { return this.role; }
-	public void setRole(Role role) { this.role = role; SpoutFeatures.updateAppearances(this.getPlayer()); }
+	private Rel role;
+	public Rel getRole() { return this.role; }
+	public void setRole(Rel role) { this.role = role; SpoutFeatures.updateAppearances(this.getPlayer()); }
 	
 	// FIELD: title
 	private String title;
@@ -179,7 +178,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		
 		this.factionId = "0"; // The default neutral faction
 		this.chatMode = ChatMode.PUBLIC;
-		this.role = Role.NORMAL;
+		this.role = Rel.MEMBER;
 		this.title = "";
 		this.autoClaimFor = null;
 
@@ -400,18 +399,18 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 	}
 	
 	@Override
-	public Relation getRelationTo(RelationParticipator rp)
+	public Rel getRelationTo(RelationParticipator rp)
 	{
 		return RelationUtil.getRelationTo(this, rp);
 	}
 	
 	@Override
-	public Relation getRelationTo(RelationParticipator rp, boolean ignorePeaceful)
+	public Rel getRelationTo(RelationParticipator rp, boolean ignorePeaceful)
 	{
 		return RelationUtil.getRelationTo(this, rp, ignorePeaceful);
 	}
 	
-	public Relation getRelationToLocation()
+	public Rel getRelationToLocation()
 	{
 		return Board.getFactionAt(new FLocation(this)).getRelationTo(this);
 	}
@@ -540,17 +539,17 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 
 	public boolean isInAllyTerritory()
 	{
-		return Board.getFactionAt(new FLocation(this)).getRelationTo(this).isAlly();
+		return Board.getFactionAt(new FLocation(this)).getRelationTo(this) == Rel.ALLY;
 	}
 
 	public boolean isInNeutralTerritory()
 	{
-		return Board.getFactionAt(new FLocation(this)).getRelationTo(this).isNeutral();
+		return Board.getFactionAt(new FLocation(this)).getRelationTo(this) == Rel.NEUTRAL;
 	}
 
 	public boolean isInEnemyTerritory()
 	{
-		return Board.getFactionAt(new FLocation(this)).getRelationTo(this).isEnemy();
+		return Board.getFactionAt(new FLocation(this)).getRelationTo(this) == Rel.ENEMY;
 	}
 
 	public void sendFactionHereMessage()
@@ -577,7 +576,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		Faction myFaction = this.getFaction();
 		boolean perm = myFaction.isPermanent();
 		
-		if (!perm && this.getRole() == Role.ADMIN && myFaction.getFPlayers().size() > 1)
+		if (!perm && this.getRole() == Rel.LEADER && myFaction.getFPlayers().size() > 1)
 		{
 			msg("<b>You must give the admin role to someone else first.");
 			return;
@@ -664,9 +663,9 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		{
 			error = P.p.txt.parse("%s<i> already own this land.", forFaction.describeTo(this, true));
 		}
-		else if (this.getRole().value < Role.MODERATOR.value)
+		else if ( ! this.getRole().isAtLeast(Rel.OFFICER))
 		{
-			error = P.p.txt.parse("<b>You must be <h>%s<b> to claim land.", Role.MODERATOR.toString());
+			error = P.p.txt.parse("<b>You must be <h>%s<b> to claim land.", Rel.OFFICER.toString());
 		}
 		else if (forFaction.getFPlayers().size() < Conf.claimsRequireMinFactionMembers)
 		{
@@ -684,7 +683,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		{
 			error = P.p.txt.parse("<b>You can't claim more land! You need more power!");
 		}
-		else if (currentFaction.getRelationTo(forFaction) == Relation.ALLY)
+		else if (currentFaction.getRelationTo(forFaction) == Rel.ALLY)
 		{
 			error = P.p.txt.parse("<b>You can't claim the land of your allies.");
 		}

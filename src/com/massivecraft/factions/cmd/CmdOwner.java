@@ -6,7 +6,7 @@ import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.struct.Rel;
 
 
 public class CmdOwner extends FCommand
@@ -52,7 +52,7 @@ public class CmdOwner extends FCommand
 			return;
 		}
 
-		if ( ! hasBypass && !assertMinRole(Conf.ownedAreasModeratorsCanSet ? Role.MODERATOR : Role.ADMIN))
+		if ( ! hasBypass && !assertMinRole(Conf.ownedAreasModeratorsCanSet ? Rel.OFFICER : Rel.LEADER))
 		{
 			return;
 		}

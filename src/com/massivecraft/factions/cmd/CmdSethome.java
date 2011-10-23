@@ -5,7 +5,7 @@ import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.struct.Rel;
 
 public class CmdSethome extends FCommand
 {
@@ -40,7 +40,7 @@ public class CmdSethome extends FCommand
 		// Can the player set the home for this faction?
 		if (faction == myFaction)
 		{
-			if ( ! Permission.SETHOME_ANY.has(sender) && ! assertMinRole(Role.MODERATOR)) return;
+			if ( ! Permission.SETHOME_ANY.has(sender) && ! assertMinRole(Rel.OFFICER)) return;
 		}
 		else
 		{

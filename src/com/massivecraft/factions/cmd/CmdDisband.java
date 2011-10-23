@@ -7,8 +7,7 @@ import com.massivecraft.factions.P;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.struct.Role;
-
+import com.massivecraft.factions.struct.Rel;
 
 public class CmdDisband extends FCommand
 {
@@ -40,7 +39,7 @@ public class CmdDisband extends FCommand
 		
 		if (isMyFaction)
 		{
-			if ( ! assertMinRole(Role.ADMIN)) return;
+			if ( ! assertMinRole(Rel.LEADER)) return;
 		}
 		else
 		{

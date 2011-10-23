@@ -6,11 +6,11 @@ import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.struct.Relation;
+import com.massivecraft.factions.struct.Rel;
 
 public abstract class FRelationCommand extends FCommand
 {
-	public Relation targetRelation;
+	public Rel targetRelation;
 	
 	public FRelationCommand()
 	{
@@ -49,7 +49,7 @@ public abstract class FRelationCommand extends FCommand
 		if ( ! payForCommand(targetRelation.getRelationCost(), "to change a relation wish", "for changing a relation wish")) return;
 
 		myFaction.setRelationWish(them, targetRelation);
-		Relation currentRelation = myFaction.getRelationTo(them, true);
+		Rel currentRelation = myFaction.getRelationTo(them, true);
 		ChatColor currentRelationColor = currentRelation.getColor();
 		if (targetRelation.value == currentRelation.value)
 		{
@@ -63,13 +63,13 @@ public abstract class FRelationCommand extends FCommand
 			myFaction.msg(currentRelationColor+them.getTag()+"<i> were informed that you wish to be "+targetRelation.getColor()+targetRelation);
 		}
 		
-		if ( ! targetRelation.isNeutral() && them.isPeaceful())
+		if ( targetRelation != Rel.NEUTRAL && them.isPeaceful())
 		{
 			them.msg("<i>This will have no effect while your faction is peaceful.");
 			myFaction.msg("<i>This will have no effect while their faction is peaceful.");
 		}
 		
-		if ( ! targetRelation.isNeutral() && myFaction.isPeaceful())
+		if ( targetRelation != Rel.NEUTRAL && myFaction.isPeaceful())
 		{
 			them.msg("<i>This will have no effect while their faction is peaceful.");
 			myFaction.msg("<i>This will have no effect while your faction is peaceful.");

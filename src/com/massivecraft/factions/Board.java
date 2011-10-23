@@ -12,7 +12,7 @@ import java.util.TreeMap;
 import org.bukkit.ChatColor;
 
 import com.google.gson.reflect.TypeToken;
-import com.massivecraft.factions.struct.Relation;
+import com.massivecraft.factions.struct.Rel;
 import com.massivecraft.factions.util.AsciiCompass;
 import com.massivecraft.factions.zcore.util.DiscUtil;
 
@@ -213,7 +213,7 @@ public class Board
 				{
 					FLocation flocationHere = topLeft.getRelative(dx, dz);
 					Faction factionHere = getFactionAt(flocationHere);
-					Relation relation = faction.getRelationTo(factionHere);
+					Rel relation = faction.getRelationTo(factionHere);
 					if (factionHere.isNone())
 					{
 						row += ChatColor.GRAY+"-";
@@ -232,11 +232,11 @@ public class Board
 						||
 						factionHere == factionLoc
 						||
-						relation.isAtLeast(Relation.ALLY)
+						relation.isAtLeast(Rel.ALLY)
 						||
-						(Conf.showNeutralFactionsOnMap && relation.equals(Relation.NEUTRAL))
+						(Conf.showNeutralFactionsOnMap && relation.equals(Rel.NEUTRAL))
 						||
-						(Conf.showEnemyFactionsOnMap && relation.equals(Relation.ENEMY))
+						(Conf.showEnemyFactionsOnMap && relation.equals(Rel.ENEMY))
 					)
 					{
 						if (!fList.containsKey(factionHere.getTag()))

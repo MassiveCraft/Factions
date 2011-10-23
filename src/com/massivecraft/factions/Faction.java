@@ -12,8 +12,7 @@ import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.iface.RelationParticipator;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.struct.Relation;
-import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.struct.Rel;
 import com.massivecraft.factions.util.*;
 import com.massivecraft.factions.zcore.persist.Entity;
 import com.nijikokun.register.payment.Method.MethodAccount;
@@ -22,7 +21,7 @@ import com.nijikokun.register.payment.Method.MethodAccount;
 public class Faction extends Entity implements EconomyParticipator
 {
 	// FIELD: relationWish
-	private Map<String, Relation> relationWish;
+	private Map<String, Rel> relationWish;
 	
 	// FIELD: claimOwnership
 	private Map<FLocation, Set<String>> claimOwnership = new ConcurrentHashMap<FLocation, Set<String>>();
@@ -141,7 +140,7 @@ public class Faction extends Entity implements EconomyParticipator
 	
 	public Faction()
 	{
-		this.relationWish = new HashMap<String, Relation>();
+		this.relationWish = new HashMap<String, Rel>();
 		this.invites = new HashSet<String>();
 		this.open = Conf.newFactionsDefaultOpen;
 		this.tag = "???";
@@ -210,13 +209,13 @@ public class Faction extends Entity implements EconomyParticipator
 	}
 	
 	@Override
-	public Relation getRelationTo(RelationParticipator rp)
+	public Rel getRelationTo(RelationParticipator rp)
 	{
 		return RelationUtil.getRelationTo(this, rp);
 	}
 	
 	@Override
-	public Relation getRelationTo(RelationParticipator rp, boolean ignorePeaceful)
+	public Rel getRelationTo(RelationParticipator rp, boolean ignorePeaceful)
 	{
 		return RelationUtil.getRelationTo(this, rp, ignorePeaceful);
 	}
@@ -227,18 +226,18 @@ public class Faction extends Entity implements EconomyParticipator
 		return RelationUtil.getColorOfThatToMe(this, rp);
 	}
 	
-	public Relation getRelationWish(Faction otherFaction)
+	public Rel getRelationWish(Faction otherFaction)
 	{
 		if (this.relationWish.containsKey(otherFaction.getId()))
 		{
 			return this.relationWish.get(otherFaction.getId());
 		}
-		return Relation.NEUTRAL;
+		return Rel.NEUTRAL;
 	}
 	
-	public void setRelationWish(Faction otherFaction, Relation relation)
+	public void setRelationWish(Faction otherFaction, Rel relation)
 	{
-		if (this.relationWish.containsKey(otherFaction.getId()) && relation.equals(Relation.NEUTRAL))
+		if (this.relationWish.containsKey(otherFaction.getId()) && relation.equals(Rel.NEUTRAL))
 		{
 			this.relationWish.remove(otherFaction.getId());
 		}
@@ -355,7 +354,7 @@ public class Faction extends Entity implements EconomyParticipator
 		
 		for (FPlayer fplayer : FPlayers.i.get())
 		{
-			if (fplayer.getFaction() == this && fplayer.getRole() == Role.ADMIN)
+			if (fplayer.getFaction() == this && fplayer.getRole() == Rel.LEADER)
 			{
 				return fplayer;
 			}
@@ -363,7 +362,7 @@ public class Faction extends Entity implements EconomyParticipator
 		return null;
 	}
 	
-	public ArrayList<FPlayer> getFPlayersWhereRole(Role role)
+	public ArrayList<FPlayer> getFPlayersWhereRole(Rel role)
 	{
 		ArrayList<FPlayer> ret = new ArrayList<FPlayer>();
 		if ( ! this.isNormal()) return ret;
@@ -595,7 +594,7 @@ public class Faction extends Entity implements EconomyParticipator
 			fplayer.getFaction() == this
 			&&
 			(
-				fplayer.getRole().isAtLeast(Conf.ownedAreaModeratorsBypass ? Role.MODERATOR : Role.ADMIN)
+				fplayer.getRole().isAtLeast(Conf.ownedAreaModeratorsBypass ? Rel.OFFICER : Rel.LEADER)
 				||
 				Permission.OWNERSHIP_BYPASS.has(fplayer.getPlayer())
 			)

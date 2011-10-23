@@ -3,7 +3,7 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.struct.Rel;
 
 public class CmdAdmin extends FCommand
 {	
@@ -42,8 +42,8 @@ public class CmdAdmin extends FCommand
 			return;
 		}
 		
-		fme.setRole(Role.MODERATOR);
-		fyou.setRole(Role.ADMIN);
+		fme.setRole(Rel.OFFICER);
+		fyou.setRole(Rel.LEADER);
 		
 		// Inform all players
 		for (FPlayer fplayer : FPlayers.i.getOnline())

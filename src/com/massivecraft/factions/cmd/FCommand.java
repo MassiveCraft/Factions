@@ -12,7 +12,7 @@ import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.P;
-import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.struct.Rel;
 import com.massivecraft.factions.zcore.MCommand;
 
 
@@ -101,13 +101,13 @@ public abstract class FCommand extends MCommand<P>
 			return false;
 		}
 		
-		if (this.senderMustBeModerator && ! fplayer.getRole().isAtLeast(Role.MODERATOR))
+		if (this.senderMustBeModerator && ! fplayer.getRole().isAtLeast(Rel.OFFICER))
 		{
 			sender.sendMessage(p.txt.parse("<b>Only faction moderators can %s.", this.getHelpShort()));
 			return false;
 		}
 		
-		if (this.senderMustBeAdmin && ! fplayer.getRole().isAtLeast(Role.ADMIN))
+		if (this.senderMustBeAdmin && ! fplayer.getRole().isAtLeast(Rel.LEADER))
 		{
 			sender.sendMessage(p.txt.parse("<b>Only faction admins can %s.", this.getHelpShort()));
 			return false;
@@ -132,7 +132,7 @@ public abstract class FCommand extends MCommand<P>
 		return true;
 	}
 
-	public boolean assertMinRole(Role role)
+	public boolean assertMinRole(Rel role)
 	{
 		if (me == null) return true;
 		
@@ -285,16 +285,16 @@ public abstract class FCommand extends MCommand<P>
 			return false;
 		}
 		
-		if (i.getRole().value > you.getRole().value || i.getRole().equals(Role.ADMIN) )
+		if (i.getRole().value > you.getRole().value || i.getRole().equals(Rel.LEADER) )
 		{
 			return true;
 		}
 		
-		if (you.getRole().equals(Role.ADMIN))
+		if (you.getRole().equals(Rel.LEADER))
 		{
 			i.sendMessage(p.txt.parse("<b>Only the faction admin can do that."));
 		}
-		else if (i.getRole().equals(Role.MODERATOR))
+		else if (i.getRole().equals(Rel.OFFICER))
 		{
 			if ( i == you )
 			{

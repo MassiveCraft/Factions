@@ -2,7 +2,7 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.struct.Rel;
 
 public class CmdMod extends FCommand
 {
@@ -42,16 +42,16 @@ public class CmdMod extends FCommand
 			return;
 		}
 
-		if (you.getRole() == Role.MODERATOR)
+		if (you.getRole() == Rel.OFFICER)
 		{
 			// Revoke
-			you.setRole(Role.NORMAL);
+			you.setRole(Rel.MEMBER);
 			myFaction.msg("%s<i> is no longer moderator in your faction.", you.describeTo(myFaction, true));
 		}
 		else
 		{
 			// Give
-			you.setRole(Role.MODERATOR);
+			you.setRole(Rel.OFFICER);
 			myFaction.msg("%s<i> was promoted to moderator in your faction.", you.describeTo(myFaction, true));
 		}
 	}

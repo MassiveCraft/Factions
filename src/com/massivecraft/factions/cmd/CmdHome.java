@@ -14,8 +14,7 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.struct.Relation;
-import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.struct.Rel;
 import com.massivecraft.factions.zcore.util.SmokeUtil;
 
 public class CmdHome extends FCommand
@@ -56,7 +55,7 @@ public class CmdHome extends FCommand
 		
 		if ( ! myFaction.hasHome())
 		{
-			fme.msg("<b>You faction does not have a home. " + (fme.getRole().value < Role.MODERATOR.value ? "<i> Ask your leader to:" : "<i>You should:"));
+			fme.msg("<b>You faction does not have a home. " + (fme.getRole().isLessThan(Rel.OFFICER) ? "<i> Ask your leader to:" : "<i>You should:"));
 			fme.sendMessage(p.cmdBase.cmdSethome.getUseageTemplate());
 			return;
 		}
@@ -105,7 +104,7 @@ public class CmdHome extends FCommand
 					continue;
 
 				FPlayer fp = FPlayers.i.get(p);
-				if (fme.getRelationTo(fp) != Relation.ENEMY)
+				if (fme.getRelationTo(fp) != Rel.ENEMY)
 					continue;
 
 				Location l = p.getLocation();

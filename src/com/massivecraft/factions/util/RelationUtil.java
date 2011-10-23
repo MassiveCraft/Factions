@@ -6,7 +6,7 @@ import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.iface.RelationParticipator;
-import com.massivecraft.factions.struct.Relation;
+import com.massivecraft.factions.struct.Rel;
 import com.massivecraft.factions.zcore.util.TextUtil;
 
 public class RelationUtil
@@ -62,32 +62,32 @@ public class RelationUtil
 		return describeThatToMe(that, me, false);
 	}
 
-	public static Relation getRelationTo(RelationParticipator me, RelationParticipator that)
+	public static Rel getRelationTo(RelationParticipator me, RelationParticipator that)
 	{
 		return getRelationTo(that, me, false);
 	}
 
-	public static Relation getRelationTo(RelationParticipator me, RelationParticipator that, boolean ignorePeaceful)
+	public static Rel getRelationTo(RelationParticipator me, RelationParticipator that, boolean ignorePeaceful)
 	{
 		Faction fthat = getFaction(that);
-		if (fthat == null) return Relation.NEUTRAL; // ERROR
+		if (fthat == null) return Rel.NEUTRAL; // ERROR
 
 		Faction fme = getFaction(me);
-		if (fme == null) return Relation.NEUTRAL; // ERROR
+		if (fme == null) return Rel.NEUTRAL; // ERROR
 
 		if (!fthat.isNormal() || !fme.isNormal())
 		{
-			return Relation.NEUTRAL;
+			return Rel.NEUTRAL;
 		}
 
 		if (fthat.equals(fme))
 		{
-			return Relation.MEMBER;
+			return Rel.MEMBER;
 		}
 
 		if (!ignorePeaceful && (fme.isPeaceful() || fthat.isPeaceful()))
 		{
-			return Relation.NEUTRAL;
+			return Rel.NEUTRAL;
 		}
 
 		if (fme.getRelationWish(fthat).value >= fthat.getRelationWish(fme).value)

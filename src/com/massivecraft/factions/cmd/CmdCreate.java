@@ -8,8 +8,7 @@ import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.struct.Role;
-
+import com.massivecraft.factions.struct.Rel;
 
 public class CmdCreate extends FCommand
 {
@@ -67,7 +66,7 @@ public class CmdCreate extends FCommand
 		}
 
 		faction.setTag(tag);
-		fme.setRole(Role.ADMIN);
+		fme.setRole(Rel.LEADER);
 		fme.setFaction(faction);
 
 		for (FPlayer follower : FPlayers.i.getOnline())

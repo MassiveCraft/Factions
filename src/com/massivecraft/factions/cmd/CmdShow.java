@@ -8,7 +8,7 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.struct.Rel;
 
 public class CmdShow extends FCommand
 {
@@ -43,9 +43,9 @@ public class CmdShow extends FCommand
 		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
 		if ( ! payForCommand(Conf.econCostShow, "to show faction information", "for showing faction information")) return;
 
-		Collection<FPlayer> admins = faction.getFPlayersWhereRole(Role.ADMIN);
-		Collection<FPlayer> mods = faction.getFPlayersWhereRole(Role.MODERATOR);
-		Collection<FPlayer> normals = faction.getFPlayersWhereRole(Role.NORMAL);
+		Collection<FPlayer> admins = faction.getFPlayersWhereRole(Rel.LEADER);
+		Collection<FPlayer> mods = faction.getFPlayersWhereRole(Rel.OFFICER);
+		Collection<FPlayer> normals = faction.getFPlayersWhereRole(Rel.MEMBER);
 		
 		msg(p.txt.titleize(faction.getTag(fme)));
 		msg("<a>Description: <i>%s", faction.getDescription());
@@ -98,11 +98,11 @@ public class CmdShow extends FCommand
 				continue;
 			}
 			listpart = otherFaction.getTag(fme)+p.txt.parse("<i>")+", ";
-			if (otherFaction.getRelationTo(faction).isAlly())
+			if (otherFaction.getRelationTo(faction) == Rel.ALLY)
 			{
 				allyList += listpart;
 			}
-			else if (otherFaction.getRelationTo(faction).isEnemy())
+			else if (otherFaction.getRelationTo(faction) == Rel.ENEMY)
 			{
 				enemyList += listpart;
 			}

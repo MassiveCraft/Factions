@@ -5,17 +5,18 @@ import org.bukkit.ChatColor;
 import com.massivecraft.factions.Conf;
 
 
-public enum Relation
+public enum RelationDEPR
 {
 	MEMBER(3, "member"),
 	ALLY(2, "ally"),
 	NEUTRAL(1, "neutral"),
-	ENEMY(0, "enemy");
+	ENEMY(0, "enemy"),
+	;
 	
 	public final int value;
 	public final String nicename;
 	
-	private Relation(final int value, final String nicename)
+	private RelationDEPR(final int value, final String nicename)
 	{
         this.value = value;
         this.nicename = nicename;
