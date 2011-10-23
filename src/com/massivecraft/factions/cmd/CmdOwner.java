@@ -5,6 +5,7 @@ import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
 
@@ -90,6 +91,7 @@ public class CmdOwner extends FCommand
 		if (args.isEmpty() && myFaction.doesLocationHaveOwnersSet(flocation))
 		{
 			myFaction.clearClaimOwnership(flocation);
+			SpoutFeatures.updateOwnerListLoc(flocation);
 			fme.msg("<i>You have cleared ownership for this claimed area.");
 			return;
 		}
@@ -97,6 +99,7 @@ public class CmdOwner extends FCommand
 		if (myFaction.isPlayerInOwnerList(playerName, flocation))
 		{
 			myFaction.removePlayerAsOwner(playerName, flocation);
+			SpoutFeatures.updateOwnerListLoc(flocation);
 			fme.msg("<i>You have removed ownership of this claimed land from %s<i>.", playerName);
 			return;
 		}
@@ -105,6 +108,8 @@ public class CmdOwner extends FCommand
 		if ( ! payForCommand(Conf.econCostOwner, "to set ownership of claimed land", "for setting ownership of claimed land")) return;
 
 		myFaction.setPlayerAsOwner(playerName, flocation);
+		SpoutFeatures.updateOwnerListLoc(flocation);
+
 		fme.msg("<i>You have added %s<i> to the owner list for this claimed land.", playerName);
 	}
 }

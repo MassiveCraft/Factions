@@ -6,6 +6,7 @@ import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.P;
 
 import org.bukkit.ChatColor;
@@ -63,13 +64,60 @@ public class SpoutFeatures
 	}
 
 
+	// update displayed current territory for all players inside a specified chunk; if specified chunk is null, then simply update everyone online
+	public static void updateTerritoryDisplayLoc(FLocation fLoc)
+	{
+		if (!enabled())
+			return;
+
+		Set<FPlayer> players = FPlayers.i.getOnline();
+
+		for (FPlayer player : players)
+		{
+			if (fLoc == null)
+				mainListener.updateTerritoryDisplay(player, false);
+			else if (player.getLastStoodAt().equals(fLoc))
+				mainListener.updateTerritoryDisplay(player, true);
+		}
+	}
+
 	// update displayed current territory for specified player; returns false if unsuccessful
 	public static boolean updateTerritoryDisplay(FPlayer player)
 	{
 		if (!enabled())
 			return false;
 
-		return mainListener.updateTerritoryDisplay(player);
+		return mainListener.updateTerritoryDisplay(player, true);
+	}
+
+	// update owner list for all players inside a specified chunk; if specified chunk is null, then simply update everyone online
+	public static void updateOwnerListLoc(FLocation fLoc)
+	{
+		if (!enabled())
+			return;
+
+		Set<FPlayer> players = FPlayers.i.getOnline();
+
+		for (FPlayer player : players)
+		{
+			if (fLoc == null || player.getLastStoodAt().equals(fLoc))
+				mainListener.updateOwnerList(player);
+		}
+/*		// immediate update after a change doesn't seem to work; oh well, delay it slightly
+		P.p.getServer().getScheduler().scheduleSyncDelayedTask(P.p, new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				Set<FPlayer> players = FPlayers.i.getOnline();
+
+				for (FPlayer player : players)
+				{
+					if (fLoc == null || player.getLastStoodAt() == fLoc)
+						mainListener.updateOwnerList(player);
+				}
+			}
+		}, 5);*/
 	}
 
 	// update owner list for specified player
@@ -94,19 +142,15 @@ public class SpoutFeatures
 	public static void updateAppearances()
 	{
 		if (!enabled())
-		{
 			return;
-		}
 
 		Set<FPlayer> players = FPlayers.i.getOnline();
-		Faction factionA;
 
 		for (FPlayer playerA : players)
 		{
-			factionA = playerA.getFaction();
 			for (FPlayer playerB : players)
 			{
-				updateSingle(playerB.getPlayer(), playerA.getPlayer(), factionA.getRelationTo(playerB), factionA, playerA.getTitle(), playerA.getRole());
+				updateSingle(playerB, playerA);
 			}
 		}
 	}
@@ -115,33 +159,39 @@ public class SpoutFeatures
 	public static void updateAppearances(Player player)
 	{
 		if (!enabled() || player == null)
-		{
 			return;
-		}
 
 		Set<FPlayer> players = FPlayers.i.getOnline();
 		FPlayer playerA = FPlayers.i.get(player);
-		Faction factionA = playerA.getFaction();
 
 		for (FPlayer playerB : players)
 		{
-			Player player2 = playerB.getPlayer();
-			Relation rel = factionA.getRelationTo(playerB);
-			updateSingle(player2, player, rel, factionA, playerA.getTitle(), playerA.getRole());
-			updateSingle(player, player2, rel, playerB.getFaction(), playerB.getTitle(), playerB.getRole());
+			updateSingle(playerB, playerA);
+			updateSingle(playerA, playerB);
 		}
+	}
+
+	// as above method, but with a delay added; useful for after-login update which doesn't always propagate if done immediately
+	public static void updateAppearancesShortly(final Player player)
+	{
+		P.p.getServer().getScheduler().scheduleSyncDelayedTask(P.p, new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				updateAppearances(player);
+			}
+		}, 100);
 	}
 
 	// update all appearances related to a single faction
 	public static void updateAppearances(Faction faction)
 	{
 		if (!enabled() || faction == null)
-		{
 			return;
-		}
 
 		Set<FPlayer> players = FPlayers.i.getOnline();
-		Faction factionA, factionB;
+		Faction factionA;
 
 		for (FPlayer playerA : players)
 		{
@@ -149,12 +199,10 @@ public class SpoutFeatures
 
 			for (FPlayer playerB : players)
 			{
-				factionB = playerB.getFaction();
-				if (factionA != faction && factionB != faction)
-				{
+				if (factionA != faction && playerB.getFaction() != faction)
 					continue;
-				}
-				updateSingle(playerB.getPlayer(), playerA.getPlayer(), factionA.getRelationTo(factionB), factionA, playerA.getTitle(), playerA.getRole());
+
+				updateSingle(playerB, playerA);
 			}
 		}
 	}
@@ -163,31 +211,33 @@ public class SpoutFeatures
 	public static void updateAppearances(Faction factionA, Faction factionB)
 	{
 		if (!enabled() || factionA == null || factionB == null)
-		{
 			return;
-		}
 
 		for (FPlayer playerA : factionA.getFPlayersWhereOnline(true))
 		{
 			for (FPlayer playerB : factionB.getFPlayersWhereOnline(true))
 			{
-				Player player1 = playerA.getPlayer();
-				Player player2 = playerB.getPlayer();
-				Relation rel = factionA.getRelationTo(factionB);
-				updateSingle(player2, player1, rel, factionA, playerA.getTitle(), playerA.getRole());
-				updateSingle(player1, player2, rel, factionB, playerB.getTitle(), playerB.getRole());
+				updateSingle(playerB, playerA);
+				updateSingle(playerA, playerB);
 			}
 		}
 	}
 
 
 	// update a single appearance; internal use only by above public methods
-	private static void updateSingle(Player viewer, Player viewed, Relation relation, Faction viewedFaction, String viewedTitle, Role viewedRole)
+	private static void updateSingle(FPlayer viewer, FPlayer viewed)
 	{
 		if (viewer == null || viewed == null)
 			return;
 
-		SpoutPlayer sPlayer = SpoutManager.getPlayer(viewer);
+		Faction viewedFaction = viewed.getFaction();
+		if (viewedFaction == null)
+			return;
+
+		SpoutPlayer sPlayer = SpoutManager.getPlayer(viewer.getPlayer());
+		Player pViewed = viewed.getPlayer();
+		String viewedTitle = viewed.getTitle();
+		Role viewedRole = viewed.getRole();
 
 		if ((Conf.spoutFactionTagsOverNames || Conf.spoutFactionTitlesOverNames) && viewer != viewed)
 		{
@@ -195,19 +245,17 @@ public class SpoutFeatures
 			{
 				String addTag = "";
 				if (Conf.spoutFactionTagsOverNames)
-				{
-					addTag += viewedFaction.getTag(relation.getColor().toString() + "[") + "]";
-				}
+					addTag += viewedFaction.getTag(viewed.getColorTo(viewer).toString() + "[") + "]";
+
 				String rolePrefix = viewedRole.getPrefix();
 				if (Conf.spoutFactionTitlesOverNames && (!viewedTitle.isEmpty() || !rolePrefix.isEmpty()))
-				{
 					addTag += (addTag.isEmpty() ? "" : " ") + viewedRole.getPrefix() + viewedTitle;
-				}
-				spoutApp.setPlayerTitle(sPlayer, viewed, addTag + "\n" + viewed.getDisplayName());
+
+				spoutApp.setPlayerTitle(sPlayer, pViewed, addTag + "\n" + pViewed.getDisplayName());
 			}
 			else
 			{
-				spoutApp.setPlayerTitle(sPlayer, viewed, viewed.getDisplayName());
+				spoutApp.setPlayerTitle(sPlayer, pViewed, pViewed.getDisplayName());
 			}
 		}
 
@@ -226,54 +274,41 @@ public class SpoutFeatures
 			)
 		)
 		{
+			Relation relation = viewer.getRelationTo(viewed);
 			String cape = "";
 			if (!viewedFaction.isNormal())
 			{
 				// yeah, no cape if no faction
 			}
 			else if (viewedFaction.isPeaceful())
-			{
 				cape = Conf.capePeaceful;
-			}
 			else if (relation.isNeutral())
-			{
 				cape = Conf.capeNeutral;
-			}
 			else if (relation.isMember())
-			{
 				cape = Conf.capeMember;
-			}
 			else if (relation.isEnemy())
-			{
 				cape = Conf.capeEnemy;
-			}
 			else if (relation.isAlly())
-			{
 				cape = Conf.capeAlly;
-			}
 
 			if (cape.isEmpty())
-			{
-				spoutApp.resetPlayerCloak(sPlayer, viewed);
-			}
+				spoutApp.resetPlayerCloak(sPlayer, pViewed);
 			else
-			{
-				spoutApp.setPlayerCloak(sPlayer, viewed, cape);
-			}
+				spoutApp.setPlayerCloak(sPlayer, pViewed, cape);
 		}
 		else if (Conf.spoutFactionAdminCapes || Conf.spoutFactionModeratorCapes)
 		{
-			spoutApp.resetPlayerCloak(sPlayer, viewed);
+			spoutApp.resetPlayerCloak(sPlayer, pViewed);
 		}
 	}
+
 
 	// method to convert a Bukkit ChatColor to a Spout Color
 	protected static Color getSpoutColor(ChatColor inColor, int alpha)
 	{
 		if (inColor == null)
-		{
 			return SpoutFixedColor(191, 191, 191, alpha);
-		}
+
 		switch (inColor.getCode())
 		{
 			case 0x1:	return SpoutFixedColor(0, 0, 191, alpha);

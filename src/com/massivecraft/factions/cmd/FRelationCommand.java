@@ -76,6 +76,6 @@ public abstract class FRelationCommand extends FCommand
 		}
 
 		SpoutFeatures.updateAppearances(myFaction, them);
-		
+		SpoutFeatures.updateTerritoryDisplayLoc(null);
 	}
 }

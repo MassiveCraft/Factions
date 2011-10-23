@@ -154,6 +154,8 @@ public class FactionsPlayerListener extends PlayerListener
 		// Run the member auto kick routine. Twice to get to the admins...
 		FPlayers.i.autoLeaveOnInactivityRoutine();
 		FPlayers.i.autoLeaveOnInactivityRoutine();
+
+		SpoutFeatures.updateAppearancesShortly(event.getPlayer());
 	}
 	
     @Override
