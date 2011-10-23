@@ -86,11 +86,11 @@ public class Econ
 	
 	public static boolean canIControllYou(EconomyParticipator i, EconomyParticipator you)
 	{
-		Faction fInvoker = RelationUtil.getFaction(i);
-		Faction fFrom = RelationUtil.getFaction(you);
+		Faction fI = RelationUtil.getFaction(i);
+		Faction fYou = RelationUtil.getFaction(you);
 		
 		// This is a system invoker. Accept it.
-		if (fInvoker == null) return true;
+		if (fI == null) return true;
 		
 		// Bypassing players can do any kind of transaction
 		if (i instanceof FPlayer && ((FPlayer)i).isAdminBypassing()) return true;
@@ -104,10 +104,10 @@ public class Econ
 		// A faction can always transfer away the money of it's members and its own money...
 		// This will however probably never happen as a faction does not have free will.
 		// Ohh by the way... Yes it could. For daily rent to the faction.
-		if (i == fInvoker && fInvoker == fFrom) return true;
+		if (i == fI && fI == fYou) return true;
 		
-		// If you are part of the same faction as from and members can withdraw or you are at least moderator... then it is ok.
-		if (fInvoker == fFrom && (Conf.bankMembersCanWithdraw || ((FPlayer)i).getRole().value >= Role.MODERATOR.value)) return true;
+		// Factions can be controlled by members that are moderators... or any member if any member can withdraw.
+		if (you instanceof Faction && fI == fYou && (Conf.bankMembersCanWithdraw || ((FPlayer)i).getRole().value >= Role.MODERATOR.value)) return true;
 		
 		// Otherwise you may not! ;,,;
 		i.msg("<h>%s<i> lack permission to controll <h>%s's<i> money.", i.describeTo(i, true), you.describeTo(i));

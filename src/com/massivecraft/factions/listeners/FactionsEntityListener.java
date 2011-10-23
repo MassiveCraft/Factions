@@ -2,7 +2,6 @@ package com.massivecraft.factions.listeners;
 
 import java.text.MessageFormat;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Creeper;
 import org.bukkit.entity.Entity;
@@ -362,7 +361,7 @@ public class FactionsEntityListener extends EntityListener
 			
 			// Send message
 		    String perc = MessageFormat.format("{0,number,#%}", (Conf.territoryShieldFactor)); // TODO does this display correctly??
-		    defender.msg("<i>Enemy damage reduced by "+ChatColor.RED+perc+"<i>.");
+		    defender.msg("<i>Enemy damage reduced by <rose>%s<i>.", perc);
 		}
 		
 		return true;
