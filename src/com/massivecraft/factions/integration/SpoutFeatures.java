@@ -103,21 +103,6 @@ public class SpoutFeatures
 			if (fLoc == null || player.getLastStoodAt().equals(fLoc))
 				mainListener.updateOwnerList(player);
 		}
-/*		// immediate update after a change doesn't seem to work; oh well, delay it slightly
-		P.p.getServer().getScheduler().scheduleSyncDelayedTask(P.p, new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				Set<FPlayer> players = FPlayers.i.getOnline();
-
-				for (FPlayer player : players)
-				{
-					if (fLoc == null || player.getLastStoodAt() == fLoc)
-						mainListener.updateOwnerList(player);
-				}
-			}
-		}, 5);*/
 	}
 
 	// update owner list for specified player

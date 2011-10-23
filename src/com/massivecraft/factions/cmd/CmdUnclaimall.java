@@ -28,14 +28,17 @@ public class CmdUnclaimall extends FCommand
 	@Override
 	public void perform()
 	{
-		double refund = Econ.calculateTotalLandRefund(myFaction.getLandRounded());
-		if(Conf.bankFactionPaysLandCosts)
+		if (Econ.shouldBeUsed())
 		{
-			if ( ! Econ.modifyMoney(myFaction, refund, "to unclaim all faction land", "for unclaiming all faction land")) return;
-		}
-		else
-		{
-			if ( ! Econ.modifyMoney(fme      , refund, "to unclaim all faction land", "for unclaiming all faction land")) return;
+			double refund = Econ.calculateTotalLandRefund(myFaction.getLandRounded());
+			if(Conf.bankFactionPaysLandCosts)
+			{
+				if ( ! Econ.modifyMoney(myFaction, refund, "to unclaim all faction land", "for unclaiming all faction land")) return;
+			}
+			else
+			{
+				if ( ! Econ.modifyMoney(fme      , refund, "to unclaim all faction land", "for unclaiming all faction land")) return;
+			}
 		}
 
 		Board.unclaimAll(myFaction.getId());
