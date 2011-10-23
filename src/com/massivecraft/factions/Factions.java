@@ -58,6 +58,13 @@ public class Factions extends EntityCollection<Faction>
 			faction.setTag("SafeZone");
 			faction.setDescription("Free from PVP and monsters");
 		}
+		else
+		{
+			// if SafeZone has old pre-1.6.0 name, rename it to remove troublesome " "
+			Faction faction = this.getSafeZone();
+			if (faction.getTag().contains(" "))
+				faction.setTag("SafeZone");
+		}
 		
 		// Make sure the war zone faction exists
 		if ( ! this.exists("-2"))
@@ -65,6 +72,13 @@ public class Factions extends EntityCollection<Faction>
 			Faction faction = this.create("-2");
 			faction.setTag("WarZone");
 			faction.setDescription("Not the safest place to be");
+		}
+		else
+		{
+			// if WarZone has old pre-1.6.0 name, rename it to remove troublesome " "
+			Faction faction = this.getWarZone();
+			if (faction.getTag().contains(" "))
+				faction.setTag("WarZone");
 		}
 		
 		return true;

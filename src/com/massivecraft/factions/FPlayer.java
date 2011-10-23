@@ -770,6 +770,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		}
 		
 		Board.setFactionAt(forFaction, flocation);
+		SpoutFeatures.updateTerritoryDisplayLoc(flocation);
 		return true;
 	}
 	

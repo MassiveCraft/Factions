@@ -3,6 +3,7 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.Board;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.integration.Econ;
+import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.struct.Permission;
@@ -38,6 +39,7 @@ public class CmdUnclaim extends FCommand
 			if (Permission.MANAGE_SAFE_ZONE.has(sender))
 			{
 				Board.removeAt(flocation);
+				SpoutFeatures.updateTerritoryDisplayLoc(flocation);
 				msg("<i>Safe zone was unclaimed.");
 			}
 			else
@@ -51,6 +53,7 @@ public class CmdUnclaim extends FCommand
 			if (Permission.MANAGE_WAR_ZONE.has(sender))
 			{
 				Board.removeAt(flocation);
+				SpoutFeatures.updateTerritoryDisplayLoc(flocation);
 				msg("<i>War zone was unclaimed.");
 			}
 			else
@@ -63,6 +66,7 @@ public class CmdUnclaim extends FCommand
 		if (fme.isAdminBypassing())
 		{
 			Board.removeAt(flocation);
+			SpoutFeatures.updateTerritoryDisplayLoc(flocation);
 
 			otherFaction.msg("%s<i> unclaimed some of your land.", fme.describeTo(otherFaction, true));
 			msg("<i>You unclaimed this land.");
@@ -148,6 +152,7 @@ public class CmdUnclaim extends FCommand
 		}
 
 		Board.removeAt(flocation);
+		SpoutFeatures.updateTerritoryDisplayLoc(flocation);
 		myFaction.msg("%s<i> unclaimed some land.", fme.describeTo(myFaction, true));
 	}
 	

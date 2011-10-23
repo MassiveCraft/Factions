@@ -29,7 +29,7 @@ public class SpoutMainListener extends SpoutListener
 		final FPlayer me = FPlayers.i.get(event.getPlayer());
 
 		SpoutFeatures.updateAppearances(me.getPlayer());
-		updateTerritoryDisplay(me);
+		updateTerritoryDisplay(me, true);
 	}
 
 	//-----------------------------------------------------------------------------------------//
@@ -43,7 +43,7 @@ public class SpoutMainListener extends SpoutListener
 //	private final static int SCREEN_HEIGHT = 240;
 
 
-	public boolean updateTerritoryDisplay(FPlayer player)
+	public boolean updateTerritoryDisplay(FPlayer player, boolean notify)
 	{
 		Player p = player.getPlayer();
 		if (p == null)
@@ -53,7 +53,7 @@ public class SpoutMainListener extends SpoutListener
 		if (!sPlayer.isSpoutCraftEnabled() || (Conf.spoutTerritoryDisplaySize <= 0 && ! Conf.spoutTerritoryNoticeShow))
 			return false;
 
-		doLabels(player, sPlayer);
+		doLabels(player, sPlayer, notify);
 
 		return true;
 	}
@@ -80,11 +80,11 @@ public class SpoutMainListener extends SpoutListener
 	}
 
 
-	private void doLabels(FPlayer player, SpoutPlayer sPlayer)
+	private void doLabels(FPlayer player, SpoutPlayer sPlayer, boolean notify)
 	{
 		FLocation here = new FLocation(player);
 		Faction factionHere = Board.getFactionAt(here);
-		String tag = factionHere.getTag(player);
+		String tag = factionHere.getColorTo(player).toString() + factionHere.getTag();
 
 		// ----------------------
 		// Main territory display
@@ -122,7 +122,7 @@ public class SpoutMainListener extends SpoutListener
 		// -----------------------
 		// Fading territory notice
 		// -----------------------
-		if (Conf.spoutTerritoryNoticeShow && Conf.spoutTerritoryNoticeSize > 0)
+		if (notify && Conf.spoutTerritoryNoticeShow && Conf.spoutTerritoryNoticeSize > 0)
 		{
 			NoticeLabel label; 
 			if (territoryChangeLabels.containsKey(player.getName()))
