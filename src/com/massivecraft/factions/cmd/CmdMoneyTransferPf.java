@@ -1,11 +1,12 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Conf;
-import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Permission;
+
+import org.bukkit.ChatColor;
 
 
 public class CmdMoneyTransferPf extends FCommand
@@ -33,14 +34,14 @@ public class CmdMoneyTransferPf extends FCommand
 	public void perform()
 	{
 		double amount = this.argAsDouble(0, 0d);
-		FPlayer from = this.argAsBestFPlayerMatch(1);
+		EconomyParticipator from = this.argAsBestFPlayerMatch(1);
 		if (from == null) return;
-		Faction to = this.argAsFaction(2);
+		EconomyParticipator to = this.argAsFaction(2);
 		if (to == null) return;
 		
 		Econ.transferMoney(fme, from, to, amount);
 
 		if (Conf.logMoneyTransactions)
-			P.p.log(fme.getName()+" transferred "+Econ.moneyString(amount)+" from the player \""+from.getName()+"\" to the faction \""+to.getTag()+"\"");
+			P.p.log(ChatColor.stripColor(P.p.txt.parse("%s transferred %s from the player \"%s\" to the faction \"%s\"", fme.getName(), Econ.moneyString(amount), from.describeTo(null), to.describeTo(null))));
 	}
 }
