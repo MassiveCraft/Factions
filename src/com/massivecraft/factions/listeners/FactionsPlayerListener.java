@@ -30,8 +30,8 @@ import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.integration.SpoutFeatures;
+import com.massivecraft.factions.struct.FPerm;
 import com.massivecraft.factions.struct.Rel;
-import com.massivecraft.factions.zcore.util.TextUtil;
 
 import java.util.logging.Level;
 
@@ -198,56 +198,10 @@ public class FactionsPlayerListener extends PlayerListener
 			// Did we change "host"(faction)?
 			Faction factionFrom = Board.getFactionAt(from);
 			Faction factionTo = Board.getFactionAt(to);
-			Faction myFaction = me.getFaction();
-			String ownersTo = myFaction.getOwnerListString(to);
-			boolean spoutClient = SpoutFeatures.availableFor(player);
 
 			if (factionFrom != factionTo)
 			{
 				me.sendFactionHereMessage();
-				if
-				(
-					Conf.ownedAreasEnabled
-					&&
-					Conf.ownedMessageOnBorder
-					&&
-					(
-						!spoutClient
-						||
-						!Conf.spoutTerritoryOwnersShow
-					)
-					&&
-					myFaction == factionTo
-					&&
-					!ownersTo.isEmpty()
-				)
-				{
-					me.sendMessage(Conf.ownedLandMessage+ownersTo);
-				}
-			}
-			else if (spoutClient && Conf.spoutTerritoryOwnersShow)
-			{
-				SpoutFeatures.updateOwnerList(me);
-			}
-			else if
-			(
-				Conf.ownedAreasEnabled
-				&&
-				Conf.ownedMessageInsideTerritory
-				&&
-				factionFrom == factionTo
-				&&
-				myFaction == factionTo
-			)
-			{
-				String ownersFrom = myFaction.getOwnerListString(from);
-				if (Conf.ownedMessageByChunk || !ownersFrom.equals(ownersTo))
-				{
-					if (!ownersTo.isEmpty())
-						me.sendMessage(Conf.ownedLandMessage+ownersTo);
-					else if (!Conf.publicLandMessage.isEmpty())
-						me.sendMessage(Conf.publicLandMessage);
-				}
 			}
 		}
 		
@@ -288,99 +242,27 @@ public class FactionsPlayerListener extends PlayerListener
 		}
 	}
 
-    
-    // TODO: Improve with the... system for... Permissions
-	public static boolean playerCanUseItemHere(Player player, Location location, Material material, boolean justCheck)
+    // TODO: Refactor ! justCheck    -> to informIfNot
+    // TODO: Possibly incorporate pain build... 
+    public static boolean playerCanUseItemHere(Player player, Location loc, Material material, boolean justCheck)
 	{
 		FPlayer me = FPlayers.i.get(player);
-		if (me.isAdminBypassing())
-			return true;
-
-		FLocation loc = new FLocation(location);
-		Faction otherFaction = Board.getFactionAt(loc);
-
-		if (otherFaction.hasPlayersOnline())
-		{
-			if ( ! Conf.territoryDenyUseageMaterials.contains(material))
-				return true; // Item isn't one we're preventing for online factions.
-		}
-		else
-		{
-			if ( ! Conf.territoryDenyUseageMaterialsWhenOffline.contains(material))
-				return true; // Item isn't one we're preventing for offline factions.
-		}
-
-		Faction myFaction = me.getFaction();
-		Rel rel = myFaction.getRelationTo(otherFaction);
-
-		// Cancel if we are not in our own territory
-		if (rel.confDenyUseage())
-		{
-			if (!justCheck)
-				me.msg("<b>You can't use <h>%s<b> in the territory of <h>%s<b>.", TextUtil.getMaterialName(material), otherFaction.getTag(myFaction));
-
-			return false;
-		}
-
-		// Also cancel if player doesn't have ownership rights for this claim
-		if (Conf.ownedAreasEnabled && Conf.ownedAreaDenyUseage && !otherFaction.playerHasOwnershipRights(me, loc))
-		{
-			if (!justCheck)
-				me.msg("<b>You can't use <h>%s<b> in this territory, it is owned by: %s<b>.", TextUtil.getMaterialName(material), otherFaction.getOwnerListString(loc));
-
-			return false;
-		}
-
+		if (me.isAdminBypassing()) return true;
+		if (Conf.materialsEditTools.contains(material) && ! FPerm.BUILD.has(me, loc, ! justCheck)) return false;
 		return true;
 	}
-
 	public static boolean canPlayerUseBlock(Player player, Block block, boolean justCheck)
 	{
 		FPlayer me = FPlayers.i.get(player);
-		if (me.isAdminBypassing())
-			return true;
-
+		if (me.isAdminBypassing()) return true;
+		Location loc = block.getLocation();
 		Material material = block.getType();
-		FLocation loc = new FLocation(block);
-		Faction otherFaction = Board.getFactionAt(loc);
-
-		// no door/chest/whatever protection in wilderness, war zones, or safe zones
-		if (!otherFaction.isNormal())
-			return true;
-
-		// We only care about some material types.
-		if (otherFaction.hasPlayersOnline())
-		{
-			if ( ! Conf.territoryProtectedMaterials.contains(material))
-				return true;
-		}
-		else
-		{
-			if ( ! Conf.territoryProtectedMaterialsWhenOffline.contains(material))
-				return true;
-		}
-
-		Faction myFaction = me.getFaction();
-		Rel rel = myFaction.getRelationTo(otherFaction);
-
-		// You may use any block unless it is another faction's territory...
-		if (rel == Rel.NEUTRAL || (rel == Rel.ENEMY && Conf.territoryEnemyProtectMaterials) || (rel == Rel.ALLY && Conf.territoryAllyProtectMaterials))
-		{
-			if (!justCheck)
-				me.msg("<b>You can't use <h>%s<b> in the territory of <h>%s<b>.", TextUtil.getMaterialName(material), otherFaction.getTag(myFaction));
-
-			return false;
-		}
-
-		// Also cancel if player doesn't have ownership rights for this claim
-		if (Conf.ownedAreasEnabled && Conf.ownedAreaProtectMaterials && !otherFaction.playerHasOwnershipRights(me, loc))
-		{
-			if (!justCheck)
-				me.msg("<b>You can't use <h>%s<b> in this territory, it is owned by: %s<b>.", TextUtil.getMaterialName(material), otherFaction.getOwnerListString(loc));
-			
-			return false;
-		}
-
+		
+		if (Conf.materialsEditOnInteract.contains(material) && ! FPerm.BUILD.has(me, loc, ! justCheck)) return false;
+		if (Conf.materialsContainer.contains(material) && ! FPerm.CONTAINER.has(me, loc, ! justCheck)) return false;
+		if (Conf.materialsDoor.contains(material)      && ! FPerm.DOOR.has(me, loc, ! justCheck)) return false;
+		if (material == Material.STONE_BUTTON          && ! FPerm.BUTTON.has(me, loc, ! justCheck)) return false;
+		if (material == Material.LEVER                 && ! FPerm.LEVER.has(me, loc, ! justCheck)) return false;
 		return true;
 	}
 

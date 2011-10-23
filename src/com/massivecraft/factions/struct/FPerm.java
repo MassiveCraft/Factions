@@ -6,19 +6,27 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.bukkit.Location;
+
+import com.massivecraft.factions.Board;
 import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.FLocation;
+import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.iface.RelationParticipator;
+import com.massivecraft.factions.util.RelationUtil;
 import com.massivecraft.factions.zcore.util.TextUtil;
 
 /**
  * Permissions that you (a player) may or may not have in the territory of a certain faction.
  * Each faction have many Rel's assigned to each one of these Perms. 
  */
-public enum FactionPerm
+public enum FPerm
 {
 	BUILD("build", "edit the terrain", Rel.MEMBER),
 	PAINBUILD("painbuild", "edit but take damage", Rel.ALLY),
-	DOOR("door", "use doors etc.", Rel.MEMBER, Rel.ALLY),
-	CONTAINER("container", "use chests etc.", Rel.MEMBER),
+	DOOR("door", "use doors", Rel.MEMBER, Rel.ALLY),
+	CONTAINER("container", "use containers", Rel.MEMBER),
 	BUTTON("button", "use stone buttons", Rel.MEMBER, Rel.ALLY),
 	LEVER("lever", "use levers", Rel.MEMBER, Rel.ALLY),
 	;
@@ -27,7 +35,7 @@ public enum FactionPerm
 	private final String desc;
 	public final Set<Rel> defaultDefaultValue;
 	
-	private FactionPerm(final String nicename, final String desc, final Rel... rels)
+	private FPerm(final String nicename, final String desc, final Rel... rels)
 	{
 		this.nicename = nicename;
 		this.desc = desc;
@@ -52,7 +60,7 @@ public enum FactionPerm
 		return ret; 
 	}
 	
-	public static FactionPerm parse(String str)
+	public static FPerm parse(String str)
 	{
 		str = str.toLowerCase();
 		if (str.startsWith("bui")) return BUILD;
@@ -115,5 +123,32 @@ public enum FactionPerm
 			}
 		}
 		return ret; 
+	}
+	
+	private static final String errorpattern = "<b>%s can't <h>%s<b> in the territory of %s<b>.";
+	public boolean has(RelationParticipator testSubject, FLocation floc, boolean informIfNot)
+	{
+		Faction factionThere = Board.getFactionAt(floc);
+		Faction factionDoer = RelationUtil.getFaction(testSubject);
+		boolean ret = factionThere.getPermittedRelations(this).contains(factionThere.getRelationTo(factionDoer));
+		if (!ret && informIfNot && testSubject instanceof FPlayer)
+		{
+			FPlayer fplayer = (FPlayer)testSubject;
+			fplayer.msg(errorpattern, fplayer.describeTo(fplayer, true), this.getDescription(), factionThere.describeTo(fplayer));
+		}
+		return ret;
+	}
+	public boolean has(RelationParticipator testSubject, Location loc, boolean informIfNot)
+	{
+		FLocation floc = new FLocation(loc);
+		return this.has(testSubject, floc, informIfNot);
+	}
+	public boolean has(RelationParticipator testSubject, Location loc)
+	{
+		return this.has(testSubject, loc, false);
+	}
+	public boolean has(RelationParticipator testSubject, FLocation floc)
+	{
+		return this.has(testSubject, floc, false);
 	}
 }

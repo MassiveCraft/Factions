@@ -1,8 +1,6 @@
 package com.massivecraft.factions;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.Map.Entry;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -12,8 +10,7 @@ import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.iface.RelationParticipator;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.FactionFlag;
-import com.massivecraft.factions.struct.FactionPerm;
-import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.struct.FPerm;
 import com.massivecraft.factions.struct.Rel;
 import com.massivecraft.factions.util.*;
 import com.massivecraft.factions.zcore.persist.Entity;
@@ -24,9 +21,6 @@ public class Faction extends Entity implements EconomyParticipator
 {
 	// FIELD: relationWish
 	private Map<String, Rel> relationWish;
-	
-	// FIELD: claimOwnership
-	private Map<FLocation, Set<String>> claimOwnership = new ConcurrentHashMap<FLocation, Set<String>>();
 	
 	// FIELD: invites
 	// Where string is a lowercase player name
@@ -131,14 +125,14 @@ public class Faction extends Entity implements EconomyParticipator
 	}
 
 	// FIELDS: Permission <-> Groups management
-	private Map<FactionPerm, Set<Rel>> permOverrides; // Contains the modifications to the default values
-	public Set<Rel> getPerm(FactionPerm perm)
+	private Map<FPerm, Set<Rel>> permOverrides; // Contains the modifications to the default values
+	public Set<Rel> getPermittedRelations(FPerm perm)
 	{
 		Set<Rel> ret = this.permOverrides.get(perm);
 		if (ret == null) ret = perm.getDefault();
 		return ret;
 	}
-	public void setPerm(FactionPerm perm, Set<Rel> value)
+	public void setPermittedRelations(FPerm perm, Set<Rel> value)
 	{
 		if (Conf.factionPermDefaults.get(perm).equals(value))
 		{
@@ -165,7 +159,7 @@ public class Faction extends Entity implements EconomyParticipator
 		//this.peacefulExplosionsEnabled = false;
 		this.money = 0.0;
 		this.flagOverrides = new LinkedHashMap<FactionFlag, Boolean>();
-		this.permOverrides = new LinkedHashMap<FactionPerm, Set<Rel>>();
+		this.permOverrides = new LinkedHashMap<FPerm, Set<Rel>>();
 	}
 	
 
@@ -450,167 +444,6 @@ public class Faction extends Entity implements EconomyParticipator
 			fplayer.sendMessage(messages);
 		}
 	}
-	
-	//----------------------------------------------//
-	// Ownership of specific claims
-	//----------------------------------------------//
-
-	public void clearAllClaimOwnership()
-	{
-		claimOwnership.clear();
-	}
-
-	public void clearClaimOwnership(FLocation loc)
-	{
-		claimOwnership.remove(loc);
-	}
-
-	public void clearClaimOwnership(String playerName)
-	{
-		if (playerName == null || playerName.isEmpty())
-		{
-			return;
-		}
-
-		Set<String> ownerData;
-		String player = playerName.toLowerCase();
-
-		for (Entry<FLocation, Set<String>> entry : claimOwnership.entrySet())
-		{
-			ownerData = entry.getValue();
-
-			if (ownerData == null) continue;
-
-			Iterator<String> iter = ownerData.iterator();
-			while (iter.hasNext())
-			{
-				if (iter.next().equals(player))
-				{
-					iter.remove();
-				}
-			}
-
-			if (ownerData.isEmpty())
-			{
-				claimOwnership.remove(entry.getKey());
-			}
-		}
-	}
-
-	public int getCountOfClaimsWithOwners()
-	{
-		return claimOwnership.isEmpty() ? 0 : claimOwnership.size();
-	}
-
-	public boolean doesLocationHaveOwnersSet(FLocation loc)
-	{
-		if (claimOwnership.isEmpty() || !claimOwnership.containsKey(loc))
-		{
-			return false;
-		}
-		
-		Set<String> ownerData = claimOwnership.get(loc);
-		return ownerData != null && !ownerData.isEmpty();
-	}
-
-	public boolean isPlayerInOwnerList(String playerName, FLocation loc)
-	{
-		if (claimOwnership.isEmpty())
-		{
-			return false;
-		}
-		Set<String> ownerData = claimOwnership.get(loc);
-		if (ownerData == null)
-		{
-			return false;
-		}
-		if (ownerData.contains(playerName.toLowerCase()))
-		{
-			return true;
-		}
-		
-		return false;
-	}
-
-	public void setPlayerAsOwner(String playerName, FLocation loc)
-	{
-		Set<String> ownerData = claimOwnership.get(loc);
-		if (ownerData == null)
-		{
-			ownerData = new HashSet<String>();
-		}
-		ownerData.add(playerName.toLowerCase());
-		claimOwnership.put(loc, ownerData);
-	}
-
-	public void removePlayerAsOwner(String playerName, FLocation loc)
-	{
-		Set<String> ownerData = claimOwnership.get(loc);
-		if (ownerData == null)
-		{
-			return;
-		}
-		ownerData.remove(playerName.toLowerCase());
-		claimOwnership.put(loc, ownerData);
-	}
-
-	public Set<String> getOwnerList(FLocation loc)
-	{
-		return claimOwnership.get(loc);
-	}
-
-	public String getOwnerListString(FLocation loc)
-	{
-		Set<String> ownerData = claimOwnership.get(loc);
-		if (ownerData == null || ownerData.isEmpty())
-		{
-			return "";
-		}
-
-		String ownerList = "";
-
-		Iterator<String> iter = ownerData.iterator();
-		while (iter.hasNext()) {
-			if (!ownerList.isEmpty())
-			{
-				ownerList += ", ";
-			}
-			ownerList += iter.next();
-		}
-		return ownerList;
-	}
-
-	public boolean playerHasOwnershipRights(FPlayer fplayer, FLocation loc)
-	{
-		// in own faction, with sufficient role or permission to bypass ownership?
-		if
-		(
-			fplayer.getFaction() == this
-			&&
-			(
-				fplayer.getRole().isAtLeast(Conf.ownedAreaModeratorsBypass ? Rel.OFFICER : Rel.LEADER)
-				||
-				Permission.OWNERSHIP_BYPASS.has(fplayer.getPlayer())
-			)
-		)
-		{
-			return true;
-		}
-
-		// make sure claimOwnership is initialized
-		if (claimOwnership.isEmpty())
-			return true;
-
-		// need to check the ownership list, then
-		Set<String> ownerData = claimOwnership.get(loc);
-
-		// if no owner list, owner list is empty, or player is in owner list, they're allowed
-		if (ownerData == null || ownerData.isEmpty() || ownerData.contains(fplayer.getName().toLowerCase()))
-			return true;
-
-		return false;
-	}
-	
 	
 	//----------------------------------------------//
 	// Persistance and entity management

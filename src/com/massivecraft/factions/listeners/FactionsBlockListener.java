@@ -1,7 +1,6 @@
 package com.massivecraft.factions.listeners;
 
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -18,7 +17,7 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.P;
-import com.massivecraft.factions.struct.Rel;
+import com.massivecraft.factions.struct.FPerm;
 
 
 public class FactionsBlockListener extends BlockListener
@@ -35,13 +34,14 @@ public class FactionsBlockListener extends BlockListener
 		if (event.isCancelled()) return;
 		if ( ! event.canBuild()) return;
 		
+		// TODO: Test if this old stuff is still an issue.
 		// special case for flint&steel, which should only be prevented by DenyUsage list
-		if (event.getBlockPlaced().getType() == Material.FIRE)
+		/*if (event.getBlockPlaced().getType() == Material.FIRE)
 		{
 			return;
-		}
+		}*/
 
-		if ( ! playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock().getLocation(), "build", false))
+		if ( ! playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock(), "build", false))
 		{
 			event.setCancelled(true);
 		}
@@ -52,7 +52,7 @@ public class FactionsBlockListener extends BlockListener
 	{
 		if (event.isCancelled()) return;
 
-		if ( ! playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock().getLocation(), "destroy", false))
+		if ( ! playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock(), "destroy", false))
 		{
 			event.setCancelled(true);
 		}
@@ -63,7 +63,7 @@ public class FactionsBlockListener extends BlockListener
 	{
 		if (event.isCancelled()) return;
 
-		if (event.getInstaBreak() && ! playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock().getLocation(), "destroy", false))
+		if (event.getInstaBreak() && ! playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock(), "destroy", false))
 		{
 			event.setCancelled(true);
 		}
@@ -81,10 +81,11 @@ public class FactionsBlockListener extends BlockListener
 		Block targetBlock = event.getBlock().getRelative(event.getDirection(), event.getLength() + 1);
 
 		// if potentially pushing into air in another territory, we need to check it out
-		if (targetBlock.isEmpty() && !canPistonMoveBlock(pistonFaction, targetBlock.getLocation()))
+		
+		 
+		if (targetBlock.isEmpty() && ! FPerm.BUILD.has(pistonFaction, targetBlock.getLocation()))
 		{
 			event.setCancelled(true);
-			return;
 		}
 
 		/*
@@ -98,97 +99,43 @@ public class FactionsBlockListener extends BlockListener
 	public void onBlockPistonRetract(BlockPistonRetractEvent event)
 	{
 		// if not a sticky piston, retraction should be fine
-		if (event.isCancelled() || !event.isSticky() || !Conf.pistonProtectionThroughDenyBuild)
-		{
-			return;
-		}
+		if (event.isCancelled() || !event.isSticky() || !Conf.pistonProtectionThroughDenyBuild) return;
 
 		Location targetLoc = event.getRetractLocation();
 
 		// if potentially retracted block is just air, no worries
-		if (targetLoc.getBlock().isEmpty())
-		{
-			return;
-		}
+		if (targetLoc.getBlock().isEmpty()) return;
 
 		Faction pistonFaction = Board.getFactionAt(new FLocation(event.getBlock()));
-
-		if (!canPistonMoveBlock(pistonFaction, targetLoc))
+		
+		if ( ! FPerm.BUILD.has(pistonFaction, targetLoc))
 		{
 			event.setCancelled(true);
-			return;
 		}
 	}
 
-	private boolean canPistonMoveBlock(Faction pistonFaction, Location target)
-	{
-
-		Faction otherFaction = Board.getFactionAt(new FLocation(target));
-
-		if (pistonFaction == otherFaction)
-			return true;
-
-		Rel rel = pistonFaction.getRelationTo(otherFaction);
-
-		if (rel.confDenyBuild(otherFaction.hasPlayersOnline()))
-			return false;
-
-		return true;
-	}
-
-	public static boolean playerCanBuildDestroyBlock(Player player, Location location, String action, boolean justCheck)
+	public static boolean playerCanBuildDestroyBlock(Player player, Block block, String action, boolean justCheck)
 	{
 		FPlayer me = FPlayers.i.get(player);
 
-		if (me.isAdminBypassing())
-			return true;
+		if (me.isAdminBypassing()) return true;
 
+		Location location = block.getLocation();
 		FLocation loc = new FLocation(location);
-		Faction otherFaction = Board.getFactionAt(loc);
+		Faction factionHere = Board.getFactionAt(loc);
 
 		Faction myFaction = me.getFaction();
-		Rel rel = myFaction.getRelationTo(otherFaction);
-		boolean online = otherFaction.hasPlayersOnline();
-		boolean pain = !justCheck && rel.confPainBuild(online);
-		boolean deny = rel.confDenyBuild(online);
 
-		// hurt the player for building/destroying in other territory?
-		if (pain)
-		{
-			player.damage(Conf.actionDeniedPainAmount);
-
-			if (!deny)
-				me.msg("<b>It is painful to try to "+action+" in the territory of "+otherFaction.getTag(myFaction));
-		}
-
-		// cancel building/destroying in other territory?
-		if (deny)
+		if (FPerm.PAINBUILD.has(me, location))
 		{
 			if (!justCheck)
-				me.msg("<b>You can't "+action+" in the territory of "+otherFaction.getTag(myFaction));
-
-			return false;
- 		}
-
-		// Also cancel and/or cause pain if player doesn't have ownership rights for this claim
-		if (Conf.ownedAreasEnabled && (Conf.ownedAreaDenyBuild || Conf.ownedAreaPainBuild) && !otherFaction.playerHasOwnershipRights(me, loc))
-		{
-			if (!pain && Conf.ownedAreaPainBuild && !justCheck)
 			{
+				me.msg("<b>It is painful to try to "+action+" in the territory of "+factionHere.getTag(myFaction));
 				player.damage(Conf.actionDeniedPainAmount);
-
-				if (!Conf.ownedAreaDenyBuild)
-					me.msg("<b>It is painful to try to "+action+" in this territory, it is owned by: "+otherFaction.getOwnerListString(loc));
 			}
-			if (Conf.ownedAreaDenyBuild)
-			{
-				if (!justCheck)
-					me.msg("<b>You can't "+action+" in this territory, it is owned by: "+otherFaction.getOwnerListString(loc));
-
-				return false;
-			}
+			return true;
 		}
-
-		return true;
+		
+		return FPerm.BUILD.has(me, location, true);
 	}
 }

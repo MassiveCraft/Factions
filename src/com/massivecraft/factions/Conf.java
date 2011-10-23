@@ -6,7 +6,7 @@ import org.bukkit.*;
 import org.bukkit.entity.CreatureType;
 
 import com.massivecraft.factions.struct.FactionFlag;
-import com.massivecraft.factions.struct.FactionPerm;
+import com.massivecraft.factions.struct.FPerm;
 import com.massivecraft.factions.struct.Rel;
 
 public class Conf
@@ -25,17 +25,9 @@ public class Conf
 	//public static ChatColor colorWar = ChatColor.DARK_RED;
 	//public static ChatColor colorWilderness = ChatColor.DARK_GREEN;
 	
-	
-	// REFACTOR ASJDKJASDKFJKASDF
 	public static Map<FactionFlag, Boolean> factionFlagDefaults;
 	public static Map<FactionFlag, Boolean> factionFlagIsChangeable;
-	public static Map<FactionPerm, Set<Rel>> factionPermDefaults;
-	
-	
-	// REFACTOR ASJDKJASDKFJKASDF EEEEEENNNNDD
-	
-	
-	
+	public static Map<FPerm, Set<Rel>> factionPermDefaults;
 	
 	// Power
 	public static double powerPlayerMax = 10.0;
@@ -124,14 +116,14 @@ public class Conf
 	
 	public static double considerFactionsReallyOfflineAfterXMinutes = 0.0;
 	
-	public static int actionDeniedPainAmount = 1;
+	public static int actionDeniedPainAmount = 2;
 	
 	// commands which will be prevented when in claimed territory of another faction
 	public static Set<String> territoryNeutralDenyCommands = new HashSet<String>();
 	public static Set<String> territoryEnemyDenyCommands = new HashSet<String>();
 	
 	public static double territoryShieldFactor = 0.3;
-	public static boolean territoryDenyBuild = true;
+	/*public static boolean territoryDenyBuild = true;
 	public static boolean territoryDenyBuildWhenOffline = true;
 	public static boolean territoryPainBuild = false;
 	public static boolean territoryPainBuildWhenOffline = false;
@@ -161,7 +153,7 @@ public class Conf
 	public static boolean territoryBlockTNT = false;
 	public static boolean territoryBlockTNTWhenOffline = false;
 	public static boolean territoryDenyEndermanBlocks = true;
-	public static boolean territoryDenyEndermanBlocksWhenOffline = true;
+	public static boolean territoryDenyEndermanBlocksWhenOffline = true;*/
 
 	/*public static boolean safeZoneDenyBuild = true;
 	public static boolean safeZoneDenyUseage = true;
@@ -205,13 +197,16 @@ public class Conf
 
 	public static boolean pistonProtectionThroughDenyBuild = true;
 
-	public static Set<Material> territoryProtectedMaterials = EnumSet.noneOf(Material.class);
-	public static Set<Material> territoryDenyUseageMaterials = EnumSet.noneOf(Material.class);
-	public static Set<Material> territoryProtectedMaterialsWhenOffline = EnumSet.noneOf(Material.class);
-	public static Set<Material> territoryDenyUseageMaterialsWhenOffline = EnumSet.noneOf(Material.class);
+	public final transient static Set<Material> materialsEditOnInteract = EnumSet.noneOf(Material.class);
+	public final transient static Set<Material> materialsEditTools = EnumSet.noneOf(Material.class);
+	public final transient static Set<Material> materialsDoor = EnumSet.noneOf(Material.class);
+	public final transient static Set<Material> materialsContainer = EnumSet.noneOf(Material.class);
+	
+	//public static Set<Material> territoryProtectedMaterialsWhenOffline = EnumSet.noneOf(Material.class);
+	//public static Set<Material> territoryDenyUseageMaterialsWhenOffline = EnumSet.noneOf(Material.class);
 	
 	// TODO: Rename to monsterCreatureTypes
-	public static transient Set<CreatureType> safeZoneNerfedCreatureTypes = EnumSet.noneOf(CreatureType.class);
+	public static transient Set<CreatureType> monsters = EnumSet.noneOf(CreatureType.class);
 
 	// Spout features
 	public static boolean spoutFactionTagsOverNames = true;  // show faction tags over names over player heads
@@ -289,8 +284,8 @@ public class Conf
 			factionFlagIsChangeable.put(flag, flag.defaultDefaultChangeable);
 		}
 		
-		factionPermDefaults = new LinkedHashMap<FactionPerm, Set<Rel>>();
-		for (FactionPerm perm: FactionPerm.values())
+		factionPermDefaults = new LinkedHashMap<FPerm, Set<Rel>>();
+		for (FPerm perm: FPerm.values())
 		{
 			factionPermDefaults.put(perm, perm.defaultDefaultValue);
 		}
@@ -302,21 +297,27 @@ public class Conf
 		territoryEnemyDenyCommands.add("tpaccept");
 		territoryEnemyDenyCommands.add("tpa");
 
-		territoryProtectedMaterials.add(Material.WOODEN_DOOR);
-		territoryProtectedMaterials.add(Material.TRAP_DOOR);
-		territoryProtectedMaterials.add(Material.FENCE_GATE);
-		territoryProtectedMaterials.add(Material.DISPENSER);
-		territoryProtectedMaterials.add(Material.CHEST);
-		territoryProtectedMaterials.add(Material.FURNACE);
-		territoryProtectedMaterials.add(Material.BURNING_FURNACE);
-		territoryProtectedMaterials.add(Material.DIODE_BLOCK_OFF);
-		territoryProtectedMaterials.add(Material.DIODE_BLOCK_ON);
-
-		territoryDenyUseageMaterials.add(Material.FLINT_AND_STEEL);
-		territoryDenyUseageMaterials.add(Material.BUCKET);
-		territoryDenyUseageMaterials.add(Material.WATER_BUCKET);
-		territoryDenyUseageMaterials.add(Material.LAVA_BUCKET);
-
+		
+		materialsContainer.add(Material.DISPENSER);
+		materialsContainer.add(Material.CHEST);
+		materialsContainer.add(Material.FURNACE);
+		materialsContainer.add(Material.BURNING_FURNACE);
+		
+		materialsEditOnInteract.add(Material.DIODE_BLOCK_OFF);
+		materialsEditOnInteract.add(Material.DIODE_BLOCK_ON);
+		
+		materialsDoor.add(Material.WOODEN_DOOR);
+		materialsDoor.add(Material.TRAP_DOOR);
+		materialsDoor.add(Material.FENCE_GATE);
+		
+		materialsEditTools.add(Material.FLINT_AND_STEEL);
+		materialsEditTools.add(Material.BUCKET);
+		materialsEditTools.add(Material.WATER_BUCKET);
+		materialsEditTools.add(Material.LAVA_BUCKET);
+		
+		
+		
+/*
 		territoryProtectedMaterialsWhenOffline.add(Material.WOODEN_DOOR);
 		territoryProtectedMaterialsWhenOffline.add(Material.TRAP_DOOR);
 		territoryProtectedMaterialsWhenOffline.add(Material.FENCE_GATE);
@@ -330,18 +331,18 @@ public class Conf
 		territoryDenyUseageMaterialsWhenOffline.add(Material.FLINT_AND_STEEL);
 		territoryDenyUseageMaterialsWhenOffline.add(Material.BUCKET);
 		territoryDenyUseageMaterialsWhenOffline.add(Material.WATER_BUCKET);
-		territoryDenyUseageMaterialsWhenOffline.add(Material.LAVA_BUCKET);
+		territoryDenyUseageMaterialsWhenOffline.add(Material.LAVA_BUCKET);*/
 
-		safeZoneNerfedCreatureTypes.add(CreatureType.CAVE_SPIDER);
-		safeZoneNerfedCreatureTypes.add(CreatureType.CREEPER);
-		safeZoneNerfedCreatureTypes.add(CreatureType.ENDERMAN);
-		safeZoneNerfedCreatureTypes.add(CreatureType.GHAST);
-		safeZoneNerfedCreatureTypes.add(CreatureType.PIG_ZOMBIE);
-		safeZoneNerfedCreatureTypes.add(CreatureType.SILVERFISH);
-		safeZoneNerfedCreatureTypes.add(CreatureType.SKELETON);
-		safeZoneNerfedCreatureTypes.add(CreatureType.SPIDER);
-		safeZoneNerfedCreatureTypes.add(CreatureType.SLIME);
-		safeZoneNerfedCreatureTypes.add(CreatureType.ZOMBIE);
+		monsters.add(CreatureType.CAVE_SPIDER);
+		monsters.add(CreatureType.CREEPER);
+		monsters.add(CreatureType.ENDERMAN);
+		monsters.add(CreatureType.GHAST);
+		monsters.add(CreatureType.PIG_ZOMBIE);
+		monsters.add(CreatureType.SILVERFISH);
+		monsters.add(CreatureType.SKELETON);
+		monsters.add(CreatureType.SPIDER);
+		monsters.add(CreatureType.SLIME);
+		monsters.add(CreatureType.ZOMBIE);
 	}
 
 	// -------------------------------------------- //

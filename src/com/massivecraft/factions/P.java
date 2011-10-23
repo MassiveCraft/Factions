@@ -343,7 +343,7 @@ public class P extends MPlugin
 	// check if player is allowed to build/destroy in a particular location
 	public boolean isPlayerAllowedToBuildHere(Player player, Location location)
 	{
-		return FactionsBlockListener.playerCanBuildDestroyBlock(player, location, "", true);
+		return FactionsBlockListener.playerCanBuildDestroyBlock(player, location.getBlock(), "", true);
 	}
 
 	// check if player is allowed to interact with the specified block (doors/chests/whatever)

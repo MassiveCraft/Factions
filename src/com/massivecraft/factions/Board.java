@@ -42,8 +42,6 @@ public class Board
 	
 	public static void setIdAt(String id, FLocation flocation)
 	{
-		clearOwnershipAt(flocation);
-
 		if (id == "0")
 		{
 			removeAt(flocation);
@@ -59,28 +57,11 @@ public class Board
 	
 	public static void removeAt(FLocation flocation)
 	{
-		clearOwnershipAt(flocation);
 		flocationIds.remove(flocation);
-	}
-	
-	// not to be confused with claims, ownership referring to further member-specific ownership of a claim
-	public static void clearOwnershipAt(FLocation flocation)
-	{
-		Faction faction = getFactionAt(flocation);
-		if (faction != null && faction.isNormal())
-		{
-			faction.clearClaimOwnership(flocation);
-		}
 	}
 	
 	public static void unclaimAll(String factionId)
 	{
-		Faction faction = Factions.i.get(factionId);
-		if (faction != null && faction.isNormal())
-		{
-			faction.clearAllClaimOwnership();
-		}
-
 		Iterator<Entry<FLocation, String>> iter = flocationIds.entrySet().iterator();
 		while (iter.hasNext())
 		{

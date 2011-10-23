@@ -89,30 +89,6 @@ public class SpoutFeatures
 		return mainListener.updateTerritoryDisplay(player, true);
 	}
 
-	// update owner list for all players inside a specified chunk; if specified chunk is null, then simply update everyone online
-	public static void updateOwnerListLoc(FLocation fLoc)
-	{
-		if (!enabled())
-			return;
-
-		Set<FPlayer> players = FPlayers.i.getOnline();
-
-		for (FPlayer player : players)
-		{
-			if (fLoc == null || player.getLastStoodAt().equals(fLoc))
-				mainListener.updateOwnerList(player);
-		}
-	}
-
-	// update owner list for specified player
-	public static void updateOwnerList(FPlayer player)
-	{
-		if (!enabled())
-			return;
-
-		mainListener.updateOwnerList(player);
-	}
-
 	public static void playerDisconnect(FPlayer player)
 	{
 		if (!enabled())

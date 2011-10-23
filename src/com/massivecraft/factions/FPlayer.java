@@ -132,16 +132,6 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 	
 	public final void resetFactionData(boolean doSpotUpdate)
 	{
-		// clean up any territory ownership in old faction, if there is one
-		if (Factions.i.exists(this.getFactionId()))
-		{
-			Faction currentFaction = this.getFaction();
-			if (currentFaction.isNormal())
-			{
-				currentFaction.clearClaimOwnership(this.getId());
-			}
-		}
-		
 		this.factionId = "0"; // The default neutral faction
 		this.chatMode = ChatMode.PUBLIC;
 		this.role = Rel.MEMBER;

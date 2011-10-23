@@ -3,7 +3,7 @@ package com.massivecraft.factions.cmd;
 import java.util.Set;
 
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.struct.FactionPerm;
+import com.massivecraft.factions.struct.FPerm;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Rel;
 import com.massivecraft.factions.zcore.util.TextUtil;
@@ -46,23 +46,23 @@ public class CmdPerm extends FCommand
 		
 		if ( ! this.argIsSet(1))
 		{
-			for (FactionPerm perm : FactionPerm.values())
+			for (FPerm perm : FPerm.values())
 			{
-				msg(perm.getStateInfo(faction.getPerm(perm), true));
+				msg(perm.getStateInfo(faction.getPermittedRelations(perm), true));
 			}
 			return;
 		}
 		
-		FactionPerm perm = this.argAsFactionPerm(1);
+		FPerm perm = this.argAsFactionPerm(1);
 		if (perm == null) return;
 		if ( ! this.argIsSet(2))
 		{
-			msg(perm.getStateInfo(faction.getPerm(perm), true));
+			msg(perm.getStateInfo(faction.getPermittedRelations(perm), true));
 			return;
 		}
 		
 		// TODO: Awesomesause parser for deltas...
-		Set<Rel> targetValue = FactionPerm.parseRelDeltas(TextUtil.implode(args.subList(2, args.size()), " "), faction.getPerm(perm));
+		Set<Rel> targetValue = FPerm.parseRelDeltas(TextUtil.implode(args.subList(2, args.size()), " "), faction.getPermittedRelations(perm));
 
 		// Do the sender have the right to change perms for this faction?
 		if (Permission.PERM_ANY.has(sender))
@@ -81,8 +81,8 @@ public class CmdPerm extends FCommand
 		}
 		
 		// Do the change
-		faction.setPerm(perm, targetValue);
-		msg(perm.getStateInfo(faction.getPerm(perm), true));
+		faction.setPermittedRelations(perm, targetValue);
+		msg(perm.getStateInfo(faction.getPermittedRelations(perm), true));
 	}
 	
 }

@@ -29,8 +29,6 @@ public class FCmdRoot extends FCommand
 	public CmdOfficer cmdOfficer = new CmdOfficer();
 	public CmdMoney cmdMoney = new CmdMoney();
 	public CmdOpen cmdOpen = new CmdOpen();
-	public CmdOwner cmdOwner = new CmdOwner();
-	public CmdOwnerList cmdOwnerList = new CmdOwnerList();
 	public CmdPerm cmdPerm = new CmdPerm();
 	public CmdPower cmdPower = new CmdPower();
 	public CmdRelationAlly cmdRelationAlly = new CmdRelationAlly();
@@ -92,8 +90,6 @@ public class FCmdRoot extends FCommand
 		this.addSubCommand(this.cmdOfficer);
 		this.addSubCommand(this.cmdMoney);
 		this.addSubCommand(this.cmdOpen);
-		this.addSubCommand(this.cmdOwner);
-		this.addSubCommand(this.cmdOwnerList);
 		this.addSubCommand(this.cmdPerm);
 		this.addSubCommand(this.cmdPower);
 		this.addSubCommand(this.cmdRelationAlly);

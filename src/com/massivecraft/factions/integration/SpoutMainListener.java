@@ -58,20 +58,6 @@ public class SpoutMainListener extends SpoutListener
 		return true;
 	}
 
-	public void updateOwnerList(FPlayer player)
-	{
-		SpoutPlayer sPlayer = SpoutManager.getPlayer(player.getPlayer());
-		if (!sPlayer.isSpoutCraftEnabled() || (Conf.spoutTerritoryDisplaySize <= 0 && ! Conf.spoutTerritoryNoticeShow))
-			return;
-
-		FLocation here = new FLocation(player);
-		Faction factionHere = Board.getFactionAt(here);
-
-		doOwnerList(player, sPlayer, here, factionHere);
-
-		return;
-	}
-
 	public void removeTerritoryLabels(String playerName)
 	{
 		territoryLabels.remove(playerName);
@@ -146,46 +132,7 @@ public class SpoutMainListener extends SpoutListener
 			label.resetNotice();
 			label.setDirty(true);
 		}
-
-		// and owner list, of course
-		doOwnerList(player, sPlayer, here, factionHere);
 	}
-	
-	private void doOwnerList(FPlayer player, SpoutPlayer sPlayer, FLocation here, Faction factionHere)
-	{
-		// ----------
-		// Owner list
-		// ----------
-		if (Conf.spoutTerritoryDisplayPosition > 0 && Conf.spoutTerritoryDisplaySize > 0 && Conf.spoutTerritoryOwnersShow && Conf.ownedAreasEnabled)
-		{
-			GenericLabel label; 
-			if (ownerLabels.containsKey(player.getName()))
-				label = ownerLabels.get(player.getName());
-			else
-			{
-				label = new GenericLabel();
-				label.setScale(Conf.spoutTerritoryDisplaySize);
-				label.setY((int)(10 * Conf.spoutTerritoryDisplaySize));
-				sPlayer.getMainScreen().attachWidget(P.p, label);
-				ownerLabels.put(player.getName(), label);
-			}
-
-			String msg = "";
-
-			if (player.getFaction() == factionHere)
-			{
-				msg = factionHere.getOwnerListString(here);
-
-				if (!msg.isEmpty())
-					msg = Conf.ownedLandMessage + msg;
-			}
-
-			label.setText(msg);
-			alignLabel(label, msg);
-			label.setDirty(true);
-		}
-	}
-
 
 	// this is only necessary because Spout text size scaling is currently bugged and breaks their built-in alignment methods
 	public void alignLabel(GenericLabel label, String text)

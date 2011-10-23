@@ -273,7 +273,7 @@ public class FactionsEntityListener extends EntityListener
 		Faction faction = Board.getFactionAt(floc);
 		
 		if (faction.getFlag(FactionFlag.MONSTERS)) return;
-		if ( ! Conf.safeZoneNerfedCreatureTypes.contains(event.getCreatureType())) return;
+		if ( ! Conf.monsters.contains(event.getCreatureType())) return;
 		
 		event.setCancelled(true);
 	}
@@ -288,7 +288,7 @@ public class FactionsEntityListener extends EntityListener
 		if (target == null) return;
 		
 		// We are interested in blocking targeting for certain mobs:
-		if ( ! Conf.safeZoneNerfedCreatureTypes.contains(MiscUtil.creatureTypeFromEntity(event.getEntity()))) return;
+		if ( ! Conf.monsters.contains(MiscUtil.creatureTypeFromEntity(event.getEntity()))) return;
 		
 		FLocation floc = new FLocation(target.getLocation());
 		Faction faction = Board.getFactionAt(floc);
@@ -314,7 +314,7 @@ public class FactionsEntityListener extends EntityListener
 			return;
 		}
 
-		if ( ! FactionsBlockListener.playerCanBuildDestroyBlock((Player)breaker, event.getPainting().getLocation(), "remove paintings", false))
+		if ( ! FactionsBlockListener.playerCanBuildDestroyBlock((Player)breaker, event.getPainting().getLocation().getBlock(), "remove paintings", false))
 		{
 			event.setCancelled(true);
 		}
@@ -325,7 +325,7 @@ public class FactionsEntityListener extends EntityListener
 	{
 		if (event.isCancelled()) return;
 
-		if ( ! FactionsBlockListener.playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock().getLocation(), "place paintings", false) )
+		if ( ! FactionsBlockListener.playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock().getLocation().getBlock(), "place paintings", false) )
 		{
 			event.setCancelled(true);
 		}
