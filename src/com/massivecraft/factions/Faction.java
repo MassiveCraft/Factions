@@ -12,6 +12,7 @@ import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.iface.RelationParticipator;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.FactionFlag;
+import com.massivecraft.factions.struct.FactionPerm;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Rel;
 import com.massivecraft.factions.util.*;
@@ -38,25 +39,6 @@ public class Faction extends Entity implements EconomyParticipator
 	private boolean open;
 	public boolean getOpen() { return open; }
 	public void setOpen(boolean isOpen) { open = isOpen; }
-	
-	// FIELD: peaceful
-	// "peaceful" status can only be set by server admins/moderators/ops, and prevents PvP and land capture to/from the faction
-	//private boolean peaceful;
-	//public boolean isPeaceful() { return this.peaceful; }
-	//public void setPeaceful(boolean isPeaceful) { this.peaceful = isPeaceful; }
-	
-	// FIELD: peacefulExplosionsEnabled
-	//private boolean peacefulExplosionsEnabled;
-	//public void setPeacefulExplosionsEnabled(boolean val) { peacefulExplosionsEnabled = val; }
-	//public boolean getPeacefulExplosionsEnabled(){ return this.peacefulExplosionsEnabled; }
-	
-	//public boolean noExplosionsInTerritory() { return this.peaceful && ! peacefulExplosionsEnabled; }
-
-	// FIELD: permanent
-	// "permanent" status can only be set by server admins/moderators/ops, and allows the faction to remain even with 0 members
-	//private boolean permanent;
-	//public boolean isPermanent() { return permanent; }
-	//public void setPermanent(boolean isPermanent) { permanent = isPermanent; }
 	
 	// FIELD: tag
 	private String tag;
@@ -140,15 +122,31 @@ public class Faction extends Entity implements EconomyParticipator
 	}
 	public void setFlag(FactionFlag flag, boolean value)
 	{
-		if (Conf.factionFlagDefaults.get(flag) == value)
+		if (Conf.factionFlagDefaults.get(flag).equals(value))
 		{
 			this.flagOverrides.remove(flag);
 			return;
 		}
 		this.flagOverrides.put(flag, value);
 	}
-	
+
 	// FIELDS: Permission <-> Groups management
+	private Map<FactionPerm, Set<Rel>> permOverrides; // Contains the modifications to the default values
+	public Set<Rel> getPerm(FactionPerm perm)
+	{
+		Set<Rel> ret = this.permOverrides.get(perm);
+		if (ret == null) ret = perm.getDefault();
+		return ret;
+	}
+	public void setPerm(FactionPerm perm, Set<Rel> value)
+	{
+		if (Conf.factionPermDefaults.get(perm).equals(value))
+		{
+			this.permOverrides.remove(perm);
+			return;
+		}
+		this.permOverrides.put(perm, value);
+	}
 	
 	
 	// -------------------------------------------- //
@@ -169,15 +167,6 @@ public class Faction extends Entity implements EconomyParticipator
 		this.flagOverrides = new LinkedHashMap<FactionFlag, Boolean>();
 	}
 	
-	// -------------------------------------------- //
-	// Extra Getters And Setters
-	// -------------------------------------------- //
-
-	//public boolean noPvPInTerritory() { return isSafeZone() || (peaceful && Conf.peacefulTerritoryDisablePVP); }
-
-	//public boolean noMonstersInTerritory() { return isSafeZone() || (peaceful && Conf.peacefulTerritoryDisableMonsters); }
-
-	
 
 	// -------------------------------
 	// Understand the types
@@ -195,22 +184,6 @@ public class Faction extends Entity implements EconomyParticipator
 	{
 		return this.getId().equals("0");
 	}
-	
-	/*public boolean isSafeZone()
-	{
-		return this.getId().equals("-1");
-	}
-	
-	public boolean isWarZone()
-	{
-		return this.getId().equals("-2");
-	}
-	
-	public boolean isPlayerFreeType()
-	{
-		return this.isSafeZone() || this.isWarZone();
-	}*/
-	
 	
 	// -------------------------------
 	// Relation and relation colors

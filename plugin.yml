@@ -33,6 +33,7 @@ permissions:
       factions.kit.fullplayer: true
       factions.bypass: true
       factions.flag.any: true
+      factions.perm.any: true
       factions.kick.any: true
       factions.ownershipbypass: true
   factions.kit.fullplayer:
@@ -52,6 +53,7 @@ permissions:
       factions.description: true
       factions.disband: true
       factions.flag: true
+      factions.perm: true
       factions.help: true
       factions.home: true
       factions.invite: true
@@ -102,6 +104,10 @@ permissions:
     description: change faction flags
   factions.flag.any:
     description: change all flags for all factions
+  factions.perm:
+    description: change faction permissions
+  factions.perm.any:
+    description: change all permissions for all factions
   factions.help:
     description: display a help page
   factions.home:

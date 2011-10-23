@@ -20,6 +20,8 @@ public enum Permission
 	DISBAND_ANY("disband.any"),
 	FLAG("flag"),
 	FLAG_ANY("flag.any"),
+	PERM("perm"),
+	PERM_ANY("perm.any"),
 	HELP("help"),
 	HOME("home"),
 	INVITE("invite"),

@@ -13,6 +13,7 @@ import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.FactionFlag;
+import com.massivecraft.factions.struct.FactionPerm;
 import com.massivecraft.factions.struct.Rel;
 import com.massivecraft.factions.zcore.MCommand;
 
@@ -306,6 +307,40 @@ public abstract class FCommand extends MCommand<P>
 	public FactionFlag argAsFactionFlag(int idx)
 	{
 		return this.argAsFactionFlag(idx, null);
+	}
+	
+	// FACTION PERM ======================
+	public FactionPerm strAsFactionPerm(String name, FactionPerm def, boolean msg)
+	{
+		FactionPerm ret = def;
+		
+		if (name != null)
+		{
+			FactionPerm perm = FactionPerm.parse(name);
+			if (perm != null)
+			{
+				ret = perm;
+			}
+		}
+		
+		if (msg && ret == null)
+		{
+			this.msg("<b>The faction-perm \"<p>%s<b>\" could not be found.", name);
+		}
+		
+		return ret;
+	}
+	public FactionPerm argAsFactionPerm(int idx, FactionPerm def, boolean msg)
+	{
+		return this.strAsFactionPerm(this.argAsString(idx), def, msg);
+	}
+	public FactionPerm argAsFactionPerm(int idx, FactionPerm def)
+	{
+		return this.argAsFactionPerm(idx, def, true);
+	}
+	public FactionPerm argAsFactionPerm(int idx)
+	{
+		return this.argAsFactionPerm(idx, null);
 	}
 	
 	

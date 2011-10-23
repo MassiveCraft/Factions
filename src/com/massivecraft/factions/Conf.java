@@ -6,6 +6,8 @@ import org.bukkit.*;
 import org.bukkit.entity.CreatureType;
 
 import com.massivecraft.factions.struct.FactionFlag;
+import com.massivecraft.factions.struct.FactionPerm;
+import com.massivecraft.factions.struct.Rel;
 
 public class Conf
 {
@@ -27,6 +29,8 @@ public class Conf
 	// REFACTOR ASJDKJASDKFJKASDF
 	public static Map<FactionFlag, Boolean> factionFlagDefaults;
 	public static Map<FactionFlag, Boolean> factionFlagIsChangeable;
+	public static Map<FactionPerm, Set<Rel>> factionPermDefaults;
+	
 	
 	// REFACTOR ASJDKJASDKFJKASDF EEEEEENNNNDD
 	
@@ -283,6 +287,12 @@ public class Conf
 		{
 			factionFlagDefaults.put(flag, flag.defaultDefaultValue);
 			factionFlagIsChangeable.put(flag, flag.defaultDefaultChangeable);
+		}
+		
+		factionPermDefaults = new LinkedHashMap<FactionPerm, Set<Rel>>();
+		for (FactionPerm perm: FactionPerm.values())
+		{
+			factionPermDefaults.put(perm, perm.defaultDefaultValue);
 		}
 		
 		territoryEnemyDenyCommands.add("home");
