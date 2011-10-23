@@ -26,7 +26,6 @@ permissions:
       factions.kit.halfmod: true
       factions.disband.any: true
       factions.setpermanent: true
-      factions.setpermanentpower: true
       factions.setpeaceful: true
       factions.sethome.any: true
       factions.money.*: true
@@ -37,6 +36,7 @@ permissions:
       factions.managesafezone: true
       factions.managewarzone: true
       factions.bypass: true
+      factions.flag.any: true
       factions.kick.any: true
       factions.ownershipbypass: true
   factions.kit.fullplayer:
@@ -55,6 +55,7 @@ permissions:
       factions.deinvite: true
       factions.description: true
       factions.disband: true
+      factions.flag: true
       factions.help: true
       factions.home: true
       factions.invite: true
@@ -101,6 +102,10 @@ permissions:
     description: disband a faction
   factions.disband.any:
     description: disband an other faction
+  factions.flag:
+    description: change faction flags
+  factions.flag.any:
+    description: change all flags for all factions
   factions.help:
     description: display a help page
   factions.home:
@@ -176,8 +181,6 @@ permissions:
     description: designate a faction as peaceful
   factions.setpermanent:
     description: designate a faction as permanent
-  factions.setpermanentpower:
-    description: set permanent power for a faction
   factions.power:
     description: show player power info
   factions.power.any:

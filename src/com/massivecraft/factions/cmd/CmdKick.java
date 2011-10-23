@@ -4,6 +4,7 @@ import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.struct.FactionFlag;
 import com.massivecraft.factions.struct.Permission;
 
 public class CmdKick extends FCommand
@@ -77,7 +78,7 @@ public class CmdKick extends FCommand
 		yourFaction.deinvite(you);
 		you.resetFactionData();
 
-		if (yourFaction.getFPlayers().isEmpty() && !yourFaction.isPermanent())
+		if (yourFaction.getFPlayers().isEmpty() && !yourFaction.getFlag(FactionFlag.PERMANENT))
 		{
 			// Remove this faction
 			for (FPlayer fplayer : FPlayers.i.getOnline())

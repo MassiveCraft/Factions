@@ -12,6 +12,7 @@ import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.P;
+import com.massivecraft.factions.struct.FactionFlag;
 import com.massivecraft.factions.struct.Rel;
 import com.massivecraft.factions.zcore.MCommand;
 
@@ -272,6 +273,41 @@ public abstract class FCommand extends MCommand<P>
 	{
 		return this.argAsFaction(idx, null);
 	}
+	
+	// FACTION FLAG ======================
+	public FactionFlag strAsFactionFlag(String name, FactionFlag def, boolean msg)
+	{
+		FactionFlag ret = def;
+		
+		if (name != null)
+		{
+			FactionFlag flag = FactionFlag.parse(name);
+			if (flag != null)
+			{
+				ret = flag;
+			}
+		}
+		
+		if (msg && ret == null)
+		{
+			this.msg("<b>The faction-flag \"<p>%s<b>\" could not be found.", name);
+		}
+		
+		return ret;
+	}
+	public FactionFlag argAsFactionFlag(int idx, FactionFlag def, boolean msg)
+	{
+		return this.strAsFactionFlag(this.argAsString(idx), def, msg);
+	}
+	public FactionFlag argAsFactionFlag(int idx, FactionFlag def)
+	{
+		return this.argAsFactionFlag(idx, def, true);
+	}
+	public FactionFlag argAsFactionFlag(int idx)
+	{
+		return this.argAsFactionFlag(idx, null);
+	}
+	
 	
 	// -------------------------------------------- //
 	// Commonly used logic

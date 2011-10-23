@@ -6,6 +6,7 @@ import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.integration.SpoutFeatures;
+import com.massivecraft.factions.struct.FactionFlag;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Rel;
 
@@ -49,7 +50,7 @@ public class CmdDisband extends FCommand
 			}
 		}
 
-		if (faction.isPermanent())
+		if (faction.getFlag(FactionFlag.PERMANENT))
 		{
 			msg("<i>This faction is designated as permanent, so you cannot disband it.");
 			return;

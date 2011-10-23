@@ -14,6 +14,7 @@ import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.integration.Worldguard;
 import com.massivecraft.factions.struct.ChatMode;
+import com.massivecraft.factions.struct.FactionFlag;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Rel;
 import com.massivecraft.factions.util.RelationUtil;
@@ -574,7 +575,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 	public void leave(boolean makePay)
 	{
 		Faction myFaction = this.getFaction();
-		boolean perm = myFaction.isPermanent();
+		boolean perm = myFaction.getFlag(FactionFlag.PERMANENT);
 		
 		if (!perm && this.getRole() == Rel.LEADER && myFaction.getFPlayers().size() > 1)
 		{

@@ -151,7 +151,7 @@ public class P extends MPlugin
 		.excludeFieldsWithModifiers(Modifier.TRANSIENT, Modifier.VOLATILE)
 		.registerTypeAdapter(Location.class, new MyLocationTypeAdapter())
 		.registerTypeAdapter(mapFLocToStringSetType, new MapFLocToStringSetTypeAdapter())
-		.registerTypeAdapter(Rel.class, new MyRelTypeAdapter());
+		.registerTypeAdapter(Rel.class, new MyRelTypeAdapter()); // This one is for users upgrading from 1.6 to 1.7... should be removed some time in the future.
 	}
 
 	@Override

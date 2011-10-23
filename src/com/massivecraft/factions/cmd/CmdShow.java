@@ -7,6 +7,7 @@ import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.struct.FactionFlag;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Rel;
 
@@ -63,7 +64,7 @@ public class CmdShow extends FCommand
 		msg("<a>Joining: <i>"+(faction.getOpen() ? "no invitation is needed" : "invitation is required")+peaceStatus);
 		msg("<a>Land / Power / Maxpower: <i> %d/%d/%d", faction.getLandRounded(), faction.getPowerRounded(), faction.getPowerMaxRounded());
 
-		if (faction.isPermanent())
+		if (faction.getFlag(FactionFlag.PERMANENT))
 		{
 			msg("<a>This faction is permanent, remaining even with no members.");
 		}

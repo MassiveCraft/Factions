@@ -5,6 +5,8 @@ import java.util.*;
 import org.bukkit.*;
 import org.bukkit.entity.CreatureType;
 
+import com.massivecraft.factions.struct.FactionFlag;
+
 public class Conf
 {
 	public static List<String> baseCommandAliases = new ArrayList<String>();
@@ -19,6 +21,16 @@ public class Conf
 	public static ChatColor colorPeaceful = ChatColor.GOLD;
 	public static ChatColor colorWar = ChatColor.DARK_RED;
 	//public static ChatColor colorWilderness = ChatColor.DARK_GREEN;
+	
+	
+	// REFACTOR ASJDKJASDKFJKASDF
+	public static Map<FactionFlag, Boolean> factionFlagDefaults;
+	public static Map<FactionFlag, Boolean> factionFlagIsChangeable;
+	
+	// REFACTOR ASJDKJASDKFJKASDF EEEEEENNNNDD
+	
+	
+	
 	
 	// Power
 	public static double powerPlayerMax = 10.0;
@@ -244,6 +256,32 @@ public class Conf
 	static
 	{
 		baseCommandAliases.add("f");
+		
+		factionFlagDefaults = new LinkedHashMap<FactionFlag, Boolean>();
+		factionFlagDefaults.put(FactionFlag.PERMANENT, FactionFlag.PERMANENT.defaultDefaultValue);
+		factionFlagDefaults.put(FactionFlag.PEACEFUL, FactionFlag.PEACEFUL.defaultDefaultValue);
+		factionFlagDefaults.put(FactionFlag.INFPOWER, FactionFlag.INFPOWER.defaultDefaultValue);
+		factionFlagDefaults.put(FactionFlag.POWERLOSS, FactionFlag.POWERLOSS.defaultDefaultValue);
+		factionFlagDefaults.put(FactionFlag.PVP, FactionFlag.PVP.defaultDefaultValue);
+		factionFlagDefaults.put(FactionFlag.FRIENDLYFIRE, FactionFlag.FRIENDLYFIRE.defaultDefaultValue);
+		factionFlagDefaults.put(FactionFlag.MONSTERS, FactionFlag.MONSTERS.defaultDefaultValue);
+		factionFlagDefaults.put(FactionFlag.EXPLOSIONS, FactionFlag.EXPLOSIONS.defaultDefaultValue);
+		factionFlagDefaults.put(FactionFlag.FIRESPREAD, FactionFlag.FIRESPREAD.defaultDefaultValue);
+		factionFlagDefaults.put(FactionFlag.LIGHTNING, FactionFlag.LIGHTNING.defaultDefaultValue);
+		factionFlagDefaults.put(FactionFlag.ENDERGRIEF, FactionFlag.ENDERGRIEF.defaultDefaultValue);
+		
+		factionFlagIsChangeable = new LinkedHashMap<FactionFlag, Boolean>();
+		factionFlagIsChangeable.put(FactionFlag.PERMANENT, FactionFlag.PERMANENT.defaultDefaultChangeable);
+		factionFlagIsChangeable.put(FactionFlag.PEACEFUL, FactionFlag.PEACEFUL.defaultDefaultChangeable);
+		factionFlagIsChangeable.put(FactionFlag.INFPOWER, FactionFlag.INFPOWER.defaultDefaultChangeable);
+		factionFlagIsChangeable.put(FactionFlag.POWERLOSS, FactionFlag.POWERLOSS.defaultDefaultChangeable);
+		factionFlagIsChangeable.put(FactionFlag.PVP, FactionFlag.PVP.defaultDefaultChangeable);
+		factionFlagIsChangeable.put(FactionFlag.FRIENDLYFIRE, FactionFlag.FRIENDLYFIRE.defaultDefaultChangeable);
+		factionFlagIsChangeable.put(FactionFlag.MONSTERS, FactionFlag.MONSTERS.defaultDefaultChangeable);
+		factionFlagIsChangeable.put(FactionFlag.EXPLOSIONS, FactionFlag.EXPLOSIONS.defaultDefaultChangeable);
+		factionFlagIsChangeable.put(FactionFlag.FIRESPREAD, FactionFlag.FIRESPREAD.defaultDefaultChangeable);
+		factionFlagIsChangeable.put(FactionFlag.LIGHTNING, FactionFlag.LIGHTNING.defaultDefaultChangeable);
+		factionFlagIsChangeable.put(FactionFlag.ENDERGRIEF, FactionFlag.ENDERGRIEF.defaultDefaultChangeable);
 		
 		territoryEnemyDenyCommands.add("home");
 		territoryEnemyDenyCommands.add("sethome");

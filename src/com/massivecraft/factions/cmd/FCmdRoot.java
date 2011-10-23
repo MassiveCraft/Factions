@@ -17,6 +17,7 @@ public class FCmdRoot extends FCommand
 	public CmdDeinvite cmdDeinvite = new CmdDeinvite();
 	public CmdDescription cmdDescription = new CmdDescription();
 	public CmdDisband cmdDisband = new CmdDisband();
+	public CmdFlag cmdFlag = new CmdFlag();
 	public CmdHelp cmdHelp = new CmdHelp();
 	public CmdHome cmdHome = new CmdHome();
 	public CmdInvite cmdInvite = new CmdInvite();
@@ -32,8 +33,6 @@ public class FCmdRoot extends FCommand
 	public CmdOwner cmdOwner = new CmdOwner();
 	public CmdOwnerList cmdOwnerList = new CmdOwnerList();
 	public CmdPeaceful cmdPeaceful = new CmdPeaceful();
-	public CmdPermanent cmdPermanent = new CmdPermanent();
-	public CmdPermanentPower cmdPermanentPower = new CmdPermanentPower();
 	public CmdPower cmdPower = new CmdPower();
 	public CmdRelationAlly cmdRelationAlly = new CmdRelationAlly();
 	public CmdRelationEnemy cmdRelationEnemy = new CmdRelationEnemy();
@@ -83,6 +82,7 @@ public class FCmdRoot extends FCommand
 		this.addSubCommand(this.cmdDeinvite);
 		this.addSubCommand(this.cmdDescription);
 		this.addSubCommand(this.cmdDisband);
+		this.addSubCommand(this.cmdFlag);
 		this.addSubCommand(this.cmdHelp);
 		this.addSubCommand(this.cmdHome);
 		this.addSubCommand(this.cmdInvite);
@@ -98,8 +98,6 @@ public class FCmdRoot extends FCommand
 		this.addSubCommand(this.cmdOwner);
 		this.addSubCommand(this.cmdOwnerList);
 		this.addSubCommand(this.cmdPeaceful);
-		this.addSubCommand(this.cmdPermanent);
-		this.addSubCommand(this.cmdPermanentPower);
 		this.addSubCommand(this.cmdPower);
 		this.addSubCommand(this.cmdRelationAlly);
 		this.addSubCommand(this.cmdRelationEnemy);

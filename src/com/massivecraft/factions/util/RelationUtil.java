@@ -15,6 +15,11 @@ public class RelationUtil
 	{
 		String ret = "";
 
+		if (that == null)
+		{
+			return "A server admin";
+		}
+		
 		Faction thatFaction = getFaction(that);
 		if (thatFaction == null) return "ERROR"; // ERROR
 

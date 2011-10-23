@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.iface.RelationParticipator;
 import com.massivecraft.factions.integration.Econ;
+import com.massivecraft.factions.struct.FactionFlag;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Rel;
 import com.massivecraft.factions.util.*;
@@ -53,9 +54,9 @@ public class Faction extends Entity implements EconomyParticipator
 
 	// FIELD: permanent
 	// "permanent" status can only be set by server admins/moderators/ops, and allows the faction to remain even with 0 members
-	private boolean permanent;
-	public boolean isPermanent() { return permanent; }
-	public void setPermanent(boolean isPermanent) { permanent = isPermanent; }
+	//private boolean permanent;
+	//public boolean isPermanent() { return permanent; }
+	//public void setPermanent(boolean isPermanent) { permanent = isPermanent; }
 	
 	// FIELD: tag
 	private String tag;
@@ -128,11 +129,27 @@ public class Faction extends Entity implements EconomyParticipator
 		return Econ.getMethod().getAccount(aid);
 	}
 	
-	// FIELD: permanentPower
-	private Integer permanentPower;
-	public Integer getPermanentPower() { return this.permanentPower; }
-	public void setPermanentPower(Integer permanentPower) { this.permanentPower = permanentPower; }
-	public boolean hasPermanentPower() { return this.permanentPower != null; }
+	// FIELDS: Flag management
+	// TODO: This will save... defaults if they where changed to...
+	private Map<FactionFlag, Boolean> flagOverrides; // Contains the modifications to the default values
+	public boolean getFlag(FactionFlag flag)
+	{
+		Boolean ret = this.flagOverrides.get(flag);
+		if (ret == null) ret = flag.getDefault();
+		return ret;
+	}
+	public void setFlag(FactionFlag flag, boolean value)
+	{
+		if (Conf.factionFlagDefaults.get(flag) == value)
+		{
+			this.flagOverrides.remove(flag);
+			return;
+		}
+		this.flagOverrides.put(flag, value);
+	}
+	
+	// FIELDS: Permission <-> Groups management
+	
 	
 	// -------------------------------------------- //
 	// Construct
@@ -148,8 +165,8 @@ public class Faction extends Entity implements EconomyParticipator
 		this.lastPlayerLoggedOffTime = 0;
 		this.peaceful = false;
 		this.peacefulExplosionsEnabled = false;
-		this.permanent = false;
 		this.money = 0.0;
+		this.flagOverrides = new LinkedHashMap<FactionFlag, Boolean>();
 	}
 	
 	// -------------------------------------------- //
@@ -165,6 +182,8 @@ public class Faction extends Entity implements EconomyParticipator
 	// -------------------------------
 	// Understand the types
 	// -------------------------------
+	
+	// TODO: These should be gone after the refactoring...
 	
 	public boolean isNormal()
 	{
@@ -252,9 +271,9 @@ public class Faction extends Entity implements EconomyParticipator
 	//----------------------------------------------//
 	public double getPower()
 	{
-		if (this.hasPermanentPower())
+		if (this.getFlag(FactionFlag.INFPOWER))
 		{
-			return this.getPermanentPower();
+			return 999999;
 		}
 		
 		double ret = 0;
@@ -271,9 +290,9 @@ public class Faction extends Entity implements EconomyParticipator
 	
 	public double getPowerMax()
 	{
-		if (this.hasPermanentPower())
+		if (this.getFlag(FactionFlag.INFPOWER))
 		{
-			return this.getPermanentPower();
+			return 999999;
 		}
 		
 		double ret = 0;
