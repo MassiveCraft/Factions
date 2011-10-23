@@ -1,6 +1,8 @@
 package com.massivecraft.factions.cmd;
 
+import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.P;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Permission;
 
@@ -33,6 +35,9 @@ public class CmdMoneyDeposit extends FCommand
 		Faction faction = this.argAsFaction(1, myFaction);
 		if (faction == null) return;
 		Econ.transferMoney(fme, fme, faction, amount);
+
+		if (Conf.logMoneyTransactions)
+			P.p.log(fme.getName()+" deposited "+Econ.moneyString(amount)+" into the faction bank: "+faction.getTag());
 	}
 	
 }

@@ -68,6 +68,16 @@ public class Conf
 	public static double autoLeaveAfterDaysOfInactivity = 10.0;
 	
 	public static boolean worldGuardChecking = false;
+
+	// server logging options
+	public static boolean logFactionCreate = true;
+	public static boolean logFactionDisband = true;
+	public static boolean logFactionJoin = true;
+	public static boolean logFactionKick = true;
+	public static boolean logFactionLeave = true;
+	public static boolean logLandClaims = true;
+	public static boolean logLandUnclaims = true;
+	public static boolean logMoneyTransactions = true;
 	
 	public static boolean homesEnabled = true;
 	public static boolean homesMustBeInClaimedTerritory = true;

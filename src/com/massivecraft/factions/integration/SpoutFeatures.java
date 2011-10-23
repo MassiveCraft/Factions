@@ -221,6 +221,9 @@ public class SpoutFeatures
 
 		SpoutPlayer sPlayer = SpoutManager.getPlayer(viewer.getPlayer());
 		Player pViewed = viewed.getPlayer();
+		if (pViewed == null || viewer.getPlayer() == null)
+			return;
+
 		String viewedTitle = viewed.getTitle();
 		Role viewedRole = viewed.getRole();
 

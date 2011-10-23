@@ -6,6 +6,7 @@ import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
 
@@ -41,6 +42,9 @@ public class CmdUnclaim extends FCommand
 				Board.removeAt(flocation);
 				SpoutFeatures.updateTerritoryDisplayLoc(flocation);
 				msg("<i>Safe zone was unclaimed.");
+
+				if (Conf.logLandUnclaims)
+					P.p.log(fme.getName()+" unclaimed land at ("+flocation.getCoordString()+") from the faction: "+otherFaction.getTag());
 			}
 			else
 			{
@@ -55,6 +59,9 @@ public class CmdUnclaim extends FCommand
 				Board.removeAt(flocation);
 				SpoutFeatures.updateTerritoryDisplayLoc(flocation);
 				msg("<i>War zone was unclaimed.");
+
+				if (Conf.logLandUnclaims)
+					P.p.log(fme.getName()+" unclaimed land at ("+flocation.getCoordString()+") from the faction: "+otherFaction.getTag());
 			}
 			else
 			{
@@ -70,6 +77,10 @@ public class CmdUnclaim extends FCommand
 
 			otherFaction.msg("%s<i> unclaimed some of your land.", fme.describeTo(otherFaction, true));
 			msg("<i>You unclaimed this land.");
+
+			if (Conf.logLandUnclaims)
+				P.p.log(fme.getName()+" unclaimed land at ("+flocation.getCoordString()+") from the faction: "+otherFaction.getTag());
+
 			return;
 		}
 		
@@ -154,6 +165,9 @@ public class CmdUnclaim extends FCommand
 		Board.removeAt(flocation);
 		SpoutFeatures.updateTerritoryDisplayLoc(flocation);
 		myFaction.msg("%s<i> unclaimed some land.", fme.describeTo(myFaction, true));
+
+		if (Conf.logLandUnclaims)
+			P.p.log(fme.getName()+" unclaimed land at ("+flocation.getCoordString()+") from the faction: "+otherFaction.getTag());
 	}
 	
 }

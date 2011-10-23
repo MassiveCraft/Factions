@@ -2,6 +2,7 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Permission;
 
 public class CmdJoin extends FCommand
@@ -69,5 +70,8 @@ public class CmdJoin extends FCommand
 		fme.resetFactionData();
 		fme.setFaction(faction);
 		faction.deinvite(fme);
+
+		if (Conf.logFactionJoin)
+			P.p.log(fme.getName()+" joined the faction: "+faction.getTag());
 	}
 }

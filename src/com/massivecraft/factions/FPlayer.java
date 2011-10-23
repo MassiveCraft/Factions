@@ -611,6 +611,9 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 			{
 				fplayer.msg("%s<i> left %s<i>.", this.describeTo(fplayer, true), myFaction.describeTo(fplayer));
 			}
+
+			if (Conf.logFactionLeave)
+				P.p.log(this.getName()+" left the faction: "+myFaction.getTag());
 		}
 		
 		this.resetFactionData();
@@ -624,6 +627,8 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 			}
 
 			myFaction.detach();
+			if (Conf.logFactionDisband)
+				P.p.log("The faction "+myFaction.getTag()+" ("+myFaction.getId()+") was disbanded due to the last player ("+this.getName()+") leaving.");
 		}
 	}
 	
@@ -772,6 +777,10 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		
 		Board.setFactionAt(forFaction, flocation);
 		SpoutFeatures.updateTerritoryDisplayLoc(flocation);
+
+		if (Conf.logLandClaims)
+			P.p.log(this.getName()+" claimed land at ("+flocation.getCoordString()+") for the faction: "+forFaction.getTag());
+
 		return true;
 	}
 	
