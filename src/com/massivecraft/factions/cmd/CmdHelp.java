@@ -160,17 +160,19 @@ public class CmdHelp extends FCommand
 		pageLines = new ArrayList<String>();
 		pageLines.add("Finally some commands for the server admins:");
 		pageLines.add( p.cmdBase.cmdBypass.getUseageTemplate(true) );
+		pageLines.add(p.txt.parse("<c>/f claim safezone <i>claim land for the Safe Zone"));
+		pageLines.add(p.txt.parse("<c>/f claim warzone <i>claim land for the War Zone"));
+		pageLines.add(p.txt.parse("<c>/f autoclaim [safezone|warzone] <i>take a guess"));
 		pageLines.add( p.cmdBase.cmdSafeunclaimall.getUseageTemplate(true) );
 		pageLines.add( p.cmdBase.cmdWarunclaimall.getUseageTemplate(true) );
 		pageLines.add(p.txt.parse("<i>Note: " + p.cmdBase.cmdUnclaim.getUseageTemplate(false) + P.p.txt.parse("<i>") + " works on safe/war zones as well."));
+		pageLines.add( p.cmdBase.cmdPeaceful.getUseageTemplate(true) );
 		helpPages.add(pageLines);
 		
 		pageLines = new ArrayList<String>();
 		pageLines.add(p.txt.parse("<i>More commands for server admins:"));
-		pageLines.add( p.cmdBase.cmdPeaceful.getUseageTemplate(true) );
 		pageLines.add( p.cmdBase.cmdPermanent.getUseageTemplate(true) );
 		pageLines.add( p.cmdBase.cmdPermanentPower.getUseageTemplate(true) );
-		pageLines.add(p.txt.parse("<i>Peaceful factions are protected from PvP and land capture."));
 		pageLines.add( p.cmdBase.cmdLock.getUseageTemplate(true) );
 		pageLines.add( p.cmdBase.cmdReload.getUseageTemplate(true) );
 		pageLines.add( p.cmdBase.cmdSaveAll.getUseageTemplate(true) );
