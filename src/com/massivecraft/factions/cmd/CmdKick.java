@@ -4,6 +4,7 @@ import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.FactionFlag;
 import com.massivecraft.factions.struct.Permission;
 
@@ -78,6 +79,9 @@ public class CmdKick extends FCommand
 		yourFaction.deinvite(you);
 		you.resetFactionData();
 
+		if (Conf.logFactionKick)
+			P.p.log(fme.getName()+" kicked "+you.getName()+" from the faction: "+yourFaction.getTag());
+
 		if (yourFaction.getFPlayers().isEmpty() && !yourFaction.getFlag(FactionFlag.PERMANENT))
 		{
 			// Remove this faction
@@ -86,6 +90,9 @@ public class CmdKick extends FCommand
 				fplayer.msg("The faction %s<i> was disbanded.", yourFaction.getTag(fplayer));
 			}
 			yourFaction.detach();
+
+			if (Conf.logFactionDisband)
+				P.p.log("The faction "+yourFaction.getTag()+" ("+yourFaction.getId()+") was disbanded since the last player was kicked by "+(senderIsConsole ? "console command" : fme.getName())+".");
 		}
 	}
 	

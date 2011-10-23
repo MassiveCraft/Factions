@@ -7,6 +7,7 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Rel;
 
@@ -75,6 +76,9 @@ public class CmdCreate extends FCommand
 		}
 		
 		msg("<i>You should now: %s", p.cmdBase.cmdDescription.getUseageTemplate());
+
+		if (Conf.logFactionCreate)
+			P.p.log(fme.getName()+" created a new faction: "+tag);
 	}
 	
 }

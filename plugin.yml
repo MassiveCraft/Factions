@@ -89,7 +89,7 @@ permissions:
   factions.chat:
     description: change chat mode
   factions.claim:
-    description: claim the land where you are standing
+    description: claim land where you are standing
   factions.config:
     description: change a conf.json setting
   factions.create:

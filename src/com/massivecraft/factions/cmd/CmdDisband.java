@@ -1,5 +1,6 @@
 package com.massivecraft.factions.cmd;
 
+import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
@@ -69,7 +70,8 @@ public class CmdDisband extends FCommand
 				fplayer.msg("<h>%s<i> disbanded the faction %s.", who, faction.getTag(fplayer));
 			}
 		}
-		P.p.log("The faction "+faction.getTag()+" ("+faction.getId()+") was disbanded by "+(senderIsConsole ? "console command" : fme.getName())+".");
+		if (Conf.logFactionDisband)
+			P.p.log("The faction "+faction.getTag()+" ("+faction.getId()+") was disbanded by "+(senderIsConsole ? "console command" : fme.getName())+".");
 
 		if (Econ.shouldBeUsed())
 		{
@@ -87,7 +89,7 @@ public class CmdDisband extends FCommand
 		}		
 		
 		faction.detach();
-		
+
 		SpoutFeatures.updateAppearances();
 	}
 }
