@@ -91,7 +91,7 @@ public enum FactionFlag
 	
 	public String getStateInfo(boolean value, boolean withDesc)
 	{
-		String ret = (value ? "<g>YES" : "<b>NOT") + "<h> " + this.getNicename();
+		String ret = (value ? "<g>YES" : "<b>NOO") + "<h> " + this.getNicename();
 		if (withDesc)
 		{
 			ret += " " + this.getDescription();

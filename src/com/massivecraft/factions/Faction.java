@@ -165,6 +165,7 @@ public class Faction extends Entity implements EconomyParticipator
 		//this.peacefulExplosionsEnabled = false;
 		this.money = 0.0;
 		this.flagOverrides = new LinkedHashMap<FactionFlag, Boolean>();
+		this.permOverrides = new LinkedHashMap<FactionPerm, Set<Rel>>();
 	}
 	
 

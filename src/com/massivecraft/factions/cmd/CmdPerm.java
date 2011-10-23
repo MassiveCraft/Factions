@@ -62,7 +62,7 @@ public class CmdPerm extends FCommand
 		}
 		
 		// TODO: Awesomesause parser for deltas...
-		Set<Rel> targetValue = FactionPerm.parseRelDeltas(TextUtil.implode(args.subList(2, args.size()-1), " "), faction.getPerm(perm));
+		Set<Rel> targetValue = FactionPerm.parseRelDeltas(TextUtil.implode(args.subList(2, args.size()), " "), faction.getPerm(perm));
 
 		// Do the sender have the right to change perms for this faction?
 		if (Permission.PERM_ANY.has(sender))

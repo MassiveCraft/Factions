@@ -71,13 +71,13 @@ public enum FactionPerm
 		List<String> rels = new ArrayList<String>();
 		for (Rel rel : value)
 		{
-			rels.add("<i>"+rel.nicename);
+			rels.add("<p>"+rel.nicename);
 		}
-		ret += TextUtil.implode(rels, "<n> ,");
+		ret += TextUtil.implode(rels, "<c> + ");
 		
 		if (withDesc)
 		{
-			ret += " " + this.getDescription();
+			ret += " <i>" + this.getDescription();
 		}
 		return ret;
 	}
