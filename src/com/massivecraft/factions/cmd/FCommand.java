@@ -23,8 +23,8 @@ public abstract class FCommand extends MCommand<P>
 	public FPlayer fme;
 	public Faction myFaction;
 	public boolean senderMustBeMember;
-	public boolean senderMustBeModerator;
-	public boolean senderMustBeAdmin;
+	public boolean senderMustBeOfficer;
+	public boolean senderMustBeLeader;
 	
 	public boolean isMoneyCommand;
 	
@@ -39,8 +39,8 @@ public abstract class FCommand extends MCommand<P>
 		isMoneyCommand = false;
 		
 		senderMustBeMember = false;
-		senderMustBeModerator = false;
-		senderMustBeAdmin = false;
+		senderMustBeOfficer = false;
+		senderMustBeLeader = false;
 	}
 	
 	@Override
@@ -89,7 +89,7 @@ public abstract class FCommand extends MCommand<P>
 		boolean superValid = super.validSenderType(sender, informSenderIfNot);
 		if ( ! superValid) return false;
 		
-		if ( ! (this.senderMustBeMember || this.senderMustBeModerator || this.senderMustBeAdmin)) return true;
+		if ( ! (this.senderMustBeMember || this.senderMustBeOfficer || this.senderMustBeLeader)) return true;
 		
 		if ( ! (sender instanceof Player)) return false;
 		
@@ -101,13 +101,13 @@ public abstract class FCommand extends MCommand<P>
 			return false;
 		}
 		
-		if (this.senderMustBeModerator && ! fplayer.getRole().isAtLeast(Rel.OFFICER))
+		if (this.senderMustBeOfficer && ! fplayer.getRole().isAtLeast(Rel.OFFICER))
 		{
 			sender.sendMessage(p.txt.parse("<b>Only faction moderators can %s.", this.getHelpShort()));
 			return false;
 		}
 		
-		if (this.senderMustBeAdmin && ! fplayer.getRole().isAtLeast(Rel.LEADER))
+		if (this.senderMustBeLeader && ! fplayer.getRole().isAtLeast(Rel.LEADER))
 		{
 			sender.sendMessage(p.txt.parse("<b>Only faction admins can %s.", this.getHelpShort()));
 			return false;

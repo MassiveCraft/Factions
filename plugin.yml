@@ -48,7 +48,7 @@ permissions:
   factions.kit.halfplayer:
     description: Can do all but create factions.
     children:
-      factions.admin: true
+      factions.leader: true
       factions.autoclaim: true
       factions.chat: true
       factions.claim: true
@@ -63,7 +63,7 @@ permissions:
       factions.leave: true
       factions.list: true
       factions.map: true
-      factions.mod: true
+      factions.officer: true
       factions.money.kit.standard: true
       factions.noboom: true
       factions.open: true
@@ -79,8 +79,8 @@ permissions:
       factions.version: true
       factions.unclaim: true
       factions.unclaimall: true
-  factions.admin:
-    description: hand over your admin rights
+  factions.leader:
+    description: hand over your leader rights
   factions.autoclaim:
     description: auto-claim land as you walk around
   factions.bypass:
@@ -125,8 +125,8 @@ permissions:
     description: claim land as a war zone and build/destroy within war zones
   factions.map:
     description: show the territory map, and set optional auto update
-  factions.mod:
-    description: give or revoke moderator rights
+  factions.officer:
+    description: give or revoke officer rights
   factions.money.balance:
     description: show your factions current money balance
   factions.money.balance.any:

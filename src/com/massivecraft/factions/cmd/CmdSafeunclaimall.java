@@ -20,8 +20,8 @@ public class CmdSafeunclaimall extends FCommand
 		
 		senderMustBePlayer = false;
 		senderMustBeMember = false;
-		senderMustBeModerator = false;
-		senderMustBeAdmin = false;
+		senderMustBeOfficer = false;
+		senderMustBeLeader = false;
 		
 		this.setHelpShort("Unclaim all safezone land");
 	}

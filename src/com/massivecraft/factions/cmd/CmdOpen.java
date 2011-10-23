@@ -20,8 +20,8 @@ public class CmdOpen extends FCommand
 		
 		senderMustBePlayer = true;
 		senderMustBeMember = false;
-		senderMustBeModerator = true;
-		senderMustBeAdmin = false;
+		senderMustBeOfficer = true;
+		senderMustBeLeader = false;
 	}
 	
 	@Override

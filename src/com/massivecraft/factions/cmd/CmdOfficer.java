@@ -4,24 +4,24 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Rel;
 
-public class CmdMod extends FCommand
+public class CmdOfficer extends FCommand
 {
 	
-	public CmdMod()
+	public CmdOfficer()
 	{
 		super();
-		this.aliases.add("mod");
+		this.aliases.add("officer");
 		
 		this.requiredArgs.add("player name");
 		//this.optionalArgs.put("", "");
 		
-		this.permission = Permission.MOD.node;
+		this.permission = Permission.OFFICER.node;
 		this.disableOnLock = true;
 		
 		senderMustBePlayer = true;
 		senderMustBeMember = false;
-		senderMustBeModerator = false;
-		senderMustBeAdmin = true;
+		senderMustBeOfficer = false;
+		senderMustBeLeader = true;
 	}
 	
 	@Override

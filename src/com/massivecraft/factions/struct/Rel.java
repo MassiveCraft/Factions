@@ -95,12 +95,12 @@ public enum Rel
 	{
 		if (this == LEADER)
 		{
-			return Conf.prefixAdmin;
+			return Conf.prefixLeader;
 		} 
 		
 		if (this == OFFICER)
 		{
-			return Conf.prefixMod;
+			return Conf.prefixOfficer;
 		}
 		
 		return "";
@@ -115,5 +115,70 @@ public enum Rel
 			return Conf.econCostAlly;
 		else
 			return Conf.econCostNeutral;
+	}
+	
+	// return appropriate Conf setting for DenyBuild based on this relation and their online status
+	public boolean confDenyBuild(boolean online)
+	{
+		if (this == MEMBER)
+			return false;
+
+		if (online)
+		{
+			if (this == ENEMY)
+				return Conf.territoryEnemyDenyBuild;
+			else if (this == ALLY)
+				return Conf.territoryAllyDenyBuild;
+			else
+				return Conf.territoryDenyBuild;
+		}
+		else
+		{
+			if (this == ENEMY)
+				return Conf.territoryEnemyDenyBuildWhenOffline;
+			else if (this == ALLY)
+				return Conf.territoryAllyDenyBuildWhenOffline;
+			else
+				return Conf.territoryDenyBuildWhenOffline;
+		}
+	}
+
+	// return appropriate Conf setting for PainBuild based on this relation and their online status
+	public boolean confPainBuild(boolean online)
+	{
+		if (this == MEMBER)
+			return false;
+
+		if (online)
+		{
+			if (this == ENEMY)
+				return Conf.territoryEnemyPainBuild;
+			else if (this == ALLY)
+				return Conf.territoryAllyPainBuild;
+			else
+				return Conf.territoryPainBuild;
+		}
+		else
+		{
+			if (this == ENEMY) 
+				return Conf.territoryEnemyPainBuildWhenOffline;
+			else if (this == ALLY)
+				return Conf.territoryAllyPainBuildWhenOffline;
+			else
+				return Conf.territoryPainBuildWhenOffline;
+		}
+	}
+
+	// return appropriate Conf setting for DenyUseage based on this relation
+	public boolean confDenyUseage()
+	{
+		if (this == MEMBER)
+			return false;
+		else if (this == ENEMY)
+			return Conf.territoryEnemyDenyUseage;
+		else if (this == ALLY)
+			return Conf.territoryAllyDenyUseage;
+		else
+			return Conf.territoryDenyUseage;
 	}
 }

@@ -23,8 +23,8 @@ public class CmdMoney extends FCommand
 		
 		senderMustBePlayer = false;
 		senderMustBeMember = false;
-		senderMustBeModerator = false;
-		senderMustBeAdmin = false;
+		senderMustBeOfficer = false;
+		senderMustBeLeader = false;
 		
 		this.setHelpShort("faction money commands");
 		this.helpLong.add(p.txt.parseTags("<i>The faction money commands."));

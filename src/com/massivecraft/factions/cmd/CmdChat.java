@@ -21,8 +21,8 @@ public class CmdChat extends FCommand
 		
 		senderMustBePlayer = true;
 		senderMustBeMember = true;
-		senderMustBeModerator = false;
-		senderMustBeAdmin = false;
+		senderMustBeOfficer = false;
+		senderMustBeLeader = false;
 	}
 	
 	@Override

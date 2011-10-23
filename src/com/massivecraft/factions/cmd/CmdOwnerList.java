@@ -22,8 +22,8 @@ public class CmdOwnerList extends FCommand
 		
 		senderMustBePlayer = true;
 		senderMustBeMember = false;
-		senderMustBeModerator = false;
-		senderMustBeAdmin = false;
+		senderMustBeOfficer = false;
+		senderMustBeLeader = false;
 	}
 	
 	@Override

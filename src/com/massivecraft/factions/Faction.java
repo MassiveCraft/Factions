@@ -348,7 +348,7 @@ public class Faction extends Entity implements EconomyParticipator
 		return ret;
 	}
 	
-	public FPlayer getFPlayerAdmin()
+	public FPlayer getFPlayerLeader()
 	{
 		if ( ! this.isNormal()) return null;
 		

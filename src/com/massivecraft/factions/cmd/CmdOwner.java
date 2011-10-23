@@ -26,8 +26,8 @@ public class CmdOwner extends FCommand
 		
 		senderMustBePlayer = true;
 		senderMustBeMember = false;
-		senderMustBeModerator = false;
-		senderMustBeAdmin = false;
+		senderMustBeOfficer = false;
+		senderMustBeLeader = false;
 	}
 	
 	// TODO: Fix colors!

@@ -13,7 +13,7 @@ import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.ChatMode;
-import com.massivecraft.factions.struct.Relation;
+import com.massivecraft.factions.struct.Rel;
 
 
 // this is an addtional PlayerListener for handling slashless command usage and faction chat, to be set at low priority so Factions gets to them first
@@ -67,7 +67,7 @@ public class FactionsChatEarlyListener extends PlayerListener
 			//Send to all our allies
 			for (FPlayer fplayer : FPlayers.i.getOnline())
 			{
-				if(myFaction.getRelationTo(fplayer) == Relation.ALLY)
+				if(myFaction.getRelationTo(fplayer) == Rel.ALLY)
 					fplayer.sendMessage(message);	
 			}
 			

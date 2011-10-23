@@ -28,7 +28,7 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.P;
-import com.massivecraft.factions.struct.Relation;
+import com.massivecraft.factions.struct.Rel;
 import com.massivecraft.factions.util.MiscUtil;
 
 
@@ -321,10 +321,10 @@ public class FactionsEntityListener extends EntityListener
 			return false;
 		}
 		
-		Relation relation = defendFaction.getRelationTo(attackFaction);
+		Rel relation = defendFaction.getRelationTo(attackFaction);
 		
 		// You can not hurt neutral factions
-		if (Conf.disablePVPBetweenNeutralFactions && relation.isNeutral())
+		if (Conf.disablePVPBetweenNeutralFactions && relation == Rel.NEUTRAL)
 		{
 			attacker.msg("<i>You can't hurt neutral factions. Declare them as an enemy.");
 			return false;
@@ -337,7 +337,7 @@ public class FactionsEntityListener extends EntityListener
 		}
 		
 		// You can never hurt faction members or allies
-		if (relation.isMember() || relation.isAlly())
+		if (relation == Rel.MEMBER || relation == Rel.ALLY)
 		{
 			attacker.msg("<i>You can't hurt %s<i>.", defender.describeTo(attacker));
 			return false;
@@ -346,7 +346,7 @@ public class FactionsEntityListener extends EntityListener
 		boolean ownTerritory = defender.isInOwnTerritory();
 		
 		// You can not hurt neutrals in their own territory.
-		if (ownTerritory && relation.isNeutral())
+		if (ownTerritory && relation == Rel.NEUTRAL)
 		{
 			attacker.msg("<i>You can't hurt %s<i> in their own territory unless you declare them as an enemy.", defender.describeTo(attacker));
 			defender.msg("%s<i> tried to hurt you.", attacker.describeTo(defender, true));

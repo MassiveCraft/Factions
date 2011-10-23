@@ -19,7 +19,7 @@ import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.struct.Relation;
+import com.massivecraft.factions.struct.Rel;
 
 
 public class FactionsBlockListener extends BlockListener
@@ -151,7 +151,7 @@ public class FactionsBlockListener extends BlockListener
 			return false;
 		}
 
-		Relation rel = pistonFaction.getRelationTo(otherFaction);
+		Rel rel = pistonFaction.getRelationTo(otherFaction);
 
 		if (rel.confDenyBuild(otherFaction.hasPlayersOnline()))
 			return false;
@@ -201,7 +201,7 @@ public class FactionsBlockListener extends BlockListener
 		}
 
 		Faction myFaction = me.getFaction();
-		Relation rel = myFaction.getRelationTo(otherFaction);
+		Rel rel = myFaction.getRelationTo(otherFaction);
 		boolean online = otherFaction.hasPlayersOnline();
 		boolean pain = !justCheck && rel.confPainBuild(online);
 		boolean deny = rel.confDenyBuild(online);

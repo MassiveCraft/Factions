@@ -32,7 +32,7 @@ import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.struct.Relation;
+import com.massivecraft.factions.struct.Rel;
 import com.massivecraft.factions.zcore.util.TextUtil;
 
 import java.util.logging.Level;
@@ -376,7 +376,7 @@ public class FactionsPlayerListener extends PlayerListener
 		}
 
 		Faction myFaction = me.getFaction();
-		Relation rel = myFaction.getRelationTo(otherFaction);
+		Rel rel = myFaction.getRelationTo(otherFaction);
 
 		// Cancel if we are not in our own territory
 		if (rel.confDenyUseage())
@@ -426,10 +426,10 @@ public class FactionsPlayerListener extends PlayerListener
 		}
 
 		Faction myFaction = me.getFaction();
-		Relation rel = myFaction.getRelationTo(otherFaction);
+		Rel rel = myFaction.getRelationTo(otherFaction);
 
 		// You may use any block unless it is another faction's territory...
-		if (rel.isNeutral() || (rel.isEnemy() && Conf.territoryEnemyProtectMaterials) || (rel.isAlly() && Conf.territoryAllyProtectMaterials))
+		if (rel == Rel.NEUTRAL || (rel == Rel.ENEMY && Conf.territoryEnemyProtectMaterials) || (rel == Rel.ALLY && Conf.territoryAllyProtectMaterials))
 		{
 			if (!justCheck)
 				me.msg("<b>You can't use <h>%s<b> in the territory of <h>%s<b>.", TextUtil.getMaterialName(material), otherFaction.getTag(myFaction));
@@ -529,8 +529,8 @@ public class FactionsPlayerListener extends PlayerListener
 			return false;
 		}
 
-		Relation rel = me.getRelationToLocation();
-		if (rel.isAtLeast(Relation.ALLY))
+		Rel rel = me.getRelationToLocation();
+		if (rel.isAtLeast(Rel.ALLY))
 		{
 			return false;
 		}
@@ -539,7 +539,7 @@ public class FactionsPlayerListener extends PlayerListener
 		
 		if
 		(
-			rel.isNeutral()
+			rel == Rel.NEUTRAL
 			&&
 			! Conf.territoryNeutralDenyCommands.isEmpty()
 			&&
@@ -567,7 +567,7 @@ public class FactionsPlayerListener extends PlayerListener
 		}
 		else if
 		(
-			rel.isEnemy()
+			rel == Rel.ENEMY
 			&&
 			! Conf.territoryEnemyDenyCommands.isEmpty()
 			&&

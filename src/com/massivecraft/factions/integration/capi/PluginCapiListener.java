@@ -17,7 +17,7 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.P;
-import com.massivecraft.factions.struct.Relation;
+import com.massivecraft.factions.struct.Rel;
 
 public class PluginCapiListener extends CapiListener
 {
@@ -81,7 +81,7 @@ public class PluginCapiListener extends CapiListener
 			for (Player somePlayer : Bukkit.getServer().getOnlinePlayers())
 			{
 				FPlayer someFPlayer = FPlayers.i.get(somePlayer);
-				if (someFPlayer.getRelationTo(fme).value >= Relation.ALLY.value)
+				if (someFPlayer.getRelationTo(fme).value >= Rel.ALLY.value)
 				{
 					event.getThem().add(somePlayer);
 				}

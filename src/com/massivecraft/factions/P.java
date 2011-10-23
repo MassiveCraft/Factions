@@ -24,8 +24,10 @@ import com.massivecraft.factions.listeners.FactionsEntityListener;
 import com.massivecraft.factions.listeners.FactionsPlayerListener;
 import com.massivecraft.factions.listeners.FactionsServerListener;
 import com.massivecraft.factions.struct.ChatMode;
+import com.massivecraft.factions.struct.Rel;
 import com.massivecraft.factions.util.MapFLocToStringSetTypeAdapter;
 import com.massivecraft.factions.util.MyLocationTypeAdapter;
+import com.massivecraft.factions.util.MyRelTypeAdapter;
 import com.massivecraft.factions.zcore.MPlugin;
 
 import com.nijiko.permissions.PermissionHandler;
@@ -148,7 +150,8 @@ public class P extends MPlugin
 		.disableHtmlEscaping()
 		.excludeFieldsWithModifiers(Modifier.TRANSIENT, Modifier.VOLATILE)
 		.registerTypeAdapter(Location.class, new MyLocationTypeAdapter())
-		.registerTypeAdapter(mapFLocToStringSetType, new MapFLocToStringSetTypeAdapter());
+		.registerTypeAdapter(mapFLocToStringSetType, new MapFLocToStringSetTypeAdapter())
+		.registerTypeAdapter(Rel.class, new MyRelTypeAdapter());
 	}
 
 	@Override

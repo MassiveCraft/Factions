@@ -6,7 +6,7 @@ import com.massivecraft.factions.Conf;
 
 public class FCmdRoot extends FCommand
 {
-	public CmdAdmin cmdAdmin = new CmdAdmin();
+	public CmdLeader cmdLeader = new CmdLeader();
 	public CmdAutoClaim cmdAutoClaim = new CmdAutoClaim();
 	public CmdBoom cmdBoom = new CmdBoom();
 	public CmdBypass cmdBypass = new CmdBypass();
@@ -26,7 +26,7 @@ public class FCmdRoot extends FCommand
 	public CmdList cmdList = new CmdList();
 	public CmdLock cmdLock = new CmdLock();
 	public CmdMap cmdMap = new CmdMap();
-	public CmdMod cmdMod = new CmdMod();
+	public CmdOfficer cmdOfficer = new CmdOfficer();
 	public CmdMoney cmdMoney = new CmdMoney();
 	public CmdOpen cmdOpen = new CmdOpen();
 	public CmdOwner cmdOwner = new CmdOwner();
@@ -62,8 +62,8 @@ public class FCmdRoot extends FCommand
 		
 		senderMustBePlayer = false;
 		senderMustBeMember = false;
-		senderMustBeModerator = false;
-		senderMustBeAdmin = false;
+		senderMustBeOfficer = false;
+		senderMustBeLeader = false;
 		
 		this.disableOnLock = false;
 		
@@ -72,7 +72,7 @@ public class FCmdRoot extends FCommand
 		
 		//this.subCommands.add(p.cmdHelp);
 		
-		this.addSubCommand(this.cmdAdmin);
+		this.addSubCommand(this.cmdLeader);
 		this.addSubCommand(this.cmdAutoClaim);
 		this.addSubCommand(this.cmdBoom);
 		this.addSubCommand(this.cmdBypass);
@@ -92,7 +92,7 @@ public class FCmdRoot extends FCommand
 		this.addSubCommand(this.cmdList);
 		this.addSubCommand(this.cmdLock);
 		this.addSubCommand(this.cmdMap);
-		this.addSubCommand(this.cmdMod);
+		this.addSubCommand(this.cmdOfficer);
 		this.addSubCommand(this.cmdMoney);
 		this.addSubCommand(this.cmdOpen);
 		this.addSubCommand(this.cmdOwner);

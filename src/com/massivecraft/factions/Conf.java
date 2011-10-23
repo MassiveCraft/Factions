@@ -30,8 +30,8 @@ public class Conf
 	public static double powerOfflineLossLimit = 0.0;  // players will no longer lose power from being offline once their power drops to this amount or less
 	public static double powerFactionMax = 0.0;  // if greater than 0, the cap on how much power a faction can have (additional power from players beyond that will act as a "buffer" of sorts)
 	
-	public static String prefixAdmin = "**";
-	public static String prefixMod = "*";
+	public static String prefixLeader = "**";
+	public static String prefixOfficer = "*";
 	
 	public static int factionTagLengthMin = 3;
 	public static int factionTagLengthMax = 10;
@@ -181,8 +181,8 @@ public class Conf
 	// Spout features
 	public static boolean spoutFactionTagsOverNames = true;  // show faction tags over names over player heads
 	public static boolean spoutFactionTitlesOverNames = true;  // whether to include player's title in that
-	public static boolean spoutFactionAdminCapes = true;  // Show capes on faction admins, colored based on the viewer's relation to the target player
-	public static boolean spoutFactionModeratorCapes = true;  // same, but for faction moderators
+	public static boolean spoutFactionLeaderCapes = true;  // Show capes on faction admins, colored based on the viewer's relation to the target player
+	public static boolean spoutFactionOfficerCapes = true;  // same, but for faction moderators
 	public static int spoutTerritoryDisplayPosition = 3;  // permanent territory display, instead of by chat; 0 = disabled, 1 = top left, 2 = top center, 3+ = top right
 	public static float spoutTerritoryDisplaySize = 1.0f;  // text scale (size) for territory display
 	public static boolean spoutTerritoryDisplayShowDescription = true;  // whether to show the faction description, not just the faction tag

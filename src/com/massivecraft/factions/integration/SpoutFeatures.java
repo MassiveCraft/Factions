@@ -13,8 +13,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 
-import com.massivecraft.factions.struct.Relation;
-import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.struct.Rel;
 
 import org.getspout.spoutapi.gui.Color;
 import org.getspout.spoutapi.player.AppearanceManager;
@@ -222,7 +221,7 @@ public class SpoutFeatures
 		SpoutPlayer sPlayer = SpoutManager.getPlayer(viewer.getPlayer());
 		Player pViewed = viewed.getPlayer();
 		String viewedTitle = viewed.getTitle();
-		Role viewedRole = viewed.getRole();
+		Rel viewedRole = viewed.getRole();
 
 		if ((Conf.spoutFactionTagsOverNames || Conf.spoutFactionTitlesOverNames) && viewer != viewed)
 		{
@@ -247,19 +246,19 @@ public class SpoutFeatures
 		if
 		(
 			(
-				Conf.spoutFactionAdminCapes
+				Conf.spoutFactionLeaderCapes
 				&&
-				viewedRole.equals(Role.ADMIN)
+				viewedRole.equals(Rel.LEADER)
 			)
 			|| 
 			(
-				Conf.spoutFactionModeratorCapes
+				Conf.spoutFactionOfficerCapes
 				&&
-				viewedRole.equals(Role.MODERATOR)
+				viewedRole.equals(Rel.OFFICER)
 			)
 		)
 		{
-			Relation relation = viewer.getRelationTo(viewed);
+			Rel relation = viewer.getRelationTo(viewed);
 			String cape = "";
 			if (!viewedFaction.isNormal())
 			{
@@ -267,13 +266,13 @@ public class SpoutFeatures
 			}
 			else if (viewedFaction.isPeaceful())
 				cape = Conf.capePeaceful;
-			else if (relation.isNeutral())
+			else if (relation == Rel.NEUTRAL)
 				cape = Conf.capeNeutral;
-			else if (relation.isMember())
+			else if (relation == Rel.MEMBER)
 				cape = Conf.capeMember;
-			else if (relation.isEnemy())
+			else if (relation == Rel.ENEMY)
 				cape = Conf.capeEnemy;
-			else if (relation.isAlly())
+			else if (relation == Rel.ALLY)
 				cape = Conf.capeAlly;
 
 			if (cape.isEmpty())
@@ -281,7 +280,7 @@ public class SpoutFeatures
 			else
 				spoutApp.setPlayerCloak(sPlayer, pViewed, cape);
 		}
-		else if (Conf.spoutFactionAdminCapes || Conf.spoutFactionModeratorCapes)
+		else if (Conf.spoutFactionLeaderCapes || Conf.spoutFactionOfficerCapes)
 		{
 			spoutApp.resetPlayerCloak(sPlayer, pViewed);
 		}

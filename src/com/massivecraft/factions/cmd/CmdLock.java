@@ -24,8 +24,8 @@ public class CmdLock extends FCommand {
 		
 		senderMustBePlayer = false;
 		senderMustBeMember = false;
-		senderMustBeModerator = false;
-		senderMustBeAdmin = false;
+		senderMustBeOfficer = false;
+		senderMustBeLeader = false;
 	}
 	
 	@Override
