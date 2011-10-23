@@ -231,6 +231,7 @@ public class Conf
 	public static boolean bankMembersCanWithdraw = false; //Have to be at least moderator to withdraw or pay money to another faction
 	public static boolean bankFactionPaysCosts = true; //The faction pays for faction command costs, such as sethome
 	public static boolean bankFactionPaysLandCosts = true; //The faction pays for land claiming costs.
+	public static boolean bankCanBeUsedEverywhere = true; // If false, you must be on one of your claimed chunks to execute /f money deposit or /f money withdraw
 	
 	public static Set<String> worldsNoClaiming = new HashSet<String>();
 	public static Set<String> worldsNoPowerLoss = new HashSet<String>();
