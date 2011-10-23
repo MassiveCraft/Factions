@@ -146,7 +146,7 @@ public class Factions extends EntityCollection<Faction>
 		return null;
 	}
 	
-	public Faction getBestTagMatch(String pattern)
+	public Faction getBestTagMatch(String searchFor)
 	{
 		Map<String, Faction> tag2faction = new HashMap<String, Faction>();
 		
@@ -156,7 +156,7 @@ public class Factions extends EntityCollection<Faction>
 			tag2faction.put(ChatColor.stripColor(faction.getTag()), faction);
 		}
 		
-		String tag = TextUtil.getWhereLongestCommonStartCI(tag2faction.keySet(), pattern);
+		String tag = TextUtil.getBestStartWithCI(tag2faction.keySet(), searchFor);
 		if (tag == null) return null;
 		return tag2faction.get(tag);
 	}

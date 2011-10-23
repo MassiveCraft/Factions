@@ -97,7 +97,7 @@ public abstract class EntityCollection<E extends Entity>
 	
 	public E getBestIdMatch(String pattern)
 	{
-		String id = TextUtil.getWhereLongestCommonStartCI(this.id2entity.keySet(), pattern);
+		String id = TextUtil.getBestStartWithCI(this.id2entity.keySet(), pattern);
 		if (id == null) return null;
 		return this.id2entity.get(id);
 	}
@@ -106,12 +106,12 @@ public abstract class EntityCollection<E extends Entity>
 	// CREATE
 	// -------------------------------------------- //
 	
-	public E create()
+	public synchronized E create()
 	{
 		return this.create(this.getNextId());
 	}
 	
-	public E create(String id)
+	public synchronized E create(String id)
 	{
 		if ( ! this.isIdFree(id)) return null;
 		
@@ -225,21 +225,23 @@ public abstract class EntityCollection<E extends Entity>
 	
 	public String getNextId()
 	{
-		String next = Integer.toString(this.nextId);
-		do
+		while ( ! isIdFree(this.nextId) )
 		{
 			this.nextId += 1;
-		} while ( ! isIdFree(Integer.toString(this.nextId)) );
-
-		return next;
+		}
+		return Integer.toString(this.nextId);
 	}
 	
 	public boolean isIdFree(String id)
 	{
 		return ! this.id2entity.containsKey(id);
 	}
+	public boolean isIdFree(int id)
+	{
+		return this.isIdFree(Integer.toString(id));
+	}
 	
-	protected void fillIds()
+	protected synchronized void fillIds()
 	{
 		this.nextId = 1;
 		for(Entry<String, E> entry : this.id2entity.entrySet())
@@ -251,16 +253,21 @@ public abstract class EntityCollection<E extends Entity>
 		}
 	}
 	
+	protected synchronized void updateNextIdForId(int id)
+	{
+		if (this.nextId < id)
+		{
+			this.nextId = id + 1;
+		}
+	}
+	
 	protected void updateNextIdForId(String id)
 	{
 		try
 		{
 			int idAsInt = Integer.parseInt(id);
-			if (this.nextId < idAsInt)
-			{
-				this.nextId = idAsInt + 1;
-			}
-		} catch (Exception ignored) {}
+			this.updateNextIdForId(idAsInt);
+		}
+		catch (Exception ignored) { }
 	}
-	
 }

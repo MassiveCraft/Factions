@@ -53,13 +53,13 @@ public class CmdCreate extends FCommand
 			sendMessage(tagValidationErrors);
 			return;
 		}
-
+		
 		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
 		if ( ! payForCommand(Conf.econCostCreate, "to create a new faction", "for creating a new faction")) return;
 
 		Faction faction = Factions.i.create();
 
-		// TODO: Why would this even happen???
+		// TODO: Why would this even happen??? Auto increment clash??
 		if (faction == null)
 		{
 			msg("<b>There was an internal error while trying to create your faction. Please try again.");

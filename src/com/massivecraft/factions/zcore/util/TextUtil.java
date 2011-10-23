@@ -285,7 +285,7 @@ public class TextUtil
 	// String comparison
 	// -------------------------------------------- //
 	
-	public static int commonStartLength(String a, String b)
+	/*private static int commonStartLength(String a, String b)
 	{
 		int len = a.length() < b.length() ? a.length() : b.length();
 		int i;
@@ -294,19 +294,29 @@ public class TextUtil
 			if (a.charAt(i) != b.charAt(i)) break;
 		}
 		return i;
-	}
+	}*/
 	
-	public static String getWhereLongestCommonStartCI(Collection<String> candidates, String pattern)
+	public static String getBestStartWithCI(Collection<String> candidates, String start)
 	{
 		String ret = null;
 		int best = 0;
-		pattern = pattern.toLowerCase();
+		
+		start = start.toLowerCase();
+		int minlength = start.length();
 		for (String candidate : candidates)
 		{
-			int csl = commonStartLength(pattern, candidate.toLowerCase());
-			if (csl > best)
+			if (candidate.length() < minlength) continue;
+			if ( ! candidate.toLowerCase().startsWith(start)) continue;
+			
+			// The closer to zero the better
+			int lendiff = candidate.length() - minlength;
+			if (lendiff == 0)
 			{
-				best = csl;
+				return candidate;
+			}
+			if (lendiff < best ||best == 0)
+			{
+				best = lendiff;
 				ret = candidate;
 			}
 		}
