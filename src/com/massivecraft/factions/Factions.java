@@ -62,7 +62,7 @@ public class Factions extends EntityCollection<Faction>
 		{
 			// if SafeZone has old pre-1.6.0 name, rename it to remove troublesome " "
 			Faction faction = this.getSafeZone();
-			if (faction.getTag().equals("Safe Zone"))
+			if (faction.getTag().equals(ChatColor.GOLD+"Safe Zone"))
 				faction.setTag("SafeZone");
 		}
 		
@@ -77,7 +77,7 @@ public class Factions extends EntityCollection<Faction>
 		{
 			// if WarZone has old pre-1.6.0 name, rename it to remove troublesome " "
 			Faction faction = this.getWarZone();
-			if (faction.getTag().equals("War Zone"))
+			if (faction.getTag().equals(ChatColor.DARK_RED+"War Zone"))
 				faction.setTag("WarZone");
 		}
 		
