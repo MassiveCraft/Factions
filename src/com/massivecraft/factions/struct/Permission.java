@@ -6,8 +6,6 @@ import com.massivecraft.factions.P;
 
 public enum Permission
 {
-	MANAGE_SAFE_ZONE("managesafezone"),
-	MANAGE_WAR_ZONE("managewarzone"),
 	OWNERSHIP_BYPASS("ownershipbypass"),
 	LEADER("leader"),
 	AUTOCLAIM("autoclaim"),

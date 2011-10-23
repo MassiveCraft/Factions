@@ -218,14 +218,14 @@ public class Board
 					{
 						row += ChatColor.GRAY+"-";
 					}
-					else if (factionHere.isSafeZone())
+					/*else if (factionHere.isSafeZone())
 					{
 						row += Conf.colorPeaceful+"+";
 					}
 					else if (factionHere.isWarZone())
 					{
 						row += ChatColor.DARK_RED+"+";
-					}
+					}*/
 					else if
 					(
 						factionHere == faction

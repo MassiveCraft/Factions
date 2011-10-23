@@ -18,7 +18,6 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.P;
-import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Rel;
 
 
@@ -129,28 +128,6 @@ public class FactionsBlockListener extends BlockListener
 		if (pistonFaction == otherFaction)
 			return true;
 
-		if (otherFaction.isNone())
-		{
-			if (!Conf.wildernessDenyBuild || Conf.worldsNoWildernessProtection.contains(target.getWorld().getName()))
-				return true;
-
-			return false;
-		}
-		else if (otherFaction.isSafeZone())
-		{
-			if ( ! Conf.safeZoneDenyBuild)
-				return true;
-
-			return false;
-		}
-		else if (otherFaction.isWarZone())
-		{
-			if ( ! Conf.warZoneDenyBuild)
-				return true;
-
-			return false;
-		}
-
 		Rel rel = pistonFaction.getRelationTo(otherFaction);
 
 		if (rel.confDenyBuild(otherFaction.hasPlayersOnline()))
@@ -168,37 +145,6 @@ public class FactionsBlockListener extends BlockListener
 
 		FLocation loc = new FLocation(location);
 		Faction otherFaction = Board.getFactionAt(loc);
-
-		if (otherFaction.isNone())
-		{
-			if (!Conf.wildernessDenyBuild || Conf.worldsNoWildernessProtection.contains(location.getWorld().getName()))
-				return true; // This is not faction territory. Use whatever you like here.
-
-			if (!justCheck)
-				me.msg("<b>You can't "+action+" in the wilderness.");
-
-			return false;
-		}
-		else if (otherFaction.isSafeZone())
-		{
-			if (!Conf.safeZoneDenyBuild || Permission.MANAGE_SAFE_ZONE.has(player))
-				return true;
-
-			if (!justCheck)
-				me.msg("<b>You can't "+action+" in a safe zone.");
-
-			return false;
-		}
-		else if (otherFaction.isWarZone())
-		{
-			if (!Conf.warZoneDenyBuild || Permission.MANAGE_WAR_ZONE.has(player))
-				return true;
-
-			if (!justCheck)
-				me.msg("<b>You can't "+action+" in a war zone.");
-
-			return false;
-		}
 
 		Faction myFaction = me.getFaction();
 		Rel rel = myFaction.getRelationTo(otherFaction);

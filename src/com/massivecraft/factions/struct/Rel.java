@@ -6,13 +6,13 @@ import com.massivecraft.factions.Conf;
 
 public enum Rel
 {
-	LEADER (70, "leader"),
-	OFFICER(60, "officer"),
-	MEMBER (50, "member"),
-	ALLY   (40, "ally"),
-	TRUCE  (30, "truce"),
-	NEUTRAL(20, "neutral"),
-	ENEMY  (10, "enemy"),
+	LEADER   (70, "leader"),
+	OFFICER  (60, "officer"),
+	MEMBER   (50, "member"),
+	ALLY     (40, "ally"),
+	TRUCE    (30, "truce"),
+	NEUTRAL  (20, "neutral"),
+	ENEMY    (10, "enemy"),
 	;
 	
 	public final int value;
@@ -87,6 +87,8 @@ public enum Rel
 			return Conf.colorAlly;
 		else if (this == NEUTRAL)
 			return Conf.colorNeutral;
+		else if (this == TRUCE)
+			return Conf.colorTruce;
 		else
 			return Conf.colorEnemy;
 	}
@@ -107,6 +109,7 @@ public enum Rel
 	}
 	
 	// TODO: ADD TRUCE!!!!
+	// TODO.... or remove it...
 	public double getRelationCost()
 	{
 		if (this == ENEMY)
@@ -129,6 +132,8 @@ public enum Rel
 				return Conf.territoryEnemyDenyBuild;
 			else if (this == ALLY)
 				return Conf.territoryAllyDenyBuild;
+			else if (this == TRUCE)
+				return Conf.territoryTruceDenyBuild;
 			else
 				return Conf.territoryDenyBuild;
 		}
@@ -138,6 +143,8 @@ public enum Rel
 				return Conf.territoryEnemyDenyBuildWhenOffline;
 			else if (this == ALLY)
 				return Conf.territoryAllyDenyBuildWhenOffline;
+			else if (this == TRUCE)
+				return Conf.territoryTruceDenyBuildWhenOffline;
 			else
 				return Conf.territoryDenyBuildWhenOffline;
 		}
@@ -155,6 +162,8 @@ public enum Rel
 				return Conf.territoryEnemyPainBuild;
 			else if (this == ALLY)
 				return Conf.territoryAllyPainBuild;
+			else if (this == TRUCE)
+				return Conf.territoryTrucePainBuild;
 			else
 				return Conf.territoryPainBuild;
 		}
@@ -164,6 +173,8 @@ public enum Rel
 				return Conf.territoryEnemyPainBuildWhenOffline;
 			else if (this == ALLY)
 				return Conf.territoryAllyPainBuildWhenOffline;
+			else if (this == TRUCE)
+				return Conf.territoryTrucePainBuildWhenOffline;
 			else
 				return Conf.territoryPainBuildWhenOffline;
 		}
@@ -178,6 +189,8 @@ public enum Rel
 			return Conf.territoryEnemyDenyUseage;
 		else if (this == ALLY)
 			return Conf.territoryAllyDenyUseage;
+		else if (this == TRUCE)
+			return Conf.territoryTruceDenyUseage;
 		else
 			return Conf.territoryDenyUseage;
 	}

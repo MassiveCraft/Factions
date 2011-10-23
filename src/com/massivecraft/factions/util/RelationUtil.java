@@ -2,10 +2,10 @@ package com.massivecraft.factions.util;
 
 import org.bukkit.ChatColor;
 
-import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.iface.RelationParticipator;
+import com.massivecraft.factions.struct.FactionFlag;
 import com.massivecraft.factions.struct.Rel;
 import com.massivecraft.factions.zcore.util.TextUtil;
 
@@ -90,9 +90,9 @@ public class RelationUtil
 			return Rel.MEMBER;
 		}
 
-		if (!ignorePeaceful && (fme.isPeaceful() || fthat.isPeaceful()))
+		if (!ignorePeaceful && (fme.getFlag(FactionFlag.PEACEFUL) || fthat.getFlag(FactionFlag.PEACEFUL)))
 		{
-			return Rel.NEUTRAL;
+			return Rel.TRUCE;
 		}
 
 		if (fme.getRelationWish(fthat).value >= fthat.getRelationWish(fme).value)
@@ -121,8 +121,9 @@ public class RelationUtil
 
 	public static ChatColor getColorOfThatToMe(RelationParticipator that, RelationParticipator me)
 	{
-		Faction thatFaction = getFaction(that);
-		if (thatFaction != null)
+		//Faction thatFaction = getFaction(that);
+		// TODO: Add special colors to zone as a feature to replace this one
+		/*if (thatFaction != null)
 		{
 			if (thatFaction.isPeaceful() && thatFaction != getFaction(me))
 			{
@@ -138,7 +139,7 @@ public class RelationUtil
 			{
 				return Conf.colorWar;
 			}
-		}
+		}*/
 		
 		return getRelationTo(that, me).getColor();
 	}

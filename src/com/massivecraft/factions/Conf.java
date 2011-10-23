@@ -15,11 +15,12 @@ public class Conf
 	// Colors
 	public static ChatColor colorMember = ChatColor.GREEN;
 	public static ChatColor colorAlly = ChatColor.LIGHT_PURPLE;
+	public static ChatColor colorTruce = ChatColor.GOLD;
 	public static ChatColor colorNeutral = ChatColor.WHITE;
 	public static ChatColor colorEnemy = ChatColor.RED;
 	
-	public static ChatColor colorPeaceful = ChatColor.GOLD;
-	public static ChatColor colorWar = ChatColor.DARK_RED;
+	//public static ChatColor colorPeaceful = ChatColor.GOLD;
+	//public static ChatColor colorWar = ChatColor.DARK_RED;
 	//public static ChatColor colorWilderness = ChatColor.DARK_GREEN;
 	
 	
@@ -143,6 +144,12 @@ public class Conf
 	public static boolean territoryAllyPainBuildWhenOffline = false;
 	public static boolean territoryAllyDenyUseage = true;
 	public static boolean territoryAllyProtectMaterials = true;
+	public static boolean territoryTruceDenyBuild = true;
+	public static boolean territoryTruceDenyBuildWhenOffline = true;
+	public static boolean territoryTrucePainBuild = false;
+	public static boolean territoryTrucePainBuildWhenOffline = false;
+	public static boolean territoryTruceDenyUseage = true;
+	public static boolean territoryTruceProtectMaterials = true;
 	public static boolean territoryBlockCreepers = false;
 	public static boolean territoryBlockCreepersWhenOffline = false;
 	public static boolean territoryBlockFireballs = false;
@@ -152,7 +159,7 @@ public class Conf
 	public static boolean territoryDenyEndermanBlocks = true;
 	public static boolean territoryDenyEndermanBlocksWhenOffline = true;
 
-	public static boolean safeZoneDenyBuild = true;
+	/*public static boolean safeZoneDenyBuild = true;
 	public static boolean safeZoneDenyUseage = true;
 	public static boolean safeZoneBlockTNT = true;
 	public static boolean safeZonePreventAllDamageToPlayers = false;
@@ -166,14 +173,15 @@ public class Conf
 	public static boolean warZonePowerLoss = true;
 	public static boolean warZoneFriendlyFire = false;
 	public static boolean warZoneDenyEndermanBlocks = true;
+	*/
 	
-	public static boolean wildernessDenyBuild = false;
+	/*public static boolean wildernessDenyBuild = false;
 	public static boolean wildernessDenyUseage = false;
 	public static boolean wildernessBlockCreepers = false;
 	public static boolean wildernessBlockFireballs = false;
 	public static boolean wildernessBlockTNT = false;
 	public static boolean wildernessPowerLoss = true;
-	public static boolean wildernessDenyEndermanBlocks = false;
+	public static boolean wildernessDenyEndermanBlocks = false;*/
 
 	// for claimed areas where further faction-member ownership can be defined
 	public static boolean ownedAreasEnabled = true;
@@ -198,6 +206,7 @@ public class Conf
 	public static Set<Material> territoryProtectedMaterialsWhenOffline = EnumSet.noneOf(Material.class);
 	public static Set<Material> territoryDenyUseageMaterialsWhenOffline = EnumSet.noneOf(Material.class);
 	
+	// TODO: Rename to monsterCreatureTypes
 	public static transient Set<CreatureType> safeZoneNerfedCreatureTypes = EnumSet.noneOf(CreatureType.class);
 
 	// Spout features
@@ -257,6 +266,7 @@ public class Conf
 	public static Set<String> worldsNoClaiming = new HashSet<String>();
 	public static Set<String> worldsNoPowerLoss = new HashSet<String>();
 	public static Set<String> worldsIgnorePvP = new HashSet<String>();
+	// TODO: A better solution Would be to have One wilderness faction per world.
 	public static Set<String> worldsNoWildernessProtection = new HashSet<String>();
 	
 	public static transient int mapHeight = 8;
@@ -268,30 +278,12 @@ public class Conf
 		baseCommandAliases.add("f");
 		
 		factionFlagDefaults = new LinkedHashMap<FactionFlag, Boolean>();
-		factionFlagDefaults.put(FactionFlag.PERMANENT, FactionFlag.PERMANENT.defaultDefaultValue);
-		factionFlagDefaults.put(FactionFlag.PEACEFUL, FactionFlag.PEACEFUL.defaultDefaultValue);
-		factionFlagDefaults.put(FactionFlag.INFPOWER, FactionFlag.INFPOWER.defaultDefaultValue);
-		factionFlagDefaults.put(FactionFlag.POWERLOSS, FactionFlag.POWERLOSS.defaultDefaultValue);
-		factionFlagDefaults.put(FactionFlag.PVP, FactionFlag.PVP.defaultDefaultValue);
-		factionFlagDefaults.put(FactionFlag.FRIENDLYFIRE, FactionFlag.FRIENDLYFIRE.defaultDefaultValue);
-		factionFlagDefaults.put(FactionFlag.MONSTERS, FactionFlag.MONSTERS.defaultDefaultValue);
-		factionFlagDefaults.put(FactionFlag.EXPLOSIONS, FactionFlag.EXPLOSIONS.defaultDefaultValue);
-		factionFlagDefaults.put(FactionFlag.FIRESPREAD, FactionFlag.FIRESPREAD.defaultDefaultValue);
-		factionFlagDefaults.put(FactionFlag.LIGHTNING, FactionFlag.LIGHTNING.defaultDefaultValue);
-		factionFlagDefaults.put(FactionFlag.ENDERGRIEF, FactionFlag.ENDERGRIEF.defaultDefaultValue);
-		
 		factionFlagIsChangeable = new LinkedHashMap<FactionFlag, Boolean>();
-		factionFlagIsChangeable.put(FactionFlag.PERMANENT, FactionFlag.PERMANENT.defaultDefaultChangeable);
-		factionFlagIsChangeable.put(FactionFlag.PEACEFUL, FactionFlag.PEACEFUL.defaultDefaultChangeable);
-		factionFlagIsChangeable.put(FactionFlag.INFPOWER, FactionFlag.INFPOWER.defaultDefaultChangeable);
-		factionFlagIsChangeable.put(FactionFlag.POWERLOSS, FactionFlag.POWERLOSS.defaultDefaultChangeable);
-		factionFlagIsChangeable.put(FactionFlag.PVP, FactionFlag.PVP.defaultDefaultChangeable);
-		factionFlagIsChangeable.put(FactionFlag.FRIENDLYFIRE, FactionFlag.FRIENDLYFIRE.defaultDefaultChangeable);
-		factionFlagIsChangeable.put(FactionFlag.MONSTERS, FactionFlag.MONSTERS.defaultDefaultChangeable);
-		factionFlagIsChangeable.put(FactionFlag.EXPLOSIONS, FactionFlag.EXPLOSIONS.defaultDefaultChangeable);
-		factionFlagIsChangeable.put(FactionFlag.FIRESPREAD, FactionFlag.FIRESPREAD.defaultDefaultChangeable);
-		factionFlagIsChangeable.put(FactionFlag.LIGHTNING, FactionFlag.LIGHTNING.defaultDefaultChangeable);
-		factionFlagIsChangeable.put(FactionFlag.ENDERGRIEF, FactionFlag.ENDERGRIEF.defaultDefaultChangeable);
+		for (FactionFlag flag : FactionFlag.values())
+		{
+			factionFlagDefaults.put(flag, flag.defaultDefaultValue);
+			factionFlagIsChangeable.put(flag, flag.defaultDefaultChangeable);
+		}
 		
 		territoryEnemyDenyCommands.add("home");
 		territoryEnemyDenyCommands.add("sethome");

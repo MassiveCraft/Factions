@@ -267,7 +267,7 @@ public class SpoutFeatures
 			{
 				// yeah, no cape if no faction
 			}
-			else if (viewedFaction.isPeaceful())
+			else if (relation == Rel.TRUCE)
 				cape = Conf.capePeaceful;
 			else if (relation == Rel.NEUTRAL)
 				cape = Conf.capeNeutral;

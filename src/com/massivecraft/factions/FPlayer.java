@@ -15,7 +15,6 @@ import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.integration.Worldguard;
 import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.struct.FactionFlag;
-import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Rel;
 import com.massivecraft.factions.util.RelationUtil;
 import com.massivecraft.factions.zcore.persist.PlayerEntity;
@@ -78,40 +77,8 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 	public void setAutoClaimFor(Faction faction)
 	{
 		this.autoClaimFor = faction;
-		if (this.autoClaimFor != null)
-		{
-			// TODO: merge these into same autoclaim
-			this.autoSafeZoneEnabled = false;
-			this.autoWarZoneEnabled = false;
-		}
 	}
-	
-	// FIELD: autoSafeZoneEnabled
-	private transient boolean autoSafeZoneEnabled;
-	public boolean isAutoSafeClaimEnabled() { return autoSafeZoneEnabled; }
-	public void setIsAutoSafeClaimEnabled(boolean enabled)
-	{
-		this.autoSafeZoneEnabled = enabled;
-		if (enabled)
-		{
-			this.autoClaimFor = null;
-			this.autoWarZoneEnabled = false;
-		}
-	}
-
-	// FIELD: autoWarZoneEnabled
-	private transient boolean autoWarZoneEnabled;
-	public boolean isAutoWarClaimEnabled() { return autoWarZoneEnabled; }
-	public void setIsAutoWarClaimEnabled(boolean enabled)
-	{
-		this.autoWarZoneEnabled = enabled;
-		if (enabled)
-		{
-			this.autoClaimFor = null;
-			this.autoSafeZoneEnabled = false;
-		}
-	}
-	
+		
 	private transient boolean isAdminBypassing = false;
 	public boolean isAdminBypassing() { return this.isAdminBypassing; }
 	public void setIsAdminBypassing(boolean val) { this.isAdminBypassing = val; }
@@ -154,8 +121,6 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		this.lastLoginTime = System.currentTimeMillis();
 		this.mapAutoUpdating = false;
 		this.autoClaimFor = null;
-		this.autoSafeZoneEnabled = false;
-		this.autoWarZoneEnabled = false;
 		this.loginPvpDisabled = (Conf.noPVPDamageToOthersForXSecondsAfterLogin > 0) ? true : false;
 		this.deleteMe = false;
 
@@ -653,14 +618,6 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		{
 			return true;
 		}
-		else if (forFaction.isSafeZone() && Permission.MANAGE_SAFE_ZONE.has(getPlayer()))
-		{
-			return true;
-		}
-		else if (forFaction.isWarZone() && Permission.MANAGE_WAR_ZONE.has(getPlayer()))
-		{
-			return true;
-		}
 		else if (myFaction != forFaction)
 		{
 			error = P.p.txt.parse("<b>You can't claim land for <h>%s<b>.", forFaction.describeTo(this));
@@ -677,21 +634,13 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		{
 			error = P.p.txt.parse("Factions must have at least <h>%s<b> members to claim land.", Conf.claimsRequireMinFactionMembers);
 		}
-		else if (currentFaction.isSafeZone())
-		{
-			error = P.p.txt.parse("<b>You can not claim a Safe Zone.");
-		}
-		else if (currentFaction.isWarZone())
-		{
-			error = P.p.txt.parse("<b>You can not claim a War Zone.");
-		}
 		else if (ownedLand >= forFaction.getPowerRounded())
 		{
 			error = P.p.txt.parse("<b>You can't claim more land! You need more power!");
 		}
-		else if (currentFaction.getRelationTo(forFaction) == Rel.ALLY)
+		else if (currentFaction.getRelationTo(forFaction).isAtLeast(Rel.TRUCE))
 		{
-			error = P.p.txt.parse("<b>You can't claim the land of your allies.");
+			error = P.p.txt.parse("<b>You can't claim this land due to your relation with the current owner.");
 		}
 		else if
 		(
@@ -709,15 +658,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		}
 		else if (currentFaction.isNormal())
 		{
-			if (myFaction.isPeaceful())
-			{
-				error = P.p.txt.parse("%s<i> owns this land. Your faction is peaceful, so you cannot claim land from other factions.", currentFaction.getTag(this));
-			}
-			else if (currentFaction.isPeaceful())
-			{
-				error = P.p.txt.parse("%s<i> owns this land, and is a peaceful faction. You cannot claim land from them.", currentFaction.getTag(this));
-			}
-			else if ( ! currentFaction.hasLandInflation())
+			if ( ! currentFaction.hasLandInflation())
 			{
 				 // TODO more messages WARN current faction most importantly
 				error = P.p.txt.parse("%s<i> owns this land and is strong enough to keep it.", currentFaction.getTag(this));
@@ -748,7 +689,9 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		if ( ! this.canClaimForFactionAtLocation(forFaction, location, notifyFailure)) return false;
 		
 		// if economy is enabled and they're not on the bypass list, make 'em pay
-		if (Econ.shouldBeUsed() && ! this.isAdminBypassing() && ! forFaction.isSafeZone() && ! forFaction.isWarZone())
+		// TODO: Add flag no costs??
+		//if (Econ.shouldBeUsed() && ! this.isAdminBypassing() && ! forFaction.isSafeZone() && ! forFaction.isWarZone())
+		if (Econ.shouldBeUsed() && ! this.isAdminBypassing())
 		{
 			double cost = Econ.calculateClaimCost(ownedLand, currentFaction.isNormal());
 			//String costString = Econ.moneyString(cost);

@@ -6,7 +6,7 @@ public class CmdRelationTruce extends FRelationCommand
 {
 	public CmdRelationTruce()
 	{
-		aliases.add("neutral");
-		targetRelation = Rel.NEUTRAL;
+		aliases.add("truce");
+		targetRelation = Rel.TRUCE;
 	}
 }

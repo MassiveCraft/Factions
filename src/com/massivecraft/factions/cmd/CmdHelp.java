@@ -113,7 +113,6 @@ public class CmdHelp extends FCommand
 		
 		pageLines = new ArrayList<String>();
 		pageLines.add( p.cmdBase.cmdMap.getUseageTemplate(true) );
-		pageLines.add( p.cmdBase.cmdBoom.getUseageTemplate(true) );
 		pageLines.add( p.cmdBase.cmdOwner.getUseageTemplate(true) );
 		pageLines.add( p.cmdBase.cmdOwnerList.getUseageTemplate(true) );
 		pageLines.add(p.txt.parse("<i>Claimed land with ownership set is further protected so"));
@@ -125,6 +124,7 @@ public class CmdHelp extends FCommand
 		pageLines.add( p.cmdBase.cmdDisband.getUseageTemplate(true) );
 		pageLines.add("");
 		pageLines.add( p.cmdBase.cmdRelationAlly.getUseageTemplate(true) );
+		pageLines.add( p.cmdBase.cmdRelationTruce.getUseageTemplate(true) ); 
 		pageLines.add( p.cmdBase.cmdRelationNeutral.getUseageTemplate(true) );
 		pageLines.add( p.cmdBase.cmdRelationEnemy.getUseageTemplate(true) );
 		pageLines.add(p.txt.parse("<i>Set the relation you WISH to have with another faction."));
@@ -163,15 +163,11 @@ public class CmdHelp extends FCommand
 		pageLines.add(p.txt.parse("<c>/f claim safezone <i>claim land for the Safe Zone"));
 		pageLines.add(p.txt.parse("<c>/f claim warzone <i>claim land for the War Zone"));
 		pageLines.add(p.txt.parse("<c>/f autoclaim [safezone|warzone] <i>take a guess"));
-		pageLines.add( p.cmdBase.cmdSafeunclaimall.getUseageTemplate(true) );
-		pageLines.add( p.cmdBase.cmdWarunclaimall.getUseageTemplate(true) );
 		pageLines.add(p.txt.parse("<i>Note: " + p.cmdBase.cmdUnclaim.getUseageTemplate(false) + P.p.txt.parse("<i>") + " works on safe/war zones as well."));
-		pageLines.add( p.cmdBase.cmdPeaceful.getUseageTemplate(true) );
 		helpPages.add(pageLines);
 		
 		pageLines = new ArrayList<String>();
 		pageLines.add(p.txt.parse("<i>More commands for server admins:"));
-		pageLines.add( p.cmdBase.cmdPeaceful.getUseageTemplate(true) );
 		pageLines.add(p.txt.parse("<i>Peaceful factions are protected from PvP and land capture."));
 		pageLines.add( p.cmdBase.cmdLock.getUseageTemplate(true) );
 		pageLines.add( p.cmdBase.cmdReload.getUseageTemplate(true) );

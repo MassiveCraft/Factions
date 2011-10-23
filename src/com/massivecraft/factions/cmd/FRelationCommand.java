@@ -5,6 +5,7 @@ import org.bukkit.ChatColor;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.integration.SpoutFeatures;
+import com.massivecraft.factions.struct.FactionFlag;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Rel;
 
@@ -63,13 +64,13 @@ public abstract class FRelationCommand extends FCommand
 			myFaction.msg(currentRelationColor+them.getTag()+"<i> were informed that you wish to be "+targetRelation.getColor()+targetRelation);
 		}
 		
-		if ( targetRelation != Rel.NEUTRAL && them.isPeaceful())
+		if ( targetRelation != Rel.NEUTRAL && them.getFlag(FactionFlag.PEACEFUL))
 		{
 			them.msg("<i>This will have no effect while your faction is peaceful.");
 			myFaction.msg("<i>This will have no effect while their faction is peaceful.");
 		}
 		
-		if ( targetRelation != Rel.NEUTRAL && myFaction.isPeaceful())
+		if ( targetRelation != Rel.NEUTRAL && myFaction.getFlag(FactionFlag.PEACEFUL))
 		{
 			them.msg("<i>This will have no effect while their faction is peaceful.");
 			myFaction.msg("<i>This will have no effect while your faction is peaceful.");

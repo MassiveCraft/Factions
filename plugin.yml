@@ -25,16 +25,12 @@ permissions:
     children:
       factions.kit.halfmod: true
       factions.disband.any: true
-      factions.setpermanent: true
-      factions.setpeaceful: true
       factions.sethome.any: true
       factions.money.*: true
   factions.kit.halfmod:
     description: Zones, bypassing, and kicking
     children:
       factions.kit.fullplayer: true
-      factions.managesafezone: true
-      factions.managewarzone: true
       factions.bypass: true
       factions.flag.any: true
       factions.kick.any: true
@@ -124,10 +120,6 @@ permissions:
     description: see a list of the factions
   factions.lock:
     description: lock all write stuff
-  factions.managesafezone:
-    description: claim land as a safe zone and build/destroy within safe zones
-  factions.managewarzone:
-    description: claim land as a war zone and build/destroy within war zones
   factions.map:
     description: show the territory map, and set optional auto update
   factions.officer:
@@ -167,8 +159,6 @@ permissions:
       factions.money.f2f: true
       factions.money.f2p: true
       factions.money.p2f: true
-  factions.noboom:
-    description: toggle explosions (peaceful factions only)
   factions.open:
     description: switch if invitation is required to join
   factions.owner:
@@ -177,10 +167,6 @@ permissions:
     description: list owner(s) of this claimed land
   factions.ownershipbypass:
     description: bypass ownership restrictions within own faction's territory
-  factions.setpeaceful:
-    description: designate a faction as peaceful
-  factions.setpermanent:
-    description: designate a faction as permanent
   factions.power:
     description: show player power info
   factions.power.any:

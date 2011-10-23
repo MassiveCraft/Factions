@@ -56,9 +56,9 @@ public class CmdShow extends FCommand
 		}
 		
 		String peaceStatus = "";
-		if (faction.isPeaceful())
+		if (faction.getFlag(FactionFlag.PEACEFUL))
 		{
-			peaceStatus = "     "+Conf.colorNeutral+"This faction is Peaceful";
+			peaceStatus = "     "+Conf.colorTruce+"This faction is Peaceful";
 		}
 		
 		msg("<a>Joining: <i>"+(faction.getOpen() ? "no invitation is needed" : "invitation is required")+peaceStatus);

@@ -56,7 +56,9 @@ public enum FactionFlag
 	 */
 	public boolean getDefault()
 	{
-		return Conf.factionFlagDefaults.get(this);
+		Boolean ret = Conf.factionFlagDefaults.get(this);
+		if (ret == null) return this.defaultDefaultValue;
+		return ret; 
 	}
 	
 	/**
@@ -66,7 +68,9 @@ public enum FactionFlag
 	 */
 	public boolean isChangeable()
 	{
-		return Conf.factionFlagIsChangeable.get(this);
+		Boolean ret = Conf.factionFlagIsChangeable.get(this);
+		if (ret == null) return this.defaultDefaultChangeable;
+		return ret; 
 	}
 	
 	public static FactionFlag parse(String str)

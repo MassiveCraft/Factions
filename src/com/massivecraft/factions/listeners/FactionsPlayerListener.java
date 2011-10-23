@@ -28,10 +28,8 @@ import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.integration.SpoutFeatures;
-import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Rel;
 import com.massivecraft.factions.zcore.util.TextUtil;
 
@@ -257,40 +255,6 @@ public class FactionsPlayerListener extends PlayerListener
 		{
 			me.attemptClaim(me.getAutoClaimFor(), player.getLocation(), true);
 		}
-		else if (me.isAutoSafeClaimEnabled())
-		{
-			if ( ! Permission.MANAGE_SAFE_ZONE.has(player))
-			{
-				me.setIsAutoSafeClaimEnabled(false);
-			}
-			else
-			{
-				FLocation playerFlocation = new FLocation(me);
-
-				if (!Board.getFactionAt(playerFlocation).isSafeZone())
-				{
-					Board.setFactionAt(Factions.i.getSafeZone(), playerFlocation);
-					me.msg("<i>This land is now a safe zone.");
-				}
-			}
-		}
-		else if (me.isAutoWarClaimEnabled())
-		{
-			if ( ! Permission.MANAGE_WAR_ZONE.has(player))
-			{
-				me.setIsAutoWarClaimEnabled(false);
-			}
-			else
-			{
-				FLocation playerFlocation = new FLocation(me);
-
-				if (!Board.getFactionAt(playerFlocation).isWarZone())
-				{
-					Board.setFactionAt(Factions.i.getWarZone(), playerFlocation);
-					me.msg("<i>This land is now a war zone.");
-				}
-			}
-		}
 	}
 
     @Override
@@ -324,6 +288,8 @@ public class FactionsPlayerListener extends PlayerListener
 		}
 	}
 
+    
+    // TODO: Improve with the... system for... Permissions
 	public static boolean playerCanUseItemHere(Player player, Location location, Material material, boolean justCheck)
 	{
 		FPlayer me = FPlayers.i.get(player);
@@ -342,37 +308,6 @@ public class FactionsPlayerListener extends PlayerListener
 		{
 			if ( ! Conf.territoryDenyUseageMaterialsWhenOffline.contains(material))
 				return true; // Item isn't one we're preventing for offline factions.
-		}
-
-		if (otherFaction.isNone())
-		{
-			if (!Conf.wildernessDenyUseage || Conf.worldsNoWildernessProtection.contains(location.getWorld().getName()))
-				return true; // This is not faction territory. Use whatever you like here.
-			
-			if (!justCheck)
-				me.msg("<b>You can't use <h>%s<b> in the wilderness.", TextUtil.getMaterialName(material));
-
-			return false;
-		}
-		else if (otherFaction.isSafeZone())
-		{
-			if (!Conf.safeZoneDenyUseage || Permission.MANAGE_SAFE_ZONE.has(player))
-				return true;
-
-			if (!justCheck)
-				me.msg("<b>You can't use <h>%s<b> in a safe zone.", TextUtil.getMaterialName(material));
-
-			return false;
-		}
-		else if (otherFaction.isWarZone())
-		{
-			if (!Conf.warZoneDenyUseage || Permission.MANAGE_WAR_ZONE.has(player))
-				return true;
-
-			if (!justCheck)
-				me.msg("<b>You can't use <h>%s<b> in a war zone.", TextUtil.getMaterialName(material));
-
-			return false;
 		}
 
 		Faction myFaction = me.getFaction();

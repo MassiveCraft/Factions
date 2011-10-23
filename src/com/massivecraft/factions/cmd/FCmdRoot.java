@@ -8,7 +8,6 @@ public class FCmdRoot extends FCommand
 {
 	public CmdLeader cmdLeader = new CmdLeader();
 	public CmdAutoClaim cmdAutoClaim = new CmdAutoClaim();
-	public CmdBoom cmdBoom = new CmdBoom();
 	public CmdBypass cmdBypass = new CmdBypass();
 	public CmdChat cmdChat = new CmdChat();
 	public CmdClaim cmdClaim = new CmdClaim();
@@ -32,13 +31,12 @@ public class FCmdRoot extends FCommand
 	public CmdOpen cmdOpen = new CmdOpen();
 	public CmdOwner cmdOwner = new CmdOwner();
 	public CmdOwnerList cmdOwnerList = new CmdOwnerList();
-	public CmdPeaceful cmdPeaceful = new CmdPeaceful();
 	public CmdPower cmdPower = new CmdPower();
 	public CmdRelationAlly cmdRelationAlly = new CmdRelationAlly();
 	public CmdRelationEnemy cmdRelationEnemy = new CmdRelationEnemy();
 	public CmdRelationNeutral cmdRelationNeutral = new CmdRelationNeutral();
+	public CmdRelationTruce cmdRelationTruce = new CmdRelationTruce();
 	public CmdReload cmdReload = new CmdReload();
-	public CmdSafeunclaimall cmdSafeunclaimall = new CmdSafeunclaimall();
 	public CmdSaveAll cmdSaveAll = new CmdSaveAll();
 	public CmdSethome cmdSethome = new CmdSethome();
 	public CmdShow cmdShow = new CmdShow();
@@ -47,7 +45,6 @@ public class FCmdRoot extends FCommand
 	public CmdUnclaim cmdUnclaim = new CmdUnclaim();
 	public CmdUnclaimall cmdUnclaimall = new CmdUnclaimall();
 	public CmdVersion cmdVersion = new CmdVersion();
-	public CmdWarunclaimall cmdWarunclaimall = new CmdWarunclaimall();
 	
 	public FCmdRoot()
 	{
@@ -73,7 +70,6 @@ public class FCmdRoot extends FCommand
 		
 		this.addSubCommand(this.cmdLeader);
 		this.addSubCommand(this.cmdAutoClaim);
-		this.addSubCommand(this.cmdBoom);
 		this.addSubCommand(this.cmdBypass);
 		this.addSubCommand(this.cmdChat);
 		this.addSubCommand(this.cmdClaim);
@@ -97,13 +93,12 @@ public class FCmdRoot extends FCommand
 		this.addSubCommand(this.cmdOpen);
 		this.addSubCommand(this.cmdOwner);
 		this.addSubCommand(this.cmdOwnerList);
-		this.addSubCommand(this.cmdPeaceful);
 		this.addSubCommand(this.cmdPower);
 		this.addSubCommand(this.cmdRelationAlly);
 		this.addSubCommand(this.cmdRelationEnemy);
 		this.addSubCommand(this.cmdRelationNeutral);
+		this.addSubCommand(this.cmdRelationTruce);
 		this.addSubCommand(this.cmdReload);
-		this.addSubCommand(this.cmdSafeunclaimall);
 		this.addSubCommand(this.cmdSaveAll);
 		this.addSubCommand(this.cmdSethome);
 		this.addSubCommand(this.cmdShow);
@@ -112,7 +107,6 @@ public class FCmdRoot extends FCommand
 		this.addSubCommand(this.cmdUnclaim);
 		this.addSubCommand(this.cmdUnclaimall);
 		this.addSubCommand(this.cmdVersion);
-		this.addSubCommand(this.cmdWarunclaimall);
 	}
 	
 	@Override

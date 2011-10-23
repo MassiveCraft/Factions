@@ -41,16 +41,16 @@ public class Faction extends Entity implements EconomyParticipator
 	
 	// FIELD: peaceful
 	// "peaceful" status can only be set by server admins/moderators/ops, and prevents PvP and land capture to/from the faction
-	private boolean peaceful;
-	public boolean isPeaceful() { return this.peaceful; }
-	public void setPeaceful(boolean isPeaceful) { this.peaceful = isPeaceful; }
+	//private boolean peaceful;
+	//public boolean isPeaceful() { return this.peaceful; }
+	//public void setPeaceful(boolean isPeaceful) { this.peaceful = isPeaceful; }
 	
 	// FIELD: peacefulExplosionsEnabled
-	private boolean peacefulExplosionsEnabled;
-	public void setPeacefulExplosionsEnabled(boolean val) { peacefulExplosionsEnabled = val; }
-	public boolean getPeacefulExplosionsEnabled(){ return this.peacefulExplosionsEnabled; }
+	//private boolean peacefulExplosionsEnabled;
+	//public void setPeacefulExplosionsEnabled(boolean val) { peacefulExplosionsEnabled = val; }
+	//public boolean getPeacefulExplosionsEnabled(){ return this.peacefulExplosionsEnabled; }
 	
-	public boolean noExplosionsInTerritory() { return this.peaceful && ! peacefulExplosionsEnabled; }
+	//public boolean noExplosionsInTerritory() { return this.peaceful && ! peacefulExplosionsEnabled; }
 
 	// FIELD: permanent
 	// "permanent" status can only be set by server admins/moderators/ops, and allows the faction to remain even with 0 members
@@ -163,8 +163,8 @@ public class Faction extends Entity implements EconomyParticipator
 		this.tag = "???";
 		this.description = "Default faction description :(";
 		this.lastPlayerLoggedOffTime = 0;
-		this.peaceful = false;
-		this.peacefulExplosionsEnabled = false;
+		//this.peaceful = false;
+		//this.peacefulExplosionsEnabled = false;
 		this.money = 0.0;
 		this.flagOverrides = new LinkedHashMap<FactionFlag, Boolean>();
 	}
@@ -173,9 +173,9 @@ public class Faction extends Entity implements EconomyParticipator
 	// Extra Getters And Setters
 	// -------------------------------------------- //
 
-	public boolean noPvPInTerritory() { return isSafeZone() || (peaceful && Conf.peacefulTerritoryDisablePVP); }
+	//public boolean noPvPInTerritory() { return isSafeZone() || (peaceful && Conf.peacefulTerritoryDisablePVP); }
 
-	public boolean noMonstersInTerritory() { return isSafeZone() || (peaceful && Conf.peacefulTerritoryDisableMonsters); }
+	//public boolean noMonstersInTerritory() { return isSafeZone() || (peaceful && Conf.peacefulTerritoryDisableMonsters); }
 
 	
 
@@ -187,7 +187,8 @@ public class Faction extends Entity implements EconomyParticipator
 	
 	public boolean isNormal()
 	{
-		return ! (this.isNone() || this.isSafeZone() || this.isWarZone());
+		//return ! (this.isNone() || this.isSafeZone() || this.isWarZone());
+		return ! this.isNone();
 	}
 	
 	public boolean isNone()
@@ -195,7 +196,7 @@ public class Faction extends Entity implements EconomyParticipator
 		return this.getId().equals("0");
 	}
 	
-	public boolean isSafeZone()
+	/*public boolean isSafeZone()
 	{
 		return this.getId().equals("-1");
 	}
@@ -208,7 +209,7 @@ public class Faction extends Entity implements EconomyParticipator
 	public boolean isPlayerFreeType()
 	{
 		return this.isSafeZone() || this.isWarZone();
-	}
+	}*/
 	
 	
 	// -------------------------------
@@ -338,7 +339,7 @@ public class Faction extends Entity implements EconomyParticipator
 	public ArrayList<FPlayer> getFPlayers()
 	{
 		ArrayList<FPlayer> ret = new ArrayList<FPlayer>();
-		if (this.isPlayerFreeType()) return ret;
+		//if (this.isPlayerFreeType()) return ret;
 
 		for (FPlayer fplayer : FPlayers.i.get())
 		{
@@ -354,7 +355,7 @@ public class Faction extends Entity implements EconomyParticipator
 	public ArrayList<FPlayer> getFPlayersWhereOnline(boolean online)
 	{
 		ArrayList<FPlayer> ret = new ArrayList<FPlayer>();
-		if (this.isPlayerFreeType()) return ret;
+		//if (this.isPlayerFreeType()) return ret;
 
 		for (FPlayer fplayer : FPlayers.i.get())
 		{
@@ -400,7 +401,7 @@ public class Faction extends Entity implements EconomyParticipator
 	public ArrayList<Player> getOnlinePlayers()
 	{
 		ArrayList<Player> ret = new ArrayList<Player>();
-		if (this.isPlayerFreeType()) return ret;
+		//if (this.isPlayerFreeType()) return ret;
 
 		for (Player player: P.p.getServer().getOnlinePlayers())
 		{
@@ -418,7 +419,7 @@ public class Faction extends Entity implements EconomyParticipator
 	public boolean hasPlayersOnline()
 	{
 		// only real factions can have players online, not safe zone / war zone
-		if (this.isPlayerFreeType()) return false;
+		//if (this.isPlayerFreeType()) return false;
 		
 		for (Player player: P.p.getServer().getOnlinePlayers())
 		{
