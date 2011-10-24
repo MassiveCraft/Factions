@@ -62,7 +62,6 @@ public class FPlayers extends PlayerEntityCollection<FPlayer>
 			if (now - fplayer.getLastLoginTime() > toleranceMillis)
 			{
 				fplayer.leave(false);
-				fplayer.markForDeletion(true);
 			}
 		}
 	}

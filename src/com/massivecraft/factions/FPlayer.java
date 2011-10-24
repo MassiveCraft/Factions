@@ -33,10 +33,9 @@ import com.nijikokun.register.payment.Method.MethodAccount;
  */
 
 // TODO: The players are saved in non order.
-// TODO: To many players are saved. There must be ways to improve the selective saving functionality.
 public class FPlayer extends PlayerEntity implements EconomyParticipator
 {	
-	//private transient String playerName;
+	// FIELD: lastStoodAt
 	private transient FLocation lastStoodAt = new FLocation(); // Where did this player stand the last time we checked?
 	public FLocation getLastStoodAt() { return this.lastStoodAt; }
 	public void setLastStoodAt(FLocation flocation) { this.lastStoodAt = flocation; }
@@ -71,14 +70,6 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 	// FIELD: lastLoginTime
 	private long lastLoginTime;
 	
-	
-	
-	
-
-	
-	
-	
-	
 	// FIELD: mapAutoUpdating
 	private transient boolean mapAutoUpdating;
 	public void setMapAutoUpdating(boolean mapAutoUpdating) { this.mapAutoUpdating = mapAutoUpdating; }
@@ -95,11 +86,6 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 	
 	// FIELD: loginPvpDisabled
 	private transient boolean loginPvpDisabled;
-	
-	// FIELD: deleteMe
-	// TODO: This is not the way it is meant to be used... Check out the selective saving and improve it
-	private transient boolean deleteMe;
-	public void markForDeletion(boolean delete) { deleteMe = delete; }
 	
 	// FIELD: chatMode
 	private ChatMode chatMode;
@@ -134,7 +120,6 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		this.mapAutoUpdating = false;
 		this.autoClaimFor = null;
 		this.loginPvpDisabled = (Conf.noPVPDamageToOthersForXSecondsAfterLogin > 0) ? true : false;
-		this.deleteMe = false;
 
 		if ( ! Conf.newPlayerStartingFactionID.equals("0") && Factions.i.exists(Conf.newPlayerStartingFactionID))
 		{
@@ -198,14 +183,9 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 	//----------------------------------------------//
 	// Title, Name, Faction Tag and Chat
 	//----------------------------------------------//
-	
-	// Base:
-	
-
-	
 	public String getName()
 	{
-		return getId(); // TODO: ... display name or remove completeley
+		return getId();
 	}
 	
 	public String getTag()
@@ -669,7 +649,8 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 	@Override
 	public boolean shouldBeSaved()
 	{
-		return ! this.deleteMe;
+		if (this.hasFaction()) return true;
+		return false;
 	}
 	
 	public void msg(String str, Object... args)

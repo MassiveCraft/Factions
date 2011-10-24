@@ -402,7 +402,7 @@ public class FactionsPlayerListener extends PlayerListener
 		}
 		return false;
 	}
-
+	
 	@Override
 	public void onPlayerKick(PlayerKickEvent event)
 	{
@@ -420,7 +420,6 @@ public class FactionsPlayerListener extends PlayerListener
 		if (event.getReason().equals("Banned by admin."))
 		{
 			badGuy.leave(false);
-			badGuy.markForDeletion(true);
 		}
 	}
 }
