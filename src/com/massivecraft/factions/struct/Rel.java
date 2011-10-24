@@ -93,7 +93,7 @@ public enum Rel
 	
 	public ChatColor getColor()
 	{
-		if (this == MEMBER)
+		if (this.isAtLeast(MEMBER))
 			return Conf.colorMember;
 		else if (this == ALLY)
 			return Conf.colorAlly;

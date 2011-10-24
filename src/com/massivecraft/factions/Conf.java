@@ -187,7 +187,7 @@ public class Conf
 	
 	//Faction banks, to pay for land claiming and other costs instead of individuals paying for them
 	public static boolean bankEnabled = true;
-	public static boolean bankMembersCanWithdraw = false; //Have to be at least moderator to withdraw or pay money to another faction
+	//public static boolean bankMembersCanWithdraw = false; //Have to be at least moderator to withdraw or pay money to another faction
 	public static boolean bankFactionPaysCosts = true; //The faction pays for faction command costs, such as sethome
 	public static boolean bankFactionPaysLandCosts = true; //The faction pays for land claiming costs.
 	

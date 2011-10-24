@@ -16,8 +16,8 @@ import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.iface.EconomyParticipator;
+import com.massivecraft.factions.struct.FPerm;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.struct.Rel;
 import com.massivecraft.factions.util.RelationUtil;
 
 public class Econ
@@ -106,8 +106,8 @@ public class Econ
 		// Ohh by the way... Yes it could. For daily rent to the faction.
 		if (i == fI && fI == fYou) return true;
 		
-		// Factions can be controlled by members that are moderators... or any member if any member can withdraw.
-		if (you instanceof Faction && fI == fYou && (Conf.bankMembersCanWithdraw || ((FPlayer)i).getRole().isAtLeast(Rel.OFFICER))) return true;
+		// Factions can be controlled by those that have permissions
+		if (you instanceof Faction && FPerm.WITHDRAW.has(i, fYou)) return true;
 		
 		// Otherwise you may not! ;,,;
 		i.msg("<h>%s<i> lack permission to controll <h>%s's<i> money.", i.describeTo(i, true), you.describeTo(i));

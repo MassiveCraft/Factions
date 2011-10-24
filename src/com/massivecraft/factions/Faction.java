@@ -46,13 +46,6 @@ public class Faction extends Entity implements EconomyParticipator
 		}
 		return this.getTag(this.getColorTo(observer).toString());
 	}
-	public String getTag(FPlayer otherFplayer) {
-		if (otherFplayer == null)
-		{
-			return getTag();
-		}
-		return this.getTag(this.getColorTo(otherFplayer).toString());
-	}
 	public void setTag(String str)
 	{
 		if (Conf.factionTagForceUpperCase)

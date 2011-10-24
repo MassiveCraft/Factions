@@ -39,7 +39,7 @@ public class CmdFlag extends FCommand
 		
 		if ( ! this.argIsSet(1))
 		{
-			msg(p.txt.titleize("Flags for " + faction.describeTo(fme)));
+			msg(p.txt.titleize("Flags for " + faction.describeTo(fme, true)));
 			for (FFlag flag : FFlag.values())
 			{
 				msg(flag.getStateInfo(faction.getFlag(flag), true));
@@ -51,7 +51,7 @@ public class CmdFlag extends FCommand
 		if (flag == null) return;
 		if ( ! this.argIsSet(2))
 		{
-			msg(p.txt.titleize("Flag for " + faction.describeTo(fme)));
+			msg(p.txt.titleize("Flag for " + faction.describeTo(fme, true)));
 			msg(flag.getStateInfo(faction.getFlag(flag), true));
 			return;
 		}
@@ -81,7 +81,7 @@ public class CmdFlag extends FCommand
 		}
 		
 		// Do the change
-		msg(p.txt.titleize("Flag for " + faction.describeTo(fme)));
+		msg(p.txt.titleize("Flag for " + faction.describeTo(fme, true)));
 		faction.setFlag(flag, targetValue);
 		msg(flag.getStateInfo(faction.getFlag(flag), true));
 	}

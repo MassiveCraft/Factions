@@ -15,7 +15,6 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.iface.RelationParticipator;
 import com.massivecraft.factions.util.RelationUtil;
-import com.massivecraft.factions.zcore.util.TextUtil;
 
 /**
  * Permissions that you (a player) may or may not have in the territory of a certain faction.
@@ -23,12 +22,13 @@ import com.massivecraft.factions.zcore.util.TextUtil;
  */
 public enum FPerm
 {
-	BUILD("build", "edit the terrain", Rel.MEMBER),
+	BUILD("build", "edit the terrain", Rel.LEADER, Rel.OFFICER, Rel.MEMBER),
 	PAINBUILD("painbuild", "edit but take damage", Rel.ALLY),
-	DOOR("door", "use doors", Rel.MEMBER, Rel.ALLY),
-	CONTAINER("container", "use containers", Rel.MEMBER),
-	BUTTON("button", "use stone buttons", Rel.MEMBER, Rel.ALLY),
-	LEVER("lever", "use levers", Rel.MEMBER, Rel.ALLY),
+	DOOR("door", "use doors", Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.ALLY),
+	CONTAINER("container", "use containers", Rel.LEADER, Rel.OFFICER, Rel.MEMBER),
+	BUTTON("button", "use stone buttons", Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.ALLY),
+	LEVER("lever", "use levers", Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.ALLY),
+	WITHDRAW("withdraw", "withdraw faction money", Rel.LEADER, Rel.OFFICER),
 	;
 	
 	private final String nicename;
@@ -69,30 +69,44 @@ public enum FPerm
 		if (str.startsWith("c")) return CONTAINER;
 		if (str.startsWith("but")) return BUTTON;
 		if (str.startsWith("l")) return LEVER;
+		if (str.startsWith("w")) return WITHDRAW;
 		return null;
+	}
+	
+	public static String getStateHeaders()
+	{
+		String ret = "";
+		for (Rel rel : Rel.values())
+		{
+			ret += rel.getColor().toString();
+			ret += rel.toString().substring(0, 3);
+			ret += " ";
+		}
+		
+		return ret;
 	}
 	
 	public String getStateInfo(Set<Rel> value, boolean withDesc)
 	{
-		String ret = "<h>"+this.getNicename()+ " ";
+		String ret = "";
 		
-		List<String> rels = new ArrayList<String>();
-		for (Rel rel : value)
+		for (Rel rel : Rel.values())
 		{
-			rels.add("<p>"+rel);
-		}
-		if (rels.size() > 0)
-		{
-			ret += TextUtil.implode(rels, "<c>+");
-		}
-		else
-		{
-			ret += "NOONE";
+			if (value.contains(rel))
+			{
+				ret += "<g>YES";
+			}
+			else
+			{
+				ret += "<b>NOO";
+			}
+			ret += " ";
 		}
 		
+		ret +="<h>"+this.getNicename();
 		if (withDesc)
 		{
-			ret += " <i>" + this.getDescription();
+			ret += " <i>" + this.getDescription(); 
 		}
 		return ret;
 	}
@@ -133,17 +147,25 @@ public enum FPerm
 	}
 	
 	private static final String errorpattern = "<b>%s<b> can't %s in the territory of %s<b>.";
-	public boolean has(RelationParticipator testSubject, FLocation floc, boolean informIfNot)
+	public boolean has(RelationParticipator testSubject, Faction hostFaction, boolean informIfNot)
 	{
-		Faction factionThere = Board.getFactionAt(floc);
 		Faction factionDoer = RelationUtil.getFaction(testSubject);
-		boolean ret = factionThere.getPermittedRelations(this).contains(factionThere.getRelationTo(factionDoer));
+		boolean ret = hostFaction.getPermittedRelations(this).contains(hostFaction.getRelationTo(factionDoer));
 		if (!ret && informIfNot && testSubject instanceof FPlayer)
 		{
 			FPlayer fplayer = (FPlayer)testSubject;
-			fplayer.msg(errorpattern, fplayer.describeTo(fplayer, true), this.getDescription(), factionThere.describeTo(fplayer));
+			fplayer.msg(errorpattern, fplayer.describeTo(fplayer, true), this.getDescription(), hostFaction.describeTo(fplayer));
 		}
 		return ret;
+	}
+	public boolean has(RelationParticipator testSubject, Faction hostFaction)
+	{
+		return this.has(testSubject, hostFaction, false);
+	}
+	public boolean has(RelationParticipator testSubject, FLocation floc, boolean informIfNot)
+	{
+		Faction factionThere = Board.getFactionAt(floc);
+		return this.has(testSubject, factionThere, informIfNot);
 	}
 	public boolean has(RelationParticipator testSubject, Location loc, boolean informIfNot)
 	{
