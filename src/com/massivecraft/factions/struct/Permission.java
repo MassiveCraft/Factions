@@ -6,7 +6,6 @@ import com.massivecraft.factions.P;
 
 public enum Permission
 {
-	OWNERSHIP_BYPASS("ownershipbypass"),
 	LEADER("leader"),
 	AUTOCLAIM("autoclaim"),
 	BYPASS("bypass"),
@@ -41,10 +40,7 @@ public enum Permission
 	MONEY_F2F("money.f2f"),
 	MONEY_F2P("money.f2p"),
 	MONEY_P2F("money.p2f"),
-	NO_BOOM("noboom"),
 	OPEN("open"),
-	OWNER("owner"),
-	OWNERLIST("ownerlist"),
 	SET_PEACEFUL("setpeaceful"),
 	POWER("power"),
 	POWER_ANY("power.any"),

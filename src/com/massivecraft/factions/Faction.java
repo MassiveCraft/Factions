@@ -25,9 +25,9 @@ public class Faction extends Entity implements EconomyParticipator
 	// FIELD: invites
 	// Where string is a lowercase player name
 	private Set<String> invites; 
-	public void invite(FPlayer fplayer) { this.invites.add(fplayer.getName().toLowerCase()); }
-	public void deinvite(FPlayer fplayer) { this.invites.remove(fplayer.getName().toLowerCase()); }
-	public boolean isInvited(FPlayer fplayer) { return this.invites.contains(fplayer.getName().toLowerCase()); }
+	public void invite(FPlayer fplayer) { this.invites.add(fplayer.getId().toLowerCase()); }
+	public void deinvite(FPlayer fplayer) { this.invites.remove(fplayer.getId().toLowerCase()); }
+	public boolean isInvited(FPlayer fplayer) { return this.invites.contains(fplayer.getId().toLowerCase()); }
 	
 	// FIELD: open
 	private boolean open;
@@ -83,9 +83,6 @@ public class Faction extends Entity implements EconomyParticipator
 		msg("<b>Your faction home has been un-set since it is no longer in your territory.");
 		this.home = null;
 	}
-	
-	// FIELD: lastPlayerLoggedOffTime
-	private transient long lastPlayerLoggedOffTime;
 	
 	// FIELD: account (fake field)
 	// Bank functions
@@ -161,9 +158,6 @@ public class Faction extends Entity implements EconomyParticipator
 		this.open = Conf.newFactionsDefaultOpen;
 		this.tag = "???";
 		this.description = "Default faction description :(";
-		this.lastPlayerLoggedOffTime = 0;
-		//this.peaceful = false;
-		//this.peacefulExplosionsEnabled = false;
 		this.money = 0.0;
 		this.flagOverrides = new LinkedHashMap<FFlag, Boolean>();
 		this.permOverrides = new LinkedHashMap<FPerm, Set<Rel>>();
@@ -242,6 +236,7 @@ public class Faction extends Entity implements EconomyParticipator
 		}
 	}
 	
+	// TODO: Implement a has enough feature.
 	//----------------------------------------------//
 	// Power
 	//----------------------------------------------//
@@ -388,34 +383,6 @@ public class Faction extends Entity implements EconomyParticipator
 		}
 
 		return ret;
-	}
-	
-	// slightly faster check than getOnlinePlayers() if you just want to see if there are any players online
-	public boolean hasPlayersOnline()
-	{
-		// only real factions can have players online, not safe zone / war zone
-		//if (this.isPlayerFreeType()) return false;
-		
-		for (Player player: P.p.getServer().getOnlinePlayers())
-		{
-			FPlayer fplayer = FPlayers.i.get(player);
-			if (fplayer.getFaction() == this)
-			{
-				return true;
-			}
-		}
-		
-		// even if all players are technically logged off, maybe someone was on recently enough to not consider them officially offline yet
-		if (Conf.considerFactionsReallyOfflineAfterXMinutes > 0 && System.currentTimeMillis() < lastPlayerLoggedOffTime + (Conf.considerFactionsReallyOfflineAfterXMinutes * 60000))
-		{
-			return true;
-		}
-		return false;
-	}
-	
-	public void memberLoggedOff()
-	{
-		lastPlayerLoggedOffTime = System.currentTimeMillis();
 	}
 	
 	//----------------------------------------------//

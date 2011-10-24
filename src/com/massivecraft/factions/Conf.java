@@ -106,15 +106,13 @@ public class Conf
 	
 	public static int noPVPDamageToOthersForXSecondsAfterLogin = 3;
 
-	public static boolean peacefulTerritoryDisablePVP = true;
-	public static boolean peacefulTerritoryDisableMonsters = false;
-	public static boolean peacefulMembersDisablePowerLoss = true;
+	//public static boolean peacefulMembersDisablePowerLoss = true;
 	
 	public static boolean claimsMustBeConnected = false;
 	public static boolean claimsCanBeUnconnectedIfOwnedByOtherFaction = true;
 	public static int claimsRequireMinFactionMembers = 1;
 	
-	public static double considerFactionsReallyOfflineAfterXMinutes = 0.0;
+	//public static double considerFactionsReallyOfflineAfterXMinutes = 0.0;
 	
 	public static int actionDeniedPainAmount = 2;
 	
@@ -123,77 +121,8 @@ public class Conf
 	public static Set<String> territoryEnemyDenyCommands = new HashSet<String>();
 	
 	public static double territoryShieldFactor = 0.3;
-	/*public static boolean territoryDenyBuild = true;
-	public static boolean territoryDenyBuildWhenOffline = true;
-	public static boolean territoryPainBuild = false;
-	public static boolean territoryPainBuildWhenOffline = false;
-	public static boolean territoryDenyUseage = true;
-	public static boolean territoryEnemyDenyBuild = true;
-	public static boolean territoryEnemyDenyBuildWhenOffline = true;
-	public static boolean territoryEnemyPainBuild = false;
-	public static boolean territoryEnemyPainBuildWhenOffline = false;
-	public static boolean territoryEnemyDenyUseage = true;
-	public static boolean territoryEnemyProtectMaterials = true;
-	public static boolean territoryAllyDenyBuild = true;
-	public static boolean territoryAllyDenyBuildWhenOffline = true;
-	public static boolean territoryAllyPainBuild = false;
-	public static boolean territoryAllyPainBuildWhenOffline = false;
-	public static boolean territoryAllyDenyUseage = true;
-	public static boolean territoryAllyProtectMaterials = true;
-	public static boolean territoryTruceDenyBuild = true;
-	public static boolean territoryTruceDenyBuildWhenOffline = true;
-	public static boolean territoryTrucePainBuild = false;
-	public static boolean territoryTrucePainBuildWhenOffline = false;
-	public static boolean territoryTruceDenyUseage = true;
-	public static boolean territoryTruceProtectMaterials = true;
-	public static boolean territoryBlockCreepers = false;
-	public static boolean territoryBlockCreepersWhenOffline = false;
-	public static boolean territoryBlockFireballs = false;
-	public static boolean territoryBlockFireballsWhenOffline = false;
-	public static boolean territoryBlockTNT = false;
-	public static boolean territoryBlockTNTWhenOffline = false;
-	public static boolean territoryDenyEndermanBlocks = true;
-	public static boolean territoryDenyEndermanBlocksWhenOffline = true;*/
-
-	/*public static boolean safeZoneDenyBuild = true;
-	public static boolean safeZoneDenyUseage = true;
-	public static boolean safeZoneBlockTNT = true;
-	public static boolean safeZonePreventAllDamageToPlayers = false;
-	public static boolean safeZoneDenyEndermanBlocks = true;
-	
-	public static boolean warZoneDenyBuild = true;
-	public static boolean warZoneDenyUseage = true;
-	public static boolean warZoneBlockCreepers = false;
-	public static boolean warZoneBlockFireballs = false;
-	public static boolean warZoneBlockTNT = true;
-	public static boolean warZonePowerLoss = true;
-	public static boolean warZoneFriendlyFire = false;
-	public static boolean warZoneDenyEndermanBlocks = true;
-	*/
-	
-	/*public static boolean wildernessDenyBuild = false;
-	public static boolean wildernessDenyUseage = false;
-	public static boolean wildernessBlockCreepers = false;
-	public static boolean wildernessBlockFireballs = false;
-	public static boolean wildernessBlockTNT = false;
-	public static boolean wildernessPowerLoss = true;
-	public static boolean wildernessDenyEndermanBlocks = false;*/
 
 	// for claimed areas where further faction-member ownership can be defined
-	public static boolean ownedAreasEnabled = true;
-	public static int ownedAreasLimitPerFaction = 0;
-	public static boolean ownedAreasModeratorsCanSet = false;
-	public static boolean ownedAreaModeratorsBypass = true;
-	public static boolean ownedAreaDenyBuild = true;
-	public static boolean ownedAreaPainBuild = false;
-	public static boolean ownedAreaProtectMaterials = true;
-	public static boolean ownedAreaDenyUseage = true;
-
-	public static String ownedLandMessage = "Owner(s): ";
-	public static String publicLandMessage = "Public faction land.";
-	public static boolean ownedMessageOnBorder = true;
-	public static boolean ownedMessageInsideTerritory = true;
-	public static boolean ownedMessageByChunk = false;
 
 	public static boolean pistonProtectionThroughDenyBuild = true;
 
@@ -266,7 +195,7 @@ public class Conf
 	public static Set<String> worldsNoPowerLoss = new HashSet<String>();
 	public static Set<String> worldsIgnorePvP = new HashSet<String>();
 	// TODO: A better solution Would be to have One wilderness faction per world.
-	public static Set<String> worldsNoWildernessProtection = new HashSet<String>();
+	//public static Set<String> worldsNoWildernessProtection = new HashSet<String>();
 	
 	public static transient int mapHeight = 8;
 	public static transient int mapWidth = 39;
@@ -314,24 +243,6 @@ public class Conf
 		materialsEditTools.add(Material.BUCKET);
 		materialsEditTools.add(Material.WATER_BUCKET);
 		materialsEditTools.add(Material.LAVA_BUCKET);
-		
-		
-		
-/*
-		territoryProtectedMaterialsWhenOffline.add(Material.WOODEN_DOOR);
-		territoryProtectedMaterialsWhenOffline.add(Material.TRAP_DOOR);
-		territoryProtectedMaterialsWhenOffline.add(Material.FENCE_GATE);
-		territoryProtectedMaterialsWhenOffline.add(Material.DISPENSER);
-		territoryProtectedMaterialsWhenOffline.add(Material.CHEST);
-		territoryProtectedMaterialsWhenOffline.add(Material.FURNACE);
-		territoryProtectedMaterialsWhenOffline.add(Material.BURNING_FURNACE);
-		territoryProtectedMaterialsWhenOffline.add(Material.DIODE_BLOCK_OFF);
-		territoryProtectedMaterialsWhenOffline.add(Material.DIODE_BLOCK_ON);
-
-		territoryDenyUseageMaterialsWhenOffline.add(Material.FLINT_AND_STEEL);
-		territoryDenyUseageMaterialsWhenOffline.add(Material.BUCKET);
-		territoryDenyUseageMaterialsWhenOffline.add(Material.WATER_BUCKET);
-		territoryDenyUseageMaterialsWhenOffline.add(Material.LAVA_BUCKET);*/
 
 		monsters.add(CreatureType.CAVE_SPIDER);
 		monsters.add(CreatureType.CREEPER);

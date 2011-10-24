@@ -15,7 +15,8 @@ public class FLocation
 	private int x = 0;
 	private int z = 0;
 	
-//	private final static transient double cellSize = 16;
+	// TODO: It would be wise to ask yourself is there is a better solution to creating loads of new object
+	// This object is create many times.
 	
 	//----------------------------------------------//
 	// Constructors

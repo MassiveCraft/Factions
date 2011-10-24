@@ -243,9 +243,6 @@ public class P extends MPlugin
 	}
 
 	// Is this chat message actually a Factions command, and thus should be left alone by other plugins?
-	
-	// TODO: GET THIS BACK AND WORKING
-	
 	public boolean isFactionsCommand(String check)
 	{
 		if (check == null || check.isEmpty()) return false;

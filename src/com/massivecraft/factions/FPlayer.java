@@ -32,10 +32,14 @@ import com.nijikokun.register.payment.Method.MethodAccount;
  * This means you can use the == operator. No .equals method necessary.
  */
 
+// TODO: The players are saved in non order.
+// TODO: To many players are saved. There must be ways to improve the selective saving functionality.
 public class FPlayer extends PlayerEntity implements EconomyParticipator
 {	
 	//private transient String playerName;
 	private transient FLocation lastStoodAt = new FLocation(); // Where did this player stand the last time we checked?
+	public FLocation getLastStoodAt() { return this.lastStoodAt; }
+	public void setLastStoodAt(FLocation flocation) { this.lastStoodAt = flocation; }
 	
 	// FIELD: factionId
 	private String factionId;
@@ -55,6 +59,8 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 	
 	// FIELD: title
 	private String title;
+	public String getTitle() { return this.title; }
+	public void setTitle(String title) { this.title = title; }
 	
 	// FIELD: power
 	private double power;
@@ -65,19 +71,23 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 	// FIELD: lastLoginTime
 	private long lastLoginTime;
 	
+	
+	
+	
+
+	
+	
+	
+	
 	// FIELD: mapAutoUpdating
 	private transient boolean mapAutoUpdating;
+	public void setMapAutoUpdating(boolean mapAutoUpdating) { this.mapAutoUpdating = mapAutoUpdating; }
+	public boolean isMapAutoUpdating() { return mapAutoUpdating; }
 	
 	// FIELD: autoClaimEnabled
 	private transient Faction autoClaimFor;
-	public Faction getAutoClaimFor()
-	{
-		return autoClaimFor;
-	}
-	public void setAutoClaimFor(Faction faction)
-	{
-		this.autoClaimFor = faction;
-	}
+	public Faction getAutoClaimFor() { return autoClaimFor; }
+	public void setAutoClaimFor(Faction faction) { this.autoClaimFor = faction; }
 		
 	private transient boolean isAdminBypassing = false;
 	public boolean isAdminBypassing() { return this.isAdminBypassing; }
@@ -87,7 +97,9 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 	private transient boolean loginPvpDisabled;
 	
 	// FIELD: deleteMe
+	// TODO: This is not the way it is meant to be used... Check out the selective saving and improve it
 	private transient boolean deleteMe;
+	public void markForDeletion(boolean delete) { deleteMe = delete; }
 	
 	// FIELD: chatMode
 	private ChatMode chatMode;
@@ -153,15 +165,10 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 	// Getters And Setters
 	// -------------------------------------------- //
 	
-	
-	
-	
 	public long getLastLoginTime()
 	{
 		return lastLoginTime;
 	}
-
-	
 
 	public void setLastLoginTime(long lastLoginTime)
 	{
@@ -172,16 +179,6 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		{
 			this.loginPvpDisabled = true;
 		}
-	}
-
-	public boolean isMapAutoUpdating()
-	{
-		return mapAutoUpdating;
-	}
-
-	public void setMapAutoUpdating(boolean mapAutoUpdating)
-	{
-		this.mapAutoUpdating = mapAutoUpdating;
 	}
 
 	public boolean hasLoginPvpDisabled()
@@ -198,40 +195,17 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		return true;
 	}
 	
-	public FLocation getLastStoodAt()
-	{
-		return this.lastStoodAt;
-	}
-	
-	public void setLastStoodAt(FLocation flocation)
-	{
-		this.lastStoodAt = flocation;
-	}
-
-	public void markForDeletion(boolean delete)
-	{
-		deleteMe = delete;
-	}
-	
 	//----------------------------------------------//
 	// Title, Name, Faction Tag and Chat
 	//----------------------------------------------//
 	
 	// Base:
 	
-	public String getTitle()
-	{
-		return this.title;
-	}
 
-	public void setTitle(String title)
-	{
-		this.title = title;
-	}
 	
 	public String getName()
 	{
-		return this.getId(); // TODO: ... display name or remove completeley
+		return getId(); // TODO: ... display name or remove completeley
 	}
 	
 	public String getTag()
@@ -276,35 +250,6 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 	{
 		return this.getColorTo(fplayer)+this.getNameAndTitle();
 	}
-	
-	/*public String getNameAndTag(Faction faction)
-	{
-		return this.getRelationColor(faction)+this.getNameAndTag();
-	}
-	public String getNameAndTag(FPlayer fplayer)
-	{
-		return this.getRelationColor(fplayer)+this.getNameAndTag();
-	}*/
-	
-	// TODO: REmovded for refactoring.
-	
-	/*public String getNameAndRelevant(Faction faction)
-	{
-		// Which relation?
-		Relation rel = this.getRelationTo(faction);
-		
-		// For member we show title
-		if (rel == Relation.MEMBER) {
-			return rel.getColor() + this.getNameAndTitle();
-		}
-		
-		// For non members we show tag
-		return rel.getColor() + this.getNameAndTag();
-	}
-	public String getNameAndRelevant(FPlayer fplayer)
-	{
-		return getNameAndRelevant(fplayer.getFaction());
-	}*/
 	
 	// Chat Tag: 
 	// These are injected into the format of global chat messages.
@@ -493,15 +438,15 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		return factionHere != null && factionHere.isNormal() && factionHere != this.getFaction();
 	}*/
 
-	public boolean isInAllyTerritory()
+	/*public boolean isInAllyTerritory()
 	{
 		return Board.getFactionAt(new FLocation(this)).getRelationTo(this) == Rel.ALLY;
-	}
+	}*/
 
-	public boolean isInNeutralTerritory()
+	/*public boolean isInNeutralTerritory()
 	{
 		return Board.getFactionAt(new FLocation(this)).getRelationTo(this) == Rel.NEUTRAL;
-	}
+	}*/
 
 	public boolean isInEnemyTerritory()
 	{

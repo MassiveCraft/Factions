@@ -162,11 +162,6 @@ public class FactionsPlayerListener extends PlayerListener
 		// Make sure player's power is up to date when they log off.
 		FPlayer me = FPlayers.i.get(event.getPlayer());
 		me.getPower();
-		Faction myFaction = me.getFaction();
-		if (myFaction != null)
-		{
-			myFaction.memberLoggedOff();
-		}
 		SpoutFeatures.playerDisconnect(me);
 	}
 	
@@ -176,14 +171,14 @@ public class FactionsPlayerListener extends PlayerListener
 		Player player = event.getPlayer();
 		FPlayer me = FPlayers.i.get(player);
 		
+		// Did we change block?
+		if (event.getFrom().equals(event.getTo())) return;
+		
 		// Did we change coord?
 		FLocation from = me.getLastStoodAt();
 		FLocation to = new FLocation(player.getLocation());
 		
-		if (from.equals(to))
-		{
-			return;
-		}
+		if (from.equals(to)) return;
 		
 		// Yes we did change coord (:
 		

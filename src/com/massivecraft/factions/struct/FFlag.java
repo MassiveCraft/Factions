@@ -18,6 +18,7 @@ public enum FFlag
 	// This faction has infinite power: TODO: Add faction has enough method. Replace the permanentpower level 
 	
 	// (Faction) Territory flags
+	// If a faction later could have many different territories this would probably be in another enum
 	POWERLOSS("powerloss", "<i>Is power lost on death in this territory?", true, false),
 	PVP("pvp", "<i>Can you PVP in territory?", true, false),
 	FRIENDLYFIRE("friendlyfire", "<i>Can friends hurt eachother here?", false, false),

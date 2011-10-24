@@ -108,20 +108,7 @@ public class FactionsEntityListener extends EntityListener
 			return;
 		}
 	}
-/*
-	public boolean isPlayerInSafeZone(Entity damagee)
-	{
-		if ( ! (damagee instanceof Player))
-		{
-			return false;
-		}
-		if (Board.getFactionAt(new FLocation(damagee.getLocation())).isSafeZone())
-		{
-			return true;
-		}
-		return false;
-	}
-*/
+	
 	public boolean canDamagerHurtDamagee(EntityDamageByEntityEvent sub)
 	{
 		Entity damager = sub.getDamager();
@@ -356,50 +343,4 @@ public class FactionsEntityListener extends EntityListener
 		
 		event.setCancelled(true);
 	}
-
-	/*private boolean stopEndermanBlockManipulation(Location loc)
-	{
-		if (loc == null)
-		{
-			return false;
-		}
-		// quick check to see if all Enderman deny options are enabled; if so, no need to check location
-		if
-		(
-			Conf.wildernessDenyEndermanBlocks
-			&&
-			Conf.territoryDenyEndermanBlocks
-			&&
-			Conf.territoryDenyEndermanBlocksWhenOffline
-			&&
-			Conf.safeZoneDenyEndermanBlocks
-			&&
-			Conf.warZoneDenyEndermanBlocks
-		)
-		{
-			return true;
-		}
-
-		FLocation fLoc = new FLocation(loc);
-		Faction claimFaction = Board.getFactionAt(fLoc);
-
-		if (claimFaction.isNone())
-		{
-			return Conf.wildernessDenyEndermanBlocks;
-		}
-		else if (claimFaction.isNormal())
-		{
-			return claimFaction.hasPlayersOnline() ? Conf.territoryDenyEndermanBlocks : Conf.territoryDenyEndermanBlocksWhenOffline;
-		}
-		else if (claimFaction.isSafeZone())
-		{
-			return Conf.safeZoneDenyEndermanBlocks;
-		}
-		else if (claimFaction.isWarZone())
-		{
-			return Conf.warZoneDenyEndermanBlocks;
-		}
-
-		return false;
-	}*/
 }
