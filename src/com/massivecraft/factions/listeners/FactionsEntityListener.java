@@ -65,12 +65,6 @@ public class FactionsEntityListener extends EntityListener
 		fplayer.msg("<i>Your power is now <h>"+fplayer.getPowerRounded()+" / "+fplayer.getPowerMaxRounded());
 	}
 	
-	/**
-	 * Who can I hurt?
-	 * I can never hurt members or allies.
-	 * I can always hurt enemies.
-	 * I can hurt neutrals as long as they are outside their own territory.
-	 */
 	@Override
 	public void onEntityDamage(EntityDamageEvent event)
 	{
@@ -146,7 +140,7 @@ public class FactionsEntityListener extends EntityListener
 			if (damager instanceof Player)
 			{
 				FPlayer attacker = FPlayers.i.get((Player)damager);
-				attacker.msg("<i>You can't hurt other players here.");
+				attacker.msg("<i>PVP is disabled in %s.", defLocFaction.describeTo(attacker));
 				return false;
 			}
 			return defLocFaction.getFlag(FFlag.MONSTERS);
@@ -175,7 +169,7 @@ public class FactionsEntityListener extends EntityListener
 		// so we know from above that the defender isn't in a safezone... what about the attacker, sneaky dog that he might be?
 		if (locFaction.getFlag(FFlag.PVP) == false)
 		{
-			attacker.msg("<i>You can't hurt other players here.");
+			attacker.msg("<i>PVP is disabled in %s.", locFaction.describeTo(attacker));
 			return false;
 		}
 		
@@ -204,15 +198,14 @@ public class FactionsEntityListener extends EntityListener
 		Rel relation = defendFaction.getRelationTo(attackFaction);
 		
 		// Check the relation
-		if (relation.isAtLeast(Conf.friendlyFireFromRel))
+		if (relation.isAtLeast(Conf.friendlyFireFromRel) && defLocFaction.getFlag(FFlag.FRIENDLYFIRE) == false)
 		{
 			attacker.msg("<i>You can't hurt %s<i>.", relation.getDescPlayerMany());
 			return false;
 		}
 		
-		boolean ownTerritory = defender.isInOwnTerritory();
-		
 		// You can not hurt neutrals in their own territory.
+		boolean ownTerritory = defender.isInOwnTerritory();
 		if (ownTerritory && relation == Rel.NEUTRAL)
 		{
 			attacker.msg("<i>You can't hurt %s<i> in their own territory unless you declare them as an enemy.", defender.describeTo(attacker));
