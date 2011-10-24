@@ -70,39 +70,41 @@ public class RelationUtil
 
 	public static Rel getRelationOfThatToMe(RelationParticipator that, RelationParticipator me)
 	{
-		return getRelationOfThatToMe(me, that, false);
+		return getRelationOfThatToMe(that, me, false);
 	}
 
 	public static Rel getRelationOfThatToMe(RelationParticipator that, RelationParticipator me, boolean ignorePeaceful)
 	{
 		Rel ret = null;
 		
-		Faction fthat = getFaction(me);
-		if (fthat == null) return Rel.NEUTRAL; // ERROR
+		Faction myFaction = getFaction(me);
+		if (myFaction == null) return Rel.NEUTRAL; // ERROR
 
-		Faction fme = getFaction(that);
-		if (fme == null) return Rel.NEUTRAL; // ERROR
+		Faction thatFaction = getFaction(that);
+		if (thatFaction == null) return Rel.NEUTRAL; // ERROR
 		
 		// The faction with the lowest wish "wins"
-		if (fme.getRelationWish(fthat).isLessThan(fthat.getRelationWish(fme)))
+		if (thatFaction.getRelationWish(myFaction).isLessThan(myFaction.getRelationWish(thatFaction)))
 		{
-			ret = fme.getRelationWish(fthat);
+			ret = thatFaction.getRelationWish(myFaction);
 		}
 		else
 		{
-			ret = fthat.getRelationWish(fme);
+			ret = myFaction.getRelationWish(thatFaction);
 		}
 
-		if (fthat.equals(fme))
+		if (myFaction.equals(thatFaction))
 		{
 			ret = Rel.MEMBER;
 			// Do officer and leader check
+			//P.p.log("getRelationOfThatToMe the factions are the same for "+that.getClass().getSimpleName()+" and observer "+me.getClass().getSimpleName());
 			if (that instanceof FPlayer)
 			{
 				ret = ((FPlayer)that).getRole();
+				//P.p.log("getRelationOfThatToMe it was a player and role is "+ret);
 			}
 		}
-		else if (!ignorePeaceful && (fme.getFlag(FFlag.PEACEFUL) || fthat.getFlag(FFlag.PEACEFUL)))
+		else if (!ignorePeaceful && (thatFaction.getFlag(FFlag.PEACEFUL) || myFaction.getFlag(FFlag.PEACEFUL)))
 		{
 			ret = Rel.TRUCE;
 		}

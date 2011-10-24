@@ -14,7 +14,6 @@ import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.iface.RelationParticipator;
-import com.massivecraft.factions.util.RelationUtil;
 
 /**
  * Permissions that you (a player) may or may not have in the territory of a certain faction.
@@ -103,7 +102,7 @@ public enum FPerm
 			ret += " ";
 		}
 		
-		ret +="<h>"+this.getNicename();
+		ret +="<c>"+this.getNicename();
 		if (withDesc)
 		{
 			ret += " <i>" + this.getDescription(); 
@@ -149,8 +148,15 @@ public enum FPerm
 	private static final String errorpattern = "<b>%s<b> can't %s in the territory of %s<b>.";
 	public boolean has(RelationParticipator testSubject, Faction hostFaction, boolean informIfNot)
 	{
-		Faction factionDoer = RelationUtil.getFaction(testSubject);
-		boolean ret = hostFaction.getPermittedRelations(this).contains(hostFaction.getRelationTo(factionDoer));
+		//Faction factionDoer = RelationUtil.getFaction(testSubject);
+		//P.p.log("Testing the permission "+this.toString()+" for a "+testSubject.getClass().getSimpleName());
+		//P.p.log("hostFaction: "+hostFaction);
+		Rel rel = testSubject.getRelationTo(hostFaction);
+		
+		//P.p.log("rel: "+rel);
+		
+		boolean ret = hostFaction.getPermittedRelations(this).contains(rel);
+		
 		if (!ret && informIfNot && testSubject instanceof FPlayer)
 		{
 			FPlayer fplayer = (FPlayer)testSubject;

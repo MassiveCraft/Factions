@@ -25,7 +25,7 @@ public enum FFlag
 	MONSTERS("monsters", "<i>Can monsters spawn in this territory?", true, false),
 	EXPLOSIONS("explosions", "<i>Can explosions occur in this territory?", true, false),
 	FIRESPREAD("firespread", "<i>Can fire spread in territory?", true, false),
-	LIGHTNING("lightning", "<i>Can lightning strike in this territory?", true, false),
+	//LIGHTNING("lightning", "<i>Can lightning strike in this territory?", true, false), Possible to add later.
 	ENDERGRIEF("endergrief", "<i>Can endermen grief in this territory?", false, true),
 	;
 	
@@ -86,13 +86,13 @@ public enum FFlag
 		if (str.startsWith("m")) return MONSTERS;
 		if (str.startsWith("e")) return EXPLOSIONS;
 		if (str.startsWith("fi")) return FIRESPREAD;
-		if (str.startsWith("l")) return LIGHTNING;
+		//if (str.startsWith("l")) return LIGHTNING;
 		return null;
 	}
 	
 	public String getStateInfo(boolean value, boolean withDesc)
 	{
-		String ret = (value ? "<g>YES" : "<b>NOO") + "<h> " + this.getNicename();
+		String ret = (value ? "<g>YES" : "<b>NOO") + "<c> " + this.getNicename();
 		if (withDesc)
 		{
 			ret += " " + this.getDescription();

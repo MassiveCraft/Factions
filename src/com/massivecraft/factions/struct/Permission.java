@@ -16,7 +16,7 @@ public enum Permission
 	DEINVITE("deinvite"),
 	DESCRIPTION("description"),
 	DISBAND("disband"),
-	DISBAND_ANY("disband.any"),
+	DISBAND_ANY("disband.any"), // WHAT TO DO?
 	FLAG("flag"),
 	FLAG_ANY("flag.any"),
 	PERM("perm"),
@@ -36,7 +36,7 @@ public enum Permission
 	MONEY_BALANCE_ANY("money.balance.any"),
 	MONEY_DEPOSIT("money.deposit"),
 	MONEY_WITHDRAW("money.withdraw"),
-	MONEY_WITHDRAW_ANY("money.withdraw.any"),
+	MONEY_WITHDRAW_ANY("money.withdraw.any"), // WHAT TO DO?
 	MONEY_F2F("money.f2f"),
 	MONEY_F2P("money.f2p"),
 	MONEY_P2F("money.p2f"),
@@ -48,7 +48,7 @@ public enum Permission
 	RELOAD("reload"),
 	SAVE("save"),
 	SETHOME("sethome"),
-	SETHOME_ANY("sethome.any"),
+	SETHOME_ANY("sethome.any"), // WHAT TO DO?
 	SHOW("show"),
 	TAG("tag"),
 	TITLE("title"),
