@@ -14,7 +14,7 @@ public class CmdSethome extends FCommand
 		this.aliases.add("sethome");
 		
 		//this.requiredArgs.add("");
-		this.optionalArgs.put("faction tag", "mine");
+		this.optionalArgs.put("faction", "your");
 		
 		this.permission = Permission.SETHOME.node;
 		this.disableOnLock = true;

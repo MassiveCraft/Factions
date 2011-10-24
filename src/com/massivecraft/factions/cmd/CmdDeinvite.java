@@ -12,7 +12,7 @@ public class CmdDeinvite extends FCommand
 		this.aliases.add("deinvite");
 		this.aliases.add("deinv");
 		
-		this.requiredArgs.add("player name");
+		this.requiredArgs.add("player");
 		//this.optionalArgs.put("", "");
 		
 		this.permission = Permission.DEINVITE.node;

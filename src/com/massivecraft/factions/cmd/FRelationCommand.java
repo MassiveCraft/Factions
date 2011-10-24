@@ -14,8 +14,8 @@ public abstract class FRelationCommand extends FCommand
 	public FRelationCommand()
 	{
 		super();
-		this.requiredArgs.add("faction tag");
-		//this.optionalArgs.put("player name", "you");
+		this.requiredArgs.add("faction");
+		//this.optionalArgs.put("", "");
 		
 		this.permission = Permission.RELATION.node;
 		this.disableOnLock = true;

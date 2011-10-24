@@ -12,7 +12,7 @@ public class CmdLeader extends FCommand
 		super();
 		this.aliases.add("leader");
 		
-		this.requiredArgs.add("player name");
+		this.requiredArgs.add("player");
 		//this.optionalArgs.put("", "");
 		
 		this.permission = Permission.LEADER.node;

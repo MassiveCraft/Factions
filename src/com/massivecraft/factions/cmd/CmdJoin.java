@@ -12,7 +12,7 @@ public class CmdJoin extends FCommand
 		super();
 		this.aliases.add("join");
 		
-		this.requiredArgs.add("faction name");
+		this.requiredArgs.add("faction");
 		//this.optionalArgs.put("", "");
 		
 		this.permission = Permission.JOIN.node;

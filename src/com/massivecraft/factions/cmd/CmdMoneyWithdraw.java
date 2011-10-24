@@ -17,7 +17,7 @@ public class CmdMoneyWithdraw extends FCommand
 		this.aliases.add("withdraw");
 		
 		this.requiredArgs.add("amount");
-		this.optionalArgs.put("faction", "yours");
+		this.optionalArgs.put("faction", "your");
 		
 		this.permission = Permission.MONEY_WITHDRAW.node;
 		this.setHelpShort("withdraw money");

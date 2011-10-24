@@ -20,7 +20,7 @@ public class CmdShow extends FCommand
 		this.aliases.add("who");
 		
 		//this.requiredArgs.add("");
-		this.optionalArgs.put("faction tag", "yours");
+		this.optionalArgs.put("faction", "your");
 		
 		this.permission = Permission.SHOW.node;
 		this.disableOnLock = false;

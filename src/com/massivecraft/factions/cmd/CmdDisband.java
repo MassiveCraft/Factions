@@ -19,7 +19,7 @@ public class CmdDisband extends FCommand
 		this.aliases.add("disband");
 		
 		//this.requiredArgs.add("");
-		this.optionalArgs.put("faction tag", "yours");
+		this.optionalArgs.put("faction", "your");
 		
 		this.permission = Permission.DISBAND.node;
 		this.disableOnLock = true;

@@ -14,7 +14,7 @@ public class CmdPower extends FCommand
 		this.aliases.add("pow");
 		
 		//this.requiredArgs.add("faction tag");
-		this.optionalArgs.put("player name", "you");
+		this.optionalArgs.put("player", "you");
 		
 		this.permission = Permission.POWER.node;
 		this.disableOnLock = false;

@@ -16,7 +16,7 @@ public class CmdTag extends FCommand
 	{
 		this.aliases.add("tag");
 		
-		this.requiredArgs.add("faction tag");
+		this.requiredArgs.add("new tag");
 		//this.optionalArgs.put("", "");
 		
 		this.permission = Permission.TAG.node;

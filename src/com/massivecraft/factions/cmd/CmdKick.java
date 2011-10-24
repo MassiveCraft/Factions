@@ -16,7 +16,7 @@ public class CmdKick extends FCommand
 		super();
 		this.aliases.add("kick");
 		
-		this.requiredArgs.add("player name");
+		this.requiredArgs.add("player");
 		//this.optionalArgs.put("", "");
 		
 		this.permission = Permission.KICK.node;

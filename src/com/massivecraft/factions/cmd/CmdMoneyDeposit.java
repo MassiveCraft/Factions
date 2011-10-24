@@ -19,7 +19,7 @@ public class CmdMoneyDeposit extends FCommand
 		this.aliases.add("deposit");
 		
 		this.requiredArgs.add("amount");
-		this.optionalArgs.put("faction", "yours");
+		this.optionalArgs.put("faction", "your");
 		
 		this.permission = Permission.MONEY_DEPOSIT.node;
 		this.setHelpShort("deposit money");
