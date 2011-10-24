@@ -5,11 +5,11 @@ import com.massivecraft.factions.struct.Rel;
 
 public interface RelationParticipator
 {
-	public String describeTo(RelationParticipator that);
-	public String describeTo(RelationParticipator that, boolean ucfirst);
+	public String describeTo(RelationParticipator observer);
+	public String describeTo(RelationParticipator observer, boolean ucfirst);
 	
-	public Rel getRelationTo(RelationParticipator that);
-	public Rel getRelationTo(RelationParticipator that, boolean ignorePeaceful);
+	public Rel getRelationTo(RelationParticipator observer);
+	public Rel getRelationTo(RelationParticipator observer, boolean ignorePeaceful);
 	
-	public ChatColor getColorTo(RelationParticipator to);
+	public ChatColor getColorTo(RelationParticipator observer);
 }

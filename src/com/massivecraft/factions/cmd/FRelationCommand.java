@@ -1,7 +1,5 @@
 package com.massivecraft.factions.cmd;
 
-import org.bukkit.ChatColor;
-
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.integration.SpoutFeatures;
@@ -51,26 +49,26 @@ public abstract class FRelationCommand extends FCommand
 
 		myFaction.setRelationWish(them, targetRelation);
 		Rel currentRelation = myFaction.getRelationTo(them, true);
-		ChatColor currentRelationColor = currentRelation.getColor();
-		if (targetRelation.value == currentRelation.value)
+		if (targetRelation == currentRelation)
 		{
-			them.msg("<i>Your faction is now "+currentRelationColor+targetRelation.toString()+"<i> to "+currentRelationColor+myFaction.getTag());
-			myFaction.msg("<i>Your faction is now "+currentRelationColor+targetRelation.toString()+"<i> to "+currentRelationColor+them.getTag());
+			them.msg("%s<i> is now %s.", myFaction.describeTo(them, true), targetRelation.getDescFactionOne());
+			myFaction.msg("%s<i> is now %s.", them.describeTo(myFaction, true), targetRelation.getDescFactionOne());
 		}
 		else
 		{
-			them.msg(currentRelationColor+myFaction.getTag()+"<i> wishes to be your "+targetRelation.getColor()+targetRelation.toString());
+			them.msg("%s<i> wishes to be %s.", myFaction.describeTo(them, true), targetRelation.getColor()+targetRelation.getDescFactionOne());
 			them.msg("<i>Type <c>/"+Conf.baseCommandAliases.get(0)+" "+targetRelation+" "+myFaction.getTag()+"<i> to accept.");
-			myFaction.msg(currentRelationColor+them.getTag()+"<i> were informed that you wish to be "+targetRelation.getColor()+targetRelation);
+			myFaction.msg("%s<i> were informed that you wish to be %s<i>.", them.describeTo(myFaction, true), targetRelation.getColor()+targetRelation.getDescFactionOne());
 		}
 		
-		if ( targetRelation != Rel.NEUTRAL && them.getFlag(FFlag.PEACEFUL))
+		// TODO: The ally case should work!!
+		if ( targetRelation != Rel.TRUCE && them.getFlag(FFlag.PEACEFUL))
 		{
 			them.msg("<i>This will have no effect while your faction is peaceful.");
 			myFaction.msg("<i>This will have no effect while their faction is peaceful.");
 		}
 		
-		if ( targetRelation != Rel.NEUTRAL && myFaction.getFlag(FFlag.PEACEFUL))
+		if ( targetRelation != Rel.TRUCE && myFaction.getFlag(FFlag.PEACEFUL))
 		{
 			them.msg("<i>This will have no effect while their faction is peaceful.");
 			myFaction.msg("<i>This will have no effect while your faction is peaceful.");

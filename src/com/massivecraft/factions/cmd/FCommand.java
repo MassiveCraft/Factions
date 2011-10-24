@@ -138,7 +138,7 @@ public abstract class FCommand extends MCommand<P>
 	{
 		if (me == null) return true;
 		
-		if (fme.getRole().value < role.value)
+		if (fme.getRole().isLessThan(role))
 		{
 			msg("<b>You <h>must be "+role+"<b> to "+this.getHelpShort()+".");
 			return false;
@@ -356,7 +356,7 @@ public abstract class FCommand extends MCommand<P>
 			return false;
 		}
 		
-		if (i.getRole().value > you.getRole().value || i.getRole().equals(Rel.LEADER) )
+		if (i.getRole().isMoreThan(you.getRole()) || i.getRole().equals(Rel.LEADER) )
 		{
 			return true;
 		}

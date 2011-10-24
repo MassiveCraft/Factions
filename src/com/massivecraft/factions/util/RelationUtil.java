@@ -68,40 +68,46 @@ public class RelationUtil
 		return describeThatToMe(that, me, false);
 	}
 
-	public static Rel getRelationTo(RelationParticipator me, RelationParticipator that)
+	public static Rel getRelationOfThatToMe(RelationParticipator that, RelationParticipator me)
 	{
-		return getRelationTo(that, me, false);
+		return getRelationOfThatToMe(me, that, false);
 	}
 
-	public static Rel getRelationTo(RelationParticipator me, RelationParticipator that, boolean ignorePeaceful)
+	public static Rel getRelationOfThatToMe(RelationParticipator that, RelationParticipator me, boolean ignorePeaceful)
 	{
-		Faction fthat = getFaction(that);
+		Rel ret = null;
+		
+		Faction fthat = getFaction(me);
 		if (fthat == null) return Rel.NEUTRAL; // ERROR
 
-		Faction fme = getFaction(me);
+		Faction fme = getFaction(that);
 		if (fme == null) return Rel.NEUTRAL; // ERROR
-
-		if (!fthat.isNormal() || !fme.isNormal())
+		
+		// The faction with the lowest wish "wins"
+		if (fme.getRelationWish(fthat).isLessThan(fthat.getRelationWish(fme)))
 		{
-			return Rel.NEUTRAL;
+			ret = fme.getRelationWish(fthat);
+		}
+		else
+		{
+			ret = fthat.getRelationWish(fme);
 		}
 
 		if (fthat.equals(fme))
 		{
-			return Rel.MEMBER;
+			ret = Rel.MEMBER;
+			// Do officer and leader check
+			if (that instanceof FPlayer)
+			{
+				ret = ((FPlayer)that).getRole();
+			}
 		}
-
-		if (!ignorePeaceful && (fme.getFlag(FFlag.PEACEFUL) || fthat.getFlag(FFlag.PEACEFUL)))
+		else if (!ignorePeaceful && (fme.getFlag(FFlag.PEACEFUL) || fthat.getFlag(FFlag.PEACEFUL)))
 		{
-			return Rel.TRUCE;
+			ret = Rel.TRUCE;
 		}
 
-		if (fme.getRelationWish(fthat).value >= fthat.getRelationWish(fme).value)
-		{
-			return fthat.getRelationWish(fme);
-		}
-
-		return fme.getRelationWish(fthat);
+		return ret;
 	}
 
 	public static Faction getFaction(RelationParticipator rp)
@@ -135,6 +141,6 @@ public class RelationUtil
 				return Conf.colorNoPVP;
 			}
 		}
-		return getRelationTo(that, me).getColor();
+		return getRelationOfThatToMe(that, me).getColor();
 	}
 }

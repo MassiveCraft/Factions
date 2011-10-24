@@ -79,7 +79,7 @@ public enum FPerm
 		List<String> rels = new ArrayList<String>();
 		for (Rel rel : value)
 		{
-			rels.add("<p>"+rel.nicename);
+			rels.add("<p>"+rel);
 		}
 		if (rels.size() > 0)
 		{

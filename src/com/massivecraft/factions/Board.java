@@ -171,10 +171,9 @@ public class Board
 		int width = halfWidth * 2 + 1;
 		int height = halfHeight * 2 + 1;
 		
-		/*if (Conf.showMapFactionKey)
-		{
-			height--;
-		}*/
+		//Make room for the list of tags
+		height--;
+		
 		
 		Map<Faction, Character> fList = new HashMap<Faction, Character>();
 		int chrIdx = 0;
@@ -194,33 +193,17 @@ public class Board
 			
 				FLocation flocationHere = topLeft.getRelative(dx, dz);
 				Faction factionHere = getFactionAt(flocationHere);
-				//Rel relation = faction.getRelationTo(factionHere);
 				if (factionHere.isNone())
 				{
 					row += ChatColor.GRAY+"-";
 				}
-				else /*if
-				(
-					factionHere == faction
-					||
-					factionHere == factionLoc
-					||
-					relation.isAtLeast(Rel.ALLY)
-					||
-					(Conf.showNeutralFactionsOnMap && relation.equals(Rel.NEUTRAL))
-					||
-					(Conf.showEnemyFactionsOnMap && relation.equals(Rel.ENEMY))
-				)*/
+				else
 				{
-					if (!fList.containsKey(factionHere.getTag()))
+					if (!fList.containsKey(factionHere))
 						fList.put(factionHere, Conf.mapKeyChrs[chrIdx++]);
-					char tag = fList.get(factionHere);
-					row += factionHere.getColorTo(observer) + "" + tag;
+					char fchar = fList.get(factionHere);
+					row += factionHere.getColorTo(observer) + "" + fchar;
 				}
-				/*else
-				{
-					row += ChatColor.GRAY+"-";
-				}*/
 			}
 			ret.add(row);
 		}
@@ -232,19 +215,14 @@ public class Board
 		ret.set(1, asciiCompass.get(0)+ret.get(1).substring(3*3));
 		ret.set(2, asciiCompass.get(1)+ret.get(2).substring(3*3));
 		ret.set(3, asciiCompass.get(2)+ret.get(3).substring(3*3));
-		
-		// Add the faction key
-		// TODO: relation color for them
-		//if (Conf.showMapFactionKey)
-		//{
 			
 		String fRow = "";
 		for(Faction keyfaction : fList.keySet())
 		{
-			fRow += String.format("%s%s: %s ", keyfaction.getColorTo(observer), fList.get(keyfaction), keyfaction.getTag());
+			fRow += ""+keyfaction.getColorTo(observer) + fList.get(keyfaction) + ": " + keyfaction.getTag() + " ";
 		}
+		fRow = fRow.trim();
 		ret.add(fRow);
-		//}
 		
 		return ret;
 	}

@@ -6,22 +6,35 @@ import com.massivecraft.factions.Conf;
 
 public enum Rel
 {
-	LEADER   (70, "leader"),
-	OFFICER  (60, "officer"),
-	MEMBER   (50, "member"),
-	ALLY     (40, "ally"),
-	TRUCE    (30, "truce"),
-	NEUTRAL  (20, "neutral"),
-	ENEMY    (10, "enemy"),
+	LEADER   (70, "your faction leader", "your faction leader", "", ""),
+	OFFICER  (60, "an officer in your faction", "officers in your faction", "", ""),
+	MEMBER   (50, "a member in your faction", "members in your faction", "your faction", "your factions"),
+	ALLY     (40, "an ally", "allies", "an allied faction", "allied factions"),
+	TRUCE    (30, "someone in truce with you", "those in truce with you", "a faction in truce", "factions in truce"),
+	NEUTRAL  (20, "someone neutral to you", "those neutral to you", "a neutral faction", "neutral factions"),
+	ENEMY    (10, "an enemy", "enemies", "an enemy faction", "enemy factions"),
 	;
 	
-	public final int value;
-	public final String nicename;
+	private final int value;
+	private final String descPlayerOne;
+	public String getDescPlayerOne() { return this.descPlayerOne; }
 	
-	private Rel(final int value, final String nicename)
+	private final String descPlayerMany;
+	public String getDescPlayerMany() { return this.descPlayerMany; }
+	
+	private final String descFactionOne;
+	public String getDescFactionOne() { return this.descFactionOne; }
+	
+	private final String descFactionMany;
+	public String getDescFactionMany() { return this.descFactionMany; }
+	
+	private Rel(final int value, final String descPlayerOne, final String descPlayerMany, final String descFactionOne, final String descFactionMany)
 	{
 		this.value = value;
-		this.nicename = nicename;
+		this.descPlayerOne = descPlayerOne;
+		this.descPlayerMany = descPlayerMany;
+		this.descFactionOne = descFactionOne;
+		this.descFactionMany = descFactionMany;
 	}
 	
 	public static Rel parse(String str)
@@ -58,12 +71,6 @@ public enum Rel
 		return null;
 	}
 	
-	@Override
-	public String toString()
-	{
-		return this.nicename;
-	}
-	
 	public boolean isAtLeast(Rel rel)
 	{
 		return this.value >= rel.value;
@@ -77,6 +84,11 @@ public enum Rel
 	public boolean isLessThan(Rel rel)
 	{
 		return this.value < rel.value;
+	}
+	
+	public boolean isMoreThan(Rel rel)
+	{
+		return this.value > rel.value;
 	}
 	
 	public ChatColor getColor()
@@ -116,6 +128,8 @@ public enum Rel
 			return Conf.econCostEnemy;
 		else if (this == ALLY)
 			return Conf.econCostAlly;
+		else if (this == TRUCE)
+			return Conf.econCostTruce;
 		else
 			return Conf.econCostNeutral;
 	}

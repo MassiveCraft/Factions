@@ -115,10 +115,7 @@ public class FactionsEntityListener extends EntityListener
 		Entity damagee = sub.getEntity();
 		int damage = sub.getDamage();
 		
-		if ( ! (damagee instanceof Player))
-		{
-			return true;
-		}
+		if ( ! (damagee instanceof Player)) return true;
 		
 		FPlayer defender = FPlayers.i.get((Player)damagee);
 		
@@ -206,23 +203,10 @@ public class FactionsEntityListener extends EntityListener
 		
 		Rel relation = defendFaction.getRelationTo(attackFaction);
 		
-		// You can not hurt neutral factions
-		if (Conf.disablePVPBetweenNeutralFactions && relation == Rel.NEUTRAL)
+		// Check the relation
+		if (relation.isAtLeast(Conf.friendlyFireFromRel))
 		{
-			attacker.msg("<i>You can't hurt neutral factions. Declare them as an enemy.");
-			return false;
-		}
-		
-		// Players without faction may be hurt anywhere
-		if (!defender.hasFaction())
-		{
-			return true;
-		}
-		
-		// You can never hurt faction members or allies
-		if (relation == Rel.MEMBER || relation == Rel.ALLY)
-		{
-			attacker.msg("<i>You can't hurt %s<i>.", defender.describeTo(attacker));
+			attacker.msg("<i>You can't hurt %s<i>.", relation.getDescPlayerMany());
 			return false;
 		}
 		

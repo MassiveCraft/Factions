@@ -81,7 +81,7 @@ public class PluginCapiListener extends CapiListener
 			for (Player somePlayer : Bukkit.getServer().getOnlinePlayers())
 			{
 				FPlayer someFPlayer = FPlayers.i.get(somePlayer);
-				if (someFPlayer.getRelationTo(fme).value >= Rel.ALLY.value)
+				if (someFPlayer.getRelationTo(fme).isAtLeast(Rel.ALLY))
 				{
 					event.getThem().add(somePlayer);
 				}

@@ -100,7 +100,8 @@ public class Conf
 	public static double homesTeleportAllowedEnemyDistance = 32.0;
 	public static boolean homesTeleportIgnoreEnemiesIfInOwnTerritory = true;
 	
-	public static boolean disablePVPBetweenNeutralFactions = false;
+	
+	public static Rel friendlyFireFromRel = Rel.TRUCE;
 	public static boolean disablePVPForFactionlessPlayers = false;
 	public static boolean enablePVPAgainstFactionlessInAttackersLand = false;
 	
@@ -165,7 +166,6 @@ public class Conf
 	public static double econClaimAdditionalMultiplier = 0.5;
 	public static double econClaimRefundMultiplier = 0.7;
 	public static double econCostCreate = 100.0;
-	public static double econCostOwner = 15.0;
 	public static double econCostSethome = 30.0;
 	public static double econCostJoin = 0.0;
 	public static double econCostLeave = 0.0;
@@ -181,9 +181,9 @@ public class Conf
 	public static double econCostShow = 0.0;
 	public static double econCostOpen = 0.0;
 	public static double econCostAlly = 0.0;
-	public static double econCostEnemy = 0.0;
+	public static double econCostTruce = 0.0;
 	public static double econCostNeutral = 0.0;
-	public static double econCostNoBoom = 0.0;
+	public static double econCostEnemy = 0.0;
 	
 	//Faction banks, to pay for land claiming and other costs instead of individuals paying for them
 	public static boolean bankEnabled = true;

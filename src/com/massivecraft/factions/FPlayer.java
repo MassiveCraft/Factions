@@ -268,27 +268,27 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 	// -------------------------------
 	
 	@Override
-	public String describeTo(RelationParticipator that, boolean ucfirst)
+	public String describeTo(RelationParticipator observer, boolean ucfirst)
 	{
-		return RelationUtil.describeThatToMe(this, that, ucfirst);
+		return RelationUtil.describeThatToMe(this, observer, ucfirst);
 	}
 	
 	@Override
-	public String describeTo(RelationParticipator that)
+	public String describeTo(RelationParticipator observer)
 	{
-		return RelationUtil.describeThatToMe(this, that);
+		return RelationUtil.describeThatToMe(this, observer);
 	}
 	
 	@Override
-	public Rel getRelationTo(RelationParticipator rp)
+	public Rel getRelationTo(RelationParticipator observer)
 	{
-		return RelationUtil.getRelationTo(this, rp);
+		return RelationUtil.getRelationOfThatToMe(this, observer);
 	}
 	
 	@Override
-	public Rel getRelationTo(RelationParticipator rp, boolean ignorePeaceful)
+	public Rel getRelationTo(RelationParticipator observer, boolean ignorePeaceful)
 	{
-		return RelationUtil.getRelationTo(this, rp, ignorePeaceful);
+		return RelationUtil.getRelationOfThatToMe(this, observer, ignorePeaceful);
 	}
 	
 	public Rel getRelationToLocation()
@@ -297,9 +297,9 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 	}
 	
 	@Override
-	public ChatColor getColorTo(RelationParticipator rp)
+	public ChatColor getColorTo(RelationParticipator observer)
 	{
-		return RelationUtil.getColorOfThatToMe(this, rp);
+		return RelationUtil.getColorOfThatToMe(this, observer);
 	}
 	
 	//----------------------------------------------//
