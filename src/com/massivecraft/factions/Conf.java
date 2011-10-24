@@ -5,7 +5,7 @@ import java.util.*;
 import org.bukkit.*;
 import org.bukkit.entity.CreatureType;
 
-import com.massivecraft.factions.struct.FactionFlag;
+import com.massivecraft.factions.struct.FFlag;
 import com.massivecraft.factions.struct.FPerm;
 import com.massivecraft.factions.struct.Rel;
 
@@ -25,8 +25,8 @@ public class Conf
 	//public static ChatColor colorWar = ChatColor.DARK_RED;
 	//public static ChatColor colorWilderness = ChatColor.DARK_GREEN;
 	
-	public static Map<FactionFlag, Boolean> factionFlagDefaults;
-	public static Map<FactionFlag, Boolean> factionFlagIsChangeable;
+	public static Map<FFlag, Boolean> factionFlagDefaults;
+	public static Map<FFlag, Boolean> factionFlagIsChangeable;
 	public static Map<FPerm, Set<Rel>> factionPermDefaults;
 	
 	// Power
@@ -276,9 +276,9 @@ public class Conf
 	{
 		baseCommandAliases.add("f");
 		
-		factionFlagDefaults = new LinkedHashMap<FactionFlag, Boolean>();
-		factionFlagIsChangeable = new LinkedHashMap<FactionFlag, Boolean>();
-		for (FactionFlag flag : FactionFlag.values())
+		factionFlagDefaults = new LinkedHashMap<FFlag, Boolean>();
+		factionFlagIsChangeable = new LinkedHashMap<FFlag, Boolean>();
+		for (FFlag flag : FFlag.values())
 		{
 			factionFlagDefaults.put(flag, flag.defaultDefaultValue);
 			factionFlagIsChangeable.put(flag, flag.defaultDefaultChangeable);

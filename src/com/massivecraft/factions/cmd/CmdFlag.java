@@ -1,7 +1,7 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.struct.FactionFlag;
+import com.massivecraft.factions.struct.FFlag;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Rel;
 
@@ -41,14 +41,14 @@ public class CmdFlag extends FCommand
 		
 		if ( ! this.argIsSet(1))
 		{
-			for (FactionFlag flag : FactionFlag.values())
+			for (FFlag flag : FFlag.values())
 			{
 				msg(flag.getStateInfo(faction.getFlag(flag), true));
 			}
 			return;
 		}
 		
-		FactionFlag flag = this.argAsFactionFlag(1);
+		FFlag flag = this.argAsFactionFlag(1);
 		if (flag == null) return;
 		if ( ! this.argIsSet(2))
 		{

@@ -13,7 +13,7 @@ import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.struct.FactionFlag;
+import com.massivecraft.factions.struct.FFlag;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Rel;
 import com.massivecraft.factions.zcore.util.SmokeUtil;
@@ -80,7 +80,7 @@ public class CmdHome extends FCommand
 		(
 			Conf.homesTeleportAllowedEnemyDistance > 0
 			&&
-			faction.getFlag(FactionFlag.PVP)
+			faction.getFlag(FFlag.PVP)
 			&&
 			(
 				! fme.isInOwnTerritory()

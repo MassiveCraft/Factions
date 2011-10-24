@@ -341,13 +341,8 @@ public class FactionsPlayerListener extends PlayerListener
 
 		FPlayer me = FPlayers.i.get(player);
 
-		if (!me.isInOthersTerritory())
-		{
-			return false;
-		}
-
 		Rel rel = me.getRelationToLocation();
-		if (rel.isAtLeast(Rel.ALLY))
+		if (rel.isAtLeast(Rel.TRUCE))
 		{
 			return false;
 		}

@@ -38,9 +38,11 @@ public class CmdList extends FCommand
 		if ( ! payForCommand(Conf.econCostList, "to list the factions", "for listing the factions")) return;
 		
 		ArrayList<Faction> factionList = new ArrayList<Faction>(Factions.i.get());
+
 		factionList.remove(Factions.i.getNone());
-		factionList.remove(Factions.i.getSafeZone());
-		factionList.remove(Factions.i.getWarZone());
+		// TODO: Add flag SECRET To factions instead.
+		//factionList.remove(Factions.i.getSafeZone());
+		//factionList.remove(Factions.i.getWarZone());
 		
 		// Sort by total followers first
 		Collections.sort(factionList, new Comparator<Faction>(){

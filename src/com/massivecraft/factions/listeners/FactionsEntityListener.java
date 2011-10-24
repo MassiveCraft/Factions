@@ -26,7 +26,7 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.P;
-import com.massivecraft.factions.struct.FactionFlag;
+import com.massivecraft.factions.struct.FFlag;
 import com.massivecraft.factions.struct.Rel;
 import com.massivecraft.factions.util.MiscUtil;
 
@@ -49,7 +49,7 @@ public class FactionsEntityListener extends EntityListener
 		FPlayer fplayer = FPlayers.i.get(player);
 		Faction faction = Board.getFactionAt(new FLocation(player.getLocation()));
 		
-		if ( ! faction.getFlag(FactionFlag.POWERLOSS))
+		if ( ! faction.getFlag(FFlag.POWERLOSS))
 		{
 			fplayer.msg("<i>You didn't lose any power since the territory you died in works that way.");
 			return;
@@ -101,7 +101,7 @@ public class FactionsEntityListener extends EntityListener
 		
 		Faction faction = Board.getFactionAt(new FLocation(loc));
 
-		if (faction.getFlag(FactionFlag.EXPLOSIONS) == false)
+		if (faction.getFlag(FFlag.EXPLOSIONS) == false)
 		{
 			// faction is peaceful and has explosions set to disabled
 			event.setCancelled(true);
@@ -157,7 +157,7 @@ public class FactionsEntityListener extends EntityListener
 
 		// Players can not take attack damage in a SafeZone, or possibly peaceful territory
 		
-		if (defLocFaction.getFlag(FactionFlag.PVP) == false)
+		if (defLocFaction.getFlag(FFlag.PVP) == false)
 		{
 			if (damager instanceof Player)
 			{
@@ -165,7 +165,7 @@ public class FactionsEntityListener extends EntityListener
 				attacker.msg("<i>You can't hurt other players here.");
 				return false;
 			}
-			return defLocFaction.getFlag(FactionFlag.MONSTERS);
+			return defLocFaction.getFlag(FFlag.MONSTERS);
 		}
 		
 		if ( ! (damager instanceof Player))
@@ -189,7 +189,7 @@ public class FactionsEntityListener extends EntityListener
 		Faction locFaction = Board.getFactionAt(new FLocation(attacker));
 		
 		// so we know from above that the defender isn't in a safezone... what about the attacker, sneaky dog that he might be?
-		if (locFaction.getFlag(FactionFlag.PVP) == false)
+		if (locFaction.getFlag(FFlag.PVP) == false)
 		{
 			attacker.msg("<i>You can't hurt other players here.");
 			return false;
@@ -272,7 +272,7 @@ public class FactionsEntityListener extends EntityListener
 		FLocation floc = new FLocation(event.getLocation());
 		Faction faction = Board.getFactionAt(floc);
 		
-		if (faction.getFlag(FactionFlag.MONSTERS)) return;
+		if (faction.getFlag(FFlag.MONSTERS)) return;
 		if ( ! Conf.monsters.contains(event.getCreatureType())) return;
 		
 		event.setCancelled(true);
@@ -293,7 +293,7 @@ public class FactionsEntityListener extends EntityListener
 		FLocation floc = new FLocation(target.getLocation());
 		Faction faction = Board.getFactionAt(floc);
 		
-		if (faction.getFlag(FactionFlag.MONSTERS)) return;
+		if (faction.getFlag(FFlag.MONSTERS)) return;
 		
 		event.setCancelled(true);
 	}
@@ -339,7 +339,7 @@ public class FactionsEntityListener extends EntityListener
 		FLocation floc = new FLocation(event.getBlock());
 		Faction faction = Board.getFactionAt(floc);
 		
-		if (faction.getFlag(FactionFlag.ENDERGRIEF)) return;
+		if (faction.getFlag(FFlag.ENDERGRIEF)) return;
 		
 		event.setCancelled(true);
 	}
@@ -352,7 +352,7 @@ public class FactionsEntityListener extends EntityListener
 		FLocation floc = new FLocation(event.getLocation());
 		Faction faction = Board.getFactionAt(floc);
 		
-		if (faction.getFlag(FactionFlag.ENDERGRIEF)) return;
+		if (faction.getFlag(FFlag.ENDERGRIEF)) return;
 		
 		event.setCancelled(true);
 	}

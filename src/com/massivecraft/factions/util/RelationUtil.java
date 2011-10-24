@@ -5,7 +5,7 @@ import org.bukkit.ChatColor;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.iface.RelationParticipator;
-import com.massivecraft.factions.struct.FactionFlag;
+import com.massivecraft.factions.struct.FFlag;
 import com.massivecraft.factions.struct.Rel;
 import com.massivecraft.factions.zcore.util.TextUtil;
 
@@ -90,7 +90,7 @@ public class RelationUtil
 			return Rel.MEMBER;
 		}
 
-		if (!ignorePeaceful && (fme.getFlag(FactionFlag.PEACEFUL) || fthat.getFlag(FactionFlag.PEACEFUL)))
+		if (!ignorePeaceful && (fme.getFlag(FFlag.PEACEFUL) || fthat.getFlag(FFlag.PEACEFUL)))
 		{
 			return Rel.TRUCE;
 		}

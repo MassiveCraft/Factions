@@ -14,7 +14,7 @@ import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.integration.Worldguard;
 import com.massivecraft.factions.struct.ChatMode;
-import com.massivecraft.factions.struct.FactionFlag;
+import com.massivecraft.factions.struct.FFlag;
 import com.massivecraft.factions.struct.Rel;
 import com.massivecraft.factions.util.RelationUtil;
 import com.massivecraft.factions.zcore.persist.PlayerEntity;
@@ -487,11 +487,11 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		return Board.getFactionAt(new FLocation(this)) == this.getFaction();
 	}
 	
-	public boolean isInOthersTerritory()
+	/*public boolean isInOthersTerritory()
 	{
 		Faction factionHere = Board.getFactionAt(new FLocation(this));
 		return factionHere != null && factionHere.isNormal() && factionHere != this.getFaction();
-	}
+	}*/
 
 	public boolean isInAllyTerritory()
 	{
@@ -530,7 +530,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 	public void leave(boolean makePay)
 	{
 		Faction myFaction = this.getFaction();
-		boolean perm = myFaction.getFlag(FactionFlag.PERMANENT);
+		boolean perm = myFaction.getFlag(FFlag.PERMANENT);
 		
 		if (!perm && this.getRole() == Rel.LEADER && myFaction.getFPlayers().size() > 1)
 		{

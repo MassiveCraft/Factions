@@ -5,7 +5,7 @@ import org.bukkit.ChatColor;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.integration.SpoutFeatures;
-import com.massivecraft.factions.struct.FactionFlag;
+import com.massivecraft.factions.struct.FFlag;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Rel;
 
@@ -34,11 +34,11 @@ public abstract class FRelationCommand extends FCommand
 		Faction them = this.argAsFaction(0);
 		if (them == null) return;
 		
-		if ( ! them.isNormal())
+		/*if ( ! them.isNormal())
 		{
 			msg("<b>Nope! You can't.");
 			return;
-		}
+		}*/
 		
 		if (them == myFaction)
 		{
@@ -64,13 +64,13 @@ public abstract class FRelationCommand extends FCommand
 			myFaction.msg(currentRelationColor+them.getTag()+"<i> were informed that you wish to be "+targetRelation.getColor()+targetRelation);
 		}
 		
-		if ( targetRelation != Rel.NEUTRAL && them.getFlag(FactionFlag.PEACEFUL))
+		if ( targetRelation != Rel.NEUTRAL && them.getFlag(FFlag.PEACEFUL))
 		{
 			them.msg("<i>This will have no effect while your faction is peaceful.");
 			myFaction.msg("<i>This will have no effect while their faction is peaceful.");
 		}
 		
-		if ( targetRelation != Rel.NEUTRAL && myFaction.getFlag(FactionFlag.PEACEFUL))
+		if ( targetRelation != Rel.NEUTRAL && myFaction.getFlag(FFlag.PEACEFUL))
 		{
 			them.msg("<i>This will have no effect while their faction is peaceful.");
 			myFaction.msg("<i>This will have no effect while your faction is peaceful.");

@@ -61,7 +61,6 @@ public class CmdPerm extends FCommand
 			return;
 		}
 		
-		// TODO: Awesomesause parser for deltas...
 		Set<Rel> targetValue = FPerm.parseRelDeltas(TextUtil.implode(args.subList(2, args.size()), " "), faction.getPermittedRelations(perm));
 
 		// Do the sender have the right to change perms for this faction?

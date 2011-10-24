@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.iface.RelationParticipator;
 import com.massivecraft.factions.integration.Econ;
-import com.massivecraft.factions.struct.FactionFlag;
+import com.massivecraft.factions.struct.FFlag;
 import com.massivecraft.factions.struct.FPerm;
 import com.massivecraft.factions.struct.Rel;
 import com.massivecraft.factions.util.*;
@@ -107,14 +107,14 @@ public class Faction extends Entity implements EconomyParticipator
 	
 	// FIELDS: Flag management
 	// TODO: This will save... defaults if they where changed to...
-	private Map<FactionFlag, Boolean> flagOverrides; // Contains the modifications to the default values
-	public boolean getFlag(FactionFlag flag)
+	private Map<FFlag, Boolean> flagOverrides; // Contains the modifications to the default values
+	public boolean getFlag(FFlag flag)
 	{
 		Boolean ret = this.flagOverrides.get(flag);
 		if (ret == null) ret = flag.getDefault();
 		return ret;
 	}
-	public void setFlag(FactionFlag flag, boolean value)
+	public void setFlag(FFlag flag, boolean value)
 	{
 		if (Conf.factionFlagDefaults.get(flag).equals(value))
 		{
@@ -132,14 +132,21 @@ public class Faction extends Entity implements EconomyParticipator
 		if (ret == null) ret = perm.getDefault();
 		return ret;
 	}
-	public void setPermittedRelations(FPerm perm, Set<Rel> value)
+	public void setPermittedRelations(FPerm perm, Set<Rel> rels)
 	{
-		if (Conf.factionPermDefaults.get(perm).equals(value))
+		if (Conf.factionPermDefaults.get(perm).equals(rels))
 		{
 			this.permOverrides.remove(perm);
 			return;
 		}
-		this.permOverrides.put(perm, value);
+		this.permOverrides.put(perm, rels);
+	}
+	
+	public void setPermittedRelations(FPerm perm, Rel... rels)
+	{
+		Set<Rel> temp = new HashSet<Rel>();
+		temp.addAll(Arrays.asList(rels));
+		this.setPermittedRelations(perm, temp);
 	}
 	
 	
@@ -158,7 +165,7 @@ public class Faction extends Entity implements EconomyParticipator
 		//this.peaceful = false;
 		//this.peacefulExplosionsEnabled = false;
 		this.money = 0.0;
-		this.flagOverrides = new LinkedHashMap<FactionFlag, Boolean>();
+		this.flagOverrides = new LinkedHashMap<FFlag, Boolean>();
 		this.permOverrides = new LinkedHashMap<FPerm, Set<Rel>>();
 	}
 	
@@ -240,7 +247,7 @@ public class Faction extends Entity implements EconomyParticipator
 	//----------------------------------------------//
 	public double getPower()
 	{
-		if (this.getFlag(FactionFlag.INFPOWER))
+		if (this.getFlag(FFlag.INFPOWER))
 		{
 			return 999999;
 		}
@@ -259,7 +266,7 @@ public class Faction extends Entity implements EconomyParticipator
 	
 	public double getPowerMax()
 	{
-		if (this.getFlag(FactionFlag.INFPOWER))
+		if (this.getFlag(FFlag.INFPOWER))
 		{
 			return 999999;
 		}
@@ -338,7 +345,7 @@ public class Faction extends Entity implements EconomyParticipator
 	
 	public FPlayer getFPlayerLeader()
 	{
-		if ( ! this.isNormal()) return null;
+		//if ( ! this.isNormal()) return null;
 		
 		for (FPlayer fplayer : FPlayers.i.get())
 		{
@@ -353,7 +360,7 @@ public class Faction extends Entity implements EconomyParticipator
 	public ArrayList<FPlayer> getFPlayersWhereRole(Rel role)
 	{
 		ArrayList<FPlayer> ret = new ArrayList<FPlayer>();
-		if ( ! this.isNormal()) return ret;
+		//if ( ! this.isNormal()) return ret;
 		
 		for (FPlayer fplayer : FPlayers.i.get())
 		{
@@ -408,13 +415,8 @@ public class Faction extends Entity implements EconomyParticipator
 	
 	public void memberLoggedOff()
 	{
-		if (this.isNormal())
-		{
-			lastPlayerLoggedOffTime = System.currentTimeMillis();
-		}
+		lastPlayerLoggedOffTime = System.currentTimeMillis();
 	}
-	
-	
 	
 	//----------------------------------------------//
 	// Messages

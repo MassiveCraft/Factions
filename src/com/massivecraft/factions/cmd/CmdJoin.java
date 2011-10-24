@@ -30,11 +30,11 @@ public class CmdJoin extends FCommand
 		Faction faction = this.argAsFaction(0);
 		if (faction == null) return;
 
-		if ( ! faction.isNormal())
+		/*if ( ! faction.isNormal())
 		{
 			msg("<b>You may only join normal factions. This is a system faction.");
 			return;
-		}
+		}*/
 		
 		if (faction == myFaction)
 		{

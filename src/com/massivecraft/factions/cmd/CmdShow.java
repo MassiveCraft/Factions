@@ -7,7 +7,7 @@ import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
-import com.massivecraft.factions.struct.FactionFlag;
+import com.massivecraft.factions.struct.FFlag;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Rel;
 
@@ -50,13 +50,13 @@ public class CmdShow extends FCommand
 		
 		msg(p.txt.titleize(faction.getTag(fme)));
 		msg("<a>Description: <i>%s", faction.getDescription());
-		if ( ! faction.isNormal())
+		/*if ( ! faction.isNormal())
 		{
 			return;
-		}
+		}*/
 		
 		String peaceStatus = "";
-		if (faction.getFlag(FactionFlag.PEACEFUL))
+		if (faction.getFlag(FFlag.PEACEFUL))
 		{
 			peaceStatus = "     "+Conf.colorTruce+"This faction is Peaceful";
 		}
@@ -64,7 +64,7 @@ public class CmdShow extends FCommand
 		msg("<a>Joining: <i>"+(faction.getOpen() ? "no invitation is needed" : "invitation is required")+peaceStatus);
 		msg("<a>Land / Power / Maxpower: <i> %d/%d/%d", faction.getLandRounded(), faction.getPowerRounded(), faction.getPowerMaxRounded());
 
-		if (faction.getFlag(FactionFlag.PERMANENT))
+		if (faction.getFlag(FFlag.PERMANENT))
 		{
 			msg("<a>This faction is permanent, remaining even with no members.");
 		}

@@ -124,13 +124,11 @@ public class FactionsBlockListener extends BlockListener
 		FLocation loc = new FLocation(location);
 		Faction factionHere = Board.getFactionAt(loc);
 
-		Faction myFaction = me.getFaction();
-
 		if (FPerm.PAINBUILD.has(me, location))
 		{
 			if (!justCheck)
 			{
-				me.msg("<b>It is painful to try to "+action+" in the territory of "+factionHere.getTag(myFaction));
+				me.msg("<b>It is painful to %s in the territory of %s<b>.", action, factionHere.describeTo(me));
 				player.damage(Conf.actionDeniedPainAmount);
 			}
 			return true;

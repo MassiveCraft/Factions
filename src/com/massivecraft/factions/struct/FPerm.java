@@ -81,7 +81,7 @@ public enum FPerm
 		{
 			rels.add("<p>"+rel.nicename);
 		}
-		ret += TextUtil.implode(rels, "<c> + ");
+		ret += TextUtil.implode(rels, "<c>+");
 		
 		if (withDesc)
 		{
@@ -125,7 +125,7 @@ public enum FPerm
 		return ret; 
 	}
 	
-	private static final String errorpattern = "<b>%s can't <h>%s<b> in the territory of %s<b>.";
+	private static final String errorpattern = "<b>%s<b> can't %s in the territory of %s<b>.";
 	public boolean has(RelationParticipator testSubject, FLocation floc, boolean informIfNot)
 	{
 		Faction factionThere = Board.getFactionAt(floc);

@@ -12,7 +12,7 @@ import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.P;
-import com.massivecraft.factions.struct.FactionFlag;
+import com.massivecraft.factions.struct.FFlag;
 import com.massivecraft.factions.struct.FPerm;
 import com.massivecraft.factions.struct.Rel;
 import com.massivecraft.factions.zcore.MCommand;
@@ -276,13 +276,13 @@ public abstract class FCommand extends MCommand<P>
 	}
 	
 	// FACTION FLAG ======================
-	public FactionFlag strAsFactionFlag(String name, FactionFlag def, boolean msg)
+	public FFlag strAsFactionFlag(String name, FFlag def, boolean msg)
 	{
-		FactionFlag ret = def;
+		FFlag ret = def;
 		
 		if (name != null)
 		{
-			FactionFlag flag = FactionFlag.parse(name);
+			FFlag flag = FFlag.parse(name);
 			if (flag != null)
 			{
 				ret = flag;
@@ -296,15 +296,15 @@ public abstract class FCommand extends MCommand<P>
 		
 		return ret;
 	}
-	public FactionFlag argAsFactionFlag(int idx, FactionFlag def, boolean msg)
+	public FFlag argAsFactionFlag(int idx, FFlag def, boolean msg)
 	{
 		return this.strAsFactionFlag(this.argAsString(idx), def, msg);
 	}
-	public FactionFlag argAsFactionFlag(int idx, FactionFlag def)
+	public FFlag argAsFactionFlag(int idx, FFlag def)
 	{
 		return this.argAsFactionFlag(idx, def, true);
 	}
-	public FactionFlag argAsFactionFlag(int idx)
+	public FFlag argAsFactionFlag(int idx)
 	{
 		return this.argAsFactionFlag(idx, null);
 	}

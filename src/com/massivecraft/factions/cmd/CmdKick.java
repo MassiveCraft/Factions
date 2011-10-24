@@ -5,7 +5,7 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.P;
-import com.massivecraft.factions.struct.FactionFlag;
+import com.massivecraft.factions.struct.FFlag;
 import com.massivecraft.factions.struct.Permission;
 
 public class CmdKick extends FCommand
@@ -82,7 +82,7 @@ public class CmdKick extends FCommand
 		if (Conf.logFactionKick)
 			P.p.log(fme.getName()+" kicked "+you.getName()+" from the faction: "+yourFaction.getTag());
 
-		if (yourFaction.getFPlayers().isEmpty() && !yourFaction.getFlag(FactionFlag.PERMANENT))
+		if (yourFaction.getFPlayers().isEmpty() && !yourFaction.getFlag(FFlag.PERMANENT))
 		{
 			// Remove this faction
 			for (FPlayer fplayer : FPlayers.i.getOnline())

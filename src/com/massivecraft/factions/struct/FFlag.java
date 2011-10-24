@@ -9,7 +9,7 @@ import com.massivecraft.factions.Conf;
  * 
  * The flags are either true or false.
  */
-public enum FactionFlag
+public enum FFlag
 {
 	// Faction flags
 	PERMANENT("permanent", "<i>A permanent faction will never be deleted.", false, false),
@@ -33,7 +33,7 @@ public enum FactionFlag
 	public final boolean defaultDefaultValue;
 	public final boolean defaultDefaultChangeable;
 	
-	private FactionFlag(final String nicename, final String desc, final boolean defaultDefaultValue, final boolean defaultDefaultChangeable)
+	private FFlag(final String nicename, final String desc, final boolean defaultDefaultValue, final boolean defaultDefaultChangeable)
 	{
 		this.nicename = nicename;
 		this.desc = desc;
@@ -73,7 +73,7 @@ public enum FactionFlag
 		return ret; 
 	}
 	
-	public static FactionFlag parse(String str)
+	public static FFlag parse(String str)
 	{
 		str = str.toLowerCase();
 		if (str.startsWith("per")) return PERMANENT;
