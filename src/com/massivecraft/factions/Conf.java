@@ -17,12 +17,12 @@ public class Conf
 	// Colors
 	public static ChatColor colorMember = ChatColor.GREEN;
 	public static ChatColor colorAlly = ChatColor.LIGHT_PURPLE;
-	public static ChatColor colorTruce = ChatColor.GOLD;
+	public static ChatColor colorTruce = ChatColor.DARK_PURPLE;
 	public static ChatColor colorNeutral = ChatColor.WHITE;
 	public static ChatColor colorEnemy = ChatColor.RED;
 	
-	//public static ChatColor colorPeaceful = ChatColor.GOLD;
-	//public static ChatColor colorWar = ChatColor.DARK_RED;
+	public static ChatColor colorNoPVP = ChatColor.GOLD;
+	public static ChatColor colorFriendlyFire = ChatColor.DARK_RED;
 	//public static ChatColor colorWilderness = ChatColor.DARK_GREEN;
 	
 	public static Map<FFlag, Boolean> factionFlagDefaults;
@@ -51,9 +51,9 @@ public class Conf
 	// what faction ID to start new players in when they first join the server; default is 0, "no faction"
 	public static String newPlayerStartingFactionID = "0";
 
-	public static boolean showMapFactionKey = true;
-	public static boolean showNeutralFactionsOnMap = true;
-	public static boolean showEnemyFactionsOnMap = true;
+	//public static boolean showMapFactionKey = true;
+	//public static boolean showNeutralFactionsOnMap = true;
+	//public static boolean showEnemyFactionsOnMap = true;
 	
 	// Disallow joining/leaving/kicking while power is negative
 	public static boolean canLeaveWithNegativePower = true;

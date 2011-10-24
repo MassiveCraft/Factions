@@ -38,13 +38,13 @@ public class Faction extends Entity implements EconomyParticipator
 	private String tag;
 	public String getTag() { return this.tag; }
 	public String getTag(String prefix) { return prefix+this.tag; }
-	public String getTag(Faction otherFaction)
+	public String getTag(RelationParticipator observer)
 	{
-		if (otherFaction == null)
+		if (observer == null)
 		{
 			return getTag();
 		}
-		return this.getTag(this.getColorTo(otherFaction).toString());
+		return this.getTag(this.getColorTo(observer).toString());
 	}
 	public String getTag(FPlayer otherFplayer) {
 		if (otherFplayer == null)

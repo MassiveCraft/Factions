@@ -22,6 +22,7 @@ import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.P;
 
 
+// TODO: Is this one even used anymore??
 public class MapFLocToStringSetTypeAdapter implements JsonDeserializer<Map<FLocation, Set<String>>>, JsonSerializer<Map<FLocation, Set<String>>>
 {
 

@@ -28,6 +28,29 @@ public class FactionsBlockListener extends BlockListener
 		this.p = p;
 	}
 	
+	public static boolean playerCanBuildDestroyBlock(Player player, Block block, String action, boolean justCheck)
+	{
+		FPlayer me = FPlayers.i.get(player);
+
+		if (me.isAdminBypassing()) return true;
+
+		Location location = block.getLocation();
+		FLocation loc = new FLocation(location);
+		Faction factionHere = Board.getFactionAt(loc);
+
+		if (FPerm.PAINBUILD.has(me, location))
+		{
+			if (!justCheck)
+			{
+				me.msg("<b>It is painful to %s in the territory of %s<b>.", action, factionHere.describeTo(me));
+				player.damage(Conf.actionDeniedPainAmount);
+			}
+			return true;
+		}
+		
+		return FPerm.BUILD.has(me, location, true);
+	}
+	
 	@Override
 	public void onBlockPlace(BlockPlaceEvent event)
 	{
@@ -62,8 +85,9 @@ public class FactionsBlockListener extends BlockListener
 	public void onBlockDamage(BlockDamageEvent event)
 	{
 		if (event.isCancelled()) return;
+		if ( ! event.getInstaBreak()) return;
 
-		if (event.getInstaBreak() && ! playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock(), "destroy", false))
+		if (! playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock(), "destroy", false))
 		{
 			event.setCancelled(true);
 		}
@@ -112,28 +136,5 @@ public class FactionsBlockListener extends BlockListener
 		{
 			event.setCancelled(true);
 		}
-	}
-
-	public static boolean playerCanBuildDestroyBlock(Player player, Block block, String action, boolean justCheck)
-	{
-		FPlayer me = FPlayers.i.get(player);
-
-		if (me.isAdminBypassing()) return true;
-
-		Location location = block.getLocation();
-		FLocation loc = new FLocation(location);
-		Faction factionHere = Board.getFactionAt(loc);
-
-		if (FPerm.PAINBUILD.has(me, location))
-		{
-			if (!justCheck)
-			{
-				me.msg("<b>It is painful to %s in the territory of %s<b>.", action, factionHere.describeTo(me));
-				player.damage(Conf.actionDeniedPainAmount);
-			}
-			return true;
-		}
-		
-		return FPerm.BUILD.has(me, location, true);
 	}
 }

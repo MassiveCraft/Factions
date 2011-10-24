@@ -12,7 +12,7 @@ import java.util.TreeMap;
 import org.bukkit.ChatColor;
 
 import com.google.gson.reflect.TypeToken;
-import com.massivecraft.factions.struct.Rel;
+import com.massivecraft.factions.iface.RelationParticipator;
 import com.massivecraft.factions.util.AsciiCompass;
 import com.massivecraft.factions.zcore.util.DiscUtil;
 
@@ -159,11 +159,11 @@ public class Board
 	 * north is in the direction of decreasing x
 	 * east is in the direction of decreasing z
 	 */
-	public static ArrayList<String> getMap(Faction faction, FLocation flocation, double inDegrees)
+	public static ArrayList<String> getMap(RelationParticipator observer, FLocation flocation, double inDegrees)
 	{
 		ArrayList<String> ret = new ArrayList<String>();
 		Faction factionLoc = getFactionAt(flocation);
-		ret.add(P.p.txt.titleize("("+flocation.getCoordString()+") "+factionLoc.getTag(faction)));
+		ret.add(P.p.txt.titleize("("+flocation.getCoordString()+") "+factionLoc.getTag(observer)));
 		
 		int halfWidth = Conf.mapWidth / 2;
 		int halfHeight = Conf.mapHeight / 2;
@@ -171,12 +171,12 @@ public class Board
 		int width = halfWidth * 2 + 1;
 		int height = halfHeight * 2 + 1;
 		
-		if (Conf.showMapFactionKey)
+		/*if (Conf.showMapFactionKey)
 		{
 			height--;
-		}
+		}*/
 		
-		Map<String, Character> fList = new HashMap<String, Character>();
+		Map<Faction, Character> fList = new HashMap<Faction, Character>();
 		int chrIdx = 0;
 		
 		// For each row
@@ -189,47 +189,38 @@ public class Board
 				if(dz == -(halfWidth) && dx == halfHeight)
 				{
 					row += ChatColor.AQUA+"+";
+					continue;
 				}
-				else
+			
+				FLocation flocationHere = topLeft.getRelative(dx, dz);
+				Faction factionHere = getFactionAt(flocationHere);
+				//Rel relation = faction.getRelationTo(factionHere);
+				if (factionHere.isNone())
 				{
-					FLocation flocationHere = topLeft.getRelative(dx, dz);
-					Faction factionHere = getFactionAt(flocationHere);
-					Rel relation = faction.getRelationTo(factionHere);
-					if (factionHere.isNone())
-					{
-						row += ChatColor.GRAY+"-";
-					}
-					/*else if (factionHere.isSafeZone())
-					{
-						row += Conf.colorPeaceful+"+";
-					}
-					else if (factionHere.isWarZone())
-					{
-						row += ChatColor.DARK_RED+"+";
-					}*/
-					else if
-					(
-						factionHere == faction
-						||
-						factionHere == factionLoc
-						||
-						relation.isAtLeast(Rel.ALLY)
-						||
-						(Conf.showNeutralFactionsOnMap && relation.equals(Rel.NEUTRAL))
-						||
-						(Conf.showEnemyFactionsOnMap && relation.equals(Rel.ENEMY))
-					)
-					{
-						if (!fList.containsKey(factionHere.getTag()))
-							fList.put(factionHere.getTag(), Conf.mapKeyChrs[chrIdx++]);
-						char tag = fList.get(factionHere.getTag());
-						row += factionHere.getColorTo(faction) + "" + tag;
-					}
-					else
-					{
-						row += ChatColor.GRAY+"-";
-					}
+					row += ChatColor.GRAY+"-";
 				}
+				else /*if
+				(
+					factionHere == faction
+					||
+					factionHere == factionLoc
+					||
+					relation.isAtLeast(Rel.ALLY)
+					||
+					(Conf.showNeutralFactionsOnMap && relation.equals(Rel.NEUTRAL))
+					||
+					(Conf.showEnemyFactionsOnMap && relation.equals(Rel.ENEMY))
+				)*/
+				{
+					if (!fList.containsKey(factionHere.getTag()))
+						fList.put(factionHere, Conf.mapKeyChrs[chrIdx++]);
+					char tag = fList.get(factionHere);
+					row += factionHere.getColorTo(observer) + "" + tag;
+				}
+				/*else
+				{
+					row += ChatColor.GRAY+"-";
+				}*/
 			}
 			ret.add(row);
 		}
@@ -243,15 +234,17 @@ public class Board
 		ret.set(3, asciiCompass.get(2)+ret.get(3).substring(3*3));
 		
 		// Add the faction key
-		if (Conf.showMapFactionKey)
+		// TODO: relation color for them
+		//if (Conf.showMapFactionKey)
+		//{
+			
+		String fRow = "";
+		for(Faction keyfaction : fList.keySet())
 		{
-			String fRow = "";
-			for(String key : fList.keySet())
-			{
-				fRow += String.format("%s%s: %s ", ChatColor.GRAY, fList.get(key), key);
-			}
-			ret.add(fRow);
+			fRow += String.format("%s%s: %s ", keyfaction.getColorTo(observer), fList.get(keyfaction), keyfaction.getTag());
 		}
+		ret.add(fRow);
+		//}
 		
 		return ret;
 	}

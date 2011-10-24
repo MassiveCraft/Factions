@@ -2,6 +2,7 @@ package com.massivecraft.factions.util;
 
 import org.bukkit.ChatColor;
 
+import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.iface.RelationParticipator;
@@ -121,26 +122,19 @@ public class RelationUtil
 
 	public static ChatColor getColorOfThatToMe(RelationParticipator that, RelationParticipator me)
 	{
-		//Faction thatFaction = getFaction(that);
-		// TODO: Add special colors to zone as a feature to replace this one
-		/*if (thatFaction != null)
+		Faction thatFaction = getFaction(that);
+		if (thatFaction != null && thatFaction != getFaction(me))
 		{
-			if (thatFaction.isPeaceful() && thatFaction != getFaction(me))
+			if (thatFaction.getFlag(FFlag.FRIENDLYFIRE) == true)
 			{
-				return Conf.colorPeaceful;
+				return Conf.colorFriendlyFire;
 			}
 			
-			if (thatFaction.isSafeZone() && thatFaction != getFaction(me))
+			if (thatFaction.getFlag(FFlag.PVP) == false)
 			{
-				return Conf.colorPeaceful;
+				return Conf.colorNoPVP;
 			}
-			
-			if (thatFaction.isWarZone() && thatFaction != getFaction(me))
-			{
-				return Conf.colorWar;
-			}
-		}*/
-		
+		}
 		return getRelationTo(that, me).getColor();
 	}
 }

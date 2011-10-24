@@ -42,10 +42,9 @@ public class CmdPerm extends FCommand
 		}
 		if (faction == null) return;
 		
-		msg(p.txt.titleize("Perm(s) for " + faction.describeTo(fme)));
-		
 		if ( ! this.argIsSet(1))
 		{
+			msg(p.txt.titleize("Perms for " + faction.describeTo(fme)));
 			for (FPerm perm : FPerm.values())
 			{
 				msg(perm.getStateInfo(faction.getPermittedRelations(perm), true));
@@ -57,6 +56,7 @@ public class CmdPerm extends FCommand
 		if (perm == null) return;
 		if ( ! this.argIsSet(2))
 		{
+			msg(p.txt.titleize("Perm for " + faction.describeTo(fme)));
 			msg(perm.getStateInfo(faction.getPermittedRelations(perm), true));
 			return;
 		}
@@ -81,6 +81,7 @@ public class CmdPerm extends FCommand
 		
 		// Do the change
 		faction.setPermittedRelations(perm, targetValue);
+		msg(p.txt.titleize("Perm for " + faction.describeTo(fme)));
 		msg(perm.getStateInfo(faction.getPermittedRelations(perm), true));
 	}
 	

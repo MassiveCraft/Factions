@@ -81,7 +81,14 @@ public enum FPerm
 		{
 			rels.add("<p>"+rel.nicename);
 		}
-		ret += TextUtil.implode(rels, "<c>+");
+		if (rels.size() > 0)
+		{
+			ret += TextUtil.implode(rels, "<c>+");
+		}
+		else
+		{
+			ret += "NOONE";
+		}
 		
 		if (withDesc)
 		{
