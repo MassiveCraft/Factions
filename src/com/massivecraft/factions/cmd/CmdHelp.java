@@ -87,7 +87,6 @@ public class CmdHelp extends FCommand
 		if (Econ.isSetup() && Conf.bankEnabled)
 		{
 			pageLines = new ArrayList<String>();
-			pageLines.add( "" );
 			pageLines.add( p.txt.parse("<i>Your faction has a bank which is used to pay for certain" ));
 			pageLines.add( p.txt.parse("<i>things, so it will need to have money deposited into it." ));
 			pageLines.add( p.txt.parse("<i>To learn more, use the money command." ));
