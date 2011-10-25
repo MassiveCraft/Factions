@@ -2,6 +2,7 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.struct.Role;
 
 public class CmdAutoClaim extends FCommand
 {
@@ -26,10 +27,20 @@ public class CmdAutoClaim extends FCommand
 	public void perform()
 	{
 		Faction forFaction = this.argAsFaction(0, myFaction);
-		if (forFaction == null || (forFaction == myFaction && fme.getAutoClaimFor() == myFaction))
+		if (forFaction == null || forFaction == fme.getAutoClaimFor())
 		{
 			fme.setAutoClaimFor(null);
 			msg("<i>Auto-claiming of land disabled.");
+			return;
+		}
+
+		if (! fme.canClaimForFaction(forFaction))
+		{
+			if (myFaction == forFaction)
+				msg("<b>You must be <h>%s<b> to claim land.", Role.MODERATOR.toString());
+			else
+				msg("<b>You can't claim land for <h>%s<b>.", forFaction.describeTo(fme));
+
 			return;
 		}
 		

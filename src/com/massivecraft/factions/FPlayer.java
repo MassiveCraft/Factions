@@ -632,6 +632,24 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		}
 	}
 	
+	public boolean canClaimForFaction(Faction forFaction)
+	{
+		if (forFaction.isNone()) return false;
+
+		if
+		(
+			   this.isAdminBypassing()
+			|| (forFaction == this.getFaction() && this.getRole().isAtLeast(Role.MODERATOR))
+			|| (forFaction.isSafeZone() && Permission.MANAGE_SAFE_ZONE.has(getPlayer()))
+			|| (forFaction.isWarZone() && Permission.MANAGE_WAR_ZONE.has(getPlayer()))
+		)
+		{
+			return true;
+		}
+
+		return false;
+	}
+
 	public boolean canClaimForFactionAtLocation(Faction forFaction, Location location, boolean notifyFailure)
 	{
 		String error = null;
