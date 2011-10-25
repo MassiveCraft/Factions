@@ -550,7 +550,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		{
 			error = P.p.txt.parse("<b>You can't claim more land! You need more power!");
 		}
-		else if (currentFaction.getRelationTo(forFaction).isAtLeast(Rel.TRUCE))
+		else if (currentFaction.getRelationTo(forFaction).isAtLeast(Rel.TRUCE) && ! currentFaction.isNone())
 		{
 			error = P.p.txt.parse("<b>You can't claim this land due to your relation with the current owner.");
 		}

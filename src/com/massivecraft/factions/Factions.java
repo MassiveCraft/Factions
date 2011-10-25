@@ -102,7 +102,7 @@ public class Factions extends EntityCollection<Faction>
 	public void setFlagsForWilderness(Faction faction)
 	{
 		faction.setFlag(FFlag.PERMANENT, true);
-		faction.setFlag(FFlag.PEACEFUL, true);
+		faction.setFlag(FFlag.PEACEFUL, false);
 		faction.setFlag(FFlag.INFPOWER, true);
 		faction.setFlag(FFlag.POWERLOSS, true);
 		faction.setFlag(FFlag.PVP, true);
