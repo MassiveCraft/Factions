@@ -8,7 +8,7 @@ public class FCmdRoot extends FCommand
 {
 	public CmdLeader cmdLeader = new CmdLeader();
 	public CmdAutoClaim cmdAutoClaim = new CmdAutoClaim();
-	public CmdBypass cmdBypass = new CmdBypass();
+	public CmdAdmin cmdBypass = new CmdAdmin();
 	public CmdChat cmdChat = new CmdChat();
 	public CmdClaim cmdClaim = new CmdClaim();
 	public CmdConfig cmdConfig = new CmdConfig();

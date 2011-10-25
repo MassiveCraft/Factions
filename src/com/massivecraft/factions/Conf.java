@@ -16,8 +16,8 @@ public class Conf
 	
 	// Colors
 	public static ChatColor colorMember = ChatColor.GREEN;
-	public static ChatColor colorAlly = ChatColor.LIGHT_PURPLE;
-	public static ChatColor colorTruce = ChatColor.DARK_PURPLE;
+	public static ChatColor colorAlly = ChatColor.DARK_PURPLE;
+	public static ChatColor colorTruce = ChatColor.LIGHT_PURPLE;
 	public static ChatColor colorNeutral = ChatColor.WHITE;
 	public static ChatColor colorEnemy = ChatColor.RED;
 	
@@ -206,11 +206,9 @@ public class Conf
 		baseCommandAliases.add("f");
 		
 		factionFlagDefaults = new LinkedHashMap<FFlag, Boolean>();
-		factionFlagIsChangeable = new LinkedHashMap<FFlag, Boolean>();
 		for (FFlag flag : FFlag.values())
 		{
 			factionFlagDefaults.put(flag, flag.defaultDefaultValue);
-			factionFlagIsChangeable.put(flag, flag.defaultDefaultChangeable);
 		}
 		
 		factionPermDefaults = new LinkedHashMap<FPerm, Set<Rel>>();

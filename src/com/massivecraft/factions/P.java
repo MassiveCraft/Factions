@@ -14,6 +14,11 @@ import org.bukkit.event.Event;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.plugin.Plugin;
 
+import com.massivecraft.factions.adapters.FFlagTypeAdapter;
+import com.massivecraft.factions.adapters.FLocToStringSetTypeAdapter;
+import com.massivecraft.factions.adapters.FPermTypeAdapter;
+import com.massivecraft.factions.adapters.LocationTypeAdapter;
+import com.massivecraft.factions.adapters.RelTypeAdapter;
 import com.massivecraft.factions.cmd.*;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.integration.SpoutFeatures;
@@ -24,10 +29,9 @@ import com.massivecraft.factions.listeners.FactionsEntityListener;
 import com.massivecraft.factions.listeners.FactionsPlayerListener;
 import com.massivecraft.factions.listeners.FactionsServerListener;
 import com.massivecraft.factions.struct.ChatMode;
+import com.massivecraft.factions.struct.FFlag;
+import com.massivecraft.factions.struct.FPerm;
 import com.massivecraft.factions.struct.Rel;
-import com.massivecraft.factions.util.MapFLocToStringSetTypeAdapter;
-import com.massivecraft.factions.util.MyLocationTypeAdapter;
-import com.massivecraft.factions.util.MyRelTypeAdapter;
 import com.massivecraft.factions.zcore.MPlugin;
 
 import com.nijiko.permissions.PermissionHandler;
@@ -132,6 +136,8 @@ public class P extends MPlugin
 		this.registerEvent(Event.Type.BLOCK_PLACE, this.blockListener, Event.Priority.Normal);
 		this.registerEvent(Event.Type.BLOCK_PISTON_EXTEND, this.blockListener, Event.Priority.Normal);
 		this.registerEvent(Event.Type.BLOCK_PISTON_RETRACT, this.blockListener, Event.Priority.Normal);
+		this.registerEvent(Event.Type.BLOCK_SPREAD, this.blockListener, Event.Priority.Normal);
+		this.registerEvent(Event.Type.BLOCK_BURN, this.blockListener, Event.Priority.Normal);
 		
 		// Server Events
 		this.registerEvent(Event.Type.PLUGIN_ENABLE, this.serverListener, Event.Priority.Monitor);
@@ -149,9 +155,11 @@ public class P extends MPlugin
 		.setPrettyPrinting()
 		.disableHtmlEscaping()
 		.excludeFieldsWithModifiers(Modifier.TRANSIENT, Modifier.VOLATILE)
-		.registerTypeAdapter(Location.class, new MyLocationTypeAdapter())
-		.registerTypeAdapter(mapFLocToStringSetType, new MapFLocToStringSetTypeAdapter())
-		.registerTypeAdapter(Rel.class, new MyRelTypeAdapter()); // This one is for users upgrading from 1.6 to 1.7... should be removed some time in the future.
+		.registerTypeAdapter(Location.class, new LocationTypeAdapter())
+		.registerTypeAdapter(mapFLocToStringSetType, new FLocToStringSetTypeAdapter())
+		.registerTypeAdapter(Rel.class, new RelTypeAdapter())
+		.registerTypeAdapter(FPerm.class, new FPermTypeAdapter())
+		.registerTypeAdapter(FFlag.class, new FFlagTypeAdapter());
 	}
 
 	@Override

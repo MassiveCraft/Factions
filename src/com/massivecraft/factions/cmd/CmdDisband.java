@@ -8,8 +8,8 @@ import com.massivecraft.factions.P;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.struct.FFlag;
+import com.massivecraft.factions.struct.FPerm;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.struct.Rel;
 
 public class CmdDisband extends FCommand
 {
@@ -37,19 +37,7 @@ public class CmdDisband extends FCommand
 		Faction faction = this.argAsFaction(0, fme == null ? null : myFaction);
 		if (faction == null) return;
 		
-		boolean isMyFaction = fme == null ? false : faction == myFaction;
-		
-		if (isMyFaction)
-		{
-			if ( ! assertMinRole(Rel.LEADER)) return;
-		}
-		else
-		{
-			if ( ! Permission.DISBAND_ANY.has(sender, true))
-			{
-				return;
-			}
-		}
+		if ( ! FPerm.DISBAND.has(sender, faction, true)) return;
 
 		if (faction.getFlag(FFlag.PERMANENT))
 		{

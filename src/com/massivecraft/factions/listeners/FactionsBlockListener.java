@@ -4,11 +4,13 @@ import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockBurnEvent;
 import org.bukkit.event.block.BlockDamageEvent;
 import org.bukkit.event.block.BlockListener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.block.BlockPistonExtendEvent;
 import org.bukkit.event.block.BlockPistonRetractEvent;
+import org.bukkit.event.block.BlockSpreadEvent;
 
 import com.massivecraft.factions.Board;
 import com.massivecraft.factions.Conf;
@@ -17,6 +19,7 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.P;
+import com.massivecraft.factions.struct.FFlag;
 import com.massivecraft.factions.struct.FPerm;
 
 
@@ -28,17 +31,40 @@ public class FactionsBlockListener extends BlockListener
 		this.p = p;
 	}
 	
+	@Override
+	public void onBlockSpread(BlockSpreadEvent event)
+	{
+		if (event.isCancelled()) return;
+		if (event.getSource().getTypeId() != 51) return; // Must be Fire
+		Faction faction = Board.getFactionAt(event.getBlock());
+		if (faction.getFlag(FFlag.FIRESPREAD) == false)
+		{
+			event.setCancelled(true);
+		}
+	}
+	
+	@Override
+	public void onBlockBurn(BlockBurnEvent event)
+	{
+		if (event.isCancelled()) return;
+		Faction faction = Board.getFactionAt(event.getBlock());
+		if (faction.getFlag(FFlag.FIRESPREAD) == false)
+		{
+			event.setCancelled(true);
+		}
+	}
+	
 	public static boolean playerCanBuildDestroyBlock(Player player, Block block, String action, boolean justCheck)
 	{
 		FPlayer me = FPlayers.i.get(player);
 
-		if (me.isAdminBypassing()) return true;
+		if (me.hasAdminMode()) return true;
 
 		Location location = block.getLocation();
 		FLocation loc = new FLocation(location);
 		Faction factionHere = Board.getFactionAt(loc);
 
-		if (FPerm.PAINBUILD.has(me, location))
+		if ( ! FPerm.BUILD.has(me, location) && FPerm.PAINBUILD.has(me, location))
 		{
 			if (!justCheck)
 			{
@@ -48,7 +74,7 @@ public class FactionsBlockListener extends BlockListener
 			return true;
 		}
 		
-		return FPerm.BUILD.has(me, location, true);
+		return FPerm.BUILD.has(me, loc, true);
 	}
 	
 	@Override
@@ -106,7 +132,6 @@ public class FactionsBlockListener extends BlockListener
 
 		// if potentially pushing into air in another territory, we need to check it out
 		
-		 
 		if (targetBlock.isEmpty() && ! FPerm.BUILD.has(pistonFaction, targetBlock.getLocation()))
 		{
 			event.setCancelled(true);

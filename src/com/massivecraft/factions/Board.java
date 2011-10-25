@@ -10,6 +10,8 @@ import java.util.Map.Entry;
 import java.util.TreeMap;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.block.Block;
 
 import com.google.gson.reflect.TypeToken;
 import com.massivecraft.factions.iface.RelationParticipator;
@@ -38,6 +40,14 @@ public class Board
 	public static Faction getFactionAt(FLocation flocation)
 	{
 		return Factions.i.get(getIdAt(flocation));
+	}
+	public static Faction getFactionAt(Location location)
+	{
+		return getFactionAt(new FLocation(location));
+	}
+	public static Faction getFactionAt(Block block)
+	{
+		return getFactionAt(new FLocation(block));
 	}
 	
 	public static void setIdAt(String id, FLocation flocation)

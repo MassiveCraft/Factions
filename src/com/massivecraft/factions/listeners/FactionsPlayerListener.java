@@ -242,14 +242,14 @@ public class FactionsPlayerListener extends PlayerListener
     public static boolean playerCanUseItemHere(Player player, Location loc, Material material, boolean justCheck)
 	{
 		FPlayer me = FPlayers.i.get(player);
-		if (me.isAdminBypassing()) return true;
+		if (me.hasAdminMode()) return true;
 		if (Conf.materialsEditTools.contains(material) && ! FPerm.BUILD.has(me, loc, ! justCheck)) return false;
 		return true;
 	}
 	public static boolean canPlayerUseBlock(Player player, Block block, boolean justCheck)
 	{
 		FPlayer me = FPlayers.i.get(player);
-		if (me.isAdminBypassing()) return true;
+		if (me.hasAdminMode()) return true;
 		Location loc = block.getLocation();
 		Material material = block.getType();
 		
@@ -350,7 +350,7 @@ public class FactionsPlayerListener extends PlayerListener
 			&&
 			! Conf.territoryNeutralDenyCommands.isEmpty()
 			&&
-			! me.isAdminBypassing()
+			! me.hasAdminMode()
 		)
 		{
 			Iterator<String> iter = Conf.territoryNeutralDenyCommands.iterator();
@@ -378,7 +378,7 @@ public class FactionsPlayerListener extends PlayerListener
 			&&
 			! Conf.territoryEnemyDenyCommands.isEmpty()
 			&&
-			! me.isAdminBypassing()
+			! me.hasAdminMode()
 		)
 		{
 			Iterator<String> iter = Conf.territoryEnemyDenyCommands.iterator();

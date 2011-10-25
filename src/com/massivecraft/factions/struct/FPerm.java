@@ -7,12 +7,16 @@ import java.util.List;
 import java.util.Set;
 
 import org.bukkit.Location;
+import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Player;
 
 import com.massivecraft.factions.Board;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.P;
 import com.massivecraft.factions.iface.RelationParticipator;
 
 /**
@@ -21,13 +25,18 @@ import com.massivecraft.factions.iface.RelationParticipator;
  */
 public enum FPerm
 {
-	BUILD("build", "edit the terrain", Rel.LEADER, Rel.OFFICER, Rel.MEMBER),
+	BUILD("build", "edit the terrain",             Rel.LEADER, Rel.OFFICER, Rel.MEMBER),
 	PAINBUILD("painbuild", "edit but take damage", Rel.ALLY),
-	DOOR("door", "use doors", Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.ALLY),
-	CONTAINER("container", "use containers", Rel.LEADER, Rel.OFFICER, Rel.MEMBER),
-	BUTTON("button", "use stone buttons", Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.ALLY),
-	LEVER("lever", "use levers", Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.ALLY),
-	WITHDRAW("withdraw", "withdraw faction money", Rel.LEADER, Rel.OFFICER),
+	DOOR("door", "use doors",                      Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.ALLY),
+	BUTTON("button", "use stone buttons",          Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.ALLY),
+	LEVER("lever", "use levers",                   Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.ALLY),
+	CONTAINER("container", "use containers",       Rel.LEADER, Rel.OFFICER, Rel.MEMBER),
+	KICK("kick", "kick members",                   Rel.LEADER, Rel.OFFICER),
+	SETHOME("sethome", "set the home",             Rel.LEADER, Rel.OFFICER),
+	WITHDRAW("withdraw", "withdraw money",         Rel.LEADER, Rel.OFFICER),
+	TERRITORY("territory", "claim or unclaim",     Rel.LEADER, Rel.OFFICER),
+	DISBAND("disband", "disband the faction",      Rel.LEADER),
+	PERMS("perms", "manage permissions",           Rel.LEADER),
 	;
 	
 	private final String nicename;
@@ -63,12 +72,17 @@ public enum FPerm
 	{
 		str = str.toLowerCase();
 		if (str.startsWith("bui")) return BUILD;
-		if (str.startsWith("p")) return PAINBUILD;
-		if (str.startsWith("d")) return DOOR;
-		if (str.startsWith("c")) return CONTAINER;
+		if (str.startsWith("pa"))  return PAINBUILD;
+		if (str.startsWith("do"))  return DOOR;
 		if (str.startsWith("but")) return BUTTON;
-		if (str.startsWith("l")) return LEVER;
-		if (str.startsWith("w")) return WITHDRAW;
+		if (str.startsWith("l"))   return LEVER;
+		if (str.startsWith("co"))  return CONTAINER;
+		if (str.startsWith("k"))   return KICK;
+		if (str.startsWith("s"))   return SETHOME;
+		if (str.startsWith("w"))   return WITHDRAW;
+		if (str.startsWith("t"))   return TERRITORY;
+		if (str.startsWith("di"))  return DISBAND;
+		if (str.startsWith("pe"))  return PERMS;
 		return null;
 	}
 	
@@ -145,44 +159,63 @@ public enum FPerm
 		return ret; 
 	}
 	
-	private static final String errorpattern = "<b>%s<b> can't %s in the territory of %s<b>.";
-	public boolean has(RelationParticipator testSubject, Faction hostFaction, boolean informIfNot)
+	private static final String errorpattern = "%s<b> does not allow you to %s<b>.";
+	public boolean has(Object testSubject, Faction hostFaction, boolean informIfNot)
 	{
-		//Faction factionDoer = RelationUtil.getFaction(testSubject);
-		//P.p.log("Testing the permission "+this.toString()+" for a "+testSubject.getClass().getSimpleName());
-		//P.p.log("hostFaction: "+hostFaction);
-		Rel rel = testSubject.getRelationTo(hostFaction);
+		if (testSubject instanceof ConsoleCommandSender) return true;
 		
-		//P.p.log("rel: "+rel);
+		RelationParticipator rpSubject = null;
 		
+		if (testSubject instanceof Player)
+		{
+			rpSubject = FPlayers.i.get((Player)testSubject);
+		}
+		else if (testSubject instanceof RelationParticipator)
+		{
+			rpSubject = (RelationParticipator) testSubject;
+		}
+		else
+		{
+			return false;
+		}
+		
+		Rel rel = rpSubject.getRelationTo(hostFaction);
+		
+		// TODO: Create better description messages like: "You must at least be officer".
 		boolean ret = hostFaction.getPermittedRelations(this).contains(rel);
 		
-		if (!ret && informIfNot && testSubject instanceof FPlayer)
+		if (rpSubject instanceof FPlayer && ret == false && ((FPlayer)rpSubject).hasAdminMode()) ret = true;
+		
+		if (!ret && informIfNot && rpSubject instanceof FPlayer)
 		{
-			FPlayer fplayer = (FPlayer)testSubject;
-			fplayer.msg(errorpattern, fplayer.describeTo(fplayer, true), this.getDescription(), hostFaction.describeTo(fplayer));
+			FPlayer fplayer = (FPlayer)rpSubject;
+			fplayer.msg(errorpattern, hostFaction.describeTo(fplayer, true), this.getDescription());
+			if (Permission.ADMIN.has(fplayer.getPlayer()))
+			{
+				fplayer.msg("<i>You can bypass by using " + P.p.cmdBase.cmdBypass.getUseageTemplate(false));
+			}
 		}
 		return ret;
 	}
-	public boolean has(RelationParticipator testSubject, Faction hostFaction)
+	public boolean has(Object testSubject, Faction hostFaction)
 	{
 		return this.has(testSubject, hostFaction, false);
 	}
-	public boolean has(RelationParticipator testSubject, FLocation floc, boolean informIfNot)
+	public boolean has(Object testSubject, FLocation floc, boolean informIfNot)
 	{
 		Faction factionThere = Board.getFactionAt(floc);
 		return this.has(testSubject, factionThere, informIfNot);
 	}
-	public boolean has(RelationParticipator testSubject, Location loc, boolean informIfNot)
+	public boolean has(Object testSubject, Location loc, boolean informIfNot)
 	{
 		FLocation floc = new FLocation(loc);
 		return this.has(testSubject, floc, informIfNot);
 	}
-	public boolean has(RelationParticipator testSubject, Location loc)
+	public boolean has(Object testSubject, Location loc)
 	{
 		return this.has(testSubject, loc, false);
 	}
-	public boolean has(RelationParticipator testSubject, FLocation floc)
+	public boolean has(Object testSubject, FLocation floc)
 	{
 		return this.has(testSubject, floc, false);
 	}

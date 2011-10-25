@@ -122,9 +122,26 @@ public class Faction extends Entity implements EconomyParticipator
 		if (ret == null) ret = perm.getDefault();
 		return ret;
 	}
+	
+	public void addPermittedRelation(FPerm perm, Rel rel)
+	{
+		Set<Rel> newPermittedRelations = EnumSet.noneOf(Rel.class);
+		newPermittedRelations.addAll(this.getPermittedRelations(perm));
+		newPermittedRelations.add(rel);
+		this.setPermittedRelations(perm, newPermittedRelations);
+	}
+	
+	public void removePermittedRelation(FPerm perm, Rel rel)
+	{
+		Set<Rel> newPermittedRelations = EnumSet.noneOf(Rel.class);
+		newPermittedRelations.addAll(this.getPermittedRelations(perm));
+		newPermittedRelations.remove(rel);
+		this.setPermittedRelations(perm, newPermittedRelations);
+	}
+	
 	public void setPermittedRelations(FPerm perm, Set<Rel> rels)
 	{
-		if (Conf.factionPermDefaults.get(perm).equals(rels))
+		if (perm.getDefault().equals(rels))
 		{
 			this.permOverrides.remove(perm);
 			return;

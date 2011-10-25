@@ -1,4 +1,4 @@
-package com.massivecraft.factions.util;
+package com.massivecraft.factions.adapters;
 
 import java.lang.reflect.Type;
 import java.util.concurrent.ConcurrentHashMap;
@@ -23,7 +23,7 @@ import com.massivecraft.factions.P;
 
 
 // TODO: Is this one even used anymore??
-public class MapFLocToStringSetTypeAdapter implements JsonDeserializer<Map<FLocation, Set<String>>>, JsonSerializer<Map<FLocation, Set<String>>>
+public class FLocToStringSetTypeAdapter implements JsonDeserializer<Map<FLocation, Set<String>>>, JsonSerializer<Map<FLocation, Set<String>>>
 {
 
 	@Override

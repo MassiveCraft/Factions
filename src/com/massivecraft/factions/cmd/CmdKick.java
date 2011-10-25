@@ -6,6 +6,7 @@ import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.FFlag;
+import com.massivecraft.factions.struct.FPerm;
 import com.massivecraft.factions.struct.Permission;
 
 public class CmdKick extends FCommand
@@ -41,31 +42,16 @@ public class CmdKick extends FCommand
 			return;
 		}
 
+		if ( ! Conf.canLeaveWithNegativePower && you.getPower() < 0)
+		{
+			msg("<b>You cannot kick that member until their power is positive.");
+			return;
+		}
+		
 		Faction yourFaction = you.getFaction();
 
-		// players with admin-level "disband" permission can bypass these requirements
-		if ( ! Permission.KICK_ANY.has(sender))
-		{
-			if (yourFaction != myFaction)
-			{
-				msg("%s<b> is not a member of %s", you.describeTo(fme, true), myFaction.describeTo(fme));
-				return;
-			}
-
-			if (you.getRole().isAtLeast(fme.getRole()))
-			{
-				// TODO add more informative messages.
-				msg("<b>Your rank is too low to kick this player.");
-				return;
-			}
-
-			if ( ! Conf.canLeaveWithNegativePower && you.getPower() < 0)
-			{
-				msg("<b>You cannot kick that member until their power is positive.");
-				return;
-			}
-		}
-
+		if (fme != null && ! FPerm.KICK.has(fme, yourFaction)) return;
+		
 		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
 		if ( ! payForCommand(Conf.econCostKick, "to kick someone from the faction", "for kicking someone from the faction")) return;
 

@@ -15,6 +15,7 @@ import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.integration.Worldguard;
 import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.struct.FFlag;
+import com.massivecraft.factions.struct.FPerm;
 import com.massivecraft.factions.struct.Rel;
 import com.massivecraft.factions.util.RelationUtil;
 import com.massivecraft.factions.zcore.persist.PlayerEntity;
@@ -80,9 +81,9 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 	public Faction getAutoClaimFor() { return autoClaimFor; }
 	public void setAutoClaimFor(Faction faction) { this.autoClaimFor = faction; }
 		
-	private transient boolean isAdminBypassing = false;
-	public boolean isAdminBypassing() { return this.isAdminBypassing; }
-	public void setIsAdminBypassing(boolean val) { this.isAdminBypassing = val; }
+	private transient boolean hasAdminMode = false;
+	public boolean hasAdminMode() { return this.hasAdminMode; }
+	public void setHasAdminMode(boolean val) { this.hasAdminMode = val; }
 	
 	// FIELD: loginPvpDisabled
 	private transient boolean loginPvpDisabled;
@@ -470,7 +471,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		}
 
 		// if economy is enabled and they're not on the bypass list, make 'em pay
-		if (makePay && Econ.shouldBeUsed() && ! this.isAdminBypassing())
+		if (makePay && Econ.shouldBeUsed() && ! this.hasAdminMode())
 		{
 			double cost = Conf.econCostLeave;
 			if ( ! Econ.modifyMoney(this, -cost, "to leave your faction.", "for leaving your faction.")) return;
@@ -511,24 +512,6 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 				P.p.log("The faction "+myFaction.getTag()+" ("+myFaction.getId()+") was disbanded due to the last player ("+this.getName()+") leaving.");
 		}
 	}
-	
-	public boolean canClaimForFaction(Faction forFaction)
-	{
-		if (forFaction.isNone()) return false;
-
-		if
-		(
-			   this.isAdminBypassing()
-			|| (forFaction == this.getFaction() && this.getRole().isAtLeast(Role.MODERATOR))
-			|| (forFaction.isSafeZone() && Permission.MANAGE_SAFE_ZONE.has(getPlayer()))
-			|| (forFaction.isWarZone() && Permission.MANAGE_WAR_ZONE.has(getPlayer()))
-		)
-		{
-			return true;
-		}
-
-		return false;
-	}
 
 	public boolean canClaimForFactionAtLocation(Faction forFaction, Location location, boolean notifyFailure)
 	{
@@ -547,21 +530,17 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		{
 			error = P.p.txt.parse("<b>Sorry, this world has land claiming disabled.");
 		}
-		else if (this.isAdminBypassing())
+		else if (this.hasAdminMode())
 		{
 			return true;
-		}
-		else if (myFaction != forFaction)
-		{
-			error = P.p.txt.parse("<b>You can't claim land for <h>%s<b>.", forFaction.describeTo(this));
 		}
 		else if (forFaction == currentFaction)
 		{
 			error = P.p.txt.parse("%s<i> already own this land.", forFaction.describeTo(this, true));
 		}
-		else if ( ! this.getRole().isAtLeast(Rel.OFFICER))
+		else if ( ! FPerm.TERRITORY.has(this, forFaction, true))
 		{
-			error = P.p.txt.parse("<b>You must be <h>%s<b> to claim land.", Rel.OFFICER.toString());
+			return false;
 		}
 		else if (forFaction.getFPlayers().size() < Conf.claimsRequireMinFactionMembers)
 		{
@@ -578,7 +557,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		else if
 		(
 			Conf.claimsMustBeConnected
-			&& ! this.isAdminBypassing()
+			&& ! this.hasAdminMode()
 			&& myFaction.getLandRoundedInWorld(flocation.getWorldName()) > 0
 			&& !Board.isConnectedLocation(flocation, myFaction)
 			&& (!Conf.claimsCanBeUnconnectedIfOwnedByOtherFaction || !currentFaction.isNormal())
@@ -624,7 +603,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		// if economy is enabled and they're not on the bypass list, make 'em pay
 		// TODO: Add flag no costs??
 		//if (Econ.shouldBeUsed() && ! this.isAdminBypassing() && ! forFaction.isSafeZone() && ! forFaction.isWarZone())
-		if (Econ.shouldBeUsed() && ! this.isAdminBypassing())
+		if (Econ.shouldBeUsed() && ! this.hasAdminMode())
 		{
 			double cost = Econ.calculateClaimCost(ownedLand, currentFaction.isNormal());
 			//String costString = Econ.moneyString(cost);

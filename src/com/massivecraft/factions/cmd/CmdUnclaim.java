@@ -7,8 +7,8 @@ import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.P;
+import com.massivecraft.factions.struct.FPerm;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.struct.Rel;
 
 public class CmdUnclaim extends FCommand
 {
@@ -34,37 +34,8 @@ public class CmdUnclaim extends FCommand
 	{
 		FLocation flocation = new FLocation(fme);
 		Faction otherFaction = Board.getFactionAt(flocation);
-		
-		if (fme.isAdminBypassing())
-		{
-			Board.removeAt(flocation);
-			SpoutFeatures.updateTerritoryDisplayLoc(flocation);
 
-			otherFaction.msg("%s<i> unclaimed some of your land.", fme.describeTo(otherFaction, true));
-			msg("<i>You unclaimed this land.");
-
-			if (Conf.logLandUnclaims)
-				P.p.log(fme.getName()+" unclaimed land at ("+flocation.getCoordString()+") from the faction: "+otherFaction.getTag());
-
-			return;
-		}
-		
-		if ( ! assertHasFaction())
-		{
-			return;
-		}
-		
-		if ( ! assertMinRole(Rel.OFFICER))
-		{
-			return;
-		}
-		
-		
-		if ( myFaction != otherFaction)
-		{
-			msg("<b>You don't own this land.");
-			return;
-		}
+		if ( ! FPerm.TERRITORY.has(sender, otherFaction, true)) return;
 
 		//String moneyBack = "<i>";
 		if (Econ.shouldBeUsed())

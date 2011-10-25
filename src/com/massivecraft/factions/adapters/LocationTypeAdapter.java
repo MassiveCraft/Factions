@@ -1,4 +1,4 @@
-package com.massivecraft.factions.util;
+package com.massivecraft.factions.adapters;
 
 import java.lang.reflect.Type;
 import java.util.logging.Level;
@@ -16,7 +16,7 @@ import com.google.gson.JsonSerializer;
 import com.massivecraft.factions.P;
 
 
-public class MyLocationTypeAdapter implements JsonDeserializer<Location>, JsonSerializer<Location>
+public class LocationTypeAdapter implements JsonDeserializer<Location>, JsonSerializer<Location>
 {
 	private static final String WORLD = "world";
 	private static final String X = "x";

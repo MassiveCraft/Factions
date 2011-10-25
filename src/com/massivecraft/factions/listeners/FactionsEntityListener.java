@@ -3,6 +3,7 @@ package com.massivecraft.factions.listeners;
 import java.text.MessageFormat;
 
 import org.bukkit.Location;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
@@ -91,15 +92,15 @@ public class FactionsEntityListener extends EntityListener
 	{
 		if ( event.isCancelled()) return;
 		
-		Location loc = event.getLocation();
-		
-		Faction faction = Board.getFactionAt(new FLocation(loc));
-
-		if (faction.getFlag(FFlag.EXPLOSIONS) == false)
+		for (Block block : event.blockList())
 		{
-			// faction is peaceful and has explosions set to disabled
-			event.setCancelled(true);
-			return;
+			Faction faction = Board.getFactionAt(new FLocation(block));
+			if (faction.getFlag(FFlag.EXPLOSIONS) == false)
+			{
+				// faction is peaceful and has explosions set to disabled
+				event.setCancelled(true);
+				return;
+			}
 		}
 	}
 	

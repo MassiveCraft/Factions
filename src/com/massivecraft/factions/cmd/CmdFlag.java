@@ -3,7 +3,6 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.struct.FFlag;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.struct.Rel;
 
 public class CmdFlag extends FCommand
 {
@@ -12,6 +11,7 @@ public class CmdFlag extends FCommand
 	{
 		super();
 		this.aliases.add("flag");
+		this.aliases.add("flags");
 		
 		//this.requiredArgs.add("");
 		this.optionalArgs.put("faction", "your");
@@ -59,26 +59,8 @@ public class CmdFlag extends FCommand
 		Boolean targetValue = this.argAsBool(2);
 		if (targetValue == null) return;
 
-		// Do the sender have the right to change flags for this faction?
-		if (Permission.FLAG_ANY.has(sender))
-		{
-			// This sender may modify any flag for anyone
-		}
-		else if ( ! flag.isChangeable())
-		{
-			msg("<b>Only server operators can change this flag.");
-			return;
-		}
-		else if (faction != myFaction)
-		{
-			msg("<b>You are not a member in that faction.");
-			return;
-		}
-		else if (fme.getRole().isLessThan(Rel.OFFICER))
-		{
-			msg("<b>You must be faction leader or officer to change your faction flags.");
-			return;
-		}
+		// Do the sender have the right to change flags?
+		if ( ! Permission.FLAG_SET.has(sender, true)) return;
 		
 		// Do the change
 		msg(p.txt.titleize("Flag for " + faction.describeTo(fme, true)));

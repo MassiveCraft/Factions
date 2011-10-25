@@ -15,6 +15,7 @@ public class CmdPerm extends FCommand
 	{
 		super();
 		this.aliases.add("perm");
+		this.aliases.add("perms");
 		
 		//this.requiredArgs.add("");
 		this.optionalArgs.put("faction", "your");
@@ -63,26 +64,20 @@ public class CmdPerm extends FCommand
 			return;
 		}
 		
-		Set<Rel> targetValue = FPerm.parseRelDeltas(TextUtil.implode(args.subList(2, args.size()), " "), faction.getPermittedRelations(perm));
-
 		// Do the sender have the right to change perms for this faction?
-		if (Permission.PERM_ANY.has(sender))
-		{
-			// This sender may modify any perm for anyone
-		}
-		else if (faction != myFaction)
-		{
-			msg("<b>You are not a member in that faction.");
-			return;
-		}
-		else if (fme.getRole().isLessThan(Rel.OFFICER))
-		{
-			msg("<b>You must be faction leader or officer to change your faction permissions.");
-			return;
-		}
+		if ( ! FPerm.PERMS.has(sender, faction, true)) return;
 		
 		// Do the change
+		Set<Rel> targetValue = FPerm.parseRelDeltas(TextUtil.implode(args.subList(2, args.size()), " "), faction.getPermittedRelations(perm));
+		
+		// The following is to make sure the leader always has the right to change perms if that is our goal.
+		if (perm == FPerm.PERMS && FPerm.PERMS.getDefault().contains(Rel.LEADER))
+		{
+			targetValue.add(Rel.LEADER);
+		}
+		
 		faction.setPermittedRelations(perm, targetValue);
+		
 		msg(p.txt.titleize("Perm for " + faction.describeTo(fme, true)));
 		msg(FPerm.getStateHeaders());
 		msg(perm.getStateInfo(faction.getPermittedRelations(perm), true));

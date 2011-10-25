@@ -1,8 +1,8 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.struct.FPerm;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.struct.Role;
 
 public class CmdAutoClaim extends FCommand
 {
@@ -33,16 +33,8 @@ public class CmdAutoClaim extends FCommand
 			msg("<i>Auto-claiming of land disabled.");
 			return;
 		}
-
-		if (! fme.canClaimForFaction(forFaction))
-		{
-			if (myFaction == forFaction)
-				msg("<b>You must be <h>%s<b> to claim land.", Role.MODERATOR.toString());
-			else
-				msg("<b>You can't claim land for <h>%s<b>.", forFaction.describeTo(fme));
-
-			return;
-		}
+		
+		if ( ! FPerm.TERRITORY.has(fme, forFaction, true)) return;
 		
 		fme.setAutoClaimFor(forFaction);
 		
