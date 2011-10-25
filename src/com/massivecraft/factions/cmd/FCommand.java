@@ -166,7 +166,7 @@ public abstract class FCommand extends MCommand<P>
 		
 		if (msg && ret == null)
 		{
-			this.msg("<b>No player \"<p>%s<b>\" could not be found.", name);			
+			this.msg("<b>No player \"<p>%s<b>\" could be found.", name);			
 		}
 		
 		return ret;
