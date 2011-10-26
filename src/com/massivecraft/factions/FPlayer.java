@@ -647,6 +647,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 	public boolean shouldBeSaved()
 	{
 		if (this.hasFaction()) return true;
+		if (this.getPowerRounded() != this.getPowerMaxRounded()) return true;
 		return false;
 	}
 	
