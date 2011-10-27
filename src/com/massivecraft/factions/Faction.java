@@ -1,6 +1,7 @@
 package com.massivecraft.factions;
 
 import java.util.*;
+import java.util.logging.Level;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -88,6 +89,11 @@ public class Faction extends Entity implements EconomyParticipator
 		// We need to override the default money given to players.
 		if ( ! Econ.getMethod().hasAccount(aid))
 		{
+			if ( ! Econ.getMethod().createAccount(aid))
+			{
+				P.p.log(Level.SEVERE, "Error creating faction bank account through Register: "+aid);
+				return null;
+			}
 			MethodAccount acc = Econ.getMethod().getAccount(aid);
 			acc.set(0); 
 		}
