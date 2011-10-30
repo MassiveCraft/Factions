@@ -39,6 +39,10 @@ public class Conf
 	public static double powerOfflineLossLimit = 0.0;  // players will no longer lose power from being offline once their power drops to this amount or less
 	public static double powerFactionMax = 0.0;  // if greater than 0, the cap on how much power a faction can have (additional power from players beyond that will act as a "buffer" of sorts)
 	
+	public static boolean powerCappedByLand = false; // If enabled, a faction's current land acts as a limit to their power.
+	public static double powerCapPowerBuffer = 5.0; // The amount of additional power a faction may have above its land when capped.
+	public static double powerCapPowerLossPerMinute = 0.1; // The faction loses this much power per minute when the faction has more power than land + buffer.
+	
 	public static String prefixLeader = "**";
 	public static String prefixOfficer = "*";
 	
