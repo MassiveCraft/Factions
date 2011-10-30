@@ -366,6 +366,33 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 	
 	protected void updatePower()
 	{
+		long now = System.currentTimeMillis();
+		long millisPassed = now - this.lastPowerUpdateTime;
+		this.lastPowerUpdateTime = now;
+		int millisPerMinute = 60*1000;
+		boolean powerCurrentlyCapped = false;
+		
+		
+		//Check the land power cap, lose power if necessary
+		//Happens even when a player is offline.		
+		if (Conf.powerCappedByLand && this.hasFaction()) {
+			Faction faction = this.getFaction();		
+			int land = faction.getLandRounded();
+			double power = faction.getPower();
+			int memberCount = faction.getFPlayers().size();
+			
+			
+			//Make the power loss across all factions uniform
+			// a faction with 30 members will lose power at
+			// the same rate as a faction with 3 members
+			double powerLossPerMinute = Conf.powerCapPowerLossPerMinute / memberCount;
+			
+			if (power > land + Conf.powerCapPowerBuffer) {
+				this.alterPower(millisPassed * powerLossPerMinute / millisPerMinute);
+				powerCurrentlyCapped = true;
+			}
+		}
+		
 		if (this.isOffline())
 		{
 			losePowerFromBeingOffline();
@@ -374,12 +401,11 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 				return;
 			}
 		}
-		long now = System.currentTimeMillis();
-		long millisPassed = now - this.lastPowerUpdateTime;
-		this.lastPowerUpdateTime = now;
 		
-		int millisPerMinute = 60*1000;
-		this.alterPower(millisPassed * Conf.powerPerMinute / millisPerMinute);
+		//Gain power for being online, but only when not being capped
+		if (!powerCurrentlyCapped) {
+			this.alterPower(millisPassed * Conf.powerPerMinute / millisPerMinute);
+		}
 	}
 
 	protected void losePowerFromBeingOffline()
