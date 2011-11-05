@@ -101,6 +101,8 @@ public class Factions extends EntityCollection<Faction>
 	//----------------------------------------------//
 	public void setFlagsForWilderness(Faction faction)
 	{
+		faction.setOpen(false);
+		
 		faction.setFlag(FFlag.PERMANENT, true);
 		faction.setFlag(FFlag.PEACEFUL, false);
 		faction.setFlag(FFlag.INFPOWER, true);
@@ -122,6 +124,8 @@ public class Factions extends EntityCollection<Faction>
 	
 	public void setFlagsForSafeZone(Faction faction)
 	{
+		faction.setOpen(false);
+		
 		faction.setFlag(FFlag.PERMANENT, true);
 		faction.setFlag(FFlag.PEACEFUL, true);
 		faction.setFlag(FFlag.INFPOWER, true);
@@ -142,6 +146,8 @@ public class Factions extends EntityCollection<Faction>
 	
 	public void setFlagsForWarZone(Faction faction)
 	{
+		faction.setOpen(false);
+		
 		faction.setFlag(FFlag.PERMANENT, true);
 		faction.setFlag(FFlag.PEACEFUL, true);
 		faction.setFlag(FFlag.INFPOWER, true);
