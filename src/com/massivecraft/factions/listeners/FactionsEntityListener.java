@@ -207,7 +207,7 @@ public class FactionsEntityListener extends EntityListener
 		
 		// You can not hurt neutrals in their own territory.
 		boolean ownTerritory = defender.isInOwnTerritory();
-		if (ownTerritory && relation == Rel.NEUTRAL)
+		if (defender.hasFaction() && ownTerritory && relation == Rel.NEUTRAL)
 		{
 			attacker.msg("<i>You can't hurt %s<i> in their own territory unless you declare them as an enemy.", defender.describeTo(attacker));
 			defender.msg("%s<i> tried to hurt you.", attacker.describeTo(defender, true));
