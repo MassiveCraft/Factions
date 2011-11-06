@@ -194,12 +194,13 @@ public class SpoutFeatures
 		if (viewedFaction == null)
 			return;
 
-		SpoutPlayer sPlayer = SpoutManager.getPlayer(viewer.getPlayer());
-		Player pViewed = viewed.getPlayer();
-		if (pViewed == null || viewer.getPlayer() == null)
-			return;
-
-		String viewedTitle = viewed.getTitle();
+ 		Player pViewed = viewed.getPlayer();
+		Player pViewer = viewer.getPlayer();
+		if (pViewed == null || pViewer == null)
+ 			return;
+ 
+		SpoutPlayer sPlayer = SpoutManager.getPlayer(pViewer);
+ 		String viewedTitle = viewed.getTitle();
 		Rel viewedRole = viewed.getRole();
 
 		if ((Conf.spoutFactionTagsOverNames || Conf.spoutFactionTitlesOverNames) && viewer != viewed)
