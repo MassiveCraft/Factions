@@ -46,13 +46,13 @@ public class CmdOfficer extends FCommand
 		{
 			// Revoke
 			you.setRole(Rel.MEMBER);
-			myFaction.msg("%s<i> is no longer moderator in your faction.", you.describeTo(myFaction, true));
+			myFaction.msg("%s<i> is no longer officer in your faction.", you.describeTo(myFaction, true));
 		}
 		else
 		{
 			// Give
 			you.setRole(Rel.OFFICER);
-			myFaction.msg("%s<i> was promoted to moderator in your faction.", you.describeTo(myFaction, true));
+			myFaction.msg("%s<i> was promoted to officer in your faction.", you.describeTo(myFaction, true));
 		}
 	}
 	
