@@ -38,7 +38,7 @@ public class CmdDescription extends FCommand
 		for (FPlayer fplayer : FPlayers.i.getOnline())
 		{
 			fplayer.msg("<h>%s<i> changed their description to:", myFaction.describeTo(fplayer));
-			fplayer.msg("<h>"+myFaction.getDescription());
+			fplayer.msg("<i>"+myFaction.getDescription());
 		}
 	}
 	
