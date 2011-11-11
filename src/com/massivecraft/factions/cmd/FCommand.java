@@ -389,7 +389,7 @@ public abstract class FCommand extends MCommand<P>
 	{
 		if ( ! Econ.shouldBeUsed() || this.fme == null || cost == 0.0 || fme.hasAdminMode()) return true;
 
-		if(Conf.bankFactionPaysLandCosts && fme.hasFaction())
+		if(Conf.bankEnabled && Conf.bankFactionPaysCosts && fme.hasFaction())
 		{
 			if ( ! Econ.modifyMoney(myFaction, -cost, toDoThis, forDoingThis)) return false;
 		}
