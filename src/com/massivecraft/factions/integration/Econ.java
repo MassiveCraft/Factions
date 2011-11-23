@@ -255,8 +255,11 @@ public class Econ
 		
 		for (Faction faction : Factions.i.get())
 		{
-			faction.getAccount().add(faction.money);
-			faction.money = 0;
+			if (faction.money > 0)
+			{
+				faction.getAccount().add(faction.money);
+				faction.money = 0;
+			}
 		}
 	}
 

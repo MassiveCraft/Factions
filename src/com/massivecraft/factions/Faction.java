@@ -92,7 +92,7 @@ public class Faction extends Entity implements EconomyParticipator
 			if ( ! Econ.getMethod().createAccount(aid))
 			{
 				P.p.log(Level.SEVERE, "Error creating faction bank account through Register: "+aid);
-				return null;
+//				return null;
 			}
 			MethodAccount acc = Econ.getMethod().getAccount(aid);
 			acc.set(0); 
