@@ -399,10 +399,15 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		}
 	}
 	
-	public void onDeath()
+	public void onDeath(String typeOfDeath)
 	{
 		this.updatePower();
-		this.alterPower(-Conf.powerPerDeath);
+		if (typeOfDeath.equals("PVP")) {
+			this.alterPower(-Conf.powerPerPvPDeath);
+		}
+		else {
+			this.alterPower(-Conf.powerPerPvEDeath);
+		}
 	}
 	
 	//----------------------------------------------//
