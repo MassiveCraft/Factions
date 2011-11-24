@@ -252,7 +252,7 @@ public class Faction extends Entity implements EconomyParticipator
 		}
 	}
 	
-	public Map<Rel, List<String>> getFactionTagsPerRelation()
+	public Map<Rel, List<String>> getFactionTagsPerRelation(RelationParticipator rp)
 	{
 		Map<Rel, List<String>> ret = new HashMap<Rel, List<String>>();
 		for (Rel rel : Rel.values())
@@ -262,7 +262,7 @@ public class Faction extends Entity implements EconomyParticipator
 		for (Faction faction : Factions.i.get())
 		{
 			Rel relation = faction.getRelationTo(this);
-			ret.get(relation).add(faction.getTag(this));
+			ret.get(relation).add(faction.getTag(rp));
 		}
 		return ret;
 	}

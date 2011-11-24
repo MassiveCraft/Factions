@@ -57,12 +57,12 @@ public class CmdShow extends FCommand
 		// TODO: Find the non default flags, and display them instead.
 		if (faction.getFlag(FFlag.PERMANENT))
 		{
-			msg("<a>This faction is permanent, remaining even with no members.");
+			msg("<a>This faction is permanent - remaining even with no members.");
 		}
 		
 		if (faction.getFlag(FFlag.PEACEFUL))
 		{
-			sendMessage(Conf.colorTruce+"This faction is peaceful - in truce with everyone.");
+			msg("<a>This faction is peaceful - in truce with everyone.");
 		}
 		
 		msg("<a>Joining: <i>"+(faction.getOpen() ? "no invitation is needed" : "invitation is required"));
@@ -90,8 +90,17 @@ public class CmdShow extends FCommand
 		String sepparator = p.txt.parse("<i>")+", ";
 		
 		// List the relations to other factions
-		Map<Rel, List<String>> relationTags = faction.getFactionTagsPerRelation();
-		sendMessage(p.txt.parse("<a>In Truce with: ") + TextUtil.implode(relationTags.get(Rel.TRUCE), sepparator));
+		Map<Rel, List<String>> relationTags = faction.getFactionTagsPerRelation(fme);
+		
+		if (faction.getFlag(FFlag.PEACEFUL))
+		{
+			sendMessage(p.txt.parse("<a>In Truce with:<i> *everyone*"));
+		}
+		else
+		{
+			sendMessage(p.txt.parse("<a>In Truce with: ") + TextUtil.implode(relationTags.get(Rel.TRUCE), sepparator));
+		}
+		
 		sendMessage(p.txt.parse("<a>Allied to: ") + TextUtil.implode(relationTags.get(Rel.ALLY), sepparator));
 		sendMessage(p.txt.parse("<a>Enemies: ") + TextUtil.implode(relationTags.get(Rel.ENEMY), sepparator));
 		
