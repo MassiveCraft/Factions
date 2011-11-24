@@ -608,7 +608,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 			double cost = Econ.calculateClaimCost(ownedLand, currentFaction.isNormal());
 			//String costString = Econ.moneyString(cost);
 			
-			if(Conf.bankFactionPaysLandCosts && this.hasFaction())
+			if(Conf.bankEnabled && Conf.bankFactionPaysLandCosts && this.hasFaction())
 			{
 				Faction faction = this.getFaction();
 				if ( ! Econ.modifyMoney(faction, -cost, "to claim this land", "for claiming this land")) return false;
