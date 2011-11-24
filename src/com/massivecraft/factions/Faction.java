@@ -252,6 +252,21 @@ public class Faction extends Entity implements EconomyParticipator
 		}
 	}
 	
+	public Map<Rel, List<String>> getFactionTagsPerRelation()
+	{
+		Map<Rel, List<String>> ret = new HashMap<Rel, List<String>>();
+		for (Rel rel : Rel.values())
+		{
+			ret.put(rel, new ArrayList<String>());
+		}
+		for (Faction faction : Factions.i.get())
+		{
+			Rel relation = faction.getRelationTo(this);
+			ret.get(relation).add(faction.getTag(this));
+		}
+		return ret;
+	}
+	
 	// TODO: Implement a has enough feature.
 	//----------------------------------------------//
 	// Power

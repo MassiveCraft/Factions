@@ -37,6 +37,7 @@ public class FCmdRoot extends FCommand
 	public CmdRelationTruce cmdRelationTruce = new CmdRelationTruce();
 	public CmdReload cmdReload = new CmdReload();
 	public CmdSaveAll cmdSaveAll = new CmdSaveAll();
+	public CmdSeeChunk cmdSeeChunks = new CmdSeeChunk();
 	public CmdSethome cmdSethome = new CmdSethome();
 	public CmdShow cmdShow = new CmdShow();
 	public CmdTag cmdTag = new CmdTag();
@@ -98,6 +99,7 @@ public class FCmdRoot extends FCommand
 		this.addSubCommand(this.cmdRelationTruce);
 		this.addSubCommand(this.cmdReload);
 		this.addSubCommand(this.cmdSaveAll);
+		this.addSubCommand(this.cmdSeeChunks);
 		this.addSubCommand(this.cmdSethome);
 		this.addSubCommand(this.cmdShow);
 		this.addSubCommand(this.cmdTag);
