@@ -1,6 +1,7 @@
 package com.massivecraft.factions.zcore.util;
 
 import java.util.*;
+import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -123,6 +124,12 @@ public class TextUtil
 		return string.substring(0, 1).toUpperCase()+string.substring(1);
 	}
 	
+	public static String repeat(String s, int times)
+	{
+	    if (times <= 0) return "";
+	    else return s + repeat(s, times-1);
+	}
+	
 	public static String implode(List<String> list, String glue)
 	{
 	    StringBuilder ret = new StringBuilder();
@@ -137,10 +144,22 @@ public class TextUtil
 	    return ret.toString();
 	}
 	
-	public static String repeat(String s, int times)
+	public static String implodeCommaAnd(List<String> list, String comma, String and)
 	{
-	    if (times <= 0) return "";
-	    else return s + repeat(s, times-1);
+	    if (list.size() == 0) return "";
+		if (list.size() == 1) return list.get(0);
+		
+		String lastItem = list.get(list.size()-1);
+		String nextToLastItem = list.get(list.size()-2);
+		String merge = nextToLastItem+and+lastItem;
+		list.set(list.size()-2, merge);
+		list.remove(list.size()-1);
+		
+		return implode(list, comma);
+	}
+	public static String implodeCommaAnd(List<String> list)
+	{
+	    return implodeCommaAnd(list, ", ", " and ");
 	}
 	
 	// -------------------------------------------- //
@@ -224,77 +243,58 @@ public class TextUtil
 	public static final long millisPerWeek   =    7 * millisPerDay;
 	public static final long millisPerMonth  =   31 * millisPerDay;
 	public static final long millisPerYear   =  365 * millisPerDay;
+	
+	public static Map<String, Long> unitMillis;
+	
+	static
+	{
+		unitMillis = new LinkedHashMap<String, Long>();
+		unitMillis.put("years", millisPerYear);
+		unitMillis.put("months", millisPerMonth);
+		unitMillis.put("weeks", millisPerWeek);
+		unitMillis.put("days", millisPerDay);
+		unitMillis.put("hours", millisPerHour);
+		unitMillis.put("minutes", millisPerMinute);
+		unitMillis.put("seconds", millisPerSecond);
+	}
+	
 	public static String getTimeDeltaDescriptionRelNow(long millis)
 	{
-		double absmillis = (double) Math.abs(millis);
-		String agofromnow = "from now";
-		String unit;
-		long num;
-		if (millis <= 0)
+		String ret = "";
+		
+		double millisLeft = (double) Math.abs(millis);
+		
+		List<String> unitCountParts = new ArrayList<String>();
+		for (Entry<String, Long> entry : unitMillis.entrySet())
 		{
-			agofromnow = "ago";
+			if (unitCountParts.size() == 3 ) break;
+			String unitName = entry.getKey();
+			long unitSize = entry.getValue();
+			long unitCount = (long) Math.floor(millisLeft / unitSize);
+			if (unitCount < 1) continue;
+			millisLeft -= unitSize*unitCount;
+			unitCountParts.add(unitCount+" "+unitName);
 		}
 		
-		// We use a factor 3 below for a reason... why do you think?
-		// Answer: it is a way to make our round of error smaller.
-		if (absmillis < 3 * millisPerSecond)
+		if (unitCountParts.size() == 0) return "just now";
+		
+		ret += implodeCommaAnd(unitCountParts);
+		ret += " ";
+		if (millis <= 0)
 		{
-			unit = "milliseconds";
-			num = (long) (absmillis);
-		}
-		else if (absmillis < 3 * millisPerMinute)
-		{
-			unit = "seconds";
-			num = (long) (absmillis / millisPerSecond);
-		}
-		else if (absmillis < 3 * millisPerHour)
-		{
-			unit = "minutes";
-			num = (long) (absmillis / millisPerMinute);
-		}
-		else if (absmillis <  3 * millisPerDay)
-		{
-			unit = "hours";
-			num = (long) (absmillis / millisPerHour);
-		}
-		else if (absmillis < 3 * millisPerWeek)
-		{
-			unit = "days";
-			num = (long) (absmillis / millisPerDay);
-		}
-		else if (absmillis < 3 * millisPerMonth)
-		{
-			unit = "weeks";
-			num = (long) (absmillis / millisPerWeek);
-		}
-		else if (absmillis < 3 * millisPerYear)
-		{
-			unit = "months";
-			num = (long) (absmillis / millisPerMonth);
+			ret += "ago";
 		}
 		else
 		{
-			unit = "years";
-			num = (long) (absmillis / millisPerYear);
+			ret += "from now";
 		}
 		
-		return ""+num+" "+unit+" "+agofromnow;
+		return ret;
 	}
 	
 	// -------------------------------------------- //
 	// String comparison
 	// -------------------------------------------- //
-	
-	/*private static int commonStartLength(String a, String b)
-	{
-		int len = a.length() < b.length() ? a.length() : b.length();
-		int i;
-		for (i = 0; i < len; i++)
-		{
-			if (a.charAt(i) != b.charAt(i)) break;
-		}
-		return i;
-	}*/
 	
 	public static String getBestStartWithCI(Collection<String> candidates, String start)
 	{
