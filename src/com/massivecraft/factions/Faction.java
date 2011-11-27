@@ -446,6 +446,33 @@ public class Faction extends Entity implements EconomyParticipator
 	}
 	
 	//----------------------------------------------//
+	// Deprecated
+	//----------------------------------------------//
+	/**
+	 * @deprecated  As of release 1.7, replaced by {@link #getFPlayerLeader()}
+	 */
+	public FPlayer getFPlayerAdmin()
+	{
+		return getFPlayerLeader();
+	}
+	
+	/**
+	 * @deprecated  As of release 1.7, replaced by {@link #getFlag()}
+	 */
+	public boolean isPeaceful()
+	{
+		return this.getFlag(FFlag.PEACEFUL);
+	}
+	
+	/**
+	 * @deprecated  As of release 1.7, replaced by {@link #getFlag()}
+	 */
+	public boolean getPeacefulExplosionsEnabled()
+	{
+		return this.getFlag(FFlag.EXPLOSIONS);
+	}
+	
+	//----------------------------------------------//
 	// Persistance and entity management
 	//----------------------------------------------//
 
