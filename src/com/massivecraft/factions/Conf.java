@@ -224,7 +224,6 @@ public class Conf
 		territoryEnemyDenyCommands.add("tpaccept");
 		territoryEnemyDenyCommands.add("tpa");
 
-		
 		materialsContainer.add(Material.DISPENSER);
 		materialsContainer.add(Material.CHEST);
 		materialsContainer.add(Material.FURNACE);
@@ -241,6 +240,8 @@ public class Conf
 		materialsEditTools.add(Material.BUCKET);
 		materialsEditTools.add(Material.WATER_BUCKET);
 		materialsEditTools.add(Material.LAVA_BUCKET);
+		materialsEditTools.add(Material.CAULDRON);
+		materialsEditTools.add(Material.BREWING_STAND);
 
 		monsters.add(CreatureType.CAVE_SPIDER);
 		monsters.add(CreatureType.CREEPER);
