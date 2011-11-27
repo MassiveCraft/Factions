@@ -26,10 +26,11 @@ permissions:
       factions.kit.halfmod: true
       factions.flag.set: true
   factions.kit.halfmod:
-    description: Can use adminmode
+    description: Can use adminmode and chat spy
     children:
       factions.kit.fullplayer: true
       factions.adminmode: true
+      factions.chatspy: true
   factions.kit.fullplayer:
     default: true
     description: Can also create new factions.
@@ -71,6 +72,8 @@ permissions:
       factions.version: true
   factions.adminmode:
     description: enable admin bypass mode
+  factions.chatspy:
+    description: enable admin chat spy mode
   factions.autoclaim:
     description: auto-claim land as you walk around
   factions.chat:
