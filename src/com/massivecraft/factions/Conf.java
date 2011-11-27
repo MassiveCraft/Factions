@@ -243,15 +243,18 @@ public class Conf
 		materialsEditTools.add(Material.CAULDRON);
 		materialsEditTools.add(Material.BREWING_STAND);
 
+		monsters.add(CreatureType.BLAZE);
 		monsters.add(CreatureType.CAVE_SPIDER);
 		monsters.add(CreatureType.CREEPER);
 		monsters.add(CreatureType.ENDERMAN);
+		monsters.add(CreatureType.ENDER_DRAGON);
 		monsters.add(CreatureType.GHAST);
+		monsters.add(CreatureType.GIANT);
 		monsters.add(CreatureType.PIG_ZOMBIE);
 		monsters.add(CreatureType.SILVERFISH);
 		monsters.add(CreatureType.SKELETON);
-		monsters.add(CreatureType.SPIDER);
 		monsters.add(CreatureType.SLIME);
+		monsters.add(CreatureType.SPIDER);
 		monsters.add(CreatureType.ZOMBIE);
 	}
 
