@@ -25,8 +25,8 @@ import com.massivecraft.factions.iface.RelationParticipator;
  */
 public enum FPerm
 {
-	BUILD("build", "edit the terrain",             Rel.LEADER, Rel.OFFICER, Rel.MEMBER),
-	PAINBUILD("painbuild", "edit but take damage", Rel.ALLY),
+	BUILD("build", "edit the terrain",             Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.ALLY),
+	PAINBUILD("painbuild", "edit but take damage"),
 	DOOR("door", "use doors",                      Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.ALLY),
 	BUTTON("button", "use stone buttons",          Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.ALLY),
 	LEVER("lever", "use levers",                   Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.ALLY),
