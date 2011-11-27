@@ -46,7 +46,6 @@ public class CmdClaim extends FCommand
 		
 		// Get the FLocations
 		Set<FLocation> flocs = new FLocation(me).getCircle(radius);
-		p.log(flocs);
 		for (FLocation floc : flocs)
 		{
 			fme.attemptClaim(forFaction, new Location(floc.getWorld(), floc.getX()*16, 1, floc.getZ()*16), true);
