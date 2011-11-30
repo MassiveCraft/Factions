@@ -41,6 +41,8 @@ public class Conf
 	
 	public static String prefixLeader = "**";
 	public static String prefixOfficer = "*";
+	public static String prefixMember = "+";
+	public static String prefixRecruit = "";
 	
 	public static int factionTagLengthMin = 3;
 	public static int factionTagLengthMax = 10;
@@ -155,6 +157,7 @@ public class Conf
 	public static String capeAlly = "https://github.com/MassiveCraft/Factions/raw/master/capes/ally.png";
 	public static String capeEnemy = "https://github.com/MassiveCraft/Factions/raw/master/capes/enemy.png";
 	public static String capeMember = "https://github.com/MassiveCraft/Factions/raw/master/capes/member.png";
+	public static String capeRecruit = "https://github.com/MassiveCraft/Factions/raw/master/capes/member.png";
 	public static String capeNeutral = "https://github.com/MassiveCraft/Factions/raw/master/capes/neutral.png";
 	public static String capePeaceful = "https://github.com/MassiveCraft/Factions/raw/master/capes/peaceful.png";
 	
