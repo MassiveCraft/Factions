@@ -152,6 +152,11 @@ public class FactionsPlayerListener extends PlayerListener
 		// Run the member auto kick routine. Twice to get to the admins...
 		FPlayers.i.autoLeaveOnInactivityRoutine();
 		FPlayers.i.autoLeaveOnInactivityRoutine();
+		
+		if( me.hasFaction() ) {
+			//Notify our faction that the number of online players has changed.
+			me.getFaction().updateOfflineExplosionProtection();
+		}
 
 		SpoutFeatures.updateAppearancesShortly(event.getPlayer());
 	}
@@ -162,6 +167,12 @@ public class FactionsPlayerListener extends PlayerListener
 		// Make sure player's power is up to date when they log off.
 		FPlayer me = FPlayers.i.get(event.getPlayer());
 		me.getPower();
+		
+		if( me.hasFaction() ) {
+			//Notify our faction that the number of online players has changed.
+			me.getFaction().updateOfflineExplosionProtection();
+		}
+		
 		SpoutFeatures.playerDisconnect(me);
 	}
 	
