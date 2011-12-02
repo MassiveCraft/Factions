@@ -43,6 +43,7 @@ permissions:
       factions.chat: true
       factions.claim: true
       factions.deinvite: true
+      factions.demote: true
       factions.description: true
       factions.disband: true
       factions.flag: true
@@ -56,11 +57,11 @@ permissions:
       factions.list: true
       factions.map: true
       factions.money.*: true
-      factions.officer: true
       factions.open: true
       factions.perm: true
       factions.power: true
       factions.power.any: true
+      factions.promote: true
       factions.relation: true
       factions.sethome: true
       factions.show: true

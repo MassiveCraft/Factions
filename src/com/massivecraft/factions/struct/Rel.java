@@ -95,7 +95,7 @@ public enum Rel
 	
 	public ChatColor getColor()
 	{
-		if (this.isAtLeast(MEMBER))
+		if (this.isAtLeast(RECRUIT))
 			return Conf.colorMember;
 		else if (this == ALLY)
 			return Conf.colorAlly;
