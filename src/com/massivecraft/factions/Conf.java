@@ -228,6 +228,7 @@ public class Conf
 		materialsContainer.add(Material.CHEST);
 		materialsContainer.add(Material.FURNACE);
 		materialsContainer.add(Material.BURNING_FURNACE);
+		materialsContainer.add(Material.JUKEBOX);
 		
 		materialsEditOnInteract.add(Material.DIODE_BLOCK_OFF);
 		materialsEditOnInteract.add(Material.DIODE_BLOCK_ON);
