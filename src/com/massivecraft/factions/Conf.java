@@ -223,6 +223,7 @@ public class Conf
 		territoryEnemyDenyCommands.add("tpahere");
 		territoryEnemyDenyCommands.add("tpaccept");
 		territoryEnemyDenyCommands.add("tpa");
+		territoryEnemyDenyCommands.add("warp");
 
 		materialsContainer.add(Material.DISPENSER);
 		materialsContainer.add(Material.CHEST);
@@ -232,6 +233,7 @@ public class Conf
 		
 		materialsEditOnInteract.add(Material.DIODE_BLOCK_OFF);
 		materialsEditOnInteract.add(Material.DIODE_BLOCK_ON);
+		materialsEditOnInteract.add(Material.NOTE_BLOCK);
 		
 		materialsDoor.add(Material.WOODEN_DOOR);
 		materialsDoor.add(Material.TRAP_DOOR);
