@@ -230,11 +230,14 @@ public class Conf
 		materialsContainer.add(Material.FURNACE);
 		materialsContainer.add(Material.BURNING_FURNACE);
 		materialsContainer.add(Material.JUKEBOX);
+		materialsContainer.add(Material.BREWING_STAND);
+		materialsContainer.add(Material.ENCHANTMENT_TABLE);
 		
 		materialsEditOnInteract.add(Material.DIODE_BLOCK_OFF);
 		materialsEditOnInteract.add(Material.DIODE_BLOCK_ON);
 		materialsEditOnInteract.add(Material.NOTE_BLOCK);
-		
+		materialsEditOnInteract.add(Material.CAULDRON);
+
 		materialsDoor.add(Material.WOODEN_DOOR);
 		materialsDoor.add(Material.TRAP_DOOR);
 		materialsDoor.add(Material.FENCE_GATE);
@@ -243,8 +246,6 @@ public class Conf
 		materialsEditTools.add(Material.BUCKET);
 		materialsEditTools.add(Material.WATER_BUCKET);
 		materialsEditTools.add(Material.LAVA_BUCKET);
-		materialsEditTools.add(Material.CAULDRON);
-		materialsEditTools.add(Material.BREWING_STAND);
 
 		monsters.add(CreatureType.BLAZE);
 		monsters.add(CreatureType.CAVE_SPIDER);
