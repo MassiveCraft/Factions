@@ -53,7 +53,7 @@ public class PluginCapiListener extends CapiListener
 	@Override
 	public void onListChannelsEvent(CAPIListChannelsEvent event)
 	{
-		for (Channel c : Channels.i.get())
+		for (Channel c : Channels.i.getAll())
 		{
 			if (myChannelIds.contains(c.getId()))
 			{
