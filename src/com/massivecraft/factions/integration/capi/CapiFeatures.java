@@ -12,7 +12,7 @@ public class CapiFeatures
 	public static void setup()
 	{
 		Plugin plug = Bukkit.getServer().getPluginManager().getPlugin("capi");
-		if (plug != null && plug.getClass().getName().equals("com.massivecraft.capi.capi"))
+		if (plug != null && plug.getClass().getName().equals("com.massivecraft.capi.P"))
 		{
 			P.p.log("Integration with the CAPI plugin was successful");
 			P.p.registerEvent(Event.Type.CUSTOM_EVENT, new PluginCapiListener(P.p), Priority.Normal);

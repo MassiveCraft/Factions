@@ -168,11 +168,11 @@ public class FactionsPlayerListener extends PlayerListener
 	@Override
 	public void onPlayerMove(PlayerMoveEvent event)
 	{
-		Player player = event.getPlayer();
-		FPlayer me = FPlayers.i.get(player);
-		
 		// Did we change block?
 		if (event.getFrom().equals(event.getTo())) return;
+				
+		Player player = event.getPlayer();
+		FPlayer me = FPlayers.i.get(player);
 		
 		// Did we change coord?
 		FLocation from = me.getLastStoodAt();
