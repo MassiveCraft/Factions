@@ -292,10 +292,13 @@ public class Conf
 		territoryDenyUseageMaterialsWhenOffline.add(Material.WATER_BUCKET);
 		territoryDenyUseageMaterialsWhenOffline.add(Material.LAVA_BUCKET);
 
+		safeZoneNerfedCreatureTypes.add(CreatureType.BLAZE);
 		safeZoneNerfedCreatureTypes.add(CreatureType.CAVE_SPIDER);
 		safeZoneNerfedCreatureTypes.add(CreatureType.CREEPER);
+		safeZoneNerfedCreatureTypes.add(CreatureType.ENDER_DRAGON);
 		safeZoneNerfedCreatureTypes.add(CreatureType.ENDERMAN);
 		safeZoneNerfedCreatureTypes.add(CreatureType.GHAST);
+		safeZoneNerfedCreatureTypes.add(CreatureType.MAGMA_CUBE);
 		safeZoneNerfedCreatureTypes.add(CreatureType.PIG_ZOMBIE);
 		safeZoneNerfedCreatureTypes.add(CreatureType.SILVERFISH);
 		safeZoneNerfedCreatureTypes.add(CreatureType.SKELETON);
