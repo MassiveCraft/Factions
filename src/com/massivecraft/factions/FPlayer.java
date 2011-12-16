@@ -377,9 +377,15 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		long now = System.currentTimeMillis();
 		long millisPassed = now - this.lastPowerUpdateTime;
 		this.lastPowerUpdateTime = now;
+
+		int millisPerMinute = 60*1000;		
+		double powerPerMinute = Conf.powerPerMinute;
+		if(Conf.scaleNegativePower && this.power < 0)
+		{
+			powerPerMinute += (Math.sqrt(Math.abs(this.power)) * Math.abs(this.power)) / Conf.scaleNegativeDivisor;
+		}
+		this.alterPower(millisPassed * powerPerMinute / millisPerMinute);
 		
-		int millisPerMinute = 60*1000;
-		this.alterPower(millisPassed * Conf.powerPerMinute / millisPerMinute);
 	}
 
 	protected void losePowerFromBeingOffline()
