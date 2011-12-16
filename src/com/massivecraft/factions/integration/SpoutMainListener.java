@@ -97,6 +97,7 @@ public class SpoutMainListener extends SpoutListener
 			else
 			{
 				label = new GenericLabel();
+				label.setWidth(1).setHeight(1);  // prevent Spout's questionable new "no default size" warning
 				label.setScale(Conf.spoutTerritoryDisplaySize);
 /*				// this should work once the Spout team fix it to account for text scaling; we can then get rid of alignLabel method added below
 				switch (Conf.spoutTerritoryDisplayPosition) {
@@ -130,6 +131,7 @@ public class SpoutMainListener extends SpoutListener
 			else
 			{
 				label = new NoticeLabel(Conf.spoutTerritoryNoticeLeaveAfterSeconds);
+				label.setWidth(1).setHeight(1);  // prevent Spout's questionable new "no default size" warning
 				label.setScale(Conf.spoutTerritoryNoticeSize);
 				label.setY(Conf.spoutTerritoryNoticeTop);
 				sPlayer.getMainScreen().attachWidget(P.p, label);
@@ -164,6 +166,7 @@ public class SpoutMainListener extends SpoutListener
 			else
 			{
 				label = new GenericLabel();
+				label.setWidth(1).setHeight(1);  // prevent Spout's questionable new "no default size" warning
 				label.setScale(Conf.spoutTerritoryDisplaySize);
 				label.setY((int)(10 * Conf.spoutTerritoryDisplaySize));
 				sPlayer.getMainScreen().attachWidget(P.p, label);
