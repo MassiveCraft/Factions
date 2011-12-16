@@ -254,6 +254,7 @@ public class Conf
 		monsters.add(CreatureType.ENDER_DRAGON);
 		monsters.add(CreatureType.GHAST);
 		monsters.add(CreatureType.GIANT);
+		monsters.add(CreatureType.MAGMA_CUBE);
 		monsters.add(CreatureType.PIG_ZOMBIE);
 		monsters.add(CreatureType.SILVERFISH);
 		monsters.add(CreatureType.SKELETON);
