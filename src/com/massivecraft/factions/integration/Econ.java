@@ -19,6 +19,7 @@ import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.RelationUtil;
+import java.util.logging.Level;
 
 public class Econ
 {
@@ -81,6 +82,11 @@ public class Econ
 	
 	public static void sendBalanceInfo(FPlayer to, EconomyParticipator about)
 	{
+		if (!shouldBeUsed())
+		{
+			P.p.log(Level.WARNING, "Register does not appear to be hooked into an economy plugin.");
+			return;
+		}
 		to.msg("<a>%s's<i> balance is <h>%s<i>.", about.describeTo(to, true), Econ.moneyString(about.getAccount().balance()));
 	}
 	
