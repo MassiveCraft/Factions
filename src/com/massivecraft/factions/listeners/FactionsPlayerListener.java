@@ -183,23 +183,22 @@ public class FactionsPlayerListener extends PlayerListener
 		// Yes we did change coord (:
 		
 		me.setLastStoodAt(to);
+
+		// Did we change "host"(faction)?
+		boolean changedFaction = (Board.getFactionAt(from) != Board.getFactionAt(to));
+
+		if (changedFaction && SpoutFeatures.updateTerritoryDisplay(me))
+			changedFaction = false;
 		
 		if (me.isMapAutoUpdating())
 		{
 			me.sendMessage(Board.getMap(me.getFaction(), to, player.getLocation().getYaw()));
 		}
-		else
+		else if (changedFaction)
 		{
-			// Did we change "host"(faction)?
-			Faction factionFrom = Board.getFactionAt(from);
-			Faction factionTo = Board.getFactionAt(to);
-
-			if (factionFrom != factionTo)
-			{
-				me.sendFactionHereMessage();
-			}
+			me.sendFactionHereMessage();
 		}
-		
+
 		if (me.getAutoClaimFor() != null)
 		{
 			me.attemptClaim(me.getAutoClaimFor(), player.getLocation(), true);
