@@ -175,6 +175,11 @@ public class FactionsPlayerListener extends PlayerListener
 	@Override
 	public void onPlayerMove(PlayerMoveEvent event)
 	{
+		// Did we change block?
+		if (event.getFrom().equals(event.getTo())
+			|| (event.getFrom().getBlockX() == event.getTo().getBlockX() && event.getFrom().getBlockZ() == event.getTo().getBlockZ())
+			) return;
+
 		Player player = event.getPlayer();
 		FPlayer me = FPlayers.i.get(player);
 		
@@ -190,21 +195,29 @@ public class FactionsPlayerListener extends PlayerListener
 		// Yes we did change coord (:
 		
 		me.setLastStoodAt(to);
-		
+
+		// Did we change "host"(faction)?
+		boolean spoutClient = SpoutFeatures.availableFor(player);
+		Faction factionFrom = Board.getFactionAt(from);
+		Faction factionTo = Board.getFactionAt(to);
+		boolean changedFaction = (factionFrom != factionTo);
+
+		if (changedFaction && SpoutFeatures.updateTerritoryDisplay(me))
+			changedFaction = false;
+
 		if (me.isMapAutoUpdating())
 		{
 			me.sendMessage(Board.getMap(me.getFaction(), to, player.getLocation().getYaw()));
+
+			if (spoutClient && Conf.spoutTerritoryOwnersShow)
+				SpoutFeatures.updateOwnerList(me);
 		}
 		else
 		{
-			// Did we change "host"(faction)?
-			Faction factionFrom = Board.getFactionAt(from);
-			Faction factionTo = Board.getFactionAt(to);
 			Faction myFaction = me.getFaction();
 			String ownersTo = myFaction.getOwnerListString(to);
-			boolean spoutClient = SpoutFeatures.availableFor(player);
 
-			if (factionFrom != factionTo)
+			if (changedFaction)
 			{
 				me.sendFactionHereMessage();
 				if
