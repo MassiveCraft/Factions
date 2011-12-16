@@ -51,6 +51,11 @@ public class CmdDisband extends FCommand
 			}
 		}
 
+		if (! faction.isNormal())
+		{
+			msg("<i>You cannot disband the Wilderness, SafeZone, or WarZone.");
+			return;
+		}
 		if (faction.isPermanent())
 		{
 			msg("<i>This faction is designated as permanent, so you cannot disband it.");
