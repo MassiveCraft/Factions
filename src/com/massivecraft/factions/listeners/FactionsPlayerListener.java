@@ -418,6 +418,8 @@ public class FactionsPlayerListener extends PlayerListener
 		// if player was banned (not just kicked), get rid of their stored info
 		if (Conf.removePlayerDataWhenBanned && event.getReason().equals("Banned by admin."))
 		{
+			if (badGuy.getRole() == Rel.LEADER)
+				badGuy.getFaction().promoteNewLeader();
 			badGuy.leave(false);
 		}
 	}

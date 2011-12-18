@@ -415,7 +415,47 @@ public class Faction extends Entity implements EconomyParticipator
 
 		return ret;
 	}
-	
+
+	// used when current leader is about to be removed from the faction; promotes new leader, or disbands faction if no other members left
+	public void promoteNewLeader()
+	{
+		if (! this.isNormal()) return;
+
+		FPlayer oldLeader = this.getFPlayerLeader();
+
+		// get list of officers, or list of normal members if there are no officers
+		ArrayList<FPlayer> replacements = this.getFPlayersWhereRole(Rel.OFFICER);
+		if (replacements == null || replacements.isEmpty())
+			replacements = this.getFPlayersWhereRole(Rel.MEMBER);
+
+		if (replacements == null || replacements.isEmpty())
+		{	// faction leader is the only member; one-man faction
+			if (this.getFlag(FFlag.PERMANENT))
+			{
+				oldLeader.setRole(Rel.MEMBER);
+				return;
+			}
+
+			// no members left and faction isn't permanent, so disband it
+			if (Conf.logFactionDisband)
+				P.p.log("The faction "+this.getTag()+" ("+this.getId()+") has been disbanded since it has no members left.");
+
+			for (FPlayer fplayer : FPlayers.i.getOnline())
+			{
+				fplayer.msg("The faction %s<i> was disbanded.", this.getTag(fplayer));
+			}
+
+			this.detach();
+		}
+		else
+		{	// promote new faction leader
+			oldLeader.setRole(Rel.MEMBER);
+			replacements.get(0).setRole(Rel.LEADER);
+			this.msg("<i>Faction leader <h>%s<i> has been removed. %s<i> has been promoted as the new faction leader.", oldLeader.getName(), replacements.get(0).getName());
+			P.p.log("Faction "+this.getTag()+" ("+this.getId()+") leader was removed. Replacement leader: "+replacements.get(0).getName());
+		}
+	}
+
 	//----------------------------------------------//
 	// Messages
 	//----------------------------------------------//

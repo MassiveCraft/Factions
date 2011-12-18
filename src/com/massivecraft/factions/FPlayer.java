@@ -462,6 +462,13 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 	public void leave(boolean makePay)
 	{
 		Faction myFaction = this.getFaction();
+
+		if (myFaction == null)
+		{
+			resetFactionData();
+			return;
+		}
+
 		boolean perm = myFaction.getFlag(FFlag.PERMANENT);
 		
 		if (!perm && this.getRole() == Rel.LEADER && myFaction.getFPlayers().size() > 1)

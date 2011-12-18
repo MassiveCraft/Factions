@@ -7,6 +7,7 @@ import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.google.gson.reflect.TypeToken;
+import com.massivecraft.factions.struct.Rel;
 import com.massivecraft.factions.zcore.persist.PlayerEntityCollection;
 
 public class FPlayers extends PlayerEntityCollection<FPlayer>
@@ -61,6 +62,13 @@ public class FPlayers extends PlayerEntityCollection<FPlayer>
 		{
 			if (now - fplayer.getLastLoginTime() > toleranceMillis)
 			{
+				if (Conf.logFactionLeave || Conf.logFactionKick)
+					P.p.log("Player "+fplayer.getName()+" was auto-removed due to inactivity.");
+
+				// if player is faction leader, sort out the faction since he's going away
+				if (fplayer.getRole() == Rel.LEADER)
+					fplayer.getFaction().promoteNewLeader();
+
 				fplayer.leave(false);
 			}
 		}
