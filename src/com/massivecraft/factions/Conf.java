@@ -241,6 +241,7 @@ public class Conf
 		materialsEditOnInteract.add(Material.DIODE_BLOCK_ON);
 		materialsEditOnInteract.add(Material.NOTE_BLOCK);
 		materialsEditOnInteract.add(Material.CAULDRON);
+		materialsEditOnInteract.add(Material.SOIL);
 
 		materialsDoor.add(Material.WOODEN_DOOR);
 		materialsDoor.add(Material.TRAP_DOOR);
