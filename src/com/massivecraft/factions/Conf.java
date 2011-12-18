@@ -23,6 +23,7 @@ public class Conf
 	// Power
 	public static double powerPlayerMax = 10.0;
 	public static double powerPlayerMin = -10.0;
+	public static double powerPlayerStarting = 0.0;
 	public static double powerPerMinute = 0.2; // Default health rate... it takes 5 min to heal one power
 	public static double powerPerDeath = 4.0; // A death makes you lose 4 power
 	public static boolean powerRegenOffline = false;  // does player power regenerate even while they're offline?

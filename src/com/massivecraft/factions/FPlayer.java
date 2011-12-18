@@ -149,7 +149,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 	public FPlayer()
 	{
 		this.resetFactionData(false);
-		this.power = this.getPowerMax();
+		this.power = Conf.powerPlayerStarting;
 		this.lastPowerUpdateTime = System.currentTimeMillis();
 		this.lastLoginTime = System.currentTimeMillis();
 		this.mapAutoUpdating = false;
@@ -809,7 +809,10 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 	@Override
 	public boolean shouldBeSaved()
 	{
-		if (this.getPowerRounded() == this.getPowerMaxRounded() && !this.hasFaction()) return false;
+		if (!this.hasFaction() &&
+			(this.getPowerRounded() == this.getPowerMaxRounded() || this.getPowerRounded() == (int) Math.round(Conf.powerPlayerStarting))
+			)
+			return false;
 		return ! this.deleteMe;
 	}
 	
