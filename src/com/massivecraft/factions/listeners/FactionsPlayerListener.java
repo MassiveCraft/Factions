@@ -175,11 +175,6 @@ public class FactionsPlayerListener extends PlayerListener
 	@Override
 	public void onPlayerMove(PlayerMoveEvent event)
 	{
-		// Did we change block?
-		if (event.getFrom().equals(event.getTo())
-			|| (event.getFrom().getBlockX() == event.getTo().getBlockX() && event.getFrom().getBlockZ() == event.getTo().getBlockZ())
-			) return;
-
 		Player player = event.getPlayer();
 		FPlayer me = FPlayers.i.get(player);
 		
@@ -623,7 +618,7 @@ public class FactionsPlayerListener extends PlayerListener
 		SpoutFeatures.playerDisconnect(badGuy);
 
 		// if player was banned (not just kicked), get rid of their stored info
-		if (event.getReason().equals("Banned by admin."))
+		if (Conf.removePlayerDataWhenBanned && event.getReason().equals("Banned by admin."))
 		{
 			badGuy.leave(false);
 			badGuy.markForDeletion(true);

@@ -66,7 +66,8 @@ public class Conf
 	public static String allianceChatFormat = ChatColor.LIGHT_PURPLE+"%s:"+ChatColor.WHITE+" %s";
 	
 	public static double autoLeaveAfterDaysOfInactivity = 10.0;
-	
+	public static boolean removePlayerDataWhenBanned = true;
+
 	public static boolean worldGuardChecking = false;
 
 	// server logging options
