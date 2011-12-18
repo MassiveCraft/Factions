@@ -277,6 +277,7 @@ public class Conf
 		territoryProtectedMaterials.add(Material.BREWING_STAND);
 		territoryProtectedMaterials.add(Material.ENCHANTMENT_TABLE);
 		territoryProtectedMaterials.add(Material.CAULDRON);
+		territoryProtectedMaterials.add(Material.SOIL);
 
 		territoryDenyUseageMaterials.add(Material.FLINT_AND_STEEL);
 		territoryDenyUseageMaterials.add(Material.BUCKET);
@@ -296,6 +297,7 @@ public class Conf
 		territoryProtectedMaterialsWhenOffline.add(Material.BREWING_STAND);
 		territoryProtectedMaterialsWhenOffline.add(Material.ENCHANTMENT_TABLE);
 		territoryProtectedMaterialsWhenOffline.add(Material.CAULDRON);
+		territoryProtectedMaterialsWhenOffline.add(Material.SOIL);
 
 		territoryDenyUseageMaterialsWhenOffline.add(Material.FLINT_AND_STEEL);
 		territoryDenyUseageMaterialsWhenOffline.add(Material.BUCKET);
