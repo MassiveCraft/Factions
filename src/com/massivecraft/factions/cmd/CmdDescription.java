@@ -32,13 +32,13 @@ public class CmdDescription extends FCommand
 		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
 		if ( ! payForCommand(Conf.econCostDesc, "to change faction description", "for changing faction description")) return;
 
-		myFaction.setDescription(TextUtil.implode(args, " "));
-		
+		myFaction.setDescription(TextUtil.implode(args, " ").replaceAll("(&([a-f0-9]))", "& $2"));  // since "&" color tags seem to work even through plain old FPlayer.sendMessage() for some reason, we need to break those up
+
 		// Broadcast the description to everyone
 		for (FPlayer fplayer : FPlayers.i.getOnline())
 		{
 			fplayer.msg("<i>The faction %s<i> changed their description to:", myFaction.describeTo(fplayer));
-			fplayer.msg("<i>"+myFaction.getDescription());
+			fplayer.sendMessage(myFaction.getDescription());  // players can inject "&" or "`" or "<i>" or whatever in their description; &k is particularly interesting looking
 		}
 	}
 	
