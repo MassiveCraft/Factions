@@ -33,6 +33,7 @@ import com.massivecraft.factions.P;
 import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
+import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.util.TextUtil;
 
 import java.util.logging.Level;
@@ -620,6 +621,9 @@ public class FactionsPlayerListener extends PlayerListener
 		// if player was banned (not just kicked), get rid of their stored info
 		if (Conf.removePlayerDataWhenBanned && event.getReason().equals("Banned by admin."))
 		{
+			if (badGuy.getRole() == Role.ADMIN)
+				badGuy.getFaction().promoteNewLeader();
+
 			badGuy.leave(false);
 			badGuy.markForDeletion(true);
 		}

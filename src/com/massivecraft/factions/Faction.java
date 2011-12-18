@@ -56,7 +56,7 @@ public class Faction extends Entity implements EconomyParticipator
 	// FIELD: permanent
 	// "permanent" status can only be set by server admins/moderators/ops, and allows the faction to remain even with 0 members
 	private boolean permanent;
-	public boolean isPermanent() { return permanent; }
+	public boolean isPermanent() { return permanent || !this.isNormal(); }
 	public void setPermanent(boolean isPermanent) { permanent = isPermanent; }
 	
 	// FIELD: tag
@@ -432,9 +432,48 @@ public class Faction extends Entity implements EconomyParticipator
 			lastPlayerLoggedOffTime = System.currentTimeMillis();
 		}
 	}
-	
-	
-	
+
+	// used when current leader is about to be removed from the faction; promotes new leader, or disbands faction if no other members left
+	public void promoteNewLeader()
+	{
+		if (! this.isNormal()) return;
+
+		FPlayer oldLeader = this.getFPlayerAdmin();
+
+		// get list of moderators, or list of normal members if there are no moderators
+		ArrayList<FPlayer> replacements = this.getFPlayersWhereRole(Role.MODERATOR);
+		if (replacements == null || replacements.isEmpty())
+			replacements = this.getFPlayersWhereRole(Role.NORMAL);
+
+		if (replacements == null || replacements.isEmpty())
+		{	// faction admin is the only member; one-man faction
+			if (this.isPermanent())
+			{
+				oldLeader.setRole(Role.NORMAL);
+				return;
+			}
+
+			// no members left and faction isn't permanent, so disband it
+			if (Conf.logFactionDisband)
+				P.p.log("The faction "+this.getTag()+" ("+this.getId()+") has been disbanded since it has no members left.");
+
+			for (FPlayer fplayer : FPlayers.i.getOnline())
+			{
+				fplayer.msg("The faction %s<i> was disbanded.", this.getTag(fplayer));
+			}
+
+			this.detach();
+		}
+		else
+		{	// promote new faction admin
+			oldLeader.setRole(Role.NORMAL);
+			replacements.get(0).setRole(Role.ADMIN);
+			this.msg("<i>Faction admin <h>%s<i> has been removed. %s<i> has been promoted as the new faction admin.", oldLeader.getName(), replacements.get(0).getName());
+			P.p.log("Faction "+this.getTag()+" ("+this.getId()+") admin was removed. Replacement admin: "+replacements.get(0).getName());
+		}
+	}
+
+
 	//----------------------------------------------//
 	// Messages
 	//----------------------------------------------//
