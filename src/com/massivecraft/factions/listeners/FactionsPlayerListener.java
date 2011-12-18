@@ -416,7 +416,7 @@ public class FactionsPlayerListener extends PlayerListener
 		SpoutFeatures.playerDisconnect(badGuy);
 
 		// if player was banned (not just kicked), get rid of their stored info
-		if (event.getReason().equals("Banned by admin."))
+		if (Conf.removePlayerDataWhenBanned && event.getReason().equals("Banned by admin."))
 		{
 			badGuy.leave(false);
 		}
