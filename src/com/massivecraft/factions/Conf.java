@@ -271,6 +271,10 @@ public class Conf
 		territoryProtectedMaterials.add(Material.BURNING_FURNACE);
 		territoryProtectedMaterials.add(Material.DIODE_BLOCK_OFF);
 		territoryProtectedMaterials.add(Material.DIODE_BLOCK_ON);
+		territoryProtectedMaterials.add(Material.JUKEBOX);
+		territoryProtectedMaterials.add(Material.BREWING_STAND);
+		territoryProtectedMaterials.add(Material.ENCHANTMENT_TABLE);
+		territoryProtectedMaterials.add(Material.CAULDRON);
 
 		territoryDenyUseageMaterials.add(Material.FLINT_AND_STEEL);
 		territoryDenyUseageMaterials.add(Material.BUCKET);
@@ -286,6 +290,10 @@ public class Conf
 		territoryProtectedMaterialsWhenOffline.add(Material.BURNING_FURNACE);
 		territoryProtectedMaterialsWhenOffline.add(Material.DIODE_BLOCK_OFF);
 		territoryProtectedMaterialsWhenOffline.add(Material.DIODE_BLOCK_ON);
+		territoryProtectedMaterialsWhenOffline.add(Material.JUKEBOX);
+		territoryProtectedMaterialsWhenOffline.add(Material.BREWING_STAND);
+		territoryProtectedMaterialsWhenOffline.add(Material.ENCHANTMENT_TABLE);
+		territoryProtectedMaterialsWhenOffline.add(Material.CAULDRON);
 
 		territoryDenyUseageMaterialsWhenOffline.add(Material.FLINT_AND_STEEL);
 		territoryDenyUseageMaterialsWhenOffline.add(Material.BUCKET);
