@@ -132,6 +132,7 @@ public class Conf
 	public static boolean pistonProtectionThroughDenyBuild = true;
 
 	public final transient static Set<Material> materialsEditOnInteract = EnumSet.noneOf(Material.class);
+	public final transient static Set<Material> itemsEditOnInteract = EnumSet.noneOf(Material.class);
 	public final transient static Set<Material> materialsEditTools = EnumSet.noneOf(Material.class);
 	public final transient static Set<Material> materialsDoor = EnumSet.noneOf(Material.class);
 	public final transient static Set<Material> materialsContainer = EnumSet.noneOf(Material.class);
@@ -236,6 +237,8 @@ public class Conf
 		materialsContainer.add(Material.JUKEBOX);
 		materialsContainer.add(Material.BREWING_STAND);
 		materialsContainer.add(Material.ENCHANTMENT_TABLE);
+		
+		materialsEditOnInteract.add(Material.POTION);
 		
 		materialsEditOnInteract.add(Material.DIODE_BLOCK_OFF);
 		materialsEditOnInteract.add(Material.DIODE_BLOCK_ON);
