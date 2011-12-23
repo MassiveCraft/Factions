@@ -238,7 +238,7 @@ public class Conf
 		materialsContainer.add(Material.BREWING_STAND);
 		materialsContainer.add(Material.ENCHANTMENT_TABLE);
 		
-		materialsEditOnInteract.add(Material.POTION);
+		itemsEditOnInteract.add(Material.POTION);
 		
 		materialsEditOnInteract.add(Material.DIODE_BLOCK_OFF);
 		materialsEditOnInteract.add(Material.DIODE_BLOCK_ON);
