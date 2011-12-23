@@ -40,6 +40,12 @@ public class CmdKick extends FCommand
 			msg("<i>You might want to: %s", p.cmdBase.cmdLeave.getUseageTemplate(false));
 			return;
 		}
+		
+		if (you.getRole() == Rel.LEADER && !(this.senderIsConsole || fme.hasAdminMode()))
+		{
+			msg("<b>The leader can not be kicked.");
+			return;
+		}
 
 		if ( ! Conf.canLeaveWithNegativePower && you.getPower() < 0)
 		{
