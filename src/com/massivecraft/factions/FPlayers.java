@@ -62,8 +62,10 @@ public class FPlayers extends PlayerEntityCollection<FPlayer>
 		{
 			if (now - fplayer.getLastLoginTime() > toleranceMillis)
 			{
-				if (Conf.logFactionLeave || Conf.logFactionKick)
-					P.p.log("Player "+fplayer.getName()+" was auto-removed due to inactivity.");
+				// TODO: This stops the memory leak crashes but does not solve the issue: MEMBERS ARE NOT KICKED!!!
+				// TODO: DO SOMETHING ABOUT THIS
+				/*if (Conf.logFactionLeave || Conf.logFactionKick)
+					P.p.log("Player "+fplayer.getName()+" was auto-removed due to inactivity.");*/
 
 				// if player is faction leader, sort out the faction since he's going away
 				if (fplayer.getRole() == Rel.LEADER)
