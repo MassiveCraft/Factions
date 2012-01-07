@@ -2,10 +2,8 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.P;
-import com.massivecraft.factions.struct.FFlag;
 import com.massivecraft.factions.struct.FPerm;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Rel;
@@ -40,6 +38,12 @@ public class CmdKick extends FCommand
 		{
 			msg("<b>You cannot kick yourself.");
 			msg("<i>You might want to: %s", p.cmdBase.cmdLeave.getUseageTemplate(false));
+			return;
+		}
+		
+		if (you.getRole() == Rel.LEADER && !(this.senderIsConsole || fme.hasAdminMode()))
+		{
+			msg("<b>The leader can not be kicked.");
 			return;
 		}
 

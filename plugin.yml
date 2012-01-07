@@ -102,7 +102,7 @@ permissions:
   factions.kick:
     description: kick a player from the faction
   factions.leader:
-    description: hand over your leader rights
+    description: hand over leader rights
   factions.leave:
     description: leave your faction
   factions.list:
