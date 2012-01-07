@@ -43,7 +43,7 @@ public class FPlayers extends PlayerEntityCollection<FPlayer>
 			if ( ! Factions.i.exists(fplayer.getFactionId()))
 			{
 				p.log("Reset faction data (invalid faction) for player "+fplayer.getName());
-				fplayer.resetFactionData();
+				fplayer.resetFactionData(false);
 			}
 		}
 	}
