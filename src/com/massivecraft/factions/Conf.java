@@ -70,6 +70,8 @@ public class Conf
 	public static boolean removePlayerDataWhenBanned = true;
 
 	public static boolean worldGuardChecking = false;
+	
+	public static boolean lwcIntegration = false;
 
 	// server logging options
 	public static boolean logFactionCreate = true;
