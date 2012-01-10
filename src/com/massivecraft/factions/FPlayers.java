@@ -70,7 +70,7 @@ public class FPlayers extends PlayerEntityCollection<FPlayer>
 					fplayer.getFaction().promoteNewLeader();
 
 				fplayer.leave(false);
-				fplayer.markForDeletion(true);
+				fplayer.detach();
 			}
 		}
 	}

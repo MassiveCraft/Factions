@@ -625,7 +625,7 @@ public class FactionsPlayerListener extends PlayerListener
 				badGuy.getFaction().promoteNewLeader();
 
 			badGuy.leave(false);
-			badGuy.markForDeletion(true);
+			badGuy.detach();
 		}
 	}
 }
