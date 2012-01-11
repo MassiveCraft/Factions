@@ -420,6 +420,7 @@ public class FactionsPlayerListener extends PlayerListener
 			if (badGuy.getRole() == Rel.LEADER)
 				badGuy.getFaction().promoteNewLeader();
 			badGuy.leave(false);
+			badGuy.detach();
 		}
 	}
 }
