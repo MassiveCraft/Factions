@@ -794,7 +794,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		
 		if (LWCFeatures.getEnabled()&& ! forFaction.isSafeZone() && ! forFaction.isWarZone() && Board.getIdAt(flocation) != "0")
 		{
-			LWCFeatures.clearChests(location, this);
+			LWCFeatures.clearOtherChests(flocation, this.getFaction());
 		}
 		
 		// announce success
