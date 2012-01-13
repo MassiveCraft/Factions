@@ -117,6 +117,9 @@ public class Conf
 	
 	//public static double considerFactionsReallyOfflineAfterXMinutes = 0.0;
 	
+	public static boolean protectOfflineFactionsFromExplosions = true;
+	public static double offlineExplosionProtectionDelay = 2.0;
+	
 	public static int actionDeniedPainAmount = 2;
 	
 	// commands which will be prevented when in claimed territory of another faction

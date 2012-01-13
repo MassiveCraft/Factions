@@ -78,6 +78,10 @@ public class Faction extends Entity implements EconomyParticipator
 		this.home = null;
 	}
 	
+	// FIELD: lastOnlineTime
+	private long lastOnlineTime;
+	
+	
 	// FIELD: account (fake field)
 	// Bank functions
 	public double money;
@@ -492,5 +496,30 @@ public class Faction extends Entity implements EconomyParticipator
 		
 		// Clean the fplayers
 		FPlayers.i.clean();
+	}
+
+	//OfflineFactionProtection
+	public void updateOfflineExplosionProtection() {
+		//We've either gained or lost a player.
+		
+		if (this.getOnlinePlayers().size() == 0 ) {
+			//No one is online, set the last online time
+			this.lastOnlineTime = System.currentTimeMillis();
+		}
+	}
+	
+	public boolean hasOfflineExplosionProtection() {
+		
+		//No protection if we are online.
+		if (this.getOnlinePlayers().size() > 0 ) {
+			return false;
+		}
+		
+		if ( this.lastOnlineTime + ( Conf.offlineExplosionProtectionDelay * 60 * 1000 ) < System.currentTimeMillis() ) {
+			//Last online time + buffer time < current time, so the protection has expired.
+			return false;
+		} else {
+			return true;
+		}
 	}
 }

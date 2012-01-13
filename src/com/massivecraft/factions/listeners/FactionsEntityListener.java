@@ -95,7 +95,7 @@ public class FactionsEntityListener extends EntityListener
 		for (Block block : event.blockList())
 		{
 			Faction faction = Board.getFactionAt(new FLocation(block));
-			if (faction.getFlag(FFlag.EXPLOSIONS) == false)
+			if (faction.getFlag(FFlag.EXPLOSIONS) == false || faction.hasOfflineExplosionProtection() )
 			{
 				// faction is peaceful and has explosions set to disabled
 				event.setCancelled(true);
