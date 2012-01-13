@@ -80,7 +80,13 @@ public class Factions extends EntityCollection<Faction>
 			if (faction.getTag().contains(" "))
 				faction.setTag("WarZone");
 		}
-		
+
+		// populate all faction player lists
+		for (Faction faction : i.get())
+		{
+			faction.refreshFPlayers();
+		}
+
 		return true;
 	}
 	
