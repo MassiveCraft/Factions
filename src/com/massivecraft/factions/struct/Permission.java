@@ -8,6 +8,7 @@ public enum Permission
 	ADMIN("adminmode"),
 	AUTOCLAIM("autoclaim"),
 	CHAT("chat"),
+	CHATSPY("chatspy"),
 	CLAIM("claim"),
 	CONFIG("config"),
 	CREATE("create"),
