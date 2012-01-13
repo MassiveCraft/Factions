@@ -1,6 +1,5 @@
 package com.massivecraft.factions;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -48,6 +47,9 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 	public boolean hasFaction() { return ! factionId.equals("0"); }
 	public void setFaction(Faction faction)
 	{
+		Faction oldFaction = this.getFaction();
+		if (oldFaction != null) oldFaction.removeFPlayer(this);
+		faction.addFPlayer(this);
 		this.factionId = faction.getId();
 		SpoutFeatures.updateAppearances(this.getPlayer());
 	}
@@ -130,6 +132,10 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 	
 	public final void resetFactionData(boolean doSpotUpdate)
 	{
+		Faction currentFaction = this.getFaction();
+		if (currentFaction != null)
+			currentFaction.removeFPlayer(this);
+
 		this.factionId = "0"; // The default neutral faction
 		this.chatMode = ChatMode.PUBLIC;
 		this.role = Rel.MEMBER;
@@ -491,8 +497,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		}
 
 		// Am I the last one in the faction?
-		ArrayList<FPlayer> fplayers = myFaction.getFPlayers();
-		if (fplayers.size() == 1 && fplayers.get(0) == this)
+		if (myFaction.getFPlayers().size() == 1)
 		{
 			// Transfer all money
 			if (Econ.shouldBeUsed())

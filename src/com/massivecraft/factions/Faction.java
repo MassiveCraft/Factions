@@ -22,7 +22,11 @@ public class Faction extends Entity implements EconomyParticipator
 {
 	// FIELD: relationWish
 	private Map<String, Rel> relationWish;
-	
+
+	// FIELD: fplayers
+	// speedy lookup of players in faction
+	private Set<FPlayer> fplayers = new HashSet<FPlayer>();
+
 	// FIELD: invites
 	// Where string is a lowercase player name
 	private Set<String> invites; 
@@ -279,7 +283,7 @@ public class Faction extends Entity implements EconomyParticipator
 		}
 		
 		double ret = 0;
-		for (FPlayer fplayer : this.getFPlayers())
+		for (FPlayer fplayer : fplayers)
 		{
 			ret += fplayer.getPower();
 		}
@@ -298,7 +302,7 @@ public class Faction extends Entity implements EconomyParticipator
 		}
 		
 		double ret = 0;
-		for (FPlayer fplayer : this.getFPlayers())
+		for (FPlayer fplayer : fplayers)
 		{
 			ret += fplayer.getPowerMax();
 		}
@@ -336,31 +340,48 @@ public class Faction extends Entity implements EconomyParticipator
 	// -------------------------------
 	// FPlayers
 	// -------------------------------
-	
-	public ArrayList<FPlayer> getFPlayers()
+
+	// maintain the reference list of FPlayers in this faction
+	public void refreshFPlayers()
 	{
-		ArrayList<FPlayer> ret = new ArrayList<FPlayer>();
-		//if (this.isPlayerFreeType()) return ret;
+		fplayers.clear();
+		if (this.isNone()) return;
 
 		for (FPlayer fplayer : FPlayers.i.get())
 		{
 			if (fplayer.getFaction() == this)
 			{
-				ret.add(fplayer);
+				fplayers.add(fplayer);
 			}
 		}
+	}
+	public boolean addFPlayer(FPlayer fplayer)
+	{
+		if (this.isNone()) return false;
 
+		return fplayers.add(fplayer);
+	}
+	public boolean removeFPlayer(FPlayer fplayer)
+	{
+		if (this.isNone()) return false;
+
+		return fplayers.remove(fplayer);
+	}
+
+	public Set<FPlayer> getFPlayers()
+	{
+		// return a shallow copy of the FPlayer list, to prevent tampering and concurrency issues
+		Set<FPlayer> ret = new HashSet(fplayers);
 		return ret;
 	}
 	
-	public ArrayList<FPlayer> getFPlayersWhereOnline(boolean online)
+	public Set<FPlayer> getFPlayersWhereOnline(boolean online)
 	{
-		ArrayList<FPlayer> ret = new ArrayList<FPlayer>();
-		//if (this.isPlayerFreeType()) return ret;
+		Set<FPlayer> ret = new HashSet<FPlayer>();
 
-		for (FPlayer fplayer : FPlayers.i.get())
+		for (FPlayer fplayer : fplayers)
 		{
-			if (fplayer.getFaction() == this && fplayer.isOnline() == online)
+			if (fplayer.isOnline() == online)
 			{
 				ret.add(fplayer);
 			}
@@ -373,9 +394,9 @@ public class Faction extends Entity implements EconomyParticipator
 	{
 		//if ( ! this.isNormal()) return null;
 		
-		for (FPlayer fplayer : FPlayers.i.get())
+		for (FPlayer fplayer : fplayers)
 		{
-			if (fplayer.getFaction() == this && fplayer.getRole() == Rel.LEADER)
+			if (fplayer.getRole() == Rel.LEADER)
 			{
 				return fplayer;
 			}
@@ -388,9 +409,9 @@ public class Faction extends Entity implements EconomyParticipator
 		ArrayList<FPlayer> ret = new ArrayList<FPlayer>();
 		//if ( ! this.isNormal()) return ret;
 		
-		for (FPlayer fplayer : FPlayers.i.get())
+		for (FPlayer fplayer : fplayers)
 		{
-			if (fplayer.getFaction() == this && fplayer.getRole() == role)
+			if (fplayer.getRole() == role)
 			{
 				ret.add(fplayer);
 			}
