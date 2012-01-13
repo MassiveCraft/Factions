@@ -86,6 +86,13 @@ public class Persist {
 		if (loaded == null)
 		{
 			p.log(Level.WARNING, "Using default as I failed to load: "+file);
+
+			// backup bad file, so user can attempt to recover their changes from it
+			File backup = new File(file.getPath()+"_bad");
+			if (backup.exists()) backup.delete();
+			p.log(Level.WARNING, "Backing up copy of bad file to: "+backup);
+			file.renameTo(backup);
+
 			return def;
 		}
 		
@@ -129,9 +136,17 @@ public class Persist {
 			return null;
 		}
 		
-		T instance = p.gson.fromJson(content, clazz);
-		
-		return instance;
+		try
+		{
+			T instance = p.gson.fromJson(content, clazz);
+			return instance;
+		}
+		catch (Exception ex)
+		{	// output the error message rather than full stack trace; error parsing the file, most likely
+			p.log(Level.WARNING, ex.getMessage());
+		}
+
+		return null;
 	}
 	
 	
