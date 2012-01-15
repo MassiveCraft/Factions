@@ -1,5 +1,5 @@
 name: Factions
-version: 1.6.2
+version: 1.6.3_dev
 main: com.massivecraft.factions.P
 authors: [Olof Larsson, Brett Flannigan]
 softdepend: [PermissionsEx, Permissions, Essentials, EssentialsChat, HeroChat, iChat, LocalAreaChat, nChat, ChatManager, CAPI, AuthMe, Register, Spout, WorldEdit, WorldGuard]
@@ -31,7 +31,7 @@ permissions:
       factions.sethome.any: true
       factions.money.*: true
   factions.kit.halfmod:
-    description: Zones, bypassing, and kicking
+    description: Zones, bypassing, kicking, and chatspy
     children:
       factions.kit.fullplayer: true
       factions.managesafezone: true
@@ -39,6 +39,7 @@ permissions:
       factions.bypass: true
       factions.kick.any: true
       factions.ownershipbypass: true
+      factions.chatspy: true
   factions.kit.fullplayer:
     default: true
     description: Can also create new factions.
@@ -87,6 +88,8 @@ permissions:
     description: enable admin bypass mode
   factions.chat:
     description: change chat mode
+  factions.chatspy:
+    description: enable admin chat spy mode
   factions.claim:
     description: claim land where you are standing
   factions.config:

@@ -13,6 +13,7 @@ public enum Permission
 	AUTOCLAIM("autoclaim"),
 	BYPASS("bypass"),
 	CHAT("chat"),
+	CHATSPY("chatspy"),
 	CLAIM("claim"),
 	CONFIG("config"),
 	CREATE("create"),

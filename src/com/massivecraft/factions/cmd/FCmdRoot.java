@@ -11,6 +11,7 @@ public class FCmdRoot extends FCommand
 	public CmdBoom cmdBoom = new CmdBoom();
 	public CmdBypass cmdBypass = new CmdBypass();
 	public CmdChat cmdChat = new CmdChat();
+	public CmdChatSpy cmdChatSpy = new CmdChatSpy();
 	public CmdClaim cmdClaim = new CmdClaim();
 	public CmdConfig cmdConfig = new CmdConfig();
 	public CmdCreate cmdCreate = new CmdCreate();
@@ -77,6 +78,7 @@ public class FCmdRoot extends FCommand
 		this.addSubCommand(this.cmdBoom);
 		this.addSubCommand(this.cmdBypass);
 		this.addSubCommand(this.cmdChat);
+		this.addSubCommand(this.cmdChatSpy);
 		this.addSubCommand(this.cmdClaim);
 		this.addSubCommand(this.cmdConfig);
 		this.addSubCommand(this.cmdCreate);

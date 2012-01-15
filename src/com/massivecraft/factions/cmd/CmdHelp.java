@@ -171,12 +171,12 @@ public class CmdHelp extends FCommand
 		
 		pageLines = new ArrayList<String>();
 		pageLines.add(p.txt.parse("<i>More commands for server admins:"));
+		pageLines.add( p.cmdBase.cmdChatSpy.getUseageTemplate(true) );
 		pageLines.add( p.cmdBase.cmdPermanent.getUseageTemplate(true) );
 		pageLines.add( p.cmdBase.cmdPermanentPower.getUseageTemplate(true) );
 		pageLines.add( p.cmdBase.cmdLock.getUseageTemplate(true) );
 		pageLines.add( p.cmdBase.cmdReload.getUseageTemplate(true) );
 		pageLines.add( p.cmdBase.cmdSaveAll.getUseageTemplate(true) );
-		pageLines.add( p.cmdBase.cmdVersion.getUseageTemplate(true) );
 		pageLines.add( p.cmdBase.cmdConfig.getUseageTemplate(true) );
 		helpPages.add(pageLines);
 	}

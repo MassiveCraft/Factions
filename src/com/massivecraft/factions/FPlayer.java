@@ -135,7 +135,12 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		}
 		return chatMode;
 	}
-	
+
+	// FIELD: chatSpy
+	private transient boolean spyingChat = false;
+	public void setSpyingChat(boolean chatSpying) { this.spyingChat = chatSpying; }
+	public boolean isSpyingChat() { return spyingChat; }
+
 	// FIELD: account
 	public MethodAccount getAccount()
 	{
