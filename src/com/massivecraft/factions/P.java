@@ -14,10 +14,6 @@ import org.bukkit.event.Event;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.plugin.Plugin;
 
-import com.earth2me.essentials.chat.EssentialsChat;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
-import com.griefcraft.lwc.LWCPlugin;
 import com.massivecraft.factions.cmd.CmdAutoHelp;
 import com.massivecraft.factions.cmd.FCmdRoot;
 import com.massivecraft.factions.integration.Econ;
@@ -35,6 +31,11 @@ import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.util.MapFLocToStringSetTypeAdapter;
 import com.massivecraft.factions.util.MyLocationTypeAdapter;
 import com.massivecraft.factions.zcore.MPlugin;
+
+import com.earth2me.essentials.chat.EssentialsChat;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+import com.griefcraft.lwc.LWCPlugin;
 import com.nijiko.permissions.PermissionHandler;
 
 public class P extends MPlugin
@@ -210,7 +211,7 @@ public class P extends MPlugin
 		
 		Plugin test = this.getServer().getPluginManager().getPlugin("LWC");
 		
-		if(test != null && test.isEnabled() && Conf.lwcIntegration)
+		if(test != null && test.isEnabled())
 		{
 			LWCFeatures.integrateLWC((LWCPlugin)test);
 		}
