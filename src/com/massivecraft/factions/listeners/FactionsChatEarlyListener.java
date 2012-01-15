@@ -55,8 +55,8 @@ public class FactionsChatEarlyListener extends PlayerListener
 			//Send to any players who are spying chat
 			for (FPlayer fplayer : FPlayers.i.getOnline())
 			{
-				if( fplayer.isSpyingChat() )
-					fplayer.sendMessage("FactionChat "+me.getFaction().getTag()+": "+message);	
+				if(fplayer.isSpyingChat() && fplayer.getFaction() != myFaction)
+					fplayer.sendMessage("[FCspy] "+me.getFaction().getTag()+": "+message);	
 			}
 			
 			event.setCancelled(true);
@@ -79,11 +79,11 @@ public class FactionsChatEarlyListener extends PlayerListener
 					fplayer.sendMessage(message);
 				
 				//Send to any players who are spying chat
-				if( fplayer.isSpyingChat() )
-					fplayer.sendMessage("AllianceChat " + message);
+				else if(fplayer.isSpyingChat())
+					fplayer.sendMessage("[ACspy]: " + message);
 			}
 			
-			P.p.log(Level.INFO, ChatColor.stripColor("AllianceChat "+message));
+			P.p.log(Level.INFO, ChatColor.stripColor("AllianceChat: "+message));
 			
 			event.setCancelled(true);
 			return;
