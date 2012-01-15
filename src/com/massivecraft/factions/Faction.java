@@ -4,6 +4,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.Map.Entry;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -11,6 +12,7 @@ import org.bukkit.entity.Player;
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.iface.RelationParticipator;
 import com.massivecraft.factions.integration.Econ;
+import com.massivecraft.factions.integration.LWCFeatures;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
@@ -535,6 +537,11 @@ public class Faction extends Entity implements EconomyParticipator
 
 	public void clearClaimOwnership(FLocation loc)
 	{
+		if(Conf.onUnclaimResetLwcLocks && LWCFeatures.getEnabled())
+		{
+			LWCFeatures.clearAllChests(loc);
+			Bukkit.getServer().broadcastMessage("boardclearat / clearclaim");
+		}	
 		claimOwnership.remove(loc);
 	}
 
@@ -565,6 +572,10 @@ public class Faction extends Entity implements EconomyParticipator
 
 			if (ownerData.isEmpty())
 			{
+				if(Conf.onUnclaimResetLwcLocks && LWCFeatures.getEnabled())
+				{
+					LWCFeatures.clearAllChests(entry.getKey());
+				}
 				claimOwnership.remove(entry.getKey());
 			}
 		}

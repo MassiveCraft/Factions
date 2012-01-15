@@ -6,18 +6,26 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.bukkit.block.Block;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.plugin.Plugin;
 
-import com.massivecraft.factions.cmd.*;
+import com.earth2me.essentials.chat.EssentialsChat;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+import com.griefcraft.lwc.LWCPlugin;
+import com.massivecraft.factions.cmd.CmdAutoHelp;
+import com.massivecraft.factions.cmd.FCmdRoot;
 import com.massivecraft.factions.integration.Econ;
+import com.massivecraft.factions.integration.EssentialsFeatures;
+import com.massivecraft.factions.integration.LWCFeatures;
 import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.integration.Worldguard;
+import com.massivecraft.factions.integration.capi.CapiFeatures;
 import com.massivecraft.factions.listeners.FactionsBlockListener;
 import com.massivecraft.factions.listeners.FactionsChatEarlyListener;
 import com.massivecraft.factions.listeners.FactionsEntityListener;
@@ -27,13 +35,7 @@ import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.util.MapFLocToStringSetTypeAdapter;
 import com.massivecraft.factions.util.MyLocationTypeAdapter;
 import com.massivecraft.factions.zcore.MPlugin;
-
 import com.nijiko.permissions.PermissionHandler;
-import com.earth2me.essentials.chat.EssentialsChat;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
-import com.massivecraft.factions.integration.EssentialsFeatures;
-import com.massivecraft.factions.integration.capi.CapiFeatures;
 
 public class P extends MPlugin
 {
@@ -94,6 +96,7 @@ public class P extends MPlugin
 		Econ.doSetup();
 		Econ.oldMoneyDoTransfer();
 		CapiFeatures.setup();
+		setupLWC();
 		
 		if(Conf.worldGuardChecking)
 		{
@@ -202,6 +205,17 @@ public class P extends MPlugin
 		}
 	}
 
+	private void setupLWC()
+	{
+		
+		Plugin test = this.getServer().getPluginManager().getPlugin("LWC");
+		
+		if(test != null && test.isEnabled() && Conf.lwcIntegration)
+		{
+			LWCFeatures.integrateLWC((LWCPlugin)test);
+		}
+	}
+	
 	// -------------------------------------------- //
 	// Functions for other plugins to hook into
 	// -------------------------------------------- //
