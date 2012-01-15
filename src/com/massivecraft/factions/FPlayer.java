@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.iface.RelationParticipator;
 import com.massivecraft.factions.integration.Econ;
+import com.massivecraft.factions.integration.LWCFeatures;
 import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.integration.Worldguard;
 import com.massivecraft.factions.struct.ChatMode;
@@ -643,7 +644,10 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 
 			}
 		}
-		
+
+		if (LWCFeatures.getEnabled() && forFaction.isNormal() && Conf.onCaptureResetLwcLocks)
+			LWCFeatures.clearOtherChests(flocation, this.getFaction());
+
 		// announce success
 		Set<FPlayer> informTheseFPlayers = new HashSet<FPlayer>();
 		informTheseFPlayers.add(this);

@@ -82,6 +82,11 @@ public class Conf
 
 	public static boolean worldGuardChecking = false;
 
+	//LWC
+	public static boolean lwcIntegration = false;
+	public static boolean onUnclaimResetLwcLocks = false;
+	public static boolean onCaptureResetLwcLocks = false;
+
 	// server logging options
 	public static boolean logFactionCreate = true;
 	public static boolean logFactionDisband = true;

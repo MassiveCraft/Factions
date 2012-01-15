@@ -21,6 +21,7 @@ import com.massivecraft.factions.adapters.LocationTypeAdapter;
 import com.massivecraft.factions.adapters.RelTypeAdapter;
 import com.massivecraft.factions.cmd.*;
 import com.massivecraft.factions.integration.Econ;
+import com.massivecraft.factions.integration.LWCFeatures;
 import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.integration.Worldguard;
 import com.massivecraft.factions.listeners.FactionsBlockListener;
@@ -34,6 +35,7 @@ import com.massivecraft.factions.struct.FPerm;
 import com.massivecraft.factions.struct.Rel;
 import com.massivecraft.factions.zcore.MPlugin;
 
+import com.griefcraft.lwc.LWCPlugin;
 import com.nijiko.permissions.PermissionHandler;
 import com.earth2me.essentials.chat.EssentialsChat;
 import com.google.gson.GsonBuilder;
@@ -100,6 +102,7 @@ public class P extends MPlugin
 		Econ.doSetup();
 		Econ.oldMoneyDoTransfer();
 		CapiFeatures.setup();
+		setupLWC();
 		
 		if(Conf.worldGuardChecking)
 		{
@@ -211,6 +214,14 @@ public class P extends MPlugin
 		{
 			EssentialsFeatures.unhookChat();
 		}
+	}
+
+	private void setupLWC()
+	{
+		Plugin test = this.getServer().getPluginManager().getPlugin("LWC");
+
+		if(test != null && test.isEnabled())
+			LWCFeatures.integrateLWC((LWCPlugin)test);
 	}
 
 	// -------------------------------------------- //
