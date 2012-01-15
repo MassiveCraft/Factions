@@ -45,6 +45,13 @@ public class FactionsBlockListener extends BlockListener
 		if ( ! playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock().getLocation(), "build", false))
 		{
 			event.setCancelled(true);
+
+			Material handItem = event.getPlayer().getItemInHand().getType();
+			if (handItem == Material.TNT || handItem == Material.REDSTONE_TORCH_ON)
+			{
+				Faction targetFaction = Board.getFactionAt(new FLocation(event.getBlock()));
+				FactionsEntityListener.trackPotentialExplosionExploit(event.getPlayer().getName(), targetFaction, handItem, event.getBlock().getLocation());
+			}
 		}
 	}
 

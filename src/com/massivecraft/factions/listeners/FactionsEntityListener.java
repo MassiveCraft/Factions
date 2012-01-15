@@ -1,8 +1,11 @@
 package com.massivecraft.factions.listeners;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.logging.Level;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Creeper;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Fireball;
@@ -39,7 +42,9 @@ public class FactionsEntityListener extends EntityListener
 	{
 		this.p = p;
 	}
-	
+
+	private static ArrayList<PotentialExplosionExploit> exploitExplosions = new ArrayList<PotentialExplosionExploit>();
+
 	@Override
 	public void onEntityDeath(EntityDeathEvent event)
 	{
@@ -164,39 +169,76 @@ public class FactionsEntityListener extends EntityListener
 			// ghast fireball which needs prevention
 			event.setCancelled(true);
 		}
-		else if
-		(
+		else
+		{	// TNT
+			if (exploitExplosions.size() > 0)
+			{	// make sure this isn't a TNT explosion exploit attempt
+				int locX = event.getLocation().getBlockX();
+				int locZ = event.getLocation().getBlockZ();
+
+				for (int i = exploitExplosions.size() - 1; i >= 0; i--)
+				{
+					PotentialExplosionExploit ex = exploitExplosions.get(i);
+
+					// remove anything from the list older than 10 seconds (TNT takes 4 seconds to trigger; provide some leeway)
+					if (ex.timeMillis + 10000 < System.currentTimeMillis())
+					{
+						exploitExplosions.remove(i);
+						continue;
+					}
+
+					int absX = Math.abs(ex.X - locX);
+					int absZ = Math.abs(ex.Z - locZ);
+					if (absX < 5 && absZ < 5) 
+					{	// it sure looks like an exploit attempt
+						// let's tattle on him to everyone
+						String msg = "NOTICE: Player \""+ex.playerName+"\" attempted to exploit a TNT bug in the territory of \""+ex.faction.getTag()+"\" at "+ex.X+","+ex.Z+" (X,Z) using "+ex.item.name();
+						P.p.log(Level.WARNING, msg);
+						for (FPlayer fplayer : FPlayers.i.getOnline())
+						{
+							fplayer.sendMessage(msg);
+						}
+						event.setCancelled(true);
+						exploitExplosions.remove(i);
+						return;
+					}
+				}
+			}
+
+			if
 			(
-				faction.isNone()
-				&&
-				Conf.wildernessBlockTNT
-				&&
-				! Conf.worldsNoWildernessProtection.contains(loc.getWorld().getName())
-			)
-			||
-			(
-				faction.isNormal()
-				&&
 				(
-					online ? Conf.territoryBlockTNT : Conf.territoryBlockTNTWhenOffline
+					faction.isNone()
+					&&
+					Conf.wildernessBlockTNT
+					&&
+					! Conf.worldsNoWildernessProtection.contains(loc.getWorld().getName())
+				)
+				||
+				(
+					faction.isNormal()
+					&&
+					(
+						online ? Conf.territoryBlockTNT : Conf.territoryBlockTNTWhenOffline
+					)
+				)
+				||
+				(
+					faction.isWarZone()
+					&&
+					Conf.warZoneBlockTNT
+				)
+				||
+				(
+					faction.isSafeZone()
+					&&
+					Conf.safeZoneBlockTNT
 				)
 			)
-			||
-			(
-				faction.isWarZone()
-				&&
-				Conf.warZoneBlockTNT
-			)
-			||
-			(
-				faction.isSafeZone()
-				&&
-				Conf.safeZoneBlockTNT
-			)
-		)
-		{
-			// we'll assume it's TNT, which needs prevention
-			event.setCancelled(true);
+			{
+				// we'll assume it's TNT, which needs prevention
+				event.setCancelled(true);
+			}
 		}
 	}
 
@@ -505,5 +547,39 @@ public class FactionsEntityListener extends EntityListener
 		}
 
 		return false;
+	}
+
+
+	/**
+	 * Since the Bukkit team still don't seem to be in any hurry to fix the problem after at least half a year,
+	 * we'll track potential explosion exploits ourselves and try to prevent them
+	 * For reference, canceled TNT placement next to redstone power is bugged and triggers a free explosion
+	 * Same thing happens for canceled redstone torch placement next to existing TNT
+	 * https://bukkit.atlassian.net/browse/BUKKIT-89
+	 */
+
+	public static void trackPotentialExplosionExploit(String playerName, Faction faction, Material item, Location location)
+	{
+		exploitExplosions.add(new PotentialExplosionExploit(playerName, faction, item, location));
+	}
+
+	public static class PotentialExplosionExploit
+	{
+		public String playerName;
+		public Faction faction;
+		public Material item;
+		public long timeMillis;
+		public int X;
+		public int Z;
+		
+		public PotentialExplosionExploit(String playerName, Faction faction, Material item, Location location)
+		{
+			this.playerName = playerName;
+			this.faction = faction;
+			this.item = item;
+			this.timeMillis = System.currentTimeMillis();
+			this.X = location.getBlockX();
+			this.Z = location.getBlockZ();
+		}
 	}
 }
