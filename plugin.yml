@@ -2,7 +2,7 @@ name: Factions
 version: 1.7_mcwars_2012_01_12
 main: com.massivecraft.factions.P
 authors: [Olof Larsson, Brett Flannigan]
-softdepend: [PermissionsEx, Permissions, Essentials, EssentialsChat, HeroChat, iChat, LocalAreaChat, nChat, ChatManager, CAPI, AuthMe, Register, Spout, WorldEdit, WorldGuard]
+softdepend: [PermissionsEx, Permissions, Essentials, EssentialsChat, HeroChat, iChat, LocalAreaChat, LWC, nChat, ChatManager, CAPI, AuthMe, Register, Spout, WorldEdit, WorldGuard]
 commands:
   factions:
     description: Reference command for Factions.
@@ -106,7 +106,7 @@ permissions:
   factions.kick:
     description: kick a player from the faction
   factions.leader:
-    description: hand over your leader rights
+    description: hand over leader rights
   factions.leave:
     description: leave your faction
   factions.list:

@@ -32,8 +32,11 @@ public class Conf
 	// Power
 	public static double powerPlayerMax = 10.0;
 	public static double powerPlayerMin = -10.0;
+	public static double powerPlayerStarting = 10.0; // New players start out with this power level
 	public static double powerPerMinute = 0.2; // Default health rate... it takes 5 min to heal one power
 	public static double powerPerDeath = 4.0; // A death makes you lose 4 power
+	public static boolean scaleNegativePower = false; // Power regeneration rate increase as power decreases
+	public static double scaleNegativeDivisor = 40.0; // Divisor for inverse power regeneration curve    
 	public static boolean powerRegenOffline = false;  // does player power regenerate even while they're offline?
 	public static double powerOfflineLossPerDay = 0.0;  // players will lose this much power per day offline
 	public static double powerOfflineLossLimit = 0.0;  // players will no longer lose power from being offline once their power drops to this amount or less
@@ -77,8 +80,14 @@ public class Conf
 	public static String allianceChatFormat = ChatColor.LIGHT_PURPLE+"%s:"+ChatColor.WHITE+" %s";
 	
 	public static double autoLeaveAfterDaysOfInactivity = 10.0;
-	
+	public static boolean removePlayerDataWhenBanned = true;
+
 	public static boolean worldGuardChecking = false;
+
+	//LWC
+	public static boolean lwcIntegration = false;
+	public static boolean onUnclaimResetLwcLocks = false;
+	public static boolean onCaptureResetLwcLocks = false;
 
 	// server logging options
 	public static boolean logFactionCreate = true;
@@ -229,15 +238,22 @@ public class Conf
 		territoryEnemyDenyCommands.add("tpahere");
 		territoryEnemyDenyCommands.add("tpaccept");
 		territoryEnemyDenyCommands.add("tpa");
+		territoryEnemyDenyCommands.add("warp");
 
 		materialsContainer.add(Material.DISPENSER);
 		materialsContainer.add(Material.CHEST);
 		materialsContainer.add(Material.FURNACE);
 		materialsContainer.add(Material.BURNING_FURNACE);
+		materialsContainer.add(Material.JUKEBOX);
+		materialsContainer.add(Material.BREWING_STAND);
+		materialsContainer.add(Material.ENCHANTMENT_TABLE);
 		
 		materialsEditOnInteract.add(Material.DIODE_BLOCK_OFF);
 		materialsEditOnInteract.add(Material.DIODE_BLOCK_ON);
-		
+		materialsEditOnInteract.add(Material.NOTE_BLOCK);
+		materialsEditOnInteract.add(Material.CAULDRON);
+		materialsEditOnInteract.add(Material.SOIL);
+
 		materialsDoor.add(Material.WOODEN_DOOR);
 		materialsDoor.add(Material.TRAP_DOOR);
 		materialsDoor.add(Material.FENCE_GATE);
@@ -246,8 +262,6 @@ public class Conf
 		materialsEditTools.add(Material.BUCKET);
 		materialsEditTools.add(Material.WATER_BUCKET);
 		materialsEditTools.add(Material.LAVA_BUCKET);
-		materialsEditTools.add(Material.CAULDRON);
-		materialsEditTools.add(Material.BREWING_STAND);
 
 		monsters.add(CreatureType.BLAZE);
 		monsters.add(CreatureType.CAVE_SPIDER);
@@ -256,6 +270,7 @@ public class Conf
 		monsters.add(CreatureType.ENDER_DRAGON);
 		monsters.add(CreatureType.GHAST);
 		monsters.add(CreatureType.GIANT);
+		monsters.add(CreatureType.MAGMA_CUBE);
 		monsters.add(CreatureType.PIG_ZOMBIE);
 		monsters.add(CreatureType.SILVERFISH);
 		monsters.add(CreatureType.SKELETON);

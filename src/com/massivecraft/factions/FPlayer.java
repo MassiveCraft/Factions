@@ -1,6 +1,5 @@
 package com.massivecraft.factions;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -11,6 +10,7 @@ import org.bukkit.entity.Player;
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.iface.RelationParticipator;
 import com.massivecraft.factions.integration.Econ;
+import com.massivecraft.factions.integration.LWCFeatures;
 import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.integration.Worldguard;
 import com.massivecraft.factions.struct.ChatMode;
@@ -48,6 +48,9 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 	public boolean hasFaction() { return ! factionId.equals("0"); }
 	public void setFaction(Faction faction)
 	{
+		Faction oldFaction = this.getFaction();
+		if (oldFaction != null) oldFaction.removeFPlayer(this);
+		faction.addFPlayer(this);
 		this.factionId = faction.getId();
 		SpoutFeatures.updateAppearances(this.getPlayer());
 	}
@@ -120,7 +123,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 	public FPlayer()
 	{
 		this.resetFactionData(false);
-		this.power = this.getPowerMax();
+		this.power = Conf.powerPlayerStarting;
 		this.lastPowerUpdateTime = System.currentTimeMillis();
 		this.lastLoginTime = System.currentTimeMillis();
 		this.mapAutoUpdating = false;
@@ -135,6 +138,10 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 	
 	public final void resetFactionData(boolean doSpotUpdate)
 	{
+		Faction currentFaction = this.getFaction();
+		if (currentFaction != null)
+			currentFaction.removeFPlayer(this);
+
 		this.factionId = "0"; // The default neutral faction
 		this.chatMode = ChatMode.PUBLIC;
 		this.role = Rel.RECRUIT;
@@ -382,9 +389,15 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		long now = System.currentTimeMillis();
 		long millisPassed = now - this.lastPowerUpdateTime;
 		this.lastPowerUpdateTime = now;
+
+		int millisPerMinute = 60*1000;		
+		double powerPerMinute = Conf.powerPerMinute;
+		if(Conf.scaleNegativePower && this.power < 0)
+		{
+			powerPerMinute += (Math.sqrt(Math.abs(this.power)) * Math.abs(this.power)) / Conf.scaleNegativeDivisor;
+		}
+		this.alterPower(millisPassed * powerPerMinute / millisPerMinute);
 		
-		int millisPerMinute = 60*1000;
-		this.alterPower(millisPassed * Conf.powerPerMinute / millisPerMinute);
 	}
 
 	protected void losePowerFromBeingOffline()
@@ -461,6 +474,13 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 	public void leave(boolean makePay)
 	{
 		Faction myFaction = this.getFaction();
+
+		if (myFaction == null)
+		{
+			resetFactionData();
+			return;
+		}
+
 		boolean perm = myFaction.getFlag(FFlag.PERMANENT);
 		
 		if (!perm && this.getRole() == Rel.LEADER && myFaction.getFPlayers().size() > 1)
@@ -483,8 +503,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		}
 
 		// Am I the last one in the faction?
-		ArrayList<FPlayer> fplayers = myFaction.getFPlayers();
-		if (fplayers.size() == 1 && fplayers.get(0) == this)
+		if (myFaction.getFPlayers().size() == 1)
 		{
 			// Transfer all money
 			if (Econ.shouldBeUsed())
@@ -625,7 +644,10 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 
 			}
 		}
-		
+
+		if (LWCFeatures.getEnabled() && forFaction.isNormal() && Conf.onCaptureResetLwcLocks)
+			LWCFeatures.clearOtherChests(flocation, this.getFaction());
+
 		// announce success
 		Set<FPlayer> informTheseFPlayers = new HashSet<FPlayer>();
 		informTheseFPlayers.add(this);
@@ -652,7 +674,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 	public boolean shouldBeSaved()
 	{
 		if (this.hasFaction()) return true;
-		if (this.getPowerRounded() != this.getPowerMaxRounded()) return true;
+		if (this.getPowerRounded() != this.getPowerMaxRounded() && this.getPowerRounded() != (int) Math.round(Conf.powerPlayerStarting)) return true;
 		return false;
 	}
 	

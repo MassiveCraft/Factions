@@ -27,7 +27,6 @@ import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
-import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.struct.FPerm;
@@ -179,11 +178,11 @@ public class FactionsPlayerListener extends PlayerListener
 	@Override
 	public void onPlayerMove(PlayerMoveEvent event)
 	{
-		Player player = event.getPlayer();
-		FPlayer me = FPlayers.i.get(player);
-		
 		// Did we change block?
 		if (event.getFrom().equals(event.getTo())) return;
+				
+		Player player = event.getPlayer();
+		FPlayer me = FPlayers.i.get(player);
 		
 		// Did we change coord?
 		FLocation from = me.getLastStoodAt();
@@ -194,23 +193,22 @@ public class FactionsPlayerListener extends PlayerListener
 		// Yes we did change coord (:
 		
 		me.setLastStoodAt(to);
+
+		// Did we change "host"(faction)?
+		boolean changedFaction = (Board.getFactionAt(from) != Board.getFactionAt(to));
+
+		if (changedFaction && SpoutFeatures.updateTerritoryDisplay(me))
+			changedFaction = false;
 		
 		if (me.isMapAutoUpdating())
 		{
 			me.sendMessage(Board.getMap(me.getFaction(), to, player.getLocation().getYaw()));
 		}
-		else
+		else if (changedFaction)
 		{
-			// Did we change "host"(faction)?
-			Faction factionFrom = Board.getFactionAt(from);
-			Faction factionTo = Board.getFactionAt(to);
-
-			if (factionFrom != factionTo)
-			{
-				me.sendFactionHereMessage();
-			}
+			me.sendFactionHereMessage();
 		}
-		
+
 		if (me.getAutoClaimFor() != null)
 		{
 			me.attemptClaim(me.getAutoClaimFor(), player.getLocation(), true);
@@ -428,9 +426,12 @@ public class FactionsPlayerListener extends PlayerListener
 		SpoutFeatures.playerDisconnect(badGuy);
 
 		// if player was banned (not just kicked), get rid of their stored info
-		if (event.getReason().equals("Banned by admin."))
+		if (Conf.removePlayerDataWhenBanned && event.getReason().equals("Banned by admin."))
 		{
+			if (badGuy.getRole() == Rel.LEADER)
+				badGuy.getFaction().promoteNewLeader();
 			badGuy.leave(false);
+			badGuy.detach();
 		}
 	}
 }
