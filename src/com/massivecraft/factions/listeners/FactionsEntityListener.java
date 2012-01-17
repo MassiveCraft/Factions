@@ -163,24 +163,21 @@ public class FactionsEntityListener extends EntityListener
 		FPlayer defender = FPlayers.i.get((Player)damagee);
 		
 		if (defender == null || defender.getPlayer() == null)
-		{
 			return true;
-		}
 		
 		Location defenderLoc = defender.getPlayer().getLocation();
 		
 		if (Conf.worldsIgnorePvP.contains(defenderLoc.getWorld().getName()))
-		{
 			return true;
-		}
 		
 		Faction defLocFaction = Board.getFactionAt(new FLocation(defenderLoc));
 
 		// for damage caused by projectiles, getDamager() returns the projectile... what we need to know is the source
 		if (damager instanceof Projectile)
-		{
 			damager = ((Projectile)damager).getShooter();
-		}
+
+		if (damager == damagee)  // ender pearl usage and other self-inflicted damage
+			return true;
 
 		// Players can not take attack damage in a SafeZone, or possibly peaceful territory
 		
@@ -196,16 +193,12 @@ public class FactionsEntityListener extends EntityListener
 		}
 		
 		if ( ! (damager instanceof Player))
-		{
 			return true;
-		}
 		
 		FPlayer attacker = FPlayers.i.get((Player)damager);
 		
 		if (attacker == null || attacker.getPlayer() == null)
-		{
 			return true;
-		}
 		
 		if (attacker.hasLoginPvpDisabled())
 		{
