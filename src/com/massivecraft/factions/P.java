@@ -132,6 +132,7 @@ public class P extends MPlugin
 		this.registerEvent(Event.Type.ENTITY_TARGET, this.entityListener, Event.Priority.Normal);
 		this.registerEvent(Event.Type.PAINTING_BREAK, this.entityListener, Event.Priority.Normal);
 		this.registerEvent(Event.Type.PAINTING_PLACE, this.entityListener, Event.Priority.Normal);
+		this.registerEvent(Event.Type.EXPLOSION_PRIME, this.entityListener, Event.Priority.Normal);
 		
 		// Block Events
 		this.registerEvent(Event.Type.BLOCK_BREAK, this.blockListener, Event.Priority.Normal);
