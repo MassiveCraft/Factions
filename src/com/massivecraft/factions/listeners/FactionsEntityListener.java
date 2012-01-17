@@ -11,6 +11,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Fireball;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
+import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EndermanPickupEvent;
 import org.bukkit.event.entity.EndermanPlaceEvent;
@@ -20,6 +21,7 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntityListener;
 import org.bukkit.event.entity.EntityTargetEvent;
+import org.bukkit.event.entity.ExplosionPrimeEvent;
 import org.bukkit.event.painting.PaintingBreakByEntityEvent;
 import org.bukkit.event.painting.PaintingBreakEvent;
 import org.bukkit.event.painting.PaintingPlaceEvent;
@@ -114,7 +116,48 @@ public class FactionsEntityListener extends EntityListener
 			event.setCancelled(true);
 		}
 	}
-	
+
+	@Override
+	public void onExplosionPrime(ExplosionPrimeEvent event)
+	{
+		if (event.isCancelled()) return;
+		if (! (event.getEntity() instanceof TNTPrimed)) return;
+		if (exploitExplosions.isEmpty()) return;
+
+		// make sure this isn't a TNT explosion exploit attempt
+
+		int locX = event.getEntity().getLocation().getBlockX();
+		int locZ = event.getEntity().getLocation().getBlockZ();
+
+		for (int i = exploitExplosions.size() - 1; i >= 0; i--)
+		{
+			PotentialExplosionExploit ex = exploitExplosions.get(i);
+
+			// remove anything from the list older than 10 seconds (TNT takes 4 seconds to trigger; provide some leeway)
+			if (ex.timeMillis + 10000 < System.currentTimeMillis())
+			{
+				exploitExplosions.remove(i);
+				continue;
+			}
+
+			int absX = Math.abs(ex.X - locX);
+			int absZ = Math.abs(ex.Z - locZ);
+			if (absX < 5 && absZ < 5) 
+			{	// it sure looks like an exploit attempt
+				// let's tattle on him to everyone
+				String msg = "NOTICE: Player \""+ex.playerName+"\" attempted to exploit a TNT bug in the territory of \""+ex.faction.getTag()+"\" at "+ex.X+","+ex.Z+" (X,Z) using "+ex.item.name();
+				P.p.log(Level.WARNING, msg);
+				for (FPlayer fplayer : FPlayers.i.getOnline())
+				{
+					fplayer.sendMessage(msg);
+				}
+				event.setCancelled(true);
+				exploitExplosions.remove(i);
+				return;
+			}
+		}
+	}
+
 	@Override
 	public void onEntityExplode(EntityExplodeEvent event)
 	{
@@ -169,76 +212,39 @@ public class FactionsEntityListener extends EntityListener
 			// ghast fireball which needs prevention
 			event.setCancelled(true);
 		}
-		else
-		{	// TNT
-			if (exploitExplosions.size() > 0)
-			{	// make sure this isn't a TNT explosion exploit attempt
-				int locX = event.getLocation().getBlockX();
-				int locZ = event.getLocation().getBlockZ();
-
-				for (int i = exploitExplosions.size() - 1; i >= 0; i--)
-				{
-					PotentialExplosionExploit ex = exploitExplosions.get(i);
-
-					// remove anything from the list older than 10 seconds (TNT takes 4 seconds to trigger; provide some leeway)
-					if (ex.timeMillis + 10000 < System.currentTimeMillis())
-					{
-						exploitExplosions.remove(i);
-						continue;
-					}
-
-					int absX = Math.abs(ex.X - locX);
-					int absZ = Math.abs(ex.Z - locZ);
-					if (absX < 5 && absZ < 5) 
-					{	// it sure looks like an exploit attempt
-						// let's tattle on him to everyone
-						String msg = "NOTICE: Player \""+ex.playerName+"\" attempted to exploit a TNT bug in the territory of \""+ex.faction.getTag()+"\" at "+ex.X+","+ex.Z+" (X,Z) using "+ex.item.name();
-						P.p.log(Level.WARNING, msg);
-						for (FPlayer fplayer : FPlayers.i.getOnline())
-						{
-							fplayer.sendMessage(msg);
-						}
-						event.setCancelled(true);
-						exploitExplosions.remove(i);
-						return;
-					}
-				}
-			}
-
-			if
+		else if
+		(
 			(
+				faction.isNone()
+				&&
+				Conf.wildernessBlockTNT
+				&&
+				! Conf.worldsNoWildernessProtection.contains(loc.getWorld().getName())
+			)
+			||
+			(
+				faction.isNormal()
+				&&
 				(
-					faction.isNone()
-					&&
-					Conf.wildernessBlockTNT
-					&&
-					! Conf.worldsNoWildernessProtection.contains(loc.getWorld().getName())
-				)
-				||
-				(
-					faction.isNormal()
-					&&
-					(
-						online ? Conf.territoryBlockTNT : Conf.territoryBlockTNTWhenOffline
-					)
-				)
-				||
-				(
-					faction.isWarZone()
-					&&
-					Conf.warZoneBlockTNT
-				)
-				||
-				(
-					faction.isSafeZone()
-					&&
-					Conf.safeZoneBlockTNT
+					online ? Conf.territoryBlockTNT : Conf.territoryBlockTNTWhenOffline
 				)
 			)
-			{
-				// we'll assume it's TNT, which needs prevention
-				event.setCancelled(true);
-			}
+			||
+			(
+				faction.isWarZone()
+				&&
+				Conf.warZoneBlockTNT
+			)
+			||
+			(
+				faction.isSafeZone()
+				&&
+				Conf.safeZoneBlockTNT
+			)
+		)
+		{
+			// we'll assume it's TNT, which needs prevention
+			event.setCancelled(true);
 		}
 	}
 
