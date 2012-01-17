@@ -15,7 +15,6 @@ import com.massivecraft.factions.struct.FPerm;
 import com.massivecraft.factions.struct.Rel;
 import com.massivecraft.factions.util.*;
 import com.massivecraft.factions.zcore.persist.Entity;
-import com.nijikokun.register.payment.Method.MethodAccount;
 
 
 public class Faction extends Entity implements EconomyParticipator
@@ -85,26 +84,17 @@ public class Faction extends Entity implements EconomyParticipator
 	// FIELD: account (fake field)
 	// Bank functions
 	public double money;
-	public String getAccountId() { return "faction-"+this.getId(); }
-	public MethodAccount getAccount()
+	public String getAccountId()
 	{
-		String aid = this.getAccountId();
+		String aid = "faction-"+this.getId();
 
 		// We need to override the default money given to players.
-		if ( ! Econ.getMethod().hasAccount(aid))
-		{
-			if ( ! Econ.getMethod().createAccount(aid))
-			{
-				P.p.log(Level.SEVERE, "Error creating faction bank account through Register: "+aid);
-//				return null;
-			}
-			MethodAccount acc = Econ.getMethod().getAccount(aid);
-			acc.set(0); 
-		}
-		
-		return Econ.getMethod().getAccount(aid);
+		if ( ! Econ.hasAccount(aid))
+			Econ.setBalance(aid, 0);
+
+		return aid;
 	}
-	
+
 	// FIELDS: Flag management
 	// TODO: This will save... defaults if they where changed to...
 	private Map<FFlag, Boolean> flagOverrides; // Contains the modifications to the default values
@@ -543,7 +533,7 @@ public class Faction extends Entity implements EconomyParticipator
 	{
 		if (Econ.shouldBeUsed())
 		{
-			Econ.getMethod().getAccount(getAccountId()).remove();
+			Econ.setBalance(getAccountId(), 0);
 		}
 		
 		this.getAccountId();
