@@ -82,7 +82,7 @@ public class CmdShow extends FCommand
 			
 			//Show bank contents
 			if(Conf.bankEnabled) {
-				msg("<a>Bank contains: <i>"+Econ.moneyString(faction.getAccount().balance()));
+				msg("<a>Bank contains: <i>"+Econ.moneyString(Econ.getBalance(faction.getAccountId())));
 			}
 		}
 

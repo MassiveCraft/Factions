@@ -19,7 +19,6 @@ import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.RelationUtil;
 import com.massivecraft.factions.zcore.persist.PlayerEntity;
-import com.nijikokun.register.payment.Method.MethodAccount;
 
 
 /**
@@ -143,11 +142,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 	public boolean isSpyingChat() { return spyingChat; }
 
 	// FIELD: account
-	public MethodAccount getAccount()
-	{
-		if ( ! Econ.shouldBeUsed()) return null;
-		return Econ.getMethod().getAccount(this.getId());
-	}
+	public String getAccountId() { return this.getId(); }
 	
 	// -------------------------------------------- //
 	// Construct
@@ -617,7 +612,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		{
 			// Transfer all money
 			if (Econ.shouldBeUsed())
-				Econ.transferMoney(this, myFaction, this, myFaction.getAccount().balance());
+				Econ.transferMoney(this, myFaction, this, Econ.getBalance(myFaction.getAccountId()));
 		}
 		
 		if (myFaction.isNormal())

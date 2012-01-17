@@ -39,9 +39,9 @@ public class CmdMoneyTransferFf extends FCommand
 		EconomyParticipator to = this.argAsFaction(2);
 		if (to == null) return;
 		
-		Econ.transferMoney(fme, from, to, amount);
+		boolean success = Econ.transferMoney(fme, from, to, amount);
 
-		if (Conf.logMoneyTransactions)
+		if (success && Conf.logMoneyTransactions)
 			P.p.log(ChatColor.stripColor(P.p.txt.parse("%s transferred %s from the faction \"%s\" to the faction \"%s\"", fme.getName(), Econ.moneyString(amount), from.describeTo(null), to.describeTo(null))));
 	}
 }
