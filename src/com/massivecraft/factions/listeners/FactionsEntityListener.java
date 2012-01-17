@@ -268,31 +268,26 @@ public class FactionsEntityListener extends EntityListener
 		int damage = sub.getDamage();
 		
 		if ( ! (damagee instanceof Player))
-		{
 			return true;
-		}
-		
+
 		FPlayer defender = FPlayers.i.get((Player)damagee);
 		
 		if (defender == null || defender.getPlayer() == null)
-		{
 			return true;
-		}
 		
 		Location defenderLoc = defender.getPlayer().getLocation();
 		
 		if (Conf.worldsIgnorePvP.contains(defenderLoc.getWorld().getName()))
-		{
 			return true;
-		}
 		
 		Faction defLocFaction = Board.getFactionAt(new FLocation(defenderLoc));
 
 		// for damage caused by projectiles, getDamager() returns the projectile... what we need to know is the source
 		if (damager instanceof Projectile)
-		{
 			damager = ((Projectile)damager).getShooter();
-		}
+
+		if (damager == damagee)  // ender pearl usage and other self-inflicted damage
+			return true;
 
 		// Players can not take attack damage in a SafeZone, or possibly peaceful territory
 		if (defLocFaction.noPvPInTerritory()) {
@@ -306,16 +301,12 @@ public class FactionsEntityListener extends EntityListener
 		}
 		
 		if ( ! (damager instanceof Player))
-		{
 			return true;
-		}
 		
 		FPlayer attacker = FPlayers.i.get((Player)damager);
 		
 		if (attacker == null || attacker.getPlayer() == null)
-		{
 			return true;
-		}
 		
 		if (attacker.hasLoginPvpDisabled())
 		{
@@ -332,9 +323,7 @@ public class FactionsEntityListener extends EntityListener
 			return false;
 		}
 		else if (locFaction.isWarZone() && Conf.warZoneFriendlyFire)
-		{
 			return true;
-		}
 		
 		Faction defendFaction = defender.getFaction();
 		Faction attackFaction = attacker.getFaction();
@@ -380,9 +369,7 @@ public class FactionsEntityListener extends EntityListener
 		
 		// Players without faction may be hurt anywhere
 		if (!defender.hasFaction())
-		{
 			return true;
-		}
 		
 		// You can never hurt faction members or allies
 		if (relation.isMember() || relation.isAlly())
