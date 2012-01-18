@@ -54,7 +54,7 @@ public class CmdJoin extends FCommand
 			return;
 		}
 		
-		if( ! (faction.getOpen() || faction.isInvited(fme) || fme.hasAdminMode()))
+		if( ! (faction.getOpen() || faction.isInvited(fme) || fme.hasAdminMode() || Permission.JOIN_ANY.has(sender, false)))
 		{
 			msg("<i>This faction requires invitation.");
 			faction.msg("%s<i> tried to join your faction.", fme.describeTo(faction, true));

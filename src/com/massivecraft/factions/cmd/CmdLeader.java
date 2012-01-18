@@ -38,7 +38,7 @@ public class CmdLeader extends FCommand
 		FPlayer targetFactionCurrentLeader = targetFaction.getFPlayerLeader();
 		
 		// We now have fplayer and the target faction
-		if (this.senderIsConsole || fme.hasAdminMode())
+		if (this.senderIsConsole || fme.hasAdminMode() || Permission.LEADER_ANY.has(sender, false))
 		{
 			// Do whatever you wish
 		}
@@ -47,7 +47,7 @@ public class CmdLeader extends FCommand
 			// Follow the standard rules
 			if (fme.getRole() != Rel.LEADER)
 			{
-				sender.sendMessage(p.txt.parse("<b>Only faction admins can %s.", this.getHelpShort()));
+				sender.sendMessage(p.txt.parse("<b>Only faction leaders can %s.", this.getHelpShort()));
 				return;
 			}
 			
@@ -64,6 +64,15 @@ public class CmdLeader extends FCommand
 			}
 		}
 		
+		// if target player is currently leader, demote and replace him
+		if (targetFactionCurrentLeader == newLeader)
+		{
+			targetFaction.promoteNewLeader();
+			msg("<i>You have demoted %s<i> from the position of faction leader.", newLeader.describeTo(fme, true));
+			newLeader.msg("<i>You have been demoted from the position of faction leader by %s<i>.", senderIsConsole ? "a server admin" : fme.describeTo(newLeader, true));
+			return;
+		}
+
 		// Perform the switching
 		if (targetFactionCurrentLeader != null)
 		{
@@ -71,11 +80,12 @@ public class CmdLeader extends FCommand
 		}
 		newLeader.setFaction(targetFaction);
 		newLeader.setRole(Rel.LEADER);
+		msg("<i>You have promoted %s<i> to the position of faction leader.", newLeader.describeTo(fme, true));
 		
 		// Inform all players
 		for (FPlayer fplayer : FPlayers.i.getOnline())
 		{
-			fplayer.msg("%s<i> gave %s<i> the leadership of %s", RelationUtil.describeThatToMe(fme, fplayer, true), newLeader.describeTo(fplayer), targetFaction.describeTo(fplayer));
+			fplayer.msg("%s<i> gave %s<i> the leadership of %s<i>.", senderIsConsole ? "A server admin" : RelationUtil.describeThatToMe(fme, fplayer, true), newLeader.describeTo(fplayer), targetFaction.describeTo(fplayer));
 		}
 	}
 }

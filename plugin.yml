@@ -25,6 +25,9 @@ permissions:
     children:
       factions.kit.halfmod: true
       factions.flag.set: true
+      factions.join.any: true
+      factions.leader.any: true
+      factions.officer.any: true
   factions.kit.halfmod:
     description: Can use adminmode and chat spy
     children:
@@ -102,10 +105,14 @@ permissions:
     description: invite a player to your faction
   factions.join:
     description: join a faction
+  factions.join.any:
+    description: join any faction, bypassing invitation process for closed factions
   factions.kick:
     description: kick a player from the faction
   factions.leader:
     description: hand over leader rights
+  factions.leader.any:
+    description: give or revoke leader status for any player in any faction
   factions.leave:
     description: leave your faction
   factions.list:
@@ -139,6 +146,8 @@ permissions:
       factions.money.withdraw: true
   factions.officer:
     description: give or revoke officer rights
+  factions.officer.any:
+    description: give or revoke officer rights for any player in any faction
   factions.open:
     description: switch if invitation is required to join
   factions.perm:

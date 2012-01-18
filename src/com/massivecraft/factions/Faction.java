@@ -443,7 +443,8 @@ public class Faction extends Entity implements EconomyParticipator
 		{	// faction leader is the only member; one-man faction
 			if (this.getFlag(FFlag.PERMANENT))
 			{
-				oldLeader.setRole(Rel.MEMBER);
+				if (oldLeader != null)
+					oldLeader.setRole(Rel.MEMBER);
 				return;
 			}
 
@@ -460,9 +461,10 @@ public class Faction extends Entity implements EconomyParticipator
 		}
 		else
 		{	// promote new faction leader
-			oldLeader.setRole(Rel.MEMBER);
+			if (oldLeader != null)
+				oldLeader.setRole(Rel.MEMBER);
 			replacements.get(0).setRole(Rel.LEADER);
-			this.msg("<i>Faction leader <h>%s<i> has been removed. %s<i> has been promoted as the new faction leader.", oldLeader.getName(), replacements.get(0).getName());
+			this.msg("<i>Faction leader <h>%s<i> has been removed. %s<i> has been promoted as the new faction leader.", oldLeader == null ? "" : oldLeader.getName(), replacements.get(0).getName());
 			P.p.log("Faction "+this.getTag()+" ("+this.getId()+") leader was removed. Replacement leader: "+replacements.get(0).getName());
 		}
 	}
