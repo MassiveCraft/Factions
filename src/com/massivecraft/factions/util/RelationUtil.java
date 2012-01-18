@@ -19,7 +19,7 @@ public class RelationUtil
 		if (thatFaction == null) return "ERROR"; // ERROR
 
 		Faction myFaction = getFaction(me);
-		if (myFaction == null) return thatFaction.getTag(); // no relation, but can show basic faction tag
+//		if (myFaction == null) return that.describeTo(null); // no relation, but can show basic name or tag
 
 		if (that instanceof Faction)
 		{

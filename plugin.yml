@@ -30,6 +30,9 @@ permissions:
       factions.setpeaceful: true
       factions.sethome.any: true
       factions.money.*: true
+      factions.join.any: true
+      factions.admin.any: true
+      factions.mod.any: true
   factions.kit.halfmod:
     description: Zones, bypassing, kicking, and chatspy
     children:
@@ -82,6 +85,8 @@ permissions:
       factions.unclaimall: true
   factions.admin:
     description: hand over your admin rights
+  factions.admin.any:
+    description: give or revoke admin status for any player in any faction
   factions.autoclaim:
     description: auto-claim land as you walk around
   factions.bypass:
@@ -103,7 +108,7 @@ permissions:
   factions.disband:
     description: disband a faction
   factions.disband.any:
-    description: disband an other faction
+    description: disband another faction
   factions.help:
     description: display a help page
   factions.home:
@@ -112,6 +117,8 @@ permissions:
     description: invite a player to your faction
   factions.join:
     description: join a faction
+  factions.join.any:
+    description: join any faction, bypassing invitation process for closed factions
   factions.kick:
     description: kick a player from the faction
   factions.kick.any:
@@ -130,6 +137,8 @@ permissions:
     description: show the territory map, and set optional auto update
   factions.mod:
     description: give or revoke moderator rights
+  factions.mod.any:
+    description: give or revoke moderator rights for any player in any faction
   factions.money.balance:
     description: show your factions current money balance
   factions.money.balance.any:
