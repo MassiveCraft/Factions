@@ -9,6 +9,7 @@ import java.util.Set;
 import org.bukkit.block.Block;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.player.PlayerChatEvent;
@@ -112,7 +113,6 @@ public class P extends MPlugin
 		// Player Events
 		this.registerEvent(Event.Type.PLAYER_CHAT, this.playerListener, Event.Priority.Highest);
 		this.registerEvent(Event.Type.PLAYER_CHAT, this.chatEarlyListener, Event.Priority.Lowest);
-		this.registerEvent(Event.Type.PLAYER_COMMAND_PREPROCESS, this.playerListener, Event.Priority.Normal);
 		this.registerEvent(Event.Type.PLAYER_INTERACT, this.playerListener, Event.Priority.Normal);
 		this.registerEvent(Event.Type.PLAYER_MOVE, this.playerListener, Event.Priority.Normal);
 		this.registerEvent(Event.Type.PLAYER_JOIN, this.playerListener, Event.Priority.Normal);
@@ -180,6 +180,14 @@ public class P extends MPlugin
 	{
 		Board.save();
 		Conf.save();
+	}
+
+	@Override
+	public boolean handleCommand(CommandSender sender, String commandString, boolean testOnly)
+	{
+		if (sender instanceof Player && FactionsPlayerListener.preventCommand(commandString, (Player)sender)) return true;
+
+		return super.handleCommand(sender, commandString, testOnly);
 	}
 
 	// -------------------------------------------- //

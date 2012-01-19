@@ -29,17 +29,10 @@ public class FactionsChatEarlyListener extends PlayerListener
 	public void onPlayerChat(PlayerChatEvent event)
 	{
 		if (event.isCancelled()) return;
-		
-		if (p.handleCommand(event.getPlayer(), event.getMessage()))
-		{
-			event.setCancelled(true);
-			return;
-		}
-		
+
 		Player talkingPlayer = event.getPlayer();
 		String msg = event.getMessage();
-		
-		// ... it was not a command. This means that it is a chat message!
+
 		FPlayer me = FPlayers.i.get(talkingPlayer);
 		
 		// Is it a faction chat message?
