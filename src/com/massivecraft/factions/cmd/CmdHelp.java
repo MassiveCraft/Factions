@@ -84,7 +84,7 @@ public class CmdHelp extends FCommand
 		pageLines.add( p.cmdBase.cmdSethome.getUseageTemplate(true) );
 		helpPages.add(pageLines);
 		
-		if (Econ.isSetup() && Conf.bankEnabled)
+		if (Econ.isSetup() && Conf.econEnabled && Conf.bankEnabled)
 		{
 			pageLines = new ArrayList<String>();
 			pageLines.add( "" );
