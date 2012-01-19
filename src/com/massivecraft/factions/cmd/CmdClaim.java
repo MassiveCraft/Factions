@@ -27,8 +27,6 @@ public class CmdClaim extends FCommand
 		senderMustBeMember = false;
 		senderMustBeModerator = false;
 		senderMustBeAdmin = false;
-		
-		aliases.add("claim");
 	}
 	
 	@Override
