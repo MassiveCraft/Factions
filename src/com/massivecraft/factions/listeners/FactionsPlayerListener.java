@@ -29,6 +29,7 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.integration.SpoutFeatures;
+import com.massivecraft.factions.struct.FFlag;
 import com.massivecraft.factions.struct.FPerm;
 import com.massivecraft.factions.struct.Rel;
 
@@ -316,18 +317,10 @@ public class FactionsPlayerListener extends PlayerListener
 
 	public static boolean preventCommand(String fullCmd, Player player)
 	{
-		if ((Conf.territoryNeutralDenyCommands.isEmpty() && Conf.territoryEnemyDenyCommands.isEmpty()))
-		{
+		if ((Conf.territoryNeutralDenyCommands.isEmpty() && Conf.territoryEnemyDenyCommands.isEmpty() && Conf.permanentFactionMemberDenyCommands.isEmpty()))
 			return false;
-		}
 
 		FPlayer me = FPlayers.i.get(player);
-
-		Rel rel = me.getRelationToLocation();
-		if (rel.isAtLeast(Rel.TRUCE))
-		{
-			return false;
-		}
 
 		String shortCmd;  // command without the slash at the beginning
 		if (fullCmd.startsWith("/"))
@@ -337,7 +330,30 @@ public class FactionsPlayerListener extends PlayerListener
 			shortCmd = fullCmd;
 			fullCmd = "/" + fullCmd;
 		}
-		
+
+		if
+		(
+			me.hasFaction()
+			&&
+			! me.hasAdminMode()
+			&&
+			! Conf.permanentFactionMemberDenyCommands.isEmpty()
+			&&
+			me.getFaction().getFlag(FFlag.PERMANENT)
+			&&
+			isCommandInList(fullCmd, shortCmd, Conf.permanentFactionMemberDenyCommands.iterator())
+		)
+		{
+			me.msg("<b>You can't use the command \""+fullCmd+"\" because you are in a permanent faction.");
+			return true;
+		}
+
+		Rel rel = me.getRelationToLocation();
+		if (rel.isAtLeast(Rel.TRUCE))
+		{
+			return false;
+		}
+
 		if
 		(
 			rel == Rel.NEUTRAL
@@ -345,58 +361,51 @@ public class FactionsPlayerListener extends PlayerListener
 			! Conf.territoryNeutralDenyCommands.isEmpty()
 			&&
 			! me.hasAdminMode()
+			&&
+			isCommandInList(fullCmd, shortCmd, Conf.territoryNeutralDenyCommands.iterator())
 		)
 		{
-			Iterator<String> iter = Conf.territoryNeutralDenyCommands.iterator();
-			String cmdCheck;
-			while (iter.hasNext())
-			{
-				cmdCheck = iter.next();
-				if (cmdCheck == null)
-				{
-					iter.remove();
-					continue;
-				}
-
-				cmdCheck = cmdCheck.toLowerCase();
-				if (fullCmd.startsWith(cmdCheck) || shortCmd.startsWith(cmdCheck))
-				{
-					me.msg("<b>You can't use the command \""+fullCmd+"\" in neutral territory.");
-					return true;
-				}
-			}
+			me.msg("<b>You can't use the command \""+fullCmd+"\" in neutral territory.");
+			return true;
 		}
-		else if
+
+		if
 		(
 			rel == Rel.ENEMY
 			&&
 			! Conf.territoryEnemyDenyCommands.isEmpty()
 			&&
 			! me.hasAdminMode()
+			&&
+			isCommandInList(fullCmd, shortCmd, Conf.territoryEnemyDenyCommands.iterator())
 		)
 		{
-			Iterator<String> iter = Conf.territoryEnemyDenyCommands.iterator();
-			String cmdCheck;
-			while (iter.hasNext())
-			{
-				cmdCheck = iter.next();
-				if (cmdCheck == null)
-				{
-					iter.remove();
-					continue;
-				}
+			me.msg("<b>You can't use the command \""+fullCmd+"\" in enemy territory.");
+			return true;
+		}
 
-				cmdCheck = cmdCheck.toLowerCase();
-				if (fullCmd.startsWith(cmdCheck) || shortCmd.startsWith(cmdCheck))
-				{
-					me.msg("<b>You can't use the command \""+fullCmd+"\" in enemy territory.");
-					return true;
-				}
+		return false;
+	}
+
+	private static boolean isCommandInList(String fullCmd, String shortCmd, Iterator<String> iter)
+	{
+		String cmdCheck;
+		while (iter.hasNext())
+		{
+			cmdCheck = iter.next();
+			if (cmdCheck == null)
+			{
+				iter.remove();
+				continue;
 			}
+
+			cmdCheck = cmdCheck.toLowerCase();
+			if (fullCmd.startsWith(cmdCheck) || shortCmd.startsWith(cmdCheck))
+				return true;
 		}
 		return false;
 	}
-	
+
 	@Override
 	public void onPlayerKick(PlayerKickEvent event)
 	{

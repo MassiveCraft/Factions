@@ -127,7 +127,10 @@ public class Conf
 	//public static double considerFactionsReallyOfflineAfterXMinutes = 0.0;
 	
 	public static int actionDeniedPainAmount = 2;
-	
+
+	// commands which will be prevented if the player is a member of a permanent faction
+	public static Set<String> permanentFactionMemberDenyCommands = new HashSet<String>();
+
 	// commands which will be prevented when in claimed territory of another faction
 	public static Set<String> territoryNeutralDenyCommands = new HashSet<String>();
 	public static Set<String> territoryEnemyDenyCommands = new HashSet<String>();
