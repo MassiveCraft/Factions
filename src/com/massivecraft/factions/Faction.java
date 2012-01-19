@@ -449,6 +449,7 @@ public class Faction extends Entity implements EconomyParticipator
 	public void promoteNewLeader()
 	{
 		if (! this.isNormal()) return;
+		if (this.isPermanent() && Conf.permanentFactionsDisableLeaderPromotion) return;
 
 		FPlayer oldLeader = this.getFPlayerAdmin();
 

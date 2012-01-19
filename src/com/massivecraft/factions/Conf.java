@@ -108,6 +108,8 @@ public class Conf
 	public static boolean peacefulTerritoryDisableMonsters = false;
 	public static boolean peacefulMembersDisablePowerLoss = true;
 	
+	public static boolean permanentFactionsDisableLeaderPromotion = false;
+	
 	public static boolean claimsMustBeConnected = false;
 	public static boolean claimsCanBeUnconnectedIfOwnedByOtherFaction = true;
 	public static int claimsRequireMinFactionMembers = 1;
