@@ -26,6 +26,7 @@ public class CmdConfig extends FCommand
 		
 		this.requiredArgs.add("setting");
 		this.requiredArgs.add("value");
+		this.errorOnToManyArgs = false;
 		
 		this.permission = Permission.CONFIG.node;
 		this.disableOnLock = true;
