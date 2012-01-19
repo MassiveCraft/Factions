@@ -513,17 +513,6 @@ public class FactionsPlayerListener extends PlayerListener
 		}
 	}
 
-	@Override
-	public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event)
-	{
-		if (event.isCancelled()) return;
-
-		if (preventCommand(event.getMessage().toLowerCase(), event.getPlayer()))
-		{
-			event.setCancelled(true);
-		}
-	}
-
 	public static boolean preventCommand(String fullCmd, Player player)
 	{
 		if ((Conf.territoryNeutralDenyCommands.isEmpty() && Conf.territoryEnemyDenyCommands.isEmpty()))
@@ -544,7 +533,14 @@ public class FactionsPlayerListener extends PlayerListener
 			return false;
 		}
 
-		String shortCmd = fullCmd.substring(1);	// Get rid of the slash at the beginning
+		String shortCmd;  // command without the slash at the beginning
+		if (fullCmd.startsWith("/"))
+			shortCmd = fullCmd.substring(1);
+		else
+		{
+			shortCmd = fullCmd;
+			fullCmd = "/" + fullCmd;
+		}
 		
 		if
 		(
