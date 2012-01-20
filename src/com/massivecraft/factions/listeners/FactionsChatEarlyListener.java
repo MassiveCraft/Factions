@@ -34,9 +34,17 @@ public class FactionsChatEarlyListener extends PlayerListener
 		String msg = event.getMessage();
 
 		FPlayer me = FPlayers.i.get(talkingPlayer);
-		
+		ChatMode chat = me.getChatMode();
+
+		// slashless factions commands need to be handled here if the user isn't in public chat mode
+		if (chat != ChatMode.PUBLIC && p.handleCommand(event.getPlayer(), event.getMessage()))
+		{
+			event.setCancelled(true);
+			return;
+		}
+
 		// Is it a faction chat message?
-		if (me.getChatMode() == ChatMode.FACTION)
+		if (chat == ChatMode.FACTION)
 		{
 			Faction myFaction = me.getFaction();
  			
@@ -54,9 +62,8 @@ public class FactionsChatEarlyListener extends PlayerListener
 			
 			event.setCancelled(true);
 			return;
-			
 		}
-		else if (me.getChatMode() == ChatMode.ALLIANCE )
+		else if (chat == ChatMode.ALLIANCE)
 		{
 			Faction myFaction = me.getFaction();
 			
