@@ -701,8 +701,6 @@ public class Faction extends Entity implements EconomyParticipator
 			Econ.setBalance(getAccountId(), 0);
 		}
 		
-		this.getAccountId();
-		
 		// Clean the board
 		Board.clean();
 		
