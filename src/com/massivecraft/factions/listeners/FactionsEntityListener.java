@@ -8,6 +8,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Fireball;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.entity.TNTPrimed;
@@ -96,6 +97,7 @@ public class FactionsEntityListener extends EntityListener
 	@Override
 	public void onEntityExplode(EntityExplodeEvent event)
 	{
+		//p.log(Level.INFO, "Explosion Event!");
 		if ( event.isCancelled()) return;
 
 		if (event.getEntity() instanceof TNTPrimed && exploitExplosions.size() > 0)
@@ -113,17 +115,17 @@ public class FactionsEntityListener extends EntityListener
 					exploitExplosions.remove(i);
 					continue;
 				}
-
+				
 				int absX = Math.abs(ex.X - locX);
 				int absZ = Math.abs(ex.Z - locZ);
 				if (absX < 5 && absZ < 5) 
 				{	// it sure looks like an exploit attempt
 					// let's tattle on him to everyone
-					String msg = "NOTICE: Player \""+ex.playerName+"\" attempted to exploit a TNT bug in the territory of \""+ex.faction.getTag()+"\" at "+ex.X+","+ex.Z+" (X,Z) using "+ex.item.name();
-					P.p.log(Level.WARNING, msg);
+					String msg = "NOTICE: Player \""+ex.playerName+"\" attempted to exploit a TNT bug in the territory of \""+ex.faction.getTag()+"\" using "+ex.item.name();
+					P.p.log(Level.WARNING, msg +  " at "+ex.X+","+ex.Z+" (X,Z");
 					for (FPlayer fplayer : FPlayers.i.getOnline())
 					{
-						fplayer.sendMessage(msg);
+						fplayer.sendMessage(msg + "!");
 					}
 					event.setCancelled(true);
 					exploitExplosions.remove(i);
@@ -131,13 +133,38 @@ public class FactionsEntityListener extends EntityListener
 				}
 			}
 		}
-
+				
+		// "NoBoom" offline faction protection single block deny.
+		if (event.getEntity() instanceof TNTPrimed || event.getEntity() instanceof Fireball)
+		{
+			Faction faction = Board.getFactionAt(new FLocation(event.getLocation().getBlock()));
+			
+			// Only update Explosion Protection when the TNT is inside the chunk...
+			faction.updateOfflineExplosionProtection();
+			
+			//p.log( Level.INFO, "Explosions Allowed: " + faction.getFlag(FFlag.EXPLOSIONS) );
+			//p.log( Level.INFO, "Explosion B Blocked: " + faction.hasOfflineExplosionProtection() );
+			//p.log( Level.INFO, "Explosion B, Players Online: " + faction.getOnlinePlayers().size() );
+			//p.log( Level.INFO, "Explosion B, Last Online: " + faction.getLastOnlineTime() );
+			if ( faction.hasOfflineExplosionProtection() )
+			{
+				// faction is peaceful and has explosions set to disabled
+				//p.log(Level.INFO, "Explosion Block Event Cancelled!");
+				event.setCancelled(true);
+				return;
+			}
+		}
+		
+		// "NoBoom" offline faction protection area block deny.
 		for (Block block : event.blockList())
 		{
 			Faction faction = Board.getFactionAt(new FLocation(block));
-			if (faction.getFlag(FFlag.EXPLOSIONS) == false || faction.hasOfflineExplosionProtection() )
+			
+			//p.log( Level.INFO, "Explosion A Blocked: " + faction.hasOfflineExplosionProtection() );
+			if ( faction.hasOfflineExplosionProtection() )
 			{
 				// faction is peaceful and has explosions set to disabled
+				//p.log( Level.INFO, "Explosion Area Event Cancelled!" );
 				event.setCancelled(true);
 				return;
 			}

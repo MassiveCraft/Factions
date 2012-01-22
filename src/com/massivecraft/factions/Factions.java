@@ -20,7 +20,7 @@ import com.massivecraft.factions.zcore.util.TextUtil;
 public class Factions extends EntityCollection<Faction>
 {
 	public static Factions i = new Factions();
-	
+		
 	P p = P.p;
 	
 	private Factions()
@@ -182,9 +182,12 @@ public class Factions extends EntityCollection<Faction>
 	{
 		if ( ! this.exists(id))
 		{
-			p.log(Level.WARNING, "Non existing factionId "+id+" requested! Issuing cleaning!");
+			// Clean the board if this faction doesn't exist..
+			p.log(Level.WARNING, "Non existing factionId "+id+" requested! Issuing Board cleaning!");
+			id = "0";
 			Board.clean();
-			FPlayers.i.clean();
+			//FPlayers.i.clean();  // Endless loop..
+			//return getNone(); // id = "0";
 		}
 		
 		return super.get(id);

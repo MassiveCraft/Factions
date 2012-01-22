@@ -570,17 +570,31 @@ public class Faction extends Entity implements EconomyParticipator
 	}
 	
 	public boolean hasOfflineExplosionProtection() {
-		
 		//No protection if we are online.
-		if (this.getOnlinePlayers().size() > 0 ) {
+		if (this.getOnlinePlayers().size() > 0 || this.getId() == "0" || this.isNone()) 
+		{
 			return false;
 		}
 		
-		if ( this.lastOnlineTime + ( Conf.offlineExplosionProtectionDelay * 60 * 1000 ) < System.currentTimeMillis() ) {
+		double lastonlinetime = this.lastOnlineTime + ( Conf.offlineExplosionProtectionDelay * 60 * 1000 );
+				
+		if ( this.getFlag(FFlag.EXPLOSIONS) == true && this.getId() != "0" && lastonlinetime < System.currentTimeMillis()) 
+		{
 			//Last online time + buffer time < current time, so the protection has expired.
 			return false;
-		} else {
+		} 
+		else if ( lastonlinetime < System.currentTimeMillis())
+		{
+			return false;
+		}
+		else
+		{
 			return true;
 		}
+	}
+	
+	public float getLastOnlineTime()
+	{
+		return this.lastOnlineTime;
 	}
 }

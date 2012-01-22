@@ -2,6 +2,7 @@ package com.massivecraft.factions;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Level;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -139,9 +140,14 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 	public final void resetFactionData(boolean doSpotUpdate)
 	{
 		Faction currentFaction = this.getFaction();
+		
+		// TODO: Make this not happen.
+		if (currentFaction == null)
+			P.p.log(Level.WARNING, "Reset Faction Data: " + currentFaction);
+		
 		if (currentFaction != null)
 			currentFaction.removeFPlayer(this);
-
+		
 		this.factionId = "0"; // The default neutral faction
 		this.chatMode = ChatMode.PUBLIC;
 		this.role = Rel.RECRUIT;

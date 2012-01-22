@@ -5,6 +5,7 @@ import java.lang.reflect.Type;
 import java.util.Map;
 import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.logging.Level;
 
 import com.google.gson.reflect.TypeToken;
 import com.massivecraft.factions.struct.Rel;
@@ -42,7 +43,7 @@ public class FPlayers extends PlayerEntityCollection<FPlayer>
 		{
 			if ( ! Factions.i.exists(fplayer.getFactionId()))
 			{
-				p.log("Reset faction data (invalid faction) for player "+fplayer.getName());
+				p.log(Level.INFO, "Reset faction data (invalid faction) for player "+fplayer.getName());
 				fplayer.resetFactionData(false);
 			}
 		}

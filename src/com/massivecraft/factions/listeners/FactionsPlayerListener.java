@@ -27,6 +27,7 @@ import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
+import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.struct.FPerm;
@@ -261,7 +262,9 @@ public class FactionsPlayerListener extends PlayerListener
 		if (me.hasAdminMode()) return true;
 		Location loc = block.getLocation();
 		Material material = block.getType();
+		Faction factionHere = Board.getFactionAt(loc);
 		
+		if (factionHere.isNone() && ! me.hasFaction()) return true;
 		if (Conf.materialsEditOnInteract.contains(material) && ! FPerm.BUILD.has(me, loc, ! justCheck)) return false;
 		if (Conf.materialsContainer.contains(material) && ! FPerm.CONTAINER.has(me, loc, ! justCheck)) return false;
 		if (Conf.materialsDoor.contains(material)      && ! FPerm.DOOR.has(me, loc, ! justCheck)) return false;
