@@ -49,7 +49,7 @@ public class LWCFeatures
 		{
 			if(lwc.findProtection(chests.get(x)) != null)
 			{
-				if(!faction.getFPlayers().contains(FPlayers.i.get(lwc.findProtection(chests.get(x)).getBukkitOwner())))
+				if(!faction.getFPlayers().contains(FPlayers.i.get(lwc.findProtection(chests.get(x)).getOwner())))
 					lwc.findProtection(chests.get(x)).remove();
 			}
 		}
