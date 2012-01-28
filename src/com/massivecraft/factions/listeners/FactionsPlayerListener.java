@@ -8,12 +8,12 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerBucketFillEvent;
 import org.bukkit.event.player.PlayerChatEvent;
-import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
@@ -324,6 +324,25 @@ public class FactionsPlayerListener extends PlayerListener
 		if (event.getAction() != Action.RIGHT_CLICK_BLOCK)
 		{
 			return;  // only interested on right-clicks for below
+		}
+
+		// workaround fix for new CraftBukkit 1.1-R1 bug where half-step on half-step placement doesn't trigger BlockPlaceEvent
+		if (
+				event.hasItem()
+				&&
+				event.getItem().getType() == Material.STEP
+				&&
+				block.getType() == Material.STEP
+				&&
+				event.getBlockFace() == BlockFace.UP
+				&&
+				event.getItem().getData().getData() == block.getData()
+				&&
+				! FactionsBlockListener.playerCanBuildDestroyBlock(player, block.getLocation(), "build", false)
+			)
+		{
+			event.setCancelled(true);
+			return;
 		}
 
 		if ( ! playerCanUseItemHere(player, block.getLocation(), event.getMaterial(), false))
