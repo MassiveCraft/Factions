@@ -21,6 +21,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
@@ -34,6 +35,7 @@ import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.struct.FFlag;
 import com.massivecraft.factions.struct.FPerm;
 import com.massivecraft.factions.struct.Rel;
+import com.massivecraft.factions.util.VisualizeUtil;
 
 import java.util.logging.Level;
 
@@ -451,5 +453,27 @@ public class FactionsPlayerListener implements Listener
 			badGuy.leave(false);
 			badGuy.detach();
 		}
+	}
+	
+	// -------------------------------------------- //
+	// VisualizeUtil
+	// -------------------------------------------- //
+	
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void onPlayerMoveClearVisualizations(PlayerMoveEvent event)
+	{
+		if (event.isCancelled()) return;
+		
+		Block blockFrom = event.getFrom().getBlock();
+		Block blockTo = event.getTo().getBlock();
+		if (blockFrom.equals(blockTo)) return;
+		
+		VisualizeUtil.clear(event.getPlayer());
+	}
+	
+	@EventHandler(priority = EventPriority.LOWEST)
+	public void onPlayerPreLogin(PlayerPreLoginEvent event)
+	{
+		VisualizeUtil.onPlayerPreLogin(event.getName());
 	}
 }

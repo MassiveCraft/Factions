@@ -46,6 +46,7 @@ public enum Permission
 	RELATION("relation"),
 	RELOAD("reload"),
 	SAVE("save"),
+	SEE_CHUNK("seechunk"),
 	SETHOME("sethome"),
 	SHOW("show"),
 	TAG("tag"),
