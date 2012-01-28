@@ -264,7 +264,7 @@ public class FactionsPlayerListener extends PlayerListener
 	public void onPlayerRespawn(PlayerRespawnEvent event)
 	{
 		FPlayer me = FPlayers.i.get(event.getPlayer());
-		Location home = me.getFaction().getHome();
+		Location home = me.getFaction().getHome(); // TODO: WARNING FOR NPE HERE THE ORIO FOR RESPAWN SHOULD BE ASSIGNABLE FROM CONFIG.
 		if
 		(
 			Conf.homesEnabled
