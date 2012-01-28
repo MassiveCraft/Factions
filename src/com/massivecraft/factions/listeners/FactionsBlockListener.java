@@ -4,10 +4,12 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockBurnEvent;
 import org.bukkit.event.block.BlockDamageEvent;
-import org.bukkit.event.block.BlockListener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.block.BlockPistonExtendEvent;
 import org.bukkit.event.block.BlockPistonRetractEvent;
@@ -24,7 +26,7 @@ import com.massivecraft.factions.struct.FFlag;
 import com.massivecraft.factions.struct.FPerm;
 
 
-public class FactionsBlockListener extends BlockListener
+public class FactionsBlockListener implements Listener
 {
 	public P p;
 	public FactionsBlockListener(P p)
@@ -32,7 +34,7 @@ public class FactionsBlockListener extends BlockListener
 		this.p = p;
 	}
 	
-	@Override
+	@EventHandler(priority = EventPriority.NORMAL)
 	public void onBlockSpread(BlockSpreadEvent event)
 	{
 		if (event.isCancelled()) return;
@@ -44,7 +46,7 @@ public class FactionsBlockListener extends BlockListener
 		}
 	}
 	
-	@Override
+	@EventHandler(priority = EventPriority.NORMAL)
 	public void onBlockBurn(BlockBurnEvent event)
 	{
 		if (event.isCancelled()) return;
@@ -78,7 +80,7 @@ public class FactionsBlockListener extends BlockListener
 		return FPerm.BUILD.has(me, loc, true);
 	}
 	
-	@Override
+	@EventHandler(priority = EventPriority.NORMAL)
 	public void onBlockPlace(BlockPlaceEvent event)
 	{
 		if (event.isCancelled()) return;
@@ -94,17 +96,10 @@ public class FactionsBlockListener extends BlockListener
 		if ( ! playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock(), "build", false))
 		{
 			event.setCancelled(true);
-
-			Material handItem = event.getPlayer().getItemInHand().getType();
-			if (handItem == Material.TNT || handItem == Material.REDSTONE_TORCH_ON)
-			{
-				Faction targetFaction = Board.getFactionAt(new FLocation(event.getBlock()));
-				FactionsEntityListener.trackPotentialExplosionExploit(event.getPlayer().getName(), targetFaction, handItem, event.getBlock().getLocation());
-			}
 		}
 	}
 
-	@Override
+	@EventHandler(priority = EventPriority.NORMAL)
 	public void onBlockBreak(BlockBreakEvent event)
 	{
 		if (event.isCancelled()) return;
@@ -115,7 +110,7 @@ public class FactionsBlockListener extends BlockListener
 		}
 	}
 
-	@Override
+	@EventHandler(priority = EventPriority.NORMAL)
 	public void onBlockDamage(BlockDamageEvent event)
 	{
 		if (event.isCancelled()) return;
@@ -127,7 +122,7 @@ public class FactionsBlockListener extends BlockListener
 		}
 	}
 
-	@Override
+	@EventHandler(priority = EventPriority.NORMAL)
 	public void onBlockPistonExtend(BlockPistonExtendEvent event)
 	{
 		if (event.isCancelled()) return;
@@ -152,7 +147,7 @@ public class FactionsBlockListener extends BlockListener
 		 */
 	}
 
-	@Override
+	@EventHandler(priority = EventPriority.NORMAL)
 	public void onBlockPistonRetract(BlockPistonRetractEvent event)
 	{
 		// if not a sticky piston, retraction should be fine
