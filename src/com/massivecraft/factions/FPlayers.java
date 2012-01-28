@@ -67,7 +67,11 @@ public class FPlayers extends PlayerEntityCollection<FPlayer>
 
 				// if player is faction leader, sort out the faction since he's going away
 				if (fplayer.getRole() == Rel.LEADER)
-					fplayer.getFaction().promoteNewLeader();
+				{
+					Faction faction = fplayer.getFaction();
+					if (faction != null)
+						fplayer.getFaction().promoteNewLeader();
+				}
 
 				fplayer.leave(false);
 				fplayer.detach();
