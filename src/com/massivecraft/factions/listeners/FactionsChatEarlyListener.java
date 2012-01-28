@@ -4,8 +4,10 @@ import java.util.logging.Level;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChatEvent;
-import org.bukkit.event.player.PlayerListener;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
@@ -17,7 +19,7 @@ import com.massivecraft.factions.struct.Relation;
 
 
 // this is an addtional PlayerListener for handling slashless command usage and faction chat, to be set at low priority so Factions gets to them first
-public class FactionsChatEarlyListener extends PlayerListener
+public class FactionsChatEarlyListener implements Listener
 {
 	public P p;
 	public FactionsChatEarlyListener(P p)
@@ -25,7 +27,7 @@ public class FactionsChatEarlyListener extends PlayerListener
 		this.p = p;
 	}
 	
-	@Override
+	@EventHandler(priority = EventPriority.LOWEST)
 	public void onPlayerChat(PlayerChatEvent event)
 	{
 		if (event.isCancelled()) return;

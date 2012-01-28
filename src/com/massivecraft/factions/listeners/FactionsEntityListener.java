@@ -1,17 +1,16 @@
 package com.massivecraft.factions.listeners;
 
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.logging.Level;
 
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.Creeper;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Fireball;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
-import org.bukkit.entity.TNTPrimed;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EndermanPickupEvent;
 import org.bukkit.event.entity.EndermanPlaceEvent;
@@ -19,9 +18,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
-import org.bukkit.event.entity.EntityListener;
 import org.bukkit.event.entity.EntityTargetEvent;
-import org.bukkit.event.entity.ExplosionPrimeEvent;
 import org.bukkit.event.painting.PaintingBreakByEntityEvent;
 import org.bukkit.event.painting.PaintingBreakEvent;
 import org.bukkit.event.painting.PaintingPlaceEvent;
@@ -37,7 +34,7 @@ import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.util.MiscUtil;
 
 
-public class FactionsEntityListener extends EntityListener
+public class FactionsEntityListener implements Listener
 {
 	public P p;
 	public FactionsEntityListener(P p)
@@ -45,9 +42,7 @@ public class FactionsEntityListener extends EntityListener
 		this.p = p;
 	}
 
-	private static ArrayList<PotentialExplosionExploit> exploitExplosions = new ArrayList<PotentialExplosionExploit>();
-
-	@Override
+	@EventHandler(priority = EventPriority.NORMAL)
 	public void onEntityDeath(EntityDeathEvent event)
 	{
 		Entity entity = event.getEntity();
@@ -97,7 +92,7 @@ public class FactionsEntityListener extends EntityListener
 	 * I can always hurt enemies.
 	 * I can hurt neutrals as long as they are outside their own territory.
 	 */
-	@Override
+	@EventHandler(priority = EventPriority.NORMAL)
 	public void onEntityDamage(EntityDamageEvent event)
 	{
 		if ( event.isCancelled()) return;
@@ -117,7 +112,7 @@ public class FactionsEntityListener extends EntityListener
 		}
 	}
 
-	@Override
+	@EventHandler(priority = EventPriority.NORMAL)
 	public void onEntityExplode(EntityExplodeEvent event)
 	{
 		if ( event.isCancelled()) return;
@@ -361,7 +356,7 @@ public class FactionsEntityListener extends EntityListener
 		return true;
 	}
 	
-	@Override
+	@EventHandler(priority = EventPriority.NORMAL)
 	public void onCreatureSpawn(CreatureSpawnEvent event)
 	{
 		if (event.isCancelled() || event.getLocation() == null)
@@ -375,7 +370,7 @@ public class FactionsEntityListener extends EntityListener
 		}
 	}
 	
-	@Override
+	@EventHandler(priority = EventPriority.NORMAL)
 	public void onEntityTarget(EntityTargetEvent event)
 	{
 		if (event.isCancelled()) return;
@@ -400,7 +395,7 @@ public class FactionsEntityListener extends EntityListener
 		}
 	}
 
-	@Override
+	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPaintingBreak(PaintingBreakEvent event)
 	{
 		if (event.isCancelled()) return;
@@ -422,7 +417,7 @@ public class FactionsEntityListener extends EntityListener
 		}
 	}
 
-	@Override
+	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPaintingPlace(PaintingPlaceEvent event)
 	{
 		if (event.isCancelled()) return;
@@ -433,7 +428,7 @@ public class FactionsEntityListener extends EntityListener
 		}
 	}
 
-	@Override
+	@EventHandler(priority = EventPriority.NORMAL)
 	public void onEndermanPickup(EndermanPickupEvent event)
 	{
 		if (event.isCancelled()) return;
@@ -444,7 +439,7 @@ public class FactionsEntityListener extends EntityListener
 		}
 	}
 
-	@Override
+	@EventHandler(priority = EventPriority.NORMAL)
 	public void onEndermanPlace(EndermanPlaceEvent event)
 	{
 		if (event.isCancelled()) return;
@@ -499,39 +494,5 @@ public class FactionsEntityListener extends EntityListener
 		}
 
 		return false;
-	}
-
-
-	/**
-	 * Since the Bukkit team still don't seem to be in any hurry to fix the problem after at least half a year,
-	 * we'll track potential explosion exploits ourselves and try to prevent them
-	 * For reference, canceled TNT placement next to redstone power is bugged and triggers a free explosion
-	 * Same thing happens for canceled redstone torch placement next to existing TNT
-	 * https://bukkit.atlassian.net/browse/BUKKIT-89
-	 */
-
-	public static void trackPotentialExplosionExploit(String playerName, Faction faction, Material item, Location location)
-	{
-		exploitExplosions.add(new PotentialExplosionExploit(playerName, faction, item, location));
-	}
-
-	public static class PotentialExplosionExploit
-	{
-		public String playerName;
-		public Faction faction;
-		public Material item;
-		public long timeMillis;
-		public int X;
-		public int Z;
-		
-		public PotentialExplosionExploit(String playerName, Faction faction, Material item, Location location)
-		{
-			this.playerName = playerName;
-			this.faction = faction;
-			this.item = item;
-			this.timeMillis = System.currentTimeMillis();
-			this.X = location.getBlockX();
-			this.Z = location.getBlockZ();
-		}
 	}
 }

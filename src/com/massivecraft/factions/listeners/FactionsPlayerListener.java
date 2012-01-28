@@ -10,6 +10,9 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerBucketFillEvent;
@@ -17,7 +20,6 @@ import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
-import org.bukkit.event.player.PlayerListener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
@@ -40,7 +42,7 @@ import java.util.logging.Level;
 
 
 
-public class FactionsPlayerListener extends PlayerListener
+public class FactionsPlayerListener implements Listener
 {
 	public P p;
 	public FactionsPlayerListener(P p)
@@ -48,7 +50,7 @@ public class FactionsPlayerListener extends PlayerListener
 		this.p = p;
 	}
 	
-	@Override
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onPlayerChat(PlayerChatEvent event)
 	{
 		if (event.isCancelled()) return;
@@ -143,7 +145,7 @@ public class FactionsPlayerListener extends PlayerListener
 		}
 	}
 	
-	@Override
+	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerJoin(PlayerJoinEvent event)
 	{
 		// Make sure that all online players do have a fplayer.
@@ -159,7 +161,7 @@ public class FactionsPlayerListener extends PlayerListener
 		SpoutFeatures.updateAppearancesShortly(event.getPlayer());
 	}
 	
-    @Override
+	@EventHandler(priority = EventPriority.NORMAL)
     public void onPlayerQuit(PlayerQuitEvent event)
     {
 		// Make sure player's power is up to date when they log off.
@@ -173,7 +175,7 @@ public class FactionsPlayerListener extends PlayerListener
 		SpoutFeatures.playerDisconnect(me);
 	}
 	
-	@Override
+	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerMove(PlayerMoveEvent event)
 	{
 		Player player = event.getPlayer();
@@ -302,7 +304,7 @@ public class FactionsPlayerListener extends PlayerListener
 		}
 	}
 
-    @Override
+	@EventHandler(priority = EventPriority.NORMAL)
     public void onPlayerInteract(PlayerInteractEvent event)
     {
 		if (event.isCancelled()) return;
@@ -477,7 +479,7 @@ public class FactionsPlayerListener extends PlayerListener
 		return true;
 	}
 
-	@Override
+	@EventHandler(priority = EventPriority.HIGH)
 	public void onPlayerRespawn(PlayerRespawnEvent event)
 	{
 		FPlayer me = FPlayers.i.get(event.getPlayer());
@@ -503,7 +505,7 @@ public class FactionsPlayerListener extends PlayerListener
 
 	// For some reason onPlayerInteract() sometimes misses bucket events depending on distance (something like 2-3 blocks away isn't detected),
 	// but these separate bucket events below always fire without fail
-	@Override
+	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerBucketEmpty(PlayerBucketEmptyEvent event)
 	{
 		if (event.isCancelled()) return;
@@ -517,7 +519,7 @@ public class FactionsPlayerListener extends PlayerListener
 			return;
 		}
 	}
-	@Override
+	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerBucketFill(PlayerBucketFillEvent event)
 	{
 		if (event.isCancelled()) return;
@@ -628,7 +630,7 @@ public class FactionsPlayerListener extends PlayerListener
 		return false;
 	}
 
-	@Override
+	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerKick(PlayerKickEvent event)
 	{
 		if (event.isCancelled()) return;
