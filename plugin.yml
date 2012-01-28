@@ -25,9 +25,10 @@ permissions:
     children:
       factions.kit.halfmod: true
       factions.disband.any: true
+      factions.setpeaceful: true
       factions.setpermanent: true
       factions.setpermanentpower: true
-      factions.setpeaceful: true
+      factions.powerboost: true
       factions.sethome.any: true
       factions.money.*: true
       factions.join.any: true
@@ -194,6 +195,8 @@ permissions:
     description: show player power info
   factions.power.any:
     description: view an other players power level
+  factions.powerboost:
+    description: apply permanent power bonus/penalty to specified player or faction
   factions.relation:
     description: set relation wish to another faction
   factions.reload:

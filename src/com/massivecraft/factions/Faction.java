@@ -135,7 +135,14 @@ public class Faction extends Entity implements EconomyParticipator
 	public Integer getPermanentPower() { return this.permanentPower; }
 	public void setPermanentPower(Integer permanentPower) { this.permanentPower = permanentPower; }
 	public boolean hasPermanentPower() { return this.permanentPower != null; }
-	
+
+	// FIELD: powerBoost
+	// special increase/decrease to default and max power for this faction
+	private double powerBoost;
+	public double getPowerBoost() { return this.powerBoost; }
+	public void setPowerBoost(double powerBoost) { this.powerBoost = powerBoost; }
+
+
 	// -------------------------------------------- //
 	// Construct
 	// -------------------------------------------- //
@@ -152,6 +159,7 @@ public class Faction extends Entity implements EconomyParticipator
 		this.peacefulExplosionsEnabled = false;
 		this.permanent = false;
 		this.money = 0.0;
+		this.powerBoost = 0.0;
 	}
 	
 	// -------------------------------------------- //
@@ -268,7 +276,7 @@ public class Faction extends Entity implements EconomyParticipator
 		{
 			ret = Conf.powerFactionMax;
 		}
-		return ret;
+		return ret + this.powerBoost;
 	}
 	
 	public double getPowerMax()
@@ -287,7 +295,7 @@ public class Faction extends Entity implements EconomyParticipator
 		{
 			ret = Conf.powerFactionMax;
 		}
-		return ret;
+		return ret + this.powerBoost;
 	}
 	
 	public int getPowerRounded()

@@ -35,6 +35,7 @@ public class FCmdRoot extends FCommand
 	public CmdPeaceful cmdPeaceful = new CmdPeaceful();
 	public CmdPermanent cmdPermanent = new CmdPermanent();
 	public CmdPermanentPower cmdPermanentPower = new CmdPermanentPower();
+	public CmdPowerBoost cmdPowerBoost = new CmdPowerBoost();
 	public CmdPower cmdPower = new CmdPower();
 	public CmdRelationAlly cmdRelationAlly = new CmdRelationAlly();
 	public CmdRelationEnemy cmdRelationEnemy = new CmdRelationEnemy();
@@ -103,6 +104,7 @@ public class FCmdRoot extends FCommand
 		this.addSubCommand(this.cmdPermanent);
 		this.addSubCommand(this.cmdPermanentPower);
 		this.addSubCommand(this.cmdPower);
+		this.addSubCommand(this.cmdPowerBoost);
 		this.addSubCommand(this.cmdRelationAlly);
 		this.addSubCommand(this.cmdRelationEnemy);
 		this.addSubCommand(this.cmdRelationNeutral);
