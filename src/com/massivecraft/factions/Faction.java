@@ -30,7 +30,7 @@ public class Faction extends Entity implements EconomyParticipator
 
 	// FIELD: fplayers
 	// speedy lookup of players in faction
-	private Set<FPlayer> fplayers = new HashSet<FPlayer>();
+	private transient Set<FPlayer> fplayers = new HashSet<FPlayer>();
 
 	// FIELD: invites
 	// Where string is a lowercase player name
@@ -340,13 +340,13 @@ public class Faction extends Entity implements EconomyParticipator
 			}
 		}
 	}
-	public boolean addFPlayer(FPlayer fplayer)
+	protected boolean addFPlayer(FPlayer fplayer)
 	{
 		if (this.isPlayerFreeType()) return false;
 
 		return fplayers.add(fplayer);
 	}
-	public boolean removeFPlayer(FPlayer fplayer)
+	protected boolean removeFPlayer(FPlayer fplayer)
 	{
 		if (this.isPlayerFreeType()) return false;
 
