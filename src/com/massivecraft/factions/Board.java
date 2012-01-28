@@ -187,7 +187,7 @@ public class Board
 		
 		int halfWidth = Conf.mapWidth / 2;
 		int halfHeight = Conf.mapHeight / 2;
-		FLocation topLeft = flocation.getRelative(-halfHeight, halfWidth);
+		FLocation topLeft = flocation.getRelative(-halfWidth, -halfHeight);
 		int width = halfWidth * 2 + 1;
 		int height = halfHeight * 2 + 1;
 		
@@ -199,13 +199,13 @@ public class Board
 		int chrIdx = 0;
 		
 		// For each row
-		for (int dx = 0; dx < height; dx++)
+		for (int dz = 0; dz < height; dz++)
 		{
 			// Draw and add that row
 			String row = "";
-			for (int dz = 0; dz > -width; dz--)
+			for (int dx = 0; dx < width; dx++)
 			{
-				if(dz == -(halfWidth) && dx == halfHeight)
+				if(dx == halfWidth && dz == halfHeight)
 				{
 					row += ChatColor.AQUA+"+";
 					continue;
