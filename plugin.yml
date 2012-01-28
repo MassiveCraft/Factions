@@ -25,6 +25,7 @@ permissions:
     children:
       factions.kit.halfmod: true
       factions.flag.set: true
+      factions.powerboost: true
       factions.join.any: true
       factions.leader.any: true
       factions.officer.any: true
@@ -156,6 +157,8 @@ permissions:
     description: show player power info
   factions.power.any:
     description: view an other players power level
+  factions.powerboost:
+    description: apply permanent power bonus/penalty to specified player or faction
   factions.relation:
     description: set relation wish to another faction
   factions.reload:

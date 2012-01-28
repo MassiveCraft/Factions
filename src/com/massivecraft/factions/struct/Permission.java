@@ -42,6 +42,7 @@ public enum Permission
 	PERM("perm"),
 	POWER("power"),
 	POWER_ANY("power.any"),
+	POWERBOOST("powerboost"),
 	RELATION("relation"),
 	RELOAD("reload"),
 	SAVE("save"),

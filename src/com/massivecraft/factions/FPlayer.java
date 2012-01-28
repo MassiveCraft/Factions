@@ -66,7 +66,13 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 	
 	// FIELD: power
 	private double power;
-	
+
+	// FIELD: powerBoost
+	// special increase/decrease to min and max power for this player
+	private double powerBoost;
+	public double getPowerBoost() { return this.powerBoost; }
+	public void setPowerBoost(double powerBoost) { this.powerBoost = powerBoost; }
+
 	// FIELD: lastPowerUpdateTime
 	private long lastPowerUpdateTime;
 	
@@ -124,6 +130,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		this.mapAutoUpdating = false;
 		this.autoClaimFor = null;
 		this.loginPvpDisabled = (Conf.noPVPDamageToOthersForXSecondsAfterLogin > 0) ? true : false;
+		this.powerBoost = 0.0;
 
 		if ( ! Conf.newPlayerStartingFactionID.equals("0") && Factions.i.exists(Conf.newPlayerStartingFactionID))
 		{
@@ -337,23 +344,19 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 	{
 		this.power += delta;
 		if (this.power > this.getPowerMax())
-		{
 			this.power = this.getPowerMax();
-		} else if (this.power < this.getPowerMin())
-		{
+		else if (this.power < this.getPowerMin())
 			this.power = this.getPowerMin();
-		}
-		//Log.debug("Power of "+this.getName()+" is now: "+this.power);
 	}
 	
 	public double getPowerMax()
 	{
-		return Conf.powerPlayerMax;
+		return Conf.powerPlayerMax + this.powerBoost;
 	}
 	
 	public double getPowerMin()
 	{
-		return Conf.powerPlayerMin;
+		return Conf.powerPlayerMin + this.powerBoost;
 	}
 	
 	public int getPowerRounded()

@@ -94,6 +94,12 @@ public class Faction extends Entity implements EconomyParticipator
 		return aid;
 	}
 
+	// FIELD: powerBoost
+	// special increase/decrease to default and max power for this faction
+	private double powerBoost;
+	public double getPowerBoost() { return this.powerBoost; }
+	public void setPowerBoost(double powerBoost) { this.powerBoost = powerBoost; }
+
 	// FIELDS: Flag management
 	// TODO: This will save... defaults if they where changed to...
 	private Map<FFlag, Boolean> flagOverrides; // Contains the modifications to the default values
@@ -168,6 +174,7 @@ public class Faction extends Entity implements EconomyParticipator
 		this.tag = "???";
 		this.description = "Default faction description :(";
 		this.money = 0.0;
+		this.powerBoost = 0.0;
 		this.flagOverrides = new LinkedHashMap<FFlag, Boolean>();
 		this.permOverrides = new LinkedHashMap<FPerm, Set<Rel>>();
 	}
@@ -280,7 +287,7 @@ public class Faction extends Entity implements EconomyParticipator
 		{
 			ret = Conf.powerFactionMax;
 		}
-		return ret;
+		return ret + this.powerBoost;
 	}
 	
 	public double getPowerMax()
@@ -299,7 +306,7 @@ public class Faction extends Entity implements EconomyParticipator
 		{
 			ret = Conf.powerFactionMax;
 		}
-		return ret;
+		return ret + this.powerBoost;
 	}
 	
 	public int getPowerRounded()
