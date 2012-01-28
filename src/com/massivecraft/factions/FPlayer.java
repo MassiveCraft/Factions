@@ -140,9 +140,14 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 	
 	public final void resetFactionData(boolean doSpotUpdate)
 	{
-		Faction currentFaction = this.getFaction();
-		if (currentFaction != null)
-			currentFaction.removeFPlayer(this);
+		if (this.factionId != null && Factions.i.exists(this.factionId)) // Avoid infinite loop! TODO: I think that this is needed is a sign we need to refactor.
+		{
+			Faction currentFaction = this.getFaction();
+			if (currentFaction != null)
+			{
+				currentFaction.removeFPlayer(this);
+			}
+		}
 
 		this.factionId = "0"; // The default neutral faction
 		this.chatMode = ChatMode.PUBLIC;

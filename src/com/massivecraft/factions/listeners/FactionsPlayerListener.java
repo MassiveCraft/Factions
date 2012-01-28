@@ -288,7 +288,7 @@ public class FactionsPlayerListener implements Listener
 
 		me.getPower();  // update power, so they won't have gained any while dead
 
-		Location home = me.getFaction().getHome();
+		Location home = me.getFaction().getHome(); // TODO: WARNING FOR NPE HERE THE ORIO FOR RESPAWN SHOULD BE ASSIGNABLE FROM CONFIG.
 		if
 		(
 			Conf.homesEnabled
