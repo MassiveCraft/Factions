@@ -483,6 +483,9 @@ public class FactionsPlayerListener implements Listener
 	public void onPlayerRespawn(PlayerRespawnEvent event)
 	{
 		FPlayer me = FPlayers.i.get(event.getPlayer());
+
+		me.getPower();  // update power, so they won't have gained any while dead
+
 		Location home = me.getFaction().getHome();
 		if
 		(

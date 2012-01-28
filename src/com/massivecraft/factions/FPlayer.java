@@ -500,7 +500,10 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		long now = System.currentTimeMillis();
 		long millisPassed = now - this.lastPowerUpdateTime;
 		this.lastPowerUpdateTime = now;
-		
+
+		Player thisPlayer = this.getPlayer();
+		if (thisPlayer != null && thisPlayer.isDead()) return;  // don't let dead players regain power until they respawn
+
 		int millisPerMinute = 60*1000;
 		this.alterPower(millisPassed * Conf.powerPerMinute / millisPerMinute);
 	}
