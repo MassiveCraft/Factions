@@ -214,6 +214,12 @@ public class FactionsPlayerListener implements Listener
 
 		Block block = event.getClickedBlock();
 		Player player = event.getPlayer();
+		
+		if ( ! playerCanUsePotionHere(player, player.getLocation(), event.getMaterial(), false))
+		{
+			event.setCancelled(true);
+			return;
+		}
 
 		if (block == null)
 		{
@@ -264,6 +270,13 @@ public class FactionsPlayerListener implements Listener
 		FPlayer me = FPlayers.i.get(player);
 		if (me.hasAdminMode()) return true;
 		if (Conf.materialsEditTools.contains(material) && ! FPerm.BUILD.has(me, loc, ! justCheck)) return false;
+		return true;
+	}
+    public static boolean playerCanUsePotionHere(Player player, Location loc, Material material, boolean justCheck)
+	{
+		FPlayer me = FPlayers.i.get(player);
+		if (me.hasAdminMode()) return true;
+		if (Conf.itemsEditOnInteract.contains(material) && ! FPerm.BUILD.has(me, loc, ! justCheck)) return false;
 		return true;
 	}
 	public static boolean canPlayerUseBlock(Player player, Block block, boolean justCheck)
