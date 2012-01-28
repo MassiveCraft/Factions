@@ -1,7 +1,6 @@
 package com.massivecraft.factions;
 
 import java.util.*;
-import java.util.logging.Level;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -361,7 +360,7 @@ public class Faction extends Entity implements EconomyParticipator
 	public Set<FPlayer> getFPlayers()
 	{
 		// return a shallow copy of the FPlayer list, to prevent tampering and concurrency issues
-		Set<FPlayer> ret = new HashSet(fplayers);
+		Set<FPlayer> ret = new HashSet<FPlayer>(fplayers);
 		return ret;
 	}
 	
