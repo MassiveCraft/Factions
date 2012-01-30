@@ -33,47 +33,34 @@ public class Econ
 		return econ != null;
 	}
 
-	public static void initialSetup(P p)
-	{
-		if (Bukkit.getServer().getPluginManager().getPlugin("Vault") == null)
-		{
-			P.p.log("Economy integration is "+(Conf.econEnabled ? "enabled, but" : "disabled, and")+" the plugin \"Vault\" is not installed.");
-			return;
-		}
-
-		p.getServer().getScheduler().scheduleSyncDelayedTask(p, new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				doSetup();
-				oldMoneyDoTransfer();
-			}
-		}, 1);
-	}
-
 	public static void doSetup()
 	{
 		if (isSetup()) return;
-		
-		if (Bukkit.getServer().getPluginManager().getPlugin("Vault") != null)
-		{
-			RegisteredServiceProvider<Economy> rsp = Bukkit.getServer().getServicesManager().getRegistration(Economy.class);
-			if (rsp == null)
-			{
-				P.p.log("Economy integration is "+(Conf.econEnabled ? "enabled" : "disabled")+", but the plugin \"Vault\" is not hooked into an economy plugin.");
-				return;
-			}
-			econ = rsp.getProvider();
-				
-			P.p.log("Economy integration through Vault plugin successful.");
 
-			if ( ! Conf.econEnabled)
-				P.p.log("NOTE: Economy is disabled. Enable with command: f config econEnabled true");
+		String integrationFail = "Economy integration is "+(Conf.econEnabled ? "enabled, but" : "disabled, and")+" the plugin \"Vault\" ";
+
+		if (Bukkit.getServer().getPluginManager().getPlugin("Vault") == null)
+		{
+			P.p.log(integrationFail+"is not installed.");
+			return;
 		}
-		
+
+		RegisteredServiceProvider<Economy> rsp = Bukkit.getServer().getServicesManager().getRegistration(Economy.class);
+		if (rsp == null)
+		{
+			P.p.log(integrationFail+"is not hooked into an economy plugin.");
+			return;
+		}
+		econ = rsp.getProvider();
+
+		P.p.log("Economy integration through Vault plugin successful.");
+
+		if ( ! Conf.econEnabled)
+			P.p.log("NOTE: Economy is disabled. You can enable it with the command: f config econEnabled true");
+
 		P.p.cmdBase.cmdHelp.updateHelp();
 	}
+
 
 	public static void modifyUniverseMoney(double delta)
 	{

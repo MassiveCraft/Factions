@@ -99,7 +99,8 @@ public class P extends MPlugin
 		//setupPermissions();
 		integrateEssentialsChat();
 		setupSpout(this);
-		Econ.initialSetup(this);
+		Econ.doSetup();
+		Econ.oldMoneyDoTransfer();
 		CapiFeatures.setup();
 		setupLWC();
 		
