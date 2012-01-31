@@ -36,7 +36,6 @@ import com.massivecraft.factions.struct.Rel;
 import com.massivecraft.factions.zcore.MPlugin;
 
 import com.griefcraft.lwc.LWCPlugin;
-import com.nijiko.permissions.PermissionHandler;
 import com.earth2me.essentials.chat.EssentialsChat;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -75,8 +74,7 @@ public class P extends MPlugin
 	}
 	
 	
-	
-	public static PermissionHandler Permissions;
+
 	private static EssentialsChat essChat;
 	
 	
