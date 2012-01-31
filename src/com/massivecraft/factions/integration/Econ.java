@@ -220,7 +220,14 @@ public class Econ
 		String acc = ep.getAccountId();
 		String You = ep.describeTo(ep, true);
 		
-		if (delta >= 0)
+		if (delta == 0)
+		{
+			// no money actually transferred?
+//			ep.msg("<h>%s<i> didn't have to pay anything %s.", You, forDoingThis);  // might be for gains, might be for losses
+			return true;
+		}
+
+		if (delta > 0)
 		{
 			// The player should gain money
 			// There is no risk of failure
