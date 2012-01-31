@@ -36,7 +36,6 @@ import com.earth2me.essentials.chat.EssentialsChat;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.griefcraft.lwc.LWCPlugin;
-import com.nijiko.permissions.PermissionHandler;
 
 public class P extends MPlugin
 {
@@ -70,8 +69,7 @@ public class P extends MPlugin
 	}
 	
 	
-	
-	public static PermissionHandler Permissions;
+
 	private static EssentialsChat essChat;
 	
 	
