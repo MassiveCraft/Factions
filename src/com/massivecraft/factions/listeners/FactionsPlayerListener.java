@@ -123,12 +123,9 @@ public class FactionsPlayerListener implements Listener
 				}
 				catch (UnknownFormatConversionException ex)
 				{
-					P.p.log(Level.SEVERE, "Critical error in chat message formatting! Complete format string: "+yourFormat);
-					P.p.log(Level.SEVERE, "First half of event.getFormat() string: "+formatStart);
-					P.p.log(Level.SEVERE, "Second half of event.getFormat() string: "+formatEnd);
+					P.p.log(Level.SEVERE, "Critical error in chat message formatting!");
 					P.p.log(Level.SEVERE, "NOTE: To fix this quickly, running this command should work: f config chatTagInsertIndex 0");
-					P.p.log(Level.SEVERE, "For a more proper fix, please read the chat configuration notes on the configuration page of the Factions user guide.");
-					ex.printStackTrace();
+					P.p.log(Level.SEVERE, "For a more proper fix, please read this regarding chat configuration: http://massivecraft.com/plugins/factions/config#Chat_configuration");
 					return;
 				}
 			}
