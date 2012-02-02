@@ -14,6 +14,7 @@ import org.bukkit.Location;
 import org.bukkit.block.Block;
 
 import com.google.gson.reflect.TypeToken;
+import com.massivecraft.factions.integration.LWCFeatures;
 import com.massivecraft.factions.iface.RelationParticipator;
 import com.massivecraft.factions.util.AsciiCompass;
 import com.massivecraft.factions.zcore.util.DiscUtil;
@@ -67,6 +68,9 @@ public class Board
 	
 	public static void removeAt(FLocation flocation)
 	{
+		if(Conf.onUnclaimResetLwcLocks && LWCFeatures.getEnabled())
+			LWCFeatures.clearAllChests(flocation);
+
 		flocationIds.remove(flocation);
 	}
 	
@@ -78,6 +82,9 @@ public class Board
 			Entry<FLocation, String> entry = iter.next();
 			if (entry.getValue().equals(factionId))
 			{
+				if(Conf.onUnclaimResetLwcLocks && LWCFeatures.getEnabled())
+					LWCFeatures.clearAllChests(entry.getKey());
+
 				iter.remove();
 			}
 		}
@@ -117,6 +124,9 @@ public class Board
 			Entry<FLocation, String> entry = iter.next();
 			if ( ! Factions.i.exists(entry.getValue()))
 			{
+				if(Conf.onUnclaimResetLwcLocks && LWCFeatures.getEnabled())
+					LWCFeatures.clearAllChests(entry.getKey());
+
 				P.p.log("Board cleaner removed "+entry.getValue()+" from "+entry.getKey());
 				iter.remove();
 			}
@@ -177,7 +187,7 @@ public class Board
 		
 		int halfWidth = Conf.mapWidth / 2;
 		int halfHeight = Conf.mapHeight / 2;
-		FLocation topLeft = flocation.getRelative(-halfHeight, halfWidth);
+		FLocation topLeft = flocation.getRelative(-halfWidth, -halfHeight);
 		int width = halfWidth * 2 + 1;
 		int height = halfHeight * 2 + 1;
 		
@@ -189,13 +199,13 @@ public class Board
 		int chrIdx = 0;
 		
 		// For each row
-		for (int dx = 0; dx < height; dx++)
+		for (int dz = 0; dz < height; dz++)
 		{
 			// Draw and add that row
 			String row = "";
-			for (int dz = 0; dz > -width; dz--)
+			for (int dx = 0; dx < width; dx++)
 			{
-				if(dz == -(halfWidth) && dx == halfHeight)
+				if(dx == halfWidth && dz == halfHeight)
 				{
 					row += ChatColor.AQUA+"+";
 					continue;

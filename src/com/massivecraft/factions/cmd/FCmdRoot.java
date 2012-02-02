@@ -10,6 +10,7 @@ public class FCmdRoot extends FCommand
 	public CmdAutoClaim cmdAutoClaim = new CmdAutoClaim();
 	public CmdAdmin cmdBypass = new CmdAdmin();
 	public CmdChat cmdChat = new CmdChat();
+	public CmdChatSpy cmdChatSpy = new CmdChatSpy();
 	public CmdClaim cmdClaim = new CmdClaim();
 	public CmdConfig cmdConfig = new CmdConfig();
 	public CmdCreate cmdCreate = new CmdCreate();
@@ -31,6 +32,7 @@ public class FCmdRoot extends FCommand
 	public CmdOpen cmdOpen = new CmdOpen();
 	public CmdPerm cmdPerm = new CmdPerm();
 	public CmdPower cmdPower = new CmdPower();
+	public CmdPowerBoost cmdPowerBoost = new CmdPowerBoost();
 	public CmdPromote cmdPromote = new CmdPromote();
 	public CmdRelationAlly cmdRelationAlly = new CmdRelationAlly();
 	public CmdRelationEnemy cmdRelationEnemy = new CmdRelationEnemy();
@@ -73,6 +75,7 @@ public class FCmdRoot extends FCommand
 		this.addSubCommand(this.cmdAutoClaim);
 		this.addSubCommand(this.cmdBypass);
 		this.addSubCommand(this.cmdChat);
+		this.addSubCommand(this.cmdChatSpy);
 		this.addSubCommand(this.cmdClaim);
 		this.addSubCommand(this.cmdConfig);
 		this.addSubCommand(this.cmdCreate);
@@ -94,6 +97,7 @@ public class FCmdRoot extends FCommand
 		this.addSubCommand(this.cmdOpen);
 		this.addSubCommand(this.cmdPerm);
 		this.addSubCommand(this.cmdPower);
+		this.addSubCommand(this.cmdPowerBoost);
 		this.addSubCommand(this.cmdPromote);
 		this.addSubCommand(this.cmdRelationAlly);
 		this.addSubCommand(this.cmdRelationEnemy);

@@ -8,17 +8,20 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerBucketFillEvent;
 import org.bukkit.event.player.PlayerChatEvent;
-import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
-import org.bukkit.event.player.PlayerListener;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
@@ -27,17 +30,18 @@ import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
-import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.integration.SpoutFeatures;
+import com.massivecraft.factions.struct.FFlag;
 import com.massivecraft.factions.struct.FPerm;
 import com.massivecraft.factions.struct.Rel;
+import com.massivecraft.factions.util.VisualizeUtil;
 
 import java.util.logging.Level;
 
 
 
-public class FactionsPlayerListener extends PlayerListener
+public class FactionsPlayerListener implements Listener
 {
 	public P p;
 	public FactionsPlayerListener(P p)
@@ -45,7 +49,7 @@ public class FactionsPlayerListener extends PlayerListener
 		this.p = p;
 	}
 	
-	@Override
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onPlayerChat(PlayerChatEvent event)
 	{
 		if (event.isCancelled()) return;
@@ -119,12 +123,9 @@ public class FactionsPlayerListener extends PlayerListener
 				}
 				catch (UnknownFormatConversionException ex)
 				{
-					P.p.log(Level.SEVERE, "Critical error in chat message formatting! Complete format string: "+yourFormat);
-					P.p.log(Level.SEVERE, "First half of event.getFormat() string: "+formatStart);
-					P.p.log(Level.SEVERE, "Second half of event.getFormat() string: "+formatEnd);
+					P.p.log(Level.SEVERE, "Critical error in chat message formatting!");
 					P.p.log(Level.SEVERE, "NOTE: To fix this quickly, running this command should work: f config chatTagInsertIndex 0");
-					P.p.log(Level.SEVERE, "For a more proper fix, please read the chat configuration notes on the configuration page of the Factions user guide.");
-					ex.printStackTrace();
+					P.p.log(Level.SEVERE, "For a more proper fix, please read this regarding chat configuration: http://massivecraft.com/plugins/factions/config#Chat_configuration");
 					return;
 				}
 			}
@@ -140,7 +141,7 @@ public class FactionsPlayerListener extends PlayerListener
 		}
 	}
 	
-	@Override
+	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerJoin(PlayerJoinEvent event)
 	{
 		// Make sure that all online players do have a fplayer.
@@ -156,7 +157,7 @@ public class FactionsPlayerListener extends PlayerListener
 		SpoutFeatures.updateAppearancesShortly(event.getPlayer());
 	}
 	
-    @Override
+	@EventHandler(priority = EventPriority.NORMAL)
     public void onPlayerQuit(PlayerQuitEvent event)
     {
 		// Make sure player's power is up to date when they log off.
@@ -165,14 +166,14 @@ public class FactionsPlayerListener extends PlayerListener
 		SpoutFeatures.playerDisconnect(me);
 	}
 	
-	@Override
+	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerMove(PlayerMoveEvent event)
 	{
-		Player player = event.getPlayer();
-		FPlayer me = FPlayers.i.get(player);
-		
 		// Did we change block?
 		if (event.getFrom().equals(event.getTo())) return;
+				
+		Player player = event.getPlayer();
+		FPlayer me = FPlayers.i.get(player);
 		
 		// Did we change coord?
 		FLocation from = me.getLastStoodAt();
@@ -183,30 +184,29 @@ public class FactionsPlayerListener extends PlayerListener
 		// Yes we did change coord (:
 		
 		me.setLastStoodAt(to);
+
+		// Did we change "host"(faction)?
+		boolean changedFaction = (Board.getFactionAt(from) != Board.getFactionAt(to));
+
+		if (changedFaction && SpoutFeatures.updateTerritoryDisplay(me))
+			changedFaction = false;
 		
 		if (me.isMapAutoUpdating())
 		{
 			me.sendMessage(Board.getMap(me.getFaction(), to, player.getLocation().getYaw()));
 		}
-		else
+		else if (changedFaction)
 		{
-			// Did we change "host"(faction)?
-			Faction factionFrom = Board.getFactionAt(from);
-			Faction factionTo = Board.getFactionAt(to);
-
-			if (factionFrom != factionTo)
-			{
-				me.sendFactionHereMessage();
-			}
+			me.sendFactionHereMessage();
 		}
-		
+
 		if (me.getAutoClaimFor() != null)
 		{
 			me.attemptClaim(me.getAutoClaimFor(), player.getLocation(), true);
 		}
 	}
 
-    @Override
+	@EventHandler(priority = EventPriority.NORMAL)
     public void onPlayerInteract(PlayerInteractEvent event)
     {
 		if (event.isCancelled()) return;
@@ -228,6 +228,25 @@ public class FactionsPlayerListener extends PlayerListener
 		if (event.getAction() != Action.RIGHT_CLICK_BLOCK)
 		{
 			return;  // only interested on right-clicks for below
+		}
+
+		// workaround fix for new CraftBukkit 1.1-R1 bug where half-step on half-step placement doesn't trigger BlockPlaceEvent
+		if (
+				event.hasItem()
+				&&
+				event.getItem().getType() == Material.STEP
+				&&
+				block.getType() == Material.STEP
+				&&
+				event.getBlockFace() == BlockFace.UP
+				&&
+				event.getItem().getData().getData() == block.getData()
+				&&
+				! FactionsBlockListener.playerCanBuildDestroyBlock(player, block, "build", false)
+			)
+		{
+			event.setCancelled(true);
+			return;
 		}
 
 		if ( ! playerCanUseItemHere(player, block.getLocation(), event.getMaterial(), false))
@@ -261,11 +280,14 @@ public class FactionsPlayerListener extends PlayerListener
 		return true;
 	}
 
-	@Override
+	@EventHandler(priority = EventPriority.HIGH)
 	public void onPlayerRespawn(PlayerRespawnEvent event)
 	{
 		FPlayer me = FPlayers.i.get(event.getPlayer());
-		Location home = me.getFaction().getHome();
+
+		me.getPower();  // update power, so they won't have gained any while dead
+
+		Location home = me.getFaction().getHome(); // TODO: WARNING FOR NPE HERE THE ORIO FOR RESPAWN SHOULD BE ASSIGNABLE FROM CONFIG.
 		if
 		(
 			Conf.homesEnabled
@@ -287,7 +309,7 @@ public class FactionsPlayerListener extends PlayerListener
 
 	// For some reason onPlayerInteract() sometimes misses bucket events depending on distance (something like 2-3 blocks away isn't detected),
 	// but these separate bucket events below always fire without fail
-	@Override
+	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerBucketEmpty(PlayerBucketEmptyEvent event)
 	{
 		if (event.isCancelled()) return;
@@ -301,7 +323,7 @@ public class FactionsPlayerListener extends PlayerListener
 			return;
 		}
 	}
-	@Override
+	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerBucketFill(PlayerBucketFillEvent event)
 	{
 		if (event.isCancelled()) return;
@@ -316,25 +338,38 @@ public class FactionsPlayerListener extends PlayerListener
 		}
 	}
 
-	@Override
-	public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event)
-	{
-		if (event.isCancelled()) return;
-
-		if (preventCommand(event.getMessage().toLowerCase(), event.getPlayer()))
-		{
-			event.setCancelled(true);
-		}
-	}
-
 	public static boolean preventCommand(String fullCmd, Player player)
 	{
-		if ((Conf.territoryNeutralDenyCommands.isEmpty() && Conf.territoryEnemyDenyCommands.isEmpty()))
-		{
+		if ((Conf.territoryNeutralDenyCommands.isEmpty() && Conf.territoryEnemyDenyCommands.isEmpty() && Conf.permanentFactionMemberDenyCommands.isEmpty()))
 			return false;
-		}
 
 		FPlayer me = FPlayers.i.get(player);
+
+		String shortCmd;  // command without the slash at the beginning
+		if (fullCmd.startsWith("/"))
+			shortCmd = fullCmd.substring(1);
+		else
+		{
+			shortCmd = fullCmd;
+			fullCmd = "/" + fullCmd;
+		}
+
+		if
+		(
+			me.hasFaction()
+			&&
+			! me.hasAdminMode()
+			&&
+			! Conf.permanentFactionMemberDenyCommands.isEmpty()
+			&&
+			me.getFaction().getFlag(FFlag.PERMANENT)
+			&&
+			isCommandInList(fullCmd, shortCmd, Conf.permanentFactionMemberDenyCommands.iterator())
+		)
+		{
+			me.msg("<b>You can't use the command \""+fullCmd+"\" because you are in a permanent faction.");
+			return true;
+		}
 
 		Rel rel = me.getRelationToLocation();
 		if (rel.isAtLeast(Rel.TRUCE))
@@ -342,8 +377,6 @@ public class FactionsPlayerListener extends PlayerListener
 			return false;
 		}
 
-		String shortCmd = fullCmd.substring(1);	// Get rid of the slash at the beginning
-		
 		if
 		(
 			rel == Rel.NEUTRAL
@@ -351,59 +384,52 @@ public class FactionsPlayerListener extends PlayerListener
 			! Conf.territoryNeutralDenyCommands.isEmpty()
 			&&
 			! me.hasAdminMode()
+			&&
+			isCommandInList(fullCmd, shortCmd, Conf.territoryNeutralDenyCommands.iterator())
 		)
 		{
-			Iterator<String> iter = Conf.territoryNeutralDenyCommands.iterator();
-			String cmdCheck;
-			while (iter.hasNext())
-			{
-				cmdCheck = iter.next();
-				if (cmdCheck == null)
-				{
-					iter.remove();
-					continue;
-				}
-
-				cmdCheck = cmdCheck.toLowerCase();
-				if (fullCmd.startsWith(cmdCheck) || shortCmd.startsWith(cmdCheck))
-				{
-					me.msg("<b>You can't use the command \""+fullCmd+"\" in neutral territory.");
-					return true;
-				}
-			}
+			me.msg("<b>You can't use the command \""+fullCmd+"\" in neutral territory.");
+			return true;
 		}
-		else if
+
+		if
 		(
 			rel == Rel.ENEMY
 			&&
 			! Conf.territoryEnemyDenyCommands.isEmpty()
 			&&
 			! me.hasAdminMode()
+			&&
+			isCommandInList(fullCmd, shortCmd, Conf.territoryEnemyDenyCommands.iterator())
 		)
 		{
-			Iterator<String> iter = Conf.territoryEnemyDenyCommands.iterator();
-			String cmdCheck;
-			while (iter.hasNext())
-			{
-				cmdCheck = iter.next();
-				if (cmdCheck == null)
-				{
-					iter.remove();
-					continue;
-				}
+			me.msg("<b>You can't use the command \""+fullCmd+"\" in enemy territory.");
+			return true;
+		}
 
-				cmdCheck = cmdCheck.toLowerCase();
-				if (fullCmd.startsWith(cmdCheck) || shortCmd.startsWith(cmdCheck))
-				{
-					me.msg("<b>You can't use the command \""+fullCmd+"\" in enemy territory.");
-					return true;
-				}
+		return false;
+	}
+
+	private static boolean isCommandInList(String fullCmd, String shortCmd, Iterator<String> iter)
+	{
+		String cmdCheck;
+		while (iter.hasNext())
+		{
+			cmdCheck = iter.next();
+			if (cmdCheck == null)
+			{
+				iter.remove();
+				continue;
 			}
+
+			cmdCheck = cmdCheck.toLowerCase();
+			if (fullCmd.startsWith(cmdCheck) || shortCmd.startsWith(cmdCheck))
+				return true;
 		}
 		return false;
 	}
-	
-	@Override
+
+	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerKick(PlayerKickEvent event)
 	{
 		if (event.isCancelled()) return;
@@ -417,9 +443,34 @@ public class FactionsPlayerListener extends PlayerListener
 		SpoutFeatures.playerDisconnect(badGuy);
 
 		// if player was banned (not just kicked), get rid of their stored info
-		if (event.getReason().equals("Banned by admin."))
+		if (Conf.removePlayerDataWhenBanned && event.getReason().equals("Banned by admin."))
 		{
+			if (badGuy.getRole() == Rel.LEADER)
+				badGuy.getFaction().promoteNewLeader();
 			badGuy.leave(false);
+			badGuy.detach();
 		}
+	}
+	
+	// -------------------------------------------- //
+	// VisualizeUtil
+	// -------------------------------------------- //
+	
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void onPlayerMoveClearVisualizations(PlayerMoveEvent event)
+	{
+		if (event.isCancelled()) return;
+		
+		Block blockFrom = event.getFrom().getBlock();
+		Block blockTo = event.getTo().getBlock();
+		if (blockFrom.equals(blockTo)) return;
+		
+		VisualizeUtil.clear(event.getPlayer());
+	}
+	
+	@EventHandler(priority = EventPriority.LOWEST)
+	public void onPlayerPreLogin(PlayerPreLoginEvent event)
+	{
+		VisualizeUtil.onPlayerPreLogin(event.getName());
 	}
 }

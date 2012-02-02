@@ -84,7 +84,7 @@ public class CmdHelp extends FCommand
 		pageLines.add( p.cmdBase.cmdSethome.getUseageTemplate(true) );
 		helpPages.add(pageLines);
 		
-		if (Econ.isSetup() && Conf.bankEnabled)
+		if (Econ.isSetup() && Conf.econEnabled && Conf.bankEnabled)
 		{
 			pageLines = new ArrayList<String>();
 			pageLines.add( p.txt.parse("<i>Your faction has a bank which is used to pay for certain" ));
@@ -113,6 +113,7 @@ public class CmdHelp extends FCommand
 		
 		pageLines = new ArrayList<String>();
 		pageLines.add( p.cmdBase.cmdMap.getUseageTemplate(true) );
+		pageLines.add( p.cmdBase.cmdSeeChunks.getUseageTemplate(true) );
 		pageLines.add(p.txt.parse("<i>Claimed land with ownership set is further protected so"));
 		pageLines.add(p.txt.parse("<i>that only the owner(s), faction admin, and possibly the"));
 		pageLines.add(p.txt.parse("<i>faction moderators have full access."));
@@ -166,7 +167,8 @@ public class CmdHelp extends FCommand
 		
 		pageLines = new ArrayList<String>();
 		pageLines.add(p.txt.parse("<i>More commands for server admins:"));
-		pageLines.add(p.txt.parse("<i>Peaceful factions are protected from PvP and land capture."));
+		pageLines.add( p.cmdBase.cmdChatSpy.getUseageTemplate(true) );
+		pageLines.add( p.cmdBase.cmdPowerBoost.getUseageTemplate(true) );
 		pageLines.add( p.cmdBase.cmdLock.getUseageTemplate(true) );
 		pageLines.add( p.cmdBase.cmdReload.getUseageTemplate(true) );
 		pageLines.add( p.cmdBase.cmdSaveAll.getUseageTemplate(true) );

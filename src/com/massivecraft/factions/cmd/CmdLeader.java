@@ -2,8 +2,10 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
+import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Rel;
+import com.massivecraft.factions.util.RelationUtil;
 
 public class CmdLeader extends FCommand
 {	
@@ -13,43 +15,77 @@ public class CmdLeader extends FCommand
 		this.aliases.add("leader");
 		
 		this.requiredArgs.add("player");
-		//this.optionalArgs.put("", "");
+		this.optionalArgs.put("faction", "your");
 		
 		this.permission = Permission.LEADER.node;
 		this.disableOnLock = true;
 		
-		senderMustBePlayer = true;
+		senderMustBePlayer = false;
 		senderMustBeMember = false;
 		senderMustBeOfficer = false;
-		senderMustBeLeader = true;
+		senderMustBeLeader = false;
 	}
 	
 	@Override
 	public void perform()
 	{
-		FPlayer fyou = this.argAsBestFPlayerMatch(0);
-		if (fyou == null) return;
+		FPlayer newLeader = this.argAsBestFPlayerMatch(0);
+		if (newLeader == null) return;
 		
-		if (fyou.getFaction() != myFaction)
+		Faction targetFaction = this.argAsFaction(1, myFaction);
+		if (targetFaction == null) return;
+		
+		FPlayer targetFactionCurrentLeader = targetFaction.getFPlayerLeader();
+		
+		// We now have fplayer and the target faction
+		if (this.senderIsConsole || fme.hasAdminMode() || Permission.LEADER_ANY.has(sender, false))
 		{
-			msg("%s<i> is not a member in your faction.", fyou.describeTo(fme, true));
-			return;
+			// Do whatever you wish
+		}
+		else
+		{
+			// Follow the standard rules
+			if (fme.getRole() != Rel.LEADER)
+			{
+				sender.sendMessage(p.txt.parse("<b>Only faction leaders can %s.", this.getHelpShort()));
+				return;
+			}
+			
+			if (newLeader.getFaction() != myFaction)
+			{
+				msg("%s<i> is not a member in your faction.", newLeader.describeTo(fme, true));
+				return;
+			}
+			
+			if (newLeader == fme)
+			{
+				msg("<b>The target player musn't be yourself.");
+				return;
+			}
 		}
 		
-		if (fyou == fme)
+		// if target player is currently leader, demote and replace him
+		if (targetFactionCurrentLeader == newLeader)
 		{
-			msg("<b>The target player musn't be yourself.");
+			targetFaction.promoteNewLeader();
+			msg("<i>You have demoted %s<i> from the position of faction leader.", newLeader.describeTo(fme, true));
+			newLeader.msg("<i>You have been demoted from the position of faction leader by %s<i>.", senderIsConsole ? "a server admin" : fme.describeTo(newLeader, true));
 			return;
 		}
-		
-		fme.setRole(Rel.OFFICER);
-		fyou.setRole(Rel.LEADER);
+
+		// Perform the switching
+		if (targetFactionCurrentLeader != null)
+		{
+			targetFactionCurrentLeader.setRole(Rel.OFFICER);
+		}
+		newLeader.setFaction(targetFaction);
+		newLeader.setRole(Rel.LEADER);
+		msg("<i>You have promoted %s<i> to the position of faction leader.", newLeader.describeTo(fme, true));
 		
 		// Inform all players
 		for (FPlayer fplayer : FPlayers.i.getOnline())
 		{
-			fplayer.msg("%s<i> gave %s<i> the leadership of %s", fme.describeTo(fplayer, true), fyou.describeTo(fplayer), myFaction.describeTo(fplayer));
+			fplayer.msg("%s<i> gave %s<i> the leadership of %s<i>.", senderIsConsole ? "A server admin" : RelationUtil.describeThatToMe(fme, fplayer, true), newLeader.describeTo(fplayer), targetFaction.describeTo(fplayer));
 		}
 	}
-	
 }

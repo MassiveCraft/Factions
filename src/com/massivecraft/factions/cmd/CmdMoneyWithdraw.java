@@ -34,9 +34,9 @@ public class CmdMoneyWithdraw extends FCommand
 		double amount = this.argAsDouble(0, 0d);
 		EconomyParticipator faction = this.argAsFaction(1, myFaction);
 		if (faction == null) return;
-		Econ.transferMoney(fme, faction, fme, amount);
+		boolean success = Econ.transferMoney(fme, faction, fme, amount);
 
-		if (Conf.logMoneyTransactions)
+		if (success && Conf.logMoneyTransactions)
 			P.p.log(ChatColor.stripColor(P.p.txt.parse("%s withdrew %s from the faction bank: %s", fme.getName(), Econ.moneyString(amount), faction.describeTo(null))));
 	}
 }

@@ -1,7 +1,6 @@
 package com.massivecraft.factions;
 
 import java.util.*;
-import java.util.logging.Level;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -15,14 +14,17 @@ import com.massivecraft.factions.struct.FPerm;
 import com.massivecraft.factions.struct.Rel;
 import com.massivecraft.factions.util.*;
 import com.massivecraft.factions.zcore.persist.Entity;
-import com.nijikokun.register.payment.Method.MethodAccount;
 
 
 public class Faction extends Entity implements EconomyParticipator
 {
 	// FIELD: relationWish
 	private Map<String, Rel> relationWish;
-	
+
+	// FIELD: fplayers
+	// speedy lookup of players in faction
+	private transient Set<FPlayer> fplayers = new HashSet<FPlayer>();
+
 	// FIELD: invites
 	// Where string is a lowercase player name
 	private Set<String> invites; 
@@ -81,26 +83,23 @@ public class Faction extends Entity implements EconomyParticipator
 	// FIELD: account (fake field)
 	// Bank functions
 	public double money;
-	public String getAccountId() { return "faction-"+this.getId(); }
-	public MethodAccount getAccount()
+	public String getAccountId()
 	{
-		String aid = this.getAccountId();
+		String aid = "faction-"+this.getId();
 
 		// We need to override the default money given to players.
-		if ( ! Econ.getMethod().hasAccount(aid))
-		{
-			if ( ! Econ.getMethod().createAccount(aid))
-			{
-				P.p.log(Level.SEVERE, "Error creating faction bank account through Register: "+aid);
-//				return null;
-			}
-			MethodAccount acc = Econ.getMethod().getAccount(aid);
-			acc.set(0); 
-		}
-		
-		return Econ.getMethod().getAccount(aid);
+		if ( ! Econ.hasAccount(aid))
+			Econ.setBalance(aid, 0);
+
+		return aid;
 	}
-	
+
+	// FIELD: powerBoost
+	// special increase/decrease to default and max power for this faction
+	private double powerBoost;
+	public double getPowerBoost() { return this.powerBoost; }
+	public void setPowerBoost(double powerBoost) { this.powerBoost = powerBoost; }
+
 	// FIELDS: Flag management
 	// TODO: This will save... defaults if they where changed to...
 	private Map<FFlag, Boolean> flagOverrides; // Contains the modifications to the default values
@@ -175,6 +174,7 @@ public class Faction extends Entity implements EconomyParticipator
 		this.tag = "???";
 		this.description = "Default faction description :(";
 		this.money = 0.0;
+		this.powerBoost = 0.0;
 		this.flagOverrides = new LinkedHashMap<FFlag, Boolean>();
 		this.permOverrides = new LinkedHashMap<FPerm, Set<Rel>>();
 	}
@@ -279,7 +279,7 @@ public class Faction extends Entity implements EconomyParticipator
 		}
 		
 		double ret = 0;
-		for (FPlayer fplayer : this.getFPlayers())
+		for (FPlayer fplayer : fplayers)
 		{
 			ret += fplayer.getPower();
 		}
@@ -287,7 +287,7 @@ public class Faction extends Entity implements EconomyParticipator
 		{
 			ret = Conf.powerFactionMax;
 		}
-		return ret;
+		return ret + this.powerBoost;
 	}
 	
 	public double getPowerMax()
@@ -298,7 +298,7 @@ public class Faction extends Entity implements EconomyParticipator
 		}
 		
 		double ret = 0;
-		for (FPlayer fplayer : this.getFPlayers())
+		for (FPlayer fplayer : fplayers)
 		{
 			ret += fplayer.getPowerMax();
 		}
@@ -306,7 +306,7 @@ public class Faction extends Entity implements EconomyParticipator
 		{
 			ret = Conf.powerFactionMax;
 		}
-		return ret;
+		return ret + this.powerBoost;
 	}
 	
 	public int getPowerRounded()
@@ -336,31 +336,48 @@ public class Faction extends Entity implements EconomyParticipator
 	// -------------------------------
 	// FPlayers
 	// -------------------------------
-	
-	public ArrayList<FPlayer> getFPlayers()
+
+	// maintain the reference list of FPlayers in this faction
+	public void refreshFPlayers()
 	{
-		ArrayList<FPlayer> ret = new ArrayList<FPlayer>();
-		//if (this.isPlayerFreeType()) return ret;
+		fplayers.clear();
+		if (this.isNone()) return;
 
 		for (FPlayer fplayer : FPlayers.i.get())
 		{
 			if (fplayer.getFaction() == this)
 			{
-				ret.add(fplayer);
+				fplayers.add(fplayer);
 			}
 		}
+	}
+	protected boolean addFPlayer(FPlayer fplayer)
+	{
+		if (this.isNone()) return false;
 
+		return fplayers.add(fplayer);
+	}
+	protected boolean removeFPlayer(FPlayer fplayer)
+	{
+		if (this.isNone()) return false;
+
+		return fplayers.remove(fplayer);
+	}
+
+	public Set<FPlayer> getFPlayers()
+	{
+		// return a shallow copy of the FPlayer list, to prevent tampering and concurrency issues
+		Set<FPlayer> ret = new HashSet<FPlayer>(fplayers);
 		return ret;
 	}
 	
-	public ArrayList<FPlayer> getFPlayersWhereOnline(boolean online)
+	public Set<FPlayer> getFPlayersWhereOnline(boolean online)
 	{
-		ArrayList<FPlayer> ret = new ArrayList<FPlayer>();
-		//if (this.isPlayerFreeType()) return ret;
+		Set<FPlayer> ret = new HashSet<FPlayer>();
 
-		for (FPlayer fplayer : FPlayers.i.get())
+		for (FPlayer fplayer : fplayers)
 		{
-			if (fplayer.getFaction() == this && fplayer.isOnline() == online)
+			if (fplayer.isOnline() == online)
 			{
 				ret.add(fplayer);
 			}
@@ -373,9 +390,9 @@ public class Faction extends Entity implements EconomyParticipator
 	{
 		//if ( ! this.isNormal()) return null;
 		
-		for (FPlayer fplayer : FPlayers.i.get())
+		for (FPlayer fplayer : fplayers)
 		{
-			if (fplayer.getFaction() == this && fplayer.getRole() == Rel.LEADER)
+			if (fplayer.getRole() == Rel.LEADER)
 			{
 				return fplayer;
 			}
@@ -388,9 +405,9 @@ public class Faction extends Entity implements EconomyParticipator
 		ArrayList<FPlayer> ret = new ArrayList<FPlayer>();
 		//if ( ! this.isNormal()) return ret;
 		
-		for (FPlayer fplayer : FPlayers.i.get())
+		for (FPlayer fplayer : fplayers)
 		{
-			if (fplayer.getFaction() == this && fplayer.getRole() == role)
+			if (fplayer.getRole() == role)
 			{
 				ret.add(fplayer);
 			}
@@ -415,7 +432,50 @@ public class Faction extends Entity implements EconomyParticipator
 
 		return ret;
 	}
-	
+
+	// used when current leader is about to be removed from the faction; promotes new leader, or disbands faction if no other members left
+	public void promoteNewLeader()
+	{
+		if (! this.isNormal()) return;
+		if (this.getFlag(FFlag.PERMANENT) && Conf.permanentFactionsDisableLeaderPromotion) return;
+
+		FPlayer oldLeader = this.getFPlayerLeader();
+
+		// get list of officers, or list of normal members if there are no officers
+		ArrayList<FPlayer> replacements = this.getFPlayersWhereRole(Rel.OFFICER);
+		if (replacements == null || replacements.isEmpty())
+			replacements = this.getFPlayersWhereRole(Rel.MEMBER);
+
+		if (replacements == null || replacements.isEmpty())
+		{	// faction leader is the only member; one-man faction
+			if (this.getFlag(FFlag.PERMANENT))
+			{
+				if (oldLeader != null)
+					oldLeader.setRole(Rel.MEMBER);
+				return;
+			}
+
+			// no members left and faction isn't permanent, so disband it
+			if (Conf.logFactionDisband)
+				P.p.log("The faction "+this.getTag()+" ("+this.getId()+") has been disbanded since it has no members left.");
+
+			for (FPlayer fplayer : FPlayers.i.getOnline())
+			{
+				fplayer.msg("The faction %s<i> was disbanded.", this.getTag(fplayer));
+			}
+
+			this.detach();
+		}
+		else
+		{	// promote new faction leader
+			if (oldLeader != null)
+				oldLeader.setRole(Rel.MEMBER);
+			replacements.get(0).setRole(Rel.LEADER);
+			this.msg("<i>Faction leader <h>%s<i> has been removed. %s<i> has been promoted as the new faction leader.", oldLeader == null ? "" : oldLeader.getName(), replacements.get(0).getName());
+			P.p.log("Faction "+this.getTag()+" ("+this.getId()+") leader was removed. Replacement leader: "+replacements.get(0).getName());
+		}
+	}
+
 	//----------------------------------------------//
 	// Messages
 	//----------------------------------------------//
@@ -482,10 +542,8 @@ public class Faction extends Entity implements EconomyParticipator
 	{
 		if (Econ.shouldBeUsed())
 		{
-			Econ.getMethod().getAccount(getAccountId()).remove();
+			Econ.setBalance(getAccountId(), 0);
 		}
-		
-		this.getAccountId();
 		
 		// Clean the board
 		Board.clean();

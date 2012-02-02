@@ -1,8 +1,8 @@
 name: Factions
-version: 1.7_dev
+version: 1.7.1_dev
 main: com.massivecraft.factions.P
 authors: [Olof Larsson, Brett Flannigan]
-softdepend: [PermissionsEx, Permissions, Essentials, EssentialsChat, HeroChat, iChat, LocalAreaChat, nChat, ChatManager, CAPI, AuthMe, Register, Spout, WorldEdit, WorldGuard]
+softdepend: [PermissionsEx, Permissions, Essentials, EssentialsChat, HeroChat, iChat, LocalAreaChat, LWC, nChat, ChatManager, CAPI, AuthMe, Vault, Spout, WorldEdit, WorldGuard, AuthDB, CaptureThePoints, CombatTag]
 commands:
   factions:
     description: Reference command for Factions.
@@ -25,11 +25,16 @@ permissions:
     children:
       factions.kit.halfmod: true
       factions.flag.set: true
+      factions.powerboost: true
+      factions.join.any: true
+      factions.leader.any: true
+      factions.officer.any: true
   factions.kit.halfmod:
-    description: Can use adminmode
+    description: Can use adminmode and chat spy
     children:
       factions.kit.fullplayer: true
       factions.adminmode: true
+      factions.chatspy: true
   factions.kit.fullplayer:
     default: true
     description: Can also create new factions.
@@ -63,6 +68,7 @@ permissions:
       factions.power.any: true
       factions.promote: true
       factions.relation: true
+      factions.seechunk: true
       factions.sethome: true
       factions.show: true
       factions.tag: true
@@ -72,6 +78,8 @@ permissions:
       factions.version: true
   factions.adminmode:
     description: enable admin bypass mode
+  factions.chatspy:
+    description: enable admin chat spy mode
   factions.autoclaim:
     description: auto-claim land as you walk around
   factions.chat:
@@ -100,10 +108,14 @@ permissions:
     description: invite a player to your faction
   factions.join:
     description: join a faction
+  factions.join.any:
+    description: join any faction, bypassing invitation process for closed factions
   factions.kick:
     description: kick a player from the faction
   factions.leader:
-    description: hand over your leader rights
+    description: hand over leader rights
+  factions.leader.any:
+    description: give or revoke leader status for any player in any faction
   factions.leave:
     description: leave your faction
   factions.list:
@@ -137,6 +149,8 @@ permissions:
       factions.money.withdraw: true
   factions.officer:
     description: give or revoke officer rights
+  factions.officer.any:
+    description: give or revoke officer rights for any player in any faction
   factions.open:
     description: switch if invitation is required to join
   factions.perm:
@@ -145,12 +159,16 @@ permissions:
     description: show player power info
   factions.power.any:
     description: view an other players power level
+  factions.powerboost:
+    description: apply permanent power bonus/penalty to specified player or faction
   factions.relation:
     description: set relation wish to another faction
   factions.reload:
     description: reload data file(s) from disk
   factions.save:
     description: save all data to disk
+  factions.seechunk:
+    description: see the chunk you stand in
   factions.sethome:
     description: set the faction home
   factions.show:

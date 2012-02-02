@@ -4,8 +4,10 @@ import java.util.logging.Level;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChatEvent;
-import org.bukkit.event.player.PlayerListener;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
@@ -17,7 +19,7 @@ import com.massivecraft.factions.struct.Rel;
 
 
 // this is an addtional PlayerListener for handling slashless command usage and faction chat, to be set at low priority so Factions gets to them first
-public class FactionsChatEarlyListener extends PlayerListener
+public class FactionsChatEarlyListener implements Listener
 {
 	public P p;
 	public FactionsChatEarlyListener(P p)
@@ -25,38 +27,45 @@ public class FactionsChatEarlyListener extends PlayerListener
 		this.p = p;
 	}
 	
-	@Override
+	@EventHandler(priority = EventPriority.LOWEST)
 	public void onPlayerChat(PlayerChatEvent event)
 	{
 		if (event.isCancelled()) return;
-		
-		if (p.handleCommand(event.getPlayer(), event.getMessage()))
+
+		Player talkingPlayer = event.getPlayer();
+		String msg = event.getMessage();
+
+		FPlayer me = FPlayers.i.get(talkingPlayer);
+		ChatMode chat = me.getChatMode();
+
+		// slashless factions commands need to be handled here if the user isn't in public chat mode
+		if (chat != ChatMode.PUBLIC && p.handleCommand(event.getPlayer(), event.getMessage()))
 		{
 			event.setCancelled(true);
 			return;
 		}
-		
-		Player talkingPlayer = event.getPlayer();
-		String msg = event.getMessage();
-		
-		// ... it was not a command. This means that it is a chat message!
-		FPlayer me = FPlayers.i.get(talkingPlayer);
-		
+
 		// Is it a faction chat message?
-		if (me.getChatMode() == ChatMode.FACTION)
+		if (chat == ChatMode.FACTION)
 		{
 			Faction myFaction = me.getFaction();
  			
 			String message = String.format(Conf.factionChatFormat, me.describeTo(myFaction), msg);
 			myFaction.sendMessage(message);
 			
-			P.p.log(Level.INFO, ChatColor.stripColor("FactionChat "+me.getFaction().getTag()+": "+message));
+			P.p.log(Level.INFO, ChatColor.stripColor("FactionChat "+myFaction.getTag()+": "+message));
+			
+			//Send to any players who are spying chat
+			for (FPlayer fplayer : FPlayers.i.getOnline())
+			{
+				if(fplayer.isSpyingChat() && fplayer.getFaction() != myFaction)
+					fplayer.sendMessage("[FCspy] "+myFaction.getTag()+": "+message);	
+			}
 			
 			event.setCancelled(true);
 			return;
-			
 		}
-		else if (me.getChatMode() == ChatMode.ALLIANCE )
+		else if (chat == ChatMode.ALLIANCE)
 		{
 			Faction myFaction = me.getFaction();
 			
@@ -69,7 +78,11 @@ public class FactionsChatEarlyListener extends PlayerListener
 			for (FPlayer fplayer : FPlayers.i.getOnline())
 			{
 				if(myFaction.getRelationTo(fplayer) == Rel.ALLY)
-					fplayer.sendMessage(message);	
+					fplayer.sendMessage(message);
+				
+				//Send to any players who are spying chat
+				else if(fplayer.isSpyingChat())
+					fplayer.sendMessage("[ACspy]: " + message);
 			}
 			
 			P.p.log(Level.INFO, ChatColor.stripColor("AllianceChat: "+message));

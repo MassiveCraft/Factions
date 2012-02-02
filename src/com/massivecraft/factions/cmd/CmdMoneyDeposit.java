@@ -36,10 +36,10 @@ public class CmdMoneyDeposit extends FCommand
 		double amount = this.argAsDouble(0, 0d);
 		EconomyParticipator faction = this.argAsFaction(1, myFaction);
 		if (faction == null) return;
-		Econ.transferMoney(fme, fme, faction, amount);
+		boolean success = Econ.transferMoney(fme, fme, faction, amount);
 
-		if (Conf.logMoneyTransactions)
-			P.p.log(ChatColor.stripColor(P.p.txt.parse("%s deposited %s from the faction bank: %s", fme.getName(), Econ.moneyString(amount), faction.describeTo(null))));
+		if (success && Conf.logMoneyTransactions)
+			P.p.log(ChatColor.stripColor(P.p.txt.parse("%s deposited %s in the faction bank: %s", fme.getName(), Econ.moneyString(amount), faction.describeTo(null))));
 	}
 	
 }

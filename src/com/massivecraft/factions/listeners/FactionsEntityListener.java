@@ -7,6 +7,9 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EndermanPickupEvent;
 import org.bukkit.event.entity.EndermanPlaceEvent;
@@ -14,7 +17,6 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
-import org.bukkit.event.entity.EntityListener;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.painting.PaintingBreakByEntityEvent;
 import org.bukkit.event.painting.PaintingBreakEvent;
@@ -32,15 +34,15 @@ import com.massivecraft.factions.struct.Rel;
 import com.massivecraft.factions.util.MiscUtil;
 
 
-public class FactionsEntityListener extends EntityListener
+public class FactionsEntityListener implements Listener
 {
 	public P p;
 	public FactionsEntityListener(P p)
 	{
 		this.p = p;
 	}
-	
-	@Override
+
+	@EventHandler(priority = EventPriority.NORMAL)
 	public void onEntityDeath(EntityDeathEvent event)
 	{
 		Entity entity = event.getEntity();
@@ -66,7 +68,7 @@ public class FactionsEntityListener extends EntityListener
 		fplayer.msg("<i>Your power is now <h>"+fplayer.getPowerRounded()+" / "+fplayer.getPowerMaxRounded());
 	}
 	
-	@Override
+	@EventHandler(priority = EventPriority.NORMAL)
 	public void onEntityDamage(EntityDamageEvent event)
 	{
 		if ( event.isCancelled()) return;
@@ -86,12 +88,12 @@ public class FactionsEntityListener extends EntityListener
 			event.setCancelled(true);
 		}*/
 	}
-	
-	@Override
+
+	@EventHandler(priority = EventPriority.NORMAL)
 	public void onEntityExplode(EntityExplodeEvent event)
 	{
 		if ( event.isCancelled()) return;
-		
+
 		for (Block block : event.blockList())
 		{
 			Faction faction = Board.getFactionAt(new FLocation(block));
@@ -115,24 +117,21 @@ public class FactionsEntityListener extends EntityListener
 		FPlayer defender = FPlayers.i.get((Player)damagee);
 		
 		if (defender == null || defender.getPlayer() == null)
-		{
 			return true;
-		}
 		
 		Location defenderLoc = defender.getPlayer().getLocation();
 		
 		if (Conf.worldsIgnorePvP.contains(defenderLoc.getWorld().getName()))
-		{
 			return true;
-		}
 		
 		Faction defLocFaction = Board.getFactionAt(new FLocation(defenderLoc));
 
 		// for damage caused by projectiles, getDamager() returns the projectile... what we need to know is the source
 		if (damager instanceof Projectile)
-		{
 			damager = ((Projectile)damager).getShooter();
-		}
+
+		if (damager == damagee)  // ender pearl usage and other self-inflicted damage
+			return true;
 
 		// Players can not take attack damage in a SafeZone, or possibly peaceful territory
 		
@@ -148,16 +147,12 @@ public class FactionsEntityListener extends EntityListener
 		}
 		
 		if ( ! (damager instanceof Player))
-		{
 			return true;
-		}
 		
 		FPlayer attacker = FPlayers.i.get((Player)damager);
 		
 		if (attacker == null || attacker.getPlayer() == null)
-		{
 			return true;
-		}
 		
 		if (attacker.hasLoginPvpDisabled())
 		{
@@ -228,7 +223,7 @@ public class FactionsEntityListener extends EntityListener
 		return true;
 	}
 	
-	@Override
+	@EventHandler(priority = EventPriority.NORMAL)
 	public void onCreatureSpawn(CreatureSpawnEvent event)
 	{
 		if (event.isCancelled()) return;
@@ -243,7 +238,7 @@ public class FactionsEntityListener extends EntityListener
 		event.setCancelled(true);
 	}
 	
-	@Override
+	@EventHandler(priority = EventPriority.NORMAL)
 	public void onEntityTarget(EntityTargetEvent event)
 	{
 		if (event.isCancelled()) return;
@@ -263,7 +258,7 @@ public class FactionsEntityListener extends EntityListener
 		event.setCancelled(true);
 	}
 
-	@Override
+	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPaintingBreak(PaintingBreakEvent event)
 	{
 		if (event.isCancelled()) return;
@@ -285,7 +280,7 @@ public class FactionsEntityListener extends EntityListener
 		}
 	}
 
-	@Override
+	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPaintingPlace(PaintingPlaceEvent event)
 	{
 		if (event.isCancelled()) return;
@@ -296,7 +291,7 @@ public class FactionsEntityListener extends EntityListener
 		}
 	}
 
-	@Override
+	@EventHandler(priority = EventPriority.NORMAL)
 	public void onEndermanPickup(EndermanPickupEvent event)
 	{
 		if (event.isCancelled()) return;
@@ -309,7 +304,7 @@ public class FactionsEntityListener extends EntityListener
 		event.setCancelled(true);
 	}
 
-	@Override
+	@EventHandler(priority = EventPriority.NORMAL)
 	public void onEndermanPlace(EndermanPlaceEvent event)
 	{
 		if (event.isCancelled()) return;

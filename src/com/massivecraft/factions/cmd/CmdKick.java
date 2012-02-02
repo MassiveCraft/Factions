@@ -2,12 +2,11 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.P;
-import com.massivecraft.factions.struct.FFlag;
 import com.massivecraft.factions.struct.FPerm;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.struct.Rel;
 
 public class CmdKick extends FCommand
 {
@@ -41,6 +40,12 @@ public class CmdKick extends FCommand
 			msg("<i>You might want to: %s", p.cmdBase.cmdLeave.getUseageTemplate(false));
 			return;
 		}
+		
+		if (you.getRole() == Rel.LEADER && !(this.senderIsConsole || fme.hasAdminMode()))
+		{
+			msg("<b>The leader can not be kicked.");
+			return;
+		}
 
 		if ( ! Conf.canLeaveWithNegativePower && you.getPower() < 0)
 		{
@@ -62,24 +67,14 @@ public class CmdKick extends FCommand
 			fme.msg("<i>You kicked %s<i> from the faction %s<i>!", you.describeTo(fme), yourFaction.describeTo(fme));
 		}
 
+		if (Conf.logFactionKick)
+			P.p.log((senderIsConsole ? "A console command" : fme.getName())+" kicked "+you.getName()+" from the faction: "+yourFaction.getTag());
+
+		if (you.getRole() == Rel.LEADER)
+			yourFaction.promoteNewLeader();
+
 		yourFaction.deinvite(you);
 		you.resetFactionData();
-
-		if (Conf.logFactionKick)
-			P.p.log(fme.getName()+" kicked "+you.getName()+" from the faction: "+yourFaction.getTag());
-
-		if (yourFaction.getFPlayers().isEmpty() && !yourFaction.getFlag(FFlag.PERMANENT))
-		{
-			// Remove this faction
-			for (FPlayer fplayer : FPlayers.i.getOnline())
-			{
-				fplayer.msg("The faction %s<i> was disbanded.", yourFaction.getTag(fplayer));
-			}
-			yourFaction.detach();
-
-			if (Conf.logFactionDisband)
-				P.p.log("The faction "+yourFaction.getTag()+" ("+yourFaction.getId()+") was disbanded since the last player was kicked by "+(senderIsConsole ? "console command" : fme.getName())+".");
-		}
 	}
 	
 }

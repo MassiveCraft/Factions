@@ -92,7 +92,13 @@ public class Factions extends EntityCollection<Faction>
 			setFlagsForSafeZone(safeZone);
 		if (warZone != null && ! warZone.getFlag(FFlag.PERMANENT))
 			setFlagsForWarZone(warZone);
-		
+
+		// populate all faction player lists
+		for (Faction faction : i.get())
+		{
+			faction.refreshFPlayers();
+		}
+
 		return true;
 	}
 	

@@ -67,7 +67,10 @@ public class CmdShow extends FCommand
 		}
 		
 		msg("<a>Joining: <i>"+(faction.getOpen() ? "no invitation is needed" : "invitation is required"));
-		msg("<a>Land / Power / Maxpower: <i> %d/%d/%d", faction.getLandRounded(), faction.getPowerRounded(), faction.getPowerMaxRounded());
+
+		double powerBoost = faction.getPowerBoost();
+		String boost = (powerBoost == 0.0) ? "" : (powerBoost > 0.0 ? " (bonus: " : " (penalty: ") + powerBoost + ")";
+		msg("<a>Land / Power / Maxpower: <i> %d/%d/%d %s", faction.getLandRounded(), faction.getPowerRounded(), faction.getPowerMaxRounded(), boost);
 
 		// show the land value
 		if (Econ.shouldBeUsed())
@@ -84,7 +87,7 @@ public class CmdShow extends FCommand
 			//Show bank contents
 			if(Conf.bankEnabled)
 			{
-				msg("<a>Bank contains: <i>"+Econ.moneyString(faction.getAccount().balance()));
+				msg("<a>Bank contains: <i>"+Econ.moneyString(Econ.getBalance(faction.getAccountId())));
 			}
 		}
 
