@@ -2,6 +2,7 @@ package com.massivecraft.factions;
 
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
+import java.util.logging.Level;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -23,7 +24,7 @@ import com.massivecraft.factions.cmd.*;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.integration.LWCFeatures;
 import com.massivecraft.factions.integration.SpoutFeatures;
-import com.massivecraft.factions.integration.Worldguard;
+//import com.massivecraft.factions.integration.Worldguard;
 import com.massivecraft.factions.listeners.FactionsBlockListener;
 import com.massivecraft.factions.listeners.FactionsChatEarlyListener;
 import com.massivecraft.factions.listeners.FactionsEntityListener;
@@ -41,6 +42,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.massivecraft.factions.integration.EssentialsFeatures;
 import com.massivecraft.factions.integration.capi.CapiFeatures;
+
 
 public class P extends MPlugin
 {
@@ -104,7 +106,9 @@ public class P extends MPlugin
 		
 		if(Conf.worldGuardChecking)
 		{
-			Worldguard.init(this);			
+			this.log(Level.WARNING, "Our WorldGuard integration is broken with current versions of WorldGuard, so it is disabled. If you are a plugin dev and want to try your hand at fixing it, be our guest.");
+			Conf.worldGuardChecking = false;
+//			Worldguard.init(this);
 		}
 
 		// Register Event Handlers
