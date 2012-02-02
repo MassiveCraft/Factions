@@ -1,16 +1,15 @@
 package com.massivecraft.factions.listeners;
 
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.logging.Level;
 
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
-import org.bukkit.entity.TNTPrimed;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EndermanPickupEvent;
 import org.bukkit.event.entity.EndermanPlaceEvent;
@@ -18,7 +17,6 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
-import org.bukkit.event.entity.EntityListener;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.painting.PaintingBreakByEntityEvent;
 import org.bukkit.event.painting.PaintingBreakEvent;
@@ -36,7 +34,7 @@ import com.massivecraft.factions.struct.Rel;
 import com.massivecraft.factions.util.MiscUtil;
 
 
-public class FactionsEntityListener extends EntityListener
+public class FactionsEntityListener implements Listener
 {
 	public P p;
 	public FactionsEntityListener(P p)
@@ -44,9 +42,7 @@ public class FactionsEntityListener extends EntityListener
 		this.p = p;
 	}
 
-	private static ArrayList<PotentialExplosionExploit> exploitExplosions = new ArrayList<PotentialExplosionExploit>();
-
-	@Override
+	@EventHandler(priority = EventPriority.NORMAL)
 	public void onEntityDeath(EntityDeathEvent event)
 	{
 		Entity entity = event.getEntity();
@@ -72,7 +68,7 @@ public class FactionsEntityListener extends EntityListener
 		fplayer.msg("<i>Your power is now <h>"+fplayer.getPowerRounded()+" / "+fplayer.getPowerMaxRounded());
 	}
 	
-	@Override
+	@EventHandler(priority = EventPriority.NORMAL)
 	public void onEntityDamage(EntityDamageEvent event)
 	{
 		if ( event.isCancelled()) return;
@@ -92,45 +88,11 @@ public class FactionsEntityListener extends EntityListener
 			event.setCancelled(true);
 		}*/
 	}
-	
-	@Override
+
+	@EventHandler(priority = EventPriority.NORMAL)
 	public void onEntityExplode(EntityExplodeEvent event)
 	{
 		if ( event.isCancelled()) return;
-
-		if (event.getEntity() instanceof TNTPrimed && exploitExplosions.size() > 0)
-		{	// make sure this isn't a TNT explosion exploit attempt
-			int locX = event.getLocation().getBlockX();
-			int locZ = event.getLocation().getBlockZ();
-
-			for (int i = exploitExplosions.size() - 1; i >= 0; i--)
-			{
-				PotentialExplosionExploit ex = exploitExplosions.get(i);
-
-				// remove anything from the list older than 10 seconds (TNT takes 4 seconds to trigger; provide some leeway)
-				if (ex.timeMillis + 10000 < System.currentTimeMillis())
-				{
-					exploitExplosions.remove(i);
-					continue;
-				}
-
-				int absX = Math.abs(ex.X - locX);
-				int absZ = Math.abs(ex.Z - locZ);
-				if (absX < 5 && absZ < 5) 
-				{	// it sure looks like an exploit attempt
-					// let's tattle on him to everyone
-					String msg = "NOTICE: Player \""+ex.playerName+"\" attempted to exploit a TNT bug in the territory of \""+ex.faction.getTag()+"\" at "+ex.X+","+ex.Z+" (X,Z) using "+ex.item.name();
-					P.p.log(Level.WARNING, msg);
-					for (FPlayer fplayer : FPlayers.i.getOnline())
-					{
-						fplayer.sendMessage(msg);
-					}
-					event.setCancelled(true);
-					exploitExplosions.remove(i);
-					return;
-				}
-			}
-		}
 
 		for (Block block : event.blockList())
 		{
@@ -155,24 +117,21 @@ public class FactionsEntityListener extends EntityListener
 		FPlayer defender = FPlayers.i.get((Player)damagee);
 		
 		if (defender == null || defender.getPlayer() == null)
-		{
 			return true;
-		}
 		
 		Location defenderLoc = defender.getPlayer().getLocation();
 		
 		if (Conf.worldsIgnorePvP.contains(defenderLoc.getWorld().getName()))
-		{
 			return true;
-		}
 		
 		Faction defLocFaction = Board.getFactionAt(new FLocation(defenderLoc));
 
 		// for damage caused by projectiles, getDamager() returns the projectile... what we need to know is the source
 		if (damager instanceof Projectile)
-		{
 			damager = ((Projectile)damager).getShooter();
-		}
+
+		if (damager == damagee)  // ender pearl usage and other self-inflicted damage
+			return true;
 
 		// Players can not take attack damage in a SafeZone, or possibly peaceful territory
 		
@@ -188,16 +147,12 @@ public class FactionsEntityListener extends EntityListener
 		}
 		
 		if ( ! (damager instanceof Player))
-		{
 			return true;
-		}
 		
 		FPlayer attacker = FPlayers.i.get((Player)damager);
 		
 		if (attacker == null || attacker.getPlayer() == null)
-		{
 			return true;
-		}
 		
 		if (attacker.hasLoginPvpDisabled())
 		{
@@ -268,7 +223,7 @@ public class FactionsEntityListener extends EntityListener
 		return true;
 	}
 	
-	@Override
+	@EventHandler(priority = EventPriority.NORMAL)
 	public void onCreatureSpawn(CreatureSpawnEvent event)
 	{
 		if (event.isCancelled()) return;
@@ -283,7 +238,7 @@ public class FactionsEntityListener extends EntityListener
 		event.setCancelled(true);
 	}
 	
-	@Override
+	@EventHandler(priority = EventPriority.NORMAL)
 	public void onEntityTarget(EntityTargetEvent event)
 	{
 		if (event.isCancelled()) return;
@@ -303,7 +258,7 @@ public class FactionsEntityListener extends EntityListener
 		event.setCancelled(true);
 	}
 
-	@Override
+	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPaintingBreak(PaintingBreakEvent event)
 	{
 		if (event.isCancelled()) return;
@@ -325,7 +280,7 @@ public class FactionsEntityListener extends EntityListener
 		}
 	}
 
-	@Override
+	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPaintingPlace(PaintingPlaceEvent event)
 	{
 		if (event.isCancelled()) return;
@@ -336,7 +291,7 @@ public class FactionsEntityListener extends EntityListener
 		}
 	}
 
-	@Override
+	@EventHandler(priority = EventPriority.NORMAL)
 	public void onEndermanPickup(EndermanPickupEvent event)
 	{
 		if (event.isCancelled()) return;
@@ -349,7 +304,7 @@ public class FactionsEntityListener extends EntityListener
 		event.setCancelled(true);
 	}
 
-	@Override
+	@EventHandler(priority = EventPriority.NORMAL)
 	public void onEndermanPlace(EndermanPlaceEvent event)
 	{
 		if (event.isCancelled()) return;
@@ -360,39 +315,5 @@ public class FactionsEntityListener extends EntityListener
 		if (faction.getFlag(FFlag.ENDERGRIEF)) return;
 		
 		event.setCancelled(true);
-	}
-
-
-	/**
-	 * Since the Bukkit team still don't seem to be in any hurry to fix the problem after at least half a year,
-	 * we'll track potential explosion exploits ourselves and try to prevent them
-	 * For reference, canceled TNT placement next to redstone power is bugged and triggers a free explosion
-	 * Same thing happens for canceled redstone torch placement next to existing TNT
-	 * https://bukkit.atlassian.net/browse/BUKKIT-89
-	 */
-
-	public static void trackPotentialExplosionExploit(String playerName, Faction faction, Material item, Location location)
-	{
-		exploitExplosions.add(new PotentialExplosionExploit(playerName, faction, item, location));
-	}
-
-	public static class PotentialExplosionExploit
-	{
-		public String playerName;
-		public Faction faction;
-		public Material item;
-		public long timeMillis;
-		public int X;
-		public int Z;
-		
-		public PotentialExplosionExploit(String playerName, Faction faction, Material item, Location location)
-		{
-			this.playerName = playerName;
-			this.faction = faction;
-			this.item = item;
-			this.timeMillis = System.currentTimeMillis();
-			this.X = location.getBlockX();
-			this.Z = location.getBlockZ();
-		}
 	}
 }

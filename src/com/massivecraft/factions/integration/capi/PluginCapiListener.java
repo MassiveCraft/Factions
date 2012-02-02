@@ -5,6 +5,9 @@ import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 
 import com.massivecraft.capi.Channel;
 import com.massivecraft.capi.Channels;
@@ -12,14 +15,13 @@ import com.massivecraft.capi.events.CAPIListChannelsEvent;
 import com.massivecraft.capi.events.CAPIMessageToChannelEvent;
 import com.massivecraft.capi.events.CAPIMessageToPlayerEvent;
 import com.massivecraft.capi.events.CAPISelectChannelEvent;
-import com.massivecraft.capi.listeners.CapiListener;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Rel;
 
-public class PluginCapiListener extends CapiListener
+public class PluginCapiListener implements Listener
 {
 	P p;
 	
@@ -50,7 +52,7 @@ public class PluginCapiListener extends CapiListener
 		return format;
 	}
 	
-	@Override
+	@EventHandler(priority = EventPriority.NORMAL)
 	public void onListChannelsEvent(CAPIListChannelsEvent event)
 	{
 		for (Channel c : Channels.i.getAll())
@@ -62,7 +64,7 @@ public class PluginCapiListener extends CapiListener
 		}
 	}
 	
-	@Override
+	@EventHandler(priority = EventPriority.NORMAL)
 	public void onMessageToChannel(CAPIMessageToChannelEvent event)
 	{
 		if (event.isCancelled()) return;
@@ -89,14 +91,14 @@ public class PluginCapiListener extends CapiListener
 		}
 	}
 	
-	@Override
+	@EventHandler(priority = EventPriority.NORMAL)
 	public void onMessageToPlayer(CAPIMessageToPlayerEvent event)
 	{
 		if (event.isCancelled()) return;
 		event.setFormat(this.replacePlayerTags(event.getFormat(), FPlayers.i.get(event.getMe()), FPlayers.i.get(event.getYou())));
 	}
 	
-	@Override
+	@EventHandler(priority = EventPriority.NORMAL)
 	public void onSelectChannel(CAPISelectChannelEvent event)
 	{
 		if (event.isCancelled()) return;

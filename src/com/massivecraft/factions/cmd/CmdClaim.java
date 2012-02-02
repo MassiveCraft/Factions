@@ -27,8 +27,6 @@ public class CmdClaim extends FCommand
 		senderMustBeMember = false;
 		senderMustBeOfficer = false;
 		senderMustBeLeader = false;
-		
-		aliases.add("claim");
 	}
 	
 	@Override
@@ -36,6 +34,14 @@ public class CmdClaim extends FCommand
 	{
 		// Read and validate input
 		Faction forFaction = this.argAsFaction(0, myFaction);
+
+		// just to cut the unauthorized off immediately instead of going on to do radius calculations
+		if (! fme.canClaimForFactionAtLocation(forFaction, me.getLocation(), false))
+		{
+			msg("<b>You do not currently have permission to claim land for the faction "+forFaction.describeTo(fme) +"<b>.");
+			return;
+		}
+
 		double radius = this.argAsDouble(1, 1d);
 		radius -= 0.5;
 		if (radius <= 0)
@@ -43,12 +49,17 @@ public class CmdClaim extends FCommand
 			msg("<b>That radius is to small.");
 			return;
 		}
+		else if (radius > 100)  // huge radius can crash server
+		{
+			msg("<b>That radius is overly large. Remember that the radius is in chunks (16x16 blocks), not individual blocks.");
+			return;
+		}
 		
 		// Get the FLocations
 		Set<FLocation> flocs = new FLocation(me).getCircle(radius);
 		for (FLocation floc : flocs)
 		{
-			fme.attemptClaim(forFaction, new Location(floc.getWorld(), floc.getX()*16, 1, floc.getZ()*16), true);
+			fme.attemptClaim(forFaction, new Location(floc.getWorld(), floc.getX() << 4, 1, floc.getZ() << 4), true);
 		}
 	}
 	

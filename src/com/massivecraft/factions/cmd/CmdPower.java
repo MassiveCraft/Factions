@@ -36,7 +36,9 @@ public class CmdPower extends FCommand
 		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
 		if ( ! payForCommand(Conf.econCostPower, "to show player power info", "for showing player power info")) return;
 
-		msg("%s<a> - Power / Maxpower: <i>%d / %d", target.describeTo(fme, true), target.getPowerRounded(), target.getPowerMaxRounded());
+		double powerBoost = target.getPowerBoost();
+		String boost = (powerBoost == 0.0) ? "" : (powerBoost > 0.0 ? " (bonus: " : " (penalty: ") + powerBoost + ")";
+		msg("%s<a> - Power / Maxpower: <i>%d / %d %s", target.describeTo(fme, true), target.getPowerRounded(), target.getPowerMaxRounded(), boost);
 	}
 	
 }
