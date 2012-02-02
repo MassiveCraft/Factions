@@ -723,6 +723,10 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		{
 			error = P.p.txt.parse("<b>You can't claim more land! You need more power!");
 		}
+		else if (Conf.claimedLandsMax != 0 && ownedLand >= Conf.claimedLandsMax && forFaction.isNormal())
+		{
+			error = P.p.txt.parse("<b>Limit reached. You can't claim more land!");
+		}
 		else if (currentFaction.getRelationTo(forFaction) == Relation.ALLY)
 		{
 			error = P.p.txt.parse("<b>You can't claim the land of your allies.");
