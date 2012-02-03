@@ -22,7 +22,7 @@ import com.massivecraft.factions.integration.EssentialsFeatures;
 import com.massivecraft.factions.integration.EssentialsOldVersionFeatures;
 import com.massivecraft.factions.integration.LWCFeatures;
 import com.massivecraft.factions.integration.SpoutFeatures;
-//import com.massivecraft.factions.integration.Worldguard;
+import com.massivecraft.factions.integration.Worldguard;
 import com.massivecraft.factions.integration.capi.CapiFeatures;
 import com.massivecraft.factions.listeners.FactionsBlockListener;
 import com.massivecraft.factions.listeners.FactionsChatEarlyListener;
@@ -102,9 +102,7 @@ public class P extends MPlugin
 		
 		if(Conf.worldGuardChecking)
 		{
-			this.log(Level.WARNING, "Our WorldGuard integration is broken with current versions of WorldGuard, so it is disabled. If you are a plugin dev and want to try your hand at fixing it, be our guest.");
-			Conf.worldGuardChecking = false;
-//			Worldguard.init(this);
+			Worldguard.init(this);
 		}
 
 		// Register Event Handlers
