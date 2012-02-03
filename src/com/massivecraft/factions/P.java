@@ -19,6 +19,7 @@ import com.massivecraft.factions.cmd.CmdAutoHelp;
 import com.massivecraft.factions.cmd.FCmdRoot;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.integration.EssentialsFeatures;
+import com.massivecraft.factions.integration.EssentialsOldVersionFeatures;
 import com.massivecraft.factions.integration.LWCFeatures;
 import com.massivecraft.factions.integration.SpoutFeatures;
 //import com.massivecraft.factions.integration.Worldguard;
@@ -176,7 +177,25 @@ public class P extends MPlugin
 		if (test != null && test.isEnabled())
 		{
 			essChat = (EssentialsChat)test;
-			EssentialsFeatures.integrateChat(essChat);
+
+			// try newer Essentials 3.x integration method
+			try
+			{
+				Class.forName("com.earth2me.essentials.chat.EssentialsLocalChatEvent");
+				EssentialsFeatures.integrateChat(essChat);
+			}
+			catch (ClassNotFoundException ex)
+			{
+				// no? try older Essentials 2.x integration method
+				try
+				{
+					EssentialsOldVersionFeatures.integrateChat(essChat);
+				}
+				catch (NoClassDefFoundError ex2)
+				{
+					// no known method for hooking into Essentials chat stuff
+				}
+			}
 		}
 	}
 	
@@ -184,7 +203,13 @@ public class P extends MPlugin
 	{
 		if (essChat != null)
 		{
-			EssentialsFeatures.unhookChat();
+			try
+			{
+				EssentialsOldVersionFeatures.unhookChat();
+			}
+			catch (NoClassDefFoundError ex)
+			{
+			}
 		}
 	}
 

@@ -74,10 +74,10 @@ public class FactionsPlayerListener implements Listener
 		if (!Conf.chatTagReplaceString.isEmpty() && eventFormat.contains(Conf.chatTagReplaceString))
 		{
 			// we're using the "replace" method of inserting the faction tags
-			// if they stuck "{FACTION_TITLE}" in there, go ahead and do it too
-			if (eventFormat.contains("{FACTION_TITLE}"))
+			// if they stuck "[FACTION_TITLE]" in there, go ahead and do it too
+			if (eventFormat.contains("[FACTION_TITLE]"))
 			{
-				eventFormat = eventFormat.replace("{FACTION_TITLE}", me.getTitle());
+				eventFormat = eventFormat.replace("[FACTION_TITLE]", me.getTitle());
 			}
 			InsertIndex = eventFormat.indexOf(Conf.chatTagReplaceString);
 			eventFormat = eventFormat.replace(Conf.chatTagReplaceString, "");
@@ -124,8 +124,9 @@ public class FactionsPlayerListener implements Listener
 				}
 				catch (UnknownFormatConversionException ex)
 				{
+					Conf.chatTagInsertIndex = 0;
 					P.p.log(Level.SEVERE, "Critical error in chat message formatting!");
-					P.p.log(Level.SEVERE, "NOTE: To fix this quickly, running this command should work: f config chatTagInsertIndex 0");
+					P.p.log(Level.SEVERE, "NOTE: This has been automatically fixed right now by setting chatTagInsertIndex to 0.");
 					P.p.log(Level.SEVERE, "For a more proper fix, please read this regarding chat configuration: http://massivecraft.com/plugins/factions/config#Chat_configuration");
 					return;
 				}

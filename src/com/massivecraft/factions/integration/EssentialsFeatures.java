@@ -1,14 +1,21 @@
 package com.massivecraft.factions.integration;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerChatEvent;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.P;
 
 import com.earth2me.essentials.chat.EssentialsChat;
-import com.earth2me.essentials.chat.IEssentialsChatListener;
+import com.earth2me.essentials.chat.EssentialsLocalChatEvent;
 
+
+/*
+ * This Essentials integration handler is for newer 3.x.x versions of Essentials which don't have "IEssentialsChatListener"
+ */
 
 public class EssentialsFeatures
 {
@@ -19,21 +26,11 @@ public class EssentialsFeatures
 		essChat = instance;
 		try
 		{
-			essChat.addEssentialsChatListener("Factions", new IEssentialsChatListener()
-			{
-				public boolean shouldHandleThisChat(PlayerChatEvent event)
-				{
-					return P.p.shouldLetFactionsHandleThisChat(event);
-				}
-				public String modifyMessage(PlayerChatEvent event, Player target, String message)
-				{
-					return message.replace(Conf.chatTagReplaceString, P.p.getPlayerFactionTagRelation(event.getPlayer(), target)).replace("[FACTION_TITLE]", P.p.getPlayerTitle(event.getPlayer()));
-				}
-			});
-			P.p.log("Found and will integrate chat with "+essChat.getDescription().getFullName());
+			Bukkit.getServer().getPluginManager().registerEvents(new LocalChatListener(), P.p);
+			P.p.log("Found and will integrate chat with newer "+essChat.getDescription().getFullName());
 
-			// As of Essentials 2.8+, curly braces are not accepted and are instead replaced with square braces, so... deal with it
-			if (essChat.getDescription().getVersion().startsWith("2.8.") && Conf.chatTagReplaceString.contains("{"))
+			// curly braces used to be accepted by the format string EssentialsChat but no longer are, so... deal with chatTagReplaceString which might need updating
+			if (Conf.chatTagReplaceString.contains("{"))
 			{
 				Conf.chatTagReplaceString = Conf.chatTagReplaceString.replace("{", "[").replace("}", "]");
 				P.p.log("NOTE: as of Essentials 2.8+, we've had to switch the default chat replacement tag from \"{FACTION}\" to \"[FACTION]\". This has automatically been updated for you.");
@@ -45,11 +42,17 @@ public class EssentialsFeatures
 		}
 	}
 
-	public static void unhookChat()
+	private static class LocalChatListener implements Listener
 	{
-		if (essChat != null)
+		@EventHandler(priority = EventPriority.NORMAL)
+		public void onPlayerChat(EssentialsLocalChatEvent event)
 		{
-			essChat.removeEssentialsChatListener("Factions");
+			Player speaker = event.getPlayer();
+			String format = event.getFormat();
+			format = format.replace(Conf.chatTagReplaceString, P.p.getPlayerFactionTag(speaker)).replace("[FACTION_TITLE]", P.p.getPlayerTitle(speaker));
+			event.setFormat(format);
+			// NOTE: above doesn't do relation coloring. if/when we can get a local recipient list from EssentialsLocalChatEvent, we'll probably
+			// want to pass it on to FactionsPlayerListener.onPlayerChat(PlayerChatEvent event) rather than duplicating code
 		}
 	}
 }
