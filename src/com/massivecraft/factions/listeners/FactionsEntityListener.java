@@ -538,11 +538,11 @@ public class FactionsEntityListener implements Listener
 			if (absX < 5 && absZ < 5) 
 			{	// it sure looks like an exploit attempt
 				// let's tattle on him to everyone
-				String msg = "NOTICE: Player \""+ex.playerName+"\" attempted to exploit a TNT bug in the territory of \""+ex.faction.getTag()+"\" at "+ex.X+","+ex.Z+" (X,Z) using a "+ex.item.name();
-				P.p.log(Level.WARNING, msg);
+				String msg = "NOTICE: Player \""+ex.playerName+"\" attempted to exploit a TNT bug in the territory of \""+ex.faction.getTag()+"\"";
+				P.p.log(Level.WARNING, msg + " at "+ex.X+","+ex.Z+" (X,Z) using a "+ex.item.name());
 				for (FPlayer fplayer : FPlayers.i.getOnline())
 				{
-					fplayer.sendMessage(msg);
+					fplayer.sendMessage(msg+". Coordinates logged.");
 				}
 				event.setCancelled(true);
 				exploitExplosions.remove(i);
