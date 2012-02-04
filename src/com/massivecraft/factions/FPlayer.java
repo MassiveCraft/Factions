@@ -141,22 +141,6 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 	
 	public final void resetFactionData(boolean doSpotUpdate)
 	{
-<<<<<<< HEAD
-		Faction currentFaction = this.getFaction();
-		
-		// TODO: Make this not happen.
-		if (currentFaction == null)
-			P.p.log(Level.WARNING, "Reset Faction Data: " + currentFaction);
-		
-		if (currentFaction != null)
-			currentFaction.removeFPlayer(this);
-		
-||||||| merged common ancestors
-		Faction currentFaction = this.getFaction();
-		if (currentFaction != null)
-			currentFaction.removeFPlayer(this);
-
-=======
 		if (this.factionId != null && Factions.i.exists(this.factionId)) // Avoid infinite loop! TODO: I think that this is needed is a sign we need to refactor.
 		{
 			Faction currentFaction = this.getFaction();
@@ -166,7 +150,6 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 			}
 		}
 
->>>>>>> mcwars
 		this.factionId = "0"; // The default neutral faction
 		this.chatMode = ChatMode.PUBLIC;
 		this.role = Rel.RECRUIT;
