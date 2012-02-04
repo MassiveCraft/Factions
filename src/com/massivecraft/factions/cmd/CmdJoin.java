@@ -4,6 +4,7 @@ import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.struct.Rel;
 
 public class CmdJoin extends FCommand
 {
@@ -69,6 +70,7 @@ public class CmdJoin extends FCommand
 		
 		fme.resetFactionData();
 		fme.setFaction(faction);
+		fme.setRole(Rel.RECRUIT); //They have just joined a faction, start them out on the lowest rank.
 		faction.deinvite(fme);
 
 		if (Conf.logFactionJoin)
