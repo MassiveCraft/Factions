@@ -9,8 +9,8 @@ import java.util.Set;
 import org.bukkit.block.Block;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.plugin.Plugin;
 
@@ -36,7 +36,6 @@ import com.massivecraft.factions.struct.Rel;
 import com.massivecraft.factions.zcore.MPlugin;
 
 import com.griefcraft.lwc.LWCPlugin;
-import com.nijiko.permissions.PermissionHandler;
 import com.earth2me.essentials.chat.EssentialsChat;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -75,8 +74,7 @@ public class P extends MPlugin
 	}
 	
 	
-	
-	public static PermissionHandler Permissions;
+
 	private static EssentialsChat essChat;
 	
 	
@@ -108,44 +106,14 @@ public class P extends MPlugin
 		{
 			Worldguard.init(this);			
 		}
-		
-		// Player Events
-		this.registerEvent(Event.Type.PLAYER_CHAT, this.playerListener, Event.Priority.Highest);
-		this.registerEvent(Event.Type.PLAYER_CHAT, this.chatEarlyListener, Event.Priority.Lowest);
-		this.registerEvent(Event.Type.PLAYER_COMMAND_PREPROCESS, this.playerListener, Event.Priority.Normal);
-		this.registerEvent(Event.Type.PLAYER_INTERACT, this.playerListener, Event.Priority.Normal);
-		this.registerEvent(Event.Type.PLAYER_MOVE, this.playerListener, Event.Priority.Normal);
-		this.registerEvent(Event.Type.PLAYER_JOIN, this.playerListener, Event.Priority.Normal);
-		this.registerEvent(Event.Type.PLAYER_QUIT, this.playerListener, Event.Priority.Normal);
-		this.registerEvent(Event.Type.PLAYER_RESPAWN, this.playerListener, Event.Priority.High);
-		this.registerEvent(Event.Type.PLAYER_BUCKET_EMPTY, this.playerListener, Event.Priority.Normal);
-		this.registerEvent(Event.Type.PLAYER_BUCKET_FILL, this.playerListener, Event.Priority.Normal);
-		this.registerEvent(Event.Type.PLAYER_KICK, this.playerListener, Event.Priority.Normal);
-		
-		// Entity Events
-		this.registerEvent(Event.Type.ENDERMAN_PICKUP, this.entityListener, Event.Priority.Normal);
-		this.registerEvent(Event.Type.ENDERMAN_PLACE, this.entityListener, Event.Priority.Normal);
-		this.registerEvent(Event.Type.ENTITY_DEATH, this.entityListener, Event.Priority.Normal);
-		this.registerEvent(Event.Type.ENTITY_DAMAGE, this.entityListener, Event.Priority.Normal);
-		this.registerEvent(Event.Type.ENTITY_EXPLODE, this.entityListener, Event.Priority.Normal);
-		this.registerEvent(Event.Type.CREATURE_SPAWN, this.entityListener, Event.Priority.Normal);
-		this.registerEvent(Event.Type.ENTITY_TARGET, this.entityListener, Event.Priority.Normal);
-		this.registerEvent(Event.Type.PAINTING_BREAK, this.entityListener, Event.Priority.Normal);
-		this.registerEvent(Event.Type.PAINTING_PLACE, this.entityListener, Event.Priority.Normal);
-		
-		// Block Events
-		this.registerEvent(Event.Type.BLOCK_BREAK, this.blockListener, Event.Priority.Normal);
-		this.registerEvent(Event.Type.BLOCK_DAMAGE, this.blockListener, Event.Priority.Normal);
-		this.registerEvent(Event.Type.BLOCK_PLACE, this.blockListener, Event.Priority.Normal);
-		this.registerEvent(Event.Type.BLOCK_PISTON_EXTEND, this.blockListener, Event.Priority.Normal);
-		this.registerEvent(Event.Type.BLOCK_PISTON_RETRACT, this.blockListener, Event.Priority.Normal);
-		this.registerEvent(Event.Type.BLOCK_SPREAD, this.blockListener, Event.Priority.Normal);
-		this.registerEvent(Event.Type.BLOCK_BURN, this.blockListener, Event.Priority.Normal);
-		
-		// Server Events
-		this.registerEvent(Event.Type.PLUGIN_ENABLE, this.serverListener, Event.Priority.Monitor);
-		this.registerEvent(Event.Type.PLUGIN_DISABLE, this.serverListener, Event.Priority.Monitor);
-		
+
+		// Register Event Handlers
+		getServer().getPluginManager().registerEvents(playerListener, this);
+		getServer().getPluginManager().registerEvents(chatEarlyListener, this);
+		getServer().getPluginManager().registerEvents(entityListener, this);
+		getServer().getPluginManager().registerEvents(blockListener, this);
+		getServer().getPluginManager().registerEvents(serverListener, this);
+
 		postEnable();
 	}
 	
@@ -179,6 +147,14 @@ public class P extends MPlugin
 	{
 		Board.save();
 		Conf.save();
+	}
+
+	@Override
+	public boolean handleCommand(CommandSender sender, String commandString, boolean testOnly)
+	{
+		if (sender instanceof Player && FactionsPlayerListener.preventCommand(commandString, (Player)sender)) return true;
+
+		return super.handleCommand(sender, commandString, testOnly);
 	}
 
 	// -------------------------------------------- //

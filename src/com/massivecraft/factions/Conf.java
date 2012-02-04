@@ -104,8 +104,8 @@ public class Conf
 	public static boolean homesTeleportToOnDeath = true;
 	public static boolean homesRespawnFromNoPowerLossWorlds = true;
 	public static boolean homesTeleportCommandEnabled = true;
+	public static boolean homesTeleportCommandEssentialsIntegration = true;
 	public static boolean homesTeleportCommandSmokeEffectEnabled = true;
-	public static float homesTeleportCommandSmokeEffectThickness = 3f;
 	public static boolean homesTeleportAllowedFromEnemyTerritory = true;
 	public static boolean homesTeleportAllowedFromDifferentWorld = true;
 	public static double homesTeleportAllowedEnemyDistance = 32.0;
@@ -120,6 +120,8 @@ public class Conf
 
 	//public static boolean peacefulMembersDisablePowerLoss = true;
 	
+	public static boolean permanentFactionsDisableLeaderPromotion = false;
+	
 	public static boolean claimsMustBeConnected = false;
 	public static boolean claimsCanBeUnconnectedIfOwnedByOtherFaction = true;
 	public static int claimsRequireMinFactionMembers = 1;
@@ -130,7 +132,10 @@ public class Conf
 	public static double offlineExplosionProtectionDelay = 2.0;
 	
 	public static int actionDeniedPainAmount = 2;
-	
+
+	// commands which will be prevented if the player is a member of a permanent faction
+	public static Set<String> permanentFactionMemberDenyCommands = new HashSet<String>();
+
 	// commands which will be prevented when in claimed territory of another faction
 	public static Set<String> territoryNeutralDenyCommands = new HashSet<String>();
 	public static Set<String> territoryEnemyDenyCommands = new HashSet<String>();
@@ -180,6 +185,7 @@ public class Conf
 	public static double econCostClaimFromFactionBonus = 30.0;
 	public static double econClaimAdditionalMultiplier = 0.5;
 	public static double econClaimRefundMultiplier = 0.7;
+	public static double econClaimUnconnectedFee = 0.0;
 	public static double econCostCreate = 100.0;
 	public static double econCostSethome = 30.0;
 	public static double econCostJoin = 0.0;

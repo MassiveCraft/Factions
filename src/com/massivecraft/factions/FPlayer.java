@@ -20,7 +20,6 @@ import com.massivecraft.factions.struct.FPerm;
 import com.massivecraft.factions.struct.Rel;
 import com.massivecraft.factions.util.RelationUtil;
 import com.massivecraft.factions.zcore.persist.PlayerEntity;
-import com.nijikokun.register.payment.Method.MethodAccount;
 
 
 /**
@@ -68,7 +67,13 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 	
 	// FIELD: power
 	private double power;
-	
+
+	// FIELD: powerBoost
+	// special increase/decrease to min and max power for this player
+	private double powerBoost;
+	public double getPowerBoost() { return this.powerBoost; }
+	public void setPowerBoost(double powerBoost) { this.powerBoost = powerBoost; }
+
 	// FIELD: lastPowerUpdateTime
 	private long lastPowerUpdateTime;
 	
@@ -110,11 +115,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 	public boolean isSpyingChat() { return spyingChat; }
 	
 	// FIELD: account
-	public MethodAccount getAccount()
-	{
-		if ( ! Econ.shouldBeUsed()) return null;
-		return Econ.getMethod().getAccount(this.getId());
-	}
+	public String getAccountId() { return this.getId(); }
 	
 	// -------------------------------------------- //
 	// Construct
@@ -130,6 +131,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		this.mapAutoUpdating = false;
 		this.autoClaimFor = null;
 		this.loginPvpDisabled = (Conf.noPVPDamageToOthersForXSecondsAfterLogin > 0) ? true : false;
+		this.powerBoost = 0.0;
 
 		if ( ! Conf.newPlayerStartingFactionID.equals("0") && Factions.i.exists(Conf.newPlayerStartingFactionID))
 		{
@@ -139,6 +141,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 	
 	public final void resetFactionData(boolean doSpotUpdate)
 	{
+<<<<<<< HEAD
 		Faction currentFaction = this.getFaction();
 		
 		// TODO: Make this not happen.
@@ -148,6 +151,22 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		if (currentFaction != null)
 			currentFaction.removeFPlayer(this);
 		
+||||||| merged common ancestors
+		Faction currentFaction = this.getFaction();
+		if (currentFaction != null)
+			currentFaction.removeFPlayer(this);
+
+=======
+		if (this.factionId != null && Factions.i.exists(this.factionId)) // Avoid infinite loop! TODO: I think that this is needed is a sign we need to refactor.
+		{
+			Faction currentFaction = this.getFaction();
+			if (currentFaction != null)
+			{
+				currentFaction.removeFPlayer(this);
+			}
+		}
+
+>>>>>>> mcwars
 		this.factionId = "0"; // The default neutral faction
 		this.chatMode = ChatMode.PUBLIC;
 		this.role = Rel.RECRUIT;
@@ -348,23 +367,19 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 	{
 		this.power += delta;
 		if (this.power > this.getPowerMax())
-		{
 			this.power = this.getPowerMax();
-		} else if (this.power < this.getPowerMin())
-		{
+		else if (this.power < this.getPowerMin())
 			this.power = this.getPowerMin();
-		}
-		//Log.debug("Power of "+this.getName()+" is now: "+this.power);
 	}
 	
 	public double getPowerMax()
 	{
-		return Conf.powerPlayerMax;
+		return Conf.powerPlayerMax + this.powerBoost;
 	}
 	
 	public double getPowerMin()
 	{
-		return Conf.powerPlayerMin;
+		return Conf.powerPlayerMin + this.powerBoost;
 	}
 	
 	public int getPowerRounded()
@@ -395,6 +410,9 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		long now = System.currentTimeMillis();
 		long millisPassed = now - this.lastPowerUpdateTime;
 		this.lastPowerUpdateTime = now;
+
+		Player thisPlayer = this.getPlayer();
+		if (thisPlayer != null && thisPlayer.isDead()) return;  // don't let dead players regain power until they respawn
 
 		int millisPerMinute = 60*1000;		
 		double powerPerMinute = Conf.powerPerMinute;
@@ -513,7 +531,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		{
 			// Transfer all money
 			if (Econ.shouldBeUsed())
-				Econ.transferMoney(this, myFaction, this, myFaction.getAccount().balance());
+				Econ.transferMoney(this, myFaction, this, Econ.getBalance(myFaction.getAccountId()));
 		}
 		
 		if (myFaction.isNormal())
@@ -636,8 +654,10 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		if (Econ.shouldBeUsed() && ! this.hasAdminMode())
 		{
 			double cost = Econ.calculateClaimCost(ownedLand, currentFaction.isNormal());
-			//String costString = Econ.moneyString(cost);
-			
+
+			if (Conf.econClaimUnconnectedFee != 0.0 && forFaction.getLandRoundedInWorld(flocation.getWorldName()) > 0 && !Board.isConnectedLocation(flocation, currentFaction))
+				cost += Conf.econClaimUnconnectedFee;
+
 			if(Conf.bankEnabled && Conf.bankFactionPaysLandCosts && this.hasFaction())
 			{
 				Faction faction = this.getFaction();
