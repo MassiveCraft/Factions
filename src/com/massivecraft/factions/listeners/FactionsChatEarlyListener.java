@@ -44,6 +44,15 @@ public class FactionsChatEarlyListener implements Listener
 			event.setCancelled(true);
 			return;
 		}
+		
+		// Is the chat a "shout"?
+	    if (msg.startsWith("!") && me.getChatMode() != ChatMode.PUBLIC) 
+	    {
+	      msg = msg.substring(1);
+	      
+	      event.setMessage(msg);
+	      return;
+	    }
 
 		// Is it a faction chat message?
 		if (chat == ChatMode.FACTION)
