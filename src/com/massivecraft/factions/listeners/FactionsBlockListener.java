@@ -3,6 +3,7 @@ package com.massivecraft.factions.listeners;
 import java.util.logging.Level;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -101,6 +102,13 @@ public class FactionsBlockListener implements Listener
 		{
 			event.setCancelled(true);
 		}
+		
+		/*Material handItem = event.getPlayer().getItemInHand().getType();
+     	if (handItem == Material.TNT || handItem == Material.REDSTONE_TORCH_ON)
+     	{
+     		Faction targetFaction = Board.getFactionAt(new FLocation(event.getBlock()));
+     		FactionsEntityListener.trackPotentialExplosionExploit(event.getPlayer().getName(), targetFaction, handItem, event.getBlock().getLocation());
+     	}*/
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL)

@@ -1,6 +1,7 @@
 package com.massivecraft.factions;
 
 import java.util.*;
+import java.util.logging.Level;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -287,6 +288,12 @@ public class Faction extends Entity implements EconomyParticipator
 		{
 			ret += fplayer.getPower();
 		}
+	    if (Conf.scaleFactionPower)
+	    {
+	    	double TotalPowers = (ret) / this.getFPlayers().size();
+	    	double PowerMultiplier =  Math.pow(this.getFPlayers().size(), Conf.powerFTotalMupliplier);  
+	    	ret = (TotalPowers * PowerMultiplier);
+	    }
 		if (ret > getPowerMax())
 		{
 			ret = getPowerMax();
@@ -310,6 +317,12 @@ public class Faction extends Entity implements EconomyParticipator
 		{
 			ret += fplayer.getPowerMax();
 		}
+	    if (Conf.scaleFactionPower)
+	    {
+	    	double TotalPowers = (ret - Conf.powerFactionLeaderBonus) / this.getFPlayers().size();
+	    	double PowerMultiplier =  Math.pow(this.getFPlayers().size(), Conf.powerFTotalMupliplier);  
+	    	ret = (TotalPowers * PowerMultiplier);
+	    }
 		if (Conf.powerFactionMax > 0 && ret > Conf.powerFactionMax)
 		{
 			ret = Conf.powerFactionMax;
@@ -564,37 +577,57 @@ public class Faction extends Entity implements EconomyParticipator
 	public void updateOfflineExplosionProtection() {
 		//We've either gained or lost a player.
 		
-		if (this.getOnlinePlayers().size() == 0 ) {
+		if (id == "-1" || id == "-2" || getId() == "0")
+		{
+			return;
+		}
+		
+		if (this.getOnlinePlayers().size() <= 1 && this.getLastOnlineTime() + ( Conf.offlineExplosionProtectionDelay * 60 * 1000 ) < System.currentTimeMillis()) 
+		{
+			P.p.log(Level.INFO, "NoBoom " + this.id + ": " + this.getLastOnlineTime() + " < " + System.currentTimeMillis());
 			//No one is online, set the last online time
 			this.lastOnlineTime = System.currentTimeMillis();
 		}
 	}
 	
-	public boolean hasOfflineExplosionProtection() {
+	public boolean hasOfflineExplosionProtection() 
+	{
+		long lastonlinetime = (long) (this.getLastOnlineTime() + ( Conf.offlineExplosionProtectionDelay * 60 * 1000 ));
+		
+		if (this.id == "-1" || this.id == "-2" )
+		{
+			return true;
+		}
+		else if ( (this.getId() == "-1" || this.getId() == "-2") && this.getFlag(FFlag.EXPLOSIONS) == false )
+		{
+			return true;
+		}
+		
 		//No protection if we are online.
-		if (this.getOnlinePlayers().size() > 0 || this.getId() == "0" || this.isNone()) 
+		if ( this.getOnlinePlayers().size() > 0 || this.isNone() ) 
 		{
 			return false;
 		}
-		
-		double lastonlinetime = this.lastOnlineTime + ( Conf.offlineExplosionProtectionDelay * 60 * 1000 );
+		else if ( this.getOnlinePlayers().size() == 0 && lastonlinetime > System.currentTimeMillis())
+		{
+			updateOfflineExplosionProtection();
+		}
 				
-		if ( this.getFlag(FFlag.EXPLOSIONS) == true && this.getId() != "0" && lastonlinetime < System.currentTimeMillis()) 
+		if ( lastonlinetime > System.currentTimeMillis())
 		{
-			//Last online time + buffer time < current time, so the protection has expired.
-			return false;
-		} 
-		else if ( lastonlinetime < System.currentTimeMillis())
-		{
+			//P.p.log(Level.INFO, "Protected: " + lastonlinetime + " > " + System.currentTimeMillis());
+			P.p.log("Protected: Return False");
 			return false;
 		}
 		else
 		{
+			//P.p.log(Level.INFO, "Protected: " + lastonlinetime + " < " + System.currentTimeMillis());
+			P.p.log("Protected: Return true");
 			return true;
 		}
 	}
 	
-	public float getLastOnlineTime()
+	public long getLastOnlineTime()
 	{
 		return this.lastOnlineTime;
 	}

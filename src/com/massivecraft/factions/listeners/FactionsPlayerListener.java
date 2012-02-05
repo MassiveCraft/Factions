@@ -155,9 +155,10 @@ public class FactionsPlayerListener implements Listener
 		FPlayers.i.autoLeaveOnInactivityRoutine();
 		FPlayers.i.autoLeaveOnInactivityRoutine();
 		
+		Faction faction = me.getFaction();
 		if( me.hasFaction() ) {
-			//Notify our faction that the number of online players has changed.
-			me.getFaction().updateOfflineExplosionProtection();
+			//Notify our faction that the number of online players has changed.	
+			faction.updateOfflineExplosionProtection();
 		}
 
 		SpoutFeatures.updateAppearancesShortly(event.getPlayer());
@@ -170,9 +171,10 @@ public class FactionsPlayerListener implements Listener
 		FPlayer me = FPlayers.i.get(event.getPlayer());
 		me.getPower();
 		
+		Faction faction = me.getFaction();
 		if( me.hasFaction() ) {
-			//Notify our faction that the number of online players has changed.
-			me.getFaction().updateOfflineExplosionProtection();
+			//Notify our faction that the number of online players has changed.	
+			faction.updateOfflineExplosionProtection();
 		}
 		
 		SpoutFeatures.playerDisconnect(me);

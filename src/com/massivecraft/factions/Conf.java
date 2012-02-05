@@ -33,6 +33,8 @@ public class Conf
 	public static double powerPlayerMax = 10.0;
 	public static double powerPlayerMin = -10.0;
 	public static double powerFactionLeaderBonus = 0.0;
+	public static double powerFTotalMupliplier = 0.60;
+	public static boolean scaleFactionPower = false; // Scales the total power by the players average power
 	public static double powerPlayerStarting = 10.0; // New players start out with this power level
 	public static double powerPerMinute = 0.2; // Default health rate... it takes 5 min to heal one power
 	public static double powerPerDeath = 4.0; // A death makes you lose 4 power
