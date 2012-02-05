@@ -14,7 +14,7 @@ import com.earth2me.essentials.chat.IEssentialsChatListener;
  * This Essentials integration handler is for older 2.x.x versions of Essentials which have "IEssentialsChatListener"
  */
 
-public class EssentialsOldVersionFeatures
+public class EssentialsOldVersionFeaturesTODO
 {
 	private static EssentialsChat essChat;
 
