@@ -584,7 +584,6 @@ public class Faction extends Entity implements EconomyParticipator
 		
 		if (this.getOnlinePlayers().size() <= 1 && this.getLastOnlineTime() + ( Conf.offlineExplosionProtectionDelay * 60 * 1000 ) < System.currentTimeMillis()) 
 		{
-			P.p.log(Level.INFO, "NoBoom " + this.id + ": " + this.getLastOnlineTime() + " < " + System.currentTimeMillis());
 			//No one is online, set the last online time
 			this.lastOnlineTime = System.currentTimeMillis();
 		}
@@ -615,14 +614,10 @@ public class Faction extends Entity implements EconomyParticipator
 				
 		if ( lastonlinetime > System.currentTimeMillis())
 		{
-			//P.p.log(Level.INFO, "Protected: " + lastonlinetime + " > " + System.currentTimeMillis());
-			P.p.log("Protected: Return False");
 			return false;
 		}
 		else
 		{
-			//P.p.log(Level.INFO, "Protected: " + lastonlinetime + " < " + System.currentTimeMillis());
-			P.p.log("Protected: Return true");
 			return true;
 		}
 	}
