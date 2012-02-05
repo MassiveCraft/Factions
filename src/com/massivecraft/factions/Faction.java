@@ -287,6 +287,10 @@ public class Faction extends Entity implements EconomyParticipator
 		{
 			ret += fplayer.getPower();
 		}
+		if (ret > getPowerMax())
+		{
+			ret = getPowerMax();
+		}
 		if (Conf.powerFactionMax > 0 && ret > Conf.powerFactionMax)
 		{
 			ret = Conf.powerFactionMax;

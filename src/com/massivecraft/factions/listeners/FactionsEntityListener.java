@@ -4,7 +4,9 @@ import java.text.MessageFormat;
 
 import org.bukkit.Location;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Creeper;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Explosive;
 import org.bukkit.entity.Fireball;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
@@ -95,7 +97,7 @@ public class FactionsEntityListener extends EntityListener
 		if ( event.isCancelled()) return;
 		
 	    // "NoBoom" offline faction protection area block deny.
-	    if (event.getEntity() instanceof Fireball) // || event.getEntity() instanceof Creeper || event.getEntity() instanceof Explosive || event.getEntity() instanceof TNTPrimed)
+	    if (event.getEntity() instanceof Fireball || event.getEntity() instanceof Creeper || event.getEntity() instanceof Explosive)
 	    {
 	      Faction faction = Board.getFactionAt(new FLocation(event.getLocation().getBlock()));
 	      // Only update Explosion Protection on TNTPrimed or Fireball from within the chunk..

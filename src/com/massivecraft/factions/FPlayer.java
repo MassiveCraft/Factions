@@ -357,6 +357,9 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 	
 	public double getPowerMax()
 	{
+	    if (this.role == Rel.LEADER && Conf.powerFactionLeaderBonus > 0)
+	        return Conf.powerPlayerMax + this.powerBoost + Conf.powerFactionLeaderBonus;
+		
 		return Conf.powerPlayerMax + this.powerBoost;
 	}
 	
@@ -428,6 +431,29 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 	{
 		this.updatePower();
 		this.alterPower(-Conf.powerPerDeath);
+		
+	    if ( Conf.disbandOnLeaderNoPower && this.role == Rel.LEADER && this.power <= Conf.powerPlayerMin ) // Is the king dead?
+	    {
+	    	Faction faction = this.getFaction();
+	    	if (faction.getFlag(FFlag.INFPOWER))
+	    		return;
+	    	P.p.log(Level.INFO,  this.id + "has Disbanded due to the Faction Leader " + faction.getTag(this) + " falling from power.");
+	    	// Inform all players
+	    	for (FPlayer fplayer : FPlayers.i.getOnline())
+	    	{
+	    		if (fplayer.getFaction() == faction)
+	    		{
+	    			fplayer.msg("<i>Your leader <h>%s<i> died and the faction was disbanded.", this.id);
+	    		}
+	    		else
+	    		{
+	    			fplayer.msg("<i>The faction <h>%s<i> disbanded.  Their leader, <h>%s<i> has fallen.", faction.getTag(fplayer), this.id);
+	    		}
+	    	} 
+	    	faction.detach();
+	    	this.resetFactionData();
+	    	this.alterPower(this.power);
+	    }
 	}
 	
 	//----------------------------------------------//
