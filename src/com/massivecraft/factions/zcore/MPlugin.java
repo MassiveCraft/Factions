@@ -74,11 +74,8 @@ public abstract class MPlugin extends JavaPlugin
 		// Create and register listeners
 		this.mPluginSecretPlayerListener = new MPluginSecretPlayerListener(this);
 		this.mPluginSecretServerListener = new MPluginSecretServerListener(this);
-		PluginManager pm = this.getServer().getPluginManager();
-		pm.registerEvent(Event.Type.PLAYER_PRELOGIN, this.mPluginSecretPlayerListener, Event.Priority.Lowest, this);
-		pm.registerEvent(Event.Type.PLAYER_CHAT, this.mPluginSecretPlayerListener, Event.Priority.Low, this);
-		pm.registerEvent(Event.Type.PLAYER_COMMAND_PREPROCESS, this.mPluginSecretPlayerListener, Event.Priority.Lowest, this);
-		pm.registerEvent(Event.Type.SERVER_COMMAND, this.mPluginSecretServerListener, Event.Priority.Lowest, this);
+		getServer().getPluginManager().registerEvents(this.mPluginSecretPlayerListener, this);
+		getServer().getPluginManager().registerEvents(this.mPluginSecretServerListener, this);
 		
 		
 		// Register recurring tasks
