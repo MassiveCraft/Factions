@@ -78,7 +78,7 @@ public class CmdDisband extends FCommand
 		if (Conf.logFactionDisband)
 			P.p.log("The faction "+faction.getTag()+" ("+faction.getId()+") was disbanded by "+(senderIsConsole ? "console command" : fme.getName())+".");
 
-		if (Econ.shouldBeUsed())
+		if (Econ.shouldBeUsed() && ! senderIsConsole)
 		{
 			//Give all the faction's money to the disbander
 			double amount = Econ.getBalance(faction.getAccountId());
