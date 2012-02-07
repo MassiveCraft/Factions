@@ -24,6 +24,7 @@ import com.massivecraft.factions.cmd.*;
 import com.massivecraft.factions.integration.capi.CapiFeatures;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.integration.EssentialsFeatures;
+import com.massivecraft.factions.integration.EssentialsOldVersionFeatures;
 import com.massivecraft.factions.integration.LWCFeatures;
 import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.integration.Worldguard;
@@ -194,8 +195,7 @@ public class P extends MPlugin
 				// no? try older Essentials 2.x integration method
 				try
 				{
-					// TODO: Creates errors in eclipse
-					//EssentialsOldVersionFeatures.integrateChat(essChat);
+					EssentialsOldVersionFeatures.integrateChat(essChat);
 				}
 				catch (NoClassDefFoundError ex2)
 				{
@@ -211,8 +211,7 @@ public class P extends MPlugin
 		{
 			try
 			{
-				// TODO: Creates errors in eclipse
-				//EssentialsOldVersionFeatures.unhookChat();
+				EssentialsOldVersionFeatures.unhookChat();
 			}
 			catch (NoClassDefFoundError ex)
 			{

@@ -47,7 +47,7 @@ public class CmdLeader extends FCommand
 			// Follow the standard rules
 			if (fme.getRole() != Rel.LEADER || targetFaction != myFaction)
 			{
-				sender.sendMessage(p.txt.parse("<b>Only faction leaders can %s.", this.getHelpShort()));
+				sender.sendMessage(p.txt.parse("<b>You must be leader of the faction to %s.", this.getHelpShort()));
 				return;
 			}
 			
