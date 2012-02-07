@@ -125,10 +125,7 @@ public class FactionsEntityListener implements Listener
 			return true;
 		
 		Location defenderLoc = defender.getPlayer().getLocation();
-		
-		if (Conf.worldsIgnorePvP.contains(defenderLoc.getWorld().getName()))
-			return true;
-		
+
 		Faction defLocFaction = Board.getFactionAt(new FLocation(defenderLoc));
 
 		// for damage caused by projectiles, getDamager() returns the projectile... what we need to know is the source
@@ -173,7 +170,10 @@ public class FactionsEntityListener implements Listener
 			attacker.msg("<i>PVP is disabled in %s.", locFaction.describeTo(attacker));
 			return false;
 		}
-		
+
+		if (Conf.worldsIgnorePvP.contains(defenderLoc.getWorld().getName()))
+			return true;
+
 		Faction defendFaction = defender.getFaction();
 		Faction attackFaction = attacker.getFaction();
 		
