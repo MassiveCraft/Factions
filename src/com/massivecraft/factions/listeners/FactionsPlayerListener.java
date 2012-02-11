@@ -168,8 +168,8 @@ public class FactionsPlayerListener implements Listener
 	}
 	
 	private boolean hasChangedBlockCoordinates(Location fromLoc, Location toLoc) {
-	        if (fromLoc.getBlockX() == toLoc.getBlockX()
-	                && fromLoc.getBlockY() == toLoc.getBlockY()
+	        if (fromLoc.getWorld().equals(toLoc.getWorld())
+	                && fromLoc.getBlockX() == toLoc.getBlockX()
 	                && fromLoc.getBlockZ() == toLoc.getBlockZ()) {
 	            return false;
 	        }
