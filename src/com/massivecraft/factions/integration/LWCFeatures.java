@@ -30,9 +30,15 @@ public class LWCFeatures
 		P.p.log("Successfully hooked into LWC!"+(Conf.lwcIntegration ? "" : " Integration is currently disabled, though (\"lwcIntegration\")."));
 	}
 
+	public static boolean getEnabled()
+	{
+		return Conf.lwcIntegration && lwc != null;
+	}
+
 	public static void clearOtherChests(FLocation flocation, Faction faction)
 	{
 		Location location = new Location(Bukkit.getWorld(flocation.getWorldName()), flocation.getX() * 16, 5, flocation.getZ() * 16);
+		if (location.getWorld() == null) return;  // world not loaded or something? cancel out to prevent error
 		Chunk chunk = location.getChunk();
 		BlockState[] blocks = chunk.getTileEntities();
 		List<Block> chests = new LinkedList<Block>();
@@ -58,6 +64,7 @@ public class LWCFeatures
 	public static void clearAllChests(FLocation flocation)
 	{
 		Location location = new Location(Bukkit.getWorld(flocation.getWorldName()), flocation.getX() * 16, 5, flocation.getZ() * 16);
+		if (location.getWorld() == null) return;  // world not loaded or something? cancel out to prevent error
 		Chunk chunk = location.getChunk();
 		BlockState[] blocks = chunk.getTileEntities();
 		List<Block> chests = new LinkedList<Block>();
@@ -77,10 +84,5 @@ public class LWCFeatures
 					lwc.findProtection(chests.get(x)).remove();
 			}
 		}
-	}
-
-	public static boolean getEnabled()
-	{
-		return Conf.lwcIntegration && lwc != null;
 	}
 }
