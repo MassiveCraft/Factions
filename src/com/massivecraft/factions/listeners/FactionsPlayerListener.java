@@ -344,6 +344,8 @@ public class FactionsPlayerListener implements Listener
 		if ((Conf.territoryNeutralDenyCommands.isEmpty() && Conf.territoryEnemyDenyCommands.isEmpty() && Conf.permanentFactionMemberDenyCommands.isEmpty()))
 			return false;
 
+		fullCmd = fullCmd.toLowerCase();
+
 		FPlayer me = FPlayers.i.get(player);
 
 		String shortCmd;  // command without the slash at the beginning
