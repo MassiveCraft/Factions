@@ -65,7 +65,7 @@ public abstract class MPlugin extends JavaPlugin
 		this.persist = new Persist(this);
 		this.lib = new LibLoader(this);
 		
-		if ( ! lib.require("gson.jar", "http://search.maven.org/remotecontent?filepath=com/google/code/gson/gson/1.7.1/gson-1.7.1.jar")) return false;
+		if ( ! lib.require("gson.jar", "http://search.maven.org/remotecontent?filepath=com/google/code/gson/gson/2.1/gson-2.1.jar")) return false;
 		this.gson = this.getGsonBuilder().create();
 		
 		this.txt = new TextUtil();

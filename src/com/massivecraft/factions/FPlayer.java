@@ -138,7 +138,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		}
 	}
 	
-	public final void resetFactionData(boolean doSpotUpdate)
+	public final void resetFactionData(boolean doSpoutUpdate)
 	{
 		if (this.factionId != null && Factions.i.exists(this.factionId)) // Avoid infinite loop! TODO: I think that this is needed is a sign we need to refactor.
 		{
@@ -155,7 +155,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		this.title = "";
 		this.autoClaimFor = null;
 
-		if (doSpotUpdate)
+		if (doSpoutUpdate)
 		{
 			SpoutFeatures.updateAppearances(this.getPlayer());
 		}
