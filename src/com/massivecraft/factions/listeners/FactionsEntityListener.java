@@ -7,6 +7,7 @@ import java.util.logging.Level;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Enderman;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
@@ -15,8 +16,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
-import org.bukkit.event.entity.EndermanPickupEvent;
-import org.bukkit.event.entity.EndermanPlaceEvent;
+import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
@@ -297,24 +297,14 @@ public class FactionsEntityListener implements Listener
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL)
-	public void onEndermanPickup(EndermanPickupEvent event)
+	public void onEntityChangeBlock(EntityChangeBlockEvent event)
 	{
 		if (event.isCancelled()) return;
+
+		// for now, only interested in Enderman tomfoolery
+		if (!(event.getEntity() instanceof Enderman)) return;
 
 		FLocation floc = new FLocation(event.getBlock());
-		Faction faction = Board.getFactionAt(floc);
-		
-		if (faction.getFlag(FFlag.ENDERGRIEF)) return;
-		
-		event.setCancelled(true);
-	}
-
-	@EventHandler(priority = EventPriority.NORMAL)
-	public void onEndermanPlace(EndermanPlaceEvent event)
-	{
-		if (event.isCancelled()) return;
-
-		FLocation floc = new FLocation(event.getLocation());
 		Faction faction = Board.getFactionAt(floc);
 		
 		if (faction.getFlag(FFlag.ENDERGRIEF)) return;
