@@ -9,22 +9,20 @@ import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.P;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
 
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 
 import org.getspout.spoutapi.gui.Color;
-import org.getspout.spoutapi.player.AppearanceManager;
 import org.getspout.spoutapi.player.SpoutPlayer;
 import org.getspout.spoutapi.SpoutManager;
 
 
 public class SpoutFeatures
 {
-	private transient static AppearanceManager spoutApp;
 	private transient static boolean spoutMe = false;
 	private transient static SpoutMainListener mainListener;
 	private transient static boolean listenersHooked;
@@ -33,21 +31,15 @@ public class SpoutFeatures
 	public static void setAvailable(boolean enable, String pluginName)
 	{
 		spoutMe = enable;
-		if (spoutMe)
-		{
-			spoutApp = SpoutManager.getAppearanceManager();
-			P.p.log("Found and will use features of "+pluginName);
+		if (!spoutMe) return;
 
-			if (!listenersHooked)
-			{
-				listenersHooked = true;
-				mainListener = new SpoutMainListener();
-				P.p.registerEvent(Event.Type.CUSTOM_EVENT, mainListener, Event.Priority.Normal);
-			}
-		}
-		else
+		P.p.log("Found and will use features of "+pluginName);
+
+		if (!listenersHooked)
 		{
-			spoutApp = null;
+			listenersHooked = true;
+			mainListener = new SpoutMainListener();
+			Bukkit.getServer().getPluginManager().registerEvents(mainListener, P.p);
 		}
 	}
 
@@ -219,12 +211,11 @@ public class SpoutFeatures
 		if (viewedFaction == null)
 			return;
 
-		Player pViewed = viewed.getPlayer();
-		Player pViewer = viewer.getPlayer();
+		SpoutPlayer pViewer = SpoutManager.getPlayer(viewer.getPlayer());
+		SpoutPlayer pViewed = SpoutManager.getPlayer(viewed.getPlayer());
 		if (pViewed == null || pViewer == null)
 			return;
 
-		SpoutPlayer sPlayer = SpoutManager.getPlayer(pViewer);
 		String viewedTitle = viewed.getTitle();
 		Role viewedRole = viewed.getRole();
 
@@ -240,11 +231,11 @@ public class SpoutFeatures
 				if (Conf.spoutFactionTitlesOverNames && (!viewedTitle.isEmpty() || !rolePrefix.isEmpty()))
 					addTag += (addTag.isEmpty() ? "" : " ") + viewedRole.getPrefix() + viewedTitle;
 
-				spoutApp.setPlayerTitle(sPlayer, pViewed, addTag + "\n" + pViewed.getDisplayName());
+				pViewed.setTitleFor(pViewer, addTag + "\n" + pViewed.getDisplayName());
 			}
 			else
 			{
-				spoutApp.setPlayerTitle(sPlayer, pViewed, pViewed.getDisplayName());
+				pViewed.setTitleFor(pViewer, pViewed.getDisplayName());
 			}
 		}
 
@@ -281,13 +272,13 @@ public class SpoutFeatures
 				cape = Conf.capeAlly;
 
 			if (cape.isEmpty())
-				spoutApp.resetPlayerCloak(sPlayer, pViewed);
+				pViewed.resetCapeFor(pViewer);
 			else
-				spoutApp.setPlayerCloak(sPlayer, pViewed, cape);
+				pViewed.setCapeFor(pViewer, cape);
 		}
 		else if (Conf.spoutFactionAdminCapes || Conf.spoutFactionModeratorCapes)
 		{
-			spoutApp.resetPlayerCloak(sPlayer, pViewed);
+			pViewed.resetCapeFor(pViewer);
 		}
 	}
 
@@ -298,7 +289,7 @@ public class SpoutFeatures
 		if (inColor == null)
 			return SpoutFixedColor(191, 191, 191, alpha);
 
-		switch (inColor.getCode())
+		switch (inColor.getChar())
 		{
 			case 0x1:	return SpoutFixedColor(0, 0, 191, alpha);
 			case 0x2:	return SpoutFixedColor(0, 191, 0, alpha);

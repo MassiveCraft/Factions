@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 
 import com.massivecraft.factions.Board;
 import com.massivecraft.factions.Conf;
@@ -14,16 +17,14 @@ import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.P;
 
 import org.getspout.spoutapi.event.spout.SpoutCraftEnableEvent;
-import org.getspout.spoutapi.event.spout.SpoutListener;
 import org.getspout.spoutapi.gui.GenericLabel;
 import org.getspout.spoutapi.player.SpoutPlayer;
 import org.getspout.spoutapi.SpoutManager;
-//import org.getspout.spoutapi.gui.WidgetAnchor;
 
 
-public class SpoutMainListener extends SpoutListener
+public class SpoutMainListener implements Listener
 {
-	@Override
+	@EventHandler(priority = EventPriority.NORMAL)
 	public void onSpoutCraftEnable(SpoutCraftEnableEvent event)
 	{
 		final FPlayer me = FPlayers.i.get(event.getPlayer());
@@ -99,13 +100,7 @@ public class SpoutMainListener extends SpoutListener
 				label = new GenericLabel();
 				label.setWidth(1).setHeight(1);  // prevent Spout's questionable new "no default size" warning
 				label.setScale(Conf.spoutTerritoryDisplaySize);
-/*				// this should work once the Spout team fix it to account for text scaling; we can then get rid of alignLabel method added below
-				switch (Conf.spoutTerritoryDisplayPosition) {
-					case 1: label.setAlign(WidgetAnchor.TOP_LEFT).setAnchor(WidgetAnchor.TOP_LEFT); break;
-					case 2: label.setAlign(WidgetAnchor.TOP_CENTER).setAnchor(WidgetAnchor.TOP_CENTER); break;
-					default: label.setAlign(WidgetAnchor.TOP_RIGHT).setAnchor(WidgetAnchor.TOP_RIGHT);
-				}
- */
+
 				sPlayer.getMainScreen().attachWidget(P.p, label);
 				territoryLabels.put(player.getName(), label);
 			}
