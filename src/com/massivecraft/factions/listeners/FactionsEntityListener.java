@@ -7,6 +7,7 @@ import java.util.logging.Level;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Creeper;
+import org.bukkit.entity.Enderman;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Fireball;
 import org.bukkit.entity.Player;
@@ -16,8 +17,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
-import org.bukkit.event.entity.EndermanPickupEvent;
-import org.bukkit.event.entity.EndermanPlaceEvent;
+import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
@@ -434,22 +434,14 @@ public class FactionsEntityListener implements Listener
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL)
-	public void onEndermanPickup(EndermanPickupEvent event)
+	public void onEntityChangeBlock(EntityChangeBlockEvent event)
 	{
 		if (event.isCancelled()) return;
+
+		// for now, only interested in Enderman tomfoolery
+		if (!(event.getEntity() instanceof Enderman)) return;
 
 		if (stopEndermanBlockManipulation(event.getBlock().getLocation()))
-		{
-			event.setCancelled(true);
-		}
-	}
-
-	@EventHandler(priority = EventPriority.NORMAL)
-	public void onEndermanPlace(EndermanPlaceEvent event)
-	{
-		if (event.isCancelled()) return;
-
-		if (stopEndermanBlockManipulation(event.getLocation()))
 		{
 			event.setCancelled(true);
 		}
