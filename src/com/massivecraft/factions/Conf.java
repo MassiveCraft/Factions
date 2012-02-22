@@ -91,6 +91,7 @@ public class Conf
 	public static boolean homesTeleportToOnDeath = true;
 	public static boolean homesRespawnFromNoPowerLossWorlds = true;
 	public static boolean homesTeleportCommandEnabled = true;
+	public static boolean homesTeleportCommandEssentialsIntegration = true;
 	public static boolean homesTeleportCommandSmokeEffectEnabled = true;
 	public static float homesTeleportCommandSmokeEffectThickness = 3f;
 	public static boolean homesTeleportAllowedFromEnemyTerritory = true;
