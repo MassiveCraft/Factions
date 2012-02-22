@@ -1,15 +1,20 @@
 package com.massivecraft.factions.integration;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.Location;
 import org.bukkit.plugin.Plugin;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.P;
 
+import com.earth2me.essentials.IEssentials;
+import com.earth2me.essentials.Teleport;
+import com.earth2me.essentials.Trade;
 import com.earth2me.essentials.chat.EssentialsChat;
 import com.earth2me.essentials.chat.EssentialsLocalChatEvent;
 
@@ -22,9 +27,21 @@ import com.earth2me.essentials.chat.EssentialsLocalChatEvent;
 public class EssentialsFeatures
 {
 	private static EssentialsChat essChat;
+	private static IEssentials essentials;
 
+	@SuppressWarnings("deprecation")
 	public static void setup()
 	{
+		// integrate main essentials plugin
+		// TODO: this is the old Essentials method not supported in 3.0... probably needs to eventually be moved to EssentialsOldVersionFeatures and new method implemented
+		if (essentials == null)
+		{
+			Plugin ess = Bukkit.getPluginManager().getPlugin("Essentials");
+			if (ess != null && ess.isEnabled())
+				essentials = (IEssentials)ess;
+		}
+
+		// integrate chat
 		if (essChat != null) return;
 
 		Plugin test = Bukkit.getServer().getPluginManager().getPlugin("EssentialsChat");
@@ -60,6 +77,25 @@ public class EssentialsFeatures
 		catch (NoClassDefFoundError ex) {}
 	}
 
+
+	// return false if feature is disabled or Essentials isn't available
+	@SuppressWarnings("deprecation")
+	public static boolean handleTeleport(Player player, Location loc)
+	{
+		if ( ! Conf.homesTeleportCommandEssentialsIntegration || essentials == null) return false;
+
+		Teleport teleport = (Teleport) essentials.getUser(player).getTeleport();
+		Trade trade = new Trade(Conf.econCostHome, essentials);
+		try
+		{
+			teleport.teleport(loc, trade);
+		}
+		catch (Exception e)
+		{
+			player.sendMessage(ChatColor.RED.toString()+e.getMessage());
+		}
+		return true;
+	}
 
 
 	public static void integrateChat(EssentialsChat instance)
