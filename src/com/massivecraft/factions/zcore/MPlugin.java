@@ -9,9 +9,6 @@ import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
-import org.bukkit.event.Event;
-import org.bukkit.event.Listener;
-import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.google.gson.Gson;
