@@ -23,18 +23,8 @@ import net.milkbowl.vault.economy.Economy;
 public class Econ
 {
 	private static Economy econ = null;
-	
-	public static boolean shouldBeUsed()
-	{
-		return Conf.econEnabled && econ != null && econ.isEnabled();
-	}
-	
-	public static boolean isSetup()
-	{
-		return econ != null;
-	}
 
-	public static void doSetup()
+	public static void setup()
 	{
 		if (isSetup()) return;
 
@@ -60,6 +50,18 @@ public class Econ
 			P.p.log("NOTE: Economy is disabled. You can enable it with the command: f config econEnabled true");
 
 		P.p.cmdBase.cmdHelp.updateHelp();
+
+		oldMoneyDoTransfer();
+	}
+
+	public static boolean shouldBeUsed()
+	{
+		return Conf.econEnabled && econ != null && econ.isEnabled();
+	}
+	
+	public static boolean isSetup()
+	{
+		return econ != null;
 	}
 
 
