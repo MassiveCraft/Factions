@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.plugin.Plugin;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.P;
@@ -15,11 +16,51 @@ import com.earth2me.essentials.chat.EssentialsLocalChatEvent;
 
 /*
  * This Essentials integration handler is for newer 3.x.x versions of Essentials which don't have "IEssentialsChatListener"
+ * If an older version is detected in the setup() method below, handling is passed off to EssentialsOldVersionFeatures
  */
 
 public class EssentialsFeatures
 {
 	private static EssentialsChat essChat;
+
+	public static void setup()
+	{
+		if (essChat != null) return;
+
+		Plugin test = Bukkit.getServer().getPluginManager().getPlugin("EssentialsChat");
+		if (test == null || !test.isEnabled()) return;
+
+		essChat = (EssentialsChat)test;
+
+		// try newer Essentials 3.x integration method
+		try
+		{
+			Class.forName("com.earth2me.essentials.chat.EssentialsLocalChatEvent");
+			integrateChat(essChat);
+		}
+		catch (ClassNotFoundException ex)
+		{
+			// no? try older Essentials 2.x integration method
+			try
+			{
+				EssentialsOldVersionFeatures.integrateChat(essChat);
+			}
+			catch (NoClassDefFoundError ex2) { /* no known integration method, then */ }
+		}
+	}
+
+	public static void unhookChat()
+	{
+		if (essChat == null) return;
+
+		try
+		{
+			EssentialsOldVersionFeatures.unhookChat();
+		}
+		catch (NoClassDefFoundError ex) {}
+	}
+
+
 
 	public static void integrateChat(EssentialsChat instance)
 	{

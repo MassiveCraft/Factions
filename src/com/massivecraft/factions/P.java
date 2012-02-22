@@ -2,7 +2,6 @@ package com.massivecraft.factions;
 
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
-import java.util.logging.Level;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -13,7 +12,6 @@ import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerChatEvent;
-import org.bukkit.plugin.Plugin;
 
 import com.massivecraft.factions.adapters.FFlagTypeAdapter;
 import com.massivecraft.factions.adapters.FLocToStringSetTypeAdapter;
@@ -24,7 +22,6 @@ import com.massivecraft.factions.cmd.*;
 import com.massivecraft.factions.integration.capi.CapiFeatures;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.integration.EssentialsFeatures;
-import com.massivecraft.factions.integration.EssentialsOldVersionFeatures;
 import com.massivecraft.factions.integration.LWCFeatures;
 import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.integration.Worldguard;
@@ -39,8 +36,6 @@ import com.massivecraft.factions.struct.FPerm;
 import com.massivecraft.factions.struct.Rel;
 import com.massivecraft.factions.zcore.MPlugin;
 
-import com.griefcraft.lwc.LWCPlugin;
-import com.earth2me.essentials.chat.EssentialsChat;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
@@ -75,12 +70,8 @@ public class P extends MPlugin
 		this.blockListener = new FactionsBlockListener(this);
 		this.serverListener = new FactionsServerListener(this);
 	}
-	
-	
 
-	private static EssentialsChat essChat;
-	
-	
+
 	@Override
 	public void onEnable()
 	{
@@ -96,14 +87,12 @@ public class P extends MPlugin
 		this.cmdBase = new FCmdRoot();
 		this.cmdAutoHelp = new CmdAutoHelp();
 		this.getBaseCommands().add(cmdBase);
-		
-		//setupPermissions();
-		integrateEssentialsChat();
-		setupSpout(this);
-		Econ.doSetup();
-		Econ.oldMoneyDoTransfer();
+
+		EssentialsFeatures.setup();
+		SpoutFeatures.setup();
+		Econ.setup();
 		CapiFeatures.setup();
-		setupLWC();
+		LWCFeatures.setup();
 		
 		if(Conf.worldGuardChecking)
 		{
@@ -141,7 +130,7 @@ public class P extends MPlugin
 	{
 		Board.save();
 		Conf.save();
-		unhookEssentialsChat();
+		EssentialsFeatures.unhookChat();
 		super.onDisable();
 	}
 	
@@ -160,72 +149,7 @@ public class P extends MPlugin
 		return super.handleCommand(sender, commandString, testOnly);
 	}
 
-	// -------------------------------------------- //
-	// Integration with other plugins
-	// -------------------------------------------- //
 
-	private void setupSpout(P factions)
-	{
-		Plugin test = factions.getServer().getPluginManager().getPlugin("Spout");
-
-		if (test != null && test.isEnabled())
-		{
-			SpoutFeatures.setAvailable(true, test.getDescription().getFullName());
-		}
-	}
-
-	private void integrateEssentialsChat()
-	{
-		if (essChat != null) return;
-
-		Plugin test = this.getServer().getPluginManager().getPlugin("EssentialsChat");
-
-		if (test != null && test.isEnabled())
-		{
-			essChat = (EssentialsChat)test;
-
-			// try newer Essentials 3.x integration method
-			try
-			{
-				Class.forName("com.earth2me.essentials.chat.EssentialsLocalChatEvent");
-				EssentialsFeatures.integrateChat(essChat);
-			}
-			catch (ClassNotFoundException ex)
-			{
-				// no? try older Essentials 2.x integration method
-				try
-				{
-					EssentialsOldVersionFeatures.integrateChat(essChat);
-				}
-				catch (NoClassDefFoundError ex2)
-				{
-					// no known method for hooking into Essentials chat stuff
-				}
-			}
-		}
-	}
-	
-	private void unhookEssentialsChat()
-	{
-		if (essChat != null)
-		{
-			try
-			{
-				EssentialsOldVersionFeatures.unhookChat();
-			}
-			catch (NoClassDefFoundError ex)
-			{
-			}
-		}
-	}
-
-	private void setupLWC()
-	{
-		Plugin test = this.getServer().getPluginManager().getPlugin("LWC");
-
-		if(test != null && test.isEnabled())
-			LWCFeatures.integrateLWC((LWCPlugin)test);
-	}
 
 	// -------------------------------------------- //
 	// Functions for other plugins to hook into

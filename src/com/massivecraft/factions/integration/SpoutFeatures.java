@@ -11,6 +11,7 @@ import com.massivecraft.factions.P;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.entity.Player;
 
 import com.massivecraft.factions.struct.Rel;
@@ -25,6 +26,14 @@ public class SpoutFeatures
 	private transient static boolean spoutMe = false;
 	private transient static SpoutMainListener mainListener;
 	private transient static boolean listenersHooked;
+
+	public static void setup()
+	{
+		Plugin test = Bukkit.getServer().getPluginManager().getPlugin("Spout");
+		if (test == null || !test.isEnabled()) return;
+
+		setAvailable(true, test.getDescription().getFullName());
+	}
 
 	// set integration availability
 	public static void setAvailable(boolean enable, String pluginName)
