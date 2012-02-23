@@ -1,8 +1,12 @@
 package com.massivecraft.factions.listeners;
 
-import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.logging.Level;
+import java.text.MessageFormat;
+import java.util.Set;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -10,6 +14,7 @@ import org.bukkit.entity.Creeper;
 import org.bukkit.entity.Enderman;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Fireball;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.entity.TNTPrimed;
@@ -18,15 +23,19 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
+import org.bukkit.event.entity.EntityCombustByEntityEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.entity.ExplosionPrimeEvent;
+import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.event.painting.PaintingBreakByEntityEvent;
 import org.bukkit.event.painting.PaintingBreakEvent;
 import org.bukkit.event.painting.PaintingPlaceEvent;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import com.massivecraft.factions.Board;
 import com.massivecraft.factions.Conf;
@@ -100,12 +109,12 @@ public class FactionsEntityListener implements Listener
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onEntityDamage(EntityDamageEvent event)
 	{
-		if ( event.isCancelled()) return;
+		if (event.isCancelled()) return;
 		
 		if (event instanceof EntityDamageByEntityEvent)
 		{
 			EntityDamageByEntityEvent sub = (EntityDamageByEntityEvent)event;
-			if ( ! this.canDamagerHurtDamagee(sub))
+			if ( ! this.canDamagerHurtDamagee(sub, true))
 			{
     			event.setCancelled(true);
     		}
@@ -120,7 +129,7 @@ public class FactionsEntityListener implements Listener
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onEntityExplode(EntityExplodeEvent event)
 	{
-		if ( event.isCancelled()) return;
+		if (event.isCancelled()) return;
 		
 		Location loc = event.getLocation();
 		
@@ -207,6 +216,56 @@ public class FactionsEntityListener implements Listener
 		}
 	}
 
+	// mainly for flaming arrows; don't want allies or people in safe zones to be ignited even after damage event is cancelled
+	@EventHandler(priority = EventPriority.NORMAL)
+	public void onEntityCombustByEntity(EntityCombustByEntityEvent event)
+	{
+		if (event.isCancelled()) return;
+		
+		EntityDamageByEntityEvent sub = new EntityDamageByEntityEvent(event.getCombuster(), event.getEntity(), EntityDamageEvent.DamageCause.FIRE, 0);
+		if ( ! this.canDamagerHurtDamagee(sub, false))
+			event.setCancelled(true);
+		sub = null;
+	}
+
+	private static final Set<PotionEffectType> badPotionEffects = new LinkedHashSet<PotionEffectType>(Arrays.asList(
+		PotionEffectType.BLINDNESS, PotionEffectType.CONFUSION, PotionEffectType.HARM, PotionEffectType.HUNGER,
+		PotionEffectType.POISON, PotionEffectType.SLOW, PotionEffectType.SLOW_DIGGING, PotionEffectType.WEAKNESS
+	));
+
+	@EventHandler(priority = EventPriority.NORMAL)
+	public void onPotionSplashEvent(PotionSplashEvent event)
+	{
+		if (event.isCancelled()) return;
+
+		// see if the potion has a harmful effect
+		boolean badjuju = false;
+		for (PotionEffect effect : event.getPotion().getEffects())
+		{
+			if (badPotionEffects.contains(effect.getType()))
+			{
+				badjuju = true;
+				break;
+			}
+		}
+		if ( ! badjuju) return;
+
+		Entity thrower = event.getEntity();
+		if (thrower instanceof Projectile)
+			thrower = ((Projectile)thrower).getShooter();
+
+		// scan through affected entities to make sure they're all valid targets
+		Iterator<LivingEntity> iter = event.getAffectedEntities().iterator();
+		while (iter.hasNext())
+		{
+			LivingEntity target = iter.next();
+			EntityDamageByEntityEvent sub = new EntityDamageByEntityEvent(thrower, target, EntityDamageEvent.DamageCause.CUSTOM, 0);
+			if ( ! this.canDamagerHurtDamagee(sub, true))
+				event.setIntensity(target, 0.0);  // affected entity list doesn't accept modification (so no iter.remove()), but this works
+			sub = null;
+		}
+	}
+
 	public boolean isPlayerInSafeZone(Entity damagee)
 	{
 		if ( ! (damagee instanceof Player))
@@ -221,6 +280,11 @@ public class FactionsEntityListener implements Listener
 	}
 
 	public boolean canDamagerHurtDamagee(EntityDamageByEntityEvent sub)
+	{
+		return canDamagerHurtDamagee(sub, true);
+	}
+
+	public boolean canDamagerHurtDamagee(EntityDamageByEntityEvent sub, boolean notify)
 	{
 		Entity damager = sub.getDamager();
 		Entity damagee = sub.getEntity();
@@ -248,8 +312,11 @@ public class FactionsEntityListener implements Listener
 		if (defLocFaction.noPvPInTerritory()) {
 			if (damager instanceof Player)
 			{
-				FPlayer attacker = FPlayers.i.get((Player)damager);
-				attacker.msg("<i>You can't hurt other players in "+(defLocFaction.isSafeZone() ? "a SafeZone." : "peaceful territory."));
+				if (notify)
+				{
+					FPlayer attacker = FPlayers.i.get((Player)damager);
+					attacker.msg("<i>You can't hurt other players in "+(defLocFaction.isSafeZone() ? "a SafeZone." : "peaceful territory."));
+				}
 				return false;
 			}
 			return !defLocFaction.noMonstersInTerritory();
@@ -265,7 +332,7 @@ public class FactionsEntityListener implements Listener
 		
 		if (attacker.hasLoginPvpDisabled())
 		{
-			attacker.msg("<i>You can't hurt other players for " + Conf.noPVPDamageToOthersForXSecondsAfterLogin + " seconds after logging in.");
+			if (notify) attacker.msg("<i>You can't hurt other players for " + Conf.noPVPDamageToOthersForXSecondsAfterLogin + " seconds after logging in.");
 			return false;
 		}
 		
@@ -274,7 +341,7 @@ public class FactionsEntityListener implements Listener
 		// so we know from above that the defender isn't in a safezone... what about the attacker, sneaky dog that he might be?
 		if (locFaction.noPvPInTerritory())
 		{
-			attacker.msg("<i>You can't hurt other players while you are in "+(locFaction.isSafeZone() ? "a SafeZone." : "peaceful territory."));
+			if (notify) attacker.msg("<i>You can't hurt other players while you are in "+(locFaction.isSafeZone() ? "a SafeZone." : "peaceful territory."));
 			return false;
 		}
 
@@ -289,7 +356,7 @@ public class FactionsEntityListener implements Listener
 		
 		if (attackFaction.isNone() && Conf.disablePVPForFactionlessPlayers)
 		{
-			attacker.msg("<i>You can't hurt other players until you join a faction.");
+			if (notify) attacker.msg("<i>You can't hurt other players until you join a faction.");
 			return false;
 		}
 		else if (defendFaction.isNone())
@@ -301,19 +368,19 @@ public class FactionsEntityListener implements Listener
 			}
 			else if (Conf.disablePVPForFactionlessPlayers)
 			{
-				attacker.msg("<i>You can't hurt players who are not currently in a faction.");
+				if (notify) attacker.msg("<i>You can't hurt players who are not currently in a faction.");
 				return false;
 			}
 		}
 		
 		if (defendFaction.isPeaceful())
 		{
-			attacker.msg("<i>You can't hurt players who are in a peaceful faction.");
+			if (notify) attacker.msg("<i>You can't hurt players who are in a peaceful faction.");
 			return false;
 		}
 		else if (attackFaction.isPeaceful())
 		{
-			attacker.msg("<i>You can't hurt players while you are in a peaceful faction.");
+			if (notify) attacker.msg("<i>You can't hurt players while you are in a peaceful faction.");
 			return false;
 		}
 		
@@ -322,7 +389,7 @@ public class FactionsEntityListener implements Listener
 		// You can not hurt neutral factions
 		if (Conf.disablePVPBetweenNeutralFactions && relation.isNeutral())
 		{
-			attacker.msg("<i>You can't hurt neutral factions. Declare them as an enemy.");
+			if (notify) attacker.msg("<i>You can't hurt neutral factions. Declare them as an enemy.");
 			return false;
 		}
 		
@@ -333,7 +400,7 @@ public class FactionsEntityListener implements Listener
 		// You can never hurt faction members or allies
 		if (relation.isMember() || relation.isAlly())
 		{
-			attacker.msg("<i>You can't hurt %s<i>.", defender.describeTo(attacker));
+			if (notify) attacker.msg("<i>You can't hurt %s<i>.", defender.describeTo(attacker));
 			return false;
 		}
 		
@@ -342,20 +409,26 @@ public class FactionsEntityListener implements Listener
 		// You can not hurt neutrals in their own territory.
 		if (ownTerritory && relation.isNeutral())
 		{
-			attacker.msg("<i>You can't hurt %s<i> in their own territory unless you declare them as an enemy.", defender.describeTo(attacker));
-			defender.msg("%s<i> tried to hurt you.", attacker.describeTo(defender, true));
+			if (notify)
+			{
+				attacker.msg("<i>You can't hurt %s<i> in their own territory unless you declare them as an enemy.", defender.describeTo(attacker));
+				defender.msg("%s<i> tried to hurt you.", attacker.describeTo(defender, true));
+			}
 			return false;
 		}
 		
 		// Damage will be dealt. However check if the damage should be reduced.
-		if (ownTerritory && Conf.territoryShieldFactor > 0)
+		if (damage > 0.0 && ownTerritory && Conf.territoryShieldFactor > 0)
 		{
 			int newDamage = (int)Math.ceil(damage * (1D - Conf.territoryShieldFactor));
 			sub.setDamage(newDamage);
 			
 			// Send message
-		    String perc = MessageFormat.format("{0,number,#%}", (Conf.territoryShieldFactor)); // TODO does this display correctly??
-		    defender.msg("<i>Enemy damage reduced by <rose>%s<i>.", perc);
+			if (notify)
+			{
+				String perc = MessageFormat.format("{0,number,#%}", (Conf.territoryShieldFactor)); // TODO does this display correctly??
+				defender.msg("<i>Enemy damage reduced by <rose>%s<i>.", perc);
+			}
 		}
 		
 		return true;
