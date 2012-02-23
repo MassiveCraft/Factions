@@ -34,7 +34,7 @@ public class SmokeUtil
 	public static void spawnSingle(Location location, int direction)
 	{
 		if (location == null) return;
-		location.getWorld().playEffect(location, Effect.SMOKE, direction);
+		location.getWorld().playEffect(location.clone(), Effect.SMOKE, direction);
 	}
 	
 	public static void spawnSingle(Location location)
@@ -70,7 +70,7 @@ public class SmokeUtil
 		int singles = (int) Math.floor(thickness*9);
 		for (int i = 0; i < singles; i++)
 		{
-			spawnSingleRandom(location);
+			spawnSingleRandom(location.clone());
 		}
 	}
 	
