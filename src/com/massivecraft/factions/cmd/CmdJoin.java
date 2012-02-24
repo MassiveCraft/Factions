@@ -35,25 +35,31 @@ public class CmdJoin extends FCommand
 			msg("<b>You may only join normal factions. This is a system faction.");
 			return;
 		}
-		
+
 		if (faction == myFaction)
 		{
 			msg("<b>You are already a member of %s", faction.getTag(fme));
 			return;
 		}
-		
+
+		if (Conf.factionMemberLimit > 0 && faction.getFPlayers().size() >= Conf.factionMemberLimit)
+		{
+			msg("<b>The faction %s is at the limit of %d members, so you cannot currently join.", faction.getTag(fme));
+			return;
+		}
+
 		if (fme.hasFaction())
 		{
 			msg("<b>You must leave your current faction first.");
 			return;
 		}
-		
+
 		if (!Conf.canLeaveWithNegativePower && fme.getPower() < 0)
 		{
 			msg("<b>You cannot join a faction until your power is positive.");
 			return;
 		}
-		
+
 		if( ! (faction.getOpen() || faction.isInvited(fme) || fme.isAdminBypassing() || Permission.JOIN_ANY.has(sender, false)))
 		{
 			msg("<i>This faction requires invitation.");
@@ -66,7 +72,7 @@ public class CmdJoin extends FCommand
 
 		fme.msg("<i>You successfully joined %s", faction.getTag(fme));
 		faction.msg("<i>%s joined your faction.", fme.describeTo(faction, true));
-		
+
 		fme.resetFactionData();
 		fme.setFaction(faction);
 		faction.deinvite(fme);
