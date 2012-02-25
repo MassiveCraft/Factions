@@ -77,6 +77,13 @@ public class PluginCapiListener implements Listener
 		if (event.getChannel().getId().equals("faction") && myFaction.isNormal())
 		{
 			event.getThem().addAll(myFaction.getOnlinePlayers());
+
+			// Send to any players who are spying chat... could probably be implemented better than this
+			for (FPlayer fplayer : FPlayers.i.getOnline())
+			{
+				if(fplayer.isSpyingChat() && fplayer.getFaction() != myFaction)
+					fplayer.sendMessage("[FCspy] "+myFaction.getTag()+": "+event.getMessage());
+			}
 		}
 		else if (event.getChannel().getId().equals("allies"))
 		{
@@ -84,9 +91,10 @@ public class PluginCapiListener implements Listener
 			{
 				FPlayer someFPlayer = FPlayers.i.get(somePlayer);
 				if (someFPlayer.getRelationTo(fme).isAtLeast(Relation.ALLY))
-				{
 					event.getThem().add(somePlayer);
-				}
+				// Send to any players who are spying chat
+				else if(someFPlayer.isSpyingChat())
+					someFPlayer.sendMessage("[ACspy]: " + event.getMessage());
 			}
 		}
 	}

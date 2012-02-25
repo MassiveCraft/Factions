@@ -59,7 +59,7 @@ public class FactionsChatEarlyListener implements Listener
 			for (FPlayer fplayer : FPlayers.i.getOnline())
 			{
 				if(fplayer.isSpyingChat() && fplayer.getFaction() != myFaction)
-					fplayer.sendMessage("[FCspy] "+myFaction.getTag()+": "+message);  
+					fplayer.sendMessage("[FCspy] "+myFaction.getTag()+": "+message);
 			}
 
 			event.setCancelled(true);
