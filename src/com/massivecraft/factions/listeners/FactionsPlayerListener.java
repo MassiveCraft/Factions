@@ -150,10 +150,12 @@ public class FactionsPlayerListener implements Listener
 		
 		// Update the lastLoginTime for this fplayer
 		me.setLastLoginTime(System.currentTimeMillis());
-		
+
+/*		This is now done in a separate task which runs every few minutes
 		// Run the member auto kick routine. Twice to get to the admins...
 		FPlayers.i.autoLeaveOnInactivityRoutine();
 		FPlayers.i.autoLeaveOnInactivityRoutine();
+ */
 
 		SpoutFeatures.updateAppearancesShortly(event.getPlayer());
 	}
@@ -161,9 +163,13 @@ public class FactionsPlayerListener implements Listener
 	@EventHandler(priority = EventPriority.NORMAL)
     public void onPlayerQuit(PlayerQuitEvent event)
     {
-		// Make sure player's power is up to date when they log off.
 		FPlayer me = FPlayers.i.get(event.getPlayer());
+
+		// Make sure player's power is up to date when they log off.
 		me.getPower();
+		// and update their last login time to point to when the logged off, for auto-remove routine
+		me.setLastLoginTime(System.currentTimeMillis());
+
 		SpoutFeatures.playerDisconnect(me);
 	}
 	
