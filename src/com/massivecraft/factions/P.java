@@ -27,6 +27,7 @@ import com.massivecraft.factions.listeners.FactionsEntityListener;
 import com.massivecraft.factions.listeners.FactionsPlayerListener;
 import com.massivecraft.factions.listeners.FactionsServerListener;
 import com.massivecraft.factions.struct.ChatMode;
+import com.massivecraft.factions.util.AutoLeaveTask;
 import com.massivecraft.factions.util.MapFLocToStringSetTypeAdapter;
 import com.massivecraft.factions.util.MyLocationTypeAdapter;
 import com.massivecraft.factions.zcore.MPlugin;
@@ -51,6 +52,7 @@ public class P extends MPlugin
 	private boolean locked = false;
 	public boolean getLocked() {return this.locked;}
 	public void setLocked(boolean val) {this.locked = val; this.setAutoSave(val);}
+	private Integer AutoLeaveTask = null;
 	
 	// Commands
 	public FCmdRoot cmdBase;
@@ -94,6 +96,9 @@ public class P extends MPlugin
 			Worldguard.init(this);
 		}
 
+		// start up task which runs the autoLeaveAfterDaysOfInactivity routine
+		startAutoLeaveTask(false);
+
 		// Register Event Handlers
 		getServer().getPluginManager().registerEvents(playerListener, this);
 		getServer().getPluginManager().registerEvents(chatEarlyListener, this);
@@ -123,9 +128,29 @@ public class P extends MPlugin
 		Board.save();
 		Conf.save();
 		EssentialsFeatures.unhookChat();
+		if (AutoLeaveTask != null)
+		{
+			this.getServer().getScheduler().cancelTask(AutoLeaveTask);
+			AutoLeaveTask = null;
+		}
 		super.onDisable();
 	}
-	
+
+	public void startAutoLeaveTask(boolean restartIfRunning)
+	{
+		if (AutoLeaveTask != null)
+		{
+			if ( ! restartIfRunning) return;
+			this.getServer().getScheduler().cancelTask(AutoLeaveTask);
+		}
+
+		if (Conf.autoLeaveRoutineRunsEveryXMinutes > 0.0)
+		{
+			long ticks = (long)(20 * 60 * Conf.autoLeaveRoutineRunsEveryXMinutes);
+			AutoLeaveTask = getServer().getScheduler().scheduleSyncRepeatingTask(this, new AutoLeaveTask(), ticks, ticks);
+		}
+	}
+
 	@Override
 	public void postAutoSave()
 	{
