@@ -1,5 +1,6 @@
 package com.massivecraft.factions.zcore;
 
+import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -27,6 +28,7 @@ public class MPluginSecretPlayerListener implements Listener
 
 		if (p.handleCommand(event.getPlayer(), event.getMessage()))
 		{
+			Bukkit.getLogger().info("[PLAYER_COMMAND] "+event.getPlayer().getName()+": "+event.getMessage());
 			event.setCancelled(true);
 		}
 	}
@@ -38,6 +40,7 @@ public class MPluginSecretPlayerListener implements Listener
 		
 		if (p.handleCommand(event.getPlayer(), event.getMessage()))
 		{
+			Bukkit.getLogger().info("[PLAYER_COMMAND] "+event.getPlayer().getName()+": "+event.getMessage());
 			event.setCancelled(true);
 		}
 	}
