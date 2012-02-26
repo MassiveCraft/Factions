@@ -44,18 +44,18 @@ public class CmdPermanent extends FCommand
 			faction.setPermanent(true);
 		}
 
-		P.p.log((fme == null ? "A server admin" : fme.getName())+"<i> has "+change+" the faction \"" + faction.getTag() + "\".");
+		P.p.log((fme == null ? "A server admin" : fme.getName())+" "+change+" the faction \"" + faction.getTag() + "\".");
 		
 		// Inform all players
 		for (FPlayer fplayer : FPlayers.i.getOnline())
 		{
 			if (fplayer.getFaction() == faction)
 			{
-				fplayer.msg((fme == null ? "A server admin" : fme.describeTo(fplayer, true))+"<i> has "+change+" your faction.");
+				fplayer.msg((fme == null ? "A server admin" : fme.describeTo(fplayer, true))+"<i> "+change+" your faction.");
 			}
 			else
 			{
-				fplayer.msg((fme == null ? "A server admin" : fme.describeTo(fplayer, true))+"<i> has "+change+" the faction \"" + faction.getTag(fplayer) + "\".");
+				fplayer.msg((fme == null ? "A server admin" : fme.describeTo(fplayer, true))+"<i> "+change+" the faction \"" + faction.getTag(fplayer) + "\".");
 			}
 		}
 	}

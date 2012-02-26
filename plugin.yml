@@ -32,6 +32,7 @@ permissions:
       factions.sethome.any: true
       factions.money.*: true
       factions.join.any: true
+      factions.join.others: true
       factions.admin.any: true
       factions.mod.any: true
   factions.kit.halfmod:
@@ -120,6 +121,8 @@ permissions:
     description: join a faction
   factions.join.any:
     description: join any faction, bypassing invitation process for closed factions
+  factions.join.others:
+    description: specify another player in the join command, to move them to the specified faction
   factions.kick:
     description: kick a player from the faction
   factions.kick.any:

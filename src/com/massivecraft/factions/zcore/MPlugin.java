@@ -219,7 +219,17 @@ public abstract class MPlugin extends JavaPlugin
 	{
 		log(Level.INFO, msg);
 	}
-	
+
+	public void log(String str, Object... args)
+	{
+		log(Level.INFO, this.txt.parse(str, args));
+	}
+
+	public void log(Level level, String str, Object... args)
+	{
+		log(level, this.txt.parse(str, args));
+	}
+
 	public void log(Level level, Object msg)
 	{
 		Logger.getLogger("Minecraft").log(level, "["+this.getDescription().getFullName()+"] "+msg);

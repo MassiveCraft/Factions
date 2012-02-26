@@ -27,6 +27,7 @@ public enum Permission
 	INVITE("invite"),
 	JOIN("join"),
 	JOIN_ANY("join.any"),
+	JOIN_OTHERS("join.others"),
 	KICK("kick"),
 	KICK_ANY("kick.any"),
 	LEAVE("leave"),
