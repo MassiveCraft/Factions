@@ -54,7 +54,7 @@ public class CmdJoin extends FCommand
 
 		if (Conf.factionMemberLimit > 0 && faction.getFPlayers().size() >= Conf.factionMemberLimit)
 		{
-			msg("<b>The faction %s is at the limit of %d members, so %s cannot currently join.", faction.getTag(fme), fplayer.describeTo(fme, false));
+			msg("<b>The faction %s is at the limit of %d members, so %s cannot currently join.", faction.getTag(fme), Conf.factionMemberLimit, fplayer.describeTo(fme, false));
 			return;
 		}
 
