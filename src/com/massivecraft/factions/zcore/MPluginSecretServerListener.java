@@ -21,8 +21,7 @@ public class MPluginSecretServerListener implements Listener
 		// reference command will be used to prevent "unknown command" console messages
 		try
 		{
-			@SuppressWarnings("unchecked")
-			Map<String, Object> refCmd = (Map<String, Object>) p.getDescription().getCommands();
+			Map<String, Map<String, Object>> refCmd = p.getDescription().getCommands();
 			if (refCmd != null && !refCmd.isEmpty())
 				refCommand = (String)(refCmd.keySet().toArray()[0]);
 		}
