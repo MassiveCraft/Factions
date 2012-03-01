@@ -195,6 +195,10 @@ public class SpoutFeatures
 		if (viewedFaction == null)
 			return;
 
+		// these still end up returning null on occasion at this point, mucking up the SpoutManager.getPlayer() method
+		if (viewer.getPlayer() == null || viewed.getPlayer() == null)
+			return;
+
 		SpoutPlayer pViewer = SpoutManager.getPlayer(viewer.getPlayer());
 		SpoutPlayer pViewed = SpoutManager.getPlayer(viewed.getPlayer());
 		if (pViewed == null || pViewer == null)
