@@ -1,6 +1,10 @@
 package com.massivecraft.factions.cmd;
 
+import org.bukkit.Bukkit;
+
 import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.event.FPlayerLeaveEvent;
+import com.massivecraft.factions.event.FactionDisbandEvent;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
@@ -45,12 +49,17 @@ public class CmdDisband extends FCommand
 			return;
 		}
 
+		FactionDisbandEvent disbandEvent = new FactionDisbandEvent(me, faction.getId());
+		Bukkit.getServer().getPluginManager().callEvent(disbandEvent);
+		if(disbandEvent.isCancelled()) return;
+		
 		// Inform all players
 		for (FPlayer fplayer : FPlayers.i.getOnline())
 		{
 			String who = senderIsConsole ? "A server admin" : fme.describeTo(fplayer);
 			if (fplayer.getFaction() == faction)
 			{
+				Bukkit.getServer().getPluginManager().callEvent(new FPlayerLeaveEvent(fplayer,faction, FPlayerLeaveEvent.PlayerLeaveReason.DISBAND));
 				fplayer.msg("<h>%s<i> disbanded your faction.", who);
 			}
 			else
