@@ -9,9 +9,6 @@ import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
-import org.bukkit.event.Event;
-import org.bukkit.event.Listener;
-import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.google.gson.Gson;
@@ -65,7 +62,7 @@ public abstract class MPlugin extends JavaPlugin
 		this.persist = new Persist(this);
 		this.lib = new LibLoader(this);
 		
-		if ( ! lib.require("gson.jar", "http://search.maven.org/remotecontent?filepath=com/google/code/gson/gson/1.7.1/gson-1.7.1.jar")) return false;
+		if ( ! lib.require("gson.jar", "http://search.maven.org/remotecontent?filepath=com/google/code/gson/gson/2.1/gson-2.1.jar")) return false;
 		this.gson = this.getGsonBuilder().create();
 		
 		this.txt = new TextUtil();
@@ -74,11 +71,8 @@ public abstract class MPlugin extends JavaPlugin
 		// Create and register listeners
 		this.mPluginSecretPlayerListener = new MPluginSecretPlayerListener(this);
 		this.mPluginSecretServerListener = new MPluginSecretServerListener(this);
-		PluginManager pm = this.getServer().getPluginManager();
-		pm.registerEvent(Event.Type.PLAYER_PRELOGIN, this.mPluginSecretPlayerListener, Event.Priority.Lowest, this);
-		pm.registerEvent(Event.Type.PLAYER_CHAT, this.mPluginSecretPlayerListener, Event.Priority.Low, this);
-		pm.registerEvent(Event.Type.PLAYER_COMMAND_PREPROCESS, this.mPluginSecretPlayerListener, Event.Priority.Lowest, this);
-		pm.registerEvent(Event.Type.SERVER_COMMAND, this.mPluginSecretServerListener, Event.Priority.Lowest, this);
+		getServer().getPluginManager().registerEvents(this.mPluginSecretPlayerListener, this);
+		getServer().getPluginManager().registerEvents(this.mPluginSecretServerListener, this);
 		
 		
 		// Register recurring tasks
@@ -113,20 +107,6 @@ public abstract class MPlugin extends JavaPlugin
 		this.getServer().getPluginManager().disablePlugin(this);
 	}
 
-	// -------------------------------------------- //
-	// Register Event convenience method
-	// -------------------------------------------- //
-	
-	public void registerEvent(Event.Type type, Listener listener, Event.Priority priority)
-	{
-		Bukkit.getServer().getPluginManager().registerEvent(type, listener, priority, this);
-	}
-	
-	public void registerEvent(Event.Type type, Listener listener)
-	{
-		registerEvent(type, listener, Event.Priority.Normal);
-	}
-	
 	// -------------------------------------------- //
 	// Some inits...
 	// You are supposed to override these in the plugin if you aren't satisfied with the defaults
@@ -236,7 +216,17 @@ public abstract class MPlugin extends JavaPlugin
 	{
 		log(Level.INFO, msg);
 	}
-	
+
+	public void log(String str, Object... args)
+	{
+		log(Level.INFO, this.txt.parse(str, args));
+	}
+
+	public void log(Level level, String str, Object... args)
+	{
+		log(level, this.txt.parse(str, args));
+	}
+
 	public void log(Level level, Object msg)
 	{
 		Logger.getLogger("Minecraft").log(level, "["+this.getDescription().getFullName()+"] "+msg);

@@ -3,28 +3,23 @@ package com.massivecraft.factions.cmd;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 
-import com.earth2me.essentials.IEssentials;
-import com.earth2me.essentials.Teleport;
-import com.earth2me.essentials.Trade;
 import com.massivecraft.factions.Board;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.integration.EssentialsFeatures;
 import com.massivecraft.factions.struct.FFlag;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Rel;
 import com.massivecraft.factions.zcore.util.SmokeUtil;
 
-@SuppressWarnings("deprecation")
+
 public class CmdHome extends FCommand
 {
 	
@@ -130,44 +125,24 @@ public class CmdHome extends FCommand
 			}
 		}
 
-		// The teleport is either handled inhouse or by the Essentials plugin as a warp
-		final Plugin grab = Bukkit.getPluginManager().getPlugin("Essentials");
-		if (Conf.homesTeleportCommandEssentialsIntegration && grab != null && grab.isEnabled())
-		{
-			// Handled by Essentials
-			IEssentials ess = (IEssentials) grab;
-			Teleport teleport = (Teleport) ess.getUser(this.me).getTeleport();
-			Trade trade = new Trade(Conf.econCostHome, ess);
-			try
-			{
-				teleport.teleport(myFaction.getHome(), trade);
-			}
-			catch (Exception e)
-			{
-				me.sendMessage(ChatColor.RED.toString()+e.getMessage());
-			}
-		}
-		else
-		{
-			// Handled by Factions
-			
-			// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-			if ( ! payForCommand(Conf.econCostHome, "to teleport to your faction home", "for teleporting to your faction home")) return;
+		// if Essentials teleport handling is enabled and available, pass the teleport off to it (for delay and cooldown)
+		if (EssentialsFeatures.handleTeleport(me, myFaction.getHome())) return;
 
-			// Create a smoke effect
-			if (Conf.homesTeleportCommandSmokeEffectEnabled)
-			{
-				List<Location> smokeLocations = new ArrayList<Location>();
-				smokeLocations.add(me.getLocation());
-				smokeLocations.add(me.getLocation().clone().add(0, 1, 0));
-				smokeLocations.add(myFaction.getHome());
-				smokeLocations.add(myFaction.getHome().clone().add(0, 1, 0));
-				SmokeUtil.spawnCloudRandom(smokeLocations, 3f);
-			}
-			
-			me.teleport(myFaction.getHome());
+		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
+		if ( ! payForCommand(Conf.econCostHome, "to teleport to your faction home", "for teleporting to your faction home")) return;
+
+		// Create a smoke effect
+		if (Conf.homesTeleportCommandSmokeEffectEnabled)
+		{
+			List<Location> smokeLocations = new ArrayList<Location>();
+			smokeLocations.add(me.getLocation());
+			smokeLocations.add(me.getLocation().clone().add(0, 1, 0));
+			smokeLocations.add(myFaction.getHome());
+			smokeLocations.add(myFaction.getHome().clone().add(0, 1, 0));
+			SmokeUtil.spawnCloudRandom(smokeLocations, 3f);
 		}
-		
+
+		me.teleport(myFaction.getHome());
 	}
 	
 }

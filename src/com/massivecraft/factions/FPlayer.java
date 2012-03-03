@@ -138,7 +138,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		}
 	}
 	
-	public final void resetFactionData(boolean doSpotUpdate)
+	public final void resetFactionData(boolean doSpoutUpdate)
 	{
 		if (this.factionId != null && Factions.i.exists(this.factionId)) // Avoid infinite loop! TODO: I think that this is needed is a sign we need to refactor.
 		{
@@ -155,7 +155,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		this.title = "";
 		this.autoClaimFor = null;
 
-		if (doSpotUpdate)
+		if (doSpoutUpdate)
 		{
 			SpoutFeatures.updateAppearances(this.getPlayer());
 		}
@@ -579,6 +579,10 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		else if (ownedLand >= forFaction.getPowerRounded())
 		{
 			error = P.p.txt.parse("<b>You can't claim more land! You need more power!");
+		}
+		else if (Conf.claimedLandsMax != 0 && ownedLand >= Conf.claimedLandsMax && ! forFaction.getFlag(FFlag.INFPOWER))
+		{
+			error = P.p.txt.parse("<b>Limit reached. You can't claim more land!");
 		}
 		else if (currentFaction.getRelationTo(forFaction).isAtLeast(Rel.TRUCE) && ! currentFaction.isNone())
 		{
