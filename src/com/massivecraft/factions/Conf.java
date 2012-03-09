@@ -3,7 +3,7 @@ package com.massivecraft.factions;
 import java.util.*;
 
 import org.bukkit.*;
-import org.bukkit.entity.CreatureType;
+import org.bukkit.entity.EntityType;
 
 import com.massivecraft.factions.struct.FFlag;
 import com.massivecraft.factions.struct.FPerm;
@@ -155,7 +155,7 @@ public class Conf
 	//public static Set<Material> territoryDenyUseageMaterialsWhenOffline = EnumSet.noneOf(Material.class);
 	
 	// TODO: Rename to monsterCreatureTypes
-	public static transient Set<CreatureType> monsters = EnumSet.noneOf(CreatureType.class);
+	public static transient Set<EntityType> monsters = EnumSet.noneOf(EntityType.class);
 
 	// Spout features
 	public static boolean spoutFactionTagsOverNames = true;  // show faction tags over names over player heads
@@ -268,20 +268,20 @@ public class Conf
 		materialsEditTools.add(Material.WATER_BUCKET);
 		materialsEditTools.add(Material.LAVA_BUCKET);
 
-		monsters.add(CreatureType.BLAZE);
-		monsters.add(CreatureType.CAVE_SPIDER);
-		monsters.add(CreatureType.CREEPER);
-		monsters.add(CreatureType.ENDERMAN);
-		monsters.add(CreatureType.ENDER_DRAGON);
-		monsters.add(CreatureType.GHAST);
-		monsters.add(CreatureType.GIANT);
-		monsters.add(CreatureType.MAGMA_CUBE);
-		monsters.add(CreatureType.PIG_ZOMBIE);
-		monsters.add(CreatureType.SILVERFISH);
-		monsters.add(CreatureType.SKELETON);
-		monsters.add(CreatureType.SLIME);
-		monsters.add(CreatureType.SPIDER);
-		monsters.add(CreatureType.ZOMBIE);
+		monsters.add(EntityType.BLAZE);
+		monsters.add(EntityType.CAVE_SPIDER);
+		monsters.add(EntityType.CREEPER);
+		monsters.add(EntityType.ENDERMAN);
+		monsters.add(EntityType.ENDER_DRAGON);
+		monsters.add(EntityType.GHAST);
+		monsters.add(EntityType.GIANT);
+		monsters.add(EntityType.MAGMA_CUBE);
+		monsters.add(EntityType.PIG_ZOMBIE);
+		monsters.add(EntityType.SILVERFISH);
+		monsters.add(EntityType.SKELETON);
+		monsters.add(EntityType.SLIME);
+		monsters.add(EntityType.SPIDER);
+		monsters.add(EntityType.ZOMBIE);
 	}
 
 	// -------------------------------------------- //
