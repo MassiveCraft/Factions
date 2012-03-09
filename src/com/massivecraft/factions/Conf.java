@@ -3,7 +3,7 @@ package com.massivecraft.factions;
 import java.util.*;
 
 import org.bukkit.*;
-import org.bukkit.entity.CreatureType;
+import org.bukkit.entity.EntityType;
 
 public class Conf
 {
@@ -204,7 +204,7 @@ public class Conf
 	public static Set<Material> territoryProtectedMaterialsWhenOffline = EnumSet.noneOf(Material.class);
 	public static Set<Material> territoryDenyUseageMaterialsWhenOffline = EnumSet.noneOf(Material.class);
 	
-	public static transient Set<CreatureType> safeZoneNerfedCreatureTypes = EnumSet.noneOf(CreatureType.class);
+	public static transient Set<EntityType> safeZoneNerfedCreatureTypes = EnumSet.noneOf(EntityType.class);
 
 	// Spout features
 	public static boolean spoutFactionTagsOverNames = true;  // show faction tags over names over player heads
@@ -321,19 +321,19 @@ public class Conf
 		territoryDenyUseageMaterialsWhenOffline.add(Material.WATER_BUCKET);
 		territoryDenyUseageMaterialsWhenOffline.add(Material.LAVA_BUCKET);
 
-		safeZoneNerfedCreatureTypes.add(CreatureType.BLAZE);
-		safeZoneNerfedCreatureTypes.add(CreatureType.CAVE_SPIDER);
-		safeZoneNerfedCreatureTypes.add(CreatureType.CREEPER);
-		safeZoneNerfedCreatureTypes.add(CreatureType.ENDER_DRAGON);
-		safeZoneNerfedCreatureTypes.add(CreatureType.ENDERMAN);
-		safeZoneNerfedCreatureTypes.add(CreatureType.GHAST);
-		safeZoneNerfedCreatureTypes.add(CreatureType.MAGMA_CUBE);
-		safeZoneNerfedCreatureTypes.add(CreatureType.PIG_ZOMBIE);
-		safeZoneNerfedCreatureTypes.add(CreatureType.SILVERFISH);
-		safeZoneNerfedCreatureTypes.add(CreatureType.SKELETON);
-		safeZoneNerfedCreatureTypes.add(CreatureType.SPIDER);
-		safeZoneNerfedCreatureTypes.add(CreatureType.SLIME);
-		safeZoneNerfedCreatureTypes.add(CreatureType.ZOMBIE);
+		safeZoneNerfedCreatureTypes.add(EntityType.BLAZE);
+		safeZoneNerfedCreatureTypes.add(EntityType.CAVE_SPIDER);
+		safeZoneNerfedCreatureTypes.add(EntityType.CREEPER);
+		safeZoneNerfedCreatureTypes.add(EntityType.ENDER_DRAGON);
+		safeZoneNerfedCreatureTypes.add(EntityType.ENDERMAN);
+		safeZoneNerfedCreatureTypes.add(EntityType.GHAST);
+		safeZoneNerfedCreatureTypes.add(EntityType.MAGMA_CUBE);
+		safeZoneNerfedCreatureTypes.add(EntityType.PIG_ZOMBIE);
+		safeZoneNerfedCreatureTypes.add(EntityType.SILVERFISH);
+		safeZoneNerfedCreatureTypes.add(EntityType.SKELETON);
+		safeZoneNerfedCreatureTypes.add(EntityType.SPIDER);
+		safeZoneNerfedCreatureTypes.add(EntityType.SLIME);
+		safeZoneNerfedCreatureTypes.add(EntityType.ZOMBIE);
 	}
 
 	// -------------------------------------------- //
