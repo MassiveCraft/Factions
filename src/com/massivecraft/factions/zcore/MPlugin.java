@@ -37,6 +37,7 @@ public abstract class MPlugin extends JavaPlugin
 	public Gson gson;	
 	private Integer saveTask = null;
 	private boolean autoSave = true;
+	protected boolean loadSuccessful = false;
 	public boolean getAutoSave() {return this.autoSave;}
 	public void setAutoSave(boolean val) {this.autoSave = val;}
 	
@@ -84,7 +85,8 @@ public abstract class MPlugin extends JavaPlugin
 		{
 			saveTask = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, new SaveTask(this), saveTicks, saveTicks);
 		}
-		
+
+		loadSuccessful = true;
 		return true;
 	}
 	
@@ -100,7 +102,9 @@ public abstract class MPlugin extends JavaPlugin
 			this.getServer().getScheduler().cancelTask(saveTask);
 			saveTask = null;
 		}
-		EM.saveAllToDisc();
+		// only save data if plugin actually loaded successfully
+		if (loadSuccessful)
+			EM.saveAllToDisc();
 		log("Disabled");
 	}
 	

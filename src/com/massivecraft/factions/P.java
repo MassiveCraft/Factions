@@ -73,7 +73,8 @@ public class P extends MPlugin
 	public void onEnable()
 	{
 		if ( ! preEnable()) return;
-		
+		this.loadSuccessful = false;
+
 		// Load Conf from disk
 		Conf.load();
 		FPlayers.i.loadFromDisc();
@@ -107,6 +108,7 @@ public class P extends MPlugin
 		getServer().getPluginManager().registerEvents(serverListener, this);
 
 		postEnable();
+		this.loadSuccessful = true;
 	}
 	
 	@Override
@@ -125,8 +127,12 @@ public class P extends MPlugin
 	@Override
 	public void onDisable()
 	{
-		Board.save();
-		Conf.save();
+		// only save data if plugin actually completely loaded successfully
+		if (this.loadSuccessful)
+		{
+			Board.save();
+			Conf.save();
+		}
 		EssentialsFeatures.unhookChat();
 		if (AutoLeaveTask != null)
 		{
