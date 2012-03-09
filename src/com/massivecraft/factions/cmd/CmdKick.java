@@ -63,6 +63,7 @@ public class CmdKick extends FCommand
 		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
 		if ( ! payForCommand(Conf.econCostKick, "to kick someone from the faction", "for kicking someone from the faction")) return;
 
+		// trigger the leave event (cancellable) [reason:kicked]
 		FPlayerLeaveEvent event = new FPlayerLeaveEvent(you, you.getFaction(), FPlayerLeaveEvent.PlayerLeaveReason.KICKED);
 		Bukkit.getServer().getPluginManager().callEvent(event);
 		if (event.isCancelled()) return;

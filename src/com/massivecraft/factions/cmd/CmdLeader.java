@@ -66,11 +66,16 @@ public class CmdLeader extends FCommand
 				return;
 			}
 		}
-		
-		FPlayerJoinEvent event = new FPlayerJoinEvent(FPlayers.i.get(me),targetFaction,FPlayerJoinEvent.PlayerJoinReason.LEADER);
-		Bukkit.getServer().getPluginManager().callEvent(event);
-		if (event.isCancelled()) return;
-		
+
+		// only perform a FPlayerJoinEvent when newLeader isn't actually in the faction
+		// (only possibly triggered by console)
+		if (newLeader.getFaction() != targetFaction)
+	  {
+		  FPlayerJoinEvent event = new FPlayerJoinEvent(FPlayers.i.get(me),targetFaction,FPlayerJoinEvent.PlayerJoinReason.LEADER);
+		  Bukkit.getServer().getPluginManager().callEvent(event);
+		  if (event.isCancelled()) return;
+	  }
+
 		// if target player is currently leader, demote and replace him
 		if (targetFactionCurrentLeader == newLeader)
 		{

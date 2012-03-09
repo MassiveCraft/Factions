@@ -18,12 +18,12 @@ public class LandClaimEvent extends Event implements Cancellable
 	private FLocation location;
 	private String factionId, playerId;
 
-	public LandClaimEvent(FLocation loc, String id, String pid)
+	public LandClaimEvent(FLocation loc, String fid, String pid)
 	{
 		cancelled = false;
 		location = loc;
-		factionId = id;
-		playerId = pid;
+		this.factionId = fid;
+		this.playerId = pid;
 	}
 
 	public HandlerList getHandlers() 

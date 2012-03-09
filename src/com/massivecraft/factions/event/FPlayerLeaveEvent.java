@@ -15,7 +15,7 @@ public class FPlayerLeaveEvent extends Event implements Cancellable
 	Faction Faction;
 	boolean cancelled = false;
 
-	public enum PlayerLeaveReason 
+	public enum PlayerLeaveReason
 	{
 		KICKED, DISBAND, RESET, JOINOTHER, LEAVE
 	}

@@ -57,10 +57,10 @@ public class CmdCreate extends FCommand
 			sendMessage(tagValidationErrors);
 			return;
 		}
-		
-		FactionCreateEvent createEvent = new FactionCreateEvent(tag, me);
-		Bukkit.getServer().getPluginManager().callEvent(createEvent);
 
+		// trigger the faction creation event (cancellable)
+		FactionCreateEvent createEvent = new FactionCreateEvent(me, tag);
+		Bukkit.getServer().getPluginManager().callEvent(createEvent);
 		if(createEvent.isCancelled()) return;
 		
 		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
@@ -75,10 +75,15 @@ public class CmdCreate extends FCommand
 			return;
 		}
 
-		FPlayerJoinEvent joinEvent = new FPlayerJoinEvent(FPlayers.i.get(me),faction,FPlayerJoinEvent.PlayerJoinReason.CREATE);
-		Bukkit.getServer().getPluginManager().callEvent(joinEvent); 
-		
-		faction.setTag(tag);
+		// finish setting up the Faction
+    faction.setTag(tag);
+
+    // trigger the faction join event for the creator
+    FPlayerJoinEvent joinEvent = new FPlayerJoinEvent(FPlayers.i.get(me),faction,FPlayerJoinEvent.PlayerJoinReason.CREATE);
+    Bukkit.getServer().getPluginManager().callEvent(joinEvent);
+    // join event cannot be cancelled or you'll have an empty faction
+
+    // finish setting up the FPlayer
 		fme.setRole(Rel.LEADER);
 		fme.setFaction(faction);
 
