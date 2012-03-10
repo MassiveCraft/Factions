@@ -33,9 +33,6 @@ import com.massivecraft.factions.struct.FPerm;
 import com.massivecraft.factions.struct.Rel;
 import com.massivecraft.factions.util.VisualizeUtil;
 
-import java.util.logging.Level;
-
-
 
 public class FactionsPlayerListener implements Listener
 {
