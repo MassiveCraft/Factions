@@ -170,6 +170,12 @@ public abstract class MPlugin extends JavaPlugin
 	// COMMAND HANDLING
 	// -------------------------------------------- //
 
+	// can be overridden by P method, to provide option
+	public boolean logPlayerCommands()
+	{
+		return true;
+	}
+
 	public boolean handleCommand(CommandSender sender, String commandString, boolean testOnly)
 	{
 		boolean noSlash = true;

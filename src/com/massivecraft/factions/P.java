@@ -165,6 +165,12 @@ public class P extends MPlugin
 	}
 
 	@Override
+	public boolean logPlayerCommands()
+	{
+		return Conf.logPlayerCommands;
+	}
+
+	@Override
 	public boolean handleCommand(CommandSender sender, String commandString, boolean testOnly)
 	{
 		if (sender instanceof Player && FactionsPlayerListener.preventCommand(commandString, (Player)sender)) return true;
