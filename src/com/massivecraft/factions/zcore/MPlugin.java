@@ -5,13 +5,9 @@ import java.lang.reflect.Type;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
-import org.bukkit.event.Event;
-import org.bukkit.event.Listener;
-import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.google.gson.Gson;
@@ -242,6 +238,6 @@ public abstract class MPlugin extends JavaPlugin
 
 	public void log(Level level, Object msg)
 	{
-		Logger.getLogger("Minecraft").log(level, "["+this.getDescription().getFullName()+"] "+msg);
+		Bukkit.getLogger().log(level, "["+this.getDescription().getFullName()+"] "+msg);
 	}
 }
