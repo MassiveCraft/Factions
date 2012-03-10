@@ -5,7 +5,6 @@ import java.lang.reflect.Type;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -239,6 +238,6 @@ public abstract class MPlugin extends JavaPlugin
 
 	public void log(Level level, Object msg)
 	{
-		Logger.getLogger("Minecraft").log(level, "["+this.getDescription().getFullName()+"] "+msg);
+		Bukkit.getLogger().log(level, "["+this.getDescription().getFullName()+"] "+msg);
 	}
 }
