@@ -100,6 +100,7 @@ public class Conf
 	public static boolean logLandClaims = true;
 	public static boolean logLandUnclaims = true;
 	public static boolean logMoneyTransactions = true;
+	public static boolean logPlayerCommands = true;
 	
 	public static boolean homesEnabled = true;
 	public static boolean homesMustBeInClaimedTerritory = true;
