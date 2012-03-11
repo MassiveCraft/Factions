@@ -36,6 +36,7 @@ public abstract class MPlugin extends JavaPlugin
 	protected boolean loadSuccessful = false;
 	public boolean getAutoSave() {return this.autoSave;}
 	public void setAutoSave(boolean val) {this.autoSave = val;}
+	public String refCommand = "";
 	
 	// Listeners
 	private MPluginSecretPlayerListener mPluginSecretPlayerListener; 
@@ -61,13 +62,24 @@ public abstract class MPlugin extends JavaPlugin
 		this.perm = new PermUtil(this);
 		this.persist = new Persist(this);
 		this.lib = new LibLoader(this);
-		
-		if ( ! lib.require("gson.jar", "http://search.maven.org/remotecontent?filepath=com/google/code/gson/gson/2.1/gson-2.1.jar")) return false;
+
+		// GSON 2.1 is now embedded in CraftBukkit, used by the auto-updater: https://github.com/Bukkit/CraftBukkit/commit/0ed1d1fdbb1e0bc09a70bc7bfdf40c1de8411665
+//		if ( ! lib.require("gson.jar", "http://search.maven.org/remotecontent?filepath=com/google/code/gson/gson/2.1/gson-2.1.jar")) return false;
 		this.gson = this.getGsonBuilder().create();
 		
 		this.txt = new TextUtil();
 		initTXT();
-		
+
+		// attempt to get first command defined in plugin.yml as reference command, if any commands are defined in there
+		// reference command will be used to prevent "unknown command" console messages
+		try
+		{
+			Map<String, Map<String, Object>> refCmd = this.getDescription().getCommands();
+			if (refCmd != null && !refCmd.isEmpty())
+				this.refCommand = (String)(refCmd.keySet().toArray()[0]);
+		}
+		catch (ClassCastException ex) {}
+
 		// Create and register listeners
 		this.mPluginSecretPlayerListener = new MPluginSecretPlayerListener(this);
 		this.mPluginSecretServerListener = new MPluginSecretServerListener(this);
