@@ -55,8 +55,8 @@ public class CmdUnclaim extends FCommand
 			}
 		}
 
-		LandUnclaimEvent unclaimEvent = new LandUnclaimEvent(flocation, otherFaction.getId());
-		Bukkit.getServer().getPluginManager().callEvent(unclaimEvent);	
+		LandUnclaimEvent unclaimEvent = new LandUnclaimEvent(flocation, otherFaction, fme);
+		Bukkit.getServer().getPluginManager().callEvent(unclaimEvent);
 		if(unclaimEvent.isCancelled()) return;
 		
 		Board.removeAt(flocation);

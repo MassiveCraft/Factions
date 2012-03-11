@@ -664,7 +664,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 			}
 		}
 		
-		LandClaimEvent claimEvent = new LandClaimEvent(flocation, forFaction.getId(), this.getId());
+		LandClaimEvent claimEvent = new LandClaimEvent(flocation, forFaction, this);
 		Bukkit.getServer().getPluginManager().callEvent(claimEvent);
 		if(claimEvent.isCancelled()) return false;
 		

@@ -9,13 +9,11 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 
 import com.google.gson.reflect.TypeToken;
-import com.massivecraft.factions.event.LandUnclaimEvent;
 import com.massivecraft.factions.integration.LWCFeatures;
 import com.massivecraft.factions.iface.RelationParticipator;
 import com.massivecraft.factions.util.AsciiCompass;
@@ -84,15 +82,10 @@ public class Board
 			Entry<FLocation, String> entry = iter.next();
 			if (entry.getValue().equals(factionId))
 			{
-				LandUnclaimEvent unclaimEvent = new LandUnclaimEvent(entry.getKey(), entry.getValue());
-				Bukkit.getServer().getPluginManager().callEvent(unclaimEvent);	
-				if(!unclaimEvent.isCancelled())
-				{	
 					if(Conf.onUnclaimResetLwcLocks && LWCFeatures.getEnabled())
 						LWCFeatures.clearAllChests(entry.getKey());
 
 					iter.remove();
-				}
 			}
 		}
 	}

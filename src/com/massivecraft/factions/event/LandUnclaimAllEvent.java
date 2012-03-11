@@ -1,27 +1,25 @@
 package com.massivecraft.factions.event;
 
-import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-import com.massivecraft.factions.FLocation;
+//import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FPlayer;
 import org.bukkit.entity.Player;
 
-public class LandUnclaimEvent extends Event implements Cancellable
+public class LandUnclaimAllEvent extends Event
 {	
 	private static final HandlerList handlers = new HandlerList();
 
-	private boolean cancelled;
-  private FLocation location;
+	// Location is commented out because there is no clean way to hook currently.
+	// faction and fplayer should be enough to filter needed information.
+  // private FLocation[] location;
   private Faction faction;
   private FPlayer fplayer;
 
-	public LandUnclaimEvent(FLocation loc, Faction f, FPlayer p)
+	public LandUnclaimAllEvent(Faction f, FPlayer p)
 	{
-		cancelled = false;
-		location = loc;
 		faction = f;
 		fplayer = p;
 	}
@@ -36,10 +34,12 @@ public class LandUnclaimEvent extends Event implements Cancellable
 		return handlers;
 	}
 
+/*
 	public FLocation getLocation()
 	{
 	  return this.location;
 	}
+ */
 
 	public Faction getFaction()
 	{
@@ -65,15 +65,4 @@ public class LandUnclaimEvent extends Event implements Cancellable
   {
     return fplayer.getPlayer();
   }
-
-	@Override
-	public boolean isCancelled() 
-	{
-		return cancelled;
-	}
-
-	@Override
-	public void setCancelled(boolean c) {
-		cancelled = c;
-	}
 }
