@@ -1,10 +1,7 @@
 package com.massivecraft.factions.listeners;
 
-import java.util.logging.Logger;
 import java.util.Iterator;
-import java.util.UnknownFormatConversionException;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -16,7 +13,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerBucketFillEvent;
-import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
@@ -48,100 +44,7 @@ public class FactionsPlayerListener implements Listener
 	{
 		this.p = p;
 	}
-	
-	@EventHandler(priority = EventPriority.HIGHEST)
-	public void onPlayerChat(PlayerChatEvent event)
-	{
-		if (event.isCancelled()) return;
-		
-		Player talkingPlayer = event.getPlayer();
-		String msg = event.getMessage();
-		
-		// ... it was not a command. This means that it is a chat message!
-		FPlayer me = FPlayers.i.get(talkingPlayer);
-		
-		// Are we to insert the Faction tag into the format?
-		// If we are not to insert it - we are done.
-		if ( ! Conf.chatTagEnabled || Conf.chatTagHandledByAnotherPlugin)
-		{
-			return;
-		}
 
-		int InsertIndex = 0;
-		String eventFormat = event.getFormat();
-		
-		if (!Conf.chatTagReplaceString.isEmpty() && eventFormat.contains(Conf.chatTagReplaceString))
-		{
-			// we're using the "replace" method of inserting the faction tags
-			// if they stuck "[FACTION_TITLE]" in there, go ahead and do it too
-			if (eventFormat.contains("[FACTION_TITLE]"))
-			{
-				eventFormat = eventFormat.replace("[FACTION_TITLE]", me.getTitle());
-			}
-			InsertIndex = eventFormat.indexOf(Conf.chatTagReplaceString);
-			eventFormat = eventFormat.replace(Conf.chatTagReplaceString, "");
-			Conf.chatTagPadAfter = false;
-			Conf.chatTagPadBefore = false;
-		}
-		else if (!Conf.chatTagInsertAfterString.isEmpty() && eventFormat.contains(Conf.chatTagInsertAfterString))
-		{
-			// we're using the "insert after string" method
-			InsertIndex = eventFormat.indexOf(Conf.chatTagInsertAfterString) + Conf.chatTagInsertAfterString.length();
-		}
-		else if (!Conf.chatTagInsertBeforeString.isEmpty() && eventFormat.contains(Conf.chatTagInsertBeforeString))
-		{
-			// we're using the "insert before string" method
-			InsertIndex = eventFormat.indexOf(Conf.chatTagInsertBeforeString);
-		}
-		else
-		{
-			// we'll fall back to using the index place method
-			InsertIndex = Conf.chatTagInsertIndex;
-			if (InsertIndex > eventFormat.length())
-				return;
-		}
-		
-		String formatStart = eventFormat.substring(0, InsertIndex) + ((Conf.chatTagPadBefore && !me.getChatTag().isEmpty()) ? " " : "");
-		String formatEnd = ((Conf.chatTagPadAfter && !me.getChatTag().isEmpty()) ? " " : "") + eventFormat.substring(InsertIndex);
-		
-		String nonColoredMsgFormat = formatStart + me.getChatTag().trim() + formatEnd;
-		
-		// Relation Colored?
-		if (Conf.chatTagRelationColored)
-		{
-			// We must choke the standard message and send out individual messages to all players
-			// Why? Because the relations will differ.
-			event.setCancelled(true);
-			
-			for (Player listeningPlayer : event.getRecipients())
-			{
-				FPlayer you = FPlayers.i.get(listeningPlayer);
-				String yourFormat = formatStart + me.getChatTag(you).trim() + formatEnd;
-				try
-				{
-					listeningPlayer.sendMessage(String.format(yourFormat, talkingPlayer.getDisplayName(), msg));
-				}
-				catch (UnknownFormatConversionException ex)
-				{
-					Conf.chatTagInsertIndex = 0;
-					P.p.log(Level.SEVERE, "Critical error in chat message formatting!");
-					P.p.log(Level.SEVERE, "NOTE: This has been automatically fixed right now by setting chatTagInsertIndex to 0.");
-					P.p.log(Level.SEVERE, "For a more proper fix, please read this regarding chat configuration: http://massivecraft.com/plugins/factions/config#Chat_configuration");
-					return;
-				}
-			}
-			
-			// Write to the log... We will write the non colored message.
-			String nonColoredMsg = ChatColor.stripColor(String.format(nonColoredMsgFormat, talkingPlayer.getDisplayName(), msg));
-			Logger.getLogger("Minecraft").info(nonColoredMsg);
-		}
-		else
-		{
-			// No relation color.
-			event.setFormat(nonColoredMsgFormat);
-		}
-	}
-	
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerJoin(PlayerJoinEvent event)
 	{
