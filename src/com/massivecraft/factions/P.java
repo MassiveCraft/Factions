@@ -2,16 +2,18 @@ package com.massivecraft.factions;
 
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerChatEvent;
+import org.bukkit.Location;
+import org.bukkit.Material;
 
 import com.massivecraft.factions.cmd.CmdAutoHelp;
 import com.massivecraft.factions.cmd.FCmdRoot;
@@ -31,6 +33,7 @@ import com.massivecraft.factions.util.AutoLeaveTask;
 import com.massivecraft.factions.util.MapFLocToStringSetTypeAdapter;
 import com.massivecraft.factions.util.MyLocationTypeAdapter;
 import com.massivecraft.factions.zcore.MPlugin;
+import com.massivecraft.factions.zcore.util.TextUtil;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -107,6 +110,9 @@ public class P extends MPlugin
 		getServer().getPluginManager().registerEvents(blockListener, this);
 		getServer().getPluginManager().registerEvents(serverListener, this);
 
+		// since some other plugins execute commands directly through this command interface, provide it
+		this.getCommand(this.refCommand).setExecutor(this);
+
 		postEnable();
 		this.loadSuccessful = true;
 	}
@@ -176,6 +182,17 @@ public class P extends MPlugin
 		if (sender instanceof Player && FactionsPlayerListener.preventCommand(commandString, (Player)sender)) return true;
 
 		return super.handleCommand(sender, commandString, testOnly);
+	}
+
+	@Override
+	public boolean onCommand(CommandSender sender, Command command, String label, String[] split)
+	{
+		// if bare command at this point, it has already been handled by MPlugin's command listeners
+		if (split == null || split.length == 0) return true;
+
+		// otherwise, needs to be handled; presumably another plugin directly ran the command
+		String cmd = Conf.baseCommandAliases.isEmpty() ? "/f" : "/" + Conf.baseCommandAliases.get(0);
+		return handleCommand(sender, cmd + " " + TextUtil.implode(Arrays.asList(split), " "), false);
 	}
 
 
