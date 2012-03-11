@@ -260,9 +260,11 @@ public class FactionsPlayerListener implements Listener
 
 	public static boolean playerCanUseItemHere(Player player, Location location, Material material, boolean justCheck)
 	{
-		FPlayer me = FPlayers.i.get(player);
-		if (me.isAdminBypassing())
-			return true;
+		String name = player.getName();
+		if (Conf.playersWhoBypassAllProtection.contains(name)) return true;
+
+		FPlayer me = FPlayers.i.get(name);
+		if (me.isAdminBypassing()) return true;
 
 		FLocation loc = new FLocation(location);
 		Faction otherFaction = Board.getFactionAt(loc);
@@ -335,9 +337,11 @@ public class FactionsPlayerListener implements Listener
 
 	public static boolean canPlayerUseBlock(Player player, Block block, boolean justCheck)
 	{
-		FPlayer me = FPlayers.i.get(player);
-		if (me.isAdminBypassing())
-			return true;
+		String name = player.getName();
+		if (Conf.playersWhoBypassAllProtection.contains(name)) return true;
+
+		FPlayer me = FPlayers.i.get(name);
+		if (me.isAdminBypassing()) return true;
 
 		Material material = block.getType();
 		FLocation loc = new FLocation(block);
