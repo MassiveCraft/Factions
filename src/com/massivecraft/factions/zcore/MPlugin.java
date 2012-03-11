@@ -36,6 +36,7 @@ public abstract class MPlugin extends JavaPlugin
 	protected boolean loadSuccessful = false;
 	public boolean getAutoSave() {return this.autoSave;}
 	public void setAutoSave(boolean val) {this.autoSave = val;}
+	public String refCommand = "";
 	
 	// Listeners
 	private MPluginSecretPlayerListener mPluginSecretPlayerListener; 
@@ -68,7 +69,17 @@ public abstract class MPlugin extends JavaPlugin
 		
 		this.txt = new TextUtil();
 		initTXT();
-		
+
+		// attempt to get first command defined in plugin.yml as reference command, if any commands are defined in there
+		// reference command will be used to prevent "unknown command" console messages
+		try
+		{
+			Map<String, Map<String, Object>> refCmd = this.getDescription().getCommands();
+			if (refCmd != null && !refCmd.isEmpty())
+				this.refCommand = (String)(refCmd.keySet().toArray()[0]);
+		}
+		catch (ClassCastException ex) {}
+
 		// Create and register listeners
 		this.mPluginSecretPlayerListener = new MPluginSecretPlayerListener(this);
 		this.mPluginSecretServerListener = new MPluginSecretServerListener(this);
