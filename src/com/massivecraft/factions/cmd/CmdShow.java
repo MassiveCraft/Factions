@@ -108,13 +108,13 @@ public class CmdShow extends FCommand
 		}
 
 		List<String> allies = relationTags.get(Rel.ALLY);
-		List<String> ennemies = relationTags.get(Rel.ENEMY);
+		List<String> enemies = relationTags.get(Rel.ENEMY);
 
 		if (! allies.isEmpty())
 			sendMessage(p.txt.parse("<a>Allied to: ") + TextUtil.implode(allies, sepparator));
 
-		if (! ennemies.isEmpty())
-			sendMessage(p.txt.parse("<a>Enemies : ") + TextUtil.implode(ennemies, sepparator));
+		if (! enemies.isEmpty())
+			sendMessage(p.txt.parse("<a>Enemies : ") + TextUtil.implode(enemies, sepparator));
 
 		// List the members...
 		List<String> memberOnlineNames = new ArrayList<String>();
