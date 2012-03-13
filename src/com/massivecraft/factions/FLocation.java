@@ -19,8 +19,6 @@ public class FLocation
 	private int x = 0;
 	private int z = 0;
 	
-//	private final static transient double cellSize = 16;
-	
 	//----------------------------------------------//
 	// Constructors
 	//----------------------------------------------//
@@ -39,9 +37,7 @@ public class FLocation
 	
 	public FLocation(Location location)
 	{
-//		this(location.getWorld().getName(), (int) Math.floor(location.getX() / cellSize) , (int) Math.floor(location.getZ() / cellSize));
-		// handy dandy rapid bitshifting instead of division
-		this(location.getWorld().getName(), location.getBlockX() >> 4, location.getBlockZ() >> 4);
+		this( location.getWorld().getName(), blockToChunk(location.getBlockX()), blockToChunk(location.getBlockZ()) );
 	}
 	
 	public FLocation(Player player)
@@ -109,6 +105,41 @@ public class FLocation
 	}
 
 	//----------------------------------------------//
+	// Block/Chunk/Region Value Transformation
+	//----------------------------------------------//
+
+	// bit-shifting is used because it's much faster than standard division and multiplication
+	public static int blockToChunk(int blockVal)
+	{	// 1 chunk is 16x16 blocks
+		return blockVal >> 4;   // ">> 4" == "/ 16"
+	}
+
+	public static int blockToRegion(int blockVal)
+	{	// 1 region is 512x512 blocks
+		return blockVal >> 9;   // ">> 9" == "/ 512"
+	}
+
+	public static int chunkToRegion(int chunkVal)
+	{	// 1 region is 32x32 chunks
+		return chunkVal >> 5;   // ">> 5" == "/ 32"
+	}
+
+	public static int chunkToBlock(int chunkVal)
+	{
+		return chunkVal << 4;   // "<< 4" == "* 16"
+	}
+
+	public static int regionToBlock(int regionVal)
+	{
+		return regionVal << 9;   // "<< 9" == "* 512"
+	}
+
+	public static int regionToChunk(int regionVal)
+	{
+		return regionVal << 5;   // "<< 5" == "* 32"
+	}
+
+	//----------------------------------------------//
 	// Misc Geometry
 	//----------------------------------------------//
 	
@@ -172,12 +203,9 @@ public class FLocation
 	@Override
 	public int hashCode()
 	{
-		int hash = 3;
-        hash = 19 * hash + (this.worldName != null ? this.worldName.hashCode() : 0);
-        hash = 19 * hash + this.x;
-        hash = 19 * hash + this.z;
-        return hash;
-	};
+		// should be fast, with good range and few hash collisions: (x * 512) + z + worldName.hashCode
+		return (this.x << 9) + this.z + (this.worldName != null ? this.worldName.hashCode() : 0);
+	}
 	
 	@Override
 	public boolean equals(Object obj)

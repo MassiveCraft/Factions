@@ -797,12 +797,10 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 			{
 				Faction faction = this.getFaction();
 				if ( ! Econ.modifyMoney(faction, -cost, "to claim this land", "for claiming this land")) return false;
-				
 			}
 			else
 			{
 				if ( ! Econ.modifyMoney(this, -cost, "to claim this land", "for claiming this land")) return false;
-
 			}
 		}
 		
