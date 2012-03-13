@@ -51,7 +51,10 @@ public class CmdShow extends FCommand
 		Collection<FPlayer> normals = faction.getFPlayersWhereRole(Rel.MEMBER);
 		
 		msg(p.txt.titleize(faction.getTag(fme)));
-		msg("<a>Description: <i>%s", faction.getDescription());
+		
+		String desc = faction.getDescription();
+		if (desc.equals(""))
+			msg("<a>Description: <i>%s", faction.getDescription());
 		
 		// Display important flags
 		// TODO: Find the non default flags, and display them instead.
@@ -101,11 +104,26 @@ public class CmdShow extends FCommand
 		}
 		else
 		{
-			sendMessage(p.txt.parse("<a>In Truce with: ") + TextUtil.implode(relationTags.get(Rel.TRUCE), sepparator));
+			List<String> listTruce = relationTags.get(Rel.TRUCE);
+			listTruce.remove("SafeZone");
+			listTruce.remove("WarZone");
+
+			if (listTruce.isEmpty())
+				sendMessage(p.txt.parse("<a>In Truce with: ") + TextUtil.implode(listTruce, sepparator));
 		}
 		
-		sendMessage(p.txt.parse("<a>Allied to: ") + TextUtil.implode(relationTags.get(Rel.ALLY), sepparator));
-		sendMessage(p.txt.parse("<a>Enemies: ") + TextUtil.implode(relationTags.get(Rel.ENEMY), sepparator));
+		List<String> allies = relationTags.get(Rel.ALLY);
+		List<String> ennemies = relationTags.get(Rel.ENEMY);
+
+		if (! allies.isEmpty())
+		{
+			sendMessage(p.txt.parse("<a>Allied to: ") + TextUtil.implode(allies, sepparator));
+		}
+
+		if (! ennemies.isEmpty())
+		{
+			sendMessage(p.txt.parse("<a>Ennemies : ") + TextUtil.implode(ennemies, sepparator));
+		}
 		
 		// List the members...
 		List<String> memberOnlineNames = new ArrayList<String>();
@@ -147,8 +165,12 @@ public class CmdShow extends FCommand
 			}
 		}
 		
-		sendMessage(p.txt.parse("<a>Members online: ") + TextUtil.implode(memberOnlineNames, sepparator));
-		sendMessage(p.txt.parse("<a>Members offline: ") + TextUtil.implode(memberOfflineNames, sepparator));
+		if (! memberOnlineNames.isEmpty())
+			sendMessage(p.txt.parse("<a>Members online: ") + TextUtil.implode(memberOnlineNames, sepparator));
+
+		if (! memberOfflineNames.isEmpty())
+			sendMessage(p.txt.parse("<a>Members offline: ") + TextUtil.implode(memberOfflineNames, sepparator));
+		
 	}
 	
 }
