@@ -104,6 +104,10 @@ public class CmdUnclaim extends FCommand
 			return;
 		}
 
+		LandUnclaimEvent unclaimEvent = new LandUnclaimEvent(flocation, otherFaction, fme);
+		Bukkit.getServer().getPluginManager().callEvent(unclaimEvent);
+		if(unclaimEvent.isCancelled()) return;
+
 		if (Econ.shouldBeUsed())
 		{
 			double refund = Econ.calculateClaimRefund(myFaction.getLandRounded());
@@ -117,10 +121,6 @@ public class CmdUnclaim extends FCommand
 				if ( ! Econ.modifyMoney(fme      , refund, "to unclaim this land", "for unclaiming this land")) return;
 			}
 		}
-
-		LandUnclaimEvent unclaimEvent = new LandUnclaimEvent(flocation, otherFaction, fme);
-		Bukkit.getServer().getPluginManager().callEvent(unclaimEvent);
-		if(unclaimEvent.isCancelled()) return;
 
 		Board.removeAt(flocation);
 		SpoutFeatures.updateTerritoryDisplayLoc(flocation);

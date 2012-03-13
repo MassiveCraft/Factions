@@ -588,6 +588,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 	public void leave(boolean makePay)
 	{
 		Faction myFaction = this.getFaction();
+		makePay = makePay && Econ.shouldBeUsed() && ! this.isAdminBypassing();
 
 		if (myFaction == null)
 		{
@@ -609,16 +610,15 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 			return;
 		}
 
-		// if economy is enabled and they're not on the bypass list, make 'em pay
-		if (makePay && Econ.shouldBeUsed() && ! this.isAdminBypassing())
-		{
-			double cost = Conf.econCostLeave;
-			if ( ! Econ.modifyMoney(this, -cost, "to leave your faction.", "for leaving your faction.")) return;
-		}
+		// if economy is enabled and they're not on the bypass list, make sure they can pay
+		if (makePay && ! Econ.hasAtLeast(this, Conf.econCostLeave, "to leave your faction.")) return;
 
 		FPlayerLeaveEvent leaveEvent = new FPlayerLeaveEvent(this,myFaction,FPlayerLeaveEvent.PlayerLeaveReason.LEAVE);
 		Bukkit.getServer().getPluginManager().callEvent(leaveEvent);
 		if (leaveEvent.isCancelled()) return;
+
+		// then make 'em pay (if applicable)
+		if (makePay && ! Econ.modifyMoney(this, -Conf.econCostLeave, "to leave your faction.", "for leaving your faction.")) return;
 
 		// Am I the last one in the faction?
 		if (myFaction.getFPlayers().size() == 1)
@@ -791,29 +791,32 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		int ownedLand = forFaction.getLandRounded();
 		
 		if ( ! this.canClaimForFactionAtLocation(forFaction, location, notifyFailure)) return false;
-		
-		// if economy is enabled and they're not on the bypass list, make 'em pay
-		if (Econ.shouldBeUsed() && ! this.isAdminBypassing() && ! forFaction.isSafeZone() && ! forFaction.isWarZone())
+
+		// if economy is enabled and they're not on the bypass list, make sure they can pay
+		boolean mustPay = Econ.shouldBeUsed() && ! this.isAdminBypassing() && ! forFaction.isSafeZone() && ! forFaction.isWarZone();
+		double cost = 0.0;
+		EconomyParticipator payee = null;
+		if (mustPay)
 		{
-			double cost = Econ.calculateClaimCost(ownedLand, currentFaction.isNormal());
+			cost = Econ.calculateClaimCost(ownedLand, currentFaction.isNormal());
 
 			if (Conf.econClaimUnconnectedFee != 0.0 && forFaction.getLandRoundedInWorld(flocation.getWorldName()) > 0 && !Board.isConnectedLocation(flocation, forFaction))
 				cost += Conf.econClaimUnconnectedFee;
 
 			if(Conf.bankEnabled && Conf.bankFactionPaysLandCosts && this.hasFaction())
-			{
-				Faction faction = this.getFaction();
-				if ( ! Econ.modifyMoney(faction, -cost, "to claim this land", "for claiming this land")) return false;
-			}
+				payee = this.getFaction();
 			else
-			{
-				if ( ! Econ.modifyMoney(this, -cost, "to claim this land", "for claiming this land")) return false;
-			}
+				payee = this;
+
+			if ( ! Econ.hasAtLeast(payee, cost, "to claim this land")) return false;
 		}
 
 		LandClaimEvent claimEvent = new LandClaimEvent(flocation, forFaction, this);
 		Bukkit.getServer().getPluginManager().callEvent(claimEvent);
 		if(claimEvent.isCancelled()) return false;
+
+		// then make 'em pay (if applicable)
+		if (mustPay && ! Econ.modifyMoney(payee, -cost, "to claim this land", "for claiming this land")) return false;
 
 		if (LWCFeatures.getEnabled() && forFaction.isNormal() && Conf.onCaptureResetLwcLocks)
 		{

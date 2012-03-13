@@ -214,7 +214,20 @@ public class Econ
 			}
 		}
 	}
-	
+
+	public static boolean hasAtLeast(EconomyParticipator ep, double delta, String toDoThis)
+	{
+		if ( ! shouldBeUsed()) return true;
+
+		if ( ! econ.has(ep.getAccountId(), delta))
+		{
+			if (toDoThis != null && !toDoThis.isEmpty())
+				ep.msg("<h>%s<i> can't afford <h>%s<i> %s.", ep.describeTo(ep, true), moneyString(delta), toDoThis);
+			return false;
+		}
+		return true;
+	}
+
 	public static boolean modifyMoney(EconomyParticipator ep, double delta, String toDoThis, String forDoingThis)
 	{
 		if ( ! shouldBeUsed()) return false;
@@ -235,7 +248,8 @@ public class Econ
 			// There is no risk of failure
 			econ.depositPlayer(acc, delta);
 			modifyUniverseMoney(-delta);
-			ep.msg("<h>%s<i> gained <h>%s<i> %s.", You, moneyString(delta), forDoingThis);
+			if (forDoingThis != null && !forDoingThis.isEmpty())
+				ep.msg("<h>%s<i> gained <h>%s<i> %s.", You, moneyString(delta), forDoingThis);
 			return true;
 		}
 		else
@@ -248,13 +262,15 @@ public class Econ
 				// There is enough money to pay
 				econ.withdrawPlayer(acc, -delta);
 				modifyUniverseMoney(-delta);
-				ep.msg("<h>%s<i> lost <h>%s<i> %s.", You, moneyString(-delta), forDoingThis);
+				if (forDoingThis != null && !forDoingThis.isEmpty())
+					ep.msg("<h>%s<i> lost <h>%s<i> %s.", You, moneyString(-delta), forDoingThis);
 				return true;
 			}
 			else
 			{
 				// There was not enough money to pay
-				ep.msg("<h>%s<i> can't afford <h>%s<i> %s.", You, moneyString(-delta), toDoThis);
+				if (toDoThis != null && !toDoThis.isEmpty())
+					ep.msg("<h>%s<i> can't afford <h>%s<i> %s.", You, moneyString(-delta), toDoThis);
 				return false;
 			}
 		}

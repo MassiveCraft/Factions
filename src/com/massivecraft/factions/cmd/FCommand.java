@@ -319,63 +319,19 @@ public abstract class FCommand extends MCommand<P>
 		if ( ! Econ.shouldBeUsed() || this.fme == null || cost == 0.0 || fme.isAdminBypassing()) return true;
 
 		if(Conf.bankEnabled && Conf.bankFactionPaysCosts && fme.hasFaction())
-		{
-			if ( ! Econ.modifyMoney(myFaction, -cost, toDoThis, forDoingThis)) return false;
-		}
+			return Econ.modifyMoney(myFaction, -cost, toDoThis, forDoingThis);
 		else
-		{
-			if ( ! Econ.modifyMoney(fme, -cost, toDoThis, forDoingThis)) return false;
-		}
-		return true;
-		/*
-		
-		
-		
-		// pay up
-		if (cost > 0.0)
-		{
-			String costString = Econ.moneyString(cost);
-			if(Conf.bankFactionPaysCosts && fme.hasFaction() )
-			{
-				if( ! faction.getAccount().subtract(cost))
-				{
-					sendMessage("It costs "+costString+" to "+desc+", which your faction can't currently afford.");
-					return false;
-				}
-				else
-				{
-					sendMessage(faction.getTag()+" has paid "+costString+" to "+desc+".");
-				}
-					
-			}
-			else
-			{
-				if ( ! Econ.deductMoney(fme.getName(), cost))
-				{
-					sendMessage("It costs "+costString+" to "+desc+", which you can't currently afford.");
-					return false;
-				}
-				sendMessage("You have paid "+costString+" to "+desc+".");
-			}
-		}
-		// wait... we pay you to use this command?
+			return Econ.modifyMoney(fme, -cost, toDoThis, forDoingThis);
+	}
+
+	// like above, but just make sure they can pay; returns true unless person can't afford the cost
+	public boolean canAffordCommand(double cost, String toDoThis)
+	{
+		if ( ! Econ.shouldBeUsed() || this.fme == null || cost == 0.0 || fme.isAdminBypassing()) return true;
+
+		if(Conf.bankEnabled && Conf.bankFactionPaysCosts && fme.hasFaction())
+			return Econ.hasAtLeast(myFaction, -cost, toDoThis);
 		else
-		{
-			String costString = Econ.moneyString(-cost);
-			
-			if(Conf.bankFactionPaysCosts && fme.hasFaction() )
-			{
-				faction.getAccount().add(-cost);
-				sendMessage(faction.getTag()+" has been paid "+costString+" to "+desc+".");
-			}
-			else
-			{
-				Econ.addMoney(fme.getName(), -cost);
-			}
-			
-			
-			sendMessage("You have been paid "+costString+" to "+desc+".");
-		}
-		return true;*/
+			return Econ.hasAtLeast(fme, -cost, toDoThis);
 	}
 }
