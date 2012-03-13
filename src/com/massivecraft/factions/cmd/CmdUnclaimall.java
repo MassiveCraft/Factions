@@ -46,7 +46,7 @@ public class CmdUnclaimall extends FCommand
 		}
 
 		LandUnclaimAllEvent unclaimAllEvent = new LandUnclaimAllEvent(myFaction, fme);
-    Bukkit.getServer().getPluginManager().callEvent(unclaimAllEvent);
+	Bukkit.getServer().getPluginManager().callEvent(unclaimAllEvent);
 		// this event cannot be cancelled
 
 		Board.unclaimAll(myFaction.getId());

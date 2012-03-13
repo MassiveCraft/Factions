@@ -76,14 +76,14 @@ public class CmdCreate extends FCommand
 		}
 
 		// finish setting up the Faction
-    faction.setTag(tag);
+	faction.setTag(tag);
 
-    // trigger the faction join event for the creator
-    FPlayerJoinEvent joinEvent = new FPlayerJoinEvent(FPlayers.i.get(me),faction,FPlayerJoinEvent.PlayerJoinReason.CREATE);
-    Bukkit.getServer().getPluginManager().callEvent(joinEvent);
-    // join event cannot be cancelled or you'll have an empty faction
+	// trigger the faction join event for the creator
+	FPlayerJoinEvent joinEvent = new FPlayerJoinEvent(FPlayers.i.get(me),faction,FPlayerJoinEvent.PlayerJoinReason.CREATE);
+	Bukkit.getServer().getPluginManager().callEvent(joinEvent);
+	// join event cannot be cancelled or you'll have an empty faction
 
-    // finish setting up the FPlayer
+	// finish setting up the FPlayer
 		fme.setRole(Rel.LEADER);
 		fme.setFaction(faction);
 

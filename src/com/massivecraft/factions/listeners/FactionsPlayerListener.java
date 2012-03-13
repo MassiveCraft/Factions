@@ -61,8 +61,8 @@ public class FactionsPlayerListener implements Listener
 	}
 	
 	@EventHandler(priority = EventPriority.NORMAL)
-    public void onPlayerQuit(PlayerQuitEvent event)
-    {
+	public void onPlayerQuit(PlayerQuitEvent event)
+	{
 		FPlayer me = FPlayers.i.get(event.getPlayer());
 
 		// Make sure player's power is up to date when they log off.
@@ -114,8 +114,8 @@ public class FactionsPlayerListener implements Listener
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL)
-    public void onPlayerInteract(PlayerInteractEvent event)
-    {
+	public void onPlayerInteract(PlayerInteractEvent event)
+	{
 		if (event.isCancelled()) return;
 
 		Block block = event.getClickedBlock();
@@ -163,9 +163,9 @@ public class FactionsPlayerListener implements Listener
 		}
 	}
 
-    // TODO: Refactor ! justCheck    -> to informIfNot
-    // TODO: Possibly incorporate pain build... 
-    public static boolean playerCanUseItemHere(Player player, Location loc, Material material, boolean justCheck)
+	// TODO: Refactor ! justCheck    -> to informIfNot
+	// TODO: Possibly incorporate pain build... 
+	public static boolean playerCanUseItemHere(Player player, Location loc, Material material, boolean justCheck)
 	{
 		String name = player.getName();
 		if (Conf.playersWhoBypassAllProtection.contains(name)) return true;

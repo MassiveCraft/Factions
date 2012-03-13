@@ -17,47 +17,47 @@ public class FactionCreateEvent extends Event implements Cancellable
 	private Player sender;
 	private boolean cancelled;
 	
-    public FactionCreateEvent(Player sender, String tag) 
-    {
-       this.factionTag = tag;
-       this.sender = sender;
-       this.cancelled = false;
-    }
+	public FactionCreateEvent(Player sender, String tag) 
+	{
+		this.factionTag = tag;
+		this.sender = sender;
+		this.cancelled = false;
+	}
  
-    public FPlayer getFPlayer()
-    {
-    	return FPlayers.i.get(sender);
-    }
-    
-    public String getFactionId()
-    {
-      return Factions.i.getNextId();
-    }
+	public FPlayer getFPlayer()
+	{
+		return FPlayers.i.get(sender);
+	}
+	
+	public String getFactionId()
+	{
+		return Factions.i.getNextId();
+	}
 
-    public String getFactionTag()
-    {
-    	return factionTag;
-    }
+	public String getFactionTag()
+	{
+		return factionTag;
+	}
 
-    public HandlerList getHandlers() 
-    {
-        return handlers;
-    }
+	public HandlerList getHandlers() 
+	{
+		return handlers;
+	}
  
-    public static HandlerList getHandlerList() 
-    {
-        return handlers;
-    }
+	public static HandlerList getHandlerList() 
+	{
+		return handlers;
+	}
 
-    @Override
-    public boolean isCancelled() 
-    {
-        return cancelled;
-    }
+	@Override
+	public boolean isCancelled() 
+	{
+		return cancelled;
+	}
 
-    @Override
-    public void setCancelled(boolean c) 
-    {
-        this.cancelled = c;
-    }
+	@Override
+	public void setCancelled(boolean c) 
+	{
+		this.cancelled = c;
+	}
 }

@@ -37,23 +37,23 @@ public class LandClaimEvent extends Event implements Cancellable
 	}
 
 	public FLocation getLocation()
-  {
-    return this.location;
-  }
+	{
+		return this.location;
+	}
 
 	public Faction getFaction()
 	{
-	  return faction;
+		return faction;
 	}
 
 	public String getFactionId()
 	{
-	  return faction.getId();
+		return faction.getId();
 	}
 
 	public String getFactionTag()
 	{
-	  return faction.getTag();
+		return faction.getTag();
 	}
 
 	public FPlayer getFPlayer()
@@ -63,7 +63,7 @@ public class LandClaimEvent extends Event implements Cancellable
 
 	public Player getPlayer()
 	{
-	  return fplayer.getPlayer();
+		return fplayer.getPlayer();
 	}
 
 	@Override
@@ -77,5 +77,4 @@ public class LandClaimEvent extends Event implements Cancellable
 	{
 		this.cancelled = c;
 	}
-
 }

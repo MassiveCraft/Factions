@@ -92,8 +92,8 @@ public class FactionsEntityListener implements Listener
 			EntityDamageByEntityEvent sub = (EntityDamageByEntityEvent)event;
 			if ( ! this.canDamagerHurtDamagee(sub, true))
 			{
-    			event.setCancelled(true);
-    		}
+				event.setCancelled(true);
+			}
 		}
 		// TODO: Add a no damage at all flag??
 		/*else if (Conf.safeZonePreventAllDamageToPlayers && isPlayerInSafeZone(event.getEntity()))
