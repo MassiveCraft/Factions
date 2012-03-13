@@ -444,7 +444,7 @@ public class FactionsEntityListener implements Listener
 			return;
 		}
 		
-		if (Conf.safeZoneNerfedCreatureTypes.contains(event.getCreatureType()) && Board.getFactionAt(new FLocation(event.getLocation())).noMonstersInTerritory())
+		if (Conf.safeZoneNerfedCreatureTypes.contains(event.getEntityType()) && Board.getFactionAt(new FLocation(event.getLocation())).noMonstersInTerritory())
 		{
 			event.setCancelled(true);
 		}

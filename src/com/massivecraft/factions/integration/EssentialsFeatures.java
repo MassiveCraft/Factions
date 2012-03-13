@@ -24,12 +24,13 @@ import com.earth2me.essentials.chat.EssentialsLocalChatEvent;
  * If an older version is detected in the setup() method below, handling is passed off to EssentialsOldVersionFeatures
  */
 
+// silence deprecation warnings with this old interface
+@SuppressWarnings("deprecation")
 public class EssentialsFeatures
 {
 	private static EssentialsChat essChat;
 	private static IEssentials essentials;
 
-	@SuppressWarnings("deprecation")
 	public static void setup()
 	{
 		// integrate main essentials plugin
@@ -79,7 +80,6 @@ public class EssentialsFeatures
 
 
 	// return false if feature is disabled or Essentials isn't available
-	@SuppressWarnings("deprecation")
 	public static boolean handleTeleport(Player player, Location loc)
 	{
 		if ( ! Conf.homesTeleportCommandEssentialsIntegration || essentials == null) return false;
@@ -121,6 +121,7 @@ public class EssentialsFeatures
 
 	private static class LocalChatListener implements Listener
 	{
+		@SuppressWarnings("unused")
 		@EventHandler(priority = EventPriority.NORMAL)
 		public void onPlayerChat(EssentialsLocalChatEvent event)
 		{
