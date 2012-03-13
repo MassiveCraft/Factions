@@ -1,6 +1,10 @@
 package com.massivecraft.factions.cmd;
 
+import org.bukkit.Bukkit;
+
 import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.event.FPlayerLeaveEvent;
+import com.massivecraft.factions.event.FactionDisbandEvent;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
@@ -43,6 +47,16 @@ public class CmdDisband extends FCommand
 		{
 			msg("<i>This faction is designated as permanent, so you cannot disband it.");
 			return;
+		}
+
+		FactionDisbandEvent disbandEvent = new FactionDisbandEvent(me, faction.getId());
+		Bukkit.getServer().getPluginManager().callEvent(disbandEvent);
+		if(disbandEvent.isCancelled()) return;
+
+		// Send FPlayerLeaveEvent for each player in the faction
+		for ( FPlayer fplayer : faction.getFPlayers() )
+	  {
+      Bukkit.getServer().getPluginManager().callEvent(new FPlayerLeaveEvent(fplayer, faction, FPlayerLeaveEvent.PlayerLeaveReason.DISBAND));
 		}
 
 		// Inform all players

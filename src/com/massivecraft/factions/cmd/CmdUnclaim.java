@@ -1,7 +1,10 @@
 package com.massivecraft.factions.cmd;
 
+import org.bukkit.Bukkit;
+
 import com.massivecraft.factions.Board;
 import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.event.LandUnclaimEvent;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.FLocation;
@@ -36,7 +39,7 @@ public class CmdUnclaim extends FCommand
 		Faction otherFaction = Board.getFactionAt(flocation);
 
 		if ( ! FPerm.TERRITORY.has(sender, otherFaction, true)) return;
-
+		
 		//String moneyBack = "<i>";
 		if (Econ.shouldBeUsed())
 		{
@@ -52,6 +55,10 @@ public class CmdUnclaim extends FCommand
 			}
 		}
 
+		LandUnclaimEvent unclaimEvent = new LandUnclaimEvent(flocation, otherFaction, fme);
+		Bukkit.getServer().getPluginManager().callEvent(unclaimEvent);
+		if(unclaimEvent.isCancelled()) return;
+		
 		Board.removeAt(flocation);
 		SpoutFeatures.updateTerritoryDisplayLoc(flocation);
 		myFaction.msg("%s<i> unclaimed some land.", fme.describeTo(myFaction, true));
