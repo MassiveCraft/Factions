@@ -79,13 +79,13 @@ public class CmdJoin extends FCommand
 		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
 		if (samePlayer && ! payForCommand(Conf.econCostJoin, "to join a faction", "for joining a faction")) return;
 
-		fme.msg("<i>%s successfully joined %s.", fplayer.describeTo(fme, true), faction.getTag(fme));
-
 		// trigger the join event (cancellable)
 		FPlayerJoinEvent joinEvent = new FPlayerJoinEvent(FPlayers.i.get(me),faction,FPlayerJoinEvent.PlayerJoinReason.COMMAND);
 		Bukkit.getServer().getPluginManager().callEvent(joinEvent);
 		if (joinEvent.isCancelled()) return;
-		
+
+		fme.msg("<i>%s successfully joined %s.", fplayer.describeTo(fme, true), faction.getTag(fme));
+
 		if (!samePlayer)
 			fplayer.msg("<i>%s moved you into the faction %s.", fme.describeTo(fplayer, true), faction.getTag(fplayer));
 		faction.msg("<i>%s joined your faction.", fplayer.describeTo(faction, true));

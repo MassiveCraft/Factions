@@ -55,8 +55,8 @@ public class CmdDisband extends FCommand
 
 		// Send FPlayerLeaveEvent for each player in the faction
 		for ( FPlayer fplayer : faction.getFPlayers() )
-	  {
-      Bukkit.getServer().getPluginManager().callEvent(new FPlayerLeaveEvent(fplayer, faction, FPlayerLeaveEvent.PlayerLeaveReason.DISBAND));
+		{
+			Bukkit.getServer().getPluginManager().callEvent(new FPlayerLeaveEvent(fplayer, faction, FPlayerLeaveEvent.PlayerLeaveReason.DISBAND));
 		}
 
 		// Inform all players

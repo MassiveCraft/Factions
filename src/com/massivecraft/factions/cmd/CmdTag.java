@@ -51,15 +51,15 @@ public class CmdTag extends FCommand
 			return;
 		}
 
-    // trigger the faction rename event (cancellable)
-    FactionRenameEvent renameEvent = new FactionRenameEvent(fme, tag);
-    Bukkit.getServer().getPluginManager().callEvent(renameEvent);
-    if(renameEvent.isCancelled()) return;
+		// trigger the faction rename event (cancellable)
+		FactionRenameEvent renameEvent = new FactionRenameEvent(fme, tag);
+		Bukkit.getServer().getPluginManager().callEvent(renameEvent);
+		if(renameEvent.isCancelled()) return;
 
 		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
 		if ( ! payForCommand(Conf.econCostTag, "to change the faction tag", "for changing the faction tag")) return;
 
-    String oldtag = myFaction.getTag();
+		String oldtag = myFaction.getTag();
 		myFaction.setTag(tag);
 
 		// Inform

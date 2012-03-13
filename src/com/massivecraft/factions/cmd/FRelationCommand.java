@@ -58,9 +58,9 @@ public abstract class FRelationCommand extends FCommand
 		// if the relation change was successful
 		if (targetRelation == currentRelation)
 		{
-      // trigger the faction relation event
-      FactionRelationEvent relationEvent = new FactionRelationEvent(myFaction, them, oldRelation, currentRelation);
-      Bukkit.getServer().getPluginManager().callEvent(relationEvent);
+			// trigger the faction relation event
+			FactionRelationEvent relationEvent = new FactionRelationEvent(myFaction, them, oldRelation, currentRelation);
+			Bukkit.getServer().getPluginManager().callEvent(relationEvent);
 
 			them.msg("%s<i> is now %s.", myFaction.describeTo(them, true), targetRelation.getDescFactionOne());
 			myFaction.msg("%s<i> is now %s.", them.describeTo(myFaction, true), targetRelation.getDescFactionOne());
