@@ -1,10 +1,16 @@
 package com.massivecraft.factions.cmd;
 
+import org.bukkit.Bukkit;
+
 import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.P;
+import com.massivecraft.factions.event.FPlayerJoinEvent;
+import com.massivecraft.factions.event.FPlayerLeaveEvent;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.zcore.persist.EM;
 
 public class CmdJoin extends FCommand
 {
@@ -76,6 +82,18 @@ public class CmdJoin extends FCommand
 		if (samePlayer && ! payForCommand(Conf.econCostJoin, "to join a faction", "for joining a faction")) return;
 
 		fme.msg("<i>%s successfully joined %s.", fplayer.describeTo(fme, true), faction.getTag(fme));
+		
+		if(!EM.detached(myFaction))
+		{
+			FPlayerLeaveEvent leaveEvent = new FPlayerLeaveEvent(FPlayers.i.get(me),faction,FPlayerLeaveEvent.PlayerLeaveReason.JOINOTHER);
+			Bukkit.getServer().getPluginManager().callEvent(leaveEvent);
+			if (leaveEvent.isCancelled()) return;
+		}
+		
+		FPlayerJoinEvent joinEvent = new FPlayerJoinEvent(FPlayers.i.get(me),faction,FPlayerJoinEvent.PlayerJoinReason.COMMAND);
+		Bukkit.getServer().getPluginManager().callEvent(joinEvent);
+		if (joinEvent.isCancelled()) return;
+		
 		if (!samePlayer)
 			fplayer.msg("<i>%s moved you into the faction %s.", fme.describeTo(fplayer, true), faction.getTag(fplayer));
 		faction.msg("<i>%s joined your faction.", fplayer.describeTo(faction, true));
