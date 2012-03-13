@@ -1,8 +1,11 @@
 package com.massivecraft.factions.cmd;
 
+import org.bukkit.Bukkit;
+
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.event.FPlayerJoinEvent;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Rel;
 import com.massivecraft.factions.util.RelationUtil;
@@ -63,7 +66,16 @@ public class CmdLeader extends FCommand
 				return;
 			}
 		}
-		
+
+		// only perform a FPlayerJoinEvent when newLeader isn't actually in the faction
+		// (only possibly triggered by console)
+		if (newLeader.getFaction() != targetFaction)
+	  {
+		  FPlayerJoinEvent event = new FPlayerJoinEvent(FPlayers.i.get(me),targetFaction,FPlayerJoinEvent.PlayerJoinReason.LEADER);
+		  Bukkit.getServer().getPluginManager().callEvent(event);
+		  if (event.isCancelled()) return;
+	  }
+
 		// if target player is currently leader, demote and replace him
 		if (targetFactionCurrentLeader == newLeader)
 		{

@@ -82,10 +82,10 @@ public class Board
 			Entry<FLocation, String> entry = iter.next();
 			if (entry.getValue().equals(factionId))
 			{
-				if(Conf.onUnclaimResetLwcLocks && LWCFeatures.getEnabled())
-					LWCFeatures.clearAllChests(entry.getKey());
+					if(Conf.onUnclaimResetLwcLocks && LWCFeatures.getEnabled())
+						LWCFeatures.clearAllChests(entry.getKey());
 
-				iter.remove();
+					iter.remove();
 			}
 		}
 	}

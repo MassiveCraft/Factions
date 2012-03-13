@@ -2,12 +2,16 @@ package com.massivecraft.factions.cmd;
 
 import java.util.ArrayList;
 
+import org.bukkit.Bukkit;
+
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.P;
+import com.massivecraft.factions.event.FPlayerJoinEvent;
+import com.massivecraft.factions.event.FactionCreateEvent;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Rel;
 
@@ -53,6 +57,11 @@ public class CmdCreate extends FCommand
 			sendMessage(tagValidationErrors);
 			return;
 		}
+
+		// trigger the faction creation event (cancellable)
+		FactionCreateEvent createEvent = new FactionCreateEvent(me, tag);
+		Bukkit.getServer().getPluginManager().callEvent(createEvent);
+		if(createEvent.isCancelled()) return;
 		
 		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
 		if ( ! payForCommand(Conf.econCostCreate, "to create a new faction", "for creating a new faction")) return;
@@ -66,7 +75,15 @@ public class CmdCreate extends FCommand
 			return;
 		}
 
-		faction.setTag(tag);
+		// finish setting up the Faction
+    faction.setTag(tag);
+
+    // trigger the faction join event for the creator
+    FPlayerJoinEvent joinEvent = new FPlayerJoinEvent(FPlayers.i.get(me),faction,FPlayerJoinEvent.PlayerJoinReason.CREATE);
+    Bukkit.getServer().getPluginManager().callEvent(joinEvent);
+    // join event cannot be cancelled or you'll have an empty faction
+
+    // finish setting up the FPlayer
 		fme.setRole(Rel.LEADER);
 		fme.setFaction(faction);
 
