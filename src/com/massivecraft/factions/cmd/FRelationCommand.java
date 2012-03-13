@@ -1,9 +1,11 @@
 package com.massivecraft.factions.cmd;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.event.FactionRelationEvent;
 import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
@@ -48,14 +50,23 @@ public abstract class FRelationCommand extends FCommand
 		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
 		if ( ! payForCommand(targetRelation.getRelationCost(), "to change a relation wish", "for changing a relation wish")) return;
 
+		// try to set the new relation
+		Relation oldRelation = myFaction.getRelationTo(them, true);
 		myFaction.setRelationWish(them, targetRelation);
 		Relation currentRelation = myFaction.getRelationTo(them, true);
 		ChatColor currentRelationColor = currentRelation.getColor();
+
+		// if the relation change was successful
 		if (targetRelation.value == currentRelation.value)
 		{
+			// trigger the faction relation event
+			FactionRelationEvent relationEvent = new FactionRelationEvent(myFaction, them, oldRelation, currentRelation);
+			Bukkit.getServer().getPluginManager().callEvent(relationEvent);
+
 			them.msg("<i>Your faction is now "+currentRelationColor+targetRelation.toString()+"<i> to "+currentRelationColor+myFaction.getTag());
 			myFaction.msg("<i>Your faction is now "+currentRelationColor+targetRelation.toString()+"<i> to "+currentRelationColor+them.getTag());
 		}
+		// inform the other faction of your request
 		else
 		{
 			them.msg(currentRelationColor+myFaction.getTag()+"<i> wishes to be your "+targetRelation.getColor()+targetRelation.toString());

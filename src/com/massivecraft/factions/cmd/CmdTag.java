@@ -2,9 +2,12 @@ package com.massivecraft.factions.cmd;
 
 import java.util.ArrayList;
 
+import org.bukkit.Bukkit;
+
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.event.FactionRenameEvent;
 import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.MiscUtil;
@@ -50,7 +53,12 @@ public class CmdTag extends FCommand
 
 		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
 		if ( ! payForCommand(Conf.econCostTag, "to change the faction tag", "for changing the faction tag")) return;
-		
+
+		// trigger the faction rename event (cancellable)
+		FactionRenameEvent renameEvent = new FactionRenameEvent(fme, tag);
+		Bukkit.getServer().getPluginManager().callEvent(renameEvent);
+		if(renameEvent.isCancelled()) return;
+
 		String oldtag = myFaction.getTag();
 		myFaction.setTag(tag);
 		

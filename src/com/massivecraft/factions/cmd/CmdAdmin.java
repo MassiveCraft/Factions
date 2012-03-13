@@ -1,8 +1,11 @@
 package com.massivecraft.factions.cmd;
 
+import org.bukkit.Bukkit;
+
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
+import com.massivecraft.factions.event.FPlayerJoinEvent;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
 
@@ -50,6 +53,14 @@ public class CmdAdmin extends FCommand
 		{
 			msg("<b>The target player musn't be yourself.");
 			return;
+		}
+
+		// only perform a FPlayerJoinEvent when newLeader isn't actually in the faction
+		if (fyou.getFaction() != targetFaction)
+		{
+			FPlayerJoinEvent event = new FPlayerJoinEvent(FPlayers.i.get(me),targetFaction,FPlayerJoinEvent.PlayerJoinReason.LEADER);
+			Bukkit.getServer().getPluginManager().callEvent(event);
+			if (event.isCancelled()) return;
 		}
 
 		FPlayer admin = targetFaction.getFPlayerAdmin();

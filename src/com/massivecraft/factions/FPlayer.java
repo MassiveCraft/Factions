@@ -3,10 +3,13 @@ package com.massivecraft.factions;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
+import com.massivecraft.factions.event.FPlayerLeaveEvent;
+import com.massivecraft.factions.event.LandClaimEvent;
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.iface.RelationParticipator;
 import com.massivecraft.factions.integration.Econ;
@@ -613,6 +616,10 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 			if ( ! Econ.modifyMoney(this, -cost, "to leave your faction.", "for leaving your faction.")) return;
 		}
 
+		FPlayerLeaveEvent leaveEvent = new FPlayerLeaveEvent(this,myFaction,FPlayerLeaveEvent.PlayerLeaveReason.LEAVE);
+		Bukkit.getServer().getPluginManager().callEvent(leaveEvent);
+		if (leaveEvent.isCancelled()) return;
+
 		// Am I the last one in the faction?
 		if (myFaction.getFPlayers().size() == 1)
 		{
@@ -803,7 +810,11 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 				if ( ! Econ.modifyMoney(this, -cost, "to claim this land", "for claiming this land")) return false;
 			}
 		}
-		
+
+		LandClaimEvent claimEvent = new LandClaimEvent(flocation, forFaction, this);
+		Bukkit.getServer().getPluginManager().callEvent(claimEvent);
+		if(claimEvent.isCancelled()) return false;
+
 		if (LWCFeatures.getEnabled() && forFaction.isNormal() && Conf.onCaptureResetLwcLocks)
 		{
 			LWCFeatures.clearOtherChests(flocation, this.getFaction());

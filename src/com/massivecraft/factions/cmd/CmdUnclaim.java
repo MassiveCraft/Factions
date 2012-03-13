@@ -1,7 +1,10 @@
 package com.massivecraft.factions.cmd;
 
+import org.bukkit.Bukkit;
+
 import com.massivecraft.factions.Board;
 import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.event.LandUnclaimEvent;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.FLocation;
@@ -101,7 +104,6 @@ public class CmdUnclaim extends FCommand
 			return;
 		}
 
-		//String moneyBack = "<i>";
 		if (Econ.shouldBeUsed())
 		{
 			double refund = Econ.calculateClaimRefund(myFaction.getLandRounded());
@@ -114,53 +116,11 @@ public class CmdUnclaim extends FCommand
 			{
 				if ( ! Econ.modifyMoney(fme      , refund, "to unclaim this land", "for unclaiming this land")) return;
 			}
-			
-			/*
-			// a real refund
-			if (refund > 0.0)
-			{
-				if(Conf.bankFactionPaysLandCosts)
-				{
-					Faction faction = myFaction;
-					faction.addMoney(refund);
-					moneyBack = " "+faction.getTag()+"<i> received a refund of <h>"+Econ.moneyString(refund)+"<i>.";
-				}
-				else
-				{
-					Econ.addMoney(fme.getName(), refund);
-					moneyBack = " They received a refund of <h>"+Econ.moneyString(refund)+"<i>.";
-				}
-			}
-			// wait, you're charging people to unclaim land? outrageous
-			else if (refund < 0.0)
-			{
-				if(Conf.bankFactionPaysLandCosts)
-				{
-					Faction faction = myFaction;
-					if(!faction.removeMoney(-refund))
-					{
-						msg("<b>Unclaiming this land will cost <h>%s<b> which your faction can't currently afford.", Econ.moneyString(-refund));
-						return;
-					}
-					moneyBack = " It cost "+faction.getTag()+" <h>"+Econ.moneyString(refund)+"<i>.";
-				}
-				else
-				{
-					if (!Econ.deductMoney(fme.getName(), -refund))
-					{
-						msg("<b>Unclaiming this land will cost <h>%s<b> which you can't currently afford.", Econ.moneyString(-refund));
-						return;
-					}
-					moneyBack = " It cost them <h>"+Econ.moneyString(refund)+"<i>.";
-				}
-			}
-			// no refund
-			else
-			{
-				moneyBack = "";
-			}
-			*/
 		}
+
+		LandUnclaimEvent unclaimEvent = new LandUnclaimEvent(flocation, otherFaction, fme);
+		Bukkit.getServer().getPluginManager().callEvent(unclaimEvent);
+		if(unclaimEvent.isCancelled()) return;
 
 		Board.removeAt(flocation);
 		SpoutFeatures.updateTerritoryDisplayLoc(flocation);
