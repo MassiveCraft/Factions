@@ -116,8 +116,8 @@ public class FactionsEntityListener implements Listener
 			EntityDamageByEntityEvent sub = (EntityDamageByEntityEvent)event;
 			if ( ! this.canDamagerHurtDamagee(sub, true))
 			{
-    			event.setCancelled(true);
-    		}
+				event.setCancelled(true);
+			}
 		}
 		else if (Conf.safeZonePreventAllDamageToPlayers && isPlayerInSafeZone(event.getEntity()))
 		{

@@ -17,9 +17,9 @@ public enum Relation
 	
 	private Relation(final int value, final String nicename)
 	{
-        this.value = value;
-        this.nicename = nicename;
-    }
+		this.value = value;
+		this.nicename = nicename;
+	}
 	
 	@Override
 	public String toString()

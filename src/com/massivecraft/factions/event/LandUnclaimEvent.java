@@ -14,9 +14,9 @@ public class LandUnclaimEvent extends Event implements Cancellable
 	private static final HandlerList handlers = new HandlerList();
 
 	private boolean cancelled;
-  private FLocation location;
-  private Faction faction;
-  private FPlayer fplayer;
+	private FLocation location;
+	private Faction faction;
+	private FPlayer fplayer;
 
 	public LandUnclaimEvent(FLocation loc, Faction f, FPlayer p)
 	{
@@ -38,7 +38,7 @@ public class LandUnclaimEvent extends Event implements Cancellable
 
 	public FLocation getLocation()
 	{
-	  return this.location;
+		return this.location;
 	}
 
 	public Faction getFaction()
@@ -46,25 +46,25 @@ public class LandUnclaimEvent extends Event implements Cancellable
 		return faction;
 	}
 
-  public String getFactionId()
-  {
-    return faction.getId();
-  }
+	public String getFactionId()
+	{
+		return faction.getId();
+	}
 
-  public String getFactionTag()
-  {
-    return faction.getTag();
-  }
+	public String getFactionTag()
+	{
+		return faction.getTag();
+	}
 
-  public FPlayer getFPlayer()
-  {
-    return fplayer;
-  }
+	public FPlayer getFPlayer()
+	{
+		return fplayer;
+	}
 
-  public Player getPlayer()
-  {
-    return fplayer.getPlayer();
-  }
+	public Player getPlayer()
+	{
+		return fplayer.getPlayer();
+	}
 
 	@Override
 	public boolean isCancelled() 

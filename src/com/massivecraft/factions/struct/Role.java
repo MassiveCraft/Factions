@@ -13,9 +13,9 @@ public enum Role
 	
 	private Role(final int value, final String nicename)
 	{
-        this.value = value;
-        this.nicename = nicename;
-    }
+		this.value = value;
+		this.nicename = nicename;
+	}
 	
 	public boolean isAtLeast(Role role)
 	{

@@ -62,8 +62,8 @@ public class FactionsPlayerListener implements Listener
 	}
 	
 	@EventHandler(priority = EventPriority.NORMAL)
-    public void onPlayerQuit(PlayerQuitEvent event)
-    {
+	public void onPlayerQuit(PlayerQuitEvent event)
+	{
 		FPlayer me = FPlayers.i.get(event.getPlayer());
 
 		// Make sure player's power is up to date when they log off.
@@ -209,8 +209,8 @@ public class FactionsPlayerListener implements Listener
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL)
-    public void onPlayerInteract(PlayerInteractEvent event)
-    {
+	public void onPlayerInteract(PlayerInteractEvent event)
+	{
 		if (event.isCancelled()) return;
 
 		Block block = event.getClickedBlock();
