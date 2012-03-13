@@ -59,15 +59,18 @@ public class CmdKick extends FCommand
 		Faction yourFaction = you.getFaction();
 
 		if (fme != null && ! FPerm.KICK.has(fme, yourFaction)) return;
-		
-		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-		if ( ! payForCommand(Conf.econCostKick, "to kick someone from the faction", "for kicking someone from the faction")) return;
+
+		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make sure they can pay
+		if ( ! canAffordCommand(Conf.econCostKick, "to kick someone from the faction")) return;
 
 		// trigger the leave event (cancellable) [reason:kicked]
 		FPlayerLeaveEvent event = new FPlayerLeaveEvent(you, you.getFaction(), FPlayerLeaveEvent.PlayerLeaveReason.KICKED);
 		Bukkit.getServer().getPluginManager().callEvent(event);
 		if (event.isCancelled()) return;
-		
+
+		// then make 'em pay (if applicable)
+		if ( ! payForCommand(Conf.econCostKick, "to kick someone from the faction", "for kicking someone from the faction")) return;
+
 		yourFaction.msg("%s<i> kicked %s<i> from the faction! :O", fme.describeTo(yourFaction, true), you.describeTo(yourFaction, true));
 		you.msg("%s<i> kicked you from %s<i>! :O", fme.describeTo(you, true), yourFaction.describeTo(you));
 		if (yourFaction != myFaction)
