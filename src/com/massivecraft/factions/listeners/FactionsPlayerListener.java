@@ -167,14 +167,20 @@ public class FactionsPlayerListener implements Listener
     // TODO: Possibly incorporate pain build... 
     public static boolean playerCanUseItemHere(Player player, Location loc, Material material, boolean justCheck)
 	{
-		FPlayer me = FPlayers.i.get(player);
+		String name = player.getName();
+		if (Conf.playersWhoBypassAllProtection.contains(name)) return true;
+
+		FPlayer me = FPlayers.i.get(name);
 		if (me.hasAdminMode()) return true;
 		if (Conf.materialsEditTools.contains(material) && ! FPerm.BUILD.has(me, loc, ! justCheck)) return false;
 		return true;
 	}
 	public static boolean canPlayerUseBlock(Player player, Block block, boolean justCheck)
 	{
-		FPlayer me = FPlayers.i.get(player);
+		String name = player.getName();
+		if (Conf.playersWhoBypassAllProtection.contains(name)) return true;
+
+		FPlayer me = FPlayers.i.get(name);
 		if (me.hasAdminMode()) return true;
 		Location loc = block.getLocation();
 		Material material = block.getType();

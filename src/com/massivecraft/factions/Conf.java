@@ -135,11 +135,11 @@ public class Conf
 	public static int actionDeniedPainAmount = 2;
 
 	// commands which will be prevented if the player is a member of a permanent faction
-	public static Set<String> permanentFactionMemberDenyCommands = new HashSet<String>();
+	public static Set<String> permanentFactionMemberDenyCommands = new LinkedHashSet<String>();
 
 	// commands which will be prevented when in claimed territory of another faction
-	public static Set<String> territoryNeutralDenyCommands = new HashSet<String>();
-	public static Set<String> territoryEnemyDenyCommands = new HashSet<String>();
+	public static Set<String> territoryNeutralDenyCommands = new LinkedHashSet<String>();
+	public static Set<String> territoryEnemyDenyCommands = new LinkedHashSet<String>();
 	
 	public static double territoryShieldFactor = 0.3;
 
@@ -211,12 +211,15 @@ public class Conf
 	//public static boolean bankMembersCanWithdraw = false; //Have to be at least moderator to withdraw or pay money to another faction
 	public static boolean bankFactionPaysCosts = true; //The faction pays for faction command costs, such as sethome
 	public static boolean bankFactionPaysLandCosts = true; //The faction pays for land claiming costs.
-	
-	public static Set<String> worldsNoClaiming = new HashSet<String>();
-	public static Set<String> worldsNoPowerLoss = new HashSet<String>();
-	public static Set<String> worldsIgnorePvP = new HashSet<String>();
+
+	// mainly for other plugins/mods that use a fake player to take actions, which shouldn't be subject to our protections
+	public static Set<String> playersWhoBypassAllProtection = new LinkedHashSet<String>();
+
+	public static Set<String> worldsNoClaiming = new LinkedHashSet<String>();
+	public static Set<String> worldsNoPowerLoss = new LinkedHashSet<String>();
+	public static Set<String> worldsIgnorePvP = new LinkedHashSet<String>();
 	// TODO: A better solution Would be to have One wilderness faction per world.
-	//public static Set<String> worldsNoWildernessProtection = new HashSet<String>();
+	//public static Set<String> worldsNoWildernessProtection = new LinkedHashSet<String>();
 	
 	public static transient int mapHeight = 8;
 	public static transient int mapWidth = 39;

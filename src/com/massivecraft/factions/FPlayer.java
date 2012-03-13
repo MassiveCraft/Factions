@@ -641,7 +641,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		{
 			double cost = Econ.calculateClaimCost(ownedLand, currentFaction.isNormal());
 
-			if (Conf.econClaimUnconnectedFee != 0.0 && forFaction.getLandRoundedInWorld(flocation.getWorldName()) > 0 && !Board.isConnectedLocation(flocation, currentFaction))
+			if (Conf.econClaimUnconnectedFee != 0.0 && forFaction.getLandRoundedInWorld(flocation.getWorldName()) > 0 && !Board.isConnectedLocation(flocation, forFaction))
 				cost += Conf.econClaimUnconnectedFee;
 
 			if(Conf.bankEnabled && Conf.bankFactionPaysLandCosts && this.hasFaction())
