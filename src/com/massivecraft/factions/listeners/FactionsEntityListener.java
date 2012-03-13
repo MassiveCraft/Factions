@@ -313,7 +313,7 @@ public class FactionsEntityListener implements Listener
 		Faction faction = Board.getFactionAt(floc);
 		
 		if (faction.getFlag(FFlag.MONSTERS)) return;
-		if ( ! Conf.monsters.contains(event.getCreatureType())) return;
+		if ( ! Conf.monsters.contains(event.getEntityType())) return;
 		
 		event.setCancelled(true);
 	}

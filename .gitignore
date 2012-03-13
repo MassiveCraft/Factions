@@ -14,7 +14,7 @@
 /build
 /bin
 /dist
-/localexport.jardesc
+/*.jardesc
 
 # Mac filesystem dust
 .DS_Store
