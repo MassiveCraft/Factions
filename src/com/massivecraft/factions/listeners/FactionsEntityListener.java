@@ -222,7 +222,9 @@ public class FactionsEntityListener implements Listener
 		
 		if (attacker == null || attacker.getPlayer() == null)
 			return true;
-		
+
+		if (Conf.playersWhoBypassAllProtection.contains(attacker.getName())) return true;
+
 		if (attacker.hasLoginPvpDisabled())
 		{
 			if (notify) attacker.msg("<i>You can't hurt other players for " + Conf.noPVPDamageToOthersForXSecondsAfterLogin + " seconds after logging in.");

@@ -59,8 +59,10 @@ public class FactionsBlockListener implements Listener
 	
 	public static boolean playerCanBuildDestroyBlock(Player player, Block block, String action, boolean justCheck)
 	{
-		FPlayer me = FPlayers.i.get(player);
+		String name = player.getName();
+		if (Conf.playersWhoBypassAllProtection.contains(name)) return true;
 
+		FPlayer me = FPlayers.i.get(name);
 		if (me.hasAdminMode()) return true;
 
 		Location location = block.getLocation();
