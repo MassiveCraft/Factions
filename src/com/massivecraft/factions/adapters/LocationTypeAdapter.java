@@ -3,8 +3,8 @@ package com.massivecraft.factions.adapters;
 import java.lang.reflect.Type;
 import java.util.logging.Level;
 
-import org.bukkit.Location;
-import org.bukkit.World;
+import com.massivecraft.factions.P;
+import com.massivecraft.factions.util.LazyLocation;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
@@ -13,10 +13,9 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
-import com.massivecraft.factions.P;
 
 
-public class LocationTypeAdapter implements JsonDeserializer<Location>, JsonSerializer<Location>
+public class LocationTypeAdapter implements JsonDeserializer<LazyLocation>, JsonSerializer<LazyLocation>
 {
 	private static final String WORLD = "world";
 	private static final String X = "x";
@@ -26,49 +25,37 @@ public class LocationTypeAdapter implements JsonDeserializer<Location>, JsonSeri
 	private static final String PITCH = "pitch";
 	
 	@Override
-	public Location deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException
+	public LazyLocation deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException
 	{
 		try
 		{
 			JsonObject obj = json.getAsJsonObject();
 
-			String worldname = obj.get(WORLD).getAsString();
-			World world = P.p.getServer().getWorld(worldname);
-			if (world == null) {
-				P.p.log(Level.WARNING, "Stored location's world \"" + worldname + "\" not found on server; dropping the location.");
-				return null;
-			}
-
+			String worldName = obj.get(WORLD).getAsString();
 			double x = obj.get(X).getAsDouble();
 			double y = obj.get(Y).getAsDouble();
 			double z = obj.get(Z).getAsDouble();
 			float yaw = obj.get(YAW).getAsFloat();
 			float pitch = obj.get(PITCH).getAsFloat();
 
-			return new Location(world, x, y, z, yaw, pitch);
+			return new LazyLocation(worldName, x, y, z, yaw, pitch);
 
 		}
 		catch (Exception ex)
 		{
 			ex.printStackTrace();
-			P.p.log(Level.WARNING, "Error encountered while deserializing a location.");
+			P.p.log(Level.WARNING, "Error encountered while deserializing a LazyLocation.");
 			return null;
 		}
 	}
 
 	@Override
-	public JsonElement serialize(Location src, Type typeOfSrc, JsonSerializationContext context) {
+	public JsonElement serialize(LazyLocation src, Type typeOfSrc, JsonSerializationContext context) {
 		JsonObject obj = new JsonObject();
 
 		try
 		{
-			if (src.getWorld() == null)
-			{
-				P.p.log(Level.WARNING, "Passed location's world was not found on the server. Dropping the location.");
-				return obj;
-			}
-
-			obj.addProperty(WORLD, src.getWorld().getName());
+			obj.addProperty(WORLD, src.getWorldName());
 			obj.addProperty(X, src.getX());
 			obj.addProperty(Y, src.getY());
 			obj.addProperty(Z, src.getZ());
@@ -76,12 +63,11 @@ public class LocationTypeAdapter implements JsonDeserializer<Location>, JsonSeri
 			obj.addProperty(PITCH, src.getPitch());
 
 			return obj;
-
 		}
 		catch (Exception ex)
 		{
 			ex.printStackTrace();
-			P.p.log(Level.WARNING, "Error encountered while serializing a location.");
+			P.p.log(Level.WARNING, "Error encountered while serializing a LazyLocation.");
 			return obj;
 		}
 	}

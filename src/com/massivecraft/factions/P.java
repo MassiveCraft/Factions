@@ -37,6 +37,7 @@ import com.massivecraft.factions.struct.FFlag;
 import com.massivecraft.factions.struct.FPerm;
 import com.massivecraft.factions.struct.Rel;
 import com.massivecraft.factions.util.AutoLeaveTask;
+import com.massivecraft.factions.util.LazyLocation;
 import com.massivecraft.factions.zcore.MPlugin;
 import com.massivecraft.factions.zcore.util.TextUtil;
 
@@ -131,7 +132,7 @@ public class P extends MPlugin
 		.setPrettyPrinting()
 		.disableHtmlEscaping()
 		.excludeFieldsWithModifiers(Modifier.TRANSIENT, Modifier.VOLATILE)
-		.registerTypeAdapter(Location.class, new LocationTypeAdapter())
+		.registerTypeAdapter(LazyLocation.class, new LocationTypeAdapter())
 		.registerTypeAdapter(mapFLocToStringSetType, new FLocToStringSetTypeAdapter())
 		.registerTypeAdapter(Rel.class, new RelTypeAdapter())
 		.registerTypeAdapter(FPerm.class, new FPermTypeAdapter())
