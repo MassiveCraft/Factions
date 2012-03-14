@@ -30,6 +30,7 @@ import com.massivecraft.factions.listeners.FactionsPlayerListener;
 import com.massivecraft.factions.listeners.FactionsServerListener;
 import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.util.AutoLeaveTask;
+import com.massivecraft.factions.util.LazyLocation;
 import com.massivecraft.factions.util.MapFLocToStringSetTypeAdapter;
 import com.massivecraft.factions.util.MyLocationTypeAdapter;
 import com.massivecraft.factions.zcore.MPlugin;
@@ -126,7 +127,7 @@ public class P extends MPlugin
 		.setPrettyPrinting()
 		.disableHtmlEscaping()
 		.excludeFieldsWithModifiers(Modifier.TRANSIENT, Modifier.VOLATILE)
-		.registerTypeAdapter(Location.class, new MyLocationTypeAdapter())
+		.registerTypeAdapter(LazyLocation.class, new MyLocationTypeAdapter())
 		.registerTypeAdapter(mapFLocToStringSetType, new MapFLocToStringSetTypeAdapter());
 	}
 

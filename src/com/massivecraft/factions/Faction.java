@@ -98,16 +98,18 @@ public class Faction extends Entity implements EconomyParticipator
 	public void setDescription(String value) { this.description = value; }
 	
 	// FIELD: home
-	private Location home;
-	public void setHome(Location home) { this.home = home; }
-	public Location getHome() { confirmValidHome(); return home; }
+	private LazyLocation home;
+	public void setHome(Location home) { this.home = new LazyLocation(home); }
 	public boolean hasHome() { return this.getHome() != null; }
+	public Location getHome()
+	{
+		confirmValidHome();
+		return (this.home != null) ? this.home.getLocation() : null;
+	}
 	public void confirmValidHome()
 	{
-		if (!Conf.homesMustBeInClaimedTerritory || this.home == null || Board.getFactionAt(new FLocation(this.home)) == this)
-		{
+		if (!Conf.homesMustBeInClaimedTerritory || this.home == null || Board.getFactionAt(new FLocation(this.home.getLocation())) == this)
 			return;
-		}
 
 		msg("<b>Your faction home has been un-set since it is no longer in your territory.");
 		this.home = null;
