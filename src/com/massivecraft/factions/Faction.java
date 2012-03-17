@@ -591,8 +591,6 @@ public class Faction extends Entity implements EconomyParticipator
 	
 	public boolean hasOfflineExplosionProtection() 
 	{
-		long lastonlinetime = (long) (this.getLastOnlineTime() + ( Conf.offlineExplosionProtectionDelay * 60 * 1000 ));
-		
 		if (this.id == "-1" || this.id == "-2" )
 		{
 			return true;
@@ -601,6 +599,8 @@ public class Faction extends Entity implements EconomyParticipator
 		{
 			return true;
 		}
+		
+		long lastonlinetime = (long) (this.getLastOnlineTime() + ( Conf.offlineExplosionProtectionDelay * 60 * 1000 ));
 		
 		//No protection if we are online.
 		if ( this.getOnlinePlayers().size() > 0 || this.isNone() ) 

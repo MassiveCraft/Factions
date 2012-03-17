@@ -112,22 +112,45 @@ public class FactionsEntityListener implements Listener
 	    		faction.updateOfflineExplosionProtection(); 
 	    }
 	    
-		if (event.getEntity() instanceof TNTPrimed && exploitExplosions.size() > 0)
-		{	// make sure this isn't a TNT explosion exploit attempt
-			int locX = event.getLocation().getBlockX();
-			int locZ = event.getLocation().getBlockZ();
+		for (Block block : event.blockList())
+		{
+			Faction faction = Board.getFactionAt(new FLocation(block));
+			if (faction.hasOfflineExplosionProtection())
+			{
+				// faction is peaceful and has explosions set to disabled
+				event.setCancelled(true);
+				return;
+			}
+		}
+		
+    	Faction faction = Board.getFactionAt(new FLocation(event.getLocation().getBlock()));
+		if ( 
+			event.getEntity() instanceof TNTPrimed && exploitExplosions.size() > 0 &&
+			!faction.hasOfflineExplosionProtection() && !faction.isNone() 
+		   )
+		{
+			// make sure this isn't a TNT explosion exploit attempt
+
+			int locX = event.getEntity().getLocation().getBlockX();
+			int locZ = event.getEntity().getLocation().getBlockZ();
 
 			for (int i = exploitExplosions.size() - 1; i >= 0; i--)
 			{
 				PotentialExplosionExploit ex = exploitExplosions.get(i);
 
-				// remove anything from the list older than 10 seconds (TNT takes 4 seconds to trigger; provide some leeway)
-				if (ex.timeMillis + 10000 < System.currentTimeMillis())
+				// remove anything from the list older than 8 seconds
+				if (ex.timeMillis + 8000 < System.currentTimeMillis())
 				{
 					exploitExplosions.remove(i);
 					continue;
 				}
 				
+				// if it's in your faction, don't try to catch exploit
+				if (ex.faction == faction)
+				{
+					return;
+				}
+
 				int absX = Math.abs(ex.X - locX);
 				int absZ = Math.abs(ex.Z - locZ);
 				if (absX < 5 && absZ < 5) 
@@ -143,17 +166,6 @@ public class FactionsEntityListener implements Listener
 					exploitExplosions.remove(i);
 					return;
 				}
-			}
-		}
-		
-		for (Block block : event.blockList())
-		{
-			Faction faction = Board.getFactionAt(new FLocation(block));
-			if (faction.hasOfflineExplosionProtection())
-			{
-				// faction is peaceful and has explosions set to disabled
-				event.setCancelled(true);
-				return;
 			}
 		}
 	}
