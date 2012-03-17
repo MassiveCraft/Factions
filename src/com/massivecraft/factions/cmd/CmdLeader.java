@@ -45,15 +45,15 @@ public class CmdLeader extends FCommand
 		else
 		{
 			// Follow the standard rules
-			if (fme.getRole() != Rel.LEADER)
+			if (fme.getRole() != Rel.LEADER || targetFaction != myFaction)
 			{
-				sender.sendMessage(p.txt.parse("<b>Only faction leaders can %s.", this.getHelpShort()));
+				sender.sendMessage(p.txt.parse("<b>You must be leader of the faction to %s.", this.getHelpShort()));
 				return;
 			}
 			
 			if (newLeader.getFaction() != myFaction)
 			{
-				msg("%s<i> is not a member in your faction.", newLeader.describeTo(fme, true));
+				msg("%s<i> is not a member in the faction.", newLeader.describeTo(fme, true));
 				return;
 			}
 			

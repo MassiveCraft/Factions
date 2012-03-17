@@ -2,10 +2,12 @@ package com.massivecraft.factions.zcore;
 
 import java.util.Map;
 
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.server.ServerCommandEvent;
-import org.bukkit.event.server.ServerListener;
 
-public class MPluginSecretServerListener extends ServerListener
+public class MPluginSecretServerListener implements Listener
 {
 	private MPlugin p;
 	private String refCommand;
@@ -19,15 +21,14 @@ public class MPluginSecretServerListener extends ServerListener
 		// reference command will be used to prevent "unknown command" console messages
 		try
 		{
-			@SuppressWarnings("unchecked")
-			Map<String, Object> refCmd = (Map<String, Object>) p.getDescription().getCommands();
+			Map<String, Map<String, Object>> refCmd = p.getDescription().getCommands();
 			if (refCmd != null && !refCmd.isEmpty())
 				refCommand = (String)(refCmd.keySet().toArray()[0]);
 		}
 		catch (ClassCastException ex) {}
 	}
 	
-	@Override
+	@EventHandler(priority = EventPriority.LOWEST)
 	public void onServerCommand(ServerCommandEvent event)
 	{
 		if (event.getCommand().length() == 0) return;
