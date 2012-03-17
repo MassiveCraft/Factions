@@ -61,7 +61,7 @@ public class FPlayers extends PlayerEntityCollection<FPlayer>
 		
 		for (FPlayer fplayer : FPlayers.i.get())
 		{
-			if (now - fplayer.getLastLoginTime() > toleranceMillis)
+			if (fplayer.isOffline() && now - fplayer.getLastLoginTime() > toleranceMillis)
 			{
 				if (Conf.logFactionLeave || Conf.logFactionKick)
 					P.p.log("Player "+fplayer.getName()+" was auto-removed due to inactivity.");

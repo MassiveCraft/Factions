@@ -1,5 +1,11 @@
 name: Factions
+<<<<<<< HEAD
 version: 1.7.2c_dev_mcwars_2012_02_23
+||||||| merged common ancestors
+version: 1.7.1_dev
+=======
+version: 1.7.3b_dev
+>>>>>>> recruit
 main: com.massivecraft.factions.P
 authors: [Olof Larsson, Brett Flannigan]
 softdepend: [PermissionsEx, Permissions, Essentials, EssentialsChat, HeroChat, iChat, LocalAreaChat, LWC, nChat, ChatManager, CAPI, AuthMe, Vault, Spout, WorldEdit, WorldGuard, AuthDB, CaptureThePoints, CombatTag]
@@ -27,6 +33,7 @@ permissions:
       factions.flag.set: true
       factions.powerboost: true
       factions.join.any: true
+      factions.join.others: true
       factions.leader.any: true
       factions.officer.any: true
   factions.kit.halfmod:
@@ -110,6 +117,8 @@ permissions:
     description: join a faction
   factions.join.any:
     description: join any faction, bypassing invitation process for closed factions
+  factions.join.others:
+    description: specify another player in the join command, to move them to the specified faction
   factions.kick:
     description: kick a player from the faction
   factions.leader:

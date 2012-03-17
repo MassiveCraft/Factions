@@ -12,7 +12,6 @@ import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerChatEvent;
-import org.bukkit.plugin.Plugin;
 
 import com.massivecraft.factions.adapters.FFlagTypeAdapter;
 import com.massivecraft.factions.adapters.FLocToStringSetTypeAdapter;
@@ -20,7 +19,9 @@ import com.massivecraft.factions.adapters.FPermTypeAdapter;
 import com.massivecraft.factions.adapters.LocationTypeAdapter;
 import com.massivecraft.factions.adapters.RelTypeAdapter;
 import com.massivecraft.factions.cmd.*;
+import com.massivecraft.factions.integration.capi.CapiFeatures;
 import com.massivecraft.factions.integration.Econ;
+import com.massivecraft.factions.integration.EssentialsFeatures;
 import com.massivecraft.factions.integration.LWCFeatures;
 import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.integration.Worldguard;
@@ -33,14 +34,12 @@ import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.struct.FFlag;
 import com.massivecraft.factions.struct.FPerm;
 import com.massivecraft.factions.struct.Rel;
+import com.massivecraft.factions.util.AutoLeaveTask;
 import com.massivecraft.factions.zcore.MPlugin;
 
-import com.griefcraft.lwc.LWCPlugin;
-import com.earth2me.essentials.chat.EssentialsChat;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import com.massivecraft.factions.integration.EssentialsFeatures;
-import com.massivecraft.factions.integration.capi.CapiFeatures;
+
 
 public class P extends MPlugin
 {
@@ -58,6 +57,7 @@ public class P extends MPlugin
 	private boolean locked = false;
 	public boolean getLocked() {return this.locked;}
 	public void setLocked(boolean val) {this.locked = val; this.setAutoSave(val);}
+	private Integer AutoLeaveTask = null;
 	
 	// Commands
 	public FCmdRoot cmdBase;
@@ -72,12 +72,8 @@ public class P extends MPlugin
 		this.blockListener = new FactionsBlockListener(this);
 		this.serverListener = new FactionsServerListener(this);
 	}
-	
-	
 
-	private static EssentialsChat essChat;
-	
-	
+
 	@Override
 	public void onEnable()
 	{
@@ -93,19 +89,20 @@ public class P extends MPlugin
 		this.cmdBase = new FCmdRoot();
 		this.cmdAutoHelp = new CmdAutoHelp();
 		this.getBaseCommands().add(cmdBase);
-		
-		//setupPermissions();
-		integrateEssentialsChat();
-		setupSpout(this);
-		Econ.doSetup();
-		Econ.oldMoneyDoTransfer();
+
+		EssentialsFeatures.setup();
+		SpoutFeatures.setup();
+		Econ.setup();
 		CapiFeatures.setup();
-		setupLWC();
+		LWCFeatures.setup();
 		
 		if(Conf.worldGuardChecking)
 		{
-			Worldguard.init(this);			
+			Worldguard.init(this);
 		}
+
+		// start up task which runs the autoLeaveAfterDaysOfInactivity routine
+		startAutoLeaveTask(false);
 
 		// Register Event Handlers
 		getServer().getPluginManager().registerEvents(playerListener, this);
@@ -138,10 +135,30 @@ public class P extends MPlugin
 	{
 		Board.save();
 		Conf.save();
-		unhookEssentialsChat();
+		EssentialsFeatures.unhookChat();
+		if (AutoLeaveTask != null)
+		{
+			this.getServer().getScheduler().cancelTask(AutoLeaveTask);
+			AutoLeaveTask = null;
+		}
 		super.onDisable();
 	}
-	
+
+	public void startAutoLeaveTask(boolean restartIfRunning)
+	{
+		if (AutoLeaveTask != null)
+		{
+			if ( ! restartIfRunning) return;
+			this.getServer().getScheduler().cancelTask(AutoLeaveTask);
+		}
+
+		if (Conf.autoLeaveRoutineRunsEveryXMinutes > 0.0)
+		{
+			long ticks = (long)(20 * 60 * Conf.autoLeaveRoutineRunsEveryXMinutes);
+			AutoLeaveTask = getServer().getScheduler().scheduleSyncRepeatingTask(this, new AutoLeaveTask(), ticks, ticks);
+		}
+	}
+
 	@Override
 	public void postAutoSave()
 	{
@@ -157,48 +174,7 @@ public class P extends MPlugin
 		return super.handleCommand(sender, commandString, testOnly);
 	}
 
-	// -------------------------------------------- //
-	// Integration with other plugins
-	// -------------------------------------------- //
 
-	private void setupSpout(P factions)
-	{
-		Plugin test = factions.getServer().getPluginManager().getPlugin("Spout");
-
-		if (test != null && test.isEnabled())
-		{
-			SpoutFeatures.setAvailable(true, test.getDescription().getFullName());
-		}
-	}
-
-	private void integrateEssentialsChat()
-	{
-		if (essChat != null) return;
-
-		Plugin test = this.getServer().getPluginManager().getPlugin("EssentialsChat");
-
-		if (test != null && test.isEnabled())
-		{
-			essChat = (EssentialsChat)test;
-			EssentialsFeatures.integrateChat(essChat);
-		}
-	}
-	
-	private void unhookEssentialsChat()
-	{
-		if (essChat != null)
-		{
-			EssentialsFeatures.unhookChat();
-		}
-	}
-
-	private void setupLWC()
-	{
-		Plugin test = this.getServer().getPluginManager().getPlugin("LWC");
-
-		if(test != null && test.isEnabled())
-			LWCFeatures.integrateLWC((LWCPlugin)test);
-	}
 
 	// -------------------------------------------- //
 	// Functions for other plugins to hook into

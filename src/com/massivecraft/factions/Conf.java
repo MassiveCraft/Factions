@@ -57,6 +57,9 @@ public class Conf
 	
 	public static boolean newFactionsDefaultOpen = false;
 
+	// when faction membership hits this limit, players will no longer be able to join using /f join; default is 0, no limit
+	public static int factionMemberLimit = 0;
+
 	// what faction ID to start new players in when they first join the server; default is 0, "no faction"
 	public static String newPlayerStartingFactionID = "0";
 
@@ -73,7 +76,7 @@ public class Conf
 	public static boolean chatTagEnabled = true;
 	public static transient boolean chatTagHandledByAnotherPlugin = false;
 	public static boolean chatTagRelationColored = true;
-	public static String chatTagReplaceString = "{FACTION}";
+	public static String chatTagReplaceString = "[FACTION]";
 	public static String chatTagInsertAfterString = "";
 	public static String chatTagInsertBeforeString = "";
 	public static int chatTagInsertIndex = 1;
@@ -84,6 +87,7 @@ public class Conf
 	public static String allianceChatFormat = ChatColor.LIGHT_PURPLE+"%s:"+ChatColor.WHITE+" %s";
 	
 	public static double autoLeaveAfterDaysOfInactivity = 10.0;
+	public static double autoLeaveRoutineRunsEveryXMinutes = 5.0;
 	public static boolean removePlayerDataWhenBanned = true;
 
 	public static boolean worldGuardChecking = false;
@@ -129,6 +133,7 @@ public class Conf
 	public static boolean claimsMustBeConnected = false;
 	public static boolean claimsCanBeUnconnectedIfOwnedByOtherFaction = true;
 	public static int claimsRequireMinFactionMembers = 1;
+	public static int claimedLandsMax = 0;
 	
 	//public static double considerFactionsReallyOfflineAfterXMinutes = 0.0;
 	
