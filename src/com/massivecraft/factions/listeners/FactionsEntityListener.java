@@ -456,7 +456,7 @@ public class FactionsEntityListener implements Listener
 	 */
 	private static ArrayList<PotentialExplosionExploit> exploitExplosions = new ArrayList<PotentialExplosionExploit>();
 
-	@EventHandler(priority = EventPriority.NORMAL)
+	/*@EventHandler(priority = EventPriority.NORMAL)
 	public void onExplosionPrime(ExplosionPrimeEvent event)
 	{
 		if (event.isCancelled()) return;
@@ -495,7 +495,7 @@ public class FactionsEntityListener implements Listener
 				return;
 			}
 		}
-	}
+	}*/
 
 	public static void trackPotentialExplosionExploit(String playerName, Faction faction, Material item, Location location)
 	{
