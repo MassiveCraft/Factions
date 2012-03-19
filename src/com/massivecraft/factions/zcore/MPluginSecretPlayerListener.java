@@ -28,7 +28,8 @@ public class MPluginSecretPlayerListener implements Listener
 
 		if (p.handleCommand(event.getPlayer(), event.getMessage()))
 		{
-			Bukkit.getLogger().info("[PLAYER_COMMAND] "+event.getPlayer().getName()+": "+event.getMessage());
+			if (p.logPlayerCommands())
+				Bukkit.getLogger().info("[PLAYER_COMMAND] "+event.getPlayer().getName()+": "+event.getMessage());
 			event.setCancelled(true);
 		}
 	}
@@ -40,7 +41,8 @@ public class MPluginSecretPlayerListener implements Listener
 		
 		if (p.handleCommand(event.getPlayer(), event.getMessage()))
 		{
-			Bukkit.getLogger().info("[PLAYER_COMMAND] "+event.getPlayer().getName()+": "+event.getMessage());
+			if (p.logPlayerCommands())
+				Bukkit.getLogger().info("[PLAYER_COMMAND] "+event.getPlayer().getName()+": "+event.getMessage());
 			event.setCancelled(true);
 		}
 	}

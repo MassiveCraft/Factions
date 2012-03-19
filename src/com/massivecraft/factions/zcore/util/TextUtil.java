@@ -76,14 +76,14 @@ public class TextUtil
 	public static String parseColorAmp(String string)
 	{
 		string = string.replaceAll("(§([a-z0-9]))", "\u00A7$2");
-	    string = string.replaceAll("(&([a-z0-9]))", "\u00A7$2");
-	    string = string.replace("&&", "&");
-	    return string;
+		string = string.replaceAll("(&([a-z0-9]))", "\u00A7$2");
+		string = string.replace("&&", "&");
+		return string;
 	}
 	
-    public static String parseColorAcc(String string)
-    {
-        return string.replace("`e", "")
+	public static String parseColorAcc(String string)
+	{
+		return string.replace("`e", "")
 		.replace("`r", ChatColor.RED.toString()) .replace("`R", ChatColor.DARK_RED.toString())
 		.replace("`y", ChatColor.YELLOW.toString()) .replace("`Y", ChatColor.GOLD.toString())
 		.replace("`g", ChatColor.GREEN.toString()) .replace("`G", ChatColor.DARK_GREEN.toString())
@@ -92,27 +92,27 @@ public class TextUtil
 		.replace("`p", ChatColor.LIGHT_PURPLE.toString()) .replace("`P", ChatColor.DARK_PURPLE.toString())
 		.replace("`k", ChatColor.BLACK.toString()) .replace("`s", ChatColor.GRAY.toString())
 		.replace("`S", ChatColor.DARK_GRAY.toString()) .replace("`w", ChatColor.WHITE.toString());
-    }
+	}
 	
 	public static String parseColorTags(String string)
 	{
-        return string.replace("<empty>", "")
-        .replace("<black>", "\u00A70")
-        .replace("<navy>", "\u00A71")
-        .replace("<green>", "\u00A72")
-        .replace("<teal>", "\u00A73")
-        .replace("<red>", "\u00A74")
-        .replace("<purple>", "\u00A75")
-        .replace("<gold>", "\u00A76")
-        .replace("<silver>", "\u00A77")
-        .replace("<gray>", "\u00A78")
-        .replace("<blue>", "\u00A79")
-        .replace("<lime>", "\u00A7a")
-        .replace("<aqua>", "\u00A7b")
-        .replace("<rose>", "\u00A7c")
-        .replace("<pink>", "\u00A7d")
-        .replace("<yellow>", "\u00A7e")
-        .replace("<white>", "\u00A7f");
+		return string.replace("<empty>", "")
+		.replace("<black>", "\u00A70")
+		.replace("<navy>", "\u00A71")
+		.replace("<green>", "\u00A72")
+		.replace("<teal>", "\u00A73")
+		.replace("<red>", "\u00A74")
+		.replace("<purple>", "\u00A75")
+		.replace("<gold>", "\u00A76")
+		.replace("<silver>", "\u00A77")
+		.replace("<gray>", "\u00A78")
+		.replace("<blue>", "\u00A79")
+		.replace("<lime>", "\u00A7a")
+		.replace("<aqua>", "\u00A7b")
+		.replace("<rose>", "\u00A7c")
+		.replace("<pink>", "\u00A7d")
+		.replace("<yellow>", "\u00A7e")
+		.replace("<white>", "\u00A7f");
 	}
 	
 	// -------------------------------------------- //
@@ -126,27 +126,27 @@ public class TextUtil
 	
 	public static String repeat(String s, int times)
 	{
-	    if (times <= 0) return "";
-	    else return s + repeat(s, times-1);
+		if (times <= 0) return "";
+		else return s + repeat(s, times-1);
 	}
 	
 	public static String implode(List<String> list, String glue)
 	{
-	    StringBuilder ret = new StringBuilder();
-	    for (int i=0; i<list.size(); i++)
-	    {
-	        if (i!=0)
-	        {
-	        	ret.append(glue);
-	        }
-	        ret.append(list.get(i));
-	    }
-	    return ret.toString();
+		StringBuilder ret = new StringBuilder();
+		for (int i=0; i<list.size(); i++)
+		{
+			if (i!=0)
+			{
+				ret.append(glue);
+			}
+			ret.append(list.get(i));
+		}
+		return ret.toString();
 	}
 	
 	public static String implodeCommaAnd(List<String> list, String comma, String and)
 	{
-	    if (list.size() == 0) return "";
+		if (list.size() == 0) return "";
 		if (list.size() == 1) return list.get(0);
 		
 		String lastItem = list.get(list.size()-1);
@@ -159,7 +159,7 @@ public class TextUtil
 	}
 	public static String implodeCommaAnd(List<String> list)
 	{
-	    return implodeCommaAnd(list, ", ", " and ");
+		return implodeCommaAnd(list, ", ", " and ");
 	}
 	
 	// -------------------------------------------- //

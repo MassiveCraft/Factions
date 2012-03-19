@@ -4,12 +4,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
-import java.util.logging.Level;
+import java.util.List;
 import java.text.MessageFormat;
 import java.util.Set;
 
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Enderman;
 import org.bukkit.entity.Entity;
@@ -28,7 +27,6 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
-import org.bukkit.event.entity.ExplosionPrimeEvent;
 import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.event.painting.PaintingBreakByEntityEvent;
 import org.bukkit.event.painting.PaintingBreakEvent;
@@ -92,8 +90,8 @@ public class FactionsEntityListener implements Listener
 			EntityDamageByEntityEvent sub = (EntityDamageByEntityEvent)event;
 			if ( ! this.canDamagerHurtDamagee(sub, true))
 			{
-    			event.setCancelled(true);
-    		}
+				event.setCancelled(true);
+			}
 		}
 		// TODO: Add a no damage at all flag??
 		/*else if (Conf.safeZonePreventAllDamageToPlayers && isPlayerInSafeZone(event.getEntity()))
@@ -116,6 +114,29 @@ public class FactionsEntityListener implements Listener
 				// faction is peaceful and has explosions set to disabled
 				event.setCancelled(true);
 				return;
+			}
+		}
+
+		// TNT in water/lava doesn't normally destroy any surrounding blocks, which is usually desired behavior, but...
+		// this optional change below provides workaround for waterwalling providing perfect protection,
+		// and makes cheap (non-obsidian) TNT cannons require minor maintenance between shots
+		Block center = event.getLocation().getBlock();
+		if (event.getEntity() instanceof TNTPrimed && Conf.handleExploitTNTWaterlog && center.isLiquid())
+		{
+			// a single surrounding block in all 6 directions is broken if the material is weak enough
+			List<Block> targets = new ArrayList<Block>();
+			targets.add(center.getRelative(0, 0, 1));
+			targets.add(center.getRelative(0, 0, -1));
+			targets.add(center.getRelative(0, 1, 0));
+			targets.add(center.getRelative(0, -1, 0));
+			targets.add(center.getRelative(1, 0, 0));
+			targets.add(center.getRelative(-1, 0, 0));
+			for (Block target : targets)
+			{
+				int id = target.getTypeId();
+				// ignore air, bedrock, water, lava, obsidian, enchanting table... too bad we can't get a working material durability # yet
+				if (id != 0 && (id < 7 || id > 11) && id != 49 && id != 116)
+					target.breakNaturally();
 			}
 		}
 	}
@@ -154,9 +175,7 @@ public class FactionsEntityListener implements Listener
 		}
 		if ( ! badjuju) return;
 
-		Entity thrower = event.getEntity();
-		if (thrower instanceof Projectile)
-			thrower = ((Projectile)thrower).getShooter();
+		Entity thrower = event.getPotion().getShooter();
 
 		// scan through affected entities to make sure they're all valid targets
 		Iterator<LivingEntity> iter = event.getAffectedEntities().iterator();
@@ -222,7 +241,9 @@ public class FactionsEntityListener implements Listener
 		
 		if (attacker == null || attacker.getPlayer() == null)
 			return true;
-		
+
+		if (Conf.playersWhoBypassAllProtection.contains(attacker.getName())) return true;
+
 		if (attacker.hasLoginPvpDisabled())
 		{
 			if (notify) attacker.msg("<i>You can't hurt other players for " + Conf.noPVPDamageToOthersForXSecondsAfterLogin + " seconds after logging in.");
@@ -311,7 +332,7 @@ public class FactionsEntityListener implements Listener
 		Faction faction = Board.getFactionAt(floc);
 		
 		if (faction.getFlag(FFlag.MONSTERS)) return;
-		if ( ! Conf.monsters.contains(event.getCreatureType())) return;
+		if ( ! Conf.monsters.contains(event.getEntityType())) return;
 		
 		event.setCancelled(true);
 	}
@@ -383,81 +404,5 @@ public class FactionsEntityListener implements Listener
 		if (faction.getFlag(FFlag.ENDERGRIEF)) return;
 		
 		event.setCancelled(true);
-	}
-
-
-
-	/**
-	 * Canceled redstone torch placement next to existing TNT is still triggering an explosion, thus, our workaround here.
-	 * related to this:
-	 * https://bukkit.atlassian.net/browse/BUKKIT-89
-	 * though they do finally appear to have fixed the converse situation (existing redstone torch, TNT placement attempted but canceled)
-	 */
-	private static ArrayList<PotentialExplosionExploit> exploitExplosions = new ArrayList<PotentialExplosionExploit>();
-
-	@EventHandler(priority = EventPriority.NORMAL)
-	public void onExplosionPrime(ExplosionPrimeEvent event)
-	{
-		if (event.isCancelled()) return;
-		if (! (event.getEntity() instanceof TNTPrimed)) return;
-		if (exploitExplosions.isEmpty()) return;
-
-		// make sure this isn't a TNT explosion exploit attempt
-
-		int locX = event.getEntity().getLocation().getBlockX();
-		int locZ = event.getEntity().getLocation().getBlockZ();
-
-		for (int i = exploitExplosions.size() - 1; i >= 0; i--)
-		{
-			PotentialExplosionExploit ex = exploitExplosions.get(i);
-
-			// remove anything from the list older than 8 seconds
-			if (ex.timeMillis + 8000 < System.currentTimeMillis())
-			{
-				exploitExplosions.remove(i);
-				continue;
-			}
-
-			int absX = Math.abs(ex.X - locX);
-			int absZ = Math.abs(ex.Z - locZ);
-			if (absX < 5 && absZ < 5) 
-			{	// it sure looks like an exploit attempt
-				// let's tattle on him to everyone
-				String msg = "NOTICE: Player \""+ex.playerName+"\" attempted to exploit a TNT bug in the territory of \""+ex.faction.getTag()+"\"";
-				P.p.log(Level.WARNING, msg + " at "+ex.X+","+ex.Z+" (X,Z) using a "+ex.item.name());
-				for (FPlayer fplayer : FPlayers.i.getOnline())
-				{
-					fplayer.sendMessage(msg+". Coordinates logged.");
-				}
-				event.setCancelled(true);
-				exploitExplosions.remove(i);
-				return;
-			}
-		}
-	}
-
-	public static void trackPotentialExplosionExploit(String playerName, Faction faction, Material item, Location location)
-	{
-		exploitExplosions.add(new PotentialExplosionExploit(playerName, faction, item, location));
-	}
-
-	public static class PotentialExplosionExploit
-	{
-		public String playerName;
-		public Faction faction;
-		public Material item;
-		public long timeMillis;
-		public int X;
-		public int Z;
-
-		public PotentialExplosionExploit(String playerName, Faction faction, Material item, Location location)
-		{
-			this.playerName = playerName;
-			this.faction = faction;
-			this.item = item;
-			this.timeMillis = System.currentTimeMillis();
-			this.X = location.getBlockX();
-			this.Z = location.getBlockZ();
-		}
 	}
 }

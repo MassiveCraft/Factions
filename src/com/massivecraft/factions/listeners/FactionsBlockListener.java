@@ -59,8 +59,10 @@ public class FactionsBlockListener implements Listener
 	
 	public static boolean playerCanBuildDestroyBlock(Player player, Block block, String action, boolean justCheck)
 	{
-		FPlayer me = FPlayers.i.get(player);
+		String name = player.getName();
+		if (Conf.playersWhoBypassAllProtection.contains(name)) return true;
 
+		FPlayer me = FPlayers.i.get(name);
 		if (me.hasAdminMode()) return true;
 
 		Location location = block.getLocation();
@@ -85,25 +87,9 @@ public class FactionsBlockListener implements Listener
 	{
 		if (event.isCancelled()) return;
 		if ( ! event.canBuild()) return;
-		
-		// TODO: Test if this old stuff is still an issue.
-		// special case for flint&steel, which should only be prevented by DenyUsage list
-		/*if (event.getBlockPlaced().getType() == Material.FIRE)
-		{
-			return;
-		}*/
 
 		if ( ! playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock(), "build", false))
-		{
 			event.setCancelled(true);
-
-			Material handItem = event.getPlayer().getItemInHand().getType();
-			if (handItem == Material.TNT || handItem == Material.REDSTONE_TORCH_ON)
-			{
-				Faction targetFaction = Board.getFactionAt(new FLocation(event.getBlock()));
-				FactionsEntityListener.trackPotentialExplosionExploit(event.getPlayer().getName(), targetFaction, handItem, event.getBlock().getLocation());
-			}
-		}
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL)

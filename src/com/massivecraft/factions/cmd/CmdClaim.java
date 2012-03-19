@@ -1,12 +1,11 @@
 package com.massivecraft.factions.cmd;
 
-import java.util.Set;
-
-import org.bukkit.Location;
-
+import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.util.SpiralTask;
+
 
 public class CmdClaim extends FCommand
 {
@@ -33,34 +32,43 @@ public class CmdClaim extends FCommand
 	public void perform()
 	{
 		// Read and validate input
-		Faction forFaction = this.argAsFaction(0, myFaction);
+		final Faction forFaction = this.argAsFaction(0, myFaction);
+		int radius = this.argAsInt(1, 1);
 
-		// just to cut the unauthorized off immediately instead of going on to do radius calculations
-		if (! fme.canClaimForFactionAtLocation(forFaction, me.getLocation(), false))
+		if (radius < 1)
 		{
-			msg("<b>You do not currently have permission to claim land for the faction "+forFaction.describeTo(fme) +"<b>.");
+			msg("<b>If you specify a radius, it must be at least 1.");
 			return;
 		}
 
-		double radius = this.argAsDouble(1, 1d);
-		radius -= 0.5;
-		if (radius <= 0)
+		if (radius < 2)
 		{
-			msg("<b>That radius is to small.");
-			return;
+			// single chunk
+			fme.attemptClaim(forFaction, me.getLocation(), true);
 		}
-		else if (radius > 100)  // huge radius can crash server
+		else
 		{
-			msg("<b>That radius is overly large. Remember that the radius is in chunks (16x16 blocks), not individual blocks.");
-			return;
-		}
-		
-		// Get the FLocations
-		Set<FLocation> flocs = new FLocation(me).getCircle(radius);
-		for (FLocation floc : flocs)
-		{
-			fme.attemptClaim(forFaction, new Location(floc.getWorld(), floc.getX() << 4, 1, floc.getZ() << 4), true);
+			// radius claim
+			new SpiralTask(new FLocation(me), radius)
+			{
+				private int failCount = 0;
+				private final int limit = Conf.radiusClaimFailureLimit - 1;
+
+				@Override
+				public boolean work()
+				{
+					boolean success = fme.attemptClaim(forFaction, this.currentLocation(), true);
+					if (success)
+						failCount = 0;
+					else if ( ! success && failCount++ >= limit)
+					{
+						this.stop();
+						return false;
+					}
+
+					return true;
+				}
+			};
 		}
 	}
-	
 }

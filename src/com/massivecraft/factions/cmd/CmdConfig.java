@@ -5,6 +5,8 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Set;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -13,7 +15,10 @@ import org.bukkit.entity.Player;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.integration.SpoutFeatures;
+import com.massivecraft.factions.struct.FFlag;
+import com.massivecraft.factions.struct.FPerm;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.struct.Rel;
 
 public class CmdConfig extends FCommand
 {
@@ -174,76 +179,186 @@ public class CmdConfig extends FCommand
 				ParameterizedType targSet = (ParameterizedType)target.getGenericType();
 				Type innerType = targSet.getActualTypeArguments()[0];
 
-				// not a Set, somehow, and that should be the only collection we're using in Conf.java
-				if (targSet.getRawType() != Set.class)
+				// Set<?>
+				if (targSet.getRawType() == Set.class)
 				{
-					sendMessage("\""+fieldName+"\" is not a data collection type which can be modified with this command.");
-					return;
-				}
+					// Set<Material>
+					if (innerType == Material.class)
+					{
+						Material newMat = null;
+						try
+						{
+							newMat = Material.valueOf(value.toUpperCase());
+						}
+						catch (IllegalArgumentException ex)
+						{
 
-				// Set<Material>
-				else if (innerType == Material.class)
-				{
-					Material newMat = null;
-					try
-					{
-						newMat = Material.valueOf(value.toUpperCase());
-					}
-					catch (IllegalArgumentException ex)
-					{
-						
-					}
-					if (newMat == null)
-					{
-						sendMessage("Cannot change \""+fieldName+"\" set: \""+value.toUpperCase()+"\" is not a valid material.");
-						return;
+						}
+						if (newMat == null)
+						{
+							sendMessage("Cannot change \""+fieldName+"\" set: \""+value.toUpperCase()+"\" is not a valid material.");
+							return;
+						}
+
+						@SuppressWarnings("unchecked")
+						Set<Material> matSet = (Set<Material>)target.get(null);
+
+						// Material already present, so remove it
+						if (matSet.contains(newMat))
+						{
+							matSet.remove(newMat);
+							target.set(null, matSet);
+							success = "\""+fieldName+"\" set: Material \""+value.toUpperCase()+"\" removed.";
+						}
+						// Material not present yet, add it
+						else
+						{
+							matSet.add(newMat);
+							target.set(null, matSet);
+							success = "\""+fieldName+"\" set: Material \""+value.toUpperCase()+"\" added.";
+						}
 					}
 
-					@SuppressWarnings("unchecked")
-					Set<Material> matSet = (Set<Material>)target.get(null);
-
-					// Material already present, so remove it
-					if (matSet.contains(newMat))
+					// Set<String>
+					else if (innerType == String.class)
 					{
-						matSet.remove(newMat);
-						target.set(null, matSet);
-						success = "\""+fieldName+"\" set: Material \""+value.toUpperCase()+"\" removed.";
+						@SuppressWarnings("unchecked")
+						Set<String> stringSet = (Set<String>)target.get(null);
+
+						// String already present, so remove it
+						if (stringSet.contains(value))
+						{
+							stringSet.remove(value);
+							success = "\""+fieldName+"\" set: \""+value+"\" removed.";
+						}
+						// String not present yet, add it
+						else 
+						{
+							stringSet.add(value);
+							success = "\""+fieldName+"\" set: \""+value+"\" added.";
+						}
+						target.set(null, stringSet);
 					}
-					// Material not present yet, add it
+
+					// Set of unknown type
 					else
 					{
-						matSet.add(newMat);
-						target.set(null, matSet);
-						success = "\""+fieldName+"\" set: Material \""+value.toUpperCase()+"\" added.";
+						sendMessage("\""+fieldName+"\" is not a data type set which can be modified with this command.");
+						return;
 					}
 				}
 
-				// Set<String>
-				else if (innerType == String.class)
+				// Map<?, ?>
+				else if (targSet.getRawType() == Map.class)
 				{
-					@SuppressWarnings("unchecked")
-					Set<String> stringSet = (Set<String>)target.get(null);
-
-					// String already present, so remove it
-					if (stringSet.contains(value))
+					if (args.size() < 3)
 					{
-						stringSet.remove(value);
-						target.set(null, stringSet);
-						success = "\""+fieldName+"\" set: \""+value+"\" removed.";
+						sendMessage("Cannot change \""+fieldName+"\" map: not enough arguments passed.");
+						return;
 					}
-					// String not present yet, add it
-					else 
+					Type innerType2 = targSet.getActualTypeArguments()[1];
+					String value1 = args.get(1);
+					String value2 = value.substring(value1.length() + 1);
+
+					// Map<FFlag, Boolean>
+					if (innerType == FFlag.class && innerType2 == Boolean.class)
 					{
-						stringSet.add(value);
-						target.set(null, stringSet);
-						success = "\""+fieldName+"\" set: \""+value+"\" added.";
+						value1 = value1.toUpperCase();
+						FFlag newFlag = null;
+						try
+						{
+							newFlag = FFlag.valueOf(value1);
+						}
+						catch (IllegalArgumentException ex) {}
+
+						if (newFlag == null)
+						{
+							sendMessage("Cannot change \""+fieldName+"\" map: \""+value1+"\" is not a valid FFlag.");
+							return;
+						}
+
+						@SuppressWarnings("unchecked")
+						Map<FFlag, Boolean> map = (Map<FFlag, Boolean>)target.get(null);
+
+						Boolean targetValue = this.strAsBool(value2);
+
+						map.put(newFlag, targetValue);
+						target.set(null, map);
+
+						if (targetValue)
+							success = "\""+fieldName+"\" flag \""+value1+"\" set to true (enabled).";
+						else
+							success = "\""+fieldName+"\" flag \""+value1+"\" set to false (disabled).";
+					}
+
+					// Map<FPerm, Set<Rel>>
+					else if (innerType == FPerm.class && innerType2 instanceof ParameterizedType)
+					{
+						if (((ParameterizedType)innerType2).getRawType() != Set.class)
+						{
+							sendMessage("\""+fieldName+"\" is not a data type map which can be modified with this command, due to the inner collection type.");
+							return;
+						}
+
+						value1 = value1.toUpperCase();
+						value2 = value2.toUpperCase();
+
+						FPerm newPerm = null;
+						Rel newRel = null;
+						try
+						{
+							newPerm = FPerm.valueOf(value1);
+							newRel = Rel.valueOf(value2);
+						}
+						catch (IllegalArgumentException ex) {}
+
+						if (newPerm == null)
+						{
+							sendMessage("Cannot change \""+fieldName+"\" map: \""+value1+"\" is not a valid FPerm.");
+							return;
+						}
+						if (newRel == null)
+						{
+							sendMessage("Cannot change \""+fieldName+"\" map: \""+value2+"\" is not a valid Rel.");
+							return;
+						}
+
+						@SuppressWarnings("unchecked")
+						Map<FPerm, Set<Rel>> map = (Map<FPerm, Set<Rel>>)target.get(null);
+
+						Set<Rel> relSet = map.get(newPerm);
+						if (relSet == null)
+							relSet = new HashSet<Rel>();
+
+						// Rel already present, so remove it
+						if (relSet.contains(newRel))
+						{
+							relSet.remove(newRel);
+							success = "\""+fieldName+"\" permission \""+value1+"\": relation \""+value2+"\" removed.";
+						}
+						// Rel not present yet, add it
+						else 
+						{
+							relSet.add(newRel);
+							success = "\""+fieldName+"\" permission \""+value1+"\": relation \""+value2+"\" added.";
+						}
+
+						map.put(newPerm, relSet);
+						target.set(null, map);
+					}
+
+					// Map of unknown type
+					else
+					{
+						sendMessage("\""+fieldName+"\" is not a data type map which can be modified with this command.");
+						return;
 					}
 				}
 
-				// Set of unknown type
+				// not a Set or Map?
 				else
 				{
-					sendMessage("\""+fieldName+"\" is not a data type set which can be modified with this command.");
+					sendMessage("\""+fieldName+"\" is not a data collection type which can be modified with this command.");
 					return;
 				}
 			}

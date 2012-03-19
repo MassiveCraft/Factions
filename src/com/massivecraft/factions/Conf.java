@@ -3,7 +3,7 @@ package com.massivecraft.factions;
 import java.util.*;
 
 import org.bukkit.*;
-import org.bukkit.entity.CreatureType;
+import org.bukkit.entity.EntityType;
 
 import com.massivecraft.factions.struct.FFlag;
 import com.massivecraft.factions.struct.FPerm;
@@ -36,7 +36,7 @@ public class Conf
 	public static double powerPerMinute = 0.2; // Default health rate... it takes 5 min to heal one power
 	public static double powerPerDeath = 4.0; // A death makes you lose 4 power
 	public static boolean scaleNegativePower = false; // Power regeneration rate increase as power decreases
-	public static double scaleNegativeDivisor = 40.0; // Divisor for inverse power regeneration curve    
+	public static double scaleNegativeDivisor = 40.0; // Divisor for inverse power regeneration curve
 	public static boolean powerRegenOffline = false;  // does player power regenerate even while they're offline?
 	public static double powerOfflineLossPerDay = 0.0;  // players will lose this much power per day offline
 	public static double powerOfflineLossLimit = 0.0;  // players will no longer lose power from being offline once their power drops to this amount or less
@@ -102,7 +102,14 @@ public class Conf
 	public static boolean logLandClaims = true;
 	public static boolean logLandUnclaims = true;
 	public static boolean logMoneyTransactions = true;
-	
+	public static boolean logPlayerCommands = true;
+
+	// prevent some potential exploits
+	public static boolean handleExploitObsidianGenerators = true;
+	public static boolean handleExploitEnderPearlClipping = true;
+	public static boolean handleExploitInteractionSpam = true;
+	public static boolean handleExploitTNTWaterlog = false;
+
 	public static boolean homesEnabled = true;
 	public static boolean homesMustBeInClaimedTerritory = true;
 	public static boolean homesTeleportToOnDeath = true;
@@ -130,7 +137,10 @@ public class Conf
 	public static boolean claimsCanBeUnconnectedIfOwnedByOtherFaction = true;
 	public static int claimsRequireMinFactionMembers = 1;
 	public static int claimedLandsMax = 0;
-	
+
+	// if someone is doing a radius claim and the process fails to claim land this many times in a row, it will exit
+	public static int radiusClaimFailureLimit = 9;
+
 	//public static double considerFactionsReallyOfflineAfterXMinutes = 0.0;
 	
 	public static boolean protectOfflineFactionsFromExplosions = true;
@@ -139,11 +149,11 @@ public class Conf
 	public static int actionDeniedPainAmount = 2;
 
 	// commands which will be prevented if the player is a member of a permanent faction
-	public static Set<String> permanentFactionMemberDenyCommands = new HashSet<String>();
+	public static Set<String> permanentFactionMemberDenyCommands = new LinkedHashSet<String>();
 
 	// commands which will be prevented when in claimed territory of another faction
-	public static Set<String> territoryNeutralDenyCommands = new HashSet<String>();
-	public static Set<String> territoryEnemyDenyCommands = new HashSet<String>();
+	public static Set<String> territoryNeutralDenyCommands = new LinkedHashSet<String>();
+	public static Set<String> territoryEnemyDenyCommands = new LinkedHashSet<String>();
 	
 	public static double territoryShieldFactor = 0.3;
 
@@ -160,7 +170,7 @@ public class Conf
 	//public static Set<Material> territoryDenyUseageMaterialsWhenOffline = EnumSet.noneOf(Material.class);
 	
 	// TODO: Rename to monsterCreatureTypes
-	public static transient Set<CreatureType> monsters = EnumSet.noneOf(CreatureType.class);
+	public static transient Set<EntityType> monsters = EnumSet.noneOf(EntityType.class);
 
 	// Spout features
 	public static boolean spoutFactionTagsOverNames = true;  // show faction tags over names over player heads
@@ -216,12 +226,15 @@ public class Conf
 	//public static boolean bankMembersCanWithdraw = false; //Have to be at least moderator to withdraw or pay money to another faction
 	public static boolean bankFactionPaysCosts = true; //The faction pays for faction command costs, such as sethome
 	public static boolean bankFactionPaysLandCosts = true; //The faction pays for land claiming costs.
-	
-	public static Set<String> worldsNoClaiming = new HashSet<String>();
-	public static Set<String> worldsNoPowerLoss = new HashSet<String>();
-	public static Set<String> worldsIgnorePvP = new HashSet<String>();
+
+	// mainly for other plugins/mods that use a fake player to take actions, which shouldn't be subject to our protections
+	public static Set<String> playersWhoBypassAllProtection = new LinkedHashSet<String>();
+
+	public static Set<String> worldsNoClaiming = new LinkedHashSet<String>();
+	public static Set<String> worldsNoPowerLoss = new LinkedHashSet<String>();
+	public static Set<String> worldsIgnorePvP = new LinkedHashSet<String>();
 	// TODO: A better solution Would be to have One wilderness faction per world.
-	//public static Set<String> worldsNoWildernessProtection = new HashSet<String>();
+	//public static Set<String> worldsNoWildernessProtection = new LinkedHashSet<String>();
 	
 	public static transient int mapHeight = 8;
 	public static transient int mapWidth = 39;
@@ -269,25 +282,26 @@ public class Conf
 		materialsDoor.add(Material.TRAP_DOOR);
 		materialsDoor.add(Material.FENCE_GATE);
 		
+		materialsEditTools.add(Material.FIREBALL);
 		materialsEditTools.add(Material.FLINT_AND_STEEL);
 		materialsEditTools.add(Material.BUCKET);
 		materialsEditTools.add(Material.WATER_BUCKET);
 		materialsEditTools.add(Material.LAVA_BUCKET);
 
-		monsters.add(CreatureType.BLAZE);
-		monsters.add(CreatureType.CAVE_SPIDER);
-		monsters.add(CreatureType.CREEPER);
-		monsters.add(CreatureType.ENDERMAN);
-		monsters.add(CreatureType.ENDER_DRAGON);
-		monsters.add(CreatureType.GHAST);
-		monsters.add(CreatureType.GIANT);
-		monsters.add(CreatureType.MAGMA_CUBE);
-		monsters.add(CreatureType.PIG_ZOMBIE);
-		monsters.add(CreatureType.SILVERFISH);
-		monsters.add(CreatureType.SKELETON);
-		monsters.add(CreatureType.SLIME);
-		monsters.add(CreatureType.SPIDER);
-		monsters.add(CreatureType.ZOMBIE);
+		monsters.add(EntityType.BLAZE);
+		monsters.add(EntityType.CAVE_SPIDER);
+		monsters.add(EntityType.CREEPER);
+		monsters.add(EntityType.ENDERMAN);
+		monsters.add(EntityType.ENDER_DRAGON);
+		monsters.add(EntityType.GHAST);
+		monsters.add(EntityType.GIANT);
+		monsters.add(EntityType.MAGMA_CUBE);
+		monsters.add(EntityType.PIG_ZOMBIE);
+		monsters.add(EntityType.SILVERFISH);
+		monsters.add(EntityType.SKELETON);
+		monsters.add(EntityType.SLIME);
+		monsters.add(EntityType.SPIDER);
+		monsters.add(EntityType.ZOMBIE);
 	}
 
 	// -------------------------------------------- //
