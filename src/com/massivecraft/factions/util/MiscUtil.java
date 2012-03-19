@@ -5,12 +5,12 @@ import java.util.HashSet;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Creature;
-import org.bukkit.entity.CreatureType;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Entity;
 
 public class MiscUtil
 {	
-	public static CreatureType creatureTypeFromEntity(Entity entity)
+	public static EntityType creatureTypeFromEntity(Entity entity)
 	{
 		if ( ! (entity instanceof Creature))
 		{
@@ -20,7 +20,7 @@ public class MiscUtil
 		String name = entity.getClass().getSimpleName();
 		name = name.substring(5); // Remove "Craft"
 		
-		return CreatureType.fromName(name);
+		return EntityType.fromName(name);
 	}
 	
 	// Inclusive range

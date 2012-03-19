@@ -11,9 +11,9 @@ public enum ChatMode
 	
 	private ChatMode(final int value, final String nicename)
 	{
-        this.value = value;
-        this.nicename = nicename;
-    }
+		this.value = value;
+		this.nicename = nicename;
+	}
 	
 	public boolean isAtLeast(ChatMode role)
 	{
