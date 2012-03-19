@@ -199,6 +199,9 @@ public abstract class MPlugin extends JavaPlugin
 			
 			for (String alias : command.aliases)
 			{
+				// disallow double-space after alias, so specific commands can be prevented (preventing "f home" won't prevent "f  home")
+				if (commandString.startsWith(alias+"  ")) return false;
+
 				if (commandString.startsWith(alias+" ") || commandString.equals(alias))
 				{
 					List<String> args = new ArrayList<String>(Arrays.asList(commandString.split("\\s+")));
