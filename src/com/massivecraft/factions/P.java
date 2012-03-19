@@ -30,6 +30,7 @@ import com.massivecraft.factions.integration.Worldguard;
 import com.massivecraft.factions.listeners.FactionsBlockListener;
 import com.massivecraft.factions.listeners.FactionsChatListener;
 import com.massivecraft.factions.listeners.FactionsEntityListener;
+import com.massivecraft.factions.listeners.FactionsExploitListener;
 import com.massivecraft.factions.listeners.FactionsPlayerListener;
 import com.massivecraft.factions.listeners.FactionsServerListener;
 import com.massivecraft.factions.struct.ChatMode;
@@ -54,6 +55,7 @@ public class P extends MPlugin
 	public final FactionsPlayerListener playerListener;
 	public final FactionsChatListener chatListener;
 	public final FactionsEntityListener entityListener;
+	public final FactionsExploitListener exploitListener;
 	public final FactionsBlockListener blockListener;
 	public final FactionsServerListener serverListener;
 	
@@ -73,6 +75,7 @@ public class P extends MPlugin
 		this.playerListener = new FactionsPlayerListener(this);
 		this.chatListener = new FactionsChatListener(this);
 		this.entityListener = new FactionsEntityListener(this);
+		this.exploitListener = new FactionsExploitListener();
 		this.blockListener = new FactionsBlockListener(this);
 		this.serverListener = new FactionsServerListener(this);
 	}
@@ -113,6 +116,7 @@ public class P extends MPlugin
 		getServer().getPluginManager().registerEvents(playerListener, this);
 		getServer().getPluginManager().registerEvents(chatListener, this);
 		getServer().getPluginManager().registerEvents(entityListener, this);
+		getServer().getPluginManager().registerEvents(exploitListener, this);
 		getServer().getPluginManager().registerEvents(blockListener, this);
 		getServer().getPluginManager().registerEvents(serverListener, this);
 

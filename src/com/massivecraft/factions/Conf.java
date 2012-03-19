@@ -101,7 +101,11 @@ public class Conf
 	public static boolean logLandUnclaims = true;
 	public static boolean logMoneyTransactions = true;
 	public static boolean logPlayerCommands = true;
-	
+
+	// prevent some potential exploits
+	public static boolean handleExploitObsidianGenerators = true;
+	public static boolean handleExploitEnderPearlClipping = true;
+
 	public static boolean homesEnabled = true;
 	public static boolean homesMustBeInClaimedTerritory = true;
 	public static boolean homesTeleportToOnDeath = true;
