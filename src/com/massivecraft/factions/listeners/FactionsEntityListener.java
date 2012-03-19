@@ -1,12 +1,15 @@
 package com.massivecraft.factions.listeners;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.text.MessageFormat;
 import java.util.Set;
 
 import org.bukkit.Location;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Creeper;
 import org.bukkit.entity.Enderman;
 import org.bukkit.entity.Entity;
@@ -14,6 +17,7 @@ import org.bukkit.entity.Fireball;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
+import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -127,7 +131,7 @@ public class FactionsEntityListener implements Listener
 		if (event.isCancelled()) return;
 		
 		Location loc = event.getLocation();
-		
+		Entity boomer = event.getEntity();
 		Faction faction = Board.getFactionAt(new FLocation(loc));
 
 		if (faction.noExplosionsInTerritory())
@@ -141,7 +145,7 @@ public class FactionsEntityListener implements Listener
 
 		if
 		(
-			event.getEntity() instanceof Creeper
+			boomer instanceof Creeper
 			&&
 			(
 				(faction.isNone() && Conf.wildernessBlockCreepers && !Conf.worldsNoWildernessProtection.contains(loc.getWorld().getName()))
@@ -159,7 +163,7 @@ public class FactionsEntityListener implements Listener
 		}
 		else if
 		(
-			event.getEntity() instanceof Fireball
+			boomer instanceof Fireball
 			&&
 			(
 				(faction.isNone() && Conf.wildernessBlockFireballs && !Conf.worldsNoWildernessProtection.contains(loc.getWorld().getName()))
@@ -177,37 +181,46 @@ public class FactionsEntityListener implements Listener
 		}
 		else if
 		(
+			boomer instanceof TNTPrimed
+			&&
 			(
-				faction.isNone()
-				&&
-				Conf.wildernessBlockTNT
-				&&
-				! Conf.worldsNoWildernessProtection.contains(loc.getWorld().getName())
-			)
-			||
-			(
-				faction.isNormal()
-				&&
-				(
-					online ? Conf.territoryBlockTNT : Conf.territoryBlockTNTWhenOffline
-				)
-			)
-			||
-			(
-				faction.isWarZone()
-				&&
-				Conf.warZoneBlockTNT
-			)
-			||
-			(
-				faction.isSafeZone()
-				&&
-				Conf.safeZoneBlockTNT
+				(faction.isNone() && Conf.wildernessBlockTNT && ! Conf.worldsNoWildernessProtection.contains(loc.getWorld().getName()))
+				||
+				(faction.isNormal() && ( online ? Conf.territoryBlockTNT : Conf.territoryBlockTNTWhenOffline ))
+				||
+				(faction.isWarZone() && Conf.warZoneBlockTNT)
+				||
+				(faction.isSafeZone() && Conf.safeZoneBlockTNT)
 			)
 		)
 		{
-			// we'll assume it's TNT, which needs prevention
+			// TNT which needs prevention
 			event.setCancelled(true);
+		}
+		else if (boomer instanceof TNTPrimed && Conf.handleExploitTNTWaterlog)
+		{
+			// TNT in water/lava doesn't normally destroy any surrounding blocks, which is usually desired behavior, but...
+			// this change below provides workaround for waterwalling providing perfect protection,
+			// and makes cheap (non-obsidian) TNT cannons require minor maintenance between shots
+			Block center = loc.getBlock();
+			if (center.isLiquid())
+			{
+				// a single surrounding block in all 6 directions is broken if the material is weak enough
+				List<Block> targets = new ArrayList<Block>();
+				targets.add(center.getRelative(0, 0, 1));
+				targets.add(center.getRelative(0, 0, -1));
+				targets.add(center.getRelative(0, 1, 0));
+				targets.add(center.getRelative(0, -1, 0));
+				targets.add(center.getRelative(1, 0, 0));
+				targets.add(center.getRelative(-1, 0, 0));
+				for (Block target : targets)
+				{
+					int id = target.getTypeId();
+					// ignore air, bedrock, water, lava, obsidian, enchanting table... too bad we can't get a working material durability # yet
+					if (id != 0 && (id < 7 || id > 11) && id != 49 && id != 116)
+						target.breakNaturally();
+				}
+			}
 		}
 	}
 
