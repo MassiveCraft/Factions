@@ -303,6 +303,7 @@ public class Conf
 		territoryProtectedMaterials.add(Material.CAULDRON);
 		territoryProtectedMaterials.add(Material.SOIL);
 
+		territoryDenyUseageMaterials.add(Material.FIREBALL);
 		territoryDenyUseageMaterials.add(Material.FLINT_AND_STEEL);
 		territoryDenyUseageMaterials.add(Material.BUCKET);
 		territoryDenyUseageMaterials.add(Material.WATER_BUCKET);
@@ -323,6 +324,7 @@ public class Conf
 		territoryProtectedMaterialsWhenOffline.add(Material.CAULDRON);
 		territoryProtectedMaterialsWhenOffline.add(Material.SOIL);
 
+		territoryDenyUseageMaterialsWhenOffline.add(Material.FIREBALL);
 		territoryDenyUseageMaterialsWhenOffline.add(Material.FLINT_AND_STEEL);
 		territoryDenyUseageMaterialsWhenOffline.add(Material.BUCKET);
 		territoryDenyUseageMaterialsWhenOffline.add(Material.WATER_BUCKET);
