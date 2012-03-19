@@ -56,6 +56,7 @@ public enum Permission
 	TITLE("title"),
 	UNCLAIM("unclaim"),
 	UNCLAIM_ALL("unclaimall"),
+	UNCLAIM_CHUNK("unclaimchunk"),
 	VERSION("version"),
 	;
 	
@@ -64,7 +65,7 @@ public enum Permission
 	Permission(final String node)
 	{
 		this.node = "factions."+node;
-    }
+	}
 	
 	public boolean has(CommandSender sender, boolean informSenderIfNot)
 	{

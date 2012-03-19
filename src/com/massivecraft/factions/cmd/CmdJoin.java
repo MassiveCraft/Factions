@@ -1,9 +1,13 @@
 package com.massivecraft.factions.cmd;
 
+import org.bukkit.Bukkit;
+
 import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.P;
+import com.massivecraft.factions.event.FPlayerJoinEvent;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Rel;
 
@@ -73,15 +77,44 @@ public class CmdJoin extends FCommand
 			return;
 		}
 
-		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
+		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make sure they can pay
+		if (samePlayer && ! canAffordCommand(Conf.econCostJoin, "to join a faction")) return;
+
+		// trigger the join event (cancellable)
+		FPlayerJoinEvent joinEvent = new FPlayerJoinEvent(FPlayers.i.get(me),faction,FPlayerJoinEvent.PlayerJoinReason.COMMAND);
+		Bukkit.getServer().getPluginManager().callEvent(joinEvent);
+		if (joinEvent.isCancelled()) return;
+
+		// then make 'em pay (if applicable)
 		if (samePlayer && ! payForCommand(Conf.econCostJoin, "to join a faction", "for joining a faction")) return;
 
+/*<<<<<<< HEAD
 		fme.msg("<i>You successfully joined %s", faction.getTag(fme));
 		faction.msg("<i>%s joined your faction.", fme.describeTo(faction, true));
 		
 		fme.resetFactionData();
 		fme.setFaction(faction);
 		faction.deinvite(fme);
+||||||| merged common ancestors*/
+		fme.msg("<i>%s successfully joined %s.", fplayer.describeTo(fme, true), faction.getTag(fme));
+		if (!samePlayer)
+			fplayer.msg("<i>%s moved you into the faction %s.", fme.describeTo(fplayer, true), faction.getTag(fplayer));
+		faction.msg("<i>%s joined your faction.", fplayer.describeTo(faction, true));
+
+		fplayer.resetFactionData();
+		fplayer.setFaction(faction);
+		faction.deinvite(fplayer);
+/*=======
+		fme.msg("<i>%s successfully joined %s.", fplayer.describeTo(fme, true), faction.getTag(fme));
+
+		if (!samePlayer)
+			fplayer.msg("<i>%s moved you into the faction %s.", fme.describeTo(fplayer, true), faction.getTag(fplayer));
+		faction.msg("<i>%s joined your faction.", fplayer.describeTo(faction, true));
+
+		fplayer.resetFactionData();
+		fplayer.setFaction(faction);
+		faction.deinvite(fplayer);
+>>>>>>> recruit*/
 
 		if (Conf.logFactionJoin)
 		{

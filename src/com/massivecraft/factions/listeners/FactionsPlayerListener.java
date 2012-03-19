@@ -1,14 +1,12 @@
 package com.massivecraft.factions.listeners;
 
-import java.util.logging.Logger;
+import java.util.HashMap;
 import java.util.Iterator;
-import java.util.UnknownFormatConversionException;
+import java.util.Map;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -16,7 +14,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerBucketFillEvent;
-import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
@@ -24,6 +21,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.util.NumberConversions;
 
 import com.massivecraft.factions.Board;
 import com.massivecraft.factions.Conf;
@@ -38,9 +36,6 @@ import com.massivecraft.factions.struct.FPerm;
 import com.massivecraft.factions.struct.Rel;
 import com.massivecraft.factions.util.VisualizeUtil;
 
-import java.util.logging.Level;
-
-
 
 public class FactionsPlayerListener implements Listener
 {
@@ -49,100 +44,7 @@ public class FactionsPlayerListener implements Listener
 	{
 		this.p = p;
 	}
-	
-	@EventHandler(priority = EventPriority.HIGHEST)
-	public void onPlayerChat(PlayerChatEvent event)
-	{
-		if (event.isCancelled()) return;
-		
-		Player talkingPlayer = event.getPlayer();
-		String msg = event.getMessage();
-		
-		// ... it was not a command. This means that it is a chat message!
-		FPlayer me = FPlayers.i.get(talkingPlayer);
-		
-		// Are we to insert the Faction tag into the format?
-		// If we are not to insert it - we are done.
-		if ( ! Conf.chatTagEnabled || Conf.chatTagHandledByAnotherPlugin)
-		{
-			return;
-		}
 
-		int InsertIndex = 0;
-		String eventFormat = event.getFormat();
-		
-		if (!Conf.chatTagReplaceString.isEmpty() && eventFormat.contains(Conf.chatTagReplaceString))
-		{
-			// we're using the "replace" method of inserting the faction tags
-			// if they stuck "[FACTION_TITLE]" in there, go ahead and do it too
-			if (eventFormat.contains("[FACTION_TITLE]"))
-			{
-				eventFormat = eventFormat.replace("[FACTION_TITLE]", me.getTitle());
-			}
-			InsertIndex = eventFormat.indexOf(Conf.chatTagReplaceString);
-			eventFormat = eventFormat.replace(Conf.chatTagReplaceString, "");
-			Conf.chatTagPadAfter = false;
-			Conf.chatTagPadBefore = false;
-		}
-		else if (!Conf.chatTagInsertAfterString.isEmpty() && eventFormat.contains(Conf.chatTagInsertAfterString))
-		{
-			// we're using the "insert after string" method
-			InsertIndex = eventFormat.indexOf(Conf.chatTagInsertAfterString) + Conf.chatTagInsertAfterString.length();
-		}
-		else if (!Conf.chatTagInsertBeforeString.isEmpty() && eventFormat.contains(Conf.chatTagInsertBeforeString))
-		{
-			// we're using the "insert before string" method
-			InsertIndex = eventFormat.indexOf(Conf.chatTagInsertBeforeString);
-		}
-		else
-		{
-			// we'll fall back to using the index place method
-			InsertIndex = Conf.chatTagInsertIndex;
-			if (InsertIndex > eventFormat.length())
-				return;
-		}
-		
-		String formatStart = eventFormat.substring(0, InsertIndex) + ((Conf.chatTagPadBefore && !me.getChatTag().isEmpty()) ? " " : "");
-		String formatEnd = ((Conf.chatTagPadAfter && !me.getChatTag().isEmpty()) ? " " : "") + eventFormat.substring(InsertIndex);
-		
-		String nonColoredMsgFormat = formatStart + me.getChatTag().trim() + formatEnd;
-		
-		// Relation Colored?
-		if (Conf.chatTagRelationColored)
-		{
-			// We must choke the standard message and send out individual messages to all players
-			// Why? Because the relations will differ.
-			event.setCancelled(true);
-			
-			for (Player listeningPlayer : event.getRecipients())
-			{
-				FPlayer you = FPlayers.i.get(listeningPlayer);
-				String yourFormat = formatStart + me.getChatTag(you).trim() + formatEnd;
-				try
-				{
-					listeningPlayer.sendMessage(String.format(yourFormat, talkingPlayer.getDisplayName(), msg));
-				}
-				catch (UnknownFormatConversionException ex)
-				{
-					Conf.chatTagInsertIndex = 0;
-					P.p.log(Level.SEVERE, "Critical error in chat message formatting!");
-					P.p.log(Level.SEVERE, "NOTE: This has been automatically fixed right now by setting chatTagInsertIndex to 0.");
-					P.p.log(Level.SEVERE, "For a more proper fix, please read this regarding chat configuration: http://massivecraft.com/plugins/factions/config#Chat_configuration");
-					return;
-				}
-			}
-			
-			// Write to the log... We will write the non colored message.
-			String nonColoredMsg = ChatColor.stripColor(String.format(nonColoredMsgFormat, talkingPlayer.getDisplayName(), msg));
-			Logger.getLogger("Minecraft").info(nonColoredMsg);
-		}
-		else
-		{
-			// No relation color.
-			event.setFormat(nonColoredMsgFormat);
-		}
-	}
-	
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerJoin(PlayerJoinEvent event)
 	{
@@ -167,8 +69,8 @@ public class FactionsPlayerListener implements Listener
 	}
 	
 	@EventHandler(priority = EventPriority.NORMAL)
-    public void onPlayerQuit(PlayerQuitEvent event)
-    {
+	public void onPlayerQuit(PlayerQuitEvent event)
+	{
 		FPlayer me = FPlayers.i.get(event.getPlayer());
 
 		// Make sure player's power is up to date when they log off.
@@ -227,8 +129,8 @@ public class FactionsPlayerListener implements Listener
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL)
-    public void onPlayerInteract(PlayerInteractEvent event)
-    {
+	public void onPlayerInteract(PlayerInteractEvent event)
+	{
 		if (event.isCancelled()) return;
 
 		Block block = event.getClickedBlock();
@@ -242,31 +144,29 @@ public class FactionsPlayerListener implements Listener
 		if ( ! canPlayerUseBlock(player, block, false))
 		{
 			event.setCancelled(true);
+			if (Conf.handleExploitInteractionSpam)
+			{
+				String name = player.getName();
+				InteractAttemptSpam attempt = interactSpammers.get(name);
+				if (attempt == null)
+				{
+					attempt = new InteractAttemptSpam();
+					interactSpammers.put(name, attempt);
+				}
+				int count = attempt.increment();
+				if (count >= 10)
+				{
+					FPlayer me = FPlayers.i.get(name);
+					me.msg("<b>Ouch, that is starting to hurt. You should give it a rest.");
+					player.damage(NumberConversions.floor((double)count / 10));
+				}
+			}
 			return;
 		}
 
 		if (event.getAction() != Action.RIGHT_CLICK_BLOCK)
 		{
 			return;  // only interested on right-clicks for below
-		}
-
-		// workaround fix for new CraftBukkit 1.1-R1 bug where half-step on half-step placement doesn't trigger BlockPlaceEvent
-		if (
-				event.hasItem()
-				&&
-				event.getItem().getType() == Material.STEP
-				&&
-				block.getType() == Material.STEP
-				&&
-				event.getBlockFace() == BlockFace.UP
-				&&
-				event.getItem().getData().getData() == block.getData()
-				&&
-				! FactionsBlockListener.playerCanBuildDestroyBlock(player, block, "build", false)
-			)
-		{
-			event.setCancelled(true);
-			return;
 		}
 
 		if ( ! playerCanUseItemHere(player, block.getLocation(), event.getMaterial(), false))
@@ -276,18 +176,46 @@ public class FactionsPlayerListener implements Listener
 		}
 	}
 
-    // TODO: Refactor ! justCheck    -> to informIfNot
-    // TODO: Possibly incorporate pain build... 
-    public static boolean playerCanUseItemHere(Player player, Location loc, Material material, boolean justCheck)
+
+	// for handling people who repeatedly spam attempts to open a door (or similar) in another faction's territory
+	private Map<String, InteractAttemptSpam> interactSpammers = new HashMap<String, InteractAttemptSpam>();
+	private static class InteractAttemptSpam
 	{
-		FPlayer me = FPlayers.i.get(player);
+		private int attempts = 0;
+		private long lastAttempt = System.currentTimeMillis();
+
+		// returns the current attempt count
+		public int increment()
+		{
+			long Now = System.currentTimeMillis();
+			if (Now > lastAttempt + 2000)
+				attempts = 1;
+			else
+				attempts++;
+			lastAttempt = Now;
+			return attempts;
+		}
+	}
+
+
+	// TODO: Refactor ! justCheck    -> to informIfNot
+	// TODO: Possibly incorporate pain build... 
+	public static boolean playerCanUseItemHere(Player player, Location loc, Material material, boolean justCheck)
+	{
+		String name = player.getName();
+		if (Conf.playersWhoBypassAllProtection.contains(name)) return true;
+
+		FPlayer me = FPlayers.i.get(name);
 		if (me.hasAdminMode()) return true;
 		if (Conf.materialsEditTools.contains(material) && ! FPerm.BUILD.has(me, loc, ! justCheck)) return false;
 		return true;
 	}
 	public static boolean canPlayerUseBlock(Player player, Block block, boolean justCheck)
 	{
-		FPlayer me = FPlayers.i.get(player);
+		String name = player.getName();
+		if (Conf.playersWhoBypassAllProtection.contains(name)) return true;
+
+		FPlayer me = FPlayers.i.get(name);
 		if (me.hasAdminMode()) return true;
 		Location loc = block.getLocation();
 		Material material = block.getType();

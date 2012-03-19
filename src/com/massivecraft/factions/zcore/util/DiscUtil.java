@@ -61,8 +61,8 @@ public class DiscUtil
 			URL url = new URL(urlstring);
 			ReadableByteChannel rbc = Channels.newChannel(url.openStream());
 			FileOutputStream fos = new FileOutputStream(file);
-		    fos.getChannel().transferFrom(rbc, 0, 1 << 24);
-		    return true;
+			fos.getChannel().transferFrom(rbc, 0, 1 << 24);
+			return true;
 		}
 		catch (Exception e)
 		{

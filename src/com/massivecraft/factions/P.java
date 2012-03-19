@@ -2,16 +2,18 @@ package com.massivecraft.factions;
 
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
 import org.bukkit.block.Block;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerChatEvent;
+import org.bukkit.Location;
+import org.bukkit.Material;
 
 import com.massivecraft.factions.adapters.FFlagTypeAdapter;
 import com.massivecraft.factions.adapters.FLocToStringSetTypeAdapter;
@@ -26,8 +28,9 @@ import com.massivecraft.factions.integration.LWCFeatures;
 import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.integration.Worldguard;
 import com.massivecraft.factions.listeners.FactionsBlockListener;
-import com.massivecraft.factions.listeners.FactionsChatEarlyListener;
+import com.massivecraft.factions.listeners.FactionsChatListener;
 import com.massivecraft.factions.listeners.FactionsEntityListener;
+import com.massivecraft.factions.listeners.FactionsExploitListener;
 import com.massivecraft.factions.listeners.FactionsPlayerListener;
 import com.massivecraft.factions.listeners.FactionsServerListener;
 import com.massivecraft.factions.struct.ChatMode;
@@ -35,7 +38,9 @@ import com.massivecraft.factions.struct.FFlag;
 import com.massivecraft.factions.struct.FPerm;
 import com.massivecraft.factions.struct.Rel;
 import com.massivecraft.factions.util.AutoLeaveTask;
+import com.massivecraft.factions.util.LazyLocation;
 import com.massivecraft.factions.zcore.MPlugin;
+import com.massivecraft.factions.zcore.util.TextUtil;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -48,8 +53,9 @@ public class P extends MPlugin
 	
 	// Listeners
 	public final FactionsPlayerListener playerListener;
-	public final FactionsChatEarlyListener chatEarlyListener;
+	public final FactionsChatListener chatListener;
 	public final FactionsEntityListener entityListener;
+	public final FactionsExploitListener exploitListener;
 	public final FactionsBlockListener blockListener;
 	public final FactionsServerListener serverListener;
 	
@@ -67,8 +73,9 @@ public class P extends MPlugin
 	{
 		p = this;
 		this.playerListener = new FactionsPlayerListener(this);
-		this.chatEarlyListener = new FactionsChatEarlyListener(this);
+		this.chatListener = new FactionsChatListener(this);
 		this.entityListener = new FactionsEntityListener(this);
+		this.exploitListener = new FactionsExploitListener();
 		this.blockListener = new FactionsBlockListener(this);
 		this.serverListener = new FactionsServerListener(this);
 	}
@@ -78,7 +85,8 @@ public class P extends MPlugin
 	public void onEnable()
 	{
 		if ( ! preEnable()) return;
-		
+		this.loadSuccessful = false;
+
 		// Load Conf from disk
 		Conf.load();
 		FPlayers.i.loadFromDisc();
@@ -106,12 +114,17 @@ public class P extends MPlugin
 
 		// Register Event Handlers
 		getServer().getPluginManager().registerEvents(playerListener, this);
-		getServer().getPluginManager().registerEvents(chatEarlyListener, this);
+		getServer().getPluginManager().registerEvents(chatListener, this);
 		getServer().getPluginManager().registerEvents(entityListener, this);
+		getServer().getPluginManager().registerEvents(exploitListener, this);
 		getServer().getPluginManager().registerEvents(blockListener, this);
 		getServer().getPluginManager().registerEvents(serverListener, this);
 
+		// since some other plugins execute commands directly through this command interface, provide it
+		this.getCommand(this.refCommand).setExecutor(this);
+
 		postEnable();
+		this.loadSuccessful = true;
 	}
 	
 	@Override
@@ -123,7 +136,7 @@ public class P extends MPlugin
 		.setPrettyPrinting()
 		.disableHtmlEscaping()
 		.excludeFieldsWithModifiers(Modifier.TRANSIENT, Modifier.VOLATILE)
-		.registerTypeAdapter(Location.class, new LocationTypeAdapter())
+		.registerTypeAdapter(LazyLocation.class, new LocationTypeAdapter())
 		.registerTypeAdapter(mapFLocToStringSetType, new FLocToStringSetTypeAdapter())
 		.registerTypeAdapter(Rel.class, new RelTypeAdapter())
 		.registerTypeAdapter(FPerm.class, new FPermTypeAdapter())
@@ -133,8 +146,12 @@ public class P extends MPlugin
 	@Override
 	public void onDisable()
 	{
-		Board.save();
-		Conf.save();
+		// only save data if plugin actually completely loaded successfully
+		if (this.loadSuccessful)
+		{
+			Board.save();
+			Conf.save();
+		}
 		EssentialsFeatures.unhookChat();
 		if (AutoLeaveTask != null)
 		{
@@ -167,11 +184,28 @@ public class P extends MPlugin
 	}
 
 	@Override
+	public boolean logPlayerCommands()
+	{
+		return Conf.logPlayerCommands;
+	}
+
+	@Override
 	public boolean handleCommand(CommandSender sender, String commandString, boolean testOnly)
 	{
 		if (sender instanceof Player && FactionsPlayerListener.preventCommand(commandString, (Player)sender)) return true;
 
 		return super.handleCommand(sender, commandString, testOnly);
+	}
+
+	@Override
+	public boolean onCommand(CommandSender sender, Command command, String label, String[] split)
+	{
+		// if bare command at this point, it has already been handled by MPlugin's command listeners
+		if (split == null || split.length == 0) return true;
+
+		// otherwise, needs to be handled; presumably another plugin directly ran the command
+		String cmd = Conf.baseCommandAliases.isEmpty() ? "/f" : "/" + Conf.baseCommandAliases.get(0);
+		return handleCommand(sender, cmd + " " + TextUtil.implode(Arrays.asList(split), " "), false);
 	}
 
 
