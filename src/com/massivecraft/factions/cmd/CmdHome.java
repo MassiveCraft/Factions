@@ -76,6 +76,7 @@ public class CmdHome extends FCommand
 		}
 		
 		Faction faction = Board.getFactionAt(new FLocation(me.getLocation()));
+		Location loc = me.getLocation().clone();
 		
 		// if player is not in a safe zone or their own faction territory, only allow teleport if no enemies are nearby
 		if
@@ -95,7 +96,6 @@ public class CmdHome extends FCommand
 			)
 		)
 		{
-			Location loc = me.getLocation();
 			World w = loc.getWorld();
 			double x = loc.getX();
 			double y = loc.getY();
@@ -135,8 +135,8 @@ public class CmdHome extends FCommand
 		if (Conf.homesTeleportCommandSmokeEffectEnabled)
 		{
 			List<Location> smokeLocations = new ArrayList<Location>();
-			smokeLocations.add(me.getLocation());
-			smokeLocations.add(me.getLocation().clone().add(0, 1, 0));
+			smokeLocations.add(loc);
+			smokeLocations.add(loc.add(0, 1, 0));
 			smokeLocations.add(myFaction.getHome());
 			smokeLocations.add(myFaction.getHome().clone().add(0, 1, 0));
 			SmokeUtil.spawnCloudRandom(smokeLocations, Conf.homesTeleportCommandSmokeEffectThickness);
