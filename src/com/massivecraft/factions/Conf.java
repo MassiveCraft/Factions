@@ -94,6 +94,7 @@ public class Conf
 	// prevent some potential exploits
 	public static boolean handleExploitObsidianGenerators = true;
 	public static boolean handleExploitEnderPearlClipping = true;
+	public static boolean handleExploitInteractionSpam = true;
 
 	public static boolean homesEnabled = true;
 	public static boolean homesMustBeInClaimedTerritory = true;
