@@ -270,6 +270,7 @@ public class Conf
 		materialsDoor.add(Material.TRAP_DOOR);
 		materialsDoor.add(Material.FENCE_GATE);
 		
+		materialsEditTools.add(Material.FIREBALL);
 		materialsEditTools.add(Material.FLINT_AND_STEEL);
 		materialsEditTools.add(Material.BUCKET);
 		materialsEditTools.add(Material.WATER_BUCKET);
