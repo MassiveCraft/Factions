@@ -40,19 +40,10 @@ public class FactionsChatEarlyListener implements Listener
 
 		// slashless factions commands need to be handled here if the user isn't in public chat mode
 		if (chat != ChatMode.PUBLIC && p.handleCommand(event.getPlayer(), event.getMessage()))
-		{
+		{	
 			event.setCancelled(true);
 			return;
 		}
-		
-		// Is the chat a "shout"?
-	    if (msg.startsWith("!") && me.getChatMode() != ChatMode.PUBLIC) 
-	    {
-	      msg = msg.substring(1);
-	      
-	      event.setMessage(msg);
-	      return;
-	    }
 
 		// Is it a faction chat message?
 		if (chat == ChatMode.FACTION)

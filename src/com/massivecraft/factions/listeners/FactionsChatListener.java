@@ -38,6 +38,15 @@ public class FactionsChatListener implements Listener
 		String msg = event.getMessage();
 		FPlayer me = FPlayers.i.get(talkingPlayer);
 		ChatMode chat = me.getChatMode();
+		
+		// Is the chat a "shout"?
+	    if (msg.startsWith("!") && chat != ChatMode.PUBLIC) 
+	    {
+	    	String message = msg.substring(1);
+	    	
+	    	event.setMessage(message);
+	    	return;
+	    }
 
 		// slashless factions commands need to be handled here if the user isn't in public chat mode
 		if (chat != ChatMode.PUBLIC && p.handleCommand(talkingPlayer, msg))
