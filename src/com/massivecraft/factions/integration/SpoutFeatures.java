@@ -15,6 +15,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.entity.Player;
 
 import com.massivecraft.factions.struct.Rel;
+import com.massivecraft.factions.util.HealthBarUtil;
 
 import org.getspout.spoutapi.gui.Color;
 import org.getspout.spoutapi.player.SpoutPlayer;
@@ -131,6 +132,20 @@ public class SpoutFeatures
 			updateSingle(playerA, playerB);
 		}
 	}
+	
+	// update how this player looks in the eyes of all other players
+	public static void updateMyAppearance(Player player)
+	{
+		if (!enabled() || player == null) return;
+
+		Set<FPlayer> players = FPlayers.i.getOnline();
+		FPlayer playerA = FPlayers.i.get(player);
+
+		for (FPlayer playerB : players)
+		{
+			updateSingle(playerB, playerA);
+		}
+	}
 
 	// as above method, but with a delay added; useful for after-login update which doesn't always propagate if done immediately
 	public static void updateAppearancesShortly(final Player player)
@@ -207,24 +222,34 @@ public class SpoutFeatures
 		String viewedTitle = viewed.getTitle();
 		Rel viewedRole = viewed.getRole();
 
-		if ((Conf.spoutFactionTagsOverNames || Conf.spoutFactionTitlesOverNames) && viewer != viewed)
+		if ((Conf.spoutFactionTagsOverNames || Conf.spoutFactionTitlesOverNames || Conf.spoutHealthBarUnderNames) && viewer != viewed)
 		{
+			String title = pViewed.getDisplayName();
+			
 			if (viewedFaction.isNormal())
 			{
 				String addTag = "";
 				if (Conf.spoutFactionTagsOverNames)
+				{
 					addTag += viewedFaction.getTag(viewed.getColorTo(viewer).toString() + "[") + "]";
-
+				}
+					
 				String rolePrefix = viewedRole.getPrefix();
 				if (Conf.spoutFactionTitlesOverNames && (!viewedTitle.isEmpty() || !rolePrefix.isEmpty()))
+				{
 					addTag += (addTag.isEmpty() ? "" : " ") + viewedRole.getPrefix() + viewedTitle;
+				}
 
-				pViewed.setTitleFor(pViewer, addTag + "\n" + pViewed.getDisplayName());
+				title = addTag + "\n" + title;
 			}
-			else
+			
+			if (Conf.spoutHealthBarUnderNames)
 			{
-				pViewed.setTitleFor(pViewer, pViewed.getDisplayName());
+				title += "\n";
+				title += HealthBarUtil.getHealthbar(pViewed.getHealth() / 20d);
 			}
+			
+			pViewed.setTitleFor(pViewer, title);
 		}
 
 		if

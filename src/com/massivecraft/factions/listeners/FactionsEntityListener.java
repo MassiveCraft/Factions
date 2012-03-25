@@ -26,6 +26,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
+import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.event.painting.PaintingBreakByEntityEvent;
@@ -41,6 +42,7 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.P;
+import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.struct.FFlag;
 import com.massivecraft.factions.struct.Rel;
 import com.massivecraft.factions.util.MiscUtil;
@@ -404,5 +406,31 @@ public class FactionsEntityListener implements Listener
 		if (faction.getFlag(FFlag.ENDERGRIEF)) return;
 		
 		event.setCancelled(true);
+	}
+	
+	// -------------------------------------------- //
+	// HEALTH BAR
+	// -------------------------------------------- //
+	
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void monitorEntityDamageEvent(EntityDamageEvent event)
+	{
+		if (event.isCancelled()) return;
+		if ( ! Conf.spoutHealthBarUnderNames) return;
+		Entity entity = event.getEntity();
+		if ( ! (entity instanceof Player)) return;
+		Player player = (Player)entity;
+		SpoutFeatures.updateMyAppearance(player);
+	}
+	
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void monitorEntityRegainHealthEvent(EntityRegainHealthEvent event)
+	{
+		if (event.isCancelled()) return;
+		if ( ! Conf.spoutHealthBarUnderNames) return;
+		Entity entity = event.getEntity();
+		if ( ! (entity instanceof Player)) return;
+		Player player = (Player)entity;
+		SpoutFeatures.updateMyAppearance(player);
 	}
 }

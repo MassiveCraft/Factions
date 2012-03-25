@@ -170,6 +170,16 @@ public class Conf
 	// Spout features
 	public static boolean spoutFactionTagsOverNames = true;  // show faction tags over names over player heads
 	public static boolean spoutFactionTitlesOverNames = true;  // whether to include player's title in that
+	public static boolean spoutHealthBarUnderNames = true;  // Show healthbar under player names.
+	public static String spoutHealthBarLeft = "{c}[";
+	public static String spoutHealthBarSolid = "|";
+	public static String spoutHealthBarBetween = "&8";
+	public static String spoutHealthBarEmpty = "|";
+	public static String spoutHealthBarRight = "{c}]";
+	public static double spoutHealthBarSolidsPerEmpty = 1d;
+	public static String spoutHealthBarColorTag = "{c}";
+	public static int spoutHealthBarWidth = 30;
+	public static Map<Double, String> spoutHealthBarColorUnderQuota = new LinkedHashMap<Double, String>();
 	public static boolean spoutFactionLeaderCapes = true;  // Show capes on faction admins, colored based on the viewer's relation to the target player
 	public static boolean spoutFactionOfficerCapes = true;  // same, but for faction moderators
 	public static int spoutTerritoryDisplayPosition = 3;  // permanent territory display, instead of by chat; 0 = disabled, 1 = top left, 2 = top center, 3+ = top right
@@ -296,6 +306,13 @@ public class Conf
 		monsters.add(EntityType.SLIME);
 		monsters.add(EntityType.SPIDER);
 		monsters.add(EntityType.ZOMBIE);
+		
+		spoutHealthBarColorUnderQuota.put(1.0d, "&2");
+        spoutHealthBarColorUnderQuota.put(0.8d, "&a");
+        spoutHealthBarColorUnderQuota.put(0.5d, "&e");
+        spoutHealthBarColorUnderQuota.put(0.4d, "&6");
+        spoutHealthBarColorUnderQuota.put(0.3d, "&c");
+        spoutHealthBarColorUnderQuota.put(0.2d, "&4");
 	}
 
 	// -------------------------------------------- //
