@@ -1,0 +1,555 @@
+diff --git a/plugin.yml b/plugin.yml
+index 1e168e3..8762afd 100644
+--- a/plugin.yml
++++ b/plugin.yml
+@@ -1,5 +1,5 @@
+ name: Factions
+-version: 1.7.1_dev
++version: 1.7.2c_dev_mcwars
+ main: com.massivecraft.factions.P
+ authors: [Olof Larsson, Brett Flannigan]
+ softdepend: [PermissionsEx, Permissions, Essentials, EssentialsChat, HeroChat, iChat, LocalAreaChat, LWC, nChat, ChatManager, CAPI, AuthMe, Vault, Spout, WorldEdit, WorldGuard, AuthDB, CaptureThePoints, CombatTag]
+diff --git a/src/com/massivecraft/factions/Conf.java b/src/com/massivecraft/factions/Conf.java
+index 5549c72..b3ed088 100644
+--- a/src/com/massivecraft/factions/Conf.java
++++ b/src/com/massivecraft/factions/Conf.java
+@@ -32,6 +32,9 @@ public class Conf
+ 	// Power
+ 	public static double powerPlayerMax = 10.0;
+ 	public static double powerPlayerMin = -10.0;
++	public static double powerFactionLeaderBonus = 0.0;
++	public static double powerFTotalMupliplier = 0.60;
++	public static boolean scaleFactionPower = false; // Scales the total power by the players average power
+ 	public static double powerPlayerStarting = 10.0; // New players start out with this power level
+ 	public static double powerPerMinute = 0.2; // Default health rate... it takes 5 min to heal one power
+ 	public static double powerPerDeath = 4.0; // A death makes you lose 4 power
+@@ -41,6 +44,7 @@ public class Conf
+ 	public static double powerOfflineLossPerDay = 0.0;  // players will lose this much power per day offline
+ 	public static double powerOfflineLossLimit = 0.0;  // players will no longer lose power from being offline once their power drops to this amount or less
+ 	public static double powerFactionMax = 0.0;  // if greater than 0, the cap on how much power a faction can have (additional power from players beyond that will act as a "buffer" of sorts)
++	public static boolean disbandOnLeaderNoPower= false; // Disbands the faction is the leaders power falls below Zero
+ 	
+ 	public static String prefixLeader = "**";
+ 	public static String prefixOfficer = "*";
+diff --git a/src/com/massivecraft/factions/FPlayer.java b/src/com/massivecraft/factions/FPlayer.java
+index 5946f5c..3e34311 100644
+--- a/src/com/massivecraft/factions/FPlayer.java
++++ b/src/com/massivecraft/factions/FPlayer.java
+@@ -2,6 +2,7 @@ package com.massivecraft.factions;
+ 
+ import java.util.HashSet;
+ import java.util.Set;
++import java.util.logging.Level;
+ 
+ import org.bukkit.ChatColor;
+ import org.bukkit.Location;
+@@ -151,7 +152,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
+ 
+ 		this.factionId = "0"; // The default neutral faction
+ 		this.chatMode = ChatMode.PUBLIC;
+-		this.role = Rel.RECRUIT;
++		this.role = Rel.MEMBER; // Default neutral faction has members, not recruits.
+ 		this.title = "";
+ 		this.autoClaimFor = null;
+ 
+@@ -356,6 +357,9 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
+ 	
+ 	public double getPowerMax()
+ 	{
++	    if (this.role == Rel.LEADER && Conf.powerFactionLeaderBonus > 0)
++	        return Conf.powerPlayerMax + this.powerBoost + Conf.powerFactionLeaderBonus;
++		
+ 		return Conf.powerPlayerMax + this.powerBoost;
+ 	}
+ 	
+@@ -427,6 +431,29 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
+ 	{
+ 		this.updatePower();
+ 		this.alterPower(-Conf.powerPerDeath);
++		
++	    if ( Conf.disbandOnLeaderNoPower && this.role == Rel.LEADER && this.power <= Conf.powerPlayerMin ) // Is the king dead?
++	    {
++	    	Faction faction = this.getFaction();
++	    	if (faction.getFlag(FFlag.INFPOWER))
++	    		return;
++	    	P.p.log(Level.INFO,  this.id + "has Disbanded due to the Faction Leader " + faction.getTag(this) + " falling from power.");
++	    	// Inform all players
++	    	for (FPlayer fplayer : FPlayers.i.getOnline())
++	    	{
++	    		if (fplayer.getFaction() == faction)
++	    		{
++	    			fplayer.msg("<i>Your leader <h>%s<i> died and the faction was disbanded.", this.id);
++	    		}
++	    		else
++	    		{
++	    			fplayer.msg("<i>The faction <h>%s<i> disbanded.  Their leader, <h>%s<i> has fallen.", faction.getTag(fplayer), this.id);
++	    		}
++	    	} 
++	    	faction.detach();
++	    	this.resetFactionData();
++	    	this.alterPower(this.power);
++	    }
+ 	}
+ 	
+ 	//----------------------------------------------//
+diff --git a/src/com/massivecraft/factions/FPlayers.java b/src/com/massivecraft/factions/FPlayers.java
+index 186b47a..0a3884f 100644
+--- a/src/com/massivecraft/factions/FPlayers.java
++++ b/src/com/massivecraft/factions/FPlayers.java
+@@ -5,6 +5,7 @@ import java.lang.reflect.Type;
+ import java.util.Map;
+ import java.util.concurrent.ConcurrentSkipListMap;
+ import java.util.concurrent.CopyOnWriteArrayList;
++import java.util.logging.Level;
+ 
+ import com.google.gson.reflect.TypeToken;
+ import com.massivecraft.factions.struct.Rel;
+@@ -42,7 +43,7 @@ public class FPlayers extends PlayerEntityCollection<FPlayer>
+ 		{
+ 			if ( ! Factions.i.exists(fplayer.getFactionId()))
+ 			{
+-				p.log("Reset faction data (invalid faction) for player "+fplayer.getName());
++				p.log(Level.INFO, "Reset faction data (invalid faction) for player "+fplayer.getName());
+ 				fplayer.resetFactionData(false);
+ 			}
+ 		}
+diff --git a/src/com/massivecraft/factions/Faction.java b/src/com/massivecraft/factions/Faction.java
+index e6111c8..d8cd4e2 100644
+--- a/src/com/massivecraft/factions/Faction.java
++++ b/src/com/massivecraft/factions/Faction.java
+@@ -1,6 +1,7 @@
+ package com.massivecraft.factions;
+ 
+ import java.util.*;
++import java.util.logging.Level;
+ 
+ import org.bukkit.ChatColor;
+ import org.bukkit.Location;
+@@ -24,7 +25,7 @@ public class Faction extends Entity implements EconomyParticipator
+ 	// FIELD: fplayers
+ 	// speedy lookup of players in faction
+ 	private transient Set<FPlayer> fplayers = new HashSet<FPlayer>();
+-
++	
+ 	// FIELD: invites
+ 	// Where string is a lowercase player name
+ 	private Set<String> invites; 
+@@ -287,6 +288,16 @@ public class Faction extends Entity implements EconomyParticipator
+ 		{
+ 			ret += fplayer.getPower();
+ 		}
++	    if (Conf.scaleFactionPower)
++	    {
++	    	double TotalPowers = (ret) / this.getFPlayers().size();
++	    	double PowerMultiplier =  Math.pow(this.getFPlayers().size(), Conf.powerFTotalMupliplier);  
++	    	ret = (TotalPowers * PowerMultiplier);
++	    }
++		if (ret > getPowerMax())
++		{
++			ret = getPowerMax();
++		}
+ 		if (Conf.powerFactionMax > 0 && ret > Conf.powerFactionMax)
+ 		{
+ 			ret = Conf.powerFactionMax;
+@@ -306,6 +317,12 @@ public class Faction extends Entity implements EconomyParticipator
+ 		{
+ 			ret += fplayer.getPowerMax();
+ 		}
++	    if (Conf.scaleFactionPower)
++	    {
++	    	double TotalPowers = (ret - Conf.powerFactionLeaderBonus) / this.getFPlayers().size();
++	    	double PowerMultiplier =  Math.pow(this.getFPlayers().size(), Conf.powerFTotalMupliplier);  
++	    	ret = (TotalPowers * PowerMultiplier);
++	    }
+ 		if (Conf.powerFactionMax > 0 && ret > Conf.powerFactionMax)
+ 		{
+ 			ret = Conf.powerFactionMax;
+@@ -560,24 +577,53 @@ public class Faction extends Entity implements EconomyParticipator
+ 	public void updateOfflineExplosionProtection() {
+ 		//We've either gained or lost a player.
+ 		
+-		if (this.getOnlinePlayers().size() == 0 ) {
++		if (id == "-1" || id == "-2" || getId() == "0")
++		{
++			return;
++		}
++		
++		if (this.getOnlinePlayers().size() <= 1 && this.getLastOnlineTime() + ( Conf.offlineExplosionProtectionDelay * 60 * 1000 ) < System.currentTimeMillis()) 
++		{
+ 			//No one is online, set the last online time
+ 			this.lastOnlineTime = System.currentTimeMillis();
+ 		}
+ 	}
+ 	
+-	public boolean hasOfflineExplosionProtection() {
++	public boolean hasOfflineExplosionProtection() 
++	{
++		long lastonlinetime = (long) (this.getLastOnlineTime() + ( Conf.offlineExplosionProtectionDelay * 60 * 1000 ));
++		
++		if (this.id == "-1" || this.id == "-2" )
++		{
++			return true;
++		}
++		else if ( (this.getId() == "-1" || this.getId() == "-2") && this.getFlag(FFlag.EXPLOSIONS) == false )
++		{
++			return true;
++		}
+ 		
+ 		//No protection if we are online.
+-		if (this.getOnlinePlayers().size() > 0 ) {
++		if ( this.getOnlinePlayers().size() > 0 || this.isNone() ) 
++		{
+ 			return false;
+ 		}
+-		
+-		if ( this.lastOnlineTime + ( Conf.offlineExplosionProtectionDelay * 60 * 1000 ) < System.currentTimeMillis() ) {
+-			//Last online time + buffer time < current time, so the protection has expired.
++		else if ( this.getOnlinePlayers().size() == 0 && lastonlinetime > System.currentTimeMillis())
++		{
++			updateOfflineExplosionProtection();
++		}
++				
++		if ( lastonlinetime > System.currentTimeMillis())
++		{
+ 			return false;
+-		} else {
++		}
++		else
++		{
+ 			return true;
+ 		}
+ 	}
++	
++	public long getLastOnlineTime()
++	{
++		return this.lastOnlineTime;
++	}
+ }
+diff --git a/src/com/massivecraft/factions/Factions.java b/src/com/massivecraft/factions/Factions.java
+index efe9cdc..48e1e00 100644
+--- a/src/com/massivecraft/factions/Factions.java
++++ b/src/com/massivecraft/factions/Factions.java
+@@ -20,7 +20,7 @@ import com.massivecraft.factions.zcore.util.TextUtil;
+ public class Factions extends EntityCollection<Faction>
+ {
+ 	public static Factions i = new Factions();
+-	
++		
+ 	P p = P.p;
+ 	
+ 	private Factions()
+@@ -183,9 +183,8 @@ public class Factions extends EntityCollection<Faction>
+ 		if ( ! this.exists(id))
+ 		{
+ 			p.log(Level.WARNING, "Non existing factionId "+id+" requested! Issuing cleaning!");
+-			Board.clean();
+ 			FPlayers.i.clean();
+-		}
++		}
+ 		
+ 		return super.get(id);
+ 	}
+diff --git a/src/com/massivecraft/factions/cmd/CmdJoin.java b/src/com/massivecraft/factions/cmd/CmdJoin.java
+index 32eecec..b07a042 100644
+--- a/src/com/massivecraft/factions/cmd/CmdJoin.java
++++ b/src/com/massivecraft/factions/cmd/CmdJoin.java
+@@ -4,6 +4,7 @@ import com.massivecraft.factions.Conf;
+ import com.massivecraft.factions.Faction;
+ import com.massivecraft.factions.P;
+ import com.massivecraft.factions.struct.Permission;
++import com.massivecraft.factions.struct.Rel;
+ 
+ public class CmdJoin extends FCommand
+ {
+@@ -69,6 +70,7 @@ public class CmdJoin extends FCommand
+ 		
+ 		fme.resetFactionData();
+ 		fme.setFaction(faction);
++		fme.setRole(Rel.RECRUIT); //They have just joined a faction, start them out on the lowest rank.
+ 		faction.deinvite(fme);
+ 
+ 		if (Conf.logFactionJoin)
+diff --git a/src/com/massivecraft/factions/listeners/FactionsBlockListener.java b/src/com/massivecraft/factions/listeners/FactionsBlockListener.java
+index 3ade74d..b5e189e 100644
+--- a/src/com/massivecraft/factions/listeners/FactionsBlockListener.java
++++ b/src/com/massivecraft/factions/listeners/FactionsBlockListener.java
+@@ -1,6 +1,9 @@
+ package com.massivecraft.factions.listeners;
+ 
++import java.util.logging.Level;
++
+ import org.bukkit.Location;
++import org.bukkit.Material;
+ import org.bukkit.block.Block;
+ import org.bukkit.entity.Player;
+ import org.bukkit.event.EventHandler;
+@@ -65,6 +68,9 @@ public class FactionsBlockListener implements Listener
+ 		Location location = block.getLocation();
+ 		FLocation loc = new FLocation(location);
+ 		Faction factionHere = Board.getFactionAt(loc);
++		
++		//me.msg( "factionHere.isNone: " + factionHere.isNone() + " :: Faction Here: " + factionHere.getId());
++		if (factionHere.isNone() && ! me.hasFaction()) return true;
+ 
+ 		if ( ! FPerm.BUILD.has(me, location) && FPerm.PAINBUILD.has(me, location))
+ 		{
+@@ -75,7 +81,7 @@ public class FactionsBlockListener implements Listener
+ 			}
+ 			return true;
+ 		}
+-		
++
+ 		return FPerm.BUILD.has(me, loc, true);
+ 	}
+ 	
+@@ -96,6 +102,13 @@ public class FactionsBlockListener implements Listener
+ 		{
+ 			event.setCancelled(true);
+ 		}
++		
++		/*Material handItem = event.getPlayer().getItemInHand().getType();
++     	if (handItem == Material.TNT || handItem == Material.REDSTONE_TORCH_ON)
++     	{
++     		Faction targetFaction = Board.getFactionAt(new FLocation(event.getBlock()));
++     		FactionsEntityListener.trackPotentialExplosionExploit(event.getPlayer().getName(), targetFaction, handItem, event.getBlock().getLocation());
++     	}*/
+ 	}
+ 
+ 	@EventHandler(priority = EventPriority.NORMAL)
+diff --git a/src/com/massivecraft/factions/listeners/FactionsChatEarlyListener.java b/src/com/massivecraft/factions/listeners/FactionsChatEarlyListener.java
+index 40e569c..a7dddbe 100644
+--- a/src/com/massivecraft/factions/listeners/FactionsChatEarlyListener.java
++++ b/src/com/massivecraft/factions/listeners/FactionsChatEarlyListener.java
+@@ -44,6 +44,15 @@ public class FactionsChatEarlyListener implements Listener
+ 			event.setCancelled(true);
+ 			return;
+ 		}
++		
++		// Is the chat a "shout"?
++	    if (msg.startsWith("!") && me.getChatMode() != ChatMode.PUBLIC) 
++	    {
++	      msg = msg.substring(1);
++	      
++	      event.setMessage(msg);
++	      return;
++	    }
+ 
+ 		// Is it a faction chat message?
+ 		if (chat == ChatMode.FACTION)
+diff --git a/src/com/massivecraft/factions/listeners/FactionsEntityListener.java b/src/com/massivecraft/factions/listeners/FactionsEntityListener.java
+index 7152dd2..9c7a44c 100644
+--- a/src/com/massivecraft/factions/listeners/FactionsEntityListener.java
++++ b/src/com/massivecraft/factions/listeners/FactionsEntityListener.java
+@@ -1,12 +1,19 @@
+ package com.massivecraft.factions.listeners;
+ 
+ import java.text.MessageFormat;
++import java.util.ArrayList;
++import java.util.logging.Level;
+ 
+ import org.bukkit.Location;
++import org.bukkit.Material;
+ import org.bukkit.block.Block;
++import org.bukkit.entity.Creeper;
+ import org.bukkit.entity.Entity;
++import org.bukkit.entity.Explosive;
++import org.bukkit.entity.Fireball;
+ import org.bukkit.entity.Player;
+ import org.bukkit.entity.Projectile;
++import org.bukkit.entity.TNTPrimed;
+ import org.bukkit.event.EventHandler;
+ import org.bukkit.event.EventPriority;
+ import org.bukkit.event.Listener;
+@@ -18,6 +25,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
+ import org.bukkit.event.entity.EntityDeathEvent;
+ import org.bukkit.event.entity.EntityExplodeEvent;
+ import org.bukkit.event.entity.EntityTargetEvent;
++import org.bukkit.event.entity.ExplosionPrimeEvent;
+ import org.bukkit.event.painting.PaintingBreakByEntityEvent;
+ import org.bukkit.event.painting.PaintingBreakEvent;
+ import org.bukkit.event.painting.PaintingPlaceEvent;
+@@ -92,12 +100,56 @@ public class FactionsEntityListener implements Listener
+ 	@EventHandler(priority = EventPriority.NORMAL)
+ 	public void onEntityExplode(EntityExplodeEvent event)
+ 	{
++		//p.log(Level.INFO, "Explosion Event!");
+ 		if ( event.isCancelled()) return;
++		
++	    // "NoBoom" offline faction protection area block deny.
++	    if (event.getEntity() instanceof Fireball || event.getEntity() instanceof Creeper || event.getEntity() instanceof Explosive)
++	    {
++	    	Faction faction = Board.getFactionAt(new FLocation(event.getLocation().getBlock()));
++	    	// Only update Explosion Protection on TNTPrimed or Fireball from within the chunk..
++	    	if ( !faction.hasOfflineExplosionProtection() )
++	    		faction.updateOfflineExplosionProtection(); 
++	    }
++	    
++		if (event.getEntity() instanceof TNTPrimed && exploitExplosions.size() > 0)
++		{	// make sure this isn't a TNT explosion exploit attempt
++			int locX = event.getLocation().getBlockX();
++			int locZ = event.getLocation().getBlockZ();
++
++			for (int i = exploitExplosions.size() - 1; i >= 0; i--)
++			{
++				PotentialExplosionExploit ex = exploitExplosions.get(i);
+ 
++				// remove anything from the list older than 10 seconds (TNT takes 4 seconds to trigger; provide some leeway)
++				if (ex.timeMillis + 10000 < System.currentTimeMillis())
++				{
++					exploitExplosions.remove(i);
++					continue;
++				}
++				
++				int absX = Math.abs(ex.X - locX);
++				int absZ = Math.abs(ex.Z - locZ);
++				if (absX < 5 && absZ < 5) 
++				{	// it sure looks like an exploit attempt
++					// let's tattle on him to everyone
++					String msg = "NOTICE: Player \""+ex.playerName+"\" attempted to exploit a TNT bug in the territory of \""+ex.faction.getTag()+"\"";
++					P.p.log(Level.WARNING, msg + " at "+ex.X+","+ex.Z+" (X,Z) using a "+ex.item.name());
++					for (FPlayer fplayer : FPlayers.i.getOnline())
++					{
++						fplayer.sendMessage(msg + "!");
++					}
++					event.setCancelled(true);
++					exploitExplosions.remove(i);
++					return;
++				}
++			}
++		}
++		
+ 		for (Block block : event.blockList())
+ 		{
+ 			Faction faction = Board.getFactionAt(new FLocation(block));
+-			if (faction.getFlag(FFlag.EXPLOSIONS) == false || faction.hasOfflineExplosionProtection() )
++			if (faction.hasOfflineExplosionProtection())
+ 			{
+ 				// faction is peaceful and has explosions set to disabled
+ 				event.setCancelled(true);
+@@ -316,4 +368,78 @@ public class FactionsEntityListener implements Listener
+ 		
+ 		event.setCancelled(true);
+ 	}
++	
++	/**
++	 * Canceled redstone torch placement next to existing TNT is still triggering an explosion, thus, our workaround here.
++	 * related to this:
++	 * https://bukkit.atlassian.net/browse/BUKKIT-89
++	 * though they do finally appear to have fixed the converse situation (existing redstone torch, TNT placement attempted but canceled)
++	 */
++	private static ArrayList<PotentialExplosionExploit> exploitExplosions = new ArrayList<PotentialExplosionExploit>();
++
++	/*@EventHandler(priority = EventPriority.NORMAL)
++	public void onExplosionPrime(ExplosionPrimeEvent event)
++	{
++		if (event.isCancelled()) return;
++		if (! (event.getEntity() instanceof TNTPrimed)) return;
++		if (exploitExplosions.isEmpty()) return;
++
++		// make sure this isn't a TNT explosion exploit attempt
++
++		int locX = event.getEntity().getLocation().getBlockX();
++		int locZ = event.getEntity().getLocation().getBlockZ();
++
++		for (int i = exploitExplosions.size() - 1; i >= 0; i--)
++		{
++			PotentialExplosionExploit ex = exploitExplosions.get(i);
++
++			// remove anything from the list older than 8 seconds
++			if (ex.timeMillis + 8000 < System.currentTimeMillis())
++			{
++				exploitExplosions.remove(i);
++				continue;
++			}
++
++			int absX = Math.abs(ex.X - locX);
++			int absZ = Math.abs(ex.Z - locZ);
++			if (absX < 5 && absZ < 5) 
++			{	// it sure looks like an exploit attempt
++				// let's tattle on him to everyone
++				String msg = "NOTICE: Player \""+ex.playerName+"\" attempted to exploit a TNT bug in the territory of \""+ex.faction.getTag()+"\"";
++				P.p.log(Level.WARNING, msg + " at "+ex.X+","+ex.Z+" (X,Z) using a "+ex.item.name());
++				for (FPlayer fplayer : FPlayers.i.getOnline())
++				{
++					fplayer.sendMessage(msg+". Coordinates logged.");
++				}
++				event.setCancelled(true);
++				exploitExplosions.remove(i);
++				return;
++			}
++		}
++	}*/
++
++	public static void trackPotentialExplosionExploit(String playerName, Faction faction, Material item, Location location)
++	{
++		exploitExplosions.add(new PotentialExplosionExploit(playerName, faction, item, location));
++	}
++
++	public static class PotentialExplosionExploit
++	{
++		public String playerName;
++		public Faction faction;
++		public Material item;
++		public long timeMillis;
++		public int X;
++		public int Z;
++
++		public PotentialExplosionExploit(String playerName, Faction faction, Material item, Location location)
++		{
++			this.playerName = playerName;
++			this.faction = faction;
++			this.item = item;
++			this.timeMillis = System.currentTimeMillis();
++			this.X = location.getBlockX();
++			this.Z = location.getBlockZ();
++		}
++	}
+ }
+diff --git a/src/com/massivecraft/factions/listeners/FactionsPlayerListener.java b/src/com/massivecraft/factions/listeners/FactionsPlayerListener.java
+index dc674e8..14a517d 100644
+--- a/src/com/massivecraft/factions/listeners/FactionsPlayerListener.java
++++ b/src/com/massivecraft/factions/listeners/FactionsPlayerListener.java
+@@ -30,6 +30,7 @@ import com.massivecraft.factions.Conf;
+ import com.massivecraft.factions.FLocation;
+ import com.massivecraft.factions.FPlayer;
+ import com.massivecraft.factions.FPlayers;
++import com.massivecraft.factions.Faction;
+ import com.massivecraft.factions.P;
+ import com.massivecraft.factions.integration.SpoutFeatures;
+ import com.massivecraft.factions.struct.FFlag;
+@@ -154,9 +155,10 @@ public class FactionsPlayerListener implements Listener
+ 		FPlayers.i.autoLeaveOnInactivityRoutine();
+ 		FPlayers.i.autoLeaveOnInactivityRoutine();
+ 		
++		Faction faction = me.getFaction();
+ 		if( me.hasFaction() ) {
+-			//Notify our faction that the number of online players has changed.
+-			me.getFaction().updateOfflineExplosionProtection();
++			//Notify our faction that the number of online players has changed.	
++			faction.updateOfflineExplosionProtection();
+ 		}
+ 
+ 		SpoutFeatures.updateAppearancesShortly(event.getPlayer());
+@@ -169,9 +171,10 @@ public class FactionsPlayerListener implements Listener
+ 		FPlayer me = FPlayers.i.get(event.getPlayer());
+ 		me.getPower();
+ 		
++		Faction faction = me.getFaction();
+ 		if( me.hasFaction() ) {
+-			//Notify our faction that the number of online players has changed.
+-			me.getFaction().updateOfflineExplosionProtection();
++			//Notify our faction that the number of online players has changed.	
++			faction.updateOfflineExplosionProtection();
+ 		}
+ 		
+ 		SpoutFeatures.playerDisconnect(me);
+@@ -282,7 +285,9 @@ public class FactionsPlayerListener implements Listener
+ 		if (me.hasAdminMode()) return true;
+ 		Location loc = block.getLocation();
+ 		Material material = block.getType();
++		Faction factionHere = Board.getFactionAt(loc);
+ 		
++		if (factionHere.isNone() && ! me.hasFaction()) return true;
+ 		if (Conf.materialsEditOnInteract.contains(material) && ! FPerm.BUILD.has(me, loc, ! justCheck)) return false;
+ 		if (Conf.materialsContainer.contains(material) && ! FPerm.CONTAINER.has(me, loc, ! justCheck)) return false;
+ 		if (Conf.materialsDoor.contains(material)      && ! FPerm.DOOR.has(me, loc, ! justCheck)) return false;
