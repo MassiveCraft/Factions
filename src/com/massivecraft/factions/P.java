@@ -31,6 +31,7 @@ import com.massivecraft.factions.listeners.FactionsBlockListener;
 import com.massivecraft.factions.listeners.FactionsChatListener;
 import com.massivecraft.factions.listeners.FactionsEntityListener;
 import com.massivecraft.factions.listeners.FactionsExploitListener;
+import com.massivecraft.factions.listeners.FactionsHealthBarListener;
 import com.massivecraft.factions.listeners.FactionsPlayerListener;
 import com.massivecraft.factions.listeners.FactionsServerListener;
 import com.massivecraft.factions.struct.ChatMode;
@@ -58,6 +59,7 @@ public class P extends MPlugin
 	public final FactionsExploitListener exploitListener;
 	public final FactionsBlockListener blockListener;
 	public final FactionsServerListener serverListener;
+	public final FactionsHealthBarListener healthBarListener;
 	
 	// Persistance related
 	private boolean locked = false;
@@ -78,6 +80,7 @@ public class P extends MPlugin
 		this.exploitListener = new FactionsExploitListener();
 		this.blockListener = new FactionsBlockListener(this);
 		this.serverListener = new FactionsServerListener(this);
+		this.healthBarListener = new FactionsHealthBarListener(this);
 	}
 
 
