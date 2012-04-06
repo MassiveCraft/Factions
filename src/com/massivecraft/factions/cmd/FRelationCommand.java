@@ -47,6 +47,12 @@ public abstract class FRelationCommand extends FCommand
 			return;
 		}
 
+		if (myFaction.getRelationWish(them) == targetRelation)
+		{
+			msg("<b>You already have that relation wish set with %s.", them.getTag());
+			return;
+		}
+
 		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
 		if ( ! payForCommand(targetRelation.getRelationCost(), "to change a relation wish", "for changing a relation wish")) return;
 
