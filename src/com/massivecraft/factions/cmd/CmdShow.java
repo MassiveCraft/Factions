@@ -128,7 +128,7 @@ public class CmdShow extends FCommand
 		for (FPlayer follower : admins)
 		{
 			listpart = follower.getNameAndTitle(fme)+p.txt.parse("<i>")+", ";
-			if (follower.isOnline())
+			if (follower.isOnlineAndVisibleTo(me))
 			{
 				onlineList += listpart;
 			}
@@ -141,7 +141,7 @@ public class CmdShow extends FCommand
 		{
 			listpart = follower.getNameAndTitle(fme)+p.txt.parse("<i>")+", ";
 			if
-			(follower.isOnline())
+			(follower.isOnlineAndVisibleTo(me))
 			{
 				onlineList += listpart;
 			} else {
@@ -150,7 +150,7 @@ public class CmdShow extends FCommand
 		}
 		for (FPlayer follower : normals) {
 			listpart = follower.getNameAndTitle(fme)+p.txt.parse("<i>")+", ";
-			if (follower.isOnline()) {
+			if (follower.isOnlineAndVisibleTo(me)) {
 				onlineList += listpart;
 			} else {
 				offlineList += listpart;

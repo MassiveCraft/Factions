@@ -16,7 +16,14 @@ public class PlayerEntity extends Entity
 	{
 		return this.getPlayer() != null;
 	}
-	
+
+	// make sure target player should be able to detect that this player is online
+	public boolean isOnlineAndVisibleTo(Player player)
+	{
+		Player target = this.getPlayer();
+		return target != null && player.canSee(target);
+	}
+
 	public boolean isOffline()
 	{
 		return ! isOnline();
