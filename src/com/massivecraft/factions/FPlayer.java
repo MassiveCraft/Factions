@@ -154,7 +154,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 
 		this.factionId = "0"; // The default neutral faction
 		this.chatMode = ChatMode.PUBLIC;
-		this.role = Rel.MEMBER;
+		this.role = Rel.MEMBER; // Default neutral faction has members, not recruits.
 		this.title = "";
 		this.autoClaimFor = null;
 

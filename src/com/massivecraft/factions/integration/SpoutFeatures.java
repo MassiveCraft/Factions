@@ -279,6 +279,8 @@ public class SpoutFeatures
 				cape = Conf.capeNeutral;
 			else if (relation == Rel.MEMBER)
 				cape = Conf.capeMember;
+			else if (relation == Rel.RECRUIT)
+				cape = Conf.capeRecruit;
 			else if (relation == Rel.ENEMY)
 				cape = Conf.capeEnemy;
 			else if (relation == Rel.ALLY)

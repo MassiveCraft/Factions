@@ -6,9 +6,10 @@ import com.massivecraft.factions.Conf;
 
 public enum Rel
 {
-	LEADER   (70, "your faction leader", "your faction leader", "", ""),
-	OFFICER  (60, "an officer in your faction", "officers in your faction", "", ""),
-	MEMBER   (50, "a member in your faction", "members in your faction", "your faction", "your factions"),
+	LEADER   (80, "your faction leader", "your faction leader", "", ""),
+	OFFICER  (70, "an officer in your faction", "officers in your faction", "", ""),
+	MEMBER   (60, "a member in your faction", "members in your faction", "your faction", "your factions"),
+	RECRUIT  (50, "a recruit in your faction", "recruits in your faction", "", ""),
 	ALLY     (40, "an ally", "allies", "an allied faction", "allied factions"),
 	TRUCE    (30, "someone in truce with you", "those in truce with you", "a faction in truce", "factions in truce"),
 	NEUTRAL  (20, "someone neutral to you", "those neutral to you", "a neutral faction", "neutral factions"),
@@ -64,6 +65,7 @@ public enum Rel
 		if (c == 'l') return LEADER;
 		if (c == 'o') return OFFICER;
 		if (c == 'm') return MEMBER;
+		if (c == 'r') return RECRUIT;
 		if (c == 'a') return ALLY;
 		if (c == 't') return TRUCE;
 		if (c == 'n') return NEUTRAL;
@@ -93,7 +95,7 @@ public enum Rel
 	
 	public ChatColor getColor()
 	{
-		if (this.isAtLeast(MEMBER))
+		if (this.isAtLeast(RECRUIT))
 			return Conf.colorMember;
 		else if (this == ALLY)
 			return Conf.colorAlly;
@@ -115,6 +117,16 @@ public enum Rel
 		if (this == OFFICER)
 		{
 			return Conf.prefixOfficer;
+		}
+		
+		if (this == MEMBER)
+		{
+			return Conf.prefixMember;
+		}
+		
+		if (this == RECRUIT)
+		{
+			return Conf.prefixRecruit;
 		}
 		
 		return "";

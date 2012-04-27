@@ -15,6 +15,7 @@ public class FCmdRoot extends FCommand
 	public CmdConfig cmdConfig = new CmdConfig();
 	public CmdCreate cmdCreate = new CmdCreate();
 	public CmdDeinvite cmdDeinvite = new CmdDeinvite();
+	public CmdDemote cmdDemote = new CmdDemote();
 	public CmdDescription cmdDescription = new CmdDescription();
 	public CmdDisband cmdDisband = new CmdDisband();
 	public CmdFlag cmdFlag = new CmdFlag();
@@ -27,12 +28,12 @@ public class FCmdRoot extends FCommand
 	public CmdList cmdList = new CmdList();
 	public CmdLock cmdLock = new CmdLock();
 	public CmdMap cmdMap = new CmdMap();
-	public CmdOfficer cmdOfficer = new CmdOfficer();
 	public CmdMoney cmdMoney = new CmdMoney();
 	public CmdOpen cmdOpen = new CmdOpen();
 	public CmdPerm cmdPerm = new CmdPerm();
 	public CmdPower cmdPower = new CmdPower();
 	public CmdPowerBoost cmdPowerBoost = new CmdPowerBoost();
+	public CmdPromote cmdPromote = new CmdPromote();
 	public CmdRelationAlly cmdRelationAlly = new CmdRelationAlly();
 	public CmdRelationEnemy cmdRelationEnemy = new CmdRelationEnemy();
 	public CmdRelationNeutral cmdRelationNeutral = new CmdRelationNeutral();
@@ -79,6 +80,7 @@ public class FCmdRoot extends FCommand
 		this.addSubCommand(this.cmdConfig);
 		this.addSubCommand(this.cmdCreate);
 		this.addSubCommand(this.cmdDeinvite);
+		this.addSubCommand(this.cmdDemote);
 		this.addSubCommand(this.cmdDescription);
 		this.addSubCommand(this.cmdDisband);
 		this.addSubCommand(this.cmdFlag);
@@ -91,12 +93,12 @@ public class FCmdRoot extends FCommand
 		this.addSubCommand(this.cmdList);
 		this.addSubCommand(this.cmdLock);
 		this.addSubCommand(this.cmdMap);
-		this.addSubCommand(this.cmdOfficer);
 		this.addSubCommand(this.cmdMoney);
 		this.addSubCommand(this.cmdOpen);
 		this.addSubCommand(this.cmdPerm);
 		this.addSubCommand(this.cmdPower);
 		this.addSubCommand(this.cmdPowerBoost);
+		this.addSubCommand(this.cmdPromote);
 		this.addSubCommand(this.cmdRelationAlly);
 		this.addSubCommand(this.cmdRelationEnemy);
 		this.addSubCommand(this.cmdRelationNeutral);
