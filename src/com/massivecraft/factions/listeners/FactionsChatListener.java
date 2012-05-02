@@ -1,24 +1,30 @@
 package com.massivecraft.factions.listeners;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Level;
-import java.util.UnknownFormatConversionException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChatEvent;
+import org.bukkit.plugin.AuthorNagException;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.RegisteredListener;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
-import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.P;
-import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.struct.Rel;
-
 
 public class FactionsChatListener implements Listener
 {
@@ -28,158 +34,232 @@ public class FactionsChatListener implements Listener
 		this.p = p;
 	}
 	
-	// this is for handling slashless command usage and faction/alliance chat, set at lowest priority so Factions gets to them first
-	@EventHandler(priority = EventPriority.LOWEST)
-	public void onPlayerEarlyChat(PlayerChatEvent event)
+	public static Field fieldRegisteredListenerDotPriority;
+	public static final Pattern parsePattern;
+	static
 	{
-		if (event.isCancelled()) return;
-
-		Player talkingPlayer = event.getPlayer();
-		String msg = event.getMessage();
-		FPlayer me = FPlayers.i.get(talkingPlayer);
-		ChatMode chat = me.getChatMode();
-
-		// slashless factions commands need to be handled here if the user isn't in public chat mode
-		if (chat != ChatMode.PUBLIC && p.handleCommand(talkingPlayer, msg))
+		try
 		{
-			if (Conf.logPlayerCommands)
-				Bukkit.getLogger().log(Level.INFO, "[PLAYER_COMMAND] "+talkingPlayer.getName()+": "+msg);
-			event.setCancelled(true);
-			return;
+			fieldRegisteredListenerDotPriority = RegisteredListener.class.getDeclaredField("priority");
+			fieldRegisteredListenerDotPriority.setAccessible(true);
 		}
-
-		// Is it a faction chat message?
-		if (chat == ChatMode.FACTION)
+		catch (Exception e)
 		{
-			Faction myFaction = me.getFaction();
- 			
-			String message = String.format(Conf.factionChatFormat, me.describeTo(myFaction), msg);
-			myFaction.sendMessage(message);
-			
-			Bukkit.getLogger().log(Level.INFO, ChatColor.stripColor("FactionChat "+myFaction.getTag()+": "+message));
-			
-			//Send to any players who are spying chat
-			for (FPlayer fplayer : FPlayers.i.getOnline())
-			{
-				if(fplayer.isSpyingChat() && fplayer.getFaction() != myFaction)
-					fplayer.sendMessage("[FCspy] "+myFaction.getTag()+": "+message);
-			}
-			
-			event.setCancelled(true);
-			return;
+			P.p.log(Level.SEVERE, "A reflection trick is broken! This will lead to glitchy relation-colored-chat.");
 		}
-		else if (chat == ChatMode.ALLIANCE)
+		
+		parsePattern = Pattern.compile("[{\\[]factions?_([a-zA-Z_]+)[}\\]]");
+	}
+	
+	/**
+	 * We offer an optional and very simple chat formating functionality.
+	 */
+	@EventHandler(priority = EventPriority.LOW, ignoreCancelled=true)
+	public void lowPlayerChatEvent(PlayerChatEvent event)
+	{
+		if (Conf.chatSetFormat)
 		{
-			Faction myFaction = me.getFaction();
-			
-			String message = String.format(Conf.allianceChatFormat, ChatColor.stripColor(me.getNameAndTag()), msg);
-			
-			//Send message to our own faction
-			myFaction.sendMessage(message);
-
-			//Send to all our allies
-			for (FPlayer fplayer : FPlayers.i.getOnline())
-			{
-				if(myFaction.getRelationTo(fplayer) == Rel.ALLY)
-					fplayer.sendMessage(message);
-				
-				//Send to any players who are spying chat
-				else if(fplayer.isSpyingChat())
-					fplayer.sendMessage("[ACspy]: " + message);
-			}
-			
-			Bukkit.getLogger().log(Level.INFO, ChatColor.stripColor("AllianceChat: "+message));
-			
-			event.setCancelled(true);
-			return;
+			event.setFormat(Conf.chatSetFormatTo);
 		}
 	}
 
 	// this is for handling insertion of the player's faction tag, set at highest priority to give other plugins a chance to modify chat first
-	@EventHandler(priority = EventPriority.HIGHEST)
-	public void onPlayerChat(PlayerChatEvent event)
+	
+	/**
+	 * At the Highest event priority we apply chat formating.
+	 * Relation colored faction tags may or may not be disabled (Conf.chatParseTagsColored)
+	 * If color is disabled it works flawlessly.
+	 * If however color is enabled we face a limitation in Bukkit.
+	 * Bukkit does not support the same message looking different for each recipient.
+	 * The method we use to get around this is a bit hacky:
+	 * 1. We cancel the chat event on EventPriority.HIGHEST
+	 * 2. We trigger EventPriority.MONITOR manually without relation color.
+	 * 3. We log in console the way it's usually done (as in nms.NetServerHandler line~793).
+	 * 4. We send out the messages to each player with relation color.
+	 * The side effect is that other plugins at EventPriority.HIGHEST may experience the event as cancelled. 
+	 */
+	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled=true)
+	public synchronized void onPlayerChat(PlayerChatEvent event)
 	{
-		if (event.isCancelled()) return;
-
-		// Are we to insert the Faction tag into the format?
-		// If we are not to insert it - we are done.
-		if ( ! Conf.chatTagEnabled || Conf.chatTagHandledByAnotherPlugin) return;
-
-		Player talkingPlayer = event.getPlayer();
-		String msg = event.getMessage();
-		String eventFormat = event.getFormat();
-		FPlayer me = FPlayers.i.get(talkingPlayer);
-		int InsertIndex = 0;
+		// Should we even parse?
+		if ( ! Conf.chatParseTags) return;
+		if (Conf.chatTagHandledByAnotherPlugin) return;
 		
-		if (!Conf.chatTagReplaceString.isEmpty() && eventFormat.contains(Conf.chatTagReplaceString))
+		Player from = event.getPlayer();
+		FPlayer fpfrom = FPlayers.i.get(from);
+		String format = event.getFormat();
+		String message = event.getMessage();
+		
+		String formatWithoutColor = parseTags(format, from, fpfrom);
+		
+		if ( ! Conf.chatParseTagsColored)
 		{
-			// we're using the "replace" method of inserting the faction tags
-			// if they stuck "[FACTION_TITLE]" in there, go ahead and do it too
-			if (eventFormat.contains("[FACTION_TITLE]"))
-			{
-				eventFormat = eventFormat.replace("[FACTION_TITLE]", me.getTitle());
-			}
-			InsertIndex = eventFormat.indexOf(Conf.chatTagReplaceString);
-			eventFormat = eventFormat.replace(Conf.chatTagReplaceString, "");
-			Conf.chatTagPadAfter = false;
-			Conf.chatTagPadBefore = false;
-		}
-		else if (!Conf.chatTagInsertAfterString.isEmpty() && eventFormat.contains(Conf.chatTagInsertAfterString))
-		{
-			// we're using the "insert after string" method
-			InsertIndex = eventFormat.indexOf(Conf.chatTagInsertAfterString) + Conf.chatTagInsertAfterString.length();
-		}
-		else if (!Conf.chatTagInsertBeforeString.isEmpty() && eventFormat.contains(Conf.chatTagInsertBeforeString))
-		{
-			// we're using the "insert before string" method
-			InsertIndex = eventFormat.indexOf(Conf.chatTagInsertBeforeString);
-		}
-		else
-		{
-			// we'll fall back to using the index place method
-			InsertIndex = Conf.chatTagInsertIndex;
-			if (InsertIndex > eventFormat.length())
-				return;
+			// The case without color is really this simple (:
+			event.setFormat(formatWithoutColor);
+			return;
 		}
 		
-		String formatStart = eventFormat.substring(0, InsertIndex) + ((Conf.chatTagPadBefore && !me.getChatTag().isEmpty()) ? " " : "");
-		String formatEnd = ((Conf.chatTagPadAfter && !me.getChatTag().isEmpty()) ? " " : "") + eventFormat.substring(InsertIndex);
+		// So you want color eh? You monster :O
 		
-		String nonColoredMsgFormat = formatStart + me.getChatTag().trim() + formatEnd;
+		// 1. We cancel the chat event on EventPriority.HIGHEST
+		event.setCancelled(true);
 		
-		// Relation Colored?
-		if (Conf.chatTagRelationColored)
+		// 2. We trigger EventPriority.MONITOR manually without relation color.
+		PlayerChatEvent monitorOnlyEvent = new PlayerChatEvent(from, message);
+		monitorOnlyEvent.setFormat(formatWithoutColor);
+		callEventAtMonitorOnly(monitorOnlyEvent);
+		
+		// 3. We log in console the way it's usually done (as in nms.NetServerHandler line~793).
+		Bukkit.getConsoleSender().sendMessage(String.format(monitorOnlyEvent.getFormat(), monitorOnlyEvent.getPlayer().getDisplayName(), monitorOnlyEvent.getMessage()));
+		
+		// 4. We send out the messages to each player with relation color.
+		for (Player to : event.getRecipients())
 		{
-			// We must choke the standard message and send out individual messages to all players
-			// Why? Because the relations will differ.
-			event.setCancelled(true);
-			
-			for (Player listeningPlayer : event.getRecipients())
-			{
-				FPlayer you = FPlayers.i.get(listeningPlayer);
-				String yourFormat = formatStart + me.getChatTag(you).trim() + formatEnd;
-				try
+			FPlayer fpto = FPlayers.i.get(to);
+			String formatWithColor = parseTags(format, from, fpfrom, to, fpto);
+			to.sendMessage(String.format(formatWithColor, from.getDisplayName(), message));
+        }
+	}
+	
+	/**
+	 * This is some nasty woodo - I know :/
+	 * I should make a pull request to Bukkit and CraftBukkit to support this feature natively
+	 */
+	public static synchronized void callEventAtMonitorOnly(Event event)
+	{
+		synchronized(Bukkit.getPluginManager())
+		{
+			HandlerList handlers = event.getHandlers();
+	        RegisteredListener[] listeners = handlers.getRegisteredListeners();
+	        
+	        for (RegisteredListener registration : listeners)
+	        {
+	        	try
 				{
-					listeningPlayer.sendMessage(String.format(yourFormat, talkingPlayer.getDisplayName(), msg));
+	        		EventPriority priority = (EventPriority) fieldRegisteredListenerDotPriority.get(registration);
+	        		if (priority != EventPriority.MONITOR) continue;
 				}
-				catch (UnknownFormatConversionException ex)
+				catch (Exception e)
 				{
-					Conf.chatTagInsertIndex = 0;
-					P.p.log(Level.SEVERE, "Critical error in chat message formatting!");
-					P.p.log(Level.SEVERE, "NOTE: This has been automatically fixed right now by setting chatTagInsertIndex to 0.");
-					P.p.log(Level.SEVERE, "For a more proper fix, please read this regarding chat configuration: http://massivecraft.com/plugins/factions/config#Chat_configuration");
-					return;
+					e.printStackTrace();
+					continue;
 				}
-			}
-			
-			// Write to the log... We will write the non colored message.
-			String nonColoredMsg = ChatColor.stripColor(String.format(nonColoredMsgFormat, talkingPlayer.getDisplayName(), msg));
-			Bukkit.getLogger().log(Level.INFO, nonColoredMsg);
-		}
-		else
-		{
-			// No relation color.
-			event.setFormat(nonColoredMsgFormat);
+	        	
+	        	// This rest is almost copy pasted from SimplePluginManager in Bukkit:
+	        	
+	        	if (!registration.getPlugin().isEnabled()) {
+	                continue;
+	            }
+	        	
+	            try {
+	                registration.callEvent(event);
+	            } catch (AuthorNagException ex) {
+	                Plugin plugin = registration.getPlugin();
+
+	                if (plugin.isNaggable()) {
+	                    plugin.setNaggable(false);
+
+	                    String author = "<NoAuthorGiven>";
+
+	                    if (plugin.getDescription().getAuthors().size() > 0) {
+	                        author = plugin.getDescription().getAuthors().get(0);
+	                    }
+	                    Bukkit.getServer().getLogger().log(Level.SEVERE, String.format(
+	                            "Nag author: '%s' of '%s' about the following: %s",
+	                            author,
+	                            plugin.getDescription().getName(),
+	                            ex.getMessage()
+	                            ));
+	                }
+	            } catch (Throwable ex) {
+	            	Bukkit.getServer().getLogger().log(Level.SEVERE, "Could not pass event " + event.getEventName() + " to " + registration.getPlugin().getDescription().getName(), ex);
+	            }
+	        }
 		}
 	}
+	
+	public static String parseTags(String str, Player from)
+	{
+		FPlayer fpfrom = FPlayers.i.get(from);
+		return parseTags(str, from, fpfrom, null, null);
+	}
+	public static String parseTags(String str, Player from, FPlayer fpfrom)
+	{
+		return parseTags(str, from, fpfrom, null, null);
+	}
+	public static String parseTags(String str, Player from, Player to)
+	{
+		FPlayer fpfrom = FPlayers.i.get(from);
+		FPlayer fpto = FPlayers.i.get(to);
+		return parseTags(str, from, fpfrom, to, fpto);
+	}
+	public static String parseTags(String str, Player from, FPlayer fpfrom, Player to, FPlayer fpto)
+	{
+		StringBuffer ret = new StringBuffer();
+		
+		Matcher matcher = parsePattern.matcher(str);
+		while (matcher.find())
+		{
+			String[] parts = matcher.group(1).toLowerCase().split("_");
+			List<String> args = new ArrayList<String>(Arrays.asList(parts));
+			String tag = args.remove(0);
+			matcher.appendReplacement(ret, produceTag(tag, args, from, fpfrom, to, fpto));
+		}
+		matcher.appendTail(ret);
+		
+		return ret.toString();
+	}
+	public static String produceTag(String tag, List<String> args, Player from, FPlayer fpfrom, Player to, FPlayer fpto)
+	{
+		String ret = "";
+		if (tag.equals("relcolor"))
+		{
+			if (fpto == null)
+			{
+				ret = Rel.NEUTRAL.getColor().toString();
+			}
+			else
+			{
+				ret = fpfrom.getRelationTo(fpto).getColor().toString();
+			}
+		}
+		else if (tag.startsWith("roleprefix"))
+		{
+			ret = fpfrom.getRole().getPrefix();
+		}
+		else if (tag.equals("title"))
+		{
+			ret = fpfrom.getTitle();
+		}
+		else if (tag.equals("tag"))
+		{
+			if (fpfrom.hasFaction())
+			{
+				ret = fpfrom.getFaction().getTag();
+			}
+		}
+		else if (tag.startsWith("tagforce"))
+		{
+			ret = fpfrom.getFaction().getTag();
+		}
+		
+		if (ret == null) ret = "";
+		
+		return applyFormatsByName(ret, args);
+	}
+	public static String applyFormatsByName(String str, List<String> formatNames)
+	{
+		if (str.length() == 0) return str;
+		for (String formatName : formatNames)
+		{
+			String format = Conf.chatSingleFormats.get(formatName);
+			try
+			{
+				str = String.format(format, str);
+			}
+			catch (Exception e) { }
+		}
+		return str;
+	}
+	
 }

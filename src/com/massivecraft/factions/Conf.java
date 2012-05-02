@@ -64,21 +64,18 @@ public class Conf
 	// Disallow joining/leaving/kicking while power is negative
 	public static boolean canLeaveWithNegativePower = true;
 	
-	// Configuration for faction-only chat
-	public static boolean factionOnlyChat = true;
 	// Configuration on the Faction tag in chat messages.
-	public static boolean chatTagEnabled = true;
-	public static transient boolean chatTagHandledByAnotherPlugin = false;
-	public static boolean chatTagRelationColored = true;
-	public static String chatTagReplaceString = "[FACTION]";
-	public static String chatTagInsertAfterString = "";
-	public static String chatTagInsertBeforeString = "";
-	public static int chatTagInsertIndex = 1;
-	public static boolean chatTagPadBefore = false;
-	public static boolean chatTagPadAfter = true;
-	public static String chatTagFormat = "%s"+ChatColor.WHITE;
-	public static String factionChatFormat = "%s:"+ChatColor.WHITE+" %s";
-	public static String allianceChatFormat = ChatColor.LIGHT_PURPLE+"%s:"+ChatColor.WHITE+" %s";
+	public static boolean chatSetFormat = false;
+	public static String chatSetFormatTo = "<{faction_relcolor}§l{faction_roleprefix}§r{faction_relcolor}{faction_tag_pr}"+ChatColor.WHITE.toString()+"%s> %s";
+	public static boolean chatParseTags = true;
+	public static boolean chatParseTagsColored = true;
+	public static Map<String, String> chatSingleFormats = new HashMap<String, String>();
+	public static transient boolean chatTagHandledByAnotherPlugin = false; // Why do we need this? (Olof asks)
+	public static String chatTagFormat = "%s"+ChatColor.WHITE; // This one is almost deprecated now right? or is it?
+	
+	// Herochat
+	public static String herochatFactionChannelName = "Faction";
+	public static String herochatAllyChannelName = "Allies";
 	
 	public static double autoLeaveAfterDaysOfInactivity = 10.0;
 	public static double autoLeaveRoutineRunsEveryXMinutes = 5.0;
@@ -259,6 +256,10 @@ public class Conf
 		{
 			factionPermDefaults.put(perm, perm.defaultDefaultValue);
 		}
+		
+		chatSingleFormats.put("pl", " %s");
+		chatSingleFormats.put("pr", "%s ");
+		chatSingleFormats.put("pb", " %s ");
 		
 		territoryEnemyDenyCommands.add("home");
 		territoryEnemyDenyCommands.add("sethome");

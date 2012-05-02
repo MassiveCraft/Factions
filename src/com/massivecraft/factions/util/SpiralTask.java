@@ -39,7 +39,7 @@ public abstract class SpiralTask implements Runnable
 	private transient int length = -1;
 	private transient int current = 0;
 
-	@SuppressWarnings("LeakingThisInConstructor")
+	// @SuppressWarnings("LeakingThisInConstructor") This actually triggers a warning in Eclipse xD Could we find another way to suppress the error please? :)
 	public SpiralTask(FLocation fLocation, int radius)
 	{
 		// limit is determined based on spiral leg length for given radius; see insideRadius()

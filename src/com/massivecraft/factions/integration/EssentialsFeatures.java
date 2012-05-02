@@ -11,6 +11,7 @@ import org.bukkit.plugin.Plugin;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.P;
+import com.massivecraft.factions.listeners.FactionsChatListener;
 
 import com.earth2me.essentials.IEssentials;
 import com.earth2me.essentials.Teleport;
@@ -105,13 +106,6 @@ public class EssentialsFeatures
 		{
 			Bukkit.getServer().getPluginManager().registerEvents(new LocalChatListener(), P.p);
 			P.p.log("Found and will integrate chat with newer "+essChat.getDescription().getFullName());
-
-			// curly braces used to be accepted by the format string EssentialsChat but no longer are, so... deal with chatTagReplaceString which might need updating
-			if (Conf.chatTagReplaceString.contains("{"))
-			{
-				Conf.chatTagReplaceString = Conf.chatTagReplaceString.replace("{", "[").replace("}", "]");
-				P.p.log("NOTE: as of Essentials 2.8+, we've had to switch the default chat replacement tag from \"{FACTION}\" to \"[FACTION]\". This has automatically been updated for you.");
-			}
 		}
 		catch (NoSuchMethodError ex)
 		{
@@ -127,7 +121,9 @@ public class EssentialsFeatures
 		{
 			Player speaker = event.getPlayer();
 			String format = event.getFormat();
-			format = format.replace(Conf.chatTagReplaceString, P.p.getPlayerFactionTag(speaker)).replace("[FACTION_TITLE]", P.p.getPlayerTitle(speaker));
+			
+			format = FactionsChatListener.parseTags(format, speaker);
+			
 			event.setFormat(format);
 			// NOTE: above doesn't do relation coloring. if/when we can get a local recipient list from EssentialsLocalChatEvent, we'll probably
 			// want to pass it on to FactionsPlayerListener.onPlayerChat(PlayerChatEvent event) rather than duplicating code

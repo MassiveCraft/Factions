@@ -67,7 +67,6 @@ public class CmdHelp extends FCommand
 		pageLines.add( p.cmdBase.cmdPower.getUseageTemplate(true) );
 		pageLines.add( p.cmdBase.cmdJoin.getUseageTemplate(true) );
 		pageLines.add( p.cmdBase.cmdLeave.getUseageTemplate(true) );
-		pageLines.add( p.cmdBase.cmdChat.getUseageTemplate(true) );
 		pageLines.add( p.cmdBase.cmdHome.getUseageTemplate(true) );
 		pageLines.add( p.txt.parse("<i>Learn how to create a faction on the next page.") );
 		helpPages.add(pageLines);
@@ -166,7 +165,6 @@ public class CmdHelp extends FCommand
 		
 		pageLines = new ArrayList<String>();
 		pageLines.add(p.txt.parse("<i>More commands for server admins:"));
-		pageLines.add( p.cmdBase.cmdChatSpy.getUseageTemplate(true) );
 		pageLines.add( p.cmdBase.cmdPowerBoost.getUseageTemplate(true) );
 		pageLines.add( p.cmdBase.cmdLock.getUseageTemplate(true) );
 		pageLines.add( p.cmdBase.cmdReload.getUseageTemplate(true) );
