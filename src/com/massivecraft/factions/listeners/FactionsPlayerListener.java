@@ -75,11 +75,20 @@ public class FactionsPlayerListener implements Listener
 		SpoutFeatures.playerDisconnect(me);
 	}
 	
+	private boolean hasChangedBlockCoordinates(Location fromLoc, Location toLoc) {
+	        if (fromLoc.getWorld().equals(toLoc.getWorld())
+	                && fromLoc.getBlockX() == toLoc.getBlockX()
+	                && fromLoc.getBlockZ() == toLoc.getBlockZ()) {
+	            return false;
+	        }
+	        return true;
+	    }
+	
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerMove(PlayerMoveEvent event)
 	{
 		// Did we change block?
-		if (event.getFrom().equals(event.getTo())) return;
+		if (!hasChangedBlockCoordinates(event.getFrom(), event.getTo()) return;
 				
 		Player player = event.getPlayer();
 		FPlayer me = FPlayers.i.get(player);
