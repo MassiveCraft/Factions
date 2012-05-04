@@ -122,14 +122,21 @@ public class FactionsEntityListener implements Listener
 			
 			if (killer instanceof Player)
 			{
-				dReason = DeathReason.PVP;
 				
-				if (Conf.powerGainedPerKill != 0) 
-				{
-					FPlayer kplayer = FPlayers.i.get((Player) killer);
-					kplayer.onKill();
-
-					kplayer.msg("<i>Your power is now <h>"+kplayer.getPowerRounded()+" / "+kplayer.getPowerMaxRounded());
+				if ((Player) killer == player) {
+					dReason = DeathReason.OTHER;
+				}
+				else {
+					dReason = DeathReason.PVP;
+					
+					if (Conf.powerGainedPerKill != 0) 
+					{
+						FPlayer kplayer = FPlayers.i.get((Player) killer);
+						kplayer.onKill();
+						
+						kplayer.msg("<i>You gained <h>"+Math.round(Conf.powerGainedPerKill)+" <i>power for killing <h>"+player.getName()+"<i>.");
+						kplayer.msg("<i>Your power is now <h>"+kplayer.getPowerRounded()+" / "+kplayer.getPowerMaxRounded());
+					}
 				}
 			}
 			else if (killer instanceof Monster)
