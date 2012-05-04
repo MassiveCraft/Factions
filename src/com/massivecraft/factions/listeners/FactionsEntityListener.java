@@ -13,7 +13,6 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Creeper;
 import org.bukkit.entity.Enderman;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Fireball;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Monster;
@@ -106,12 +105,7 @@ public class FactionsEntityListener implements Listener
 		}
 		
 		EntityDamageEvent dCause = player.getLastDamageCause();
-		
-		if (dCause == null)
-		{
-			dReason = DeathReason.OTHER;
-		}
-		else if (dCause instanceof EntityDamageByEntityEvent)
+		if (dCause != null && dCause instanceof EntityDamageByEntityEvent)
 		{
 			Entity killer = ((EntityDamageByEntityEvent) dCause).getDamager();
 			if (killer instanceof Projectile)
@@ -119,10 +113,16 @@ public class FactionsEntityListener implements Listener
 				Projectile projectile = (Projectile) killer;
 				killer = projectile.getShooter();
 			}
+			if (killer instanceof Wolf) {
+				Wolf wolf = (Wolf) killer;
+				if (wolf.isTamed() && wolf.getOwner() instanceof Player)
+				{
+					killer = (Player) wolf.getOwner();
+				}
+			}
 			
 			if (killer instanceof Player)
 			{
-				
 				if ((Player) killer == player) 
 				{
 					dReason = DeathReason.OTHER;
@@ -147,28 +147,12 @@ public class FactionsEntityListener implements Listener
 			{
 				dReason = DeathReason.MOB;
 			}
-			else 
+			else
 			{
-				if (killer instanceof Wolf)
-				{
-					Wolf wolf = (Wolf) killer;
-					if (wolf.isTamed() && wolf.getOwner() instanceof Player)
-					{
-						dReason = DeathReason.PVP;
-					}
-					else 
-					{
-						dReason = DeathReason.OTHER;
-					}
-				}
-				else 
-				{
-					dReason = DeathReason.OTHER;
-				}
+				dReason = DeathReason.OTHER;
 			}
 		}
-		else
-		{
+		else {
 			dReason = DeathReason.OTHER;
 		}
 		
