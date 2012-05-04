@@ -123,7 +123,8 @@ public class FactionsEntityListener implements Listener
 			if (killer instanceof Player)
 			{
 				
-				if ((Player) killer == player) {
+				if ((Player) killer == player) 
+				{
 					dReason = DeathReason.OTHER;
 				}
 				else {
@@ -132,10 +133,13 @@ public class FactionsEntityListener implements Listener
 					if (Conf.powerGainedPerKill != 0) 
 					{
 						FPlayer kplayer = FPlayers.i.get((Player) killer);
-						kplayer.onKill();
-						
-						kplayer.msg("<i>You gained <h>"+Math.round(Conf.powerGainedPerKill)+" <i>power for killing <h>"+player.getName()+"<i>.");
-						kplayer.msg("<i>Your power is now <h>"+kplayer.getPowerRounded()+" / "+kplayer.getPowerMaxRounded());
+						if (kplayer.getPowerRounded() != kplayer.getPowerMaxRounded() && fplayer.getPowerRounded() != fplayer.getPowerMinRounded())
+						{
+							kplayer.onKill();
+							
+							kplayer.msg("<i>You gained <h>"+Math.round(Conf.powerGainedPerKill)+" <i>power for killing <h>"+player.getName()+"<i>.");
+							kplayer.msg("<i>Your power is now <h>"+kplayer.getPowerRounded()+" / "+kplayer.getPowerMaxRounded());
+						}
 					}
 				}
 			}
