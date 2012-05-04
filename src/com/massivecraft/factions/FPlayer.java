@@ -16,6 +16,7 @@ import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.integration.LWCFeatures;
 import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.integration.Worldguard;
+import com.massivecraft.factions.listeners.FactionsEntityListener.DeathReason;
 import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
@@ -64,6 +65,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 	
 	// FIELD: power
 	private double power;
+	private double powerLossPerDeath;
 
 	// FIELD: powerBoost
 	// special increase/decrease to min and max power for this player
@@ -531,10 +533,28 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		}
 	}
 	
-	public void onDeath()
+	public void onKill()
 	{
 		this.updatePower();
-		this.alterPower(-Conf.powerPerDeath);
+		this.alterPower(Conf.powerGainedPerKill);
+	}
+	
+	public void onDeath(DeathReason dReason)
+	{
+		switch (dReason) {
+		case PVP:
+			powerLossPerDeath = Conf.powerPerPVPDeath;
+			break;
+		case MOB:
+			powerLossPerDeath = Conf.powerPerMobDeath;
+			break;
+		case OTHER: 
+			powerLossPerDeath = Conf.powerPerDeath;
+		default:
+			powerLossPerDeath = Conf.powerPerDeath;
+		}
+		this.updatePower();
+		this.alterPower(-powerLossPerDeath);
 	}
 	
 	//----------------------------------------------//
