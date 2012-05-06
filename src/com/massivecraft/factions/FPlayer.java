@@ -17,7 +17,6 @@ import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.integration.LWCFeatures;
 import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.integration.Worldguard;
-import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.struct.FFlag;
 import com.massivecraft.factions.struct.FPerm;
 import com.massivecraft.factions.struct.Rel;
@@ -100,23 +99,6 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 	// FIELD: loginPvpDisabled
 	private transient boolean loginPvpDisabled;
 	
-	// FIELD: chatMode
-	private ChatMode chatMode;
-	public void setChatMode(ChatMode chatMode) { this.chatMode = chatMode; }
-	public ChatMode getChatMode()
-	{
-		if(this.factionId.equals("0") || ! Conf.factionOnlyChat)
-		{
-			this.chatMode = ChatMode.PUBLIC;
-		}
-		return chatMode;
-	}
-	
-	// FIELD: chatSpy
-	private transient boolean spyingChat = false;
-	public void setSpyingChat(boolean chatSpying) { this.spyingChat = chatSpying; }
-	public boolean isSpyingChat() { return spyingChat; }
-	
 	// FIELD: account
 	public String getAccountId() { return this.getId(); }
 	
@@ -154,8 +136,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		}
 
 		this.factionId = "0"; // The default neutral faction
-		this.chatMode = ChatMode.PUBLIC;
-		this.role = Rel.MEMBER; // Default neutral faction has members, not recruits.
+		this.role = Rel.MEMBER;
 		this.title = "";
 		this.autoClaimFor = null;
 

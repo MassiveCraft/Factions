@@ -31,7 +31,7 @@ public class CmdPower extends FCommand
 		FPlayer target = this.argAsBestFPlayerMatch(0, fme);
 		if (target == null) return;
 		
-		if (target != me && ! Permission.POWER_ANY.has(sender, true)) return;
+		if (target != fme && ! Permission.POWER_ANY.has(sender, true)) return;
 
 		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
 		if ( ! payForCommand(Conf.econCostPower, "to show player power info", "for showing player power info")) return;

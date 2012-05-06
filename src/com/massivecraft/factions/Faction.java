@@ -555,6 +555,22 @@ public class Faction extends Entity implements EconomyParticipator
 		return this.getFlag(FFlag.EXPLOSIONS);
 	}
 	
+	/**
+	 * @deprecated  As of release 1.7, replaced by {@link #getFlag()}
+	 */
+	public boolean noExplosionsInTerritory()
+	{
+		return ! this.getFlag(FFlag.EXPLOSIONS);
+	}
+	
+	/**
+	 * @deprecated  As of release 1.7, replaced by {@link #getFlag()}
+	 */
+	public boolean isSafeZone()
+	{
+		return ! this.getFlag(FFlag.EXPLOSIONS);
+	}
+	
 	//----------------------------------------------//
 	// Persistance and entity management
 	//----------------------------------------------//

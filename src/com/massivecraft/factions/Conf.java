@@ -70,21 +70,18 @@ public class Conf
 	// Disallow joining/leaving/kicking while power is negative
 	public static boolean canLeaveWithNegativePower = true;
 	
-	// Configuration for faction-only chat
-	public static boolean factionOnlyChat = true;
 	// Configuration on the Faction tag in chat messages.
-	public static boolean chatTagEnabled = true;
-	public static transient boolean chatTagHandledByAnotherPlugin = false;
-	public static boolean chatTagRelationColored = true;
-	public static String chatTagReplaceString = "[FACTION]";
-	public static String chatTagInsertAfterString = "";
-	public static String chatTagInsertBeforeString = "";
-	public static int chatTagInsertIndex = 1;
-	public static boolean chatTagPadBefore = false;
-	public static boolean chatTagPadAfter = true;
-	public static String chatTagFormat = "%s"+ChatColor.WHITE;
-	public static String factionChatFormat = "%s:"+ChatColor.WHITE+" %s";
-	public static String allianceChatFormat = ChatColor.LIGHT_PURPLE+"%s:"+ChatColor.WHITE+" %s";
+	public static boolean chatSetFormat = false;
+	public static String chatSetFormatTo = "<{faction_relcolor}§l{faction_roleprefix}§r{faction_relcolor}{faction_tag_pr}"+ChatColor.WHITE.toString()+"%s> %s";
+	public static boolean chatParseTags = true;
+	public static boolean chatParseTagsColored = true;
+	public static Map<String, String> chatSingleFormats = new HashMap<String, String>();
+	public static transient boolean chatTagHandledByAnotherPlugin = false; // Why do we need this? (Olof asks)
+	public static String chatTagFormat = "%s"+ChatColor.WHITE; // This one is almost deprecated now right? or is it?
+	
+	// Herochat
+	public static String herochatFactionChannelName = "Faction";
+	public static String herochatAllyChannelName = "Allies";
 	
 	public static double autoLeaveAfterDaysOfInactivity = 10.0;
 	public static double autoLeaveRoutineRunsEveryXMinutes = 5.0;
@@ -179,6 +176,16 @@ public class Conf
 	// Spout features
 	public static boolean spoutFactionTagsOverNames = true;  // show faction tags over names over player heads
 	public static boolean spoutFactionTitlesOverNames = true;  // whether to include player's title in that
+	public static boolean spoutHealthBarUnderNames = true;  // Show healthbar under player names.
+	public static String spoutHealthBarLeft = "{c}[";
+	public static String spoutHealthBarSolid = "|";
+	public static String spoutHealthBarBetween = "&8";
+	public static String spoutHealthBarEmpty = "|";
+	public static String spoutHealthBarRight = "{c}]";
+	public static double spoutHealthBarSolidsPerEmpty = 1d;
+	public static String spoutHealthBarColorTag = "{c}";
+	public static int spoutHealthBarWidth = 30;
+	public static Map<Double, String> spoutHealthBarColorUnderQuota = new LinkedHashMap<Double, String>();
 	public static boolean spoutFactionLeaderCapes = true;  // Show capes on faction admins, colored based on the viewer's relation to the target player
 	public static boolean spoutFactionOfficerCapes = true;  // same, but for faction moderators
 	public static int spoutTerritoryDisplayPosition = 3;  // permanent territory display, instead of by chat; 0 = disabled, 1 = top left, 2 = top center, 3+ = top right
@@ -260,6 +267,10 @@ public class Conf
 			factionPermDefaults.put(perm, perm.defaultDefaultValue);
 		}
 		
+		chatSingleFormats.put("pl", " %s");
+		chatSingleFormats.put("pr", "%s ");
+		chatSingleFormats.put("pb", " %s ");
+		
 		territoryEnemyDenyCommands.add("home");
 		territoryEnemyDenyCommands.add("sethome");
 		territoryEnemyDenyCommands.add("spawn");
@@ -306,6 +317,13 @@ public class Conf
 		monsters.add(EntityType.SLIME);
 		monsters.add(EntityType.SPIDER);
 		monsters.add(EntityType.ZOMBIE);
+		
+		spoutHealthBarColorUnderQuota.put(1.0d, "&2");
+        spoutHealthBarColorUnderQuota.put(0.8d, "&a");
+        spoutHealthBarColorUnderQuota.put(0.5d, "&e");
+        spoutHealthBarColorUnderQuota.put(0.4d, "&6");
+        spoutHealthBarColorUnderQuota.put(0.3d, "&c");
+        spoutHealthBarColorUnderQuota.put(0.2d, "&4");
 	}
 
 	// -------------------------------------------- //

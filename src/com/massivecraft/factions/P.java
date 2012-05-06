@@ -24,6 +24,7 @@ import com.massivecraft.factions.cmd.*;
 import com.massivecraft.factions.integration.capi.CapiFeatures;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.integration.EssentialsFeatures;
+import com.massivecraft.factions.integration.HerochatFeatures;
 import com.massivecraft.factions.integration.LWCFeatures;
 import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.integration.Worldguard;
@@ -31,9 +32,9 @@ import com.massivecraft.factions.listeners.FactionsBlockListener;
 import com.massivecraft.factions.listeners.FactionsChatListener;
 import com.massivecraft.factions.listeners.FactionsEntityListener;
 import com.massivecraft.factions.listeners.FactionsExploitListener;
+import com.massivecraft.factions.listeners.FactionsHealthBarListener;
 import com.massivecraft.factions.listeners.FactionsPlayerListener;
 import com.massivecraft.factions.listeners.FactionsServerListener;
-import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.struct.FFlag;
 import com.massivecraft.factions.struct.FPerm;
 import com.massivecraft.factions.struct.Rel;
@@ -58,6 +59,7 @@ public class P extends MPlugin
 	public final FactionsExploitListener exploitListener;
 	public final FactionsBlockListener blockListener;
 	public final FactionsServerListener serverListener;
+	public final FactionsHealthBarListener healthBarListener;
 	
 	// Persistance related
 	private boolean locked = false;
@@ -78,6 +80,7 @@ public class P extends MPlugin
 		this.exploitListener = new FactionsExploitListener();
 		this.blockListener = new FactionsBlockListener(this);
 		this.serverListener = new FactionsServerListener(this);
+		this.healthBarListener = new FactionsHealthBarListener(this);
 	}
 
 
@@ -102,6 +105,7 @@ public class P extends MPlugin
 		SpoutFeatures.setup();
 		Econ.setup();
 		CapiFeatures.setup();
+		HerochatFeatures.setup();
 		LWCFeatures.setup();
 		
 		if(Conf.worldGuardChecking)
@@ -238,13 +242,12 @@ public class P extends MPlugin
 
 	// Does player have Faction Chat enabled? If so, chat plugins should preferably not do channels,
 	// local chat, or anything else which targets individual recipients, so Faction Chat can be done
+	/**
+	 * @deprecated  As of release 1.8, there is no built in faction chat.
+	 */
 	public boolean isPlayerFactionChatting(Player player)
 	{
-		if (player == null) return false;
-		FPlayer me = FPlayers.i.get(player);
-		
-		if (me == null)return false;
-		return me.getChatMode().isAtLeast(ChatMode.ALLIANCE);
+		return false;
 	}
 
 	// Is this chat message actually a Factions command, and thus should be left alone by other plugins?
@@ -273,7 +276,7 @@ public class P extends MPlugin
 			return tag;
 
 		// if listener isn't set, or config option is disabled, give back uncolored tag
-		if (listener == null || !Conf.chatTagRelationColored) {
+		if (listener == null || !Conf.chatParseTagsColored) {
 			tag = me.getChatTag().trim();
 		} else {
 			FPlayer you = FPlayers.i.get(listener);

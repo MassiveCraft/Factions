@@ -114,7 +114,7 @@ public class CmdShow extends FCommand
 		
 		for (FPlayer follower : admins)
 		{
-			if (follower.isOnline())
+			if (follower.isOnlineAndVisibleTo(me))
 			{
 				memberOnlineNames.add(follower.getNameAndTitle(fme));
 			}
@@ -126,7 +126,7 @@ public class CmdShow extends FCommand
 		
 		for (FPlayer follower : mods)
 		{
-			if (follower.isOnline())
+			if (follower.isOnlineAndVisibleTo(me))
 			{
 				memberOnlineNames.add(follower.getNameAndTitle(fme));
 			}
@@ -138,7 +138,7 @@ public class CmdShow extends FCommand
 		
 		for (FPlayer follower : normals)
 		{
-			if (follower.isOnline())
+			if (follower.isOnlineAndVisibleTo(me))
 			{
 				memberOnlineNames.add(follower.getNameAndTitle(fme));
 			}
