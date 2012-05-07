@@ -19,7 +19,7 @@ import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.entity.TNTPrimed;
-import org.bukkit.entity.Wolf;
+import org.bukkit.entity.Tameable;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -113,11 +113,11 @@ public class FactionsEntityListener implements Listener
 				Projectile projectile = (Projectile) killer;
 				killer = projectile.getShooter();
 			}
-			if (killer instanceof Wolf) {
-				Wolf wolf = (Wolf) killer;
-				if (wolf.isTamed() && wolf.getOwner() instanceof Player)
+			if (killer instanceof Tameable) {
+				Tameable animal = (Tameable) killer;
+				if (animal.getOwner() instanceof Player)
 				{
-					killer = (Player) wolf.getOwner();
+					killer = (Player) animal.getOwner();
 				}
 			}
 			
