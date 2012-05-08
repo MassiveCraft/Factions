@@ -75,7 +75,7 @@ public class Faction extends Entity implements EconomyParticipator
 	}
 	public void confirmValidHome()
 	{
-		if (!Conf.homesMustBeInClaimedTerritory || this.home == null || Board.getFactionAt(new FLocation(this.home.getLocation())) == this)
+		if (!Conf.homesMustBeInClaimedTerritory || this.home == null || (this.home.getLocation() != null && Board.getFactionAt(new FLocation(this.home.getLocation())) == this))
 			return;
 
 		msg("<b>Your faction home has been un-set since it is no longer in your territory.");
