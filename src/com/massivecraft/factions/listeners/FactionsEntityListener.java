@@ -15,9 +15,11 @@ import org.bukkit.entity.Enderman;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Fireball;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.entity.TNTPrimed;
+import org.bukkit.entity.Tameable;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -54,6 +56,10 @@ public class FactionsEntityListener implements Listener
 	{
 		this.p = p;
 	}
+	
+	public enum DeathReason {
+		PVP, MOB, OTHER;
+	}
 
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onEntityDeath(EntityDeathEvent event)
@@ -67,6 +73,8 @@ public class FactionsEntityListener implements Listener
 		Player player = (Player) entity;
 		FPlayer fplayer = FPlayers.i.get(player);
 		Faction faction = Board.getFactionAt(new FLocation(player.getLocation()));
+		DeathReason dReason = null;
+		
 		if (faction.isWarZone())
 		{
 			// war zones always override worldsNoPowerLoss either way, thus this layout
@@ -95,7 +103,60 @@ public class FactionsEntityListener implements Listener
 			fplayer.msg("<i>You didn't lose any power since you are in a peaceful faction.");
 			return;
 		}
-		fplayer.onDeath();
+		
+		EntityDamageEvent dCause = player.getLastDamageCause();
+		if (dCause != null && dCause instanceof EntityDamageByEntityEvent)
+		{
+			Entity killer = ((EntityDamageByEntityEvent) dCause).getDamager();
+			if (killer instanceof Projectile)
+			{
+				Projectile projectile = (Projectile) killer;
+				killer = projectile.getShooter();
+			}
+			if (killer instanceof Tameable) {
+				Tameable animal = (Tameable) killer;
+				if (animal.getOwner() instanceof Player)
+				{
+					killer = (Player) animal.getOwner();
+				}
+			}
+			
+			if (killer instanceof Player)
+			{
+				if ((Player) killer == player) 
+				{
+					dReason = DeathReason.OTHER;
+				}
+				else {
+					dReason = DeathReason.PVP;
+					
+					if (Conf.powerGainedPerKill != 0) 
+					{
+						FPlayer kplayer = FPlayers.i.get((Player) killer);
+						if (kplayer.getPowerRounded() != kplayer.getPowerMaxRounded() && fplayer.getPowerRounded() != fplayer.getPowerMinRounded())
+						{
+							kplayer.onKill();
+							
+							kplayer.msg("<i>You gained <h>"+Math.round(Conf.powerGainedPerKill)+" <i>power for killing <h>"+player.getName()+"<i>.");
+							kplayer.msg("<i>Your power is now <h>"+kplayer.getPowerRounded()+" / "+kplayer.getPowerMaxRounded());
+						}
+					}
+				}
+			}
+			else if (killer instanceof Monster)
+			{
+				dReason = DeathReason.MOB;
+			}
+			else
+			{
+				dReason = DeathReason.OTHER;
+			}
+		}
+		else {
+			dReason = DeathReason.OTHER;
+		}
+		
+		fplayer.onDeath(dReason);
 		fplayer.msg("<i>Your power is now <h>"+fplayer.getPowerRounded()+" / "+fplayer.getPowerMaxRounded());
 	}
 	

@@ -25,7 +25,10 @@ public class Conf
 	public static double powerPlayerMin = -10.0;
 	public static double powerPlayerStarting = 0.0;
 	public static double powerPerMinute = 0.2; // Default health rate... it takes 5 min to heal one power
-	public static double powerPerDeath = 4.0; // A death makes you lose 4 power
+	public static double powerPerPVPDeath = 4.0; // Power loss when killed by another player
+	public static double powerPerMobDeath = 2.0; // Power loss when killed by any monster
+	public static double powerPerDeath = 1.0; // Power loss for generic deaths. e.g Suffocation, drowning, falling
+	public static double powerGainedPerKill = 1.0; // Power gained for killing a player
 	public static boolean powerRegenOffline = false;  // does player power regenerate even while they're offline?
 	public static double powerOfflineLossPerDay = 0.0;  // players will lose this much power per day offline
 	public static double powerOfflineLossLimit = 0.0;  // players will no longer lose power from being offline once their power drops to this amount or less
