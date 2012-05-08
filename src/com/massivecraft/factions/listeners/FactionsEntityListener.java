@@ -2,6 +2,7 @@ package com.massivecraft.factions.listeners;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -106,12 +107,17 @@ public class FactionsEntityListener implements Listener
 	{
 		if (event.isCancelled()) return;
 
+		Set<FLocation> explosionLocs = new HashSet<FLocation>();
 		for (Block block : event.blockList())
 		{
-			Faction faction = Board.getFactionAt(new FLocation(block));
+			explosionLocs.add(new FLocation(block));
+		}
+		for (FLocation loc : explosionLocs)
+		{
+			Faction faction = Board.getFactionAt(loc);
 			if (faction.getFlag(FFlag.EXPLOSIONS) == false)
 			{
-				// faction is peaceful and has explosions set to disabled
+				// faction has explosions disabled
 				event.setCancelled(true);
 				return;
 			}
