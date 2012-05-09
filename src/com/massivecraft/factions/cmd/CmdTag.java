@@ -78,7 +78,7 @@ public class CmdTag extends FCommand
 
 		if (Conf.spoutFactionTagsOverNames)
 		{
-			SpoutFeatures.updateAppearances(myFaction);
+			SpoutFeatures.updateTitle(myFaction, null);
 		}
 	}
 	

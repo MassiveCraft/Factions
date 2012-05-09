@@ -95,6 +95,11 @@ public class Faction extends Entity implements EconomyParticipator
 
 		return aid;
 	}
+	
+	// FIELD: cape
+	private String cape;
+	public String getCape() { return cape; }
+	public void setCape(String val) { this.cape = val; }
 
 	// FIELD: powerBoost
 	// special increase/decrease to default and max power for this faction

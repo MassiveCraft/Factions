@@ -2,6 +2,7 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.struct.FPerm;
 import com.massivecraft.factions.struct.Permission;
 
 public class CmdInvite extends FCommand
@@ -37,6 +38,8 @@ public class CmdInvite extends FCommand
 			return;
 		}
 
+		if (fme != null && ! FPerm.INVITE.has(fme, myFaction)) return;
+		
 		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
 		if ( ! payForCommand(Conf.econCostInvite, "to invite someone", "for inviting someone")) return;
 

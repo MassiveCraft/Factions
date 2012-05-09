@@ -97,8 +97,8 @@ public class P extends MPlugin
 		Board.load();
 		
 		// Add Base Commands
-		this.cmdBase = new FCmdRoot();
 		this.cmdAutoHelp = new CmdAutoHelp();
+		this.cmdBase = new FCmdRoot();
 		this.getBaseCommands().add(cmdBase);
 
 		EssentialsFeatures.setup();

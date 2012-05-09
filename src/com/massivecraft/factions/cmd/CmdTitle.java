@@ -45,7 +45,7 @@ public class CmdTitle extends FCommand
 
 		if (Conf.spoutFactionTitlesOverNames)
 		{
-			SpoutFeatures.updateAppearances(me);
+			SpoutFeatures.updateTitle(me, null);
 		}
 	}
 	

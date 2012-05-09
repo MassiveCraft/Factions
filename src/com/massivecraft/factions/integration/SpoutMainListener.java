@@ -29,7 +29,8 @@ public class SpoutMainListener implements Listener
 	{
 		final FPlayer me = FPlayers.i.get(event.getPlayer());
 
-		SpoutFeatures.updateAppearances(me.getPlayer());
+		SpoutFeatures.updateTitle(me, null);
+		SpoutFeatures.updateTitle(null, me);
 		updateTerritoryDisplay(me, true);
 	}
 

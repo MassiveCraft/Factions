@@ -35,9 +35,7 @@ permissions:
     children:
       factions.kit.fullplayer: true
       factions.adminmode: true
-      factions.chatspy: true
   factions.kit.fullplayer:
-    default: true
     description: Can also create new factions.
     children:
       factions.kit.halfplayer: true
@@ -46,7 +44,8 @@ permissions:
     description: Can do all but create factions.
     children:
       factions.autoclaim: true
-      factions.chat: true
+      factions.cape: true
+      factions.cape.*: true
       factions.claim: true
       factions.deinvite: true
       factions.description: true
@@ -78,12 +77,21 @@ permissions:
       factions.version: true
   factions.adminmode:
     description: enable admin bypass mode
-  factions.chatspy:
-    description: enable admin chat spy mode
   factions.autoclaim:
     description: auto-claim land as you walk around
-  factions.chat:
-    description: change chat mode
+  factions.cape:
+    description: manage faction capes
+  factions.cape.*:
+    children:
+      factions.cape.get: true
+      factions.cape.set: true
+      factions.cape.remove: true
+  factions.cape.get:
+    description: get faction cape
+  factions.cape.set:
+    description: set faction cape
+  factions.cape.remove:
+    description: remove faction cape
   factions.claim:
     description: claim land where you are standing
   factions.config:

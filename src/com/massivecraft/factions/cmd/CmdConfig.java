@@ -393,7 +393,8 @@ public class CmdConfig extends FCommand
 		Conf.save();
 
 		// in case some Spout related setting was changed
-		SpoutFeatures.updateAppearances();
+		SpoutFeatures.updateTitle(null, null);
+		//SpoutFeatures.updateCape(null);
 	}
 	
 }

@@ -53,13 +53,11 @@ public class FactionsPlayerListener implements Listener
 		// Update the lastLoginTime for this fplayer
 		me.setLastLoginTime(System.currentTimeMillis());
 
-/*		This is now done in a separate task which runs every few minutes
-		// Run the member auto kick routine. Twice to get to the admins...
-		FPlayers.i.autoLeaveOnInactivityRoutine();
-		FPlayers.i.autoLeaveOnInactivityRoutine();
- */
-
-		SpoutFeatures.updateAppearancesShortly(event.getPlayer());
+		//SpoutFeatures.updateAppearancesShortly(event.getPlayer());
+		SpoutFeatures.updateTitleShortly(event.getPlayer(), null);
+		SpoutFeatures.updateTitleShortly(null, event.getPlayer());
+		SpoutFeatures.updateCapeShortly(event.getPlayer(), null);
+		SpoutFeatures.updateCapeShortly(null, event.getPlayer());
 	}
 	
 	@EventHandler(priority = EventPriority.NORMAL)

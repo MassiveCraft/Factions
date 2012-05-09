@@ -27,7 +27,7 @@ public class CmdKick extends FCommand
 		
 		senderMustBePlayer = true;
 		senderMustBeMember = false;
-		senderMustBeOfficer = true;
+		senderMustBeOfficer = false;
 		senderMustBeLeader = false;
 	}
 	

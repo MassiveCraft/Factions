@@ -31,10 +31,12 @@ public enum FPerm
 	BUTTON("button", "use stone buttons",          Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.ALLY),
 	LEVER("lever", "use levers",                   Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.ALLY),
 	CONTAINER("container", "use containers",       Rel.LEADER, Rel.OFFICER, Rel.MEMBER),
+	INVITE("invite", "invite players",             Rel.LEADER, Rel.OFFICER),
 	KICK("kick", "kick members",                   Rel.LEADER, Rel.OFFICER),
 	SETHOME("sethome", "set the home",             Rel.LEADER, Rel.OFFICER),
 	WITHDRAW("withdraw", "withdraw money",         Rel.LEADER, Rel.OFFICER),
 	TERRITORY("territory", "claim or unclaim",     Rel.LEADER, Rel.OFFICER),
+	CAPE("cape", "set the cape",                   Rel.LEADER, Rel.OFFICER),
 	DISBAND("disband", "disband the faction",      Rel.LEADER),
 	PERMS("perms", "manage permissions",           Rel.LEADER),
 	;
@@ -77,6 +79,7 @@ public enum FPerm
 		if (str.startsWith("but")) return BUTTON;
 		if (str.startsWith("l"))   return LEVER;
 		if (str.startsWith("co"))  return CONTAINER;
+		if (str.startsWith("i"))   return INVITE;
 		if (str.startsWith("k"))   return KICK;
 		if (str.startsWith("s"))   return SETHOME;
 		if (str.startsWith("w"))   return WITHDRAW;

@@ -9,6 +9,7 @@ public class FCmdRoot extends FCommand
 	public CmdLeader cmdLeader = new CmdLeader();
 	public CmdAutoClaim cmdAutoClaim = new CmdAutoClaim();
 	public CmdAdmin cmdBypass = new CmdAdmin();
+	public CmdCape cmdCape = new CmdCape();
 	public CmdClaim cmdClaim = new CmdClaim();
 	public CmdConfig cmdConfig = new CmdConfig();
 	public CmdCreate cmdCreate = new CmdCreate();
@@ -71,6 +72,7 @@ public class FCmdRoot extends FCommand
 		this.addSubCommand(this.cmdLeader);
 		this.addSubCommand(this.cmdAutoClaim);
 		this.addSubCommand(this.cmdBypass);
+		this.addSubCommand(this.cmdCape);
 		this.addSubCommand(this.cmdClaim);
 		this.addSubCommand(this.cmdConfig);
 		this.addSubCommand(this.cmdCreate);

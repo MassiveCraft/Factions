@@ -33,7 +33,7 @@ public class FactionsHealthBarListener implements Listener
 		if ( ! Conf.spoutHealthBarUnderNames) return;
 		if ( ! (entity instanceof Player)) return;
 		Player player = (Player)entity;
-		SpoutFeatures.updateMyAppearance(player);
+		SpoutFeatures.updateTitle(player, null);
 	}
 	
 	@EventHandler(priority = EventPriority.MONITOR)
