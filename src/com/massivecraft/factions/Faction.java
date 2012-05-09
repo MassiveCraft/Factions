@@ -136,6 +136,7 @@ public class Faction extends Entity implements EconomyParticipator
 		return ret;
 	}
 	
+	/*
 	public void addPermittedRelation(FPerm perm, Rel rel)
 	{
 		Set<Rel> newPermittedRelations = EnumSet.noneOf(Rel.class);
@@ -149,6 +150,21 @@ public class Faction extends Entity implements EconomyParticipator
 		Set<Rel> newPermittedRelations = EnumSet.noneOf(Rel.class);
 		newPermittedRelations.addAll(this.getPermittedRelations(perm));
 		newPermittedRelations.remove(rel);
+		this.setPermittedRelations(perm, newPermittedRelations);
+	}*/
+	
+	public void setRelationPermitted(FPerm perm, Rel rel, boolean permitted)
+	{
+		Set<Rel> newPermittedRelations = EnumSet.noneOf(Rel.class);
+		newPermittedRelations.addAll(this.getPermittedRelations(perm));
+		if (permitted)
+		{
+			newPermittedRelations.add(rel);
+		}
+		else
+		{
+			newPermittedRelations.remove(rel);
+		}
 		this.setPermittedRelations(perm, newPermittedRelations);
 	}
 	

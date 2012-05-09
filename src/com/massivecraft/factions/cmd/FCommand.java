@@ -343,6 +343,39 @@ public abstract class FCommand extends MCommand<P>
 		return this.argAsFactionPerm(idx, null);
 	}
 	
+	// FACTION REL ======================
+	public Rel strAsRel(String name, Rel def, boolean msg)
+	{
+		Rel ret = def;
+		
+		if (name != null)
+		{
+			Rel perm = Rel.parse(name);
+			if (perm != null)
+			{
+				ret = perm;
+			}
+		}
+		
+		if (msg && ret == null)
+		{
+			this.msg("<b>The role \"<p>%s<b>\" could not be found.", name);
+		}
+		
+		return ret;
+	}
+	public Rel argAsRel(int idx, Rel def, boolean msg)
+	{
+		return this.strAsRel(this.argAsString(idx), def, msg);
+	}
+	public Rel argAsRel(int idx, Rel def)
+	{
+		return this.argAsRel(idx, def, true);
+	}
+	public Rel argAsRel(int idx)
+	{
+		return this.argAsRel(idx, null);
+	}
 	
 	// -------------------------------------------- //
 	// Commonly used logic

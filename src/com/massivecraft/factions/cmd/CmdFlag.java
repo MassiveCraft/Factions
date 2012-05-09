@@ -15,7 +15,7 @@ public class CmdFlag extends FCommand
 		//this.requiredArgs.add("");
 		this.optionalArgs.put("faction", "your");
 		this.optionalArgs.put("flag", "all");
-		this.optionalArgs.put("on/off", "read");
+		this.optionalArgs.put("yes/no", "read");
 		
 		this.permission = Permission.FLAG.node;
 		this.disableOnLock = true;

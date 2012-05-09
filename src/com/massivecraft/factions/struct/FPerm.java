@@ -1,9 +1,7 @@
 package com.massivecraft.factions.struct;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.bukkit.Location;
@@ -126,41 +124,6 @@ public enum FPerm
 			ret += " <i>" + this.getDescription(); 
 		}
 		return ret;
-	}
-	
-	public static Set<Rel> parseRelDeltas(String str, Set<Rel> current)
-	{
-		Set<Rel> ret = new HashSet<Rel>();
-		ret.addAll(current);
-		
-		List<String> nodes = new ArrayList<String>(Arrays.asList(str.split("\\s+")));
-		
-		for (String node : nodes)
-		{
-			boolean add = true;
-			if (node.startsWith("-"))
-			{
-				add = false;
-				node = node.substring(1);
-			}
-			else if (node.startsWith("+"))
-			{
-				node = node.substring(1);
-			}
-			Rel rel = Rel.parse(node);
-			
-			if (rel == null) continue;
-			
-			if (add)
-			{
-				ret.add(rel);
-			}
-			else
-			{
-				ret.remove(rel);
-			}
-		}
-		return ret; 
 	}
 	
 	private static final String errorpattern = "%s<b> does not allow you to %s<b>.";

@@ -388,7 +388,7 @@ public abstract class MCommand<T extends MPlugin>
 		}
 		return false;
 	}
-	public Boolean argAsBool(int idx, boolean def)
+	public Boolean argAsBool(int idx, Boolean def)
 	{
 		String str = this.argAsString(idx);
 		if (str == null) return def;
