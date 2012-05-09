@@ -187,11 +187,6 @@ public class Conf
 	public static boolean spoutTerritoryNoticeShowDescription = false;  // whether to show the faction description in the notice, not just the faction tag
 	public static float spoutTerritoryNoticeSize = 1.5f;  // text scale (size) for notice
 	public static float spoutTerritoryNoticeLeaveAfterSeconds = 2.00f;  // how many seconds before the notice goes away
-	/*public static String capeAlly = "https://github.com/MassiveCraft/Factions/raw/master/capes/ally.png";
-	public static String capeEnemy = "https://github.com/MassiveCraft/Factions/raw/master/capes/enemy.png";
-	public static String capeMember = "https://github.com/MassiveCraft/Factions/raw/master/capes/member.png";
-	public static String capeNeutral = "https://github.com/MassiveCraft/Factions/raw/master/capes/neutral.png";
-	public static String capePeaceful = "https://github.com/MassiveCraft/Factions/raw/master/capes/peaceful.png";*/
 	
 	// Economy settings
 	public static boolean econEnabled = false;

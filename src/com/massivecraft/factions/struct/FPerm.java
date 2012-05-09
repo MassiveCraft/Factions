@@ -84,6 +84,7 @@ public enum FPerm
 		if (str.startsWith("s"))   return SETHOME;
 		if (str.startsWith("w"))   return WITHDRAW;
 		if (str.startsWith("t"))   return TERRITORY;
+		if (str.startsWith("ca"))  return CAPE;
 		if (str.startsWith("di"))  return DISBAND;
 		if (str.startsWith("pe"))  return PERMS;
 		return null;

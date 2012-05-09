@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.iface.RelationParticipator;
 import com.massivecraft.factions.integration.Econ;
+import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.struct.FFlag;
 import com.massivecraft.factions.struct.FPerm;
 import com.massivecraft.factions.struct.Rel;
@@ -99,7 +100,7 @@ public class Faction extends Entity implements EconomyParticipator
 	// FIELD: cape
 	private String cape;
 	public String getCape() { return cape; }
-	public void setCape(String val) { this.cape = val; }
+	public void setCape(String val) { this.cape = val; SpoutFeatures.updateCape(this, null); }
 
 	// FIELD: powerBoost
 	// special increase/decrease to default and max power for this faction
