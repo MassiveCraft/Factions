@@ -52,11 +52,6 @@ public class FactionsPlayerListener implements Listener
 		
 		// Update the lastLoginTime for this fplayer
 		me.setLastLoginTime(System.currentTimeMillis());
-
-		SpoutFeatures.updateTitleShortly(event.getPlayer(), null);
-		SpoutFeatures.updateTitleShortly(null, event.getPlayer());
-		SpoutFeatures.updateCapeShortly(event.getPlayer(), null);
-		SpoutFeatures.updateCapeShortly(null, event.getPlayer());
 	}
 	
 	@EventHandler(priority = EventPriority.NORMAL)

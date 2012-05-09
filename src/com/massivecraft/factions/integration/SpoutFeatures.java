@@ -62,7 +62,7 @@ public class SpoutFeatures
 	// -------------------------------------------- //
 	// Capes look the same to everyone.
 	
-	public static void updateCape(final Object ofrom, final Object oto)
+	public static void updateCape(final Object ofrom, final Object oto, boolean onlyIfDifferent)
 	{
 		// Enabled and non-null?
 		if ( ! isEnabled()) return;
@@ -78,29 +78,36 @@ public class SpoutFeatures
 			Faction faction = fplayer.getFaction();
 			
 			String cape = faction.getCape();
+			if (cape == null)
+			{
+				cape = "http://s3.amazonaws.com/MinecraftCloaks/" + player.getName() + ".png";
+			}
 			
 			for (Player playerTo : toPlayers)
 			{
 				SpoutPlayer splayerTo = SpoutManager.getPlayer(playerTo);
 				
+				boolean skip = onlyIfDifferent && cape.equals(splayer.getCape(splayerTo));
+				//Bukkit.getConsoleSender().sendMessage(P.p.txt.parse("<i>CAPE SKIP:<h>%s <i>FROM <h>%s <i>TO <h>%s <i>URL <h>%s", String.valueOf(skip), player.getDisplayName(), playerTo.getDisplayName(), cape));
+				if (skip) continue;
+				//Bukkit.getConsoleSender().sendMessage(P.p.txt.parse("<i>CAPE FROM <h>%s <i>TO <h>%s <i>URL <h>%s", player.getDisplayName(), playerTo.getDisplayName(), cape));
+				
 				// Set the cape
-				if (cape != null)
+				try
 				{
-					try
-					{
-						splayer.setCapeFor(splayerTo, cape);
-					}
-					catch (Exception e)
-					{
-						
-					}
+					splayer.setCapeFor(splayerTo, cape);
 				}
-				else
+				catch (Exception e)
 				{
-					splayer.resetCapeFor(splayerTo);
+					
 				}
 			}	
 		}
+	}
+	
+	public static void updateCape(final Object ofrom, final Object oto)
+	{
+		updateCape(ofrom, oto, true);
 	}
 	
 	public static void updateCapeShortly(final Object ofrom, final Object oto)
@@ -110,16 +117,16 @@ public class SpoutFeatures
 			@Override
 			public void run()
 			{
-				updateCape(ofrom, oto);
+				updateCape(ofrom, oto, false);
 			}
-		}, 10);
+		}, 5);
 	}
 	
 	// -------------------------------------------- //
 	// TITLE
 	// -------------------------------------------- //
 	
-	public static void updateTitle(final Object ofrom, final Object oto)
+	public static void updateTitle(final Object ofrom, final Object oto, boolean onlyIfDifferent)
 	{
 		// Enabled and non-null?
 		if ( ! isEnabled()) return;
@@ -143,9 +150,20 @@ public class SpoutFeatures
 				ChatColor relationColor = faction.getRelationTo(factionTo).getColor();
 				
 				String title = generateTitle(player, fplayer, faction, relationColor);
+				
+				boolean skip = onlyIfDifferent && title.equals(splayer.getTitleFor(splayerTo));
+				//Bukkit.getConsoleSender().sendMessage(P.p.txt.parse("<i>TITLE SKIP:<h>%s <i>FROM <h>%s <i>TO <h>%s <i>TITLE <h>%s", String.valueOf(skip), player.getDisplayName(), playerTo.getDisplayName(), title));
+				if (skip) continue;
+				//Bukkit.getConsoleSender().sendMessage(P.p.txt.parse("<i>TITLE FROM <h>%s <i>TO <h>%s <i>TITLE <h>%s", player.getDisplayName(), playerTo.getDisplayName(), title));
+				
 				splayer.setTitleFor(splayerTo, title);
 			}	
 		}
+	}
+	
+	public static void updateTitle(final Object ofrom, final Object oto)
+	{
+		updateTitle(ofrom, oto, true);
 	}
 	
 	public static void updateTitleShortly(final Object ofrom, final Object oto)
@@ -155,9 +173,9 @@ public class SpoutFeatures
 			@Override
 			public void run()
 			{
-				updateTitle(ofrom, oto);
+				updateTitle(ofrom, oto, false);
 			}
-		}, 10);
+		}, 5);
 	}
 	
 	public static String generateTitle(Player player, FPlayer fplayer, Faction faction, ChatColor relationColor)
@@ -171,7 +189,7 @@ public class SpoutFeatures
 			String addTag = "";
 			if (Conf.spoutFactionTagsOverNames)
 			{
-				addTag += relationColor.toString() + "[" + fplayer.getRole().getPrefix() + faction.getTag() + "]";
+				addTag += relationColor.toString() + fplayer.getRole().getPrefix() + faction.getTag();
 			}
 				
 			if (Conf.spoutFactionTitlesOverNames && ! fplayer.getTitle().isEmpty())
@@ -204,7 +222,12 @@ public class SpoutFeatures
 		}
 		else if (o instanceof FPlayer)
 		{
-			ret.add(((FPlayer)o).getPlayer());
+			FPlayer fplayer = (FPlayer)o;
+			Player player = fplayer.getPlayer();
+			if (player != null)
+			{
+				ret.add(player);
+			}
 		}
 		else if (o instanceof Faction)
 		{

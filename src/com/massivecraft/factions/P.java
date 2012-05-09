@@ -32,7 +32,7 @@ import com.massivecraft.factions.listeners.FactionsBlockListener;
 import com.massivecraft.factions.listeners.FactionsChatListener;
 import com.massivecraft.factions.listeners.FactionsEntityListener;
 import com.massivecraft.factions.listeners.FactionsExploitListener;
-import com.massivecraft.factions.listeners.FactionsHealthBarListener;
+import com.massivecraft.factions.listeners.FactionsAppearanceListener;
 import com.massivecraft.factions.listeners.FactionsPlayerListener;
 import com.massivecraft.factions.listeners.FactionsServerListener;
 import com.massivecraft.factions.struct.FFlag;
@@ -59,7 +59,7 @@ public class P extends MPlugin
 	public final FactionsExploitListener exploitListener;
 	public final FactionsBlockListener blockListener;
 	public final FactionsServerListener serverListener;
-	public final FactionsHealthBarListener healthBarListener;
+	public final FactionsAppearanceListener appearanceListener;
 	
 	// Persistance related
 	private boolean locked = false;
@@ -80,7 +80,7 @@ public class P extends MPlugin
 		this.exploitListener = new FactionsExploitListener();
 		this.blockListener = new FactionsBlockListener(this);
 		this.serverListener = new FactionsServerListener(this);
-		this.healthBarListener = new FactionsHealthBarListener(this);
+		this.appearanceListener = new FactionsAppearanceListener(this);
 	}
 
 
@@ -117,12 +117,13 @@ public class P extends MPlugin
 		startAutoLeaveTask(false);
 
 		// Register Event Handlers
-		getServer().getPluginManager().registerEvents(playerListener, this);
-		getServer().getPluginManager().registerEvents(chatListener, this);
-		getServer().getPluginManager().registerEvents(entityListener, this);
-		getServer().getPluginManager().registerEvents(exploitListener, this);
-		getServer().getPluginManager().registerEvents(blockListener, this);
-		getServer().getPluginManager().registerEvents(serverListener, this);
+		getServer().getPluginManager().registerEvents(this.playerListener, this);
+		getServer().getPluginManager().registerEvents(this.chatListener, this);
+		getServer().getPluginManager().registerEvents(this.entityListener, this);
+		getServer().getPluginManager().registerEvents(this.exploitListener, this);
+		getServer().getPluginManager().registerEvents(this.blockListener, this);
+		getServer().getPluginManager().registerEvents(this.serverListener, this);
+		getServer().getPluginManager().registerEvents(this.appearanceListener, this);
 
 		// since some other plugins execute commands directly through this command interface, provide it
 		this.getCommand(this.refCommand).setExecutor(this);
