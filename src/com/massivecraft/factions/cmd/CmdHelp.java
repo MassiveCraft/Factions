@@ -61,7 +61,7 @@ public class CmdHelp extends FCommand
 		ArrayList<String> pageLines;
 
 		pageLines = new ArrayList<String>();
-		pageLines.add( p.cmdBase.cmdHelp.getUseageTemplate(true) );
+		//pageLines.add( p.cmdBase.cmdHelp.getUseageTemplate(true) );
 		pageLines.add( p.cmdBase.cmdList.getUseageTemplate(true) );
 		pageLines.add( p.cmdBase.cmdShow.getUseageTemplate(true) );
 		pageLines.add( p.cmdBase.cmdPower.getUseageTemplate(true) );

@@ -3,6 +3,7 @@ package com.massivecraft.factions.cmd;
 import java.util.Collections;
 
 import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.P;
 
 public class FCmdRoot extends FCommand
 {
@@ -17,7 +18,6 @@ public class FCmdRoot extends FCommand
 	public CmdDescription cmdDescription = new CmdDescription();
 	public CmdDisband cmdDisband = new CmdDisband();
 	public CmdFlag cmdFlag = new CmdFlag();
-	public CmdHelp cmdHelp = new CmdHelp();
 	public CmdHome cmdHome = new CmdHome();
 	public CmdInvite cmdInvite = new CmdInvite();
 	public CmdJoin cmdJoin = new CmdJoin();
@@ -67,47 +67,45 @@ public class FCmdRoot extends FCommand
 		this.setHelpShort("The faction base command");
 		this.helpLong.add(p.txt.parseTags("<i>This command contains all faction stuff."));
 		
-		//this.subCommands.add(p.cmdHelp);
-		
-		this.addSubCommand(this.cmdLeader);
-		this.addSubCommand(this.cmdAutoClaim);
-		this.addSubCommand(this.cmdBypass);
-		this.addSubCommand(this.cmdCape);
-		this.addSubCommand(this.cmdClaim);
-		this.addSubCommand(this.cmdConfig);
-		this.addSubCommand(this.cmdCreate);
-		this.addSubCommand(this.cmdDeinvite);
-		this.addSubCommand(this.cmdDescription);
-		this.addSubCommand(this.cmdDisband);
-		this.addSubCommand(this.cmdFlag);
-		this.addSubCommand(this.cmdHelp);
-		this.addSubCommand(this.cmdHome);
-		this.addSubCommand(this.cmdInvite);
-		this.addSubCommand(this.cmdJoin);
-		this.addSubCommand(this.cmdKick);
-		this.addSubCommand(this.cmdLeave);
+		this.addSubCommand(P.p.cmdAutoHelp);
 		this.addSubCommand(this.cmdList);
-		this.addSubCommand(this.cmdLock);
-		this.addSubCommand(this.cmdMap);
-		this.addSubCommand(this.cmdOfficer);
-		this.addSubCommand(this.cmdMoney);
-		this.addSubCommand(this.cmdOpen);
-		this.addSubCommand(this.cmdPerm);
+		this.addSubCommand(this.cmdShow);
 		this.addSubCommand(this.cmdPower);
-		this.addSubCommand(this.cmdPowerBoost);
+		this.addSubCommand(this.cmdJoin);
+		this.addSubCommand(this.cmdLeave);
+		this.addSubCommand(this.cmdHome);
+		this.addSubCommand(this.cmdCreate);
+		this.addSubCommand(this.cmdSethome);
+		this.addSubCommand(this.cmdTag);
+		this.addSubCommand(this.cmdDescription);
+		this.addSubCommand(this.cmdCape);
+		this.addSubCommand(this.cmdPerm);
+		this.addSubCommand(this.cmdFlag);
+		this.addSubCommand(this.cmdInvite);
+		this.addSubCommand(this.cmdDeinvite);
+		this.addSubCommand(this.cmdOpen);
+		this.addSubCommand(this.cmdMoney);
+		this.addSubCommand(this.cmdClaim);
+		this.addSubCommand(this.cmdAutoClaim);
+		this.addSubCommand(this.cmdUnclaim);
+		this.addSubCommand(this.cmdUnclaimall);
+		this.addSubCommand(this.cmdKick);
+		this.addSubCommand(this.cmdOfficer);
+		this.addSubCommand(this.cmdLeader);
+		this.addSubCommand(this.cmdTitle);
+		this.addSubCommand(this.cmdMap);
+		this.addSubCommand(this.cmdSeeChunks);
+		this.addSubCommand(this.cmdDisband);
 		this.addSubCommand(this.cmdRelationAlly);
 		this.addSubCommand(this.cmdRelationEnemy);
 		this.addSubCommand(this.cmdRelationNeutral);
 		this.addSubCommand(this.cmdRelationTruce);
+		this.addSubCommand(this.cmdBypass);
+		this.addSubCommand(this.cmdPowerBoost);
+		this.addSubCommand(this.cmdLock);
 		this.addSubCommand(this.cmdReload);
+		this.addSubCommand(this.cmdConfig);
 		this.addSubCommand(this.cmdSaveAll);
-		this.addSubCommand(this.cmdSeeChunks);
-		this.addSubCommand(this.cmdSethome);
-		this.addSubCommand(this.cmdShow);
-		this.addSubCommand(this.cmdTag);
-		this.addSubCommand(this.cmdTitle);
-		this.addSubCommand(this.cmdUnclaim);
-		this.addSubCommand(this.cmdUnclaimall);
 		this.addSubCommand(this.cmdVersion);
 	}
 	
@@ -115,7 +113,7 @@ public class FCmdRoot extends FCommand
 	public void perform()
 	{
 		this.commandChain.add(this);
-		this.cmdHelp.execute(this.sender, this.args, this.commandChain);
+		P.p.cmdAutoHelp.execute(this.sender, this.args, this.commandChain);
 	}
 
 }

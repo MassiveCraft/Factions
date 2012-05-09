@@ -18,7 +18,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.util.NumberConversions;
@@ -395,11 +394,5 @@ public class FactionsPlayerListener implements Listener
 		if (blockFrom.equals(blockTo)) return;
 		
 		VisualizeUtil.clear(event.getPlayer());
-	}
-	
-	@EventHandler(priority = EventPriority.LOWEST)
-	public void onPlayerPreLogin(PlayerPreLoginEvent event)
-	{
-		VisualizeUtil.onPlayerPreLogin(event.getName());
 	}
 }

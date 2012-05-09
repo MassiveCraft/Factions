@@ -15,7 +15,6 @@ public class CmdPerm extends FCommand
 	{
 		super();
 		this.aliases.add("perm");
-		this.aliases.add("perms");
 		
 		//this.requiredArgs.add("");
 		this.optionalArgs.put("faction", "your");
