@@ -1,10 +1,8 @@
 package com.massivecraft.factions;
 
 import java.lang.reflect.Modifier;
-import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 import org.bukkit.block.Block;
@@ -16,7 +14,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 
 import com.massivecraft.factions.adapters.FFlagTypeAdapter;
-import com.massivecraft.factions.adapters.FLocToStringSetTypeAdapter;
 import com.massivecraft.factions.adapters.FPermTypeAdapter;
 import com.massivecraft.factions.adapters.LocationTypeAdapter;
 import com.massivecraft.factions.adapters.RelTypeAdapter;
@@ -38,13 +35,13 @@ import com.massivecraft.factions.listeners.FactionsServerListener;
 import com.massivecraft.factions.struct.FFlag;
 import com.massivecraft.factions.struct.FPerm;
 import com.massivecraft.factions.struct.Rel;
+import com.massivecraft.factions.struct.TerritoryAccess;
 import com.massivecraft.factions.util.AutoLeaveTask;
 import com.massivecraft.factions.util.LazyLocation;
 import com.massivecraft.factions.zcore.MPlugin;
 import com.massivecraft.factions.zcore.util.TextUtil;
 
 import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 
 
 public class P extends MPlugin
@@ -135,14 +132,12 @@ public class P extends MPlugin
 	@Override
 	public GsonBuilder getGsonBuilder()
 	{
-		Type mapFLocToStringSetType = new TypeToken<Map<FLocation, Set<String>>>(){}.getType();
-
 		return new GsonBuilder()
 		.setPrettyPrinting()
 		.disableHtmlEscaping()
 		.excludeFieldsWithModifiers(Modifier.TRANSIENT, Modifier.VOLATILE)
 		.registerTypeAdapter(LazyLocation.class, new LocationTypeAdapter())
-		.registerTypeAdapter(mapFLocToStringSetType, new FLocToStringSetTypeAdapter())
+		.registerTypeAdapter(TerritoryAccess.class, new TerritoryAccess())
 		.registerTypeAdapter(Rel.class, new RelTypeAdapter())
 		.registerTypeAdapter(FPerm.class, new FPermTypeAdapter())
 		.registerTypeAdapter(FFlag.class, new FFlagTypeAdapter());

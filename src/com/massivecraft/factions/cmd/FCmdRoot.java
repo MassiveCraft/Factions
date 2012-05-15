@@ -7,6 +7,7 @@ import com.massivecraft.factions.P;
 
 public class FCmdRoot extends FCommand
 {
+	public CmdAccess cmdAccess = new CmdAccess();
 	public CmdLeader cmdLeader = new CmdLeader();
 	public CmdAutoClaim cmdAutoClaim = new CmdAutoClaim();
 	public CmdAdmin cmdBypass = new CmdAdmin();
@@ -89,6 +90,7 @@ public class FCmdRoot extends FCommand
 		this.addSubCommand(this.cmdAutoClaim);
 		this.addSubCommand(this.cmdUnclaim);
 		this.addSubCommand(this.cmdUnclaimall);
+		this.addSubCommand(this.cmdAccess);
 		this.addSubCommand(this.cmdKick);
 		this.addSubCommand(this.cmdOfficer);
 		this.addSubCommand(this.cmdLeader);

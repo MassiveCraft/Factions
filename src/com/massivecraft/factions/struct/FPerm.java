@@ -1,6 +1,7 @@
 package com.massivecraft.factions.struct;
 
 import java.util.Arrays;
+import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -35,6 +36,7 @@ public enum FPerm
 	WITHDRAW("withdraw", "withdraw money",         Rel.LEADER, Rel.OFFICER),
 	TERRITORY("territory", "claim or unclaim",     Rel.LEADER, Rel.OFFICER),
 	CAPE("cape", "set the cape",                   Rel.LEADER, Rel.OFFICER),
+	ACCESS("access", "grant territory access",     Rel.LEADER, Rel.OFFICER),
 	DISBAND("disband", "disband the faction",      Rel.LEADER),
 	PERMS("perms", "manage permissions",           Rel.LEADER),
 	;
@@ -71,6 +73,7 @@ public enum FPerm
 	public static FPerm parse(String str)
 	{
 		str = str.toLowerCase();
+		if (str.startsWith("a"))   return ACCESS;
 		if (str.startsWith("bui")) return BUILD;
 		if (str.startsWith("pa"))  return PAINBUILD;
 		if (str.startsWith("do"))  return DOOR;
@@ -125,7 +128,14 @@ public enum FPerm
 		}
 		return ret;
 	}
-	
+
+	// Perms which apply strictly to granting territory access
+	private static final Set<FPerm> TerritoryPerms = EnumSet.of(BUILD, DOOR, BUTTON, LEVER, CONTAINER);
+	public boolean isTerritoryPerm()
+	{
+		return TerritoryPerms.contains(this);
+	}
+
 	private static final String errorpattern = "%s<b> does not allow you to %s<b>.";
 	public boolean has(Object testSubject, Faction hostFaction, boolean informIfNot)
 	{
@@ -170,7 +180,26 @@ public enum FPerm
 	}
 	public boolean has(Object testSubject, FLocation floc, boolean informIfNot)
 	{
-		Faction factionThere = Board.getFactionAt(floc);
+		TerritoryAccess access = Board.getTerritoryAccessAt(floc);
+		Faction factionThere = access.getHostFaction();
+		if (this.isTerritoryPerm())
+		{
+			if (access.subjectHasAccess(testSubject)) return true;
+			if ( ! access.isHostFactionAllowed() && access.doesHostFactionMatch(testSubject) && ! FPerm.ACCESS.has(testSubject, factionThere))
+			{
+				if (informIfNot)
+				{
+					FPlayer notify = null;
+					if (testSubject instanceof Player)
+						notify = FPlayers.i.get((Player)testSubject);
+					else if (testSubject instanceof FPlayer)
+						notify = (FPlayer)testSubject;
+					if (notify != null)
+						notify.msg("<b>This territory owned by your faction has restricted access.");
+				}
+				return false;
+			}
+		}
 		return this.has(testSubject, factionThere, informIfNot);
 	}
 	public boolean has(Object testSubject, Location loc, boolean informIfNot)

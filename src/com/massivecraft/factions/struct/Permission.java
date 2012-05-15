@@ -5,6 +5,9 @@ import com.massivecraft.factions.P;
 
 public enum Permission
 {
+	ACCESS("access"),
+	ACCESS_ANY("access.any"),
+	ACCESS_VIEW("access.view"),
 	ADMIN("adminmode"),
 	AUTOCLAIM("autoclaim"),
 	CAPE("cape"),
