@@ -178,7 +178,7 @@ public class Conf
 	public static int spoutHealthBarWidth = 30;
 	public static Map<Double, String> spoutHealthBarColorUnderQuota = new LinkedHashMap<Double, String>();
 	public static boolean spoutCapes = true;  // Show faction capes
-	public static int spoutTerritoryDisplayPosition = 3;  // permanent territory display, instead of by chat; 0 = disabled, 1 = top left, 2 = top center, 3+ = top right
+	public static int spoutTerritoryDisplayPosition = 1;  // permanent territory display, instead of by chat; 0 = disabled, 1 = top left, 2 = top center, 3+ = top right
 	public static float spoutTerritoryDisplaySize = 1.0f;  // text scale (size) for territory display
 	public static boolean spoutTerritoryDisplayShowDescription = true;  // whether to show the faction description, not just the faction tag
 	public static boolean spoutTerritoryAccessShow = true;  // show occasional territory access info as well ("access granted" or "access restricted" if relevant)
