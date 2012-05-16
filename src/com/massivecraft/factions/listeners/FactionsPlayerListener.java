@@ -69,9 +69,6 @@ public class FactionsPlayerListener implements Listener
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerMove(PlayerMoveEvent event)
 	{
-		// Did we change block?
-		if (event.getFrom().equals(event.getTo())) return;
-				
 		Player player = event.getPlayer();
 		FPlayer me = FPlayers.i.get(player);
 		
