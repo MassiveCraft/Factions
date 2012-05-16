@@ -209,6 +209,12 @@ public class TerritoryAccess implements JsonDeserializer<TerritoryAccess>, JsonS
 		return factionIDs.contains(factionID);
 	}
 
+	// this should normally only be checked after running subjectHasAccess() or fPlayerHasAccess() above to see if they have access explicitly granted
+	public boolean subjectAccessIsRestricted(Object testSubject)
+	{
+		return ( ! this.isHostFactionAllowed() && this.doesHostFactionMatch(testSubject) && ! FPerm.ACCESS.has(testSubject, this.getHostFaction()));
+	}
+
 
 	//----------------------------------------------//
 	// JSON Serialize/Deserialize Type Adapters

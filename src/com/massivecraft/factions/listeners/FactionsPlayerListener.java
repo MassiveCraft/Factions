@@ -32,6 +32,7 @@ import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.struct.FFlag;
 import com.massivecraft.factions.struct.FPerm;
 import com.massivecraft.factions.struct.Rel;
+import com.massivecraft.factions.struct.TerritoryAccess;
 import com.massivecraft.factions.util.VisualizeUtil;
 
 
@@ -81,20 +82,30 @@ public class FactionsPlayerListener implements Listener
 		// Yes we did change coord (:
 		
 		me.setLastStoodAt(to);
+		TerritoryAccess access = Board.getTerritoryAccessAt(to);
 
 		// Did we change "host"(faction)?
-		boolean changedFaction = (Board.getFactionAt(from) != Board.getFactionAt(to));
+		boolean changedFaction = (Board.getFactionAt(from) != access.getHostFaction());
 
-		if (changedFaction && SpoutFeatures.updateTerritoryDisplay(me))
-			changedFaction = false;
+		// let Spout handle most of this if it's available
+		boolean handledBySpout = changedFaction && SpoutFeatures.updateTerritoryDisplay(me);
 		
 		if (me.isMapAutoUpdating())
 		{
 			me.sendMessage(Board.getMap(me.getFaction(), to, player.getLocation().getYaw()));
 		}
-		else if (changedFaction)
+		else if (changedFaction && ! handledBySpout)
 		{
 			me.sendFactionHereMessage();
+		}
+
+		// show access info message if needed
+		if ( ! handledBySpout && ! SpoutFeatures.updateAccessInfo(me) && ! access.isDefault())
+		{
+			if (access.subjectHasAccess(me))
+				me.msg("<g>You have access to this area.");
+			else if (access.subjectAccessIsRestricted(me))
+				me.msg("<b>This area has restricted access.");
 		}
 
 		if (me.getAutoClaimFor() != null)

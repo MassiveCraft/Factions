@@ -181,11 +181,10 @@ public enum FPerm
 	public boolean has(Object testSubject, FLocation floc, boolean informIfNot)
 	{
 		TerritoryAccess access = Board.getTerritoryAccessAt(floc);
-		Faction factionThere = access.getHostFaction();
 		if (this.isTerritoryPerm())
 		{
 			if (access.subjectHasAccess(testSubject)) return true;
-			if ( ! access.isHostFactionAllowed() && access.doesHostFactionMatch(testSubject) && ! FPerm.ACCESS.has(testSubject, factionThere))
+			if (access.subjectAccessIsRestricted(testSubject))
 			{
 				if (informIfNot)
 				{
@@ -200,7 +199,7 @@ public enum FPerm
 				return false;
 			}
 		}
-		return this.has(testSubject, factionThere, informIfNot);
+		return this.has(testSubject, access.getHostFaction(), informIfNot);
 	}
 	public boolean has(Object testSubject, Location loc, boolean informIfNot)
 	{

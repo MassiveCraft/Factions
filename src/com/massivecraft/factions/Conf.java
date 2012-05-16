@@ -181,7 +181,7 @@ public class Conf
 	public static int spoutTerritoryDisplayPosition = 3;  // permanent territory display, instead of by chat; 0 = disabled, 1 = top left, 2 = top center, 3+ = top right
 	public static float spoutTerritoryDisplaySize = 1.0f;  // text scale (size) for territory display
 	public static boolean spoutTerritoryDisplayShowDescription = true;  // whether to show the faction description, not just the faction tag
-	public static boolean spoutTerritoryOwnersShow = true;  // show territory owner list as well
+	public static boolean spoutTerritoryAccessShow = true;  // show occasional territory access info as well ("access granted" or "access restricted" if relevant)
 	public static boolean spoutTerritoryNoticeShow = true;  // show additional brief territory notice near center of screen, to be sure player notices transition
 	public static int spoutTerritoryNoticeTop = 40;  // how far down the screen to place the additional notice
 	public static boolean spoutTerritoryNoticeShowDescription = false;  // whether to show the faction description in the notice, not just the faction tag

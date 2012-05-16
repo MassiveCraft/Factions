@@ -268,6 +268,27 @@ public class SpoutFeatures
 		return mainListener.updateTerritoryDisplay(player, true);
 	}
 
+	// update access info for all players inside a specified chunk; if specified chunk is null, then simply update everyone online
+	public static void updateAccessInfoLoc(FLocation fLoc)
+	{
+		if ( ! isEnabled()) return;
+
+		Set<FPlayer> players = FPlayers.i.getOnline();
+
+		for (FPlayer player : players)
+		{
+			if (fLoc == null || player.getLastStoodAt().equals(fLoc))
+			mainListener.updateAccessInfo(player);
+		}
+	}
+
+	// update owner list for specified player
+	public static boolean updateAccessInfo(FPlayer player)
+	{
+		if ( ! isEnabled()) return false;
+		return mainListener.updateAccessInfo(player);
+	}
+
 	public static void playerDisconnect(FPlayer player)
 	{
 		if ( ! isEnabled()) return;

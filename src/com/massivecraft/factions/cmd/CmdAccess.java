@@ -4,6 +4,7 @@ import com.massivecraft.factions.Board;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.struct.FPerm;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.TerritoryAccess;
@@ -35,8 +36,9 @@ public class CmdAccess extends FCommand
 	{
 		String type = this.argAsString(0);
 		type = (type == null) ? "" : type.toLowerCase();
+		FLocation loc = new FLocation(me.getLocation());
 
-		TerritoryAccess territory = Board.getTerritoryAccessAt(new FLocation(me.getLocation()));
+		TerritoryAccess territory = Board.getTerritoryAccessAt(loc);
 		Faction locFaction = territory.getHostFaction();
 		boolean accessAny = Permission.ACCESS_ANY.has(sender, false);
 
@@ -87,6 +89,7 @@ public class CmdAccess extends FCommand
 		}
 
 		msg("<i>%s has been %s<i> the access list for this territory.", target, TextUtil.parseColor(added ? "<lime>added to" : "<rose>removed from"));
+		SpoutFeatures.updateAccessInfoLoc(loc);
 		showAccessList(territory, locFaction);
 	}
 
