@@ -31,7 +31,7 @@ public class EssentialsOldVersionFeatures
 				}
 				public String modifyMessage(PlayerChatEvent event, Player target, String message)
 				{
-					return FactionsChatListener.parseTags(message, event.getPlayer());
+					return FactionsChatListener.parseTags(message, event.getPlayer(), target);
 					//return message.replace(Conf.chatTagReplaceString, P.p.getPlayerFactionTagRelation(event.getPlayer(), target)).replace("[FACTION_TITLE]", P.p.getPlayerTitle(event.getPlayer()));
 				}
 			});
