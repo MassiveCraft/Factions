@@ -221,7 +221,7 @@ public class Conf
 	public static boolean spoutFactionTitlesOverNames = true;  // whether to include player's title in that
 	public static boolean spoutFactionAdminCapes = true;  // Show capes on faction admins, colored based on the viewer's relation to the target player
 	public static boolean spoutFactionModeratorCapes = true;  // same, but for faction moderators
-	public static int spoutTerritoryDisplayPosition = 3;  // permanent territory display, instead of by chat; 0 = disabled, 1 = top left, 2 = top center, 3+ = top right
+	public static int spoutTerritoryDisplayPosition = 1;  // permanent territory display, instead of by chat; 0 = disabled, 1 = top left, 2 = top center, 3+ = top right
 	public static float spoutTerritoryDisplaySize = 1.0f;  // text scale (size) for territory display
 	public static boolean spoutTerritoryDisplayShowDescription = true;  // whether to show the faction description, not just the faction tag
 	public static boolean spoutTerritoryOwnersShow = true;  // show territory owner list as well
