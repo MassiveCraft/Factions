@@ -39,7 +39,9 @@ public class Board
 	public static TerritoryAccess getTerritoryAccessAt(FLocation flocation)
 	{
 		if ( ! flocationIds.containsKey(flocation))
-			flocationIds.put(flocation, new TerritoryAccess("0"));
+		{
+			return new TerritoryAccess("0");
+		}
 		return flocationIds.get(flocation);
 	}
 
