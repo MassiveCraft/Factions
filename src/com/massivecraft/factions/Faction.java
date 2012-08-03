@@ -106,6 +106,10 @@ public class Faction extends Entity implements EconomyParticipator
 	private double powerBoost;
 	public double getPowerBoost() { return this.powerBoost; }
 	public void setPowerBoost(double powerBoost) { this.powerBoost = powerBoost; }
+	
+	private double powerLoss;
+	public double getPowerLoss() { return this.powerLoss; }
+	public void setPowerLoss(double powerLoss) { this.powerLoss = powerLoss; }
 
 	// FIELDS: Flag management
 	// TODO: This will save... defaults if they where changed to...
@@ -185,7 +189,6 @@ public class Faction extends Entity implements EconomyParticipator
 		this.flagOverrides = new LinkedHashMap<FFlag, Boolean>();
 		this.permOverrides = new LinkedHashMap<FPerm, Set<Rel>>();
 	}
-	
 
 	// -------------------------------
 	// Understand the types
@@ -304,7 +307,7 @@ public class Faction extends Entity implements EconomyParticipator
 		{
 			ret = Conf.powerFactionMax;
 		}
-		return ret + this.powerBoost;
+		return ret + this.powerBoost + this.powerLoss;
 	}
 	
 	public double getPowerMax()
