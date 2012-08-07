@@ -1,13 +1,12 @@
 package com.massivecraft.factions.integration;
 
 import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerChatEvent;
-
-import com.massivecraft.factions.P;
-import com.massivecraft.factions.listeners.FactionsChatListener;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import com.earth2me.essentials.chat.EssentialsChat;
 import com.earth2me.essentials.chat.IEssentialsChatListener;
+import com.massivecraft.factions.P;
+import com.massivecraft.factions.listeners.FactionsChatListener;
 
 
 /*
@@ -25,11 +24,11 @@ public class EssentialsOldVersionFeatures
 		{
 			essChat.addEssentialsChatListener("Factions", new IEssentialsChatListener()
 			{
-				public boolean shouldHandleThisChat(PlayerChatEvent event)
+				public boolean shouldHandleThisChat(AsyncPlayerChatEvent event)
 				{
 					return P.p.shouldLetFactionsHandleThisChat(event);
 				}
-				public String modifyMessage(PlayerChatEvent event, Player target, String message)
+				public String modifyMessage(AsyncPlayerChatEvent event, Player target, String message)
 				{
 					return FactionsChatListener.parseTags(message, event.getPlayer(), target);
 					//return message.replace(Conf.chatTagReplaceString, P.p.getPlayerFactionTagRelation(event.getPlayer(), target)).replace("[FACTION_TITLE]", P.p.getPlayerTitle(event.getPlayer()));

@@ -9,7 +9,7 @@ import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerChatEvent;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.Location;
 import org.bukkit.Material;
 
@@ -230,7 +230,7 @@ public class P extends MPlugin
 	// enabled or use of the Factions f command without a slash; combination of isPlayerFactionChatting() and isFactionsCommand()
 	
 	
-	public boolean shouldLetFactionsHandleThisChat(PlayerChatEvent event)
+	public boolean shouldLetFactionsHandleThisChat(AsyncPlayerChatEvent event)
 	{
 		if (event == null) return false;
 		return (isPlayerFactionChatting(event.getPlayer()) || isFactionsCommand(event.getMessage()));
