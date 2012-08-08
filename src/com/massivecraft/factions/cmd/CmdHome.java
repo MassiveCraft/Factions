@@ -103,7 +103,7 @@ public class CmdHome extends FCommand
 
 			for (Player p : me.getServer().getOnlinePlayers())
 			{
-				if (p == null || !p.isOnline() || p.isDead() || p == fme || p.getWorld() != w)
+				if (p == null || !p.isOnline() || p.isDead() || p == me || p.getWorld() != w)
 					continue;
 
 				FPlayer fp = FPlayers.i.get(p);
