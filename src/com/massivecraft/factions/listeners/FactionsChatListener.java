@@ -80,7 +80,7 @@ public class FactionsChatListener implements Listener
 	 * The side effect is that other plugins at EventPriority.HIGHEST may experience the event as cancelled. 
 	 */
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled=true)
-	public synchronized void onPlayerChat(AsyncPlayerChatEvent event)
+	public void onPlayerChat(AsyncPlayerChatEvent event)
 	{
 		// Should we even parse?
 		if ( ! Conf.chatParseTags) return;
@@ -126,7 +126,7 @@ public class FactionsChatListener implements Listener
 	 * This is some nasty woodo - I know :/
 	 * I should make a pull request to Bukkit and CraftBukkit to support this feature natively
 	 */
-	public static synchronized void callEventAtMonitorOnly(Event event)
+	public static void callEventAtMonitorOnly(Event event)
 	{
 		synchronized(Bukkit.getPluginManager())
 		{

@@ -68,14 +68,33 @@ public class Conf
 	public static boolean chatSetFormat = false;
 	public static String chatSetFormatTo = "<{faction_relcolor}§l{faction_roleprefix}§r{faction_relcolor}{faction_tag_pr}"+ChatColor.WHITE.toString()+"%s> %s";
 	public static boolean chatParseTags = true;
-	public static boolean chatParseTagsColored = true;
+	public static boolean chatParseTagsColored = false;
 	public static Map<String, String> chatSingleFormats = new HashMap<String, String>();
 	public static transient boolean chatTagHandledByAnotherPlugin = false; // Why do we need this? (Olof asks)
 	public static String chatTagFormat = "%s"+ChatColor.WHITE; // This one is almost deprecated now right? or is it?
 	
 	// Herochat
-	public static String herochatFactionChannelName = "Faction";
-	public static String herochatAllyChannelName = "Allies";
+	public static String herochatFactionName = "Faction";
+	public static String herochatFactionNick = "F";
+	public static String herochatFactionFormat = "{color}[&l{nick}&r{color} &l{faction_roleprefix}&r{color}{faction_title_pr}{sender}{color}] &f{msg}";
+	public static ChatColor herochatFactionColor = ChatColor.GREEN;
+	public static int herochatFactionDistance = 0;
+	public static boolean herochatFactionIsShortcutAllowed = false;
+	public static boolean herochatFactionCrossWorld = true;
+	public static boolean herochatFactionMuted = false;
+	public static Set<String> herochatFactionWorlds = new HashSet<String>();
+	
+	public static String herochatAlliesName = "Allies";
+	public static String herochatAlliesNick = "A";
+	public static String herochatAlliesFormat = "{color}[&l{nick}&r&f {faction_relcolor}&l{faction_roleprefix}&r{faction_relcolor}{faction_tag_pr}{sender}{color}] &f{msg}";
+	public static ChatColor herochatAlliesColor = ChatColor.DARK_PURPLE;
+	public static int herochatAlliesDistance = 0;
+	public static boolean herochatAlliesIsShortcutAllowed = false;
+	public static boolean herochatAlliesCrossWorld = true;
+	public static boolean herochatAlliesMuted = false;
+	public static Set<String> herochatAlliesWorlds = new HashSet<String>();
+	
+	public static String herochatAllyName = "Allies";
 	
 	public static double autoLeaveAfterDaysOfInactivity = 10.0;
 	public static double autoLeaveRoutineRunsEveryXMinutes = 5.0;
