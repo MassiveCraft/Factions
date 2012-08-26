@@ -4,7 +4,6 @@ import java.io.*;
 import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
-import java.nio.file.Files;
 
 public class DiscUtil
 {
@@ -20,12 +19,24 @@ public class DiscUtil
 	
 	public static byte[] readBytes(File file) throws IOException
 	{
-		return Files.readAllBytes(file.toPath());
+		int length = (int) file.length();
+		byte[] output = new byte[length];
+		InputStream in = new FileInputStream(file);
+		int offset = 0;
+		// normally it should be able to read the entire file with just a single iteration below, but it depends on the whims of the FileInputStream
+		while (offset < length)
+		{
+			offset += in.read(output, offset, (length - offset));
+		}
+		in.close();
+		return output;
 	}
 	
 	public static void writeBytes(File file, byte[] bytes) throws IOException
 	{
-		Files.write(file.toPath(), bytes);
+		FileOutputStream out = new FileOutputStream(file);
+		out.write(bytes);
+		out.close();
 	}
 	
 	// -------------------------------------------- //
@@ -82,8 +93,8 @@ public class DiscUtil
 			URL url = new URL(urlstring);
 			ReadableByteChannel rbc = Channels.newChannel(url.openStream());
 			FileOutputStream fos = new FileOutputStream(file);
-		    fos.getChannel().transferFrom(rbc, 0, 1 << 24);
-		    return true;
+			fos.getChannel().transferFrom(rbc, 0, 1 << 24);
+			return true;
 		}
 		catch (Exception e)
 		{
