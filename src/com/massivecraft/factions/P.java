@@ -37,8 +37,8 @@ import com.massivecraft.factions.util.MyLocationTypeAdapter;
 import com.massivecraft.factions.zcore.MPlugin;
 import com.massivecraft.factions.zcore.util.TextUtil;
 
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
+import org.bukkit.craftbukkit.libs.com.google.gson.GsonBuilder;
+import org.bukkit.craftbukkit.libs.com.google.gson.reflect.TypeToken;
 
 
 public class P extends MPlugin

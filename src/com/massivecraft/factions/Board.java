@@ -10,7 +10,7 @@ import java.util.Map.Entry;
 import java.util.TreeMap;
 
 import org.bukkit.ChatColor;
-import com.google.gson.reflect.TypeToken;
+import org.bukkit.craftbukkit.libs.com.google.gson.reflect.TypeToken;
 import com.massivecraft.factions.integration.LWCFeatures;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.util.AsciiCompass;
