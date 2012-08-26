@@ -293,7 +293,7 @@ public class FactionsEntityListener implements Listener
 		Rel relation = defendFaction.getRelationTo(attackFaction);
 		
 		// Check the relation
-		if (relation.isAtLeast(Conf.friendlyFireFromRel) && defLocFaction.getFlag(FFlag.FRIENDLYFIRE) == false)
+		if (defender.hasFaction() && relation.isAtLeast(Conf.friendlyFireFromRel) && defLocFaction.getFlag(FFlag.FRIENDLYFIRE) == false)
 		{
 			if (notify) attacker.msg("<i>You can't hurt %s<i>.", relation.getDescPlayerMany());
 			return false;
@@ -312,7 +312,7 @@ public class FactionsEntityListener implements Listener
 		}
 		
 		// Damage will be dealt. However check if the damage should be reduced.
-		if (damage > 0.0 && ownTerritory && Conf.territoryShieldFactor > 0)
+		if (damage > 0.0 && defender.hasFaction() && ownTerritory && Conf.territoryShieldFactor > 0)
 		{
 			int newDamage = (int)Math.ceil(damage * (1D - Conf.territoryShieldFactor));
 			sub.setDamage(newDamage);
