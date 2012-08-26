@@ -1,6 +1,5 @@
 package com.massivecraft.factions.integration.herochat;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -23,6 +22,10 @@ import com.dthielke.herochat.Herochat;
 import com.dthielke.herochat.MessageFormatSupplier;
 import com.dthielke.herochat.MessageNotFoundException;
 import com.dthielke.herochat.util.Messaging;
+import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.FPlayers;
+import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.struct.Rel;
 
 public abstract class FactionsChannelAbstract implements Channel
 {
@@ -34,6 +37,8 @@ public abstract class FactionsChannelAbstract implements Channel
 	{
 		
 	}
+	
+	
 	
 	@Override
 	public boolean addMember(Chatter chatter, boolean announce, boolean flagUpdate)
@@ -201,6 +206,29 @@ public abstract class FactionsChannelAbstract implements Channel
 		return this.getMutes().contains(name.toLowerCase());
 	}
 	
+	
+	public abstract Set<Rel> getTargetRelations();
+	
+	public Set<Player> getRecipients(Player sender)
+	{
+		Set<Player> ret = new HashSet<Player>();
+		
+		FPlayer fpsender = FPlayers.i.get(sender);
+		Faction faction = fpsender.getFaction();		
+		ret.addAll(faction.getOnlinePlayers());
+		
+		for (FPlayer fplayer : FPlayers.i.getOnline())
+		{
+			if(this.getTargetRelations().contains(faction.getRelationTo(fplayer)))
+			{
+				ret.add(fplayer.getPlayer());
+			}
+		}
+		
+		return ret;
+	}
+	
+	
 	@Override
 	public void processChat(ChannelChatEvent event)
 	{
@@ -209,7 +237,7 @@ public abstract class FactionsChannelAbstract implements Channel
 		String format = applyFormat(event.getFormat(), event.getBukkitFormat(), player);
 
 		Chatter sender = Herochat.getChatterManager().getChatter(player);
-		Set<Player> recipients = new HashSet<Player>(Arrays.asList(Bukkit.getOnlinePlayers()));
+		Set<Player> recipients = this.getRecipients(player);
 
 		trimRecipients(recipients, sender);
 		String msg = String.format(format, player.getDisplayName(), event.getMessage());

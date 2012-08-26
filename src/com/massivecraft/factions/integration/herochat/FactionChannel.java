@@ -1,14 +1,19 @@
 package com.massivecraft.factions.integration.herochat;
 
+import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
 
 import org.bukkit.ChatColor;
 
 import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.struct.Rel;
 
 public class FactionChannel extends FactionsChannelAbstract
-{	
+{
+	public static final Set<Rel> targetRelations = EnumSet.of(Rel.MEMBER);
+	@Override public Set<Rel> getTargetRelations() { return targetRelations; }
+	
 	@Override public String getName() { return Conf.herochatFactionName; }
 	
 	@Override public String getNick() { return Conf.herochatFactionNick; }
