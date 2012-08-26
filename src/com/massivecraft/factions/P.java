@@ -41,7 +41,7 @@ import com.massivecraft.factions.util.LazyLocation;
 import com.massivecraft.factions.zcore.MPlugin;
 import com.massivecraft.factions.zcore.util.TextUtil;
 
-import com.google.gson.GsonBuilder;
+import org.bukkit.craftbukkit.libs.com.google.gson.GsonBuilder;
 
 
 public class P extends MPlugin
