@@ -37,6 +37,7 @@ import com.massivecraft.factions.util.MyLocationTypeAdapter;
 import com.massivecraft.factions.zcore.MPlugin;
 import com.massivecraft.factions.zcore.util.TextUtil;
 
+import java.util.logging.Level;
 import org.bukkit.craftbukkit.libs.com.google.gson.GsonBuilder;
 import org.bukkit.craftbukkit.libs.com.google.gson.reflect.TypeToken;
 
@@ -79,6 +80,18 @@ public class P extends MPlugin
 	@Override
 	public void onEnable()
 	{
+		// bit of (apparently absolutely necessary) idiot-proofing for CB version support due to changed GSON lib package name
+		try
+		{
+			Class.forName("org.bukkit.craftbukkit.libs.com.google.gson.reflect.TypeToken");
+		}
+		catch (ClassNotFoundException ex)
+		{
+			this.log(Level.SEVERE, "CraftBukkit 1.3.2-R0.1 (build 2340) or newer required. Your CraftBukkit build is not compatible.");
+			this.suicide();
+			return;
+		}
+
 		if ( ! preEnable()) return;
 		this.loadSuccessful = false;
 
