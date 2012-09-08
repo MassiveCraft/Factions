@@ -75,7 +75,17 @@ public class Worldguard
 		ApplicableRegionSet set = regionManager.getApplicableRegions(pt);
 		return set.allows(DefaultFlag.PVP);
 	}
-
+	
+	public static boolean playerCanBuild(Player player, Location loc)
+	{
+		if( ! enabled)
+		{
+			// No WG hooks so we'll always bypass this check.
+			return false;
+		}
+		return wg.canBuild(player, loc);
+	}
+	
 	// Check for Regions in chunk the chunk
 	// Returns:
 	//   True: Regions found within chunk

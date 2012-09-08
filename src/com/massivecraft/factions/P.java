@@ -112,7 +112,7 @@ public class P extends MPlugin
 		CapiFeatures.setup();
 		LWCFeatures.setup();
 
-		if(Conf.worldGuardChecking)
+		if(Conf.worldGuardChecking || Conf.worldGuardBuildPriority)
 		{
 			Worldguard.init(this);
 		}

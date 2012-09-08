@@ -74,6 +74,7 @@ public class Conf
 	public static boolean removePlayerDataWhenBanned = true;
 
 	public static boolean worldGuardChecking = false;
+	public static boolean worldGuardBuildPriority = false;
 	
 	//LWC
 	public static boolean lwcIntegration = false;
