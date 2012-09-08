@@ -75,7 +75,10 @@ public class Worldguard
 		ApplicableRegionSet set = regionManager.getApplicableRegions(pt);
 		return set.allows(DefaultFlag.PVP);
 	}
-	
+	// Check if player can build at location by worldguards rules.
+	// Returns:
+	//	True: Player can build in the region.
+	//	False: Player can not build in the region.
 	public static boolean playerCanBuild(Player player, Location loc)
 	{
 		if( ! enabled)
@@ -83,7 +86,13 @@ public class Worldguard
 			// No WG hooks so we'll always bypass this check.
 			return false;
 		}
-		return wg.canBuild(player, loc);
+		
+		World world = loc.getWorld();
+		Vector pt = toVector(loc);
+		
+		if (wg.getRegionManager(world).getApplicableRegions(pt).size() > 0)
+			return wg.canBuild(player, loc);
+		return false;
 	}
 	
 	// Check for Regions in chunk the chunk
