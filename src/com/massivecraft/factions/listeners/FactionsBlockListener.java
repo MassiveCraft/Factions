@@ -129,8 +129,11 @@ public class FactionsBlockListener implements Listener
 		// target end-of-the-line empty (air) block which is being pushed into, including if piston itself would extend into air
 		Block targetBlock = event.getBlock().getRelative(event.getDirection(), event.getLength() + 1);
 
+		// members of faction might not have build rights in their own territory, but pistons should still work regardless; so, address that corner case
+		Faction targetFaction = Board.getFactionAt(new FLocation(targetBlock));
+		if (targetFaction == pistonFaction) return;
+
 		// if potentially pushing into air in another territory, we need to check it out
-		
 		if (targetBlock.isEmpty() && ! FPerm.BUILD.has(pistonFaction, targetBlock.getLocation()))
 		{
 			event.setCancelled(true);
