@@ -542,7 +542,6 @@ public class Faction extends Entity implements EconomyParticipator
 		if(Conf.onUnclaimResetLwcLocks && LWCFeatures.getEnabled())
 		{
 			LWCFeatures.clearAllChests(loc);
-			Bukkit.getServer().broadcastMessage("boardclearat / clearclaim");
 		}	
 		claimOwnership.remove(loc);
 	}
