@@ -20,6 +20,7 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.P;
+import com.massivecraft.factions.integration.Worldguard;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 
@@ -182,6 +183,12 @@ public class FactionsBlockListener implements Listener
 		}
 		else if (otherFaction.isSafeZone())
 		{
+			if (Conf.worldGuardBuildPriority)
+			{
+				if (Worldguard.playerCanBuild(player, location))
+					return true;
+			}
+				
 			if (!Conf.safeZoneDenyBuild || Permission.MANAGE_SAFE_ZONE.has(player))
 				return true;
 
