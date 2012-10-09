@@ -8,7 +8,6 @@ import java.util.Map;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
-import com.sk89q.worldguard.protection.UnsupportedIntersectionException;
 import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import static com.sk89q.worldguard.bukkit.BukkitUtil.*;
@@ -75,6 +74,7 @@ public class Worldguard
 		ApplicableRegionSet set = regionManager.getApplicableRegions(pt);
 		return set.allows(DefaultFlag.PVP);
 	}
+
 	// Check if player can build at location by worldguards rules.
 	// Returns:
 	//	True: Player can build in the region.
@@ -94,7 +94,7 @@ public class Worldguard
 			return wg.canBuild(player, loc);
 		return false;
 	}
-	
+
 	// Check for Regions in chunk the chunk
 	// Returns:
 	//   True: Regions found within chunk
@@ -138,7 +138,7 @@ public class Worldguard
 				foundregions = true;
 			}
 		}
-		catch (UnsupportedIntersectionException e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
