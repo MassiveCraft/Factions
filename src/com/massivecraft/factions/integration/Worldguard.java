@@ -8,7 +8,6 @@ import java.util.Map;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
-import com.sk89q.worldguard.protection.UnsupportedIntersectionException;
 import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import static com.sk89q.worldguard.bukkit.BukkitUtil.*;
@@ -119,7 +118,7 @@ public class Worldguard
 				foundregions = true;
 			}
 		}
-		catch (UnsupportedIntersectionException e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
