@@ -196,7 +196,7 @@ public class Faction extends Entity implements EconomyParticipator
 		this.invites = new HashSet<String>();
 		this.open = Conf.newFactionsDefaultOpen;
 		this.tag = "???";
-		this.description = "Default faction description :(";
+		this.description = "";
 		this.money = 0.0;
 		this.powerBoost = 0.0;
 		this.flagOverrides = new LinkedHashMap<FFlag, Boolean>();

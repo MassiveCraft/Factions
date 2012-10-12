@@ -20,13 +20,13 @@ public class CmdShow extends FCommand
 	{
 		this.aliases.add("show");
 		this.aliases.add("who");
-		
+
 		//this.requiredArgs.add("");
 		this.optionalArgs.put("faction", "your");
-		
+
 		this.permission = Permission.SHOW.node;
 		this.disableOnLock = false;
-		
+
 		senderMustBePlayer = true;
 		senderMustBeMember = false;
 		senderMustBeOfficer = false;
@@ -49,22 +49,25 @@ public class CmdShow extends FCommand
 		Collection<FPlayer> admins = faction.getFPlayersWhereRole(Rel.LEADER);
 		Collection<FPlayer> mods = faction.getFPlayersWhereRole(Rel.OFFICER);
 		Collection<FPlayer> normals = faction.getFPlayersWhereRole(Rel.MEMBER);
-		
+
 		msg(p.txt.titleize(faction.getTag(fme)));
-		msg("<a>Description: <i>%s", faction.getDescription());
-		
+
+		String desc = faction.getDescription();
+		if (! desc.equals(""))
+			msg("<a>Description: <i>%s", faction.getDescription());
+
 		// Display important flags
 		// TODO: Find the non default flags, and display them instead.
 		if (faction.getFlag(FFlag.PERMANENT))
 		{
 			msg("<a>This faction is permanent - remaining even with no members.");
 		}
-		
+
 		if (faction.getFlag(FFlag.PEACEFUL))
 		{
 			msg("<a>This faction is peaceful - in truce with everyone.");
 		}
-		
+
 		msg("<a>Joining: <i>"+(faction.getOpen() ? "no invitation is needed" : "invitation is required"));
 
 		double powerBoost = faction.getPowerBoost();
@@ -82,7 +85,7 @@ public class CmdShow extends FCommand
 				String stringRefund = (refund > 0.0) ? (" ("+Econ.moneyString(refund)+" depreciated)") : "";
 				msg("<a>Total land value: <i>" + stringValue + stringRefund);
 			}
-			
+
 			//Show bank contents
 			if(Conf.bankEnabled)
 			{
@@ -91,10 +94,10 @@ public class CmdShow extends FCommand
 		}
 
 		String sepparator = p.txt.parse("<i>")+", ";
-		
+
 		// List the relations to other factions
 		Map<Rel, List<String>> relationTags = faction.getFactionTagsPerRelation(fme);
-		
+
 		if (faction.getFlag(FFlag.PEACEFUL))
 		{
 			sendMessage(p.txt.parse("<a>In Truce with:<i> *everyone*"));
@@ -103,14 +106,20 @@ public class CmdShow extends FCommand
 		{
 			sendMessage(p.txt.parse("<a>In Truce with: ") + TextUtil.implode(relationTags.get(Rel.TRUCE), sepparator));
 		}
-		
-		sendMessage(p.txt.parse("<a>Allied to: ") + TextUtil.implode(relationTags.get(Rel.ALLY), sepparator));
-		sendMessage(p.txt.parse("<a>Enemies: ") + TextUtil.implode(relationTags.get(Rel.ENEMY), sepparator));
-		
+
+		List<String> allies = relationTags.get(Rel.ALLY);
+		List<String> enemies = relationTags.get(Rel.ENEMY);
+
+		if (! allies.isEmpty())
+			sendMessage(p.txt.parse("<a>Allied to: ") + TextUtil.implode(allies, sepparator));
+
+		if (! enemies.isEmpty())
+			sendMessage(p.txt.parse("<a>Enemies : ") + TextUtil.implode(enemies, sepparator));
+
 		// List the members...
 		List<String> memberOnlineNames = new ArrayList<String>();
 		List<String> memberOfflineNames = new ArrayList<String>();
-		
+
 		for (FPlayer follower : admins)
 		{
 			if (follower.isOnlineAndVisibleTo(me))
@@ -122,7 +131,7 @@ public class CmdShow extends FCommand
 				memberOfflineNames.add(follower.getNameAndTitle(fme));
 			}
 		}
-		
+
 		for (FPlayer follower : mods)
 		{
 			if (follower.isOnlineAndVisibleTo(me))
@@ -134,7 +143,7 @@ public class CmdShow extends FCommand
 				memberOfflineNames.add(follower.getNameAndTitle(fme));
 			}
 		}
-		
+
 		for (FPlayer follower : normals)
 		{
 			if (follower.isOnlineAndVisibleTo(me))
@@ -146,9 +155,13 @@ public class CmdShow extends FCommand
 				memberOfflineNames.add(follower.getNameAndTitle(fme));
 			}
 		}
-		
-		sendMessage(p.txt.parse("<a>Members online: ") + TextUtil.implode(memberOnlineNames, sepparator));
-		sendMessage(p.txt.parse("<a>Members offline: ") + TextUtil.implode(memberOfflineNames, sepparator));
+
+		if (! memberOnlineNames.isEmpty())
+			sendMessage(p.txt.parse("<a>Members online: ") + TextUtil.implode(memberOnlineNames, sepparator));
+
+		if (! memberOfflineNames.isEmpty())
+			sendMessage(p.txt.parse("<a>Members offline: ") + TextUtil.implode(memberOfflineNames, sepparator));
+
 	}
-	
+
 }
