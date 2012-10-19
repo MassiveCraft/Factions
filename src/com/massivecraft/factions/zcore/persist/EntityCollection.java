@@ -3,9 +3,12 @@ package com.massivecraft.factions.zcore.persist;
 import java.io.File;
 import java.lang.reflect.Type;
 import java.util.*;
+import java.util.logging.Level;
 import java.util.Map.Entry;
 
+import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.libs.com.google.gson.Gson;
+import org.bukkit.craftbukkit.libs.com.google.gson.JsonSyntaxException;
 import com.massivecraft.factions.zcore.util.DiscUtil;
 import com.massivecraft.factions.zcore.util.TextUtil;
 
@@ -216,7 +219,22 @@ public abstract class EntityCollection<E extends Entity>
 		}
 		
 		Type type = this.getMapType();
-		return this.gson.fromJson(content, type);
+		try
+		{
+			return this.gson.fromJson(content, type);
+		}
+		catch(JsonSyntaxException ex)
+		{
+			Bukkit.getLogger().log(Level.WARNING, "JSON error encountered loading \"" + file + "\": " + ex.getLocalizedMessage());
+
+			// backup bad file, so user can attempt to recover something from it
+			File backup = new File(file.getPath()+"_bad");
+			if (backup.exists()) backup.delete();
+			Bukkit.getLogger().log(Level.WARNING, "Backing up copy of bad file to: "+backup);
+			file.renameTo(backup);
+
+			return null;
+		}
 	}
 	
 	// -------------------------------------------- //
