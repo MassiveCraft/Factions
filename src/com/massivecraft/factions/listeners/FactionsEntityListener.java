@@ -140,8 +140,8 @@ public class FactionsEntityListener implements Listener
 			for (Block target : targets)
 			{
 				int id = target.getTypeId();
-				// ignore air, bedrock, water, lava, obsidian, enchanting table... too bad we can't get a working material durability # yet
-				if (id != 0 && (id < 7 || id > 11) && id != 49 && id != 116)
+				// ignore air, bedrock, water, lava, obsidian, enchanting table, etc.... too bad we can't get a blast resistance value through Bukkit yet
+				if (id != 0 && (id < 7 || id > 11) && id != 49 && id != 90 && id != 116 && id != 119 && id != 120 && id != 130)
 					target.breakNaturally();
 			}
 		}
