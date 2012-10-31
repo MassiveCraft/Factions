@@ -29,9 +29,9 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.entity.PotionSplashEvent;
-import org.bukkit.event.painting.PaintingBreakByEntityEvent;
-import org.bukkit.event.painting.PaintingBreakEvent;
-import org.bukkit.event.painting.PaintingPlaceEvent;
+import org.bukkit.event.hanging.HangingBreakByEntityEvent;
+import org.bukkit.event.hanging.HangingBreakEvent;
+import org.bukkit.event.hanging.HangingPlaceEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -364,29 +364,29 @@ public class FactionsEntityListener implements Listener
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL)
-	public void onPaintingBreak(PaintingBreakEvent event)
+	public void onPaintingBreak(HangingBreakEvent event)
 	{
 		if (event.isCancelled()) return;
 		
-		if (! (event instanceof PaintingBreakByEntityEvent))
+		if (! (event instanceof HangingBreakByEntityEvent))
 		{
 			return;
 		}
 
-		Entity breaker = ((PaintingBreakByEntityEvent)event).getRemover();
+		Entity breaker = ((HangingBreakByEntityEvent)event).getRemover();
 		if (! (breaker instanceof Player))
 		{
 			return;
 		}
 
-		if ( ! FactionsBlockListener.playerCanBuildDestroyBlock((Player)breaker, event.getPainting().getLocation().getBlock(), "remove paintings", false))
+		if ( ! FactionsBlockListener.playerCanBuildDestroyBlock((Player)breaker, event.getEntity().getLocation().getBlock(), "remove paintings", false))
 		{
 			event.setCancelled(true);
 		}
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL)
-	public void onPaintingPlace(PaintingPlaceEvent event)
+	public void onPaintingPlace(HangingPlaceEvent event)
 	{
 		if (event.isCancelled()) return;
 

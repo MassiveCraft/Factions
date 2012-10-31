@@ -92,7 +92,7 @@ public class P extends MPlugin
 		}
 		catch (ClassNotFoundException ex)
 		{
-			this.log(Level.SEVERE, "CraftBukkit 1.3.2-R0.1 (build 2340) or newer required. Your CraftBukkit build is not compatible.");
+			this.log(Level.SEVERE, "GSON lib not found. Your CraftBukkit build is too old (< 1.3.2) or otherwise not compatible.");
 			this.suicide();
 			return;
 		}
