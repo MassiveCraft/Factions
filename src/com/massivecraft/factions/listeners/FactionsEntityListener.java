@@ -18,6 +18,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.entity.TNTPrimed;
+import org.bukkit.entity.Wither;
 import org.bukkit.entity.WitherSkull;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -31,9 +32,9 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.entity.PotionSplashEvent;
-import org.bukkit.event.painting.PaintingBreakByEntityEvent;
-import org.bukkit.event.painting.PaintingBreakEvent;
-import org.bukkit.event.painting.PaintingPlaceEvent;
+import org.bukkit.event.hanging.HangingBreakByEntityEvent;
+import org.bukkit.event.hanging.HangingBreakEvent;
+import org.bukkit.event.hanging.HangingPlaceEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -164,7 +165,7 @@ public class FactionsEntityListener implements Listener
 		}
 		else if
 		(
-			(boomer instanceof Fireball || boomer instanceof WitherSkull)
+			(boomer instanceof Fireball || boomer instanceof WitherSkull || boomer instanceof Wither)
 			&&
 			(
 				(faction.isNone() && Conf.wildernessBlockFireballs && !Conf.worldsNoWildernessProtection.contains(loc.getWorld().getName()))
@@ -483,29 +484,29 @@ public class FactionsEntityListener implements Listener
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL)
-	public void onPaintingBreak(PaintingBreakEvent event)
+	public void onPaintingBreak(HangingBreakEvent event)
 	{
 		if (event.isCancelled()) return;
 		
-		if (! (event instanceof PaintingBreakByEntityEvent))
+		if (! (event instanceof HangingBreakByEntityEvent))
 		{
 			return;
 		}
 
-		Entity breaker = ((PaintingBreakByEntityEvent)event).getRemover();
+		Entity breaker = ((HangingBreakByEntityEvent)event).getRemover();
 		if (! (breaker instanceof Player))
 		{
 			return;
 		}
 
-		if ( ! FactionsBlockListener.playerCanBuildDestroyBlock((Player)breaker, event.getPainting().getLocation(), "remove paintings", false))
+		if ( ! FactionsBlockListener.playerCanBuildDestroyBlock((Player)breaker, event.getEntity().getLocation(), "remove paintings", false))
 		{
 			event.setCancelled(true);
 		}
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL)
-	public void onPaintingPlace(PaintingPlaceEvent event)
+	public void onPaintingPlace(HangingPlaceEvent event)
 	{
 		if (event.isCancelled()) return;
 
