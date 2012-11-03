@@ -34,6 +34,7 @@ import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.hanging.HangingBreakEvent;
+import org.bukkit.event.hanging.HangingBreakEvent.RemoveCause;
 import org.bukkit.event.hanging.HangingPlaceEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -487,6 +488,62 @@ public class FactionsEntityListener implements Listener
 	public void onPaintingBreak(HangingBreakEvent event)
 	{
 		if (event.isCancelled()) return;
+		if (event.getCause() == RemoveCause.EXPLOSION)
+		{
+			Location loc = event.getEntity().getLocation();
+			Faction faction = Board.getFactionAt(new FLocation(loc));
+			if (faction.noExplosionsInTerritory())
+			{
+				// faction is peaceful and has explosions set to disabled
+				event.setCancelled(true);
+				return;
+			}
+
+			boolean online = faction.hasPlayersOnline();
+			
+			if
+			(
+					(faction.isNone() && Conf.wildernessBlockCreepers && !Conf.worldsNoWildernessProtection.contains(loc.getWorld().getName()))
+					||
+					(faction.isNormal() && (online ? Conf.territoryBlockCreepers : Conf.territoryBlockCreepersWhenOffline))
+					||
+					(faction.isWarZone() && Conf.warZoneBlockCreepers)
+					||
+					faction.isSafeZone()
+			)
+			{
+				// creeper which needs prevention
+				event.setCancelled(true);
+			}
+			else if
+			(
+					(faction.isNone() && Conf.wildernessBlockFireballs && !Conf.worldsNoWildernessProtection.contains(loc.getWorld().getName()))
+					||
+					(faction.isNormal() && (online ? Conf.territoryBlockFireballs : Conf.territoryBlockFireballsWhenOffline))
+					||
+					(faction.isWarZone() && Conf.warZoneBlockFireballs)
+					||
+					faction.isSafeZone()
+			)
+			{
+				// ghast fireball which needs prevention
+				event.setCancelled(true);
+			}
+			else if
+			(
+					(faction.isNone() && Conf.wildernessBlockTNT && ! Conf.worldsNoWildernessProtection.contains(loc.getWorld().getName()))
+					||
+					(faction.isNormal() && ( online ? Conf.territoryBlockTNT : Conf.territoryBlockTNTWhenOffline ))
+					||
+					(faction.isWarZone() && Conf.warZoneBlockTNT)
+					||
+					(faction.isSafeZone() && Conf.safeZoneBlockTNT)
+			)
+			{
+				// TNT which needs prevention
+				event.setCancelled(true);
+			}
+		}
 		
 		if (! (event instanceof HangingBreakByEntityEvent))
 		{
