@@ -299,6 +299,16 @@ public class FactionsEntityListener implements Listener
 		Entity damagee = sub.getEntity();
 		int damage = sub.getDamage();
 		
+		// Edit start
+		Faction faction = Board.getFactionAt(new FLocation(damagee.getLocation()));
+
+		if ((damager instanceof Wither || damager instanceof WitherSkull)
+				&& ! (damagee instanceof Player)
+				&& faction.noExplosionsInTerritory()) {
+			return false;
+		}
+		// Edit end
+		
 		if ( ! (damagee instanceof Player))
 			return true;
 
