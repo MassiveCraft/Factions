@@ -10,6 +10,7 @@ import java.util.Set;
 
 import org.bukkit.Location;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Animals;
 import org.bukkit.entity.Creeper;
 import org.bukkit.entity.Enderman;
 import org.bukkit.entity.Entity;
@@ -300,12 +301,34 @@ public class FactionsEntityListener implements Listener
 		int damage = sub.getDamage();
 		
 		// Edit start
+		boolean playerHit = false;
+		boolean projectileHit = false;
 		Faction faction = Board.getFactionAt(new FLocation(damagee.getLocation()));
 
 		if ((damager instanceof Wither || damager instanceof WitherSkull)
 				&& ! (damagee instanceof Player)
 				&& faction.noExplosionsInTerritory()) {
 			return false;
+		}
+		
+		if (damager instanceof Player) { playerHit = true; }
+		if (damager instanceof Projectile)
+		{
+			Projectile proj = (Projectile)damager;
+			if (proj.getShooter() instanceof Player) { projectileHit = true; }
+		}
+		if (playerHit || projectileHit)
+		{
+			Player p = playerHit ? (Player) damager : (Player)((Projectile)damager).getShooter();
+			FPlayer fdamager = FPlayers.i.get(p);
+			if (damagee instanceof Animals)
+			{
+				if (faction.isPeaceful() && fdamager.getFaction() != faction)
+				{
+					sub.setCancelled(true);
+					fdamager.msg("<i>You can't hurt animals in peaceful territory.");
+				}
+			}
 		}
 		// Edit end
 		
