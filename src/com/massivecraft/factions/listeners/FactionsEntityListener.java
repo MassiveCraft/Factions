@@ -325,8 +325,8 @@ public class FactionsEntityListener implements Listener
 			{
 				if (faction.isPeaceful() && fdamager.getFaction() != faction)
 				{
-					sub.setCancelled(true);
 					fdamager.msg("<i>You can't hurt animals in peaceful territory.");
+					return false;
 				}
 			}
 		}
