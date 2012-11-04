@@ -10,10 +10,12 @@ import java.util.Set;
 
 import org.bukkit.Location;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Animals;
 import org.bukkit.entity.Creeper;
 import org.bukkit.entity.Enderman;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Fireball;
+import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
@@ -34,6 +36,7 @@ import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.hanging.HangingBreakEvent;
+import org.bukkit.event.hanging.HangingBreakEvent.RemoveCause;
 import org.bukkit.event.hanging.HangingPlaceEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -298,6 +301,38 @@ public class FactionsEntityListener implements Listener
 		Entity damagee = sub.getEntity();
 		int damage = sub.getDamage();
 		
+		// Edit start
+		boolean playerHit = false;
+		boolean projectileHit = false;
+		Faction faction = Board.getFactionAt(new FLocation(damagee.getLocation()));
+
+		if ((damager instanceof Wither || damager instanceof WitherSkull)
+				&& ! (damagee instanceof Player)
+				&& faction.noExplosionsInTerritory()) {
+			return false;
+		}
+		
+		if (damager instanceof Player) { playerHit = true; }
+		if (damager instanceof Projectile)
+		{
+			Projectile proj = (Projectile)damager;
+			if (proj.getShooter() instanceof Player) { projectileHit = true; }
+		}
+		if (playerHit || projectileHit)
+		{
+			Player p = playerHit ? (Player) damager : (Player)((Projectile)damager).getShooter();
+			FPlayer fdamager = FPlayers.i.get(p);
+			if (damagee instanceof Animals)
+			{
+				if (faction.isPeaceful() && fdamager.getFaction() != faction)
+				{
+					fdamager.msg("<i>You can't hurt animals in peaceful territory.");
+					return false;
+				}
+			}
+		}
+		// Edit end
+		
 		if ( ! (damagee instanceof Player))
 			return true;
 
@@ -486,7 +521,64 @@ public class FactionsEntityListener implements Listener
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPaintingBreak(HangingBreakEvent event)
 	{
+		boolean itemframe = event.getEntity() instanceof ItemFrame;
 		if (event.isCancelled()) return;
+		if (event.getCause() == RemoveCause.EXPLOSION)
+		{
+			Location loc = event.getEntity().getLocation();
+			Faction faction = Board.getFactionAt(new FLocation(loc));
+			if (faction.noExplosionsInTerritory())
+			{
+				// faction is peaceful and has explosions set to disabled
+				event.setCancelled(true);
+				return;
+			}
+
+			boolean online = faction.hasPlayersOnline();
+			
+			if
+			(
+					(faction.isNone() && Conf.wildernessBlockCreepers && !Conf.worldsNoWildernessProtection.contains(loc.getWorld().getName()))
+					||
+					(faction.isNormal() && (online ? Conf.territoryBlockCreepers : Conf.territoryBlockCreepersWhenOffline))
+					||
+					(faction.isWarZone() && Conf.warZoneBlockCreepers)
+					||
+					faction.isSafeZone()
+			)
+			{
+				// creeper which needs prevention
+				event.setCancelled(true);
+			}
+			else if
+			(
+					(faction.isNone() && Conf.wildernessBlockFireballs && !Conf.worldsNoWildernessProtection.contains(loc.getWorld().getName()))
+					||
+					(faction.isNormal() && (online ? Conf.territoryBlockFireballs : Conf.territoryBlockFireballsWhenOffline))
+					||
+					(faction.isWarZone() && Conf.warZoneBlockFireballs)
+					||
+					faction.isSafeZone()
+			)
+			{
+				// ghast fireball which needs prevention
+				event.setCancelled(true);
+			}
+			else if
+			(
+					(faction.isNone() && Conf.wildernessBlockTNT && ! Conf.worldsNoWildernessProtection.contains(loc.getWorld().getName()))
+					||
+					(faction.isNormal() && ( online ? Conf.territoryBlockTNT : Conf.territoryBlockTNTWhenOffline ))
+					||
+					(faction.isWarZone() && Conf.warZoneBlockTNT)
+					||
+					(faction.isSafeZone() && Conf.safeZoneBlockTNT)
+			)
+			{
+				// TNT which needs prevention
+				event.setCancelled(true);
+			}
+		}
 		
 		if (! (event instanceof HangingBreakByEntityEvent))
 		{
@@ -499,7 +591,7 @@ public class FactionsEntityListener implements Listener
 			return;
 		}
 
-		if ( ! FactionsBlockListener.playerCanBuildDestroyBlock((Player)breaker, event.getEntity().getLocation(), "remove paintings", false))
+		if ( ! FactionsBlockListener.playerCanBuildDestroyBlock((Player)breaker, event.getEntity().getLocation(), itemframe ? "remove item frames" : "remove paintings", false))
 		{
 			event.setCancelled(true);
 		}
@@ -508,9 +600,10 @@ public class FactionsEntityListener implements Listener
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPaintingPlace(HangingPlaceEvent event)
 	{
+		boolean itemframe = event.getEntity() instanceof ItemFrame;
 		if (event.isCancelled()) return;
 
-		if ( ! FactionsBlockListener.playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock().getLocation(), "place paintings", false) )
+		if ( ! FactionsBlockListener.playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock().getLocation(), itemframe ? "remove item frames" : "remove paintings", false) )
 		{
 			event.setCancelled(true);
 		}
