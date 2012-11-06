@@ -290,6 +290,8 @@ public class Conf
 		materialsContainer.add(Material.JUKEBOX);
 		materialsContainer.add(Material.BREWING_STAND);
 		materialsContainer.add(Material.ENCHANTMENT_TABLE);
+		materialsContainer.add(Material.ANVIL);
+		materialsContainer.add(Material.BEACON);
 		
 		materialsEditOnInteract.add(Material.DIODE_BLOCK_OFF);
 		materialsEditOnInteract.add(Material.DIODE_BLOCK_ON);
