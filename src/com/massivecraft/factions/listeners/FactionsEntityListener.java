@@ -17,6 +17,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.entity.TNTPrimed;
+import org.bukkit.entity.Wither;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -413,14 +414,23 @@ public class FactionsEntityListener implements Listener
 	{
 		if (event.isCancelled()) return;
 
-		// for now, only interested in Enderman tomfoolery
-		if (!(event.getEntity() instanceof Enderman)) return;
+		Entity entity = event.getEntity();
+
+		// for now, only interested in Enderman and Wither boss tomfoolery
+		if (!(entity instanceof Enderman) && !(entity instanceof Wither)) return;
 
 		FLocation floc = new FLocation(event.getBlock());
 		Faction faction = Board.getFactionAt(floc);
 		
-		if (faction.getFlag(FFlag.ENDERGRIEF)) return;
-		
-		event.setCancelled(true);
+		if (entity instanceof Enderman)
+		{
+			if ( ! faction.getFlag(FFlag.ENDERGRIEF))
+				event.setCancelled(true);
+		}
+		else if (entity instanceof Wither)
+		{
+			if ( ! faction.getFlag(FFlag.EXPLOSIONS))
+				event.setCancelled(true);
+		}
 	}
 }
