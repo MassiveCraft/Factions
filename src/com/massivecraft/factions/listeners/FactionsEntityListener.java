@@ -166,6 +166,7 @@ public class FactionsEntityListener implements Listener
 		}
 		else if
 		(
+			// it's a bit crude just using fireball protection for Wither boss too, but I'd rather not add in a whole new set of xxxBlockWitherExplosion or whatever
 			(boomer instanceof Fireball || boomer instanceof WitherSkull || boomer instanceof Wither)
 			&&
 			(
@@ -579,12 +580,33 @@ public class FactionsEntityListener implements Listener
 	{
 		if (event.isCancelled()) return;
 
-		// for now, only interested in Enderman tomfoolery
-		if (!(event.getEntity() instanceof Enderman)) return;
+		Entity entity = event.getEntity();
 
-		if (stopEndermanBlockManipulation(event.getBlock().getLocation()))
+		// for now, only interested in Enderman and Wither boss tomfoolery
+		if (!(entity instanceof Enderman) && !(entity instanceof Wither)) return;
+
+		Location loc = event.getBlock().getLocation();
+
+		if (entity instanceof Enderman)
 		{
-			event.setCancelled(true);
+			if (stopEndermanBlockManipulation(loc))
+				event.setCancelled(true);
+		}
+		else if (entity instanceof Wither)
+		{
+			Faction faction = Board.getFactionAt(new FLocation(loc));
+			// it's a bit crude just using fireball protection, but I'd rather not add in a whole new set of xxxBlockWitherExplosion or whatever
+			if
+			(
+				(faction.isNone() && Conf.wildernessBlockFireballs && !Conf.worldsNoWildernessProtection.contains(loc.getWorld().getName()))
+				||
+				(faction.isNormal() && (faction.hasPlayersOnline() ? Conf.territoryBlockFireballs : Conf.territoryBlockFireballsWhenOffline))
+				||
+				(faction.isWarZone() && Conf.warZoneBlockFireballs)
+				||
+				faction.isSafeZone()
+			)
+				event.setCancelled(true);
 		}
 	}
 
