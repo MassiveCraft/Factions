@@ -505,44 +505,30 @@ public class FactionsEntityListener implements Listener
 			
 			if
 			(
-					(faction.isNone() && Conf.wildernessBlockCreepers && !Conf.worldsNoWildernessProtection.contains(loc.getWorld().getName()))
-					||
-					(faction.isNormal() && (online ? Conf.territoryBlockCreepers : Conf.territoryBlockCreepersWhenOffline))
-					||
-					(faction.isWarZone() && Conf.warZoneBlockCreepers)
-					||
-					faction.isSafeZone()
+				(
+					faction.isNone()
+					&& !Conf.worldsNoWildernessProtection.contains(loc.getWorld().getName())
+					&& (Conf.wildernessBlockCreepers || Conf.wildernessBlockFireballs || Conf.wildernessBlockTNT)
+				)
+				||
+				(
+					faction.isNormal()
+					&&
+					( online
+						? (Conf.territoryBlockCreepers || Conf.territoryBlockFireballs || Conf.territoryBlockTNT)
+						: (Conf.territoryBlockCreepersWhenOffline || Conf.territoryBlockFireballsWhenOffline || Conf.territoryBlockTNTWhenOffline)
+					)
+				)
+				||
+				(
+					faction.isWarZone()
+					&& (Conf.warZoneBlockCreepers || Conf.warZoneBlockFireballs || Conf.warZoneBlockTNT)
+				)
+				||
+				faction.isSafeZone()
 			)
 			{
-				// creeper which needs prevention
-				event.setCancelled(true);
-			}
-			else if
-			(
-					(faction.isNone() && Conf.wildernessBlockFireballs && !Conf.worldsNoWildernessProtection.contains(loc.getWorld().getName()))
-					||
-					(faction.isNormal() && (online ? Conf.territoryBlockFireballs : Conf.territoryBlockFireballsWhenOffline))
-					||
-					(faction.isWarZone() && Conf.warZoneBlockFireballs)
-					||
-					faction.isSafeZone()
-			)
-			{
-				// ghast fireball which needs prevention
-				event.setCancelled(true);
-			}
-			else if
-			(
-					(faction.isNone() && Conf.wildernessBlockTNT && ! Conf.worldsNoWildernessProtection.contains(loc.getWorld().getName()))
-					||
-					(faction.isNormal() && ( online ? Conf.territoryBlockTNT : Conf.territoryBlockTNTWhenOffline ))
-					||
-					(faction.isWarZone() && Conf.warZoneBlockTNT)
-					||
-					(faction.isSafeZone() && Conf.safeZoneBlockTNT)
-			)
-			{
-				// TNT which needs prevention
+				// explosion which needs prevention
 				event.setCancelled(true);
 			}
 		}
