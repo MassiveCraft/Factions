@@ -136,7 +136,8 @@ public class FactionsPlayerListener implements Listener
 	public void onPlayerInteract(PlayerInteractEvent event)
 	{
 		if (event.isCancelled()) return;
-		if (event.getAction() != Action.RIGHT_CLICK_BLOCK) return;  // only interested in right-clicks as of MC 1.4+; good performance boost
+		// only need to check right-clicks and physical as of MC 1.4+; good performance boost
+		if (event.getAction() != Action.RIGHT_CLICK_BLOCK && event.getAction() != Action.PHYSICAL) return;
 
 		Block block = event.getClickedBlock();
 		Player player = event.getPlayer();
@@ -165,6 +166,8 @@ public class FactionsPlayerListener implements Listener
 			}
 			return;
 		}
+
+		if (event.getAction() != Action.RIGHT_CLICK_BLOCK) return;  // only interested on right-clicks for below
 
 		if ( ! playerCanUseItemHere(player, block.getLocation(), event.getMaterial(), false))
 		{
