@@ -54,11 +54,10 @@ public class FactionsPlayerListener implements Listener
 		// Update the lastLoginTime for this fplayer
 		me.setLastLoginTime(System.currentTimeMillis());
 
-/*		This is now done in a separate task which runs every few minutes
-		// Run the member auto kick routine. Twice to get to the admins...
-		FPlayers.i.autoLeaveOnInactivityRoutine();
-		FPlayers.i.autoLeaveOnInactivityRoutine();
- */
+		// Store player's current FLocation and notify them where they are
+		me.setLastStoodAt(new FLocation(event.getPlayer().getLocation()));
+		if ( ! SpoutFeatures.updateTerritoryDisplay(me))
+			me.sendFactionHereMessage();
 
 		SpoutFeatures.updateAppearancesShortly(event.getPlayer());
 	}
@@ -81,15 +80,28 @@ public class FactionsPlayerListener implements Listener
 		SpoutFeatures.playerDisconnect(me);
 	}
 	
-	@EventHandler(priority = EventPriority.NORMAL)
+	@EventHandler(priority = EventPriority.MONITOR)
 	public void onPlayerMove(PlayerMoveEvent event)
 	{
+		if (event.isCancelled()) return;
+
+		// quick check to make sure player is moving between chunks; good performance boost
+		if
+		(
+			event.getFrom().getBlockX() >> 4 == event.getTo().getBlockX() >> 4
+			&&
+			event.getFrom().getBlockZ() >> 4 == event.getTo().getBlockZ() >> 4
+			&&
+			event.getFrom().getWorld() == event.getTo().getWorld()
+		)
+			return;
+
 		Player player = event.getPlayer();
 		FPlayer me = FPlayers.i.get(player);
 		
 		// Did we change coord?
 		FLocation from = me.getLastStoodAt();
-		FLocation to = new FLocation(player.getLocation());
+		FLocation to = new FLocation(event.getTo());
 		
 		if (from.equals(to))
 		{
@@ -172,7 +184,7 @@ public class FactionsPlayerListener implements Listener
 		
 		if (me.getAutoClaimFor() != null)
 		{
-			me.attemptClaim(me.getAutoClaimFor(), player.getLocation(), true);
+			me.attemptClaim(me.getAutoClaimFor(), event.getTo(), true);
 		}
 		else if (me.isAutoSafeClaimEnabled())
 		{
@@ -182,11 +194,9 @@ public class FactionsPlayerListener implements Listener
 			}
 			else
 			{
-				FLocation playerFlocation = new FLocation(me);
-
-				if (!Board.getFactionAt(playerFlocation).isSafeZone())
+				if (!Board.getFactionAt(to).isSafeZone())
 				{
-					Board.setFactionAt(Factions.i.getSafeZone(), playerFlocation);
+					Board.setFactionAt(Factions.i.getSafeZone(), to);
 					me.msg("<i>This land is now a safe zone.");
 				}
 			}
@@ -199,11 +209,9 @@ public class FactionsPlayerListener implements Listener
 			}
 			else
 			{
-				FLocation playerFlocation = new FLocation(me);
-
-				if (!Board.getFactionAt(playerFlocation).isWarZone())
+				if (!Board.getFactionAt(to).isWarZone())
 				{
-					Board.setFactionAt(Factions.i.getWarZone(), playerFlocation);
+					Board.setFactionAt(Factions.i.getWarZone(), to);
 					me.msg("<i>This land is now a war zone.");
 				}
 			}
@@ -214,14 +222,12 @@ public class FactionsPlayerListener implements Listener
 	public void onPlayerInteract(PlayerInteractEvent event)
 	{
 		if (event.isCancelled()) return;
+		if (event.getAction() != Action.RIGHT_CLICK_BLOCK) return;  // only interested in right-clicks as of MC 1.4+; good performance boost
 
 		Block block = event.getClickedBlock();
 		Player player = event.getPlayer();
 
-		if (block == null)
-		{
-			return;  // clicked in air, apparently
-		}
+		if (block == null) return;  // clicked in air, apparently
 
 		if ( ! canPlayerUseBlock(player, block, false))
 		{
@@ -244,11 +250,6 @@ public class FactionsPlayerListener implements Listener
 				}
 			}
 			return;
-		}
-
-		if (event.getAction() != Action.RIGHT_CLICK_BLOCK)
-		{
-			return;  // only interested on right-clicks for below
 		}
 
 		if ( ! playerCanUseItemHere(player, block.getLocation(), event.getMaterial(), false))

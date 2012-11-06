@@ -71,6 +71,8 @@ public class CmdList extends FCommand
 		});
 		
 		ArrayList<String> lines = new ArrayList<String>();
+
+/*		// this code was really slow on large servers, getting full info for every faction and then only showing 9 of them; rewritten below
 		lines.add(p.txt.parse("<i>Factionless<i> %d online", Factions.i.getNone().getFPlayersWhereOnline(true).size()));
 		for (Faction faction : factionList)
 		{
@@ -85,6 +87,37 @@ public class CmdList extends FCommand
 		}
 		
 		sendMessage(p.txt.getPage(lines, this.argAsInt(0, 1), "Faction List"));
+ */
+
+		factionList.add(0, Factions.i.getNone());
+
+		final int pageheight = 9;
+		int pagenumber = this.argAsInt(0, 1);
+		int pagecount = (factionList.size() / pageheight) + 1;
+		int start = (pagenumber - 1) * pageheight;
+		int end = start + pageheight;
+		if (end > factionList.size())
+			end = factionList.size();
+
+		lines.add(p.txt.titleize("Faction List "+pagenumber+"/"+pagecount));
+
+		for (Faction faction : factionList.subList(start, end))
+		{
+			if (faction.isNone())
+			{
+				lines.add(p.txt.parse("<i>Factionless<i> %d online", Factions.i.getNone().getFPlayersWhereOnline(true).size()));
+				continue;
+			}
+			lines.add(p.txt.parse("%s<i> %d/%d online, %d/%d/%d",
+				faction.getTag(fme),
+				faction.getFPlayersWhereOnline(true).size(),
+				faction.getFPlayers().size(),
+				faction.getLandRounded(),
+				faction.getPowerRounded(),
+				faction.getPowerMaxRounded())
+			);
+		}
+
+		sendMessage(lines);
 	}
-	
 }

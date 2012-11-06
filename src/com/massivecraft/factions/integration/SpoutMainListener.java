@@ -65,7 +65,7 @@ public class SpoutMainListener implements Listener
 		if (!sPlayer.isSpoutCraftEnabled() || (Conf.spoutTerritoryDisplaySize <= 0 && ! Conf.spoutTerritoryNoticeShow))
 			return;
 
-		FLocation here = new FLocation(player);
+		FLocation here = player.getLastStoodAt();
 		Faction factionHere = Board.getFactionAt(here);
 
 		doOwnerList(player, sPlayer, here, factionHere);
@@ -83,7 +83,7 @@ public class SpoutMainListener implements Listener
 
 	private void doLabels(FPlayer player, SpoutPlayer sPlayer, boolean notify)
 	{
-		FLocation here = new FLocation(player);
+		FLocation here = player.getLastStoodAt();
 		Faction factionHere = Board.getFactionAt(here);
 		String tag = factionHere.getColorTo(player).toString() + factionHere.getTag();
 

@@ -9,6 +9,7 @@ import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.struct.Relation;
 
 public class CmdShow extends FCommand
 {
@@ -96,28 +97,21 @@ public class CmdShow extends FCommand
 		String enemyList = p.txt.parse("<a>Enemies: ");
 		for (Faction otherFaction : Factions.i.get())
 		{
-			if (otherFaction == faction)
-			{
-				continue;
-			}
+			if (otherFaction == faction) continue;
+
+			Relation rel = otherFaction.getRelationTo(faction);
+			if ( ! rel.isAlly() && ! rel.isEnemy()) continue;  // if not ally or enemy, drop out now so we're not wasting time on it; good performance boost
+
 			listpart = otherFaction.getTag(fme)+p.txt.parse("<i>")+", ";
-			if (otherFaction.getRelationTo(faction).isAlly())
-			{
+			if (rel.isAlly())
 				allyList += listpart;
-			}
-			else if (otherFaction.getRelationTo(faction).isEnemy())
-			{
+			else if (rel.isEnemy())
 				enemyList += listpart;
-			}
 		}
 		if (allyList.endsWith(", "))
-		{
 			allyList = allyList.substring(0, allyList.length()-2);
-		}
 		if (enemyList.endsWith(", "))
-		{
 			enemyList = enemyList.substring(0, enemyList.length()-2);
-		}
 		
 		sendMessage(allyList);
 		sendMessage(enemyList);
