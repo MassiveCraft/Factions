@@ -31,6 +31,7 @@ import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.hanging.HangingBreakEvent;
+import org.bukkit.event.hanging.HangingBreakEvent.RemoveCause;
 import org.bukkit.event.hanging.HangingPlaceEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -367,7 +368,17 @@ public class FactionsEntityListener implements Listener
 	public void onPaintingBreak(HangingBreakEvent event)
 	{
 		if (event.isCancelled()) return;
-		
+
+		if (event.getCause() == RemoveCause.EXPLOSION)
+		{
+			Faction faction = Board.getFactionAt(new FLocation(event.getEntity().getLocation()));
+			if (faction.getFlag(FFlag.EXPLOSIONS) == false)
+			{	// faction has explosions disabled
+				event.setCancelled(true);
+				return;
+			}
+		}
+
 		if (! (event instanceof HangingBreakByEntityEvent))
 		{
 			return;
