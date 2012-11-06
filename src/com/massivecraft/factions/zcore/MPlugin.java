@@ -186,6 +186,11 @@ public abstract class MPlugin extends JavaPlugin
 
 	public boolean handleCommand(CommandSender sender, String commandString, boolean testOnly)
 	{
+		return handleCommand(sender, commandString, testOnly, false);
+	}
+
+	public boolean handleCommand(final CommandSender sender, String commandString, boolean testOnly, boolean async)
+	{
 		boolean noSlash = true;
 		if (commandString.startsWith("/"))
 		{
@@ -193,7 +198,7 @@ public abstract class MPlugin extends JavaPlugin
 			commandString = commandString.substring(1);
 		}
 		
-		for (MCommand<?> command : this.getBaseCommands())
+		for (final MCommand<?> command : this.getBaseCommands())
 		{
 			if (noSlash && ! command.allowNoSlashAccess) continue;
 			
@@ -204,10 +209,25 @@ public abstract class MPlugin extends JavaPlugin
 
 				if (commandString.startsWith(alias+" ") || commandString.equals(alias))
 				{
-					List<String> args = new ArrayList<String>(Arrays.asList(commandString.split("\\s+")));
+					final List<String> args = new ArrayList<String>(Arrays.asList(commandString.split("\\s+")));
 					args.remove(0);
+
 					if (testOnly) return true;
-					command.execute(sender, args);
+
+					if (async)
+					{
+						Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this, new Runnable()
+						{
+							@Override
+							public void run()
+							{
+								command.execute(sender, args);
+							}
+						});
+					}
+					else
+						command.execute(sender, args);
+
 					return true;
 				}
 			}

@@ -39,7 +39,7 @@ public class MPluginSecretPlayerListener implements Listener
 	{
 		if (event.isCancelled()) return;
 		
-		if (p.handleCommand(event.getPlayer(), event.getMessage()))
+		if (p.handleCommand(event.getPlayer(), event.getMessage(), false, true))
 		{
 			if (p.logPlayerCommands())
 				Bukkit.getLogger().info("[PLAYER_COMMAND] "+event.getPlayer().getName()+": "+event.getMessage());
