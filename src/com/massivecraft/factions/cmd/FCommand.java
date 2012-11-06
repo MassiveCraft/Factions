@@ -330,8 +330,8 @@ public abstract class FCommand extends MCommand<P>
 		if ( ! Econ.shouldBeUsed() || this.fme == null || cost == 0.0 || fme.isAdminBypassing()) return true;
 
 		if(Conf.bankEnabled && Conf.bankFactionPaysCosts && fme.hasFaction())
-			return Econ.hasAtLeast(myFaction, -cost, toDoThis);
+			return Econ.hasAtLeast(myFaction, cost, toDoThis);
 		else
-			return Econ.hasAtLeast(fme, -cost, toDoThis);
+			return Econ.hasAtLeast(fme, cost, toDoThis);
 	}
 }
