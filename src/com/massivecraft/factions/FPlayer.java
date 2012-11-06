@@ -451,7 +451,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		{
 			return;
 		}
-		Faction factionHere = Board.getFactionAt(new FLocation(this));
+		Faction factionHere = Board.getFactionAt(this.getLastStoodAt());
 		String msg = P.p.txt.parse("<i>")+" ~ "+factionHere.getTag(this);
 		if (factionHere.getDescription().length() > 0)
 		{

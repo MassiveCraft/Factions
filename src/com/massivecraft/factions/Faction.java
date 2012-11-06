@@ -278,6 +278,12 @@ public class Faction extends Entity implements EconomyParticipator
 	
 	public Map<Rel, List<String>> getFactionTagsPerRelation(RelationParticipator rp)
 	{
+		return getFactionTagsPerRelation(rp, false);
+	}
+
+	// onlyNonNeutral option provides substantial performance boost on large servers for listing only non-neutral factions
+	public Map<Rel, List<String>> getFactionTagsPerRelation(RelationParticipator rp, boolean onlyNonNeutral)
+	{
 		Map<Rel, List<String>> ret = new HashMap<Rel, List<String>>();
 		for (Rel rel : Rel.values())
 		{
@@ -286,6 +292,7 @@ public class Faction extends Entity implements EconomyParticipator
 		for (Faction faction : Factions.i.get())
 		{
 			Rel relation = faction.getRelationTo(this);
+			if (onlyNonNeutral && relation == Rel.NEUTRAL) continue;
 			ret.get(relation).add(faction.getTag(rp));
 		}
 		return ret;

@@ -93,7 +93,7 @@ public class CmdShow extends FCommand
 		String sepparator = p.txt.parse("<i>")+", ";
 		
 		// List the relations to other factions
-		Map<Rel, List<String>> relationTags = faction.getFactionTagsPerRelation(fme);
+		Map<Rel, List<String>> relationTags = faction.getFactionTagsPerRelation(fme, true);
 		
 		if (faction.getFlag(FFlag.PEACEFUL))
 		{
