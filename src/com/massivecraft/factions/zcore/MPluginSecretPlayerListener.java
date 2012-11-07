@@ -6,7 +6,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-import org.bukkit.event.player.PlayerPreLoginEvent;
+import org.bukkit.event.player.PlayerLoginEvent;
 
 import com.massivecraft.factions.zcore.persist.EM;
 import com.massivecraft.factions.zcore.persist.Entity;
@@ -48,13 +48,13 @@ public class MPluginSecretPlayerListener implements Listener
 	}
 	
 	@EventHandler(priority = EventPriority.LOWEST)
-	public void onPlayerPreLogin(PlayerPreLoginEvent event)
+	public void onPlayerPreLogin(PlayerLoginEvent event)
 	{
 		for (EntityCollection<? extends Entity> ecoll : EM.class2Entities.values())
 		{
 			if (ecoll instanceof PlayerEntityCollection)
 			{
-				ecoll.get(event.getName());
+				ecoll.get(event.getPlayer().getName());
 			}
 		}
 	}
