@@ -158,7 +158,11 @@ public class FactionsBlockListener implements Listener
 		if (targetLoc.getBlock().isEmpty()) return;
 
 		Faction pistonFaction = Board.getFactionAt(new FLocation(event.getBlock()));
-		
+
+		// members of faction might not have build rights in their own territory, but pistons should still work regardless; so, address that corner case
+		Faction targetFaction = Board.getFactionAt(new FLocation(targetLoc));
+		if (targetFaction == pistonFaction) return;
+
 		if ( ! FPerm.BUILD.has(pistonFaction, targetLoc))
 		{
 			event.setCancelled(true);
