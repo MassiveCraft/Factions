@@ -322,7 +322,7 @@ public class FactionsPlayerListener implements Listener
 		}
 
 		Rel rel = me.getRelationToLocation();
-		if (rel.isAtLeast(Rel.TRUCE))
+		if (rel.isAtLeast(Rel.TRUCE) || Board.getFactionAt(me.getLastStoodAt()).isNone())
 		{
 			return false;
 		}
