@@ -68,7 +68,9 @@ public class Conf
 	public static String chatTagFormat = "%s"+ChatColor.WHITE;
 	public static String factionChatFormat = "%s:"+ChatColor.WHITE+" %s";
 	public static String allianceChatFormat = ChatColor.LIGHT_PURPLE+"%s:"+ChatColor.WHITE+" %s";
-	
+
+	public static boolean broadcastDescriptionChanges = false;
+
 	public static double autoLeaveAfterDaysOfInactivity = 10.0;
 	public static double autoLeaveRoutineRunsEveryXMinutes = 5.0;
 	public static boolean removePlayerDataWhenBanned = true;
@@ -353,6 +355,8 @@ public class Conf
 		safeZoneNerfedCreatureTypes.add(EntityType.SKELETON);
 		safeZoneNerfedCreatureTypes.add(EntityType.SPIDER);
 		safeZoneNerfedCreatureTypes.add(EntityType.SLIME);
+		safeZoneNerfedCreatureTypes.add(EntityType.WITCH);
+		safeZoneNerfedCreatureTypes.add(EntityType.WITHER);
 		safeZoneNerfedCreatureTypes.add(EntityType.ZOMBIE);
 	}
 
