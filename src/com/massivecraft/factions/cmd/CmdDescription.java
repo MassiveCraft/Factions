@@ -34,6 +34,12 @@ public class CmdDescription extends FCommand
 
 		myFaction.setDescription(TextUtil.implode(args, " ").replaceAll("(&([a-f0-9]))", "& $2"));  // since "&" color tags seem to work even through plain old FPlayer.sendMessage() for some reason, we need to break those up
 
+		if ( ! Conf.broadcastDescriptionChanges)
+		{
+			fme.msg("You have changed your faction description to:", myFaction.describeTo(fme));
+			return;
+		}
+
 		// Broadcast the description to everyone
 		for (FPlayer fplayer : FPlayers.i.getOnline())
 		{
