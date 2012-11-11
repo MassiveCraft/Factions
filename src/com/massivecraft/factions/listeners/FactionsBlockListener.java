@@ -133,8 +133,8 @@ public class FactionsBlockListener implements Listener
 		Faction targetFaction = Board.getFactionAt(new FLocation(targetBlock));
 		if (targetFaction == pistonFaction) return;
 
-		// if potentially pushing into air in another territory, we need to check it out
-		if (targetBlock.isEmpty() && ! FPerm.BUILD.has(pistonFaction, targetBlock.getLocation()))
+		// if potentially pushing into air/water/lava in another territory, we need to check it out
+		if ((targetBlock.isEmpty() || targetBlock.isLiquid()) && ! FPerm.BUILD.has(pistonFaction, targetBlock.getLocation()))
 		{
 			event.setCancelled(true);
 		}
@@ -154,8 +154,8 @@ public class FactionsBlockListener implements Listener
 
 		Location targetLoc = event.getRetractLocation();
 
-		// if potentially retracted block is just air, no worries
-		if (targetLoc.getBlock().isEmpty()) return;
+		// if potentially retracted block is just air/water/lava, no worries
+		if (targetLoc.getBlock().isEmpty() || targetLoc.getBlock().isLiquid()) return;
 
 		Faction pistonFaction = Board.getFactionAt(new FLocation(event.getBlock()));
 
