@@ -82,8 +82,8 @@ public class FactionsBlockListener implements Listener
 		// target end-of-the-line empty (air) block which is being pushed into, including if piston itself would extend into air
 		Block targetBlock = event.getBlock().getRelative(event.getDirection(), event.getLength() + 1);
 
-		// if potentially pushing into air in another territory, we need to check it out
-		if (targetBlock.isEmpty() && !canPistonMoveBlock(pistonFaction, targetBlock.getLocation()))
+		// if potentially pushing into air/water/lava in another territory, we need to check it out
+		if ((targetBlock.isEmpty() || targetBlock.isLiquid()) && !canPistonMoveBlock(pistonFaction, targetBlock.getLocation()))
 		{
 			event.setCancelled(true);
 			return;
@@ -107,8 +107,8 @@ public class FactionsBlockListener implements Listener
 
 		Location targetLoc = event.getRetractLocation();
 
-		// if potentially retracted block is just air, no worries
-		if (targetLoc.getBlock().isEmpty())
+		// if potentially retracted block is just air/water/lava, no worries
+		if (targetLoc.getBlock().isEmpty() || targetLoc.getBlock().isLiquid())
 		{
 			return;
 		}
