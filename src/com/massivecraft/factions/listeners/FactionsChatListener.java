@@ -40,7 +40,7 @@ public class FactionsChatListener implements Listener
 		ChatMode chat = me.getChatMode();
 
 		// slashless factions commands need to be handled here if the user isn't in public chat mode
-		if (chat != ChatMode.PUBLIC && p.handleCommand(talkingPlayer, msg))
+		if (chat != ChatMode.PUBLIC && p.handleCommand(talkingPlayer, msg, false, true))
 		{
 			if (Conf.logPlayerCommands)
 				Bukkit.getLogger().log(Level.INFO, "[PLAYER_COMMAND] "+talkingPlayer.getName()+": "+msg);
