@@ -1,8 +1,10 @@
 package com.massivecraft.factions.listeners;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -27,6 +29,8 @@ import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
+import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.struct.FFlag;
@@ -101,9 +105,10 @@ public class FactionsPlayerListener implements Listener
 		
 		me.setLastStoodAt(to);
 		TerritoryAccess access = Board.getTerritoryAccessAt(to);
+		Faction hostFaction = access.getHostFaction();
 
 		// Did we change "host"(faction)?
-		boolean changedFaction = (Board.getFactionAt(from) != access.getHostFaction());
+		boolean changedFaction = (Board.getFactionAt(from) != hostFaction);
 
 		// let Spout handle most of this if it's available
 		boolean handledBySpout = changedFaction && SpoutFeatures.updateTerritoryDisplay(me);
@@ -129,6 +134,26 @@ public class FactionsPlayerListener implements Listener
 		if (me.getAutoClaimFor() != null)
 		{
 			me.attemptClaim(me.getAutoClaimFor(), event.getTo(), true);
+		}
+		//if enemy, is corner, and host is weak => unclaim chunk
+		else if (Rel.ENEMY == me.getRelationTo(access.getHostFaction()) &&
+				Board.isCornerLocation(to) && 
+				hostFaction.hasLandInflation()
+				)
+		{
+			Set<FPlayer> informTheseFPlayers = new HashSet<FPlayer>();
+			informTheseFPlayers.add(me);
+			informTheseFPlayers.addAll(hostFaction.getFPlayersWhereOnline(true));
+			for (FPlayer fp : informTheseFPlayers)
+			{
+				fp.msg("<h>%s<i>'s presence unclaimed land from <h>%s<i>.", me.describeTo(fp, true), hostFaction.describeTo(fp));
+			}
+			
+			Board.setFactionAt(Factions.i.getNone(), to);
+			SpoutFeatures.updateTerritoryDisplayLoc(to);
+
+			if (Conf.logLandClaims)
+				P.p.log(me.getName()+"'s presence unclaimed land at ("+to.getCoordString()+") from: "+hostFaction.getTag());
 		}
 	}
 
