@@ -604,9 +604,9 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 				 // TODO more messages WARN current faction most importantly
 				error = P.p.txt.parse("%s<i> owns this land and is strong enough to keep it.", currentFaction.getTag(this));
 			}
-			else if ( ! Board.isBorderLocation(flocation))
+			else if ( ! Board.isCornerLocation(flocation))
 			{
-				error = P.p.txt.parse("<b>You must start claiming land at the border of the territory.");
+				error = P.p.txt.parse("<b>You must start claiming land at the corner of the territory.");
 			}
 		}
 		
