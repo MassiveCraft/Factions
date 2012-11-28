@@ -38,6 +38,7 @@ import com.massivecraft.factions.struct.FPerm;
 import com.massivecraft.factions.struct.Rel;
 import com.massivecraft.factions.struct.TerritoryAccess;
 import com.massivecraft.factions.util.AutoLeaveTask;
+import com.massivecraft.factions.util.EconLandRewardTask;
 import com.massivecraft.factions.util.LazyLocation;
 import com.massivecraft.factions.zcore.MPlugin;
 import com.massivecraft.factions.zcore.util.TextUtil;
@@ -64,6 +65,7 @@ public class P extends MPlugin
 	public boolean getLocked() {return this.locked;}
 	public void setLocked(boolean val) {this.locked = val; this.setAutoSave(val);}
 	private Integer AutoLeaveTask = null;
+	private Integer econLandRewardTaskID = null;
 	
 	// Commands
 	public FCmdRoot cmdBase;
@@ -186,6 +188,23 @@ public class P extends MPlugin
 		{
 			long ticks = (long)(20 * 60 * Conf.autoLeaveRoutineRunsEveryXMinutes);
 			AutoLeaveTask = getServer().getScheduler().scheduleSyncRepeatingTask(this, new AutoLeaveTask(), ticks, ticks);
+		}
+	}
+
+	public void startEconLandRewardTask(boolean restartIfRunning)
+	{
+		if (econLandRewardTaskID != null)
+		{
+			if (!restartIfRunning) return;
+			this.getServer().getScheduler().cancelTask(econLandRewardTaskID);
+		}
+
+		if (Conf.econEnabled &&
+			Conf.econLandRewardTaskRunsEveryXMinutes > 0.0 &&
+			Conf.econLandReward > 0.0)
+		{
+			long ticks = (long)(20 * 60 * Conf.econLandRewardTaskRunsEveryXMinutes);
+			econLandRewardTaskID = getServer().getScheduler().scheduleSyncRepeatingTask(this, new EconLandRewardTask(), ticks, ticks);
 		}
 	}
 
