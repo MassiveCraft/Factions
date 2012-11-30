@@ -1,5 +1,7 @@
 package com.massivecraft.factions.integration;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Level;
@@ -152,6 +154,71 @@ public class Econ
 			sendTransferInfo(invoker, from, to, amount);
 		
 		return true;
+	}
+
+	/**
+	 * Receiver always gets payed full amount regardless if payer can afford it.
+	 * @param from
+	 * @param to
+	 * @param amount
+	 * @param notify
+	 * @param reason
+	 * @return amount the transfer was short  or NaN if econ not enabled.
+	 */
+	public static double transferAwardMoney(EconomyParticipator from, EconomyParticipator to, double amount, boolean notify, String reason)
+	{
+		if ( ! shouldBeUsed()) return Double.NaN;
+
+		// The amount must be positive.
+		// If the amount is negative we must flip and multiply amount with -1.
+		if (amount < 0)
+		{
+			amount *= -1;
+			EconomyParticipator temp = from;
+			from = to;
+			to = temp;
+		}
+
+		//Receiver always gets the award regardless if payer can afford it.
+		econ.depositPlayer(to.getAccountId(), amount);
+
+		if (from instanceof Faction)
+		{
+			Collection<FPlayer> members = ((Faction) from).getFPlayers();
+			ArrayList<FPlayer> nextRound = new ArrayList<FPlayer>(members.size());
+			while (amount > 0 && members.size() > 0)
+			{
+				double share = amount / members.size();
+				nextRound.clear();
+				for (FPlayer p : members) {
+					String acc = p.getAccountId();
+					double bal = econ.getBalance(acc);
+					double toWithdraw = 0;
+					if (bal < share)
+					{
+						toWithdraw = bal;
+					}
+					else
+					{
+						toWithdraw = share;
+						nextRound.add(p);
+					}
+					econ.withdrawPlayer(p.getAccountId(), toWithdraw);
+					amount -= toWithdraw;
+				}
+				members = nextRound;
+			}
+		}
+		else if (from instanceof FPlayer)
+		{
+			double toWithdraw = Math.min(amount, econ.getBalance(from.getAccountId()));
+			econ.withdrawPlayer(from.getAccountId(), toWithdraw);
+			amount -= toWithdraw;
+		}
+		if (notify) {
+			//TODO
+		}
+		return amount;
 	}
 	
 	public static Set<FPlayer> getFplayers(EconomyParticipator ep)
