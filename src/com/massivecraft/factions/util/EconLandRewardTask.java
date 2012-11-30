@@ -10,7 +10,7 @@ public class EconLandRewardTask implements Runnable {
 	
 	public EconLandRewardTask()
 	{
-		this.rate = Conf.autoLeaveRoutineRunsEveryXMinutes;
+		this.rate = Conf.econLandRewardTaskRunsEveryXMinutes;
 	}
 
 	@Override

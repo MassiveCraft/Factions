@@ -128,6 +128,9 @@ public class P extends MPlugin
 		// start up task which runs the autoLeaveAfterDaysOfInactivity routine
 		startAutoLeaveTask(false);
 
+		// start up task which runs the econLandRewardRoutine
+		startEconLandRewardTask(false);
+
 		// Register Event Handlers
 		getServer().getPluginManager().registerEvents(this.playerListener, this);
 		getServer().getPluginManager().registerEvents(this.chatListener, this);
