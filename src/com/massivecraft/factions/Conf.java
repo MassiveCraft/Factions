@@ -157,6 +157,7 @@ public class Conf
 
 	// if someone is doing a radius claim and the process fails to claim land this many times in a row, it will exit
 	public static int radiusClaimFailureLimit = 9;
+	public static int radiusClaimMax = 5;
 
 	//public static double considerFactionsReallyOfflineAfterXMinutes = 0.0;
 	

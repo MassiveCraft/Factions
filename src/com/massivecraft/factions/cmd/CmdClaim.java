@@ -16,8 +16,8 @@ public class CmdClaim extends FCommand
 		this.aliases.add("claim");
 		
 		//this.requiredArgs.add("");
-		this.optionalArgs.put("faction", "your");
 		this.optionalArgs.put("radius", "1");
+		this.optionalArgs.put("faction", "your");
 		
 		this.permission = Permission.CLAIM.node;
 		this.disableOnLock = true;
@@ -32,8 +32,13 @@ public class CmdClaim extends FCommand
 	public void perform()
 	{
 		// Read and validate input
-		final Faction forFaction = this.argAsFaction(0, myFaction);
-		int radius = this.argAsInt(1, 1);
+		int radius = this.argAsInt(0, 1);
+		final Faction forFaction = this.argAsFaction(1, myFaction);
+
+		if (radius > Conf.radiusClaimMax) {
+			msg("<b>Max radius is %s.", Conf.radiusClaimMax);
+			return;
+		}
 
 		if (radius < 1)
 		{
