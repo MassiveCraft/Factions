@@ -36,7 +36,8 @@ public class CmdDescription extends FCommand
 
 		if ( ! Conf.broadcastDescriptionChanges)
 		{
-			fme.msg("You have changed your faction description to:", myFaction.describeTo(fme));
+			fme.msg("You have changed the description for <h>%s<i> to:", myFaction.describeTo(fme));
+			fme.sendMessage(myFaction.getDescription());
 			return;
 		}
 
