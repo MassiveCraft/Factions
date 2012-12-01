@@ -94,6 +94,10 @@ public class CmdList extends FCommand
 		final int pageheight = 9;
 		int pagenumber = this.argAsInt(0, 1);
 		int pagecount = (factionList.size() / pageheight) + 1;
+		if (pagenumber > pagecount)
+			pagenumber = pagecount;
+		else if (pagenumber < 1)
+			pagenumber = 1;
 		int start = (pagenumber - 1) * pageheight;
 		int end = start + pageheight;
 		if (end > factionList.size())
