@@ -89,16 +89,16 @@ public class FactionsEntityListener implements Listener
 		// call Event
 		Bukkit.getPluginManager().callEvent(powerLossEvent);
 
+		// Call player onDeath if the event is not cancelled
+		if(!powerLossEvent.isCancelled())
+		{
+			fplayer.onDeath();
+		}
 		// Send the message from the powerLossEvent
 		final String msg = powerLossEvent.getMessage();
 		if (msg != null && !msg.isEmpty())
 		{
 			fplayer.msg(msg,fplayer.getPowerRounded(),fplayer.getPowerMaxRounded());
-		}
-		// Call player onDeath if the event is not cancelled
-		if(!powerLossEvent.isCancelled())
-		{
-			fplayer.onDeath();
 		}
 	}
 
