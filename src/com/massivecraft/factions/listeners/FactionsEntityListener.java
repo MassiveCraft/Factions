@@ -57,6 +57,7 @@ public class FactionsEntityListener implements Listener
 		this.p = p;
 	}
 
+
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onEntityDeath(EntityDeathEvent event)
 	{
@@ -66,21 +67,36 @@ public class FactionsEntityListener implements Listener
 		Player player = (Player) entity;
 		FPlayer fplayer = FPlayers.i.get(player);
 		Faction faction = Board.getFactionAt(new FLocation(player.getLocation()));
-		
+
+		PowerLossEvent powerLossEvent = new PowerLossEvent(faction,fplayer);
+		// Check for no power loss conditions
 		if ( ! faction.getFlag(FFlag.POWERLOSS))
 		{
-			fplayer.msg("<i>You didn't lose any power since the territory you died in works that way.");
-			return;
+			powerLossEvent.setMessage("<i>You didn't lose any power since the territory you died in works that way.");
+			powerLossEvent.setCancelled(true);
 		}
-		
-		if (Conf.worldsNoPowerLoss.contains(player.getWorld().getName()))
+		else if (Conf.worldsNoPowerLoss.contains(player.getWorld().getName()))
 		{
-			fplayer.msg("<i>You didn't lose any power due to the world you died in.");
-			return;
+			powerLossEvent.setMessage("<i>You didn't lose any power due to the world you died in.");
+			powerLossEvent.setCancelled(true);
 		}
-		
-		fplayer.onDeath();
-		fplayer.msg("<i>Your power is now <h>"+fplayer.getPowerRounded()+" / "+fplayer.getPowerMaxRounded());
+		else {
+			powerLossEvent.setMessage("<i>Your power is now <h>"+fplayer.getPowerRounded()+" / "+fplayer.getPowerMaxRounded());
+		}
+		// call Event
+		Bukkit.getPluginManager().callEvent(powerLossEvent);
+
+		// Send the message from the powerLossEvent
+		final String msg = powerLossEvent.getMessage();
+		if (msg != null && !msg.isEmpty())
+		{
+			fplayer.msg(msg);
+		}
+		// Call player onDeath if the event is not cancelled
+		if(!powerLossEvent.isCancelled())
+		{
+			fplayer.onDeath();
+		}
 	}
 	
 	@EventHandler(priority = EventPriority.NORMAL)
