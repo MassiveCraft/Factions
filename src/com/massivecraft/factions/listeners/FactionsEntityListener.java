@@ -8,6 +8,7 @@ import java.util.List;
 import java.text.MessageFormat;
 import java.util.Set;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Creeper;
@@ -46,6 +47,7 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.P;
+import com.massivecraft.factions.event.PowerLossEvent;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.util.MiscUtil;
 
@@ -70,36 +72,55 @@ public class FactionsEntityListener implements Listener
 		Player player = (Player) entity;
 		FPlayer fplayer = FPlayers.i.get(player);
 		Faction faction = Board.getFactionAt(new FLocation(player.getLocation()));
+
+		PowerLossEvent powerLossEvent = new PowerLossEvent(faction,fplayer);
+		// Check for no power loss conditions
 		if (faction.isWarZone())
 		{
 			// war zones always override worldsNoPowerLoss either way, thus this layout
 			if (! Conf.warZonePowerLoss)
 			{
-				fplayer.msg("<i>You didn't lose any power since you were in a war zone.");
-				return;
+				powerLossEvent.setMessage("<i>You didn't lose any power since you were in a war zone.");
+				powerLossEvent.setCancelled(true);
 			}
 			if (Conf.worldsNoPowerLoss.contains(player.getWorld().getName()))
 			{
-				fplayer.msg("<b>The world you are in has power loss normally disabled, but you still lost power since you were in a war zone.");
+				powerLossEvent.setMessage("<b>The world you are in has power loss normally disabled, but you still lost power since you were in a war zone.\n<i>Your power is now <h>%d / %d");
 			}
 		}
 		else if (faction.isNone() && !Conf.wildernessPowerLoss && !Conf.worldsNoWildernessProtection.contains(player.getWorld().getName()))
 		{
-			fplayer.msg("<i>You didn't lose any power since you were in the wilderness.");
-			return;
+			powerLossEvent.setMessage("<i>You didn't lose any power since you were in the wilderness.");
+			powerLossEvent.setCancelled(true);
 		}
 		else if (Conf.worldsNoPowerLoss.contains(player.getWorld().getName()))
 		{
-			fplayer.msg("<i>You didn't lose any power due to the world you died in.");
-			return;
+			powerLossEvent.setMessage("<i>You didn't lose any power due to the world you died in.");
+			powerLossEvent.setCancelled(true);
 		}
 		else if (Conf.peacefulMembersDisablePowerLoss && fplayer.hasFaction() && fplayer.getFaction().isPeaceful())
 		{
-			fplayer.msg("<i>You didn't lose any power since you are in a peaceful faction.");
-			return;
+			powerLossEvent.setMessage("<i>You didn't lose any power since you are in a peaceful faction.");
+			powerLossEvent.setCancelled(true);
 		}
-		fplayer.onDeath();
-		fplayer.msg("<i>Your power is now <h>"+fplayer.getPowerRounded()+" / "+fplayer.getPowerMaxRounded());
+		else {
+			powerLossEvent.setMessage("<i>Your power is now <h>%d / %d");
+		}
+
+		// call Event
+		Bukkit.getPluginManager().callEvent(powerLossEvent);
+
+		// Call player onDeath if the event is not cancelled
+		if(!powerLossEvent.isCancelled())
+		{
+			fplayer.onDeath();
+		}
+		// Send the message from the powerLossEvent
+		final String msg = powerLossEvent.getMessage();
+		if (msg != null && !msg.isEmpty())
+		{
+			fplayer.msg(msg,fplayer.getPowerRounded(),fplayer.getPowerMaxRounded());
+		}
 	}
 	
 	/**
