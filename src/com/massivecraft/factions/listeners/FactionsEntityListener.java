@@ -1,14 +1,15 @@
 package com.massivecraft.factions.listeners;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.text.MessageFormat;
 import java.util.Set;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Enderman;
@@ -44,6 +45,8 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.P;
+import com.massivecraft.factions.event.PowerLossEvent;
+import com.massivecraft.factions.listeners.FactionsBlockListener;
 import com.massivecraft.factions.struct.FFlag;
 import com.massivecraft.factions.struct.Rel;
 import com.massivecraft.factions.util.MiscUtil;
@@ -57,6 +60,7 @@ public class FactionsEntityListener implements Listener
 		this.p = p;
 	}
 
+
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onEntityDeath(EntityDeathEvent event)
 	{
@@ -66,28 +70,43 @@ public class FactionsEntityListener implements Listener
 		Player player = (Player) entity;
 		FPlayer fplayer = FPlayers.i.get(player);
 		Faction faction = Board.getFactionAt(new FLocation(player.getLocation()));
-		
+
+		PowerLossEvent powerLossEvent = new PowerLossEvent(faction,fplayer);
+		// Check for no power loss conditions
 		if ( ! faction.getFlag(FFlag.POWERLOSS))
 		{
-			fplayer.msg("<i>You didn't lose any power since the territory you died in works that way.");
-			return;
+			powerLossEvent.setMessage("<i>You didn't lose any power since the territory you died in works that way.");
+			powerLossEvent.setCancelled(true);
 		}
-		
-		if (Conf.worldsNoPowerLoss.contains(player.getWorld().getName()))
+		else if (Conf.worldsNoPowerLoss.contains(player.getWorld().getName()))
 		{
-			fplayer.msg("<i>You didn't lose any power due to the world you died in.");
-			return;
+			powerLossEvent.setMessage("<i>You didn't lose any power due to the world you died in.");
+			powerLossEvent.setCancelled(true);
 		}
-		
-		fplayer.onDeath();
-		fplayer.msg("<i>Your power is now <h>"+fplayer.getPowerRounded()+" / "+fplayer.getPowerMaxRounded());
+		else {
+			powerLossEvent.setMessage("<i>Your power is now <h>%d / %d");
+		}
+		// call Event
+		Bukkit.getPluginManager().callEvent(powerLossEvent);
+
+		// Call player onDeath if the event is not cancelled
+		if(!powerLossEvent.isCancelled())
+		{
+			fplayer.onDeath();
+		}
+		// Send the message from the powerLossEvent
+		final String msg = powerLossEvent.getMessage();
+		if (msg != null && !msg.isEmpty())
+		{
+			fplayer.msg(msg,fplayer.getPowerRounded(),fplayer.getPowerMaxRounded());
+		}
 	}
-	
+
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onEntityDamage(EntityDamageEvent event)
 	{
 		if (event.isCancelled()) return;
-		
+
 		if (event instanceof EntityDamageByEntityEvent)
 		{
 			EntityDamageByEntityEvent sub = (EntityDamageByEntityEvent)event;
@@ -154,7 +173,7 @@ public class FactionsEntityListener implements Listener
 	public void onEntityCombustByEntity(EntityCombustByEntityEvent event)
 	{
 		if (event.isCancelled()) return;
-		
+
 		EntityDamageByEntityEvent sub = new EntityDamageByEntityEvent(event.getCombuster(), event.getEntity(), EntityDamageEvent.DamageCause.FIRE, 0);
 		if ( ! this.canDamagerHurtDamagee(sub, false))
 			event.setCancelled(true);
@@ -208,14 +227,14 @@ public class FactionsEntityListener implements Listener
 		Entity damager = sub.getDamager();
 		Entity damagee = sub.getEntity();
 		int damage = sub.getDamage();
-		
+
 		if ( ! (damagee instanceof Player)) return true;
-		
+
 		FPlayer defender = FPlayers.i.get((Player)damagee);
-		
+
 		if (defender == null || defender.getPlayer() == null)
 			return true;
-		
+
 		Location defenderLoc = defender.getPlayer().getLocation();
 
 		Faction defLocFaction = Board.getFactionAt(new FLocation(defenderLoc));
@@ -228,7 +247,7 @@ public class FactionsEntityListener implements Listener
 			return true;
 
 		// Players can not take attack damage in a SafeZone, or possibly peaceful territory
-		
+
 		if (defLocFaction.getFlag(FFlag.PVP) == false)
 		{
 			if (damager instanceof Player)
@@ -242,12 +261,12 @@ public class FactionsEntityListener implements Listener
 			}
 			return defLocFaction.getFlag(FFlag.MONSTERS);
 		}
-		
+
 		if ( ! (damager instanceof Player))
 			return true;
-		
+
 		FPlayer attacker = FPlayers.i.get((Player)damager);
-		
+
 		if (attacker == null || attacker.getPlayer() == null)
 			return true;
 
@@ -258,9 +277,9 @@ public class FactionsEntityListener implements Listener
 			if (notify) attacker.msg("<i>You can't hurt other players for " + Conf.noPVPDamageToOthersForXSecondsAfterLogin + " seconds after logging in.");
 			return false;
 		}
-		
+
 		Faction locFaction = Board.getFactionAt(new FLocation(attacker));
-		
+
 		// so we know from above that the defender isn't in a safezone... what about the attacker, sneaky dog that he might be?
 		if (locFaction.getFlag(FFlag.PVP) == false)
 		{
@@ -273,7 +292,7 @@ public class FactionsEntityListener implements Listener
 
 		Faction defendFaction = defender.getFaction();
 		Faction attackFaction = attacker.getFaction();
-		
+
 		if (attackFaction.isNone() && Conf.disablePVPForFactionlessPlayers)
 		{
 			if (notify) attacker.msg("<i>You can't hurt other players until you join a faction.");
@@ -292,16 +311,16 @@ public class FactionsEntityListener implements Listener
 				return false;
 			}
 		}
-		
+
 		Rel relation = defendFaction.getRelationTo(attackFaction);
-		
+
 		// Check the relation
 		if (defender.hasFaction() && relation.isAtLeast(Conf.friendlyFireFromRel) && defLocFaction.getFlag(FFlag.FRIENDLYFIRE) == false)
 		{
 			if (notify) attacker.msg("<i>You can't hurt %s<i>.", relation.getDescPlayerMany());
 			return false;
 		}
-		
+
 		// You can not hurt neutrals in their own territory.
 		boolean ownTerritory = defender.isInOwnTerritory();
 		if (defender.hasFaction() && ownTerritory && relation == Rel.NEUTRAL)
@@ -313,13 +332,13 @@ public class FactionsEntityListener implements Listener
 			}
 			return false;
 		}
-		
+
 		// Damage will be dealt. However check if the damage should be reduced.
 		if (damage > 0.0 && defender.hasFaction() && ownTerritory && Conf.territoryShieldFactor > 0)
 		{
 			int newDamage = (int)Math.ceil(damage * (1D - Conf.territoryShieldFactor));
 			sub.setDamage(newDamage);
-			
+
 			// Send message
 			if (notify)
 			{
@@ -327,42 +346,42 @@ public class FactionsEntityListener implements Listener
 				defender.msg("<i>Enemy damage reduced by <rose>%s<i>.", perc);
 			}
 		}
-		
+
 		return true;
 	}
-	
+
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onCreatureSpawn(CreatureSpawnEvent event)
 	{
 		if (event.isCancelled()) return;
 		if (event.getLocation() == null) return;
-		
+
 		FLocation floc = new FLocation(event.getLocation());
 		Faction faction = Board.getFactionAt(floc);
-		
+
 		if (faction.getFlag(FFlag.MONSTERS)) return;
 		if ( ! Conf.monsters.contains(event.getEntityType())) return;
-		
+
 		event.setCancelled(true);
 	}
-	
+
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onEntityTarget(EntityTargetEvent event)
 	{
 		if (event.isCancelled()) return;
-		
+
 		// if there is a target
 		Entity target = event.getTarget();
 		if (target == null) return;
-		
+
 		// We are interested in blocking targeting for certain mobs:
 		if ( ! Conf.monsters.contains(MiscUtil.creatureTypeFromEntity(event.getEntity()))) return;
-		
+
 		FLocation floc = new FLocation(target.getLocation());
 		Faction faction = Board.getFactionAt(floc);
-		
+
 		if (faction.getFlag(FFlag.MONSTERS)) return;
-		
+
 		event.setCancelled(true);
 	}
 
@@ -421,7 +440,7 @@ public class FactionsEntityListener implements Listener
 
 		FLocation floc = new FLocation(event.getBlock());
 		Faction faction = Board.getFactionAt(floc);
-		
+
 		if (entity instanceof Enderman)
 		{
 			if ( ! faction.getFlag(FFlag.ENDERGRIEF))
