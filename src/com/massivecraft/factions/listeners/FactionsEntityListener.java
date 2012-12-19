@@ -46,7 +46,6 @@ import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.event.PowerLossEvent;
-import com.massivecraft.factions.listeners.FactionsBlockListener;
 import com.massivecraft.factions.struct.FFlag;
 import com.massivecraft.factions.struct.Rel;
 import com.massivecraft.factions.util.MiscUtil;
@@ -86,6 +85,7 @@ public class FactionsEntityListener implements Listener
 		else {
 			powerLossEvent.setMessage("<i>Your power is now <h>%d / %d");
 		}
+
 		// call Event
 		Bukkit.getPluginManager().callEvent(powerLossEvent);
 

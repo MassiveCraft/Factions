@@ -1,7 +1,14 @@
 package com.massivecraft.factions.event;
 
-import src.com.massivecraft.factions.FPlayer;
-import src.com.massivecraft.factions.Faction;
+import org.bukkit.event.Cancellable;
+import org.bukkit.event.Event;
+import org.bukkit.event.HandlerList;
+
+import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.Faction;
+
+import org.bukkit.entity.Player;
+
 
 public class PowerLossEvent extends Event implements Cancellable
 {
