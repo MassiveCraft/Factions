@@ -1,14 +1,13 @@
 package com.massivecraft.factions;
 
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.logging.Level;
 import java.util.Set;
 
 import org.bukkit.block.Block;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.Location;
@@ -40,8 +39,9 @@ import com.massivecraft.factions.struct.TerritoryAccess;
 import com.massivecraft.factions.util.AutoLeaveTask;
 import com.massivecraft.factions.util.LazyLocation;
 import com.massivecraft.factions.zcore.MPlugin;
-import com.massivecraft.factions.zcore.util.TextUtil;
 
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 import org.bukkit.craftbukkit.libs.com.google.gson.GsonBuilder;
 
 
@@ -81,7 +81,6 @@ public class P extends MPlugin
 		this.appearanceListener = new FactionsAppearanceListener(this);
 	}
 
-
 	@Override
 	public void onEnable()
 	{
@@ -109,7 +108,6 @@ public class P extends MPlugin
 		// Add Base Commands
 		this.cmdAutoHelp = new CmdAutoHelp();
 		this.cmdBase = new FCmdRoot();
-		this.getBaseCommands().add(cmdBase);
 
 		EssentialsFeatures.setup();
 		SpoutFeatures.setup();
@@ -134,9 +132,6 @@ public class P extends MPlugin
 		getServer().getPluginManager().registerEvents(this.blockListener, this);
 		getServer().getPluginManager().registerEvents(this.serverListener, this);
 		getServer().getPluginManager().registerEvents(this.appearanceListener, this);
-
-		// since some other plugins execute commands directly through this command interface, provide it
-		this.getCommand(this.refCommand).setExecutor(this);
 
 		postEnable();
 		this.loadSuccessful = true;
@@ -195,33 +190,13 @@ public class P extends MPlugin
 		Board.save();
 		Conf.save();
 	}
-
-	@Override
-	public boolean logPlayerCommands()
-	{
-		return Conf.logPlayerCommands;
-	}
-
-	@Override
-	public boolean handleCommand(CommandSender sender, String commandString, boolean testOnly)
-	{
-		if (sender instanceof Player && FactionsPlayerListener.preventCommand(commandString, (Player)sender)) return true;
-
-		return super.handleCommand(sender, commandString, testOnly);
-	}
-
+	
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] split)
 	{
-		// if bare command at this point, it has already been handled by MPlugin's command listeners
-		if (split == null || split.length == 0) return true;
-
-		// otherwise, needs to be handled; presumably another plugin directly ran the command
-		String cmd = Conf.baseCommandAliases.isEmpty() ? "/f" : "/" + Conf.baseCommandAliases.get(0);
-		return handleCommand(sender, cmd + " " + TextUtil.implode(Arrays.asList(split), " "), false);
+		this.cmdBase.execute(sender, new ArrayList<String>(Arrays.asList(split)));
+		return true;
 	}
-
-
 
 	// -------------------------------------------- //
 	// Functions for other plugins to hook into
@@ -260,10 +235,12 @@ public class P extends MPlugin
 	}
 
 	// Is this chat message actually a Factions command, and thus should be left alone by other plugins?
+	/**
+	 * @deprecated As of release 1.8.1 the normal Bukkit command-handling is used. 
+	 */
 	public boolean isFactionsCommand(String check)
 	{
-		if (check == null || check.isEmpty()) return false;
-		return this.handleCommand(null, check, true);
+		return false;
 	}
 
 	// Get a player's faction tag (faction name), mainly for usage by chat plugins for local/channel chat

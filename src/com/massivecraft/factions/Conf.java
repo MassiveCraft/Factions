@@ -11,8 +11,7 @@ import com.massivecraft.factions.struct.Rel;
 
 public class Conf
 {
-	public static List<String> baseCommandAliases = new ArrayList<String>();
-	public static boolean allowNoSlashCommand = true;
+	public final static transient List<String> baseCommandAliases = new ArrayList<String>();
 	
 	// Colors
 	public static ChatColor colorMember = ChatColor.GREEN;
