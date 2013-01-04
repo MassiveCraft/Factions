@@ -14,7 +14,7 @@ Usage
 
 Installing
 ----------
-1. Download the latest release: [https://github.com/MassiveCraft/Factions/downloads](https://github.com/MassiveCraft/Factions/downloads)<br>
+1. Download the latest release: [http://dev.bukkit.org/server-mods/factions/](http://dev.bukkit.org/server-mods/factions/)<br>
 1. Put Factions.jar in the plugins folder.
 
 A default config file will be created on the first run.
