@@ -18,6 +18,7 @@ import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.RelationUtil;
 
 import net.milkbowl.vault.economy.Economy;
+import net.milkbowl.vault.economy.EconomyResponse;
 
 
 public class Econ
@@ -148,14 +149,24 @@ public class Econ
 		}
 		
 		// Transfer money
-		econ.withdrawPlayer(from.getAccountId(), amount);
-		econ.depositPlayer(to.getAccountId(), amount);
-		
-		// Inform
+		EconomyResponse erw = econ.withdrawPlayer(from.getAccountId(), amount);
+
+		if (erw.transactionSuccess()) {
+			EconomyResponse erd = econ.depositPlayer(to.getAccountId(), amount);
+			if (erd.transactionSuccess()) {
+				if (notify) sendTransferInfo(invoker, from, to, amount);
+				return true;
+			} else {
+				// transaction failed, refund account
+				econ.depositPlayer(from.getAccountId(), amount);
+			}
+		}
+
+		// if we get here something with the transaction failed
 		if (notify)
-			sendTransferInfo(invoker, from, to, amount);
-		
-		return true;
+			invoker.msg("Unable to transfer %s<b> to <h>%s<b> from <h>%s<b>.", moneyString(amount), to.describeTo(invoker), from.describeTo(invoker, true));
+
+		return false;
 	}
 	
 	public static Set<FPlayer> getFplayers(EconomyParticipator ep)
@@ -245,22 +256,28 @@ public class Econ
 		if (delta > 0)
 		{
 			// The player should gain money
-			// There is no risk of failure
-			econ.depositPlayer(acc, delta);
-			modifyUniverseMoney(-delta);
-			if (forDoingThis != null && !forDoingThis.isEmpty())
-				ep.msg("<h>%s<i> gained <h>%s<i> %s.", You, moneyString(delta), forDoingThis);
-			return true;
+			// The account might not have enough space
+			EconomyResponse er = econ.depositPlayer(acc, delta);
+			if (er.transactionSuccess()) {
+				modifyUniverseMoney(-delta);
+				if (forDoingThis != null && !forDoingThis.isEmpty())
+					ep.msg("<h>%s<i> gained <h>%s<i> %s.", You, moneyString(delta), forDoingThis);
+				return true;
+			} else {
+				// transfer to account failed
+				if (forDoingThis != null && !forDoingThis.isEmpty())
+					ep.msg("<h>%s<i> would have gained <h>%s<i> %s, but the deposit failed.", You, moneyString(delta), forDoingThis);
+				return false;
+			}
 		}
 		else
 		{
 			// The player should loose money
 			// The player might not have enough.
 			
-			if (econ.has(acc, -delta))
+			if (econ.has(acc, -delta) && econ.withdrawPlayer(acc, -delta).transactionSuccess())
 			{
 				// There is enough money to pay
-				econ.withdrawPlayer(acc, -delta);
 				modifyUniverseMoney(-delta);
 				if (forDoingThis != null && !forDoingThis.isEmpty())
 					ep.msg("<h>%s<i> lost <h>%s<i> %s.", You, moneyString(-delta), forDoingThis);
