@@ -236,6 +236,10 @@ public class Conf
 	public static double econCostTruce = 0.0;
 	public static double econCostNeutral = 0.0;
 	public static double econCostEnemy = 0.0;
+
+	public static int    econLandRewardTaskRunsEveryXMinutes = 20;
+	public static double econLandReward = 0.03;
+	public static double econLandRevertEnemyReward = 25.0;
 	
 	//Faction banks, to pay for land claiming and other costs instead of individuals paying for them
 	public static boolean bankEnabled = true;

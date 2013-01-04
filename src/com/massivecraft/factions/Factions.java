@@ -10,6 +10,8 @@ import java.util.logging.Level;
 import org.bukkit.ChatColor;
 
 import org.bukkit.craftbukkit.libs.com.google.gson.reflect.TypeToken;
+
+import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.FFlag;
 import com.massivecraft.factions.struct.FPerm;
 import com.massivecraft.factions.struct.Rel;
@@ -257,6 +259,25 @@ public class Factions extends EntityCollection<Faction>
 	public boolean isTagTaken(String str)
 	{
 		return this.getByTag(str) != null;
+	}
+
+	public void econLandRewardRoutine()
+	{
+		P.p.log("Running econLandRewardRoutine...");
+		for (Faction faction : this.get())
+		{
+			int landCount = faction.getLandRounded();
+			if (!faction.getFlag(FFlag.PEACEFUL) && landCount > 0)
+			{
+				Set<FPlayer> players = faction.getFPlayers();
+				int playerCount = players.size();
+				double reward = Conf.econLandReward * landCount / playerCount;
+				for (FPlayer player : players)
+				{
+					Econ.modifyMoney(player, reward, "to own faction land", "for faction owning " + landCount + " land divided among " + playerCount + " member(s)");
+				}
+			}
+		}
 	}
 
 }
