@@ -27,6 +27,7 @@ public class Conf
 	public static Map<FFlag, Boolean> factionFlagDefaults;
 	public static Map<FFlag, Boolean> factionFlagIsChangeable;
 	public static Map<FPerm, Set<Rel>> factionPermDefaults;
+	public static Rel factionRankDefault = Rel.RECRUIT;
 	
 	// Power
 	public static double powerPlayerMax = 10.0;
@@ -43,6 +44,8 @@ public class Conf
 	
 	public static String prefixLeader = "**";
 	public static String prefixOfficer = "*";
+	public static String prefixMember = "+";
+	public static String prefixRecruit = "-";
 	
 	public static int factionTagLengthMin = 3;
 	public static int factionTagLengthMax = 10;
