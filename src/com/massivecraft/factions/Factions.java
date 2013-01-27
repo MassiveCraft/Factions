@@ -263,6 +263,8 @@ public class Factions extends EntityCollection<Faction>
 
 	public void econLandRewardRoutine()
 	{
+		if ( ! Econ.shouldBeUsed()) return;
+
 		P.p.log("Running econLandRewardRoutine...");
 		for (Faction faction : this.get())
 		{
