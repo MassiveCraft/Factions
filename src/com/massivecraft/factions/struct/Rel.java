@@ -6,10 +6,10 @@ import com.massivecraft.factions.Conf;
 
 public enum Rel
 {
-	LEADER   (80, "your faction leader", "your faction leader", "", ""),
-	OFFICER  (70, "an officer in your faction", "officers in your faction", "", ""),
-	MEMBER   (60, "a member in your faction", "members in your faction", "your faction", "your factions"),
-	RECRUIT  (50, "a recruit in your faction", "recruits in your faction", "", ""),
+	LEADER   (70, "your faction leader", "your faction leader", "", ""),
+	OFFICER  (60, "an officer in your faction", "officers in your faction", "", ""),
+	MEMBER   (50, "a member in your faction", "members in your faction", "your faction", "your factions"),
+	RECRUIT  (45, "a recruit in your faction", "recruits in your faction", "", ""),
 	ALLY     (40, "an ally", "allies", "an allied faction", "allied factions"),
 	TRUCE    (30, "someone in truce with you", "those in truce with you", "a faction in truce", "factions in truce"),
 	NEUTRAL  (20, "someone neutral to you", "those neutral to you", "a neutral faction", "neutral factions"),

@@ -24,6 +24,7 @@ permissions:
   factions.config: {description: change a conf.json setting}
   factions.create: {description: create a new faction}
   factions.deinvite: {description: remove a pending invitation}
+  factions.demote: {description: demote lesser members in your faction}
   factions.description: {description: change the faction description}
   factions.disband: {description: disband a faction}
   factions.flag: {description: read faction flags}
@@ -55,6 +56,7 @@ permissions:
   factions.power: {description: show player power info}
   factions.power.any: {description: view an other players power level}
   factions.powerboost: {description: apply permanent power bonus/penalty to specified player or faction}
+  factions.promote: {description: promote lesser members in your faction}
   factions.relation: {description: set relation wish to another faction}
   factions.reload: {description: reload data file(s) from disk}
   factions.save: {description: save all data to disk}

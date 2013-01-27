@@ -143,9 +143,9 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 
 		if (doSpoutUpdate)
 		{
-            SpoutFeatures.updateTitle(this, null);
-            SpoutFeatures.updateTitle(null, this);
-            SpoutFeatures.updateCape(this.getPlayer(), null);
+			SpoutFeatures.updateTitle(this, null);
+			SpoutFeatures.updateTitle(null, this);
+			SpoutFeatures.updateCape(this.getPlayer(), null);
 		}
 	}
 	
