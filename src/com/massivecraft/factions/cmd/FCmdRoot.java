@@ -16,6 +16,7 @@ public class FCmdRoot extends FCommand
 	public CmdConfig cmdConfig = new CmdConfig();
 	public CmdCreate cmdCreate = new CmdCreate();
 	public CmdDeinvite cmdDeinvite = new CmdDeinvite();
+	public CmdDemote cmdDemote = new CmdDemote();
 	public CmdDescription cmdDescription = new CmdDescription();
 	public CmdDisband cmdDisband = new CmdDisband();
 	public CmdFlag cmdFlag = new CmdFlag();
@@ -33,6 +34,7 @@ public class FCmdRoot extends FCommand
 	public CmdPerm cmdPerm = new CmdPerm();
 	public CmdPower cmdPower = new CmdPower();
 	public CmdPowerBoost cmdPowerBoost = new CmdPowerBoost();
+	public CmdPromote cmdPromote = new CmdPromote();
 	public CmdRelationAlly cmdRelationAlly = new CmdRelationAlly();
 	public CmdRelationEnemy cmdRelationEnemy = new CmdRelationEnemy();
 	public CmdRelationNeutral cmdRelationNeutral = new CmdRelationNeutral();
@@ -77,6 +79,7 @@ public class FCmdRoot extends FCommand
 		this.addSubCommand(this.cmdCreate);
 		this.addSubCommand(this.cmdSethome);
 		this.addSubCommand(this.cmdTag);
+		this.addSubCommand(this.cmdDemote);
 		this.addSubCommand(this.cmdDescription);
 		this.addSubCommand(this.cmdCape);
 		this.addSubCommand(this.cmdPerm);
@@ -103,6 +106,7 @@ public class FCmdRoot extends FCommand
 		this.addSubCommand(this.cmdRelationTruce);
 		this.addSubCommand(this.cmdBypass);
 		this.addSubCommand(this.cmdPowerBoost);
+		this.addSubCommand(this.cmdPromote);
 		this.addSubCommand(this.cmdLock);
 		this.addSubCommand(this.cmdReload);
 		this.addSubCommand(this.cmdConfig);

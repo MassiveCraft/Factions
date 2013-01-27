@@ -136,15 +136,16 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		}
 
 		this.factionId = "0"; // The default neutral faction
+
 		this.role = Rel.MEMBER;
 		this.title = "";
 		this.autoClaimFor = null;
 
 		if (doSpoutUpdate)
 		{
-			SpoutFeatures.updateTitle(this, null);
-			SpoutFeatures.updateTitle(null, this);
-			SpoutFeatures.updateCape(this.getPlayer(), null);
+            SpoutFeatures.updateTitle(this, null);
+            SpoutFeatures.updateTitle(null, this);
+            SpoutFeatures.updateCape(this.getPlayer(), null);
 		}
 	}
 	

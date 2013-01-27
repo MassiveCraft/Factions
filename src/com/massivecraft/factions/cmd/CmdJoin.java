@@ -3,9 +3,9 @@ package com.massivecraft.factions.cmd;
 import org.bukkit.Bukkit;
 
 import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.event.FPlayerJoinEvent;
 import com.massivecraft.factions.struct.Permission;
@@ -87,15 +87,18 @@ public class CmdJoin extends FCommand
 		// then make 'em pay (if applicable)
 		if (samePlayer && ! payForCommand(Conf.econCostJoin, "to join a faction", "for joining a faction")) return;
 
-		fme.msg("<i>%s successfully joined %s.", fplayer.describeTo(fme, true), faction.getTag(fme));
+		fme.setRole(Conf.factionRankDefault); // They have just joined a faction, start them out on the lowest rank (default config).
 
 		if (!samePlayer)
 			fplayer.msg("<i>%s moved you into the faction %s.", fme.describeTo(fplayer, true), faction.getTag(fplayer));
 		faction.msg("<i>%s joined your faction.", fplayer.describeTo(faction, true));
-
+		fme.msg("<i>%s successfully joined %s.", fplayer.describeTo(fme, true), faction.getTag(fme));
+		
 		fplayer.resetFactionData();
 		fplayer.setFaction(faction);
+	    
 		faction.deinvite(fplayer);
+		
 
 		if (Conf.logFactionJoin)
 		{
