@@ -21,6 +21,7 @@ permissions:
   factions.cape.set: {description: set faction cape}
   factions.cape.remove: {description: remove faction cape}
   factions.claim: {description: claim land where you are standing}
+  factions.claim.radius: {description: claim land in a large radius}
   factions.config: {description: change a conf.json setting}
   factions.create: {description: create a new faction}
   factions.deinvite: {description: remove a pending invitation}
@@ -130,6 +131,7 @@ permissions:
       factions.cape: true
       factions.cape.*: true
       factions.claim: true
+      factions.claim.radius: true
       factions.deinvite: true
       factions.demote: true
       factions.description: true

@@ -15,6 +15,7 @@ public enum Permission
 	CAPE_SET("cape.set"),
 	CAPE_REMOVE("cape.remove"),
 	CLAIM("claim"),
+	CLAIM_RADIUS("claim.radius"),
 	CONFIG("config"),
 	CREATE("create"),
 	DEINVITE("deinvite"),
