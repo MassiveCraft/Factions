@@ -58,6 +58,7 @@ permissions:
       factions.autoclaim: true
       factions.chat: true
       factions.claim: true
+      factions.claim.radius: true
       factions.deinvite: true
       factions.description: true
       factions.disband: true
@@ -99,6 +100,8 @@ permissions:
     description: enable admin chat spy mode
   factions.claim:
     description: claim land where you are standing
+  factions.claim.radius:
+    description: claim land in a large radius
   factions.config:
     description: change a conf.json setting
   factions.create:
