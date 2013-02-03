@@ -615,6 +615,10 @@ public class Faction extends Entity implements EconomyParticipator
 	}
 	
 	public boolean hasOfflineExplosionProtection() {
+		if (!Conf.protectOfflineFactionsFromExplosions)
+		{
+			return false;
+		}
 		if (this.id == "-1" || this.id == "-2" )
 		{
 			return true;

@@ -58,7 +58,7 @@ public class FactionsPlayerListener implements Listener
 		
 		// Set NoBoom timer update.
 		Faction faction = me.getFaction();
-		if(me.hasFaction()) {
+		if(me.hasFaction() && Conf.protectOfflineFactionsFromExplosions) {
 			//Notify our faction that the number of online players has changed.	
 			faction.updateOfflineExplosionProtection();
 		}
@@ -81,7 +81,7 @@ public class FactionsPlayerListener implements Listener
 		
 		// Set NoBoom timer update.
 		Faction faction = me.getFaction();
-		if(me.hasFaction()) {
+		if(me.hasFaction() && Conf.protectOfflineFactionsFromExplosions) {
 			//Notify our faction that the number of online players has changed.	
 			faction.updateOfflineExplosionProtection();
 		}
