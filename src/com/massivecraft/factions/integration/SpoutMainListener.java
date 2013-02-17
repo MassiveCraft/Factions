@@ -41,7 +41,7 @@ public class SpoutMainListener implements Listener
 	private transient static Map<String, NoticeLabel> territoryChangeLabels = new HashMap<String, NoticeLabel>();
 	private transient static Map<String, GenericLabel> ownerLabels = new HashMap<String, GenericLabel>();
 	private final static int SCREEN_WIDTH = 427;
-//	private final static int SCREEN_HEIGHT = 240;
+  	private final static int SCREEN_HEIGHT = 240;
 
 
 	public boolean updateTerritoryDisplay(FPlayer player, boolean notify)
@@ -193,21 +193,49 @@ public class SpoutMainListener implements Listener
 	public void alignLabel(GenericLabel label, String text, int alignment)
 	{
 		int labelWidth = (int)((float)GenericLabel.getStringWidth(text) * Conf.spoutTerritoryDisplaySize);
+		int labelHeight = (int)((float)GenericLabel.getStringHeight(text) * Conf.spoutTerritoryDisplaySize);
 		if (labelWidth > SCREEN_WIDTH)
 		{
 				label.setX(0);
 				return;
 		}
+		
+		if(labelHeight > SCREEN_HEIGHT)
+		{
+				label.setY(0);
+				return;
+		}
 
 		switch (alignment)
 		{
-			case 1:		// left aligned
+			case 1:		// top-left aligned
 				label.setX(0);
 				break;
-			case 2:		// center aligned
+			case 2:		// top-center aligned
 				label.setX((SCREEN_WIDTH - labelWidth) / 2);
 				break;
-			default:	// right aligned
+			case 4:		// middle-left aligned
+				label.setX(0);
+				label.setY((SCREEN_HEIGHT - labelHeight) / 2);
+				break;
+			case 5:		// middle-center aligned
+				label.setX((SCREEN_WIDTH - labelWidth) / 2);
+				label.setY((SCREEN_HEIGHT - labelHeight) / 2);
+				break;
+			case 6: 	// middle-right aligned
+				label.setX(SCREEN_WIDTH - labelWidth);
+				label.setY((SCREEN_HEIGHT - labelHeight) / 2);
+				break;
+			case 7:		// bottom-left aligned
+				label.setX(0);
+				label.setY(SCREEN_HEIGHT - labelHeight);
+			case 8:		// bottom-center aligned
+				label.setX((SCREEN_WIDTH - labelWidth) / 2);
+				label.setY(SCREEN_HEIGHT - labelHeight);
+			case 9:		// bottom-left aligned
+				label.setX(SCREEN_WIDTH - labelWidth);
+				label.setY(SCREEN_HEIGHT - labelHeight);
+			default:	// top-right aligned
 				label.setX(SCREEN_WIDTH - labelWidth);
 		}
 	}
