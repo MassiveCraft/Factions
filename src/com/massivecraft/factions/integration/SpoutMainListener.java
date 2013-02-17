@@ -202,8 +202,8 @@ public class SpoutMainListener implements Listener
 		
 		if(labelHeight > SCREEN_HEIGHT)
 		{
-			label.setY(0);
-			return;
+				label.setY(0);
+				return;
 		}
 
 		switch (alignment)
