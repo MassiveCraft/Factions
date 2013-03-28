@@ -95,16 +95,20 @@ public class Board
 		}
 	}
 
-	// Is this coord NOT completely surrounded by coords claimed by the same faction?
-	// Simpler: Is there any nearby coord with a faction other than the faction here?
-	public static boolean isBorderLocation(FLocation flocation)
+	//Is this coord on the corner of a factions territory
+	public static boolean isCornerLocation(FLocation flocation)
 	{
 		Faction faction = getFactionAt(flocation);
-		FLocation a = flocation.getRelative(1, 0);
-		FLocation b = flocation.getRelative(-1, 0);
-		FLocation c = flocation.getRelative(0, 1);
-		FLocation d = flocation.getRelative(0, -1);
-		return faction != getFactionAt(a) || faction != getFactionAt(b) || faction != getFactionAt(c) || faction != getFactionAt(d);
+		FLocation[] surrounds = new FLocation[8];   
+		surrounds[0] = flocation.getRelative( 1,  0);
+		surrounds[1] = flocation.getRelative(-1,  0);
+		surrounds[2] = flocation.getRelative( 0,  1);
+		surrounds[3] = flocation.getRelative( 0, -1);
+		int surroundCount = 0;
+		for (FLocation fl : surrounds) {
+			surroundCount += faction == getFactionAt(fl)?1:0;
+		}
+		return surroundCount < 3;
 	}
 
 	// Is this coord connected to any coord claimed by the specified faction?
