@@ -6,7 +6,7 @@ import org.bukkit.Bukkit;
 
 import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.FPlayers;
+import com.massivecraft.factions.FPlayerColl;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionColl;
 import com.massivecraft.factions.Factions;
@@ -82,7 +82,7 @@ public class CmdCreate extends FCommand
 	faction.setTag(tag);
 
 	// trigger the faction join event for the creator
-	FPlayerJoinEvent joinEvent = new FPlayerJoinEvent(FPlayers.i.get(me),faction,FPlayerJoinEvent.PlayerJoinReason.CREATE);
+	FPlayerJoinEvent joinEvent = new FPlayerJoinEvent(FPlayerColl.i.get(me),faction,FPlayerJoinEvent.PlayerJoinReason.CREATE);
 	Bukkit.getServer().getPluginManager().callEvent(joinEvent);
 	// join event cannot be cancelled or you'll have an empty faction
 
@@ -90,7 +90,7 @@ public class CmdCreate extends FCommand
 		fme.setRole(Rel.LEADER);
 		fme.setFaction(faction);
 
-		for (FPlayer follower : FPlayers.i.getOnline())
+		for (FPlayer follower : FPlayerColl.i.getOnline())
 		{
 			follower.msg("%s<i> created a new faction %s", fme.describeTo(follower, true), faction.getTag(follower));
 		}

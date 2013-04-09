@@ -23,7 +23,7 @@ import com.dthielke.herochat.MessageFormatSupplier;
 import com.dthielke.herochat.MessageNotFoundException;
 import com.dthielke.herochat.util.Messaging;
 import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.FPlayers;
+import com.massivecraft.factions.FPlayerColl;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.struct.Rel;
 
@@ -213,11 +213,11 @@ public abstract class FactionsChannelAbstract implements Channel
 	{
 		Set<Player> ret = new HashSet<Player>();
 		
-		FPlayer fpsender = FPlayers.i.get(sender);
+		FPlayer fpsender = FPlayerColl.i.get(sender);
 		Faction faction = fpsender.getFaction();		
 		ret.addAll(faction.getOnlinePlayers());
 		
-		for (FPlayer fplayer : FPlayers.i.getOnline())
+		for (FPlayer fplayer : FPlayerColl.i.getOnline())
 		{
 			if(this.getTargetRelations().contains(faction.getRelationTo(fplayer)))
 			{

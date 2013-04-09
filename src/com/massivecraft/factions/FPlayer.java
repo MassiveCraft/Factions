@@ -524,7 +524,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		if (myFaction.isNormal() && !perm && myFaction.getFPlayers().isEmpty())
 		{
 			// Remove this faction
-			for (FPlayer fplayer : FPlayers.i.getOnline())
+			for (FPlayer fplayer : FPlayerColl.i.getOnline())
 			{
 				fplayer.msg("<i>%s<i> was disbanded.", myFaction.describeTo(fplayer, true));
 			}

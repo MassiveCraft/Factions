@@ -18,7 +18,7 @@ import com.massivecraft.factions.Board;
 import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.FPlayers;
+import com.massivecraft.factions.FPlayerColl;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.struct.FFlag;
@@ -66,7 +66,7 @@ public class FactionsBlockListener implements Listener
 		String name = player.getName();
 		if (ConfServer.playersWhoBypassAllProtection.contains(name)) return true;
 
-		FPlayer me = FPlayers.i.get(name);
+		FPlayer me = FPlayerColl.i.get(name);
 		if (me.hasAdminMode()) return true;
 
 		FLocation loc = new FLocation(location);

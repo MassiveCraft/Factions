@@ -102,7 +102,7 @@ public class Factions extends MPlugin
 
 		// Load Conf from disk
 		ConfServer.load();
-		FPlayers.i.loadFromDisc();
+		FPlayerColl.i.loadFromDisc();
 		FactionColl.i.loadFromDisc();
 		Board.load();
 		
@@ -264,7 +264,7 @@ public class Factions extends MPlugin
 		if (speaker == null)
 			return tag;
 
-		FPlayer me = FPlayers.i.get(speaker);
+		FPlayer me = FPlayerColl.i.get(speaker);
 		if (me == null)
 			return tag;
 
@@ -272,7 +272,7 @@ public class Factions extends MPlugin
 		if (listener == null || !ConfServer.chatParseTagsColored) {
 			tag = me.getChatTag().trim();
 		} else {
-			FPlayer you = FPlayers.i.get(listener);
+			FPlayer you = FPlayerColl.i.get(listener);
 			if (you == null)
 				tag = me.getChatTag().trim();
 			else  // everything checks out, give the colored tag
@@ -290,7 +290,7 @@ public class Factions extends MPlugin
 		if (player == null)
 			return "";
 
-		FPlayer me = FPlayers.i.get(player);
+		FPlayer me = FPlayerColl.i.get(player);
 		if (me == null)
 			return "";
 

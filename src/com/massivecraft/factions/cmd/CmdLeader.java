@@ -3,7 +3,7 @@ package com.massivecraft.factions.cmd;
 import org.bukkit.Bukkit;
 
 import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.FPlayers;
+import com.massivecraft.factions.FPlayerColl;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.event.FPlayerJoinEvent;
@@ -70,7 +70,7 @@ public class CmdLeader extends FCommand
 		// only perform a FPlayerJoinEvent when newLeader isn't actually in the faction
 		if (newLeader.getFaction() != targetFaction)
 		{
-			FPlayerJoinEvent event = new FPlayerJoinEvent(FPlayers.i.get(me),targetFaction,FPlayerJoinEvent.PlayerJoinReason.LEADER);
+			FPlayerJoinEvent event = new FPlayerJoinEvent(FPlayerColl.i.get(me),targetFaction,FPlayerJoinEvent.PlayerJoinReason.LEADER);
 			Bukkit.getServer().getPluginManager().callEvent(event);
 			if (event.isCancelled()) return;
 		}
@@ -94,7 +94,7 @@ public class CmdLeader extends FCommand
 		msg("<i>You have promoted %s<i> to the position of faction leader.", newLeader.describeTo(fme, true));
 		
 		// Inform all players
-		for (FPlayer fplayer : FPlayers.i.getOnline())
+		for (FPlayer fplayer : FPlayerColl.i.getOnline())
 		{
 			fplayer.msg("%s<i> gave %s<i> the leadership of %s<i>.", senderIsConsole ? "A server admin" : RelationUtil.describeThatToMe(fme, fplayer, true), newLeader.describeTo(fplayer), targetFaction.describeTo(fplayer));
 		}

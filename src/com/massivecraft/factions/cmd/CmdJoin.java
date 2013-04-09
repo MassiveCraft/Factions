@@ -4,7 +4,7 @@ import org.bukkit.Bukkit;
 
 import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.FPlayers;
+import com.massivecraft.factions.FPlayerColl;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
@@ -80,7 +80,7 @@ public class CmdJoin extends FCommand
 		if (samePlayer && ! canAffordCommand(ConfServer.econCostJoin, "to join a faction")) return;
 
 		// trigger the join event (cancellable)
-		FPlayerJoinEvent joinEvent = new FPlayerJoinEvent(FPlayers.i.get(me),faction,FPlayerJoinEvent.PlayerJoinReason.COMMAND);
+		FPlayerJoinEvent joinEvent = new FPlayerJoinEvent(FPlayerColl.i.get(me),faction,FPlayerJoinEvent.PlayerJoinReason.COMMAND);
 		Bukkit.getServer().getPluginManager().callEvent(joinEvent);
 		if (joinEvent.isCancelled()) return;
 

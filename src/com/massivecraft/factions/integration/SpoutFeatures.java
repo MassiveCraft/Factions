@@ -6,7 +6,7 @@ import java.util.Set;
 
 import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.FPlayers;
+import com.massivecraft.factions.FPlayerColl;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.Factions;
@@ -73,7 +73,7 @@ public class SpoutFeatures
 		
 		for (Player player : fromPlayers)
 		{
-			FPlayer fplayer = FPlayers.i.get(player);
+			FPlayer fplayer = FPlayerColl.i.get(player);
 			SpoutPlayer splayer = SpoutManager.getPlayer(player);
 			Faction faction = fplayer.getFaction();
 			
@@ -137,13 +137,13 @@ public class SpoutFeatures
 		
 		for (Player player : fromPlayers)
 		{
-			FPlayer fplayer = FPlayers.i.get(player);
+			FPlayer fplayer = FPlayerColl.i.get(player);
 			SpoutPlayer splayer = SpoutManager.getPlayer(player);
 			Faction faction = fplayer.getFaction();
 			
 			for (Player playerTo : toPlayers)
 			{
-				FPlayer fplayerTo = FPlayers.i.get(playerTo);
+				FPlayer fplayerTo = FPlayerColl.i.get(playerTo);
 				SpoutPlayer splayerTo = SpoutManager.getPlayer(playerTo);
 				Faction factionTo = fplayerTo.getFaction();
 				
@@ -250,7 +250,7 @@ public class SpoutFeatures
 	{
 		if ( ! isEnabled()) return;
 
-		Set<FPlayer> players = FPlayers.i.getOnline();
+		Set<FPlayer> players = FPlayerColl.i.getOnline();
 
 		for (FPlayer player : players)
 		{
@@ -273,7 +273,7 @@ public class SpoutFeatures
 	{
 		if ( ! isEnabled()) return;
 
-		Set<FPlayer> players = FPlayers.i.getOnline();
+		Set<FPlayer> players = FPlayerColl.i.getOnline();
 
 		for (FPlayer player : players)
 		{

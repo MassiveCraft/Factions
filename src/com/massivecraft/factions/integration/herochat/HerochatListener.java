@@ -9,7 +9,7 @@ import com.dthielke.herochat.ChannelChatEvent;
 import com.dthielke.herochat.Herochat;
 import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.FPlayers;
+import com.massivecraft.factions.FPlayerColl;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.listeners.FactionsChatListener;
 
@@ -34,7 +34,7 @@ public class HerochatListener implements Listener
 		if (ConfServer.chatTagHandledByAnotherPlugin) return;
 		
 		Player from = event.getSender().getPlayer();
-		FPlayer fpfrom = FPlayers.i.get(from);
+		FPlayer fpfrom = FPlayerColl.i.get(from);
 		String format = event.getFormat();
 		
 		format = format.replaceAll("&r", "§r");

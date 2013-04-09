@@ -13,7 +13,7 @@ import com.massivecraft.factions.Board;
 import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.FPlayers;
+import com.massivecraft.factions.FPlayerColl;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
@@ -146,7 +146,7 @@ public enum FPerm
 		
 		if (testSubject instanceof Player)
 		{
-			rpSubject = FPlayers.i.get((Player)testSubject);
+			rpSubject = FPlayerColl.i.get((Player)testSubject);
 		}
 		else if (testSubject instanceof RelationParticipator)
 		{
@@ -191,7 +191,7 @@ public enum FPerm
 				{
 					FPlayer notify = null;
 					if (testSubject instanceof Player)
-						notify = FPlayers.i.get((Player)testSubject);
+						notify = FPlayerColl.i.get((Player)testSubject);
 					else if (testSubject instanceof FPlayer)
 						notify = (FPlayer)testSubject;
 					if (notify != null)

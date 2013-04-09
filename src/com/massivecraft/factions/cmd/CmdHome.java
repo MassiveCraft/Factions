@@ -11,7 +11,7 @@ import com.massivecraft.factions.Board;
 import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.FPlayers;
+import com.massivecraft.factions.FPlayerColl;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.integration.EssentialsFeatures;
@@ -106,7 +106,7 @@ public class CmdHome extends FCommand
 				if (p == null || !p.isOnline() || p.isDead() || p == me || p.getWorld() != w)
 					continue;
 
-				FPlayer fp = FPlayers.i.get(p);
+				FPlayer fp = FPlayerColl.i.get(p);
 				if (fme.getRelationTo(fp) != Rel.ENEMY)
 					continue;
 

@@ -23,7 +23,7 @@ import org.bukkit.plugin.RegisteredListener;
 
 import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.FPlayers;
+import com.massivecraft.factions.FPlayerColl;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.struct.Rel;
 
@@ -87,7 +87,7 @@ public class FactionsChatListener implements Listener
 		if (ConfServer.chatTagHandledByAnotherPlugin) return;
 		
 		Player from = event.getPlayer();
-		FPlayer fpfrom = FPlayers.i.get(from);
+		FPlayer fpfrom = FPlayerColl.i.get(from);
 		String format = event.getFormat();
 		String message = event.getMessage();
 		
@@ -116,7 +116,7 @@ public class FactionsChatListener implements Listener
 		// 4. We send out the messages to each player with relation color.
 		for (Player to : event.getRecipients())
 		{
-			FPlayer fpto = FPlayers.i.get(to);
+			FPlayer fpto = FPlayerColl.i.get(to);
 			String formatWithColor = parseTags(format, from, fpfrom, to, fpto);
 			to.sendMessage(String.format(formatWithColor, from.getDisplayName(), message));
         }
@@ -181,7 +181,7 @@ public class FactionsChatListener implements Listener
 	
 	public static String parseTags(String str, Player from)
 	{
-		FPlayer fpfrom = FPlayers.i.get(from);
+		FPlayer fpfrom = FPlayerColl.i.get(from);
 		return parseTags(str, from, fpfrom, null, null);
 	}
 	public static String parseTags(String str, Player from, FPlayer fpfrom)
@@ -190,8 +190,8 @@ public class FactionsChatListener implements Listener
 	}
 	public static String parseTags(String str, Player from, Player to)
 	{
-		FPlayer fpfrom = FPlayers.i.get(from);
-		FPlayer fpto = FPlayers.i.get(to);
+		FPlayer fpfrom = FPlayerColl.i.get(from);
+		FPlayer fpto = FPlayerColl.i.get(to);
 		return parseTags(str, from, fpfrom, to, fpto);
 	}
 	public static String parseTags(String str, Player from, FPlayer fpfrom, Player to, FPlayer fpto)

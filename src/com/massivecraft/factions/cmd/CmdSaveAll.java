@@ -2,7 +2,7 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Board;
 import com.massivecraft.factions.ConfServer;
-import com.massivecraft.factions.FPlayers;
+import com.massivecraft.factions.FPlayerColl;
 import com.massivecraft.factions.FactionColl;
 import com.massivecraft.factions.Perm;
 
@@ -30,7 +30,7 @@ public class CmdSaveAll extends FCommand
 	@Override
 	public void perform()
 	{
-		FPlayers.i.saveToDisc();
+		FPlayerColl.i.saveToDisc();
 		FactionColl.i.saveToDisc();
 		Board.save();
 		ConfServer.save();

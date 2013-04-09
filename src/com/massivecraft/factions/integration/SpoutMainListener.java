@@ -12,7 +12,7 @@ import com.massivecraft.factions.Board;
 import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.FPlayers;
+import com.massivecraft.factions.FPlayerColl;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.struct.TerritoryAccess;
@@ -29,7 +29,7 @@ public class SpoutMainListener implements Listener
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onSpoutCraftEnable(SpoutCraftEnableEvent event)
 	{
-		final FPlayer me = FPlayers.i.get(event.getPlayer());
+		final FPlayer me = FPlayerColl.i.get(event.getPlayer());
 
 		SpoutFeatures.updateTitle(me, null);
 		SpoutFeatures.updateTitle(null, me);

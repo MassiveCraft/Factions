@@ -374,7 +374,7 @@ public class Faction extends Entity implements EconomyParticipator
 		fplayers.clear();
 		if (this.isNone()) return;
 
-		for (FPlayer fplayer : FPlayers.i.get())
+		for (FPlayer fplayer : FPlayerColl.i.get())
 		{
 			if (fplayer.getFaction() == this)
 			{
@@ -454,7 +454,7 @@ public class Faction extends Entity implements EconomyParticipator
 
 		for (Player player: Factions.get().getServer().getOnlinePlayers())
 		{
-			FPlayer fplayer = FPlayers.i.get(player);
+			FPlayer fplayer = FPlayerColl.i.get(player);
 			if (fplayer.getFaction() == this)
 			{
 				ret.add(player);
@@ -490,7 +490,7 @@ public class Faction extends Entity implements EconomyParticipator
 			if (ConfServer.logFactionDisband)
 				Factions.get().log("The faction "+this.getTag()+" ("+this.getId()+") has been disbanded since it has no members left.");
 
-			for (FPlayer fplayer : FPlayers.i.getOnline())
+			for (FPlayer fplayer : FPlayerColl.i.getOnline())
 			{
 				fplayer.msg("The faction %s<i> was disbanded.", this.getTag(fplayer));
 			}
@@ -596,6 +596,6 @@ public class Faction extends Entity implements EconomyParticipator
 		Board.clean();
 		
 		// Clean the fplayers
-		FPlayers.i.clean();
+		FPlayerColl.i.clean();
 	}
 }

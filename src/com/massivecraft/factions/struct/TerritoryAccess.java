@@ -22,7 +22,7 @@ import org.bukkit.craftbukkit.libs.com.google.gson.JsonParseException;
 import org.bukkit.craftbukkit.libs.com.google.gson.JsonPrimitive;
 import org.bukkit.craftbukkit.libs.com.google.gson.JsonSerializationContext;
 import org.bukkit.craftbukkit.libs.com.google.gson.JsonSerializer;
-import com.massivecraft.factions.FPlayers;
+import com.massivecraft.factions.FPlayerColl;
 
 
 public class TerritoryAccess implements JsonDeserializer<TerritoryAccess>, JsonSerializer<TerritoryAccess>
@@ -77,7 +77,7 @@ public class TerritoryAccess implements JsonDeserializer<TerritoryAccess>, JsonS
 		if (testSubject instanceof String)
 			return hostFactionID.equals((String)testSubject);
 		else if (testSubject instanceof Player)
-			return hostFactionID.equals(FPlayers.i.get((Player)testSubject).getFactionId());
+			return hostFactionID.equals(FPlayerColl.i.get((Player)testSubject).getFactionId());
 		else if (testSubject instanceof FPlayer)
 			return hostFactionID.equals(((FPlayer)testSubject).getFactionId());
 		else if (testSubject instanceof Faction)
@@ -188,7 +188,7 @@ public class TerritoryAccess implements JsonDeserializer<TerritoryAccess>, JsonS
 	public boolean subjectHasAccess(Object testSubject)
 	{
 		if (testSubject instanceof Player)
-			return fPlayerHasAccess(FPlayers.i.get((Player)testSubject));
+			return fPlayerHasAccess(FPlayerColl.i.get((Player)testSubject));
 		else if (testSubject instanceof FPlayer)
 			return fPlayerHasAccess((FPlayer)testSubject);
 		else if (testSubject instanceof Faction)

@@ -15,7 +15,7 @@ import com.griefcraft.lwc.LWC;
 import com.griefcraft.lwc.LWCPlugin;
 import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.FLocation;
-import com.massivecraft.factions.FPlayers;
+import com.massivecraft.factions.FPlayerColl;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 
@@ -57,7 +57,7 @@ public class LWCFeatures
 		{
 			if(lwc.findProtection(chests.get(x)) != null)
 			{
-				if(!faction.getFPlayers().contains(FPlayers.i.get(lwc.findProtection(chests.get(x)).getOwner())))
+				if(!faction.getFPlayers().contains(FPlayerColl.i.get(lwc.findProtection(chests.get(x)).getOwner())))
 					lwc.findProtection(chests.get(x)).remove();
 			}
 		}

@@ -42,7 +42,7 @@ import com.massivecraft.factions.Board;
 import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.FPlayers;
+import com.massivecraft.factions.FPlayerColl;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.event.PowerLossEvent;
@@ -67,7 +67,7 @@ public class FactionsEntityListener implements Listener
 		if ( ! (entity instanceof Player)) return;
 
 		Player player = (Player) entity;
-		FPlayer fplayer = FPlayers.i.get(player);
+		FPlayer fplayer = FPlayerColl.i.get(player);
 		Faction faction = Board.getFactionAt(new FLocation(player.getLocation()));
 
 		PowerLossEvent powerLossEvent = new PowerLossEvent(faction,fplayer);
@@ -230,7 +230,7 @@ public class FactionsEntityListener implements Listener
 
 		if ( ! (damagee instanceof Player)) return true;
 
-		FPlayer defender = FPlayers.i.get((Player)damagee);
+		FPlayer defender = FPlayerColl.i.get((Player)damagee);
 
 		if (defender == null || defender.getPlayer() == null)
 			return true;
@@ -254,7 +254,7 @@ public class FactionsEntityListener implements Listener
 			{
 				if (notify)
 				{
-					FPlayer attacker = FPlayers.i.get((Player)damager);
+					FPlayer attacker = FPlayerColl.i.get((Player)damager);
 					attacker.msg("<i>PVP is disabled in %s.", defLocFaction.describeTo(attacker));
 				}
 				return false;
@@ -265,7 +265,7 @@ public class FactionsEntityListener implements Listener
 		if ( ! (damager instanceof Player))
 			return true;
 
-		FPlayer attacker = FPlayers.i.get((Player)damager);
+		FPlayer attacker = FPlayerColl.i.get((Player)damager);
 
 		if (attacker == null || attacker.getPlayer() == null)
 			return true;

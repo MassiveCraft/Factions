@@ -2,7 +2,7 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.FPlayers;
+import com.massivecraft.factions.FPlayerColl;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.zcore.util.TextUtil;
 
@@ -42,7 +42,7 @@ public class CmdDescription extends FCommand
 		}
 
 		// Broadcast the description to everyone
-		for (FPlayer fplayer : FPlayers.i.getOnline())
+		for (FPlayer fplayer : FPlayerColl.i.getOnline())
 		{
 			fplayer.msg("<h>%s<i> changed their description to:", myFaction.describeTo(fplayer));
 			fplayer.sendMessage(myFaction.getDescription());  // players can inject "&" or "`" or "<i>" or whatever in their description, thus exploitable (masquerade as server messages or whatever); by the way, &k is particularly interesting looking

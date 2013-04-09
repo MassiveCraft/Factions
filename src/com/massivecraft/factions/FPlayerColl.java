@@ -10,13 +10,13 @@ import org.bukkit.craftbukkit.libs.com.google.gson.reflect.TypeToken;
 import com.massivecraft.factions.struct.Rel;
 import com.massivecraft.factions.zcore.persist.PlayerEntityCollection;
 
-public class FPlayers extends PlayerEntityCollection<FPlayer>
+public class FPlayerColl extends PlayerEntityCollection<FPlayer>
 {
-	public static FPlayers i = new FPlayers();
+	public static FPlayerColl i = new FPlayerColl();
 	
 	Factions p = Factions.get();
 	
-	private FPlayers()
+	private FPlayerColl()
 	{
 		super
 		(
@@ -58,7 +58,7 @@ public class FPlayers extends PlayerEntityCollection<FPlayer>
 		long now = System.currentTimeMillis();
 		double toleranceMillis = ConfServer.autoLeaveAfterDaysOfInactivity * 24 * 60 * 60 * 1000;
 		
-		for (FPlayer fplayer : FPlayers.i.get())
+		for (FPlayer fplayer : FPlayerColl.i.get())
 		{
 			if (fplayer.isOffline() && now - fplayer.getLastLoginTime() > toleranceMillis)
 			{

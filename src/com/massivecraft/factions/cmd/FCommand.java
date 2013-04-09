@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.FPlayers;
+import com.massivecraft.factions.FPlayerColl;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionColl;
 import com.massivecraft.factions.Factions;
@@ -50,7 +50,7 @@ public abstract class FCommand extends MCommand<Factions>
 	{
 		if (sender instanceof Player)
 		{
-			this.fme = FPlayers.i.get((Player)sender);
+			this.fme = FPlayerColl.i.get((Player)sender);
 			this.myFaction = this.fme.getFaction();
 		}
 		else
@@ -95,7 +95,7 @@ public abstract class FCommand extends MCommand<Factions>
 		
 		if ( ! (sender instanceof Player)) return false;
 		
-		FPlayer fplayer = FPlayers.i.get((Player)sender);
+		FPlayer fplayer = FPlayerColl.i.get((Player)sender);
 		
 		if ( ! fplayer.hasFaction())
 		{
@@ -157,7 +157,7 @@ public abstract class FCommand extends MCommand<Factions>
 		
 		if (name != null)
 		{
-			FPlayer fplayer = FPlayers.i.get(name);
+			FPlayer fplayer = FPlayerColl.i.get(name);
 			if (fplayer != null)
 			{
 				ret = fplayer;
@@ -191,7 +191,7 @@ public abstract class FCommand extends MCommand<Factions>
 		
 		if (name != null)
 		{
-			FPlayer fplayer = FPlayers.i.getBestIdMatch(name);
+			FPlayer fplayer = FPlayerColl.i.getBestIdMatch(name);
 			if (fplayer != null)
 			{
 				ret = fplayer;
@@ -242,7 +242,7 @@ public abstract class FCommand extends MCommand<Factions>
 			// Next we match player names
 			if (faction == null)
 			{
-				FPlayer fplayer = FPlayers.i.getBestIdMatch(name);
+				FPlayer fplayer = FPlayerColl.i.getBestIdMatch(name);
 				if (fplayer != null)
 				{
 					faction = fplayer.getFaction();

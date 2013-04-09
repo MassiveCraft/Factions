@@ -6,7 +6,7 @@ import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.event.FPlayerLeaveEvent;
 import com.massivecraft.factions.event.FactionDisbandEvent;
 import com.massivecraft.factions.integration.Econ;
-import com.massivecraft.factions.FPlayers;
+import com.massivecraft.factions.FPlayerColl;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.FPlayer;
@@ -60,7 +60,7 @@ public class CmdDisband extends FCommand
 		}
 
 		// Inform all players
-		for (FPlayer fplayer : FPlayers.i.getOnline())
+		for (FPlayer fplayer : FPlayerColl.i.getOnline())
 		{
 			String who = senderIsConsole ? "A server admin" : fme.describeTo(fplayer);
 			if (fplayer.getFaction() == faction)
