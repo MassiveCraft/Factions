@@ -2,8 +2,8 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.integration.SpoutFeatures;
-import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TextUtil;
 
 public class CmdTitle extends FCommand
@@ -15,7 +15,7 @@ public class CmdTitle extends FCommand
 		this.requiredArgs.add("player");
 		this.optionalArgs.put("title", "");
 		
-		this.permission = Permission.TITLE.node;
+		this.permission = Perm.TITLE.node;
 		this.disableOnLock = true;
 		
 		senderMustBePlayer = true;

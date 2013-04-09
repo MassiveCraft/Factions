@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.P;
+import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.integration.Econ;
-import com.massivecraft.factions.struct.Permission;
 
 
 public class CmdHelp extends FCommand
@@ -21,7 +21,7 @@ public class CmdHelp extends FCommand
 		//this.requiredArgs.add("");
 		this.optionalArgs.put("page", "1");
 		
-		this.permission = Permission.HELP.node;
+		this.permission = Perm.HELP.node;
 		this.disableOnLock = false;
 		
 		senderMustBePlayer = false;

@@ -4,8 +4,8 @@ import com.massivecraft.factions.Board;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.struct.FPerm;
-import com.massivecraft.factions.struct.Permission;
 
 public class CmdSethome extends FCommand
 {
@@ -16,7 +16,7 @@ public class CmdSethome extends FCommand
 		//this.requiredArgs.add("");
 		this.optionalArgs.put("faction", "your");
 		
-		this.permission = Permission.SETHOME.node;
+		this.permission = Perm.SETHOME.node;
 		this.disableOnLock = true;
 		
 		senderMustBePlayer = true;

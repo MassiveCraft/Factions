@@ -3,7 +3,7 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
-import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.zcore.util.TextUtil;
 
 public class CmdDescription extends FCommand
@@ -17,7 +17,7 @@ public class CmdDescription extends FCommand
 		this.errorOnToManyArgs = false;
 		//this.optionalArgs
 		
-		this.permission = Permission.DESCRIPTION.node;
+		this.permission = Perm.DESCRIPTION.node;
 		this.disableOnLock = true;
 		
 		senderMustBePlayer = true;

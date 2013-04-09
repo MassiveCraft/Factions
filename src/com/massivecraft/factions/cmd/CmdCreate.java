@@ -10,9 +10,9 @@ import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.P;
+import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.event.FPlayerJoinEvent;
 import com.massivecraft.factions.event.FactionCreateEvent;
-import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Rel;
 
 public class CmdCreate extends FCommand
@@ -25,7 +25,7 @@ public class CmdCreate extends FCommand
 		this.requiredArgs.add("faction tag");
 		//this.optionalArgs.put("", "");
 		
-		this.permission = Permission.CREATE.node;
+		this.permission = Perm.CREATE.node;
 		this.disableOnLock = true;
 		
 		senderMustBePlayer = true;

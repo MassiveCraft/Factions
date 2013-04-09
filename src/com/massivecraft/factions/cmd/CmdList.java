@@ -7,7 +7,7 @@ import java.util.Comparator;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
-import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.Perm;
 
 
 public class CmdList extends FCommand
@@ -22,7 +22,7 @@ public class CmdList extends FCommand
 		//this.requiredArgs.add("");
 		this.optionalArgs.put("page", "1");
 		
-		this.permission = Permission.LIST.node;
+		this.permission = Perm.LIST.node;
 		this.disableOnLock = false;
 		
 		senderMustBePlayer = false;

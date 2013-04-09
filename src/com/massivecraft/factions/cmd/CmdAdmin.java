@@ -1,7 +1,7 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.P;
-import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.Perm;
 
 public class CmdAdmin extends FCommand
 {
@@ -13,7 +13,7 @@ public class CmdAdmin extends FCommand
 		//this.requiredArgs.add("");
 		this.optionalArgs.put("on/off", "flip");
 		
-		this.permission = Permission.ADMIN.node;
+		this.permission = Perm.ADMIN.node;
 		this.disableOnLock = false;
 		
 		senderMustBePlayer = true;

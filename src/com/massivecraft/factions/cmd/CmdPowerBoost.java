@@ -3,7 +3,7 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.P;
-import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.Perm;
 
 public class CmdPowerBoost extends FCommand
 {
@@ -16,7 +16,7 @@ public class CmdPowerBoost extends FCommand
 		this.requiredArgs.add("name");
 		this.requiredArgs.add("#");
 		
-		this.permission = Permission.POWERBOOST.node;
+		this.permission = Perm.POWERBOOST.node;
 		this.disableOnLock = true;
 		
 		senderMustBePlayer = false;

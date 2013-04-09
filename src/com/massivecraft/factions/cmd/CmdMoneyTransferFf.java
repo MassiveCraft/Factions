@@ -1,10 +1,10 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.integration.Econ;
-import com.massivecraft.factions.struct.Permission;
 
 import org.bukkit.ChatColor;
 
@@ -21,7 +21,7 @@ public class CmdMoneyTransferFf extends FCommand
 		
 		//this.optionalArgs.put("", "");
 		
-		this.permission = Permission.MONEY_F2F.node;
+		this.permission = Perm.MONEY_F2F.node;
 		this.setHelpShort("transfer f -> f");
 		
 		senderMustBePlayer = false;

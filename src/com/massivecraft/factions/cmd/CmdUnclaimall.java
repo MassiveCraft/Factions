@@ -5,10 +5,10 @@ import org.bukkit.Bukkit;
 import com.massivecraft.factions.Board;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.P;
+import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.event.LandUnclaimAllEvent;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.integration.SpoutFeatures;
-import com.massivecraft.factions.struct.Permission;
 
 public class CmdUnclaimall extends FCommand
 {	
@@ -20,7 +20,7 @@ public class CmdUnclaimall extends FCommand
 		//this.requiredArgs.add("");
 		//this.optionalArgs.put("", "");
 		
-		this.permission = Permission.UNCLAIM_ALL.node;
+		this.permission = Perm.UNCLAIM_ALL.node;
 		this.disableOnLock = true;
 		
 		senderMustBePlayer = true;

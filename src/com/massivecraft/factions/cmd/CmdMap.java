@@ -3,7 +3,7 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.Board;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FLocation;
-import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.Perm;
 
 
 public class CmdMap extends FCommand
@@ -16,7 +16,7 @@ public class CmdMap extends FCommand
 		//this.requiredArgs.add("");
 		this.optionalArgs.put("on/off", "once");
 		
-		this.permission = Permission.MAP.node;
+		this.permission = Perm.MAP.node;
 		this.disableOnLock = false;
 		
 		senderMustBePlayer = true;

@@ -1,8 +1,8 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.struct.FPerm;
-import com.massivecraft.factions.struct.Permission;
 
 public class CmdAutoClaim extends FCommand
 {
@@ -14,7 +14,7 @@ public class CmdAutoClaim extends FCommand
 		//this.requiredArgs.add("");
 		this.optionalArgs.put("faction", "your");
 		
-		this.permission = Permission.AUTOCLAIM.node;
+		this.permission = Perm.AUTOCLAIM.node;
 		this.disableOnLock = true;
 		
 		senderMustBePlayer = true;

@@ -16,6 +16,7 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.P;
+import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.iface.RelationParticipator;
 
 /**
@@ -167,7 +168,7 @@ public enum FPerm
 		{
 			FPlayer fplayer = (FPlayer)rpSubject;
 			fplayer.msg(errorpattern, hostFaction.describeTo(fplayer, true), this.getDescription());
-			if (Permission.ADMIN.has(fplayer.getPlayer()))
+			if (Perm.ADMIN.has(fplayer.getPlayer()))
 			{
 				fplayer.msg("<i>You can bypass by using " + P.p.cmdBase.cmdBypass.getUseageTemplate(false));
 			}

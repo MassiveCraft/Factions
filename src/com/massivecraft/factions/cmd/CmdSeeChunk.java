@@ -4,7 +4,8 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
-import com.massivecraft.factions.struct.Permission;
+
+import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.util.VisualizeUtil;
 
 public class CmdSeeChunk extends FCommand
@@ -15,7 +16,7 @@ public class CmdSeeChunk extends FCommand
 		this.aliases.add("sc");
 		this.aliases.add("seechunk");
 		
-		this.permission = Permission.SEE_CHUNK.node;
+		this.permission = Perm.SEE_CHUNK.node;
 		this.disableOnLock = false;
 		
 		senderMustBePlayer = true;

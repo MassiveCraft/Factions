@@ -4,7 +4,7 @@ import com.massivecraft.factions.Board;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Factions;
-import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.Perm;
 
 public class CmdSaveAll extends FCommand
 {
@@ -18,7 +18,7 @@ public class CmdSaveAll extends FCommand
 		//this.requiredArgs.add("");
 		//this.optionalArgs.put("", "");
 		
-		this.permission = Permission.SAVE.node;
+		this.permission = Perm.SAVE.node;
 		this.disableOnLock = false;
 		
 		senderMustBePlayer = false;

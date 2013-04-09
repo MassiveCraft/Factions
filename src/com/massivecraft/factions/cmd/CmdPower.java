@@ -2,7 +2,7 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.Perm;
 
 public class CmdPower extends FCommand
 {
@@ -16,7 +16,7 @@ public class CmdPower extends FCommand
 		//this.requiredArgs.add("faction tag");
 		this.optionalArgs.put("player", "you");
 		
-		this.permission = Permission.POWER.node;
+		this.permission = Perm.POWER.node;
 		this.disableOnLock = false;
 		
 		senderMustBePlayer = false;
@@ -31,7 +31,7 @@ public class CmdPower extends FCommand
 		FPlayer target = this.argAsBestFPlayerMatch(0, fme);
 		if (target == null) return;
 		
-		if (target != fme && ! Permission.POWER_ANY.has(sender, true)) return;
+		if (target != fme && ! Perm.POWER_ANY.has(sender, true)) return;
 
 		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
 		if ( ! payForCommand(Conf.econCostPower, "to show player power info", "for showing player power info")) return;

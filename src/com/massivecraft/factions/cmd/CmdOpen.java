@@ -3,7 +3,7 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
-import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.Perm;
 
 public class CmdOpen extends FCommand
 {
@@ -15,7 +15,7 @@ public class CmdOpen extends FCommand
 		//this.requiredArgs.add("");
 		this.optionalArgs.put("yes/no", "flip");
 		
-		this.permission = Permission.OPEN.node;
+		this.permission = Perm.OPEN.node;
 		this.disableOnLock = false;
 		
 		senderMustBePlayer = true;

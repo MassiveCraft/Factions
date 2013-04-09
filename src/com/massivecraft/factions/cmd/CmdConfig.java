@@ -14,10 +14,10 @@ import org.bukkit.entity.Player;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.P;
+import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.struct.FFlag;
 import com.massivecraft.factions.struct.FPerm;
-import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Rel;
 
 public class CmdConfig extends FCommand
@@ -33,7 +33,7 @@ public class CmdConfig extends FCommand
 		this.requiredArgs.add("value");
 		this.errorOnToManyArgs = false;
 		
-		this.permission = Permission.CONFIG.node;
+		this.permission = Perm.CONFIG.node;
 		this.disableOnLock = true;
 		
 		senderMustBePlayer = false;

@@ -2,7 +2,7 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.struct.Rel;
 
 public class CmdOfficer extends FCommand
@@ -16,7 +16,7 @@ public class CmdOfficer extends FCommand
 		this.requiredArgs.add("player name");
 		//this.optionalArgs.put("", "");
 		
-		this.permission = Permission.OFFICER.node;
+		this.permission = Perm.OFFICER.node;
 		this.disableOnLock = true;
 		
 		senderMustBePlayer = false;
@@ -31,7 +31,7 @@ public class CmdOfficer extends FCommand
 		FPlayer you = this.argAsBestFPlayerMatch(0);
 		if (you == null) return;
 
-		boolean permAny = Permission.OFFICER_ANY.has(sender, false);
+		boolean permAny = Perm.OFFICER_ANY.has(sender, false);
 		Faction targetFaction = you.getFaction();
 
 		if (targetFaction != myFaction && !permAny)

@@ -7,8 +7,8 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.P;
+import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.event.FPlayerJoinEvent;
-import com.massivecraft.factions.struct.Permission;
 
 public class CmdJoin extends FCommand
 {
@@ -20,7 +20,7 @@ public class CmdJoin extends FCommand
 		this.requiredArgs.add("faction");
 		this.optionalArgs.put("player", "you");
 		
-		this.permission = Permission.JOIN.node;
+		this.permission = Perm.JOIN.node;
 		this.disableOnLock = true;
 		
 		senderMustBePlayer = true;
@@ -38,7 +38,7 @@ public class CmdJoin extends FCommand
 		FPlayer fplayer = this.argAsBestFPlayerMatch(1, fme, false);
 		boolean samePlayer = fplayer == fme;
 
-		if (!samePlayer  && ! Permission.JOIN_OTHERS.has(sender, false))
+		if (!samePlayer  && ! Perm.JOIN_OTHERS.has(sender, false))
 		{
 			msg("<b>You do not have permission to move other players into a faction.");
 			return;
@@ -68,7 +68,7 @@ public class CmdJoin extends FCommand
 			return;
 		}
 
-		if( ! (faction.getOpen() || faction.isInvited(fplayer) || fme.hasAdminMode() || Permission.JOIN_ANY.has(sender, false)))
+		if( ! (faction.getOpen() || faction.isInvited(fplayer) || fme.hasAdminMode() || Perm.JOIN_ANY.has(sender, false)))
 		{
 			msg("<i>This faction requires invitation.");
 			if (samePlayer)

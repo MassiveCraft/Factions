@@ -1,7 +1,7 @@
 package com.massivecraft.factions.cmd;
 
+import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.integration.SpoutFeatures;
-import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.RelationUtil;
 
 public class CmdCapeRemove extends CapeCommand
@@ -14,7 +14,7 @@ public class CmdCapeRemove extends CapeCommand
 		this.aliases.add("remove");
 		this.aliases.add("del");
 		this.aliases.add("delete");
-		this.permission = Permission.CAPE_REMOVE.node;
+		this.permission = Perm.CAPE_REMOVE.node;
 	}
 	
 	@Override

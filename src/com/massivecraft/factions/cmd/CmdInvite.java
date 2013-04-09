@@ -2,8 +2,8 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.struct.FPerm;
-import com.massivecraft.factions.struct.Permission;
 
 public class CmdInvite extends FCommand
 {
@@ -16,7 +16,7 @@ public class CmdInvite extends FCommand
 		this.requiredArgs.add("player");
 		//this.optionalArgs.put("", "");
 		
-		this.permission = Permission.INVITE.node;
+		this.permission = Perm.INVITE.node;
 		this.disableOnLock = true;
 		
 		senderMustBePlayer = true;

@@ -1,8 +1,8 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.integration.Econ;
-import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.Perm;
 
 public class CmdMoneyBalance extends FCommand
 {
@@ -15,7 +15,7 @@ public class CmdMoneyBalance extends FCommand
 		//this.requiredArgs.add("");
 		this.optionalArgs.put("faction", "your");
 		
-		this.permission = Permission.MONEY_BALANCE.node;
+		this.permission = Perm.MONEY_BALANCE.node;
 		this.setHelpShort("show faction balance");
 		
 		senderMustBePlayer = false;
@@ -34,7 +34,7 @@ public class CmdMoneyBalance extends FCommand
 		}
 			
 		if (faction == null) return;
-		if (faction != myFaction && ! Permission.MONEY_BALANCE_ANY.has(sender, true)) return;
+		if (faction != myFaction && ! Perm.MONEY_BALANCE_ANY.has(sender, true)) return;
 		
 		Econ.sendBalanceInfo(fme, faction);
 	}

@@ -1,8 +1,8 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.struct.FFlag;
-import com.massivecraft.factions.struct.Permission;
 
 public class CmdFlag extends FCommand
 {
@@ -17,7 +17,7 @@ public class CmdFlag extends FCommand
 		this.optionalArgs.put("flag", "all");
 		this.optionalArgs.put("yes/no", "read");
 		
-		this.permission = Permission.FLAG.node;
+		this.permission = Perm.FLAG.node;
 		this.disableOnLock = true;
 		
 		senderMustBePlayer = false;
@@ -59,7 +59,7 @@ public class CmdFlag extends FCommand
 		if (targetValue == null) return;
 
 		// Do the sender have the right to change flags?
-		if ( ! Permission.FLAG_SET.has(sender, true)) return;
+		if ( ! Perm.FLAG_SET.has(sender, true)) return;
 		
 		// Do the change
 		msg(p.txt.titleize("Flag for " + faction.describeTo(fme, true)));

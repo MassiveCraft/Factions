@@ -1,7 +1,7 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.P;
-import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.Perm;
 
 
 public class CmdVersion extends FCommand
@@ -13,7 +13,7 @@ public class CmdVersion extends FCommand
 		//this.requiredArgs.add("");
 		//this.optionalArgs.put("", "");
 		
-		this.permission = Permission.VERSION.node;
+		this.permission = Perm.VERSION.node;
 		this.disableOnLock = false;
 		
 		senderMustBePlayer = false;

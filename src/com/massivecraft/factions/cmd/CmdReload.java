@@ -5,7 +5,7 @@ import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.P;
-import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.Perm;
 
 public class CmdReload extends FCommand
 {
@@ -18,7 +18,7 @@ public class CmdReload extends FCommand
 		//this.requiredArgs.add("");
 		this.optionalArgs.put("file", "all");
 		
-		this.permission = Permission.RELOAD.node;
+		this.permission = Perm.RELOAD.node;
 		this.disableOnLock = false;
 		
 		senderMustBePlayer = false;

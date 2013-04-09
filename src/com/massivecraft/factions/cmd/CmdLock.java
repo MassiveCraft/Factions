@@ -1,6 +1,6 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.Perm;
 
 public class CmdLock extends FCommand {
 	
@@ -19,7 +19,7 @@ public class CmdLock extends FCommand {
 		//this.requiredArgs.add("");
 		this.optionalArgs.put("on/off", "flip");
 		
-		this.permission = Permission.LOCK.node;
+		this.permission = Perm.LOCK.node;
 		this.disableOnLock = false;
 		
 		senderMustBePlayer = false;

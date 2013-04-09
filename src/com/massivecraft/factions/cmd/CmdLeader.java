@@ -5,8 +5,8 @@ import org.bukkit.Bukkit;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.event.FPlayerJoinEvent;
-import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Rel;
 import com.massivecraft.factions.util.RelationUtil;
 
@@ -20,7 +20,7 @@ public class CmdLeader extends FCommand
 		this.requiredArgs.add("player");
 		this.optionalArgs.put("faction", "your");
 		
-		this.permission = Permission.LEADER.node;
+		this.permission = Perm.LEADER.node;
 		this.disableOnLock = true;
 		
 		senderMustBePlayer = false;
@@ -41,7 +41,7 @@ public class CmdLeader extends FCommand
 		FPlayer targetFactionCurrentLeader = targetFaction.getFPlayerLeader();
 		
 		// We now have fplayer and the target faction
-		if (this.senderIsConsole || fme.hasAdminMode() || Permission.LEADER_ANY.has(sender, false))
+		if (this.senderIsConsole || fme.hasAdminMode() || Perm.LEADER_ANY.has(sender, false))
 		{
 			// Do whatever you wish
 		}

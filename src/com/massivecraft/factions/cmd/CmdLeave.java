@@ -1,6 +1,6 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.Perm;
 
 public class CmdLeave extends FCommand {
 	
@@ -12,7 +12,7 @@ public class CmdLeave extends FCommand {
 		//this.requiredArgs.add("");
 		//this.optionalArgs.put("", "");
 		
-		this.permission = Permission.LEAVE.node;
+		this.permission = Perm.LEAVE.node;
 		this.disableOnLock = true;
 		
 		senderMustBePlayer = true;

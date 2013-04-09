@@ -10,8 +10,8 @@ import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.P;
+import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.struct.FPerm;
-import com.massivecraft.factions.struct.Permission;
 
 public class CmdUnclaim extends FCommand
 {
@@ -23,7 +23,7 @@ public class CmdUnclaim extends FCommand
 		//this.requiredArgs.add("");
 		//this.optionalArgs.put("", "");
 		
-		this.permission = Permission.UNCLAIM.node;
+		this.permission = Perm.UNCLAIM.node;
 		this.disableOnLock = true;
 		
 		senderMustBePlayer = true;

@@ -1,7 +1,7 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.P;
-import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.Perm;
 
 public class CmdCape extends FCommand
 {
@@ -14,7 +14,7 @@ public class CmdCape extends FCommand
 		super();
 		this.aliases.add("cape");
 		
-		this.permission = Permission.CAPE.node;
+		this.permission = Perm.CAPE.node;
 		
 		senderMustBePlayer = false;
 		senderMustBeMember = false;

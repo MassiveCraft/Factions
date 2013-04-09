@@ -4,10 +4,10 @@ import org.bukkit.Bukkit;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.event.FactionRelationEvent;
 import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.struct.FFlag;
-import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Rel;
 
 public abstract class FRelationCommand extends FCommand
@@ -20,7 +20,7 @@ public abstract class FRelationCommand extends FCommand
 		this.requiredArgs.add("faction");
 		//this.optionalArgs.put("", "");
 		
-		this.permission = Permission.RELATION.node;
+		this.permission = Perm.RELATION.node;
 		this.disableOnLock = true;
 		
 		senderMustBePlayer = true;

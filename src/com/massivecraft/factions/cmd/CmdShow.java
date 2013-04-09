@@ -9,8 +9,8 @@ import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.struct.FFlag;
-import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Rel;
 import com.massivecraft.factions.zcore.util.TextUtil;
 
@@ -24,7 +24,7 @@ public class CmdShow extends FCommand
 		//this.requiredArgs.add("");
 		this.optionalArgs.put("faction", "your");
 		
-		this.permission = Permission.SHOW.node;
+		this.permission = Perm.SHOW.node;
 		this.disableOnLock = false;
 		
 		senderMustBePlayer = true;

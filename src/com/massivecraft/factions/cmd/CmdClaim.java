@@ -3,7 +3,7 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.util.SpiralTask;
 
 
@@ -19,7 +19,7 @@ public class CmdClaim extends FCommand
 		this.optionalArgs.put("faction", "your");
 		this.optionalArgs.put("radius", "1");
 		
-		this.permission = Permission.CLAIM.node;
+		this.permission = Perm.CLAIM.node;
 		this.disableOnLock = true;
 		
 		senderMustBePlayer = true;
@@ -49,7 +49,7 @@ public class CmdClaim extends FCommand
 		else
 		{
 			// radius claim
-			if (! Permission.CLAIM_RADIUS.has(sender, false))
+			if (! Perm.CLAIM_RADIUS.has(sender, false))
 			{
 				msg("<b>You do not have permission to claim in a radius.");
 				return;

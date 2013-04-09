@@ -6,9 +6,9 @@ import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.P;
+import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.event.FPlayerLeaveEvent;
 import com.massivecraft.factions.struct.FPerm;
-import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Rel;
 
 public class CmdKick extends FCommand
@@ -22,7 +22,7 @@ public class CmdKick extends FCommand
 		this.requiredArgs.add("player");
 		//this.optionalArgs.put("", "");
 		
-		this.permission = Permission.KICK.node;
+		this.permission = Perm.KICK.node;
 		this.disableOnLock = false;
 		
 		senderMustBePlayer = true;

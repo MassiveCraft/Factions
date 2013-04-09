@@ -1,8 +1,8 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.struct.FPerm;
-import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Rel;
 
 public class CmdPerm extends FCommand
@@ -18,7 +18,7 @@ public class CmdPerm extends FCommand
 		this.optionalArgs.put("relation", "read");
 		this.optionalArgs.put("yes/no", "read");
 		
-		this.permission = Permission.PERM.node;
+		this.permission = Perm.PERM.node;
 		this.disableOnLock = true;
 		
 		this.errorOnToManyArgs = false;

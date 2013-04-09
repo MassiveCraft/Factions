@@ -2,8 +2,8 @@ package com.massivecraft.factions.cmd;
 
 import java.net.URL;
 
+import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.integration.SpoutFeatures;
-import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.RelationUtil;
 
 public class CmdCapeSet extends CapeCommand
@@ -13,7 +13,7 @@ public class CmdCapeSet extends CapeCommand
 	{
 		this.aliases.add("set");
 		this.requiredArgs.add("url");
-		this.permission = Permission.CAPE_SET.node;
+		this.permission = Perm.CAPE_SET.node;
 	}
 	
 	@Override

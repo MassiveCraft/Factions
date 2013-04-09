@@ -4,9 +4,9 @@ import com.massivecraft.factions.Board;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.struct.FPerm;
-import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.TerritoryAccess;
 import com.massivecraft.factions.zcore.util.TextUtil;
 
@@ -40,11 +40,11 @@ public class CmdAccess extends FCommand
 
 		TerritoryAccess territory = Board.getTerritoryAccessAt(loc);
 		Faction locFaction = territory.getHostFaction();
-		boolean accessAny = Permission.ACCESS_ANY.has(sender, false);
+		boolean accessAny = Perm.ACCESS_ANY.has(sender, false);
 
 		if (type.isEmpty() || type.equals("view"))
 		{
-			if ( ! accessAny && ! Permission.ACCESS_VIEW.has(sender, true)) return;
+			if ( ! accessAny && ! Perm.ACCESS_VIEW.has(sender, true)) return;
 			if ( ! accessAny && ! territory.doesHostFactionMatch(fme))
 			{
 				msg("<b>This territory isn't controlled by your faction, so you can't view the access list.");
@@ -54,7 +54,7 @@ public class CmdAccess extends FCommand
 			return;
 		}
 
-		if ( ! accessAny && ! Permission.ACCESS.has(sender, true)) return;
+		if ( ! accessAny && ! Perm.ACCESS.has(sender, true)) return;
 		if ( ! accessAny && ! FPerm.ACCESS.has(fme, locFaction, true)) return;
 
 		boolean doPlayer = true;

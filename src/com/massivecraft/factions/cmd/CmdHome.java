@@ -13,9 +13,9 @@ import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.integration.EssentialsFeatures;
 import com.massivecraft.factions.struct.FFlag;
-import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Rel;
 import com.massivecraft.factions.zcore.util.SmokeUtil;
 
@@ -31,7 +31,7 @@ public class CmdHome extends FCommand
 		//this.requiredArgs.add("");
 		//this.optionalArgs.put("", "");
 		
-		this.permission = Permission.HOME.node;
+		this.permission = Perm.HOME.node;
 		this.disableOnLock = false;
 		
 		senderMustBePlayer = true;

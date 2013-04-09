@@ -1,7 +1,7 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.struct.Rel;
 
 public class CmdPromote extends FCommand
@@ -15,7 +15,7 @@ public class CmdPromote extends FCommand
 		this.requiredArgs.add("player name");
 		//this.optionalArgs.put("", "");
 		
-		this.permission = Permission.PROMOTE.node;
+		this.permission = Perm.PROMOTE.node;
 		this.disableOnLock = true;
 		
 		//To promote someone from recruit -> member you must be an officer.

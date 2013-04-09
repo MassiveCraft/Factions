@@ -1,13 +1,13 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.Perm;
 
 public class CmdCapeGet extends CapeCommand
 {
 	public CmdCapeGet()
 	{
 		this.aliases.add("get");
-		this.permission = Permission.CAPE_GET.node;
+		this.permission = Perm.CAPE_GET.node;
 	}
 	
 	@Override

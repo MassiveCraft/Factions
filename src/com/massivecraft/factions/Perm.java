@@ -1,9 +1,8 @@
-package com.massivecraft.factions.struct;
+package com.massivecraft.factions;
 
 import org.bukkit.command.CommandSender;
-import com.massivecraft.factions.P;
 
-public enum Permission
+public enum Perm
 {
 	ACCESS("access"),
 	ACCESS_ANY("access.any"),
@@ -67,7 +66,7 @@ public enum Permission
 	
 	public final String node;
 	
-	Permission(final String node)
+	Perm(final String node)
 	{
 		this.node = "factions."+node;
 	}
