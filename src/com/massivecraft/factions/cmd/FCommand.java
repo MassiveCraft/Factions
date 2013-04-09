@@ -11,14 +11,14 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionColl;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.struct.FFlag;
 import com.massivecraft.factions.struct.FPerm;
 import com.massivecraft.factions.struct.Rel;
 import com.massivecraft.factions.zcore.MCommand;
 
 
-public abstract class FCommand extends MCommand<P>
+public abstract class FCommand extends MCommand<Factions>
 {
 	public boolean disableOnLock;
 	
@@ -32,7 +32,7 @@ public abstract class FCommand extends MCommand<P>
 	
 	public FCommand()
 	{
-		super(P.p);
+		super(Factions.p);
 		
 		// Due to safety reasons it defaults to disable on lock.
 		disableOnLock = true;

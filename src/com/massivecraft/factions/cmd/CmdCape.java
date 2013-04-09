@@ -1,6 +1,6 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 
 public class CmdCape extends FCommand
@@ -30,7 +30,7 @@ public class CmdCape extends FCommand
 	public void perform()
 	{
 		this.commandChain.add(this);
-		P.p.cmdAutoHelp.execute(this.sender, this.args, this.commandChain);
+		Factions.p.cmdAutoHelp.execute(this.sender, this.args, this.commandChain);
 	}
 	
 }

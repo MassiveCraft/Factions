@@ -10,7 +10,7 @@ import org.bukkit.Location;
 import org.bukkit.plugin.Plugin;
 
 import com.massivecraft.factions.Conf;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.listeners.FactionsChatListener;
 
 import com.earth2me.essentials.IEssentials;
@@ -104,8 +104,8 @@ public class EssentialsFeatures
 		essChat = instance;
 		try
 		{
-			Bukkit.getServer().getPluginManager().registerEvents(new LocalChatListener(), P.p);
-			P.p.log("Found and will integrate chat with newer "+essChat.getDescription().getFullName());
+			Bukkit.getServer().getPluginManager().registerEvents(new LocalChatListener(), Factions.p);
+			Factions.p.log("Found and will integrate chat with newer "+essChat.getDescription().getFullName());
 		}
 		catch (NoSuchMethodError ex)
 		{

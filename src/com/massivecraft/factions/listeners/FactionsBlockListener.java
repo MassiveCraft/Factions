@@ -20,15 +20,15 @@ import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.struct.FFlag;
 import com.massivecraft.factions.struct.FPerm;
 
 
 public class FactionsBlockListener implements Listener
 {
-	public P p;
-	public FactionsBlockListener(P p)
+	public Factions p;
+	public FactionsBlockListener(Factions p)
 	{
 		this.p = p;
 	}

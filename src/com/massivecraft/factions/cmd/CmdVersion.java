@@ -1,6 +1,6 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 
 
@@ -25,6 +25,6 @@ public class CmdVersion extends FCommand
 	@Override
 	public void perform()
 	{
-		msg("<i>You are running "+P.p.getDescription().getFullName());
+		msg("<i>You are running "+Factions.p.getDescription().getFullName());
 	}
 }

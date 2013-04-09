@@ -1,6 +1,6 @@
 package com.massivecraft.factions.integration;
 
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.Factions;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -39,13 +39,13 @@ public class Worldguard
 		{
 			enabled = false;
 			wg = null;
-			P.p.log("Could not hook to WorldGuard. WorldGuard checks are disabled.");
+			Factions.p.log("Could not hook to WorldGuard. WorldGuard checks are disabled.");
 		}
 		else
 		{
 			wg = (WorldGuardPlugin) wgplug;
 			enabled = true;
-			P.p.log("Successfully hooked to WorldGuard.");
+			Factions.p.log("Successfully hooked to WorldGuard.");
 		}
 	}
 

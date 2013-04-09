@@ -6,14 +6,14 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.event.server.PluginEnableEvent;
 
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.integration.SpoutFeatures;
 
 
 public class FactionsServerListener implements Listener
 {
-	public P p;
-	public FactionsServerListener(P p)
+	public Factions p;
+	public FactionsServerListener(Factions p)
 	{
 		this.p = p;
 	}

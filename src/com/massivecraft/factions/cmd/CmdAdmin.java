@@ -1,6 +1,6 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 
 public class CmdAdmin extends FCommand
@@ -30,12 +30,12 @@ public class CmdAdmin extends FCommand
 		if ( fme.hasAdminMode())
 		{
 			fme.msg("<i>You have enabled admin bypass mode.");
-			P.p.log(fme.getName() + " has ENABLED admin bypass mode.");
+			Factions.p.log(fme.getName() + " has ENABLED admin bypass mode.");
 		}
 		else
 		{
 			fme.msg("<i>You have disabled admin bypass mode.");
-			P.p.log(fme.getName() + " DISABLED admin bypass mode.");
+			Factions.p.log(fme.getName() + " DISABLED admin bypass mode.");
 		}
 	}
 }

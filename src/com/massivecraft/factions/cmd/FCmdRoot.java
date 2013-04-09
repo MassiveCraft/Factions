@@ -3,7 +3,7 @@ package com.massivecraft.factions.cmd;
 import java.util.Collections;
 
 import com.massivecraft.factions.Conf;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.Factions;
 
 public class FCmdRoot extends FCommand
 {
@@ -69,7 +69,7 @@ public class FCmdRoot extends FCommand
 		this.setHelpShort("The faction base command");
 		this.helpLong.add(p.txt.parseTags("<i>This command contains all faction stuff."));
 		
-		this.addSubCommand(P.p.cmdAutoHelp);
+		this.addSubCommand(Factions.p.cmdAutoHelp);
 		this.addSubCommand(this.cmdList);
 		this.addSubCommand(this.cmdShow);
 		this.addSubCommand(this.cmdPower);
@@ -118,7 +118,7 @@ public class FCmdRoot extends FCommand
 	public void perform()
 	{
 		this.commandChain.add(this);
-		P.p.cmdAutoHelp.execute(this.sender, this.args, this.commandChain);
+		Factions.p.cmdAutoHelp.execute(this.sender, this.args, this.commandChain);
 	}
 
 }

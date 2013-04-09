@@ -3,7 +3,7 @@ package com.massivecraft.factions.adapters;
 import java.lang.reflect.Type;
 import java.util.logging.Level;
 
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.util.LazyLocation;
 
 import org.bukkit.craftbukkit.libs.com.google.gson.JsonDeserializationContext;
@@ -44,7 +44,7 @@ public class LocationTypeAdapter implements JsonDeserializer<LazyLocation>, Json
 		catch (Exception ex)
 		{
 			ex.printStackTrace();
-			P.p.log(Level.WARNING, "Error encountered while deserializing a LazyLocation.");
+			Factions.p.log(Level.WARNING, "Error encountered while deserializing a LazyLocation.");
 			return null;
 		}
 	}
@@ -67,7 +67,7 @@ public class LocationTypeAdapter implements JsonDeserializer<LazyLocation>, Json
 		catch (Exception ex)
 		{
 			ex.printStackTrace();
-			P.p.log(Level.WARNING, "Error encountered while serializing a LazyLocation.");
+			Factions.p.log(Level.WARNING, "Error encountered while serializing a LazyLocation.");
 			return obj;
 		}
 	}

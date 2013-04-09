@@ -2,15 +2,15 @@ package com.massivecraft.factions.cmd;
 
 import java.util.ArrayList;
 
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.zcore.CommandVisibility;
 import com.massivecraft.factions.zcore.MCommand;
 
-public class CmdAutoHelp extends MCommand<P>
+public class CmdAutoHelp extends MCommand<Factions>
 {
 	public CmdAutoHelp()
 	{
-		super(P.p);
+		super(Factions.p);
 		this.aliases.add("?");
 		this.aliases.add("h");
 		this.aliases.add("help");

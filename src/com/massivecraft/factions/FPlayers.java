@@ -14,7 +14,7 @@ public class FPlayers extends PlayerEntityCollection<FPlayer>
 {
 	public static FPlayers i = new FPlayers();
 	
-	P p = P.p;
+	Factions p = Factions.p;
 	
 	private FPlayers()
 	{
@@ -23,8 +23,8 @@ public class FPlayers extends PlayerEntityCollection<FPlayer>
 			FPlayer.class,
 			new CopyOnWriteArrayList<FPlayer>(),
 			new ConcurrentSkipListMap<String, FPlayer>(String.CASE_INSENSITIVE_ORDER),
-			new File(P.p.getDataFolder(), "players.json"),
-			P.p.gson
+			new File(Factions.p.getDataFolder(), "players.json"),
+			Factions.p.gson
 		);
 		
 		this.setCreative(true);
@@ -63,7 +63,7 @@ public class FPlayers extends PlayerEntityCollection<FPlayer>
 			if (fplayer.isOffline() && now - fplayer.getLastLoginTime() > toleranceMillis)
 			{
 				if (Conf.logFactionLeave || Conf.logFactionKick)
-					P.p.log("Player "+fplayer.getName()+" was auto-removed due to inactivity.");
+					Factions.p.log("Player "+fplayer.getName()+" was auto-removed due to inactivity.");
 
 				// if player is faction leader, sort out the faction since he's going away
 				if (fplayer.getRole() == Rel.LEADER)

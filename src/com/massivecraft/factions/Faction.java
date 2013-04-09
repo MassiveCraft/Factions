@@ -452,7 +452,7 @@ public class Faction extends Entity implements EconomyParticipator
 		ArrayList<Player> ret = new ArrayList<Player>();
 		//if (this.isPlayerFreeType()) return ret;
 
-		for (Player player: P.p.getServer().getOnlinePlayers())
+		for (Player player: Factions.p.getServer().getOnlinePlayers())
 		{
 			FPlayer fplayer = FPlayers.i.get(player);
 			if (fplayer.getFaction() == this)
@@ -488,7 +488,7 @@ public class Faction extends Entity implements EconomyParticipator
 
 			// no members left and faction isn't permanent, so disband it
 			if (Conf.logFactionDisband)
-				P.p.log("The faction "+this.getTag()+" ("+this.getId()+") has been disbanded since it has no members left.");
+				Factions.p.log("The faction "+this.getTag()+" ("+this.getId()+") has been disbanded since it has no members left.");
 
 			for (FPlayer fplayer : FPlayers.i.getOnline())
 			{
@@ -503,7 +503,7 @@ public class Faction extends Entity implements EconomyParticipator
 				oldLeader.setRole(Rel.MEMBER);
 			replacements.get(0).setRole(Rel.LEADER);
 			this.msg("<i>Faction leader <h>%s<i> has been removed. %s<i> has been promoted as the new faction leader.", oldLeader == null ? "" : oldLeader.getName(), replacements.get(0).getName());
-			P.p.log("Faction "+this.getTag()+" ("+this.getId()+") leader was removed. Replacement leader: "+replacements.get(0).getName());
+			Factions.p.log("Faction "+this.getTag()+" ("+this.getId()+") leader was removed. Replacement leader: "+replacements.get(0).getName());
 		}
 	}
 
@@ -512,7 +512,7 @@ public class Faction extends Entity implements EconomyParticipator
 	//----------------------------------------------//
 	public void msg(String message, Object... args)
 	{
-		message = P.p.txt.parse(message, args);
+		message = Factions.p.txt.parse(message, args);
 		
 		for (FPlayer fplayer : this.getFPlayersWhereOnline(true))
 		{

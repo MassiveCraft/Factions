@@ -4,7 +4,7 @@ import com.massivecraft.factions.Board;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.FactionColl;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 
 public class CmdReload extends FCommand
@@ -65,7 +65,7 @@ public class CmdReload extends FCommand
 		}
 		else
 		{
-			P.p.log("RELOAD CANCELLED - SPECIFIED FILE INVALID");
+			Factions.p.log("RELOAD CANCELLED - SPECIFIED FILE INVALID");
 			msg("<b>Invalid file specified. <i>Valid files: all, conf, board, factions, players");
 			return;
 		}

@@ -3,7 +3,7 @@ package com.massivecraft.factions.cmd;
 import java.util.ArrayList;
 
 import com.massivecraft.factions.Conf;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.integration.Econ;
 
@@ -162,7 +162,7 @@ public class CmdHelp extends FCommand
 		pageLines.add(p.txt.parse("<c>/f claim safezone <i>claim land for the Safe Zone"));
 		pageLines.add(p.txt.parse("<c>/f claim warzone <i>claim land for the War Zone"));
 		pageLines.add(p.txt.parse("<c>/f autoclaim [safezone|warzone] <i>take a guess"));
-		pageLines.add(p.txt.parse("<i>Note: " + p.cmdBase.cmdUnclaim.getUseageTemplate(false) + P.p.txt.parse("<i>") + " works on safe/war zones as well."));
+		pageLines.add(p.txt.parse("<i>Note: " + p.cmdBase.cmdUnclaim.getUseageTemplate(false) + Factions.p.txt.parse("<i>") + " works on safe/war zones as well."));
 		helpPages.add(pageLines);
 		
 		pageLines = new ArrayList<String>();

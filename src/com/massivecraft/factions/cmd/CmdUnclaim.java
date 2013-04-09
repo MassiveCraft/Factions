@@ -9,7 +9,7 @@ import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.struct.FPerm;
 
@@ -64,7 +64,7 @@ public class CmdUnclaim extends FCommand
 		myFaction.msg("%s<i> unclaimed some land.", fme.describeTo(myFaction, true));
 
 		if (Conf.logLandUnclaims)
-			P.p.log(fme.getName()+" unclaimed land at ("+flocation.getCoordString()+") from the faction: "+otherFaction.getTag());
+			Factions.p.log(fme.getName()+" unclaimed land at ("+flocation.getCoordString()+") from the faction: "+otherFaction.getTag());
 	}
 	
 }

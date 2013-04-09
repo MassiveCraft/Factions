@@ -4,7 +4,7 @@ import org.bukkit.Bukkit;
 
 import com.massivecraft.factions.Board;
 import com.massivecraft.factions.Conf;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.event.LandUnclaimAllEvent;
 import com.massivecraft.factions.integration.Econ;
@@ -54,7 +54,7 @@ public class CmdUnclaimall extends FCommand
 		SpoutFeatures.updateTerritoryDisplayLoc(null);
 
 		if (Conf.logLandUnclaims)
-			P.p.log(fme.getName()+" unclaimed everything for the faction: "+myFaction.getTag());
+			Factions.p.log(fme.getName()+" unclaimed everything for the faction: "+myFaction.getTag());
 	}
 	
 }

@@ -10,13 +10,13 @@ import com.dthielke.herochat.Herochat;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.listeners.FactionsChatListener;
 
 public class HerochatListener implements Listener
 {
-	P p;
-	public HerochatListener(P p)
+	Factions p;
+	public HerochatListener(Factions p)
 	{
 		this.p = p;
 		Herochat.getChannelManager().addChannel(new FactionChannel());

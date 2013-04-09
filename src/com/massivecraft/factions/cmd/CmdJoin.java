@@ -6,7 +6,7 @@ import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.event.FPlayerJoinEvent;
 
@@ -103,9 +103,9 @@ public class CmdJoin extends FCommand
 		if (Conf.logFactionJoin)
 		{
 			if (samePlayer)
-				P.p.log("%s joined the faction %s.", fplayer.getName(), faction.getTag());
+				Factions.p.log("%s joined the faction %s.", fplayer.getName(), faction.getTag());
 			else
-				P.p.log("%s moved the player %s into the faction %s.", fme.getName(), fplayer.getName(), faction.getTag());
+				Factions.p.log("%s moved the player %s into the faction %s.", fme.getName(), fplayer.getName(), faction.getTag());
 		}
 	}
 }

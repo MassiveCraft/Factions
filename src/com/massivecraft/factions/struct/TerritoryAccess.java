@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionColl;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.Factions;
 
 import org.bukkit.craftbukkit.libs.com.google.gson.JsonArray;
 import org.bukkit.craftbukkit.libs.com.google.gson.JsonDeserializationContext;
@@ -262,7 +262,7 @@ public class TerritoryAccess implements JsonDeserializer<TerritoryAccess>, JsonS
 		catch (Exception ex)
 		{
 			ex.printStackTrace();
-			P.p.log(Level.WARNING, "Error encountered while deserializing TerritoryAccess data.");
+			Factions.p.log(Level.WARNING, "Error encountered while deserializing TerritoryAccess data.");
 			return null;
 		}
 	}
@@ -313,7 +313,7 @@ public class TerritoryAccess implements JsonDeserializer<TerritoryAccess>, JsonS
 		catch (Exception ex)
 		{
 			ex.printStackTrace();
-			P.p.log(Level.WARNING, "Error encountered while serializing TerritoryAccess data.");
+			Factions.p.log(Level.WARNING, "Error encountered while serializing TerritoryAccess data.");
 			return null;
 		}
 	}

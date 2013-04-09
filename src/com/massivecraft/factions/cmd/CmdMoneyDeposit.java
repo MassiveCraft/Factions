@@ -1,7 +1,7 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Conf;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.integration.Econ;
@@ -39,7 +39,7 @@ public class CmdMoneyDeposit extends FCommand
 		boolean success = Econ.transferMoney(fme, fme, faction, amount);
 
 		if (success && Conf.logMoneyTransactions)
-			P.p.log(ChatColor.stripColor(P.p.txt.parse("%s deposited %s in the faction bank: %s", fme.getName(), Econ.moneyString(amount), faction.describeTo(null))));
+			Factions.p.log(ChatColor.stripColor(Factions.p.txt.parse("%s deposited %s in the faction bank: %s", fme.getName(), Econ.moneyString(amount), faction.describeTo(null))));
 	}
 	
 }

@@ -24,13 +24,13 @@ import org.bukkit.plugin.RegisteredListener;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.struct.Rel;
 
 public class FactionsChatListener implements Listener
 {
-	public P p;
-	public FactionsChatListener(P p)
+	public Factions p;
+	public FactionsChatListener(Factions p)
 	{
 		this.p = p;
 	}
@@ -46,7 +46,7 @@ public class FactionsChatListener implements Listener
 		}
 		catch (Exception e)
 		{
-			P.p.log(Level.SEVERE, "A reflection trick is broken! This will lead to glitchy relation-colored-chat.");
+			Factions.p.log(Level.SEVERE, "A reflection trick is broken! This will lead to glitchy relation-colored-chat.");
 		}
 		
 		parsePattern = Pattern.compile("[{\\[]factions?_([a-zA-Z_]+)[}\\]]");

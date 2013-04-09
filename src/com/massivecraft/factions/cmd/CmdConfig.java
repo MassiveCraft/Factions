@@ -13,7 +13,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import com.massivecraft.factions.Conf;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.struct.FFlag;
@@ -386,7 +386,7 @@ public class CmdConfig extends FCommand
 			sendMessage(success);
 			if (sender instanceof Player)
 			{
-				P.p.log(success + " Command was run by "+fme.getName()+".");
+				Factions.p.log(success + " Command was run by "+fme.getName()+".");
 			}
 		}
 		// save change to disk

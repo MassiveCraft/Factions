@@ -18,16 +18,16 @@ import com.massivecraft.capi.events.CAPISelectChannelEvent;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.struct.Rel;
 
 public class PluginCapiListener implements Listener
 {
-	P p;
+	Factions p;
 	
 	Set<String> myChannelIds = new LinkedHashSet<String>();
 	
-	public PluginCapiListener(P p)
+	public PluginCapiListener(Factions p)
 	{
 		this.p = p;
 		

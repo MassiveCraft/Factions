@@ -23,7 +23,7 @@ public class FactionColl extends EntityCollection<Faction>
 {
 	public static FactionColl i = new FactionColl();
 	
-	P p = P.p;
+	Factions p = Factions.p;
 	
 	private FactionColl()
 	{
@@ -32,8 +32,8 @@ public class FactionColl extends EntityCollection<Faction>
 			Faction.class,
 			new CopyOnWriteArrayList<Faction>(),
 			new ConcurrentHashMap<String, Faction>(),
-			new File(P.p.getDataFolder(), "factions.json"),
-			P.p.gson
+			new File(Factions.p.getDataFolder(), "factions.json"),
+			Factions.p.gson
 		);
 	}
 	
@@ -209,19 +209,19 @@ public class FactionColl extends EntityCollection<Faction>
 		
 		if(MiscUtil.getComparisonString(str).length() < Conf.factionTagLengthMin)
 		{
-			errors.add(P.p.txt.parse("<i>The faction tag can't be shorter than <h>%s<i> chars.", Conf.factionTagLengthMin));
+			errors.add(Factions.p.txt.parse("<i>The faction tag can't be shorter than <h>%s<i> chars.", Conf.factionTagLengthMin));
 		}
 		
 		if(str.length() > Conf.factionTagLengthMax)
 		{
-			errors.add(P.p.txt.parse("<i>The faction tag can't be longer than <h>%s<i> chars.", Conf.factionTagLengthMax));
+			errors.add(Factions.p.txt.parse("<i>The faction tag can't be longer than <h>%s<i> chars.", Conf.factionTagLengthMax));
 		}
 		
 		for (char c : str.toCharArray())
 		{
 			if ( ! MiscUtil.substanceChars.contains(String.valueOf(c)))
 			{
-				errors.add(P.p.txt.parse("<i>Faction tag must be alphanumeric. \"<h>%s<i>\" is not allowed.", c));
+				errors.add(Factions.p.txt.parse("<i>Faction tag must be alphanumeric. \"<h>%s<i>\" is not allowed.", c));
 			}
 		}
 		
@@ -265,7 +265,7 @@ public class FactionColl extends EntityCollection<Faction>
 	{
 		if ( ! Econ.shouldBeUsed()) return;
 
-		P.p.log("Running econLandRewardRoutine...");
+		Factions.p.log("Running econLandRewardRoutine...");
 		for (Faction faction : this.get())
 		{
 			int landCount = faction.getLandRounded();

@@ -9,7 +9,7 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FLocation;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.Factions;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -50,9 +50,9 @@ public class SpoutFeatures
 		if (enabled == true) return true;
 		enabled = true;
 		
-		P.p.log("Found and will use features of "+plugin.getDescription().getFullName());
+		Factions.p.log("Found and will use features of "+plugin.getDescription().getFullName());
 		mainListener = new SpoutMainListener();
-		Bukkit.getPluginManager().registerEvents(mainListener, P.p);
+		Bukkit.getPluginManager().registerEvents(mainListener, Factions.p);
 		
 		return true;
 	}
@@ -112,7 +112,7 @@ public class SpoutFeatures
 	
 	public static void updateCapeShortly(final Object ofrom, final Object oto)
 	{
-		P.p.getServer().getScheduler().scheduleSyncDelayedTask(P.p, new Runnable()
+		Factions.p.getServer().getScheduler().scheduleSyncDelayedTask(Factions.p, new Runnable()
 		{
 			@Override
 			public void run()
@@ -168,7 +168,7 @@ public class SpoutFeatures
 	
 	public static void updateTitleShortly(final Object ofrom, final Object oto)
 	{
-		P.p.getServer().getScheduler().scheduleSyncDelayedTask(P.p, new Runnable()
+		Factions.p.getServer().getScheduler().scheduleSyncDelayedTask(Factions.p, new Runnable()
 		{
 			@Override
 			public void run()

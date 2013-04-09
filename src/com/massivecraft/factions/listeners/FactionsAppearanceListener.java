@@ -12,14 +12,14 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
 import com.massivecraft.factions.Conf;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.integration.SpoutFeatures;
 
 
 public class FactionsAppearanceListener implements Listener
 {
-	public P p;
-	public FactionsAppearanceListener(P p)
+	public Factions p;
+	public FactionsAppearanceListener(Factions p)
 	{
 		this.p = p;
 	}

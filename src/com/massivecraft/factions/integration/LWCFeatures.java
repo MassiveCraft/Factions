@@ -17,7 +17,7 @@ import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.Factions;
 
 public class LWCFeatures 
 {
@@ -29,7 +29,7 @@ public class LWCFeatures
 		if(test == null || !test.isEnabled()) return;
 
 		lwc = ((LWCPlugin)test).getLWC();
-		P.p.log("Successfully hooked into LWC!"+(Conf.lwcIntegration ? "" : " Integration is currently disabled, though (\"lwcIntegration\")."));
+		Factions.p.log("Successfully hooked into LWC!"+(Conf.lwcIntegration ? "" : " Integration is currently disabled, though (\"lwcIntegration\")."));
 	}
 
 	public static boolean getEnabled()

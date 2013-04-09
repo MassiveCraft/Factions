@@ -46,10 +46,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.craftbukkit.libs.com.google.gson.GsonBuilder;
 
 
-public class P extends MPlugin
+public class Factions extends MPlugin
 {
 	// Our single plugin instance
-	public static P p;
+	public static Factions p;
 	
 	// Listeners
 	public final FactionsPlayerListener playerListener;
@@ -71,7 +71,7 @@ public class P extends MPlugin
 	public FCmdRoot cmdBase;
 	public CmdAutoHelp cmdAutoHelp;
 	
-	public P()
+	public Factions()
 	{
 		p = this;
 		this.playerListener = new FactionsPlayerListener(this);

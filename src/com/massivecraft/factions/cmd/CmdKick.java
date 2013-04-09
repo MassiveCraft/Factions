@@ -5,7 +5,7 @@ import org.bukkit.Bukkit;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.event.FPlayerLeaveEvent;
 import com.massivecraft.factions.struct.FPerm;
@@ -79,7 +79,7 @@ public class CmdKick extends FCommand
 		}
 
 		if (Conf.logFactionKick)
-			P.p.log((senderIsConsole ? "A console command" : fme.getName())+" kicked "+you.getName()+" from the faction: "+yourFaction.getTag());
+			Factions.p.log((senderIsConsole ? "A console command" : fme.getName())+" kicked "+you.getName()+" from the faction: "+yourFaction.getTag());
 
 		if (you.getRole() == Rel.LEADER)
 			yourFaction.promoteNewLeader();

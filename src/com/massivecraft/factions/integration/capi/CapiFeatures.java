@@ -3,7 +3,7 @@ package com.massivecraft.factions.integration.capi;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.Factions;
 
 public class CapiFeatures
 {
@@ -12,8 +12,8 @@ public class CapiFeatures
 		Plugin plug = Bukkit.getServer().getPluginManager().getPlugin("capi");
 		if (plug != null && plug.getClass().getName().equals("com.massivecraft.capi.P"))
 		{
-			P.p.log("Integration with the CAPI plugin was successful");
-			Bukkit.getPluginManager().registerEvents(new PluginCapiListener(P.p), P.p);
+			Factions.p.log("Integration with the CAPI plugin was successful");
+			Bukkit.getPluginManager().registerEvents(new PluginCapiListener(Factions.p), Factions.p);
 		}
 	}
 }

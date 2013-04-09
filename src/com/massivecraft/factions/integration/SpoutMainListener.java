@@ -14,7 +14,7 @@ import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.struct.TerritoryAccess;
 
 import org.getspout.spoutapi.event.spout.SpoutCraftEnableEvent;
@@ -107,7 +107,7 @@ public class SpoutMainListener implements Listener
 				label.setWidth(1).setHeight(1);  // prevent Spout's questionable new "no default size" warning
 				label.setScale(Conf.spoutTerritoryDisplaySize);
 
-				sPlayer.getMainScreen().attachWidget(P.p, label);
+				sPlayer.getMainScreen().attachWidget(Factions.p, label);
 				territoryLabels.put(player.getName(), label);
 			}
 
@@ -135,7 +135,7 @@ public class SpoutMainListener implements Listener
 				label.setWidth(1).setHeight(1);  // prevent Spout's questionable new "no default size" warning
 				label.setScale(Conf.spoutTerritoryNoticeSize);
 				label.setY(Conf.spoutTerritoryNoticeTop);
-				sPlayer.getMainScreen().attachWidget(P.p, label);
+				sPlayer.getMainScreen().attachWidget(Factions.p, label);
 				territoryChangeLabels.put(player.getName(), label);
 			}
 
@@ -172,7 +172,7 @@ public class SpoutMainListener implements Listener
 			label.setWidth(1).setHeight(1);  // prevent Spout's questionable new "no default size" warning
 			label.setScale(Conf.spoutTerritoryDisplaySize);
 			label.setY((int)(10 * Conf.spoutTerritoryDisplaySize));
-			sPlayer.getMainScreen().attachWidget(P.p, label);
+			sPlayer.getMainScreen().attachWidget(Factions.p, label);
 			accessLabels.put(player.getName(), label);
 		}
 

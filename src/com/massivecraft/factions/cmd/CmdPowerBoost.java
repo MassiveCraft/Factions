@@ -2,7 +2,7 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 
 public class CmdPowerBoost extends FCommand
@@ -67,6 +67,6 @@ public class CmdPowerBoost extends FCommand
 
 		msg("<i>"+target+" now has a power bonus/penalty of "+targetPower+" to min and max power levels.");
 		if (!senderIsConsole)
-			P.p.log(fme.getName()+" has set the power bonus/penalty for "+target+" to "+targetPower+".");
+			Factions.p.log(fme.getName()+" has set the power bonus/penalty for "+target+" to "+targetPower+".");
 	}
 }

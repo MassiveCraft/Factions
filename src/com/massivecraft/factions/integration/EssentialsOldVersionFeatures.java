@@ -3,7 +3,7 @@ package com.massivecraft.factions.integration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.listeners.FactionsChatListener;
 
 import com.earth2me.essentials.chat.EssentialsChat;
@@ -27,7 +27,7 @@ public class EssentialsOldVersionFeatures
 			{
 				public boolean shouldHandleThisChat(AsyncPlayerChatEvent event)
 				{
-					return P.p.shouldLetFactionsHandleThisChat(event);
+					return Factions.p.shouldLetFactionsHandleThisChat(event);
 				}
 				public String modifyMessage(AsyncPlayerChatEvent event, Player target, String message)
 				{
@@ -35,7 +35,7 @@ public class EssentialsOldVersionFeatures
 					//return message.replace(Conf.chatTagReplaceString, P.p.getPlayerFactionTagRelation(event.getPlayer(), target)).replace("[FACTION_TITLE]", P.p.getPlayerTitle(event.getPlayer()));
 				}
 			});
-			P.p.log("Found and will integrate chat with "+essChat.getDescription().getFullName());
+			Factions.p.log("Found and will integrate chat with "+essChat.getDescription().getFullName());
 		}
 		catch (NoSuchMethodError ex)
 		{
