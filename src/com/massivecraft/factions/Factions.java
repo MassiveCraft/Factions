@@ -17,7 +17,6 @@ import com.massivecraft.factions.adapters.FPermTypeAdapter;
 import com.massivecraft.factions.adapters.LocationTypeAdapter;
 import com.massivecraft.factions.adapters.RelTypeAdapter;
 import com.massivecraft.factions.cmd.*;
-import com.massivecraft.factions.integration.capi.CapiFeatures;
 import com.massivecraft.factions.integration.herochat.HerochatFeatures;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.integration.EssentialsFeatures;
@@ -113,7 +112,6 @@ public class Factions extends MPlugin
 		EssentialsFeatures.setup();
 		SpoutFeatures.setup();
 		Econ.setup();
-		CapiFeatures.setup();
 		HerochatFeatures.setup();
 		LWCFeatures.setup();
 		
