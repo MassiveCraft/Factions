@@ -73,7 +73,7 @@ public class CmdDisband extends FCommand
 			}
 		}
 		if (Conf.logFactionDisband)
-			Factions.p.log("The faction "+faction.getTag()+" ("+faction.getId()+") was disbanded by "+(senderIsConsole ? "console command" : fme.getName())+".");
+			Factions.get().log("The faction "+faction.getTag()+" ("+faction.getId()+") was disbanded by "+(senderIsConsole ? "console command" : fme.getName())+".");
 
 		if (Econ.shouldBeUsed() && ! senderIsConsole)
 		{
@@ -85,7 +85,7 @@ public class CmdDisband extends FCommand
 			{
 				String amountString = Econ.moneyString(amount);
 				msg("<i>You have been given the disbanded faction's bank, totaling %s.", amountString);
-				Factions.p.log(fme.getName() + " has been given bank holdings of "+amountString+" from disbanding "+faction.getTag()+".");
+				Factions.get().log(fme.getName() + " has been given bank holdings of "+amountString+" from disbanding "+faction.getTag()+".");
 			}
 		}		
 		

@@ -50,9 +50,9 @@ public class SpoutFeatures
 		if (enabled == true) return true;
 		enabled = true;
 		
-		Factions.p.log("Found and will use features of "+plugin.getDescription().getFullName());
+		Factions.get().log("Found and will use features of "+plugin.getDescription().getFullName());
 		mainListener = new SpoutMainListener();
-		Bukkit.getPluginManager().registerEvents(mainListener, Factions.p);
+		Bukkit.getPluginManager().registerEvents(mainListener, Factions.get());
 		
 		return true;
 	}
@@ -112,7 +112,7 @@ public class SpoutFeatures
 	
 	public static void updateCapeShortly(final Object ofrom, final Object oto)
 	{
-		Factions.p.getServer().getScheduler().scheduleSyncDelayedTask(Factions.p, new Runnable()
+		Factions.get().getServer().getScheduler().scheduleSyncDelayedTask(Factions.get(), new Runnable()
 		{
 			@Override
 			public void run()
@@ -168,7 +168,7 @@ public class SpoutFeatures
 	
 	public static void updateTitleShortly(final Object ofrom, final Object oto)
 	{
-		Factions.p.getServer().getScheduler().scheduleSyncDelayedTask(Factions.p, new Runnable()
+		Factions.get().getServer().getScheduler().scheduleSyncDelayedTask(Factions.get(), new Runnable()
 		{
 			@Override
 			public void run()

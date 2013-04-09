@@ -347,11 +347,11 @@ public class Conf
 	private static transient Conf i = new Conf();
 	public static void load()
 	{
-		Factions.p.persist.loadOrSaveDefault(i, Conf.class, "conf");
+		Factions.get().persist.loadOrSaveDefault(i, Conf.class, "conf");
 	}
 	public static void save()
 	{
-		Factions.p.persist.save(i);
+		Factions.get().persist.save(i);
 	}
 }
 

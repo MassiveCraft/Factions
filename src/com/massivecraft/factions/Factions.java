@@ -46,17 +46,26 @@ import org.bukkit.craftbukkit.libs.com.google.gson.GsonBuilder;
 
 public class Factions extends MPlugin
 {
-	// Our single plugin instance
-	public static Factions p;
+	// -------------------------------------------- //
+	// INSTANCE & CONSTRUCT
+	// -------------------------------------------- //
+	
+	private static Factions i;
+	public static Factions get() { return i; }
+	public Factions() { Factions.i = this; }
+	
+	// -------------------------------------------- //
+	// FIELDS
+	// -------------------------------------------- //
 	
 	// Listeners
-	public final FactionsPlayerListener playerListener;
-	public final FactionsChatListener chatListener;
-	public final FactionsEntityListener entityListener;
-	public final FactionsExploitListener exploitListener;
-	public final FactionsBlockListener blockListener;
-	public final FactionsServerListener serverListener;
-	public final FactionsAppearanceListener appearanceListener;
+	public FactionsPlayerListener playerListener;
+	public FactionsChatListener chatListener;
+	public FactionsEntityListener entityListener;
+	public FactionsExploitListener exploitListener;
+	public FactionsBlockListener blockListener;
+	public FactionsServerListener serverListener;
+	public FactionsAppearanceListener appearanceListener;
 	
 	// Persistance related
 	private boolean locked = false;
@@ -68,19 +77,11 @@ public class Factions extends MPlugin
 	// Commands
 	public FCmdRoot cmdBase;
 	public CmdAutoHelp cmdAutoHelp;
-	
-	public Factions()
-	{
-		p = this;
-		this.playerListener = new FactionsPlayerListener(this);
-		this.chatListener = new FactionsChatListener(this);
-		this.entityListener = new FactionsEntityListener(this);
-		this.exploitListener = new FactionsExploitListener();
-		this.blockListener = new FactionsBlockListener(this);
-		this.serverListener = new FactionsServerListener(this);
-		this.appearanceListener = new FactionsAppearanceListener(this);
-	}
 
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
+	
 	@Override
 	public void onEnable()
 	{
@@ -127,14 +128,27 @@ public class Factions extends MPlugin
 		startEconLandRewardTask(false);
 
 		// Register Event Handlers
+		this.playerListener = new FactionsPlayerListener(this);
 		getServer().getPluginManager().registerEvents(this.playerListener, this);
+		
+		this.chatListener = new FactionsChatListener(this);
 		getServer().getPluginManager().registerEvents(this.chatListener, this);
+		
+		this.entityListener = new FactionsEntityListener(this);
 		getServer().getPluginManager().registerEvents(this.entityListener, this);
+		
+		this.exploitListener = new FactionsExploitListener();
 		getServer().getPluginManager().registerEvents(this.exploitListener, this);
+		
+		this.blockListener = new FactionsBlockListener(this);
 		getServer().getPluginManager().registerEvents(this.blockListener, this);
+		
+		this.serverListener = new FactionsServerListener(this);
 		getServer().getPluginManager().registerEvents(this.serverListener, this);
+		
+		this.appearanceListener = new FactionsAppearanceListener(this);
 		getServer().getPluginManager().registerEvents(this.appearanceListener, this);
-
+		
 		postEnable();
 		this.loadSuccessful = true;
 	}
@@ -171,6 +185,9 @@ public class Factions extends MPlugin
 		super.onDisable();
 	}
 
+	
+	
+	
 	public void startAutoLeaveTask(boolean restartIfRunning)
 	{
 		if (AutoLeaveTask != null)

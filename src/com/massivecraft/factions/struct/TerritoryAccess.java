@@ -262,7 +262,7 @@ public class TerritoryAccess implements JsonDeserializer<TerritoryAccess>, JsonS
 		catch (Exception ex)
 		{
 			ex.printStackTrace();
-			Factions.p.log(Level.WARNING, "Error encountered while deserializing TerritoryAccess data.");
+			Factions.get().log(Level.WARNING, "Error encountered while deserializing TerritoryAccess data.");
 			return null;
 		}
 	}
@@ -313,7 +313,7 @@ public class TerritoryAccess implements JsonDeserializer<TerritoryAccess>, JsonS
 		catch (Exception ex)
 		{
 			ex.printStackTrace();
-			Factions.p.log(Level.WARNING, "Error encountered while serializing TerritoryAccess data.");
+			Factions.get().log(Level.WARNING, "Error encountered while serializing TerritoryAccess data.");
 			return null;
 		}
 	}

@@ -41,7 +41,7 @@ public class CmdMoney extends FCommand
 	public void perform()
 	{
 		this.commandChain.add(this);
-		Factions.p.cmdAutoHelp.execute(this.sender, this.args, this.commandChain);
+		Factions.get().cmdAutoHelp.execute(this.sender, this.args, this.commandChain);
 	}
 	
 }

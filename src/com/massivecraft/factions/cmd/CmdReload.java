@@ -65,7 +65,7 @@ public class CmdReload extends FCommand
 		}
 		else
 		{
-			Factions.p.log("RELOAD CANCELLED - SPECIFIED FILE INVALID");
+			Factions.get().log("RELOAD CANCELLED - SPECIFIED FILE INVALID");
 			msg("<b>Invalid file specified. <i>Valid files: all, conf, board, factions, players");
 			return;
 		}

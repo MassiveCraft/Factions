@@ -91,7 +91,7 @@ public enum Perm
 	
 	public boolean has(CommandSender sender, boolean informSenderIfNot)
 	{
-		return Factions.p.perm.has(sender, this.node, informSenderIfNot);
+		return Factions.get().perm.has(sender, this.node, informSenderIfNot);
 	}
 	
 	public boolean has(CommandSender sender)

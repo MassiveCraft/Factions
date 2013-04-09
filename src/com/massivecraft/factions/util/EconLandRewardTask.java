@@ -19,7 +19,7 @@ public class EconLandRewardTask implements Runnable {
 		FactionColl.i.econLandRewardRoutine();
 		// maybe setting has been changed? if so, restart task at new rate
 		if (this.rate != Conf.econLandRewardTaskRunsEveryXMinutes)
-			Factions.p.startEconLandRewardTask(true);
+			Factions.get().startEconLandRewardTask(true);
 	}
 
 }

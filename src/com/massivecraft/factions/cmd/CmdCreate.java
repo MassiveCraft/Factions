@@ -98,7 +98,7 @@ public class CmdCreate extends FCommand
 		msg("<i>You should now: %s", p.cmdBase.cmdDescription.getUseageTemplate());
 
 		if (Conf.logFactionCreate)
-			Factions.p.log(fme.getName()+" created a new faction: "+tag);
+			Factions.get().log(fme.getName()+" created a new faction: "+tag);
 	}
 	
 }

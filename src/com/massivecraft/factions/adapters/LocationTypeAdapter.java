@@ -44,7 +44,7 @@ public class LocationTypeAdapter implements JsonDeserializer<LazyLocation>, Json
 		catch (Exception ex)
 		{
 			ex.printStackTrace();
-			Factions.p.log(Level.WARNING, "Error encountered while deserializing a LazyLocation.");
+			Factions.get().log(Level.WARNING, "Error encountered while deserializing a LazyLocation.");
 			return null;
 		}
 	}
@@ -67,7 +67,7 @@ public class LocationTypeAdapter implements JsonDeserializer<LazyLocation>, Json
 		catch (Exception ex)
 		{
 			ex.printStackTrace();
-			Factions.p.log(Level.WARNING, "Error encountered while serializing a LazyLocation.");
+			Factions.get().log(Level.WARNING, "Error encountered while serializing a LazyLocation.");
 			return obj;
 		}
 	}

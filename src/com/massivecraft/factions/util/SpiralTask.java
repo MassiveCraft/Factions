@@ -48,7 +48,7 @@ public abstract class SpiralTask implements Runnable
 		this.world = Bukkit.getWorld(fLocation.getWorldName());
 		if (this.world == null)
 		{
-			Factions.p.log(Level.WARNING, "[SpiralTask] A valid world must be specified!");
+			Factions.get().log(Level.WARNING, "[SpiralTask] A valid world must be specified!");
 			this.stop();
 			return;
 		}
@@ -59,7 +59,7 @@ public abstract class SpiralTask implements Runnable
 		this.readyToGo = true;
 
 		// get this party started
-		this.setTaskID(Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(Factions.p, this, 2, 2));
+		this.setTaskID(Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(Factions.get(), this, 2, 2));
 	}
 
 /*

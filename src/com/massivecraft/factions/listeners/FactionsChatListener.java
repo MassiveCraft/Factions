@@ -46,7 +46,7 @@ public class FactionsChatListener implements Listener
 		}
 		catch (Exception e)
 		{
-			Factions.p.log(Level.SEVERE, "A reflection trick is broken! This will lead to glitchy relation-colored-chat.");
+			Factions.get().log(Level.SEVERE, "A reflection trick is broken! This will lead to glitchy relation-colored-chat.");
 		}
 		
 		parsePattern = Pattern.compile("[{\\[]factions?_([a-zA-Z_]+)[}\\]]");

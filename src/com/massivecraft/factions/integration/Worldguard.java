@@ -39,13 +39,13 @@ public class Worldguard
 		{
 			enabled = false;
 			wg = null;
-			Factions.p.log("Could not hook to WorldGuard. WorldGuard checks are disabled.");
+			Factions.get().log("Could not hook to WorldGuard. WorldGuard checks are disabled.");
 		}
 		else
 		{
 			wg = (WorldGuardPlugin) wgplug;
 			enabled = true;
-			Factions.p.log("Successfully hooked to WorldGuard.");
+			Factions.get().log("Successfully hooked to WorldGuard.");
 		}
 	}
 

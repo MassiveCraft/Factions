@@ -107,7 +107,7 @@ public class SpoutMainListener implements Listener
 				label.setWidth(1).setHeight(1);  // prevent Spout's questionable new "no default size" warning
 				label.setScale(Conf.spoutTerritoryDisplaySize);
 
-				sPlayer.getMainScreen().attachWidget(Factions.p, label);
+				sPlayer.getMainScreen().attachWidget(Factions.get(), label);
 				territoryLabels.put(player.getName(), label);
 			}
 
@@ -135,7 +135,7 @@ public class SpoutMainListener implements Listener
 				label.setWidth(1).setHeight(1);  // prevent Spout's questionable new "no default size" warning
 				label.setScale(Conf.spoutTerritoryNoticeSize);
 				label.setY(Conf.spoutTerritoryNoticeTop);
-				sPlayer.getMainScreen().attachWidget(Factions.p, label);
+				sPlayer.getMainScreen().attachWidget(Factions.get(), label);
 				territoryChangeLabels.put(player.getName(), label);
 			}
 
@@ -172,7 +172,7 @@ public class SpoutMainListener implements Listener
 			label.setWidth(1).setHeight(1);  // prevent Spout's questionable new "no default size" warning
 			label.setScale(Conf.spoutTerritoryDisplaySize);
 			label.setY((int)(10 * Conf.spoutTerritoryDisplaySize));
-			sPlayer.getMainScreen().attachWidget(Factions.p, label);
+			sPlayer.getMainScreen().attachWidget(Factions.get(), label);
 			accessLabels.put(player.getName(), label);
 		}
 

@@ -32,22 +32,22 @@ public class Econ
 
 		if (Bukkit.getServer().getPluginManager().getPlugin("Vault") == null)
 		{
-			Factions.p.log(integrationFail+"is not installed.");
+			Factions.get().log(integrationFail+"is not installed.");
 			return;
 		}
 
 		RegisteredServiceProvider<Economy> rsp = Bukkit.getServer().getServicesManager().getRegistration(Economy.class);
 		if (rsp == null)
 		{
-			Factions.p.log(integrationFail+"is not hooked into an economy plugin.");
+			Factions.get().log(integrationFail+"is not hooked into an economy plugin.");
 			return;
 		}
 		econ = rsp.getProvider();
 
-		Factions.p.log("Economy integration through Vault plugin successful.");
+		Factions.get().log("Economy integration through Vault plugin successful.");
 
 		if ( ! Conf.econEnabled)
-			Factions.p.log("NOTE: Economy is disabled. You can enable it with the command: f config econEnabled true");
+			Factions.get().log("NOTE: Economy is disabled. You can enable it with the command: f config econEnabled true");
 
 		oldMoneyDoTransfer();
 	}
@@ -78,7 +78,7 @@ public class Econ
 	{
 		if (!shouldBeUsed())
 		{
-			Factions.p.log(Level.WARNING, "Vault does not appear to be hooked into an economy plugin.");
+			Factions.get().log(Level.WARNING, "Vault does not appear to be hooked into an economy plugin.");
 			return;
 		}
 		to.msg("<a>%s's<i> balance is <h>%s<i>.", about.describeTo(to, true), Econ.moneyString(econ.getBalance(about.getAccountId())));

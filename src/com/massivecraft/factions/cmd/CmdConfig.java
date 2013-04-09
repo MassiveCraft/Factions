@@ -386,7 +386,7 @@ public class CmdConfig extends FCommand
 			sendMessage(success);
 			if (sender instanceof Player)
 			{
-				Factions.p.log(success + " Command was run by "+fme.getName()+".");
+				Factions.get().log(success + " Command was run by "+fme.getName()+".");
 			}
 		}
 		// save change to disk

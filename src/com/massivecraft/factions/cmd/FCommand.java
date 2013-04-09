@@ -32,7 +32,7 @@ public abstract class FCommand extends MCommand<Factions>
 	
 	public FCommand()
 	{
-		super(Factions.p);
+		super(Factions.get());
 		
 		// Due to safety reasons it defaults to disable on lock.
 		disableOnLock = true;

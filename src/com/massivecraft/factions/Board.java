@@ -23,7 +23,7 @@ import com.massivecraft.factions.zcore.util.DiscUtil;
 
 public class Board
 {
-	private static transient File file = new File(Factions.p.getDataFolder(), "board.json");
+	private static transient File file = new File(Factions.get().getDataFolder(), "board.json");
 	private static transient HashMap<FLocation, TerritoryAccess> flocationIds = new HashMap<FLocation, TerritoryAccess>();
 	
 	//----------------------------------------------//
@@ -132,7 +132,7 @@ public class Board
 				if(Conf.onUnclaimResetLwcLocks && LWCFeatures.getEnabled())
 					LWCFeatures.clearAllChests(entry.getKey());
 
-				Factions.p.log("Board cleaner removed "+entry.getValue().getHostFactionID()+" from "+entry.getKey());
+				Factions.get().log("Board cleaner removed "+entry.getValue().getHostFactionID()+" from "+entry.getKey());
 				iter.remove();
 			}
 		}
@@ -188,7 +188,7 @@ public class Board
 	{
 		ArrayList<String> ret = new ArrayList<String>();
 		Faction factionLoc = getFactionAt(flocation);
-		ret.add(Factions.p.txt.titleize("("+flocation.getCoordString()+") "+factionLoc.getTag(observer)));
+		ret.add(Factions.get().txt.titleize("("+flocation.getCoordString()+") "+factionLoc.getTag(observer)));
 		
 		int halfWidth = Conf.mapWidth / 2;
 		int halfHeight = Conf.mapHeight / 2;
@@ -234,7 +234,7 @@ public class Board
 		}
 		
 		// Get the compass
-		ArrayList<String> asciiCompass = AsciiCompass.getAsciiCompass(inDegrees, ChatColor.RED, Factions.p.txt.parse("<a>"));
+		ArrayList<String> asciiCompass = AsciiCompass.getAsciiCompass(inDegrees, ChatColor.RED, Factions.get().txt.parse("<a>"));
 
 		// Add the compass
 		ret.set(1, asciiCompass.get(0)+ret.get(1).substring(3*3));
@@ -309,12 +309,12 @@ public class Board
 		
 		try
 		{
-			DiscUtil.write(file, Factions.p.gson.toJson(dumpAsSaveFormat()));
+			DiscUtil.write(file, Factions.get().gson.toJson(dumpAsSaveFormat()));
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			Factions.p.log("Failed to save the board to disk.");
+			Factions.get().log("Failed to save the board to disk.");
 			return false;
 		}
 		
@@ -323,11 +323,11 @@ public class Board
 	
 	public static boolean load()
 	{
-		Factions.p.log("Loading board from disk");
+		Factions.get().log("Loading board from disk");
 		
 		if ( ! file.exists())
 		{
-			Factions.p.log("No board to load from disk. Creating new file.");
+			Factions.get().log("No board to load from disk. Creating new file.");
 			save();
 			return true;
 		}
@@ -335,13 +335,13 @@ public class Board
 		try
 		{
 			Type type = new TypeToken<Map<String,Map<String,TerritoryAccess>>>(){}.getType();
-			Map<String,Map<String,TerritoryAccess>> worldCoordIds = Factions.p.gson.fromJson(DiscUtil.read(file), type);
+			Map<String,Map<String,TerritoryAccess>> worldCoordIds = Factions.get().gson.fromJson(DiscUtil.read(file), type);
 			loadFromSaveFormat(worldCoordIds);
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			Factions.p.log("Failed to load the board from disk.");
+			Factions.get().log("Failed to load the board from disk.");
 			return false;
 		}
 			

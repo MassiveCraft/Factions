@@ -42,6 +42,6 @@ public class CmdMoneyTransferPf extends FCommand
 		boolean success = Econ.transferMoney(fme, from, to, amount);
 
 		if (success && Conf.logMoneyTransactions)
-			Factions.p.log(ChatColor.stripColor(Factions.p.txt.parse("%s transferred %s from the player \"%s\" to the faction \"%s\"", fme.getName(), Econ.moneyString(amount), from.describeTo(null), to.describeTo(null))));
+			Factions.get().log(ChatColor.stripColor(Factions.get().txt.parse("%s transferred %s from the player \"%s\" to the faction \"%s\"", fme.getName(), Econ.moneyString(amount), from.describeTo(null), to.describeTo(null))));
 	}
 }

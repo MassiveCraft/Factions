@@ -103,9 +103,9 @@ public class CmdJoin extends FCommand
 		if (Conf.logFactionJoin)
 		{
 			if (samePlayer)
-				Factions.p.log("%s joined the faction %s.", fplayer.getName(), faction.getTag());
+				Factions.get().log("%s joined the faction %s.", fplayer.getName(), faction.getTag());
 			else
-				Factions.p.log("%s moved the player %s into the faction %s.", fme.getName(), fplayer.getName(), faction.getTag());
+				Factions.get().log("%s moved the player %s into the faction %s.", fme.getName(), fplayer.getName(), faction.getTag());
 		}
 	}
 }

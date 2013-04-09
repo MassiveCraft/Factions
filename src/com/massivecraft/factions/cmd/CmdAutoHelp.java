@@ -10,7 +10,7 @@ public class CmdAutoHelp extends MCommand<Factions>
 {
 	public CmdAutoHelp()
 	{
-		super(Factions.p);
+		super(Factions.get());
 		this.aliases.add("?");
 		this.aliases.add("h");
 		this.aliases.add("help");

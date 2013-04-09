@@ -54,7 +54,7 @@ public class CmdUnclaimall extends FCommand
 		SpoutFeatures.updateTerritoryDisplayLoc(null);
 
 		if (Conf.logLandUnclaims)
-			Factions.p.log(fme.getName()+" unclaimed everything for the faction: "+myFaction.getTag());
+			Factions.get().log(fme.getName()+" unclaimed everything for the faction: "+myFaction.getTag());
 	}
 	
 }

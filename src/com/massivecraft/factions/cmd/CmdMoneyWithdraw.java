@@ -37,6 +37,6 @@ public class CmdMoneyWithdraw extends FCommand
 		boolean success = Econ.transferMoney(fme, faction, fme, amount);
 
 		if (success && Conf.logMoneyTransactions)
-			Factions.p.log(ChatColor.stripColor(Factions.p.txt.parse("%s withdrew %s from the faction bank: %s", fme.getName(), Econ.moneyString(amount), faction.describeTo(null))));
+			Factions.get().log(ChatColor.stripColor(Factions.get().txt.parse("%s withdrew %s from the faction bank: %s", fme.getName(), Econ.moneyString(amount), faction.describeTo(null))));
 	}
 }

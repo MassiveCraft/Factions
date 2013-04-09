@@ -92,8 +92,8 @@ public class EssentialsFeatures
 		essChat = instance;
 		try
 		{
-			Bukkit.getServer().getPluginManager().registerEvents(new LocalChatListener(), Factions.p);
-			Factions.p.log("Found and will integrate chat with newer "+essChat.getDescription().getFullName());
+			Bukkit.getServer().getPluginManager().registerEvents(new LocalChatListener(), Factions.get());
+			Factions.get().log("Found and will integrate chat with newer "+essChat.getDescription().getFullName());
 		}
 		catch (NoSuchMethodError ex)
 		{

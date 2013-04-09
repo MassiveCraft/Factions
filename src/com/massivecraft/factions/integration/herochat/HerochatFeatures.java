@@ -13,7 +13,7 @@ public class HerochatFeatures implements Listener
 		Plugin plug = Bukkit.getServer().getPluginManager().getPlugin("Herochat");
 		if (plug == null) return;
 		if (!plug.getClass().getName().equals("com.dthielke.herochat.Herochat")) return;
-		Bukkit.getPluginManager().registerEvents(new HerochatListener(Factions.p), Factions.p);
-		Factions.p.log("Integration with Herochat successful");
+		Bukkit.getPluginManager().registerEvents(new HerochatListener(Factions.get()), Factions.get());
+		Factions.get().log("Integration with Herochat successful");
 	}
 }
