@@ -101,7 +101,7 @@ public class Factions extends MPlugin
 		this.loadSuccessful = false;
 
 		// Load Conf from disk
-		Conf.load();
+		ConfServer.load();
 		FPlayers.i.loadFromDisc();
 		FactionColl.i.loadFromDisc();
 		Board.load();
@@ -116,7 +116,7 @@ public class Factions extends MPlugin
 		HerochatFeatures.setup();
 		LWCFeatures.setup();
 		
-		if(Conf.worldGuardChecking)
+		if(ConfServer.worldGuardChecking)
 		{
 			Worldguard.init(this);
 		}
@@ -174,7 +174,7 @@ public class Factions extends MPlugin
 		if (this.loadSuccessful)
 		{
 			Board.save();
-			Conf.save();
+			ConfServer.save();
 		}
 		EssentialsFeatures.unhookChat();
 		if (AutoLeaveTask != null)
@@ -196,9 +196,9 @@ public class Factions extends MPlugin
 			this.getServer().getScheduler().cancelTask(AutoLeaveTask);
 		}
 
-		if (Conf.autoLeaveRoutineRunsEveryXMinutes > 0.0)
+		if (ConfServer.autoLeaveRoutineRunsEveryXMinutes > 0.0)
 		{
-			long ticks = (long)(20 * 60 * Conf.autoLeaveRoutineRunsEveryXMinutes);
+			long ticks = (long)(20 * 60 * ConfServer.autoLeaveRoutineRunsEveryXMinutes);
 			AutoLeaveTask = getServer().getScheduler().scheduleSyncRepeatingTask(this, new AutoLeaveTask(), ticks, ticks);
 		}
 	}
@@ -211,11 +211,11 @@ public class Factions extends MPlugin
 			this.getServer().getScheduler().cancelTask(econLandRewardTaskID);
 		}
 
-		if (Conf.econEnabled &&
-			Conf.econLandRewardTaskRunsEveryXMinutes > 0.0 &&
-			Conf.econLandReward > 0.0)
+		if (ConfServer.econEnabled &&
+			ConfServer.econLandRewardTaskRunsEveryXMinutes > 0.0 &&
+			ConfServer.econLandReward > 0.0)
 		{
-			long ticks = (long)(20 * 60 * Conf.econLandRewardTaskRunsEveryXMinutes);
+			long ticks = (long)(20 * 60 * ConfServer.econLandRewardTaskRunsEveryXMinutes);
 			econLandRewardTaskID = getServer().getScheduler().scheduleSyncRepeatingTask(this, new EconLandRewardTask(), ticks, ticks);
 		}
 	}
@@ -224,7 +224,7 @@ public class Factions extends MPlugin
 	public void postAutoSave()
 	{
 		Board.save();
-		Conf.save();
+		ConfServer.save();
 	}
 	
 	@Override
@@ -247,7 +247,7 @@ public class Factions extends MPlugin
 	// If another plugin is handling insertion of chat tags, this should be used to notify Factions
 	public void handleFactionTagExternally(boolean notByFactions)
 	{
-		Conf.chatTagHandledByAnotherPlugin = notByFactions;
+		ConfServer.chatTagHandledByAnotherPlugin = notByFactions;
 	}
 
 	// Get a player's faction tag (faction name), mainly for usage by chat plugins for local/channel chat
@@ -269,7 +269,7 @@ public class Factions extends MPlugin
 			return tag;
 
 		// if listener isn't set, or config option is disabled, give back uncolored tag
-		if (listener == null || !Conf.chatParseTagsColored) {
+		if (listener == null || !ConfServer.chatParseTagsColored) {
 			tag = me.getChatTag().trim();
 		} else {
 			FPlayer you = FPlayers.i.get(listener);

@@ -7,7 +7,7 @@ import org.bukkit.event.Listener;
 
 import com.dthielke.herochat.ChannelChatEvent;
 import com.dthielke.herochat.Herochat;
-import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Factions;
@@ -30,8 +30,8 @@ public class HerochatListener implements Listener
 	public void onChannelChatEvent(ChannelChatEvent event)
 	{
 		// Should we even parse?
-		if ( ! Conf.chatParseTags) return;
-		if (Conf.chatTagHandledByAnotherPlugin) return;
+		if ( ! ConfServer.chatParseTags) return;
+		if (ConfServer.chatTagHandledByAnotherPlugin) return;
 		
 		Player from = event.getSender().getPlayer();
 		FPlayer fpfrom = FPlayers.i.get(from);

@@ -9,7 +9,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
 import com.massivecraft.factions.Board;
-import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
@@ -54,7 +54,7 @@ public class SpoutMainListener implements Listener
 			return false;
 
 		SpoutPlayer sPlayer = SpoutManager.getPlayer(p);
-		if (!sPlayer.isSpoutCraftEnabled() || (Conf.spoutTerritoryDisplaySize <= 0 && ! Conf.spoutTerritoryNoticeShow))
+		if (!sPlayer.isSpoutCraftEnabled() || (ConfServer.spoutTerritoryDisplaySize <= 0 && ! ConfServer.spoutTerritoryNoticeShow))
 			return false;
 
 		doLabels(player, sPlayer, notify);
@@ -69,7 +69,7 @@ public class SpoutMainListener implements Listener
 			return false;
 
 		SpoutPlayer sPlayer = SpoutManager.getPlayer(p);
-		if (!sPlayer.isSpoutCraftEnabled() || (Conf.spoutTerritoryDisplaySize <= 0 && ! Conf.spoutTerritoryNoticeShow))
+		if (!sPlayer.isSpoutCraftEnabled() || (ConfServer.spoutTerritoryDisplaySize <= 0 && ! ConfServer.spoutTerritoryNoticeShow))
 			return false;
 
 		FLocation here = player.getLastStoodAt();
@@ -96,7 +96,7 @@ public class SpoutMainListener implements Listener
 		// ----------------------
 		// Main territory display
 		// ----------------------
-		if (Conf.spoutTerritoryDisplayPosition > 0 && Conf.spoutTerritoryDisplaySize > 0)
+		if (ConfServer.spoutTerritoryDisplayPosition > 0 && ConfServer.spoutTerritoryDisplaySize > 0)
 		{
 			GenericLabel label; 
 			if (territoryLabels.containsKey(player.getName()))
@@ -105,7 +105,7 @@ public class SpoutMainListener implements Listener
 			{
 				label = new GenericLabel();
 				label.setWidth(1).setHeight(1);  // prevent Spout's questionable new "no default size" warning
-				label.setScale(Conf.spoutTerritoryDisplaySize);
+				label.setScale(ConfServer.spoutTerritoryDisplaySize);
 
 				sPlayer.getMainScreen().attachWidget(Factions.get(), label);
 				territoryLabels.put(player.getName(), label);
@@ -113,7 +113,7 @@ public class SpoutMainListener implements Listener
 
 			String msg = tag;
 
-			if (Conf.spoutTerritoryDisplayShowDescription && !factionHere.getDescription().isEmpty())
+			if (ConfServer.spoutTerritoryDisplayShowDescription && !factionHere.getDescription().isEmpty())
 				msg += " - " + factionHere.getDescription();
 
 			label.setText(msg);
@@ -124,24 +124,24 @@ public class SpoutMainListener implements Listener
 		// -----------------------
 		// Fading territory notice
 		// -----------------------
-		if (notify && Conf.spoutTerritoryNoticeShow && Conf.spoutTerritoryNoticeSize > 0)
+		if (notify && ConfServer.spoutTerritoryNoticeShow && ConfServer.spoutTerritoryNoticeSize > 0)
 		{
 			NoticeLabel label; 
 			if (territoryChangeLabels.containsKey(player.getName()))
 				label = territoryChangeLabels.get(player.getName());
 			else
 			{
-				label = new NoticeLabel(Conf.spoutTerritoryNoticeLeaveAfterSeconds);
+				label = new NoticeLabel(ConfServer.spoutTerritoryNoticeLeaveAfterSeconds);
 				label.setWidth(1).setHeight(1);  // prevent Spout's questionable new "no default size" warning
-				label.setScale(Conf.spoutTerritoryNoticeSize);
-				label.setY(Conf.spoutTerritoryNoticeTop);
+				label.setScale(ConfServer.spoutTerritoryNoticeSize);
+				label.setY(ConfServer.spoutTerritoryNoticeTop);
 				sPlayer.getMainScreen().attachWidget(Factions.get(), label);
 				territoryChangeLabels.put(player.getName(), label);
 			}
 
 			String msg = tag;
 
-			if (Conf.spoutTerritoryNoticeShowDescription && !factionHere.getDescription().isEmpty())
+			if (ConfServer.spoutTerritoryNoticeShowDescription && !factionHere.getDescription().isEmpty())
 				msg += " - " + factionHere.getDescription();
 
 			label.setText(msg);
@@ -158,7 +158,7 @@ public class SpoutMainListener implements Listener
 	private static final Color accessDeniedColor = new Color(1.0f, 0.2f, 0.2f);
 	private void doAccessInfo(FPlayer player, SpoutPlayer sPlayer, FLocation here)
 	{
-		if (Conf.spoutTerritoryDisplayPosition <= 0 || Conf.spoutTerritoryDisplaySize <= 0 || ! Conf.spoutTerritoryAccessShow) return;
+		if (ConfServer.spoutTerritoryDisplayPosition <= 0 || ConfServer.spoutTerritoryDisplaySize <= 0 || ! ConfServer.spoutTerritoryAccessShow) return;
 
 		// -----------
 		// Access Info
@@ -170,8 +170,8 @@ public class SpoutMainListener implements Listener
 		{
 			label = new GenericLabel();
 			label.setWidth(1).setHeight(1);  // prevent Spout's questionable new "no default size" warning
-			label.setScale(Conf.spoutTerritoryDisplaySize);
-			label.setY((int)(10 * Conf.spoutTerritoryDisplaySize));
+			label.setScale(ConfServer.spoutTerritoryDisplaySize);
+			label.setY((int)(10 * ConfServer.spoutTerritoryDisplaySize));
 			sPlayer.getMainScreen().attachWidget(Factions.get(), label);
 			accessLabels.put(player.getName(), label);
 		}
@@ -201,11 +201,11 @@ public class SpoutMainListener implements Listener
 	// this is only necessary because Spout text size scaling is currently bugged and breaks their built-in alignment methods
 	public void alignLabel(GenericLabel label, String text)
 	{
-		alignLabel(label, text, Conf.spoutTerritoryDisplayPosition);
+		alignLabel(label, text, ConfServer.spoutTerritoryDisplayPosition);
 	}
 	public void alignLabel(GenericLabel label, String text, int alignment)
 	{
-		int labelWidth = (int)((float)GenericLabel.getStringWidth(text) * Conf.spoutTerritoryDisplaySize);
+		int labelWidth = (int)((float)GenericLabel.getStringWidth(text) * ConfServer.spoutTerritoryDisplaySize);
 		if (labelWidth > SCREEN_WIDTH)
 		{
 				label.setX(0);

@@ -1,7 +1,7 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Board;
-import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Perm;
@@ -28,7 +28,7 @@ public class CmdSethome extends FCommand
 	@Override
 	public void perform()
 	{
-		if ( ! Conf.homesEnabled)
+		if ( ! ConfServer.homesEnabled)
 		{
 			fme.msg("<b>Sorry, Faction homes are disabled on this server.");
 			return;
@@ -45,7 +45,7 @@ public class CmdSethome extends FCommand
 		(
 			! fme.hasAdminMode()
 			&&
-			Conf.homesMustBeInClaimedTerritory
+			ConfServer.homesMustBeInClaimedTerritory
 			&& 
 			Board.getFactionAt(new FLocation(me)) != faction
 		)
@@ -55,7 +55,7 @@ public class CmdSethome extends FCommand
 		}
 
 		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-		if ( ! payForCommand(Conf.econCostSethome, "to set the faction home", "for setting the faction home")) return;
+		if ( ! payForCommand(ConfServer.econCostSethome, "to set the faction home", "for setting the faction home")) return;
 
 		faction.setHome(me.getLocation());
 		

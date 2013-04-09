@@ -50,19 +50,19 @@ public class FPlayers extends PlayerEntityCollection<FPlayer>
 	
 	public void autoLeaveOnInactivityRoutine()
 	{
-		if (Conf.autoLeaveAfterDaysOfInactivity <= 0.0)
+		if (ConfServer.autoLeaveAfterDaysOfInactivity <= 0.0)
 		{
 			return;
 		}
 
 		long now = System.currentTimeMillis();
-		double toleranceMillis = Conf.autoLeaveAfterDaysOfInactivity * 24 * 60 * 60 * 1000;
+		double toleranceMillis = ConfServer.autoLeaveAfterDaysOfInactivity * 24 * 60 * 60 * 1000;
 		
 		for (FPlayer fplayer : FPlayers.i.get())
 		{
 			if (fplayer.isOffline() && now - fplayer.getLastLoginTime() > toleranceMillis)
 			{
-				if (Conf.logFactionLeave || Conf.logFactionKick)
+				if (ConfServer.logFactionLeave || ConfServer.logFactionKick)
 					Factions.get().log("Player "+fplayer.getName()+" was auto-removed due to inactivity.");
 
 				// if player is faction leader, sort out the faction since he's going away

@@ -73,7 +73,7 @@ public class Board
 	
 	public static void removeAt(FLocation flocation)
 	{
-		if(Conf.onUnclaimResetLwcLocks && LWCFeatures.getEnabled())
+		if(ConfServer.onUnclaimResetLwcLocks && LWCFeatures.getEnabled())
 			LWCFeatures.clearAllChests(flocation);
 
 		flocationIds.remove(flocation);
@@ -87,7 +87,7 @@ public class Board
 			Entry<FLocation, TerritoryAccess> entry = iter.next();
 			if (entry.getValue().getHostFactionID().equals(factionId))
 			{
-					if(Conf.onUnclaimResetLwcLocks && LWCFeatures.getEnabled())
+					if(ConfServer.onUnclaimResetLwcLocks && LWCFeatures.getEnabled())
 						LWCFeatures.clearAllChests(entry.getKey());
 
 					iter.remove();
@@ -129,7 +129,7 @@ public class Board
 			Entry<FLocation, TerritoryAccess> entry = iter.next();
 			if ( ! FactionColl.i.exists(entry.getValue().getHostFactionID()))
 			{
-				if(Conf.onUnclaimResetLwcLocks && LWCFeatures.getEnabled())
+				if(ConfServer.onUnclaimResetLwcLocks && LWCFeatures.getEnabled())
 					LWCFeatures.clearAllChests(entry.getKey());
 
 				Factions.get().log("Board cleaner removed "+entry.getValue().getHostFactionID()+" from "+entry.getKey());
@@ -190,8 +190,8 @@ public class Board
 		Faction factionLoc = getFactionAt(flocation);
 		ret.add(Factions.get().txt.titleize("("+flocation.getCoordString()+") "+factionLoc.getTag(observer)));
 		
-		int halfWidth = Conf.mapWidth / 2;
-		int halfHeight = Conf.mapHeight / 2;
+		int halfWidth = ConfServer.mapWidth / 2;
+		int halfHeight = ConfServer.mapHeight / 2;
 		FLocation topLeft = flocation.getRelative(-halfWidth, -halfHeight);
 		int width = halfWidth * 2 + 1;
 		int height = halfHeight * 2 + 1;
@@ -225,7 +225,7 @@ public class Board
 				else
 				{
 					if (!fList.containsKey(factionHere))
-						fList.put(factionHere, Conf.mapKeyChrs[chrIdx++]);
+						fList.put(factionHere, ConfServer.mapKeyChrs[chrIdx++]);
 					char fchar = fList.get(factionHere);
 					row += factionHere.getColorTo(observer) + "" + fchar;
 				}

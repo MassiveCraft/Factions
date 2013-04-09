@@ -1,7 +1,7 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Board;
-import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.FactionColl;
 import com.massivecraft.factions.Perm;
@@ -33,7 +33,7 @@ public class CmdSaveAll extends FCommand
 		FPlayers.i.saveToDisc();
 		FactionColl.i.saveToDisc();
 		Board.save();
-		Conf.save();
+		ConfServer.save();
 		msg("<i>Factions saved to disk!");
 	}
 	

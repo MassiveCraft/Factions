@@ -2,7 +2,7 @@ package com.massivecraft.factions.struct;
 
 import org.bukkit.ChatColor;
 
-import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.ConfServer;
 
 public enum Rel
 {
@@ -96,37 +96,37 @@ public enum Rel
 	public ChatColor getColor()
 	{
 		if (this.isAtLeast(RECRUIT))
-			return Conf.colorMember;
+			return ConfServer.colorMember;
 		else if (this == ALLY)
-			return Conf.colorAlly;
+			return ConfServer.colorAlly;
 		else if (this == NEUTRAL)
-			return Conf.colorNeutral;
+			return ConfServer.colorNeutral;
 		else if (this == TRUCE)
-			return Conf.colorTruce;
+			return ConfServer.colorTruce;
 		else
-			return Conf.colorEnemy;
+			return ConfServer.colorEnemy;
 	}
 	
 	public String getPrefix()
 	{
 		if (this == LEADER)
 		{
-			return Conf.prefixLeader;
+			return ConfServer.prefixLeader;
 		} 
 		
 		if (this == OFFICER)
 		{
-			return Conf.prefixOfficer;
+			return ConfServer.prefixOfficer;
 		}
 		
 		if (this == MEMBER)
 		{
-			return Conf.prefixMember;
+			return ConfServer.prefixMember;
 		}
 		
 		if (this == RECRUIT)
 		{
-			return Conf.prefixRecruit;
+			return ConfServer.prefixRecruit;
 		}
 		
 		return "";
@@ -137,12 +137,12 @@ public enum Rel
 	public double getRelationCost()
 	{
 		if (this == ENEMY)
-			return Conf.econCostEnemy;
+			return ConfServer.econCostEnemy;
 		else if (this == ALLY)
-			return Conf.econCostAlly;
+			return ConfServer.econCostAlly;
 		else if (this == TRUCE)
-			return Conf.econCostTruce;
+			return ConfServer.econCostTruce;
 		else
-			return Conf.econCostNeutral;
+			return ConfServer.econCostNeutral;
 	}
 }

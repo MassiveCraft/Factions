@@ -11,7 +11,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
-import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.integration.SpoutFeatures;
 
@@ -61,7 +61,7 @@ public class FactionsAppearanceListener implements Listener
 	
 	public static void possiblyUpdateHealthBar(Entity entity)
 	{
-		if ( ! Conf.spoutHealthBarUnderNames) return;
+		if ( ! ConfServer.spoutHealthBarUnderNames) return;
 		if ( ! (entity instanceof Player)) return;
 		Player player = (Player)entity;
 		SpoutFeatures.updateTitle(player, null);

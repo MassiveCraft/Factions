@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
@@ -66,7 +66,7 @@ public class SpoutFeatures
 	{
 		// Enabled and non-null?
 		if ( ! isEnabled()) return;
-		if ( ! Conf.spoutCapes) return;
+		if ( ! ConfServer.spoutCapes) return;
 		
 		Set<Player> fromPlayers = getPlayersFromObject(ofrom);
 		Set<Player> toPlayers = getPlayersFromObject(oto);
@@ -130,7 +130,7 @@ public class SpoutFeatures
 	{
 		// Enabled and non-null?
 		if ( ! isEnabled()) return;
-		if ( ! (Conf.spoutFactionTagsOverNames || Conf.spoutFactionTitlesOverNames || Conf.spoutHealthBarUnderNames)) return;
+		if ( ! (ConfServer.spoutFactionTagsOverNames || ConfServer.spoutFactionTitlesOverNames || ConfServer.spoutHealthBarUnderNames)) return;
 		
 		Set<Player> fromPlayers = getPlayersFromObject(ofrom);
 		Set<Player> toPlayers = getPlayersFromObject(oto);
@@ -187,12 +187,12 @@ public class SpoutFeatures
 		if (faction.isNormal())
 		{
 			String addTag = "";
-			if (Conf.spoutFactionTagsOverNames)
+			if (ConfServer.spoutFactionTagsOverNames)
 			{
 				addTag += relationColor.toString() + fplayer.getRole().getPrefix() + faction.getTag();
 			}
 				
-			if (Conf.spoutFactionTitlesOverNames && ! fplayer.getTitle().isEmpty())
+			if (ConfServer.spoutFactionTitlesOverNames && ! fplayer.getTitle().isEmpty())
 			{
 				addTag += (addTag.isEmpty() ? "" : " ") + fplayer.getTitle();
 			}
@@ -200,7 +200,7 @@ public class SpoutFeatures
 			ret = addTag + "\n" + ret;
 		}
 		
-		if (Conf.spoutHealthBarUnderNames)
+		if (ConfServer.spoutHealthBarUnderNames)
 		{
 			ret += "\n";
 			ret += HealthBarUtil.getHealthbar(player.getHealth() / 20d);

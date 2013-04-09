@@ -15,7 +15,7 @@ import org.bukkit.event.block.BlockPistonRetractEvent;
 import org.bukkit.event.block.BlockSpreadEvent;
 
 import com.massivecraft.factions.Board;
-import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
@@ -64,7 +64,7 @@ public class FactionsBlockListener implements Listener
 	public static boolean playerCanBuildDestroyBlock(Player player, Location location, String action, boolean justCheck)
 	{
 		String name = player.getName();
-		if (Conf.playersWhoBypassAllProtection.contains(name)) return true;
+		if (ConfServer.playersWhoBypassAllProtection.contains(name)) return true;
 
 		FPlayer me = FPlayers.i.get(name);
 		if (me.hasAdminMode()) return true;
@@ -77,7 +77,7 @@ public class FactionsBlockListener implements Listener
 			if (!justCheck)
 			{
 				me.msg("<b>It is painful to %s in the territory of %s<b>.", action, factionHere.describeTo(me));
-				player.damage(Conf.actionDeniedPainAmount);
+				player.damage(ConfServer.actionDeniedPainAmount);
 			}
 			return true;
 		}
@@ -122,7 +122,7 @@ public class FactionsBlockListener implements Listener
 	public void onBlockPistonExtend(BlockPistonExtendEvent event)
 	{
 		if (event.isCancelled()) return;
-		if ( ! Conf.pistonProtectionThroughDenyBuild) return;
+		if ( ! ConfServer.pistonProtectionThroughDenyBuild) return;
 
 		Faction pistonFaction = Board.getFactionAt(new FLocation(event.getBlock()));
 
@@ -150,7 +150,7 @@ public class FactionsBlockListener implements Listener
 	public void onBlockPistonRetract(BlockPistonRetractEvent event)
 	{
 		// if not a sticky piston, retraction should be fine
-		if (event.isCancelled() || !event.isSticky() || !Conf.pistonProtectionThroughDenyBuild) return;
+		if (event.isCancelled() || !event.isSticky() || !ConfServer.pistonProtectionThroughDenyBuild) return;
 
 		Location targetLoc = event.getRetractLocation();
 

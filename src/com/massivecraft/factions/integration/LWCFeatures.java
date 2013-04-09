@@ -13,7 +13,7 @@ import org.bukkit.block.BlockState;
 
 import com.griefcraft.lwc.LWC;
 import com.griefcraft.lwc.LWCPlugin;
-import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
@@ -29,12 +29,12 @@ public class LWCFeatures
 		if(test == null || !test.isEnabled()) return;
 
 		lwc = ((LWCPlugin)test).getLWC();
-		Factions.get().log("Successfully hooked into LWC!"+(Conf.lwcIntegration ? "" : " Integration is currently disabled, though (\"lwcIntegration\")."));
+		Factions.get().log("Successfully hooked into LWC!"+(ConfServer.lwcIntegration ? "" : " Integration is currently disabled, though (\"lwcIntegration\")."));
 	}
 
 	public static boolean getEnabled()
 	{
-		return Conf.lwcIntegration && lwc != null;
+		return ConfServer.lwcIntegration && lwc != null;
 	}
 
 	public static void clearOtherChests(FLocation flocation, Faction faction)

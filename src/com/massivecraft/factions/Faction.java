@@ -52,7 +52,7 @@ public class Faction extends Entity implements EconomyParticipator
 	}
 	public void setTag(String str)
 	{
-		if (Conf.factionTagForceUpperCase)
+		if (ConfServer.factionTagForceUpperCase)
 		{
 			str = str.toUpperCase();
 		}
@@ -76,7 +76,7 @@ public class Faction extends Entity implements EconomyParticipator
 	}
 	public void confirmValidHome()
 	{
-		if (!Conf.homesMustBeInClaimedTerritory || this.home == null || (this.home.getLocation() != null && Board.getFactionAt(new FLocation(this.home.getLocation())) == this))
+		if (!ConfServer.homesMustBeInClaimedTerritory || this.home == null || (this.home.getLocation() != null && Board.getFactionAt(new FLocation(this.home.getLocation())) == this))
 			return;
 
 		msg("<b>Your faction home has been un-set since it is no longer in your territory.");
@@ -119,7 +119,7 @@ public class Faction extends Entity implements EconomyParticipator
 	}
 	public void setFlag(FFlag flag, boolean value)
 	{
-		if (Conf.factionFlagDefaults.get(flag).equals(value))
+		if (ConfServer.factionFlagDefaults.get(flag).equals(value))
 		{
 			this.flagOverrides.remove(flag);
 			return;
@@ -194,7 +194,7 @@ public class Faction extends Entity implements EconomyParticipator
 	{
 		this.relationWish = new HashMap<String, Rel>();
 		this.invites = new HashSet<String>();
-		this.open = Conf.newFactionsDefaultOpen;
+		this.open = ConfServer.newFactionsDefaultOpen;
 		this.tag = "???";
 		this.description = "Default faction description :(";
 		this.money = 0.0;
@@ -314,9 +314,9 @@ public class Faction extends Entity implements EconomyParticipator
 		{
 			ret += fplayer.getPower();
 		}
-		if (Conf.powerFactionMax > 0 && ret > Conf.powerFactionMax)
+		if (ConfServer.powerFactionMax > 0 && ret > ConfServer.powerFactionMax)
 		{
-			ret = Conf.powerFactionMax;
+			ret = ConfServer.powerFactionMax;
 		}
 		return ret + this.powerBoost;
 	}
@@ -333,9 +333,9 @@ public class Faction extends Entity implements EconomyParticipator
 		{
 			ret += fplayer.getPowerMax();
 		}
-		if (Conf.powerFactionMax > 0 && ret > Conf.powerFactionMax)
+		if (ConfServer.powerFactionMax > 0 && ret > ConfServer.powerFactionMax)
 		{
-			ret = Conf.powerFactionMax;
+			ret = ConfServer.powerFactionMax;
 		}
 		return ret + this.powerBoost;
 	}
@@ -468,7 +468,7 @@ public class Faction extends Entity implements EconomyParticipator
 	public void promoteNewLeader()
 	{
 		if (! this.isNormal()) return;
-		if (this.getFlag(FFlag.PERMANENT) && Conf.permanentFactionsDisableLeaderPromotion) return;
+		if (this.getFlag(FFlag.PERMANENT) && ConfServer.permanentFactionsDisableLeaderPromotion) return;
 
 		FPlayer oldLeader = this.getFPlayerLeader();
 
@@ -487,7 +487,7 @@ public class Faction extends Entity implements EconomyParticipator
 			}
 
 			// no members left and faction isn't permanent, so disband it
-			if (Conf.logFactionDisband)
+			if (ConfServer.logFactionDisband)
 				Factions.get().log("The faction "+this.getTag()+" ("+this.getId()+") has been disbanded since it has no members left.");
 
 			for (FPlayer fplayer : FPlayers.i.getOnline())

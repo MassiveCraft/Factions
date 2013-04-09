@@ -10,7 +10,7 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
 import com.massivecraft.factions.Board;
-import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
@@ -66,7 +66,7 @@ public enum FPerm
 	
 	public Set<Rel> getDefault()
 	{
-		Set<Rel> ret = Conf.factionPermDefaults.get(this);
+		Set<Rel> ret = ConfServer.factionPermDefaults.get(this);
 		if (ret == null) return this.defaultDefaultValue;
 		return ret; 
 	}

@@ -2,7 +2,7 @@ package com.massivecraft.factions.util;
 
 import java.util.Map.Entry;
 
-import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.zcore.util.TextUtil;
 
 public class HealthBarUtil
@@ -19,10 +19,10 @@ public class HealthBarUtil
     	int solidCount = (int) Math.ceil(barLength * healthQuota);
     	
     	// The rest is empty
-    	int emptyCount = (int) ((barLength - solidCount) / Conf.spoutHealthBarSolidsPerEmpty);
+    	int emptyCount = (int) ((barLength - solidCount) / ConfServer.spoutHealthBarSolidsPerEmpty);
     	
     	// Create the non-parsed bar
-    	String ret = Conf.spoutHealthBarLeft + TextUtil.repeat(Conf.spoutHealthBarSolid, solidCount) + Conf.spoutHealthBarBetween + TextUtil.repeat(Conf.spoutHealthBarEmpty, emptyCount) + Conf.spoutHealthBarRight;
+    	String ret = ConfServer.spoutHealthBarLeft + TextUtil.repeat(ConfServer.spoutHealthBarSolid, solidCount) + ConfServer.spoutHealthBarBetween + TextUtil.repeat(ConfServer.spoutHealthBarEmpty, emptyCount) + ConfServer.spoutHealthBarRight;
     	
     	// Replace color tag
     	ret = ret.replace("{c}", color);
@@ -35,7 +35,7 @@ public class HealthBarUtil
     
     public static String getHealthbar(double healthQuota)
     {
-    	return getHealthbar(healthQuota, Conf.spoutHealthBarWidth);
+    	return getHealthbar(healthQuota, ConfServer.spoutHealthBarWidth);
     }
     
     public static double fixQuota(double healthQuota)
@@ -55,7 +55,7 @@ public class HealthBarUtil
     {
         Double currentRoof = null;
         String ret = null;
-        for (Entry<Double, String> entry : Conf.spoutHealthBarColorUnderQuota.entrySet())
+        for (Entry<Double, String> entry : ConfServer.spoutHealthBarColorUnderQuota.entrySet())
         {
         	double roof = entry.getKey();
         	String color = entry.getValue();

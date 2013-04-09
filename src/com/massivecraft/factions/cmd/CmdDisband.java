@@ -2,7 +2,7 @@ package com.massivecraft.factions.cmd;
 
 import org.bukkit.Bukkit;
 
-import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.event.FPlayerLeaveEvent;
 import com.massivecraft.factions.event.FactionDisbandEvent;
 import com.massivecraft.factions.integration.Econ;
@@ -72,7 +72,7 @@ public class CmdDisband extends FCommand
 				fplayer.msg("<h>%s<i> disbanded the faction %s.", who, faction.getTag(fplayer));
 			}
 		}
-		if (Conf.logFactionDisband)
+		if (ConfServer.logFactionDisband)
 			Factions.get().log("The faction "+faction.getTag()+" ("+faction.getId()+") was disbanded by "+(senderIsConsole ? "console command" : fme.getName())+".");
 
 		if (Econ.shouldBeUsed() && ! senderIsConsole)

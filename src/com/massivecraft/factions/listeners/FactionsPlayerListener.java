@@ -25,7 +25,7 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.util.NumberConversions;
 
 import com.massivecraft.factions.Board;
-import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
@@ -149,7 +149,7 @@ public class FactionsPlayerListener implements Listener
 		if ( ! canPlayerUseBlock(player, block, false))
 		{
 			event.setCancelled(true);
-			if (Conf.handleExploitInteractionSpam)
+			if (ConfServer.handleExploitInteractionSpam)
 			{
 				String name = player.getName();
 				InteractAttemptSpam attempt = interactSpammers.get(name);
@@ -205,26 +205,26 @@ public class FactionsPlayerListener implements Listener
 	public static boolean playerCanUseItemHere(Player player, Location loc, Material material, boolean justCheck)
 	{
 		String name = player.getName();
-		if (Conf.playersWhoBypassAllProtection.contains(name)) return true;
+		if (ConfServer.playersWhoBypassAllProtection.contains(name)) return true;
 
 		FPlayer me = FPlayers.i.get(name);
 		if (me.hasAdminMode()) return true;
-		if (Conf.materialsEditTools.contains(material) && ! FPerm.BUILD.has(me, loc, ! justCheck)) return false;
+		if (ConfServer.materialsEditTools.contains(material) && ! FPerm.BUILD.has(me, loc, ! justCheck)) return false;
 		return true;
 	}
 	public static boolean canPlayerUseBlock(Player player, Block block, boolean justCheck)
 	{
 		String name = player.getName();
-		if (Conf.playersWhoBypassAllProtection.contains(name)) return true;
+		if (ConfServer.playersWhoBypassAllProtection.contains(name)) return true;
 
 		FPlayer me = FPlayers.i.get(name);
 		if (me.hasAdminMode()) return true;
 		Location loc = block.getLocation();
 		Material material = block.getType();
 		
-		if (Conf.materialsEditOnInteract.contains(material) && ! FPerm.BUILD.has(me, loc, ! justCheck)) return false;
-		if (Conf.materialsContainer.contains(material) && ! FPerm.CONTAINER.has(me, loc, ! justCheck)) return false;
-		if (Conf.materialsDoor.contains(material)      && ! FPerm.DOOR.has(me, loc, ! justCheck)) return false;
+		if (ConfServer.materialsEditOnInteract.contains(material) && ! FPerm.BUILD.has(me, loc, ! justCheck)) return false;
+		if (ConfServer.materialsContainer.contains(material) && ! FPerm.CONTAINER.has(me, loc, ! justCheck)) return false;
+		if (ConfServer.materialsDoor.contains(material)      && ! FPerm.DOOR.has(me, loc, ! justCheck)) return false;
 		if (material == Material.STONE_BUTTON          && ! FPerm.BUTTON.has(me, loc, ! justCheck)) return false;
 		if (material == Material.LEVER                 && ! FPerm.LEVER.has(me, loc, ! justCheck)) return false;
 		return true;
@@ -240,16 +240,16 @@ public class FactionsPlayerListener implements Listener
 		Location home = me.getFaction().getHome(); // TODO: WARNING FOR NPE HERE THE ORIO FOR RESPAWN SHOULD BE ASSIGNABLE FROM CONFIG.
 		if
 		(
-			Conf.homesEnabled
+			ConfServer.homesEnabled
 			&&
-			Conf.homesTeleportToOnDeath
+			ConfServer.homesTeleportToOnDeath
 			&&
 			home != null
 			&&
 			(
-				Conf.homesRespawnFromNoPowerLossWorlds
+				ConfServer.homesRespawnFromNoPowerLossWorlds
 				||
-				! Conf.worldsNoPowerLoss.contains(event.getPlayer().getWorld().getName())
+				! ConfServer.worldsNoPowerLoss.contains(event.getPlayer().getWorld().getName())
 			)
 		)
 		{
@@ -301,7 +301,7 @@ public class FactionsPlayerListener implements Listener
 		// The full command is converted to lowercase and does include the slash in the front
 		String fullCmd = event.getMessage().toLowerCase();
 		
-		if (me.hasFaction() && me.getFaction().getFlag(FFlag.PERMANENT) && isCommandInList(fullCmd, Conf.permanentFactionMemberDenyCommands))
+		if (me.hasFaction() && me.getFaction().getFlag(FFlag.PERMANENT) && isCommandInList(fullCmd, ConfServer.permanentFactionMemberDenyCommands))
 		{
 			me.msg("<b>You can't use the command \""+fullCmd+"\" because you are in a permanent faction.");
 			event.setCancelled(true);
@@ -311,14 +311,14 @@ public class FactionsPlayerListener implements Listener
 		Rel rel = me.getRelationToLocation();
 		if (Board.getFactionAt(me.getLastStoodAt()).isNone()) return;
 		
-		if (rel == Rel.NEUTRAL && isCommandInList(fullCmd, Conf.territoryNeutralDenyCommands))
+		if (rel == Rel.NEUTRAL && isCommandInList(fullCmd, ConfServer.territoryNeutralDenyCommands))
 		{
 			me.msg("<b>You can't use the command \""+fullCmd+"\" in neutral territory.");
 			event.setCancelled(true);
 			return;
 		}
 
-		if (rel == Rel.ENEMY && isCommandInList(fullCmd, Conf.territoryEnemyDenyCommands))
+		if (rel == Rel.ENEMY && isCommandInList(fullCmd, ConfServer.territoryEnemyDenyCommands))
 		{
 			me.msg("<b>You can't use the command \""+fullCmd+"\" in enemy territory.");
 			event.setCancelled(true);
@@ -361,7 +361,7 @@ public class FactionsPlayerListener implements Listener
 		SpoutFeatures.playerDisconnect(badGuy);
 
 		// if player was banned (not just kicked), get rid of their stored info
-		if (Conf.removePlayerDataWhenBanned && event.getReason().equals("Banned by admin."))
+		if (ConfServer.removePlayerDataWhenBanned && event.getReason().equals("Banned by admin."))
 		{
 			if (badGuy.getRole() == Rel.LEADER)
 				badGuy.getFaction().promoteNewLeader();

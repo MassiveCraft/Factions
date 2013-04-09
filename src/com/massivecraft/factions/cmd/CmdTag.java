@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import org.bukkit.Bukkit;
 
-import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionColl;
 import com.massivecraft.factions.Perm;
@@ -52,7 +52,7 @@ public class CmdTag extends FCommand
 		}
 
 		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make sure they can pay
-		if ( ! canAffordCommand(Conf.econCostTag, "to change the faction tag")) return;
+		if ( ! canAffordCommand(ConfServer.econCostTag, "to change the faction tag")) return;
 
 		// trigger the faction rename event (cancellable)
 		FactionRenameEvent renameEvent = new FactionRenameEvent(fme, tag);
@@ -60,7 +60,7 @@ public class CmdTag extends FCommand
 		if(renameEvent.isCancelled()) return;
 
 		// then make 'em pay (if applicable)
-		if ( ! payForCommand(Conf.econCostTag, "to change the faction tag", "for changing the faction tag")) return;
+		if ( ! payForCommand(ConfServer.econCostTag, "to change the faction tag", "for changing the faction tag")) return;
 
 		String oldtag = myFaction.getTag();
 		myFaction.setTag(tag);
@@ -76,7 +76,7 @@ public class CmdTag extends FCommand
 			faction.msg("<i>The faction %s<i> changed their name to %s.", fme.getColorTo(faction)+oldtag, myFaction.getTag(faction));
 		}
 
-		if (Conf.spoutFactionTagsOverNames)
+		if (ConfServer.spoutFactionTagsOverNames)
 		{
 			SpoutFeatures.updateTitle(myFaction, null);
 		}

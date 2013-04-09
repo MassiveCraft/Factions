@@ -2,7 +2,7 @@ package com.massivecraft.factions.cmd;
 
 import java.util.Collections;
 
-import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.Factions;
 
 public class FCmdRoot extends FCommand
@@ -53,7 +53,7 @@ public class FCmdRoot extends FCommand
 	public FCmdRoot()
 	{
 		super();
-		this.aliases.addAll(Conf.baseCommandAliases);
+		this.aliases.addAll(ConfServer.baseCommandAliases);
 		this.aliases.removeAll(Collections.singletonList(null));  // remove any nulls from extra commas
 		
 		//this.requiredArgs.add("");

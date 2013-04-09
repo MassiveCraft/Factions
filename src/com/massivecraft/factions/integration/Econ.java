@@ -7,7 +7,7 @@ import java.util.logging.Level;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
-import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionColl;
@@ -28,7 +28,7 @@ public class Econ
 	{
 		if (isSetup()) return;
 
-		String integrationFail = "Economy integration is "+(Conf.econEnabled ? "enabled, but" : "disabled, and")+" the plugin \"Vault\" ";
+		String integrationFail = "Economy integration is "+(ConfServer.econEnabled ? "enabled, but" : "disabled, and")+" the plugin \"Vault\" ";
 
 		if (Bukkit.getServer().getPluginManager().getPlugin("Vault") == null)
 		{
@@ -46,7 +46,7 @@ public class Econ
 
 		Factions.get().log("Economy integration through Vault plugin successful.");
 
-		if ( ! Conf.econEnabled)
+		if ( ! ConfServer.econEnabled)
 			Factions.get().log("NOTE: Economy is disabled. You can enable it with the command: f config econEnabled true");
 
 		oldMoneyDoTransfer();
@@ -54,7 +54,7 @@ public class Econ
 
 	public static boolean shouldBeUsed()
 	{
-		return Conf.econEnabled && econ != null && econ.isEnabled();
+		return ConfServer.econEnabled && econ != null && econ.isEnabled();
 	}
 	
 	public static boolean isSetup()
@@ -67,11 +67,11 @@ public class Econ
 	{
 		if (!shouldBeUsed()) return;
 
-		if (Conf.econUniverseAccount == null) return;
-		if (Conf.econUniverseAccount.length() == 0) return;
-		if ( ! econ.hasAccount(Conf.econUniverseAccount)) return;
+		if (ConfServer.econUniverseAccount == null) return;
+		if (ConfServer.econUniverseAccount.length() == 0) return;
+		if ( ! econ.hasAccount(ConfServer.econUniverseAccount)) return;
 
-		modifyBalance(Conf.econUniverseAccount, delta);
+		modifyBalance(ConfServer.econUniverseAccount, delta);
 	}
 
 	public static void sendBalanceInfo(FPlayer to, EconomyParticipator about)
@@ -318,15 +318,15 @@ public class Econ
 		}
 
 		// basic claim cost, plus land inflation cost, minus the potential bonus given for claiming from another faction
-		return Conf.econCostClaimWilderness
-			+ (Conf.econCostClaimWilderness * Conf.econClaimAdditionalMultiplier * ownedLand)
-			- (takingFromAnotherFaction ? Conf.econCostClaimFromFactionBonus: 0);
+		return ConfServer.econCostClaimWilderness
+			+ (ConfServer.econCostClaimWilderness * ConfServer.econClaimAdditionalMultiplier * ownedLand)
+			- (takingFromAnotherFaction ? ConfServer.econCostClaimFromFactionBonus: 0);
 	}
 
 	// calculate refund amount for unclaiming land
 	public static double calculateClaimRefund(int ownedLand)
 	{
-		return calculateClaimCost(ownedLand - 1, false) * Conf.econClaimRefundMultiplier;
+		return calculateClaimCost(ownedLand - 1, false) * ConfServer.econClaimRefundMultiplier;
 	}
 
 	// calculate value of all owned land
@@ -342,7 +342,7 @@ public class Econ
 	// calculate refund amount for all owned land
 	public static double calculateTotalLandRefund(int ownedLand)
 	{
-		return calculateTotalLandValue(ownedLand) * Conf.econClaimRefundMultiplier;
+		return calculateTotalLandValue(ownedLand) * ConfServer.econClaimRefundMultiplier;
 	}
 
 

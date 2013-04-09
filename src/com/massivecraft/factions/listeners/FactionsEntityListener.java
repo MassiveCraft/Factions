@@ -39,7 +39,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import com.massivecraft.factions.Board;
-import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
@@ -77,7 +77,7 @@ public class FactionsEntityListener implements Listener
 			powerLossEvent.setMessage("<i>You didn't lose any power since the territory you died in works that way.");
 			powerLossEvent.setCancelled(true);
 		}
-		else if (Conf.worldsNoPowerLoss.contains(player.getWorld().getName()))
+		else if (ConfServer.worldsNoPowerLoss.contains(player.getWorld().getName()))
 		{
 			powerLossEvent.setMessage("<i>You didn't lose any power due to the world you died in.");
 			powerLossEvent.setCancelled(true);
@@ -148,7 +148,7 @@ public class FactionsEntityListener implements Listener
 		// this optional change below provides workaround for waterwalling providing perfect protection,
 		// and makes cheap (non-obsidian) TNT cannons require minor maintenance between shots
 		Block center = event.getLocation().getBlock();
-		if (event.getEntity() instanceof TNTPrimed && Conf.handleExploitTNTWaterlog && center.isLiquid())
+		if (event.getEntity() instanceof TNTPrimed && ConfServer.handleExploitTNTWaterlog && center.isLiquid())
 		{
 			// a single surrounding block in all 6 directions is broken if the material is weak enough
 			List<Block> targets = new ArrayList<Block>();
@@ -270,11 +270,11 @@ public class FactionsEntityListener implements Listener
 		if (attacker == null || attacker.getPlayer() == null)
 			return true;
 
-		if (Conf.playersWhoBypassAllProtection.contains(attacker.getName())) return true;
+		if (ConfServer.playersWhoBypassAllProtection.contains(attacker.getName())) return true;
 
 		if (attacker.hasLoginPvpDisabled())
 		{
-			if (notify) attacker.msg("<i>You can't hurt other players for " + Conf.noPVPDamageToOthersForXSecondsAfterLogin + " seconds after logging in.");
+			if (notify) attacker.msg("<i>You can't hurt other players for " + ConfServer.noPVPDamageToOthersForXSecondsAfterLogin + " seconds after logging in.");
 			return false;
 		}
 
@@ -287,25 +287,25 @@ public class FactionsEntityListener implements Listener
 			return false;
 		}
 
-		if (Conf.worldsIgnorePvP.contains(defenderLoc.getWorld().getName()))
+		if (ConfServer.worldsIgnorePvP.contains(defenderLoc.getWorld().getName()))
 			return true;
 
 		Faction defendFaction = defender.getFaction();
 		Faction attackFaction = attacker.getFaction();
 
-		if (attackFaction.isNone() && Conf.disablePVPForFactionlessPlayers)
+		if (attackFaction.isNone() && ConfServer.disablePVPForFactionlessPlayers)
 		{
 			if (notify) attacker.msg("<i>You can't hurt other players until you join a faction.");
 			return false;
 		}
 		else if (defendFaction.isNone())
 		{
-			if (defLocFaction == attackFaction && Conf.enablePVPAgainstFactionlessInAttackersLand)
+			if (defLocFaction == attackFaction && ConfServer.enablePVPAgainstFactionlessInAttackersLand)
 			{
 				// Allow PVP vs. Factionless in attacker's faction territory
 				return true;
 			}
-			else if (Conf.disablePVPForFactionlessPlayers)
+			else if (ConfServer.disablePVPForFactionlessPlayers)
 			{
 				if (notify) attacker.msg("<i>You can't hurt players who are not currently in a faction.");
 				return false;
@@ -315,7 +315,7 @@ public class FactionsEntityListener implements Listener
 		Rel relation = defendFaction.getRelationTo(attackFaction);
 
 		// Check the relation
-		if (defender.hasFaction() && relation.isAtLeast(Conf.friendlyFireFromRel) && defLocFaction.getFlag(FFlag.FRIENDLYFIRE) == false)
+		if (defender.hasFaction() && relation.isAtLeast(ConfServer.friendlyFireFromRel) && defLocFaction.getFlag(FFlag.FRIENDLYFIRE) == false)
 		{
 			if (notify) attacker.msg("<i>You can't hurt %s<i>.", relation.getDescPlayerMany());
 			return false;
@@ -334,15 +334,15 @@ public class FactionsEntityListener implements Listener
 		}
 
 		// Damage will be dealt. However check if the damage should be reduced.
-		if (damage > 0.0 && defender.hasFaction() && ownTerritory && Conf.territoryShieldFactor > 0)
+		if (damage > 0.0 && defender.hasFaction() && ownTerritory && ConfServer.territoryShieldFactor > 0)
 		{
-			int newDamage = (int)Math.ceil(damage * (1D - Conf.territoryShieldFactor));
+			int newDamage = (int)Math.ceil(damage * (1D - ConfServer.territoryShieldFactor));
 			sub.setDamage(newDamage);
 
 			// Send message
 			if (notify)
 			{
-				String perc = MessageFormat.format("{0,number,#%}", (Conf.territoryShieldFactor)); // TODO does this display correctly??
+				String perc = MessageFormat.format("{0,number,#%}", (ConfServer.territoryShieldFactor)); // TODO does this display correctly??
 				defender.msg("<i>Enemy damage reduced by <rose>%s<i>.", perc);
 			}
 		}
@@ -360,7 +360,7 @@ public class FactionsEntityListener implements Listener
 		Faction faction = Board.getFactionAt(floc);
 
 		if (faction.getFlag(FFlag.MONSTERS)) return;
-		if ( ! Conf.monsters.contains(event.getEntityType())) return;
+		if ( ! ConfServer.monsters.contains(event.getEntityType())) return;
 
 		event.setCancelled(true);
 	}
@@ -375,7 +375,7 @@ public class FactionsEntityListener implements Listener
 		if (target == null) return;
 
 		// We are interested in blocking targeting for certain mobs:
-		if ( ! Conf.monsters.contains(MiscUtil.creatureTypeFromEntity(event.getEntity()))) return;
+		if ( ! ConfServer.monsters.contains(MiscUtil.creatureTypeFromEntity(event.getEntity()))) return;
 
 		FLocation floc = new FLocation(target.getLocation());
 		Faction faction = Board.getFactionAt(floc);

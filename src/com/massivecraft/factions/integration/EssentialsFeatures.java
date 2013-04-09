@@ -9,7 +9,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.Location;
 import org.bukkit.plugin.Plugin;
 
-import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.listeners.FactionsChatListener;
 
@@ -71,10 +71,10 @@ public class EssentialsFeatures
 	// return false if feature is disabled or Essentials isn't available
 	public static boolean handleTeleport(Player player, Location loc)
 	{
-		if ( ! Conf.homesTeleportCommandEssentialsIntegration || essentials == null) return false;
+		if ( ! ConfServer.homesTeleportCommandEssentialsIntegration || essentials == null) return false;
 
 		Teleport teleport = (Teleport) essentials.getUser(player).getTeleport();
-		Trade trade = new Trade(Conf.econCostHome, essentials);
+		Trade trade = new Trade(ConfServer.econCostHome, essentials);
 		try
 		{
 			teleport.teleport(loc, trade);

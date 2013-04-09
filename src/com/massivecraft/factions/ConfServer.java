@@ -9,7 +9,7 @@ import com.massivecraft.factions.struct.FFlag;
 import com.massivecraft.factions.struct.FPerm;
 import com.massivecraft.factions.struct.Rel;
 
-public class Conf
+public class ConfServer
 {
 	public final static transient List<String> baseCommandAliases = new ArrayList<String>();
 	
@@ -344,10 +344,10 @@ public class Conf
 	// -------------------------------------------- //
 	// Persistance
 	// -------------------------------------------- //
-	private static transient Conf i = new Conf();
+	private static transient ConfServer i = new ConfServer();
 	public static void load()
 	{
-		Factions.get().persist.loadOrSaveDefault(i, Conf.class, "conf");
+		Factions.get().persist.loadOrSaveDefault(i, ConfServer.class, "conf");
 	}
 	public static void save()
 	{

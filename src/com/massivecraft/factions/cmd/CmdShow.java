@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
@@ -44,7 +44,7 @@ public class CmdShow extends FCommand
 		}
 
 		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-		if ( ! payForCommand(Conf.econCostShow, "to show faction information", "for showing faction information")) return;
+		if ( ! payForCommand(ConfServer.econCostShow, "to show faction information", "for showing faction information")) return;
 
 		Collection<FPlayer> admins = faction.getFPlayersWhereRole(Rel.LEADER);
 		Collection<FPlayer> mods = faction.getFPlayersWhereRole(Rel.OFFICER);
@@ -76,7 +76,7 @@ public class CmdShow extends FCommand
 		if (Econ.shouldBeUsed())
 		{
 			double value = Econ.calculateTotalLandValue(faction.getLandRounded());
-			double refund = value * Conf.econClaimRefundMultiplier;
+			double refund = value * ConfServer.econClaimRefundMultiplier;
 			if (value > 0)
 			{
 				String stringValue = Econ.moneyString(value);
@@ -85,7 +85,7 @@ public class CmdShow extends FCommand
 			}
 			
 			//Show bank contents
-			if(Conf.bankEnabled)
+			if(ConfServer.bankEnabled)
 			{
 				msg("<a>Bank contains: <i>"+Econ.moneyString(Econ.getBalance(faction.getAccountId())));
 			}

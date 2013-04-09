@@ -5,7 +5,7 @@ import java.util.List;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
@@ -70,13 +70,13 @@ public abstract class FCommand extends MCommand<Factions>
 			return false;
 		}
 		
-		if (this.isMoneyCommand && ! Conf.econEnabled)
+		if (this.isMoneyCommand && ! ConfServer.econEnabled)
 		{
 			msg("<b>Faction economy features are disabled on this server.");
 			return false;
 		}
 		
-		if (this.isMoneyCommand && ! Conf.bankEnabled)
+		if (this.isMoneyCommand && ! ConfServer.bankEnabled)
 		{
 			msg("<b>The faction bank system is disabled on this server.");
 			return false;
@@ -422,7 +422,7 @@ public abstract class FCommand extends MCommand<Factions>
 	{
 		if ( ! Econ.shouldBeUsed() || this.fme == null || cost == 0.0 || fme.hasAdminMode()) return true;
 
-		if(Conf.bankEnabled && Conf.bankFactionPaysCosts && fme.hasFaction())
+		if(ConfServer.bankEnabled && ConfServer.bankFactionPaysCosts && fme.hasFaction())
 			return Econ.modifyMoney(myFaction, -cost, toDoThis, forDoingThis);
 		else
 			return Econ.modifyMoney(fme, -cost, toDoThis, forDoingThis);
@@ -433,7 +433,7 @@ public abstract class FCommand extends MCommand<Factions>
 	{
 		if ( ! Econ.shouldBeUsed() || this.fme == null || cost == 0.0 || fme.hasAdminMode()) return true;
 
-		if(Conf.bankEnabled && Conf.bankFactionPaysCosts && fme.hasFaction())
+		if(ConfServer.bankEnabled && ConfServer.bankFactionPaysCosts && fme.hasFaction())
 			return Econ.hasAtLeast(myFaction, cost, toDoThis);
 		else
 			return Econ.hasAtLeast(fme, cost, toDoThis);

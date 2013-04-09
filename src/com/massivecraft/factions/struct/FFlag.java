@@ -1,6 +1,6 @@
 package com.massivecraft.factions.struct;
 
-import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.ConfServer;
 
 /**
  * Flags that describe the nature of a faction and it's territory.
@@ -55,7 +55,7 @@ public enum FFlag
 	 */
 	public boolean getDefault()
 	{
-		Boolean ret = Conf.factionFlagDefaults.get(this);
+		Boolean ret = ConfServer.factionFlagDefaults.get(this);
 		if (ret == null) return this.defaultDefaultValue;
 		return ret; 
 	}

@@ -1,6 +1,6 @@
 package com.massivecraft.factions.util;
 
-import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.FactionColl;
 import com.massivecraft.factions.Factions;
 
@@ -10,7 +10,7 @@ public class EconLandRewardTask implements Runnable {
 	
 	public EconLandRewardTask()
 	{
-		this.rate = Conf.econLandRewardTaskRunsEveryXMinutes;
+		this.rate = ConfServer.econLandRewardTaskRunsEveryXMinutes;
 	}
 
 	@Override
@@ -18,7 +18,7 @@ public class EconLandRewardTask implements Runnable {
 	{
 		FactionColl.i.econLandRewardRoutine();
 		// maybe setting has been changed? if so, restart task at new rate
-		if (this.rate != Conf.econLandRewardTaskRunsEveryXMinutes)
+		if (this.rate != ConfServer.econLandRewardTaskRunsEveryXMinutes)
 			Factions.get().startEconLandRewardTask(true);
 	}
 

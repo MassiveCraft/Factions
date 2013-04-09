@@ -1,6 +1,6 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.Factions;
@@ -41,7 +41,7 @@ public class CmdMoneyTransferFf extends FCommand
 		
 		boolean success = Econ.transferMoney(fme, from, to, amount);
 
-		if (success && Conf.logMoneyTransactions)
+		if (success && ConfServer.logMoneyTransactions)
 			Factions.get().log(ChatColor.stripColor(Factions.get().txt.parse("%s transferred %s from the faction \"%s\" to the faction \"%s\"", fme.getName(), Econ.moneyString(amount), from.describeTo(null), to.describeTo(null))));
 	}
 }

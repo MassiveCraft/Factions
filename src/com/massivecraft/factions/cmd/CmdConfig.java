@@ -12,7 +12,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
-import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.integration.SpoutFeatures;
@@ -49,7 +49,7 @@ public class CmdConfig extends FCommand
 		// that way, if the person using this command messes up the capitalization, we can fix that
 		if (properFieldNames.isEmpty())
 		{
-			Field[] fields = Conf.class.getDeclaredFields();
+			Field[] fields = ConfServer.class.getDeclaredFields();
 			for(int i = 0; i < fields.length; i++)
 			{
 				properFieldNames.put(fields[i].getName().toLowerCase(), fields[i].getName());
@@ -79,7 +79,7 @@ public class CmdConfig extends FCommand
 
 		try
 		{
-			Field target = Conf.class.getField(fieldName);
+			Field target = ConfServer.class.getField(fieldName);
 
 			// boolean
 			if (target.getType() == boolean.class)
@@ -390,7 +390,7 @@ public class CmdConfig extends FCommand
 			}
 		}
 		// save change to disk
-		Conf.save();
+		ConfServer.save();
 
 		// in case some Spout related setting was changed
 		SpoutFeatures.updateTitle(null, null);

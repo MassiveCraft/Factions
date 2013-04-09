@@ -207,14 +207,14 @@ public class FactionColl extends EntityCollection<Faction>
 	{
 		ArrayList<String> errors = new ArrayList<String>();
 		
-		if(MiscUtil.getComparisonString(str).length() < Conf.factionTagLengthMin)
+		if(MiscUtil.getComparisonString(str).length() < ConfServer.factionTagLengthMin)
 		{
-			errors.add(Factions.get().txt.parse("<i>The faction tag can't be shorter than <h>%s<i> chars.", Conf.factionTagLengthMin));
+			errors.add(Factions.get().txt.parse("<i>The faction tag can't be shorter than <h>%s<i> chars.", ConfServer.factionTagLengthMin));
 		}
 		
-		if(str.length() > Conf.factionTagLengthMax)
+		if(str.length() > ConfServer.factionTagLengthMax)
 		{
-			errors.add(Factions.get().txt.parse("<i>The faction tag can't be longer than <h>%s<i> chars.", Conf.factionTagLengthMax));
+			errors.add(Factions.get().txt.parse("<i>The faction tag can't be longer than <h>%s<i> chars.", ConfServer.factionTagLengthMax));
 		}
 		
 		for (char c : str.toCharArray())
@@ -273,7 +273,7 @@ public class FactionColl extends EntityCollection<Faction>
 			{
 				Set<FPlayer> players = faction.getFPlayers();
 				int playerCount = players.size();
-				double reward = Conf.econLandReward * landCount / playerCount;
+				double reward = ConfServer.econLandReward * landCount / playerCount;
 				for (FPlayer player : players)
 				{
 					Econ.modifyMoney(player, reward, "to own faction land", "for faction owning " + landCount + " land divided among " + playerCount + " member(s)");

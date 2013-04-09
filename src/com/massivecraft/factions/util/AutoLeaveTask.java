@@ -1,6 +1,6 @@
 package com.massivecraft.factions.util;
 
-import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Factions;
 
@@ -10,7 +10,7 @@ public class AutoLeaveTask implements Runnable
 
 	public AutoLeaveTask()
 	{
-		this.rate = Conf.autoLeaveRoutineRunsEveryXMinutes;
+		this.rate = ConfServer.autoLeaveRoutineRunsEveryXMinutes;
 	}
 
 	public void run()
@@ -18,7 +18,7 @@ public class AutoLeaveTask implements Runnable
 		FPlayers.i.autoLeaveOnInactivityRoutine();
 
 		// maybe setting has been changed? if so, restart task at new rate
-		if (this.rate != Conf.autoLeaveRoutineRunsEveryXMinutes)
+		if (this.rate != ConfServer.autoLeaveRoutineRunsEveryXMinutes)
 			Factions.get().startAutoLeaveTask(true);
 	}
 }

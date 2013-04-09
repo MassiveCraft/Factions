@@ -21,7 +21,7 @@ import org.bukkit.plugin.AuthorNagException;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredListener;
 
-import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Factions;
@@ -58,9 +58,9 @@ public class FactionsChatListener implements Listener
 	@EventHandler(priority = EventPriority.LOW, ignoreCancelled=true)
 	public void lowPlayerChatEvent(AsyncPlayerChatEvent event)
 	{
-		if (Conf.chatSetFormat)
+		if (ConfServer.chatSetFormat)
 		{
-			event.setFormat(Conf.chatSetFormatTo);
+			event.setFormat(ConfServer.chatSetFormatTo);
 		}
 	}
 
@@ -83,8 +83,8 @@ public class FactionsChatListener implements Listener
 	public void onPlayerChat(AsyncPlayerChatEvent event)
 	{
 		// Should we even parse?
-		if ( ! Conf.chatParseTags) return;
-		if (Conf.chatTagHandledByAnotherPlugin) return;
+		if ( ! ConfServer.chatParseTags) return;
+		if (ConfServer.chatTagHandledByAnotherPlugin) return;
 		
 		Player from = event.getPlayer();
 		FPlayer fpfrom = FPlayers.i.get(from);
@@ -93,7 +93,7 @@ public class FactionsChatListener implements Listener
 		
 		String formatWithoutColor = parseTags(format, from, fpfrom);
 		
-		if ( ! Conf.chatParseTagsColored)
+		if ( ! ConfServer.chatParseTagsColored)
 		{
 			// The case without color is really this simple (:
 			event.setFormat(formatWithoutColor);
@@ -253,7 +253,7 @@ public class FactionsChatListener implements Listener
 		if (str.length() == 0) return str;
 		for (String formatName : formatNames)
 		{
-			String format = Conf.chatSingleFormats.get(formatName);
+			String format = ConfServer.chatSingleFormats.get(formatName);
 			try
 			{
 				str = String.format(format, str);

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionColl;
 import com.massivecraft.factions.Perm;
@@ -35,7 +35,7 @@ public class CmdList extends FCommand
 	public void perform()
 	{
 		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-		if ( ! payForCommand(Conf.econCostList, "to list the factions", "for listing the factions")) return;
+		if ( ! payForCommand(ConfServer.econCostList, "to list the factions", "for listing the factions")) return;
 		
 		ArrayList<Faction> factionList = new ArrayList<Faction>(FactionColl.i.get());
 

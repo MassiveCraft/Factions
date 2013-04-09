@@ -2,7 +2,7 @@ package com.massivecraft.factions.cmd;
 
 import org.bukkit.Bukkit;
 
-import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
@@ -50,9 +50,9 @@ public class CmdJoin extends FCommand
 			return;
 		}
 
-		if (Conf.factionMemberLimit > 0 && faction.getFPlayers().size() >= Conf.factionMemberLimit)
+		if (ConfServer.factionMemberLimit > 0 && faction.getFPlayers().size() >= ConfServer.factionMemberLimit)
 		{
-			msg(" <b>!<white> The faction %s is at the limit of %d members, so %s cannot currently join.", faction.getTag(fme), Conf.factionMemberLimit, fplayer.describeTo(fme, false));
+			msg(" <b>!<white> The faction %s is at the limit of %d members, so %s cannot currently join.", faction.getTag(fme), ConfServer.factionMemberLimit, fplayer.describeTo(fme, false));
 			return;
 		}
 
@@ -62,7 +62,7 @@ public class CmdJoin extends FCommand
 			return;
 		}
 
-		if (!Conf.canLeaveWithNegativePower && fplayer.getPower() < 0)
+		if (!ConfServer.canLeaveWithNegativePower && fplayer.getPower() < 0)
 		{
 			msg("<b>%s cannot join a faction with a negative power level.", fplayer.describeTo(fme, true));
 			return;
@@ -77,7 +77,7 @@ public class CmdJoin extends FCommand
 		}
 
 		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make sure they can pay
-		if (samePlayer && ! canAffordCommand(Conf.econCostJoin, "to join a faction")) return;
+		if (samePlayer && ! canAffordCommand(ConfServer.econCostJoin, "to join a faction")) return;
 
 		// trigger the join event (cancellable)
 		FPlayerJoinEvent joinEvent = new FPlayerJoinEvent(FPlayers.i.get(me),faction,FPlayerJoinEvent.PlayerJoinReason.COMMAND);
@@ -85,9 +85,9 @@ public class CmdJoin extends FCommand
 		if (joinEvent.isCancelled()) return;
 
 		// then make 'em pay (if applicable)
-		if (samePlayer && ! payForCommand(Conf.econCostJoin, "to join a faction", "for joining a faction")) return;
+		if (samePlayer && ! payForCommand(ConfServer.econCostJoin, "to join a faction", "for joining a faction")) return;
 
-		fme.setRole(Conf.factionRankDefault); // They have just joined a faction, start them out on the lowest rank (default config).
+		fme.setRole(ConfServer.factionRankDefault); // They have just joined a faction, start them out on the lowest rank (default config).
 
 		if (!samePlayer)
 			fplayer.msg("<i>%s moved you into the faction %s.", fme.describeTo(fplayer, true), faction.getTag(fplayer));
@@ -100,7 +100,7 @@ public class CmdJoin extends FCommand
 		faction.deinvite(fplayer);
 		
 
-		if (Conf.logFactionJoin)
+		if (ConfServer.logFactionJoin)
 		{
 			if (samePlayer)
 				Factions.get().log("%s joined the faction %s.", fplayer.getName(), faction.getTag());
