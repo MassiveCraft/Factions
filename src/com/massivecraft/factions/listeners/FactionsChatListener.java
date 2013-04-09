@@ -25,7 +25,7 @@ import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayerColl;
 import com.massivecraft.factions.Factions;
-import com.massivecraft.factions.struct.Rel;
+import com.massivecraft.factions.Rel;
 
 public class FactionsChatListener implements Listener
 {

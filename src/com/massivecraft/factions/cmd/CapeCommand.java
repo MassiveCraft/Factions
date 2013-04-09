@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.bukkit.command.CommandSender;
 
+import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.struct.FPerm;
 
 public abstract class CapeCommand extends FCommand
 {

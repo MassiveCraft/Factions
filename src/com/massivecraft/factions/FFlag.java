@@ -1,6 +1,5 @@
-package com.massivecraft.factions.struct;
+package com.massivecraft.factions;
 
-import com.massivecraft.factions.ConfServer;
 
 /**
  * Flags that describe the nature of a faction and it's territory.

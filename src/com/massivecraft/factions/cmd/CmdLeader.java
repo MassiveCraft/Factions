@@ -6,8 +6,8 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayerColl;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Perm;
+import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.event.FPlayerJoinEvent;
-import com.massivecraft.factions.struct.Rel;
 import com.massivecraft.factions.util.RelationUtil;
 
 public class CmdLeader extends FCommand

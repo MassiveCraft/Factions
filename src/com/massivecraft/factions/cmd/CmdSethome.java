@@ -3,9 +3,9 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.Board;
 import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.FLocation;
+import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Perm;
-import com.massivecraft.factions.struct.FPerm;
 
 public class CmdSethome extends FCommand
 {

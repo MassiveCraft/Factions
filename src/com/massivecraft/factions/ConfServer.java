@@ -5,9 +5,6 @@ import java.util.*;
 import org.bukkit.*;
 import org.bukkit.entity.EntityType;
 
-import com.massivecraft.factions.struct.FFlag;
-import com.massivecraft.factions.struct.FPerm;
-import com.massivecraft.factions.struct.Rel;
 
 public class ConfServer
 {

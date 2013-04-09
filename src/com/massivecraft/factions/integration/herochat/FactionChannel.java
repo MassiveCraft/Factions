@@ -7,7 +7,7 @@ import java.util.Set;
 import org.bukkit.ChatColor;
 
 import com.massivecraft.factions.ConfServer;
-import com.massivecraft.factions.struct.Rel;
+import com.massivecraft.factions.Rel;
 
 public class FactionChannel extends FactionsChannelAbstract
 {

@@ -1,13 +1,13 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Board;
+import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Perm;
+import com.massivecraft.factions.TerritoryAccess;
 import com.massivecraft.factions.integration.SpoutFeatures;
-import com.massivecraft.factions.struct.FPerm;
-import com.massivecraft.factions.struct.TerritoryAccess;
 import com.massivecraft.factions.zcore.util.TextUtil;
 
 

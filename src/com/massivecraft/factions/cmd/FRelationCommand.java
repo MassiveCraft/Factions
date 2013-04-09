@@ -3,12 +3,12 @@ package com.massivecraft.factions.cmd;
 import org.bukkit.Bukkit;
 
 import com.massivecraft.factions.ConfServer;
+import com.massivecraft.factions.FFlag;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Perm;
+import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.event.FactionRelationEvent;
 import com.massivecraft.factions.integration.SpoutFeatures;
-import com.massivecraft.factions.struct.FFlag;
-import com.massivecraft.factions.struct.Rel;
 
 public abstract class FRelationCommand extends FCommand
 {

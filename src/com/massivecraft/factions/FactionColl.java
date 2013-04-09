@@ -12,9 +12,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.craftbukkit.libs.com.google.gson.reflect.TypeToken;
 
 import com.massivecraft.factions.integration.Econ;
-import com.massivecraft.factions.struct.FFlag;
-import com.massivecraft.factions.struct.FPerm;
-import com.massivecraft.factions.struct.Rel;
 import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.factions.zcore.persist.EntityCollection;
 import com.massivecraft.factions.zcore.util.TextUtil;

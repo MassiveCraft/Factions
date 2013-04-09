@@ -40,14 +40,14 @@ import org.bukkit.potion.PotionEffectType;
 
 import com.massivecraft.factions.Board;
 import com.massivecraft.factions.ConfServer;
+import com.massivecraft.factions.FFlag;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayerColl;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.event.PowerLossEvent;
-import com.massivecraft.factions.struct.FFlag;
-import com.massivecraft.factions.struct.Rel;
 import com.massivecraft.factions.util.MiscUtil;
 
 

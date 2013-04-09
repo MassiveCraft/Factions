@@ -3,8 +3,8 @@ package com.massivecraft.factions.event;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-import com.massivecraft.factions.struct.Rel;
 import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.Rel;
 
 
 public class FactionRelationEvent extends Event

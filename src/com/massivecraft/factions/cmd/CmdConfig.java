@@ -13,12 +13,12 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import com.massivecraft.factions.ConfServer;
+import com.massivecraft.factions.FFlag;
+import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
+import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.integration.SpoutFeatures;
-import com.massivecraft.factions.struct.FFlag;
-import com.massivecraft.factions.struct.FPerm;
-import com.massivecraft.factions.struct.Rel;
 
 public class CmdConfig extends FCommand
 {

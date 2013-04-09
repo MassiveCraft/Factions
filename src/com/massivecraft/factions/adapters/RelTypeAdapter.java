@@ -6,7 +6,8 @@ import org.bukkit.craftbukkit.libs.com.google.gson.JsonDeserializationContext;
 import org.bukkit.craftbukkit.libs.com.google.gson.JsonDeserializer;
 import org.bukkit.craftbukkit.libs.com.google.gson.JsonElement;
 import org.bukkit.craftbukkit.libs.com.google.gson.JsonParseException;
-import com.massivecraft.factions.struct.Rel;
+
+import com.massivecraft.factions.Rel;
 
 public class RelTypeAdapter implements JsonDeserializer<Rel>
 {

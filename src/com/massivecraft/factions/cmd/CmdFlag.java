@@ -1,8 +1,8 @@
 package com.massivecraft.factions.cmd;
 
+import com.massivecraft.factions.FFlag;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Perm;
-import com.massivecraft.factions.struct.FFlag;
 
 public class CmdFlag extends FCommand
 {

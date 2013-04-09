@@ -2,7 +2,7 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Perm;
-import com.massivecraft.factions.struct.Rel;
+import com.massivecraft.factions.Rel;
 
 public class CmdDemote extends FCommand
 {

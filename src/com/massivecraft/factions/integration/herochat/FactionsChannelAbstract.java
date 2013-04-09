@@ -25,7 +25,7 @@ import com.dthielke.herochat.util.Messaging;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayerColl;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.struct.Rel;
+import com.massivecraft.factions.Rel;
 
 public abstract class FactionsChannelAbstract implements Channel
 {

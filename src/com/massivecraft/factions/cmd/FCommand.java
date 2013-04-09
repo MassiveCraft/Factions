@@ -7,14 +7,14 @@ import org.bukkit.entity.Player;
 
 import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.integration.Econ;
+import com.massivecraft.factions.FFlag;
+import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayerColl;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionColl;
 import com.massivecraft.factions.Factions;
-import com.massivecraft.factions.struct.FFlag;
-import com.massivecraft.factions.struct.FPerm;
-import com.massivecraft.factions.struct.Rel;
+import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.zcore.MCommand;
 
 

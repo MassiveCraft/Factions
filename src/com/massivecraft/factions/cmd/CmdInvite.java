@@ -1,9 +1,9 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.ConfServer;
+import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Perm;
-import com.massivecraft.factions.struct.FPerm;
 
 public class CmdInvite extends FCommand
 {

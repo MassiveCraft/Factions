@@ -1,8 +1,8 @@
 package com.massivecraft.factions.cmd;
 
+import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Perm;
-import com.massivecraft.factions.struct.FPerm;
 
 public class CmdAutoClaim extends FCommand
 {

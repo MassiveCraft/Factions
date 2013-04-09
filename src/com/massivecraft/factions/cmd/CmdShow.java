@@ -7,11 +7,11 @@ import java.util.Map;
 
 import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.integration.Econ;
+import com.massivecraft.factions.FFlag;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Perm;
-import com.massivecraft.factions.struct.FFlag;
-import com.massivecraft.factions.struct.Rel;
+import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.zcore.util.TextUtil;
 
 public class CmdShow extends FCommand

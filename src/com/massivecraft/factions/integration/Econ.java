@@ -8,12 +8,12 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
 import com.massivecraft.factions.ConfServer;
+import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionColl;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.iface.EconomyParticipator;
-import com.massivecraft.factions.struct.FPerm;
 import com.massivecraft.factions.util.RelationUtil;
 
 import net.milkbowl.vault.economy.Economy;

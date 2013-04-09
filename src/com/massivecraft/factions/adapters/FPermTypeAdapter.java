@@ -6,7 +6,8 @@ import org.bukkit.craftbukkit.libs.com.google.gson.JsonDeserializationContext;
 import org.bukkit.craftbukkit.libs.com.google.gson.JsonDeserializer;
 import org.bukkit.craftbukkit.libs.com.google.gson.JsonElement;
 import org.bukkit.craftbukkit.libs.com.google.gson.JsonParseException;
-import com.massivecraft.factions.struct.FPerm;
+
+import com.massivecraft.factions.FPerm;
 
 public class FPermTypeAdapter implements JsonDeserializer<FPerm>
 {

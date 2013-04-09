@@ -1,8 +1,7 @@
-package com.massivecraft.factions.struct;
+package com.massivecraft.factions;
 
 import org.bukkit.ChatColor;
 
-import com.massivecraft.factions.ConfServer;
 
 public enum Rel
 {
