@@ -19,13 +19,13 @@ import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.factions.zcore.persist.EntityCollection;
 import com.massivecraft.factions.zcore.util.TextUtil;
 
-public class Factions extends EntityCollection<Faction>
+public class FactionColl extends EntityCollection<Faction>
 {
-	public static Factions i = new Factions();
+	public static FactionColl i = new FactionColl();
 	
 	P p = P.p;
 	
-	private Factions()
+	private FactionColl()
 	{
 		super
 		(

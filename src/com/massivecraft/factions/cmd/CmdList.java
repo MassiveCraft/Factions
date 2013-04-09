@@ -6,7 +6,7 @@ import java.util.Comparator;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.FactionColl;
 import com.massivecraft.factions.Perm;
 
 
@@ -37,9 +37,9 @@ public class CmdList extends FCommand
 		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
 		if ( ! payForCommand(Conf.econCostList, "to list the factions", "for listing the factions")) return;
 		
-		ArrayList<Faction> factionList = new ArrayList<Faction>(Factions.i.get());
+		ArrayList<Faction> factionList = new ArrayList<Faction>(FactionColl.i.get());
 
-		factionList.remove(Factions.i.getNone());
+		factionList.remove(FactionColl.i.getNone());
 		// TODO: Add flag SECRET To factions instead.
 		//factionList.remove(Factions.i.getSafeZone());
 		//factionList.remove(Factions.i.getWarZone());
@@ -91,7 +91,7 @@ public class CmdList extends FCommand
 		sendMessage(p.txt.getPage(lines, this.argAsInt(0, 1), "Faction List"));
  */
 
-		factionList.add(0, Factions.i.getNone());
+		factionList.add(0, FactionColl.i.getNone());
 
 		final int pageheight = 9;
 		int pagenumber = this.argAsInt(0, 1);
@@ -111,7 +111,7 @@ public class CmdList extends FCommand
 		{
 			if (faction.isNone())
 			{
-				lines.add(p.txt.parse("<i>Factionless<i> %d online", Factions.i.getNone().getFPlayersWhereOnline(true).size()));
+				lines.add(p.txt.parse("<i>Factionless<i> %d online", FactionColl.i.getNone().getFPlayersWhereOnline(true).size()));
 				continue;
 			}
 			lines.add(p.txt.parse("%s<i> %d/%d online, %d/%d/%d",

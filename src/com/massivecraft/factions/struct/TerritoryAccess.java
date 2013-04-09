@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.FactionColl;
 import com.massivecraft.factions.P;
 
 import org.bukkit.craftbukkit.libs.com.google.gson.JsonArray;
@@ -54,7 +54,7 @@ public class TerritoryAccess implements JsonDeserializer<TerritoryAccess>, JsonS
 	}
 	public Faction getHostFaction()
 	{
-		return Factions.i.get(hostFactionID);
+		return FactionColl.i.get(hostFactionID);
 	}
 
 	// considered "default" if host faction is still allowed and nobody has been granted access
@@ -166,7 +166,7 @@ public class TerritoryAccess implements JsonDeserializer<TerritoryAccess>, JsonS
 		{
 			if (list.length() > 0)
 				list.append(", ");
-			list.append(Factions.i.get(factionID).getTag());
+			list.append(FactionColl.i.get(factionID).getTag());
 		}
 		return list.toString();
 	}

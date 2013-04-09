@@ -8,7 +8,7 @@ import org.bukkit.event.HandlerList;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.FactionColl;
 
 public class FactionDisbandEvent extends Event implements Cancellable
 {
@@ -37,7 +37,7 @@ public class FactionDisbandEvent extends Event implements Cancellable
 
 	public Faction getFaction()
 	{
-		return Factions.i.get(id);
+		return FactionColl.i.get(id);
 	}
 
 	public FPlayer getFPlayer()

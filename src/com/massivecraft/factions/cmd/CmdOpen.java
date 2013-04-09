@@ -2,7 +2,7 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.FactionColl;
 import com.massivecraft.factions.Perm;
 
 public class CmdOpen extends FCommand
@@ -36,7 +36,7 @@ public class CmdOpen extends FCommand
 		
 		// Inform
 		myFaction.msg("%s<i> changed the faction to <h>%s<i>.", fme.describeTo(myFaction, true), open);
-		for (Faction faction : Factions.i.get())
+		for (Faction faction : FactionColl.i.get())
 		{
 			if (faction == myFaction)
 			{

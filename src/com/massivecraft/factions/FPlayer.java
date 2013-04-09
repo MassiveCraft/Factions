@@ -44,7 +44,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 	
 	// FIELD: factionId
 	private String factionId;
-	public Faction getFaction() { if(this.factionId == null) {return null;} return Factions.i.get(this.factionId); }
+	public Faction getFaction() { if(this.factionId == null) {return null;} return FactionColl.i.get(this.factionId); }
 	public String getFactionId() { return this.factionId; }
 	public boolean hasFaction() { return ! factionId.equals("0"); }
 	public void setFaction(Faction faction)
@@ -118,7 +118,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		this.loginPvpDisabled = (Conf.noPVPDamageToOthersForXSecondsAfterLogin > 0) ? true : false;
 		this.powerBoost = 0.0;
 
-		if ( ! Conf.newPlayerStartingFactionID.equals("0") && Factions.i.exists(Conf.newPlayerStartingFactionID))
+		if ( ! Conf.newPlayerStartingFactionID.equals("0") && FactionColl.i.exists(Conf.newPlayerStartingFactionID))
 		{
 			this.factionId = Conf.newPlayerStartingFactionID;
 		}
@@ -126,7 +126,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 	
 	public final void resetFactionData(boolean doSpoutUpdate)
 	{
-		if (this.factionId != null && Factions.i.exists(this.factionId)) // Avoid infinite loop! TODO: I think that this is needed is a sign we need to refactor.
+		if (this.factionId != null && FactionColl.i.exists(this.factionId)) // Avoid infinite loop! TODO: I think that this is needed is a sign we need to refactor.
 		{
 			Faction currentFaction = this.getFaction();
 			if (currentFaction != null)

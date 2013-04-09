@@ -104,7 +104,7 @@ public class P extends MPlugin
 		// Load Conf from disk
 		Conf.load();
 		FPlayers.i.loadFromDisc();
-		Factions.i.loadFromDisc();
+		FactionColl.i.loadFromDisc();
 		Board.load();
 		
 		// Add Base Commands
@@ -316,7 +316,7 @@ public class P extends MPlugin
 	public Set<String> getFactionTags()
 	{
 		Set<String> tags = new HashSet<String>();
-		for (Faction faction : Factions.i.get())
+		for (Faction faction : FactionColl.i.get())
 		{
 			tags.add(faction.getTag());
 		}
@@ -327,7 +327,7 @@ public class P extends MPlugin
 	public Set<String> getPlayersInFaction(String factionTag)
 	{
 		Set<String> players = new HashSet<String>();
-		Faction faction = Factions.i.getByTag(factionTag);
+		Faction faction = FactionColl.i.getByTag(factionTag);
 		if (faction != null)
 		{
 			for (FPlayer fplayer : faction.getFPlayers())
@@ -342,7 +342,7 @@ public class P extends MPlugin
 	public Set<String> getOnlinePlayersInFaction(String factionTag)
 	{
 		Set<String> players = new HashSet<String>();
-		Faction faction = Factions.i.getByTag(factionTag);
+		Faction faction = FactionColl.i.getByTag(factionTag);
 		if (faction != null)
 		{
 			for (FPlayer fplayer : faction.getFPlayersWhereOnline(true))

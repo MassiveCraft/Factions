@@ -40,7 +40,7 @@ public class FPlayers extends PlayerEntityCollection<FPlayer>
 	{
 		for (FPlayer fplayer : this.get())
 		{
-			if ( ! Factions.i.exists(fplayer.getFactionId()))
+			if ( ! FactionColl.i.exists(fplayer.getFactionId()))
 			{
 				p.log("Reset faction data (invalid faction) for player "+fplayer.getName());
 				fplayer.resetFactionData(false);

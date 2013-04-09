@@ -8,7 +8,7 @@ import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.FactionColl;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.event.FPlayerJoinEvent;
@@ -45,13 +45,13 @@ public class CmdCreate extends FCommand
 			return;
 		}
 		
-		if (Factions.i.isTagTaken(tag))
+		if (FactionColl.i.isTagTaken(tag))
 		{
 			msg("<b>That tag is already in use.");
 			return;
 		}
 		
-		ArrayList<String> tagValidationErrors = Factions.validateTag(tag);
+		ArrayList<String> tagValidationErrors = FactionColl.validateTag(tag);
 		if (tagValidationErrors.size() > 0)
 		{
 			sendMessage(tagValidationErrors);
@@ -69,7 +69,7 @@ public class CmdCreate extends FCommand
 		// then make 'em pay (if applicable)
 		if ( ! payForCommand(Conf.econCostCreate, "to create a new faction", "for creating a new faction")) return;
 
-		Faction faction = Factions.i.create();
+		Faction faction = FactionColl.i.create();
 
 		// TODO: Why would this even happen??? Auto increment clash??
 		if (faction == null)

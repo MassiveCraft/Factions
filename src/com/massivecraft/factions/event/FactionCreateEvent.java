@@ -7,7 +7,7 @@ import org.bukkit.event.HandlerList;
 
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
-import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.FactionColl;
 
 public class FactionCreateEvent extends Event implements Cancellable
 {
@@ -31,7 +31,7 @@ public class FactionCreateEvent extends Event implements Cancellable
 	
 	public String getFactionId()
 	{
-		return Factions.i.getNextId();
+		return FactionColl.i.getNextId();
 	}
 
 	public String getFactionTag()

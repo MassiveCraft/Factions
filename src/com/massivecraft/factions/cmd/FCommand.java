@@ -10,7 +10,7 @@ import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.FactionColl;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.FFlag;
 import com.massivecraft.factions.struct.FPerm;
@@ -230,13 +230,13 @@ public abstract class FCommand extends MCommand<P>
 			// First we try an exact match
 			if (faction == null)
 			{
-				faction = Factions.i.getByTag(name);
+				faction = FactionColl.i.getByTag(name);
 			}
 			
 			// Next we match faction tags
 			if (faction == null)
 			{
-				faction = Factions.i.getBestTagMatch(name);
+				faction = FactionColl.i.getBestTagMatch(name);
 			}
 				
 			// Next we match player names

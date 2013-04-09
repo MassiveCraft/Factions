@@ -47,7 +47,7 @@ public class Board
 
 	public static Faction getFactionAt(FLocation flocation)
 	{
-		return Factions.i.get(getIdAt(flocation));
+		return FactionColl.i.get(getIdAt(flocation));
 	}
 	public static Faction getFactionAt(Location location)
 	{
@@ -127,7 +127,7 @@ public class Board
 		Iterator<Entry<FLocation, TerritoryAccess>> iter = flocationIds.entrySet().iterator();
 		while (iter.hasNext()) {
 			Entry<FLocation, TerritoryAccess> entry = iter.next();
-			if ( ! Factions.i.exists(entry.getValue().getHostFactionID()))
+			if ( ! FactionColl.i.exists(entry.getValue().getHostFactionID()))
 			{
 				if(Conf.onUnclaimResetLwcLocks && LWCFeatures.getEnabled())
 					LWCFeatures.clearAllChests(entry.getKey());

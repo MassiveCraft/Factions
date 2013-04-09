@@ -3,7 +3,7 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.Board;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayers;
-import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.FactionColl;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.Perm;
 
@@ -47,7 +47,7 @@ public class CmdReload extends FCommand
 		}
 		else if (file.startsWith("f"))
 		{
-			Factions.i.loadFromDisc();
+			FactionColl.i.loadFromDisc();
 			fileName = "factions.json";
 		}
 		else if (file.startsWith("p"))
@@ -60,7 +60,7 @@ public class CmdReload extends FCommand
 			fileName = "all";
 			Conf.load();
 			FPlayers.i.loadFromDisc();
-			Factions.i.loadFromDisc();
+			FactionColl.i.loadFromDisc();
 			Board.load();
 		}
 		else

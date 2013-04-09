@@ -6,7 +6,7 @@ import org.bukkit.Bukkit;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.FactionColl;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.event.FactionRenameEvent;
 import com.massivecraft.factions.integration.SpoutFeatures;
@@ -37,14 +37,14 @@ public class CmdTag extends FCommand
 		String tag = this.argAsString(0);
 		
 		// TODO does not first test cover selfcase?
-		if (Factions.i.isTagTaken(tag) && ! MiscUtil.getComparisonString(tag).equals(myFaction.getComparisonTag()))
+		if (FactionColl.i.isTagTaken(tag) && ! MiscUtil.getComparisonString(tag).equals(myFaction.getComparisonTag()))
 		{
 			msg("<b>That tag is already taken");
 			return;
 		}
 
 		ArrayList<String> errors = new ArrayList<String>();
-		errors.addAll(Factions.validateTag(tag));
+		errors.addAll(FactionColl.validateTag(tag));
 		if (errors.size() > 0)
 		{
 			sendMessage(errors);
@@ -67,7 +67,7 @@ public class CmdTag extends FCommand
 
 		// Inform
 		myFaction.msg("%s<i> changed your faction tag to %s", fme.describeTo(myFaction, true), myFaction.getTag(myFaction));
-		for (Faction faction : Factions.i.get())
+		for (Faction faction : FactionColl.i.get())
 		{
 			if (faction == myFaction)
 			{

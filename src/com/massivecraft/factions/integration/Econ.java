@@ -10,7 +10,7 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.FactionColl;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.struct.FPerm;
@@ -299,7 +299,7 @@ public class Econ
 	{
 		if ( ! shouldBeUsed()) return;
 		
-		for (Faction faction : Factions.i.get())
+		for (Faction faction : FactionColl.i.get())
 		{
 			if (faction.money > 0)
 			{

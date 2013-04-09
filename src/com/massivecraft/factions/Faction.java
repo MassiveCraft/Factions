@@ -289,7 +289,7 @@ public class Faction extends Entity implements EconomyParticipator
 		{
 			ret.put(rel, new ArrayList<String>());
 		}
-		for (Faction faction : Factions.i.get())
+		for (Faction faction : FactionColl.i.get())
 		{
 			Rel relation = faction.getRelationTo(this);
 			if (onlyNonNeutral && relation == Rel.NEUTRAL) continue;
