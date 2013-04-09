@@ -11,6 +11,26 @@ import com.massivecraft.factions.struct.Rel;
 
 public class ConfServer
 {
+	// -------------------------------------------- //
+	// INSTANCE & CONSTRUCT
+	// -------------------------------------------- //
+	
+	private static transient ConfServer i = new ConfServer();
+	public static ConfServer get() { return i; }
+	
+	public static void load()
+	{
+		Factions.get().persist.loadOrSaveDefault(i, ConfServer.class, "conf");
+	}
+	public static void save()
+	{
+		Factions.get().persist.save(i);
+	}
+	
+	// -------------------------------------------- //
+	// FIELDS
+	// -------------------------------------------- //
+	
 	public final static transient List<String> baseCommandAliases = new ArrayList<String>();
 	
 	// Colors
@@ -339,19 +359,6 @@ public class ConfServer
         spoutHealthBarColorUnderQuota.put(0.4d, "&6");
         spoutHealthBarColorUnderQuota.put(0.3d, "&c");
         spoutHealthBarColorUnderQuota.put(0.2d, "&4");
-	}
-
-	// -------------------------------------------- //
-	// Persistance
-	// -------------------------------------------- //
-	private static transient ConfServer i = new ConfServer();
-	public static void load()
-	{
-		Factions.get().persist.loadOrSaveDefault(i, ConfServer.class, "conf");
-	}
-	public static void save()
-	{
-		Factions.get().persist.save(i);
 	}
 }
 
