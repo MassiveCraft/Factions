@@ -94,10 +94,10 @@ public class TerritoryAccessAdapter implements JsonDeserializer<TerritoryAccess>
 			if (src.isDefault())
 			{
 				// if Wilderness (faction "0") and default access values, no need to store it
-				if (src.getHostFactionID().equals("0"))
+				if (src.getHostFactionId().equals("0"))
 					return null;
 
-				return new JsonPrimitive(src.getHostFactionID());
+				return new JsonPrimitive(src.getHostFactionId());
 			}
 
 			// otherwise, store all data
@@ -106,19 +106,19 @@ public class TerritoryAccessAdapter implements JsonDeserializer<TerritoryAccess>
 			JsonArray factions = new JsonArray();
 			JsonArray fplayers = new JsonArray();
 
-			Iterator<String> iter = src.factionIDs.iterator();
+			Iterator<String> iter = src.getFactionIds().iterator();
 			while (iter.hasNext())
 			{
 				factions.add(new JsonPrimitive(iter.next()));
 			}
 
-			iter = src.fplayerIDs.iterator();
+			iter = src.getFPlayerIds().iterator();
 			while (iter.hasNext())
 			{
 				fplayers.add(new JsonPrimitive(iter.next()));
 			}
 
-			obj.addProperty(ID, src.getHostFactionID());
+			obj.addProperty(ID, src.getHostFactionId());
 			obj.addProperty(OPEN, src.isHostFactionAllowed());
 			obj.add(FACTIONS, factions);
 			obj.add(FPLAYERS, fplayers);

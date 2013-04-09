@@ -32,7 +32,7 @@ public class Board
 	{
 		if ( ! flocationIds.containsKey(flocation)) return "0";
 		
-		return flocationIds.get(flocation).getHostFactionID();
+		return flocationIds.get(flocation).getHostFactionId();
 	}
 
 	public static TerritoryAccess getTerritoryAccessAt(FLocation flocation)
@@ -84,7 +84,7 @@ public class Board
 		while (iter.hasNext())
 		{
 			Entry<FLocation, TerritoryAccess> entry = iter.next();
-			if (entry.getValue().getHostFactionID().equals(factionId))
+			if (entry.getValue().getHostFactionId().equals(factionId))
 			{
 					if(ConfServer.onUnclaimResetLwcLocks && LWCFeatures.getEnabled())
 						LWCFeatures.clearAllChests(entry.getKey());
@@ -126,12 +126,12 @@ public class Board
 		Iterator<Entry<FLocation, TerritoryAccess>> iter = flocationIds.entrySet().iterator();
 		while (iter.hasNext()) {
 			Entry<FLocation, TerritoryAccess> entry = iter.next();
-			if ( ! FactionColl.i.exists(entry.getValue().getHostFactionID()))
+			if ( ! FactionColl.i.exists(entry.getValue().getHostFactionId()))
 			{
 				if(ConfServer.onUnclaimResetLwcLocks && LWCFeatures.getEnabled())
 					LWCFeatures.clearAllChests(entry.getKey());
 
-				Factions.get().log("Board cleaner removed "+entry.getValue().getHostFactionID()+" from "+entry.getKey());
+				Factions.get().log("Board cleaner removed "+entry.getValue().getHostFactionId()+" from "+entry.getKey());
 				iter.remove();
 			}
 		}
@@ -146,7 +146,7 @@ public class Board
 		int ret = 0;
 		for (TerritoryAccess thatFactionId : flocationIds.values())
 		{
-			if(thatFactionId.getHostFactionID().equals(factionId))
+			if(thatFactionId.getHostFactionId().equals(factionId))
 			{
 				ret += 1;
 			}
@@ -166,7 +166,7 @@ public class Board
 		Iterator<Entry<FLocation, TerritoryAccess>> iter = flocationIds.entrySet().iterator();
 		while (iter.hasNext()) {
 			Entry<FLocation, TerritoryAccess> entry = iter.next();
-			if (entry.getValue().getHostFactionID().equals(factionId) && entry.getKey().getWorldName().equals(worldName))
+			if (entry.getValue().getHostFactionId().equals(factionId) && entry.getKey().getWorldName().equals(worldName))
 			{
 				ret += 1;
 			}
