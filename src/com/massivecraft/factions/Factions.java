@@ -9,7 +9,6 @@ import java.util.Set;
 
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.Location;
 import org.bukkit.Material;
 
@@ -234,35 +233,6 @@ public class Factions extends MPlugin
 	public void handleFactionTagExternally(boolean notByFactions)
 	{
 		Conf.chatTagHandledByAnotherPlugin = notByFactions;
-	}
-
-	// Simply put, should this chat event be left for Factions to handle? For now, that means players with Faction Chat
-	// enabled or use of the Factions f command without a slash; combination of isPlayerFactionChatting() and isFactionsCommand()
-	
-	
-	public boolean shouldLetFactionsHandleThisChat(AsyncPlayerChatEvent event)
-	{
-		if (event == null) return false;
-		return (isPlayerFactionChatting(event.getPlayer()) || isFactionsCommand(event.getMessage()));
-	}
-
-	// Does player have Faction Chat enabled? If so, chat plugins should preferably not do channels,
-	// local chat, or anything else which targets individual recipients, so Faction Chat can be done
-	/**
-	 * @deprecated  As of release 1.8, there is no built in faction chat.
-	 */
-	public boolean isPlayerFactionChatting(Player player)
-	{
-		return false;
-	}
-
-	// Is this chat message actually a Factions command, and thus should be left alone by other plugins?
-	/**
-	 * @deprecated As of release 1.8.1 the normal Bukkit command-handling is used. 
-	 */
-	public boolean isFactionsCommand(String check)
-	{
-		return false;
 	}
 
 	// Get a player's faction tag (faction name), mainly for usage by chat plugins for local/channel chat

@@ -59,26 +59,14 @@ public class EssentialsFeatures
 		}
 		catch (ClassNotFoundException ex)
 		{
-			// no? try older Essentials 2.x integration method
-			try
-			{
-				EssentialsOldVersionFeatures.integrateChat(essChat);
-			}
-			catch (NoClassDefFoundError ex2) { /* no known integration method, then */ }
+			
 		}
 	}
 
 	public static void unhookChat()
 	{
 		if (essChat == null) return;
-
-		try
-		{
-			EssentialsOldVersionFeatures.unhookChat();
-		}
-		catch (NoClassDefFoundError ex) {}
 	}
-
 
 	// return false if feature is disabled or Essentials isn't available
 	public static boolean handleTeleport(Player player, Location loc)
