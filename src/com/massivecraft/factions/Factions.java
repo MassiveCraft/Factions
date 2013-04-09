@@ -157,7 +157,7 @@ public class Factions extends MPlugin
 		.disableHtmlEscaping()
 		.excludeFieldsWithModifiers(Modifier.TRANSIENT, Modifier.VOLATILE)
 		.registerTypeAdapter(LazyLocation.class, new LocationTypeAdapter())
-		.registerTypeAdapter(TerritoryAccess.class, new TerritoryAccess())
+		.registerTypeAdapter(TerritoryAccess.class, TerritoryAccessAdapter.get())
 		.registerTypeAdapter(Rel.class, new RelTypeAdapter())
 		.registerTypeAdapter(FPerm.class, new FPermTypeAdapter())
 		.registerTypeAdapter(FFlag.class, new FFlagTypeAdapter());

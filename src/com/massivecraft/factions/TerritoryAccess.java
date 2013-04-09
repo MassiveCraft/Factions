@@ -1,32 +1,16 @@
 package com.massivecraft.factions;
 
-import java.lang.reflect.Type;
-import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.logging.Level;
 
 import org.bukkit.entity.Player;
 
-
-import org.bukkit.craftbukkit.libs.com.google.gson.JsonArray;
-import org.bukkit.craftbukkit.libs.com.google.gson.JsonDeserializationContext;
-import org.bukkit.craftbukkit.libs.com.google.gson.JsonDeserializer;
-import org.bukkit.craftbukkit.libs.com.google.gson.JsonElement;
-import org.bukkit.craftbukkit.libs.com.google.gson.JsonObject;
-import org.bukkit.craftbukkit.libs.com.google.gson.JsonParseException;
-import org.bukkit.craftbukkit.libs.com.google.gson.JsonPrimitive;
-import org.bukkit.craftbukkit.libs.com.google.gson.JsonSerializationContext;
-import org.bukkit.craftbukkit.libs.com.google.gson.JsonSerializer;
-
-
-public class TerritoryAccess implements JsonDeserializer<TerritoryAccess>, JsonSerializer<TerritoryAccess>
+public class TerritoryAccess
 {
-	private String hostFactionID;
-	private boolean hostFactionAllowed = true;
-	private Set<String> factionIDs = new LinkedHashSet<String>();
-	private Set<String> fplayerIDs = new LinkedHashSet<String>();
-
+	protected String hostFactionID;
+	protected boolean hostFactionAllowed = true;
+	protected Set<String> factionIDs = new LinkedHashSet<String>();
+	protected Set<String> fplayerIDs = new LinkedHashSet<String>();
 
 	public TerritoryAccess(String factionID)
 	{
@@ -210,112 +194,8 @@ public class TerritoryAccess implements JsonDeserializer<TerritoryAccess>, JsonS
 		return ( ! this.isHostFactionAllowed() && this.doesHostFactionMatch(testSubject) && ! FPerm.ACCESS.has(testSubject, this.getHostFaction()));
 	}
 
-
 	//----------------------------------------------//
-	// JSON Serialize/Deserialize Type Adapters
-	//----------------------------------------------//
-
-	@Override
-	public TerritoryAccess deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException
-	{
-		try
-		{
-			// if stored as simple string, it's just the faction ID and default values are to be used
-			if (json.isJsonPrimitive())
-			{
-				String factionID = json.getAsString();
-				return new TerritoryAccess(factionID);
-			}
-
-			// otherwise, it's stored as an object and all data should be present
-			JsonObject obj = json.getAsJsonObject();
-			if (obj == null) return null;
-
-			String factionID = obj.get("ID").getAsString();
-			boolean hostAllowed = obj.get("open").getAsBoolean();
-			JsonArray factions = obj.getAsJsonArray("factions");
-			JsonArray fplayers = obj.getAsJsonArray("fplayers");
-
-			TerritoryAccess access = new TerritoryAccess(factionID);
-			access.setHostFactionAllowed(hostAllowed);
-
-			Iterator<JsonElement> iter = factions.iterator();
-			while (iter.hasNext())
-			{
-				access.addFaction(iter.next().getAsString());
-			}
-
-			iter = fplayers.iterator();
-			while (iter.hasNext())
-			{
-				access.addFPlayer(iter.next().getAsString());
-			}
-
-			return access;
-
-		}
-		catch (Exception ex)
-		{
-			ex.printStackTrace();
-			Factions.get().log(Level.WARNING, "Error encountered while deserializing TerritoryAccess data.");
-			return null;
-		}
-	}
-
-	@Override
-	public JsonElement serialize(TerritoryAccess src, Type typeOfSrc, JsonSerializationContext context)
-	{
-		try
-		{
-			if (src == null) return null;
-
-			// if default values, store as simple string
-			if (src.isDefault())
-			{
-				// if Wilderness (faction "0") and default access values, no need to store it
-				if (src.getHostFactionID().equals("0"))
-					return null;
-
-				return new JsonPrimitive(src.getHostFactionID());
-			}
-
-			// otherwise, store all data
-			JsonObject obj = new JsonObject();
-
-			JsonArray factions = new JsonArray();
-			JsonArray fplayers = new JsonArray();
-
-			Iterator<String> iter = src.factionIDs.iterator();
-			while (iter.hasNext())
-			{
-				factions.add(new JsonPrimitive(iter.next()));
-			}
-
-			iter = src.fplayerIDs.iterator();
-			while (iter.hasNext())
-			{
-				fplayers.add(new JsonPrimitive(iter.next()));
-			}
-
-			obj.addProperty("ID", src.getHostFactionID());
-			obj.addProperty("open", src.isHostFactionAllowed());
-			obj.add("factions", factions);
-			obj.add("fplayers", fplayers);
-
-			return obj;
-
-		}
-		catch (Exception ex)
-		{
-			ex.printStackTrace();
-			Factions.get().log(Level.WARNING, "Error encountered while serializing TerritoryAccess data.");
-			return null;
-		}
-	}
-
-
-	//----------------------------------------------//
-	// Comparison
+	// COMPARISON
 	//----------------------------------------------//
 
 	@Override
@@ -327,10 +207,9 @@ public class TerritoryAccess implements JsonDeserializer<TerritoryAccess>, JsonS
 	@Override
 	public boolean equals(Object obj)
 	{
-		if (obj == this)
-			return true;
-		if (!(obj instanceof TerritoryAccess))
-			return false;
+		if (obj == this) return true;
+		
+		if (!(obj instanceof TerritoryAccess)) return false;
 
 		TerritoryAccess that = (TerritoryAccess) obj;
 		return this.hostFactionID.equals(that.hostFactionID) && this.hostFactionAllowed == that.hostFactionAllowed && this.factionIDs == that.factionIDs && this.fplayerIDs == that.fplayerIDs;
