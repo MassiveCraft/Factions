@@ -1,4 +1,4 @@
-package com.massivecraft.factions;
+package com.massivecraft.factions.adapters;
 
 import java.lang.reflect.Type;
 import java.util.Iterator;
@@ -13,6 +13,9 @@ import org.bukkit.craftbukkit.libs.com.google.gson.JsonParseException;
 import org.bukkit.craftbukkit.libs.com.google.gson.JsonPrimitive;
 import org.bukkit.craftbukkit.libs.com.google.gson.JsonSerializationContext;
 import org.bukkit.craftbukkit.libs.com.google.gson.JsonSerializer;
+
+import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.TerritoryAccess;
 
 public class TerritoryAccessAdapter implements JsonDeserializer<TerritoryAccess>, JsonSerializer<TerritoryAccess>
 {
