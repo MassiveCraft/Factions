@@ -12,20 +12,9 @@ public class TerritoryAccess
 	// -------------------------------------------- //
 	
 	private String hostFactionId;
-	public String getHostFactionId()
-	{
-		return this.hostFactionId;
-	}
+	public String getHostFactionId() { return this.hostFactionId; }
 	public Faction getHostFaction() { return FactionColl.i.get(this.hostFactionId); }
-	
-	public void setHostFactionId(String factionId)
-	{
-		// TODO: Why all these here???
-		this.hostFactionId = factionId;
-		this.hostFactionAllowed = true;
-		this.factionIds.clear();
-		this.fplayerIds.clear();
-	}
+	public void setHostFactionId(String hostFactionId) { this.hostFactionId = hostFactionId; }
 	
 	private boolean hostFactionAllowed = true;
 	public boolean isHostFactionAllowed() { return this.hostFactionAllowed; }
@@ -40,6 +29,8 @@ public class TerritoryAccess
 	// -------------------------------------------- //
 	// CONSTRUCT
 	// -------------------------------------------- //
+	
+	
 	
 	public TerritoryAccess(String factionID)
 	{
@@ -57,30 +48,30 @@ public class TerritoryAccess
 
 	public void addFaction(String factionId) { this.getFactionIds().add(factionId); }
 	public void addFaction(Faction faction) { this.addFaction(faction.getId()); }
-	public void removeFaction(String factionID) { this.getFactionIds().remove(factionID); }
+	public void removeFaction(String factionId) { this.getFactionIds().remove(factionId); }
 	public void removeFaction(Faction faction) { this.removeFaction(faction.getId()); }
 	
 	// return true if faction was added, false if it was removed
-	public boolean toggleFaction(String factionID)
+	public boolean toggleFaction(String factionId)
 	{
 		// if the host faction, special handling
-		if (doesHostFactionMatch(factionID))
+		if (this.doesHostFactionMatch(factionId))
 		{
 			this.hostFactionAllowed ^= true;
 			return this.hostFactionAllowed;
 		}
 
-		if (this.getFactionIds().contains(factionID))
+		if (this.getFactionIds().contains(factionId))
 		{
-			removeFaction(factionID);
+			this.removeFaction(factionId);
 			return false;
 		}
-		this.addFaction(factionID);
+		this.addFaction(factionId);
 		return true;
 	}
 	public boolean toggleFaction(Faction faction)
 	{
-		return toggleFaction(faction.getId());
+		return this.toggleFaction(faction.getId());
 	}
 	
 	
@@ -93,17 +84,16 @@ public class TerritoryAccess
 	{
 		if (this.getFPlayerIds().contains(fplayerID))
 		{
-			removeFPlayer(fplayerID);
+			this.removeFPlayer(fplayerID);
 			return false;
 		}
-		addFPlayer(fplayerID);
+		this.addFPlayer(fplayerID);
 		return true;
 	}
 	public boolean toggleFPlayer(FPlayer fplayer)
 	{
-		return toggleFPlayer(fplayer.getId());
+		return this.toggleFPlayer(fplayer.getId());
 	}
-	
 	
 	
 	public boolean doesHostFactionMatch(Object testSubject)
@@ -126,9 +116,16 @@ public class TerritoryAccess
 	// considered "default" if host faction is still allowed and nobody has been granted access
 	public boolean isDefault()
 	{
-		return this.hostFactionAllowed && factionIds.isEmpty() && fplayerIds.isEmpty();
+		return this.hostFactionAllowed && this.factionIds.isEmpty() && this.fplayerIds.isEmpty();
 	}
 	
+	public void setDefault(String factionId)
+	{
+		this.hostFactionId = factionId;
+		this.hostFactionAllowed = true;
+		this.factionIds.clear();
+		this.fplayerIds.clear();
+	}
 
 	public String factionList()
 	{
@@ -175,9 +172,9 @@ public class TerritoryAccess
 	{
 		return factionHasAccess(faction.getId());
 	}
-	public boolean factionHasAccess(String factionID)
+	public boolean factionHasAccess(String factionId)
 	{
-		return factionIds.contains(factionID);
+		return factionIds.contains(factionId);
 	}
 
 	// this should normally only be checked after running subjectHasAccess() or fPlayerHasAccess() above to see if they have access explicitly granted
