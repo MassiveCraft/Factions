@@ -20,7 +20,6 @@ import com.massivecraft.factions.listeners.FactionsBlockListener;
 import com.massivecraft.factions.listeners.FactionsChatListener;
 import com.massivecraft.factions.listeners.FactionsEntityListener;
 import com.massivecraft.factions.listeners.FactionsExploitListener;
-import com.massivecraft.factions.listeners.FactionsAppearanceListener;
 import com.massivecraft.factions.listeners.FactionsPlayerListener;
 import com.massivecraft.factions.listeners.FactionsServerListener;
 import com.massivecraft.factions.util.AutoLeaveTask;
@@ -55,7 +54,6 @@ public class Factions extends MPlugin
 	public FactionsExploitListener exploitListener;
 	public FactionsBlockListener blockListener;
 	public FactionsServerListener serverListener;
-	public FactionsAppearanceListener appearanceListener;
 	
 	// Persistance related
 	private boolean locked = false;
@@ -109,6 +107,8 @@ public class Factions extends MPlugin
 		startEconLandRewardTask(false);
 
 		// Register Event Handlers
+		MainListener.get().setup();
+		
 		this.playerListener = new FactionsPlayerListener(this);
 		getServer().getPluginManager().registerEvents(this.playerListener, this);
 		
@@ -126,9 +126,6 @@ public class Factions extends MPlugin
 		
 		this.serverListener = new FactionsServerListener(this);
 		getServer().getPluginManager().registerEvents(this.serverListener, this);
-		
-		this.appearanceListener = new FactionsAppearanceListener(this);
-		getServer().getPluginManager().registerEvents(this.appearanceListener, this);
 		
 		postEnable();
 		this.loadSuccessful = true;
