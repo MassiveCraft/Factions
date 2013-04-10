@@ -24,6 +24,8 @@ public abstract class FCommand extends MCommand<Factions>
 	
 	public FPlayer fme;
 	public Faction myFaction;
+	
+	// TODO: All these are "command reqs"
 	public boolean senderMustBeMember;
 	public boolean senderMustBeOfficer;
 	public boolean senderMustBeLeader;
@@ -122,6 +124,9 @@ public abstract class FCommand extends MCommand<Factions>
 	// Assertions
 	// -------------------------------------------- //
 
+	// These are not used. Remove in the future if no need for them arises.
+	
+	/*
 	public boolean assertHasFaction()
 	{
 		if (me == null) return true;
@@ -144,11 +149,13 @@ public abstract class FCommand extends MCommand<Factions>
 			return false;
 		}
 		return true;
-	}
+	}*/
 	
 	// -------------------------------------------- //
 	// Argument Readers
 	// -------------------------------------------- //
+	
+	// TODO: Convert these arg-readers to MCore ArgReaders.
 	
 	// FPLAYER ======================
 	public FPlayer strAsFPlayer(String name, FPlayer def, boolean msg)
