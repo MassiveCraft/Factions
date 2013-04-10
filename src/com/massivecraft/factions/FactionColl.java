@@ -18,7 +18,13 @@ import com.massivecraft.factions.zcore.util.TextUtil;
 
 public class FactionColl extends EntityCollection<Faction>
 {
+	// -------------------------------------------- //
+	// INSTANCE & CONSTRUCT
+	// -------------------------------------------- //
+	
 	public static FactionColl i = new FactionColl();
+	// public static FactionColl get() { return i; }
+	// TODO: Crap, does not work because of the instance method colliding.
 	
 	private FactionColl()
 	{
