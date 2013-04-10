@@ -9,6 +9,7 @@ import java.util.logging.Level;
 
 import org.bukkit.ChatColor;
 
+import com.massivecraft.mcore.util.Txt;
 import com.massivecraft.mcore.xlib.gson.reflect.TypeToken;
 
 import com.massivecraft.factions.integration.Econ;
@@ -210,19 +211,19 @@ public class FactionColl extends EntityCollection<Faction>
 		
 		if(MiscUtil.getComparisonString(str).length() < ConfServer.factionTagLengthMin)
 		{
-			errors.add(Factions.get().txt.parse("<i>The faction tag can't be shorter than <h>%s<i> chars.", ConfServer.factionTagLengthMin));
+			errors.add(Txt.parse("<i>The faction tag can't be shorter than <h>%s<i> chars.", ConfServer.factionTagLengthMin));
 		}
 		
 		if(str.length() > ConfServer.factionTagLengthMax)
 		{
-			errors.add(Factions.get().txt.parse("<i>The faction tag can't be longer than <h>%s<i> chars.", ConfServer.factionTagLengthMax));
+			errors.add(Txt.parse("<i>The faction tag can't be longer than <h>%s<i> chars.", ConfServer.factionTagLengthMax));
 		}
 		
 		for (char c : str.toCharArray())
 		{
 			if ( ! MiscUtil.substanceChars.contains(String.valueOf(c)))
 			{
-				errors.add(Factions.get().txt.parse("<i>Faction tag must be alphanumeric. \"<h>%s<i>\" is not allowed.", c));
+				errors.add(Txt.parse("<i>Faction tag must be alphanumeric. \"<h>%s<i>\" is not allowed.", c));
 			}
 		}
 		

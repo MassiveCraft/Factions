@@ -18,6 +18,7 @@ import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.integration.Worldguard;
 import com.massivecraft.factions.util.RelationUtil;
 import com.massivecraft.factions.zcore.persist.PlayerEntity;
+import com.massivecraft.mcore.util.Txt;
 
 
 /**
@@ -450,7 +451,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 			return;
 		}
 		Faction factionHere = Board.getFactionAt(this.getLastStoodAt());
-		String msg = Factions.get().txt.parse("<i>")+" ~ "+factionHere.getTag(this);
+		String msg = Txt.parse("<i>")+" ~ "+factionHere.getTag(this);
 		if (factionHere.getDescription().length() > 0)
 		{
 			msg += " - "+factionHere.getDescription();
@@ -543,11 +544,11 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		if (ConfServer.worldGuardChecking && Worldguard.checkForRegionsInChunk(location))
 		{
 			// Checks for WorldGuard regions in the chunk attempting to be claimed
-			error = Factions.get().txt.parse("<b>This land is protected");
+			error = Txt.parse("<b>This land is protected");
 		}
 		else if (ConfServer.worldsNoClaiming.contains(flocation.getWorldName()))
 		{
-			error = Factions.get().txt.parse("<b>Sorry, this world has land claiming disabled.");
+			error = Txt.parse("<b>Sorry, this world has land claiming disabled.");
 		}
 		else if (this.hasAdminMode())
 		{
@@ -555,7 +556,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		}
 		else if (forFaction == currentFaction)
 		{
-			error = Factions.get().txt.parse("%s<i> already own this land.", forFaction.describeTo(this, true));
+			error = Txt.parse("%s<i> already own this land.", forFaction.describeTo(this, true));
 		}
 		else if ( ! FPerm.TERRITORY.has(this, forFaction, true))
 		{
@@ -563,23 +564,23 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		}
 		else if (forFaction.getFPlayers().size() < ConfServer.claimsRequireMinFactionMembers)
 		{
-			error = Factions.get().txt.parse("Factions must have at least <h>%s<b> members to claim land.", ConfServer.claimsRequireMinFactionMembers);
+			error = Txt.parse("Factions must have at least <h>%s<b> members to claim land.", ConfServer.claimsRequireMinFactionMembers);
 		}
 		else if (ownedLand >= forFaction.getPowerRounded())
 		{
-			error = Factions.get().txt.parse("<b>You can't claim more land! You need more power!");
+			error = Txt.parse("<b>You can't claim more land! You need more power!");
 		}
 		else if (ConfServer.claimedLandsMax != 0 && ownedLand >= ConfServer.claimedLandsMax && ! forFaction.getFlag(FFlag.INFPOWER))
 		{
-			error = Factions.get().txt.parse("<b>Limit reached. You can't claim more land!");
+			error = Txt.parse("<b>Limit reached. You can't claim more land!");
 		}
 		else if ( ! ConfServer.claimingFromOthersAllowed && currentFaction.isNormal())
 		{
-			error = Factions.get().txt.parse("<b>You may not claim land from others.");
+			error = Txt.parse("<b>You may not claim land from others.");
 		}
 		else if (currentFaction.getRelationTo(forFaction).isAtLeast(Rel.TRUCE) && ! currentFaction.isNone())
 		{
-			error = Factions.get().txt.parse("<b>You can't claim this land due to your relation with the current owner.");
+			error = Txt.parse("<b>You can't claim this land due to your relation with the current owner.");
 		}
 		else if
 		(
@@ -591,20 +592,20 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		)
 		{
 			if (ConfServer.claimsCanBeUnconnectedIfOwnedByOtherFaction)
-				error = Factions.get().txt.parse("<b>You can only claim additional land which is connected to your first claim or controlled by another faction!");
+				error = Txt.parse("<b>You can only claim additional land which is connected to your first claim or controlled by another faction!");
 			else
-				error = Factions.get().txt.parse("<b>You can only claim additional land which is connected to your first claim!");
+				error = Txt.parse("<b>You can only claim additional land which is connected to your first claim!");
 		}
 		else if (currentFaction.isNormal())
 		{
 			if ( ! currentFaction.hasLandInflation())
 			{
 				 // TODO more messages WARN current faction most importantly
-				error = Factions.get().txt.parse("%s<i> owns this land and is strong enough to keep it.", currentFaction.getTag(this));
+				error = Txt.parse("%s<i> owns this land and is strong enough to keep it.", currentFaction.getTag(this));
 			}
 			else if ( ! Board.isBorderLocation(flocation))
 			{
-				error = Factions.get().txt.parse("<b>You must start claiming land at the border of the territory.");
+				error = Txt.parse("<b>You must start claiming land at the border of the territory.");
 			}
 		}
 		
@@ -689,6 +690,6 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 	
 	public void msg(String str, Object... args)
 	{
-		this.sendMessage(Factions.get().txt.parse(str, args));
+		this.sendMessage(Txt.parse(str, args));
 	}
 }

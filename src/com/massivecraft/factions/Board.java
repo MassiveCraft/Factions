@@ -13,6 +13,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 
+import com.massivecraft.mcore.util.Txt;
 import com.massivecraft.mcore.xlib.gson.reflect.TypeToken;
 import com.massivecraft.factions.integration.LWCFeatures;
 import com.massivecraft.factions.iface.RelationParticipator;
@@ -187,7 +188,7 @@ public class Board
 	{
 		ArrayList<String> ret = new ArrayList<String>();
 		Faction factionLoc = getFactionAt(flocation);
-		ret.add(Factions.get().txt.titleize("("+flocation.getCoordString()+") "+factionLoc.getTag(observer)));
+		ret.add(Txt.titleize("("+flocation.getCoordString()+") "+factionLoc.getTag(observer)));
 		
 		int halfWidth = ConfServer.mapWidth / 2;
 		int halfHeight = ConfServer.mapHeight / 2;
@@ -233,7 +234,7 @@ public class Board
 		}
 		
 		// Get the compass
-		ArrayList<String> asciiCompass = AsciiCompass.getAsciiCompass(inDegrees, ChatColor.RED, Factions.get().txt.parse("<a>"));
+		ArrayList<String> asciiCompass = AsciiCompass.getAsciiCompass(inDegrees, ChatColor.RED, Txt.parse("<a>"));
 
 		// Add the compass
 		ret.set(1, asciiCompass.get(0)+ret.get(1).substring(3*3));

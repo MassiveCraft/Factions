@@ -3,6 +3,7 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.FFlag;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Perm;
+import com.massivecraft.mcore.util.Txt;
 
 public class CmdFlag extends FCommand
 {
@@ -38,7 +39,7 @@ public class CmdFlag extends FCommand
 		
 		if ( ! this.argIsSet(1))
 		{
-			msg(p.txt.titleize("Flags for " + faction.describeTo(fme, true)));
+			msg(Txt.titleize("Flags for " + faction.describeTo(fme, true)));
 			for (FFlag flag : FFlag.values())
 			{
 				msg(flag.getStateInfo(faction.getFlag(flag), true));
@@ -50,7 +51,7 @@ public class CmdFlag extends FCommand
 		if (flag == null) return;
 		if ( ! this.argIsSet(2))
 		{
-			msg(p.txt.titleize("Flag for " + faction.describeTo(fme, true)));
+			msg(Txt.titleize("Flag for " + faction.describeTo(fme, true)));
 			msg(flag.getStateInfo(faction.getFlag(flag), true));
 			return;
 		}
@@ -62,7 +63,7 @@ public class CmdFlag extends FCommand
 		if ( ! Perm.FLAG_SET.has(sender, true)) return;
 		
 		// Do the change
-		msg(p.txt.titleize("Flag for " + faction.describeTo(fme, true)));
+		msg(Txt.titleize("Flag for " + faction.describeTo(fme, true)));
 		faction.setFlag(flag, targetValue);
 		msg(flag.getStateInfo(faction.getFlag(flag), true));
 	}

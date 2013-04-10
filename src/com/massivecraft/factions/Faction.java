@@ -12,6 +12,7 @@ import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.util.*;
 import com.massivecraft.factions.zcore.persist.Entity;
+import com.massivecraft.mcore.util.Txt;
 
 
 public class Faction extends Entity implements EconomyParticipator
@@ -507,9 +508,10 @@ public class Faction extends Entity implements EconomyParticipator
 	// -------------------------------------------- //
 	// Messages
 	// -------------------------------------------- //
+	
 	public void msg(String message, Object... args)
 	{
-		message = Factions.get().txt.parse(message, args);
+		message = Txt.parse(message, args);
 		
 		for (FPlayer fplayer : this.getFPlayersWhereOnline(true))
 		{

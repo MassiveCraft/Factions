@@ -8,6 +8,7 @@ import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionColl;
 import com.massivecraft.factions.Perm;
+import com.massivecraft.mcore.util.Txt;
 
 
 public class CmdList extends FCommand
@@ -75,10 +76,10 @@ public class CmdList extends FCommand
 		ArrayList<String> lines = new ArrayList<String>();
 
 /*		// this code was really slow on large servers, getting full info for every faction and then only showing 9 of them; rewritten below
-		lines.add(p.txt.parse("<i>Factionless<i> %d online", Factions.i.getNone().getFPlayersWhereOnline(true).size()));
+		lines.add(Txt.parse("<i>Factionless<i> %d online", Factions.i.getNone().getFPlayersWhereOnline(true).size()));
 		for (Faction faction : factionList)
 		{
-			lines.add(p.txt.parse("%s<i> %d/%d online, %d/%d/%d",
+			lines.add(Txt.parse("%s<i> %d/%d online, %d/%d/%d",
 				faction.getTag(fme),
 				faction.getFPlayersWhereOnline(true).size(),
 				faction.getFPlayers().size(),
@@ -88,7 +89,7 @@ public class CmdList extends FCommand
 			);
 		}
 		
-		sendMessage(p.txt.getPage(lines, this.argAsInt(0, 1), "Faction List"));
+		sendMessage(Txt.getPage(lines, this.argAsInt(0, 1), "Faction List"));
  */
 
 		factionList.add(0, FactionColl.i.getNone());
@@ -105,16 +106,16 @@ public class CmdList extends FCommand
 		if (end > factionList.size())
 			end = factionList.size();
 
-		lines.add(p.txt.titleize("Faction List "+pagenumber+"/"+pagecount));
+		lines.add(Txt.titleize("Faction List "+pagenumber+"/"+pagecount));
 
 		for (Faction faction : factionList.subList(start, end))
 		{
 			if (faction.isNone())
 			{
-				lines.add(p.txt.parse("<i>Factionless<i> %d online", FactionColl.i.getNone().getFPlayersWhereOnline(true).size()));
+				lines.add(Txt.parse("<i>Factionless<i> %d online", FactionColl.i.getNone().getFPlayersWhereOnline(true).size()));
 				continue;
 			}
-			lines.add(p.txt.parse("%s<i> %d/%d online, %d/%d/%d",
+			lines.add(Txt.parse("%s<i> %d/%d online, %d/%d/%d",
 				faction.getTag(fme),
 				faction.getFPlayersWhereOnline(true).size(),
 				faction.getFPlayers().size(),

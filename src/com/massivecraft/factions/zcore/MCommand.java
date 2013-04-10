@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import com.massivecraft.factions.zcore.MCommand;
 import com.massivecraft.factions.zcore.MPlugin;
 import com.massivecraft.factions.zcore.util.TextUtil;
+import com.massivecraft.mcore.util.Txt;
 
 
 public abstract class MCommand<T extends MPlugin>
@@ -221,7 +222,7 @@ public abstract class MCommand<T extends MPlugin>
 	public String getUseageTemplate(List<MCommand<?>> commandChain, boolean addShortHelp)
 	{
 		StringBuilder ret = new StringBuilder();
-		ret.append(p.txt.parseTags("<c>"));
+		ret.append(Txt.parse("<c>"));
 		ret.append('/');
 		
 		for (MCommand<?> mc : commandChain)
@@ -255,13 +256,13 @@ public abstract class MCommand<T extends MPlugin>
 		
 		if (args.size() > 0)
 		{
-			ret.append(p.txt.parseTags("<p> "));
+			ret.append(Txt.parse("<p> "));
 			ret.append(TextUtil.implode(args, " "));
 		}
 		
 		if (addShortHelp)
 		{
-			ret.append(p.txt.parseTags(" <i>"));
+			ret.append(Txt.parse(" <i>"));
 			ret.append(this.getHelpShort());
 		}
 		
@@ -284,7 +285,7 @@ public abstract class MCommand<T extends MPlugin>
 	
 	public void msg(String str, Object... args)
 	{
-		sender.sendMessage(p.txt.parse(str, args));
+		sender.sendMessage(Txt.parse(str, args));
 	}
 	
 	public void sendMessage(String msg)

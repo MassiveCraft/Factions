@@ -13,6 +13,7 @@ import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.zcore.util.TextUtil;
+import com.massivecraft.mcore.util.Txt;
 
 public class CmdShow extends FCommand
 {
@@ -51,7 +52,7 @@ public class CmdShow extends FCommand
 		Collection<FPlayer> normals = faction.getFPlayersWhereRole(Rel.MEMBER);
 		Collection<FPlayer> recruits = faction.getFPlayersWhereRole(Rel.RECRUIT);
 		
-		msg(p.txt.titleize(faction.getTag(fme)));
+		msg(Txt.titleize(faction.getTag(fme)));
 		msg("<a>Description: <i>%s", faction.getDescription());
 		
 		// Display important flags
@@ -91,22 +92,22 @@ public class CmdShow extends FCommand
 			}
 		}
 
-		String sepparator = p.txt.parse("<i>")+", ";
+		String sepparator = Txt.parse("<i>")+", ";
 		
 		// List the relations to other factions
 		Map<Rel, List<String>> relationTags = faction.getFactionTagsPerRelation(fme, true);
 		
 		if (faction.getFlag(FFlag.PEACEFUL))
 		{
-			sendMessage(p.txt.parse("<a>In Truce with:<i> *everyone*"));
+			sendMessage(Txt.parse("<a>In Truce with:<i> *everyone*"));
 		}
 		else
 		{
-			sendMessage(p.txt.parse("<a>In Truce with: ") + TextUtil.implode(relationTags.get(Rel.TRUCE), sepparator));
+			sendMessage(Txt.parse("<a>In Truce with: ") + TextUtil.implode(relationTags.get(Rel.TRUCE), sepparator));
 		}
 		
-		sendMessage(p.txt.parse("<a>Allied to: ") + TextUtil.implode(relationTags.get(Rel.ALLY), sepparator));
-		sendMessage(p.txt.parse("<a>Enemies: ") + TextUtil.implode(relationTags.get(Rel.ENEMY), sepparator));
+		sendMessage(Txt.parse("<a>Allied to: ") + TextUtil.implode(relationTags.get(Rel.ALLY), sepparator));
+		sendMessage(Txt.parse("<a>Enemies: ") + TextUtil.implode(relationTags.get(Rel.ENEMY), sepparator));
 		
 		// List the members...
 		List<String> memberOnlineNames = new ArrayList<String>();
@@ -159,8 +160,8 @@ public class CmdShow extends FCommand
 				memberOfflineNames.add(follower.getNameAndTitle(fme));
 			}
 		}
-		sendMessage(p.txt.parse("<a>Members online: ") + TextUtil.implode(memberOnlineNames, sepparator));
-		sendMessage(p.txt.parse("<a>Members offline: ") + TextUtil.implode(memberOfflineNames, sepparator));
+		sendMessage(Txt.parse("<a>Members online: ") + TextUtil.implode(memberOnlineNames, sepparator));
+		sendMessage(Txt.parse("<a>Members offline: ") + TextUtil.implode(memberOfflineNames, sepparator));
 	}
 	
 }

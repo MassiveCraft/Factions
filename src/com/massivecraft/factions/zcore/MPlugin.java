@@ -1,9 +1,6 @@
 package com.massivecraft.factions.zcore;
 
 import java.lang.reflect.Modifier;
-import java.lang.reflect.Type;
-import java.util.*;
-import java.util.Map.Entry;
 import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
@@ -14,17 +11,15 @@ import com.massivecraft.factions.zcore.persist.SaveTask;
 import com.massivecraft.factions.zcore.util.LibLoader;
 import com.massivecraft.factions.zcore.util.PermUtil;
 import com.massivecraft.factions.zcore.util.Persist;
-import com.massivecraft.factions.zcore.util.TextUtil;
+import com.massivecraft.mcore.util.Txt;
 import com.massivecraft.mcore.xlib.gson.Gson;
 import com.massivecraft.mcore.xlib.gson.GsonBuilder;
-import com.massivecraft.mcore.xlib.gson.reflect.TypeToken;
 
 
 public abstract class MPlugin extends JavaPlugin
 {
 	// Some utils
 	public Persist persist;
-	public TextUtil txt;
 	public LibLoader lib;
 	public PermUtil perm;
 	
@@ -60,8 +55,8 @@ public abstract class MPlugin extends JavaPlugin
 //		if ( ! lib.require("gson.jar", "http://search.maven.org/remotecontent?filepath=com/google/code/gson/gson/2.1/gson-2.1.jar")) return false;
 		this.gson = this.getGsonBuilder().create();
 		
-		this.txt = new TextUtil();
-		initTXT();
+		//this.txt = new TextUtil();
+		//initTXT();
 
 		// Create and register listeners
 		this.mPluginSecretPlayerListener = new MPluginSecretPlayerListener(this);
@@ -119,7 +114,7 @@ public abstract class MPlugin extends JavaPlugin
 	// -------------------------------------------- //
 	// LANG AND TAGS
 	// -------------------------------------------- //
-	
+	/*
 	// These are not supposed to be used directly.
 	// They are loaded and used through the TextUtil instance for the plugin.
 	public Map<String, String> rawTags = new LinkedHashMap<String, String>();
@@ -151,7 +146,7 @@ public abstract class MPlugin extends JavaPlugin
 		{
 			this.txt.tags.put(rawTag.getKey(), TextUtil.parseColor(rawTag.getValue()));
 		}
-	}
+	}*/
 	
 	// -------------------------------------------- //
 	// HOOKS
@@ -176,12 +171,12 @@ public abstract class MPlugin extends JavaPlugin
 
 	public void log(String str, Object... args)
 	{
-		log(Level.INFO, this.txt.parse(str, args));
+		log(Level.INFO, Txt.parse(str, args));
 	}
 
 	public void log(Level level, String str, Object... args)
 	{
-		log(level, this.txt.parse(str, args));
+		log(level, Txt.parse(str, args));
 	}
 
 	public void log(Level level, Object msg)

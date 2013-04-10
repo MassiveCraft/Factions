@@ -4,6 +4,7 @@ import java.util.Collections;
 
 import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.Factions;
+import com.massivecraft.mcore.util.Txt;
 
 public class FCmdRoot extends FCommand
 {
@@ -67,7 +68,7 @@ public class FCmdRoot extends FCommand
 		this.disableOnLock = false;
 		
 		this.setHelpShort("The faction base command");
-		this.helpLong.add(p.txt.parseTags("<i>This command contains all faction stuff."));
+		this.helpLong.add(Txt.parse("<i>This command contains all faction stuff."));
 		
 		this.addSubCommand(Factions.get().cmdAutoHelp);
 		this.addSubCommand(this.cmdList);

@@ -9,6 +9,7 @@ import org.bukkit.permissions.Permission;
 
 import com.massivecraft.factions.zcore.Lang;
 import com.massivecraft.factions.zcore.MPlugin;
+import com.massivecraft.mcore.util.Txt;
 
 
 public class PermUtil {
@@ -25,7 +26,7 @@ public class PermUtil {
 	
 	public String getForbiddenMessage(String perm)
 	{
-		return p.txt.parse(Lang.permForbidden, getPermissionDescription(perm));
+		return Txt.parse(Lang.permForbidden, getPermissionDescription(perm));
 	}
 	
 	/**

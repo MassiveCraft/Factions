@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.zcore.CommandVisibility;
 import com.massivecraft.factions.zcore.MCommand;
+import com.massivecraft.mcore.util.Txt;
 
 public class CmdAutoHelp extends MCommand<Factions>
 {
@@ -43,6 +44,6 @@ public class CmdAutoHelp extends MCommand<Factions>
 			}
 		}
 		
-		sendMessage(p.txt.getPage(lines, this.argAsInt(0, 1), "Help for command \""+pcmd.aliases.get(0)+"\""));
+		sendMessage(Txt.getPage(lines, this.argAsInt(0, 1), "Help for command \""+pcmd.aliases.get(0)+"\""));
 	}
 }

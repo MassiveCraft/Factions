@@ -5,6 +5,7 @@ import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.integration.Econ;
+import com.massivecraft.mcore.util.Txt;
 
 import org.bukkit.ChatColor;
 
@@ -37,6 +38,6 @@ public class CmdMoneyWithdraw extends FCommand
 		boolean success = Econ.transferMoney(fme, faction, fme, amount);
 
 		if (success && ConfServer.logMoneyTransactions)
-			Factions.get().log(ChatColor.stripColor(Factions.get().txt.parse("%s withdrew %s from the faction bank: %s", fme.getName(), Econ.moneyString(amount), faction.describeTo(null))));
+			Factions.get().log(ChatColor.stripColor(Txt.parse("%s withdrew %s from the faction bank: %s", fme.getName(), Econ.moneyString(amount), faction.describeTo(null))));
 	}
 }

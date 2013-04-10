@@ -1,6 +1,7 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Factions;
+import com.massivecraft.mcore.util.Txt;
 
 public class CmdMoney extends FCommand
 {
@@ -27,7 +28,7 @@ public class CmdMoney extends FCommand
 		senderMustBeLeader = false;
 		
 		this.setHelpShort("faction money commands");
-		this.helpLong.add(p.txt.parseTags("<i>The faction money commands."));
+		this.helpLong.add(Txt.parse("<i>The faction money commands."));
 		
 		this.addSubCommand(this.cmdMoneyBalance);
 		this.addSubCommand(this.cmdMoneyDeposit);
