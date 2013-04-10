@@ -3,13 +3,6 @@ package com.massivecraft.factions;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-
-import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
-import org.bukkit.Location;
-import org.bukkit.Material;
 
 import com.massivecraft.factions.adapters.FFlagTypeAdapter;
 import com.massivecraft.factions.adapters.FPermTypeAdapter;
@@ -221,6 +214,10 @@ public class Factions extends MPlugin
 	// -------------------------------------------- //
 	// Functions for other plugins to hook into
 	// -------------------------------------------- //
+	// TODO: This "outer API" is removed. I should ensure these features are
+	// available using the appropriate classes and then remove this commented out section below.
+	
+	/*
 
 	// This value will be updated whenever new hooks are added
 	public int hookSupportVersion()
@@ -339,4 +336,7 @@ public class Factions extends MPlugin
 	{
 		return FactionsPlayerListener.playerCanUseItemHere(player, location, material, true);
 	}
+	
+	*/
+	
 }
