@@ -6,6 +6,7 @@ import org.bukkit.*;
 import org.bukkit.entity.EntityType;
 
 import com.massivecraft.mcore.SimpleConfig;
+import com.massivecraft.mcore.util.MUtil;
 
 public class ConfServer extends SimpleConfig
 {
@@ -21,7 +22,7 @@ public class ConfServer extends SimpleConfig
 	// FIELDS
 	// -------------------------------------------- //
 	
-	public final static transient List<String> baseCommandAliases = new ArrayList<String>();
+	public final static transient List<String> baseCommandAliases = MUtil.list("f");
 	
 	// Colors
 	public static ChatColor colorMember = ChatColor.GREEN;
@@ -179,7 +180,7 @@ public class ConfServer extends SimpleConfig
 
 	// commands which will be prevented when in claimed territory of another faction
 	public static Set<String> territoryNeutralDenyCommands = new LinkedHashSet<String>();
-	public static Set<String> territoryEnemyDenyCommands = new LinkedHashSet<String>();
+	public static Set<String> territoryEnemyDenyCommands = MUtil.set("home", "sethome", "spawn", "tpahere", "tpaccept", "tpa", "warp");
 	
 	public static double territoryShieldFactor = 0.3;
 
@@ -274,8 +275,6 @@ public class ConfServer extends SimpleConfig
 	
 	static
 	{
-		baseCommandAliases.add("f");
-		
 		factionFlagDefaults = new LinkedHashMap<FFlag, Boolean>();
 		for (FFlag flag : FFlag.values())
 		{
@@ -291,14 +290,6 @@ public class ConfServer extends SimpleConfig
 		chatSingleFormats.put("pl", " %s");
 		chatSingleFormats.put("pr", "%s ");
 		chatSingleFormats.put("pb", " %s ");
-		
-		territoryEnemyDenyCommands.add("home");
-		territoryEnemyDenyCommands.add("sethome");
-		territoryEnemyDenyCommands.add("spawn");
-		territoryEnemyDenyCommands.add("tpahere");
-		territoryEnemyDenyCommands.add("tpaccept");
-		territoryEnemyDenyCommands.add("tpa");
-		territoryEnemyDenyCommands.add("warp");
 
 		materialsContainer.add(Material.DISPENSER);
 		materialsContainer.add(Material.CHEST);
