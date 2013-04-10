@@ -8,7 +8,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.massivecraft.factions.zcore.persist.EM;
 import com.massivecraft.factions.zcore.persist.SaveTask;
-import com.massivecraft.factions.zcore.util.PermUtil;
 import com.massivecraft.factions.zcore.util.Persist;
 import com.massivecraft.mcore.util.Txt;
 import com.massivecraft.mcore.xlib.gson.Gson;
@@ -19,7 +18,6 @@ public abstract class MPlugin extends JavaPlugin
 {
 	// Some utils
 	public Persist persist;
-	public PermUtil perm;
 	
 	// Persist related
 	public Gson gson;	
@@ -45,7 +43,6 @@ public abstract class MPlugin extends JavaPlugin
 		this.getDataFolder().mkdirs();
 		
 		// Create Utility Instances
-		this.perm = new PermUtil(this);
 		this.persist = new Persist(this);
 
 		// GSON 2.1 is now embedded in CraftBukkit, used by the auto-updater: https://github.com/Bukkit/CraftBukkit/commit/0ed1d1fdbb1e0bc09a70bc7bfdf40c1de8411665

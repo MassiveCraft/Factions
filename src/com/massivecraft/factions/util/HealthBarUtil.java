@@ -3,7 +3,7 @@ package com.massivecraft.factions.util;
 import java.util.Map.Entry;
 
 import com.massivecraft.factions.ConfServer;
-import com.massivecraft.factions.zcore.util.TextUtil;
+import com.massivecraft.mcore.util.Txt;
 
 public class HealthBarUtil
 {   
@@ -22,13 +22,13 @@ public class HealthBarUtil
     	int emptyCount = (int) ((barLength - solidCount) / ConfServer.spoutHealthBarSolidsPerEmpty);
     	
     	// Create the non-parsed bar
-    	String ret = ConfServer.spoutHealthBarLeft + TextUtil.repeat(ConfServer.spoutHealthBarSolid, solidCount) + ConfServer.spoutHealthBarBetween + TextUtil.repeat(ConfServer.spoutHealthBarEmpty, emptyCount) + ConfServer.spoutHealthBarRight;
+    	String ret = ConfServer.spoutHealthBarLeft + Txt.repeat(ConfServer.spoutHealthBarSolid, solidCount) + ConfServer.spoutHealthBarBetween + Txt.repeat(ConfServer.spoutHealthBarEmpty, emptyCount) + ConfServer.spoutHealthBarRight;
     	
     	// Replace color tag
     	ret = ret.replace("{c}", color);
     			
     	// Parse amp color codes
-    	ret = TextUtil.parseColorAmp(ret);
+    	ret = Txt.parse(ret);
     	
     	return ret;
     }

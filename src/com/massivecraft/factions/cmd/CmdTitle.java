@@ -4,7 +4,7 @@ import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.integration.SpoutFeatures;
-import com.massivecraft.factions.zcore.util.TextUtil;
+import com.massivecraft.mcore.util.Txt;
 
 public class CmdTitle extends FCommand
 {
@@ -31,7 +31,7 @@ public class CmdTitle extends FCommand
 		if (you == null) return;
 		
 		args.remove(0);
-		String title = TextUtil.implode(args, " ");
+		String title = Txt.implode(args, " ");
 		
 		if ( ! canIAdministerYou(fme, you)) return;
 

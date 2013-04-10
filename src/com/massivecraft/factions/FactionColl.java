@@ -15,7 +15,6 @@ import com.massivecraft.mcore.xlib.gson.reflect.TypeToken;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.factions.zcore.persist.EntityCollection;
-import com.massivecraft.factions.zcore.util.TextUtil;
 
 public class FactionColl extends EntityCollection<Faction>
 {
@@ -253,7 +252,7 @@ public class FactionColl extends EntityCollection<Faction>
 			tag2faction.put(ChatColor.stripColor(faction.getTag()), faction);
 		}
 		
-		String tag = TextUtil.getBestStartWithCI(tag2faction.keySet(), searchFor);
+		String tag = Txt.getBestCIStart(tag2faction.keySet(), searchFor);
 		if (tag == null) return null;
 		return tag2faction.get(tag);
 	}

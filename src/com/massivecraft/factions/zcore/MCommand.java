@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 
 import com.massivecraft.factions.zcore.MCommand;
 import com.massivecraft.factions.zcore.MPlugin;
-import com.massivecraft.factions.zcore.util.TextUtil;
+import com.massivecraft.mcore.util.PermUtil;
 import com.massivecraft.mcore.util.Txt;
 
 
@@ -43,7 +43,7 @@ public abstract class MCommand<T extends MPlugin>
 	{
 		if (this.helpShort == null)
 		{
-			String pdesc = p.perm.getPermissionDescription(this.permission);
+			String pdesc = PermUtil.getDescription(permission);
 			if (pdesc != null)
 			{
 				return pdesc;
@@ -182,7 +182,7 @@ public abstract class MCommand<T extends MPlugin>
 	public boolean validSenderPermissions(CommandSender sender, boolean informSenderIfNot)
 	{
 		if (this.permission == null) return true;
-		return p.perm.has(sender, this.permission, informSenderIfNot);
+		return PermUtil.has(sender, this.permission, informSenderIfNot);
 	}
 	
 	public boolean validArgs(List<String> args, CommandSender sender)
@@ -203,7 +203,7 @@ public abstract class MCommand<T extends MPlugin>
 			{
 				// Get the to many string slice
 				List<String> theToMany = args.subList(this.requiredArgs.size() + this.optionalArgs.size(), args.size());
-				msg(Lang.commandToManyArgs, TextUtil.implode(theToMany, " "));
+				msg(Lang.commandToManyArgs, Txt.implode(theToMany, " "));
 				sender.sendMessage(this.getUseageTemplate());
 			}
 			return false;
@@ -227,11 +227,11 @@ public abstract class MCommand<T extends MPlugin>
 		
 		for (MCommand<?> mc : commandChain)
 		{
-			ret.append(TextUtil.implode(mc.aliases, ","));
+			ret.append(Txt.implode(mc.aliases, ","));
 			ret.append(' ');
 		}
 		
-		ret.append(TextUtil.implode(this.aliases, ","));
+		ret.append(Txt.implode(this.aliases, ","));
 		
 		List<String> args = new ArrayList<String>();
 		
@@ -257,7 +257,7 @@ public abstract class MCommand<T extends MPlugin>
 		if (args.size() > 0)
 		{
 			ret.append(Txt.parse("<p> "));
-			ret.append(TextUtil.implode(args, " "));
+			ret.append(Txt.implode(args, " "));
 		}
 		
 		if (addShortHelp)

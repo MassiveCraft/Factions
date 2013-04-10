@@ -7,8 +7,8 @@ import java.util.logging.Level;
 import java.util.Map.Entry;
 
 import org.bukkit.Bukkit;
-import com.massivecraft.factions.zcore.util.TextUtil;
 import com.massivecraft.mcore.util.DiscUtil;
+import com.massivecraft.mcore.util.Txt;
 import com.massivecraft.mcore.xlib.gson.Gson;
 import com.massivecraft.mcore.xlib.gson.JsonSyntaxException;
 
@@ -100,7 +100,8 @@ public abstract class EntityCollection<E extends Entity>
 	
 	public E getBestIdMatch(String pattern)
 	{
-		String id = TextUtil.getBestStartWithCI(this.id2entity.keySet(), pattern);
+		String id = Txt.getBestCIStart(this.id2entity.keySet(), pattern);
+		
 		if (id == null) return null;
 		return this.id2entity.get(id);
 	}

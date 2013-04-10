@@ -1,6 +1,8 @@
 package com.massivecraft.factions;
 
-import org.bukkit.command.CommandSender;
+import org.bukkit.permissions.Permissible;
+
+import com.massivecraft.mcore.util.PermUtil;
 
 public enum Perm
 {
@@ -89,13 +91,14 @@ public enum Perm
 	// HAS
 	// -------------------------------------------- //
 	
-	public boolean has(CommandSender sender, boolean informSenderIfNot)
+	public boolean has(Permissible permissible, boolean informSenderIfNot)
 	{
-		return Factions.get().perm.has(sender, this.node, informSenderIfNot);
+		return PermUtil.has(permissible, this.node, informSenderIfNot);
 	}
 	
-	public boolean has(CommandSender sender)
+	public boolean has(Permissible permissible)
 	{
-		return has(sender, false);
+		return has(permissible, false);
 	}
+	
 }

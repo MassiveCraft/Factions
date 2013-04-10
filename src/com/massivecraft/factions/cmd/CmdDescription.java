@@ -4,7 +4,7 @@ import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayerColl;
 import com.massivecraft.factions.Perm;
-import com.massivecraft.factions.zcore.util.TextUtil;
+import com.massivecraft.mcore.util.Txt;
 
 public class CmdDescription extends FCommand
 {
@@ -32,7 +32,8 @@ public class CmdDescription extends FCommand
 		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
 		if ( ! payForCommand(ConfServer.econCostDesc, "to change faction description", "for changing faction description")) return;
 
-		myFaction.setDescription(TextUtil.implode(args, " ").replaceAll("(&([a-f0-9]))", "& $2"));  // since "&" color tags seem to work even through plain old FPlayer.sendMessage() for some reason, we need to break those up
+		// TODO: This must be an invalid replace-approach. The call order is wrong somehow? 
+		myFaction.setDescription(Txt.implode(args, " ").replaceAll("(&([a-f0-9]))", "& $2"));  // since "&" color tags seem to work even through plain old FPlayer.sendMessage() for some reason, we need to break those up
 
 		if ( ! ConfServer.broadcastDescriptionChanges)
 		{

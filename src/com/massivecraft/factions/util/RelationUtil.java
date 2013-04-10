@@ -8,7 +8,7 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.iface.RelationParticipator;
-import com.massivecraft.factions.zcore.util.TextUtil;
+import com.massivecraft.mcore.util.Txt;
 
 public class RelationUtil
 {
@@ -57,7 +57,7 @@ public class RelationUtil
 
 		if (ucfirst)
 		{
-			ret = TextUtil.upperCaseFirst(ret);
+			ret = Txt.upperCaseFirst(ret);
 		}
 
 		return "" + getColorOfThatToMe(that, me) + ret;

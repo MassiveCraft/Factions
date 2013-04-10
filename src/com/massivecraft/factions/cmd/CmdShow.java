@@ -12,7 +12,6 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
-import com.massivecraft.factions.zcore.util.TextUtil;
 import com.massivecraft.mcore.util.Txt;
 
 public class CmdShow extends FCommand
@@ -103,11 +102,11 @@ public class CmdShow extends FCommand
 		}
 		else
 		{
-			sendMessage(Txt.parse("<a>In Truce with: ") + TextUtil.implode(relationTags.get(Rel.TRUCE), sepparator));
+			sendMessage(Txt.parse("<a>In Truce with: ") + Txt.implode(relationTags.get(Rel.TRUCE), sepparator));
 		}
 		
-		sendMessage(Txt.parse("<a>Allied to: ") + TextUtil.implode(relationTags.get(Rel.ALLY), sepparator));
-		sendMessage(Txt.parse("<a>Enemies: ") + TextUtil.implode(relationTags.get(Rel.ENEMY), sepparator));
+		sendMessage(Txt.parse("<a>Allied to: ") + Txt.implode(relationTags.get(Rel.ALLY), sepparator));
+		sendMessage(Txt.parse("<a>Enemies: ") + Txt.implode(relationTags.get(Rel.ENEMY), sepparator));
 		
 		// List the members...
 		List<String> memberOnlineNames = new ArrayList<String>();
@@ -160,8 +159,8 @@ public class CmdShow extends FCommand
 				memberOfflineNames.add(follower.getNameAndTitle(fme));
 			}
 		}
-		sendMessage(Txt.parse("<a>Members online: ") + TextUtil.implode(memberOnlineNames, sepparator));
-		sendMessage(Txt.parse("<a>Members offline: ") + TextUtil.implode(memberOfflineNames, sepparator));
+		sendMessage(Txt.parse("<a>Members online: ") + Txt.implode(memberOnlineNames, sepparator));
+		sendMessage(Txt.parse("<a>Members offline: ") + Txt.implode(memberOfflineNames, sepparator));
 	}
 	
 }
