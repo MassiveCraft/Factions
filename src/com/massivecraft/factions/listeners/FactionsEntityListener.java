@@ -48,7 +48,6 @@ import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.event.PowerLossEvent;
-import com.massivecraft.factions.util.MiscUtil;
 
 
 public class FactionsEntityListener implements Listener
@@ -375,7 +374,9 @@ public class FactionsEntityListener implements Listener
 		if (target == null) return;
 
 		// We are interested in blocking targeting for certain mobs:
-		if ( ! ConfServer.monsters.contains(MiscUtil.creatureTypeFromEntity(event.getEntity()))) return;
+		
+		
+		if ( ! ConfServer.monsters.contains(event.getEntity().getType())) return;
 
 		FLocation floc = new FLocation(target.getLocation());
 		Faction faction = Board.getFactionAt(floc);

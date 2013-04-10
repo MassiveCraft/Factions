@@ -4,25 +4,9 @@ import java.util.Arrays;
 import java.util.HashSet;
 
 import org.bukkit.ChatColor;
-import org.bukkit.entity.Creature;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Entity;
 
 public class MiscUtil
 {	
-	public static EntityType creatureTypeFromEntity(Entity entity)
-	{
-		if ( ! (entity instanceof Creature))
-		{
-			return null;
-		}
-		
-		String name = entity.getClass().getSimpleName();
-		name = name.substring(5); // Remove "Craft"
-		
-		return EntityType.fromName(name);
-	}
-	
 	// Inclusive range
 	public static long[] range(long start, long end) {
 		long[] values = new long[(int) Math.abs(end - start) + 1];
