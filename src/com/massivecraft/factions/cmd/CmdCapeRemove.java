@@ -4,7 +4,7 @@ import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.util.RelationUtil;
 
-public class CmdCapeRemove extends CapeCommand
+public class CmdCapeRemove extends CmdCapeAbstract
 {
 	
 	public CmdCapeRemove()

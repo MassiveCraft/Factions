@@ -2,7 +2,7 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Perm;
 
-public class CmdCapeGet extends CapeCommand
+public class CmdCapeGet extends CmdCapeAbstract
 {
 	public CmdCapeGet()
 	{

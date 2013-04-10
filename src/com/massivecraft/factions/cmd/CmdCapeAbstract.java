@@ -7,12 +7,12 @@ import org.bukkit.command.CommandSender;
 import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.Faction;
 
-public abstract class CapeCommand extends FCommand
+public abstract class CmdCapeAbstract extends FCommand
 {
 	public Faction capeFaction;
 	public String currentCape;
 	
-	public CapeCommand()
+	public CmdCapeAbstract()
 	{
 		this.optionalArgs.put("faction", "your");
 		

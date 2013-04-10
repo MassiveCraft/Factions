@@ -265,8 +265,6 @@ public class ConfServer extends SimpleConfig
 	// TODO: A better solution Would be to have One wilderness faction per world.
 	//public static Set<String> worldsNoWildernessProtection = new LinkedHashSet<String>();
 	
-
-	
 	static
 	{
 		factionFlagDefaults = new LinkedHashMap<FFlag, Boolean>();

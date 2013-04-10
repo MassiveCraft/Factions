@@ -6,7 +6,7 @@ import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.util.RelationUtil;
 
-public class CmdCapeSet extends CapeCommand
+public class CmdCapeSet extends CmdCapeAbstract
 {
 	
 	public CmdCapeSet()

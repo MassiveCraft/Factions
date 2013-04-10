@@ -40,6 +40,8 @@ public class MainListener implements Listener
 	// -------------------------------------------- //
 	// TODO: These spout related methods should not be in here.
 	// The spout integration needs to be moved elsewhere.
+	// NOTE: Also the spout integration should not have method calls from within FactionsCore code,
+	// we should instead listen to FactionsCore events. And send client updates upon non-cancelled monitor.
 	
 	// Setup
 	
