@@ -30,7 +30,7 @@ import com.massivecraft.factions.zcore.MPlugin;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.craftbukkit.libs.com.google.gson.GsonBuilder;
+import com.massivecraft.mcore.xlib.gson.GsonBuilder;
 
 
 public class Factions extends MPlugin

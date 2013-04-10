@@ -4,15 +4,15 @@ import java.lang.reflect.Type;
 import java.util.Iterator;
 import java.util.logging.Level;
 
-import org.bukkit.craftbukkit.libs.com.google.gson.JsonArray;
-import org.bukkit.craftbukkit.libs.com.google.gson.JsonDeserializationContext;
-import org.bukkit.craftbukkit.libs.com.google.gson.JsonDeserializer;
-import org.bukkit.craftbukkit.libs.com.google.gson.JsonElement;
-import org.bukkit.craftbukkit.libs.com.google.gson.JsonObject;
-import org.bukkit.craftbukkit.libs.com.google.gson.JsonParseException;
-import org.bukkit.craftbukkit.libs.com.google.gson.JsonPrimitive;
-import org.bukkit.craftbukkit.libs.com.google.gson.JsonSerializationContext;
-import org.bukkit.craftbukkit.libs.com.google.gson.JsonSerializer;
+import com.massivecraft.mcore.xlib.gson.JsonArray;
+import com.massivecraft.mcore.xlib.gson.JsonDeserializationContext;
+import com.massivecraft.mcore.xlib.gson.JsonDeserializer;
+import com.massivecraft.mcore.xlib.gson.JsonElement;
+import com.massivecraft.mcore.xlib.gson.JsonObject;
+import com.massivecraft.mcore.xlib.gson.JsonParseException;
+import com.massivecraft.mcore.xlib.gson.JsonPrimitive;
+import com.massivecraft.mcore.xlib.gson.JsonSerializationContext;
+import com.massivecraft.mcore.xlib.gson.JsonSerializer;
 
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.TerritoryAccess;

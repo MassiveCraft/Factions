@@ -9,7 +9,7 @@ import java.util.Set;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import org.bukkit.craftbukkit.libs.com.google.gson.Gson;
+import com.massivecraft.mcore.xlib.gson.Gson;
 
 /**
  * The PlayerEntityCollection is an EntityCollection with the extra features

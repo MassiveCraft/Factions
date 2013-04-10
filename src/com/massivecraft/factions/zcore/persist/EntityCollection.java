@@ -7,10 +7,10 @@ import java.util.logging.Level;
 import java.util.Map.Entry;
 
 import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.libs.com.google.gson.Gson;
-import org.bukkit.craftbukkit.libs.com.google.gson.JsonSyntaxException;
 import com.massivecraft.factions.zcore.util.DiscUtil;
 import com.massivecraft.factions.zcore.util.TextUtil;
+import com.massivecraft.mcore.xlib.gson.Gson;
+import com.massivecraft.mcore.xlib.gson.JsonSyntaxException;
 
 public abstract class EntityCollection<E extends Entity>
 {	
