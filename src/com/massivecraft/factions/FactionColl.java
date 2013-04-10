@@ -43,9 +43,9 @@ public class FactionColl extends EntityCollection<Faction>
 	{
 		if ( ! super.loadFromDisc()) return false;
 		
-		//----------------------------------------------//
+		// -------------------------------------------- //
 		// Create Default Special Factions
-		//----------------------------------------------//
+		// -------------------------------------------- //
 		if ( ! this.exists("0"))
 		{
 			Faction faction = this.create("0");
@@ -69,9 +69,9 @@ public class FactionColl extends EntityCollection<Faction>
 			this.setFlagsForWarZone(faction);
 		}
 		
-		//----------------------------------------------//
+		// -------------------------------------------- //
 		// Fix From Old Formats
-		//----------------------------------------------//
+		// -------------------------------------------- //
 		Faction wild = this.get("0");
 		Faction safeZone = this.get("-1");
 		Faction warZone = this.get("-2");
@@ -99,9 +99,9 @@ public class FactionColl extends EntityCollection<Faction>
 		return true;
 	}
 	
-	//----------------------------------------------//
+	// -------------------------------------------- //
 	// Flag Setters
-	//----------------------------------------------//
+	// -------------------------------------------- //
 	public void setFlagsForWilderness(Faction faction)
 	{
 		faction.setOpen(false);
@@ -172,9 +172,9 @@ public class FactionColl extends EntityCollection<Faction>
 	}
 	
 	
-	//----------------------------------------------//
+	// -------------------------------------------- //
 	// GET
-	//----------------------------------------------//
+	// -------------------------------------------- //
 	
 	@Override
 	public Faction get(String id)
@@ -194,9 +194,9 @@ public class FactionColl extends EntityCollection<Faction>
 		return this.get("0");
 	}
 	
-	//----------------------------------------------//
+	// -------------------------------------------- //
 	// Faction tag
-	//----------------------------------------------//
+	// -------------------------------------------- //
 	
 	public static ArrayList<String> validateTag(String str)
 	{

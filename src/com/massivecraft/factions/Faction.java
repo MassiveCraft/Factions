@@ -296,9 +296,9 @@ public class Faction extends Entity implements EconomyParticipator
 	}
 	
 	// TODO: Implement a has enough feature.
-	//----------------------------------------------//
+	// -------------------------------------------- //
 	// Power
-	//----------------------------------------------//
+	// -------------------------------------------- //
 	public double getPower()
 	{
 		if (this.getFlag(FFlag.INFPOWER))
@@ -361,9 +361,9 @@ public class Faction extends Entity implements EconomyParticipator
 		return this.getLandRounded() > this.getPowerRounded();
 	}
 	
-	// -------------------------------
+	// -------------------------------------------- //
 	// FPlayers
-	// -------------------------------
+	// -------------------------------------------- //
 
 	// maintain the reference list of FPlayers in this faction
 	public void refreshFPlayers()
@@ -504,9 +504,9 @@ public class Faction extends Entity implements EconomyParticipator
 		}
 	}
 
-	//----------------------------------------------//
+	// -------------------------------------------- //
 	// Messages
-	//----------------------------------------------//
+	// -------------------------------------------- //
 	public void msg(String message, Object... args)
 	{
 		message = Factions.get().txt.parse(message, args);
@@ -533,53 +533,9 @@ public class Faction extends Entity implements EconomyParticipator
 		}
 	}
 	
-	//----------------------------------------------//
-	// Deprecated
-	//----------------------------------------------//
-	/**
-	 * @deprecated  As of release 1.7, replaced by {@link #getFPlayerLeader()}
-	 */
-	public FPlayer getFPlayerAdmin()
-	{
-		return getFPlayerLeader();
-	}
-	
-	/**
-	 * @deprecated  As of release 1.7, replaced by {@link #getFlag()}
-	 */
-	public boolean isPeaceful()
-	{
-		return this.getFlag(FFlag.PEACEFUL);
-	}
-	
-	/**
-	 * @deprecated  As of release 1.7, replaced by {@link #getFlag()}
-	 */
-	public boolean getPeacefulExplosionsEnabled()
-	{
-		return this.getFlag(FFlag.EXPLOSIONS);
-	}
-	
-	/**
-	 * @deprecated  As of release 1.7, replaced by {@link #getFlag()}
-	 */
-	public boolean noExplosionsInTerritory()
-	{
-		return ! this.getFlag(FFlag.EXPLOSIONS);
-	}
-	
-	/**
-	 * @deprecated  As of release 1.7, replaced by {@link #getFlag()}
-	 */
-	public boolean isSafeZone()
-	{
-		return ! this.getFlag(FFlag.EXPLOSIONS);
-	}
-	
-	//----------------------------------------------//
+	// -------------------------------------------- //
 	// Persistance and entity management
-	//----------------------------------------------//
-
+	// -------------------------------------------- //
 	
 	@Override
 	public void postDetach()

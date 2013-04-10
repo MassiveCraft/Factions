@@ -18,7 +18,7 @@ public class TerritoryAccess
 	
 	private boolean hostFactionAllowed = true;
 	public boolean isHostFactionAllowed() { return this.hostFactionAllowed; }
-	public void setHostFactionAllowed(boolean allowed) { this.hostFactionAllowed = allowed; }
+	public void setHostFactionAllowed(boolean hostFactionAllowed) { this.hostFactionAllowed = hostFactionAllowed; }
 	
 	private Set<String> factionIds = new LinkedHashSet<String>();
 	public Set<String> getFactionIds() { return this.factionIds; }
@@ -30,11 +30,9 @@ public class TerritoryAccess
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	
-	
-	public TerritoryAccess(String factionID)
+	public TerritoryAccess(String hostFactionId)
 	{
-		hostFactionId = factionID;
+		this.hostFactionId = hostFactionId;
 	}
 
 	public TerritoryAccess()
