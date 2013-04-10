@@ -7,8 +7,8 @@ import java.util.logging.Level;
 import java.util.Map.Entry;
 
 import org.bukkit.Bukkit;
-import com.massivecraft.factions.zcore.util.DiscUtil;
 import com.massivecraft.factions.zcore.util.TextUtil;
+import com.massivecraft.mcore.util.DiscUtil;
 import com.massivecraft.mcore.xlib.gson.Gson;
 import com.massivecraft.mcore.xlib.gson.JsonSyntaxException;
 

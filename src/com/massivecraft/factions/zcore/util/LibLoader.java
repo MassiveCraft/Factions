@@ -3,6 +3,7 @@ package com.massivecraft.factions.zcore.util;
 import java.io.File;
 
 import com.massivecraft.factions.zcore.MPlugin;
+import com.massivecraft.mcore.util.DiscUtil;
 
 public class LibLoader
 {	

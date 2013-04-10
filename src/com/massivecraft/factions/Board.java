@@ -13,12 +13,12 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 
+import com.massivecraft.mcore.util.DiscUtil;
 import com.massivecraft.mcore.util.Txt;
 import com.massivecraft.mcore.xlib.gson.reflect.TypeToken;
 import com.massivecraft.factions.integration.LWCFeatures;
 import com.massivecraft.factions.iface.RelationParticipator;
 import com.massivecraft.factions.util.AsciiCompass;
-import com.massivecraft.factions.zcore.util.DiscUtil;
 
 
 public class Board
