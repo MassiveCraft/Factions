@@ -9,7 +9,7 @@ import org.bukkit.craftbukkit.libs.com.google.gson.JsonParseException;
 
 import com.massivecraft.factions.FFlag;
 
-public class FFlagTypeAdapter implements JsonDeserializer<FFlag>
+public class FFlagAdapter implements JsonDeserializer<FFlag>
 {
 	@Override
 	public FFlag deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException

@@ -9,7 +9,7 @@ import org.bukkit.craftbukkit.libs.com.google.gson.JsonParseException;
 
 import com.massivecraft.factions.FPerm;
 
-public class FPermTypeAdapter implements JsonDeserializer<FPerm>
+public class FPermAdapter implements JsonDeserializer<FPerm>
 {
 	@Override
 	public FPerm deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException

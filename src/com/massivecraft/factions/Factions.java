@@ -4,10 +4,10 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import com.massivecraft.factions.adapters.FFlagTypeAdapter;
-import com.massivecraft.factions.adapters.FPermTypeAdapter;
-import com.massivecraft.factions.adapters.LocationTypeAdapter;
-import com.massivecraft.factions.adapters.RelTypeAdapter;
+import com.massivecraft.factions.adapters.FFlagAdapter;
+import com.massivecraft.factions.adapters.FPermAdapter;
+import com.massivecraft.factions.adapters.LazyLocationAdapter;
+import com.massivecraft.factions.adapters.RelAdapter;
 import com.massivecraft.factions.adapters.TerritoryAccessAdapter;
 import com.massivecraft.factions.cmd.*;
 import com.massivecraft.factions.integration.herochat.HerochatFeatures;
@@ -137,11 +137,11 @@ public class Factions extends MPlugin
 		.setPrettyPrinting()
 		.disableHtmlEscaping()
 		.excludeFieldsWithModifiers(Modifier.TRANSIENT, Modifier.VOLATILE)
-		.registerTypeAdapter(LazyLocation.class, new LocationTypeAdapter())
+		.registerTypeAdapter(LazyLocation.class, new LazyLocationAdapter())
 		.registerTypeAdapter(TerritoryAccess.class, TerritoryAccessAdapter.get())
-		.registerTypeAdapter(Rel.class, new RelTypeAdapter())
-		.registerTypeAdapter(FPerm.class, new FPermTypeAdapter())
-		.registerTypeAdapter(FFlag.class, new FFlagTypeAdapter());
+		.registerTypeAdapter(Rel.class, new RelAdapter())
+		.registerTypeAdapter(FPerm.class, new FPermAdapter())
+		.registerTypeAdapter(FFlag.class, new FFlagAdapter());
 	}
 
 	@Override

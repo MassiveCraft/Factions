@@ -9,7 +9,7 @@ import org.bukkit.craftbukkit.libs.com.google.gson.JsonParseException;
 
 import com.massivecraft.factions.Rel;
 
-public class RelTypeAdapter implements JsonDeserializer<Rel>
+public class RelAdapter implements JsonDeserializer<Rel>
 {
 	@Override
 	public Rel deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException
