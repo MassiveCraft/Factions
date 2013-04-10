@@ -162,7 +162,7 @@ public enum FPerm
 			fplayer.msg(errorpattern, hostFaction.describeTo(fplayer, true), this.getDescription());
 			if (Perm.ADMIN.has(fplayer.getPlayer()))
 			{
-				fplayer.msg("<i>You can bypass by using " + Factions.get().cmdBase.cmdBypass.getUseageTemplate(false));
+				fplayer.msg("<i>You can bypass by using " + Factions.get().cmdBase.cmdFactionsAdmin.getUseageTemplate(false));
 			}
 		}
 		return ret;

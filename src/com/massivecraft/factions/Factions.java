@@ -61,8 +61,8 @@ public class Factions extends MPlugin
 	private Integer econLandRewardTaskID = null;
 	
 	// Commands
-	public FCmdRoot cmdBase;
-	public CmdAutoHelp cmdAutoHelp;
+	public CmdFactions cmdBase;
+	public CmdFactionsAutoHelp cmdAutoHelp;
 
 	// -------------------------------------------- //
 	// OVERRIDE
@@ -84,8 +84,8 @@ public class Factions extends MPlugin
 		Board.load();
 		
 		// Add Base Commands
-		this.cmdAutoHelp = new CmdAutoHelp();
-		this.cmdBase = new FCmdRoot();
+		this.cmdAutoHelp = new CmdFactionsAutoHelp();
+		this.cmdBase = new CmdFactions();
 
 		EssentialsFeatures.setup();
 		SpoutFeatures.setup();
