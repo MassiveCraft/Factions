@@ -11,6 +11,8 @@ import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.event.server.PluginDisableEvent;
+import org.bukkit.event.server.PluginEnableEvent;
 
 import com.massivecraft.factions.integration.SpoutFeatures;
 
@@ -36,6 +38,20 @@ public class MainListener implements Listener
 	// -------------------------------------------- //
 	// SPOUT
 	// -------------------------------------------- //
+	
+	// Setup
+	
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void spoutSetup(PluginDisableEvent event)
+	{
+		SpoutFeatures.setup();
+	}
+
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void spoutSetup(PluginEnableEvent event)
+	{
+		SpoutFeatures.setup();
+	}
 	
 	// Standard
 	

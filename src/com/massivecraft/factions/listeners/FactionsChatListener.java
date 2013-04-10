@@ -29,11 +29,6 @@ import com.massivecraft.factions.Rel;
 
 public class FactionsChatListener implements Listener
 {
-	public Factions p;
-	public FactionsChatListener(Factions p)
-	{
-		this.p = p;
-	}
 	
 	public static Field fieldRegisteredListenerDotPriority;
 	public static final Pattern parsePattern;

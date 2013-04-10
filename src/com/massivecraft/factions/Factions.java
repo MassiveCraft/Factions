@@ -21,7 +21,6 @@ import com.massivecraft.factions.listeners.FactionsChatListener;
 import com.massivecraft.factions.listeners.FactionsEntityListener;
 import com.massivecraft.factions.listeners.FactionsExploitListener;
 import com.massivecraft.factions.listeners.FactionsPlayerListener;
-import com.massivecraft.factions.listeners.FactionsServerListener;
 import com.massivecraft.factions.util.AutoLeaveTask;
 import com.massivecraft.factions.util.EconLandRewardTask;
 import com.massivecraft.factions.util.LazyLocation;
@@ -53,7 +52,6 @@ public class Factions extends MPlugin
 	public FactionsEntityListener entityListener;
 	public FactionsExploitListener exploitListener;
 	public FactionsBlockListener blockListener;
-	public FactionsServerListener serverListener;
 	
 	// Persistance related
 	private boolean locked = false;
@@ -109,23 +107,20 @@ public class Factions extends MPlugin
 		// Register Event Handlers
 		MainListener.get().setup();
 		
-		this.playerListener = new FactionsPlayerListener(this);
+		this.playerListener = new FactionsPlayerListener();
 		getServer().getPluginManager().registerEvents(this.playerListener, this);
 		
-		this.chatListener = new FactionsChatListener(this);
+		this.chatListener = new FactionsChatListener();
 		getServer().getPluginManager().registerEvents(this.chatListener, this);
 		
-		this.entityListener = new FactionsEntityListener(this);
+		this.entityListener = new FactionsEntityListener();
 		getServer().getPluginManager().registerEvents(this.entityListener, this);
 		
 		this.exploitListener = new FactionsExploitListener();
 		getServer().getPluginManager().registerEvents(this.exploitListener, this);
 		
-		this.blockListener = new FactionsBlockListener(this);
+		this.blockListener = new FactionsBlockListener();
 		getServer().getPluginManager().registerEvents(this.blockListener, this);
-		
-		this.serverListener = new FactionsServerListener(this);
-		getServer().getPluginManager().registerEvents(this.serverListener, this);
 		
 		postEnable();
 		this.loadSuccessful = true;

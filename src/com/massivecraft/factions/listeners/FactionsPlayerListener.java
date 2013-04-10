@@ -31,7 +31,6 @@ import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayerColl;
-import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.TerritoryAccess;
 import com.massivecraft.factions.integration.SpoutFeatures;
@@ -40,12 +39,6 @@ import com.massivecraft.factions.util.VisualizeUtil;
 
 public class FactionsPlayerListener implements Listener
 {
-	public Factions p;
-	public FactionsPlayerListener(Factions p)
-	{
-		this.p = p;
-	}
-
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerJoin(PlayerJoinEvent event)
 	{

@@ -45,19 +45,12 @@ import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayerColl;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.event.PowerLossEvent;
 
 
 public class FactionsEntityListener implements Listener
 {
-	public Factions p;
-	public FactionsEntityListener(Factions p)
-	{
-		this.p = p;
-	}
-
 
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onEntityDeath(EntityDeathEvent event)

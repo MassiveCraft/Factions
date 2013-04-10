@@ -22,17 +22,10 @@ import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayerColl;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.Factions;
 
 
 public class FactionsBlockListener implements Listener
-{
-	public Factions p;
-	public FactionsBlockListener(Factions p)
-	{
-		this.p = p;
-	}
-	
+{	
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onBlockSpread(BlockSpreadEvent event)
 	{
