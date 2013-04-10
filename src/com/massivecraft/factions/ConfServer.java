@@ -3,7 +3,6 @@ package com.massivecraft.factions;
 import java.util.*;
 
 import org.bukkit.*;
-import org.bukkit.entity.EntityType;
 
 import com.massivecraft.mcore.SimpleConfig;
 import com.massivecraft.mcore.util.MUtil;
@@ -83,7 +82,6 @@ public class ConfServer extends SimpleConfig
 	public static boolean chatParseTags = true;
 	public static boolean chatParseTagsColored = false;
 	public static Map<String, String> chatSingleFormats = new HashMap<String, String>();
-	public static transient boolean chatTagHandledByAnotherPlugin = false; // Why do we need this? (Olof asks)
 	public static String chatTagFormat = "%s"+ChatColor.WHITE; // This one is almost deprecated now right? or is it?
 	
 	// Herochat
@@ -186,18 +184,7 @@ public class ConfServer extends SimpleConfig
 
 	// for claimed areas where further faction-member ownership can be defined
 
-	public static boolean pistonProtectionThroughDenyBuild = true;
-
-	public final transient static Set<Material> materialsEditOnInteract = EnumSet.noneOf(Material.class);
-	public final transient static Set<Material> materialsEditTools = EnumSet.noneOf(Material.class);
-	public final transient static Set<Material> materialsDoor = EnumSet.noneOf(Material.class);
-	public final transient static Set<Material> materialsContainer = EnumSet.noneOf(Material.class);
-	
-	//public static Set<Material> territoryProtectedMaterialsWhenOffline = EnumSet.noneOf(Material.class);
-	//public static Set<Material> territoryDenyUseageMaterialsWhenOffline = EnumSet.noneOf(Material.class);
-	
-	// TODO: Rename to monsterCreatureTypes
-	public static transient Set<EntityType> monsters = EnumSet.noneOf(EntityType.class);
+	public static boolean pistonProtectionThroughDenyBuild = true;	
 
 	// Spout features
 	public static boolean spoutFactionTagsOverNames = true;  // show faction tags over names over player heads
@@ -211,7 +198,16 @@ public class ConfServer extends SimpleConfig
 	public static double spoutHealthBarSolidsPerEmpty = 1d;
 	public static String spoutHealthBarColorTag = "{c}";
 	public static int spoutHealthBarWidth = 30;
-	public static Map<Double, String> spoutHealthBarColorUnderQuota = new LinkedHashMap<Double, String>();
+	
+	public static Map<Double, String> spoutHealthBarColorUnderQuota = MUtil.map(
+		1.0d, "&2",
+		0.8d, "&a",
+		0.5d, "&e",
+		0.4d, "&6",
+		0.3d, "&c",
+		0.2d, "&4"
+	);
+	
 	public static boolean spoutCapes = true;  // Show faction capes
 	public static int spoutTerritoryDisplayPosition = 1;  // permanent territory display, instead of by chat; 0 = disabled, 1 = top left, 2 = top center, 3+ = top right
 	public static float spoutTerritoryDisplaySize = 1.0f;  // text scale (size) for territory display
@@ -269,9 +265,7 @@ public class ConfServer extends SimpleConfig
 	// TODO: A better solution Would be to have One wilderness faction per world.
 	//public static Set<String> worldsNoWildernessProtection = new LinkedHashSet<String>();
 	
-	public static transient int mapHeight = 8;
-	public static transient int mapWidth = 39;
-	public static transient char[] mapKeyChrs = "\\/#?$%=&^ABCDEFGHJKLMNOPQRSTUVWXYZ1234567890abcdeghjmnopqrsuvwxyz".toCharArray();
+
 	
 	static
 	{
@@ -290,56 +284,6 @@ public class ConfServer extends SimpleConfig
 		chatSingleFormats.put("pl", " %s");
 		chatSingleFormats.put("pr", "%s ");
 		chatSingleFormats.put("pb", " %s ");
-
-		materialsContainer.add(Material.DISPENSER);
-		materialsContainer.add(Material.CHEST);
-		materialsContainer.add(Material.FURNACE);
-		materialsContainer.add(Material.BURNING_FURNACE);
-		materialsContainer.add(Material.JUKEBOX);
-		materialsContainer.add(Material.BREWING_STAND);
-		materialsContainer.add(Material.ENCHANTMENT_TABLE);
-		materialsContainer.add(Material.ANVIL);
-		materialsContainer.add(Material.BEACON);
-		
-		materialsEditOnInteract.add(Material.DIODE_BLOCK_OFF);
-		materialsEditOnInteract.add(Material.DIODE_BLOCK_ON);
-		materialsEditOnInteract.add(Material.NOTE_BLOCK);
-		materialsEditOnInteract.add(Material.CAULDRON);
-		materialsEditOnInteract.add(Material.SOIL);
-
-		materialsDoor.add(Material.WOODEN_DOOR);
-		materialsDoor.add(Material.TRAP_DOOR);
-		materialsDoor.add(Material.FENCE_GATE);
-		
-		materialsEditTools.add(Material.FIREBALL);
-		materialsEditTools.add(Material.FLINT_AND_STEEL);
-		materialsEditTools.add(Material.BUCKET);
-		materialsEditTools.add(Material.WATER_BUCKET);
-		materialsEditTools.add(Material.LAVA_BUCKET);
-
-		monsters.add(EntityType.BLAZE);
-		monsters.add(EntityType.CAVE_SPIDER);
-		monsters.add(EntityType.CREEPER);
-		monsters.add(EntityType.ENDERMAN);
-		monsters.add(EntityType.ENDER_DRAGON);
-		monsters.add(EntityType.GHAST);
-		monsters.add(EntityType.GIANT);
-		monsters.add(EntityType.MAGMA_CUBE);
-		monsters.add(EntityType.PIG_ZOMBIE);
-		monsters.add(EntityType.SILVERFISH);
-		monsters.add(EntityType.SKELETON);
-		monsters.add(EntityType.SLIME);
-		monsters.add(EntityType.SPIDER);
-		monsters.add(EntityType.WITCH);
-		monsters.add(EntityType.WITHER);
-		monsters.add(EntityType.ZOMBIE);
-		
-		spoutHealthBarColorUnderQuota.put(1.0d, "&2");
-        spoutHealthBarColorUnderQuota.put(0.8d, "&a");
-        spoutHealthBarColorUnderQuota.put(0.5d, "&e");
-        spoutHealthBarColorUnderQuota.put(0.4d, "&6");
-        spoutHealthBarColorUnderQuota.put(0.3d, "&c");
-        spoutHealthBarColorUnderQuota.put(0.2d, "&4");
 	}
 }
 

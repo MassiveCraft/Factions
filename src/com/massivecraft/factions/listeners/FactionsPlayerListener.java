@@ -26,6 +26,7 @@ import org.bukkit.util.NumberConversions;
 
 import com.massivecraft.factions.Board;
 import com.massivecraft.factions.ConfServer;
+import com.massivecraft.factions.Const;
 import com.massivecraft.factions.FFlag;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.FPerm;
@@ -202,7 +203,7 @@ public class FactionsPlayerListener implements Listener
 
 		FPlayer me = FPlayerColl.i.get(name);
 		if (me.hasAdminMode()) return true;
-		if (ConfServer.materialsEditTools.contains(material) && ! FPerm.BUILD.has(me, loc, ! justCheck)) return false;
+		if (Const.MATERIALS_EDIT_TOOLS.contains(material) && ! FPerm.BUILD.has(me, loc, ! justCheck)) return false;
 		return true;
 	}
 	public static boolean canPlayerUseBlock(Player player, Block block, boolean justCheck)
@@ -215,9 +216,9 @@ public class FactionsPlayerListener implements Listener
 		Location loc = block.getLocation();
 		Material material = block.getType();
 		
-		if (ConfServer.materialsEditOnInteract.contains(material) && ! FPerm.BUILD.has(me, loc, ! justCheck)) return false;
-		if (ConfServer.materialsContainer.contains(material) && ! FPerm.CONTAINER.has(me, loc, ! justCheck)) return false;
-		if (ConfServer.materialsDoor.contains(material)      && ! FPerm.DOOR.has(me, loc, ! justCheck)) return false;
+		if (Const.MATERIALS_EDIT_ON_INTERACT.contains(material) && ! FPerm.BUILD.has(me, loc, ! justCheck)) return false;
+		if (Const.MATERIALS_CONTAINER.contains(material) && ! FPerm.CONTAINER.has(me, loc, ! justCheck)) return false;
+		if (Const.MATERIALS_DOOR.contains(material)      && ! FPerm.DOOR.has(me, loc, ! justCheck)) return false;
 		if (material == Material.STONE_BUTTON          && ! FPerm.BUTTON.has(me, loc, ! justCheck)) return false;
 		if (material == Material.LEVER                 && ! FPerm.LEVER.has(me, loc, ! justCheck)) return false;
 		return true;

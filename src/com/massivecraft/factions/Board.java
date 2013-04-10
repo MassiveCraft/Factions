@@ -190,8 +190,8 @@ public class Board
 		Faction factionLoc = getFactionAt(flocation);
 		ret.add(Txt.titleize("("+flocation.getCoordString()+") "+factionLoc.getTag(observer)));
 		
-		int halfWidth = ConfServer.mapWidth / 2;
-		int halfHeight = ConfServer.mapHeight / 2;
+		int halfWidth = Const.MAP_WIDTH / 2;
+		int halfHeight = Const.MAP_HEIGHT / 2;
 		FLocation topLeft = flocation.getRelative(-halfWidth, -halfHeight);
 		int width = halfWidth * 2 + 1;
 		int height = halfHeight * 2 + 1;
@@ -225,7 +225,7 @@ public class Board
 				else
 				{
 					if (!fList.containsKey(factionHere))
-						fList.put(factionHere, ConfServer.mapKeyChrs[chrIdx++]);
+						fList.put(factionHere, Const.MAP_KEY_CHARS[chrIdx++]);
 					char fchar = fList.get(factionHere);
 					row += factionHere.getColorTo(observer) + "" + fchar;
 				}

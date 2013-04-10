@@ -31,7 +31,6 @@ public class HerochatListener implements Listener
 	{
 		// Should we even parse?
 		if ( ! ConfServer.chatParseTags) return;
-		if (ConfServer.chatTagHandledByAnotherPlugin) return;
 		
 		Player from = event.getSender().getPlayer();
 		FPlayer fpfrom = FPlayerColl.i.get(from);

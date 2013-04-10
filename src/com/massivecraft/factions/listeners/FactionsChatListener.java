@@ -79,7 +79,9 @@ public class FactionsChatListener implements Listener
 	{
 		// Should we even parse?
 		if ( ! ConfServer.chatParseTags) return;
-		if (ConfServer.chatTagHandledByAnotherPlugin) return;
+		
+		// TODO: Replace this one with a detailed EventPriority + boolean. 
+		//if (ConfServer.chatTagHandledByAnotherPlugin) return;
 		
 		Player from = event.getPlayer();
 		FPlayer fpfrom = FPlayerColl.i.get(from);

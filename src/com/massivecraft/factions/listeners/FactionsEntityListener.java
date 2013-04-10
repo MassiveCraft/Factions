@@ -40,6 +40,7 @@ import org.bukkit.potion.PotionEffectType;
 
 import com.massivecraft.factions.Board;
 import com.massivecraft.factions.ConfServer;
+import com.massivecraft.factions.Const;
 import com.massivecraft.factions.FFlag;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.FPlayer;
@@ -353,7 +354,7 @@ public class FactionsEntityListener implements Listener
 		Faction faction = Board.getFactionAt(floc);
 
 		if (faction.getFlag(FFlag.MONSTERS)) return;
-		if ( ! ConfServer.monsters.contains(event.getEntityType())) return;
+		if ( ! Const.ENTITY_TYPES_MONSTERS.contains(event.getEntityType())) return;
 
 		event.setCancelled(true);
 	}
@@ -370,7 +371,7 @@ public class FactionsEntityListener implements Listener
 		// We are interested in blocking targeting for certain mobs:
 		
 		
-		if ( ! ConfServer.monsters.contains(event.getEntity().getType())) return;
+		if ( ! Const.ENTITY_TYPES_MONSTERS.contains(event.getEntity().getType())) return;
 
 		FLocation floc = new FLocation(target.getLocation());
 		Faction faction = Board.getFactionAt(floc);

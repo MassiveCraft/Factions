@@ -38,6 +38,8 @@ public class MainListener implements Listener
 	// -------------------------------------------- //
 	// SPOUT
 	// -------------------------------------------- //
+	// TODO: These spout related methods should not be in here.
+	// The spout integration needs to be moved elsewhere.
 	
 	// Setup
 	
