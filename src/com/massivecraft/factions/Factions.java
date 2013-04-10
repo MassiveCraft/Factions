@@ -4,7 +4,6 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.logging.Level;
 import java.util.Set;
 
 import org.bukkit.block.Block;
@@ -82,18 +81,6 @@ public class Factions extends MPlugin
 	@Override
 	public void onEnable()
 	{
-		// bit of (apparently absolutely necessary) idiot-proofing for CB version support due to changed GSON lib package name
-		try
-		{
-			Class.forName("org.bukkit.craftbukkit.libs.com.google.gson.reflect.TypeToken");
-		}
-		catch (ClassNotFoundException ex)
-		{
-			this.log(Level.SEVERE, "GSON lib not found. Your CraftBukkit build is too old (< 1.3.2) or otherwise not compatible.");
-			this.suicide();
-			return;
-		}
-
 		if ( ! preEnable()) return;
 		this.loadSuccessful = false;
 
