@@ -11,9 +11,7 @@ import com.massivecraft.factions.zcore.persist.PlayerEntityCollection;
 
 public class FPlayerColl extends PlayerEntityCollection<FPlayer>
 {
-	public static FPlayerColl i = new FPlayerColl();
-	
-	Factions p = Factions.get();
+	public static FPlayerColl i = new FPlayerColl();	
 	
 	private FPlayerColl()
 	{
@@ -41,7 +39,7 @@ public class FPlayerColl extends PlayerEntityCollection<FPlayer>
 		{
 			if ( ! FactionColl.i.exists(fplayer.getFactionId()))
 			{
-				p.log("Reset faction data (invalid faction) for player "+fplayer.getName());
+				Factions.get().log("Reset faction data (invalid faction) for player "+fplayer.getName());
 				fplayer.resetFactionData(false);
 			}
 		}

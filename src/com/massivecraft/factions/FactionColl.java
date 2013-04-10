@@ -20,8 +20,6 @@ public class FactionColl extends EntityCollection<Faction>
 {
 	public static FactionColl i = new FactionColl();
 	
-	Factions p = Factions.get();
-	
 	private FactionColl()
 	{
 		super
@@ -183,7 +181,7 @@ public class FactionColl extends EntityCollection<Faction>
 	{
 		if ( ! this.exists(id))
 		{
-			p.log(Level.WARNING, "Non existing factionId "+id+" requested! Issuing cleaning!");
+			Factions.get().log(Level.WARNING, "Non existing factionId "+id+" requested! Issuing cleaning!");
 			Board.clean();
 			FPlayerColl.i.clean();
 		}
