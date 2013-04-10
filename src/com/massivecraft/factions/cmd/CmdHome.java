@@ -17,7 +17,7 @@ import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.integration.EssentialsFeatures;
-import com.massivecraft.factions.zcore.util.SmokeUtil;
+import com.massivecraft.mcore.util.SmokeUtil;
 
 
 public class CmdHome extends FCommand

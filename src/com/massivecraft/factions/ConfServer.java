@@ -5,8 +5,9 @@ import java.util.*;
 import org.bukkit.*;
 import org.bukkit.entity.EntityType;
 
+import com.massivecraft.mcore.SimpleConfig;
 
-public class ConfServer
+public class ConfServer extends SimpleConfig
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -14,15 +15,7 @@ public class ConfServer
 	
 	private static transient ConfServer i = new ConfServer();
 	public static ConfServer get() { return i; }
-	
-	public static void load()
-	{
-		Factions.get().persist.loadOrSaveDefault(i, ConfServer.class, "conf");
-	}
-	public static void save()
-	{
-		Factions.get().persist.save(i);
-	}
+	public ConfServer() { super(Factions.get()); }
 	
 	// -------------------------------------------- //
 	// FIELDS

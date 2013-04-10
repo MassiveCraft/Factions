@@ -1,7 +1,6 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Board;
-import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.FPlayerColl;
 import com.massivecraft.factions.FactionColl;
 import com.massivecraft.factions.Factions;
@@ -35,12 +34,7 @@ public class CmdReload extends FCommand
 		
 		String fileName;
 		
-		if (file.startsWith("c"))
-		{
-			ConfServer.load();
-			fileName = "conf.json";
-		}
-		else if (file.startsWith("b"))
+		if (file.startsWith("b"))
 		{
 			Board.load();
 			fileName = "board.json";
@@ -58,7 +52,6 @@ public class CmdReload extends FCommand
 		else if (file.startsWith("a"))
 		{
 			fileName = "all";
-			ConfServer.load();
 			FPlayerColl.i.loadFromDisc();
 			FactionColl.i.loadFromDisc();
 			Board.load();
@@ -66,7 +59,7 @@ public class CmdReload extends FCommand
 		else
 		{
 			Factions.get().log("RELOAD CANCELLED - SPECIFIED FILE INVALID");
-			msg("<b>Invalid file specified. <i>Valid files: all, conf, board, factions, players");
+			msg("<b>Invalid file specified. <i>Valid files: all, board, factions, players");
 			return;
 		}
 		

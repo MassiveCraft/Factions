@@ -30,6 +30,7 @@ import com.massivecraft.factions.zcore.MPlugin;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+
 import com.massivecraft.mcore.xlib.gson.GsonBuilder;
 
 
@@ -75,10 +76,13 @@ public class Factions extends MPlugin
 	public void onEnable()
 	{
 		if ( ! preEnable()) return;
+		
+		// Load Server Config
+		ConfServer.get().load();
+		
 		this.loadSuccessful = false;
 
 		// Load Conf from disk
-		ConfServer.load();
 		FPlayerColl.i.loadFromDisc();
 		FactionColl.i.loadFromDisc();
 		Board.load();
@@ -151,7 +155,6 @@ public class Factions extends MPlugin
 		if (this.loadSuccessful)
 		{
 			Board.save();
-			ConfServer.save();
 		}
 		EssentialsFeatures.unhookChat();
 		if (AutoLeaveTask != null)
@@ -201,7 +204,6 @@ public class Factions extends MPlugin
 	public void postAutoSave()
 	{
 		Board.save();
-		ConfServer.save();
 	}
 	
 	@Override
