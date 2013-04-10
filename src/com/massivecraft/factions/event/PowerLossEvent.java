@@ -12,74 +12,47 @@ import org.bukkit.entity.Player;
 
 public class PowerLossEvent extends Event implements Cancellable
 {
+	// -------------------------------------------- //
+	// REQUIRED EVENT CODE
+	// -------------------------------------------- //
+	
 	private static final HandlerList handlers = new HandlerList();
+	@Override public HandlerList getHandlers() { return handlers; }
+	public static HandlerList getHandlerList() { return handlers; }
 
+	// -------------------------------------------- //
+	// FIELDS
+	// -------------------------------------------- //
+	
 	private boolean cancelled;
-	private Faction faction;
-	private FPlayer fplayer;
+	@Override public boolean isCancelled() { return this.cancelled; }
+	@Override public void setCancelled(boolean cancelled) { this.cancelled = cancelled; }
+	
+	private final Faction faction;
+	public Faction getFaction() { return this.faction; }
+	
+	private final FPlayer fplayer;
+	public FPlayer getFPlayer() { return this.fplayer; }
+	
+	// TODO: Should message really be set here? Or should it be sent by the plugin that cancells directly?
 	private String message;
+	public String getMessage() { return this.message; }
+	public void setMessage(String message) { this.message = message; }
+	
+	// TODO: These methods seem redundant? Why were they added? Can I remove them?
+	public String getFactionId() { return this.faction.getId(); }
+	public String getFactionTag() { return this.faction.getTag(); }
+	public Player getPlayer() { return this.fplayer.getPlayer(); }
 
-	public PowerLossEvent(Faction f, FPlayer p)
+	// -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
+	
+	public PowerLossEvent(Faction faction, FPlayer fplayer)
 	{
-		cancelled = false;
-		faction = f;
-		fplayer = p;
-	}
-
-	@Override
-	public HandlerList getHandlers()
-	{
-		return handlers;
-	}
-
-	public static HandlerList getHandlerList()
-	{
-		return handlers;
-	}
-
-	public Faction getFaction()
-	{
-		return faction;
-	}
-
-	public String getFactionId()
-	{
-		return faction.getId();
-	}
-
-	public String getFactionTag()
-	{
-		return faction.getTag();
-	}
-
-	public FPlayer getFPlayer()
-	{
-		return fplayer;
-	}
-
-	public Player getPlayer()
-	{
-		return fplayer.getPlayer();
-	}
-
-	public String getMessage() {
-		return message;
-	}
-
-	public void setMessage(String message) {
-		this.message = message;
-	}
-
-	@Override
-	public boolean isCancelled()
-	{
-		return cancelled;
-	}
-
-	@Override
-	public void setCancelled(boolean c)
-	{
-		this.cancelled = c;
+		this.cancelled = false;
+		this.faction = faction;
+		this.fplayer = fplayer;
 	}
 
 }

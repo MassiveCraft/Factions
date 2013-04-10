@@ -12,28 +12,26 @@ import com.massivecraft.factions.FactionColl;
 
 public class FactionDisbandEvent extends Event implements Cancellable
 {
+	// -------------------------------------------- //
+	// REQUIRED EVENT CODE
+	// -------------------------------------------- //
+	
 	private static final HandlerList handlers = new HandlerList();
-
+	@Override public HandlerList getHandlers() { return handlers; }
+	public static HandlerList getHandlerList() { return handlers; }
+	
+	// -------------------------------------------- //
+	// FIELDS
+	// -------------------------------------------- //
+	
 	private boolean cancelled;
+	@Override public boolean isCancelled() { return this.cancelled; }
+	@Override public void setCancelled(boolean cancelled) { this.cancelled = cancelled; }
+	
+	// TODO: Could the fields be reorganized to achieve symmetry?
+	
 	private String id;
 	private Player sender;
-
-	public FactionDisbandEvent(Player sender, String factionId)
-	{
-		cancelled = false;
-		this.sender = sender;
-		this.id = factionId;
-	}
-
-	public HandlerList getHandlers() 
-	{
-		return handlers;
-	}
-
-	public static HandlerList getHandlerList() 
-	{
-		return handlers;
-	}
 
 	public Faction getFaction()
 	{
@@ -47,18 +45,25 @@ public class FactionDisbandEvent extends Event implements Cancellable
 
 	public Player getPlayer()
 	{
-		return sender;
+		return this.sender;
 	}
-
-	@Override
-	public boolean isCancelled() 
+	
+	// -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
+	
+	public FactionDisbandEvent(Player sender, String factionId)
 	{
-		return cancelled;
+		this.cancelled = false;
+		this.sender = sender;
+		this.id = factionId;
 	}
+	
+	// -------------------------------------------- //
+	// ASSORTED
+	// -------------------------------------------- //
 
-	@Override
-	public void setCancelled(boolean c) 
-	{
-		cancelled = c;
-	}
+	
+
+	
 }

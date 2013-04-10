@@ -10,65 +10,51 @@ import com.massivecraft.factions.Faction;
 
 public class FactionRenameEvent extends Event implements Cancellable
 {
+	// -------------------------------------------- //
+	// REQUIRED EVENT CODE
+	// -------------------------------------------- //
+	
 	private static final HandlerList handlers = new HandlerList();
-
+	@Override public HandlerList getHandlers() { return handlers; }
+	public static HandlerList getHandlerList() { return handlers; }
+	
+	// -------------------------------------------- //
+	// FIELDS
+	// -------------------------------------------- //
+	
 	private boolean cancelled;
-	private FPlayer fplayer;
-	private Faction faction;
+	@Override public boolean isCancelled() { return this.cancelled; }
+	@Override public void setCancelled(boolean cancelled) { this.cancelled = cancelled; }
+	
+	private final FPlayer fplayer;
+	public FPlayer getFPlayer() { return this.fplayer; }
+	
+	private final Faction faction;
+	public Faction getFaction() { return this.faction; }
+	
 	private String tag;
+	
+	
+	// TODO: fix these
+	public Player getPlayer() { return this.fplayer.getPlayer(); }
+	public String getOldFactionTag() { return this.faction.getTag(); }
+	public String getFactionTag() { return this.tag; }
 
+	// -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
+	
 	public FactionRenameEvent(FPlayer sender, String newTag) 
 	{
-		fplayer = sender;
-		faction = sender.getFaction();
-		tag = newTag;
 		this.cancelled = false;
+		this.fplayer = sender;
+		this.faction = sender.getFaction(); // TODO: Players can only rename their own faction? A field and constructor rewrite is probably pending for this class...
+		this.tag = newTag;
 	}
 
-	public Faction getFaction()
-	{
-		return(faction);
-	}
+	
 
-	public FPlayer getFPlayer()
-	{
-		return(fplayer);
-	}
+	
 
-	public Player getPlayer()
-	{
-		return(fplayer.getPlayer());
-	}
 
-	public String getOldFactionTag()
-	{
-		return(faction.getTag());
-	}
-
-	public String getFactionTag()
-	{
-		return(tag);
-	}
-
-	public HandlerList getHandlers() 
-	{
-		return handlers;
-	}
-
-	public static HandlerList getHandlerList() 
-	{
-		return handlers;
-	}
-
-	@Override
-	public boolean isCancelled() 
-	{
-		return cancelled;
-	}
-
-	@Override
-	public void setCancelled(boolean c) 
-	{
-		this.cancelled = c;
-	}
 }

@@ -11,19 +11,29 @@ import com.massivecraft.factions.FactionColl;
 
 public class FactionCreateEvent extends Event implements Cancellable
 {
-	private static final HandlerList handlers = new HandlerList();
- 
-	private String factionTag;
-	private Player sender;
-	private boolean cancelled;
+	// -------------------------------------------- //
+	// REQUIRED EVENT CODE
+	// -------------------------------------------- //
 	
-	public FactionCreateEvent(Player sender, String tag) 
-	{
-		this.factionTag = tag;
-		this.sender = sender;
-		this.cancelled = false;
-	}
+	private static final HandlerList handlers = new HandlerList();
+	@Override public HandlerList getHandlers() { return handlers; }
+	public static HandlerList getHandlerList() { return handlers; }
+	
+	// -------------------------------------------- //
+	// FIELDS
+	// -------------------------------------------- //
  
+	private boolean cancelled;
+	@Override public boolean isCancelled() { return this.cancelled; }
+	@Override public void setCancelled(boolean cancelled) { this.cancelled = cancelled; }
+	
+	// TODO: Could the fields be reorganized to achieve symmetry?
+	
+	private String factionTag;
+	public String getFactionTag() { return this.factionTag; }
+	
+	private Player sender;
+	
 	public FPlayer getFPlayer()
 	{
 		return FPlayerColl.i.get(sender);
@@ -33,31 +43,16 @@ public class FactionCreateEvent extends Event implements Cancellable
 	{
 		return FactionColl.i.getNextId();
 	}
-
-	public String getFactionTag()
+	
+	// -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
+	
+	public FactionCreateEvent(Player sender, String tag) 
 	{
-		return factionTag;
+		this.cancelled = false;
+		this.factionTag = tag;
+		this.sender = sender;
 	}
 
-	public HandlerList getHandlers() 
-	{
-		return handlers;
-	}
- 
-	public static HandlerList getHandlerList() 
-	{
-		return handlers;
-	}
-
-	@Override
-	public boolean isCancelled() 
-	{
-		return cancelled;
-	}
-
-	@Override
-	public void setCancelled(boolean c) 
-	{
-		this.cancelled = c;
-	}
 }

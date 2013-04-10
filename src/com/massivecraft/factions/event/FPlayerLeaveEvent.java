@@ -9,55 +9,20 @@ import com.massivecraft.factions.Faction;
 
 public class FPlayerLeaveEvent extends Event implements Cancellable
 {
+	// -------------------------------------------- //
+	// REQUIRED EVENT CODE
+	// -------------------------------------------- //
+	
 	private static final HandlerList handlers = new HandlerList();
-	private PlayerLeaveReason reason;
-	FPlayer FPlayer;
-	Faction Faction;
-	boolean cancelled = false;
-
-	public enum PlayerLeaveReason
-	{
-		KICKED, DISBAND, RESET, JOINOTHER, LEAVE
-	}
-
-	public FPlayerLeaveEvent(FPlayer p, Faction f, PlayerLeaveReason r)
-	{
-		FPlayer = p;
-		Faction = f;
-		reason = r;
-	}
-
-	public HandlerList getHandlers() 
-	{
-		return handlers;
-	}
-
-	public static HandlerList getHandlerList() 
-	{
-		return handlers;
-	}
+	@Override public HandlerList getHandlers() { return handlers; }
+	public static HandlerList getHandlerList() { return handlers; }
 	
-	public PlayerLeaveReason getReason() 
-	{
-		return reason;
-	}
+	// -------------------------------------------- //
+	// FIELDS
+	// -------------------------------------------- //
 	
-	public FPlayer getFPlayer()
-	{
-		return FPlayer;
-	}
-	
-	public Faction getFaction()
-	{
-		return Faction;
-	}
-
-	@Override
-	public boolean isCancelled() 
-	{
-		return cancelled;
-	}
-
+	private boolean cancelled;
+	@Override public boolean isCancelled() { return this.cancelled; }
 	@Override
 	public void setCancelled(boolean c) 
 	{
@@ -68,4 +33,35 @@ public class FPlayerLeaveEvent extends Event implements Cancellable
 		}
 		cancelled = c;
 	}
+	
+	private final PlayerLeaveReason reason;
+	public PlayerLeaveReason getReason() { return this.reason; }
+	
+	private final FPlayer fplayer;
+	public FPlayer getFPlayer() { return this.fplayer; }
+	
+	private final Faction faction;
+	public Faction getFaction() { return this.faction; }
+
+	// -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
+	
+	public FPlayerLeaveEvent(FPlayer fplayer, Faction faction, PlayerLeaveReason reason)
+	{
+		this.cancelled = false;
+		this.fplayer = fplayer;
+		this.faction = faction;
+		this.reason = reason;
+	}
+	
+	// -------------------------------------------- //
+	// INTERNAL ENUM
+	// -------------------------------------------- //
+	
+	public enum PlayerLeaveReason
+	{
+		KICKED, DISBAND, RESET, JOINOTHER, LEAVE
+	}
+	
 }

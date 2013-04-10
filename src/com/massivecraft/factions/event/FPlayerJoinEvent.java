@@ -9,21 +9,35 @@ import com.massivecraft.factions.Faction;
 
 public class FPlayerJoinEvent extends Event implements Cancellable
 {
+	// -------------------------------------------- //
+	// REQUIRED EVENT CODE
+	// -------------------------------------------- //
+	
 	private static final HandlerList handlers = new HandlerList();
-
-	FPlayer fplayer;
-	Faction faction;
-	PlayerJoinReason reason;
-	boolean cancelled = false;
-	public enum PlayerJoinReason
+	@Override public HandlerList getHandlers() { return handlers; }
+	public static HandlerList getHandlerList() { return handlers; }
+	
+	// -------------------------------------------- //
+	// FIELDS
+	// -------------------------------------------- //
+	
+	private FPlayer fplayer;
+	private Faction faction;
+	private PlayerJoinReason reason;
+	
+	private boolean cancelled = false;
+	@Override public boolean isCancelled() { return this.cancelled; }
+	@Override public void setCancelled(boolean cancelled) { this.cancelled = cancelled; }
+	
+	// -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
+	
+	public FPlayerJoinEvent(FPlayer fplayer, Faction faction, PlayerJoinReason reason)
 	{
-		CREATE, LEADER, COMMAND
-	}
-	public FPlayerJoinEvent(FPlayer fp, Faction f, PlayerJoinReason r)
-	{ 
-		fplayer = fp;
-		faction = f;
-		reason = r;
+		this.fplayer = fplayer;
+		this.faction = faction;
+		this.reason = reason;
 	}
 
 	public FPlayer getFPlayer()
@@ -38,23 +52,14 @@ public class FPlayerJoinEvent extends Event implements Cancellable
 	{
 		return reason;	
 	}
-	public HandlerList getHandlers() 
+	
+	// -------------------------------------------- //
+	// INTERNAL ENUM
+	// -------------------------------------------- //
+	
+	public enum PlayerJoinReason
 	{
-		return handlers;
+		CREATE, LEADER, COMMAND
 	}
-
-	public static HandlerList getHandlerList() 
-	{
-		return handlers;
-	}
-	@Override
-	public boolean isCancelled() 
-	{
-		return cancelled;
-	}
-	@Override
-	public void setCancelled(boolean c) 
-	{
-		cancelled = c;
-	}
+	
 }

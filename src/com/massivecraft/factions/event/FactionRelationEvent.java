@@ -9,48 +9,44 @@ import com.massivecraft.factions.Rel;
 
 public class FactionRelationEvent extends Event
 {
+	// -------------------------------------------- //
+	// REQUIRED EVENT CODE
+	// -------------------------------------------- //
+	
 	private static final HandlerList handlers = new HandlerList();
+	@Override public HandlerList getHandlers() { return handlers; }
+	public static HandlerList getHandlerList() { return handlers; }
+	
+	// -------------------------------------------- //
+	// FIELDS
+	// -------------------------------------------- //
+	
+	// TODO: Should this one be informative only?
+	// TODO: How about making it Cancellable?
+	// TODO: How about making the target relation non-final?
+	
+	private final Faction faction;
+	public Faction getFaction() { return this.faction; }
+	
+	private final Faction targetFaction;
+	public Faction getTargetFaction() { return this.targetFaction; }
+	
+	private final Rel oldRel;
+	public Rel getOldRel() { return this.oldRel; }
+	
+	private final Rel newRel;
+	public Rel getNewRel() { return this.newRel; }
 
-	private Faction fsender;
-	private Faction ftarget;
-	private Rel foldrel;
-	private Rel frel;
-
-	public FactionRelationEvent(Faction sender, Faction target, Rel oldrel, Rel rel)
+	// -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
+	
+	public FactionRelationEvent(Faction faction, Faction targetFaction, Rel oldRel, Rel newRel)
 	{
-		fsender = sender;
-		ftarget = target;
-		foldrel = oldrel;
-		frel = rel;
+		this.faction = faction;
+		this.targetFaction = targetFaction;
+		this.oldRel = oldRel;
+		this.newRel = newRel;
 	}
-
-	public HandlerList getHandlers() 
-	{
-		return handlers;
-	}
-
-	public static HandlerList getHandlerList() 
-	{
-		return handlers;
-	}
-
-	public Rel getOldRelation() 
-	{
-		return foldrel;
-	}
-
-	public Rel getRelation() 
-	{
-		return frel;
-	}
-
-	public Faction getFaction()
-	{
-		return fsender;
-	}
-
-	public Faction getTargetFaction()
-	{
-		return ftarget;
-	}
+	
 }
