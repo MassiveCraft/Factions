@@ -26,9 +26,9 @@ public class BoardOld
 	private static transient File file = new File(Factions.get().getDataFolder(), "board.json");
 	private static transient HashMap<FLocation, TerritoryAccess> flocationIds = new HashMap<FLocation, TerritoryAccess>();
 	
-	//----------------------------------------------//
-	// Get and Set
-	//----------------------------------------------//
+	// -------------------------------------------- //
+	// GET AND SET
+	// -------------------------------------------- //
 	public static String getIdAt(FLocation flocation)
 	{
 		if ( ! flocationIds.containsKey(flocation)) return "0";
@@ -118,9 +118,9 @@ public class BoardOld
 	}
 	
 	
-	//----------------------------------------------//
-	// Cleaner. Remove orphaned foreign keys
-	//----------------------------------------------//
+	// -------------------------------------------- //
+	// CLEANER. REMOVE ORPHANED FOREIGN KEYS
+	// -------------------------------------------- //
 	
 	public static void clean()
 	{
@@ -136,11 +136,11 @@ public class BoardOld
 				iter.remove();
 			}
 		}
-	}	
+	}
 	
-	//----------------------------------------------//
-	// Coord count
-	//----------------------------------------------//
+	// -------------------------------------------- //
+	// COORD COUNT
+	// -------------------------------------------- //
 	
 	public static int getFactionCoordCount(String factionId)
 	{
@@ -175,9 +175,9 @@ public class BoardOld
 		return ret;
 	}
 	
-	//----------------------------------------------//
-	// Map generation
-	//----------------------------------------------//
+	// -------------------------------------------- //
+	// MAP GENERATION
+	// -------------------------------------------- //
 	
 	/**
 	 * The map is relative to a coord and a faction

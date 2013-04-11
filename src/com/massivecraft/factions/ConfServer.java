@@ -21,7 +21,8 @@ public class ConfServer extends SimpleConfig
 	// FIELDS
 	// -------------------------------------------- //
 	
-	public final static List<String> baseCommandAliases = MUtil.list("f");
+	public static List<String> baseCommandAliases = MUtil.list("f");
+	public static String dburi = "default";
 	
 	// Colors
 	public static ChatColor colorMember = ChatColor.GREEN;

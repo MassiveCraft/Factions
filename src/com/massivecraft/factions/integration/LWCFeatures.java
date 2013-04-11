@@ -18,6 +18,7 @@ import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.FPlayerColl;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
+import com.massivecraft.mcore.ps.PS;
 
 public class LWCFeatures 
 {
@@ -63,15 +64,22 @@ public class LWCFeatures
 		}
 	}
 	
-	public static void clearAllChests(FLocation flocation)
+	public static void clearAllChests(PS ps)
 	{
-		Location location = new Location(Bukkit.getWorld(flocation.getWorldName()), flocation.getX() * 16, 5, flocation.getZ() * 16);
-		if (location.getWorld() == null) return;  // world not loaded or something? cancel out to prevent error
-		Chunk chunk = location.getChunk();
+		Chunk chunk = null;
+		try
+		{
+			chunk = ps.asBukkitChunk(true);
+		}
+		catch (Exception e)
+		{
+			return;
+		}
+		
 		BlockState[] blocks = chunk.getTileEntities();
 		List<Block> chests = new LinkedList<Block>();
 		
-		for(int x = 0; x < blocks.length; x++)
+		for (int x = 0; x < blocks.length; x++)
 		{
 			if(blocks[x].getType() == Material.CHEST)
 			{
@@ -79,11 +87,11 @@ public class LWCFeatures
 			}
 		}
 		
-		for(int x = 0; x < chests.size(); x++)
+		for (int x = 0; x < chests.size(); x++)
 		{
 			if(lwc.findProtection(chests.get(x)) != null)
 			{
-					lwc.findProtection(chests.get(x)).remove();
+				lwc.findProtection(chests.get(x)).remove();
 			}
 		}
 	}
