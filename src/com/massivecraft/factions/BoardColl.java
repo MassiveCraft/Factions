@@ -1,11 +1,19 @@
 package com.massivecraft.factions;
 
+import java.io.File;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import com.massivecraft.factions.iface.RelationParticipator;
 import com.massivecraft.mcore.ps.PS;
+import com.massivecraft.mcore.ps.PSBuilder;
 import com.massivecraft.mcore.store.Coll;
 import com.massivecraft.mcore.store.MStore;
+import com.massivecraft.mcore.util.DiscUtil;
 import com.massivecraft.mcore.util.MUtil;
+import com.massivecraft.mcore.xlib.gson.reflect.TypeToken;
 
 public class BoardColl extends Coll<Board, String> implements BoardInterface
 {
@@ -33,6 +41,51 @@ public class BoardColl extends Coll<Board, String> implements BoardInterface
 		
 		return MUtil.extract(String.class, "worldName", oid);
 	}
+	
+	@Override
+	public void init()
+	{
+		super.init();
+
+		this.migrate();
+	}
+	
+	public void migrate()
+	{
+		// Create file objects
+		File oldFile = new File(Factions.get().getDataFolder(), "board.json");
+		File newFile = new File(Factions.get().getDataFolder(), "board.json.old");
+		
+		// Already migrated?
+		if ( ! oldFile.exists()) return;
+		
+		// Read the file content through GSON. 
+		Type type = new TypeToken<Map<String,Map<String,TerritoryAccess>>>(){}.getType();
+		Map<String,Map<String,TerritoryAccess>> worldCoordIds = Factions.get().gson.fromJson(DiscUtil.readCatch(oldFile), type);
+		
+		// Set the data
+		for (Entry<String,Map<String,TerritoryAccess>> entry : worldCoordIds.entrySet())
+		{
+			String worldName = entry.getKey();
+			Board board = this.get(worldName);
+			for (Entry<String,TerritoryAccess> entry2 : entry.getValue().entrySet())
+			{
+				String[] ChunkCoordParts = entry2.getKey().trim().split("[,\\s]+");
+				
+				int chunkX = Integer.parseInt(ChunkCoordParts[0]);
+				int chunkZ = Integer.parseInt(ChunkCoordParts[1]);
+				
+				PS ps = new PSBuilder().chunkX(chunkX).chunkZ(chunkZ).build();
+				TerritoryAccess territoryAccess = entry2.getValue();
+				
+				board.setTerritoryAccessAt(ps, territoryAccess);
+			}
+		}
+		
+		// Mark as migrated
+		oldFile.renameTo(newFile);
+	}
+	
 	
 	// -------------------------------------------- //
 	// OVERRIDE: BOARD
