@@ -34,8 +34,8 @@ public class Faction extends Entity implements EconomyParticipator
 	
 	// FIELD: open
 	private boolean open;
-	public boolean getOpen() { return open; }
-	public void setOpen(boolean isOpen) { open = isOpen; }
+	public boolean isOpen() { return this.open; }
+	public void setOpen(boolean open) { this.open = open; }
 	
 	// FIELD: tag
 	private String tag;
@@ -84,16 +84,17 @@ public class Faction extends Entity implements EconomyParticipator
 	
 	// FIELD: account (fake field)
 	// Bank functions
-	public double money;
 	public String getAccountId()
 	{
-		String aid = "faction-"+this.getId();
+		String accountId = "faction-"+this.getId();
 
 		// We need to override the default money given to players.
-		if ( ! Econ.hasAccount(aid))
-			Econ.setBalance(aid, 0);
+		if ( ! Econ.hasAccount(accountId))
+		{
+			Econ.setBalance(accountId, 0);
+		}
 
-		return aid;
+		return accountId;
 	}
 	
 	// FIELD: cape
@@ -196,7 +197,6 @@ public class Faction extends Entity implements EconomyParticipator
 		this.open = ConfServer.newFactionsDefaultOpen;
 		this.tag = "???";
 		this.description = "Default faction description :(";
-		this.money = 0.0;
 		this.powerBoost = 0.0;
 		this.flagOverrides = new LinkedHashMap<FFlag, Boolean>();
 		this.permOverrides = new LinkedHashMap<FPerm, Set<Rel>>();

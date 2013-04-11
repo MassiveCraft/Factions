@@ -66,7 +66,7 @@ public class CmdFactionsShow extends FCommand
 			msg("<a>This faction is peaceful - in truce with everyone.");
 		}
 		
-		msg("<a>Joining: <i>"+(faction.getOpen() ? "no invitation is needed" : "invitation is required"));
+		msg("<a>Joining: <i>"+(faction.isOpen() ? "no invitation is needed" : "invitation is required"));
 
 		double powerBoost = faction.getPowerBoost();
 		String boost = (powerBoost == 0.0) ? "" : (powerBoost > 0.0 ? " (bonus: " : " (penalty: ") + powerBoost + ")";

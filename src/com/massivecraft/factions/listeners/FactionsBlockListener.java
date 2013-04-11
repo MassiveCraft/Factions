@@ -29,6 +29,10 @@ import com.massivecraft.mcore.ps.PS;
 
 public class FactionsBlockListener implements Listener
 {
+	// -------------------------------------------- //
+	// FLAG: FIRE SPREAD
+	// -------------------------------------------- //
+	
 	public void blockFireSpread(Block block, Cancellable cancellable)
 	{
 		// If the faction at the block has firespread disabled ...
@@ -70,6 +74,9 @@ public class FactionsBlockListener implements Listener
 		blockFireSpread(event.getBlock(), event);
 	}
 	
+	// -------------------------------------------- //
+	// ASSORTED
+	// -------------------------------------------- //
 
 	public static boolean playerCanBuildDestroyBlock(Player player, Block block, String action, boolean justCheck)
 	{

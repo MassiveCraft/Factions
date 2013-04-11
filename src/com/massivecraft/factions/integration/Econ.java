@@ -11,7 +11,6 @@ import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.FactionColl;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.util.RelationUtil;
@@ -48,8 +47,6 @@ public class Econ
 
 		if ( ! ConfServer.econEnabled)
 			Factions.get().log("NOTE: Economy is disabled. You can enable it with the command: f config econEnabled true");
-
-		oldMoneyDoTransfer();
 	}
 
 	public static boolean shouldBeUsed()
@@ -293,20 +290,6 @@ public class Econ
 	public static String moneyString(double amount)
 	{
 		return econ.format(amount);
-	}
-	
-	public static void oldMoneyDoTransfer()
-	{
-		if ( ! shouldBeUsed()) return;
-		
-		for (Faction faction : FactionColl.i.get())
-		{
-			if (faction.money > 0)
-			{
-				econ.depositPlayer(faction.getAccountId(), faction.money);
-				faction.money = 0;
-			}
-		}
 	}
 
 	// calculate the cost for claiming land
