@@ -10,7 +10,6 @@ import com.massivecraft.mcore.xlib.gson.JsonElement;
 import com.massivecraft.mcore.xlib.gson.JsonParseException;
 import com.massivecraft.mcore.xlib.gson.JsonSerializationContext;
 import com.massivecraft.mcore.xlib.gson.JsonSerializer;
-import com.massivecraft.mcore.xlib.gson.reflect.TypeToken;
 
 import com.massivecraft.factions.Board;
 import com.massivecraft.factions.TerritoryAccess;
@@ -24,23 +23,21 @@ public class BoardAdapter implements JsonDeserializer<Board>, JsonSerializer<Boa
 	private static BoardAdapter i = new BoardAdapter();
 	public static BoardAdapter get() { return i; }
 	
-	//----------------------------------------------//
+	// -------------------------------------------- //
 	// OVERRIDE
-	//----------------------------------------------//
-
-	private static final Type mapType = new TypeToken<Map<PS, TerritoryAccess>>(){}.getType();
+	// -------------------------------------------- //
 	
 	@SuppressWarnings("unchecked")
 	@Override
 	public Board deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException
 	{
-		return new Board((Map<PS, TerritoryAccess>) context.deserialize(json, mapType));
+		return new Board((Map<PS, TerritoryAccess>) context.deserialize(json, Board.MAP_TYPE));
 	}
 
 	@Override
 	public JsonElement serialize(Board src, Type typeOfSrc, JsonSerializationContext context)
 	{
-		return context.serialize(src.getMap(), mapType);
+		return context.serialize(src.getMap(), Board.MAP_TYPE);
 	}
 	
 }

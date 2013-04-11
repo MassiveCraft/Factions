@@ -1,5 +1,6 @@
 package com.massivecraft.factions;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -15,9 +16,12 @@ import com.massivecraft.factions.util.AsciiCompass;
 import com.massivecraft.mcore.ps.PS;
 import com.massivecraft.mcore.store.Entity;
 import com.massivecraft.mcore.util.Txt;
+import com.massivecraft.mcore.xlib.gson.reflect.TypeToken;
 
 public class Board extends Entity<Board, String> implements BoardInterface
 {
+	public static final transient Type MAP_TYPE = new TypeToken<Map<PS, TerritoryAccess>>(){}.getType();
+	
 	// -------------------------------------------- //
 	// META
 	// -------------------------------------------- //

@@ -54,7 +54,7 @@ public class BoardColl extends Coll<Board, String> implements BoardInterface
 	{
 		// Create file objects
 		File oldFile = new File(Factions.get().getDataFolder(), "board.json");
-		File newFile = new File(Factions.get().getDataFolder(), "board.json.old");
+		File newFile = new File(Factions.get().getDataFolder(), "board.json.migrated");
 		
 		// Already migrated?
 		if ( ! oldFile.exists()) return;
@@ -71,11 +71,10 @@ public class BoardColl extends Coll<Board, String> implements BoardInterface
 			for (Entry<String,TerritoryAccess> entry2 : entry.getValue().entrySet())
 			{
 				String[] ChunkCoordParts = entry2.getKey().trim().split("[,\\s]+");
-				
 				int chunkX = Integer.parseInt(ChunkCoordParts[0]);
 				int chunkZ = Integer.parseInt(ChunkCoordParts[1]);
-				
 				PS ps = new PSBuilder().chunkX(chunkX).chunkZ(chunkZ).build();
+				
 				TerritoryAccess territoryAccess = entry2.getValue();
 				
 				board.setTerritoryAccessAt(ps, territoryAccess);
