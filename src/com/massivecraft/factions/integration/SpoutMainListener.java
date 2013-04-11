@@ -8,14 +8,14 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
-import com.massivecraft.factions.BoardOld;
+import com.massivecraft.factions.BoardColl;
 import com.massivecraft.factions.ConfServer;
-import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayerColl;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.TerritoryAccess;
+import com.massivecraft.mcore.ps.PS;
 
 import org.getspout.spoutapi.event.spout.SpoutCraftEnableEvent;
 import org.getspout.spoutapi.gui.Color;
@@ -72,9 +72,9 @@ public class SpoutMainListener implements Listener
 		if (!sPlayer.isSpoutCraftEnabled() || (ConfServer.spoutTerritoryDisplaySize <= 0 && ! ConfServer.spoutTerritoryNoticeShow))
 			return false;
 
-		FLocation here = player.getLastStoodAt();
+		PS here = player.getLastStoodAt();
 
-		doAccessInfo(player, sPlayer, here);
+		this.doAccessInfo(player, sPlayer, here);
 
 		return true;
 	}
@@ -89,8 +89,8 @@ public class SpoutMainListener implements Listener
 
 	private void doLabels(FPlayer player, SpoutPlayer sPlayer, boolean notify)
 	{
-		FLocation here = player.getLastStoodAt();
-		Faction factionHere = BoardOld.getFactionAt(here);
+		PS here = player.getLastStoodAt();
+		Faction factionHere = BoardColl.get().getFactionAt(here);
 		String tag = factionHere.getColorTo(player).toString() + factionHere.getTag();
 
 		// ----------------------
@@ -156,7 +156,7 @@ public class SpoutMainListener implements Listener
 
 	private static final Color accessGrantedColor = new Color(0.2f, 1.0f, 0.2f);
 	private static final Color accessDeniedColor = new Color(1.0f, 0.2f, 0.2f);
-	private void doAccessInfo(FPlayer player, SpoutPlayer sPlayer, FLocation here)
+	private void doAccessInfo(FPlayer player, SpoutPlayer sPlayer, PS here)
 	{
 		if (ConfServer.spoutTerritoryDisplayPosition <= 0 || ConfServer.spoutTerritoryDisplaySize <= 0 || ! ConfServer.spoutTerritoryAccessShow) return;
 
@@ -177,7 +177,7 @@ public class SpoutMainListener implements Listener
 		}
 
 		String msg = "";
-		TerritoryAccess access = BoardOld.getTerritoryAccessAt(here);
+		TerritoryAccess access = BoardColl.get().getTerritoryAccessAt(here);
 
 		if ( ! access.isDefault())
 		{

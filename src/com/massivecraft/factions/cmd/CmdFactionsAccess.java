@@ -1,13 +1,13 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.BoardOld;
+import com.massivecraft.factions.BoardColl;
 import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.TerritoryAccess;
 import com.massivecraft.factions.integration.SpoutFeatures;
+import com.massivecraft.mcore.ps.PS;
 import com.massivecraft.mcore.util.Txt;
 
 
@@ -36,9 +36,9 @@ public class CmdFactionsAccess extends FCommand
 	{
 		String type = this.argAsString(0);
 		type = (type == null) ? "" : type.toLowerCase();
-		FLocation loc = new FLocation(me.getLocation());
+		PS loc = PS.valueOf(me);
 
-		TerritoryAccess territory = BoardOld.getTerritoryAccessAt(loc);
+		TerritoryAccess territory = BoardColl.get().getTerritoryAccessAt(loc);
 		Faction locFaction = territory.getHostFaction();
 		boolean accessAny = Perm.ACCESS_ANY.has(sender, false);
 

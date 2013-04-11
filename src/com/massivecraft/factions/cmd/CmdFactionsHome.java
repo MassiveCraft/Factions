@@ -7,16 +7,16 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
-import com.massivecraft.factions.BoardOld;
+import com.massivecraft.factions.BoardColl;
 import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.FFlag;
-import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayerColl;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.integration.EssentialsFeatures;
+import com.massivecraft.mcore.ps.PS;
 import com.massivecraft.mcore.util.SmokeUtil;
 
 
@@ -75,7 +75,8 @@ public class CmdFactionsHome extends FCommand
 			return;
 		}
 		
-		Faction faction = BoardOld.getFactionAt(new FLocation(me.getLocation()));
+		
+		Faction faction = BoardColl.get().getFactionAt(PS.valueOf(me));
 		Location loc = me.getLocation().clone();
 		
 		// if player is not in a safe zone or their own faction territory, only allow teleport if no enemies are nearby

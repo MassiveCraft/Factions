@@ -77,14 +77,12 @@ public class Factions extends MPlugin
 		
 		// Load Server Config
 		ConfServer.get().load();
-		
-		this.loadSuccessful = false;
 
 		// Load Conf from disk
 		FPlayerColl.i.loadFromDisc();
 		FactionColl.i.loadFromDisc();
-		BoardOld.load();
-		
+		BoardColl.get().init();
+				
 		// Add Base Commands
 		this.cmdAutoHelp = new CmdFactionsAutoHelp();
 		this.cmdBase = new CmdFactions();
@@ -125,7 +123,6 @@ public class Factions extends MPlugin
 		getServer().getPluginManager().registerEvents(this.blockListener, this);
 		
 		postEnable();
-		this.loadSuccessful = true;
 	}
 	
 	@Override
@@ -147,11 +144,6 @@ public class Factions extends MPlugin
 	@Override
 	public void onDisable()
 	{
-		// only save data if plugin actually completely loaded successfully
-		if (this.loadSuccessful)
-		{
-			BoardOld.save();
-		}
 		EssentialsFeatures.unhookChat();
 		if (AutoLeaveTask != null)
 		{
@@ -193,12 +185,6 @@ public class Factions extends MPlugin
 			long ticks = (long)(20 * 60 * ConfServer.econLandRewardTaskRunsEveryXMinutes);
 			econLandRewardTaskID = getServer().getScheduler().scheduleSyncRepeatingTask(this, new EconLandRewardTask(), ticks, ticks);
 		}
-	}
-
-	@Override
-	public void postAutoSave()
-	{
-		BoardOld.save();
 	}
 	
 	@Override

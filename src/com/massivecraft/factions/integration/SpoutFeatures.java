@@ -8,7 +8,6 @@ import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayerColl;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.Factions;
 
 import org.bukkit.Bukkit;
@@ -17,6 +16,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.entity.Player;
 
 import com.massivecraft.factions.util.HealthBarUtil;
+import com.massivecraft.mcore.ps.PS;
 
 import org.getspout.spoutapi.player.SpoutPlayer;
 import org.getspout.spoutapi.SpoutManager;
@@ -246,7 +246,7 @@ public class SpoutFeatures
 	// -------------------------------------------- //
 
 	// update displayed current territory for all players inside a specified chunk; if specified chunk is null, then simply update everyone online
-	public static void updateTerritoryDisplayLoc(FLocation fLoc)
+	public static void updateTerritoryDisplayLoc(PS chunk)
 	{
 		if ( ! isEnabled()) return;
 
@@ -254,10 +254,14 @@ public class SpoutFeatures
 
 		for (FPlayer player : players)
 		{
-			if (fLoc == null)
+			if (chunk == null)
+			{
 				mainListener.updateTerritoryDisplay(player, false);
-			else if (player.getLastStoodAt().equals(fLoc))
+			}
+			else if (player.getLastStoodAt().equals(chunk))
+			{
 				mainListener.updateTerritoryDisplay(player, true);
+			}
 		}
 	}
 
@@ -269,15 +273,17 @@ public class SpoutFeatures
 	}
 
 	// update access info for all players inside a specified chunk; if specified chunk is null, then simply update everyone online
-	public static void updateAccessInfoLoc(FLocation fLoc)
+	public static void updateAccessInfoLoc(PS chunk)
 	{
 		if ( ! isEnabled()) return;
+		
+		chunk = chunk.getChunk(true);
 
 		Set<FPlayer> players = FPlayerColl.i.getOnline();
 
 		for (FPlayer player : players)
 		{
-			if (fLoc == null || player.getLastStoodAt().equals(fLoc))
+			if (chunk == null || player.getLastStoodAt().equals(chunk))
 			mainListener.updateAccessInfo(player);
 		}
 	}

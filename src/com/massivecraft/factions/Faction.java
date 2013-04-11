@@ -12,6 +12,7 @@ import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.util.*;
 import com.massivecraft.factions.zcore.persist.Entity;
+import com.massivecraft.mcore.ps.PS;
 import com.massivecraft.mcore.util.Txt;
 
 
@@ -74,7 +75,7 @@ public class Faction extends Entity implements EconomyParticipator
 	}
 	public void confirmValidHome()
 	{
-		if (!ConfServer.homesMustBeInClaimedTerritory || this.home == null || (this.home.getLocation() != null && BoardOld.getFactionAt(new FLocation(this.home.getLocation())) == this))
+		if (!ConfServer.homesMustBeInClaimedTerritory || this.home == null || (this.home.getLocation() != null && BoardColl.get().getFactionAt(PS.valueOf(this.home.getLocation())) == this))
 			return;
 
 		msg("<b>Your faction home has been un-set since it is no longer in your territory.");
@@ -348,13 +349,14 @@ public class Faction extends Entity implements EconomyParticipator
 		return (int) Math.round(this.getPowerMax());
 	}
 	
-	public int getLandRounded() {
-		return BoardOld.getFactionCoordCount(this);
+	//  TODO: Why "rounded"? Rename to getLandCount? or getChunkCount?
+	public int getLandRounded()
+	{
+		return BoardColl.get().getCount(this);
 	}
-	
 	public int getLandRoundedInWorld(String worldName)
 	{
-		return BoardOld.getFactionCoordCountInWorld(this, worldName);
+		return BoardColl.get().get(worldName).getCount(this);
 	}
 	
 	public boolean hasLandInflation()
@@ -548,7 +550,8 @@ public class Faction extends Entity implements EconomyParticipator
 		}
 		
 		// Clean the board
-		BoardOld.clean();
+		// TODO: Use events for this instead
+		BoardColl.get().clean();
 		
 		// Clean the fplayers
 		FPlayerColl.i.clean();

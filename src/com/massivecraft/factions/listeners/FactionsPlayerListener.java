@@ -24,11 +24,10 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.util.NumberConversions;
 
-import com.massivecraft.factions.BoardOld;
+import com.massivecraft.factions.BoardColl;
 import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.Const;
 import com.massivecraft.factions.FFlag;
-import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayerColl;
@@ -36,6 +35,7 @@ import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.TerritoryAccess;
 import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.util.VisualizeUtil;
+import com.massivecraft.mcore.ps.PS;
 
 
 public class FactionsPlayerListener implements Listener
@@ -49,10 +49,13 @@ public class FactionsPlayerListener implements Listener
 		// Update the lastLoginTime for this fplayer
 		me.setLastLoginTime(System.currentTimeMillis());
 
-		// Store player's current FLocation and notify them where they are
-		me.setLastStoodAt(new FLocation(event.getPlayer().getLocation()));
+		// Store player's current Chunk and notify them where they are
+		me.setLastStoodAt(PS.valueOf(event.getPlayer()));
+		
 		if ( ! SpoutFeatures.updateTerritoryDisplay(me))
+		{
 			me.sendFactionHereMessage();
+		}
 	}
 	
 	@EventHandler(priority = EventPriority.NORMAL)
@@ -88,25 +91,25 @@ public class FactionsPlayerListener implements Listener
 		FPlayer me = FPlayerColl.i.get(player);
 		
 		// Did we change coord?
-		FLocation from = me.getLastStoodAt();
-		FLocation to = new FLocation(event.getTo());
+		PS from = me.getLastStoodAt();
+		PS to = PS.valueOf(event.getTo()).getChunk(true);
 		
 		if (from.equals(to)) return;
 		
 		// Yes we did change coord (:
 		
 		me.setLastStoodAt(to);
-		TerritoryAccess access = BoardOld.getTerritoryAccessAt(to);
+		TerritoryAccess access = BoardColl.get().getTerritoryAccessAt(to);
 
 		// Did we change "host"(faction)?
-		boolean changedFaction = (BoardOld.getFactionAt(from) != access.getHostFaction());
+		boolean changedFaction = (BoardColl.get().getFactionAt(from) != access.getHostFaction());
 
 		// let Spout handle most of this if it's available
 		boolean handledBySpout = changedFaction && SpoutFeatures.updateTerritoryDisplay(me);
 		
 		if (me.isMapAutoUpdating())
 		{
-			me.sendMessage(BoardOld.getMap(me.getFaction(), to, player.getLocation().getYaw()));
+			me.sendMessage(BoardColl.get().getMap(me.getFaction(), to, player.getLocation().getYaw()));
 		}
 		else if (changedFaction && ! handledBySpout)
 		{
@@ -303,7 +306,7 @@ public class FactionsPlayerListener implements Listener
 		}
 		
 		Rel rel = me.getRelationToLocation();
-		if (BoardOld.getFactionAt(me.getLastStoodAt()).isNone()) return;
+		if (BoardColl.get().getFactionAt(me.getLastStoodAt()).isNone()) return;
 		
 		if (rel == Rel.NEUTRAL && isCommandInList(fullCmd, ConfServer.territoryNeutralDenyCommands))
 		{

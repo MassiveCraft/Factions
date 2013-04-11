@@ -4,9 +4,10 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FPlayer;
+import com.massivecraft.mcore.ps.PS;
+
 import org.bukkit.entity.Player;
 
 public class LandUnclaimEvent extends Event implements Cancellable
@@ -27,8 +28,8 @@ public class LandUnclaimEvent extends Event implements Cancellable
 	@Override public boolean isCancelled() { return this.cancelled; }
 	@Override public void setCancelled(boolean cancelled) { this.cancelled = cancelled; }
 	
-	private final FLocation location;
-	public FLocation getLocation() { return this.location; }
+	private final PS chunk;
+	public PS getChunk() { return this.chunk; }
 	
 	private final Faction faction;
 	public Faction getFaction() { return this.faction; }
@@ -45,10 +46,10 @@ public class LandUnclaimEvent extends Event implements Cancellable
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public LandUnclaimEvent(FLocation location, Faction faction, FPlayer fplayer)
+	public LandUnclaimEvent(PS chunk, Faction faction, FPlayer fplayer)
 	{
 		this.cancelled = false;
-		this.location = location;
+		this.chunk = chunk.getChunk(true);
 		this.faction = faction;
 		this.fplayer = fplayer;
 	}

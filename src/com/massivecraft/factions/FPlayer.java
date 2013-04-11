@@ -18,6 +18,7 @@ import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.integration.Worldguard;
 import com.massivecraft.factions.util.RelationUtil;
 import com.massivecraft.factions.zcore.persist.PlayerEntity;
+import com.massivecraft.mcore.ps.PS;
 import com.massivecraft.mcore.util.Txt;
 
 
@@ -36,9 +37,12 @@ import com.massivecraft.mcore.util.Txt;
 public class FPlayer extends PlayerEntity implements EconomyParticipator
 {	
 	// FIELD: lastStoodAt
-	private transient FLocation lastStoodAt = new FLocation(); // Where did this player stand the last time we checked?
-	public FLocation getLastStoodAt() { return this.lastStoodAt; }
-	public void setLastStoodAt(FLocation flocation) { this.lastStoodAt = flocation; }
+	// Where did this player stand the last time we checked?
+	// This is a "chunk".
+	// Rename to "currentChunk"?
+	private transient PS lastStoodAt = PS.NULL; 
+	public PS getLastStoodAt() { return this.lastStoodAt; }
+	public void setLastStoodAt(PS lastStoodAt) { this.lastStoodAt = lastStoodAt.getChunk(true); }
 	
 	// FIELD: factionId
 	private String factionId;
@@ -101,7 +105,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 	public String getAccountId() { return this.getId(); }
 	
 	// -------------------------------------------- //
-	// Construct
+	// CONSTRUCT
 	// -------------------------------------------- //
 	
 	// GSON need this noarg constructor.
@@ -153,7 +157,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 	}
 	
 	// -------------------------------------------- //
-	// Getters And Setters
+	// GETTERS AND SETTERS
 	// -------------------------------------------- //
 	
 	public long getLastLoginTime()
@@ -187,7 +191,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 	}
 	
 	//----------------------------------------------//
-	// Title, Name, Faction Tag and Chat
+	// TITLE, NAME, FACTION TAG AND CHAT
 	//----------------------------------------------//
 	public String getName()
 	{
@@ -270,7 +274,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 	}
 	
 	// -------------------------------
-	// Relation and relation colors
+	// RELATION AND RELATION COLORS
 	// -------------------------------
 	
 	@Override
@@ -299,7 +303,8 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 	
 	public Rel getRelationToLocation()
 	{
-		return BoardOld.getFactionAt(new FLocation(this)).getRelationTo(this);
+		// TODO: Use some built in system to get sender
+		return BoardColl.get().getFactionAt(PS.valueOf(this.getPlayer())).getRelationTo(this);
 	}
 	
 	@Override
@@ -309,7 +314,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 	}
 	
 	//----------------------------------------------//
-	// Health
+	// HEALTH
 	//----------------------------------------------//
 	public void heal(int amnt)
 	{
@@ -323,7 +328,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 	
 	
 	//----------------------------------------------//
-	// Power
+	// POWER
 	//----------------------------------------------//
 	public double getPower()
 	{
@@ -416,11 +421,12 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 	}
 	
 	//----------------------------------------------//
-	// Territory
+	// TERRITORY
 	//----------------------------------------------//
 	public boolean isInOwnTerritory()
 	{
-		return BoardOld.getFactionAt(new FLocation(this)) == this.getFaction();
+		// TODO: Use Mixin to get this PS instead
+		return BoardColl.get().getFactionAt(PS.valueOf(this.getPlayer())) == this.getFaction();
 	}
 	
 	/*public boolean isInOthersTerritory()
@@ -441,7 +447,8 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 
 	public boolean isInEnemyTerritory()
 	{
-		return BoardOld.getFactionAt(new FLocation(this)).getRelationTo(this) == Rel.ENEMY;
+		// TODO: Use Mixin to get this PS instead
+		return BoardColl.get().getFactionAt(PS.valueOf(this.getPlayer())).getRelationTo(this) == Rel.ENEMY;
 	}
 
 	public void sendFactionHereMessage()
@@ -450,7 +457,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		{
 			return;
 		}
-		Faction factionHere = BoardOld.getFactionAt(this.getLastStoodAt());
+		Faction factionHere = BoardColl.get().getFactionAt(this.getLastStoodAt());
 		String msg = Txt.parse("<i>")+" ~ "+factionHere.getTag(this);
 		if (factionHere.getDescription().length() > 0)
 		{
@@ -460,7 +467,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 	}
 	
 	// -------------------------------
-	// Actions
+	// ACTIONS
 	// -------------------------------
 	
 	public void leave(boolean makePay)
@@ -536,9 +543,10 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 	public boolean canClaimForFactionAtLocation(Faction forFaction, Location location, boolean notifyFailure)
 	{
 		String error = null;
-		FLocation flocation = new FLocation(location);
-		Faction myFaction = getFaction();
-		Faction currentFaction = BoardOld.getFactionAt(flocation);
+		
+		PS ps = PS.valueOf(location);
+		Faction myFaction = this.getFaction();
+		Faction currentFaction = BoardColl.get().getFactionAt(ps);
 		int ownedLand = forFaction.getLandRounded();
 		
 		if (ConfServer.worldGuardChecking && Worldguard.checkForRegionsInChunk(location))
@@ -546,7 +554,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 			// Checks for WorldGuard regions in the chunk attempting to be claimed
 			error = Txt.parse("<b>This land is protected");
 		}
-		else if (ConfServer.worldsNoClaiming.contains(flocation.getWorldName()))
+		else if (ConfServer.worldsNoClaiming.contains(ps.getWorld()))
 		{
 			error = Txt.parse("<b>Sorry, this world has land claiming disabled.");
 		}
@@ -586,8 +594,8 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		(
 			ConfServer.claimsMustBeConnected
 			&& ! this.hasAdminMode()
-			&& myFaction.getLandRoundedInWorld(flocation.getWorldName()) > 0
-			&& !BoardOld.isConnectedLocation(flocation, myFaction)
+			&& myFaction.getLandRoundedInWorld(ps.getWorld()) > 0
+			&& !BoardColl.get().isConnectedPs(ps, myFaction)
 			&& (!ConfServer.claimsCanBeUnconnectedIfOwnedByOtherFaction || !currentFaction.isNormal())
 		)
 		{
@@ -603,7 +611,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 				 // TODO more messages WARN current faction most importantly
 				error = Txt.parse("%s<i> owns this land and is strong enough to keep it.", currentFaction.getTag(this));
 			}
-			else if ( ! BoardOld.isBorderLocation(flocation))
+			else if ( ! BoardColl.get().isBorderPs(ps))
 			{
 				error = Txt.parse("<b>You must start claiming land at the border of the territory.");
 			}
@@ -621,8 +629,8 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		// notifyFailure is false if called by auto-claim; no need to notify on every failure for it
 		// return value is false on failure, true on success
 		
-		FLocation flocation = new FLocation(location);
-		Faction currentFaction = BoardOld.getFactionAt(flocation);
+		PS flocation = PS.valueOf(location).getChunk(true);
+		Faction currentFaction = BoardColl.get().getFactionAt(flocation);
 		
 		int ownedLand = forFaction.getLandRounded();
 		
@@ -637,7 +645,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		{
 			cost = Econ.calculateClaimCost(ownedLand, currentFaction.isNormal());
 
-			if (ConfServer.econClaimUnconnectedFee != 0.0 && forFaction.getLandRoundedInWorld(flocation.getWorldName()) > 0 && !BoardOld.isConnectedLocation(flocation, forFaction))
+			if (ConfServer.econClaimUnconnectedFee != 0.0 && forFaction.getLandRoundedInWorld(flocation.getWorld()) > 0 && !BoardColl.get().isConnectedPs(flocation, forFaction))
 				cost += ConfServer.econClaimUnconnectedFee;
 
 			if(ConfServer.bankEnabled && ConfServer.bankFactionPaysLandCosts && this.hasFaction())
@@ -667,17 +675,17 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 			fp.msg("<h>%s<i> claimed land for <h>%s<i> from <h>%s<i>.", this.describeTo(fp, true), forFaction.describeTo(fp), currentFaction.describeTo(fp));
 		}
 		
-		BoardOld.setFactionAt(forFaction, flocation);
+		BoardColl.get().setFactionAt(flocation, forFaction);
 		SpoutFeatures.updateTerritoryDisplayLoc(flocation);
 
 		if (ConfServer.logLandClaims)
-			Factions.get().log(this.getName()+" claimed land at ("+flocation.getCoordString()+") for the faction: "+forFaction.getTag());
+			Factions.get().log(this.getName()+" claimed land at ("+flocation.getChunkX()+","+flocation.getChunkZ()+") for the faction: "+forFaction.getTag());
 
 		return true;
 	}
 	
 	// -------------------------------------------- //
-	// Persistance
+	// PERSISTANCE
 	// -------------------------------------------- //
 	
 	@Override

@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
-import org.bukkit.Location;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -14,7 +13,6 @@ import org.bukkit.block.BlockState;
 import com.griefcraft.lwc.LWC;
 import com.griefcraft.lwc.LWCPlugin;
 import com.massivecraft.factions.ConfServer;
-import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.FPlayerColl;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
@@ -38,11 +36,18 @@ public class LWCFeatures
 		return ConfServer.lwcIntegration && lwc != null;
 	}
 
-	public static void clearOtherChests(FLocation flocation, Faction faction)
+	public static void clearOtherChests(PS ps, Faction faction)
 	{
-		Location location = new Location(Bukkit.getWorld(flocation.getWorldName()), flocation.getX() * 16, 5, flocation.getZ() * 16);
-		if (location.getWorld() == null) return;  // world not loaded or something? cancel out to prevent error
-		Chunk chunk = location.getChunk();
+		Chunk chunk = null;
+		try
+		{
+			chunk = ps.asBukkitChunk(true);
+		}
+		catch (Exception e)
+		{
+			return;
+		}
+		
 		BlockState[] blocks = chunk.getTileEntities();
 		List<Block> chests = new LinkedList<Block>();
 		

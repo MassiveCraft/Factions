@@ -3,7 +3,6 @@ package com.massivecraft.factions.listeners;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -38,16 +37,16 @@ import org.bukkit.event.hanging.HangingPlaceEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import com.massivecraft.factions.BoardOld;
+import com.massivecraft.factions.BoardColl;
 import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.Const;
 import com.massivecraft.factions.FFlag;
-import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayerColl;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.event.PowerLossEvent;
+import com.massivecraft.mcore.ps.PS;
 
 
 public class FactionsEntityListener implements Listener
@@ -61,7 +60,8 @@ public class FactionsEntityListener implements Listener
 
 		Player player = (Player) entity;
 		FPlayer fplayer = FPlayerColl.i.get(player);
-		Faction faction = BoardOld.getFactionAt(new FLocation(player.getLocation()));
+		
+		Faction faction = BoardColl.get().getFactionAt(PS.valueOf(player));
 
 		PowerLossEvent powerLossEvent = new PowerLossEvent(faction,fplayer);
 		// Check for no power loss conditions
@@ -117,26 +117,23 @@ public class FactionsEntityListener implements Listener
 		}*/
 	}
 
-	@EventHandler(priority = EventPriority.NORMAL)
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onEntityExplode(EntityExplodeEvent event)
 	{
-		if (event.isCancelled()) return;
+		Iterator<Block> iter = event.blockList().iterator();
+		while (iter.hasNext())
+		{
+			Block block = iter.next();
+			Faction faction = BoardColl.get().getFactionAt(PS.valueOf(block));
+			if (faction.getFlag(FFlag.EXPLOSIONS) == false) iter.remove();
+		}
 
-		Set<FLocation> explosionLocs = new HashSet<FLocation>();
-		for (Block block : event.blockList())
+		if (BoardColl.get().getFactionAt(PS.valueOf(event.getEntity())).getFlag(FFlag.EXPLOSIONS) == false)
 		{
-			explosionLocs.add(new FLocation(block));
+			event.setCancelled(true);
+			return;
 		}
-		for (FLocation loc : explosionLocs)
-		{
-			Faction faction = BoardOld.getFactionAt(loc);
-			if (faction.getFlag(FFlag.EXPLOSIONS) == false)
-			{
-				// faction has explosions disabled
-				event.setCancelled(true);
-				return;
-			}
-		}
+		
 
 		// TNT in water/lava doesn't normally destroy any surrounding blocks, which is usually desired behavior, but...
 		// this optional change below provides workaround for waterwalling providing perfect protection,
@@ -231,7 +228,7 @@ public class FactionsEntityListener implements Listener
 
 		Location defenderLoc = defender.getPlayer().getLocation();
 
-		Faction defLocFaction = BoardOld.getFactionAt(new FLocation(defenderLoc));
+		Faction defLocFaction = BoardColl.get().getFactionAt(PS.valueOf(defenderLoc));
 
 		// for damage caused by projectiles, getDamager() returns the projectile... what we need to know is the source
 		if (damager instanceof Projectile)
@@ -272,7 +269,7 @@ public class FactionsEntityListener implements Listener
 			return false;
 		}
 
-		Faction locFaction = BoardOld.getFactionAt(new FLocation(attacker));
+		Faction locFaction = BoardColl.get().getFactionAt(PS.valueOf(damager));
 
 		// so we know from above that the defender isn't in a safezone... what about the attacker, sneaky dog that he might be?
 		if (locFaction.getFlag(FFlag.PVP) == false)
@@ -350,8 +347,8 @@ public class FactionsEntityListener implements Listener
 		if (event.isCancelled()) return;
 		if (event.getLocation() == null) return;
 
-		FLocation floc = new FLocation(event.getLocation());
-		Faction faction = BoardOld.getFactionAt(floc);
+		PS ps = PS.valueOf(event.getLocation());
+		Faction faction = BoardColl.get().getFactionAt(ps);
 
 		if (faction.getFlag(FFlag.MONSTERS)) return;
 		if ( ! Const.ENTITY_TYPES_MONSTERS.contains(event.getEntityType())) return;
@@ -373,8 +370,8 @@ public class FactionsEntityListener implements Listener
 		
 		if ( ! Const.ENTITY_TYPES_MONSTERS.contains(event.getEntity().getType())) return;
 
-		FLocation floc = new FLocation(target.getLocation());
-		Faction faction = BoardOld.getFactionAt(floc);
+		PS ps = PS.valueOf(target.getLocation());
+		Faction faction = BoardColl.get().getFactionAt(ps);
 
 		if (faction.getFlag(FFlag.MONSTERS)) return;
 
@@ -388,7 +385,7 @@ public class FactionsEntityListener implements Listener
 
 		if (event.getCause() == RemoveCause.EXPLOSION)
 		{
-			Faction faction = BoardOld.getFactionAt(new FLocation(event.getEntity().getLocation()));
+			Faction faction = BoardColl.get().getFactionAt(PS.valueOf(event.getEntity()));
 			if (faction.getFlag(FFlag.EXPLOSIONS) == false)
 			{	// faction has explosions disabled
 				event.setCancelled(true);
@@ -434,8 +431,8 @@ public class FactionsEntityListener implements Listener
 		// for now, only interested in Enderman and Wither boss tomfoolery
 		if (!(entity instanceof Enderman) && !(entity instanceof Wither)) return;
 
-		FLocation floc = new FLocation(event.getBlock());
-		Faction faction = BoardOld.getFactionAt(floc);
+		PS ps = PS.valueOf(event.getBlock());
+		Faction faction = BoardColl.get().getFactionAt(ps);
 
 		if (entity instanceof Enderman)
 		{

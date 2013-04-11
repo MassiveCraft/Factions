@@ -10,6 +10,7 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
 import com.massivecraft.factions.iface.RelationParticipator;
+import com.massivecraft.mcore.ps.PS;
 
 /**
  * Permissions that you (a player) may or may not have in the territory of a certain faction.
@@ -171,9 +172,10 @@ public enum FPerm
 	{
 		return this.has(testSubject, hostFaction, false);
 	}
-	public boolean has(Object testSubject, FLocation floc, boolean informIfNot)
+	public boolean has(Object testSubject, PS ps, boolean informIfNot)
 	{
-		TerritoryAccess access = BoardOld.getTerritoryAccessAt(floc);
+		TerritoryAccess access = BoardColl.get().getTerritoryAccessAt(ps);
+		
 		if (this.isTerritoryPerm())
 		{
 			if (access.subjectHasAccess(testSubject)) return true;
@@ -196,15 +198,15 @@ public enum FPerm
 	}
 	public boolean has(Object testSubject, Location loc, boolean informIfNot)
 	{
-		FLocation floc = new FLocation(loc);
-		return this.has(testSubject, floc, informIfNot);
+		PS ps = PS.valueOf(loc);
+		return this.has(testSubject, ps, informIfNot);
 	}
 	public boolean has(Object testSubject, Location loc)
 	{
 		return this.has(testSubject, loc, false);
 	}
-	public boolean has(Object testSubject, FLocation floc)
+	public boolean has(Object testSubject, PS ps)
 	{
-		return this.has(testSubject, floc, false);
+		return this.has(testSubject, ps, false);
 	}
 }

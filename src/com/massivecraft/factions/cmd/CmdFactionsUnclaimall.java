@@ -2,7 +2,7 @@ package com.massivecraft.factions.cmd;
 
 import org.bukkit.Bukkit;
 
-import com.massivecraft.factions.BoardOld;
+import com.massivecraft.factions.BoardColl;
 import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
@@ -46,15 +46,17 @@ public class CmdFactionsUnclaimall extends FCommand
 		}
 
 		LandUnclaimAllEvent unclaimAllEvent = new LandUnclaimAllEvent(myFaction, fme);
-	Bukkit.getServer().getPluginManager().callEvent(unclaimAllEvent);
+		Bukkit.getServer().getPluginManager().callEvent(unclaimAllEvent);
 		// this event cannot be cancelled
 
-		BoardOld.unclaimAll(myFaction.getId());
+		BoardColl.get().removeAll(myFaction);
 		myFaction.msg("%s<i> unclaimed ALL of your faction's land.", fme.describeTo(myFaction, true));
 		SpoutFeatures.updateTerritoryDisplayLoc(null);
 
 		if (ConfServer.logLandUnclaims)
+		{
 			Factions.get().log(fme.getName()+" unclaimed everything for the faction: "+myFaction.getTag());
+		}
 	}
 	
 }
