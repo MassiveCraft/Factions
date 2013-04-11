@@ -81,7 +81,7 @@ public class Factions extends MPlugin
 		// Load Conf from disk
 		FPlayerColl.i.loadFromDisc();
 		FactionColl.i.loadFromDisc();
-		Board.load();
+		BoardOld.load();
 		
 		// Add Base Commands
 		this.cmdAutoHelp = new CmdFactionsAutoHelp();
@@ -146,7 +146,7 @@ public class Factions extends MPlugin
 		// only save data if plugin actually completely loaded successfully
 		if (this.loadSuccessful)
 		{
-			Board.save();
+			BoardOld.save();
 		}
 		EssentialsFeatures.unhookChat();
 		if (AutoLeaveTask != null)
@@ -156,9 +156,8 @@ public class Factions extends MPlugin
 		}
 		super.onDisable();
 	}
-
 	
-	
+	//
 	
 	public void startAutoLeaveTask(boolean restartIfRunning)
 	{
@@ -195,7 +194,7 @@ public class Factions extends MPlugin
 	@Override
 	public void postAutoSave()
 	{
-		Board.save();
+		BoardOld.save();
 	}
 	
 	@Override

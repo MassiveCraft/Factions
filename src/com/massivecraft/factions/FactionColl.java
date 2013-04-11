@@ -188,7 +188,7 @@ public class FactionColl extends EntityCollection<Faction>
 		if ( ! this.exists(id))
 		{
 			Factions.get().log(Level.WARNING, "Non existing factionId "+id+" requested! Issuing cleaning!");
-			Board.clean();
+			BoardOld.clean();
 			FPlayerColl.i.clean();
 		}
 		

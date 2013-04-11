@@ -74,7 +74,7 @@ public class Faction extends Entity implements EconomyParticipator
 	}
 	public void confirmValidHome()
 	{
-		if (!ConfServer.homesMustBeInClaimedTerritory || this.home == null || (this.home.getLocation() != null && Board.getFactionAt(new FLocation(this.home.getLocation())) == this))
+		if (!ConfServer.homesMustBeInClaimedTerritory || this.home == null || (this.home.getLocation() != null && BoardOld.getFactionAt(new FLocation(this.home.getLocation())) == this))
 			return;
 
 		msg("<b>Your faction home has been un-set since it is no longer in your territory.");
@@ -349,12 +349,12 @@ public class Faction extends Entity implements EconomyParticipator
 	}
 	
 	public int getLandRounded() {
-		return Board.getFactionCoordCount(this);
+		return BoardOld.getFactionCoordCount(this);
 	}
 	
 	public int getLandRoundedInWorld(String worldName)
 	{
-		return Board.getFactionCoordCountInWorld(this, worldName);
+		return BoardOld.getFactionCoordCountInWorld(this, worldName);
 	}
 	
 	public boolean hasLandInflation()
@@ -548,7 +548,7 @@ public class Faction extends Entity implements EconomyParticipator
 		}
 		
 		// Clean the board
-		Board.clean();
+		BoardOld.clean();
 		
 		// Clean the fplayers
 		FPlayerColl.i.clean();

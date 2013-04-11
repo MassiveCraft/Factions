@@ -1,6 +1,6 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.Board;
+import com.massivecraft.factions.BoardOld;
 import com.massivecraft.factions.FPlayerColl;
 import com.massivecraft.factions.FactionColl;
 import com.massivecraft.factions.Factions;
@@ -36,7 +36,7 @@ public class CmdFactionsReload extends FCommand
 		
 		if (file.startsWith("b"))
 		{
-			Board.load();
+			BoardOld.load();
 			fileName = "board.json";
 		}
 		else if (file.startsWith("f"))
@@ -54,7 +54,7 @@ public class CmdFactionsReload extends FCommand
 			fileName = "all";
 			FPlayerColl.i.loadFromDisc();
 			FactionColl.i.loadFromDisc();
-			Board.load();
+			BoardOld.load();
 		}
 		else
 		{

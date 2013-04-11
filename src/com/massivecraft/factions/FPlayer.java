@@ -299,7 +299,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 	
 	public Rel getRelationToLocation()
 	{
-		return Board.getFactionAt(new FLocation(this)).getRelationTo(this);
+		return BoardOld.getFactionAt(new FLocation(this)).getRelationTo(this);
 	}
 	
 	@Override
@@ -420,7 +420,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 	//----------------------------------------------//
 	public boolean isInOwnTerritory()
 	{
-		return Board.getFactionAt(new FLocation(this)) == this.getFaction();
+		return BoardOld.getFactionAt(new FLocation(this)) == this.getFaction();
 	}
 	
 	/*public boolean isInOthersTerritory()
@@ -441,7 +441,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 
 	public boolean isInEnemyTerritory()
 	{
-		return Board.getFactionAt(new FLocation(this)).getRelationTo(this) == Rel.ENEMY;
+		return BoardOld.getFactionAt(new FLocation(this)).getRelationTo(this) == Rel.ENEMY;
 	}
 
 	public void sendFactionHereMessage()
@@ -450,7 +450,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		{
 			return;
 		}
-		Faction factionHere = Board.getFactionAt(this.getLastStoodAt());
+		Faction factionHere = BoardOld.getFactionAt(this.getLastStoodAt());
 		String msg = Txt.parse("<i>")+" ~ "+factionHere.getTag(this);
 		if (factionHere.getDescription().length() > 0)
 		{
@@ -538,7 +538,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		String error = null;
 		FLocation flocation = new FLocation(location);
 		Faction myFaction = getFaction();
-		Faction currentFaction = Board.getFactionAt(flocation);
+		Faction currentFaction = BoardOld.getFactionAt(flocation);
 		int ownedLand = forFaction.getLandRounded();
 		
 		if (ConfServer.worldGuardChecking && Worldguard.checkForRegionsInChunk(location))
@@ -587,7 +587,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 			ConfServer.claimsMustBeConnected
 			&& ! this.hasAdminMode()
 			&& myFaction.getLandRoundedInWorld(flocation.getWorldName()) > 0
-			&& !Board.isConnectedLocation(flocation, myFaction)
+			&& !BoardOld.isConnectedLocation(flocation, myFaction)
 			&& (!ConfServer.claimsCanBeUnconnectedIfOwnedByOtherFaction || !currentFaction.isNormal())
 		)
 		{
@@ -603,7 +603,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 				 // TODO more messages WARN current faction most importantly
 				error = Txt.parse("%s<i> owns this land and is strong enough to keep it.", currentFaction.getTag(this));
 			}
-			else if ( ! Board.isBorderLocation(flocation))
+			else if ( ! BoardOld.isBorderLocation(flocation))
 			{
 				error = Txt.parse("<b>You must start claiming land at the border of the territory.");
 			}
@@ -622,7 +622,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		// return value is false on failure, true on success
 		
 		FLocation flocation = new FLocation(location);
-		Faction currentFaction = Board.getFactionAt(flocation);
+		Faction currentFaction = BoardOld.getFactionAt(flocation);
 		
 		int ownedLand = forFaction.getLandRounded();
 		
@@ -637,7 +637,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		{
 			cost = Econ.calculateClaimCost(ownedLand, currentFaction.isNormal());
 
-			if (ConfServer.econClaimUnconnectedFee != 0.0 && forFaction.getLandRoundedInWorld(flocation.getWorldName()) > 0 && !Board.isConnectedLocation(flocation, forFaction))
+			if (ConfServer.econClaimUnconnectedFee != 0.0 && forFaction.getLandRoundedInWorld(flocation.getWorldName()) > 0 && !BoardOld.isConnectedLocation(flocation, forFaction))
 				cost += ConfServer.econClaimUnconnectedFee;
 
 			if(ConfServer.bankEnabled && ConfServer.bankFactionPaysLandCosts && this.hasFaction())
@@ -667,7 +667,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 			fp.msg("<h>%s<i> claimed land for <h>%s<i> from <h>%s<i>.", this.describeTo(fp, true), forFaction.describeTo(fp), currentFaction.describeTo(fp));
 		}
 		
-		Board.setFactionAt(forFaction, flocation);
+		BoardOld.setFactionAt(forFaction, flocation);
 		SpoutFeatures.updateTerritoryDisplayLoc(flocation);
 
 		if (ConfServer.logLandClaims)

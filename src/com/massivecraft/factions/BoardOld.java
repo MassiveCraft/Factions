@@ -21,7 +21,7 @@ import com.massivecraft.factions.iface.RelationParticipator;
 import com.massivecraft.factions.util.AsciiCompass;
 
 
-public class Board
+public class BoardOld
 {
 	private static transient File file = new File(Factions.get().getDataFolder(), "board.json");
 	private static transient HashMap<FLocation, TerritoryAccess> flocationIds = new HashMap<FLocation, TerritoryAccess>();

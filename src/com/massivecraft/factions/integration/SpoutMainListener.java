@@ -8,7 +8,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
-import com.massivecraft.factions.Board;
+import com.massivecraft.factions.BoardOld;
 import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.FPlayer;
@@ -90,7 +90,7 @@ public class SpoutMainListener implements Listener
 	private void doLabels(FPlayer player, SpoutPlayer sPlayer, boolean notify)
 	{
 		FLocation here = player.getLastStoodAt();
-		Faction factionHere = Board.getFactionAt(here);
+		Faction factionHere = BoardOld.getFactionAt(here);
 		String tag = factionHere.getColorTo(player).toString() + factionHere.getTag();
 
 		// ----------------------
@@ -177,7 +177,7 @@ public class SpoutMainListener implements Listener
 		}
 
 		String msg = "";
-		TerritoryAccess access = Board.getTerritoryAccessAt(here);
+		TerritoryAccess access = BoardOld.getTerritoryAccessAt(here);
 
 		if ( ! access.isDefault())
 		{

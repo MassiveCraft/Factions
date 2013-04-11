@@ -38,7 +38,7 @@ import org.bukkit.event.hanging.HangingPlaceEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import com.massivecraft.factions.Board;
+import com.massivecraft.factions.BoardOld;
 import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.Const;
 import com.massivecraft.factions.FFlag;
@@ -61,7 +61,7 @@ public class FactionsEntityListener implements Listener
 
 		Player player = (Player) entity;
 		FPlayer fplayer = FPlayerColl.i.get(player);
-		Faction faction = Board.getFactionAt(new FLocation(player.getLocation()));
+		Faction faction = BoardOld.getFactionAt(new FLocation(player.getLocation()));
 
 		PowerLossEvent powerLossEvent = new PowerLossEvent(faction,fplayer);
 		// Check for no power loss conditions
@@ -129,7 +129,7 @@ public class FactionsEntityListener implements Listener
 		}
 		for (FLocation loc : explosionLocs)
 		{
-			Faction faction = Board.getFactionAt(loc);
+			Faction faction = BoardOld.getFactionAt(loc);
 			if (faction.getFlag(FFlag.EXPLOSIONS) == false)
 			{
 				// faction has explosions disabled
@@ -231,7 +231,7 @@ public class FactionsEntityListener implements Listener
 
 		Location defenderLoc = defender.getPlayer().getLocation();
 
-		Faction defLocFaction = Board.getFactionAt(new FLocation(defenderLoc));
+		Faction defLocFaction = BoardOld.getFactionAt(new FLocation(defenderLoc));
 
 		// for damage caused by projectiles, getDamager() returns the projectile... what we need to know is the source
 		if (damager instanceof Projectile)
@@ -272,7 +272,7 @@ public class FactionsEntityListener implements Listener
 			return false;
 		}
 
-		Faction locFaction = Board.getFactionAt(new FLocation(attacker));
+		Faction locFaction = BoardOld.getFactionAt(new FLocation(attacker));
 
 		// so we know from above that the defender isn't in a safezone... what about the attacker, sneaky dog that he might be?
 		if (locFaction.getFlag(FFlag.PVP) == false)
@@ -351,7 +351,7 @@ public class FactionsEntityListener implements Listener
 		if (event.getLocation() == null) return;
 
 		FLocation floc = new FLocation(event.getLocation());
-		Faction faction = Board.getFactionAt(floc);
+		Faction faction = BoardOld.getFactionAt(floc);
 
 		if (faction.getFlag(FFlag.MONSTERS)) return;
 		if ( ! Const.ENTITY_TYPES_MONSTERS.contains(event.getEntityType())) return;
@@ -374,7 +374,7 @@ public class FactionsEntityListener implements Listener
 		if ( ! Const.ENTITY_TYPES_MONSTERS.contains(event.getEntity().getType())) return;
 
 		FLocation floc = new FLocation(target.getLocation());
-		Faction faction = Board.getFactionAt(floc);
+		Faction faction = BoardOld.getFactionAt(floc);
 
 		if (faction.getFlag(FFlag.MONSTERS)) return;
 
@@ -388,7 +388,7 @@ public class FactionsEntityListener implements Listener
 
 		if (event.getCause() == RemoveCause.EXPLOSION)
 		{
-			Faction faction = Board.getFactionAt(new FLocation(event.getEntity().getLocation()));
+			Faction faction = BoardOld.getFactionAt(new FLocation(event.getEntity().getLocation()));
 			if (faction.getFlag(FFlag.EXPLOSIONS) == false)
 			{	// faction has explosions disabled
 				event.setCancelled(true);
@@ -435,7 +435,7 @@ public class FactionsEntityListener implements Listener
 		if (!(entity instanceof Enderman) && !(entity instanceof Wither)) return;
 
 		FLocation floc = new FLocation(event.getBlock());
-		Faction faction = Board.getFactionAt(floc);
+		Faction faction = BoardOld.getFactionAt(floc);
 
 		if (entity instanceof Enderman)
 		{

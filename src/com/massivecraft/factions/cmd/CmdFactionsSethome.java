@@ -1,6 +1,6 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.Board;
+import com.massivecraft.factions.BoardOld;
 import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.FPerm;
@@ -47,7 +47,7 @@ public class CmdFactionsSethome extends FCommand
 			&&
 			ConfServer.homesMustBeInClaimedTerritory
 			&& 
-			Board.getFactionAt(new FLocation(me)) != faction
+			BoardOld.getFactionAt(new FLocation(me)) != faction
 		)
 		{
 			fme.msg("<b>Sorry, your faction home can only be set inside your own claimed territory.");

@@ -173,7 +173,7 @@ public enum FPerm
 	}
 	public boolean has(Object testSubject, FLocation floc, boolean informIfNot)
 	{
-		TerritoryAccess access = Board.getTerritoryAccessAt(floc);
+		TerritoryAccess access = BoardOld.getTerritoryAccessAt(floc);
 		if (this.isTerritoryPerm())
 		{
 			if (access.subjectHasAccess(testSubject)) return true;

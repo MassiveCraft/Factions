@@ -14,7 +14,7 @@ import org.bukkit.event.block.BlockPistonExtendEvent;
 import org.bukkit.event.block.BlockPistonRetractEvent;
 import org.bukkit.event.block.BlockSpreadEvent;
 
-import com.massivecraft.factions.Board;
+import com.massivecraft.factions.BoardOld;
 import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.FFlag;
 import com.massivecraft.factions.FLocation;
@@ -31,7 +31,7 @@ public class FactionsBlockListener implements Listener
 	{
 		if (event.isCancelled()) return;
 		if (event.getSource().getTypeId() != 51) return; // Must be Fire
-		Faction faction = Board.getFactionAt(event.getBlock());
+		Faction faction = BoardOld.getFactionAt(event.getBlock());
 		if (faction.getFlag(FFlag.FIRESPREAD) == false)
 		{
 			event.setCancelled(true);
@@ -42,7 +42,7 @@ public class FactionsBlockListener implements Listener
 	public void onBlockBurn(BlockBurnEvent event)
 	{
 		if (event.isCancelled()) return;
-		Faction faction = Board.getFactionAt(event.getBlock());
+		Faction faction = BoardOld.getFactionAt(event.getBlock());
 		if (faction.getFlag(FFlag.FIRESPREAD) == false)
 		{
 			event.setCancelled(true);
@@ -63,7 +63,7 @@ public class FactionsBlockListener implements Listener
 		if (me.hasAdminMode()) return true;
 
 		FLocation loc = new FLocation(location);
-		Faction factionHere = Board.getFactionAt(loc);
+		Faction factionHere = BoardOld.getFactionAt(loc);
 
 		if ( ! FPerm.BUILD.has(me, location) && FPerm.PAINBUILD.has(me, location))
 		{
@@ -117,13 +117,13 @@ public class FactionsBlockListener implements Listener
 		if (event.isCancelled()) return;
 		if ( ! ConfServer.pistonProtectionThroughDenyBuild) return;
 
-		Faction pistonFaction = Board.getFactionAt(new FLocation(event.getBlock()));
+		Faction pistonFaction = BoardOld.getFactionAt(new FLocation(event.getBlock()));
 
 		// target end-of-the-line empty (air) block which is being pushed into, including if piston itself would extend into air
 		Block targetBlock = event.getBlock().getRelative(event.getDirection(), event.getLength() + 1);
 
 		// members of faction might not have build rights in their own territory, but pistons should still work regardless; so, address that corner case
-		Faction targetFaction = Board.getFactionAt(new FLocation(targetBlock));
+		Faction targetFaction = BoardOld.getFactionAt(new FLocation(targetBlock));
 		if (targetFaction == pistonFaction) return;
 
 		// if potentially pushing into air/water/lava in another territory, we need to check it out
@@ -150,10 +150,10 @@ public class FactionsBlockListener implements Listener
 		// if potentially retracted block is just air/water/lava, no worries
 		if (targetLoc.getBlock().isEmpty() || targetLoc.getBlock().isLiquid()) return;
 
-		Faction pistonFaction = Board.getFactionAt(new FLocation(event.getBlock()));
+		Faction pistonFaction = BoardOld.getFactionAt(new FLocation(event.getBlock()));
 
 		// members of faction might not have build rights in their own territory, but pistons should still work regardless; so, address that corner case
-		Faction targetFaction = Board.getFactionAt(new FLocation(targetLoc));
+		Faction targetFaction = BoardOld.getFactionAt(new FLocation(targetLoc));
 		if (targetFaction == pistonFaction) return;
 
 		if ( ! FPerm.BUILD.has(pistonFaction, targetLoc))

@@ -1,6 +1,6 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.Board;
+import com.massivecraft.factions.BoardOld;
 import com.massivecraft.factions.FPlayerColl;
 import com.massivecraft.factions.FactionColl;
 import com.massivecraft.factions.Perm;
@@ -31,7 +31,7 @@ public class CmdFactionsSaveAll extends FCommand
 	{
 		FPlayerColl.i.saveToDisc();
 		FactionColl.i.saveToDisc();
-		Board.save();
+		BoardOld.save();
 		msg("<i>Factions saved to disk!");
 	}
 	

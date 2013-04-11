@@ -24,7 +24,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.util.NumberConversions;
 
-import com.massivecraft.factions.Board;
+import com.massivecraft.factions.BoardOld;
 import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.Const;
 import com.massivecraft.factions.FFlag;
@@ -96,17 +96,17 @@ public class FactionsPlayerListener implements Listener
 		// Yes we did change coord (:
 		
 		me.setLastStoodAt(to);
-		TerritoryAccess access = Board.getTerritoryAccessAt(to);
+		TerritoryAccess access = BoardOld.getTerritoryAccessAt(to);
 
 		// Did we change "host"(faction)?
-		boolean changedFaction = (Board.getFactionAt(from) != access.getHostFaction());
+		boolean changedFaction = (BoardOld.getFactionAt(from) != access.getHostFaction());
 
 		// let Spout handle most of this if it's available
 		boolean handledBySpout = changedFaction && SpoutFeatures.updateTerritoryDisplay(me);
 		
 		if (me.isMapAutoUpdating())
 		{
-			me.sendMessage(Board.getMap(me.getFaction(), to, player.getLocation().getYaw()));
+			me.sendMessage(BoardOld.getMap(me.getFaction(), to, player.getLocation().getYaw()));
 		}
 		else if (changedFaction && ! handledBySpout)
 		{
@@ -303,7 +303,7 @@ public class FactionsPlayerListener implements Listener
 		}
 		
 		Rel rel = me.getRelationToLocation();
-		if (Board.getFactionAt(me.getLastStoodAt()).isNone()) return;
+		if (BoardOld.getFactionAt(me.getLastStoodAt()).isNone()) return;
 		
 		if (rel == Rel.NEUTRAL && isCommandInList(fullCmd, ConfServer.territoryNeutralDenyCommands))
 		{

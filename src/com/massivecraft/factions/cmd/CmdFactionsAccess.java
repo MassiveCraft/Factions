@@ -1,6 +1,6 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.Board;
+import com.massivecraft.factions.BoardOld;
 import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FLocation;
@@ -38,7 +38,7 @@ public class CmdFactionsAccess extends FCommand
 		type = (type == null) ? "" : type.toLowerCase();
 		FLocation loc = new FLocation(me.getLocation());
 
-		TerritoryAccess territory = Board.getTerritoryAccessAt(loc);
+		TerritoryAccess territory = BoardOld.getTerritoryAccessAt(loc);
 		Faction locFaction = territory.getHostFaction();
 		boolean accessAny = Perm.ACCESS_ANY.has(sender, false);
 
