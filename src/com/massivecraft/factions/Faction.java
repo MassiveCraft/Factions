@@ -35,8 +35,16 @@ public class Faction extends Entity implements EconomyParticipator
 	/*@Override
 	public Faction load(Faction that)
 	{
-		//this.item = that.item;
-		// TODO
+		this.relationWish = that.relationWish;
+		this.invitedPlayerIds = that.invitedPlayerIds;
+		this.open = that.open;
+		this.tag = that.tag;
+		this.description = that.description;
+		this.home = that.home;
+		this.cape = that.cape;
+		this.powerBoost = that.powerBoost;
+		this.flagOverrides = that.flagOverrides;
+		this.permOverrides = that.permOverrides;
 		
 		return this;
 	}*/
@@ -62,17 +70,20 @@ public class Faction extends Entity implements EconomyParticipator
 	}
 	public void setInvitedPlayerIds(Collection<String> invitedPlayerIds)
 	{
-		TreeSet<String> target = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
-		
-		if (invitedPlayerIds != null)
+		if (invitedPlayerIds == null || invitedPlayerIds.isEmpty())
 		{
+			this.invitedPlayerIds = null;
+		}
+		else
+		{
+			TreeSet<String> target = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
 			for (String invitedPlayerId : invitedPlayerIds)
 			{
 				target.add(invitedPlayerId.toLowerCase());
 			}
+			this.invitedPlayerIds = target;
 		}
 		
-		this.invitedPlayerIds = target;
 		// TODO: Add when we use a true mcore entity.
 		// this.changed();
 	}
@@ -154,6 +165,9 @@ public class Faction extends Entity implements EconomyParticipator
 
 	// FIELDS: Flag management
 	// TODO: This will save... defaults if they where changed to...
+	
+	
+	
 	private Map<FFlag, Boolean> flagOverrides; // Contains the modifications to the default values
 	public boolean getFlag(FFlag flag)
 	{
