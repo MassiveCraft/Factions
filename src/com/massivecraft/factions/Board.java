@@ -15,7 +15,7 @@ import com.massivecraft.mcore.ps.PS;
 import com.massivecraft.mcore.store.Entity;
 import com.massivecraft.mcore.util.Txt;
 
-public class Board extends Entity<Board, String>
+public class Board extends Entity<Board, String> implements BoardInterface
 {
 	// -------------------------------------------- //
 	// META
@@ -27,7 +27,7 @@ public class Board extends Entity<Board, String>
 	}
 	
 	// -------------------------------------------- //
-	// OVERRIDE
+	// OVERRIDE: ENTITY
 	// -------------------------------------------- //
 	
 	@Override
@@ -54,26 +54,31 @@ public class Board extends Entity<Board, String>
 	private ConcurrentSkipListMap<PS, TerritoryAccess> map = new ConcurrentSkipListMap<PS, TerritoryAccess>();
 	
 	// -------------------------------------------- //
-	// GET
+	// OVERRIDE: BOARD
 	// -------------------------------------------- //
 	
+	// GET
+	
+	@Override
 	public TerritoryAccess getTerritoryAccessAt(PS ps)
 	{
+		if (ps == null) return null;
 		ps = ps.getChunkCoords(true);
 		TerritoryAccess ret = this.map.get(ps);
 		if (ret == null) ret = new TerritoryAccess("0");
 		return ret;
 	}
 	
+	@Override
 	public Faction getFactionAt(PS ps)
 	{
+		if (ps == null) return null;
 		return this.getTerritoryAccessAt(ps).getHostFaction();
 	}
 	
-	// -------------------------------------------- //
 	// SET
-	// -------------------------------------------- //
 	
+	@Override
 	public void setTerritoryAccessAt(PS ps, TerritoryAccess territoryAccess)
 	{
 		ps = ps.getChunkCoords(true);
@@ -97,6 +102,7 @@ public class Board extends Entity<Board, String>
 		this.changed();
 	}
 	
+	@Override
 	public void setFactionAt(PS ps, Faction faction)
 	{
 		TerritoryAccess territoryAccess = null;
@@ -107,17 +113,19 @@ public class Board extends Entity<Board, String>
 		this.setTerritoryAccessAt(ps, territoryAccess);
 	}
 	
-	// -------------------------------------------- //
 	// REMOVE
-	// -------------------------------------------- //
 	
+	@Override
 	public void removeAt(PS ps)
 	{
 		this.setTerritoryAccessAt(ps, null);
 	}
 	
-	public void removeAll(String factionId)
+	@Override
+	public void removeAll(Faction faction)
 	{
+		String factionId = faction.getId();
+		
 		for (Entry<PS, TerritoryAccess> entry : this.map.entrySet())
 		{
 			TerritoryAccess territoryAccess = entry.getValue();
@@ -129,6 +137,7 @@ public class Board extends Entity<Board, String>
 	}
 	
 	// Removes orphaned foreign keys
+	@Override
 	public void clean()
 	{
 		for (Entry<PS, TerritoryAccess> entry : this.map.entrySet())
@@ -143,9 +152,13 @@ public class Board extends Entity<Board, String>
 		}
 	}
 	
-	// -------------------------------------------- //
 	// COUNT
-	// -------------------------------------------- //
+	
+	@Override
+	public int getCount(Faction faction)
+	{
+		return this.getCount(faction.getId());
+	}
 	
 	public int getCount(String factionId)
 	{
@@ -157,17 +170,11 @@ public class Board extends Entity<Board, String>
 		return ret;
 	}
 	
-	public int getCount(Faction faction)
-	{
-		return this.getCount(faction.getId());
-	}
-	
-	// -------------------------------------------- //
 	// NEARBY DETECTION
-	// -------------------------------------------- //
-	
+		
 	// Is this coord NOT completely surrounded by coords claimed by the same faction?
 	// Simpler: Is there any nearby coord with a faction other than the faction here?
+	@Override
 	public boolean isBorderPs(PS ps)
 	{
 		PS nearby = null;
@@ -189,6 +196,7 @@ public class Board extends Entity<Board, String>
 	}
 
 	// Is this coord connected to any coord claimed by the specified faction?
+	@Override
 	public boolean isConnectedPs(PS ps, Faction faction)
 	{
 		PS nearby = null;
@@ -208,10 +216,9 @@ public class Board extends Entity<Board, String>
 		return false;
 	}
 	
-	// -------------------------------------------- //
 	// MAP GENERATION
-	// -------------------------------------------- //
 	
+	@Override
 	public ArrayList<String> getMap(RelationParticipator observer, PS centerPs, double inDegrees)
 	{
 		centerPs = centerPs.getChunkCoords(true);
