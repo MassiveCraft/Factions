@@ -14,25 +14,69 @@ import com.massivecraft.factions.util.*;
 import com.massivecraft.factions.zcore.persist.Entity;
 import com.massivecraft.mcore.ps.PS;
 import com.massivecraft.mcore.util.Txt;
+import com.massivecraft.mcore.xlib.gson.annotations.SerializedName;
 
 
 public class Faction extends Entity implements EconomyParticipator
 {
-	// FIELD: relationWish
-	private Map<String, Rel> relationWish;
-
-	// FIELD: fplayers
+	// -------------------------------------------- //
+	// META
+	// -------------------------------------------- //
+	
+	/*public static Faction get(Object oid)
+	{
+		return FactionColl.get().get(oid);
+	}*/
+	
+	// -------------------------------------------- //
+	// OVERRIDE: ENTITY
+	// -------------------------------------------- //
+	
+	/*@Override
+	public Faction load(Faction that)
+	{
+		//this.item = that.item;
+		// TODO
+		
+		return this;
+	}*/
+	
+	// -------------------------------------------- //
+	// FIELDS: RAW
+	// -------------------------------------------- //
+	
 	// speedy lookup of players in faction
 	private transient Set<FPlayer> fplayers = new HashSet<FPlayer>();
-
-	// FIELD: invites
-	// Where string is a lowercase player name
-	private Set<String> invites; 
-	public void invite(FPlayer fplayer) { this.invites.add(fplayer.getId().toLowerCase()); }
-	public void deinvite(FPlayer fplayer) { this.invites.remove(fplayer.getId().toLowerCase()); }
-	public boolean isInvited(FPlayer fplayer) { return this.invites.contains(fplayer.getId().toLowerCase()); }
+	// TODO
 	
-	// FIELD: open
+	private Map<String, Rel> relationWish;
+	// TODO
+	
+	@SerializedName("invites")
+	private Set<String> invitedPlayerIds = null;
+	public TreeSet<String> getInvitedPlayerIds()
+	{
+		TreeSet<String> ret = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
+		if (this.invitedPlayerIds != null) ret.addAll(this.invitedPlayerIds);
+		return ret;
+	}
+	public void setInvitedPlayerIds(Collection<String> invitedPlayerIds)
+	{
+		TreeSet<String> target = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
+		
+		if (invitedPlayerIds != null)
+		{
+			for (String invitedPlayerId : invitedPlayerIds)
+			{
+				target.add(invitedPlayerId.toLowerCase());
+			}
+		}
+		
+		this.invitedPlayerIds = target;
+		// TODO: Add when we use a true mcore entity.
+		// this.changed();
+	}
+	
 	private boolean open;
 	public boolean isOpen() { return this.open; }
 	public void setOpen(boolean open) { this.open = open; }
@@ -193,7 +237,6 @@ public class Faction extends Entity implements EconomyParticipator
 	public Faction()
 	{
 		this.relationWish = new HashMap<String, Rel>();
-		this.invites = new HashSet<String>();
 		this.open = ConfServer.newFactionsDefaultOpen;
 		this.tag = "???";
 		this.description = "Default faction description :(";
@@ -202,6 +245,52 @@ public class Faction extends Entity implements EconomyParticipator
 		this.permOverrides = new LinkedHashMap<FPerm, Set<Rel>>();
 	}
 	
+	// -------------------------------------------- //
+	// FIELDS: EXTRA
+	// -------------------------------------------- //
+	
+	// TODO: Make use of a player name extractor?
+	
+	public boolean addInvitedPlayerId(String playerId)
+	{
+		TreeSet<String> invitedPlayerIds = this.getInvitedPlayerIds();
+		if (invitedPlayerIds.add(playerId.toLowerCase()))
+		{
+			this.setInvitedPlayerIds(invitedPlayerIds);
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean removeInvitedPlayerId(String playerId)
+	{
+		TreeSet<String> invitedPlayerIds = this.getInvitedPlayerIds();
+		if (invitedPlayerIds.remove(playerId.toLowerCase()))
+		{
+			this.setInvitedPlayerIds(invitedPlayerIds);
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean isInvited(FPlayer fplayer)
+	{
+		return this.getInvitedPlayerIds().contains(fplayer.getId());
+	}
+	
+	// -------------------------------------------- //
+	// ACTIONS
+	// -------------------------------------------- //
+	
+	public void invite(FPlayer fplayer)
+	{
+		this.addInvitedPlayerId(fplayer.getId());
+	}
+	
+	public void deinvite(FPlayer fplayer)
+	{
+		this.removeInvitedPlayerId(fplayer.getId());
+	}
 
 	// -------------------------------
 	// Understand the types
