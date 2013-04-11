@@ -9,9 +9,21 @@ import com.massivecraft.mcore.util.MUtil;
 
 public class Const
 {
+	// MStore Collection Names
+	public static final String COLLECTION_BASENAME = "factions";
+	public static final String COLLECTION_BASENAME_ = COLLECTION_BASENAME+"_";
+	public static final String COLLECTION_BASENAME_CONF = COLLECTION_BASENAME_+"conf";
+	public static final String COLLECTION_BASENAME_BOARD = COLLECTION_BASENAME_+"board";
+	public static final String COLLECTION_BASENAME_PLAYER = COLLECTION_BASENAME_+"player";
+	public static final String COLLECTION_BASENAME_FACTION = COLLECTION_BASENAME_+"faction";
+	
+	// ASCII Map
+	
 	public static final int MAP_HEIGHT = 8;
 	public static final int MAP_WIDTH = 39;
 	public static final char[] MAP_KEY_CHARS = "\\/#?$%=&^ABCDEFGHJKLMNOPQRSTUVWXYZ1234567890abcdeghjmnopqrsuvwxyz".toCharArray();
+	
+	// Enumerations
 	
 	public static final Set<Material> MATERIALS_EDIT_ON_INTERACT = MUtil.set(
 		Material.DIODE_BLOCK_OFF,
