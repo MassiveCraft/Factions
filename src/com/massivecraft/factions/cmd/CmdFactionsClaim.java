@@ -1,10 +1,10 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.ConfServer;
-import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.util.SpiralTask;
+import com.massivecraft.mcore.ps.PS;
 
 
 public class CmdFactionsClaim extends FCommand
@@ -55,7 +55,7 @@ public class CmdFactionsClaim extends FCommand
 				return;
 			}
 
-			new SpiralTask(new FLocation(me), radius)
+			new SpiralTask(PS.valueOf(me), radius)
 			{
 				private int failCount = 0;
 				private final int limit = ConfServer.radiusClaimFailureLimit - 1;

@@ -6,8 +6,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 
-import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.Factions;
+import com.massivecraft.mcore.ps.PS;
 
 
 /*
@@ -40,12 +40,14 @@ public abstract class SpiralTask implements Runnable
 	private transient int current = 0;
 
 	// @SuppressWarnings("LeakingThisInConstructor") This actually triggers a warning in Eclipse xD Could we find another way to suppress the error please? :)
-	public SpiralTask(FLocation fLocation, int radius)
+	public SpiralTask(PS chunk, int radius)
 	{
+		chunk = chunk.getChunk(true);
+		
 		// limit is determined based on spiral leg length for given radius; see insideRadius()
 		this.limit = (radius - 1) * 2;
 
-		this.world = Bukkit.getWorld(fLocation.getWorldName());
+		this.world = Bukkit.getWorld(chunk.getWorld());
 		if (this.world == null)
 		{
 			Factions.get().log(Level.WARNING, "[SpiralTask] A valid world must be specified!");
@@ -53,8 +55,8 @@ public abstract class SpiralTask implements Runnable
 			return;
 		}
 
-		this.x = (int)fLocation.getX();
-		this.z = (int)fLocation.getZ();
+		this.x = (int)chunk.getChunkX();
+		this.z = (int)chunk.getChunkZ();
 
 		this.readyToGo = true;
 
@@ -70,11 +72,11 @@ public abstract class SpiralTask implements Runnable
 	public abstract boolean work();
 
 /*
- * Returns an FLocation pointing at the current chunk X and Z values.
+ * Returns a PS pointing at the current chunk X and Z values.
  */
-	public final FLocation currentFLocation()
+	public final PS currentChunk()
 	{
-		return new FLocation(world.getName(), x, z);
+		return PS.valueOf(this.world.getName(), null, null, null, null, null, null, this.x, this.z, null, null, null, null, null);
 	}
 /*
  * Returns a Location pointing at the current chunk X and Z values.
@@ -82,7 +84,8 @@ public abstract class SpiralTask implements Runnable
  */
 	public final Location currentLocation()
 	{
-		return new Location(world, FLocation.chunkToBlock(x), 65.0, FLocation.chunkToBlock(z));
+		
+		return new Location(world, this.x * 16, 65.0, this.z * 16);
 	}
 /*
  * Returns current chunk X and Z values.

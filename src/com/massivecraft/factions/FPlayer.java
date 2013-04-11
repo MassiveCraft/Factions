@@ -428,22 +428,6 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		// TODO: Use Mixin to get this PS instead
 		return BoardColl.get().getFactionAt(PS.valueOf(this.getPlayer())) == this.getFaction();
 	}
-	
-	/*public boolean isInOthersTerritory()
-	{
-		Faction factionHere = Board.getFactionAt(new FLocation(this));
-		return factionHere != null && factionHere.isNormal() && factionHere != this.getFaction();
-	}*/
-
-	/*public boolean isInAllyTerritory()
-	{
-		return Board.getFactionAt(new FLocation(this)).getRelationTo(this) == Rel.ALLY;
-	}*/
-
-	/*public boolean isInNeutralTerritory()
-	{
-		return Board.getFactionAt(new FLocation(this)).getRelationTo(this) == Rel.NEUTRAL;
-	}*/
 
 	public boolean isInEnemyTerritory()
 	{
