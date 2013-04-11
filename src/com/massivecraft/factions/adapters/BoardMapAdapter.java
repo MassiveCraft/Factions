@@ -42,11 +42,11 @@ public class BoardMapAdapter implements JsonDeserializer<Map<PS, TerritoryAccess
 			String[] ChunkCoordParts = entry.getKey().split("[,\\s]+");
 			int chunkX = Integer.parseInt(ChunkCoordParts[0]);
 			int chunkZ = Integer.parseInt(ChunkCoordParts[1]);
-			PS ps = new PSBuilder().chunkX(chunkX).chunkZ(chunkZ).build();
+			PS chunk = PS.valueOf(chunkX, chunkZ);
 			
 			TerritoryAccess territoryAccess = context.deserialize(entry.getValue(), TerritoryAccess.class);
 			
-			ret.put(ps, territoryAccess);
+			ret.put(chunk, territoryAccess);
 		}
 		
 		return ret;

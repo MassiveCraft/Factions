@@ -36,9 +36,9 @@ public class CmdFactionsAccess extends FCommand
 	{
 		String type = this.argAsString(0);
 		type = (type == null) ? "" : type.toLowerCase();
-		PS loc = PS.valueOf(me);
+		PS chunk = PS.valueOf(me).getChunk(true);
 
-		TerritoryAccess territory = BoardColl.get().getTerritoryAccessAt(loc);
+		TerritoryAccess territory = BoardColl.get().getTerritoryAccessAt(chunk);
 		Faction locFaction = territory.getHostFaction();
 		boolean accessAny = Perm.ACCESS_ANY.has(sender, false);
 
@@ -89,7 +89,7 @@ public class CmdFactionsAccess extends FCommand
 		}
 
 		msg("<i>%s has been %s<i> the access list for this territory.", target, Txt.parse(added ? "<lime>added to" : "<rose>removed from"));
-		SpoutFeatures.updateAccessInfoLoc(loc);
+		SpoutFeatures.updateAccessInfoLoc(chunk);
 		showAccessList(territory, locFaction);
 	}
 

@@ -258,7 +258,7 @@ public class SpoutFeatures
 			{
 				mainListener.updateTerritoryDisplay(player, false);
 			}
-			else if (player.getLastStoodAt().equals(chunk))
+			else if (player.getCurrentChunk().equals(chunk))
 			{
 				mainListener.updateTerritoryDisplay(player, true);
 			}
@@ -283,7 +283,7 @@ public class SpoutFeatures
 
 		for (FPlayer player : players)
 		{
-			if (chunk == null || player.getLastStoodAt().equals(chunk))
+			if (chunk == null || player.getCurrentChunk().equals(chunk))
 			mainListener.updateAccessInfo(player);
 		}
 	}

@@ -36,12 +36,12 @@ public class LWCFeatures
 		return ConfServer.lwcIntegration && lwc != null;
 	}
 
-	public static void clearOtherChests(PS ps, Faction faction)
+	public static void clearOtherChests(PS chunkPs, Faction faction)
 	{
 		Chunk chunk = null;
 		try
 		{
-			chunk = ps.asBukkitChunk(true);
+			chunk = chunkPs.asBukkitChunk(true);
 		}
 		catch (Exception e)
 		{
@@ -69,12 +69,12 @@ public class LWCFeatures
 		}
 	}
 	
-	public static void clearAllChests(PS ps)
+	public static void clearAllChests(PS chunkPs)
 	{
 		Chunk chunk = null;
 		try
 		{
-			chunk = ps.asBukkitChunk(true);
+			chunk = chunkPs.asBukkitChunk(true);
 		}
 		catch (Exception e)
 		{

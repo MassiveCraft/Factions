@@ -40,9 +40,9 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 	// Where did this player stand the last time we checked?
 	// This is a "chunk".
 	// Rename to "currentChunk"?
-	private transient PS lastStoodAt = PS.NULL; 
-	public PS getLastStoodAt() { return this.lastStoodAt; }
-	public void setLastStoodAt(PS lastStoodAt) { this.lastStoodAt = lastStoodAt.getChunk(true); }
+	private transient PS currentChunk = null; 
+	public PS getCurrentChunk() { return this.currentChunk; }
+	public void setCurrentChunk(PS currentChunk) { this.currentChunk = currentChunk.getChunk(true); }
 	
 	// FIELD: factionId
 	private String factionId;
@@ -441,7 +441,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		{
 			return;
 		}
-		Faction factionHere = BoardColl.get().getFactionAt(this.getLastStoodAt());
+		Faction factionHere = BoardColl.get().getFactionAt(this.getCurrentChunk());
 		String msg = Txt.parse("<i>")+" ~ "+factionHere.getTag(this);
 		if (factionHere.getDescription().length() > 0)
 		{

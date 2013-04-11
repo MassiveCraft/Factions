@@ -50,7 +50,7 @@ public class FactionsPlayerListener implements Listener
 		me.setLastLoginTime(System.currentTimeMillis());
 
 		// Store player's current Chunk and notify them where they are
-		me.setLastStoodAt(PS.valueOf(event.getPlayer()));
+		me.setCurrentChunk(PS.valueOf(event.getPlayer()));
 		
 		if ( ! SpoutFeatures.updateTerritoryDisplay(me))
 		{
@@ -91,25 +91,25 @@ public class FactionsPlayerListener implements Listener
 		FPlayer me = FPlayerColl.i.get(player);
 		
 		// Did we change coord?
-		PS from = me.getLastStoodAt();
-		PS to = PS.valueOf(event.getTo()).getChunk(true);
+		PS chunkFrom = me.getCurrentChunk();
+		PS chunkTo = PS.valueOf(event.getTo()).getChunk(true);
 		
-		if (from.equals(to)) return;
+		if (chunkFrom.equals(chunkTo)) return;
 		
 		// Yes we did change coord (:
 		
-		me.setLastStoodAt(to);
-		TerritoryAccess access = BoardColl.get().getTerritoryAccessAt(to);
+		me.setCurrentChunk(chunkTo);
+		TerritoryAccess access = BoardColl.get().getTerritoryAccessAt(chunkTo);
 
 		// Did we change "host"(faction)?
-		boolean changedFaction = (BoardColl.get().getFactionAt(from) != access.getHostFaction());
+		boolean changedFaction = (BoardColl.get().getFactionAt(chunkFrom) != access.getHostFaction());
 
 		// let Spout handle most of this if it's available
 		boolean handledBySpout = changedFaction && SpoutFeatures.updateTerritoryDisplay(me);
 		
 		if (me.isMapAutoUpdating())
 		{
-			me.sendMessage(BoardColl.get().getMap(me.getFaction(), to, player.getLocation().getYaw()));
+			me.sendMessage(BoardColl.get().getMap(me.getFaction(), chunkTo, player.getLocation().getYaw()));
 		}
 		else if (changedFaction && ! handledBySpout)
 		{
@@ -306,7 +306,7 @@ public class FactionsPlayerListener implements Listener
 		}
 		
 		Rel rel = me.getRelationToLocation();
-		if (BoardColl.get().getFactionAt(me.getLastStoodAt()).isNone()) return;
+		if (BoardColl.get().getFactionAt(me.getCurrentChunk()).isNone()) return;
 		
 		if (rel == Rel.NEUTRAL && isCommandInList(fullCmd, ConfServer.territoryNeutralDenyCommands))
 		{
