@@ -1,6 +1,7 @@
 package com.massivecraft.factions;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -50,8 +51,24 @@ public class Board extends Entity<Board, String> implements BoardInterface
 	// FIELDS
 	// -------------------------------------------- //
 	
-	// TODO: Make TerritoryAccess immutable!
-	private ConcurrentSkipListMap<PS, TerritoryAccess> map = new ConcurrentSkipListMap<PS, TerritoryAccess>();
+	// TODO: Make TerritoryAccess immutable.
+	
+	private ConcurrentSkipListMap<PS, TerritoryAccess> map;
+	public Map<PS, TerritoryAccess> getMap() { return Collections.unmodifiableMap(this.map); }
+	
+	// -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
+	
+	public Board()
+	{
+		this.map = new ConcurrentSkipListMap<PS, TerritoryAccess>();
+	}
+	
+	public Board(Map<PS, TerritoryAccess> map)
+	{
+		this.map = new ConcurrentSkipListMap<PS, TerritoryAccess>(map);
+	}
 	
 	// -------------------------------------------- //
 	// OVERRIDE: BOARD

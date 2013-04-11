@@ -4,6 +4,7 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import com.massivecraft.factions.adapters.BoardAdapter;
 import com.massivecraft.factions.adapters.FFlagAdapter;
 import com.massivecraft.factions.adapters.FPermAdapter;
 import com.massivecraft.factions.adapters.LazyLocationAdapter;
@@ -135,6 +136,7 @@ public class Factions extends MPlugin
 		.excludeFieldsWithModifiers(Modifier.TRANSIENT, Modifier.VOLATILE)
 		.registerTypeAdapter(LazyLocation.class, new LazyLocationAdapter())
 		.registerTypeAdapter(TerritoryAccess.class, TerritoryAccessAdapter.get())
+		.registerTypeAdapter(Board.class, BoardAdapter.get())
 		.registerTypeAdapter(Rel.class, new RelAdapter())
 		.registerTypeAdapter(FPerm.class, new FPermAdapter())
 		.registerTypeAdapter(FFlag.class, new FFlagAdapter());
