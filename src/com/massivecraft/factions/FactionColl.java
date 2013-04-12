@@ -57,7 +57,8 @@ public class FactionColl extends EntityCollection<Faction>
 			Faction faction = this.create("0");
 			faction.setTag(ChatColor.DARK_GREEN+"Wilderness");
 			faction.setDescription("");
-			this.setFlagsForWilderness(faction);
+			
+			setFlagsForWilderness(faction);
 		}
 		if ( ! this.exists("-1"))
 		{
@@ -65,14 +66,15 @@ public class FactionColl extends EntityCollection<Faction>
 			faction.setTag("SafeZone");
 			faction.setDescription("Free from PVP and monsters");
 			
-			this.setFlagsForSafeZone(faction);
+			setFlagsForSafeZone(faction);
 		}
 		if ( ! this.exists("-2"))
 		{
 			Faction faction = this.create("-2");
 			faction.setTag("WarZone");
 			faction.setDescription("Not the safest place to be");
-			this.setFlagsForWarZone(faction);
+			
+			setFlagsForWarZone(faction);
 		}
 		
 		// -------------------------------------------- //
@@ -106,9 +108,9 @@ public class FactionColl extends EntityCollection<Faction>
 	}
 	
 	// -------------------------------------------- //
-	// Flag Setters
+	// FLAG SETTERS
 	// -------------------------------------------- //
-	public void setFlagsForWilderness(Faction faction)
+	public static void setFlagsForWilderness(Faction faction)
 	{
 		faction.setOpen(false);
 		
@@ -131,7 +133,7 @@ public class FactionColl extends EntityCollection<Faction>
 		faction.setPermittedRelations(FPerm.LEVER, Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
 	}
 	
-	public void setFlagsForSafeZone(Faction faction)
+	public static void setFlagsForSafeZone(Faction faction)
 	{
 		faction.setOpen(false);
 		
@@ -154,7 +156,7 @@ public class FactionColl extends EntityCollection<Faction>
 		faction.setPermittedRelations(FPerm.TERRITORY, Rel.LEADER, Rel.OFFICER, Rel.MEMBER);	
 	}
 	
-	public void setFlagsForWarZone(Faction faction)
+	public static void setFlagsForWarZone(Faction faction)
 	{
 		faction.setOpen(false);
 		
@@ -176,7 +178,6 @@ public class FactionColl extends EntityCollection<Faction>
 		faction.setPermittedRelations(FPerm.LEVER, Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
 		faction.setPermittedRelations(FPerm.TERRITORY, Rel.LEADER, Rel.OFFICER, Rel.MEMBER);
 	}
-	
 	
 	// -------------------------------------------- //
 	// GET

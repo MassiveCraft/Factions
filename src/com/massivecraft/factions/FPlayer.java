@@ -22,24 +22,49 @@ import com.massivecraft.mcore.ps.PS;
 import com.massivecraft.mcore.util.Txt;
 
 
-/**
- * Logged in players always have exactly one FPlayer instance.
- * Logged out players may or may not have an FPlayer instance. They will always have one if they are part of a faction.
- * This is because only players with a faction are saved to disk (in order to not waste disk space).
- * 
- * The FPlayer is linked to a minecraft player using the player name.
- * 
- * The same instance is always returned for the same player.
- * This means you can use the == operator. No .equals method necessary.
- */
-
-// TODO: The players are saved in non order.
 public class FPlayer extends PlayerEntity implements EconomyParticipator
-{	
-	// FIELD: lastStoodAt
+{
+	// -------------------------------------------- //
+	// PERSISTANCE
+	// -------------------------------------------- //
+	
+	@Override
+	public boolean shouldBeSaved()
+	{
+		if (this.hasFaction()) return true;
+		if (this.getPowerRounded() != this.getPowerMaxRounded() && this.getPowerRounded() != (int) Math.round(ConfServer.powerPlayerStarting)) return true;
+		return false;
+	}
+	
+	// This stuff from the economy participator interface... will it clash with the built in one from the MCore player entity?
+	public void msg(String str, Object... args)
+	{
+		this.sendMessage(Txt.parse(str, args));
+	}
+	
+	// -------------------------------------------- //
+	// OVERRIDE: ENTITY
+	// -------------------------------------------- //
+	
+	/*@Override
+	public FPlayer load(FPlayer that)
+	{
+		this.factionId = that.factionId;
+		this.role = that.role;
+		this.title = that.title;
+		this.power = that.power;
+		this.powerBoost = that.powerBoost;
+		this.lastPowerUpdateTime = that.lastPowerUpdateTime;
+		this.lastLoginTime = that.lastLoginTime;
+		
+		return this;
+	}*/
+	
+	// -------------------------------------------- //
+	// FIELDS
+	// -------------------------------------------- //
+	
 	// Where did this player stand the last time we checked?
-	// This is a "chunk".
-	// Rename to "currentChunk"?
 	private transient PS currentChunk = null; 
 	public PS getCurrentChunk() { return this.currentChunk; }
 	public void setCurrentChunk(PS currentChunk) { this.currentChunk = currentChunk.getChunk(true); }
@@ -190,9 +215,10 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		return true;
 	}
 	
-	//----------------------------------------------//
+	// -------------------------------------------- //
 	// TITLE, NAME, FACTION TAG AND CHAT
-	//----------------------------------------------//
+	// -------------------------------------------- //
+	
 	public String getName()
 	{
 		return getId();
@@ -273,9 +299,9 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		return this.getColorTo(fplayer)+getChatTag();
 	}
 	
-	// -------------------------------
+	// -------------------------------------------- //
 	// RELATION AND RELATION COLORS
-	// -------------------------------
+	// -------------------------------------------- //
 	
 	@Override
 	public String describeTo(RelationParticipator observer, boolean ucfirst)
@@ -313,9 +339,10 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		return RelationUtil.getColorOfThatToMe(this, observer);
 	}
 	
-	//----------------------------------------------//
+	// -------------------------------------------- //
 	// HEALTH
-	//----------------------------------------------//
+	// -------------------------------------------- //
+	
 	public void heal(int amnt)
 	{
 		Player player = this.getPlayer();
@@ -326,10 +353,10 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		player.setHealth(player.getHealth() + amnt);
 	}
 	
-	
-	//----------------------------------------------//
+	// -------------------------------------------- //
 	// POWER
-	//----------------------------------------------//
+	// -------------------------------------------- //
+	
 	public double getPower()
 	{
 		this.updatePower();
@@ -420,9 +447,10 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		this.alterPower(-ConfServer.powerPerDeath);
 	}
 	
-	//----------------------------------------------//
+	// -------------------------------------------- //
 	// TERRITORY
-	//----------------------------------------------//
+	// -------------------------------------------- //
+	
 	public boolean isInOwnTerritory()
 	{
 		// TODO: Use Mixin to get this PS instead
@@ -450,9 +478,9 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		this.sendMessage(msg);
 	}
 	
-	// -------------------------------
+	// -------------------------------------------- //
 	// ACTIONS
-	// -------------------------------
+	// -------------------------------------------- //
 	
 	public void leave(boolean makePay)
 	{
@@ -668,20 +696,4 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		return true;
 	}
 	
-	// -------------------------------------------- //
-	// PERSISTANCE
-	// -------------------------------------------- //
-	
-	@Override
-	public boolean shouldBeSaved()
-	{
-		if (this.hasFaction()) return true;
-		if (this.getPowerRounded() != this.getPowerMaxRounded() && this.getPowerRounded() != (int) Math.round(ConfServer.powerPlayerStarting)) return true;
-		return false;
-	}
-	
-	public void msg(String str, Object... args)
-	{
-		this.sendMessage(Txt.parse(str, args));
-	}
 }
