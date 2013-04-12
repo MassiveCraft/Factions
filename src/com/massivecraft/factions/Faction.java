@@ -17,7 +17,7 @@ import com.massivecraft.mcore.util.Txt;
 import com.massivecraft.mcore.xlib.gson.annotations.SerializedName;
 
 
-public class Faction extends Entity<Faction, String> implements EconomyParticipator
+public class Faction extends Entity<Faction> implements EconomyParticipator
 {
 	// -------------------------------------------- //
 	// META

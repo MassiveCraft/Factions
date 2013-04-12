@@ -18,7 +18,7 @@ import com.massivecraft.mcore.store.Entity;
 import com.massivecraft.mcore.util.Txt;
 import com.massivecraft.mcore.xlib.gson.reflect.TypeToken;
 
-public class Board extends Entity<Board, String> implements BoardInterface
+public class Board extends Entity<Board> implements BoardInterface
 {
 	public static final transient Type MAP_TYPE = new TypeToken<Map<PS, TerritoryAccess>>(){}.getType();
 	

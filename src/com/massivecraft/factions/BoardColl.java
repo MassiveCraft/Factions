@@ -15,7 +15,7 @@ import com.massivecraft.mcore.util.DiscUtil;
 import com.massivecraft.mcore.util.MUtil;
 import com.massivecraft.mcore.xlib.gson.reflect.TypeToken;
 
-public class BoardColl extends Coll<Board, String> implements BoardInterface
+public class BoardColl extends Coll<Board> implements BoardInterface
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -25,7 +25,7 @@ public class BoardColl extends Coll<Board, String> implements BoardInterface
 	public static BoardColl get() { return i; }
 	private BoardColl()
 	{
-		super(MStore.getDb(ConfServer.dburi), Factions.get(), "ai", Const.COLLECTION_BASENAME_BOARD, Board.class, String.class, true);
+		super(MStore.getDb(ConfServer.dburi), Factions.get(), "uuid", Const.COLLECTION_BASENAME_BOARD, Board.class, true);
 	}
 	
 	// -------------------------------------------- //

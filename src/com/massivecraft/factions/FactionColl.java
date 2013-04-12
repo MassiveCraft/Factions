@@ -9,7 +9,6 @@ import org.bukkit.ChatColor;
 
 import com.massivecraft.mcore.store.Coll;
 import com.massivecraft.mcore.store.MStore;
-import com.massivecraft.mcore.store.idstrategy.IdStrategyAiAbstract;
 import com.massivecraft.mcore.util.DiscUtil;
 import com.massivecraft.mcore.util.Txt;
 import com.massivecraft.mcore.xlib.gson.reflect.TypeToken;
@@ -17,7 +16,7 @@ import com.massivecraft.mcore.xlib.gson.reflect.TypeToken;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.util.MiscUtil;
 
-public class FactionColl extends Coll<Faction, String>
+public class FactionColl extends Coll<Faction>
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -27,7 +26,7 @@ public class FactionColl extends Coll<Faction, String>
 	public static FactionColl get() { return i; }
 	private FactionColl()
 	{
-		super(MStore.getDb(ConfServer.dburi), Factions.get(), "ai", Const.COLLECTION_BASENAME_FACTION, Faction.class, String.class, false);
+		super(MStore.getDb(ConfServer.dburi), Factions.get(), "uuid", Const.COLLECTION_BASENAME_FACTION, Faction.class, false);
 	}
 	
 	// -------------------------------------------- //
@@ -65,33 +64,14 @@ public class FactionColl extends Coll<Faction, String>
 		Type type = new TypeToken<Map<String, Faction>>(){}.getType();
 		Map<String, Faction> id2faction = Factions.get().gson.fromJson(DiscUtil.readCatch(oldFile), type);
 		
-		// We need to find the next AI id!
-		int highestId = 0;
-		
 		// Set the data
 		for (Entry<String, Faction> entry : id2faction.entrySet())
 		{
 			String factionId = entry.getKey();
 			Faction faction = entry.getValue();
 			
-			try
-			{
-				int intFactionId = Integer.valueOf(factionId);
-				if (highestId < intFactionId)
-				{
-					highestId = intFactionId;
-				}
-			}
-			catch (Exception e)
-			{
-				// Just ignore
-			}
-			
 			FactionColl.get().create(factionId).load(faction);
 		}
-		
-		IdStrategyAiAbstract idStrategy = (IdStrategyAiAbstract) FactionColl.get().getIdStrategy();
-		idStrategy.setNext(this, highestId + 1);
 		
 		// Mark as migrated
 		oldFile.renameTo(newFile);
