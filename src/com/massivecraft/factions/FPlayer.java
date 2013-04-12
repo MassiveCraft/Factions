@@ -61,13 +61,8 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 	}*/
 	
 	// -------------------------------------------- //
-	// FIELDS
+	// FIELDS: RAW PERMANENT
 	// -------------------------------------------- //
-	
-	// Where did this player stand the last time we checked?
-	private transient PS currentChunk = null; 
-	public PS getCurrentChunk() { return this.currentChunk; }
-	public void setCurrentChunk(PS currentChunk) { this.currentChunk = currentChunk.getChunk(true); }
 	
 	// FIELD: factionId
 	private String factionId;
@@ -108,6 +103,15 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 	
 	// FIELD: lastLoginTime
 	private long lastLoginTime;
+	
+	// -------------------------------------------- //
+	// FIELDS: RAW TRANSIENT
+	// -------------------------------------------- //
+	
+	// Where did this player stand the last time we checked?
+	private transient PS currentChunk = null; 
+	public PS getCurrentChunk() { return this.currentChunk; }
+	public void setCurrentChunk(PS currentChunk) { this.currentChunk = currentChunk.getChunk(true); }
 	
 	// FIELD: mapAutoUpdating
 	private transient boolean mapAutoUpdating;

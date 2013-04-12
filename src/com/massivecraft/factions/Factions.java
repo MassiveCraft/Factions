@@ -93,7 +93,7 @@ public class Factions extends MPlugin
 		HerochatFeatures.setup();
 		LWCFeatures.setup();
 		
-		if(ConfServer.worldGuardChecking)
+		if (ConfServer.worldGuardChecking)
 		{
 			Worldguard.init(this);
 		}
@@ -178,9 +178,12 @@ public class Factions extends MPlugin
 			this.getServer().getScheduler().cancelTask(econLandRewardTaskID);
 		}
 
-		if (ConfServer.econEnabled &&
+		if
+		(
+			ConfServer.econEnabled &&
 			ConfServer.econLandRewardTaskRunsEveryXMinutes > 0.0 &&
-			ConfServer.econLandReward > 0.0)
+			ConfServer.econLandReward > 0.0
+		)
 		{
 			long ticks = (long)(20 * 60 * ConfServer.econLandRewardTaskRunsEveryXMinutes);
 			econLandRewardTaskID = getServer().getScheduler().scheduleSyncRepeatingTask(this, new EconLandRewardTask(), ticks, ticks);
