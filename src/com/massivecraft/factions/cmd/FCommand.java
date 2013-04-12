@@ -229,13 +229,13 @@ public abstract class FCommand extends MCommand<Factions>
 			// First we try an exact match
 			if (faction == null)
 			{
-				faction = FactionColl.i.getByTag(name);
+				faction = FactionColl.get().getByTag(name);
 			}
 			
 			// Next we match faction tags
 			if (faction == null)
 			{
-				faction = FactionColl.i.getBestTagMatch(name);
+				faction = FactionColl.get().getBestTagMatch(name);
 			}
 				
 			// Next we match player names

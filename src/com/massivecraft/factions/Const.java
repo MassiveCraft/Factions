@@ -17,14 +17,17 @@ public class Const
 	public static final String COLLECTION_BASENAME_PLAYER = COLLECTION_BASENAME_+"player";
 	public static final String COLLECTION_BASENAME_FACTION = COLLECTION_BASENAME_+"faction";
 	
-	// ASCII Map
+	// Defautlt faction ids
+	public static final String FACTIONID_NONE = "0";
+	public static final String FACTIONID_SAFEZONE = "-1";
+	public static final String FACTIONID_WARZONE = "-2";
 	
+	// ASCII Map
 	public static final int MAP_HEIGHT = 8;
 	public static final int MAP_WIDTH = 39;
 	public static final char[] MAP_KEY_CHARS = "\\/#?$%=&^ABCDEFGHJKLMNOPQRSTUVWXYZ1234567890abcdeghjmnopqrsuvwxyz".toCharArray();
 	
 	// Enumerations
-	
 	public static final Set<Material> MATERIALS_EDIT_ON_INTERACT = MUtil.set(
 		Material.DIODE_BLOCK_OFF,
 		Material.DIODE_BLOCK_ON,

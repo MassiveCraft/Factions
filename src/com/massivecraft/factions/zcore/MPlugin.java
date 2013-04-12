@@ -6,8 +6,6 @@ import java.util.logging.Level;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.massivecraft.factions.zcore.persist.EM;
-import com.massivecraft.factions.zcore.persist.SaveTask;
 import com.massivecraft.mcore.util.Txt;
 import com.massivecraft.mcore.xlib.gson.Gson;
 import com.massivecraft.mcore.xlib.gson.GsonBuilder;
@@ -17,14 +15,6 @@ public abstract class MPlugin extends JavaPlugin
 {	
 	// Persist related
 	public Gson gson;	
-	private Integer saveTask = null;
-	private boolean autoSave = true;
-	protected boolean loadSuccessful = false;
-	public boolean getAutoSave() {return this.autoSave;}
-	public void setAutoSave(boolean val) {this.autoSave = val;}
-	
-	// Listeners
-	public MPluginSecretPlayerListener mPluginSecretPlayerListener; 
 
 	// -------------------------------------------- //
 	// ENABLE
@@ -39,18 +29,7 @@ public abstract class MPlugin extends JavaPlugin
 		this.getDataFolder().mkdirs();
 
 		this.gson = this.getGsonBuilder().create();
-
-		// Create and register listeners
-		this.mPluginSecretPlayerListener = new MPluginSecretPlayerListener(this);
 		
-		// Register recurring tasks
-		long saveTicks = 20 * 60 * 30; // Approximately every 30 min
-		if (saveTask == null)
-		{
-			saveTask = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, new SaveTask(this), saveTicks, saveTicks);
-		}
-
-		loadSuccessful = true;
 		return true;
 	}
 	
@@ -61,14 +40,6 @@ public abstract class MPlugin extends JavaPlugin
 	
 	public void onDisable()
 	{
-		if (saveTask != null)
-		{
-			this.getServer().getScheduler().cancelTask(saveTask);
-			saveTask = null;
-		}
-		// only save data if plugin actually loaded successfully
-		if (loadSuccessful)
-			EM.saveAllToDisc();
 		log("Disabled");
 	}
 	
@@ -91,56 +62,6 @@ public abstract class MPlugin extends JavaPlugin
 		.disableHtmlEscaping()
 		.serializeNulls()
 		.excludeFieldsWithModifiers(Modifier.TRANSIENT, Modifier.VOLATILE);
-	}
-	
-	// -------------------------------------------- //
-	// LANG AND TAGS
-	// -------------------------------------------- //
-	/*
-	// These are not supposed to be used directly.
-	// They are loaded and used through the TextUtil instance for the plugin.
-	public Map<String, String> rawTags = new LinkedHashMap<String, String>();
-	
-	public void addRawTags()
-	{
-		this.rawTags.put("l", "<green>"); // logo
-		this.rawTags.put("a", "<gold>"); // art
-		this.rawTags.put("n", "<silver>"); // notice
-		this.rawTags.put("i", "<yellow>"); // info
-		this.rawTags.put("g", "<lime>"); // good
-		this.rawTags.put("b", "<rose>"); // bad
-		this.rawTags.put("h", "<pink>"); // highligh
-		this.rawTags.put("c", "<aqua>"); // command
-		this.rawTags.put("p", "<teal>"); // parameter
-	}
-	
-	public void initTXT()
-	{
-		this.addRawTags();
-		
-		Type type = new TypeToken<Map<String, String>>(){}.getType();
-		
-		Map<String, String> tagsFromFile = this.persist.load(type, "tags");
-		if (tagsFromFile != null) this.rawTags.putAll(tagsFromFile);
-		this.persist.save(this.rawTags, "tags");
-		
-		for (Entry<String, String> rawTag : this.rawTags.entrySet())
-		{
-			this.txt.tags.put(rawTag.getKey(), TextUtil.parseColor(rawTag.getValue()));
-		}
-	}*/
-	
-	// -------------------------------------------- //
-	// HOOKS
-	// -------------------------------------------- //
-	public void preAutoSave()
-	{
-		
-	}
-	
-	public void postAutoSave()
-	{
-		
 	}
 	
 	// -------------------------------------------- //

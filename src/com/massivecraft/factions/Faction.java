@@ -11,28 +11,28 @@ import com.massivecraft.factions.iface.RelationParticipator;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.util.*;
-import com.massivecraft.factions.zcore.persist.Entity;
 import com.massivecraft.mcore.ps.PS;
+import com.massivecraft.mcore.store.Entity;
 import com.massivecraft.mcore.util.Txt;
 import com.massivecraft.mcore.xlib.gson.annotations.SerializedName;
 
 
-public class Faction extends Entity implements EconomyParticipator
+public class Faction extends Entity<Faction, String> implements EconomyParticipator
 {
 	// -------------------------------------------- //
 	// META
 	// -------------------------------------------- //
 	
-	/*public static Faction get(Object oid)
+	public static Faction get(Object oid)
 	{
 		return FactionColl.get().get(oid);
-	}*/
+	}
 	
 	// -------------------------------------------- //
 	// OVERRIDE: ENTITY
 	// -------------------------------------------- //
 	
-	/*@Override
+	@Override
 	public Faction load(Faction that)
 	{
 		this.relationWish = that.relationWish;
@@ -47,26 +47,6 @@ public class Faction extends Entity implements EconomyParticipator
 		this.permOverrides = that.permOverrides;
 		
 		return this;
-	}*/
-	
-	// -------------------------------------------- //
-	// Persistance and entity management
-	// -------------------------------------------- //
-	
-	@Override
-	public void postDetach()
-	{
-		if (Econ.shouldBeUsed())
-		{
-			Econ.setBalance(getAccountId(), 0);
-		}
-		
-		// Clean the board
-		// TODO: Use events for this instead
-		BoardColl.get().clean();
-		
-		// Clean the fplayers
-		FPlayerColl.get().clean();
 	}
 	
 	// -------------------------------------------- //
@@ -411,7 +391,7 @@ public class Faction extends Entity implements EconomyParticipator
 		{
 			ret.put(rel, new ArrayList<String>());
 		}
-		for (Faction faction : FactionColl.i.get())
+		for (Faction faction : FactionColl.get().getAll())
 		{
 			Rel relation = faction.getRelationTo(this);
 			if (onlyNonNeutral && relation == Rel.NEUTRAL) continue;

@@ -164,7 +164,8 @@ public class Board extends Entity<Board, String> implements BoardInterface
 		for (Entry<PS, TerritoryAccess> entry : this.map.entrySet())
 		{
 			TerritoryAccess territoryAccess = entry.getValue();
-			if (FactionColl.i.exists(territoryAccess.getHostFactionId())) continue;
+			
+			if (FactionColl.get().containsId(territoryAccess.getHostFactionId())) continue;
 			
 			PS ps = entry.getKey();
 			this.removeAt(ps);

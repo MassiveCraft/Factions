@@ -37,9 +37,9 @@ public class CmdFactionsList extends FCommand
 		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
 		if ( ! payForCommand(ConfServer.econCostList, "to list the factions", "for listing the factions")) return;
 		
-		ArrayList<Faction> factionList = new ArrayList<Faction>(FactionColl.i.get());
+		ArrayList<Faction> factionList = new ArrayList<Faction>(FactionColl.get().getAll());
 
-		factionList.remove(FactionColl.i.getNone());
+		factionList.remove(FactionColl.get().getNone());
 		// TODO: Add flag SECRET To factions instead.
 		//factionList.remove(Factions.i.getSafeZone());
 		//factionList.remove(Factions.i.getWarZone());
@@ -91,7 +91,7 @@ public class CmdFactionsList extends FCommand
 		sendMessage(Txt.getPage(lines, this.argAsInt(0, 1), "Faction List"));
  */
 
-		factionList.add(0, FactionColl.i.getNone());
+		factionList.add(0, FactionColl.get().getNone());
 
 		final int pageheight = 9;
 		int pagenumber = this.argAsInt(0, 1);
@@ -111,7 +111,7 @@ public class CmdFactionsList extends FCommand
 		{
 			if (faction.isNone())
 			{
-				lines.add(Txt.parse("<i>Factionless<i> %d online", FactionColl.i.getNone().getFPlayersWhereOnline(true).size()));
+				lines.add(Txt.parse("<i>Factionless<i> %d online", FactionColl.get().getNone().getFPlayersWhereOnline(true).size()));
 				continue;
 			}
 			lines.add(Txt.parse("%s<i> %d/%d online, %d/%d/%d",

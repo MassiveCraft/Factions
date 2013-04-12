@@ -36,7 +36,7 @@ public class CmdFactionsTag extends FCommand
 		String tag = this.argAsString(0);
 		
 		// TODO does not first test cover selfcase?
-		if (FactionColl.i.isTagTaken(tag) && ! MiscUtil.getComparisonString(tag).equals(myFaction.getComparisonTag()))
+		if (FactionColl.get().isTagTaken(tag) && ! MiscUtil.getComparisonString(tag).equals(myFaction.getComparisonTag()))
 		{
 			msg("<b>That tag is already taken");
 			return;
@@ -66,7 +66,7 @@ public class CmdFactionsTag extends FCommand
 
 		// Inform
 		myFaction.msg("%s<i> changed your faction tag to %s", fme.describeTo(myFaction, true), myFaction.getTag(myFaction));
-		for (Faction faction : FactionColl.i.get())
+		for (Faction faction : FactionColl.get().getAll())
 		{
 			if (faction == myFaction)
 			{

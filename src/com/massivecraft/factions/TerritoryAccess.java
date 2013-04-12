@@ -13,7 +13,7 @@ public class TerritoryAccess
 	
 	private String hostFactionId;
 	public String getHostFactionId() { return this.hostFactionId; }
-	public Faction getHostFaction() { return FactionColl.i.get(this.hostFactionId); }
+	public Faction getHostFaction() { return FactionColl.get().get(this.hostFactionId); }
 	public void setHostFactionId(String hostFactionId) { this.hostFactionId = hostFactionId; }
 	
 	private boolean hostFactionAllowed = true;
@@ -132,7 +132,7 @@ public class TerritoryAccess
 		{
 			if (list.length() > 0)
 				list.append(", ");
-			list.append(FactionColl.i.get(factionID).getTag());
+			list.append(FactionColl.get().get(factionID).getTag());
 		}
 		return list.toString();
 	}

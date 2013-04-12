@@ -44,7 +44,7 @@ public class CmdFactionsCreate extends FCommand
 			return;
 		}
 		
-		if (FactionColl.i.isTagTaken(tag))
+		if (FactionColl.get().isTagTaken(tag))
 		{
 			msg("<b>That tag is already in use.");
 			return;
@@ -61,14 +61,16 @@ public class CmdFactionsCreate extends FCommand
 		if ( ! canAffordCommand(ConfServer.econCostCreate, "to create a new faction")) return;
 
 		// trigger the faction creation event (cancellable)
-		FactionCreateEvent createEvent = new FactionCreateEvent(me, tag);
+		String factionId = FactionColl.get().getIdStrategy().generate(FactionColl.get());
+		
+		FactionCreateEvent createEvent = new FactionCreateEvent(me, tag, factionId);
 		Bukkit.getServer().getPluginManager().callEvent(createEvent);
 		if(createEvent.isCancelled()) return;
 		
 		// then make 'em pay (if applicable)
 		if ( ! payForCommand(ConfServer.econCostCreate, "to create a new faction", "for creating a new faction")) return;
-
-		Faction faction = FactionColl.i.create();
+		
+		Faction faction = FactionColl.get().create(factionId);
 
 		// TODO: Why would this even happen??? Auto increment clash??
 		if (faction == null)

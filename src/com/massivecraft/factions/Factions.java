@@ -80,7 +80,7 @@ public class Factions extends MPlugin
 
 		// Load Conf from disk
 		FPlayerColl.get().init();
-		FactionColl.i.loadFromDisc();
+		FactionColl.get().init();
 		BoardColl.get().init();
 				
 		// Add Base Commands

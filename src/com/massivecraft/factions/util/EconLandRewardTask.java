@@ -16,7 +16,7 @@ public class EconLandRewardTask implements Runnable
 	@Override
 	public void run()
 	{
-		FactionColl.i.econLandRewardRoutine();
+		FactionColl.get().econLandRewardRoutine();
 		
 		// TODO: This technique is TPS dependent and wrong.
 		// Instead of restarting a TPS dependent task the task should poll every once in a while for the system millis.

@@ -34,7 +34,7 @@ public class FactionDisbandEvent extends Event implements Cancellable
 
 	public Faction getFaction()
 	{
-		return FactionColl.i.get(id);
+		return FactionColl.get().get(id);
 	}
 
 	public FPlayer getFPlayer()

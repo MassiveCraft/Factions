@@ -66,7 +66,7 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 	
 	// FIELD: factionId
 	private String factionId;
-	public Faction getFaction() { if(this.factionId == null) {return null;} return FactionColl.i.get(this.factionId); }
+	public Faction getFaction() { if(this.factionId == null) {return null;} return FactionColl.get().get(this.factionId); }
 	public String getFactionId() { return this.factionId; }
 	public boolean hasFaction() { return this.factionId != null && ! factionId.equals("0"); }
 	public void setFaction(Faction faction)
@@ -149,7 +149,7 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 		this.loginPvpDisabled = (ConfServer.noPVPDamageToOthersForXSecondsAfterLogin > 0) ? true : false;
 		this.powerBoost = 0.0;
 
-		if ( ! ConfServer.newPlayerStartingFactionID.equals("0") && FactionColl.i.exists(ConfServer.newPlayerStartingFactionID))
+		if ( ! ConfServer.newPlayerStartingFactionID.equals("0") && FactionColl.get().containsId(ConfServer.newPlayerStartingFactionID))
 		{
 			this.factionId = ConfServer.newPlayerStartingFactionID;
 		}
@@ -157,7 +157,7 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 	
 	public final void resetFactionData(boolean doSpoutUpdate)
 	{
-		if (this.factionId != null && FactionColl.i.exists(this.factionId)) // Avoid infinite loop! TODO: I think that this is needed is a sign we need to refactor.
+		if (this.factionId != null && FactionColl.get().containsId(this.factionId)) // Avoid infinite loop! TODO: I think that this is needed is a sign we need to refactor.
 		{
 			Faction currentFaction = this.getFaction();
 			if (currentFaction != null)

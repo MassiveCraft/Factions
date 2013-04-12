@@ -24,7 +24,7 @@ public class FPlayerColl extends SenderColl<FPlayer>
 	}
 	
 	// -------------------------------------------- //
-	// OVERRIDE
+	// OVERRIDE: COLL
 	// -------------------------------------------- //
 	
 	// TODO: Init and migration routine!
@@ -70,11 +70,10 @@ public class FPlayerColl extends SenderColl<FPlayer>
 	{
 		for (FPlayer fplayer : this.getAll())
 		{
-			if ( ! FactionColl.i.exists(fplayer.getFactionId()))
-			{
-				Factions.get().log("Reset faction data (invalid faction) for player "+fplayer.getName());
-				fplayer.resetFactionData(false);
-			}
+			if (FactionColl.get().containsId(fplayer.getFactionId())) continue;
+			
+			Factions.get().log("Reset faction data (invalid faction) for player "+fplayer.getName());
+			fplayer.resetFactionData(false);
 		}
 	}
 	
