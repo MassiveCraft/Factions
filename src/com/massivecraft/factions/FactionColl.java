@@ -125,29 +125,6 @@ public class FactionColl extends Coll<Faction, String>
 		return this.get(Const.FACTIONID_NONE);
 	}
 	
-	/*
-	private FactionColl()
-	{
-		super
-		(
-			Faction.class,
-			new CopyOnWriteArrayList<Faction>(),
-			new ConcurrentHashMap<String, Faction>(),
-			new File(Factions.get().getDataFolder(), "factions.json"),
-			Factions.get().gson
-		);
-	}
-	
-	@Override
-	public Type getMapType()
-	{
-		return new TypeToken<Map<String, Faction>>(){}.getType();
-	}
-	
-	*/
-	
-	
-	
 	// -------------------------------------------- //
 	// FACTION TAG
 	// -------------------------------------------- //
