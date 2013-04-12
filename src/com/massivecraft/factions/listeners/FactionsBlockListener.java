@@ -173,6 +173,9 @@ public class FactionsBlockListener implements Listener
 
 		if (otherFaction.isNone())
 		{
+			if (Conf.worldGuardBuildPriority && Worldguard.playerCanBuild(player, location))
+				return true;
+
 			if (!Conf.wildernessDenyBuild || Conf.worldsNoWildernessProtection.contains(location.getWorld().getName()))
 				return true; // This is not faction territory. Use whatever you like here.
 
@@ -183,12 +186,9 @@ public class FactionsBlockListener implements Listener
 		}
 		else if (otherFaction.isSafeZone())
 		{
-			if (Conf.worldGuardBuildPriority)
-			{
-				if (Worldguard.playerCanBuild(player, location))
-					return true;
-			}
-				
+			if (Conf.worldGuardBuildPriority && Worldguard.playerCanBuild(player, location))
+				return true;
+
 			if (!Conf.safeZoneDenyBuild || Permission.MANAGE_SAFE_ZONE.has(player))
 				return true;
 
@@ -199,6 +199,9 @@ public class FactionsBlockListener implements Listener
 		}
 		else if (otherFaction.isWarZone())
 		{
+			if (Conf.worldGuardBuildPriority && Worldguard.playerCanBuild(player, location))
+				return true;
+
 			if (!Conf.warZoneDenyBuild || Permission.MANAGE_WAR_ZONE.has(player))
 				return true;
 
