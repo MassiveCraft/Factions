@@ -17,7 +17,6 @@ public class CmdFactionsPowerBoost extends FCommand
 		this.requiredArgs.add("#");
 		
 		this.permission = Perm.POWERBOOST.node;
-		this.disableOnLock = true;
 		
 		senderMustBePlayer = false;
 		senderMustBeMember = false;

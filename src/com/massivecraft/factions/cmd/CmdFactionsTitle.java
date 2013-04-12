@@ -16,7 +16,6 @@ public class CmdFactionsTitle extends FCommand
 		this.optionalArgs.put("title", "");
 		
 		this.permission = Perm.TITLE.node;
-		this.disableOnLock = true;
 		
 		senderMustBePlayer = true;
 		senderMustBeMember = false;

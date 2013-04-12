@@ -19,7 +19,6 @@ public class CmdFactionsFlag extends FCommand
 		this.optionalArgs.put("yes/no", "read");
 		
 		this.permission = Perm.FLAG.node;
-		this.disableOnLock = true;
 		
 		senderMustBePlayer = false;
 		senderMustBeMember = false;

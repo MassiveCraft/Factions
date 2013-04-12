@@ -26,7 +26,6 @@ public class CmdFactionsDisband extends FCommand
 		this.optionalArgs.put("faction", "your");
 		
 		this.permission = Perm.DISBAND.node;
-		this.disableOnLock = true;
 		
 		senderMustBePlayer = false;
 		senderMustBeMember = false;
@@ -60,7 +59,7 @@ public class CmdFactionsDisband extends FCommand
 		}
 
 		// Inform all players
-		for (FPlayer fplayer : FPlayerColl.i.getOnline())
+		for (FPlayer fplayer : FPlayerColl.get().getAllOnline())
 		{
 			String who = senderIsConsole ? "A server admin" : fme.describeTo(fplayer);
 			if (fplayer.getFaction() == faction)

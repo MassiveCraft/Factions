@@ -15,7 +15,6 @@ public class CmdFactionsAutoClaim extends FCommand
 		this.optionalArgs.put("faction", "your");
 		
 		this.permission = Perm.AUTOCLAIM.node;
-		this.disableOnLock = true;
 		
 		senderMustBePlayer = true;
 		senderMustBeMember = false;

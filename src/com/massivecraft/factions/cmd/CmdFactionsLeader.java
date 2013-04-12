@@ -22,7 +22,6 @@ public class CmdFactionsLeader extends FCommand
 		this.optionalArgs.put("faction", "your");
 		
 		this.permission = Perm.LEADER.node;
-		this.disableOnLock = true;
 		
 		senderMustBePlayer = false;
 		senderMustBeMember = false;
@@ -71,7 +70,7 @@ public class CmdFactionsLeader extends FCommand
 		// only perform a FPlayerJoinEvent when newLeader isn't actually in the faction
 		if (newLeader.getFaction() != targetFaction)
 		{
-			FPlayerJoinEvent event = new FPlayerJoinEvent(FPlayerColl.i.get(me),targetFaction,FPlayerJoinEvent.PlayerJoinReason.LEADER);
+			FPlayerJoinEvent event = new FPlayerJoinEvent(FPlayerColl.get().get(me),targetFaction,FPlayerJoinEvent.PlayerJoinReason.LEADER);
 			Bukkit.getServer().getPluginManager().callEvent(event);
 			if (event.isCancelled()) return;
 		}
@@ -95,7 +94,7 @@ public class CmdFactionsLeader extends FCommand
 		msg("<i>You have promoted %s<i> to the position of faction leader.", newLeader.describeTo(fme, true));
 		
 		// Inform all players
-		for (FPlayer fplayer : FPlayerColl.i.getOnline())
+		for (FPlayer fplayer : FPlayerColl.get().getAllOnline())
 		{
 			fplayer.msg("%s<i> gave %s<i> the leadership of %s<i>.", senderIsConsole ? "A server admin" : RelationUtil.describeThatToMe(fme, fplayer, true), newLeader.describeTo(fplayer), targetFaction.describeTo(fplayer));
 		}

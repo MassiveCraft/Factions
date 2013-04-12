@@ -14,7 +14,6 @@ public class CmdFactionsAdmin extends FCommand
 		this.optionalArgs.put("on/off", "flip");
 		
 		this.permission = Perm.ADMIN.node;
-		this.disableOnLock = false;
 		
 		senderMustBePlayer = true;
 		senderMustBeMember = false;

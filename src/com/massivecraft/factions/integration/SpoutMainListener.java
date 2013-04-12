@@ -29,7 +29,7 @@ public class SpoutMainListener implements Listener
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onSpoutCraftEnable(SpoutCraftEnableEvent event)
 	{
-		final FPlayer me = FPlayerColl.i.get(event.getPlayer());
+		final FPlayer me = FPlayerColl.get().get(event.getPlayer());
 
 		SpoutFeatures.updateTitle(me, null);
 		SpoutFeatures.updateTitle(null, me);

@@ -15,7 +15,7 @@ public class AutoLeaveTask implements Runnable
 
 	public void run()
 	{
-		FPlayerColl.i.autoLeaveOnInactivityRoutine();
+		FPlayerColl.get().autoLeaveOnInactivityRoutine();
 
 		// maybe setting has been changed? if so, restart task at new rate
 		if (this.rate != ConfServer.autoLeaveRoutineRunsEveryXMinutes)

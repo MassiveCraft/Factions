@@ -26,7 +26,6 @@ public class CmdFactions extends FCommand
 	public CmdFactionsKick cmdFactionsKick = new CmdFactionsKick();
 	public CmdFactionsLeave cmdFactionsLeave = new CmdFactionsLeave();
 	public CmdFactionsList cmdFactionsList = new CmdFactionsList();
-	public CmdFactionsLock cmdFactionsLock = new CmdFactionsLock();
 	public CmdFactionsMap cmdFactionsMap = new CmdFactionsMap();
 	public CmdFactionsOfficer cmdFactionsOfficer = new CmdFactionsOfficer();
 	public CmdFactionsMoney cmdFactionsMoney = new CmdFactionsMoney();
@@ -39,8 +38,6 @@ public class CmdFactions extends FCommand
 	public CmdFactionsRelationEnemy cmdFactionsRelationEnemy = new CmdFactionsRelationEnemy();
 	public CmdFactionsRelationNeutral cmdFactionsRelationNeutral = new CmdFactionsRelationNeutral();
 	public CmdFactionsRelationTruce cmdFactionsRelationTruce = new CmdFactionsRelationTruce();
-	public CmdFactionsReload cmdFactionsReload = new CmdFactionsReload();
-	public CmdFactionsSaveAll cmdFactionsSaveAll = new CmdFactionsSaveAll();
 	public CmdFactionsSeeChunk cmdFactionsSeeChunk = new CmdFactionsSeeChunk();
 	public CmdFactionsSethome cmdFactionsSethome = new CmdFactionsSethome();
 	public CmdFactionsShow cmdFactionsShow = new CmdFactionsShow();
@@ -66,8 +63,6 @@ public class CmdFactions extends FCommand
 		senderMustBeMember = false;
 		senderMustBeOfficer = false;
 		senderMustBeLeader = false;
-		
-		this.disableOnLock = false;
 		
 		this.setHelpShort("The faction base command");
 		this.helpLong.add(Txt.parse("<i>This command contains all faction stuff."));
@@ -110,9 +105,6 @@ public class CmdFactions extends FCommand
 		this.addSubCommand(this.cmdFactionsAdmin);
 		this.addSubCommand(this.cmdFactionsPowerBoost);
 		this.addSubCommand(this.cmdFactionsPromote);
-		this.addSubCommand(this.cmdFactionsLock);
-		this.addSubCommand(this.cmdFactionsReload);
-		this.addSubCommand(this.cmdFactionsSaveAll);
 		this.addSubCommand(this.cmdFactionsVersion);
 	}
 	

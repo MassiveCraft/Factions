@@ -17,7 +17,6 @@ public class CmdFactionsInvite extends FCommand
 		//this.optionalArgs.put("", "");
 		
 		this.permission = Perm.INVITE.node;
-		this.disableOnLock = true;
 		
 		senderMustBePlayer = true;
 		senderMustBeMember = false;

@@ -32,7 +32,6 @@ public class CmdFactionsHome extends FCommand
 		//this.optionalArgs.put("", "");
 		
 		this.permission = Perm.HOME.node;
-		this.disableOnLock = false;
 		
 		senderMustBePlayer = true;
 		senderMustBeMember = true;
@@ -107,7 +106,7 @@ public class CmdFactionsHome extends FCommand
 				if (p == null || !p.isOnline() || p.isDead() || p == me || p.getWorld() != w)
 					continue;
 
-				FPlayer fp = FPlayerColl.i.get(p);
+				FPlayer fp = FPlayerColl.get().get(p);
 				if (fme.getRelationTo(fp) != Rel.ENEMY)
 					continue;
 

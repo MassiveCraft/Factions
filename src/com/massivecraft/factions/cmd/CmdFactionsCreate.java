@@ -26,7 +26,6 @@ public class CmdFactionsCreate extends FCommand
 		//this.optionalArgs.put("", "");
 		
 		this.permission = Perm.CREATE.node;
-		this.disableOnLock = true;
 		
 		senderMustBePlayer = true;
 		senderMustBeMember = false;
@@ -79,18 +78,18 @@ public class CmdFactionsCreate extends FCommand
 		}
 
 		// finish setting up the Faction
-	faction.setTag(tag);
-
-	// trigger the faction join event for the creator
-	FPlayerJoinEvent joinEvent = new FPlayerJoinEvent(FPlayerColl.i.get(me),faction,FPlayerJoinEvent.PlayerJoinReason.CREATE);
-	Bukkit.getServer().getPluginManager().callEvent(joinEvent);
-	// join event cannot be cancelled or you'll have an empty faction
-
-	// finish setting up the FPlayer
+		faction.setTag(tag);
+		
+		// trigger the faction join event for the creator
+		FPlayerJoinEvent joinEvent = new FPlayerJoinEvent(FPlayerColl.get().get(me),faction,FPlayerJoinEvent.PlayerJoinReason.CREATE);
+		Bukkit.getServer().getPluginManager().callEvent(joinEvent);
+		// join event cannot be cancelled or you'll have an empty faction
+		
+		// finish setting up the FPlayer
 		fme.setRole(Rel.LEADER);
 		fme.setFaction(faction);
 
-		for (FPlayer follower : FPlayerColl.i.getOnline())
+		for (FPlayer follower : FPlayerColl.get().getAllOnline())
 		{
 			follower.msg("%s<i> created a new faction %s", fme.describeTo(follower, true), faction.getTag(follower));
 		}

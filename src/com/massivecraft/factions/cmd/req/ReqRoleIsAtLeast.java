@@ -3,11 +3,9 @@ package com.massivecraft.factions.cmd.req;
 import org.bukkit.command.CommandSender;
 
 import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.FPlayerColl;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.mcore.cmd.MCommand;
 import com.massivecraft.mcore.cmd.req.ReqAbstract;
-import com.massivecraft.mcore.util.SenderUtil;
 import com.massivecraft.mcore.util.Txt;
 
 public class ReqRoleIsAtLeast extends ReqAbstract
@@ -35,8 +33,7 @@ public class ReqRoleIsAtLeast extends ReqAbstract
 	@Override
 	public boolean apply(CommandSender sender, MCommand command)
 	{
-		
-		FPlayer fplayer = FPlayerColl.i.get(SenderUtil.getSenderId(sender));
+		FPlayer fplayer = FPlayer.get(sender);
 		return fplayer.getRole().isAtLeast(this.rel);
 	}
 	

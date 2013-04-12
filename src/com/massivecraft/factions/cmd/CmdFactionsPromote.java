@@ -16,7 +16,6 @@ public class CmdFactionsPromote extends FCommand
 		//this.optionalArgs.put("", "");
 		
 		this.permission = Perm.PROMOTE.node;
-		this.disableOnLock = true;
 		
 		//To promote someone from recruit -> member you must be an officer.
 		//To promote someone from member -> officer you must be a leader.

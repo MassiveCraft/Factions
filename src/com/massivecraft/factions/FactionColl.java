@@ -190,7 +190,7 @@ public class FactionColl extends EntityCollection<Faction>
 		{
 			Factions.get().log(Level.WARNING, "Non existing factionId "+id+" requested! Issuing cleaning!");
 			BoardColl.get().clean();
-			FPlayerColl.i.clean();
+			FPlayerColl.get().clean();
 		}
 		
 		return super.get(id);

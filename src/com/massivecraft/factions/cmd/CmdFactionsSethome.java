@@ -17,7 +17,6 @@ public class CmdFactionsSethome extends FCommand
 		this.optionalArgs.put("faction", "your");
 		
 		this.permission = Perm.SETHOME.node;
-		this.disableOnLock = true;
 		
 		senderMustBePlayer = true;
 		senderMustBeMember = false;

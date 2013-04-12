@@ -16,7 +16,6 @@ public class CmdFactionsDeinvite extends FCommand
 		//this.optionalArgs.put("", "");
 		
 		this.permission = Perm.DEINVITE.node;
-		this.disableOnLock = true;
 		
 		senderMustBePlayer = true;
 		senderMustBeMember = false;

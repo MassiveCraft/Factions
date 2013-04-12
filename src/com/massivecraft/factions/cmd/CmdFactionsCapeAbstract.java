@@ -16,8 +16,6 @@ public abstract class CmdFactionsCapeAbstract extends FCommand
 	{
 		this.optionalArgs.put("faction", "your");
 		
-		this.disableOnLock = true;
-		
 		senderMustBePlayer = false;
 		senderMustBeMember = false;
 		senderMustBeOfficer = false;

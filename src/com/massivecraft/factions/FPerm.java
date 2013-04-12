@@ -139,7 +139,7 @@ public enum FPerm
 		
 		if (testSubject instanceof Player)
 		{
-			rpSubject = FPlayerColl.i.get((Player)testSubject);
+			rpSubject = FPlayerColl.get().get(testSubject);
 		}
 		else if (testSubject instanceof RelationParticipator)
 		{
@@ -185,7 +185,7 @@ public enum FPerm
 				{
 					FPlayer notify = null;
 					if (testSubject instanceof Player)
-						notify = FPlayerColl.i.get((Player)testSubject);
+						notify = FPlayerColl.get().get(testSubject);
 					else if (testSubject instanceof FPlayer)
 						notify = (FPlayer)testSubject;
 					if (notify != null)

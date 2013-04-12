@@ -21,7 +21,6 @@ public class CmdFactionsUnclaimall extends FCommand
 		//this.optionalArgs.put("", "");
 		
 		this.permission = Perm.UNCLAIM_ALL.node;
-		this.disableOnLock = true;
 		
 		senderMustBePlayer = true;
 		senderMustBeMember = false;

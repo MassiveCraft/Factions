@@ -17,7 +17,6 @@ public class CmdFactionsOfficer extends FCommand
 		//this.optionalArgs.put("", "");
 		
 		this.permission = Perm.OFFICER.node;
-		this.disableOnLock = true;
 		
 		senderMustBePlayer = false;
 		senderMustBeMember = false;

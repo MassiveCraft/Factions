@@ -20,7 +20,6 @@ public class CmdFactionsPerm extends FCommand
 		this.optionalArgs.put("yes/no", "read");
 		
 		this.permission = Perm.PERM.node;
-		this.disableOnLock = true;
 		
 		this.errorOnToManyArgs = false;
 		

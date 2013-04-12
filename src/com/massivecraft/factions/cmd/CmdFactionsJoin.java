@@ -21,7 +21,6 @@ public class CmdFactionsJoin extends FCommand
 		this.optionalArgs.put("player", "you");
 		
 		this.permission = Perm.JOIN.node;
-		this.disableOnLock = true;
 		
 		senderMustBePlayer = true;
 		senderMustBeMember = false;
@@ -80,7 +79,7 @@ public class CmdFactionsJoin extends FCommand
 		if (samePlayer && ! canAffordCommand(ConfServer.econCostJoin, "to join a faction")) return;
 
 		// trigger the join event (cancellable)
-		FPlayerJoinEvent joinEvent = new FPlayerJoinEvent(FPlayerColl.i.get(me),faction,FPlayerJoinEvent.PlayerJoinReason.COMMAND);
+		FPlayerJoinEvent joinEvent = new FPlayerJoinEvent(FPlayerColl.get().get(me),faction,FPlayerJoinEvent.PlayerJoinReason.COMMAND);
 		Bukkit.getServer().getPluginManager().callEvent(joinEvent);
 		if (joinEvent.isCancelled()) return;
 

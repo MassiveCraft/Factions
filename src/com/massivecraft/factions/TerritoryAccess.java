@@ -99,7 +99,7 @@ public class TerritoryAccess
 		if (testSubject instanceof String)
 			return hostFactionId.equals((String)testSubject);
 		else if (testSubject instanceof Player)
-			return hostFactionId.equals(FPlayerColl.i.get((Player)testSubject).getFactionId());
+			return hostFactionId.equals(FPlayerColl.get().get(testSubject).getFactionId());
 		else if (testSubject instanceof FPlayer)
 			return hostFactionId.equals(((FPlayer)testSubject).getFactionId());
 		else if (testSubject instanceof Faction)
@@ -154,7 +154,7 @@ public class TerritoryAccess
 	public boolean subjectHasAccess(Object testSubject)
 	{
 		if (testSubject instanceof Player)
-			return fPlayerHasAccess(FPlayerColl.i.get((Player)testSubject));
+			return fPlayerHasAccess(FPlayerColl.get().get(testSubject));
 		else if (testSubject instanceof FPlayer)
 			return fPlayerHasAccess((FPlayer)testSubject);
 		else if (testSubject instanceof Faction)

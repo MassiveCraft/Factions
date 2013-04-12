@@ -20,7 +20,6 @@ public class CmdFactionsClaim extends FCommand
 		this.optionalArgs.put("radius", "1");
 		
 		this.permission = Perm.CLAIM.node;
-		this.disableOnLock = true;
 		
 		senderMustBePlayer = true;
 		senderMustBeMember = false;

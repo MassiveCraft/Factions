@@ -209,15 +209,16 @@ public abstract class FactionsChannelAbstract implements Channel
 	
 	public abstract Set<Rel> getTargetRelations();
 	
+	// TODO: When I add in universes I will need to separate the channel per universe.
 	public Set<Player> getRecipients(Player sender)
 	{
 		Set<Player> ret = new HashSet<Player>();
 		
-		FPlayer fpsender = FPlayerColl.i.get(sender);
+		FPlayer fpsender = FPlayerColl.get().get(sender);
 		Faction faction = fpsender.getFaction();		
 		ret.addAll(faction.getOnlinePlayers());
 		
-		for (FPlayer fplayer : FPlayerColl.i.getOnline())
+		for (FPlayer fplayer : FPlayerColl.get().getAllOnline())
 		{
 			if(this.getTargetRelations().contains(faction.getRelationTo(fplayer)))
 			{

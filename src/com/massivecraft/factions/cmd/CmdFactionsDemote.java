@@ -16,7 +16,6 @@ public class CmdFactionsDemote extends FCommand
 		//this.optionalArgs.put("", "");
 		
 		this.permission = Perm.DEMOTE.node;
-		this.disableOnLock = true;
 		
 		//To demote someone from member -> recruit you must be an officer.
 		//To demote someone from officer -> member you must be a leader.

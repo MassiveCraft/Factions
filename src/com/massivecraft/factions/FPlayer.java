@@ -17,36 +17,27 @@ import com.massivecraft.factions.integration.LWCFeatures;
 import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.integration.Worldguard;
 import com.massivecraft.factions.util.RelationUtil;
-import com.massivecraft.factions.zcore.persist.PlayerEntity;
 import com.massivecraft.mcore.ps.PS;
+import com.massivecraft.mcore.store.SenderEntity;
 import com.massivecraft.mcore.util.Txt;
 
 
-public class FPlayer extends PlayerEntity implements EconomyParticipator
+public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipator
 {
 	// -------------------------------------------- //
-	// PERSISTANCE
+	// META
 	// -------------------------------------------- //
 	
-	@Override
-	public boolean shouldBeSaved()
+	public static FPlayer get(Object oid)
 	{
-		if (this.hasFaction()) return true;
-		if (this.getPowerRounded() != this.getPowerMaxRounded() && this.getPowerRounded() != (int) Math.round(ConfServer.powerPlayerStarting)) return true;
-		return false;
-	}
-	
-	// This stuff from the economy participator interface... will it clash with the built in one from the MCore player entity?
-	public void msg(String str, Object... args)
-	{
-		this.sendMessage(Txt.parse(str, args));
+		return FPlayerColl.get().get(oid);
 	}
 	
 	// -------------------------------------------- //
 	// OVERRIDE: ENTITY
 	// -------------------------------------------- //
 	
-	/*@Override
+	@Override
 	public FPlayer load(FPlayer that)
 	{
 		this.factionId = that.factionId;
@@ -58,7 +49,16 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		this.lastLoginTime = that.lastLoginTime;
 		
 		return this;
-	}*/
+	}
+	
+	@Override
+	public boolean isDefault()
+	{
+		if (this.hasFaction()) return false;
+		if (this.getPowerRounded() != this.getPowerMaxRounded() && this.getPowerRounded() != (int) Math.round(ConfServer.powerPlayerStarting)) return false;
+		
+		return true;
+	}
 	
 	// -------------------------------------------- //
 	// FIELDS: RAW PERMANENT
@@ -68,7 +68,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 	private String factionId;
 	public Faction getFaction() { if(this.factionId == null) {return null;} return FactionColl.i.get(this.factionId); }
 	public String getFactionId() { return this.factionId; }
-	public boolean hasFaction() { return ! factionId.equals("0"); }
+	public boolean hasFaction() { return this.factionId != null && ! factionId.equals("0"); }
 	public void setFaction(Faction faction)
 	{
 		Faction oldFaction = this.getFaction();
@@ -545,7 +545,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		if (myFaction.isNormal() && !perm && myFaction.getFPlayers().isEmpty())
 		{
 			// Remove this faction
-			for (FPlayer fplayer : FPlayerColl.i.getOnline())
+			for (FPlayer fplayer : FPlayerColl.get().getAllOnline())
 			{
 				fplayer.msg("<i>%s<i> was disbanded.", myFaction.describeTo(fplayer, true));
 			}

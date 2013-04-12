@@ -1,6 +1,7 @@
 package com.massivecraft.factions.integration;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -73,7 +74,7 @@ public class SpoutFeatures
 		
 		for (Player player : fromPlayers)
 		{
-			FPlayer fplayer = FPlayerColl.i.get(player);
+			FPlayer fplayer = FPlayer.get(player);
 			SpoutPlayer splayer = SpoutManager.getPlayer(player);
 			Faction faction = fplayer.getFaction();
 			
@@ -137,13 +138,13 @@ public class SpoutFeatures
 		
 		for (Player player : fromPlayers)
 		{
-			FPlayer fplayer = FPlayerColl.i.get(player);
+			FPlayer fplayer = FPlayer.get(player);
 			SpoutPlayer splayer = SpoutManager.getPlayer(player);
 			Faction faction = fplayer.getFaction();
 			
 			for (Player playerTo : toPlayers)
 			{
-				FPlayer fplayerTo = FPlayerColl.i.get(playerTo);
+				FPlayer fplayerTo = FPlayer.get(playerTo);
 				SpoutPlayer splayerTo = SpoutManager.getPlayer(playerTo);
 				Faction factionTo = fplayerTo.getFaction();
 				
@@ -250,7 +251,7 @@ public class SpoutFeatures
 	{
 		if ( ! isEnabled()) return;
 
-		Set<FPlayer> players = FPlayerColl.i.getOnline();
+		Collection<FPlayer> players = FPlayerColl.get().getAllOnline();
 
 		for (FPlayer player : players)
 		{
@@ -279,7 +280,7 @@ public class SpoutFeatures
 		
 		chunk = chunk.getChunk(true);
 
-		Set<FPlayer> players = FPlayerColl.i.getOnline();
+		Collection<FPlayer> players = FPlayerColl.get().getAllOnline();
 
 		for (FPlayer player : players)
 		{

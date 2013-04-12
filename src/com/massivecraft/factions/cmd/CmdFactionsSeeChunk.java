@@ -17,7 +17,6 @@ public class CmdFactionsSeeChunk extends FCommand
 		this.aliases.add("seechunk");
 		
 		this.permission = Perm.SEE_CHUNK.node;
-		this.disableOnLock = false;
 		
 		senderMustBePlayer = true;
 		senderMustBeMember = false;

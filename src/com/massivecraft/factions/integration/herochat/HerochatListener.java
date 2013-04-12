@@ -33,7 +33,7 @@ public class HerochatListener implements Listener
 		if ( ! ConfServer.chatParseTags) return;
 		
 		Player from = event.getSender().getPlayer();
-		FPlayer fpfrom = FPlayerColl.i.get(from);
+		FPlayer fpfrom = FPlayerColl.get().get(from);
 		String format = event.getFormat();
 		
 		format = format.replaceAll("&r", "§r");

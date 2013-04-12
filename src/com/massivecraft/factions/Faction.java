@@ -50,6 +50,26 @@ public class Faction extends Entity implements EconomyParticipator
 	}*/
 	
 	// -------------------------------------------- //
+	// Persistance and entity management
+	// -------------------------------------------- //
+	
+	@Override
+	public void postDetach()
+	{
+		if (Econ.shouldBeUsed())
+		{
+			Econ.setBalance(getAccountId(), 0);
+		}
+		
+		// Clean the board
+		// TODO: Use events for this instead
+		BoardColl.get().clean();
+		
+		// Clean the fplayers
+		FPlayerColl.get().clean();
+	}
+	
+	// -------------------------------------------- //
 	// FIELDS: RAW
 	// -------------------------------------------- //
 	
@@ -477,7 +497,7 @@ public class Faction extends Entity implements EconomyParticipator
 		fplayers.clear();
 		if (this.isNone()) return;
 
-		for (FPlayer fplayer : FPlayerColl.i.get())
+		for (FPlayer fplayer : FPlayerColl.get().getAll())
 		{
 			if (fplayer.getFaction() == this)
 			{
@@ -550,6 +570,7 @@ public class Faction extends Entity implements EconomyParticipator
 		return ret;
 	}
 	
+	// TODO: Makes use of bukkit instead of mixin. Fix that?
 	public ArrayList<Player> getOnlinePlayers()
 	{
 		ArrayList<Player> ret = new ArrayList<Player>();
@@ -557,7 +578,7 @@ public class Faction extends Entity implements EconomyParticipator
 
 		for (Player player: Factions.get().getServer().getOnlinePlayers())
 		{
-			FPlayer fplayer = FPlayerColl.i.get(player);
+			FPlayer fplayer = FPlayerColl.get().get(player);
 			if (fplayer.getFaction() == this)
 			{
 				ret.add(player);
@@ -593,7 +614,7 @@ public class Faction extends Entity implements EconomyParticipator
 			if (ConfServer.logFactionDisband)
 				Factions.get().log("The faction "+this.getTag()+" ("+this.getId()+") has been disbanded since it has no members left.");
 
-			for (FPlayer fplayer : FPlayerColl.i.getOnline())
+			for (FPlayer fplayer : FPlayerColl.get().getAllOnline())
 			{
 				fplayer.msg("The faction %s<i> was disbanded.", this.getTag(fplayer));
 			}
@@ -614,7 +635,8 @@ public class Faction extends Entity implements EconomyParticipator
 	// Messages
 	// -------------------------------------------- //
 	
-	public void msg(String message, Object... args)
+	// TODO: Invalid code since Mixin introduction. Fix this.
+	public boolean msg(String message, Object... args)
 	{
 		message = Txt.parse(message, args);
 		
@@ -622,6 +644,8 @@ public class Faction extends Entity implements EconomyParticipator
 		{
 			fplayer.sendMessage(message);
 		}
+		
+		return true;
 	}
 	
 	public void sendMessage(String message)
@@ -640,23 +664,5 @@ public class Faction extends Entity implements EconomyParticipator
 		}
 	}
 	
-	// -------------------------------------------- //
-	// Persistance and entity management
-	// -------------------------------------------- //
 	
-	@Override
-	public void postDetach()
-	{
-		if (Econ.shouldBeUsed())
-		{
-			Econ.setBalance(getAccountId(), 0);
-		}
-		
-		// Clean the board
-		// TODO: Use events for this instead
-		BoardColl.get().clean();
-		
-		// Clean the fplayers
-		FPlayerColl.i.clean();
-	}
 }

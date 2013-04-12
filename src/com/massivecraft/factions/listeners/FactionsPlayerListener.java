@@ -44,7 +44,7 @@ public class FactionsPlayerListener implements Listener
 	public void onPlayerJoin(PlayerJoinEvent event)
 	{
 		// Make sure that all online players do have a fplayer.
-		final FPlayer me = FPlayerColl.i.get(event.getPlayer());
+		final FPlayer me = FPlayerColl.get().get(event.getPlayer());
 		
 		// Update the lastLoginTime for this fplayer
 		me.setLastLoginTime(System.currentTimeMillis());
@@ -61,7 +61,7 @@ public class FactionsPlayerListener implements Listener
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerQuit(PlayerQuitEvent event)
 	{
-		FPlayer me = FPlayerColl.i.get(event.getPlayer());
+		FPlayer me = FPlayerColl.get().get(event.getPlayer());
 
 		// Make sure player's power is up to date when they log off.
 		me.getPower();
@@ -88,7 +88,7 @@ public class FactionsPlayerListener implements Listener
 			return;
 
 		Player player = event.getPlayer();
-		FPlayer me = FPlayerColl.i.get(player);
+		FPlayer me = FPlayerColl.get().get(player);
 		
 		// Did we change coord?
 		PS chunkFrom = me.getCurrentChunk();
@@ -158,7 +158,7 @@ public class FactionsPlayerListener implements Listener
 				int count = attempt.increment();
 				if (count >= 10)
 				{
-					FPlayer me = FPlayerColl.i.get(name);
+					FPlayer me = FPlayerColl.get().get(name);
 					me.msg("<b>Ouch, that is starting to hurt. You should give it a rest.");
 					player.damage(NumberConversions.floor((double)count / 10));
 				}
@@ -204,7 +204,7 @@ public class FactionsPlayerListener implements Listener
 		String name = player.getName();
 		if (ConfServer.playersWhoBypassAllProtection.contains(name)) return true;
 
-		FPlayer me = FPlayerColl.i.get(name);
+		FPlayer me = FPlayerColl.get().get(name);
 		if (me.hasAdminMode()) return true;
 		if (Const.MATERIALS_EDIT_TOOLS.contains(material) && ! FPerm.BUILD.has(me, loc, ! justCheck)) return false;
 		return true;
@@ -214,7 +214,7 @@ public class FactionsPlayerListener implements Listener
 		String name = player.getName();
 		if (ConfServer.playersWhoBypassAllProtection.contains(name)) return true;
 
-		FPlayer me = FPlayerColl.i.get(name);
+		FPlayer me = FPlayerColl.get().get(name);
 		if (me.hasAdminMode()) return true;
 		Location loc = block.getLocation();
 		Material material = block.getType();
@@ -230,7 +230,7 @@ public class FactionsPlayerListener implements Listener
 	@EventHandler(priority = EventPriority.HIGH)
 	public void onPlayerRespawn(PlayerRespawnEvent event)
 	{
-		FPlayer me = FPlayerColl.i.get(event.getPlayer());
+		FPlayer me = FPlayerColl.get().get(event.getPlayer());
 
 		me.getPower();  // update power, so they won't have gained any while dead
 
@@ -290,7 +290,7 @@ public class FactionsPlayerListener implements Listener
 	{
 		// Get the player
 		Player player = event.getPlayer();
-		FPlayer me = FPlayerColl.i.get(player);
+		FPlayer me = FPlayerColl.get().get(player);
 		
 		// With adminmode no commands are denied. 
 		if (me.hasAdminMode()) return;
@@ -349,7 +349,7 @@ public class FactionsPlayerListener implements Listener
 	{
 		if (event.isCancelled()) return;
 
-		FPlayer badGuy = FPlayerColl.i.get(event.getPlayer());
+		FPlayer badGuy = FPlayerColl.get().get(event.getPlayer());
 		if (badGuy == null)
 		{
 			return;

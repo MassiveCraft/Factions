@@ -18,7 +18,6 @@ public class CmdFactionsDescription extends FCommand
 		//this.optionalArgs
 		
 		this.permission = Perm.DESCRIPTION.node;
-		this.disableOnLock = true;
 		
 		senderMustBePlayer = true;
 		senderMustBeMember = false;
@@ -43,7 +42,7 @@ public class CmdFactionsDescription extends FCommand
 		}
 
 		// Broadcast the description to everyone
-		for (FPlayer fplayer : FPlayerColl.i.getOnline())
+		for (FPlayer fplayer : FPlayerColl.get().getAllOnline())
 		{
 			fplayer.msg("<h>%s<i> changed their description to:", myFaction.describeTo(fplayer));
 			fplayer.sendMessage(myFaction.getDescription());  // players can inject "&" or "`" or "<i>" or whatever in their description, thus exploitable (masquerade as server messages or whatever); by the way, &k is particularly interesting looking

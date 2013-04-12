@@ -56,9 +56,9 @@ public class Factions extends MPlugin
 	public FactionsBlockListener blockListener;
 	
 	// Persistance related
-	private boolean locked = false;
-	public boolean getLocked() {return this.locked;}
-	public void setLocked(boolean val) {this.locked = val; this.setAutoSave(val);}
+	//private boolean locked = false;
+	//public boolean getLocked() {return this.locked;}
+	//public void setLocked(boolean val) {this.locked = val; this.setAutoSave(val);}
 	private Integer AutoLeaveTask = null;
 	private Integer econLandRewardTaskID = null;
 	
@@ -79,7 +79,7 @@ public class Factions extends MPlugin
 		ConfServer.get().load();
 
 		// Load Conf from disk
-		FPlayerColl.i.loadFromDisc();
+		FPlayerColl.get().init();
 		FactionColl.i.loadFromDisc();
 		BoardColl.get().init();
 				

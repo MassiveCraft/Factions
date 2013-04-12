@@ -17,7 +17,6 @@ public class CmdFactionsPower extends FCommand
 		this.optionalArgs.put("player", "you");
 		
 		this.permission = Perm.POWER.node;
-		this.disableOnLock = false;
 		
 		senderMustBePlayer = false;
 		senderMustBeMember = false;

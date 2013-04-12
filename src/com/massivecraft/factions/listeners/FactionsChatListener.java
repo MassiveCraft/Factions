@@ -84,7 +84,7 @@ public class FactionsChatListener implements Listener
 		//if (ConfServer.chatTagHandledByAnotherPlugin) return;
 		
 		Player from = event.getPlayer();
-		FPlayer fpfrom = FPlayerColl.i.get(from);
+		FPlayer fpfrom = FPlayerColl.get().get(from);
 		String format = event.getFormat();
 		String message = event.getMessage();
 		
@@ -113,7 +113,7 @@ public class FactionsChatListener implements Listener
 		// 4. We send out the messages to each player with relation color.
 		for (Player to : event.getRecipients())
 		{
-			FPlayer fpto = FPlayerColl.i.get(to);
+			FPlayer fpto = FPlayerColl.get().get(to);
 			String formatWithColor = parseTags(format, from, fpfrom, to, fpto);
 			to.sendMessage(String.format(formatWithColor, from.getDisplayName(), message));
         }
@@ -178,7 +178,7 @@ public class FactionsChatListener implements Listener
 	
 	public static String parseTags(String str, Player from)
 	{
-		FPlayer fpfrom = FPlayerColl.i.get(from);
+		FPlayer fpfrom = FPlayerColl.get().get(from);
 		return parseTags(str, from, fpfrom, null, null);
 	}
 	public static String parseTags(String str, Player from, FPlayer fpfrom)
@@ -187,8 +187,8 @@ public class FactionsChatListener implements Listener
 	}
 	public static String parseTags(String str, Player from, Player to)
 	{
-		FPlayer fpfrom = FPlayerColl.i.get(from);
-		FPlayer fpto = FPlayerColl.i.get(to);
+		FPlayer fpfrom = FPlayerColl.get().get(from);
+		FPlayer fpto = FPlayerColl.get().get(to);
 		return parseTags(str, from, fpfrom, to, fpto);
 	}
 	public static String parseTags(String str, Player from, FPlayer fpfrom, Player to, FPlayer fpto)

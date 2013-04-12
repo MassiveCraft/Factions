@@ -22,8 +22,6 @@ public class CmdFactionsAccess extends FCommand
 		this.optionalArgs.put("name", "you");
 		
 		this.setHelpShort("view or grant access for the claimed territory you are in");
-
-		this.disableOnLock = true;
 		
 		senderMustBePlayer = true;
 		senderMustBeMember = false;

@@ -21,8 +21,6 @@ import com.massivecraft.mcore.util.Txt;
 
 public abstract class FCommand extends MCommand<Factions>
 {
-	public boolean disableOnLock;
-	
 	public FPlayer fme;
 	public Faction myFaction;
 	
@@ -37,9 +35,6 @@ public abstract class FCommand extends MCommand<Factions>
 	{
 		super(Factions.get());
 		
-		// Due to safety reasons it defaults to disable on lock.
-		disableOnLock = true;
-		
 		// The money commands must be disabled if money should not be used.
 		isMoneyCommand = false;
 		
@@ -53,7 +48,7 @@ public abstract class FCommand extends MCommand<Factions>
 	{
 		if (sender instanceof Player)
 		{
-			this.fme = FPlayerColl.i.get((Player)sender);
+			this.fme = FPlayerColl.get().get(sender);
 			this.myFaction = this.fme.getFaction();
 		}
 		else
@@ -66,13 +61,7 @@ public abstract class FCommand extends MCommand<Factions>
 	
 	@Override
 	public boolean isEnabled()
-	{
-		if (p.getLocked() && this.disableOnLock)
-		{
-			msg("<b>Factions was locked by an admin. Please try again later.");
-			return false;
-		}
-		
+	{	
 		if (this.isMoneyCommand && ! ConfServer.econEnabled)
 		{
 			msg("<b>Faction economy features are disabled on this server.");
@@ -98,7 +87,7 @@ public abstract class FCommand extends MCommand<Factions>
 		
 		if ( ! (sender instanceof Player)) return false;
 		
-		FPlayer fplayer = FPlayerColl.i.get((Player)sender);
+		FPlayer fplayer = FPlayerColl.get().get((Player)sender);
 		
 		if ( ! fplayer.hasFaction())
 		{
@@ -165,7 +154,7 @@ public abstract class FCommand extends MCommand<Factions>
 		
 		if (name != null)
 		{
-			FPlayer fplayer = FPlayerColl.i.get(name);
+			FPlayer fplayer = FPlayerColl.get().get(name);
 			if (fplayer != null)
 			{
 				ret = fplayer;
@@ -199,7 +188,9 @@ public abstract class FCommand extends MCommand<Factions>
 		
 		if (name != null)
 		{
-			FPlayer fplayer = FPlayerColl.i.getBestIdMatch(name);
+			// TODO: Easy fix for now
+			//FPlayer fplayer = FPlayerColl.get().getBestIdMatch(name);
+			FPlayer fplayer = FPlayerColl.get().getId2entity().get(name);
 			if (fplayer != null)
 			{
 				ret = fplayer;
@@ -250,7 +241,10 @@ public abstract class FCommand extends MCommand<Factions>
 			// Next we match player names
 			if (faction == null)
 			{
-				FPlayer fplayer = FPlayerColl.i.getBestIdMatch(name);
+				// TODO: Easy fix for now
+				//FPlayer fplayer = FPlayerColl.get().getBestIdMatch(name);
+				FPlayer fplayer = FPlayerColl.get().getId2entity().get(name);
+				
 				if (fplayer != null)
 				{
 					faction = fplayer.getFaction();

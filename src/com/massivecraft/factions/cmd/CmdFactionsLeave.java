@@ -13,7 +13,6 @@ public class CmdFactionsLeave extends FCommand {
 		//this.optionalArgs.put("", "");
 		
 		this.permission = Perm.LEAVE.node;
-		this.disableOnLock = true;
 		
 		senderMustBePlayer = true;
 		senderMustBeMember = true;

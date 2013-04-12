@@ -14,7 +14,6 @@ public class CmdFactionsVersion extends FCommand
 		//this.optionalArgs.put("", "");
 		
 		this.permission = Perm.VERSION.node;
-		this.disableOnLock = false;
 		
 		senderMustBePlayer = false;
 		senderMustBeMember = false;

@@ -17,7 +17,6 @@ public class CmdFactionsMap extends FCommand
 		this.optionalArgs.put("on/off", "once");
 		
 		this.permission = Perm.MAP.node;
-		this.disableOnLock = false;
 		
 		senderMustBePlayer = true;
 		senderMustBeMember = false;

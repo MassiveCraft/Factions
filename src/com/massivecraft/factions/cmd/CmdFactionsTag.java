@@ -23,7 +23,6 @@ public class CmdFactionsTag extends FCommand
 		//this.optionalArgs.put("", "");
 		
 		this.permission = Perm.TAG.node;
-		this.disableOnLock = true;
 		
 		senderMustBePlayer = true;
 		senderMustBeMember = false;

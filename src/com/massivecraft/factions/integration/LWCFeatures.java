@@ -13,7 +13,7 @@ import org.bukkit.block.BlockState;
 import com.griefcraft.lwc.LWC;
 import com.griefcraft.lwc.LWCPlugin;
 import com.massivecraft.factions.ConfServer;
-import com.massivecraft.factions.FPlayerColl;
+import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.mcore.ps.PS;
@@ -63,7 +63,7 @@ public class LWCFeatures
 		{
 			if(lwc.findProtection(chests.get(x)) != null)
 			{
-				if(!faction.getFPlayers().contains(FPlayerColl.i.get(lwc.findProtection(chests.get(x)).getOwner())))
+				if(!faction.getFPlayers().contains(FPlayer.get(lwc.findProtection(chests.get(x)).getOwner())))
 					lwc.findProtection(chests.get(x)).remove();
 			}
 		}

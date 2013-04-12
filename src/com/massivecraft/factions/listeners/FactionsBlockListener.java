@@ -22,7 +22,6 @@ import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.FFlag;
 import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.FPlayerColl;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.mcore.ps.PS;
 
@@ -88,7 +87,7 @@ public class FactionsBlockListener implements Listener
 		String name = player.getName();
 		if (ConfServer.playersWhoBypassAllProtection.contains(name)) return true;
 
-		FPlayer me = FPlayerColl.i.get(name);
+		FPlayer me = FPlayer.get(name);
 		if (me.hasAdminMode()) return true;
 
 		PS ps = PS.valueOf(location);

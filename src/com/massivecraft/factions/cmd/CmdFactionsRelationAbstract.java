@@ -21,7 +21,6 @@ public abstract class CmdFactionsRelationAbstract extends FCommand
 		//this.optionalArgs.put("", "");
 		
 		this.permission = Perm.RELATION.node;
-		this.disableOnLock = true;
 		
 		senderMustBePlayer = true;
 		senderMustBeMember = false;

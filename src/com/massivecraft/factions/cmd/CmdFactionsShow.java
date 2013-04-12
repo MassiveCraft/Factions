@@ -12,6 +12,7 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
+import com.massivecraft.mcore.mixin.Mixin;
 import com.massivecraft.mcore.util.Txt;
 
 public class CmdFactionsShow extends FCommand
@@ -25,7 +26,6 @@ public class CmdFactionsShow extends FCommand
 		this.optionalArgs.put("faction", "your");
 		
 		this.permission = Perm.SHOW.node;
-		this.disableOnLock = false;
 		
 		senderMustBePlayer = true;
 		senderMustBeMember = false;
@@ -114,7 +114,7 @@ public class CmdFactionsShow extends FCommand
 		
 		for (FPlayer follower : admins)
 		{
-			if (follower.isOnlineAndVisibleTo(me))
+			if (follower.isOnline() && Mixin.isVisible(me, follower.getId()))
 			{
 				memberOnlineNames.add(follower.getNameAndTitle(fme));
 			}
@@ -126,7 +126,7 @@ public class CmdFactionsShow extends FCommand
 		
 		for (FPlayer follower : mods)
 		{
-			if (follower.isOnlineAndVisibleTo(me))
+			if (follower.isOnline() && Mixin.isVisible(me, follower.getId()))
 			{
 				memberOnlineNames.add(follower.getNameAndTitle(fme));
 			}
@@ -138,7 +138,7 @@ public class CmdFactionsShow extends FCommand
 		
 		for (FPlayer follower : normals)
 		{
-			if (follower.isOnlineAndVisibleTo(me))
+			if (follower.isOnline() && Mixin.isVisible(me, follower.getId()))
 			{
 				memberOnlineNames.add(follower.getNameAndTitle(fme));
 			}

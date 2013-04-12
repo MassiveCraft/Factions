@@ -24,7 +24,6 @@ public class CmdFactionsList extends FCommand
 		this.optionalArgs.put("page", "1");
 		
 		this.permission = Perm.LIST.node;
-		this.disableOnLock = false;
 		
 		senderMustBePlayer = false;
 		senderMustBeMember = false;

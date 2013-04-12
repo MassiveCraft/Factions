@@ -3,39 +3,72 @@ package com.massivecraft.factions;
 import java.io.File;
 import java.lang.reflect.Type;
 import java.util.Map;
-import java.util.concurrent.ConcurrentSkipListMap;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.Map.Entry;
 
+import com.massivecraft.mcore.store.MStore;
+import com.massivecraft.mcore.store.SenderColl;
+import com.massivecraft.mcore.util.DiscUtil;
 import com.massivecraft.mcore.xlib.gson.reflect.TypeToken;
-import com.massivecraft.factions.zcore.persist.PlayerEntityCollection;
 
-public class FPlayerColl extends PlayerEntityCollection<FPlayer>
+public class FPlayerColl extends SenderColl<FPlayer>
 {
-	public static FPlayerColl i = new FPlayerColl();	
+	// -------------------------------------------- //
+	// INSTANCE & CONSTRUCT
+	// -------------------------------------------- //
 	
+	private static FPlayerColl i = new FPlayerColl();
+	public static FPlayerColl get() { return i; }
 	private FPlayerColl()
 	{
-		super
-		(
-			FPlayer.class,
-			new CopyOnWriteArrayList<FPlayer>(),
-			new ConcurrentSkipListMap<String, FPlayer>(String.CASE_INSENSITIVE_ORDER),
-			new File(Factions.get().getDataFolder(), "players.json"),
-			Factions.get().gson
-		);
-		
-		this.setCreative(true);
+		super(MStore.getDb(ConfServer.dburi), Factions.get(), Const.COLLECTION_BASENAME_PLAYER, FPlayer.class, true, true);
 	}
 	
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
+	
+	// TODO: Init and migration routine!
+	
 	@Override
-	public Type getMapType()
+	public void init()
 	{
-		return new TypeToken<Map<String, FPlayer>>(){}.getType();
+		super.init();
+
+		this.migrate();
 	}
+	
+	public void migrate()
+	{
+		// Create file objects
+		File oldFile = new File(Factions.get().getDataFolder(), "players.json");
+		File newFile = new File(Factions.get().getDataFolder(), "players.json.migrated");
+		
+		// Already migrated?
+		if ( ! oldFile.exists()) return;
+		
+		// Read the file content through GSON. 
+		Type type = new TypeToken<Map<String, FPlayer>>(){}.getType();
+		Map<String, FPlayer> id2fplayer = Factions.get().gson.fromJson(DiscUtil.readCatch(oldFile), type);
+		
+		// Set the data
+		for (Entry<String, FPlayer> entry : id2fplayer.entrySet())
+		{
+			String playerId = entry.getKey();
+			FPlayer fplayer = entry.getValue();
+			FPlayerColl.get().create(playerId).load(fplayer);
+		}
+		
+		// Mark as migrated
+		oldFile.renameTo(newFile);
+	}
+	
+	// -------------------------------------------- //
+	// EXTRAS
+	// -------------------------------------------- //
 	
 	public void clean()
 	{
-		for (FPlayer fplayer : this.get())
+		for (FPlayer fplayer : this.getAll())
 		{
 			if ( ! FactionColl.i.exists(fplayer.getFactionId()))
 			{
@@ -55,7 +88,7 @@ public class FPlayerColl extends PlayerEntityCollection<FPlayer>
 		long now = System.currentTimeMillis();
 		double toleranceMillis = ConfServer.autoLeaveAfterDaysOfInactivity * 24 * 60 * 60 * 1000;
 		
-		for (FPlayer fplayer : FPlayerColl.i.get())
+		for (FPlayer fplayer : this.getAll())
 		{
 			if (fplayer.isOffline() && now - fplayer.getLastLoginTime() > toleranceMillis)
 			{
