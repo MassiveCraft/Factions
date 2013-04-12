@@ -320,7 +320,7 @@ public class Faction extends Entity<Faction, String> implements EconomyParticipa
 	
 	public boolean isNone()
 	{
-		return this.getId().equals("0");
+		return this.getId().equals(Const.FACTIONID_NONE);
 	}
 	
 	// -------------------------------

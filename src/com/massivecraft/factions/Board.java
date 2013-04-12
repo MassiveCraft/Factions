@@ -86,7 +86,7 @@ public class Board extends Entity<Board, String> implements BoardInterface
 		if (ps == null) return null;
 		ps = ps.getChunkCoords(true);
 		TerritoryAccess ret = this.map.get(ps);
-		if (ret == null) ret = new TerritoryAccess("0");
+		if (ret == null) ret = new TerritoryAccess(Const.FACTIONID_NONE);
 		return ret;
 	}
 	
@@ -104,7 +104,7 @@ public class Board extends Entity<Board, String> implements BoardInterface
 	{
 		ps = ps.getChunkCoords(true);
 		
-		if (territoryAccess == null || (territoryAccess.getHostFactionId().equals("0") && territoryAccess.isDefault()))
+		if (territoryAccess == null || (territoryAccess.getHostFactionId().equals(Const.FACTIONID_NONE) && territoryAccess.isDefault()))
 		{
 			// TODO: Listen to an event instead!
 			// And this is probably the place where the event should be triggered!

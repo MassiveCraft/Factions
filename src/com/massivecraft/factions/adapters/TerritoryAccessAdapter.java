@@ -14,6 +14,7 @@ import com.massivecraft.mcore.xlib.gson.JsonPrimitive;
 import com.massivecraft.mcore.xlib.gson.JsonSerializationContext;
 import com.massivecraft.mcore.xlib.gson.JsonSerializer;
 
+import com.massivecraft.factions.Const;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.TerritoryAccess;
 
@@ -97,7 +98,7 @@ public class TerritoryAccessAdapter implements JsonDeserializer<TerritoryAccess>
 			if (src.isDefault())
 			{
 				// if Wilderness (faction "0") and default access values, no need to store it
-				if (src.getHostFactionId().equals("0"))
+				if (src.getHostFactionId().equals(Const.FACTIONID_NONE))
 					return null;
 
 				return new JsonPrimitive(src.getHostFactionId());

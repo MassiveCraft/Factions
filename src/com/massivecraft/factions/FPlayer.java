@@ -68,7 +68,7 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 	private String factionId;
 	public Faction getFaction() { if(this.factionId == null) {return null;} return FactionColl.get().get(this.factionId); }
 	public String getFactionId() { return this.factionId; }
-	public boolean hasFaction() { return this.factionId != null && ! factionId.equals("0"); }
+	public boolean hasFaction() { return this.factionId != null && ! factionId.equals(Const.FACTIONID_NONE); }
 	public void setFaction(Faction faction)
 	{
 		Faction oldFaction = this.getFaction();
@@ -149,7 +149,7 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 		this.loginPvpDisabled = (ConfServer.noPVPDamageToOthersForXSecondsAfterLogin > 0) ? true : false;
 		this.powerBoost = 0.0;
 
-		if ( ! ConfServer.newPlayerStartingFactionID.equals("0") && FactionColl.get().containsId(ConfServer.newPlayerStartingFactionID))
+		if ( ! ConfServer.newPlayerStartingFactionID.equals(Const.FACTIONID_NONE) && FactionColl.get().containsId(ConfServer.newPlayerStartingFactionID))
 		{
 			this.factionId = ConfServer.newPlayerStartingFactionID;
 		}
@@ -166,7 +166,8 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 			}
 		}
 
-		this.factionId = "0"; // The default neutral faction
+		// TODO: Should we not rather use ConfServer.newPlayerStartingFactionID here?
+		this.factionId = Const.FACTIONID_NONE; // The default neutral faction
 
 		this.role = Rel.MEMBER;
 		this.title = "";
