@@ -9,6 +9,7 @@ import org.bukkit.ChatColor;
 
 import com.massivecraft.mcore.store.Coll;
 import com.massivecraft.mcore.store.MStore;
+import com.massivecraft.mcore.store.idstrategy.IdStrategyAiAbstract;
 import com.massivecraft.mcore.util.DiscUtil;
 import com.massivecraft.mcore.util.Txt;
 import com.massivecraft.mcore.xlib.gson.reflect.TypeToken;
@@ -51,7 +52,6 @@ public class FactionColl extends Coll<Faction, String>
 		}		
 	}
 	
-	// TODO: REMEMBER: Deciding on the next AI value is part of the migration routine.
 	public void migrate()
 	{
 		// Create file objects
@@ -65,13 +65,33 @@ public class FactionColl extends Coll<Faction, String>
 		Type type = new TypeToken<Map<String, Faction>>(){}.getType();
 		Map<String, Faction> id2faction = Factions.get().gson.fromJson(DiscUtil.readCatch(oldFile), type);
 		
+		// We need to find the next AI id!
+		int highestId = 0;
+		
 		// Set the data
 		for (Entry<String, Faction> entry : id2faction.entrySet())
 		{
 			String factionId = entry.getKey();
 			Faction faction = entry.getValue();
+			
+			try
+			{
+				int intFactionId = Integer.valueOf(factionId);
+				if (highestId < intFactionId)
+				{
+					highestId = intFactionId;
+				}
+			}
+			catch (Exception e)
+			{
+				// Just ignore
+			}
+			
 			FactionColl.get().create(factionId).load(faction);
 		}
+		
+		IdStrategyAiAbstract idStrategy = (IdStrategyAiAbstract) FactionColl.get().getIdStrategy();
+		idStrategy.setNext(this, highestId + 1);
 		
 		// Mark as migrated
 		oldFile.renameTo(newFile);
