@@ -55,10 +55,7 @@ public class Factions extends MPlugin
 	public FactionsExploitListener exploitListener;
 	public FactionsBlockListener blockListener;
 	
-	// Persistance related
-	//private boolean locked = false;
-	//public boolean getLocked() {return this.locked;}
-	//public void setLocked(boolean val) {this.locked = val; this.setAutoSave(val);}
+	// Task Ids
 	private Integer AutoLeaveTask = null;
 	private Integer econLandRewardTaskID = null;
 	
