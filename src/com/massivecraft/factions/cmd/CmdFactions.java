@@ -56,9 +56,6 @@ public class CmdFactions extends FCommand
 		// TODO: When is this required? Should this be added to MCore?
 		this.aliases.removeAll(Collections.singletonList(null));
 		
-		//this.requiredArgs.add("");
-		//this.optionalArgs.put("","")
-		
 		senderMustBePlayer = false;
 		senderMustBeMember = false;
 		senderMustBeOfficer = false;

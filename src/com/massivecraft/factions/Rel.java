@@ -5,6 +5,10 @@ import org.bukkit.ChatColor;
 
 public enum Rel
 {
+	// -------------------------------------------- //
+	// ENUM
+	// -------------------------------------------- //
+	
 	LEADER   (70, "your faction leader", "your faction leader", "", ""),
 	OFFICER  (60, "an officer in your faction", "officers in your faction", "", ""),
 	MEMBER   (50, "a member in your faction", "members in your faction", "your faction", "your factions"),
@@ -13,7 +17,13 @@ public enum Rel
 	TRUCE    (30, "someone in truce with you", "those in truce with you", "a faction in truce", "factions in truce"),
 	NEUTRAL  (20, "someone neutral to you", "those neutral to you", "a neutral faction", "neutral factions"),
 	ENEMY    (10, "an enemy", "enemies", "an enemy faction", "enemy factions"),
+	
+	// END OF LIST
 	;
+	
+	// -------------------------------------------- //
+	// FIELDS
+	// -------------------------------------------- //
 	
 	private final int value;
 	private final String descPlayerOne;
@@ -28,6 +38,10 @@ public enum Rel
 	private final String descFactionMany;
 	public String getDescFactionMany() { return this.descFactionMany; }
 	
+	// -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
+	
 	private Rel(final int value, final String descPlayerOne, final String descPlayerMany, final String descFactionOne, final String descFactionMany)
 	{
 		this.value = value;
@@ -36,6 +50,10 @@ public enum Rel
 		this.descFactionOne = descFactionOne;
 		this.descFactionMany = descFactionMany;
 	}
+	
+	// -------------------------------------------- //
+	// UTIL
+	// -------------------------------------------- //
 	
 	public static Rel parse(String str)
 	{
