@@ -22,11 +22,6 @@ public class CmdFactionsPerm extends FCommand
 		this.permission = Perm.PERM.node;
 		
 		this.errorOnToManyArgs = false;
-		
-		senderMustBePlayer = false;
-		senderMustBeMember = false;
-		senderMustBeOfficer = false;
-		senderMustBeLeader = false;
 	}
 	
 	@Override

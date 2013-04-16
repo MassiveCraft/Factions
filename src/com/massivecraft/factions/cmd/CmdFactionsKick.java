@@ -23,11 +23,6 @@ public class CmdFactionsKick extends FCommand
 		//this.optionalArgs.put("", "");
 		
 		this.permission = Perm.KICK.node;
-		
-		senderMustBePlayer = true;
-		senderMustBeMember = false;
-		senderMustBeOfficer = false;
-		senderMustBeLeader = false;
 	}
 	
 	@Override

@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.util.VisualizeUtil;
+import com.massivecraft.mcore.cmd.req.ReqIsPlayer;
 
 public class CmdFactionsSeeChunk extends FCommand
 {
@@ -18,10 +19,7 @@ public class CmdFactionsSeeChunk extends FCommand
 		
 		this.permission = Perm.SEE_CHUNK.node;
 		
-		senderMustBePlayer = true;
-		senderMustBeMember = false;
-		senderMustBeOfficer = false;
-		senderMustBeLeader = false;
+		this.addRequirements(ReqIsPlayer.get());
 	}
 	
 	@Override

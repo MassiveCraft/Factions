@@ -19,10 +19,7 @@ public class CmdFactionsDescription extends FCommand
 		
 		this.permission = Perm.DESCRIPTION.node;
 		
-		senderMustBePlayer = true;
-		senderMustBeMember = false;
 		senderMustBeOfficer = true;
-		senderMustBeLeader = false;
 	}
 	
 	@Override

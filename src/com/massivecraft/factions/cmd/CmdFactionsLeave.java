@@ -14,10 +14,7 @@ public class CmdFactionsLeave extends FCommand {
 		
 		this.permission = Perm.LEAVE.node;
 		
-		senderMustBePlayer = true;
 		senderMustBeMember = true;
-		senderMustBeOfficer = false;
-		senderMustBeLeader = false;
 	}
 	
 	@Override

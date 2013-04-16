@@ -10,15 +10,7 @@ public class CmdFactionsVersion extends FCommand
 	{
 		this.aliases.add("version");
 		
-		//this.requiredArgs.add("");
-		//this.optionalArgs.put("", "");
-		
 		this.permission = Perm.VERSION.node;
-		
-		senderMustBePlayer = false;
-		senderMustBeMember = false;
-		senderMustBeOfficer = false;
-		senderMustBeLeader = false;
 	}
 
 	@Override

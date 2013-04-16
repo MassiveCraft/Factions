@@ -7,6 +7,7 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.TerritoryAccess;
 import com.massivecraft.factions.integration.SpoutFeatures;
+import com.massivecraft.mcore.cmd.req.ReqIsPlayer;
 import com.massivecraft.mcore.ps.PS;
 import com.massivecraft.mcore.util.Txt;
 
@@ -23,10 +24,7 @@ public class CmdFactionsAccess extends FCommand
 		
 		this.setHelpShort("view or grant access for the claimed territory you are in");
 		
-		senderMustBePlayer = true;
-		senderMustBeMember = false;
-		senderMustBeOfficer = false;
-		senderMustBeLeader = false;
+		this.addRequirements(ReqIsPlayer.get());
 	}
 	
 	@Override

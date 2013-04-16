@@ -4,6 +4,7 @@ import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Perm;
+import com.massivecraft.mcore.cmd.req.ReqIsPlayer;
 
 public class CmdFactionsInvite extends FCommand
 {
@@ -18,10 +19,10 @@ public class CmdFactionsInvite extends FCommand
 		
 		this.permission = Perm.INVITE.node;
 		
-		senderMustBePlayer = true;
-		senderMustBeMember = false;
+		
+		this.addRequirements(ReqIsPlayer.get());
+		
 		senderMustBeOfficer = true;
-		senderMustBeLeader = false;
 	}
 	
 	@Override

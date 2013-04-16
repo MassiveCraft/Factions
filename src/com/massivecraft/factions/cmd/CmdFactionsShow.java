@@ -26,11 +26,6 @@ public class CmdFactionsShow extends FCommand
 		this.optionalArgs.put("faction", "your");
 		
 		this.permission = Perm.SHOW.node;
-		
-		senderMustBePlayer = true;
-		senderMustBeMember = false;
-		senderMustBeOfficer = false;
-		senderMustBeLeader = false;
 	}
 
 	@Override

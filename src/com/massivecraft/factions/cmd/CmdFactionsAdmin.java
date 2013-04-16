@@ -14,11 +14,6 @@ public class CmdFactionsAdmin extends FCommand
 		this.optionalArgs.put("on/off", "flip");
 		
 		this.permission = Perm.ADMIN.node;
-		
-		senderMustBePlayer = true;
-		senderMustBeMember = false;
-		senderMustBeOfficer = false;
-		senderMustBeLeader = false;
 	}
 	
 	@Override

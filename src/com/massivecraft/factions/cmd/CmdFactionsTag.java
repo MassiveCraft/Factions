@@ -24,10 +24,7 @@ public class CmdFactionsTag extends FCommand
 		
 		this.permission = Perm.TAG.node;
 		
-		senderMustBePlayer = true;
-		senderMustBeMember = false;
 		senderMustBeOfficer = true;
-		senderMustBeLeader = false;
 	}
 	
 	@Override

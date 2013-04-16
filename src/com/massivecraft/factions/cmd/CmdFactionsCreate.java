@@ -14,6 +14,7 @@ import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.event.FPlayerJoinEvent;
 import com.massivecraft.factions.event.FactionCreateEvent;
+import com.massivecraft.mcore.cmd.req.ReqIsPlayer;
 
 public class CmdFactionsCreate extends FCommand
 {
@@ -26,11 +27,6 @@ public class CmdFactionsCreate extends FCommand
 		//this.optionalArgs.put("", "");
 		
 		this.permission = Perm.CREATE.node;
-		
-		senderMustBePlayer = true;
-		senderMustBeMember = false;
-		senderMustBeOfficer = false;
-		senderMustBeLeader = false;
 	}
 	
 	@Override
@@ -63,7 +59,7 @@ public class CmdFactionsCreate extends FCommand
 		// trigger the faction creation event (cancellable)
 		String factionId = FactionColl.get().getIdStrategy().generate(FactionColl.get());
 		
-		FactionCreateEvent createEvent = new FactionCreateEvent(me, tag, factionId);
+		FactionCreateEvent createEvent = new FactionCreateEvent(sender, tag, factionId);
 		Bukkit.getServer().getPluginManager().callEvent(createEvent);
 		if(createEvent.isCancelled()) return;
 		
@@ -83,7 +79,7 @@ public class CmdFactionsCreate extends FCommand
 		faction.setTag(tag);
 		
 		// trigger the faction join event for the creator
-		FPlayerJoinEvent joinEvent = new FPlayerJoinEvent(FPlayerColl.get().get(me),faction,FPlayerJoinEvent.PlayerJoinReason.CREATE);
+		FPlayerJoinEvent joinEvent = new FPlayerJoinEvent(FPlayerColl.get().get(sender),faction,FPlayerJoinEvent.PlayerJoinReason.CREATE);
 		Bukkit.getServer().getPluginManager().callEvent(joinEvent);
 		// join event cannot be cancelled or you'll have an empty faction
 		

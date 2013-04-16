@@ -20,10 +20,6 @@ public class CmdFactionsPromote extends FCommand
 		//To promote someone from recruit -> member you must be an officer.
 		//To promote someone from member -> officer you must be a leader.
 		//We'll handle this internally
-		senderMustBePlayer = true;
-		senderMustBeMember = false;
-		senderMustBeOfficer = false;
-		senderMustBeLeader = false;
 	}
 	
 	@Override

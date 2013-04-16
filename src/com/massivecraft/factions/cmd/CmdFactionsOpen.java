@@ -17,10 +17,7 @@ public class CmdFactionsOpen extends FCommand
 		
 		this.permission = Perm.OPEN.node;
 		
-		senderMustBePlayer = true;
-		senderMustBeMember = false;
 		senderMustBeOfficer = true;
-		senderMustBeLeader = false;
 	}
 	
 	@Override

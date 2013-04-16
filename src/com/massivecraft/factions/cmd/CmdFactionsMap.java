@@ -3,6 +3,7 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.BoardColl;
 import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.Perm;
+import com.massivecraft.mcore.cmd.req.ReqIsPlayer;
 import com.massivecraft.mcore.ps.PS;
 
 
@@ -18,10 +19,7 @@ public class CmdFactionsMap extends FCommand
 		
 		this.permission = Perm.MAP.node;
 		
-		senderMustBePlayer = true;
-		senderMustBeMember = false;
-		senderMustBeOfficer = false;
-		senderMustBeLeader = false;
+		this.addRequirements(ReqIsPlayer.get());
 	}
 	
 	@Override

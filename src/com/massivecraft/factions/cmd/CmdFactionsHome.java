@@ -16,6 +16,7 @@ import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.integration.EssentialsFeatures;
+import com.massivecraft.mcore.cmd.req.ReqIsPlayer;
 import com.massivecraft.mcore.ps.PS;
 import com.massivecraft.mcore.util.SmokeUtil;
 
@@ -33,10 +34,9 @@ public class CmdFactionsHome extends FCommand
 		
 		this.permission = Perm.HOME.node;
 		
-		senderMustBePlayer = true;
+		this.addRequirements(ReqIsPlayer.get());
+		
 		senderMustBeMember = true;
-		senderMustBeOfficer = false;
-		senderMustBeLeader = false;
 	}
 	
 	@Override

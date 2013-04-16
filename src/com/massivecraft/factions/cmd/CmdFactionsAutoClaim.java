@@ -3,6 +3,7 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Perm;
+import com.massivecraft.mcore.cmd.req.ReqIsPlayer;
 
 public class CmdFactionsAutoClaim extends FCommand
 {
@@ -16,10 +17,7 @@ public class CmdFactionsAutoClaim extends FCommand
 		
 		this.permission = Perm.AUTOCLAIM.node;
 		
-		senderMustBePlayer = true;
-		senderMustBeMember = false;
-		senderMustBeOfficer = false;
-		senderMustBeLeader = false;
+		this.addRequirements(ReqIsPlayer.get());
 	}
 
 	@Override

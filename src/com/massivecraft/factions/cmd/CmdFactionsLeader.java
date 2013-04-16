@@ -22,11 +22,6 @@ public class CmdFactionsLeader extends FCommand
 		this.optionalArgs.put("faction", "your");
 		
 		this.permission = Perm.LEADER.node;
-		
-		senderMustBePlayer = false;
-		senderMustBeMember = false;
-		senderMustBeOfficer = false;
-		senderMustBeLeader = false;
 	}
 	
 	@Override

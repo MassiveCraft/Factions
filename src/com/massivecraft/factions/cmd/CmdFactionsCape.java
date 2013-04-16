@@ -16,11 +16,6 @@ public class CmdFactionsCape extends FCommand
 		
 		this.permission = Perm.CAPE.node;
 		
-		senderMustBePlayer = false;
-		senderMustBeMember = false;
-		senderMustBeOfficer = false;
-		senderMustBeLeader = false;
-		
 		this.addSubCommand(this.cmdCapeGet);
 		this.addSubCommand(this.cmdCapeSet);
 		this.addSubCommand(this.cmdCapeRemove);

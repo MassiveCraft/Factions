@@ -26,11 +26,6 @@ public class CmdFactionsDisband extends FCommand
 		this.optionalArgs.put("faction", "your");
 		
 		this.permission = Perm.DISBAND.node;
-		
-		senderMustBePlayer = false;
-		senderMustBeMember = false;
-		senderMustBeOfficer = false;
-		senderMustBeLeader = false;
 	}
 	
 	@Override

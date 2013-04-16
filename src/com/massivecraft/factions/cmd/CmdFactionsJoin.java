@@ -21,11 +21,6 @@ public class CmdFactionsJoin extends FCommand
 		this.optionalArgs.put("player", "you");
 		
 		this.permission = Perm.JOIN.node;
-		
-		senderMustBePlayer = true;
-		senderMustBeMember = false;
-		senderMustBeOfficer = false;
-		senderMustBeLeader = false;
 	}
 	
 	@Override

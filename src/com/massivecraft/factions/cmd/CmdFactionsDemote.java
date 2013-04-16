@@ -20,10 +20,6 @@ public class CmdFactionsDemote extends FCommand
 		//To demote someone from member -> recruit you must be an officer.
 		//To demote someone from officer -> member you must be a leader.
 		//We'll handle this internally
-		senderMustBePlayer = true;
-		senderMustBeMember = false;
-		senderMustBeOfficer = false;
-		senderMustBeLeader = false;
 	}
 	
 	@Override

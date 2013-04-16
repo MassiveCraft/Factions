@@ -4,6 +4,7 @@ import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.util.SpiralTask;
+import com.massivecraft.mcore.cmd.req.ReqIsPlayer;
 import com.massivecraft.mcore.ps.PS;
 
 
@@ -21,10 +22,7 @@ public class CmdFactionsClaim extends FCommand
 		
 		this.permission = Perm.CLAIM.node;
 		
-		senderMustBePlayer = true;
-		senderMustBeMember = false;
-		senderMustBeOfficer = false;
-		senderMustBeLeader = false;
+		this.addRequirements(ReqIsPlayer.get());
 	}
 	
 	@Override

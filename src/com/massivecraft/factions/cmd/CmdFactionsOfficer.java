@@ -17,11 +17,6 @@ public class CmdFactionsOfficer extends FCommand
 		//this.optionalArgs.put("", "");
 		
 		this.permission = Perm.OFFICER.node;
-		
-		senderMustBePlayer = false;
-		senderMustBeMember = false;
-		senderMustBeOfficer = false;
-		senderMustBeLeader = false;
 	}
 	
 	@Override

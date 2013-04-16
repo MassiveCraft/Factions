@@ -22,10 +22,7 @@ public class CmdFactionsUnclaimall extends FCommand
 		
 		this.permission = Perm.UNCLAIM_ALL.node;
 		
-		senderMustBePlayer = true;
-		senderMustBeMember = false;
 		senderMustBeOfficer = true;
-		senderMustBeLeader = false;
 	}
 	
 	@Override

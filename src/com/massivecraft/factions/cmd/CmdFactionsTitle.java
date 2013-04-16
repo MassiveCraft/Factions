@@ -17,10 +17,7 @@ public class CmdFactionsTitle extends FCommand
 		
 		this.permission = Perm.TITLE.node;
 		
-		senderMustBePlayer = true;
-		senderMustBeMember = false;
 		senderMustBeOfficer = true;
-		senderMustBeLeader = false;
 	}
 	
 	@Override

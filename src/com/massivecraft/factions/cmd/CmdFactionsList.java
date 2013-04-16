@@ -24,11 +24,6 @@ public class CmdFactionsList extends FCommand
 		this.optionalArgs.put("page", "1");
 		
 		this.permission = Perm.LIST.node;
-		
-		senderMustBePlayer = false;
-		senderMustBeMember = false;
-		senderMustBeOfficer = false;
-		senderMustBeLeader = false;
 	}
 
 	@Override

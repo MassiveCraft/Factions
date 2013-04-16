@@ -17,11 +17,6 @@ public class CmdFactionsPowerBoost extends FCommand
 		this.requiredArgs.add("#");
 		
 		this.permission = Perm.POWERBOOST.node;
-		
-		senderMustBePlayer = false;
-		senderMustBeMember = false;
-		senderMustBeOfficer = false;
-		senderMustBeLeader = false;
 	}
 	
 	@Override

@@ -9,6 +9,7 @@ import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.event.FactionRelationEvent;
 import com.massivecraft.factions.integration.SpoutFeatures;
+import com.massivecraft.mcore.cmd.req.ReqIsPlayer;
 
 public abstract class CmdFactionsRelationAbstract extends FCommand
 {
@@ -22,10 +23,7 @@ public abstract class CmdFactionsRelationAbstract extends FCommand
 		
 		this.permission = Perm.RELATION.node;
 		
-		senderMustBePlayer = true;
-		senderMustBeMember = false;
 		senderMustBeOfficer = true;
-		senderMustBeLeader = false;
 	}
 	
 	@Override

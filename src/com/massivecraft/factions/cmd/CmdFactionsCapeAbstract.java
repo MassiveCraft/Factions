@@ -15,11 +15,6 @@ public abstract class CmdFactionsCapeAbstract extends FCommand
 	public CmdFactionsCapeAbstract()
 	{
 		this.optionalArgs.put("faction", "your");
-		
-		senderMustBePlayer = false;
-		senderMustBeMember = false;
-		senderMustBeOfficer = false;
-		senderMustBeLeader = false;
 	}
 
 	@Override

@@ -17,7 +17,6 @@ public class CmdFactionsDeinvite extends FCommand
 		
 		this.permission = Perm.DEINVITE.node;
 		
-		senderMustBePlayer = true;
 		senderMustBeMember = false;
 		senderMustBeOfficer = true;
 		senderMustBeLeader = false;
