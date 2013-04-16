@@ -34,11 +34,11 @@ public class CmdFactionsKick extends FCommand
 		if (fme == you)
 		{
 			msg("<b>You cannot kick yourself.");
-			msg("<i>You might want to: %s", p.cmdBase.cmdFactionsLeave.getUseageTemplate(false));
+			msg("<i>You might want to: %s", Factions.get().getOuterCmdFactions().cmdFactionsLeave.getUseageTemplate(false));
 			return;
 		}
 		
-		if (you.getRole() == Rel.LEADER && !(this.senderIsConsole || fme.hasAdminMode()))
+		if (you.getRole() == Rel.LEADER && !(this.senderIsConsole || fme.isUsingAdminMode()))
 		{
 			msg("<b>The leader can not be kicked.");
 			return;

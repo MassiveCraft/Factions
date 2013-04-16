@@ -13,6 +13,7 @@ import com.massivecraft.factions.FFlag;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayerColl;
 import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.integration.EssentialsFeatures;
@@ -53,7 +54,7 @@ public class CmdFactionsHome extends FCommand
 		if ( ! myFaction.hasHome())
 		{
 			fme.msg("<b>Your faction does not have a home. " + (fme.getRole().isLessThan(Rel.OFFICER) ? "<i> Ask your leader to:" : "<i>You should:"));
-			fme.sendMessage(p.cmdBase.cmdFactionsSethome.getUseageTemplate());
+			fme.sendMessage(Factions.get().getOuterCmdFactions().cmdFactionsSethome.getUseageTemplate());
 			return;
 		}
 		

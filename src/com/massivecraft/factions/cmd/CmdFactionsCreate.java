@@ -15,7 +15,6 @@ import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.event.FPlayerJoinEvent;
 import com.massivecraft.factions.event.FactionCreateEvent;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
-import com.massivecraft.mcore.cmd.req.ReqIsPlayer;
 
 public class CmdFactionsCreate extends FCommand
 {
@@ -91,7 +90,7 @@ public class CmdFactionsCreate extends FCommand
 			follower.msg("%s<i> created a new faction %s", fme.describeTo(follower, true), faction.getTag(follower));
 		}
 		
-		msg("<i>You should now: %s", p.cmdBase.cmdFactionsDescription.getUseageTemplate());
+		msg("<i>You should now: %s", Factions.get().getOuterCmdFactions().cmdFactionsDescription.getUseageTemplate());
 
 		if (ConfServer.logFactionCreate)
 			Factions.get().log(fme.getName()+" created a new faction: "+tag);

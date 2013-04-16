@@ -123,9 +123,9 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 	public Faction getAutoClaimFor() { return autoClaimFor; }
 	public void setAutoClaimFor(Faction faction) { this.autoClaimFor = faction; }
 		
-	private transient boolean hasAdminMode = false;
-	public boolean hasAdminMode() { return this.hasAdminMode; }
-	public void setHasAdminMode(boolean val) { this.hasAdminMode = val; }
+	private transient boolean usingAdminMode = false;
+	public boolean isUsingAdminMode() { return this.usingAdminMode; }
+	public void setUsingAdminMode(boolean val) { this.usingAdminMode = val; }
 	
 	// FIELD: loginPvpDisabled
 	private transient boolean loginPvpDisabled;
@@ -490,7 +490,7 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 	public void leave(boolean makePay)
 	{
 		Faction myFaction = this.getFaction();
-		makePay = makePay && Econ.shouldBeUsed() && ! this.hasAdminMode();
+		makePay = makePay && Econ.shouldBeUsed() && ! this.isUsingAdminMode();
 
 		if (myFaction == null)
 		{
@@ -575,7 +575,7 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 		{
 			error = Txt.parse("<b>Sorry, this world has land claiming disabled.");
 		}
-		else if (this.hasAdminMode())
+		else if (this.isUsingAdminMode())
 		{
 			return true;
 		}
@@ -610,7 +610,7 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 		else if
 		(
 			ConfServer.claimsMustBeConnected
-			&& ! this.hasAdminMode()
+			&& ! this.isUsingAdminMode()
 			&& myFaction.getLandRoundedInWorld(ps.getWorld()) > 0
 			&& !BoardColl.get().isConnectedPs(ps, myFaction)
 			&& (!ConfServer.claimsCanBeUnconnectedIfOwnedByOtherFaction || !currentFaction.isNormal())
@@ -655,7 +655,7 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 		
 		// TODO: Add flag no costs??
 		// if economy is enabled and they're not on the bypass list, make sure they can pay
-		boolean mustPay = Econ.shouldBeUsed() && ! this.hasAdminMode();
+		boolean mustPay = Econ.shouldBeUsed() && ! this.isUsingAdminMode();
 		double cost = 0.0;
 		EconomyParticipator payee = null;
 		if (mustPay)

@@ -1,9 +1,5 @@
 package com.massivecraft.factions;
 
-import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import com.massivecraft.factions.adapters.BoardAdapter;
 import com.massivecraft.factions.adapters.BoardMapAdapter;
 import com.massivecraft.factions.adapters.FFlagAdapter;
@@ -26,11 +22,8 @@ import com.massivecraft.factions.listeners.FactionsPlayerListener;
 import com.massivecraft.factions.util.AutoLeaveTask;
 import com.massivecraft.factions.util.EconLandRewardTask;
 import com.massivecraft.factions.util.LazyLocation;
-import com.massivecraft.factions.zcore.MPlugin;
 
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-
+import com.massivecraft.mcore.MPlugin;
 import com.massivecraft.mcore.xlib.gson.GsonBuilder;
 
 
@@ -48,6 +41,10 @@ public class Factions extends MPlugin
 	// FIELDS
 	// -------------------------------------------- //
 	
+	// Commands
+	private CmdFactions outerCmdFactions;
+	public CmdFactions getOuterCmdFactions() { return this.outerCmdFactions; }
+	
 	// Listeners
 	public FactionsPlayerListener playerListener;
 	public FactionsChatListener chatListener;
@@ -58,10 +55,6 @@ public class Factions extends MPlugin
 	// Task Ids
 	private Integer AutoLeaveTask = null;
 	private Integer econLandRewardTaskID = null;
-	
-	// Commands
-	public CmdFactions cmdBase;
-	public CmdFactionsAutoHelp cmdAutoHelp;
 
 	// -------------------------------------------- //
 	// OVERRIDE
@@ -75,14 +68,14 @@ public class Factions extends MPlugin
 		// Load Server Config
 		ConfServer.get().load();
 
-		// Load Conf from disk
+		// Initialize Collections
 		FPlayerColl.get().init();
 		FactionColl.get().init();
 		BoardColl.get().init();
-				
-		// Add Base Commands
-		this.cmdAutoHelp = new CmdFactionsAutoHelp();
-		this.cmdBase = new CmdFactions();
+		
+		// Commands
+		this.outerCmdFactions = new CmdFactions();
+		this.outerCmdFactions.register(this);
 
 		EssentialsFeatures.setup();
 		SpoutFeatures.setup();
@@ -125,17 +118,15 @@ public class Factions extends MPlugin
 	@Override
 	public GsonBuilder getGsonBuilder()
 	{
-		return new GsonBuilder()
-		.setPrettyPrinting()
-		.disableHtmlEscaping()
-		.excludeFieldsWithModifiers(Modifier.TRANSIENT, Modifier.VOLATILE)
+		return super.getGsonBuilder()
 		.registerTypeAdapter(LazyLocation.class, new LazyLocationAdapter())
 		.registerTypeAdapter(TerritoryAccess.class, TerritoryAccessAdapter.get())
 		.registerTypeAdapter(Board.class, BoardAdapter.get())
 		.registerTypeAdapter(Board.MAP_TYPE, BoardMapAdapter.get())
 		.registerTypeAdapter(Rel.class, new RelAdapter())
 		.registerTypeAdapter(FPerm.class, new FPermAdapter())
-		.registerTypeAdapter(FFlag.class, new FFlagAdapter());
+		.registerTypeAdapter(FFlag.class, new FFlagAdapter())
+		;
 	}
 
 	@Override
@@ -185,13 +176,6 @@ public class Factions extends MPlugin
 			long ticks = (long)(20 * 60 * ConfServer.econLandRewardTaskRunsEveryXMinutes);
 			econLandRewardTaskID = getServer().getScheduler().scheduleSyncRepeatingTask(this, new EconLandRewardTask(), ticks, ticks);
 		}
-	}
-	
-	@Override
-	public boolean onCommand(CommandSender sender, Command command, String label, String[] split)
-	{
-		this.cmdBase.execute(sender, new ArrayList<String>(Arrays.asList(split)));
-		return true;
 	}
 
 	// -------------------------------------------- //

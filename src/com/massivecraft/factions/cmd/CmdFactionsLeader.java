@@ -38,7 +38,7 @@ public class CmdFactionsLeader extends FCommand
 		FPlayer targetFactionCurrentLeader = targetFaction.getFPlayerLeader();
 		
 		// We now have fplayer and the target faction
-		if (this.senderIsConsole || fme.hasAdminMode() || Perm.LEADER_ANY.has(sender, false))
+		if (this.senderIsConsole || fme.isUsingAdminMode() || Perm.LEADER_ANY.has(sender, false))
 		{
 			// Do whatever you wish
 		}

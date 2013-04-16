@@ -90,7 +90,7 @@ public class Econ
 		if (fI == null) return true;
 		
 		// Bypassing players can do any kind of transaction
-		if (i instanceof FPlayer && ((FPlayer)i).hasAdminMode()) return true;
+		if (i instanceof FPlayer && ((FPlayer)i).isUsingAdminMode()) return true;
 		
 		// You can deposit to anywhere you feel like. It's your loss if you can't withdraw it again.
 		if (i == you) return true;

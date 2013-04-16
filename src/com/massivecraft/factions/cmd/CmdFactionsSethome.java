@@ -4,6 +4,7 @@ import com.massivecraft.factions.BoardColl;
 import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.cmd.arg.ARFaction;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
@@ -40,7 +41,7 @@ public class CmdFactionsSethome extends FCommand
 		// Can the player set the faction home HERE?
 		if
 		(
-			! fme.hasAdminMode()
+			! fme.isUsingAdminMode()
 			&&
 			ConfServer.homesMustBeInClaimedTerritory
 			&& 
@@ -57,7 +58,7 @@ public class CmdFactionsSethome extends FCommand
 		faction.setHome(me.getLocation());
 		
 		faction.msg("%s<i> set the home for your faction. You can now use:", fme.describeTo(myFaction, true));
-		faction.sendMessage(p.cmdBase.cmdFactionsHome.getUseageTemplate());
+		faction.sendMessage(Factions.get().getOuterCmdFactions().cmdFactionsHome.getUseageTemplate());
 		if (faction != myFaction)
 		{
 			fme.msg("<b>You have set the home for the "+faction.getTag(fme)+"<i> faction.");

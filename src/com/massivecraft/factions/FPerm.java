@@ -155,7 +155,7 @@ public enum FPerm
 		// TODO: Create better description messages like: "You must at least be officer".
 		boolean ret = hostFaction.getPermittedRelations(this).contains(rel);
 		
-		if (rpSubject instanceof FPlayer && ret == false && ((FPlayer)rpSubject).hasAdminMode()) ret = true;
+		if (rpSubject instanceof FPlayer && ret == false && ((FPlayer)rpSubject).isUsingAdminMode()) ret = true;
 		
 		if (!ret && informIfNot && rpSubject instanceof FPlayer)
 		{
@@ -163,7 +163,7 @@ public enum FPerm
 			fplayer.msg(errorpattern, hostFaction.describeTo(fplayer, true), this.getDescription());
 			if (Perm.ADMIN.has(fplayer.getPlayer()))
 			{
-				fplayer.msg("<i>You can bypass by using " + Factions.get().cmdBase.cmdFactionsAdmin.getUseageTemplate(false));
+				fplayer.msg("<i>You can bypass by using " + Factions.get().getOuterCmdFactions().cmdFactionsAdmin.getUseageTemplate(false));
 			}
 		}
 		return ret;

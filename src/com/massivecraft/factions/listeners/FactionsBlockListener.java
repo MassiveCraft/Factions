@@ -88,7 +88,7 @@ public class FactionsBlockListener implements Listener
 		if (ConfServer.playersWhoBypassAllProtection.contains(name)) return true;
 
 		FPlayer me = FPlayer.get(name);
-		if (me.hasAdminMode()) return true;
+		if (me.isUsingAdminMode()) return true;
 
 		PS ps = PS.valueOf(location);
 		Faction factionHere = BoardColl.get().getFactionAt(ps);

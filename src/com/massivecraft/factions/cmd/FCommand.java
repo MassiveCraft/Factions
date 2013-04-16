@@ -64,7 +64,7 @@ public abstract class FCommand extends MCommand
 	// if economy is enabled and they're not on the bypass list, make 'em pay; returns true unless person can't afford the cost
 	public boolean payForCommand(double cost, String toDoThis, String forDoingThis)
 	{
-		if ( ! Econ.shouldBeUsed() || this.fme == null || cost == 0.0 || fme.hasAdminMode()) return true;
+		if ( ! Econ.shouldBeUsed() || this.fme == null || cost == 0.0 || fme.isUsingAdminMode()) return true;
 
 		if(ConfServer.bankEnabled && ConfServer.bankFactionPaysCosts && fme.hasFaction())
 			return Econ.modifyMoney(myFaction, -cost, toDoThis, forDoingThis);
@@ -75,7 +75,7 @@ public abstract class FCommand extends MCommand
 	// like above, but just make sure they can pay; returns true unless person can't afford the cost
 	public boolean canAffordCommand(double cost, String toDoThis)
 	{
-		if ( ! Econ.shouldBeUsed() || this.fme == null || cost == 0.0 || fme.hasAdminMode()) return true;
+		if ( ! Econ.shouldBeUsed() || this.fme == null || cost == 0.0 || fme.isUsingAdminMode()) return true;
 
 		if(ConfServer.bankEnabled && ConfServer.bankFactionPaysCosts && fme.hasFaction())
 			return Econ.hasAtLeast(myFaction, cost, toDoThis);

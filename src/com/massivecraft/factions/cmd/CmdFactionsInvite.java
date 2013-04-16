@@ -4,6 +4,7 @@ import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.cmd.arg.ARFPlayer;
 import com.massivecraft.factions.cmd.arg.ARFaction;
@@ -33,7 +34,7 @@ public class CmdFactionsInvite extends FCommand
 		if (you.getFaction() == myFaction)
 		{
 			msg("%s<i> is already a member of %s", you.getName(), myFaction.getTag());
-			msg("<i>You might want to: " +  p.cmdBase.cmdFactionsKick.getUseageTemplate(false));
+			msg("<i>You might want to: " + Factions.get().getOuterCmdFactions().cmdFactionsKick.getUseageTemplate(false));
 			return;
 		}
 

@@ -66,7 +66,7 @@ public class CmdFactionsJoin extends FCommand
 			return;
 		}
 
-		if( ! (faction.isOpen() || faction.isInvited(fplayer) || fme.hasAdminMode() || Perm.JOIN_ANY.has(sender, false)))
+		if( ! (faction.isOpen() || faction.isInvited(fplayer) || fme.isUsingAdminMode() || Perm.JOIN_ANY.has(sender, false)))
 		{
 			msg("<i>This faction requires invitation.");
 			if (samePlayer)

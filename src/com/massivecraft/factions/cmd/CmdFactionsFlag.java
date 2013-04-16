@@ -3,7 +3,9 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.FFlag;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Perm;
+import com.massivecraft.factions.cmd.arg.ARFFlag;
 import com.massivecraft.factions.cmd.arg.ARFaction;
+import com.massivecraft.mcore.cmd.arg.ARBoolean;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 import com.massivecraft.mcore.util.Txt;
 
@@ -37,8 +39,9 @@ public class CmdFactionsFlag extends FCommand
 			return;
 		}
 		
-		FFlag flag = this.argAsFactionFlag(1);
+		FFlag flag = this.arg(1, ARFFlag.get());
 		if (flag == null) return;
+		
 		if ( ! this.argIsSet(2))
 		{
 			msg(Txt.titleize("Flag for " + faction.describeTo(fme, true)));
@@ -46,7 +49,7 @@ public class CmdFactionsFlag extends FCommand
 			return;
 		}
 		
-		Boolean targetValue = this.argAsBool(2);
+		Boolean targetValue = this.arg(2, ARBoolean.get());
 		if (targetValue == null) return;
 
 		// Do the sender have the right to change flags?

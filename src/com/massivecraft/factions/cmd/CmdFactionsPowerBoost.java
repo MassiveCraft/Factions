@@ -4,6 +4,9 @@ import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
+import com.massivecraft.factions.cmd.arg.ARFPlayer;
+import com.massivecraft.factions.cmd.arg.ARFaction;
+import com.massivecraft.mcore.cmd.arg.ARDouble;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 
 public class CmdFactionsPowerBoost extends FCommand
@@ -35,32 +38,29 @@ public class CmdFactionsPowerBoost extends FCommand
 			return;
 		}
 		
-		Double targetPower = this.argAsDouble(2);
-		if (targetPower == null)
-		{
-			msg("<b>You must specify a valid numeric value for the power bonus/penalty amount.");
-			return;
-		}
+		Double targetPower = this.arg(2, ARDouble.get());
+		if (targetPower == null) return;
 
 		String target;
 
 		if (doPlayer)
 		{
-			FPlayer targetPlayer = this.argAsBestFPlayerMatch(1);
+			FPlayer targetPlayer = this.arg(1, ARFPlayer.getStartAny());
 			if (targetPlayer == null) return;
+			
 			targetPlayer.setPowerBoost(targetPower);
 			target = "Player \""+targetPlayer.getName()+"\"";
 		}
 		else
 		{
-			Faction targetFaction = this.argAsFaction(1);
+			Faction targetFaction = this.arg(1, ARFaction.get());
 			if (targetFaction == null) return;
+			
 			targetFaction.setPowerBoost(targetPower);
 			target = "Faction \""+targetFaction.getTag()+"\"";
 		}
 
 		msg("<i>"+target+" now has a power bonus/penalty of "+targetPower+" to min and max power levels.");
-		if (!senderIsConsole)
-			Factions.get().log(fme.getName()+" has set the power bonus/penalty for "+target+" to "+targetPower+".");
+		Factions.get().log(fme.getName()+" has set the power bonus/penalty for "+target+" to "+targetPower+".");
 	}
 }

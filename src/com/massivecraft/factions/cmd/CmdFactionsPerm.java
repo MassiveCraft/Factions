@@ -4,7 +4,10 @@ import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
+import com.massivecraft.factions.cmd.arg.ARFPerm;
 import com.massivecraft.factions.cmd.arg.ARFaction;
+import com.massivecraft.factions.cmd.arg.ARRel;
+import com.massivecraft.mcore.cmd.arg.ARBoolean;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 import com.massivecraft.mcore.util.Txt;
 
@@ -40,8 +43,9 @@ public class CmdFactionsPerm extends FCommand
 			return;
 		}
 		
-		FPerm perm = this.argAsFactionPerm(1);
+		FPerm perm = this.arg(1, ARFPerm.get());
 		if (perm == null) return;
+		
 		if ( ! this.argIsSet(2))
 		{
 			msg(Txt.titleize("Perm for " + faction.describeTo(fme, true)));
@@ -53,10 +57,10 @@ public class CmdFactionsPerm extends FCommand
 		// Do the sender have the right to change perms for this faction?
 		if ( ! FPerm.PERMS.has(sender, faction, true)) return;
 		
-		Rel rel = this.argAsRel(2);
+		Rel rel = this.arg(2, ARRel.get());
 		if (rel == null) return;
 		
-		Boolean val = this.argAsBool(3, null);
+		Boolean val = this.arg(3, ARBoolean.get(), null);
 		if (val == null) return;
 		
 		// Do the change

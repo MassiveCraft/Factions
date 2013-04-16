@@ -3,6 +3,7 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Perm;
+import com.massivecraft.factions.cmd.arg.ARFaction;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 import com.massivecraft.mcore.cmd.req.ReqIsPlayer;
 
@@ -21,7 +22,7 @@ public class CmdFactionsAutoClaim extends FCommand
 	@Override
 	public void perform()
 	{
-		Faction forFaction = this.argAsFaction(0, myFaction);
+		Faction forFaction = this.arg(0, ARFaction.get(), myFaction);
 		if (forFaction == null || forFaction == fme.getAutoClaimFor())
 		{
 			fme.setAutoClaimFor(null);

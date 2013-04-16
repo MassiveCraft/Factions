@@ -205,7 +205,7 @@ public class FactionsPlayerListener implements Listener
 		if (ConfServer.playersWhoBypassAllProtection.contains(name)) return true;
 
 		FPlayer me = FPlayerColl.get().get(name);
-		if (me.hasAdminMode()) return true;
+		if (me.isUsingAdminMode()) return true;
 		if (Const.MATERIALS_EDIT_TOOLS.contains(material) && ! FPerm.BUILD.has(me, loc, ! justCheck)) return false;
 		return true;
 	}
@@ -215,7 +215,7 @@ public class FactionsPlayerListener implements Listener
 		if (ConfServer.playersWhoBypassAllProtection.contains(name)) return true;
 
 		FPlayer me = FPlayerColl.get().get(name);
-		if (me.hasAdminMode()) return true;
+		if (me.isUsingAdminMode()) return true;
 		Location loc = block.getLocation();
 		Material material = block.getType();
 		
@@ -293,7 +293,7 @@ public class FactionsPlayerListener implements Listener
 		FPlayer me = FPlayerColl.get().get(player);
 		
 		// With adminmode no commands are denied. 
-		if (me.hasAdminMode()) return;
+		if (me.isUsingAdminMode()) return;
 		
 		// The full command is converted to lowercase and does include the slash in the front
 		String fullCmd = event.getMessage().toLowerCase();

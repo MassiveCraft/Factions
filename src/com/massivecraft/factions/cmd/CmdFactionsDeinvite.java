@@ -1,6 +1,7 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.cmd.arg.ARFPlayer;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
@@ -31,7 +32,7 @@ public class CmdFactionsDeinvite extends FCommand
 		if (you.getFaction() == myFaction)
 		{
 			msg("%s<i> is already a member of %s", you.getName(), myFaction.getTag());
-			msg("<i>You might want to: %s", p.cmdBase.cmdFactionsKick.getUseageTemplate(false));
+			msg("<i>You might want to: %s", Factions.get().getOuterCmdFactions().cmdFactionsKick.getUseageTemplate(false));
 			return;
 		}
 		
