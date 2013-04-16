@@ -26,7 +26,7 @@ public class FactionColl extends Coll<Faction>
 	public static FactionColl get() { return i; }
 	private FactionColl()
 	{
-		super(MStore.getDb(ConfServer.dburi), Factions.get(), "uuid", Const.COLLECTION_BASENAME_FACTION, Faction.class, false);
+		super(Const.COLLECTION_BASENAME_FACTION, Faction.class, MStore.getDb(ConfServer.dburi), Factions.get());
 	}
 	
 	// -------------------------------------------- //

@@ -25,7 +25,7 @@ public class BoardColl extends Coll<Board> implements BoardInterface
 	public static BoardColl get() { return i; }
 	private BoardColl()
 	{
-		super(MStore.getDb(ConfServer.dburi), Factions.get(), "uuid", Const.COLLECTION_BASENAME_BOARD, Board.class, true);
+		super(Const.COLLECTION_BASENAME_BOARD, Board.class, MStore.getDb(ConfServer.dburi), Factions.get(), true, true);
 	}
 	
 	// -------------------------------------------- //

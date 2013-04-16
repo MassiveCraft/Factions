@@ -20,7 +20,7 @@ public class FPlayerColl extends SenderColl<FPlayer>
 	public static FPlayerColl get() { return i; }
 	private FPlayerColl()
 	{
-		super(MStore.getDb(ConfServer.dburi), Factions.get(), Const.COLLECTION_BASENAME_PLAYER, FPlayer.class, true, true);
+		super(Const.COLLECTION_BASENAME_PLAYER, FPlayer.class, MStore.getDb(ConfServer.dburi), Factions.get());
 	}
 	
 	// -------------------------------------------- //

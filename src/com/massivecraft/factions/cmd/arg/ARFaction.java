@@ -46,7 +46,6 @@ public class ARFaction extends ArgReaderAbstract<Faction>
 		
 		result.setErrors(Txt.parse("<b>No faction or player matching \"<p>%s<b>\".", str));
 		return result;
-		
 	}
 	
 }
