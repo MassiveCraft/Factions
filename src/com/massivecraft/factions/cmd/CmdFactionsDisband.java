@@ -3,6 +3,7 @@ package com.massivecraft.factions.cmd;
 import org.bukkit.Bukkit;
 
 import com.massivecraft.factions.ConfServer;
+import com.massivecraft.factions.cmd.arg.ARFaction;
 import com.massivecraft.factions.event.FPlayerLeaveEvent;
 import com.massivecraft.factions.event.FactionDisbandEvent;
 import com.massivecraft.factions.integration.Econ;
@@ -30,8 +31,7 @@ public class CmdFactionsDisband extends FCommand
 	@Override
 	public void perform()
 	{
-		// The faction, default to your own.. but null if console sender.
-		Faction faction = this.argAsFaction(0, fme == null ? null : myFaction);
+		Faction faction = this.arg(0, ARFaction.get(), myFaction);
 		if (faction == null) return;
 		
 		if ( ! FPerm.DISBAND.has(sender, faction, true)) return;

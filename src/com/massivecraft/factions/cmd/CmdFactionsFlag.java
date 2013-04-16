@@ -3,6 +3,7 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.FFlag;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Perm;
+import com.massivecraft.factions.cmd.arg.ARFaction;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 import com.massivecraft.mcore.util.Txt;
 
@@ -23,11 +24,7 @@ public class CmdFactionsFlag extends FCommand
 	@Override
 	public void perform()
 	{
-		Faction faction = myFaction;
-		if (this.argIsSet(0))
-		{
-			faction = this.argAsFaction(0);
-		}
+		Faction faction = this.arg(0, ARFaction.get(), myFaction);
 		if (faction == null) return;
 		
 		if ( ! this.argIsSet(1))

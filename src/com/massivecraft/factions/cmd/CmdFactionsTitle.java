@@ -3,7 +3,9 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Perm;
+import com.massivecraft.factions.cmd.arg.ARFPlayer;
 import com.massivecraft.factions.integration.SpoutFeatures;
+import com.massivecraft.mcore.cmd.arg.ARString;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 import com.massivecraft.mcore.util.Txt;
 
@@ -24,11 +26,11 @@ public class CmdFactionsTitle extends FCommand
 	@Override
 	public void perform()
 	{
-		FPlayer you = this.argAsBestFPlayerMatch(0);
+		FPlayer you = this.arg(0, ARFPlayer.getStartAny());
 		if (you == null) return;
 		
-		args.remove(0);
-		String title = Txt.implode(args, " ");
+		String title = this.argConcatFrom(1, ARString.get(), "");
+		if (title == null) return;
 		
 		if ( ! canIAdministerYou(fme, you)) return;
 

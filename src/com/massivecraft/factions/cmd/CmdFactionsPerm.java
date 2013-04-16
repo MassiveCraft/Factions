@@ -4,6 +4,7 @@ import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
+import com.massivecraft.factions.cmd.arg.ARFaction;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 import com.massivecraft.mcore.util.Txt;
 
@@ -13,7 +14,7 @@ public class CmdFactionsPerm extends FCommand
 	{
 		this.addAliases("perm");
 		
-		this.addOptionalArg("faction", "your");
+		this.addOptionalArg("faction", "you");
 		this.addOptionalArg("perm", "all");
 		this.addOptionalArg("relation", "read");
 		this.addOptionalArg("yes/no", "read");
@@ -25,11 +26,7 @@ public class CmdFactionsPerm extends FCommand
 	@Override
 	public void perform()
 	{
-		Faction faction = myFaction;
-		if (this.argIsSet(0))
-		{
-			faction = this.argAsFaction(0);
-		}
+		Faction faction = this.arg(0, ARFaction.get(), myFaction);
 		if (faction == null) return;
 		
 		if ( ! this.argIsSet(1))

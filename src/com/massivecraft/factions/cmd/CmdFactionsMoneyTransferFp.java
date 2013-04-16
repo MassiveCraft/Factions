@@ -1,10 +1,15 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.ConfServer;
+import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Perm;
+import com.massivecraft.factions.cmd.arg.ARFPlayer;
+import com.massivecraft.factions.cmd.arg.ARFaction;
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.integration.Econ;
+import com.massivecraft.mcore.cmd.arg.ARDouble;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 import com.massivecraft.mcore.util.Txt;
 
@@ -29,10 +34,13 @@ public class CmdFactionsMoneyTransferFp extends FCommand
 	@Override
 	public void perform()
 	{
-		double amount = this.argAsDouble(0, 0d);
-		EconomyParticipator from = this.argAsFaction(1);
+		Double amount = this.arg(0, ARDouble.get());
+		if (amount == null) return;
+		
+		Faction from = this.arg(1, ARFaction.get());
 		if (from == null) return;
-		EconomyParticipator to = this.argAsBestFPlayerMatch(2);
+		
+		FPlayer to = this.arg(2, ARFPlayer.getStartAny());
 		if (to == null) return;
 		
 		boolean success = Econ.transferMoney(fme, from, to, amount);

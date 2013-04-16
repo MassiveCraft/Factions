@@ -9,6 +9,7 @@ import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
+import com.massivecraft.factions.cmd.arg.ARFPlayer;
 import com.massivecraft.factions.event.FPlayerLeaveEvent;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 
@@ -27,7 +28,7 @@ public class CmdFactionsKick extends FCommand
 	@Override
 	public void perform()
 	{	
-		FPlayer you = this.argAsBestFPlayerMatch(0);
+		FPlayer you = this.arg(1, ARFPlayer.getStartAny());
 		if (you == null) return;
 		
 		if (fme == you)

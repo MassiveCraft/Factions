@@ -6,6 +6,7 @@ import org.bukkit.command.CommandSender;
 
 import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.cmd.arg.ARFaction;
 
 public abstract class CmdFactionsCapeAbstract extends FCommand
 {
@@ -20,9 +21,6 @@ public abstract class CmdFactionsCapeAbstract extends FCommand
 	@Override
 	public boolean validCall(CommandSender sender, List<String> args)
 	{
-		if ( ! super.validCall(sender, args)) return false;
-		
-	
 		this.capeFaction = null;
 		this.currentCape = null;
 		
@@ -32,7 +30,7 @@ public abstract class CmdFactionsCapeAbstract extends FCommand
 			return false;
 		}
 		
-		this.capeFaction = this.argAsFaction(this.requiredArgs.size(), this.myFaction);
+		this.capeFaction = this.arg(this.requiredArgs.size(), ARFaction.get(), this.myFaction);
 		if (this.capeFaction == null) return false;
 		
 		// Do we have permission to manage the cape of that faction? 

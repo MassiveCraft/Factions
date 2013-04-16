@@ -5,6 +5,7 @@ import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Perm;
+import com.massivecraft.factions.cmd.arg.ARFaction;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 import com.massivecraft.mcore.cmd.req.ReqIsPlayer;
 import com.massivecraft.mcore.ps.PS;
@@ -30,7 +31,7 @@ public class CmdFactionsSethome extends FCommand
 			return;
 		}
 		
-		Faction faction = this.argAsFaction(0, myFaction);
+		Faction faction = this.arg(0, ARFaction.get(), myFaction);
 		if (faction == null) return;
 		
 		// Can the player set the home for this faction?

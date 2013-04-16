@@ -8,6 +8,8 @@ import com.massivecraft.factions.FPlayerColl;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
+import com.massivecraft.factions.cmd.arg.ARFPlayer;
+import com.massivecraft.factions.cmd.arg.ARFaction;
 import com.massivecraft.factions.event.FPlayerJoinEvent;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 
@@ -26,10 +28,12 @@ public class CmdFactionsJoin extends FCommand
 	@Override
 	public void perform()
 	{
-		Faction faction = this.argAsFaction(0);
+		Faction faction = this.arg(0, ARFaction.get());
 		if (faction == null) return;
 
-		FPlayer fplayer = this.argAsBestFPlayerMatch(1, fme, false);
+		FPlayer fplayer = this.arg(1, ARFPlayer.getStartAny(), fme);
+		if (fplayer == null) return;
+		
 		boolean samePlayer = fplayer == fme;
 
 		if (!samePlayer  && ! Perm.JOIN_OTHERS.has(sender, false))

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.massivecraft.factions.ConfServer;
+import com.massivecraft.factions.cmd.arg.ARFaction;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.FFlag;
 import com.massivecraft.factions.FPlayer;
@@ -30,12 +31,8 @@ public class CmdFactionsShow extends FCommand
 	@Override
 	public void perform()
 	{
-		Faction faction = myFaction;
-		if (this.argIsSet(0))
-		{
-			faction = this.argAsFaction(0);
-			if (faction == null) return;
-		}
+		Faction faction = this.arg(0, ARFaction.get(), myFaction);
+		if (faction == null) return;
 
 		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
 		if ( ! payForCommand(ConfServer.econCostShow, "to show faction information", "for showing faction information")) return;

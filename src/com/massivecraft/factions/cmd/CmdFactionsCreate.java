@@ -31,7 +31,7 @@ public class CmdFactionsCreate extends FCommand
 	@Override
 	public void perform()
 	{
-		String tag = this.argAsString(0);
+		String tag = this.arg(0);
 		
 		if (fme.hasFaction())
 		{

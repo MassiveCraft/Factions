@@ -15,6 +15,7 @@ public class CmdFactionsCapeSet extends CmdFactionsCapeAbstract
 		this.addAliases("set");
 		
 		this.addRequiredArg("url");
+		this.setErrorOnToManyArgs(false);
 		
 		this.addRequirements(ReqHasPerm.get(Perm.CAPE_SET.node));
 	}
@@ -22,7 +23,7 @@ public class CmdFactionsCapeSet extends CmdFactionsCapeAbstract
 	@Override
 	public void perform()
 	{
-		String newCape = this.argAsString(0);
+		String newCape = this.argConcatFrom(0);
 		
 		if (isUrlValid(newCape))
 		{

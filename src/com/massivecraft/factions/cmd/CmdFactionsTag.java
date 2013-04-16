@@ -30,7 +30,7 @@ public class CmdFactionsTag extends FCommand
 	@Override
 	public void perform()
 	{
-		String tag = this.argAsString(0);
+		String tag = this.arg(0);
 		
 		// TODO does not first test cover selfcase?
 		if (FactionColl.get().isTagTaken(tag) && ! MiscUtil.getComparisonString(tag).equals(myFaction.getComparisonTag()))

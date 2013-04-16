@@ -7,6 +7,7 @@ import com.massivecraft.factions.FFlag;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
+import com.massivecraft.factions.cmd.arg.ARFaction;
 import com.massivecraft.factions.event.FactionRelationEvent;
 import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
@@ -28,7 +29,7 @@ public abstract class CmdFactionsRelationAbstract extends FCommand
 	@Override
 	public void perform()
 	{
-		Faction them = this.argAsFaction(0);
+		Faction them = this.arg(0, ARFaction.get());
 		if (them == null) return;
 		
 		/*if ( ! them.isNormal())

@@ -2,6 +2,7 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Perm;
+import com.massivecraft.factions.cmd.arg.ARFPlayer;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 
 public class CmdFactionsDeinvite extends FCommand
@@ -15,6 +16,7 @@ public class CmdFactionsDeinvite extends FCommand
 		
 		this.addRequirements(ReqHasPerm.get(Perm.DEINVITE.node));
 		
+		// TODO: Base on faction permissions instead?
 		senderMustBeMember = false;
 		senderMustBeOfficer = true;
 		senderMustBeLeader = false;
@@ -23,7 +25,7 @@ public class CmdFactionsDeinvite extends FCommand
 	@Override
 	public void perform()
 	{
-		FPlayer you = this.argAsBestFPlayerMatch(0);
+		FPlayer you = this.arg(0, ARFPlayer.getStartAny());
 		if (you == null) return;
 		
 		if (you.getFaction() == myFaction)

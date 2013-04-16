@@ -3,7 +3,10 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Perm;
+import com.massivecraft.factions.cmd.arg.ARFPlayer;
+import com.massivecraft.factions.cmd.arg.ARFaction;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 import com.massivecraft.mcore.cmd.req.ReqIsPlayer;
 
@@ -24,7 +27,7 @@ public class CmdFactionsInvite extends FCommand
 	@Override
 	public void perform()
 	{
-		FPlayer you = this.argAsBestFPlayerMatch(0);
+		FPlayer you = this.arg(0, ARFPlayer.getStartAny());
 		if (you == null) return;
 		
 		if (you.getFaction() == myFaction)

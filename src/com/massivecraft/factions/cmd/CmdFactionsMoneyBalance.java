@@ -1,5 +1,6 @@
 package com.massivecraft.factions.cmd;
 
+import com.massivecraft.factions.cmd.arg.ARFaction;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Perm;
@@ -21,13 +22,9 @@ public class CmdFactionsMoneyBalance extends FCommand
 	@Override
 	public void perform()
 	{
-		Faction faction = myFaction;
-		if (this.argIsSet(0))
-		{
-			faction = this.argAsFaction(0);
-		}
-			
+		Faction faction = this.arg(0, ARFaction.get(), myFaction);
 		if (faction == null) return;
+			
 		if (faction != myFaction && ! Perm.MONEY_BALANCE_ANY.has(sender, true)) return;
 		
 		Econ.sendBalanceInfo(fme, faction);

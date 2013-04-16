@@ -7,6 +7,8 @@ import com.massivecraft.factions.FPlayerColl;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
+import com.massivecraft.factions.cmd.arg.ARFPlayer;
+import com.massivecraft.factions.cmd.arg.ARFaction;
 import com.massivecraft.factions.event.FPlayerJoinEvent;
 import com.massivecraft.factions.util.RelationUtil;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
@@ -27,10 +29,10 @@ public class CmdFactionsLeader extends FCommand
 	@Override
 	public void perform()
 	{
-		FPlayer newLeader = this.argAsBestFPlayerMatch(0);
+		FPlayer newLeader = this.arg(0, ARFPlayer.getStartAny());
 		if (newLeader == null) return;
 		
-		Faction targetFaction = this.argAsFaction(1, myFaction);
+		Faction targetFaction = this.arg(1, ARFaction.get(), myFaction);
 		if (targetFaction == null) return;
 		
 		FPlayer targetFactionCurrentLeader = targetFaction.getFPlayerLeader();

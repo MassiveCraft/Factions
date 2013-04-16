@@ -22,7 +22,7 @@ public class CmdFactionsPowerBoost extends FCommand
 	@Override
 	public void perform()
 	{
-		String type = this.argAsString(0).toLowerCase();
+		String type = this.arg(0).toLowerCase();
 		boolean doPlayer = true;
 		if (type.equals("f") || type.equals("faction"))
 		{

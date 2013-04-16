@@ -4,6 +4,7 @@ import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionColl;
 import com.massivecraft.factions.Perm;
+import com.massivecraft.mcore.cmd.arg.ARBoolean;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 
 public class CmdFactionsOpen extends FCommand
@@ -22,22 +23,25 @@ public class CmdFactionsOpen extends FCommand
 	@Override
 	public void perform()
 	{
+		Boolean target = this.arg(0, ARBoolean.get(), !myFaction.isOpen());
+		if (target == null) return;
+
 		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
 		if ( ! payForCommand(ConfServer.econCostOpen, "to open or close the faction", "for opening or closing the faction")) return;
-
-		myFaction.setOpen(this.argAsBool(0, ! myFaction.isOpen()));
 		
-		String open = myFaction.isOpen() ? "open" : "closed";
+		myFaction.setOpen(target);
+		
+		String descTarget = myFaction.isOpen() ? "open" : "closed";
 		
 		// Inform
-		myFaction.msg("%s<i> changed the faction to <h>%s<i>.", fme.describeTo(myFaction, true), open);
+		myFaction.msg("%s<i> changed the faction to <h>%s<i>.", fme.describeTo(myFaction, true), descTarget);
 		for (Faction faction : FactionColl.get().getAll())
 		{
 			if (faction == myFaction)
 			{
 				continue;
 			}
-			faction.msg("<i>The faction %s<i> is now %s", myFaction.getTag(faction), open);
+			faction.msg("<i>The faction %s<i> is now %s", myFaction.getTag(faction), descTarget);
 		}
 	}
 	
