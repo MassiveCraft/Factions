@@ -4,6 +4,8 @@ import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayerColl;
 import com.massivecraft.factions.Perm;
+import com.massivecraft.factions.Rel;
+import com.massivecraft.factions.cmd.req.ReqRoleIsAtLeast;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 import com.massivecraft.mcore.util.Txt;
 
@@ -17,8 +19,7 @@ public class CmdFactionsDescription extends FCommand
 		this.setErrorOnToManyArgs(false);
 		
 		this.addRequirements(ReqHasPerm.get(Perm.DESCRIPTION.node));
-		
-		senderMustBeOfficer = true;
+		this.addRequirements(ReqRoleIsAtLeast.get(Rel.OFFICER));
 	}
 	
 	@Override

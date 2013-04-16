@@ -3,9 +3,7 @@ package com.massivecraft.factions.cmd;
 import java.util.Collections;
 
 import com.massivecraft.factions.ConfServer;
-import com.massivecraft.factions.Factions;
 import com.massivecraft.mcore.cmd.HelpCommand;
-import com.massivecraft.mcore.util.Txt;
 
 public class CmdFactions extends FCommand
 {
@@ -57,8 +55,8 @@ public class CmdFactions extends FCommand
 		// TODO: When is this required? Should this be added to MCore?
 		this.aliases.removeAll(Collections.singletonList(null));
 		
-		this.setHelpShort("The faction base command");
-		this.helpLong.add(Txt.parse("<i>This command contains all faction stuff."));
+		this.setDesc("The faction base command");
+		this.setHelp("This command contains all faction stuff.");
 		
 		this.addSubCommand(HelpCommand.get());
 		this.addSubCommand(this.cmdFactionsList);

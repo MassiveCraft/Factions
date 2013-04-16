@@ -3,11 +3,12 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Perm;
+import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.cmd.arg.ARFPlayer;
+import com.massivecraft.factions.cmd.req.ReqRoleIsAtLeast;
 import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.mcore.cmd.arg.ARString;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
-import com.massivecraft.mcore.util.Txt;
 
 public class CmdFactionsTitle extends FCommand
 {
@@ -19,8 +20,7 @@ public class CmdFactionsTitle extends FCommand
 		this.addOptionalArg("title", "");
 		
 		this.addRequirements(ReqHasPerm.get(Perm.TITLE.node));
-		
-		senderMustBeOfficer = true;
+		this.addRequirements(ReqRoleIsAtLeast.get(Rel.OFFICER));
 	}
 	
 	@Override

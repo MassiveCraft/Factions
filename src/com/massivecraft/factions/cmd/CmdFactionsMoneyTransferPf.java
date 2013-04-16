@@ -6,7 +6,7 @@ import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.cmd.arg.ARFPlayer;
 import com.massivecraft.factions.cmd.arg.ARFaction;
-import com.massivecraft.factions.iface.EconomyParticipator;
+import com.massivecraft.factions.cmd.req.ReqBankCommandsEnabled;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.mcore.cmd.arg.ARDouble;
@@ -27,8 +27,7 @@ public class CmdFactionsMoneyTransferPf extends FCommand
 		this.addRequiredArg("faction");
 		
 		this.addRequirements(ReqHasPerm.get(Perm.MONEY_P2F.node));
-		
-		this.setHelpShort("transfer p -> f");
+		this.addRequirements(ReqBankCommandsEnabled.get());
 	}
 	
 	@Override

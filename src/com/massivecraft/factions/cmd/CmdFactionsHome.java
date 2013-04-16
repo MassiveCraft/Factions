@@ -16,6 +16,7 @@ import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
+import com.massivecraft.factions.cmd.req.ReqRoleIsAtLeast;
 import com.massivecraft.factions.integration.EssentialsFeatures;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 import com.massivecraft.mcore.cmd.req.ReqIsPlayer;
@@ -31,8 +32,7 @@ public class CmdFactionsHome extends FCommand
 		
 		this.addRequirements(ReqHasPerm.get(Perm.HOME.node));
 		this.addRequirements(ReqIsPlayer.get());
-		
-		senderMustBeMember = true;
+		this.addRequirements(ReqRoleIsAtLeast.get(Rel.RECRUIT));
 	}
 	
 	@Override

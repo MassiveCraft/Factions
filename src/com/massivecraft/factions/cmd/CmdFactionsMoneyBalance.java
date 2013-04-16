@@ -1,6 +1,7 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.cmd.arg.ARFaction;
+import com.massivecraft.factions.cmd.req.ReqBankCommandsEnabled;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Perm;
@@ -15,8 +16,7 @@ public class CmdFactionsMoneyBalance extends FCommand
 		this.addOptionalArg("faction", "you");
 		
 		this.addRequirements(ReqHasPerm.get(Perm.MONEY_BALANCE.node));
-		
-		this.setHelpShort("show faction balance");
+		this.addRequirements(ReqBankCommandsEnabled.get());
 	}
 	
 	@Override

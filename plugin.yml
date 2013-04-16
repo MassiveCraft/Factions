@@ -44,13 +44,13 @@ permissions:
   factions.list: {description: see a list of the factions}
   factions.lock: {description: lock all write stuff}
   factions.map: {description: show the territory map, and set optional auto update}
-  factions.money.balance: {description: show your factions current money balance}
-  factions.money.balance.any: {description: show money balance for factions other than your own}
-  factions.money.deposit: {description: deposit money into a faction bank}
-  factions.money.f2f: {description: transfer money from faction to faction}
-  factions.money.f2p: {description: transfer money from faction to player}
-  factions.money.p2f: {description: transfer money from player to faction}
-  factions.money.withdraw: {description: withdraw money from your faction bank}
+  factions.money.balance: {description: show money balance for a faction}
+  factions.money.balance.any: {description: show money balance for another faction}
+  factions.money.deposit: {description: deposit money to faction bank}
+  factions.money.f2f: {description: transfer f --> f}
+  factions.money.f2p: {description: transfer f --> p}
+  factions.money.p2f: {description: transfer p --> f}
+  factions.money.withdraw: {description: withdraw money from faction bank}
   factions.officer: {description: give or revoke officer rights}
   factions.officer.any: {description: give or revoke officer rights for any player in any faction}
   factions.open: {description: switch if invitation is required to join}

@@ -6,6 +6,8 @@ import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.TerritoryAccess;
+import com.massivecraft.factions.cmd.arg.ARFPlayer;
+import com.massivecraft.factions.cmd.arg.ARFaction;
 import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.mcore.cmd.req.ReqIsPlayer;
 import com.massivecraft.mcore.ps.PS;
@@ -21,9 +23,9 @@ public class CmdFactionsAccess extends FCommand
 		this.addOptionalArg("view|p|player|f|faction", "view");
 		this.addOptionalArg("name", "you");
 		
-		this.setHelpShort("view or grant access for the claimed territory you are in");
+		this.setDesc("view or grant access for the claimed territory you are in");
 		
-		// TODO: Missing permission node here!
+		// TODO: Missing permission node here!?
 		this.addRequirements(ReqIsPlayer.get());
 	}
 	
@@ -71,14 +73,14 @@ public class CmdFactionsAccess extends FCommand
 
 		if (doPlayer)
 		{
-			FPlayer targetPlayer = this.argAsBestFPlayerMatch(1, fme);
+			FPlayer targetPlayer = this.arg(1, ARFPlayer.getStartAny(), fme);
 			if (targetPlayer == null) return;
 			added = territory.toggleFPlayer(targetPlayer);
 			target = "Player \""+targetPlayer.getName()+"\"";
 		}
 		else
 		{
-			Faction targetFaction = this.argAsFaction(1, myFaction);
+			Faction targetFaction = this.arg(1, ARFaction.get(), myFaction);
 			if (targetFaction == null) return;
 			added = territory.toggleFaction(targetFaction);
 			target = "Faction \""+targetFaction.getTag()+"\"";

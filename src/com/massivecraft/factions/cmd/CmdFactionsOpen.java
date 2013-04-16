@@ -4,6 +4,8 @@ import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionColl;
 import com.massivecraft.factions.Perm;
+import com.massivecraft.factions.Rel;
+import com.massivecraft.factions.cmd.req.ReqRoleIsAtLeast;
 import com.massivecraft.mcore.cmd.arg.ARBoolean;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 
@@ -16,8 +18,7 @@ public class CmdFactionsOpen extends FCommand
 		this.addOptionalArg("yes/no", "toggle");
 		
 		this.addRequirements(ReqHasPerm.get(Perm.OPEN.node));
-		
-		senderMustBeOfficer = true;
+		this.addRequirements(ReqRoleIsAtLeast.get(Rel.OFFICER));
 	}
 	
 	@Override

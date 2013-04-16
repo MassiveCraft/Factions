@@ -6,6 +6,8 @@ import com.massivecraft.factions.BoardColl;
 import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
+import com.massivecraft.factions.Rel;
+import com.massivecraft.factions.cmd.req.ReqRoleIsAtLeast;
 import com.massivecraft.factions.event.LandUnclaimAllEvent;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.integration.SpoutFeatures;
@@ -18,8 +20,7 @@ public class CmdFactionsUnclaimall extends FCommand
 		this.addAliases("unclaimall", "declaimall");
 		
 		this.addRequirements(ReqHasPerm.get(Perm.UNCLAIM_ALL.node));
-		
-		senderMustBeOfficer = true;
+		this.addRequirements(ReqRoleIsAtLeast.get(Rel.OFFICER));
 	}
 	
 	@Override

@@ -1,8 +1,7 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.cmd.req.ReqBankCommandsEnabled;
 import com.massivecraft.mcore.cmd.HelpCommand;
-import com.massivecraft.mcore.util.Txt;
 
 public class CmdFactionsMoney extends FCommand
 {
@@ -17,15 +16,10 @@ public class CmdFactionsMoney extends FCommand
 	{
 		this.addAliases("money");
 		
-		this.isMoneyCommand = true;
+		this.setDesc("faction money commands");
+		this.setHelp("The faction money commands.");
 		
-		senderMustBePlayer = false;
-		senderMustBeMember = false;
-		senderMustBeOfficer = false;
-		senderMustBeLeader = false;
-		
-		this.setHelpShort("faction money commands");
-		this.helpLong.add(Txt.parse("<i>The faction money commands."));
+		this.addRequirements(ReqBankCommandsEnabled.get());
 		
 		this.addSubCommand(this.cmdMoneyBalance);
 		this.addSubCommand(this.cmdMoneyDeposit);

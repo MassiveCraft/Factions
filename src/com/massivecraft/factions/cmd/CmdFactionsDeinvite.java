@@ -3,7 +3,9 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
+import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.cmd.arg.ARFPlayer;
+import com.massivecraft.factions.cmd.req.ReqRoleIsAtLeast;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 
 public class CmdFactionsDeinvite extends FCommand
@@ -16,11 +18,7 @@ public class CmdFactionsDeinvite extends FCommand
 		this.addRequiredArg("player");
 		
 		this.addRequirements(ReqHasPerm.get(Perm.DEINVITE.node));
-		
-		// TODO: Base on faction permissions instead?
-		senderMustBeMember = false;
-		senderMustBeOfficer = true;
-		senderMustBeLeader = false;
+		this.addRequirements(ReqRoleIsAtLeast.get(Rel.OFFICER));
 	}
 	
 	@Override

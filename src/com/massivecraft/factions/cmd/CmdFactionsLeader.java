@@ -47,7 +47,7 @@ public class CmdFactionsLeader extends FCommand
 			// Follow the standard rules
 			if (fme.getRole() != Rel.LEADER || targetFaction != myFaction)
 			{
-				sender.sendMessage(Txt.parse("<b>You must be leader of the faction to %s.", this.getHelpShort()));
+				sender.sendMessage(Txt.parse("<b>You must be leader of the faction to %s.", this.getDesc()));
 				return;
 			}
 			

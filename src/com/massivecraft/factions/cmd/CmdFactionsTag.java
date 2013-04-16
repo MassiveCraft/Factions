@@ -8,6 +8,8 @@ import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionColl;
 import com.massivecraft.factions.Perm;
+import com.massivecraft.factions.Rel;
+import com.massivecraft.factions.cmd.req.ReqRoleIsAtLeast;
 import com.massivecraft.factions.event.FactionRenameEvent;
 import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.util.MiscUtil;
@@ -23,8 +25,7 @@ public class CmdFactionsTag extends FCommand
 		this.addRequiredArg("new tag");
 		
 		this.addRequirements(ReqHasPerm.get(Perm.TAG.node));
-		
-		senderMustBeOfficer = true;
+		this.addRequirements(ReqRoleIsAtLeast.get(Rel.OFFICER));
 	}
 	
 	@Override
