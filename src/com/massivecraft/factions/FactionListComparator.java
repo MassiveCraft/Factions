@@ -22,24 +22,24 @@ public class FactionListComparator implements Comparator<Faction>
 	{
 		int ret = 0;
 		
-		// Null --> Low
+		// Null
 		if (f1 == null && f2 == null) ret = 0;
 		if (f1 == null) ret = -1;
 		if (f2 == null) ret = +1;
 		if (ret != 0) return ret;
 		
-		// None --> High
+		// None
 		if (f1.isNone() && f2.isNone()) ret = 0;
-		if (f1.isNone()) ret = +1;
-		if (f2.isNone()) ret = -1;
+		if (f1.isNone()) ret = -1;
+		if (f2.isNone()) ret = +1;
 		if (ret != 0) return ret;
 		
-		// Players Online --> High
-		ret = f1.getFPlayersWhereOnline(true).size() - f2.getFPlayersWhereOnline(true).size();
+		// Players Online
+		ret = f2.getFPlayersWhereOnline(true).size() - f1.getFPlayersWhereOnline(true).size();
 		if (ret != 0) return ret;
 		
-		// Players Total --> High
-		ret = f1.getFPlayers().size() - f2.getFPlayers().size();
+		// Players Total
+		ret = f2.getFPlayers().size() - f1.getFPlayers().size();
 		if (ret != 0) return ret;
 		
 		// Tie by Id

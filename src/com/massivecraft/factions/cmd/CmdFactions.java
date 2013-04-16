@@ -3,7 +3,10 @@ package com.massivecraft.factions.cmd;
 import java.util.Collections;
 
 import com.massivecraft.factions.ConfServer;
+import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.Perm;
 import com.massivecraft.mcore.cmd.HelpCommand;
+import com.massivecraft.mcore.cmd.VersionCommand;
 
 public class CmdFactions extends FCommand
 {
@@ -44,7 +47,7 @@ public class CmdFactions extends FCommand
 	public CmdFactionsTitle cmdFactionsTitle = new CmdFactionsTitle();
 	public CmdFactionsUnclaim cmdFactionsUnclaim = new CmdFactionsUnclaim();
 	public CmdFactionsUnclaimall cmdFactionsUnclaimall = new CmdFactionsUnclaimall();
-	public CmdFactionsVersion cmdFactionsVersion = new CmdFactionsVersion();
+	public VersionCommand cmdFactionsVersion = new VersionCommand(Factions.get(), Perm.VERSION.node, "v", "version");
 	
 	public CmdFactions()
 	{
