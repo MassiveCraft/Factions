@@ -12,6 +12,7 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
+import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 import com.massivecraft.mcore.mixin.Mixin;
 import com.massivecraft.mcore.util.Txt;
 
@@ -19,13 +20,12 @@ public class CmdFactionsShow extends FCommand
 {
 	public CmdFactionsShow()
 	{
-		this.aliases.add("show");
-		this.aliases.add("who");
+		this.addAliases("show", "who");
 		
 		//this.requiredArgs.add("");
 		this.optionalArgs.put("faction", "your");
 		
-		this.permission = Perm.SHOW.node;
+		this.addRequirements(ReqHasPerm.get(Perm.SHOW.node));
 	}
 
 	@Override

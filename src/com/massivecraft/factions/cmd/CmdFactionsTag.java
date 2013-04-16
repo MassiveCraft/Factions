@@ -11,18 +11,18 @@ import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.event.FactionRenameEvent;
 import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.util.MiscUtil;
+import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 
 public class CmdFactionsTag extends FCommand
 {
 	
 	public CmdFactionsTag()
 	{
-		this.aliases.add("tag");
+		this.addAliases("tag");
 		
 		this.requiredArgs.add("new tag");
-		//this.optionalArgs.put("", "");
 		
-		this.permission = Perm.TAG.node;
+		this.addRequirements(ReqHasPerm.get(Perm.TAG.node));
 		
 		senderMustBeOfficer = true;
 	}

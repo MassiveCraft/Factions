@@ -5,6 +5,7 @@ import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.integration.Econ;
+import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 import com.massivecraft.mcore.util.Txt;
 
 import org.bukkit.ChatColor;
@@ -16,13 +17,14 @@ public class CmdFactionsMoneyDeposit extends FCommand
 	public CmdFactionsMoneyDeposit()
 	{
 		super();
-		this.aliases.add("d");
-		this.aliases.add("deposit");
+		
+		this.addAliases("d", "deposit");
 		
 		this.requiredArgs.add("amount");
 		this.optionalArgs.put("faction", "your");
 		
-		this.permission = Perm.MONEY_DEPOSIT.node;
+		this.addRequirements(ReqHasPerm.get(Perm.MONEY_DEPOSIT.node));
+		
 		this.setHelpShort("deposit money");
 		
 		senderMustBePlayer = true;

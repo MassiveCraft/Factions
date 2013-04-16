@@ -5,15 +5,18 @@ import java.net.URL;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.util.RelationUtil;
+import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 
 public class CmdFactionsCapeSet extends CmdFactionsCapeAbstract
 {
 	
 	public CmdFactionsCapeSet()
 	{
-		this.aliases.add("set");
+		this.addAliases("set");
+		
 		this.requiredArgs.add("url");
-		this.permission = Perm.CAPE_SET.node;
+		
+		this.addRequirements(ReqHasPerm.get(Perm.CAPE_SET.node));
 	}
 	
 	@Override

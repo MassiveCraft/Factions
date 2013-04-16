@@ -1,6 +1,7 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Factions;
+import com.massivecraft.mcore.cmd.HelpCommand;
 import com.massivecraft.mcore.util.Txt;
 
 public class CmdFactionsMoney extends FCommand
@@ -15,10 +16,8 @@ public class CmdFactionsMoney extends FCommand
 	public CmdFactionsMoney()
 	{
 		super();
-		this.aliases.add("money");
 		
-		//this.requiredArgs.add("");
-		//this.optionalArgs.put("","")
+		this.addAliases("money");
 		
 		this.isMoneyCommand = true;
 		
@@ -41,8 +40,8 @@ public class CmdFactionsMoney extends FCommand
 	@Override
 	public void perform()
 	{
-		this.commandChain.add(this);
-		Factions.get().cmdAutoHelp.execute(this.sender, this.args, this.commandChain);
+		this.getCommandChain().add(this);
+		HelpCommand.getInstance().execute(this.sender, this.args, this.commandChain);
 	}
 	
 }

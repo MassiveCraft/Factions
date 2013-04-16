@@ -3,19 +3,21 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Perm;
+import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 
 public class CmdFactionsMoneyBalance extends FCommand
 {
 	public CmdFactionsMoneyBalance()
 	{
 		super();
-		this.aliases.add("b");
-		this.aliases.add("balance");
+		
+		this.addAliases("b", "balance");
 		
 		//this.requiredArgs.add("");
 		this.optionalArgs.put("faction", "your");
 		
-		this.permission = Perm.MONEY_BALANCE.node;
+		this.addRequirements(ReqHasPerm.get(Perm.MONEY_BALANCE.node));
+		
 		this.setHelpShort("show faction balance");
 		
 		senderMustBePlayer = false;

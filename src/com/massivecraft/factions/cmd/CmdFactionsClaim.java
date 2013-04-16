@@ -4,6 +4,7 @@ import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.util.SpiralTask;
+import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 import com.massivecraft.mcore.cmd.req.ReqIsPlayer;
 import com.massivecraft.mcore.ps.PS;
 
@@ -14,13 +15,14 @@ public class CmdFactionsClaim extends FCommand
 	public CmdFactionsClaim()
 	{
 		super();
-		this.aliases.add("claim");
+		
+		this.addAliases("claim");
 		
 		//this.requiredArgs.add("");
 		this.optionalArgs.put("faction", "your");
 		this.optionalArgs.put("radius", "1");
 		
-		this.permission = Perm.CLAIM.node;
+		this.addRequirements(ReqHasPerm.get(Perm.CLAIM.node));
 		
 		this.addRequirements(ReqIsPlayer.get());
 	}

@@ -4,18 +4,19 @@ import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.integration.SpoutFeatures;
+import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 import com.massivecraft.mcore.util.Txt;
 
 public class CmdFactionsTitle extends FCommand
 {
 	public CmdFactionsTitle()
 	{
-		this.aliases.add("title");
+		this.addAliases("title");
 		
 		this.requiredArgs.add("player");
 		this.optionalArgs.put("title", "");
 		
-		this.permission = Perm.TITLE.node;
+		this.addRequirements(ReqHasPerm.get(Perm.TITLE.node));
 		
 		senderMustBeOfficer = true;
 	}

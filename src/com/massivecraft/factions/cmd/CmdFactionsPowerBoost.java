@@ -4,19 +4,21 @@ import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
+import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 
 public class CmdFactionsPowerBoost extends FCommand
 {
 	public CmdFactionsPowerBoost()
 	{
 		super();
-		this.aliases.add("powerboost");
+		
+		this.addAliases("powerboost");
 		
 		this.requiredArgs.add("p|f|player|faction");
 		this.requiredArgs.add("name");
 		this.requiredArgs.add("#");
 		
-		this.permission = Perm.POWERBOOST.node;
+		this.addRequirements(ReqHasPerm.get(Perm.POWERBOOST.node));
 	}
 	
 	@Override

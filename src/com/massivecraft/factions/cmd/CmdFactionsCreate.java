@@ -14,6 +14,7 @@ import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.event.FPlayerJoinEvent;
 import com.massivecraft.factions.event.FactionCreateEvent;
+import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 import com.massivecraft.mcore.cmd.req.ReqIsPlayer;
 
 public class CmdFactionsCreate extends FCommand
@@ -21,12 +22,13 @@ public class CmdFactionsCreate extends FCommand
 	public CmdFactionsCreate()
 	{
 		super();
-		this.aliases.add("create");
+		
+		this.addAliases("create");
 		
 		this.requiredArgs.add("faction tag");
 		//this.optionalArgs.put("", "");
 		
-		this.permission = Perm.CREATE.node;
+		this.addRequirements(ReqHasPerm.get(Perm.CREATE.node));
 	}
 	
 	@Override

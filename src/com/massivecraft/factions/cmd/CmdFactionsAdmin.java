@@ -2,18 +2,19 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
+import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 
 public class CmdFactionsAdmin extends FCommand
 {
 	public CmdFactionsAdmin()
 	{
 		super();
-		this.aliases.add("admin");
 		
-		//this.requiredArgs.add("");
+		this.addAliases("admin");
+		
 		this.optionalArgs.put("on/off", "flip");
 		
-		this.permission = Perm.ADMIN.node;
+		this.addRequirements(ReqHasPerm.get(Perm.ADMIN.node));
 	}
 	
 	@Override

@@ -3,6 +3,7 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.FFlag;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Perm;
+import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 import com.massivecraft.mcore.util.Txt;
 
 public class CmdFactionsFlag extends FCommand
@@ -11,14 +12,15 @@ public class CmdFactionsFlag extends FCommand
 	public CmdFactionsFlag()
 	{
 		super();
-		this.aliases.add("flag");
+		
+		this.addAliases("flag");
 		
 		//this.requiredArgs.add("");
 		this.optionalArgs.put("faction", "your");
 		this.optionalArgs.put("flag", "all");
 		this.optionalArgs.put("yes/no", "read");
 		
-		this.permission = Perm.FLAG.node;
+		this.addRequirements(ReqHasPerm.get(Perm.FLAG.node));
 	}
 	
 	@Override

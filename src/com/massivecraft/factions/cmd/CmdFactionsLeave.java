@@ -1,18 +1,17 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Perm;
+import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 
 public class CmdFactionsLeave extends FCommand {
 	
 	public CmdFactionsLeave()
 	{
 		super();
-		this.aliases.add("leave");
 		
-		//this.requiredArgs.add("");
-		//this.optionalArgs.put("", "");
+		this.addAliases("leave");
 		
-		this.permission = Perm.LEAVE.node;
+		this.addRequirements(ReqHasPerm.get(Perm.LEAVE.node));
 		
 		senderMustBeMember = true;
 	}

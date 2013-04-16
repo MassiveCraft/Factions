@@ -4,18 +4,20 @@ import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionColl;
 import com.massivecraft.factions.Perm;
+import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 
 public class CmdFactionsOpen extends FCommand
 {
 	public CmdFactionsOpen()
 	{
 		super();
-		this.aliases.add("open");
+		
+		this.addAliases("open");
 		
 		//this.requiredArgs.add("");
 		this.optionalArgs.put("yes/no", "flip");
 		
-		this.permission = Perm.OPEN.node;
+		this.addRequirements(ReqHasPerm.get(Perm.OPEN.node));
 		
 		senderMustBeOfficer = true;
 	}

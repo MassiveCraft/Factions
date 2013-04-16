@@ -11,6 +11,7 @@ import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
+import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 import com.massivecraft.mcore.cmd.req.ReqIsPlayer;
 import com.massivecraft.mcore.ps.PS;
 
@@ -18,13 +19,9 @@ public class CmdFactionsUnclaim extends FCommand
 {
 	public CmdFactionsUnclaim()
 	{
-		this.aliases.add("unclaim");
-		this.aliases.add("declaim");
+		this.addAliases("unclaim", "declaim");
 		
-		//this.requiredArgs.add("");
-		//this.optionalArgs.put("", "");
-		
-		this.permission = Perm.UNCLAIM.node;
+		this.addRequirements(ReqHasPerm.get(Perm.UNCLAIM.node));
 		
 		this.addRequirements(ReqIsPlayer.get());
 	}

@@ -9,18 +9,15 @@ import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.event.LandUnclaimAllEvent;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.integration.SpoutFeatures;
+import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 
 public class CmdFactionsUnclaimall extends FCommand
 {	
 	public CmdFactionsUnclaimall()
 	{
-		this.aliases.add("unclaimall");
-		this.aliases.add("declaimall");
+		this.addAliases("unclaimall", "declaimall");
 		
-		//this.requiredArgs.add("");
-		//this.optionalArgs.put("", "");
-		
-		this.permission = Perm.UNCLAIM_ALL.node;
+		this.addRequirements(ReqHasPerm.get(Perm.UNCLAIM_ALL.node));
 		
 		senderMustBeOfficer = true;
 	}

@@ -3,18 +3,14 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.util.RelationUtil;
+import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 
 public class CmdFactionsCapeRemove extends CmdFactionsCapeAbstract
 {
-	
 	public CmdFactionsCapeRemove()
 	{
-		this.aliases.add("rm");
-		this.aliases.add("rem");
-		this.aliases.add("remove");
-		this.aliases.add("del");
-		this.aliases.add("delete");
-		this.permission = Perm.CAPE_REMOVE.node;
+		this.addAliases("rm", "rem", "remove", "del", "delete");
+		this.addRequirements(ReqHasPerm.get(Perm.CAPE_REMOVE.node));
 	}
 	
 	@Override

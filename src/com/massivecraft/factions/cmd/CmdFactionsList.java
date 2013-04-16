@@ -8,6 +8,7 @@ import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionColl;
 import com.massivecraft.factions.Perm;
+import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 import com.massivecraft.mcore.util.Txt;
 
 
@@ -17,13 +18,13 @@ public class CmdFactionsList extends FCommand
 	public CmdFactionsList()
 	{
 		super();
-		this.aliases.add("list");
-		this.aliases.add("ls");
+		
+		this.addAliases("ls", "list");
 		
 		//this.requiredArgs.add("");
 		this.optionalArgs.put("page", "1");
 		
-		this.permission = Perm.LIST.node;
+		this.addRequirements(ReqHasPerm.get(Perm.LIST.node));
 	}
 
 	@Override

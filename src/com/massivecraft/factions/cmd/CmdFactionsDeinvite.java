@@ -2,6 +2,7 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Perm;
+import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 
 public class CmdFactionsDeinvite extends FCommand
 {
@@ -9,13 +10,13 @@ public class CmdFactionsDeinvite extends FCommand
 	public CmdFactionsDeinvite()
 	{
 		super();
-		this.aliases.add("deinvite");
-		this.aliases.add("deinv");
+		
+		this.addAliases("deinvite", "deinv");
 		
 		this.requiredArgs.add("player");
 		//this.optionalArgs.put("", "");
 		
-		this.permission = Perm.DEINVITE.node;
+		this.addRequirements(ReqHasPerm.get(Perm.DEINVITE.node));
 		
 		senderMustBeMember = false;
 		senderMustBeOfficer = true;

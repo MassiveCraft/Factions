@@ -4,6 +4,7 @@ import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayerColl;
 import com.massivecraft.factions.Perm;
+import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 import com.massivecraft.mcore.util.Txt;
 
 public class CmdFactionsDescription extends FCommand
@@ -11,13 +12,14 @@ public class CmdFactionsDescription extends FCommand
 	public CmdFactionsDescription()
 	{
 		super();
-		this.aliases.add("desc");
+		
+		this.addAliases("desc");
 		
 		this.requiredArgs.add("desc");
 		this.errorOnToManyArgs = false;
 		//this.optionalArgs
 		
-		this.permission = Perm.DESCRIPTION.node;
+		this.addRequirements(ReqHasPerm.get(Perm.DESCRIPTION.node));
 		
 		senderMustBeOfficer = true;
 	}

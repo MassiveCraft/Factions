@@ -5,6 +5,7 @@ import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.integration.Econ;
+import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 import com.massivecraft.mcore.util.Txt;
 
 import org.bukkit.ChatColor;
@@ -14,7 +15,7 @@ public class CmdFactionsMoneyTransferFp extends FCommand
 {
 	public CmdFactionsMoneyTransferFp()
 	{
-		this.aliases.add("fp");
+		this.addAliases("fp");
 		
 		this.requiredArgs.add("amount");
 		this.requiredArgs.add("faction");
@@ -22,7 +23,8 @@ public class CmdFactionsMoneyTransferFp extends FCommand
 		
 		//this.optionalArgs.put("", "");
 		
-		this.permission = Perm.MONEY_F2P.node;
+		this.addRequirements(ReqHasPerm.get(Perm.MONEY_F2P.node));
+		
 		this.setHelpShort("transfer f -> p");
 		
 		senderMustBePlayer = false;

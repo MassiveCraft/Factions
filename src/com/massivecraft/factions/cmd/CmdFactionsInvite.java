@@ -4,6 +4,7 @@ import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Perm;
+import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 import com.massivecraft.mcore.cmd.req.ReqIsPlayer;
 
 public class CmdFactionsInvite extends FCommand
@@ -11,15 +12,13 @@ public class CmdFactionsInvite extends FCommand
 	public CmdFactionsInvite()
 	{
 		super();
-		this.aliases.add("invite");
-		this.aliases.add("inv");
+		
+		this.addAliases("inv", "invite");
 		
 		this.requiredArgs.add("player");
 		//this.optionalArgs.put("", "");
 		
-		this.permission = Perm.INVITE.node;
-		
-		
+		this.addRequirements(ReqHasPerm.get(Perm.INVITE.node));
 		this.addRequirements(ReqIsPlayer.get());
 		
 		senderMustBeOfficer = true;

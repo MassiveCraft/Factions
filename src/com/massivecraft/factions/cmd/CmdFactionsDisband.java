@@ -14,18 +14,20 @@ import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.integration.SpoutFeatures;
+import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 
 public class CmdFactionsDisband extends FCommand
 {
 	public CmdFactionsDisband()
 	{
 		super();
-		this.aliases.add("disband");
+		
+		this.addAliases("disband");
 		
 		//this.requiredArgs.add("");
 		this.optionalArgs.put("faction", "your");
 		
-		this.permission = Perm.DISBAND.node;
+		this.addRequirements(ReqHasPerm.get(Perm.DISBAND.node));
 	}
 	
 	@Override

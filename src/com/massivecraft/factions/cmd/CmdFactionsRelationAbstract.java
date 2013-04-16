@@ -9,6 +9,7 @@ import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.event.FactionRelationEvent;
 import com.massivecraft.factions.integration.SpoutFeatures;
+import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 import com.massivecraft.mcore.cmd.req.ReqIsPlayer;
 
 public abstract class CmdFactionsRelationAbstract extends FCommand
@@ -18,10 +19,10 @@ public abstract class CmdFactionsRelationAbstract extends FCommand
 	public CmdFactionsRelationAbstract()
 	{
 		super();
-		this.requiredArgs.add("faction");
-		//this.optionalArgs.put("", "");
 		
-		this.permission = Perm.RELATION.node;
+		this.addAliases("faction");
+		
+		this.addRequirements(ReqHasPerm.get(Perm.RELATION.node));
 		
 		senderMustBeOfficer = true;
 	}

@@ -4,6 +4,7 @@ import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
+import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 import com.massivecraft.mcore.util.Txt;
 
 public class CmdFactionsPerm extends FCommand
@@ -12,14 +13,15 @@ public class CmdFactionsPerm extends FCommand
 	public CmdFactionsPerm()
 	{
 		super();
-		this.aliases.add("perm");
+		
+		this.addAliases("perm");
 		
 		this.optionalArgs.put("faction", "your");
 		this.optionalArgs.put("perm", "all");
 		this.optionalArgs.put("relation", "read");
 		this.optionalArgs.put("yes/no", "read");
 		
-		this.permission = Perm.PERM.node;
+		this.addRequirements(ReqHasPerm.get(Perm.PERM.node));
 		
 		this.errorOnToManyArgs = false;
 	}

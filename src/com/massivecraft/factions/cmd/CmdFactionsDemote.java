@@ -3,6 +3,7 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
+import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 
 public class CmdFactionsDemote extends FCommand
 {
@@ -10,12 +11,13 @@ public class CmdFactionsDemote extends FCommand
 	public CmdFactionsDemote()
 	{
 		super();
-		this.aliases.add("demote");
+		
+		this.addAliases("demote");
 		
 		this.requiredArgs.add("player name");
 		//this.optionalArgs.put("", "");
 		
-		this.permission = Perm.DEMOTE.node;
+		this.addRequirements(ReqHasPerm.get(Perm.DEMOTE.node));
 		
 		//To demote someone from member -> recruit you must be an officer.
 		//To demote someone from officer -> member you must be a leader.

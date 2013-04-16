@@ -1,13 +1,15 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Perm;
+import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 
 public class CmdFactionsCapeGet extends CmdFactionsCapeAbstract
 {
 	public CmdFactionsCapeGet()
 	{
-		this.aliases.add("get");
-		this.permission = Perm.CAPE_GET.node;
+		this.addAliases("get");
+		
+		this.addRequirements(ReqHasPerm.get(Perm.CAPE_GET.node));
 	}
 	
 	@Override

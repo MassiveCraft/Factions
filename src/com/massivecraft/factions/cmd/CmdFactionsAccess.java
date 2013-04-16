@@ -17,9 +17,10 @@ public class CmdFactionsAccess extends FCommand
 	public CmdFactionsAccess()
 	{
 		super();
-		this.aliases.add("access");
 		
-		this.optionalArgs.put("view|p|f|player|faction", "view");
+		this.addAliases("access");
+		
+		this.optionalArgs.put("view|p|player|f|faction", "view");
 		this.optionalArgs.put("name", "you");
 		
 		this.setHelpShort("view or grant access for the claimed territory you are in");
@@ -30,7 +31,7 @@ public class CmdFactionsAccess extends FCommand
 	@Override
 	public void perform()
 	{
-		String type = this.argAsString(0);
+		String type = this.arg(0);
 		type = (type == null) ? "" : type.toLowerCase();
 		PS chunk = PS.valueOf(me).getChunk(true);
 

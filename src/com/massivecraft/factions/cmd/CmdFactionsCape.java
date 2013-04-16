@@ -1,7 +1,8 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
+import com.massivecraft.mcore.cmd.HelpCommand;
+import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 
 public class CmdFactionsCape extends FCommand
 {
@@ -12,9 +13,10 @@ public class CmdFactionsCape extends FCommand
 	public CmdFactionsCape()
 	{
 		super();
-		this.aliases.add("cape");
 		
-		this.permission = Perm.CAPE.node;
+		this.addAliases("cape");
+		
+		this.addRequirements(ReqHasPerm.get(Perm.CAPE.node));
 		
 		this.addSubCommand(this.cmdCapeGet);
 		this.addSubCommand(this.cmdCapeSet);
@@ -24,8 +26,8 @@ public class CmdFactionsCape extends FCommand
 	@Override
 	public void perform()
 	{
-		this.commandChain.add(this);
-		Factions.get().cmdAutoHelp.execute(this.sender, this.args, this.commandChain);
+		this.getCommandChain().add(this);
+		HelpCommand.getInstance().execute(this.sender, this.args, this.commandChain);
 	}
 	
 }

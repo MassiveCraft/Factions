@@ -16,6 +16,7 @@ import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.integration.EssentialsFeatures;
+import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 import com.massivecraft.mcore.cmd.req.ReqIsPlayer;
 import com.massivecraft.mcore.ps.PS;
 import com.massivecraft.mcore.util.SmokeUtil;
@@ -27,12 +28,13 @@ public class CmdFactionsHome extends FCommand
 	public CmdFactionsHome()
 	{
 		super();
-		this.aliases.add("home");
+		
+		this.addAliases("home");
 		
 		//this.requiredArgs.add("");
 		//this.optionalArgs.put("", "");
 		
-		this.permission = Perm.HOME.node;
+		this.addRequirements(ReqHasPerm.get(Perm.HOME.node));
 		
 		this.addRequirements(ReqIsPlayer.get());
 		

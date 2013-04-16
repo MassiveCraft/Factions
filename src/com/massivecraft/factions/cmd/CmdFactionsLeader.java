@@ -9,6 +9,7 @@ import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.event.FPlayerJoinEvent;
 import com.massivecraft.factions.util.RelationUtil;
+import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 import com.massivecraft.mcore.util.Txt;
 
 public class CmdFactionsLeader extends FCommand
@@ -16,12 +17,13 @@ public class CmdFactionsLeader extends FCommand
 	public CmdFactionsLeader()
 	{
 		super();
-		this.aliases.add("leader");
+		
+		this.addAliases("leader");
 		
 		this.requiredArgs.add("player");
 		this.optionalArgs.put("faction", "your");
 		
-		this.permission = Perm.LEADER.node;
+		this.addRequirements(ReqHasPerm.get(Perm.LEADER.node));
 	}
 	
 	@Override

@@ -9,18 +9,20 @@ import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.event.FPlayerJoinEvent;
+import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 
 public class CmdFactionsJoin extends FCommand
 {
 	public CmdFactionsJoin()
 	{
 		super();
-		this.aliases.add("join");
+		
+		this.addAliases("join");
 		
 		this.requiredArgs.add("faction");
 		this.optionalArgs.put("player", "you");
 		
-		this.permission = Perm.JOIN.node;
+		this.addRequirements(ReqHasPerm.get(Perm.JOIN.node));
 	}
 	
 	@Override

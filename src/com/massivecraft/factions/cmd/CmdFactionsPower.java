@@ -3,6 +3,7 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Perm;
+import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 
 public class CmdFactionsPower extends FCommand
 {
@@ -10,13 +11,13 @@ public class CmdFactionsPower extends FCommand
 	public CmdFactionsPower()
 	{
 		super();
-		this.aliases.add("power");
-		this.aliases.add("pow");
+		
+		this.addAliases("power", "pow");
 		
 		//this.requiredArgs.add("faction tag");
 		this.optionalArgs.put("player", "you");
 		
-		this.permission = Perm.POWER.node;
+		this.addRequirements(ReqHasPerm.get(Perm.POWER.node));
 	}
 	
 	@Override

@@ -4,6 +4,7 @@ import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
+import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 
 public class CmdFactionsOfficer extends FCommand
 {
@@ -11,12 +12,13 @@ public class CmdFactionsOfficer extends FCommand
 	public CmdFactionsOfficer()
 	{
 		super();
-		this.aliases.add("officer");
+		
+		this.addAliases("officer");
 		
 		this.requiredArgs.add("player name");
 		//this.optionalArgs.put("", "");
 		
-		this.permission = Perm.OFFICER.node;
+		this.addRequirements(ReqHasPerm.get(Perm.OFFICER.node));
 	}
 	
 	@Override

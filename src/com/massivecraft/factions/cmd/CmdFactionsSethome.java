@@ -5,6 +5,7 @@ import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Perm;
+import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 import com.massivecraft.mcore.cmd.req.ReqIsPlayer;
 import com.massivecraft.mcore.ps.PS;
 
@@ -12,12 +13,12 @@ public class CmdFactionsSethome extends FCommand
 {
 	public CmdFactionsSethome()
 	{
-		this.aliases.add("sethome");
+		this.addAliases("sethome");
 		
 		//this.requiredArgs.add("");
 		this.optionalArgs.put("faction", "your");
 		
-		this.permission = Perm.SETHOME.node;
+		this.addRequirements(ReqHasPerm.get(Perm.SETHOME.node));
 		
 		this.addRequirements(ReqIsPlayer.get());
 	}

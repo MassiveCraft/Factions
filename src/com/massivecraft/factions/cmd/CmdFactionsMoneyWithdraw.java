@@ -5,6 +5,7 @@ import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.integration.Econ;
+import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 import com.massivecraft.mcore.util.Txt;
 
 import org.bukkit.ChatColor;
@@ -14,13 +15,13 @@ public class CmdFactionsMoneyWithdraw extends FCommand
 {
 	public CmdFactionsMoneyWithdraw()
 	{
-		this.aliases.add("w");
-		this.aliases.add("withdraw");
+		this.addAliases("w", "withdraw");
 		
 		this.requiredArgs.add("amount");
 		this.optionalArgs.put("faction", "your");
 		
-		this.permission = Perm.MONEY_WITHDRAW.node;
+		this.addRequirements(ReqHasPerm.get(Perm.MONEY_WITHDRAW.node));
+		
 		this.setHelpShort("withdraw money");
 		
 		senderMustBePlayer = true;

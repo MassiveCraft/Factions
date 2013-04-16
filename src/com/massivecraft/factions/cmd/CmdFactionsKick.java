@@ -10,6 +10,7 @@ import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.event.FPlayerLeaveEvent;
+import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 
 public class CmdFactionsKick extends FCommand
 {
@@ -17,12 +18,13 @@ public class CmdFactionsKick extends FCommand
 	public CmdFactionsKick()
 	{
 		super();
-		this.aliases.add("kick");
+		
+		this.addAliases("kick");
 		
 		this.requiredArgs.add("player");
 		//this.optionalArgs.put("", "");
 		
-		this.permission = Perm.KICK.node;
+		this.addRequirements(ReqHasPerm.get(Perm.KICK.node));
 	}
 	
 	@Override
