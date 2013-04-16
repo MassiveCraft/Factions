@@ -29,6 +29,7 @@ import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
+import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.struct.FFlag;
@@ -59,6 +60,13 @@ public class FactionsPlayerListener implements Listener
 		me.setLastStoodAt(new FLocation(event.getPlayer().getLocation()));
 		if ( ! SpoutFeatures.updateTerritoryDisplay(me))
 			me.sendFactionHereMessage();
+		
+		// Set NoBoom timer update.
+		Faction faction = me.getFaction();
+		if (me.hasFaction() && Conf.protectOfflineFactionsFromExplosions) {
+			//Notify our faction that the number of online players has changed.
+			faction.updateOfflineExplosionProtection();
+		}
 	}
 	
 	@EventHandler(priority = EventPriority.NORMAL)
@@ -72,6 +80,13 @@ public class FactionsPlayerListener implements Listener
 		me.setLastLoginTime(System.currentTimeMillis());
 
 		SpoutFeatures.playerDisconnect(me);
+		
+		// Set NoBoom timer update.
+		Faction faction = me.getFaction();
+		if(me.hasFaction() && Conf.protectOfflineFactionsFromExplosions) {
+			//Notify our faction that the number of online players has changed.
+			faction.updateOfflineExplosionProtection();
+		}
 	}
 	
 	@EventHandler(priority = EventPriority.MONITOR)

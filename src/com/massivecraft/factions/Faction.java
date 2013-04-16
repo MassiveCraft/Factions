@@ -83,6 +83,9 @@ public class Faction extends Entity implements EconomyParticipator
 		this.home = null;
 	}
 	
+	// FIELD: lastOnlineTime
+	private long lastOnlineTime;
+	
 	// FIELD: account (fake field)
 	// Bank functions
 	public double money;
@@ -534,6 +537,53 @@ public class Faction extends Entity implements EconomyParticipator
 		{
 			fplayer.sendMessage(messages);
 		}
+	}
+	
+	//----------------------------------------------//
+	// Offline Faction Protection
+	//----------------------------------------------//
+	public void updateOfflineExplosionProtection() {
+		// We have either gained or a lost a player.
+		if (this.id == "-2" || this.id == "-1" || this.id == "0") {
+			return;
+		}
+		
+		if (this.getOnlinePlayers().size() <=1 && (this.getLastOnlineTime() + (Conf.offlineExplosionProtectionDelay * 60 * 1000)) < System.currentTimeMillis()) {
+			//No one is online, set the last online time
+			this.lastOnlineTime = System.currentTimeMillis();
+		}
+	}
+	
+	public boolean hasOfflineExplosionProtection() {
+		if (!Conf.protectOfflineFactionsFromExplosions) {
+			return false;
+		}
+		
+		if (this.id == "-2" || this.id == "-1") {
+			return true;
+		} else if ((this.id == "-2" || this.id == "-1") && this.getFlag(FFlag.EXPLOSIONS) == false) {
+			return true;
+		}
+		
+		long timeUntilNoboom = (long) (this.getLastOnlineTime() + (Conf.offlineExplosionProtectionDelay * 60 * 1000));
+		
+		//No protection if we are online.
+		if (this.getOnlinePlayers().size() > 0 || this.isNone()) {
+			return false;
+		} else if (this.getOnlinePlayers().size() == 0 && timeUntilNoboom > System.currentTimeMillis()) {
+			updateOfflineExplosionProtection();
+		}
+		
+		// No Protection while timeUntilNoboom is greater than current system time.
+		if (timeUntilNoboom > System.currentTimeMillis()) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+	
+	public long getLastOnlineTime() {
+		return this.lastOnlineTime;
 	}
 	
 	//----------------------------------------------//
