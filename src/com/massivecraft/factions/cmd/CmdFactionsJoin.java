@@ -15,12 +15,10 @@ public class CmdFactionsJoin extends FCommand
 {
 	public CmdFactionsJoin()
 	{
-		super();
-		
 		this.addAliases("join");
 		
-		this.requiredArgs.add("faction");
-		this.optionalArgs.put("player", "you");
+		this.addRequiredArg("faction");
+		this.addOptionalArg("player", "you");
 		
 		this.addRequirements(ReqHasPerm.get(Perm.JOIN.node));
 	}

@@ -12,14 +12,11 @@ public class CmdFactionsMap extends FCommand
 {
 	public CmdFactionsMap()
 	{
-		super();
-		
 		this.addAliases("map");
 		
-		this.optionalArgs.put("on/off", "once");
+		this.addOptionalArg("on/off", "once");
 		
 		this.addRequirements(ReqHasPerm.get(Perm.MAP.node));
-		
 		this.addRequirements(ReqIsPlayer.get());
 	}
 	

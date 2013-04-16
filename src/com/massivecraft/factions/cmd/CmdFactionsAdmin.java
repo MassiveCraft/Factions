@@ -8,11 +8,9 @@ public class CmdFactionsAdmin extends FCommand
 {
 	public CmdFactionsAdmin()
 	{
-		super();
-		
 		this.addAliases("admin");
 		
-		this.optionalArgs.put("on/off", "flip");
+		this.addOptionalArg("on/off", "flip");
 		
 		this.addRequirements(ReqHasPerm.get(Perm.ADMIN.node));
 	}

@@ -6,7 +6,8 @@ public class CmdFactionsRelationEnemy extends CmdFactionsRelationAbstract
 {
 	public CmdFactionsRelationEnemy()
 	{
-		aliases.add("enemy");
-		targetRelation = Rel.ENEMY;
+		this.addAliases("enemy");
+		
+		this.targetRelation = Rel.ENEMY;
 	}
 }

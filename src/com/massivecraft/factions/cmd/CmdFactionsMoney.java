@@ -15,8 +15,6 @@ public class CmdFactionsMoney extends FCommand
 	
 	public CmdFactionsMoney()
 	{
-		super();
-		
 		this.addAliases("money");
 		
 		this.isMoneyCommand = true;

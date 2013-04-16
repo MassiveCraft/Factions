@@ -16,12 +16,10 @@ public class CmdFactionsLeader extends FCommand
 {	
 	public CmdFactionsLeader()
 	{
-		super();
-		
 		this.addAliases("leader");
 		
-		this.requiredArgs.add("player");
-		this.optionalArgs.put("faction", "your");
+		this.addRequiredArg("player");
+		this.addOptionalArg("faction", "you");
 		
 		this.addRequirements(ReqHasPerm.get(Perm.LEADER.node));
 	}

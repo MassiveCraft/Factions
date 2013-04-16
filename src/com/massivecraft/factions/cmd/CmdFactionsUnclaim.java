@@ -22,7 +22,6 @@ public class CmdFactionsUnclaim extends FCommand
 		this.addAliases("unclaim", "declaim");
 		
 		this.addRequirements(ReqHasPerm.get(Perm.UNCLAIM.node));
-		
 		this.addRequirements(ReqIsPlayer.get());
 	}
 	

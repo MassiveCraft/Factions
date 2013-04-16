@@ -12,8 +12,6 @@ public class CmdFactionsCape extends FCommand
 	
 	public CmdFactionsCape()
 	{
-		super();
-		
 		this.addAliases("cape");
 		
 		this.addRequirements(ReqHasPerm.get(Perm.CAPE.node));

@@ -10,12 +10,9 @@ public class CmdFactionsOpen extends FCommand
 {
 	public CmdFactionsOpen()
 	{
-		super();
-		
 		this.addAliases("open");
 		
-		//this.requiredArgs.add("");
-		this.optionalArgs.put("yes/no", "flip");
+		this.addOptionalArg("yes/no", "toggle");
 		
 		this.addRequirements(ReqHasPerm.get(Perm.OPEN.node));
 		

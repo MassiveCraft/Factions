@@ -24,18 +24,11 @@ import com.massivecraft.mcore.util.SmokeUtil;
 
 public class CmdFactionsHome extends FCommand
 {
-	
 	public CmdFactionsHome()
 	{
-		super();
-		
 		this.addAliases("home");
 		
-		//this.requiredArgs.add("");
-		//this.optionalArgs.put("", "");
-		
 		this.addRequirements(ReqHasPerm.get(Perm.HOME.node));
-		
 		this.addRequirements(ReqIsPlayer.get());
 		
 		senderMustBeMember = true;

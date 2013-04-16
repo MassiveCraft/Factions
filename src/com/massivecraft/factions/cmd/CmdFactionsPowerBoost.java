@@ -10,13 +10,11 @@ public class CmdFactionsPowerBoost extends FCommand
 {
 	public CmdFactionsPowerBoost()
 	{
-		super();
-		
 		this.addAliases("powerboost");
 		
-		this.requiredArgs.add("p|f|player|faction");
-		this.requiredArgs.add("name");
-		this.requiredArgs.add("#");
+		this.addRequiredArg("p|f|player|faction");
+		this.addRequiredArg("name");
+		this.addRequiredArg("#");
 		
 		this.addRequirements(ReqHasPerm.get(Perm.POWERBOOST.node));
 	}

@@ -20,7 +20,7 @@ public class CmdFactionsTag extends FCommand
 	{
 		this.addAliases("tag");
 		
-		this.requiredArgs.add("new tag");
+		this.addRequiredArg("new tag");
 		
 		this.addRequirements(ReqHasPerm.get(Perm.TAG.node));
 		

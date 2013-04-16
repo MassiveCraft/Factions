@@ -10,6 +10,7 @@ public class CmdFactionsCapeRemove extends CmdFactionsCapeAbstract
 	public CmdFactionsCapeRemove()
 	{
 		this.addAliases("rm", "rem", "remove", "del", "delete");
+		
 		this.addRequirements(ReqHasPerm.get(Perm.CAPE_REMOVE.node));
 	}
 	

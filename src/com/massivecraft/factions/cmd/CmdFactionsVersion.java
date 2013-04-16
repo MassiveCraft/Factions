@@ -10,6 +10,7 @@ public class CmdFactionsVersion extends FCommand
 	public CmdFactionsVersion()
 	{
 		this.addAliases("version");
+		
 		this.addRequirements(ReqHasPerm.get(Perm.VERSION.node));
 	}
 

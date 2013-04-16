@@ -17,17 +17,12 @@ public class CmdFactionsMoneyWithdraw extends FCommand
 	{
 		this.addAliases("w", "withdraw");
 		
-		this.requiredArgs.add("amount");
-		this.optionalArgs.put("faction", "your");
+		this.addRequiredArg("amount");
+		this.addOptionalArg("faction", "you");
 		
 		this.addRequirements(ReqHasPerm.get(Perm.MONEY_WITHDRAW.node));
 		
 		this.setHelpShort("withdraw money");
-		
-		senderMustBePlayer = true;
-		senderMustBeMember = false;
-		senderMustBeOfficer = false;
-		senderMustBeLeader = false;
 	}
 	
 	@Override

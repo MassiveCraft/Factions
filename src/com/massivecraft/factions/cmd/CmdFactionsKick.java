@@ -17,12 +17,9 @@ public class CmdFactionsKick extends FCommand
 	
 	public CmdFactionsKick()
 	{
-		super();
-		
 		this.addAliases("kick");
 		
-		this.requiredArgs.add("player");
-		//this.optionalArgs.put("", "");
+		this.addRequiredArg("player");
 		
 		this.addRequirements(ReqHasPerm.get(Perm.KICK.node));
 	}

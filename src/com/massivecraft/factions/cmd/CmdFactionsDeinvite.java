@@ -9,12 +9,9 @@ public class CmdFactionsDeinvite extends FCommand
 	
 	public CmdFactionsDeinvite()
 	{
-		super();
-		
 		this.addAliases("deinvite", "deinv");
 		
-		this.requiredArgs.add("player");
-		//this.optionalArgs.put("", "");
+		this.addRequiredArg("player");
 		
 		this.addRequirements(ReqHasPerm.get(Perm.DEINVITE.node));
 		

@@ -9,21 +9,13 @@ public class CmdFactionsMoneyBalance extends FCommand
 {
 	public CmdFactionsMoneyBalance()
 	{
-		super();
-		
 		this.addAliases("b", "balance");
 		
-		//this.requiredArgs.add("");
-		this.optionalArgs.put("faction", "your");
+		this.addOptionalArg("faction", "you");
 		
 		this.addRequirements(ReqHasPerm.get(Perm.MONEY_BALANCE.node));
 		
 		this.setHelpShort("show faction balance");
-		
-		senderMustBePlayer = false;
-		senderMustBeMember = false;
-		senderMustBeOfficer = false;
-		senderMustBeLeader = false;
 	}
 	
 	@Override

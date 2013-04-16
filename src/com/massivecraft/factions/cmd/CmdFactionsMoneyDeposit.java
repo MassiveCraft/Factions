@@ -16,21 +16,14 @@ public class CmdFactionsMoneyDeposit extends FCommand
 	
 	public CmdFactionsMoneyDeposit()
 	{
-		super();
-		
 		this.addAliases("d", "deposit");
 		
-		this.requiredArgs.add("amount");
-		this.optionalArgs.put("faction", "your");
+		this.addRequiredArg("amount");
+		this.addOptionalArg("faction", "you");
 		
 		this.addRequirements(ReqHasPerm.get(Perm.MONEY_DEPOSIT.node));
 		
 		this.setHelpShort("deposit money");
-		
-		senderMustBePlayer = true;
-		senderMustBeMember = false;
-		senderMustBeOfficer = false;
-		senderMustBeLeader = false;
 	}
 	
 	@Override

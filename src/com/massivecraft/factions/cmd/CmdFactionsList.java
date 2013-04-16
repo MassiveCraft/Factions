@@ -17,12 +17,9 @@ public class CmdFactionsList extends FCommand
 	
 	public CmdFactionsList()
 	{
-		super();
-		
 		this.addAliases("ls", "list");
 		
-		//this.requiredArgs.add("");
-		this.optionalArgs.put("page", "1");
+		this.addOptionalArg("page", "1");
 		
 		this.addRequirements(ReqHasPerm.get(Perm.LIST.node));
 	}

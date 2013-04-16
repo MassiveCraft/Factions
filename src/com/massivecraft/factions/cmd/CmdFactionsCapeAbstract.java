@@ -14,7 +14,7 @@ public abstract class CmdFactionsCapeAbstract extends FCommand
 	
 	public CmdFactionsCapeAbstract()
 	{
-		this.optionalArgs.put("faction", "your");
+		this.addOptionalArg("faction", "you");
 	}
 
 	@Override

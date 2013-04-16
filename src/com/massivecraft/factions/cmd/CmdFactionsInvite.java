@@ -11,12 +11,9 @@ public class CmdFactionsInvite extends FCommand
 {
 	public CmdFactionsInvite()
 	{
-		super();
-		
 		this.addAliases("inv", "invite");
 		
-		this.requiredArgs.add("player");
-		//this.optionalArgs.put("", "");
+		this.addRequiredArg("player");
 		
 		this.addRequirements(ReqHasPerm.get(Perm.INVITE.node));
 		this.addRequirements(ReqIsPlayer.get());

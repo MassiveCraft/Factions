@@ -10,11 +10,9 @@ public class CmdFactionsAutoClaim extends FCommand
 {
 	public CmdFactionsAutoClaim()
 	{
-		super();
-		
 		this.addAliases("autoclaim");
 		
-		this.optionalArgs.put("faction", "your");
+		this.addOptionalArg("faction", "you");
 		
 		this.addRequirements(ReqHasPerm.get(Perm.AUTOCLAIM.node));
 		this.addRequirements(ReqIsPlayer.get());

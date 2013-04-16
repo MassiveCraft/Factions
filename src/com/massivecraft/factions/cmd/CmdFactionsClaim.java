@@ -14,16 +14,12 @@ public class CmdFactionsClaim extends FCommand
 	
 	public CmdFactionsClaim()
 	{
-		super();
-		
 		this.addAliases("claim");
 		
-		//this.requiredArgs.add("");
-		this.optionalArgs.put("faction", "your");
-		this.optionalArgs.put("radius", "1");
+		this.addOptionalArg("faction", "you");
+		this.addOptionalArg("radius", "1");
 		
 		this.addRequirements(ReqHasPerm.get(Perm.CLAIM.node));
-		
 		this.addRequirements(ReqIsPlayer.get());
 	}
 	

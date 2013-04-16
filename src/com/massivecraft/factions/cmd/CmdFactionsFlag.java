@@ -11,14 +11,11 @@ public class CmdFactionsFlag extends FCommand
 	
 	public CmdFactionsFlag()
 	{
-		super();
-		
 		this.addAliases("flag");
 		
-		//this.requiredArgs.add("");
-		this.optionalArgs.put("faction", "your");
-		this.optionalArgs.put("flag", "all");
-		this.optionalArgs.put("yes/no", "read");
+		this.addOptionalArg("faction", "you");
+		this.addOptionalArg("flag", "all");
+		this.addOptionalArg("yes/no", "read");
 		
 		this.addRequirements(ReqHasPerm.get(Perm.FLAG.node));
 	}

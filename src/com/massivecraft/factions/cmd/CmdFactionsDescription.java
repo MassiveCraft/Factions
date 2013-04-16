@@ -11,13 +11,10 @@ public class CmdFactionsDescription extends FCommand
 {
 	public CmdFactionsDescription()
 	{
-		super();
-		
 		this.addAliases("desc");
 		
-		this.requiredArgs.add("desc");
-		this.errorOnToManyArgs = false;
-		//this.optionalArgs
+		this.addRequiredArg("desc");
+		this.setErrorOnToManyArgs(false);
 		
 		this.addRequirements(ReqHasPerm.get(Perm.DESCRIPTION.node));
 		

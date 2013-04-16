@@ -14,7 +14,7 @@ public class CmdFactionsCapeSet extends CmdFactionsCapeAbstract
 	{
 		this.addAliases("set");
 		
-		this.requiredArgs.add("url");
+		this.addRequiredArg("url");
 		
 		this.addRequirements(ReqHasPerm.get(Perm.CAPE_SET.node));
 	}

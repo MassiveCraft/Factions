@@ -11,12 +11,9 @@ public class CmdFactionsOfficer extends FCommand
 	
 	public CmdFactionsOfficer()
 	{
-		super();
-		
 		this.addAliases("officer");
 		
-		this.requiredArgs.add("player name");
-		//this.optionalArgs.put("", "");
+		this.addRequiredArg("player");
 		
 		this.addRequirements(ReqHasPerm.get(Perm.OFFICER.node));
 	}

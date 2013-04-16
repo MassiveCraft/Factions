@@ -7,8 +7,6 @@ public class CmdFactionsLeave extends FCommand {
 	
 	public CmdFactionsLeave()
 	{
-		super();
-		
 		this.addAliases("leave");
 		
 		this.addRequirements(ReqHasPerm.get(Perm.LEAVE.node));

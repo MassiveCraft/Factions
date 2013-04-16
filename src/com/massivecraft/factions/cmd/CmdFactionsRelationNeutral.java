@@ -6,7 +6,8 @@ public class CmdFactionsRelationNeutral extends CmdFactionsRelationAbstract
 {
 	public CmdFactionsRelationNeutral()
 	{
-		aliases.add("neutral");
-		targetRelation = Rel.NEUTRAL;
+		this.addAliases("neutral");
+		
+		this.targetRelation = Rel.NEUTRAL;
 	}
 }

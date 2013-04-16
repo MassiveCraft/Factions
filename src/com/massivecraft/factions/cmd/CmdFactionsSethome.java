@@ -15,12 +15,10 @@ public class CmdFactionsSethome extends FCommand
 	{
 		this.addAliases("sethome");
 		
-		//this.requiredArgs.add("");
-		this.optionalArgs.put("faction", "your");
-		
-		this.addRequirements(ReqHasPerm.get(Perm.SETHOME.node));
+		this.addOptionalArg("faction", "you");
 		
 		this.addRequirements(ReqIsPlayer.get());
+		this.addRequirements(ReqHasPerm.get(Perm.SETHOME.node));
 	}
 	
 	@Override

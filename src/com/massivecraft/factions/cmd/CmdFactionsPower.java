@@ -10,12 +10,9 @@ public class CmdFactionsPower extends FCommand
 	
 	public CmdFactionsPower()
 	{
-		super();
-		
 		this.addAliases("power", "pow");
 		
-		//this.requiredArgs.add("faction tag");
-		this.optionalArgs.put("player", "you");
+		this.addOptionalArg("player", "you");
 		
 		this.addRequirements(ReqHasPerm.get(Perm.POWER.node));
 	}

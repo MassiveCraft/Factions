@@ -22,8 +22,7 @@ public class CmdFactionsShow extends FCommand
 	{
 		this.addAliases("show", "who");
 		
-		//this.requiredArgs.add("");
-		this.optionalArgs.put("faction", "your");
+		this.addOptionalArg("faction", "you");
 		
 		this.addRequirements(ReqHasPerm.get(Perm.SHOW.node));
 	}

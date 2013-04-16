@@ -21,12 +21,9 @@ public class CmdFactionsCreate extends FCommand
 {
 	public CmdFactionsCreate()
 	{
-		super();
-		
 		this.addAliases("create");
 		
-		this.requiredArgs.add("faction tag");
-		//this.optionalArgs.put("", "");
+		this.addRequiredArg("faction tag");
 		
 		this.addRequirements(ReqHasPerm.get(Perm.CREATE.node));
 	}

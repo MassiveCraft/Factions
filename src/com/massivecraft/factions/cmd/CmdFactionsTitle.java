@@ -13,8 +13,8 @@ public class CmdFactionsTitle extends FCommand
 	{
 		this.addAliases("title");
 		
-		this.requiredArgs.add("player");
-		this.optionalArgs.put("title", "");
+		this.addRequiredArg("player");
+		this.addOptionalArg("title", "");
 		
 		this.addRequirements(ReqHasPerm.get(Perm.TITLE.node));
 		

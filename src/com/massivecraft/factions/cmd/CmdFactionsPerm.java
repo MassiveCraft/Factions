@@ -9,21 +9,17 @@ import com.massivecraft.mcore.util.Txt;
 
 public class CmdFactionsPerm extends FCommand
 {
-	
 	public CmdFactionsPerm()
 	{
-		super();
-		
 		this.addAliases("perm");
 		
-		this.optionalArgs.put("faction", "your");
-		this.optionalArgs.put("perm", "all");
-		this.optionalArgs.put("relation", "read");
-		this.optionalArgs.put("yes/no", "read");
+		this.addOptionalArg("faction", "your");
+		this.addOptionalArg("perm", "all");
+		this.addOptionalArg("relation", "read");
+		this.addOptionalArg("yes/no", "read");
+		this.setErrorOnToManyArgs(false);
 		
 		this.addRequirements(ReqHasPerm.get(Perm.PERM.node));
-		
-		this.errorOnToManyArgs = false;
 	}
 	
 	@Override

@@ -17,20 +17,13 @@ public class CmdFactionsMoneyTransferPf extends FCommand
 	{
 		this.addAliases("pf");
 		
-		this.requiredArgs.add("amount");
-		this.requiredArgs.add("player");
-		this.requiredArgs.add("faction");
-		
-		//this.optionalArgs.put("", "");
+		this.addRequiredArg("amount");
+		this.addRequiredArg("player");
+		this.addRequiredArg("faction");
 		
 		this.addRequirements(ReqHasPerm.get(Perm.MONEY_P2F.node));
 		
 		this.setHelpShort("transfer p -> f");
-		
-		senderMustBePlayer = false;
-		senderMustBeMember = false;
-		senderMustBeOfficer = false;
-		senderMustBeLeader = false;
 	}
 	
 	@Override

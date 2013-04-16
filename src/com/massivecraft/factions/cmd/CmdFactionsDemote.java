@@ -10,12 +10,9 @@ public class CmdFactionsDemote extends FCommand
 	
 	public CmdFactionsDemote()
 	{
-		super();
-		
 		this.addAliases("demote");
 		
-		this.requiredArgs.add("player name");
-		//this.optionalArgs.put("", "");
+		this.addRequiredArg("player");
 		
 		this.addRequirements(ReqHasPerm.get(Perm.DEMOTE.node));
 		

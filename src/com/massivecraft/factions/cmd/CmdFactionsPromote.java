@@ -10,12 +10,9 @@ public class CmdFactionsPromote extends FCommand
 	
 	public CmdFactionsPromote()
 	{
-		super();
-		
 		this.addAliases("promote");
 		
-		this.requiredArgs.add("player name");
-		//this.optionalArgs.put("", "");
+		this.addRequiredArg("player");
 		
 		this.addRequirements(ReqHasPerm.get(Perm.PROMOTE.node));
 		

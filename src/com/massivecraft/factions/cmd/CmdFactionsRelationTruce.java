@@ -6,7 +6,8 @@ public class CmdFactionsRelationTruce extends CmdFactionsRelationAbstract
 {
 	public CmdFactionsRelationTruce()
 	{
-		aliases.add("truce");
-		targetRelation = Rel.TRUCE;
+		this.addAliases("truce");
+		
+		this.targetRelation = Rel.TRUCE;
 	}
 }

@@ -16,15 +16,14 @@ public class CmdFactionsAccess extends FCommand
 {
 	public CmdFactionsAccess()
 	{
-		super();
-		
 		this.addAliases("access");
 		
-		this.optionalArgs.put("view|p|player|f|faction", "view");
-		this.optionalArgs.put("name", "you");
+		this.addOptionalArg("view|p|player|f|faction", "view");
+		this.addOptionalArg("name", "you");
 		
 		this.setHelpShort("view or grant access for the claimed territory you are in");
 		
+		// TODO: Missing permission node here!
 		this.addRequirements(ReqIsPlayer.get());
 	}
 	

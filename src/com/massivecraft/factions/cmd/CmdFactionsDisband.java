@@ -20,12 +20,9 @@ public class CmdFactionsDisband extends FCommand
 {
 	public CmdFactionsDisband()
 	{
-		super();
-		
 		this.addAliases("disband");
 		
-		//this.requiredArgs.add("");
-		this.optionalArgs.put("faction", "your");
+		this.addOptionalArg("faction", "you");
 		
 		this.addRequirements(ReqHasPerm.get(Perm.DISBAND.node));
 	}
