@@ -30,10 +30,6 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.entity.PotionSplashEvent;
-import org.bukkit.event.hanging.HangingBreakByEntityEvent;
-import org.bukkit.event.hanging.HangingBreakEvent;
-import org.bukkit.event.hanging.HangingBreakEvent.RemoveCause;
-import org.bukkit.event.hanging.HangingPlaceEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -378,48 +374,13 @@ public class FactionsEntityListener implements Listener
 		event.setCancelled(true);
 	}
 
-	@EventHandler(priority = EventPriority.NORMAL)
-	public void onPaintingBreak(HangingBreakEvent event)
-	{
-		if (event.isCancelled()) return;
+	
+	
+	
+	
+	
 
-		if (event.getCause() == RemoveCause.EXPLOSION)
-		{
-			Faction faction = BoardColl.get().getFactionAt(PS.valueOf(event.getEntity()));
-			if (faction.getFlag(FFlag.EXPLOSIONS) == false)
-			{	// faction has explosions disabled
-				event.setCancelled(true);
-				return;
-			}
-		}
-
-		if (! (event instanceof HangingBreakByEntityEvent))
-		{
-			return;
-		}
-
-		Entity breaker = ((HangingBreakByEntityEvent)event).getRemover();
-		if (! (breaker instanceof Player))
-		{
-			return;
-		}
-
-		if ( ! FactionsBlockListener.playerCanBuildDestroyBlock((Player)breaker, event.getEntity().getLocation().getBlock(), "remove paintings", false))
-		{
-			event.setCancelled(true);
-		}
-	}
-
-	@EventHandler(priority = EventPriority.NORMAL)
-	public void onPaintingPlace(HangingPlaceEvent event)
-	{
-		if (event.isCancelled()) return;
-
-		if ( ! FactionsBlockListener.playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock().getLocation().getBlock(), "place paintings", false) )
-		{
-			event.setCancelled(true);
-		}
-	}
+	
 
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onEntityChangeBlock(EntityChangeBlockEvent event)

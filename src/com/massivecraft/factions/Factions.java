@@ -12,7 +12,6 @@ import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.integration.LWCFeatures;
 import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.integration.Worldguard;
-import com.massivecraft.factions.listeners.FactionsBlockListener;
 import com.massivecraft.factions.listeners.FactionsChatListener;
 import com.massivecraft.factions.listeners.FactionsEntityListener;
 import com.massivecraft.factions.listeners.FactionsExploitListener;
@@ -47,7 +46,6 @@ public class Factions extends MPlugin
 	public FactionsChatListener chatListener;
 	public FactionsEntityListener entityListener;
 	public FactionsExploitListener exploitListener;
-	public FactionsBlockListener blockListener;
 	
 	// Task Ids
 	private Integer AutoLeaveTask = null;
@@ -104,9 +102,6 @@ public class Factions extends MPlugin
 		
 		this.exploitListener = new FactionsExploitListener();
 		getServer().getPluginManager().registerEvents(this.exploitListener, this);
-		
-		this.blockListener = new FactionsBlockListener();
-		getServer().getPluginManager().registerEvents(this.blockListener, this);
 		
 		postEnable();
 	}

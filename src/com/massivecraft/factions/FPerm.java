@@ -29,6 +29,7 @@ public enum FPerm
 	BUTTON("button", "use stone buttons",          Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY),
 	LEVER("lever", "use levers",                   Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY),
 	CONTAINER("container", "use containers",       Rel.LEADER, Rel.OFFICER, Rel.MEMBER),
+	
 	INVITE("invite", "invite players",             Rel.LEADER, Rel.OFFICER),
 	KICK("kick", "kick members",                   Rel.LEADER, Rel.OFFICER),
 	SETHOME("sethome", "set the home",             Rel.LEADER, Rel.OFFICER),
@@ -141,6 +142,7 @@ public enum FPerm
 	}
 
 	// Perms which apply strictly to granting territory access
+	// TODO: This should be a boolean field within the class itself!
 	private static final Set<FPerm> TerritoryPerms = EnumSet.of(BUILD, DOOR, BUTTON, LEVER, CONTAINER);
 	public boolean isTerritoryPerm()
 	{
