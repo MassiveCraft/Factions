@@ -5,7 +5,6 @@ import java.util.Map.Entry;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -73,31 +72,12 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	
 	private Map<String, Rel> relationWish = null;
 	
-	// FIELD: home
-	// TODO: Use a PS instead!
-	private LazyLocation home;
-	public void setHome(Location home) { this.home = new LazyLocation(home); }
-	public boolean hasHome() { return this.getHome() != null; }
-	public Location getHome()
-	{
-		confirmValidHome();
-		return (this.home != null) ? this.home.getLocation() : null;
-	}
-	public void confirmValidHome()
-	{
-		if (!ConfServer.homesMustBeInClaimedTerritory || this.home == null || (this.home.getLocation() != null && BoardColl.get().getFactionAt(PS.valueOf(this.home.getLocation())) == this))
-			return;
-
-		msg("<b>Your faction home has been un-set since it is no longer in your territory.");
-		this.home = null;
-	}
+	private PS home = null;
 	
-	// FIELD: cape
-	private String cape;
-	public String getCape() { return cape; }
-	public void setCape(String val) { this.cape = val; SpoutFeatures.updateCape(this, null); }
+	// The cape field is a URL used by the Spout integration features.
+	private String cape = null;
 
-	// The powerBoost is a custom increase/decrease to default and max power for this faction
+	// The powerBoost is a custom increase/decrease to default and max power for this faction.
 	private Double powerBoost = null;
 
 	// The flag overrides are the modifications to the default values
@@ -453,6 +433,58 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	public void deinvite(FPlayer fplayer)
 	{
 		this.deinvite(fplayer.getId());
+	}
+	
+	// -------------------------------------------- //
+	// FIELD: home
+	// -------------------------------------------- //
+	
+	// TODO: Checkery is a bit weird?
+	
+	public PS getHome()
+	{
+		this.verifyHomeIsValid();
+		return this.home;
+	}
+	
+	public void verifyHomeIsValid()
+	{
+		if (this.isValidHome(this.home)) return;
+		this.home = null;
+		msg("<b>Your faction home has been un-set since it is no longer in your territory.");
+	}
+	
+	public boolean isValidHome(PS ps)
+	{
+		if (ps == null) return true;
+		if (!ConfServer.homesMustBeInClaimedTerritory) return true;
+		if (BoardColl.get().getFactionAt(ps) == this) return true;
+		return false;
+	}
+	
+	public boolean hasHome()
+	{
+		return this.getHome() != null;
+	}
+	
+	public void setHome(PS home)
+	{
+		this.home = home;
+	}
+	
+	// -------------------------------------------- //
+	// FIELD: cape
+	// -------------------------------------------- //
+	
+	public String getCape()
+	{
+		return cape;
+	}
+	
+	public void setCape(String cape)
+	{
+		this.cape = cape;
+		SpoutFeatures.updateCape(this, null);
 	}
 	
 	// -------------------------------------------- //

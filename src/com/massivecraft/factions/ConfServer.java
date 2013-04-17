@@ -36,8 +36,10 @@ public class ConfServer extends SimpleConfig
 	//public static ChatColor colorWilderness = ChatColor.DARK_GREEN;
 	
 	public static Map<FFlag, Boolean> factionFlagDefaults;
-	public static Map<FFlag, Boolean> factionFlagIsChangeable;
+	//public static Map<FFlag, Boolean> factionFlagIsChangeable;
 	public static Map<FPerm, Set<Rel>> factionPermDefaults;
+	
+	// TODO: Shouldn't this be a constant rather?
 	public static Rel factionRankDefault = Rel.RECRUIT;
 	
 	// Power
@@ -108,6 +110,10 @@ public class ConfServer extends SimpleConfig
 	
 	public static String herochatAllyName = "Allies";
 
+	// TODO: Does anyone toggle this feature on I wonder?
+	// It could work for small servers but never for big ones.
+	// Why not conform to big server setups at once?
+	// POSSIBLY: Remove this option
 	public static boolean broadcastDescriptionChanges = false;
 
 	public static double autoLeaveAfterDaysOfInactivity = 10.0;
@@ -140,18 +146,15 @@ public class ConfServer extends SimpleConfig
 
 	public static boolean homesEnabled = true;
 	public static boolean homesMustBeInClaimedTerritory = true;
-	public static boolean homesTeleportToOnDeath = true;
-	public static boolean homesRespawnFromNoPowerLossWorlds = true;
 	public static boolean homesTeleportCommandEnabled = true;
-	public static boolean homesTeleportCommandEssentialsIntegration = true;
-	public static boolean homesTeleportCommandSmokeEffectEnabled = true;
 	public static boolean homesTeleportAllowedFromEnemyTerritory = true;
 	public static boolean homesTeleportAllowedFromDifferentWorld = true;
 	public static double homesTeleportAllowedEnemyDistance = 32.0;
 	public static boolean homesTeleportIgnoreEnemiesIfInOwnTerritory = true;
 	
-	
+	// TODO: This one should not be in the config should it? It should be built into the enum?
 	public static Rel friendlyFireFromRel = Rel.TRUCE;
+	
 	public static boolean disablePVPForFactionlessPlayers = false;
 	public static boolean enablePVPAgainstFactionlessInAttackersLand = false;
 	
@@ -261,6 +264,8 @@ public class ConfServer extends SimpleConfig
 	public static Set<String> playersWhoBypassAllProtection = new LinkedHashSet<String>();
 
 	public static Set<String> worldsNoClaiming = new LinkedHashSet<String>();
+	
+	// TODO: Should worldsNoPowerLoss rather be a bukkit permission node?
 	public static Set<String> worldsNoPowerLoss = new LinkedHashSet<String>();
 	public static Set<String> worldsIgnorePvP = new LinkedHashSet<String>();
 	// TODO: A better solution Would be to have One wilderness faction per world.

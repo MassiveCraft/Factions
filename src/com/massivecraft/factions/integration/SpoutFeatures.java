@@ -81,6 +81,7 @@ public class SpoutFeatures
 			String cape = faction.getCape();
 			if (cape == null)
 			{
+				// TODO: This URL is outdated?
 				cape = "http://s3.amazonaws.com/MinecraftCloaks/" + player.getName() + ".png";
 			}
 			

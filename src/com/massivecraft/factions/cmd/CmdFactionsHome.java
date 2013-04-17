@@ -1,8 +1,5 @@
 package com.massivecraft.factions.cmd;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -17,11 +14,11 @@ import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.cmd.req.ReqRoleIsAtLeast;
-import com.massivecraft.factions.integration.EssentialsFeatures;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 import com.massivecraft.mcore.cmd.req.ReqIsPlayer;
+import com.massivecraft.mcore.mixin.Mixin;
+import com.massivecraft.mcore.mixin.TeleporterException;
 import com.massivecraft.mcore.ps.PS;
-import com.massivecraft.mcore.util.SmokeUtil;
 
 
 public class CmdFactionsHome extends FCommand
@@ -64,7 +61,7 @@ public class CmdFactionsHome extends FCommand
 			return;
 		}
 		
-		if ( ! ConfServer.homesTeleportAllowedFromDifferentWorld && me.getWorld().getUID() != myFaction.getHome().getWorld().getUID())
+		if (!ConfServer.homesTeleportAllowedFromDifferentWorld && !me.getWorld().getName().equalsIgnoreCase(myFaction.getHome().getWorld()))
 		{
 			fme.msg("<b>You cannot teleport to your faction home while in a different world.");
 			return;
@@ -121,24 +118,17 @@ public class CmdFactionsHome extends FCommand
 			}
 		}
 
-		// if Essentials teleport handling is enabled and available, pass the teleport off to it (for delay and cooldown)
-		if (EssentialsFeatures.handleTeleport(me, myFaction.getHome())) return;
-
-		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-		if ( ! payForCommand(ConfServer.econCostHome, "to teleport to your faction home", "for teleporting to your faction home")) return;
-
-		// Create a smoke effect
-		if (ConfServer.homesTeleportCommandSmokeEffectEnabled)
+		try
 		{
-			List<Location> smokeLocations = new ArrayList<Location>();
-			smokeLocations.add(loc);
-			smokeLocations.add(loc.add(0, 1, 0));
-			smokeLocations.add(myFaction.getHome());
-			smokeLocations.add(myFaction.getHome().clone().add(0, 1, 0));
-			SmokeUtil.spawnCloudRandom(smokeLocations, 3f);
+			Mixin.teleport(me, myFaction.getHome(), "your faction home", sender);
+			
+			// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
+			if ( ! payForCommand(ConfServer.econCostHome, "to teleport to your faction home", "for teleporting to your faction home")) return;
 		}
-
-		me.teleport(myFaction.getHome());
+		catch (TeleporterException e)
+		{
+			me.sendMessage(e.getMessage());
+		}
 	}
 	
 }

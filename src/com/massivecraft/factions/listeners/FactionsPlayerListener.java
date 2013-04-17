@@ -21,7 +21,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.util.NumberConversions;
 
 import com.massivecraft.factions.BoardColl;
@@ -225,33 +224,6 @@ public class FactionsPlayerListener implements Listener
 		if (material == Material.STONE_BUTTON          && ! FPerm.BUTTON.has(me, loc, ! justCheck)) return false;
 		if (material == Material.LEVER                 && ! FPerm.LEVER.has(me, loc, ! justCheck)) return false;
 		return true;
-	}
-
-	@EventHandler(priority = EventPriority.HIGH)
-	public void onPlayerRespawn(PlayerRespawnEvent event)
-	{
-		FPlayer me = FPlayerColl.get().get(event.getPlayer());
-
-		me.getPower();  // update power, so they won't have gained any while dead
-
-		Location home = me.getFaction().getHome(); // TODO: WARNING FOR NPE HERE THE ORIO FOR RESPAWN SHOULD BE ASSIGNABLE FROM CONFIG.
-		if
-		(
-			ConfServer.homesEnabled
-			&&
-			ConfServer.homesTeleportToOnDeath
-			&&
-			home != null
-			&&
-			(
-				ConfServer.homesRespawnFromNoPowerLossWorlds
-				||
-				! ConfServer.worldsNoPowerLoss.contains(event.getPlayer().getWorld().getName())
-			)
-		)
-		{
-			event.setRespawnLocation(home);
-		}
 	}
 
 	// For some reason onPlayerInteract() sometimes misses bucket events depending on distance (something like 2-3 blocks away isn't detected),

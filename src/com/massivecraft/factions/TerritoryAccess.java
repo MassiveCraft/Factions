@@ -3,6 +3,7 @@ package com.massivecraft.factions;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class TerritoryAccess
@@ -98,7 +99,7 @@ public class TerritoryAccess
 	{
 		if (testSubject instanceof String)
 			return hostFactionId.equals((String)testSubject);
-		else if (testSubject instanceof Player)
+		else if (testSubject instanceof CommandSender)
 			return hostFactionId.equals(FPlayerColl.get().get(testSubject).getFactionId());
 		else if (testSubject instanceof FPlayer)
 			return hostFactionId.equals(((FPlayer)testSubject).getFactionId());

@@ -4,13 +4,11 @@ import com.massivecraft.factions.adapters.BoardAdapter;
 import com.massivecraft.factions.adapters.BoardMapAdapter;
 import com.massivecraft.factions.adapters.FFlagAdapter;
 import com.massivecraft.factions.adapters.FPermAdapter;
-import com.massivecraft.factions.adapters.LazyLocationAdapter;
 import com.massivecraft.factions.adapters.RelAdapter;
 import com.massivecraft.factions.adapters.TerritoryAccessAdapter;
 import com.massivecraft.factions.cmd.*;
 import com.massivecraft.factions.integration.herochat.HerochatFeatures;
 import com.massivecraft.factions.integration.Econ;
-import com.massivecraft.factions.integration.EssentialsFeatures;
 import com.massivecraft.factions.integration.LWCFeatures;
 import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.integration.Worldguard;
@@ -21,7 +19,6 @@ import com.massivecraft.factions.listeners.FactionsExploitListener;
 import com.massivecraft.factions.listeners.FactionsPlayerListener;
 import com.massivecraft.factions.util.AutoLeaveTask;
 import com.massivecraft.factions.util.EconLandRewardTask;
-import com.massivecraft.factions.util.LazyLocation;
 
 import com.massivecraft.mcore.MPlugin;
 import com.massivecraft.mcore.xlib.gson.GsonBuilder;
@@ -77,7 +74,6 @@ public class Factions extends MPlugin
 		this.outerCmdFactions = new CmdFactions();
 		this.outerCmdFactions.register(this);
 
-		EssentialsFeatures.setup();
 		SpoutFeatures.setup();
 		Econ.setup();
 		HerochatFeatures.setup();
@@ -119,7 +115,6 @@ public class Factions extends MPlugin
 	public GsonBuilder getGsonBuilder()
 	{
 		return super.getGsonBuilder()
-		.registerTypeAdapter(LazyLocation.class, new LazyLocationAdapter())
 		.registerTypeAdapter(TerritoryAccess.class, TerritoryAccessAdapter.get())
 		.registerTypeAdapter(Board.class, BoardAdapter.get())
 		.registerTypeAdapter(Board.MAP_TYPE, BoardMapAdapter.get())
@@ -132,7 +127,6 @@ public class Factions extends MPlugin
 	@Override
 	public void onDisable()
 	{
-		EssentialsFeatures.unhookChat();
 		if (AutoLeaveTask != null)
 		{
 			this.getServer().getScheduler().cancelTask(AutoLeaveTask);
