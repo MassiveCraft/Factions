@@ -1,6 +1,6 @@
 package com.massivecraft.factions.event;
 
-import org.bukkit.entity.Player;
+import org.bukkit.command.CommandSender;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
@@ -30,7 +30,7 @@ public class FactionDisbandEvent extends Event implements Cancellable
 	// TODO: Could the fields be reorganized to achieve symmetry?
 	
 	private String id;
-	private Player sender;
+	private CommandSender sender;
 
 	public Faction getFaction()
 	{
@@ -42,7 +42,7 @@ public class FactionDisbandEvent extends Event implements Cancellable
 		return FPlayer.get(sender);
 	}
 
-	public Player getPlayer()
+	public CommandSender getPlayer()
 	{
 		return this.sender;
 	}
@@ -51,7 +51,7 @@ public class FactionDisbandEvent extends Event implements Cancellable
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public FactionDisbandEvent(Player sender, String factionId)
+	public FactionDisbandEvent(CommandSender sender, String factionId)
 	{
 		this.cancelled = false;
 		this.sender = sender;

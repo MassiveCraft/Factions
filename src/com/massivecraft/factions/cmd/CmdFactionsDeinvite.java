@@ -4,9 +4,7 @@ import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
-import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.cmd.arg.ARFPlayer;
-import com.massivecraft.factions.cmd.req.ReqRoleIsAtLeast;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 
 public class CmdFactionsDeinvite extends FCommand

@@ -8,7 +8,6 @@ import java.util.Set;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.entity.Player;
 
 import com.massivecraft.factions.iface.RelationParticipator;
 import com.massivecraft.mcore.ps.PS;
@@ -185,7 +184,7 @@ public enum FPerm
 				if (informIfNot)
 				{
 					FPlayer notify = null;
-					if (testSubject instanceof Player)
+					if (testSubject instanceof CommandSender)
 						notify = FPlayerColl.get().get(testSubject);
 					else if (testSubject instanceof FPlayer)
 						notify = (FPlayer)testSubject;
