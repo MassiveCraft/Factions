@@ -1,6 +1,7 @@
 package com.massivecraft.factions;
 
 import java.util.*;
+import java.util.Map.Entry;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -37,15 +38,15 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	@Override
 	public Faction load(Faction that)
 	{
-		this.relationWish = that.relationWish;
-		this.invitedPlayerIds = that.invitedPlayerIds;
-		this.open = that.open;
 		this.tag = that.tag;
 		this.setDescription(that.description);
+		this.open = that.open;
+		this.setInvitedPlayerIds(that.invitedPlayerIds);
+		this.setRelationWishes(that.relationWish);
 		this.home = that.home;
 		this.cape = that.cape;
-		this.powerBoost = that.powerBoost;
-		this.flagOverrides = that.flagOverrides;
+		this.setPowerBoost(that.powerBoost);
+		this.setFlags(that.flagOverrides);
 		this.permOverrides = that.permOverrides;
 		
 		return this;
@@ -54,87 +55,23 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	// -------------------------------------------- //
 	// FIELDS: RAW
 	// -------------------------------------------- //
-	
-	private Map<String, Rel> relationWish;
 	// TODO
+	// In this section of the source code we place the field declarations only.
+	// Each field has it's own section further down since even the getter and setter logic takes up quite some place.
+	
+	// TODO: The faction "tag" could/should also have been called "name".
+	// The actual faction id looks something like "54947df8-0e9e-4471-a2f9-9af509fb5889" and that is not too easy to remember for humans.
+	// Thus we make use of a name. Since the id is used in all foreign key situations changing the name is fine.
+	private String tag = null;
+	
+	private String description = null;
+	
+	private Boolean open = null;
 	
 	@SerializedName("invites")
 	private Set<String> invitedPlayerIds = null;
-	public TreeSet<String> getInvitedPlayerIds()
-	{
-		TreeSet<String> ret = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
-		if (this.invitedPlayerIds != null) ret.addAll(this.invitedPlayerIds);
-		return ret;
-	}
-	public void setInvitedPlayerIds(Collection<String> invitedPlayerIds)
-	{
-		if (invitedPlayerIds == null || invitedPlayerIds.isEmpty())
-		{
-			this.invitedPlayerIds = null;
-		}
-		else
-		{
-			TreeSet<String> target = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
-			for (String invitedPlayerId : invitedPlayerIds)
-			{
-				target.add(invitedPlayerId.toLowerCase());
-			}
-			this.invitedPlayerIds = target;
-		}
-		
-		this.changed();
-	}
 	
-	private boolean open;
-	public boolean isOpen() { return this.open; }
-	public void setOpen(boolean open) { this.open = open; }
-	
-	// FIELD: tag
-	private String tag;
-	public String getTag() { return this.tag; }
-	public String getTag(String prefix) { return prefix+this.tag; }
-	public String getTag(RelationParticipator observer)
-	{
-		if (observer == null)
-		{
-			return getTag();
-		}
-		return this.getTag(this.getColorTo(observer).toString());
-	}
-	public void setTag(String str)
-	{
-		if (ConfServer.factionTagForceUpperCase)
-		{
-			str = str.toUpperCase();
-		}
-		this.tag = str;
-	}
-	public String getComparisonTag() { return MiscUtil.getComparisonString(this.tag); }
-	
-	// FIELD: description
-	private String description;
-	public boolean hasDescription()
-	{
-		return this.description != null;
-	}
-	public String getDescription()
-	{
-		if (this.hasDescription()) return this.description;
-		return Lang.FACTION_NODESCRIPTION;
-	}
-	public void setDescription(String description)
-	{
-		if (description != null)
-		{
-			description = description.trim();
-			// This code should be kept for a while to clean out the previous default text that was actually stored in the database.
-			if (description.length() == 0 || description.equalsIgnoreCase("Default faction description :("))
-			{
-				description = null;
-			}
-		}
-		this.description = description;
-	}
+	private Map<String, Rel> relationWish = null;
 	
 	// FIELD: home
 	// TODO: Use a PS instead!
@@ -155,51 +92,17 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 		this.home = null;
 	}
 	
-	// FIELD: account (fake field)
-	// Bank functions
-	public String getAccountId()
-	{
-		String accountId = "faction-"+this.getId();
-
-		// We need to override the default money given to players.
-		if ( ! Econ.hasAccount(accountId))
-		{
-			Econ.setBalance(accountId, 0);
-		}
-
-		return accountId;
-	}
-	
 	// FIELD: cape
 	private String cape;
 	public String getCape() { return cape; }
 	public void setCape(String val) { this.cape = val; SpoutFeatures.updateCape(this, null); }
 
-	// FIELD: powerBoost
-	// special increase/decrease to default and max power for this faction
-	private double powerBoost;
-	public double getPowerBoost() { return this.powerBoost; }
-	public void setPowerBoost(double powerBoost) { this.powerBoost = powerBoost; }
+	// The powerBoost is a custom increase/decrease to default and max power for this faction
+	private Double powerBoost = null;
 
-	// FIELDS: Flag management
-	// TODO: This will save... defaults if they where changed to...
+	// The flag overrides are the modifications to the default values
+	private Map<FFlag, Boolean> flagOverrides;
 	
-	private Map<FFlag, Boolean> flagOverrides; // Contains the modifications to the default values
-	public boolean getFlag(FFlag flag)
-	{
-		Boolean ret = this.flagOverrides.get(flag);
-		if (ret == null) ret = flag.getDefault();
-		return ret;
-	}
-	public void setFlag(FFlag flag, boolean value)
-	{
-		if (ConfServer.factionFlagDefaults.get(flag).equals(value))
-		{
-			this.flagOverrides.remove(flag);
-			return;
-		}
-		this.flagOverrides.put(flag, value);
-	}
 
 	// FIELDS: Permission <-> Groups management
 	private Map<FPerm, Set<Rel>> permOverrides; // Contains the modifications to the default values
@@ -266,22 +169,262 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	
 	public Faction()
 	{
-		this.relationWish = new LinkedHashMap<String, Rel>();
-		this.open = ConfServer.newFactionsDefaultOpen;
-		this.tag = "???";
-		this.description = null;
-		this.powerBoost = 0.0;
 		this.flagOverrides = new LinkedHashMap<FFlag, Boolean>();
 		this.permOverrides = new LinkedHashMap<FPerm, Set<Rel>>();
 	}
 	
 	// -------------------------------------------- //
-	// FIELDS: EXTRA
+	// FIELD: id
 	// -------------------------------------------- //
 	
-	// TODO: Make use of a player name extractor?
+	// FINER
 	
-	public boolean addInvitedPlayerId(String playerId)
+	public boolean isNone()
+	{
+		return this.getId().equals(Const.FACTIONID_NONE);
+	}
+	
+	public boolean isNormal()
+	{
+		return ! this.isNone();
+	}
+	
+	// This is the bank account id used by external money-plugins
+	@Override
+	public String getAccountId()
+	{
+		String accountId = "faction-"+this.getId();
+
+		// We need to override the default money given to players.
+		if ( ! Econ.hasAccount(accountId))
+		{
+			Econ.setBalance(accountId, 0);
+		}
+
+		return accountId;
+	}
+	
+	// -------------------------------------------- //
+	// FIELD: tag
+	// -------------------------------------------- //
+	// TODO: Rename tag --> name ?
+	
+	// RAW
+	
+	public String getTag()
+	{
+		String ret = this.tag;
+		if (ConfServer.factionTagForceUpperCase)
+		{
+			ret = ret.toUpperCase();
+		}
+		return ret;
+	}
+	
+	public void setTag(String str)
+	{
+		if (ConfServer.factionTagForceUpperCase)
+		{
+			str = str.toUpperCase();
+		}
+		this.tag = str;
+		this.changed();
+	}
+	
+	// FINER
+	
+	public String getComparisonTag()
+	{
+		return MiscUtil.getComparisonString(this.getTag());
+	}
+	
+	public String getTag(String prefix)
+	{
+		return prefix + this.getTag();
+	}
+	
+	public String getTag(RelationParticipator observer)
+	{
+		if (observer == null) return getTag();
+		return this.getTag(this.getColorTo(observer).toString());
+	}
+	
+	// -------------------------------------------- //
+	// FIELD: description
+	// -------------------------------------------- //
+	
+	// RAW
+	
+	public boolean hasDescription()
+	{
+		return this.description != null;
+	}
+	
+	public String getDescription()
+	{
+		if (this.hasDescription()) return this.description;
+		return Lang.FACTION_NODESCRIPTION;
+	}
+	
+	public void setDescription(String description)
+	{
+		if (description != null)
+		{
+			description = description.trim();
+			// This code should be kept for a while to clean out the previous default text that was actually stored in the database.
+			if (description.length() == 0 || description.equalsIgnoreCase("Default faction description :("))
+			{
+				description = null;
+			}
+		}
+		this.description = description;
+		this.changed();
+	}
+	
+	// -------------------------------------------- //
+	// FIELD: open
+	// -------------------------------------------- //
+	
+	public boolean isOpen()
+	{
+		Boolean ret = this.open;
+		if (ret == null) ret = ConfServer.newFactionsDefaultOpen;
+		return ret;
+	}
+	
+	public void setOpen(Boolean open)
+	{
+		this.open = open;
+		this.changed();
+	}
+	
+	// -------------------------------------------- //
+	// FIELD: relationWish
+	// -------------------------------------------- //
+	
+	// RAW
+	
+	public Map<String, Rel> getRelationWishes()
+	{
+		Map<String, Rel> ret = new LinkedHashMap<String, Rel>();
+		if (this.relationWish != null) ret.putAll(this.relationWish);
+		return ret;
+	}
+	
+	public void setRelationWishes(Map<String, Rel> relationWishes)
+	{
+		if (relationWishes == null || relationWishes.isEmpty())
+		{
+			this.relationWish = null;
+		}
+		else
+		{
+			this.relationWish = relationWishes;
+		}
+		this.changed();
+	}
+	
+	// FINER
+	
+	public Rel getRelationWish(String factionId)
+	{
+		Rel ret = this.getRelationWishes().get(factionId);
+		if (ret == null) ret = Rel.NEUTRAL;
+		return ret;
+	}
+	
+	public Rel getRelationWish(Faction faction)
+	{
+		return this.getRelationWish(faction.getId());
+	}
+	
+	public void setRelationWish(String factionId, Rel rel)
+	{
+		Map<String, Rel> relationWishes = this.getRelationWishes();
+		if (rel == null || rel == Rel.NEUTRAL)
+		{
+			relationWishes.remove(factionId);
+		}
+		else
+		{
+			relationWishes.put(factionId, rel);
+		}
+		this.setRelationWishes(relationWishes);
+	}
+	
+	public void setRelationWish(Faction faction, Rel rel)
+	{
+		this.setRelationWish(faction.getId(), rel);
+	}
+	
+	// TODO: What is this and where is it used?
+	
+	public Map<Rel, List<String>> getFactionTagsPerRelation(RelationParticipator rp)
+	{
+		return getFactionTagsPerRelation(rp, false);
+	}
+
+	// onlyNonNeutral option provides substantial performance boost on large servers for listing only non-neutral factions
+	public Map<Rel, List<String>> getFactionTagsPerRelation(RelationParticipator rp, boolean onlyNonNeutral)
+	{
+		Map<Rel, List<String>> ret = new HashMap<Rel, List<String>>();
+		for (Rel rel : Rel.values())
+		{
+			ret.put(rel, new ArrayList<String>());
+		}
+		for (Faction faction : FactionColl.get().getAll())
+		{
+			Rel relation = faction.getRelationTo(this);
+			if (onlyNonNeutral && relation == Rel.NEUTRAL) continue;
+			ret.get(relation).add(faction.getTag(rp));
+		}
+		return ret;
+	}
+	
+	// -------------------------------------------- //
+	// FIELD: invitedPlayerIds
+	// -------------------------------------------- //
+	
+	// RAW
+	
+	public TreeSet<String> getInvitedPlayerIds()
+	{
+		TreeSet<String> ret = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
+		if (this.invitedPlayerIds != null) ret.addAll(this.invitedPlayerIds);
+		return ret;
+	}
+	
+	public void setInvitedPlayerIds(Collection<String> invitedPlayerIds)
+	{
+		if (invitedPlayerIds == null || invitedPlayerIds.isEmpty())
+		{
+			this.invitedPlayerIds = null;
+		}
+		else
+		{
+			TreeSet<String> target = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
+			for (String invitedPlayerId : invitedPlayerIds)
+			{
+				target.add(invitedPlayerId.toLowerCase());
+			}
+			this.invitedPlayerIds = target;
+		}
+		this.changed();
+	}
+	
+	// FINER
+	
+	public boolean isInvited(String playerId)
+	{
+		return this.getInvitedPlayerIds().contains(playerId);
+	}
+	
+	public boolean isInvited(FPlayer fplayer)
+	{
+		return this.isInvited(fplayer.getId());
+	}
+	
+	public boolean invite(String playerId)
 	{
 		TreeSet<String> invitedPlayerIds = this.getInvitedPlayerIds();
 		if (invitedPlayerIds.add(playerId.toLowerCase()))
@@ -292,7 +435,12 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 		return false;
 	}
 	
-	public boolean removeInvitedPlayerId(String playerId)
+	public void invite(FPlayer fplayer)
+	{
+		this.invite(fplayer.getId());
+	}
+	
+	public boolean deinvite(String playerId)
 	{
 		TreeSet<String> invitedPlayerIds = this.getInvitedPlayerIds();
 		if (invitedPlayerIds.remove(playerId.toLowerCase()))
@@ -303,37 +451,101 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 		return false;
 	}
 	
-	public boolean isInvited(FPlayer fplayer)
-	{
-		return this.getInvitedPlayerIds().contains(fplayer.getId());
-	}
-	
-	// -------------------------------------------- //
-	// ACTIONS
-	// -------------------------------------------- //
-	
-	public void invite(FPlayer fplayer)
-	{
-		this.addInvitedPlayerId(fplayer.getId());
-	}
-	
 	public void deinvite(FPlayer fplayer)
 	{
-		this.removeInvitedPlayerId(fplayer.getId());
-	}
-
-	// -------------------------------------------- //
-	// NONE OR NORMAL?
-	// -------------------------------------------- //
-	
-	public boolean isNone()
-	{
-		return this.getId().equals(Const.FACTIONID_NONE);
+		this.deinvite(fplayer.getId());
 	}
 	
-	public boolean isNormal()
+	// -------------------------------------------- //
+	// FIELD: powerBoost
+	// -------------------------------------------- //
+	
+	// RAW
+	
+	public double getPowerBoost()
 	{
-		return ! this.isNone();
+		Double ret = this.powerBoost;
+		if (ret == null) ret = 0D;
+		return ret;
+	}
+	
+	public void setPowerBoost(Double powerBoost)
+	{
+		if (powerBoost == null || powerBoost == 0)
+		{
+			powerBoost = null;
+		}
+		this.powerBoost = powerBoost;
+		this.changed();
+	}
+	
+	// -------------------------------------------- //
+	// FIELD: flagOverrides
+	// -------------------------------------------- //
+	
+	// RAW
+	
+	public Map<FFlag, Boolean> getFlags()
+	{
+		Map<FFlag, Boolean> ret = new LinkedHashMap<FFlag, Boolean>();
+		
+		for (FFlag fflag : FFlag.values())
+		{
+			ret.put(fflag, fflag.getDefault());
+		}
+		
+		if (this.flagOverrides != null)
+		{
+			for (Entry<FFlag, Boolean> entry : this.flagOverrides.entrySet())
+			{
+				ret.put(entry.getKey(), entry.getValue());
+			}
+		}
+		
+		return ret;
+	}
+	
+	public void setFlags(Map<FFlag, Boolean> flags)
+	{
+		Map<FFlag, Boolean> target = new LinkedHashMap<FFlag, Boolean>();
+		
+		if (flags != null)
+		{
+			target.putAll(flags);
+		}
+		
+		Iterator<Entry<FFlag, Boolean>> iter = target.entrySet().iterator();
+		while (iter.hasNext())
+		{
+			Entry<FFlag, Boolean> entry = iter.next();
+			if (entry.getKey().getDefault() == entry.getValue())
+			{
+				iter.remove();
+			}
+		}
+		
+		if (target == null || target.isEmpty())
+		{
+			this.flagOverrides = null;
+		}
+		else
+		{
+			this.flagOverrides = target;
+		}
+		this.changed();
+	}
+	
+	// FINER
+	
+	public boolean getFlag(FFlag flag)
+	{
+		return this.getFlags().get(flag);
+	}
+	public void setFlag(FFlag flag, boolean value)
+	{
+		Map<FFlag, Boolean> flags = this.getFlags();
+		flags.put(flag, value);
+		this.setFlags(flags);
 	}
 	
 	// -------------------------------------------- //
@@ -370,48 +582,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 		return RelationUtil.getColorOfThatToMe(this, observer);
 	}
 	
-	public Rel getRelationWish(Faction otherFaction)
-	{
-		if (this.relationWish.containsKey(otherFaction.getId()))
-		{
-			return this.relationWish.get(otherFaction.getId());
-		}
-		return Rel.NEUTRAL;
-	}
 	
-	public void setRelationWish(Faction otherFaction, Rel relation)
-	{
-		if (this.relationWish.containsKey(otherFaction.getId()) && relation.equals(Rel.NEUTRAL))
-		{
-			this.relationWish.remove(otherFaction.getId());
-		}
-		else
-		{
-			this.relationWish.put(otherFaction.getId(), relation);
-		}
-	}
-	
-	public Map<Rel, List<String>> getFactionTagsPerRelation(RelationParticipator rp)
-	{
-		return getFactionTagsPerRelation(rp, false);
-	}
-
-	// onlyNonNeutral option provides substantial performance boost on large servers for listing only non-neutral factions
-	public Map<Rel, List<String>> getFactionTagsPerRelation(RelationParticipator rp, boolean onlyNonNeutral)
-	{
-		Map<Rel, List<String>> ret = new HashMap<Rel, List<String>>();
-		for (Rel rel : Rel.values())
-		{
-			ret.put(rel, new ArrayList<String>());
-		}
-		for (Faction faction : FactionColl.get().getAll())
-		{
-			Rel relation = faction.getRelationTo(this);
-			if (onlyNonNeutral && relation == Rel.NEUTRAL) continue;
-			ret.get(relation).add(faction.getTag(rp));
-		}
-		return ret;
-	}
 	
 	// TODO: Implement a has enough feature.
 	// -------------------------------------------- //
