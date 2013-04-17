@@ -13,6 +13,7 @@ import com.massivecraft.factions.iface.RelationParticipator;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.util.*;
+import com.massivecraft.mcore.mixin.Mixin;
 import com.massivecraft.mcore.ps.PS;
 import com.massivecraft.mcore.store.Entity;
 import com.massivecraft.mcore.util.SenderUtil;
@@ -46,7 +47,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 		this.setInvitedPlayerIds(that.invitedPlayerIds);
 		this.setRelationWishes(that.relationWish);
 		this.setFlags(that.flagOverrides);
-		this.permOverrides = that.permOverrides;
+		this.setPerms(that.permOverrides);
 		
 		return this;
 	}
@@ -54,7 +55,6 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	// -------------------------------------------- //
 	// FIELDS: RAW
 	// -------------------------------------------- //
-	// TODO
 	// In this section of the source code we place the field declarations only.
 	// Each field has it's own section further down since even the getter and setter logic takes up quite some place.
 	
@@ -92,66 +92,11 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	// The keys in this map are factionIds.
 	private Map<String, Rel> relationWish = null;
 	
-	// The flag overrides are the modifications to the default values.
-	private Map<FFlag, Boolean> flagOverrides;
+	// The flag overrides are modifications to the default values.
+	private Map<FFlag, Boolean> flagOverrides = null;
 
-	// FIELDS: Permission <-> Groups management
-	private Map<FPerm, Set<Rel>> permOverrides; // Contains the modifications to the default values
-	public Set<Rel> getPermittedRelations(FPerm perm)
-	{
-		Set<Rel> ret = this.permOverrides.get(perm);
-		if (ret == null) ret = perm.getDefault();
-		return ret;
-	}
-	
-	/*
-	public void addPermittedRelation(FPerm perm, Rel rel)
-	{
-		Set<Rel> newPermittedRelations = EnumSet.noneOf(Rel.class);
-		newPermittedRelations.addAll(this.getPermittedRelations(perm));
-		newPermittedRelations.add(rel);
-		this.setPermittedRelations(perm, newPermittedRelations);
-	}
-	
-	public void removePermittedRelation(FPerm perm, Rel rel)
-	{
-		Set<Rel> newPermittedRelations = EnumSet.noneOf(Rel.class);
-		newPermittedRelations.addAll(this.getPermittedRelations(perm));
-		newPermittedRelations.remove(rel);
-		this.setPermittedRelations(perm, newPermittedRelations);
-	}*/
-	
-	public void setRelationPermitted(FPerm perm, Rel rel, boolean permitted)
-	{
-		Set<Rel> newPermittedRelations = EnumSet.noneOf(Rel.class);
-		newPermittedRelations.addAll(this.getPermittedRelations(perm));
-		if (permitted)
-		{
-			newPermittedRelations.add(rel);
-		}
-		else
-		{
-			newPermittedRelations.remove(rel);
-		}
-		this.setPermittedRelations(perm, newPermittedRelations);
-	}
-	
-	public void setPermittedRelations(FPerm perm, Set<Rel> rels)
-	{
-		if (perm.getDefault().equals(rels))
-		{
-			this.permOverrides.remove(perm);
-			return;
-		}
-		this.permOverrides.put(perm, rels);
-	}
-	
-	public void setPermittedRelations(FPerm perm, Rel... rels)
-	{
-		Set<Rel> temp = new HashSet<Rel>();
-		temp.addAll(Arrays.asList(rels));
-		this.setPermittedRelations(perm, temp);
-	}
+	// The perm overrides are modifications to the default values.
+	private Map<FPerm, Set<Rel>> permOverrides = null;
 	
 	// -------------------------------------------- //
 	// CONSTRUCT
@@ -159,8 +104,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	
 	public Faction()
 	{
-		this.flagOverrides = new LinkedHashMap<FFlag, Boolean>();
-		this.permOverrides = new LinkedHashMap<FPerm, Set<Rel>>();
+		
 	}
 	
 	// -------------------------------------------- //
@@ -274,8 +218,6 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	// -------------------------------------------- //
 	// FIELD: home
 	// -------------------------------------------- //
-	
-	// TODO: Checkery is a bit weird?
 	
 	public PS getHome()
 	{
@@ -592,7 +534,104 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	}
 	
 	// -------------------------------------------- //
-	// RELATION AND COLORS
+	// FIELD: permOverrides
+	// -------------------------------------------- //
+	
+	// RAW
+	
+	public Map<FPerm, Set<Rel>> getPerms()
+	{
+		Map<FPerm, Set<Rel>> ret = new LinkedHashMap<FPerm, Set<Rel>>();
+		
+		for (FPerm fperm : FPerm.values())
+		{
+			ret.put(fperm, fperm.getDefault());
+		}
+		
+		if (this.permOverrides != null)
+		{
+			for (Entry<FPerm, Set<Rel>> entry : this.permOverrides.entrySet())
+			{
+				ret.put(entry.getKey(), new LinkedHashSet<Rel>(entry.getValue()));
+			}
+		}
+		
+		return ret;
+	}
+	
+	public void setPerms(Map<FPerm, Set<Rel>> perms)
+	{
+		Map<FPerm, Set<Rel>> target = new LinkedHashMap<FPerm, Set<Rel>>();
+		
+		if (perms != null)
+		{
+			for (Entry<FPerm, Set<Rel>> entry : perms.entrySet())
+			{
+				target.put(entry.getKey(), new LinkedHashSet<Rel>(entry.getValue()));
+			}
+		}
+		
+		Iterator<Entry<FPerm, Set<Rel>>> iter = target.entrySet().iterator();
+		while (iter.hasNext())
+		{
+			Entry<FPerm, Set<Rel>> entry = iter.next();
+			if (entry.getKey().getDefault().equals(entry.getValue()))
+			{
+				iter.remove();
+			}
+		}
+		
+		if (target == null || target.isEmpty())
+		{
+			this.permOverrides = null;
+		}
+		else
+		{
+			this.permOverrides = target;
+		}
+		this.changed();
+	}
+	
+	// FINER
+	
+	public Set<Rel> getPermittedRelations(FPerm perm)
+	{
+		return this.getPerms().get(perm);
+	}
+	
+	public void setPermittedRelations(FPerm perm, Set<Rel> rels)
+	{
+		Map<FPerm, Set<Rel>> perms = this.getPerms();
+		perms.put(perm, rels);
+		this.setPerms(perms);
+	}
+	
+	public void setPermittedRelations(FPerm perm, Rel... rels)
+	{
+		Set<Rel> temp = new HashSet<Rel>();
+		temp.addAll(Arrays.asList(rels));
+		this.setPermittedRelations(perm, temp);
+	}
+	
+	public void setRelationPermitted(FPerm perm, Rel rel, boolean permitted)
+	{
+		Map<FPerm, Set<Rel>> perms = this.getPerms();
+		Set<Rel> rels = perms.get(perm);
+
+		if (permitted)
+		{
+			rels.add(rel);
+		}
+		else
+		{
+			rels.remove(rel);
+		}
+		
+		this.setPerms(perms);
+	}
+	
+	// -------------------------------------------- //
+	// OVERRIDE: RelationParticipator
 	// -------------------------------------------- //
 	
 	@Override
@@ -693,7 +732,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	}
 	
 	// -------------------------------------------- //
-	// FPLAYERS
+	// FOREIGN KEYS: FPLAYERS
 	// -------------------------------------------- //
 
 	public List<FPlayer> getFPlayers()
@@ -821,64 +860,40 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	// -------------------------------------------- //
 	// MESSAGES
 	// -------------------------------------------- //
-	// These methods are simply proxied in from the SenderEntity class using a for loop.
+	// These methods are simply proxied in from the Mixin.
 	
 	// CONVENIENCE SEND MESSAGE
 	
 	public boolean sendMessage(String message)
 	{
-		for (FPlayer fplayer : this.getFPlayers())
-		{
-			fplayer.sendMessage(message);
-		}
-		return true;
+		return Mixin.message(new FactionEqualsPredictate(this), message);
 	}
 	
 	public boolean sendMessage(String... messages)
 	{
-		for (FPlayer fplayer : this.getFPlayers())
-		{
-			fplayer.sendMessage(messages);
-		}
-		return true;
+		return Mixin.message(new FactionEqualsPredictate(this), messages);
 	}
 	
 	public boolean sendMessage(Collection<String> messages)
 	{
-		for (FPlayer fplayer : this.getFPlayers())
-		{
-			fplayer.sendMessage(messages);
-		}
-		return true;
+		return Mixin.message(new FactionEqualsPredictate(this), messages);
 	}
 	
 	// CONVENIENCE MSG
 	
 	public boolean msg(String msg)
 	{
-		for (FPlayer fplayer : this.getFPlayers())
-		{
-			fplayer.msg(msg);
-		}
-		return true;
+		return Mixin.msg(new FactionEqualsPredictate(this), msg);
 	}
 	
 	public boolean msg(String msg, Object... args)
 	{
-		for (FPlayer fplayer : this.getFPlayers())
-		{
-			fplayer.msg(msg, args);
-		}
-		return true;
+		return Mixin.msg(new FactionEqualsPredictate(this), msg, args);
 	}
 	
 	public boolean msg(Collection<String> msgs)
 	{
-		for (FPlayer fplayer : this.getFPlayers())
-		{
-			fplayer.msg(msgs);
-		}
-		return true;
+		return Mixin.msg(new FactionEqualsPredictate(this), msgs);
 	}
 	
 }

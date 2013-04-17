@@ -1,8 +1,9 @@
 package com.massivecraft.factions;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.EnumSet;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.bukkit.Location;
@@ -18,6 +19,10 @@ import com.massivecraft.mcore.ps.PS;
  */
 public enum FPerm
 {
+	// -------------------------------------------- //
+	// ENUM
+	// -------------------------------------------- //
+	
 	BUILD("build", "edit the terrain",             Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY),
 	PAINBUILD("painbuild", "edit but take damage"),
 	DOOR("door", "use doors",                      Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY),
@@ -33,35 +38,47 @@ public enum FPerm
 	ACCESS("access", "grant territory access",     Rel.LEADER, Rel.OFFICER),
 	DISBAND("disband", "disband the faction",      Rel.LEADER),
 	PERMS("perms", "manage permissions",           Rel.LEADER),
+	
+	// END OF LIST
 	;
 	
+	// -------------------------------------------- //
+	// FIELDS
+	// -------------------------------------------- //
+	
 	private final String nicename;
+	public String getNicename() { return this.nicename; }
+	
 	private final String desc;
+	public String getDescription() { return this.desc; }
+	
 	public final Set<Rel> defaultDefaultValue;
+	
+	// -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
 	
 	private FPerm(final String nicename, final String desc, final Rel... rels)
 	{
 		this.nicename = nicename;
 		this.desc = desc;
-		this.defaultDefaultValue = new HashSet<Rel>();
-		this.defaultDefaultValue.addAll(Arrays.asList(rels));
+		
+		Set<Rel> defaultDefaultValue = new LinkedHashSet<Rel>();
+		defaultDefaultValue.addAll(Arrays.asList(rels));
+		defaultDefaultValue = Collections.unmodifiableSet(defaultDefaultValue);
+		this.defaultDefaultValue = defaultDefaultValue;
 	}
 	
-	public String getNicename()
-	{
-		return this.nicename;
-	}
-	
-	public String getDescription()
-	{
-		return this.desc;
-	}
+	// -------------------------------------------- //
+	// FROOODLDLLD
+	// -------------------------------------------- //
 	
 	public Set<Rel> getDefault()
 	{
 		Set<Rel> ret = ConfServer.factionPermDefaults.get(this);
-		if (ret == null) return this.defaultDefaultValue;
-		return ret; 
+		if (ret == null) ret = this.defaultDefaultValue;
+		ret = new LinkedHashSet<Rel>(ret);
+		return ret;
 	}
 	
 	public static FPerm parse(String str)
