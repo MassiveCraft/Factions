@@ -57,7 +57,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	// FIELDS: RAW
 	// -------------------------------------------- //
 	// In this section of the source code we place the field declarations only.
-	// Each field has it's own section further down since even the getter and setter logic takes up quite some place.
+	// Each field has it's own section further down since just the getter and setter logic takes up quite some place.
 	
 	// TODO: The faction "tag" could/should also have been called "name".
 	// The actual faction id looks something like "54947df8-0e9e-4471-a2f9-9af509fb5889" and that is not too easy to remember for humans.
@@ -272,6 +272,11 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 		}
 		this.powerBoost = powerBoost;
 		this.changed();
+	}
+	
+	public boolean hasPowerBoost()
+	{
+		return this.getPowerBoost() != 0D;
 	}
 	
 	// -------------------------------------------- //

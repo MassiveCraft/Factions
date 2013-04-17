@@ -194,7 +194,7 @@ public class SpoutFeatures
 				addTag += relationColor.toString() + fplayer.getRole().getPrefix() + faction.getTag();
 			}
 				
-			if (ConfServer.spoutFactionTitlesOverNames && ! fplayer.getTitle().isEmpty())
+			if (ConfServer.spoutFactionTitlesOverNames && fplayer.hasTitle())
 			{
 				addTag += (addTag.isEmpty() ? "" : " ") + fplayer.getTitle();
 			}

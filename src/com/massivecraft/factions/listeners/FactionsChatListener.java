@@ -227,7 +227,10 @@ public class FactionsChatListener implements Listener
 		}
 		else if (tag.equals("title"))
 		{
-			ret = fpfrom.getTitle();
+			if (fpfrom.hasTitle())
+			{
+				ret = fpfrom.getTitle();
+			}
 		}
 		else if (tag.equals("tag"))
 		{

@@ -41,10 +41,11 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 	public FPlayer load(FPlayer that)
 	{
 		this.setFactionId(that.factionId);
-		this.role = that.role;
-		this.title = that.title;
+		this.setRole(that.role);
+		this.setTitle(that.title);
+		this.setPowerBoost(that.powerBoost);
+		
 		this.power = that.power;
-		this.powerBoost = that.powerBoost;
 		this.lastPowerUpdateTime = that.lastPowerUpdateTime;
 		this.lastLoginTime = that.lastLoginTime;
 		
@@ -55,27 +56,144 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 	public boolean isDefault()
 	{
 		if (this.hasFaction()) return false;
+		
+		// Note: we do not check role or title here since they mean nothing without a faction.
+		
+		// TODO: This line looks obnoxious, investigate it.
 		if (this.getPowerRounded() != this.getPowerMaxRounded() && this.getPowerRounded() != (int) Math.round(ConfServer.powerPlayerStarting)) return false;
+		
+		if (this.hasPowerBoost()) return false;
 		
 		return true;
 	}
 	
 	// -------------------------------------------- //
-	// FIELDS: RAW PERMANENT
+	// FIELDS: RAW
 	// -------------------------------------------- //
+	// In this section of the source code we place the field declarations only.
+	// Each field has it's own section further down since just the getter and setter logic takes up quite some place.
 	
-	// FIELD: factionId
-	// TODO: Ensure this one always is null in the nofaction case and never actually the ID of the nofaction-faction.
-	// TODO: The getFactionId should however NEVER return null!
-	
+	// This is a foreign key.
+	// A players always belongs to a faction.
+	// If null the player belongs to the no-faction faction called Wilderness.
 	private String factionId = null;
 	
-	// The get methods never return null.
+	// What role does the player have in the faction?
+	// The default value here is MEMBER since that one would be one of the most common ones and our goal is to save database space.
+	// A note to self is that we can not change it from member to anything else just because we feel like it, that would corrupt database content.
+	private Rel role = null;
+	
+	// What title does the player have in the faction?
+	// The title is just for fun. It's completely meaningless.
+	// The default case is no title since it's what you start with and also the most common case.
+	// The player title is similar to the faction description.
+	// 
+	// Question: Can the title contain chat colors?
+	// Answer: Yes but in such case the policy is that they already must be parsed using Txt.parse.
+	//          If they contain markup it should not be parsed in case we coded the system correctly.
+	private String title = null;
+	
+	// Player usually do not have a powerboost. It defaults to 0.
+	// The powerBoost is a custom increase/decrease to default and maximum power.
+	// Note that player powerBoost and faction powerBoost are very similar.
+	private Double powerBoost = null;
+	
+	// TODO
+	// FIELD: power
+	private double power;
+	
+	// TODO
+	// FIELD: lastPowerUpdateTime
+	private long lastPowerUpdateTime;
+	
+	// TODO
+	// FIELD: lastLoginTime
+	private long lastLoginTime;
+	
+	// -------------------------------------------- //
+	// FIELDS: RAW TRANSIENT
+	// -------------------------------------------- //
+	
+	// Where did this player stand the last time we checked?
+	private transient PS currentChunk = null; 
+	public PS getCurrentChunk() { return this.currentChunk; }
+	public void setCurrentChunk(PS currentChunk) { this.currentChunk = currentChunk.getChunk(true); }
+	
+	// FIELD: mapAutoUpdating
+	private transient boolean mapAutoUpdating = false;
+	public void setMapAutoUpdating(boolean mapAutoUpdating) { this.mapAutoUpdating = mapAutoUpdating; }
+	public boolean isMapAutoUpdating() { return mapAutoUpdating; }
+	
+	// FIELD: autoClaimEnabled
+	private transient Faction autoClaimFor = null;
+	public Faction getAutoClaimFor() { return autoClaimFor; }
+	public void setAutoClaimFor(Faction faction) { this.autoClaimFor = faction; }
+		
+	private transient boolean usingAdminMode = false;
+	public boolean isUsingAdminMode() { return this.usingAdminMode; }
+	public void setUsingAdminMode(boolean val) { this.usingAdminMode = val; }
+	
+	// FIELD: loginPvpDisabled
+	private transient boolean loginPvpDisabled;
+	
+	// FIELD: account
+	public String getAccountId() { return this.getId(); }
+	
+	// -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
+	
+	// GSON need this noarg constructor.
+	public FPlayer()
+	{
+		this.resetFactionData(false);
+		this.power = ConfServer.powerPlayerStarting;
+		this.lastPowerUpdateTime = System.currentTimeMillis();
+		this.lastLoginTime = System.currentTimeMillis();
+		this.loginPvpDisabled = (ConfServer.noPVPDamageToOthersForXSecondsAfterLogin > 0) ? true : false;
+
+		if ( ! ConfServer.newPlayerStartingFactionID.equals(Const.FACTIONID_NONE) && FactionColl.get().containsId(ConfServer.newPlayerStartingFactionID))
+		{
+			this.factionId = ConfServer.newPlayerStartingFactionID;
+		}
+	}
+	
+	public final void resetFactionData(boolean doSpoutUpdate)
+	{
+		// TODO: Should we not rather use ConfServer.newPlayerStartingFactionID here?
+		
+		// The default neutral faction
+		this.setFactionId(null); 
+		this.setRole(null);
+		this.setTitle(null);
+		
+		this.autoClaimFor = null;
+
+		if (doSpoutUpdate)
+		{
+			SpoutFeatures.updateTitle(this, null);
+			SpoutFeatures.updateTitle(null, this);
+			SpoutFeatures.updateCape(this.getPlayer(), null);
+		}
+	}
+	
+	public void resetFactionData()
+	{
+		this.resetFactionData(true);
+	}
+	
+	// -------------------------------------------- //
+	// FIELD: factionId
+	// -------------------------------------------- //
+	
+	// This method never returns null
 	public String getFactionId()
 	{
 		if (this.factionId == null) return Const.FACTIONID_NONE;
 		return this.factionId;
 	}
+	
+	// This method never returns null
 	public Faction getFaction()
 	{
 		Faction ret = FactionColl.get().get(this.getFactionId());
@@ -83,13 +201,10 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 		return ret;
 	}
 	
-	// TODO: When is this one used?
 	public boolean hasFaction()
 	{
-		// TODO: Broken logic
 		return !this.getFactionId().equals(Const.FACTIONID_NONE);
 	}
-	
 	
 	// This setter is so long because it search for default/null case and takes care of updating the faction member index 
 	public void setFactionId(String factionId)
@@ -137,103 +252,83 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 		this.setFactionId(faction.getId());
 	}
 	
-	
+	// -------------------------------------------- //
 	// FIELD: role
-	private Rel role;
-	public Rel getRole() { return this.role; }
-	public void setRole(Rel role) { this.role = role; SpoutFeatures.updateTitle(this, null); }
+	// -------------------------------------------- //
 	
+	public Rel getRole()
+	{
+		if (this.role == null) return Rel.MEMBER;
+		return this.role;
+	}
+	
+	public void setRole(Rel role)
+	{
+		if (role == null || role == Rel.MEMBER)
+		{
+			this.role = null;
+		}
+		else
+		{
+			this.role = role;
+		}
+		SpoutFeatures.updateTitle(this, null);
+		this.changed();
+	}
+	
+	// -------------------------------------------- //
 	// FIELD: title
-	private String title;
-	public String getTitle() { return this.title; }
-	public void setTitle(String title) { this.title = title; }
+	// -------------------------------------------- //
 	
-	// FIELD: power
-	private double power;
-
+	public boolean hasTitle()
+	{
+		return this.title != null;
+	}
+	
+	public String getTitle()
+	{
+		if (this.hasTitle()) return this.title;
+		return Lang.PLAYER_NOTITLE;
+	}
+	
+	public void setTitle(String title)
+	{
+		if (title != null)
+		{
+			title = title.trim();
+			if (title.length() == 0)
+			{
+				title = null;
+			}
+		}
+		this.title = title;
+		this.changed();
+	}
+	
+	// -------------------------------------------- //
 	// FIELD: powerBoost
-	// special increase/decrease to min and max power for this player
-	private double powerBoost;
-	public double getPowerBoost() { return this.powerBoost; }
-	public void setPowerBoost(double powerBoost) { this.powerBoost = powerBoost; }
-
-	// FIELD: lastPowerUpdateTime
-	private long lastPowerUpdateTime;
-	
-	// FIELD: lastLoginTime
-	private long lastLoginTime;
-	
-	// -------------------------------------------- //
-	// FIELDS: RAW TRANSIENT
 	// -------------------------------------------- //
 	
-	// Where did this player stand the last time we checked?
-	private transient PS currentChunk = null; 
-	public PS getCurrentChunk() { return this.currentChunk; }
-	public void setCurrentChunk(PS currentChunk) { this.currentChunk = currentChunk.getChunk(true); }
-	
-	// FIELD: mapAutoUpdating
-	private transient boolean mapAutoUpdating;
-	public void setMapAutoUpdating(boolean mapAutoUpdating) { this.mapAutoUpdating = mapAutoUpdating; }
-	public boolean isMapAutoUpdating() { return mapAutoUpdating; }
-	
-	// FIELD: autoClaimEnabled
-	private transient Faction autoClaimFor;
-	public Faction getAutoClaimFor() { return autoClaimFor; }
-	public void setAutoClaimFor(Faction faction) { this.autoClaimFor = faction; }
-		
-	private transient boolean usingAdminMode = false;
-	public boolean isUsingAdminMode() { return this.usingAdminMode; }
-	public void setUsingAdminMode(boolean val) { this.usingAdminMode = val; }
-	
-	// FIELD: loginPvpDisabled
-	private transient boolean loginPvpDisabled;
-	
-	// FIELD: account
-	public String getAccountId() { return this.getId(); }
-	
-	// -------------------------------------------- //
-	// CONSTRUCT
-	// -------------------------------------------- //
-	
-	// GSON need this noarg constructor.
-	public FPlayer()
+	public double getPowerBoost()
 	{
-		this.resetFactionData(false);
-		this.power = ConfServer.powerPlayerStarting;
-		this.lastPowerUpdateTime = System.currentTimeMillis();
-		this.lastLoginTime = System.currentTimeMillis();
-		this.mapAutoUpdating = false;
-		this.autoClaimFor = null;
-		this.loginPvpDisabled = (ConfServer.noPVPDamageToOthersForXSecondsAfterLogin > 0) ? true : false;
-		this.powerBoost = 0.0;
-
-		if ( ! ConfServer.newPlayerStartingFactionID.equals(Const.FACTIONID_NONE) && FactionColl.get().containsId(ConfServer.newPlayerStartingFactionID))
-		{
-			this.factionId = ConfServer.newPlayerStartingFactionID;
-		}
+		Double ret = this.powerBoost;
+		if (ret == null) ret = 0D;
+		return ret;
 	}
 	
-	public final void resetFactionData(boolean doSpoutUpdate)
+	public void setPowerBoost(Double powerBoost)
 	{
-		// TODO: Should we not rather use ConfServer.newPlayerStartingFactionID here?
-		this.factionId = Const.FACTIONID_NONE; // The default neutral faction
-
-		this.role = Rel.MEMBER;
-		this.title = "";
-		this.autoClaimFor = null;
-
-		if (doSpoutUpdate)
+		if (powerBoost == null || powerBoost == 0)
 		{
-			SpoutFeatures.updateTitle(this, null);
-			SpoutFeatures.updateTitle(null, this);
-			SpoutFeatures.updateCape(this.getPlayer(), null);
+			powerBoost = null;
 		}
+		this.powerBoost = powerBoost;
+		this.changed();
 	}
 	
-	public void resetFactionData()
+	public boolean hasPowerBoost()
 	{
-		this.resetFactionData(true);
+		return this.getPowerBoost() != 0D;
 	}
 	
 	// -------------------------------------------- //
@@ -293,7 +388,8 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 	public String getNameAndSomething(String something)
 	{
 		String ret = this.role.getPrefix();
-		if (something.length() > 0) {
+		if (something.length() > 0)
+		{
 			ret += something+" ";
 		}
 		ret += this.getName();
@@ -302,7 +398,14 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 	
 	public String getNameAndTitle()
 	{
-		return this.getNameAndSomething(this.getTitle());
+		if (this.hasTitle())
+		{
+			return this.getNameAndSomething(this.getTitle());
+		}
+		else
+		{
+			return this.getName();
+		}
 	}
 	
 	public String getNameAndTag()
