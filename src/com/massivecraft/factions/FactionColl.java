@@ -39,8 +39,8 @@ public class FactionColl extends Coll<Faction>
 		super.init();
 		
 		this.migrate();
-		
-		this.createDefaultFactions();	
+		this.createDefaultFactions();
+		this.reindexFPlayers();
 	}
 	
 	public void migrate()
@@ -89,6 +89,14 @@ public class FactionColl extends Coll<Faction>
 		FPlayerColl.get().clean();
 		
 		return ret;
+	}
+	
+	public void reindexFPlayers()
+	{
+		for (Faction faction : this.getAll())
+		{
+			faction.reindexFPlayers();
+		}
 	}
 	
 	// -------------------------------------------- //

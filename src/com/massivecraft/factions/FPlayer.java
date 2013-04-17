@@ -40,7 +40,7 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 	@Override
 	public FPlayer load(FPlayer that)
 	{
-		this.factionId = that.factionId;
+		this.setFactionId(that.factionId);
 		this.role = that.role;
 		this.title = that.title;
 		this.power = that.power;
@@ -65,16 +65,78 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 	// -------------------------------------------- //
 	
 	// FIELD: factionId
-	private String factionId;
-	public Faction getFaction() { if(this.factionId == null) {return null;} return FactionColl.get().get(this.factionId); }
-	public String getFactionId() { return this.factionId; }
-	public boolean hasFaction() { return this.factionId != null && ! factionId.equals(Const.FACTIONID_NONE); }
-	public void setFaction(Faction faction)
+	// TODO: Ensure this one always is null in the nofaction case and never actually the ID of the nofaction-faction.
+	// TODO: The getFactionId should however NEVER return null!
+	
+	private String factionId = null;
+	
+	// The get methods never return null.
+	public String getFactionId()
 	{
-		this.factionId = faction.getId();
+		if (this.factionId == null) return Const.FACTIONID_NONE;
+		return this.factionId;
+	}
+	public Faction getFaction()
+	{
+		Faction ret = FactionColl.get().get(this.getFactionId());
+		if (ret == null) ret = FactionColl.get().get(Const.FACTIONID_NONE);
+		return ret;
+	}
+	
+	// TODO: When is this one used?
+	public boolean hasFaction()
+	{
+		// TODO: Broken logic
+		return !this.getFactionId().equals(Const.FACTIONID_NONE);
+	}
+	
+	
+	// This setter is so long because it search for default/null case and takes care of updating the faction member index 
+	public void setFactionId(String factionId)
+	{
+		// Avoid null input
+		if (factionId == null) factionId = Const.FACTIONID_NONE;
+		
+		// Get the old value
+		String oldFactionId = this.getFactionId();
+		
+		// Ignore nochange
+		if (factionId.equals(oldFactionId)) return;
+		
+		// Apply change
+		if (factionId.equals(Const.FACTIONID_NONE))
+		{
+			this.factionId = null;
+		}
+		else
+		{
+			this.factionId = factionId;
+		}
+		
+		// Next we must be attached and inited
+		if (!this.attached()) return;
+		if (!this.getColl().inited()) return;
+		
+		// Spout Derp
 		SpoutFeatures.updateTitle(this, null);
 		SpoutFeatures.updateTitle(null, this);
+		
+		// Update index
+		Faction oldFaction = FactionColl.get().get(oldFactionId);
+		Faction faction = FactionColl.get().get(factionId);
+		
+		oldFaction.fplayers.remove(this);
+		faction.fplayers.add(this);
+		
+		// Mark as changed
+		this.changed();
 	}
+	
+	public void setFaction(Faction faction)
+	{
+		this.setFactionId(faction.getId());
+	}
+	
 	
 	// FIELD: role
 	private Rel role;

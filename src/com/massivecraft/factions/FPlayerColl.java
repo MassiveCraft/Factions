@@ -62,6 +62,37 @@ public class FPlayerColl extends SenderColl<FPlayer>
 		oldFile.renameTo(newFile);
 	}
 	
+	@Override
+	protected synchronized String attach(FPlayer entity, Object oid, boolean noteChange)
+	{
+		String ret = super.attach(entity, oid, noteChange);
+		
+		// If inited ...
+		if (!this.inited()) return ret;
+		
+		// ... update the index.
+		Faction faction = entity.getFaction();
+		faction.fplayers.add(entity);
+		
+		return ret;
+	}
+	
+	@Override
+	public FPlayer detachId(Object oid)
+	{
+		FPlayer ret = super.detachId(oid);
+		if (ret == null) return null;
+		
+		// If inited ...
+		if (!this.inited()) return ret;
+		
+		// ... update the index.
+		Faction faction = ret.getFaction();
+		faction.fplayers.remove(ret);
+		
+		return ret;
+	}
+	
 	// -------------------------------------------- //
 	// EXTRAS
 	// -------------------------------------------- //

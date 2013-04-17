@@ -16,6 +16,7 @@ import com.massivecraft.factions.util.*;
 import com.massivecraft.mcore.mixin.Mixin;
 import com.massivecraft.mcore.ps.PS;
 import com.massivecraft.mcore.store.Entity;
+import com.massivecraft.mcore.util.MUtil;
 import com.massivecraft.mcore.util.SenderUtil;
 import com.massivecraft.mcore.xlib.gson.annotations.SerializedName;
 
@@ -664,10 +665,10 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 		return RelationUtil.getColorOfThatToMe(this, observer);
 	}
 	
-	// TODO: Implement a has enough feature.
 	// -------------------------------------------- //
 	// POWER
 	// -------------------------------------------- //
+	// TODO: Implement a has enough feature.
 	
 	public double getPower()
 	{
@@ -685,7 +686,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 		{
 			ret = ConfServer.powerFactionMax;
 		}
-		return ret + this.powerBoost;
+		return ret + this.getPowerBoost();
 	}
 	
 	public double getPowerMax()
@@ -704,7 +705,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 		{
 			ret = ConfServer.powerFactionMax;
 		}
-		return ret + this.powerBoost;
+		return ret + this.getPowerBoost();
 	}
 	
 	public int getPowerRounded()
@@ -735,48 +736,71 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	// FOREIGN KEYS: FPLAYERS
 	// -------------------------------------------- //
 
-	public List<FPlayer> getFPlayers()
+	// TODO: With this approach null must be used as default always.
+	// TODO: Take a moment and reflect upon the consequenses eeeeeeh...
+	// TODO: This one may be to slow after all :/ Thus I must maintain an index.
+	
+	protected transient List<FPlayer> fplayers = null;
+	public void reindexFPlayers()
 	{
-		List<FPlayer> ret = new ArrayList<FPlayer>();
+		this.fplayers = new ArrayList<FPlayer>();
+		
+		String factionId = this.getId();
+		if (factionId == null) return;
+		
 		for (FPlayer fplayer : FPlayerColl.get().getAll())
 		{
-			if (fplayer.getFaction() != this) continue;
-			ret.add(fplayer);
+			if (!MUtil.equals(factionId, fplayer.getFactionId())) continue;
+			this.fplayers.add(fplayer);
 		}
-		return ret;
+	}
+	
+	public List<FPlayer> getFPlayers()
+	{
+		return new ArrayList<FPlayer>(this.fplayers);
 	}
 	
 	public List<FPlayer> getFPlayersWhereOnline(boolean online)
 	{
-		List<FPlayer> ret = new ArrayList<FPlayer>();
-		for (FPlayer fplayer : FPlayerColl.get().getAll())
+		List<FPlayer> ret = this.getFPlayers();
+		Iterator<FPlayer> iter = ret.iterator();
+		while (iter.hasNext())
 		{
-			if (fplayer.getFaction() != this) continue;
-			if (fplayer.isOnline() != online) continue;
-			ret.add(fplayer);
+			FPlayer fplayer = iter.next();
+			if (fplayer.isOnline() != online)
+			{
+				iter.remove();
+			}
 		}
 		return ret;
 	}
 	
 	public List<FPlayer> getFPlayersWhereRole(Rel role)
 	{
-		List<FPlayer> ret = new ArrayList<FPlayer>();
-		for (FPlayer fplayer : FPlayerColl.get().getAll())
+		List<FPlayer> ret = this.getFPlayers();
+		Iterator<FPlayer> iter = ret.iterator();
+		while (iter.hasNext())
 		{
-			if (fplayer.getFaction() != this) continue;
-			if (fplayer.getRole() != role) continue;
-			ret.add(fplayer);
+			FPlayer fplayer = iter.next();
+			if (fplayer.getRole() != role)
+			{
+				iter.remove();
+			}
 		}
 		return ret;
 	}
 	
 	public FPlayer getLeader()
 	{
-		for (FPlayer fplayer : FPlayerColl.get().getAll())
+		List<FPlayer> ret = this.getFPlayers();
+		Iterator<FPlayer> iter = ret.iterator();
+		while (iter.hasNext())
 		{
-			if (fplayer.getFaction() != this) continue;
-			if (fplayer.getRole() != Rel.LEADER) continue;
-			return fplayer;
+			FPlayer fplayer = iter.next();
+			if (fplayer.getRole() == Rel.LEADER)
+			{
+				return fplayer;
+			}
 		}
 		return null;
 	}
