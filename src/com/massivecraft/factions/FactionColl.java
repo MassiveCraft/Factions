@@ -40,15 +40,7 @@ public class FactionColl extends Coll<Faction>
 		
 		this.migrate();
 		
-		this.createDefaultFactions();
-		
-		// TODO: Refactor and fix with the member-index.
-		// populate all faction player lists
-		// or as you also could describe it: Reindex of Members
-		for (Faction faction : this.getAll())
-		{
-			faction.refreshFPlayers();
-		}		
+		this.createDefaultFactions();	
 	}
 	
 	public void migrate()
@@ -194,10 +186,10 @@ public class FactionColl extends Coll<Faction>
 		Factions.get().log("Running econLandRewardRoutine...");
 		for (Faction faction : this.getAll())
 		{
-			int landCount = faction.getLandRounded();
+			int landCount = faction.getLandCount();
 			if (!faction.getFlag(FFlag.PEACEFUL) && landCount > 0)
 			{
-				Set<FPlayer> players = faction.getFPlayers();
+				List<FPlayer> players = faction.getFPlayers();
 				int playerCount = players.size();
 				double reward = ConfServer.econLandReward * landCount / playerCount;
 				for (FPlayer player : players)

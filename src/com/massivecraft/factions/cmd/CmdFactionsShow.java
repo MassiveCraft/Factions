@@ -61,12 +61,12 @@ public class CmdFactionsShow extends FCommand
 
 		double powerBoost = faction.getPowerBoost();
 		String boost = (powerBoost == 0.0) ? "" : (powerBoost > 0.0 ? " (bonus: " : " (penalty: ") + powerBoost + ")";
-		msg("<a>Land / Power / Maxpower: <i> %d/%d/%d %s", faction.getLandRounded(), faction.getPowerRounded(), faction.getPowerMaxRounded(), boost);
+		msg("<a>Land / Power / Maxpower: <i> %d/%d/%d %s", faction.getLandCount(), faction.getPowerRounded(), faction.getPowerMaxRounded(), boost);
 
 		// show the land value
 		if (Econ.shouldBeUsed())
 		{
-			double value = Econ.calculateTotalLandValue(faction.getLandRounded());
+			double value = Econ.calculateTotalLandValue(faction.getLandCount());
 			double refund = value * ConfServer.econClaimRefundMultiplier;
 			if (value > 0)
 			{

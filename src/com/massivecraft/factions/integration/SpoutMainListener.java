@@ -113,8 +113,10 @@ public class SpoutMainListener implements Listener
 
 			String msg = tag;
 
-			if (ConfServer.spoutTerritoryDisplayShowDescription && !factionHere.getDescription().isEmpty())
+			if (ConfServer.spoutTerritoryDisplayShowDescription && factionHere.hasDescription())
+			{
 				msg += " - " + factionHere.getDescription();
+			}
 
 			label.setText(msg);
 			alignLabel(label, msg);
@@ -141,8 +143,10 @@ public class SpoutMainListener implements Listener
 
 			String msg = tag;
 
-			if (ConfServer.spoutTerritoryNoticeShowDescription && !factionHere.getDescription().isEmpty())
+			if (ConfServer.spoutTerritoryNoticeShowDescription && factionHere.hasDescription())
+			{
 				msg += " - " + factionHere.getDescription();
+			}
 
 			label.setText(msg);
 			alignLabel(label, msg, 2);

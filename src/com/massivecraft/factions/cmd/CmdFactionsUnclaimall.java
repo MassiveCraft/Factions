@@ -28,7 +28,7 @@ public class CmdFactionsUnclaimall extends FCommand
 	{
 		if (Econ.shouldBeUsed())
 		{
-			double refund = Econ.calculateTotalLandRefund(myFaction.getLandRounded());
+			double refund = Econ.calculateTotalLandRefund(myFaction.getLandCount());
 			if(ConfServer.bankEnabled && ConfServer.bankFactionPaysLandCosts)
 			{
 				if ( ! Econ.modifyMoney(myFaction, refund, "to unclaim all faction land", "for unclaiming all faction land")) return;

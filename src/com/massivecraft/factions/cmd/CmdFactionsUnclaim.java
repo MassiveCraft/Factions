@@ -40,7 +40,7 @@ public class CmdFactionsUnclaim extends FCommand
 		//String moneyBack = "<i>";
 		if (Econ.shouldBeUsed())
 		{
-			double refund = Econ.calculateClaimRefund(myFaction.getLandRounded());
+			double refund = Econ.calculateClaimRefund(myFaction.getLandCount());
 			
 			if(ConfServer.bankEnabled && ConfServer.bankFactionPaysLandCosts)
 			{

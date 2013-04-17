@@ -64,7 +64,7 @@ public class CmdFactionsList extends FCommand
 				faction.getTag(fme),
 				faction.getFPlayersWhereOnline(true).size(),
 				faction.getFPlayers().size(),
-				faction.getLandRounded(),
+				faction.getLandCount(),
 				faction.getPowerRounded(),
 				faction.getPowerMaxRounded())
 			);

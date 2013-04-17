@@ -66,7 +66,7 @@ public abstract class FCommand extends MCommand
 	{
 		if ( ! Econ.shouldBeUsed() || this.fme == null || cost == 0.0 || fme.isUsingAdminMode()) return true;
 
-		if(ConfServer.bankEnabled && ConfServer.bankFactionPaysCosts && fme.hasFaction())
+		if (ConfServer.bankEnabled && ConfServer.bankFactionPaysCosts && fme.hasFaction())
 			return Econ.modifyMoney(myFaction, -cost, toDoThis, forDoingThis);
 		else
 			return Econ.modifyMoney(fme, -cost, toDoThis, forDoingThis);

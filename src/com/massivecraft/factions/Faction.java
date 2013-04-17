@@ -2,8 +2,10 @@ package com.massivecraft.factions;
 
 import java.util.*;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.massivecraft.factions.iface.EconomyParticipator;
@@ -13,7 +15,7 @@ import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.util.*;
 import com.massivecraft.mcore.ps.PS;
 import com.massivecraft.mcore.store.Entity;
-import com.massivecraft.mcore.util.Txt;
+import com.massivecraft.mcore.util.SenderUtil;
 import com.massivecraft.mcore.xlib.gson.annotations.SerializedName;
 
 
@@ -39,7 +41,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 		this.invitedPlayerIds = that.invitedPlayerIds;
 		this.open = that.open;
 		this.tag = that.tag;
-		this.description = that.description;
+		this.setDescription(that.description);
 		this.home = that.home;
 		this.cape = that.cape;
 		this.powerBoost = that.powerBoost;
@@ -52,10 +54,6 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	// -------------------------------------------- //
 	// FIELDS: RAW
 	// -------------------------------------------- //
-	
-	// speedy lookup of players in faction
-	private transient Set<FPlayer> fplayers = new HashSet<FPlayer>();
-	// TODO
 	
 	private Map<String, Rel> relationWish;
 	// TODO
@@ -84,8 +82,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 			this.invitedPlayerIds = target;
 		}
 		
-		// TODO: Add when we use a true mcore entity.
-		// this.changed();
+		this.changed();
 	}
 	
 	private boolean open;
@@ -116,10 +113,31 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	
 	// FIELD: description
 	private String description;
-	public String getDescription() { return this.description; }
-	public void setDescription(String value) { this.description = value; }
+	public boolean hasDescription()
+	{
+		return this.description != null;
+	}
+	public String getDescription()
+	{
+		if (this.hasDescription()) return this.description;
+		return Lang.FACTION_NODESCRIPTION;
+	}
+	public void setDescription(String description)
+	{
+		if (description != null)
+		{
+			description = description.trim();
+			// This code should be kept for a while to clean out the previous default text that was actually stored in the database.
+			if (description.length() == 0 || description.equalsIgnoreCase("Default faction description :("))
+			{
+				description = null;
+			}
+		}
+		this.description = description;
+	}
 	
 	// FIELD: home
+	// TODO: Use a PS instead!
 	private LazyLocation home;
 	public void setHome(Location home) { this.home = new LazyLocation(home); }
 	public boolean hasHome() { return this.getHome() != null; }
@@ -165,8 +183,6 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 
 	// FIELDS: Flag management
 	// TODO: This will save... defaults if they where changed to...
-	
-	
 	
 	private Map<FFlag, Boolean> flagOverrides; // Contains the modifications to the default values
 	public boolean getFlag(FFlag flag)
@@ -245,15 +261,15 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	
 	
 	// -------------------------------------------- //
-	// Construct
+	// CONSTRUCT
 	// -------------------------------------------- //
 	
 	public Faction()
 	{
-		this.relationWish = new HashMap<String, Rel>();
+		this.relationWish = new LinkedHashMap<String, Rel>();
 		this.open = ConfServer.newFactionsDefaultOpen;
 		this.tag = "???";
-		this.description = "Default faction description :(";
+		this.description = null;
 		this.powerBoost = 0.0;
 		this.flagOverrides = new LinkedHashMap<FFlag, Boolean>();
 		this.permOverrides = new LinkedHashMap<FPerm, Set<Rel>>();
@@ -306,26 +322,23 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 		this.removeInvitedPlayerId(fplayer.getId());
 	}
 
-	// -------------------------------
-	// Understand the types
-	// -------------------------------
-	
-	// TODO: These should be gone after the refactoring...
-	
-	public boolean isNormal()
-	{
-		//return ! (this.isNone() || this.isSafeZone() || this.isWarZone());
-		return ! this.isNone();
-	}
+	// -------------------------------------------- //
+	// NONE OR NORMAL?
+	// -------------------------------------------- //
 	
 	public boolean isNone()
 	{
 		return this.getId().equals(Const.FACTIONID_NONE);
 	}
 	
-	// -------------------------------
-	// Relation and relation colors
-	// -------------------------------
+	public boolean isNormal()
+	{
+		return ! this.isNone();
+	}
+	
+	// -------------------------------------------- //
+	// RELATION AND COLORS
+	// -------------------------------------------- //
 	
 	@Override
 	public String describeTo(RelationParticipator observer, boolean ucfirst)
@@ -402,8 +415,9 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	
 	// TODO: Implement a has enough feature.
 	// -------------------------------------------- //
-	// Power
+	// POWER
 	// -------------------------------------------- //
+	
 	public double getPower()
 	{
 		if (this.getFlag(FFlag.INFPOWER))
@@ -412,7 +426,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 		}
 		
 		double ret = 0;
-		for (FPlayer fplayer : fplayers)
+		for (FPlayer fplayer : this.getFPlayers())
 		{
 			ret += fplayer.getPower();
 		}
@@ -431,7 +445,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 		}
 		
 		double ret = 0;
-		for (FPlayer fplayer : fplayers)
+		for (FPlayer fplayer : this.getFPlayers())
 		{
 			ret += fplayer.getPowerMax();
 		}
@@ -452,147 +466,125 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 		return (int) Math.round(this.getPowerMax());
 	}
 	
-	//  TODO: Why "rounded"? Rename to getLandCount? or getChunkCount?
-	public int getLandRounded()
+	public int getLandCount()
 	{
 		return BoardColl.get().getCount(this);
 	}
-	public int getLandRoundedInWorld(String worldName)
+	public int getLandCountInWorld(String worldName)
 	{
 		return BoardColl.get().get(worldName).getCount(this);
 	}
 	
 	public boolean hasLandInflation()
 	{
-		return this.getLandRounded() > this.getPowerRounded();
+		return this.getLandCount() > this.getPowerRounded();
 	}
 	
 	// -------------------------------------------- //
-	// FPlayers
+	// FPLAYERS
 	// -------------------------------------------- //
 
-	// maintain the reference list of FPlayers in this faction
-	public void refreshFPlayers()
+	public List<FPlayer> getFPlayers()
 	{
-		fplayers.clear();
-		if (this.isNone()) return;
-
+		List<FPlayer> ret = new ArrayList<FPlayer>();
 		for (FPlayer fplayer : FPlayerColl.get().getAll())
 		{
-			if (fplayer.getFaction() == this)
-			{
-				fplayers.add(fplayer);
-			}
+			if (fplayer.getFaction() != this) continue;
+			ret.add(fplayer);
 		}
-	}
-	protected boolean addFPlayer(FPlayer fplayer)
-	{
-		if (this.isNone()) return false;
-
-		return fplayers.add(fplayer);
-	}
-	protected boolean removeFPlayer(FPlayer fplayer)
-	{
-		if (this.isNone()) return false;
-
-		return fplayers.remove(fplayer);
-	}
-
-	public Set<FPlayer> getFPlayers()
-	{
-		// return a shallow copy of the FPlayer list, to prevent tampering and concurrency issues
-		Set<FPlayer> ret = new HashSet<FPlayer>(fplayers);
 		return ret;
 	}
 	
-	public Set<FPlayer> getFPlayersWhereOnline(boolean online)
+	public List<FPlayer> getFPlayersWhereOnline(boolean online)
 	{
-		Set<FPlayer> ret = new HashSet<FPlayer>();
-
-		for (FPlayer fplayer : fplayers)
+		List<FPlayer> ret = new ArrayList<FPlayer>();
+		for (FPlayer fplayer : FPlayerColl.get().getAll())
 		{
-			if (fplayer.isOnline() == online)
-			{
-				ret.add(fplayer);
-			}
+			if (fplayer.getFaction() != this) continue;
+			if (fplayer.isOnline() != online) continue;
+			ret.add(fplayer);
 		}
-
 		return ret;
 	}
 	
-	public FPlayer getFPlayerLeader()
+	public List<FPlayer> getFPlayersWhereRole(Rel role)
 	{
-		//if ( ! this.isNormal()) return null;
-		
-		for (FPlayer fplayer : fplayers)
+		List<FPlayer> ret = new ArrayList<FPlayer>();
+		for (FPlayer fplayer : FPlayerColl.get().getAll())
 		{
-			if (fplayer.getRole() == Rel.LEADER)
-			{
-				return fplayer;
-			}
+			if (fplayer.getFaction() != this) continue;
+			if (fplayer.getRole() != role) continue;
+			ret.add(fplayer);
+		}
+		return ret;
+	}
+	
+	public FPlayer getLeader()
+	{
+		for (FPlayer fplayer : FPlayerColl.get().getAll())
+		{
+			if (fplayer.getFaction() != this) continue;
+			if (fplayer.getRole() != Rel.LEADER) continue;
+			return fplayer;
 		}
 		return null;
 	}
 	
-	public ArrayList<FPlayer> getFPlayersWhereRole(Rel role)
+	public List<CommandSender> getOnlineCommandSenders()
 	{
-		ArrayList<FPlayer> ret = new ArrayList<FPlayer>();
-		//if ( ! this.isNormal()) return ret;
-		
-		for (FPlayer fplayer : fplayers)
+		List<CommandSender> ret = new ArrayList<CommandSender>();
+		for (CommandSender player : SenderUtil.getOnlineSenders())
 		{
-			if (fplayer.getRole() == role)
-			{
-				ret.add(fplayer);
-			}
+			FPlayer fplayer = FPlayerColl.get().get(player);
+			if (fplayer.getFaction() != this) continue;
+			ret.add(player);
 		}
-		
 		return ret;
 	}
 	
-	// TODO: Makes use of bukkit instead of mixin. Fix that?
-	public ArrayList<Player> getOnlinePlayers()
+	public List<Player> getOnlinePlayers()
 	{
-		ArrayList<Player> ret = new ArrayList<Player>();
-		//if (this.isPlayerFreeType()) return ret;
-
-		for (Player player: Factions.get().getServer().getOnlinePlayers())
+		List<Player> ret = new ArrayList<Player>();
+		for (Player player : Bukkit.getOnlinePlayers())
 		{
 			FPlayer fplayer = FPlayerColl.get().get(player);
-			if (fplayer.getFaction() == this)
-			{
-				ret.add(player);
-			}
+			if (fplayer.getFaction() != this) continue;
+			ret.add(player);
 		}
-
 		return ret;
 	}
 
 	// used when current leader is about to be removed from the faction; promotes new leader, or disbands faction if no other members left
 	public void promoteNewLeader()
 	{
-		if (! this.isNormal()) return;
+		if ( ! this.isNormal()) return;
 		if (this.getFlag(FFlag.PERMANENT) && ConfServer.permanentFactionsDisableLeaderPromotion) return;
 
-		FPlayer oldLeader = this.getFPlayerLeader();
+		FPlayer oldLeader = this.getLeader();
 
 		// get list of officers, or list of normal members if there are no officers
-		ArrayList<FPlayer> replacements = this.getFPlayersWhereRole(Rel.OFFICER);
+		List<FPlayer> replacements = this.getFPlayersWhereRole(Rel.OFFICER);
 		if (replacements == null || replacements.isEmpty())
+		{
 			replacements = this.getFPlayersWhereRole(Rel.MEMBER);
+		}
 
 		if (replacements == null || replacements.isEmpty())
 		{	// faction leader is the only member; one-man faction
 			if (this.getFlag(FFlag.PERMANENT))
 			{
 				if (oldLeader != null)
+				{
 					oldLeader.setRole(Rel.MEMBER);
+				}
 				return;
 			}
 
 			// no members left and faction isn't permanent, so disband it
 			if (ConfServer.logFactionDisband)
+			{
 				Factions.get().log("The faction "+this.getTag()+" ("+this.getId()+") has been disbanded since it has no members left.");
+			}
 
 			for (FPlayer fplayer : FPlayerColl.get().getAllOnline())
 			{
@@ -604,7 +596,10 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 		else
 		{	// promote new faction leader
 			if (oldLeader != null)
+			{
 				oldLeader.setRole(Rel.MEMBER);
+			}
+				
 			replacements.get(0).setRole(Rel.LEADER);
 			this.msg("<i>Faction leader <h>%s<i> has been removed. %s<i> has been promoted as the new faction leader.", oldLeader == null ? "" : oldLeader.getName(), replacements.get(0).getName());
 			Factions.get().log("Faction "+this.getTag()+" ("+this.getId()+") leader was removed. Replacement leader: "+replacements.get(0).getName());
@@ -612,37 +607,66 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	}
 
 	// -------------------------------------------- //
-	// Messages
+	// MESSAGES
 	// -------------------------------------------- //
+	// These methods are simply proxied in from the SenderEntity class using a for loop.
 	
-	// TODO: Invalid code since Mixin introduction. Fix this.
-	public boolean msg(String message, Object... args)
+	// CONVENIENCE SEND MESSAGE
+	
+	public boolean sendMessage(String message)
 	{
-		message = Txt.parse(message, args);
-		
-		for (FPlayer fplayer : this.getFPlayersWhereOnline(true))
+		for (FPlayer fplayer : this.getFPlayers())
 		{
 			fplayer.sendMessage(message);
 		}
-		
 		return true;
 	}
 	
-	public void sendMessage(String message)
+	public boolean sendMessage(String... messages)
 	{
-		for (FPlayer fplayer : this.getFPlayersWhereOnline(true))
-		{
-			fplayer.sendMessage(message);
-		}
-	}
-	
-	public void sendMessage(List<String> messages)
-	{
-		for (FPlayer fplayer : this.getFPlayersWhereOnline(true))
+		for (FPlayer fplayer : this.getFPlayers())
 		{
 			fplayer.sendMessage(messages);
 		}
+		return true;
 	}
 	
+	public boolean sendMessage(Collection<String> messages)
+	{
+		for (FPlayer fplayer : this.getFPlayers())
+		{
+			fplayer.sendMessage(messages);
+		}
+		return true;
+	}
+	
+	// CONVENIENCE MSG
+	
+	public boolean msg(String msg)
+	{
+		for (FPlayer fplayer : this.getFPlayers())
+		{
+			fplayer.msg(msg);
+		}
+		return true;
+	}
+	
+	public boolean msg(String msg, Object... args)
+	{
+		for (FPlayer fplayer : this.getFPlayers())
+		{
+			fplayer.msg(msg, args);
+		}
+		return true;
+	}
+	
+	public boolean msg(Collection<String> msgs)
+	{
+		for (FPlayer fplayer : this.getFPlayers())
+		{
+			fplayer.msg(msgs);
+		}
+		return true;
+	}
 	
 }

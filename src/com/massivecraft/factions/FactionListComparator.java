@@ -28,7 +28,7 @@ public class FactionListComparator implements Comparator<Faction>
 		if (f2 == null) ret = +1;
 		if (ret != 0) return ret;
 		
-		// None
+		// None a.k.a. Wilderness
 		if (f1.isNone() && f2.isNone()) ret = 0;
 		if (f1.isNone()) ret = -1;
 		if (f2.isNone()) ret = +1;

@@ -71,9 +71,6 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 	public boolean hasFaction() { return this.factionId != null && ! factionId.equals(Const.FACTIONID_NONE); }
 	public void setFaction(Faction faction)
 	{
-		Faction oldFaction = this.getFaction();
-		if (oldFaction != null) oldFaction.removeFPlayer(this);
-		faction.addFPlayer(this);
 		this.factionId = faction.getId();
 		SpoutFeatures.updateTitle(this, null);
 		SpoutFeatures.updateTitle(null, this);
@@ -157,15 +154,6 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 	
 	public final void resetFactionData(boolean doSpoutUpdate)
 	{
-		if (this.factionId != null && FactionColl.get().containsId(this.factionId)) // Avoid infinite loop! TODO: I think that this is needed is a sign we need to refactor.
-		{
-			Faction currentFaction = this.getFaction();
-			if (currentFaction != null)
-			{
-				currentFaction.removeFPlayer(this);
-			}
-		}
-
 		// TODO: Should we not rather use ConfServer.newPlayerStartingFactionID here?
 		this.factionId = Const.FACTIONID_NONE; // The default neutral faction
 
@@ -476,7 +464,7 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 		}
 		Faction factionHere = BoardColl.get().getFactionAt(this.getCurrentChunk());
 		String msg = Txt.parse("<i>")+" ~ "+factionHere.getTag(this);
-		if (factionHere.getDescription().length() > 0)
+		if (factionHere.hasDescription())
 		{
 			msg += " - "+factionHere.getDescription();
 		}
@@ -564,7 +552,7 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 		PS ps = PS.valueOf(location);
 		Faction myFaction = this.getFaction();
 		Faction currentFaction = BoardColl.get().getFactionAt(ps);
-		int ownedLand = forFaction.getLandRounded();
+		int ownedLand = forFaction.getLandCount();
 		
 		if (ConfServer.worldGuardChecking && Worldguard.checkForRegionsInChunk(location))
 		{
@@ -611,7 +599,7 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 		(
 			ConfServer.claimsMustBeConnected
 			&& ! this.isUsingAdminMode()
-			&& myFaction.getLandRoundedInWorld(ps.getWorld()) > 0
+			&& myFaction.getLandCountInWorld(ps.getWorld()) > 0
 			&& !BoardColl.get().isConnectedPs(ps, myFaction)
 			&& (!ConfServer.claimsCanBeUnconnectedIfOwnedByOtherFaction || !currentFaction.isNormal())
 		)
@@ -649,7 +637,7 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 		PS flocation = PS.valueOf(location).getChunk(true);
 		Faction currentFaction = BoardColl.get().getFactionAt(flocation);
 		
-		int ownedLand = forFaction.getLandRounded();
+		int ownedLand = forFaction.getLandCount();
 		
 		if ( ! this.canClaimForFactionAtLocation(forFaction, location, notifyFailure)) return false;
 		
@@ -662,7 +650,7 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 		{
 			cost = Econ.calculateClaimCost(ownedLand, currentFaction.isNormal());
 
-			if (ConfServer.econClaimUnconnectedFee != 0.0 && forFaction.getLandRoundedInWorld(flocation.getWorld()) > 0 && !BoardColl.get().isConnectedPs(flocation, forFaction))
+			if (ConfServer.econClaimUnconnectedFee != 0.0 && forFaction.getLandCountInWorld(flocation.getWorld()) > 0 && !BoardColl.get().isConnectedPs(flocation, forFaction))
 				cost += ConfServer.econClaimUnconnectedFee;
 
 			if(ConfServer.bankEnabled && ConfServer.bankFactionPaysLandCosts && this.hasFaction())
