@@ -39,12 +39,12 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	{
 		this.tag = that.tag;
 		this.setDescription(that.description);
+		this.home = that.home;
+		this.setPowerBoost(that.powerBoost);
+		this.cape = that.cape;
 		this.open = that.open;
 		this.setInvitedPlayerIds(that.invitedPlayerIds);
 		this.setRelationWishes(that.relationWish);
-		this.home = that.home;
-		this.cape = that.cape;
-		this.setPowerBoost(that.powerBoost);
 		this.setFlags(that.flagOverrides);
 		this.permOverrides = that.permOverrides;
 		
@@ -63,24 +63,36 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	// Thus we make use of a name. Since the id is used in all foreign key situations changing the name is fine.
 	private String tag = null;
 	
+	// Factions can optionally set a description for themselves.
+	// This description can for example be seen in territorial alerts.
 	private String description = null;
 	
+	// Factions can optionally set a home location.
+	// If they do their members can teleport there using /f home
+	private PS home = null;
+	
+	// Factions usually do not have a powerboost. It defaults to 0.
+	// The powerBoost is a custom increase/decrease to default and maximum power.
+	private Double powerBoost = null;
+	
+	// The cape field is used by the Spout integration features.
+	// It's the URL to the faction cape. 
+	private String cape = null;
+	
+	// Can anyone join the Faction?
+	// If the faction is open they can.
+	// If the faction is closed an invite is required.
 	private Boolean open = null;
 	
+	// This is the ids of the invited players.
+	// They are actually "senderIds" since you can invite "@console" to your faction.
 	@SerializedName("invites")
 	private Set<String> invitedPlayerIds = null;
 	
+	// The keys in this map are factionIds.
 	private Map<String, Rel> relationWish = null;
 	
-	private PS home = null;
-	
-	// The cape field is a URL used by the Spout integration features.
-	private String cape = null;
-
-	// The powerBoost is a custom increase/decrease to default and max power for this faction.
-	private Double powerBoost = null;
-
-	// The flag overrides are the modifications to the default values
+	// The flag overrides are the modifications to the default values.
 	private Map<FFlag, Boolean> flagOverrides;
 
 	// FIELDS: Permission <-> Groups management
@@ -140,7 +152,6 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 		temp.addAll(Arrays.asList(rels));
 		this.setPermittedRelations(perm, temp);
 	}
-	
 	
 	// -------------------------------------------- //
 	// CONSTRUCT
@@ -261,6 +272,81 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	}
 	
 	// -------------------------------------------- //
+	// FIELD: home
+	// -------------------------------------------- //
+	
+	// TODO: Checkery is a bit weird?
+	
+	public PS getHome()
+	{
+		this.verifyHomeIsValid();
+		return this.home;
+	}
+	
+	public void verifyHomeIsValid()
+	{
+		if (this.isValidHome(this.home)) return;
+		this.home = null;
+		msg("<b>Your faction home has been un-set since it is no longer in your territory.");
+	}
+	
+	public boolean isValidHome(PS ps)
+	{
+		if (ps == null) return true;
+		if (!ConfServer.homesMustBeInClaimedTerritory) return true;
+		if (BoardColl.get().getFactionAt(ps) == this) return true;
+		return false;
+	}
+	
+	public boolean hasHome()
+	{
+		return this.getHome() != null;
+	}
+	
+	public void setHome(PS home)
+	{
+		this.home = home;
+	}
+	
+	// -------------------------------------------- //
+	// FIELD: powerBoost
+	// -------------------------------------------- //
+	
+	// RAW
+	
+	public double getPowerBoost()
+	{
+		Double ret = this.powerBoost;
+		if (ret == null) ret = 0D;
+		return ret;
+	}
+	
+	public void setPowerBoost(Double powerBoost)
+	{
+		if (powerBoost == null || powerBoost == 0)
+		{
+			powerBoost = null;
+		}
+		this.powerBoost = powerBoost;
+		this.changed();
+	}
+	
+	// -------------------------------------------- //
+	// FIELD: cape
+	// -------------------------------------------- //
+	
+	public String getCape()
+	{
+		return cape;
+	}
+	
+	public void setCape(String cape)
+	{
+		this.cape = cape;
+		SpoutFeatures.updateCape(this, null);
+	}
+	
+	// -------------------------------------------- //
 	// FIELD: open
 	// -------------------------------------------- //
 	
@@ -276,6 +362,82 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 		this.open = open;
 		this.changed();
 	}
+	
+	// -------------------------------------------- //
+	// FIELD: invitedPlayerIds
+	// -------------------------------------------- //
+	
+	// RAW
+	
+	public TreeSet<String> getInvitedPlayerIds()
+	{
+		TreeSet<String> ret = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
+		if (this.invitedPlayerIds != null) ret.addAll(this.invitedPlayerIds);
+		return ret;
+	}
+	
+	public void setInvitedPlayerIds(Collection<String> invitedPlayerIds)
+	{
+		if (invitedPlayerIds == null || invitedPlayerIds.isEmpty())
+		{
+			this.invitedPlayerIds = null;
+		}
+		else
+		{
+			TreeSet<String> target = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
+			for (String invitedPlayerId : invitedPlayerIds)
+			{
+				target.add(invitedPlayerId.toLowerCase());
+			}
+			this.invitedPlayerIds = target;
+		}
+		this.changed();
+	}
+	
+	// FINER
+	
+	public boolean isInvited(String playerId)
+	{
+		return this.getInvitedPlayerIds().contains(playerId);
+	}
+	
+	public boolean isInvited(FPlayer fplayer)
+	{
+		return this.isInvited(fplayer.getId());
+	}
+	
+	public boolean invite(String playerId)
+	{
+		TreeSet<String> invitedPlayerIds = this.getInvitedPlayerIds();
+		if (invitedPlayerIds.add(playerId.toLowerCase()))
+		{
+			this.setInvitedPlayerIds(invitedPlayerIds);
+			return true;
+		}
+		return false;
+	}
+	
+	public void invite(FPlayer fplayer)
+	{
+		this.invite(fplayer.getId());
+	}
+	
+	public boolean deinvite(String playerId)
+	{
+		TreeSet<String> invitedPlayerIds = this.getInvitedPlayerIds();
+		if (invitedPlayerIds.remove(playerId.toLowerCase()))
+		{
+			this.setInvitedPlayerIds(invitedPlayerIds);
+			return true;
+		}
+		return false;
+	}
+	
+	public void deinvite(FPlayer fplayer)
+	{
+		this.deinvite(fplayer.getId());
+	}
+	
 	
 	// -------------------------------------------- //
 	// FIELD: relationWish
@@ -358,156 +520,6 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 			ret.get(relation).add(faction.getTag(rp));
 		}
 		return ret;
-	}
-	
-	// -------------------------------------------- //
-	// FIELD: invitedPlayerIds
-	// -------------------------------------------- //
-	
-	// RAW
-	
-	public TreeSet<String> getInvitedPlayerIds()
-	{
-		TreeSet<String> ret = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
-		if (this.invitedPlayerIds != null) ret.addAll(this.invitedPlayerIds);
-		return ret;
-	}
-	
-	public void setInvitedPlayerIds(Collection<String> invitedPlayerIds)
-	{
-		if (invitedPlayerIds == null || invitedPlayerIds.isEmpty())
-		{
-			this.invitedPlayerIds = null;
-		}
-		else
-		{
-			TreeSet<String> target = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
-			for (String invitedPlayerId : invitedPlayerIds)
-			{
-				target.add(invitedPlayerId.toLowerCase());
-			}
-			this.invitedPlayerIds = target;
-		}
-		this.changed();
-	}
-	
-	// FINER
-	
-	public boolean isInvited(String playerId)
-	{
-		return this.getInvitedPlayerIds().contains(playerId);
-	}
-	
-	public boolean isInvited(FPlayer fplayer)
-	{
-		return this.isInvited(fplayer.getId());
-	}
-	
-	public boolean invite(String playerId)
-	{
-		TreeSet<String> invitedPlayerIds = this.getInvitedPlayerIds();
-		if (invitedPlayerIds.add(playerId.toLowerCase()))
-		{
-			this.setInvitedPlayerIds(invitedPlayerIds);
-			return true;
-		}
-		return false;
-	}
-	
-	public void invite(FPlayer fplayer)
-	{
-		this.invite(fplayer.getId());
-	}
-	
-	public boolean deinvite(String playerId)
-	{
-		TreeSet<String> invitedPlayerIds = this.getInvitedPlayerIds();
-		if (invitedPlayerIds.remove(playerId.toLowerCase()))
-		{
-			this.setInvitedPlayerIds(invitedPlayerIds);
-			return true;
-		}
-		return false;
-	}
-	
-	public void deinvite(FPlayer fplayer)
-	{
-		this.deinvite(fplayer.getId());
-	}
-	
-	// -------------------------------------------- //
-	// FIELD: home
-	// -------------------------------------------- //
-	
-	// TODO: Checkery is a bit weird?
-	
-	public PS getHome()
-	{
-		this.verifyHomeIsValid();
-		return this.home;
-	}
-	
-	public void verifyHomeIsValid()
-	{
-		if (this.isValidHome(this.home)) return;
-		this.home = null;
-		msg("<b>Your faction home has been un-set since it is no longer in your territory.");
-	}
-	
-	public boolean isValidHome(PS ps)
-	{
-		if (ps == null) return true;
-		if (!ConfServer.homesMustBeInClaimedTerritory) return true;
-		if (BoardColl.get().getFactionAt(ps) == this) return true;
-		return false;
-	}
-	
-	public boolean hasHome()
-	{
-		return this.getHome() != null;
-	}
-	
-	public void setHome(PS home)
-	{
-		this.home = home;
-	}
-	
-	// -------------------------------------------- //
-	// FIELD: cape
-	// -------------------------------------------- //
-	
-	public String getCape()
-	{
-		return cape;
-	}
-	
-	public void setCape(String cape)
-	{
-		this.cape = cape;
-		SpoutFeatures.updateCape(this, null);
-	}
-	
-	// -------------------------------------------- //
-	// FIELD: powerBoost
-	// -------------------------------------------- //
-	
-	// RAW
-	
-	public double getPowerBoost()
-	{
-		Double ret = this.powerBoost;
-		if (ret == null) ret = 0D;
-		return ret;
-	}
-	
-	public void setPowerBoost(Double powerBoost)
-	{
-		if (powerBoost == null || powerBoost == 0)
-		{
-			powerBoost = null;
-		}
-		this.powerBoost = powerBoost;
-		this.changed();
 	}
 	
 	// -------------------------------------------- //
