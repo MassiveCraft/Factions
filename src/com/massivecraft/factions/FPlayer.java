@@ -371,7 +371,7 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 	
 	public String getName()
 	{
-		return getId();
+		return this.getFixedId();
 	}
 	
 	public String getTag()

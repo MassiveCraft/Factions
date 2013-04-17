@@ -118,9 +118,9 @@ public class Factions extends MPlugin
 		.registerTypeAdapter(TerritoryAccess.class, TerritoryAccessAdapter.get())
 		.registerTypeAdapter(Board.class, BoardAdapter.get())
 		.registerTypeAdapter(Board.MAP_TYPE, BoardMapAdapter.get())
-		.registerTypeAdapter(Rel.class, new RelAdapter())
-		.registerTypeAdapter(FPerm.class, new FPermAdapter())
-		.registerTypeAdapter(FFlag.class, new FFlagAdapter())
+		.registerTypeAdapter(Rel.class, RelAdapter.get())
+		.registerTypeAdapter(FPerm.class, FPermAdapter.get())
+		.registerTypeAdapter(FFlag.class, FFlagAdapter.get())
 		;
 	}
 

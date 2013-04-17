@@ -238,7 +238,6 @@ public class FactionColl extends Coll<Faction>
 		faction.setFlag(FFlag.MONSTERS, true);
 		faction.setFlag(FFlag.EXPLOSIONS, true);
 		faction.setFlag(FFlag.FIRESPREAD, true);
-		//faction.setFlag(FFlag.LIGHTNING, true);
 		faction.setFlag(FFlag.ENDERGRIEF, true);
 		
 		faction.setPermittedRelations(FPerm.BUILD, Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
@@ -267,7 +266,6 @@ public class FactionColl extends Coll<Faction>
 		faction.setFlag(FFlag.MONSTERS, false);
 		faction.setFlag(FFlag.EXPLOSIONS, false);
 		faction.setFlag(FFlag.FIRESPREAD, false);
-		//faction.setFlag(FFlag.LIGHTNING, false);
 		faction.setFlag(FFlag.ENDERGRIEF, false);
 		
 		faction.setPermittedRelations(FPerm.DOOR, Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
@@ -296,7 +294,6 @@ public class FactionColl extends Coll<Faction>
 		faction.setFlag(FFlag.MONSTERS, true);
 		faction.setFlag(FFlag.EXPLOSIONS, true);
 		faction.setFlag(FFlag.FIRESPREAD, true);
-		//faction.setFlag(FFlag.LIGHTNING, true);
 		faction.setFlag(FFlag.ENDERGRIEF, true);
 		
 		faction.setPermittedRelations(FPerm.DOOR, Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);

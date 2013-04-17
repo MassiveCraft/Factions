@@ -10,6 +10,17 @@ import com.massivecraft.mcore.xlib.gson.JsonParseException;
 
 public class FFlagAdapter implements JsonDeserializer<FFlag>
 {
+	// -------------------------------------------- //
+	// INSTANCE & CONSTRUCT
+	// -------------------------------------------- //
+	
+	private static FFlagAdapter i = new FFlagAdapter();
+	public static FFlagAdapter get() { return i; }
+	
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
+	
 	@Override
 	public FFlag deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException
 	{

@@ -10,6 +10,10 @@ package com.massivecraft.factions;
  */
 public enum FFlag
 {
+	// -------------------------------------------- //
+	// ENUM
+	// -------------------------------------------- //
+	
 	// Faction flags
 	PERMANENT("permanent", "<i>A permanent faction will never be deleted.", false),
 	PEACEFUL("peaceful", "<i>Allways in truce with other factions.", false),
@@ -24,13 +28,26 @@ public enum FFlag
 	MONSTERS("monsters", "<i>Can monsters spawn in this territory?", true),
 	EXPLOSIONS("explosions", "<i>Can explosions occur in this territory?", true),
 	FIRESPREAD("firespread", "<i>Can fire spread in territory?", true),
-	//LIGHTNING("lightning", "<i>Can lightning strike in this territory?", true), Possible to add later.
 	ENDERGRIEF("endergrief", "<i>Can endermen grief in this territory?", false),
+	
+	// END OF LIST
 	;
 	
+	// -------------------------------------------- //
+	// FIELDS
+	// -------------------------------------------- //
+	
 	private final String nicename;
+	public String getNicename() { return this.nicename; }
+	
 	private final String desc;
+	public String getDescription() { return this.desc; }
+	
 	public final boolean defaultDefaultValue;
+	
+	// -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
 	
 	private FFlag(final String nicename, final String desc, final boolean defaultDefaultValue)
 	{
@@ -39,15 +56,10 @@ public enum FFlag
 		this.defaultDefaultValue = defaultDefaultValue;
 	}
 	
-	public String getNicename()
-	{
-		return this.nicename;
-	}
+	// -------------------------------------------- //
+	// FRODOODODFOFL
+	// -------------------------------------------- //
 	
-	public String getDescription()
-	{
-		return this.desc;
-	}
 	
 	/**
 	 * The state for newly created factions.
@@ -71,7 +83,6 @@ public enum FFlag
 		if (str.startsWith("m")) return MONSTERS;
 		if (str.startsWith("ex")) return EXPLOSIONS;
 		if (str.startsWith("fi")) return FIRESPREAD;
-		//if (str.startsWith("l")) return LIGHTNING;
 		if (str.startsWith("en")) return ENDERGRIEF;		
 		return null;
 	}
