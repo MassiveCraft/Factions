@@ -1,5 +1,6 @@
 package com.massivecraft.factions.cmd;
 
+import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
@@ -18,12 +19,13 @@ public class CmdFactionsDeinvite extends FCommand
 		this.addRequiredArg("player");
 		
 		this.addRequirements(ReqHasPerm.get(Perm.DEINVITE.node));
-		this.addRequirements(ReqRoleIsAtLeast.get(Rel.OFFICER));
 	}
 	
 	@Override
 	public void perform()
 	{
+		if ( ! FPerm.INVITE.has(sender, myFaction, true)) return;
+		
 		FPlayer you = this.arg(0, ARFPlayer.getStartAny());
 		if (you == null) return;
 		

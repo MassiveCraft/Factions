@@ -5,9 +5,7 @@ import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
-import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.cmd.arg.ARFPlayer;
-import com.massivecraft.factions.cmd.req.ReqRoleIsAtLeast;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 import com.massivecraft.mcore.cmd.req.ReqIsPlayer;
 
@@ -21,12 +19,13 @@ public class CmdFactionsInvite extends FCommand
 		
 		this.addRequirements(ReqHasPerm.get(Perm.INVITE.node));
 		this.addRequirements(ReqIsPlayer.get());
-		this.addRequirements(ReqRoleIsAtLeast.get(Rel.OFFICER));
 	}
 	
 	@Override
 	public void perform()
 	{
+		if ( ! FPerm.INVITE.has(sender, myFaction, true)) return;
+		
 		FPlayer you = this.arg(0, ARFPlayer.getStartAny());
 		if (you == null) return;
 		

@@ -102,7 +102,6 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 
 	// The flag overrides are the modifications to the default values
 	private Map<FFlag, Boolean> flagOverrides;
-	
 
 	// FIELDS: Permission <-> Groups management
 	private Map<FPerm, Set<Rel>> permOverrides; // Contains the modifications to the default values
@@ -581,8 +580,6 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	{
 		return RelationUtil.getColorOfThatToMe(this, observer);
 	}
-	
-	
 	
 	// TODO: Implement a has enough feature.
 	// -------------------------------------------- //

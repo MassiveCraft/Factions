@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.bukkit.Location;
+import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
@@ -137,7 +138,7 @@ public enum FPerm
 		
 		RelationParticipator rpSubject = null;
 		
-		if (testSubject instanceof Player)
+		if (testSubject instanceof CommandSender)
 		{
 			rpSubject = FPlayerColl.get().get(testSubject);
 		}
