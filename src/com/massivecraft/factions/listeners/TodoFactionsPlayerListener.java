@@ -12,7 +12,6 @@ import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerBucketFillEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 
 import com.massivecraft.factions.BoardColl;
@@ -21,10 +20,8 @@ import com.massivecraft.factions.Const;
 import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayerColl;
-import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.TerritoryAccess;
 import com.massivecraft.factions.integration.SpoutFeatures;
-import com.massivecraft.factions.util.VisualizeUtil;
 import com.massivecraft.mcore.event.MCorePlayerLeaveEvent;
 import com.massivecraft.mcore.ps.PS;
 import com.massivecraft.mcore.util.MUtil;
@@ -200,36 +197,4 @@ public class TodoFactionsPlayerListener implements Listener
 	}
 	
 	
-
-	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-	public void onPlayerKick(PlayerKickEvent event)
-	{
-		FPlayer badGuy = FPlayerColl.get().get(event.getPlayer());
-		if (badGuy == null) return;
-
-		SpoutFeatures.playerDisconnect(badGuy);
-
-		// if player was banned (not just kicked), get rid of their stored info
-		if (ConfServer.removePlayerDataWhenBanned && event.getReason().equals("Banned by admin."))
-		{
-			if (badGuy.getRole() == Rel.LEADER)
-				badGuy.getFaction().promoteNewLeader();
-			badGuy.leave(false);
-			badGuy.detach();
-		}
-	}
-	
-	// -------------------------------------------- //
-	// VisualizeUtil
-	// -------------------------------------------- //
-	
-	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-	public void onPlayerMoveClearVisualizations(PlayerMoveEvent event)
-	{
-		Block blockFrom = event.getFrom().getBlock();
-		Block blockTo = event.getTo().getBlock();
-		if (blockFrom.equals(blockTo)) return;
-		
-		VisualizeUtil.clear(event.getPlayer());
-	}
 }

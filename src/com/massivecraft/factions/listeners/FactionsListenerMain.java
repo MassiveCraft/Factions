@@ -36,6 +36,8 @@ import org.bukkit.event.hanging.HangingPlaceEvent;
 import org.bukkit.event.hanging.HangingBreakEvent.RemoveCause;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerKickEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.server.PluginDisableEvent;
@@ -52,7 +54,9 @@ import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.integration.SpoutFeatures;
+import com.massivecraft.factions.util.VisualizeUtil;
 import com.massivecraft.mcore.ps.PS;
+import com.massivecraft.mcore.util.MUtil;
 import com.massivecraft.mcore.util.Txt;
 
 public class FactionsListenerMain implements Listener
@@ -72,6 +76,45 @@ public class FactionsListenerMain implements Listener
 	public void setup()
 	{
 		Bukkit.getPluginManager().registerEvents(this, Factions.get());
+	}
+	
+	// -------------------------------------------- //
+	// REMOVE PLAYER DATA WHEN BANNED
+	// -------------------------------------------- //
+
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	public void onPlayerKick(PlayerKickEvent event)
+	{
+		// If a player was kicked from the server ...
+		Player player = event.getPlayer();
+		FPlayer fplayer = FPlayerColl.get().get(player);
+
+		// ... and if the if player was banned (not just kicked) ...
+		if (!event.getReason().equals("Banned by admin.")) return;
+		
+		// ... and we remove player data when banned ...
+		if (!ConfServer.removePlayerDataWhenBanned) return;
+		
+		// ... get rid of their stored info.
+		if (fplayer.getRole() == Rel.LEADER)
+		{
+			fplayer.getFaction().promoteNewLeader();
+		}
+		fplayer.leave(false);
+		fplayer.detach();
+		
+	}
+	
+	// -------------------------------------------- //
+	// VISUALIZE UTIL
+	// -------------------------------------------- //
+	
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	public void onPlayerMoveClearVisualizations(PlayerMoveEvent event)
+	{
+		if (MUtil.isSameBlock(event)) return;
+		
+		VisualizeUtil.clear(event.getPlayer());
 	}
 	
 	// -------------------------------------------- //
