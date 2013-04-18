@@ -147,18 +147,6 @@ public class Factions extends MPlugin
 	
 	/*
 
-	// This value will be updated whenever new hooks are added
-	public int hookSupportVersion()
-	{
-		return 3;
-	}
-
-	// If another plugin is handling insertion of chat tags, this should be used to notify Factions
-	public void handleFactionTagExternally(boolean notByFactions)
-	{
-		ConfServer.chatTagHandledByAnotherPlugin = notByFactions;
-	}
-
 	// Get a player's faction tag (faction name), mainly for usage by chat plugins for local/channel chat
 	public String getPlayerFactionTag(Player player)
 	{
