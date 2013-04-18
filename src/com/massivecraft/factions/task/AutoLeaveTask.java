@@ -17,6 +17,7 @@ public class AutoLeaveTask implements Runnable
 	{
 		FPlayerColl.get().autoLeaveOnInactivityRoutine();
 
+		// TODO: Make it a polling and non-tps-dependent system instead.
 		// maybe setting has been changed? if so, restart task at new rate
 		if (this.rate != ConfServer.autoLeaveRoutineRunsEveryXMinutes)
 			Factions.get().startAutoLeaveTask(true);
