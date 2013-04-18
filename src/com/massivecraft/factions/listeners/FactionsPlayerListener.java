@@ -1,9 +1,7 @@
 package com.massivecraft.factions.listeners;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -20,7 +18,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.util.NumberConversions;
 
 import com.massivecraft.factions.BoardColl;
 import com.massivecraft.factions.ConfServer;
@@ -137,23 +134,6 @@ public class FactionsPlayerListener implements Listener
 		if ( ! canPlayerUseBlock(player, block, false))
 		{
 			event.setCancelled(true);
-			if (ConfServer.handleExploitInteractionSpam)
-			{
-				String name = player.getName();
-				InteractAttemptSpam attempt = interactSpammers.get(name);
-				if (attempt == null)
-				{
-					attempt = new InteractAttemptSpam();
-					interactSpammers.put(name, attempt);
-				}
-				int count = attempt.increment();
-				if (count >= 10)
-				{
-					FPlayer me = FPlayerColl.get().get(name);
-					me.msg("<b>Ouch, that is starting to hurt. You should give it a rest.");
-					player.damage(NumberConversions.floor((double)count / 10));
-				}
-			}
 			return;
 		}
 
@@ -163,27 +143,6 @@ public class FactionsPlayerListener implements Listener
 		{
 			event.setCancelled(true);
 			return;
-		}
-	}
-
-
-	// for handling people who repeatedly spam attempts to open a door (or similar) in another faction's territory
-	private Map<String, InteractAttemptSpam> interactSpammers = new HashMap<String, InteractAttemptSpam>();
-	private static class InteractAttemptSpam
-	{
-		private int attempts = 0;
-		private long lastAttempt = System.currentTimeMillis();
-
-		// returns the current attempt count
-		public int increment()
-		{
-			long Now = System.currentTimeMillis();
-			if (Now > lastAttempt + 2000)
-				attempts = 1;
-			else
-				attempts++;
-			lastAttempt = Now;
-			return attempts;
 		}
 	}
 

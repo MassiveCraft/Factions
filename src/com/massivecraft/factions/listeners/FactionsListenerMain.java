@@ -1,4 +1,4 @@
-package com.massivecraft.factions;
+package com.massivecraft.factions.listeners;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -30,18 +30,25 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.event.server.PluginEnableEvent;
 
+import com.massivecraft.factions.BoardColl;
+import com.massivecraft.factions.ConfServer;
+import com.massivecraft.factions.FFlag;
+import com.massivecraft.factions.FPerm;
+import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.mcore.ps.PS;
 
-public class MainListener implements Listener
+public class FactionsListenerMain implements Listener
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static MainListener i = new MainListener();
-	public static MainListener get() { return i; }
-	public MainListener() {}
+	private static FactionsListenerMain i = new FactionsListenerMain();
+	public static FactionsListenerMain get() { return i; }
+	public FactionsListenerMain() {}
 	
 	// -------------------------------------------- //
 	// SETUP

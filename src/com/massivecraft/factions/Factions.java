@@ -14,7 +14,8 @@ import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.integration.Worldguard;
 import com.massivecraft.factions.listeners.FactionsChatListener;
 import com.massivecraft.factions.listeners.FactionsEntityListener;
-import com.massivecraft.factions.listeners.FactionsExploitListener;
+import com.massivecraft.factions.listeners.FactionsListenerExploit;
+import com.massivecraft.factions.listeners.FactionsListenerMain;
 import com.massivecraft.factions.listeners.FactionsPlayerListener;
 import com.massivecraft.factions.task.AutoLeaveTask;
 import com.massivecraft.factions.task.EconLandRewardTask;
@@ -45,7 +46,6 @@ public class Factions extends MPlugin
 	public FactionsPlayerListener playerListener;
 	public FactionsChatListener chatListener;
 	public FactionsEntityListener entityListener;
-	public FactionsExploitListener exploitListener;
 
 	// -------------------------------------------- //
 	// OVERRIDE
@@ -83,8 +83,12 @@ public class Factions extends MPlugin
 		EconLandRewardTask.get().schedule(this);
 
 		// Register Event Handlers
-		MainListener.get().setup();
+		FactionsListenerMain.get().setup();
+		// TODO: Chat goes here
+		FactionsListenerExploit.get().setup();
 		
+		
+		// TODO: Get rid of these
 		this.playerListener = new FactionsPlayerListener();
 		getServer().getPluginManager().registerEvents(this.playerListener, this);
 		
@@ -94,8 +98,7 @@ public class Factions extends MPlugin
 		this.entityListener = new FactionsEntityListener();
 		getServer().getPluginManager().registerEvents(this.entityListener, this);
 		
-		this.exploitListener = new FactionsExploitListener();
-		getServer().getPluginManager().registerEvents(this.exploitListener, this);
+		
 		
 		postEnable();
 	}

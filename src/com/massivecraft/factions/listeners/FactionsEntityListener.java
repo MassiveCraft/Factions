@@ -1,11 +1,9 @@
 package com.massivecraft.factions.listeners;
 
 import java.text.MessageFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.bukkit.Bukkit;
@@ -16,7 +14,6 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
-import org.bukkit.entity.TNTPrimed;
 import org.bukkit.entity.Wither;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -88,7 +85,7 @@ public class FactionsEntityListener implements Listener
 		final String msg = powerLossEvent.getMessage();
 		if (msg != null && !msg.isEmpty())
 		{
-			fplayer.msg(msg,fplayer.getPowerRounded(),fplayer.getPowerMaxRounded());
+			fplayer.msg(msg, fplayer.getPowerRounded(), fplayer.getPowerMaxRounded());
 		}
 	}
 
@@ -126,30 +123,6 @@ public class FactionsEntityListener implements Listener
 		{
 			event.setCancelled(true);
 			return;
-		}
-		
-
-		// TNT in water/lava doesn't normally destroy any surrounding blocks, which is usually desired behavior, but...
-		// this optional change below provides workaround for waterwalling providing perfect protection,
-		// and makes cheap (non-obsidian) TNT cannons require minor maintenance between shots
-		Block center = event.getLocation().getBlock();
-		if (event.getEntity() instanceof TNTPrimed && ConfServer.handleExploitTNTWaterlog && center.isLiquid())
-		{
-			// a single surrounding block in all 6 directions is broken if the material is weak enough
-			List<Block> targets = new ArrayList<Block>();
-			targets.add(center.getRelative(0, 0, 1));
-			targets.add(center.getRelative(0, 0, -1));
-			targets.add(center.getRelative(0, 1, 0));
-			targets.add(center.getRelative(0, -1, 0));
-			targets.add(center.getRelative(1, 0, 0));
-			targets.add(center.getRelative(-1, 0, 0));
-			for (Block target : targets)
-			{
-				int id = target.getTypeId();
-				// ignore air, bedrock, water, lava, obsidian, enchanting table, etc.... too bad we can't get a blast resistance value through Bukkit yet
-				if (id != 0 && (id < 7 || id > 11) && id != 49 && id != 90 && id != 116 && id != 119 && id != 120 && id != 130)
-					target.breakNaturally();
-			}
 		}
 	}
 
