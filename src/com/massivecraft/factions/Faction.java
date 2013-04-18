@@ -542,50 +542,38 @@ public class Faction extends Entity implements EconomyParticipator
 	//----------------------------------------------//
 	// Offline Faction Protection
 	//----------------------------------------------//
-	public void updateOfflineExplosionProtection() {
+	public void updateLastOnlineTime()
+	{
 		// We have either gained or a lost a player.
-		if (this.id == "-2" || this.id == "-1" || this.id == "0") {
+		if (this.isNone())
 			return;
-		}
-		
-		if (this.getOnlinePlayers().size() <=1 && (this.getLastOnlineTime() + (Conf.offlineExplosionProtectionDelay * 60 * 1000)) < System.currentTimeMillis()) {
-			//No one is online, set the last online time
-			this.lastOnlineTime = System.currentTimeMillis();
-		}
+
+		this.lastOnlineTime = System.currentTimeMillis();
 	}
-	
-	public boolean hasOfflineExplosionProtection() {
-		if (!Conf.protectOfflineFactionsFromExplosions) {
+
+	public boolean hasOfflineExplosionProtection()
+	{
+		if (!Conf.protectOfflineFactionsFromExplosions || this.isNone())
 			return false;
-		}
-		
-		if (this.id == "-2" || this.id == "-1") {
-			return true;
-		} else if ((this.id == "-2" || this.id == "-1") && this.getFlag(FFlag.EXPLOSIONS) == false) {
-			return true;
-		}
-		
-		long timeUntilNoboom = (long) (this.getLastOnlineTime() + (Conf.offlineExplosionProtectionDelay * 60 * 1000));
-		
-		//No protection if we are online.
-		if (this.getOnlinePlayers().size() > 0 || this.isNone()) {
+
+		long timeUntilNoboom = this.getLastOnlineTime() + (long)(Conf.offlineExplosionProtectionDelay * 60 * 1000);
+
+		//No protection if players are online.
+		if (this.getOnlinePlayers().size() > 0)
 			return false;
-		} else if (this.getOnlinePlayers().size() == 0 && timeUntilNoboom > System.currentTimeMillis()) {
-			updateOfflineExplosionProtection();
-		}
-		
+
 		// No Protection while timeUntilNoboom is greater than current system time.
-		if (timeUntilNoboom > System.currentTimeMillis()) {
+		if (timeUntilNoboom > System.currentTimeMillis())
 			return false;
-		} else {
-			return true;
-		}
+
+		return true;
 	}
-	
-	public long getLastOnlineTime() {
+
+	public long getLastOnlineTime()
+	{
 		return this.lastOnlineTime;
 	}
-	
+
 	//----------------------------------------------//
 	// Deprecated
 	//----------------------------------------------//

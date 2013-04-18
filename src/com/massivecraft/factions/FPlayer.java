@@ -520,6 +520,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator
 		}
 		
 		this.resetFactionData();
+		myFaction.updateLastOnlineTime();
 
 		if (myFaction.isNormal() && !perm && myFaction.getFPlayers().isEmpty())
 		{

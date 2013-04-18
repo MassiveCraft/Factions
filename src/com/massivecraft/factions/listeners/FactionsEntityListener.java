@@ -12,11 +12,8 @@ import java.util.Set;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Creeper;
 import org.bukkit.entity.Enderman;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Explosive;
-import org.bukkit.entity.Fireball;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
@@ -130,14 +127,6 @@ public class FactionsEntityListener implements Listener
 	public void onEntityExplode(EntityExplodeEvent event)
 	{
 		if (event.isCancelled()) return;
-		
-		// NoBoom Explosion Protection
-		if (event.getEntity() instanceof Fireball || event.getEntity() instanceof Creeper || event.getEntity() instanceof Explosive) {
-			Faction faction = Board.getFactionAt(new FLocation(event.getLocation().getBlock()));
-
-			if (!faction.hasOfflineExplosionProtection())
-				faction.updateOfflineExplosionProtection();
-		}
 
 		Set<FLocation> explosionLocs = new HashSet<FLocation>();
 		for (Block block : event.blockList())
