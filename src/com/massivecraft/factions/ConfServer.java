@@ -3,6 +3,7 @@ package com.massivecraft.factions;
 import java.util.*;
 
 import org.bukkit.*;
+import org.bukkit.event.EventPriority;
 
 import com.massivecraft.mcore.SimpleConfig;
 import com.massivecraft.mcore.util.MUtil;
@@ -105,15 +106,19 @@ public class ConfServer extends SimpleConfig
 	// CHAT
 	// -------------------------------------------- //
 	
-	// Configuration on the Faction tag in chat messages.
+	// We offer a simple standard way to set the format
 	public static boolean chatSetFormat = false;
-	public static String chatSetFormatTo = "<{faction_relcolor}§l{faction_roleprefix}§r{faction_relcolor}{faction_tag_pr}"+ChatColor.WHITE.toString()+"%s> %s";
+	public static EventPriority chatSetFormatAt = EventPriority.LOWEST;
+	public static String chatSetFormatTo = "<{faction_relcolor}§l{faction_roleprefix}§r{faction_relcolor}{faction_tag_pr}§f%s> %s";
+	
+	// We offer a simple standard way to parse the chat tags
 	public static boolean chatParseTags = true;
+	public static EventPriority chatParseTagsAt = EventPriority.LOW;
 	
-	
+	// TODO: What is this line and can I get rid of it?
 	public static String chatTagFormat = "%s"+ChatColor.WHITE; // This one is almost deprecated now right? or is it?
 	
-	// Herochat
+	// HeroChat: The Faction Channel
 	public static String herochatFactionName = "Faction";
 	public static String herochatFactionNick = "F";
 	public static String herochatFactionFormat = "{color}[&l{nick}&r{color} &l{faction_roleprefix}&r{color}{faction_title_pr}{sender}{color}] &f{msg}";
@@ -124,6 +129,7 @@ public class ConfServer extends SimpleConfig
 	public static boolean herochatFactionMuted = false;
 	public static Set<String> herochatFactionWorlds = new HashSet<String>();
 	
+	// HeroChat: The Allies Channel
 	public static String herochatAlliesName = "Allies";
 	public static String herochatAlliesNick = "A";
 	public static String herochatAlliesFormat = "{color}[&l{nick}&r&f {faction_relcolor}&l{faction_roleprefix}&r{faction_relcolor}{faction_tag_pr}{sender}{color}] &f{msg}";
@@ -133,8 +139,6 @@ public class ConfServer extends SimpleConfig
 	public static boolean herochatAlliesCrossWorld = true;
 	public static boolean herochatAlliesMuted = false;
 	public static Set<String> herochatAlliesWorlds = new HashSet<String>();
-	
-	public static String herochatAllyName = "Allies";
 
 	// -------------------------------------------- //
 	// AUTO LEAVE

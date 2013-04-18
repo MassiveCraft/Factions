@@ -35,7 +35,7 @@ import com.massivecraft.mcore.ps.PS;
 import com.massivecraft.mcore.util.MUtil;
 
 
-public class FactionsPlayerListener implements Listener
+public class TodoFactionsPlayerListener implements Listener
 {
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerJoin(PlayerJoinEvent event)

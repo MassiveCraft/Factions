@@ -42,7 +42,7 @@ import com.massivecraft.factions.event.PowerLossEvent;
 import com.massivecraft.mcore.ps.PS;
 
 
-public class FactionsEntityListener implements Listener
+public class TodoFactionsEntityListener implements Listener
 {
 
 	@EventHandler(priority = EventPriority.NORMAL)

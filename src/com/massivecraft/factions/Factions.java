@@ -13,10 +13,10 @@ import com.massivecraft.factions.integration.LWCFeatures;
 import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.integration.Worldguard;
 import com.massivecraft.factions.listeners.FactionsListenerChat;
-import com.massivecraft.factions.listeners.FactionsEntityListener;
+import com.massivecraft.factions.listeners.TodoFactionsEntityListener;
 import com.massivecraft.factions.listeners.FactionsListenerExploit;
 import com.massivecraft.factions.listeners.FactionsListenerMain;
-import com.massivecraft.factions.listeners.FactionsPlayerListener;
+import com.massivecraft.factions.listeners.TodoFactionsPlayerListener;
 import com.massivecraft.factions.task.AutoLeaveTask;
 import com.massivecraft.factions.task.EconLandRewardTask;
 
@@ -43,9 +43,8 @@ public class Factions extends MPlugin
 	public CmdFactions getOuterCmdFactions() { return this.outerCmdFactions; }
 	
 	// Listeners
-	public FactionsPlayerListener playerListener;
-	public FactionsListenerChat chatListener;
-	public FactionsEntityListener entityListener;
+	public TodoFactionsPlayerListener playerListener;
+	public TodoFactionsEntityListener entityListener;
 
 	// -------------------------------------------- //
 	// OVERRIDE
@@ -84,21 +83,15 @@ public class Factions extends MPlugin
 
 		// Register Event Handlers
 		FactionsListenerMain.get().setup();
-		// TODO: Chat goes here
+		FactionsListenerChat.get().setup();
 		FactionsListenerExploit.get().setup();
 		
-		
 		// TODO: Get rid of these
-		this.playerListener = new FactionsPlayerListener();
+		this.playerListener = new TodoFactionsPlayerListener();
 		getServer().getPluginManager().registerEvents(this.playerListener, this);
 		
-		this.chatListener = new FactionsListenerChat();
-		getServer().getPluginManager().registerEvents(this.chatListener, this);
-		
-		this.entityListener = new FactionsEntityListener();
+		this.entityListener = new TodoFactionsEntityListener();
 		getServer().getPluginManager().registerEvents(this.entityListener, this);
-		
-		
 		
 		postEnable();
 	}
