@@ -17,8 +17,11 @@ import com.massivecraft.factions.integration.LWCFeatures;
 import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.integration.Worldguard;
 import com.massivecraft.factions.util.RelationUtil;
+import com.massivecraft.mcore.mixin.Mixin;
 import com.massivecraft.mcore.ps.PS;
 import com.massivecraft.mcore.store.SenderEntity;
+import com.massivecraft.mcore.util.TimeDiffUtil;
+import com.massivecraft.mcore.util.TimeUnit;
 import com.massivecraft.mcore.util.Txt;
 
 
@@ -47,7 +50,6 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 		
 		this.power = that.power;
 		this.lastPowerUpdateTime = that.lastPowerUpdateTime;
-		this.lastLoginTime = that.lastLoginTime;
 		
 		return this;
 	}
@@ -60,7 +62,7 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 		// Note: we do not check role or title here since they mean nothing without a faction.
 		
 		// TODO: This line looks obnoxious, investigate it.
-		if (this.getPowerRounded() != this.getPowerMaxRounded() && this.getPowerRounded() != (int) Math.round(ConfServer.powerPlayerStarting)) return false;
+		if (this.getPowerRounded() != this.getPowerMaxRounded() && this.getPowerRounded() != (int) Math.round(ConfServer.powerStarting)) return false;
 		
 		if (this.hasPowerBoost()) return false;
 		
@@ -98,17 +100,13 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 	// Note that player powerBoost and faction powerBoost are very similar.
 	private Double powerBoost = null;
 	
-	// TODO
-	// FIELD: power
+	// This field contains the last calculated value of the players power.
+	// The power calculation is lazy which means that the power is calculated first when you try to view the value.
 	private double power;
 	
-	// TODO
-	// FIELD: lastPowerUpdateTime
+	// This is the timestamp for the last calculation of the power.
+	// The value is used for the lazy calculation described above.
 	private long lastPowerUpdateTime;
-	
-	// TODO
-	// FIELD: lastLoginTime
-	private long lastLoginTime;
 	
 	// -------------------------------------------- //
 	// FIELDS: RAW TRANSIENT
@@ -147,9 +145,8 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 	public FPlayer()
 	{
 		this.resetFactionData(false);
-		this.power = ConfServer.powerPlayerStarting;
+		this.power = ConfServer.powerStarting;
 		this.lastPowerUpdateTime = System.currentTimeMillis();
-		this.lastLoginTime = System.currentTimeMillis();
 		this.loginPvpDisabled = (ConfServer.noPVPDamageToOthersForXSecondsAfterLogin > 0) ? true : false;
 
 		if ( ! ConfServer.newPlayerStartingFactionID.equals(Const.FACTIONID_NONE) && FactionColl.get().containsId(ConfServer.newPlayerStartingFactionID))
@@ -332,18 +329,179 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 	}
 	
 	// -------------------------------------------- //
-	// GETTERS AND SETTERS
+	// FIELD: lastPowerUpdateTime
 	// -------------------------------------------- //
 	
-	public long getLastLoginTime()
+	// RAW
+	
+	public long getLastPowerUpdateTime()
 	{
-		return lastLoginTime;
+		return this.lastPowerUpdateTime;
 	}
+	
+	public void setLastPowerUpdateTime(long lastPowerUpdateTime)
+	{
+		this.lastPowerUpdateTime = lastPowerUpdateTime;
+		this.changed();
+	}
+	
+	// -------------------------------------------- //
+	// FIELD: power
+	// -------------------------------------------- //
+	
+	// RAW
+	
+	public double getPower()
+	{
+		this.updatePower();
+		return this.power;
+	}
+	
+	public void setPower(double power)
+	{
+		this.setPower(power, System.currentTimeMillis());
+	}
+	
+	public void setPower(double power, long now)
+	{
+		power = Math.min(power, this.getPowerMax());
+		power = Math.max(power, this.getPowerMin());
+		
+		// Nochange
+		if (this.power == power) return;
+		
+		this.power = power;
+		this.setLastPowerUpdateTime(now);
+		this.changed();
+	}
+	
+	public double getPowerMax()
+	{
+		return ConfServer.powerMax + this.powerBoost;
+	}
+	
+	public double getPowerMin()
+	{
+		return ConfServer.powerMin + this.powerBoost;
+	}
+	
+	public void updatePower()
+	{
+		this.updatePower(this.isOnline());
+	}
+	
+	private static final transient long POWER_RECALCULATION_MINIMUM_WAIT_MILLIS = 10 * TimeUnit.MILLIS_PER_SECOND;
+	
+	public void updatePower(boolean online)
+	{
+		// Is the player really on this server?
+		// We use the sender ps mixin to fetch the current player location.
+		// If the PS is null it's OK. We assume the player is here if we do not know.
+		PS ps = Mixin.getSenderPs(this.getId());
+		if (ps != null && !ps.isWorldLoadedOnThisServer()) return;
+		
+		// Get the now
+		long now = System.currentTimeMillis();
+		
+		// We will only update if a certain amount of time has passed.
+		if (this.getLastPowerUpdateTime() + POWER_RECALCULATION_MINIMUM_WAIT_MILLIS >= now) return;
+		
+		// Calculate millis passed
+		long millisPassed = now - this.getLastPowerUpdateTime();
+		
+		// Note that we updated
+		this.setLastPowerUpdateTime(now);
+		
+		// We consider dead players to be offline.
+		if (online)
+		{
+			Player thisPlayer = this.getPlayer();
+			if (thisPlayer != null && thisPlayer.isDead())
+			{
+				online = false;
+			}
+		}
+		
+		// Depending on online state pick the config values
+		double powerPerHour = online ? ConfServer.powerPerHourOnline : ConfServer.powerPerHourOffline;
+		double powerLimitGain = online ? ConfServer.powerLimitGainOnline : ConfServer.powerLimitGainOffline;
+		double powerLimitLoss = online ? ConfServer.powerLimitLossOnline : ConfServer.powerLimitLossOffline;
+		
+		// Apply the negative divisor thingy
+		if (ConfServer.scaleNegativePower && this.power < 0)
+		{
+			powerPerHour += (Math.sqrt(Math.abs(this.power)) * Math.abs(this.power)) / ConfServer.scaleNegativeDivisor;
+		}
+		
+		// Calculate delta and target
+		double powerDelta = powerPerHour * millisPassed / TimeUnit.MILLIS_PER_HOUR;
+		double powerTarget = this.power + powerDelta;
+		
+		// Check Gain and Loss limits
+		if (powerDelta >= 0)
+		{
+			// Gain
+			if (powerTarget > powerLimitGain)
+			{
+				if (this.power > powerLimitGain)
+				{
+					// Did already cross --> Just freeze
+					powerTarget = this.power;
+				}
+				else
+				{
+					// Crossing right now --> Snap to limit
+					powerTarget = powerLimitGain;
+				}
+			}
+		}
+		else
+		{
+			// Loss
+			if (powerTarget < powerLimitLoss)
+			{
+				if (this.power < powerLimitLoss)
+				{
+					// Did already cross --> Just freeze
+					powerTarget = this.power;
+				}
+				else
+				{
+					// Crossing right now --> Snap to limit
+					powerTarget = powerLimitLoss;
+				}
+			}
+		}
+		
+		this.setPower(powerTarget, now);
+	}
+	
+	// FINER
+	
+	public int getPowerRounded()
+	{
+		return (int) Math.round(this.getPower());
+	}
+	
+	public int getPowerMaxRounded()
+	{
+		return (int) Math.round(this.getPowerMax());
+	}
+	
+	public int getPowerMinRounded()
+	{
+		return (int) Math.round(this.getPowerMin());
+	}
+	
+	// -------------------------------------------- //
+	// FIELD: loginPvpDisabled
+	// -------------------------------------------- //
+	// TODO
 
 	public void setLastLoginTime(long lastLoginTime)
 	{
 		losePowerFromBeingOffline();
-		this.lastLoginTime = lastLoginTime;
+		//this.lastLoginTime = lastLoginTime;
 		this.lastPowerUpdateTime = lastLoginTime;
 		if (ConfServer.noPVPDamageToOthersForXSecondsAfterLogin > 0)
 		{
@@ -509,100 +667,6 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 			return;
 		}
 		player.setHealth(player.getHealth() + amnt);
-	}
-	
-	// -------------------------------------------- //
-	// POWER
-	// -------------------------------------------- //
-	
-	public double getPower()
-	{
-		this.updatePower();
-		return this.power;
-	}
-	
-	protected void alterPower(double delta)
-	{
-		this.power += delta;
-		if (this.power > this.getPowerMax())
-			this.power = this.getPowerMax();
-		else if (this.power < this.getPowerMin())
-			this.power = this.getPowerMin();
-	}
-	
-	public double getPowerMax()
-	{
-		return ConfServer.powerPlayerMax + this.powerBoost;
-	}
-	
-	public double getPowerMin()
-	{
-		return ConfServer.powerPlayerMin + this.powerBoost;
-	}
-	
-	public int getPowerRounded()
-	{
-		return (int) Math.round(this.getPower());
-	}
-	
-	public int getPowerMaxRounded()
-	{
-		return (int) Math.round(this.getPowerMax());
-	}
-	
-	public int getPowerMinRounded()
-	{
-		return (int) Math.round(this.getPowerMin());
-	}
-	
-	protected void updatePower()
-	{
-		if (this.isOffline())
-		{
-			losePowerFromBeingOffline();
-			if (!ConfServer.powerRegenOffline)
-			{
-				return;
-			}
-		}
-		long now = System.currentTimeMillis();
-		long millisPassed = now - this.lastPowerUpdateTime;
-		this.lastPowerUpdateTime = now;
-
-		Player thisPlayer = this.getPlayer();
-		if (thisPlayer != null && thisPlayer.isDead()) return;  // don't let dead players regain power until they respawn
-
-		int millisPerMinute = 60*1000;		
-		double powerPerMinute = ConfServer.powerPerMinute;
-		if(ConfServer.scaleNegativePower && this.power < 0)
-		{
-			powerPerMinute += (Math.sqrt(Math.abs(this.power)) * Math.abs(this.power)) / ConfServer.scaleNegativeDivisor;
-		}
-		this.alterPower(millisPassed * powerPerMinute / millisPerMinute);
-		
-	}
-
-	protected void losePowerFromBeingOffline()
-	{
-		if (ConfServer.powerOfflineLossPerDay > 0.0 && this.power > ConfServer.powerOfflineLossLimit)
-		{
-			long now = System.currentTimeMillis();
-			long millisPassed = now - this.lastPowerUpdateTime;
-			this.lastPowerUpdateTime = now;
-
-			double loss = millisPassed * ConfServer.powerOfflineLossPerDay / (24*60*60*1000);
-			if (this.power - loss < ConfServer.powerOfflineLossLimit)
-			{
-				loss = this.power;
-			}
-			this.alterPower(-loss);
-		}
-	}
-	
-	public void onDeath()
-	{
-		this.updatePower();
-		this.alterPower(-ConfServer.powerPerDeath);
 	}
 	
 	// -------------------------------------------- //
