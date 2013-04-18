@@ -87,8 +87,6 @@ public class CmdJoin extends FCommand
 		// then make 'em pay (if applicable)
 		if (samePlayer && ! payForCommand(Conf.econCostJoin, "to join a faction", "for joining a faction")) return;
 
-		fme.setRole(Conf.factionRankDefault); // They have just joined a faction, start them out on the lowest rank (default config).
-
 		if (!samePlayer)
 			fplayer.msg("<i>%s moved you into the faction %s.", fme.describeTo(fplayer, true), faction.getTag(fplayer));
 		faction.msg("<i>%s joined your faction.", fplayer.describeTo(faction, true));
@@ -96,6 +94,7 @@ public class CmdJoin extends FCommand
 		
 		fplayer.resetFactionData();
 		fplayer.setFaction(faction);
+		fplayer.setRole(Conf.factionRankDefault); // They have just joined a faction, start them out on the lowest rank (default config).
 	    
 		faction.deinvite(fplayer);
 		
