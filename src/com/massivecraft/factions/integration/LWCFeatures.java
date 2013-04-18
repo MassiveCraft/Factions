@@ -1,6 +1,6 @@
 package com.massivecraft.factions.integration;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -12,6 +12,7 @@ import org.bukkit.block.BlockState;
 
 import com.griefcraft.lwc.LWC;
 import com.griefcraft.lwc.LWCPlugin;
+import com.griefcraft.model.Protection;
 import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
@@ -36,41 +37,30 @@ public class LWCFeatures
 		return ConfServer.lwcIntegration && lwc != null;
 	}
 
-	public static void clearOtherChests(PS chunkPs, Faction faction)
-	{
-		Chunk chunk = null;
-		try
-		{
-			chunk = chunkPs.asBukkitChunk(true);
-		}
-		catch (Exception e)
-		{
-			return;
-		}
-		
-		BlockState[] blocks = chunk.getTileEntities();
-		List<Block> chests = new LinkedList<Block>();
-		
-		for(int x = 0; x < blocks.length; x++)
-		{
-			if(blocks[x].getType() == Material.CHEST)
-			{
-				chests.add(blocks[x].getBlock());
-			}
-		}
-		
-		for(int x = 0; x < chests.size(); x++)
-		{
-			if(lwc.findProtection(chests.get(x)) != null)
-			{
-				if(!faction.getFPlayers().contains(FPlayer.get(lwc.findProtection(chests.get(x)).getOwner())))
-					lwc.findProtection(chests.get(x)).remove();
-			}
-		}
-	}
 	
 	public static void clearAllChests(PS chunkPs)
 	{
+		for (Protection protection : getProtectionsInChunk(chunkPs))
+		{
+			protection.remove();
+		}
+	}
+	
+	public static void clearOtherChests(PS chunkPs, Faction faction)
+	{
+		for (Protection protection : getProtectionsInChunk(chunkPs))
+		{
+			FPlayer owner = FPlayer.get(protection.getOwner());
+			if (faction.getFPlayers().contains(owner)) continue;
+			protection.remove();
+		}
+	}
+	
+	public static List<Protection> getProtectionsInChunk(PS chunkPs)
+	{
+		List<Protection> ret = new ArrayList<Protection>();
+		
+		// Get the chunk
 		Chunk chunk = null;
 		try
 		{
@@ -78,26 +68,22 @@ public class LWCFeatures
 		}
 		catch (Exception e)
 		{
-			return;
+			return ret;
 		}
 		
-		BlockState[] blocks = chunk.getTileEntities();
-		List<Block> chests = new LinkedList<Block>();
-		
-		for (int x = 0; x < blocks.length; x++)
+		for (BlockState blockState : chunk.getTileEntities())
 		{
-			if(blocks[x].getType() == Material.CHEST)
-			{
-				chests.add(blocks[x].getBlock());
-			}
+			// TODO: Can something else be protected by LWC? Or is it really only chests?
+			if (blockState.getType() != Material.CHEST) continue;
+			Block block = blockState.getBlock();
+			
+			Protection protection = lwc.findProtection(block);
+			if (protection == null) continue;
+			
+			ret.add(protection);
 		}
 		
-		for (int x = 0; x < chests.size(); x++)
-		{
-			if(lwc.findProtection(chests.get(x)) != null)
-			{
-				lwc.findProtection(chests.get(x)).remove();
-			}
-		}
+		return ret;
 	}
+	
 }

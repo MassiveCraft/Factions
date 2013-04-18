@@ -139,7 +139,7 @@ public class FactionsListenerMain implements Listener
 		
 		if (fplayer.hasFaction() && fplayer.getFaction().getFlag(FFlag.PERMANENT) && containsCommand(command, ConfServer.permanentFactionMemberDenyCommands))
 		{
-			fplayer.msg("<b>You can't use \"<h>%s<b>\" as member of a permanent faction.", command);
+			fplayer.msg("<b>You can't use \"<h>/%s<b>\" as member of a permanent faction.", command);
 			event.setCancelled(true);
 			return;
 		}
@@ -149,14 +149,14 @@ public class FactionsListenerMain implements Listener
 		
 		if (rel == Rel.NEUTRAL && containsCommand(command, ConfServer.territoryNeutralDenyCommands))
 		{
-			fplayer.msg("<b>You can't use \"<h>%s<b>\" in neutral territory.", command);
+			fplayer.msg("<b>You can't use \"<h>/%s<b>\" in neutral territory.", command);
 			event.setCancelled(true);
 			return;
 		}
 
 		if (rel == Rel.ENEMY && containsCommand(command, ConfServer.territoryEnemyDenyCommands))
 		{
-			fplayer.msg("<b>You can't use \"<h>%s<b>\" in enemy territory.", command);
+			fplayer.msg("<b>You can't use \"<h>/%s<b>\" in enemy territory.", command);
 			event.setCancelled(true);
 			return;
 		}
@@ -168,13 +168,13 @@ public class FactionsListenerMain implements Listener
 		needle = Txt.removeLeadingCommandDust(needle);
 		needle = needle.toLowerCase();
 		
-		for (String string : haystack)
+		for (String straw : haystack)
 		{
-			if (string == null) continue;
-			string = Txt.removeLeadingCommandDust(string);
-			string = string.toLowerCase();
+			if (straw == null) continue;
+			straw = Txt.removeLeadingCommandDust(straw);
+			straw = straw.toLowerCase();
 			
-			if (needle.startsWith(string)) return true;
+			if (needle.startsWith(straw)) return true;
 		}
 		
 		return false;
