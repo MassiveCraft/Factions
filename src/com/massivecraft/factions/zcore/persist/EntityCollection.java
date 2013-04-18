@@ -172,9 +172,15 @@ public abstract class EntityCollection<E extends Entity>
 	// -------------------------------------------- //
 	// DISC
 	// -------------------------------------------- //
-	
+
+	// we don't want to let saveToDisc() run multiple iterations simultaneously
+	private boolean saveIsRunning = false;
+
 	public boolean saveToDisc()
 	{
+		if (saveIsRunning) return true;
+		saveIsRunning = true;
+
 		Map<String, E> entitiesThatShouldBeSaved = new HashMap<String, E>();
 		for (E entity : this.entities)
 		{
@@ -183,7 +189,8 @@ public abstract class EntityCollection<E extends Entity>
 				entitiesThatShouldBeSaved.put(entity.getId(), entity);
 			}
 		}
-		
+
+		saveIsRunning = false;
 		return this.saveCore(entitiesThatShouldBeSaved);
 	}
 	
