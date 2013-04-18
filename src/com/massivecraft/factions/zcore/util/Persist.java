@@ -164,8 +164,16 @@ public class Persist {
 		if (content == null) {
 			return null;
 		}
-		
-		return (T) p.gson.fromJson(content, typeOfT);
+
+		try
+		{
+			return (T) p.gson.fromJson(content, typeOfT);
+		}
+		catch (Exception ex)
+		{	// output the error message rather than full stack trace; error parsing the file, most likely
+			p.log(Level.WARNING, ex.getMessage());
+		}
+
+		return null;
 	}
-	
 }
