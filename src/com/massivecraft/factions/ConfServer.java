@@ -109,7 +109,7 @@ public class ConfServer extends SimpleConfig
 	// We offer a simple standard way to set the format
 	public static boolean chatSetFormat = false;
 	public static EventPriority chatSetFormatAt = EventPriority.LOWEST;
-	public static String chatSetFormatTo = "<§l{factions_roleprefix}§r{factions_relcolor}{factions_tag|rp}§f%1$s> %2$s";
+	public static String chatSetFormatTo = "<{factions_relcolor}§l{factions_roleprefix}§r{factions_relcolor}{factions_tag|rp}§f%1$s> %2$s";
 	
 	// We offer a simple standard way to parse the chat tags
 	public static boolean chatParseTags = true;

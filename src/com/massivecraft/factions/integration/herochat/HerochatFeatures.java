@@ -1,19 +1,34 @@
 package com.massivecraft.factions.integration.herochat;
 
-import org.bukkit.Bukkit;
-import org.bukkit.event.Listener;
-import org.bukkit.plugin.Plugin;
+import com.dthielke.herochat.Herochat;
+import com.massivecraft.mcore.integration.IntegrationFeaturesAbstract;
 
-import com.massivecraft.factions.Factions;
-
-public class HerochatFeatures implements Listener
+public class HerochatFeatures extends IntegrationFeaturesAbstract
 {
-	public static void setup()
+	// -------------------------------------------- //
+	// INSTANCE & CONSTRUCT
+	// -------------------------------------------- //
+	
+	private static HerochatFeatures i = new HerochatFeatures();
+	public static HerochatFeatures get() { return i; }
+	private HerochatFeatures() { super("Herochat"); }
+	
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
+	
+	@Override
+	public void activate()
 	{
-		Plugin plug = Bukkit.getServer().getPluginManager().getPlugin("Herochat");
-		if (plug == null) return;
-		if (!plug.getClass().getName().equals("com.dthielke.herochat.Herochat")) return;
-		Bukkit.getPluginManager().registerEvents(new HerochatListener(Factions.get()), Factions.get());
-		Factions.get().log("Integration with Herochat successful");
+		Herochat.getChannelManager().addChannel(new FactionChannel());
+		Herochat.getChannelManager().addChannel(new AlliesChannel());
+		HerochatListener.get().activate();
 	}
+	
+	@Override
+	public void deactivate()
+	{
+		HerochatListener.get().deactivate();
+	}
+	
 }

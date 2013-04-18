@@ -19,11 +19,11 @@ import com.massivecraft.factions.chat.tag.ChatTagTag;
 import com.massivecraft.factions.chat.tag.ChatTagTagforce;
 import com.massivecraft.factions.chat.tag.ChatTagTitle;
 import com.massivecraft.factions.cmd.*;
-import com.massivecraft.factions.integration.herochat.HerochatFeatures;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.integration.LWCFeatures;
 import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.integration.Worldguard;
+import com.massivecraft.factions.integration.herochat.HerochatFeatures;
 import com.massivecraft.factions.listeners.FactionsListenerChat;
 import com.massivecraft.factions.listeners.TodoFactionsEntityListener;
 import com.massivecraft.factions.listeners.FactionsListenerExploit;
@@ -112,9 +112,10 @@ public class Factions extends MPlugin
 		ChatTagTitle.get().register();
 		
 		// Integrate
+		this.integrate(HerochatFeatures.get());
+		
 		SpoutFeatures.setup();
 		Econ.setup();
-		HerochatFeatures.setup();
 		LWCFeatures.setup();
 		
 		if (ConfServer.worldGuardChecking)
