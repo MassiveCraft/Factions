@@ -129,10 +129,9 @@ public class FactionsPlayerListener implements Listener
 		}
 	}
 
-	@EventHandler(priority = EventPriority.NORMAL)
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onPlayerInteract(PlayerInteractEvent event)
 	{
-		if (event.isCancelled()) return;
 		// only need to check right-clicks and physical as of MC 1.4+; good performance boost
 		if (event.getAction() != Action.RIGHT_CLICK_BLOCK && event.getAction() != Action.PHYSICAL) return;
 
@@ -227,11 +226,9 @@ public class FactionsPlayerListener implements Listener
 
 	// For some reason onPlayerInteract() sometimes misses bucket events depending on distance (something like 2-3 blocks away isn't detected),
 	// but these separate bucket events below always fire without fail
-	@EventHandler(priority = EventPriority.NORMAL)
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onPlayerBucketEmpty(PlayerBucketEmptyEvent event)
 	{
-		if (event.isCancelled()) return;
-
 		Block block = event.getBlockClicked();
 		Player player = event.getPlayer();
 
@@ -241,11 +238,9 @@ public class FactionsPlayerListener implements Listener
 			return;
 		}
 	}
-	@EventHandler(priority = EventPriority.NORMAL)
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onPlayerBucketFill(PlayerBucketFillEvent event)
 	{
-		if (event.isCancelled()) return;
-
 		Block block = event.getBlockClicked();
 		Player player = event.getPlayer();
 
@@ -315,11 +310,9 @@ public class FactionsPlayerListener implements Listener
 		return false;
 	}
 
-	@EventHandler(priority = EventPriority.NORMAL)
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onPlayerKick(PlayerKickEvent event)
 	{
-		if (event.isCancelled()) return;
-
 		FPlayer badGuy = FPlayerColl.get().get(event.getPlayer());
 		if (badGuy == null)
 		{
@@ -342,11 +335,9 @@ public class FactionsPlayerListener implements Listener
 	// VisualizeUtil
 	// -------------------------------------------- //
 	
-	@EventHandler(priority = EventPriority.MONITOR)
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onPlayerMoveClearVisualizations(PlayerMoveEvent event)
 	{
-		if (event.isCancelled()) return;
-		
 		Block blockFrom = event.getFrom().getBlock();
 		Block blockTo = event.getTo().getBlock();
 		if (blockFrom.equals(blockTo)) return;

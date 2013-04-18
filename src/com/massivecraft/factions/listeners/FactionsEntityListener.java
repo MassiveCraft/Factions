@@ -92,11 +92,9 @@ public class FactionsEntityListener implements Listener
 		}
 	}
 
-	@EventHandler(priority = EventPriority.NORMAL)
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onEntityDamage(EntityDamageEvent event)
 	{
-		if (event.isCancelled()) return;
-
 		if (event instanceof EntityDamageByEntityEvent)
 		{
 			EntityDamageByEntityEvent sub = (EntityDamageByEntityEvent)event;
@@ -173,11 +171,9 @@ public class FactionsEntityListener implements Listener
 		PotionEffectType.WITHER
 	));
 
-	@EventHandler(priority = EventPriority.NORMAL)
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onPotionSplashEvent(PotionSplashEvent event)
 	{
-		if (event.isCancelled()) return;
-
 		// see if the potion has a harmful effect
 		boolean badjuju = false;
 		for (PotionEffect effect : event.getPotion().getEffects())
@@ -337,10 +333,9 @@ public class FactionsEntityListener implements Listener
 		return true;
 	}
 
-	@EventHandler(priority = EventPriority.NORMAL)
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onCreatureSpawn(CreatureSpawnEvent event)
 	{
-		if (event.isCancelled()) return;
 		if (event.getLocation() == null) return;
 
 		PS ps = PS.valueOf(event.getLocation());
@@ -352,11 +347,9 @@ public class FactionsEntityListener implements Listener
 		event.setCancelled(true);
 	}
 
-	@EventHandler(priority = EventPriority.NORMAL)
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onEntityTarget(EntityTargetEvent event)
 	{
-		if (event.isCancelled()) return;
-
 		// if there is a target
 		Entity target = event.getTarget();
 		if (target == null) return;
@@ -382,11 +375,9 @@ public class FactionsEntityListener implements Listener
 
 	
 
-	@EventHandler(priority = EventPriority.NORMAL)
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onEntityChangeBlock(EntityChangeBlockEvent event)
 	{
-		if (event.isCancelled()) return;
-
 		Entity entity = event.getEntity();
 
 		// for now, only interested in Enderman and Wither boss tomfoolery
