@@ -8,24 +8,19 @@ import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.block.Block;
-import org.bukkit.entity.Enderman;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
-import org.bukkit.entity.Wither;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
-import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityCombustByEntityEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -45,18 +40,24 @@ import com.massivecraft.mcore.ps.PS;
 public class TodoFactionsEntityListener implements Listener
 {
 
+	// -------------------------------------------- //
+	// POWER LOSS ON DEATH
+	// -------------------------------------------- //
+	
 	@EventHandler(priority = EventPriority.NORMAL)
-	public void onEntityDeath(EntityDeathEvent event)
+	public void powerLossOnDeath(PlayerDeathEvent event)
 	{
-		Entity entity = event.getEntity();
-		if ( ! (entity instanceof Player)) return;
-
-		Player player = (Player) entity;
+		// If a player dies ...
+		Player player = event.getEntity();
 		FPlayer fplayer = FPlayerColl.get().get(player);
 		
+		// ... TODO: Sending the message through the event is not the best way of doing it.
+		// TODO: We should listen to our own events and send message from there if we cancel.
+		// 
 		Faction faction = BoardColl.get().getFactionAt(PS.valueOf(player));
 
-		PowerLossEvent powerLossEvent = new PowerLossEvent(faction,fplayer);
+		PowerLossEvent powerLossEvent = new PowerLossEvent(faction, fplayer);
+		
 		// Check for no power loss conditions
 		if ( ! faction.getFlag(FFlag.POWERLOSS))
 		{
@@ -68,7 +69,8 @@ public class TodoFactionsEntityListener implements Listener
 			powerLossEvent.setMessage("<i>You didn't lose any power due to the world you died in.");
 			powerLossEvent.setCancelled(true);
 		}
-		else {
+		else
+		{
 			powerLossEvent.setMessage("<i>Your power is now <h>%d / %d");
 		}
 
@@ -99,30 +101,6 @@ public class TodoFactionsEntityListener implements Listener
 			{
 				event.setCancelled(true);
 			}
-		}
-		// TODO: Add a no damage at all flag??
-		/*else if (Conf.safeZonePreventAllDamageToPlayers && isPlayerInSafeZone(event.getEntity()))
-		{
-			// Players can not take any damage in a Safe Zone
-			event.setCancelled(true);
-		}*/
-	}
-
-	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-	public void onEntityExplode(EntityExplodeEvent event)
-	{
-		Iterator<Block> iter = event.blockList().iterator();
-		while (iter.hasNext())
-		{
-			Block block = iter.next();
-			Faction faction = BoardColl.get().getFactionAt(PS.valueOf(block));
-			if (faction.getFlag(FFlag.EXPLOSIONS) == false) iter.remove();
-		}
-
-		if (BoardColl.get().getFactionAt(PS.valueOf(event.getEntity())).getFlag(FFlag.EXPLOSIONS) == false)
-		{
-			event.setCancelled(true);
-			return;
 		}
 	}
 
@@ -331,35 +309,5 @@ public class TodoFactionsEntityListener implements Listener
 
 		event.setCancelled(true);
 	}
-
 	
-	
-	
-	
-	
-
-	
-
-	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-	public void onEntityChangeBlock(EntityChangeBlockEvent event)
-	{
-		Entity entity = event.getEntity();
-
-		// for now, only interested in Enderman and Wither boss tomfoolery
-		if (!(entity instanceof Enderman) && !(entity instanceof Wither)) return;
-
-		PS ps = PS.valueOf(event.getBlock());
-		Faction faction = BoardColl.get().getFactionAt(ps);
-
-		if (entity instanceof Enderman)
-		{
-			if ( ! faction.getFlag(FFlag.ENDERGRIEF))
-				event.setCancelled(true);
-		}
-		else if (entity instanceof Wither)
-		{
-			if ( ! faction.getFlag(FFlag.EXPLOSIONS))
-				event.setCancelled(true);
-		}
-	}
 }

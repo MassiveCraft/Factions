@@ -1,10 +1,14 @@
 package com.massivecraft.factions.listeners;
 
+import java.util.Iterator;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Enderman;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Wither;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -18,7 +22,9 @@ import org.bukkit.event.block.BlockPistonRetractEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.block.BlockSpreadEvent;
 import org.bukkit.event.block.BlockIgniteEvent.IgniteCause;
+import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.hanging.HangingBreakEvent;
@@ -74,6 +80,61 @@ public class FactionsListenerMain implements Listener
 		if (faction.getFlag(FFlag.EXPLOSIONS)) return;
 		
 		// ... then cancel.
+		event.setCancelled(true);
+	}
+	
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void blockExplosion(EntityExplodeEvent event)
+	{
+		// Individually check the flag state for each block
+		Iterator<Block> iter = event.blockList().iterator();
+		while (iter.hasNext())
+		{
+			Block block = iter.next();
+			Faction faction = BoardColl.get().getFactionAt(PS.valueOf(block));
+			if (faction.getFlag(FFlag.EXPLOSIONS) == false) iter.remove();
+		}
+
+		// Check the entity. Are explosions disabled there? 
+		if (BoardColl.get().getFactionAt(PS.valueOf(event.getEntity())).getFlag(FFlag.EXPLOSIONS) == false)
+		{
+			event.setCancelled(true);
+		}
+	}
+	
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void blockExplosion(EntityChangeBlockEvent event)
+	{
+		// If a wither is changing a block ...
+		Entity entity = event.getEntity();
+		if (!(entity instanceof Wither)) return;
+
+		// ... and the faction there has explosions disabled ...
+		PS ps = PS.valueOf(event.getBlock());
+		Faction faction = BoardColl.get().getFactionAt(ps);
+		if (faction.getFlag(FFlag.EXPLOSIONS)) return;
+		
+		// ... stop the block alteration.
+		event.setCancelled(true);
+	}
+	
+	// -------------------------------------------- //
+	// FLAG: ENDERGRIEF
+	// -------------------------------------------- //
+	
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void blockEndergrief(EntityChangeBlockEvent event)
+	{
+		// If an enderman is changing a block ...
+		Entity entity = event.getEntity();
+		if (!(entity instanceof Enderman)) return;
+		
+		// ... and the faction there has endergrief disabled ...
+		PS ps = PS.valueOf(event.getBlock());
+		Faction faction = BoardColl.get().getFactionAt(ps);
+		if (faction.getFlag(FFlag.ENDERGRIEF)) return;
+		
+		// ... stop the block alteration.
 		event.setCancelled(true);
 	}
 	
