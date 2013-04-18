@@ -189,8 +189,9 @@ public class FactionColl extends Coll<Faction>
 
 	public void econLandRewardRoutine()
 	{
-		if ( ! Econ.shouldBeUsed()) return;
-
+		if (!Econ.shouldBeUsed()) return;
+		if (ConfServer.econLandReward == 0.0) return;
+		
 		Factions.get().log("Running econLandRewardRoutine...");
 		for (Faction faction : this.getAll())
 		{

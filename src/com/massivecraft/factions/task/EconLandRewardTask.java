@@ -2,30 +2,38 @@ package com.massivecraft.factions.task;
 
 import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.FactionColl;
-import com.massivecraft.factions.Factions;
+import com.massivecraft.mcore.ModuloRepeatTask;
+import com.massivecraft.mcore.util.TimeUnit;
 
-public class EconLandRewardTask implements Runnable
+public class EconLandRewardTask extends ModuloRepeatTask
 {
-	double rate;
+	// -------------------------------------------- //
+	// INSTANCE & CONSTRUCT
+	// -------------------------------------------- //
 	
-	public EconLandRewardTask()
-	{
-		this.rate = ConfServer.econLandRewardTaskRunsEveryXMinutes;
-	}
-
+	private static EconLandRewardTask i = new EconLandRewardTask();
+	public static EconLandRewardTask get() { return i; }
+	
+	// -------------------------------------------- //
+	// OVERRIDE: MODULO REPEAT TASK
+	// -------------------------------------------- //
+	
 	@Override
-	public void run()
+	public long getDelayMillis()
+	{
+		return (long) (ConfServer.econLandRewardTaskRunsEveryXMinutes * TimeUnit.MILLIS_PER_MINUTE);
+	}
+	
+	@Override
+	public void setDelayMillis(long delayMillis)
+	{
+		throw new RuntimeException("operation not supported");
+	}
+	
+	@Override
+	public void invoke()
 	{
 		FactionColl.get().econLandRewardRoutine();
-		
-		// TODO: This technique is TPS dependent and wrong.
-		// Instead of restarting a TPS dependent task the task should poll every once in a while for the system millis.
-		// With such a setup the need for restarts are gone.
-		
-		// maybe setting has been changed? if so, restart task at new rate
-		if (this.rate != ConfServer.econLandRewardTaskRunsEveryXMinutes)
-		{
-			Factions.get().startEconLandRewardTask(true);
-		}
 	}
+	
 }

@@ -122,22 +122,26 @@ public class FPlayerColl extends SenderColl<FPlayer>
 			Long lastPlayed = Mixin.getLastPlayed(fplayer.getId());
 			if (lastPlayed == null) continue;
 			
-			if (fplayer.isOffline() && now - lastPlayed > toleranceMillis)
+			if (fplayer.isOnline()) continue;
+			if (now - lastPlayed <= toleranceMillis) continue;
+			
+			if (ConfServer.logFactionLeave || ConfServer.logFactionKick)
 			{
-				if (ConfServer.logFactionLeave || ConfServer.logFactionKick)
-					Factions.get().log("Player "+fplayer.getName()+" was auto-removed due to inactivity.");
-
-				// if player is faction leader, sort out the faction since he's going away
-				if (fplayer.getRole() == Rel.LEADER)
-				{
-					Faction faction = fplayer.getFaction();
-					if (faction != null)
-						fplayer.getFaction().promoteNewLeader();
-				}
-
-				fplayer.leave(false);
-				fplayer.detach();
+				Factions.get().log("Player "+fplayer.getName()+" was auto-removed due to inactivity.");
 			}
+
+			// if player is faction leader, sort out the faction since he's going away
+			if (fplayer.getRole() == Rel.LEADER)
+			{
+				Faction faction = fplayer.getFaction();
+				if (faction != null)
+				{
+					fplayer.getFaction().promoteNewLeader();
+				}
+			}
+
+			fplayer.leave(false);
+			fplayer.detach();
 		}
 	}
 }

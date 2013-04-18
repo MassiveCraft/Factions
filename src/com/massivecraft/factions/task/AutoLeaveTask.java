@@ -2,24 +2,38 @@ package com.massivecraft.factions.task;
 
 import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.FPlayerColl;
-import com.massivecraft.factions.Factions;
+import com.massivecraft.mcore.ModuloRepeatTask;
+import com.massivecraft.mcore.util.TimeUnit;
 
-public class AutoLeaveTask implements Runnable
+public class AutoLeaveTask extends ModuloRepeatTask
 {
-	double rate;
-
-	public AutoLeaveTask()
+	// -------------------------------------------- //
+	// INSTANCE & CONSTRUCT
+	// -------------------------------------------- //
+	
+	private static AutoLeaveTask i = new AutoLeaveTask();
+	public static AutoLeaveTask get() { return i; }
+	
+	// -------------------------------------------- //
+	// OVERRIDE: MODULO REPEAT TASK
+	// -------------------------------------------- //
+	
+	@Override
+	public long getDelayMillis()
 	{
-		this.rate = ConfServer.autoLeaveRoutineRunsEveryXMinutes;
+		return (long) (ConfServer.autoLeaveRoutineRunsEveryXMinutes * TimeUnit.MILLIS_PER_MINUTE);
 	}
-
-	public void run()
+	
+	@Override
+	public void setDelayMillis(long delayMillis)
+	{
+		throw new RuntimeException("operation not supported");
+	}
+	
+	@Override
+	public void invoke()
 	{
 		FPlayerColl.get().autoLeaveOnInactivityRoutine();
-
-		// TODO: Make it a polling and non-tps-dependent system instead.
-		// maybe setting has been changed? if so, restart task at new rate
-		if (this.rate != ConfServer.autoLeaveRoutineRunsEveryXMinutes)
-			Factions.get().startAutoLeaveTask(true);
 	}
+	
 }

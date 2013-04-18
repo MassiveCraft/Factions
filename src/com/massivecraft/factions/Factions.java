@@ -46,10 +46,6 @@ public class Factions extends MPlugin
 	public FactionsChatListener chatListener;
 	public FactionsEntityListener entityListener;
 	public FactionsExploitListener exploitListener;
-	
-	// Task Ids
-	private Integer AutoLeaveTask = null;
-	private Integer econLandRewardTaskID = null;
 
 	// -------------------------------------------- //
 	// OVERRIDE
@@ -82,11 +78,9 @@ public class Factions extends MPlugin
 			Worldguard.init(this);
 		}
 
-		// start up task which runs the autoLeaveAfterDaysOfInactivity routine
-		startAutoLeaveTask(false);
-
-		// start up task which runs the econLandRewardRoutine
-		startEconLandRewardTask(false);
+		// Schedule recurring non-tps-dependent tasks
+		AutoLeaveTask.get().schedule(this);
+		EconLandRewardTask.get().schedule(this);
 
 		// Register Event Handlers
 		MainListener.get().setup();
@@ -117,54 +111,6 @@ public class Factions extends MPlugin
 		.registerTypeAdapter(FPerm.class, FPermAdapter.get())
 		.registerTypeAdapter(FFlag.class, FFlagAdapter.get())
 		;
-	}
-
-	@Override
-	public void onDisable()
-	{
-		if (AutoLeaveTask != null)
-		{
-			this.getServer().getScheduler().cancelTask(AutoLeaveTask);
-			AutoLeaveTask = null;
-		}
-		super.onDisable();
-	}
-	
-	//
-	
-	public void startAutoLeaveTask(boolean restartIfRunning)
-	{
-		if (AutoLeaveTask != null)
-		{
-			if ( ! restartIfRunning) return;
-			this.getServer().getScheduler().cancelTask(AutoLeaveTask);
-		}
-
-		if (ConfServer.autoLeaveRoutineRunsEveryXMinutes > 0.0)
-		{
-			long ticks = (long)(20 * 60 * ConfServer.autoLeaveRoutineRunsEveryXMinutes);
-			AutoLeaveTask = getServer().getScheduler().scheduleSyncRepeatingTask(this, new AutoLeaveTask(), ticks, ticks);
-		}
-	}
-
-	public void startEconLandRewardTask(boolean restartIfRunning)
-	{
-		if (econLandRewardTaskID != null)
-		{
-			if (!restartIfRunning) return;
-			this.getServer().getScheduler().cancelTask(econLandRewardTaskID);
-		}
-
-		if
-		(
-			ConfServer.econEnabled &&
-			ConfServer.econLandRewardTaskRunsEveryXMinutes > 0.0 &&
-			ConfServer.econLandReward > 0.0
-		)
-		{
-			long ticks = (long)(20 * 60 * ConfServer.econLandRewardTaskRunsEveryXMinutes);
-			econLandRewardTaskID = getServer().getScheduler().scheduleSyncRepeatingTask(this, new EconLandRewardTask(), ticks, ticks);
-		}
 	}
 
 	// -------------------------------------------- //
