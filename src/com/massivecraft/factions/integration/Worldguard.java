@@ -10,7 +10,7 @@ import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
-import static com.sk89q.worldguard.bukkit.BukkitUtil.*;
+import static com.sk89q.worldguard.bukkit.BukkitUtil.toVector;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
 
 import com.sk89q.worldedit.Vector;
@@ -60,7 +60,7 @@ public class Worldguard
 	//   False: PVP is disallowed
 	public static boolean isPVP(Player player)
 	{
-		if( ! enabled)
+		if ( ! enabled)
 		{
 			// No WG hooks so we'll always bypass this check.
 			return true;
@@ -81,7 +81,7 @@ public class Worldguard
 	//   False: No regions found within chunk
 	public static boolean checkForRegionsInChunk(Location loc)
 	{
-		if( ! enabled)
+		if ( ! enabled)
 		{
 			// No WG hooks so we'll always bypass this check.
 			return false;
@@ -109,7 +109,7 @@ public class Worldguard
 		try
 		{
 			overlaps = region.getIntersectingRegions(allregionslist);
-			if(overlaps == null || overlaps.isEmpty())
+			if (overlaps == null || overlaps.isEmpty())
 			{
 				foundregions = false;
 			}

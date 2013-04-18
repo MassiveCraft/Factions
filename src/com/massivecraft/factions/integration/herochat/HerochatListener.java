@@ -7,6 +7,7 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 
 import com.dthielke.herochat.ChannelChatEvent;
+import com.dthielke.herochat.Herochat;
 import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.chat.ChatFormatter;
@@ -28,6 +29,9 @@ public class HerochatListener implements Listener
 	
 	public void activate()
 	{
+		Herochat.getChannelManager().addChannel(new FactionChannel());
+		Herochat.getChannelManager().addChannel(new AlliesChannel());
+		
 		Bukkit.getPluginManager().registerEvents(this, Factions.get());
 	}
 	

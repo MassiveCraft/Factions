@@ -226,6 +226,7 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 		// Next we must be attached and inited
 		if (!this.attached()) return;
 		if (!this.getColl().inited()) return;
+		if (!FactionColl.get().inited()) return;
 		
 		// Spout Derp
 		SpoutFeatures.updateTitle(this, null);
@@ -375,12 +376,12 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 	
 	public double getPowerMax()
 	{
-		return ConfServer.powerMax + this.powerBoost;
+		return ConfServer.powerMax + this.getPowerBoost();
 	}
 	
 	public double getPowerMin()
 	{
-		return ConfServer.powerMin + this.powerBoost;
+		return ConfServer.powerMin + this.getPowerBoost();
 	}
 	
 	public void recalculatePower()

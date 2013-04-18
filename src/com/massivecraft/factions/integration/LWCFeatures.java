@@ -74,6 +74,7 @@ public class LWCFeatures
 		for (BlockState blockState : chunk.getTileEntities())
 		{
 			// TODO: Can something else be protected by LWC? Or is it really only chests?
+			// TODO: How about we run through each block in the chunk just to be on the safe side?
 			if (blockState.getType() != Material.CHEST) continue;
 			Block block = blockState.getBlock();
 			

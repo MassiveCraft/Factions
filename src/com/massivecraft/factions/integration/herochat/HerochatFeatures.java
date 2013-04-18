@@ -1,6 +1,5 @@
 package com.massivecraft.factions.integration.herochat;
 
-import com.dthielke.herochat.Herochat;
 import com.massivecraft.mcore.integration.IntegrationFeaturesAbstract;
 
 public class HerochatFeatures extends IntegrationFeaturesAbstract
@@ -20,8 +19,6 @@ public class HerochatFeatures extends IntegrationFeaturesAbstract
 	@Override
 	public void activate()
 	{
-		Herochat.getChannelManager().addChannel(new FactionChannel());
-		Herochat.getChannelManager().addChannel(new AlliesChannel());
 		HerochatListener.get().activate();
 	}
 	

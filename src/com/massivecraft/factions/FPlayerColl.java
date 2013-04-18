@@ -71,6 +71,7 @@ public class FPlayerColl extends SenderColl<FPlayer>
 		
 		// If inited ...
 		if (!this.inited()) return ret;
+		if (!FactionColl.get().inited()) return ret;
 		
 		// ... update the index.
 		Faction faction = entity.getFaction();
