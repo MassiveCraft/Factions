@@ -1,5 +1,6 @@
 package com.massivecraft.factions.listeners;
 
+import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -9,7 +10,9 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Enderman;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.entity.Wither;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.EventHandler;
@@ -26,10 +29,13 @@ import org.bukkit.event.block.BlockSpreadEvent;
 import org.bukkit.event.block.BlockIgniteEvent.IgniteCause;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
+import org.bukkit.event.entity.EntityCombustByEntityEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
+import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.hanging.HangingBreakEvent;
 import org.bukkit.event.hanging.HangingPlaceEvent;
@@ -76,6 +82,169 @@ public class FactionsListenerMain implements Listener
 	public void setup()
 	{
 		Bukkit.getPluginManager().registerEvents(this, Factions.get());
+	}
+
+	// -------------------------------------------- //
+	// CAN COMBAT DAMAGE HAPPEN
+	// -------------------------------------------- //
+	
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void canCombatDamageHappen(EntityDamageEvent event)
+	{
+		// TODO: Can't we just listen to the class type the sub is of?
+		if (!(event instanceof EntityDamageByEntityEvent)) return;
+		EntityDamageByEntityEvent sub = (EntityDamageByEntityEvent)event;
+		
+		if (this.canCombatDamageHappen(sub, true)) return;
+		event.setCancelled(true);
+	}
+
+	// mainly for flaming arrows; don't want allies or people in safe zones to be ignited even after damage event is cancelled
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void canCombatDamageHappen(EntityCombustByEntityEvent event)
+	{
+		EntityDamageByEntityEvent sub = new EntityDamageByEntityEvent(event.getCombuster(), event.getEntity(), EntityDamageEvent.DamageCause.FIRE, 0);
+		if (this.canCombatDamageHappen(sub, false)) return;
+		event.setCancelled(true);
+	}
+
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void canCombatDamageHappen(PotionSplashEvent event)
+	{
+		// If a harmful potion is splashing ...
+		if (!MUtil.isHarmfulPotion(event.getPotion())) return;
+		
+		Entity thrower = event.getPotion().getShooter();
+
+		// ... scan through affected entities to make sure they're all valid targets.
+		for (LivingEntity affectedEntity : event.getAffectedEntities())
+		{
+			EntityDamageByEntityEvent sub = new EntityDamageByEntityEvent(thrower, affectedEntity, EntityDamageEvent.DamageCause.CUSTOM, 0);
+			if (this.canCombatDamageHappen(sub, true)) continue;
+			
+			// affected entity list doesn't accept modification (iter.remove() is a no-go), but this works
+			event.setIntensity(affectedEntity, 0.0);
+		}
+	}
+
+	public boolean canCombatDamageHappen(EntityDamageByEntityEvent event, boolean notify)
+	{
+		// If the defender is a player ...
+		Entity edefender = event.getEntity();
+		if (!(edefender instanceof Player)) return true;
+		Player defender = (Player)edefender;
+		FPlayer fdefender = FPlayerColl.get().get(edefender);
+		
+		// ... and the attacker is someone else ...
+		Entity eattacker = event.getDamager();
+		if (eattacker instanceof Projectile)
+		{
+			eattacker = ((Projectile)eattacker).getShooter();
+		}
+		if (eattacker.equals(edefender)) return true;
+		
+		// ... gather defender PS and faction information ...
+		PS defenderPs = PS.valueOf(defender);
+		Faction defenderPsFaction = BoardColl.get().getFactionAt(defenderPs);
+		
+		// ... PVP flag may cause a damage block ...
+		if (defenderPsFaction.getFlag(FFlag.PVP) == false)
+		{
+			if (eattacker instanceof Player)
+			{
+				if (notify)
+				{
+					FPlayer attacker = FPlayerColl.get().get((Player)eattacker);
+					attacker.msg("<i>PVP is disabled in %s.", defenderPsFaction.describeTo(attacker));
+				}
+				return false;
+			}
+			return defenderPsFaction.getFlag(FFlag.MONSTERS);
+		}
+
+		// ... and if the attacker is a player ...
+		if (!(eattacker instanceof Player)) return true;
+		Player attacker = (Player)eattacker;
+		FPlayer fattacker = FPlayerColl.get().get(attacker);
+		
+		// ... does this player bypass all protection? ...
+		if (ConfServer.playersWhoBypassAllProtection.contains(attacker.getName())) return true;
+
+		// ... gather attacker PS and faction information ...
+		PS attackerPs = PS.valueOf(attacker);
+		Faction attackerPsFaction = BoardColl.get().getFactionAt(attackerPs);
+
+		// ... PVP flag may cause a damage block ...
+		// (just checking the defender as above isn't enough. What about the attacker? It could be in a no-pvp area)
+		// NOTE: This check is probably not that important but we could keep it anyways.
+		if (attackerPsFaction.getFlag(FFlag.PVP) == false)
+		{
+			if (notify) fattacker.msg("<i>PVP is disabled in %s.", attackerPsFaction.describeTo(fattacker));
+			return false;
+		}
+
+		// ... are PVP rules completely ignored in this world? ...
+		if (ConfServer.worldsIgnorePvP.contains(defenderPs.getWorld())) return true;
+
+		Faction defendFaction = fdefender.getFaction();
+		Faction attackFaction = fattacker.getFaction();
+
+		if (attackFaction.isNone() && ConfServer.disablePVPForFactionlessPlayers)
+		{
+			if (notify) fattacker.msg("<i>You can't hurt other players until you join a faction.");
+			return false;
+		}
+		else if (defendFaction.isNone())
+		{
+			if (defenderPsFaction == attackFaction && ConfServer.enablePVPAgainstFactionlessInAttackersLand)
+			{
+				// Allow PVP vs. Factionless in attacker's faction territory
+				return true;
+			}
+			else if (ConfServer.disablePVPForFactionlessPlayers)
+			{
+				if (notify) fattacker.msg("<i>You can't hurt players who are not currently in a faction.");
+				return false;
+			}
+		}
+
+		Rel relation = defendFaction.getRelationTo(attackFaction);
+
+		// Check the relation
+		if (fdefender.hasFaction() && relation.isAtLeast(ConfServer.friendlyFireFromRel) && defenderPsFaction.getFlag(FFlag.FRIENDLYFIRE) == false)
+		{
+			if (notify) fattacker.msg("<i>You can't hurt %s<i>.", relation.getDescPlayerMany());
+			return false;
+		}
+
+		// You can not hurt neutrals in their own territory.
+		boolean ownTerritory = fdefender.isInOwnTerritory();
+		if (fdefender.hasFaction() && ownTerritory && relation == Rel.NEUTRAL)
+		{
+			if (notify)
+			{
+				fattacker.msg("<i>You can't hurt %s<i> in their own territory unless you declare them as an enemy.", fdefender.describeTo(fattacker));
+				fdefender.msg("%s<i> tried to hurt you.", fattacker.describeTo(fdefender, true));
+			}
+			return false;
+		}
+
+		// Damage will be dealt. However check if the damage should be reduced.
+		int damage = event.getDamage();
+		if (damage > 0.0 && fdefender.hasFaction() && ownTerritory && ConfServer.territoryShieldFactor > 0)
+		{
+			int newDamage = (int)Math.ceil(damage * (1D - ConfServer.territoryShieldFactor));
+			event.setDamage(newDamage);
+
+			// Send message
+			if (notify)
+			{
+				String perc = MessageFormat.format("{0,number,#%}", (ConfServer.territoryShieldFactor)); // TODO does this display correctly??
+				fdefender.msg("<i>Enemy damage reduced by <rose>%s<i>.", perc);
+			}
+		}
+
+		return true;
 	}
 	
 	// -------------------------------------------- //
