@@ -71,6 +71,8 @@ public class Conf
 
 	public static boolean broadcastDescriptionChanges = false;
 
+	public static double saveToFileEveryXMinutes = 30.0;
+
 	public static double autoLeaveAfterDaysOfInactivity = 10.0;
 	public static double autoLeaveRoutineRunsEveryXMinutes = 5.0;
 	public static boolean removePlayerDataWhenBanned = true;

@@ -20,6 +20,8 @@ import com.massivecraft.factions.zcore.util.PermUtil;
 import com.massivecraft.factions.zcore.util.Persist;
 import com.massivecraft.factions.zcore.util.TextUtil;
 
+import com.massivecraft.factions.Conf;
+
 
 public abstract class MPlugin extends JavaPlugin
 {
@@ -88,9 +90,9 @@ public abstract class MPlugin extends JavaPlugin
 		
 		
 		// Register recurring tasks
-		long saveTicks = 20 * 60 * 30; // Approximately every 30 min
-		if (saveTask == null)
+		if (saveTask == null && Conf.saveToFileEveryXMinutes > 0.0)
 		{
+			long saveTicks = (long)(20 * 60 * Conf.saveToFileEveryXMinutes); // Approximately every 30 min by default
 			saveTask = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, new SaveTask(this), saveTicks, saveTicks);
 		}
 
