@@ -1,10 +1,6 @@
 package com.massivecraft.factions.listeners;
 
 import java.text.MessageFormat;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -20,8 +16,6 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.entity.PotionSplashEvent;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 
 import com.massivecraft.factions.BoardColl;
 import com.massivecraft.factions.ConfServer;
@@ -32,6 +26,7 @@ import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.event.PowerLossEvent;
 import com.massivecraft.mcore.ps.PS;
+import com.massivecraft.mcore.util.MUtil;
 
 
 public class TodoFactionsEntityListener implements Listener
@@ -92,18 +87,16 @@ public class TodoFactionsEntityListener implements Listener
 	// PVP STUFF??
 	// -------------------------------------------- //
 	
-	
-
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onEntityDamage(EntityDamageEvent event)
 	{
-		if (event instanceof EntityDamageByEntityEvent)
+		// TODO: Can't we just listen to the class type the sub is of?
+		if (!(event instanceof EntityDamageByEntityEvent)) return;
+		EntityDamageByEntityEvent sub = (EntityDamageByEntityEvent)event;
+		
+		if ( ! this.canDamagerHurtDamagee(sub, true))
 		{
-			EntityDamageByEntityEvent sub = (EntityDamageByEntityEvent)event;
-			if ( ! this.canDamagerHurtDamagee(sub, true))
-			{
-				event.setCancelled(true);
-			}
+			event.setCancelled(true);
 		}
 	}
 
@@ -118,38 +111,22 @@ public class TodoFactionsEntityListener implements Listener
 		}
 	}
 
-	private static final Set<PotionEffectType> badPotionEffects = new LinkedHashSet<PotionEffectType>(Arrays.asList(
-		PotionEffectType.BLINDNESS, PotionEffectType.CONFUSION, PotionEffectType.HARM, PotionEffectType.HUNGER,
-		PotionEffectType.POISON, PotionEffectType.SLOW, PotionEffectType.SLOW_DIGGING, PotionEffectType.WEAKNESS,
-		PotionEffectType.WITHER
-	));
-
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onPotionSplashEvent(PotionSplashEvent event)
 	{
-		// see if the potion has a harmful effect
-		boolean badjuju = false;
-		for (PotionEffect effect : event.getPotion().getEffects())
-		{
-			if (badPotionEffects.contains(effect.getType()))
-			{
-				badjuju = true;
-				break;
-			}
-		}
-		if ( ! badjuju) return;
-
+		// If a harmful potion is splashing ...
+		if (!MUtil.isHarmfulPotion(event.getPotion())) return;
+		
 		Entity thrower = event.getPotion().getShooter();
 
 		// scan through affected entities to make sure they're all valid targets
-		Iterator<LivingEntity> iter = event.getAffectedEntities().iterator();
-		while (iter.hasNext())
+		for (LivingEntity affectedEntity : event.getAffectedEntities())
 		{
-			LivingEntity target = iter.next();
-			EntityDamageByEntityEvent sub = new EntityDamageByEntityEvent(thrower, target, EntityDamageEvent.DamageCause.CUSTOM, 0);
-			if ( ! this.canDamagerHurtDamagee(sub, true))
-				event.setIntensity(target, 0.0);  // affected entity list doesn't accept modification (iter.remove() is a no-go), but this works
-			sub = null;
+			EntityDamageByEntityEvent sub = new EntityDamageByEntityEvent(thrower, affectedEntity, EntityDamageEvent.DamageCause.CUSTOM, 0);
+			if (this.canDamagerHurtDamagee(sub, true)) continue;
+			
+			// affected entity list doesn't accept modification (iter.remove() is a no-go), but this works
+			event.setIntensity(affectedEntity, 0.0);
 		}
 	}
 

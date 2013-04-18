@@ -28,6 +28,7 @@ public class Const
 	public static final char[] MAP_KEY_CHARS = "\\/#?$%=&^ABCDEFGHJKLMNOPQRSTUVWXYZ1234567890abcdeghjmnopqrsuvwxyz".toCharArray();
 	
 	// Enumerations
+	
 	public static final Set<Material> MATERIALS_EDIT_ON_INTERACT = MUtil.set(
 		Material.DIODE_BLOCK_OFF,
 		Material.DIODE_BLOCK_ON,
