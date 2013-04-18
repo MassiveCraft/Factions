@@ -3,6 +3,7 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.struct.FFlag;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.zcore.Lang;
 
 public class CmdFlag extends FCommand
 {
@@ -34,7 +35,15 @@ public class CmdFlag extends FCommand
 		{
 			faction = this.argAsFaction(0);
 		}
-		if (faction == null) return;
+		if (faction == null) 
+		{
+			if (senderIsConsole)
+			{
+				msg(Lang.commandToFewArgs);
+				sender.sendMessage(this.getUseageTemplate());
+			}
+			return;
+		}
 		
 		if ( ! this.argIsSet(1))
 		{

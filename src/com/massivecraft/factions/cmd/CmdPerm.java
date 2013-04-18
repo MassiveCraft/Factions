@@ -4,6 +4,7 @@ import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.struct.FPerm;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Rel;
+import com.massivecraft.factions.zcore.Lang;
 
 public class CmdPerm extends FCommand
 {
@@ -37,7 +38,15 @@ public class CmdPerm extends FCommand
 		{
 			faction = this.argAsFaction(0);
 		}
-		if (faction == null) return;
+		if (faction == null) 
+		{
+			if (senderIsConsole)
+			{
+				msg(Lang.commandToFewArgs);
+				sender.sendMessage(this.getUseageTemplate());
+			}
+			return;
+		}
 		
 		if ( ! this.argIsSet(1))
 		{
