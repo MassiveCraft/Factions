@@ -53,9 +53,9 @@ public class ConfServer extends SimpleConfig
 	public static double powerPerHourOffline = 0.0;
 	
 	// players will no longer lose power from being offline once their power drops to this amount or less
-	public static double powerLimitGainOnline = 0.0;
+	public static double powerLimitGainOnline = 10.0;
 	public static double powerLimitGainOffline = 0.0;
-	public static double powerLimitLossOnline = 0.0;
+	public static double powerLimitLossOnline = -10.0;
 	public static double powerLimitLossOffline = 0.0;
 	
 	public static boolean scaleNegativePower = false; // Power regeneration rate increase as power decreases

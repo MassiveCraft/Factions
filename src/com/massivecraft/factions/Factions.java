@@ -16,8 +16,8 @@ import com.massivecraft.factions.listeners.FactionsChatListener;
 import com.massivecraft.factions.listeners.FactionsEntityListener;
 import com.massivecraft.factions.listeners.FactionsExploitListener;
 import com.massivecraft.factions.listeners.FactionsPlayerListener;
-import com.massivecraft.factions.util.AutoLeaveTask;
-import com.massivecraft.factions.util.EconLandRewardTask;
+import com.massivecraft.factions.task.AutoLeaveTask;
+import com.massivecraft.factions.task.EconLandRewardTask;
 
 import com.massivecraft.mcore.MPlugin;
 import com.massivecraft.mcore.xlib.gson.GsonBuilder;

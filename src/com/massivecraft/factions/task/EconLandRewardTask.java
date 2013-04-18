@@ -1,4 +1,4 @@
-package com.massivecraft.factions.util;
+package com.massivecraft.factions.task;
 
 import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.FactionColl;

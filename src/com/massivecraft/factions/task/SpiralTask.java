@@ -1,4 +1,4 @@
-package com.massivecraft.factions.util;
+package com.massivecraft.factions.task;
 
 import java.util.logging.Level;
 
