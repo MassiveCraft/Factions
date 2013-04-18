@@ -1,17 +1,19 @@
 package com.massivecraft.factions.chat.tag;
 
+import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.FPlayerColl;
 import com.massivecraft.factions.chat.ChatTagAbstract;
-import com.massivecraft.mcore.mixin.Mixin;
+import com.massivecraft.mcore.util.Txt;
 
-public class ChatTagSendeeId extends ChatTagAbstract
+public class ChatTagRole extends ChatTagAbstract
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private ChatTagSendeeId() { super("sendeeid"); }
-	private static ChatTagSendeeId i = new ChatTagSendeeId();
-	public static ChatTagSendeeId get() { return i; }
+	private ChatTagRole() { super("factions_role"); }
+	private static ChatTagRole i = new ChatTagRole();
+	public static ChatTagRole get() { return i; }
 	
 	// -------------------------------------------- //
 	// OVERRIDE
@@ -19,8 +21,9 @@ public class ChatTagSendeeId extends ChatTagAbstract
 
 	@Override
 	public String getReplacement(String senderId, String sendeeId, String recipientId)
-	{
-		return Mixin.tryFix(sendeeId);
+	{		
+		FPlayer fsender = FPlayerColl.get().get(senderId);
+		return Txt.upperCaseFirst(fsender.getRole().toString().toLowerCase());
 	}
 
 }

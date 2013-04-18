@@ -1,17 +1,18 @@
 package com.massivecraft.factions.chat.tag;
 
+import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.FPlayerColl;
 import com.massivecraft.factions.chat.ChatTagAbstract;
-import com.massivecraft.mcore.mixin.Mixin;
 
-public class ChatTagSender extends ChatTagAbstract
+public class ChatTagTag extends ChatTagAbstract
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private ChatTagSender() { super("sender"); }
-	private static ChatTagSender i = new ChatTagSender();
-	public static ChatTagSender get() { return i; }
+	private ChatTagTag() { super("factions_tag"); }
+	private static ChatTagTag i = new ChatTagTag();
+	public static ChatTagTag get() { return i; }
 	
 	// -------------------------------------------- //
 	// OVERRIDE
@@ -19,8 +20,10 @@ public class ChatTagSender extends ChatTagAbstract
 
 	@Override
 	public String getReplacement(String senderId, String sendeeId, String recipientId)
-	{
-		return Mixin.getDisplayName(senderId);
+	{		
+		FPlayer fsender = FPlayerColl.get().get(senderId);
+		if (!fsender.hasFaction()) return "";
+		return fsender.getFaction().getTag();
 	}
 
 }

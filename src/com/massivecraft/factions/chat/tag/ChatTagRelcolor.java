@@ -4,15 +4,15 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayerColl;
 import com.massivecraft.factions.chat.ChatTagAbstract;
 
-public class ChatTagFactionTagforce extends ChatTagAbstract
+public class ChatTagRelcolor extends ChatTagAbstract
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private ChatTagFactionTagforce() { super("factions_tagforce"); }
-	private static ChatTagFactionTagforce i = new ChatTagFactionTagforce();
-	public static ChatTagFactionTagforce get() { return i; }
+	private ChatTagRelcolor() { super("factions_relcolor"); }
+	private static ChatTagRelcolor i = new ChatTagRelcolor();
+	public static ChatTagRelcolor get() { return i; }
 	
 	// -------------------------------------------- //
 	// OVERRIDE
@@ -20,9 +20,17 @@ public class ChatTagFactionTagforce extends ChatTagAbstract
 
 	@Override
 	public String getReplacement(String senderId, String sendeeId, String recipientId)
-	{		
+	{
+		if (senderId == null) return "";
+		if (recipientId == null) return "";
+		
 		FPlayer fsender = FPlayerColl.get().get(senderId);
-		return fsender.getFaction().getTag();
+		FPlayer frecipient = FPlayerColl.get().get(recipientId);
+		
+		if (fsender == null) return "";
+		if (frecipient == null) return "";
+		
+		return frecipient.getRelationTo(fsender).getColor().toString();
 	}
 
 }

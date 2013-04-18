@@ -3,17 +3,16 @@ package com.massivecraft.factions.chat.tag;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayerColl;
 import com.massivecraft.factions.chat.ChatTagAbstract;
-import com.massivecraft.mcore.util.Txt;
 
-public class ChatTagFactionRole extends ChatTagAbstract
+public class ChatTagTagforce extends ChatTagAbstract
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private ChatTagFactionRole() { super("factions_role"); }
-	private static ChatTagFactionRole i = new ChatTagFactionRole();
-	public static ChatTagFactionRole get() { return i; }
+	private ChatTagTagforce() { super("factions_tagforce"); }
+	private static ChatTagTagforce i = new ChatTagTagforce();
+	public static ChatTagTagforce get() { return i; }
 	
 	// -------------------------------------------- //
 	// OVERRIDE
@@ -23,7 +22,7 @@ public class ChatTagFactionRole extends ChatTagAbstract
 	public String getReplacement(String senderId, String sendeeId, String recipientId)
 	{		
 		FPlayer fsender = FPlayerColl.get().get(senderId);
-		return Txt.upperCaseFirst(fsender.getRole().toString().toLowerCase());
+		return fsender.getFaction().getTag();
 	}
 
 }

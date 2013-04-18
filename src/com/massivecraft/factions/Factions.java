@@ -6,6 +6,18 @@ import com.massivecraft.factions.adapters.FFlagAdapter;
 import com.massivecraft.factions.adapters.FPermAdapter;
 import com.massivecraft.factions.adapters.RelAdapter;
 import com.massivecraft.factions.adapters.TerritoryAccessAdapter;
+import com.massivecraft.factions.chat.modifier.ChatModifierLc;
+import com.massivecraft.factions.chat.modifier.ChatModifierLp;
+import com.massivecraft.factions.chat.modifier.ChatModifierParse;
+import com.massivecraft.factions.chat.modifier.ChatModifierRp;
+import com.massivecraft.factions.chat.modifier.ChatModifierUc;
+import com.massivecraft.factions.chat.modifier.ChatModifierUcf;
+import com.massivecraft.factions.chat.tag.ChatTagRelcolor;
+import com.massivecraft.factions.chat.tag.ChatTagRole;
+import com.massivecraft.factions.chat.tag.ChatTagRoleprefix;
+import com.massivecraft.factions.chat.tag.ChatTagTag;
+import com.massivecraft.factions.chat.tag.ChatTagTagforce;
+import com.massivecraft.factions.chat.tag.ChatTagTitle;
 import com.massivecraft.factions.cmd.*;
 import com.massivecraft.factions.integration.herochat.HerochatFeatures;
 import com.massivecraft.factions.integration.Econ;
@@ -67,21 +79,7 @@ public class Factions extends MPlugin
 		this.outerCmdFactions = new CmdFactions();
 		this.outerCmdFactions.register(this);
 
-		SpoutFeatures.setup();
-		Econ.setup();
-		HerochatFeatures.setup();
-		LWCFeatures.setup();
-		
-		if (ConfServer.worldGuardChecking)
-		{
-			Worldguard.init(this);
-		}
-
-		// Schedule recurring non-tps-dependent tasks
-		AutoLeaveTask.get().schedule(this);
-		EconLandRewardTask.get().schedule(this);
-
-		// Register Event Handlers
+		// Setup Listeners
 		FactionsListenerMain.get().setup();
 		FactionsListenerChat.get().setup();
 		FactionsListenerExploit.get().setup();
@@ -92,6 +90,37 @@ public class Factions extends MPlugin
 		
 		this.entityListener = new TodoFactionsEntityListener();
 		getServer().getPluginManager().registerEvents(this.entityListener, this);
+		
+		// Schedule recurring non-tps-dependent tasks
+		AutoLeaveTask.get().schedule(this);
+		EconLandRewardTask.get().schedule(this);
+		
+		// Register built in chat modifiers
+		ChatModifierLc.get().register();
+		ChatModifierLp.get().register();
+		ChatModifierParse.get().register();
+		ChatModifierRp.get().register();
+		ChatModifierUc.get().register();
+		ChatModifierUcf.get().register();
+		
+		// Register built in chat tags
+		ChatTagRelcolor.get().register();
+		ChatTagRole.get().register();
+		ChatTagRoleprefix.get().register();
+		ChatTagTag.get().register();
+		ChatTagTagforce.get().register();
+		ChatTagTitle.get().register();
+		
+		// Integrate
+		SpoutFeatures.setup();
+		Econ.setup();
+		HerochatFeatures.setup();
+		LWCFeatures.setup();
+		
+		if (ConfServer.worldGuardChecking)
+		{
+			Worldguard.init(this);
+		}
 		
 		postEnable();
 	}
