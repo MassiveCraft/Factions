@@ -18,13 +18,16 @@ public class ConfServer extends SimpleConfig
 	public ConfServer() { super(Factions.get()); }
 	
 	// -------------------------------------------- //
-	// FIELDS
+	// CORE
 	// -------------------------------------------- //
 	
 	public static List<String> baseCommandAliases = MUtil.list("f");
 	public static String dburi = "default";
 	
-	// Colors
+	// -------------------------------------------- //
+	// COLORS
+	// -------------------------------------------- //
+	
 	public static ChatColor colorMember = ChatColor.GREEN;
 	public static ChatColor colorAlly = ChatColor.DARK_PURPLE;
 	public static ChatColor colorTruce = ChatColor.LIGHT_PURPLE;
@@ -35,6 +38,10 @@ public class ConfServer extends SimpleConfig
 	public static ChatColor colorFriendlyFire = ChatColor.DARK_RED;
 	//public static ChatColor colorWilderness = ChatColor.DARK_GREEN;
 	
+	// -------------------------------------------- //
+	// DOUBTFULLY CONFIGURABLE DEFAULTS (TODO)
+	// -------------------------------------------- //
+	
 	public static Map<FFlag, Boolean> factionFlagDefaults;
 	//public static Map<FFlag, Boolean> factionFlagIsChangeable;
 	public static Map<FPerm, Set<Rel>> factionPermDefaults;
@@ -42,7 +49,10 @@ public class ConfServer extends SimpleConfig
 	// TODO: Shouldn't this be a constant rather?
 	public static Rel factionRankDefault = Rel.RECRUIT;
 	
-	// Power
+	// -------------------------------------------- //
+	// POWER
+	// -------------------------------------------- //
+	
 	public static double powerMax = 10.0;
 	public static double powerMin = -10.0;
 	public static double powerStarting = 10.0; // New players start out with this power level
@@ -63,12 +73,18 @@ public class ConfServer extends SimpleConfig
 	
 	public static double powerFactionMax = 0.0;  // if greater than 0, the cap on how much power a faction can have (additional power from players beyond that will act as a "buffer" of sorts)
 	
-	
+	// -------------------------------------------- //
+	// PREFIXES
+	// -------------------------------------------- //
 	
 	public static String prefixLeader = "**";
 	public static String prefixOfficer = "*";
 	public static String prefixMember = "+";
 	public static String prefixRecruit = "-";
+	
+	// -------------------------------------------- //
+	// CORE
+	// -------------------------------------------- //
 	
 	public static int factionTagLengthMin = 3;
 	public static int factionTagLengthMax = 10;
@@ -81,20 +97,20 @@ public class ConfServer extends SimpleConfig
 
 	// what faction ID to start new players in when they first join the server; default is 0, "no faction"
 	public static String newPlayerStartingFactionID = Const.FACTIONID_NONE;
-
-	//public static boolean showMapFactionKey = true;
-	//public static boolean showNeutralFactionsOnMap = true;
-	//public static boolean showEnemyFactionsOnMap = true;
 	
 	// Disallow joining/leaving/kicking while power is negative
 	public static boolean canLeaveWithNegativePower = true;
+	
+	// -------------------------------------------- //
+	// CHAT
+	// -------------------------------------------- //
 	
 	// Configuration on the Faction tag in chat messages.
 	public static boolean chatSetFormat = false;
 	public static String chatSetFormatTo = "<{faction_relcolor}§l{faction_roleprefix}§r{faction_relcolor}{faction_tag_pr}"+ChatColor.WHITE.toString()+"%s> %s";
 	public static boolean chatParseTags = true;
-	public static boolean chatParseTagsColored = false;
-	public static Map<String, String> chatSingleFormats = new HashMap<String, String>();
+	
+	
 	public static String chatTagFormat = "%s"+ChatColor.WHITE; // This one is almost deprecated now right? or is it?
 	
 	// Herochat
@@ -120,24 +136,32 @@ public class ConfServer extends SimpleConfig
 	
 	public static String herochatAllyName = "Allies";
 
-	// TODO: Does anyone toggle this feature on I wonder?
-	// It could work for small servers but never for big ones.
-	// Why not conform to big server setups at once?
-	// POSSIBLY: Remove this option
-	public static boolean broadcastDescriptionChanges = false;
+	// -------------------------------------------- //
+	// AUTO LEAVE
+	// -------------------------------------------- //
 
 	public static double autoLeaveAfterDaysOfInactivity = 10.0;
 	public static double autoLeaveRoutineRunsEveryXMinutes = 5.0;
 	public static boolean removePlayerDataWhenBanned = true;
 
+	// -------------------------------------------- //
+	// INTEGRATION: WORLD GUARD
+	// -------------------------------------------- //
+	
 	public static boolean worldGuardChecking = false;
 
-	//LWC
+	// -------------------------------------------- //
+	// INTEGRATION: LWC
+	// -------------------------------------------- //
+	
 	public static boolean lwcIntegration = false;
 	public static boolean onUnclaimResetLwcLocks = false;
 	public static boolean onCaptureResetLwcLocks = false;
 
-	// server logging options
+	// -------------------------------------------- //
+	// LOGGING
+	// -------------------------------------------- //
+	
 	public static boolean logFactionCreate = true;
 	public static boolean logFactionDisband = true;
 	public static boolean logFactionJoin = true;
@@ -148,12 +172,19 @@ public class ConfServer extends SimpleConfig
 	public static boolean logMoneyTransactions = true;
 	public static boolean logPlayerCommands = true;
 
-	// prevent some potential exploits
+	// -------------------------------------------- //
+	// EXPLOITS
+	// -------------------------------------------- //
+	
 	public static boolean handleExploitObsidianGenerators = true;
 	public static boolean handleExploitEnderPearlClipping = true;
 	public static boolean handleExploitInteractionSpam = true;
 	public static boolean handleExploitTNTWaterlog = false;
 
+	// -------------------------------------------- //
+	// HOMES
+	// -------------------------------------------- //
+	
 	public static boolean homesEnabled = true;
 	public static boolean homesMustBeInClaimedTerritory = true;
 	public static boolean homesTeleportCommandEnabled = true;
@@ -231,7 +262,10 @@ public class ConfServer extends SimpleConfig
 	public static float spoutTerritoryNoticeSize = 1.5f;  // text scale (size) for notice
 	public static float spoutTerritoryNoticeLeaveAfterSeconds = 2.00f;  // how many seconds before the notice goes away
 	
-	// Economy settings
+	// -------------------------------------------- //
+	// INTEGRATION: ECONOMY
+	// -------------------------------------------- //
+	
 	public static boolean econEnabled = false;
 	public static String econUniverseAccount = "";
 	public static double econCostClaimWilderness = 30.0;
@@ -259,7 +293,7 @@ public class ConfServer extends SimpleConfig
 	public static double econCostNeutral = 0.0;
 	public static double econCostEnemy = 0.0;
 
-	public static int    econLandRewardTaskRunsEveryXMinutes = 20;
+	public static int econLandRewardTaskRunsEveryXMinutes = 20;
 	public static double econLandReward = 0.00;
 	
 	//Faction banks, to pay for land claiming and other costs instead of individuals paying for them
@@ -268,6 +302,10 @@ public class ConfServer extends SimpleConfig
 	public static boolean bankFactionPaysCosts = true; //The faction pays for faction command costs, such as sethome
 	public static boolean bankFactionPaysLandCosts = true; //The faction pays for land claiming costs.
 
+	// -------------------------------------------- //
+	// DERPY OVERRIDES
+	// -------------------------------------------- //
+	
 	// mainly for other plugins/mods that use a fake player to take actions, which shouldn't be subject to our protections
 	public static Set<String> playersWhoBypassAllProtection = new LinkedHashSet<String>();
 
@@ -278,6 +316,10 @@ public class ConfServer extends SimpleConfig
 	public static Set<String> worldsIgnorePvP = new LinkedHashSet<String>();
 	// TODO: A better solution Would be to have One wilderness faction per world.
 	//public static Set<String> worldsNoWildernessProtection = new LinkedHashSet<String>();
+	
+	// -------------------------------------------- //
+	// STATIC CONSTRUCTOR TO GET RID OF (TODO)
+	// -------------------------------------------- //
 	
 	static
 	{
@@ -292,10 +334,6 @@ public class ConfServer extends SimpleConfig
 		{
 			factionPermDefaults.put(perm, perm.defaultDefaultValue);
 		}
-		
-		chatSingleFormats.put("pl", " %s");
-		chatSingleFormats.put("pr", "%s ");
-		chatSingleFormats.put("pb", " %s ");
 	}
 }
 

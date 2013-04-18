@@ -1,0 +1,25 @@
+package com.massivecraft.factions.chat.modifier;
+
+import com.massivecraft.factions.chat.ChatModifierAbstract;
+
+public class ChatModifierUc extends ChatModifierAbstract
+{
+	// -------------------------------------------- //
+	// INSTANCE & CONSTRUCT
+	// -------------------------------------------- //
+	
+	private ChatModifierUc() { super("uc"); }
+	private static ChatModifierUc i = new ChatModifierUc();
+	public static ChatModifierUc get() { return i; }
+	
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
+
+	@Override
+	public String getModified(String subject, String senderId, String sendeeId, String recipientId)
+	{
+		return subject.toUpperCase();
+	}
+
+}

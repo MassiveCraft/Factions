@@ -12,7 +12,7 @@ import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.integration.LWCFeatures;
 import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.integration.Worldguard;
-import com.massivecraft.factions.listeners.FactionsChatListener;
+import com.massivecraft.factions.listeners.FactionsListenerChat;
 import com.massivecraft.factions.listeners.FactionsEntityListener;
 import com.massivecraft.factions.listeners.FactionsListenerExploit;
 import com.massivecraft.factions.listeners.FactionsListenerMain;
@@ -44,7 +44,7 @@ public class Factions extends MPlugin
 	
 	// Listeners
 	public FactionsPlayerListener playerListener;
-	public FactionsChatListener chatListener;
+	public FactionsListenerChat chatListener;
 	public FactionsEntityListener entityListener;
 
 	// -------------------------------------------- //
@@ -92,7 +92,7 @@ public class Factions extends MPlugin
 		this.playerListener = new FactionsPlayerListener();
 		getServer().getPluginManager().registerEvents(this.playerListener, this);
 		
-		this.chatListener = new FactionsChatListener();
+		this.chatListener = new FactionsListenerChat();
 		getServer().getPluginManager().registerEvents(this.chatListener, this);
 		
 		this.entityListener = new FactionsEntityListener();

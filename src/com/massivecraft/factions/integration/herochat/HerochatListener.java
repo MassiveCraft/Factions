@@ -1,6 +1,5 @@
 package com.massivecraft.factions.integration.herochat;
 
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -8,10 +7,8 @@ import org.bukkit.event.Listener;
 import com.dthielke.herochat.ChannelChatEvent;
 import com.dthielke.herochat.Herochat;
 import com.massivecraft.factions.ConfServer;
-import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.FPlayerColl;
 import com.massivecraft.factions.Factions;
-import com.massivecraft.factions.listeners.FactionsChatListener;
+import com.massivecraft.factions.chat.ChatFormatter;
 
 public class HerochatListener implements Listener
 {
@@ -32,14 +29,9 @@ public class HerochatListener implements Listener
 		// Should we even parse?
 		if ( ! ConfServer.chatParseTags) return;
 		
-		Player from = event.getSender().getPlayer();
-		FPlayer fpfrom = FPlayerColl.get().get(from);
 		String format = event.getFormat();
-		
 		format = format.replaceAll("&r", "§r");
-		
-		String formatWithoutColor = FactionsChatListener.parseTags(format, from, fpfrom);
-				
-		event.setFormat(formatWithoutColor);
+		format = ChatFormatter.format(format, event.getSender().getName(), null, null); 
+		event.setFormat(format);
 	}
 }
