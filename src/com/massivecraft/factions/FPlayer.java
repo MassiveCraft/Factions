@@ -859,13 +859,17 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 
 		LandClaimEvent claimEvent = new LandClaimEvent(flocation, forFaction, this);
 		Bukkit.getServer().getPluginManager().callEvent(claimEvent);
-		if(claimEvent.isCancelled()) return false;
+		if (claimEvent.isCancelled()) return false;
 
 		// then make 'em pay (if applicable)
+		// TODO: The economy integration should cancel the event above!
 		if (mustPay && ! Econ.modifyMoney(payee, -cost, "to claim this land", "for claiming this land")) return false;
 
+		// TODO: The LWC integration should listen to Monitor for the claim event.
 		if (LWCFeatures.getEnabled() && forFaction.isNormal() && ConfServer.onCaptureResetLwcLocks)
+		{
 			LWCFeatures.clearOtherChests(flocation, this.getFaction());
+		}
 
 		// announce success
 		Set<FPlayer> informTheseFPlayers = new HashSet<FPlayer>();

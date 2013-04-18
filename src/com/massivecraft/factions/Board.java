@@ -107,7 +107,7 @@ public class Board extends Entity<Board> implements BoardInterface
 		if (territoryAccess == null || (territoryAccess.getHostFactionId().equals(Const.FACTIONID_NONE) && territoryAccess.isDefault()))
 		{
 			// TODO: Listen to an event instead!
-			// And this is probably the place where the event should be triggered!
+			// NOTE: And this is probably the place where the event should be triggered!
 			if (ConfServer.onUnclaimResetLwcLocks && LWCFeatures.getEnabled())
 			{
 				LWCFeatures.clearAllChests(ps);
