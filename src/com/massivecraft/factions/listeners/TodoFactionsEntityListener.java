@@ -15,11 +15,9 @@ import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityCombustByEntityEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.potion.PotionEffect;
@@ -27,7 +25,6 @@ import org.bukkit.potion.PotionEffectType;
 
 import com.massivecraft.factions.BoardColl;
 import com.massivecraft.factions.ConfServer;
-import com.massivecraft.factions.Const;
 import com.massivecraft.factions.FFlag;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayerColl;
@@ -110,8 +107,9 @@ public class TodoFactionsEntityListener implements Listener
 	{
 		EntityDamageByEntityEvent sub = new EntityDamageByEntityEvent(event.getCombuster(), event.getEntity(), EntityDamageEvent.DamageCause.FIRE, 0);
 		if ( ! this.canDamagerHurtDamagee(sub, false))
+		{
 			event.setCancelled(true);
-		sub = null;
+		}
 	}
 
 	private static final Set<PotionEffectType> badPotionEffects = new LinkedHashSet<PotionEffectType>(Arrays.asList(
@@ -276,38 +274,6 @@ public class TodoFactionsEntityListener implements Listener
 		return true;
 	}
 
-	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-	public void onCreatureSpawn(CreatureSpawnEvent event)
-	{
-		if (event.getLocation() == null) return;
-
-		PS ps = PS.valueOf(event.getLocation());
-		Faction faction = BoardColl.get().getFactionAt(ps);
-
-		if (faction.getFlag(FFlag.MONSTERS)) return;
-		if ( ! Const.ENTITY_TYPES_MONSTERS.contains(event.getEntityType())) return;
-
-		event.setCancelled(true);
-	}
-
-	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-	public void onEntityTarget(EntityTargetEvent event)
-	{
-		// if there is a target
-		Entity target = event.getTarget();
-		if (target == null) return;
-
-		// We are interested in blocking targeting for certain mobs:
-		
-		
-		if ( ! Const.ENTITY_TYPES_MONSTERS.contains(event.getEntity().getType())) return;
-
-		PS ps = PS.valueOf(target.getLocation());
-		Faction faction = BoardColl.get().getFactionAt(ps);
-
-		if (faction.getFlag(FFlag.MONSTERS)) return;
-
-		event.setCancelled(true);
-	}
+	
 	
 }

@@ -7,6 +7,7 @@ import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Enderman;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Wither;
 import org.bukkit.event.Cancellable;
@@ -22,10 +23,12 @@ import org.bukkit.event.block.BlockPistonRetractEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.block.BlockSpreadEvent;
 import org.bukkit.event.block.BlockIgniteEvent.IgniteCause;
+import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
+import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.hanging.HangingBreakEvent;
 import org.bukkit.event.hanging.HangingPlaceEvent;
@@ -38,6 +41,7 @@ import org.bukkit.event.server.PluginEnableEvent;
 
 import com.massivecraft.factions.BoardColl;
 import com.massivecraft.factions.ConfServer;
+import com.massivecraft.factions.Const;
 import com.massivecraft.factions.FFlag;
 import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.FPlayer;
@@ -63,6 +67,47 @@ public class FactionsListenerMain implements Listener
 	public void setup()
 	{
 		Bukkit.getPluginManager().registerEvents(this, Factions.get());
+	}
+	
+	// -------------------------------------------- //
+	// FLAG: MONSTERS
+	// -------------------------------------------- //
+	
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void blockMonsters(CreatureSpawnEvent event)
+	{
+		// If a monster is spawning ...
+		if ( ! Const.ENTITY_TYPES_MONSTERS.contains(event.getEntityType())) return;
+		
+		// ... at a place where monsters are forbidden ...
+		PS ps = PS.valueOf(event.getLocation());
+		Faction faction = BoardColl.get().getFactionAt(ps);
+		if (faction.getFlag(FFlag.MONSTERS)) return;
+		
+		// ... block the spawn.
+		event.setCancelled(true);
+	}
+
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void blockMonsters(EntityTargetEvent event)
+	{
+		// If a monster is targeting something ...
+		if ( ! Const.ENTITY_TYPES_MONSTERS.contains(event.getEntityType())) return;
+		
+		// ... at a place where monsters are forbidden ...
+		PS ps = PS.valueOf(event.getTarget());
+		Faction faction = BoardColl.get().getFactionAt(ps);
+		if (faction.getFlag(FFlag.MONSTERS)) return;
+		
+		// ... then if ghast target nothing ...
+		if (event.getEntityType() == EntityType.GHAST)
+		{
+			event.setTarget(null);
+			return;
+		}
+		
+		// ... otherwise simply cancel.
+		event.setCancelled(true);
 	}
 	
 	// -------------------------------------------- //

@@ -267,10 +267,7 @@ public class TodoFactionsPlayerListener implements Listener
 	public void onPlayerKick(PlayerKickEvent event)
 	{
 		FPlayer badGuy = FPlayerColl.get().get(event.getPlayer());
-		if (badGuy == null)
-		{
-			return;
-		}
+		if (badGuy == null) return;
 
 		SpoutFeatures.playerDisconnect(badGuy);
 
