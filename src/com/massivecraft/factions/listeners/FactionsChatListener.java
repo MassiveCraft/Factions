@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerChatEvent;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
@@ -30,7 +30,7 @@ public class FactionsChatListener implements Listener
 	
 	// this is for handling slashless command usage and faction/alliance chat, set at lowest priority so Factions gets to them first
 	@EventHandler(priority = EventPriority.LOWEST)
-	public void onPlayerEarlyChat(AsyncPlayerChatEvent event)
+	public void onPlayerEarlyChat(PlayerChatEvent event)
 	{
 		if (event.isCancelled()) return;
 	
@@ -97,7 +97,7 @@ public class FactionsChatListener implements Listener
 
 	// this is for handling insertion of the player's faction tag, set at highest priority to give other plugins a chance to modify chat first
 	@EventHandler(priority = EventPriority.HIGHEST)
-	public void onPlayerChat(AsyncPlayerChatEvent event)
+	public void onPlayerChat(PlayerChatEvent event)
 	{
 		if (event.isCancelled()) return;
 
