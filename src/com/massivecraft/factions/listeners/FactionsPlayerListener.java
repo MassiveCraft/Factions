@@ -58,9 +58,6 @@ public class FactionsPlayerListener implements Listener
 		{
 			fplayer.sendFactionHereMessage();
 		}
-		
-		// Update the lastLoginTime for this fplayer
-		fplayer.setLastLoginTime(System.currentTimeMillis());
 	}
 	
 	@EventHandler(priority = EventPriority.NORMAL)
@@ -73,9 +70,6 @@ public class FactionsPlayerListener implements Listener
 		// This is required since we recalculate as if the player were offline when they log back in.
 		// TODO: When I setup universes I must do this for all universe instance of the player that logs off!
 		fplayer.recalculatePower(true);
-		
-		// and update their last login time to point to when the logged off, for auto-remove routine
-		fplayer.setLastLoginTime(System.currentTimeMillis());
 
 		SpoutFeatures.playerDisconnect(fplayer);
 	}

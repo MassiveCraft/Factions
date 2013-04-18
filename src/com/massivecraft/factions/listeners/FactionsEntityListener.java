@@ -253,12 +253,6 @@ public class FactionsEntityListener implements Listener
 
 		if (ConfServer.playersWhoBypassAllProtection.contains(attacker.getName())) return true;
 
-		if (attacker.hasLoginPvpDisabled())
-		{
-			if (notify) attacker.msg("<i>You can't hurt other players for " + ConfServer.noPVPDamageToOthersForXSecondsAfterLogin + " seconds after logging in.");
-			return false;
-		}
-
 		Faction locFaction = BoardColl.get().getFactionAt(PS.valueOf(damager));
 
 		// so we know from above that the defender isn't in a safezone... what about the attacker, sneaky dog that he might be?

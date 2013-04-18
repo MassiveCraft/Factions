@@ -5,9 +5,11 @@ import java.lang.reflect.Type;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.massivecraft.mcore.mixin.Mixin;
 import com.massivecraft.mcore.store.MStore;
 import com.massivecraft.mcore.store.SenderColl;
 import com.massivecraft.mcore.util.DiscUtil;
+import com.massivecraft.mcore.util.TimeUnit;
 import com.massivecraft.mcore.xlib.gson.reflect.TypeToken;
 
 public class FPlayerColl extends SenderColl<FPlayer>
@@ -110,17 +112,17 @@ public class FPlayerColl extends SenderColl<FPlayer>
 	
 	public void autoLeaveOnInactivityRoutine()
 	{
-		if (ConfServer.autoLeaveAfterDaysOfInactivity <= 0.0)
-		{
-			return;
-		}
-
+		if (ConfServer.autoLeaveAfterDaysOfInactivity <= 0.0) return;
+		
 		long now = System.currentTimeMillis();
-		double toleranceMillis = ConfServer.autoLeaveAfterDaysOfInactivity * 24 * 60 * 60 * 1000;
+		double toleranceMillis = ConfServer.autoLeaveAfterDaysOfInactivity * TimeUnit.MILLIS_PER_DAY;
 		
 		for (FPlayer fplayer : this.getAll())
 		{
-			if (fplayer.isOffline() && now - fplayer.getLastLoginTime() > toleranceMillis)
+			Long lastPlayed = Mixin.getLastPlayed(fplayer.getId());
+			if (lastPlayed == null) continue;
+			
+			if (fplayer.isOffline() && now - lastPlayed > toleranceMillis)
 			{
 				if (ConfServer.logFactionLeave || ConfServer.logFactionKick)
 					Factions.get().log("Player "+fplayer.getName()+" was auto-removed due to inactivity.");

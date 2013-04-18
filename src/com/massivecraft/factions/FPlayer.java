@@ -20,7 +20,6 @@ import com.massivecraft.factions.util.RelationUtil;
 import com.massivecraft.mcore.mixin.Mixin;
 import com.massivecraft.mcore.ps.PS;
 import com.massivecraft.mcore.store.SenderEntity;
-import com.massivecraft.mcore.util.TimeDiffUtil;
 import com.massivecraft.mcore.util.TimeUnit;
 import com.massivecraft.mcore.util.Txt;
 
@@ -132,7 +131,7 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 	public void setUsingAdminMode(boolean val) { this.usingAdminMode = val; }
 	
 	// FIELD: loginPvpDisabled
-	private transient boolean loginPvpDisabled;
+	//private transient boolean loginPvpDisabled;
 	
 	// FIELD: account
 	public String getAccountId() { return this.getId(); }
@@ -147,7 +146,6 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 		this.resetFactionData(false);
 		this.power = ConfServer.powerStarting;
 		this.lastPowerUpdateTime = System.currentTimeMillis();
-		this.loginPvpDisabled = (ConfServer.noPVPDamageToOthersForXSecondsAfterLogin > 0) ? true : false;
 
 		if ( ! ConfServer.newPlayerStartingFactionID.equals(Const.FACTIONID_NONE) && FactionColl.get().containsId(ConfServer.newPlayerStartingFactionID))
 		{
@@ -490,35 +488,6 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 	public int getPowerMinRounded()
 	{
 		return (int) Math.round(this.getPowerMin());
-	}
-	
-	// -------------------------------------------- //
-	// FIELD: loginPvpDisabled
-	// -------------------------------------------- //
-	// TODO
-
-	@Deprecated
-	public void setLastLoginTime(long lastLoginTime)
-	{
-		this.lastPowerUpdateTime = lastLoginTime;
-		if (ConfServer.noPVPDamageToOthersForXSecondsAfterLogin > 0)
-		{
-			this.loginPvpDisabled = true;
-		}
-	}
-	
-	public boolean hasLoginPvpDisabled()
-	{
-		if (!loginPvpDisabled)
-		{
-			return false;
-		}
-		if (this.lastLoginTime + (ConfServer.noPVPDamageToOthersForXSecondsAfterLogin * 1000) < System.currentTimeMillis())
-		{
-			this.loginPvpDisabled = false;
-			return false;
-		}
-		return true;
 	}
 	
 	// -------------------------------------------- //

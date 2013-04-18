@@ -167,8 +167,6 @@ public class ConfServer extends SimpleConfig
 	
 	public static boolean disablePVPForFactionlessPlayers = false;
 	public static boolean enablePVPAgainstFactionlessInAttackersLand = false;
-	
-	public static int noPVPDamageToOthersForXSecondsAfterLogin = 3;
 
 	//public static boolean peacefulMembersDisablePowerLoss = true;
 	
