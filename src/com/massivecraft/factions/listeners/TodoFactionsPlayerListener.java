@@ -1,8 +1,5 @@
 package com.massivecraft.factions.listeners;
 
-import java.util.Collection;
-import java.util.Iterator;
-
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -13,7 +10,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerBucketFillEvent;
-import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
@@ -22,7 +18,6 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import com.massivecraft.factions.BoardColl;
 import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.Const;
-import com.massivecraft.factions.FFlag;
 import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayerColl;
@@ -204,64 +199,7 @@ public class TodoFactionsPlayerListener implements Listener
 		}
 	}
 	
-	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
-	public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event)
-	{
-		// Get the player
-		Player player = event.getPlayer();
-		FPlayer me = FPlayerColl.get().get(player);
-		
-		// With adminmode no commands are denied. 
-		if (me.isUsingAdminMode()) return;
-		
-		// The full command is converted to lowercase and does include the slash in the front
-		String fullCmd = event.getMessage().toLowerCase();
-		
-		if (me.hasFaction() && me.getFaction().getFlag(FFlag.PERMANENT) && isCommandInList(fullCmd, ConfServer.permanentFactionMemberDenyCommands))
-		{
-			me.msg("<b>You can't use the command \""+fullCmd+"\" because you are in a permanent faction.");
-			event.setCancelled(true);
-			return;
-		}
-		
-		Rel rel = me.getRelationToLocation();
-		if (BoardColl.get().getFactionAt(me.getCurrentChunk()).isNone()) return;
-		
-		if (rel == Rel.NEUTRAL && isCommandInList(fullCmd, ConfServer.territoryNeutralDenyCommands))
-		{
-			me.msg("<b>You can't use the command \""+fullCmd+"\" in neutral territory.");
-			event.setCancelled(true);
-			return;
-		}
-
-		if (rel == Rel.ENEMY && isCommandInList(fullCmd, ConfServer.territoryEnemyDenyCommands))
-		{
-			me.msg("<b>You can't use the command \""+fullCmd+"\" in enemy territory.");
-			event.setCancelled(true);
-			return;
-		}
-
-		return;
-	}
-
-	private static boolean isCommandInList(String fullCmd, Collection<String> strings)
-	{
-		String shortCmd = fullCmd.substring(1);
-		Iterator<String> iter = strings.iterator();
-		while (iter.hasNext())
-		{
-			String cmdCheck = iter.next();
-			if (cmdCheck == null)
-			{
-				iter.remove();
-				continue;
-			}
-			cmdCheck = cmdCheck.toLowerCase();
-			if (fullCmd.startsWith(cmdCheck)) return true;
-			if (shortCmd.startsWith(cmdCheck)) return true;
-		}
-		return false;
-	}
+	
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onPlayerKick(PlayerKickEvent event)

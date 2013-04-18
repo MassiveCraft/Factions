@@ -1,5 +1,6 @@
 package com.massivecraft.factions.listeners;
 
+import java.util.Collection;
 import java.util.Iterator;
 
 import org.bukkit.Bukkit;
@@ -33,6 +34,7 @@ import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.hanging.HangingBreakEvent;
 import org.bukkit.event.hanging.HangingPlaceEvent;
 import org.bukkit.event.hanging.HangingBreakEvent.RemoveCause;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
@@ -45,10 +47,13 @@ import com.massivecraft.factions.Const;
 import com.massivecraft.factions.FFlag;
 import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.FPlayerColl;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.mcore.ps.PS;
+import com.massivecraft.mcore.util.Txt;
 
 public class FactionsListenerMain implements Listener
 {
@@ -67,6 +72,69 @@ public class FactionsListenerMain implements Listener
 	public void setup()
 	{
 		Bukkit.getPluginManager().registerEvents(this, Factions.get());
+	}
+	
+	// -------------------------------------------- //
+	// DENY COMMANDS
+	// -------------------------------------------- //
+	
+	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
+	public void denyCommands(PlayerCommandPreprocessEvent event)
+	{
+		// If a player is trying to run a command ...
+		Player player = event.getPlayer();
+		FPlayer fplayer = FPlayerColl.get().get(player);
+		
+		// ... and the player does not have adminmode ...
+		if (fplayer.isUsingAdminMode()) return;
+		
+		// ... clean up the command ...
+		String command = event.getMessage();
+		command = Txt.removeLeadingCommandDust(command);
+		command = command.toLowerCase();
+		command = command.trim();
+		
+		if (fplayer.hasFaction() && fplayer.getFaction().getFlag(FFlag.PERMANENT) && containsCommand(command, ConfServer.permanentFactionMemberDenyCommands))
+		{
+			fplayer.msg("<b>You can't use \"<h>%s<b>\" as member of a permanent faction.", command);
+			event.setCancelled(true);
+			return;
+		}
+		
+		Rel rel = fplayer.getRelationToLocation();
+		if (BoardColl.get().getFactionAt(fplayer.getCurrentChunk()).isNone()) return;
+		
+		if (rel == Rel.NEUTRAL && containsCommand(command, ConfServer.territoryNeutralDenyCommands))
+		{
+			fplayer.msg("<b>You can't use \"<h>%s<b>\" in neutral territory.", command);
+			event.setCancelled(true);
+			return;
+		}
+
+		if (rel == Rel.ENEMY && containsCommand(command, ConfServer.territoryEnemyDenyCommands))
+		{
+			fplayer.msg("<b>You can't use \"<h>%s<b>\" in enemy territory.", command);
+			event.setCancelled(true);
+			return;
+		}
+	}
+
+	private static boolean containsCommand(String needle, Collection<String> haystack)
+	{
+		if (needle == null) return false;
+		needle = Txt.removeLeadingCommandDust(needle);
+		needle = needle.toLowerCase();
+		
+		for (String string : haystack)
+		{
+			if (string == null) continue;
+			string = Txt.removeLeadingCommandDust(string);
+			string = string.toLowerCase();
+			
+			if (needle.startsWith(string)) return true;
+		}
+		
+		return false;
 	}
 	
 	// -------------------------------------------- //

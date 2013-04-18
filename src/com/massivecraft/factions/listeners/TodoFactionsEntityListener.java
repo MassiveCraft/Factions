@@ -87,6 +87,12 @@ public class TodoFactionsEntityListener implements Listener
 			fplayer.msg(msg, fplayer.getPowerRounded(), fplayer.getPowerMaxRounded());
 		}
 	}
+	
+	// -------------------------------------------- //
+	// PVP STUFF??
+	// -------------------------------------------- //
+	
+	
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onEntityDamage(EntityDamageEvent event)
