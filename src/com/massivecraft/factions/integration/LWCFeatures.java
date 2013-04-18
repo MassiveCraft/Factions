@@ -38,7 +38,7 @@ public class LWCFeatures
 	}
 
 	
-	public static void clearAllChests(PS chunkPs)
+	public static void clearAllProtections(PS chunkPs)
 	{
 		for (Protection protection : getProtectionsInChunk(chunkPs))
 		{
@@ -46,7 +46,7 @@ public class LWCFeatures
 		}
 	}
 	
-	public static void clearOtherChests(PS chunkPs, Faction faction)
+	public static void clearOtherProtections(PS chunkPs, Faction faction)
 	{
 		for (Protection protection : getProtectionsInChunk(chunkPs))
 		{

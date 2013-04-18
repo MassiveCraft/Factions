@@ -869,7 +869,7 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 		// TODO: The LWC integration should listen to Monitor for the claim event.
 		if (LWCFeatures.getEnabled() && forFaction.isNormal() && ConfServer.onCaptureResetLwcLocks)
 		{
-			LWCFeatures.clearOtherChests(flocation, this.getFaction());
+			LWCFeatures.clearOtherProtections(flocation, this.getFaction());
 		}
 
 		// announce success

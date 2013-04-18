@@ -110,7 +110,7 @@ public class Board extends Entity<Board> implements BoardInterface
 			// NOTE: And this is probably the place where the event should be triggered!
 			if (ConfServer.onUnclaimResetLwcLocks && LWCFeatures.getEnabled())
 			{
-				LWCFeatures.clearAllChests(ps);
+				LWCFeatures.clearAllProtections(ps);
 			}
 			
 			this.map.remove(ps);
