@@ -81,7 +81,7 @@ public class FactionsEntityListener implements Listener
 		// Call player onDeath if the event is not cancelled
 		if ( ! powerLossEvent.isCancelled())
 		{
-			fplayer.onDeath();
+			fplayer.setPower(fplayer.getPower() + ConfServer.powerPerDeath);
 		}
 		
 		// Send the message from the powerLossEvent

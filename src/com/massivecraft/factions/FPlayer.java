@@ -353,7 +353,7 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 	
 	public double getPower()
 	{
-		this.updatePower();
+		this.recalculatePower();
 		return this.power;
 	}
 	
@@ -385,14 +385,13 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 		return ConfServer.powerMin + this.powerBoost;
 	}
 	
-	public void updatePower()
+	public void recalculatePower()
 	{
-		this.updatePower(this.isOnline());
+		this.recalculatePower(this.isOnline());
 	}
 	
 	private static final transient long POWER_RECALCULATION_MINIMUM_WAIT_MILLIS = 10 * TimeUnit.MILLIS_PER_SECOND;
-	
-	public void updatePower(boolean online)
+	public void recalculatePower(boolean online)
 	{
 		// Is the player really on this server?
 		// We use the sender ps mixin to fetch the current player location.
@@ -498,17 +497,16 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 	// -------------------------------------------- //
 	// TODO
 
+	@Deprecated
 	public void setLastLoginTime(long lastLoginTime)
 	{
-		losePowerFromBeingOffline();
-		//this.lastLoginTime = lastLoginTime;
 		this.lastPowerUpdateTime = lastLoginTime;
 		if (ConfServer.noPVPDamageToOthersForXSecondsAfterLogin > 0)
 		{
 			this.loginPvpDisabled = true;
 		}
 	}
-
+	
 	public boolean hasLoginPvpDisabled()
 	{
 		if (!loginPvpDisabled)
