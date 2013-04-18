@@ -8,7 +8,6 @@ import java.util.Map.Entry;
 
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.libs.com.google.gson.Gson;
-import org.bukkit.craftbukkit.libs.com.google.gson.JsonSyntaxException;
 import com.massivecraft.factions.zcore.util.DiscUtil;
 import com.massivecraft.factions.zcore.util.TextUtil;
 
@@ -223,7 +222,7 @@ public abstract class EntityCollection<E extends Entity>
 		{
 			return this.gson.fromJson(content, type);
 		}
-		catch(JsonSyntaxException ex)
+		catch(Exception ex)
 		{
 			Bukkit.getLogger().log(Level.WARNING, "JSON error encountered loading \"" + file + "\": " + ex.getLocalizedMessage());
 
