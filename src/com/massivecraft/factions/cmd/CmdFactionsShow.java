@@ -34,7 +34,7 @@ public class CmdFactionsShow extends FCommand
 		Faction faction = this.arg(0, ARFaction.get(), myFaction);
 		if (faction == null) return;
 
-		Collection<FPlayer> admins = faction.getFPlayersWhereRole(Rel.LEADER);
+		Collection<FPlayer> leaders = faction.getFPlayersWhereRole(Rel.LEADER);
 		Collection<FPlayer> mods = faction.getFPlayersWhereRole(Rel.OFFICER);
 		Collection<FPlayer> normals = faction.getFPlayersWhereRole(Rel.MEMBER);
 		Collection<FPlayer> recruits = faction.getFPlayersWhereRole(Rel.RECRUIT);
@@ -100,7 +100,7 @@ public class CmdFactionsShow extends FCommand
 		List<String> memberOnlineNames = new ArrayList<String>();
 		List<String> memberOfflineNames = new ArrayList<String>();
 		
-		for (FPlayer follower : admins)
+		for (FPlayer follower : leaders)
 		{
 			if (follower.isOnline() && Mixin.isVisible(me, follower.getId()))
 			{

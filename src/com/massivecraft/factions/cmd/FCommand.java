@@ -38,7 +38,7 @@ public abstract class FCommand extends MCommand
 		
 		if (you.getRole().equals(Rel.LEADER))
 		{
-			i.sendMessage(Txt.parse("<b>Only the faction admin can do that."));
+			i.sendMessage(Txt.parse("<b>Only the faction leader can do that."));
 		}
 		else if (i.getRole().equals(Rel.OFFICER))
 		{

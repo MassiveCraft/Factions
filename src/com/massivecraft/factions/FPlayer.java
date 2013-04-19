@@ -686,7 +686,7 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 		
 		if (!permanent && this.getRole() == Rel.LEADER && myFaction.getFPlayers().size() > 1)
 		{
-			msg("<b>You must give the admin role to someone else first.");
+			msg("<b>You must give the leader role to someone else first.");
 			return;
 		}
 

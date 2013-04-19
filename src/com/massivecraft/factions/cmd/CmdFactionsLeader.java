@@ -76,7 +76,7 @@ public class CmdFactionsLeader extends FCommand
 		{
 			targetFaction.promoteNewLeader();
 			msg("<i>You have demoted %s<i> from the position of faction leader.", newLeader.describeTo(fme, true));
-			newLeader.msg("<i>You have been demoted from the position of faction leader by %s<i>.", senderIsConsole ? "a server admin" : fme.describeTo(newLeader, true));
+			newLeader.msg("<i>You have been demoted from the position of faction leader by %s<i>.", fme.describeTo(newLeader, true));
 			return;
 		}
 

@@ -47,8 +47,10 @@ public class Econ
 
 		Factions.get().log("Economy integration through Vault plugin successful.");
 
-		if ( ! ConfServer.econEnabled)
+		if (!ConfServer.econEnabled)
+		{
 			Factions.get().log("NOTE: Economy is disabled. You can enable it with the command: f config econEnabled true");
+		}
 	}
 
 	// -------------------------------------------- //
@@ -333,12 +335,6 @@ public class Econ
 		}
 	}
 
-	// format money string based on server's set currency type, like "24 gold" or "$24.50"
-	public static String moneyString(double amount)
-	{
-		return economy.format(amount);
-	}
-
 	// calculate the cost for claiming land
 	public static double calculateClaimCost(int ownedLand, boolean takingFromAnotherFaction)
 	{
@@ -377,6 +373,12 @@ public class Econ
 	// Standard account management methods
 	// -------------------------------------------- //
 
+	// format money string based on server's set currency type, like "24 gold" or "$24.50"
+	public static String moneyString(double amount)
+	{
+		return economy.format(amount);
+	}
+	
 	public static boolean hasAccount(String name)
 	{
 		return economy.hasAccount(name);
@@ -390,27 +392,33 @@ public class Econ
 	public static boolean setBalance(String account, double amount)
 	{
 		double current = economy.getBalance(account);
-		if (current > amount)
-			return economy.withdrawPlayer(account, current - amount).transactionSuccess();
-		else
-			return economy.depositPlayer(account, amount - current).transactionSuccess();
+		
+		// TODO: WHY?
+		return modifyBalance(account, amount - current);
 	}
 
+	
 	public static boolean modifyBalance(String account, double amount)
 	{
-		if (amount < 0)
-			return economy.withdrawPlayer(account, -amount).transactionSuccess();
-		else
-			return economy.depositPlayer(account, amount).transactionSuccess();
+		// TODO: Get rid of?
+		return deposit(account, amount);
 	}
 
 	public static boolean deposit(String account, double amount)
 	{
+		if (amount < 0)
+		{
+			return withdraw(account, -amount);
+		}
 		return economy.depositPlayer(account, amount).transactionSuccess();
 	}
 
 	public static boolean withdraw(String account, double amount)
 	{
+		if (amount < 0)
+		{
+			return deposit(account, -amount);
+		}
 		return economy.withdrawPlayer(account, amount).transactionSuccess();
 	}
 }
