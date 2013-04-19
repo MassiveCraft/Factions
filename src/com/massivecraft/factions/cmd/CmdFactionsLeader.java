@@ -1,7 +1,5 @@
 package com.massivecraft.factions.cmd;
 
-import org.bukkit.Bukkit;
-
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayerColl;
 import com.massivecraft.factions.Faction;
@@ -9,7 +7,7 @@ import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.cmd.arg.ARFPlayer;
 import com.massivecraft.factions.cmd.arg.ARFaction;
-import com.massivecraft.factions.event.FPlayerJoinEvent;
+import com.massivecraft.factions.event.FactionsEventJoin;
 import com.massivecraft.factions.util.RelationUtil;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 import com.massivecraft.mcore.util.Txt;
@@ -67,8 +65,8 @@ public class CmdFactionsLeader extends FCommand
 		// only perform a FPlayerJoinEvent when newLeader isn't actually in the faction
 		if (newLeader.getFaction() != targetFaction)
 		{
-			FPlayerJoinEvent event = new FPlayerJoinEvent(FPlayerColl.get().get(me),targetFaction,FPlayerJoinEvent.PlayerJoinReason.LEADER);
-			Bukkit.getServer().getPluginManager().callEvent(event);
+			FactionsEventJoin event = new FactionsEventJoin(sender, newLeader, targetFaction, FactionsEventJoin.PlayerJoinReason.LEADER);
+			event.run();
 			if (event.isCancelled()) return;
 		}
 

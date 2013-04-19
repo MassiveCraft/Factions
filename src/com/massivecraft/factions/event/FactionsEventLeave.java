@@ -1,13 +1,12 @@
 package com.massivecraft.factions.event;
 
-import org.bukkit.event.Cancellable;
-import org.bukkit.event.Event;
+import org.bukkit.command.CommandSender;
 import org.bukkit.event.HandlerList;
 
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 
-public class FPlayerJoinEvent extends Event implements Cancellable
+public class FactionsEventLeave extends FactionsEventAbstractSender
 {
 	// -------------------------------------------- //
 	// REQUIRED EVENT CODE
@@ -21,45 +20,44 @@ public class FPlayerJoinEvent extends Event implements Cancellable
 	// FIELDS
 	// -------------------------------------------- //
 	
-	private FPlayer fplayer;
-	private Faction faction;
-	private PlayerJoinReason reason;
+	@Override
+	public void setCancelled(boolean cancelled) 
+	{
+		if (this.reason == PlayerLeaveReason.DISBAND || this.reason == PlayerLeaveReason.RESET)
+		{
+			cancelled = false;
+		}
+		super.setCancelled(cancelled);		
+	}
 	
-	private boolean cancelled = false;
-	@Override public boolean isCancelled() { return this.cancelled; }
-	@Override public void setCancelled(boolean cancelled) { this.cancelled = cancelled; }
+	private final FPlayer fplayer;
+	public FPlayer getFPlayer() { return this.fplayer; }
 	
+	private final Faction faction;
+	public Faction getFaction() { return this.faction; }
+	
+	private final PlayerLeaveReason reason;
+	public PlayerLeaveReason getReason() { return this.reason; }
+
 	// -------------------------------------------- //
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public FPlayerJoinEvent(FPlayer fplayer, Faction faction, PlayerJoinReason reason)
+	public FactionsEventLeave(CommandSender sender, FPlayer fplayer, Faction faction, PlayerLeaveReason reason)
 	{
+		super(sender);
 		this.fplayer = fplayer;
 		this.faction = faction;
 		this.reason = reason;
-	}
-
-	public FPlayer getFPlayer()
-	{
-		return fplayer;
-	}
-	public Faction getFaction()
-	{
-		return faction;
-	}
-	public PlayerJoinReason getReason()
-	{
-		return reason;	
 	}
 	
 	// -------------------------------------------- //
 	// INTERNAL ENUM
 	// -------------------------------------------- //
 	
-	public enum PlayerJoinReason
+	public enum PlayerLeaveReason
 	{
-		CREATE, LEADER, COMMAND
+		KICKED, DISBAND, RESET, JOINOTHER, LEAVE
 	}
 	
 }

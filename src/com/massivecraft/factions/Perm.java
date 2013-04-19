@@ -23,7 +23,6 @@ public enum Perm
 	CLAIM_RADIUS("claim.radius"),
 	CONFIG("config"),
 	CREATE("create"),
-	DEINVITE("deinvite"),
 	DEMOTE("demote"),
 	DESCRIPTION("description"),
 	DISBAND("disband"),

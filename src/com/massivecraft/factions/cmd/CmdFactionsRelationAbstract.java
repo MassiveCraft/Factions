@@ -1,7 +1,5 @@
 package com.massivecraft.factions.cmd;
 
-import org.bukkit.Bukkit;
-
 import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.FFlag;
 import com.massivecraft.factions.Faction;
@@ -9,7 +7,7 @@ import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.cmd.arg.ARFaction;
 import com.massivecraft.factions.cmd.req.ReqRoleIsAtLeast;
-import com.massivecraft.factions.event.FactionRelationEvent;
+import com.massivecraft.factions.event.FactionsEventRelationChange;
 import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 
@@ -28,8 +26,11 @@ public abstract class CmdFactionsRelationAbstract extends FCommand
 	@Override
 	public void perform()
 	{
-		Faction them = this.arg(0, ARFaction.get());
-		if (them == null) return;
+		// Args
+		Faction otherFaction = this.arg(0, ARFaction.get());
+		if (otherFaction == null) return;
+		
+		Rel newRelation = targetRelation;
 		
 		/*if ( ! them.isNormal())
 		{
@@ -37,60 +38,60 @@ public abstract class CmdFactionsRelationAbstract extends FCommand
 			return;
 		}*/
 		
-		if (them == myFaction)
+		// Verify
+		
+		if (otherFaction == myFaction)
 		{
 			msg("<b>Nope! You can't declare a relation to yourself :)");
 			return;
 		}
 
-		if (myFaction.getRelationWish(them) == targetRelation)
+		if (myFaction.getRelationWish(otherFaction) == newRelation)
 		{
-			msg("<b>You already have that relation wish set with %s.", them.getTag());
+			msg("<b>You already have that relation wish set with %s.", otherFaction.getTag());
 			return;
 		}
-
-		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-		if (!payForCommand(targetRelation.getRelationCost())) return;
+		
+		// Event
+		FactionsEventRelationChange event = new FactionsEventRelationChange(sender, myFaction, otherFaction, newRelation);
+		event.run();
+		if (event.isCancelled()) return;
+		newRelation = event.getNewRelation();
 
 		// try to set the new relation
-		Rel oldRelation = myFaction.getRelationTo(them, true);
-		myFaction.setRelationWish(them, targetRelation);
-		Rel currentRelation = myFaction.getRelationTo(them, true);
+		myFaction.setRelationWish(otherFaction, newRelation);
+		Rel currentRelation = myFaction.getRelationTo(otherFaction, true);
 
 		// if the relation change was successful
-		if (targetRelation == currentRelation)
+		if (newRelation == currentRelation)
 		{
-			// trigger the faction relation event
-			FactionRelationEvent relationEvent = new FactionRelationEvent(myFaction, them, oldRelation, currentRelation);
-			Bukkit.getServer().getPluginManager().callEvent(relationEvent);
-
-			them.msg("%s<i> is now %s.", myFaction.describeTo(them, true), targetRelation.getDescFactionOne());
-			myFaction.msg("%s<i> is now %s.", them.describeTo(myFaction, true), targetRelation.getDescFactionOne());
+			otherFaction.msg("%s<i> is now %s.", myFaction.describeTo(otherFaction, true), newRelation.getDescFactionOne());
+			myFaction.msg("%s<i> is now %s.", otherFaction.describeTo(myFaction, true), newRelation.getDescFactionOne());
 		}
 		// inform the other faction of your request
 		else
 		{
-			them.msg("%s<i> wishes to be %s.", myFaction.describeTo(them, true), targetRelation.getColor()+targetRelation.getDescFactionOne());
-			them.msg("<i>Type <c>/"+ConfServer.baseCommandAliases.get(0)+" "+targetRelation+" "+myFaction.getTag()+"<i> to accept.");
-			myFaction.msg("%s<i> were informed that you wish to be %s<i>.", them.describeTo(myFaction, true), targetRelation.getColor()+targetRelation.getDescFactionOne());
+			otherFaction.msg("%s<i> wishes to be %s.", myFaction.describeTo(otherFaction, true), newRelation.getColor()+newRelation.getDescFactionOne());
+			otherFaction.msg("<i>Type <c>/"+ConfServer.baseCommandAliases.get(0)+" "+newRelation+" "+myFaction.getTag()+"<i> to accept.");
+			myFaction.msg("%s<i> were informed that you wish to be %s<i>.", otherFaction.describeTo(myFaction, true), newRelation.getColor()+newRelation.getDescFactionOne());
 		}
 		
 		// TODO: The ally case should work!!
 		//   * this might have to be bumped up to make that happen, & allow ALLY,NEUTRAL only
-		if ( targetRelation != Rel.TRUCE && them.getFlag(FFlag.PEACEFUL))
+		if ( newRelation != Rel.TRUCE && otherFaction.getFlag(FFlag.PEACEFUL))
 		{
-			them.msg("<i>This will have no effect while your faction is peaceful.");
+			otherFaction.msg("<i>This will have no effect while your faction is peaceful.");
 			myFaction.msg("<i>This will have no effect while their faction is peaceful.");
 		}
 		
-		if ( targetRelation != Rel.TRUCE && myFaction.getFlag(FFlag.PEACEFUL))
+		if ( newRelation != Rel.TRUCE && myFaction.getFlag(FFlag.PEACEFUL))
 		{
-			them.msg("<i>This will have no effect while their faction is peaceful.");
+			otherFaction.msg("<i>This will have no effect while their faction is peaceful.");
 			myFaction.msg("<i>This will have no effect while your faction is peaceful.");
 		}
 
-		SpoutFeatures.updateTitle(myFaction, them);
-		SpoutFeatures.updateTitle(them, myFaction);
+		SpoutFeatures.updateTitle(myFaction, otherFaction);
+		SpoutFeatures.updateTitle(otherFaction, myFaction);
 		SpoutFeatures.updateTerritoryDisplayLoc(null);
 	}
 }

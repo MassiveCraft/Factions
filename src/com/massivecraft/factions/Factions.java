@@ -26,7 +26,6 @@ import com.massivecraft.factions.integration.Worldguard;
 import com.massivecraft.factions.integration.herochat.HerochatFeatures;
 import com.massivecraft.factions.listeners.FactionsListenerChat;
 import com.massivecraft.factions.listeners.FactionsListenerEcon;
-import com.massivecraft.factions.listeners.TodoFactionsEntityListener;
 import com.massivecraft.factions.listeners.FactionsListenerExploit;
 import com.massivecraft.factions.listeners.FactionsListenerMain;
 import com.massivecraft.factions.listeners.TodoFactionsPlayerListener;
@@ -57,7 +56,6 @@ public class Factions extends MPlugin
 	
 	// Listeners
 	public TodoFactionsPlayerListener playerListener;
-	public TodoFactionsEntityListener entityListener;
 
 	// -------------------------------------------- //
 	// OVERRIDE
@@ -90,12 +88,9 @@ public class Factions extends MPlugin
 		// Right now only a few situations are handled through this listener.
 		FactionsListenerEcon.get().setup();
 		
-		// TODO: Get rid of these
+		// TODO: Get rid of this one
 		this.playerListener = new TodoFactionsPlayerListener();
 		getServer().getPluginManager().registerEvents(this.playerListener, this);
-		
-		this.entityListener = new TodoFactionsEntityListener();
-		getServer().getPluginManager().registerEvents(this.entityListener, this);
 		
 		// Schedule recurring non-tps-dependent tasks
 		AutoLeaveTask.get().schedule(this);

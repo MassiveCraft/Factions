@@ -35,6 +35,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.hanging.HangingBreakEvent;
@@ -59,6 +60,7 @@ import com.massivecraft.factions.FPlayerColl;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Rel;
+import com.massivecraft.factions.event.FactionsEventPowerLoss;
 import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.util.VisualizeUtil;
 import com.massivecraft.mcore.ps.PS;
@@ -84,6 +86,44 @@ public class FactionsListenerMain implements Listener
 		Bukkit.getPluginManager().registerEvents(this, Factions.get());
 	}
 
+	// -------------------------------------------- //
+	// POWER LOSS ON DEATH
+	// -------------------------------------------- //
+	
+	@EventHandler(priority = EventPriority.NORMAL)
+	public void powerLossOnDeath(PlayerDeathEvent event)
+	{
+		// If a player dies ...
+		Player player = event.getEntity();
+		FPlayer fplayer = FPlayerColl.get().get(player);
+		
+		// ... and powerloss can happen here ...
+		Faction faction = BoardColl.get().getFactionAt(PS.valueOf(player));
+		
+		if (!faction.getFlag(FFlag.POWERLOSS))
+		{
+			fplayer.msg("<i>You didn't lose any power since the territory you died in works that way.");
+			return;
+		}
+		
+		if (ConfServer.worldsNoPowerLoss.contains(player.getWorld().getName()))
+		{
+			fplayer.msg("<i>You didn't lose any power due to the world you died in.");
+			return;
+		}
+		
+		// ... and our special event doesn't get cancelled ...
+		FactionsEventPowerLoss powerLossEvent = new FactionsEventPowerLoss(player);
+		powerLossEvent.run();
+		if (powerLossEvent.isCancelled()) return;
+		
+		// ... alter the power ...
+		fplayer.setPower(fplayer.getPower() + ConfServer.powerPerDeath);
+		
+		// ... and inform the player.
+		fplayer.msg("<i>Your power is now <h>%d / %d", fplayer.getPowerRounded(), fplayer.getPowerMaxRounded());
+	}
+	
 	// -------------------------------------------- //
 	// CAN COMBAT DAMAGE HAPPEN
 	// -------------------------------------------- //

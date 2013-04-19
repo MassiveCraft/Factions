@@ -283,9 +283,10 @@ public class ConfServer extends SimpleConfig
 	public static double econCostLeave = 0.0;
 	public static double econCostKick = 0.0;
 	public static double econCostInvite = 0.0;
+	public static double econCostDeinvite = 0.0;
 	public static double econCostHome = 0.0;
 	public static double econCostTag = 0.0;
-	public static double econCostDesc = 0.0;
+	public static double econCostDescription = 0.0;
 	public static double econCostTitle = 0.0;
 	public static double econCostOpen = 0.0;
 	public static double econCostAlly = 0.0;

@@ -7,8 +7,17 @@ import org.bukkit.event.Listener;
 
 import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.Factions;
-import com.massivecraft.factions.event.FactionsHomeChangeEvent;
+import com.massivecraft.factions.event.FactionsEventAbstractSender;
+import com.massivecraft.factions.event.FactionsEventCreate;
+import com.massivecraft.factions.event.FactionsEventDescriptionChange;
+import com.massivecraft.factions.event.FactionsEventHomeChange;
+import com.massivecraft.factions.event.FactionsEventInvitedChange;
+import com.massivecraft.factions.event.FactionsEventOpenChange;
+import com.massivecraft.factions.event.FactionsEventRelationChange;
+import com.massivecraft.factions.event.FactionsEventTagChange;
+import com.massivecraft.factions.event.FactionsEventTitleChange;
 import com.massivecraft.factions.integration.Econ;
+import com.massivecraft.mcore.cmd.MCommand;
 
 public class FactionsListenerEcon implements Listener
 {
@@ -30,20 +39,67 @@ public class FactionsListenerEcon implements Listener
 	}
 
 	// -------------------------------------------- //
-	// LISTENER
+	// PAY FOR COMMAND
 	// -------------------------------------------- //
 	
-	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
-	public void onFactionsHomeChangeEvent(FactionsHomeChangeEvent event)
+	public void payForCommand(FactionsEventAbstractSender event, double cost, MCommand command)
 	{
-		// If the faction home is being changed through a command ...
-		if (!event.getReason().equals(FactionsHomeChangeEvent.REASON_COMMAND_SETHOME)) return;
+		// If there is a sender ...
+		if (event.getSender() == null) return;
 		
-		// ... and the sender can not afford the command ...
-		if (Econ.payForAction(ConfServer.econCostSethome, event.getSender(), Factions.get().getOuterCmdFactions().cmdFactionsSethome.getDesc())) return;
+		// ... and the sender can't afford ...
+		if (Econ.payForAction(cost, event.getSender(), command.getDesc())) return;
 		
-		// ... then cancel the change.
+		// ... then cancel.
 		event.setCancelled(true);
 	}
 	
+	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+	public void payForCommand(FactionsEventHomeChange event)
+	{
+		payForCommand(event, ConfServer.econCostSethome, Factions.get().getOuterCmdFactions().cmdFactionsSethome);
+	}
+	
+	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+	public void payForCommand(FactionsEventCreate event)
+	{
+		payForCommand(event, ConfServer.econCostCreate, Factions.get().getOuterCmdFactions().cmdFactionsCreate);
+	}
+	
+	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+	public void payForCommand(FactionsEventDescriptionChange event)
+	{
+		payForCommand(event, ConfServer.econCostDescription, Factions.get().getOuterCmdFactions().cmdFactionsDescription);
+	}
+	
+	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+	public void payForCommand(FactionsEventTagChange event)
+	{
+		payForCommand(event, ConfServer.econCostTag, Factions.get().getOuterCmdFactions().cmdFactionsTag);
+	}
+	
+	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+	public void payForCommand(FactionsEventTitleChange event)
+	{
+		payForCommand(event, ConfServer.econCostTitle, Factions.get().getOuterCmdFactions().cmdFactionsTitle);
+	}
+	
+	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+	public void payForCommand(FactionsEventRelationChange event)
+	{
+		payForCommand(event, event.getNewRelation().getRelationCost(), Factions.get().getOuterCmdFactions().cmdFactionsRelationNeutral);
+	}
+	
+	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+	public void payForCommand(FactionsEventOpenChange event)
+	{
+		payForCommand(event, ConfServer.econCostOpen, Factions.get().getOuterCmdFactions().cmdFactionsOpen);
+	}
+	
+	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+	public void payForCommand(FactionsEventInvitedChange event)
+	{
+		double cost = event.isNewInvited() ? ConfServer.econCostInvite : ConfServer.econCostDeinvite;
+		payForCommand(event, cost, Factions.get().getOuterCmdFactions().cmdFactionsInvite);
+	}
 }

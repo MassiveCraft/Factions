@@ -10,7 +10,7 @@ import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.cmd.arg.ARFPlayer;
-import com.massivecraft.factions.event.FPlayerLeaveEvent;
+import com.massivecraft.factions.event.FactionsEventLeave;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 
 public class CmdFactionsKick extends FCommand
@@ -55,7 +55,7 @@ public class CmdFactionsKick extends FCommand
 		if (fme != null && ! FPerm.KICK.has(fme, yourFaction)) return;
 
 		// trigger the leave event (cancellable) [reason:kicked]
-		FPlayerLeaveEvent event = new FPlayerLeaveEvent(you, you.getFaction(), FPlayerLeaveEvent.PlayerLeaveReason.KICKED);
+		FactionsEventLeave event = new FactionsEventLeave(you, you.getFaction(), FactionsEventLeave.PlayerLeaveReason.KICKED);
 		Bukkit.getServer().getPluginManager().callEvent(event);
 		if (event.isCancelled()) return;
 

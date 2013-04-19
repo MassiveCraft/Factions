@@ -3,7 +3,7 @@ package com.massivecraft.factions.cmd;
 import org.bukkit.Bukkit;
 
 import com.massivecraft.factions.ConfServer;
-import com.massivecraft.factions.event.LandUnclaimEvent;
+import com.massivecraft.factions.event.FactionsEventLandUnclaim;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.BoardColl;
@@ -33,7 +33,7 @@ public class CmdFactionsUnclaim extends FCommand
 
 		if ( ! FPerm.TERRITORY.has(sender, otherFaction, true)) return;
 
-		LandUnclaimEvent unclaimEvent = new LandUnclaimEvent(chunk, otherFaction, fme);
+		FactionsEventLandUnclaim unclaimEvent = new FactionsEventLandUnclaim(sender, otherFaction, chunk);
 		Bukkit.getServer().getPluginManager().callEvent(unclaimEvent);
 		if(unclaimEvent.isCancelled()) return;
 	

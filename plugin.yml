@@ -26,7 +26,6 @@ permissions:
   factions.claim.radius: {description: claim land in a large radius}
   factions.config: {description: change a conf.json setting}
   factions.create: {description: create a new faction}
-  factions.deinvite: {description: remove a pending invitation}
   factions.demote: {description: demote lesser members in your faction}
   factions.description: {description: change the faction description}
   factions.disband: {description: disband a faction}
@@ -34,7 +33,7 @@ permissions:
   factions.flag.set: {description: set faction flags}
   factions.help: {description: display a help page}
   factions.home: {description: teleport to the faction home}
-  factions.invite: {description: invite a player to your faction}
+  factions.invite: {description: set if a player is invited}
   factions.join: {description: join a faction}
   factions.join.any: {description: join any faction, bypassing invitation process for closed factions}
   factions.join.others: {description: specify another player in the join command, to move them to the specified faction}
@@ -134,7 +133,6 @@ permissions:
       factions.cape.*: true
       factions.claim: true
       factions.claim.radius: true
-      factions.deinvite: true
       factions.demote: true
       factions.description: true
       factions.disband: true

@@ -12,8 +12,8 @@ import com.massivecraft.factions.FactionColl;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
-import com.massivecraft.factions.event.FPlayerJoinEvent;
-import com.massivecraft.factions.event.FactionCreateEvent;
+import com.massivecraft.factions.event.FactionsEventJoin;
+import com.massivecraft.factions.event.FactionsEventCreate;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 
 public class CmdFactionsCreate extends FCommand
@@ -54,29 +54,19 @@ public class CmdFactionsCreate extends FCommand
 		// trigger the faction creation event (cancellable)
 		String factionId = FactionColl.get().getIdStrategy().generate(FactionColl.get());
 		
-		FactionCreateEvent createEvent = new FactionCreateEvent(sender, tag, factionId);
+		FactionsEventCreate createEvent = new FactionsEventCreate(sender, tag, factionId);
 		Bukkit.getServer().getPluginManager().callEvent(createEvent);
-		if(createEvent.isCancelled()) return;
-		
-		// then make 'em pay (if applicable)
-		if (!payForCommand(ConfServer.econCostCreate)) return;
+		if (createEvent.isCancelled()) return;
 		
 		Faction faction = FactionColl.get().create(factionId);
-
-		// TODO: Why would this even happen??? Auto increment clash??
-		if (faction == null)
-		{
-			msg("<b>There was an internal error while trying to create your faction. Please try again.");
-			return;
-		}
 
 		// finish setting up the Faction
 		faction.setTag(tag);
 		
 		// trigger the faction join event for the creator
-		FPlayerJoinEvent joinEvent = new FPlayerJoinEvent(FPlayerColl.get().get(sender),faction,FPlayerJoinEvent.PlayerJoinReason.CREATE);
-		Bukkit.getServer().getPluginManager().callEvent(joinEvent);
-		// join event cannot be cancelled or you'll have an empty faction
+		FactionsEventJoin joinEvent = new FactionsEventJoin(sender, fme, faction, FactionsEventJoin.PlayerJoinReason.CREATE);
+		joinEvent.run();
+		// NOTE: join event cannot be cancelled or you'll have an empty faction
 		
 		// finish setting up the FPlayer
 		fme.setRole(Rel.LEADER);

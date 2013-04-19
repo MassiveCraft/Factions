@@ -6,7 +6,7 @@ import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.cmd.arg.ARFaction;
-import com.massivecraft.factions.event.FactionsHomeChangeEvent;
+import com.massivecraft.factions.event.FactionsEventHomeChange;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 import com.massivecraft.mcore.cmd.req.ReqIsPlayer;
 import com.massivecraft.mcore.ps.PS;
@@ -48,13 +48,10 @@ public class CmdFactionsSethome extends FCommand
 			return;
 		}
 		
-		FactionsHomeChangeEvent event = new FactionsHomeChangeEvent(sender, FactionsHomeChangeEvent.REASON_COMMAND_SETHOME, faction, newHome);
+		FactionsEventHomeChange event = new FactionsEventHomeChange(sender, faction, newHome);
 		event.run();
 		if (event.isCancelled()) return;
 		newHome = event.getNewHome();
-
-		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-		if (!payForCommand(ConfServer.econCostSethome)) return;
 
 		faction.setHome(newHome);
 		

@@ -3,13 +3,12 @@ package com.massivecraft.factions;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import com.massivecraft.factions.event.FPlayerLeaveEvent;
-import com.massivecraft.factions.event.LandClaimEvent;
+import com.massivecraft.factions.event.FactionsEventLeave;
+import com.massivecraft.factions.event.FactionsEventLandClaim;
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.iface.RelationParticipator;
 import com.massivecraft.factions.integration.Econ;
@@ -700,8 +699,8 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 		// if economy is enabled and they're not on the bypass list, make sure they can pay
 		if (makePay && ! Econ.hasAtLeast(this, ConfServer.econCostLeave, "to leave your faction.")) return;
 
-		FPlayerLeaveEvent leaveEvent = new FPlayerLeaveEvent(this,myFaction,FPlayerLeaveEvent.PlayerLeaveReason.LEAVE);
-		Bukkit.getServer().getPluginManager().callEvent(leaveEvent);
+		FactionsEventLeave leaveEvent = new FactionsEventLeave(sender, this, myFaction, FactionsEventLeave.PlayerLeaveReason.LEAVE);
+		leaveEvent.run();
 		if (leaveEvent.isCancelled()) return;
 
 		// then make 'em pay (if applicable)
@@ -858,8 +857,8 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 			if ( ! Econ.hasAtLeast(payee, cost, "to claim this land")) return false;
 		}
 
-		LandClaimEvent claimEvent = new LandClaimEvent(flocation, forFaction, this);
-		Bukkit.getServer().getPluginManager().callEvent(claimEvent);
+		FactionsEventLandClaim claimEvent = new FactionsEventLandClaim(sender, forFaction, flocation);
+		claimEvent.run();
 		if (claimEvent.isCancelled()) return false;
 
 		// then make 'em pay (if applicable)

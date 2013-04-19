@@ -10,7 +10,7 @@ import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.cmd.arg.ARFPlayer;
 import com.massivecraft.factions.cmd.arg.ARFaction;
-import com.massivecraft.factions.event.FPlayerJoinEvent;
+import com.massivecraft.factions.event.FactionsEventJoin;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 
 public class CmdFactionsJoin extends FCommand
@@ -75,7 +75,7 @@ public class CmdFactionsJoin extends FCommand
 		}
 
 		// trigger the join event (cancellable)
-		FPlayerJoinEvent joinEvent = new FPlayerJoinEvent(FPlayerColl.get().get(me),faction,FPlayerJoinEvent.PlayerJoinReason.COMMAND);
+		FactionsEventJoin joinEvent = new FactionsEventJoin(FPlayerColl.get().get(me),faction,FactionsEventJoin.PlayerJoinReason.JOIN);
 		Bukkit.getServer().getPluginManager().callEvent(joinEvent);
 		if (joinEvent.isCancelled()) return;
 

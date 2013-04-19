@@ -4,8 +4,8 @@ import org.bukkit.Bukkit;
 
 import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.cmd.arg.ARFaction;
-import com.massivecraft.factions.event.FPlayerLeaveEvent;
-import com.massivecraft.factions.event.FactionDisbandEvent;
+import com.massivecraft.factions.event.FactionsEventLeave;
+import com.massivecraft.factions.event.FactionsEventDisband;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.FFlag;
 import com.massivecraft.factions.FPerm;
@@ -42,14 +42,15 @@ public class CmdFactionsDisband extends FCommand
 			return;
 		}
 
-		FactionDisbandEvent disbandEvent = new FactionDisbandEvent(me, faction.getId());
+		FactionsEventDisband disbandEvent = new FactionsEventDisband(me, faction);
 		Bukkit.getServer().getPluginManager().callEvent(disbandEvent);
 		if(disbandEvent.isCancelled()) return;
 
 		// Send FPlayerLeaveEvent for each player in the faction
 		for ( FPlayer fplayer : faction.getFPlayers() )
 		{
-			Bukkit.getServer().getPluginManager().callEvent(new FPlayerLeaveEvent(fplayer, faction, FPlayerLeaveEvent.PlayerLeaveReason.DISBAND));
+			FactionsEventLeave leaveEvent = new FactionsEventLeave(sender, fplayer, faction, FactionsEventLeave.PlayerLeaveReason.DISBAND);
+			leaveEvent.run();
 		}
 
 		// Inform all players

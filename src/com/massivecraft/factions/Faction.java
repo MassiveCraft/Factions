@@ -354,38 +354,27 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 		return this.isInvited(fplayer.getId());
 	}
 	
-	public boolean invite(String playerId)
+	public boolean setInvited(String playerId, boolean invited)
 	{
 		TreeSet<String> invitedPlayerIds = this.getInvitedPlayerIds();
-		if (invitedPlayerIds.add(playerId.toLowerCase()))
+		boolean ret;
+		if (invited)
 		{
-			this.setInvitedPlayerIds(invitedPlayerIds);
-			return true;
+			ret = invitedPlayerIds.add(playerId.toLowerCase());
 		}
-		return false;
-	}
-	
-	public void invite(FPlayer fplayer)
-	{
-		this.invite(fplayer.getId());
-	}
-	
-	public boolean deinvite(String playerId)
-	{
-		TreeSet<String> invitedPlayerIds = this.getInvitedPlayerIds();
-		if (invitedPlayerIds.remove(playerId.toLowerCase()))
+		else
 		{
-			this.setInvitedPlayerIds(invitedPlayerIds);
-			return true;
+			ret = invitedPlayerIds.remove(playerId.toLowerCase());
 		}
-		return false;
+		this.setInvitedPlayerIds(invitedPlayerIds);
+		return ret;
+		
 	}
 	
-	public void deinvite(FPlayer fplayer)
+	public void setInvited(FPlayer fplayer, boolean invited)
 	{
-		this.deinvite(fplayer.getId());
+		this.setInvited(fplayer.getId(), invited);
 	}
-	
 	
 	// -------------------------------------------- //
 	// FIELD: relationWish

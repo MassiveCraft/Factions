@@ -1,11 +1,11 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionColl;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.cmd.req.ReqRoleIsAtLeast;
+import com.massivecraft.factions.event.FactionsEventOpenChange;
 import com.massivecraft.mcore.cmd.arg.ARBoolean;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 
@@ -24,17 +24,21 @@ public class CmdFactionsOpen extends FCommand
 	@Override
 	public void perform()
 	{
-		Boolean target = this.arg(0, ARBoolean.get(), !myFaction.isOpen());
-		if (target == null) return;
+		// Args
+		Boolean newOpen = this.arg(0, ARBoolean.get(), !myFaction.isOpen());
+		if (newOpen == null) return;
 
-		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-		if (!payForCommand(ConfServer.econCostOpen)) return;
+		// Event
+		FactionsEventOpenChange event = new FactionsEventOpenChange(sender, myFaction, newOpen);
+		event.run();
+		if (event.isCancelled()) return;
+		newOpen = event.isNewOpen();
 		
-		myFaction.setOpen(target);
-		
-		String descTarget = myFaction.isOpen() ? "open" : "closed";
+		// Apply
+		myFaction.setOpen(newOpen);
 		
 		// Inform
+		String descTarget = myFaction.isOpen() ? "open" : "closed";
 		myFaction.msg("%s<i> changed the faction to <h>%s<i>.", fme.describeTo(myFaction, true), descTarget);
 		for (Faction faction : FactionColl.get().getAll())
 		{

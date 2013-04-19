@@ -1,15 +1,11 @@
 package com.massivecraft.factions.event;
 
 import org.bukkit.command.CommandSender;
-import org.bukkit.event.Cancellable;
-import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.FactionColl;
 
-public class FactionDisbandEvent extends Event implements Cancellable
+public class FactionsEventDisband extends FactionsEventAbstractSender
 {
 	// -------------------------------------------- //
 	// REQUIRED EVENT CODE
@@ -23,39 +19,21 @@ public class FactionDisbandEvent extends Event implements Cancellable
 	// FIELDS
 	// -------------------------------------------- //
 	
-	private boolean cancelled;
-	@Override public boolean isCancelled() { return this.cancelled; }
-	@Override public void setCancelled(boolean cancelled) { this.cancelled = cancelled; }
+	private final Faction faction;
+	public Faction getFaction() { return this.faction; }
 	
-	// TODO: Could the fields be reorganized to achieve symmetry?
-	
-	private String id;
-	private CommandSender sender;
-
-	public Faction getFaction()
-	{
-		return FactionColl.get().get(id);
-	}
-
-	public FPlayer getFPlayer()
-	{
-		return FPlayer.get(sender);
-	}
-
-	public CommandSender getPlayer()
-	{
-		return this.sender;
-	}
+	private final String factionId;
+	public String getFactionId() { return this.factionId; }
 	
 	// -------------------------------------------- //
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public FactionDisbandEvent(CommandSender sender, String factionId)
+	public FactionsEventDisband(CommandSender sender, Faction faction)
 	{
-		this.cancelled = false;
-		this.sender = sender;
-		this.id = factionId;
+		super(sender);
+		this.faction = faction;
+		this.factionId = faction.getId();
 	}
 	
 	// -------------------------------------------- //

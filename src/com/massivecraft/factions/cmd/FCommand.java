@@ -4,7 +4,6 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayerColl;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Rel;
-import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.mcore.cmd.MCommand;
 import com.massivecraft.mcore.util.Txt;
 
@@ -61,8 +60,8 @@ public abstract class FCommand extends MCommand
 	}
 	
 	// if economy is enabled and they're not on the bypass list, make 'em pay; returns true unless person can't afford the cost
-	public boolean payForCommand(double cost)
+	/*public boolean payForCommand(double cost)
 	{
 		return Econ.payForAction(cost, sender, this.getDesc());
-	}
+	}*/
 }

@@ -17,7 +17,6 @@ public class CmdFactions extends FCommand
 	public CmdFactionsCape cmdFactionsCape = new CmdFactionsCape();
 	public CmdFactionsClaim cmdFactionsClaim = new CmdFactionsClaim();
 	public CmdFactionsCreate cmdFactionsCreate = new CmdFactionsCreate();
-	public CmdFactionsDeinvite cmdFactionsDeinvite = new CmdFactionsDeinvite();
 	public CmdFactionsDemote cmdFactionsDemote = new CmdFactionsDemote();
 	public CmdFactionsDescription cmdFactionsDescription = new CmdFactionsDescription();
 	public CmdFactionsDisband cmdFactionsDisband = new CmdFactionsDisband();
@@ -77,7 +76,6 @@ public class CmdFactions extends FCommand
 		this.addSubCommand(this.cmdFactionsPerm);
 		this.addSubCommand(this.cmdFactionsFlag);
 		this.addSubCommand(this.cmdFactionsInvite);
-		this.addSubCommand(this.cmdFactionsDeinvite);
 		this.addSubCommand(this.cmdFactionsOpen);
 		this.addSubCommand(this.cmdFactionsMoney);
 		this.addSubCommand(this.cmdFactionsClaim);
