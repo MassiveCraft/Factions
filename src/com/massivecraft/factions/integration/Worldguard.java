@@ -1,6 +1,8 @@
 package com.massivecraft.factions.integration;
 
 import com.massivecraft.factions.Factions;
+import com.massivecraft.mcore.ps.PS;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -79,16 +81,23 @@ public class Worldguard
 	// Returns:
 	//   True: Regions found within chunk
 	//   False: No regions found within chunk
-	public static boolean checkForRegionsInChunk(Location loc)
+	public static boolean checkForRegionsInChunk(PS psChunk)
 	{
-		if ( ! enabled)
+		// No WG hooks so we'll always bypass this check.
+		if (!enabled) return false;
+
+		World world = null;
+		Chunk chunk = null;
+		try
 		{
-			// No WG hooks so we'll always bypass this check.
+			world = psChunk.asBukkitWorld(true);
+			chunk = psChunk.asBukkitChunk(true);
+		}
+		catch (Exception e)
+		{
 			return false;
 		}
-
-		World world = loc.getWorld();
-		Chunk chunk = world.getChunkAt(loc);
+		
 		int minChunkX = chunk.getX() << 4;
 		int minChunkZ = chunk.getZ() << 4;
 		int maxChunkX = minChunkX + 15;

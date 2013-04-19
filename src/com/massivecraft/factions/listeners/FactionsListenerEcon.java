@@ -51,7 +51,7 @@ public class FactionsListenerEcon implements Listener
 		if (event.getSender() == null) return;
 		
 		// ... and the sender can't afford ...
-		if (Econ.payForAction(cost, event.getSender(), command.getDesc())) return;
+		if (Econ.payForAction(cost, event.getFSender(), command.getDesc())) return;
 		
 		// ... then cancel.
 		event.setCancelled(true);

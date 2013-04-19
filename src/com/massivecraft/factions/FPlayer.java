@@ -4,7 +4,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import com.massivecraft.factions.event.FactionsEventLandClaim;
@@ -730,16 +729,15 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 		}
 	}
 
-	public boolean canClaimForFactionAtLocation(Faction forFaction, Location location, boolean notifyFailure)
+	public boolean canClaimForFactionAtLocation(Faction forFaction, PS ps, boolean notifyFailure)
 	{
 		String error = null;
 		
-		PS ps = PS.valueOf(location);
 		Faction myFaction = this.getFaction();
 		Faction currentFaction = BoardColl.get().getFactionAt(ps);
 		int ownedLand = forFaction.getLandCount();
 		
-		if (ConfServer.worldGuardChecking && Worldguard.checkForRegionsInChunk(location))
+		if (ConfServer.worldGuardChecking && Worldguard.checkForRegionsInChunk(ps))
 		{
 			// Checks for WorldGuard regions in the chunk attempting to be claimed
 			error = Txt.parse("<b>This land is protected");
@@ -814,51 +812,35 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 		return error == null;
 	}
 	
-	public boolean attemptClaim(Faction forFaction, Location location, boolean notifyFailure)
+	// notifyFailure is false if called by auto-claim; no need to notify on every failure for it
+	// return value is false on failure, true on success
+	public boolean attemptClaim(Faction forFaction, PS psChunk, boolean notifyFailure)
 	{
-		// notifyFailure is false if called by auto-claim; no need to notify on every failure for it
-		// return value is false on failure, true on success
-		
-		PS flocation = PS.valueOf(location).getChunk(true);
-		Faction currentFaction = BoardColl.get().getFactionAt(flocation);
-		
+		psChunk = psChunk.getChunk(true);
+		Faction currentFaction = BoardColl.get().getFactionAt(psChunk);
 		int ownedLand = forFaction.getLandCount();
 		
-		if ( ! this.canClaimForFactionAtLocation(forFaction, location, notifyFailure)) return false;
-		
-		// TODO: Add flag no costs??
-		// if economy is enabled and they're not on the bypass list, make sure they can pay
-		boolean mustPay = Econ.isEnabled() && ! this.isUsingAdminMode();
-		double cost = 0.0;
-		EconomyParticipator payee = null;
-		if (mustPay)
-		{
-			cost = Econ.calculateClaimCost(ownedLand, currentFaction.isNormal());
-
-			if (ConfServer.econClaimUnconnectedFee != 0.0 && forFaction.getLandCountInWorld(flocation.getWorld()) > 0 && !BoardColl.get().isConnectedPs(flocation, forFaction))
-				cost += ConfServer.econClaimUnconnectedFee;
-
-			if(ConfServer.bankEnabled && ConfServer.bankFactionPaysLandCosts && this.hasFaction())
-				payee = this.getFaction();
-			else
-				payee = this;
-
-			if ( ! Econ.hasAtLeast(payee, cost, "to claim this land")) return false;
-		}
+		if ( ! this.canClaimForFactionAtLocation(forFaction, psChunk, notifyFailure)) return false;
 
 		// Event
-		FactionsEventLandClaim event = new FactionsEventLandClaim(sender, forFaction, flocation);
+		FactionsEventLandClaim event = new FactionsEventLandClaim(sender, forFaction, psChunk);
 		event.run();
 		if (event.isCancelled()) return false;
 
 		// then make 'em pay (if applicable)
 		// TODO: The economy integration should cancel the event above!
-		if (mustPay && ! Econ.modifyMoney(payee, -cost, "claim this land")) return false;
+		// Calculate the cost to claim the area
+		double cost = Econ.calculateClaimCost(ownedLand, currentFaction.isNormal());
+		if (ConfServer.econClaimUnconnectedFee != 0.0 && forFaction.getLandCountInWorld(psChunk.getWorld()) > 0 && !BoardColl.get().isConnectedPs(psChunk, forFaction))
+		{
+			cost += ConfServer.econClaimUnconnectedFee;
+		}
+		if (Econ.payForAction(cost, this, "claim this land")) return false;
 
 		// TODO: The LWC integration should listen to Monitor for the claim event.
 		if (LWCFeatures.getEnabled() && forFaction.isNormal() && ConfServer.onCaptureResetLwcLocks)
 		{
-			LWCFeatures.clearOtherProtections(flocation, this.getFaction());
+			LWCFeatures.clearOtherProtections(psChunk, this.getFaction());
 		}
 
 		// announce success
@@ -870,11 +852,11 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 			fp.msg("<h>%s<i> claimed land for <h>%s<i> from <h>%s<i>.", this.describeTo(fp, true), forFaction.describeTo(fp), currentFaction.describeTo(fp));
 		}
 		
-		BoardColl.get().setFactionAt(flocation, forFaction);
-		SpoutFeatures.updateTerritoryDisplayLoc(flocation);
+		BoardColl.get().setFactionAt(psChunk, forFaction);
+		SpoutFeatures.updateTerritoryDisplayLoc(psChunk);
 
 		if (ConfServer.logLandClaims)
-			Factions.get().log(this.getName()+" claimed land at ("+flocation.getChunkX()+","+flocation.getChunkZ()+") for the faction: "+forFaction.getTag());
+			Factions.get().log(this.getName()+" claimed land at ("+psChunk.getChunkX()+","+psChunk.getChunkZ()+") for the faction: "+forFaction.getTag());
 
 		return true;
 	}

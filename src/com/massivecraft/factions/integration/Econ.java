@@ -5,7 +5,6 @@ import java.util.Set;
 import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
 import com.massivecraft.factions.ConfServer;
@@ -71,12 +70,11 @@ public class Econ
 	// UTIL
 	// -------------------------------------------- //
 	
-	public static boolean payForAction(double cost, CommandSender sender, String actionDescription)
+	public static boolean payForAction(double cost, FPlayer fsender, String actionDescription)
 	{
 		if (!isEnabled()) return true;
 		if (cost == 0D) return true;
 		
-		FPlayer fsender = FPlayer.get(sender);
 		if (fsender.isUsingAdminMode()) return true;
 		Faction fsenderFaction = fsender.getFaction();
 

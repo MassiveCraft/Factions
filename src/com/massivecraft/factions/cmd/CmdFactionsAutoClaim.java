@@ -6,6 +6,7 @@ import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.cmd.arg.ARFaction;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 import com.massivecraft.mcore.cmd.req.ReqIsPlayer;
+import com.massivecraft.mcore.ps.PS;
 
 public class CmdFactionsAutoClaim extends FCommand
 {
@@ -35,7 +36,7 @@ public class CmdFactionsAutoClaim extends FCommand
 		fme.setAutoClaimFor(forFaction);
 		
 		msg("<i>Now auto-claiming land for <h>%s<i>.", forFaction.describeTo(fme));
-		fme.attemptClaim(forFaction, me.getLocation(), true);
+		fme.attemptClaim(forFaction, PS.valueOf(me), true);
 	}
 	
 }

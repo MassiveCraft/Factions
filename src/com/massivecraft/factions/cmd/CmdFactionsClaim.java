@@ -44,7 +44,7 @@ public class CmdFactionsClaim extends FCommand
 		if (radius < 2)
 		{
 			// single chunk
-			fme.attemptClaim(forFaction, me.getLocation(), true);
+			fme.attemptClaim(forFaction, PS.valueOf(me), true);
 			return;
 		}
 		
@@ -64,7 +64,7 @@ public class CmdFactionsClaim extends FCommand
 			@Override
 			public boolean work()
 			{
-				boolean success = fme.attemptClaim(forFaction, this.currentLocation(), true);
+				boolean success = fme.attemptClaim(forFaction, PS.valueOf(this.currentLocation()), true);
 				if (success)
 					failCount = 0;
 				else if ( ! success && failCount++ >= limit)

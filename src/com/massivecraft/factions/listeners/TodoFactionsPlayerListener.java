@@ -108,7 +108,7 @@ public class TodoFactionsPlayerListener implements Listener
 
 		if (fplayer.getAutoClaimFor() != null)
 		{
-			fplayer.attemptClaim(fplayer.getAutoClaimFor(), event.getTo(), true);
+			fplayer.attemptClaim(fplayer.getAutoClaimFor(), PS.valueOf(event.getTo()), true);
 		}
 	}
 
