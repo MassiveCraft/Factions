@@ -102,7 +102,7 @@ public class Econ
 		if (ConfServer.econUniverseAccount.length() == 0) return;
 		if ( ! economy.hasAccount(ConfServer.econUniverseAccount)) return;
 
-		modifyBalance(ConfServer.econUniverseAccount, delta);
+		deposit(ConfServer.econUniverseAccount, delta);
 	}
 
 	public static void sendBalanceInfo(FPlayer to, EconomyParticipator about)
@@ -191,6 +191,9 @@ public class Econ
 			else
 			{
 				// transaction failed, refund account
+				// TODO: This must be invalid thinking for sure!
+				// Atomicity should be built into the system implementing Vault. We are /not/ doing manual rollbacks.
+				// TODO: Re
 				economy.depositPlayer(from.getAccountId(), amount);
 			}
 		}
@@ -391,17 +394,10 @@ public class Econ
 
 	public static boolean setBalance(String account, double amount)
 	{
+		// This is about as stupid as it seems.
+		// Vault does however not implement a set balance feature.
 		double current = economy.getBalance(account);
-		
-		// TODO: WHY?
-		return modifyBalance(account, amount - current);
-	}
-
-	
-	public static boolean modifyBalance(String account, double amount)
-	{
-		// TODO: Get rid of?
-		return deposit(account, amount);
+		return deposit(account, amount - current);
 	}
 
 	public static boolean deposit(String account, double amount)

@@ -35,7 +35,7 @@ public class CmdFactionsShow extends FCommand
 		if (faction == null) return;
 
 		Collection<FPlayer> leaders = faction.getFPlayersWhereRole(Rel.LEADER);
-		Collection<FPlayer> mods = faction.getFPlayersWhereRole(Rel.OFFICER);
+		Collection<FPlayer> officers = faction.getFPlayersWhereRole(Rel.OFFICER);
 		Collection<FPlayer> normals = faction.getFPlayersWhereRole(Rel.MEMBER);
 		Collection<FPlayer> recruits = faction.getFPlayersWhereRole(Rel.RECRUIT);
 		
@@ -112,7 +112,7 @@ public class CmdFactionsShow extends FCommand
 			}
 		}
 		
-		for (FPlayer follower : mods)
+		for (FPlayer follower : officers)
 		{
 			if (follower.isOnline() && Mixin.isVisible(me, follower.getId()))
 			{
