@@ -25,6 +25,7 @@ import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.integration.Worldguard;
 import com.massivecraft.factions.integration.herochat.HerochatFeatures;
 import com.massivecraft.factions.listeners.FactionsListenerChat;
+import com.massivecraft.factions.listeners.FactionsListenerEcon;
 import com.massivecraft.factions.listeners.TodoFactionsEntityListener;
 import com.massivecraft.factions.listeners.FactionsListenerExploit;
 import com.massivecraft.factions.listeners.FactionsListenerMain;
@@ -83,6 +84,11 @@ public class Factions extends MPlugin
 		FactionsListenerMain.get().setup();
 		FactionsListenerChat.get().setup();
 		FactionsListenerExploit.get().setup();
+		
+		// NOTE: This listener is a work in progress.
+		// The goal is that the Econ integration should be completely based on listening to our own events.
+		// Right now only a few situations are handled through this listener.
+		FactionsListenerEcon.get().setup();
 		
 		// TODO: Get rid of these
 		this.playerListener = new TodoFactionsPlayerListener();

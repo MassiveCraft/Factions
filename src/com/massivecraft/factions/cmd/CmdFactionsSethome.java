@@ -6,7 +6,7 @@ import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.cmd.arg.ARFaction;
-import com.massivecraft.factions.event.FactionsHomeChangedEvent;
+import com.massivecraft.factions.event.FactionsHomeChangeEvent;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 import com.massivecraft.mcore.cmd.req.ReqIsPlayer;
 import com.massivecraft.mcore.ps.PS;
@@ -48,7 +48,7 @@ public class CmdFactionsSethome extends FCommand
 			return;
 		}
 		
-		FactionsHomeChangedEvent event = new FactionsHomeChangedEvent(sender, FactionsHomeChangedEvent.REASON_COMMAND_SETHOME, faction, newHome);
+		FactionsHomeChangeEvent event = new FactionsHomeChangeEvent(sender, FactionsHomeChangeEvent.REASON_COMMAND_SETHOME, faction, newHome);
 		event.run();
 		if (event.isCancelled()) return;
 		newHome = event.getNewHome();

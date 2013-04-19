@@ -34,9 +34,6 @@ public class CmdFactionsShow extends FCommand
 		Faction faction = this.arg(0, ARFaction.get(), myFaction);
 		if (faction == null) return;
 
-		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-		if (!payForCommand(ConfServer.econCostShow)) return;
-
 		Collection<FPlayer> admins = faction.getFPlayersWhereRole(Rel.LEADER);
 		Collection<FPlayer> mods = faction.getFPlayersWhereRole(Rel.OFFICER);
 		Collection<FPlayer> normals = faction.getFPlayersWhereRole(Rel.MEMBER);

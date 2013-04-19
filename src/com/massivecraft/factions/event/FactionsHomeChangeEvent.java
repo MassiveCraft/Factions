@@ -7,7 +7,7 @@ import com.massivecraft.factions.Faction;
 import com.massivecraft.mcore.event.MCoreCancellableEvent;
 import com.massivecraft.mcore.ps.PS;
 
-public class FactionsHomeChangedEvent extends MCoreCancellableEvent
+public class FactionsHomeChangeEvent extends MCoreCancellableEvent
 {
 	// -------------------------------------------- //
 	// CONSTANTS
@@ -46,7 +46,7 @@ public class FactionsHomeChangedEvent extends MCoreCancellableEvent
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public FactionsHomeChangedEvent(CommandSender sender, String reason, Faction faction, PS newHome)
+	public FactionsHomeChangeEvent(CommandSender sender, String reason, Faction faction, PS newHome)
 	{
 		this.sender = sender;
 		this.reason = reason;

@@ -3,7 +3,6 @@ package com.massivecraft.factions.cmd;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionColl;
 import com.massivecraft.factions.FactionListComparator;
@@ -30,9 +29,6 @@ public class CmdFactionsList extends FCommand
 	{
 		Integer pageHumanBased = this.arg(0, ARInteger.get(), 1);
 		if (pageHumanBased == null) return;
-		
-		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-		if (!payForCommand(ConfServer.econCostList)) return;
 		
 		// Create Messages
 		List<String> lines = new ArrayList<String>();
