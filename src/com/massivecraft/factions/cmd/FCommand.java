@@ -58,10 +58,4 @@ public abstract class FCommand extends MCommand
 		
 		return false;
 	}
-	
-	// if economy is enabled and they're not on the bypass list, make 'em pay; returns true unless person can't afford the cost
-	/*public boolean payForCommand(double cost)
-	{
-		return Econ.payForAction(cost, sender, this.getDesc());
-	}*/
 }

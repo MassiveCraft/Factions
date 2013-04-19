@@ -2,13 +2,15 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.cmd.arg.ARFaction;
-import com.massivecraft.factions.event.FactionsEventLeave;
 import com.massivecraft.factions.event.FactionsEventDisband;
+import com.massivecraft.factions.event.FactionsEventMembershipChange;
+import com.massivecraft.factions.event.FactionsEventMembershipChange.MembershipChangeReason;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.FFlag;
 import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.FPlayerColl;
 import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.FactionColl;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Perm;
@@ -51,10 +53,10 @@ public class CmdFactionsDisband extends FCommand
 		// Merged Apply and Inform
 		
 		// Send FPlayerLeaveEvent for each player in the faction
-		for ( FPlayer fplayer : faction.getFPlayers() )
+		for (FPlayer fplayer : faction.getFPlayers())
 		{
-			FactionsEventLeave leaveEvent = new FactionsEventLeave(sender, fplayer, faction, FactionsEventLeave.PlayerLeaveReason.DISBAND);
-			leaveEvent.run();
+			FactionsEventMembershipChange membershipChangeEvent = new FactionsEventMembershipChange(sender, fplayer, FactionColl.get().getNone(), MembershipChangeReason.DISBAND);
+			membershipChangeEvent.run();
 		}
 
 		// Inform all players

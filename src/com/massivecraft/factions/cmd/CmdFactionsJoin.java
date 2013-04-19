@@ -1,16 +1,14 @@
 package com.massivecraft.factions.cmd;
 
-import org.bukkit.Bukkit;
-
 import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.FPlayerColl;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.cmd.arg.ARFPlayer;
 import com.massivecraft.factions.cmd.arg.ARFaction;
-import com.massivecraft.factions.event.FactionsEventJoin;
+import com.massivecraft.factions.event.FactionsEventMembershipChange;
+import com.massivecraft.factions.event.FactionsEventMembershipChange.MembershipChangeReason;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 
 public class CmdFactionsJoin extends FCommand
@@ -28,6 +26,7 @@ public class CmdFactionsJoin extends FCommand
 	@Override
 	public void perform()
 	{
+		// Args
 		Faction faction = this.arg(0, ARFaction.get());
 		if (faction == null) return;
 
@@ -35,7 +34,8 @@ public class CmdFactionsJoin extends FCommand
 		if (fplayer == null) return;
 		
 		boolean samePlayer = fplayer == fme;
-
+		
+		// Validate
 		if (!samePlayer  && ! Perm.JOIN_OTHERS.has(sender, false))
 		{
 			msg("<b>You do not have permission to move other players into a faction.");
@@ -70,30 +70,33 @@ public class CmdFactionsJoin extends FCommand
 		{
 			msg("<i>This faction requires invitation.");
 			if (samePlayer)
+			{
 				faction.msg("%s<i> tried to join your faction.", fplayer.describeTo(faction, true));
+			}
 			return;
 		}
 
-		// trigger the join event (cancellable)
-		FactionsEventJoin joinEvent = new FactionsEventJoin(FPlayerColl.get().get(me),faction,FactionsEventJoin.PlayerJoinReason.JOIN);
-		Bukkit.getServer().getPluginManager().callEvent(joinEvent);
-		if (joinEvent.isCancelled()) return;
-
-		// then make 'em pay (if applicable)
-		if (samePlayer && ! payForCommand(ConfServer.econCostJoin)) return;
-
+		// Event
+		FactionsEventMembershipChange membershipChangeEvent = new FactionsEventMembershipChange(sender, fme, faction, MembershipChangeReason.JOIN);
+		membershipChangeEvent.run();
+		if (membershipChangeEvent.isCancelled()) return;
+		
+		// Inform
 		if (!samePlayer)
+		{
 			fplayer.msg("<i>%s moved you into the faction %s.", fme.describeTo(fplayer, true), faction.getTag(fplayer));
+		}
 		faction.msg("<i>%s joined your faction.", fplayer.describeTo(faction, true));
 		fme.msg("<i>%s successfully joined %s.", fplayer.describeTo(fme, true), faction.getTag(fme));
 		
+		// Apply
 		fplayer.resetFactionData();
 		fplayer.setFaction(faction);
 		fme.setRole(ConfServer.factionRankDefault); // They have just joined a faction, start them out on the lowest rank (default config).
 	    
-		faction.deinvite(fplayer);
-		
+		faction.setInvited(fplayer, false);
 
+		// Derplog
 		if (ConfServer.logFactionJoin)
 		{
 			if (samePlayer)

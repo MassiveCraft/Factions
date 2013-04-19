@@ -13,6 +13,8 @@ import com.massivecraft.factions.event.FactionsEventDescriptionChange;
 import com.massivecraft.factions.event.FactionsEventHomeChange;
 import com.massivecraft.factions.event.FactionsEventHomeTeleport;
 import com.massivecraft.factions.event.FactionsEventInvitedChange;
+import com.massivecraft.factions.event.FactionsEventMembershipChange;
+import com.massivecraft.factions.event.FactionsEventMembershipChange.MembershipChangeReason;
 import com.massivecraft.factions.event.FactionsEventOpenChange;
 import com.massivecraft.factions.event.FactionsEventRelationChange;
 import com.massivecraft.factions.event.FactionsEventTagChange;
@@ -110,4 +112,32 @@ public class FactionsListenerEcon implements Listener
 		payForCommand(event, ConfServer.econCostHome, Factions.get().getOuterCmdFactions().cmdFactionsHome);
 	}
 	
+	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+	public void payForCommand(FactionsEventMembershipChange event)
+	{
+		Double cost = null;
+		MCommand command = null;
+		
+		if (event.getReason() == MembershipChangeReason.JOIN)
+		{
+			cost = ConfServer.econCostJoin;
+			command = Factions.get().getOuterCmdFactions().cmdFactionsJoin;
+		}
+		else if (event.getReason() == MembershipChangeReason.LEAVE)
+		{
+			cost = ConfServer.econCostLeave;
+			command = Factions.get().getOuterCmdFactions().cmdFactionsLeave;
+		}
+		else if (event.getReason() == MembershipChangeReason.KICK)
+		{
+			cost = ConfServer.econCostKick;
+			command = Factions.get().getOuterCmdFactions().cmdFactionsKick;
+		}
+		else
+		{
+			return;
+		}
+		
+		payForCommand(event, cost, command);
+	}
 }

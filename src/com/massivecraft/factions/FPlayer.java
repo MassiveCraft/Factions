@@ -7,8 +7,9 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import com.massivecraft.factions.event.FactionsEventLeave;
 import com.massivecraft.factions.event.FactionsEventLandClaim;
+import com.massivecraft.factions.event.FactionsEventMembershipChange;
+import com.massivecraft.factions.event.FactionsEventMembershipChange.MembershipChangeReason;
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.iface.RelationParticipator;
 import com.massivecraft.factions.integration.Econ;
@@ -674,17 +675,10 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 	public void leave(boolean makePay)
 	{
 		Faction myFaction = this.getFaction();
-		makePay = makePay && Econ.isEnabled() && ! this.isUsingAdminMode();
 
-		if (myFaction == null)
-		{
-			resetFactionData();
-			return;
-		}
-
-		boolean perm = myFaction.getFlag(FFlag.PERMANENT);
+		boolean permanent = myFaction.getFlag(FFlag.PERMANENT);
 		
-		if (!perm && this.getRole() == Rel.LEADER && myFaction.getFPlayers().size() > 1)
+		if (!permanent && this.getRole() == Rel.LEADER && myFaction.getFPlayers().size() > 1)
 		{
 			msg("<b>You must give the admin role to someone else first.");
 			return;
@@ -696,15 +690,10 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 			return;
 		}
 
-		// if economy is enabled and they're not on the bypass list, make sure they can pay
-		if (makePay && ! Econ.hasAtLeast(this, ConfServer.econCostLeave, "to leave your faction.")) return;
-
-		FactionsEventLeave leaveEvent = new FactionsEventLeave(sender, this, myFaction, FactionsEventLeave.PlayerLeaveReason.LEAVE);
-		leaveEvent.run();
-		if (leaveEvent.isCancelled()) return;
-
-		// then make 'em pay (if applicable)
-		if (makePay && ! Econ.modifyMoney(this, -ConfServer.econCostLeave, "leave your faction")) return;
+		// Event
+		FactionsEventMembershipChange membershipChangeEvent = new FactionsEventMembershipChange(sender, this, myFaction, MembershipChangeReason.LEAVE);
+		membershipChangeEvent.run();
+		if (membershipChangeEvent.isCancelled()) return;
 
 		// Am I the last one in the faction?
 		if (myFaction.getFPlayers().size() == 1)
@@ -727,7 +716,7 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 		
 		this.resetFactionData();
 
-		if (myFaction.isNormal() && !perm && myFaction.getFPlayers().isEmpty())
+		if (myFaction.isNormal() && !permanent && myFaction.getFPlayers().isEmpty())
 		{
 			// Remove this faction
 			for (FPlayer fplayer : FPlayerColl.get().getAllOnline())

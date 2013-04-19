@@ -10,8 +10,9 @@ import com.massivecraft.factions.FactionColl;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
-import com.massivecraft.factions.event.FactionsEventJoin;
 import com.massivecraft.factions.event.FactionsEventCreate;
+import com.massivecraft.factions.event.FactionsEventMembershipChange;
+import com.massivecraft.factions.event.FactionsEventMembershipChange.MembershipChangeReason;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 
 public class CmdFactionsCreate extends FCommand
@@ -66,7 +67,7 @@ public class CmdFactionsCreate extends FCommand
 		fme.setRole(Rel.LEADER);
 		fme.setFaction(faction);
 		
-		FactionsEventJoin joinEvent = new FactionsEventJoin(sender, fme, faction, FactionsEventJoin.PlayerJoinReason.CREATE);
+		FactionsEventMembershipChange joinEvent = new FactionsEventMembershipChange(sender, fme, faction, MembershipChangeReason.CREATE);
 		joinEvent.run();
 		// NOTE: join event cannot be cancelled or you'll have an empty faction
 		

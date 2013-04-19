@@ -6,7 +6,7 @@ import org.bukkit.event.HandlerList;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 
-public class FactionsEventLeave extends FactionsEventAbstractSender
+public class FactionsEventMembershipChange extends FactionsEventAbstractSender
 {
 	// -------------------------------------------- //
 	// REQUIRED EVENT CODE
@@ -23,31 +23,28 @@ public class FactionsEventLeave extends FactionsEventAbstractSender
 	@Override
 	public void setCancelled(boolean cancelled) 
 	{
-		if (this.reason == PlayerLeaveReason.DISBAND || this.reason == PlayerLeaveReason.RESET)
-		{
-			cancelled = false;
-		}
+		if (!this.reason.isCancellable()) cancelled = false;
 		super.setCancelled(cancelled);		
 	}
 	
 	private final FPlayer fplayer;
 	public FPlayer getFPlayer() { return this.fplayer; }
 	
-	private final Faction faction;
-	public Faction getFaction() { return this.faction; }
+	private final Faction newFaction;
+	public Faction getNewFaction() { return this.newFaction; }
 	
-	private final PlayerLeaveReason reason;
-	public PlayerLeaveReason getReason() { return this.reason; }
+	private final MembershipChangeReason reason;
+	public MembershipChangeReason getReason() { return this.reason; }
 
 	// -------------------------------------------- //
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public FactionsEventLeave(CommandSender sender, FPlayer fplayer, Faction faction, PlayerLeaveReason reason)
+	public FactionsEventMembershipChange(CommandSender sender, FPlayer fplayer, Faction newFaction, MembershipChangeReason reason)
 	{
 		super(sender);
 		this.fplayer = fplayer;
-		this.faction = faction;
+		this.newFaction = newFaction;
 		this.reason = reason;
 	}
 	
@@ -55,9 +52,28 @@ public class FactionsEventLeave extends FactionsEventAbstractSender
 	// INTERNAL ENUM
 	// -------------------------------------------- //
 	
-	public enum PlayerLeaveReason
+	public enum MembershipChangeReason
 	{
-		KICKED, DISBAND, RESET, JOINOTHER, LEAVE
+		// Join
+		JOIN      (true),
+		CREATE    (false),
+		LEADER    (true),
+		
+		// Leave
+		LEAVE     (true),
+		//JOINOTHER (true),
+		KICK      (true),
+		DISBAND   (false),
+		//RESET     (false),
+		;
+		
+		private final boolean cancellable;
+		public boolean isCancellable() { return this.cancellable; }
+		
+		private MembershipChangeReason(boolean cancellable)
+		{
+			this.cancellable = cancellable;
+		}
 	}
 	
 }
