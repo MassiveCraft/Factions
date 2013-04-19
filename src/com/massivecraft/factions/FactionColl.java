@@ -7,6 +7,7 @@ import java.util.Map.Entry;
 
 import org.bukkit.ChatColor;
 
+import com.massivecraft.mcore.money.Money;
 import com.massivecraft.mcore.store.Coll;
 import com.massivecraft.mcore.store.MStore;
 import com.massivecraft.mcore.util.DiscUtil;
@@ -70,16 +71,29 @@ public class FactionColl extends Coll<Faction>
 	}
 	
 	@Override
+	protected synchronized String attach(Faction faction, Object oid, boolean noteChange)
+	{
+		String ret = super.attach(faction, oid, noteChange);
+		
+		// Factions start with 0 money.
+		if (!Money.exists(faction, faction))
+		{
+			Money.set(faction, faction, 0);
+		}
+		
+		return ret;
+	}
+	
+	@Override
 	public Faction detachId(Object oid)
 	{
-		String accountId = this.get(oid).getAccountId();
+		Faction faction = this.get(oid);
+		if (faction != null)
+		{
+			Money.set(faction, faction, 0);
+		}
 		
 		Faction ret = super.detachId(oid);
-		
-		if (Econ.isEnabled())
-		{
-			Econ.setBalance(accountId, 0);
-		}
 		
 		// Clean the board
 		// TODO: Use events for this instead?

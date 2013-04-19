@@ -10,7 +10,6 @@ import org.bukkit.entity.Player;
 
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.iface.RelationParticipator;
-import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.util.*;
 import com.massivecraft.mcore.mixin.Mixin;
@@ -129,12 +128,6 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	public String getAccountId()
 	{
 		String accountId = "faction-"+this.getId();
-
-		// We need to override the default money given to players.
-		if ( ! Econ.hasAccount(accountId))
-		{
-			Econ.setBalance(accountId, 0);
-		}
 
 		return accountId;
 	}

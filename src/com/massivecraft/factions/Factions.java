@@ -34,6 +34,7 @@ import com.massivecraft.factions.task.AutoLeaveTask;
 import com.massivecraft.factions.task.EconLandRewardTask;
 
 import com.massivecraft.mcore.MPlugin;
+import com.massivecraft.mcore.util.MUtil;
 import com.massivecraft.mcore.xlib.gson.GsonBuilder;
 
 
@@ -69,6 +70,10 @@ public class Factions extends MPlugin
 		
 		// Load Server Config
 		ConfServer.get().load();
+		
+		// Register Faction accountId Extractor
+		// TODO: Perhaps this should be placed in the econ integration somewhere?
+		MUtil.registerExtractor(String.class, "accountId", ExtractorFactionAccountId.get());
 
 		// Initialize Collections
 		FPlayerColl.get().init();
