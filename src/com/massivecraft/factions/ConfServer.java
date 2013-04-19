@@ -121,7 +121,7 @@ public class ConfServer extends SimpleConfig
 	// HeroChat: The Faction Channel
 	public static String herochatFactionName = "Faction";
 	public static String herochatFactionNick = "F";
-	public static String herochatFactionFormat = "{color}[&l{nick}&r{color} &l{faction_roleprefix}&r{color}{faction_title_pr}{sender}{color}] &f{msg}";
+	public static String herochatFactionFormat = "{color}[&l{nick}&r{color} &l{factions_roleprefix}&r{color}{factions_title|rp}{sender}{color}] &f{msg}";
 	public static ChatColor herochatFactionColor = ChatColor.GREEN;
 	public static int herochatFactionDistance = 0;
 	public static boolean herochatFactionIsShortcutAllowed = false;
@@ -132,7 +132,7 @@ public class ConfServer extends SimpleConfig
 	// HeroChat: The Allies Channel
 	public static String herochatAlliesName = "Allies";
 	public static String herochatAlliesNick = "A";
-	public static String herochatAlliesFormat = "{color}[&l{nick}&r&f {faction_relcolor}&l{faction_roleprefix}&r{faction_relcolor}{faction_tag_pr}{sender}{color}] &f{msg}";
+	public static String herochatAlliesFormat = "{color}[&l{nick}&r&f {factions_relcolor}&l{factions_roleprefix}&r{factions_relcolor}{factions_tag|rp}{sender}{color}] &f{msg}";
 	public static ChatColor herochatAlliesColor = ChatColor.DARK_PURPLE;
 	public static int herochatAlliesDistance = 0;
 	public static boolean herochatAlliesIsShortcutAllowed = false;
@@ -230,7 +230,10 @@ public class ConfServer extends SimpleConfig
 
 	public static boolean pistonProtectionThroughDenyBuild = true;	
 
-	// Spout features
+	// -------------------------------------------- //
+	// INTEGRATION: SPOUT
+	// -------------------------------------------- //
+	
 	public static boolean spoutFactionTagsOverNames = true;  // show faction tags over names over player heads
 	public static boolean spoutFactionTitlesOverNames = true;  // whether to include player's title in that
 	public static boolean spoutHealthBarUnderNames = true;  // Show healthbar under player names.

@@ -123,7 +123,7 @@ public class CmdFactionsHome extends FCommand
 			Mixin.teleport(me, myFaction.getHome(), "your faction home", sender);
 			
 			// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-			if ( ! payForCommand(ConfServer.econCostHome, "to teleport to your faction home", "for teleporting to your faction home")) return;
+			if (!payForCommand(ConfServer.econCostHome)) return;
 		}
 		catch (TeleporterException e)
 		{

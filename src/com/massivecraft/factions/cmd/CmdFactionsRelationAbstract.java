@@ -50,7 +50,7 @@ public abstract class CmdFactionsRelationAbstract extends FCommand
 		}
 
 		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-		if ( ! payForCommand(targetRelation.getRelationCost(), "to change a relation wish", "for changing a relation wish")) return;
+		if (!payForCommand(targetRelation.getRelationCost())) return;
 
 		// try to set the new relation
 		Rel oldRelation = myFaction.getRelationTo(them, true);

@@ -13,15 +13,15 @@ import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.chat.ChatFormatter;
 
 
-public class HerochatListener implements Listener
+public class HerochatEngine implements Listener
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static HerochatListener i = new HerochatListener();
-	public static HerochatListener get() { return i; }
-	private HerochatListener() {}
+	private static HerochatEngine i = new HerochatEngine();
+	public static HerochatEngine get() { return i; }
+	private HerochatEngine() {}
 	
 	// -------------------------------------------- //
 	// ACTIVATE & DEACTIVATE

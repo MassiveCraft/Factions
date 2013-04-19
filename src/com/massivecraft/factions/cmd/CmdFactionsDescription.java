@@ -24,7 +24,7 @@ public class CmdFactionsDescription extends FCommand
 	public void perform()
 	{
 		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-		if ( ! payForCommand(ConfServer.econCostDesc, "to change faction description", "for changing faction description")) return;
+		if (!payForCommand(ConfServer.econCostDesc)) return;
 
 		myFaction.setDescription(this.argConcatFrom(1));
 		

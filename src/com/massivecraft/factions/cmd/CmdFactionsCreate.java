@@ -51,9 +51,6 @@ public class CmdFactionsCreate extends FCommand
 			return;
 		}
 
-		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make sure they can pay
-		if ( ! canAffordCommand(ConfServer.econCostCreate, "to create a new faction")) return;
-
 		// trigger the faction creation event (cancellable)
 		String factionId = FactionColl.get().getIdStrategy().generate(FactionColl.get());
 		
@@ -62,7 +59,7 @@ public class CmdFactionsCreate extends FCommand
 		if(createEvent.isCancelled()) return;
 		
 		// then make 'em pay (if applicable)
-		if ( ! payForCommand(ConfServer.econCostCreate, "to create a new faction", "for creating a new faction")) return;
+		if (!payForCommand(ConfServer.econCostCreate)) return;
 		
 		Faction faction = FactionColl.get().create(factionId);
 

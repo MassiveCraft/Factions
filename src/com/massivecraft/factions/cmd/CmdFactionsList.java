@@ -32,7 +32,7 @@ public class CmdFactionsList extends FCommand
 		if (pageHumanBased == null) return;
 		
 		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-		if ( ! payForCommand(ConfServer.econCostList, "to list the factions", "for listing the factions")) return;
+		if (!payForCommand(ConfServer.econCostList)) return;
 		
 		// Create Messages
 		List<String> lines = new ArrayList<String>();

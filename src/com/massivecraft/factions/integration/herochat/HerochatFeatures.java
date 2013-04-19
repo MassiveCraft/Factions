@@ -19,13 +19,13 @@ public class HerochatFeatures extends IntegrationFeaturesAbstract
 	@Override
 	public void activate()
 	{
-		HerochatListener.get().activate();
+		HerochatEngine.get().activate();
 	}
 	
 	@Override
 	public void deactivate()
 	{
-		HerochatListener.get().deactivate();
+		HerochatEngine.get().deactivate();
 	}
 	
 }

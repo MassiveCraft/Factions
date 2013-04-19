@@ -38,17 +38,17 @@ public class CmdFactionsUnclaim extends FCommand
 		if(unclaimEvent.isCancelled()) return;
 	
 		//String moneyBack = "<i>";
-		if (Econ.shouldBeUsed())
+		if (Econ.isEnabled())
 		{
 			double refund = Econ.calculateClaimRefund(myFaction.getLandCount());
 			
 			if(ConfServer.bankEnabled && ConfServer.bankFactionPaysLandCosts)
 			{
-				if ( ! Econ.modifyMoney(myFaction, refund, "to unclaim this land", "for unclaiming this land")) return;
+				if ( ! Econ.modifyMoney(myFaction, refund, "unclaim this land")) return;
 			}
 			else
 			{
-				if ( ! Econ.modifyMoney(fme      , refund, "to unclaim this land", "for unclaiming this land")) return;
+				if ( ! Econ.modifyMoney(fme, refund, "unclaim this land")) return;
 			}
 		}
 

@@ -28,7 +28,7 @@ public class CmdFactionsOpen extends FCommand
 		if (target == null) return;
 
 		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-		if ( ! payForCommand(ConfServer.econCostOpen, "to open or close the faction", "for opening or closing the faction")) return;
+		if (!payForCommand(ConfServer.econCostOpen)) return;
 		
 		myFaction.setOpen(target);
 		

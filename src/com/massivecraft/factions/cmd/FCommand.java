@@ -1,6 +1,5 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayerColl;
 import com.massivecraft.factions.Faction;
@@ -62,24 +61,8 @@ public abstract class FCommand extends MCommand
 	}
 	
 	// if economy is enabled and they're not on the bypass list, make 'em pay; returns true unless person can't afford the cost
-	public boolean payForCommand(double cost, String toDoThis, String forDoingThis)
+	public boolean payForCommand(double cost)
 	{
-		if ( ! Econ.shouldBeUsed() || this.fme == null || cost == 0.0 || fme.isUsingAdminMode()) return true;
-
-		if (ConfServer.bankEnabled && ConfServer.bankFactionPaysCosts && fme.hasFaction())
-			return Econ.modifyMoney(myFaction, -cost, toDoThis, forDoingThis);
-		else
-			return Econ.modifyMoney(fme, -cost, toDoThis, forDoingThis);
-	}
-
-	// like above, but just make sure they can pay; returns true unless person can't afford the cost
-	public boolean canAffordCommand(double cost, String toDoThis)
-	{
-		if ( ! Econ.shouldBeUsed() || this.fme == null || cost == 0.0 || fme.isUsingAdminMode()) return true;
-
-		if(ConfServer.bankEnabled && ConfServer.bankFactionPaysCosts && fme.hasFaction())
-			return Econ.hasAtLeast(myFaction, cost, toDoThis);
-		else
-			return Econ.hasAtLeast(fme, cost, toDoThis);
+		return Econ.payForAction(cost, sender, this.getDesc());
 	}
 }

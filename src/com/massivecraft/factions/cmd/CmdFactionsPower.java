@@ -27,7 +27,7 @@ public class CmdFactionsPower extends FCommand
 		if (target != fme && ! Perm.POWER_ANY.has(sender, true)) return;
 
 		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-		if ( ! payForCommand(ConfServer.econCostPower, "to show player power info", "for showing player power info")) return;
+		if (!payForCommand(ConfServer.econCostPower)) return;
 
 		double powerBoost = target.getPowerBoost();
 		String boost = (powerBoost == 0.0) ? "" : (powerBoost > 0.0 ? " (bonus: " : " (penalty: ") + powerBoost + ")";

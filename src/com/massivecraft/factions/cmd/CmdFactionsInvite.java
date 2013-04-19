@@ -39,7 +39,7 @@ public class CmdFactionsInvite extends FCommand
 		if (fme != null && ! FPerm.INVITE.has(fme, myFaction)) return;
 		
 		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-		if ( ! payForCommand(ConfServer.econCostInvite, "to invite someone", "for inviting someone")) return;
+		if (!payForCommand(ConfServer.econCostInvite)) return;
 
 		myFaction.invite(you);
 		

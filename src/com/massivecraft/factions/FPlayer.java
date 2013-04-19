@@ -675,7 +675,7 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 	public void leave(boolean makePay)
 	{
 		Faction myFaction = this.getFaction();
-		makePay = makePay && Econ.shouldBeUsed() && ! this.isUsingAdminMode();
+		makePay = makePay && Econ.isEnabled() && ! this.isUsingAdminMode();
 
 		if (myFaction == null)
 		{
@@ -705,13 +705,13 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 		if (leaveEvent.isCancelled()) return;
 
 		// then make 'em pay (if applicable)
-		if (makePay && ! Econ.modifyMoney(this, -ConfServer.econCostLeave, "to leave your faction.", "for leaving your faction.")) return;
+		if (makePay && ! Econ.modifyMoney(this, -ConfServer.econCostLeave, "leave your faction")) return;
 
 		// Am I the last one in the faction?
 		if (myFaction.getFPlayers().size() == 1)
 		{
 			// Transfer all money
-			if (Econ.shouldBeUsed())
+			if (Econ.isEnabled())
 				Econ.transferMoney(this, myFaction, this, Econ.getBalance(myFaction.getAccountId()));
 		}
 		
@@ -840,7 +840,7 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 		
 		// TODO: Add flag no costs??
 		// if economy is enabled and they're not on the bypass list, make sure they can pay
-		boolean mustPay = Econ.shouldBeUsed() && ! this.isUsingAdminMode();
+		boolean mustPay = Econ.isEnabled() && ! this.isUsingAdminMode();
 		double cost = 0.0;
 		EconomyParticipator payee = null;
 		if (mustPay)
@@ -864,7 +864,7 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 
 		// then make 'em pay (if applicable)
 		// TODO: The economy integration should cancel the event above!
-		if (mustPay && ! Econ.modifyMoney(payee, -cost, "to claim this land", "for claiming this land")) return false;
+		if (mustPay && ! Econ.modifyMoney(payee, -cost, "claim this land")) return false;
 
 		// TODO: The LWC integration should listen to Monitor for the claim event.
 		if (LWCFeatures.getEnabled() && forFaction.isNormal() && ConfServer.onCaptureResetLwcLocks)

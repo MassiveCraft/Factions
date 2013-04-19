@@ -35,7 +35,7 @@ public class CmdFactionsTitle extends FCommand
 		if ( ! canIAdministerYou(fme, you)) return;
 
 		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-		if ( ! payForCommand(ConfServer.econCostTitle, "to change a players title", "for changing a players title")) return;
+		if (!payForCommand(ConfServer.econCostTitle)) return;
 
 		you.setTitle(title);
 		

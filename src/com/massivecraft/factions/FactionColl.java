@@ -76,7 +76,7 @@ public class FactionColl extends Coll<Faction>
 		
 		Faction ret = super.detachId(oid);
 		
-		if (Econ.shouldBeUsed())
+		if (Econ.isEnabled())
 		{
 			Econ.setBalance(accountId, 0);
 		}
@@ -189,7 +189,7 @@ public class FactionColl extends Coll<Faction>
 
 	public void econLandRewardRoutine()
 	{
-		if (!Econ.shouldBeUsed()) return;
+		if (!Econ.isEnabled()) return;
 		if (ConfServer.econLandReward == 0.0) return;
 		
 		Factions.get().log("Running econLandRewardRoutine...");
@@ -203,7 +203,7 @@ public class FactionColl extends Coll<Faction>
 				double reward = ConfServer.econLandReward * landCount / playerCount;
 				for (FPlayer player : players)
 				{
-					Econ.modifyMoney(player, reward, "to own faction land", "for faction owning " + landCount + " land divided among " + playerCount + " member(s)");
+					Econ.modifyMoney(player, reward, "own " + landCount + " faction land divided among " + playerCount + " members");
 				}
 			}
 		}

@@ -35,7 +35,7 @@ public class CmdFactionsShow extends FCommand
 		if (faction == null) return;
 
 		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-		if ( ! payForCommand(ConfServer.econCostShow, "to show faction information", "for showing faction information")) return;
+		if (!payForCommand(ConfServer.econCostShow)) return;
 
 		Collection<FPlayer> admins = faction.getFPlayersWhereRole(Rel.LEADER);
 		Collection<FPlayer> mods = faction.getFPlayersWhereRole(Rel.OFFICER);
@@ -64,7 +64,7 @@ public class CmdFactionsShow extends FCommand
 		msg("<a>Land / Power / Maxpower: <i> %d/%d/%d %s", faction.getLandCount(), faction.getPowerRounded(), faction.getPowerMaxRounded(), boost);
 
 		// show the land value
-		if (Econ.shouldBeUsed())
+		if (Econ.isEnabled())
 		{
 			double value = Econ.calculateTotalLandValue(faction.getLandCount());
 			double refund = value * ConfServer.econClaimRefundMultiplier;
