@@ -36,11 +36,4 @@ public class FactionsEventDisband extends FactionsEventAbstractSender
 		this.factionId = faction.getId();
 	}
 	
-	// -------------------------------------------- //
-	// ASSORTED
-	// -------------------------------------------- //
-
-	
-
-	
 }

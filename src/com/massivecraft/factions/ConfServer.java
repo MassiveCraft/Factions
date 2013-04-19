@@ -272,11 +272,13 @@ public class ConfServer extends SimpleConfig
 	
 	public static boolean econEnabled = false;
 	public static String econUniverseAccount = "";
+	
 	public static double econCostClaimWilderness = 30.0;
 	public static double econCostClaimFromFactionBonus = 30.0;
 	public static double econClaimAdditionalMultiplier = 0.5;
 	public static double econClaimRefundMultiplier = 0.7;
 	public static double econClaimUnconnectedFee = 0.0;
+	
 	public static double econCostCreate = 100.0;
 	public static double econCostSethome = 30.0;
 	public static double econCostJoin = 0.0;

@@ -49,7 +49,7 @@ public class FactionsEventMembershipChange extends FactionsEventAbstractSender
 	}
 	
 	// -------------------------------------------- //
-	// INTERNAL ENUM
+	// REASON ENUM
 	// -------------------------------------------- //
 	
 	public enum MembershipChangeReason

@@ -42,7 +42,8 @@ public class CmdFactionsPromote extends FCommand
 
 		if (you.getRole() == Rel.RECRUIT)
 		{
-			if (!fme.getRole().isAtLeast(Rel.OFFICER)) {
+			if (!fme.getRole().isAtLeast(Rel.OFFICER))
+			{
 				msg("<b>You must be an officer to promote someone to member.");
 				return;
 			}
@@ -51,7 +52,8 @@ public class CmdFactionsPromote extends FCommand
 		}
 		else if (you.getRole() == Rel.MEMBER)
 		{
-			if (!fme.getRole().isAtLeast(Rel.LEADER)) {
+			if (!fme.getRole().isAtLeast(Rel.LEADER))
+			{
 				msg("<b>You must be the leader to promote someone to officer.");
 				return;
 			}

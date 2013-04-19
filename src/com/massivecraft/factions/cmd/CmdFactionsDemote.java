@@ -42,7 +42,8 @@ public class CmdFactionsDemote extends FCommand
 
 		if (you.getRole() == Rel.MEMBER)
 		{
-			if (!fme.getRole().isAtLeast(Rel.OFFICER)) {
+			if (!fme.getRole().isAtLeast(Rel.OFFICER))
+			{
 				msg("<b>You must be an officer to demote a member to recruit.");
 				return;
 			}
@@ -51,7 +52,8 @@ public class CmdFactionsDemote extends FCommand
 		}
 		else if (you.getRole() == Rel.OFFICER)
 		{
-			if (!fme.getRole().isAtLeast(Rel.LEADER)) {
+			if (!fme.getRole().isAtLeast(Rel.LEADER))
+			{
 				msg("<b>You must be the leader to demote an officer to member.");
 				return;
 			}
