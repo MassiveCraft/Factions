@@ -2,8 +2,6 @@ package com.massivecraft.factions.cmd;
 
 import java.util.ArrayList;
 
-import org.bukkit.Bukkit;
-
 import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionColl;
@@ -50,10 +48,10 @@ public class CmdFactionsTag extends FCommand
 		}
 
 		// Event
-		FactionsEventTagChange renameEvent = new FactionsEventTagChange(sender, myFaction, newTag);
-		Bukkit.getServer().getPluginManager().callEvent(renameEvent);
-		if (renameEvent.isCancelled()) return;
-		newTag = renameEvent.getNewTag();
+		FactionsEventTagChange event = new FactionsEventTagChange(sender, myFaction, newTag);
+		event.run();
+		if (event.isCancelled()) return;
+		newTag = event.getNewTag();
 
 		// Apply
 		String oldtag = myFaction.getTag();

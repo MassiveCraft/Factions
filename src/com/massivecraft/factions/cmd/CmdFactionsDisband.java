@@ -1,7 +1,5 @@
 package com.massivecraft.factions.cmd;
 
-import org.bukkit.Bukkit;
-
 import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.cmd.arg.ARFaction;
 import com.massivecraft.factions.event.FactionsEventLeave;
@@ -31,21 +29,27 @@ public class CmdFactionsDisband extends FCommand
 	@Override
 	public void perform()
 	{
+		// Args
 		Faction faction = this.arg(0, ARFaction.get(), myFaction);
 		if (faction == null) return;
 		
+		// FPerm
 		if ( ! FPerm.DISBAND.has(sender, faction, true)) return;
 
+		// Verify
 		if (faction.getFlag(FFlag.PERMANENT))
 		{
 			msg("<i>This faction is designated as permanent, so you cannot disband it.");
 			return;
 		}
 
-		FactionsEventDisband disbandEvent = new FactionsEventDisband(me, faction);
-		Bukkit.getServer().getPluginManager().callEvent(disbandEvent);
-		if(disbandEvent.isCancelled()) return;
+		// Event
+		FactionsEventDisband event = new FactionsEventDisband(me, faction);
+		event.run();
+		if (event.isCancelled()) return;
 
+		// Merged Apply and Inform
+		
 		// Send FPlayerLeaveEvent for each player in the faction
 		for ( FPlayer fplayer : faction.getFPlayers() )
 		{

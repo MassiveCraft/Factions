@@ -11,6 +11,7 @@ import com.massivecraft.factions.event.FactionsEventAbstractSender;
 import com.massivecraft.factions.event.FactionsEventCreate;
 import com.massivecraft.factions.event.FactionsEventDescriptionChange;
 import com.massivecraft.factions.event.FactionsEventHomeChange;
+import com.massivecraft.factions.event.FactionsEventHomeTeleport;
 import com.massivecraft.factions.event.FactionsEventInvitedChange;
 import com.massivecraft.factions.event.FactionsEventOpenChange;
 import com.massivecraft.factions.event.FactionsEventRelationChange;
@@ -102,4 +103,11 @@ public class FactionsListenerEcon implements Listener
 		double cost = event.isNewInvited() ? ConfServer.econCostInvite : ConfServer.econCostDeinvite;
 		payForCommand(event, cost, Factions.get().getOuterCmdFactions().cmdFactionsInvite);
 	}
+	
+	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+	public void payForCommand(FactionsEventHomeTeleport event)
+	{	
+		payForCommand(event, ConfServer.econCostHome, Factions.get().getOuterCmdFactions().cmdFactionsHome);
+	}
+	
 }

@@ -33,28 +33,32 @@ public class CmdFactionsSethome extends FCommand
 			return;
 		}
 		
+		// Args
 		Faction faction = this.arg(0, ARFaction.get(), myFaction);
 		if (faction == null) return;
 		
-		// Has faction permission?
-		if ( ! FPerm.SETHOME.has(sender, faction, true)) return;
-		
 		PS newHome = PS.valueOf(me.getLocation());
 		
-		// Can the player set the faction home HERE?
+		// FPerm
+		if ( ! FPerm.SETHOME.has(sender, faction, true)) return;
+		
+		// Verify
 		if (!fme.isUsingAdminMode() && !faction.isValidHome(newHome))
 		{
 			fme.msg("<b>Sorry, your faction home can only be set inside your own claimed territory.");
 			return;
 		}
 		
+		// Event
 		FactionsEventHomeChange event = new FactionsEventHomeChange(sender, faction, newHome);
 		event.run();
 		if (event.isCancelled()) return;
 		newHome = event.getNewHome();
 
+		// Apply
 		faction.setHome(newHome);
 		
+		// Inform
 		faction.msg("%s<i> set the home for your faction. You can now use:", fme.describeTo(myFaction, true));
 		faction.sendMessage(Factions.get().getOuterCmdFactions().cmdFactionsHome.getUseageTemplate());
 		if (faction != myFaction)

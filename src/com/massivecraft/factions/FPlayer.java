@@ -857,9 +857,10 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 			if ( ! Econ.hasAtLeast(payee, cost, "to claim this land")) return false;
 		}
 
-		FactionsEventLandClaim claimEvent = new FactionsEventLandClaim(sender, forFaction, flocation);
-		claimEvent.run();
-		if (claimEvent.isCancelled()) return false;
+		// Event
+		FactionsEventLandClaim event = new FactionsEventLandClaim(sender, forFaction, flocation);
+		event.run();
+		if (event.isCancelled()) return false;
 
 		// then make 'em pay (if applicable)
 		// TODO: The economy integration should cancel the event above!

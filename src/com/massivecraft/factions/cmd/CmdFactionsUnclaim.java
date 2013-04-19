@@ -1,7 +1,5 @@
 package com.massivecraft.factions.cmd;
 
-import org.bukkit.Bukkit;
-
 import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.event.FactionsEventLandUnclaim;
 import com.massivecraft.factions.integration.Econ;
@@ -28,14 +26,17 @@ public class CmdFactionsUnclaim extends FCommand
 	@Override
 	public void perform()
 	{
+		// Args
 		PS chunk = PS.valueOf(me).getChunk(true);
 		Faction otherFaction = BoardColl.get().getFactionAt(chunk);
 
+		// FPerm
 		if ( ! FPerm.TERRITORY.has(sender, otherFaction, true)) return;
 
-		FactionsEventLandUnclaim unclaimEvent = new FactionsEventLandUnclaim(sender, otherFaction, chunk);
-		Bukkit.getServer().getPluginManager().callEvent(unclaimEvent);
-		if(unclaimEvent.isCancelled()) return;
+		// Event
+		FactionsEventLandUnclaim event = new FactionsEventLandUnclaim(sender, otherFaction, chunk);
+		event.run();
+		if (event.isCancelled()) return;
 	
 		//String moneyBack = "<i>";
 		if (Econ.isEnabled())

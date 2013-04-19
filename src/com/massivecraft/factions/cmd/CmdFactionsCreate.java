@@ -2,8 +2,6 @@ package com.massivecraft.factions.cmd;
 
 import java.util.ArrayList;
 
-import org.bukkit.Bukkit;
-
 import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayerColl;
@@ -30,48 +28,49 @@ public class CmdFactionsCreate extends FCommand
 	@Override
 	public void perform()
 	{
-		String tag = this.arg(0);
+		// Args
+		String newTag = this.arg(0);
 		
+		// Verify
 		if (fme.hasFaction())
 		{
 			msg("<b>You must leave your current faction first.");
 			return;
 		}
 		
-		if (FactionColl.get().isTagTaken(tag))
+		if (FactionColl.get().isTagTaken(newTag))
 		{
 			msg("<b>That tag is already in use.");
 			return;
 		}
 		
-		ArrayList<String> tagValidationErrors = FactionColl.validateTag(tag);
+		ArrayList<String> tagValidationErrors = FactionColl.validateTag(newTag);
 		if (tagValidationErrors.size() > 0)
 		{
 			sendMessage(tagValidationErrors);
 			return;
 		}
 
-		// trigger the faction creation event (cancellable)
+		// Pre-Generate Id
 		String factionId = FactionColl.get().getIdStrategy().generate(FactionColl.get());
 		
-		FactionsEventCreate createEvent = new FactionsEventCreate(sender, tag, factionId);
-		Bukkit.getServer().getPluginManager().callEvent(createEvent);
+		// Event
+		FactionsEventCreate createEvent = new FactionsEventCreate(sender, newTag, factionId);
+		createEvent.run();
 		if (createEvent.isCancelled()) return;
 		
+		// Apply
 		Faction faction = FactionColl.get().create(factionId);
-
-		// finish setting up the Faction
-		faction.setTag(tag);
+		faction.setTag(newTag);
 		
-		// trigger the faction join event for the creator
+		fme.setRole(Rel.LEADER);
+		fme.setFaction(faction);
+		
 		FactionsEventJoin joinEvent = new FactionsEventJoin(sender, fme, faction, FactionsEventJoin.PlayerJoinReason.CREATE);
 		joinEvent.run();
 		// NOTE: join event cannot be cancelled or you'll have an empty faction
 		
-		// finish setting up the FPlayer
-		fme.setRole(Rel.LEADER);
-		fme.setFaction(faction);
-
+		// Inform
 		for (FPlayer follower : FPlayerColl.get().getAllOnline())
 		{
 			follower.msg("%s<i> created a new faction %s", fme.describeTo(follower, true), faction.getTag(follower));
@@ -80,7 +79,9 @@ public class CmdFactionsCreate extends FCommand
 		msg("<i>You should now: %s", Factions.get().getOuterCmdFactions().cmdFactionsDescription.getUseageTemplate());
 
 		if (ConfServer.logFactionCreate)
-			Factions.get().log(fme.getName()+" created a new faction: "+tag);
+		{
+			Factions.get().log(fme.getName()+" created a new faction: "+newTag);
+		}
 	}
 	
 }

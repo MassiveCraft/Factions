@@ -14,6 +14,7 @@ import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.cmd.req.ReqRoleIsAtLeast;
+import com.massivecraft.factions.event.FactionsEventHomeTeleport;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 import com.massivecraft.mcore.cmd.req.ReqIsPlayer;
 import com.massivecraft.mcore.mixin.Mixin;
@@ -118,12 +119,15 @@ public class CmdFactionsHome extends FCommand
 			}
 		}
 
+		// Event
+		FactionsEventHomeTeleport event = new FactionsEventHomeTeleport(sender);
+		event.run();
+		if (event.isCancelled()) return;
+		
+		// Apply
 		try
 		{
 			Mixin.teleport(me, myFaction.getHome(), "your faction home", sender);
-			
-			// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-			if (!payForCommand(ConfServer.econCostHome)) return;
 		}
 		catch (TeleporterException e)
 		{

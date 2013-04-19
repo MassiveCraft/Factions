@@ -1,7 +1,5 @@
 package com.massivecraft.factions.cmd;
 
-import org.bukkit.Bukkit;
-
 import com.massivecraft.factions.BoardColl;
 import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.Factions;
@@ -26,6 +24,7 @@ public class CmdFactionsUnclaimall extends FCommand
 	@Override
 	public void perform()
 	{
+		// TODO: Put this as a listener and not in here!
 		if (Econ.isEnabled())
 		{
 			double refund = Econ.calculateTotalLandRefund(myFaction.getLandCount());
@@ -39,12 +38,18 @@ public class CmdFactionsUnclaimall extends FCommand
 			}
 		}
 
-		FactionsEventLandUnclaimAll unclaimAllEvent = new FactionsEventLandUnclaimAll(sender, myFaction);
-		Bukkit.getServer().getPluginManager().callEvent(unclaimAllEvent);
-		// this event cannot be cancelled
+		// Event
+		FactionsEventLandUnclaimAll event = new FactionsEventLandUnclaimAll(sender, myFaction);
+		event.run();
+		// TODO: this event cannot be cancelled yet.
 
+		// Apply
 		BoardColl.get().removeAll(myFaction);
+		
+		// Inform
 		myFaction.msg("%s<i> unclaimed ALL of your faction's land.", fme.describeTo(myFaction, true));
+		
+		// TODO: Move this to a listener instead.
 		SpoutFeatures.updateTerritoryDisplayLoc(null);
 
 		if (ConfServer.logLandUnclaims)
