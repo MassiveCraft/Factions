@@ -28,6 +28,7 @@ import com.massivecraft.factions.listeners.FactionsListenerChat;
 import com.massivecraft.factions.listeners.FactionsListenerEcon;
 import com.massivecraft.factions.listeners.FactionsListenerExploit;
 import com.massivecraft.factions.listeners.FactionsListenerMain;
+import com.massivecraft.factions.listeners.FactionsListenerSpout;
 import com.massivecraft.factions.listeners.TodoFactionsPlayerListener;
 import com.massivecraft.factions.task.AutoLeaveTask;
 import com.massivecraft.factions.task.EconLandRewardTask;
@@ -83,10 +84,13 @@ public class Factions extends MPlugin
 		FactionsListenerChat.get().setup();
 		FactionsListenerExploit.get().setup();
 		
-		// NOTE: This listener is a work in progress.
+		// TODO: This listener is a work in progress.
 		// The goal is that the Econ integration should be completely based on listening to our own events.
 		// Right now only a few situations are handled through this listener.
 		FactionsListenerEcon.get().setup();
+		
+		// TODO: The same goes for this one:
+		FactionsListenerSpout.get().setup();
 		
 		// TODO: Get rid of this one
 		this.playerListener = new TodoFactionsPlayerListener();
