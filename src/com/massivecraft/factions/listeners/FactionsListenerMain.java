@@ -211,7 +211,7 @@ public class FactionsListenerMain implements Listener
 		Rel relation = defendFaction.getRelationTo(attackFaction);
 
 		// Check the relation
-		if (fdefender.hasFaction() && relation.isAtLeast(ConfServer.friendlyFireFromRel) && defenderPsFaction.getFlag(FFlag.FRIENDLYFIRE) == false)
+		if (fdefender.hasFaction() && relation.isFriend() && defenderPsFaction.getFlag(FFlag.FRIENDLYFIRE) == false)
 		{
 			if (notify) fattacker.msg("<i>You can't hurt %s<i>.", relation.getDescPlayerMany());
 			return false;

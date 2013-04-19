@@ -9,14 +9,14 @@ public enum Rel
 	// ENUM
 	// -------------------------------------------- //
 	
-	LEADER   (70, "your faction leader", "your faction leader", "", ""),
-	OFFICER  (60, "an officer in your faction", "officers in your faction", "", ""),
-	MEMBER   (50, "a member in your faction", "members in your faction", "your faction", "your factions"),
-	RECRUIT  (45, "a recruit in your faction", "recruits in your faction", "", ""),
-	ALLY     (40, "an ally", "allies", "an allied faction", "allied factions"),
-	TRUCE    (30, "someone in truce with you", "those in truce with you", "a faction in truce", "factions in truce"),
-	NEUTRAL  (20, "someone neutral to you", "those neutral to you", "a neutral faction", "neutral factions"),
-	ENEMY    (10, "an enemy", "enemies", "an enemy faction", "enemy factions"),
+	LEADER (70, true, "your faction leader", "your faction leader", "", ""),
+	OFFICER (60, true, "an officer in your faction", "officers in your faction", "", ""),
+	MEMBER (50, true, "a member in your faction", "members in your faction", "your faction", "your factions"),
+	RECRUIT (45, true, "a recruit in your faction", "recruits in your faction", "", ""),
+	ALLY (40, true, "an ally", "allies", "an allied faction", "allied factions"),
+	TRUCE (30, true, "someone in truce with you", "those in truce with you", "a faction in truce", "factions in truce"),
+	NEUTRAL (20, false, "someone neutral to you", "those neutral to you", "a neutral faction", "neutral factions"),
+	ENEMY (10, false, "an enemy", "enemies", "an enemy faction", "enemy factions"),
 	
 	// END OF LIST
 	;
@@ -26,6 +26,11 @@ public enum Rel
 	// -------------------------------------------- //
 	
 	private final int value;
+	
+	// Used for friendly fire.
+	private final boolean friend;
+	public boolean isFriend() { return this.friend; }
+	
 	private final String descPlayerOne;
 	public String getDescPlayerOne() { return this.descPlayerOne; }
 	
@@ -42,9 +47,10 @@ public enum Rel
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	private Rel(final int value, final String descPlayerOne, final String descPlayerMany, final String descFactionOne, final String descFactionMany)
+	private Rel(final int value, final boolean friend, final String descPlayerOne, final String descPlayerMany, final String descFactionOne, final String descFactionMany)
 	{
 		this.value = value;
+		this.friend = friend;
 		this.descPlayerOne = descPlayerOne;
 		this.descPlayerMany = descPlayerMany;
 		this.descFactionOne = descFactionOne;

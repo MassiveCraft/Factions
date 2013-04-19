@@ -197,9 +197,6 @@ public class ConfServer extends SimpleConfig
 	public static double homesTeleportAllowedEnemyDistance = 32.0;
 	public static boolean homesTeleportIgnoreEnemiesIfInOwnTerritory = true;
 	
-	// TODO: This one should not be in the config should it? It should be built into the enum?
-	public static Rel friendlyFireFromRel = Rel.TRUCE;
-	
 	public static boolean disablePVPForFactionlessPlayers = false;
 	public static boolean enablePVPAgainstFactionlessInAttackersLand = false;
 
