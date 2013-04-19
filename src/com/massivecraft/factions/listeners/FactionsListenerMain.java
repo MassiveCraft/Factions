@@ -54,7 +54,8 @@ import com.massivecraft.factions.FPlayerColl;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Rel;
-import com.massivecraft.factions.event.FactionsEventPowerLoss;
+import com.massivecraft.factions.event.FactionsEventPowerChange;
+import com.massivecraft.factions.event.FactionsEventPowerChange.PowerChangeReason;
 import com.massivecraft.factions.util.VisualizeUtil;
 import com.massivecraft.mcore.ps.PS;
 import com.massivecraft.mcore.util.MUtil;
@@ -105,13 +106,15 @@ public class FactionsListenerMain implements Listener
 			return;
 		}
 		
-		// ... and our special event doesn't get cancelled ...
-		FactionsEventPowerLoss powerLossEvent = new FactionsEventPowerLoss(player);
-		powerLossEvent.run();
-		if (powerLossEvent.isCancelled()) return;
+		// ... Event ...
+		double newPower = fplayer.getPower() + ConfServer.powerPerDeath;
+		FactionsEventPowerChange powerChangeEvent = new FactionsEventPowerChange(null, fplayer, PowerChangeReason.DEATH, newPower);
+		powerChangeEvent.run();
+		if (powerChangeEvent.isCancelled()) return;
+		newPower = powerChangeEvent.getNewPower();
 		
 		// ... alter the power ...
-		fplayer.setPower(fplayer.getPower() + ConfServer.powerPerDeath);
+		fplayer.setPower(newPower);
 		
 		// ... and inform the player.
 		fplayer.msg("<i>Your power is now <h>%d / %d", fplayer.getPowerRounded(), fplayer.getPowerMaxRounded());

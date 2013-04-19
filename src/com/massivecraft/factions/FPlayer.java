@@ -9,6 +9,8 @@ import org.bukkit.entity.Player;
 import com.massivecraft.factions.event.FactionsEventLandClaim;
 import com.massivecraft.factions.event.FactionsEventMembershipChange;
 import com.massivecraft.factions.event.FactionsEventMembershipChange.MembershipChangeReason;
+import com.massivecraft.factions.event.FactionsEventPowerChange;
+import com.massivecraft.factions.event.FactionsEventPowerChange.PowerChangeReason;
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.iface.RelationParticipator;
 import com.massivecraft.factions.integration.Econ;
@@ -469,6 +471,11 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 				}
 			}
 		}
+		
+		FactionsEventPowerChange event = new FactionsEventPowerChange(null, this, PowerChangeReason.TIME, powerTarget);
+		event.run();
+		if (event.isCancelled()) return;
+		powerTarget = event.getNewPower();
 		
 		this.setPower(powerTarget, now);
 	}
