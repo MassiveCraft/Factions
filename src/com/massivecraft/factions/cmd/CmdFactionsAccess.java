@@ -5,7 +5,7 @@ import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.TerritoryAccess;
 import com.massivecraft.factions.cmd.arg.ARFPlayer;
 import com.massivecraft.factions.cmd.arg.ARFaction;
-import com.massivecraft.factions.entity.BoardColl;
+import com.massivecraft.factions.entity.BoardColls;
 import com.massivecraft.factions.entity.FPlayer;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.integration.SpoutFeatures;
@@ -36,7 +36,7 @@ public class CmdFactionsAccess extends FCommand
 		type = (type == null) ? "" : type.toLowerCase();
 		PS chunk = PS.valueOf(me).getChunk(true);
 
-		TerritoryAccess territory = BoardColl.get().getTerritoryAccessAt(chunk);
+		TerritoryAccess territory = BoardColls.get().getTerritoryAccessAt(chunk);
 		Faction locFaction = territory.getHostFaction();
 		boolean accessAny = Perm.ACCESS_ANY.has(sender, false);
 

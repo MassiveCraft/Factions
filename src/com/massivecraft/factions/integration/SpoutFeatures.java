@@ -1,7 +1,6 @@
 package com.massivecraft.factions.integration;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,7 +13,6 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.entity.Player;
 
 import com.massivecraft.factions.entity.FPlayer;
-import com.massivecraft.factions.entity.FPlayerColl;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.util.HealthBarUtil;
 import com.massivecraft.mcore.ps.PS;
@@ -252,17 +250,16 @@ public class SpoutFeatures
 	{
 		if ( ! isEnabled()) return;
 
-		Collection<FPlayer> players = FPlayerColl.get().getAllOnline();
-
-		for (FPlayer player : players)
+		for (Player player : Bukkit.getOnlinePlayers())
 		{
+			FPlayer fplayer = FPlayer.get(player);
 			if (chunk == null)
 			{
-				mainListener.updateTerritoryDisplay(player, false);
+				mainListener.updateTerritoryDisplay(fplayer, false);
 			}
-			else if (player.getCurrentChunk().equals(chunk))
+			else if (fplayer.getCurrentChunk().equals(chunk))
 			{
-				mainListener.updateTerritoryDisplay(player, true);
+				mainListener.updateTerritoryDisplay(fplayer, true);
 			}
 		}
 	}
@@ -281,12 +278,13 @@ public class SpoutFeatures
 		
 		chunk = chunk.getChunk(true);
 
-		Collection<FPlayer> players = FPlayerColl.get().getAllOnline();
-
-		for (FPlayer player : players)
+		for (Player player : Bukkit.getOnlinePlayers())
 		{
-			if (chunk == null || player.getCurrentChunk().equals(chunk))
-			mainListener.updateAccessInfo(player);
+			FPlayer fplayer = FPlayer.get(player);
+			if (chunk == null || fplayer.getCurrentChunk().equals(chunk))
+			{
+				mainListener.updateAccessInfo(fplayer);
+			}
 		}
 	}
 

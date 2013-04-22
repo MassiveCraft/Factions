@@ -20,9 +20,9 @@ import com.massivecraft.factions.chat.tag.ChatTagTagforce;
 import com.massivecraft.factions.chat.tag.ChatTagTitle;
 import com.massivecraft.factions.cmd.*;
 import com.massivecraft.factions.entity.Board;
-import com.massivecraft.factions.entity.BoardColl;
-import com.massivecraft.factions.entity.FPlayerColl;
-import com.massivecraft.factions.entity.FactionColl;
+import com.massivecraft.factions.entity.BoardColls;
+import com.massivecraft.factions.entity.FPlayerColls;
+import com.massivecraft.factions.entity.FactionColls;
 import com.massivecraft.factions.entity.MConfColl;
 import com.massivecraft.factions.integration.LWCFeatures;
 import com.massivecraft.factions.integration.SpoutFeatures;
@@ -38,6 +38,9 @@ import com.massivecraft.factions.task.AutoLeaveTask;
 import com.massivecraft.factions.task.EconLandRewardTask;
 
 import com.massivecraft.mcore.MPlugin;
+import com.massivecraft.mcore.usys.Aspect;
+import com.massivecraft.mcore.usys.AspectColl;
+import com.massivecraft.mcore.usys.Multiverse;
 import com.massivecraft.mcore.util.MUtil;
 import com.massivecraft.mcore.xlib.gson.GsonBuilder;
 
@@ -62,6 +65,11 @@ public class Factions extends MPlugin
 	
 	// Listeners
 	public TodoFactionsPlayerListener playerListener;
+	
+	// Aspects
+	private Aspect aspect;
+	public Aspect getAspect() { return this.aspect; }
+	public Multiverse getMultiverse() { return this.getAspect().getMultiverse(); }
 
 	// -------------------------------------------- //
 	// OVERRIDE
@@ -75,15 +83,23 @@ public class Factions extends MPlugin
 		// Load Server Config
 		ConfServer.get().load();
 		
+		// Initialize Aspects
+		this.aspect = AspectColl.get().get(Const.ASPECT_ID, true);
+		this.aspect.register();
+		this.aspect.setDesc(
+			"<i>If the factions system even is enabled and how it's configured.",
+			"<i>What factions exists and what players belong to them."
+		);
+		
 		// Register Faction accountId Extractor
 		// TODO: Perhaps this should be placed in the econ integration somewhere?
 		MUtil.registerExtractor(String.class, "accountId", ExtractorFactionAccountId.get());
 
 		// Initialize Collections
 		MConfColl.get().init();
-		FPlayerColl.get().init();
-		FactionColl.get().init();
-		BoardColl.get().init();
+		FPlayerColls.get().init();
+		FactionColls.get().init();
+		BoardColls.get().init();
 		
 		// Commands
 		this.outerCmdFactions = new CmdFactions();

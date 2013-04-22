@@ -2,6 +2,7 @@ package com.massivecraft.factions.task;
 
 import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.entity.FPlayerColl;
+import com.massivecraft.factions.entity.FPlayerColls;
 import com.massivecraft.mcore.ModuloRepeatTask;
 import com.massivecraft.mcore.util.TimeUnit;
 
@@ -33,7 +34,10 @@ public class AutoLeaveTask extends ModuloRepeatTask
 	@Override
 	public void invoke()
 	{
-		FPlayerColl.get().autoLeaveOnInactivityRoutine();
+		for (FPlayerColl coll : FPlayerColls.get().getColls())
+		{
+			coll.autoLeaveOnInactivityRoutine();
+		}
 	}
 	
 }

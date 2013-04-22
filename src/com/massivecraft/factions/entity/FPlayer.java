@@ -41,7 +41,7 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 	
 	public static FPlayer get(Object oid)
 	{
-		return FPlayerColl.get().get(oid);
+		return FPlayerColls.get().get2(oid);
 	}
 	
 	// -------------------------------------------- //
@@ -200,8 +200,8 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 	// This method never returns null
 	public Faction getFaction()
 	{
-		Faction ret = FactionColl.get().get(this.getFactionId());
-		if (ret == null) ret = FactionColl.get().get(Const.FACTIONID_NONE);
+		Faction ret = FactionColls.get().get(this).get(this.getFactionId());
+		if (ret == null) ret = FactionColls.get().get(this).get(Const.FACTIONID_NONE);
 		return ret;
 	}
 	
@@ -235,15 +235,15 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 		// Next we must be attached and inited
 		if (!this.attached()) return;
 		if (!this.getColl().inited()) return;
-		if (!FactionColl.get().inited()) return;
+		if (!FactionColls.get().get(this).inited()) return;
 		
 		// Spout Derp
 		SpoutFeatures.updateTitle(this, null);
 		SpoutFeatures.updateTitle(null, this);
 		
 		// Update index
-		Faction oldFaction = FactionColl.get().get(oldFactionId);
-		Faction faction = FactionColl.get().get(factionId);
+		Faction oldFaction = FactionColls.get().get(this).get(oldFactionId);
+		Faction faction = FactionColls.get().get(this).get(factionId);
 		
 		oldFaction.fplayers.remove(this);
 		faction.fplayers.add(this);
@@ -596,7 +596,7 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 	public Rel getRelationToLocation()
 	{
 		// TODO: Use some built in system to get sender
-		return BoardColl.get().getFactionAt(PS.valueOf(this.getPlayer())).getRelationTo(this);
+		return BoardColls.get().getFactionAt(PS.valueOf(this.getPlayer())).getRelationTo(this);
 	}
 	
 	@Override
@@ -626,13 +626,13 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 	public boolean isInOwnTerritory()
 	{
 		// TODO: Use Mixin to get this PS instead
-		return BoardColl.get().getFactionAt(PS.valueOf(this.getPlayer())) == this.getFaction();
+		return BoardColls.get().getFactionAt(Mixin.getSenderPs(this.getId())) == this.getFaction();
 	}
 
 	public boolean isInEnemyTerritory()
 	{
 		// TODO: Use Mixin to get this PS instead
-		return BoardColl.get().getFactionAt(PS.valueOf(this.getPlayer())).getRelationTo(this) == Rel.ENEMY;
+		return BoardColls.get().getFactionAt(Mixin.getSenderPs(this.getId())).getRelationTo(this) == Rel.ENEMY;
 	}
 
 	public void sendFactionHereMessage()
@@ -641,7 +641,7 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 		{
 			return;
 		}
-		Faction factionHere = BoardColl.get().getFactionAt(this.getCurrentChunk());
+		Faction factionHere = BoardColls.get().getFactionAt(this.getCurrentChunk());
 		String msg = Txt.parse("<i>")+" ~ "+factionHere.getTag(this);
 		if (factionHere.hasDescription())
 		{
@@ -705,7 +705,7 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 		if (myFaction.isNormal() && !permanent && myFaction.getFPlayers().isEmpty())
 		{
 			// Remove this faction
-			for (FPlayer fplayer : FPlayerColl.get().getAllOnline())
+			for (FPlayer fplayer : FPlayerColls.get().get(this).getAllOnline())
 			{
 				fplayer.msg("<i>%s<i> was disbanded.", myFaction.describeTo(fplayer, true));
 			}
@@ -723,7 +723,7 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 		String error = null;
 		
 		Faction myFaction = this.getFaction();
-		Faction currentFaction = BoardColl.get().getFactionAt(ps);
+		Faction currentFaction = BoardColls.get().getFactionAt(ps);
 		int ownedLand = forFaction.getLandCount();
 		
 		if (ConfServer.worldGuardChecking && Worldguard.checkForRegionsInChunk(ps))
@@ -772,7 +772,7 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 			ConfServer.claimsMustBeConnected
 			&& ! this.isUsingAdminMode()
 			&& myFaction.getLandCountInWorld(ps.getWorld()) > 0
-			&& !BoardColl.get().isConnectedPs(ps, myFaction)
+			&& !BoardColls.get().isConnectedPs(ps, myFaction)
 			&& (!ConfServer.claimsCanBeUnconnectedIfOwnedByOtherFaction || !currentFaction.isNormal())
 		)
 		{
@@ -788,7 +788,7 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 				 // TODO more messages WARN current faction most importantly
 				error = Txt.parse("%s<i> owns this land and is strong enough to keep it.", currentFaction.getTag(this));
 			}
-			else if ( ! BoardColl.get().isBorderPs(ps))
+			else if ( ! BoardColls.get().isBorderPs(ps))
 			{
 				error = Txt.parse("<b>You must start claiming land at the border of the territory.");
 			}
@@ -806,7 +806,7 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 	public boolean attemptClaim(Faction forFaction, PS psChunk, boolean notifyFailure)
 	{
 		psChunk = psChunk.getChunk(true);
-		Faction currentFaction = BoardColl.get().getFactionAt(psChunk);
+		Faction currentFaction = BoardColls.get().getFactionAt(psChunk);
 		int ownedLand = forFaction.getLandCount();
 		
 		if ( ! this.canClaimForFactionAtLocation(forFaction, psChunk, notifyFailure)) return false;
@@ -820,7 +820,7 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 		// TODO: The economy integration should cancel the event above!
 		// Calculate the cost to claim the area
 		double cost = Econ.calculateClaimCost(ownedLand, currentFaction.isNormal());
-		if (ConfServer.econClaimUnconnectedFee != 0.0 && forFaction.getLandCountInWorld(psChunk.getWorld()) > 0 && !BoardColl.get().isConnectedPs(psChunk, forFaction))
+		if (ConfServer.econClaimUnconnectedFee != 0.0 && forFaction.getLandCountInWorld(psChunk.getWorld()) > 0 && !BoardColls.get().isConnectedPs(psChunk, forFaction))
 		{
 			cost += ConfServer.econClaimUnconnectedFee;
 		}
@@ -841,7 +841,7 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 			fp.msg("<h>%s<i> claimed land for <h>%s<i> from <h>%s<i>.", this.describeTo(fp, true), forFaction.describeTo(fp), currentFaction.describeTo(fp));
 		}
 		
-		BoardColl.get().setFactionAt(psChunk, forFaction);
+		BoardColls.get().setFactionAt(psChunk, forFaction);
 		SpoutFeatures.updateTerritoryDisplayLoc(psChunk);
 
 		if (MConf.get().logLandClaims)

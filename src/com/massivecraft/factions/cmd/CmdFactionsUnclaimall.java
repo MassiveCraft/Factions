@@ -5,7 +5,7 @@ import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.cmd.req.ReqRoleIsAtLeast;
-import com.massivecraft.factions.entity.BoardColl;
+import com.massivecraft.factions.entity.BoardColls;
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.event.FactionsEventLandUnclaimAll;
 import com.massivecraft.factions.integration.Econ;
@@ -45,7 +45,7 @@ public class CmdFactionsUnclaimall extends FCommand
 		// TODO: this event cannot be cancelled yet.
 
 		// Apply
-		BoardColl.get().removeAll(myFaction);
+		BoardColls.get().removeAll(myFaction);
 		
 		// Inform
 		myFaction.msg("%s<i> unclaimed ALL of your faction's land.", fme.describeTo(myFaction, true));

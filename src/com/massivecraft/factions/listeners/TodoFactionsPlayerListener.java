@@ -17,9 +17,8 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import com.massivecraft.factions.Const;
 import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.TerritoryAccess;
-import com.massivecraft.factions.entity.BoardColl;
+import com.massivecraft.factions.entity.BoardColls;
 import com.massivecraft.factions.entity.FPlayer;
-import com.massivecraft.factions.entity.FPlayerColl;
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.mcore.event.MCorePlayerLeaveEvent;
@@ -34,7 +33,7 @@ public class TodoFactionsPlayerListener implements Listener
 	{
 		// If a player is joining the server ...
 		Player player = event.getPlayer();
-		FPlayer fplayer = FPlayerColl.get().get(player);
+		FPlayer fplayer = FPlayer.get(player);
 		
 		// ... recalculate their power as if they were offline since last recalculation ...
 		fplayer.recalculatePower(false);
@@ -53,7 +52,7 @@ public class TodoFactionsPlayerListener implements Listener
 	public void onPlayerLeave(MCorePlayerLeaveEvent event)
 	{
 		Player player = event.getPlayer();
-		FPlayer fplayer = FPlayerColl.get().get(player);
+		FPlayer fplayer = FPlayer.get(player);
 
 		// Recalculate the power before the player leaves.
 		// This is required since we recalculate as if the player were offline when they log back in.
@@ -71,7 +70,7 @@ public class TodoFactionsPlayerListener implements Listener
 
 		// ... update the stored current chunk ...
 		Player player = event.getPlayer();
-		FPlayer fplayer = FPlayerColl.get().get(player);
+		FPlayer fplayer = FPlayer.get(player);
 		
 		PS chunkFrom = fplayer.getCurrentChunk();
 		PS chunkTo = PS.valueOf(event.getTo()).getChunk(true);
@@ -80,17 +79,17 @@ public class TodoFactionsPlayerListener implements Listener
 		
 		// ... TODO: assorted and uncleaned code below ...
 		
-		TerritoryAccess access = BoardColl.get().getTerritoryAccessAt(chunkTo);
+		TerritoryAccess access = BoardColls.get().getTerritoryAccessAt(chunkTo);
 
 		// Did we change "host"(faction)?
-		boolean changedFaction = (BoardColl.get().getFactionAt(chunkFrom) != access.getHostFaction());
+		boolean changedFaction = (BoardColls.get().getFactionAt(chunkFrom) != access.getHostFaction());
 
 		// let Spout handle most of this if it's available
 		boolean handledBySpout = changedFaction && SpoutFeatures.updateTerritoryDisplay(fplayer);
 		
 		if (fplayer.isMapAutoUpdating())
 		{
-			fplayer.sendMessage(BoardColl.get().getMap(fplayer.getFaction(), chunkTo, player.getLocation().getYaw()));
+			fplayer.sendMessage(BoardColls.get().getMap(fplayer.getFaction(), chunkTo, player.getLocation().getYaw()));
 		}
 		else if (changedFaction && ! handledBySpout)
 		{
@@ -146,7 +145,7 @@ public class TodoFactionsPlayerListener implements Listener
 		String name = player.getName();
 		if (MConf.get().playersWhoBypassAllProtection.contains(name)) return true;
 
-		FPlayer me = FPlayerColl.get().get(name);
+		FPlayer me = FPlayer.get(name);
 		if (me.isUsingAdminMode()) return true;
 		if (Const.MATERIALS_EDIT_TOOLS.contains(material) && ! FPerm.BUILD.has(me, loc, ! justCheck)) return false;
 		return true;
@@ -156,7 +155,7 @@ public class TodoFactionsPlayerListener implements Listener
 		String name = player.getName();
 		if (MConf.get().playersWhoBypassAllProtection.contains(name)) return true;
 
-		FPlayer me = FPlayerColl.get().get(name);
+		FPlayer me = FPlayer.get(name);
 		if (me.isUsingAdminMode()) return true;
 		Location loc = block.getLocation();
 		Material material = block.getType();

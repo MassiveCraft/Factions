@@ -50,9 +50,8 @@ import com.massivecraft.factions.FFlag;
 import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Rel;
-import com.massivecraft.factions.entity.BoardColl;
+import com.massivecraft.factions.entity.BoardColls;
 import com.massivecraft.factions.entity.FPlayer;
-import com.massivecraft.factions.entity.FPlayerColl;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.event.FactionsEventPowerChange;
@@ -90,10 +89,10 @@ public class FactionsListenerMain implements Listener
 	{
 		// If a player dies ...
 		Player player = event.getEntity();
-		FPlayer fplayer = FPlayerColl.get().get(player);
+		FPlayer fplayer = FPlayer.get(player);
 		
 		// ... and powerloss can happen here ...
-		Faction faction = BoardColl.get().getFactionAt(PS.valueOf(player));
+		Faction faction = BoardColls.get().getFactionAt(PS.valueOf(player));
 		
 		if (!faction.getFlag(FFlag.POWERLOSS))
 		{
@@ -170,7 +169,7 @@ public class FactionsListenerMain implements Listener
 		Entity edefender = event.getEntity();
 		if (!(edefender instanceof Player)) return true;
 		Player defender = (Player)edefender;
-		FPlayer fdefender = FPlayerColl.get().get(edefender);
+		FPlayer fdefender = FPlayer.get(edefender);
 		
 		// ... and the attacker is someone else ...
 		Entity eattacker = event.getDamager();
@@ -182,7 +181,7 @@ public class FactionsListenerMain implements Listener
 		
 		// ... gather defender PS and faction information ...
 		PS defenderPs = PS.valueOf(defender);
-		Faction defenderPsFaction = BoardColl.get().getFactionAt(defenderPs);
+		Faction defenderPsFaction = BoardColls.get().getFactionAt(defenderPs);
 		
 		// ... PVP flag may cause a damage block ...
 		if (defenderPsFaction.getFlag(FFlag.PVP) == false)
@@ -191,7 +190,7 @@ public class FactionsListenerMain implements Listener
 			{
 				if (notify)
 				{
-					FPlayer attacker = FPlayerColl.get().get((Player)eattacker);
+					FPlayer attacker = FPlayer.get(eattacker);
 					attacker.msg("<i>PVP is disabled in %s.", defenderPsFaction.describeTo(attacker));
 				}
 				return false;
@@ -202,14 +201,14 @@ public class FactionsListenerMain implements Listener
 		// ... and if the attacker is a player ...
 		if (!(eattacker instanceof Player)) return true;
 		Player attacker = (Player)eattacker;
-		FPlayer fattacker = FPlayerColl.get().get(attacker);
+		FPlayer fattacker = FPlayer.get(attacker);
 		
 		// ... does this player bypass all protection? ...
 		if (MConf.get().playersWhoBypassAllProtection.contains(attacker.getName())) return true;
 
 		// ... gather attacker PS and faction information ...
 		PS attackerPs = PS.valueOf(attacker);
-		Faction attackerPsFaction = BoardColl.get().getFactionAt(attackerPs);
+		Faction attackerPsFaction = BoardColls.get().getFactionAt(attackerPs);
 
 		// ... PVP flag may cause a damage block ...
 		// (just checking the defender as above isn't enough. What about the attacker? It could be in a no-pvp area)
@@ -293,7 +292,7 @@ public class FactionsListenerMain implements Listener
 	{
 		// If a player was kicked from the server ...
 		Player player = event.getPlayer();
-		FPlayer fplayer = FPlayerColl.get().get(player);
+		FPlayer fplayer = FPlayer.get(player);
 
 		// ... and if the if player was banned (not just kicked) ...
 		if (!event.getReason().equals("Banned by admin.")) return;
@@ -332,7 +331,7 @@ public class FactionsListenerMain implements Listener
 	{
 		// If a player is trying to run a command ...
 		Player player = event.getPlayer();
-		FPlayer fplayer = FPlayerColl.get().get(player);
+		FPlayer fplayer = FPlayer.get(player);
 		
 		// ... and the player does not have adminmode ...
 		if (fplayer.isUsingAdminMode()) return;
@@ -351,7 +350,7 @@ public class FactionsListenerMain implements Listener
 		}
 		
 		Rel rel = fplayer.getRelationToLocation();
-		if (BoardColl.get().getFactionAt(fplayer.getCurrentChunk()).isNone()) return;
+		if (BoardColls.get().getFactionAt(fplayer.getCurrentChunk()).isNone()) return;
 		
 		if (rel == Rel.NEUTRAL && containsCommand(command, ConfServer.territoryNeutralDenyCommands))
 		{
@@ -398,7 +397,7 @@ public class FactionsListenerMain implements Listener
 		
 		// ... at a place where monsters are forbidden ...
 		PS ps = PS.valueOf(event.getLocation());
-		Faction faction = BoardColl.get().getFactionAt(ps);
+		Faction faction = BoardColls.get().getFactionAt(ps);
 		if (faction.getFlag(FFlag.MONSTERS)) return;
 		
 		// ... block the spawn.
@@ -413,7 +412,7 @@ public class FactionsListenerMain implements Listener
 		
 		// ... at a place where monsters are forbidden ...
 		PS ps = PS.valueOf(event.getTarget());
-		Faction faction = BoardColl.get().getFactionAt(ps);
+		Faction faction = BoardColls.get().getFactionAt(ps);
 		if (faction.getFlag(FFlag.MONSTERS)) return;
 		
 		// ... then if ghast target nothing ...
@@ -438,7 +437,7 @@ public class FactionsListenerMain implements Listener
 		if (event.getCause() != RemoveCause.EXPLOSION) return;
 	
 		// ... and the faction there has explosions disabled ...
-		Faction faction = BoardColl.get().getFactionAt(PS.valueOf(event.getEntity()));
+		Faction faction = BoardColls.get().getFactionAt(PS.valueOf(event.getEntity()));
 		if (faction.getFlag(FFlag.EXPLOSIONS)) return;
 		
 		// ... then cancel.
@@ -453,12 +452,12 @@ public class FactionsListenerMain implements Listener
 		while (iter.hasNext())
 		{
 			Block block = iter.next();
-			Faction faction = BoardColl.get().getFactionAt(PS.valueOf(block));
+			Faction faction = BoardColls.get().getFactionAt(PS.valueOf(block));
 			if (faction.getFlag(FFlag.EXPLOSIONS) == false) iter.remove();
 		}
 
 		// Check the entity. Are explosions disabled there? 
-		if (BoardColl.get().getFactionAt(PS.valueOf(event.getEntity())).getFlag(FFlag.EXPLOSIONS) == false)
+		if (BoardColls.get().getFactionAt(PS.valueOf(event.getEntity())).getFlag(FFlag.EXPLOSIONS) == false)
 		{
 			event.setCancelled(true);
 		}
@@ -473,7 +472,7 @@ public class FactionsListenerMain implements Listener
 
 		// ... and the faction there has explosions disabled ...
 		PS ps = PS.valueOf(event.getBlock());
-		Faction faction = BoardColl.get().getFactionAt(ps);
+		Faction faction = BoardColls.get().getFactionAt(ps);
 		if (faction.getFlag(FFlag.EXPLOSIONS)) return;
 		
 		// ... stop the block alteration.
@@ -493,7 +492,7 @@ public class FactionsListenerMain implements Listener
 		
 		// ... and the faction there has endergrief disabled ...
 		PS ps = PS.valueOf(event.getBlock());
-		Faction faction = BoardColl.get().getFactionAt(ps);
+		Faction faction = BoardColls.get().getFactionAt(ps);
 		if (faction.getFlag(FFlag.ENDERGRIEF)) return;
 		
 		// ... stop the block alteration.
@@ -512,7 +511,7 @@ public class FactionsListenerMain implements Listener
 		FPlayer me = FPlayer.get(name);
 		if (me.isUsingAdminMode()) return true;
 
-		Faction factionHere = BoardColl.get().getFactionAt(ps);
+		Faction factionHere = BoardColls.get().getFactionAt(ps);
 
 		if ( ! FPerm.BUILD.has(me, ps) && FPerm.PAINBUILD.has(me, ps))
 		{
@@ -585,13 +584,13 @@ public class FactionsListenerMain implements Listener
 	{
 		if ( ! ConfServer.pistonProtectionThroughDenyBuild) return;
 
-		Faction pistonFaction = BoardColl.get().getFactionAt(PS.valueOf(event.getBlock()));
+		Faction pistonFaction = BoardColls.get().getFactionAt(PS.valueOf(event.getBlock()));
 
 		// target end-of-the-line empty (air) block which is being pushed into, including if piston itself would extend into air
 		Block targetBlock = event.getBlock().getRelative(event.getDirection(), event.getLength() + 1);
 
 		// members of faction might not have build rights in their own territory, but pistons should still work regardless; so, address that corner case
-		Faction targetFaction = BoardColl.get().getFactionAt(PS.valueOf(targetBlock));
+		Faction targetFaction = BoardColls.get().getFactionAt(PS.valueOf(targetBlock));
 		if (targetFaction == pistonFaction) return;
 
 		// if potentially pushing into air/water/lava in another territory, we need to check it out
@@ -620,10 +619,10 @@ public class FactionsListenerMain implements Listener
 		// if potentially retracted block is just air/water/lava, no worries
 		if (targetLoc.getBlock().isEmpty() || targetLoc.getBlock().isLiquid()) return;
 
-		Faction pistonFaction = BoardColl.get().getFactionAt(PS.valueOf(event.getBlock()));
+		Faction pistonFaction = BoardColls.get().getFactionAt(PS.valueOf(event.getBlock()));
 
 		// members of faction might not have build rights in their own territory, but pistons should still work regardless; so, address that corner case
-		Faction targetFaction = BoardColl.get().getFactionAt(PS.valueOf(targetLoc));
+		Faction targetFaction = BoardColls.get().getFactionAt(PS.valueOf(targetLoc));
 		if (targetFaction == pistonFaction) return;
 
 		if ( ! FPerm.BUILD.has(pistonFaction, targetLoc))
@@ -640,7 +639,7 @@ public class FactionsListenerMain implements Listener
 	{
 		// If the faction at the block has firespread disabled ...
 		PS ps = PS.valueOf(block);
-		Faction faction = BoardColl.get().getFactionAt(ps);
+		Faction faction = BoardColls.get().getFactionAt(ps);
 		if (faction.getFlag(FFlag.FIRESPREAD)) return;
 		
 		// then cancel the event.

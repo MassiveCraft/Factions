@@ -11,9 +11,8 @@ import org.bukkit.event.Listener;
 import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.TerritoryAccess;
-import com.massivecraft.factions.entity.BoardColl;
+import com.massivecraft.factions.entity.BoardColls;
 import com.massivecraft.factions.entity.FPlayer;
-import com.massivecraft.factions.entity.FPlayerColl;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.mcore.ps.PS;
 
@@ -29,7 +28,7 @@ public class SpoutMainListener implements Listener
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onSpoutCraftEnable(SpoutCraftEnableEvent event)
 	{
-		final FPlayer me = FPlayerColl.get().get(event.getPlayer());
+		final FPlayer me = FPlayer.get(event.getPlayer());
 
 		SpoutFeatures.updateTitle(me, null);
 		SpoutFeatures.updateTitle(null, me);
@@ -90,7 +89,7 @@ public class SpoutMainListener implements Listener
 	private void doLabels(FPlayer player, SpoutPlayer sPlayer, boolean notify)
 	{
 		PS here = player.getCurrentChunk();
-		Faction factionHere = BoardColl.get().getFactionAt(here);
+		Faction factionHere = BoardColls.get().getFactionAt(here);
 		String tag = factionHere.getColorTo(player).toString() + factionHere.getTag();
 
 		// ----------------------
@@ -181,7 +180,7 @@ public class SpoutMainListener implements Listener
 		}
 
 		String msg = "";
-		TerritoryAccess access = BoardColl.get().getTerritoryAccessAt(here);
+		TerritoryAccess access = BoardColls.get().getTerritoryAccessAt(here);
 
 		if ( ! access.isDefault())
 		{

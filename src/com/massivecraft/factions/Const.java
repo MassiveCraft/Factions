@@ -18,6 +18,10 @@ public class Const
 	public static final String COLLECTION_BASENAME_PLAYER = COLLECTION_BASENAME_+"player";
 	public static final String COLLECTION_BASENAME_FACTION = COLLECTION_BASENAME_+"faction";
 	
+	// Aspect Ids
+	
+	public static final String ASPECT_ID = "factions";
+	
 	// Defautlt faction ids
 	public static final String FACTIONID_NONE = "0";
 	public static final String FACTIONID_SAFEZONE = "-1";

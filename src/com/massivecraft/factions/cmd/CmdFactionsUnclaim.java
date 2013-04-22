@@ -1,7 +1,7 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.ConfServer;
-import com.massivecraft.factions.entity.BoardColl;
+import com.massivecraft.factions.entity.BoardColls;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.event.FactionsEventLandUnclaim;
@@ -29,7 +29,7 @@ public class CmdFactionsUnclaim extends FCommand
 	{
 		// Args
 		PS chunk = PS.valueOf(me).getChunk(true);
-		Faction otherFaction = BoardColl.get().getFactionAt(chunk);
+		Faction otherFaction = BoardColls.get().getFactionAt(chunk);
 
 		// FPerm
 		if ( ! FPerm.TERRITORY.has(sender, otherFaction, true)) return;
@@ -54,7 +54,7 @@ public class CmdFactionsUnclaim extends FCommand
 			}
 		}
 
-		BoardColl.get().removeAt(chunk);
+		BoardColls.get().removeAt(chunk);
 		SpoutFeatures.updateTerritoryDisplayLoc(chunk);
 		myFaction.msg("%s<i> unclaimed some land.", fme.describeTo(myFaction, true));
 

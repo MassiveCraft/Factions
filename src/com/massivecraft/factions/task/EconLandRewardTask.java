@@ -2,6 +2,7 @@ package com.massivecraft.factions.task;
 
 import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.entity.FactionColl;
+import com.massivecraft.factions.entity.FactionColls;
 import com.massivecraft.mcore.ModuloRepeatTask;
 import com.massivecraft.mcore.util.TimeUnit;
 
@@ -33,7 +34,10 @@ public class EconLandRewardTask extends ModuloRepeatTask
 	@Override
 	public void invoke()
 	{
-		FactionColl.get().econLandRewardRoutine();
+		for (FactionColl coll : FactionColls.get().getColls())
+		{
+			coll.econLandRewardRoutine();
+		}
 	}
 	
 }

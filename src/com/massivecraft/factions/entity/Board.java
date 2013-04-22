@@ -32,7 +32,7 @@ public class Board extends Entity<Board> implements BoardInterface
 	
 	public static Board get(Object oid)
 	{
-		return BoardColl.get().get(oid);
+		return BoardColls.get().get2(oid);
 	}
 	
 	// -------------------------------------------- //
@@ -169,7 +169,7 @@ public class Board extends Entity<Board> implements BoardInterface
 		{
 			TerritoryAccess territoryAccess = entry.getValue();
 			
-			if (FactionColl.get().containsId(territoryAccess.getHostFactionId())) continue;
+			if (FactionColls.get().get(this).containsId(territoryAccess.getHostFactionId())) continue;
 			
 			PS ps = entry.getKey();
 			this.removeAt(ps);

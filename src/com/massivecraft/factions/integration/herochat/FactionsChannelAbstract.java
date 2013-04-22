@@ -24,7 +24,6 @@ import com.dthielke.herochat.MessageNotFoundException;
 import com.dthielke.herochat.util.Messaging;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.entity.FPlayer;
-import com.massivecraft.factions.entity.FPlayerColl;
 import com.massivecraft.factions.entity.Faction;
 
 public abstract class FactionsChannelAbstract implements Channel
@@ -206,29 +205,26 @@ public abstract class FactionsChannelAbstract implements Channel
 		return this.getMutes().contains(name.toLowerCase());
 	}
 	
-	
 	public abstract Set<Rel> getTargetRelations();
 	
-	// TODO: When I add in universes I will need to separate the channel per universe.
 	public Set<Player> getRecipients(Player sender)
 	{
 		Set<Player> ret = new HashSet<Player>();
 		
-		FPlayer fpsender = FPlayerColl.get().get(sender);
-		Faction faction = fpsender.getFaction();		
-		ret.addAll(faction.getOnlinePlayers());
+		FPlayer fpsender = FPlayer.get(sender);
+		Faction faction = fpsender.getFaction();
+		String universe = fpsender.getUniverse();
 		
-		for (FPlayer fplayer : FPlayerColl.get().getAllOnline())
+		for (Player player : Bukkit.getOnlinePlayers())
 		{
-			if(this.getTargetRelations().contains(faction.getRelationTo(fplayer)))
-			{
-				ret.add(fplayer.getPlayer());
-			}
+			FPlayer frecipient = FPlayer.get(player);
+			if (!frecipient.getUniverse().equals(universe)) continue;
+			if (!this.getTargetRelations().contains(faction.getRelationTo(frecipient))) continue;
+			ret.add(player);
 		}
 		
 		return ret;
 	}
-	
 	
 	@Override
 	public void processChat(ChannelChatEvent event)

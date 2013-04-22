@@ -12,9 +12,8 @@ import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 
-import com.massivecraft.factions.entity.BoardColl;
+import com.massivecraft.factions.entity.BoardColls;
 import com.massivecraft.factions.entity.FPlayer;
-import com.massivecraft.factions.entity.FPlayerColl;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.mcore.ps.PS;
 
@@ -178,7 +177,7 @@ public enum FPerm
 		
 		if (testSubject instanceof CommandSender)
 		{
-			rpSubject = FPlayerColl.get().get(testSubject);
+			rpSubject = FPlayer.get(testSubject);
 		}
 		else if (testSubject instanceof RelationParticipator)
 		{
@@ -213,7 +212,7 @@ public enum FPerm
 	}
 	public boolean has(Object testSubject, PS ps, boolean informIfNot)
 	{
-		TerritoryAccess access = BoardColl.get().getTerritoryAccessAt(ps);
+		TerritoryAccess access = BoardColls.get().getTerritoryAccessAt(ps);
 		
 		if (this.isTerritoryPerm())
 		{
@@ -224,7 +223,7 @@ public enum FPerm
 				{
 					FPlayer notify = null;
 					if (testSubject instanceof CommandSender)
-						notify = FPlayerColl.get().get(testSubject);
+						notify = FPlayer.get(testSubject);
 					else if (testSubject instanceof FPlayer)
 						notify = (FPlayer)testSubject;
 					if (notify != null)

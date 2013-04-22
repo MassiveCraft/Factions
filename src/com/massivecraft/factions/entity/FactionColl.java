@@ -1,18 +1,13 @@
 package com.massivecraft.factions.entity;
 
-import java.io.File;
-import java.lang.reflect.Type;
 import java.util.*;
-import java.util.Map.Entry;
 
 import org.bukkit.ChatColor;
 
 import com.massivecraft.mcore.money.Money;
 import com.massivecraft.mcore.store.Coll;
 import com.massivecraft.mcore.store.MStore;
-import com.massivecraft.mcore.util.DiscUtil;
 import com.massivecraft.mcore.util.Txt;
-import com.massivecraft.mcore.xlib.gson.reflect.TypeToken;
 
 import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.Const;
@@ -26,14 +21,12 @@ import com.massivecraft.factions.util.MiscUtil;
 public class FactionColl extends Coll<Faction>
 {
 	// -------------------------------------------- //
-	// INSTANCE & CONSTRUCT
+	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static FactionColl i = new FactionColl();
-	public static FactionColl get() { return i; }
-	private FactionColl()
+	public FactionColl(String name)
 	{
-		super(Const.COLLECTION_BASENAME_FACTION, Faction.class, MStore.getDb(ConfServer.dburi), Factions.get());
+		super(name, Faction.class, MStore.getDb(ConfServer.dburi), Factions.get());
 	}
 	
 	// -------------------------------------------- //
@@ -45,35 +38,8 @@ public class FactionColl extends Coll<Faction>
 	{
 		super.init();
 		
-		this.migrate();
 		this.createDefaultFactions();
 		this.reindexFPlayers();
-	}
-	
-	public void migrate()
-	{
-		// Create file objects
-		File oldFile = new File(Factions.get().getDataFolder(), "factions.json");
-		File newFile = new File(Factions.get().getDataFolder(), "factions.json.migrated");
-		
-		// Already migrated?
-		if ( ! oldFile.exists()) return;
-		
-		// Read the file content through GSON. 
-		Type type = new TypeToken<Map<String, Faction>>(){}.getType();
-		Map<String, Faction> id2faction = Factions.get().gson.fromJson(DiscUtil.readCatch(oldFile), type);
-		
-		// Set the data
-		for (Entry<String, Faction> entry : id2faction.entrySet())
-		{
-			String factionId = entry.getKey();
-			Faction faction = entry.getValue();
-			
-			FactionColl.get().create(factionId).load(faction);
-		}
-		
-		// Mark as migrated
-		oldFile.renameTo(newFile);
 	}
 	
 	@Override
@@ -97,19 +63,16 @@ public class FactionColl extends Coll<Faction>
 	public Faction detachId(Object oid)
 	{
 		Faction faction = this.get(oid);
-		if (faction != null)
-		{
-			Money.set(faction, faction, 0);
-		}
+		Money.set(faction, 0);
+		String universe = faction.getUniverse();
 		
 		Faction ret = super.detachId(oid);
 		
 		// Clean the board
-		// TODO: Use events for this instead?
-		BoardColl.get().clean();
+		BoardColls.get().getForUniverse(universe).clean();
 		
 		// Clean the fplayers
-		FPlayerColl.get().clean();
+		FPlayerColls.get().getForUniverse(universe).clean();
 		
 		return ret;
 	}

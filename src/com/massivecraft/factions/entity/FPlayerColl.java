@@ -1,73 +1,28 @@
 package com.massivecraft.factions.entity;
 
-import java.io.File;
-import java.lang.reflect.Type;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import com.massivecraft.factions.ConfServer;
-import com.massivecraft.factions.Const;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.mcore.mixin.Mixin;
 import com.massivecraft.mcore.store.MStore;
 import com.massivecraft.mcore.store.SenderColl;
-import com.massivecraft.mcore.util.DiscUtil;
 import com.massivecraft.mcore.util.TimeUnit;
-import com.massivecraft.mcore.xlib.gson.reflect.TypeToken;
 
 public class FPlayerColl extends SenderColl<FPlayer>
 {
 	// -------------------------------------------- //
-	// INSTANCE & CONSTRUCT
+	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static FPlayerColl i = new FPlayerColl();
-	public static FPlayerColl get() { return i; }
-	private FPlayerColl()
+	public FPlayerColl(String name)
 	{
-		super(Const.COLLECTION_BASENAME_PLAYER, FPlayer.class, MStore.getDb(ConfServer.dburi), Factions.get());
+		super(name, FPlayer.class, MStore.getDb(ConfServer.dburi), Factions.get());
 	}
 	
 	// -------------------------------------------- //
 	// OVERRIDE: COLL
 	// -------------------------------------------- //
-	
-	// TODO: Init and migration routine!
-	
-	@Override
-	public void init()
-	{
-		super.init();
 
-		this.migrate();
-	}
-	
-	public void migrate()
-	{
-		// Create file objects
-		File oldFile = new File(Factions.get().getDataFolder(), "players.json");
-		File newFile = new File(Factions.get().getDataFolder(), "players.json.migrated");
-		
-		// Already migrated?
-		if ( ! oldFile.exists()) return;
-		
-		// Read the file content through GSON. 
-		Type type = new TypeToken<Map<String, FPlayer>>(){}.getType();
-		Map<String, FPlayer> id2fplayer = Factions.get().gson.fromJson(DiscUtil.readCatch(oldFile), type);
-		
-		// Set the data
-		for (Entry<String, FPlayer> entry : id2fplayer.entrySet())
-		{
-			String playerId = entry.getKey();
-			FPlayer fplayer = entry.getValue();
-			FPlayerColl.get().create(playerId).load(fplayer);
-		}
-		
-		// Mark as migrated
-		oldFile.renameTo(newFile);
-	}
-	
 	@Override
 	protected synchronized String attach(FPlayer entity, Object oid, boolean noteChange)
 	{
@@ -75,7 +30,7 @@ public class FPlayerColl extends SenderColl<FPlayer>
 		
 		// If inited ...
 		if (!this.inited()) return ret;
-		if (!FactionColl.get().inited()) return ret;
+		if (!FactionColls.get().getForUniverse(this.getUniverse()).inited()) return ret;
 		
 		// ... update the index.
 		Faction faction = entity.getFaction();
@@ -108,7 +63,7 @@ public class FPlayerColl extends SenderColl<FPlayer>
 	{
 		for (FPlayer fplayer : this.getAll())
 		{
-			if (FactionColl.get().containsId(fplayer.getFactionId())) continue;
+			if (FactionColls.get().get(this).containsId(fplayer.getFactionId())) continue;
 			
 			Factions.get().log("Reset faction data (invalid faction) for player "+fplayer.getName());
 			fplayer.resetFactionData(false);

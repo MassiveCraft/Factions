@@ -1,12 +1,11 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Perm;
-import com.massivecraft.factions.entity.BoardColl;
+import com.massivecraft.factions.entity.BoardColls;
 import com.massivecraft.mcore.cmd.arg.ARBoolean;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 import com.massivecraft.mcore.cmd.req.ReqIsPlayer;
 import com.massivecraft.mcore.ps.PS;
-
 
 public class CmdFactionsMap extends FCommand
 {
@@ -49,7 +48,7 @@ public class CmdFactionsMap extends FCommand
 	
 	public void showMap()
 	{
-		sendMessage(BoardColl.get().getMap(myFaction, PS.valueOf(me), fme.getPlayer().getLocation().getYaw()));
+		sendMessage(BoardColls.get().getMap(myFaction, PS.valueOf(me), fme.getPlayer().getLocation().getYaw()));
 	}
 	
 }

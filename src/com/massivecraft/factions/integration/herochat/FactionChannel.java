@@ -11,7 +11,7 @@ import com.massivecraft.factions.entity.MConf;
 
 public class FactionChannel extends FactionsChannelAbstract
 {
-	public static final Set<Rel> targetRelations = EnumSet.of(Rel.MEMBER);
+	public static final Set<Rel> targetRelations = EnumSet.of(Rel.MEMBER, Rel.RECRUIT);
 	@Override public Set<Rel> getTargetRelations() { return targetRelations; }
 	
 	@Override public String getName() { return MConf.get().herochatFactionName; }

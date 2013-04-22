@@ -10,7 +10,7 @@ import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.cmd.req.ReqRoleIsAtLeast;
-import com.massivecraft.factions.entity.BoardColl;
+import com.massivecraft.factions.entity.BoardColls;
 import com.massivecraft.factions.entity.FPlayer;
 import com.massivecraft.factions.entity.FPlayerColl;
 import com.massivecraft.factions.entity.Faction;
@@ -69,7 +69,7 @@ public class CmdFactionsHome extends FCommand
 		}
 		
 		
-		Faction faction = BoardColl.get().getFactionAt(PS.valueOf(me));
+		Faction faction = BoardColls.get().getFactionAt(PS.valueOf(me));
 		Location loc = me.getLocation().clone();
 		
 		// if player is not in a safe zone or their own faction territory, only allow teleport if no enemies are nearby

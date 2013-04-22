@@ -36,7 +36,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	
 	public static Faction get(Object oid)
 	{
-		return FactionColl.get().get(oid);
+		return FactionColls.get().get2(oid);
 	}
 	
 	// -------------------------------------------- //
@@ -238,7 +238,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	{
 		if (ps == null) return true;
 		if (!ConfServer.homesMustBeInClaimedTerritory) return true;
-		if (BoardColl.get().getFactionAt(ps) == this) return true;
+		if (BoardColls.get().getFactionAt(ps) == this) return true;
 		return false;
 	}
 	
@@ -451,7 +451,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 		{
 			ret.put(rel, new ArrayList<String>());
 		}
-		for (Faction faction : FactionColl.get().getAll())
+		for (Faction faction : FactionColls.get().get(this).getAll())
 		{
 			Rel relation = faction.getRelationTo(this);
 			if (onlyNonNeutral && relation == Rel.NEUTRAL) continue;
@@ -715,11 +715,11 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	
 	public int getLandCount()
 	{
-		return BoardColl.get().getCount(this);
+		return BoardColls.get().getCount(this);
 	}
 	public int getLandCountInWorld(String worldName)
 	{
-		return BoardColl.get().get(worldName).getCount(this);
+		return BoardColls.get().get(worldName).getCount(this);
 	}
 	
 	public boolean hasLandInflation()
@@ -743,7 +743,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 		String factionId = this.getId();
 		if (factionId == null) return;
 		
-		for (FPlayer fplayer : FPlayerColl.get().getAll())
+		for (FPlayer fplayer : FPlayerColls.get().get(this).getAll())
 		{
 			if (!MUtil.equals(factionId, fplayer.getFactionId())) continue;
 			this.fplayers.add(fplayer);
@@ -805,7 +805,8 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 		List<CommandSender> ret = new ArrayList<CommandSender>();
 		for (CommandSender player : SenderUtil.getOnlineSenders())
 		{
-			FPlayer fplayer = FPlayerColl.get().get(player);
+			FPlayer fplayer = FPlayer.get(player);
+			if (!MUtil.equals(fplayer.getUniverse(), this.getUniverse())) continue;
 			if (fplayer.getFaction() != this) continue;
 			ret.add(player);
 		}
@@ -817,7 +818,8 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 		List<Player> ret = new ArrayList<Player>();
 		for (Player player : Bukkit.getOnlinePlayers())
 		{
-			FPlayer fplayer = FPlayerColl.get().get(player);
+			FPlayer fplayer = FPlayer.get(player);
+			if (!MUtil.equals(fplayer.getUniverse(), this.getUniverse())) continue;
 			if (fplayer.getFaction() != this) continue;
 			ret.add(player);
 		}
@@ -856,7 +858,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 				Factions.get().log("The faction "+this.getTag()+" ("+this.getId()+") has been disbanded since it has no members left.");
 			}
 
-			for (FPlayer fplayer : FPlayerColl.get().getAllOnline())
+			for (FPlayer fplayer : FPlayerColls.get().get(this).getAllOnline())
 			{
 				fplayer.msg("The faction %s<i> was disbanded.", this.getTag(fplayer));
 			}
