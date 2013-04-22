@@ -1,11 +1,11 @@
 package com.massivecraft.factions.util;
 
 import com.massivecraft.factions.Conf;
-import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.P;
 
 public class AutoLeaveTask implements Runnable
 {
+	private static AutoLeaveProcessTask task;
 	double rate;
 
 	public AutoLeaveTask()
@@ -13,11 +13,15 @@ public class AutoLeaveTask implements Runnable
 		this.rate = Conf.autoLeaveRoutineRunsEveryXMinutes;
 	}
 
-	public void run()
+	public synchronized void run()
 	{
-		FPlayers.i.autoLeaveOnInactivityRoutine();
+		if (task != null && ! task.isFinished())
+			return;
 
-		// maybe setting has been changed? if so, restart task at new rate
+		task = new AutoLeaveProcessTask();
+		task.runTaskTimer(P.p, 1, 1);
+
+		// maybe setting has been changed? if so, restart this task at new rate
 		if (this.rate != Conf.autoLeaveRoutineRunsEveryXMinutes)
 			P.p.startAutoLeaveTask(true);
 	}

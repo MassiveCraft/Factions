@@ -108,6 +108,22 @@ public class CmdConfig extends FCommand
 				}
 			}
 
+			// long 
+			else if (target.getType() == long.class)
+			{
+				try
+				{
+					long longVal = Long.parseLong(value);
+					target.setLong(null, longVal);
+					success = "\""+fieldName+"\" option set to "+longVal+".";
+				}
+				catch(NumberFormatException ex)
+				{
+					sendMessage("Cannot set \""+fieldName+"\": long integer (whole number) value required.");
+					return;
+				}
+			}
+
 			// double
 			else if (target.getType() == double.class)
 			{
@@ -268,11 +284,13 @@ public class CmdConfig extends FCommand
 
 		if (!success.isEmpty())
 		{
-			sendMessage(success);
 			if (sender instanceof Player)
 			{
+				sendMessage(success);
 				P.p.log(success + " Command was run by "+fme.getName()+".");
 			}
+			else  // using P.p.log() instead of sendMessage if run from server console so that "[Factions v#.#.#]" is prepended in server log
+				P.p.log(success);
 		}
 		// save change to disk
 		Conf.save();
