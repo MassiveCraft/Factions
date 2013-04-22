@@ -34,14 +34,16 @@ public class CmdFactionsTag extends FCommand
 		String newTag = this.arg(0);
 		
 		// TODO does not first test cover selfcase?
-		if (FactionColls.get().get(myFaction).isTagTaken(newTag) && ! MiscUtil.getComparisonString(newTag).equals(myFaction.getComparisonTag()))
+		
+		FactionColl factionColl = FactionColls.get().get(myFaction);
+		if (factionColl.isTagTaken(newTag) && ! MiscUtil.getComparisonString(newTag).equals(myFaction.getComparisonTag()))
 		{
 			msg("<b>That tag is already taken");
 			return;
 		}
 
 		ArrayList<String> errors = new ArrayList<String>();
-		errors.addAll(FactionColl.validateTag(newTag));
+		errors.addAll(factionColl.validateTag(newTag));
 		if (errors.size() > 0)
 		{
 			sendMessage(errors);

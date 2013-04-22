@@ -150,7 +150,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	public String getTag()
 	{
 		String ret = this.tag;
-		if (ConfServer.factionTagForceUpperCase)
+		if (UConf.get(this).factionTagForceUpperCase)
 		{
 			ret = ret.toUpperCase();
 		}
@@ -159,7 +159,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	
 	public void setTag(String str)
 	{
-		if (ConfServer.factionTagForceUpperCase)
+		if (UConf.get(this).factionTagForceUpperCase)
 		{
 			str = str.toUpperCase();
 		}
@@ -302,7 +302,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	public boolean isOpen()
 	{
 		Boolean ret = this.open;
-		if (ret == null) ret = ConfServer.newFactionsDefaultOpen;
+		if (ret == null) ret = UConf.get(this).newFactionsDefaultOpen;
 		return ret;
 	}
 	
@@ -472,7 +472,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 		
 		for (FFlag fflag : FFlag.values())
 		{
-			ret.put(fflag, fflag.getDefault());
+			ret.put(fflag, fflag.getDefault(this));
 		}
 		
 		if (this.flagOverrides != null)
@@ -499,7 +499,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 		while (iter.hasNext())
 		{
 			Entry<FFlag, Boolean> entry = iter.next();
-			if (entry.getKey().getDefault() == entry.getValue())
+			if (entry.getKey().getDefault(this) == entry.getValue())
 			{
 				iter.remove();
 			}
@@ -541,7 +541,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 		
 		for (FPerm fperm : FPerm.values())
 		{
-			ret.put(fperm, fperm.getDefault());
+			ret.put(fperm, fperm.getDefault(this));
 		}
 		
 		if (this.permOverrides != null)
@@ -571,7 +571,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 		while (iter.hasNext())
 		{
 			Entry<FPerm, Set<Rel>> entry = iter.next();
-			if (entry.getKey().getDefault().equals(entry.getValue()))
+			if (entry.getKey().getDefault(this).equals(entry.getValue()))
 			{
 				iter.remove();
 			}

@@ -23,35 +23,6 @@ public class ConfServer extends SimpleConfig
 	public static String dburi = "default";
 	
 	// -------------------------------------------- //
-	// DOUBTFULLY CONFIGURABLE DEFAULTS (TODO)
-	// -------------------------------------------- //
-	
-	public static Map<FFlag, Boolean> factionFlagDefaults = FFlag.getDefaultDefaults();
-	public static Map<FPerm, Set<Rel>> factionPermDefaults = FPerm.getDefaultDefaults();
-	
-	// TODO: Shouldn't this be a constant rather?
-	public static Rel factionRankDefault = Rel.RECRUIT;
-	
-	// -------------------------------------------- //
-	// CORE
-	// -------------------------------------------- //
-	
-	public static int factionTagLengthMin = 3;
-	public static int factionTagLengthMax = 10;
-	public static boolean factionTagForceUpperCase = false;
-	
-	public static boolean newFactionsDefaultOpen = false;
-
-	// when faction membership hits this limit, players will no longer be able to join using /f join; default is 0, no limit
-	public static int factionMemberLimit = 0;
-
-	// what faction ID to start new players in when they first join the server; default is 0, "no faction"
-	public static String newPlayerStartingFactionID = Const.FACTIONID_NONE;
-	
-	// Disallow joining/leaving/kicking while power is negative
-	public static boolean canLeaveWithNegativePower = true;
-
-	// -------------------------------------------- //
 	// AUTO LEAVE
 	// -------------------------------------------- //
 

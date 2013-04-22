@@ -13,6 +13,7 @@ import org.bukkit.command.CommandSender;
 import com.massivecraft.factions.entity.BoardColls;
 import com.massivecraft.factions.entity.FPlayer;
 import com.massivecraft.factions.entity.Faction;
+import com.massivecraft.factions.entity.UConf;
 import com.massivecraft.mcore.ps.PS;
 
 /**
@@ -77,9 +78,9 @@ public enum FPerm
 	// DEFAULTS
 	// -------------------------------------------- //
 	
-	public Set<Rel> getDefault()
+	public Set<Rel> getDefault(Object o)
 	{
-		Set<Rel> ret = ConfServer.factionPermDefaults.get(this);
+		Set<Rel> ret = UConf.get(o).factionPermDefaults.get(this);
 		if (ret == null) return this.getDefaultDefault();
 		ret = new LinkedHashSet<Rel>(ret);
 		return ret;

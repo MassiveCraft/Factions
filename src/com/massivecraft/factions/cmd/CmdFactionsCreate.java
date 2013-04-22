@@ -48,7 +48,7 @@ public class CmdFactionsCreate extends FCommand
 			return;
 		}
 		
-		ArrayList<String> tagValidationErrors = FactionColl.validateTag(newTag);
+		ArrayList<String> tagValidationErrors = coll.validateTag(newTag);
 		if (tagValidationErrors.size() > 0)
 		{
 			sendMessage(tagValidationErrors);

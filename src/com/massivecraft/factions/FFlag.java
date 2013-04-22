@@ -3,6 +3,8 @@ package com.massivecraft.factions;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import com.massivecraft.factions.entity.UConf;
+
 
 /**
  * Flags that describe the nature of a faction and it's territory.
@@ -64,9 +66,9 @@ public enum FFlag
 	// DEFAULTS
 	// -------------------------------------------- //
 	
-	public boolean getDefault()
+	public boolean getDefault(Object o)
 	{
-		Boolean ret = ConfServer.factionFlagDefaults.get(this);
+		Boolean ret = UConf.get(o).factionFlagDefaults.get(this);
 		if (ret == null) return this.getDefaultDefault();
 		return ret; 
 	}

@@ -124,18 +124,18 @@ public class FactionColl extends Coll<Faction>
 	// FACTION TAG
 	// -------------------------------------------- //
 	
-	public static ArrayList<String> validateTag(String str)
+	public ArrayList<String> validateTag(String str)
 	{
 		ArrayList<String> errors = new ArrayList<String>();
 		
-		if(MiscUtil.getComparisonString(str).length() < ConfServer.factionTagLengthMin)
+		if (MiscUtil.getComparisonString(str).length() < UConf.get(this).factionTagLengthMin)
 		{
-			errors.add(Txt.parse("<i>The faction tag can't be shorter than <h>%s<i> chars.", ConfServer.factionTagLengthMin));
+			errors.add(Txt.parse("<i>The faction tag can't be shorter than <h>%s<i> chars.", UConf.get(this).factionTagLengthMin));
 		}
 		
-		if(str.length() > ConfServer.factionTagLengthMax)
+		if (str.length() > UConf.get(this).factionTagLengthMax)
 		{
-			errors.add(Txt.parse("<i>The faction tag can't be longer than <h>%s<i> chars.", ConfServer.factionTagLengthMax));
+			errors.add(Txt.parse("<i>The faction tag can't be longer than <h>%s<i> chars.", UConf.get(this).factionTagLengthMax));
 		}
 		
 		for (char c : str.toCharArray())

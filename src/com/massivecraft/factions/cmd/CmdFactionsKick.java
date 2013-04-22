@@ -1,6 +1,5 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
@@ -10,6 +9,7 @@ import com.massivecraft.factions.entity.FPlayer;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.FactionColls;
 import com.massivecraft.factions.entity.MConf;
+import com.massivecraft.factions.entity.UConf;
 import com.massivecraft.factions.event.FactionsEventMembershipChange;
 import com.massivecraft.factions.event.FactionsEventMembershipChange.MembershipChangeReason;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
@@ -47,7 +47,7 @@ public class CmdFactionsKick extends FCommand
 			return;
 		}
 
-		if ( ! ConfServer.canLeaveWithNegativePower && fplayer.getPower() < 0)
+		if ( ! UConf.get(fplayer).canLeaveWithNegativePower && fplayer.getPower() < 0)
 		{
 			msg("<b>You cannot kick that member until their power is positive.");
 			return;

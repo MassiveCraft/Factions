@@ -1,6 +1,5 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.cmd.arg.ARFPlayer;
@@ -8,6 +7,7 @@ import com.massivecraft.factions.cmd.arg.ARFaction;
 import com.massivecraft.factions.entity.FPlayer;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MConf;
+import com.massivecraft.factions.entity.UConf;
 import com.massivecraft.factions.event.FactionsEventMembershipChange;
 import com.massivecraft.factions.event.FactionsEventMembershipChange.MembershipChangeReason;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
@@ -49,9 +49,9 @@ public class CmdFactionsJoin extends FCommand
 			return;
 		}
 
-		if (ConfServer.factionMemberLimit > 0 && faction.getFPlayers().size() >= ConfServer.factionMemberLimit)
+		if (UConf.get(faction).factionMemberLimit > 0 && faction.getFPlayers().size() >= UConf.get(faction).factionMemberLimit)
 		{
-			msg(" <b>!<white> The faction %s is at the limit of %d members, so %s cannot currently join.", faction.getTag(fme), ConfServer.factionMemberLimit, fplayer.describeTo(fme, false));
+			msg(" <b>!<white> The faction %s is at the limit of %d members, so %s cannot currently join.", faction.getTag(fme), UConf.get(faction).factionMemberLimit, fplayer.describeTo(fme, false));
 			return;
 		}
 
@@ -61,7 +61,7 @@ public class CmdFactionsJoin extends FCommand
 			return;
 		}
 
-		if (!ConfServer.canLeaveWithNegativePower && fplayer.getPower() < 0)
+		if (!UConf.get(faction).canLeaveWithNegativePower && fplayer.getPower() < 0)
 		{
 			msg("<b>%s cannot join a faction with a negative power level.", fplayer.describeTo(fme, true));
 			return;
@@ -93,7 +93,6 @@ public class CmdFactionsJoin extends FCommand
 		// Apply
 		fplayer.resetFactionData();
 		fplayer.setFaction(faction);
-		fme.setRole(ConfServer.factionRankDefault); // They have just joined a faction, start them out on the lowest rank (default config).
 	    
 		faction.setInvited(fplayer, false);
 

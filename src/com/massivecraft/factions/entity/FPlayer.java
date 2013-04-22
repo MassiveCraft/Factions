@@ -110,11 +110,11 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 	
 	// This field contains the last calculated value of the players power.
 	// The power calculation is lazy which means that the power is calculated first when you try to view the value.
-	private double power;
+	private Double power = null;
 	
 	// This is the timestamp for the last calculation of the power.
 	// The value is used for the lazy calculation described above.
-	private long lastPowerUpdateTime;
+	private long lastPowerUpdateTime = System.currentTimeMillis();
 	
 	// -------------------------------------------- //
 	// FIELDS: RAW TRANSIENT
@@ -153,15 +153,11 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 	public FPlayer()
 	{
 		this.resetFactionData(false);
-		this.setFactionId(ConfServer.newPlayerStartingFactionID);
-		this.power = ConfServer.powerStarting;
-		this.lastPowerUpdateTime = System.currentTimeMillis();
+		//this.power = ConfServer.powerStarting;
 	}
 	
-	public final void resetFactionData(boolean doSpoutUpdate)
+	public void resetFactionData(boolean doSpoutUpdate)
 	{
-		// TODO: Should we not rather use ConfServer.newPlayerStartingFactionID here?
-		
 		// The default neutral faction
 		this.setFactionId(null); 
 		this.setRole(null);
@@ -189,7 +185,7 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 	// This method never returns null
 	public String getFactionId()
 	{
-		if (this.factionId == null) return Const.FACTIONID_NONE;
+		if (this.factionId == null) return UConf.get(this).playerDefaultFactionId;
 		return this.factionId;
 	}
 	
@@ -197,7 +193,7 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 	public Faction getFaction()
 	{
 		Faction ret = FactionColls.get().get(this).get(this.getFactionId());
-		if (ret == null) ret = FactionColls.get().get(this).get(Const.FACTIONID_NONE);
+		if (ret == null) ret = FactionColls.get().get(this).get(UConf.get(this).playerDefaultFactionId);
 		return ret;
 	}
 	
@@ -259,13 +255,13 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 	
 	public Rel getRole()
 	{
-		if (this.role == null) return Rel.MEMBER;
+		if (this.role == null) return UConf.get(this).playerDefaultRole;
 		return this.role;
 	}
 	
 	public void setRole(Rel role)
 	{
-		if (role == null || role == Rel.MEMBER)
+		if (role == null || role == UConf.get(this).playerDefaultRole)
 		{
 			this.role = null;
 		}
@@ -662,7 +658,7 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 			return;
 		}
 
-		if (!ConfServer.canLeaveWithNegativePower && this.getPower() < 0)
+		if (!UConf.get(myFaction).canLeaveWithNegativePower && this.getPower() < 0)
 		{
 			msg("<b>You cannot leave until your power is positive.");
 			return;

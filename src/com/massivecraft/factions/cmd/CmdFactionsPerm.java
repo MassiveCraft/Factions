@@ -67,7 +67,7 @@ public class CmdFactionsPerm extends FCommand
 		faction.setRelationPermitted(perm, rel, val);
 		
 		// The following is to make sure the leader always has the right to change perms if that is our goal.
-		if (perm == FPerm.PERMS && FPerm.PERMS.getDefault().contains(Rel.LEADER))
+		if (perm == FPerm.PERMS && FPerm.PERMS.getDefault(faction).contains(Rel.LEADER))
 		{
 			faction.setRelationPermitted(FPerm.PERMS, Rel.LEADER, true);
 		}
