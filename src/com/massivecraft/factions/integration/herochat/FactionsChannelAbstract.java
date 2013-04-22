@@ -264,65 +264,6 @@ public abstract class FactionsChannelAbstract implements Channel
 		Herochat.logChat(msg);
 	}
 	
-	/*@Override
-	public void processChat(ChannelChatEvent event)
-	{
-		final Player player = event.getSender().getPlayer();
-
-		String format = applyFormat(event.getFormat(), event.getBukkitFormat(), player);
-
-		Chatter sender = Herochat.getChatterManager().getChatter(player);
-		Set<Player> recipients = new HashSet<Player>(Arrays.asList(Bukkit.getOnlinePlayers()));
-
-		trimRecipients(recipients, sender);
-		if (!isMessageHeard(recipients, sender))
-		{
-			Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Herochat.getPlugin(), new Runnable()
-			{
-				public void run()
-				{
-					try
-					{
-						Messaging.send(player, Herochat.getMessage("channel_alone"));
-					}
-					catch (MessageNotFoundException e)
-					{
-						Herochat.severe("Messages.properties is missing: channel_alone");
-					}
-				}
-			}, 1L);
-		}
-		
-		FPlayer fplayer = FPlayers.i.get(player);
-		
-		String formatWithoutColor = FactionsChatListener.parseTags(format, player, fplayer);
-		
-		//String msg = String.format(format, player.getDisplayName(), event.getMessage());
-		
-
-		for (Player recipient : recipients)
-		{
-			String finalFormat;
-			if ( ! Conf.chatParseTags || Conf.chatTagHandledByAnotherPlugin)
-			{
-				finalFormat = format;
-			}
-			else if (! Conf.chatParseTagsColored)
-			{
-				finalFormat = formatWithoutColor;
-			}
-			else
-			{
-				FPlayer frecipient = FPlayers.i.get(recipient);
-				finalFormat = FactionsChatListener.parseTags(format, player, fplayer, recipient, frecipient);
-			}
-			String msg = String.format(finalFormat, player.getDisplayName(), event.getMessage());
-			recipient.sendMessage(msg);
-		}
-
-		Herochat.logChat(String.format(formatWithoutColor, player.getDisplayName(), event.getMessage()));
-	}*/
-	
 	public boolean isMessageHeard(Set<Player> recipients, Chatter sender)
 	{
 		if (!isLocal()) return true;

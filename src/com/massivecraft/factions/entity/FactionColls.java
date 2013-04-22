@@ -119,7 +119,7 @@ public class FactionColls extends Colls<FactionColl, Faction>
 	{
 		for (FactionColl coll : this.getColls())
 		{
-			coll.reindexFPlayers();
+			coll.reindexUPlayers();
 		}
 	}
 	

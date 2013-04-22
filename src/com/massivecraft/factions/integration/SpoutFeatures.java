@@ -72,9 +72,9 @@ public class SpoutFeatures
 		
 		for (Player player : fromPlayers)
 		{
-			UPlayer fplayer = UPlayer.get(player);
+			UPlayer uplayer = UPlayer.get(player);
 			SpoutPlayer splayer = SpoutManager.getPlayer(player);
-			Faction faction = fplayer.getFaction();
+			Faction faction = uplayer.getFaction();
 			
 			String cape = faction.getCape();
 			if (cape == null)
@@ -137,19 +137,19 @@ public class SpoutFeatures
 		
 		for (Player player : fromPlayers)
 		{
-			UPlayer fplayer = UPlayer.get(player);
+			UPlayer uplayer = UPlayer.get(player);
 			SpoutPlayer splayer = SpoutManager.getPlayer(player);
-			Faction faction = fplayer.getFaction();
+			Faction faction = uplayer.getFaction();
 			
 			for (Player playerTo : toPlayers)
 			{
-				UPlayer fplayerTo = UPlayer.get(playerTo);
+				UPlayer uplayerTo = UPlayer.get(playerTo);
 				SpoutPlayer splayerTo = SpoutManager.getPlayer(playerTo);
-				Faction factionTo = fplayerTo.getFaction();
+				Faction factionTo = uplayerTo.getFaction();
 				
 				ChatColor relationColor = faction.getRelationTo(factionTo).getColor();
 				
-				String title = generateTitle(player, fplayer, faction, relationColor);
+				String title = generateTitle(player, uplayer, faction, relationColor);
 				
 				boolean skip = onlyIfDifferent && title.equals(splayer.getTitleFor(splayerTo));
 				//Bukkit.getConsoleSender().sendMessage(P.p.txt.parse("<i>TITLE SKIP:<h>%s <i>FROM <h>%s <i>TO <h>%s <i>TITLE <h>%s", String.valueOf(skip), player.getDisplayName(), playerTo.getDisplayName(), title));
@@ -178,7 +178,7 @@ public class SpoutFeatures
 		}, 5);
 	}
 	
-	public static String generateTitle(Player player, UPlayer fplayer, Faction faction, ChatColor relationColor)
+	public static String generateTitle(Player player, UPlayer uplayer, Faction faction, ChatColor relationColor)
 	{
 		String ret = null;
 		
@@ -189,12 +189,12 @@ public class SpoutFeatures
 			String addTag = "";
 			if (ConfServer.spoutFactionTagsOverNames)
 			{
-				addTag += relationColor.toString() + fplayer.getRole().getPrefix() + faction.getTag();
+				addTag += relationColor.toString() + uplayer.getRole().getPrefix() + faction.getTag();
 			}
 				
-			if (ConfServer.spoutFactionTitlesOverNames && fplayer.hasTitle())
+			if (ConfServer.spoutFactionTitlesOverNames && uplayer.hasTitle())
 			{
-				addTag += (addTag.isEmpty() ? "" : " ") + fplayer.getTitle();
+				addTag += (addTag.isEmpty() ? "" : " ") + uplayer.getTitle();
 			}
 
 			ret = addTag + "\n" + ret;
@@ -222,8 +222,8 @@ public class SpoutFeatures
 		}
 		else if (o instanceof UPlayer)
 		{
-			UPlayer fplayer = (UPlayer)o;
-			Player player = fplayer.getPlayer();
+			UPlayer uplayer = (UPlayer)o;
+			Player player = uplayer.getPlayer();
 			if (player != null)
 			{
 				ret.add(player);
@@ -252,14 +252,14 @@ public class SpoutFeatures
 
 		for (Player player : Bukkit.getOnlinePlayers())
 		{
-			UPlayer fplayer = UPlayer.get(player);
+			UPlayer uplayer = UPlayer.get(player);
 			if (chunk == null)
 			{
-				mainListener.updateTerritoryDisplay(fplayer, false);
+				mainListener.updateTerritoryDisplay(uplayer, false);
 			}
-			else if (fplayer.getCurrentChunk().equals(chunk))
+			else if (uplayer.getCurrentChunk().equals(chunk))
 			{
-				mainListener.updateTerritoryDisplay(fplayer, true);
+				mainListener.updateTerritoryDisplay(uplayer, true);
 			}
 		}
 	}
@@ -280,10 +280,10 @@ public class SpoutFeatures
 
 		for (Player player : Bukkit.getOnlinePlayers())
 		{
-			UPlayer fplayer = UPlayer.get(player);
-			if (chunk == null || fplayer.getCurrentChunk().equals(chunk))
+			UPlayer uplayer = UPlayer.get(player);
+			if (chunk == null || uplayer.getCurrentChunk().equals(chunk))
 			{
-				mainListener.updateAccessInfo(fplayer);
+				mainListener.updateAccessInfo(uplayer);
 			}
 		}
 	}

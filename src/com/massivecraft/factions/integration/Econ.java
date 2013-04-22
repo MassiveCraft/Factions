@@ -167,9 +167,9 @@ public class Econ
 		return false;
 	}
 	
-	public static Set<UPlayer> getFplayers(EconomyParticipator ep)
+	public static Set<UPlayer> getUPlayers(EconomyParticipator ep)
 	{
-		Set<UPlayer> fplayers = new HashSet<UPlayer>();
+		Set<UPlayer> uplayers = new HashSet<UPlayer>();
 		
 		if (ep == null)
 		{
@@ -177,22 +177,22 @@ public class Econ
 		}
 		else if (ep instanceof UPlayer)
 		{
-			fplayers.add((UPlayer)ep);
+			uplayers.add((UPlayer)ep);
 		}
 		else if (ep instanceof Faction)
 		{
-			fplayers.addAll(((Faction)ep).getUPlayers());
+			uplayers.addAll(((Faction)ep).getUPlayers());
 		}
 		
-		return fplayers;
+		return uplayers;
 	}
 	
 	public static void sendTransferInfo(EconomyParticipator invoker, EconomyParticipator from, EconomyParticipator to, double amount)
 	{
 		Set<UPlayer> recipients = new HashSet<UPlayer>();
-		recipients.addAll(getFplayers(invoker));
-		recipients.addAll(getFplayers(from));
-		recipients.addAll(getFplayers(to));
+		recipients.addAll(getUPlayers(invoker));
+		recipients.addAll(getUPlayers(from));
+		recipients.addAll(getUPlayers(to));
 		
 		if (invoker == null)
 		{

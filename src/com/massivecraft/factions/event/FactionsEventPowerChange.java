@@ -19,8 +19,8 @@ public class FactionsEventPowerChange extends FactionsEventAbstractSender
 	// FIELDS
 	// -------------------------------------------- //
 	
-	private final UPlayer fplayer;
-	public UPlayer getFPlayer() { return this.fplayer; }
+	private final UPlayer uplayer;
+	public UPlayer getUPlayer() { return this.uplayer; }
 	
 	private final PowerChangeReason reason;
 	public PowerChangeReason getReason() { return this.reason; }
@@ -33,10 +33,10 @@ public class FactionsEventPowerChange extends FactionsEventAbstractSender
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public FactionsEventPowerChange(CommandSender sender, UPlayer fplayer, PowerChangeReason reason, double newPower)
+	public FactionsEventPowerChange(CommandSender sender, UPlayer uplayer, PowerChangeReason reason, double newPower)
 	{
 		super(sender);
-		this.fplayer = fplayer;
+		this.uplayer = uplayer;
 		this.reason = reason;
 		this.newPower = newPower;
 	}

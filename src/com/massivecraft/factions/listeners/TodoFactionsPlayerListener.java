@@ -32,18 +32,18 @@ public class TodoFactionsPlayerListener implements Listener
 	{
 		// If a player is joining the server ...
 		Player player = event.getPlayer();
-		UPlayer fplayer = UPlayer.get(player);
+		UPlayer uplayer = UPlayer.get(player);
 		
 		// ... recalculate their power as if they were offline since last recalculation ...
-		fplayer.recalculatePower(false);
+		uplayer.recalculatePower(false);
 		
 		// ... update the current chunk ...
-		fplayer.setCurrentChunk(PS.valueOf(event.getPlayer()));
+		uplayer.setCurrentChunk(PS.valueOf(event.getPlayer()));
 		
 		// ... notify the player about where they are ...
-		if ( ! SpoutFeatures.updateTerritoryDisplay(fplayer))
+		if ( ! SpoutFeatures.updateTerritoryDisplay(uplayer))
 		{
-			fplayer.sendFactionHereMessage();
+			uplayer.sendFactionHereMessage();
 		}
 	}
 	
@@ -51,14 +51,14 @@ public class TodoFactionsPlayerListener implements Listener
 	public void onPlayerLeave(MCorePlayerLeaveEvent event)
 	{
 		Player player = event.getPlayer();
-		UPlayer fplayer = UPlayer.get(player);
+		UPlayer uplayer = UPlayer.get(player);
 
 		// Recalculate the power before the player leaves.
 		// This is required since we recalculate as if the player were offline when they log back in.
 		// TODO: When I setup universes I must do this for all universe instance of the player that logs off!
-		fplayer.recalculatePower(true);
+		uplayer.recalculatePower(true);
 
-		SpoutFeatures.playerDisconnect(fplayer);
+		SpoutFeatures.playerDisconnect(uplayer);
 	}
 	
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -69,12 +69,12 @@ public class TodoFactionsPlayerListener implements Listener
 
 		// ... update the stored current chunk ...
 		Player player = event.getPlayer();
-		UPlayer fplayer = UPlayer.get(player);
+		UPlayer uplayer = UPlayer.get(player);
 		
-		PS chunkFrom = fplayer.getCurrentChunk();
+		PS chunkFrom = uplayer.getCurrentChunk();
 		PS chunkTo = PS.valueOf(event.getTo()).getChunk(true);
 		
-		fplayer.setCurrentChunk(chunkTo);
+		uplayer.setCurrentChunk(chunkTo);
 		
 		// ... TODO: assorted and uncleaned code below ...
 		
@@ -84,29 +84,29 @@ public class TodoFactionsPlayerListener implements Listener
 		boolean changedFaction = (BoardColls.get().getFactionAt(chunkFrom) != BoardColls.get().getFactionAt(chunkTo));
 
 		// let Spout handle most of this if it's available
-		boolean handledBySpout = changedFaction && SpoutFeatures.updateTerritoryDisplay(fplayer);
+		boolean handledBySpout = changedFaction && SpoutFeatures.updateTerritoryDisplay(uplayer);
 		
-		if (fplayer.isMapAutoUpdating())
+		if (uplayer.isMapAutoUpdating())
 		{
-			fplayer.sendMessage(BoardColls.get().getMap(fplayer.getFaction(), chunkTo, player.getLocation().getYaw()));
+			uplayer.sendMessage(BoardColls.get().getMap(uplayer.getFaction(), chunkTo, player.getLocation().getYaw()));
 		}
 		else if (changedFaction && ! handledBySpout)
 		{
-			fplayer.sendFactionHereMessage();
+			uplayer.sendFactionHereMessage();
 		}
 
 		// show access info message if needed
-		if ( ! handledBySpout && ! SpoutFeatures.updateAccessInfo(fplayer) && ! access.isDefault())
+		if ( ! handledBySpout && ! SpoutFeatures.updateAccessInfo(uplayer) && ! access.isDefault())
 		{
-			if (access.subjectHasAccess(fplayer))
-				fplayer.msg("<g>You have access to this area.");
-			else if (access.subjectAccessIsRestricted(fplayer))
-				fplayer.msg("<b>This area has restricted access.");
+			if (access.subjectHasAccess(uplayer))
+				uplayer.msg("<g>You have access to this area.");
+			else if (access.subjectAccessIsRestricted(uplayer))
+				uplayer.msg("<b>This area has restricted access.");
 		}
 
-		if (fplayer.getAutoClaimFor() != null)
+		if (uplayer.getAutoClaimFor() != null)
 		{
-			fplayer.attemptClaim(fplayer.getAutoClaimFor(), PS.valueOf(event.getTo()), true);
+			uplayer.attemptClaim(uplayer.getAutoClaimFor(), PS.valueOf(event.getTo()), true);
 		}
 	}
 
@@ -145,10 +145,10 @@ public class TodoFactionsPlayerListener implements Listener
 		String name = player.getName();
 		if (MConf.get().playersWhoBypassAllProtection.contains(name)) return true;
 
-		UPlayer fplayer = UPlayer.get(player);
-		if (fplayer.isUsingAdminMode()) return true;
+		UPlayer uplayer = UPlayer.get(player);
+		if (uplayer.isUsingAdminMode()) return true;
 		
-		return FPerm.BUILD.has(fplayer, ps, !justCheck);
+		return FPerm.BUILD.has(uplayer, ps, !justCheck);
 	}
 	
 	public static boolean canPlayerUseBlock(Player player, Block block, boolean justCheck)

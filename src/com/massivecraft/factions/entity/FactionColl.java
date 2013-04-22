@@ -86,7 +86,7 @@ public class FactionColl extends Coll<Faction>
 	// INDEX
 	// -------------------------------------------- //
 	
-	public void reindexFPlayers()
+	public void reindexUPlayers()
 	{
 		for (Faction faction : this.getAll())
 		{

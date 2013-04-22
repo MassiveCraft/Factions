@@ -94,17 +94,17 @@ public class UPlayerColls extends Colls<UPlayerColl, UPlayer>
 		
 		// Read the file content through GSON. 
 		Type type = new TypeToken<Map<String, UPlayer>>(){}.getType();
-		Map<String, UPlayer> id2fplayer = Factions.get().gson.fromJson(DiscUtil.readCatch(oldFile), type);
+		Map<String, UPlayer> id2uplayer = Factions.get().gson.fromJson(DiscUtil.readCatch(oldFile), type);
 		
 		// The Coll
 		UPlayerColl coll = this.getForUniverse(MCore.DEFAULT);
 		
 		// Set the data
-		for (Entry<String, UPlayer> entry : id2fplayer.entrySet())
+		for (Entry<String, UPlayer> entry : id2uplayer.entrySet())
 		{
 			String playerId = entry.getKey();
-			UPlayer fplayer = entry.getValue();
-			coll.attach(fplayer, playerId);
+			UPlayer uplayer = entry.getValue();
+			coll.attach(uplayer, playerId);
 		}
 		
 		// Mark as migrated

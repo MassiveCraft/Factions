@@ -89,35 +89,35 @@ public class FactionsListenerMain implements Listener
 	{
 		// If a player dies ...
 		Player player = event.getEntity();
-		UPlayer fplayer = UPlayer.get(player);
+		UPlayer uplayer = UPlayer.get(player);
 		
 		// ... and powerloss can happen here ...
 		Faction faction = BoardColls.get().getFactionAt(PS.valueOf(player));
 		
 		if (!faction.getFlag(FFlag.POWERLOSS))
 		{
-			fplayer.msg("<i>You didn't lose any power since the territory you died in works that way.");
+			uplayer.msg("<i>You didn't lose any power since the territory you died in works that way.");
 			return;
 		}
 		
 		if (MConf.get().worldsNoPowerLoss.contains(player.getWorld().getName()))
 		{
-			fplayer.msg("<i>You didn't lose any power due to the world you died in.");
+			uplayer.msg("<i>You didn't lose any power due to the world you died in.");
 			return;
 		}
 		
 		// ... Event ...
-		double newPower = fplayer.getPower() + UConf.get(fplayer).powerPerDeath;
-		FactionsEventPowerChange powerChangeEvent = new FactionsEventPowerChange(null, fplayer, PowerChangeReason.DEATH, newPower);
+		double newPower = uplayer.getPower() + UConf.get(uplayer).powerPerDeath;
+		FactionsEventPowerChange powerChangeEvent = new FactionsEventPowerChange(null, uplayer, PowerChangeReason.DEATH, newPower);
 		powerChangeEvent.run();
 		if (powerChangeEvent.isCancelled()) return;
 		newPower = powerChangeEvent.getNewPower();
 		
 		// ... alter the power ...
-		fplayer.setPower(newPower);
+		uplayer.setPower(newPower);
 		
 		// ... and inform the player.
-		fplayer.msg("<i>Your power is now <h>%d / %d", fplayer.getPowerRounded(), fplayer.getPowerMaxRounded());
+		uplayer.msg("<i>Your power is now <h>%d / %d", uplayer.getPowerRounded(), uplayer.getPowerMaxRounded());
 	}
 	
 	// -------------------------------------------- //
@@ -292,7 +292,7 @@ public class FactionsListenerMain implements Listener
 	{
 		// If a player was kicked from the server ...
 		Player player = event.getPlayer();
-		UPlayer fplayer = UPlayer.get(player);
+		UPlayer uplayer = UPlayer.get(player);
 
 		// ... and if the if player was banned (not just kicked) ...
 		if (!event.getReason().equals("Banned by admin.")) return;
@@ -301,12 +301,12 @@ public class FactionsListenerMain implements Listener
 		if (!ConfServer.removePlayerDataWhenBanned) return;
 		
 		// ... get rid of their stored info.
-		if (fplayer.getRole() == Rel.LEADER)
+		if (uplayer.getRole() == Rel.LEADER)
 		{
-			fplayer.getFaction().promoteNewLeader();
+			uplayer.getFaction().promoteNewLeader();
 		}
-		fplayer.leave(false);
-		fplayer.detach();
+		uplayer.leave(false);
+		uplayer.detach();
 		
 	}
 	
@@ -331,10 +331,10 @@ public class FactionsListenerMain implements Listener
 	{
 		// If a player is trying to run a command ...
 		Player player = event.getPlayer();
-		UPlayer fplayer = UPlayer.get(player);
+		UPlayer uplayer = UPlayer.get(player);
 		
 		// ... and the player does not have adminmode ...
-		if (fplayer.isUsingAdminMode()) return;
+		if (uplayer.isUsingAdminMode()) return;
 		
 		// ... clean up the command ...
 		String command = event.getMessage();
@@ -342,26 +342,26 @@ public class FactionsListenerMain implements Listener
 		command = command.toLowerCase();
 		command = command.trim();
 		
-		if (fplayer.hasFaction() && fplayer.getFaction().getFlag(FFlag.PERMANENT) && containsCommand(command, ConfServer.permanentFactionMemberDenyCommands))
+		if (uplayer.hasFaction() && uplayer.getFaction().getFlag(FFlag.PERMANENT) && containsCommand(command, ConfServer.permanentFactionMemberDenyCommands))
 		{
-			fplayer.msg("<b>You can't use \"<h>/%s<b>\" as member of a permanent faction.", command);
+			uplayer.msg("<b>You can't use \"<h>/%s<b>\" as member of a permanent faction.", command);
 			event.setCancelled(true);
 			return;
 		}
 		
-		Rel rel = fplayer.getRelationToLocation();
-		if (BoardColls.get().getFactionAt(fplayer.getCurrentChunk()).isNone()) return;
+		Rel rel = uplayer.getRelationToLocation();
+		if (BoardColls.get().getFactionAt(uplayer.getCurrentChunk()).isNone()) return;
 		
 		if (rel == Rel.NEUTRAL && containsCommand(command, ConfServer.territoryNeutralDenyCommands))
 		{
-			fplayer.msg("<b>You can't use \"<h>/%s<b>\" in neutral territory.", command);
+			uplayer.msg("<b>You can't use \"<h>/%s<b>\" in neutral territory.", command);
 			event.setCancelled(true);
 			return;
 		}
 
 		if (rel == Rel.ENEMY && containsCommand(command, ConfServer.territoryEnemyDenyCommands))
 		{
-			fplayer.msg("<b>You can't use \"<h>/%s<b>\" in enemy territory.", command);
+			uplayer.msg("<b>You can't use \"<h>/%s<b>\" in enemy territory.", command);
 			event.setCancelled(true);
 			return;
 		}

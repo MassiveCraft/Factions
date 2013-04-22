@@ -20,8 +20,8 @@ public class FactionsEventInvitedChange extends FactionsEventAbstractSender
 	// FIELDS
 	// -------------------------------------------- //
 	
-	private final UPlayer fplayer;
-	public UPlayer getFPlayer() { return this.fplayer; }
+	private final UPlayer uplayer;
+	public UPlayer getUPlayer() { return this.uplayer; }
 	
 	private final Faction faction;
 	public Faction getFaction() { return this.faction; }
@@ -34,10 +34,10 @@ public class FactionsEventInvitedChange extends FactionsEventAbstractSender
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public FactionsEventInvitedChange(CommandSender sender, UPlayer fplayer, Faction faction, boolean newInvited)
+	public FactionsEventInvitedChange(CommandSender sender, UPlayer uplayer, Faction faction, boolean newInvited)
 	{
 		super(sender);
-		this.fplayer = fplayer;
+		this.uplayer = uplayer;
 		this.faction = faction;
 		this.newInvited = newInvited;
 	}

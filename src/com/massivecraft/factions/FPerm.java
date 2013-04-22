@@ -194,11 +194,11 @@ public enum FPerm
 		
 		if (!ret && informIfNot && rpSubject instanceof UPlayer)
 		{
-			UPlayer fplayer = (UPlayer)rpSubject;
-			fplayer.msg(errorpattern, hostFaction.describeTo(fplayer, true), this.getDescription());
-			if (Perm.ADMIN.has(fplayer.getPlayer()))
+			UPlayer uplayer = (UPlayer)rpSubject;
+			uplayer.msg(errorpattern, hostFaction.describeTo(uplayer, true), this.getDescription());
+			if (Perm.ADMIN.has(uplayer.getPlayer()))
 			{
-				fplayer.msg("<i>You can bypass by using " + Factions.get().getOuterCmdFactions().cmdFactionsAdmin.getUseageTemplate(false));
+				uplayer.msg("<i>You can bypass by using " + Factions.get().getOuterCmdFactions().cmdFactionsAdmin.getUseageTemplate(false));
 			}
 		}
 		return ret;

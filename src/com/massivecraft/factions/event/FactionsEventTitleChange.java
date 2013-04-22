@@ -19,8 +19,8 @@ public class FactionsEventTitleChange extends FactionsEventAbstractSender
 	// FIELDS
 	// -------------------------------------------- //
 	
-	private final UPlayer fplayer;
-	public UPlayer getFPlayer() { return this.fplayer; }
+	private final UPlayer uplayer;
+	public UPlayer getUPlayer() { return this.uplayer; }
 	
 	private String newTitle;
 	public String getNewTitle() { return this.newTitle; }
@@ -30,10 +30,10 @@ public class FactionsEventTitleChange extends FactionsEventAbstractSender
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public FactionsEventTitleChange(CommandSender sender, UPlayer fplayer, String newTitle)
+	public FactionsEventTitleChange(CommandSender sender, UPlayer uplayer, String newTitle)
 	{
 		super(sender);
-		this.fplayer = fplayer;
+		this.uplayer = uplayer;
 		this.newTitle = newTitle;
 	}
 	
