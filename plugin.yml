@@ -5,10 +5,6 @@ website: http://massivecraft.com/factions
 authors: [Olof "Cayorion" Larsson, Brett Flannigan]
 depend: [mcore]
 softdepend: [PermissionsEx, Permissions, Essentials, EssentialsChat, HeroChat, iChat, LocalAreaChat, LWC, nChat, ChatManager, AuthMe, Vault, Spout, WorldEdit, WorldGuard, AuthDB, CaptureThePoints, CombatTag]
-commands:
-  factions:
-    description: The Factions base command
-    aliases: [f]
 permissions:
 # -------------------------------------------- #
 # THE REAL NODES

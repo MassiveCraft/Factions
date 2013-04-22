@@ -164,9 +164,9 @@ public class TodoFactionsPlayerListener implements Listener
 		
 		if (Const.MATERIALS_EDIT_ON_INTERACT.contains(material) && ! FPerm.BUILD.has(me, ps, ! justCheck)) return false;
 		if (Const.MATERIALS_CONTAINER.contains(material) && ! FPerm.CONTAINER.has(me, ps, ! justCheck)) return false;
-		if (Const.MATERIALS_DOOR.contains(material)      && ! FPerm.DOOR.has(me, ps, ! justCheck)) return false;
-		if (material == Material.STONE_BUTTON          && ! FPerm.BUTTON.has(me, ps, ! justCheck)) return false;
-		if (material == Material.LEVER                 && ! FPerm.LEVER.has(me, ps, ! justCheck)) return false;
+		if (Const.MATERIALS_DOOR.contains(material) && ! FPerm.DOOR.has(me, ps, ! justCheck)) return false;
+		if (material == Material.STONE_BUTTON && ! FPerm.BUTTON.has(me, ps, ! justCheck)) return false;
+		if (material == Material.LEVER && ! FPerm.LEVER.has(me, ps, ! justCheck)) return false;
 		return true;
 	}
 
@@ -177,24 +177,21 @@ public class TodoFactionsPlayerListener implements Listener
 	{
 		Block block = event.getBlockClicked();
 		Player player = event.getPlayer();
-
-		if ( ! playerCanUseItemHere(player, PS.valueOf(block), event.getBucket(), false))
-		{
-			event.setCancelled(true);
-			return;
-		}
+		
+		if (playerCanUseItemHere(player, PS.valueOf(block), event.getBucket(), false)) return;
+		
+		event.setCancelled(true);
 	}
+	
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onPlayerBucketFill(PlayerBucketFillEvent event)
 	{
 		Block block = event.getBlockClicked();
 		Player player = event.getPlayer();
 
-		if ( ! playerCanUseItemHere(player, PS.valueOf(block), event.getBucket(), false))
-		{
-			event.setCancelled(true);
-			return;
-		}
+		if (playerCanUseItemHere(player, PS.valueOf(block), event.getBucket(), false)) return;
+		
+		event.setCancelled(true);
 	}
 	
 	

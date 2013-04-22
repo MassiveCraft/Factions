@@ -16,10 +16,7 @@ public class MConf extends Entity<MConf>
 	// -------------------------------------------- //
 	
 	protected static transient MConf i;
-	public static MConf get()
-	{
-		return i;
-	}
+	public static MConf get() { return i; }
 	
 	// -------------------------------------------- //
 	// COLORS
