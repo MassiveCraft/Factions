@@ -8,15 +8,15 @@ import com.massivecraft.mcore.store.MStore;
 import com.massivecraft.mcore.store.SenderColl;
 import com.massivecraft.mcore.util.TimeUnit;
 
-public class FPlayerColl extends SenderColl<FPlayer>
+public class UPlayerColl extends SenderColl<UPlayer>
 {
 	// -------------------------------------------- //
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public FPlayerColl(String name)
+	public UPlayerColl(String name)
 	{
-		super(name, FPlayer.class, MStore.getDb(ConfServer.dburi), Factions.get());
+		super(name, UPlayer.class, MStore.getDb(ConfServer.dburi), Factions.get());
 	}
 	
 	// -------------------------------------------- //
@@ -24,7 +24,7 @@ public class FPlayerColl extends SenderColl<FPlayer>
 	// -------------------------------------------- //
 
 	@Override
-	protected synchronized String attach(FPlayer entity, Object oid, boolean noteChange)
+	protected synchronized String attach(UPlayer entity, Object oid, boolean noteChange)
 	{
 		String ret = super.attach(entity, oid, noteChange);
 		
@@ -34,15 +34,15 @@ public class FPlayerColl extends SenderColl<FPlayer>
 		
 		// ... update the index.
 		Faction faction = entity.getFaction();
-		faction.fplayers.add(entity);
+		faction.uplayers.add(entity);
 		
 		return ret;
 	}
 	
 	@Override
-	public FPlayer detachId(Object oid)
+	public UPlayer detachId(Object oid)
 	{
-		FPlayer ret = super.detachId(oid);
+		UPlayer ret = super.detachId(oid);
 		if (ret == null) return null;
 		
 		// If inited ...
@@ -50,7 +50,7 @@ public class FPlayerColl extends SenderColl<FPlayer>
 		
 		// ... update the index.
 		Faction faction = ret.getFaction();
-		faction.fplayers.remove(ret);
+		faction.uplayers.remove(ret);
 		
 		return ret;
 	}
@@ -61,12 +61,12 @@ public class FPlayerColl extends SenderColl<FPlayer>
 	
 	public void clean()
 	{
-		for (FPlayer fplayer : this.getAll())
+		for (UPlayer uplayer : this.getAll())
 		{
-			if (FactionColls.get().get(this).containsId(fplayer.getFactionId())) continue;
+			if (FactionColls.get().get(this).containsId(uplayer.getFactionId())) continue;
 			
-			Factions.get().log("Reset faction data (invalid faction) for player "+fplayer.getName());
-			fplayer.resetFactionData(false);
+			Factions.get().log("Reset faction data (invalid faction) for player "+uplayer.getName());
+			uplayer.resetFactionData(false);
 		}
 	}
 	
@@ -77,31 +77,31 @@ public class FPlayerColl extends SenderColl<FPlayer>
 		long now = System.currentTimeMillis();
 		double toleranceMillis = ConfServer.autoLeaveAfterDaysOfInactivity * TimeUnit.MILLIS_PER_DAY;
 		
-		for (FPlayer fplayer : this.getAll())
+		for (UPlayer uplayer : this.getAll())
 		{
-			Long lastPlayed = Mixin.getLastPlayed(fplayer.getId());
+			Long lastPlayed = Mixin.getLastPlayed(uplayer.getId());
 			if (lastPlayed == null) continue;
 			
-			if (fplayer.isOnline()) continue;
+			if (uplayer.isOnline()) continue;
 			if (now - lastPlayed <= toleranceMillis) continue;
 			
 			if (MConf.get().logFactionLeave || MConf.get().logFactionKick)
 			{
-				Factions.get().log("Player "+fplayer.getName()+" was auto-removed due to inactivity.");
+				Factions.get().log("Player "+uplayer.getName()+" was auto-removed due to inactivity.");
 			}
 
 			// if player is faction leader, sort out the faction since he's going away
-			if (fplayer.getRole() == Rel.LEADER)
+			if (uplayer.getRole() == Rel.LEADER)
 			{
-				Faction faction = fplayer.getFaction();
+				Faction faction = uplayer.getFaction();
 				if (faction != null)
 				{
-					fplayer.getFaction().promoteNewLeader();
+					uplayer.getFaction().promoteNewLeader();
 				}
 			}
 
-			fplayer.leave(false);
-			fplayer.detach();
+			uplayer.leave(false);
+			uplayer.detach();
 		}
 	}
 }

@@ -3,9 +3,9 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
-import com.massivecraft.factions.cmd.arg.ARFPlayer;
+import com.massivecraft.factions.cmd.arg.ARUPlayer;
 import com.massivecraft.factions.cmd.req.ReqRoleIsAtLeast;
-import com.massivecraft.factions.entity.FPlayer;
+import com.massivecraft.factions.entity.UPlayer;
 import com.massivecraft.factions.event.FactionsEventTitleChange;
 import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.mcore.cmd.arg.ARString;
@@ -28,7 +28,7 @@ public class CmdFactionsTitle extends FCommand
 	public void perform()
 	{
 		// Args
-		FPlayer you = this.arg(0, ARFPlayer.getStartAny(sender));
+		UPlayer you = this.arg(0, ARUPlayer.getStartAny(sender));
 		if (you == null) return;
 		
 		String newTitle = this.argConcatFrom(1, ARString.get(), "");

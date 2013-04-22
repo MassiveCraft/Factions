@@ -2,8 +2,8 @@ package com.massivecraft.factions.cmd.arg;
 
 import org.bukkit.command.CommandSender;
 
-import com.massivecraft.factions.entity.FPlayer;
-import com.massivecraft.factions.entity.FPlayerColls;
+import com.massivecraft.factions.entity.UPlayer;
+import com.massivecraft.factions.entity.UPlayerColls;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.FactionColl;
 import com.massivecraft.factions.entity.FactionColls;
@@ -47,11 +47,11 @@ public class ARFaction extends ArgReaderAbstract<Faction>
 		result.setResult(this.getColl().getBestTagMatch(str));
 		if (result.hasResult()) return result;
 		
-		// FPlayer Name Exact
-		FPlayer fplayer = FPlayerColls.get().get(this.getColl()).get(str);
-		if (fplayer != null)
+		// UPlayer Name Exact
+		UPlayer uplayer = UPlayerColls.get().get(this.getColl()).get(str);
+		if (uplayer != null)
 		{
-			result.setResult(fplayer.getFaction());
+			result.setResult(uplayer.getFaction());
 			return result;
 		}
 		

@@ -1,20 +1,20 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Rel;
-import com.massivecraft.factions.entity.FPlayer;
+import com.massivecraft.factions.entity.UPlayer;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.mcore.cmd.MCommand;
 import com.massivecraft.mcore.util.Txt;
 
 public abstract class FCommand extends MCommand
 {
-	public FPlayer fme;
+	public UPlayer fme;
 	public Faction myFaction;
 	
 	@Override
 	public void fixSenderVars()
 	{
-		this.fme = FPlayer.get(this.sender);
+		this.fme = UPlayer.get(this.sender);
 		this.myFaction = this.fme.getFaction();
 	}
 	
@@ -22,7 +22,7 @@ public abstract class FCommand extends MCommand
 	// COMMONLY USED LOGIC
 	// -------------------------------------------- //
 	
-	public boolean canIAdministerYou(FPlayer i, FPlayer you)
+	public boolean canIAdministerYou(UPlayer i, UPlayer you)
 	{
 		if ( ! i.getFaction().equals(you.getFaction()))
 		{

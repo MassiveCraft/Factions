@@ -350,9 +350,9 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 		return this.getInvitedPlayerIds().contains(playerId);
 	}
 	
-	public boolean isInvited(FPlayer fplayer)
+	public boolean isInvited(UPlayer uplayer)
 	{
-		return this.isInvited(fplayer.getId());
+		return this.isInvited(uplayer.getId());
 	}
 	
 	public boolean setInvited(String playerId, boolean invited)
@@ -372,9 +372,9 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 		
 	}
 	
-	public void setInvited(FPlayer fplayer, boolean invited)
+	public void setInvited(UPlayer uplayer, boolean invited)
 	{
-		this.setInvited(fplayer.getId(), invited);
+		this.setInvited(uplayer.getId(), invited);
 	}
 	
 	// -------------------------------------------- //
@@ -673,9 +673,9 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 		}
 		
 		double ret = 0;
-		for (FPlayer fplayer : this.getFPlayers())
+		for (UPlayer uplayer : this.getUPlayers())
 		{
-			ret += fplayer.getPower();
+			ret += uplayer.getPower();
 		}
 		
 		if (UConf.get(this).powerFactionMax > 0 && ret > UConf.get(this).powerFactionMax)
@@ -694,9 +694,9 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 		}
 		
 		double ret = 0;
-		for (FPlayer fplayer : this.getFPlayers())
+		for (UPlayer uplayer : this.getUPlayers())
 		{
-			ret += fplayer.getPowerMax();
+			ret += uplayer.getPowerMax();
 		}
 		
 		if (UConf.get(this).powerFactionMax > 0 && ret > UConf.get(this).powerFactionMax)
@@ -732,41 +732,37 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	}
 	
 	// -------------------------------------------- //
-	// FOREIGN KEYS: FPLAYERS
+	// FOREIGN KEY: UPLAYER
 	// -------------------------------------------- //
-
-	// TODO: With this approach null must be used as default always.
-	// TODO: Take a moment and reflect upon the consequenses eeeeeeh...
-	// TODO: This one may be to slow after all :/ Thus I must maintain an index.
 	
-	protected transient List<FPlayer> fplayers = null;
-	public void reindexFPlayers()
+	protected transient List<UPlayer> uplayers = null;
+	public void reindexUPlayers()
 	{
-		this.fplayers = new ArrayList<FPlayer>();
+		this.uplayers = new ArrayList<UPlayer>();
 		
 		String factionId = this.getId();
 		if (factionId == null) return;
 		
-		for (FPlayer fplayer : FPlayerColls.get().get(this).getAll())
+		for (UPlayer uplayer : UPlayerColls.get().get(this).getAll())
 		{
-			if (!MUtil.equals(factionId, fplayer.getFactionId())) continue;
-			this.fplayers.add(fplayer);
+			if (!MUtil.equals(factionId, uplayer.getFactionId())) continue;
+			this.uplayers.add(uplayer);
 		}
 	}
 	
-	public List<FPlayer> getFPlayers()
+	public List<UPlayer> getUPlayers()
 	{
-		return new ArrayList<FPlayer>(this.fplayers);
+		return new ArrayList<UPlayer>(this.uplayers);
 	}
 	
-	public List<FPlayer> getFPlayersWhereOnline(boolean online)
+	public List<UPlayer> getUPlayersWhereOnline(boolean online)
 	{
-		List<FPlayer> ret = this.getFPlayers();
-		Iterator<FPlayer> iter = ret.iterator();
+		List<UPlayer> ret = this.getUPlayers();
+		Iterator<UPlayer> iter = ret.iterator();
 		while (iter.hasNext())
 		{
-			FPlayer fplayer = iter.next();
-			if (fplayer.isOnline() != online)
+			UPlayer uplayer = iter.next();
+			if (uplayer.isOnline() != online)
 			{
 				iter.remove();
 			}
@@ -774,14 +770,14 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 		return ret;
 	}
 	
-	public List<FPlayer> getFPlayersWhereRole(Rel role)
+	public List<UPlayer> getUPlayersWhereRole(Rel role)
 	{
-		List<FPlayer> ret = this.getFPlayers();
-		Iterator<FPlayer> iter = ret.iterator();
+		List<UPlayer> ret = this.getUPlayers();
+		Iterator<UPlayer> iter = ret.iterator();
 		while (iter.hasNext())
 		{
-			FPlayer fplayer = iter.next();
-			if (fplayer.getRole() != role)
+			UPlayer uplayer = iter.next();
+			if (uplayer.getRole() != role)
 			{
 				iter.remove();
 			}
@@ -789,16 +785,16 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 		return ret;
 	}
 	
-	public FPlayer getLeader()
+	public UPlayer getLeader()
 	{
-		List<FPlayer> ret = this.getFPlayers();
-		Iterator<FPlayer> iter = ret.iterator();
+		List<UPlayer> ret = this.getUPlayers();
+		Iterator<UPlayer> iter = ret.iterator();
 		while (iter.hasNext())
 		{
-			FPlayer fplayer = iter.next();
-			if (fplayer.getRole() == Rel.LEADER)
+			UPlayer uplayer = iter.next();
+			if (uplayer.getRole() == Rel.LEADER)
 			{
-				return fplayer;
+				return uplayer;
 			}
 		}
 		return null;
@@ -809,9 +805,9 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 		List<CommandSender> ret = new ArrayList<CommandSender>();
 		for (CommandSender player : SenderUtil.getOnlineSenders())
 		{
-			FPlayer fplayer = FPlayer.get(player);
-			if (!MUtil.equals(fplayer.getUniverse(), this.getUniverse())) continue;
-			if (fplayer.getFaction() != this) continue;
+			UPlayer uplayer = UPlayer.get(player);
+			if (!MUtil.equals(uplayer.getUniverse(), this.getUniverse())) continue;
+			if (uplayer.getFaction() != this) continue;
 			ret.add(player);
 		}
 		return ret;
@@ -822,9 +818,9 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 		List<Player> ret = new ArrayList<Player>();
 		for (Player player : Bukkit.getOnlinePlayers())
 		{
-			FPlayer fplayer = FPlayer.get(player);
-			if (!MUtil.equals(fplayer.getUniverse(), this.getUniverse())) continue;
-			if (fplayer.getFaction() != this) continue;
+			UPlayer uplayer = UPlayer.get(player);
+			if (!MUtil.equals(uplayer.getUniverse(), this.getUniverse())) continue;
+			if (uplayer.getFaction() != this) continue;
 			ret.add(player);
 		}
 		return ret;
@@ -836,13 +832,13 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 		if ( ! this.isNormal()) return;
 		if (this.getFlag(FFlag.PERMANENT) && ConfServer.permanentFactionsDisableLeaderPromotion) return;
 
-		FPlayer oldLeader = this.getLeader();
+		UPlayer oldLeader = this.getLeader();
 
 		// get list of officers, or list of normal members if there are no officers
-		List<FPlayer> replacements = this.getFPlayersWhereRole(Rel.OFFICER);
+		List<UPlayer> replacements = this.getUPlayersWhereRole(Rel.OFFICER);
 		if (replacements == null || replacements.isEmpty())
 		{
-			replacements = this.getFPlayersWhereRole(Rel.MEMBER);
+			replacements = this.getUPlayersWhereRole(Rel.MEMBER);
 		}
 
 		if (replacements == null || replacements.isEmpty())
@@ -862,9 +858,9 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 				Factions.get().log("The faction "+this.getTag()+" ("+this.getId()+") has been disbanded since it has no members left.");
 			}
 
-			for (FPlayer fplayer : FPlayerColls.get().get(this).getAllOnline())
+			for (UPlayer uplayer : UPlayerColls.get().get(this).getAllOnline())
 			{
-				fplayer.msg("The faction %s<i> was disbanded.", this.getTag(fplayer));
+				uplayer.msg("The faction %s<i> was disbanded.", this.getTag(uplayer));
 			}
 
 			this.detach();

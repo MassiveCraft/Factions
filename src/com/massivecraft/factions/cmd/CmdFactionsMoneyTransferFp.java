@@ -1,10 +1,10 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Perm;
-import com.massivecraft.factions.cmd.arg.ARFPlayer;
+import com.massivecraft.factions.cmd.arg.ARUPlayer;
 import com.massivecraft.factions.cmd.arg.ARFaction;
 import com.massivecraft.factions.cmd.req.ReqBankCommandsEnabled;
-import com.massivecraft.factions.entity.FPlayer;
+import com.massivecraft.factions.entity.UPlayer;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.Factions;
@@ -40,7 +40,7 @@ public class CmdFactionsMoneyTransferFp extends FCommand
 		Faction from = this.arg(1, ARFaction.get(sender));
 		if (from == null) return;
 		
-		FPlayer to = this.arg(2, ARFPlayer.getStartAny(sender));
+		UPlayer to = this.arg(2, ARUPlayer.getStartAny(sender));
 		if (to == null) return;
 		
 		boolean success = Econ.transferMoney(fme, from, to, amount);

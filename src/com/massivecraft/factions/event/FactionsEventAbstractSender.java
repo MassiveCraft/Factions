@@ -2,7 +2,7 @@ package com.massivecraft.factions.event;
 
 import org.bukkit.command.CommandSender;
 
-import com.massivecraft.factions.entity.FPlayer;
+import com.massivecraft.factions.entity.UPlayer;
 import com.massivecraft.mcore.event.MCoreEvent;
 
 public abstract class FactionsEventAbstractSender extends MCoreEvent
@@ -13,7 +13,7 @@ public abstract class FactionsEventAbstractSender extends MCoreEvent
 	
 	private final CommandSender sender;
 	public CommandSender getSender() { return this.sender; }
-	public FPlayer getFSender() { return FPlayer.get(this.sender); }
+	public UPlayer getFSender() { return UPlayer.get(this.sender); }
 	
 	// -------------------------------------------- //
 	// CONSTRUCT

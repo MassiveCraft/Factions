@@ -2,9 +2,9 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
-import com.massivecraft.factions.cmd.arg.ARFPlayer;
+import com.massivecraft.factions.cmd.arg.ARUPlayer;
 import com.massivecraft.factions.cmd.arg.ARFaction;
-import com.massivecraft.factions.entity.FPlayer;
+import com.massivecraft.factions.entity.UPlayer;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.mcore.cmd.arg.ARDouble;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
@@ -45,7 +45,7 @@ public class CmdFactionsPowerBoost extends FCommand
 
 		if (doPlayer)
 		{
-			FPlayer targetPlayer = this.arg(1, ARFPlayer.getStartAny(sender));
+			UPlayer targetPlayer = this.arg(1, ARUPlayer.getStartAny(sender));
 			if (targetPlayer == null) return;
 			
 			targetPlayer.setPowerBoost(targetPower);

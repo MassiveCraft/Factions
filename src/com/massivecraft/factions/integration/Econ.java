@@ -8,7 +8,7 @@ import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.EconomyParticipator;
 import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.Factions;
-import com.massivecraft.factions.entity.FPlayer;
+import com.massivecraft.factions.entity.UPlayer;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.util.RelationUtil;
 import com.massivecraft.mcore.money.Money;
@@ -30,7 +30,7 @@ public class Econ
 	// UTIL
 	// -------------------------------------------- //
 	
-	public static boolean payForAction(double cost, FPlayer fsender, String actionDescription)
+	public static boolean payForAction(double cost, UPlayer fsender, String actionDescription)
 	{
 		if (!isEnabled(fsender)) return true;
 		if (cost == 0D) return true;
@@ -64,7 +64,7 @@ public class Econ
 		Money.add(universe, ConfServer.econUniverseAccount, delta);
 	}
 
-	public static void sendBalanceInfo(FPlayer to, EconomyParticipator about)
+	public static void sendBalanceInfo(UPlayer to, EconomyParticipator about)
 	{
 		if (!isEnabled(to))
 		{
@@ -84,7 +84,7 @@ public class Econ
 		if (fI == null) return true;
 		
 		// Bypassing players can do any kind of transaction
-		if (i instanceof FPlayer && ((FPlayer)i).isUsingAdminMode()) return true;
+		if (i instanceof UPlayer && ((UPlayer)i).isUsingAdminMode()) return true;
 		
 		// You can deposit to anywhere you feel like. It's your loss if you can't withdraw it again.
 		if (i == you) return true;
@@ -167,21 +167,21 @@ public class Econ
 		return false;
 	}
 	
-	public static Set<FPlayer> getFplayers(EconomyParticipator ep)
+	public static Set<UPlayer> getFplayers(EconomyParticipator ep)
 	{
-		Set<FPlayer> fplayers = new HashSet<FPlayer>();
+		Set<UPlayer> fplayers = new HashSet<UPlayer>();
 		
 		if (ep == null)
 		{
 			// Add nothing
 		}
-		else if (ep instanceof FPlayer)
+		else if (ep instanceof UPlayer)
 		{
-			fplayers.add((FPlayer)ep);
+			fplayers.add((UPlayer)ep);
 		}
 		else if (ep instanceof Faction)
 		{
-			fplayers.addAll(((Faction)ep).getFPlayers());
+			fplayers.addAll(((Faction)ep).getUPlayers());
 		}
 		
 		return fplayers;
@@ -189,35 +189,35 @@ public class Econ
 	
 	public static void sendTransferInfo(EconomyParticipator invoker, EconomyParticipator from, EconomyParticipator to, double amount)
 	{
-		Set<FPlayer> recipients = new HashSet<FPlayer>();
+		Set<UPlayer> recipients = new HashSet<UPlayer>();
 		recipients.addAll(getFplayers(invoker));
 		recipients.addAll(getFplayers(from));
 		recipients.addAll(getFplayers(to));
 		
 		if (invoker == null)
 		{
-			for (FPlayer recipient : recipients)
+			for (UPlayer recipient : recipients)
 			{
 				recipient.msg("<h>%s<i> was transfered from <h>%s<i> to <h>%s<i>.", Money.format(from, amount), from.describeTo(recipient), to.describeTo(recipient));
 			}
 		}
 		else if (invoker == from)
 		{
-			for (FPlayer recipient : recipients)
+			for (UPlayer recipient : recipients)
 			{
 				recipient.msg("<h>%s<i> <h>gave %s<i> to <h>%s<i>.", from.describeTo(recipient, true), Money.format(from, amount), to.describeTo(recipient));
 			}
 		}
 		else if (invoker == to)
 		{
-			for (FPlayer recipient : recipients)
+			for (UPlayer recipient : recipients)
 			{
 				recipient.msg("<h>%s<i> <h>took %s<i> from <h>%s<i>.", to.describeTo(recipient, true), Money.format(from, amount), from.describeTo(recipient));
 			}
 		}
 		else
 		{
-			for (FPlayer recipient : recipients)
+			for (UPlayer recipient : recipients)
 			{
 				recipient.msg("<h>%s<i> transfered <h>%s<i> from <h>%s<i> to <h>%s<i>.", invoker.describeTo(recipient, true), Money.format(from, amount), from.describeTo(recipient), to.describeTo(recipient));
 			}

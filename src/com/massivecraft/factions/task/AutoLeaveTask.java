@@ -1,8 +1,8 @@
 package com.massivecraft.factions.task;
 
 import com.massivecraft.factions.ConfServer;
-import com.massivecraft.factions.entity.FPlayerColl;
-import com.massivecraft.factions.entity.FPlayerColls;
+import com.massivecraft.factions.entity.UPlayerColl;
+import com.massivecraft.factions.entity.UPlayerColls;
 import com.massivecraft.mcore.ModuloRepeatTask;
 import com.massivecraft.mcore.util.TimeUnit;
 
@@ -34,7 +34,7 @@ public class AutoLeaveTask extends ModuloRepeatTask
 	@Override
 	public void invoke()
 	{
-		for (FPlayerColl coll : FPlayerColls.get().getColls())
+		for (UPlayerColl coll : UPlayerColls.get().getColls())
 		{
 			coll.autoLeaveOnInactivityRoutine();
 		}

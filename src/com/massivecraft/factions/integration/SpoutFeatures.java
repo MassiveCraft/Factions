@@ -12,7 +12,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.entity.Player;
 
-import com.massivecraft.factions.entity.FPlayer;
+import com.massivecraft.factions.entity.UPlayer;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.util.HealthBarUtil;
 import com.massivecraft.mcore.ps.PS;
@@ -72,7 +72,7 @@ public class SpoutFeatures
 		
 		for (Player player : fromPlayers)
 		{
-			FPlayer fplayer = FPlayer.get(player);
+			UPlayer fplayer = UPlayer.get(player);
 			SpoutPlayer splayer = SpoutManager.getPlayer(player);
 			Faction faction = fplayer.getFaction();
 			
@@ -137,13 +137,13 @@ public class SpoutFeatures
 		
 		for (Player player : fromPlayers)
 		{
-			FPlayer fplayer = FPlayer.get(player);
+			UPlayer fplayer = UPlayer.get(player);
 			SpoutPlayer splayer = SpoutManager.getPlayer(player);
 			Faction faction = fplayer.getFaction();
 			
 			for (Player playerTo : toPlayers)
 			{
-				FPlayer fplayerTo = FPlayer.get(playerTo);
+				UPlayer fplayerTo = UPlayer.get(playerTo);
 				SpoutPlayer splayerTo = SpoutManager.getPlayer(playerTo);
 				Faction factionTo = fplayerTo.getFaction();
 				
@@ -178,7 +178,7 @@ public class SpoutFeatures
 		}, 5);
 	}
 	
-	public static String generateTitle(Player player, FPlayer fplayer, Faction faction, ChatColor relationColor)
+	public static String generateTitle(Player player, UPlayer fplayer, Faction faction, ChatColor relationColor)
 	{
 		String ret = null;
 		
@@ -220,9 +220,9 @@ public class SpoutFeatures
 		{
 			ret.add((Player)o);
 		}
-		else if (o instanceof FPlayer)
+		else if (o instanceof UPlayer)
 		{
-			FPlayer fplayer = (FPlayer)o;
+			UPlayer fplayer = (UPlayer)o;
 			Player player = fplayer.getPlayer();
 			if (player != null)
 			{
@@ -252,7 +252,7 @@ public class SpoutFeatures
 
 		for (Player player : Bukkit.getOnlinePlayers())
 		{
-			FPlayer fplayer = FPlayer.get(player);
+			UPlayer fplayer = UPlayer.get(player);
 			if (chunk == null)
 			{
 				mainListener.updateTerritoryDisplay(fplayer, false);
@@ -265,7 +265,7 @@ public class SpoutFeatures
 	}
 
 	// update displayed current territory for specified player; returns false if unsuccessful
-	public static boolean updateTerritoryDisplay(FPlayer player)
+	public static boolean updateTerritoryDisplay(UPlayer player)
 	{
 		if ( ! isEnabled()) return false;
 		return mainListener.updateTerritoryDisplay(player, true);
@@ -280,7 +280,7 @@ public class SpoutFeatures
 
 		for (Player player : Bukkit.getOnlinePlayers())
 		{
-			FPlayer fplayer = FPlayer.get(player);
+			UPlayer fplayer = UPlayer.get(player);
 			if (chunk == null || fplayer.getCurrentChunk().equals(chunk))
 			{
 				mainListener.updateAccessInfo(fplayer);
@@ -289,13 +289,13 @@ public class SpoutFeatures
 	}
 
 	// update owner list for specified player
-	public static boolean updateAccessInfo(FPlayer player)
+	public static boolean updateAccessInfo(UPlayer player)
 	{
 		if ( ! isEnabled()) return false;
 		return mainListener.updateAccessInfo(player);
 	}
 
-	public static void playerDisconnect(FPlayer player)
+	public static void playerDisconnect(UPlayer player)
 	{
 		if ( ! isEnabled()) return;
 		mainListener.removeTerritoryLabels(player.getName());

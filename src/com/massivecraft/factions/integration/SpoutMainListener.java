@@ -12,7 +12,7 @@ import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.TerritoryAccess;
 import com.massivecraft.factions.entity.BoardColls;
-import com.massivecraft.factions.entity.FPlayer;
+import com.massivecraft.factions.entity.UPlayer;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.mcore.ps.PS;
 
@@ -28,7 +28,7 @@ public class SpoutMainListener implements Listener
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onSpoutCraftEnable(SpoutCraftEnableEvent event)
 	{
-		final FPlayer me = FPlayer.get(event.getPlayer());
+		final UPlayer me = UPlayer.get(event.getPlayer());
 
 		SpoutFeatures.updateTitle(me, null);
 		SpoutFeatures.updateTitle(null, me);
@@ -46,7 +46,7 @@ public class SpoutMainListener implements Listener
 //	private final static int SCREEN_HEIGHT = 240;
 
 
-	public boolean updateTerritoryDisplay(FPlayer player, boolean notify)
+	public boolean updateTerritoryDisplay(UPlayer player, boolean notify)
 	{
 		Player p = player.getPlayer();
 		if (p == null)
@@ -61,7 +61,7 @@ public class SpoutMainListener implements Listener
 		return true;
 	}
 
-	public boolean updateAccessInfo(FPlayer player)
+	public boolean updateAccessInfo(UPlayer player)
 	{
 		Player p = player.getPlayer();
 		if (p == null)
@@ -86,7 +86,7 @@ public class SpoutMainListener implements Listener
 	}
 
 
-	private void doLabels(FPlayer player, SpoutPlayer sPlayer, boolean notify)
+	private void doLabels(UPlayer player, SpoutPlayer sPlayer, boolean notify)
 	{
 		PS here = player.getCurrentChunk();
 		Faction factionHere = BoardColls.get().getFactionAt(here);
@@ -159,7 +159,7 @@ public class SpoutMainListener implements Listener
 
 	private static final Color accessGrantedColor = new Color(0.2f, 1.0f, 0.2f);
 	private static final Color accessDeniedColor = new Color(1.0f, 0.2f, 0.2f);
-	private void doAccessInfo(FPlayer player, SpoutPlayer sPlayer, PS here)
+	private void doAccessInfo(UPlayer player, SpoutPlayer sPlayer, PS here)
 	{
 		if (ConfServer.spoutTerritoryDisplayPosition <= 0 || ConfServer.spoutTerritoryDisplaySize <= 0 || ! ConfServer.spoutTerritoryAccessShow) return;
 

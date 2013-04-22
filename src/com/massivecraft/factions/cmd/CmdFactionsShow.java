@@ -7,7 +7,7 @@ import java.util.Map;
 
 import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.cmd.arg.ARFaction;
-import com.massivecraft.factions.entity.FPlayer;
+import com.massivecraft.factions.entity.UPlayer;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.FFlag;
@@ -35,10 +35,10 @@ public class CmdFactionsShow extends FCommand
 		Faction faction = this.arg(0, ARFaction.get(myFaction), myFaction);
 		if (faction == null) return;
 
-		Collection<FPlayer> leaders = faction.getFPlayersWhereRole(Rel.LEADER);
-		Collection<FPlayer> officers = faction.getFPlayersWhereRole(Rel.OFFICER);
-		Collection<FPlayer> normals = faction.getFPlayersWhereRole(Rel.MEMBER);
-		Collection<FPlayer> recruits = faction.getFPlayersWhereRole(Rel.RECRUIT);
+		Collection<UPlayer> leaders = faction.getUPlayersWhereRole(Rel.LEADER);
+		Collection<UPlayer> officers = faction.getUPlayersWhereRole(Rel.OFFICER);
+		Collection<UPlayer> normals = faction.getUPlayersWhereRole(Rel.MEMBER);
+		Collection<UPlayer> recruits = faction.getUPlayersWhereRole(Rel.RECRUIT);
 		
 		msg(Txt.titleize(faction.getTag(fme)));
 		msg("<a>Description: <i>%s", faction.getDescription());
@@ -101,7 +101,7 @@ public class CmdFactionsShow extends FCommand
 		List<String> memberOnlineNames = new ArrayList<String>();
 		List<String> memberOfflineNames = new ArrayList<String>();
 		
-		for (FPlayer follower : leaders)
+		for (UPlayer follower : leaders)
 		{
 			if (follower.isOnline() && Mixin.isVisible(me, follower.getId()))
 			{
@@ -113,7 +113,7 @@ public class CmdFactionsShow extends FCommand
 			}
 		}
 		
-		for (FPlayer follower : officers)
+		for (UPlayer follower : officers)
 		{
 			if (follower.isOnline() && Mixin.isVisible(me, follower.getId()))
 			{
@@ -125,7 +125,7 @@ public class CmdFactionsShow extends FCommand
 			}
 		}
 		
-		for (FPlayer follower : normals)
+		for (UPlayer follower : normals)
 		{
 			if (follower.isOnline() && Mixin.isVisible(me, follower.getId()))
 			{
@@ -137,7 +137,7 @@ public class CmdFactionsShow extends FCommand
 			}
 		}
 		
-		for (FPlayer follower : recruits)
+		for (UPlayer follower : recruits)
 		{
 			if (follower.isOnline())
 			{

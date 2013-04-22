@@ -50,7 +50,7 @@ import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.entity.BoardColls;
-import com.massivecraft.factions.entity.FPlayer;
+import com.massivecraft.factions.entity.UPlayer;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.entity.UConf;
@@ -89,7 +89,7 @@ public class FactionsListenerMain implements Listener
 	{
 		// If a player dies ...
 		Player player = event.getEntity();
-		FPlayer fplayer = FPlayer.get(player);
+		UPlayer fplayer = UPlayer.get(player);
 		
 		// ... and powerloss can happen here ...
 		Faction faction = BoardColls.get().getFactionAt(PS.valueOf(player));
@@ -169,7 +169,7 @@ public class FactionsListenerMain implements Listener
 		Entity edefender = event.getEntity();
 		if (!(edefender instanceof Player)) return true;
 		Player defender = (Player)edefender;
-		FPlayer fdefender = FPlayer.get(edefender);
+		UPlayer fdefender = UPlayer.get(edefender);
 		
 		// ... and the attacker is someone else ...
 		Entity eattacker = event.getDamager();
@@ -190,7 +190,7 @@ public class FactionsListenerMain implements Listener
 			{
 				if (notify)
 				{
-					FPlayer attacker = FPlayer.get(eattacker);
+					UPlayer attacker = UPlayer.get(eattacker);
 					attacker.msg("<i>PVP is disabled in %s.", defenderPsFaction.describeTo(attacker));
 				}
 				return false;
@@ -201,7 +201,7 @@ public class FactionsListenerMain implements Listener
 		// ... and if the attacker is a player ...
 		if (!(eattacker instanceof Player)) return true;
 		Player attacker = (Player)eattacker;
-		FPlayer fattacker = FPlayer.get(attacker);
+		UPlayer fattacker = UPlayer.get(attacker);
 		
 		// ... does this player bypass all protection? ...
 		if (MConf.get().playersWhoBypassAllProtection.contains(attacker.getName())) return true;
@@ -292,7 +292,7 @@ public class FactionsListenerMain implements Listener
 	{
 		// If a player was kicked from the server ...
 		Player player = event.getPlayer();
-		FPlayer fplayer = FPlayer.get(player);
+		UPlayer fplayer = UPlayer.get(player);
 
 		// ... and if the if player was banned (not just kicked) ...
 		if (!event.getReason().equals("Banned by admin.")) return;
@@ -331,7 +331,7 @@ public class FactionsListenerMain implements Listener
 	{
 		// If a player is trying to run a command ...
 		Player player = event.getPlayer();
-		FPlayer fplayer = FPlayer.get(player);
+		UPlayer fplayer = UPlayer.get(player);
 		
 		// ... and the player does not have adminmode ...
 		if (fplayer.isUsingAdminMode()) return;
@@ -508,7 +508,7 @@ public class FactionsListenerMain implements Listener
 		String name = player.getName();
 		if (MConf.get().playersWhoBypassAllProtection.contains(name)) return true;
 
-		FPlayer me = FPlayer.get(player);
+		UPlayer me = UPlayer.get(player);
 		if (me.isUsingAdminMode()) return true;
 
 		Faction factionHere = BoardColls.get().getFactionAt(ps);

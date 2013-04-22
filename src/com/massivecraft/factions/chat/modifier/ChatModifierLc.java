@@ -1,7 +1,7 @@
 package com.massivecraft.factions.chat.modifier;
 
 import com.massivecraft.factions.chat.ChatModifierAbstract;
-import com.massivecraft.factions.entity.FPlayer;
+import com.massivecraft.factions.entity.UPlayer;
 
 public class ChatModifierLc extends ChatModifierAbstract
 {
@@ -18,7 +18,7 @@ public class ChatModifierLc extends ChatModifierAbstract
 	// -------------------------------------------- //
 
 	@Override
-	public String getModified(String subject, FPlayer fsender, FPlayer frecipient)
+	public String getModified(String subject, UPlayer fsender, UPlayer frecipient)
 	{
 		return subject.toLowerCase();
 	}

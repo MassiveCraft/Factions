@@ -11,7 +11,7 @@ import java.util.Set;
 import org.bukkit.command.CommandSender;
 
 import com.massivecraft.factions.entity.BoardColls;
-import com.massivecraft.factions.entity.FPlayer;
+import com.massivecraft.factions.entity.UPlayer;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.UConf;
 import com.massivecraft.mcore.ps.PS;
@@ -174,7 +174,7 @@ public enum FPerm
 		
 		if (testSubject instanceof CommandSender)
 		{
-			rpSubject = FPlayer.get(testSubject);
+			rpSubject = UPlayer.get(testSubject);
 		}
 		else if (testSubject instanceof RelationParticipator)
 		{
@@ -190,11 +190,11 @@ public enum FPerm
 		// TODO: Create better description messages like: "You must at least be officer".
 		boolean ret = hostFaction.getPermittedRelations(this).contains(rel);
 		
-		if (rpSubject instanceof FPlayer && ret == false && ((FPlayer)rpSubject).isUsingAdminMode()) ret = true;
+		if (rpSubject instanceof UPlayer && ret == false && ((UPlayer)rpSubject).isUsingAdminMode()) ret = true;
 		
-		if (!ret && informIfNot && rpSubject instanceof FPlayer)
+		if (!ret && informIfNot && rpSubject instanceof UPlayer)
 		{
-			FPlayer fplayer = (FPlayer)rpSubject;
+			UPlayer fplayer = (UPlayer)rpSubject;
 			fplayer.msg(errorpattern, hostFaction.describeTo(fplayer, true), this.getDescription());
 			if (Perm.ADMIN.has(fplayer.getPlayer()))
 			{
@@ -218,11 +218,11 @@ public enum FPerm
 			{
 				if (informIfNot)
 				{
-					FPlayer notify = null;
+					UPlayer notify = null;
 					if (testSubject instanceof CommandSender)
-						notify = FPlayer.get(testSubject);
-					else if (testSubject instanceof FPlayer)
-						notify = (FPlayer)testSubject;
+						notify = UPlayer.get(testSubject);
+					else if (testSubject instanceof UPlayer)
+						notify = (UPlayer)testSubject;
 					if (notify != null)
 						notify.msg("<b>This territory owned by your faction has restricted access.");
 				}

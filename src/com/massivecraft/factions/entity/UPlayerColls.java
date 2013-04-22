@@ -19,23 +19,23 @@ import com.massivecraft.mcore.util.MUtil;
 import com.massivecraft.mcore.util.SenderUtil;
 import com.massivecraft.mcore.xlib.gson.reflect.TypeToken;
 
-public class FPlayerColls extends Colls<FPlayerColl, FPlayer>
+public class UPlayerColls extends Colls<UPlayerColl, UPlayer>
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static FPlayerColls i = new FPlayerColls();
-	public static FPlayerColls get() { return i; }
+	private static UPlayerColls i = new UPlayerColls();
+	public static UPlayerColls get() { return i; }
 	
 	// -------------------------------------------- //
 	// OVERRIDE: COLLS
 	// -------------------------------------------- //
 	
 	@Override
-	public FPlayerColl createColl(String collName)
+	public UPlayerColl createColl(String collName)
 	{
-		return new FPlayerColl(collName);
+		return new UPlayerColl(collName);
 	}
 
 	@Override
@@ -47,11 +47,11 @@ public class FPlayerColls extends Colls<FPlayerColl, FPlayer>
 	@Override
 	public String getBasename()
 	{
-		return Const.COLLECTION_BASENAME_PLAYER;
+		return Const.COLLECTION_BASENAME_UPLAYER;
 	}
 	
 	@Override
-	public FPlayerColl get(Object o)
+	public UPlayerColl get(Object o)
 	{
 		if (o == null) return null;
 		
@@ -93,17 +93,17 @@ public class FPlayerColls extends Colls<FPlayerColl, FPlayer>
 		if ( ! oldFile.exists()) return;
 		
 		// Read the file content through GSON. 
-		Type type = new TypeToken<Map<String, FPlayer>>(){}.getType();
-		Map<String, FPlayer> id2fplayer = Factions.get().gson.fromJson(DiscUtil.readCatch(oldFile), type);
+		Type type = new TypeToken<Map<String, UPlayer>>(){}.getType();
+		Map<String, UPlayer> id2fplayer = Factions.get().gson.fromJson(DiscUtil.readCatch(oldFile), type);
 		
 		// The Coll
-		FPlayerColl coll = this.getForUniverse(MCore.DEFAULT);
+		UPlayerColl coll = this.getForUniverse(MCore.DEFAULT);
 		
 		// Set the data
-		for (Entry<String, FPlayer> entry : id2fplayer.entrySet())
+		for (Entry<String, UPlayer> entry : id2fplayer.entrySet())
 		{
 			String playerId = entry.getKey();
-			FPlayer fplayer = entry.getValue();
+			UPlayer fplayer = entry.getValue();
 			coll.attach(fplayer, playerId);
 		}
 		

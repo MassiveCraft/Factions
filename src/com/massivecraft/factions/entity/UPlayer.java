@@ -34,15 +34,15 @@ import com.massivecraft.mcore.util.TimeUnit;
 import com.massivecraft.mcore.util.Txt;
 
 
-public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipator
+public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipator
 {
 	// -------------------------------------------- //
 	// META
 	// -------------------------------------------- //
 	
-	public static FPlayer get(Object oid)
+	public static UPlayer get(Object oid)
 	{
-		return FPlayerColls.get().get2(oid);
+		return UPlayerColls.get().get2(oid);
 	}
 	
 	// -------------------------------------------- //
@@ -50,7 +50,7 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 	// -------------------------------------------- //
 	
 	@Override
-	public FPlayer load(FPlayer that)
+	public UPlayer load(UPlayer that)
 	{
 		this.setFactionId(that.factionId);
 		this.setRole(that.role);
@@ -151,7 +151,7 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 	// -------------------------------------------- //
 	
 	// GSON need this noarg constructor.
-	public FPlayer()
+	public UPlayer()
 	{
 		this.resetFactionData(false);
 		//this.power = ConfServer.powerStarting;
@@ -238,8 +238,8 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 		Faction oldFaction = FactionColls.get().get(this).get(oldFactionId);
 		Faction faction = FactionColls.get().get(this).get(factionId);
 		
-		oldFaction.fplayers.remove(this);
-		faction.fplayers.add(this);
+		oldFaction.uplayers.remove(this);
+		faction.uplayers.add(this);
 		
 		// Mark as changed
 		this.changed();
@@ -418,7 +418,7 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 		if (online)
 		{
 			Player thisPlayer = this.getPlayer();
-			online = (thisPlayer != null && !thisPlayer.isDead() && FPlayer.get(thisPlayer) == this);
+			online = (thisPlayer != null && !thisPlayer.isDead() && UPlayer.get(thisPlayer) == this);
 		}
 		
 		// Cache and prepare
@@ -564,9 +564,9 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 	{
 		return this.getColorTo(faction)+this.getNameAndTitle();
 	}
-	public String getNameAndTitle(FPlayer fplayer)
+	public String getNameAndTitle(UPlayer uplayer)
 	{
-		return this.getColorTo(fplayer)+this.getNameAndTitle();
+		return this.getColorTo(uplayer)+this.getNameAndTitle();
 	}
 	
 	// -------------------------------------------- //
@@ -664,7 +664,7 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 
 		boolean permanent = myFaction.getFlag(FFlag.PERMANENT);
 		
-		if (!permanent && this.getRole() == Rel.LEADER && myFaction.getFPlayers().size() > 1)
+		if (!permanent && this.getRole() == Rel.LEADER && myFaction.getUPlayers().size() > 1)
 		{
 			msg("<b>You must give the leader role to someone else first.");
 			return;
@@ -682,7 +682,7 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 		if (membershipChangeEvent.isCancelled()) return;
 
 		// Am I the last one in the faction?
-		if (myFaction.getFPlayers().size() == 1)
+		if (myFaction.getUPlayers().size() == 1)
 		{
 			// Transfer all money
 			if (Econ.isEnabled(this))
@@ -693,9 +693,9 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 		
 		if (myFaction.isNormal())
 		{
-			for (FPlayer fplayer : myFaction.getFPlayersWhereOnline(true))
+			for (UPlayer uplayer : myFaction.getUPlayersWhereOnline(true))
 			{
-				fplayer.msg("%s<i> left %s<i>.", this.describeTo(fplayer, true), myFaction.describeTo(fplayer));
+				uplayer.msg("%s<i> left %s<i>.", this.describeTo(uplayer, true), myFaction.describeTo(uplayer));
 			}
 
 			if (MConf.get().logFactionLeave)
@@ -706,12 +706,12 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 		
 		this.resetFactionData();
 
-		if (myFaction.isNormal() && !permanent && myFaction.getFPlayers().isEmpty())
+		if (myFaction.isNormal() && !permanent && myFaction.getUPlayers().isEmpty())
 		{
 			// Remove this faction
-			for (FPlayer fplayer : FPlayerColls.get().get(this).getAllOnline())
+			for (UPlayer uplayer : UPlayerColls.get().get(this).getAllOnline())
 			{
-				fplayer.msg("<i>%s<i> was disbanded.", myFaction.describeTo(fplayer, true));
+				uplayer.msg("<i>%s<i> was disbanded.", myFaction.describeTo(uplayer, true));
 			}
 
 			myFaction.detach();
@@ -751,7 +751,7 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 		{
 			return false;
 		}
-		else if (forFaction.getFPlayers().size() < ConfServer.claimsRequireMinFactionMembers)
+		else if (forFaction.getUPlayers().size() < ConfServer.claimsRequireMinFactionMembers)
 		{
 			error = Txt.parse("Factions must have at least <h>%s<b> members to claim land.", ConfServer.claimsRequireMinFactionMembers);
 		}
@@ -837,10 +837,10 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 		}
 
 		// announce success
-		Set<FPlayer> informTheseFPlayers = new HashSet<FPlayer>();
-		informTheseFPlayers.add(this);
-		informTheseFPlayers.addAll(forFaction.getFPlayersWhereOnline(true));
-		for (FPlayer fp : informTheseFPlayers)
+		Set<UPlayer> informTheseUPlayers = new HashSet<UPlayer>();
+		informTheseUPlayers.add(this);
+		informTheseUPlayers.addAll(forFaction.getUPlayersWhereOnline(true));
+		for (UPlayer fp : informTheseUPlayers)
 		{
 			fp.msg("<h>%s<i> claimed land for <h>%s<i> from <h>%s<i>.", this.describeTo(fp, true), forFaction.describeTo(fp), currentFaction.describeTo(fp));
 		}

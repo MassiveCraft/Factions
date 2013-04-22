@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.massivecraft.factions.entity.FPlayer;
+import com.massivecraft.factions.entity.UPlayer;
 
 /**
  * The ChatFormater is a system offered by factions for tag parsing.
@@ -102,7 +102,7 @@ public class ChatFormatter
 	// FORMAT
 	// -------------------------------------------- //
 	
-	public static String format(String msg, FPlayer fsender, FPlayer frecipient)
+	public static String format(String msg, UPlayer fsender, UPlayer frecipient)
 	{
 		// We build the return value in this string buffer
 		StringBuffer ret = new StringBuffer();
@@ -159,7 +159,7 @@ public class ChatFormatter
 	// TAG COMPUTE
 	// -------------------------------------------- //
 	
-	public static String compute(ChatTag tag, List<String> modifierIds, FPlayer fsender, FPlayer frecipient)
+	public static String compute(ChatTag tag, List<String> modifierIds, UPlayer fsender, UPlayer frecipient)
 	{
 		String ret = tag.getReplacement(fsender, frecipient);
 		if (ret == null) return null;

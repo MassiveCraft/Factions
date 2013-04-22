@@ -3,7 +3,7 @@ package com.massivecraft.factions.event;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.HandlerList;
 
-import com.massivecraft.factions.entity.FPlayer;
+import com.massivecraft.factions.entity.UPlayer;
 
 public class FactionsEventPowerChange extends FactionsEventAbstractSender
 {
@@ -19,8 +19,8 @@ public class FactionsEventPowerChange extends FactionsEventAbstractSender
 	// FIELDS
 	// -------------------------------------------- //
 	
-	private final FPlayer fplayer;
-	public FPlayer getFPlayer() { return this.fplayer; }
+	private final UPlayer fplayer;
+	public UPlayer getFPlayer() { return this.fplayer; }
 	
 	private final PowerChangeReason reason;
 	public PowerChangeReason getReason() { return this.reason; }
@@ -33,7 +33,7 @@ public class FactionsEventPowerChange extends FactionsEventAbstractSender
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public FactionsEventPowerChange(CommandSender sender, FPlayer fplayer, PowerChangeReason reason, double newPower)
+	public FactionsEventPowerChange(CommandSender sender, UPlayer fplayer, PowerChangeReason reason, double newPower)
 	{
 		super(sender);
 		this.fplayer = fplayer;

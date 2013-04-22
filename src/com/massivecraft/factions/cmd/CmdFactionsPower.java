@@ -1,8 +1,8 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Perm;
-import com.massivecraft.factions.cmd.arg.ARFPlayer;
-import com.massivecraft.factions.entity.FPlayer;
+import com.massivecraft.factions.cmd.arg.ARUPlayer;
+import com.massivecraft.factions.entity.UPlayer;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 
 public class CmdFactionsPower extends FCommand
@@ -20,7 +20,7 @@ public class CmdFactionsPower extends FCommand
 	@Override
 	public void perform()
 	{
-		FPlayer target = this.arg(0, ARFPlayer.getStartAny(fme), fme);
+		UPlayer target = this.arg(0, ARUPlayer.getStartAny(fme), fme);
 		if (target == null) return;
 		
 		if (target != fme && ! Perm.POWER_ANY.has(sender, true)) return;

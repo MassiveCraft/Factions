@@ -1,8 +1,8 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.cmd.arg.ARFaction;
-import com.massivecraft.factions.entity.FPlayer;
-import com.massivecraft.factions.entity.FPlayerColls;
+import com.massivecraft.factions.entity.UPlayer;
+import com.massivecraft.factions.entity.UPlayerColls;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.FactionColls;
 import com.massivecraft.factions.entity.MConf;
@@ -53,24 +53,24 @@ public class CmdFactionsDisband extends FCommand
 
 		// Merged Apply and Inform
 		
-		// Send FPlayerLeaveEvent for each player in the faction
-		for (FPlayer fplayer : faction.getFPlayers())
+		// Run event for each player in the faction
+		for (UPlayer uplayer : faction.getUPlayers())
 		{
-			FactionsEventMembershipChange membershipChangeEvent = new FactionsEventMembershipChange(sender, fplayer, FactionColls.get().get(faction).getNone(), MembershipChangeReason.DISBAND);
+			FactionsEventMembershipChange membershipChangeEvent = new FactionsEventMembershipChange(sender, uplayer, FactionColls.get().get(faction).getNone(), MembershipChangeReason.DISBAND);
 			membershipChangeEvent.run();
 		}
 
 		// Inform all players
-		for (FPlayer fplayer : FPlayerColls.get().get(fme).getAllOnline())
+		for (UPlayer uplayer : UPlayerColls.get().get(fme).getAllOnline())
 		{
-			String who = fme.describeTo(fplayer);
-			if (fplayer.getFaction() == faction)
+			String who = fme.describeTo(uplayer);
+			if (uplayer.getFaction() == faction)
 			{
-				fplayer.msg("<h>%s<i> disbanded your faction.", who);
+				uplayer.msg("<h>%s<i> disbanded your faction.", who);
 			}
 			else
 			{
-				fplayer.msg("<h>%s<i> disbanded the faction %s.", who, faction.getTag(fplayer));
+				uplayer.msg("<h>%s<i> disbanded the faction %s.", who, faction.getTag(uplayer));
 			}
 		}
 		

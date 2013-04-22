@@ -76,8 +76,8 @@ public class FactionColl extends Coll<Faction>
 		// Clean the board
 		BoardColls.get().getForUniverse(universe).clean();
 		
-		// Clean the fplayers
-		FPlayerColls.get().getForUniverse(universe).clean();
+		// Clean the uplayers
+		UPlayerColls.get().getForUniverse(universe).clean();
 		
 		return ret;
 	}
@@ -90,7 +90,7 @@ public class FactionColl extends Coll<Faction>
 	{
 		for (Faction faction : this.getAll())
 		{
-			faction.reindexFPlayers();
+			faction.reindexUPlayers();
 		}
 	}
 	
@@ -193,10 +193,10 @@ public class FactionColl extends Coll<Faction>
 			int landCount = faction.getLandCount();
 			if (!faction.getFlag(FFlag.PEACEFUL) && landCount > 0)
 			{
-				List<FPlayer> players = faction.getFPlayers();
+				List<UPlayer> players = faction.getUPlayers();
 				int playerCount = players.size();
 				double reward = ConfServer.econLandReward * landCount / playerCount;
-				for (FPlayer player : players)
+				for (UPlayer player : players)
 				{
 					Econ.modifyMoney(player, reward, "own " + landCount + " faction land divided among " + playerCount + " members");
 				}

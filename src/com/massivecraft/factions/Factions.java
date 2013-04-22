@@ -21,7 +21,7 @@ import com.massivecraft.factions.chat.tag.ChatTagTitle;
 import com.massivecraft.factions.cmd.*;
 import com.massivecraft.factions.entity.Board;
 import com.massivecraft.factions.entity.BoardColls;
-import com.massivecraft.factions.entity.FPlayerColls;
+import com.massivecraft.factions.entity.UPlayerColls;
 import com.massivecraft.factions.entity.FactionColls;
 import com.massivecraft.factions.entity.MConfColl;
 import com.massivecraft.factions.integration.LWCFeatures;
@@ -103,11 +103,11 @@ public class Factions extends MPlugin
 		this.databaseInitialized = false;
 		
 		MConfColl.get().init();
-		FPlayerColls.get().init();
+		UPlayerColls.get().init();
 		FactionColls.get().init();
 		BoardColls.get().init();
 		
-		FactionColls.get().reindexFPlayers();
+		FactionColls.get().reindexUPlayers();
 		
 		this.databaseInitialized = true;
 		

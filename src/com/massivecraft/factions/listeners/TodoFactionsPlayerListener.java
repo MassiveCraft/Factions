@@ -17,7 +17,7 @@ import com.massivecraft.factions.Const;
 import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.TerritoryAccess;
 import com.massivecraft.factions.entity.BoardColls;
-import com.massivecraft.factions.entity.FPlayer;
+import com.massivecraft.factions.entity.UPlayer;
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.mcore.event.MCorePlayerLeaveEvent;
@@ -32,7 +32,7 @@ public class TodoFactionsPlayerListener implements Listener
 	{
 		// If a player is joining the server ...
 		Player player = event.getPlayer();
-		FPlayer fplayer = FPlayer.get(player);
+		UPlayer fplayer = UPlayer.get(player);
 		
 		// ... recalculate their power as if they were offline since last recalculation ...
 		fplayer.recalculatePower(false);
@@ -51,7 +51,7 @@ public class TodoFactionsPlayerListener implements Listener
 	public void onPlayerLeave(MCorePlayerLeaveEvent event)
 	{
 		Player player = event.getPlayer();
-		FPlayer fplayer = FPlayer.get(player);
+		UPlayer fplayer = UPlayer.get(player);
 
 		// Recalculate the power before the player leaves.
 		// This is required since we recalculate as if the player were offline when they log back in.
@@ -69,7 +69,7 @@ public class TodoFactionsPlayerListener implements Listener
 
 		// ... update the stored current chunk ...
 		Player player = event.getPlayer();
-		FPlayer fplayer = FPlayer.get(player);
+		UPlayer fplayer = UPlayer.get(player);
 		
 		PS chunkFrom = fplayer.getCurrentChunk();
 		PS chunkTo = PS.valueOf(event.getTo()).getChunk(true);
@@ -145,7 +145,7 @@ public class TodoFactionsPlayerListener implements Listener
 		String name = player.getName();
 		if (MConf.get().playersWhoBypassAllProtection.contains(name)) return true;
 
-		FPlayer fplayer = FPlayer.get(player);
+		UPlayer fplayer = UPlayer.get(player);
 		if (fplayer.isUsingAdminMode()) return true;
 		
 		return FPerm.BUILD.has(fplayer, ps, !justCheck);
@@ -156,7 +156,7 @@ public class TodoFactionsPlayerListener implements Listener
 		String name = player.getName();
 		if (MConf.get().playersWhoBypassAllProtection.contains(name)) return true;
 
-		FPlayer me = FPlayer.get(player);
+		UPlayer me = UPlayer.get(player);
 		if (me.isUsingAdminMode()) return true;
 		
 		PS ps = PS.valueOf(block);

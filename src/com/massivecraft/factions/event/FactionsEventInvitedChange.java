@@ -3,7 +3,7 @@ package com.massivecraft.factions.event;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.HandlerList;
 
-import com.massivecraft.factions.entity.FPlayer;
+import com.massivecraft.factions.entity.UPlayer;
 import com.massivecraft.factions.entity.Faction;
 
 public class FactionsEventInvitedChange extends FactionsEventAbstractSender
@@ -20,8 +20,8 @@ public class FactionsEventInvitedChange extends FactionsEventAbstractSender
 	// FIELDS
 	// -------------------------------------------- //
 	
-	private final FPlayer fplayer;
-	public FPlayer getFPlayer() { return this.fplayer; }
+	private final UPlayer fplayer;
+	public UPlayer getFPlayer() { return this.fplayer; }
 	
 	private final Faction faction;
 	public Faction getFaction() { return this.faction; }
@@ -34,7 +34,7 @@ public class FactionsEventInvitedChange extends FactionsEventAbstractSender
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public FactionsEventInvitedChange(CommandSender sender, FPlayer fplayer, Faction faction, boolean newInvited)
+	public FactionsEventInvitedChange(CommandSender sender, UPlayer fplayer, Faction faction, boolean newInvited)
 	{
 		super(sender);
 		this.fplayer = fplayer;

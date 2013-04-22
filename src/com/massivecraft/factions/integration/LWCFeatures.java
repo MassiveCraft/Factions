@@ -14,7 +14,7 @@ import com.griefcraft.lwc.LWC;
 import com.griefcraft.lwc.LWCPlugin;
 import com.griefcraft.model.Protection;
 import com.massivecraft.factions.Factions;
-import com.massivecraft.factions.entity.FPlayer;
+import com.massivecraft.factions.entity.UPlayer;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.mcore.ps.PS;
 
@@ -48,8 +48,8 @@ public class LWCFeatures
 	{
 		for (Protection protection : getProtectionsInChunk(chunkPs))
 		{
-			FPlayer owner = FPlayer.get(protection.getOwner());
-			if (faction.getFPlayers().contains(owner)) continue;
+			UPlayer owner = UPlayer.get(protection.getOwner());
+			if (faction.getUPlayers().contains(owner)) continue;
 			protection.remove();
 		}
 	}

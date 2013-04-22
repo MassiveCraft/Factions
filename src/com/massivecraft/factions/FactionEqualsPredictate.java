@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import org.bukkit.command.CommandSender;
 
-import com.massivecraft.factions.entity.FPlayer;
+import com.massivecraft.factions.entity.UPlayer;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.mcore.Predictate;
 
@@ -35,7 +35,7 @@ public class FactionEqualsPredictate implements Predictate<CommandSender>, Seria
 	@Override
 	public boolean apply(CommandSender sender)
 	{
-		FPlayer fplayer = FPlayer.get(sender);
+		UPlayer fplayer = UPlayer.get(sender);
 		return this.factionId.equals(fplayer.getFactionId());
 	}
 

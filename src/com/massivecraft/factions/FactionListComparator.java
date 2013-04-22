@@ -36,11 +36,11 @@ public class FactionListComparator implements Comparator<Faction>
 		if (ret != 0) return ret;
 		
 		// Players Online
-		ret = f2.getFPlayersWhereOnline(true).size() - f1.getFPlayersWhereOnline(true).size();
+		ret = f2.getUPlayersWhereOnline(true).size() - f1.getUPlayersWhereOnline(true).size();
 		if (ret != 0) return ret;
 		
 		// Players Total
-		ret = f2.getFPlayers().size() - f1.getFPlayers().size();
+		ret = f2.getUPlayers().size() - f1.getUPlayers().size();
 		if (ret != 0) return ret;
 		
 		// Tie by Id

@@ -2,8 +2,8 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
-import com.massivecraft.factions.cmd.arg.ARFPlayer;
-import com.massivecraft.factions.entity.FPlayer;
+import com.massivecraft.factions.cmd.arg.ARUPlayer;
+import com.massivecraft.factions.entity.UPlayer;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 
@@ -22,7 +22,7 @@ public class CmdFactionsOfficer extends FCommand
 	@Override
 	public void perform()
 	{
-		FPlayer you = this.arg(0, ARFPlayer.getStartAny(sender));
+		UPlayer you = this.arg(0, ARUPlayer.getStartAny(sender));
 		if (you == null) return;
 
 		boolean permAny = Perm.OFFICER_ANY.has(sender, false);

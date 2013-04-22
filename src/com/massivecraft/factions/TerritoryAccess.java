@@ -6,7 +6,7 @@ import java.util.Set;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.massivecraft.factions.entity.FPlayer;
+import com.massivecraft.factions.entity.UPlayer;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.FactionColls;
 
@@ -78,9 +78,9 @@ public class TerritoryAccess
 	
 	
 	public void addFPlayer(String fplayerID) { this.getFPlayerIds().add(fplayerID); }
-	public void addFPlayer(FPlayer fplayer) { this.addFPlayer(fplayer.getId()); }
+	public void addFPlayer(UPlayer fplayer) { this.addFPlayer(fplayer.getId()); }
 	public void removeFPlayer(String fplayerID) { this.getFPlayerIds().remove(fplayerID); }
-	public void removeFPlayer(FPlayer fplayer) { this.removeFPlayer(fplayer.getId()); }
+	public void removeFPlayer(UPlayer fplayer) { this.removeFPlayer(fplayer.getId()); }
 	
 	public boolean toggleFPlayer(String fplayerID)
 	{
@@ -92,7 +92,7 @@ public class TerritoryAccess
 		this.addFPlayer(fplayerID);
 		return true;
 	}
-	public boolean toggleFPlayer(FPlayer fplayer)
+	public boolean toggleFPlayer(UPlayer fplayer)
 	{
 		return this.toggleFPlayer(fplayer.getId());
 	}
@@ -103,9 +103,9 @@ public class TerritoryAccess
 		if (testSubject instanceof String)
 			return hostFactionId.equals((String)testSubject);
 		else if (testSubject instanceof CommandSender)
-			return hostFactionId.equals(FPlayer.get(testSubject).getFactionId());
-		else if (testSubject instanceof FPlayer)
-			return hostFactionId.equals(((FPlayer)testSubject).getFactionId());
+			return hostFactionId.equals(UPlayer.get(testSubject).getFactionId());
+		else if (testSubject instanceof UPlayer)
+			return hostFactionId.equals(((UPlayer)testSubject).getFactionId());
 		else if (testSubject instanceof Faction)
 			return hostFactionId.equals(((Faction)testSubject).getId());
 		return false;
@@ -158,14 +158,14 @@ public class TerritoryAccess
 	public boolean subjectHasAccess(Object testSubject)
 	{
 		if (testSubject instanceof Player)
-			return fPlayerHasAccess(FPlayer.get(testSubject));
-		else if (testSubject instanceof FPlayer)
-			return fPlayerHasAccess((FPlayer)testSubject);
+			return fPlayerHasAccess(UPlayer.get(testSubject));
+		else if (testSubject instanceof UPlayer)
+			return fPlayerHasAccess((UPlayer)testSubject);
 		else if (testSubject instanceof Faction)
 			return factionHasAccess((Faction)testSubject);
 		return false;
 	}
-	public boolean fPlayerHasAccess(FPlayer fplayer)
+	public boolean fPlayerHasAccess(UPlayer fplayer)
 	{
 		if (factionHasAccess(fplayer.getFactionId())) return true;
 		return fplayerIds.contains(fplayer.getId());

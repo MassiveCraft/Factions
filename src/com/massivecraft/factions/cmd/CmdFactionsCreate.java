@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
-import com.massivecraft.factions.entity.FPlayer;
-import com.massivecraft.factions.entity.FPlayerColls;
+import com.massivecraft.factions.entity.UPlayer;
+import com.massivecraft.factions.entity.UPlayerColls;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.FactionColl;
 import com.massivecraft.factions.entity.FactionColls;
@@ -75,7 +75,7 @@ public class CmdFactionsCreate extends FCommand
 		// NOTE: join event cannot be cancelled or you'll have an empty faction
 		
 		// Inform
-		for (FPlayer follower : FPlayerColls.get().get(fme).getAllOnline())
+		for (UPlayer follower : UPlayerColls.get().get(fme).getAllOnline())
 		{
 			follower.msg("%s<i> created a new faction %s", fme.describeTo(follower, true), faction.getTag(follower));
 		}
