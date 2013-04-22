@@ -78,5 +78,28 @@ public class MConf extends Entity<MConf>
 	public boolean herochatAlliesMuted = false;
 	public Set<String> herochatAlliesWorlds = new HashSet<String>();
 	
+	// -------------------------------------------- //
+	// LOGGING
+	// -------------------------------------------- //
+	
+	public boolean logFactionCreate = true;
+	public boolean logFactionDisband = true;
+	public boolean logFactionJoin = true;
+	public boolean logFactionKick = true;
+	public boolean logFactionLeave = true;
+	public boolean logLandClaims = true;
+	public boolean logLandUnclaims = true;
+	public boolean logMoneyTransactions = true;
+	public boolean logPlayerCommands = true;
+
+	// -------------------------------------------- //
+	// EXPLOITS
+	// -------------------------------------------- //
+	
+	public boolean handleExploitObsidianGenerators = true;
+	public boolean handleExploitEnderPearlClipping = true;
+	public boolean handleExploitInteractionSpam = true;
+	public boolean handleExploitTNTWaterlog = false;
+	
 
 }

@@ -75,8 +75,6 @@ public class ConfServer extends SimpleConfig
 	
 	// Disallow joining/leaving/kicking while power is negative
 	public static boolean canLeaveWithNegativePower = true;
-	
-	
 
 	// -------------------------------------------- //
 	// AUTO LEAVE
@@ -96,33 +94,9 @@ public class ConfServer extends SimpleConfig
 	// INTEGRATION: LWC
 	// -------------------------------------------- //
 	
-	public static boolean lwcIntegration = false;
 	public static boolean onUnclaimResetLwcLocks = false;
 	public static boolean onCaptureResetLwcLocks = false;
-
-	// -------------------------------------------- //
-	// LOGGING
-	// -------------------------------------------- //
 	
-	public static boolean logFactionCreate = true;
-	public static boolean logFactionDisband = true;
-	public static boolean logFactionJoin = true;
-	public static boolean logFactionKick = true;
-	public static boolean logFactionLeave = true;
-	public static boolean logLandClaims = true;
-	public static boolean logLandUnclaims = true;
-	public static boolean logMoneyTransactions = true;
-	public static boolean logPlayerCommands = true;
-
-	// -------------------------------------------- //
-	// EXPLOITS
-	// -------------------------------------------- //
-	
-	public static boolean handleExploitObsidianGenerators = true;
-	public static boolean handleExploitEnderPearlClipping = true;
-	public static boolean handleExploitInteractionSpam = true;
-	public static boolean handleExploitTNTWaterlog = false;
-
 	// -------------------------------------------- //
 	// HOMES
 	// -------------------------------------------- //

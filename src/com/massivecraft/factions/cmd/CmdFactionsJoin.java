@@ -7,6 +7,7 @@ import com.massivecraft.factions.cmd.arg.ARFPlayer;
 import com.massivecraft.factions.cmd.arg.ARFaction;
 import com.massivecraft.factions.entity.FPlayer;
 import com.massivecraft.factions.entity.Faction;
+import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.event.FactionsEventMembershipChange;
 import com.massivecraft.factions.event.FactionsEventMembershipChange.MembershipChangeReason;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
@@ -97,7 +98,7 @@ public class CmdFactionsJoin extends FCommand
 		faction.setInvited(fplayer, false);
 
 		// Derplog
-		if (ConfServer.logFactionJoin)
+		if (MConf.get().logFactionJoin)
 		{
 			if (samePlayer)
 				Factions.get().log("%s joined the faction %s.", fplayer.getName(), faction.getTag());

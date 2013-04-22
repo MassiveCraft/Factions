@@ -3,6 +3,7 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.entity.BoardColl;
 import com.massivecraft.factions.entity.Faction;
+import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.event.FactionsEventLandUnclaim;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.integration.SpoutFeatures;
@@ -57,7 +58,7 @@ public class CmdFactionsUnclaim extends FCommand
 		SpoutFeatures.updateTerritoryDisplayLoc(chunk);
 		myFaction.msg("%s<i> unclaimed some land.", fme.describeTo(myFaction, true));
 
-		if (ConfServer.logLandUnclaims)
+		if (MConf.get().logLandUnclaims)
 		{
 			Factions.get().log(fme.getName()+" unclaimed land at ("+chunk.getChunkX()+","+chunk.getChunkZ()+") from the faction: "+otherFaction.getTag());
 		}

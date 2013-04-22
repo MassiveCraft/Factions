@@ -1,12 +1,12 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.cmd.arg.ARFPlayer;
 import com.massivecraft.factions.cmd.arg.ARFaction;
 import com.massivecraft.factions.cmd.req.ReqBankCommandsEnabled;
 import com.massivecraft.factions.entity.FPlayer;
 import com.massivecraft.factions.entity.Faction;
+import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.mcore.cmd.arg.ARDouble;
@@ -45,7 +45,7 @@ public class CmdFactionsMoneyTransferFp extends FCommand
 		
 		boolean success = Econ.transferMoney(fme, from, to, amount);
 
-		if (success && ConfServer.logMoneyTransactions)
+		if (success && MConf.get().logMoneyTransactions)
 		{
 			Factions.get().log(ChatColor.stripColor(Txt.parse("%s transferred %s from the faction \"%s\" to the player \"%s\"", fme.getName(), Money.format(from, amount), from.describeTo(null), to.describeTo(null))));
 		}

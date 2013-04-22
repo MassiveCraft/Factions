@@ -2,7 +2,6 @@ package com.massivecraft.factions.cmd;
 
 import java.util.ArrayList;
 
-import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
@@ -10,6 +9,7 @@ import com.massivecraft.factions.entity.FPlayer;
 import com.massivecraft.factions.entity.FPlayerColl;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.FactionColl;
+import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.event.FactionsEventCreate;
 import com.massivecraft.factions.event.FactionsEventMembershipChange;
 import com.massivecraft.factions.event.FactionsEventMembershipChange.MembershipChangeReason;
@@ -79,7 +79,7 @@ public class CmdFactionsCreate extends FCommand
 		
 		msg("<i>You should now: %s", Factions.get().getOuterCmdFactions().cmdFactionsDescription.getUseageTemplate());
 
-		if (ConfServer.logFactionCreate)
+		if (MConf.get().logFactionCreate)
 		{
 			Factions.get().log(fme.getName()+" created a new faction: "+newTag);
 		}

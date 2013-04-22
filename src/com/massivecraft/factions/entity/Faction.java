@@ -851,7 +851,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 			}
 
 			// no members left and faction isn't permanent, so disband it
-			if (ConfServer.logFactionDisband)
+			if (MConf.get().logFactionDisband)
 			{
 				Factions.get().log("The faction "+this.getTag()+" ("+this.getId()+") has been disbanded since it has no members left.");
 			}

@@ -694,8 +694,10 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 				fplayer.msg("%s<i> left %s<i>.", this.describeTo(fplayer, true), myFaction.describeTo(fplayer));
 			}
 
-			if (ConfServer.logFactionLeave)
+			if (MConf.get().logFactionLeave)
+			{
 				Factions.get().log(this.getName()+" left the faction: "+myFaction.getTag());
+			}
 		}
 		
 		this.resetFactionData();
@@ -709,8 +711,10 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 			}
 
 			myFaction.detach();
-			if (ConfServer.logFactionDisband)
+			if (MConf.get().logFactionDisband)
+			{
 				Factions.get().log("The faction "+myFaction.getTag()+" ("+myFaction.getId()+") was disbanded due to the last player ("+this.getName()+") leaving.");
+			}
 		}
 	}
 
@@ -840,8 +844,10 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 		BoardColl.get().setFactionAt(psChunk, forFaction);
 		SpoutFeatures.updateTerritoryDisplayLoc(psChunk);
 
-		if (ConfServer.logLandClaims)
+		if (MConf.get().logLandClaims)
+		{
 			Factions.get().log(this.getName()+" claimed land at ("+psChunk.getChunkX()+","+psChunk.getChunkZ()+") for the faction: "+forFaction.getTag());
+		}
 
 		return true;
 	}

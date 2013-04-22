@@ -130,7 +130,7 @@ public class FPlayerColl extends SenderColl<FPlayer>
 			if (fplayer.isOnline()) continue;
 			if (now - lastPlayed <= toleranceMillis) continue;
 			
-			if (ConfServer.logFactionLeave || ConfServer.logFactionKick)
+			if (MConf.get().logFactionLeave || MConf.get().logFactionKick)
 			{
 				Factions.get().log("Player "+fplayer.getName()+" was auto-removed due to inactivity.");
 			}

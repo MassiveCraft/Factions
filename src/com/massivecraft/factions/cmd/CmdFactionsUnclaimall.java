@@ -6,6 +6,7 @@ import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.cmd.req.ReqRoleIsAtLeast;
 import com.massivecraft.factions.entity.BoardColl;
+import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.event.FactionsEventLandUnclaimAll;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.integration.SpoutFeatures;
@@ -52,7 +53,7 @@ public class CmdFactionsUnclaimall extends FCommand
 		// TODO: Move this to a listener instead.
 		SpoutFeatures.updateTerritoryDisplayLoc(null);
 
-		if (ConfServer.logLandUnclaims)
+		if (MConf.get().logLandUnclaims)
 		{
 			Factions.get().log(fme.getName()+" unclaimed everything for the faction: "+myFaction.getTag());
 		}

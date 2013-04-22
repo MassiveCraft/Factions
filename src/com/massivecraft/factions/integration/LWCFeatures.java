@@ -13,7 +13,6 @@ import org.bukkit.block.BlockState;
 import com.griefcraft.lwc.LWC;
 import com.griefcraft.lwc.LWCPlugin;
 import com.griefcraft.model.Protection;
-import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.entity.FPlayer;
 import com.massivecraft.factions.entity.Faction;
@@ -29,14 +28,13 @@ public class LWCFeatures
 		if(test == null || !test.isEnabled()) return;
 
 		lwc = ((LWCPlugin)test).getLWC();
-		Factions.get().log("Successfully hooked into LWC!"+(ConfServer.lwcIntegration ? "" : " Integration is currently disabled, though (\"lwcIntegration\")."));
+		Factions.get().log("Successfully hooked into LWC!");
 	}
 
 	public static boolean getEnabled()
 	{
-		return ConfServer.lwcIntegration && lwc != null;
+		return lwc != null;
 	}
-
 	
 	public static void clearAllProtections(PS chunkPs)
 	{

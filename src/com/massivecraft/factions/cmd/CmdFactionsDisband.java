@@ -1,11 +1,11 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.cmd.arg.ARFaction;
 import com.massivecraft.factions.entity.FPlayer;
 import com.massivecraft.factions.entity.FPlayerColl;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.FactionColl;
+import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.event.FactionsEventDisband;
 import com.massivecraft.factions.event.FactionsEventMembershipChange;
 import com.massivecraft.factions.event.FactionsEventMembershipChange.MembershipChangeReason;
@@ -73,8 +73,11 @@ public class CmdFactionsDisband extends FCommand
 				fplayer.msg("<h>%s<i> disbanded the faction %s.", who, faction.getTag(fplayer));
 			}
 		}
-		if (ConfServer.logFactionDisband)
+		
+		if (MConf.get().logFactionDisband)
+		{
 			Factions.get().log("The faction "+faction.getTag()+" ("+faction.getId()+") was disbanded by "+(senderIsConsole ? "console command" : fme.getName())+".");
+		}
 
 		if (Econ.isEnabled(faction))
 		{

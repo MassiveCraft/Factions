@@ -9,6 +9,7 @@ import com.massivecraft.factions.cmd.arg.ARFPlayer;
 import com.massivecraft.factions.entity.FPlayer;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.FactionColl;
+import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.event.FactionsEventMembershipChange;
 import com.massivecraft.factions.event.FactionsEventMembershipChange.MembershipChangeReason;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
@@ -69,9 +70,9 @@ public class CmdFactionsKick extends FCommand
 			fme.msg("<i>You kicked %s<i> from the faction %s<i>!", fplayer.describeTo(fme), fplayerFaction.describeTo(fme));
 		}
 
-		if (ConfServer.logFactionKick)
+		if (MConf.get().logFactionKick)
 		{
-			Factions.get().log((senderIsConsole ? "A console command" : fme.getName())+" kicked "+fplayer.getName()+" from the faction: "+fplayerFaction.getTag());
+			Factions.get().log(fme.getDisplayName() + " kicked " + fplayer.getName() + " from the faction " + fplayerFaction.getTag());
 		}
 
 		// Apply
