@@ -26,36 +26,26 @@ public class ConfServer extends SimpleConfig
 	// DOUBTFULLY CONFIGURABLE DEFAULTS (TODO)
 	// -------------------------------------------- //
 	
-	public static Map<FFlag, Boolean> factionFlagDefaults;
-	//public static Map<FFlag, Boolean> factionFlagIsChangeable;
-	public static Map<FPerm, Set<Rel>> factionPermDefaults;
+	public static Map<FFlag, Boolean> factionFlagDefaults = FFlag.getDefaultDefaults();
+	public static Map<FPerm, Set<Rel>> factionPermDefaults = FPerm.getDefaultDefaults();
 	
 	// TODO: Shouldn't this be a constant rather?
 	public static Rel factionRankDefault = Rel.RECRUIT;
 	
 	// -------------------------------------------- //
-	// POWER
+	// DERPY OVERRIDES
 	// -------------------------------------------- //
 	
-	public static double powerMax = 10.0;
-	public static double powerMin = -10.0;
-	public static double powerStarting = 10.0; // New players start out with this power level
+	// mainly for other plugins/mods that use a fake player to take actions, which shouldn't be subject to our protections
+	public static Set<String> playersWhoBypassAllProtection = new LinkedHashSet<String>();
+
+	public static Set<String> worldsNoClaiming = new LinkedHashSet<String>();
 	
-	public static double powerPerDeath = -4.0; // A death makes you lose 4 power
-	
-	public static double powerPerHourOnline = 10.0;
-	public static double powerPerHourOffline = 0.0;
-	
-	// players will no longer lose power from being offline once their power drops to this amount or less
-	public static double powerLimitGainOnline = 10.0;
-	public static double powerLimitGainOffline = 0.0;
-	public static double powerLimitLossOnline = -10.0;
-	public static double powerLimitLossOffline = 0.0;
-	
-	public static boolean scaleNegativePower = false; // Power regeneration rate increase as power decreases
-	public static double scaleNegativeDivisor = 40.0; // Divisor for inverse power regeneration curve
-	
-	public static double powerFactionMax = 0.0;  // if greater than 0, the cap on how much power a faction can have (additional power from players beyond that will act as a "buffer" of sorts)
+	// TODO: Should worldsNoPowerLoss rather be a bukkit permission node?
+	public static Set<String> worldsNoPowerLoss = new LinkedHashSet<String>();
+	public static Set<String> worldsIgnorePvP = new LinkedHashSet<String>();
+	// TODO: A better solution Would be to have One wilderness faction per world.
+	//public static Set<String> worldsNoWildernessProtection = new LinkedHashSet<String>();
 	
 	// -------------------------------------------- //
 	// CORE
@@ -83,19 +73,30 @@ public class ConfServer extends SimpleConfig
 	public static double autoLeaveAfterDaysOfInactivity = 10.0;
 	public static double autoLeaveRoutineRunsEveryXMinutes = 5.0;
 	public static boolean removePlayerDataWhenBanned = true;
-
+	
 	// -------------------------------------------- //
-	// INTEGRATION: WORLD GUARD
+	// POWER
 	// -------------------------------------------- //
 	
-	public static boolean worldGuardChecking = false;
-
-	// -------------------------------------------- //
-	// INTEGRATION: LWC
-	// -------------------------------------------- //
+	public static double powerMax = 10.0;
+	public static double powerMin = -10.0;
+	public static double powerStarting = 10.0; // New players start out with this power level
 	
-	public static boolean onUnclaimResetLwcLocks = false;
-	public static boolean onCaptureResetLwcLocks = false;
+	public static double powerPerDeath = -4.0; // A death makes you lose 4 power
+	
+	public static double powerPerHourOnline = 10.0;
+	public static double powerPerHourOffline = 0.0;
+	
+	// players will no longer lose power from being offline once their power drops to this amount or less
+	public static double powerLimitGainOnline = 10.0;
+	public static double powerLimitGainOffline = 0.0;
+	public static double powerLimitLossOnline = -10.0;
+	public static double powerLimitLossOffline = 0.0;
+	
+	public static boolean scaleNegativePower = false; // Power regeneration rate increase as power decreases
+	public static double scaleNegativeDivisor = 40.0; // Divisor for inverse power regeneration curve
+	
+	public static double powerFactionMax = 0.0;  // if greater than 0, the cap on how much power a faction can have (additional power from players beyond that will act as a "buffer" of sorts)
 	
 	// -------------------------------------------- //
 	// HOMES
@@ -142,6 +143,19 @@ public class ConfServer extends SimpleConfig
 
 	public static boolean pistonProtectionThroughDenyBuild = true;	
 
+	// -------------------------------------------- //
+	// INTEGRATION: WORLD GUARD
+	// -------------------------------------------- //
+	
+	public static boolean worldGuardChecking = false;
+
+	// -------------------------------------------- //
+	// INTEGRATION: LWC
+	// -------------------------------------------- //
+	
+	public static boolean onUnclaimResetLwcLocks = false;
+	public static boolean onCaptureResetLwcLocks = false;
+	
 	// -------------------------------------------- //
 	// INTEGRATION: SPOUT
 	// -------------------------------------------- //
@@ -216,39 +230,6 @@ public class ConfServer extends SimpleConfig
 	//public static boolean bankMembersCanWithdraw = false; //Have to be at least moderator to withdraw or pay money to another faction
 	public static boolean bankFactionPaysCosts = true; //The faction pays for faction command costs, such as sethome
 	public static boolean bankFactionPaysLandCosts = true; //The faction pays for land claiming costs.
-
-	// -------------------------------------------- //
-	// DERPY OVERRIDES
-	// -------------------------------------------- //
 	
-	// mainly for other plugins/mods that use a fake player to take actions, which shouldn't be subject to our protections
-	public static Set<String> playersWhoBypassAllProtection = new LinkedHashSet<String>();
-
-	public static Set<String> worldsNoClaiming = new LinkedHashSet<String>();
-	
-	// TODO: Should worldsNoPowerLoss rather be a bukkit permission node?
-	public static Set<String> worldsNoPowerLoss = new LinkedHashSet<String>();
-	public static Set<String> worldsIgnorePvP = new LinkedHashSet<String>();
-	// TODO: A better solution Would be to have One wilderness faction per world.
-	//public static Set<String> worldsNoWildernessProtection = new LinkedHashSet<String>();
-	
-	// -------------------------------------------- //
-	// STATIC CONSTRUCTOR TO GET RID OF (TODO)
-	// -------------------------------------------- //
-	
-	static
-	{
-		factionFlagDefaults = new LinkedHashMap<FFlag, Boolean>();
-		for (FFlag flag : FFlag.values())
-		{
-			factionFlagDefaults.put(flag, flag.defaultDefaultValue);
-		}
-		
-		factionPermDefaults = new LinkedHashMap<FPerm, Set<Rel>>();
-		for (FPerm perm: FPerm.values())
-		{
-			factionPermDefaults.put(perm, perm.defaultDefaultValue);
-		}
-	}
 }
 

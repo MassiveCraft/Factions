@@ -1,5 +1,8 @@
 package com.massivecraft.factions;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 
 /**
  * Flags that describe the nature of a faction and it's territory.
@@ -43,33 +46,44 @@ public enum FFlag
 	private final String desc;
 	public String getDescription() { return this.desc; }
 	
-	public final boolean defaultDefaultValue;
+	public final boolean defaultDefault;
+	public boolean getDefaultDefault() { return this.defaultDefault; }
 	
 	// -------------------------------------------- //
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	private FFlag(final String nicename, final String desc, final boolean defaultDefaultValue)
+	private FFlag(String nicename, final String desc, boolean defaultDefault)
 	{
 		this.nicename = nicename;
 		this.desc = desc;
-		this.defaultDefaultValue = defaultDefaultValue;
+		this.defaultDefault = defaultDefault;
+	}
+	
+	// -------------------------------------------- //
+	// DEFAULTS
+	// -------------------------------------------- //
+	
+	public boolean getDefault()
+	{
+		Boolean ret = ConfServer.factionFlagDefaults.get(this);
+		if (ret == null) return this.getDefaultDefault();
+		return ret; 
+	}
+	
+	public static Map<FFlag, Boolean> getDefaultDefaults()
+	{
+		Map<FFlag, Boolean> ret = new LinkedHashMap<FFlag, Boolean>();
+		for (FFlag flag : values())
+		{
+			ret.put(flag, flag.getDefaultDefault());
+		}
+		return ret;
 	}
 	
 	// -------------------------------------------- //
 	// FRODOODODFOFL
 	// -------------------------------------------- //
-	
-	
-	/**
-	 * The state for newly created factions.
-	 */
-	public boolean getDefault()
-	{
-		Boolean ret = ConfServer.factionFlagDefaults.get(this);
-		if (ret == null) return this.defaultDefaultValue;
-		return ret; 
-	}
 	
 	public static FFlag parse(String str)
 	{
@@ -96,4 +110,7 @@ public enum FFlag
 		}
 		return ret;
 	}
+	
+	
+	
 }

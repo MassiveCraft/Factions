@@ -3,7 +3,9 @@ package com.massivecraft.factions;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumSet;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.bukkit.Location;
@@ -56,7 +58,8 @@ public enum FPerm
 	private final String desc;
 	public String getDescription() { return this.desc; }
 	
-	public final Set<Rel> defaultDefaultValue;
+	public final Set<Rel> defaultDefault;
+	public Set<Rel> getDefaultDefault() { return new LinkedHashSet<Rel>(this.defaultDefault); }
 	
 	// -------------------------------------------- //
 	// CONSTRUCT
@@ -70,21 +73,35 @@ public enum FPerm
 		Set<Rel> defaultDefaultValue = new LinkedHashSet<Rel>();
 		defaultDefaultValue.addAll(Arrays.asList(rels));
 		defaultDefaultValue = Collections.unmodifiableSet(defaultDefaultValue);
-		this.defaultDefaultValue = defaultDefaultValue;
+		this.defaultDefault = defaultDefaultValue;
 	}
 	
 	// -------------------------------------------- //
-	// FROOODLDLLD
+	// DEFAULTS
 	// -------------------------------------------- //
 	
 	public Set<Rel> getDefault()
 	{
 		Set<Rel> ret = ConfServer.factionPermDefaults.get(this);
-		if (ret == null) ret = this.defaultDefaultValue;
+		if (ret == null) return this.getDefaultDefault();
 		ret = new LinkedHashSet<Rel>(ret);
 		return ret;
 	}
 	
+	public static Map<FPerm, Set<Rel>> getDefaultDefaults()
+	{
+		Map<FPerm, Set<Rel>> ret = new LinkedHashMap<FPerm, Set<Rel>>();
+		for (FPerm fperm : values())
+		{
+			ret.put(fperm, fperm.getDefaultDefault());
+		}
+		return ret;
+	}
+	
+	// -------------------------------------------- //
+	// FROOODLDLLD
+	// -------------------------------------------- //
+
 	public static FPerm parse(String str)
 	{
 		str = str.toLowerCase();
