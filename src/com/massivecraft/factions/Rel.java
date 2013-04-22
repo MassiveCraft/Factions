@@ -2,6 +2,8 @@ package com.massivecraft.factions;
 
 import org.bukkit.ChatColor;
 
+import com.massivecraft.factions.entity.MConf;
+
 
 public enum Rel
 {
@@ -119,15 +121,15 @@ public enum Rel
 	public ChatColor getColor()
 	{
 		if (this.isAtLeast(RECRUIT))
-			return ConfServer.colorMember;
+			return MConf.get().colorMember;
 		else if (this == ALLY)
-			return ConfServer.colorAlly;
+			return MConf.get().colorAlly;
 		else if (this == NEUTRAL)
-			return ConfServer.colorNeutral;
+			return MConf.get().colorNeutral;
 		else if (this == TRUCE)
-			return ConfServer.colorTruce;
+			return MConf.get().colorTruce;
 		else
-			return ConfServer.colorEnemy;
+			return MConf.get().colorEnemy;
 	}
 	
 	public String getPrefix()

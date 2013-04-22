@@ -2,12 +2,12 @@ package com.massivecraft.factions.util;
 
 import org.bukkit.ChatColor;
 
-import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.FFlag;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.RelationParticipator;
 import com.massivecraft.factions.entity.FPlayer;
 import com.massivecraft.factions.entity.Faction;
+import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.mcore.util.Txt;
 
 public class RelationUtil
@@ -135,12 +135,12 @@ public class RelationUtil
 		{
 			if (thatFaction.getFlag(FFlag.FRIENDLYFIRE) == true)
 			{
-				return ConfServer.colorFriendlyFire;
+				return MConf.get().colorFriendlyFire;
 			}
 			
 			if (thatFaction.getFlag(FFlag.PVP) == false)
 			{
-				return ConfServer.colorNoPVP;
+				return MConf.get().colorNoPVP;
 			}
 		}
 		return getRelationOfThatToMe(that, me).getColor();

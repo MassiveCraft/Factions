@@ -25,19 +25,7 @@ public class ConfServer extends SimpleConfig
 	public static List<String> baseCommandAliases = MUtil.list("f");
 	public static String dburi = "default";
 	
-	// -------------------------------------------- //
-	// COLORS
-	// -------------------------------------------- //
 	
-	public static ChatColor colorMember = ChatColor.GREEN;
-	public static ChatColor colorAlly = ChatColor.DARK_PURPLE;
-	public static ChatColor colorTruce = ChatColor.LIGHT_PURPLE;
-	public static ChatColor colorNeutral = ChatColor.WHITE;
-	public static ChatColor colorEnemy = ChatColor.RED;
-	
-	public static ChatColor colorNoPVP = ChatColor.GOLD;
-	public static ChatColor colorFriendlyFire = ChatColor.DARK_RED;
-	//public static ChatColor colorWilderness = ChatColor.DARK_GREEN;
 	
 	// -------------------------------------------- //
 	// DOUBTFULLY CONFIGURABLE DEFAULTS (TODO)
