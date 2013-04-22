@@ -2,9 +2,6 @@ package com.massivecraft.factions;
 
 import java.util.*;
 
-import org.bukkit.*;
-import org.bukkit.event.EventPriority;
-
 import com.massivecraft.mcore.SimpleConfig;
 import com.massivecraft.mcore.util.MUtil;
 
@@ -24,8 +21,6 @@ public class ConfServer extends SimpleConfig
 	
 	public static List<String> baseCommandAliases = MUtil.list("f");
 	public static String dburi = "default";
-	
-	
 	
 	// -------------------------------------------- //
 	// DOUBTFULLY CONFIGURABLE DEFAULTS (TODO)
@@ -63,15 +58,6 @@ public class ConfServer extends SimpleConfig
 	public static double powerFactionMax = 0.0;  // if greater than 0, the cap on how much power a faction can have (additional power from players beyond that will act as a "buffer" of sorts)
 	
 	// -------------------------------------------- //
-	// PREFIXES
-	// -------------------------------------------- //
-	
-	public static String prefixLeader = "**";
-	public static String prefixOfficer = "*";
-	public static String prefixMember = "+";
-	public static String prefixRecruit = "-";
-	
-	// -------------------------------------------- //
 	// CORE
 	// -------------------------------------------- //
 	
@@ -90,43 +76,7 @@ public class ConfServer extends SimpleConfig
 	// Disallow joining/leaving/kicking while power is negative
 	public static boolean canLeaveWithNegativePower = true;
 	
-	// -------------------------------------------- //
-	// CHAT
-	// -------------------------------------------- //
 	
-	// We offer a simple standard way to set the format
-	public static boolean chatSetFormat = false;
-	public static EventPriority chatSetFormatAt = EventPriority.LOWEST;
-	public static String chatSetFormatTo = "<{factions_relcolor}§l{factions_roleprefix}§r{factions_relcolor}{factions_tag|rp}§f%1$s> %2$s";
-	
-	// We offer a simple standard way to parse the chat tags
-	public static boolean chatParseTags = true;
-	public static EventPriority chatParseTagsAt = EventPriority.LOW;
-	
-	// TODO: What is this line and can I get rid of it?
-	public static String chatTagFormat = "%s"+ChatColor.WHITE; // This one is almost deprecated now right? or is it?
-	
-	// HeroChat: The Faction Channel
-	public static String herochatFactionName = "Faction";
-	public static String herochatFactionNick = "F";
-	public static String herochatFactionFormat = "{color}[&l{nick}&r{color} &l{factions_roleprefix}&r{color}{factions_title|rp}{sender}{color}] &f{msg}";
-	public static ChatColor herochatFactionColor = ChatColor.GREEN;
-	public static int herochatFactionDistance = 0;
-	public static boolean herochatFactionIsShortcutAllowed = false;
-	public static boolean herochatFactionCrossWorld = true;
-	public static boolean herochatFactionMuted = false;
-	public static Set<String> herochatFactionWorlds = new HashSet<String>();
-	
-	// HeroChat: The Allies Channel
-	public static String herochatAlliesName = "Allies";
-	public static String herochatAlliesNick = "A";
-	public static String herochatAlliesFormat = "{color}[&l{nick}&r&f {factions_relcolor}&l{factions_roleprefix}&r{factions_relcolor}{factions_tag|rp}{sender}{color}] &f{msg}";
-	public static ChatColor herochatAlliesColor = ChatColor.DARK_PURPLE;
-	public static int herochatAlliesDistance = 0;
-	public static boolean herochatAlliesIsShortcutAllowed = false;
-	public static boolean herochatAlliesCrossWorld = true;
-	public static boolean herochatAlliesMuted = false;
-	public static Set<String> herochatAlliesWorlds = new HashSet<String>();
 
 	// -------------------------------------------- //
 	// AUTO LEAVE

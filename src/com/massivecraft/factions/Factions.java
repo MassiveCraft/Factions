@@ -23,6 +23,7 @@ import com.massivecraft.factions.entity.Board;
 import com.massivecraft.factions.entity.BoardColl;
 import com.massivecraft.factions.entity.FPlayerColl;
 import com.massivecraft.factions.entity.FactionColl;
+import com.massivecraft.factions.entity.MConfColl;
 import com.massivecraft.factions.integration.LWCFeatures;
 import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.integration.Worldguard;
@@ -79,6 +80,7 @@ public class Factions extends MPlugin
 		MUtil.registerExtractor(String.class, "accountId", ExtractorFactionAccountId.get());
 
 		// Initialize Collections
+		MConfColl.get().init();
 		FPlayerColl.get().init();
 		FactionColl.get().init();
 		BoardColl.get().init();

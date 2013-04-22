@@ -6,38 +6,38 @@ import java.util.Set;
 
 import org.bukkit.ChatColor;
 
-import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.Rel;
+import com.massivecraft.factions.entity.MConf;
 
 public class FactionChannel extends FactionsChannelAbstract
 {
 	public static final Set<Rel> targetRelations = EnumSet.of(Rel.MEMBER);
 	@Override public Set<Rel> getTargetRelations() { return targetRelations; }
 	
-	@Override public String getName() { return ConfServer.herochatFactionName; }
+	@Override public String getName() { return MConf.get().herochatFactionName; }
 	
-	@Override public String getNick() { return ConfServer.herochatFactionNick; }
-	@Override public void setNick(String nick) { ConfServer.herochatFactionNick = nick; }
+	@Override public String getNick() { return MConf.get().herochatFactionNick; }
+	@Override public void setNick(String nick) { MConf.get().herochatFactionNick = nick; }
 	
-	@Override public String getFormat() { return ConfServer.herochatFactionFormat; }
-	@Override public void setFormat(String format) { ConfServer.herochatFactionFormat = format; }
+	@Override public String getFormat() { return MConf.get().herochatFactionFormat; }
+	@Override public void setFormat(String format) { MConf.get().herochatFactionFormat = format; }
 	
-	@Override public ChatColor getColor() { return ConfServer.herochatFactionColor; }
-	@Override public void setColor(ChatColor color) { ConfServer.herochatFactionColor = color; }
+	@Override public ChatColor getColor() { return MConf.get().herochatFactionColor; }
+	@Override public void setColor(ChatColor color) { MConf.get().herochatFactionColor = color; }
 	
-	@Override public int getDistance() { return ConfServer.herochatFactionDistance; }
-	@Override public void setDistance(int distance) { ConfServer.herochatFactionDistance = distance; }
+	@Override public int getDistance() { return MConf.get().herochatFactionDistance; }
+	@Override public void setDistance(int distance) { MConf.get().herochatFactionDistance = distance; }
 	
-	@Override public void addWorld(String world) { ConfServer.herochatFactionWorlds.add(world); }
-	@Override public Set<String> getWorlds() { return new HashSet<String>(ConfServer.herochatFactionWorlds); }
-	@Override public void setWorlds(Set<String> worlds) { ConfServer.herochatFactionWorlds = worlds; }
+	@Override public void addWorld(String world) { MConf.get().herochatFactionWorlds.add(world); }
+	@Override public Set<String> getWorlds() { return new HashSet<String>(MConf.get().herochatFactionWorlds); }
+	@Override public void setWorlds(Set<String> worlds) { MConf.get().herochatFactionWorlds = worlds; }
 	
-	@Override public boolean isShortcutAllowed() { return ConfServer.herochatFactionIsShortcutAllowed; }
-	@Override public void setShortcutAllowed(boolean shortcutAllowed) { ConfServer.herochatFactionIsShortcutAllowed = shortcutAllowed; }
+	@Override public boolean isShortcutAllowed() { return MConf.get().herochatFactionIsShortcutAllowed; }
+	@Override public void setShortcutAllowed(boolean shortcutAllowed) { MConf.get().herochatFactionIsShortcutAllowed = shortcutAllowed; }
 	
-	@Override public boolean isCrossWorld() { return ConfServer.herochatFactionCrossWorld; }
-	@Override public void setCrossWorld(boolean crossWorld) { ConfServer.herochatFactionCrossWorld = crossWorld; }
+	@Override public boolean isCrossWorld() { return MConf.get().herochatFactionCrossWorld; }
+	@Override public void setCrossWorld(boolean crossWorld) { MConf.get().herochatFactionCrossWorld = crossWorld; }
 	
-	@Override public boolean isMuted() { return ConfServer.herochatFactionMuted; }
-	@Override public void setMuted(boolean value) { ConfServer.herochatFactionMuted = value; }
+	@Override public boolean isMuted() { return MConf.get().herochatFactionMuted; }
+	@Override public void setMuted(boolean value) { MConf.get().herochatFactionMuted = value; }
 }

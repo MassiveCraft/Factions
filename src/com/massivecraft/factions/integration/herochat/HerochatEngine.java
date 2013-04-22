@@ -8,9 +8,9 @@ import org.bukkit.event.Listener;
 
 import com.dthielke.herochat.ChannelChatEvent;
 import com.dthielke.herochat.Herochat;
-import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.chat.ChatFormatter;
+import com.massivecraft.factions.entity.MConf;
 
 
 public class HerochatEngine implements Listener
@@ -48,7 +48,7 @@ public class HerochatEngine implements Listener
 	public void onChannelChatEvent(ChannelChatEvent event)
 	{
 		// Should we even parse?
-		if ( ! ConfServer.chatParseTags) return;
+		if ( ! MConf.get().chatParseTags) return;
 		
 		String format = event.getFormat();
 		format = format.replaceAll("&r", "§r");

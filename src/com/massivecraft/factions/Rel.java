@@ -136,22 +136,22 @@ public enum Rel
 	{
 		if (this == LEADER)
 		{
-			return ConfServer.prefixLeader;
+			return MConf.get().prefixLeader;
 		} 
 		
 		if (this == OFFICER)
 		{
-			return ConfServer.prefixOfficer;
+			return MConf.get().prefixOfficer;
 		}
 		
 		if (this == MEMBER)
 		{
-			return ConfServer.prefixMember;
+			return MConf.get().prefixMember;
 		}
 		
 		if (this == RECRUIT)
 		{
-			return ConfServer.prefixRecruit;
+			return MConf.get().prefixRecruit;
 		}
 		
 		return "";

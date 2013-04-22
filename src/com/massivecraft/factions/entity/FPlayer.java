@@ -565,38 +565,6 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 		return this.getColorTo(fplayer)+this.getNameAndTitle();
 	}
 	
-	// Chat Tag: 
-	// These are injected into the format of global chat messages.
-	
-	public String getChatTag()
-	{
-		if ( ! this.hasFaction()) {
-			return "";
-		}
-		
-		return String.format(ConfServer.chatTagFormat, this.role.getPrefix()+this.getTag());
-	}
-	
-	// Colored Chat Tag
-	public String getChatTag(Faction faction)
-	{
-		if ( ! this.hasFaction()) {
-			return "";
-		}
-		
-		return this.getRelationTo(faction).getColor()+getChatTag();
-	}
-	
-	public String getChatTag(FPlayer fplayer)
-	{
-		if ( ! this.hasFaction())
-		{
-			return "";
-		}
-		
-		return this.getColorTo(fplayer)+getChatTag();
-	}
-	
 	// -------------------------------------------- //
 	// RELATION AND RELATION COLORS
 	// -------------------------------------------- //

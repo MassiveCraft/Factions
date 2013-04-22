@@ -6,9 +6,9 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.chat.ChatFormatter;
+import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.mcore.util.SenderUtil;
 
 public class FactionsListenerChat implements Listener
@@ -36,13 +36,13 @@ public class FactionsListenerChat implements Listener
 	public static void setFormat(AsyncPlayerChatEvent event, EventPriority currentPriority)
 	{
 		// If we are setting the chat format ...
-		if (!ConfServer.chatSetFormat) return;
+		if (!MConf.get().chatSetFormat) return;
 		
 		// ... and this is the right priority ...
-		if (currentPriority != ConfServer.chatSetFormatAt) return;
+		if (currentPriority != MConf.get().chatSetFormatAt) return;
 		
 		// ... then set the format.
-		event.setFormat(ConfServer.chatSetFormatTo);
+		event.setFormat(MConf.get().chatSetFormatTo);
 	}
 	
 	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
@@ -88,10 +88,10 @@ public class FactionsListenerChat implements Listener
 	public static void parseTags(AsyncPlayerChatEvent event, EventPriority currentPriority)
 	{
 		// If we are setting the chat format ...
-		if (!ConfServer.chatParseTags) return;
+		if (!MConf.get().chatParseTags) return;
 		
 		// ... and this is the right priority ...
-		if (currentPriority != ConfServer.chatParseTagsAt) return;
+		if (currentPriority != MConf.get().chatParseTagsAt) return;
 		
 		// ... then parse tags a.k.a. "format the format".
 		String format = event.getFormat();
