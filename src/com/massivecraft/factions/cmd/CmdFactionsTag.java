@@ -2,7 +2,6 @@ package com.massivecraft.factions.cmd;
 
 import java.util.ArrayList;
 
-import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.cmd.req.ReqRoleIsAtLeast;
@@ -10,7 +9,6 @@ import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.FactionColl;
 import com.massivecraft.factions.entity.FactionColls;
 import com.massivecraft.factions.event.FactionsEventTagChange;
-import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 
@@ -69,11 +67,6 @@ public class CmdFactionsTag extends FCommand
 				continue;
 			}
 			faction.msg("<i>The faction %s<i> changed their name to %s.", fme.getColorTo(faction)+oldtag, myFaction.getTag(faction));
-		}
-
-		if (ConfServer.spoutFactionTagsOverNames)
-		{
-			SpoutFeatures.updateTitle(myFaction, null);
 		}
 	}
 	

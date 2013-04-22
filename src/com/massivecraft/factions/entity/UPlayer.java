@@ -22,7 +22,6 @@ import com.massivecraft.factions.event.FactionsEventPowerChange;
 import com.massivecraft.factions.event.FactionsEventPowerChange.PowerChangeReason;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.integration.LWCFeatures;
-import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.integration.Worldguard;
 import com.massivecraft.factions.util.RelationUtil;
 import com.massivecraft.mcore.mixin.Mixin;
@@ -121,12 +120,8 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 	// FIELDS: RAW TRANSIENT
 	// -------------------------------------------- //
 	
-	// Where did this player stand the last time we checked?
-	private transient PS currentChunk = null; 
-	public PS getCurrentChunk() { return this.currentChunk; }
-	public void setCurrentChunk(PS currentChunk) { this.currentChunk = currentChunk.getChunk(true); }
-	
 	// FIELD: mapAutoUpdating
+	// TODO: Move this to the MPlayer
 	private transient boolean mapAutoUpdating = false;
 	public void setMapAutoUpdating(boolean mapAutoUpdating) { this.mapAutoUpdating = mapAutoUpdating; }
 	public boolean isMapAutoUpdating() { return mapAutoUpdating; }
@@ -153,11 +148,11 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 	// GSON need this noarg constructor.
 	public UPlayer()
 	{
-		this.resetFactionData(false);
+		this.resetFactionData();
 		//this.power = ConfServer.powerStarting;
 	}
 	
-	public void resetFactionData(boolean doSpoutUpdate)
+	public void resetFactionData()
 	{
 		// The default neutral faction
 		this.setFactionId(null); 
@@ -165,18 +160,6 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 		this.setTitle(null);
 		
 		this.autoClaimFor = null;
-
-		if (doSpoutUpdate)
-		{
-			SpoutFeatures.updateTitle(this, null);
-			SpoutFeatures.updateTitle(null, this);
-			SpoutFeatures.updateCape(this.getPlayer(), null);
-		}
-	}
-	
-	public void resetFactionData()
-	{
-		this.resetFactionData(true);
 	}
 	
 	// -------------------------------------------- //
@@ -230,10 +213,6 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 		if (!this.getColl().inited()) return;
 		if (!Factions.get().isDatabaseInitialized()) return;
 		
-		// Spout Derp
-		SpoutFeatures.updateTitle(this, null);
-		SpoutFeatures.updateTitle(null, this);
-		
 		// Update index
 		Faction oldFaction = FactionColls.get().get(this).get(oldFactionId);
 		Faction faction = FactionColls.get().get(this).get(factionId);
@@ -270,7 +249,6 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 		{
 			this.role = role;
 		}
-		SpoutFeatures.updateTitle(this, null);
 		this.changed();
 	}
 	
@@ -638,21 +616,6 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 		// TODO: Use Mixin to get this PS instead
 		return BoardColls.get().getFactionAt(Mixin.getSenderPs(this.getId())).getRelationTo(this) == Rel.ENEMY;
 	}
-
-	public void sendFactionHereMessage()
-	{
-		if (SpoutFeatures.updateTerritoryDisplay(this))
-		{
-			return;
-		}
-		Faction factionHere = BoardColls.get().getFactionAt(this.getCurrentChunk());
-		String msg = Txt.parse("<i>")+" ~ "+factionHere.getTag(this);
-		if (factionHere.hasDescription())
-		{
-			msg += " - "+factionHere.getDescription();
-		}
-		this.sendMessage(msg);
-	}
 	
 	// -------------------------------------------- //
 	// ACTIONS
@@ -846,7 +809,6 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 		}
 		
 		BoardColls.get().setFactionAt(psChunk, forFaction);
-		SpoutFeatures.updateTerritoryDisplayLoc(psChunk);
 
 		if (MConf.get().logLandClaims)
 		{

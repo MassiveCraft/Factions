@@ -6,7 +6,6 @@ import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.event.FactionsEventLandUnclaim;
 import com.massivecraft.factions.integration.Econ;
-import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
@@ -55,7 +54,6 @@ public class CmdFactionsUnclaim extends FCommand
 		}
 
 		BoardColls.get().removeAt(chunk);
-		SpoutFeatures.updateTerritoryDisplayLoc(chunk);
 		myFaction.msg("%s<i> unclaimed some land.", fme.describeTo(myFaction, true));
 
 		if (MConf.get().logLandUnclaims)

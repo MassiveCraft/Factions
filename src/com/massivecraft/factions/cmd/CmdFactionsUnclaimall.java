@@ -9,7 +9,6 @@ import com.massivecraft.factions.entity.BoardColls;
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.event.FactionsEventLandUnclaimAll;
 import com.massivecraft.factions.integration.Econ;
-import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 
 public class CmdFactionsUnclaimall extends FCommand
@@ -49,9 +48,6 @@ public class CmdFactionsUnclaimall extends FCommand
 		
 		// Inform
 		myFaction.msg("%s<i> unclaimed ALL of your faction's land.", fme.describeTo(myFaction, true));
-		
-		// TODO: Move this to a listener instead.
-		SpoutFeatures.updateTerritoryDisplayLoc(null);
 
 		if (MConf.get().logLandUnclaims)
 		{

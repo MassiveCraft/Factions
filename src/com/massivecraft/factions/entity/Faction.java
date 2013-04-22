@@ -18,7 +18,6 @@ import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Lang;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.RelationParticipator;
-import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.util.*;
 import com.massivecraft.mcore.mixin.Mixin;
 import com.massivecraft.mcore.ps.PS;
@@ -50,7 +49,6 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 		this.setDescription(that.description);
 		this.home = that.home;
 		this.setPowerBoost(that.powerBoost);
-		this.cape = that.cape;
 		this.open = that.open;
 		this.setInvitedPlayerIds(that.invitedPlayerIds);
 		this.setRelationWishes(that.relationWish);
@@ -82,10 +80,6 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	// Factions usually do not have a powerboost. It defaults to 0.
 	// The powerBoost is a custom increase/decrease to default and maximum power.
 	private Double powerBoost = null;
-	
-	// The cape field is used by the Spout integration features.
-	// It's the URL to the faction cape. 
-	private String cape = null;
 	
 	// Can anyone join the Faction?
 	// If the faction is open they can.
@@ -278,21 +272,6 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	public boolean hasPowerBoost()
 	{
 		return this.getPowerBoost() != 0D;
-	}
-	
-	// -------------------------------------------- //
-	// FIELD: cape
-	// -------------------------------------------- //
-	
-	public String getCape()
-	{
-		return cape;
-	}
-	
-	public void setCape(String cape)
-	{
-		this.cape = cape;
-		SpoutFeatures.updateCape(this, null);
 	}
 	
 	// -------------------------------------------- //

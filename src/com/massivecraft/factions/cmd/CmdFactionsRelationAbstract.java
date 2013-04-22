@@ -8,7 +8,6 @@ import com.massivecraft.factions.cmd.arg.ARFaction;
 import com.massivecraft.factions.cmd.req.ReqRoleIsAtLeast;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.event.FactionsEventRelationChange;
-import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 
 public abstract class CmdFactionsRelationAbstract extends FCommand
@@ -89,9 +88,5 @@ public abstract class CmdFactionsRelationAbstract extends FCommand
 			otherFaction.msg("<i>This will have no effect while their faction is peaceful.");
 			myFaction.msg("<i>This will have no effect while your faction is peaceful.");
 		}
-
-		SpoutFeatures.updateTitle(myFaction, otherFaction);
-		SpoutFeatures.updateTitle(otherFaction, myFaction);
-		SpoutFeatures.updateTerritoryDisplayLoc(null);
 	}
 }

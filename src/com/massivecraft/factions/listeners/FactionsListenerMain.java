@@ -350,7 +350,8 @@ public class FactionsListenerMain implements Listener
 		}
 		
 		Rel rel = uplayer.getRelationToLocation();
-		if (BoardColls.get().getFactionAt(uplayer.getCurrentChunk()).isNone()) return;
+		PS ps = PS.valueOf(player).getChunk(true);
+		if (BoardColls.get().getFactionAt(ps).isNone()) return;
 		
 		if (rel == Rel.NEUTRAL && containsCommand(command, ConfServer.territoryNeutralDenyCommands))
 		{

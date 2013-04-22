@@ -1,13 +1,11 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.cmd.arg.ARUPlayer;
 import com.massivecraft.factions.cmd.req.ReqRoleIsAtLeast;
 import com.massivecraft.factions.entity.UPlayer;
 import com.massivecraft.factions.event.FactionsEventTitleChange;
-import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.mcore.cmd.arg.ARString;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 
@@ -48,11 +46,6 @@ public class CmdFactionsTitle extends FCommand
 		
 		// Inform
 		myFaction.msg("%s<i> changed a title: %s", fme.describeTo(myFaction, true), you.describeTo(myFaction, true));
-
-		if (ConfServer.spoutFactionTitlesOverNames)
-		{
-			SpoutFeatures.updateTitle(me, null);
-		}
 	}
 	
 }

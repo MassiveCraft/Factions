@@ -89,42 +89,6 @@ public class ConfServer extends SimpleConfig
 	public static boolean onCaptureResetLwcLocks = false;
 	
 	// -------------------------------------------- //
-	// INTEGRATION: SPOUT
-	// -------------------------------------------- //
-	
-	public static boolean spoutFactionTagsOverNames = true;  // show faction tags over names over player heads
-	public static boolean spoutFactionTitlesOverNames = true;  // whether to include player's title in that
-	public static boolean spoutHealthBarUnderNames = true;  // Show healthbar under player names.
-	public static String spoutHealthBarLeft = "{c}[";
-	public static String spoutHealthBarSolid = "|";
-	public static String spoutHealthBarBetween = "&8";
-	public static String spoutHealthBarEmpty = "|";
-	public static String spoutHealthBarRight = "{c}]";
-	public static double spoutHealthBarSolidsPerEmpty = 1d;
-	public static String spoutHealthBarColorTag = "{c}";
-	public static int spoutHealthBarWidth = 30;
-	
-	public static Map<Double, String> spoutHealthBarColorUnderQuota = MUtil.map(
-		1.0d, "&2",
-		0.8d, "&a",
-		0.5d, "&e",
-		0.4d, "&6",
-		0.3d, "&c",
-		0.2d, "&4"
-	);
-	
-	public static boolean spoutCapes = true;  // Show faction capes
-	public static int spoutTerritoryDisplayPosition = 1;  // permanent territory display, instead of by chat; 0 = disabled, 1 = top left, 2 = top center, 3+ = top right
-	public static float spoutTerritoryDisplaySize = 1.0f;  // text scale (size) for territory display
-	public static boolean spoutTerritoryDisplayShowDescription = true;  // whether to show the faction description, not just the faction tag
-	public static boolean spoutTerritoryAccessShow = true;  // show occasional territory access info as well ("access granted" or "access restricted" if relevant)
-	public static boolean spoutTerritoryNoticeShow = true;  // show additional brief territory notice near center of screen, to be sure player notices transition
-	public static int spoutTerritoryNoticeTop = 40;  // how far down the screen to place the additional notice
-	public static boolean spoutTerritoryNoticeShowDescription = false;  // whether to show the faction description in the notice, not just the faction tag
-	public static float spoutTerritoryNoticeSize = 1.5f;  // text scale (size) for notice
-	public static float spoutTerritoryNoticeLeaveAfterSeconds = 2.00f;  // how many seconds before the notice goes away
-	
-	// -------------------------------------------- //
 	// INTEGRATION: ECONOMY
 	// -------------------------------------------- //
 	

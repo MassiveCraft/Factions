@@ -8,7 +8,6 @@ import com.massivecraft.factions.cmd.arg.ARFaction;
 import com.massivecraft.factions.entity.BoardColls;
 import com.massivecraft.factions.entity.UPlayer;
 import com.massivecraft.factions.entity.Faction;
-import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.mcore.cmd.req.ReqIsPlayer;
 import com.massivecraft.mcore.ps.PS;
 import com.massivecraft.mcore.util.Txt;
@@ -87,7 +86,6 @@ public class CmdFactionsAccess extends FCommand
 		}
 
 		msg("<i>%s has been %s<i> the access list for this territory.", target, Txt.parse(added ? "<lime>added to" : "<rose>removed from"));
-		SpoutFeatures.updateAccessInfoLoc(chunk);
 		showAccessList(territory, locFaction);
 	}
 

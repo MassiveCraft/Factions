@@ -66,7 +66,6 @@ public class UPlayerColl extends SenderColl<UPlayer>
 			if (FactionColls.get().get(this).containsId(uplayer.getFactionId())) continue;
 			
 			Factions.get().log("Reset faction data (invalid faction) for player "+uplayer.getName());
-			uplayer.resetFactionData(false);
 		}
 	}
 	

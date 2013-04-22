@@ -17,12 +17,14 @@ import com.massivecraft.factions.Const;
 import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.TerritoryAccess;
 import com.massivecraft.factions.entity.BoardColls;
+import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.UPlayer;
 import com.massivecraft.factions.entity.MConf;
-import com.massivecraft.factions.integration.SpoutFeatures;
+import com.massivecraft.factions.entity.UPlayerColls;
 import com.massivecraft.mcore.event.MCorePlayerLeaveEvent;
 import com.massivecraft.mcore.ps.PS;
 import com.massivecraft.mcore.util.MUtil;
+import com.massivecraft.mcore.util.Txt;
 
 
 public class TodoFactionsPlayerListener implements Listener
@@ -34,17 +36,10 @@ public class TodoFactionsPlayerListener implements Listener
 		Player player = event.getPlayer();
 		UPlayer uplayer = UPlayer.get(player);
 		
-		// ... recalculate their power as if they were offline since last recalculation ...
+		// ... recalculate their power as if they were offline since last recalculation.
 		uplayer.recalculatePower(false);
-		
-		// ... update the current chunk ...
-		uplayer.setCurrentChunk(PS.valueOf(event.getPlayer()));
-		
-		// ... notify the player about where they are ...
-		if ( ! SpoutFeatures.updateTerritoryDisplay(uplayer))
-		{
-			uplayer.sendFactionHereMessage();
-		}
+		// TODO: What about the other universes?
+		// TODO: Track world --> world travel as logging on and off.
 	}
 	
 	@EventHandler(priority = EventPriority.NORMAL)
@@ -57,8 +52,6 @@ public class TodoFactionsPlayerListener implements Listener
 		// This is required since we recalculate as if the player were offline when they log back in.
 		// TODO: When I setup universes I must do this for all universe instance of the player that logs off!
 		uplayer.recalculatePower(true);
-
-		SpoutFeatures.playerDisconnect(uplayer);
 	}
 	
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -66,47 +59,49 @@ public class TodoFactionsPlayerListener implements Listener
 	{
 		// If the player is moving from one chunk to another ...
 		if (MUtil.isSameChunk(event)) return;
-
-		// ... update the stored current chunk ...
-		Player player = event.getPlayer();
-		UPlayer uplayer = UPlayer.get(player);
 		
-		PS chunkFrom = uplayer.getCurrentChunk();
+		// ... gather info on the player and the move ...
+		Player player = event.getPlayer();
+		UPlayer uplayerTo = UPlayerColls.get().get(event.getTo()).get(player);
+		
+		PS chunkFrom = PS.valueOf(event.getFrom()).getChunk(true);
 		PS chunkTo = PS.valueOf(event.getTo()).getChunk(true);
 		
-		uplayer.setCurrentChunk(chunkTo);
+		Faction factionFrom = BoardColls.get().getFactionAt(chunkFrom);
+		Faction factionTo = BoardColls.get().getFactionAt(chunkTo);
 		
-		// ... TODO: assorted and uncleaned code below ...
-		
-		TerritoryAccess access = BoardColls.get().getTerritoryAccessAt(chunkTo);
-
-		// Did we change "host"(faction)?
-		boolean changedFaction = (BoardColls.get().getFactionAt(chunkFrom) != BoardColls.get().getFactionAt(chunkTo));
-
-		// let Spout handle most of this if it's available
-		boolean handledBySpout = changedFaction && SpoutFeatures.updateTerritoryDisplay(uplayer);
-		
-		if (uplayer.isMapAutoUpdating())
+		// ... send host faction info updates ...
+		if (uplayerTo.isMapAutoUpdating())
 		{
-			uplayer.sendMessage(BoardColls.get().getMap(uplayer.getFaction(), chunkTo, player.getLocation().getYaw()));
+			uplayerTo.sendMessage(BoardColls.get().getMap(uplayerTo.getFaction(), chunkTo, player.getLocation().getYaw()));
 		}
-		else if (changedFaction && ! handledBySpout)
+		else if (factionFrom != factionTo)
 		{
-			uplayer.sendFactionHereMessage();
+			String msg = Txt.parse("<i>") + " ~ " + factionTo.getTag(uplayerTo);
+			if (factionTo.hasDescription())
+			{
+				msg += " - " + factionTo.getDescription();
+			}
+			player.sendMessage(msg);
 		}
 
 		// show access info message if needed
-		if ( ! handledBySpout && ! SpoutFeatures.updateAccessInfo(uplayer) && ! access.isDefault())
+		TerritoryAccess accessTo = BoardColls.get().getTerritoryAccessAt(chunkTo);
+		if (!accessTo.isDefault())
 		{
-			if (access.subjectHasAccess(uplayer))
-				uplayer.msg("<g>You have access to this area.");
-			else if (access.subjectAccessIsRestricted(uplayer))
-				uplayer.msg("<b>This area has restricted access.");
+			if (accessTo.subjectHasAccess(uplayerTo))
+			{
+				uplayerTo.msg("<g>You have access to this area.");
+			}
+			else if (accessTo.subjectAccessIsRestricted(uplayerTo))
+			{
+				uplayerTo.msg("<b>This area has restricted access.");
+			}
 		}
 
-		if (uplayer.getAutoClaimFor() != null)
+		if (uplayerTo.getAutoClaimFor() != null)
 		{
-			uplayer.attemptClaim(uplayer.getAutoClaimFor(), PS.valueOf(event.getTo()), true);
+			uplayerTo.attemptClaim(uplayerTo.getAutoClaimFor(), PS.valueOf(event.getTo()), true);
 		}
 	}
 

@@ -14,7 +14,6 @@ import com.massivecraft.factions.FFlag;
 import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
-import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 import com.massivecraft.mcore.money.Money;
 
@@ -94,8 +93,5 @@ public class CmdFactionsDisband extends FCommand
 		}		
 		
 		faction.detach();
-
-		SpoutFeatures.updateTitle(null, null);
-		SpoutFeatures.updateCape(null, null);
 	}
 }

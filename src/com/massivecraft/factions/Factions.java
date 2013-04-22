@@ -25,14 +25,12 @@ import com.massivecraft.factions.entity.UPlayerColls;
 import com.massivecraft.factions.entity.FactionColls;
 import com.massivecraft.factions.entity.MConfColl;
 import com.massivecraft.factions.integration.LWCFeatures;
-import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.integration.Worldguard;
 import com.massivecraft.factions.integration.herochat.HerochatFeatures;
 import com.massivecraft.factions.listeners.FactionsListenerChat;
 import com.massivecraft.factions.listeners.FactionsListenerEcon;
 import com.massivecraft.factions.listeners.FactionsListenerExploit;
 import com.massivecraft.factions.listeners.FactionsListenerMain;
-import com.massivecraft.factions.listeners.FactionsListenerSpout;
 import com.massivecraft.factions.listeners.TodoFactionsPlayerListener;
 import com.massivecraft.factions.task.AutoLeaveTask;
 import com.massivecraft.factions.task.EconLandRewardTask;
@@ -125,9 +123,6 @@ public class Factions extends MPlugin
 		// Right now only a few situations are handled through this listener.
 		FactionsListenerEcon.get().setup();
 		
-		// TODO: The same goes for this one:
-		FactionsListenerSpout.get().setup();
-		
 		// TODO: Get rid of this one
 		this.playerListener = new TodoFactionsPlayerListener();
 		getServer().getPluginManager().registerEvents(this.playerListener, this);
@@ -155,7 +150,6 @@ public class Factions extends MPlugin
 		// Integrate
 		this.integrate(HerochatFeatures.get());
 		
-		SpoutFeatures.setup();
 		LWCFeatures.setup();
 		
 		if (ConfServer.worldGuardChecking)
