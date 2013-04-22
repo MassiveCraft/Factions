@@ -8,9 +8,7 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
 
 import com.massivecraft.factions.entity.BoardColls;
 import com.massivecraft.factions.entity.FPlayer;
@@ -171,8 +169,6 @@ public enum FPerm
 	private static final String errorpattern = "%s<b> does not allow you to %s<b>.";
 	public boolean has(Object testSubject, Faction hostFaction, boolean informIfNot)
 	{
-		if (testSubject instanceof ConsoleCommandSender) return true;
-		
 		RelationParticipator rpSubject = null;
 		
 		if (testSubject instanceof CommandSender)
@@ -232,16 +228,8 @@ public enum FPerm
 				return false;
 			}
 		}
-		return this.has(testSubject, access.getHostFaction(), informIfNot);
-	}
-	public boolean has(Object testSubject, Location loc, boolean informIfNot)
-	{
-		PS ps = PS.valueOf(loc);
-		return this.has(testSubject, ps, informIfNot);
-	}
-	public boolean has(Object testSubject, Location loc)
-	{
-		return this.has(testSubject, loc, false);
+		
+		return this.has(testSubject, BoardColls.get().getFactionAt(ps), informIfNot);
 	}
 	public boolean has(Object testSubject, PS ps)
 	{

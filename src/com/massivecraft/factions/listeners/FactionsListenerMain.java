@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Enderman;
 import org.bukkit.entity.Entity;
@@ -594,7 +593,7 @@ public class FactionsListenerMain implements Listener
 		if (targetFaction == pistonFaction) return;
 
 		// if potentially pushing into air/water/lava in another territory, we need to check it out
-		if ((targetBlock.isEmpty() || targetBlock.isLiquid()) && ! FPerm.BUILD.has(pistonFaction, targetBlock.getLocation()))
+		if ((targetBlock.isEmpty() || targetBlock.isLiquid()) && ! FPerm.BUILD.has(pistonFaction, PS.valueOf(targetBlock)))
 		{
 			event.setCancelled(true);
 		}
@@ -614,18 +613,19 @@ public class FactionsListenerMain implements Listener
 		// if not a sticky piston, retraction should be fine
 		if (!event.isSticky()) return;
 
-		Location targetLoc = event.getRetractLocation();
+		Block retractBlock = event.getRetractLocation().getBlock();
+		PS retractPs = PS.valueOf(retractBlock);
 
 		// if potentially retracted block is just air/water/lava, no worries
-		if (targetLoc.getBlock().isEmpty() || targetLoc.getBlock().isLiquid()) return;
+		if (retractBlock.isEmpty() || retractBlock.isLiquid()) return;
 
 		Faction pistonFaction = BoardColls.get().getFactionAt(PS.valueOf(event.getBlock()));
 
 		// members of faction might not have build rights in their own territory, but pistons should still work regardless; so, address that corner case
-		Faction targetFaction = BoardColls.get().getFactionAt(PS.valueOf(targetLoc));
+		Faction targetFaction = BoardColls.get().getFactionAt(retractPs);
 		if (targetFaction == pistonFaction) return;
 
-		if ( ! FPerm.BUILD.has(pistonFaction, targetLoc))
+		if (!FPerm.BUILD.has(pistonFaction, retractPs))
 		{
 			event.setCancelled(true);
 		}

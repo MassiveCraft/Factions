@@ -153,13 +153,9 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 	public FPlayer()
 	{
 		this.resetFactionData(false);
+		this.setFactionId(ConfServer.newPlayerStartingFactionID);
 		this.power = ConfServer.powerStarting;
 		this.lastPowerUpdateTime = System.currentTimeMillis();
-
-		if ( ! ConfServer.newPlayerStartingFactionID.equals(Const.FACTIONID_NONE) && FactionColl.get().containsId(ConfServer.newPlayerStartingFactionID))
-		{
-			this.factionId = ConfServer.newPlayerStartingFactionID;
-		}
 	}
 	
 	public final void resetFactionData(boolean doSpoutUpdate)

@@ -37,7 +37,7 @@ public class CmdFactionsAccess extends FCommand
 		PS chunk = PS.valueOf(me).getChunk(true);
 
 		TerritoryAccess territory = BoardColls.get().getTerritoryAccessAt(chunk);
-		Faction locFaction = territory.getHostFaction();
+		Faction locFaction = BoardColls.get().getFactionAt(chunk);
 		boolean accessAny = Perm.ACCESS_ANY.has(sender, false);
 
 		if (type.isEmpty() || type.equals("view"))
@@ -96,7 +96,7 @@ public class CmdFactionsAccess extends FCommand
 		msg("<i>Host faction %s has %s<i> in this territory.", locFaction.getTag(), Txt.parse(territory.isHostFactionAllowed() ? "<lime>normal access" : "<rose>restricted access"));
 
 		String players = territory.fplayerList();
-		String factions = territory.factionList();
+		String factions = territory.factionList(locFaction);
 
 		if (factions.isEmpty())
 			msg("No factions have been explicitly granted access.");

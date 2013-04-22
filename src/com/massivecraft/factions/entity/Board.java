@@ -98,7 +98,7 @@ public class Board extends Entity<Board> implements BoardInterface
 	public Faction getFactionAt(PS ps)
 	{
 		if (ps == null) return null;
-		return this.getTerritoryAccessAt(ps).getHostFaction();
+		return FactionColls.get().get(this).get(this.getTerritoryAccessAt(ps).getHostFactionId()); 
 	}
 	
 	// SET

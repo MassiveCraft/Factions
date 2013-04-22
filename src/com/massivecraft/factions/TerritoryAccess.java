@@ -7,9 +7,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.massivecraft.factions.entity.FPlayer;
-import com.massivecraft.factions.entity.FPlayerColl;
 import com.massivecraft.factions.entity.Faction;
-import com.massivecraft.factions.entity.FactionColl;
+import com.massivecraft.factions.entity.FactionColls;
 
 public class TerritoryAccess
 {
@@ -19,7 +18,6 @@ public class TerritoryAccess
 	
 	private String hostFactionId;
 	public String getHostFactionId() { return this.hostFactionId; }
-	public Faction getHostFaction() { return FactionColl.get().get(this.hostFactionId); }
 	public void setHostFactionId(String hostFactionId) { this.hostFactionId = hostFactionId; }
 	
 	private boolean hostFactionAllowed = true;
@@ -105,7 +103,7 @@ public class TerritoryAccess
 		if (testSubject instanceof String)
 			return hostFactionId.equals((String)testSubject);
 		else if (testSubject instanceof CommandSender)
-			return hostFactionId.equals(FPlayerColl.get().get(testSubject).getFactionId());
+			return hostFactionId.equals(FPlayer.get(testSubject).getFactionId());
 		else if (testSubject instanceof FPlayer)
 			return hostFactionId.equals(((FPlayer)testSubject).getFactionId());
 		else if (testSubject instanceof Faction)
@@ -131,14 +129,14 @@ public class TerritoryAccess
 		this.fplayerIds.clear();
 	}
 
-	public String factionList()
+	public String factionList(Faction universeExtractable)
 	{
 		StringBuilder list = new StringBuilder();
 		for (String factionID : factionIds)
 		{
 			if (list.length() > 0)
 				list.append(", ");
-			list.append(FactionColl.get().get(factionID).getTag());
+			list.append(FactionColls.get().get(universeExtractable).get(factionID).getTag());
 		}
 		return list.toString();
 	}
@@ -160,7 +158,7 @@ public class TerritoryAccess
 	public boolean subjectHasAccess(Object testSubject)
 	{
 		if (testSubject instanceof Player)
-			return fPlayerHasAccess(FPlayerColl.get().get(testSubject));
+			return fPlayerHasAccess(FPlayer.get(testSubject));
 		else if (testSubject instanceof FPlayer)
 			return fPlayerHasAccess((FPlayer)testSubject);
 		else if (testSubject instanceof Faction)
@@ -184,7 +182,8 @@ public class TerritoryAccess
 	// this should normally only be checked after running subjectHasAccess() or fPlayerHasAccess() above to see if they have access explicitly granted
 	public boolean subjectAccessIsRestricted(Object testSubject)
 	{
-		return ( ! this.isHostFactionAllowed() && this.doesHostFactionMatch(testSubject) && ! FPerm.ACCESS.has(testSubject, this.getHostFaction()));
+		Faction hostFaction = FactionColls.get().get(testSubject).get(this.getHostFactionId());
+		return ( ! this.isHostFactionAllowed() && this.doesHostFactionMatch(testSubject) && ! FPerm.ACCESS.has(testSubject, hostFaction));
 	}
 
 	//----------------------------------------------//

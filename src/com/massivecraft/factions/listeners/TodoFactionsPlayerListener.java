@@ -1,6 +1,5 @@
 package com.massivecraft.factions.listeners;
 
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -82,7 +81,7 @@ public class TodoFactionsPlayerListener implements Listener
 		TerritoryAccess access = BoardColls.get().getTerritoryAccessAt(chunkTo);
 
 		// Did we change "host"(faction)?
-		boolean changedFaction = (BoardColls.get().getFactionAt(chunkFrom) != access.getHostFaction());
+		boolean changedFaction = (BoardColls.get().getFactionAt(chunkFrom) != BoardColls.get().getFactionAt(chunkTo));
 
 		// let Spout handle most of this if it's available
 		boolean handledBySpout = changedFaction && SpoutFeatures.updateTerritoryDisplay(fplayer);
@@ -130,41 +129,44 @@ public class TodoFactionsPlayerListener implements Listener
 
 		if (event.getAction() != Action.RIGHT_CLICK_BLOCK) return;  // only interested on right-clicks for below
 
-		if ( ! playerCanUseItemHere(player, block.getLocation(), event.getMaterial(), false))
+		if ( ! playerCanUseItemHere(player, PS.valueOf(block), event.getMaterial(), false))
 		{
 			event.setCancelled(true);
 			return;
 		}
 	}
 
-
 	// TODO: Refactor ! justCheck    -> to informIfNot
 	// TODO: Possibly incorporate pain build... 
-	public static boolean playerCanUseItemHere(Player player, Location loc, Material material, boolean justCheck)
+	public static boolean playerCanUseItemHere(Player player, PS ps, Material material, boolean justCheck)
 	{
+		if (!Const.MATERIALS_EDIT_TOOLS.contains(material)) return true;
+		
 		String name = player.getName();
 		if (MConf.get().playersWhoBypassAllProtection.contains(name)) return true;
 
-		FPlayer me = FPlayer.get(name);
-		if (me.isUsingAdminMode()) return true;
-		if (Const.MATERIALS_EDIT_TOOLS.contains(material) && ! FPerm.BUILD.has(me, loc, ! justCheck)) return false;
-		return true;
+		FPlayer fplayer = FPlayer.get(player);
+		if (fplayer.isUsingAdminMode()) return true;
+		
+		return FPerm.BUILD.has(fplayer, ps, !justCheck);
 	}
+	
 	public static boolean canPlayerUseBlock(Player player, Block block, boolean justCheck)
 	{
 		String name = player.getName();
 		if (MConf.get().playersWhoBypassAllProtection.contains(name)) return true;
 
-		FPlayer me = FPlayer.get(name);
+		FPlayer me = FPlayer.get(player);
 		if (me.isUsingAdminMode()) return true;
-		Location loc = block.getLocation();
+		
+		PS ps = PS.valueOf(block);
 		Material material = block.getType();
 		
-		if (Const.MATERIALS_EDIT_ON_INTERACT.contains(material) && ! FPerm.BUILD.has(me, loc, ! justCheck)) return false;
-		if (Const.MATERIALS_CONTAINER.contains(material) && ! FPerm.CONTAINER.has(me, loc, ! justCheck)) return false;
-		if (Const.MATERIALS_DOOR.contains(material)      && ! FPerm.DOOR.has(me, loc, ! justCheck)) return false;
-		if (material == Material.STONE_BUTTON          && ! FPerm.BUTTON.has(me, loc, ! justCheck)) return false;
-		if (material == Material.LEVER                 && ! FPerm.LEVER.has(me, loc, ! justCheck)) return false;
+		if (Const.MATERIALS_EDIT_ON_INTERACT.contains(material) && ! FPerm.BUILD.has(me, ps, ! justCheck)) return false;
+		if (Const.MATERIALS_CONTAINER.contains(material) && ! FPerm.CONTAINER.has(me, ps, ! justCheck)) return false;
+		if (Const.MATERIALS_DOOR.contains(material)      && ! FPerm.DOOR.has(me, ps, ! justCheck)) return false;
+		if (material == Material.STONE_BUTTON          && ! FPerm.BUTTON.has(me, ps, ! justCheck)) return false;
+		if (material == Material.LEVER                 && ! FPerm.LEVER.has(me, ps, ! justCheck)) return false;
 		return true;
 	}
 
@@ -176,7 +178,7 @@ public class TodoFactionsPlayerListener implements Listener
 		Block block = event.getBlockClicked();
 		Player player = event.getPlayer();
 
-		if ( ! playerCanUseItemHere(player, block.getLocation(), event.getBucket(), false))
+		if ( ! playerCanUseItemHere(player, PS.valueOf(block), event.getBucket(), false))
 		{
 			event.setCancelled(true);
 			return;
@@ -188,7 +190,7 @@ public class TodoFactionsPlayerListener implements Listener
 		Block block = event.getBlockClicked();
 		Player player = event.getPlayer();
 
-		if ( ! playerCanUseItemHere(player, block.getLocation(), event.getBucket(), false))
+		if ( ! playerCanUseItemHere(player, PS.valueOf(block), event.getBucket(), false))
 		{
 			event.setCancelled(true);
 			return;
