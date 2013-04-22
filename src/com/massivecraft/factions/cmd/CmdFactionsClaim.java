@@ -28,7 +28,7 @@ public class CmdFactionsClaim extends FCommand
 	@Override
 	public void perform()
 	{
-		final Faction forFaction = this.arg(0, ARFaction.get());
+		final Faction forFaction = this.arg(0, ARFaction.get(me));
 		if (forFaction == null) return;
 		
 		Integer radius = this.arg(1, ARInteger.get(), 1);

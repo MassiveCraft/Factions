@@ -3,9 +3,10 @@ package com.massivecraft.factions.cmd.arg;
 import org.bukkit.command.CommandSender;
 
 import com.massivecraft.factions.entity.FPlayer;
-import com.massivecraft.factions.entity.FPlayerColl;
+import com.massivecraft.factions.entity.FPlayerColls;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.FactionColl;
+import com.massivecraft.factions.entity.FactionColls;
 import com.massivecraft.mcore.cmd.arg.ArgReaderAbstract;
 import com.massivecraft.mcore.cmd.arg.ArgResult;
 import com.massivecraft.mcore.util.Txt;
@@ -16,8 +17,18 @@ public class ARFaction extends ArgReaderAbstract<Faction>
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static ARFaction i = new ARFaction();
-	public static ARFaction get() { return i; }
+	public static ARFaction get(Object o) { return new ARFaction(FactionColls.get().get(o)); }
+	private ARFaction(FactionColl coll)
+	{
+		this.coll = coll;
+	}
+	
+	// -------------------------------------------- //
+	// FIELDS
+	// -------------------------------------------- //
+	
+	private final FactionColl coll;
+	public FactionColl getColl() { return this.coll;}
 	
 	// -------------------------------------------- //
 	// OVERRIDE
@@ -29,15 +40,15 @@ public class ARFaction extends ArgReaderAbstract<Faction>
 		ArgResult<Faction> result = new ArgResult<Faction>();
 		
 		// Faction Tag Exact 
-		result.setResult(FactionColl.get().getByTag(str));
+		result.setResult(this.getColl().getByTag(str));
 		if (result.hasResult()) return result;
 		
 		// Faction Tag Match
-		result.setResult(FactionColl.get().getBestTagMatch(str));
+		result.setResult(this.getColl().getBestTagMatch(str));
 		if (result.hasResult()) return result;
 		
 		// FPlayer Name Exact
-		FPlayer fplayer = FPlayerColl.get().get(str);
+		FPlayer fplayer = FPlayerColls.get().get(this.getColl()).get(str);
 		if (fplayer != null)
 		{
 			result.setResult(fplayer.getFaction());

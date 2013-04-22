@@ -5,7 +5,7 @@ import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.cmd.arg.ARFPlayer;
 import com.massivecraft.factions.cmd.arg.ARFaction;
 import com.massivecraft.factions.entity.FPlayer;
-import com.massivecraft.factions.entity.FPlayerColl;
+import com.massivecraft.factions.entity.FPlayerColls;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.event.FactionsEventMembershipChange;
 import com.massivecraft.factions.event.FactionsEventMembershipChange.MembershipChangeReason;
@@ -28,10 +28,10 @@ public class CmdFactionsLeader extends FCommand
 	@Override
 	public void perform()
 	{
-		FPlayer newLeader = this.arg(0, ARFPlayer.getStartAny());
+		FPlayer newLeader = this.arg(0, ARFPlayer.getStartAny(sender));
 		if (newLeader == null) return;
 		
-		Faction targetFaction = this.arg(1, ARFaction.get(), myFaction);
+		Faction targetFaction = this.arg(1, ARFaction.get(sender), myFaction);
 		if (targetFaction == null) return;
 		
 		FPlayer targetFactionCurrentLeader = targetFaction.getLeader();
@@ -90,7 +90,7 @@ public class CmdFactionsLeader extends FCommand
 		msg("<i>You have promoted %s<i> to the position of faction leader.", newLeader.describeTo(fme, true));
 		
 		// Inform all players
-		for (FPlayer fplayer : FPlayerColl.get().getAllOnline())
+		for (FPlayer fplayer : FPlayerColls.get().get(sender).getAllOnline())
 		{
 			fplayer.msg("%s<i> gave %s<i> the leadership of %s<i>.", senderIsConsole ? "A server admin" : RelationUtil.describeThatToMe(fme, fplayer, true), newLeader.describeTo(fplayer), targetFaction.describeTo(fplayer));
 		}

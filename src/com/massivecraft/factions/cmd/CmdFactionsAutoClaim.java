@@ -23,7 +23,7 @@ public class CmdFactionsAutoClaim extends FCommand
 	@Override
 	public void perform()
 	{
-		Faction forFaction = this.arg(0, ARFaction.get(), myFaction);
+		Faction forFaction = this.arg(0, ARFaction.get(myFaction), myFaction);
 		if (forFaction == null || forFaction == fme.getAutoClaimFor())
 		{
 			fme.setAutoClaimFor(null);

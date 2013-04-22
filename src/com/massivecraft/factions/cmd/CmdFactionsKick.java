@@ -8,7 +8,7 @@ import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.cmd.arg.ARFPlayer;
 import com.massivecraft.factions.entity.FPlayer;
 import com.massivecraft.factions.entity.Faction;
-import com.massivecraft.factions.entity.FactionColl;
+import com.massivecraft.factions.entity.FactionColls;
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.event.FactionsEventMembershipChange;
 import com.massivecraft.factions.event.FactionsEventMembershipChange.MembershipChangeReason;
@@ -30,7 +30,7 @@ public class CmdFactionsKick extends FCommand
 	public void perform()
 	{
 		// Arg
-		FPlayer fplayer = this.arg(1, ARFPlayer.getStartAny());
+		FPlayer fplayer = this.arg(1, ARFPlayer.getStartAny(sender));
 		if (fplayer == null) return;
 		
 		// Validate
@@ -58,7 +58,7 @@ public class CmdFactionsKick extends FCommand
 		if (!FPerm.KICK.has(sender, fplayerFaction)) return;
 
 		// Event
-		FactionsEventMembershipChange event = new FactionsEventMembershipChange(sender, fplayer, FactionColl.get().getNone(), MembershipChangeReason.KICK);
+		FactionsEventMembershipChange event = new FactionsEventMembershipChange(sender, fplayer, FactionColls.get().get(fplayer).getNone(), MembershipChangeReason.KICK);
 		event.run();
 		if (event.isCancelled()) return;
 

@@ -27,7 +27,7 @@ public class CmdFactionsInvite extends FCommand
 	public void perform()
 	{
 		// Args
-		FPlayer fplayer = this.arg(0, ARFPlayer.getStartAny());
+		FPlayer fplayer = this.arg(0, ARFPlayer.getStartAny(sender));
 		if (fplayer == null) return;
 		
 		Boolean newInvited = this.arg(1, ARBoolean.get(), !myFaction.isInvited(fplayer));

@@ -2,7 +2,6 @@ package com.massivecraft.factions.chat.tag;
 
 import com.massivecraft.factions.chat.ChatTagAbstract;
 import com.massivecraft.factions.entity.FPlayer;
-import com.massivecraft.factions.entity.FPlayerColl;
 
 public class ChatTagRelcolor extends ChatTagAbstract
 {
@@ -19,14 +18,8 @@ public class ChatTagRelcolor extends ChatTagAbstract
 	// -------------------------------------------- //
 
 	@Override
-	public String getReplacement(String senderId, String sendeeId, String recipientId)
+	public String getReplacement(FPlayer fsender, FPlayer frecipient)
 	{
-		if (senderId == null) return "";
-		if (recipientId == null) return "";
-		
-		FPlayer fsender = FPlayerColl.get().get(senderId);
-		FPlayer frecipient = FPlayerColl.get().get(recipientId);
-		
 		if (fsender == null) return "";
 		if (frecipient == null) return "";
 		

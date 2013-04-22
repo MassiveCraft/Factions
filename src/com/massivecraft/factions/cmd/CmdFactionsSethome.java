@@ -34,7 +34,7 @@ public class CmdFactionsSethome extends FCommand
 		}
 		
 		// Args
-		Faction faction = this.arg(0, ARFaction.get(), myFaction);
+		Faction faction = this.arg(0, ARFaction.get(myFaction), myFaction);
 		if (faction == null) return;
 		
 		PS newHome = PS.valueOf(me.getLocation());

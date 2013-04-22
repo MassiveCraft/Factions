@@ -2,7 +2,6 @@ package com.massivecraft.factions.chat.tag;
 
 import com.massivecraft.factions.chat.ChatTagAbstract;
 import com.massivecraft.factions.entity.FPlayer;
-import com.massivecraft.factions.entity.FPlayerColl;
 import com.massivecraft.mcore.util.Txt;
 
 public class ChatTagRole extends ChatTagAbstract
@@ -20,9 +19,8 @@ public class ChatTagRole extends ChatTagAbstract
 	// -------------------------------------------- //
 
 	@Override
-	public String getReplacement(String senderId, String sendeeId, String recipientId)
+	public String getReplacement(FPlayer fsender, FPlayer frecipient)
 	{		
-		FPlayer fsender = FPlayerColl.get().get(senderId);
 		return Txt.upperCaseFirst(fsender.getRole().toString().toLowerCase());
 	}
 

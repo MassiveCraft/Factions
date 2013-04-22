@@ -1,7 +1,7 @@
 package com.massivecraft.factions.cmd.arg;
 
 import com.massivecraft.factions.entity.FPlayer;
-import com.massivecraft.factions.entity.FPlayerColl;
+import com.massivecraft.factions.entity.FPlayerColls;
 import com.massivecraft.mcore.cmd.arg.ARSenderEntity;
 import com.massivecraft.mcore.cmd.arg.ArgReader;
 
@@ -11,16 +11,12 @@ public class ARFPlayer
 	// INSTANCE
 	// -------------------------------------------- //
 	
-	private static ArgReader<FPlayer> fullAny = ARSenderEntity.getFullAny(FPlayerColl.get());
-	public static ArgReader<FPlayer> getFullAny() { return fullAny; }
+	public static ArgReader<FPlayer> getFullAny(Object o) { return ARSenderEntity.getFullAny(FPlayerColls.get().get(o)); }
 	
-	private static ArgReader<FPlayer> startAny = ARSenderEntity.getStartAny(FPlayerColl.get());
-	public static ArgReader<FPlayer> getStartAny() { return startAny; }
+	public static ArgReader<FPlayer> getStartAny(Object o) { return ARSenderEntity.getStartAny(FPlayerColls.get().get(o)); }
 	
-	private static ArgReader<FPlayer> fullOnline = ARSenderEntity.getFullOnline(FPlayerColl.get());
-	public static ArgReader<FPlayer> getFullOnline() { return fullOnline; }
+	public static ArgReader<FPlayer> getFullOnline(Object o) { return ARSenderEntity.getFullOnline(FPlayerColls.get().get(o)); }
 	
-	private static ArgReader<FPlayer> startOnline = ARSenderEntity.getStartOnline(FPlayerColl.get());
-	public static ArgReader<FPlayer> getStartOnline() { return startOnline; }
+	public static ArgReader<FPlayer> getStartOnline(Object o) { return ARSenderEntity.getStartOnline(FPlayerColls.get().get(o)); }
 	
 }

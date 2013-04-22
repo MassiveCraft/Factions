@@ -27,7 +27,7 @@ public abstract class CmdFactionsRelationAbstract extends FCommand
 	public void perform()
 	{
 		// Args
-		Faction otherFaction = this.arg(0, ARFaction.get());
+		Faction otherFaction = this.arg(0, ARFaction.get(sender));
 		if (otherFaction == null) return;
 		
 		Rel newRelation = targetRelation;

@@ -30,7 +30,7 @@ public abstract class CmdFactionsCapeAbstract extends FCommand
 			return false;
 		}
 		
-		this.capeFaction = this.arg(this.requiredArgs.size(), ARFaction.get(), this.myFaction);
+		this.capeFaction = this.arg(this.requiredArgs.size(), ARFaction.get(myFaction), myFaction);
 		if (this.capeFaction == null) return false;
 		
 		// Do we have permission to manage the cape of that faction? 

@@ -28,10 +28,10 @@ public class CmdFactionsJoin extends FCommand
 	public void perform()
 	{
 		// Args
-		Faction faction = this.arg(0, ARFaction.get());
+		Faction faction = this.arg(0, ARFaction.get(sender));
 		if (faction == null) return;
 
-		FPlayer fplayer = this.arg(1, ARFPlayer.getStartAny(), fme);
+		FPlayer fplayer = this.arg(1, ARFPlayer.getStartAny(sender), fme);
 		if (fplayer == null) return;
 		
 		boolean samePlayer = fplayer == fme;

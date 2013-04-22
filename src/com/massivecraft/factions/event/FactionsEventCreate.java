@@ -17,23 +17,25 @@ public class FactionsEventCreate extends FactionsEventAbstractSender
 	// FIELDS
 	// -------------------------------------------- //
 	
-	// TODO: How do we know what universe? Should we perhaps actually create the faction?
+	private final String universe;
+	public final String getUniverse() { return this.universe; }
 	
-	private String factionTag;
-	public String getFactionTag() { return this.factionTag; }
+	private final String factionId;
+	public final String getFactionId() { return this.factionId; }
 	
-	private String factionId;
-	public String getFactionId() { return this.factionId; }
+	private final String factionTag;
+	public final String getFactionTag() { return this.factionTag; }
 	
 	// -------------------------------------------- //
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public FactionsEventCreate(CommandSender sender, String factionTag, String factionId)
+	public FactionsEventCreate(CommandSender sender, String universe, String factionId, String factionTag)
 	{
 		super(sender);
-		this.factionTag = factionTag;
+		this.universe = universe;
 		this.factionId = factionId;
+		this.factionTag = factionTag;
 	}
 
 }

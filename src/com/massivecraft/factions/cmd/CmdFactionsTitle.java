@@ -28,7 +28,7 @@ public class CmdFactionsTitle extends FCommand
 	public void perform()
 	{
 		// Args
-		FPlayer you = this.arg(0, ARFPlayer.getStartAny());
+		FPlayer you = this.arg(0, ARFPlayer.getStartAny(sender));
 		if (you == null) return;
 		
 		String newTitle = this.argConcatFrom(1, ARString.get(), "");

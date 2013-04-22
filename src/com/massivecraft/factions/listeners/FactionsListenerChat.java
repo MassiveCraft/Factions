@@ -8,8 +8,8 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.chat.ChatFormatter;
+import com.massivecraft.factions.entity.FPlayer;
 import com.massivecraft.factions.entity.MConf;
-import com.massivecraft.mcore.util.SenderUtil;
 
 public class FactionsListenerChat implements Listener
 {
@@ -95,7 +95,8 @@ public class FactionsListenerChat implements Listener
 		
 		// ... then parse tags a.k.a. "format the format".
 		String format = event.getFormat();
-		format = ChatFormatter.format(format, SenderUtil.getSenderId(event.getPlayer()), null, null);
+		
+		format = ChatFormatter.format(format, FPlayer.get(event.getPlayer()), null);
 		event.setFormat(format);
 	}
 	

@@ -2,7 +2,6 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.entity.FPlayer;
-import com.massivecraft.factions.entity.FPlayerColl;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.mcore.cmd.MCommand;
 import com.massivecraft.mcore.util.Txt;
@@ -15,7 +14,7 @@ public abstract class FCommand extends MCommand
 	@Override
 	public void fixSenderVars()
 	{
-		this.fme = FPlayerColl.get().get(this.sender);
+		this.fme = FPlayer.get(this.sender);
 		this.myFaction = this.fme.getFaction();
 	}
 	

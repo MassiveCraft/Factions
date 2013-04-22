@@ -20,7 +20,7 @@ public class CmdFactionsPower extends FCommand
 	@Override
 	public void perform()
 	{
-		FPlayer target = this.arg(0, ARFPlayer.getStartAny(), fme);
+		FPlayer target = this.arg(0, ARFPlayer.getStartAny(fme), fme);
 		if (target == null) return;
 		
 		if (target != fme && ! Perm.POWER_ANY.has(sender, true)) return;

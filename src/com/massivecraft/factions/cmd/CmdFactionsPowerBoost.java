@@ -45,7 +45,7 @@ public class CmdFactionsPowerBoost extends FCommand
 
 		if (doPlayer)
 		{
-			FPlayer targetPlayer = this.arg(1, ARFPlayer.getStartAny());
+			FPlayer targetPlayer = this.arg(1, ARFPlayer.getStartAny(sender));
 			if (targetPlayer == null) return;
 			
 			targetPlayer.setPowerBoost(targetPower);
@@ -53,7 +53,7 @@ public class CmdFactionsPowerBoost extends FCommand
 		}
 		else
 		{
-			Faction targetFaction = this.arg(1, ARFaction.get());
+			Faction targetFaction = this.arg(1, ARFaction.get(sender));
 			if (targetFaction == null) return;
 			
 			targetFaction.setPowerBoost(targetPower);

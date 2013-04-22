@@ -22,7 +22,7 @@ public class CmdFactionsOfficer extends FCommand
 	@Override
 	public void perform()
 	{
-		FPlayer you = this.arg(0, ARFPlayer.getStartAny());
+		FPlayer you = this.arg(0, ARFPlayer.getStartAny(sender));
 		if (you == null) return;
 
 		boolean permAny = Perm.OFFICER_ANY.has(sender, false);

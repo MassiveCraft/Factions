@@ -12,7 +12,6 @@ import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.cmd.req.ReqRoleIsAtLeast;
 import com.massivecraft.factions.entity.BoardColls;
 import com.massivecraft.factions.entity.FPlayer;
-import com.massivecraft.factions.entity.FPlayerColl;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.event.FactionsEventHomeTeleport;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
@@ -100,7 +99,7 @@ public class CmdFactionsHome extends FCommand
 				if (p == null || !p.isOnline() || p.isDead() || p == me || p.getWorld() != w)
 					continue;
 
-				FPlayer fp = FPlayerColl.get().get(p);
+				FPlayer fp = FPlayer.get(p);
 				if (fme.getRelationTo(fp) != Rel.ENEMY)
 					continue;
 

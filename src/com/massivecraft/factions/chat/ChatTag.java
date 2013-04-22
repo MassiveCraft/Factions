@@ -1,9 +1,11 @@
 package com.massivecraft.factions.chat;
 
+import com.massivecraft.factions.entity.FPlayer;
+
 public interface ChatTag
 {
 	public String getId();
-	public String getReplacement(String senderId, String sendeeId, String recipientId);
+	public String getReplacement(FPlayer fsender, FPlayer frecipient);
 	public boolean register();
 	public boolean unregister();
 }

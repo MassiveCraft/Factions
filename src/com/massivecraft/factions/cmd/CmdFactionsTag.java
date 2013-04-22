@@ -8,6 +8,7 @@ import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.cmd.req.ReqRoleIsAtLeast;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.FactionColl;
+import com.massivecraft.factions.entity.FactionColls;
 import com.massivecraft.factions.event.FactionsEventTagChange;
 import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.util.MiscUtil;
@@ -33,7 +34,7 @@ public class CmdFactionsTag extends FCommand
 		String newTag = this.arg(0);
 		
 		// TODO does not first test cover selfcase?
-		if (FactionColl.get().isTagTaken(newTag) && ! MiscUtil.getComparisonString(newTag).equals(myFaction.getComparisonTag()))
+		if (FactionColls.get().get(myFaction).isTagTaken(newTag) && ! MiscUtil.getComparisonString(newTag).equals(myFaction.getComparisonTag()))
 		{
 			msg("<b>That tag is already taken");
 			return;
@@ -59,7 +60,7 @@ public class CmdFactionsTag extends FCommand
 
 		// Inform
 		myFaction.msg("%s<i> changed your faction tag to %s", fme.describeTo(myFaction, true), myFaction.getTag(myFaction));
-		for (Faction faction : FactionColl.get().getAll())
+		for (Faction faction : FactionColls.get().get(myFaction).getAll())
 		{
 			if (faction == myFaction)
 			{

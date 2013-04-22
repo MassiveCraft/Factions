@@ -73,14 +73,14 @@ public class CmdFactionsAccess extends FCommand
 
 		if (doPlayer)
 		{
-			FPlayer targetPlayer = this.arg(1, ARFPlayer.getStartAny(), fme);
+			FPlayer targetPlayer = this.arg(1, ARFPlayer.getStartAny(fme), fme);
 			if (targetPlayer == null) return;
 			added = territory.toggleFPlayer(targetPlayer);
 			target = "Player \""+targetPlayer.getName()+"\"";
 		}
 		else
 		{
-			Faction targetFaction = this.arg(1, ARFaction.get(), myFaction);
+			Faction targetFaction = this.arg(1, ARFaction.get(myFaction), myFaction);
 			if (targetFaction == null) return;
 			added = territory.toggleFaction(targetFaction);
 			target = "Faction \""+targetFaction.getTag()+"\"";

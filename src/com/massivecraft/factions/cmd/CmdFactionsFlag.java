@@ -26,7 +26,7 @@ public class CmdFactionsFlag extends FCommand
 	@Override
 	public void perform()
 	{
-		Faction faction = this.arg(0, ARFaction.get(), myFaction);
+		Faction faction = this.arg(0, ARFaction.get(sender), myFaction);
 		if (faction == null) return;
 		
 		if ( ! this.argIsSet(1))

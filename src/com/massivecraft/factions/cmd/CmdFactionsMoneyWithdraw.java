@@ -3,6 +3,7 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.cmd.arg.ARFaction;
 import com.massivecraft.factions.cmd.req.ReqBankCommandsEnabled;
+import com.massivecraft.factions.entity.FPlayer;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.Factions;
@@ -34,14 +35,16 @@ public class CmdFactionsMoneyWithdraw extends FCommand
 		Double amount = this.arg(0, ARDouble.get());
 		if (amount == null) return;
 		
-		Faction faction = this.arg(1, ARFaction.get(), myFaction);
-		if (faction == null) return;
+		Faction from = this.arg(1, ARFaction.get(sender), myFaction);
+		if (from == null) return;
 		
-		boolean success = Econ.transferMoney(fme, faction, fme, amount);
+		FPlayer to = fme;
+		
+		boolean success = Econ.transferMoney(fme, from, to, amount);
 
 		if (success && MConf.get().logMoneyTransactions)
 		{
-			Factions.get().log(ChatColor.stripColor(Txt.parse("%s withdrew %s from the faction bank: %s", fme.getName(), Money.format(faction, amount), faction.describeTo(null))));
+			Factions.get().log(ChatColor.stripColor(Txt.parse("%s withdrew %s from the faction bank: %s", fme.getName(), Money.format(from, amount), from.describeTo(null))));
 		}
 	}
 }

@@ -35,7 +35,7 @@ public class CmdFactionsMoneyDeposit extends FCommand
 		Double amount = this.arg(0, ARDouble.get());
 		if (amount == null) return;
 		
-		Faction faction = this.arg(1, ARFaction.get(), myFaction);
+		Faction faction = this.arg(1, ARFaction.get(sender), myFaction);
 		if (faction == null) return;
 		
 		boolean success = Econ.transferMoney(fme, fme, faction, amount);

@@ -10,6 +10,7 @@ import com.dthielke.herochat.ChannelChatEvent;
 import com.dthielke.herochat.Herochat;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.chat.ChatFormatter;
+import com.massivecraft.factions.entity.FPlayer;
 import com.massivecraft.factions.entity.MConf;
 
 
@@ -52,7 +53,8 @@ public class HerochatEngine implements Listener
 		
 		String format = event.getFormat();
 		format = format.replaceAll("&r", "§r");
-		format = ChatFormatter.format(format, event.getSender().getName(), null, null); 
+		
+		format = ChatFormatter.format(format, FPlayer.get(event.getSender().getPlayer()), null); 
 		event.setFormat(format);
 	}
 	

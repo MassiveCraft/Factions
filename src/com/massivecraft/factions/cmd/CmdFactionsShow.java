@@ -32,7 +32,7 @@ public class CmdFactionsShow extends FCommand
 	@Override
 	public void perform()
 	{
-		Faction faction = this.arg(0, ARFaction.get(), myFaction);
+		Faction faction = this.arg(0, ARFaction.get(myFaction), myFaction);
 		if (faction == null) return;
 
 		Collection<FPlayer> leaders = faction.getFPlayersWhereRole(Rel.LEADER);

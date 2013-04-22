@@ -6,9 +6,10 @@ import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.entity.FPlayer;
-import com.massivecraft.factions.entity.FPlayerColl;
+import com.massivecraft.factions.entity.FPlayerColls;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.FactionColl;
+import com.massivecraft.factions.entity.FactionColls;
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.event.FactionsEventCreate;
 import com.massivecraft.factions.event.FactionsEventMembershipChange;
@@ -39,7 +40,9 @@ public class CmdFactionsCreate extends FCommand
 			return;
 		}
 		
-		if (FactionColl.get().isTagTaken(newTag))
+		FactionColl coll = FactionColls.get().get(fme);
+		
+		if (coll.isTagTaken(newTag))
 		{
 			msg("<b>That tag is already in use.");
 			return;
@@ -53,15 +56,15 @@ public class CmdFactionsCreate extends FCommand
 		}
 
 		// Pre-Generate Id
-		String factionId = FactionColl.get().getIdStrategy().generate(FactionColl.get());
+		String factionId = coll.getIdStrategy().generate(coll);
 		
 		// Event
-		FactionsEventCreate createEvent = new FactionsEventCreate(sender, newTag, factionId);
+		FactionsEventCreate createEvent = new FactionsEventCreate(sender, coll.getUniverse(), factionId, newTag);
 		createEvent.run();
 		if (createEvent.isCancelled()) return;
 		
 		// Apply
-		Faction faction = FactionColl.get().create(factionId);
+		Faction faction = coll.create(factionId);
 		faction.setTag(newTag);
 		
 		fme.setRole(Rel.LEADER);
@@ -72,7 +75,7 @@ public class CmdFactionsCreate extends FCommand
 		// NOTE: join event cannot be cancelled or you'll have an empty faction
 		
 		// Inform
-		for (FPlayer follower : FPlayerColl.get().getAllOnline())
+		for (FPlayer follower : FPlayerColls.get().get(fme).getAllOnline())
 		{
 			follower.msg("%s<i> created a new faction %s", fme.describeTo(follower, true), faction.getTag(follower));
 		}

@@ -2,9 +2,9 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.cmd.arg.ARFaction;
 import com.massivecraft.factions.entity.FPlayer;
-import com.massivecraft.factions.entity.FPlayerColl;
+import com.massivecraft.factions.entity.FPlayerColls;
 import com.massivecraft.factions.entity.Faction;
-import com.massivecraft.factions.entity.FactionColl;
+import com.massivecraft.factions.entity.FactionColls;
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.event.FactionsEventDisband;
 import com.massivecraft.factions.event.FactionsEventMembershipChange;
@@ -33,7 +33,7 @@ public class CmdFactionsDisband extends FCommand
 	public void perform()
 	{
 		// Args
-		Faction faction = this.arg(0, ARFaction.get(), myFaction);
+		Faction faction = this.arg(0, ARFaction.get(fme), myFaction);
 		if (faction == null) return;
 		
 		// FPerm
@@ -56,12 +56,12 @@ public class CmdFactionsDisband extends FCommand
 		// Send FPlayerLeaveEvent for each player in the faction
 		for (FPlayer fplayer : faction.getFPlayers())
 		{
-			FactionsEventMembershipChange membershipChangeEvent = new FactionsEventMembershipChange(sender, fplayer, FactionColl.get().getNone(), MembershipChangeReason.DISBAND);
+			FactionsEventMembershipChange membershipChangeEvent = new FactionsEventMembershipChange(sender, fplayer, FactionColls.get().get(faction).getNone(), MembershipChangeReason.DISBAND);
 			membershipChangeEvent.run();
 		}
 
 		// Inform all players
-		for (FPlayer fplayer : FPlayerColl.get().getAllOnline())
+		for (FPlayer fplayer : FPlayerColls.get().get(fme).getAllOnline())
 		{
 			String who = fme.describeTo(fplayer);
 			if (fplayer.getFaction() == faction)

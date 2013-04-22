@@ -37,10 +37,10 @@ public class CmdFactionsMoneyTransferPf extends FCommand
 		Double amount = this.arg(0, ARDouble.get());
 		if (amount == null) return;
 		
-		FPlayer from = this.arg(1, ARFPlayer.getStartAny());
+		FPlayer from = this.arg(1, ARFPlayer.getStartAny(sender));
 		if (from == null) return;
 		
-		Faction to = this.arg(2, ARFaction.get());
+		Faction to = this.arg(2, ARFaction.get(sender));
 		if (to == null) return;
 		
 		boolean success = Econ.transferMoney(fme, from, to, amount);

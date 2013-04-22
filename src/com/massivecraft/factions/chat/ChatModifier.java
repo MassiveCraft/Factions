@@ -1,10 +1,12 @@
 package com.massivecraft.factions.chat;
 
+import com.massivecraft.factions.entity.FPlayer;
+
 
 public interface ChatModifier
 {
 	public String getId();
-	public String getModified(String subject, String senderId, String sendeeId, String recipientId);
+	public String getModified(String subject, FPlayer fsender, FPlayer frecipient);
 	public boolean register();
 	public boolean unregister();
 }
