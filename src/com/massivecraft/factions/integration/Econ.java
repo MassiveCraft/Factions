@@ -4,68 +4,26 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Level;
 
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.RegisteredServiceProvider;
-
 import com.massivecraft.factions.ConfServer;
+import com.massivecraft.factions.EconomyParticipator;
 import com.massivecraft.factions.FPerm;
-import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
-import com.massivecraft.factions.iface.EconomyParticipator;
+import com.massivecraft.factions.entity.FPlayer;
+import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.util.RelationUtil;
-
-import net.milkbowl.vault.economy.Economy;
-import net.milkbowl.vault.economy.EconomyResponse;
-
+import com.massivecraft.mcore.money.Money;
 
 public class Econ
 {
 	// -------------------------------------------- //
-	// DERPY OLDSCHOOL SETUP
-	// -------------------------------------------- //
-	
-	public static void setup()
-	{
-		if (economy != null) return;
-
-		String integrationFail = "Economy integration is "+(ConfServer.econEnabled ? "enabled, but" : "disabled, and")+" the plugin \"Vault\" ";
-
-		if (Bukkit.getServer().getPluginManager().getPlugin("Vault") == null)
-		{
-			Factions.get().log(integrationFail+"is not installed.");
-			return;
-		}
-
-		RegisteredServiceProvider<Economy> rsp = Bukkit.getServer().getServicesManager().getRegistration(Economy.class);
-		if (rsp == null)
-		{
-			Factions.get().log(integrationFail+"is not hooked into an economy plugin.");
-			return;
-		}
-		economy = rsp.getProvider();
-
-		Factions.get().log("Economy integration through Vault plugin successful.");
-
-		if (!ConfServer.econEnabled)
-		{
-			Factions.get().log("NOTE: Economy is disabled. You can enable it with the command: f config econEnabled true");
-		}
-	}
-
-	// -------------------------------------------- //
-	// FIELDS
-	// -------------------------------------------- //
-	
-	private static Economy economy = null;
-	
-	// -------------------------------------------- //
 	// STATE
 	// -------------------------------------------- //
 	
-	public static boolean isEnabled()
+	// TODO: Do we really need that config option?
+	// TODO: Could we not have it enabled as long as Money.enabled is true?
+	public static boolean isEnabled(Object universe)
 	{
-		return ConfServer.econEnabled && economy != null && economy.isEnabled();
+		return ConfServer.econEnabled && Money.enabled(universe);
 	}
 	
 	// -------------------------------------------- //
@@ -74,7 +32,7 @@ public class Econ
 	
 	public static boolean payForAction(double cost, FPlayer fsender, String actionDescription)
 	{
-		if (!isEnabled()) return true;
+		if (!isEnabled(fsender)) return true;
 		if (cost == 0D) return true;
 		
 		if (fsender.isUsingAdminMode()) return true;
@@ -94,25 +52,27 @@ public class Econ
 	// ASSORTED
 	// -------------------------------------------- //
 
-	public static void modifyUniverseMoney(double delta)
+	public static void modifyUniverseMoney(Object universe, double delta)
 	{
-		if (!isEnabled()) return;
+		if (!isEnabled(universe)) return;
 
 		if (ConfServer.econUniverseAccount == null) return;
 		if (ConfServer.econUniverseAccount.length() == 0) return;
-		if ( ! economy.hasAccount(ConfServer.econUniverseAccount)) return;
+		
+		if (!Money.exists(universe, ConfServer.econUniverseAccount)) return;
 
-		deposit(ConfServer.econUniverseAccount, delta);
+		Money.add(universe, ConfServer.econUniverseAccount, delta);
 	}
 
 	public static void sendBalanceInfo(FPlayer to, EconomyParticipator about)
 	{
-		if (!isEnabled())
+		if (!isEnabled(to))
 		{
 			Factions.get().log(Level.WARNING, "Vault does not appear to be hooked into an economy plugin.");
 			return;
 		}
-		to.msg("<a>%s's<i> balance is <h>%s<i>.", about.describeTo(to, true), Econ.moneyString(economy.getBalance(about.getAccountId())));
+		
+		to.msg("<a>%s's<i> balance is <h>%s<i>.", about.describeTo(to, true), Money.format(about, Money.get(about)));
 	}
 
 	public static boolean canIControllYou(EconomyParticipator i, EconomyParticipator you)
@@ -148,7 +108,7 @@ public class Econ
 	}
 	public static boolean transferMoney(EconomyParticipator invoker, EconomyParticipator from, EconomyParticipator to, double amount, boolean notify)
 	{
-		if ( ! isEnabled()) return false;
+		if (!isEnabled(from)) return false;
 
 		// The amount must be positive.
 		// If the amount is negative we must flip and multiply amount with -1.
@@ -164,23 +124,26 @@ public class Econ
 		if ( ! canIControllYou(invoker, from)) return false;
 		
 		// Is there enough money for the transaction to happen?
-		if ( ! economy.has(from.getAccountId(), amount))
+		
+		
+		
+		if (Money.get(from) < amount)
 		{
 			// There was not enough money to pay
 			if (invoker != null && notify)
 			{
-				invoker.msg("<h>%s<b> can't afford to transfer <h>%s<b> to %s<b>.", from.describeTo(invoker, true), moneyString(amount), to.describeTo(invoker));
+				invoker.msg("<h>%s<b> can't afford to transfer <h>%s<b> to %s<b>.", from.describeTo(invoker, true), Money.format(from, amount), to.describeTo(invoker));
 			}
 			return false;
 		}
 		
 		// Transfer money
-		EconomyResponse erw = economy.withdrawPlayer(from.getAccountId(), amount);
 		
-		if (erw.transactionSuccess())
+		
+		
+		if (Money.subtract(from, amount))
 		{
-			EconomyResponse erd = economy.depositPlayer(to.getAccountId(), amount);
-			if (erd.transactionSuccess())
+			if (Money.add(from, amount))
 			{
 				if (notify)
 				{
@@ -190,18 +153,16 @@ public class Econ
 			}
 			else
 			{
-				// transaction failed, refund account
-				// TODO: This must be invalid thinking for sure!
-				// Atomicity should be built into the system implementing Vault. We are /not/ doing manual rollbacks.
-				// TODO: Re
-				economy.depositPlayer(from.getAccountId(), amount);
+				// We failed. Try a rollback
+				Money.add(from, amount);
 			}
 		}
 		
 		// if we get here something with the transaction failed
 		if (notify)
-			invoker.msg("Unable to transfer %s<b> to <h>%s<b> from <h>%s<b>.", moneyString(amount), to.describeTo(invoker), from.describeTo(invoker, true));
-			
+		{
+			invoker.msg("Unable to transfer %s<b> to <h>%s<b> from <h>%s<b>.", Money.format(from, amount), to.describeTo(invoker), from.describeTo(invoker, true));
+		}
 		
 		return false;
 	}
@@ -237,40 +198,42 @@ public class Econ
 		{
 			for (FPlayer recipient : recipients)
 			{
-				recipient.msg("<h>%s<i> was transfered from <h>%s<i> to <h>%s<i>.", moneyString(amount), from.describeTo(recipient), to.describeTo(recipient));
+				recipient.msg("<h>%s<i> was transfered from <h>%s<i> to <h>%s<i>.", Money.format(from, amount), from.describeTo(recipient), to.describeTo(recipient));
 			}
 		}
 		else if (invoker == from)
 		{
 			for (FPlayer recipient : recipients)
 			{
-				recipient.msg("<h>%s<i> <h>gave %s<i> to <h>%s<i>.", from.describeTo(recipient, true), moneyString(amount), to.describeTo(recipient));
+				recipient.msg("<h>%s<i> <h>gave %s<i> to <h>%s<i>.", from.describeTo(recipient, true), Money.format(from, amount), to.describeTo(recipient));
 			}
 		}
 		else if (invoker == to)
 		{
 			for (FPlayer recipient : recipients)
 			{
-				recipient.msg("<h>%s<i> <h>took %s<i> from <h>%s<i>.", to.describeTo(recipient, true), moneyString(amount), from.describeTo(recipient));
+				recipient.msg("<h>%s<i> <h>took %s<i> from <h>%s<i>.", to.describeTo(recipient, true), Money.format(from, amount), from.describeTo(recipient));
 			}
 		}
 		else
 		{
 			for (FPlayer recipient : recipients)
 			{
-				recipient.msg("<h>%s<i> transfered <h>%s<i> from <h>%s<i> to <h>%s<i>.", invoker.describeTo(recipient, true), moneyString(amount), from.describeTo(recipient), to.describeTo(recipient));
+				recipient.msg("<h>%s<i> transfered <h>%s<i> from <h>%s<i> to <h>%s<i>.", invoker.describeTo(recipient, true), Money.format(from, amount), from.describeTo(recipient), to.describeTo(recipient));
 			}
 		}
 	}
 
 	public static boolean hasAtLeast(EconomyParticipator ep, double delta, String toDoThis)
 	{
-		if (!isEnabled()) return true;
+		if (!isEnabled(ep)) return true;
 
-		if ( ! economy.has(ep.getAccountId(), delta))
+		if (Money.get(ep) < delta)
 		{
 			if (toDoThis != null && !toDoThis.isEmpty())
-				ep.msg("<h>%s<i> can't afford <h>%s<i> %s.", ep.describeTo(ep, true), moneyString(delta), toDoThis);
+			{
+				ep.msg("<h>%s<i> can't afford <h>%s<i> %s.", ep.describeTo(ep, true), Money.format(ep, delta), toDoThis);
+			}
 			return false;
 		}
 		return true;
@@ -278,71 +241,50 @@ public class Econ
 
 	public static boolean modifyMoney(EconomyParticipator ep, double delta, String actionDescription)
 	{
-		if (!isEnabled()) return false;
+		if (!isEnabled(ep)) return false;
 		if (delta == 0) return true;
 		
-		String accountId = ep.getAccountId();
 		String You = ep.describeTo(ep, true);
 		
 		boolean hasActionDesctription = (actionDescription != null && !actionDescription.isEmpty());
 
-		if (delta > 0)
+		if (Money.add(ep, delta))
 		{
-			// The player should gain money
-			// The account might not have enough space
-			EconomyResponse er = economy.depositPlayer(accountId, delta);
-			if (er.transactionSuccess())
-			{
-				modifyUniverseMoney(-delta);
-				if (hasActionDesctription)
-				{
-					ep.msg("<h>%s<i> gained <h>%s<i> since did %s.", You, moneyString(delta), actionDescription);
-				}
-				return true;
-			}
-			else
-			{
-				// transfer to account failed
-				if (hasActionDesctription)
-				{
-					ep.msg("<h>%s<i> would have gained <h>%s<i> since did %s, but the deposit failed.", You, moneyString(delta), actionDescription);
-				}
-				return false;
-			}
+			modifyUniverseMoney(ep, -delta);
 			
+			if (hasActionDesctription)
+			{
+				if (delta > 0)
+				{
+					ep.msg("<h>%s<i> gained <h>%s<i> since did %s.", You, Money.format(ep, delta), actionDescription);
+				}
+				else
+				{
+					ep.msg("<h>%s<i> lost <h>%s<i> since did %s.", You, Money.format(ep, delta), actionDescription);
+				}
+			}
+			return true;
 		}
 		else
 		{
-			// The player should loose money
-			// The player might not have enough.
-			EconomyResponse er = economy.withdrawPlayer(accountId, -delta);
-			if (er.transactionSuccess())
+			if (hasActionDesctription)
 			{
-				// There is enough money to pay
-				modifyUniverseMoney(-delta);
-				if (hasActionDesctription)
+				if (delta > 0)
 				{
-					ep.msg("<h>%s<i> lost <h>%s<i> since did %s.", You, moneyString(delta), actionDescription);
+					ep.msg("<h>%s<i> would have gained <h>%s<i> since did %s, but the deposit failed.", You, Money.format(ep, delta), actionDescription);
 				}
-				return true;
-			}
-			else
-			{
-				// There was not enough money to pay
-				if (hasActionDesctription)
+				else
 				{
-					ep.msg("<h>%s<i> can't afford <h>%s<i> to %s.", You, moneyString(-delta), actionDescription);
+					ep.msg("<h>%s<i> can't afford <h>%s<i> to %s.", You, Money.format(ep, delta), actionDescription);
 				}
-				return false;
 			}
+			return false;
 		}
 	}
 
 	// calculate the cost for claiming land
 	public static double calculateClaimCost(int ownedLand, boolean takingFromAnotherFaction)
 	{
-		if (!isEnabled()) return 0D;
-		
 		// basic claim cost, plus land inflation cost, minus the potential bonus given for claiming from another faction
 		return ConfServer.econCostClaimWilderness
 			+ (ConfServer.econCostClaimWilderness * ConfServer.econClaimAdditionalMultiplier * ownedLand)
@@ -350,9 +292,9 @@ public class Econ
 	}
 
 	// calculate refund amount for unclaiming land
-	public static double calculateClaimRefund(int ownedLand)
+	public static double calculateClaimRefund(Faction forFaction)
 	{
-		return calculateClaimCost(ownedLand - 1, false) * ConfServer.econClaimRefundMultiplier;
+		return calculateClaimCost(forFaction.getLandCount() - 1, false) * ConfServer.econClaimRefundMultiplier;
 	}
 
 	// calculate value of all owned land
@@ -371,50 +313,5 @@ public class Econ
 	{
 		return calculateTotalLandValue(ownedLand) * ConfServer.econClaimRefundMultiplier;
 	}
-
-	// -------------------------------------------- //
-	// Standard account management methods
-	// -------------------------------------------- //
-
-	// format money string based on server's set currency type, like "24 gold" or "$24.50"
-	public static String moneyString(double amount)
-	{
-		return economy.format(amount);
-	}
 	
-	public static boolean hasAccount(String name)
-	{
-		return economy.hasAccount(name);
-	}
-
-	public static double getBalance(String account)
-	{
-		return economy.getBalance(account);
-	}
-
-	public static boolean setBalance(String account, double amount)
-	{
-		// This is about as stupid as it seems.
-		// Vault does however not implement a set balance feature.
-		double current = economy.getBalance(account);
-		return deposit(account, amount - current);
-	}
-
-	public static boolean deposit(String account, double amount)
-	{
-		if (amount < 0)
-		{
-			return withdraw(account, -amount);
-		}
-		return economy.depositPlayer(account, amount).transactionSuccess();
-	}
-
-	public static boolean withdraw(String account, double amount)
-	{
-		if (amount < 0)
-		{
-			return deposit(account, -amount);
-		}
-		return economy.withdrawPlayer(account, amount).transactionSuccess();
-	}
 }

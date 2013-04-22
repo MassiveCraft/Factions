@@ -1,9 +1,9 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.FPlayerColl;
-import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Rel;
+import com.massivecraft.factions.entity.FPlayer;
+import com.massivecraft.factions.entity.FPlayerColl;
+import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.mcore.cmd.MCommand;
 import com.massivecraft.mcore.util.Txt;
 

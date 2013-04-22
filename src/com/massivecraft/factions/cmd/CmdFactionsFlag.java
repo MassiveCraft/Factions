@@ -1,10 +1,10 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.FFlag;
-import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.cmd.arg.ARFFlag;
 import com.massivecraft.factions.cmd.arg.ARFaction;
+import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.mcore.cmd.arg.ARBoolean;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 import com.massivecraft.mcore.util.Txt;

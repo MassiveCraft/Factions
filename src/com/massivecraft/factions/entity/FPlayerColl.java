@@ -1,10 +1,14 @@
-package com.massivecraft.factions;
+package com.massivecraft.factions.entity;
 
 import java.io.File;
 import java.lang.reflect.Type;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.massivecraft.factions.ConfServer;
+import com.massivecraft.factions.Const;
+import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.Rel;
 import com.massivecraft.mcore.mixin.Mixin;
 import com.massivecraft.mcore.store.MStore;
 import com.massivecraft.mcore.store.SenderColl;

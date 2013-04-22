@@ -1,7 +1,7 @@
 package com.massivecraft.factions.cmd.arg;
 
-import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.FPlayerColl;
+import com.massivecraft.factions.entity.FPlayer;
+import com.massivecraft.factions.entity.FPlayerColl;
 import com.massivecraft.mcore.cmd.arg.ARSenderEntity;
 import com.massivecraft.mcore.cmd.arg.ArgReader;
 

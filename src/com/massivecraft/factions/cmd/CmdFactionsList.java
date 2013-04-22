@@ -3,10 +3,10 @@ package com.massivecraft.factions.cmd;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.FactionColl;
 import com.massivecraft.factions.FactionListComparator;
 import com.massivecraft.factions.Perm;
+import com.massivecraft.factions.entity.Faction;
+import com.massivecraft.factions.entity.FactionColl;
 import com.massivecraft.mcore.cmd.arg.ARInteger;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 import com.massivecraft.mcore.util.Txt;

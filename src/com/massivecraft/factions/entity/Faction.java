@@ -1,4 +1,4 @@
-package com.massivecraft.factions;
+package com.massivecraft.factions.entity;
 
 import java.util.*;
 import java.util.Map.Entry;
@@ -8,8 +8,16 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.massivecraft.factions.iface.EconomyParticipator;
-import com.massivecraft.factions.iface.RelationParticipator;
+import com.massivecraft.factions.ConfServer;
+import com.massivecraft.factions.Const;
+import com.massivecraft.factions.EconomyParticipator;
+import com.massivecraft.factions.FFlag;
+import com.massivecraft.factions.FPerm;
+import com.massivecraft.factions.FactionEqualsPredictate;
+import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.Lang;
+import com.massivecraft.factions.Rel;
+import com.massivecraft.factions.RelationParticipator;
 import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.util.*;
 import com.massivecraft.mcore.mixin.Mixin;

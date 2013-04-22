@@ -1,4 +1,4 @@
-package com.massivecraft.factions.adapters;
+package com.massivecraft.factions.adapter;
 
 import java.lang.reflect.Type;
 import java.util.Map;
@@ -11,8 +11,8 @@ import com.massivecraft.mcore.xlib.gson.JsonParseException;
 import com.massivecraft.mcore.xlib.gson.JsonSerializationContext;
 import com.massivecraft.mcore.xlib.gson.JsonSerializer;
 
-import com.massivecraft.factions.Board;
 import com.massivecraft.factions.TerritoryAccess;
+import com.massivecraft.factions.entity.Board;
 
 public class BoardAdapter implements JsonDeserializer<Board>, JsonSerializer<Board>
 {

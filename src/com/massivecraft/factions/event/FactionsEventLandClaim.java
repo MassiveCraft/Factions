@@ -3,7 +3,7 @@ package com.massivecraft.factions.event;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.HandlerList;
 
-import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.mcore.ps.PS;
 
 public class FactionsEventLandClaim extends FactionsEventAbstractSender

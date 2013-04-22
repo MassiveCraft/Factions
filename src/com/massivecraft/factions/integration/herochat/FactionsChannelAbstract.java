@@ -22,10 +22,10 @@ import com.dthielke.herochat.Herochat;
 import com.dthielke.herochat.MessageFormatSupplier;
 import com.dthielke.herochat.MessageNotFoundException;
 import com.dthielke.herochat.util.Messaging;
-import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.FPlayerColl;
-import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Rel;
+import com.massivecraft.factions.entity.FPlayer;
+import com.massivecraft.factions.entity.FPlayerColl;
+import com.massivecraft.factions.entity.Faction;
 
 public abstract class FactionsChannelAbstract implements Channel
 {

@@ -2,8 +2,8 @@ package com.massivecraft.factions.cmd.req;
 
 import org.bukkit.command.CommandSender;
 
-import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Rel;
+import com.massivecraft.factions.entity.FPlayer;
 import com.massivecraft.mcore.cmd.MCommand;
 import com.massivecraft.mcore.cmd.req.ReqAbstract;
 import com.massivecraft.mcore.util.Txt;

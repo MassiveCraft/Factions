@@ -1,7 +1,7 @@
 package com.massivecraft.factions.task;
 
 import com.massivecraft.factions.ConfServer;
-import com.massivecraft.factions.FPlayerColl;
+import com.massivecraft.factions.entity.FPlayerColl;
 import com.massivecraft.mcore.ModuloRepeatTask;
 import com.massivecraft.mcore.util.TimeUnit;
 

@@ -1,8 +1,8 @@
 package com.massivecraft.factions.chat.tag;
 
-import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.FPlayerColl;
 import com.massivecraft.factions.chat.ChatTagAbstract;
+import com.massivecraft.factions.entity.FPlayer;
+import com.massivecraft.factions.entity.FPlayerColl;
 import com.massivecraft.mcore.util.Txt;
 
 public class ChatTagRole extends ChatTagAbstract

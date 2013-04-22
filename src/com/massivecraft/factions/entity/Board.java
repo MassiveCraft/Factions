@@ -1,4 +1,4 @@
-package com.massivecraft.factions;
+package com.massivecraft.factions.entity;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -10,7 +10,11 @@ import java.util.concurrent.ConcurrentSkipListMap;
 
 import org.bukkit.ChatColor;
 
-import com.massivecraft.factions.iface.RelationParticipator;
+import com.massivecraft.factions.ConfServer;
+import com.massivecraft.factions.Const;
+import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.RelationParticipator;
+import com.massivecraft.factions.TerritoryAccess;
 import com.massivecraft.factions.integration.LWCFeatures;
 import com.massivecraft.factions.util.AsciiCompass;
 import com.massivecraft.mcore.ps.PS;

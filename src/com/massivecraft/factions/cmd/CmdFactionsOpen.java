@@ -1,10 +1,10 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.FactionColl;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.cmd.req.ReqRoleIsAtLeast;
+import com.massivecraft.factions.entity.Faction;
+import com.massivecraft.factions.entity.FactionColl;
 import com.massivecraft.factions.event.FactionsEventOpenChange;
 import com.massivecraft.mcore.cmd.arg.ARBoolean;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;

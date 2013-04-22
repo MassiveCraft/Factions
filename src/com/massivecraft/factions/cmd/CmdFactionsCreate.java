@@ -3,13 +3,13 @@ package com.massivecraft.factions.cmd;
 import java.util.ArrayList;
 
 import com.massivecraft.factions.ConfServer;
-import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.FPlayerColl;
-import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.FactionColl;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
+import com.massivecraft.factions.entity.FPlayer;
+import com.massivecraft.factions.entity.FPlayerColl;
+import com.massivecraft.factions.entity.Faction;
+import com.massivecraft.factions.entity.FactionColl;
 import com.massivecraft.factions.event.FactionsEventCreate;
 import com.massivecraft.factions.event.FactionsEventMembershipChange;
 import com.massivecraft.factions.event.FactionsEventMembershipChange.MembershipChangeReason;

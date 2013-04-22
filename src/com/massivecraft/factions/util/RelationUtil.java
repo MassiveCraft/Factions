@@ -4,10 +4,10 @@ import org.bukkit.ChatColor;
 
 import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.FFlag;
-import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Rel;
-import com.massivecraft.factions.iface.RelationParticipator;
+import com.massivecraft.factions.RelationParticipator;
+import com.massivecraft.factions.entity.FPlayer;
+import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.mcore.util.Txt;
 
 public class RelationUtil

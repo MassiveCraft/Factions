@@ -1,8 +1,8 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.cmd.arg.ARFPlayer;
+import com.massivecraft.factions.entity.FPlayer;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 
 public class CmdFactionsPower extends FCommand

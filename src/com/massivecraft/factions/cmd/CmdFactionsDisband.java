@@ -2,20 +2,21 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.cmd.arg.ARFaction;
+import com.massivecraft.factions.entity.FPlayer;
+import com.massivecraft.factions.entity.FPlayerColl;
+import com.massivecraft.factions.entity.Faction;
+import com.massivecraft.factions.entity.FactionColl;
 import com.massivecraft.factions.event.FactionsEventDisband;
 import com.massivecraft.factions.event.FactionsEventMembershipChange;
 import com.massivecraft.factions.event.FactionsEventMembershipChange.MembershipChangeReason;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.FFlag;
 import com.massivecraft.factions.FPerm;
-import com.massivecraft.factions.FPlayerColl;
-import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.FactionColl;
 import com.massivecraft.factions.Factions;
-import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
+import com.massivecraft.mcore.money.Money;
 
 public class CmdFactionsDisband extends FCommand
 {
@@ -75,15 +76,15 @@ public class CmdFactionsDisband extends FCommand
 		if (ConfServer.logFactionDisband)
 			Factions.get().log("The faction "+faction.getTag()+" ("+faction.getId()+") was disbanded by "+(senderIsConsole ? "console command" : fme.getName())+".");
 
-		if (Econ.isEnabled() && ! senderIsConsole)
+		if (Econ.isEnabled(faction))
 		{
 			//Give all the faction's money to the disbander
-			double amount = Econ.getBalance(faction.getAccountId());
+			double amount = Money.get(faction);
 			Econ.transferMoney(fme, faction, fme, amount, false);
 			
 			if (amount > 0.0)
 			{
-				String amountString = Econ.moneyString(amount);
+				String amountString = Money.format(faction, amount);
 				msg("<i>You have been given the disbanded faction's bank, totaling %s.", amountString);
 				Factions.get().log(fme.getName() + " has been given bank holdings of "+amountString+" from disbanding "+faction.getTag()+".");
 			}

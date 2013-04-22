@@ -7,14 +7,15 @@ import java.util.Map;
 
 import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.cmd.arg.ARFaction;
+import com.massivecraft.factions.entity.FPlayer;
+import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.FFlag;
-import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 import com.massivecraft.mcore.mixin.Mixin;
+import com.massivecraft.mcore.money.Money;
 import com.massivecraft.mcore.util.Txt;
 
 public class CmdFactionsShow extends FCommand
@@ -61,21 +62,21 @@ public class CmdFactionsShow extends FCommand
 		msg("<a>Land / Power / Maxpower: <i> %d/%d/%d %s", faction.getLandCount(), faction.getPowerRounded(), faction.getPowerMaxRounded(), boost);
 
 		// show the land value
-		if (Econ.isEnabled())
+		if (Econ.isEnabled(faction))
 		{
 			double value = Econ.calculateTotalLandValue(faction.getLandCount());
 			double refund = value * ConfServer.econClaimRefundMultiplier;
 			if (value > 0)
 			{
-				String stringValue = Econ.moneyString(value);
-				String stringRefund = (refund > 0.0) ? (" ("+Econ.moneyString(refund)+" depreciated)") : "";
+				String stringValue = Money.format(faction, value);
+				String stringRefund = (refund > 0.0) ? (" ("+Money.format(faction, refund)+" depreciated)") : "";
 				msg("<a>Total land value: <i>" + stringValue + stringRefund);
 			}
 			
 			//Show bank contents
 			if(ConfServer.bankEnabled)
 			{
-				msg("<a>Bank contains: <i>"+Econ.moneyString(Econ.getBalance(faction.getAccountId())));
+				msg("<a>Bank contains: <i>"+Money.format(faction, Money.get(faction)));
 			}
 		}
 

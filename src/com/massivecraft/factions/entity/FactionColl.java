@@ -1,4 +1,4 @@
-package com.massivecraft.factions;
+package com.massivecraft.factions.entity;
 
 import java.io.File;
 import java.lang.reflect.Type;
@@ -14,6 +14,12 @@ import com.massivecraft.mcore.util.DiscUtil;
 import com.massivecraft.mcore.util.Txt;
 import com.massivecraft.mcore.xlib.gson.reflect.TypeToken;
 
+import com.massivecraft.factions.ConfServer;
+import com.massivecraft.factions.Const;
+import com.massivecraft.factions.FFlag;
+import com.massivecraft.factions.FPerm;
+import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.util.MiscUtil;
 
@@ -76,9 +82,12 @@ public class FactionColl extends Coll<Faction>
 		String ret = super.attach(faction, oid, noteChange);
 		
 		// Factions start with 0 money.
-		if (!Money.exists(faction, faction))
+		// TODO: Can this be done here?
+		// TODO: Or will it be a to heavy operation to do this often?
+		
+		if (!Money.exists(faction))
 		{
-			Money.set(faction, faction, 0);
+			Money.set(faction, 0);
 		}
 		
 		return ret;
@@ -203,7 +212,7 @@ public class FactionColl extends Coll<Faction>
 
 	public void econLandRewardRoutine()
 	{
-		if (!Econ.isEnabled()) return;
+		if (!Econ.isEnabled(this.getUniverse())) return;
 		if (ConfServer.econLandReward == 0.0) return;
 		
 		Factions.get().log("Running econLandRewardRoutine...");

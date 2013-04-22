@@ -2,10 +2,10 @@ package com.massivecraft.factions.cmd.arg;
 
 import org.bukkit.command.CommandSender;
 
-import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.FPlayerColl;
-import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.FactionColl;
+import com.massivecraft.factions.entity.FPlayer;
+import com.massivecraft.factions.entity.FPlayerColl;
+import com.massivecraft.factions.entity.Faction;
+import com.massivecraft.factions.entity.FactionColl;
 import com.massivecraft.mcore.cmd.arg.ArgReaderAbstract;
 import com.massivecraft.mcore.cmd.arg.ArgResult;
 import com.massivecraft.mcore.util.Txt;

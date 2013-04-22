@@ -14,13 +14,13 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 
-import com.massivecraft.factions.BoardColl;
 import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.Const;
 import com.massivecraft.factions.FPerm;
-import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.FPlayerColl;
 import com.massivecraft.factions.TerritoryAccess;
+import com.massivecraft.factions.entity.BoardColl;
+import com.massivecraft.factions.entity.FPlayer;
+import com.massivecraft.factions.entity.FPlayerColl;
 import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.mcore.event.MCorePlayerLeaveEvent;
 import com.massivecraft.mcore.ps.PS;

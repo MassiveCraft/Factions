@@ -1,13 +1,13 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.BoardColl;
 import com.massivecraft.factions.FPerm;
-import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.TerritoryAccess;
 import com.massivecraft.factions.cmd.arg.ARFPlayer;
 import com.massivecraft.factions.cmd.arg.ARFaction;
+import com.massivecraft.factions.entity.BoardColl;
+import com.massivecraft.factions.entity.FPlayer;
+import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.mcore.cmd.req.ReqIsPlayer;
 import com.massivecraft.mcore.ps.PS;

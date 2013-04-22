@@ -5,8 +5,8 @@ import java.util.List;
 import org.bukkit.command.CommandSender;
 
 import com.massivecraft.factions.FPerm;
-import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.cmd.arg.ARFaction;
+import com.massivecraft.factions.entity.Faction;
 
 public abstract class CmdFactionsCapeAbstract extends FCommand
 {

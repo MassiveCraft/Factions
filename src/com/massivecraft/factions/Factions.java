@@ -1,11 +1,11 @@
 package com.massivecraft.factions;
 
-import com.massivecraft.factions.adapters.BoardAdapter;
-import com.massivecraft.factions.adapters.BoardMapAdapter;
-import com.massivecraft.factions.adapters.FFlagAdapter;
-import com.massivecraft.factions.adapters.FPermAdapter;
-import com.massivecraft.factions.adapters.RelAdapter;
-import com.massivecraft.factions.adapters.TerritoryAccessAdapter;
+import com.massivecraft.factions.adapter.BoardAdapter;
+import com.massivecraft.factions.adapter.BoardMapAdapter;
+import com.massivecraft.factions.adapter.FFlagAdapter;
+import com.massivecraft.factions.adapter.FPermAdapter;
+import com.massivecraft.factions.adapter.RelAdapter;
+import com.massivecraft.factions.adapter.TerritoryAccessAdapter;
 import com.massivecraft.factions.chat.modifier.ChatModifierLc;
 import com.massivecraft.factions.chat.modifier.ChatModifierLp;
 import com.massivecraft.factions.chat.modifier.ChatModifierParse;
@@ -19,7 +19,10 @@ import com.massivecraft.factions.chat.tag.ChatTagTag;
 import com.massivecraft.factions.chat.tag.ChatTagTagforce;
 import com.massivecraft.factions.chat.tag.ChatTagTitle;
 import com.massivecraft.factions.cmd.*;
-import com.massivecraft.factions.integration.Econ;
+import com.massivecraft.factions.entity.Board;
+import com.massivecraft.factions.entity.BoardColl;
+import com.massivecraft.factions.entity.FPlayerColl;
+import com.massivecraft.factions.entity.FactionColl;
 import com.massivecraft.factions.integration.LWCFeatures;
 import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.integration.Worldguard;
@@ -125,7 +128,6 @@ public class Factions extends MPlugin
 		this.integrate(HerochatFeatures.get());
 		
 		SpoutFeatures.setup();
-		Econ.setup();
 		LWCFeatures.setup();
 		
 		if (ConfServer.worldGuardChecking)

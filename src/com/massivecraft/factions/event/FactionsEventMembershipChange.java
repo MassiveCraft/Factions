@@ -3,8 +3,8 @@ package com.massivecraft.factions.event;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.HandlerList;
 
-import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.entity.FPlayer;
+import com.massivecraft.factions.entity.Faction;
 
 public class FactionsEventMembershipChange extends FactionsEventAbstractSender
 {

@@ -2,10 +2,10 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.FPerm;
-import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.cmd.arg.ARFaction;
+import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.event.FactionsEventHomeChange;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 import com.massivecraft.mcore.cmd.req.ReqIsPlayer;

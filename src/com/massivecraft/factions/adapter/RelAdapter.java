@@ -1,4 +1,4 @@
-package com.massivecraft.factions.adapters;
+package com.massivecraft.factions.adapter;
 
 import java.lang.reflect.Type;
 

@@ -1,12 +1,12 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.ConfServer;
+import com.massivecraft.factions.entity.BoardColl;
+import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.event.FactionsEventLandUnclaim;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.integration.SpoutFeatures;
-import com.massivecraft.factions.BoardColl;
 import com.massivecraft.factions.FPerm;
-import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
@@ -39,9 +39,9 @@ public class CmdFactionsUnclaim extends FCommand
 		if (event.isCancelled()) return;
 	
 		//String moneyBack = "<i>";
-		if (Econ.isEnabled())
+		if (Econ.isEnabled(myFaction))
 		{
-			double refund = Econ.calculateClaimRefund(myFaction.getLandCount());
+			double refund = Econ.calculateClaimRefund(myFaction);
 			
 			if (ConfServer.bankEnabled && ConfServer.bankFactionPaysLandCosts)
 			{

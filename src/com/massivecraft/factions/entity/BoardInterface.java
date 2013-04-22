@@ -1,8 +1,9 @@
-package com.massivecraft.factions;
+package com.massivecraft.factions.entity;
 
 import java.util.ArrayList;
 
-import com.massivecraft.factions.iface.RelationParticipator;
+import com.massivecraft.factions.RelationParticipator;
+import com.massivecraft.factions.TerritoryAccess;
 import com.massivecraft.mcore.ps.PS;
 
 public interface BoardInterface

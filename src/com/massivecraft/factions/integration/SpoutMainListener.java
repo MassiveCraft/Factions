@@ -8,13 +8,13 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
-import com.massivecraft.factions.BoardColl;
 import com.massivecraft.factions.ConfServer;
-import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.FPlayerColl;
-import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.TerritoryAccess;
+import com.massivecraft.factions.entity.BoardColl;
+import com.massivecraft.factions.entity.FPlayer;
+import com.massivecraft.factions.entity.FPlayerColl;
+import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.mcore.ps.PS;
 
 import org.getspout.spoutapi.event.spout.SpoutCraftEnableEvent;

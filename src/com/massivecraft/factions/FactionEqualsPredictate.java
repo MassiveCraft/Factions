@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 import org.bukkit.command.CommandSender;
 
+import com.massivecraft.factions.entity.FPlayer;
+import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.mcore.Predictate;
 
 public class FactionEqualsPredictate implements Predictate<CommandSender>, Serializable

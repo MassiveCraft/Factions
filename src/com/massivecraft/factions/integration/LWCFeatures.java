@@ -14,9 +14,9 @@ import com.griefcraft.lwc.LWC;
 import com.griefcraft.lwc.LWCPlugin;
 import com.griefcraft.model.Protection;
 import com.massivecraft.factions.ConfServer;
-import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.entity.FPlayer;
+import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.mcore.ps.PS;
 
 public class LWCFeatures 

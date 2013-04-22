@@ -10,7 +10,10 @@ import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 
-import com.massivecraft.factions.iface.RelationParticipator;
+import com.massivecraft.factions.entity.BoardColl;
+import com.massivecraft.factions.entity.FPlayer;
+import com.massivecraft.factions.entity.FPlayerColl;
+import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.mcore.ps.PS;
 
 /**

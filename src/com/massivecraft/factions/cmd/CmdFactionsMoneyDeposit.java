@@ -1,14 +1,15 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.ConfServer;
-import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.cmd.arg.ARFaction;
 import com.massivecraft.factions.cmd.req.ReqBankCommandsEnabled;
+import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.mcore.cmd.arg.ARDouble;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
+import com.massivecraft.mcore.money.Money;
 import com.massivecraft.mcore.util.Txt;
 
 import org.bukkit.ChatColor;
@@ -37,11 +38,12 @@ public class CmdFactionsMoneyDeposit extends FCommand
 		Faction faction = this.arg(1, ARFaction.get(), myFaction);
 		if (faction == null) return;
 		
-		
 		boolean success = Econ.transferMoney(fme, fme, faction, amount);
-
+		
 		if (success && ConfServer.logMoneyTransactions)
-			Factions.get().log(ChatColor.stripColor(Txt.parse("%s deposited %s in the faction bank: %s", fme.getName(), Econ.moneyString(amount), faction.describeTo(null))));
+		{
+			Factions.get().log(ChatColor.stripColor(Txt.parse("%s deposited %s in the faction bank: %s", fme.getName(), Money.format(fme, amount), faction.describeTo(null))));
+		}
 	}
 	
 }

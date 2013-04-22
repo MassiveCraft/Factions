@@ -2,7 +2,7 @@ package com.massivecraft.factions.event;
 
 import org.bukkit.command.CommandSender;
 
-import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.entity.FPlayer;
 import com.massivecraft.mcore.event.MCoreEvent;
 
 public abstract class FactionsEventAbstractSender extends MCoreEvent

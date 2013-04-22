@@ -6,9 +6,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.massivecraft.factions.ConfServer;
-import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.FPlayerColl;
-import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 
 import org.bukkit.Bukkit;
@@ -16,6 +13,9 @@ import org.bukkit.ChatColor;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.entity.Player;
 
+import com.massivecraft.factions.entity.FPlayer;
+import com.massivecraft.factions.entity.FPlayerColl;
+import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.util.HealthBarUtil;
 import com.massivecraft.mcore.ps.PS;
 

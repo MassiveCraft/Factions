@@ -1,4 +1,4 @@
-package com.massivecraft.factions;
+package com.massivecraft.factions.entity;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -6,19 +6,27 @@ import java.util.Set;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
+import com.massivecraft.factions.ConfServer;
+import com.massivecraft.factions.Const;
+import com.massivecraft.factions.EconomyParticipator;
+import com.massivecraft.factions.FFlag;
+import com.massivecraft.factions.FPerm;
+import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.Lang;
+import com.massivecraft.factions.Rel;
+import com.massivecraft.factions.RelationParticipator;
 import com.massivecraft.factions.event.FactionsEventLandClaim;
 import com.massivecraft.factions.event.FactionsEventMembershipChange;
 import com.massivecraft.factions.event.FactionsEventMembershipChange.MembershipChangeReason;
 import com.massivecraft.factions.event.FactionsEventPowerChange;
 import com.massivecraft.factions.event.FactionsEventPowerChange.PowerChangeReason;
-import com.massivecraft.factions.iface.EconomyParticipator;
-import com.massivecraft.factions.iface.RelationParticipator;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.integration.LWCFeatures;
 import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.integration.Worldguard;
 import com.massivecraft.factions.util.RelationUtil;
 import com.massivecraft.mcore.mixin.Mixin;
+import com.massivecraft.mcore.money.Money;
 import com.massivecraft.mcore.ps.PS;
 import com.massivecraft.mcore.store.SenderEntity;
 import com.massivecraft.mcore.util.TimeUnit;
@@ -705,8 +713,10 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 		if (myFaction.getFPlayers().size() == 1)
 		{
 			// Transfer all money
-			if (Econ.isEnabled())
-				Econ.transferMoney(this, myFaction, this, Econ.getBalance(myFaction.getAccountId()));
+			if (Econ.isEnabled(this))
+			{
+				Econ.transferMoney(this, myFaction, this, Money.get(this));
+			}
 		}
 		
 		if (myFaction.isNormal())

@@ -6,6 +6,11 @@ import java.util.Set;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.massivecraft.factions.entity.FPlayer;
+import com.massivecraft.factions.entity.FPlayerColl;
+import com.massivecraft.factions.entity.Faction;
+import com.massivecraft.factions.entity.FactionColl;
+
 public class TerritoryAccess
 {
 	// -------------------------------------------- //

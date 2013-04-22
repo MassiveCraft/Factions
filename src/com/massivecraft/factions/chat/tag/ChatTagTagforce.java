@@ -1,8 +1,8 @@
 package com.massivecraft.factions.chat.tag;
 
-import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.FPlayerColl;
 import com.massivecraft.factions.chat.ChatTagAbstract;
+import com.massivecraft.factions.entity.FPlayer;
+import com.massivecraft.factions.entity.FPlayerColl;
 
 public class ChatTagTagforce extends ChatTagAbstract
 {

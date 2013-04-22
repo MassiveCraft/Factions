@@ -3,11 +3,11 @@ package com.massivecraft.factions.cmd;
 import java.util.ArrayList;
 
 import com.massivecraft.factions.ConfServer;
-import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.FactionColl;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.cmd.req.ReqRoleIsAtLeast;
+import com.massivecraft.factions.entity.Faction;
+import com.massivecraft.factions.entity.FactionColl;
 import com.massivecraft.factions.event.FactionsEventTagChange;
 import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.factions.util.MiscUtil;

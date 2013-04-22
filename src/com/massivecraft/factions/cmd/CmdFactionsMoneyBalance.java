@@ -2,8 +2,8 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.cmd.arg.ARFaction;
 import com.massivecraft.factions.cmd.req.ReqBankCommandsEnabled;
+import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.integration.Econ;
-import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 
