@@ -677,10 +677,12 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 		{
 			ret += fplayer.getPower();
 		}
-		if (ConfServer.powerFactionMax > 0 && ret > ConfServer.powerFactionMax)
+		
+		if (UConf.get(this).powerFactionMax > 0 && ret > UConf.get(this).powerFactionMax)
 		{
-			ret = ConfServer.powerFactionMax;
+			ret = UConf.get(this).powerFactionMax;
 		}
+		
 		return ret + this.getPowerBoost();
 	}
 	
@@ -696,10 +698,12 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 		{
 			ret += fplayer.getPowerMax();
 		}
-		if (ConfServer.powerFactionMax > 0 && ret > ConfServer.powerFactionMax)
+		
+		if (UConf.get(this).powerFactionMax > 0 && ret > UConf.get(this).powerFactionMax)
 		{
-			ret = ConfServer.powerFactionMax;
+			ret = UConf.get(this).powerFactionMax;
 		}
+		
 		return ret + this.getPowerBoost();
 	}
 	

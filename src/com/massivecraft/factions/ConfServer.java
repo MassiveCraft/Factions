@@ -31,30 +31,6 @@ public class ConfServer extends SimpleConfig
 	public static boolean removePlayerDataWhenBanned = true;
 	
 	// -------------------------------------------- //
-	// POWER
-	// -------------------------------------------- //
-	
-	public static double powerMax = 10.0;
-	public static double powerMin = -10.0;
-	public static double powerStarting = 10.0; // New players start out with this power level
-	
-	public static double powerPerDeath = -4.0; // A death makes you lose 4 power
-	
-	public static double powerPerHourOnline = 10.0;
-	public static double powerPerHourOffline = 0.0;
-	
-	// players will no longer lose power from being offline once their power drops to this amount or less
-	public static double powerLimitGainOnline = 10.0;
-	public static double powerLimitGainOffline = 0.0;
-	public static double powerLimitLossOnline = -10.0;
-	public static double powerLimitLossOffline = 0.0;
-	
-	public static boolean scaleNegativePower = false; // Power regeneration rate increase as power decreases
-	public static double scaleNegativeDivisor = 40.0; // Divisor for inverse power regeneration curve
-	
-	public static double powerFactionMax = 0.0;  // if greater than 0, the cap on how much power a faction can have (additional power from players beyond that will act as a "buffer" of sorts)
-	
-	// -------------------------------------------- //
 	// HOMES
 	// -------------------------------------------- //
 	

@@ -29,6 +29,7 @@ import com.massivecraft.mcore.mixin.Mixin;
 import com.massivecraft.mcore.money.Money;
 import com.massivecraft.mcore.ps.PS;
 import com.massivecraft.mcore.store.SenderEntity;
+import com.massivecraft.mcore.util.MUtil;
 import com.massivecraft.mcore.util.TimeUnit;
 import com.massivecraft.mcore.util.Txt;
 
@@ -70,7 +71,7 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 		// Note: we do not check role or title here since they mean nothing without a faction.
 		
 		// TODO: This line looks obnoxious, investigate it.
-		if (this.getPowerRounded() != this.getPowerMaxRounded() && this.getPowerRounded() != (int) Math.round(ConfServer.powerStarting)) return false;
+		if (this.getPowerRounded() != this.getPowerMaxRounded() && this.getPowerRounded() != (int) Math.round(UConf.get(this).powerStarting)) return false;
 		
 		if (this.hasPowerBoost()) return false;
 		
@@ -354,7 +355,9 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 	public double getPower()
 	{
 		this.recalculatePower();
-		return this.power;
+		Double ret = this.power;
+		if (ret == null) ret = UConf.get(this).powerStarting;
+		return ret;
 	}
 	
 	public void setPower(double power)
@@ -368,7 +371,7 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 		power = Math.max(power, this.getPowerMin());
 		
 		// Nochange
-		if (this.power == power) return;
+		if (MUtil.equals(this.power, Double.valueOf(power))) return;
 		
 		this.power = power;
 		this.setLastPowerUpdateTime(now);
@@ -377,12 +380,12 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 	
 	public double getPowerMax()
 	{
-		return ConfServer.powerMax + this.getPowerBoost();
+		return UConf.get(this).powerMax + this.getPowerBoost();
 	}
 	
 	public double getPowerMin()
 	{
-		return ConfServer.powerMin + this.getPowerBoost();
+		return UConf.get(this).powerMin + this.getPowerBoost();
 	}
 	
 	public void recalculatePower()
@@ -411,30 +414,39 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 		// Note that we updated
 		this.setLastPowerUpdateTime(now);
 		
-		// We consider dead players to be offline.
+		// We consider dead players and players in other universes offline.
 		if (online)
 		{
 			Player thisPlayer = this.getPlayer();
-			if (thisPlayer != null && thisPlayer.isDead())
-			{
-				online = false;
-			}
+			online = (thisPlayer != null && !thisPlayer.isDead() && FPlayer.get(thisPlayer) == this);
+		}
+		
+		// Cache and prepare
+		UConf uconf = UConf.get(this);
+		double powerCurrent;
+		if (this.power != null)
+		{
+			powerCurrent = this.power;
+		}
+		else
+		{
+			powerCurrent = uconf.powerStarting;
 		}
 		
 		// Depending on online state pick the config values
-		double powerPerHour = online ? ConfServer.powerPerHourOnline : ConfServer.powerPerHourOffline;
-		double powerLimitGain = online ? ConfServer.powerLimitGainOnline : ConfServer.powerLimitGainOffline;
-		double powerLimitLoss = online ? ConfServer.powerLimitLossOnline : ConfServer.powerLimitLossOffline;
+		double powerPerHour = online ? uconf.powerPerHourOnline : uconf.powerPerHourOffline;
+		double powerLimitGain = online ? uconf.powerLimitGainOnline : uconf.powerLimitGainOffline;
+		double powerLimitLoss = online ? uconf.powerLimitLossOnline : uconf.powerLimitLossOffline;
 		
 		// Apply the negative divisor thingy
-		if (ConfServer.scaleNegativePower && this.power < 0)
+		if (uconf.scaleNegativePower && powerCurrent < 0)
 		{
-			powerPerHour += (Math.sqrt(Math.abs(this.power)) * Math.abs(this.power)) / ConfServer.scaleNegativeDivisor;
+			powerPerHour += (Math.sqrt(Math.abs(powerCurrent)) * Math.abs(powerCurrent)) / uconf.scaleNegativeDivisor;
 		}
 		
 		// Calculate delta and target
 		double powerDelta = powerPerHour * millisPassed / TimeUnit.MILLIS_PER_HOUR;
-		double powerTarget = this.power + powerDelta;
+		double powerTarget = powerCurrent + powerDelta;
 		
 		// Check Gain and Loss limits
 		if (powerDelta >= 0)
@@ -442,10 +454,10 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 			// Gain
 			if (powerTarget > powerLimitGain)
 			{
-				if (this.power > powerLimitGain)
+				if (powerCurrent > powerLimitGain)
 				{
 					// Did already cross --> Just freeze
-					powerTarget = this.power;
+					powerTarget = powerCurrent;
 				}
 				else
 				{
@@ -459,10 +471,10 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 			// Loss
 			if (powerTarget < powerLimitLoss)
 			{
-				if (this.power < powerLimitLoss)
+				if (powerCurrent < powerLimitLoss)
 				{
 					// Did already cross --> Just freeze
-					powerTarget = this.power;
+					powerTarget = powerCurrent;
 				}
 				else
 				{

@@ -53,6 +53,7 @@ import com.massivecraft.factions.entity.BoardColls;
 import com.massivecraft.factions.entity.FPlayer;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MConf;
+import com.massivecraft.factions.entity.UConf;
 import com.massivecraft.factions.event.FactionsEventPowerChange;
 import com.massivecraft.factions.event.FactionsEventPowerChange.PowerChangeReason;
 import com.massivecraft.factions.util.VisualizeUtil;
@@ -106,7 +107,7 @@ public class FactionsListenerMain implements Listener
 		}
 		
 		// ... Event ...
-		double newPower = fplayer.getPower() + ConfServer.powerPerDeath;
+		double newPower = fplayer.getPower() + UConf.get(fplayer).powerPerDeath;
 		FactionsEventPowerChange powerChangeEvent = new FactionsEventPowerChange(null, fplayer, PowerChangeReason.DEATH, newPower);
 		powerChangeEvent.run();
 		if (powerChangeEvent.isCancelled()) return;
