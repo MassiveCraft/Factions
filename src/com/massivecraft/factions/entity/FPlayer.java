@@ -731,7 +731,7 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 			// Checks for WorldGuard regions in the chunk attempting to be claimed
 			error = Txt.parse("<b>This land is protected");
 		}
-		else if (ConfServer.worldsNoClaiming.contains(ps.getWorld()))
+		else if (MConf.get().worldsNoClaiming.contains(ps.getWorld()))
 		{
 			error = Txt.parse("<b>Sorry, this world has land claiming disabled.");
 		}

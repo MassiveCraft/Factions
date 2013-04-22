@@ -54,6 +54,7 @@ import com.massivecraft.factions.entity.BoardColl;
 import com.massivecraft.factions.entity.FPlayer;
 import com.massivecraft.factions.entity.FPlayerColl;
 import com.massivecraft.factions.entity.Faction;
+import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.event.FactionsEventPowerChange;
 import com.massivecraft.factions.event.FactionsEventPowerChange.PowerChangeReason;
 import com.massivecraft.factions.util.VisualizeUtil;
@@ -100,7 +101,7 @@ public class FactionsListenerMain implements Listener
 			return;
 		}
 		
-		if (ConfServer.worldsNoPowerLoss.contains(player.getWorld().getName()))
+		if (MConf.get().worldsNoPowerLoss.contains(player.getWorld().getName()))
 		{
 			fplayer.msg("<i>You didn't lose any power due to the world you died in.");
 			return;
@@ -204,7 +205,7 @@ public class FactionsListenerMain implements Listener
 		FPlayer fattacker = FPlayerColl.get().get(attacker);
 		
 		// ... does this player bypass all protection? ...
-		if (ConfServer.playersWhoBypassAllProtection.contains(attacker.getName())) return true;
+		if (MConf.get().playersWhoBypassAllProtection.contains(attacker.getName())) return true;
 
 		// ... gather attacker PS and faction information ...
 		PS attackerPs = PS.valueOf(attacker);
@@ -220,7 +221,7 @@ public class FactionsListenerMain implements Listener
 		}
 
 		// ... are PVP rules completely ignored in this world? ...
-		if (ConfServer.worldsIgnorePvP.contains(defenderPs.getWorld())) return true;
+		if (MConf.get().worldsIgnorePvP.contains(defenderPs.getWorld())) return true;
 
 		Faction defendFaction = fdefender.getFaction();
 		Faction attackFaction = fattacker.getFaction();
@@ -506,7 +507,7 @@ public class FactionsListenerMain implements Listener
 	public static boolean canPlayerBuildAt(Player player, PS ps, boolean justCheck)
 	{
 		String name = player.getName();
-		if (ConfServer.playersWhoBypassAllProtection.contains(name)) return true;
+		if (MConf.get().playersWhoBypassAllProtection.contains(name)) return true;
 
 		FPlayer me = FPlayer.get(name);
 		if (me.isUsingAdminMode()) return true;

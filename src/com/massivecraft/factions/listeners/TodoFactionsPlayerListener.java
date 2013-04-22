@@ -14,13 +14,13 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 
-import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.Const;
 import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.TerritoryAccess;
 import com.massivecraft.factions.entity.BoardColl;
 import com.massivecraft.factions.entity.FPlayer;
 import com.massivecraft.factions.entity.FPlayerColl;
+import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.integration.SpoutFeatures;
 import com.massivecraft.mcore.event.MCorePlayerLeaveEvent;
 import com.massivecraft.mcore.ps.PS;
@@ -144,7 +144,7 @@ public class TodoFactionsPlayerListener implements Listener
 	public static boolean playerCanUseItemHere(Player player, Location loc, Material material, boolean justCheck)
 	{
 		String name = player.getName();
-		if (ConfServer.playersWhoBypassAllProtection.contains(name)) return true;
+		if (MConf.get().playersWhoBypassAllProtection.contains(name)) return true;
 
 		FPlayer me = FPlayerColl.get().get(name);
 		if (me.isUsingAdminMode()) return true;
@@ -154,7 +154,7 @@ public class TodoFactionsPlayerListener implements Listener
 	public static boolean canPlayerUseBlock(Player player, Block block, boolean justCheck)
 	{
 		String name = player.getName();
-		if (ConfServer.playersWhoBypassAllProtection.contains(name)) return true;
+		if (MConf.get().playersWhoBypassAllProtection.contains(name)) return true;
 
 		FPlayer me = FPlayerColl.get().get(name);
 		if (me.isUsingAdminMode()) return true;

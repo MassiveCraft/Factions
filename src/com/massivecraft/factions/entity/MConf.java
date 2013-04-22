@@ -1,6 +1,7 @@
 package com.massivecraft.factions.entity;
 
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.bukkit.ChatColor;
@@ -101,5 +102,19 @@ public class MConf extends Entity<MConf>
 	public boolean handleExploitInteractionSpam = true;
 	public boolean handleExploitTNTWaterlog = false;
 	
+	// -------------------------------------------- //
+	// DERPY OVERRIDES
+	// -------------------------------------------- //
+	// TODO: Should worldsNoPowerLoss rather be a bukkit permission node?
+	// TODO: These are derpy because they possibly use an invalid design approact.
+	// After universe support is added. Would some of these be removed?
+	// Could it also be more customizeable using some sort of permission lookup map?
+	
+	// mainly for other plugins/mods that use a fake player to take actions, which shouldn't be subject to our protections
+	public Set<String> playersWhoBypassAllProtection = new LinkedHashSet<String>();
+
+	public Set<String> worldsNoClaiming = new LinkedHashSet<String>();
+	public Set<String> worldsNoPowerLoss = new LinkedHashSet<String>();
+	public Set<String> worldsIgnorePvP = new LinkedHashSet<String>();
 
 }

@@ -33,21 +33,6 @@ public class ConfServer extends SimpleConfig
 	public static Rel factionRankDefault = Rel.RECRUIT;
 	
 	// -------------------------------------------- //
-	// DERPY OVERRIDES
-	// -------------------------------------------- //
-	
-	// mainly for other plugins/mods that use a fake player to take actions, which shouldn't be subject to our protections
-	public static Set<String> playersWhoBypassAllProtection = new LinkedHashSet<String>();
-
-	public static Set<String> worldsNoClaiming = new LinkedHashSet<String>();
-	
-	// TODO: Should worldsNoPowerLoss rather be a bukkit permission node?
-	public static Set<String> worldsNoPowerLoss = new LinkedHashSet<String>();
-	public static Set<String> worldsIgnorePvP = new LinkedHashSet<String>();
-	// TODO: A better solution Would be to have One wilderness faction per world.
-	//public static Set<String> worldsNoWildernessProtection = new LinkedHashSet<String>();
-	
-	// -------------------------------------------- //
 	// CORE
 	// -------------------------------------------- //
 	
