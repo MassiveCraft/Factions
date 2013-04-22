@@ -28,7 +28,8 @@ public class MConfColl extends Coll<MConf>
 	public void init()
 	{
 		super.init();
-		this.get(MCore.INSTANCE);
+		
+		MConf.i = this.get(MCore.INSTANCE);
 	}
 	
 }

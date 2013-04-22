@@ -39,9 +39,9 @@ public class FactionColl extends Coll<Faction>
 		super.init();
 		
 		this.createDefaultFactions();
-		this.reindexFPlayers();
 	}
 	
+	/*
 	@Override
 	protected synchronized String attach(Faction faction, Object oid, boolean noteChange)
 	{
@@ -51,13 +51,18 @@ public class FactionColl extends Coll<Faction>
 		// TODO: Can this be done here?
 		// TODO: Or will it be a to heavy operation to do this often?
 		
+		//System.out.println("faction "+faction);
+		//System.out.println("faction.getId() "+faction.getId());
+		// TODO: Why does this happen for Wilderness?
+		if (faction.getId() == null) return ret;
+		
 		if (!Money.exists(faction))
 		{
 			Money.set(faction, 0);
 		}
 		
 		return ret;
-	}
+	}*/
 	
 	@Override
 	public Faction detachId(Object oid)
@@ -76,6 +81,10 @@ public class FactionColl extends Coll<Faction>
 		
 		return ret;
 	}
+
+	// -------------------------------------------- //
+	// INDEX
+	// -------------------------------------------- //
 	
 	public void reindexFPlayers()
 	{

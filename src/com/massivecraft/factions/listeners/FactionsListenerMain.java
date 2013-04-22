@@ -507,7 +507,7 @@ public class FactionsListenerMain implements Listener
 		String name = player.getName();
 		if (MConf.get().playersWhoBypassAllProtection.contains(name)) return true;
 
-		FPlayer me = FPlayer.get(name);
+		FPlayer me = FPlayer.get(player);
 		if (me.isUsingAdminMode()) return true;
 
 		Faction factionHere = BoardColls.get().getFactionAt(ps);

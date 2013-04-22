@@ -30,7 +30,7 @@ public class FPlayerColl extends SenderColl<FPlayer>
 		
 		// If inited ...
 		if (!this.inited()) return ret;
-		if (!FactionColls.get().getForUniverse(this.getUniverse()).inited()) return ret;
+		if (!Factions.get().isDatabaseInitialized()) return ret;
 		
 		// ... update the index.
 		Faction faction = entity.getFaction();

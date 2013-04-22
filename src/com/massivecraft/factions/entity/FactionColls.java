@@ -5,6 +5,8 @@ import java.lang.reflect.Type;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.bukkit.Bukkit;
+
 import com.massivecraft.factions.Const;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.mcore.MCore;
@@ -14,6 +16,7 @@ import com.massivecraft.mcore.store.Entity;
 import com.massivecraft.mcore.usys.Aspect;
 import com.massivecraft.mcore.util.DiscUtil;
 import com.massivecraft.mcore.util.MUtil;
+import com.massivecraft.mcore.util.SenderUtil;
 import com.massivecraft.mcore.xlib.gson.reflect.TypeToken;
 
 public class FactionColls extends Colls<FactionColl, Faction>
@@ -62,6 +65,11 @@ public class FactionColls extends Colls<FactionColl, Faction>
 			return this.getForUniverse(((Coll<?>)o).getUniverse());
 		}
 		
+		if (SenderUtil.isNonplayer(o))
+		{
+			return this.getForWorld(Bukkit.getWorlds().get(0).getName());
+		}
+		
 		String worldName = MUtil.extract(String.class, "worldName", o);
 		if (worldName == null) return null;
 		return this.getForWorld(worldName);
@@ -88,17 +96,31 @@ public class FactionColls extends Colls<FactionColl, Faction>
 		Type type = new TypeToken<Map<String, Faction>>(){}.getType();
 		Map<String, Faction> id2faction = Factions.get().gson.fromJson(DiscUtil.readCatch(oldFile), type);
 		
+		// The Coll
+		FactionColl coll = this.getForUniverse(MCore.DEFAULT);
+		
 		// Set the data
 		for (Entry<String, Faction> entry : id2faction.entrySet())
 		{
 			String factionId = entry.getKey();
 			Faction faction = entry.getValue();
-			
-			this.getForUniverse(MCore.DEFAULT).create(factionId).load(faction);
+			coll.attach(faction, factionId);
 		}
 		
 		// Mark as migrated
 		oldFile.renameTo(newFile);
+	}
+	
+	// -------------------------------------------- //
+	// INDEX
+	// -------------------------------------------- //
+	
+	public void reindexFPlayers()
+	{
+		for (FactionColl coll : this.getColls())
+		{
+			coll.reindexFPlayers();
+		}
 	}
 	
 }

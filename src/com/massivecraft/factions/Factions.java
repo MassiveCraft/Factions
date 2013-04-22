@@ -70,6 +70,10 @@ public class Factions extends MPlugin
 	private Aspect aspect;
 	public Aspect getAspect() { return this.aspect; }
 	public Multiverse getMultiverse() { return this.getAspect().getMultiverse(); }
+	
+	// Database Initialized
+	private boolean databaseInitialized;
+	public boolean isDatabaseInitialized() { return this.databaseInitialized; }
 
 	// -------------------------------------------- //
 	// OVERRIDE
@@ -96,10 +100,16 @@ public class Factions extends MPlugin
 		MUtil.registerExtractor(String.class, "accountId", ExtractorFactionAccountId.get());
 
 		// Initialize Collections
+		this.databaseInitialized = false;
+		
 		MConfColl.get().init();
 		FPlayerColls.get().init();
 		FactionColls.get().init();
 		BoardColls.get().init();
+		
+		FactionColls.get().reindexFPlayers();
+		
+		this.databaseInitialized = true;
 		
 		// Commands
 		this.outerCmdFactions = new CmdFactions();

@@ -231,7 +231,7 @@ public class FPlayer extends SenderEntity<FPlayer> implements EconomyParticipato
 		// Next we must be attached and inited
 		if (!this.attached()) return;
 		if (!this.getColl().inited()) return;
-		if (!FactionColls.get().get(this).inited()) return;
+		if (!Factions.get().isDatabaseInitialized()) return;
 		
 		// Spout Derp
 		SpoutFeatures.updateTitle(this, null);

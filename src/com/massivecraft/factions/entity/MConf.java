@@ -7,7 +7,6 @@ import java.util.Set;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventPriority;
 
-import com.massivecraft.mcore.MCore;
 import com.massivecraft.mcore.store.Entity;
 
 public class MConf extends Entity<MConf>
@@ -16,9 +15,10 @@ public class MConf extends Entity<MConf>
 	// META
 	// -------------------------------------------- //
 	
+	protected static transient MConf i;
 	public static MConf get()
 	{
-		return MConfColl.get().get(MCore.INSTANCE);
+		return i;
 	}
 	
 	// -------------------------------------------- //

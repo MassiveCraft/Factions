@@ -5,6 +5,8 @@ import java.lang.reflect.Type;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.bukkit.Bukkit;
+
 import com.massivecraft.factions.Const;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.mcore.MCore;
@@ -14,6 +16,7 @@ import com.massivecraft.mcore.store.Entity;
 import com.massivecraft.mcore.usys.Aspect;
 import com.massivecraft.mcore.util.DiscUtil;
 import com.massivecraft.mcore.util.MUtil;
+import com.massivecraft.mcore.util.SenderUtil;
 import com.massivecraft.mcore.xlib.gson.reflect.TypeToken;
 
 public class FPlayerColls extends Colls<FPlayerColl, FPlayer>
@@ -62,6 +65,11 @@ public class FPlayerColls extends Colls<FPlayerColl, FPlayer>
 			return this.getForUniverse(((Coll<?>)o).getUniverse());
 		}
 		
+		if (SenderUtil.isNonplayer(o))
+		{
+			return this.getForWorld(Bukkit.getWorlds().get(0).getName());
+		}
+		
 		String worldName = MUtil.extract(String.class, "worldName", o);
 		if (worldName == null) return null;
 		return this.getForWorld(worldName);
@@ -88,12 +96,15 @@ public class FPlayerColls extends Colls<FPlayerColl, FPlayer>
 		Type type = new TypeToken<Map<String, FPlayer>>(){}.getType();
 		Map<String, FPlayer> id2fplayer = Factions.get().gson.fromJson(DiscUtil.readCatch(oldFile), type);
 		
+		// The Coll
+		FPlayerColl coll = this.getForUniverse(MCore.DEFAULT);
+		
 		// Set the data
 		for (Entry<String, FPlayer> entry : id2fplayer.entrySet())
 		{
 			String playerId = entry.getKey();
 			FPlayer fplayer = entry.getValue();
-			FPlayerColls.get().getForUniverse(MCore.DEFAULT).create(playerId).load(fplayer);
+			coll.attach(fplayer, playerId);
 		}
 		
 		// Mark as migrated

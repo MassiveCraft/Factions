@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.bukkit.Bukkit;
+
 import com.massivecraft.factions.Const;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.RelationParticipator;
@@ -18,6 +20,7 @@ import com.massivecraft.mcore.store.Entity;
 import com.massivecraft.mcore.usys.Aspect;
 import com.massivecraft.mcore.util.DiscUtil;
 import com.massivecraft.mcore.util.MUtil;
+import com.massivecraft.mcore.util.SenderUtil;
 import com.massivecraft.mcore.xlib.gson.reflect.TypeToken;
 
 public class BoardColls extends Colls<BoardColl, Board> implements BoardInterface
@@ -64,6 +67,11 @@ public class BoardColls extends Colls<BoardColl, Board> implements BoardInterfac
 		if (o instanceof Coll)
 		{
 			return this.getForUniverse(((Coll<?>)o).getUniverse());
+		}
+		
+		if (SenderUtil.isNonplayer(o))
+		{
+			return this.getForWorld(Bukkit.getWorlds().get(0).getName());
 		}
 		
 		String worldName = MUtil.extract(String.class, "worldName", o);
