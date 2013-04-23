@@ -305,6 +305,9 @@ public class Conf
 		materialsContainer.add(Material.ENCHANTMENT_TABLE);
 		materialsContainer.add(Material.ANVIL);
 		materialsContainer.add(Material.BEACON);
+		materialsContainer.add(Material.TRAPPED_CHEST);
+		materialsContainer.add(Material.DROPPER);
+		materialsContainer.add(Material.HOPPER);
 		
 		materialsEditOnInteract.add(Material.DIODE_BLOCK_OFF);
 		materialsEditOnInteract.add(Material.DIODE_BLOCK_ON);
