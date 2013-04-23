@@ -56,7 +56,7 @@ public class Worldguard
 		return enabled;
 	}
 
-	// PVP Flag check 
+	// PVP Flag check
 	// Returns:
 	//   True: PVP is allowed
 	//   False: PVP is disallowed
@@ -97,7 +97,7 @@ public class Worldguard
 		{
 			return false;
 		}
-		
+
 		int minChunkX = chunk.getX() << 4;
 		int minChunkZ = chunk.getZ() << 4;
 		int maxChunkX = minChunkX + 15;
@@ -110,7 +110,7 @@ public class Worldguard
 
 		RegionManager regionManager = wg.getRegionManager(world);
 		ProtectedCuboidRegion region = new ProtectedCuboidRegion("wgfactionoverlapcheck", minChunk, maxChunk);
-		Map<String, ProtectedRegion> allregions = regionManager.getRegions(); 
+		Map<String, ProtectedRegion> allregions = regionManager.getRegions();
 		List<ProtectedRegion> allregionslist = new ArrayList<ProtectedRegion>(allregions.values());
 		List<ProtectedRegion> overlaps;
 		boolean foundregions = false;

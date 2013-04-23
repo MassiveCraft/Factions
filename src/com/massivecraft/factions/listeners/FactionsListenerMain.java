@@ -66,15 +66,15 @@ public class FactionsListenerMain implements Listener
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
-	
+
 	private static FactionsListenerMain i = new FactionsListenerMain();
 	public static FactionsListenerMain get() { return i; }
 	public FactionsListenerMain() {}
-	
+
 	// -------------------------------------------- //
 	// SETUP
 	// -------------------------------------------- //
-	
+
 	public void setup()
 	{
 		Bukkit.getPluginManager().registerEvents(this, Factions.get());
@@ -83,54 +83,54 @@ public class FactionsListenerMain implements Listener
 	// -------------------------------------------- //
 	// POWER LOSS ON DEATH
 	// -------------------------------------------- //
-	
+
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void powerLossOnDeath(PlayerDeathEvent event)
 	{
 		// If a player dies ...
 		Player player = event.getEntity();
 		UPlayer uplayer = UPlayer.get(player);
-		
+
 		// ... and powerloss can happen here ...
 		Faction faction = BoardColls.get().getFactionAt(PS.valueOf(player));
-		
+
 		if (!faction.getFlag(FFlag.POWERLOSS))
 		{
 			uplayer.msg("<i>You didn't lose any power since the territory you died in works that way.");
 			return;
 		}
-		
+
 		if (MConf.get().worldsNoPowerLoss.contains(player.getWorld().getName()))
 		{
 			uplayer.msg("<i>You didn't lose any power due to the world you died in.");
 			return;
 		}
-		
+
 		// ... Event ...
 		double newPower = uplayer.getPower() + UConf.get(uplayer).powerPerDeath;
 		FactionsEventPowerChange powerChangeEvent = new FactionsEventPowerChange(null, uplayer, PowerChangeReason.DEATH, newPower);
 		powerChangeEvent.run();
 		if (powerChangeEvent.isCancelled()) return;
 		newPower = powerChangeEvent.getNewPower();
-		
+
 		// ... alter the power ...
 		uplayer.setPower(newPower);
-		
+
 		// ... and inform the player.
 		uplayer.msg("<i>Your power is now <h>%d / %d", uplayer.getPowerRounded(), uplayer.getPowerMaxRounded());
 	}
-	
+
 	// -------------------------------------------- //
 	// CAN COMBAT DAMAGE HAPPEN
 	// -------------------------------------------- //
-	
+
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void canCombatDamageHappen(EntityDamageEvent event)
 	{
 		// TODO: Can't we just listen to the class type the sub is of?
 		if (!(event instanceof EntityDamageByEntityEvent)) return;
 		EntityDamageByEntityEvent sub = (EntityDamageByEntityEvent)event;
-		
+
 		if (this.canCombatDamageHappen(sub, true)) return;
 		event.setCancelled(true);
 	}
@@ -149,7 +149,7 @@ public class FactionsListenerMain implements Listener
 	{
 		// If a harmful potion is splashing ...
 		if (!MUtil.isHarmfulPotion(event.getPotion())) return;
-		
+
 		Entity thrower = event.getPotion().getShooter();
 
 		// ... scan through affected entities to make sure they're all valid targets.
@@ -157,7 +157,7 @@ public class FactionsListenerMain implements Listener
 		{
 			EntityDamageByEntityEvent sub = new EntityDamageByEntityEvent(thrower, affectedEntity, EntityDamageEvent.DamageCause.CUSTOM, 0);
 			if (this.canCombatDamageHappen(sub, true)) continue;
-			
+
 			// affected entity list doesn't accept modification (iter.remove() is a no-go), but this works
 			event.setIntensity(affectedEntity, 0.0);
 		}
@@ -170,7 +170,7 @@ public class FactionsListenerMain implements Listener
 		if (!(edefender instanceof Player)) return true;
 		Player defender = (Player)edefender;
 		UPlayer fdefender = UPlayer.get(edefender);
-		
+
 		// ... and the attacker is someone else ...
 		Entity eattacker = event.getDamager();
 		if (eattacker instanceof Projectile)
@@ -178,11 +178,11 @@ public class FactionsListenerMain implements Listener
 			eattacker = ((Projectile)eattacker).getShooter();
 		}
 		if (eattacker.equals(edefender)) return true;
-		
+
 		// ... gather defender PS and faction information ...
 		PS defenderPs = PS.valueOf(defender);
 		Faction defenderPsFaction = BoardColls.get().getFactionAt(defenderPs);
-		
+
 		// ... PVP flag may cause a damage block ...
 		if (defenderPsFaction.getFlag(FFlag.PVP) == false)
 		{
@@ -202,7 +202,7 @@ public class FactionsListenerMain implements Listener
 		if (!(eattacker instanceof Player)) return true;
 		Player attacker = (Player)eattacker;
 		UPlayer fattacker = UPlayer.get(attacker);
-		
+
 		// ... does this player bypass all protection? ...
 		if (MConf.get().playersWhoBypassAllProtection.contains(attacker.getName())) return true;
 
@@ -282,7 +282,7 @@ public class FactionsListenerMain implements Listener
 
 		return true;
 	}
-	
+
 	// -------------------------------------------- //
 	// REMOVE PLAYER DATA WHEN BANNED
 	// -------------------------------------------- //
@@ -296,10 +296,10 @@ public class FactionsListenerMain implements Listener
 
 		// ... and if the if player was banned (not just kicked) ...
 		if (!event.getReason().equals("Banned by admin.")) return;
-		
+
 		// ... and we remove player data when banned ...
 		if (!ConfServer.removePlayerDataWhenBanned) return;
-		
+
 		// ... get rid of their stored info.
 		if (uplayer.getRole() == Rel.LEADER)
 		{
@@ -307,62 +307,67 @@ public class FactionsListenerMain implements Listener
 		}
 		uplayer.leave(false);
 		uplayer.detach();
-		
+
 	}
-	
+
 	// -------------------------------------------- //
 	// VISUALIZE UTIL
 	// -------------------------------------------- //
-	
+
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onPlayerMoveClearVisualizations(PlayerMoveEvent event)
 	{
 		if (MUtil.isSameBlock(event)) return;
-		
+
 		VisualizeUtil.clear(event.getPlayer());
 	}
-	
+
 	// -------------------------------------------- //
 	// DENY COMMANDS
 	// -------------------------------------------- //
-	
+
 	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
 	public void denyCommands(PlayerCommandPreprocessEvent event)
 	{
 		// If a player is trying to run a command ...
 		Player player = event.getPlayer();
 		UPlayer uplayer = UPlayer.get(player);
-		
+
 		// ... and the player does not have adminmode ...
 		if (uplayer.isUsingAdminMode()) return;
-		
+
 		// ... clean up the command ...
 		String command = event.getMessage();
-		command = Txt.removeLeadingCommandDust(command);
-		command = command.toLowerCase();
-		command = command.trim();
-		
-		if (uplayer.hasFaction() && uplayer.getFaction().getFlag(FFlag.PERMANENT) && containsCommand(command, ConfServer.permanentFactionMemberDenyCommands))
+		command = Txt.removeLeadingCommandDust(command).toLowerCase().trim();
+
+		if ((!ConfServer.permanentFactionMemberDenyCommands.isEmpty()) && uplayer.hasFaction() && uplayer.getFaction().getFlag(FFlag.PERMANENT) && containsCommand(command, ConfServer.permanentFactionMemberDenyCommands))
 		{
 			uplayer.msg("<b>You can't use \"<h>/%s<b>\" as member of a permanent faction.", command);
 			event.setCancelled(true);
 			return;
 		}
-		
+
 		Rel rel = uplayer.getRelationToLocation();
 		PS ps = PS.valueOf(player).getChunk(true);
 		if (BoardColls.get().getFactionAt(ps).isNone()) return;
-		
-		if (rel == Rel.NEUTRAL && containsCommand(command, ConfServer.territoryNeutralDenyCommands))
+
+		if ((!ConfServer.territoryEnemyDenyCommands.isEmpty()) && rel == Rel.ENEMY && containsCommand(command, ConfServer.territoryEnemyDenyCommands))
+		{
+			uplayer.msg("<b>You can't use \"<h>/%s<b>\" in enemy territory.", command);
+			event.setCancelled(true);
+			return;
+		}
+
+		if ((!ConfServer.territoryNeutralDenyCommands.isEmpty()) && rel == Rel.NEUTRAL && containsCommand(command, ConfServer.territoryNeutralDenyCommands))
 		{
 			uplayer.msg("<b>You can't use \"<h>/%s<b>\" in neutral territory.", command);
 			event.setCancelled(true);
 			return;
 		}
 
-		if (rel == Rel.ENEMY && containsCommand(command, ConfServer.territoryEnemyDenyCommands))
+		if ((!ConfServer.territoryAllyDenyCommands.isEmpty()) && rel == Rel.ALLY && containsCommand(command, ConfServer.territoryAllyDenyCommands))
 		{
-			uplayer.msg("<b>You can't use \"<h>/%s<b>\" in enemy territory.", command);
+			uplayer.msg("<b>You can't use \"<h>/%s<b>\" in allied territory.", command);
 			event.setCancelled(true);
 			return;
 		}
@@ -373,34 +378,34 @@ public class FactionsListenerMain implements Listener
 		if (needle == null) return false;
 		needle = Txt.removeLeadingCommandDust(needle);
 		needle = needle.toLowerCase();
-		
+
 		for (String straw : haystack)
 		{
 			if (straw == null) continue;
 			straw = Txt.removeLeadingCommandDust(straw);
 			straw = straw.toLowerCase();
-			
+
 			if (needle.startsWith(straw)) return true;
 		}
-		
+
 		return false;
 	}
-	
+
 	// -------------------------------------------- //
 	// FLAG: MONSTERS
 	// -------------------------------------------- //
-	
+
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void blockMonsters(CreatureSpawnEvent event)
 	{
 		// If a monster is spawning ...
 		if ( ! Const.ENTITY_TYPES_MONSTERS.contains(event.getEntityType())) return;
-		
+
 		// ... at a place where monsters are forbidden ...
 		PS ps = PS.valueOf(event.getLocation());
 		Faction faction = BoardColls.get().getFactionAt(ps);
 		if (faction.getFlag(FFlag.MONSTERS)) return;
-		
+
 		// ... block the spawn.
 		event.setCancelled(true);
 	}
@@ -410,41 +415,41 @@ public class FactionsListenerMain implements Listener
 	{
 		// If a monster is targeting something ...
 		if ( ! Const.ENTITY_TYPES_MONSTERS.contains(event.getEntityType())) return;
-		
+
 		// ... at a place where monsters are forbidden ...
 		PS ps = PS.valueOf(event.getTarget());
 		Faction faction = BoardColls.get().getFactionAt(ps);
 		if (faction.getFlag(FFlag.MONSTERS)) return;
-		
+
 		// ... then if ghast target nothing ...
 		if (event.getEntityType() == EntityType.GHAST)
 		{
 			event.setTarget(null);
 			return;
 		}
-		
+
 		// ... otherwise simply cancel.
 		event.setCancelled(true);
 	}
-	
+
 	// -------------------------------------------- //
 	// FLAG: EXPLOSIONS
 	// -------------------------------------------- //
-	
+
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void blockExplosion(HangingBreakEvent event)
 	{
 		// If a hanging entity was broken by an explosion ...
 		if (event.getCause() != RemoveCause.EXPLOSION) return;
-	
+
 		// ... and the faction there has explosions disabled ...
 		Faction faction = BoardColls.get().getFactionAt(PS.valueOf(event.getEntity()));
 		if (faction.getFlag(FFlag.EXPLOSIONS)) return;
-		
+
 		// ... then cancel.
 		event.setCancelled(true);
 	}
-	
+
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void blockExplosion(EntityExplodeEvent event)
 	{
@@ -457,13 +462,13 @@ public class FactionsListenerMain implements Listener
 			if (faction.getFlag(FFlag.EXPLOSIONS) == false) iter.remove();
 		}
 
-		// Check the entity. Are explosions disabled there? 
+		// Check the entity. Are explosions disabled there?
 		if (BoardColls.get().getFactionAt(PS.valueOf(event.getEntity())).getFlag(FFlag.EXPLOSIONS) == false)
 		{
 			event.setCancelled(true);
 		}
 	}
-	
+
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void blockExplosion(EntityChangeBlockEvent event)
 	{
@@ -475,31 +480,31 @@ public class FactionsListenerMain implements Listener
 		PS ps = PS.valueOf(event.getBlock());
 		Faction faction = BoardColls.get().getFactionAt(ps);
 		if (faction.getFlag(FFlag.EXPLOSIONS)) return;
-		
+
 		// ... stop the block alteration.
 		event.setCancelled(true);
 	}
-	
+
 	// -------------------------------------------- //
 	// FLAG: ENDERGRIEF
 	// -------------------------------------------- //
-	
+
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void blockEndergrief(EntityChangeBlockEvent event)
 	{
 		// If an enderman is changing a block ...
 		Entity entity = event.getEntity();
 		if (!(entity instanceof Enderman)) return;
-		
+
 		// ... and the faction there has endergrief disabled ...
 		PS ps = PS.valueOf(event.getBlock());
 		Faction faction = BoardColls.get().getFactionAt(ps);
 		if (faction.getFlag(FFlag.ENDERGRIEF)) return;
-		
+
 		// ... stop the block alteration.
 		event.setCancelled(true);
 	}
-	
+
 	// -------------------------------------------- //
 	// FLAG: BUILD
 	// -------------------------------------------- //
@@ -523,24 +528,24 @@ public class FactionsListenerMain implements Listener
 			}
 			return true;
 		}
-		
+
 		return FPerm.BUILD.has(me, ps, true);
 	}
-	
+
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void blockBuild(HangingPlaceEvent event)
 	{
 		if (canPlayerBuildAt(event.getPlayer(), PS.valueOf(event.getEntity()), false)) return;
-		
+
 		event.setCancelled(true);
 	}
-	
+
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void blockBuild(HangingBreakEvent event)
 	{
 		if (! (event instanceof HangingBreakByEntityEvent)) return;
 		HangingBreakByEntityEvent entityEvent = (HangingBreakByEntityEvent)event;
-		
+
 		Entity breaker = entityEvent.getRemover();
 		if (! (breaker instanceof Player)) return;
 
@@ -549,14 +554,14 @@ public class FactionsListenerMain implements Listener
 			event.setCancelled(true);
 		}
 	}
-	
+
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void blockBuild(BlockPlaceEvent event)
 	{
 		if (!event.canBuild()) return;
 
 		if (canPlayerBuildAt(event.getPlayer(), PS.valueOf(event.getBlock()), false)) return;
-		
+
 		event.setBuild(false);
 		event.setCancelled(true);
 	}
@@ -565,7 +570,7 @@ public class FactionsListenerMain implements Listener
 	public void blockBuild(BlockBreakEvent event)
 	{
 		if (canPlayerBuildAt(event.getPlayer(), PS.valueOf(event.getBlock()), false)) return;
-		
+
 		event.setCancelled(true);
 	}
 
@@ -575,10 +580,10 @@ public class FactionsListenerMain implements Listener
 		if (!event.getInstaBreak()) return;
 
 		if (canPlayerBuildAt(event.getPlayer(), PS.valueOf(event.getBlock()), false)) return;
-		
+
 		event.setCancelled(true);
 	}
-	
+
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void blockBuild(BlockPistonExtendEvent event)
@@ -611,7 +616,7 @@ public class FactionsListenerMain implements Listener
 	public void blockBuild(BlockPistonRetractEvent event)
 	{
 		if (!ConfServer.pistonProtectionThroughDenyBuild) return;
-		
+
 		// if not a sticky piston, retraction should be fine
 		if (!event.isSticky()) return;
 
@@ -632,50 +637,50 @@ public class FactionsListenerMain implements Listener
 			event.setCancelled(true);
 		}
 	}
-	
+
 	// -------------------------------------------- //
 	// FLAG: FIRE SPREAD
 	// -------------------------------------------- //
-	
+
 	public void blockFireSpread(Block block, Cancellable cancellable)
 	{
 		// If the faction at the block has firespread disabled ...
 		PS ps = PS.valueOf(block);
 		Faction faction = BoardColls.get().getFactionAt(ps);
 		if (faction.getFlag(FFlag.FIRESPREAD)) return;
-		
+
 		// then cancel the event.
 		cancellable.setCancelled(true);
 	}
-	
+
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void blockFireSpread(BlockIgniteEvent event)
 	{
 		// If fire is spreading ...
 		if (event.getCause() != IgniteCause.SPREAD && event.getCause() != IgniteCause.LAVA) return;
-		
+
 		// ... consider blocking it.
 		blockFireSpread(event.getBlock(), event);
 	}
-	
+
 	// TODO: Is use of this event deprecated?
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void blockFireSpread(BlockSpreadEvent event)
 	{
 		// If fire is spreading ...
 		if (event.getNewState().getTypeId() != 51) return;
-		
+
 		// ... consider blocking it.
 		blockFireSpread(event.getBlock(), event);
 	}
-	
+
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void blockFireSpread(BlockBurnEvent event)
 	{
 		// If a block is burning ...
-		
+
 		// ... consider blocking it.
 		blockFireSpread(event.getBlock(), event);
 	}
-	
+
 }

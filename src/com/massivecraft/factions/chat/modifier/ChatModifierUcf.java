@@ -9,11 +9,11 @@ public class ChatModifierUcf extends ChatModifierAbstract
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
-	
+
 	private ChatModifierUcf() { super("ucf"); }
 	private static ChatModifierUcf i = new ChatModifierUcf();
 	public static ChatModifierUcf get() { return i; }
-	
+
 	// -------------------------------------------- //
 	// OVERRIDE
 	// -------------------------------------------- //

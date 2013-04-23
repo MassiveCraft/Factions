@@ -38,16 +38,16 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 	// -------------------------------------------- //
 	// META
 	// -------------------------------------------- //
-	
+
 	public static UPlayer get(Object oid)
 	{
 		return UPlayerColls.get().get2(oid);
 	}
-	
+
 	// -------------------------------------------- //
 	// OVERRIDE: ENTITY
 	// -------------------------------------------- //
-	
+
 	@Override
 	public UPlayer load(UPlayer that)
 	{
@@ -55,124 +55,124 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 		this.setRole(that.role);
 		this.setTitle(that.title);
 		this.setPowerBoost(that.powerBoost);
-		
+
 		this.power = that.power;
 		this.lastPowerUpdateTime = that.lastPowerUpdateTime;
-		
+
 		return this;
 	}
-	
+
 	@Override
 	public boolean isDefault()
 	{
 		if (this.hasFaction()) return false;
-		
+
 		// Note: we do not check role or title here since they mean nothing without a faction.
-		
+
 		// TODO: This line looks obnoxious, investigate it.
 		if (this.getPowerRounded() != this.getPowerMaxRounded() && this.getPowerRounded() != (int) Math.round(UConf.get(this).powerStarting)) return false;
-		
+
 		if (this.hasPowerBoost()) return false;
-		
+
 		return true;
 	}
-	
+
 	// -------------------------------------------- //
 	// FIELDS: RAW
 	// -------------------------------------------- //
 	// In this section of the source code we place the field declarations only.
 	// Each field has it's own section further down since just the getter and setter logic takes up quite some place.
-	
+
 	// This is a foreign key.
 	// A players always belongs to a faction.
 	// If null the player belongs to the no-faction faction called Wilderness.
 	private String factionId = null;
-	
+
 	// What role does the player have in the faction?
 	// The default value here is MEMBER since that one would be one of the most common ones and our goal is to save database space.
 	// A note to self is that we can not change it from member to anything else just because we feel like it, that would corrupt database content.
 	private Rel role = null;
-	
+
 	// What title does the player have in the faction?
 	// The title is just for fun. It's completely meaningless.
 	// The default case is no title since it's what you start with and also the most common case.
 	// The player title is similar to the faction description.
-	// 
+	//
 	// Question: Can the title contain chat colors?
 	// Answer: Yes but in such case the policy is that they already must be parsed using Txt.parse.
 	//          If they contain markup it should not be parsed in case we coded the system correctly.
 	private String title = null;
-	
+
 	// Player usually do not have a powerboost. It defaults to 0.
 	// The powerBoost is a custom increase/decrease to default and maximum power.
 	// Note that player powerBoost and faction powerBoost are very similar.
 	private Double powerBoost = null;
-	
+
 	// This field contains the last calculated value of the players power.
 	// The power calculation is lazy which means that the power is calculated first when you try to view the value.
 	private Double power = null;
-	
+
 	// This is the timestamp for the last calculation of the power.
 	// The value is used for the lazy calculation described above.
 	private long lastPowerUpdateTime = System.currentTimeMillis();
-	
+
 	// -------------------------------------------- //
 	// FIELDS: RAW TRANSIENT
 	// -------------------------------------------- //
-	
+
 	// FIELD: mapAutoUpdating
 	// TODO: Move this to the MPlayer
 	private transient boolean mapAutoUpdating = false;
 	public void setMapAutoUpdating(boolean mapAutoUpdating) { this.mapAutoUpdating = mapAutoUpdating; }
 	public boolean isMapAutoUpdating() { return mapAutoUpdating; }
-	
+
 	// FIELD: autoClaimEnabled
 	private transient Faction autoClaimFor = null;
 	public Faction getAutoClaimFor() { return autoClaimFor; }
 	public void setAutoClaimFor(Faction faction) { this.autoClaimFor = faction; }
-		
+
 	private transient boolean usingAdminMode = false;
 	public boolean isUsingAdminMode() { return this.usingAdminMode; }
 	public void setUsingAdminMode(boolean val) { this.usingAdminMode = val; }
-	
+
 	// FIELD: loginPvpDisabled
 	//private transient boolean loginPvpDisabled;
-	
+
 	// FIELD: account
 	public String getAccountId() { return this.getId(); }
-	
+
 	// -------------------------------------------- //
 	// CONSTRUCT
 	// -------------------------------------------- //
-	
+
 	// GSON need this noarg constructor.
 	public UPlayer()
 	{
 		this.resetFactionData();
 		//this.power = ConfServer.powerStarting;
 	}
-	
+
 	public void resetFactionData()
 	{
 		// The default neutral faction
-		this.setFactionId(null); 
+		this.setFactionId(null);
 		this.setRole(null);
 		this.setTitle(null);
-		
+
 		this.autoClaimFor = null;
 	}
-	
+
 	// -------------------------------------------- //
 	// FIELD: factionId
 	// -------------------------------------------- //
-	
+
 	// This method never returns null
 	public String getFactionId()
 	{
 		if (this.factionId == null) return UConf.get(this).playerDefaultFactionId;
 		return this.factionId;
 	}
-	
+
 	// This method never returns null
 	public Faction getFaction()
 	{
@@ -180,24 +180,24 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 		if (ret == null) ret = FactionColls.get().get(this).get(UConf.get(this).playerDefaultFactionId);
 		return ret;
 	}
-	
+
 	public boolean hasFaction()
 	{
 		return !this.getFactionId().equals(Const.FACTIONID_NONE);
 	}
-	
-	// This setter is so long because it search for default/null case and takes care of updating the faction member index 
+
+	// This setter is so long because it search for default/null case and takes care of updating the faction member index
 	public void setFactionId(String factionId)
 	{
 		// Avoid null input
 		if (factionId == null) factionId = Const.FACTIONID_NONE;
-		
+
 		// Get the old value
 		String oldFactionId = this.getFactionId();
-		
+
 		// Ignore nochange
 		if (factionId.equals(oldFactionId)) return;
-		
+
 		// Apply change
 		if (factionId.equals(Const.FACTIONID_NONE))
 		{
@@ -207,38 +207,38 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 		{
 			this.factionId = factionId;
 		}
-		
+
 		// Next we must be attached and inited
 		if (!this.attached()) return;
 		if (!this.getColl().inited()) return;
 		if (!Factions.get().isDatabaseInitialized()) return;
-		
+
 		// Update index
 		Faction oldFaction = FactionColls.get().get(this).get(oldFactionId);
 		Faction faction = FactionColls.get().get(this).get(factionId);
-		
+
 		oldFaction.uplayers.remove(this);
 		faction.uplayers.add(this);
-		
+
 		// Mark as changed
 		this.changed();
 	}
-	
+
 	public void setFaction(Faction faction)
 	{
 		this.setFactionId(faction.getId());
 	}
-	
+
 	// -------------------------------------------- //
 	// FIELD: role
 	// -------------------------------------------- //
-	
+
 	public Rel getRole()
 	{
 		if (this.role == null) return UConf.get(this).playerDefaultRole;
 		return this.role;
 	}
-	
+
 	public void setRole(Rel role)
 	{
 		if (role == null || role == UConf.get(this).playerDefaultRole)
@@ -251,22 +251,22 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 		}
 		this.changed();
 	}
-	
+
 	// -------------------------------------------- //
 	// FIELD: title
 	// -------------------------------------------- //
-	
+
 	public boolean hasTitle()
 	{
 		return this.title != null;
 	}
-	
+
 	public String getTitle()
 	{
 		if (this.hasTitle()) return this.title;
 		return Lang.PLAYER_NOTITLE;
 	}
-	
+
 	public void setTitle(String title)
 	{
 		if (title != null)
@@ -280,18 +280,18 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 		this.title = title;
 		this.changed();
 	}
-	
+
 	// -------------------------------------------- //
 	// FIELD: powerBoost
 	// -------------------------------------------- //
-	
+
 	public double getPowerBoost()
 	{
 		Double ret = this.powerBoost;
 		if (ret == null) ret = 0D;
 		return ret;
 	}
-	
+
 	public void setPowerBoost(Double powerBoost)
 	{
 		if (powerBoost == null || powerBoost == 0)
@@ -301,35 +301,35 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 		this.powerBoost = powerBoost;
 		this.changed();
 	}
-	
+
 	public boolean hasPowerBoost()
 	{
 		return this.getPowerBoost() != 0D;
 	}
-	
+
 	// -------------------------------------------- //
 	// FIELD: lastPowerUpdateTime
 	// -------------------------------------------- //
-	
+
 	// RAW
-	
+
 	public long getLastPowerUpdateTime()
 	{
 		return this.lastPowerUpdateTime;
 	}
-	
+
 	public void setLastPowerUpdateTime(long lastPowerUpdateTime)
 	{
 		this.lastPowerUpdateTime = lastPowerUpdateTime;
 		this.changed();
 	}
-	
+
 	// -------------------------------------------- //
 	// FIELD: power
 	// -------------------------------------------- //
-	
+
 	// RAW
-	
+
 	public double getPower()
 	{
 		this.recalculatePower();
@@ -337,40 +337,40 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 		if (ret == null) ret = UConf.get(this).powerStarting;
 		return ret;
 	}
-	
+
 	public void setPower(double power)
 	{
 		this.setPower(power, System.currentTimeMillis());
 	}
-	
+
 	public void setPower(double power, long now)
 	{
 		power = Math.min(power, this.getPowerMax());
 		power = Math.max(power, this.getPowerMin());
-		
+
 		// Nochange
 		if (MUtil.equals(this.power, Double.valueOf(power))) return;
-		
+
 		this.power = power;
 		this.setLastPowerUpdateTime(now);
 		this.changed();
 	}
-	
+
 	public double getPowerMax()
 	{
 		return UConf.get(this).powerMax + this.getPowerBoost();
 	}
-	
+
 	public double getPowerMin()
 	{
 		return UConf.get(this).powerMin + this.getPowerBoost();
 	}
-	
+
 	public void recalculatePower()
 	{
 		this.recalculatePower(this.isOnline());
 	}
-	
+
 	private static final transient long POWER_RECALCULATION_MINIMUM_WAIT_MILLIS = 10 * TimeUnit.MILLIS_PER_SECOND;
 	public void recalculatePower(boolean online)
 	{
@@ -379,26 +379,26 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 		// If the PS is null it's OK. We assume the player is here if we do not know.
 		PS ps = Mixin.getSenderPs(this.getId());
 		if (ps != null && !ps.isWorldLoadedOnThisServer()) return;
-		
+
 		// Get the now
 		long now = System.currentTimeMillis();
-		
+
 		// We will only update if a certain amount of time has passed.
 		if (this.getLastPowerUpdateTime() + POWER_RECALCULATION_MINIMUM_WAIT_MILLIS >= now) return;
-		
+
 		// Calculate millis passed
 		long millisPassed = now - this.getLastPowerUpdateTime();
-		
+
 		// Note that we updated
 		this.setLastPowerUpdateTime(now);
-		
+
 		// We consider dead players and players in other universes offline.
 		if (online)
 		{
 			Player thisPlayer = this.getPlayer();
 			online = (thisPlayer != null && !thisPlayer.isDead() && UPlayer.get(thisPlayer) == this);
 		}
-		
+
 		// Cache and prepare
 		UConf uconf = UConf.get(this);
 		double powerCurrent;
@@ -410,22 +410,22 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 		{
 			powerCurrent = uconf.powerStarting;
 		}
-		
+
 		// Depending on online state pick the config values
 		double powerPerHour = online ? uconf.powerPerHourOnline : uconf.powerPerHourOffline;
 		double powerLimitGain = online ? uconf.powerLimitGainOnline : uconf.powerLimitGainOffline;
 		double powerLimitLoss = online ? uconf.powerLimitLossOnline : uconf.powerLimitLossOffline;
-		
+
 		// Apply the negative divisor thingy
 		if (uconf.scaleNegativePower && powerCurrent < 0)
 		{
 			powerPerHour += (Math.sqrt(Math.abs(powerCurrent)) * Math.abs(powerCurrent)) / uconf.scaleNegativeDivisor;
 		}
-		
+
 		// Calculate delta and target
 		double powerDelta = powerPerHour * millisPassed / TimeUnit.MILLIS_PER_HOUR;
 		double powerTarget = powerCurrent + powerDelta;
-		
+
 		// Check Gain and Loss limits
 		if (powerDelta >= 0)
 		{
@@ -461,41 +461,41 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 				}
 			}
 		}
-		
+
 		FactionsEventPowerChange event = new FactionsEventPowerChange(null, this, PowerChangeReason.TIME, powerTarget);
 		event.run();
 		if (event.isCancelled()) return;
 		powerTarget = event.getNewPower();
-		
+
 		this.setPower(powerTarget, now);
 	}
-	
+
 	// FINER
-	
+
 	public int getPowerRounded()
 	{
 		return (int) Math.round(this.getPower());
 	}
-	
+
 	public int getPowerMaxRounded()
 	{
 		return (int) Math.round(this.getPowerMax());
 	}
-	
+
 	public int getPowerMinRounded()
 	{
 		return (int) Math.round(this.getPowerMin());
 	}
-	
+
 	// -------------------------------------------- //
 	// TITLE, NAME, FACTION TAG AND CHAT
 	// -------------------------------------------- //
-	
+
 	public String getName()
 	{
 		return this.getFixedId();
 	}
-	
+
 	public String getTag()
 	{
 		if ( ! this.hasFaction())
@@ -504,9 +504,9 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 		}
 		return this.getFaction().getTag();
 	}
-	
+
 	// Base concatenations:
-	
+
 	public String getNameAndSomething(String something)
 	{
 		String ret = this.role.getPrefix();
@@ -517,7 +517,7 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 		ret += this.getName();
 		return ret;
 	}
-	
+
 	public String getNameAndTitle()
 	{
 		if (this.hasTitle())
@@ -529,15 +529,15 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 			return this.getName();
 		}
 	}
-	
+
 	public String getNameAndTag()
 	{
 		return this.getNameAndSomething(this.getTag());
 	}
-	
+
 	// Colored concatenations:
 	// These are used in information messages
-	
+
 	public String getNameAndTitle(Faction faction)
 	{
 		return this.getColorTo(faction)+this.getNameAndTitle();
@@ -546,51 +546,51 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 	{
 		return this.getColorTo(uplayer)+this.getNameAndTitle();
 	}
-	
+
 	// -------------------------------------------- //
 	// RELATION AND RELATION COLORS
 	// -------------------------------------------- //
-	
+
 	@Override
 	public String describeTo(RelationParticipator observer, boolean ucfirst)
 	{
 		return RelationUtil.describeThatToMe(this, observer, ucfirst);
 	}
-	
+
 	@Override
 	public String describeTo(RelationParticipator observer)
 	{
 		return RelationUtil.describeThatToMe(this, observer);
 	}
-	
+
 	@Override
 	public Rel getRelationTo(RelationParticipator observer)
 	{
 		return RelationUtil.getRelationOfThatToMe(this, observer);
 	}
-	
+
 	@Override
 	public Rel getRelationTo(RelationParticipator observer, boolean ignorePeaceful)
 	{
 		return RelationUtil.getRelationOfThatToMe(this, observer, ignorePeaceful);
 	}
-	
+
 	public Rel getRelationToLocation()
 	{
 		// TODO: Use some built in system to get sender
 		return BoardColls.get().getFactionAt(PS.valueOf(this.getPlayer())).getRelationTo(this);
 	}
-	
+
 	@Override
 	public ChatColor getColorTo(RelationParticipator observer)
 	{
 		return RelationUtil.getColorOfThatToMe(this, observer);
 	}
-	
+
 	// -------------------------------------------- //
 	// HEALTH
 	// -------------------------------------------- //
-	
+
 	public void heal(int amnt)
 	{
 		Player player = this.getPlayer();
@@ -600,11 +600,11 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 		}
 		player.setHealth(player.getHealth() + amnt);
 	}
-	
+
 	// -------------------------------------------- //
 	// TERRITORY
 	// -------------------------------------------- //
-	
+
 	public boolean isInOwnTerritory()
 	{
 		// TODO: Use Mixin to get this PS instead
@@ -616,17 +616,17 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 		// TODO: Use Mixin to get this PS instead
 		return BoardColls.get().getFactionAt(Mixin.getSenderPs(this.getId())).getRelationTo(this) == Rel.ENEMY;
 	}
-	
+
 	// -------------------------------------------- //
 	// ACTIONS
 	// -------------------------------------------- //
-	
+
 	public void leave(boolean makePay)
 	{
 		Faction myFaction = this.getFaction();
 
 		boolean permanent = myFaction.getFlag(FFlag.PERMANENT);
-		
+
 		if (!permanent && this.getRole() == Rel.LEADER && myFaction.getUPlayers().size() > 1)
 		{
 			msg("<b>You must give the leader role to someone else first.");
@@ -653,7 +653,7 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 				Econ.transferMoney(this, myFaction, this, Money.get(this));
 			}
 		}
-		
+
 		if (myFaction.isNormal())
 		{
 			for (UPlayer uplayer : myFaction.getUPlayersWhereOnline(true))
@@ -666,7 +666,7 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 				Factions.get().log(this.getName()+" left the faction: "+myFaction.getTag());
 			}
 		}
-		
+
 		this.resetFactionData();
 
 		if (myFaction.isNormal() && !permanent && myFaction.getUPlayers().isEmpty())
@@ -688,11 +688,11 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 	public boolean canClaimForFactionAtLocation(Faction forFaction, PS ps, boolean notifyFailure)
 	{
 		String error = null;
-		
+
 		Faction myFaction = this.getFaction();
 		Faction currentFaction = BoardColls.get().getFactionAt(ps);
 		int ownedLand = forFaction.getLandCount();
-		
+
 		if (ConfServer.worldGuardChecking && Worldguard.checkForRegionsInChunk(ps))
 		{
 			// Checks for WorldGuard regions in the chunk attempting to be claimed
@@ -760,14 +760,14 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 				error = Txt.parse("<b>You must start claiming land at the border of the territory.");
 			}
 		}
-		
+
 		if (notifyFailure && error != null)
 		{
 			msg(error);
 		}
 		return error == null;
 	}
-	
+
 	// notifyFailure is false if called by auto-claim; no need to notify on every failure for it
 	// return value is false on failure, true on success
 	public boolean attemptClaim(Faction forFaction, PS psChunk, boolean notifyFailure)
@@ -775,7 +775,7 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 		psChunk = psChunk.getChunk(true);
 		Faction currentFaction = BoardColls.get().getFactionAt(psChunk);
 		int ownedLand = forFaction.getLandCount();
-		
+
 		if ( ! this.canClaimForFactionAtLocation(forFaction, psChunk, notifyFailure)) return false;
 
 		// Event
@@ -807,7 +807,7 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 		{
 			fp.msg("<h>%s<i> claimed land for <h>%s<i> from <h>%s<i>.", this.describeTo(fp, true), forFaction.describeTo(fp), currentFaction.describeTo(fp));
 		}
-		
+
 		BoardColls.get().setFactionAt(psChunk, forFaction);
 
 		if (MConf.get().logLandClaims)
@@ -817,5 +817,5 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 
 		return true;
 	}
-	
+
 }

@@ -46,19 +46,19 @@ public class CmdFactions extends FCommand
 	public CmdFactionsUnclaim cmdFactionsUnclaim = new CmdFactionsUnclaim();
 	public CmdFactionsUnclaimall cmdFactionsUnclaimall = new CmdFactionsUnclaimall();
 	public VersionCommand cmdFactionsVersion = new VersionCommand(Factions.get(), Perm.VERSION.node, "v", "version");
-	
+
 	public CmdFactions()
 	{
 		super();
 		this.aliases.addAll(ConfServer.baseCommandAliases);
-		
+
 		// remove any nulls from extra commas
 		// TODO: When is this required? Should this be added to MCore?
 		this.aliases.removeAll(Collections.singletonList(null));
-		
+
 		this.setDesc("The faction base command");
 		this.setHelp("This command contains all faction stuff.");
-		
+
 		this.addSubCommand(HelpCommand.get());
 		this.addSubCommand(this.cmdFactionsList);
 		this.addSubCommand(this.cmdFactionsShow);
@@ -97,7 +97,7 @@ public class CmdFactions extends FCommand
 		this.addSubCommand(this.cmdFactionsPromote);
 		this.addSubCommand(this.cmdFactionsVersion);
 	}
-	
+
 	@Override
 	public void perform()
 	{

@@ -5,7 +5,7 @@ public abstract class ChatTagAbstract implements ChatTag
 	// -------------------------------------------- //
 	// FIELDS & RAWDATA GET/SET
 	// -------------------------------------------- //
-	
+
 	private final String id;
 	@Override public String getId() { return this.id; }
 
@@ -18,20 +18,20 @@ public abstract class ChatTagAbstract implements ChatTag
 	{
 		return ChatFormatter.registerTag(this);
 	}
-	
+
 	@Override
 	public boolean unregister()
 	{
 		return ChatFormatter.unregisterTag(this);
 	}
-	
+
 	// -------------------------------------------- //
 	// CONSTRUCT
 	// -------------------------------------------- //
-	
+
 	public ChatTagAbstract(final String id)
 	{
 		this.id = id.toLowerCase();
 	}
-	
+
 }

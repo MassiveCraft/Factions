@@ -14,24 +14,24 @@ public class CmdFactionsTitle extends FCommand
 	public CmdFactionsTitle()
 	{
 		this.addAliases("title");
-		
+
 		this.addRequiredArg("player");
 		this.addOptionalArg("title", "");
-		
+
 		this.addRequirements(ReqHasPerm.get(Perm.TITLE.node));
 		this.addRequirements(ReqRoleIsAtLeast.get(Rel.OFFICER));
 	}
-	
+
 	@Override
 	public void perform()
 	{
 		// Args
 		UPlayer you = this.arg(0, ARUPlayer.getStartAny(sender));
 		if (you == null) return;
-		
+
 		String newTitle = this.argConcatFrom(1, ARString.get(), "");
 		if (newTitle == null) return;
-		
+
 		// Verify
 		if ( ! canIAdministerYou(fme, you)) return;
 
@@ -43,9 +43,9 @@ public class CmdFactionsTitle extends FCommand
 
 		// Apply
 		you.setTitle(newTitle);
-		
+
 		// Inform
 		myFaction.msg("%s<i> changed a title: %s", fme.describeTo(myFaction, true), you.describeTo(myFaction, true));
 	}
-	
+
 }

@@ -8,32 +8,32 @@ import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 
 public class CmdFactionsPromote extends FCommand
 {
-	
+
 	public CmdFactionsPromote()
 	{
 		this.addAliases("promote");
-		
+
 		this.addRequiredArg("player");
-		
+
 		this.addRequirements(ReqHasPerm.get(Perm.PROMOTE.node));
-		
+
 		//To promote someone from recruit -> member you must be an officer.
 		//To promote someone from member -> officer you must be a leader.
 		//We'll handle this internally
 	}
-	
+
 	@Override
 	public void perform()
 	{
 		UPlayer you = this.arg(0, ARUPlayer.getStartAny(sender));
 		if (you == null) return;
-		
+
 		if (you.getFaction() != myFaction)
 		{
 			msg("%s<b> is not a member in your faction.", you.describeTo(fme, true));
 			return;
 		}
-		
+
 		if (you == fme)
 		{
 			msg("<b>The target player mustn't be yourself.");
@@ -62,5 +62,5 @@ public class CmdFactionsPromote extends FCommand
 			myFaction.msg("%s<i> was promoted to being a officer in your faction.", you.describeTo(myFaction, true));
 		}
 	}
-	
+
 }

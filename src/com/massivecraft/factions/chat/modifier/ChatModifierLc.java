@@ -8,11 +8,11 @@ public class ChatModifierLc extends ChatModifierAbstract
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
-	
+
 	private ChatModifierLc() { super("lc"); }
 	private static ChatModifierLc i = new ChatModifierLc();
 	public static ChatModifierLc get() { return i; }
-	
+
 	// -------------------------------------------- //
 	// OVERRIDE
 	// -------------------------------------------- //

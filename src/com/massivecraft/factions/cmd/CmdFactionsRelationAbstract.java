@@ -13,32 +13,32 @@ import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 public abstract class CmdFactionsRelationAbstract extends FCommand
 {
 	public Rel targetRelation;
-	
+
 	public CmdFactionsRelationAbstract()
 	{
 		this.addAliases("faction");
-		
+
 		this.addRequirements(ReqHasPerm.get(Perm.RELATION.node));
 		this.addRequirements(ReqRoleIsAtLeast.get(Rel.OFFICER));
 	}
-	
+
 	@Override
 	public void perform()
 	{
 		// Args
 		Faction otherFaction = this.arg(0, ARFaction.get(sender));
 		if (otherFaction == null) return;
-		
+
 		Rel newRelation = targetRelation;
-		
+
 		/*if ( ! them.isNormal())
 		{
 			msg("<b>Nope! You can't.");
 			return;
 		}*/
-		
+
 		// Verify
-		
+
 		if (otherFaction == myFaction)
 		{
 			msg("<b>Nope! You can't declare a relation to yourself :)");
@@ -50,7 +50,7 @@ public abstract class CmdFactionsRelationAbstract extends FCommand
 			msg("<b>You already have that relation wish set with %s.", otherFaction.getTag());
 			return;
 		}
-		
+
 		// Event
 		FactionsEventRelationChange event = new FactionsEventRelationChange(sender, myFaction, otherFaction, newRelation);
 		event.run();
@@ -74,7 +74,7 @@ public abstract class CmdFactionsRelationAbstract extends FCommand
 			otherFaction.msg("<i>Type <c>/"+ConfServer.baseCommandAliases.get(0)+" "+newRelation+" "+myFaction.getTag()+"<i> to accept.");
 			myFaction.msg("%s<i> were informed that you wish to be %s<i>.", otherFaction.describeTo(myFaction, true), newRelation.getColor()+newRelation.getDescFactionOne());
 		}
-		
+
 		// TODO: The ally case should work!!
 		//   * this might have to be bumped up to make that happen, & allow ALLY,NEUTRAL only
 		if ( newRelation != Rel.TRUCE && otherFaction.getFlag(FFlag.PEACEFUL))
@@ -82,7 +82,7 @@ public abstract class CmdFactionsRelationAbstract extends FCommand
 			otherFaction.msg("<i>This will have no effect while your faction is peaceful.");
 			myFaction.msg("<i>This will have no effect while their faction is peaceful.");
 		}
-		
+
 		if ( newRelation != Rel.TRUCE && myFaction.getFlag(FFlag.PEACEFUL))
 		{
 			otherFaction.msg("<i>This will have no effect while their faction is peaceful.");

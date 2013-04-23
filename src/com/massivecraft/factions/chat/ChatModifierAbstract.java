@@ -5,7 +5,7 @@ public abstract class ChatModifierAbstract implements ChatModifier
 	// -------------------------------------------- //
 	// FIELDS & RAWDATA GET/SET
 	// -------------------------------------------- //
-	
+
 	private final String id;
 	@Override public String getId() { return this.id; }
 
@@ -18,20 +18,20 @@ public abstract class ChatModifierAbstract implements ChatModifier
 	{
 		return ChatFormatter.registerModifier(this);
 	}
-	
+
 	@Override
 	public boolean unregister()
 	{
 		return ChatFormatter.unregisterModifier(this);
 	}
-	
+
 	// -------------------------------------------- //
 	// CONSTRUCT
 	// -------------------------------------------- //
-	
+
 	public ChatModifierAbstract(final String id)
 	{
 		this.id = id.toLowerCase();
 	}
-	
+
 }

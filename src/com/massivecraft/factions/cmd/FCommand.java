@@ -10,18 +10,18 @@ public abstract class FCommand extends MCommand
 {
 	public UPlayer fme;
 	public Faction myFaction;
-	
+
 	@Override
 	public void fixSenderVars()
 	{
 		this.fme = UPlayer.get(this.sender);
 		this.myFaction = this.fme.getFaction();
 	}
-	
+
 	// -------------------------------------------- //
 	// COMMONLY USED LOGIC
 	// -------------------------------------------- //
-	
+
 	public boolean canIAdministerYou(UPlayer i, UPlayer you)
 	{
 		if ( ! i.getFaction().equals(you.getFaction()))
@@ -29,12 +29,12 @@ public abstract class FCommand extends MCommand
 			i.sendMessage(Txt.parse("%s <b>is not in the same faction as you.",you.describeTo(i, true)));
 			return false;
 		}
-		
+
 		if (i.getRole().isMoreThan(you.getRole()) || i.getRole().equals(Rel.LEADER) )
 		{
 			return true;
 		}
-		
+
 		if (you.getRole().equals(Rel.LEADER))
 		{
 			i.sendMessage(Txt.parse("<b>Only the faction leader can do that."));
@@ -54,7 +54,7 @@ public abstract class FCommand extends MCommand
 		{
 			i.sendMessage(Txt.parse("<b>You must be a faction moderator to do that."));
 		}
-		
+
 		return false;
 	}
 }

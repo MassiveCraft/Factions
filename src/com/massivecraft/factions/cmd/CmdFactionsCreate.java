@@ -21,33 +21,33 @@ public class CmdFactionsCreate extends FCommand
 	public CmdFactionsCreate()
 	{
 		this.addAliases("create");
-		
+
 		this.addRequiredArg("faction tag");
-		
+
 		this.addRequirements(ReqHasPerm.get(Perm.CREATE.node));
 	}
-	
+
 	@Override
 	public void perform()
 	{
 		// Args
 		String newTag = this.arg(0);
-		
+
 		// Verify
 		if (fme.hasFaction())
 		{
 			msg("<b>You must leave your current faction first.");
 			return;
 		}
-		
+
 		FactionColl coll = FactionColls.get().get(fme);
-		
+
 		if (coll.isTagTaken(newTag))
 		{
 			msg("<b>That tag is already in use.");
 			return;
 		}
-		
+
 		ArrayList<String> tagValidationErrors = coll.validateTag(newTag);
 		if (tagValidationErrors.size() > 0)
 		{
@@ -57,29 +57,29 @@ public class CmdFactionsCreate extends FCommand
 
 		// Pre-Generate Id
 		String factionId = coll.getIdStrategy().generate(coll);
-		
+
 		// Event
 		FactionsEventCreate createEvent = new FactionsEventCreate(sender, coll.getUniverse(), factionId, newTag);
 		createEvent.run();
 		if (createEvent.isCancelled()) return;
-		
+
 		// Apply
 		Faction faction = coll.create(factionId);
 		faction.setTag(newTag);
-		
+
 		fme.setRole(Rel.LEADER);
 		fme.setFaction(faction);
-		
+
 		FactionsEventMembershipChange joinEvent = new FactionsEventMembershipChange(sender, fme, faction, MembershipChangeReason.CREATE);
 		joinEvent.run();
 		// NOTE: join event cannot be cancelled or you'll have an empty faction
-		
+
 		// Inform
 		for (UPlayer follower : UPlayerColls.get().get(fme).getAllOnline())
 		{
 			follower.msg("%s<i> created a new faction %s", fme.describeTo(follower, true), faction.getTag(follower));
 		}
-		
+
 		msg("<i>You should now: %s", Factions.get().getOuterCmdFactions().cmdFactionsDescription.getUseageTemplate());
 
 		if (MConf.get().logFactionCreate)
@@ -87,5 +87,5 @@ public class CmdFactionsCreate extends FCommand
 			Factions.get().log(fme.getName()+" created a new faction: "+newTag);
 		}
 	}
-	
+
 }

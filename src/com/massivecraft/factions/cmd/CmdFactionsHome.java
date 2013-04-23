@@ -26,12 +26,12 @@ public class CmdFactionsHome extends FCommand
 	public CmdFactionsHome()
 	{
 		this.addAliases("home");
-		
+
 		this.addRequirements(ReqHasPerm.get(Perm.HOME.node));
 		this.addRequirements(ReqIsPlayer.get());
 		this.addRequirements(ReqRoleIsAtLeast.get(Rel.RECRUIT));
 	}
-	
+
 	@Override
 	public void perform()
 	{
@@ -47,30 +47,30 @@ public class CmdFactionsHome extends FCommand
 			fme.msg("<b>Sorry, the ability to teleport to Faction homes is disabled on this server.");
 			return;
 		}
-		
+
 		if ( ! myFaction.hasHome())
 		{
 			fme.msg("<b>Your faction does not have a home. " + (fme.getRole().isLessThan(Rel.OFFICER) ? "<i> Ask your leader to:" : "<i>You should:"));
 			fme.sendMessage(Factions.get().getOuterCmdFactions().cmdFactionsSethome.getUseageTemplate());
 			return;
 		}
-		
+
 		if ( ! ConfServer.homesTeleportAllowedFromEnemyTerritory && fme.isInEnemyTerritory())
 		{
 			fme.msg("<b>You cannot teleport to your faction home while in the territory of an enemy faction.");
 			return;
 		}
-		
+
 		if (!ConfServer.homesTeleportAllowedFromDifferentWorld && !me.getWorld().getName().equalsIgnoreCase(myFaction.getHome().getWorld()))
 		{
 			fme.msg("<b>You cannot teleport to your faction home while in a different world.");
 			return;
 		}
-		
-		
+
+
 		Faction faction = BoardColls.get().getFactionAt(PS.valueOf(me));
 		Location loc = me.getLocation().clone();
-		
+
 		// if player is not in a safe zone or their own faction territory, only allow teleport if no enemies are nearby
 		if
 		(
@@ -122,7 +122,7 @@ public class CmdFactionsHome extends FCommand
 		FactionsEventHomeTeleport event = new FactionsEventHomeTeleport(sender);
 		event.run();
 		if (event.isCancelled()) return;
-		
+
 		// Apply
 		try
 		{
@@ -133,5 +133,5 @@ public class CmdFactionsHome extends FCommand
 			me.sendMessage(e.getMessage());
 		}
 	}
-	
+
 }

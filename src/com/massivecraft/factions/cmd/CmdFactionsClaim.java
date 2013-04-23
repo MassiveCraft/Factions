@@ -13,27 +13,27 @@ import com.massivecraft.mcore.ps.PS;
 
 public class CmdFactionsClaim extends FCommand
 {
-	
+
 	public CmdFactionsClaim()
 	{
 		this.addAliases("claim");
-		
+
 		this.addOptionalArg("faction", "you");
 		this.addOptionalArg("radius", "1");
-		
+
 		this.addRequirements(ReqHasPerm.get(Perm.CLAIM.node));
 		this.addRequirements(ReqIsPlayer.get());
 	}
-	
+
 	@Override
 	public void perform()
 	{
 		final Faction forFaction = this.arg(0, ARFaction.get(me));
 		if (forFaction == null) return;
-		
+
 		Integer radius = this.arg(1, ARInteger.get(), 1);
 		if (radius == null) return;
-		
+
 
 		if (radius < 1)
 		{
@@ -47,7 +47,7 @@ public class CmdFactionsClaim extends FCommand
 			fme.attemptClaim(forFaction, PS.valueOf(me), true);
 			return;
 		}
-		
+
 		// radius claim
 		if (! Perm.CLAIM_RADIUS.has(sender, false))
 		{
@@ -76,6 +76,6 @@ public class CmdFactionsClaim extends FCommand
 				return true;
 			}
 		};
-		
+
 	}
 }

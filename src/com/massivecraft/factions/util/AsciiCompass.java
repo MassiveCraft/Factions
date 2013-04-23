@@ -16,32 +16,32 @@ public class AsciiCompass
 		SW('/'),
 		W('W'),
 		NW('\\');
-		
+
 		public final char asciiChar;
-		
+
 		private Point(final char asciiChar)
 		{
 			this.asciiChar = asciiChar;
 		}
-		
+
 		@Override
 		public String toString()
 		{
 			return String.valueOf(this.asciiChar);
 		}
-		
+
 		public String toString(boolean isActive, ChatColor colorActive, String colorDefault)
 		{
 			return (isActive ? colorActive : colorDefault)+String.valueOf(this.asciiChar);
 		}
 	}
-	
+
 	public static AsciiCompass.Point getCompassPointForDirection(double inDegrees)
 	{
 		double degrees = (inDegrees - 180) % 360 ;
 		if (degrees < 0)
 			degrees += 360;
-		
+
 		if (0 <= degrees && degrees < 22.5)
 			return AsciiCompass.Point.N;
 		else if (22.5 <= degrees && degrees < 67.5)
@@ -63,24 +63,24 @@ public class AsciiCompass
 		else
 			return null;
 	}
-	
+
 	public static ArrayList<String> getAsciiCompass(Point point, ChatColor colorActive, String colorDefault)
 	{
 		ArrayList<String> ret = new ArrayList<String>();
 		String row;
-		
+
 		row = "";
 		row += Point.NW.toString(Point.NW == point, colorActive, colorDefault);
 		row += Point.N.toString(Point.N == point, colorActive, colorDefault);
 		row += Point.NE.toString(Point.NE == point, colorActive, colorDefault);
 		ret.add(row);
-		
+
 		row = "";
 		row += Point.W.toString(Point.W == point, colorActive, colorDefault);
 		row += colorDefault+"+";
 		row += Point.E.toString(Point.E == point, colorActive, colorDefault);
 		ret.add(row);
-		
+
 		row = "";
 		row += Point.SW.toString(Point.SW == point, colorActive, colorDefault);
 		row += Point.S.toString(Point.S == point, colorActive, colorDefault);
@@ -89,7 +89,7 @@ public class AsciiCompass
 
 		return ret;
 	}
-	
+
 	public static ArrayList<String> getAsciiCompass(double inDegrees, ChatColor colorActive, String colorDefault)
 	{
 		return getAsciiCompass(getCompassPointForDirection(inDegrees), colorActive, colorDefault);

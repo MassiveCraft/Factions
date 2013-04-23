@@ -1,6 +1,5 @@
 package com.massivecraft.factions;
 
-
 public interface EconomyParticipator extends RelationParticipator
 {
 	public String getAccountId();

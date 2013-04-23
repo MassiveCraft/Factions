@@ -7,7 +7,7 @@ public class CmdFactionsRelationAlly extends CmdFactionsRelationAbstract
 	public CmdFactionsRelationAlly()
 	{
 		this.addAliases("ally");
-		
+
 		this.targetRelation = Rel.ALLY;
 	}
 }

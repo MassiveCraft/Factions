@@ -16,23 +16,23 @@ import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 
 public class CmdFactionsKick extends FCommand
 {
-	
+
 	public CmdFactionsKick()
 	{
 		this.addAliases("kick");
-		
+
 		this.addRequiredArg("player");
-		
+
 		this.addRequirements(ReqHasPerm.get(Perm.KICK.node));
 	}
-	
+
 	@Override
 	public void perform()
 	{
 		// Arg
 		UPlayer uplayer = this.arg(1, ARUPlayer.getStartAny(sender));
 		if (uplayer == null) return;
-		
+
 		// Validate
 		if (fme == uplayer)
 		{
@@ -40,7 +40,7 @@ public class CmdFactionsKick extends FCommand
 			msg("<i>You might want to: %s", Factions.get().getOuterCmdFactions().cmdFactionsLeave.getUseageTemplate(false));
 			return;
 		}
-		
+
 		if (uplayer.getRole() == Rel.LEADER && !(this.senderIsConsole || fme.isUsingAdminMode()))
 		{
 			msg("<b>The leader can not be kicked.");
@@ -52,7 +52,7 @@ public class CmdFactionsKick extends FCommand
 			msg("<b>You cannot kick that member until their power is positive.");
 			return;
 		}
-		
+
 		// FPerm
 		Faction uplayerFaction = uplayer.getFaction();
 		if (!FPerm.KICK.has(sender, uplayerFaction)) return;
@@ -83,5 +83,5 @@ public class CmdFactionsKick extends FCommand
 		uplayerFaction.setInvited(uplayer, false);
 		uplayer.resetFactionData();
 	}
-	
+
 }

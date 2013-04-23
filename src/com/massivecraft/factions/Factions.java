@@ -42,33 +42,32 @@ import com.massivecraft.mcore.usys.Multiverse;
 import com.massivecraft.mcore.util.MUtil;
 import com.massivecraft.mcore.xlib.gson.GsonBuilder;
 
-
 public class Factions extends MPlugin
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
-	
+
 	private static Factions i;
 	public static Factions get() { return i; }
 	public Factions() { Factions.i = this; }
-	
+
 	// -------------------------------------------- //
 	// FIELDS
 	// -------------------------------------------- //
-	
+
 	// Commands
 	private CmdFactions outerCmdFactions;
 	public CmdFactions getOuterCmdFactions() { return this.outerCmdFactions; }
-	
+
 	// Listeners
 	public TodoFactionsPlayerListener playerListener;
-	
+
 	// Aspects
 	private Aspect aspect;
 	public Aspect getAspect() { return this.aspect; }
 	public Multiverse getMultiverse() { return this.getAspect().getMultiverse(); }
-	
+
 	// Database Initialized
 	private boolean databaseInitialized;
 	public boolean isDatabaseInitialized() { return this.databaseInitialized; }
@@ -76,15 +75,15 @@ public class Factions extends MPlugin
 	// -------------------------------------------- //
 	// OVERRIDE
 	// -------------------------------------------- //
-	
+
 	@Override
 	public void onEnable()
 	{
 		if ( ! preEnable()) return;
-		
+
 		// Load Server Config
 		ConfServer.get().load();
-		
+
 		// Initialize Aspects
 		this.aspect = AspectColl.get().get(Const.ASPECT_ID, true);
 		this.aspect.register();
@@ -92,23 +91,23 @@ public class Factions extends MPlugin
 			"<i>If the factions system even is enabled and how it's configured.",
 			"<i>What factions exists and what players belong to them."
 		);
-		
+
 		// Register Faction accountId Extractor
 		// TODO: Perhaps this should be placed in the econ integration somewhere?
 		MUtil.registerExtractor(String.class, "accountId", ExtractorFactionAccountId.get());
 
 		// Initialize Collections
 		this.databaseInitialized = false;
-		
+
 		MConfColl.get().init();
 		UPlayerColls.get().init();
 		FactionColls.get().init();
 		BoardColls.get().init();
-		
+
 		FactionColls.get().reindexUPlayers();
-		
+
 		this.databaseInitialized = true;
-		
+
 		// Commands
 		this.outerCmdFactions = new CmdFactions();
 		this.outerCmdFactions.register(this);
@@ -117,20 +116,20 @@ public class Factions extends MPlugin
 		FactionsListenerMain.get().setup();
 		FactionsListenerChat.get().setup();
 		FactionsListenerExploit.get().setup();
-		
+
 		// TODO: This listener is a work in progress.
 		// The goal is that the Econ integration should be completely based on listening to our own events.
 		// Right now only a few situations are handled through this listener.
 		FactionsListenerEcon.get().setup();
-		
+
 		// TODO: Get rid of this one
 		this.playerListener = new TodoFactionsPlayerListener();
 		getServer().getPluginManager().registerEvents(this.playerListener, this);
-		
+
 		// Schedule recurring non-tps-dependent tasks
 		AutoLeaveTask.get().schedule(this);
 		EconLandRewardTask.get().schedule(this);
-		
+
 		// Register built in chat modifiers
 		ChatModifierLc.get().register();
 		ChatModifierLp.get().register();
@@ -138,7 +137,7 @@ public class Factions extends MPlugin
 		ChatModifierRp.get().register();
 		ChatModifierUc.get().register();
 		ChatModifierUcf.get().register();
-		
+
 		// Register built in chat tags
 		ChatTagRelcolor.get().register();
 		ChatTagRole.get().register();
@@ -146,20 +145,20 @@ public class Factions extends MPlugin
 		ChatTagTag.get().register();
 		ChatTagTagforce.get().register();
 		ChatTagTitle.get().register();
-		
+
 		// Integrate
 		this.integrate(HerochatFeatures.get());
-		
+
 		LWCFeatures.setup();
-		
+
 		if (ConfServer.worldGuardChecking)
 		{
 			Worldguard.init(this);
 		}
-		
+
 		postEnable();
 	}
-	
+
 	@Override
 	public GsonBuilder getGsonBuilder()
 	{
@@ -178,7 +177,7 @@ public class Factions extends MPlugin
 	// -------------------------------------------- //
 	// TODO: This "outer API" is removed. I should ensure these features are
 	// available using the appropriate classes and then remove this commented out section below.
-	
+
 	/*
 
 	// Get a player's faction tag (faction name), mainly for usage by chat plugins for local/channel chat
@@ -286,7 +285,7 @@ public class Factions extends MPlugin
 	{
 		return FactionsPlayerListener.playerCanUseItemHere(player, location, material, true);
 	}
-	
+
 	*/
-	
+
 }

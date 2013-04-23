@@ -24,14 +24,14 @@ public class FactionColls extends Colls<FactionColl, Faction>
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
-	
+
 	private static FactionColls i = new FactionColls();
 	public static FactionColls get() { return i; }
-	
+
 	// -------------------------------------------- //
 	// OVERRIDE: COLLS
 	// -------------------------------------------- //
-	
+
 	@Override
 	public FactionColl createColl(String collName)
 	{
@@ -43,38 +43,38 @@ public class FactionColls extends Colls<FactionColl, Faction>
 	{
 		return Factions.get().getAspect();
 	}
-	
+
 	@Override
 	public String getBasename()
 	{
 		return Const.COLLECTION_BASENAME_FACTION;
 	}
-	
+
 	@Override
 	public FactionColl get(Object o)
 	{
 		if (o == null) return null;
-		
+
 		if (o instanceof Entity)
 		{
 			return this.getForUniverse(((Entity<?>)o).getUniverse());
 		}
-		
+
 		if (o instanceof Coll)
 		{
 			return this.getForUniverse(((Coll<?>)o).getUniverse());
 		}
-		
+
 		if (SenderUtil.isNonplayer(o))
 		{
 			return this.getForWorld(Bukkit.getWorlds().get(0).getName());
 		}
-		
+
 		String worldName = MUtil.extract(String.class, "worldName", o);
 		if (worldName == null) return null;
 		return this.getForWorld(worldName);
 	}
-	
+
 	@Override
 	public void init()
 	{
@@ -82,23 +82,23 @@ public class FactionColls extends Colls<FactionColl, Faction>
 
 		this.migrate();
 	}
-	
+
 	public void migrate()
 	{
 		// Create file objects
 		File oldFile = new File(Factions.get().getDataFolder(), "factions.json");
 		File newFile = new File(Factions.get().getDataFolder(), "factions.json.migrated");
-		
+
 		// Already migrated?
 		if ( ! oldFile.exists()) return;
-		
-		// Read the file content through GSON. 
+
+		// Read the file content through GSON.
 		Type type = new TypeToken<Map<String, Faction>>(){}.getType();
 		Map<String, Faction> id2faction = Factions.get().gson.fromJson(DiscUtil.readCatch(oldFile), type);
-		
+
 		// The Coll
 		FactionColl coll = this.getForUniverse(MCore.DEFAULT);
-		
+
 		// Set the data
 		for (Entry<String, Faction> entry : id2faction.entrySet())
 		{
@@ -106,15 +106,15 @@ public class FactionColls extends Colls<FactionColl, Faction>
 			Faction faction = entry.getValue();
 			coll.attach(faction, factionId);
 		}
-		
+
 		// Mark as migrated
 		oldFile.renameTo(newFile);
 	}
-	
+
 	// -------------------------------------------- //
 	// INDEX
 	// -------------------------------------------- //
-	
+
 	public void reindexUPlayers()
 	{
 		for (FactionColl coll : this.getColls())
@@ -122,5 +122,5 @@ public class FactionColls extends Colls<FactionColl, Faction>
 			coll.reindexUPlayers();
 		}
 	}
-	
+
 }

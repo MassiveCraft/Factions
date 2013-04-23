@@ -20,7 +20,7 @@ public class RelationUtil
 		{
 			return "A server admin";
 		}
-		
+
 		Faction thatFaction = getFaction(that);
 		if (thatFaction == null) return "ERROR"; // ERROR
 
@@ -76,13 +76,13 @@ public class RelationUtil
 	public static Rel getRelationOfThatToMe(RelationParticipator that, RelationParticipator me, boolean ignorePeaceful)
 	{
 		Rel ret = null;
-		
+
 		Faction myFaction = getFaction(me);
 		if (myFaction == null) return Rel.NEUTRAL; // ERROR
 
 		Faction thatFaction = getFaction(that);
 		if (thatFaction == null) return Rel.NEUTRAL; // ERROR
-		
+
 		// The faction with the lowest wish "wins"
 		if (thatFaction.getRelationWish(myFaction).isLessThan(myFaction.getRelationWish(thatFaction)))
 		{
@@ -137,7 +137,7 @@ public class RelationUtil
 			{
 				return MConf.get().colorFriendlyFire;
 			}
-			
+
 			if (thatFaction.getFlag(FFlag.PVP) == false)
 			{
 				return MConf.get().colorNoPVP;

@@ -31,14 +31,12 @@ public abstract class FactionsChannelAbstract implements Channel
 	private static final Pattern msgPattern = Pattern.compile("(.*)<(.*)%1\\$s(.*)> %2\\$s");
 	private final ChannelStorage storage = Herochat.getChannelManager().getStorage();
 	private final MessageFormatSupplier formatSupplier = Herochat.getChannelManager();
-	
+
 	public FactionsChannelAbstract()
 	{
-		
+
 	}
-	
-	
-	
+
 	@Override
 	public boolean addMember(Chatter chatter, boolean announce, boolean flagUpdate)
 	{
@@ -46,13 +44,13 @@ public abstract class FactionsChannelAbstract implements Channel
 		chatter.addChannel(this, announce, flagUpdate);
 		return true;
 	}
-	
+
 	@Override
 	public boolean kickMember(Chatter chatter, boolean announce)
 	{
 		if (!chatter.hasChannel(this)) return false;
 		this.removeMember(chatter, false, true);
-		
+
 		if (announce)
 		{
 			try
@@ -64,10 +62,10 @@ public abstract class FactionsChannelAbstract implements Channel
 				Herochat.severe("Messages.properties is missing: channel_kick");
 			}
 		}
-		
+
 		return true;
 	}
-	
+
 	@Override
 	public boolean removeMember(Chatter chatter, boolean announce, boolean flagUpdate)
 	{
@@ -75,8 +73,8 @@ public abstract class FactionsChannelAbstract implements Channel
 		chatter.removeChannel(this, announce, flagUpdate);
 	    return true;
 	}
-	
-	
+
+
 	@Override
 	public Set<Chatter> getMembers()
 	{
@@ -107,7 +105,7 @@ public abstract class FactionsChannelAbstract implements Channel
 		format = format.replace("{nick}", this.getNick());
 		format = format.replace("{color}", this.getColor().toString());
 		format = format.replace("{msg}", "%2$s");
-		
+
 		Matcher matcher = msgPattern.matcher(originalFormat);
 		if ((matcher.matches()) && (matcher.groupCount() == 3))
 		{
@@ -117,7 +115,7 @@ public abstract class FactionsChannelAbstract implements Channel
 		{
 			format = format.replace("{sender}", "%1$s");
 		}
-		
+
 		format = format.replaceAll("(?i)&([a-fklmno0-9])", "§$1");
 		return format;
 	}
@@ -167,11 +165,11 @@ public abstract class FactionsChannelAbstract implements Channel
 		{
 			recipients.add(member.getPlayer());
 		}
-		
+
 		trimRecipients(recipients, sender);
-		
+
 		final Player player = sender.getPlayer();
-		
+
 		if (!isMessageHeard(recipients, sender))
 		{
 			Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Herochat.getPlugin(), new Runnable()
@@ -197,24 +195,24 @@ public abstract class FactionsChannelAbstract implements Channel
 			}
 		}
 	}
-	
+
 	@Override
 	public boolean isMuted(String name)
 	{
 		if (this.isMuted()) return true;
 		return this.getMutes().contains(name.toLowerCase());
 	}
-	
+
 	public abstract Set<Rel> getTargetRelations();
-	
+
 	public Set<Player> getRecipients(Player sender)
 	{
 		Set<Player> ret = new HashSet<Player>();
-		
+
 		UPlayer fpsender = UPlayer.get(sender);
 		Faction faction = fpsender.getFaction();
 		String universe = fpsender.getUniverse();
-		
+
 		for (Player player : Bukkit.getOnlinePlayers())
 		{
 			UPlayer frecipient = UPlayer.get(player);
@@ -222,10 +220,10 @@ public abstract class FactionsChannelAbstract implements Channel
 			if (!this.getTargetRelations().contains(faction.getRelationTo(frecipient))) continue;
 			ret.add(player);
 		}
-		
+
 		return ret;
 	}
-	
+
 	@Override
 	public void processChat(ChannelChatEvent event)
 	{
@@ -263,11 +261,11 @@ public abstract class FactionsChannelAbstract implements Channel
 
 		Herochat.logChat(msg);
 	}
-	
+
 	public boolean isMessageHeard(Set<Player> recipients, Chatter sender)
 	{
 		if (!isLocal()) return true;
-		
+
 		Player senderPlayer = sender.getPlayer();
 		for (Player recipient : recipients)
 		{
@@ -275,14 +273,14 @@ public abstract class FactionsChannelAbstract implements Channel
 			if (recipient.hasPermission("herochat.admin.stealth")) continue;
 			return true;
 		}
-		
+
 		return false;
 	}
 
 	public void trimRecipients(Set<Player> recipients, Chatter sender)
 	{
 		World world = sender.getPlayer().getWorld();
-		
+
 		Set<Chatter> members = this.getMembers();
 		Iterator<Player> iterator = recipients.iterator();
 		while(iterator.hasNext())
@@ -290,7 +288,7 @@ public abstract class FactionsChannelAbstract implements Channel
 			Chatter recipient = Herochat.getChatterManager().getChatter(iterator.next());
 			if (recipient == null) continue;
 			World recipientWorld = recipient.getPlayer().getWorld();
-			
+
 			if (!members.contains(recipient))
 				iterator.remove();
 			else if ((isLocal()) && (!sender.isInRange(recipient, this.getDistance())))
@@ -303,7 +301,7 @@ public abstract class FactionsChannelAbstract implements Channel
 				iterator.remove();
 		}
 	}
-	
+
 	public boolean equals(Object other)
 	{
 		if (other == this) return true;
@@ -321,7 +319,7 @@ public abstract class FactionsChannelAbstract implements Channel
 		result = prime * result + (this.getNick() == null ? 0 : this.getNick().toLowerCase().hashCode());
 		return result;
 	}
-	
+
 	@Override public boolean isTransient() { return false; }
 	@Override public String getPassword() { return ""; }
 	@Override public void setPassword(String password) {}
@@ -340,12 +338,10 @@ public abstract class FactionsChannelAbstract implements Channel
 	@Override public boolean isBanned(String name) { return this.getBans().contains(name.toLowerCase()); }
 	@Override public boolean isMember(Chatter chatter) { return this.getMembers().contains(chatter); }
 	@Override public boolean isModerator(String name) { return this.getModerators().contains(name.toLowerCase()); }
-	
+
 	@Override public void onFocusGain(Chatter chatter) {}
 	@Override public void onFocusLoss(Chatter chatter) {}
-	
-	
-	
+
 	@Override public void removeWorld(String world) { this.getWorlds().remove(world); }
 	@Override public void setBanned(String name, boolean banned) {}
 	@Override public void setBans(Set<String> bans) {}

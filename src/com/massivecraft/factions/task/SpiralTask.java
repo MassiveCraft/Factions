@@ -43,7 +43,7 @@ public abstract class SpiralTask implements Runnable
 	public SpiralTask(PS chunk, int radius)
 	{
 		chunk = chunk.getChunk(true);
-		
+
 		// limit is determined based on spiral leg length for given radius; see insideRadius()
 		this.limit = (radius - 1) * 2;
 
@@ -84,7 +84,7 @@ public abstract class SpiralTask implements Runnable
  */
 	public final Location currentLocation()
 	{
-		
+
 		return new Location(world, this.x * 16, 65.0, this.z * 16);
 	}
 /*
@@ -106,7 +106,7 @@ public abstract class SpiralTask implements Runnable
  */
 
 	public final void setTaskID(int ID)
-	{	
+	{
 		if (ID == -1)
 			this.stop();
 		taskID = ID;

@@ -10,15 +10,15 @@ public abstract class FactionsEventAbstractSender extends MCoreEvent
 	// -------------------------------------------- //
 	// FIELDS
 	// -------------------------------------------- //
-	
+
 	private final CommandSender sender;
 	public CommandSender getSender() { return this.sender; }
 	public UPlayer getFSender() { return UPlayer.get(this.sender); }
-	
+
 	// -------------------------------------------- //
 	// CONSTRUCT
 	// -------------------------------------------- //
-	
+
 	public FactionsEventAbstractSender(CommandSender sender)
 	{
 		this.sender = sender;

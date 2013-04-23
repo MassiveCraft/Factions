@@ -14,25 +14,25 @@ import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 
 public class CmdFactionsTag extends FCommand
 {
-	
+
 	public CmdFactionsTag()
 	{
 		this.addAliases("tag");
-		
+
 		this.addRequiredArg("new tag");
-		
+
 		this.addRequirements(ReqHasPerm.get(Perm.TAG.node));
 		this.addRequirements(ReqRoleIsAtLeast.get(Rel.OFFICER));
 	}
-	
+
 	@Override
 	public void perform()
 	{
 		// Arg
 		String newTag = this.arg(0);
-		
+
 		// TODO does not first test cover selfcase?
-		
+
 		FactionColl factionColl = FactionColls.get().get(myFaction);
 		if (factionColl.isTagTaken(newTag) && ! MiscUtil.getComparisonString(newTag).equals(myFaction.getComparisonTag()))
 		{
@@ -69,5 +69,5 @@ public class CmdFactionsTag extends FCommand
 			faction.msg("<i>The faction %s<i> changed their name to %s.", fme.getColorTo(faction)+oldtag, myFaction.getTag(faction));
 		}
 	}
-	
+
 }

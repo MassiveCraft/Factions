@@ -10,18 +10,18 @@ public class ConfServer extends SimpleConfig
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
-	
+
 	private static transient ConfServer i = new ConfServer();
 	public static ConfServer get() { return i; }
 	public ConfServer() { super(Factions.get()); }
-	
+
 	// -------------------------------------------- //
 	// CORE
 	// -------------------------------------------- //
-	
+
 	public static List<String> baseCommandAliases = MUtil.list("f");
 	public static String dburi = "default";
-	
+
 	// -------------------------------------------- //
 	// AUTO LEAVE
 	// -------------------------------------------- //
@@ -29,11 +29,11 @@ public class ConfServer extends SimpleConfig
 	public static double autoLeaveAfterDaysOfInactivity = 10.0;
 	public static double autoLeaveRoutineRunsEveryXMinutes = 5.0;
 	public static boolean removePlayerDataWhenBanned = true;
-	
+
 	// -------------------------------------------- //
 	// HOMES
 	// -------------------------------------------- //
-	
+
 	public static boolean homesEnabled = true;
 	public static boolean homesMustBeInClaimedTerritory = true;
 	public static boolean homesTeleportCommandEnabled = true;
@@ -41,14 +41,14 @@ public class ConfServer extends SimpleConfig
 	public static boolean homesTeleportAllowedFromDifferentWorld = true;
 	public static double homesTeleportAllowedEnemyDistance = 32.0;
 	public static boolean homesTeleportIgnoreEnemiesIfInOwnTerritory = true;
-	
+
 	public static boolean disablePVPForFactionlessPlayers = false;
 	public static boolean enablePVPAgainstFactionlessInAttackersLand = false;
 
 	//public static boolean peacefulMembersDisablePowerLoss = true;
-	
+
 	public static boolean permanentFactionsDisableLeaderPromotion = false;
-	
+
 	public static boolean claimsMustBeConnected = false;
 	public static boolean claimingFromOthersAllowed = true;
 	public static boolean claimsCanBeUnconnectedIfOwnedByOtherFaction = true;
@@ -59,48 +59,49 @@ public class ConfServer extends SimpleConfig
 	public static int radiusClaimFailureLimit = 9;
 
 	//public static double considerFactionsReallyOfflineAfterXMinutes = 0.0;
-	
+
 	public static int actionDeniedPainAmount = 2;
 
 	// commands which will be prevented if the player is a member of a permanent faction
 	public static Set<String> permanentFactionMemberDenyCommands = new LinkedHashSet<String>();
 
 	// commands which will be prevented when in claimed territory of another faction
+	public static Set<String> territoryAllyDenyCommands = new LinkedHashSet<String>();
 	public static Set<String> territoryNeutralDenyCommands = new LinkedHashSet<String>();
 	public static Set<String> territoryEnemyDenyCommands = MUtil.set("home", "sethome", "spawn", "tpahere", "tpaccept", "tpa", "warp");
-	
+
 	public static double territoryShieldFactor = 0.3;
 
 	// for claimed areas where further faction-member ownership can be defined
 
-	public static boolean pistonProtectionThroughDenyBuild = true;	
+	public static boolean pistonProtectionThroughDenyBuild = true;
 
 	// -------------------------------------------- //
 	// INTEGRATION: WORLD GUARD
 	// -------------------------------------------- //
-	
+
 	public static boolean worldGuardChecking = false;
 
 	// -------------------------------------------- //
 	// INTEGRATION: LWC
 	// -------------------------------------------- //
-	
+
 	public static boolean onUnclaimResetLwcLocks = false;
 	public static boolean onCaptureResetLwcLocks = false;
-	
+
 	// -------------------------------------------- //
 	// INTEGRATION: ECONOMY
 	// -------------------------------------------- //
-	
+
 	public static boolean econEnabled = false;
 	public static String econUniverseAccount = "";
-	
+
 	public static double econCostClaimWilderness = 30.0;
 	public static double econCostClaimFromFactionBonus = 30.0;
 	public static double econClaimAdditionalMultiplier = 0.5;
 	public static double econClaimRefundMultiplier = 0.7;
 	public static double econClaimUnconnectedFee = 0.0;
-	
+
 	public static double econCostCreate = 100.0;
 	public static double econCostSethome = 30.0;
 	public static double econCostJoin = 0.0;
@@ -120,12 +121,10 @@ public class ConfServer extends SimpleConfig
 
 	public static int econLandRewardTaskRunsEveryXMinutes = 20;
 	public static double econLandReward = 0.00;
-	
+
 	//Faction banks, to pay for land claiming and other costs instead of individuals paying for them
 	public static boolean bankEnabled = true;
 	//public static boolean bankMembersCanWithdraw = false; //Have to be at least moderator to withdraw or pay money to another faction
 	public static boolean bankFactionPaysCosts = true; //The faction pays for faction command costs, such as sethome
 	public static boolean bankFactionPaysLandCosts = true; //The faction pays for land claiming costs.
-	
 }
-

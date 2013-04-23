@@ -14,14 +14,14 @@ public class FPermAdapter implements JsonDeserializer<FPerm>
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
-	
+
 	private static FPermAdapter i = new FPermAdapter();
 	public static FPermAdapter get() { return i; }
-	
+
 	// -------------------------------------------- //
 	// OVERRIDE
 	// -------------------------------------------- //
-	
+
 	@Override
 	public FPerm deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException
 	{

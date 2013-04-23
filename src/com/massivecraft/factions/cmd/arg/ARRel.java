@@ -15,14 +15,14 @@ public class ARRel extends ARAbstractSelect<Rel>
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
-	
+
 	private static ARRel i = new ARRel();
 	public static ARRel get() { return i; }
-	
+
 	// -------------------------------------------- //
 	// OVERRIDE
 	// -------------------------------------------- //
-	
+
 	@Override
 	public String typename()
 	{
@@ -38,14 +38,14 @@ public class ARRel extends ARAbstractSelect<Rel>
 	@Override
 	public Collection<String> altNames(CommandSender sender)
 	{
-		List<String> ret = new ArrayList<String>(); 
-		
+		List<String> ret = new ArrayList<String>();
+
 		for (Rel rel : Rel.values())
 		{
 			ret.add(Txt.getNicedEnum(rel));
 		}
-		
+
 		return ret;
 	}
-	
+
 }

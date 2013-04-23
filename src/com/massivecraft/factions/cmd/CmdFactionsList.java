@@ -11,16 +11,15 @@ import com.massivecraft.mcore.cmd.arg.ARInteger;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 import com.massivecraft.mcore.util.Txt;
 
-
 public class CmdFactionsList extends FCommand
 {
-	
+
 	public CmdFactionsList()
 	{
 		this.addAliases("ls", "list");
-		
+
 		this.addOptionalArg("page", "1");
-		
+
 		this.addRequirements(ReqHasPerm.get(Perm.LIST.node));
 	}
 
@@ -29,14 +28,14 @@ public class CmdFactionsList extends FCommand
 	{
 		Integer pageHumanBased = this.arg(0, ARInteger.get(), 1);
 		if (pageHumanBased == null) return;
-		
+
 		// Create Messages
 		List<String> lines = new ArrayList<String>();
-		
+
 		ArrayList<Faction> factionList = new ArrayList<Faction>(FactionColls.get().get(sender).getAll(null, FactionListComparator.get()));
 
 		final int pageheight = 9;
-		
+
 		int pagecount = (factionList.size() / pageheight) + 1;
 		if (pageHumanBased > pagecount)
 			pageHumanBased = pagecount;

@@ -6,11 +6,11 @@ import org.bukkit.event.HandlerList;
 import com.massivecraft.factions.entity.Faction;
 
 public class FactionsEventLandUnclaimAll extends FactionsEventAbstractSender
-{	
+{
 	// -------------------------------------------- //
 	// REQUIRED EVENT CODE
 	// -------------------------------------------- //
-	
+
 	private static final HandlerList handlers = new HandlerList();
 	@Override public HandlerList getHandlers() { return handlers; }
 	public static HandlerList getHandlerList() { return handlers; }
@@ -21,7 +21,7 @@ public class FactionsEventLandUnclaimAll extends FactionsEventAbstractSender
 
 	private final Faction faction;
 	public Faction getFaction() { return this.faction; }
-	
+
 	// -------------------------------------------- //
 	// CONSTRUCT
 	// -------------------------------------------- //
@@ -31,5 +31,5 @@ public class FactionsEventLandUnclaimAll extends FactionsEventAbstractSender
 		super(sender);
 		this.faction = faction;
 	}
-	
+
 }

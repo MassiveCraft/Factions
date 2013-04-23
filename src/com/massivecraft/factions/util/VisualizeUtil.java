@@ -13,7 +13,7 @@ import org.bukkit.entity.Player;
 
 // TODO: Only send blocks in visual range
 // TODO: Only send blocks that where changed when clearing?
-// TODO: Create packed queue to avoid freezes. 
+// TODO: Create packed queue to avoid freezes.
 
 public class VisualizeUtil
 {
@@ -32,27 +32,27 @@ public class VisualizeUtil
 		}
 		return ret;
 	}
-	
+
 	// -------------------------------------------- //
 	// SINGLE
 	// -------------------------------------------- //
-	
+
 	public static void addLocation(Player player, Location location, int typeId, byte data)
 	{
 		getPlayerLocations(player).add(location);
 		player.sendBlockChange(location, typeId, data);
 	}
-	
+
 	public static void addLocation(Player player, Location location, int typeId)
 	{
 		getPlayerLocations(player).add(location);
 		player.sendBlockChange(location, typeId, (byte) 0);
 	}
-	
+
 	// -------------------------------------------- //
 	// MANY
 	// -------------------------------------------- //
-	
+
 	public static void addLocations(Player player, Map<Location, Integer> locationMaterialIds)
 	{
 		Set<Location> ploc = getPlayerLocations(player);
@@ -62,7 +62,7 @@ public class VisualizeUtil
 			player.sendBlockChange(entry.getKey(), entry.getValue(), (byte) 0);
 		}
 	}
-	
+
 	public static void addLocations(Player player, Collection<Location> locations, int typeId)
 	{
 		Set<Location> ploc = getPlayerLocations(player);
@@ -72,7 +72,7 @@ public class VisualizeUtil
 			player.sendBlockChange(location, typeId, (byte) 0);
 		}
 	}
-	
+
 	public static void addBlocks(Player player, Collection<Block> blocks, int typeId)
 	{
 		Set<Location> ploc = getPlayerLocations(player);
@@ -83,11 +83,11 @@ public class VisualizeUtil
 			player.sendBlockChange(location, typeId, (byte) 0);
 		}
 	}
-	
+
 	// -------------------------------------------- //
 	// CLEAR
 	// -------------------------------------------- //
-	
+
 	public static void clear(Player player)
 	{
 		Set<Location> locations = getPlayerLocations(player);
@@ -99,5 +99,5 @@ public class VisualizeUtil
 		}
 		locations.clear();
 	}
-	
+
 }

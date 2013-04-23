@@ -8,11 +8,11 @@ public class ChatTagRelcolor extends ChatTagAbstract
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
-	
+
 	private ChatTagRelcolor() { super("factions_relcolor"); }
 	private static ChatTagRelcolor i = new ChatTagRelcolor();
 	public static ChatTagRelcolor get() { return i; }
-	
+
 	// -------------------------------------------- //
 	// OVERRIDE
 	// -------------------------------------------- //
@@ -22,7 +22,7 @@ public class ChatTagRelcolor extends ChatTagAbstract
 	{
 		if (fsender == null) return "";
 		if (frecipient == null) return "";
-		
+
 		return frecipient.getRelationTo(fsender).getColor().toString();
 	}
 

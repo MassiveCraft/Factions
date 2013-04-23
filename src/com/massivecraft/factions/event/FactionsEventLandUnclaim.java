@@ -11,7 +11,7 @@ public class FactionsEventLandUnclaim extends FactionsEventAbstractSender
 	// -------------------------------------------- //
 	// REQUIRED EVENT CODE
 	// -------------------------------------------- //
-	
+
 	private static final HandlerList handlers = new HandlerList();
 	@Override public HandlerList getHandlers() { return handlers; }
 	public static HandlerList getHandlerList() { return handlers; }
@@ -19,22 +19,22 @@ public class FactionsEventLandUnclaim extends FactionsEventAbstractSender
 	// -------------------------------------------- //
 	// FIELDS
 	// -------------------------------------------- //
-	
+
 	private final Faction faction;
 	public Faction getFaction() { return this.faction; }
-	
+
 	private final PS chunk;
 	public PS getChunk() { return this.chunk; }
-	
+
 	// -------------------------------------------- //
 	// CONSTRUCT
 	// -------------------------------------------- //
-	
+
 	public FactionsEventLandUnclaim(CommandSender sender, Faction faction, PS chunk)
 	{
 		super(sender);
 		this.chunk = chunk.getChunk(true);
 		this.faction = faction;
 	}
-	
+
 }

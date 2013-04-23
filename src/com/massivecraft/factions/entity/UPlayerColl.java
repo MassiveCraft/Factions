@@ -13,12 +13,12 @@ public class UPlayerColl extends SenderColl<UPlayer>
 	// -------------------------------------------- //
 	// CONSTRUCT
 	// -------------------------------------------- //
-	
+
 	public UPlayerColl(String name)
 	{
 		super(name, UPlayer.class, MStore.getDb(ConfServer.dburi), Factions.get());
 	}
-	
+
 	// -------------------------------------------- //
 	// OVERRIDE: COLL
 	// -------------------------------------------- //
@@ -27,63 +27,63 @@ public class UPlayerColl extends SenderColl<UPlayer>
 	protected synchronized String attach(UPlayer entity, Object oid, boolean noteChange)
 	{
 		String ret = super.attach(entity, oid, noteChange);
-		
+
 		// If inited ...
 		if (!this.inited()) return ret;
 		if (!Factions.get().isDatabaseInitialized()) return ret;
-		
+
 		// ... update the index.
 		Faction faction = entity.getFaction();
 		faction.uplayers.add(entity);
-		
+
 		return ret;
 	}
-	
+
 	@Override
 	public UPlayer detachId(Object oid)
 	{
 		UPlayer ret = super.detachId(oid);
 		if (ret == null) return null;
-		
+
 		// If inited ...
 		if (!this.inited()) return ret;
-		
+
 		// ... update the index.
 		Faction faction = ret.getFaction();
 		faction.uplayers.remove(ret);
-		
+
 		return ret;
 	}
-	
+
 	// -------------------------------------------- //
 	// EXTRAS
 	// -------------------------------------------- //
-	
+
 	public void clean()
 	{
 		for (UPlayer uplayer : this.getAll())
 		{
 			if (FactionColls.get().get(this).containsId(uplayer.getFactionId())) continue;
-			
+
 			Factions.get().log("Reset faction data (invalid faction) for player "+uplayer.getName());
 		}
 	}
-	
+
 	public void autoLeaveOnInactivityRoutine()
 	{
 		if (ConfServer.autoLeaveAfterDaysOfInactivity <= 0.0) return;
-		
+
 		long now = System.currentTimeMillis();
 		double toleranceMillis = ConfServer.autoLeaveAfterDaysOfInactivity * TimeUnit.MILLIS_PER_DAY;
-		
+
 		for (UPlayer uplayer : this.getAll())
 		{
 			Long lastPlayed = Mixin.getLastPlayed(uplayer.getId());
 			if (lastPlayed == null) continue;
-			
+
 			if (uplayer.isOnline()) continue;
 			if (now - lastPlayed <= toleranceMillis) continue;
-			
+
 			if (MConf.get().logFactionLeave || MConf.get().logFactionKick)
 			{
 				Factions.get().log("Player "+uplayer.getName()+" was auto-removed due to inactivity.");

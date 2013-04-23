@@ -10,7 +10,7 @@ public class FactionsEventPowerChange extends FactionsEventAbstractSender
 	// -------------------------------------------- //
 	// REQUIRED EVENT CODE
 	// -------------------------------------------- //
-	
+
 	private static final HandlerList handlers = new HandlerList();
 	@Override public HandlerList getHandlers() { return handlers; }
 	public static HandlerList getHandlerList() { return handlers; }
@@ -18,21 +18,21 @@ public class FactionsEventPowerChange extends FactionsEventAbstractSender
 	// -------------------------------------------- //
 	// FIELDS
 	// -------------------------------------------- //
-	
+
 	private final UPlayer uplayer;
 	public UPlayer getUPlayer() { return this.uplayer; }
-	
+
 	private final PowerChangeReason reason;
 	public PowerChangeReason getReason() { return this.reason; }
-	
+
 	private double newPower;
 	public double getNewPower() { return this.newPower; }
 	public void setNewPower(double newPower) { this.newPower = newPower; }
-	
+
 	// -------------------------------------------- //
 	// CONSTRUCT
 	// -------------------------------------------- //
-	
+
 	public FactionsEventPowerChange(CommandSender sender, UPlayer uplayer, PowerChangeReason reason, double newPower)
 	{
 		super(sender);
@@ -40,11 +40,11 @@ public class FactionsEventPowerChange extends FactionsEventAbstractSender
 		this.reason = reason;
 		this.newPower = newPower;
 	}
-	
+
 	// -------------------------------------------- //
 	// REASON ENUM
 	// -------------------------------------------- //
-	
+
 	public enum PowerChangeReason
 	{
 		TIME,

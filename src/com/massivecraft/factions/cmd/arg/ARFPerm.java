@@ -15,14 +15,14 @@ public class ARFPerm extends ARAbstractSelect<FPerm>
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
-	
+
 	private static ARFPerm i = new ARFPerm();
 	public static ARFPerm get() { return i; }
-	
+
 	// -------------------------------------------- //
 	// OVERRIDE
 	// -------------------------------------------- //
-	
+
 	@Override
 	public String typename()
 	{
@@ -38,14 +38,14 @@ public class ARFPerm extends ARAbstractSelect<FPerm>
 	@Override
 	public Collection<String> altNames(CommandSender sender)
 	{
-		List<String> ret = new ArrayList<String>(); 
-		
+		List<String> ret = new ArrayList<String>();
+
 		for (FPerm fperm : FPerm.values())
 		{
 			ret.add(Txt.getNicedEnum(fperm));
 		}
-		
+
 		return ret;
 	}
-	
+
 }
