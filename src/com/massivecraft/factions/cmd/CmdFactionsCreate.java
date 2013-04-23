@@ -34,7 +34,7 @@ public class CmdFactionsCreate extends FCommand
 		String newTag = this.arg(0);
 		
 		// Verify
-		if (fme.hasFaction())
+		if (fme.getFaction().isNormal())
 		{
 			msg("<b>You must leave your current faction first.");
 			return;

@@ -80,7 +80,7 @@ public enum FPerm
 	
 	public Set<Rel> getDefault(Object o)
 	{
-		Set<Rel> ret = UConf.get(o).factionPermDefaults.get(this);
+		Set<Rel> ret = UConf.get(o).defaultFactionPerms.get(this);
 		if (ret == null) return this.getDefaultDefault();
 		ret = new LinkedHashSet<Rel>(ret);
 		return ret;

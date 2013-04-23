@@ -33,6 +33,7 @@ public class CmdFactionsJoin extends FCommand
 
 		UPlayer uplayer = this.arg(1, ARUPlayer.getStartAny(sender), fme);
 		if (uplayer == null) return;
+		Faction uplayerFaction = uplayer.getFaction();
 		
 		boolean samePlayer = uplayer == fme;
 		
@@ -43,7 +44,7 @@ public class CmdFactionsJoin extends FCommand
 			return;
 		}
 
-		if (faction == uplayer.getFaction())
+		if (faction == uplayerFaction)
 		{
 			msg("<b>%s %s already a member of %s", uplayer.describeTo(fme, true), (samePlayer ? "are" : "is"), faction.getTag(fme));
 			return;
@@ -55,7 +56,7 @@ public class CmdFactionsJoin extends FCommand
 			return;
 		}
 
-		if (uplayer.hasFaction())
+		if (uplayerFaction.isNormal())
 		{
 			msg("<b>%s must leave %s current faction first.", uplayer.describeTo(fme, true), (samePlayer ? "your" : "their"));
 			return;

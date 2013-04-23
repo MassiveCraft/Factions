@@ -269,24 +269,25 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 		this.changed();
 	}
 	
-	public boolean hasPowerBoost()
-	{
-		return this.getPowerBoost() != 0D;
-	}
-	
 	// -------------------------------------------- //
 	// FIELD: open
 	// -------------------------------------------- //
 	
+	public boolean isDefaultOpen()
+	{
+		return UConf.get(this).defaultFactionOpen;
+	}
+	
 	public boolean isOpen()
 	{
 		Boolean ret = this.open;
-		if (ret == null) ret = UConf.get(this).newFactionsDefaultOpen;
+		if (ret == null) ret = this.isDefaultOpen();
 		return ret;
 	}
 	
 	public void setOpen(Boolean open)
 	{
+		if (open == null || MUtil.equals(open, this.isDefaultOpen())) open = null;
 		this.open = open;
 		this.changed();
 	}
@@ -664,7 +665,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	public double getPowerMax()
 	{
 		if (this.getFlag(FFlag.INFPOWER)) return 999999;
-		return UConf.get(this).powerFactionMax + this.getPowerBoost();
+		return UConf.get(this).factionPowerMax + this.getPowerBoost();
 	}
 	
 	public int getPowerRounded()

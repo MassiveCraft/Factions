@@ -27,31 +27,29 @@ public class UConf extends Entity<UConf>
 	// CORE
 	// -------------------------------------------- //
 	
-	public Map<FFlag, Boolean> factionFlagDefaults = FFlag.getDefaultDefaults();
-	public Map<FPerm, Set<Rel>> factionPermDefaults = FPerm.getDefaultDefaults();
-	
-	public String playerDefaultFactionId = Const.FACTIONID_NONE;
-	public Rel playerDefaultRole = Rel.RECRUIT;
-	
 	public boolean canLeaveWithNegativePower = true;
+	
+	public int factionMemberLimit = 0;
+	public double factionPowerMax = 1000.0;
 	
 	public int factionTagLengthMin = 3;
 	public int factionTagLengthMax = 10;
 	public boolean factionTagForceUpperCase = false;
 	
-	public boolean newFactionsDefaultOpen = false;
-
-	public int factionMemberLimit = 0;
-	
 	// -------------------------------------------- //
-	// POWER
+	// DEFAULTS
 	// -------------------------------------------- //
 	
-	// TODO: Group default values together?
+	// TODO: should I add a nofaction id here?
+	// And perhaps for safezone and warzone as well.
 	
-	public double powerPlayerDefault = 0.0;
+	public String defaultPlayerFactionId = Const.FACTIONID_NONE;
+	public double defaultPlayerPower = 0.0;
+	public Rel defaultPlayerRole = Rel.RECRUIT;
 	
-	public double powerFactionMax = 1000.0;
+	public boolean defaultFactionOpen = false;
+	public Map<FFlag, Boolean> defaultFactionFlags = FFlag.getDefaultDefaults();
+	public Map<FPerm, Set<Rel>> defaultFactionPerms = FPerm.getDefaultDefaults();
 	
 	// -------------------------------------------- //
 	// DENY COMMANDS

@@ -26,6 +26,7 @@ import com.massivecraft.mcore.mixin.Mixin;
 import com.massivecraft.mcore.money.Money;
 import com.massivecraft.mcore.ps.PS;
 import com.massivecraft.mcore.store.SenderEntity;
+import com.massivecraft.mcore.util.MUtil;
 import com.massivecraft.mcore.util.Txt;
 
 
@@ -58,13 +59,10 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 	@Override
 	public boolean isDefault()
 	{
-		// TODO: What if I incorporated the "default" word into the system?
-		// Rename?: hasFaction --> isFactionDefault
-		
 		if (this.hasFaction()) return false;
 		// Role means nothing without a faction.
 		// Title means nothing without a faction.
-		if (this.getPowerRounded() != (int) Math.round(UConf.get(this).powerPlayerDefault)) return false;
+		if (this.getPowerRounded() != (int) Math.round(UConf.get(this).defaultPlayerPower)) return false;
 		
 		return true;
 	}
@@ -174,10 +172,15 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 	// FIELD: factionId
 	// -------------------------------------------- //
 	
+	public String getDefaultFactionId()
+	{
+		return UConf.get(this).defaultPlayerFactionId;
+	}
+	
 	// This method never returns null
 	public String getFactionId()
 	{
-		if (this.factionId == null) return UConf.get(this).playerDefaultFactionId;
+		if (this.factionId == null) return this.getDefaultFactionId();
 		return this.factionId;
 	}
 	
@@ -185,7 +188,7 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 	public Faction getFaction()
 	{
 		Faction ret = FactionColls.get().get(this).get(this.getFactionId());
-		if (ret == null) ret = FactionColls.get().get(this).get(UConf.get(this).playerDefaultFactionId);
+		if (ret == null) ret = FactionColls.get().get(this).get(UConf.get(this).defaultPlayerFactionId);
 		return ret;
 	}
 	
@@ -198,7 +201,7 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 	public void setFactionId(String factionId)
 	{
 		// Avoid null input
-		if (factionId == null) factionId = Const.FACTIONID_NONE;
+		if (factionId == null) factionId = this.getDefaultFactionId();
 		
 		// Get the old value
 		String oldFactionId = this.getFactionId();
@@ -207,14 +210,8 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 		if (factionId.equals(oldFactionId)) return;
 		
 		// Apply change
-		if (factionId.equals(Const.FACTIONID_NONE))
-		{
-			this.factionId = null;
-		}
-		else
-		{
-			this.factionId = factionId;
-		}
+		if (factionId.equals(this.getDefaultFactionId())) factionId = null;
+		this.factionId = factionId;
 		
 		// Next we must be attached and inited
 		if (!this.attached()) return;
@@ -241,22 +238,21 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 	// FIELD: role
 	// -------------------------------------------- //
 	
+	public Rel getDefaultRole()
+	{
+		return UConf.get(this).defaultPlayerRole;
+	}
+	
 	public Rel getRole()
 	{
-		if (this.role == null) return UConf.get(this).playerDefaultRole;
+		if (this.role == null) return this.getDefaultRole();
 		return this.role;
 	}
 	
 	public void setRole(Rel role)
 	{
-		if (role == null || role == UConf.get(this).playerDefaultRole)
-		{
-			this.role = null;
-		}
-		else
-		{
-			this.role = role;
-		}
+		if (role == null || MUtil.equals(role, this.getDefaultRole())) role = null;
+		this.role = role;
 		this.changed();
 	}
 	
@@ -295,23 +291,22 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 	
 	// RAW
 	
+	public double getDefaultPower()
+	{
+		return UConf.get(this).defaultPlayerPower;
+	}
+	
 	public double getPower()
 	{
 		Double ret = this.power;
-		if (ret == null) ret = UConf.get(this).powerPlayerDefault;
+		if (ret == null) ret = this.getDefaultPower();
 		return ret;
 	}
 	
 	public void setPower(Double power)
 	{
-		if (power == null || power == UConf.get(this).powerPlayerDefault)
-		{
-			this.power = null;
-		}
-		else
-		{
-			this.power = power;
-		}
+		if (power == null || MUtil.equals(power, this.getDefaultPower())) power = null;
+		this.power = power;
 		this.changed();
 	}
 	
@@ -333,11 +328,9 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 	
 	public String getTag()
 	{
-		if ( ! this.hasFaction())
-		{
-			return "";
-		}
-		return this.getFaction().getTag();
+		Faction faction = this.getFaction();
+		if (faction.isNone()) return "";
+		return faction.getTag();
 	}
 	
 	// Base concatenations:

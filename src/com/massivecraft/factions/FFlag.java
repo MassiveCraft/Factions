@@ -68,7 +68,7 @@ public enum FFlag
 	
 	public boolean getDefault(Object o)
 	{
-		Boolean ret = UConf.get(o).factionFlagDefaults.get(this);
+		Boolean ret = UConf.get(o).defaultFactionFlags.get(this);
 		if (ret == null) return this.getDefaultDefault();
 		return ret; 
 	}
