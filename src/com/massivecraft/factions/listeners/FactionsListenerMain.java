@@ -366,6 +366,7 @@ public class FactionsListenerMain implements Listener
 		if (BoardColls.get().getFactionAt(ps).isNone()) return;
 		
 		List<String> deniedCommands = UConf.get(player).denyCommandsTerritoryRelation.get(rel);
+		if (deniedCommands == null) return;
 		if (!containsCommand(command, deniedCommands)) return;
 		
 		uplayer.msg("<b>You can't use \"<h>/%s<b>\" in %s territory.", Txt.getNicedEnum(rel), command);

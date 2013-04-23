@@ -11,6 +11,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.event.EventPriority;
 import org.bukkit.permissions.PermissionDefault;
 
+import com.massivecraft.factions.listeners.FactionsListenerChat;
 import com.massivecraft.mcore.store.Entity;
 import com.massivecraft.mcore.util.MUtil;
 import com.massivecraft.mcore.util.PermUtil;
@@ -35,6 +36,7 @@ public class MConf extends Entity<MConf>
 		super.load(that);
 		
 		this.upsertPowerPerms();
+		FactionsListenerChat.get().setup();
 		
 		return this;
 	}
