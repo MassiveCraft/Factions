@@ -18,11 +18,11 @@ public class CmdFactionsUnclaim extends FCommand
 	public CmdFactionsUnclaim()
 	{
 		this.addAliases("unclaim", "declaim");
-		
+
 		this.addRequirements(ReqHasPerm.get(Perm.UNCLAIM.node));
 		this.addRequirements(ReqIsPlayer.get());
 	}
-	
+
 	@Override
 	public void perform()
 	{
@@ -37,12 +37,12 @@ public class CmdFactionsUnclaim extends FCommand
 		FactionsEventLandUnclaim event = new FactionsEventLandUnclaim(sender, otherFaction, chunk);
 		event.run();
 		if (event.isCancelled()) return;
-	
+
 		//String moneyBack = "<i>";
 		if (Econ.isEnabled(myFaction))
 		{
 			double refund = Econ.calculateClaimRefund(myFaction);
-			
+
 			if (ConfServer.bankEnabled && ConfServer.bankFactionPaysLandCosts)
 			{
 				if ( ! Econ.modifyMoney(myFaction, refund, "unclaim this land")) return;
@@ -61,5 +61,5 @@ public class CmdFactionsUnclaim extends FCommand
 			Factions.get().log(fme.getName()+" unclaimed land at ("+chunk.getChunkX()+","+chunk.getChunkZ()+") from the faction: "+otherFaction.getTag());
 		}
 	}
-	
+
 }

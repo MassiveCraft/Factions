@@ -10,20 +10,20 @@ public class CmdFactionsAdmin extends FCommand
 	public CmdFactionsAdmin()
 	{
 		this.addAliases("admin");
-		
+
 		this.addOptionalArg("on/off", "flip");
-		
+
 		this.addRequirements(ReqHasPerm.get(Perm.ADMIN.node));
 	}
-	
+
 	@Override
 	public void perform()
 	{
 		Boolean target = this.arg(0, ARBoolean.get(), !fme.isUsingAdminMode());
 		if (target == null) return;
-		
-		fme.setUsingAdminMode(target);		
-		
+
+		fme.setUsingAdminMode(target);
+
 		if ( fme.isUsingAdminMode())
 		{
 			fme.msg("<i>You have enabled admin bypass mode.");

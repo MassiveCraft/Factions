@@ -12,22 +12,22 @@ public class CmdFactionsMoneyBalance extends FCommand
 	public CmdFactionsMoneyBalance()
 	{
 		this.addAliases("b", "balance");
-		
+
 		this.addOptionalArg("faction", "you");
-		
+
 		this.addRequirements(ReqHasPerm.get(Perm.MONEY_BALANCE.node));
 		this.addRequirements(ReqBankCommandsEnabled.get());
 	}
-	
+
 	@Override
 	public void perform()
 	{
 		Faction faction = this.arg(0, ARFaction.get(sender), myFaction);
 		if (faction == null) return;
-			
+
 		if (faction != myFaction && ! Perm.MONEY_BALANCE_ANY.has(sender, true)) return;
-		
+
 		Econ.sendBalanceInfo(fme, faction);
 	}
-	
+
 }

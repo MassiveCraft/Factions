@@ -12,20 +12,20 @@ public class CmdFactionsDescription extends FCommand
 	public CmdFactionsDescription()
 	{
 		this.addAliases("desc");
-		
+
 		this.addRequiredArg("desc");
 		this.setErrorOnToManyArgs(false);
-		
+
 		this.addRequirements(ReqHasPerm.get(Perm.DESCRIPTION.node));
 		this.addRequirements(ReqRoleIsAtLeast.get(Rel.OFFICER));
 	}
-	
+
 	@Override
 	public void perform()
 	{
 		// Args
 		String newDescription = this.argConcatFrom(1);
-		
+
 		// Event
 		FactionsEventDescriptionChange event = new FactionsEventDescriptionChange(sender, myFaction, newDescription);
 		event.run();
@@ -34,9 +34,9 @@ public class CmdFactionsDescription extends FCommand
 
 		// Apply
 		myFaction.setDescription(this.argConcatFrom(1));
-		
+
 		// Inform
 		myFaction.msg("<i>%s <i>set your faction description to:\n%s", Mixin.getDisplayName(sender), myFaction.getDescription());
 	}
-	
+
 }

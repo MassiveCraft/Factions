@@ -17,13 +17,13 @@ public class CmdFactionsJoin extends FCommand
 	public CmdFactionsJoin()
 	{
 		this.addAliases("join");
-		
+
 		this.addRequiredArg("faction");
 		this.addOptionalArg("player", "you");
-		
+
 		this.addRequirements(ReqHasPerm.get(Perm.JOIN.node));
 	}
-	
+
 	@Override
 	public void perform()
 	{
@@ -33,9 +33,9 @@ public class CmdFactionsJoin extends FCommand
 
 		UPlayer uplayer = this.arg(1, ARUPlayer.getStartAny(sender), fme);
 		if (uplayer == null) return;
-		
+
 		boolean samePlayer = uplayer == fme;
-		
+
 		// Validate
 		if (!samePlayer  && ! Perm.JOIN_OTHERS.has(sender, false))
 		{
@@ -81,7 +81,7 @@ public class CmdFactionsJoin extends FCommand
 		FactionsEventMembershipChange membershipChangeEvent = new FactionsEventMembershipChange(sender, fme, faction, MembershipChangeReason.JOIN);
 		membershipChangeEvent.run();
 		if (membershipChangeEvent.isCancelled()) return;
-		
+
 		// Inform
 		if (!samePlayer)
 		{
@@ -89,11 +89,11 @@ public class CmdFactionsJoin extends FCommand
 		}
 		faction.msg("<i>%s joined your faction.", uplayer.describeTo(faction, true));
 		fme.msg("<i>%s successfully joined %s.", uplayer.describeTo(fme, true), faction.getTag(fme));
-		
+
 		// Apply
 		uplayer.resetFactionData();
 		uplayer.setFaction(faction);
-	    
+
 		faction.setInvited(uplayer, false);
 
 		// Derplog

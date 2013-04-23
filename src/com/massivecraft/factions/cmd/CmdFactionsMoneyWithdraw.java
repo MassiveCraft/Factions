@@ -15,31 +15,30 @@ import com.massivecraft.mcore.util.Txt;
 
 import org.bukkit.ChatColor;
 
-
 public class CmdFactionsMoneyWithdraw extends FCommand
 {
 	public CmdFactionsMoneyWithdraw()
 	{
 		this.addAliases("w", "withdraw");
-		
+
 		this.addRequiredArg("amount");
 		this.addOptionalArg("faction", "you");
-		
+
 		this.addRequirements(ReqHasPerm.get(Perm.MONEY_WITHDRAW.node));
 		this.addRequirements(ReqBankCommandsEnabled.get());
 	}
-	
+
 	@Override
 	public void perform()
 	{
 		Double amount = this.arg(0, ARDouble.get());
 		if (amount == null) return;
-		
+
 		Faction from = this.arg(1, ARFaction.get(sender), myFaction);
 		if (from == null) return;
-		
+
 		UPlayer to = fme;
-		
+
 		boolean success = Econ.transferMoney(fme, from, to, amount);
 
 		if (success && MConf.get().logMoneyTransactions)

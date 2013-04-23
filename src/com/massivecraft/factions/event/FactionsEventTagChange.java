@@ -10,18 +10,18 @@ public class FactionsEventTagChange extends FactionsEventAbstractSender
 	// -------------------------------------------- //
 	// REQUIRED EVENT CODE
 	// -------------------------------------------- //
-	
+
 	private static final HandlerList handlers = new HandlerList();
 	@Override public HandlerList getHandlers() { return handlers; }
 	public static HandlerList getHandlerList() { return handlers; }
-	
+
 	// -------------------------------------------- //
 	// FIELDS
 	// -------------------------------------------- //
-	
+
 	private final Faction faction;
 	public Faction getFaction() { return this.faction; }
-	
+
 	private String newTag;
 	public String getNewTag() { return this.newTag; }
 	public void setNewTag(String newTag) { this.newTag = newTag; }
@@ -29,8 +29,8 @@ public class FactionsEventTagChange extends FactionsEventAbstractSender
 	// -------------------------------------------- //
 	// CONSTRUCT
 	// -------------------------------------------- //
-	
-	public FactionsEventTagChange(CommandSender sender, Faction faction, String newTag) 
+
+	public FactionsEventTagChange(CommandSender sender, Faction faction, String newTag)
 	{
 		super(sender);
 		this.faction = faction;

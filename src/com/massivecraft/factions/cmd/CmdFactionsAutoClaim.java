@@ -13,9 +13,9 @@ public class CmdFactionsAutoClaim extends FCommand
 	public CmdFactionsAutoClaim()
 	{
 		this.addAliases("autoclaim");
-		
+
 		this.addOptionalArg("faction", "you");
-		
+
 		this.addRequirements(ReqHasPerm.get(Perm.AUTOCLAIM.node));
 		this.addRequirements(ReqIsPlayer.get());
 	}
@@ -30,13 +30,13 @@ public class CmdFactionsAutoClaim extends FCommand
 			msg("<i>Auto-claiming of land disabled.");
 			return;
 		}
-		
+
 		if ( ! FPerm.TERRITORY.has(fme, forFaction, true)) return;
-		
+
 		fme.setAutoClaimFor(forFaction);
-		
+
 		msg("<i>Now auto-claiming land for <h>%s<i>.", forFaction.describeTo(fme));
 		fme.attemptClaim(forFaction, PS.valueOf(me), true);
 	}
-	
+
 }

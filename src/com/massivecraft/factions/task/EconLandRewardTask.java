@@ -11,26 +11,26 @@ public class EconLandRewardTask extends ModuloRepeatTask
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
-	
+
 	private static EconLandRewardTask i = new EconLandRewardTask();
 	public static EconLandRewardTask get() { return i; }
-	
+
 	// -------------------------------------------- //
 	// OVERRIDE: MODULO REPEAT TASK
 	// -------------------------------------------- //
-	
+
 	@Override
 	public long getDelayMillis()
 	{
 		return (long) (ConfServer.econLandRewardTaskRunsEveryXMinutes * TimeUnit.MILLIS_PER_MINUTE);
 	}
-	
+
 	@Override
 	public void setDelayMillis(long delayMillis)
 	{
 		throw new RuntimeException("operation not supported");
 	}
-	
+
 	@Override
 	public void invoke()
 	{
@@ -39,5 +39,5 @@ public class EconLandRewardTask extends ModuloRepeatTask
 			coll.econLandRewardRoutine();
 		}
 	}
-	
+
 }

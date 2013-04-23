@@ -16,13 +16,13 @@ public class CmdFactionsSethome extends FCommand
 	public CmdFactionsSethome()
 	{
 		this.addAliases("sethome");
-		
+
 		this.addOptionalArg("faction", "you");
-		
+
 		this.addRequirements(ReqIsPlayer.get());
 		this.addRequirements(ReqHasPerm.get(Perm.SETHOME.node));
 	}
-	
+
 	@Override
 	public void perform()
 	{
@@ -32,23 +32,23 @@ public class CmdFactionsSethome extends FCommand
 			fme.msg("<b>Sorry, Faction homes are disabled on this server.");
 			return;
 		}
-		
+
 		// Args
 		Faction faction = this.arg(0, ARFaction.get(myFaction), myFaction);
 		if (faction == null) return;
-		
+
 		PS newHome = PS.valueOf(me.getLocation());
-		
+
 		// FPerm
 		if ( ! FPerm.SETHOME.has(sender, faction, true)) return;
-		
+
 		// Verify
 		if (!fme.isUsingAdminMode() && !faction.isValidHome(newHome))
 		{
 			fme.msg("<b>Sorry, your faction home can only be set inside your own claimed territory.");
 			return;
 		}
-		
+
 		// Event
 		FactionsEventHomeChange event = new FactionsEventHomeChange(sender, faction, newHome);
 		event.run();
@@ -57,7 +57,7 @@ public class CmdFactionsSethome extends FCommand
 
 		// Apply
 		faction.setHome(newHome);
-		
+
 		// Inform
 		faction.msg("%s<i> set the home for your faction. You can now use:", fme.describeTo(myFaction, true));
 		faction.sendMessage(Factions.get().getOuterCmdFactions().cmdFactionsHome.getUseageTemplate());
@@ -66,5 +66,5 @@ public class CmdFactionsSethome extends FCommand
 			fme.msg("<b>You have set the home for the "+faction.getTag(fme)+"<i> faction.");
 		}
 	}
-	
+
 }

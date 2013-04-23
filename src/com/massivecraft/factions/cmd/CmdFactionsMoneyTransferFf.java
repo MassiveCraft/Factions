@@ -14,33 +14,32 @@ import com.massivecraft.mcore.util.Txt;
 
 import org.bukkit.ChatColor;
 
-
 public class CmdFactionsMoneyTransferFf extends FCommand
 {
 	public CmdFactionsMoneyTransferFf()
 	{
 		this.addAliases("ff");
-		
+
 		this.addRequiredArg("amount");
 		this.addRequiredArg("faction");
 		this.addRequiredArg("faction");
-		
+
 		this.addRequirements(ReqHasPerm.get(Perm.MONEY_F2F.node));
 		this.addRequirements(ReqBankCommandsEnabled.get());
 	}
-	
+
 	@Override
 	public void perform()
 	{
 		Double amount = this.arg(0, ARDouble.get());
 		if (amount == null) return;
-		
+
 		Faction from = this.arg(1, ARFaction.get(sender));
 		if (from == null) return;
-		
+
 		Faction to = this.arg(2, ARFaction.get(sender));
 		if (to == null) return;
-		
+
 		boolean success = Econ.transferMoney(fme, from, to, amount);
 
 		if (success && MConf.get().logMoneyTransactions)

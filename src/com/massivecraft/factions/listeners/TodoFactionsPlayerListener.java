@@ -35,13 +35,13 @@ public class TodoFactionsPlayerListener implements Listener
 		// If a player is joining the server ...
 		Player player = event.getPlayer();
 		UPlayer uplayer = UPlayer.get(player);
-		
+
 		// ... recalculate their power as if they were offline since last recalculation.
 		uplayer.recalculatePower(false);
 		// TODO: What about the other universes?
 		// TODO: Track world --> world travel as logging on and off.
 	}
-	
+
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerLeave(MCorePlayerLeaveEvent event)
 	{
@@ -53,23 +53,23 @@ public class TodoFactionsPlayerListener implements Listener
 		// TODO: When I setup universes I must do this for all universe instance of the player that logs off!
 		uplayer.recalculatePower(true);
 	}
-	
+
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onPlayerMove(PlayerMoveEvent event)
 	{
 		// If the player is moving from one chunk to another ...
 		if (MUtil.isSameChunk(event)) return;
-		
+
 		// ... gather info on the player and the move ...
 		Player player = event.getPlayer();
 		UPlayer uplayerTo = UPlayerColls.get().get(event.getTo()).get(player);
-		
+
 		PS chunkFrom = PS.valueOf(event.getFrom()).getChunk(true);
 		PS chunkTo = PS.valueOf(event.getTo()).getChunk(true);
-		
+
 		Faction factionFrom = BoardColls.get().getFactionAt(chunkFrom);
 		Faction factionTo = BoardColls.get().getFactionAt(chunkTo);
-		
+
 		// ... send host faction info updates ...
 		if (uplayerTo.isMapAutoUpdating())
 		{
@@ -132,20 +132,20 @@ public class TodoFactionsPlayerListener implements Listener
 	}
 
 	// TODO: Refactor ! justCheck    -> to informIfNot
-	// TODO: Possibly incorporate pain build... 
+	// TODO: Possibly incorporate pain build...
 	public static boolean playerCanUseItemHere(Player player, PS ps, Material material, boolean justCheck)
 	{
 		if (!Const.MATERIALS_EDIT_TOOLS.contains(material)) return true;
-		
+
 		String name = player.getName();
 		if (MConf.get().playersWhoBypassAllProtection.contains(name)) return true;
 
 		UPlayer uplayer = UPlayer.get(player);
 		if (uplayer.isUsingAdminMode()) return true;
-		
+
 		return FPerm.BUILD.has(uplayer, ps, !justCheck);
 	}
-	
+
 	public static boolean canPlayerUseBlock(Player player, Block block, boolean justCheck)
 	{
 		String name = player.getName();
@@ -153,10 +153,10 @@ public class TodoFactionsPlayerListener implements Listener
 
 		UPlayer me = UPlayer.get(player);
 		if (me.isUsingAdminMode()) return true;
-		
+
 		PS ps = PS.valueOf(block);
 		Material material = block.getType();
-		
+
 		if (Const.MATERIALS_EDIT_ON_INTERACT.contains(material) && ! FPerm.BUILD.has(me, ps, ! justCheck)) return false;
 		if (Const.MATERIALS_CONTAINER.contains(material) && ! FPerm.CONTAINER.has(me, ps, ! justCheck)) return false;
 		if (Const.MATERIALS_DOOR.contains(material) && ! FPerm.DOOR.has(me, ps, ! justCheck)) return false;
@@ -172,12 +172,12 @@ public class TodoFactionsPlayerListener implements Listener
 	{
 		Block block = event.getBlockClicked();
 		Player player = event.getPlayer();
-		
+
 		if (playerCanUseItemHere(player, PS.valueOf(block), event.getBucket(), false)) return;
-		
+
 		event.setCancelled(true);
 	}
-	
+
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onPlayerBucketFill(PlayerBucketFillEvent event)
 	{
@@ -185,9 +185,9 @@ public class TodoFactionsPlayerListener implements Listener
 		Player player = event.getPlayer();
 
 		if (playerCanUseItemHere(player, PS.valueOf(block), event.getBucket(), false)) return;
-		
+
 		event.setCancelled(true);
 	}
-	
-	
+
+
 }

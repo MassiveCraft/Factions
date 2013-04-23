@@ -9,16 +9,15 @@ import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 
 public class CmdFactionsOfficer extends FCommand
 {
-	
 	public CmdFactionsOfficer()
 	{
 		this.addAliases("officer");
-		
+
 		this.addRequiredArg("player");
-		
+
 		this.addRequirements(ReqHasPerm.get(Perm.OFFICER.node));
 	}
-	
+
 	@Override
 	public void perform()
 	{
@@ -33,7 +32,7 @@ public class CmdFactionsOfficer extends FCommand
 			msg("%s<b> is not a member in your faction.", you.describeTo(fme, true));
 			return;
 		}
-		
+
 		if (fme != null && fme.getRole() != Rel.LEADER && !permAny)
 		{
 			msg("<b>You are not the faction leader.");
@@ -67,5 +66,5 @@ public class CmdFactionsOfficer extends FCommand
 			msg("<i>You have promoted %s<i> to officer.", you.describeTo(fme, true));
 		}
 	}
-	
+
 }

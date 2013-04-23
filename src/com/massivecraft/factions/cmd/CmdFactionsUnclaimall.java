@@ -12,15 +12,15 @@ import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 
 public class CmdFactionsUnclaimall extends FCommand
-{	
+{
 	public CmdFactionsUnclaimall()
 	{
 		this.addAliases("unclaimall", "declaimall");
-		
+
 		this.addRequirements(ReqHasPerm.get(Perm.UNCLAIM_ALL.node));
 		this.addRequirements(ReqRoleIsAtLeast.get(Rel.OFFICER));
 	}
-	
+
 	@Override
 	public void perform()
 	{
@@ -45,7 +45,7 @@ public class CmdFactionsUnclaimall extends FCommand
 
 		// Apply
 		BoardColls.get().removeAll(myFaction);
-		
+
 		// Inform
 		myFaction.msg("%s<i> unclaimed ALL of your faction's land.", fme.describeTo(myFaction, true));
 
@@ -54,5 +54,5 @@ public class CmdFactionsUnclaimall extends FCommand
 			Factions.get().log(fme.getName()+" unclaimed everything for the faction: "+myFaction.getTag());
 		}
 	}
-	
+
 }

@@ -18,23 +18,23 @@ public class Econ
 	// -------------------------------------------- //
 	// STATE
 	// -------------------------------------------- //
-	
+
 	// TODO: Do we really need that config option?
 	// TODO: Could we not have it enabled as long as Money.enabled is true?
 	public static boolean isEnabled(Object universe)
 	{
 		return ConfServer.econEnabled && Money.enabled(universe);
 	}
-	
+
 	// -------------------------------------------- //
 	// UTIL
 	// -------------------------------------------- //
-	
+
 	public static boolean payForAction(double cost, UPlayer fsender, String actionDescription)
 	{
 		if (!isEnabled(fsender)) return true;
 		if (cost == 0D) return true;
-		
+
 		if (fsender.isUsingAdminMode()) return true;
 		Faction fsenderFaction = fsender.getFaction();
 
@@ -47,7 +47,7 @@ public class Econ
 			return modifyMoney(fsender, -cost, actionDescription);
 		}
 	}
-	
+
 	// -------------------------------------------- //
 	// ASSORTED
 	// -------------------------------------------- //
@@ -58,7 +58,7 @@ public class Econ
 
 		if (ConfServer.econUniverseAccount == null) return;
 		if (ConfServer.econUniverseAccount.length() == 0) return;
-		
+
 		if (!Money.exists(universe, ConfServer.econUniverseAccount)) return;
 
 		Money.add(universe, ConfServer.econUniverseAccount, delta);
@@ -71,7 +71,7 @@ public class Econ
 			Factions.get().log(Level.WARNING, "Vault does not appear to be hooked into an economy plugin.");
 			return;
 		}
-		
+
 		to.msg("<a>%s's<i> balance is <h>%s<i>.", about.describeTo(to, true), Money.format(about, Money.get(about)));
 	}
 
@@ -79,29 +79,29 @@ public class Econ
 	{
 		Faction fI = RelationUtil.getFaction(i);
 		Faction fYou = RelationUtil.getFaction(you);
-		
+
 		// This is a system invoker. Accept it.
 		if (fI == null) return true;
-		
+
 		// Bypassing players can do any kind of transaction
 		if (i instanceof UPlayer && ((UPlayer)i).isUsingAdminMode()) return true;
-		
+
 		// You can deposit to anywhere you feel like. It's your loss if you can't withdraw it again.
 		if (i == you) return true;
-		
+
 		// A faction can always transfer away the money of it's members and its own money...
 		// This will however probably never happen as a faction does not have free will.
 		// Ohh by the way... Yes it could. For daily rent to the faction.
 		if (i == fI && fI == fYou) return true;
-		
+
 		// Factions can be controlled by those that have permissions
 		if (you instanceof Faction && FPerm.WITHDRAW.has(i, fYou)) return true;
-		
+
 		// Otherwise you may not! ;,,;
 		i.msg("<h>%s<i> lacks permission to control <h>%s's<i> money.", i.describeTo(i, true), you.describeTo(i));
 		return false;
 	}
-	
+
 	public static boolean transferMoney(EconomyParticipator invoker, EconomyParticipator from, EconomyParticipator to, double amount)
 	{
 		return transferMoney(invoker, from, to, amount, true);
@@ -119,14 +119,14 @@ public class Econ
 			from = to;
 			to = temp;
 		}
-		
+
 		// Check the rights
 		if ( ! canIControllYou(invoker, from)) return false;
-		
+
 		// Is there enough money for the transaction to happen?
-		
-		
-		
+
+
+
 		if (Money.get(from) < amount)
 		{
 			// There was not enough money to pay
@@ -136,11 +136,11 @@ public class Econ
 			}
 			return false;
 		}
-		
+
 		// Transfer money
-		
-		
-		
+
+
+
 		if (Money.subtract(from, amount))
 		{
 			if (Money.add(from, amount))
@@ -157,20 +157,20 @@ public class Econ
 				Money.add(from, amount);
 			}
 		}
-		
+
 		// if we get here something with the transaction failed
 		if (notify)
 		{
 			invoker.msg("Unable to transfer %s<b> to <h>%s<b> from <h>%s<b>.", Money.format(from, amount), to.describeTo(invoker), from.describeTo(invoker, true));
 		}
-		
+
 		return false;
 	}
-	
+
 	public static Set<UPlayer> getUPlayers(EconomyParticipator ep)
 	{
 		Set<UPlayer> uplayers = new HashSet<UPlayer>();
-		
+
 		if (ep == null)
 		{
 			// Add nothing
@@ -183,17 +183,17 @@ public class Econ
 		{
 			uplayers.addAll(((Faction)ep).getUPlayers());
 		}
-		
+
 		return uplayers;
 	}
-	
+
 	public static void sendTransferInfo(EconomyParticipator invoker, EconomyParticipator from, EconomyParticipator to, double amount)
 	{
 		Set<UPlayer> recipients = new HashSet<UPlayer>();
 		recipients.addAll(getUPlayers(invoker));
 		recipients.addAll(getUPlayers(from));
 		recipients.addAll(getUPlayers(to));
-		
+
 		if (invoker == null)
 		{
 			for (UPlayer recipient : recipients)
@@ -243,15 +243,15 @@ public class Econ
 	{
 		if (!isEnabled(ep)) return false;
 		if (delta == 0) return true;
-		
+
 		String You = ep.describeTo(ep, true);
-		
+
 		boolean hasActionDesctription = (actionDescription != null && !actionDescription.isEmpty());
 
 		if (Money.add(ep, delta))
 		{
 			modifyUniverseMoney(ep, -delta);
-			
+
 			if (hasActionDesctription)
 			{
 				if (delta > 0)
@@ -313,5 +313,5 @@ public class Econ
 	{
 		return calculateTotalLandValue(ownedLand) * ConfServer.econClaimRefundMultiplier;
 	}
-	
+
 }

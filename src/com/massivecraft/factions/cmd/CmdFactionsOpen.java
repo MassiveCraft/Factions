@@ -12,13 +12,13 @@ public class CmdFactionsOpen extends FCommand
 	public CmdFactionsOpen()
 	{
 		this.addAliases("open");
-		
+
 		this.addOptionalArg("yes/no", "toggle");
-		
+
 		this.addRequirements(ReqHasPerm.get(Perm.OPEN.node));
 		this.addRequirements(ReqRoleIsAtLeast.get(Rel.OFFICER));
 	}
-	
+
 	@Override
 	public void perform()
 	{
@@ -31,13 +31,13 @@ public class CmdFactionsOpen extends FCommand
 		event.run();
 		if (event.isCancelled()) return;
 		newOpen = event.isNewOpen();
-		
+
 		// Apply
 		myFaction.setOpen(newOpen);
-		
+
 		// Inform
 		String descTarget = myFaction.isOpen() ? "open" : "closed";
 		myFaction.msg("%s<i> changed the faction to <h>%s<i>.", fme.describeTo(myFaction, true), descTarget);
 	}
-	
+
 }

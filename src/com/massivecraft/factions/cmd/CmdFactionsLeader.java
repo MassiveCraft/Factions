@@ -14,28 +14,28 @@ import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 import com.massivecraft.mcore.util.Txt;
 
 public class CmdFactionsLeader extends FCommand
-{	
+{
 	public CmdFactionsLeader()
 	{
 		this.addAliases("leader");
-		
+
 		this.addRequiredArg("player");
 		this.addOptionalArg("faction", "you");
-		
+
 		this.addRequirements(ReqHasPerm.get(Perm.LEADER.node));
 	}
-	
+
 	@Override
 	public void perform()
 	{
 		UPlayer newLeader = this.arg(0, ARUPlayer.getStartAny(sender));
 		if (newLeader == null) return;
-		
+
 		Faction targetFaction = this.arg(1, ARFaction.get(sender), myFaction);
 		if (targetFaction == null) return;
-		
+
 		UPlayer targetFactionCurrentLeader = targetFaction.getLeader();
-		
+
 		// We now have uplayer and the target faction
 		if (this.senderIsConsole || fme.isUsingAdminMode() || Perm.LEADER_ANY.has(sender, false))
 		{
@@ -49,13 +49,13 @@ public class CmdFactionsLeader extends FCommand
 				sender.sendMessage(Txt.parse("<b>You must be leader of the faction to %s.", this.getDesc()));
 				return;
 			}
-			
+
 			if (newLeader.getFaction() != myFaction)
 			{
 				msg("%s<i> is not a member in the faction.", newLeader.describeTo(fme, true));
 				return;
 			}
-			
+
 			if (newLeader == fme)
 			{
 				msg("<b>The target player musn't be yourself.");
@@ -88,7 +88,7 @@ public class CmdFactionsLeader extends FCommand
 		newLeader.setFaction(targetFaction);
 		newLeader.setRole(Rel.LEADER);
 		msg("<i>You have promoted %s<i> to the position of faction leader.", newLeader.describeTo(fme, true));
-		
+
 		// Inform all players
 		for (UPlayer uplayer : UPlayerColls.get().get(sender).getAllOnline())
 		{

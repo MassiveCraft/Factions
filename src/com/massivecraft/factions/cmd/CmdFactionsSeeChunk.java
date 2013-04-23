@@ -15,11 +15,11 @@ public class CmdFactionsSeeChunk extends FCommand
 	public CmdFactionsSeeChunk()
 	{
 		this.addAliases("sc", "seechunk");
-		
+
 		this.addRequirements(ReqHasPerm.get(Perm.SEE_CHUNK.node));
 		this.addRequirements(ReqIsPlayer.get());
 	}
-	
+
 	@Override
 	public void perform()
 	{
@@ -28,28 +28,28 @@ public class CmdFactionsSeeChunk extends FCommand
 		// This bit shifting is something like divide by 16 :P
 		int chunkX = meLoc.getBlockX() >> 4;
 		int chunkZ = meLoc.getBlockZ() >> 4;
-		
+
 		// Get the pillars for that chunk
 		int blockX;
 		int blockZ;
-		
+
 		blockX = chunkX*16;
 		blockZ = chunkZ*16;
 		showPillar(me, me.getWorld(), blockX, blockZ);
-		
+
 		blockX = chunkX*16 + 15;
 		blockZ = chunkZ*16;
 		showPillar(me, me.getWorld(), blockX, blockZ);
-		
+
 		blockX = chunkX*16;
 		blockZ = chunkZ*16 + 15;
 		showPillar(me, me.getWorld(), blockX, blockZ);
-		
+
 		blockX = chunkX*16 + 15;
 		blockZ = chunkZ*16 + 15;
 		showPillar(me, me.getWorld(), blockX, blockZ);
 	}
-	
+
 	public void showPillar(Player player, World world, int blockX, int blockZ)
 	{
 		for (int blockY = 0; blockY < world.getMaxHeight(); blockY++)
@@ -60,5 +60,5 @@ public class CmdFactionsSeeChunk extends FCommand
 			VisualizeUtil.addLocation(player, loc, typeId);
 		}
 	}
-	
+
 }

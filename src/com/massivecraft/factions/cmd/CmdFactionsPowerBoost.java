@@ -14,14 +14,14 @@ public class CmdFactionsPowerBoost extends FCommand
 	public CmdFactionsPowerBoost()
 	{
 		this.addAliases("powerboost");
-		
+
 		this.addRequiredArg("p|f|player|faction");
 		this.addRequiredArg("name");
 		this.addRequiredArg("#");
-		
+
 		this.addRequirements(ReqHasPerm.get(Perm.POWERBOOST.node));
 	}
-	
+
 	@Override
 	public void perform()
 	{
@@ -37,7 +37,7 @@ public class CmdFactionsPowerBoost extends FCommand
 			msg("<b>ex. /f powerboost p SomePlayer 0.5  -or-  /f powerboost f SomeFaction -5");
 			return;
 		}
-		
+
 		Double targetPower = this.arg(2, ARDouble.get());
 		if (targetPower == null) return;
 
@@ -47,7 +47,7 @@ public class CmdFactionsPowerBoost extends FCommand
 		{
 			UPlayer targetPlayer = this.arg(1, ARUPlayer.getStartAny(sender));
 			if (targetPlayer == null) return;
-			
+
 			targetPlayer.setPowerBoost(targetPower);
 			target = "Player \""+targetPlayer.getName()+"\"";
 		}
@@ -55,7 +55,7 @@ public class CmdFactionsPowerBoost extends FCommand
 		{
 			Faction targetFaction = this.arg(1, ARFaction.get(sender));
 			if (targetFaction == null) return;
-			
+
 			targetFaction.setPowerBoost(targetPower);
 			target = "Faction \""+targetFaction.getTag()+"\"";
 		}

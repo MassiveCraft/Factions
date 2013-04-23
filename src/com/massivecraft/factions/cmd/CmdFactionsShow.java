@@ -23,9 +23,9 @@ public class CmdFactionsShow extends FCommand
 	public CmdFactionsShow()
 	{
 		this.addAliases("show", "who");
-		
+
 		this.addOptionalArg("faction", "you");
-		
+
 		this.addRequirements(ReqHasPerm.get(Perm.SHOW.node));
 	}
 
@@ -39,22 +39,22 @@ public class CmdFactionsShow extends FCommand
 		Collection<UPlayer> officers = faction.getUPlayersWhereRole(Rel.OFFICER);
 		Collection<UPlayer> normals = faction.getUPlayersWhereRole(Rel.MEMBER);
 		Collection<UPlayer> recruits = faction.getUPlayersWhereRole(Rel.RECRUIT);
-		
+
 		msg(Txt.titleize(faction.getTag(fme)));
 		msg("<a>Description: <i>%s", faction.getDescription());
-		
+
 		// Display important flags
 		// TODO: Find the non default flags, and display them instead.
 		if (faction.getFlag(FFlag.PERMANENT))
 		{
 			msg("<a>This faction is permanent - remaining even with no members.");
 		}
-		
+
 		if (faction.getFlag(FFlag.PEACEFUL))
 		{
 			msg("<a>This faction is peaceful - in truce with everyone.");
 		}
-		
+
 		msg("<a>Joining: <i>"+(faction.isOpen() ? "no invitation is needed" : "invitation is required"));
 
 		double powerBoost = faction.getPowerBoost();
@@ -72,7 +72,7 @@ public class CmdFactionsShow extends FCommand
 				String stringRefund = (refund > 0.0) ? (" ("+Money.format(faction, refund)+" depreciated)") : "";
 				msg("<a>Total land value: <i>" + stringValue + stringRefund);
 			}
-			
+
 			//Show bank contents
 			if(ConfServer.bankEnabled)
 			{
@@ -81,10 +81,10 @@ public class CmdFactionsShow extends FCommand
 		}
 
 		String sepparator = Txt.parse("<i>")+", ";
-		
+
 		// List the relations to other factions
 		Map<Rel, List<String>> relationTags = faction.getFactionTagsPerRelation(fme, true);
-		
+
 		if (faction.getFlag(FFlag.PEACEFUL))
 		{
 			sendMessage(Txt.parse("<a>In Truce with:<i> *everyone*"));
@@ -93,14 +93,14 @@ public class CmdFactionsShow extends FCommand
 		{
 			sendMessage(Txt.parse("<a>In Truce with: ") + Txt.implode(relationTags.get(Rel.TRUCE), sepparator));
 		}
-		
+
 		sendMessage(Txt.parse("<a>Allied to: ") + Txt.implode(relationTags.get(Rel.ALLY), sepparator));
 		sendMessage(Txt.parse("<a>Enemies: ") + Txt.implode(relationTags.get(Rel.ENEMY), sepparator));
-		
+
 		// List the members...
 		List<String> memberOnlineNames = new ArrayList<String>();
 		List<String> memberOfflineNames = new ArrayList<String>();
-		
+
 		for (UPlayer follower : leaders)
 		{
 			if (follower.isOnline() && Mixin.isVisible(me, follower.getId()))
@@ -112,7 +112,7 @@ public class CmdFactionsShow extends FCommand
 				memberOfflineNames.add(follower.getNameAndTitle(fme));
 			}
 		}
-		
+
 		for (UPlayer follower : officers)
 		{
 			if (follower.isOnline() && Mixin.isVisible(me, follower.getId()))
@@ -124,7 +124,7 @@ public class CmdFactionsShow extends FCommand
 				memberOfflineNames.add(follower.getNameAndTitle(fme));
 			}
 		}
-		
+
 		for (UPlayer follower : normals)
 		{
 			if (follower.isOnline() && Mixin.isVisible(me, follower.getId()))
@@ -136,7 +136,7 @@ public class CmdFactionsShow extends FCommand
 				memberOfflineNames.add(follower.getNameAndTitle(fme));
 			}
 		}
-		
+
 		for (UPlayer follower : recruits)
 		{
 			if (follower.isOnline())
@@ -151,5 +151,5 @@ public class CmdFactionsShow extends FCommand
 		sendMessage(Txt.parse("<a>Members online: ") + Txt.implode(memberOnlineNames, sepparator));
 		sendMessage(Txt.parse("<a>Members offline: ") + Txt.implode(memberOfflineNames, sepparator));
 	}
-	
+
 }
