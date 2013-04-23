@@ -1,5 +1,7 @@
 package com.massivecraft.factions.entity;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -8,6 +10,7 @@ import com.massivecraft.factions.FFlag;
 import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.mcore.store.Entity;
+import com.massivecraft.mcore.util.MUtil;
 
 public class UConf extends Entity<UConf>
 {
@@ -63,5 +66,24 @@ public class UConf extends Entity<UConf>
 	public double scaleNegativeDivisor = 40.0; // Divisor for inverse power regeneration curve
 	
 	public double powerFactionMax = 0.0;  // if greater than 0, the cap on how much power a faction can have (additional power from players beyond that will act as a "buffer" of sorts)
+	
+	// -------------------------------------------- //
+	// DENY COMMANDS
+	// -------------------------------------------- //
+	
+	// commands which will be prevented if the player is a member of a permanent faction
+	public List<String> denyCommandsPermanentFactionMember = new ArrayList<String>();
+
+	// commands which will be prevented when in claimed territory of another faction
+	public List<String> denyCommandsTerritoryNeutral = new ArrayList<String>();
+	public List<String> denyCommandsTerritoryEnemy = MUtil.list(
+		"home",
+		"sethome",
+		"spawn",
+		"tpahere",
+		"tpaccept",
+		"tpa",
+		"warp"
+	);
 	
 }

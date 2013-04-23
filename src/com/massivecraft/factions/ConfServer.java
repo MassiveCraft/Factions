@@ -42,12 +42,22 @@ public class ConfServer extends SimpleConfig
 	public static double homesTeleportAllowedEnemyDistance = 32.0;
 	public static boolean homesTeleportIgnoreEnemiesIfInOwnTerritory = true;
 	
+	// -------------------------------------------- //
+	// PVP
+	// -------------------------------------------- //
+	
 	public static boolean disablePVPForFactionlessPlayers = false;
 	public static boolean enablePVPAgainstFactionlessInAttackersLand = false;
-
-	//public static boolean peacefulMembersDisablePowerLoss = true;
+	
+	// -------------------------------------------- //
+	// ASSORTED
+	// -------------------------------------------- //
 	
 	public static boolean permanentFactionsDisableLeaderPromotion = false;
+	
+	// -------------------------------------------- //
+	// CLAIMS
+	// -------------------------------------------- //
 	
 	public static boolean claimsMustBeConnected = false;
 	public static boolean claimingFromOthersAllowed = true;
@@ -60,19 +70,24 @@ public class ConfServer extends SimpleConfig
 
 	//public static double considerFactionsReallyOfflineAfterXMinutes = 0.0;
 	
+	// -------------------------------------------- //
+	// ASSORTED
+	// -------------------------------------------- //
+	
 	public static int actionDeniedPainAmount = 2;
-
-	// commands which will be prevented if the player is a member of a permanent faction
-	public static Set<String> permanentFactionMemberDenyCommands = new LinkedHashSet<String>();
-
-	// commands which will be prevented when in claimed territory of another faction
-	public static Set<String> territoryNeutralDenyCommands = new LinkedHashSet<String>();
-	public static Set<String> territoryEnemyDenyCommands = MUtil.set("home", "sethome", "spawn", "tpahere", "tpaccept", "tpa", "warp");
+	
+	// -------------------------------------------- //
+	// ASSORTED
+	// -------------------------------------------- //
 	
 	public static double territoryShieldFactor = 0.3;
 
 	// for claimed areas where further faction-member ownership can be defined
 
+	// -------------------------------------------- //
+	// ASSORTED
+	// -------------------------------------------- //
+	
 	public static boolean pistonProtectionThroughDenyBuild = true;	
 
 	// -------------------------------------------- //

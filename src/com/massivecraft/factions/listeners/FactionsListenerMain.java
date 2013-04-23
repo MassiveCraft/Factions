@@ -342,7 +342,7 @@ public class FactionsListenerMain implements Listener
 		command = command.toLowerCase();
 		command = command.trim();
 		
-		if (uplayer.hasFaction() && uplayer.getFaction().getFlag(FFlag.PERMANENT) && containsCommand(command, ConfServer.permanentFactionMemberDenyCommands))
+		if (uplayer.hasFaction() && uplayer.getFaction().getFlag(FFlag.PERMANENT) && containsCommand(command, UConf.get(player).denyCommandsPermanentFactionMember))
 		{
 			uplayer.msg("<b>You can't use \"<h>/%s<b>\" as member of a permanent faction.", command);
 			event.setCancelled(true);
@@ -353,14 +353,14 @@ public class FactionsListenerMain implements Listener
 		PS ps = PS.valueOf(player).getChunk(true);
 		if (BoardColls.get().getFactionAt(ps).isNone()) return;
 		
-		if (rel == Rel.NEUTRAL && containsCommand(command, ConfServer.territoryNeutralDenyCommands))
+		if (rel == Rel.NEUTRAL && containsCommand(command, UConf.get(player).denyCommandsTerritoryNeutral))
 		{
 			uplayer.msg("<b>You can't use \"<h>/%s<b>\" in neutral territory.", command);
 			event.setCancelled(true);
 			return;
 		}
 
-		if (rel == Rel.ENEMY && containsCommand(command, ConfServer.territoryEnemyDenyCommands))
+		if (rel == Rel.ENEMY && containsCommand(command, UConf.get(player).denyCommandsTerritoryEnemy))
 		{
 			uplayer.msg("<b>You can't use \"<h>/%s<b>\" in enemy territory.", command);
 			event.setCancelled(true);
