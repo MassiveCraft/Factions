@@ -316,6 +316,9 @@ public class Conf
 		territoryProtectedMaterials.add(Material.SOIL);
 		territoryProtectedMaterials.add(Material.BEACON);
 		territoryProtectedMaterials.add(Material.ANVIL);
+		territoryProtectedMaterials.add(Material.TRAPPED_CHEST);
+		territoryProtectedMaterials.add(Material.DROPPER);
+		territoryProtectedMaterials.add(Material.HOPPER);
 
 		territoryDenyUseageMaterials.add(Material.FIREBALL);
 		territoryDenyUseageMaterials.add(Material.FLINT_AND_STEEL);
@@ -339,6 +342,9 @@ public class Conf
 		territoryProtectedMaterialsWhenOffline.add(Material.SOIL);
 		territoryProtectedMaterialsWhenOffline.add(Material.BEACON);
 		territoryProtectedMaterialsWhenOffline.add(Material.ANVIL);
+		territoryProtectedMaterialsWhenOffline.add(Material.TRAPPED_CHEST);
+		territoryProtectedMaterialsWhenOffline.add(Material.DROPPER);
+		territoryProtectedMaterialsWhenOffline.add(Material.HOPPER);
 
 		territoryDenyUseageMaterialsWhenOffline.add(Material.FIREBALL);
 		territoryDenyUseageMaterialsWhenOffline.add(Material.FLINT_AND_STEEL);

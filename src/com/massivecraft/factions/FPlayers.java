@@ -47,35 +47,4 @@ public class FPlayers extends PlayerEntityCollection<FPlayer>
 			}
 		}
 	}
-	
-	public void autoLeaveOnInactivityRoutine()
-	{
-		if (Conf.autoLeaveAfterDaysOfInactivity <= 0.0)
-		{
-			return;
-		}
-
-		long now = System.currentTimeMillis();
-		double toleranceMillis = Conf.autoLeaveAfterDaysOfInactivity * 24 * 60 * 60 * 1000;
-		
-		for (FPlayer fplayer : FPlayers.i.get())
-		{
-			if (fplayer.isOffline() && now - fplayer.getLastLoginTime() > toleranceMillis)
-			{
-				if (Conf.logFactionLeave || Conf.logFactionKick)
-					P.p.log("Player "+fplayer.getName()+" was auto-removed due to inactivity.");
-
-				// if player is faction admin, sort out the faction since he's going away
-				if (fplayer.getRole() == Role.ADMIN)
-				{
-					Faction faction = fplayer.getFaction();
-					if (faction != null)
-						fplayer.getFaction().promoteNewLeader();
-				}
-
-				fplayer.leave(false);
-				fplayer.detach();
-			}
-		}
-	}
 }

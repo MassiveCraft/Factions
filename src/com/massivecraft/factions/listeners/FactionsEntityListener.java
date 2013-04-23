@@ -16,6 +16,7 @@ import org.bukkit.entity.Enderman;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Fireball;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.minecart.ExplosiveMinecart;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.entity.TNTPrimed;
@@ -206,7 +207,7 @@ public class FactionsEntityListener implements Listener
 		}
 		else if
 		(
-			boomer instanceof TNTPrimed
+			(boomer instanceof TNTPrimed || boomer instanceof ExplosiveMinecart)
 			&&
 			(
 				(faction.isNone() && Conf.wildernessBlockTNT && ! Conf.worldsNoWildernessProtection.contains(loc.getWorld().getName()))
@@ -222,7 +223,7 @@ public class FactionsEntityListener implements Listener
 			// TNT which needs prevention
 			event.setCancelled(true);
 		}
-		else if (boomer instanceof TNTPrimed && Conf.handleExploitTNTWaterlog)
+		else if ((boomer instanceof TNTPrimed || boomer instanceof ExplosiveMinecart) && Conf.handleExploitTNTWaterlog)
 		{
 			// TNT in water/lava doesn't normally destroy any surrounding blocks, which is usually desired behavior, but...
 			// this change below provides workaround for waterwalling providing perfect protection,
