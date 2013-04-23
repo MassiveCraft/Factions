@@ -231,7 +231,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	public boolean isValidHome(PS ps)
 	{
 		if (ps == null) return true;
-		if (!ConfServer.homesMustBeInClaimedTerritory) return true;
+		if (!UConf.get(this).homesMustBeInClaimedTerritory) return true;
 		if (BoardColls.get().getFactionAt(ps) == this) return true;
 		return false;
 	}

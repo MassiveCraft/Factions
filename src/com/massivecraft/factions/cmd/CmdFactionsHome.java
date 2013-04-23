@@ -4,13 +4,13 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
-import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.FFlag;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.cmd.req.ReqRoleIsAtLeast;
 import com.massivecraft.factions.entity.BoardColls;
+import com.massivecraft.factions.entity.UConf;
 import com.massivecraft.factions.entity.UPlayer;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.event.FactionsEventHomeTeleport;
@@ -35,14 +35,16 @@ public class CmdFactionsHome extends FCommand
 	@Override
 	public void perform()
 	{
+		UConf uconf = UConf.get(sender);
+		
 		// TODO: Hide this command on help also.
-		if ( ! ConfServer.homesEnabled)
+		if ( ! uconf.homesEnabled)
 		{
 			fme.msg("<b>Sorry, Faction homes are disabled on this server.");
 			return;
 		}
 
-		if ( ! ConfServer.homesTeleportCommandEnabled)
+		if ( ! uconf.homesTeleportCommandEnabled)
 		{
 			fme.msg("<b>Sorry, the ability to teleport to Faction homes is disabled on this server.");
 			return;
@@ -55,13 +57,13 @@ public class CmdFactionsHome extends FCommand
 			return;
 		}
 		
-		if ( ! ConfServer.homesTeleportAllowedFromEnemyTerritory && fme.isInEnemyTerritory())
+		if ( ! uconf.homesTeleportAllowedFromEnemyTerritory && fme.isInEnemyTerritory())
 		{
 			fme.msg("<b>You cannot teleport to your faction home while in the territory of an enemy faction.");
 			return;
 		}
 		
-		if (!ConfServer.homesTeleportAllowedFromDifferentWorld && !me.getWorld().getName().equalsIgnoreCase(myFaction.getHome().getWorld()))
+		if (!uconf.homesTeleportAllowedFromDifferentWorld && !me.getWorld().getName().equalsIgnoreCase(myFaction.getHome().getWorld()))
 		{
 			fme.msg("<b>You cannot teleport to your faction home while in a different world.");
 			return;
@@ -74,7 +76,7 @@ public class CmdFactionsHome extends FCommand
 		// if player is not in a safe zone or their own faction territory, only allow teleport if no enemies are nearby
 		if
 		(
-			ConfServer.homesTeleportAllowedEnemyDistance > 0
+				uconf.homesTeleportAllowedEnemyDistance > 0
 			&&
 			faction.getFlag(FFlag.PVP)
 			&&
@@ -84,7 +86,7 @@ public class CmdFactionsHome extends FCommand
 				(
 					fme.isInOwnTerritory()
 					&&
-					! ConfServer.homesTeleportIgnoreEnemiesIfInOwnTerritory
+					! uconf.homesTeleportIgnoreEnemiesIfInOwnTerritory
 				)
 			)
 		)
@@ -107,13 +109,13 @@ public class CmdFactionsHome extends FCommand
 				double dx = Math.abs(x - l.getX());
 				double dy = Math.abs(y - l.getY());
 				double dz = Math.abs(z - l.getZ());
-				double max = ConfServer.homesTeleportAllowedEnemyDistance;
+				double max = uconf.homesTeleportAllowedEnemyDistance;
 
 				// box-shaped distance check
 				if (dx > max || dy > max || dz > max)
 					continue;
 
-				fme.msg("<b>You cannot teleport to your faction home while an enemy is within " + ConfServer.homesTeleportAllowedEnemyDistance + " blocks of you.");
+				fme.msg("<b>You cannot teleport to your faction home while an enemy is within " + uconf.homesTeleportAllowedEnemyDistance + " blocks of you.");
 				return;
 			}
 		}

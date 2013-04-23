@@ -1,11 +1,11 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.cmd.arg.ARFaction;
 import com.massivecraft.factions.entity.Faction;
+import com.massivecraft.factions.entity.UConf;
 import com.massivecraft.factions.event.FactionsEventHomeChange;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 import com.massivecraft.mcore.cmd.req.ReqIsPlayer;
@@ -26,18 +26,18 @@ public class CmdFactionsSethome extends FCommand
 	@Override
 	public void perform()
 	{
-		// TODO: Make a command REQ instead?
-		if ( ! ConfServer.homesEnabled)
-		{
-			fme.msg("<b>Sorry, Faction homes are disabled on this server.");
-			return;
-		}
-		
 		// Args
 		Faction faction = this.arg(0, ARFaction.get(myFaction), myFaction);
 		if (faction == null) return;
 		
 		PS newHome = PS.valueOf(me.getLocation());
+		
+		// Validate
+		if ( ! UConf.get(faction).homesEnabled)
+		{
+			fme.msg("<b>Sorry, Faction homes are disabled on this server.");
+			return;
+		}
 		
 		// FPerm
 		if ( ! FPerm.SETHOME.has(sender, faction, true)) return;

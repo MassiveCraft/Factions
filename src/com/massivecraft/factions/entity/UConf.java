@@ -61,6 +61,18 @@ public class UConf extends Entity<UConf>
 	public double powerPerDeath = -2.0;
 	
 	// -------------------------------------------- //
+	// HOMES
+	// -------------------------------------------- //
+	
+	public boolean homesEnabled = true;
+	public boolean homesMustBeInClaimedTerritory = true;
+	public boolean homesTeleportCommandEnabled = true;
+	public boolean homesTeleportAllowedFromEnemyTerritory = true;
+	public boolean homesTeleportAllowedFromDifferentWorld = true;
+	public double homesTeleportAllowedEnemyDistance = 32.0;
+	public boolean homesTeleportIgnoreEnemiesIfInOwnTerritory = true;
+	
+	// -------------------------------------------- //
 	// DENY COMMANDS
 	// -------------------------------------------- //
 	

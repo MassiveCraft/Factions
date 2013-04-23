@@ -30,17 +30,7 @@ public class ConfServer extends SimpleConfig
 	public static double autoLeaveRoutineRunsEveryXMinutes = 5.0;
 	public static boolean removePlayerDataWhenBanned = true;
 	
-	// -------------------------------------------- //
-	// HOMES
-	// -------------------------------------------- //
-	
-	public static boolean homesEnabled = true;
-	public static boolean homesMustBeInClaimedTerritory = true;
-	public static boolean homesTeleportCommandEnabled = true;
-	public static boolean homesTeleportAllowedFromEnemyTerritory = true;
-	public static boolean homesTeleportAllowedFromDifferentWorld = true;
-	public static double homesTeleportAllowedEnemyDistance = 32.0;
-	public static boolean homesTeleportIgnoreEnemiesIfInOwnTerritory = true;
+
 	
 	// -------------------------------------------- //
 	// PVP
