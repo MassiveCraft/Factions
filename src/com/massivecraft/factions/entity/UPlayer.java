@@ -18,8 +18,6 @@ import com.massivecraft.factions.RelationParticipator;
 import com.massivecraft.factions.event.FactionsEventLandClaim;
 import com.massivecraft.factions.event.FactionsEventMembershipChange;
 import com.massivecraft.factions.event.FactionsEventMembershipChange.MembershipChangeReason;
-import com.massivecraft.factions.event.FactionsEventPowerChange;
-import com.massivecraft.factions.event.FactionsEventPowerChange.PowerChangeReason;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.integration.LWCFeatures;
 import com.massivecraft.factions.integration.Worldguard;
@@ -28,8 +26,6 @@ import com.massivecraft.mcore.mixin.Mixin;
 import com.massivecraft.mcore.money.Money;
 import com.massivecraft.mcore.ps.PS;
 import com.massivecraft.mcore.store.SenderEntity;
-import com.massivecraft.mcore.util.MUtil;
-import com.massivecraft.mcore.util.TimeUnit;
 import com.massivecraft.mcore.util.Txt;
 
 
@@ -54,10 +50,7 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 		this.setFactionId(that.factionId);
 		this.setRole(that.role);
 		this.setTitle(that.title);
-		this.setPowerBoost(that.powerBoost);
-		
-		this.power = that.power;
-		this.lastPowerUpdateTime = that.lastPowerUpdateTime;
+		this.setPower(that.power);
 		
 		return this;
 	}
@@ -65,14 +58,13 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 	@Override
 	public boolean isDefault()
 	{
+		// TODO: What if I incorporated the "default" word into the system?
+		// Rename?: hasFaction --> isFactionDefault
+		
 		if (this.hasFaction()) return false;
-		
-		// Note: we do not check role or title here since they mean nothing without a faction.
-		
-		// TODO: This line looks obnoxious, investigate it.
-		if (this.getPowerRounded() != this.getPowerMaxRounded() && this.getPowerRounded() != (int) Math.round(UConf.get(this).powerStarting)) return false;
-		
-		if (this.hasPowerBoost()) return false;
+		// Role means nothing without a faction.
+		// Title means nothing without a faction.
+		if (this.getPowerRounded() != (int) Math.round(UConf.get(this).powerPlayerDefault)) return false;
 		
 		return true;
 	}
@@ -84,37 +76,29 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 	// Each field has it's own section further down since just the getter and setter logic takes up quite some place.
 	
 	// This is a foreign key.
-	// A players always belongs to a faction.
-	// If null the player belongs to the no-faction faction called Wilderness.
+	// Each player belong to a faction.
+	// Null means default which is the no-faction faction called Wilderness.
 	private String factionId = null;
 	
 	// What role does the player have in the faction?
-	// The default value here is MEMBER since that one would be one of the most common ones and our goal is to save database space.
-	// A note to self is that we can not change it from member to anything else just because we feel like it, that would corrupt database content.
+	// Null means default which is the default value for the universe.
 	private Rel role = null;
 	
 	// What title does the player have in the faction?
-	// The title is just for fun. It's completely meaningless.
+	// The title is just for fun. It's not connected to any game mechanic.
 	// The default case is no title since it's what you start with and also the most common case.
 	// The player title is similar to the faction description.
 	// 
 	// Question: Can the title contain chat colors?
 	// Answer: Yes but in such case the policy is that they already must be parsed using Txt.parse.
-	//          If they contain markup it should not be parsed in case we coded the system correctly.
+	//         If the title contains raw markup, such as "<white>" instead of "§f" it will not be parsed and "<white>" will be displayed.
 	private String title = null;
 	
-	// Player usually do not have a powerboost. It defaults to 0.
-	// The powerBoost is a custom increase/decrease to default and maximum power.
-	// Note that player powerBoost and faction powerBoost are very similar.
-	private Double powerBoost = null;
-	
-	// This field contains the last calculated value of the players power.
-	// The power calculation is lazy which means that the power is calculated first when you try to view the value.
+	// Each player has an individual power level.
+	// The power level for online players is occasionally updated by a recurring task and the power should stay the same for offline players.
+	// For that reason the value is to be considered correct when you pick it. Do not call the power update method.
+	// Null means default which is the default value for the universe.
 	private Double power = null;
-	
-	// This is the timestamp for the last calculation of the power.
-	// The value is used for the lazy calculation described above.
-	private long lastPowerUpdateTime = System.currentTimeMillis();
 	
 	// -------------------------------------------- //
 	// FIELDS: RAW TRANSIENT
@@ -142,15 +126,8 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 	public String getAccountId() { return this.getId(); }
 	
 	// -------------------------------------------- //
-	// CONSTRUCT
+	// CORE UTILITIES
 	// -------------------------------------------- //
-	
-	// GSON need this noarg constructor.
-	public UPlayer()
-	{
-		this.resetFactionData();
-		//this.power = ConfServer.powerStarting;
-	}
 	
 	public void resetFactionData()
 	{
@@ -161,6 +138,37 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 		
 		this.autoClaimFor = null;
 	}
+	
+	/*
+	public boolean isPresent(boolean requireFetchable)
+	{
+		if (!this.isOnline()) return false;
+		
+		if (requireFetchable)
+		{
+			
+		}
+		else
+		{
+			
+		}
+		
+		PS ps = Mixin.getSenderPs(this.getId());
+		if (ps == null) return false;
+		
+		String psUniverse = Factions.get().getMultiverse().getUniverseForWorldName(ps.getWorld());
+		if (!psUniverse.equals(this.getUniverse())) return false;
+		
+		if (!requireFetchable) return true;
+		
+		Player player = this.getPlayer();
+		if (player == null) return false;
+		
+		if (player.isDead()) return false;
+		
+		return true;
+	}
+	*/
 	
 	// -------------------------------------------- //
 	// FIELD: factionId
@@ -282,49 +290,6 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 	}
 	
 	// -------------------------------------------- //
-	// FIELD: powerBoost
-	// -------------------------------------------- //
-	
-	public double getPowerBoost()
-	{
-		Double ret = this.powerBoost;
-		if (ret == null) ret = 0D;
-		return ret;
-	}
-	
-	public void setPowerBoost(Double powerBoost)
-	{
-		if (powerBoost == null || powerBoost == 0)
-		{
-			powerBoost = null;
-		}
-		this.powerBoost = powerBoost;
-		this.changed();
-	}
-	
-	public boolean hasPowerBoost()
-	{
-		return this.getPowerBoost() != 0D;
-	}
-	
-	// -------------------------------------------- //
-	// FIELD: lastPowerUpdateTime
-	// -------------------------------------------- //
-	
-	// RAW
-	
-	public long getLastPowerUpdateTime()
-	{
-		return this.lastPowerUpdateTime;
-	}
-	
-	public void setLastPowerUpdateTime(long lastPowerUpdateTime)
-	{
-		this.lastPowerUpdateTime = lastPowerUpdateTime;
-		this.changed();
-	}
-	
-	// -------------------------------------------- //
 	// FIELD: power
 	// -------------------------------------------- //
 	
@@ -332,142 +297,22 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 	
 	public double getPower()
 	{
-		this.recalculatePower();
 		Double ret = this.power;
-		if (ret == null) ret = UConf.get(this).powerStarting;
+		if (ret == null) ret = UConf.get(this).powerPlayerDefault;
 		return ret;
 	}
 	
-	public void setPower(double power)
+	public void setPower(Double power)
 	{
-		this.setPower(power, System.currentTimeMillis());
-	}
-	
-	public void setPower(double power, long now)
-	{
-		power = Math.min(power, this.getPowerMax());
-		power = Math.max(power, this.getPowerMin());
-		
-		// Nochange
-		if (MUtil.equals(this.power, Double.valueOf(power))) return;
-		
-		this.power = power;
-		this.setLastPowerUpdateTime(now);
+		if (power == null || power == UConf.get(this).powerPlayerDefault)
+		{
+			this.power = null;
+		}
+		else
+		{
+			this.power = power;
+		}
 		this.changed();
-	}
-	
-	public double getPowerMax()
-	{
-		return UConf.get(this).powerMax + this.getPowerBoost();
-	}
-	
-	public double getPowerMin()
-	{
-		return UConf.get(this).powerMin + this.getPowerBoost();
-	}
-	
-	public void recalculatePower()
-	{
-		this.recalculatePower(this.isOnline());
-	}
-	
-	private static final transient long POWER_RECALCULATION_MINIMUM_WAIT_MILLIS = 10 * TimeUnit.MILLIS_PER_SECOND;
-	public void recalculatePower(boolean online)
-	{
-		// Is the player really on this server?
-		// We use the sender ps mixin to fetch the current player location.
-		// If the PS is null it's OK. We assume the player is here if we do not know.
-		PS ps = Mixin.getSenderPs(this.getId());
-		if (ps != null && !ps.isWorldLoadedOnThisServer()) return;
-		
-		// Get the now
-		long now = System.currentTimeMillis();
-		
-		// We will only update if a certain amount of time has passed.
-		if (this.getLastPowerUpdateTime() + POWER_RECALCULATION_MINIMUM_WAIT_MILLIS >= now) return;
-		
-		// Calculate millis passed
-		long millisPassed = now - this.getLastPowerUpdateTime();
-		
-		// Note that we updated
-		this.setLastPowerUpdateTime(now);
-		
-		// We consider dead players and players in other universes offline.
-		if (online)
-		{
-			Player thisPlayer = this.getPlayer();
-			online = (thisPlayer != null && !thisPlayer.isDead() && UPlayer.get(thisPlayer) == this);
-		}
-		
-		// Cache and prepare
-		UConf uconf = UConf.get(this);
-		double powerCurrent;
-		if (this.power != null)
-		{
-			powerCurrent = this.power;
-		}
-		else
-		{
-			powerCurrent = uconf.powerStarting;
-		}
-		
-		// Depending on online state pick the config values
-		double powerPerHour = online ? uconf.powerPerHourOnline : uconf.powerPerHourOffline;
-		double powerLimitGain = online ? uconf.powerLimitGainOnline : uconf.powerLimitGainOffline;
-		double powerLimitLoss = online ? uconf.powerLimitLossOnline : uconf.powerLimitLossOffline;
-		
-		// Apply the negative divisor thingy
-		if (uconf.scaleNegativePower && powerCurrent < 0)
-		{
-			powerPerHour += (Math.sqrt(Math.abs(powerCurrent)) * Math.abs(powerCurrent)) / uconf.scaleNegativeDivisor;
-		}
-		
-		// Calculate delta and target
-		double powerDelta = powerPerHour * millisPassed / TimeUnit.MILLIS_PER_HOUR;
-		double powerTarget = powerCurrent + powerDelta;
-		
-		// Check Gain and Loss limits
-		if (powerDelta >= 0)
-		{
-			// Gain
-			if (powerTarget > powerLimitGain)
-			{
-				if (powerCurrent > powerLimitGain)
-				{
-					// Did already cross --> Just freeze
-					powerTarget = powerCurrent;
-				}
-				else
-				{
-					// Crossing right now --> Snap to limit
-					powerTarget = powerLimitGain;
-				}
-			}
-		}
-		else
-		{
-			// Loss
-			if (powerTarget < powerLimitLoss)
-			{
-				if (powerCurrent < powerLimitLoss)
-				{
-					// Did already cross --> Just freeze
-					powerTarget = powerCurrent;
-				}
-				else
-				{
-					// Crossing right now --> Snap to limit
-					powerTarget = powerLimitLoss;
-				}
-			}
-		}
-		
-		FactionsEventPowerChange event = new FactionsEventPowerChange(null, this, PowerChangeReason.TIME, powerTarget);
-		event.run();
-		if (event.isCancelled()) return;
-		powerTarget = event.getNewPower();
-		
-		this.setPower(powerTarget, now);
 	}
 	
 	// FINER
@@ -475,16 +320,6 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 	public int getPowerRounded()
 	{
 		return (int) Math.round(this.getPower());
-	}
-	
-	public int getPowerMaxRounded()
-	{
-		return (int) Math.round(this.getPowerMax());
-	}
-	
-	public int getPowerMinRounded()
-	{
-		return (int) Math.round(this.getPowerMin());
 	}
 	
 	// -------------------------------------------- //

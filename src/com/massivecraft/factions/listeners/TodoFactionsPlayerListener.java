@@ -10,7 +10,6 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerBucketFillEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 
 import com.massivecraft.factions.Const;
@@ -21,7 +20,6 @@ import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.UPlayer;
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.entity.UPlayerColls;
-import com.massivecraft.mcore.event.MCorePlayerLeaveEvent;
 import com.massivecraft.mcore.ps.PS;
 import com.massivecraft.mcore.util.MUtil;
 import com.massivecraft.mcore.util.Txt;
@@ -29,30 +27,9 @@ import com.massivecraft.mcore.util.Txt;
 
 public class TodoFactionsPlayerListener implements Listener
 {
-	@EventHandler(priority = EventPriority.NORMAL)
-	public void onPlayerJoin(PlayerJoinEvent event)
-	{
-		// If a player is joining the server ...
-		Player player = event.getPlayer();
-		UPlayer uplayer = UPlayer.get(player);
-		
-		// ... recalculate their power as if they were offline since last recalculation.
-		uplayer.recalculatePower(false);
-		// TODO: What about the other universes?
-		// TODO: Track world --> world travel as logging on and off.
-	}
-	
-	@EventHandler(priority = EventPriority.NORMAL)
-	public void onPlayerLeave(MCorePlayerLeaveEvent event)
-	{
-		Player player = event.getPlayer();
-		UPlayer uplayer = UPlayer.get(player);
-
-		// Recalculate the power before the player leaves.
-		// This is required since we recalculate as if the player were offline when they log back in.
-		// TODO: When I setup universes I must do this for all universe instance of the player that logs off!
-		uplayer.recalculatePower(true);
-	}
+	// -------------------------------------------- //
+	// TERRITORY INFO MESSAGES
+	// -------------------------------------------- //
 	
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onPlayerMove(PlayerMoveEvent event)
@@ -105,6 +82,10 @@ public class TodoFactionsPlayerListener implements Listener
 		}
 	}
 
+	// -------------------------------------------- //
+	// ASSORTED BUILD AND INTERACT
+	// -------------------------------------------- //
+	
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onPlayerInteract(PlayerInteractEvent event)
 	{

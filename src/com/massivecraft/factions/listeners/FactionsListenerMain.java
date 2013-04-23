@@ -59,6 +59,7 @@ import com.massivecraft.factions.event.FactionsEventPowerChange.PowerChangeReaso
 import com.massivecraft.factions.util.VisualizeUtil;
 import com.massivecraft.mcore.ps.PS;
 import com.massivecraft.mcore.util.MUtil;
+import com.massivecraft.mcore.util.PermUtil;
 import com.massivecraft.mcore.util.Txt;
 
 public class FactionsListenerMain implements Listener
@@ -106,18 +107,26 @@ public class FactionsListenerMain implements Listener
 			return;
 		}
 		
-		// ... Event ...
-		double newPower = uplayer.getPower() + UConf.get(uplayer).powerPerDeath;
+		// ... alter the power ...
+		double maxPower = PermUtil.pickFirstVal(player, MConf.get().permToPowerMax);
+		double minPower = PermUtil.pickFirstVal(player, MConf.get().permToPowerMin);
+		double deathPower = PermUtil.pickFirstVal(player, MConf.get().permToPowerDeath);
+		double oldPower = uplayer.getPower();
+		
+		double newPower = oldPower + deathPower;
+		newPower = Math.max(newPower, minPower);
+		newPower = Math.min(newPower, maxPower);
+		
 		FactionsEventPowerChange powerChangeEvent = new FactionsEventPowerChange(null, uplayer, PowerChangeReason.DEATH, newPower);
 		powerChangeEvent.run();
 		if (powerChangeEvent.isCancelled()) return;
 		newPower = powerChangeEvent.getNewPower();
 		
-		// ... alter the power ...
 		uplayer.setPower(newPower);
 		
 		// ... and inform the player.
-		uplayer.msg("<i>Your power is now <h>%d / %d", uplayer.getPowerRounded(), uplayer.getPowerMaxRounded());
+		// TODO: A progress bar here would be epic :)
+		uplayer.msg("<i>Your power is now <h>%.2f / %.2f", newPower, maxPower);
 	}
 	
 	// -------------------------------------------- //
@@ -578,7 +587,6 @@ public class FactionsListenerMain implements Listener
 		
 		event.setCancelled(true);
 	}
-	
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void blockBuild(BlockPistonExtendEvent event)

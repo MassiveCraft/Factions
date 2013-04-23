@@ -52,8 +52,6 @@ public enum Perm
 	OFFICER_ANY("officer.any"),
 	OPEN("open"),
 	PERM("perm"),
-	POWER("power"),
-	POWER_ANY("power.any"),
 	POWERBOOST("powerboost"),
 	PROMOTE("promote"),
 	RELATION("relation"),

@@ -80,6 +80,7 @@ public class ConfServer extends SimpleConfig
 	// ASSORTED
 	// -------------------------------------------- //
 	
+	// TODO: Should this be based on a permission node lookup map?
 	public static double territoryShieldFactor = 0.3;
 
 	// for claimed areas where further faction-member ownership can be defined

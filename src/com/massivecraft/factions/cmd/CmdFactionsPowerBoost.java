@@ -2,9 +2,7 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
-import com.massivecraft.factions.cmd.arg.ARUPlayer;
 import com.massivecraft.factions.cmd.arg.ARFaction;
-import com.massivecraft.factions.entity.UPlayer;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.mcore.cmd.arg.ARDouble;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
@@ -15,9 +13,8 @@ public class CmdFactionsPowerBoost extends FCommand
 	{
 		this.addAliases("powerboost");
 		
-		this.addRequiredArg("p|f|player|faction");
-		this.addRequiredArg("name");
-		this.addRequiredArg("#");
+		this.addRequiredArg("faction");
+		this.addRequiredArg("amount");
 		
 		this.addRequirements(ReqHasPerm.get(Perm.POWERBOOST.node));
 	}
@@ -25,42 +22,17 @@ public class CmdFactionsPowerBoost extends FCommand
 	@Override
 	public void perform()
 	{
-		String type = this.arg(0).toLowerCase();
-		boolean doPlayer = true;
-		if (type.equals("f") || type.equals("faction"))
-		{
-			doPlayer = false;
-		}
-		else if (!type.equals("p") && !type.equals("player"))
-		{
-			msg("<b>You must specify \"p\" or \"player\" to target a player or \"f\" or \"faction\" to target a faction.");
-			msg("<b>ex. /f powerboost p SomePlayer 0.5  -or-  /f powerboost f SomeFaction -5");
-			return;
-		}
+		Faction faction = this.arg(0, ARFaction.get(fme));
+		if (faction == null) return;
 		
-		Double targetPower = this.arg(2, ARDouble.get());
-		if (targetPower == null) return;
+		Double amount = this.arg(1, ARDouble.get());
+		if (amount == null) return;
 
-		String target;
-
-		if (doPlayer)
-		{
-			UPlayer targetPlayer = this.arg(1, ARUPlayer.getStartAny(sender));
-			if (targetPlayer == null) return;
-			
-			targetPlayer.setPowerBoost(targetPower);
-			target = "Player \""+targetPlayer.getName()+"\"";
-		}
-		else
-		{
-			Faction targetFaction = this.arg(1, ARFaction.get(sender));
-			if (targetFaction == null) return;
-			
-			targetFaction.setPowerBoost(targetPower);
-			target = "Faction \""+targetFaction.getTag()+"\"";
-		}
-
-		msg("<i>"+target+" now has a power bonus/penalty of "+targetPower+" to min and max power levels.");
-		Factions.get().log(fme.getName()+" has set the power bonus/penalty for "+target+" to "+targetPower+".");
+		faction.setPowerBoost(amount);
+	
+		msg("<i>"+faction.getTag()+" now has a power bonus/penalty of "+amount+" to min and max power levels.");
+		
+		// TODO: Inconsistent. Why is there no boolean to toggle this logging of?
+		Factions.get().log(fme.getName()+" has set the power bonus/penalty for "+faction.getTag()+" to "+amount+".");
 	}
 }

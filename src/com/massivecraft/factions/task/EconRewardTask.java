@@ -6,14 +6,14 @@ import com.massivecraft.factions.entity.FactionColls;
 import com.massivecraft.mcore.ModuloRepeatTask;
 import com.massivecraft.mcore.util.TimeUnit;
 
-public class EconLandRewardTask extends ModuloRepeatTask
+public class EconRewardTask extends ModuloRepeatTask
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static EconLandRewardTask i = new EconLandRewardTask();
-	public static EconLandRewardTask get() { return i; }
+	private static EconRewardTask i = new EconRewardTask();
+	public static EconRewardTask get() { return i; }
 	
 	// -------------------------------------------- //
 	// OVERRIDE: MODULO REPEAT TASK

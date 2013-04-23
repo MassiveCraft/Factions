@@ -47,25 +47,11 @@ public class UConf extends Entity<UConf>
 	// POWER
 	// -------------------------------------------- //
 	
-	public double powerMax = 10.0;
-	public double powerMin = -10.0;
-	public double powerStarting = 10.0; // New players start out with this power level
+	// TODO: Group default values together?
 	
-	public double powerPerDeath = -4.0; // A death makes you lose 4 power
+	public double powerPlayerDefault = 0.0;
 	
-	public double powerPerHourOnline = 10.0;
-	public double powerPerHourOffline = 0.0;
-	
-	// players will no longer lose power from being offline once their power drops to this amount or less
-	public double powerLimitGainOnline = 10.0;
-	public double powerLimitGainOffline = 0.0;
-	public double powerLimitLossOnline = -10.0;
-	public double powerLimitLossOffline = 0.0;
-	
-	public boolean scaleNegativePower = false; // Power regeneration rate increase as power decreases
-	public double scaleNegativeDivisor = 40.0; // Divisor for inverse power regeneration curve
-	
-	public double powerFactionMax = 0.0;  // if greater than 0, the cap on how much power a faction can have (additional power from players beyond that will act as a "buffer" of sorts)
+	public double powerFactionMax = 1000.0;
 	
 	// -------------------------------------------- //
 	// DENY COMMANDS

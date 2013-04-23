@@ -51,8 +51,6 @@ permissions:
   factions.officer.any: {description: give or revoke officer rights for any player in any faction}
   factions.open: {description: switch if invitation is required to join}
   factions.perm: {description: change faction permissions}
-  factions.power: {description: show player power info}
-  factions.power.any: {description: view an other players power level}
   factions.powerboost: {description: apply permanent power bonus/penalty to specified player or faction}
   factions.promote: {description: promote lesser members in your faction}
   factions.relation: {description: set relation wish to another faction}
@@ -145,8 +143,6 @@ permissions:
       factions.money.*: true
       factions.open: true
       factions.perm: true
-      factions.power: true
-      factions.power.any: true
       factions.promote: true
       factions.relation: true
       factions.seechunk: true

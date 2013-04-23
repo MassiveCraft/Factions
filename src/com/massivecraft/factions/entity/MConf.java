@@ -1,13 +1,20 @@
 package com.massivecraft.factions.entity;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventPriority;
+import org.bukkit.permissions.PermissionDefault;
 
 import com.massivecraft.mcore.store.Entity;
+import com.massivecraft.mcore.util.MUtil;
+import com.massivecraft.mcore.util.PermUtil;
+import com.massivecraft.mcore.util.TimeUnit;
 
 public class MConf extends Entity<MConf>
 {
@@ -19,27 +26,73 @@ public class MConf extends Entity<MConf>
 	public static MConf get() { return i; }
 	
 	// -------------------------------------------- //
-	// COLORS
+	// OVERRIDE: ENTITY
 	// -------------------------------------------- //
 	
-	public ChatColor colorMember = ChatColor.GREEN;
-	public ChatColor colorAlly = ChatColor.DARK_PURPLE;
-	public ChatColor colorTruce = ChatColor.LIGHT_PURPLE;
-	public ChatColor colorNeutral = ChatColor.WHITE;
-	public ChatColor colorEnemy = ChatColor.RED;
-	
-	public ChatColor colorNoPVP = ChatColor.GOLD;
-	public ChatColor colorFriendlyFire = ChatColor.DARK_RED;
-	//public ChatColor colorWilderness = ChatColor.DARK_GREEN;
+	@Override
+	public MConf load(MConf that)
+	{
+		super.load(that);
+		
+		this.upsertPowerPerms();
+		
+		return this;
+	}
 	
 	// -------------------------------------------- //
-	// PREFIXES
+	// POWER
 	// -------------------------------------------- //
 	
-	public String prefixLeader = "**";
-	public String prefixOfficer = "*";
-	public String prefixMember = "+";
-	public String prefixRecruit = "-";
+	public long powerTaskMillis = TimeUnit.MILLIS_PER_MINUTE;
+	
+	public Map<String, Double> permToPowerMax = MUtil.map(
+		"factions.power.max.50", 50.0,
+		"factions.power.max.40", 40.0,
+		"factions.power.max.30", 30.0,
+		"factions.power.max.20", 20.0,
+		"factions.power.max.10", 10.0,
+		"factions.power.max.default", 10.0
+	);
+	
+	public Map<String, Double> permToPowerMin = MUtil.map(
+		"factions.power.min.50", 50.0,
+		"factions.power.min.40", 40.0,
+		"factions.power.min.30", 30.0,
+		"factions.power.min.20", 20.0,
+		"factions.power.min.10", 10.0,
+		"factions.power.min.default", 10.0
+	);
+	
+	public Map<String, Double> permToPowerHour = MUtil.map(
+		"factions.power.hour.50", 50.0,
+		"factions.power.hour.40", 40.0,
+		"factions.power.hour.30", 30.0,
+		"factions.power.hour.20", 20.0,
+		"factions.power.hour.10", 10.0,
+		"factions.power.hour.4", 4.0,
+		"factions.power.hour.2", 2.0,
+		"factions.power.hour.default", 2.0
+	);
+	
+	public Map<String, Double> permToPowerDeath = MUtil.map(
+		"factions.power.death.0", 0.0,
+		"factions.power.death.-2", -2.0,
+		"factions.power.death.default", -2.0
+	);
+	
+	public void upsertPowerPerms()
+	{
+		List<String> names = new ArrayList<String>();
+		names.addAll(this.permToPowerMax.keySet());
+		names.addAll(this.permToPowerMin.keySet());
+		names.addAll(this.permToPowerHour.keySet());
+		names.addAll(this.permToPowerDeath.keySet());
+		
+		for (String name : names)
+		{
+			PermUtil.get(true, true, name, name, PermissionDefault.FALSE);
+		}
+	}
 	
 	// -------------------------------------------- //
 	// CHAT
@@ -77,27 +130,27 @@ public class MConf extends Entity<MConf>
 	public Set<String> herochatAlliesWorlds = new HashSet<String>();
 	
 	// -------------------------------------------- //
-	// LOGGING
+	// COLORS
 	// -------------------------------------------- //
 	
-	public boolean logFactionCreate = true;
-	public boolean logFactionDisband = true;
-	public boolean logFactionJoin = true;
-	public boolean logFactionKick = true;
-	public boolean logFactionLeave = true;
-	public boolean logLandClaims = true;
-	public boolean logLandUnclaims = true;
-	public boolean logMoneyTransactions = true;
-	public boolean logPlayerCommands = true;
-
+	public ChatColor colorMember = ChatColor.GREEN;
+	public ChatColor colorAlly = ChatColor.DARK_PURPLE;
+	public ChatColor colorTruce = ChatColor.LIGHT_PURPLE;
+	public ChatColor colorNeutral = ChatColor.WHITE;
+	public ChatColor colorEnemy = ChatColor.RED;
+	
+	public ChatColor colorNoPVP = ChatColor.GOLD;
+	public ChatColor colorFriendlyFire = ChatColor.DARK_RED;
+	//public ChatColor colorWilderness = ChatColor.DARK_GREEN;
+	
 	// -------------------------------------------- //
-	// EXPLOITS
+	// PREFIXES
 	// -------------------------------------------- //
 	
-	public boolean handleExploitObsidianGenerators = true;
-	public boolean handleExploitEnderPearlClipping = true;
-	public boolean handleExploitInteractionSpam = true;
-	public boolean handleExploitTNTWaterlog = false;
+	public String prefixLeader = "**";
+	public String prefixOfficer = "*";
+	public String prefixMember = "+";
+	public String prefixRecruit = "-";
 	
 	// -------------------------------------------- //
 	// DERPY OVERRIDES
@@ -113,5 +166,28 @@ public class MConf extends Entity<MConf>
 	public Set<String> worldsNoClaiming = new LinkedHashSet<String>();
 	public Set<String> worldsNoPowerLoss = new LinkedHashSet<String>();
 	public Set<String> worldsIgnorePvP = new LinkedHashSet<String>();
+	
+	// -------------------------------------------- //
+	// EXPLOITS
+	// -------------------------------------------- //
+	
+	public boolean handleExploitObsidianGenerators = true;
+	public boolean handleExploitEnderPearlClipping = true;
+	public boolean handleExploitInteractionSpam = true;
+	public boolean handleExploitTNTWaterlog = false;
+	
+	// -------------------------------------------- //
+	// LOGGING
+	// -------------------------------------------- //
+	
+	public boolean logFactionCreate = true;
+	public boolean logFactionDisband = true;
+	public boolean logFactionJoin = true;
+	public boolean logFactionKick = true;
+	public boolean logFactionLeave = true;
+	public boolean logLandClaims = true;
+	public boolean logLandUnclaims = true;
+	public boolean logMoneyTransactions = true;
+	public boolean logPlayerCommands = true;
 
 }
