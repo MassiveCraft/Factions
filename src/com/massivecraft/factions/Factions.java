@@ -32,6 +32,8 @@ import com.massivecraft.factions.listeners.FactionsListenerEcon;
 import com.massivecraft.factions.listeners.FactionsListenerExploit;
 import com.massivecraft.factions.listeners.FactionsListenerMain;
 import com.massivecraft.factions.listeners.TodoFactionsPlayerListener;
+import com.massivecraft.factions.mixin.PowerMixin;
+import com.massivecraft.factions.mixin.PowerMixinDefault;
 import com.massivecraft.factions.task.AutoLeaveTask;
 import com.massivecraft.factions.task.EconRewardTask;
 import com.massivecraft.factions.task.PowerUpdateTask;
@@ -73,6 +75,11 @@ public class Factions extends MPlugin
 	// Database Initialized
 	private boolean databaseInitialized;
 	public boolean isDatabaseInitialized() { return this.databaseInitialized; }
+	
+	// Mixins
+	private PowerMixin powerMixin = null;
+	public PowerMixin getPowerMixin() { return this.powerMixin == null ? PowerMixinDefault.get() : this.powerMixin; }
+	public void setPowerMixin(PowerMixin powerMixin) { this.powerMixin = powerMixin; }
 
 	// -------------------------------------------- //
 	// OVERRIDE

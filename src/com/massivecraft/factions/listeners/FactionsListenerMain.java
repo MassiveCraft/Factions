@@ -60,7 +60,6 @@ import com.massivecraft.factions.event.FactionsEventPowerChange.PowerChangeReaso
 import com.massivecraft.factions.util.VisualizeUtil;
 import com.massivecraft.mcore.ps.PS;
 import com.massivecraft.mcore.util.MUtil;
-import com.massivecraft.mcore.util.PermUtil;
 import com.massivecraft.mcore.util.Txt;
 
 public class FactionsListenerMain implements Listener
@@ -109,14 +108,7 @@ public class FactionsListenerMain implements Listener
 		}
 		
 		// ... alter the power ...
-		double maxPower = PermUtil.pickFirstVal(player, MConf.get().permToPowerMax);
-		double minPower = PermUtil.pickFirstVal(player, MConf.get().permToPowerMin);
-		double deathPower = PermUtil.pickFirstVal(player, MConf.get().permToPowerDeath);
-		double oldPower = uplayer.getPower();
-		
-		double newPower = oldPower + deathPower;
-		newPower = Math.max(newPower, minPower);
-		newPower = Math.min(newPower, maxPower);
+		double newPower = uplayer.getPower() + uplayer.getPowerPerDeath();
 		
 		FactionsEventPowerChange powerChangeEvent = new FactionsEventPowerChange(null, uplayer, PowerChangeReason.DEATH, newPower);
 		powerChangeEvent.run();
@@ -127,7 +119,7 @@ public class FactionsListenerMain implements Listener
 		
 		// ... and inform the player.
 		// TODO: A progress bar here would be epic :)
-		uplayer.msg("<i>Your power is now <h>%.2f / %.2f", newPower, maxPower);
+		uplayer.msg("<i>Your power is now <h>%.2f / %.2f", newPower, uplayer.getPowerMax());
 	}
 	
 	// -------------------------------------------- //

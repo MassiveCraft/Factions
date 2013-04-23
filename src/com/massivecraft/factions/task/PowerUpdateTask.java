@@ -8,7 +8,6 @@ import com.massivecraft.factions.entity.UPlayer;
 import com.massivecraft.factions.event.FactionsEventPowerChange;
 import com.massivecraft.factions.event.FactionsEventPowerChange.PowerChangeReason;
 import com.massivecraft.mcore.ModuloRepeatTask;
-import com.massivecraft.mcore.util.PermUtil;
 import com.massivecraft.mcore.util.TimeUnit;
 
 public class PowerUpdateTask extends ModuloRepeatTask
@@ -45,16 +44,8 @@ public class PowerUpdateTask extends ModuloRepeatTask
 		{
 			if (player.isDead()) continue;
 			
-			double maxPower = PermUtil.pickFirstVal(player, MConf.get().permToPowerMax);
-			double minPower = PermUtil.pickFirstVal(player, MConf.get().permToPowerMin);
-			double hourPower = PermUtil.pickFirstVal(player, MConf.get().permToPowerHour);
-			
 			UPlayer uplayer = UPlayer.get(player);
-			double oldPower = uplayer.getPower();
-			
-			double newPower = oldPower + hourPower * millis / TimeUnit.MILLIS_PER_HOUR;
-			newPower = Math.max(newPower, minPower);
-			newPower = Math.min(newPower, maxPower);
+			double newPower = uplayer.getPower() + uplayer.getPowerPerHour() * millis / TimeUnit.MILLIS_PER_HOUR;
 			
 			FactionsEventPowerChange event = new FactionsEventPowerChange(null, uplayer, PowerChangeReason.TIME, newPower);
 			event.run();

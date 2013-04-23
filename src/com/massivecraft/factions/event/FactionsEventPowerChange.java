@@ -38,7 +38,7 @@ public class FactionsEventPowerChange extends FactionsEventAbstractSender
 		super(sender);
 		this.uplayer = uplayer;
 		this.reason = reason;
-		this.newPower = newPower;
+		this.newPower = uplayer.getLimitedPower(newPower);
 	}
 	
 	// -------------------------------------------- //

@@ -52,6 +52,15 @@ public class UConf extends Entity<UConf>
 	public Map<FPerm, Set<Rel>> defaultFactionPerms = FPerm.getDefaultDefaults();
 	
 	// -------------------------------------------- //
+	// POWER
+	// -------------------------------------------- //
+	
+	public double powerMax = 10.0;
+	public double powerMin = 0.0;
+	public double powerPerHour = 2.0;
+	public double powerPerDeath = -2.0;
+	
+	// -------------------------------------------- //
 	// DENY COMMANDS
 	// -------------------------------------------- //
 	

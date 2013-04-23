@@ -289,6 +289,42 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 	// FIELD: power
 	// -------------------------------------------- //
 	
+	// MIXIN: RAW
+	
+	public double getPowerMaxUniversal()
+	{
+		return Factions.get().getPowerMixin().getMaxUniversal(this);
+	}
+	
+	public double getPowerMax()
+	{
+		return Factions.get().getPowerMixin().getMax(this);
+	}
+	
+	public double getPowerMin()
+	{
+		return Factions.get().getPowerMixin().getMin(this);
+	}
+	
+	public double getPowerPerHour()
+	{
+		return Factions.get().getPowerMixin().getPerHour(this);
+	}
+	
+	public double getPowerPerDeath()
+	{
+		return Factions.get().getPowerMixin().getPerDeath(this);
+	}
+	
+	// MIXIN: FINER
+	
+	public double getLimitedPower(double power)
+	{
+		power = Math.max(power, this.getPowerMin());
+		power = Math.min(power, this.getPowerMax());
+		return power;
+	}
+	
 	// RAW
 	
 	public double getDefaultPower()
@@ -300,12 +336,14 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 	{
 		Double ret = this.power;
 		if (ret == null) ret = this.getDefaultPower();
+		ret = this.getLimitedPower(ret);
 		return ret;
 	}
 	
 	public void setPower(Double power)
 	{
 		if (power == null || MUtil.equals(power, this.getDefaultPower())) power = null;
+		power = this.getLimitedPower(power);
 		this.power = power;
 		this.changed();
 	}
