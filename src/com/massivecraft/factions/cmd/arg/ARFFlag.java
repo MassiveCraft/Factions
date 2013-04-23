@@ -15,14 +15,14 @@ public class ARFFlag extends ARAbstractSelect<FFlag>
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
-	
+
 	private static ARFFlag i = new ARFFlag();
 	public static ARFFlag get() { return i; }
-	
+
 	// -------------------------------------------- //
 	// OVERRIDE
 	// -------------------------------------------- //
-	
+
 	@Override
 	public String typename()
 	{
@@ -38,14 +38,14 @@ public class ARFFlag extends ARAbstractSelect<FFlag>
 	@Override
 	public Collection<String> altNames(CommandSender sender)
 	{
-		List<String> ret = new ArrayList<String>(); 
-		
+		List<String> ret = new ArrayList<String>();
+
 		for (FFlag fflag : FFlag.values())
 		{
 			ret.add(Txt.getNicedEnum(fflag));
 		}
-		
+
 		return ret;
 	}
-	
+
 }

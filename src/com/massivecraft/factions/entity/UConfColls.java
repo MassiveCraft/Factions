@@ -11,14 +11,14 @@ public class UConfColls extends Colls<UConfColl, UConf>
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
-	
+
 	private static UConfColls i = new UConfColls();
 	public static UConfColls get() { return i; }
-	
+
 	// -------------------------------------------- //
 	// OVERRIDE: COLLS
 	// -------------------------------------------- //
-	
+
 	@Override
 	public UConfColl createColl(String collName)
 	{
@@ -30,13 +30,13 @@ public class UConfColls extends Colls<UConfColl, UConf>
 	{
 		return Factions.get().getAspect();
 	}
-	
+
 	@Override
 	public String getBasename()
 	{
 		return Const.COLLECTION_BASENAME_UCONF;
 	}
-	
+
 	@Override
 	public UConf get2(Object worldNameExtractable)
 	{
@@ -44,6 +44,5 @@ public class UConfColls extends Colls<UConfColl, UConf>
 		if (coll == null) return null;
 		return coll.get(MCore.INSTANCE);
 	}
-	
-}
 
+}

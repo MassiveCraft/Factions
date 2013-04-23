@@ -15,25 +15,25 @@ public class TerritoryAccess
 	// -------------------------------------------- //
 	// FIELDS: RAW
 	// -------------------------------------------- //
-	
+
 	private String hostFactionId;
 	public String getHostFactionId() { return this.hostFactionId; }
 	public void setHostFactionId(String hostFactionId) { this.hostFactionId = hostFactionId; }
-	
+
 	private boolean hostFactionAllowed = true;
 	public boolean isHostFactionAllowed() { return this.hostFactionAllowed; }
 	public void setHostFactionAllowed(boolean hostFactionAllowed) { this.hostFactionAllowed = hostFactionAllowed; }
-	
+
 	private Set<String> factionIds = new LinkedHashSet<String>();
 	public Set<String> getFactionIds() { return this.factionIds; }
-	
+
 	private Set<String> fplayerIds = new LinkedHashSet<String>();
 	public Set<String> getFPlayerIds() { return this.fplayerIds; }
 
 	// -------------------------------------------- //
 	// CONSTRUCT
 	// -------------------------------------------- //
-	
+
 	public TerritoryAccess(String hostFactionId)
 	{
 		this.hostFactionId = hostFactionId;
@@ -41,9 +41,9 @@ public class TerritoryAccess
 
 	public TerritoryAccess()
 	{
-		
+
 	}
-	
+
 	// -------------------------------------------- //
 	// FIELDS: UTILS
 	// -------------------------------------------- //
@@ -52,7 +52,7 @@ public class TerritoryAccess
 	public void addFaction(Faction faction) { this.addFaction(faction.getId()); }
 	public void removeFaction(String factionId) { this.getFactionIds().remove(factionId); }
 	public void removeFaction(Faction faction) { this.removeFaction(faction.getId()); }
-	
+
 	// return true if faction was added, false if it was removed
 	public boolean toggleFaction(String factionId)
 	{
@@ -75,13 +75,13 @@ public class TerritoryAccess
 	{
 		return this.toggleFaction(faction.getId());
 	}
-	
-	
+
+
 	public void addFPlayer(String fplayerID) { this.getFPlayerIds().add(fplayerID); }
 	public void addFPlayer(UPlayer fplayer) { this.addFPlayer(fplayer.getId()); }
 	public void removeFPlayer(String fplayerID) { this.getFPlayerIds().remove(fplayerID); }
 	public void removeFPlayer(UPlayer fplayer) { this.removeFPlayer(fplayer.getId()); }
-	
+
 	public boolean toggleFPlayer(String fplayerID)
 	{
 		if (this.getFPlayerIds().contains(fplayerID))
@@ -96,8 +96,8 @@ public class TerritoryAccess
 	{
 		return this.toggleFPlayer(fplayer.getId());
 	}
-	
-	
+
+
 	public boolean doesHostFactionMatch(Object testSubject)
 	{
 		if (testSubject instanceof String)
@@ -110,17 +110,17 @@ public class TerritoryAccess
 			return hostFactionId.equals(((Faction)testSubject).getId());
 		return false;
 	}
-	
+
 	// -------------------------------------------- //
 	// UTILS
 	// -------------------------------------------- //
-	
+
 	// considered "default" if host faction is still allowed and nobody has been granted access
 	public boolean isDefault()
 	{
 		return this.hostFactionAllowed && this.factionIds.isEmpty() && this.fplayerIds.isEmpty();
 	}
-	
+
 	public void setDefault(String factionId)
 	{
 		this.hostFactionId = factionId;
@@ -200,7 +200,7 @@ public class TerritoryAccess
 	public boolean equals(Object obj)
 	{
 		if (obj == this) return true;
-		
+
 		if (!(obj instanceof TerritoryAccess)) return false;
 
 		TerritoryAccess that = (TerritoryAccess) obj;

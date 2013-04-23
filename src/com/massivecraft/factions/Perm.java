@@ -9,7 +9,7 @@ public enum Perm
 	// -------------------------------------------- //
 	// ENUM
 	// -------------------------------------------- //
-	
+
 	ACCESS("access"),
 	ACCESS_ANY("access.any"),
 	ACCESS_VIEW("access.view"),
@@ -67,37 +67,37 @@ public enum Perm
 	UNCLAIM("unclaim"),
 	UNCLAIM_ALL("unclaimall"),
 	VERSION("version"),
-	
+
 	// END OF LIST
 	;
-	
+
 	// -------------------------------------------- //
 	// FIELDS
 	// -------------------------------------------- //
-	
+
 	public final String node;
-	
+
 	// -------------------------------------------- //
 	// CONSTRUCT
 	// -------------------------------------------- //
-	
+
 	Perm(final String node)
 	{
 		this.node = "factions."+node;
 	}
-	
+
 	// -------------------------------------------- //
 	// HAS
 	// -------------------------------------------- //
-	
+
 	public boolean has(Permissible permissible, boolean informSenderIfNot)
 	{
 		return PermUtil.has(permissible, this.node, informSenderIfNot);
 	}
-	
+
 	public boolean has(Permissible permissible)
 	{
 		return has(permissible, false);
 	}
-	
+
 }

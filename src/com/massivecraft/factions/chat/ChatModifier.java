@@ -2,7 +2,6 @@ package com.massivecraft.factions.chat;
 
 import com.massivecraft.factions.entity.UPlayer;
 
-
 public interface ChatModifier
 {
 	public String getId();

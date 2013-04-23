@@ -28,14 +28,14 @@ public class TerritoryAccessAdapter implements JsonDeserializer<TerritoryAccess>
 	public static final String OPEN = "open";
 	public static final String FACTIONS = "factions";
 	public static final String FPLAYERS = "fplayers";
-	
+
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
-	
+
 	private static TerritoryAccessAdapter i = new TerritoryAccessAdapter();
 	public static TerritoryAccessAdapter get() { return i; }
-	
+
 	//----------------------------------------------//
 	// OVERRIDE
 	//----------------------------------------------//
@@ -137,5 +137,5 @@ public class TerritoryAccessAdapter implements JsonDeserializer<TerritoryAccess>
 			return null;
 		}
 	}
-	
+
 }

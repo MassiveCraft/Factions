@@ -16,30 +16,30 @@ public class BoardColl extends Coll<Board> implements BoardInterface
 	// -------------------------------------------- //
 	// CONSTRUCT
 	// -------------------------------------------- //
-	
+
 	public BoardColl(String name)
 	{
 		super(name, Board.class, MStore.getDb(ConfServer.dburi), Factions.get(), true, true);
 	}
-	
+
 	// -------------------------------------------- //
 	// OVERRIDE: COLL
 	// -------------------------------------------- //
-	
+
 	@Override
 	public String fixId(Object oid)
 	{
 		if (oid == null) return null;
 		if (oid instanceof String) return (String)oid;
 		if (oid instanceof Board) return this.getId(oid);
-		
+
 		return MUtil.extract(String.class, "worldName", oid);
 	}
-	
+
 	// -------------------------------------------- //
 	// OVERRIDE: BOARD
 	// -------------------------------------------- //
-	
+
 	@Override
 	public TerritoryAccess getTerritoryAccessAt(PS ps)
 	{
@@ -48,7 +48,7 @@ public class BoardColl extends Coll<Board> implements BoardInterface
 		if (board == null) return null;
 		return board.getTerritoryAccessAt(ps);
 	}
-	
+
 	@Override
 	public Faction getFactionAt(PS ps)
 	{
@@ -57,7 +57,7 @@ public class BoardColl extends Coll<Board> implements BoardInterface
 		if (board == null) return null;
 		return board.getFactionAt(ps);
 	}
-	
+
 	// SET
 
 	@Override
@@ -68,7 +68,7 @@ public class BoardColl extends Coll<Board> implements BoardInterface
 		if (board == null) return;
 		board.setTerritoryAccessAt(ps, territoryAccess);
 	}
-	
+
 	@Override
 	public void setFactionAt(PS ps, Faction faction)
 	{
@@ -77,9 +77,9 @@ public class BoardColl extends Coll<Board> implements BoardInterface
 		if (board == null) return;
 		board.setFactionAt(ps, faction);
 	}
-	
+
 	// REMOVE
-	
+
 	@Override
 	public void removeAt(PS ps)
 	{
@@ -88,7 +88,7 @@ public class BoardColl extends Coll<Board> implements BoardInterface
 		if (board == null) return;
 		board.removeAt(ps);
 	}
-	
+
 	@Override
 	public void removeAll(Faction faction)
 	{
@@ -97,7 +97,7 @@ public class BoardColl extends Coll<Board> implements BoardInterface
 			board.removeAll(faction);
 		}
 	}
-	
+
 	@Override
 	public void clean()
 	{
@@ -106,9 +106,9 @@ public class BoardColl extends Coll<Board> implements BoardInterface
 			board.clean();
 		}
 	}
-	
+
 	// COUNT
-	
+
 	@Override
 	public int getCount(Faction faction)
 	{
@@ -119,9 +119,9 @@ public class BoardColl extends Coll<Board> implements BoardInterface
 		}
 		return ret;
 	}
-	
+
 	// NEARBY DETECTION
-	
+
 	@Override
 	public boolean isBorderPs(PS ps)
 	{
@@ -139,9 +139,9 @@ public class BoardColl extends Coll<Board> implements BoardInterface
 		if (board == null) return false;
 		return board.isConnectedPs(ps, faction);
 	}
-	
+
 	// MAP GENERATION
-	
+
 	@Override
 	public ArrayList<String> getMap(RelationParticipator observer, PS centerPs, double inDegrees)
 	{
@@ -150,5 +150,5 @@ public class BoardColl extends Coll<Board> implements BoardInterface
 		if (board == null) return null;
 		return board.getMap(observer, centerPs, inDegrees);
 	}
-	
+
 }

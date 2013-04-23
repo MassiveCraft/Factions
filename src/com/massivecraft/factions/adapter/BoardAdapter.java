@@ -19,14 +19,14 @@ public class BoardAdapter implements JsonDeserializer<Board>, JsonSerializer<Boa
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
-	
+
 	private static BoardAdapter i = new BoardAdapter();
 	public static BoardAdapter get() { return i; }
-	
+
 	// -------------------------------------------- //
 	// OVERRIDE
 	// -------------------------------------------- //
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public Board deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException
@@ -39,5 +39,5 @@ public class BoardAdapter implements JsonDeserializer<Board>, JsonSerializer<Boa
 	{
 		return context.serialize(src.getMap(), Board.MAP_TYPE);
 	}
-	
+
 }

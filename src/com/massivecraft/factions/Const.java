@@ -18,22 +18,22 @@ public class Const
 	public static final String COLLECTION_BASENAME_MPLAYER = COLLECTION_BASENAME_+"mplayer";
 	public static final String COLLECTION_BASENAME_UCONF = COLLECTION_BASENAME_+"uconf";
 	public static final String COLLECTION_BASENAME_MCONF = COLLECTION_BASENAME_+"mconf";
-	
+
 	// Aspect Ids
 	public static final String ASPECT_ID = "factions";
-	
+
 	// Defautlt faction ids
 	public static final String FACTIONID_NONE = "0";
 	public static final String FACTIONID_SAFEZONE = "-1";
 	public static final String FACTIONID_WARZONE = "-2";
-	
+
 	// ASCII Map
 	public static final int MAP_HEIGHT = 8;
 	public static final int MAP_WIDTH = 39;
 	public static final char[] MAP_KEY_CHARS = "\\/#?$%=&^ABCDEFGHJKLMNOPQRSTUVWXYZ1234567890abcdeghjmnopqrsuvwxyz".toCharArray();
-	
+
 	// Enumerations
-	
+
 	public static final Set<Material> MATERIALS_EDIT_ON_INTERACT = MUtil.set(
 		Material.DIODE_BLOCK_OFF,
 		Material.DIODE_BLOCK_ON,
@@ -41,7 +41,7 @@ public class Const
 		Material.CAULDRON,
 		Material.SOIL
 	);
-	
+
 	public static final Set<Material> MATERIALS_EDIT_TOOLS = MUtil.set(
 		Material.FIREBALL,
 		Material.FLINT_AND_STEEL,
@@ -49,13 +49,13 @@ public class Const
 		Material.WATER_BUCKET,
 		Material.LAVA_BUCKET
 	);
-	
+
 	public static final Set<Material> MATERIALS_DOOR = MUtil.set(
 		Material.WOODEN_DOOR,
 		Material.TRAP_DOOR,
 		Material.FENCE_GATE
 	);
-	
+
 	public static final Set<Material> MATERIALS_CONTAINER = MUtil.set(
 		Material.DISPENSER,
 		Material.CHEST,
@@ -67,10 +67,10 @@ public class Const
 		Material.ANVIL,
 		Material.BEACON
 	);
-	
+
 	//public static Set<Material> territoryProtectedMaterialsWhenOffline = EnumSet.noneOf(Material.class);
 	//public static Set<Material> territoryDenyUseageMaterialsWhenOffline = EnumSet.noneOf(Material.class);
-	
+
 	public static final Set<EntityType> ENTITY_TYPES_MONSTERS = MUtil.set(
 		EntityType.BLAZE,
 		EntityType.CAVE_SPIDER,

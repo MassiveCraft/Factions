@@ -14,46 +14,46 @@ public class MConf extends Entity<MConf>
 	// -------------------------------------------- //
 	// META
 	// -------------------------------------------- //
-	
+
 	protected static transient MConf i;
 	public static MConf get() { return i; }
-	
+
 	// -------------------------------------------- //
 	// COLORS
 	// -------------------------------------------- //
-	
+
 	public ChatColor colorMember = ChatColor.GREEN;
 	public ChatColor colorAlly = ChatColor.DARK_PURPLE;
 	public ChatColor colorTruce = ChatColor.LIGHT_PURPLE;
 	public ChatColor colorNeutral = ChatColor.WHITE;
 	public ChatColor colorEnemy = ChatColor.RED;
-	
+
 	public ChatColor colorNoPVP = ChatColor.GOLD;
 	public ChatColor colorFriendlyFire = ChatColor.DARK_RED;
 	//public ChatColor colorWilderness = ChatColor.DARK_GREEN;
-	
+
 	// -------------------------------------------- //
 	// PREFIXES
 	// -------------------------------------------- //
-	
+
 	public String prefixLeader = "**";
 	public String prefixOfficer = "*";
 	public String prefixMember = "+";
 	public String prefixRecruit = "-";
-	
+
 	// -------------------------------------------- //
 	// CHAT
 	// -------------------------------------------- //
-	
+
 	// We offer a simple standard way to set the format
 	public boolean chatSetFormat = false;
 	public EventPriority chatSetFormatAt = EventPriority.LOWEST;
 	public String chatSetFormatTo = "<{factions_relcolor}§l{factions_roleprefix}§r{factions_relcolor}{factions_tag|rp}§f%1$s> %2$s";
-	
+
 	// We offer a simple standard way to parse the chat tags
 	public boolean chatParseTags = true;
 	public EventPriority chatParseTagsAt = EventPriority.LOW;
-	
+
 	// HeroChat: The Faction Channel
 	public String herochatFactionName = "Faction";
 	public String herochatFactionNick = "F";
@@ -64,7 +64,7 @@ public class MConf extends Entity<MConf>
 	public boolean herochatFactionCrossWorld = true;
 	public boolean herochatFactionMuted = false;
 	public Set<String> herochatFactionWorlds = new HashSet<String>();
-	
+
 	// HeroChat: The Allies Channel
 	public String herochatAlliesName = "Allies";
 	public String herochatAlliesNick = "A";
@@ -75,11 +75,11 @@ public class MConf extends Entity<MConf>
 	public boolean herochatAlliesCrossWorld = true;
 	public boolean herochatAlliesMuted = false;
 	public Set<String> herochatAlliesWorlds = new HashSet<String>();
-	
+
 	// -------------------------------------------- //
 	// LOGGING
 	// -------------------------------------------- //
-	
+
 	public boolean logFactionCreate = true;
 	public boolean logFactionDisband = true;
 	public boolean logFactionJoin = true;
@@ -93,12 +93,12 @@ public class MConf extends Entity<MConf>
 	// -------------------------------------------- //
 	// EXPLOITS
 	// -------------------------------------------- //
-	
+
 	public boolean handleExploitObsidianGenerators = true;
 	public boolean handleExploitEnderPearlClipping = true;
 	public boolean handleExploitInteractionSpam = true;
 	public boolean handleExploitTNTWaterlog = false;
-	
+
 	// -------------------------------------------- //
 	// DERPY OVERRIDES
 	// -------------------------------------------- //
@@ -106,7 +106,7 @@ public class MConf extends Entity<MConf>
 	// TODO: These are derpy because they possibly use an invalid design approact.
 	// After universe support is added. Would some of these be removed?
 	// Could it also be more customizeable using some sort of permission lookup map?
-	
+
 	// mainly for other plugins/mods that use a fake player to take actions, which shouldn't be subject to our protections
 	public Set<String> playersWhoBypassAllProtection = new LinkedHashSet<String>();
 

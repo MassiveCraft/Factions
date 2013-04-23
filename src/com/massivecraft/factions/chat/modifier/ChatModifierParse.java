@@ -9,11 +9,11 @@ public class ChatModifierParse extends ChatModifierAbstract
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
-	
+
 	private ChatModifierParse() { super("parse"); }
 	private static ChatModifierParse i = new ChatModifierParse();
 	public static ChatModifierParse get() { return i; }
-	
+
 	// -------------------------------------------- //
 	// OVERRIDE
 	// -------------------------------------------- //
