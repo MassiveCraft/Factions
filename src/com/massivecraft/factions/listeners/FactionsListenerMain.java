@@ -338,11 +338,9 @@ public class FactionsListenerMain implements Listener
 		
 		// ... clean up the command ...
 		String command = event.getMessage();
-		command = Txt.removeLeadingCommandDust(command);
-		command = command.toLowerCase();
-		command = command.trim();
-		
-		if (uplayer.hasFaction() && uplayer.getFaction().getFlag(FFlag.PERMANENT) && containsCommand(command, ConfServer.permanentFactionMemberDenyCommands))
+		command = Txt.removeLeadingCommandDust(command).toLowerCase().trim();
+
+		if ((!ConfServer.permanentFactionMemberDenyCommands.isEmpty()) && uplayer.hasFaction() && uplayer.getFaction().getFlag(FFlag.PERMANENT) && containsCommand(command, ConfServer.permanentFactionMemberDenyCommands))
 		{
 			uplayer.msg("<b>You can't use \"<h>/%s<b>\" as member of a permanent faction.", command);
 			event.setCancelled(true);
@@ -352,17 +350,24 @@ public class FactionsListenerMain implements Listener
 		Rel rel = uplayer.getRelationToLocation();
 		PS ps = PS.valueOf(player).getChunk(true);
 		if (BoardColls.get().getFactionAt(ps).isNone()) return;
-		
-		if (rel == Rel.NEUTRAL && containsCommand(command, ConfServer.territoryNeutralDenyCommands))
+
+		if ((!ConfServer.territoryEnemyDenyCommands.isEmpty()) && rel == Rel.ENEMY && containsCommand(command, ConfServer.territoryEnemyDenyCommands))
+		{
+			uplayer.msg("<b>You can't use \"<h>/%s<b>\" in enemy territory.", command);
+			event.setCancelled(true);
+			return;
+		}
+
+		if ((!ConfServer.territoryNeutralDenyCommands.isEmpty()) && rel == Rel.NEUTRAL && containsCommand(command, ConfServer.territoryNeutralDenyCommands))
 		{
 			uplayer.msg("<b>You can't use \"<h>/%s<b>\" in neutral territory.", command);
 			event.setCancelled(true);
 			return;
 		}
 
-		if (rel == Rel.ENEMY && containsCommand(command, ConfServer.territoryEnemyDenyCommands))
+		if ((!ConfServer.territoryAllyDenyCommands.isEmpty()) && rel == Rel.ALLY && containsCommand(command, ConfServer.territoryAllyDenyCommands))
 		{
-			uplayer.msg("<b>You can't use \"<h>/%s<b>\" in enemy territory.", command);
+			uplayer.msg("<b>You can't use \"<h>/%s<b>\" in allied territory.", command);
 			event.setCancelled(true);
 			return;
 		}

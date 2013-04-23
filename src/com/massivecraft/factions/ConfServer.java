@@ -66,6 +66,7 @@ public class ConfServer extends SimpleConfig
 	public static Set<String> permanentFactionMemberDenyCommands = new LinkedHashSet<String>();
 
 	// commands which will be prevented when in claimed territory of another faction
+	public static Set<String> territoryAllyDenyCommands = new LinkedHashSet<String>();
 	public static Set<String> territoryNeutralDenyCommands = new LinkedHashSet<String>();
 	public static Set<String> territoryEnemyDenyCommands = MUtil.set("home", "sethome", "spawn", "tpahere", "tpaccept", "tpa", "warp");
 	
