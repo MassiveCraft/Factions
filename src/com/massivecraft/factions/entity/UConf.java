@@ -61,15 +61,12 @@ public class UConf extends Entity<UConf>
 	public List<String> denyCommandsPermanentFactionMember = new ArrayList<String>();
 
 	// commands which will be prevented when in claimed territory of another faction
-	public List<String> denyCommandsTerritoryNeutral = new ArrayList<String>();
-	public List<String> denyCommandsTerritoryEnemy = MUtil.list(
-		"home",
-		"sethome",
-		"spawn",
-		"tpahere",
-		"tpaccept",
-		"tpa",
-		"warp"
+	public Map<Rel, List<String>> denyCommandsTerritoryRelation = MUtil.map(
+		Rel.ENEMY, MUtil.list("home", "sethome", "spawn", "tpahere", "tpaccept", "tpa", "warp"),
+		Rel.NEUTRAL, new ArrayList<String>(),
+		Rel.TRUCE, new ArrayList<String>(),
+		Rel.ALLY, new ArrayList<String>(),
+		Rel.MEMBER, new ArrayList<String>()
 	);
 	
 }

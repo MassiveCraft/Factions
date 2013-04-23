@@ -3,6 +3,7 @@ package com.massivecraft.factions.listeners;
 import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
@@ -351,6 +352,7 @@ public class FactionsListenerMain implements Listener
 		command = command.toLowerCase();
 		command = command.trim();
 		
+		// ... the command may be denied for members of permanent factions ...
 		if (uplayer.hasFaction() && uplayer.getFaction().getFlag(FFlag.PERMANENT) && containsCommand(command, UConf.get(player).denyCommandsPermanentFactionMember))
 		{
 			uplayer.msg("<b>You can't use \"<h>/%s<b>\" as member of a permanent faction.", command);
@@ -358,23 +360,16 @@ public class FactionsListenerMain implements Listener
 			return;
 		}
 		
+		// ... the command may be denied in the territory of this relation type ...
 		Rel rel = uplayer.getRelationToLocation();
 		PS ps = PS.valueOf(player).getChunk(true);
 		if (BoardColls.get().getFactionAt(ps).isNone()) return;
 		
-		if (rel == Rel.NEUTRAL && containsCommand(command, UConf.get(player).denyCommandsTerritoryNeutral))
-		{
-			uplayer.msg("<b>You can't use \"<h>/%s<b>\" in neutral territory.", command);
-			event.setCancelled(true);
-			return;
-		}
-
-		if (rel == Rel.ENEMY && containsCommand(command, UConf.get(player).denyCommandsTerritoryEnemy))
-		{
-			uplayer.msg("<b>You can't use \"<h>/%s<b>\" in enemy territory.", command);
-			event.setCancelled(true);
-			return;
-		}
+		List<String> deniedCommands = UConf.get(player).denyCommandsTerritoryRelation.get(rel);
+		if (!containsCommand(command, deniedCommands)) return;
+		
+		uplayer.msg("<b>You can't use \"<h>/%s<b>\" in %s territory.", Txt.getNicedEnum(rel), command);
+		event.setCancelled(true);
 	}
 
 	private static boolean containsCommand(String needle, Collection<String> haystack)
