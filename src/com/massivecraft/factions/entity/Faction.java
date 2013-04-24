@@ -8,7 +8,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.Const;
 import com.massivecraft.factions.EconomyParticipator;
 import com.massivecraft.factions.FFlag;
@@ -791,7 +790,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	public void promoteNewLeader()
 	{
 		if ( ! this.isNormal()) return;
-		if (this.getFlag(FFlag.PERMANENT) && ConfServer.permanentFactionsDisableLeaderPromotion) return;
+		if (this.getFlag(FFlag.PERMANENT) && UConf.get(this).permanentFactionsDisableLeaderPromotion) return;
 
 		UPlayer oldLeader = this.getLeader();
 

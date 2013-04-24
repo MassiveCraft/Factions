@@ -660,7 +660,7 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 		if (Econ.payForAction(cost, this, "claim this land")) return false;
 
 		// TODO: The LWC integration should listen to Monitor for the claim event.
-		if (LWCFeatures.getEnabled() && forFaction.isNormal() && ConfServer.onCaptureResetLwcLocks)
+		if (LWCFeatures.getEnabled() && forFaction.isNormal() && UConf.get(forFaction).onCaptureResetLwcLocks)
 		{
 			LWCFeatures.clearOtherProtections(psChunk, this.getFaction());
 		}

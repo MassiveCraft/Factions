@@ -30,21 +30,6 @@ public class ConfServer extends SimpleConfig
 	public static double autoLeaveRoutineRunsEveryXMinutes = 5.0;
 	public static boolean removePlayerDataWhenBanned = true;
 	
-
-	
-	// -------------------------------------------- //
-	// PVP
-	// -------------------------------------------- //
-	
-	public static boolean disablePVPForFactionlessPlayers = false;
-	public static boolean enablePVPAgainstFactionlessInAttackersLand = false;
-	
-	// -------------------------------------------- //
-	// ASSORTED
-	// -------------------------------------------- //
-	
-	public static boolean permanentFactionsDisableLeaderPromotion = false;
-	
 	// -------------------------------------------- //
 	// CLAIMS
 	// -------------------------------------------- //
@@ -58,28 +43,7 @@ public class ConfServer extends SimpleConfig
 	// if someone is doing a radius claim and the process fails to claim land this many times in a row, it will exit
 	public static int radiusClaimFailureLimit = 9;
 
-	//public static double considerFactionsReallyOfflineAfterXMinutes = 0.0;
 	
-	// -------------------------------------------- //
-	// ASSORTED
-	// -------------------------------------------- //
-	
-	public static int actionDeniedPainAmount = 2;
-	
-	// -------------------------------------------- //
-	// ASSORTED
-	// -------------------------------------------- //
-	
-	// TODO: Should this be based on a permission node lookup map?
-	public static double territoryShieldFactor = 0.3;
-
-	// for claimed areas where further faction-member ownership can be defined
-
-	// -------------------------------------------- //
-	// ASSORTED
-	// -------------------------------------------- //
-	
-	public static boolean pistonProtectionThroughDenyBuild = true;	
 
 	// -------------------------------------------- //
 	// INTEGRATION: WORLD GUARD
@@ -87,18 +51,19 @@ public class ConfServer extends SimpleConfig
 	
 	public static boolean worldGuardChecking = false;
 
-	// -------------------------------------------- //
-	// INTEGRATION: LWC
-	// -------------------------------------------- //
 	
-	public static boolean onUnclaimResetLwcLocks = false;
-	public static boolean onCaptureResetLwcLocks = false;
 	
 	// -------------------------------------------- //
 	// INTEGRATION: ECONOMY
 	// -------------------------------------------- //
 	
+	public static int econLandRewardTaskRunsEveryXMinutes = 20;
+	
 	public static boolean econEnabled = false;
+	
+	// TODO: Rename to include unit.
+	public static double econLandReward = 0.00;
+	
 	public static String econUniverseAccount = "";
 	
 	public static double econCostClaimWilderness = 30.0;
@@ -124,8 +89,7 @@ public class ConfServer extends SimpleConfig
 	public static double econCostNeutral = 0.0;
 	public static double econCostEnemy = 0.0;
 
-	public static int econLandRewardTaskRunsEveryXMinutes = 20;
-	public static double econLandReward = 0.00;
+	
 	
 	//Faction banks, to pay for land claiming and other costs instead of individuals paying for them
 	public static boolean bankEnabled = true;

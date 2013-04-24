@@ -10,7 +10,6 @@ import java.util.concurrent.ConcurrentSkipListMap;
 
 import org.bukkit.ChatColor;
 
-import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.Const;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.RelationParticipator;
@@ -112,7 +111,7 @@ public class Board extends Entity<Board> implements BoardInterface
 		{
 			// TODO: Listen to an event instead!
 			// NOTE: And this is probably the place where the event should be triggered!
-			if (ConfServer.onUnclaimResetLwcLocks && LWCFeatures.getEnabled())
+			if (UConf.get(ps).onUnclaimResetLwcLocks && LWCFeatures.getEnabled())
 			{
 				LWCFeatures.clearAllProtections(ps);
 			}

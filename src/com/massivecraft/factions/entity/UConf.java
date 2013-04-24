@@ -26,15 +26,26 @@ public class UConf extends Entity<UConf>
 	// -------------------------------------------- //
 	// CORE
 	// -------------------------------------------- //
-	
-	public boolean canLeaveWithNegativePower = true;
-	
+
 	public int factionMemberLimit = 0;
 	public double factionPowerMax = 1000.0;
 	
 	public int factionTagLengthMin = 3;
 	public int factionTagLengthMax = 10;
 	public boolean factionTagForceUpperCase = false;
+	
+	// -------------------------------------------- //
+	// ASSORTED
+	// -------------------------------------------- //
+	
+	public boolean permanentFactionsDisableLeaderPromotion = false;
+	
+	public int actionDeniedPainAmount = 2;
+	
+	public boolean disablePVPForFactionlessPlayers = false;
+	public boolean enablePVPAgainstFactionlessInAttackersLand = false;
+	
+	public double territoryShieldFactor = 0.3;
 	
 	// -------------------------------------------- //
 	// DEFAULTS
@@ -59,6 +70,8 @@ public class UConf extends Entity<UConf>
 	public double powerMin = 0.0;
 	public double powerPerHour = 2.0;
 	public double powerPerDeath = -2.0;
+	
+	public boolean canLeaveWithNegativePower = true;
 	
 	// -------------------------------------------- //
 	// HOMES
@@ -88,4 +101,11 @@ public class UConf extends Entity<UConf>
 		Rel.MEMBER, new ArrayList<String>()
 	);
 	
+	// -------------------------------------------- //
+	// INTEGRATION: LWC
+	// -------------------------------------------- //
+	
+	public boolean onUnclaimResetLwcLocks = false;
+	public boolean onCaptureResetLwcLocks = false;
+
 }

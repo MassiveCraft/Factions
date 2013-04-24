@@ -226,20 +226,21 @@ public class FactionsListenerMain implements Listener
 
 		Faction defendFaction = fdefender.getFaction();
 		Faction attackFaction = fattacker.getFaction();
+		UConf uconf = UConf.get(attackFaction);
 
-		if (attackFaction.isNone() && ConfServer.disablePVPForFactionlessPlayers)
+		if (attackFaction.isNone() && uconf.disablePVPForFactionlessPlayers)
 		{
 			if (notify) fattacker.msg("<i>You can't hurt other players until you join a faction.");
 			return false;
 		}
 		else if (defendFaction.isNone())
 		{
-			if (defenderPsFaction == attackFaction && ConfServer.enablePVPAgainstFactionlessInAttackersLand)
+			if (defenderPsFaction == attackFaction && uconf.enablePVPAgainstFactionlessInAttackersLand)
 			{
 				// Allow PVP vs. Factionless in attacker's faction territory
 				return true;
 			}
-			else if (ConfServer.disablePVPForFactionlessPlayers)
+			else if (uconf.disablePVPForFactionlessPlayers)
 			{
 				if (notify) fattacker.msg("<i>You can't hurt players who are not currently in a faction.");
 				return false;
@@ -269,15 +270,15 @@ public class FactionsListenerMain implements Listener
 
 		// Damage will be dealt. However check if the damage should be reduced.
 		int damage = event.getDamage();
-		if (damage > 0.0 && fdefender.hasFaction() && ownTerritory && ConfServer.territoryShieldFactor > 0)
+		if (damage > 0.0 && fdefender.hasFaction() && ownTerritory && uconf.territoryShieldFactor > 0)
 		{
-			int newDamage = (int)Math.ceil(damage * (1D - ConfServer.territoryShieldFactor));
+			int newDamage = (int)Math.ceil(damage * (1D - uconf.territoryShieldFactor));
 			event.setDamage(newDamage);
 
 			// Send message
 			if (notify)
 			{
-				String perc = MessageFormat.format("{0,number,#%}", (ConfServer.territoryShieldFactor)); // TODO does this display correctly??
+				String perc = MessageFormat.format("{0,number,#%}", (uconf.territoryShieldFactor)); // TODO does this display correctly??
 				fdefender.msg("<i>Enemy damage reduced by <rose>%s<i>.", perc);
 			}
 		}
@@ -516,7 +517,7 @@ public class FactionsListenerMain implements Listener
 			if (!justCheck)
 			{
 				me.msg("<b>It is painful to build in the territory of %s<b>.", factionHere.describeTo(me));
-				player.damage(ConfServer.actionDeniedPainAmount);
+				player.damage(UConf.get(player).actionDeniedPainAmount);
 			}
 			return true;
 		}
@@ -579,12 +580,12 @@ public class FactionsListenerMain implements Listener
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void blockBuild(BlockPistonExtendEvent event)
 	{
-		if ( ! ConfServer.pistonProtectionThroughDenyBuild) return;
+		Block block = event.getBlock();
 
-		Faction pistonFaction = BoardColls.get().getFactionAt(PS.valueOf(event.getBlock()));
+		Faction pistonFaction = BoardColls.get().getFactionAt(PS.valueOf(block));
 
 		// target end-of-the-line empty (air) block which is being pushed into, including if piston itself would extend into air
-		Block targetBlock = event.getBlock().getRelative(event.getDirection(), event.getLength() + 1);
+		Block targetBlock = block.getRelative(event.getDirection(), event.getLength() + 1);
 
 		// members of faction might not have build rights in their own territory, but pistons should still work regardless; so, address that corner case
 		Faction targetFaction = BoardColls.get().getFactionAt(PS.valueOf(targetBlock));
@@ -605,9 +606,7 @@ public class FactionsListenerMain implements Listener
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void blockBuild(BlockPistonRetractEvent event)
-	{
-		if (!ConfServer.pistonProtectionThroughDenyBuild) return;
-		
+	{	
 		// if not a sticky piston, retraction should be fine
 		if (!event.isSticky()) return;
 
