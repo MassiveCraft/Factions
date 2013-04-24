@@ -8,7 +8,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.massivecraft.factions.Const;
 import com.massivecraft.factions.EconomyParticipator;
 import com.massivecraft.factions.FFlag;
 import com.massivecraft.factions.FPerm;
@@ -116,7 +115,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	
 	public boolean isNone()
 	{
-		return this.getId().equals(Const.FACTIONID_NONE);
+		return this.getId().equals(UConf.get(this).factionIdNone);
 	}
 	
 	public boolean isNormal()

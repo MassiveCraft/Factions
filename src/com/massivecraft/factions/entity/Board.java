@@ -90,7 +90,7 @@ public class Board extends Entity<Board> implements BoardInterface
 		if (ps == null) return null;
 		ps = ps.getChunkCoords(true);
 		TerritoryAccess ret = this.map.get(ps);
-		if (ret == null) ret = new TerritoryAccess(Const.FACTIONID_NONE);
+		if (ret == null) ret = new TerritoryAccess(UConf.get(this).factionIdNone);
 		return ret;
 	}
 	
@@ -108,7 +108,7 @@ public class Board extends Entity<Board> implements BoardInterface
 	{
 		ps = ps.getChunkCoords(true);
 		
-		if (territoryAccess == null || (territoryAccess.getHostFactionId().equals(Const.FACTIONID_NONE) && territoryAccess.isDefault()))
+		if (territoryAccess == null || (territoryAccess.getHostFactionId().equals(UConf.get(this).factionIdNone) && territoryAccess.isDefault()))
 		{	
 			this.map.remove(ps);
 		}

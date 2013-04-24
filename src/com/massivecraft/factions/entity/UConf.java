@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
-import com.massivecraft.factions.Const;
 import com.massivecraft.factions.FFlag;
 import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.Rel;
@@ -23,6 +23,26 @@ public class UConf extends Entity<UConf>
 	{
 		return UConfColls.get().get2(oid);
 	}
+	
+	// -------------------------------------------- //
+	// SPECIAL FACTION IDS
+	// -------------------------------------------- //
+	
+	public String factionIdNone = UUID.randomUUID().toString();
+	public String factionIdSafezone = UUID.randomUUID().toString();
+	public String factionIdWarzone = UUID.randomUUID().toString();
+	
+	// -------------------------------------------- //
+	// DEFAULTS
+	// -------------------------------------------- //
+	
+	public String defaultPlayerFactionId = this.factionIdNone;
+	public double defaultPlayerPower = 0.0;
+	public Rel defaultPlayerRole = Rel.RECRUIT;
+	
+	public boolean defaultFactionOpen = false;
+	public Map<FFlag, Boolean> defaultFactionFlags = FFlag.getDefaultDefaults();
+	public Map<FPerm, Set<Rel>> defaultFactionPerms = FPerm.getDefaultDefaults();
 	
 	// -------------------------------------------- //
 	// CORE
@@ -48,20 +68,7 @@ public class UConf extends Entity<UConf>
 	
 	public double territoryShieldFactor = 0.3;
 	
-	// -------------------------------------------- //
-	// DEFAULTS
-	// -------------------------------------------- //
 	
-	// TODO: should I add a nofaction id here?
-	// And perhaps for safezone and warzone as well.
-	
-	public String defaultPlayerFactionId = Const.FACTIONID_NONE;
-	public double defaultPlayerPower = 0.0;
-	public Rel defaultPlayerRole = Rel.RECRUIT;
-	
-	public boolean defaultFactionOpen = false;
-	public Map<FFlag, Boolean> defaultFactionFlags = FFlag.getDefaultDefaults();
-	public Map<FPerm, Set<Rel>> defaultFactionPerms = FPerm.getDefaultDefaults();
 	
 	// -------------------------------------------- //
 	// POWER

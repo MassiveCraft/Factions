@@ -6,7 +6,6 @@ import java.util.Set;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-import com.massivecraft.factions.Const;
 import com.massivecraft.factions.EconomyParticipator;
 import com.massivecraft.factions.FFlag;
 import com.massivecraft.factions.Factions;
@@ -189,7 +188,7 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 	
 	public boolean hasFaction()
 	{
-		return !this.getFactionId().equals(Const.FACTIONID_NONE);
+		return !this.getFactionId().equals(UConf.get(this).factionIdNone);
 	}
 	
 	// This setter is so long because it search for default/null case and takes care of updating the faction member index 

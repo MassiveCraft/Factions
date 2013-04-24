@@ -10,7 +10,6 @@ import com.massivecraft.mcore.store.MStore;
 import com.massivecraft.mcore.util.Txt;
 
 import com.massivecraft.factions.ConfServer;
-import com.massivecraft.factions.Const;
 import com.massivecraft.factions.FFlag;
 import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.Factions;
@@ -38,7 +37,7 @@ public class FactionColl extends Coll<Faction>
 	{
 		super.init();
 		
-		this.createDefaultFactions();
+		this.createSpecialFactions();
 	}
 	
 	/*
@@ -63,6 +62,23 @@ public class FactionColl extends Coll<Faction>
 		
 		return ret;
 	}*/
+	
+	// TODO: I hope this one is not crucial anymore.
+	// If it turns out to be I will just have to recreate the feature in the proper place.
+	/*
+	@Override
+	public Faction get(String id)
+	{
+		if ( ! this.exists(id))
+		{
+			Factions.get().log(Level.WARNING, "Non existing factionId "+id+" requested! Issuing cleaning!");
+			BoardColl.get().clean();
+			FPlayerColl.get().clean();
+		}
+		
+		return super.get(id);
+	}
+	*/
 	
 	@Override
 	public Faction detachId(Object oid)
@@ -95,29 +111,116 @@ public class FactionColl extends Coll<Faction>
 	}
 	
 	// -------------------------------------------- //
-	// GET
+	// SPECIAL FACTIONS
 	// -------------------------------------------- //
 	
-	// TODO: I hope this one is not crucial anymore.
-	// If it turns out to be I will just have to recreate the feature in the proper place.
-	/*
-	@Override
-	public Faction get(String id)
+	public void createSpecialFactions()
 	{
-		if ( ! this.exists(id))
-		{
-			Factions.get().log(Level.WARNING, "Non existing factionId "+id+" requested! Issuing cleaning!");
-			BoardColl.get().clean();
-			FPlayerColl.get().clean();
-		}
-		
-		return super.get(id);
+		this.getNone();
+		this.getSafezone();
+		this.getWarzone();
 	}
-	*/
 	
 	public Faction getNone()
 	{
-		return this.get(Const.FACTIONID_NONE);
+		String id = UConf.get(this).factionIdNone;
+		Faction faction = this.get(id);
+		if (faction != null) return faction;
+		
+		faction = this.createNewInstance();
+		
+		faction.setTag(ChatColor.DARK_GREEN+"Wilderness");
+		faction.setDescription(null);
+		faction.setOpen(false);
+		
+		faction.setFlag(FFlag.PERMANENT, true);
+		faction.setFlag(FFlag.PEACEFUL, false);
+		faction.setFlag(FFlag.INFPOWER, true);
+		faction.setFlag(FFlag.POWERLOSS, true);
+		faction.setFlag(FFlag.PVP, true);
+		faction.setFlag(FFlag.FRIENDLYFIRE, false);
+		faction.setFlag(FFlag.MONSTERS, true);
+		faction.setFlag(FFlag.EXPLOSIONS, true);
+		faction.setFlag(FFlag.FIRESPREAD, true);
+		faction.setFlag(FFlag.ENDERGRIEF, true);
+		
+		faction.setPermittedRelations(FPerm.BUILD, Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
+		faction.setPermittedRelations(FPerm.DOOR, Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
+		faction.setPermittedRelations(FPerm.CONTAINER, Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
+		faction.setPermittedRelations(FPerm.BUTTON, Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
+		faction.setPermittedRelations(FPerm.LEVER, Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
+		
+		this.attach(faction, id);
+		
+		return faction;
+	}
+	
+	public Faction getSafezone()
+	{
+		String id = UConf.get(this).factionIdSafezone;
+		Faction faction = this.get(id);
+		if (faction != null) return faction;
+		
+		faction = this.createNewInstance();
+		
+		faction.setTag("SafeZone");
+		faction.setDescription("Free from PVP and monsters");
+		faction.setOpen(false);
+		
+		faction.setFlag(FFlag.PERMANENT, true);
+		faction.setFlag(FFlag.PEACEFUL, true);
+		faction.setFlag(FFlag.INFPOWER, true);
+		faction.setFlag(FFlag.POWERLOSS, false);
+		faction.setFlag(FFlag.PVP, false);
+		faction.setFlag(FFlag.FRIENDLYFIRE, false);
+		faction.setFlag(FFlag.MONSTERS, false);
+		faction.setFlag(FFlag.EXPLOSIONS, false);
+		faction.setFlag(FFlag.FIRESPREAD, false);
+		faction.setFlag(FFlag.ENDERGRIEF, false);
+		
+		faction.setPermittedRelations(FPerm.DOOR, Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
+		faction.setPermittedRelations(FPerm.CONTAINER, Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
+		faction.setPermittedRelations(FPerm.BUTTON, Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
+		faction.setPermittedRelations(FPerm.LEVER, Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
+		faction.setPermittedRelations(FPerm.TERRITORY, Rel.LEADER, Rel.OFFICER, Rel.MEMBER);
+		
+		this.attach(faction, id);
+		
+		return faction;
+	}
+	
+	public Faction getWarzone()
+	{
+		String id = UConf.get(this).factionIdWarzone;
+		Faction faction = this.get(id);
+		if (faction != null) return faction;
+		
+		faction = this.createNewInstance();
+		
+		faction.setTag("WarZone");
+		faction.setDescription("Not the safest place to be");
+		faction.setOpen(false);
+		
+		faction.setFlag(FFlag.PERMANENT, true);
+		faction.setFlag(FFlag.PEACEFUL, true);
+		faction.setFlag(FFlag.INFPOWER, true);
+		faction.setFlag(FFlag.POWERLOSS, true);
+		faction.setFlag(FFlag.PVP, true);
+		faction.setFlag(FFlag.FRIENDLYFIRE, true);
+		faction.setFlag(FFlag.MONSTERS, true);
+		faction.setFlag(FFlag.EXPLOSIONS, true);
+		faction.setFlag(FFlag.FIRESPREAD, true);
+		faction.setFlag(FFlag.ENDERGRIEF, true);
+		
+		faction.setPermittedRelations(FPerm.DOOR, Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
+		faction.setPermittedRelations(FPerm.CONTAINER, Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
+		faction.setPermittedRelations(FPerm.BUTTON, Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
+		faction.setPermittedRelations(FPerm.LEVER, Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
+		faction.setPermittedRelations(FPerm.TERRITORY, Rel.LEADER, Rel.OFFICER, Rel.MEMBER);
+		
+		this.attach(faction, id);
+		
+		return faction;
 	}
 	
 	// -------------------------------------------- //
@@ -208,101 +311,6 @@ public class FactionColl extends Coll<Faction>
 	public boolean isTagTaken(String str)
 	{
 		return this.getByTag(str) != null;
-	}
-	
-	// -------------------------------------------- //
-	// CREATE DEFAULT FACTIONS
-	// -------------------------------------------- //
-	
-	public void createDefaultFactions()
-	{
-		this.createNoneFaction();
-		this.createSafeZoneFaction();
-		this.createWarZoneFaction();
-	}
-	
-	public void createNoneFaction()
-	{
-		if (this.containsId(Const.FACTIONID_NONE)) return;
-		
-		Faction faction = this.create(Const.FACTIONID_NONE);
-		
-		faction.setTag(ChatColor.DARK_GREEN+"Wilderness");
-		faction.setDescription("");
-		faction.setOpen(false);
-		
-		faction.setFlag(FFlag.PERMANENT, true);
-		faction.setFlag(FFlag.PEACEFUL, false);
-		faction.setFlag(FFlag.INFPOWER, true);
-		faction.setFlag(FFlag.POWERLOSS, true);
-		faction.setFlag(FFlag.PVP, true);
-		faction.setFlag(FFlag.FRIENDLYFIRE, false);
-		faction.setFlag(FFlag.MONSTERS, true);
-		faction.setFlag(FFlag.EXPLOSIONS, true);
-		faction.setFlag(FFlag.FIRESPREAD, true);
-		faction.setFlag(FFlag.ENDERGRIEF, true);
-		
-		faction.setPermittedRelations(FPerm.BUILD, Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
-		faction.setPermittedRelations(FPerm.DOOR, Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
-		faction.setPermittedRelations(FPerm.CONTAINER, Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
-		faction.setPermittedRelations(FPerm.BUTTON, Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
-		faction.setPermittedRelations(FPerm.LEVER, Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
-	}
-	
-	public void createSafeZoneFaction()
-	{
-		if (this.containsId(Const.FACTIONID_SAFEZONE)) return;
-		
-		Faction faction = this.create(Const.FACTIONID_SAFEZONE);
-		
-		faction.setTag("SafeZone");
-		faction.setDescription("Free from PVP and monsters");
-		faction.setOpen(false);
-		
-		faction.setFlag(FFlag.PERMANENT, true);
-		faction.setFlag(FFlag.PEACEFUL, true);
-		faction.setFlag(FFlag.INFPOWER, true);
-		faction.setFlag(FFlag.POWERLOSS, false);
-		faction.setFlag(FFlag.PVP, false);
-		faction.setFlag(FFlag.FRIENDLYFIRE, false);
-		faction.setFlag(FFlag.MONSTERS, false);
-		faction.setFlag(FFlag.EXPLOSIONS, false);
-		faction.setFlag(FFlag.FIRESPREAD, false);
-		faction.setFlag(FFlag.ENDERGRIEF, false);
-		
-		faction.setPermittedRelations(FPerm.DOOR, Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
-		faction.setPermittedRelations(FPerm.CONTAINER, Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
-		faction.setPermittedRelations(FPerm.BUTTON, Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
-		faction.setPermittedRelations(FPerm.LEVER, Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
-		faction.setPermittedRelations(FPerm.TERRITORY, Rel.LEADER, Rel.OFFICER, Rel.MEMBER);
-	}
-	
-	public void createWarZoneFaction()
-	{
-		if (this.containsId(Const.FACTIONID_WARZONE)) return;
-		
-		Faction faction = this.create(Const.FACTIONID_WARZONE);
-		
-		faction.setTag("WarZone");
-		faction.setDescription("Not the safest place to be");
-		faction.setOpen(false);
-		
-		faction.setFlag(FFlag.PERMANENT, true);
-		faction.setFlag(FFlag.PEACEFUL, true);
-		faction.setFlag(FFlag.INFPOWER, true);
-		faction.setFlag(FFlag.POWERLOSS, true);
-		faction.setFlag(FFlag.PVP, true);
-		faction.setFlag(FFlag.FRIENDLYFIRE, true);
-		faction.setFlag(FFlag.MONSTERS, true);
-		faction.setFlag(FFlag.EXPLOSIONS, true);
-		faction.setFlag(FFlag.FIRESPREAD, true);
-		faction.setFlag(FFlag.ENDERGRIEF, true);
-		
-		faction.setPermittedRelations(FPerm.DOOR, Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
-		faction.setPermittedRelations(FPerm.CONTAINER, Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
-		faction.setPermittedRelations(FPerm.BUTTON, Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
-		faction.setPermittedRelations(FPerm.LEVER, Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
-		faction.setPermittedRelations(FPerm.TERRITORY, Rel.LEADER, Rel.OFFICER, Rel.MEMBER);
 	}
 
 }

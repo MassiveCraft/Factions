@@ -22,11 +22,6 @@ public class Const
 	// Aspect Ids
 	public static final String ASPECT_ID = "factions";
 	
-	// Defautlt faction ids
-	public static final String FACTIONID_NONE = "0";
-	public static final String FACTIONID_SAFEZONE = "-1";
-	public static final String FACTIONID_WARZONE = "-2";
-	
 	// ASCII Map
 	public static final int MAP_HEIGHT = 8;
 	public static final int MAP_WIDTH = 39;
