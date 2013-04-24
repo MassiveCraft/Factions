@@ -20,7 +20,6 @@ import com.massivecraft.mcore.mixin.Mixin;
 import com.massivecraft.mcore.ps.PS;
 import com.massivecraft.mcore.ps.PSFormatSlug;
 import com.massivecraft.mcore.store.SenderEntity;
-import com.massivecraft.mcore.util.MUtil;
 import com.massivecraft.mcore.util.SenderUtil;
 
 
@@ -186,23 +185,17 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 	// This setter is so long because it search for default/null case and takes care of updating the faction member index 
 	public void setFactionId(String factionId)
 	{
-		// Avoid null input
-		if (factionId == null) factionId = this.getDefaultFactionId();
-		
-		// Get the old value
-		String oldFactionId = this.getFactionId();
-		
-		// Ignore nochange
-		if (factionId.equals(oldFactionId)) return;
+		// Get the raw old value
+		String oldFactionId = this.factionId;
 		
 		// Apply change
-		if (factionId.equals(this.getDefaultFactionId())) factionId = null;
 		this.factionId = factionId;
 		
 		// Next we must be attached and inited
 		if (!this.attached()) return;
-		if (!this.getColl().inited()) return;
 		if (!Factions.get().isDatabaseInitialized()) return;
+		
+		if (oldFactionId == null) oldFactionId = this.getDefaultFactionId();
 		
 		// Update index
 		Faction oldFaction = FactionColls.get().get(this).get(oldFactionId);
@@ -237,7 +230,6 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 	
 	public void setRole(Rel role)
 	{
-		if (role == null || MUtil.equals(role, this.getDefaultRole())) role = null;
 		this.role = role;
 		this.changed();
 	}
@@ -328,8 +320,6 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 	
 	public void setPower(Double power)
 	{
-		if (power == null || MUtil.equals(power, this.getDefaultPower())) power = null;
-		power = this.getLimitedPower(power);
 		this.power = power;
 		this.changed();
 	}

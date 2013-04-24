@@ -43,11 +43,11 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	@Override
 	public Faction load(Faction that)
 	{
-		this.tag = that.tag;
+		this.setTag(that.tag);
 		this.setDescription(that.description);
-		this.home = that.home;
+		this.setHome(that.home);
 		this.setPowerBoost(that.powerBoost);
-		this.open = that.open;
+		this.setOpen(that.open);
 		this.setInvitedPlayerIds(that.invitedPlayerIds);
 		this.setRelationWishes(that.relationWish);
 		this.setFlags(that.flagOverrides);
@@ -238,6 +238,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	public void setHome(PS home)
 	{
 		this.home = home;
+		this.changed();
 	}
 	
 	// -------------------------------------------- //
@@ -255,10 +256,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	
 	public void setPowerBoost(Double powerBoost)
 	{
-		if (powerBoost == null || powerBoost == 0)
-		{
-			powerBoost = null;
-		}
+		if (powerBoost == null || powerBoost == 0) powerBoost = null;
 		this.powerBoost = powerBoost;
 		this.changed();
 	}
@@ -470,13 +468,16 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 			target.putAll(flags);
 		}
 		
-		Iterator<Entry<FFlag, Boolean>> iter = target.entrySet().iterator();
-		while (iter.hasNext())
+		if (this.attached() && Factions.get().isDatabaseInitialized())
 		{
-			Entry<FFlag, Boolean> entry = iter.next();
-			if (entry.getKey().getDefault(this) == entry.getValue())
+			Iterator<Entry<FFlag, Boolean>> iter = target.entrySet().iterator();
+			while (iter.hasNext())
 			{
-				iter.remove();
+				Entry<FFlag, Boolean> entry = iter.next();
+				if (entry.getKey().getDefault(this) == entry.getValue())
+				{
+					iter.remove();
+				}
 			}
 		}
 		
@@ -542,13 +543,16 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 			}
 		}
 		
-		Iterator<Entry<FPerm, Set<Rel>>> iter = target.entrySet().iterator();
-		while (iter.hasNext())
+		if (this.attached() && Factions.get().isDatabaseInitialized())
 		{
-			Entry<FPerm, Set<Rel>> entry = iter.next();
-			if (entry.getKey().getDefault(this).equals(entry.getValue()))
+			Iterator<Entry<FPerm, Set<Rel>>> iter = target.entrySet().iterator();
+			while (iter.hasNext())
 			{
-				iter.remove();
+				Entry<FPerm, Set<Rel>> entry = iter.next();
+				if (entry.getKey().getDefault(this).equals(entry.getValue()))
+				{
+					iter.remove();
+				}
 			}
 		}
 		
