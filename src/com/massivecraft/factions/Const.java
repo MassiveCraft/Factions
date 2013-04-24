@@ -60,7 +60,8 @@ public class Const
 		Material.BREWING_STAND,
 		Material.ENCHANTMENT_TABLE,
 		Material.ANVIL,
-		Material.BEACON
+		Material.BEACON,
+		Material.TRAPPED_CHEST
 	);
 	
 	//public static Set<Material> territoryProtectedMaterialsWhenOffline = EnumSet.noneOf(Material.class);
