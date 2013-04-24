@@ -69,27 +69,28 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 	
 	// This is a foreign key.
 	// Each player belong to a faction.
-	// Null means default which is the no-faction faction called Wilderness.
+	// Null means default for the universe.
 	private String factionId = null;
 	
 	// What role does the player have in the faction?
-	// Null means default which is the default value for the universe.
+	// Null means default for the universe.
 	private Rel role = null;
 	
 	// What title does the player have in the faction?
 	// The title is just for fun. It's not connected to any game mechanic.
-	// The default case is no title since it's what you start with and also the most common case.
 	// The player title is similar to the faction description.
 	// 
 	// Question: Can the title contain chat colors?
 	// Answer: Yes but in such case the policy is that they already must be parsed using Txt.parse.
 	//         If the title contains raw markup, such as "<white>" instead of "§f" it will not be parsed and "<white>" will be displayed.
+	//
+	// Null means the player has no title.
 	private String title = null;
 	
 	// Each player has an individual power level.
 	// The power level for online players is occasionally updated by a recurring task and the power should stay the same for offline players.
 	// For that reason the value is to be considered correct when you pick it. Do not call the power update method.
-	// Null means default which is the default value for the universe.
+	// Null means default for the universe.
 	private Double power = null;
 	
 	// -------------------------------------------- //

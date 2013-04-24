@@ -20,6 +20,7 @@ public class ChatTagTitle extends ChatTagAbstract
 	@Override
 	public String getReplacement(UPlayer fsender, UPlayer frecipient)
 	{
+		if (!fsender.hasTitle()) return "";
 		return fsender.getTitle();
 	}
 

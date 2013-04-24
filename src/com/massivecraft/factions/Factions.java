@@ -104,16 +104,13 @@ public class Factions extends MPlugin
 		// TODO: Perhaps this should be placed in the econ integration somewhere?
 		MUtil.registerExtractor(String.class, "accountId", ExtractorFactionAccountId.get());
 
-		// Initialize Collections
+		// Initialize Database
 		this.databaseInitialized = false;
-		
 		MConfColl.get().init();
 		UPlayerColls.get().init();
 		FactionColls.get().init();
 		BoardColls.get().init();
-		
 		FactionColls.get().reindexUPlayers();
-		
 		this.databaseInitialized = true;
 		
 		// Commands

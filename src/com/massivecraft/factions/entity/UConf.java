@@ -36,13 +36,24 @@ public class UConf extends Entity<UConf>
 	// DEFAULTS
 	// -------------------------------------------- //
 	
-	public String defaultPlayerFactionId = this.factionIdNone;
-	public double defaultPlayerPower = 0.0;
+	public String defaultPlayerFactionId = factionIdNone;
 	public Rel defaultPlayerRole = Rel.RECRUIT;
+	public double defaultPlayerPower = 0.0;
 	
 	public boolean defaultFactionOpen = false;
 	public Map<FFlag, Boolean> defaultFactionFlags = FFlag.getDefaultDefaults();
 	public Map<FPerm, Set<Rel>> defaultFactionPerms = FPerm.getDefaultDefaults();
+
+	// -------------------------------------------- //
+	// POWER
+	// -------------------------------------------- //
+	
+	public double powerMax = 10.0;
+	public double powerMin = 0.0;
+	public double powerPerHour = 2.0;
+	public double powerPerDeath = -2.0;
+	
+	public boolean canLeaveWithNegativePower = true;
 	
 	// -------------------------------------------- //
 	// CORE
@@ -54,32 +65,6 @@ public class UConf extends Entity<UConf>
 	public int factionTagLengthMin = 3;
 	public int factionTagLengthMax = 10;
 	public boolean factionTagForceUpperCase = false;
-	
-	// -------------------------------------------- //
-	// ASSORTED
-	// -------------------------------------------- //
-	
-	public boolean permanentFactionsDisableLeaderPromotion = false;
-	
-	public int actionDeniedPainAmount = 2;
-	
-	public boolean disablePVPForFactionlessPlayers = false;
-	public boolean enablePVPAgainstFactionlessInAttackersLand = false;
-	
-	public double territoryShieldFactor = 0.3;
-	
-	
-	
-	// -------------------------------------------- //
-	// POWER
-	// -------------------------------------------- //
-	
-	public double powerMax = 10.0;
-	public double powerMin = 0.0;
-	public double powerPerHour = 2.0;
-	public double powerPerDeath = -2.0;
-	
-	public boolean canLeaveWithNegativePower = true;
 	
 	// -------------------------------------------- //
 	// CLAIMS
@@ -107,6 +92,16 @@ public class UConf extends Entity<UConf>
 	public boolean homesTeleportIgnoreEnemiesIfInOwnTerritory = true;
 	
 	// -------------------------------------------- //
+	// ASSORTED
+	// -------------------------------------------- //
+	
+	public boolean permanentFactionsDisableLeaderPromotion = false;
+	public int actionDeniedPainAmount = 2;
+	public boolean disablePVPForFactionlessPlayers = false;
+	public boolean enablePVPAgainstFactionlessInAttackersLand = false;
+	public double territoryShieldFactor = 0.3;
+	
+	// -------------------------------------------- //
 	// DENY COMMANDS
 	// -------------------------------------------- //
 	
@@ -121,12 +116,6 @@ public class UConf extends Entity<UConf>
 		Rel.ALLY, new ArrayList<String>(),
 		Rel.MEMBER, new ArrayList<String>()
 	);
-
-	// -------------------------------------------- //
-	// INTEGRATION: WORLD GUARD
-	// -------------------------------------------- //
-	
-	public boolean worldGuardChecking = false;
 	
 	// -------------------------------------------- //
 	// INTEGRATION: LWC
