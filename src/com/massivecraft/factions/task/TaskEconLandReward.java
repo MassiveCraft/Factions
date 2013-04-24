@@ -4,15 +4,16 @@ import com.massivecraft.factions.entity.FactionColl;
 import com.massivecraft.factions.entity.FactionColls;
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.mcore.ModuloRepeatTask;
+import com.massivecraft.mcore.util.TimeUnit;
 
-public class EconRewardTask extends ModuloRepeatTask
+public class TaskEconLandReward extends ModuloRepeatTask
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static EconRewardTask i = new EconRewardTask();
-	public static EconRewardTask get() { return i; }
+	private static TaskEconLandReward i = new TaskEconLandReward();
+	public static TaskEconLandReward get() { return i; }
 	
 	// -------------------------------------------- //
 	// OVERRIDE: MODULO REPEAT TASK
@@ -21,13 +22,13 @@ public class EconRewardTask extends ModuloRepeatTask
 	@Override
 	public long getDelayMillis()
 	{
-		return MConf.get().taskEconMillis;
+		return (long) (MConf.get().taskEconLandRewardMinutes * TimeUnit.MILLIS_PER_MINUTE);
 	}
 	
 	@Override
 	public void setDelayMillis(long delayMillis)
 	{
-		MConf.get().taskEconMillis = delayMillis;
+		MConf.get().taskEconLandRewardMinutes = delayMillis / (double) TimeUnit.MILLIS_PER_MINUTE;
 	}
 	
 	@Override

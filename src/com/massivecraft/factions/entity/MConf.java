@@ -9,7 +9,6 @@ import org.bukkit.event.EventPriority;
 
 import com.massivecraft.factions.listeners.FactionsListenerChat;
 import com.massivecraft.mcore.store.Entity;
-import com.massivecraft.mcore.util.TimeUnit;
 
 public class MConf extends Entity<MConf>
 {
@@ -38,9 +37,9 @@ public class MConf extends Entity<MConf>
 	// TASKS
 	// -------------------------------------------- //
 	
-	public long taskPowerMillis = TimeUnit.MILLIS_PER_MINUTE;
-	public long taskEconMillis = 20 * TimeUnit.MILLIS_PER_MINUTE;
-	public long taskAutoLeaveMillis = 5 * TimeUnit.MILLIS_PER_MINUTE;
+	public double taskPlayerPowerUpdateMinutes = 1;
+	public double taskPlayerDataRemoveMinutes = 5;
+	public double taskEconLandRewardMinutes = 20;
 	
 	// -------------------------------------------- //
 	// REMOVE DATA

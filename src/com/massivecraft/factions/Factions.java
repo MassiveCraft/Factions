@@ -34,9 +34,9 @@ import com.massivecraft.factions.listeners.FactionsListenerMain;
 import com.massivecraft.factions.listeners.TodoFactionsPlayerListener;
 import com.massivecraft.factions.mixin.PowerMixin;
 import com.massivecraft.factions.mixin.PowerMixinDefault;
-import com.massivecraft.factions.task.RemovePlayerDataTask;
-import com.massivecraft.factions.task.EconRewardTask;
-import com.massivecraft.factions.task.PowerUpdateTask;
+import com.massivecraft.factions.task.TaskPlayerDataRemove;
+import com.massivecraft.factions.task.TaskEconLandReward;
+import com.massivecraft.factions.task.TaskPlayerPowerUpdate;
 
 import com.massivecraft.mcore.MPlugin;
 import com.massivecraft.mcore.usys.Aspect;
@@ -136,9 +136,9 @@ public class Factions extends MPlugin
 		getServer().getPluginManager().registerEvents(this.playerListener, this);
 		
 		// Schedule recurring non-tps-dependent tasks
-		PowerUpdateTask.get().schedule(this);
-		RemovePlayerDataTask.get().schedule(this);
-		EconRewardTask.get().schedule(this);
+		TaskPlayerPowerUpdate.get().schedule(this);
+		TaskPlayerDataRemove.get().schedule(this);
+		TaskEconLandReward.get().schedule(this);
 		
 		// Register built in chat modifiers
 		ChatModifierLc.get().register();

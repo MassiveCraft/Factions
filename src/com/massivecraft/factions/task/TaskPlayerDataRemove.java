@@ -4,15 +4,16 @@ import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.entity.UPlayerColl;
 import com.massivecraft.factions.entity.UPlayerColls;
 import com.massivecraft.mcore.ModuloRepeatTask;
+import com.massivecraft.mcore.util.TimeUnit;
 
-public class RemovePlayerDataTask extends ModuloRepeatTask
+public class TaskPlayerDataRemove extends ModuloRepeatTask
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static RemovePlayerDataTask i = new RemovePlayerDataTask();
-	public static RemovePlayerDataTask get() { return i; }
+	private static TaskPlayerDataRemove i = new TaskPlayerDataRemove();
+	public static TaskPlayerDataRemove get() { return i; }
 	
 	// -------------------------------------------- //
 	// OVERRIDE: MODULO REPEAT TASK
@@ -21,13 +22,13 @@ public class RemovePlayerDataTask extends ModuloRepeatTask
 	@Override
 	public long getDelayMillis()
 	{
-		return MConf.get().taskAutoLeaveMillis;
+		return (long) (MConf.get().taskPlayerDataRemoveMinutes * TimeUnit.MILLIS_PER_MINUTE);
 	}
 	
 	@Override
 	public void setDelayMillis(long delayMillis)
 	{
-		MConf.get().taskAutoLeaveMillis = delayMillis;
+		MConf.get().taskPlayerDataRemoveMinutes = delayMillis / (double) TimeUnit.MILLIS_PER_MINUTE;
 	}
 	
 	@Override

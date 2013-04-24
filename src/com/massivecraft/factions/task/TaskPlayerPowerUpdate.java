@@ -10,14 +10,14 @@ import com.massivecraft.factions.event.FactionsEventPowerChange.PowerChangeReaso
 import com.massivecraft.mcore.ModuloRepeatTask;
 import com.massivecraft.mcore.util.TimeUnit;
 
-public class PowerUpdateTask extends ModuloRepeatTask
+public class TaskPlayerPowerUpdate extends ModuloRepeatTask
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static PowerUpdateTask i = new PowerUpdateTask();
-	public static PowerUpdateTask get() { return i; }
+	private static TaskPlayerPowerUpdate i = new TaskPlayerPowerUpdate();
+	public static TaskPlayerPowerUpdate get() { return i; }
 	
 	// -------------------------------------------- //
 	// OVERRIDE: MODULO REPEAT TASK
@@ -26,13 +26,13 @@ public class PowerUpdateTask extends ModuloRepeatTask
 	@Override
 	public long getDelayMillis()
 	{
-		return MConf.get().taskPowerMillis;
+		return (long) (MConf.get().taskPlayerPowerUpdateMinutes * TimeUnit.MILLIS_PER_MINUTE);
 	}
 	
 	@Override
 	public void setDelayMillis(long delayMillis)
 	{
-		MConf.get().taskPowerMillis = delayMillis;
+		MConf.get().taskPlayerPowerUpdateMinutes = delayMillis / (double) TimeUnit.MILLIS_PER_MINUTE;
 	}
 	
 	@Override
