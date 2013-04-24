@@ -133,19 +133,24 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	public String getTag()
 	{
 		String ret = this.tag;
-		if (UConf.get(this).factionTagForceUpperCase)
+		
+		UConf uconf = UConf.get(this);
+		if (uconf != null && UConf.get(this).factionTagForceUpperCase)
 		{
 			ret = ret.toUpperCase();
 		}
+		
 		return ret;
 	}
 	
 	public void setTag(String str)
 	{
-		if (UConf.get(this).factionTagForceUpperCase)
+		UConf uconf = UConf.get(this);
+		if (uconf != null && UConf.get(this).factionTagForceUpperCase)
 		{
 			str = str.toUpperCase();
 		}
+
 		this.tag = str;
 		this.changed();
 	}
@@ -264,7 +269,9 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	
 	public boolean isDefaultOpen()
 	{
-		return UConf.get(this).defaultFactionOpen;
+		UConf uconf = UConf.get(this);
+		if (uconf == null) return false;
+		return uconf.defaultFactionOpen;
 	}
 	
 	public boolean isOpen()
@@ -274,9 +281,8 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 		return ret;
 	}
 	
-	public void setOpen(Boolean open)
+	public void setOpen(boolean open)
 	{
-		if (open == null || MUtil.equals(open, this.isDefaultOpen())) open = null;
 		this.open = open;
 		this.changed();
 	}

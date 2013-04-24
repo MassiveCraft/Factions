@@ -127,7 +127,7 @@ public class FactionColl extends Coll<Faction>
 		Faction faction = this.get(id);
 		if (faction != null) return faction;
 		
-		faction = this.createNewInstance();
+		faction = this.create(id);
 		
 		faction.setTag(ChatColor.DARK_GREEN+"Wilderness");
 		faction.setDescription(null);
@@ -150,8 +150,6 @@ public class FactionColl extends Coll<Faction>
 		faction.setPermittedRelations(FPerm.BUTTON, Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
 		faction.setPermittedRelations(FPerm.LEVER, Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
 		
-		this.attach(faction, id);
-		
 		return faction;
 	}
 	
@@ -161,7 +159,7 @@ public class FactionColl extends Coll<Faction>
 		Faction faction = this.get(id);
 		if (faction != null) return faction;
 		
-		faction = this.createNewInstance();
+		faction = this.create(id);
 		
 		faction.setTag("SafeZone");
 		faction.setDescription("Free from PVP and monsters");
@@ -184,8 +182,6 @@ public class FactionColl extends Coll<Faction>
 		faction.setPermittedRelations(FPerm.LEVER, Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
 		faction.setPermittedRelations(FPerm.TERRITORY, Rel.LEADER, Rel.OFFICER, Rel.MEMBER);
 		
-		this.attach(faction, id);
-		
 		return faction;
 	}
 	
@@ -195,7 +191,7 @@ public class FactionColl extends Coll<Faction>
 		Faction faction = this.get(id);
 		if (faction != null) return faction;
 		
-		faction = this.createNewInstance();
+		faction = this.create(id);
 		
 		faction.setTag("WarZone");
 		faction.setDescription("Not the safest place to be");
@@ -217,8 +213,6 @@ public class FactionColl extends Coll<Faction>
 		faction.setPermittedRelations(FPerm.BUTTON, Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
 		faction.setPermittedRelations(FPerm.LEVER, Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
 		faction.setPermittedRelations(FPerm.TERRITORY, Rel.LEADER, Rel.OFFICER, Rel.MEMBER);
-		
-		this.attach(faction, id);
 		
 		return faction;
 	}
