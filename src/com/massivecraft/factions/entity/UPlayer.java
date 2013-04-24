@@ -115,9 +115,6 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 	// FIELD: loginPvpDisabled
 	//private transient boolean loginPvpDisabled;
 	
-	// FIELD: account
-	public String getAccountId() { return this.getId(); }
-	
 	// -------------------------------------------- //
 	// CORE UTILITIES
 	// -------------------------------------------- //

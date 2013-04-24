@@ -73,10 +73,11 @@ public class LwcEngine implements Listener
 	
 	public static void removeAlienProtections(PS chunkPs, Faction faction)
 	{
+		List<UPlayer> nonAliens = faction.getUPlayers();
 		for (Protection protection : getProtectionsInChunk(chunkPs))
 		{
 			UPlayer owner = UPlayer.get(protection.getOwner());
-			if (faction.getUPlayers().contains(owner)) continue;
+			if (nonAliens.contains(owner)) continue;
 			protection.remove();
 		}
 	}

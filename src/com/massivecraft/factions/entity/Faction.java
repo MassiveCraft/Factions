@@ -65,47 +65,47 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	// TODO: The faction "tag" could/should also have been called "name".
 	// The actual faction id looks something like "54947df8-0e9e-4471-a2f9-9af509fb5889" and that is not too easy to remember for humans.
 	// Thus we make use of a name. Since the id is used in all foreign key situations changing the name is fine.
+	// Null should never happen. The tag must not be null.
 	private String tag = null;
 	
 	// Factions can optionally set a description for themselves.
 	// This description can for example be seen in territorial alerts.
+	// Null means the faction has no description.
 	private String description = null;
 	
 	// Factions can optionally set a home location.
 	// If they do their members can teleport there using /f home
+	// Null means the faction has no home.
 	private PS home = null;
 	
 	// Factions usually do not have a powerboost. It defaults to 0.
 	// The powerBoost is a custom increase/decrease to default and maximum power.
+	// Null means the faction has powerBoost (0).
 	private Double powerBoost = null;
 	
 	// Can anyone join the Faction?
 	// If the faction is open they can.
 	// If the faction is closed an invite is required.
+	// Null means default for the universe.
 	private Boolean open = null;
 	
 	// This is the ids of the invited players.
 	// They are actually "senderIds" since you can invite "@console" to your faction.
+	// Null means no one is invited
 	@SerializedName("invites")
 	private Set<String> invitedPlayerIds = null;
 	
 	// The keys in this map are factionIds.
+	// Null means no special relation whishes.
 	private Map<String, Rel> relationWish = null;
 	
 	// The flag overrides are modifications to the default values.
+	// Null means default for the universe.
 	private Map<FFlag, Boolean> flagOverrides = null;
 
 	// The perm overrides are modifications to the default values.
+	// Null means default for the universe.
 	private Map<FPerm, Set<Rel>> permOverrides = null;
-	
-	// -------------------------------------------- //
-	// CONSTRUCT
-	// -------------------------------------------- //
-	
-	public Faction()
-	{
-		
-	}
 	
 	// -------------------------------------------- //
 	// FIELD: id
@@ -121,15 +121,6 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	public boolean isNormal()
 	{
 		return ! this.isNone();
-	}
-	
-	// This is the bank account id used by external money-plugins
-	@Override
-	public String getAccountId()
-	{
-		String accountId = "faction-"+this.getId();
-
-		return accountId;
 	}
 	
 	// -------------------------------------------- //
