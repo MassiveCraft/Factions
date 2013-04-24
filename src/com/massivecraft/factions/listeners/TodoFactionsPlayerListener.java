@@ -78,7 +78,7 @@ public class TodoFactionsPlayerListener implements Listener
 
 		if (uplayerTo.getAutoClaimFor() != null)
 		{
-			uplayerTo.attemptClaim(uplayerTo.getAutoClaimFor(), PS.valueOf(event.getTo()), true);
+			uplayerTo.tryClaim(uplayerTo.getAutoClaimFor(), PS.valueOf(event.getTo()), true, true);
 		}
 	}
 

@@ -9,13 +9,11 @@ import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.event.FactionsEventDisband;
 import com.massivecraft.factions.event.FactionsEventMembershipChange;
 import com.massivecraft.factions.event.FactionsEventMembershipChange.MembershipChangeReason;
-import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.FFlag;
 import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
-import com.massivecraft.mcore.money.Money;
 
 public class CmdFactionsDisband extends FCommand
 {
@@ -78,19 +76,7 @@ public class CmdFactionsDisband extends FCommand
 			Factions.get().log("The faction "+faction.getTag()+" ("+faction.getId()+") was disbanded by "+(senderIsConsole ? "console command" : fme.getName())+".");
 		}
 
-		if (Econ.isEnabled(faction))
-		{
-			//Give all the faction's money to the disbander
-			double amount = Money.get(faction);
-			Econ.transferMoney(fme, faction, fme, amount, false);
-			
-			if (amount > 0.0)
-			{
-				String amountString = Money.format(faction, amount);
-				msg("<i>You have been given the disbanded faction's bank, totaling %s.", amountString);
-				Factions.get().log(fme.getName() + " has been given bank holdings of "+amountString+" from disbanding "+faction.getTag()+".");
-			}
-		}		
+		
 		
 		faction.detach();
 	}

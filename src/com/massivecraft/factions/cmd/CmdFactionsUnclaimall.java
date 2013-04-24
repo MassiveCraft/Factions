@@ -2,6 +2,7 @@ package com.massivecraft.factions.cmd;
 
 import java.util.Set;
 
+import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
@@ -30,8 +31,10 @@ public class CmdFactionsUnclaimall extends FCommand
 	{
 		// Args
 		Faction faction = myFaction;
-		
 		Faction newFaction = FactionColls.get().get(faction).getNone();
+		
+		// FPerm
+		if (!FPerm.TERRITORY.has(sender, faction, true)) return;
 
 		// Apply
 		BoardColl boardColl = BoardColls.get().get(faction);

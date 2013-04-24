@@ -9,7 +9,6 @@ import org.bukkit.entity.Player;
 import com.massivecraft.factions.Const;
 import com.massivecraft.factions.EconomyParticipator;
 import com.massivecraft.factions.FFlag;
-import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Lang;
 import com.massivecraft.factions.Rel;
@@ -17,15 +16,13 @@ import com.massivecraft.factions.RelationParticipator;
 import com.massivecraft.factions.event.FactionsEventChunkChange;
 import com.massivecraft.factions.event.FactionsEventMembershipChange;
 import com.massivecraft.factions.event.FactionsEventMembershipChange.MembershipChangeReason;
-import com.massivecraft.factions.integration.Econ;
-import com.massivecraft.factions.integration.Worldguard;
 import com.massivecraft.factions.util.RelationUtil;
 import com.massivecraft.mcore.mixin.Mixin;
-import com.massivecraft.mcore.money.Money;
 import com.massivecraft.mcore.ps.PS;
+import com.massivecraft.mcore.ps.PSFormatSlug;
 import com.massivecraft.mcore.store.SenderEntity;
 import com.massivecraft.mcore.util.MUtil;
-import com.massivecraft.mcore.util.Txt;
+import com.massivecraft.mcore.util.SenderUtil;
 
 
 public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipator
@@ -491,32 +488,25 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 
 		boolean permanent = myFaction.getFlag(FFlag.PERMANENT);
 		
-		if (!permanent && this.getRole() == Rel.LEADER && myFaction.getUPlayers().size() > 1)
+		if (myFaction.getUPlayers().size() > 1)
 		{
-			msg("<b>You must give the leader role to someone else first.");
-			return;
-		}
-
-		if (!UConf.get(myFaction).canLeaveWithNegativePower && this.getPower() < 0)
-		{
-			msg("<b>You cannot leave until your power is positive.");
-			return;
+			if (!permanent && this.getRole() == Rel.LEADER)
+			{
+				msg("<b>You must give the leader role to someone else first.");
+				return;
+			}
+			
+			if (!UConf.get(myFaction).canLeaveWithNegativePower && this.getPower() < 0)
+			{
+				msg("<b>You cannot leave until your power is positive.");
+				return;
+			}
 		}
 
 		// Event
 		FactionsEventMembershipChange membershipChangeEvent = new FactionsEventMembershipChange(sender, this, myFaction, MembershipChangeReason.LEAVE);
 		membershipChangeEvent.run();
 		if (membershipChangeEvent.isCancelled()) return;
-
-		// Am I the last one in the faction?
-		if (myFaction.getUPlayers().size() == 1)
-		{
-			// Transfer all money
-			if (Econ.isEnabled(this))
-			{
-				Econ.transferMoney(this, myFaction, this, Money.get(this));
-			}
-		}
 		
 		if (myFaction.isNormal())
 		{
@@ -548,120 +538,121 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 			}
 		}
 	}
-
-	public boolean canClaimForFactionAtLocation(Faction forFaction, PS ps, boolean notifyFailure)
+	
+	public boolean tryClaim(Faction newFaction, PS ps, boolean verbooseChange, boolean verbooseSame)
 	{
-		String error = null;
+		PS chunk = ps.getChunk(true);
+		Faction oldFaction = BoardColls.get().getFactionAt(chunk);
 		
-		Faction myFaction = this.getFaction();
-		Faction currentFaction = BoardColls.get().getFactionAt(ps);
-		int ownedLand = forFaction.getLandCount();
+		UConf uconf = UConf.get(newFaction);
+		MConf mconf = MConf.get();
 		
-		UConf uconf = UConf.get(ps);
-		
-		if (uconf.worldGuardChecking && Worldguard.checkForRegionsInChunk(ps))
+		// Validate
+		if (newFaction == oldFaction)
 		{
-			// Checks for WorldGuard regions in the chunk attempting to be claimed
-			error = Txt.parse("<b>This land is protected");
-		}
-		else if (MConf.get().worldsNoClaiming.contains(ps.getWorld()))
-		{
-			error = Txt.parse("<b>Sorry, this world has land claiming disabled.");
-		}
-		else if (this.isUsingAdminMode())
-		{
+			msg("%s<i> already owns this land.", newFaction.describeTo(this, true));
 			return true;
 		}
-		else if (forFaction == currentFaction)
+		
+		if (!this.isUsingAdminMode() && newFaction.isNormal())
 		{
-			error = Txt.parse("%s<i> already own this land.", forFaction.describeTo(this, true));
-		}
-		else if ( ! FPerm.TERRITORY.has(this, forFaction, true))
-		{
-			return false;
-		}
-		else if (forFaction.getUPlayers().size() < uconf.claimsRequireMinFactionMembers)
-		{
-			error = Txt.parse("Factions must have at least <h>%s<b> members to claim land.", uconf.claimsRequireMinFactionMembers);
-		}
-		else if (ownedLand >= forFaction.getPowerRounded())
-		{
-			error = Txt.parse("<b>You can't claim more land! You need more power!");
-		}
-		else if (uconf.claimedLandsMax != 0 && ownedLand >= uconf.claimedLandsMax && ! forFaction.getFlag(FFlag.INFPOWER))
-		{
-			error = Txt.parse("<b>Limit reached. You can't claim more land!");
-		}
-		else if ( ! uconf.claimingFromOthersAllowed && currentFaction.isNormal())
-		{
-			error = Txt.parse("<b>You may not claim land from others.");
-		}
-		else if (currentFaction.getRelationTo(forFaction).isAtLeast(Rel.TRUCE) && ! currentFaction.isNone())
-		{
-			error = Txt.parse("<b>You can't claim this land due to your relation with the current owner.");
-		}
-		else if
-		(
-			uconf.claimsMustBeConnected
-			&& ! this.isUsingAdminMode()
-			&& myFaction.getLandCountInWorld(ps.getWorld()) > 0
-			&& !BoardColls.get().isConnectedPs(ps, myFaction)
-			&& (!uconf.claimsCanBeUnconnectedIfOwnedByOtherFaction || !currentFaction.isNormal())
-		)
-		{
-			if (uconf.claimsCanBeUnconnectedIfOwnedByOtherFaction)
-				error = Txt.parse("<b>You can only claim additional land which is connected to your first claim or controlled by another faction!");
-			else
-				error = Txt.parse("<b>You can only claim additional land which is connected to your first claim!");
-		}
-		else if (currentFaction.isNormal())
-		{
-			if ( ! currentFaction.hasLandInflation())
+			int ownedLand = newFaction.getLandCount();
+			
+			if (!uconf.claimingFromOthersAllowed && oldFaction.isNormal())
 			{
-				 // TODO more messages WARN current faction most importantly
-				error = Txt.parse("%s<i> owns this land and is strong enough to keep it.", currentFaction.getTag(this));
+				msg("<b>You may not claim land from others.");
+				return false;
 			}
-			else if ( ! BoardColls.get().isBorderPs(ps))
+			
+			if (mconf.worldsNoClaiming.contains(ps.getWorld()))
 			{
-				error = Txt.parse("<b>You must start claiming land at the border of the territory.");
+				msg("<b>Sorry, this world has land claiming disabled.");
+				return false;
+			}
+			
+			if (oldFaction.getRelationTo(newFaction).isAtLeast(Rel.TRUCE))
+			{
+				msg("<b>You can't claim this land due to your relation with the current owner.");
+				return false;
+			}
+			
+			if (newFaction.getUPlayers().size() < uconf.claimsRequireMinFactionMembers)
+			{
+				msg("Factions must have at least <h>%s<b> members to claim land.", uconf.claimsRequireMinFactionMembers);
+				return false;
+			}
+			
+			if (uconf.claimedLandsMax != 0 && ownedLand >= uconf.claimedLandsMax && ! newFaction.getFlag(FFlag.INFPOWER))
+			{
+				msg("<b>Limit reached. You can't claim more land.");
+				return false;
+			}
+			
+			if (ownedLand >= newFaction.getPowerRounded())
+			{
+				msg("<b>You can't claim more land. You need more power.");
+				return false;
+			}
+			
+			if
+			(
+				uconf.claimsMustBeConnected
+				&& newFaction.getLandCountInWorld(ps.getWorld()) > 0
+				&& !BoardColls.get().isConnectedPs(ps, newFaction)
+				&& (!uconf.claimsCanBeUnconnectedIfOwnedByOtherFaction || !oldFaction.isNormal())
+			)
+			{
+				if (uconf.claimsCanBeUnconnectedIfOwnedByOtherFaction)
+				{
+					msg("<b>You can only claim additional land which is connected to your first claim or controlled by another faction!");
+				}
+				else
+				{
+					msg("<b>You can only claim additional land which is connected to your first claim!");
+				}
+				return false;
+			}
+			
+			if (!oldFaction.hasLandInflation())
+			{
+				msg("%s<i> owns this land and is strong enough to keep it.", oldFaction.getTag(this));
+				return false;
+			}
+			
+			if ( ! BoardColls.get().isBorderPs(ps))
+			{
+				msg("<b>You must start claiming land at the border of the territory.");
+				return false;
 			}
 		}
 		
-		if (notifyFailure && error != null)
-		{
-			msg(error);
-		}
-		return error == null;
-	}
-	
-	// notifyFailure is false if called by auto-claim; no need to notify on every failure for it
-	// return value is false on failure, true on success
-	public boolean attemptClaim(Faction forFaction, PS psChunk, boolean notifyFailure)
-	{
-		psChunk = psChunk.getChunk(true);
-		Faction currentFaction = BoardColls.get().getFactionAt(psChunk);
-		
-		if ( ! this.canClaimForFactionAtLocation(forFaction, psChunk, notifyFailure)) return false;
-
 		// Event
-		FactionsEventChunkChange event = new FactionsEventChunkChange(sender, psChunk, forFaction);
+		FactionsEventChunkChange event = new FactionsEventChunkChange(sender, chunk, newFaction);
 		event.run();
 		if (event.isCancelled()) return false;
 
-		// announce success
-		Set<UPlayer> informTheseUPlayers = new HashSet<UPlayer>();
-		informTheseUPlayers.add(this);
-		informTheseUPlayers.addAll(forFaction.getUPlayersWhereOnline(true));
-		for (UPlayer fp : informTheseUPlayers)
-		{
-			fp.msg("<h>%s<i> claimed land for <h>%s<i> from <h>%s<i>.", this.describeTo(fp, true), forFaction.describeTo(fp), currentFaction.describeTo(fp));
-		}
+		// Apply
+		BoardColls.get().setFactionAt(chunk, newFaction);
 		
-		BoardColls.get().setFactionAt(psChunk, forFaction);
-
+		// Inform
+		Set<UPlayer> informees = new HashSet<UPlayer>();
+		informees.add(this);
+		if (newFaction.isNormal())
+		{
+			informees.addAll(newFaction.getUPlayers());
+		}
+		if (oldFaction.isNormal())
+		{
+			informees.addAll(oldFaction.getUPlayers());
+		}
 		if (MConf.get().logLandClaims)
 		{
-			Factions.get().log(this.getName()+" claimed land at ("+psChunk.getChunkX()+","+psChunk.getChunkZ()+") for the faction: "+forFaction.getTag());
+			informees.add(UPlayer.get(SenderUtil.getConsole()));
+		}
+		
+		for (UPlayer informee : informees)
+		{
+			informee.msg("<h>%s<i> did %s %s <i>for <h>%s<i> from <h>%s<i>.", this.describeTo(informee, true), event.getType().toString().toLowerCase(), chunk.toString(PSFormatSlug.get()), newFaction.describeTo(informee), oldFaction.describeTo(informee));
 		}
 
 		return true;

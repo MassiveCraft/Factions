@@ -99,7 +99,7 @@ public class UPlayerColl extends SenderColl<UPlayer>
 				}
 			}
 
-			uplayer.resetFactionData();
+			uplayer.leave();
 			uplayer.detach();
 		}
 	}

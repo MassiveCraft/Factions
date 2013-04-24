@@ -24,7 +24,6 @@ import com.massivecraft.factions.entity.BoardColls;
 import com.massivecraft.factions.entity.UPlayerColls;
 import com.massivecraft.factions.entity.FactionColls;
 import com.massivecraft.factions.entity.MConfColl;
-import com.massivecraft.factions.integration.Worldguard;
 import com.massivecraft.factions.integration.herochat.HerochatFeatures;
 import com.massivecraft.factions.integration.lwc.LwcFeatures;
 import com.massivecraft.factions.listeners.FactionsListenerChat;
@@ -161,8 +160,6 @@ public class Factions extends MPlugin
 			HerochatFeatures.get(),
 			LwcFeatures.get()
 		);
-		
-		Worldguard.init(this);
 		
 		postEnable();
 	}

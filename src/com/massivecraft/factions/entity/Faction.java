@@ -679,7 +679,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	
 	public int getLandCount()
 	{
-		return BoardColls.get().getCount(this);
+		return BoardColls.get().get(this).getCount(this);
 	}
 	public int getLandCountInWorld(String worldName)
 	{

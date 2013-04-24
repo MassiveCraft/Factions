@@ -14,6 +14,7 @@ import com.massivecraft.factions.event.FactionsEventChunkChange;
 import com.massivecraft.factions.event.FactionsEventChunkChangeType;
 import com.massivecraft.factions.event.FactionsEventCreate;
 import com.massivecraft.factions.event.FactionsEventDescriptionChange;
+import com.massivecraft.factions.event.FactionsEventDisband;
 import com.massivecraft.factions.event.FactionsEventHomeChange;
 import com.massivecraft.factions.event.FactionsEventHomeTeleport;
 import com.massivecraft.factions.event.FactionsEventInvitedChange;
@@ -24,6 +25,7 @@ import com.massivecraft.factions.event.FactionsEventRelationChange;
 import com.massivecraft.factions.event.FactionsEventTagChange;
 import com.massivecraft.factions.event.FactionsEventTitleChange;
 import com.massivecraft.factions.integration.Econ;
+import com.massivecraft.mcore.money.Money;
 
 public class FactionsListenerEcon implements Listener
 {
@@ -44,6 +46,51 @@ public class FactionsListenerEcon implements Listener
 		Bukkit.getPluginManager().registerEvents(this, Factions.get());
 	}
 
+	// -------------------------------------------- //
+	// TAKE ON LEAVE
+	// -------------------------------------------- //
+	
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	public void takeOnLeave(FactionsEventMembershipChange event)
+	{
+		// If a player is leaving the faction ...
+		if (event.getReason() != MembershipChangeReason.LEAVE) return;
+		
+		// ... and that player was the last one in the faction ...
+		UPlayer uplayer = event.getUPlayer();
+		Faction oldFaction = uplayer.getFaction();
+		if (oldFaction.getUPlayers().size() > 1) return;
+		
+		// ... then transfer all money to the player. 
+		Econ.transferMoney(uplayer, oldFaction, uplayer, Money.get(oldFaction));
+	}
+	
+	// -------------------------------------------- //
+	// TAKE ON DISBAND
+	// -------------------------------------------- //
+	
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	public void takeOnDisband(FactionsEventDisband event)
+	{
+		// If there is a usender ...
+		UPlayer usender = event.getUSender();
+		if (usender == null) return;
+		
+		// ... and economy is enabled ...
+		if (!Econ.isEnabled(usender)) return;
+		
+		// ... then transfer all the faction money to the sender.
+		Faction faction = event.getFaction();
+	
+		double amount = Money.get(faction);
+		String amountString = Money.format(faction, amount);
+		
+		Econ.transferMoney(usender, faction, usender, amount, false);
+		
+		usender.msg("<i>You have been given the disbanded faction's bank, totaling %s.", amountString);
+		Factions.get().log(usender.getName() + " has been given bank holdings of "+amountString+" from disbanding "+faction.getTag()+".");
+	}
+	
 	// -------------------------------------------- //
 	// PAY FOR ACTION
 	// -------------------------------------------- //

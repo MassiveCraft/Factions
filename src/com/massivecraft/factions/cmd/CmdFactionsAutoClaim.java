@@ -36,7 +36,7 @@ public class CmdFactionsAutoClaim extends FCommand
 		fme.setAutoClaimFor(forFaction);
 		
 		msg("<i>Now auto-claiming land for <h>%s<i>.", forFaction.describeTo(fme));
-		fme.attemptClaim(forFaction, PS.valueOf(me), true);
+		fme.tryClaim(forFaction, PS.valueOf(me), true, true);
 	}
 	
 }
