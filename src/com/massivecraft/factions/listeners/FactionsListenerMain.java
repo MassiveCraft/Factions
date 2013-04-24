@@ -125,7 +125,7 @@ public class FactionsListenerMain implements Listener
 		}
 		else if (factionFrom != factionTo)
 		{
-			String msg = Txt.parse("<i>") + " ~ " + factionTo.getTag(uplayer);
+			String msg = Txt.parse("<i>") + " ~ " + factionTo.getName(uplayer);
 			if (factionTo.hasDescription())
 			{
 				msg += " - " + factionTo.getDescription();

@@ -30,15 +30,6 @@ public class CmdFactionsUnclaim extends FCommand
 
 		// Apply
 		if (fme.tryClaim(newFaction, chunk, true, true)) return;
-		
-		// Inform
-		// TODO: Move the logging stuff into the try-method
-		/*myFaction.msg("%s<i> unclaimed some land.", fme.describeTo(myFaction, true));
-
-		if (MConf.get().logLandUnclaims)
-		{
-			Factions.get().log(fme.getName()+" unclaimed land at ("+chunk.getChunkX()+","+chunk.getChunkZ()+") from the faction: "+oldFaction.getTag());
-		}*/
 	}
 	
 }

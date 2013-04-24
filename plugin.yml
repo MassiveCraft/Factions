@@ -50,7 +50,7 @@ permissions:
   factions.seechunk: {description: see the chunk you stand in, default: false}
   factions.sethome: {description: set the faction home, default: false}
   factions.show: {description: show faction information, default: false}
-  factions.tag: {description: set faction tag, default: false}
+  factions.name: {description: set faction name, default: false}
   factions.title: {description: set player title, default: false}
   factions.unclaim: {description: unclaim land where you stand, default: false}
   factions.unclaimall: {description: unclaim all land, default: false}
@@ -95,7 +95,7 @@ permissions:
       factions.seechunk: true
       factions.sethome: true
       factions.show: true
-      factions.tag: true
+      factions.name: true
       factions.title: true
       factions.unclaim: true
       factions.unclaimall: true
@@ -165,7 +165,7 @@ permissions:
       factions.seechunk: true
       factions.sethome: true
       factions.show: true
-      factions.tag: true
+      factions.name: true
       factions.title: true
       factions.unclaim: true
       factions.unclaimall: true

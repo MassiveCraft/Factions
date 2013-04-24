@@ -36,7 +36,7 @@ public class CmdFactionsInvite extends FCommand
 		// Allready member?
 		if (uplayer.getFaction() == myFaction)
 		{
-			msg("%s<i> is already a member of %s", uplayer.getName(), myFaction.getTag());
+			msg("%s<i> is already a member of %s", uplayer.getName(), myFaction.getName());
 			msg("<i>You might want to: " + Factions.get().getOuterCmdFactions().cmdFactionsKick.getUseageTemplate(false));
 			return;
 		}

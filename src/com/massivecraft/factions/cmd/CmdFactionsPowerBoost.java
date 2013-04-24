@@ -30,9 +30,9 @@ public class CmdFactionsPowerBoost extends FCommand
 
 		faction.setPowerBoost(amount);
 	
-		msg("<i>"+faction.getTag()+" now has a power bonus/penalty of "+amount+" to min and max power levels.");
+		msg("<i>"+faction.getName()+" now has a power bonus/penalty of "+amount+" to min and max power levels.");
 		
 		// TODO: Inconsistent. Why is there no boolean to toggle this logging of?
-		Factions.get().log(fme.getName()+" has set the power bonus/penalty for "+faction.getTag()+" to "+amount+".");
+		Factions.get().log(fme.getName()+" has set the power bonus/penalty for "+faction.getName()+" to "+amount+".");
 	}
 }

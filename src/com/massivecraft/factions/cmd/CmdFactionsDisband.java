@@ -67,13 +67,13 @@ public class CmdFactionsDisband extends FCommand
 			}
 			else
 			{
-				uplayer.msg("<h>%s<i> disbanded the faction %s.", who, faction.getTag(uplayer));
+				uplayer.msg("<h>%s<i> disbanded the faction %s.", who, faction.getName(uplayer));
 			}
 		}
 		
 		if (MConf.get().logFactionDisband)
 		{
-			Factions.get().log("The faction "+faction.getTag()+" ("+faction.getId()+") was disbanded by "+(senderIsConsole ? "console command" : fme.getName())+".");
+			Factions.get().log("The faction "+faction.getName()+" ("+faction.getId()+") was disbanded by "+(senderIsConsole ? "console command" : fme.getName())+".");
 		}
 
 		

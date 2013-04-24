@@ -35,7 +35,7 @@ public class RelationUtil
 			}
 			else
 			{
-				ret = thatFaction.getTag();
+				ret = thatFaction.getName();
 			}
 		}
 		else if (that instanceof UPlayer)
@@ -51,7 +51,7 @@ public class RelationUtil
 			}
 			else
 			{
-				ret = uplayerthat.getNameAndTag();
+				ret = uplayerthat.getNameAndFactionName();
 			}
 		}
 

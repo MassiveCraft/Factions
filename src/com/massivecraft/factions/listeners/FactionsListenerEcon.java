@@ -22,7 +22,7 @@ import com.massivecraft.factions.event.FactionsEventMembershipChange;
 import com.massivecraft.factions.event.FactionsEventMembershipChange.MembershipChangeReason;
 import com.massivecraft.factions.event.FactionsEventOpenChange;
 import com.massivecraft.factions.event.FactionsEventRelationChange;
-import com.massivecraft.factions.event.FactionsEventTagChange;
+import com.massivecraft.factions.event.FactionsEventNameChange;
 import com.massivecraft.factions.event.FactionsEventTitleChange;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.mcore.money.Money;
@@ -88,7 +88,7 @@ public class FactionsListenerEcon implements Listener
 		Econ.transferMoney(usender, faction, usender, amount, false);
 		
 		usender.msg("<i>You have been given the disbanded faction's bank, totaling %s.", amountString);
-		Factions.get().log(usender.getName() + " has been given bank holdings of "+amountString+" from disbanding "+faction.getTag()+".");
+		Factions.get().log(usender.getName() + " has been given bank holdings of "+amountString+" from disbanding "+faction.getName()+".");
 	}
 	
 	// -------------------------------------------- //
@@ -191,10 +191,10 @@ public class FactionsListenerEcon implements Listener
 	}
 	
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
-	public void payForCommand(FactionsEventTagChange event)
+	public void payForCommand(FactionsEventNameChange event)
 	{
-		Double cost = UConf.get(event.getSender()).econCostTag;
-		String desc = Factions.get().getOuterCmdFactions().cmdFactionsTag.getDesc();
+		Double cost = UConf.get(event.getSender()).econCostName;
+		String desc = Factions.get().getOuterCmdFactions().cmdFactionsName.getDesc();
 		
 		payForAction(event, cost, desc);
 	}

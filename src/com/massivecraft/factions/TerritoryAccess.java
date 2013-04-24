@@ -136,7 +136,7 @@ public class TerritoryAccess
 		{
 			if (list.length() > 0)
 				list.append(", ");
-			list.append(FactionColls.get().get(universeExtractable).get(factionID).getTag());
+			list.append(FactionColls.get().get(universeExtractable).get(factionID).getName());
 		}
 		return list.toString();
 	}

@@ -23,19 +23,19 @@ public class FactionsEventCreate extends FactionsEventAbstractSender
 	private final String factionId;
 	public final String getFactionId() { return this.factionId; }
 	
-	private final String factionTag;
-	public final String getFactionTag() { return this.factionTag; }
+	private final String factionName;
+	public final String getFactionName() { return this.factionName; }
 	
 	// -------------------------------------------- //
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public FactionsEventCreate(CommandSender sender, String universe, String factionId, String factionTag)
+	public FactionsEventCreate(CommandSender sender, String universe, String factionId, String factionName)
 	{
 		super(sender);
 		this.universe = universe;
 		this.factionId = factionId;
-		this.factionTag = factionTag;
+		this.factionName = factionName;
 	}
 
 }

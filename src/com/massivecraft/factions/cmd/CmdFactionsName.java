@@ -8,20 +8,20 @@ import com.massivecraft.factions.cmd.req.ReqRoleIsAtLeast;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.FactionColl;
 import com.massivecraft.factions.entity.FactionColls;
-import com.massivecraft.factions.event.FactionsEventTagChange;
+import com.massivecraft.factions.event.FactionsEventNameChange;
 import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 
-public class CmdFactionsTag extends FCommand
+public class CmdFactionsName extends FCommand
 {
 	
-	public CmdFactionsTag()
+	public CmdFactionsName()
 	{
-		this.addAliases("tag");
+		this.addAliases("name");
 		
-		this.addRequiredArg("new tag");
+		this.addRequiredArg("new name");
 		
-		this.addRequirements(ReqHasPerm.get(Perm.TAG.node));
+		this.addRequirements(ReqHasPerm.get(Perm.NAME.node));
 		this.addRequirements(ReqRoleIsAtLeast.get(Rel.OFFICER));
 	}
 	
@@ -29,19 +29,19 @@ public class CmdFactionsTag extends FCommand
 	public void perform()
 	{
 		// Arg
-		String newTag = this.arg(0);
+		String newName = this.arg(0);
 		
 		// TODO does not first test cover selfcase?
 		
 		FactionColl factionColl = FactionColls.get().get(myFaction);
-		if (factionColl.isTagTaken(newTag) && ! MiscUtil.getComparisonString(newTag).equals(myFaction.getComparisonTag()))
+		if (factionColl.isNameTaken(newName) && ! MiscUtil.getComparisonString(newName).equals(myFaction.getComparisonName()))
 		{
-			msg("<b>That tag is already taken");
+			msg("<b>That name is already taken");
 			return;
 		}
 
 		ArrayList<String> errors = new ArrayList<String>();
-		errors.addAll(factionColl.validateTag(newTag));
+		errors.addAll(factionColl.validateName(newName));
 		if (errors.size() > 0)
 		{
 			sendMessage(errors);
@@ -49,24 +49,24 @@ public class CmdFactionsTag extends FCommand
 		}
 
 		// Event
-		FactionsEventTagChange event = new FactionsEventTagChange(sender, myFaction, newTag);
+		FactionsEventNameChange event = new FactionsEventNameChange(sender, myFaction, newName);
 		event.run();
 		if (event.isCancelled()) return;
-		newTag = event.getNewTag();
+		newName = event.getNewName();
 
 		// Apply
-		String oldtag = myFaction.getTag();
-		myFaction.setTag(newTag);
+		String oldName = myFaction.getName();
+		myFaction.setName(newName);
 
 		// Inform
-		myFaction.msg("%s<i> changed your faction tag to %s", fme.describeTo(myFaction, true), myFaction.getTag(myFaction));
+		myFaction.msg("%s<i> changed your faction name to %s", fme.describeTo(myFaction, true), myFaction.getName(myFaction));
 		for (Faction faction : FactionColls.get().get(myFaction).getAll())
 		{
 			if (faction == myFaction)
 			{
 				continue;
 			}
-			faction.msg("<i>The faction %s<i> changed their name to %s.", fme.getColorTo(faction)+oldtag, myFaction.getTag(faction));
+			faction.msg("<i>The faction %s<i> changed their name to %s.", fme.getColorTo(faction)+oldName, myFaction.getName(faction));
 		}
 	}
 	

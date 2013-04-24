@@ -47,7 +47,7 @@ public abstract class CmdFactionsRelationAbstract extends FCommand
 
 		if (myFaction.getRelationWish(otherFaction) == newRelation)
 		{
-			msg("<b>You already have that relation wish set with %s.", otherFaction.getTag());
+			msg("<b>You already have that relation wish set with %s.", otherFaction.getName());
 			return;
 		}
 		
@@ -71,7 +71,7 @@ public abstract class CmdFactionsRelationAbstract extends FCommand
 		else
 		{
 			otherFaction.msg("%s<i> wishes to be %s.", myFaction.describeTo(otherFaction, true), newRelation.getColor()+newRelation.getDescFactionOne());
-			otherFaction.msg("<i>Type <c>/"+ConfServer.baseCommandAliases.get(0)+" "+newRelation+" "+myFaction.getTag()+"<i> to accept.");
+			otherFaction.msg("<i>Type <c>/"+ConfServer.baseCommandAliases.get(0)+" "+newRelation+" "+myFaction.getName()+"<i> to accept.");
 			myFaction.msg("%s<i> were informed that you wish to be %s<i>.", otherFaction.describeTo(myFaction, true), newRelation.getColor()+newRelation.getDescFactionOne());
 		}
 		

@@ -40,7 +40,7 @@ public class CmdFactions extends FCommand
 	public CmdFactionsSeeChunk cmdFactionsSeeChunk = new CmdFactionsSeeChunk();
 	public CmdFactionsSethome cmdFactionsSethome = new CmdFactionsSethome();
 	public CmdFactionsShow cmdFactionsShow = new CmdFactionsShow();
-	public CmdFactionsTag cmdFactionsTag = new CmdFactionsTag();
+	public CmdFactionsName cmdFactionsName = new CmdFactionsName();
 	public CmdFactionsTitle cmdFactionsTitle = new CmdFactionsTitle();
 	public CmdFactionsUnclaim cmdFactionsUnclaim = new CmdFactionsUnclaim();
 	public CmdFactionsUnclaimall cmdFactionsUnclaimall = new CmdFactionsUnclaimall();
@@ -66,7 +66,7 @@ public class CmdFactions extends FCommand
 		this.addSubCommand(this.cmdFactionsHome);
 		this.addSubCommand(this.cmdFactionsCreate);
 		this.addSubCommand(this.cmdFactionsSethome);
-		this.addSubCommand(this.cmdFactionsTag);
+		this.addSubCommand(this.cmdFactionsName);
 		this.addSubCommand(this.cmdFactionsDemote);
 		this.addSubCommand(this.cmdFactionsDescription);
 		this.addSubCommand(this.cmdFactionsPerm);

@@ -22,7 +22,7 @@ public class CmdFactionsCreate extends FCommand
 	{
 		this.addAliases("create");
 		
-		this.addRequiredArg("faction tag");
+		this.addRequiredArg("name");
 		
 		this.addRequirements(ReqHasPerm.get(Perm.CREATE.node));
 	}
@@ -31,7 +31,7 @@ public class CmdFactionsCreate extends FCommand
 	public void perform()
 	{
 		// Args
-		String newTag = this.arg(0);
+		String newName = this.arg(0);
 		
 		// Verify
 		if (fme.getFaction().isNormal())
@@ -42,16 +42,16 @@ public class CmdFactionsCreate extends FCommand
 		
 		FactionColl coll = FactionColls.get().get(fme);
 		
-		if (coll.isTagTaken(newTag))
+		if (coll.isNameTaken(newName))
 		{
-			msg("<b>That tag is already in use.");
+			msg("<b>That name is already in use.");
 			return;
 		}
 		
-		ArrayList<String> tagValidationErrors = coll.validateTag(newTag);
-		if (tagValidationErrors.size() > 0)
+		ArrayList<String> nameValidationErrors = coll.validateName(newName);
+		if (nameValidationErrors.size() > 0)
 		{
-			sendMessage(tagValidationErrors);
+			sendMessage(nameValidationErrors);
 			return;
 		}
 
@@ -59,13 +59,13 @@ public class CmdFactionsCreate extends FCommand
 		String factionId = coll.getIdStrategy().generate(coll);
 		
 		// Event
-		FactionsEventCreate createEvent = new FactionsEventCreate(sender, coll.getUniverse(), factionId, newTag);
+		FactionsEventCreate createEvent = new FactionsEventCreate(sender, coll.getUniverse(), factionId, newName);
 		createEvent.run();
 		if (createEvent.isCancelled()) return;
 		
 		// Apply
 		Faction faction = coll.create(factionId);
-		faction.setTag(newTag);
+		faction.setName(newName);
 		
 		fme.setRole(Rel.LEADER);
 		fme.setFaction(faction);
@@ -77,14 +77,14 @@ public class CmdFactionsCreate extends FCommand
 		// Inform
 		for (UPlayer follower : UPlayerColls.get().get(fme).getAllOnline())
 		{
-			follower.msg("%s<i> created a new faction %s", fme.describeTo(follower, true), faction.getTag(follower));
+			follower.msg("%s<i> created a new faction %s", fme.describeTo(follower, true), faction.getName(follower));
 		}
 		
 		msg("<i>You should now: %s", Factions.get().getOuterCmdFactions().cmdFactionsDescription.getUseageTemplate());
 
 		if (MConf.get().logFactionCreate)
 		{
-			Factions.get().log(fme.getName()+" created a new faction: "+newTag);
+			Factions.get().log(fme.getName()+" created a new faction: "+newName);
 		}
 	}
 	

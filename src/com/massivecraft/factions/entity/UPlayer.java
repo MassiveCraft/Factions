@@ -332,7 +332,7 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 	}
 	
 	// -------------------------------------------- //
-	// TITLE, NAME, FACTION TAG AND CHAT
+	// TITLE, NAME, FACTION NAME AND CHAT
 	// -------------------------------------------- //
 	
 	public String getName()
@@ -340,11 +340,11 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 		return this.getFixedId();
 	}
 	
-	public String getTag()
+	public String getFactionName()
 	{
 		Faction faction = this.getFaction();
 		if (faction.isNone()) return "";
-		return faction.getTag();
+		return faction.getName();
 	}
 	
 	// Base concatenations:
@@ -372,9 +372,9 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 		}
 	}
 	
-	public String getNameAndTag()
+	public String getNameAndFactionName()
 	{
-		return this.getNameAndSomething(this.getTag());
+		return this.getNameAndSomething(this.getFactionName());
 	}
 	
 	// Colored concatenations:
@@ -498,7 +498,7 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 
 			if (MConf.get().logFactionLeave)
 			{
-				Factions.get().log(this.getName()+" left the faction: "+myFaction.getTag());
+				Factions.get().log(this.getName()+" left the faction: "+myFaction.getName());
 			}
 		}
 		
@@ -515,7 +515,7 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 			myFaction.detach();
 			if (MConf.get().logFactionDisband)
 			{
-				Factions.get().log("The faction "+myFaction.getTag()+" ("+myFaction.getId()+") was disbanded due to the last player ("+this.getName()+") leaving.");
+				Factions.get().log("The faction "+myFaction.getName()+" ("+myFaction.getId()+") was disbanded due to the last player ("+this.getName()+") leaving.");
 			}
 		}
 	}
@@ -596,7 +596,7 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 			
 			if (!oldFaction.hasLandInflation())
 			{
-				msg("%s<i> owns this land and is strong enough to keep it.", oldFaction.getTag(this));
+				msg("%s<i> owns this land and is strong enough to keep it.", oldFaction.getName(this));
 				return false;
 			}
 			

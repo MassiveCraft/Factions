@@ -129,7 +129,7 @@ public class FactionColl extends Coll<Faction>
 		
 		faction = this.create(id);
 		
-		faction.setTag(ChatColor.DARK_GREEN+"Wilderness");
+		faction.setName(ChatColor.DARK_GREEN+"Wilderness");
 		faction.setDescription(null);
 		faction.setOpen(false);
 		
@@ -161,7 +161,7 @@ public class FactionColl extends Coll<Faction>
 		
 		faction = this.create(id);
 		
-		faction.setTag("SafeZone");
+		faction.setName("SafeZone");
 		faction.setDescription("Free from PVP and monsters");
 		faction.setOpen(false);
 		
@@ -193,7 +193,7 @@ public class FactionColl extends Coll<Faction>
 		
 		faction = this.create(id);
 		
-		faction.setTag("WarZone");
+		faction.setName("WarZone");
 		faction.setDescription("Not the safest place to be");
 		faction.setOpen(false);
 		
@@ -246,40 +246,40 @@ public class FactionColl extends Coll<Faction>
 	}
 	
 	// -------------------------------------------- //
-	// FACTION TAG
+	// FACTION NAME
 	// -------------------------------------------- //
 	
-	public ArrayList<String> validateTag(String str)
+	public ArrayList<String> validateName(String str)
 	{
 		ArrayList<String> errors = new ArrayList<String>();
 		
-		if (MiscUtil.getComparisonString(str).length() < UConf.get(this).factionTagLengthMin)
+		if (MiscUtil.getComparisonString(str).length() < UConf.get(this).factionNameLengthMin)
 		{
-			errors.add(Txt.parse("<i>The faction tag can't be shorter than <h>%s<i> chars.", UConf.get(this).factionTagLengthMin));
+			errors.add(Txt.parse("<i>The faction name can't be shorter than <h>%s<i> chars.", UConf.get(this).factionNameLengthMin));
 		}
 		
-		if (str.length() > UConf.get(this).factionTagLengthMax)
+		if (str.length() > UConf.get(this).factionNameLengthMax)
 		{
-			errors.add(Txt.parse("<i>The faction tag can't be longer than <h>%s<i> chars.", UConf.get(this).factionTagLengthMax));
+			errors.add(Txt.parse("<i>The faction name can't be longer than <h>%s<i> chars.", UConf.get(this).factionNameLengthMax));
 		}
 		
 		for (char c : str.toCharArray())
 		{
 			if ( ! MiscUtil.substanceChars.contains(String.valueOf(c)))
 			{
-				errors.add(Txt.parse("<i>Faction tag must be alphanumeric. \"<h>%s<i>\" is not allowed.", c));
+				errors.add(Txt.parse("<i>Faction name must be alphanumeric. \"<h>%s<i>\" is not allowed.", c));
 			}
 		}
 		
 		return errors;
 	}
 	
-	public Faction getByTag(String str)
+	public Faction getByName(String str)
 	{
 		String compStr = MiscUtil.getComparisonString(str);
 		for (Faction faction : this.getAll())
 		{
-			if (faction.getComparisonTag().equals(compStr))
+			if (faction.getComparisonName().equals(compStr))
 			{
 				return faction;
 			}
@@ -287,24 +287,24 @@ public class FactionColl extends Coll<Faction>
 		return null;
 	}
 	
-	public Faction getBestTagMatch(String searchFor)
+	public Faction getBestNameMatch(String searchFor)
 	{
-		Map<String, Faction> tag2faction = new HashMap<String, Faction>();
+		Map<String, Faction> name2faction = new HashMap<String, Faction>();
 		
 		// TODO: Slow index building
 		for (Faction faction : this.getAll())
 		{
-			tag2faction.put(ChatColor.stripColor(faction.getTag()), faction);
+			name2faction.put(ChatColor.stripColor(faction.getName()), faction);
 		}
 		
-		String tag = Txt.getBestCIStart(tag2faction.keySet(), searchFor);
+		String tag = Txt.getBestCIStart(name2faction.keySet(), searchFor);
 		if (tag == null) return null;
-		return tag2faction.get(tag);
+		return name2faction.get(tag);
 	}
 	
-	public boolean isTagTaken(String str)
+	public boolean isNameTaken(String str)
 	{
-		return this.getByTag(str) != null;
+		return this.getByName(str) != null;
 	}
 
 }

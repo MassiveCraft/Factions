@@ -62,9 +62,9 @@ public class UConf extends Entity<UConf>
 	public int factionMemberLimit = 0;
 	public double factionPowerMax = 1000.0;
 	
-	public int factionTagLengthMin = 3;
-	public int factionTagLengthMax = 10;
-	public boolean factionTagForceUpperCase = false;
+	public int factionNameLengthMin = 3;
+	public int factionNameLengthMax = 16;
+	public boolean factionNameForceUpperCase = false;
 	
 	// -------------------------------------------- //
 	// CLAIMS
@@ -154,7 +154,7 @@ public class UConf extends Entity<UConf>
 	public double econCostInvite = 0.0;
 	public double econCostDeinvite = 0.0;
 	public double econCostHome = 0.0;
-	public double econCostTag = 0.0;
+	public double econCostName = 0.0;
 	public double econCostDescription = 0.0;
 	public double econCostTitle = 0.0;
 	public double econCostOpen = 0.0;

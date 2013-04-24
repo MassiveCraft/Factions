@@ -82,7 +82,7 @@ public class CmdFactionsAccess extends FCommand
 			Faction targetFaction = this.arg(1, ARFaction.get(myFaction), myFaction);
 			if (targetFaction == null) return;
 			added = territory.toggleFaction(targetFaction);
-			target = "Faction \""+targetFaction.getTag()+"\"";
+			target = "Faction \""+targetFaction.getName()+"\"";
 		}
 
 		msg("<i>%s has been %s<i> the access list for this territory.", target, Txt.parse(added ? "<lime>added to" : "<rose>removed from"));
@@ -91,7 +91,7 @@ public class CmdFactionsAccess extends FCommand
 
 	private void showAccessList(TerritoryAccess territory, Faction locFaction)
 	{
-		msg("<i>Host faction %s has %s<i> in this territory.", locFaction.getTag(), Txt.parse(territory.isHostFactionAllowed() ? "<lime>normal access" : "<rose>restricted access"));
+		msg("<i>Host faction %s has %s<i> in this territory.", locFaction.getName(), Txt.parse(territory.isHostFactionAllowed() ? "<lime>normal access" : "<rose>restricted access"));
 
 		String players = territory.fplayerList();
 		String factions = territory.factionList(locFaction);

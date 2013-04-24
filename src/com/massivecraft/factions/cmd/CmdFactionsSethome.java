@@ -63,7 +63,7 @@ public class CmdFactionsSethome extends FCommand
 		faction.sendMessage(Factions.get().getOuterCmdFactions().cmdFactionsHome.getUseageTemplate());
 		if (faction != myFaction)
 		{
-			fme.msg("<b>You have set the home for the "+faction.getTag(fme)+"<i> faction.");
+			fme.msg("<b>You have set the home for the "+faction.getName(fme)+"<i> faction.");
 		}
 	}
 	

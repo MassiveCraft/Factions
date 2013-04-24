@@ -15,8 +15,8 @@ import com.massivecraft.factions.chat.modifier.ChatModifierUcf;
 import com.massivecraft.factions.chat.tag.ChatTagRelcolor;
 import com.massivecraft.factions.chat.tag.ChatTagRole;
 import com.massivecraft.factions.chat.tag.ChatTagRoleprefix;
-import com.massivecraft.factions.chat.tag.ChatTagTag;
-import com.massivecraft.factions.chat.tag.ChatTagTagforce;
+import com.massivecraft.factions.chat.tag.ChatTagName;
+import com.massivecraft.factions.chat.tag.ChatTagNameforce;
 import com.massivecraft.factions.chat.tag.ChatTagTitle;
 import com.massivecraft.factions.cmd.*;
 import com.massivecraft.factions.entity.Board;
@@ -146,8 +146,8 @@ public class Factions extends MPlugin
 		ChatTagRelcolor.get().register();
 		ChatTagRole.get().register();
 		ChatTagRoleprefix.get().register();
-		ChatTagTag.get().register();
-		ChatTagTagforce.get().register();
+		ChatTagName.get().register();
+		ChatTagNameforce.get().register();
 		ChatTagTitle.get().register();
 		
 		postEnable();

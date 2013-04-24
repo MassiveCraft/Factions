@@ -1,17 +1,18 @@
 package com.massivecraft.factions.chat.tag;
 
 import com.massivecraft.factions.chat.ChatTagAbstract;
+import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.UPlayer;
 
-public class ChatTagTagforce extends ChatTagAbstract
+public class ChatTagName extends ChatTagAbstract
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private ChatTagTagforce() { super("factions_tagforce"); }
-	private static ChatTagTagforce i = new ChatTagTagforce();
-	public static ChatTagTagforce get() { return i; }
+	private ChatTagName() { super("factions_name"); }
+	private static ChatTagName i = new ChatTagName();
+	public static ChatTagName get() { return i; }
 	
 	// -------------------------------------------- //
 	// OVERRIDE
@@ -20,7 +21,9 @@ public class ChatTagTagforce extends ChatTagAbstract
 	@Override
 	public String getReplacement(UPlayer fsender, UPlayer frecipient)
 	{
-		return fsender.getFaction().getTag();
+		Faction faction = fsender.getFaction();
+		if (faction.isNone()) return "";
+		return faction.getName();
 	}
 
 }

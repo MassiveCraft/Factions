@@ -39,12 +39,12 @@ public class ARFaction extends ArgReaderAbstract<Faction>
 	{
 		ArgResult<Faction> result = new ArgResult<Faction>();
 		
-		// Faction Tag Exact 
-		result.setResult(this.getColl().getByTag(str));
+		// Faction Name Exact 
+		result.setResult(this.getColl().getByName(str));
 		if (result.hasResult()) return result;
 		
-		// Faction Tag Match
-		result.setResult(this.getColl().getBestTagMatch(str));
+		// Faction Name Match
+		result.setResult(this.getColl().getBestNameMatch(str));
 		if (result.hasResult()) return result;
 		
 		// UPlayer Name Exact

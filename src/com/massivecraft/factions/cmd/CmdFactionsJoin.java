@@ -46,13 +46,13 @@ public class CmdFactionsJoin extends FCommand
 
 		if (faction == uplayerFaction)
 		{
-			msg("<b>%s %s already a member of %s", uplayer.describeTo(fme, true), (samePlayer ? "are" : "is"), faction.getTag(fme));
+			msg("<b>%s %s already a member of %s", uplayer.describeTo(fme, true), (samePlayer ? "are" : "is"), faction.getName(fme));
 			return;
 		}
 
 		if (UConf.get(faction).factionMemberLimit > 0 && faction.getUPlayers().size() >= UConf.get(faction).factionMemberLimit)
 		{
-			msg(" <b>!<white> The faction %s is at the limit of %d members, so %s cannot currently join.", faction.getTag(fme), UConf.get(faction).factionMemberLimit, uplayer.describeTo(fme, false));
+			msg(" <b>!<white> The faction %s is at the limit of %d members, so %s cannot currently join.", faction.getName(fme), UConf.get(faction).factionMemberLimit, uplayer.describeTo(fme, false));
 			return;
 		}
 
@@ -86,10 +86,10 @@ public class CmdFactionsJoin extends FCommand
 		// Inform
 		if (!samePlayer)
 		{
-			uplayer.msg("<i>%s moved you into the faction %s.", fme.describeTo(uplayer, true), faction.getTag(uplayer));
+			uplayer.msg("<i>%s moved you into the faction %s.", fme.describeTo(uplayer, true), faction.getName(uplayer));
 		}
 		faction.msg("<i>%s joined your faction.", uplayer.describeTo(faction, true));
-		fme.msg("<i>%s successfully joined %s.", uplayer.describeTo(fme, true), faction.getTag(fme));
+		fme.msg("<i>%s successfully joined %s.", uplayer.describeTo(fme, true), faction.getName(fme));
 		
 		// Apply
 		uplayer.resetFactionData();
@@ -101,9 +101,9 @@ public class CmdFactionsJoin extends FCommand
 		if (MConf.get().logFactionJoin)
 		{
 			if (samePlayer)
-				Factions.get().log("%s joined the faction %s.", uplayer.getName(), faction.getTag());
+				Factions.get().log("%s joined the faction %s.", uplayer.getName(), faction.getName());
 			else
-				Factions.get().log("%s moved the player %s into the faction %s.", fme.getName(), uplayer.getName(), faction.getTag());
+				Factions.get().log("%s moved the player %s into the faction %s.", fme.getName(), uplayer.getName(), faction.getName());
 		}
 	}
 }

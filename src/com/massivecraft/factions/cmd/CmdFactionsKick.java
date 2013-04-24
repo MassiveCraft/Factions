@@ -72,7 +72,7 @@ public class CmdFactionsKick extends FCommand
 
 		if (MConf.get().logFactionKick)
 		{
-			Factions.get().log(fme.getDisplayName() + " kicked " + uplayer.getName() + " from the faction " + uplayerFaction.getTag());
+			Factions.get().log(fme.getDisplayName() + " kicked " + uplayer.getName() + " from the faction " + uplayerFaction.getName());
 		}
 
 		// Apply

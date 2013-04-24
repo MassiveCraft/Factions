@@ -43,7 +43,7 @@ public class CmdFactionsShow extends FCommand
 		Collection<UPlayer> normals = faction.getUPlayersWhereRole(Rel.MEMBER);
 		Collection<UPlayer> recruits = faction.getUPlayersWhereRole(Rel.RECRUIT);
 		
-		msg(Txt.titleize(faction.getTag(fme)));
+		msg(Txt.titleize(faction.getName(fme)));
 		msg("<a>Description: <i>%s", faction.getDescription());
 		
 		// Display important flags
@@ -99,7 +99,7 @@ public class CmdFactionsShow extends FCommand
 		String sepparator = Txt.parse("<i>")+", ";
 		
 		// List the relations to other factions
-		Map<Rel, List<String>> relationTags = faction.getFactionTagsPerRelation(fme, true);
+		Map<Rel, List<String>> relationNames = faction.getFactionNamesPerRelation(fme, true);
 		
 		if (faction.getFlag(FFlag.PEACEFUL))
 		{
@@ -107,11 +107,11 @@ public class CmdFactionsShow extends FCommand
 		}
 		else
 		{
-			sendMessage(Txt.parse("<a>In Truce with: ") + Txt.implode(relationTags.get(Rel.TRUCE), sepparator));
+			sendMessage(Txt.parse("<a>In Truce with: ") + Txt.implode(relationNames.get(Rel.TRUCE), sepparator));
 		}
 		
-		sendMessage(Txt.parse("<a>Allied to: ") + Txt.implode(relationTags.get(Rel.ALLY), sepparator));
-		sendMessage(Txt.parse("<a>Enemies: ") + Txt.implode(relationTags.get(Rel.ENEMY), sepparator));
+		sendMessage(Txt.parse("<a>Allied to: ") + Txt.implode(relationNames.get(Rel.ALLY), sepparator));
+		sendMessage(Txt.parse("<a>Enemies: ") + Txt.implode(relationNames.get(Rel.ENEMY), sepparator));
 		
 		// List the members...
 		List<String> memberOnlineNames = new ArrayList<String>();

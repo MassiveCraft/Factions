@@ -5,7 +5,7 @@ import org.bukkit.event.HandlerList;
 
 import com.massivecraft.factions.entity.Faction;
 
-public class FactionsEventTagChange extends FactionsEventAbstractSender
+public class FactionsEventNameChange extends FactionsEventAbstractSender
 {
 	// -------------------------------------------- //
 	// REQUIRED EVENT CODE
@@ -22,19 +22,19 @@ public class FactionsEventTagChange extends FactionsEventAbstractSender
 	private final Faction faction;
 	public Faction getFaction() { return this.faction; }
 	
-	private String newTag;
-	public String getNewTag() { return this.newTag; }
-	public void setNewTag(String newTag) { this.newTag = newTag; }
+	private String newName;
+	public String getNewName() { return this.newName; }
+	public void setNewName(String newName) { this.newName = newName; }
 
 	// -------------------------------------------- //
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public FactionsEventTagChange(CommandSender sender, Faction faction, String newTag) 
+	public FactionsEventNameChange(CommandSender sender, Faction faction, String newName) 
 	{
 		super(sender);
 		this.faction = faction;
-		this.newTag = newTag;
+		this.newName = newName;
 	}
 
 }

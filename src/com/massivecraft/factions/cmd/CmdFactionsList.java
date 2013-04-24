@@ -57,7 +57,7 @@ public class CmdFactionsList extends FCommand
 				continue;
 			}
 			lines.add(Txt.parse("%s<i> %d/%d online, %d/%d/%d",
-				faction.getTag(fme),
+				faction.getName(fme),
 				faction.getUPlayersWhereOnline(true).size(),
 				faction.getUPlayers().size(),
 				faction.getLandCount(),

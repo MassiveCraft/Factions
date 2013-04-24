@@ -58,7 +58,7 @@ public class MConf extends Entity<MConf>
 	// We offer a simple standard way to set the format
 	public boolean chatSetFormat = false;
 	public EventPriority chatSetFormatAt = EventPriority.LOWEST;
-	public String chatSetFormatTo = "<{factions_relcolor}§l{factions_roleprefix}§r{factions_relcolor}{factions_tag|rp}§f%1$s> %2$s";
+	public String chatSetFormatTo = "<{factions_relcolor}§l{factions_roleprefix}§r{factions_relcolor}{factions_name|rp}§f%1$s> %2$s";
 	
 	// We offer a simple standard way to parse the chat tags
 	public boolean chatParseTags = true;
@@ -78,7 +78,7 @@ public class MConf extends Entity<MConf>
 	// HeroChat: The Allies Channel
 	public String herochatAlliesName = "Allies";
 	public String herochatAlliesNick = "A";
-	public String herochatAlliesFormat = "{color}[&l{nick}&r&f {factions_relcolor}&l{factions_roleprefix}&r{factions_relcolor}{factions_tag|rp}{sender}{color}] &f{msg}";
+	public String herochatAlliesFormat = "{color}[&l{nick}&r&f {factions_relcolor}&l{factions_roleprefix}&r{factions_relcolor}{factions_name|rp}{sender}{color}] &f{msg}";
 	public ChatColor herochatAlliesColor = ChatColor.DARK_PURPLE;
 	public int herochatAlliesDistance = 0;
 	public boolean herochatAlliesIsShortcutAllowed = false;

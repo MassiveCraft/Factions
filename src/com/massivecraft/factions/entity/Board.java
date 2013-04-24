@@ -270,7 +270,7 @@ public class Board extends Entity<Board> implements BoardInterface
 		ArrayList<String> ret = new ArrayList<String>();
 		Faction centerFaction = this.getFactionAt(centerPs);
 		
-		ret.add(Txt.titleize("("+centerPs.getChunkX() + "," + centerPs.getChunkZ()+") "+centerFaction.getTag(observer)));
+		ret.add(Txt.titleize("("+centerPs.getChunkX() + "," + centerPs.getChunkZ()+") "+centerFaction.getName(observer)));
 		
 		int halfWidth = Const.MAP_WIDTH / 2;
 		int halfHeight = Const.MAP_HEIGHT / 2;
@@ -280,7 +280,7 @@ public class Board extends Entity<Board> implements BoardInterface
 		int width = halfWidth * 2 + 1;
 		int height = halfHeight * 2 + 1;
 		
-		//Make room for the list of tags
+		// Make room for the list of names
 		height--;
 		
 		Map<Faction, Character> fList = new HashMap<Faction, Character>();
@@ -327,7 +327,7 @@ public class Board extends Entity<Board> implements BoardInterface
 		String fRow = "";
 		for (Faction keyfaction : fList.keySet())
 		{
-			fRow += ""+keyfaction.getColorTo(observer) + fList.get(keyfaction) + ": " + keyfaction.getTag() + " ";
+			fRow += ""+keyfaction.getColorTo(observer) + fList.get(keyfaction) + ": " + keyfaction.getName() + " ";
 		}
 		fRow = fRow.trim();
 		ret.add(fRow);

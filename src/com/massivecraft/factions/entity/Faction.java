@@ -43,7 +43,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	@Override
 	public Faction load(Faction that)
 	{
-		this.setTag(that.tag);
+		this.setName(that.name);
 		this.setDescription(that.description);
 		this.setHome(that.home);
 		this.setPowerBoost(that.powerBoost);
@@ -62,11 +62,11 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	// In this section of the source code we place the field declarations only.
 	// Each field has it's own section further down since just the getter and setter logic takes up quite some place.
 	
-	// TODO: The faction "tag" could/should also have been called "name".
 	// The actual faction id looks something like "54947df8-0e9e-4471-a2f9-9af509fb5889" and that is not too easy to remember for humans.
 	// Thus we make use of a name. Since the id is used in all foreign key situations changing the name is fine.
-	// Null should never happen. The tag must not be null.
-	private String tag = null;
+	// Null should never happen. The name must not be null.
+	@SerializedName("tag")
+	private String name = null;
 	
 	// Factions can optionally set a description for themselves.
 	// This description can for example be seen in territorial alerts.
@@ -124,18 +124,17 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	}
 	
 	// -------------------------------------------- //
-	// FIELD: tag
+	// FIELD: name
 	// -------------------------------------------- //
-	// TODO: Rename tag --> name ?
 	
 	// RAW
 	
-	public String getTag()
+	public String getName()
 	{
-		String ret = this.tag;
+		String ret = this.name;
 		
 		UConf uconf = UConf.get(this);
-		if (uconf != null && UConf.get(this).factionTagForceUpperCase)
+		if (uconf != null && UConf.get(this).factionNameForceUpperCase)
 		{
 			ret = ret.toUpperCase();
 		}
@@ -143,34 +142,34 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 		return ret;
 	}
 	
-	public void setTag(String str)
+	public void setName(String str)
 	{
 		UConf uconf = UConf.get(this);
-		if (uconf != null && UConf.get(this).factionTagForceUpperCase)
+		if (uconf != null && UConf.get(this).factionNameForceUpperCase)
 		{
 			str = str.toUpperCase();
 		}
 
-		this.tag = str;
+		this.name = str;
 		this.changed();
 	}
 	
 	// FINER
 	
-	public String getComparisonTag()
+	public String getComparisonName()
 	{
-		return MiscUtil.getComparisonString(this.getTag());
+		return MiscUtil.getComparisonString(this.getName());
 	}
 	
-	public String getTag(String prefix)
+	public String getName(String prefix)
 	{
-		return prefix + this.getTag();
+		return prefix + this.getName();
 	}
 	
-	public String getTag(RelationParticipator observer)
+	public String getName(RelationParticipator observer)
 	{
-		if (observer == null) return getTag();
-		return this.getTag(this.getColorTo(observer).toString());
+		if (observer == null) return getName();
+		return this.getName(this.getColorTo(observer).toString());
 	}
 	
 	// -------------------------------------------- //
@@ -411,13 +410,13 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	
 	// TODO: What is this and where is it used?
 	
-	public Map<Rel, List<String>> getFactionTagsPerRelation(RelationParticipator rp)
+	public Map<Rel, List<String>> getFactionNamesPerRelation(RelationParticipator rp)
 	{
-		return getFactionTagsPerRelation(rp, false);
+		return getFactionNamesPerRelation(rp, false);
 	}
 
 	// onlyNonNeutral option provides substantial performance boost on large servers for listing only non-neutral factions
-	public Map<Rel, List<String>> getFactionTagsPerRelation(RelationParticipator rp, boolean onlyNonNeutral)
+	public Map<Rel, List<String>> getFactionNamesPerRelation(RelationParticipator rp, boolean onlyNonNeutral)
 	{
 		Map<Rel, List<String>> ret = new HashMap<Rel, List<String>>();
 		for (Rel rel : Rel.values())
@@ -428,7 +427,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 		{
 			Rel relation = faction.getRelationTo(this);
 			if (onlyNonNeutral && relation == Rel.NEUTRAL) continue;
-			ret.get(relation).add(faction.getTag(rp));
+			ret.get(relation).add(faction.getName(rp));
 		}
 		return ret;
 	}
@@ -815,12 +814,12 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 			// no members left and faction isn't permanent, so disband it
 			if (MConf.get().logFactionDisband)
 			{
-				Factions.get().log("The faction "+this.getTag()+" ("+this.getId()+") has been disbanded since it has no members left.");
+				Factions.get().log("The faction "+this.getName()+" ("+this.getId()+") has been disbanded since it has no members left.");
 			}
 
 			for (UPlayer uplayer : UPlayerColls.get().get(this).getAllOnline())
 			{
-				uplayer.msg("The faction %s<i> was disbanded.", this.getTag(uplayer));
+				uplayer.msg("The faction %s<i> was disbanded.", this.getName(uplayer));
 			}
 
 			this.detach();
@@ -834,7 +833,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 				
 			replacements.get(0).setRole(Rel.LEADER);
 			this.msg("<i>Faction leader <h>%s<i> has been removed. %s<i> has been promoted as the new faction leader.", oldLeader == null ? "" : oldLeader.getName(), replacements.get(0).getName());
-			Factions.get().log("Faction "+this.getTag()+" ("+this.getId()+") leader was removed. Replacement leader: "+replacements.get(0).getName());
+			Factions.get().log("Faction "+this.getName()+" ("+this.getId()+") leader was removed. Replacement leader: "+replacements.get(0).getName());
 		}
 	}
 

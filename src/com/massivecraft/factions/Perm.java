@@ -52,7 +52,7 @@ public enum Perm
 	SEE_CHUNK("seechunk"),
 	SETHOME("sethome"),
 	SHOW("show"),
-	TAG("tag"),
+	NAME("name"),
 	TITLE("title"),
 	UNCLAIM("unclaim"),
 	UNCLAIM_ALL("unclaimall"),
