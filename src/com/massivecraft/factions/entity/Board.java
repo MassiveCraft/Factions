@@ -4,8 +4,10 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListMap;
 
 import org.bukkit.ChatColor;
@@ -177,6 +179,29 @@ public class Board extends Entity<Board> implements BoardInterface
 		}
 	}
 	
+	// CHUNKS
+	
+	@Override
+	public Set<PS> getChunks(Faction faction)
+	{
+		return this.getChunks(faction.getId());
+	}
+	
+	public Set<PS> getChunks(String factionId)
+	{
+		Set<PS> ret = new HashSet<PS>();
+		for (Entry<PS, TerritoryAccess> entry : this.map.entrySet())
+		{
+			TerritoryAccess ta = entry.getValue();
+			if (!ta.getHostFactionId().equals(factionId)) continue;
+			
+			PS ps = entry.getKey();
+			ps = ps.withWorld(this.getId());
+			ret.add(ps);
+		}
+		return ret;
+	}
+	
 	// COUNT
 	
 	@Override
@@ -188,9 +213,11 @@ public class Board extends Entity<Board> implements BoardInterface
 	public int getCount(String factionId)
 	{
 		int ret = 0;
-		for (TerritoryAccess territoryAccess : this.map.values())
+		for (TerritoryAccess ta : this.map.values())
 		{
-			if(territoryAccess.getHostFactionId().equals(factionId)) ret += 1;
+			if (!ta.getHostFactionId().equals(factionId)) continue;
+			
+			ret += 1;
 		}
 		return ret;
 	}

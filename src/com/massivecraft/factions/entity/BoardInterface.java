@@ -1,6 +1,7 @@
 package com.massivecraft.factions.entity;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 import com.massivecraft.factions.RelationParticipator;
 import com.massivecraft.factions.TerritoryAccess;
@@ -20,6 +21,9 @@ public interface BoardInterface
 	public void removeAt(PS ps);
 	public void removeAll(Faction faction);
 	public void clean();
+
+	// CHUNKS
+	public Set<PS> getChunks(Faction faction);
 	
 	// COUNT
 	public int getCount(Faction faction);

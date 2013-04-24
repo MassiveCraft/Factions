@@ -2,10 +2,9 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.entity.BoardColls;
 import com.massivecraft.factions.entity.Faction;
+import com.massivecraft.factions.entity.FactionColls;
 import com.massivecraft.factions.entity.MConf;
-import com.massivecraft.factions.entity.UConf;
-import com.massivecraft.factions.event.FactionsEventLandUnclaim;
-import com.massivecraft.factions.integration.Econ;
+import com.massivecraft.factions.event.FactionsEventChunkChange;
 import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
@@ -30,30 +29,21 @@ public class CmdFactionsUnclaim extends FCommand
 		PS chunk = PS.valueOf(me).getChunk(true);
 		Faction otherFaction = BoardColls.get().getFactionAt(chunk);
 
+		Faction newFaction = FactionColls.get().get(me).getNone();
+		
 		// FPerm
+		// TODO: Recode so that pillage is possible
 		if ( ! FPerm.TERRITORY.has(sender, otherFaction, true)) return;
 
 		// Event
-		FactionsEventLandUnclaim event = new FactionsEventLandUnclaim(sender, otherFaction, chunk);
+		FactionsEventChunkChange event = new FactionsEventChunkChange(sender, chunk, newFaction);
 		event.run();
 		if (event.isCancelled()) return;
-	
-		//String moneyBack = "<i>";
-		if (Econ.isEnabled(myFaction))
-		{
-			double refund = Econ.calculateClaimRefund(myFaction);
-			
-			if (UConf.get(myFaction).bankEnabled && UConf.get(myFaction).bankFactionPaysLandCosts)
-			{
-				if ( ! Econ.modifyMoney(myFaction, refund, "unclaim this land")) return;
-			}
-			else
-			{
-				if ( ! Econ.modifyMoney(fme, refund, "unclaim this land")) return;
-			}
-		}
 
-		BoardColls.get().removeAt(chunk);
+		// Apply
+		BoardColls.get().setFactionAt(chunk, newFaction);
+		
+		// Inform
 		myFaction.msg("%s<i> unclaimed some land.", fme.describeTo(myFaction, true));
 
 		if (MConf.get().logLandUnclaims)

@@ -9,6 +9,7 @@ import com.massivecraft.factions.cmd.arg.ARFaction;
 import com.massivecraft.factions.entity.UConf;
 import com.massivecraft.factions.entity.UPlayer;
 import com.massivecraft.factions.entity.Faction;
+import com.massivecraft.factions.event.FactionsEventChunkChangeType;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.FFlag;
 import com.massivecraft.factions.Perm;
@@ -34,6 +35,8 @@ public class CmdFactionsShow extends FCommand
 	{
 		Faction faction = this.arg(0, ARFaction.get(myFaction), myFaction);
 		if (faction == null) return;
+		
+		UConf uconf = UConf.get(faction);
 
 		Collection<UPlayer> leaders = faction.getUPlayersWhereRole(Rel.LEADER);
 		Collection<UPlayer> officers = faction.getUPlayersWhereRole(Rel.OFFICER);
@@ -64,18 +67,30 @@ public class CmdFactionsShow extends FCommand
 		// show the land value
 		if (Econ.isEnabled(faction))
 		{
-			double value = Econ.calculateTotalLandValue(faction.getLandCount());
+			long landCount = faction.getLandCount();
 			
-			double refund = value * UConf.get(faction).econClaimRefundMultiplier;
-			if (value > 0)
+			for (FactionsEventChunkChangeType type : FactionsEventChunkChangeType.values())
 			{
-				String stringValue = Money.format(faction, value);
-				String stringRefund = (refund > 0.0) ? (" ("+Money.format(faction, refund)+" depreciated)") : "";
-				msg("<a>Total land value: <i>" + stringValue + stringRefund);
+				Double money = uconf.econChunkCost.get(type);
+				if (money == null) money = 0D;
+				money *= landCount;
+				
+				String word = null;
+				if (money > 0)
+				{
+					word = "cost";
+				}
+				else
+				{
+					word = "reward";
+					money *= -1;
+				}
+				
+				msg("<a>Total land %s %s: <i>%s", type.toString().toLowerCase(), word, Money.format(faction, money));
 			}
 			
 			// Show bank contents
-			if(UConf.get(faction).bankEnabled)
+			if (UConf.get(faction).bankEnabled)
 			{
 				msg("<a>Bank contains: <i>"+Money.format(faction, Money.get(faction)));
 			}

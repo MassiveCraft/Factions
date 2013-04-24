@@ -1,15 +1,19 @@
 package com.massivecraft.factions.cmd;
 
+import java.util.Set;
+
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.cmd.req.ReqRoleIsAtLeast;
+import com.massivecraft.factions.entity.BoardColl;
 import com.massivecraft.factions.entity.BoardColls;
+import com.massivecraft.factions.entity.Faction;
+import com.massivecraft.factions.entity.FactionColls;
 import com.massivecraft.factions.entity.MConf;
-import com.massivecraft.factions.entity.UConf;
-import com.massivecraft.factions.event.FactionsEventLandUnclaimAll;
-import com.massivecraft.factions.integration.Econ;
+import com.massivecraft.factions.event.FactionsEventChunkChange;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
+import com.massivecraft.mcore.ps.PS;
 
 public class CmdFactionsUnclaimall extends FCommand
 {	
@@ -24,32 +28,36 @@ public class CmdFactionsUnclaimall extends FCommand
 	@Override
 	public void perform()
 	{
-		// TODO: Put this as a listener and not in here!
-		if (Econ.isEnabled(myFaction))
+		// Args
+		Faction faction = myFaction;
+		
+		Faction newFaction = FactionColls.get().get(faction).getNone();
+
+		// Apply
+		BoardColl boardColl = BoardColls.get().get(faction);
+		Set<PS> chunks = boardColl.getChunks(faction);
+		int countTotal = chunks.size();
+		int countSuccess = 0;
+		int countFail = 0;
+		for (PS chunk : chunks)
 		{
-			double refund = Econ.calculateTotalLandRefund(myFaction.getLandCount());
-			
-			if (UConf.get(myFaction).bankEnabled && UConf.get(myFaction).bankFactionPaysLandCosts)
+			FactionsEventChunkChange event = new FactionsEventChunkChange(sender, chunk, newFaction);
+			event.run();
+			if (event.isCancelled())
 			{
-				if ( ! Econ.modifyMoney(myFaction, refund, "unclaim all faction land")) return;
+				countFail++;
 			}
 			else
 			{
-				if ( ! Econ.modifyMoney(fme, refund, "unclaim all faction land")) return;
+				countSuccess++;
+				boardColl.setFactionAt(chunk, newFaction);
 			}
 		}
-
-		// Event
-		FactionsEventLandUnclaimAll event = new FactionsEventLandUnclaimAll(sender, myFaction);
-		event.run();
-		// TODO: this event cannot be cancelled yet.
-
-		// Apply
-		BoardColls.get().removeAll(myFaction);
 		
 		// Inform
-		myFaction.msg("%s<i> unclaimed ALL of your faction's land.", fme.describeTo(myFaction, true));
+		myFaction.msg("%s<i> unclaimed <h>5 <i> of your <h>200 <i>faction land. You now have <h>23 <i>land left.", fme.describeTo(myFaction, true), countSuccess, countTotal, countFail);
 
+		// Log
 		if (MConf.get().logLandUnclaims)
 		{
 			Factions.get().log(fme.getName()+" unclaimed everything for the faction: "+myFaction.getTag());

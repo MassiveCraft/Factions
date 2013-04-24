@@ -3,7 +3,9 @@ package com.massivecraft.factions.entity;
 import java.io.File;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.Map.Entry;
 
 import org.bukkit.Bukkit;
@@ -194,8 +196,19 @@ public class BoardColls extends Colls<BoardColl, Board> implements BoardInterfac
 		}
 	}
 	
-	// COUNT
+	// CHUNKS
+	@Override
+	public Set<PS> getChunks(Faction faction)
+	{
+		Set<PS> ret = new HashSet<PS>();
+		for (BoardColl coll : this.getColls())
+		{
+			ret.addAll(coll.getChunks(faction));
+		}
+		return ret;
+	}
 	
+	// COUNT
 	@Override
 	public int getCount(Faction faction)
 	{

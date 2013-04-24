@@ -1,6 +1,8 @@
 package com.massivecraft.factions.entity;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.Factions;
@@ -105,6 +107,19 @@ public class BoardColl extends Coll<Board> implements BoardInterface
 		{
 			board.clean();
 		}
+	}
+	
+	// CHUNKS
+	
+	@Override
+	public Set<PS> getChunks(Faction faction)
+	{
+		Set<PS> ret = new HashSet<PS>();
+		for (Board board : this.getAll())
+		{
+			ret.addAll(board.getChunks(faction));
+		}
+		return ret;
 	}
 	
 	// COUNT

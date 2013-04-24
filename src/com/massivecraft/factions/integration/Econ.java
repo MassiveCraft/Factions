@@ -2,12 +2,9 @@ package com.massivecraft.factions.integration;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.logging.Level;
 
-import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.EconomyParticipator;
 import com.massivecraft.factions.FPerm;
-import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.entity.UConf;
 import com.massivecraft.factions.entity.UPlayer;
 import com.massivecraft.factions.entity.Faction;
@@ -277,43 +274,6 @@ public class Econ
 			}
 			return false;
 		}
-	}
-	
-	// -------------------------------------------- //
-	// LAND VALUE
-	// -------------------------------------------- //
-	// TODO: Clean up!
-	
-	// calculate the cost for claiming land
-	public static double calculateClaimCost(int ownedLand, boolean takingFromAnotherFaction)
-	{
-		// basic claim cost, plus land inflation cost, minus the potential bonus given for claiming from another faction
-		return ConfServer.econCostClaimWilderness
-			+ (ConfServer.econCostClaimWilderness * ConfServer.econClaimAdditionalMultiplier * ownedLand)
-			- (takingFromAnotherFaction ? ConfServer.econCostClaimFromFactionBonus: 0);
-	}
-
-	// calculate refund amount for unclaiming land
-	public static double calculateClaimRefund(Faction forFaction)
-	{
-		return calculateClaimCost(forFaction.getLandCount() - 1, false) * ConfServer.econClaimRefundMultiplier;
-	}
-
-	// calculate value of all owned land
-	public static double calculateTotalLandValue(int ownedLand)
-	{
-		double amount = 0;
-		for (int x = 0; x < ownedLand; x++)
-		{
-			amount += calculateClaimCost(x, false);
-		}
-		return amount;
-	}
-
-	// calculate refund amount for all owned land
-	public static double calculateTotalLandRefund(int ownedLand)
-	{
-		return calculateTotalLandValue(ownedLand) * ConfServer.econClaimRefundMultiplier;
 	}
 	
 }

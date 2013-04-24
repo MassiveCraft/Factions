@@ -14,7 +14,7 @@ import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Lang;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.RelationParticipator;
-import com.massivecraft.factions.event.FactionsEventLandClaim;
+import com.massivecraft.factions.event.FactionsEventChunkChange;
 import com.massivecraft.factions.event.FactionsEventMembershipChange;
 import com.massivecraft.factions.event.FactionsEventMembershipChange.MembershipChangeReason;
 import com.massivecraft.factions.integration.Econ;
@@ -641,25 +641,13 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 	{
 		psChunk = psChunk.getChunk(true);
 		Faction currentFaction = BoardColls.get().getFactionAt(psChunk);
-		int ownedLand = forFaction.getLandCount();
 		
 		if ( ! this.canClaimForFactionAtLocation(forFaction, psChunk, notifyFailure)) return false;
 
 		// Event
-		FactionsEventLandClaim event = new FactionsEventLandClaim(sender, forFaction, psChunk);
+		FactionsEventChunkChange event = new FactionsEventChunkChange(sender, psChunk, forFaction);
 		event.run();
 		if (event.isCancelled()) return false;
-
-		// then make 'em pay (if applicable)
-		// TODO: The economy integration should cancel the event above!
-		// Calculate the cost to claim the area
-		double cost = Econ.calculateClaimCost(ownedLand, currentFaction.isNormal());
-		
-		if (UConf.get(psChunk).econClaimUnconnectedFee != 0.0 && forFaction.getLandCountInWorld(psChunk.getWorld()) > 0 && !BoardColls.get().isConnectedPs(psChunk, forFaction))
-		{
-			cost += UConf.get(psChunk).econClaimUnconnectedFee;
-		}
-		if (Econ.payForAction(cost, this, "claim this land")) return false;
 
 		// TODO: The LWC integration should listen to Monitor for the claim event.
 		if (LWCFeatures.getEnabled() && forFaction.isNormal() && UConf.get(forFaction).lwcRemoveOnCapture)

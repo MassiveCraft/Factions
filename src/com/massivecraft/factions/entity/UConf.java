@@ -9,6 +9,7 @@ import com.massivecraft.factions.Const;
 import com.massivecraft.factions.FFlag;
 import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.Rel;
+import com.massivecraft.factions.event.FactionsEventChunkChangeType;
 import com.massivecraft.mcore.store.Entity;
 import com.massivecraft.mcore.util.MUtil;
 
@@ -138,11 +139,12 @@ public class UConf extends Entity<UConf>
 	
 	public String econUniverseAccount = "";
 	
-	public double econCostClaimWilderness = 30.0;
-	public double econCostClaimFromFactionBonus = 30.0;
-	public double econClaimAdditionalMultiplier = 0.5;
-	public double econClaimRefundMultiplier = 0.7;
-	public double econClaimUnconnectedFee = 0.0;
+	public Map<FactionsEventChunkChangeType, Double> econChunkCost = MUtil.map(
+		FactionsEventChunkChangeType.BUY, 30.0,
+		FactionsEventChunkChangeType.SELL, -20.0,
+		FactionsEventChunkChangeType.CONQUER, -10.0,
+		FactionsEventChunkChangeType.PILLAGE, -10.0
+	);
 	
 	public double econCostCreate = 100.0;
 	public double econCostSethome = 0.0;
