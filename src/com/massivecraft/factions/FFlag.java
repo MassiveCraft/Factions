@@ -84,7 +84,7 @@ public enum FFlag
 	}
 	
 	// -------------------------------------------- //
-	// FRODOODODFOFL
+	// PARSE
 	// -------------------------------------------- //
 	
 	public static FFlag parse(String str)
@@ -103,6 +103,10 @@ public enum FFlag
 		return null;
 	}
 	
+	// -------------------------------------------- //
+	// UTIL
+	// -------------------------------------------- //
+	
 	public String getStateInfo(boolean value, boolean withDesc)
 	{
 		String ret = (value ? "<g>YES" : "<b>NOO") + "<c> " + this.getNicename();
@@ -112,7 +116,5 @@ public enum FFlag
 		}
 		return ret;
 	}
-	
-	
 	
 }

@@ -38,7 +38,6 @@ public enum FPerm
 	SETHOME("sethome", "set the home",             Rel.LEADER, Rel.OFFICER),
 	WITHDRAW("withdraw", "withdraw money",         Rel.LEADER, Rel.OFFICER),
 	TERRITORY("territory", "claim or unclaim",     Rel.LEADER, Rel.OFFICER),
-	CAPE("cape", "set the cape",                   Rel.LEADER, Rel.OFFICER),
 	ACCESS("access", "grant territory access",     Rel.LEADER, Rel.OFFICER),
 	DISBAND("disband", "disband the faction",      Rel.LEADER),
 	PERMS("perms", "manage permissions",           Rel.LEADER),
@@ -97,7 +96,7 @@ public enum FPerm
 	}
 	
 	// -------------------------------------------- //
-	// FROOODLDLLD
+	// PARSE
 	// -------------------------------------------- //
 
 	public static FPerm parse(String str)
@@ -115,11 +114,14 @@ public enum FPerm
 		if (str.startsWith("s"))   return SETHOME;
 		if (str.startsWith("w"))   return WITHDRAW;
 		if (str.startsWith("t"))   return TERRITORY;
-		if (str.startsWith("ca"))  return CAPE;
 		if (str.startsWith("di"))  return DISBAND;
 		if (str.startsWith("pe"))  return PERMS;
 		return null;
 	}
+	
+	// -------------------------------------------- //
+	// UTIL
+	// -------------------------------------------- //
 	
 	public static String getStateHeaders()
 	{

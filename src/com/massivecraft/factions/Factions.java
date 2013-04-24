@@ -123,6 +123,12 @@ public class Factions extends MPlugin
 		// Right now only a few situations are handled through this listener.
 		FactionsListenerEcon.get().setup();
 		
+		// Integrate
+		this.integrate(
+			HerochatFeatures.get(),
+			LwcFeatures.get()
+		);
+		
 		// Schedule recurring non-tps-dependent tasks
 		TaskPlayerPowerUpdate.get().schedule(this);
 		TaskPlayerDataRemove.get().schedule(this);
@@ -144,12 +150,6 @@ public class Factions extends MPlugin
 		ChatTagTagforce.get().register();
 		ChatTagTitle.get().register();
 		
-		// Integrate
-		this.integrate(
-			HerochatFeatures.get(),
-			LwcFeatures.get()
-		);
-		
 		postEnable();
 	}
 	
@@ -165,121 +165,5 @@ public class Factions extends MPlugin
 		.registerTypeAdapter(FFlag.class, FFlagAdapter.get())
 		;
 	}
-
-	// -------------------------------------------- //
-	// Functions for other plugins to hook into
-	// -------------------------------------------- //
-	// TODO: This "outer API" is removed. I should ensure these features are
-	// available using the appropriate classes and then remove this commented out section below.
-	
-	/*
-
-	// Get a player's faction tag (faction name), mainly for usage by chat plugins for local/channel chat
-	public String getPlayerFactionTag(Player player)
-	{
-		return getPlayerFactionTagRelation(player, null);
-	}
-
-	// Same as above, but with relation (enemy/neutral/ally) coloring potentially added to the tag
-	public String getPlayerFactionTagRelation(Player speaker, Player listener)
-	{
-		String tag = "~";
-
-		if (speaker == null)
-			return tag;
-
-		FPlayer me = FPlayerColl.i.get(speaker);
-		if (me == null)
-			return tag;
-
-		// if listener isn't set, or config option is disabled, give back uncolored tag
-		if (listener == null || !ConfServer.chatParseTagsColored) {
-			tag = me.getChatTag().trim();
-		} else {
-			FPlayer you = FPlayerColl.i.get(listener);
-			if (you == null)
-				tag = me.getChatTag().trim();
-			else  // everything checks out, give the colored tag
-				tag = me.getChatTag(you).trim();
-		}
-		if (tag.isEmpty())
-			tag = "~";
-
-		return tag;
-	}
-
-	// Get a player's title within their faction, mainly for usage by chat plugins for local/channel chat
-	public String getPlayerTitle(Player player)
-	{
-		if (player == null)
-			return "";
-
-		FPlayer me = FPlayerColl.i.get(player);
-		if (me == null)
-			return "";
-
-		return me.getTitle().trim();
-	}
-
-	// Get a list of all faction tags (names)
-	public Set<String> getFactionTags()
-	{
-		Set<String> tags = new HashSet<String>();
-		for (Faction faction : FactionColl.i.get())
-		{
-			tags.add(faction.getTag());
-		}
-		return tags;
-	}
-
-	// Get a list of all players in the specified faction
-	public Set<String> getPlayersInFaction(String factionTag)
-	{
-		Set<String> players = new HashSet<String>();
-		Faction faction = FactionColl.i.getByTag(factionTag);
-		if (faction != null)
-		{
-			for (FPlayer fplayer : faction.getFPlayers())
-			{
-				players.add(fplayer.getName());
-			}
-		}
-		return players;
-	}
-
-	// Get a list of all online players in the specified faction
-	public Set<String> getOnlinePlayersInFaction(String factionTag)
-	{
-		Set<String> players = new HashSet<String>();
-		Faction faction = FactionColl.i.getByTag(factionTag);
-		if (faction != null)
-		{
-			for (FPlayer fplayer : faction.getFPlayersWhereOnline(true))
-			{
-				players.add(fplayer.getName());
-			}
-		}
-		return players;
-	}
-
-	// check if player is allowed to build/destroy in a particular location
-	public boolean isPlayerAllowedToBuildHere(Player player, Location location)
-	{
-		return FactionsBlockListener.playerCanBuildDestroyBlock(player, location.getBlock(), "", true);
-	}
-
-	// check if player is allowed to interact with the specified block (doors/chests/whatever)
-	public boolean isPlayerAllowedToInteractWith(Player player, Block block)
-	{
-		return FactionsPlayerListener.canPlayerUseBlock(player, block, true);
-	}
-
-	// check if player is allowed to use a specified item (flint&steel, buckets, etc) in a particular location
-	public boolean isPlayerAllowedToUseThisHere(Player player, Location location, Material material)
-	{
-		return FactionsPlayerListener.playerCanUseItemHere(player, location, material, true);
-	}
-	
-	*/
 	
 }
