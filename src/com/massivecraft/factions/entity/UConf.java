@@ -125,8 +125,12 @@ public class UConf extends Entity<UConf>
 	// INTEGRATION: LWC
 	// -------------------------------------------- //
 	
-	public boolean lwcRemoveOnUnclaim = false;
-	public boolean lwcRemoveOnCapture = false;
+	public Map<FactionsEventChunkChangeType, Boolean> lwcRemoveOnChange = MUtil.map(
+		FactionsEventChunkChangeType.BUY, false,
+		FactionsEventChunkChangeType.SELL, false,
+		FactionsEventChunkChangeType.CONQUER, false,
+		FactionsEventChunkChangeType.PILLAGE, false
+	);
 	
 	// -------------------------------------------- //
 	// INTEGRATION: ECONOMY

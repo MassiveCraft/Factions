@@ -24,9 +24,9 @@ import com.massivecraft.factions.entity.BoardColls;
 import com.massivecraft.factions.entity.UPlayerColls;
 import com.massivecraft.factions.entity.FactionColls;
 import com.massivecraft.factions.entity.MConfColl;
-import com.massivecraft.factions.integration.LWCFeatures;
 import com.massivecraft.factions.integration.Worldguard;
 import com.massivecraft.factions.integration.herochat.HerochatFeatures;
+import com.massivecraft.factions.integration.lwc.LwcFeatures;
 import com.massivecraft.factions.listeners.FactionsListenerChat;
 import com.massivecraft.factions.listeners.FactionsListenerEcon;
 import com.massivecraft.factions.listeners.FactionsListenerExploit;
@@ -157,9 +157,11 @@ public class Factions extends MPlugin
 		ChatTagTitle.get().register();
 		
 		// Integrate
-		this.integrate(HerochatFeatures.get());
+		this.integrate(
+			HerochatFeatures.get(),
+			LwcFeatures.get()
+		);
 		
-		LWCFeatures.setup();
 		Worldguard.init(this);
 		
 		postEnable();

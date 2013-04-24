@@ -18,7 +18,6 @@ import com.massivecraft.factions.event.FactionsEventChunkChange;
 import com.massivecraft.factions.event.FactionsEventMembershipChange;
 import com.massivecraft.factions.event.FactionsEventMembershipChange.MembershipChangeReason;
 import com.massivecraft.factions.integration.Econ;
-import com.massivecraft.factions.integration.LWCFeatures;
 import com.massivecraft.factions.integration.Worldguard;
 import com.massivecraft.factions.util.RelationUtil;
 import com.massivecraft.mcore.mixin.Mixin;
@@ -648,12 +647,6 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 		FactionsEventChunkChange event = new FactionsEventChunkChange(sender, psChunk, forFaction);
 		event.run();
 		if (event.isCancelled()) return false;
-
-		// TODO: The LWC integration should listen to Monitor for the claim event.
-		if (LWCFeatures.getEnabled() && forFaction.isNormal() && UConf.get(forFaction).lwcRemoveOnCapture)
-		{
-			LWCFeatures.clearOtherProtections(psChunk, this.getFaction());
-		}
 
 		// announce success
 		Set<UPlayer> informTheseUPlayers = new HashSet<UPlayer>();

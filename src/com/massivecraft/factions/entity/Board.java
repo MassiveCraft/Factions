@@ -16,7 +16,6 @@ import com.massivecraft.factions.Const;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.RelationParticipator;
 import com.massivecraft.factions.TerritoryAccess;
-import com.massivecraft.factions.integration.LWCFeatures;
 import com.massivecraft.factions.util.AsciiCompass;
 import com.massivecraft.mcore.ps.PS;
 import com.massivecraft.mcore.store.Entity;
@@ -110,14 +109,7 @@ public class Board extends Entity<Board> implements BoardInterface
 		ps = ps.getChunkCoords(true);
 		
 		if (territoryAccess == null || (territoryAccess.getHostFactionId().equals(Const.FACTIONID_NONE) && territoryAccess.isDefault()))
-		{
-			// TODO: Listen to an event instead!
-			// NOTE: And this is probably the place where the event should be triggered!
-			if (UConf.get(ps).lwcRemoveOnUnclaim && LWCFeatures.getEnabled())
-			{
-				LWCFeatures.clearAllProtections(ps);
-			}
-			
+		{	
 			this.map.remove(ps);
 		}
 		else
