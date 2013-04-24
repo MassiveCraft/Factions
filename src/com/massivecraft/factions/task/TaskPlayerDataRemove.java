@@ -32,7 +32,7 @@ public class TaskPlayerDataRemove extends ModuloRepeatTask
 	}
 	
 	@Override
-	public void invoke()
+	public void invoke(long now)
 	{
 		for (UPlayerColl coll : UPlayerColls.get().getColls())
 		{

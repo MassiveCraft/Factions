@@ -110,7 +110,7 @@ public class MConf extends Entity<MConf>
 	// DERPY OVERRIDES
 	// -------------------------------------------- //
 	// TODO: Should worldsNoPowerLoss rather be a bukkit permission node?
-	// TODO: These are derpy because they possibly use an invalid design approact.
+	// TODO: These are derpy because they possibly use an invalid design approach.
 	// After universe support is added. Would some of these be removed?
 	// Could it also be more customizeable using some sort of permission lookup map?
 	

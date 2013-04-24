@@ -32,7 +32,7 @@ public class TaskEconLandReward extends ModuloRepeatTask
 	}
 	
 	@Override
-	public void invoke()
+	public void invoke(long now)
 	{
 		for (FactionColl coll : FactionColls.get().getColls())
 		{

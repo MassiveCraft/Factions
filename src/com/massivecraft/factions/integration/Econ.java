@@ -69,12 +69,6 @@ public class Econ
 
 	public static void sendBalanceInfo(UPlayer to, EconomyParticipator about)
 	{
-		if (!isEnabled(to))
-		{
-			Factions.get().log(Level.WARNING, "Vault does not appear to be hooked into an economy plugin.");
-			return;
-		}
-		
 		to.msg("<a>%s's<i> balance is <h>%s<i>.", about.describeTo(to, true), Money.format(about, Money.get(about)));
 	}
 

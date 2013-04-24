@@ -36,7 +36,7 @@ public class TaskPlayerPowerUpdate extends ModuloRepeatTask
 	}
 	
 	@Override
-	public void invoke()
+	public void invoke(long now)
 	{
 		long millis = this.getDelayMillis();
 		
