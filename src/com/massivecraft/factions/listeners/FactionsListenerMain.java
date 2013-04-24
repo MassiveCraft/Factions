@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Enderman;
 import org.bukkit.entity.Entity;
@@ -18,6 +19,7 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockBurnEvent;
 import org.bukkit.event.block.BlockDamageEvent;
@@ -40,7 +42,10 @@ import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.hanging.HangingBreakEvent;
 import org.bukkit.event.hanging.HangingPlaceEvent;
 import org.bukkit.event.hanging.HangingBreakEvent.RemoveCause;
+import org.bukkit.event.player.PlayerBucketEmptyEvent;
+import org.bukkit.event.player.PlayerBucketFillEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 
@@ -572,6 +577,51 @@ public class FactionsListenerMain implements Listener
 		// ... stop the block alteration.
 		event.setCancelled(true);
 	}
+
+	// -------------------------------------------- //
+	// FLAG: FIRE SPREAD
+	// -------------------------------------------- //
+	
+	public void blockFireSpread(Block block, Cancellable cancellable)
+	{
+		// If the faction at the block has firespread disabled ...
+		PS ps = PS.valueOf(block);
+		Faction faction = BoardColls.get().getFactionAt(ps);
+		if (faction.getFlag(FFlag.FIRESPREAD)) return;
+		
+		// then cancel the event.
+		cancellable.setCancelled(true);
+	}
+	
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void blockFireSpread(BlockIgniteEvent event)
+	{
+		// If fire is spreading ...
+		if (event.getCause() != IgniteCause.SPREAD && event.getCause() != IgniteCause.LAVA) return;
+		
+		// ... consider blocking it.
+		blockFireSpread(event.getBlock(), event);
+	}
+	
+	// TODO: Is use of this event deprecated?
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void blockFireSpread(BlockSpreadEvent event)
+	{
+		// If fire is spreading ...
+		if (event.getNewState().getTypeId() != 51) return;
+		
+		// ... consider blocking it.
+		blockFireSpread(event.getBlock(), event);
+	}
+	
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void blockFireSpread(BlockBurnEvent event)
+	{
+		// If a block is burning ...
+		
+		// ... consider blocking it.
+		blockFireSpread(event.getBlock(), event);
+	}
 	
 	// -------------------------------------------- //
 	// FLAG: BUILD
@@ -704,48 +754,91 @@ public class FactionsListenerMain implements Listener
 	}
 	
 	// -------------------------------------------- //
-	// FLAG: FIRE SPREAD
+	// ASSORTED BUILD AND INTERACT
 	// -------------------------------------------- //
 	
-	public void blockFireSpread(Block block, Cancellable cancellable)
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void onPlayerInteract(PlayerInteractEvent event)
 	{
-		// If the faction at the block has firespread disabled ...
+		// only need to check right-clicks and physical as of MC 1.4+; good performance boost
+		if (event.getAction() != Action.RIGHT_CLICK_BLOCK && event.getAction() != Action.PHYSICAL) return;
+
+		Block block = event.getClickedBlock();
+		Player player = event.getPlayer();
+
+		if (block == null) return;  // clicked in air, apparently
+
+		if ( ! canPlayerUseBlock(player, block, false))
+		{
+			event.setCancelled(true);
+			return;
+		}
+
+		if (event.getAction() != Action.RIGHT_CLICK_BLOCK) return;  // only interested on right-clicks for below
+
+		if ( ! playerCanUseItemHere(player, PS.valueOf(block), event.getMaterial(), false))
+		{
+			event.setCancelled(true);
+			return;
+		}
+	}
+
+	// TODO: Refactor ! justCheck    -> to informIfNot
+	// TODO: Possibly incorporate pain build... 
+	public static boolean playerCanUseItemHere(Player player, PS ps, Material material, boolean justCheck)
+	{
+		if (!Const.MATERIALS_EDIT_TOOLS.contains(material)) return true;
+		
+		String name = player.getName();
+		if (MConf.get().playersWhoBypassAllProtection.contains(name)) return true;
+
+		UPlayer uplayer = UPlayer.get(player);
+		if (uplayer.isUsingAdminMode()) return true;
+		
+		return FPerm.BUILD.has(uplayer, ps, !justCheck);
+	}
+	
+	public static boolean canPlayerUseBlock(Player player, Block block, boolean justCheck)
+	{
+		String name = player.getName();
+		if (MConf.get().playersWhoBypassAllProtection.contains(name)) return true;
+
+		UPlayer me = UPlayer.get(player);
+		if (me.isUsingAdminMode()) return true;
+		
 		PS ps = PS.valueOf(block);
-		Faction faction = BoardColls.get().getFactionAt(ps);
-		if (faction.getFlag(FFlag.FIRESPREAD)) return;
+		Material material = block.getType();
 		
-		// then cancel the event.
-		cancellable.setCancelled(true);
+		if (Const.MATERIALS_EDIT_ON_INTERACT.contains(material) && ! FPerm.BUILD.has(me, ps, ! justCheck)) return false;
+		if (Const.MATERIALS_CONTAINER.contains(material) && ! FPerm.CONTAINER.has(me, ps, ! justCheck)) return false;
+		if (Const.MATERIALS_DOOR.contains(material) && ! FPerm.DOOR.has(me, ps, ! justCheck)) return false;
+		if (material == Material.STONE_BUTTON && ! FPerm.BUTTON.has(me, ps, ! justCheck)) return false;
+		if (material == Material.LEVER && ! FPerm.LEVER.has(me, ps, ! justCheck)) return false;
+		return true;
+	}
+
+	// For some reason onPlayerInteract() sometimes misses bucket events depending on distance (something like 2-3 blocks away isn't detected),
+	// but these separate bucket events below always fire without fail
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void onPlayerBucketEmpty(PlayerBucketEmptyEvent event)
+	{
+		Block block = event.getBlockClicked();
+		Player player = event.getPlayer();
+		
+		if (playerCanUseItemHere(player, PS.valueOf(block), event.getBucket(), false)) return;
+		
+		event.setCancelled(true);
 	}
 	
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-	public void blockFireSpread(BlockIgniteEvent event)
+	public void onPlayerBucketFill(PlayerBucketFillEvent event)
 	{
-		// If fire is spreading ...
-		if (event.getCause() != IgniteCause.SPREAD && event.getCause() != IgniteCause.LAVA) return;
+		Block block = event.getBlockClicked();
+		Player player = event.getPlayer();
+
+		if (playerCanUseItemHere(player, PS.valueOf(block), event.getBucket(), false)) return;
 		
-		// ... consider blocking it.
-		blockFireSpread(event.getBlock(), event);
-	}
-	
-	// TODO: Is use of this event deprecated?
-	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-	public void blockFireSpread(BlockSpreadEvent event)
-	{
-		// If fire is spreading ...
-		if (event.getNewState().getTypeId() != 51) return;
-		
-		// ... consider blocking it.
-		blockFireSpread(event.getBlock(), event);
-	}
-	
-	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-	public void blockFireSpread(BlockBurnEvent event)
-	{
-		// If a block is burning ...
-		
-		// ... consider blocking it.
-		blockFireSpread(event.getBlock(), event);
+		event.setCancelled(true);
 	}
 	
 }

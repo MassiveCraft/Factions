@@ -30,7 +30,6 @@ import com.massivecraft.factions.listeners.FactionsListenerChat;
 import com.massivecraft.factions.listeners.FactionsListenerEcon;
 import com.massivecraft.factions.listeners.FactionsListenerExploit;
 import com.massivecraft.factions.listeners.FactionsListenerMain;
-import com.massivecraft.factions.listeners.TodoFactionsPlayerListener;
 import com.massivecraft.factions.mixin.PowerMixin;
 import com.massivecraft.factions.mixin.PowerMixinDefault;
 import com.massivecraft.factions.task.TaskPlayerDataRemove;
@@ -62,9 +61,6 @@ public class Factions extends MPlugin
 	// Commands
 	private CmdFactions outerCmdFactions;
 	public CmdFactions getOuterCmdFactions() { return this.outerCmdFactions; }
-	
-	// Listeners
-	public TodoFactionsPlayerListener playerListener;
 	
 	// Aspects
 	private Aspect aspect;
@@ -126,10 +122,6 @@ public class Factions extends MPlugin
 		// The goal is that the Econ integration should be completely based on listening to our own events.
 		// Right now only a few situations are handled through this listener.
 		FactionsListenerEcon.get().setup();
-		
-		// TODO: Get rid of this one
-		this.playerListener = new TodoFactionsPlayerListener();
-		getServer().getPluginManager().registerEvents(this.playerListener, this);
 		
 		// Schedule recurring non-tps-dependent tasks
 		TaskPlayerPowerUpdate.get().schedule(this);
