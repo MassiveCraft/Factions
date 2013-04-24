@@ -4,7 +4,7 @@ import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.cmd.arg.ARFaction;
 import com.massivecraft.factions.entity.Faction;
-import com.massivecraft.factions.entity.UConf;
+import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.task.SpiralTask;
 import com.massivecraft.mcore.cmd.arg.ARInteger;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
@@ -19,8 +19,8 @@ public class CmdFactionsClaim extends FCommand
 	{
 		this.addAliases("claim");
 		
-		this.addOptionalArg("faction", "you");
 		this.addOptionalArg("radius", "1");
+		this.addOptionalArg("faction", "you");
 		
 		this.addRequirements(ReqHasPerm.get(Perm.CLAIM.node));
 		this.addRequirements(ReqIsPlayer.get());
@@ -30,11 +30,11 @@ public class CmdFactionsClaim extends FCommand
 	public void perform()
 	{
 		// Args
-		final Faction forFaction = this.arg(0, ARFaction.get(me));
-		if (forFaction == null) return;
-		
-		Integer radius = this.arg(1, ARInteger.get(), 1);
+		Integer radius = this.arg(0, ARInteger.get(), 1);
 		if (radius == null) return;
+		
+		final Faction forFaction = this.arg(1, ARFaction.get(me), myFaction);
+		if (forFaction == null) return;
 		
 		// FPerm
 		if (!FPerm.TERRITORY.has(sender, forFaction, true)) return;
@@ -45,7 +45,13 @@ public class CmdFactionsClaim extends FCommand
 			msg("<b>If you specify a radius, it must be at least 1.");
 			return;
 		}
-
+		
+		if (radius > MConf.get().radiusClaimRadiusLimit && !fme.isUsingAdminMode())
+		{
+			msg("<b>The maximum radius allowed is <h>%s<b>.", MConf.get().radiusClaimRadiusLimit);
+			return;
+		}
+		
 		// Apply
 		
 		// single chunk
@@ -70,7 +76,7 @@ public class CmdFactionsClaim extends FCommand
 		new SpiralTask(PS.valueOf(me), radius)
 		{
 			private int failCount = 0;
-			private final int limit = UConf.get(me).radiusClaimFailureLimit - 1;
+			private final int limit = MConf.get().radiusClaimFailureLimit - 1;
 
 			@Override
 			public boolean work()

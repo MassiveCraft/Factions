@@ -75,9 +75,6 @@ public class UConf extends Entity<UConf>
 	public boolean claimsCanBeUnconnectedIfOwnedByOtherFaction = true;
 	public int claimsRequireMinFactionMembers = 1;
 	public int claimedLandsMax = 0;
-
-	// if someone is doing a radius claim and the process fails to claim land this many times in a row, it will exit
-	public int radiusClaimFailureLimit = 9;
 	
 	// -------------------------------------------- //
 	// HOMES

@@ -52,6 +52,16 @@ public class MConf extends Entity<MConf>
 	public double removePlayerDataAfterInactiveDays = 20.0;
 	
 	// -------------------------------------------- //
+	// CLAIM LIMITS
+	// -------------------------------------------- //
+	
+	// if someone is doing a radius claim and the process fails to claim land this many times in a row, it will exit
+	public int radiusClaimFailureLimit = 9;
+	
+	// the maximum radius allowed when using the claim command.
+	public int radiusClaimRadiusLimit = 5;
+	
+	// -------------------------------------------- //
 	// CHAT
 	// -------------------------------------------- //
 	
