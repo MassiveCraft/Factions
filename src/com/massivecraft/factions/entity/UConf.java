@@ -36,7 +36,7 @@ public class UConf extends Entity<UConf>
 	// DEFAULTS
 	// -------------------------------------------- //
 	
-	public String defaultPlayerFactionId = factionIdNone;
+	public String defaultPlayerFactionId = this.factionIdNone;
 	public Rel defaultPlayerRole = Rel.RECRUIT;
 	public double defaultPlayerPower = 0.0;
 	

@@ -7,6 +7,7 @@ import java.util.Set;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventPriority;
 
+import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.listeners.FactionsListenerChat;
 import com.massivecraft.mcore.store.Entity;
 
@@ -27,6 +28,8 @@ public class MConf extends Entity<MConf>
 	public MConf load(MConf that)
 	{
 		super.load(that);
+		
+		if (!Factions.get().isDatabaseInitialized()) return this;
 		
 		FactionsListenerChat.get().setup();
 		
