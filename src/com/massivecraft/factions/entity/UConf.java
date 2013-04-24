@@ -74,6 +74,19 @@ public class UConf extends Entity<UConf>
 	public boolean canLeaveWithNegativePower = true;
 	
 	// -------------------------------------------- //
+	// CLAIMS
+	// -------------------------------------------- //
+	
+	public boolean claimsMustBeConnected = false;
+	public boolean claimingFromOthersAllowed = true;
+	public boolean claimsCanBeUnconnectedIfOwnedByOtherFaction = true;
+	public int claimsRequireMinFactionMembers = 1;
+	public int claimedLandsMax = 0;
+
+	// if someone is doing a radius claim and the process fails to claim land this many times in a row, it will exit
+	public int radiusClaimFailureLimit = 9;
+	
+	// -------------------------------------------- //
 	// HOMES
 	// -------------------------------------------- //
 	
@@ -100,12 +113,61 @@ public class UConf extends Entity<UConf>
 		Rel.ALLY, new ArrayList<String>(),
 		Rel.MEMBER, new ArrayList<String>()
 	);
+
+	// -------------------------------------------- //
+	// INTEGRATION: WORLD GUARD
+	// -------------------------------------------- //
+	
+	public boolean worldGuardChecking = false;
 	
 	// -------------------------------------------- //
 	// INTEGRATION: LWC
 	// -------------------------------------------- //
 	
-	public boolean onUnclaimResetLwcLocks = false;
-	public boolean onCaptureResetLwcLocks = false;
+	public boolean lwcRemoveOnUnclaim = false;
+	public boolean lwcRemoveOnCapture = false;
+	
+	// -------------------------------------------- //
+	// INTEGRATION: ECONOMY
+	// -------------------------------------------- //
+	
+	public boolean econEnabled = false;
+	
+	// TODO: Rename to include unit.
+	public double econLandReward = 0.00;
+	
+	public String econUniverseAccount = "";
+	
+	public double econCostClaimWilderness = 30.0;
+	public double econCostClaimFromFactionBonus = 30.0;
+	public double econClaimAdditionalMultiplier = 0.5;
+	public double econClaimRefundMultiplier = 0.7;
+	public double econClaimUnconnectedFee = 0.0;
+	
+	public double econCostCreate = 100.0;
+	public double econCostSethome = 0.0;
+	public double econCostJoin = 0.0;
+	public double econCostLeave = 0.0;
+	public double econCostKick = 0.0;
+	public double econCostInvite = 0.0;
+	public double econCostDeinvite = 0.0;
+	public double econCostHome = 0.0;
+	public double econCostTag = 0.0;
+	public double econCostDescription = 0.0;
+	public double econCostTitle = 0.0;
+	public double econCostOpen = 0.0;
+	
+	public Map<Rel, Double> econRelCost = MUtil.map(
+		Rel.ENEMY, 0.0,
+		Rel.ALLY, 0.0,
+		Rel.TRUCE, 0.0,
+		Rel.NEUTRAL, 0.0
+	);
+	
+	//Faction banks, to pay for land claiming and other costs instead of individuals paying for them
+	public boolean bankEnabled = true;
+	//public static boolean bankMembersCanWithdraw = false; //Have to be at least moderator to withdraw or pay money to another faction
+	public boolean bankFactionPaysCosts = true; //The faction pays for faction command costs, such as sethome
+	public boolean bankFactionPaysLandCosts = true; //The faction pays for land claiming costs.
 
 }

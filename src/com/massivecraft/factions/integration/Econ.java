@@ -8,6 +8,7 @@ import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.EconomyParticipator;
 import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.entity.UConf;
 import com.massivecraft.factions.entity.UPlayer;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.util.RelationUtil;
@@ -23,7 +24,7 @@ public class Econ
 	// TODO: Could we not have it enabled as long as Money.enabled is true?
 	public static boolean isEnabled(Object universe)
 	{
-		return ConfServer.econEnabled && Money.enabled(universe);
+		return UConf.get(universe).econEnabled && Money.enabled(universe);
 	}
 	
 	// -------------------------------------------- //
@@ -36,9 +37,10 @@ public class Econ
 		if (cost == 0D) return true;
 		
 		if (fsender.isUsingAdminMode()) return true;
+		UConf uconf = UConf.get(fsender);
 		Faction fsenderFaction = fsender.getFaction();
-
-		if (ConfServer.bankEnabled && ConfServer.bankFactionPaysCosts && fsenderFaction.isNormal())
+		
+		if (uconf.bankEnabled && uconf.bankFactionPaysCosts && fsenderFaction.isNormal())
 		{
 			return modifyMoney(fsenderFaction, -cost, actionDescription);
 		}
@@ -55,13 +57,14 @@ public class Econ
 	public static void modifyUniverseMoney(Object universe, double delta)
 	{
 		if (!isEnabled(universe)) return;
+		UConf uconf = UConf.get(universe);
 
-		if (ConfServer.econUniverseAccount == null) return;
-		if (ConfServer.econUniverseAccount.length() == 0) return;
+		if (uconf.econUniverseAccount == null) return;
+		if (uconf.econUniverseAccount.length() == 0) return;
 		
-		if (!Money.exists(universe, ConfServer.econUniverseAccount)) return;
+		if (!Money.exists(universe, uconf.econUniverseAccount)) return;
 
-		Money.add(universe, ConfServer.econUniverseAccount, delta);
+		Money.add(universe, uconf.econUniverseAccount, delta);
 	}
 
 	public static void sendBalanceInfo(UPlayer to, EconomyParticipator about)
@@ -281,7 +284,12 @@ public class Econ
 			return false;
 		}
 	}
-
+	
+	// -------------------------------------------- //
+	// LAND VALUE
+	// -------------------------------------------- //
+	// TODO: Clean up!
+	
 	// calculate the cost for claiming land
 	public static double calculateClaimCost(int ownedLand, boolean takingFromAnotherFaction)
 	{

@@ -16,86 +16,10 @@ public class ConfServer extends SimpleConfig
 	public ConfServer() { super(Factions.get()); }
 	
 	// -------------------------------------------- //
-	// CORE
+	// FIELDS
 	// -------------------------------------------- //
 	
 	public static List<String> baseCommandAliases = MUtil.list("f");
 	public static String dburi = "default";
 	
-	// -------------------------------------------- //
-	// AUTO LEAVE
-	// -------------------------------------------- //
-
-	public static double autoLeaveAfterDaysOfInactivity = 10.0;
-	public static double autoLeaveRoutineRunsEveryXMinutes = 5.0;
-	public static boolean removePlayerDataWhenBanned = true;
-	
-	// -------------------------------------------- //
-	// CLAIMS
-	// -------------------------------------------- //
-	
-	public static boolean claimsMustBeConnected = false;
-	public static boolean claimingFromOthersAllowed = true;
-	public static boolean claimsCanBeUnconnectedIfOwnedByOtherFaction = true;
-	public static int claimsRequireMinFactionMembers = 1;
-	public static int claimedLandsMax = 0;
-
-	// if someone is doing a radius claim and the process fails to claim land this many times in a row, it will exit
-	public static int radiusClaimFailureLimit = 9;
-
-	
-
-	// -------------------------------------------- //
-	// INTEGRATION: WORLD GUARD
-	// -------------------------------------------- //
-	
-	public static boolean worldGuardChecking = false;
-
-	
-	
-	// -------------------------------------------- //
-	// INTEGRATION: ECONOMY
-	// -------------------------------------------- //
-	
-	public static int econLandRewardTaskRunsEveryXMinutes = 20;
-	
-	public static boolean econEnabled = false;
-	
-	// TODO: Rename to include unit.
-	public static double econLandReward = 0.00;
-	
-	public static String econUniverseAccount = "";
-	
-	public static double econCostClaimWilderness = 30.0;
-	public static double econCostClaimFromFactionBonus = 30.0;
-	public static double econClaimAdditionalMultiplier = 0.5;
-	public static double econClaimRefundMultiplier = 0.7;
-	public static double econClaimUnconnectedFee = 0.0;
-	
-	public static double econCostCreate = 100.0;
-	public static double econCostSethome = 30.0;
-	public static double econCostJoin = 0.0;
-	public static double econCostLeave = 0.0;
-	public static double econCostKick = 0.0;
-	public static double econCostInvite = 0.0;
-	public static double econCostDeinvite = 0.0;
-	public static double econCostHome = 0.0;
-	public static double econCostTag = 0.0;
-	public static double econCostDescription = 0.0;
-	public static double econCostTitle = 0.0;
-	public static double econCostOpen = 0.0;
-	public static double econCostAlly = 0.0;
-	public static double econCostTruce = 0.0;
-	public static double econCostNeutral = 0.0;
-	public static double econCostEnemy = 0.0;
-
-	
-	
-	//Faction banks, to pay for land claiming and other costs instead of individuals paying for them
-	public static boolean bankEnabled = true;
-	//public static boolean bankMembersCanWithdraw = false; //Have to be at least moderator to withdraw or pay money to another faction
-	public static boolean bankFactionPaysCosts = true; //The faction pays for faction command costs, such as sethome
-	public static boolean bankFactionPaysLandCosts = true; //The faction pays for land claiming costs.
-	
 }
-

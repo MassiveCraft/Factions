@@ -1,6 +1,7 @@
 package com.massivecraft.factions.integration;
 
 import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.entity.UConf;
 import com.massivecraft.mcore.ps.PS;
 
 import java.util.ArrayList;
@@ -62,11 +63,9 @@ public class Worldguard
 	//   False: PVP is disallowed
 	public static boolean isPVP(Player player)
 	{
-		if ( ! enabled)
-		{
-			// No WG hooks so we'll always bypass this check.
-			return true;
-		}
+		// No WG hooks so we'll always bypass this check.
+		if (!enabled) return true;
+		if (!UConf.get(player).worldGuardChecking) return true;
 
 		Location loc = player.getLocation();
 		World world = loc.getWorld();
@@ -85,6 +84,7 @@ public class Worldguard
 	{
 		// No WG hooks so we'll always bypass this check.
 		if (!enabled) return false;
+		if (!UConf.get(psChunk).worldGuardChecking) return true;
 
 		World world = null;
 		Chunk chunk = null;

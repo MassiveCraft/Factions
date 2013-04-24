@@ -1,19 +1,18 @@
 package com.massivecraft.factions.task;
 
-import com.massivecraft.factions.ConfServer;
+import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.entity.UPlayerColl;
 import com.massivecraft.factions.entity.UPlayerColls;
 import com.massivecraft.mcore.ModuloRepeatTask;
-import com.massivecraft.mcore.util.TimeUnit;
 
-public class AutoLeaveTask extends ModuloRepeatTask
+public class RemovePlayerDataTask extends ModuloRepeatTask
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static AutoLeaveTask i = new AutoLeaveTask();
-	public static AutoLeaveTask get() { return i; }
+	private static RemovePlayerDataTask i = new RemovePlayerDataTask();
+	public static RemovePlayerDataTask get() { return i; }
 	
 	// -------------------------------------------- //
 	// OVERRIDE: MODULO REPEAT TASK
@@ -22,13 +21,13 @@ public class AutoLeaveTask extends ModuloRepeatTask
 	@Override
 	public long getDelayMillis()
 	{
-		return (long) (ConfServer.autoLeaveRoutineRunsEveryXMinutes * TimeUnit.MILLIS_PER_MINUTE);
+		return MConf.get().taskAutoLeaveMillis;
 	}
 	
 	@Override
 	public void setDelayMillis(long delayMillis)
 	{
-		throw new RuntimeException("operation not supported");
+		MConf.get().taskAutoLeaveMillis = delayMillis;
 	}
 	
 	@Override
@@ -36,7 +35,7 @@ public class AutoLeaveTask extends ModuloRepeatTask
 	{
 		for (UPlayerColl coll : UPlayerColls.get().getColls())
 		{
-			coll.autoLeaveOnInactivityRoutine();
+			coll.removePlayerDataAfterInactiveDaysRoutine();
 		}
 	}
 	

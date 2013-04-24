@@ -1,12 +1,12 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.cmd.req.ReqRoleIsAtLeast;
 import com.massivecraft.factions.entity.BoardColls;
 import com.massivecraft.factions.entity.MConf;
+import com.massivecraft.factions.entity.UConf;
 import com.massivecraft.factions.event.FactionsEventLandUnclaimAll;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
@@ -28,7 +28,8 @@ public class CmdFactionsUnclaimall extends FCommand
 		if (Econ.isEnabled(myFaction))
 		{
 			double refund = Econ.calculateTotalLandRefund(myFaction.getLandCount());
-			if(ConfServer.bankEnabled && ConfServer.bankFactionPaysLandCosts)
+			
+			if (UConf.get(myFaction).bankEnabled && UConf.get(myFaction).bankFactionPaysLandCosts)
 			{
 				if ( ! Econ.modifyMoney(myFaction, refund, "unclaim all faction land")) return;
 			}

@@ -111,7 +111,7 @@ public class Board extends Entity<Board> implements BoardInterface
 		{
 			// TODO: Listen to an event instead!
 			// NOTE: And this is probably the place where the event should be triggered!
-			if (UConf.get(ps).onUnclaimResetLwcLocks && LWCFeatures.getEnabled())
+			if (UConf.get(ps).lwcRemoveOnUnclaim && LWCFeatures.getEnabled())
 			{
 				LWCFeatures.clearAllProtections(ps);
 			}

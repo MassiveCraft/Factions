@@ -1,10 +1,9 @@
 package com.massivecraft.factions.task;
 
-import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.entity.FactionColl;
 import com.massivecraft.factions.entity.FactionColls;
+import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.mcore.ModuloRepeatTask;
-import com.massivecraft.mcore.util.TimeUnit;
 
 public class EconRewardTask extends ModuloRepeatTask
 {
@@ -22,13 +21,13 @@ public class EconRewardTask extends ModuloRepeatTask
 	@Override
 	public long getDelayMillis()
 	{
-		return (long) (ConfServer.econLandRewardTaskRunsEveryXMinutes * TimeUnit.MILLIS_PER_MINUTE);
+		return MConf.get().taskEconMillis;
 	}
 	
 	@Override
 	public void setDelayMillis(long delayMillis)
 	{
-		throw new RuntimeException("operation not supported");
+		MConf.get().taskEconMillis = delayMillis;
 	}
 	
 	@Override

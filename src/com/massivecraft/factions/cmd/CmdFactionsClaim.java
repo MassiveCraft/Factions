@@ -1,9 +1,9 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.cmd.arg.ARFaction;
 import com.massivecraft.factions.entity.Faction;
+import com.massivecraft.factions.entity.UConf;
 import com.massivecraft.factions.task.SpiralTask;
 import com.massivecraft.mcore.cmd.arg.ARInteger;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
@@ -59,7 +59,7 @@ public class CmdFactionsClaim extends FCommand
 		new SpiralTask(PS.valueOf(me), radius)
 		{
 			private int failCount = 0;
-			private final int limit = ConfServer.radiusClaimFailureLimit - 1;
+			private final int limit = UConf.get(me).radiusClaimFailureLimit - 1;
 
 			@Override
 			public boolean work()

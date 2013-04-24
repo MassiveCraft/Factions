@@ -5,8 +5,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.cmd.arg.ARFaction;
+import com.massivecraft.factions.entity.UConf;
 import com.massivecraft.factions.entity.UPlayer;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.integration.Econ;
@@ -65,7 +65,8 @@ public class CmdFactionsShow extends FCommand
 		if (Econ.isEnabled(faction))
 		{
 			double value = Econ.calculateTotalLandValue(faction.getLandCount());
-			double refund = value * ConfServer.econClaimRefundMultiplier;
+			
+			double refund = value * UConf.get(faction).econClaimRefundMultiplier;
 			if (value > 0)
 			{
 				String stringValue = Money.format(faction, value);
@@ -73,8 +74,8 @@ public class CmdFactionsShow extends FCommand
 				msg("<a>Total land value: <i>" + stringValue + stringRefund);
 			}
 			
-			//Show bank contents
-			if(ConfServer.bankEnabled)
+			// Show bank contents
+			if(UConf.get(faction).bankEnabled)
 			{
 				msg("<a>Bank contains: <i>"+Money.format(faction, Money.get(faction)));
 			}

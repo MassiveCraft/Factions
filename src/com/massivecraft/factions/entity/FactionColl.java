@@ -121,6 +121,34 @@ public class FactionColl extends Coll<Faction>
 	}
 	
 	// -------------------------------------------- //
+	// LAND REWARD
+	// -------------------------------------------- //
+	
+	public void econLandRewardRoutine()
+	{
+		if (!Econ.isEnabled(this.getUniverse())) return;
+		
+		double econLandReward = UConf.get(this).econLandReward;
+		if (econLandReward == 0.0) return;
+		
+		Factions.get().log("Running econLandRewardRoutine...");
+		for (Faction faction : this.getAll())
+		{
+			int landCount = faction.getLandCount();
+			if (!faction.getFlag(FFlag.PEACEFUL) && landCount > 0)
+			{
+				List<UPlayer> players = faction.getUPlayers();
+				int playerCount = players.size();
+				double reward = econLandReward * landCount / playerCount;
+				for (UPlayer player : players)
+				{
+					Econ.modifyMoney(player, reward, "own " + landCount + " faction land divided among " + playerCount + " members");
+				}
+			}
+		}
+	}
+	
+	// -------------------------------------------- //
 	// FACTION TAG
 	// -------------------------------------------- //
 	
@@ -180,28 +208,6 @@ public class FactionColl extends Coll<Faction>
 	public boolean isTagTaken(String str)
 	{
 		return this.getByTag(str) != null;
-	}
-
-	public void econLandRewardRoutine()
-	{
-		if (!Econ.isEnabled(this.getUniverse())) return;
-		if (ConfServer.econLandReward == 0.0) return;
-		
-		Factions.get().log("Running econLandRewardRoutine...");
-		for (Faction faction : this.getAll())
-		{
-			int landCount = faction.getLandCount();
-			if (!faction.getFlag(FFlag.PEACEFUL) && landCount > 0)
-			{
-				List<UPlayer> players = faction.getUPlayers();
-				int playerCount = players.size();
-				double reward = ConfServer.econLandReward * landCount / playerCount;
-				for (UPlayer player : players)
-				{
-					Econ.modifyMoney(player, reward, "own " + landCount + " faction land divided among " + playerCount + " members");
-				}
-			}
-		}
 	}
 	
 	// -------------------------------------------- //

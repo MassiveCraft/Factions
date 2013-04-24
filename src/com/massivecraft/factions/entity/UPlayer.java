@@ -6,7 +6,6 @@ import java.util.Set;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.Const;
 import com.massivecraft.factions.EconomyParticipator;
 import com.massivecraft.factions.FFlag;
@@ -487,7 +486,7 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 	// ACTIONS
 	// -------------------------------------------- //
 	
-	public void leave(boolean makePay)
+	public void leave()
 	{
 		Faction myFaction = this.getFaction();
 
@@ -559,7 +558,9 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 		Faction currentFaction = BoardColls.get().getFactionAt(ps);
 		int ownedLand = forFaction.getLandCount();
 		
-		if (ConfServer.worldGuardChecking && Worldguard.checkForRegionsInChunk(ps))
+		UConf uconf = UConf.get(ps);
+		
+		if (uconf.worldGuardChecking && Worldguard.checkForRegionsInChunk(ps))
 		{
 			// Checks for WorldGuard regions in the chunk attempting to be claimed
 			error = Txt.parse("<b>This land is protected");
@@ -580,19 +581,19 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 		{
 			return false;
 		}
-		else if (forFaction.getUPlayers().size() < ConfServer.claimsRequireMinFactionMembers)
+		else if (forFaction.getUPlayers().size() < uconf.claimsRequireMinFactionMembers)
 		{
-			error = Txt.parse("Factions must have at least <h>%s<b> members to claim land.", ConfServer.claimsRequireMinFactionMembers);
+			error = Txt.parse("Factions must have at least <h>%s<b> members to claim land.", uconf.claimsRequireMinFactionMembers);
 		}
 		else if (ownedLand >= forFaction.getPowerRounded())
 		{
 			error = Txt.parse("<b>You can't claim more land! You need more power!");
 		}
-		else if (ConfServer.claimedLandsMax != 0 && ownedLand >= ConfServer.claimedLandsMax && ! forFaction.getFlag(FFlag.INFPOWER))
+		else if (uconf.claimedLandsMax != 0 && ownedLand >= uconf.claimedLandsMax && ! forFaction.getFlag(FFlag.INFPOWER))
 		{
 			error = Txt.parse("<b>Limit reached. You can't claim more land!");
 		}
-		else if ( ! ConfServer.claimingFromOthersAllowed && currentFaction.isNormal())
+		else if ( ! uconf.claimingFromOthersAllowed && currentFaction.isNormal())
 		{
 			error = Txt.parse("<b>You may not claim land from others.");
 		}
@@ -602,14 +603,14 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 		}
 		else if
 		(
-			ConfServer.claimsMustBeConnected
+			uconf.claimsMustBeConnected
 			&& ! this.isUsingAdminMode()
 			&& myFaction.getLandCountInWorld(ps.getWorld()) > 0
 			&& !BoardColls.get().isConnectedPs(ps, myFaction)
-			&& (!ConfServer.claimsCanBeUnconnectedIfOwnedByOtherFaction || !currentFaction.isNormal())
+			&& (!uconf.claimsCanBeUnconnectedIfOwnedByOtherFaction || !currentFaction.isNormal())
 		)
 		{
-			if (ConfServer.claimsCanBeUnconnectedIfOwnedByOtherFaction)
+			if (uconf.claimsCanBeUnconnectedIfOwnedByOtherFaction)
 				error = Txt.parse("<b>You can only claim additional land which is connected to your first claim or controlled by another faction!");
 			else
 				error = Txt.parse("<b>You can only claim additional land which is connected to your first claim!");
@@ -653,14 +654,15 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 		// TODO: The economy integration should cancel the event above!
 		// Calculate the cost to claim the area
 		double cost = Econ.calculateClaimCost(ownedLand, currentFaction.isNormal());
-		if (ConfServer.econClaimUnconnectedFee != 0.0 && forFaction.getLandCountInWorld(psChunk.getWorld()) > 0 && !BoardColls.get().isConnectedPs(psChunk, forFaction))
+		
+		if (UConf.get(psChunk).econClaimUnconnectedFee != 0.0 && forFaction.getLandCountInWorld(psChunk.getWorld()) > 0 && !BoardColls.get().isConnectedPs(psChunk, forFaction))
 		{
-			cost += ConfServer.econClaimUnconnectedFee;
+			cost += UConf.get(psChunk).econClaimUnconnectedFee;
 		}
 		if (Econ.payForAction(cost, this, "claim this land")) return false;
 
 		// TODO: The LWC integration should listen to Monitor for the claim event.
-		if (LWCFeatures.getEnabled() && forFaction.isNormal() && UConf.get(forFaction).onCaptureResetLwcLocks)
+		if (LWCFeatures.getEnabled() && forFaction.isNormal() && UConf.get(forFaction).lwcRemoveOnCapture)
 		{
 			LWCFeatures.clearOtherProtections(psChunk, this.getFaction());
 		}

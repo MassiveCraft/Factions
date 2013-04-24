@@ -35,10 +35,19 @@ public class MConf extends Entity<MConf>
 	}
 	
 	// -------------------------------------------- //
-	// POWER
+	// TASKS
 	// -------------------------------------------- //
 	
-	public long powerTaskMillis = TimeUnit.MILLIS_PER_MINUTE;
+	public long taskPowerMillis = TimeUnit.MILLIS_PER_MINUTE;
+	public long taskEconMillis = 20 * TimeUnit.MILLIS_PER_MINUTE;
+	public long taskAutoLeaveMillis = 5 * TimeUnit.MILLIS_PER_MINUTE;
+	
+	// -------------------------------------------- //
+	// REMOVE DATA
+	// -------------------------------------------- //
+	
+	public boolean removePlayerDataWhenBanned = true;
+	public double removePlayerDataAfterInactiveDays = 20.0;
 	
 	// -------------------------------------------- //
 	// CHAT

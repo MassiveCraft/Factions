@@ -157,17 +157,4 @@ public enum Rel
 		return "";
 	}
 	
-	// TODO: ADD TRUCE!!!!
-	// TODO.... or remove it...
-	public double getRelationCost()
-	{
-		if (this == ENEMY)
-			return ConfServer.econCostEnemy;
-		else if (this == ALLY)
-			return ConfServer.econCostAlly;
-		else if (this == TRUCE)
-			return ConfServer.econCostTruce;
-		else
-			return ConfServer.econCostNeutral;
-	}
 }

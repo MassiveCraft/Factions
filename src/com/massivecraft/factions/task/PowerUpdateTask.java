@@ -26,13 +26,13 @@ public class PowerUpdateTask extends ModuloRepeatTask
 	@Override
 	public long getDelayMillis()
 	{
-		return MConf.get().powerTaskMillis;
+		return MConf.get().taskPowerMillis;
 	}
 	
 	@Override
 	public void setDelayMillis(long delayMillis)
 	{
-		MConf.get().powerTaskMillis = delayMillis;
+		MConf.get().taskPowerMillis = delayMillis;
 	}
 	
 	@Override

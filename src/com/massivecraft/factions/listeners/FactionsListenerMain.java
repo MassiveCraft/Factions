@@ -44,7 +44,6 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 
-import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.Const;
 import com.massivecraft.factions.FFlag;
 import com.massivecraft.factions.FPerm;
@@ -301,16 +300,15 @@ public class FactionsListenerMain implements Listener
 		if (!event.getReason().equals("Banned by admin.")) return;
 		
 		// ... and we remove player data when banned ...
-		if (!ConfServer.removePlayerDataWhenBanned) return;
+		if (!MConf.get().removePlayerDataWhenBanned) return;
 		
 		// ... get rid of their stored info.
 		if (uplayer.getRole() == Rel.LEADER)
 		{
 			uplayer.getFaction().promoteNewLeader();
 		}
-		uplayer.leave(false);
+		uplayer.leave();
 		uplayer.detach();
-		
 	}
 	
 	// -------------------------------------------- //

@@ -34,7 +34,7 @@ import com.massivecraft.factions.listeners.FactionsListenerMain;
 import com.massivecraft.factions.listeners.TodoFactionsPlayerListener;
 import com.massivecraft.factions.mixin.PowerMixin;
 import com.massivecraft.factions.mixin.PowerMixinDefault;
-import com.massivecraft.factions.task.AutoLeaveTask;
+import com.massivecraft.factions.task.RemovePlayerDataTask;
 import com.massivecraft.factions.task.EconRewardTask;
 import com.massivecraft.factions.task.PowerUpdateTask;
 
@@ -137,7 +137,7 @@ public class Factions extends MPlugin
 		
 		// Schedule recurring non-tps-dependent tasks
 		PowerUpdateTask.get().schedule(this);
-		AutoLeaveTask.get().schedule(this);
+		RemovePlayerDataTask.get().schedule(this);
 		EconRewardTask.get().schedule(this);
 		
 		// Register built in chat modifiers
@@ -160,11 +160,7 @@ public class Factions extends MPlugin
 		this.integrate(HerochatFeatures.get());
 		
 		LWCFeatures.setup();
-		
-		if (ConfServer.worldGuardChecking)
-		{
-			Worldguard.init(this);
-		}
+		Worldguard.init(this);
 		
 		postEnable();
 	}

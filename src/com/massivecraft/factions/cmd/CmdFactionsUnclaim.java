@@ -1,9 +1,9 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.entity.BoardColls;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MConf;
+import com.massivecraft.factions.entity.UConf;
 import com.massivecraft.factions.event.FactionsEventLandUnclaim;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.FPerm;
@@ -43,7 +43,7 @@ public class CmdFactionsUnclaim extends FCommand
 		{
 			double refund = Econ.calculateClaimRefund(myFaction);
 			
-			if (ConfServer.bankEnabled && ConfServer.bankFactionPaysLandCosts)
+			if (UConf.get(myFaction).bankEnabled && UConf.get(myFaction).bankFactionPaysLandCosts)
 			{
 				if ( ! Econ.modifyMoney(myFaction, refund, "unclaim this land")) return;
 			}

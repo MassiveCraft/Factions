@@ -69,12 +69,12 @@ public class UPlayerColl extends SenderColl<UPlayer>
 		}
 	}
 	
-	public void autoLeaveOnInactivityRoutine()
+	public void removePlayerDataAfterInactiveDaysRoutine()
 	{
-		if (ConfServer.autoLeaveAfterDaysOfInactivity <= 0.0) return;
+		if (MConf.get().removePlayerDataAfterInactiveDays <= 0.0) return;
 		
 		long now = System.currentTimeMillis();
-		double toleranceMillis = ConfServer.autoLeaveAfterDaysOfInactivity * TimeUnit.MILLIS_PER_DAY;
+		double toleranceMillis = MConf.get().removePlayerDataAfterInactiveDays * TimeUnit.MILLIS_PER_DAY;
 		
 		for (UPlayer uplayer : this.getAll())
 		{
@@ -99,7 +99,7 @@ public class UPlayerColl extends SenderColl<UPlayer>
 				}
 			}
 
-			uplayer.leave(false);
+			uplayer.resetFactionData();
 			uplayer.detach();
 		}
 	}

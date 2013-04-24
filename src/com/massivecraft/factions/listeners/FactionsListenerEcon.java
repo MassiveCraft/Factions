@@ -5,8 +5,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
-import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.entity.UConf;
 import com.massivecraft.factions.event.FactionsEventAbstractSender;
 import com.massivecraft.factions.event.FactionsEventCreate;
 import com.massivecraft.factions.event.FactionsEventDescriptionChange;
@@ -60,56 +60,60 @@ public class FactionsListenerEcon implements Listener
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
 	public void payForCommand(FactionsEventHomeChange event)
 	{
-		payForCommand(event, ConfServer.econCostSethome, Factions.get().getOuterCmdFactions().cmdFactionsSethome);
+		payForCommand(event, UConf.get(event.getSender()).econCostSethome, Factions.get().getOuterCmdFactions().cmdFactionsSethome);
 	}
 	
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
 	public void payForCommand(FactionsEventCreate event)
 	{
-		payForCommand(event, ConfServer.econCostCreate, Factions.get().getOuterCmdFactions().cmdFactionsCreate);
+		payForCommand(event, UConf.get(event.getSender()).econCostCreate, Factions.get().getOuterCmdFactions().cmdFactionsCreate);
 	}
 	
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
 	public void payForCommand(FactionsEventDescriptionChange event)
 	{
-		payForCommand(event, ConfServer.econCostDescription, Factions.get().getOuterCmdFactions().cmdFactionsDescription);
+		payForCommand(event, UConf.get(event.getSender()).econCostDescription, Factions.get().getOuterCmdFactions().cmdFactionsDescription);
 	}
 	
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
 	public void payForCommand(FactionsEventTagChange event)
 	{
-		payForCommand(event, ConfServer.econCostTag, Factions.get().getOuterCmdFactions().cmdFactionsTag);
+		payForCommand(event, UConf.get(event.getSender()).econCostTag, Factions.get().getOuterCmdFactions().cmdFactionsTag);
 	}
 	
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
 	public void payForCommand(FactionsEventTitleChange event)
 	{
-		payForCommand(event, ConfServer.econCostTitle, Factions.get().getOuterCmdFactions().cmdFactionsTitle);
+		payForCommand(event, UConf.get(event.getSender()).econCostTitle, Factions.get().getOuterCmdFactions().cmdFactionsTitle);
 	}
 	
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
 	public void payForCommand(FactionsEventRelationChange event)
 	{
-		payForCommand(event, event.getNewRelation().getRelationCost(), Factions.get().getOuterCmdFactions().cmdFactionsRelationNeutral);
+		Double cost = UConf.get(event.getSender()).econRelCost.get(event.getNewRelation());
+		if (cost == null) return;
+		if (cost == 0) return;
+		
+		payForCommand(event, cost, Factions.get().getOuterCmdFactions().cmdFactionsRelationNeutral);
 	}
 	
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
 	public void payForCommand(FactionsEventOpenChange event)
 	{
-		payForCommand(event, ConfServer.econCostOpen, Factions.get().getOuterCmdFactions().cmdFactionsOpen);
+		payForCommand(event, UConf.get(event.getSender()).econCostOpen, Factions.get().getOuterCmdFactions().cmdFactionsOpen);
 	}
 	
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
 	public void payForCommand(FactionsEventInvitedChange event)
 	{
-		double cost = event.isNewInvited() ? ConfServer.econCostInvite : ConfServer.econCostDeinvite;
+		double cost = event.isNewInvited() ? UConf.get(event.getSender()).econCostInvite : UConf.get(event.getSender()).econCostDeinvite;
 		payForCommand(event, cost, Factions.get().getOuterCmdFactions().cmdFactionsInvite);
 	}
 	
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
 	public void payForCommand(FactionsEventHomeTeleport event)
 	{	
-		payForCommand(event, ConfServer.econCostHome, Factions.get().getOuterCmdFactions().cmdFactionsHome);
+		payForCommand(event, UConf.get(event.getSender()).econCostHome, Factions.get().getOuterCmdFactions().cmdFactionsHome);
 	}
 	
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
@@ -120,17 +124,17 @@ public class FactionsListenerEcon implements Listener
 		
 		if (event.getReason() == MembershipChangeReason.JOIN)
 		{
-			cost = ConfServer.econCostJoin;
+			cost = UConf.get(event.getSender()).econCostJoin;
 			command = Factions.get().getOuterCmdFactions().cmdFactionsJoin;
 		}
 		else if (event.getReason() == MembershipChangeReason.LEAVE)
 		{
-			cost = ConfServer.econCostLeave;
+			cost = UConf.get(event.getSender()).econCostLeave;
 			command = Factions.get().getOuterCmdFactions().cmdFactionsLeave;
 		}
 		else if (event.getReason() == MembershipChangeReason.KICK)
 		{
-			cost = ConfServer.econCostKick;
+			cost = UConf.get(event.getSender()).econCostKick;
 			command = Factions.get().getOuterCmdFactions().cmdFactionsKick;
 		}
 		else
