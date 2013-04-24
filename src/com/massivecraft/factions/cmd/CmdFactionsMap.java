@@ -28,11 +28,11 @@ public class CmdFactionsMap extends FCommand
 			return;
 		}
 		
-		if (this.arg(0, ARBoolean.get(), !fme.isMapAutoUpdating()))
+		if (this.arg(0, ARBoolean.get(), !mme.isMapAutoUpdating()))
 		{
 			// Turn on
 
-			fme.setMapAutoUpdating(true);
+			mme.setMapAutoUpdating(true);
 			msg("<i>Map auto update <green>ENABLED.");
 			
 			// And show the map once
@@ -41,7 +41,7 @@ public class CmdFactionsMap extends FCommand
 		else
 		{
 			// Turn off
-			fme.setMapAutoUpdating(false);
+			mme.setMapAutoUpdating(false);
 			msg("<i>Map auto update <red>DISABLED.");
 		}
 	}

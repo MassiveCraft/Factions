@@ -20,7 +20,8 @@ public class MPlayer extends SenderEntity<MPlayer>
 	@Override
 	public MPlayer load(MPlayer that)
 	{
-		// TODO
+		this.mapAutoUpdating = that.mapAutoUpdating;
+		this.usingAdminMode = that.usingAdminMode;
 		
 		return this;
 	}
@@ -28,8 +29,8 @@ public class MPlayer extends SenderEntity<MPlayer>
 	@Override
 	public boolean isDefault()
 	{
-		// TODO
-		//return false;
+		if (this.isMapAutoUpdating()) return false;
+		if (this.isUsingAdminMode()) return false;
 		
 		return true;
 	}
@@ -38,5 +39,12 @@ public class MPlayer extends SenderEntity<MPlayer>
 	// FIELDS
 	// -------------------------------------------- //
 
+	private boolean mapAutoUpdating = false;
+	public boolean isMapAutoUpdating() { return this.mapAutoUpdating; }
+	public void setMapAutoUpdating(boolean mapAutoUpdating) { this.mapAutoUpdating = mapAutoUpdating; this.changed(); }
+	
+	private boolean usingAdminMode = false;
+	public boolean isUsingAdminMode() { return this.usingAdminMode; }
+	public void setUsingAdminMode(boolean usingAdminMode) { this.usingAdminMode = usingAdminMode; this.changed(); }
 	
 }

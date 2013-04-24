@@ -28,18 +28,18 @@ import com.massivecraft.mcore.util.Txt;
 public class TodoFactionsPlayerListener implements Listener
 {
 	// -------------------------------------------- //
-	// TERRITORY INFO MESSAGES
+	// CHUNK CHANGE: DETECT
 	// -------------------------------------------- //
 	
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-	public void onPlayerMove(PlayerMoveEvent event)
+	public void chunkChangeDetect(PlayerMoveEvent event)
 	{
 		// If the player is moving from one chunk to another ...
 		if (MUtil.isSameChunk(event)) return;
 		
 		// ... gather info on the player and the move ...
 		Player player = event.getPlayer();
-		UPlayer uplayerTo = UPlayerColls.get().get(event.getTo()).get(player);
+		UPlayer uplayer = UPlayerColls.get().get(event.getTo()).get(player);
 		
 		PS chunkFrom = PS.valueOf(event.getFrom()).getChunk(true);
 		PS chunkTo = PS.valueOf(event.getTo()).getChunk(true);
@@ -47,14 +47,25 @@ public class TodoFactionsPlayerListener implements Listener
 		Faction factionFrom = BoardColls.get().getFactionAt(chunkFrom);
 		Faction factionTo = BoardColls.get().getFactionAt(chunkTo);
 		
-		// ... send host faction info updates ...
-		if (uplayerTo.isMapAutoUpdating())
+		// ... and send info onwards.
+		this.chunkChangeTerritoryInfo(uplayer, player, chunkFrom, chunkTo, factionFrom, factionTo);
+		this.chunkChangeAutoClaim(uplayer, chunkTo);
+	}
+	
+	// -------------------------------------------- //
+	// CHUNK CHANGE: TERRITORY INFO
+	// -------------------------------------------- //
+	
+	public void chunkChangeTerritoryInfo(UPlayer uplayer, Player player, PS chunkFrom, PS chunkTo, Faction factionFrom, Faction factionTo)
+	{
+		// send host faction info updates
+		if (uplayer.isMapAutoUpdating())
 		{
-			uplayerTo.sendMessage(BoardColls.get().getMap(uplayerTo.getFaction(), chunkTo, player.getLocation().getYaw()));
+			uplayer.sendMessage(BoardColls.get().getMap(uplayer, chunkTo, player.getLocation().getYaw()));
 		}
 		else if (factionFrom != factionTo)
 		{
-			String msg = Txt.parse("<i>") + " ~ " + factionTo.getTag(uplayerTo);
+			String msg = Txt.parse("<i>") + " ~ " + factionTo.getTag(uplayer);
 			if (factionTo.hasDescription())
 			{
 				msg += " - " + factionTo.getDescription();
@@ -66,20 +77,29 @@ public class TodoFactionsPlayerListener implements Listener
 		TerritoryAccess accessTo = BoardColls.get().getTerritoryAccessAt(chunkTo);
 		if (!accessTo.isDefault())
 		{
-			if (accessTo.subjectHasAccess(uplayerTo))
+			if (accessTo.subjectHasAccess(uplayer))
 			{
-				uplayerTo.msg("<g>You have access to this area.");
+				uplayer.msg("<g>You have access to this area.");
 			}
-			else if (accessTo.subjectAccessIsRestricted(uplayerTo))
+			else if (accessTo.subjectAccessIsRestricted(uplayer))
 			{
-				uplayerTo.msg("<b>This area has restricted access.");
+				uplayer.msg("<b>This area has restricted access.");
 			}
 		}
-
-		if (uplayerTo.getAutoClaimFor() != null)
-		{
-			uplayerTo.tryClaim(uplayerTo.getAutoClaimFor(), PS.valueOf(event.getTo()), true, true);
-		}
+	}
+	
+	// -------------------------------------------- //
+	// CHUNK CHANGE: AUTO CLAIM
+	// -------------------------------------------- //
+	
+	public void chunkChangeAutoClaim(UPlayer uplayer, PS chunkTo)
+	{
+		// If the player is auto claiming ...
+		Faction autoClaimFaction = uplayer.getAutoClaimFaction();
+		if (autoClaimFaction == null) return;
+		
+		// ... try claim.
+		uplayer.tryClaim(autoClaimFaction, chunkTo, true, true);
 	}
 
 	// -------------------------------------------- //

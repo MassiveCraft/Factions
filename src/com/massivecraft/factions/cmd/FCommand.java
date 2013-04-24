@@ -1,6 +1,7 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Rel;
+import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.entity.UPlayer;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.mcore.cmd.MCommand;
@@ -8,12 +9,14 @@ import com.massivecraft.mcore.util.Txt;
 
 public abstract class FCommand extends MCommand
 {
+	public MPlayer mme;
 	public UPlayer fme;
 	public Faction myFaction;
 	
 	@Override
 	public void fixSenderVars()
 	{
+		this.mme = MPlayer.get(sender);
 		this.fme = UPlayer.get(this.sender);
 		this.myFaction = this.fme.getFaction();
 	}

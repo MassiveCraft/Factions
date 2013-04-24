@@ -24,16 +24,16 @@ public class CmdFactionsAutoClaim extends FCommand
 	public void perform()
 	{
 		Faction forFaction = this.arg(0, ARFaction.get(myFaction), myFaction);
-		if (forFaction == null || forFaction == fme.getAutoClaimFor())
+		if (forFaction == null || forFaction == fme.getAutoClaimFaction())
 		{
-			fme.setAutoClaimFor(null);
+			fme.setAutoClaimFaction(null);
 			msg("<i>Auto-claiming of land disabled.");
 			return;
 		}
 		
-		if ( ! FPerm.TERRITORY.has(fme, forFaction, true)) return;
+		if (forFaction.isNormal() && !FPerm.TERRITORY.has(fme, forFaction, true)) return;
 		
-		fme.setAutoClaimFor(forFaction);
+		fme.setAutoClaimFaction(forFaction);
 		
 		msg("<i>Now auto-claiming land for <h>%s<i>.", forFaction.describeTo(fme));
 		fme.tryClaim(forFaction, PS.valueOf(me), true, true);

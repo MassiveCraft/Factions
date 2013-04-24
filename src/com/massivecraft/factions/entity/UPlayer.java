@@ -93,27 +93,22 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 	// Null means default for the universe.
 	private Double power = null;
 	
+	// The id for the faction this uplayer is currently autoclaiming for.
+	// NOTE: This field will not be saved to the database ever.
+	// Null means the player isn't auto claiming.
+	private transient Faction autoClaimFaction = null;
+	public Faction getAutoClaimFaction() { return this.autoClaimFaction; }
+	public void setAutoClaimFaction(Faction autoClaimFaction) { this.autoClaimFaction = autoClaimFaction; }
+	
 	// -------------------------------------------- //
-	// FIELDS: RAW TRANSIENT
+	// FIELDS: MULTIVERSE PROXY
 	// -------------------------------------------- //
 	
-	// FIELD: mapAutoUpdating
-	// TODO: Move this to the MPlayer
-	private transient boolean mapAutoUpdating = false;
-	public void setMapAutoUpdating(boolean mapAutoUpdating) { this.mapAutoUpdating = mapAutoUpdating; }
-	public boolean isMapAutoUpdating() { return mapAutoUpdating; }
+	public boolean isMapAutoUpdating() { return MPlayer.get(this).isMapAutoUpdating(); }
+	public void setMapAutoUpdating(boolean mapAutoUpdating) { MPlayer.get(this).setMapAutoUpdating(mapAutoUpdating); }
 	
-	// FIELD: autoClaimEnabled
-	private transient Faction autoClaimFor = null;
-	public Faction getAutoClaimFor() { return autoClaimFor; }
-	public void setAutoClaimFor(Faction faction) { this.autoClaimFor = faction; }
-		
-	private transient boolean usingAdminMode = false;
-	public boolean isUsingAdminMode() { return this.usingAdminMode; }
-	public void setUsingAdminMode(boolean val) { this.usingAdminMode = val; }
-	
-	// FIELD: loginPvpDisabled
-	//private transient boolean loginPvpDisabled;
+	public boolean isUsingAdminMode() { return MPlayer.get(this).isUsingAdminMode(); }
+	public void setUsingAdminMode(boolean usingAdminMode) { MPlayer.get(this).setUsingAdminMode(usingAdminMode); }
 	
 	// -------------------------------------------- //
 	// CORE UTILITIES
@@ -125,8 +120,7 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 		this.setFactionId(null); 
 		this.setRole(null);
 		this.setTitle(null);
-		
-		this.autoClaimFor = null;
+		this.setAutoClaimFaction(null);
 	}
 	
 	/*
