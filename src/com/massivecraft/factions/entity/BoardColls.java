@@ -8,24 +8,17 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
 
-import org.bukkit.Bukkit;
-
 import com.massivecraft.factions.Const;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.RelationParticipator;
 import com.massivecraft.factions.TerritoryAccess;
 import com.massivecraft.mcore.ps.PS;
 import com.massivecraft.mcore.ps.PSBuilder;
-import com.massivecraft.mcore.store.Coll;
-import com.massivecraft.mcore.store.Colls;
-import com.massivecraft.mcore.store.Entity;
 import com.massivecraft.mcore.usys.Aspect;
 import com.massivecraft.mcore.util.DiscUtil;
-import com.massivecraft.mcore.util.MUtil;
-import com.massivecraft.mcore.util.SenderUtil;
 import com.massivecraft.mcore.xlib.gson.reflect.TypeToken;
 
-public class BoardColls extends Colls<BoardColl, Board> implements BoardInterface
+public class BoardColls extends XColls<BoardColl, Board> implements BoardInterface
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -54,31 +47,6 @@ public class BoardColls extends Colls<BoardColl, Board> implements BoardInterfac
 	public String getBasename()
 	{
 		return Const.COLLECTION_BASENAME_UCONF;
-	}
-	
-	@Override
-	public BoardColl get(Object o)
-	{
-		if (o == null) return null;
-		
-		if (o instanceof Entity)
-		{
-			return this.getForUniverse(((Entity<?>)o).getUniverse());
-		}
-		
-		if (o instanceof Coll)
-		{
-			return this.getForUniverse(((Coll<?>)o).getUniverse());
-		}
-		
-		if (SenderUtil.isNonplayer(o))
-		{
-			return this.getForWorld(Bukkit.getWorlds().get(0).getName());
-		}
-		
-		String worldName = MUtil.extract(String.class, "worldName", o);
-		if (worldName == null) return null;
-		return this.getForWorld(worldName);
 	}
 	
 	@Override

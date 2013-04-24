@@ -64,9 +64,6 @@ public class Const
 		Material.TRAPPED_CHEST
 	);
 	
-	//public static Set<Material> territoryProtectedMaterialsWhenOffline = EnumSet.noneOf(Material.class);
-	//public static Set<Material> territoryDenyUseageMaterialsWhenOffline = EnumSet.noneOf(Material.class);
-	
 	public static final Set<EntityType> ENTITY_TYPES_MONSTERS = MUtil.set(
 		EntityType.BLAZE,
 		EntityType.CAVE_SPIDER,

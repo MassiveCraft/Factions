@@ -3,10 +3,9 @@ package com.massivecraft.factions.entity;
 import com.massivecraft.factions.Const;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.mcore.MCore;
-import com.massivecraft.mcore.store.Colls;
 import com.massivecraft.mcore.usys.Aspect;
 
-public class UConfColls extends Colls<UConfColl, UConf>
+public class UConfColls extends XColls<UConfColl, UConf>
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
