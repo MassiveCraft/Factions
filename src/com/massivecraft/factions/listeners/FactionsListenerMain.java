@@ -49,11 +49,13 @@ import com.massivecraft.factions.FFlag;
 import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Rel;
+import com.massivecraft.factions.TerritoryAccess;
 import com.massivecraft.factions.entity.BoardColls;
 import com.massivecraft.factions.entity.UPlayer;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.entity.UConf;
+import com.massivecraft.factions.entity.UPlayerColls;
 import com.massivecraft.factions.event.FactionsEventPowerChange;
 import com.massivecraft.factions.event.FactionsEventPowerChange.PowerChangeReason;
 import com.massivecraft.factions.util.VisualizeUtil;
@@ -80,6 +82,81 @@ public class FactionsListenerMain implements Listener
 		Bukkit.getPluginManager().registerEvents(this, Factions.get());
 	}
 
+	// -------------------------------------------- //
+	// CHUNK CHANGE: DETECT
+	// -------------------------------------------- //
+	
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	public void chunkChangeDetect(PlayerMoveEvent event)
+	{
+		// If the player is moving from one chunk to another ...
+		if (MUtil.isSameChunk(event)) return;
+		
+		// ... gather info on the player and the move ...
+		Player player = event.getPlayer();
+		UPlayer uplayer = UPlayerColls.get().get(event.getTo()).get(player);
+		
+		PS chunkFrom = PS.valueOf(event.getFrom()).getChunk(true);
+		PS chunkTo = PS.valueOf(event.getTo()).getChunk(true);
+		
+		Faction factionFrom = BoardColls.get().getFactionAt(chunkFrom);
+		Faction factionTo = BoardColls.get().getFactionAt(chunkTo);
+		
+		// ... and send info onwards.
+		this.chunkChangeTerritoryInfo(uplayer, player, chunkFrom, chunkTo, factionFrom, factionTo);
+		this.chunkChangeAutoClaim(uplayer, chunkTo);
+	}
+	
+	// -------------------------------------------- //
+	// CHUNK CHANGE: TERRITORY INFO
+	// -------------------------------------------- //
+	
+	public void chunkChangeTerritoryInfo(UPlayer uplayer, Player player, PS chunkFrom, PS chunkTo, Faction factionFrom, Faction factionTo)
+	{
+		// send host faction info updates
+		if (uplayer.isMapAutoUpdating())
+		{
+			uplayer.sendMessage(BoardColls.get().getMap(uplayer, chunkTo, player.getLocation().getYaw()));
+		}
+		else if (factionFrom != factionTo)
+		{
+			String msg = Txt.parse("<i>") + " ~ " + factionTo.getTag(uplayer);
+			if (factionTo.hasDescription())
+			{
+				msg += " - " + factionTo.getDescription();
+			}
+			player.sendMessage(msg);
+		}
+
+		// show access info message if needed
+		TerritoryAccess accessTo = BoardColls.get().getTerritoryAccessAt(chunkTo);
+		if (!accessTo.isDefault())
+		{
+			if (accessTo.subjectHasAccess(uplayer))
+			{
+				uplayer.msg("<g>You have access to this area.");
+			}
+			else if (accessTo.subjectAccessIsRestricted(uplayer))
+			{
+				uplayer.msg("<b>This area has restricted access.");
+			}
+		}
+	}
+	
+	// -------------------------------------------- //
+	// CHUNK CHANGE: AUTO CLAIM
+	// -------------------------------------------- //
+	
+	public void chunkChangeAutoClaim(UPlayer uplayer, PS chunkTo)
+	{
+		// If the player is auto claiming ...
+		Faction autoClaimFaction = uplayer.getAutoClaimFaction();
+		if (autoClaimFaction == null) return;
+		
+		// ... try claim.
+		uplayer.tryClaim(autoClaimFaction, chunkTo, true, true);
+	}
+	
 	// -------------------------------------------- //
 	// POWER LOSS ON DEATH
 	// -------------------------------------------- //
