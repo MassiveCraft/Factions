@@ -24,8 +24,8 @@ public class CmdFactionsClaim extends FCommand
 		this.addOptionalArg("faction", "you");
 		
 		this.addRequirements(ReqFactionsEnabled.get());
-		this.addRequirements(ReqHasPerm.get(Perm.CLAIM.node));
 		this.addRequirements(ReqIsPlayer.get());
+		this.addRequirements(ReqHasPerm.get(Perm.CLAIM.node));
 	}
 	
 	@Override
