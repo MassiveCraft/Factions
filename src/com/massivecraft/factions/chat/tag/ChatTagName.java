@@ -2,6 +2,7 @@ package com.massivecraft.factions.chat.tag;
 
 import com.massivecraft.factions.chat.ChatTagAbstract;
 import com.massivecraft.factions.entity.Faction;
+import com.massivecraft.factions.entity.UConf;
 import com.massivecraft.factions.entity.UPlayer;
 
 public class ChatTagName extends ChatTagAbstract
@@ -21,6 +22,7 @@ public class ChatTagName extends ChatTagAbstract
 	@Override
 	public String getReplacement(UPlayer fsender, UPlayer frecipient)
 	{
+		if (!UConf.get(fsender).enabled) return "";
 		Faction faction = fsender.getFaction();
 		if (faction.isNone()) return "";
 		return faction.getName();

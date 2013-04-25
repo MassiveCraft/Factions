@@ -1,6 +1,7 @@
 package com.massivecraft.factions.chat.tag;
 
 import com.massivecraft.factions.chat.ChatTagAbstract;
+import com.massivecraft.factions.entity.UConf;
 import com.massivecraft.factions.entity.UPlayer;
 
 public class ChatTagTitle extends ChatTagAbstract
@@ -20,6 +21,8 @@ public class ChatTagTitle extends ChatTagAbstract
 	@Override
 	public String getReplacement(UPlayer fsender, UPlayer frecipient)
 	{
+		if (!UConf.get(fsender).enabled) return "";
+		
 		if (!fsender.hasTitle()) return "";
 		return fsender.getTitle();
 	}
