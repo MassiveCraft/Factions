@@ -10,7 +10,7 @@ import com.massivecraft.factions.entity.MConf;
 
 public class AlliesChannel extends FactionsChannelAbstract
 {
-	public static final Set<Rel> targetRelations = EnumSet.of(Rel.MEMBER, Rel.ALLY);
+	public static final Set<Rel> targetRelations = EnumSet.of(Rel.MEMBER, Rel.RECRUIT, Rel.ALLY);
 	@Override public Set<Rel> getTargetRelations() { return targetRelations; }
 	
 	@Override public String getName() { return MConf.get().herochatAlliesName; }

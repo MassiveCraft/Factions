@@ -98,7 +98,7 @@ public class UConf extends Entity<UConf>
 	// -------------------------------------------- //
 
 	public int factionMemberLimit = 0;
-	public double factionPowerMax = 1000.0;
+	public double factionPowerMax = 0.0;
 	
 	public int factionNameLengthMin = 3;
 	public int factionNameLengthMax = 16;
@@ -108,7 +108,7 @@ public class UConf extends Entity<UConf>
 	// CLAIMS
 	// -------------------------------------------- //
 	
-	public boolean claimsMustBeConnected = false;
+	public boolean claimsMustBeConnected = true;
 	public boolean claimingFromOthersAllowed = true;
 	public boolean claimsCanBeUnconnectedIfOwnedByOtherFaction = true;
 	public int claimsRequireMinFactionMembers = 1;
@@ -145,7 +145,25 @@ public class UConf extends Entity<UConf>
 
 	// commands which will be prevented when in claimed territory of another faction
 	public Map<Rel, List<String>> denyCommandsTerritoryRelation = MUtil.map(
-		Rel.ENEMY, MUtil.list("home", "sethome", "spawn", "tpahere", "tpaccept", "tpa", "warp"),
+		Rel.ENEMY, MUtil.list(
+			"home",
+			"sethome",
+			"tpahere",
+			"tpaccept",
+			"tpa",
+			"warp",
+			"warps",
+			"spawn",
+			"wtp",
+			"uspawn",
+			"utp",
+			"mspawn",
+			"mtp",
+			"fspawn",
+			"ftp",
+			"jspawn",
+			"jtp"
+		),
 		Rel.NEUTRAL, new ArrayList<String>(),
 		Rel.TRUCE, new ArrayList<String>(),
 		Rel.ALLY, new ArrayList<String>(),
@@ -181,7 +199,7 @@ public class UConf extends Entity<UConf>
 		FactionsEventChunkChangeType.PILLAGE, -10.0
 	);
 	
-	public double econCostCreate = 100.0;
+	public double econCostCreate = 200.0;
 	public double econCostSethome = 0.0;
 	public double econCostJoin = 0.0;
 	public double econCostLeave = 0.0;

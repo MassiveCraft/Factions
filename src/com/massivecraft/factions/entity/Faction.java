@@ -916,11 +916,13 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 		}
 
 		if (replacements == null || replacements.isEmpty())
-		{	// faction leader is the only member; one-man faction
+		{
+			// faction leader is the only member; one-man faction
 			if (this.getFlag(FFlag.PERMANENT))
 			{
 				if (oldLeader != null)
 				{
+					// TODO: Where is the logic in this? Why MEMBER? Why not LEADER again? And why not OFFICER or RECRUIT?
 					oldLeader.setRole(Rel.MEMBER);
 				}
 				return;
