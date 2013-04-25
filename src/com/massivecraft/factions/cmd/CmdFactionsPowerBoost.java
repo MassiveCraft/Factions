@@ -22,7 +22,7 @@ public class CmdFactionsPowerBoost extends FCommand
 	@Override
 	public void perform()
 	{
-		Faction faction = this.arg(0, ARFaction.get(fme));
+		Faction faction = this.arg(0, ARFaction.get(usender));
 		if (faction == null) return;
 		
 		Double amount = this.arg(1, ARDouble.get());
@@ -33,6 +33,6 @@ public class CmdFactionsPowerBoost extends FCommand
 		msg("<i>"+faction.getName()+" now has a power bonus/penalty of "+amount+" to min and max power levels.");
 		
 		// TODO: Inconsistent. Why is there no boolean to toggle this logging of?
-		Factions.get().log(fme.getName()+" has set the power bonus/penalty for "+faction.getName()+" to "+amount+".");
+		Factions.get().log(usender.getName()+" has set the power bonus/penalty for "+faction.getName()+" to "+amount+".");
 	}
 }

@@ -33,7 +33,7 @@ public class CmdFactionsShow extends FCommand
 	@Override
 	public void perform()
 	{
-		Faction faction = this.arg(0, ARFaction.get(myFaction), myFaction);
+		Faction faction = this.arg(0, ARFaction.get(usenderFaction), usenderFaction);
 		if (faction == null) return;
 		
 		UConf uconf = UConf.get(faction);
@@ -43,7 +43,7 @@ public class CmdFactionsShow extends FCommand
 		Collection<UPlayer> normals = faction.getUPlayersWhereRole(Rel.MEMBER);
 		Collection<UPlayer> recruits = faction.getUPlayersWhereRole(Rel.RECRUIT);
 		
-		msg(Txt.titleize(faction.getName(fme)));
+		msg(Txt.titleize(faction.getName(usender)));
 		msg("<a>Description: <i>%s", faction.getDescription());
 		
 		// Display important flags
@@ -99,7 +99,7 @@ public class CmdFactionsShow extends FCommand
 		String sepparator = Txt.parse("<i>")+", ";
 		
 		// List the relations to other factions
-		Map<Rel, List<String>> relationNames = faction.getFactionNamesPerRelation(fme, true);
+		Map<Rel, List<String>> relationNames = faction.getFactionNamesPerRelation(usender, true);
 		
 		if (faction.getFlag(FFlag.PEACEFUL))
 		{
@@ -121,11 +121,11 @@ public class CmdFactionsShow extends FCommand
 		{
 			if (follower.isOnline() && Mixin.isVisible(me, follower.getId()))
 			{
-				memberOnlineNames.add(follower.getNameAndTitle(fme));
+				memberOnlineNames.add(follower.getNameAndTitle(usender));
 			}
 			else
 			{
-				memberOfflineNames.add(follower.getNameAndTitle(fme));
+				memberOfflineNames.add(follower.getNameAndTitle(usender));
 			}
 		}
 		
@@ -133,11 +133,11 @@ public class CmdFactionsShow extends FCommand
 		{
 			if (follower.isOnline() && Mixin.isVisible(me, follower.getId()))
 			{
-				memberOnlineNames.add(follower.getNameAndTitle(fme));
+				memberOnlineNames.add(follower.getNameAndTitle(usender));
 			}
 			else
 			{
-				memberOfflineNames.add(follower.getNameAndTitle(fme));
+				memberOfflineNames.add(follower.getNameAndTitle(usender));
 			}
 		}
 		
@@ -145,11 +145,11 @@ public class CmdFactionsShow extends FCommand
 		{
 			if (follower.isOnline() && Mixin.isVisible(me, follower.getId()))
 			{
-				memberOnlineNames.add(follower.getNameAndTitle(fme));
+				memberOnlineNames.add(follower.getNameAndTitle(usender));
 			}
 			else
 			{
-				memberOfflineNames.add(follower.getNameAndTitle(fme));
+				memberOfflineNames.add(follower.getNameAndTitle(usender));
 			}
 		}
 		
@@ -157,11 +157,11 @@ public class CmdFactionsShow extends FCommand
 		{
 			if (follower.isOnline())
 			{
-				memberOnlineNames.add(follower.getNameAndTitle(fme));
+				memberOnlineNames.add(follower.getNameAndTitle(usender));
 			}
 			else
 			{
-				memberOfflineNames.add(follower.getNameAndTitle(fme));
+				memberOfflineNames.add(follower.getNameAndTitle(usender));
 			}
 		}
 		sendMessage(Txt.parse("<a>Members online: ") + Txt.implode(memberOnlineNames, sepparator));

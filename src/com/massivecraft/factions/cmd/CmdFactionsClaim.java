@@ -33,7 +33,7 @@ public class CmdFactionsClaim extends FCommand
 		Integer radius = this.arg(0, ARInteger.get(), 1);
 		if (radius == null) return;
 		
-		final Faction forFaction = this.arg(1, ARFaction.get(me), myFaction);
+		final Faction forFaction = this.arg(1, ARFaction.get(me), usenderFaction);
 		if (forFaction == null) return;
 		
 		// FPerm
@@ -46,7 +46,7 @@ public class CmdFactionsClaim extends FCommand
 			return;
 		}
 		
-		if (radius > MConf.get().radiusClaimRadiusLimit && !fme.isUsingAdminMode())
+		if (radius > MConf.get().radiusClaimRadiusLimit && !usender.isUsingAdminMode())
 		{
 			msg("<b>The maximum radius allowed is <h>%s<b>.", MConf.get().radiusClaimRadiusLimit);
 			return;
@@ -57,7 +57,7 @@ public class CmdFactionsClaim extends FCommand
 		// single chunk
 		if (radius < 2)
 		{
-			fme.tryClaim(forFaction, PS.valueOf(me), true, true);
+			usender.tryClaim(forFaction, PS.valueOf(me), true, true);
 			return;
 		}
 		
@@ -81,7 +81,7 @@ public class CmdFactionsClaim extends FCommand
 			@Override
 			public boolean work()
 			{
-				boolean success = fme.tryClaim(forFaction, PS.valueOf(this.currentLocation()), true, true);
+				boolean success = usender.tryClaim(forFaction, PS.valueOf(this.currentLocation()), true, true);
 				if (success)
 				{
 					this.failCount = 0;

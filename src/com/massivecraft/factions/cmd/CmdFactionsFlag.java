@@ -26,12 +26,12 @@ public class CmdFactionsFlag extends FCommand
 	@Override
 	public void perform()
 	{
-		Faction faction = this.arg(0, ARFaction.get(sender), myFaction);
+		Faction faction = this.arg(0, ARFaction.get(sender), usenderFaction);
 		if (faction == null) return;
 		
 		if ( ! this.argIsSet(1))
 		{
-			msg(Txt.titleize("Flags for " + faction.describeTo(fme, true)));
+			msg(Txt.titleize("Flags for " + faction.describeTo(usender, true)));
 			for (FFlag flag : FFlag.values())
 			{
 				msg(flag.getStateInfo(faction.getFlag(flag), true));
@@ -44,7 +44,7 @@ public class CmdFactionsFlag extends FCommand
 		
 		if ( ! this.argIsSet(2))
 		{
-			msg(Txt.titleize("Flag for " + faction.describeTo(fme, true)));
+			msg(Txt.titleize("Flag for " + faction.describeTo(usender, true)));
 			msg(flag.getStateInfo(faction.getFlag(flag), true));
 			return;
 		}
@@ -56,7 +56,7 @@ public class CmdFactionsFlag extends FCommand
 		if ( ! Perm.FLAG_SET.has(sender, true)) return;
 		
 		// Do the change
-		msg(Txt.titleize("Flag for " + faction.describeTo(fme, true)));
+		msg(Txt.titleize("Flag for " + faction.describeTo(usender, true)));
 		faction.setFlag(flag, targetValue);
 		msg(flag.getStateInfo(faction.getFlag(flag), true));
 	}

@@ -31,32 +31,32 @@ public class CmdFactionsLeader extends FCommand
 		UPlayer newLeader = this.arg(0, ARUPlayer.getStartAny(sender));
 		if (newLeader == null) return;
 		
-		Faction targetFaction = this.arg(1, ARFaction.get(sender), myFaction);
+		Faction targetFaction = this.arg(1, ARFaction.get(sender), usenderFaction);
 		if (targetFaction == null) return;
 		
 		UPlayer targetFactionCurrentLeader = targetFaction.getLeader();
 		
 		// We now have uplayer and the target faction
-		if (this.senderIsConsole || fme.isUsingAdminMode() || Perm.LEADER_ANY.has(sender, false))
+		if (this.senderIsConsole || usender.isUsingAdminMode() || Perm.LEADER_ANY.has(sender, false))
 		{
 			// Do whatever you wish
 		}
 		else
 		{
 			// Follow the standard rules
-			if (fme.getRole() != Rel.LEADER || targetFaction != myFaction)
+			if (usender.getRole() != Rel.LEADER || targetFaction != usenderFaction)
 			{
 				sender.sendMessage(Txt.parse("<b>You must be leader of the faction to %s.", this.getDesc()));
 				return;
 			}
 			
-			if (newLeader.getFaction() != myFaction)
+			if (newLeader.getFaction() != usenderFaction)
 			{
-				msg("%s<i> is not a member in the faction.", newLeader.describeTo(fme, true));
+				msg("%s<i> is not a member in the faction.", newLeader.describeTo(usender, true));
 				return;
 			}
 			
-			if (newLeader == fme)
+			if (newLeader == usender)
 			{
 				msg("<b>The target player musn't be yourself.");
 				return;
@@ -75,8 +75,8 @@ public class CmdFactionsLeader extends FCommand
 		if (targetFactionCurrentLeader == newLeader)
 		{
 			targetFaction.promoteNewLeader();
-			msg("<i>You have demoted %s<i> from the position of faction leader.", newLeader.describeTo(fme, true));
-			newLeader.msg("<i>You have been demoted from the position of faction leader by %s<i>.", fme.describeTo(newLeader, true));
+			msg("<i>You have demoted %s<i> from the position of faction leader.", newLeader.describeTo(usender, true));
+			newLeader.msg("<i>You have been demoted from the position of faction leader by %s<i>.", usender.describeTo(newLeader, true));
 			return;
 		}
 
@@ -87,12 +87,12 @@ public class CmdFactionsLeader extends FCommand
 		}
 		newLeader.setFaction(targetFaction);
 		newLeader.setRole(Rel.LEADER);
-		msg("<i>You have promoted %s<i> to the position of faction leader.", newLeader.describeTo(fme, true));
+		msg("<i>You have promoted %s<i> to the position of faction leader.", newLeader.describeTo(usender, true));
 		
 		// Inform all players
 		for (UPlayer uplayer : UPlayerColls.get().get(sender).getAllOnline())
 		{
-			uplayer.msg("%s<i> gave %s<i> the leadership of %s<i>.", senderIsConsole ? "A server admin" : RelationUtil.describeThatToMe(fme, uplayer, true), newLeader.describeTo(uplayer), targetFaction.describeTo(uplayer));
+			uplayer.msg("%s<i> gave %s<i> the leadership of %s<i>.", senderIsConsole ? "A server admin" : RelationUtil.describeThatToMe(usender, uplayer, true), newLeader.describeTo(uplayer), targetFaction.describeTo(uplayer));
 		}
 	}
 }

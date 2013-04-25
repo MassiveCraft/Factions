@@ -29,12 +29,12 @@ public class CmdFactionsPerm extends FCommand
 	@Override
 	public void perform()
 	{
-		Faction faction = this.arg(0, ARFaction.get(myFaction), myFaction);
+		Faction faction = this.arg(0, ARFaction.get(usenderFaction), usenderFaction);
 		if (faction == null) return;
 		
 		if ( ! this.argIsSet(1))
 		{
-			msg(Txt.titleize("Perms for " + faction.describeTo(fme, true)));
+			msg(Txt.titleize("Perms for " + faction.describeTo(usender, true)));
 			msg(FPerm.getStateHeaders());
 			for (FPerm perm : FPerm.values())
 			{
@@ -48,7 +48,7 @@ public class CmdFactionsPerm extends FCommand
 		
 		if ( ! this.argIsSet(2))
 		{
-			msg(Txt.titleize("Perm for " + faction.describeTo(fme, true)));
+			msg(Txt.titleize("Perm for " + faction.describeTo(usender, true)));
 			msg(FPerm.getStateHeaders());
 			msg(perm.getStateInfo(faction.getPermittedRelations(perm), true));
 			return;
@@ -72,7 +72,7 @@ public class CmdFactionsPerm extends FCommand
 			faction.setRelationPermitted(FPerm.PERMS, Rel.LEADER, true);
 		}
 		
-		msg(Txt.titleize("Perm for " + faction.describeTo(fme, true)));
+		msg(Txt.titleize("Perm for " + faction.describeTo(usender, true)));
 		msg(FPerm.getStateHeaders());
 		msg(perm.getStateInfo(faction.getPermittedRelations(perm), true));
 	}

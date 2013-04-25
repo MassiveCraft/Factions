@@ -18,7 +18,7 @@ public class CmdFactionsLeave extends FCommand {
 	@Override
 	public void perform()
 	{
-		fme.leave();
+		usender.leave();
 	}
 	
 }

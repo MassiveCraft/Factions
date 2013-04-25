@@ -28,13 +28,13 @@ public class CmdFactionsPromote extends FCommand
 		UPlayer you = this.arg(0, ARUPlayer.getStartAny(sender));
 		if (you == null) return;
 		
-		if (you.getFaction() != myFaction)
+		if (you.getFaction() != usenderFaction)
 		{
-			msg("%s<b> is not a member in your faction.", you.describeTo(fme, true));
+			msg("%s<b> is not a member in your faction.", you.describeTo(usender, true));
 			return;
 		}
 		
-		if (you == fme)
+		if (you == usender)
 		{
 			msg("<b>The target player mustn't be yourself.");
 			return;
@@ -42,24 +42,24 @@ public class CmdFactionsPromote extends FCommand
 
 		if (you.getRole() == Rel.RECRUIT)
 		{
-			if (!fme.getRole().isAtLeast(Rel.OFFICER))
+			if (!usender.getRole().isAtLeast(Rel.OFFICER))
 			{
 				msg("<b>You must be an officer to promote someone to member.");
 				return;
 			}
 			you.setRole(Rel.MEMBER);
-			myFaction.msg("%s<i> was promoted to being a member of your faction.", you.describeTo(myFaction, true));
+			usenderFaction.msg("%s<i> was promoted to being a member of your faction.", you.describeTo(usenderFaction, true));
 		}
 		else if (you.getRole() == Rel.MEMBER)
 		{
-			if (!fme.getRole().isAtLeast(Rel.LEADER))
+			if (!usender.getRole().isAtLeast(Rel.LEADER))
 			{
 				msg("<b>You must be the leader to promote someone to officer.");
 				return;
 			}
 			// Give
 			you.setRole(Rel.OFFICER);
-			myFaction.msg("%s<i> was promoted to being a officer in your faction.", you.describeTo(myFaction, true));
+			usenderFaction.msg("%s<i> was promoted to being a officer in your faction.", you.describeTo(usenderFaction, true));
 		}
 	}
 	

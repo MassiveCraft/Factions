@@ -26,10 +26,10 @@ public class CmdFactionsUnclaim extends FCommand
 		Faction newFaction = FactionColls.get().get(me).getNone();
 		
 		// FPerm
-		if (!FPerm.TERRITORY.has(sender, myFaction, true)) return;
+		if (!FPerm.TERRITORY.has(sender, usenderFaction, true)) return;
 
 		// Apply
-		if (fme.tryClaim(newFaction, chunk, true, true)) return;
+		if (usender.tryClaim(newFaction, chunk, true, true)) return;
 	}
 	
 }

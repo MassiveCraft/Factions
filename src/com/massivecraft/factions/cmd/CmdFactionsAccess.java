@@ -42,7 +42,7 @@ public class CmdFactionsAccess extends FCommand
 		if (type.isEmpty() || type.equals("view"))
 		{
 			if ( ! accessAny && ! Perm.ACCESS_VIEW.has(sender, true)) return;
-			if ( ! accessAny && ! territory.doesHostFactionMatch(fme))
+			if ( ! accessAny && ! territory.doesHostFactionMatch(usender))
 			{
 				msg("<b>This territory isn't controlled by your faction, so you can't view the access list.");
 				return;
@@ -52,7 +52,7 @@ public class CmdFactionsAccess extends FCommand
 		}
 
 		if ( ! accessAny && ! Perm.ACCESS.has(sender, true)) return;
-		if ( ! accessAny && ! FPerm.ACCESS.has(fme, locFaction, true)) return;
+		if ( ! accessAny && ! FPerm.ACCESS.has(usender, locFaction, true)) return;
 
 		boolean doPlayer = true;
 		if (type.equals("f") || type.equals("faction"))
@@ -72,14 +72,14 @@ public class CmdFactionsAccess extends FCommand
 
 		if (doPlayer)
 		{
-			UPlayer targetPlayer = this.arg(1, ARUPlayer.getStartAny(fme), fme);
+			UPlayer targetPlayer = this.arg(1, ARUPlayer.getStartAny(usender), usender);
 			if (targetPlayer == null) return;
 			added = territory.toggleFPlayer(targetPlayer);
 			target = "Player \""+targetPlayer.getName()+"\"";
 		}
 		else
 		{
-			Faction targetFaction = this.arg(1, ARFaction.get(myFaction), myFaction);
+			Faction targetFaction = this.arg(1, ARFaction.get(usenderFaction), usenderFaction);
 			if (targetFaction == null) return;
 			added = territory.toggleFaction(targetFaction);
 			target = "Faction \""+targetFaction.getName()+"\"";

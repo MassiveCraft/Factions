@@ -27,7 +27,7 @@ public class CmdFactionsSethome extends FCommand
 	public void perform()
 	{
 		// Args
-		Faction faction = this.arg(0, ARFaction.get(myFaction), myFaction);
+		Faction faction = this.arg(0, ARFaction.get(usenderFaction), usenderFaction);
 		if (faction == null) return;
 		
 		PS newHome = PS.valueOf(me.getLocation());
@@ -35,7 +35,7 @@ public class CmdFactionsSethome extends FCommand
 		// Validate
 		if ( ! UConf.get(faction).homesEnabled)
 		{
-			fme.msg("<b>Sorry, Faction homes are disabled on this server.");
+			usender.msg("<b>Sorry, Faction homes are disabled on this server.");
 			return;
 		}
 		
@@ -43,9 +43,9 @@ public class CmdFactionsSethome extends FCommand
 		if ( ! FPerm.SETHOME.has(sender, faction, true)) return;
 		
 		// Verify
-		if (!fme.isUsingAdminMode() && !faction.isValidHome(newHome))
+		if (!usender.isUsingAdminMode() && !faction.isValidHome(newHome))
 		{
-			fme.msg("<b>Sorry, your faction home can only be set inside your own claimed territory.");
+			usender.msg("<b>Sorry, your faction home can only be set inside your own claimed territory.");
 			return;
 		}
 		
@@ -59,11 +59,11 @@ public class CmdFactionsSethome extends FCommand
 		faction.setHome(newHome);
 		
 		// Inform
-		faction.msg("%s<i> set the home for your faction. You can now use:", fme.describeTo(myFaction, true));
+		faction.msg("%s<i> set the home for your faction. You can now use:", usender.describeTo(usenderFaction, true));
 		faction.sendMessage(Factions.get().getOuterCmdFactions().cmdFactionsHome.getUseageTemplate());
-		if (faction != myFaction)
+		if (faction != usenderFaction)
 		{
-			fme.msg("<b>You have set the home for the "+faction.getName(fme)+"<i> faction.");
+			usender.msg("<b>You have set the home for the "+faction.getName(usender)+"<i> faction.");
 		}
 	}
 	

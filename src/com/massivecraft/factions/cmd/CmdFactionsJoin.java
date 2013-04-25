@@ -31,11 +31,11 @@ public class CmdFactionsJoin extends FCommand
 		Faction faction = this.arg(0, ARFaction.get(sender));
 		if (faction == null) return;
 
-		UPlayer uplayer = this.arg(1, ARUPlayer.getStartAny(sender), fme);
+		UPlayer uplayer = this.arg(1, ARUPlayer.getStartAny(sender), usender);
 		if (uplayer == null) return;
 		Faction uplayerFaction = uplayer.getFaction();
 		
-		boolean samePlayer = uplayer == fme;
+		boolean samePlayer = uplayer == usender;
 		
 		// Validate
 		if (!samePlayer  && ! Perm.JOIN_OTHERS.has(sender, false))
@@ -46,29 +46,29 @@ public class CmdFactionsJoin extends FCommand
 
 		if (faction == uplayerFaction)
 		{
-			msg("<b>%s %s already a member of %s", uplayer.describeTo(fme, true), (samePlayer ? "are" : "is"), faction.getName(fme));
+			msg("<b>%s %s already a member of %s", uplayer.describeTo(usender, true), (samePlayer ? "are" : "is"), faction.getName(usender));
 			return;
 		}
 
 		if (UConf.get(faction).factionMemberLimit > 0 && faction.getUPlayers().size() >= UConf.get(faction).factionMemberLimit)
 		{
-			msg(" <b>!<white> The faction %s is at the limit of %d members, so %s cannot currently join.", faction.getName(fme), UConf.get(faction).factionMemberLimit, uplayer.describeTo(fme, false));
+			msg(" <b>!<white> The faction %s is at the limit of %d members, so %s cannot currently join.", faction.getName(usender), UConf.get(faction).factionMemberLimit, uplayer.describeTo(usender, false));
 			return;
 		}
 
 		if (uplayerFaction.isNormal())
 		{
-			msg("<b>%s must leave %s current faction first.", uplayer.describeTo(fme, true), (samePlayer ? "your" : "their"));
+			msg("<b>%s must leave %s current faction first.", uplayer.describeTo(usender, true), (samePlayer ? "your" : "their"));
 			return;
 		}
 
 		if (!UConf.get(faction).canLeaveWithNegativePower && uplayer.getPower() < 0)
 		{
-			msg("<b>%s cannot join a faction with a negative power level.", uplayer.describeTo(fme, true));
+			msg("<b>%s cannot join a faction with a negative power level.", uplayer.describeTo(usender, true));
 			return;
 		}
 
-		if( ! (faction.isOpen() || faction.isInvited(uplayer) || fme.isUsingAdminMode() || Perm.JOIN_ANY.has(sender, false)))
+		if( ! (faction.isOpen() || faction.isInvited(uplayer) || usender.isUsingAdminMode() || Perm.JOIN_ANY.has(sender, false)))
 		{
 			msg("<i>This faction requires invitation.");
 			if (samePlayer)
@@ -79,17 +79,17 @@ public class CmdFactionsJoin extends FCommand
 		}
 
 		// Event
-		FactionsEventMembershipChange membershipChangeEvent = new FactionsEventMembershipChange(sender, fme, faction, MembershipChangeReason.JOIN);
+		FactionsEventMembershipChange membershipChangeEvent = new FactionsEventMembershipChange(sender, usender, faction, MembershipChangeReason.JOIN);
 		membershipChangeEvent.run();
 		if (membershipChangeEvent.isCancelled()) return;
 		
 		// Inform
 		if (!samePlayer)
 		{
-			uplayer.msg("<i>%s moved you into the faction %s.", fme.describeTo(uplayer, true), faction.getName(uplayer));
+			uplayer.msg("<i>%s moved you into the faction %s.", usender.describeTo(uplayer, true), faction.getName(uplayer));
 		}
 		faction.msg("<i>%s joined your faction.", uplayer.describeTo(faction, true));
-		fme.msg("<i>%s successfully joined %s.", uplayer.describeTo(fme, true), faction.getName(fme));
+		usender.msg("<i>%s successfully joined %s.", uplayer.describeTo(usender, true), faction.getName(usender));
 		
 		// Apply
 		uplayer.resetFactionData();
@@ -103,7 +103,7 @@ public class CmdFactionsJoin extends FCommand
 			if (samePlayer)
 				Factions.get().log("%s joined the faction %s.", uplayer.getName(), faction.getName());
 			else
-				Factions.get().log("%s moved the player %s into the faction %s.", fme.getName(), uplayer.getName(), faction.getName());
+				Factions.get().log("%s moved the player %s into the faction %s.", usender.getName(), uplayer.getName(), faction.getName());
 		}
 	}
 }

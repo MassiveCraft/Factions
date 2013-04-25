@@ -28,11 +28,11 @@ public class CmdFactionsMap extends FCommand
 			return;
 		}
 		
-		if (this.arg(0, ARBoolean.get(), !mme.isMapAutoUpdating()))
+		if (this.arg(0, ARBoolean.get(), !msender.isMapAutoUpdating()))
 		{
 			// Turn on
 
-			mme.setMapAutoUpdating(true);
+			msender.setMapAutoUpdating(true);
 			msg("<i>Map auto update <green>ENABLED.");
 			
 			// And show the map once
@@ -41,14 +41,14 @@ public class CmdFactionsMap extends FCommand
 		else
 		{
 			// Turn off
-			mme.setMapAutoUpdating(false);
+			msender.setMapAutoUpdating(false);
 			msg("<i>Map auto update <red>DISABLED.");
 		}
 	}
 	
 	public void showMap()
 	{
-		sendMessage(BoardColls.get().getMap(myFaction, PS.valueOf(me), fme.getPlayer().getLocation().getYaw()));
+		sendMessage(BoardColls.get().getMap(usenderFaction, PS.valueOf(me), usender.getPlayer().getLocation().getYaw()));
 	}
 	
 }

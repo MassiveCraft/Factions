@@ -34,14 +34,14 @@ public class CmdFactionsKick extends FCommand
 		if (uplayer == null) return;
 		
 		// Validate
-		if (fme == uplayer)
+		if (usender == uplayer)
 		{
 			msg("<b>You cannot kick yourself.");
 			msg("<i>You might want to: %s", Factions.get().getOuterCmdFactions().cmdFactionsLeave.getUseageTemplate(false));
 			return;
 		}
 		
-		if (uplayer.getRole() == Rel.LEADER && !(this.senderIsConsole || fme.isUsingAdminMode()))
+		if (uplayer.getRole() == Rel.LEADER && !(this.senderIsConsole || usender.isUsingAdminMode()))
 		{
 			msg("<b>The leader can not be kicked.");
 			return;
@@ -63,16 +63,16 @@ public class CmdFactionsKick extends FCommand
 		if (event.isCancelled()) return;
 
 		// Inform
-		uplayerFaction.msg("%s<i> kicked %s<i> from the faction! :O", fme.describeTo(uplayerFaction, true), uplayer.describeTo(uplayerFaction, true));
-		uplayer.msg("%s<i> kicked you from %s<i>! :O", fme.describeTo(uplayer, true), uplayerFaction.describeTo(uplayer));
-		if (uplayerFaction != myFaction)
+		uplayerFaction.msg("%s<i> kicked %s<i> from the faction! :O", usender.describeTo(uplayerFaction, true), uplayer.describeTo(uplayerFaction, true));
+		uplayer.msg("%s<i> kicked you from %s<i>! :O", usender.describeTo(uplayer, true), uplayerFaction.describeTo(uplayer));
+		if (uplayerFaction != usenderFaction)
 		{
-			fme.msg("<i>You kicked %s<i> from the faction %s<i>!", uplayer.describeTo(fme), uplayerFaction.describeTo(fme));
+			usender.msg("<i>You kicked %s<i> from the faction %s<i>!", uplayer.describeTo(usender), uplayerFaction.describeTo(usender));
 		}
 
 		if (MConf.get().logFactionKick)
 		{
-			Factions.get().log(fme.getDisplayName() + " kicked " + uplayer.getName() + " from the faction " + uplayerFaction.getName());
+			Factions.get().log(usender.getDisplayName() + " kicked " + uplayer.getName() + " from the faction " + uplayerFaction.getName());
 		}
 
 		// Apply

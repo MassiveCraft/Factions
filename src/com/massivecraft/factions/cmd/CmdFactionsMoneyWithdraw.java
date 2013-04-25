@@ -35,16 +35,16 @@ public class CmdFactionsMoneyWithdraw extends FCommand
 		Double amount = this.arg(0, ARDouble.get());
 		if (amount == null) return;
 		
-		Faction from = this.arg(1, ARFaction.get(sender), myFaction);
+		Faction from = this.arg(1, ARFaction.get(sender), usenderFaction);
 		if (from == null) return;
 		
-		UPlayer to = fme;
+		UPlayer to = usender;
 		
-		boolean success = Econ.transferMoney(fme, from, to, amount);
+		boolean success = Econ.transferMoney(usender, from, to, amount);
 
 		if (success && MConf.get().logMoneyTransactions)
 		{
-			Factions.get().log(ChatColor.stripColor(Txt.parse("%s withdrew %s from the faction bank: %s", fme.getName(), Money.format(from, amount), from.describeTo(null))));
+			Factions.get().log(ChatColor.stripColor(Txt.parse("%s withdrew %s from the faction bank: %s", usender.getName(), Money.format(from, amount), from.describeTo(null))));
 		}
 	}
 }

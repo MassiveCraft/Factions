@@ -39,40 +39,40 @@ public abstract class CmdFactionsRelationAbstract extends FCommand
 		
 		// Verify
 		
-		if (otherFaction == myFaction)
+		if (otherFaction == usenderFaction)
 		{
 			msg("<b>Nope! You can't declare a relation to yourself :)");
 			return;
 		}
 
-		if (myFaction.getRelationWish(otherFaction) == newRelation)
+		if (usenderFaction.getRelationWish(otherFaction) == newRelation)
 		{
 			msg("<b>You already have that relation wish set with %s.", otherFaction.getName());
 			return;
 		}
 		
 		// Event
-		FactionsEventRelationChange event = new FactionsEventRelationChange(sender, myFaction, otherFaction, newRelation);
+		FactionsEventRelationChange event = new FactionsEventRelationChange(sender, usenderFaction, otherFaction, newRelation);
 		event.run();
 		if (event.isCancelled()) return;
 		newRelation = event.getNewRelation();
 
 		// try to set the new relation
-		myFaction.setRelationWish(otherFaction, newRelation);
-		Rel currentRelation = myFaction.getRelationTo(otherFaction, true);
+		usenderFaction.setRelationWish(otherFaction, newRelation);
+		Rel currentRelation = usenderFaction.getRelationTo(otherFaction, true);
 
 		// if the relation change was successful
 		if (newRelation == currentRelation)
 		{
-			otherFaction.msg("%s<i> is now %s.", myFaction.describeTo(otherFaction, true), newRelation.getDescFactionOne());
-			myFaction.msg("%s<i> is now %s.", otherFaction.describeTo(myFaction, true), newRelation.getDescFactionOne());
+			otherFaction.msg("%s<i> is now %s.", usenderFaction.describeTo(otherFaction, true), newRelation.getDescFactionOne());
+			usenderFaction.msg("%s<i> is now %s.", otherFaction.describeTo(usenderFaction, true), newRelation.getDescFactionOne());
 		}
 		// inform the other faction of your request
 		else
 		{
-			otherFaction.msg("%s<i> wishes to be %s.", myFaction.describeTo(otherFaction, true), newRelation.getColor()+newRelation.getDescFactionOne());
-			otherFaction.msg("<i>Type <c>/"+ConfServer.baseCommandAliases.get(0)+" "+newRelation+" "+myFaction.getName()+"<i> to accept.");
-			myFaction.msg("%s<i> were informed that you wish to be %s<i>.", otherFaction.describeTo(myFaction, true), newRelation.getColor()+newRelation.getDescFactionOne());
+			otherFaction.msg("%s<i> wishes to be %s.", usenderFaction.describeTo(otherFaction, true), newRelation.getColor()+newRelation.getDescFactionOne());
+			otherFaction.msg("<i>Type <c>/"+ConfServer.baseCommandAliases.get(0)+" "+newRelation+" "+usenderFaction.getName()+"<i> to accept.");
+			usenderFaction.msg("%s<i> were informed that you wish to be %s<i>.", otherFaction.describeTo(usenderFaction, true), newRelation.getColor()+newRelation.getDescFactionOne());
 		}
 		
 		// TODO: The ally case should work!!
@@ -80,13 +80,13 @@ public abstract class CmdFactionsRelationAbstract extends FCommand
 		if ( newRelation != Rel.TRUCE && otherFaction.getFlag(FFlag.PEACEFUL))
 		{
 			otherFaction.msg("<i>This will have no effect while your faction is peaceful.");
-			myFaction.msg("<i>This will have no effect while their faction is peaceful.");
+			usenderFaction.msg("<i>This will have no effect while their faction is peaceful.");
 		}
 		
-		if ( newRelation != Rel.TRUCE && myFaction.getFlag(FFlag.PEACEFUL))
+		if ( newRelation != Rel.TRUCE && usenderFaction.getFlag(FFlag.PEACEFUL))
 		{
 			otherFaction.msg("<i>This will have no effect while their faction is peaceful.");
-			myFaction.msg("<i>This will have no effect while your faction is peaceful.");
+			usenderFaction.msg("<i>This will have no effect while your faction is peaceful.");
 		}
 	}
 }

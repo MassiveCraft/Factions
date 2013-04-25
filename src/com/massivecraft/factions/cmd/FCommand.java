@@ -9,16 +9,16 @@ import com.massivecraft.mcore.util.Txt;
 
 public abstract class FCommand extends MCommand
 {
-	public MPlayer mme;
-	public UPlayer fme;
-	public Faction myFaction;
+	public MPlayer msender;
+	public UPlayer usender;
+	public Faction usenderFaction;
 	
 	@Override
 	public void fixSenderVars()
 	{
-		this.mme = MPlayer.get(sender);
-		this.fme = UPlayer.get(this.sender);
-		this.myFaction = this.fme.getFaction();
+		this.msender = MPlayer.get(sender);
+		this.usender = UPlayer.get(this.sender);
+		this.usenderFaction = this.usender.getFaction();
 	}
 	
 	// -------------------------------------------- //

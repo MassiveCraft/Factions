@@ -43,11 +43,11 @@ public class CmdFactionsMoneyTransferPf extends FCommand
 		Faction to = this.arg(2, ARFaction.get(sender));
 		if (to == null) return;
 		
-		boolean success = Econ.transferMoney(fme, from, to, amount);
+		boolean success = Econ.transferMoney(usender, from, to, amount);
 
 		if (success && MConf.get().logMoneyTransactions)
 		{
-			Factions.get().log(ChatColor.stripColor(Txt.parse("%s transferred %s from the player \"%s\" to the faction \"%s\"", fme.getName(), Money.format(from, amount), from.describeTo(null), to.describeTo(null))));
+			Factions.get().log(ChatColor.stripColor(Txt.parse("%s transferred %s from the player \"%s\" to the faction \"%s\"", usender.getName(), Money.format(from, amount), from.describeTo(null), to.describeTo(null))));
 		}
 	}
 }

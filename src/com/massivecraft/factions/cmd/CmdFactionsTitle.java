@@ -33,7 +33,7 @@ public class CmdFactionsTitle extends FCommand
 		if (newTitle == null) return;
 		
 		// Verify
-		if ( ! canIAdministerYou(fme, you)) return;
+		if ( ! canIAdministerYou(usender, you)) return;
 
 		// Event
 		FactionsEventTitleChange event = new FactionsEventTitleChange(sender, you, newTitle);
@@ -45,7 +45,7 @@ public class CmdFactionsTitle extends FCommand
 		you.setTitle(newTitle);
 		
 		// Inform
-		myFaction.msg("%s<i> changed a title: %s", fme.describeTo(myFaction, true), you.describeTo(myFaction, true));
+		usenderFaction.msg("%s<i> changed a title: %s", usender.describeTo(usenderFaction, true), you.describeTo(usenderFaction, true));
 	}
 	
 }

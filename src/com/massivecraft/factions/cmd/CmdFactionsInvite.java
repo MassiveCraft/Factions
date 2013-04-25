@@ -30,39 +30,39 @@ public class CmdFactionsInvite extends FCommand
 		UPlayer uplayer = this.arg(0, ARUPlayer.getStartAny(sender));
 		if (uplayer == null) return;
 		
-		Boolean newInvited = this.arg(1, ARBoolean.get(), !myFaction.isInvited(uplayer));
+		Boolean newInvited = this.arg(1, ARBoolean.get(), !usenderFaction.isInvited(uplayer));
 		if (newInvited == null) return;
 		
 		// Allready member?
-		if (uplayer.getFaction() == myFaction)
+		if (uplayer.getFaction() == usenderFaction)
 		{
-			msg("%s<i> is already a member of %s", uplayer.getName(), myFaction.getName());
+			msg("%s<i> is already a member of %s", uplayer.getName(), usenderFaction.getName());
 			msg("<i>You might want to: " + Factions.get().getOuterCmdFactions().cmdFactionsKick.getUseageTemplate(false));
 			return;
 		}
 		
 		// FPerm
-		if ( ! FPerm.INVITE.has(sender, myFaction, true)) return;
+		if ( ! FPerm.INVITE.has(sender, usenderFaction, true)) return;
 		
 		// Event
-		FactionsEventInvitedChange event = new FactionsEventInvitedChange(sender, uplayer, myFaction, newInvited);
+		FactionsEventInvitedChange event = new FactionsEventInvitedChange(sender, uplayer, usenderFaction, newInvited);
 		event.run();
 		if (event.isCancelled()) return;
 		newInvited = event.isNewInvited();
 
 		// Apply
-		myFaction.setInvited(uplayer, newInvited);
+		usenderFaction.setInvited(uplayer, newInvited);
 		
 		// Inform
 		if (newInvited)
 		{
-			uplayer.msg("%s<i> invited you to %s", fme.describeTo(uplayer, true), myFaction.describeTo(uplayer));
-			myFaction.msg("%s<i> invited %s<i> to your faction.", fme.describeTo(myFaction, true), uplayer.describeTo(myFaction));
+			uplayer.msg("%s<i> invited you to %s", usender.describeTo(uplayer, true), usenderFaction.describeTo(uplayer));
+			usenderFaction.msg("%s<i> invited %s<i> to your faction.", usender.describeTo(usenderFaction, true), uplayer.describeTo(usenderFaction));
 		}
 		else
 		{
-			uplayer.msg("%s<i> revoked your invitation to <h>%s<i>.", fme.describeTo(uplayer), myFaction.describeTo(uplayer));
-			myFaction.msg("%s<i> revoked %s's<i> invitation.", fme.describeTo(myFaction), uplayer.describeTo(myFaction));
+			uplayer.msg("%s<i> revoked your invitation to <h>%s<i>.", usender.describeTo(uplayer), usenderFaction.describeTo(uplayer));
+			usenderFaction.msg("%s<i> revoked %s's<i> invitation.", usender.describeTo(usenderFaction), uplayer.describeTo(usenderFaction));
 		}
 	}
 	

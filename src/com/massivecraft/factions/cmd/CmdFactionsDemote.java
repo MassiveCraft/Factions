@@ -25,16 +25,16 @@ public class CmdFactionsDemote extends FCommand
 	@Override
 	public void perform()
 	{
-		UPlayer you = this.arg(0, ARUPlayer.getStartAny(fme));
+		UPlayer you = this.arg(0, ARUPlayer.getStartAny(usender));
 		if (you == null) return;
 		
-		if (you.getFaction() != myFaction)
+		if (you.getFaction() != usenderFaction)
 		{
-			msg("%s<b> is not a member in your faction.", you.describeTo(fme, true));
+			msg("%s<b> is not a member in your faction.", you.describeTo(usender, true));
 			return;
 		}
 		
-		if (you == fme)
+		if (you == usender)
 		{
 			msg("<b>The target player mustn't be yourself.");
 			return;
@@ -42,23 +42,23 @@ public class CmdFactionsDemote extends FCommand
 
 		if (you.getRole() == Rel.MEMBER)
 		{
-			if (!fme.getRole().isAtLeast(Rel.OFFICER))
+			if (!usender.getRole().isAtLeast(Rel.OFFICER))
 			{
 				msg("<b>You must be an officer to demote a member to recruit.");
 				return;
 			}
 			you.setRole(Rel.RECRUIT);
-			myFaction.msg("%s<i> was demoted to being a recruit in your faction.", you.describeTo(myFaction, true));
+			usenderFaction.msg("%s<i> was demoted to being a recruit in your faction.", you.describeTo(usenderFaction, true));
 		}
 		else if (you.getRole() == Rel.OFFICER)
 		{
-			if (!fme.getRole().isAtLeast(Rel.LEADER))
+			if (!usender.getRole().isAtLeast(Rel.LEADER))
 			{
 				msg("<b>You must be the leader to demote an officer to member.");
 				return;
 			}
 			you.setRole(Rel.MEMBER);
-			myFaction.msg("%s<i> was demoted to being a member in your faction.", you.describeTo(myFaction, true));
+			usenderFaction.msg("%s<i> was demoted to being a member in your faction.", you.describeTo(usenderFaction, true));
 		}
 	}
 	

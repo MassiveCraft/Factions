@@ -34,13 +34,13 @@ public class CmdFactionsCreate extends FCommand
 		String newName = this.arg(0);
 		
 		// Verify
-		if (fme.getFaction().isNormal())
+		if (usender.getFaction().isNormal())
 		{
 			msg("<b>You must leave your current faction first.");
 			return;
 		}
 		
-		FactionColl coll = FactionColls.get().get(fme);
+		FactionColl coll = FactionColls.get().get(usender);
 		
 		if (coll.isNameTaken(newName))
 		{
@@ -67,24 +67,24 @@ public class CmdFactionsCreate extends FCommand
 		Faction faction = coll.create(factionId);
 		faction.setName(newName);
 		
-		fme.setRole(Rel.LEADER);
-		fme.setFaction(faction);
+		usender.setRole(Rel.LEADER);
+		usender.setFaction(faction);
 		
-		FactionsEventMembershipChange joinEvent = new FactionsEventMembershipChange(sender, fme, faction, MembershipChangeReason.CREATE);
+		FactionsEventMembershipChange joinEvent = new FactionsEventMembershipChange(sender, usender, faction, MembershipChangeReason.CREATE);
 		joinEvent.run();
 		// NOTE: join event cannot be cancelled or you'll have an empty faction
 		
 		// Inform
-		for (UPlayer follower : UPlayerColls.get().get(fme).getAllOnline())
+		for (UPlayer follower : UPlayerColls.get().get(usender).getAllOnline())
 		{
-			follower.msg("%s<i> created a new faction %s", fme.describeTo(follower, true), faction.getName(follower));
+			follower.msg("%s<i> created a new faction %s", usender.describeTo(follower, true), faction.getName(follower));
 		}
 		
 		msg("<i>You should now: %s", Factions.get().getOuterCmdFactions().cmdFactionsDescription.getUseageTemplate());
 
 		if (MConf.get().logFactionCreate)
 		{
-			Factions.get().log(fme.getName()+" created a new faction: "+newName);
+			Factions.get().log(usender.getName()+" created a new faction: "+newName);
 		}
 	}
 	

@@ -22,12 +22,12 @@ public class CmdFactionsMoneyBalance extends FCommand
 	@Override
 	public void perform()
 	{
-		Faction faction = this.arg(0, ARFaction.get(sender), myFaction);
+		Faction faction = this.arg(0, ARFaction.get(sender), usenderFaction);
 		if (faction == null) return;
 			
-		if (faction != myFaction && ! Perm.MONEY_BALANCE_ANY.has(sender, true)) return;
+		if (faction != usenderFaction && ! Perm.MONEY_BALANCE_ANY.has(sender, true)) return;
 		
-		Econ.sendBalanceInfo(fme, faction);
+		Econ.sendBalanceInfo(usender, faction);
 	}
 	
 }

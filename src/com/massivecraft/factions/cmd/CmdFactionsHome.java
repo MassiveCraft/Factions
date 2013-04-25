@@ -40,32 +40,32 @@ public class CmdFactionsHome extends FCommand
 		// TODO: Hide this command on help also.
 		if ( ! uconf.homesEnabled)
 		{
-			fme.msg("<b>Sorry, Faction homes are disabled on this server.");
+			usender.msg("<b>Sorry, Faction homes are disabled on this server.");
 			return;
 		}
 
 		if ( ! uconf.homesTeleportCommandEnabled)
 		{
-			fme.msg("<b>Sorry, the ability to teleport to Faction homes is disabled on this server.");
+			usender.msg("<b>Sorry, the ability to teleport to Faction homes is disabled on this server.");
 			return;
 		}
 		
-		if ( ! myFaction.hasHome())
+		if ( ! usenderFaction.hasHome())
 		{
-			fme.msg("<b>Your faction does not have a home. " + (fme.getRole().isLessThan(Rel.OFFICER) ? "<i> Ask your leader to:" : "<i>You should:"));
-			fme.sendMessage(Factions.get().getOuterCmdFactions().cmdFactionsSethome.getUseageTemplate());
+			usender.msg("<b>Your faction does not have a home. " + (usender.getRole().isLessThan(Rel.OFFICER) ? "<i> Ask your leader to:" : "<i>You should:"));
+			usender.sendMessage(Factions.get().getOuterCmdFactions().cmdFactionsSethome.getUseageTemplate());
 			return;
 		}
 		
-		if ( ! uconf.homesTeleportAllowedFromEnemyTerritory && fme.isInEnemyTerritory())
+		if ( ! uconf.homesTeleportAllowedFromEnemyTerritory && usender.isInEnemyTerritory())
 		{
-			fme.msg("<b>You cannot teleport to your faction home while in the territory of an enemy faction.");
+			usender.msg("<b>You cannot teleport to your faction home while in the territory of an enemy faction.");
 			return;
 		}
 		
-		if (!uconf.homesTeleportAllowedFromDifferentWorld && !me.getWorld().getName().equalsIgnoreCase(myFaction.getHome().getWorld()))
+		if (!uconf.homesTeleportAllowedFromDifferentWorld && !me.getWorld().getName().equalsIgnoreCase(usenderFaction.getHome().getWorld()))
 		{
-			fme.msg("<b>You cannot teleport to your faction home while in a different world.");
+			usender.msg("<b>You cannot teleport to your faction home while in a different world.");
 			return;
 		}
 		
@@ -81,10 +81,10 @@ public class CmdFactionsHome extends FCommand
 			faction.getFlag(FFlag.PVP)
 			&&
 			(
-				! fme.isInOwnTerritory()
+				! usender.isInOwnTerritory()
 				||
 				(
-					fme.isInOwnTerritory()
+					usender.isInOwnTerritory()
 					&&
 					! uconf.homesTeleportIgnoreEnemiesIfInOwnTerritory
 				)
@@ -102,7 +102,7 @@ public class CmdFactionsHome extends FCommand
 					continue;
 
 				UPlayer fp = UPlayer.get(p);
-				if (fme.getRelationTo(fp) != Rel.ENEMY)
+				if (usender.getRelationTo(fp) != Rel.ENEMY)
 					continue;
 
 				Location l = p.getLocation();
@@ -115,7 +115,7 @@ public class CmdFactionsHome extends FCommand
 				if (dx > max || dy > max || dz > max)
 					continue;
 
-				fme.msg("<b>You cannot teleport to your faction home while an enemy is within " + uconf.homesTeleportAllowedEnemyDistance + " blocks of you.");
+				usender.msg("<b>You cannot teleport to your faction home while an enemy is within " + uconf.homesTeleportAllowedEnemyDistance + " blocks of you.");
 				return;
 			}
 		}
@@ -128,7 +128,7 @@ public class CmdFactionsHome extends FCommand
 		// Apply
 		try
 		{
-			Mixin.teleport(me, myFaction.getHome(), "your faction home", sender);
+			Mixin.teleport(me, usenderFaction.getHome(), "your faction home", sender);
 		}
 		catch (TeleporterException e)
 		{

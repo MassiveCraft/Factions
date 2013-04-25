@@ -23,21 +23,21 @@ public class CmdFactionsOpen extends FCommand
 	public void perform()
 	{
 		// Args
-		Boolean newOpen = this.arg(0, ARBoolean.get(), !myFaction.isOpen());
+		Boolean newOpen = this.arg(0, ARBoolean.get(), !usenderFaction.isOpen());
 		if (newOpen == null) return;
 
 		// Event
-		FactionsEventOpenChange event = new FactionsEventOpenChange(sender, myFaction, newOpen);
+		FactionsEventOpenChange event = new FactionsEventOpenChange(sender, usenderFaction, newOpen);
 		event.run();
 		if (event.isCancelled()) return;
 		newOpen = event.isNewOpen();
 		
 		// Apply
-		myFaction.setOpen(newOpen);
+		usenderFaction.setOpen(newOpen);
 		
 		// Inform
-		String descTarget = myFaction.isOpen() ? "open" : "closed";
-		myFaction.msg("%s<i> changed the faction to <h>%s<i>.", fme.describeTo(myFaction, true), descTarget);
+		String descTarget = usenderFaction.isOpen() ? "open" : "closed";
+		usenderFaction.msg("%s<i> changed the faction to <h>%s<i>.", usender.describeTo(usenderFaction, true), descTarget);
 	}
 	
 }

@@ -30,7 +30,7 @@ public class CmdFactionsDisband extends FCommand
 	public void perform()
 	{
 		// Args
-		Faction faction = this.arg(0, ARFaction.get(fme), myFaction);
+		Faction faction = this.arg(0, ARFaction.get(usender), usenderFaction);
 		if (faction == null) return;
 		
 		// FPerm
@@ -58,9 +58,9 @@ public class CmdFactionsDisband extends FCommand
 		}
 
 		// Inform all players
-		for (UPlayer uplayer : UPlayerColls.get().get(fme).getAllOnline())
+		for (UPlayer uplayer : UPlayerColls.get().get(usender).getAllOnline())
 		{
-			String who = fme.describeTo(uplayer);
+			String who = usender.describeTo(uplayer);
 			if (uplayer.getFaction() == faction)
 			{
 				uplayer.msg("<h>%s<i> disbanded your faction.", who);
@@ -73,7 +73,7 @@ public class CmdFactionsDisband extends FCommand
 		
 		if (MConf.get().logFactionDisband)
 		{
-			Factions.get().log("The faction "+faction.getName()+" ("+faction.getId()+") was disbanded by "+(senderIsConsole ? "console command" : fme.getName())+".");
+			Factions.get().log("The faction "+faction.getName()+" ("+faction.getId()+") was disbanded by "+(senderIsConsole ? "console command" : usender.getName())+".");
 		}
 
 		

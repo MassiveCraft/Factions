@@ -33,8 +33,8 @@ public class CmdFactionsName extends FCommand
 		
 		// TODO does not first test cover selfcase?
 		
-		FactionColl factionColl = FactionColls.get().get(myFaction);
-		if (factionColl.isNameTaken(newName) && ! MiscUtil.getComparisonString(newName).equals(myFaction.getComparisonName()))
+		FactionColl factionColl = FactionColls.get().get(usenderFaction);
+		if (factionColl.isNameTaken(newName) && ! MiscUtil.getComparisonString(newName).equals(usenderFaction.getComparisonName()))
 		{
 			msg("<b>That name is already taken");
 			return;
@@ -49,24 +49,24 @@ public class CmdFactionsName extends FCommand
 		}
 
 		// Event
-		FactionsEventNameChange event = new FactionsEventNameChange(sender, myFaction, newName);
+		FactionsEventNameChange event = new FactionsEventNameChange(sender, usenderFaction, newName);
 		event.run();
 		if (event.isCancelled()) return;
 		newName = event.getNewName();
 
 		// Apply
-		String oldName = myFaction.getName();
-		myFaction.setName(newName);
+		String oldName = usenderFaction.getName();
+		usenderFaction.setName(newName);
 
 		// Inform
-		myFaction.msg("%s<i> changed your faction name to %s", fme.describeTo(myFaction, true), myFaction.getName(myFaction));
-		for (Faction faction : FactionColls.get().get(myFaction).getAll())
+		usenderFaction.msg("%s<i> changed your faction name to %s", usender.describeTo(usenderFaction, true), usenderFaction.getName(usenderFaction));
+		for (Faction faction : FactionColls.get().get(usenderFaction).getAll())
 		{
-			if (faction == myFaction)
+			if (faction == usenderFaction)
 			{
 				continue;
 			}
-			faction.msg("<i>The faction %s<i> changed their name to %s.", fme.getColorTo(faction)+oldName, myFaction.getName(faction));
+			faction.msg("<i>The faction %s<i> changed their name to %s.", usender.getColorTo(faction)+oldName, usenderFaction.getName(faction));
 		}
 	}
 	

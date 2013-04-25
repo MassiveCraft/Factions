@@ -35,14 +35,14 @@ public class CmdFactionsMoneyDeposit extends FCommand
 		Double amount = this.arg(0, ARDouble.get());
 		if (amount == null) return;
 		
-		Faction faction = this.arg(1, ARFaction.get(sender), myFaction);
+		Faction faction = this.arg(1, ARFaction.get(sender), usenderFaction);
 		if (faction == null) return;
 		
-		boolean success = Econ.transferMoney(fme, fme, faction, amount);
+		boolean success = Econ.transferMoney(usender, usender, faction, amount);
 		
 		if (success && MConf.get().logMoneyTransactions)
 		{
-			Factions.get().log(ChatColor.stripColor(Txt.parse("%s deposited %s in the faction bank: %s", fme.getName(), Money.format(fme, amount), faction.describeTo(null))));
+			Factions.get().log(ChatColor.stripColor(Txt.parse("%s deposited %s in the faction bank: %s", usender.getName(), Money.format(usender, amount), faction.describeTo(null))));
 		}
 	}
 	

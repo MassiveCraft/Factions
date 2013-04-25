@@ -30,7 +30,7 @@ public class CmdFactionsUnclaimall extends FCommand
 	public void perform()
 	{
 		// Args
-		Faction faction = myFaction;
+		Faction faction = usenderFaction;
 		Faction newFaction = FactionColls.get().get(faction).getNone();
 		
 		// FPerm
@@ -58,12 +58,12 @@ public class CmdFactionsUnclaimall extends FCommand
 		}
 		
 		// Inform
-		myFaction.msg("%s<i> unclaimed <h>5 <i> of your <h>200 <i>faction land. You now have <h>23 <i>land left.", fme.describeTo(myFaction, true), countSuccess, countTotal, countFail);
+		usenderFaction.msg("%s<i> unclaimed <h>5 <i> of your <h>200 <i>faction land. You now have <h>23 <i>land left.", usender.describeTo(usenderFaction, true), countSuccess, countTotal, countFail);
 
 		// Log
 		if (MConf.get().logLandUnclaims)
 		{
-			Factions.get().log(fme.getName()+" unclaimed everything for the faction: "+myFaction.getName());
+			Factions.get().log(usender.getName()+" unclaimed everything for the faction: "+usenderFaction.getName());
 		}
 	}
 	
