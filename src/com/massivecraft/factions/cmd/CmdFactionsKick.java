@@ -32,7 +32,7 @@ public class CmdFactionsKick extends FCommand
 	public void perform()
 	{
 		// Arg
-		UPlayer uplayer = this.arg(1, ARUPlayer.getStartAny(sender));
+		UPlayer uplayer = this.arg(0, ARUPlayer.getStartAny(sender));
 		if (uplayer == null) return;
 		
 		// Validate
