@@ -20,6 +20,7 @@ import com.massivecraft.mcore.mixin.Mixin;
 import com.massivecraft.mcore.ps.PS;
 import com.massivecraft.mcore.ps.PSFormatSlug;
 import com.massivecraft.mcore.store.SenderEntity;
+import com.massivecraft.mcore.util.MUtil;
 import com.massivecraft.mcore.util.SenderUtil;
 
 
@@ -191,14 +192,17 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 	// This setter is so long because it search for default/null case and takes care of updating the faction member index 
 	public void setFactionId(String factionId)
 	{
+		// Clean input
+		String target = factionId;
+
 		// Detect Nochange
-		if (this.factionId == factionId) return;
+		if (MUtil.equals(this.factionId, target)) return;
 		
 		// Get the raw old value
 		String oldFactionId = this.factionId;
 		
 		// Apply
-		this.factionId = factionId;
+		this.factionId = target;
 		
 		// Must be attached and initialized 
 		if (!this.attached()) return;
@@ -239,15 +243,14 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 	
 	public void setRole(Rel role)
 	{
+		// Clean input
+		Rel target = role;
+		
 		// Detect Nochange
-		if (this.role == role) return;
+		if (MUtil.equals(this.role, target)) return;
 		
 		// Apply
-		this.role = role;
-		
-		// Must be attached and initialized 
-		if (!this.attached()) return;
-		if (!Factions.get().isDatabaseInitialized()) return;
+		this.role = target;
 		
 		// Mark as changed
 		this.changed();
@@ -271,24 +274,21 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 	public void setTitle(String title)
 	{
 		// Clean input
-		if (title != null)
+		String target = title;
+		if (target != null)
 		{
-			title = title.trim();
-			if (title.length() == 0)
+			target = target.trim();
+			if (target.length() == 0)
 			{
-				title = null;
+				target = null;
 			}
 		}
 		
 		// Detect Nochange
-		if (this.title == title) return;
+		if (MUtil.equals(this.title, target)) return;
 		
 		// Apply
-		this.title = title;
-		
-		// Must be attached and initialized 
-		if (!this.attached()) return;
-		if (!Factions.get().isDatabaseInitialized()) return;
+		this.title = target;
 		
 		// Mark as changed
 		this.changed();
@@ -308,17 +308,14 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 	public void setPowerBoost(Double powerBoost)
 	{
 		// Clean input
-		if (powerBoost == null || powerBoost == 0) powerBoost = null;
+		Double target = powerBoost;
+		if (target == null || target == 0) target = null;
 		
 		// Detect Nochange
-		if (this.powerBoost == powerBoost) return;
+		if (MUtil.equals(this.powerBoost, target)) return;
 		
 		// Apply
-		this.powerBoost = powerBoost;
-		
-		// Must be attached and initialized 
-		if (!this.attached()) return;
-		if (!Factions.get().isDatabaseInitialized()) return;
+		this.powerBoost = target;
 		
 		// Mark as changed
 		this.changed();
@@ -386,15 +383,14 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 	
 	public void setPower(Double power)
 	{
+		// Clean input
+		Double target = power;
+		
 		// Detect Nochange
-		if (this.power == power) return;
+		if (MUtil.equals(this.power, target)) return;
 		
 		// Apply
-		this.power = power;
-		
-		// Must be attached and initialized 
-		if (!this.attached()) return;
-		if (!Factions.get().isDatabaseInitialized()) return;
+		this.power = target;
 		
 		// Mark as changed
 		this.changed();

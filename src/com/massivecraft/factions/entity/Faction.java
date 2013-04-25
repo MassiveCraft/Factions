@@ -49,9 +49,9 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 		this.setPowerBoost(that.powerBoost);
 		this.setOpen(that.open);
 		this.setInvitedPlayerIds(that.invitedPlayerIds);
-		this.setRelationWishes(that.relationWish);
-		this.setFlags(that.flagOverrides);
-		this.setPerms(that.permOverrides);
+		this.setRelationWishes(that.relationWishes);
+		this.setFlags(that.flags);
+		this.setPerms(that.perms);
 		
 		return this;
 	}
@@ -97,15 +97,18 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	
 	// The keys in this map are factionIds.
 	// Null means no special relation whishes.
-	private Map<String, Rel> relationWish = null;
+	@SerializedName("relationWish")
+	private Map<String, Rel> relationWishes = null;
 	
 	// The flag overrides are modifications to the default values.
 	// Null means default for the universe.
-	private Map<FFlag, Boolean> flagOverrides = null;
+	@SerializedName("flagOverrides")
+	private Map<FFlag, Boolean> flags = null;
 
 	// The perm overrides are modifications to the default values.
 	// Null means default for the universe.
-	private Map<FPerm, Set<Rel>> permOverrides = null;
+	@SerializedName("permOverrides")
+	private Map<FPerm, Set<Rel>> perms = null;
 	
 	// -------------------------------------------- //
 	// FIELD: id
@@ -142,15 +145,18 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 		return ret;
 	}
 	
-	public void setName(String str)
+	public void setName(String name)
 	{
-		UConf uconf = UConf.get(this);
-		if (uconf != null && UConf.get(this).factionNameForceUpperCase)
-		{
-			str = str.toUpperCase();
-		}
+		// Clean input
+		String target = name;
+		
+		// Detect Nochange
+		if (MUtil.equals(this.name, target)) return;
 
-		this.name = str;
+		// Apply
+		this.name = target;
+		
+		// Mark as changed
 		this.changed();
 	}
 	
@@ -191,16 +197,25 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	
 	public void setDescription(String description)
 	{
-		if (description != null)
+		// Clean input
+		String target = description;
+		if (target != null)
 		{
-			description = description.trim();
+			target = target.trim();
 			// This code should be kept for a while to clean out the previous default text that was actually stored in the database.
-			if (description.length() == 0 || description.equalsIgnoreCase("Default faction description :("))
+			if (target.length() == 0 || target.equals("Default faction description :("))
 			{
-				description = null;
+				target = null;
 			}
 		}
-		this.description = description;
+		
+		// Detect Nochange
+		if (MUtil.equals(this.description, target)) return;
+
+		// Apply
+		this.description = target;
+		
+		// Mark as changed
 		this.changed();
 	}
 	
@@ -236,7 +251,16 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	
 	public void setHome(PS home)
 	{
-		this.home = home;
+		// Clean input
+		PS target = home;
+		
+		// Detect Nochange
+		if (MUtil.equals(this.home, target)) return;
+		
+		// Apply
+		this.home = target;
+		
+		// Mark as changed
 		this.changed();
 	}
 	
@@ -255,8 +279,18 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	
 	public void setPowerBoost(Double powerBoost)
 	{
-		if (powerBoost == null || powerBoost == 0) powerBoost = null;
-		this.powerBoost = powerBoost;
+		// Clean input
+		Double target = powerBoost;
+		
+		if (target == null || target == 0) target = null;
+		
+		// Detect Nochange
+		if (MUtil.equals(this.powerBoost, target)) return;
+		
+		// Apply
+		this.powerBoost = target;
+		
+		// Mark as changed
 		this.changed();
 	}
 	
@@ -280,7 +314,16 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	
 	public void setOpen(boolean open)
 	{
-		this.open = open;
+		// Clean input
+		boolean target = open;
+		
+		// Detect Nochange
+		if (MUtil.equals(this.open, target)) return;
+		
+		// Apply
+		this.open = target;
+		
+		// Mark as changed
 		this.changed();
 	}
 	
@@ -299,19 +342,28 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	
 	public void setInvitedPlayerIds(Collection<String> invitedPlayerIds)
 	{
+		// Clean input
+		TreeSet<String> target;
 		if (invitedPlayerIds == null || invitedPlayerIds.isEmpty())
 		{
-			this.invitedPlayerIds = null;
+			target = null;
 		}
 		else
 		{
-			TreeSet<String> target = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
+			target = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
 			for (String invitedPlayerId : invitedPlayerIds)
 			{
 				target.add(invitedPlayerId.toLowerCase());
 			}
-			this.invitedPlayerIds = target;
 		}
+		
+		// Detect Nochange
+		if (MUtil.equals(this.invitedPlayerIds, target)) return;
+		
+		// Apply
+		this.invitedPlayerIds = target;
+		
+		// Mark as changed
 		this.changed();
 	}
 	
@@ -358,20 +410,30 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	public Map<String, Rel> getRelationWishes()
 	{
 		Map<String, Rel> ret = new LinkedHashMap<String, Rel>();
-		if (this.relationWish != null) ret.putAll(this.relationWish);
+		if (this.relationWishes != null) ret.putAll(this.relationWishes);
 		return ret;
 	}
 	
 	public void setRelationWishes(Map<String, Rel> relationWishes)
 	{
+		// Clean input
+		Map<String, Rel> target;
 		if (relationWishes == null || relationWishes.isEmpty())
 		{
-			this.relationWish = null;
+			target = null;
 		}
 		else
 		{
-			this.relationWish = relationWishes;
+			target = new LinkedHashMap<String, Rel>(relationWishes);
 		}
+		
+		// Detect Nochange
+		if (MUtil.equals(this.relationWishes, target)) return;
+		
+		// Apply
+		this.relationWishes = target;
+		
+		// Mark as changed
 		this.changed();
 	}
 	
@@ -447,9 +509,9 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 			ret.put(fflag, fflag.getDefault(this));
 		}
 		
-		if (this.flagOverrides != null)
+		if (this.flags != null)
 		{
-			for (Entry<FFlag, Boolean> entry : this.flagOverrides.entrySet())
+			for (Entry<FFlag, Boolean> entry : this.flags.entrySet())
 			{
 				ret.put(entry.getKey(), entry.getValue());
 			}
@@ -460,34 +522,39 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	
 	public void setFlags(Map<FFlag, Boolean> flags)
 	{
-		Map<FFlag, Boolean> target = new LinkedHashMap<FFlag, Boolean>();
-		
-		if (flags != null)
+		// Clean input
+		Map<FFlag, Boolean> target;
+		if (flags == null)
 		{
-			target.putAll(flags);
-		}
-		
-		if (this.attached() && Factions.get().isDatabaseInitialized())
-		{
-			Iterator<Entry<FFlag, Boolean>> iter = target.entrySet().iterator();
-			while (iter.hasNext())
-			{
-				Entry<FFlag, Boolean> entry = iter.next();
-				if (entry.getKey().getDefault(this) == entry.getValue())
-				{
-					iter.remove();
-				}
-			}
-		}
-		
-		if (target == null || target.isEmpty())
-		{
-			this.flagOverrides = null;
+			target = null;
 		}
 		else
 		{
-			this.flagOverrides = target;
+			target = new LinkedHashMap<FFlag, Boolean>(flags);
+			
+			if (this.attached() && Factions.get().isDatabaseInitialized())
+			{
+				Iterator<Entry<FFlag, Boolean>> iter = target.entrySet().iterator();
+				while (iter.hasNext())
+				{
+					Entry<FFlag, Boolean> entry = iter.next();
+					if (entry.getKey().getDefault(this) == entry.getValue())
+					{
+						iter.remove();
+					}
+				}
+				
+				if (target.isEmpty()) target = null;
+			}
 		}
+
+		// Detect Nochange
+		if (MUtil.equals(this.flags, target)) return;
+		
+		// Apply
+		this.flags = target;
+		
+		// Mark as changed
 		this.changed();
 	}
 	
@@ -519,9 +586,9 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 			ret.put(fperm, fperm.getDefault(this));
 		}
 		
-		if (this.permOverrides != null)
+		if (this.perms != null)
 		{
-			for (Entry<FPerm, Set<Rel>> entry : this.permOverrides.entrySet())
+			for (Entry<FPerm, Set<Rel>> entry : this.perms.entrySet())
 			{
 				ret.put(entry.getKey(), new LinkedHashSet<Rel>(entry.getValue()));
 			}
@@ -532,37 +599,43 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	
 	public void setPerms(Map<FPerm, Set<Rel>> perms)
 	{
-		Map<FPerm, Set<Rel>> target = new LinkedHashMap<FPerm, Set<Rel>>();
-		
-		if (perms != null)
+		// Clean input
+		Map<FPerm, Set<Rel>> target;
+		if (perms == null)
 		{
+			target = null;
+		}
+		else
+		{
+			target = new LinkedHashMap<FPerm, Set<Rel>>();
 			for (Entry<FPerm, Set<Rel>> entry : perms.entrySet())
 			{
 				target.put(entry.getKey(), new LinkedHashSet<Rel>(entry.getValue()));
 			}
-		}
-		
-		if (this.attached() && Factions.get().isDatabaseInitialized())
-		{
-			Iterator<Entry<FPerm, Set<Rel>>> iter = target.entrySet().iterator();
-			while (iter.hasNext())
+			
+			if (this.attached() && Factions.get().isDatabaseInitialized())
 			{
-				Entry<FPerm, Set<Rel>> entry = iter.next();
-				if (entry.getKey().getDefault(this).equals(entry.getValue()))
+				Iterator<Entry<FPerm, Set<Rel>>> iter = target.entrySet().iterator();
+				while (iter.hasNext())
 				{
-					iter.remove();
+					Entry<FPerm, Set<Rel>> entry = iter.next();
+					if (entry.getKey().getDefault(this).equals(entry.getValue()))
+					{
+						iter.remove();
+					}
 				}
+				
+				if (target.isEmpty()) target = null;
 			}
 		}
 		
-		if (target == null || target.isEmpty())
-		{
-			this.permOverrides = null;
-		}
-		else
-		{
-			this.permOverrides = target;
-		}
+		// Detect Nochange
+		if (MUtil.equals(this.perms, target)) return;
+		
+		// Apply
+		this.perms = target;
+		
+		// Mark as changed
 		this.changed();
 	}
 	
