@@ -9,7 +9,7 @@ import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.cmd.req.ReqFactionsEnabled;
-import com.massivecraft.factions.cmd.req.ReqRoleIsAtLeast;
+import com.massivecraft.factions.cmd.req.ReqHasFaction;
 import com.massivecraft.factions.entity.BoardColls;
 import com.massivecraft.factions.entity.UConf;
 import com.massivecraft.factions.entity.UPlayer;
@@ -28,10 +28,10 @@ public class CmdFactionsHome extends FCommand
 	{
 		this.addAliases("home");
 		
-		this.addRequirements(ReqHasPerm.get(Perm.HOME.node));
 		this.addRequirements(ReqFactionsEnabled.get());
+		this.addRequirements(ReqHasPerm.get(Perm.HOME.node));
+		this.addRequirements(ReqHasFaction.get());
 		this.addRequirements(ReqIsPlayer.get());
-		this.addRequirements(ReqRoleIsAtLeast.get(Rel.RECRUIT));
 	}
 	
 	@Override

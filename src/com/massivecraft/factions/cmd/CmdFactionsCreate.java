@@ -6,6 +6,7 @@ import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.cmd.req.ReqFactionsEnabled;
+import com.massivecraft.factions.cmd.req.ReqHasntFaction;
 import com.massivecraft.factions.entity.UPlayer;
 import com.massivecraft.factions.entity.UPlayerColls;
 import com.massivecraft.factions.entity.Faction;
@@ -26,6 +27,7 @@ public class CmdFactionsCreate extends FCommand
 		this.addRequiredArg("name");
 		
 		this.addRequirements(ReqFactionsEnabled.get());
+		this.addRequirements(ReqHasntFaction.get());
 		this.addRequirements(ReqHasPerm.get(Perm.CREATE.node));
 	}
 	
@@ -36,12 +38,6 @@ public class CmdFactionsCreate extends FCommand
 		String newName = this.arg(0);
 		
 		// Verify
-		if (usender.getFaction().isNormal())
-		{
-			msg("<b>You must leave your current faction first.");
-			return;
-		}
-		
 		FactionColl coll = FactionColls.get().get(usender);
 		
 		if (coll.isNameTaken(newName))

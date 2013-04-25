@@ -1,9 +1,8 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Perm;
-import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.cmd.req.ReqFactionsEnabled;
-import com.massivecraft.factions.cmd.req.ReqRoleIsAtLeast;
+import com.massivecraft.factions.cmd.req.ReqHasFaction;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 
 public class CmdFactionsLeave extends FCommand {
@@ -14,7 +13,7 @@ public class CmdFactionsLeave extends FCommand {
 		
 		this.addRequirements(ReqFactionsEnabled.get());
 		this.addRequirements(ReqHasPerm.get(Perm.LEAVE.node));
-		this.addRequirements(ReqRoleIsAtLeast.get(Rel.RECRUIT));
+		this.addRequirements(ReqHasFaction.get());
 	}
 	
 	@Override

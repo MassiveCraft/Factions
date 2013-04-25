@@ -5,6 +5,7 @@ import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.cmd.arg.ARUPlayer;
 import com.massivecraft.factions.cmd.req.ReqFactionsEnabled;
+import com.massivecraft.factions.cmd.req.ReqHasFaction;
 import com.massivecraft.factions.entity.UPlayer;
 import com.massivecraft.factions.event.FactionsEventInvitedChange;
 import com.massivecraft.mcore.cmd.arg.ARBoolean;
@@ -22,6 +23,7 @@ public class CmdFactionsInvite extends FCommand
 		
 		this.addRequirements(ReqFactionsEnabled.get());
 		this.addRequirements(ReqHasPerm.get(Perm.INVITE.node));
+		this.addRequirements(ReqHasFaction.get());
 		this.addRequirements(ReqIsPlayer.get());
 	}
 	

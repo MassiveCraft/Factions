@@ -2,7 +2,7 @@ main: com.massivecraft.factions.Factions
 name: Factions
 version: 2.0.0_dev
 website: http://massivecraft.com/factions
-authors: [Olof "Cayorion" Larsson, Brett Flannigan]
+authors: [Cayorion, Brettflan]
 depend: [mcore]
 softdepend: [PermissionsEx, Permissions, Essentials, EssentialsChat, HeroChat, iChat, LocalAreaChat, LWC, nChat, ChatManager, AuthMe, Vault, Spout, WorldEdit, WorldGuard, AuthDB, CaptureThePoints, CombatTag]
 permissions:
