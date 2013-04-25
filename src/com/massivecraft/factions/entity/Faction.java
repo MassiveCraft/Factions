@@ -44,6 +44,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	{
 		this.setName(that.name);
 		this.setDescription(that.description);
+		this.setCreatedAtMillis(that.createdAtMillis);
 		this.setHome(that.home);
 		this.setPowerBoost(that.powerBoost);
 		this.setOpen(that.open);
@@ -70,6 +71,10 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	// This description can for example be seen in territorial alerts.
 	// Null means the faction has no description.
 	private String description = null;
+	
+	// We store the creation date for the faction.
+	// It can be displayed on info pages etc.
+	private long createdAtMillis = System.currentTimeMillis();
 	
 	// Factions can optionally set a home location.
 	// If they do their members can teleport there using /f home
@@ -208,6 +213,30 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 
 		// Apply
 		this.description = target;
+		
+		// Mark as changed
+		this.changed();
+	}
+	
+	// -------------------------------------------- //
+	// FIELD: createdAtMillis
+	// -------------------------------------------- //
+	
+	public long getCreatedAtMillis()
+	{
+		return this.createdAtMillis;
+	}
+	
+	public void setCreatedAtMillis(long createdAtMillis)
+	{
+		// Clean input
+		long target = createdAtMillis;
+		
+		// Detect Nochange
+		if (MUtil.equals(this.createdAtMillis, createdAtMillis)) return;
+
+		// Apply
+		this.createdAtMillis = target;
 		
 		// Mark as changed
 		this.changed();

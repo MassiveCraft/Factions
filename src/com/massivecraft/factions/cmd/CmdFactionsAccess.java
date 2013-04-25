@@ -91,7 +91,7 @@ public class CmdFactionsAccess extends FCommand
 
 	private void showAccessList(TerritoryAccess territory, Faction locFaction)
 	{
-		msg("<i>Host faction %s has %s<i> in this territory.", locFaction.getName(), Txt.parse(territory.isHostFactionAllowed() ? "<lime>normal access" : "<rose>restricted access"));
+		msg("<i>Host faction %s <i>has %s<i> in this territory.", locFaction.getName(), Txt.parse(territory.isHostFactionAllowed() ? "<lime>normal access" : "<rose>restricted access"));
 
 		String players = territory.fplayerList();
 		String factions = territory.factionList(locFaction);

@@ -2,6 +2,7 @@ package com.massivecraft.factions.cmd;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +18,8 @@ import com.massivecraft.factions.Rel;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 import com.massivecraft.mcore.mixin.Mixin;
 import com.massivecraft.mcore.money.Money;
+import com.massivecraft.mcore.util.TimeDiffUtil;
+import com.massivecraft.mcore.util.TimeUnit;
 import com.massivecraft.mcore.util.Txt;
 
 public class CmdFactionsShow extends FCommand
@@ -45,6 +48,11 @@ public class CmdFactionsShow extends FCommand
 		
 		msg(Txt.titleize(faction.getName(usender)));
 		msg("<a>Description: <i>%s", faction.getDescription());
+		
+		long ageMillis = faction.getCreatedAtMillis() - System.currentTimeMillis();
+		LinkedHashMap<TimeUnit, Long> ageUnitcounts = TimeDiffUtil.limit(TimeDiffUtil.unitcounts(ageMillis, TimeUnit.getAllButMillis()), 3);
+		String ageString = TimeDiffUtil.formatedVerboose(ageUnitcounts, "<i>");
+		msg("<a>Age: <i>%s", ageString);
 		
 		// Display important flags
 		// TODO: Find the non default flags, and display them instead.
