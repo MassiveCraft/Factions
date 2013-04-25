@@ -652,10 +652,14 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 		{
 			ret += uplayer.getPower();
 		}
-		ret += this.getPowerBoost();
 		
-		ret = Math.min(ret, this.getPowerMax());
-		ret = Math.max(ret, 0);
+		double factionPowerMax = UConf.get(this).factionPowerMax;
+		if (factionPowerMax > 0 && ret > factionPowerMax)
+		{
+			ret = factionPowerMax;
+		}
+		
+		ret += this.getPowerBoost();
 		
 		return ret;
 	}
@@ -663,7 +667,22 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	public double getPowerMax()
 	{
 		if (this.getFlag(FFlag.INFPOWER)) return 999999;
-		return UConf.get(this).factionPowerMax + this.getPowerBoost();
+	
+		double ret = 0;
+		for (UPlayer uplayer : this.getUPlayers())
+		{
+			ret += uplayer.getPowerMax();
+		}
+		
+		double factionPowerMax = UConf.get(this).factionPowerMax;
+		if (factionPowerMax > 0 && ret > factionPowerMax)
+		{
+			ret = factionPowerMax;
+		}
+		
+		ret += this.getPowerBoost();
+		
+		return ret;
 	}
 	
 	public int getPowerRounded()

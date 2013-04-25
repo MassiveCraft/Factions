@@ -44,6 +44,7 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 		this.setFactionId(that.factionId);
 		this.setRole(that.role);
 		this.setTitle(that.title);
+		this.powerBoost = that.powerBoost;
 		this.setPower(that.power);
 		
 		return this;
@@ -85,6 +86,11 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 	//
 	// Null means the player has no title.
 	private String title = null;
+	
+	// Player usually do not have a powerboost. It defaults to 0.
+	// The powerBoost is a custom increase/decrease to default and maximum power.
+	// Note that player powerBoost and faction powerBoost are very similar.
+	private Double powerBoost = null; 
 	
 	// Each player has an individual power level.
 	// The power level for online players is occasionally updated by a recurring task and the power should stay the same for offline players.
@@ -261,6 +267,29 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 		}
 		this.title = title;
 		this.changed();
+	}
+	
+	// -------------------------------------------- //
+	// FIELD: powerBoost
+	// -------------------------------------------- //
+	
+	public double getPowerBoost()
+	{
+		Double ret = this.powerBoost;
+		if (ret == null) ret = 0D;
+		return ret;
+	}
+	
+	public void setPowerBoost(Double powerBoost)
+	{
+		if (powerBoost == null || powerBoost == 0) powerBoost = null;
+		this.powerBoost = powerBoost;
+		this.changed();
+	}
+	
+	public boolean hasPowerBoost()
+	{
+		return this.getPowerBoost() != 0D;
 	}
 	
 	// -------------------------------------------- //
