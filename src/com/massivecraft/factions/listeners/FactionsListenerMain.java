@@ -486,11 +486,15 @@ public class FactionsListenerMain implements Listener
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void blockMonsters(EntityTargetEvent event)
 	{
-		// If a monster is targeting something ...
+		// If a monster ...
 		if ( ! Const.ENTITY_TYPES_MONSTERS.contains(event.getEntityType())) return;
 		
+		// ... is targeting something ...
+		Entity target = event.getTarget();
+		if (target == null) return;
+		
 		// ... at a place where monsters are forbidden ...
-		PS ps = PS.valueOf(event.getTarget());
+		PS ps = PS.valueOf(target);
 		Faction faction = BoardColls.get().getFactionAt(ps);
 		if (faction.getFlag(FFlag.MONSTERS)) return;
 		

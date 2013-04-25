@@ -24,7 +24,7 @@ public class CmdFactionsDescription extends FCommand
 	public void perform()
 	{
 		// Args
-		String newDescription = this.argConcatFrom(1);
+		String newDescription = this.argConcatFrom(0);
 		
 		// Event
 		FactionsEventDescriptionChange event = new FactionsEventDescriptionChange(sender, usenderFaction, newDescription);
@@ -33,7 +33,7 @@ public class CmdFactionsDescription extends FCommand
 		newDescription = event.getNewDescription();
 
 		// Apply
-		usenderFaction.setDescription(this.argConcatFrom(1));
+		usenderFaction.setDescription(newDescription);
 		
 		// Inform
 		usenderFaction.msg("<i>%s <i>set your faction description to:\n%s", Mixin.getDisplayName(sender), usenderFaction.getDescription());

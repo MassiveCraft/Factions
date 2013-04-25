@@ -31,6 +31,7 @@ public class CmdFactionsAutoClaim extends FCommand
 			return;
 		}
 		
+		// FPerm
 		if (forFaction.isNormal() && !FPerm.TERRITORY.has(usender, forFaction, true)) return;
 		
 		usender.setAutoClaimFaction(forFaction);

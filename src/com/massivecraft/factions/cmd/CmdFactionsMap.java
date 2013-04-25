@@ -30,13 +30,12 @@ public class CmdFactionsMap extends FCommand
 		
 		if (this.arg(0, ARBoolean.get(), !msender.isMapAutoUpdating()))
 		{
-			// Turn on
-
-			msender.setMapAutoUpdating(true);
-			msg("<i>Map auto update <green>ENABLED.");
-			
 			// And show the map once
 			showMap();
+			
+			// Turn on
+			msender.setMapAutoUpdating(true);
+			msg("<i>Map auto update <green>ENABLED.");
 		}
 		else
 		{

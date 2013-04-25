@@ -18,10 +18,10 @@ import com.massivecraft.factions.event.FactionsEventMembershipChange.MembershipC
 import com.massivecraft.factions.util.RelationUtil;
 import com.massivecraft.mcore.mixin.Mixin;
 import com.massivecraft.mcore.ps.PS;
-import com.massivecraft.mcore.ps.PSFormatSlug;
 import com.massivecraft.mcore.store.SenderEntity;
 import com.massivecraft.mcore.util.MUtil;
 import com.massivecraft.mcore.util.SenderUtil;
+import com.massivecraft.mcore.util.Txt;
 
 
 public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipator
@@ -212,10 +212,10 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 		
 		// Update index
 		Faction oldFaction = FactionColls.get().get(this).get(oldFactionId);
-		Faction faction = FactionColls.get().get(this).get(factionId);
+		Faction faction = this.getFaction();
 		
-		oldFaction.uplayers.remove(this);
-		faction.uplayers.add(this);
+		if (oldFaction != null) oldFaction.uplayers.remove(this);
+		if (faction != null) faction.uplayers.add(this);
 		
 		// Mark as changed
 		this.changed();
@@ -611,21 +611,9 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 		{
 			int ownedLand = newFaction.getLandCount();
 			
-			if (!uconf.claimingFromOthersAllowed && oldFaction.isNormal())
-			{
-				msg("<b>You may not claim land from others.");
-				return false;
-			}
-			
 			if (mconf.worldsNoClaiming.contains(ps.getWorld()))
 			{
 				msg("<b>Sorry, this world has land claiming disabled.");
-				return false;
-			}
-			
-			if (oldFaction.getRelationTo(newFaction).isAtLeast(Rel.TRUCE))
-			{
-				msg("<b>You can't claim this land due to your relation with the current owner.");
 				return false;
 			}
 			
@@ -647,35 +635,50 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 				return false;
 			}
 			
-			if
-			(
-				uconf.claimsMustBeConnected
-				&& newFaction.getLandCountInWorld(ps.getWorld()) > 0
-				&& !BoardColls.get().isConnectedPs(ps, newFaction)
-				&& (!uconf.claimsCanBeUnconnectedIfOwnedByOtherFaction || !oldFaction.isNormal())
-			)
+			if (oldFaction.isNormal())
 			{
-				if (uconf.claimsCanBeUnconnectedIfOwnedByOtherFaction)
+				if (!uconf.claimingFromOthersAllowed)
 				{
-					msg("<b>You can only claim additional land which is connected to your first claim or controlled by another faction!");
+					msg("<b>You may not claim land from others.");
+					return false;
 				}
-				else
+				
+				if (oldFaction.getRelationTo(newFaction).isAtLeast(Rel.TRUCE))
 				{
-					msg("<b>You can only claim additional land which is connected to your first claim!");
+					msg("<b>You can't claim this land due to your relation with the current owner.");
+					return false;
 				}
-				return false;
-			}
-			
-			if (!oldFaction.hasLandInflation())
-			{
-				msg("%s<i> owns this land and is strong enough to keep it.", oldFaction.getName(this));
-				return false;
-			}
-			
-			if ( ! BoardColls.get().isBorderPs(ps))
-			{
-				msg("<b>You must start claiming land at the border of the territory.");
-				return false;
+				
+				if
+				(
+					uconf.claimsMustBeConnected
+					&& newFaction.getLandCountInWorld(ps.getWorld()) > 0
+					&& !BoardColls.get().isConnectedPs(ps, newFaction)
+					&& (!uconf.claimsCanBeUnconnectedIfOwnedByOtherFaction || !oldFaction.isNormal())
+				)
+				{
+					if (uconf.claimsCanBeUnconnectedIfOwnedByOtherFaction)
+					{
+						msg("<b>You can only claim additional land which is connected to your first claim or controlled by another faction!");
+					}
+					else
+					{
+						msg("<b>You can only claim additional land which is connected to your first claim!");
+					}
+					return false;
+				}
+				
+				if (!oldFaction.hasLandInflation())
+				{
+					msg("%s<i> owns this land and is strong enough to keep it.", oldFaction.getName(this));
+					return false;
+				}
+				
+				if ( ! BoardColls.get().isBorderPs(ps))
+				{
+					msg("<b>You must start claiming land at the border of the territory.");
+					return false;
+				}
 			}
 		}
 		
@@ -705,7 +708,8 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 		
 		for (UPlayer informee : informees)
 		{
-			informee.msg("<h>%s<i> did %s %s <i>for <h>%s<i> from <h>%s<i>.", this.describeTo(informee, true), event.getType().toString().toLowerCase(), chunk.toString(PSFormatSlug.get()), newFaction.describeTo(informee), oldFaction.describeTo(informee));
+			String chunkString = Txt.parse("<h>%s <h>%d %d", Mixin.getWorldDisplayName(chunk.getWorld()), chunk.getChunkX(), chunk.getChunkZ());
+			informee.msg("<h>%s<i> did %s %s <i>for <h>%s<i> from <h>%s<i>.", this.describeTo(informee, true), event.getType().toString().toLowerCase(), chunkString, newFaction.describeTo(informee), oldFaction.describeTo(informee));
 		}
 
 		return true;
