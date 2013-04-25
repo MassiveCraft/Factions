@@ -7,6 +7,7 @@ import com.massivecraft.mcore.mixin.Mixin;
 import com.massivecraft.mcore.store.MStore;
 import com.massivecraft.mcore.store.SenderColl;
 import com.massivecraft.mcore.util.TimeUnit;
+import com.massivecraft.mcore.util.Txt;
 
 public class UPlayerColl extends SenderColl<UPlayer>
 {
@@ -64,11 +65,17 @@ public class UPlayerColl extends SenderColl<UPlayer>
 	
 	public void clean()
 	{
+		FactionColl factionColl = FactionColls.get().get(this);
+		String universe = this.getUniverse();
 		for (UPlayer uplayer : this.getAll())
 		{
-			if (FactionColls.get().get(this).containsId(uplayer.getFactionId())) continue;
+			String factionId = uplayer.getFactionId();
+			if (factionColl.containsId(factionId)) continue;
 			
-			Factions.get().log("Reset faction data (invalid faction) for player "+uplayer.getName());
+			uplayer.resetFactionData();
+			
+			String message = Txt.parse("<i>Reset data for <h>%s <i>in <h>%s <i>universe. Unknown factionId <h>%s", uplayer.getDisplayName(), universe, factionId);
+			Factions.get().log(message);
 		}
 	}
 	

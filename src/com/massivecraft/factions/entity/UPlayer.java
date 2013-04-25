@@ -423,8 +423,8 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 	
 	public String getNameAndSomething(String something)
 	{
-		String ret = this.role.getPrefix();
-		if (something.length() > 0)
+		String ret = this.getRole().getPrefix();
+		if (something != null && something.length() > 0)
 		{
 			ret += something+" ";
 		}
@@ -440,7 +440,7 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 		}
 		else
 		{
-			return this.getName();
+			return this.getNameAndSomething(null);
 		}
 	}
 	
@@ -557,7 +557,7 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 		}
 
 		// Event
-		FactionsEventMembershipChange membershipChangeEvent = new FactionsEventMembershipChange(sender, this, myFaction, MembershipChangeReason.LEAVE);
+		FactionsEventMembershipChange membershipChangeEvent = new FactionsEventMembershipChange(this.getSender(), this, myFaction, MembershipChangeReason.LEAVE);
 		membershipChangeEvent.run();
 		if (membershipChangeEvent.isCancelled()) return;
 		

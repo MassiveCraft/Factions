@@ -17,12 +17,17 @@ public abstract class XColls<C extends Coll<E>, E> extends Colls<C, E>
 		
 		if (o instanceof Entity)
 		{
-			return this.getForUniverse(((Entity<?>)o).getUniverse());
+			String universe = ((Entity<?>)o).getUniverse();
+			if (universe == null) return null;
+			return this.getForUniverse(universe);
 		}
 		
 		if (o instanceof Coll)
 		{
-			return this.getForUniverse(((Coll<?>)o).getUniverse());
+			String universe = ((Coll<?>)o).getUniverse();
+			if (universe == null) return null;
+			return this.getForUniverse(universe);
+
 		}
 		
 		if (SenderUtil.isNonplayer(o))

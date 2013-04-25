@@ -27,7 +27,7 @@ public class CmdFactionsShow extends FCommand
 {
 	public CmdFactionsShow()
 	{
-		this.addAliases("show", "who");
+		this.addAliases("s", "show", "who");
 		
 		this.addOptionalArg("faction", "you");
 		
@@ -42,15 +42,12 @@ public class CmdFactionsShow extends FCommand
 		if (faction == null) return;
 		
 		UConf uconf = UConf.get(faction);
-
-		Collection<UPlayer> leaders = faction.getUPlayersWhereRole(Rel.LEADER);
-		Collection<UPlayer> officers = faction.getUPlayersWhereRole(Rel.OFFICER);
-		Collection<UPlayer> normals = faction.getUPlayersWhereRole(Rel.MEMBER);
-		Collection<UPlayer> recruits = faction.getUPlayersWhereRole(Rel.RECRUIT);
 		
+		// INFO: Description
 		msg(Txt.titleize(faction.getName(usender)));
 		msg("<a>Description: <i>%s", faction.getDescription());
 		
+		// INFO: Age
 		long ageMillis = faction.getCreatedAtMillis() - System.currentTimeMillis();
 		LinkedHashMap<TimeUnit, Long> ageUnitcounts = TimeDiffUtil.limit(TimeDiffUtil.unitcounts(ageMillis, TimeUnit.getAllButMillis()), 3);
 		String ageString = TimeDiffUtil.formatedVerboose(ageUnitcounts, "<i>");
@@ -68,8 +65,10 @@ public class CmdFactionsShow extends FCommand
 			msg("<a>This faction is peaceful - in truce with everyone.");
 		}
 		
-		msg("<a>Joining: <i>"+(faction.isOpen() ? "no invitation is needed" : "invitation is required"));
+		// INFO: Open
+		msg("<a>Open: <i>"+(faction.isOpen() ? "<lime>Yes <i>- anyone can join" : "<rose>No <i>- only invited people can join"));
 
+		// INFO: Power
 		double powerBoost = faction.getPowerBoost();
 		String boost = (powerBoost == 0.0) ? "" : (powerBoost > 0.0 ? " (bonus: " : " (penalty: ") + powerBoost + ")";
 		msg("<a>Land / Power / Maxpower: <i> %d/%d/%d %s", faction.getLandCount(), faction.getPowerRounded(), faction.getPowerMaxRounded(), boost);
@@ -124,6 +123,12 @@ public class CmdFactionsShow extends FCommand
 		sendMessage(Txt.parse("<a>Enemies: ") + Txt.implode(relationNames.get(Rel.ENEMY), sepparator));
 		
 		// List the members...
+		
+		Collection<UPlayer> leaders = faction.getUPlayersWhereRole(Rel.LEADER);
+		Collection<UPlayer> officers = faction.getUPlayersWhereRole(Rel.OFFICER);
+		Collection<UPlayer> normals = faction.getUPlayersWhereRole(Rel.MEMBER);
+		Collection<UPlayer> recruits = faction.getUPlayersWhereRole(Rel.RECRUIT);
+		
 		List<String> memberOnlineNames = new ArrayList<String>();
 		List<String> memberOfflineNames = new ArrayList<String>();
 		

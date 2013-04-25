@@ -131,20 +131,22 @@ public class FactionsListenerEcon implements Listener
 		Double cost = null;		
 		String desc = null;
 		
+		UConf uconf = UConf.get(event.getSender());
+		if (uconf == null) return;
+		
 		if (event.getReason() == MembershipChangeReason.JOIN)
 		{
-			cost = UConf.get(event.getSender()).econCostJoin;
+			cost = uconf.econCostJoin;
 			desc = "join a faction";
 		}
 		else if (event.getReason() == MembershipChangeReason.LEAVE)
 		{
-			// TODO: NPE once occurred on line below.
-			cost = UConf.get(event.getSender()).econCostLeave;
+			cost = uconf.econCostLeave;
 			desc = "leave a faction";
 		}
 		else if (event.getReason() == MembershipChangeReason.KICK)
 		{
-			cost = UConf.get(event.getSender()).econCostKick;
+			cost = uconf.econCostKick;
 			desc = "kick someone from a faction";
 		}
 		else

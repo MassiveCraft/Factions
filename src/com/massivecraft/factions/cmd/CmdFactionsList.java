@@ -17,7 +17,7 @@ public class CmdFactionsList extends FCommand
 {
 	public CmdFactionsList()
 	{
-		this.addAliases("ls", "list");
+		this.addAliases("l", "list");
 		
 		this.addOptionalArg("page", "1");
 		

@@ -48,7 +48,7 @@ public class CmdFactionsJoin extends FCommand
 
 		if (faction == uplayerFaction)
 		{
-			msg("<b>%s %s already a member of %s", uplayer.describeTo(usender, true), (samePlayer ? "are" : "is"), faction.getName(usender));
+			msg("<i>%s <i>%s already a member of %s<i>.", uplayer.describeTo(usender, true), (samePlayer ? "are" : "is"), faction.getName(usender));
 			return;
 		}
 
@@ -88,10 +88,10 @@ public class CmdFactionsJoin extends FCommand
 		// Inform
 		if (!samePlayer)
 		{
-			uplayer.msg("<i>%s moved you into the faction %s.", usender.describeTo(uplayer, true), faction.getName(uplayer));
+			uplayer.msg("<i>%s <i>moved you into the faction %s<i>.", usender.describeTo(uplayer, true), faction.getName(uplayer));
 		}
-		faction.msg("<i>%s joined your faction.", uplayer.describeTo(faction, true));
-		usender.msg("<i>%s successfully joined %s.", uplayer.describeTo(usender, true), faction.getName(usender));
+		faction.msg("<i>%s <i>joined <lime>your faction<i>.", uplayer.describeTo(faction, true));
+		usender.msg("<i>%s <i>successfully joined %s<i>.", uplayer.describeTo(usender, true), faction.getName(usender));
 		
 		// Apply
 		uplayer.resetFactionData();
