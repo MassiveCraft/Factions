@@ -28,22 +28,22 @@ public class Econ
 	// UTIL
 	// -------------------------------------------- //
 	
-	public static boolean payForAction(double cost, UPlayer fsender, String actionDescription)
+	public static boolean payForAction(double cost, UPlayer usender, String actionDescription)
 	{
-		if (!isEnabled(fsender)) return true;
+		if (!isEnabled(usender)) return true;
 		if (cost == 0D) return true;
 		
-		if (fsender.isUsingAdminMode()) return true;
-		UConf uconf = UConf.get(fsender);
-		Faction fsenderFaction = fsender.getFaction();
+		if (usender.isUsingAdminMode()) return true;
+		UConf uconf = UConf.get(usender);
+		Faction usenderFaction = usender.getFaction();
 		
-		if (uconf.bankEnabled && uconf.bankFactionPaysCosts && fsenderFaction.isNormal())
+		if (uconf.bankEnabled && uconf.bankFactionPaysCosts && usenderFaction.isNormal())
 		{
-			return modifyMoney(fsenderFaction, -cost, actionDescription);
+			return modifyMoney(usenderFaction, -cost, actionDescription);
 		}
 		else
 		{
-			return modifyMoney(fsender, -cost, actionDescription);
+			return modifyMoney(usender, -cost, actionDescription);
 		}
 	}
 	
