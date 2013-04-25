@@ -44,7 +44,7 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 		this.setFactionId(that.factionId);
 		this.setRole(that.role);
 		this.setTitle(that.title);
-		this.powerBoost = that.powerBoost;
+		this.setPowerBoost(that.powerBoost);
 		this.setPower(that.power);
 		
 		return this;
@@ -191,13 +191,16 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 	// This setter is so long because it search for default/null case and takes care of updating the faction member index 
 	public void setFactionId(String factionId)
 	{
+		// Detect Nochange
+		if (this.factionId == factionId) return;
+		
 		// Get the raw old value
 		String oldFactionId = this.factionId;
 		
-		// Apply change
+		// Apply
 		this.factionId = factionId;
 		
-		// Next we must be attached and inited
+		// Must be attached and initialized 
 		if (!this.attached()) return;
 		if (!Factions.get().isDatabaseInitialized()) return;
 		
@@ -236,7 +239,17 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 	
 	public void setRole(Rel role)
 	{
+		// Detect Nochange
+		if (this.role == role) return;
+		
+		// Apply
 		this.role = role;
+		
+		// Must be attached and initialized 
+		if (!this.attached()) return;
+		if (!Factions.get().isDatabaseInitialized()) return;
+		
+		// Mark as changed
 		this.changed();
 	}
 	
@@ -257,6 +270,7 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 	
 	public void setTitle(String title)
 	{
+		// Clean input
 		if (title != null)
 		{
 			title = title.trim();
@@ -265,7 +279,18 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 				title = null;
 			}
 		}
+		
+		// Detect Nochange
+		if (this.title == title) return;
+		
+		// Apply
 		this.title = title;
+		
+		// Must be attached and initialized 
+		if (!this.attached()) return;
+		if (!Factions.get().isDatabaseInitialized()) return;
+		
+		// Mark as changed
 		this.changed();
 	}
 	
@@ -282,8 +307,20 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 	
 	public void setPowerBoost(Double powerBoost)
 	{
+		// Clean input
 		if (powerBoost == null || powerBoost == 0) powerBoost = null;
+		
+		// Detect Nochange
+		if (this.powerBoost == powerBoost) return;
+		
+		// Apply
 		this.powerBoost = powerBoost;
+		
+		// Must be attached and initialized 
+		if (!this.attached()) return;
+		if (!Factions.get().isDatabaseInitialized()) return;
+		
+		// Mark as changed
 		this.changed();
 	}
 	
@@ -349,7 +386,17 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 	
 	public void setPower(Double power)
 	{
+		// Detect Nochange
+		if (this.power == power) return;
+		
+		// Apply
 		this.power = power;
+		
+		// Must be attached and initialized 
+		if (!this.attached()) return;
+		if (!Factions.get().isDatabaseInitialized()) return;
+		
+		// Mark as changed
 		this.changed();
 	}
 	
