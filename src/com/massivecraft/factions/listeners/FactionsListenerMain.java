@@ -60,6 +60,7 @@ import com.massivecraft.factions.entity.UPlayer;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.entity.UConf;
+import com.massivecraft.factions.entity.UPlayerColl;
 import com.massivecraft.factions.entity.UPlayerColls;
 import com.massivecraft.factions.event.FactionsEventPowerChange;
 import com.massivecraft.factions.event.FactionsEventPowerChange.PowerChangeReason;
@@ -96,9 +97,12 @@ public class FactionsListenerMain implements Listener
 	{
 		// If the player is moving from one chunk to another ...
 		if (MUtil.isSameChunk(event)) return;
+		Player player = event.getPlayer();
+		
+		// Check Disabled
+		if (UConf.isDisabled(player)) return;
 		
 		// ... gather info on the player and the move ...
-		Player player = event.getPlayer();
 		UPlayer uplayer = UPlayerColls.get().get(event.getTo()).get(player);
 		
 		PS chunkFrom = PS.valueOf(event.getFrom()).getChunk(true);
@@ -171,6 +175,10 @@ public class FactionsListenerMain implements Listener
 	{
 		// If a player dies ...
 		Player player = event.getEntity();
+		
+		// Check Disabled
+		if (UConf.isDisabled(player)) return;
+		
 		UPlayer uplayer = UPlayer.get(player);
 		
 		// ... and powerloss can happen here ...
@@ -247,12 +255,15 @@ public class FactionsListenerMain implements Listener
 	}
 
 	public boolean canCombatDamageHappen(EntityDamageByEntityEvent event, boolean notify)
-	{
+	{	
 		// If the defender is a player ...
 		Entity edefender = event.getEntity();
 		if (!(edefender instanceof Player)) return true;
 		Player defender = (Player)edefender;
 		UPlayer fdefender = UPlayer.get(edefender);
+		
+		// Check Disabled
+		if (UConf.isDisabled(defender)) return true;
 		
 		// ... and the attacker is someone else ...
 		Entity eattacker = event.getDamager();
@@ -376,7 +387,6 @@ public class FactionsListenerMain implements Listener
 	{
 		// If a player was kicked from the server ...
 		Player player = event.getPlayer();
-		UPlayer uplayer = UPlayer.get(player);
 
 		// ... and if the if player was banned (not just kicked) ...
 		if (!event.getReason().equals("Banned by admin.")) return;
@@ -385,12 +395,18 @@ public class FactionsListenerMain implements Listener
 		if (!MConf.get().removePlayerDataWhenBanned) return;
 		
 		// ... get rid of their stored info.
-		if (uplayer.getRole() == Rel.LEADER)
+		for (UPlayerColl coll : UPlayerColls.get().getColls())
 		{
-			uplayer.getFaction().promoteNewLeader();
+			UPlayer uplayer = coll.get(player, false);
+			if (uplayer == null) continue;
+			
+			if (uplayer.getRole() == Rel.LEADER)
+			{
+				uplayer.getFaction().promoteNewLeader();
+			}
+			uplayer.leave();
+			uplayer.detach();
 		}
-		uplayer.leave();
-		uplayer.detach();
 	}
 	
 	// -------------------------------------------- //
@@ -414,6 +430,10 @@ public class FactionsListenerMain implements Listener
 	{
 		// If a player is trying to run a command ...
 		Player player = event.getPlayer();
+		
+		// Check Disabled
+		if (UConf.isDisabled(player)) return;
+		
 		UPlayer uplayer = UPlayer.get(player);
 		
 		// ... and the player does not have adminmode ...
@@ -474,6 +494,9 @@ public class FactionsListenerMain implements Listener
 		// If a monster is spawning ...
 		if ( ! Const.ENTITY_TYPES_MONSTERS.contains(event.getEntityType())) return;
 		
+		// Check Disabled
+		if (UConf.isDisabled(event.getLocation())) return;
+		
 		// ... at a place where monsters are forbidden ...
 		PS ps = PS.valueOf(event.getLocation());
 		Faction faction = BoardColls.get().getFactionAt(ps);
@@ -492,6 +515,9 @@ public class FactionsListenerMain implements Listener
 		// ... is targeting something ...
 		Entity target = event.getTarget();
 		if (target == null) return;
+		
+		// Check Disabled
+		if (UConf.isDisabled(target)) return;
 		
 		// ... at a place where monsters are forbidden ...
 		PS ps = PS.valueOf(target);
@@ -518,9 +544,13 @@ public class FactionsListenerMain implements Listener
 	{
 		// If a hanging entity was broken by an explosion ...
 		if (event.getCause() != RemoveCause.EXPLOSION) return;
+		Entity entity = event.getEntity();
+		
+		// Check Disabled
+		if (UConf.isDisabled(entity)) return;
 	
 		// ... and the faction there has explosions disabled ...
-		Faction faction = BoardColls.get().getFactionAt(PS.valueOf(event.getEntity()));
+		Faction faction = BoardColls.get().getFactionAt(PS.valueOf(entity));
 		if (faction.getFlag(FFlag.EXPLOSIONS)) return;
 		
 		// ... then cancel.
@@ -530,6 +560,19 @@ public class FactionsListenerMain implements Listener
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void blockExplosion(EntityExplodeEvent event)
 	{
+		// If an entity is exploding ...
+		Entity entity = event.getEntity();
+		
+		// Check Disabled
+		if (UConf.isDisabled(entity)) return;
+		
+		// Check the entity. Are explosions disabled there? 
+		if (BoardColls.get().getFactionAt(PS.valueOf(event.getEntity())).getFlag(FFlag.EXPLOSIONS) == false)
+		{
+			event.setCancelled(true);
+			return;
+		}
+		
 		// Individually check the flag state for each block
 		Iterator<Block> iter = event.blockList().iterator();
 		while (iter.hasNext())
@@ -537,12 +580,6 @@ public class FactionsListenerMain implements Listener
 			Block block = iter.next();
 			Faction faction = BoardColls.get().getFactionAt(PS.valueOf(block));
 			if (faction.getFlag(FFlag.EXPLOSIONS) == false) iter.remove();
-		}
-
-		// Check the entity. Are explosions disabled there? 
-		if (BoardColls.get().getFactionAt(PS.valueOf(event.getEntity())).getFlag(FFlag.EXPLOSIONS) == false)
-		{
-			event.setCancelled(true);
 		}
 	}
 	
@@ -552,6 +589,9 @@ public class FactionsListenerMain implements Listener
 		// If a wither is changing a block ...
 		Entity entity = event.getEntity();
 		if (!(entity instanceof Wither)) return;
+		
+		// Check Disabled
+		if (UConf.isDisabled(entity)) return;
 
 		// ... and the faction there has explosions disabled ...
 		PS ps = PS.valueOf(event.getBlock());
@@ -573,6 +613,9 @@ public class FactionsListenerMain implements Listener
 		Entity entity = event.getEntity();
 		if (!(entity instanceof Enderman)) return;
 		
+		// Check Disabled
+		if (UConf.isDisabled(entity)) return;
+		
 		// ... and the faction there has endergrief disabled ...
 		PS ps = PS.valueOf(event.getBlock());
 		Faction faction = BoardColls.get().getFactionAt(ps);
@@ -588,6 +631,9 @@ public class FactionsListenerMain implements Listener
 	
 	public void blockFireSpread(Block block, Cancellable cancellable)
 	{
+		// Check Disabled
+		if (UConf.isDisabled(block)) return;
+		
 		// If the faction at the block has firespread disabled ...
 		PS ps = PS.valueOf(block);
 		Faction faction = BoardColls.get().getFactionAt(ps);

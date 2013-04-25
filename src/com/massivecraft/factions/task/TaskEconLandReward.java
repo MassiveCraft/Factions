@@ -3,6 +3,7 @@ package com.massivecraft.factions.task;
 import com.massivecraft.factions.entity.FactionColl;
 import com.massivecraft.factions.entity.FactionColls;
 import com.massivecraft.factions.entity.MConf;
+import com.massivecraft.factions.entity.UConf;
 import com.massivecraft.mcore.ModuloRepeatTask;
 import com.massivecraft.mcore.util.TimeUnit;
 
@@ -36,6 +37,9 @@ public class TaskEconLandReward extends ModuloRepeatTask
 	{
 		for (FactionColl coll : FactionColls.get().getColls())
 		{
+			// Check disabled
+			if (UConf.isDisabled(coll)) continue;
+						
 			coll.econLandRewardRoutine();
 		}
 	}

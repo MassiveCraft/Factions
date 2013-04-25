@@ -6,12 +6,16 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import org.bukkit.command.CommandSender;
+
 import com.massivecraft.factions.FFlag;
 import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.event.FactionsEventChunkChangeType;
 import com.massivecraft.mcore.store.Entity;
+import com.massivecraft.mcore.store.SenderEntity;
 import com.massivecraft.mcore.util.MUtil;
+import com.massivecraft.mcore.util.Txt;
 
 public class UConf extends Entity<UConf>
 {
@@ -29,6 +33,34 @@ public class UConf extends Entity<UConf>
 	// -------------------------------------------- //
 	
 	public boolean enabled = true;
+	
+	public static boolean isDisabled(Object universe)
+	{
+		return isDisabled(universe, null);
+	}
+	
+	public static String getDisabledMessage(Object universe)
+	{
+		UConf uconf = UConf.get(universe);
+		return Txt.parse("<i>Factions are disabled in the <h>%s <i>universe.", uconf.getUniverse());
+	}
+	
+	public static boolean isDisabled(Object universe, Object inform)
+	{
+		UConf uconf = UConf.get(universe);
+		if (uconf.enabled) return false;
+		
+		if (inform instanceof CommandSender)
+		{
+			((CommandSender)inform).sendMessage(getDisabledMessage(universe));
+		}
+		else if (inform instanceof SenderEntity)
+		{
+			((SenderEntity<?>)inform).sendMessage(getDisabledMessage(universe));
+		}
+		
+		return true;
+	}
 	
 	// -------------------------------------------- //
 	// SPECIAL FACTION IDS

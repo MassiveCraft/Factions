@@ -2,6 +2,7 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.entity.MPlayer;
+import com.massivecraft.factions.entity.UConf;
 import com.massivecraft.factions.entity.UPlayer;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.mcore.cmd.MCommand;
@@ -17,6 +18,13 @@ public abstract class FCommand extends MCommand
 	public void fixSenderVars()
 	{
 		this.msender = MPlayer.get(sender);
+		
+		this.usender = null;
+		this.usenderFaction = null;			
+		
+		// Check disabled
+		if (UConf.isDisabled(sender)) return;
+		
 		this.usender = UPlayer.get(this.sender);
 		this.usenderFaction = this.usender.getFaction();
 	}

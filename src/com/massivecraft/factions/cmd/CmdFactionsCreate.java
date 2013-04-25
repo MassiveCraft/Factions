@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
+import com.massivecraft.factions.cmd.req.ReqFactionsEnabled;
 import com.massivecraft.factions.entity.UPlayer;
 import com.massivecraft.factions.entity.UPlayerColls;
 import com.massivecraft.factions.entity.Faction;
@@ -24,12 +25,13 @@ public class CmdFactionsCreate extends FCommand
 		
 		this.addRequiredArg("name");
 		
+		this.addRequirements(ReqFactionsEnabled.get());
 		this.addRequirements(ReqHasPerm.get(Perm.CREATE.node));
 	}
 	
 	@Override
 	public void perform()
-	{
+	{	
 		// Args
 		String newName = this.arg(0);
 		

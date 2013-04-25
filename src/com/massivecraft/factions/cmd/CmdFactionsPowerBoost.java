@@ -4,6 +4,7 @@ import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.cmd.arg.ARUPlayer;
 import com.massivecraft.factions.cmd.arg.ARFaction;
+import com.massivecraft.factions.cmd.req.ReqFactionsEnabled;
 import com.massivecraft.factions.entity.UPlayer;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.mcore.cmd.arg.ARDouble;
@@ -19,6 +20,7 @@ public class CmdFactionsPowerBoost extends FCommand
 		this.addRequiredArg("name");
 		this.addRequiredArg("#");
 		
+		this.addRequirements(ReqFactionsEnabled.get());
 		this.addRequirements(ReqHasPerm.get(Perm.POWERBOOST.node));
 	}
 	

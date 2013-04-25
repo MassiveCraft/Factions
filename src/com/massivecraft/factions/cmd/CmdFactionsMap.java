@@ -1,6 +1,7 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Perm;
+import com.massivecraft.factions.cmd.req.ReqFactionsEnabled;
 import com.massivecraft.factions.entity.BoardColls;
 import com.massivecraft.mcore.cmd.arg.ARBoolean;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
@@ -15,6 +16,7 @@ public class CmdFactionsMap extends FCommand
 		
 		this.addOptionalArg("on/off", "once");
 		
+		this.addRequirements(ReqFactionsEnabled.get());
 		this.addRequirements(ReqHasPerm.get(Perm.MAP.node));
 		this.addRequirements(ReqIsPlayer.get());
 	}

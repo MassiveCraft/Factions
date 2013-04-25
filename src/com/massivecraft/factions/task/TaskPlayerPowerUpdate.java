@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import com.massivecraft.factions.entity.MConf;
+import com.massivecraft.factions.entity.UConf;
 import com.massivecraft.factions.entity.UPlayer;
 import com.massivecraft.factions.event.FactionsEventPowerChange;
 import com.massivecraft.factions.event.FactionsEventPowerChange.PowerChangeReason;
@@ -42,6 +43,9 @@ public class TaskPlayerPowerUpdate extends ModuloRepeatTask
 		
 		for (Player player : Bukkit.getOnlinePlayers())
 		{
+			// Check disabled
+			if (UConf.isDisabled(player)) continue;
+						
 			if (player.isDead()) continue;
 			
 			UPlayer uplayer = UPlayer.get(player);

@@ -1,5 +1,7 @@
 package com.massivecraft.factions.chat.tag;
 
+import org.bukkit.command.CommandSender;
+
 import com.massivecraft.factions.chat.ChatTagAbstract;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.UConf;
@@ -20,10 +22,15 @@ public class ChatTagName extends ChatTagAbstract
 	// -------------------------------------------- //
 
 	@Override
-	public String getReplacement(UPlayer fsender, UPlayer frecipient)
+	public String getReplacement(CommandSender sender, CommandSender recipient)
 	{
-		if (!UConf.get(fsender).enabled) return "";
-		Faction faction = fsender.getFaction();
+		// Check disabled
+		if (UConf.isDisabled(sender)) return "";
+
+		// Get entities
+		UPlayer usender = UPlayer.get(sender);
+		
+		Faction faction = usender.getFaction();
 		if (faction.isNone()) return "";
 		return faction.getName();
 	}

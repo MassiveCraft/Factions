@@ -1,11 +1,11 @@
 package com.massivecraft.factions.chat;
 
-import com.massivecraft.factions.entity.UPlayer;
+import org.bukkit.command.CommandSender;
 
 public interface ChatTag
 {
 	public String getId();
-	public String getReplacement(UPlayer fsender, UPlayer frecipient);
+	public String getReplacement(CommandSender sender, CommandSender recipient);
 	public boolean register();
 	public boolean unregister();
 }

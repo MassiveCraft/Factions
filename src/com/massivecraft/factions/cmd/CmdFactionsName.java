@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
+import com.massivecraft.factions.cmd.req.ReqFactionsEnabled;
 import com.massivecraft.factions.cmd.req.ReqRoleIsAtLeast;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.FactionColl;
@@ -14,13 +15,13 @@ import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 
 public class CmdFactionsName extends FCommand
 {
-	
 	public CmdFactionsName()
 	{
 		this.addAliases("name");
 		
 		this.addRequiredArg("new name");
 		
+		this.addRequirements(ReqFactionsEnabled.get());
 		this.addRequirements(ReqHasPerm.get(Perm.NAME.node));
 		this.addRequirements(ReqRoleIsAtLeast.get(Rel.OFFICER));
 	}

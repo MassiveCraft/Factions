@@ -1,6 +1,7 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.cmd.arg.ARFaction;
+import com.massivecraft.factions.cmd.req.ReqFactionsEnabled;
 import com.massivecraft.factions.entity.UPlayer;
 import com.massivecraft.factions.entity.UPlayerColls;
 import com.massivecraft.factions.entity.Faction;
@@ -22,13 +23,14 @@ public class CmdFactionsDisband extends FCommand
 		this.addAliases("disband");
 		
 		this.addOptionalArg("faction", "you");
-		
+
+		this.addRequirements(ReqFactionsEnabled.get());
 		this.addRequirements(ReqHasPerm.get(Perm.DISBAND.node));
 	}
 	
 	@Override
 	public void perform()
-	{
+	{	
 		// Args
 		Faction faction = this.arg(0, ARFaction.get(usender), usenderFaction);
 		if (faction == null) return;

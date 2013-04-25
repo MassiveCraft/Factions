@@ -3,6 +3,7 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.cmd.arg.ARFaction;
 import com.massivecraft.factions.cmd.req.ReqBankCommandsEnabled;
+import com.massivecraft.factions.cmd.req.ReqFactionsEnabled;
 import com.massivecraft.factions.entity.UPlayer;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MConf;
@@ -25,6 +26,7 @@ public class CmdFactionsMoneyWithdraw extends FCommand
 		this.addRequiredArg("amount");
 		this.addOptionalArg("faction", "you");
 		
+		this.addRequirements(ReqFactionsEnabled.get());
 		this.addRequirements(ReqHasPerm.get(Perm.MONEY_WITHDRAW.node));
 		this.addRequirements(ReqBankCommandsEnabled.get());
 	}

@@ -10,7 +10,6 @@ import org.bukkit.plugin.EventExecutor;
 
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.chat.ChatFormatter;
-import com.massivecraft.factions.entity.UPlayer;
 import com.massivecraft.factions.entity.MConf;
 
 public class FactionsListenerChat implements Listener
@@ -91,7 +90,7 @@ public class FactionsListenerChat implements Listener
 	public static void parseTags(AsyncPlayerChatEvent event)
 	{
 		String format = event.getFormat();
-		format = ChatFormatter.format(format, UPlayer.get(event.getPlayer()), null);
+		format = ChatFormatter.format(format, event.getPlayer(), null);
 		event.setFormat(format);
 	}
 	

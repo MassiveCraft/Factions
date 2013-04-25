@@ -4,6 +4,7 @@ import com.massivecraft.factions.FFlag;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.cmd.arg.ARFFlag;
 import com.massivecraft.factions.cmd.arg.ARFaction;
+import com.massivecraft.factions.cmd.req.ReqFactionsEnabled;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.mcore.cmd.arg.ARBoolean;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
@@ -20,12 +21,13 @@ public class CmdFactionsFlag extends FCommand
 		this.addOptionalArg("flag", "all");
 		this.addOptionalArg("yes/no", "read");
 		
+		this.addRequirements(ReqFactionsEnabled.get());
 		this.addRequirements(ReqHasPerm.get(Perm.FLAG.node));
 	}
 	
 	@Override
 	public void perform()
-	{
+	{	
 		Faction faction = this.arg(0, ARFaction.get(sender), usenderFaction);
 		if (faction == null) return;
 		

@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.massivecraft.factions.FactionListComparator;
 import com.massivecraft.factions.Perm;
+import com.massivecraft.factions.cmd.req.ReqFactionsEnabled;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.FactionColls;
 import com.massivecraft.mcore.cmd.arg.ARInteger;
@@ -14,13 +15,13 @@ import com.massivecraft.mcore.util.Txt;
 
 public class CmdFactionsList extends FCommand
 {
-	
 	public CmdFactionsList()
 	{
 		this.addAliases("ls", "list");
 		
 		this.addOptionalArg("page", "1");
 		
+		this.addRequirements(ReqFactionsEnabled.get());
 		this.addRequirements(ReqHasPerm.get(Perm.LIST.node));
 	}
 

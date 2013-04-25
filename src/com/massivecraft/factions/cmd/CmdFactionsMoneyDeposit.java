@@ -4,6 +4,7 @@ import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.cmd.arg.ARFaction;
 import com.massivecraft.factions.cmd.req.ReqBankCommandsEnabled;
+import com.massivecraft.factions.cmd.req.ReqFactionsEnabled;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.integration.Econ;
@@ -17,7 +18,6 @@ import org.bukkit.ChatColor;
 
 public class CmdFactionsMoneyDeposit extends FCommand
 {
-	
 	public CmdFactionsMoneyDeposit()
 	{
 		this.addAliases("d", "deposit");
@@ -25,6 +25,7 @@ public class CmdFactionsMoneyDeposit extends FCommand
 		this.addRequiredArg("amount");
 		this.addOptionalArg("faction", "you");
 		
+		this.addRequirements(ReqFactionsEnabled.get());
 		this.addRequirements(ReqHasPerm.get(Perm.MONEY_DEPOSIT.node));
 		this.addRequirements(ReqBankCommandsEnabled.get());
 	}

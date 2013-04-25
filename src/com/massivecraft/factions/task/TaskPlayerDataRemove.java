@@ -1,6 +1,7 @@
 package com.massivecraft.factions.task;
 
 import com.massivecraft.factions.entity.MConf;
+import com.massivecraft.factions.entity.UConf;
 import com.massivecraft.factions.entity.UPlayerColl;
 import com.massivecraft.factions.entity.UPlayerColls;
 import com.massivecraft.mcore.ModuloRepeatTask;
@@ -36,6 +37,9 @@ public class TaskPlayerDataRemove extends ModuloRepeatTask
 	{
 		for (UPlayerColl coll : UPlayerColls.get().getColls())
 		{
+			// Check disabled
+			if (UConf.isDisabled(coll)) continue;
+			
 			coll.removePlayerDataAfterInactiveDaysRoutine();
 		}
 	}

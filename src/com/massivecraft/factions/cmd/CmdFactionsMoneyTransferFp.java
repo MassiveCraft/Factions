@@ -4,6 +4,7 @@ import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.cmd.arg.ARUPlayer;
 import com.massivecraft.factions.cmd.arg.ARFaction;
 import com.massivecraft.factions.cmd.req.ReqBankCommandsEnabled;
+import com.massivecraft.factions.cmd.req.ReqFactionsEnabled;
 import com.massivecraft.factions.entity.UPlayer;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MConf;
@@ -27,6 +28,7 @@ public class CmdFactionsMoneyTransferFp extends FCommand
 		this.addRequiredArg("faction");
 		this.addRequiredArg("player");
 		
+		this.addRequirements(ReqFactionsEnabled.get());
 		this.addRequirements(ReqHasPerm.get(Perm.MONEY_F2P.node));
 		this.addRequirements(ReqBankCommandsEnabled.get());
 	}

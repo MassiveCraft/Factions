@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.massivecraft.factions.cmd.arg.ARFaction;
+import com.massivecraft.factions.cmd.req.ReqFactionsEnabled;
 import com.massivecraft.factions.entity.UConf;
 import com.massivecraft.factions.entity.UPlayer;
 import com.massivecraft.factions.entity.Faction;
@@ -30,6 +31,7 @@ public class CmdFactionsShow extends FCommand
 		
 		this.addOptionalArg("faction", "you");
 		
+		this.addRequirements(ReqFactionsEnabled.get());
 		this.addRequirements(ReqHasPerm.get(Perm.SHOW.node));
 	}
 

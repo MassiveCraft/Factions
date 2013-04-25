@@ -5,6 +5,7 @@ import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.TerritoryAccess;
 import com.massivecraft.factions.cmd.arg.ARUPlayer;
 import com.massivecraft.factions.cmd.arg.ARFaction;
+import com.massivecraft.factions.cmd.req.ReqFactionsEnabled;
 import com.massivecraft.factions.entity.BoardColls;
 import com.massivecraft.factions.entity.UPlayer;
 import com.massivecraft.factions.entity.Faction;
@@ -25,12 +26,13 @@ public class CmdFactionsAccess extends FCommand
 		this.setDesc("view or grant access for the claimed territory you are in");
 		
 		// TODO: Missing permission node here!?
+		this.addRequirements(ReqFactionsEnabled.get());
 		this.addRequirements(ReqIsPlayer.get());
 	}
 	
 	@Override
 	public void perform()
-	{
+	{				
 		String type = this.arg(0);
 		type = (type == null) ? "" : type.toLowerCase();
 		PS chunk = PS.valueOf(me).getChunk(true);

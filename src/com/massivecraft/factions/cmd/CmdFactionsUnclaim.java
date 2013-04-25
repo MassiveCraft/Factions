@@ -1,5 +1,6 @@
 package com.massivecraft.factions.cmd;
 
+import com.massivecraft.factions.cmd.req.ReqFactionsEnabled;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.FactionColls;
 import com.massivecraft.factions.FPerm;
@@ -14,6 +15,7 @@ public class CmdFactionsUnclaim extends FCommand
 	{
 		this.addAliases("unclaim", "declaim");
 		
+		this.addRequirements(ReqFactionsEnabled.get());
 		this.addRequirements(ReqHasPerm.get(Perm.UNCLAIM.node));
 		this.addRequirements(ReqIsPlayer.get());
 	}

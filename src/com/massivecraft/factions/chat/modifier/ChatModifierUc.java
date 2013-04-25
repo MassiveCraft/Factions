@@ -1,7 +1,8 @@
 package com.massivecraft.factions.chat.modifier;
 
+import org.bukkit.command.CommandSender;
+
 import com.massivecraft.factions.chat.ChatModifierAbstract;
-import com.massivecraft.factions.entity.UPlayer;
 
 public class ChatModifierUc extends ChatModifierAbstract
 {
@@ -18,7 +19,7 @@ public class ChatModifierUc extends ChatModifierAbstract
 	// -------------------------------------------- //
 
 	@Override
-	public String getModified(String subject, UPlayer fsender, UPlayer frecipient)
+	public String getModified(String subject, CommandSender sender, CommandSender recipient)
 	{
 		return subject.toUpperCase();
 	}

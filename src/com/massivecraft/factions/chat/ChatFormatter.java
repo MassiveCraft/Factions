@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.massivecraft.factions.entity.UPlayer;
+import org.bukkit.command.CommandSender;
 
 /**
  * The ChatFormater is a system offered by factions for tag parsing.
@@ -102,7 +102,7 @@ public class ChatFormatter
 	// FORMAT
 	// -------------------------------------------- //
 	
-	public static String format(String msg, UPlayer fsender, UPlayer frecipient)
+	public static String format(String msg, CommandSender sender, CommandSender recipient)
 	{
 		// We build the return value in this string buffer
 		StringBuffer ret = new StringBuffer();
@@ -137,7 +137,7 @@ public class ChatFormatter
 			}
 			else
 			{
-				replacement = compute(tag, modifierIds, fsender, frecipient);
+				replacement = compute(tag, modifierIds, sender, recipient);
 				if (replacement == null)
 				{
 					// If a tag or modifier returns null it's the same as opting out.
@@ -159,9 +159,9 @@ public class ChatFormatter
 	// TAG COMPUTE
 	// -------------------------------------------- //
 	
-	public static String compute(ChatTag tag, List<String> modifierIds, UPlayer fsender, UPlayer frecipient)
+	public static String compute(ChatTag tag, List<String> modifierIds, CommandSender sender, CommandSender recipient)
 	{
-		String ret = tag.getReplacement(fsender, frecipient);
+		String ret = tag.getReplacement(sender, recipient);
 		if (ret == null) return null;
 		
 		for (String modifierId : modifierIds)
@@ -172,7 +172,7 @@ public class ChatFormatter
 			
 			// Modify and ignore change if null.
 			// Modifier can't get or return null.
-			String modified = modifier.getModified(ret, fsender, frecipient);
+			String modified = modifier.getModified(ret, sender, recipient);
 			if (modified == null) continue;
 			
 			ret = modified;

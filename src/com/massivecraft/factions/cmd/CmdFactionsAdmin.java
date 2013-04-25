@@ -13,26 +13,27 @@ public class CmdFactionsAdmin extends FCommand
 		
 		this.addOptionalArg("on/off", "flip");
 		
+		//this.addRequirements(ReqFactionsEnabled.get());
 		this.addRequirements(ReqHasPerm.get(Perm.ADMIN.node));
 	}
 	
 	@Override
 	public void perform()
-	{
-		Boolean target = this.arg(0, ARBoolean.get(), !usender.isUsingAdminMode());
+	{			
+		Boolean target = this.arg(0, ARBoolean.get(), !msender.isUsingAdminMode());
 		if (target == null) return;
 		
-		usender.setUsingAdminMode(target);		
+		msender.setUsingAdminMode(target);		
 		
-		if ( usender.isUsingAdminMode())
+		if (msender.isUsingAdminMode())
 		{
-			usender.msg("<i>You have enabled admin bypass mode.");
-			Factions.get().log(usender.getName() + " has ENABLED admin bypass mode.");
+			msender.msg("<i>You have enabled admin bypass mode.");
+			Factions.get().log(msender.getId() + " has ENABLED admin bypass mode.");
 		}
 		else
 		{
-			usender.msg("<i>You have disabled admin bypass mode.");
-			Factions.get().log(usender.getName() + " DISABLED admin bypass mode.");
+			msender.msg("<i>You have disabled admin bypass mode.");
+			Factions.get().log(msender.getId() + " DISABLED admin bypass mode.");
 		}
 	}
 }

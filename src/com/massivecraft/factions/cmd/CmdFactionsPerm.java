@@ -6,6 +6,7 @@ import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.cmd.arg.ARFPerm;
 import com.massivecraft.factions.cmd.arg.ARFaction;
 import com.massivecraft.factions.cmd.arg.ARRel;
+import com.massivecraft.factions.cmd.req.ReqFactionsEnabled;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.mcore.cmd.arg.ARBoolean;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
@@ -23,6 +24,7 @@ public class CmdFactionsPerm extends FCommand
 		this.addOptionalArg("yes/no", "read");
 		this.setErrorOnToManyArgs(false);
 		
+		this.addRequirements(ReqFactionsEnabled.get());
 		this.addRequirements(ReqHasPerm.get(Perm.PERM.node));
 	}
 	

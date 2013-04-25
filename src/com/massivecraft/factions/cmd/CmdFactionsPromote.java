@@ -3,18 +3,19 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.cmd.arg.ARUPlayer;
+import com.massivecraft.factions.cmd.req.ReqFactionsEnabled;
 import com.massivecraft.factions.entity.UPlayer;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 
 public class CmdFactionsPromote extends FCommand
 {
-	
 	public CmdFactionsPromote()
 	{
 		this.addAliases("promote");
 		
 		this.addRequiredArg("player");
 		
+		this.addRequirements(ReqFactionsEnabled.get());
 		this.addRequirements(ReqHasPerm.get(Perm.PROMOTE.node));
 		
 		//To promote someone from recruit -> member you must be an officer.
