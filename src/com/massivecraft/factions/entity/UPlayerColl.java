@@ -42,16 +42,19 @@ public class UPlayerColl extends SenderColl<UPlayer>
 	@Override
 	public UPlayer detachId(Object oid)
 	{
-		UPlayer ret = super.detachId(oid);
+		UPlayer ret = this.get(oid);
 		if (ret == null) return null;
 		
 		// If inited ...
-		if (!this.inited()) return ret;
+		if (this.inited())
+		{
+			// ... update the index.
+			Faction faction = ret.getFaction();
+			faction.uplayers.remove(ret);
+		}
 		
-		// ... update the index.
-		Faction faction = ret.getFaction();
-		faction.uplayers.remove(ret);
-		
+		super.detachId(oid);
+	
 		return ret;
 	}
 	

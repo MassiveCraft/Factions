@@ -138,6 +138,7 @@ public class FactionsListenerEcon implements Listener
 		}
 		else if (event.getReason() == MembershipChangeReason.LEAVE)
 		{
+			// TODO: NPE once occurred on line below.
 			cost = UConf.get(event.getSender()).econCostLeave;
 			desc = "leave a faction";
 		}
