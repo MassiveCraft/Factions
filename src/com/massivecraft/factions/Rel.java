@@ -27,7 +27,9 @@ public enum Rel
 	// FIELDS
 	// -------------------------------------------- //
 	
+	// TODO: Are not enums sorted without this?
 	private final int value;
+	public int getValue() { return this.value; }
 	
 	// Used for friendly fire.
 	private final boolean friend;

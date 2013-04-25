@@ -54,6 +54,7 @@ public enum Perm
 	SHOW("show"),
 	NAME("name"),
 	TITLE("title"),
+	TITLE_COLOR("title.color"),
 	UNCLAIM("unclaim"),
 	UNCLAIM_ALL("unclaimall"),
 	VERSION("version"),

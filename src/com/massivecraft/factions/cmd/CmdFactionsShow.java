@@ -1,7 +1,7 @@
 package com.massivecraft.factions.cmd;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +15,7 @@ import com.massivecraft.factions.event.FactionsEventChunkChangeType;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.FFlag;
 import com.massivecraft.factions.Perm;
+import com.massivecraft.factions.PlayerRoleComparator;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 import com.massivecraft.mcore.mixin.Mixin;
@@ -38,73 +39,80 @@ public class CmdFactionsShow extends FCommand
 	@Override
 	public void perform()
 	{
+		// Args
 		Faction faction = this.arg(0, ARFaction.get(usenderFaction), usenderFaction);
 		if (faction == null) return;
 		
+		// Data precalculation 
 		UConf uconf = UConf.get(faction);
+		//boolean none = faction.isNone();
+		boolean normal = faction.isNormal();
 		
 		// INFO: Description
 		msg(Txt.titleize(faction.getName(usender)));
-		msg("<a>Description: <i>%s", faction.getDescription());
+		msg("<a>Description: <i>%s", faction.getDescription());	
 		
-		// INFO: Age
-		long ageMillis = faction.getCreatedAtMillis() - System.currentTimeMillis();
-		LinkedHashMap<TimeUnit, Long> ageUnitcounts = TimeDiffUtil.limit(TimeDiffUtil.unitcounts(ageMillis, TimeUnit.getAllButMillis()), 3);
-		String ageString = TimeDiffUtil.formatedVerboose(ageUnitcounts, "<i>");
-		msg("<a>Age: <i>%s", ageString);
-		
-		// Display important flags
-		// TODO: Find the non default flags, and display them instead.
-		if (faction.getFlag(FFlag.PERMANENT))
+		if (normal)
 		{
-			msg("<a>This faction is permanent - remaining even with no members.");
-		}
-		
-		if (faction.getFlag(FFlag.PEACEFUL))
-		{
-			msg("<a>This faction is peaceful - in truce with everyone.");
-		}
-		
-		// INFO: Open
-		msg("<a>Open: <i>"+(faction.isOpen() ? "<lime>Yes <i>- anyone can join" : "<rose>No <i>- only invited people can join"));
-
-		// INFO: Power
-		double powerBoost = faction.getPowerBoost();
-		String boost = (powerBoost == 0.0) ? "" : (powerBoost > 0.0 ? " (bonus: " : " (penalty: ") + powerBoost + ")";
-		msg("<a>Land / Power / Maxpower: <i> %d/%d/%d %s", faction.getLandCount(), faction.getPowerRounded(), faction.getPowerMaxRounded(), boost);
-
-		// show the land value
-		if (Econ.isEnabled(faction))
-		{
-			long landCount = faction.getLandCount();
+			// INFO: Age
+			long ageMillis = faction.getCreatedAtMillis() - System.currentTimeMillis();
+			LinkedHashMap<TimeUnit, Long> ageUnitcounts = TimeDiffUtil.limit(TimeDiffUtil.unitcounts(ageMillis, TimeUnit.getAllButMillis()), 3);
+			String ageString = TimeDiffUtil.formatedVerboose(ageUnitcounts, "<i>");
+			msg("<a>Age: <i>%s", ageString);
 			
-			for (FactionsEventChunkChangeType type : FactionsEventChunkChangeType.values())
+			// INFO: Open
+			msg("<a>Open: <i>"+(faction.isOpen() ? "<lime>Yes<i>, anyone can join" : "<rose>No<i>, only invited people can join"));
+	
+			// INFO: Power
+			double powerBoost = faction.getPowerBoost();
+			String boost = (powerBoost == 0.0) ? "" : (powerBoost > 0.0 ? " (bonus: " : " (penalty: ") + powerBoost + ")";
+			msg("<a>Land / Power / Maxpower: <i> %d/%d/%d %s", faction.getLandCount(), faction.getPowerRounded(), faction.getPowerMaxRounded(), boost);
+			
+			// show the land value
+			if (Econ.isEnabled(faction))
 			{
-				Double money = uconf.econChunkCost.get(type);
-				if (money == null) money = 0D;
-				money *= landCount;
+				long landCount = faction.getLandCount();
 				
-				String word = null;
-				if (money > 0)
+				for (FactionsEventChunkChangeType type : FactionsEventChunkChangeType.values())
 				{
-					word = "cost";
-				}
-				else
-				{
-					word = "reward";
-					money *= -1;
+					Double money = uconf.econChunkCost.get(type);
+					if (money == null) money = 0D;
+					money *= landCount;
+					
+					String word = null;
+					if (money > 0)
+					{
+						word = "cost";
+					}
+					else
+					{
+						word = "reward";
+						money *= -1;
+					}
+					
+					msg("<a>Total land %s %s: <i>%s", type.toString().toLowerCase(), word, Money.format(faction, money));
 				}
 				
-				msg("<a>Total land %s %s: <i>%s", type.toString().toLowerCase(), word, Money.format(faction, money));
+				// Show bank contents
+				if (UConf.get(faction).bankEnabled)
+				{
+					msg("<a>Bank contains: <i>"+Money.format(faction, Money.get(faction)));
+				}
 			}
 			
-			// Show bank contents
-			if (UConf.get(faction).bankEnabled)
+			// Display important flags
+			// TODO: Find the non default flags, and display them instead.
+			if (faction.getFlag(FFlag.PERMANENT))
 			{
-				msg("<a>Bank contains: <i>"+Money.format(faction, Money.get(faction)));
+				msg("<a>This faction is permanent - remaining even with no followers.");
+			}
+			
+			if (faction.getFlag(FFlag.PEACEFUL))
+			{
+				msg("<a>This faction is peaceful - in truce with everyone.");
 			}
 		}
-
+		
 		String sepparator = Txt.parse("<i>")+", ";
 		
 		// List the relations to other factions
@@ -119,68 +127,35 @@ public class CmdFactionsShow extends FCommand
 			sendMessage(Txt.parse("<a>In Truce with: ") + Txt.implode(relationNames.get(Rel.TRUCE), sepparator));
 		}
 		
-		sendMessage(Txt.parse("<a>Allied to: ") + Txt.implode(relationNames.get(Rel.ALLY), sepparator));
+		sendMessage(Txt.parse("<a>Allies: ") + Txt.implode(relationNames.get(Rel.ALLY), sepparator));
 		sendMessage(Txt.parse("<a>Enemies: ") + Txt.implode(relationNames.get(Rel.ENEMY), sepparator));
 		
-		// List the members...
+		// List the followers...
+		List<String> followerNamesOnline = new ArrayList<String>();
+		List<String> followerNamesOffline = new ArrayList<String>();
 		
-		Collection<UPlayer> leaders = faction.getUPlayersWhereRole(Rel.LEADER);
-		Collection<UPlayer> officers = faction.getUPlayersWhereRole(Rel.OFFICER);
-		Collection<UPlayer> normals = faction.getUPlayersWhereRole(Rel.MEMBER);
-		Collection<UPlayer> recruits = faction.getUPlayersWhereRole(Rel.RECRUIT);
+		List<UPlayer> followers = faction.getUPlayers();
+		Collections.sort(followers, PlayerRoleComparator.get());
 		
-		List<String> memberOnlineNames = new ArrayList<String>();
-		List<String> memberOfflineNames = new ArrayList<String>();
-		
-		for (UPlayer follower : leaders)
+		for (UPlayer follower : followers)
 		{
-			if (follower.isOnline() && Mixin.isVisible(me, follower.getId()))
+			if (follower.isOnline() && Mixin.isVisible(sender, follower.getId()))
 			{
-				memberOnlineNames.add(follower.getNameAndTitle(usender));
+				followerNamesOnline.add(follower.getNameAndTitle(usender));
 			}
-			else
+			else if (normal)
 			{
-				memberOfflineNames.add(follower.getNameAndTitle(usender));
+				// For the non-faction we skip the offline members since they are far to many (infinate almost)
+				followerNamesOffline.add(follower.getNameAndTitle(usender));
 			}
 		}
 		
-		for (UPlayer follower : officers)
-		{
-			if (follower.isOnline() && Mixin.isVisible(me, follower.getId()))
-			{
-				memberOnlineNames.add(follower.getNameAndTitle(usender));
-			}
-			else
-			{
-				memberOfflineNames.add(follower.getNameAndTitle(usender));
-			}
-		}
+		sendMessage(Txt.parse("<a>Followers online (%s): ", followerNamesOnline.size()) + Txt.implode(followerNamesOnline, sepparator));
 		
-		for (UPlayer follower : normals)
+		if (normal)
 		{
-			if (follower.isOnline() && Mixin.isVisible(me, follower.getId()))
-			{
-				memberOnlineNames.add(follower.getNameAndTitle(usender));
-			}
-			else
-			{
-				memberOfflineNames.add(follower.getNameAndTitle(usender));
-			}
+			sendMessage(Txt.parse("<a>Followers offline (%s): ", followerNamesOffline.size()) + Txt.implode(followerNamesOffline, sepparator));
 		}
-		
-		for (UPlayer follower : recruits)
-		{
-			if (follower.isOnline())
-			{
-				memberOnlineNames.add(follower.getNameAndTitle(usender));
-			}
-			else
-			{
-				memberOfflineNames.add(follower.getNameAndTitle(usender));
-			}
-		}
-		sendMessage(Txt.parse("<a>Members online: ") + Txt.implode(memberOnlineNames, sepparator));
-		sendMessage(Txt.parse("<a>Members offline: ") + Txt.implode(memberOfflineNames, sepparator));
 	}
 	
 }

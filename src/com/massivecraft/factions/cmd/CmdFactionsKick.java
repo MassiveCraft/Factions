@@ -57,7 +57,7 @@ public class CmdFactionsKick extends FCommand
 		
 		// FPerm
 		Faction uplayerFaction = uplayer.getFaction();
-		if (!FPerm.KICK.has(sender, uplayerFaction)) return;
+		if (!FPerm.KICK.has(sender, uplayerFaction, true)) return;
 
 		// Event
 		FactionsEventMembershipChange event = new FactionsEventMembershipChange(sender, uplayer, FactionColls.get().get(uplayer).getNone(), MembershipChangeReason.KICK);

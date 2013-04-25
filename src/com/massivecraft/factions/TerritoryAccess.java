@@ -183,7 +183,7 @@ public class TerritoryAccess
 	public boolean subjectAccessIsRestricted(Object testSubject)
 	{
 		Faction hostFaction = FactionColls.get().get(testSubject).get(this.getHostFactionId());
-		return ( ! this.isHostFactionAllowed() && this.doesHostFactionMatch(testSubject) && ! FPerm.ACCESS.has(testSubject, hostFaction));
+		return ( ! this.isHostFactionAllowed() && this.doesHostFactionMatch(testSubject) && ! FPerm.ACCESS.has(testSubject, hostFaction, false));
 	}
 
 	//----------------------------------------------//

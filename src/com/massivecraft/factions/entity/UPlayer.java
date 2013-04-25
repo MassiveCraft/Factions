@@ -284,6 +284,13 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 			}
 		}
 		
+		// NOTE: That we parse the title here is considered part of the 1.8 --> 2.0 migration.
+		// This should be removed once the migration phase is considered to be over.
+		if (target != null)
+		{
+			target = Txt.parse(target);
+		}
+		
 		// Detect Nochange
 		if (MUtil.equals(this.title, target)) return;
 		
@@ -421,32 +428,36 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 	
 	// Base concatenations:
 	
-	public String getNameAndSomething(String something)
+	public String getNameAndSomething(String color, String something)
 	{
-		String ret = this.getRole().getPrefix();
+		String ret = "";
+		ret += color;
+		ret += this.getRole().getPrefix();
 		if (something != null && something.length() > 0)
 		{
-			ret += something+" ";
+			ret += something;
+			ret += " ";
+			ret += color;
 		}
 		ret += this.getName();
 		return ret;
 	}
 	
-	public String getNameAndTitle()
+	public String getNameAndFactionName()
+	{
+		return this.getNameAndSomething("", this.getFactionName());
+	}
+	
+	public String getNameAndTitle(String color)
 	{
 		if (this.hasTitle())
 		{
-			return this.getNameAndSomething(this.getTitle());
+			return this.getNameAndSomething(color, this.getTitle());
 		}
 		else
 		{
-			return this.getNameAndSomething(null);
+			return this.getNameAndSomething(color, null);
 		}
-	}
-	
-	public String getNameAndFactionName()
-	{
-		return this.getNameAndSomething(this.getFactionName());
 	}
 	
 	// Colored concatenations:
@@ -454,11 +465,11 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 	
 	public String getNameAndTitle(Faction faction)
 	{
-		return this.getColorTo(faction)+this.getNameAndTitle();
+		return this.getNameAndTitle(this.getColorTo(faction).toString());
 	}
 	public String getNameAndTitle(UPlayer uplayer)
 	{
-		return this.getColorTo(uplayer)+this.getNameAndTitle();
+		return this.getNameAndTitle(this.getColorTo(uplayer).toString());
 	}
 	
 	// -------------------------------------------- //

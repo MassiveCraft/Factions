@@ -53,6 +53,7 @@ permissions:
   factions.show: {description: show faction information, default: false}
   factions.name: {description: set faction name, default: false}
   factions.title: {description: set player title, default: false}
+  factions.title.color: {description: set player title with color, default: false}
   factions.unclaim: {description: unclaim land where you stand, default: false}
   factions.unclaimall: {description: unclaim all land, default: false}
   factions.version: {description: see plugin version, default: false}
@@ -98,6 +99,7 @@ permissions:
       factions.show: true
       factions.name: true
       factions.title: true
+      factions.title.color: true
       factions.unclaim: true
       factions.unclaimall: true
       factions.version: true
@@ -168,6 +170,7 @@ permissions:
       factions.show: true
       factions.name: true
       factions.title: true
+      factions.title.color: true
       factions.unclaim: true
       factions.unclaimall: true
       factions.version: true

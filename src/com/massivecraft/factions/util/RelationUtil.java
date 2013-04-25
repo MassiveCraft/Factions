@@ -47,7 +47,7 @@ public class RelationUtil
 			}
 			else if (thatFaction == myFaction)
 			{
-				ret = uplayerthat.getNameAndTitle();
+				ret = uplayerthat.getNameAndTitle(myFaction);
 			}
 			else
 			{

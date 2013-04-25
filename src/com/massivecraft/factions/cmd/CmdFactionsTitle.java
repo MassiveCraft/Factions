@@ -1,5 +1,7 @@
 package com.massivecraft.factions.cmd;
 
+import org.bukkit.ChatColor;
+
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.cmd.arg.ARUPlayer;
@@ -9,6 +11,7 @@ import com.massivecraft.factions.entity.UPlayer;
 import com.massivecraft.factions.event.FactionsEventTitleChange;
 import com.massivecraft.mcore.cmd.arg.ARString;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
+import com.massivecraft.mcore.util.Txt;
 
 public class CmdFactionsTitle extends FCommand
 {
@@ -33,6 +36,12 @@ public class CmdFactionsTitle extends FCommand
 		
 		String newTitle = this.argConcatFrom(1, ARString.get(), "");
 		if (newTitle == null) return;
+		
+		newTitle = Txt.parse(newTitle);
+		if (!Perm.TITLE_COLOR.has(sender, false))
+		{
+			newTitle = ChatColor.stripColor(newTitle);
+		}
 		
 		// Verify
 		if ( ! canIAdministerYou(usender, you)) return;
