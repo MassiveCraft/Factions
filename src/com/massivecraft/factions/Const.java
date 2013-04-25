@@ -61,7 +61,9 @@ public class Const
 		Material.ENCHANTMENT_TABLE,
 		Material.ANVIL,
 		Material.BEACON,
-		Material.TRAPPED_CHEST
+		Material.TRAPPED_CHEST,
+		Material.HOPPER,
+		Material.DROPPER
 	);
 	
 	public static final Set<EntityType> ENTITY_TYPES_MONSTERS = MUtil.set(
