@@ -335,10 +335,10 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 		return ret;
 	}
 	
-	public void setOpen(boolean open)
+	public void setOpen(Boolean open)
 	{
 		// Clean input
-		boolean target = open;
+		Boolean target = open;
 		
 		// Detect Nochange
 		if (MUtil.equals(this.open, target)) return;
@@ -809,10 +809,10 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	// FOREIGN KEY: UPLAYER
 	// -------------------------------------------- //
 	
-	protected transient List<UPlayer> uplayers = null;
+	protected transient List<UPlayer> uplayers = new ArrayList<UPlayer>();
 	public void reindexUPlayers()
 	{
-		this.uplayers = new ArrayList<UPlayer>();
+		this.uplayers.clear();
 		
 		String factionId = this.getId();
 		if (factionId == null) return;
