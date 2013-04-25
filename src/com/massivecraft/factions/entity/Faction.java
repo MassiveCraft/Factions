@@ -22,7 +22,6 @@ import com.massivecraft.mcore.ps.PS;
 import com.massivecraft.mcore.store.Entity;
 import com.massivecraft.mcore.util.MUtil;
 import com.massivecraft.mcore.util.SenderUtil;
-import com.massivecraft.mcore.xlib.gson.annotations.SerializedName;
 
 
 public class Faction extends Entity<Faction> implements EconomyParticipator
@@ -65,7 +64,6 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	// The actual faction id looks something like "54947df8-0e9e-4471-a2f9-9af509fb5889" and that is not too easy to remember for humans.
 	// Thus we make use of a name. Since the id is used in all foreign key situations changing the name is fine.
 	// Null should never happen. The name must not be null.
-	@SerializedName("tag")
 	private String name = null;
 	
 	// Factions can optionally set a description for themselves.
@@ -92,22 +90,18 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	// This is the ids of the invited players.
 	// They are actually "senderIds" since you can invite "@console" to your faction.
 	// Null means no one is invited
-	@SerializedName("invites")
 	private Set<String> invitedPlayerIds = null;
 	
 	// The keys in this map are factionIds.
 	// Null means no special relation whishes.
-	@SerializedName("relationWish")
 	private Map<String, Rel> relationWishes = null;
 	
 	// The flag overrides are modifications to the default values.
 	// Null means default for the universe.
-	@SerializedName("flagOverrides")
 	private Map<FFlag, Boolean> flags = null;
 
 	// The perm overrides are modifications to the default values.
 	// Null means default for the universe.
-	@SerializedName("permOverrides")
 	private Map<FPerm, Set<Rel>> perms = null;
 	
 	// -------------------------------------------- //

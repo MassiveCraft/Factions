@@ -57,6 +57,7 @@ public class BoardColls extends XColls<BoardColl, Board> implements BoardInterfa
 		this.migrate();
 	}
 	
+	// This method is for the 1.8.X --> 2.0.0 migration
 	public void migrate()
 	{
 		// Create file objects

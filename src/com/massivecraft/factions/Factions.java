@@ -4,6 +4,7 @@ import com.massivecraft.factions.adapter.BoardAdapter;
 import com.massivecraft.factions.adapter.BoardMapAdapter;
 import com.massivecraft.factions.adapter.FFlagAdapter;
 import com.massivecraft.factions.adapter.FPermAdapter;
+import com.massivecraft.factions.adapter.FactionPreprocessAdapter;
 import com.massivecraft.factions.adapter.RelAdapter;
 import com.massivecraft.factions.adapter.TerritoryAccessAdapter;
 import com.massivecraft.factions.chat.modifier.ChatModifierLc;
@@ -21,6 +22,7 @@ import com.massivecraft.factions.chat.tag.ChatTagTitle;
 import com.massivecraft.factions.cmd.*;
 import com.massivecraft.factions.entity.Board;
 import com.massivecraft.factions.entity.BoardColls;
+import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.UPlayerColls;
 import com.massivecraft.factions.entity.FactionColls;
 import com.massivecraft.factions.entity.MConfColl;
@@ -41,6 +43,7 @@ import com.massivecraft.mcore.usys.Aspect;
 import com.massivecraft.mcore.usys.AspectColl;
 import com.massivecraft.mcore.usys.Multiverse;
 import com.massivecraft.mcore.util.MUtil;
+import com.massivecraft.mcore.xlib.gson.Gson;
 import com.massivecraft.mcore.xlib.gson.GsonBuilder;
 
 
@@ -75,6 +78,9 @@ public class Factions extends MPlugin
 	private PowerMixin powerMixin = null;
 	public PowerMixin getPowerMixin() { return this.powerMixin == null ? PowerMixinDefault.get() : this.powerMixin; }
 	public void setPowerMixin(PowerMixin powerMixin) { this.powerMixin = powerMixin; }
+	
+	// Gson without preprocessors
+	public final Gson gsonWithoutPreprocessors = this.getGsonBuilderWithotPreprocessors().create();
 
 	// -------------------------------------------- //
 	// OVERRIDE
@@ -153,8 +159,7 @@ public class Factions extends MPlugin
 		postEnable();
 	}
 	
-	@Override
-	public GsonBuilder getGsonBuilder()
+	public GsonBuilder getGsonBuilderWithotPreprocessors()
 	{
 		return super.getGsonBuilder()
 		.registerTypeAdapter(TerritoryAccess.class, TerritoryAccessAdapter.get())
@@ -163,6 +168,14 @@ public class Factions extends MPlugin
 		.registerTypeAdapter(Rel.class, RelAdapter.get())
 		.registerTypeAdapter(FPerm.class, FPermAdapter.get())
 		.registerTypeAdapter(FFlag.class, FFlagAdapter.get())
+		;
+	}
+	
+	@Override
+	public GsonBuilder getGsonBuilder()
+	{
+		return this.getGsonBuilderWithotPreprocessors()
+		.registerTypeAdapter(Faction.class, FactionPreprocessAdapter.get())
 		;
 	}
 	
