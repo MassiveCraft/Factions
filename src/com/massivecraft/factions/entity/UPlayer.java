@@ -373,6 +373,21 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 		return power;
 	}
 	
+	public int getPowerMaxRounded()
+	{
+		return (int) Math.round(this.getPowerMax());
+	}
+	
+	public int getPowerMinRounded()
+	{
+		return (int) Math.round(this.getPowerMin());
+	}
+	
+	public int getPowerMaxUniversalRounded()
+	{
+		return (int) Math.round(this.getPowerMaxUniversal());
+	}
+	
 	// RAW
 	
 	public double getDefaultPower()

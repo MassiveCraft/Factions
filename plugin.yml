@@ -45,6 +45,8 @@ permissions:
   factions.officer.any: {description: set officers for another faction, default: false}
   factions.open: {description: set if invitation is required to join, default: false}
   factions.perm: {description: change faction permissions, default: false}
+  factions.power: {description: show player power}
+  factions.power.any: {description: show another players power}
   factions.powerboost: {description: set powerboost, default: false}
   factions.promote: {description: promote lesser members in your faction, default: false}
   factions.relation: {description: set relation wish to another faction, default: false}
@@ -91,6 +93,8 @@ permissions:
       factions.officer.any: true
       factions.open: true
       factions.perm: true
+      factions.power: true
+      factions.power.any: true
       factions.powerboost: true
       factions.promote: true
       factions.relation: true
@@ -163,6 +167,8 @@ permissions:
       factions.money.*: true
       factions.open: true
       factions.perm: true
+      factions.power: true
+      factions.power.any: true
       factions.promote: true
       factions.relation: true
       factions.seechunk: true
