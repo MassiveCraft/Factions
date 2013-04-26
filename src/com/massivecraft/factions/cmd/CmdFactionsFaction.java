@@ -24,16 +24,16 @@ import com.massivecraft.mcore.util.TimeDiffUtil;
 import com.massivecraft.mcore.util.TimeUnit;
 import com.massivecraft.mcore.util.Txt;
 
-public class CmdFactionsShow extends FCommand
+public class CmdFactionsFaction extends FCommand
 {
-	public CmdFactionsShow()
+	public CmdFactionsFaction()
 	{
-		this.addAliases("s", "show", "who");
+		this.addAliases("f", "faction");
 		
 		this.addOptionalArg("faction", "you");
 		
 		this.addRequirements(ReqFactionsEnabled.get());
-		this.addRequirements(ReqHasPerm.get(Perm.SHOW.node));
+		this.addRequirements(ReqHasPerm.get(Perm.FACTION.node));
 	}
 
 	@Override

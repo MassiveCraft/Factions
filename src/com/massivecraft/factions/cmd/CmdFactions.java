@@ -19,6 +19,7 @@ public class CmdFactions extends FCommand
 	public CmdFactionsDemote cmdFactionsDemote = new CmdFactionsDemote();
 	public CmdFactionsDescription cmdFactionsDescription = new CmdFactionsDescription();
 	public CmdFactionsDisband cmdFactionsDisband = new CmdFactionsDisband();
+	public CmdFactionsFaction cmdFactionsFaction = new CmdFactionsFaction();
 	public CmdFactionsFlag cmdFactionsFlag = new CmdFactionsFlag();
 	public CmdFactionsHome cmdFactionsHome = new CmdFactionsHome();
 	public CmdFactionsInvite cmdFactionsInvite = new CmdFactionsInvite();
@@ -31,7 +32,7 @@ public class CmdFactions extends FCommand
 	public CmdFactionsMoney cmdFactionsMoney = new CmdFactionsMoney();
 	public CmdFactionsOpen cmdFactionsOpen = new CmdFactionsOpen();
 	public CmdFactionsPerm cmdFactionsPerm = new CmdFactionsPerm();
-	public CmdFactionsPower cmdFactionsPower = new CmdFactionsPower();
+	public CmdFactionsPlayer cmdFactionsPlayer = new CmdFactionsPlayer();
 	public CmdFactionsPowerBoost cmdFactionsPowerBoost = new CmdFactionsPowerBoost();
 	public CmdFactionsPromote cmdFactionsPromote = new CmdFactionsPromote();
 	public CmdFactionsRelationAlly cmdFactionsRelationAlly = new CmdFactionsRelationAlly();
@@ -40,7 +41,6 @@ public class CmdFactions extends FCommand
 	public CmdFactionsRelationTruce cmdFactionsRelationTruce = new CmdFactionsRelationTruce();
 	public CmdFactionsSeeChunk cmdFactionsSeeChunk = new CmdFactionsSeeChunk();
 	public CmdFactionsSethome cmdFactionsSethome = new CmdFactionsSethome();
-	public CmdFactionsShow cmdFactionsShow = new CmdFactionsShow();
 	public CmdFactionsName cmdFactionsName = new CmdFactionsName();
 	public CmdFactionsTitle cmdFactionsTitle = new CmdFactionsTitle();
 	public CmdFactionsUnclaim cmdFactionsUnclaim = new CmdFactionsUnclaim();
@@ -61,8 +61,8 @@ public class CmdFactions extends FCommand
 		
 		this.addSubCommand(HelpCommand.get());
 		this.addSubCommand(this.cmdFactionsList);
-		this.addSubCommand(this.cmdFactionsShow);
-		this.addSubCommand(this.cmdFactionsPower);
+		this.addSubCommand(this.cmdFactionsFaction);
+		this.addSubCommand(this.cmdFactionsPlayer);
 		this.addSubCommand(this.cmdFactionsJoin);
 		this.addSubCommand(this.cmdFactionsLeave);
 		this.addSubCommand(this.cmdFactionsHome);

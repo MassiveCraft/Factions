@@ -62,6 +62,12 @@ public class CmdFactionsPerm extends FCommand
 		Rel rel = this.arg(2, ARRel.get());
 		if (rel == null) return;
 		
+		if (!this.argIsSet(3))
+		{
+			msg("<b>Should <h>%s <b>have the <h>%s <b>permission or not?\nYou must <h>add \"yes\" or \"no\" <b>at the end.", Txt.getNicedEnum(rel), Txt.getNicedEnum(perm));
+			return;
+		}
+		
 		Boolean val = this.arg(3, ARBoolean.get(), null);
 		if (val == null) return;
 		

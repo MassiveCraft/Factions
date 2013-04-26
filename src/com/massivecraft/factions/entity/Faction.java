@@ -643,6 +643,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 				{
 					Entry<FPerm, Set<Rel>> entry = iter.next();
 					FPerm key = entry.getKey();
+					if (key == null) System.out.println("key was null");
 					Set<Rel> keyDefault = key.getDefault(this);
 					Set<Rel> value = entry.getValue();
 					
