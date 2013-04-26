@@ -9,6 +9,8 @@ import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.util.VisualizeUtil;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 import com.massivecraft.mcore.cmd.req.ReqIsPlayer;
+import com.massivecraft.mcore.ps.PS;
+import com.massivecraft.mcore.ps.PSFormatHumanSpace;
 
 public class CmdFactionsSeeChunk extends FCommand
 {
@@ -24,34 +26,37 @@ public class CmdFactionsSeeChunk extends FCommand
 	@Override
 	public void perform()
 	{
-		Location meLoc = me.getLocation();
-		// Which chunk are we standing in ATM?
-		// This bit shifting is something like divide by 16 :P
-		int chunkX = meLoc.getBlockX() >> 4;
-		int chunkZ = meLoc.getBlockZ() >> 4;
+		// Args
+		World world = me.getWorld();
+		PS chunk = PS.valueOf(me).getChunk(true);
+		int chunkX = chunk.getChunkX();
+		int chunkZ = chunk.getChunkZ();
 		
-		// Get the pillars for that chunk
+		// Apply
 		int blockX;
 		int blockZ;
 		
 		blockX = chunkX*16;
 		blockZ = chunkZ*16;
-		showPillar(me, me.getWorld(), blockX, blockZ);
+		showPillar(me, world, blockX, blockZ);
 		
 		blockX = chunkX*16 + 15;
 		blockZ = chunkZ*16;
-		showPillar(me, me.getWorld(), blockX, blockZ);
+		showPillar(me, world, blockX, blockZ);
 		
 		blockX = chunkX*16;
 		blockZ = chunkZ*16 + 15;
-		showPillar(me, me.getWorld(), blockX, blockZ);
+		showPillar(me, world, blockX, blockZ);
 		
 		blockX = chunkX*16 + 15;
 		blockZ = chunkZ*16 + 15;
-		showPillar(me, me.getWorld(), blockX, blockZ);
+		showPillar(me, world, blockX, blockZ);
+		
+		// Inform
+		msg("<i>Visualized %s", chunk.toString(PSFormatHumanSpace.get()));
 	}
 	
-	public void showPillar(Player player, World world, int blockX, int blockZ)
+	public static void showPillar(Player player, World world, int blockX, int blockZ)
 	{
 		for (int blockY = 0; blockY < world.getMaxHeight(); blockY++)
 		{

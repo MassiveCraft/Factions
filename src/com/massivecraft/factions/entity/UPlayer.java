@@ -18,6 +18,7 @@ import com.massivecraft.factions.event.FactionsEventMembershipChange.MembershipC
 import com.massivecraft.factions.util.RelationUtil;
 import com.massivecraft.mcore.mixin.Mixin;
 import com.massivecraft.mcore.ps.PS;
+import com.massivecraft.mcore.ps.PSFormatHumanSpace;
 import com.massivecraft.mcore.store.SenderEntity;
 import com.massivecraft.mcore.util.MUtil;
 import com.massivecraft.mcore.util.SenderUtil;
@@ -726,10 +727,11 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 			informees.add(UPlayer.get(SenderUtil.getConsole()));
 		}
 		
+		String chunkString = chunk.toString(PSFormatHumanSpace.get());
+		String typeString = event.getType().toString().toLowerCase();
 		for (UPlayer informee : informees)
 		{
-			String chunkString = Txt.parse("<h>%s <h>%d %d", Mixin.getWorldDisplayName(chunk.getWorld()), chunk.getChunkX(), chunk.getChunkZ());
-			informee.msg("<h>%s<i> did %s %s <i>for <h>%s<i> from <h>%s<i>.", this.describeTo(informee, true), event.getType().toString().toLowerCase(), chunkString, newFaction.describeTo(informee), oldFaction.describeTo(informee));
+			informee.msg("<h>%s<i> did %s %s <i>for <h>%s<i> from <h>%s<i>.", this.describeTo(informee, true), typeString, chunkString, newFaction.describeTo(informee), oldFaction.describeTo(informee));
 		}
 
 		return true;
