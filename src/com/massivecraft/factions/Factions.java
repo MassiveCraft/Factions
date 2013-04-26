@@ -23,6 +23,8 @@ import com.massivecraft.factions.cmd.*;
 import com.massivecraft.factions.entity.Board;
 import com.massivecraft.factions.entity.BoardColls;
 import com.massivecraft.factions.entity.Faction;
+import com.massivecraft.factions.entity.MPlayerColl;
+import com.massivecraft.factions.entity.UConfColls;
 import com.massivecraft.factions.entity.UPlayerColls;
 import com.massivecraft.factions.entity.FactionColls;
 import com.massivecraft.factions.entity.MConfColl;
@@ -109,6 +111,8 @@ public class Factions extends MPlugin
 		// Initialize Database
 		this.databaseInitialized = false;
 		MConfColl.get().init();
+		MPlayerColl.get().init();
+		UConfColls.get().init();
 		UPlayerColls.get().init();
 		FactionColls.get().init();
 		BoardColls.get().init();

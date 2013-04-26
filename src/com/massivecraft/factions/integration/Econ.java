@@ -118,9 +118,6 @@ public class Econ
 		if ( ! canIControllYou(invoker, from)) return false;
 		
 		// Is there enough money for the transaction to happen?
-		
-		
-		
 		if (Money.get(from) < amount)
 		{
 			// There was not enough money to pay
@@ -132,12 +129,9 @@ public class Econ
 		}
 		
 		// Transfer money
-		
-		
-		
 		if (Money.subtract(from, amount))
 		{
-			if (Money.add(from, amount))
+			if (Money.add(to, amount))
 			{
 				if (notify)
 				{
@@ -254,7 +248,7 @@ public class Econ
 				}
 				else
 				{
-					ep.msg("<h>%s<i> lost <h>%s<i> since did %s.", You, Money.format(ep, delta), actionDescription);
+					ep.msg("<h>%s<i> lost <h>%s<i> since did %s.", You, Money.format(ep, -delta), actionDescription);
 				}
 			}
 			return true;
@@ -269,7 +263,7 @@ public class Econ
 				}
 				else
 				{
-					ep.msg("<h>%s<i> can't afford <h>%s<i> to %s.", You, Money.format(ep, delta), actionDescription);
+					ep.msg("<h>%s<i> can't afford <h>%s<i> to %s.", You, Money.format(ep, -delta), actionDescription);
 				}
 			}
 			return false;

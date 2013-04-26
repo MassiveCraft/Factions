@@ -76,7 +76,8 @@ public class CmdFactionsShow extends FCommand
 				for (FactionsEventChunkChangeType type : FactionsEventChunkChangeType.values())
 				{
 					Double money = uconf.econChunkCost.get(type);
-					if (money == null) money = 0D;
+					if (money == null) continue;
+					if (money == 0D) continue;
 					money *= landCount;
 					
 					String word = null;

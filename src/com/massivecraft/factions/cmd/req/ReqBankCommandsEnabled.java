@@ -31,11 +31,12 @@ public class ReqBankCommandsEnabled extends ReqAbstract
 	@Override
 	public String createErrorMessage(CommandSender sender, MCommand command)
 	{
-		if (!UConf.get(sender).bankEnabled)
+		UConf uconf = UConf.get(sender);
+		if (!uconf.bankEnabled)
 		{
-			return Txt.parse("<b>The Factions bank system is disabled on this server.");
+			return Txt.parse("<b>Faction banks are disabled in the <h>%s <b>universe.", uconf.getUniverse());
 		}
-		return Txt.parse("<b>The Factions economy features are disabled on this server.");
+		return Txt.parse("<b>Faction economy features are disabled in the <h>%s <b>universe.", uconf.getUniverse());
 	}
 	
 }
