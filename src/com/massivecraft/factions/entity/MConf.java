@@ -140,7 +140,6 @@ public class MConf extends Entity<MConf>
 	
 	public boolean handleExploitObsidianGenerators = true;
 	public boolean handleExploitEnderPearlClipping = true;
-	public boolean handleExploitInteractionSpam = true;
 	public boolean handleExploitTNTWaterlog = false;
 	
 	// -------------------------------------------- //
