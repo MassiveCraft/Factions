@@ -165,6 +165,7 @@ permissions:
       factions.list: true
       factions.map: true
       factions.money.*: true
+      factions.officer: true
       factions.open: true
       factions.perm: true
       factions.power: true

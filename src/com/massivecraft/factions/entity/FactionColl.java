@@ -40,29 +40,6 @@ public class FactionColl extends Coll<Faction>
 		this.createSpecialFactions();
 	}
 	
-	/*
-	@Override
-	protected synchronized String attach(Faction faction, Object oid, boolean noteChange)
-	{
-		String ret = super.attach(faction, oid, noteChange);
-		
-		// Factions start with 0 money.
-		// TODO: Can this be done here?
-		// TODO: Or will it be a to heavy operation to do this often?
-		
-		//System.out.println("faction "+faction);
-		//System.out.println("faction.getId() "+faction.getId());
-		// TODO: Why does this happen for Wilderness?
-		if (faction.getId() == null) return ret;
-		
-		if (!Money.exists(faction))
-		{
-			Money.set(faction, 0);
-		}
-		
-		return ret;
-	}*/
-	
 	// TODO: I hope this one is not crucial anymore.
 	// If it turns out to be I will just have to recreate the feature in the proper place.
 	/*
@@ -79,6 +56,23 @@ public class FactionColl extends Coll<Faction>
 		return super.get(id);
 	}
 	*/
+	
+	@Override
+	public Faction get(Object oid)
+	{
+		Faction ret = super.get(oid);
+		
+		if (ret == null)
+		{
+			String message = Txt.parse("<b>Non existing factionId <h>%s <b>requested. <i>Cleaning all boards and uplayers.", this.fixId(oid));
+			Factions.get().log(message);
+			
+			BoardColls.get().clean();
+			UPlayerColls.get().clean();
+		}
+		
+		return ret;
+	}
 	
 	@Override
 	public Faction detachId(Object oid)

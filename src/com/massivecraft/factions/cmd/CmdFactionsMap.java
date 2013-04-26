@@ -49,7 +49,7 @@ public class CmdFactionsMap extends FCommand
 	
 	public void showMap()
 	{
-		sendMessage(BoardColls.get().getMap(usenderFaction, PS.valueOf(me), usender.getPlayer().getLocation().getYaw()));
+		sendMessage(BoardColls.get().getMap(usenderFaction, PS.valueOf(me), me.getLocation().getYaw()));
 	}
 	
 }

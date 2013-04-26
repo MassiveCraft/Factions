@@ -98,7 +98,8 @@ public class Board extends Entity<Board> implements BoardInterface
 	public Faction getFactionAt(PS ps)
 	{
 		if (ps == null) return null;
-		return FactionColls.get().get(this).get(this.getTerritoryAccessAt(ps).getHostFactionId()); 
+		String factionId = this.getTerritoryAccessAt(ps).getHostFactionId();
+		return FactionColls.get().get(this).get(factionId);
 	}
 	
 	// SET
@@ -158,16 +159,18 @@ public class Board extends Entity<Board> implements BoardInterface
 	@Override
 	public void clean()
 	{
+		FactionColl factionColl = FactionColls.get().get(this);
+		
 		for (Entry<PS, TerritoryAccess> entry : this.map.entrySet())
 		{
 			TerritoryAccess territoryAccess = entry.getValue();
-			
-			if (FactionColls.get().get(this).containsId(territoryAccess.getHostFactionId())) continue;
+			String factionId = territoryAccess.getHostFactionId();
+			if (factionColl.containsId(factionId)) continue;
 			
 			PS ps = entry.getKey();
 			this.removeAt(ps);
 			
-			Factions.get().log("Board cleaner removed "+territoryAccess.getHostFactionId()+" from "+entry.getKey());
+			Factions.get().log("Board cleaner removed "+factionId+" from "+ps);
 		}
 	}
 	

@@ -80,4 +80,16 @@ public class UPlayerColls extends XColls<UPlayerColl, UPlayer>
 		oldFile.renameTo(newFile);
 	}
 	
+	// -------------------------------------------- //
+	// EXTRAS
+	// -------------------------------------------- //
+	
+	public void clean()
+	{
+		for (UPlayerColl coll : this.getColls())
+		{
+			coll.clean();
+		}
+	}
+	
 }

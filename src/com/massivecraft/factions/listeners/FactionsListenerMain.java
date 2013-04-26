@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Enderman;
@@ -560,14 +561,14 @@ public class FactionsListenerMain implements Listener
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void blockExplosion(EntityExplodeEvent event)
 	{
-		// If an entity is exploding ...
-		Entity entity = event.getEntity();
+		// If an explosion occurs at a location ...
+		Location location = event.getLocation();
 		
 		// Check Disabled
-		if (UConf.isDisabled(entity)) return;
+		if (UConf.isDisabled(location)) return;
 		
 		// Check the entity. Are explosions disabled there? 
-		if (BoardColls.get().getFactionAt(PS.valueOf(event.getEntity())).getFlag(FFlag.EXPLOSIONS) == false)
+		if (BoardColls.get().getFactionAt(PS.valueOf(location)).getFlag(FFlag.EXPLOSIONS) == false)
 		{
 			event.setCancelled(true);
 			return;
@@ -637,6 +638,16 @@ public class FactionsListenerMain implements Listener
 		// If the faction at the block has firespread disabled ...
 		PS ps = PS.valueOf(block);
 		Faction faction = BoardColls.get().getFactionAt(ps);
+		
+		// TODO: Remove this debug output soon.
+		if (faction == null)
+		{
+			System.out.println("faction was null");
+			System.out.println("block was "+block);
+			System.out.println("ps was "+ps);
+			return;
+		}
+			
 		if (faction.getFlag(FFlag.FIRESPREAD)) return;
 		
 		// then cancel the event.

@@ -642,7 +642,14 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 				while (iter.hasNext())
 				{
 					Entry<FPerm, Set<Rel>> entry = iter.next();
-					if (entry.getKey().getDefault(this).equals(entry.getValue()))
+					FPerm key = entry.getKey();
+					Set<Rel> keyDefault = key.getDefault(this);
+					Set<Rel> value = entry.getValue();
+					
+					if (keyDefault == null) System.out.println("keyDefault was null");
+					if (value == null) System.out.println("value was null");
+					
+					if (keyDefault.equals(value))
 					{
 						iter.remove();
 					}
