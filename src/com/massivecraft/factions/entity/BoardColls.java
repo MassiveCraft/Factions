@@ -101,7 +101,6 @@ public class BoardColls extends XColls<BoardColl, Board> implements BoardInterfa
 	@Override
 	public TerritoryAccess getTerritoryAccessAt(PS ps)
 	{
-		if (ps == null) return null;
 		BoardColl coll = this.getForWorld(ps.getWorld());
 		if (coll == null) return null;
 		return coll.getTerritoryAccessAt(ps);
@@ -110,7 +109,6 @@ public class BoardColls extends XColls<BoardColl, Board> implements BoardInterfa
 	@Override
 	public Faction getFactionAt(PS ps)
 	{
-		if (ps == null) return null;
 		BoardColl coll = this.getForWorld(ps.getWorld());
 		if (coll == null) return null;
 		return coll.getFactionAt(ps);
@@ -121,7 +119,6 @@ public class BoardColls extends XColls<BoardColl, Board> implements BoardInterfa
 	@Override
 	public void setTerritoryAccessAt(PS ps, TerritoryAccess territoryAccess)
 	{
-		if (ps == null) return;
 		BoardColl coll = this.getForWorld(ps.getWorld());
 		if (coll == null) return;
 		coll.setTerritoryAccessAt(ps, territoryAccess);
@@ -130,7 +127,6 @@ public class BoardColls extends XColls<BoardColl, Board> implements BoardInterfa
 	@Override
 	public void setFactionAt(PS ps, Faction faction)
 	{
-		if (ps == null) return;
 		BoardColl coll = this.getForWorld(ps.getWorld());
 		if (coll == null) return;
 		coll.setFactionAt(ps, faction);
@@ -141,7 +137,6 @@ public class BoardColls extends XColls<BoardColl, Board> implements BoardInterfa
 	@Override
 	public void removeAt(PS ps)
 	{
-		if (ps == null) return;
 		BoardColl coll = this.getForWorld(ps.getWorld());
 		if (coll == null) return;
 		coll.removeAt(ps);
@@ -194,7 +189,6 @@ public class BoardColls extends XColls<BoardColl, Board> implements BoardInterfa
 	@Override
 	public boolean isBorderPs(PS ps)
 	{
-		if (ps == null) return false;
 		BoardColl coll = this.getForWorld(ps.getWorld());
 		if (coll == null) return false;
 		return coll.isBorderPs(ps);
@@ -203,7 +197,6 @@ public class BoardColls extends XColls<BoardColl, Board> implements BoardInterfa
 	@Override
 	public boolean isConnectedPs(PS ps, Faction faction)
 	{
-		if (ps == null) return false;
 		BoardColl coll = this.getForWorld(ps.getWorld());
 		if (coll == null) return false;
 		return coll.isConnectedPs(ps, faction);
@@ -214,7 +207,6 @@ public class BoardColls extends XColls<BoardColl, Board> implements BoardInterfa
 	@Override
 	public ArrayList<String> getMap(RelationParticipator observer, PS centerPs, double inDegrees)
 	{
-		if (centerPs == null) return null;
 		BoardColl coll = this.getForWorld(centerPs.getWorld());
 		if (coll == null) return null;
 		return coll.getMap(observer, centerPs, inDegrees);

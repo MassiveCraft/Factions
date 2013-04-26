@@ -515,12 +515,6 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 		return RelationUtil.getRelationOfThatToMe(this, observer, ignorePeaceful);
 	}
 	
-	public Rel getRelationToLocation()
-	{
-		// TODO: Use some built in system to get sender
-		return BoardColls.get().getFactionAt(PS.valueOf(this.getPlayer())).getRelationTo(this);
-	}
-	
 	@Override
 	public ChatColor getColorTo(RelationParticipator observer)
 	{

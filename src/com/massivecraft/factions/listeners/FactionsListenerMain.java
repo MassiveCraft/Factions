@@ -454,10 +454,13 @@ public class FactionsListenerMain implements Listener
 			return;
 		}
 		
-		// ... the command may be denied in the territory of this relation type ...
-		Rel rel = uplayer.getRelationToLocation();
+		// ... if there is a faction at the players location ...
 		PS ps = PS.valueOf(player).getChunk(true);
-		if (BoardColls.get().getFactionAt(ps).isNone()) return;
+		Faction factionAtPs = BoardColls.get().getFactionAt(ps);
+		if (factionAtPs.isNone()) return;
+		
+		// ... the command may be denied in the territory of this relation type ...
+		Rel rel = factionAtPs.getRelationTo(uplayer);
 		
 		List<String> deniedCommands = UConf.get(player).denyCommandsTerritoryRelation.get(rel);
 		if (deniedCommands == null) return;
