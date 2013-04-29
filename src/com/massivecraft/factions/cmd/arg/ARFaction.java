@@ -17,7 +17,7 @@ public class ARFaction extends ArgReaderAbstract<Faction>
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	public static ARFaction get(Object o) { return new ARFaction(FactionColls.get().get(o)); }
+	public static ARFaction get(Object universe) { return new ARFaction(FactionColls.get().get(universe)); }
 	private ARFaction(FactionColl coll)
 	{
 		this.coll = coll;

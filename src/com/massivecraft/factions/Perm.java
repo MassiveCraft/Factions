@@ -11,8 +11,9 @@ public enum Perm
 	// -------------------------------------------- //
 	
 	ACCESS("access"),
-	ACCESS_ANY("access.any"),
 	ACCESS_VIEW("access.view"),
+	ACCESS_PLAYER("access.player"),
+	ACCESS_FACTION("access.faction"),
 	ADMIN("admin"),
 	AUTOCLAIM("autoclaim"),
 	CLAIM("claim"),
@@ -35,6 +36,7 @@ public enum Perm
 	LEAVE("leave"),
 	LIST("list"),
 	MAP("map"),
+	MONEY("money"),
 	MONEY_BALANCE("money.balance"),
 	MONEY_BALANCE_ANY("money.balance.any"),
 	MONEY_DEPOSIT("money.deposit"),

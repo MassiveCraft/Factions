@@ -10,9 +10,10 @@ permissions:
 # -------------------------------------------- #
 # THE REAL NODES
 # -------------------------------------------- #
-  factions.access: {description: grant territory access, with the proper fperm, default: false}
-  factions.access.any: {description: grant territory access for another faction, default: false}
-  factions.access.view: {description: view territory access, default: false}
+  factions.access: {description: manage access, with the proper fperm, default: false}
+  factions.access.faction: {description: grant faction access, with the proper fperm, default: false}
+  factions.access.player: {description: grant player access, with the proper fperm, default: false}
+  factions.access.view: {description: view access, default: false}
   factions.admin: {description: enable adminmode, default: false}
   factions.autoclaim: {description: autoclaim when walking, default: false}
   factions.claim: {description: claim land where you stand, default: false}
@@ -35,6 +36,7 @@ permissions:
   factions.leave: {description: leave your faction, default: false}
   factions.list: {description: list all factions, default: false}
   factions.map: {description: show territory map, default: false}
+  factions.money: {description: manage faction money, default: false}
   factions.money.balance: {description: show faction money, default: false}
   factions.money.balance.any: {description: show another factions money, default: false}
   factions.money.deposit: {description: deposit to faction, default: false}
@@ -64,7 +66,8 @@ permissions:
   factions.*:
     children:
       factions.access: true
-      factions.access.any: true
+      factions.access.faction: true
+      factions.access.player: true
       factions.access.view: true
       factions.admin: true
       factions.autoclaim: true
@@ -88,7 +91,14 @@ permissions:
       factions.leave: true
       factions.list: true
       factions.map: true
-      factions.money.*: true
+      factions.money: true
+      factions.money.balance: true
+      factions.money.balance.any: true
+      factions.money.deposit: true
+      factions.money.f2f: true
+      factions.money.f2p: true
+      factions.money.p2f: true
+      factions.money.withdraw: true
       factions.officer: true
       factions.officer.any: true
       factions.open: true
@@ -105,15 +115,6 @@ permissions:
       factions.unclaim: true
       factions.unclaimall: true
       factions.version: true
-  factions.money.*:
-    children:
-      factions.money.balance: true
-      factions.money.balance.any: true
-      factions.money.deposit: true
-      factions.money.f2f: true
-      factions.money.f2p: true
-      factions.money.p2f: true
-      factions.money.withdraw: true
 # -------------------------------------------- #
 # KITS
 # -------------------------------------------- #
@@ -144,12 +145,14 @@ permissions:
   factions.kit.rank0:
     default: false
     children:
-      factions.create: true
       factions.access: true
+      factions.access.faction: true
+      factions.access.player: true
       factions.access.view: true
       factions.autoclaim: true
       factions.claim: true
       factions.claim.radius: true
+      factions.create: true
       factions.demote: true
       factions.description: true
       factions.disband: true
@@ -163,7 +166,14 @@ permissions:
       factions.leave: true
       factions.list: true
       factions.map: true
-      factions.money.*: true
+      factions.money: true
+      factions.money.balance: true
+      factions.money.balance.any: true
+      factions.money.deposit: true
+      factions.money.f2f: true
+      factions.money.f2p: true
+      factions.money.p2f: true
+      factions.money.withdraw: true
       factions.officer: true
       factions.open: true
       factions.perm: true

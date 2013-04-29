@@ -1,14 +1,21 @@
 package com.massivecraft.factions;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.massivecraft.factions.entity.FactionColl;
 import com.massivecraft.factions.entity.UPlayer;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.FactionColls;
+import com.massivecraft.factions.entity.UPlayerColl;
+import com.massivecraft.factions.entity.UPlayerColls;
 
 public class TerritoryAccess
 {
@@ -16,167 +23,236 @@ public class TerritoryAccess
 	// FIELDS: RAW
 	// -------------------------------------------- //
 	
-	private String hostFactionId;
+	// no default value, can't be null
+	private final String hostFactionId;
 	public String getHostFactionId() { return this.hostFactionId; }
-	public void setHostFactionId(String hostFactionId) { this.hostFactionId = hostFactionId; }
 	
-	private boolean hostFactionAllowed = true;
+	// default is true
+	private final boolean hostFactionAllowed;
 	public boolean isHostFactionAllowed() { return this.hostFactionAllowed; }
-	public void setHostFactionAllowed(boolean hostFactionAllowed) { this.hostFactionAllowed = hostFactionAllowed; }
 	
-	private Set<String> factionIds = new LinkedHashSet<String>();
+	// default is empty
+	private final Set<String> factionIds;
 	public Set<String> getFactionIds() { return this.factionIds; }
 	
-	private Set<String> fplayerIds = new LinkedHashSet<String>();
-	public Set<String> getFPlayerIds() { return this.fplayerIds; }
-
+	// default is empty
+	private final Set<String> playerIds;
+	public Set<String> getPlayerIds() { return this.playerIds; }
+	
 	// -------------------------------------------- //
-	// CONSTRUCT
+	// FIELDS: DELTA
 	// -------------------------------------------- //
 	
-	public TerritoryAccess(String hostFactionId)
+	// The simple ones
+	public TerritoryAccess withHostFactionId(String hostFactionId) { return valueOf(hostFactionId, hostFactionAllowed, factionIds, playerIds); }
+	public TerritoryAccess withHostFactionAllowed(Boolean hostFactionAllowed) { return valueOf(hostFactionId, hostFactionAllowed, factionIds, playerIds); }
+	public TerritoryAccess withFactionIds(Collection<String> factionIds) { return valueOf(hostFactionId, hostFactionAllowed, factionIds, playerIds); }
+	public TerritoryAccess withPlayerIds(Collection<String> playerIds) { return valueOf(hostFactionId, hostFactionAllowed, factionIds, playerIds); }
+	
+	// The intermediate ones
+	public TerritoryAccess withFactionId(String factionId, boolean with)
 	{
-		this.hostFactionId = hostFactionId;
-	}
-
-	public TerritoryAccess()
-	{
+		if (this.getHostFactionId().equals(factionId))
+		{
+			return valueOf(hostFactionId, with, factionIds, playerIds);
+		}
 		
+		Set<String> factionIds = new HashSet<String>(this.getFactionIds());
+		if (with)
+		{
+			factionIds.add(factionId);
+		}
+		else
+		{
+			factionIds.remove(factionId);
+		}
+		return valueOf(hostFactionId, hostFactionAllowed, factionIds, playerIds);
+	}
+	
+	public TerritoryAccess withPlayerId(String playerId, boolean with)
+	{
+		playerId = playerId.toLowerCase();
+		Set<String> playerIds = new HashSet<String>(this.getPlayerIds());
+		if (with)
+		{
+			playerIds.add(playerId);
+		}
+		else
+		{
+			playerIds.remove(playerId);
+		}
+		return valueOf(hostFactionId, hostFactionAllowed, factionIds, playerIds);
+	}
+	
+	// The complex ones
+	public TerritoryAccess toggleFactionId(String factionId)
+	{
+		return this.withFactionId(factionId, !this.isFactionIdGranted(factionId));
+	}
+	
+	public TerritoryAccess togglePlayerId(String playerId)
+	{
+		return this.withPlayerId(playerId, !this.isPlayerIdGranted(playerId));
 	}
 	
 	// -------------------------------------------- //
-	// FIELDS: UTILS
+	// FIELDS: UNIVERSED
 	// -------------------------------------------- //
+	
+	public Faction getHostFaction(Object universe)
+	{
+		return FactionColls.get().get(universe).get(this.getHostFactionId());
+	}
+	
+	public LinkedHashSet<UPlayer> getGrantedUPlayers(Object universe)
+	{
+		LinkedHashSet<UPlayer> ret = new LinkedHashSet<UPlayer>();
+		UPlayerColl coll = UPlayerColls.get().get(universe);
+		for (String playerId : this.getPlayerIds())
+		{
+			ret.add(coll.get(playerId));
+		}
+		return ret;
+	}
+	
+	public LinkedHashSet<Faction> getGrantedFactions(Object universe)
+	{
+		LinkedHashSet<Faction> ret = new LinkedHashSet<Faction>();
+		FactionColl coll = FactionColls.get().get(universe);
+		for (String factionId : this.getFactionIds())
+		{
+			ret.add(coll.get(factionId));
+		}
+		return ret;
+	}
 
-	public void addFaction(String factionId) { this.getFactionIds().add(factionId); }
-	public void addFaction(Faction faction) { this.addFaction(faction.getId()); }
-	public void removeFaction(String factionId) { this.getFactionIds().remove(factionId); }
-	public void removeFaction(Faction faction) { this.removeFaction(faction.getId()); }
+	// -------------------------------------------- //
+	// PRIVATE CONSTRUCTOR
+	// -------------------------------------------- //
 	
-	// return true if faction was added, false if it was removed
-	public boolean toggleFaction(String factionId)
+	private TerritoryAccess(String hostFactionId, Boolean hostFactionAllowed, Collection<String> factionIds, Collection<String> playerIds)
 	{
-		// if the host faction, special handling
-		if (this.doesHostFactionMatch(factionId))
+		if (hostFactionId == null) throw new IllegalArgumentException("hostFactionId was null");
+		this.hostFactionId = hostFactionId;
+		
+		Set<String> factionIdsInner = new TreeSet<String>();
+		if (factionIds != null)
 		{
-			this.hostFactionAllowed ^= true;
-			return this.hostFactionAllowed;
+			factionIdsInner.addAll(factionIds);
+			if (factionIdsInner.remove(hostFactionId))
+			{
+				hostFactionAllowed = true;
+			}
 		}
-
-		if (this.getFactionIds().contains(factionId))
+		this.factionIds = Collections.unmodifiableSet(factionIdsInner);
+		
+		Set<String> playerIdsInner = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
+		if (playerIds != null)
 		{
-			this.removeFaction(factionId);
-			return false;
+			for (String playerId : playerIds)
+			{
+				playerIdsInner.add(playerId.toLowerCase());
+			}
 		}
-		this.addFaction(factionId);
-		return true;
-	}
-	public boolean toggleFaction(Faction faction)
-	{
-		return this.toggleFaction(faction.getId());
-	}
-	
-	
-	public void addFPlayer(String fplayerID) { this.getFPlayerIds().add(fplayerID); }
-	public void addFPlayer(UPlayer fplayer) { this.addFPlayer(fplayer.getId()); }
-	public void removeFPlayer(String fplayerID) { this.getFPlayerIds().remove(fplayerID); }
-	public void removeFPlayer(UPlayer fplayer) { this.removeFPlayer(fplayer.getId()); }
-	
-	public boolean toggleFPlayer(String fplayerID)
-	{
-		if (this.getFPlayerIds().contains(fplayerID))
-		{
-			this.removeFPlayer(fplayerID);
-			return false;
-		}
-		this.addFPlayer(fplayerID);
-		return true;
-	}
-	public boolean toggleFPlayer(UPlayer fplayer)
-	{
-		return this.toggleFPlayer(fplayer.getId());
-	}
-	
-	
-	public boolean doesHostFactionMatch(Object testSubject)
-	{
-		if (testSubject instanceof String)
-			return hostFactionId.equals((String)testSubject);
-		else if (testSubject instanceof CommandSender)
-			return hostFactionId.equals(UPlayer.get(testSubject).getFactionId());
-		else if (testSubject instanceof UPlayer)
-			return hostFactionId.equals(((UPlayer)testSubject).getFactionId());
-		else if (testSubject instanceof Faction)
-			return hostFactionId.equals(((Faction)testSubject).getId());
-		return false;
+		this.playerIds = Collections.unmodifiableSet(playerIdsInner);
+		
+		this.hostFactionAllowed = (hostFactionAllowed == null || hostFactionAllowed);
 	}
 	
 	// -------------------------------------------- //
-	// UTILS
+	// FACTORY: VALUE OF
 	// -------------------------------------------- //
 	
-	// considered "default" if host faction is still allowed and nobody has been granted access
+	public static TerritoryAccess valueOf(String hostFactionId, Boolean hostFactionAllowed, Collection<String> factionIds, Collection<String> playerIds)
+	{
+		return new TerritoryAccess(hostFactionId, hostFactionAllowed, factionIds, playerIds);
+	}
+	
+	public static TerritoryAccess valueOf(String hostFactionId)
+	{
+		return valueOf(hostFactionId, null, null, null);
+	}
+	
+	// -------------------------------------------- //
+	// INSTANCE METHODS
+	// -------------------------------------------- //
+	
+	public boolean isFactionIdGranted(String factionId)
+	{
+		if (this.getHostFactionId().equals(factionId))
+		{
+			return this.isHostFactionAllowed();
+		}
+		return this.getFactionIds().contains(factionId);
+	}
+	
+	// Note that the player can have access without being specifically granted.
+	// The player could for example be a member of a granted faction. 
+	public boolean isPlayerIdGranted(String playerId)
+	{
+		return this.getPlayerIds().contains(playerId);
+	}
+	
+	// A "default" TerritoryAccess could be serialized as a simple string only.
+	// The host faction is still allowed (default) and no faction or player has been granted explicit access (default).
 	public boolean isDefault()
 	{
-		return this.hostFactionAllowed && this.factionIds.isEmpty() && this.fplayerIds.isEmpty();
+		return this.isHostFactionAllowed() && this.getFactionIds().isEmpty() && this.getPlayerIds().isEmpty(); 
 	}
 	
-	public void setDefault(String factionId)
+	// TODO: This looks like an extractor in my eyes.
+	// TODO: Perhaps create a factionId extractor?
+	public boolean doesHostFactionMatch(Object testSubject)
 	{
-		this.hostFactionId = factionId;
-		this.hostFactionAllowed = true;
-		this.factionIds.clear();
-		this.fplayerIds.clear();
+		String factionId = null;
+		if (testSubject instanceof String)
+		{
+			factionId = (String)testSubject;
+		}
+		else if (testSubject instanceof CommandSender)
+		{
+			factionId = UPlayer.get(testSubject).getFactionId();
+		}
+		else if (testSubject instanceof UPlayer)
+		{
+			factionId = ((UPlayer)testSubject).getFactionId();
+		}
+		else if (testSubject instanceof Faction)
+		{
+			factionId = ((Faction)testSubject).getId();
+		}
+		return this.getHostFactionId().equals(factionId);
 	}
 
-	public String factionList(Faction universeExtractable)
-	{
-		StringBuilder list = new StringBuilder();
-		for (String factionID : factionIds)
-		{
-			if (list.length() > 0)
-				list.append(", ");
-			list.append(FactionColls.get().get(universeExtractable).get(factionID).getName());
-		}
-		return list.toString();
-	}
-
-	public String fplayerList()
-	{
-		StringBuilder list = new StringBuilder();
-		for (String fplayerID : fplayerIds)
-		{
-			if (list.length() > 0)
-				list.append(", ");
-			list.append(fplayerID);
-		}
-		return list.toString();
-	}
+	// -------------------------------------------- //
+	// DERPINGTON CHECKS
+	// -------------------------------------------- //
 
 	// these return false if not granted explicit access, or true if granted explicit access (in FPlayer or Faction lists)
 	// they do not take into account hostFactionAllowed, which will need to be checked separately (as to not override FPerms which are denied for faction members and such)
 	public boolean subjectHasAccess(Object testSubject)
 	{
 		if (testSubject instanceof Player)
+		{
 			return fPlayerHasAccess(UPlayer.get(testSubject));
+		}
 		else if (testSubject instanceof UPlayer)
+		{
 			return fPlayerHasAccess((UPlayer)testSubject);
+		}
 		else if (testSubject instanceof Faction)
+		{
 			return factionHasAccess((Faction)testSubject);
+		}
 		return false;
 	}
 	public boolean fPlayerHasAccess(UPlayer fplayer)
 	{
-		if (factionHasAccess(fplayer.getFactionId())) return true;
-		return fplayerIds.contains(fplayer.getId());
+		return this.isPlayerIdGranted(fplayer.getId()) || this.isFactionIdGranted(fplayer.getFaction().getId());
 	}
 	public boolean factionHasAccess(Faction faction)
 	{
-		return factionHasAccess(faction.getId());
-	}
-	public boolean factionHasAccess(String factionId)
-	{
-		return factionIds.contains(factionId);
+		return this.isFactionIdGranted(faction.getId());
 	}
 
 	// this should normally only be checked after running subjectHasAccess() or fPlayerHasAccess() above to see if they have access explicitly granted
@@ -185,25 +261,5 @@ public class TerritoryAccess
 		Faction hostFaction = FactionColls.get().get(testSubject).get(this.getHostFactionId());
 		return ( ! this.isHostFactionAllowed() && this.doesHostFactionMatch(testSubject) && ! FPerm.ACCESS.has(testSubject, hostFaction, false));
 	}
-
-	//----------------------------------------------//
-	// COMPARISON
-	//----------------------------------------------//
-
-	@Override
-	public int hashCode()
-	{
-		return this.hostFactionId.hashCode();
-	}
-
-	@Override
-	public boolean equals(Object obj)
-	{
-		if (obj == this) return true;
-		
-		if (!(obj instanceof TerritoryAccess)) return false;
-
-		TerritoryAccess that = (TerritoryAccess) obj;
-		return this.hostFactionId.equals(that.hostFactionId) && this.hostFactionAllowed == that.hostFactionAllowed && this.factionIds == that.factionIds && this.fplayerIds == that.fplayerIds;
-	}
+	
 }
