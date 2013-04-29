@@ -22,6 +22,7 @@ import com.massivecraft.mcore.ps.PS;
 import com.massivecraft.mcore.store.Entity;
 import com.massivecraft.mcore.util.MUtil;
 import com.massivecraft.mcore.util.SenderUtil;
+import com.massivecraft.mcore.xlib.gson.reflect.TypeToken;
 
 
 public class Faction extends Entity<Faction> implements EconomyParticipator
@@ -660,6 +661,9 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 			}
 		}
 		
+		System.out.println("setPerms target:");
+		System.out.println(Factions.get().gson.toJson(target, new TypeToken<Map<FPerm, Set<Rel>>>(){}.getType()));
+		
 		// Detect Nochange
 		if (MUtil.equals(this.perms, target)) return;
 		
@@ -694,6 +698,10 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	public void setRelationPermitted(FPerm perm, Rel rel, boolean permitted)
 	{
 		Map<FPerm, Set<Rel>> perms = this.getPerms();
+		
+		System.out.println("setRelationPermitted before:");
+		System.out.println(Factions.get().gson.toJson(perms, new TypeToken<Map<FPerm, Set<Rel>>>(){}.getType()));
+		
 		Set<Rel> rels = perms.get(perm);
 
 		if (permitted)
@@ -704,6 +712,9 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 		{
 			rels.remove(rel);
 		}
+		
+		System.out.println("setRelationPermitted after:");
+		System.out.println(Factions.get().gson.toJson(perms, new TypeToken<Map<FPerm, Set<Rel>>>(){}.getType()));
 		
 		this.setPerms(perms);
 	}

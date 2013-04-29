@@ -47,6 +47,7 @@ public class CmdFactionsPerm extends FCommand
 		
 		FPerm perm = this.arg(1, ARFPerm.get());
 		if (perm == null) return;
+		System.out.println("perm = "+perm);
 		
 		if ( ! this.argIsSet(2))
 		{
@@ -72,6 +73,7 @@ public class CmdFactionsPerm extends FCommand
 		if (val == null) return;
 		
 		// Do the change
+		System.out.println("setRelationPermitted perm "+perm+", rel "+rel+", val "+val);
 		faction.setRelationPermitted(perm, rel, val);
 		
 		// The following is to make sure the leader always has the right to change perms if that is our goal.

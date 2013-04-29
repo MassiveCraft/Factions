@@ -145,8 +145,8 @@ public enum FPerm
 	{
 		if (uplayer.isUsingAdminMode()) return true;
 		
-		Faction faction = uplayer.getFaction();
-		if (this.has(faction, hostFaction)) return true;
+		Rel rel = uplayer.getRelationTo(hostFaction);
+		if (hostFaction.getPermittedRelations(this).contains(rel)) return true;
 		
 		if (verboose) uplayer.sendMessage(this.createDeniedMessage(uplayer, hostFaction));
 		
