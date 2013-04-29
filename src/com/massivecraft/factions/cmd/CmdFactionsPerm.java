@@ -57,7 +57,7 @@ public class CmdFactionsPerm extends FCommand
 		}
 		
 		// Do the sender have the right to change perms for this faction?
-		if ( ! FPerm.PERMS.has(sender, faction, true)) return;
+		if ( ! FPerm.PERMS.has(usender, faction, true)) return;
 		
 		Rel rel = this.arg(2, ARRel.get());
 		if (rel == null) return;

@@ -7,9 +7,6 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
 import com.massivecraft.factions.entity.FactionColl;
 import com.massivecraft.factions.entity.UPlayer;
 import com.massivecraft.factions.entity.Faction;
@@ -199,66 +196,24 @@ public class TerritoryAccess
 	{
 		return this.isHostFactionAllowed() && this.getFactionIds().isEmpty() && this.getPlayerIds().isEmpty(); 
 	}
+
+	// -------------------------------------------- //
+	// HAS CHECK
+	// -------------------------------------------- //
 	
-	// TODO: This looks like an extractor in my eyes.
-	// TODO: Perhaps create a factionId extractor?
-	public boolean doesHostFactionMatch(Object testSubject)
+	// true means elevated access
+	// false means decreased access
+	// null means standard access
+	public Boolean hasTerritoryAccess(UPlayer uplayer)
 	{
-		String factionId = null;
-		if (testSubject instanceof String)
-		{
-			factionId = (String)testSubject;
-		}
-		else if (testSubject instanceof CommandSender)
-		{
-			factionId = UPlayer.get(testSubject).getFactionId();
-		}
-		else if (testSubject instanceof UPlayer)
-		{
-			factionId = ((UPlayer)testSubject).getFactionId();
-		}
-		else if (testSubject instanceof Faction)
-		{
-			factionId = ((Faction)testSubject).getId();
-		}
-		return this.getHostFactionId().equals(factionId);
-	}
-
-	// -------------------------------------------- //
-	// DERPINGTON CHECKS
-	// -------------------------------------------- //
-
-	// these return false if not granted explicit access, or true if granted explicit access (in FPlayer or Faction lists)
-	// they do not take into account hostFactionAllowed, which will need to be checked separately (as to not override FPerms which are denied for faction members and such)
-	public boolean subjectHasAccess(Object testSubject)
-	{
-		if (testSubject instanceof Player)
-		{
-			return fPlayerHasAccess(UPlayer.get(testSubject));
-		}
-		else if (testSubject instanceof UPlayer)
-		{
-			return fPlayerHasAccess((UPlayer)testSubject);
-		}
-		else if (testSubject instanceof Faction)
-		{
-			return factionHasAccess((Faction)testSubject);
-		}
-		return false;
-	}
-	public boolean fPlayerHasAccess(UPlayer fplayer)
-	{
-		return this.isPlayerIdGranted(fplayer.getId()) || this.isFactionIdGranted(fplayer.getFaction().getId());
-	}
-	public boolean factionHasAccess(Faction faction)
-	{
-		return this.isFactionIdGranted(faction.getId());
-	}
-
-	// this should normally only be checked after running subjectHasAccess() or fPlayerHasAccess() above to see if they have access explicitly granted
-	public boolean subjectAccessIsRestricted(Object testSubject)
-	{
-		return (!this.isHostFactionAllowed() && this.doesHostFactionMatch(testSubject));
+		if (this.getPlayerIds().contains(uplayer.getId())) return true;
+		
+		String factionId = uplayer.getFactionId();
+		if (this.getFactionIds().contains(factionId)) return true;
+		
+		if (this.getHostFactionId().equals(factionId) && !this.isHostFactionAllowed()) return false;
+		
+		return null;
 	}
 	
 }

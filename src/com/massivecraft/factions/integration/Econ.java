@@ -89,7 +89,7 @@ public class Econ
 		if (i == fI && fI == fYou) return true;
 		
 		// Factions can be controlled by those that have permissions
-		if (you instanceof Faction && FPerm.WITHDRAW.has(i, fYou, false)) return true;
+		if (you instanceof Faction && FPerm.WITHDRAW.has(fI, fYou)) return true;
 		
 		// Otherwise you may not! ;,,;
 		i.msg("<h>%s<i> lacks permission to control <h>%s's<i> money.", i.describeTo(i, true), you.describeTo(i));

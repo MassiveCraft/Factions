@@ -46,7 +46,7 @@ public class CmdFactionsInvite extends FCommand
 		}
 		
 		// FPerm
-		if ( ! FPerm.INVITE.has(sender, usenderFaction, true)) return;
+		if ( ! FPerm.INVITE.has(usender, usenderFaction, true)) return;
 		
 		// Event
 		FactionsEventInvitedChange event = new FactionsEventInvitedChange(sender, uplayer, usenderFaction, newInvited);

@@ -39,7 +39,7 @@ public class CmdFactionsClaim extends FCommand
 		if (forFaction == null) return;
 		
 		// FPerm
-		if (forFaction.isNormal() && !FPerm.TERRITORY.has(sender, forFaction, true)) return;
+		if (forFaction.isNormal() && !FPerm.TERRITORY.has(usender, forFaction, true)) return;
 		
 		// Validate
 		if (radius < 1)

@@ -42,7 +42,7 @@ public class CmdFactionsSethome extends FCommand
 		}
 		
 		// FPerm
-		if ( ! FPerm.SETHOME.has(sender, faction, true)) return;
+		if ( ! FPerm.SETHOME.has(usender, faction, true)) return;
 		
 		// Verify
 		if (!usender.isUsingAdminMode() && !faction.isValidHome(newHome))

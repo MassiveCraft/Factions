@@ -36,7 +36,7 @@ public class CmdFactionsDisband extends FCommand
 		if (faction == null) return;
 		
 		// FPerm
-		if ( ! FPerm.DISBAND.has(sender, faction, true)) return;
+		if ( ! FPerm.DISBAND.has(usender, faction, true)) return;
 
 		// Verify
 		if (faction.getFlag(FFlag.PERMANENT))

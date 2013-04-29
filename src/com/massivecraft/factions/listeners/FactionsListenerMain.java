@@ -138,17 +138,26 @@ public class FactionsListenerMain implements Listener
 			player.sendMessage(msg);
 		}
 
-		// show access info message if needed
+		// Show access level message if it changed.
+		TerritoryAccess accessFrom = BoardColls.get().getTerritoryAccessAt(chunkFrom);
+		Boolean hasTerritoryAccessFrom = accessFrom.hasTerritoryAccess(uplayer);
+		
 		TerritoryAccess accessTo = BoardColls.get().getTerritoryAccessAt(chunkTo);
-		if (!accessTo.isDefault())
+		Boolean hasTerritoryAccessTo = accessTo.hasTerritoryAccess(uplayer);
+		
+		if (!MUtil.equals(hasTerritoryAccessFrom, hasTerritoryAccessTo))
 		{
-			if (accessTo.subjectHasAccess(uplayer))
+			if (hasTerritoryAccessTo == null)
 			{
-				uplayer.msg("<g>You have access to this area.");
+				uplayer.msg("<i>You have standard access to this area.");
 			}
-			else if (accessTo.subjectAccessIsRestricted(uplayer))
+			else if (hasTerritoryAccessTo)
 			{
-				uplayer.msg("<b>This area has restricted access.");
+				uplayer.msg("<g>You have elevated access to this area.");
+			}
+			else
+			{
+				uplayer.msg("<b>You have decreased access to this area.");
 			}
 		}
 	}
@@ -691,33 +700,32 @@ public class FactionsListenerMain implements Listener
 	// FLAG: BUILD
 	// -------------------------------------------- //
 
-	public static boolean canPlayerBuildAt(Player player, PS ps, boolean justCheck)
+	public static boolean canPlayerBuildAt(Player player, PS ps, boolean verboose)
 	{
 		String name = player.getName();
 		if (MConf.get().playersWhoBypassAllProtection.contains(name)) return true;
 
-		UPlayer me = UPlayer.get(player);
-		if (me.isUsingAdminMode()) return true;
+		UPlayer uplayer = UPlayer.get(player);
+		if (uplayer.isUsingAdminMode()) return true;
 
-		Faction factionHere = BoardColls.get().getFactionAt(ps);
-
-		if ( ! FPerm.BUILD.has(me, ps) && FPerm.PAINBUILD.has(me, ps))
+		if (!FPerm.BUILD.has(uplayer, ps, false) && FPerm.PAINBUILD.has(uplayer, ps, false))
 		{
-			if (!justCheck)
+			if (verboose)
 			{
-				me.msg("<b>It is painful to build in the territory of %s<b>.", factionHere.describeTo(me));
+				Faction hostFaction = BoardColls.get().getFactionAt(ps);
+				uplayer.msg("<b>It is painful to build in the territory of %s<b>.", hostFaction.describeTo(uplayer));
 				player.damage(UConf.get(player).actionDeniedPainAmount);
 			}
 			return true;
 		}
 		
-		return FPerm.BUILD.has(me, ps, true);
+		return FPerm.BUILD.has(uplayer, ps, verboose);
 	}
 	
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void blockBuild(HangingPlaceEvent event)
 	{
-		if (canPlayerBuildAt(event.getPlayer(), PS.valueOf(event.getEntity()), false)) return;
+		if (canPlayerBuildAt(event.getPlayer(), PS.valueOf(event.getEntity()), true)) return;
 		
 		event.setCancelled(true);
 	}
@@ -731,7 +739,7 @@ public class FactionsListenerMain implements Listener
 		Entity breaker = entityEvent.getRemover();
 		if (! (breaker instanceof Player)) return;
 
-		if ( ! canPlayerBuildAt((Player)breaker, PS.valueOf(event.getEntity()), false))
+		if ( ! canPlayerBuildAt((Player)breaker, PS.valueOf(event.getEntity()), true))
 		{
 			event.setCancelled(true);
 		}
@@ -742,7 +750,7 @@ public class FactionsListenerMain implements Listener
 	{
 		if (!event.canBuild()) return;
 
-		if (canPlayerBuildAt(event.getPlayer(), PS.valueOf(event.getBlock()), false)) return;
+		if (canPlayerBuildAt(event.getPlayer(), PS.valueOf(event.getBlock()), true)) return;
 		
 		event.setBuild(false);
 		event.setCancelled(true);
@@ -751,7 +759,7 @@ public class FactionsListenerMain implements Listener
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void blockBuild(BlockBreakEvent event)
 	{
-		if (canPlayerBuildAt(event.getPlayer(), PS.valueOf(event.getBlock()), false)) return;
+		if (canPlayerBuildAt(event.getPlayer(), PS.valueOf(event.getBlock()), true)) return;
 		
 		event.setCancelled(true);
 	}
@@ -761,7 +769,7 @@ public class FactionsListenerMain implements Listener
 	{
 		if (!event.getInstaBreak()) return;
 
-		if (canPlayerBuildAt(event.getPlayer(), PS.valueOf(event.getBlock()), false)) return;
+		if (canPlayerBuildAt(event.getPlayer(), PS.valueOf(event.getBlock()), true)) return;
 		
 		event.setCancelled(true);
 	}
@@ -781,7 +789,7 @@ public class FactionsListenerMain implements Listener
 		if (targetFaction == pistonFaction) return;
 
 		// if potentially pushing into air/water/lava in another territory, we need to check it out
-		if ((targetBlock.isEmpty() || targetBlock.isLiquid()) && ! FPerm.BUILD.has(pistonFaction, PS.valueOf(targetBlock)))
+		if ((targetBlock.isEmpty() || targetBlock.isLiquid()) && ! FPerm.BUILD.has(pistonFaction, targetFaction))
 		{
 			event.setCancelled(true);
 		}
@@ -811,7 +819,7 @@ public class FactionsListenerMain implements Listener
 		Faction targetFaction = BoardColls.get().getFactionAt(retractPs);
 		if (targetFaction == pistonFaction) return;
 
-		if (!FPerm.BUILD.has(pistonFaction, retractPs))
+		if (!FPerm.BUILD.has(pistonFaction, targetFaction))
 		{
 			event.setCancelled(true);
 		}

@@ -2,19 +2,17 @@ package com.massivecraft.factions;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.EnumSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
-
-import org.bukkit.command.CommandSender;
 
 import com.massivecraft.factions.entity.BoardColls;
 import com.massivecraft.factions.entity.UPlayer;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.UConf;
 import com.massivecraft.mcore.ps.PS;
+import com.massivecraft.mcore.util.Txt;
 
 /**
  * Permissions that you (a player) may or may not have in the territory of a certain faction.
@@ -26,21 +24,21 @@ public enum FPerm
 	// ENUM
 	// -------------------------------------------- //
 	
-	BUILD("build", "edit the terrain",             Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.ALLY),
-	PAINBUILD("painbuild", "edit, take damage"),
-	DOOR("door", "use doors",                      Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY),
-	BUTTON("button", "use stone buttons",          Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY),
-	LEVER("lever", "use levers",                   Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY),
-	CONTAINER("container", "use containers",       Rel.LEADER, Rel.OFFICER, Rel.MEMBER),
+	BUILD(true, "build", "edit the terrain",             Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.ALLY),
+	PAINBUILD(true, "painbuild", "edit, take damage"),
+	DOOR(true, "door", "use doors",                      Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY),
+	BUTTON(true, "button", "use stone buttons",          Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY),
+	LEVER(true, "lever", "use levers",                   Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY),
+	CONTAINER(true, "container", "use containers",       Rel.LEADER, Rel.OFFICER, Rel.MEMBER),
 	
-	INVITE("invite", "invite players",             Rel.LEADER, Rel.OFFICER),
-	KICK("kick", "kick members",                   Rel.LEADER, Rel.OFFICER),
-	SETHOME("sethome", "set the home",             Rel.LEADER, Rel.OFFICER),
-	WITHDRAW("withdraw", "withdraw money",         Rel.LEADER, Rel.OFFICER),
-	TERRITORY("territory", "claim or unclaim",     Rel.LEADER, Rel.OFFICER),
-	ACCESS("access", "grant territory",            Rel.LEADER, Rel.OFFICER),
-	DISBAND("disband", "disband the faction",      Rel.LEADER),
-	PERMS("perms", "manage permissions",           Rel.LEADER),
+	INVITE(false, "invite", "invite players",             Rel.LEADER, Rel.OFFICER),
+	KICK(false, "kick", "kick members",                   Rel.LEADER, Rel.OFFICER),
+	SETHOME(false, "sethome", "set the home",             Rel.LEADER, Rel.OFFICER),
+	WITHDRAW(false, "withdraw", "withdraw money",         Rel.LEADER, Rel.OFFICER),
+	TERRITORY(false, "territory", "claim or unclaim",     Rel.LEADER, Rel.OFFICER),
+	ACCESS(false, "access", "grant territory",            Rel.LEADER, Rel.OFFICER),
+	DISBAND(false, "disband", "disband the faction",      Rel.LEADER),
+	PERMS(false, "perms", "manage permissions",           Rel.LEADER),
 	
 	// END OF LIST
 	;
@@ -48,6 +46,9 @@ public enum FPerm
 	// -------------------------------------------- //
 	// FIELDS
 	// -------------------------------------------- //
+	
+	private final boolean territoryPerm;
+	public boolean isTerritoryPerm() { return this.territoryPerm; }
 	
 	private final String nicename;
 	public String getNicename() { return this.nicename; }
@@ -62,8 +63,9 @@ public enum FPerm
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	private FPerm(final String nicename, final String desc, final Rel... rels)
+	private FPerm(boolean territoryPerm, final String nicename, final String desc, final Rel... rels)
 	{
+		this.territoryPerm = territoryPerm;
 		this.nicename = nicename;
 		this.desc = desc;
 		
@@ -120,7 +122,62 @@ public enum FPerm
 	}
 	
 	// -------------------------------------------- //
-	// UTIL
+	// HAS?
+	// -------------------------------------------- //
+	
+	public String createDeniedMessage(UPlayer uplayer, Faction hostFaction)
+	{
+		String ret = Txt.parse("%s<b> does not allow you to %s<b>.", hostFaction.describeTo(uplayer, true), this.getDescription());
+		if (Perm.ADMIN.has(uplayer.getPlayer()))
+		{
+			ret += Txt.parse("\n<i>You can bypass by using " + Factions.get().getOuterCmdFactions().cmdFactionsAdmin.getUseageTemplate(false));
+		}
+		return ret;
+	}
+	
+	public boolean has(Faction faction, Faction hostFaction)
+	{
+		Rel rel = faction.getRelationTo(hostFaction);
+		return hostFaction.getPermittedRelations(this).contains(rel);
+	}
+	
+	public boolean has(UPlayer uplayer, Faction hostFaction, boolean verboose)
+	{
+		if (uplayer.isUsingAdminMode()) return true;
+		
+		Faction faction = uplayer.getFaction();
+		if (this.has(faction, hostFaction)) return true;
+		
+		if (verboose) uplayer.sendMessage(this.createDeniedMessage(uplayer, hostFaction));
+		
+		return false;
+	}
+	
+	public boolean has(UPlayer uplayer, PS ps, boolean verboose)
+	{
+		if (uplayer.isUsingAdminMode()) return true;
+		
+		TerritoryAccess ta = BoardColls.get().getTerritoryAccessAt(ps);
+		Faction hostFaction = ta.getHostFaction(ps);
+		
+		if (this.isTerritoryPerm())
+		{
+			Boolean hasTerritoryAccess = ta.hasTerritoryAccess(uplayer);
+			if (hasTerritoryAccess != null)
+			{
+				if (verboose && !hasTerritoryAccess)
+				{
+					uplayer.sendMessage(this.createDeniedMessage(uplayer, hostFaction));
+				}
+				return hasTerritoryAccess;
+			}
+		}
+		
+		return this.has(uplayer, hostFaction, verboose);
+	}
+
+	// -------------------------------------------- //
+	// UTIL: ASCII
 	// -------------------------------------------- //
 	
 	public static String getStateHeaders()
@@ -160,82 +217,5 @@ public enum FPerm
 		}
 		return ret;
 	}
-
-	// Perms which apply strictly to granting territory access
-	// TODO: This should be a boolean field within the class itself!
-	private static final Set<FPerm> TerritoryPerms = EnumSet.of(BUILD, DOOR, BUTTON, LEVER, CONTAINER);
-	public boolean isTerritoryPerm()
-	{
-		return TerritoryPerms.contains(this);
-	}
-
-	private static final String errorpattern = "%s<b> does not allow you to %s<b>.";
-	public boolean has(Object testSubject, Faction hostFaction, boolean informIfNot)
-	{
-		RelationParticipator rpSubject = null;
-		
-		if (testSubject instanceof CommandSender)
-		{
-			rpSubject = UPlayer.get(testSubject);
-		}
-		else if (testSubject instanceof RelationParticipator)
-		{
-			rpSubject = (RelationParticipator) testSubject;
-		}
-		else
-		{
-			return false;
-		}
-		
-		Rel rel = rpSubject.getRelationTo(hostFaction);
-		
-		// TODO: Create better description messages like: "You must at least be officer".
-		boolean ret = hostFaction.getPermittedRelations(this).contains(rel);
-		
-		if (rpSubject instanceof UPlayer && ret == false && ((UPlayer)rpSubject).isUsingAdminMode()) ret = true;
-		
-		if (!ret && informIfNot && rpSubject instanceof UPlayer)
-		{
-			UPlayer uplayer = (UPlayer)rpSubject;
-			uplayer.msg(errorpattern, hostFaction.describeTo(uplayer, true), this.getDescription());
-			if (Perm.ADMIN.has(uplayer.getPlayer()))
-			{
-				uplayer.msg("<i>You can bypass by using " + Factions.get().getOuterCmdFactions().cmdFactionsAdmin.getUseageTemplate(false));
-			}
-		}
-		return ret;
-	}
-	public boolean has(Object testSubject, Faction hostFaction)
-	{
-		return this.has(testSubject, hostFaction, false);
-	}
-	public boolean has(Object testSubject, PS ps, boolean informIfNot)
-	{
-		TerritoryAccess access = BoardColls.get().getTerritoryAccessAt(ps);
-		
-		if (this.isTerritoryPerm())
-		{
-			if (access.subjectHasAccess(testSubject)) return true;
-			if (access.subjectAccessIsRestricted(testSubject))
-			{
-				if (informIfNot)
-				{
-					UPlayer notify = null;
-					if (testSubject instanceof CommandSender)
-						notify = UPlayer.get(testSubject);
-					else if (testSubject instanceof UPlayer)
-						notify = (UPlayer)testSubject;
-					if (notify != null)
-						notify.msg("<b>This territory owned by your faction has restricted access.");
-				}
-				return false;
-			}
-		}
-		
-		return this.has(testSubject, BoardColls.get().getFactionAt(ps), informIfNot);
-	}
-	public boolean has(Object testSubject, PS ps)
-	{
-		return this.has(testSubject, ps, false);
-	}
+	
 }
