@@ -258,8 +258,7 @@ public class TerritoryAccess
 	// this should normally only be checked after running subjectHasAccess() or fPlayerHasAccess() above to see if they have access explicitly granted
 	public boolean subjectAccessIsRestricted(Object testSubject)
 	{
-		Faction hostFaction = FactionColls.get().get(testSubject).get(this.getHostFactionId());
-		return ( ! this.isHostFactionAllowed() && this.doesHostFactionMatch(testSubject) && ! FPerm.ACCESS.has(testSubject, hostFaction, false));
+		return (!this.isHostFactionAllowed() && this.doesHostFactionMatch(testSubject));
 	}
 	
 }
