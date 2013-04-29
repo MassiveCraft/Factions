@@ -31,7 +31,7 @@ public class CmdFactionsAccessFaction extends CmdFactionsAccessAbstract
 		if (newValue == null) return;
 		
 		// FPerm
-		if (FPerm.ACCESS.has(usender, hostFaction, true)) return;
+		if (!FPerm.ACCESS.has(usender, hostFaction, true)) return;
 		
 		// Apply
 		ta = ta.withFactionId(faction.getId(), newValue);
