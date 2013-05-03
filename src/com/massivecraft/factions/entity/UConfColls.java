@@ -2,8 +2,8 @@ package com.massivecraft.factions.entity;
 
 import com.massivecraft.factions.Const;
 import com.massivecraft.factions.Factions;
+import com.massivecraft.mcore.Aspect;
 import com.massivecraft.mcore.MCore;
-import com.massivecraft.mcore.usys.Aspect;
 
 public class UConfColls extends XColls<UConfColl, UConf>
 {

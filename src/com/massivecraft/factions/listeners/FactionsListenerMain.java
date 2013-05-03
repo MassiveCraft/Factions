@@ -650,15 +650,6 @@ public class FactionsListenerMain implements Listener
 		// If the faction at the block has firespread disabled ...
 		PS ps = PS.valueOf(block);
 		Faction faction = BoardColls.get().getFactionAt(ps);
-		
-		// TODO: Remove this debug output soon.
-		if (faction == null)
-		{
-			System.out.println("faction was null");
-			System.out.println("block was "+block);
-			System.out.println("ps was "+ps);
-			return;
-		}
 			
 		if (faction.getFlag(FFlag.FIRESPREAD)) return;
 		

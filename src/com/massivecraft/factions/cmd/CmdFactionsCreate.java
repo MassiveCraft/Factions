@@ -17,6 +17,7 @@ import com.massivecraft.factions.event.FactionsEventCreate;
 import com.massivecraft.factions.event.FactionsEventMembershipChange;
 import com.massivecraft.factions.event.FactionsEventMembershipChange.MembershipChangeReason;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
+import com.massivecraft.mcore.store.MStore;
 
 public class CmdFactionsCreate extends FCommand
 {
@@ -54,7 +55,7 @@ public class CmdFactionsCreate extends FCommand
 		}
 
 		// Pre-Generate Id
-		String factionId = coll.getIdStrategy().generate(coll);
+		String factionId = MStore.createId();
 		
 		// Event
 		FactionsEventCreate createEvent = new FactionsEventCreate(sender, coll.getUniverse(), factionId, newName);

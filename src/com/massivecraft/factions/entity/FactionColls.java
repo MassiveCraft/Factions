@@ -8,8 +8,8 @@ import java.util.Set;
 
 import com.massivecraft.factions.Const;
 import com.massivecraft.factions.Factions;
+import com.massivecraft.mcore.Aspect;
 import com.massivecraft.mcore.MCore;
-import com.massivecraft.mcore.usys.Aspect;
 import com.massivecraft.mcore.util.DiscUtil;
 import com.massivecraft.mcore.util.MUtil;
 import com.massivecraft.mcore.xlib.gson.reflect.TypeToken;

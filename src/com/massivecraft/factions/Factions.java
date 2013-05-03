@@ -40,10 +40,10 @@ import com.massivecraft.factions.task.TaskPlayerDataRemove;
 import com.massivecraft.factions.task.TaskEconLandReward;
 import com.massivecraft.factions.task.TaskPlayerPowerUpdate;
 
+import com.massivecraft.mcore.Aspect;
+import com.massivecraft.mcore.AspectColl;
 import com.massivecraft.mcore.MPlugin;
-import com.massivecraft.mcore.usys.Aspect;
-import com.massivecraft.mcore.usys.AspectColl;
-import com.massivecraft.mcore.usys.Multiverse;
+import com.massivecraft.mcore.Multiverse;
 import com.massivecraft.mcore.util.MUtil;
 import com.massivecraft.mcore.xlib.gson.Gson;
 import com.massivecraft.mcore.xlib.gson.GsonBuilder;

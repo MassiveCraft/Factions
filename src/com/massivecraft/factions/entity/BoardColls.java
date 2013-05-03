@@ -12,9 +12,9 @@ import com.massivecraft.factions.Const;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.RelationParticipator;
 import com.massivecraft.factions.TerritoryAccess;
+import com.massivecraft.mcore.Aspect;
 import com.massivecraft.mcore.ps.PS;
 import com.massivecraft.mcore.ps.PSBuilder;
-import com.massivecraft.mcore.usys.Aspect;
 import com.massivecraft.mcore.util.DiscUtil;
 import com.massivecraft.mcore.xlib.gson.reflect.TypeToken;
 
