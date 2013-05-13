@@ -4,7 +4,6 @@ import com.massivecraft.factions.cmd.req.ReqFactionsEnabled;
 import com.massivecraft.factions.cmd.req.ReqHasFaction;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.FactionColls;
-import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 import com.massivecraft.mcore.cmd.req.ReqIsPlayer;
@@ -28,9 +27,6 @@ public class CmdFactionsUnclaim extends FCommand
 		// Args
 		PS chunk = PS.valueOf(me).getChunk(true);
 		Faction newFaction = FactionColls.get().get(me).getNone();
-		
-		// FPerm
-		if (!FPerm.TERRITORY.has(usender, usenderFaction, true)) return;
 
 		// Apply
 		if (usender.tryClaim(newFaction, chunk, true, true)) return;

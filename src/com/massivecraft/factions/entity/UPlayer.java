@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 
 import com.massivecraft.factions.EconomyParticipator;
 import com.massivecraft.factions.FFlag;
+import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Lang;
 import com.massivecraft.factions.Rel;
@@ -628,32 +629,40 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 			return true;
 		}
 		
-		if (!this.isUsingAdminMode() && newFaction.isNormal())
+		if (!this.isUsingAdminMode())
 		{
-			int ownedLand = newFaction.getLandCount();
-			
-			if (mconf.worldsNoClaiming.contains(ps.getWorld()))
+			if (newFaction.isNormal())
 			{
-				msg("<b>Sorry, this world has land claiming disabled.");
-				return false;
-			}
-			
-			if (newFaction.getUPlayers().size() < uconf.claimsRequireMinFactionMembers)
-			{
-				msg("Factions must have at least <h>%s<b> members to claim land.", uconf.claimsRequireMinFactionMembers);
-				return false;
-			}
-			
-			if (uconf.claimedLandsMax != 0 && ownedLand >= uconf.claimedLandsMax && ! newFaction.getFlag(FFlag.INFPOWER))
-			{
-				msg("<b>Limit reached. You can't claim more land.");
-				return false;
-			}
-			
-			if (ownedLand >= newFaction.getPowerRounded())
-			{
-				msg("<b>You can't claim more land. You need more power.");
-				return false;
+				if (mconf.worldsNoClaiming.contains(ps.getWorld()))
+				{
+					msg("<b>Sorry, this world has land claiming disabled.");
+					return false;
+				}
+				
+				if (!FPerm.TERRITORY.has(this, newFaction, true))
+				{
+					return false;
+				}
+				
+				if (newFaction.getUPlayers().size() < uconf.claimsRequireMinFactionMembers)
+				{
+					msg("Factions must have at least <h>%s<b> members to claim land.", uconf.claimsRequireMinFactionMembers);
+					return false;
+				}
+				
+				int ownedLand = newFaction.getLandCount();
+				
+				if (uconf.claimedLandsMax != 0 && ownedLand >= uconf.claimedLandsMax && ! newFaction.getFlag(FFlag.INFPOWER))
+				{
+					msg("<b>Limit reached. You can't claim more land.");
+					return false;
+				}
+				
+				if (ownedLand >= newFaction.getPowerRounded())
+				{
+					msg("<b>You can't claim more land. You need more power.");
+					return false;
+				}
 			}
 			
 			if (oldFaction.isNormal())
@@ -689,16 +698,19 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 					return false;
 				}
 				
-				if (!oldFaction.hasLandInflation())
+				if (!FPerm.TERRITORY.has(this, oldFaction, false))
 				{
-					msg("%s<i> owns this land and is strong enough to keep it.", oldFaction.getName(this));
-					return false;
-				}
-				
-				if ( ! BoardColls.get().isBorderPs(ps))
-				{
-					msg("<b>You must start claiming land at the border of the territory.");
-					return false;
+					if (!oldFaction.hasLandInflation())
+					{
+						msg("%s<i> owns this land and is strong enough to keep it.", oldFaction.getName(this));
+						return false;
+					}
+					
+					if ( ! BoardColls.get().isBorderPs(ps))
+					{
+						msg("<b>You must start claiming land at the border of the territory.");
+						return false;
+					}
 				}
 			}
 		}
