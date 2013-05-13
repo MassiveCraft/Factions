@@ -49,7 +49,6 @@ public class CmdFactions extends FCommand
 	
 	public CmdFactions()
 	{
-		super();
 		this.aliases.addAll(ConfServer.baseCommandAliases);
 		
 		// remove any nulls from extra commas
