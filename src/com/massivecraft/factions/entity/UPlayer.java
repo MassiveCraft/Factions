@@ -663,21 +663,6 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 					msg("<b>You can't claim more land. You need more power.");
 					return false;
 				}
-			}
-			
-			if (oldFaction.isNormal())
-			{
-				if (!uconf.claimingFromOthersAllowed)
-				{
-					msg("<b>You may not claim land from others.");
-					return false;
-				}
-				
-				if (oldFaction.getRelationTo(newFaction).isAtLeast(Rel.TRUCE))
-				{
-					msg("<b>You can't claim this land due to your relation with the current owner.");
-					return false;
-				}
 				
 				if
 				(
@@ -697,9 +682,24 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 					}
 					return false;
 				}
-				
+			}
+			
+			if (oldFaction.isNormal())
+			{
 				if (!FPerm.TERRITORY.has(this, oldFaction, false))
 				{
+					if (!uconf.claimingFromOthersAllowed)
+					{
+						msg("<b>You may not claim land from others.");
+						return false;
+					}
+					
+					if (oldFaction.getRelationTo(newFaction).isAtLeast(Rel.TRUCE))
+					{
+						msg("<b>You can't claim this land due to your relation with the current owner.");
+						return false;
+					}
+					
 					if (!oldFaction.hasLandInflation())
 					{
 						msg("%s<i> owns this land and is strong enough to keep it.", oldFaction.getName(this));
