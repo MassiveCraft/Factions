@@ -224,6 +224,8 @@ public class Board extends Entity<Board> implements BoardInterface
 	@Override
 	public boolean isBorderPs(PS ps)
 	{
+		ps = ps.getChunk(true);
+		
 		PS nearby = null;
 		Faction faction = this.getFactionAt(ps);
 		
@@ -246,6 +248,8 @@ public class Board extends Entity<Board> implements BoardInterface
 	@Override
 	public boolean isConnectedPs(PS ps, Faction faction)
 	{
+		ps = ps.getChunk(true);
+		
 		PS nearby = null;
 		
 		nearby = ps.withChunkX(ps.getChunkX() +1);

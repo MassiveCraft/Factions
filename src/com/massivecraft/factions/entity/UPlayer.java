@@ -668,7 +668,7 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 				(
 					uconf.claimsMustBeConnected
 					&& newFaction.getLandCountInWorld(ps.getWorld()) > 0
-					&& !BoardColls.get().isConnectedPs(ps, newFaction)
+					&& !BoardColls.get().isConnectedPs(chunk, newFaction)
 					&& (!uconf.claimsCanBeUnconnectedIfOwnedByOtherFaction || !oldFaction.isNormal())
 				)
 				{
@@ -706,7 +706,7 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 						return false;
 					}
 					
-					if ( ! BoardColls.get().isBorderPs(ps))
+					if ( ! BoardColls.get().isBorderPs(chunk))
 					{
 						msg("<b>You must start claiming land at the border of the territory.");
 						return false;
