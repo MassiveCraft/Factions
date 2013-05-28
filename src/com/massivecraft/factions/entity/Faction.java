@@ -642,13 +642,18 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 				while (iter.hasNext())
 				{
 					Entry<FPerm, Set<Rel>> entry = iter.next();
-					FPerm key = entry.getKey();
-					if (key == null) System.out.println("key was null");
+					
+					FPerm key = entry.getKey();					
+					if (key == null)
+					{
+						// TODO: I have no idea why this key is null at times... Why?
+						System.out.println("key was null :/");
+						iter.remove();
+						continue;
+					}
+					
 					Set<Rel> keyDefault = key.getDefault(this);
 					Set<Rel> value = entry.getValue();
-					
-					if (keyDefault == null) System.out.println("keyDefault was null");
-					if (value == null) System.out.println("value was null");
 					
 					if (keyDefault.equals(value))
 					{
@@ -659,9 +664,6 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 				if (target.isEmpty()) target = null;
 			}
 		}
-		
-		//System.out.println("setPerms target:");
-		//System.out.println(Factions.get().gson.toJson(target, new TypeToken<Map<FPerm, Set<Rel>>>(){}.getType()));
 		
 		// Detect Nochange
 		if (MUtil.equals(this.perms, target)) return;

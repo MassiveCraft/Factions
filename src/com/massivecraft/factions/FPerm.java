@@ -24,12 +24,12 @@ public enum FPerm
 	// ENUM
 	// -------------------------------------------- //
 	
-	BUILD(true, "build", "edit the terrain",             Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.ALLY),
+	BUILD(true, "build", "edit the terrain",              Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.ALLY),
 	PAINBUILD(true, "painbuild", "edit, take damage"),
-	DOOR(true, "door", "use doors",                      Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY),
-	BUTTON(true, "button", "use stone buttons",          Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY),
-	LEVER(true, "lever", "use levers",                   Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY),
-	CONTAINER(true, "container", "use containers",       Rel.LEADER, Rel.OFFICER, Rel.MEMBER),
+	DOOR(true, "door", "use doors",                       Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY),
+	BUTTON(true, "button", "use stone buttons",           Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY),
+	LEVER(true, "lever", "use levers",                    Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY),
+	CONTAINER(true, "container", "use containers",        Rel.LEADER, Rel.OFFICER, Rel.MEMBER),
 	
 	INVITE(false, "invite", "invite players",             Rel.LEADER, Rel.OFFICER),
 	KICK(false, "kick", "kick members",                   Rel.LEADER, Rel.OFFICER),
