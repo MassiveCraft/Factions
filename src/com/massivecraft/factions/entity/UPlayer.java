@@ -667,9 +667,12 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 				if
 				(
 					uconf.claimsMustBeConnected
-					&& newFaction.getLandCountInWorld(ps.getWorld()) > 0
-					&& !BoardColls.get().isConnectedPs(chunk, newFaction)
-					&& (!uconf.claimsCanBeUnconnectedIfOwnedByOtherFaction || !oldFaction.isNormal())
+					&&
+					newFaction.getLandCountInWorld(ps.getWorld()) > 0
+					&&
+					!BoardColls.get().isConnectedPs(chunk, newFaction)
+					&&
+					(!uconf.claimsCanBeUnconnectedIfOwnedByOtherFaction || oldFaction.isNone())
 				)
 				{
 					if (uconf.claimsCanBeUnconnectedIfOwnedByOtherFaction)

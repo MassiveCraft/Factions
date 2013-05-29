@@ -110,7 +110,7 @@ public class UConf extends Entity<UConf>
 	
 	public boolean claimsMustBeConnected = true;
 	public boolean claimingFromOthersAllowed = true;
-	public boolean claimsCanBeUnconnectedIfOwnedByOtherFaction = true;
+	public boolean claimsCanBeUnconnectedIfOwnedByOtherFaction = false;
 	public int claimsRequireMinFactionMembers = 1;
 	public int claimedLandsMax = 0;
 	

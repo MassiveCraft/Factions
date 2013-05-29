@@ -817,7 +817,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	}
 	public int getLandCountInWorld(String worldName)
 	{
-		return BoardColls.get().get(worldName).getCount(this);
+		return Board.get(worldName).getCount(this);
 	}
 	
 	public boolean hasLandInflation()
