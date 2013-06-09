@@ -1,0 +1,53 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+group = "com.massivecraft"
+version = "1.8.2-SNAPSHOT"
+
+sourceCompatibility = 1.7
+
+repositories {
+	mavenLocal()
+    mavenCentral()
+	maven {
+		url "http://repo.bukkit.org/content/groups/public"
+	}
+	maven {
+		url "http://ci.herocraftonline.com/plugin/repository/everything"
+    }
+}
+
+dependencies {
+	compile 'org.bukkit:bukkit:1.5.2-R0.2-SNAPSHOT'
+	compile('com.massivecraft:mcore:6.3.1-SNAPSHOT') {
+		exclude module: 'ProtocolLib'
+		exclude module: 'Privileges'
+		exclude module: 'craftconomy3'
+		exclude module: 'SDFEconomy'
+	}
+    compile fileTree(dir: 'lib', include: '*.jar')
+}
+
+sourceSets {
+	main {
+		java {
+			srcDir 'src'
+		}
+		resources {
+			srcDir "$projectDir"
+			include 'plugin.yml'
+		}
+	}
+}
+
+processResources  {
+	filter ReplaceTokens, tokens: [
+		version: project.version,
+	]
+}
+
+task wrapper(type: Wrapper) {
+	gradleVersion = '1.6'
+}
