@@ -64,6 +64,32 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 		return true;
 	}
 	
+	@Override
+	public void postAttach(String id)
+	{
+		// If inited ...
+		if (!Factions.get().isDatabaseInitialized()) return;
+		
+		// ... update the index.
+		Faction faction = this.getFaction();
+		faction.uplayers.add(this);
+		
+		Factions.get().log(Txt.parse("<g>postAttach added <h>%s <i>aka <h>%s <i>to <h>%s <i>aka <h>%s<i>.", id, Mixin.getDisplayName(id), faction.getId(), faction.getName()));
+	}
+	
+	@Override
+	public void preDetach(String id)
+	{
+		// If inited ...
+		if (!Factions.get().isDatabaseInitialized()) return;
+		
+		// ... update the index.
+		Faction faction = this.getFaction();
+		faction.uplayers.remove(this);
+		
+		Factions.get().log(Txt.parse("<b>preDetach removed <h>%s <i>aka <h>%s <i>to <h>%s <i>aka <h>%s<i>.", id, Mixin.getDisplayName(id), faction.getId(), faction.getName()));
+	}
+	
 	// -------------------------------------------- //
 	// FIELDS: RAW
 	// -------------------------------------------- //
@@ -219,6 +245,23 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 		if (oldFaction != null) oldFaction.uplayers.remove(this);
 		if (faction != null) faction.uplayers.add(this);
 		
+		String oldFactionIdDesc = "NULL";
+		String oldFactionNameDesc = "NULL";
+		if (oldFaction != null)
+		{
+			oldFactionIdDesc = oldFaction.getId();
+			oldFactionNameDesc = oldFaction.getName();
+		}
+		String factionIdDesc = "NULL";
+		String factionNameDesc = "NULL";
+		if (faction != null)
+		{
+			factionIdDesc = faction.getId();
+			factionNameDesc = faction.getName();
+		}
+		
+		Factions.get().log(Txt.parse("<i>setFactionId moved <h>%s <i>aka <h>%s <i>from <h>%s <i>aka <h>%s <i>to <h>%s <i>aka <h>%s<i>.", this.getId(), Mixin.getDisplayName(this.getId()), oldFactionIdDesc, oldFactionNameDesc, factionIdDesc, factionNameDesc));
+		
 		// Mark as changed
 		this.changed();
 	}
@@ -370,8 +413,20 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 	
 	public double getLimitedPower(double power)
 	{
-		power = Math.max(power, this.getPowerMin());
-		power = Math.min(power, this.getPowerMax());
+		try
+		{
+			power = Math.max(power, this.getPowerMin());
+			power = Math.min(power, this.getPowerMax());
+		}
+		catch (Exception e)
+		{
+			System.out.println("Could not limit power for this: " + this.getId());
+			System.out.println("universe this: " + this.getUniverse());
+			System.out.println("attached this: " + this.attached());
+			System.out.println("Now dumping the data this: " + Factions.get().gson.toJson(this));
+			e.printStackTrace();
+		}
+		
 		return power;
 	}
 	
@@ -606,11 +661,11 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 				uplayer.msg("<i>%s<i> was disbanded.", myFaction.describeTo(uplayer, true));
 			}
 
-			myFaction.detach();
 			if (MConf.get().logFactionDisband)
 			{
 				Factions.get().log("The faction "+myFaction.getName()+" ("+myFaction.getId()+") was disbanded due to the last player ("+this.getName()+") leaving.");
 			}
+			myFaction.detach();
 		}
 	}
 	

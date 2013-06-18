@@ -4,7 +4,6 @@ import java.util.*;
 
 import org.bukkit.ChatColor;
 
-import com.massivecraft.mcore.money.Money;
 import com.massivecraft.mcore.store.Coll;
 import com.massivecraft.mcore.store.MStore;
 import com.massivecraft.mcore.util.Txt;
@@ -40,23 +39,6 @@ public class FactionColl extends Coll<Faction>
 		this.createSpecialFactions();
 	}
 	
-	// TODO: I hope this one is not crucial anymore.
-	// If it turns out to be I will just have to recreate the feature in the proper place.
-	/*
-	@Override
-	public Faction get(String id)
-	{
-		if ( ! this.exists(id))
-		{
-			Factions.get().log(Level.WARNING, "Non existing factionId "+id+" requested! Issuing cleaning!");
-			BoardColl.get().clean();
-			FPlayerColl.get().clean();
-		}
-		
-		return super.get(id);
-	}
-	*/
-	
 	@Override
 	public Faction get(Object oid)
 	{
@@ -74,24 +56,6 @@ public class FactionColl extends Coll<Faction>
 		return ret;
 	}
 	
-	@Override
-	public Faction detachId(Object oid)
-	{
-		Faction faction = this.get(oid);
-		Money.set(faction, 0);
-		String universe = faction.getUniverse();
-		
-		Faction ret = super.detachId(oid);
-		
-		// Clean the board
-		BoardColls.get().getForUniverse(universe).clean();
-		
-		// Clean the uplayers
-		UPlayerColls.get().getForUniverse(universe).clean();
-		
-		return ret;
-	}
-
 	// -------------------------------------------- //
 	// INDEX
 	// -------------------------------------------- //

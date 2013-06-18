@@ -21,45 +21,6 @@ public class UPlayerColl extends SenderColl<UPlayer>
 	}
 	
 	// -------------------------------------------- //
-	// OVERRIDE: COLL
-	// -------------------------------------------- //
-
-	@Override
-	protected synchronized String attach(UPlayer entity, Object oid, boolean noteChange)
-	{
-		String ret = super.attach(entity, oid, noteChange);
-		
-		// If inited ...
-		if (!this.inited()) return ret;
-		if (!Factions.get().isDatabaseInitialized()) return ret;
-		
-		// ... update the index.
-		Faction faction = entity.getFaction();
-		faction.uplayers.add(entity);
-		
-		return ret;
-	}
-	
-	@Override
-	public UPlayer detachId(Object oid)
-	{
-		UPlayer ret = this.get(oid);
-		if (ret == null) return null;
-		
-		// If inited ...
-		if (this.inited())
-		{
-			// ... update the index.
-			Faction faction = ret.getFaction();
-			faction.uplayers.remove(ret);
-		}
-		
-		super.detachId(oid);
-	
-		return ret;
-	}
-	
-	// -------------------------------------------- //
 	// EXTRAS
 	// -------------------------------------------- //
 	

@@ -142,7 +142,7 @@ public class CmdFactionsFaction extends FCommand
 		
 		for (UPlayer follower : followers)
 		{
-			if (follower.isOnline() && Mixin.isVisible(sender, follower.getId()))
+			if (follower.isOnline() && Mixin.canSee(sender, follower.getId()))
 			{
 				followerNamesOnline.add(follower.getNameAndTitle(usender));
 			}

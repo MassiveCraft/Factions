@@ -82,7 +82,7 @@ public class Factions extends MPlugin
 	public void setPowerMixin(PowerMixin powerMixin) { this.powerMixin = powerMixin; }
 	
 	// Gson without preprocessors
-	public final Gson gsonWithoutPreprocessors = this.getGsonBuilderWithotPreprocessors().create();
+	public final Gson gsonWithoutPreprocessors = this.getGsonBuilderWithoutPreprocessors().create();
 
 	// -------------------------------------------- //
 	// OVERRIDE
@@ -163,7 +163,7 @@ public class Factions extends MPlugin
 		postEnable();
 	}
 	
-	public GsonBuilder getGsonBuilderWithotPreprocessors()
+	public GsonBuilder getGsonBuilderWithoutPreprocessors()
 	{
 		return super.getGsonBuilder()
 		.registerTypeAdapter(TerritoryAccess.class, TerritoryAccessAdapter.get())
@@ -178,7 +178,7 @@ public class Factions extends MPlugin
 	@Override
 	public GsonBuilder getGsonBuilder()
 	{
-		return this.getGsonBuilderWithotPreprocessors()
+		return this.getGsonBuilderWithoutPreprocessors()
 		.registerTypeAdapter(Faction.class, FactionPreprocessAdapter.get())
 		;
 	}

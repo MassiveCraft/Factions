@@ -15,6 +15,7 @@ import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
+import com.massivecraft.mcore.util.Txt;
 
 public class CmdFactionsDisband extends FCommand
 {
@@ -75,10 +76,8 @@ public class CmdFactionsDisband extends FCommand
 		
 		if (MConf.get().logFactionDisband)
 		{
-			Factions.get().log("The faction "+faction.getName()+" ("+faction.getId()+") was disbanded by "+(senderIsConsole ? "console command" : usender.getName())+".");
-		}
-
-		
+			Factions.get().log(Txt.parse("<i>The faction <h>%s <i>(<h>%s<i>) was disbanded by <h>%s<i>.", faction.getName(), faction.getId(), usender.getDisplayName()));
+		}		
 		
 		faction.detach();
 	}

@@ -18,10 +18,12 @@ import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.RelationParticipator;
 import com.massivecraft.factions.util.*;
 import com.massivecraft.mcore.mixin.Mixin;
+import com.massivecraft.mcore.money.Money;
 import com.massivecraft.mcore.ps.PS;
 import com.massivecraft.mcore.store.Entity;
 import com.massivecraft.mcore.util.MUtil;
 import com.massivecraft.mcore.util.SenderUtil;
+import com.massivecraft.mcore.util.Txt;
 
 
 public class Faction extends Entity<Faction> implements EconomyParticipator
@@ -54,6 +56,20 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 		this.setPerms(that.perms);
 		
 		return this;
+	}
+	
+	@Override
+	public void preDetach(String id)
+	{
+		Money.set(this, 0);
+		
+		String universe = this.getUniverse();
+		
+		// Clean the board
+		BoardColls.get().getForUniverse(universe).clean();
+		
+		// Clean the uplayers
+		UPlayerColls.get().getForUniverse(universe).clean();
 	}
 	
 	// -------------------------------------------- //
@@ -844,8 +860,27 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 		}
 	}
 	
+	// TODO: Even though this check method removeds the invalid entries it's not a true solution.
+	// TODO: Find the bug causing non-attached UPlayers to be present in the index.
+	private void checkUPlayerIndex()
+	{
+		Iterator<UPlayer> iter = this.uplayers.iterator();
+		while (iter.hasNext())
+		{
+			UPlayer uplayer = iter.next();
+			if (!uplayer.attached())
+			{
+				String msg = Txt.parse("<rose>WARN: <i>Faction <h>%s <i>aka <h>%s <i>had unattached uplayer in index:", this.getName(), this.getId());
+				Factions.get().log(msg);
+				Factions.get().log(Factions.get().gson.toJson(uplayer));
+				iter.remove();
+			}
+		}
+	}
+	
 	public List<UPlayer> getUPlayers()
 	{
+		this.checkUPlayerIndex();
 		return new ArrayList<UPlayer>(this.uplayers);
 	}
 	

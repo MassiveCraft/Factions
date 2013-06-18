@@ -12,6 +12,7 @@ import com.massivecraft.factions.entity.UConf;
 import com.massivecraft.factions.event.FactionsEventMembershipChange;
 import com.massivecraft.factions.event.FactionsEventMembershipChange.MembershipChangeReason;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
+import com.massivecraft.mcore.util.Txt;
 
 public class CmdFactionsJoin extends FCommand
 {
@@ -103,9 +104,13 @@ public class CmdFactionsJoin extends FCommand
 		if (MConf.get().logFactionJoin)
 		{
 			if (samePlayer)
-				Factions.get().log("%s joined the faction %s.", uplayer.getName(), faction.getName());
+			{
+				Factions.get().log(Txt.parse("%s joined the faction %s.", uplayer.getName(), faction.getName()));
+			}
 			else
-				Factions.get().log("%s moved the player %s into the faction %s.", usender.getName(), uplayer.getName(), faction.getName());
+			{
+				Factions.get().log(Txt.parse("%s moved the player %s into the faction %s.", usender.getName(), uplayer.getName(), faction.getName()));
+			}
 		}
 	}
 }
