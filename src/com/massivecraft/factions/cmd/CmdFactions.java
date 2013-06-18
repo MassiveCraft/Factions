@@ -17,12 +17,11 @@ public class CmdFactions extends FCommand
 	public CmdFactionsLeave cmdFactionsLeave = new CmdFactionsLeave();
 	public CmdFactionsHome cmdFactionsHome = new CmdFactionsHome();
 	public CmdFactionsMap cmdFactionsMap = new CmdFactionsMap();
+	public CmdFactionsMoney cmdFactionsMoney = new CmdFactionsMoney();
 	public CmdFactionsCreate cmdFactionsCreate = new CmdFactionsCreate();
 	public CmdFactionsName cmdFactionsName = new CmdFactionsName();
 	public CmdFactionsDescription cmdFactionsDescription = new CmdFactionsDescription();
 	public CmdFactionsSethome cmdFactionsSethome = new CmdFactionsSethome();
-	public CmdFactionsPerm cmdFactionsPerm = new CmdFactionsPerm();
-	public CmdFactionsFlag cmdFactionsFlag = new CmdFactionsFlag();
 	public CmdFactionsOpen cmdFactionsOpen = new CmdFactionsOpen();
 	public CmdFactionsInvite cmdFactionsInvite = new CmdFactionsInvite();
 	public CmdFactionsKick cmdFactionsKick = new CmdFactionsKick();
@@ -31,7 +30,9 @@ public class CmdFactions extends FCommand
 	public CmdFactionsDemote cmdFactionsDemote = new CmdFactionsDemote();
 	public CmdFactionsOfficer cmdFactionsOfficer = new CmdFactionsOfficer();
 	public CmdFactionsLeader cmdFactionsLeader = new CmdFactionsLeader();
-	public CmdFactionsMoney cmdFactionsMoney = new CmdFactionsMoney();
+	public CmdFactionsPerm cmdFactionsPerm = new CmdFactionsPerm();
+	public CmdFactionsFlag cmdFactionsFlag = new CmdFactionsFlag();
+	public CmdFactionsSeeChunk cmdFactionsSeeChunk = new CmdFactionsSeeChunk();
 	public CmdFactionsClaim cmdFactionsClaim = new CmdFactionsClaim();
 	public CmdFactionsAutoClaim cmdFactionsAutoClaim = new CmdFactionsAutoClaim();
 	public CmdFactionsUnclaim cmdFactionsUnclaim = new CmdFactionsUnclaim();
@@ -41,7 +42,7 @@ public class CmdFactions extends FCommand
 	public CmdFactionsRelationTruce cmdFactionsRelationTruce = new CmdFactionsRelationTruce();
 	public CmdFactionsRelationNeutral cmdFactionsRelationNeutral = new CmdFactionsRelationNeutral();
 	public CmdFactionsRelationEnemy cmdFactionsRelationEnemy = new CmdFactionsRelationEnemy();
-	public CmdFactionsSeeChunk cmdFactionsSeeChunk = new CmdFactionsSeeChunk();
+	
 	public CmdFactionsDisband cmdFactionsDisband = new CmdFactionsDisband();
 	public CmdFactionsAdmin cmdFactionsAdmin = new CmdFactionsAdmin();
 	public CmdFactionsPowerBoost cmdFactionsPowerBoost = new CmdFactionsPowerBoost();
@@ -66,12 +67,11 @@ public class CmdFactions extends FCommand
 		this.addSubCommand(this.cmdFactionsLeave);
 		this.addSubCommand(this.cmdFactionsHome);
 		this.addSubCommand(this.cmdFactionsMap);
+		this.addSubCommand(this.cmdFactionsMoney);
 		this.addSubCommand(this.cmdFactionsCreate);
 		this.addSubCommand(this.cmdFactionsName);
 		this.addSubCommand(this.cmdFactionsDescription);
 		this.addSubCommand(this.cmdFactionsSethome);
-		this.addSubCommand(this.cmdFactionsPerm);
-		this.addSubCommand(this.cmdFactionsFlag);
 		this.addSubCommand(this.cmdFactionsOpen);
 		this.addSubCommand(this.cmdFactionsInvite);
 		this.addSubCommand(this.cmdFactionsKick);
@@ -80,7 +80,9 @@ public class CmdFactions extends FCommand
 		this.addSubCommand(this.cmdFactionsDemote);
 		this.addSubCommand(this.cmdFactionsOfficer);
 		this.addSubCommand(this.cmdFactionsLeader);
-		this.addSubCommand(this.cmdFactionsMoney);
+		this.addSubCommand(this.cmdFactionsPerm);
+		this.addSubCommand(this.cmdFactionsFlag);
+		this.addSubCommand(this.cmdFactionsSeeChunk);
 		this.addSubCommand(this.cmdFactionsClaim);
 		this.addSubCommand(this.cmdFactionsAutoClaim);
 		this.addSubCommand(this.cmdFactionsUnclaim);
@@ -90,7 +92,6 @@ public class CmdFactions extends FCommand
 		this.addSubCommand(this.cmdFactionsRelationTruce);
 		this.addSubCommand(this.cmdFactionsRelationNeutral);
 		this.addSubCommand(this.cmdFactionsRelationEnemy);
-		this.addSubCommand(this.cmdFactionsSeeChunk);
 		this.addSubCommand(this.cmdFactionsDisband);
 		this.addSubCommand(this.cmdFactionsAdmin);
 		this.addSubCommand(this.cmdFactionsPowerBoost);
