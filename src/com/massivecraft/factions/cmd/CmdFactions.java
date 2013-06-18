@@ -17,7 +17,6 @@ public class CmdFactions extends FCommand
 	public CmdFactionsLeave cmdFactionsLeave = new CmdFactionsLeave();
 	public CmdFactionsHome cmdFactionsHome = new CmdFactionsHome();
 	public CmdFactionsMap cmdFactionsMap = new CmdFactionsMap();
-	public CmdFactionsMoney cmdFactionsMoney = new CmdFactionsMoney();
 	public CmdFactionsCreate cmdFactionsCreate = new CmdFactionsCreate();
 	public CmdFactionsName cmdFactionsName = new CmdFactionsName();
 	public CmdFactionsDescription cmdFactionsDescription = new CmdFactionsDescription();
@@ -30,6 +29,7 @@ public class CmdFactions extends FCommand
 	public CmdFactionsDemote cmdFactionsDemote = new CmdFactionsDemote();
 	public CmdFactionsOfficer cmdFactionsOfficer = new CmdFactionsOfficer();
 	public CmdFactionsLeader cmdFactionsLeader = new CmdFactionsLeader();
+	public CmdFactionsMoney cmdFactionsMoney = new CmdFactionsMoney();
 	public CmdFactionsSeeChunk cmdFactionsSeeChunk = new CmdFactionsSeeChunk();
 	public CmdFactionsClaim cmdFactionsClaim = new CmdFactionsClaim();
 	public CmdFactionsAutoClaim cmdFactionsAutoClaim = new CmdFactionsAutoClaim();
@@ -66,7 +66,6 @@ public class CmdFactions extends FCommand
 		this.addSubCommand(this.cmdFactionsLeave);
 		this.addSubCommand(this.cmdFactionsHome);
 		this.addSubCommand(this.cmdFactionsMap);
-		this.addSubCommand(this.cmdFactionsMoney);
 		this.addSubCommand(this.cmdFactionsCreate);
 		this.addSubCommand(this.cmdFactionsName);
 		this.addSubCommand(this.cmdFactionsDescription);
@@ -79,6 +78,7 @@ public class CmdFactions extends FCommand
 		this.addSubCommand(this.cmdFactionsDemote);
 		this.addSubCommand(this.cmdFactionsOfficer);
 		this.addSubCommand(this.cmdFactionsLeader);
+		this.addSubCommand(this.cmdFactionsMoney);
 		this.addSubCommand(this.cmdFactionsSeeChunk);
 		this.addSubCommand(this.cmdFactionsClaim);
 		this.addSubCommand(this.cmdFactionsAutoClaim);
