@@ -30,8 +30,6 @@ public class CmdFactions extends FCommand
 	public CmdFactionsDemote cmdFactionsDemote = new CmdFactionsDemote();
 	public CmdFactionsOfficer cmdFactionsOfficer = new CmdFactionsOfficer();
 	public CmdFactionsLeader cmdFactionsLeader = new CmdFactionsLeader();
-	public CmdFactionsPerm cmdFactionsPerm = new CmdFactionsPerm();
-	public CmdFactionsFlag cmdFactionsFlag = new CmdFactionsFlag();
 	public CmdFactionsSeeChunk cmdFactionsSeeChunk = new CmdFactionsSeeChunk();
 	public CmdFactionsClaim cmdFactionsClaim = new CmdFactionsClaim();
 	public CmdFactionsAutoClaim cmdFactionsAutoClaim = new CmdFactionsAutoClaim();
@@ -42,7 +40,8 @@ public class CmdFactions extends FCommand
 	public CmdFactionsRelationTruce cmdFactionsRelationTruce = new CmdFactionsRelationTruce();
 	public CmdFactionsRelationNeutral cmdFactionsRelationNeutral = new CmdFactionsRelationNeutral();
 	public CmdFactionsRelationEnemy cmdFactionsRelationEnemy = new CmdFactionsRelationEnemy();
-	
+	public CmdFactionsPerm cmdFactionsPerm = new CmdFactionsPerm();
+	public CmdFactionsFlag cmdFactionsFlag = new CmdFactionsFlag();
 	public CmdFactionsDisband cmdFactionsDisband = new CmdFactionsDisband();
 	public CmdFactionsAdmin cmdFactionsAdmin = new CmdFactionsAdmin();
 	public CmdFactionsPowerBoost cmdFactionsPowerBoost = new CmdFactionsPowerBoost();
@@ -80,8 +79,6 @@ public class CmdFactions extends FCommand
 		this.addSubCommand(this.cmdFactionsDemote);
 		this.addSubCommand(this.cmdFactionsOfficer);
 		this.addSubCommand(this.cmdFactionsLeader);
-		this.addSubCommand(this.cmdFactionsPerm);
-		this.addSubCommand(this.cmdFactionsFlag);
 		this.addSubCommand(this.cmdFactionsSeeChunk);
 		this.addSubCommand(this.cmdFactionsClaim);
 		this.addSubCommand(this.cmdFactionsAutoClaim);
@@ -92,6 +89,8 @@ public class CmdFactions extends FCommand
 		this.addSubCommand(this.cmdFactionsRelationTruce);
 		this.addSubCommand(this.cmdFactionsRelationNeutral);
 		this.addSubCommand(this.cmdFactionsRelationEnemy);
+		this.addSubCommand(this.cmdFactionsPerm);
+		this.addSubCommand(this.cmdFactionsFlag);
 		this.addSubCommand(this.cmdFactionsDisband);
 		this.addSubCommand(this.cmdFactionsAdmin);
 		this.addSubCommand(this.cmdFactionsPowerBoost);
