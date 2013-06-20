@@ -413,19 +413,8 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 	
 	public double getLimitedPower(double power)
 	{
-		try
-		{
-			power = Math.max(power, this.getPowerMin());
-			power = Math.min(power, this.getPowerMax());
-		}
-		catch (Exception e)
-		{
-			System.out.println("Could not limit power for this: " + this.getId());
-			System.out.println("universe this: " + this.getUniverse());
-			System.out.println("attached this: " + this.attached());
-			System.out.println("Now dumping the data this: " + Factions.get().gson.toJson(this));
-			e.printStackTrace();
-		}
+		power = Math.max(power, this.getPowerMin());
+		power = Math.min(power, this.getPowerMax());
 		
 		return power;
 	}
