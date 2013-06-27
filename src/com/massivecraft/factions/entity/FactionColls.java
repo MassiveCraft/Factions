@@ -49,7 +49,7 @@ public class FactionColls extends XColls<FactionColl, Faction>
 	public void init()
 	{
 		super.init();
-
+		
 		this.migrate();
 	}
 	

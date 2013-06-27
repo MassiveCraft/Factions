@@ -61,7 +61,7 @@ public class UPlayerColls extends XColls<UPlayerColl, UPlayer>
 		// Already migrated?
 		if ( ! oldFile.exists()) return;
 		
-		// Read the file content through GSON. 
+		// Read the file content through GSON.
 		Type type = new TypeToken<Map<String, UPlayer>>(){}.getType();
 		Map<String, UPlayer> id2uplayer = Factions.get().gson.fromJson(DiscUtil.readCatch(oldFile), type);
 		
