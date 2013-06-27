@@ -51,7 +51,10 @@ public class HerochatEngine implements Listener
 		if ( ! MConf.get().chatParseTags) return;
 		
 		String format = event.getFormat();
-		format = format.replaceAll("&r", "§r");
+		
+		// We trigger a replace of HeroChats tag {default} here
+		// This way we can replace faction tags hidden withing {default} as well.
+		format = format.replace("{default}", event.getChannel().getFormatSupplier().getStandardFormat());
 		
 		format = ChatFormatter.format(format, event.getSender().getPlayer(), null); 
 		event.setFormat(format);
