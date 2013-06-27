@@ -3,19 +3,18 @@ package com.massivecraft.factions.chat.tag;
 import org.bukkit.command.CommandSender;
 
 import com.massivecraft.factions.chat.ChatTagAbstract;
-import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.UConf;
 import com.massivecraft.factions.entity.UPlayer;
 
-public class ChatTagRoleprefix extends ChatTagAbstract
+public class ChatTagRoleprefixforce extends ChatTagAbstract
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private ChatTagRoleprefix() { super("factions_roleprefix"); }
-	private static ChatTagRoleprefix i = new ChatTagRoleprefix();
-	public static ChatTagRoleprefix get() { return i; }
+	private ChatTagRoleprefixforce() { super("factions_roleprefix"); }
+	private static ChatTagRoleprefixforce i = new ChatTagRoleprefixforce();
+	public static ChatTagRoleprefixforce get() { return i; }
 	
 	// -------------------------------------------- //
 	// OVERRIDE
@@ -29,10 +28,6 @@ public class ChatTagRoleprefix extends ChatTagAbstract
 		
 		// Get entities
 		UPlayer usender = UPlayer.get(sender);
-		
-		// No "force"
-		Faction faction = usender.getFaction();
-		if (faction.isNone()) return "";
 		
 		return usender.getRole().getPrefix();
 	}

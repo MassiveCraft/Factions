@@ -30,8 +30,10 @@ public class ChatTagName extends ChatTagAbstract
 		// Get entities
 		UPlayer usender = UPlayer.get(sender);
 		
+		// No "force"
 		Faction faction = usender.getFaction();
 		if (faction.isNone()) return "";
+		
 		return faction.getName();
 	}
 
