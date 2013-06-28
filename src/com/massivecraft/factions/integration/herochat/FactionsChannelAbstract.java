@@ -1,6 +1,5 @@
 package com.massivecraft.factions.integration.herochat;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -252,7 +251,9 @@ public abstract class FactionsChannelAbstract implements Channel
 		String format = this.applyFormat(event.getFormat(), event.getBukkitFormat(), player);
 		
 		Chatter sender = Herochat.getChatterManager().getChatter(player);
-		Set<Player> recipients = new HashSet<Player>(Arrays.asList(Bukkit.getOnlinePlayers()));
+		
+		// NOTE: This line is not standard deobfuscation. It's altered to achieve the recipient limitations.
+		Set<Player> recipients = this.getRecipients(player);
 		
 		this.trimRecipients(recipients, sender);
 		String msg = String.format(format, new Object[] { player.getDisplayName(), event.getMessage() });
