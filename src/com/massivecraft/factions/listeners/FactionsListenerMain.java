@@ -240,7 +240,7 @@ public class FactionsListenerMain implements Listener
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void canCombatDamageHappen(EntityCombustByEntityEvent event)
 	{
-		EntityDamageByEntityEvent sub = new EntityDamageByEntityEvent(event.getCombuster(), event.getEntity(), EntityDamageEvent.DamageCause.FIRE, 0);
+		EntityDamageByEntityEvent sub = new EntityDamageByEntityEvent(event.getCombuster(), event.getEntity(), EntityDamageEvent.DamageCause.FIRE, 0D);
 		if (this.canCombatDamageHappen(sub, false)) return;
 		event.setCancelled(true);
 	}
@@ -256,7 +256,7 @@ public class FactionsListenerMain implements Listener
 		// ... scan through affected entities to make sure they're all valid targets.
 		for (LivingEntity affectedEntity : event.getAffectedEntities())
 		{
-			EntityDamageByEntityEvent sub = new EntityDamageByEntityEvent(thrower, affectedEntity, EntityDamageEvent.DamageCause.CUSTOM, 0);
+			EntityDamageByEntityEvent sub = new EntityDamageByEntityEvent(thrower, affectedEntity, EntityDamageEvent.DamageCause.CUSTOM, 0D);
 			if (this.canCombatDamageHappen(sub, true)) continue;
 			
 			// affected entity list doesn't accept modification (iter.remove() is a no-go), but this works
@@ -371,7 +371,7 @@ public class FactionsListenerMain implements Listener
 		}
 
 		// Damage will be dealt. However check if the damage should be reduced.
-		int damage = event.getDamage();
+		double damage = event.getDamage();
 		if (damage > 0.0 && fdefender.hasFaction() && ownTerritory && uconf.territoryShieldFactor > 0)
 		{
 			int newDamage = (int)Math.ceil(damage * (1D - uconf.territoryShieldFactor));
