@@ -57,6 +57,7 @@ import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.TerritoryAccess;
 import com.massivecraft.factions.entity.BoardColls;
+import com.massivecraft.factions.entity.FactionColls;
 import com.massivecraft.factions.entity.UPlayer;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MConf;
@@ -114,6 +115,7 @@ public class FactionsListenerMain implements Listener
 		
 		// ... and send info onwards.
 		this.chunkChangeTerritoryInfo(uplayer, player, chunkFrom, chunkTo, factionFrom, factionTo);
+		this.chunkChangeEnemyRevert(uplayer, player, chunkFrom, chunkTo, factionFrom, factionTo);
 		this.chunkChangeAutoClaim(uplayer, chunkTo);
 	}
 	
@@ -162,6 +164,27 @@ public class FactionsListenerMain implements Listener
 		}
 	}
 	
+	/**
+	 * Enemy presence on vulnerable land automatically reverts the land to wilderness
+	 * @param uplayer
+	 * @param player
+	 * @param chunkFrom
+	 * @param chunkTo
+	 * @param factionFrom
+	 * @param factionTo
+	 */
+	public void chunkChangeEnemyRevert(UPlayer uplayer, Player player, PS chunkFrom, PS chunkTo, Faction factionFrom, Faction factionTo) {
+		UConf uconf = UConf.get(uplayer);
+		if (uconf.claimsEnemyPresenceReverts &&
+				factionTo.getRelationTo(uplayer) == Rel.ENEMY &&
+				factionTo.hasLandInflation() &&
+				BoardColls.get().isBorderPs(chunkTo)) {
+			uplayer.tryClaim(FactionColls.get().get(uplayer).getNone(), chunkTo, true, true);
+			double revertAward = uconf.econEnemyRevertAward;
+			//TODO award player for reverting enemy land take reward from enemy faction
+		}
+	}
+
 	// -------------------------------------------- //
 	// CHUNK CHANGE: AUTO CLAIM
 	// -------------------------------------------- //
