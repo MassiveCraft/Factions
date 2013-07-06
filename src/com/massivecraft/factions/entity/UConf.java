@@ -11,6 +11,7 @@ import org.bukkit.command.CommandSender;
 import com.massivecraft.factions.FFlag;
 import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.Rel;
+import com.massivecraft.factions.entity.Board;
 import com.massivecraft.factions.event.FactionsEventChunkChangeType;
 import com.massivecraft.mcore.store.Entity;
 import com.massivecraft.mcore.store.SenderEntity;
@@ -114,6 +115,9 @@ public class UConf extends Entity<UConf>
 	public int claimsRequireMinFactionMembers = 1;
 	public int claimedLandsMax = 0;
 	
+	public String claimsBorderAlgoName = "ORIGINAL";
+	public Board.BorderAlgo claimsBorderAlgo = Board.BorderAlgo.valueOf(claimsBorderAlgoName);
+
 	// -------------------------------------------- //
 	// HOMES
 	// -------------------------------------------- //
