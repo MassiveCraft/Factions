@@ -115,7 +115,6 @@ public class UConf extends Entity<UConf>
 	public int claimedLandsMax = 0;
 	
 	public boolean claimsEnemyPresenceReverts = true;
-	public String claimsBorderAlgoName = "ORIGINAL";
 
 	// -------------------------------------------- //
 	// HOMES
