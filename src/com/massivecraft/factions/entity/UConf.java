@@ -7,6 +7,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.bukkit.command.CommandSender;
+import org.bukkit.event.EventPriority;
 
 import com.massivecraft.factions.FFlag;
 import com.massivecraft.factions.FPerm;
@@ -125,6 +126,9 @@ public class UConf extends Entity<UConf>
 	public boolean homesTeleportAllowedFromDifferentWorld = true;
 	public double homesTeleportAllowedEnemyDistance = 32.0;
 	public boolean homesTeleportIgnoreEnemiesIfInOwnTerritory = true;
+	
+	public boolean homesTeleportToOnDeathActive = false;
+	public EventPriority homesTeleportToOnDeathPriority = EventPriority.NORMAL;
 	
 	// -------------------------------------------- //
 	// ASSORTED
