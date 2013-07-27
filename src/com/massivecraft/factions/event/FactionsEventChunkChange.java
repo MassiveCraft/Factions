@@ -25,6 +25,7 @@ public class FactionsEventChunkChange extends FactionsEventAbstractSender
 	private final PS chunk;
 	public PS getChunk() { return this.chunk; }
 	
+	private final Faction currentFaction;
 	private final Faction newFaction;
 	public Faction getNewFaction() { return this.newFaction; }
 	
@@ -36,6 +37,7 @@ public class FactionsEventChunkChange extends FactionsEventAbstractSender
 	{
 		super(sender);
 		this.chunk = chunk.getChunk(true);
+		this.currentFaction = BoardColls.get().getFactionAt(chunk);
 		this.newFaction = newFaction;
 	}
 	
@@ -45,8 +47,6 @@ public class FactionsEventChunkChange extends FactionsEventAbstractSender
 	
 	public FactionsEventChunkChangeType getType()
 	{
-		Faction currentFaction = BoardColls.get().getFactionAt(chunk);
-		
 		if (currentFaction.isNone()) return FactionsEventChunkChangeType.BUY;
 		if (newFaction.isNormal()) return FactionsEventChunkChangeType.CONQUER;
 		
