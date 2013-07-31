@@ -587,14 +587,16 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 	
 	public boolean isInOwnTerritory()
 	{
-		// TODO: Use Mixin to get this PS instead
-		return BoardColls.get().getFactionAt(Mixin.getSenderPs(this.getId())) == this.getFaction();
+		PS ps = Mixin.getSenderPs(this.getId());
+		if (ps == null) return false;
+		return BoardColls.get().getFactionAt(ps) == this.getFaction();
 	}
 
 	public boolean isInEnemyTerritory()
 	{
-		// TODO: Use Mixin to get this PS instead
-		return BoardColls.get().getFactionAt(Mixin.getSenderPs(this.getId())).getRelationTo(this) == Rel.ENEMY;
+		PS ps = Mixin.getSenderPs(this.getId());
+		if (ps == null) return false;
+		return BoardColls.get().getFactionAt(ps).getRelationTo(this) == Rel.ENEMY;
 	}
 	
 	// -------------------------------------------- //

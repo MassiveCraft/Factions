@@ -271,7 +271,7 @@ public class FactionsListenerMain implements Listener
 		Entity edefender = event.getEntity();
 		if (!(edefender instanceof Player)) return true;
 		Player defender = (Player)edefender;
-		UPlayer fdefender = UPlayer.get(edefender);
+		UPlayer udefender = UPlayer.get(edefender);
 		
 		// Check Disabled
 		if (UConf.isDisabled(defender)) return true;
@@ -306,7 +306,7 @@ public class FactionsListenerMain implements Listener
 		// ... and if the attacker is a player ...
 		if (!(eattacker instanceof Player)) return true;
 		Player attacker = (Player)eattacker;
-		UPlayer fattacker = UPlayer.get(attacker);
+		UPlayer uattacker = UPlayer.get(attacker);
 		
 		// ... does this player bypass all protection? ...
 		if (MConf.get().playersWhoBypassAllProtection.contains(attacker.getName())) return true;
@@ -320,20 +320,20 @@ public class FactionsListenerMain implements Listener
 		// NOTE: This check is probably not that important but we could keep it anyways.
 		if (attackerPsFaction.getFlag(FFlag.PVP) == false)
 		{
-			if (notify) fattacker.msg("<i>PVP is disabled in %s.", attackerPsFaction.describeTo(fattacker));
+			if (notify) uattacker.msg("<i>PVP is disabled in %s.", attackerPsFaction.describeTo(uattacker));
 			return false;
 		}
 
 		// ... are PVP rules completely ignored in this world? ...
 		if (MConf.get().worldsIgnorePvP.contains(defenderPs.getWorld())) return true;
 
-		Faction defendFaction = fdefender.getFaction();
-		Faction attackFaction = fattacker.getFaction();
+		Faction defendFaction = udefender.getFaction();
+		Faction attackFaction = uattacker.getFaction();
 		UConf uconf = UConf.get(attackFaction);
 
 		if (attackFaction.isNone() && uconf.disablePVPForFactionlessPlayers)
 		{
-			if (notify) fattacker.msg("<i>You can't hurt other players until you join a faction.");
+			if (notify) uattacker.msg("<i>You can't hurt other players until you join a faction.");
 			return false;
 		}
 		else if (defendFaction.isNone())
@@ -345,7 +345,7 @@ public class FactionsListenerMain implements Listener
 			}
 			else if (uconf.disablePVPForFactionlessPlayers)
 			{
-				if (notify) fattacker.msg("<i>You can't hurt players who are not currently in a faction.");
+				if (notify) uattacker.msg("<i>You can't hurt players who are not currently in a faction.");
 				return false;
 			}
 		}
@@ -353,27 +353,28 @@ public class FactionsListenerMain implements Listener
 		Rel relation = defendFaction.getRelationTo(attackFaction);
 
 		// Check the relation
-		if (fdefender.hasFaction() && relation.isFriend() && defenderPsFaction.getFlag(FFlag.FRIENDLYFIRE) == false)
+		if (udefender.hasFaction() && relation.isFriend() && defenderPsFaction.getFlag(FFlag.FRIENDLYFIRE) == false)
 		{
-			if (notify) fattacker.msg("<i>You can't hurt %s<i>.", relation.getDescPlayerMany());
+			if (notify) uattacker.msg("<i>You can't hurt %s<i>.", relation.getDescPlayerMany());
 			return false;
 		}
 
 		// You can not hurt neutrals in their own territory.
-		boolean ownTerritory = fdefender.isInOwnTerritory();
-		if (fdefender.hasFaction() && ownTerritory && relation == Rel.NEUTRAL)
+		boolean ownTerritory = udefender.isInOwnTerritory();
+		
+		if (udefender.hasFaction() && ownTerritory && relation == Rel.NEUTRAL)
 		{
 			if (notify)
 			{
-				fattacker.msg("<i>You can't hurt %s<i> in their own territory unless you declare them as an enemy.", fdefender.describeTo(fattacker));
-				fdefender.msg("%s<i> tried to hurt you.", fattacker.describeTo(fdefender, true));
+				uattacker.msg("<i>You can't hurt %s<i> in their own territory unless you declare them as an enemy.", udefender.describeTo(uattacker));
+				udefender.msg("%s<i> tried to hurt you.", uattacker.describeTo(udefender, true));
 			}
 			return false;
 		}
 
 		// Damage will be dealt. However check if the damage should be reduced.
 		double damage = event.getDamage();
-		if (damage > 0.0 && fdefender.hasFaction() && ownTerritory && uconf.territoryShieldFactor > 0)
+		if (damage > 0.0 && udefender.hasFaction() && ownTerritory && uconf.territoryShieldFactor > 0)
 		{
 			int newDamage = (int)Math.ceil(damage * (1D - uconf.territoryShieldFactor));
 			event.setDamage(newDamage);
@@ -382,7 +383,7 @@ public class FactionsListenerMain implements Listener
 			if (notify)
 			{
 				String perc = MessageFormat.format("{0,number,#%}", (uconf.territoryShieldFactor)); // TODO does this display correctly??
-				fdefender.msg("<i>Enemy damage reduced by <rose>%s<i>.", perc);
+				udefender.msg("<i>Enemy damage reduced by <rose>%s<i>.", perc);
 			}
 		}
 
