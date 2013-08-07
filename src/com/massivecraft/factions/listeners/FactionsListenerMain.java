@@ -282,7 +282,9 @@ public class FactionsListenerMain implements Listener
 		{
 			eattacker = ((Projectile)eattacker).getShooter();
 		}
-		if (eattacker.equals(edefender)) return true;
+		// (we check null here since there may not be an attacker)
+		// (lack of attacker situations can be caused by other bukkit plugins)
+		if (eattacker != null && eattacker.equals(edefender)) return true;
 		
 		// ... gather defender PS and faction information ...
 		PS defenderPs = PS.valueOf(defender);
@@ -291,6 +293,12 @@ public class FactionsListenerMain implements Listener
 		// ... PVP flag may cause a damage block ...
 		if (defenderPsFaction.getFlag(FFlag.PVP) == false)
 		{
+			if (eattacker == null)
+			{
+				// No attacker?
+				// Let's behave as if it were a player
+				return false;
+			}
 			if (eattacker instanceof Player)
 			{
 				if (notify)
