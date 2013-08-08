@@ -476,7 +476,7 @@ public class FactionsListenerMain implements Listener
 		// ... if there is a faction at the players location ...
 		PS ps = PS.valueOf(player).getChunk(true);
 		Faction factionAtPs = BoardColls.get().getFactionAt(ps);
-		if (factionAtPs.isNone()) return;
+		if (factionAtPs.isNone()) return; // TODO: An NPE can arise here? Why?
 		
 		// ... the command may be denied in the territory of this relation type ...
 		Rel rel = factionAtPs.getRelationTo(uplayer);
