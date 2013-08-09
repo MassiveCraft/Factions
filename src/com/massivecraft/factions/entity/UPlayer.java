@@ -679,7 +679,7 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 		{
 			if (newFaction.isNormal())
 			{
-				if (mconf.worldsNoClaiming.contains(ps.getWorld()))
+				if (mconf.getWorldsNoClaiming().contains(ps.getWorld()))
 				{
 					msg("<b>Sorry, this world has land claiming disabled.");
 					return false;

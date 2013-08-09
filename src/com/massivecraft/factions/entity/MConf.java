@@ -3,6 +3,7 @@ package com.massivecraft.factions.entity;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventPriority;
@@ -131,8 +132,28 @@ public class MConf extends Entity<MConf>
 	public Set<String> playersWhoBypassAllProtection = new LinkedHashSet<String>();
 
 	public Set<String> worldsNoClaiming = new LinkedHashSet<String>();
+	public Set<String> getWorldsNoClaiming()
+	{
+		Set<String> ret = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
+		ret.addAll(this.worldsNoClaiming);
+		return ret;
+	}
+	
 	public Set<String> worldsNoPowerLoss = new LinkedHashSet<String>();
+	public Set<String> getWorldsNoPowerLoss()
+	{
+		Set<String> ret = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
+		ret.addAll(this.worldsNoPowerLoss);
+		return ret;
+	}
+	
 	public Set<String> worldsIgnorePvP = new LinkedHashSet<String>();
+	public Set<String> getWorldsIgnlorePvP()
+	{
+		Set<String> ret = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
+		ret.addAll(this.worldsIgnorePvP);
+		return ret;
+	}
 	
 	// -------------------------------------------- //
 	// EXPLOITS
