@@ -62,7 +62,17 @@ public class ChatFormatter
 	public static boolean unregisterTag(ChatTag tag)
 	{
 		if (tag == null) return false;
-		return idToTag.remove(tag) != null;
+		List<String> toRemove = new ArrayList<String>(2);
+		for (Map.Entry<String, ChatTag> entry : idToTag.entrySet()) {
+			if (tag.equals(entry.getValue())) {
+				toRemove.add(entry.getKey());
+			}
+		}
+		boolean success = false;
+		for (String id : toRemove) {
+			success |= idToTag.remove(id) != null;
+		}
+		return success;
 	}
 	
 	// -------------------------------------------- //
@@ -95,7 +105,17 @@ public class ChatFormatter
 	public static boolean unregisterModifier(ChatModifier modifier)
 	{
 		if (modifier == null) return false;
-		return idToModifier.remove(modifier) != null;
+		List<String> toRemove = new ArrayList<String>(2);
+		for (Map.Entry<String, ChatModifier> entry : idToModifier.entrySet()) {
+			if (modifier.equals(entry.getValue())) {
+				toRemove.add(entry.getKey());
+			}
+		}
+		boolean success = false;
+		for (String id : toRemove) {
+			success |= idToModifier.remove(id) != null;
+		}
+		return success;
 	}
 	
 	// -------------------------------------------- //
