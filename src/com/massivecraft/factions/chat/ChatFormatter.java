@@ -62,7 +62,7 @@ public class ChatFormatter
 	public static boolean unregisterTag(ChatTag tag)
 	{
 		if (tag == null) return false;
-		return idToTag.remove(tag) != null;
+		return idToTag.remove(tag.getId()) != null;
 	}
 	
 	// -------------------------------------------- //
@@ -95,7 +95,7 @@ public class ChatFormatter
 	public static boolean unregisterModifier(ChatModifier modifier)
 	{
 		if (modifier == null) return false;
-		return idToModifier.remove(modifier) != null;
+		return idToModifier.remove(modifier.getId()) != null;
 	}
 	
 	// -------------------------------------------- //
