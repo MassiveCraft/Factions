@@ -63,7 +63,7 @@ public class FactionsListenerChat implements Listener
 		{
 			try
 			{
-				if (!AsyncPlayerChatEvent.class.isAssignableFrom(event.getClass())) return;
+				if (!(event instanceof AsyncPlayerChatEvent)) return;
 				setFormat((AsyncPlayerChatEvent)event);
 			}
 			catch (Throwable t)
@@ -89,7 +89,7 @@ public class FactionsListenerChat implements Listener
 		{
 			try
 			{
-				if (!AsyncPlayerChatEvent.class.isAssignableFrom(event.getClass())) return;
+				if (!(event instanceof AsyncPlayerChatEvent)) return;
 				parseTags((AsyncPlayerChatEvent)event);
 			}
 			catch (Throwable t)
@@ -117,7 +117,7 @@ public class FactionsListenerChat implements Listener
 		{
 			try
 			{
-				if (!AsyncPlayerChatEvent.class.isAssignableFrom(event.getClass())) return;
+				if (!(event instanceof AsyncPlayerChatEvent)) return;
 				parseRelcolor((AsyncPlayerChatEvent)event);
 			}
 			catch (Throwable t)
