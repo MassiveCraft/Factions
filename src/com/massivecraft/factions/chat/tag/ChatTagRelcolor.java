@@ -23,10 +23,11 @@ public class ChatTagRelcolor extends ChatTagAbstract
 	@Override
 	public String getReplacement(CommandSender sender, CommandSender recipient)
 	{
-		if (recipient == null) return "";
-		
 		// Check disabled
 		if (UConf.isDisabled(sender)) return "";
+		
+		// Opt out if no recipient
+		if (recipient == null) return null;
 
 		// Get entities
 		UPlayer usender = UPlayer.get(sender);
