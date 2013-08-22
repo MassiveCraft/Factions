@@ -1,11 +1,6 @@
 package com.massivecraft.factions.listeners;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventException;
 import org.bukkit.event.EventPriority;
@@ -17,6 +12,7 @@ import org.bukkit.plugin.EventExecutor;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.chat.ChatFormatter;
 import com.massivecraft.factions.entity.MConf;
+import com.massivecraft.mcore.event.MCorePlayerToRecipientChatEvent;
 
 public class FactionsListenerChat implements Listener
 {
@@ -45,9 +41,9 @@ public class FactionsListenerChat implements Listener
 			Bukkit.getPluginManager().registerEvent(AsyncPlayerChatEvent.class, this, MConf.get().chatParseTagsAt, new ParseTagsEventExecutor(), Factions.get(), true);
 		}
 		
-		if (MConf.get().chatParseTags && MConf.get().chatParseRelcolor)
+		if (MConf.get().chatParseTags)
 		{
-			Bukkit.getPluginManager().registerEvent(AsyncPlayerChatEvent.class, this, EventPriority.MONITOR, new ParseRelcolorEventExecutor(), Factions.get(), true);
+			Bukkit.getPluginManager().registerEvent(MCorePlayerToRecipientChatEvent.class, this, EventPriority.NORMAL, new ParseRelcolorEventExecutor(), Factions.get(), true);
 		}
 		
 	}
@@ -74,7 +70,7 @@ public class FactionsListenerChat implements Listener
 	}
 	
 	public static void setFormat(AsyncPlayerChatEvent event)
-	{
+	{	
 		event.setFormat(MConf.get().chatSetFormatTo);
 	}
 	
@@ -117,8 +113,8 @@ public class FactionsListenerChat implements Listener
 		{
 			try
 			{
-				if (!(event instanceof AsyncPlayerChatEvent)) return;
-				parseRelcolor((AsyncPlayerChatEvent)event);
+				if (!(event instanceof MCorePlayerToRecipientChatEvent)) return;
+				parseRelcolor((MCorePlayerToRecipientChatEvent)event);
 			}
 			catch (Throwable t)
 			{
@@ -127,34 +123,11 @@ public class FactionsListenerChat implements Listener
 		}
 	}
 
-	public static void parseRelcolor(AsyncPlayerChatEvent event)
+	public static void parseRelcolor(MCorePlayerToRecipientChatEvent event)
 	{
-		// Pick the recipients!
-		Set<Player> recipients = new HashSet<Player>();
-		if (event.getRecipients().isEmpty())
-		{
-			// It's empty? Another plugin probably used this trick. Guess all.
-			recipients.addAll(Arrays.asList(Bukkit.getOnlinePlayers()));
-		}
-		else
-		{
-			recipients.addAll(event.getRecipients());
-		}
-		// Avoid the message getting sent without canceling the event.
-		event.getRecipients().clear();
-		
-		// Prepare variables
-		final Player sender = event.getPlayer();
-		
-		// Send the per recipient message
-		for (Player recipient : recipients)
-		{
-			String format = event.getFormat();
-			format = ChatFormatter.format(format, sender, recipient);
-			
-			String message = String.format(format, sender.getDisplayName(), event.getMessage());
-			recipient.sendMessage(message);
-		}
+		String format = event.getFormat();
+		format = ChatFormatter.format(format, event.getSender(), event.getRecipient());
+		event.setFormat(format);
 	}
 	
 }

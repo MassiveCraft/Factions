@@ -74,7 +74,6 @@ public class MConf extends Entity<MConf>
 	// We offer a simple standard way to parse the chat tags
 	public boolean chatParseTags = true;
 	public EventPriority chatParseTagsAt = EventPriority.LOW;
-	public boolean chatParseRelcolor = true;
 	
 	// HeroChat: The Faction Channel
 	public String herochatFactionName = "Faction";
