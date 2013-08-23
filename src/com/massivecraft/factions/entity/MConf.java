@@ -6,11 +6,14 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventPriority;
 
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.listeners.FactionsListenerChat;
 import com.massivecraft.mcore.store.Entity;
+import com.massivecraft.mcore.util.MUtil;
 
 public class MConf extends Entity<MConf>
 {
@@ -176,5 +179,65 @@ public class MConf extends Entity<MConf>
 	public boolean logLandUnclaims = true;
 	public boolean logMoneyTransactions = true;
 	public boolean logPlayerCommands = true;
+	
+	// -------------------------------------------- //
+	// ENUMERATIONS
+	// -------------------------------------------- //
+	
+	public Set<Material> MATERIALS_EDIT_ON_INTERACT = MUtil.set(
+		Material.DIODE_BLOCK_OFF,
+		Material.DIODE_BLOCK_ON,
+		Material.NOTE_BLOCK,
+		Material.CAULDRON,
+		Material.SOIL
+	);
+	
+	public Set<Material> MATERIALS_EDIT_TOOLS = MUtil.set(
+		Material.FIREBALL,
+		Material.FLINT_AND_STEEL,
+		Material.BUCKET,
+		Material.WATER_BUCKET,
+		Material.LAVA_BUCKET
+	);
+	
+	public Set<Material> MATERIALS_DOOR = MUtil.set(
+		Material.WOODEN_DOOR,
+		Material.TRAP_DOOR,
+		Material.FENCE_GATE
+	);
+	
+	public Set<Material> MATERIALS_CONTAINER = MUtil.set(
+		Material.DISPENSER,
+		Material.CHEST,
+		Material.FURNACE,
+		Material.BURNING_FURNACE,
+		Material.JUKEBOX,
+		Material.BREWING_STAND,
+		Material.ENCHANTMENT_TABLE,
+		Material.ANVIL,
+		Material.BEACON,
+		Material.TRAPPED_CHEST,
+		Material.HOPPER,
+		Material.DROPPER
+	);
+	
+	public Set<EntityType> ENTITY_TYPES_MONSTERS = MUtil.set(
+		EntityType.BLAZE,
+		EntityType.CAVE_SPIDER,
+		EntityType.CREEPER,
+		EntityType.ENDERMAN,
+		EntityType.ENDER_DRAGON,
+		EntityType.GHAST,
+		EntityType.GIANT,
+		EntityType.MAGMA_CUBE,
+		EntityType.PIG_ZOMBIE,
+		EntityType.SILVERFISH,
+		EntityType.SKELETON,
+		EntityType.SLIME,
+		EntityType.SPIDER,
+		EntityType.WITCH,
+		EntityType.WITHER,
+		EntityType.ZOMBIE
+	);
 
 }

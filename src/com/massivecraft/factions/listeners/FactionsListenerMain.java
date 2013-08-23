@@ -51,7 +51,6 @@ import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
-import com.massivecraft.factions.Const;
 import com.massivecraft.factions.FFlag;
 import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.Factions;
@@ -515,7 +514,7 @@ public class FactionsListenerMain implements Listener
 	public void blockMonsters(CreatureSpawnEvent event)
 	{
 		// If a monster is spawning ...
-		if ( ! Const.ENTITY_TYPES_MONSTERS.contains(event.getEntityType())) return;
+		if ( ! MConf.get().ENTITY_TYPES_MONSTERS.contains(event.getEntityType())) return;
 		
 		// Check Disabled
 		if (UConf.isDisabled(event.getLocation())) return;
@@ -533,7 +532,7 @@ public class FactionsListenerMain implements Listener
 	public void blockMonsters(EntityTargetEvent event)
 	{
 		// If a monster ...
-		if ( ! Const.ENTITY_TYPES_MONSTERS.contains(event.getEntityType())) return;
+		if ( ! MConf.get().ENTITY_TYPES_MONSTERS.contains(event.getEntityType())) return;
 		
 		// ... is targeting something ...
 		Entity target = event.getTarget();
@@ -860,7 +859,7 @@ public class FactionsListenerMain implements Listener
 	// TODO: Possibly incorporate pain build... 
 	public static boolean playerCanUseItemHere(Player player, PS ps, Material material, boolean justCheck)
 	{
-		if (!Const.MATERIALS_EDIT_TOOLS.contains(material)) return true;
+		if (!MConf.get().MATERIALS_EDIT_TOOLS.contains(material)) return true;
 		
 		String name = player.getName();
 		if (MConf.get().playersWhoBypassAllProtection.contains(name)) return true;
@@ -882,9 +881,9 @@ public class FactionsListenerMain implements Listener
 		PS ps = PS.valueOf(block);
 		Material material = block.getType();
 		
-		if (Const.MATERIALS_EDIT_ON_INTERACT.contains(material) && ! FPerm.BUILD.has(me, ps, ! justCheck)) return false;
-		if (Const.MATERIALS_CONTAINER.contains(material) && ! FPerm.CONTAINER.has(me, ps, ! justCheck)) return false;
-		if (Const.MATERIALS_DOOR.contains(material) && ! FPerm.DOOR.has(me, ps, ! justCheck)) return false;
+		if (MConf.get().MATERIALS_EDIT_ON_INTERACT.contains(material) && ! FPerm.BUILD.has(me, ps, ! justCheck)) return false;
+		if (MConf.get().MATERIALS_CONTAINER.contains(material) && ! FPerm.CONTAINER.has(me, ps, ! justCheck)) return false;
+		if (MConf.get().MATERIALS_DOOR.contains(material) && ! FPerm.DOOR.has(me, ps, ! justCheck)) return false;
 		if (material == Material.STONE_BUTTON && ! FPerm.BUTTON.has(me, ps, ! justCheck)) return false;
 		if (material == Material.LEVER && ! FPerm.LEVER.has(me, ps, ! justCheck)) return false;
 		return true;
