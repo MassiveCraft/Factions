@@ -573,7 +573,7 @@ public class FactionsListenerMain implements Listener
 	
 		// ... and the faction there has explosions disabled ...
 		Faction faction = BoardColls.get().getFactionAt(PS.valueOf(entity));
-		if (faction.getFlag(FFlag.EXPLOSIONS)) return;
+		if (faction.isExplosionsAllowed()) return;
 		
 		// ... then cancel.
 		event.setCancelled(true);
@@ -589,7 +589,8 @@ public class FactionsListenerMain implements Listener
 		if (UConf.isDisabled(location)) return;
 		
 		// Check the entity. Are explosions disabled there? 
-		if (BoardColls.get().getFactionAt(PS.valueOf(location)).getFlag(FFlag.EXPLOSIONS) == false)
+		
+		if (BoardColls.get().getFactionAt(PS.valueOf(location)).isExplosionsAllowed() == false)
 		{
 			event.setCancelled(true);
 			return;
@@ -601,7 +602,7 @@ public class FactionsListenerMain implements Listener
 		{
 			Block block = iter.next();
 			Faction faction = BoardColls.get().getFactionAt(PS.valueOf(block));
-			if (faction.getFlag(FFlag.EXPLOSIONS) == false) iter.remove();
+			if (faction.isExplosionsAllowed() == false) iter.remove();
 		}
 	}
 	
@@ -618,7 +619,8 @@ public class FactionsListenerMain implements Listener
 		// ... and the faction there has explosions disabled ...
 		PS ps = PS.valueOf(event.getBlock());
 		Faction faction = BoardColls.get().getFactionAt(ps);
-		if (faction.getFlag(FFlag.EXPLOSIONS)) return;
+		
+		if (faction.isExplosionsAllowed()) return;
 		
 		// ... stop the block alteration.
 		event.setCancelled(true);

@@ -897,7 +897,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 			}
 		}
 		return ret;
-	}
+	}	
 	
 	public List<UPlayer> getUPlayersWhereRole(Rel role)
 	{
@@ -1008,7 +1008,40 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 			Factions.get().log("Faction "+this.getName()+" ("+this.getId()+") leader was removed. Replacement leader: "+replacements.get(0).getName());
 		}
 	}
+	
+	// -------------------------------------------- //
+	// FACTION ONLINE STATE
+	// -------------------------------------------- //
 
+	public boolean isAllUPlayersOffline()
+	{
+		return this.getUPlayersWhereOnline(true).size() == 0;
+	}
+	
+	public boolean isAnyUPlayersOnline()
+	{
+		return !this.isAllUPlayersOffline();
+	}
+	
+	public boolean isFactionConsideredOffline()
+	{
+		return this.isAllUPlayersOffline();
+	}
+	
+	public boolean isFactionConsideredOnline()
+	{
+		return !this.isFactionConsideredOffline();
+	}
+	
+	public boolean isExplosionsAllowed()
+	{
+		boolean explosions = this.getFlag(FFlag.EXPLOSIONS);
+		boolean offlineexplosions = this.getFlag(FFlag.OFFLINE_EXPLOSIONS);
+		boolean online = this.isFactionConsideredOnline();
+		
+		return (online && explosions) || (!online && offlineexplosions);
+	}
+	
 	// -------------------------------------------- //
 	// MESSAGES
 	// -------------------------------------------- //

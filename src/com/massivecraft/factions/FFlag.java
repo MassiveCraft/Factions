@@ -32,6 +32,7 @@ public enum FFlag
 	FRIENDLYFIRE("friendlyfire", "<i>Can friends hurt eachother here?", false),
 	MONSTERS("monsters", "<i>Can monsters spawn in this territory?", true),
 	EXPLOSIONS("explosions", "<i>Can explosions occur in this territory?", true),
+	OFFLINE_EXPLOSIONS("offlineexplosions", "<i>Can explosions occur if faction is offline?", false),
 	FIRESPREAD("firespread", "<i>Can fire spread in territory?", true),
 	ENDERGRIEF("endergrief", "<i>Can endermen grief in this territory?", false),
 	
@@ -98,6 +99,7 @@ public enum FFlag
 		if (str.startsWith("fr") || str.startsWith("ff")) return FRIENDLYFIRE;
 		if (str.startsWith("m")) return MONSTERS;
 		if (str.startsWith("ex")) return EXPLOSIONS;
+		if (str.startsWith("o")) return OFFLINE_EXPLOSIONS;
 		if (str.startsWith("fi")) return FIRESPREAD;
 		if (str.startsWith("en")) return ENDERGRIEF;		
 		return null;

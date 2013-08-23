@@ -102,6 +102,7 @@ public class FactionColl extends Coll<Faction>
 		faction.setFlag(FFlag.FRIENDLYFIRE, false);
 		faction.setFlag(FFlag.MONSTERS, true);
 		faction.setFlag(FFlag.EXPLOSIONS, true);
+		faction.setFlag(FFlag.OFFLINE_EXPLOSIONS, true);
 		faction.setFlag(FFlag.FIRESPREAD, true);
 		faction.setFlag(FFlag.ENDERGRIEF, true);
 		
@@ -134,6 +135,7 @@ public class FactionColl extends Coll<Faction>
 		faction.setFlag(FFlag.FRIENDLYFIRE, false);
 		faction.setFlag(FFlag.MONSTERS, false);
 		faction.setFlag(FFlag.EXPLOSIONS, false);
+		faction.setFlag(FFlag.OFFLINE_EXPLOSIONS, false);
 		faction.setFlag(FFlag.FIRESPREAD, false);
 		faction.setFlag(FFlag.ENDERGRIEF, false);
 		
@@ -166,6 +168,7 @@ public class FactionColl extends Coll<Faction>
 		faction.setFlag(FFlag.FRIENDLYFIRE, true);
 		faction.setFlag(FFlag.MONSTERS, true);
 		faction.setFlag(FFlag.EXPLOSIONS, true);
+		faction.setFlag(FFlag.OFFLINE_EXPLOSIONS, true);
 		faction.setFlag(FFlag.FIRESPREAD, true);
 		faction.setFlag(FFlag.ENDERGRIEF, true);
 		
