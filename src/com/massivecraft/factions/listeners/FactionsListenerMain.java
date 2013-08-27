@@ -484,7 +484,7 @@ public class FactionsListenerMain implements Listener
 		if (deniedCommands == null) return;
 		if (!containsCommand(command, deniedCommands)) return;
 		
-		uplayer.msg("<b>You can't use \"<h>/%s<b>\" in %s territory.", Txt.getNicedEnum(rel), command);
+		uplayer.msg("<b>You can't use \"<h>/%s<b>\" in %s territory.", command, Txt.getNicedEnum(rel));
 		event.setCancelled(true);
 	}
 
