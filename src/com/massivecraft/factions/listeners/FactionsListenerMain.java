@@ -68,6 +68,7 @@ import com.massivecraft.factions.event.FactionsEventPowerChange.PowerChangeReaso
 import com.massivecraft.factions.util.VisualizeUtil;
 import com.massivecraft.mcore.ps.PS;
 import com.massivecraft.mcore.util.MUtil;
+import com.massivecraft.mcore.util.PlayerUtil;
 import com.massivecraft.mcore.util.Txt;
 
 public class FactionsListenerMain implements Listener
@@ -185,6 +186,10 @@ public class FactionsListenerMain implements Listener
 	{
 		// If a player dies ...
 		Player player = event.getEntity();
+		
+		// ... and this is the first death event this tick ...
+		// (yeah other plugins can case death event to fire twice the same tick)
+		if (PlayerUtil.isDuplicateDeathEvent(event)) return;
 		
 		// Check Disabled
 		if (UConf.isDisabled(player)) return;
