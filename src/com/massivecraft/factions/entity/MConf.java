@@ -184,7 +184,7 @@ public class MConf extends Entity<MConf>
 	// ENUMERATIONS
 	// -------------------------------------------- //
 	
-	public Set<Material> MATERIALS_EDIT_ON_INTERACT = MUtil.set(
+	public Set<Material> materialsEditOnInteract = MUtil.set(
 		Material.DIODE_BLOCK_OFF,
 		Material.DIODE_BLOCK_ON,
 		Material.NOTE_BLOCK,
@@ -192,7 +192,7 @@ public class MConf extends Entity<MConf>
 		Material.SOIL
 	);
 	
-	public Set<Material> MATERIALS_EDIT_TOOLS = MUtil.set(
+	public Set<Material> materialsEditTools = MUtil.set(
 		Material.FIREBALL,
 		Material.FLINT_AND_STEEL,
 		Material.BUCKET,
@@ -200,13 +200,13 @@ public class MConf extends Entity<MConf>
 		Material.LAVA_BUCKET
 	);
 	
-	public Set<Material> MATERIALS_DOOR = MUtil.set(
+	public Set<Material> materialsDoor = MUtil.set(
 		Material.WOODEN_DOOR,
 		Material.TRAP_DOOR,
 		Material.FENCE_GATE
 	);
 	
-	public Set<Material> MATERIALS_CONTAINER = MUtil.set(
+	public Set<Material> materialsContainer = MUtil.set(
 		Material.DISPENSER,
 		Material.CHEST,
 		Material.FURNACE,
@@ -221,7 +221,7 @@ public class MConf extends Entity<MConf>
 		Material.DROPPER
 	);
 	
-	public Set<EntityType> ENTITY_TYPES_MONSTERS = MUtil.set(
+	public Set<EntityType> entityTypesMonsters = MUtil.set(
 		EntityType.BLAZE,
 		EntityType.CAVE_SPIDER,
 		EntityType.CREEPER,
