@@ -2,7 +2,6 @@ package com.massivecraft.factions.entity;
 
 import com.massivecraft.factions.Perm;
 import com.massivecraft.mcore.store.SenderEntity;
-import com.massivecraft.mcore.xlib.gson.JsonObject;
 
 public class MPlayer extends SenderEntity<MPlayer>
 {
@@ -24,7 +23,6 @@ public class MPlayer extends SenderEntity<MPlayer>
 	{
 		this.mapAutoUpdating = that.mapAutoUpdating;
 		this.usingAdminMode = that.usingAdminMode;
-		this.setCustomData(that.getCustomData());
 		
 		return this;
 	}
@@ -34,7 +32,6 @@ public class MPlayer extends SenderEntity<MPlayer>
 	{
 		if (this.isMapAutoUpdating()) return false;
 		if (this.isUsingAdminMode()) return false;
-		if (this.getCustomData() != null && this.getCustomData().entrySet().size() > 0) return false;
 		
 		return true;
 	}
@@ -58,10 +55,5 @@ public class MPlayer extends SenderEntity<MPlayer>
 		return this.usingAdminMode;
 	}
 	public void setUsingAdminMode(boolean usingAdminMode) { this.usingAdminMode = usingAdminMode; this.changed(); }
-	
-	// Custom Data - Since JsonObject is mutable there is not point to using fancy getters/setters.
-	private JsonObject customData = null;
-	public JsonObject getCustomData() { return this.customData; }
-	public void setCustomData(JsonObject customData) { this.customData = customData; }
 	
 }
