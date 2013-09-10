@@ -24,6 +24,7 @@ import com.massivecraft.mcore.store.Entity;
 import com.massivecraft.mcore.util.MUtil;
 import com.massivecraft.mcore.util.SenderUtil;
 import com.massivecraft.mcore.util.Txt;
+import com.massivecraft.mcore.xlib.gson.JsonObject;
 
 
 public class Faction extends Entity<Faction> implements EconomyParticipator
@@ -54,6 +55,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 		this.setRelationWishes(that.relationWishes);
 		this.setFlags(that.flags);
 		this.setPerms(that.perms);
+		this.setCustomData(that.getCustomData());
 		
 		return this;
 	}
@@ -124,6 +126,11 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	// The perm overrides are modifications to the default values.
 	// Null means default for the universe.
 	private Map<FPerm, Set<Rel>> perms = null;
+	
+	// Custom Data - Since JsonObject is mutable there is not point to using fancy getters/setters.
+	private JsonObject customData = null;
+	public JsonObject getCustomData() { return this.customData; }
+	public void setCustomData(JsonObject customData) { this.customData = customData; }
 	
 	// -------------------------------------------- //
 	// FIELD: id

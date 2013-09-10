@@ -24,6 +24,7 @@ import com.massivecraft.mcore.store.SenderEntity;
 import com.massivecraft.mcore.util.MUtil;
 import com.massivecraft.mcore.util.SenderUtil;
 import com.massivecraft.mcore.util.Txt;
+import com.massivecraft.mcore.xlib.gson.JsonObject;
 
 
 public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipator
@@ -49,6 +50,7 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 		this.setTitle(that.title);
 		this.setPowerBoost(that.powerBoost);
 		this.setPower(that.power);
+		this.setCustomData(that.getCustomData());
 		
 		return this;
 	}
@@ -60,6 +62,7 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 		// Role means nothing without a faction.
 		// Title means nothing without a faction.
 		if (this.getPowerRounded() != (int) Math.round(UConf.get(this).defaultPlayerPower)) return false;
+		if (this.getCustomData() != null && this.getCustomData().entrySet().size() > 0) return false;
 		
 		return true;
 	}
@@ -133,6 +136,11 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 	private transient Faction autoClaimFaction = null;
 	public Faction getAutoClaimFaction() { return this.autoClaimFaction; }
 	public void setAutoClaimFaction(Faction autoClaimFaction) { this.autoClaimFaction = autoClaimFaction; }
+	
+	// Custom Data - Since JsonObject is mutable there is not point to using fancy getters/setters.
+	private JsonObject customData = null;
+	public JsonObject getCustomData() { return this.customData; }
+	public void setCustomData(JsonObject customData) { this.customData = customData; }
 	
 	// -------------------------------------------- //
 	// FIELDS: MULTIVERSE PROXY
