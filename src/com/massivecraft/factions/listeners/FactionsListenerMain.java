@@ -388,7 +388,7 @@ public class FactionsListenerMain implements Listener
 		double damage = event.getDamage();
 		if (damage > 0.0 && udefender.hasFaction() && ownTerritory && uconf.territoryShieldFactor > 0)
 		{
-			int newDamage = (int)Math.ceil(damage * (1D - uconf.territoryShieldFactor));
+			double newDamage = (double)Math.ceil(damage * (1D - uconf.territoryShieldFactor));
 			event.setDamage(newDamage);
 
 			// Send message
@@ -721,7 +721,7 @@ public class FactionsListenerMain implements Listener
 			{
 				Faction hostFaction = BoardColls.get().getFactionAt(ps);
 				uplayer.msg("<b>It is painful to build in the territory of %s<b>.", hostFaction.describeTo(uplayer));
-				player.damage(UConf.get(player).actionDeniedPainAmount);
+				player.damage((double)UConf.get(player).actionDeniedPainAmount);
 			}
 			return true;
 		}
