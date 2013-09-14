@@ -135,10 +135,10 @@ public class UConf extends Entity<UConf>
 	// -------------------------------------------- //
 	
 	public boolean permanentFactionsDisableLeaderPromotion = false;
-	public int actionDeniedPainAmount = 2;
+	public double actionDeniedPainAmount = 2.0D;
 	public boolean disablePVPForFactionlessPlayers = false;
 	public boolean enablePVPAgainstFactionlessInAttackersLand = false;
-	public double territoryShieldFactor = 0.3;
+	public double territoryShieldFactor = 0.3D;
 	
 	// -------------------------------------------- //
 	// DENY COMMANDS

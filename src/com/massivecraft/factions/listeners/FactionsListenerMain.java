@@ -388,7 +388,7 @@ public class FactionsListenerMain implements Listener
 		double damage = event.getDamage();
 		if (damage > 0.0 && udefender.hasFaction() && ownTerritory && uconf.territoryShieldFactor > 0)
 		{
-			int newDamage = (int)Math.ceil(damage * (1D - uconf.territoryShieldFactor));
+			double newDamage = damage * (1D - uconf.territoryShieldFactor);
 			event.setDamage(newDamage);
 
 			// Send message
