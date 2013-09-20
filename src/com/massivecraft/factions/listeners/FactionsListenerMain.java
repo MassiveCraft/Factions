@@ -688,7 +688,7 @@ public class FactionsListenerMain implements Listener
 	public void blockFireSpread(BlockSpreadEvent event)
 	{
 		// If fire is spreading ...
-		if (event.getNewState().getTypeId() != 51) return;
+		if (event.getNewState().getType() != Material.FIRE) return;
 		
 		// ... consider blocking it.
 		blockFireSpread(event.getBlock(), event);
