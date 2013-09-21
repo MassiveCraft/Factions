@@ -344,7 +344,7 @@ public class FactionsListenerMain implements Listener
 		// NOTE: This check is probably not that important but we could keep it anyways.
 		if (attackerPsFaction.getFlag(FFlag.PVP) == false)
 		{
-			ret = falseUnlessDisallowedPvpEventCancelled((Player)eattacker, defender, event);
+			ret = falseUnlessDisallowedPvpEventCancelled(attacker, defender, event);
 			if (!ret && notify) uattacker.msg("<i>PVP is disabled in %s.", attackerPsFaction.describeTo(uattacker));
 			return ret;
 		}
@@ -358,7 +358,7 @@ public class FactionsListenerMain implements Listener
 
 		if (attackFaction.isNone() && uconf.disablePVPForFactionlessPlayers)
 		{
-			ret = falseUnlessDisallowedPvpEventCancelled((Player)eattacker, defender, event);
+			ret = falseUnlessDisallowedPvpEventCancelled(attacker, defender, event);
 			if (!ret && notify) uattacker.msg("<i>You can't hurt other players until you join a faction.");
 			return ret;
 		}
@@ -371,7 +371,7 @@ public class FactionsListenerMain implements Listener
 			}
 			else if (uconf.disablePVPForFactionlessPlayers)
 			{
-				ret = falseUnlessDisallowedPvpEventCancelled((Player)eattacker, defender, event);
+				ret = falseUnlessDisallowedPvpEventCancelled(attacker, defender, event);
 				if (!ret && notify) uattacker.msg("<i>You can't hurt players who are not currently in a faction.");
 				return ret;
 			}
@@ -382,7 +382,7 @@ public class FactionsListenerMain implements Listener
 		// Check the relation
 		if (udefender.hasFaction() && relation.isFriend() && defenderPsFaction.getFlag(FFlag.FRIENDLYFIRE) == false)
 		{
-			ret = falseUnlessDisallowedPvpEventCancelled((Player)eattacker, defender, event);
+			ret = falseUnlessDisallowedPvpEventCancelled(attacker, defender, event);
 			if (!ret && notify) uattacker.msg("<i>You can't hurt %s<i>.", relation.getDescPlayerMany());
 			return ret;
 		}
@@ -392,7 +392,7 @@ public class FactionsListenerMain implements Listener
 		
 		if (udefender.hasFaction() && ownTerritory && relation == Rel.NEUTRAL)
 		{
-			ret = falseUnlessDisallowedPvpEventCancelled((Player)eattacker, defender, event);
+			ret = falseUnlessDisallowedPvpEventCancelled(attacker, defender, event);
 			if (!ret && notify)
 			{
 				uattacker.msg("<i>You can't hurt %s<i> in their own territory unless you declare them as an enemy.", udefender.describeTo(uattacker));
