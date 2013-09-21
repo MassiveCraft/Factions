@@ -63,6 +63,7 @@ import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.entity.UConf;
 import com.massivecraft.factions.entity.UPlayerColl;
 import com.massivecraft.factions.entity.UPlayerColls;
+import com.massivecraft.factions.event.FactionsEventPvpDisallowed;
 import com.massivecraft.factions.event.FactionsEventPowerChange;
 import com.massivecraft.factions.event.FactionsEventPowerChange.PowerChangeReason;
 import com.massivecraft.factions.util.VisualizeUtil;
@@ -269,8 +270,18 @@ public class FactionsListenerMain implements Listener
 		}
 	}
 
+	// Utility method used in "canCombatDamageHappen" below.
+	public static boolean falseUnlessDisallowedPvpEventCancelled(Player attacker, Player defender, EntityDamageByEntityEvent event)
+	{
+		FactionsEventPvpDisallowed dpe = new FactionsEventPvpDisallowed(attacker, defender, event);
+		dpe.run();
+		return dpe.isCancelled();
+	}
+	
 	public boolean canCombatDamageHappen(EntityDamageByEntityEvent event, boolean notify)
-	{	
+	{
+		boolean ret = true;
+		
 		// If the defender is a player ...
 		Entity edefender = event.getEntity();
 		if (!(edefender instanceof Player)) return true;
@@ -301,16 +312,17 @@ public class FactionsListenerMain implements Listener
 			{
 				// No attacker?
 				// Let's behave as if it were a player
-				return false;
+				return falseUnlessDisallowedPvpEventCancelled(null, defender, event);
 			}
 			if (eattacker instanceof Player)
 			{
-				if (notify)
+				ret = falseUnlessDisallowedPvpEventCancelled((Player)eattacker, defender, event);
+				if (!ret && notify)
 				{
 					UPlayer attacker = UPlayer.get(eattacker);
 					attacker.msg("<i>PVP is disabled in %s.", defenderPsFaction.describeTo(attacker));
 				}
-				return false;
+				return ret;
 			}
 			return defenderPsFaction.getFlag(FFlag.MONSTERS);
 		}
@@ -332,8 +344,9 @@ public class FactionsListenerMain implements Listener
 		// NOTE: This check is probably not that important but we could keep it anyways.
 		if (attackerPsFaction.getFlag(FFlag.PVP) == false)
 		{
-			if (notify) uattacker.msg("<i>PVP is disabled in %s.", attackerPsFaction.describeTo(uattacker));
-			return false;
+			ret = falseUnlessDisallowedPvpEventCancelled((Player)eattacker, defender, event);
+			if (!ret && notify) uattacker.msg("<i>PVP is disabled in %s.", attackerPsFaction.describeTo(uattacker));
+			return ret;
 		}
 
 		// ... are PVP rules completely ignored in this world? ...
@@ -345,8 +358,9 @@ public class FactionsListenerMain implements Listener
 
 		if (attackFaction.isNone() && uconf.disablePVPForFactionlessPlayers)
 		{
-			if (notify) uattacker.msg("<i>You can't hurt other players until you join a faction.");
-			return false;
+			ret = falseUnlessDisallowedPvpEventCancelled((Player)eattacker, defender, event);
+			if (!ret && notify) uattacker.msg("<i>You can't hurt other players until you join a faction.");
+			return ret;
 		}
 		else if (defendFaction.isNone())
 		{
@@ -357,8 +371,9 @@ public class FactionsListenerMain implements Listener
 			}
 			else if (uconf.disablePVPForFactionlessPlayers)
 			{
-				if (notify) uattacker.msg("<i>You can't hurt players who are not currently in a faction.");
-				return false;
+				ret = falseUnlessDisallowedPvpEventCancelled((Player)eattacker, defender, event);
+				if (!ret && notify) uattacker.msg("<i>You can't hurt players who are not currently in a faction.");
+				return ret;
 			}
 		}
 
@@ -367,8 +382,9 @@ public class FactionsListenerMain implements Listener
 		// Check the relation
 		if (udefender.hasFaction() && relation.isFriend() && defenderPsFaction.getFlag(FFlag.FRIENDLYFIRE) == false)
 		{
-			if (notify) uattacker.msg("<i>You can't hurt %s<i>.", relation.getDescPlayerMany());
-			return false;
+			ret = falseUnlessDisallowedPvpEventCancelled((Player)eattacker, defender, event);
+			if (!ret && notify) uattacker.msg("<i>You can't hurt %s<i>.", relation.getDescPlayerMany());
+			return ret;
 		}
 
 		// You can not hurt neutrals in their own territory.
@@ -376,12 +392,13 @@ public class FactionsListenerMain implements Listener
 		
 		if (udefender.hasFaction() && ownTerritory && relation == Rel.NEUTRAL)
 		{
-			if (notify)
+			ret = falseUnlessDisallowedPvpEventCancelled((Player)eattacker, defender, event);
+			if (!ret && notify)
 			{
 				uattacker.msg("<i>You can't hurt %s<i> in their own territory unless you declare them as an enemy.", udefender.describeTo(uattacker));
 				udefender.msg("%s<i> tried to hurt you.", uattacker.describeTo(udefender, true));
 			}
-			return false;
+			return ret;
 		}
 
 		// Damage will be dealt. However check if the damage should be reduced.
