@@ -7,8 +7,8 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import com.massivecraft.factions.entity.UPlayer;
 
 /**
- * This event is fired when PVP is disallowed between players due to a "pvp deny" flag.
- * Canceling this event allows the PVP in spite of this.
+ * This event is fired when PVP is disallowed between players due to any rules in Factions.
+ * Canceling this event allows the PVP in spite of this and stops text messages from being sent.
  * 
  * Note that the defender field always is set but the attacker can be null.
  * Some other plugins seem to fire EntityDamageByEntityEvent without an attacker.
