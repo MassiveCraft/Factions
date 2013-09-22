@@ -2,8 +2,10 @@ package com.massivecraft.factions.listeners;
 
 import java.text.MessageFormat;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -604,6 +606,14 @@ public class FactionsListenerMain implements Listener
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void blockExplosion(EntityExplodeEvent event)
 	{
+		// Prepare some variables:
+		// Current faction
+		Faction faction = null;
+		// Current allowed
+		Boolean allowed = true;
+		// Caching to speed things up.
+		Map<Faction, Boolean> faction2allowed = new HashMap<Faction, Boolean>();
+				
 		// If an explosion occurs at a location ...
 		Location location = event.getLocation();
 		
@@ -611,20 +621,29 @@ public class FactionsListenerMain implements Listener
 		if (UConf.isDisabled(location)) return;
 		
 		// Check the entity. Are explosions disabled there? 
-		
-		if (BoardColls.get().getFactionAt(PS.valueOf(location)).isExplosionsAllowed() == false)
+		faction = BoardColls.get().getFactionAt(PS.valueOf(location));
+		allowed = faction.isExplosionsAllowed();
+		if (allowed == false)
 		{
 			event.setCancelled(true);
 			return;
 		}
+		faction2allowed.put(faction, allowed);
 		
 		// Individually check the flag state for each block
 		Iterator<Block> iter = event.blockList().iterator();
 		while (iter.hasNext())
 		{
 			Block block = iter.next();
-			Faction faction = BoardColls.get().getFactionAt(PS.valueOf(block));
-			if (faction.isExplosionsAllowed() == false) iter.remove();
+			faction = BoardColls.get().getFactionAt(PS.valueOf(block));
+			allowed = faction2allowed.get(faction);
+			if (allowed == null)
+			{
+				allowed = faction.isExplosionsAllowed();
+				faction2allowed.put(faction, allowed);
+			}
+			
+			if (allowed == false) iter.remove();
 		}
 	}
 	
