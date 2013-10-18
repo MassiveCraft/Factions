@@ -21,7 +21,7 @@ public class BoardColl extends Coll<Board> implements BoardInterface
 	
 	public BoardColl(String name)
 	{
-		super(name, Board.class, MStore.getDb(ConfServer.dburi), Factions.get(), true, true);
+		super(name, Board.class, MStore.getDb(ConfServer.dburi), Factions.get(), false, true, true);
 	}
 	
 	// -------------------------------------------- //

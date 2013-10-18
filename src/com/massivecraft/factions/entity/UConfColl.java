@@ -14,7 +14,7 @@ public class UConfColl extends Coll<UConf>
 	
 	public UConfColl(String name)
 	{
-		super(name, UConf.class, MStore.getDb(ConfServer.dburi), Factions.get(), true, false);
+		super(name, UConf.class, MStore.getDb(ConfServer.dburi), Factions.get());
 	}
 	
 	// -------------------------------------------- //
@@ -25,8 +25,7 @@ public class UConfColl extends Coll<UConf>
 	public void init()
 	{
 		super.init();
-		
-		this.get(MCore.INSTANCE);
+		this.get(MCore.INSTANCE, true);
 	}
 	
 }

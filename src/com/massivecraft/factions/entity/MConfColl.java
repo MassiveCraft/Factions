@@ -17,7 +17,7 @@ public class MConfColl extends Coll<MConf>
 	public static MConfColl get() { return i; }
 	private MConfColl()
 	{
-		super(Const.COLLECTION_BASENAME_MCONF, MConf.class, MStore.getDb(ConfServer.dburi), Factions.get(), true, false);
+		super(Const.COLLECTION_BASENAME_MCONF, MConf.class, MStore.getDb(ConfServer.dburi), Factions.get());
 	}
 	
 	// -------------------------------------------- //
@@ -29,7 +29,7 @@ public class MConfColl extends Coll<MConf>
 	{
 		super.init();
 		
-		MConf.i = this.get(MCore.INSTANCE);
+		MConf.i = this.get(MCore.INSTANCE, true);
 	}
 	
 }
