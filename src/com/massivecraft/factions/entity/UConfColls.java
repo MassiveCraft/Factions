@@ -33,7 +33,7 @@ public class UConfColls extends XColls<UConfColl, UConf>
 	@Override
 	public String getBasename()
 	{
-		return Const.COLLECTION_BASENAME_UCONF;
+		return Const.COLLECTION_UCONF;
 	}
 	
 	@Override

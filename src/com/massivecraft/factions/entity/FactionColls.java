@@ -42,7 +42,7 @@ public class FactionColls extends XColls<FactionColl, Faction>
 	@Override
 	public String getBasename()
 	{
-		return Const.COLLECTION_BASENAME_FACTION;
+		return Const.COLLECTION_FACTION;
 	}
 	
 	@Override

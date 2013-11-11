@@ -10,16 +10,27 @@ import com.massivecraft.mcore.ps.PS;
 
 public class CmdFactionsMap extends FCommand
 {
+	// -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
+	
 	public CmdFactionsMap()
 	{
+		// Aliases
 		this.addAliases("map");
-		
+
+		// Args
 		this.addOptionalArg("on/off", "once");
-		
+
+		// Requirements
 		this.addRequirements(ReqFactionsEnabled.get());
 		this.addRequirements(ReqHasPerm.get(Perm.MAP.node));
 		this.addRequirements(ReqIsPlayer.get());
 	}
+
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
 	
 	@Override
 	public void perform()

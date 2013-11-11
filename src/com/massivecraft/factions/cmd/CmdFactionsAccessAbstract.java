@@ -17,15 +17,28 @@ import com.massivecraft.mcore.util.Txt;
 
 public abstract class CmdFactionsAccessAbstract extends FCommand
 {
+	// -------------------------------------------- //
+	// FIELDS
+	// -------------------------------------------- //
+	
 	public PS chunk;
 	public TerritoryAccess ta;
 	public Faction hostFaction;
 	
+	// -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
+	
 	public CmdFactionsAccessAbstract()
 	{
+		// Requirements
 		this.addRequirements(ReqFactionsEnabled.get());
 		this.addRequirements(ReqIsPlayer.get());
 	}
+	
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
 	
 	@Override
 	public void perform()
@@ -58,4 +71,5 @@ public abstract class CmdFactionsAccessAbstract extends FCommand
 		}
 		return Txt.implodeCommaAnd(descriptions, Txt.parse("<i>, "), Txt.parse(" <i>and "));
 	}
+	
 }

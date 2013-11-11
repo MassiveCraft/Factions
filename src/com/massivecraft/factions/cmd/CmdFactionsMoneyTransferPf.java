@@ -20,18 +20,29 @@ import org.bukkit.ChatColor;
 
 public class CmdFactionsMoneyTransferPf extends FCommand
 {
+	// -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
+	
 	public CmdFactionsMoneyTransferPf()
 	{
+		// Aliases
 		this.addAliases("pf");
-		
+
+		// Args
 		this.addRequiredArg("amount");
 		this.addRequiredArg("player");
 		this.addRequiredArg("faction");
-		
+
+		// Requirements
 		this.addRequirements(ReqFactionsEnabled.get());
 		this.addRequirements(ReqHasPerm.get(Perm.MONEY_P2F.node));
 		this.addRequirements(ReqBankCommandsEnabled.get());
 	}
+
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
 	
 	@Override
 	public void perform()
@@ -52,4 +63,5 @@ public class CmdFactionsMoneyTransferPf extends FCommand
 			Factions.get().log(ChatColor.stripColor(Txt.parse("%s transferred %s from the player \"%s\" to the faction \"%s\"", usender.getName(), Money.format(from, amount), from.describeTo(null), to.describeTo(null))));
 		}
 	}
+	
 }

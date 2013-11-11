@@ -14,18 +14,29 @@ import com.massivecraft.mcore.cmd.req.ReqIsPlayer;
 
 public class CmdFactionsInvite extends FCommand
 {
+	// -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
+	
 	public CmdFactionsInvite()
 	{
+		// Aliases
 		this.addAliases("inv", "invite");
-		
+
+		// Args
 		this.addRequiredArg("player");
 		this.addOptionalArg("yes/no", "toggle");
-		
+
+		// Requirements
 		this.addRequirements(ReqFactionsEnabled.get());
 		this.addRequirements(ReqHasPerm.get(Perm.INVITE.node));
 		this.addRequirements(ReqHasFaction.get());
 		this.addRequirements(ReqIsPlayer.get());
 	}
+
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
 	
 	@Override
 	public void perform()

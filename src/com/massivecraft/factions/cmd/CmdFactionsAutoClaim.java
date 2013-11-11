@@ -12,17 +12,28 @@ import com.massivecraft.mcore.ps.PS;
 
 public class CmdFactionsAutoClaim extends FCommand
 {
+	// -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
+	
 	public CmdFactionsAutoClaim()
 	{
+		// Aliases
 		this.addAliases("autoclaim");
-		
+
+		// Args
 		this.addOptionalArg("faction", "you");
-		
+
+		// Requirements
 		this.addRequirements(ReqFactionsEnabled.get());
 		this.addRequirements(ReqHasPerm.get(Perm.AUTOCLAIM.node));
 		this.addRequirements(ReqIsPlayer.get());
 	}
 
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
+	
 	@Override
 	public void perform()
 	{

@@ -15,18 +15,28 @@ import com.massivecraft.mcore.ps.PS;
 
 public class CmdFactionsClaim extends FCommand
 {
+	// -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
 	
 	public CmdFactionsClaim()
 	{
+		// Aliases
 		this.addAliases("claim");
-		
+
+		// Args
 		this.addOptionalArg("radius", "1");
 		this.addOptionalArg("faction", "you");
-		
+
+		// Requirements
 		this.addRequirements(ReqFactionsEnabled.get());
 		this.addRequirements(ReqIsPlayer.get());
 		this.addRequirements(ReqHasPerm.get(Perm.CLAIM.node));
 	}
+
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
 	
 	@Override
 	public void perform()
@@ -98,4 +108,5 @@ public class CmdFactionsClaim extends FCommand
 		};
 		
 	}
+	
 }

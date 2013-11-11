@@ -8,7 +8,6 @@ import com.massivecraft.mcore.store.Coll;
 import com.massivecraft.mcore.store.MStore;
 import com.massivecraft.mcore.util.Txt;
 
-import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.FFlag;
 import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.Factions;
@@ -24,7 +23,7 @@ public class FactionColl extends Coll<Faction>
 	
 	public FactionColl(String name)
 	{
-		super(name, Faction.class, MStore.getDb(ConfServer.dburi), Factions.get());
+		super(name, Faction.class, MStore.getDb(), Factions.get());
 	}
 	
 	// -------------------------------------------- //

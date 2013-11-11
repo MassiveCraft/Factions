@@ -26,16 +26,27 @@ import com.massivecraft.mcore.util.Txt;
 
 public class CmdFactionsFaction extends FCommand
 {
+	// -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
+	
 	public CmdFactionsFaction()
 	{
+		// Aliases
 		this.addAliases("f", "faction");
-		
+
+		// Args
 		this.addOptionalArg("faction", "you");
-		
+
+		// Requirements
 		this.addRequirements(ReqFactionsEnabled.get());
 		this.addRequirements(ReqHasPerm.get(Perm.FACTION.node));
 	}
 
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
+	
 	@Override
 	public void perform()
 	{

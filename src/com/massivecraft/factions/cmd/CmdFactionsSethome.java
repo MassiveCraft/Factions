@@ -14,16 +14,27 @@ import com.massivecraft.mcore.ps.PS;
 
 public class CmdFactionsSethome extends FCommand
 {
+	// -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
+	
 	public CmdFactionsSethome()
 	{
+		// Aliases
 		this.addAliases("sethome");
-		
+
+		// Args
 		this.addOptionalArg("faction", "you");
-		
+
+		// Requirements
 		this.addRequirements(ReqFactionsEnabled.get());
 		this.addRequirements(ReqIsPlayer.get());
 		this.addRequirements(ReqHasPerm.get(Perm.SETHOME.node));
 	}
+
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
 	
 	@Override
 	public void perform()

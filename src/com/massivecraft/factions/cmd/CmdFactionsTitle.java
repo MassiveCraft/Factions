@@ -15,17 +15,28 @@ import com.massivecraft.mcore.util.Txt;
 
 public class CmdFactionsTitle extends FCommand
 {
+	// -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
+	
 	public CmdFactionsTitle()
 	{
+		// Aliases
 		this.addAliases("title");
-		
+
+		// Args
 		this.addRequiredArg("player");
 		this.addOptionalArg("title", "");
-		
+
+		// Requirements
 		this.addRequirements(ReqFactionsEnabled.get());
 		this.addRequirements(ReqHasPerm.get(Perm.TITLE.node));
 		this.addRequirements(ReqRoleIsAtLeast.get(Rel.OFFICER));
 	}
+
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
 	
 	@Override
 	public void perform()

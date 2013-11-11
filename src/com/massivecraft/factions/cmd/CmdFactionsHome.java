@@ -24,15 +24,25 @@ import com.massivecraft.mcore.ps.PS;
 
 public class CmdFactionsHome extends FCommand
 {
+	// -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
+	
 	public CmdFactionsHome()
 	{
+		// Aliases
 		this.addAliases("home");
-		
+
+		// Requirements
 		this.addRequirements(ReqFactionsEnabled.get());
 		this.addRequirements(ReqHasPerm.get(Perm.HOME.node));
 		this.addRequirements(ReqHasFaction.get());
 		this.addRequirements(ReqIsPlayer.get());
 	}
+
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
 	
 	@Override
 	public void perform()

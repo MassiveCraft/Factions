@@ -9,28 +9,43 @@ import com.massivecraft.mcore.cmd.req.ReqIsPlayer;
 
 public class CmdFactionsAccess extends FCommand
 {
+	// -------------------------------------------- //
+	// FIELDS
+	// -------------------------------------------- //
+	
 	public CmdFactionsAccessView cmdFactionsAccessView = new CmdFactionsAccessView();
 	public CmdFactionsAccessPlayer cmdFactionsAccessPlayer = new CmdFactionsAccessPlayer();
 	public CmdFactionsAccessFaction cmdFactionsAccessFaction = new CmdFactionsAccessFaction();
 	
+	// -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
+	
 	public CmdFactionsAccess()
 	{
-		this.addAliases("access");
-		
-		this.addRequirements(ReqFactionsEnabled.get());
-		this.addRequirements(ReqIsPlayer.get());
-		this.addRequirements(ReqHasPerm.get(Perm.ACCESS.node));
-		
+		// Add SubCommands
 		this.addSubCommand(this.cmdFactionsAccessView);
 		this.addSubCommand(this.cmdFactionsAccessPlayer);
 		this.addSubCommand(this.cmdFactionsAccessFaction);
+		
+		// Aliases
+		this.addAliases("access");
+		
+		// Requirements
+		this.addRequirements(ReqFactionsEnabled.get());
+		this.addRequirements(ReqIsPlayer.get());
+		this.addRequirements(ReqHasPerm.get(Perm.ACCESS.node));
 	}
+	
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
 	
 	@Override
 	public void perform()
 	{
 		this.getCommandChain().add(this);
-		HelpCommand.getInstance().execute(this.sender, this.args, this.commandChain);
+		HelpCommand.get().execute(this.sender, this.args, this.commandChain);
 	}
 	
 }

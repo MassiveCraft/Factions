@@ -10,16 +10,27 @@ import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 
 public class CmdFactionsMoneyBalance extends FCommand
 {
+	// -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
+	
 	public CmdFactionsMoneyBalance()
 	{
+		// Aliases
 		this.addAliases("b", "balance");
-		
+
+		// Args
 		this.addOptionalArg("faction", "you");
-		
+
+		// Requirements
 		this.addRequirements(ReqFactionsEnabled.get());
 		this.addRequirements(ReqHasPerm.get(Perm.MONEY_BALANCE.node));
 		this.addRequirements(ReqBankCommandsEnabled.get());
 	}
+
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
 	
 	@Override
 	public void perform()

@@ -11,15 +11,25 @@ import com.massivecraft.mcore.ps.PS;
 
 public class CmdFactionsUnclaim extends FCommand
 {
+	// -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
+	
 	public CmdFactionsUnclaim()
 	{
+		// Aliases
 		this.addAliases("unclaim");
-		
+
+		// Requirements
 		this.addRequirements(ReqFactionsEnabled.get());
 		this.addRequirements(ReqHasPerm.get(Perm.UNCLAIM.node));
 		this.addRequirements(ReqHasFaction.get());
 		this.addRequirements(ReqIsPlayer.get());
 	}
+
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
 	
 	@Override
 	public void perform()

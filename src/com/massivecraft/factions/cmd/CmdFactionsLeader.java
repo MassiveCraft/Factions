@@ -15,17 +15,27 @@ import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 import com.massivecraft.mcore.util.Txt;
 
 public class CmdFactionsLeader extends FCommand
-{	
+{
+	// -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
 	public CmdFactionsLeader()
 	{
+		// Aliases
 		this.addAliases("leader");
-		
+
+		// Args
 		this.addRequiredArg("player");
 		this.addOptionalArg("faction", "you");
-		
+
+		// Requirements
 		this.addRequirements(ReqFactionsEnabled.get());
 		this.addRequirements(ReqHasPerm.get(Perm.LEADER.node));
 	}
+
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
 	
 	@Override
 	public void perform()
@@ -97,4 +107,5 @@ public class CmdFactionsLeader extends FCommand
 			uplayer.msg("%s<i> gave %s<i> the leadership of %s<i>.", senderIsConsole ? "A server admin" : RelationUtil.describeThatToMe(usender, uplayer, true), newLeader.describeTo(uplayer), targetFaction.describeTo(uplayer));
 		}
 	}
+	
 }

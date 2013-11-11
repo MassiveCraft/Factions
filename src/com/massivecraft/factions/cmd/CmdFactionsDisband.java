@@ -19,15 +19,26 @@ import com.massivecraft.mcore.util.Txt;
 
 public class CmdFactionsDisband extends FCommand
 {
+	// -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
+	
 	public CmdFactionsDisband()
 	{
+		// Aliases
 		this.addAliases("disband");
-		
+
+		// Args
 		this.addOptionalArg("faction", "you");
 
+		// Requirements
 		this.addRequirements(ReqFactionsEnabled.get());
 		this.addRequirements(ReqHasPerm.get(Perm.DISBAND.node));
 	}
+
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
 	
 	@Override
 	public void perform()
@@ -81,4 +92,5 @@ public class CmdFactionsDisband extends FCommand
 		
 		faction.detach();
 	}
+	
 }

@@ -16,17 +16,28 @@ import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 
 public class CmdFactionsName extends FCommand
 {
+	// -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
+	
 	public CmdFactionsName()
 	{
+		// Aliases
 		this.addAliases("name");
-		
+
+		// Args
 		this.addRequiredArg("new name");
-		
+
+		// Requirements
 		this.addRequirements(ReqFactionsEnabled.get());
 		this.addRequirements(ReqHasPerm.get(Perm.NAME.node));
 		this.addRequirements(ReqHasFaction.get());
 		this.addRequirements(ReqRoleIsAtLeast.get(Rel.OFFICER));
 	}
+
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
 	
 	@Override
 	public void perform()

@@ -21,20 +21,31 @@ import com.massivecraft.mcore.store.MStore;
 
 public class CmdFactionsCreate extends FCommand
 {
+	// -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
+	
 	public CmdFactionsCreate()
 	{
+		// Aliases
 		this.addAliases("create");
-		
+
+		// Args
 		this.addRequiredArg("name");
-		
+
+		// Requirements
 		this.addRequirements(ReqFactionsEnabled.get());
 		this.addRequirements(ReqHasntFaction.get());
 		this.addRequirements(ReqHasPerm.get(Perm.CREATE.node));
 	}
+
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
 	
 	@Override
 	public void perform()
-	{	
+	{
 		// Args
 		String newName = this.arg(0);
 		

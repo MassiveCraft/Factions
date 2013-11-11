@@ -46,7 +46,7 @@ public class BoardColls extends XColls<BoardColl, Board> implements BoardInterfa
 	@Override
 	public String getBasename()
 	{
-		return Const.COLLECTION_BASENAME_BOARD;
+		return Const.COLLECTION_BOARD;
 	}
 	
 	@Override

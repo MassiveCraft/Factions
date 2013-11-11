@@ -11,18 +11,29 @@ import com.massivecraft.mcore.mixin.Mixin;
 
 public class CmdFactionsDescription extends FCommand
 {
+	// -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
+	
 	public CmdFactionsDescription()
 	{
+		// Aliases
 		this.addAliases("desc");
-		
+
+		// Args
 		this.addRequiredArg("desc");
 		this.setErrorOnToManyArgs(false);
-		
+
+		// Requirements
 		this.addRequirements(ReqFactionsEnabled.get());
 		this.addRequirements(ReqHasPerm.get(Perm.DESCRIPTION.node));
 		this.addRequirements(ReqHasFaction.get());
 		this.addRequirements(ReqRoleIsAtLeast.get(Rel.OFFICER));
 	}
+
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
 	
 	@Override
 	public void perform()

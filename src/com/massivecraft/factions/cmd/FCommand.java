@@ -10,9 +10,17 @@ import com.massivecraft.mcore.util.Txt;
 
 public abstract class FCommand extends MCommand
 {
+	// -------------------------------------------- //
+	// FIELDS
+	// -------------------------------------------- //
+	
 	public MPlayer msender;
 	public UPlayer usender;
 	public Faction usenderFaction;
+	
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
 	
 	@Override
 	public void fixSenderVars()
@@ -68,4 +76,5 @@ public abstract class FCommand extends MCommand
 		
 		return false;
 	}
+	
 }

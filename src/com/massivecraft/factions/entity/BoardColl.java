@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.RelationParticipator;
 import com.massivecraft.factions.TerritoryAccess;
@@ -21,7 +20,7 @@ public class BoardColl extends Coll<Board> implements BoardInterface
 	
 	public BoardColl(String name)
 	{
-		super(name, Board.class, MStore.getDb(ConfServer.dburi), Factions.get(), false, true, true);
+		super(name, Board.class, MStore.getDb(), Factions.get(), false, true, true);
 	}
 	
 	// -------------------------------------------- //

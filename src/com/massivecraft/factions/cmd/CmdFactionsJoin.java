@@ -16,16 +16,27 @@ import com.massivecraft.mcore.util.Txt;
 
 public class CmdFactionsJoin extends FCommand
 {
+	// -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
+	
 	public CmdFactionsJoin()
 	{
+		// Aliases
 		this.addAliases("join");
-		
+
+		// Args
 		this.addRequiredArg("faction");
 		this.addOptionalArg("player", "you");
-		
+
+		// Requirements
 		this.addRequirements(ReqFactionsEnabled.get());
 		this.addRequirements(ReqHasPerm.get(Perm.JOIN.node));
 	}
+
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
 	
 	@Override
 	public void perform()
@@ -113,4 +124,5 @@ public class CmdFactionsJoin extends FCommand
 			}
 		}
 	}
+	
 }

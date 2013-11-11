@@ -2,6 +2,7 @@ package com.massivecraft.factions.entity;
 
 import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -39,6 +40,12 @@ public class MConf extends Entity<MConf>
 		
 		return this;
 	}
+	
+	// -------------------------------------------- //
+	// COMMAND ALIASES
+	// -------------------------------------------- //
+	
+	public List<String> aliasesF = MUtil.list("f");
 	
 	// -------------------------------------------- //
 	// TASKS

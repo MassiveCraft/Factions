@@ -40,7 +40,7 @@ public class UPlayerColls extends XColls<UPlayerColl, UPlayer>
 	@Override
 	public String getBasename()
 	{
-		return Const.COLLECTION_BASENAME_UPLAYER;
+		return Const.COLLECTION_UPLAYER;
 	}
 	
 	@Override

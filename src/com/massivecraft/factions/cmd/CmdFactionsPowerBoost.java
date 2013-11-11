@@ -12,17 +12,28 @@ import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 
 public class CmdFactionsPowerBoost extends FCommand
 {
+	// -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
+	
 	public CmdFactionsPowerBoost()
 	{
+		// Aliases
 		this.addAliases("powerboost");
-		
+
+		// Args
 		this.addRequiredArg("p|f|player|faction");
 		this.addRequiredArg("name");
 		this.addRequiredArg("#");
-		
+
+		// Requirements
 		this.addRequirements(ReqFactionsEnabled.get());
 		this.addRequirements(ReqHasPerm.get(Perm.POWERBOOST.node));
 	}
+
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
 	
 	@Override
 	public void perform()
@@ -65,4 +76,5 @@ public class CmdFactionsPowerBoost extends FCommand
 		msg("<i>"+target+" now has a power bonus/penalty of "+targetPower+" to min and max power levels.");
 		Factions.get().log(usender.getName()+" has set the power bonus/penalty for "+target+" to "+targetPower+".");
 	}
+	
 }

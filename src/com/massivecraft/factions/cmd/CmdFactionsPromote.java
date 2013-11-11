@@ -9,12 +9,19 @@ import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 
 public class CmdFactionsPromote extends FCommand
 {
+	// -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
+	
 	public CmdFactionsPromote()
 	{
+		// Aliases
 		this.addAliases("promote");
-		
+
+		// Args
 		this.addRequiredArg("player");
-		
+
+		// Requirements
 		this.addRequirements(ReqFactionsEnabled.get());
 		this.addRequirements(ReqHasPerm.get(Perm.PROMOTE.node));
 		
@@ -22,6 +29,10 @@ public class CmdFactionsPromote extends FCommand
 		//To promote someone from member -> officer you must be a leader.
 		//We'll handle this internally
 	}
+
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
 	
 	@Override
 	public void perform()

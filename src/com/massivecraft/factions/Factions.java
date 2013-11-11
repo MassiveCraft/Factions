@@ -94,11 +94,8 @@ public class Factions extends MPlugin
 	{
 		if ( ! preEnable()) return;
 		
-		// Load Server Config
-		ConfServer.get().load();
-		
 		// Initialize Aspects
-		this.aspect = AspectColl.get().get(Const.ASPECT_ID, true);
+		this.aspect = AspectColl.get().get(Const.ASPECT, true);
 		this.aspect.register();
 		this.aspect.setDesc(
 			"<i>If the factions system even is enabled and how it's configured.",
@@ -122,7 +119,7 @@ public class Factions extends MPlugin
 		
 		// Commands
 		this.outerCmdFactions = new CmdFactions();
-		this.outerCmdFactions.register(this);
+		this.outerCmdFactions.register();
 
 		// Setup Listeners
 		FactionsListenerMain.get().setup();

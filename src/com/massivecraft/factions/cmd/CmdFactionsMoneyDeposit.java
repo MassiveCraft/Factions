@@ -15,20 +15,30 @@ import com.massivecraft.mcore.util.Txt;
 
 import org.bukkit.ChatColor;
 
-
 public class CmdFactionsMoneyDeposit extends FCommand
 {
+	// -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
+	
 	public CmdFactionsMoneyDeposit()
 	{
+		// Aliases
 		this.addAliases("d", "deposit");
-		
+
+		// Args
 		this.addRequiredArg("amount");
 		this.addOptionalArg("faction", "you");
-		
+
+		// Requirements
 		this.addRequirements(ReqFactionsEnabled.get());
 		this.addRequirements(ReqHasPerm.get(Perm.MONEY_DEPOSIT.node));
 		this.addRequirements(ReqBankCommandsEnabled.get());
 	}
+
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
 	
 	@Override
 	public void perform()

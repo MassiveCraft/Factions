@@ -14,15 +14,26 @@ import com.massivecraft.mcore.util.Txt;
 
 public class CmdFactionsPlayer extends FCommand
 {
+	// -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
+	
 	public CmdFactionsPlayer()
 	{
+		// Aliases
 		this.addAliases("p", "player");
-		
+
+		// Args
 		this.addOptionalArg("player", "you");
-		
+
+		// Requirements
 		this.addRequirements(ReqFactionsEnabled.get());
 		this.addRequirements(ReqHasPerm.get(Perm.PLAYER.node));
 	}
+
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
 	
 	@Override
 	public void perform()
@@ -70,4 +81,5 @@ public class CmdFactionsPlayer extends FCommand
 		msg("<k>Power per Death: <v>%.2f", uplayer.getPowerPerDeath());
 		
 	}
+	
 }

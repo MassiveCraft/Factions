@@ -7,15 +7,26 @@ import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 
 public class CmdFactionsAdmin extends FCommand
 {
+	// -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
+	
 	public CmdFactionsAdmin()
 	{
+		// Aliases
 		this.addAliases("admin");
-		
+
+		// Args
 		this.addOptionalArg("on/off", "flip");
 		
-		//this.addRequirements(ReqFactionsEnabled.get());
+		// Requirements
+		// this.addRequirements(ReqFactionsEnabled.get());
 		this.addRequirements(ReqHasPerm.get(Perm.ADMIN.node));
 	}
+
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
 	
 	@Override
 	public void perform()
@@ -36,4 +47,5 @@ public class CmdFactionsAdmin extends FCommand
 			Factions.get().log(msender.getId() + " DISABLED admin bypass mode.");
 		}
 	}
+	
 }

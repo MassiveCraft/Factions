@@ -1,15 +1,19 @@
 package com.massivecraft.factions.cmd;
 
-import java.util.Collections;
+import java.util.List;
 
-import com.massivecraft.factions.ConfServer;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
+import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.mcore.cmd.HelpCommand;
 import com.massivecraft.mcore.cmd.VersionCommand;
 
 public class CmdFactions extends FCommand
 {
+	// -------------------------------------------- //
+	// FIELDS
+	// -------------------------------------------- //
+	
 	public CmdFactionsList cmdFactionsList = new CmdFactionsList();
 	public CmdFactionsFaction cmdFactionsFaction = new CmdFactionsFaction();
 	public CmdFactionsPlayer cmdFactionsPlayer = new CmdFactionsPlayer();
@@ -47,17 +51,13 @@ public class CmdFactions extends FCommand
 	public CmdFactionsPowerBoost cmdFactionsPowerBoost = new CmdFactionsPowerBoost();
 	public VersionCommand cmdFactionsVersion = new VersionCommand(Factions.get(), Perm.VERSION.node, "v", "version");
 	
+	// -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
+	
 	public CmdFactions()
 	{
-		this.aliases.addAll(ConfServer.baseCommandAliases);
-		
-		// remove any nulls from extra commas
-		// TODO: When is this required? Should this be added to MCore?
-		this.aliases.removeAll(Collections.singletonList(null));
-		
-		this.setDesc("The faction base command");
-		this.setHelp("This command contains all faction stuff.");
-		
+		// Add SubCommands
 		this.addSubCommand(HelpCommand.get());
 		this.addSubCommand(this.cmdFactionsList);
 		this.addSubCommand(this.cmdFactionsFaction);
@@ -95,13 +95,20 @@ public class CmdFactions extends FCommand
 		this.addSubCommand(this.cmdFactionsAdmin);
 		this.addSubCommand(this.cmdFactionsPowerBoost);
 		this.addSubCommand(this.cmdFactionsVersion);
+		
+		// Misc
+		this.setDesc("The faction base command");
+		this.setHelp("This command contains all faction stuff.");
 	}
 	
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
+	
 	@Override
-	public void perform()
+	public List<String> getAliases()
 	{
-		this.getCommandChain().add(this);
-		HelpCommand.getInstance().execute(this.sender, this.args, this.commandChain);
+		return MConf.get().aliasesF;
 	}
 
 }

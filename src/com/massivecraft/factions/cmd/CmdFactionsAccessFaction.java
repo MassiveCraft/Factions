@@ -10,16 +10,27 @@ import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 
 public class CmdFactionsAccessFaction extends CmdFactionsAccessAbstract
 {
+	// -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
+	
 	public CmdFactionsAccessFaction()
 	{
+		// Aliases
 		this.addAliases("f", "faction");
 		
+		// Args
 		this.addRequiredArg("faction");
 		this.addOptionalArg("yes/no", "toggle");
-		
+
+		// Requirements
 		this.addRequirements(ReqHasPerm.get(Perm.ACCESS_FACTION.node));
 	}
 
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
+	
 	@Override
 	public void innerPerform()
 	{
@@ -40,4 +51,5 @@ public class CmdFactionsAccessFaction extends CmdFactionsAccessAbstract
 		// Inform
 		this.sendAccessInfo();
 	}
+	
 }

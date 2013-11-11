@@ -11,17 +11,28 @@ import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 
 public class CmdFactionsOpen extends FCommand
 {
+	// -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
+	
 	public CmdFactionsOpen()
 	{
+		// Aliases
 		this.addAliases("open");
-		
+
+		// Args
 		this.addOptionalArg("yes/no", "toggle");
-		
+
+		// Requirements
 		this.addRequirements(ReqFactionsEnabled.get());
 		this.addRequirements(ReqHasPerm.get(Perm.OPEN.node));
 		this.addRequirements(ReqHasFaction.get());
 		this.addRequirements(ReqRoleIsAtLeast.get(Rel.OFFICER));
 	}
+
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
 	
 	@Override
 	public void perform()

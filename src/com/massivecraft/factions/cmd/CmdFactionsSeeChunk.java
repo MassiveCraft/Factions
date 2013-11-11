@@ -14,14 +14,24 @@ import com.massivecraft.mcore.ps.PSFormatHumanSpace;
 
 public class CmdFactionsSeeChunk extends FCommand
 {
+	// -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
+	
 	public CmdFactionsSeeChunk()
 	{
+		// Aliases
 		this.addAliases("sc", "seechunk");
-		
-		//this.addRequirements(ReqFactionsEnabled.get());
+
+		// Requirements
+		// this.addRequirements(ReqFactionsEnabled.get());
 		this.addRequirements(ReqHasPerm.get(Perm.SEE_CHUNK.node));
 		this.addRequirements(ReqIsPlayer.get());
 	}
+
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
 	
 	@Override
 	public void perform()

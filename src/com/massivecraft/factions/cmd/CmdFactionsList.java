@@ -15,16 +15,27 @@ import com.massivecraft.mcore.util.Txt;
 
 public class CmdFactionsList extends FCommand
 {
+	// -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
+	
 	public CmdFactionsList()
 	{
+		// Aliases
 		this.addAliases("l", "list");
-		
+
+		// Args
 		this.addOptionalArg("page", "1");
-		
+
+		// Requirements
 		this.addRequirements(ReqFactionsEnabled.get());
 		this.addRequirements(ReqHasPerm.get(Perm.LIST.node));
 	}
 
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
+	
 	@Override
 	public void perform()
 	{
@@ -69,4 +80,5 @@ public class CmdFactionsList extends FCommand
 
 		sendMessage(lines);
 	}
+	
 }

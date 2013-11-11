@@ -20,15 +20,25 @@ import com.massivecraft.mcore.ps.PS;
 
 public class CmdFactionsUnclaimall extends FCommand
 {	
+	// -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
+	
 	public CmdFactionsUnclaimall()
 	{
+		// Aliases
 		this.addAliases("unclaimall");
-		
+
+		// Requirements
 		this.addRequirements(ReqFactionsEnabled.get());
 		this.addRequirements(ReqHasPerm.get(Perm.UNCLAIM_ALL.node));
 		this.addRequirements(ReqHasFaction.get());
 		this.addRequirements(ReqRoleIsAtLeast.get(Rel.OFFICER));
 	}
+
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
 	
 	@Override
 	public void perform()

@@ -12,18 +12,28 @@ import com.massivecraft.mcore.util.Txt;
 
 public class CmdFactionsFlag extends FCommand
 {
+	// -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
 	
 	public CmdFactionsFlag()
 	{
+		// Aliases
 		this.addAliases("flag");
-		
+
+		// Args
 		this.addOptionalArg("faction", "you");
 		this.addOptionalArg("flag", "all");
 		this.addOptionalArg("yes/no", "read");
-		
+
+		// Requirements
 		this.addRequirements(ReqFactionsEnabled.get());
 		this.addRequirements(ReqHasPerm.get(Perm.FLAG.node));
 	}
+
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
 	
 	@Override
 	public void perform()
