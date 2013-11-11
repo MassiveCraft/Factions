@@ -706,7 +706,7 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 				
 				if (ownedLand >= newFaction.getPowerRounded())
 				{
-					msg("<b>You can't claim more land. You need more power.");
+					msg("<b>你没有足够的权势值去获取更多的领土.");
 					return false;
 				}
 				
