@@ -43,7 +43,7 @@ public class CmdFactionsJoin extends FCommand
 		// Validate
 		if (!samePlayer  && ! Perm.JOIN_OTHERS.has(sender, false))
 		{
-			msg("<b>You do not have permission to move other players into a faction.");
+			msg("<b>你没有权限移动别的玩家加入公会.");
 			return;
 		}
 
@@ -73,10 +73,10 @@ public class CmdFactionsJoin extends FCommand
 
 		if( ! (faction.isOpen() || faction.isInvited(uplayer) || usender.isUsingAdminMode() || Perm.JOIN_ANY.has(sender, false)))
 		{
-			msg("<i>This faction requires invitation.");
+			msg("<i>这个公会需要申请才能够加入.");
 			if (samePlayer)
 			{
-				faction.msg("%s<i> tried to join your faction.", uplayer.describeTo(faction, true));
+				faction.msg("%s<i> 想要加入你的公会.", uplayer.describeTo(faction, true));
 			}
 			return;
 		}
@@ -89,10 +89,10 @@ public class CmdFactionsJoin extends FCommand
 		// Inform
 		if (!samePlayer)
 		{
-			uplayer.msg("<i>%s <i>moved you into the faction %s<i>.", usender.describeTo(uplayer, true), faction.getName(uplayer));
+			uplayer.msg("<i>%s <i>你已经加入公会 %s<i>.", usender.describeTo(uplayer, true), faction.getName(uplayer));
 		}
-		faction.msg("<i>%s <i>joined <lime>your faction<i>.", uplayer.describeTo(faction, true));
-		usender.msg("<i>%s <i>successfully joined %s<i>.", uplayer.describeTo(usender, true), faction.getName(usender));
+		faction.msg("<i>%s <i>加入 <lime>你的公会<i>.", uplayer.describeTo(faction, true));
+		usender.msg("<i>%s <i>加入成功 %s<i>.", uplayer.describeTo(usender, true), faction.getName(usender));
 		
 		// Apply
 		uplayer.resetFactionData();
@@ -105,11 +105,11 @@ public class CmdFactionsJoin extends FCommand
 		{
 			if (samePlayer)
 			{
-				Factions.get().log(Txt.parse("%s joined the faction %s.", uplayer.getName(), faction.getName()));
+				Factions.get().log(Txt.parse("%s 已经加入了公会 %s.", uplayer.getName(), faction.getName()));
 			}
 			else
 			{
-				Factions.get().log(Txt.parse("%s moved the player %s into the faction %s.", usender.getName(), uplayer.getName(), faction.getName()));
+				Factions.get().log(Txt.parse("%s 移动玩家 %s 加入公会 %s.", usender.getName(), uplayer.getName(), faction.getName()));
 			}
 		}
 	}

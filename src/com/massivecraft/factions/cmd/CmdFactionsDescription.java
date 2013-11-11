@@ -40,7 +40,7 @@ public class CmdFactionsDescription extends FCommand
 		usenderFaction.setDescription(newDescription);
 		
 		// Inform
-		usenderFaction.msg("<i>%s <i>set your faction description to:\n%s", Mixin.getDisplayName(sender), usenderFaction.getDescription());
+		usenderFaction.msg("<i>%s <i>设置你的公会描述:\n%s", Mixin.getDisplayName(sender), usenderFaction.getDescription());
 	}
 	
 }

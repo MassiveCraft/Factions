@@ -42,7 +42,7 @@ public class CmdFactionsDisband extends FCommand
 		// Verify
 		if (faction.getFlag(FFlag.PERMANENT))
 		{
-			msg("<i>This faction is designated as permanent, so you cannot disband it.");
+			msg("<i>这是一个永久公会, 你不能解散它.");
 			return;
 		}
 
@@ -66,17 +66,17 @@ public class CmdFactionsDisband extends FCommand
 			String who = usender.describeTo(uplayer);
 			if (uplayer.getFaction() == faction)
 			{
-				uplayer.msg("<h>%s<i> disbanded your faction.", who);
+				uplayer.msg("<h>%s<i> 解散你的公会.", who);
 			}
 			else
 			{
-				uplayer.msg("<h>%s<i> disbanded the faction %s.", who, faction.getName(uplayer));
+				uplayer.msg("<h>%s<i> 解散工会 %s.", who, faction.getName(uplayer));
 			}
 		}
 		
 		if (MConf.get().logFactionDisband)
 		{
-			Factions.get().log(Txt.parse("<i>The faction <h>%s <i>(<h>%s<i>) was disbanded by <h>%s<i>.", faction.getName(), faction.getId(), usender.getDisplayName()));
+			Factions.get().log(Txt.parse("<i>公会 <h>%s <i>(<h>%s<i>) 被 <h>%s<i> 解散.", faction.getName(), faction.getId(), usender.getDisplayName()));
 		}		
 		
 		faction.detach();

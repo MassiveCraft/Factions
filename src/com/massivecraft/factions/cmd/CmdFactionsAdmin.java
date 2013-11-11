@@ -27,13 +27,13 @@ public class CmdFactionsAdmin extends FCommand
 		
 		if (msender.isUsingAdminMode())
 		{
-			msender.msg("<i>You have enabled admin bypass mode.");
-			Factions.get().log(msender.getId() + " has ENABLED admin bypass mode.");
+			msender.msg("<i>你开启了管理员bypass模式.");
+			Factions.get().log(msender.getId() + " 开启管理员bypass模式.");
 		}
 		else
 		{
-			msender.msg("<i>You have disabled admin bypass mode.");
-			Factions.get().log(msender.getId() + " DISABLED admin bypass mode.");
+			msender.msg("<i>你禁止了管理员bypass模式.");
+			Factions.get().log(msender.getId() + " 禁止管理员bypass模式.");
 		}
 	}
 }

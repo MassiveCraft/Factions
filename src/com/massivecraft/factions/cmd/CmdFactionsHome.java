@@ -42,32 +42,32 @@ public class CmdFactionsHome extends FCommand
 		// TODO: Hide this command on help also.
 		if ( ! uconf.homesEnabled)
 		{
-			usender.msg("<b>Sorry, Faction homes are disabled on this server.");
+			usender.msg("<b>对不起, 服务器禁止公会回城点功能.");
 			return;
 		}
 
 		if ( ! uconf.homesTeleportCommandEnabled)
 		{
-			usender.msg("<b>Sorry, the ability to teleport to Faction homes is disabled on this server.");
+			usender.msg("<b>对不起, 服务器禁止传送公会回城点功能.");
 			return;
 		}
 		
 		if ( ! usenderFaction.hasHome())
 		{
-			usender.msg("<b>Your faction does not have a home. " + (usender.getRole().isLessThan(Rel.OFFICER) ? "<i> Ask your leader to:" : "<i>You should:"));
+			usender.msg("<b>你的公会还没有设置回城点. " + (usender.getRole().isLessThan(Rel.OFFICER) ? "<i> 请联系你的会长:" : "<i>You should:"));
 			usender.sendMessage(Factions.get().getOuterCmdFactions().cmdFactionsSethome.getUseageTemplate());
 			return;
 		}
 		
 		if ( ! uconf.homesTeleportAllowedFromEnemyTerritory && usender.isInEnemyTerritory())
 		{
-			usender.msg("<b>You cannot teleport to your faction home while in the territory of an enemy faction.");
+			usender.msg("<b>当你在敌对阵营领地里时,禁止传送至公会回城点.");
 			return;
 		}
 		
 		if (!uconf.homesTeleportAllowedFromDifferentWorld && !me.getWorld().getName().equalsIgnoreCase(usenderFaction.getHome().getWorld()))
 		{
-			usender.msg("<b>You cannot teleport to your faction home while in a different world.");
+			usender.msg("<b>当你在另一个世界时，禁止传送至公会回城点.");
 			return;
 		}
 		

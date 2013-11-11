@@ -32,13 +32,13 @@ public class CmdFactionsDemote extends FCommand
 		
 		if (you.getFaction() != usenderFaction)
 		{
-			msg("%s<b> is not a member in your faction.", you.describeTo(usender, true));
+			msg("%s<b> 不是你的公会成员.", you.describeTo(usender, true));
 			return;
 		}
 		
 		if (you == usender)
 		{
-			msg("<b>The target player mustn't be yourself.");
+			msg("<b>目标玩家不能是你自己.");
 			return;
 		}
 

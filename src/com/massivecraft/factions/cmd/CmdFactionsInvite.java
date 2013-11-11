@@ -60,13 +60,13 @@ public class CmdFactionsInvite extends FCommand
 		// Inform
 		if (newInvited)
 		{
-			uplayer.msg("%s<i> invited you to %s", usender.describeTo(uplayer, true), usenderFaction.describeTo(uplayer));
-			usenderFaction.msg("%s<i> invited %s<i> to your faction.", usender.describeTo(usenderFaction, true), uplayer.describeTo(usenderFaction));
+			uplayer.msg("%s<i> 邀请你加入 %s", usender.describeTo(uplayer, true), usenderFaction.describeTo(uplayer));
+			usenderFaction.msg("%s<i> 邀请 %s<i> 加入你的公会.", usender.describeTo(usenderFaction, true), uplayer.describeTo(usenderFaction));
 		}
 		else
 		{
-			uplayer.msg("%s<i> revoked your invitation to <h>%s<i>.", usender.describeTo(uplayer), usenderFaction.describeTo(uplayer));
-			usenderFaction.msg("%s<i> revoked %s's<i> invitation.", usender.describeTo(usenderFaction), uplayer.describeTo(usenderFaction));
+			uplayer.msg("%s<i> 撤销你的邀请 <h>%s<i>.", usender.describeTo(uplayer), usenderFaction.describeTo(uplayer));
+			usenderFaction.msg("%s<i> 撤销 %s's<i> 邀请.", usender.describeTo(usenderFaction), uplayer.describeTo(usenderFaction));
 		}
 	}
 	
