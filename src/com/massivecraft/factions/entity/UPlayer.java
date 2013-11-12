@@ -613,7 +613,7 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 		{
 			if (!permanent && this.getRole() == Rel.LEADER)
 			{
-				msg("<b>You must give the leader role to someone else first.");
+				msg("<b>你必须先把自己的领导者角色给别人.");
 				return;
 			}
 			
