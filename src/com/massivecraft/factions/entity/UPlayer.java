@@ -619,7 +619,7 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 			
 			if (!UConf.get(myFaction).canLeaveWithNegativePower && this.getPower() < 0)
 			{
-				msg("<b>You cannot leave until your power is positive.");
+				msg("<b>在你的能量是负数的时候你不能离开的领土.");
 				return;
 			}
 		}
