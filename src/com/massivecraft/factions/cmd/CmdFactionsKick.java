@@ -65,11 +65,11 @@ public class CmdFactionsKick extends FCommand
 		if (event.isCancelled()) return;
 
 		// Inform
-		uplayerFaction.msg("%s<i> 把 %s<i> 踢出了工会! :O", usender.describeTo(uplayerFaction, true), uplayer.describeTo(uplayerFaction, true));
-		uplayer.msg("%s<i> 把你从 %s<i> 工会里除名啦! :O", usender.describeTo(uplayer, true), uplayerFaction.describeTo(uplayer));
+		uplayerFaction.msg("%s<i> 把 %s<i> 踢出了公会! :O", usender.describeTo(uplayerFaction, true), uplayer.describeTo(uplayerFaction, true));
+		uplayer.msg("%s<i> 把你从 %s<i> 公会里除名啦! :O", usender.describeTo(uplayer, true), uplayerFaction.describeTo(uplayer));
 		if (uplayerFaction != usenderFaction)
 		{
-			usender.msg("<i>你把 %s<i> 从 %s<i> 工会里踢了出去!", uplayer.describeTo(usender), uplayerFaction.describeTo(usender));
+			usender.msg("<i>你把 %s<i> 从 %s<i> 公会里踢了出去!", uplayer.describeTo(usender), uplayerFaction.describeTo(usender));
 		}
 
 		if (MConf.get().logFactionKick)
