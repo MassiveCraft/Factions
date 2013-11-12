@@ -681,7 +681,7 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 			{
 				if (mconf.getWorldsNoClaiming().contains(ps.getWorld()))
 				{
-					msg("<b>Sorry, this world has land claiming disabled.");
+					msg("<b>抱歉，这个世界不能被圈地.");
 					return false;
 				}
 				
@@ -700,7 +700,7 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 				
 				if (uconf.claimedLandsMax != 0 && ownedLand >= uconf.claimedLandsMax && ! newFaction.getFlag(FFlag.INFPOWER))
 				{
-					msg("<b>Limit reached. You can't claim more land.");
+					msg("<b>圈地数量已经到达限制，你不能再圈更多的地.");
 					return false;
 				}
 				
@@ -723,11 +723,11 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 				{
 					if (uconf.claimsCanBeUnconnectedIfOwnedByOtherFaction)
 					{
-						msg("<b>You can only claim additional land which is connected to your first claim or controlled by another faction!");
+						msg("<b>你只能在与你的第一个领地相接的地方或者其他帮派领地相接的地方圈额外的地");
 					}
 					else
 					{
-						msg("<b>You can only claim additional land which is connected to your first claim!");
+						msg("<b>你只能在与你的第一个领地相接的地方圈地！");
 					}
 					return false;
 				}
@@ -739,13 +739,13 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 				{
 					if (!uconf.claimingFromOthersAllowed)
 					{
-						msg("<b>You may not claim land from others.");
+						msg("<b>你不能圈别人的地！");
 						return false;
 					}
 					
 					if (oldFaction.getRelationTo(newFaction).isAtLeast(Rel.TRUCE))
 					{
-						msg("<b>You can't claim this land due to your relation with the current owner.");
+						msg("<b>由于你跟这块地的所有者的关系，你不能圈这块地.");
 						return false;
 					}
 					
@@ -757,7 +757,7 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 					
 					if ( ! BoardColls.get().isBorderPs(chunk))
 					{
-						msg("<b>You must start claiming land at the border of the territory.");
+						msg("<b>你不能在地图的边界圈地.");
 						return false;
 					}
 				}
