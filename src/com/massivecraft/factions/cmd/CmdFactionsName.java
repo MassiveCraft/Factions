@@ -20,7 +20,7 @@ public class CmdFactionsName extends FCommand
 	{
 		this.addAliases("name");
 		
-		this.addRequiredArg("new name");
+		this.addRequiredArg("新名字");
 		
 		this.addRequirements(ReqFactionsEnabled.get());
 		this.addRequirements(ReqHasPerm.get(Perm.NAME.node));
@@ -39,7 +39,7 @@ public class CmdFactionsName extends FCommand
 		FactionColl factionColl = FactionColls.get().get(usenderFaction);
 		if (factionColl.isNameTaken(newName) && ! MiscUtil.getComparisonString(newName).equals(usenderFaction.getComparisonName()))
 		{
-			msg("<b>That name is already taken");
+			msg("<b>这个名字已经被使用");
 			return;
 		}
 
@@ -62,14 +62,14 @@ public class CmdFactionsName extends FCommand
 		usenderFaction.setName(newName);
 
 		// Inform
-		usenderFaction.msg("%s<i> changed your faction name to %s", usender.describeTo(usenderFaction, true), usenderFaction.getName(usenderFaction));
+		usenderFaction.msg("%s<i> 变更你的公会名称为 %s", usender.describeTo(usenderFaction, true), usenderFaction.getName(usenderFaction));
 		for (Faction faction : FactionColls.get().get(usenderFaction).getAll())
 		{
 			if (faction == usenderFaction)
 			{
 				continue;
 			}
-			faction.msg("<i>The faction %s<i> changed their name to %s.", usender.getColorTo(faction)+oldName, usenderFaction.getName(faction));
+			faction.msg("<i>行会 %s<i> 变更他们的公会名称为 %s.", usender.getColorTo(faction)+oldName, usenderFaction.getName(faction));
 		}
 	}
 	

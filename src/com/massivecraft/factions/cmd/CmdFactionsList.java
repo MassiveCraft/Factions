@@ -48,16 +48,16 @@ public class CmdFactionsList extends FCommand
 		if (end > factionList.size())
 			end = factionList.size();
 
-		lines.add(Txt.titleize("Faction List "+pageHumanBased+"/"+pagecount));
+		lines.add(Txt.titleize("公会列表 "+pageHumanBased+"/"+pagecount));
 
 		for (Faction faction : factionList.subList(start, end))
 		{
 			if (faction.isNone())
 			{
-				lines.add(Txt.parse("<i>Factionless<i> %d online", FactionColls.get().get(sender).getNone().getUPlayersWhereOnline(true).size()));
+				lines.add(Txt.parse("<i>Factionless<i> %d 在线", FactionColls.get().get(sender).getNone().getUPlayersWhereOnline(true).size()));
 				continue;
 			}
-			lines.add(Txt.parse("%s<i> %d/%d online, %d/%d/%d",
+			lines.add(Txt.parse("%s<i> %d/%d 在线, %d/%d/%d",
 				faction.getName(usender),
 				faction.getUPlayersWhereOnline(true).size(),
 				faction.getUPlayers().size(),

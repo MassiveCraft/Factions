@@ -56,7 +56,7 @@ public class CmdFactionsTitle extends FCommand
 		you.setTitle(newTitle);
 		
 		// Inform
-		usenderFaction.msg("%s<i> changed a title: %s", usender.describeTo(usenderFaction, true), you.describeTo(usenderFaction, true));
+		usenderFaction.msg("%s<i> 变更头衔为: %s", usender.describeTo(usenderFaction, true), you.describeTo(usenderFaction, true));
 	}
 	
 }

@@ -22,7 +22,7 @@ public class CmdFactionsMoneyTransferFf extends FCommand
 	{
 		this.addAliases("ff");
 		
-		this.addRequiredArg("amount");
+		this.addRequiredArg("金额");
 		this.addRequiredArg("faction");
 		this.addRequiredArg("faction");
 		

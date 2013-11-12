@@ -37,13 +37,13 @@ public class CmdFactionsMap extends FCommand
 			
 			// Turn on
 			msender.setMapAutoUpdating(true);
-			msg("<i>Map auto update <green>ENABLED.");
+			msg("<i>地图自动更新 <green>ENABLED.");
 		}
 		else
 		{
 			// Turn off
 			msender.setMapAutoUpdating(false);
-			msg("<i>Map auto update <red>DISABLED.");
+			msg("<i>地图自动更新 <red>DISABLED.");
 		}
 	}
 	

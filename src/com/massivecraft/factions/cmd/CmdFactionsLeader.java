@@ -48,19 +48,19 @@ public class CmdFactionsLeader extends FCommand
 			// Follow the standard rules
 			if (usender.getRole() != Rel.LEADER || targetFaction != usenderFaction)
 			{
-				sender.sendMessage(Txt.parse("<b>You must be leader of the faction to %s.", this.getDesc()));
+				sender.sendMessage(Txt.parse("<b>你必须是公会会长才能操作 %s.", this.getDesc()));
 				return;
 			}
 			
 			if (newLeader.getFaction() != usenderFaction)
 			{
-				msg("%s<i> is not a member in the faction.", newLeader.describeTo(usender, true));
+				msg("%s<i> 不是公会成员.", newLeader.describeTo(usender, true));
 				return;
 			}
 			
 			if (newLeader == usender)
 			{
-				msg("<b>The target player musn't be yourself.");
+				msg("<b>目标不能是你自己.");
 				return;
 			}
 		}
@@ -89,7 +89,7 @@ public class CmdFactionsLeader extends FCommand
 		}
 		newLeader.setFaction(targetFaction);
 		newLeader.setRole(Rel.LEADER);
-		msg("<i>You have promoted %s<i> to the position of faction leader.", newLeader.describeTo(usender, true));
+		msg("<i>你提升 %s<i> 成为公会会长.", newLeader.describeTo(usender, true));
 		
 		// Inform all players
 		for (UPlayer uplayer : UPlayerColls.get().get(sender).getAllOnline())

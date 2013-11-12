@@ -53,7 +53,7 @@ public class CmdFactionsSeeChunk extends FCommand
 		showPillar(me, world, blockX, blockZ);
 		
 		// Inform
-		msg("<i>Visualized %s", chunk.toString(PSFormatHumanSpace.get()));
+		msg("<i>可视化 %s", chunk.toString(PSFormatHumanSpace.get()));
 	}
 	
 	@SuppressWarnings("deprecation")

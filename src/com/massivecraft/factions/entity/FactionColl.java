@@ -219,19 +219,19 @@ public class FactionColl extends Coll<Faction>
 		
 		if (MiscUtil.getComparisonString(str).length() < UConf.get(this).factionNameLengthMin)
 		{
-			errors.add(Txt.parse("<i>The faction name can't be shorter than <h>%s<i> chars.", UConf.get(this).factionNameLengthMin));
+			errors.add(Txt.parse("<i>公会名称不能少于 <h>%s<i> 字节.", UConf.get(this).factionNameLengthMin));
 		}
 		
 		if (str.length() > UConf.get(this).factionNameLengthMax)
 		{
-			errors.add(Txt.parse("<i>The faction name can't be longer than <h>%s<i> chars.", UConf.get(this).factionNameLengthMax));
+			errors.add(Txt.parse("<i>公会名称不能多于 <h>%s<i> 字节.", UConf.get(this).factionNameLengthMax));
 		}
 		
 		for (char c : str.toCharArray())
 		{
 			if ( ! MiscUtil.substanceChars.contains(String.valueOf(c)))
 			{
-				errors.add(Txt.parse("<i>Faction name must be alphanumeric. \"<h>%s<i>\" is not allowed.", c));
+				errors.add(Txt.parse("<i>公会名称必须是字母. \"<h>%s<i>\" 不被允许.", c));
 			}
 		}
 		

@@ -22,7 +22,7 @@ public class CmdFactionsMoneyDeposit extends FCommand
 	{
 		this.addAliases("d", "deposit");
 		
-		this.addRequiredArg("amount");
+		this.addRequiredArg("金额");
 		this.addOptionalArg("faction", "you");
 		
 		this.addRequirements(ReqFactionsEnabled.get());

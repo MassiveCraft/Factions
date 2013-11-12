@@ -61,7 +61,7 @@ public class CmdFactionsJoin extends FCommand
 
 		if (uplayerFaction.isNormal())
 		{
-			msg("<b>%s must leave %s current faction first.", uplayer.describeTo(usender, true), (samePlayer ? "your" : "their"));
+			msg("<b>%s 必须先退出 %s 现在的公会.", uplayer.describeTo(usender, true), (samePlayer ? "your" : "their"));
 			return;
 		}
 

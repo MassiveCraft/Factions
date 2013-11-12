@@ -62,7 +62,7 @@ public class CmdFactionsUnclaimall extends FCommand
 		}
 		
 		// Inform
-		usenderFaction.msg("%s<i> unclaimed <h>%d <i>of your <h>%d <i>faction land. You now have <h>%d <i>land claimed.", usender.describeTo(usenderFaction, true), countSuccess, countTotal, countFail);
+		usenderFaction.msg("%s<i> unclaimed <h>%d <i>of your <h>%d <i>公会领地. You now have <h>%d <i>land claimed.", usender.describeTo(usenderFaction, true), countSuccess, countTotal, countFail);
 
 		// Log
 		if (MConf.get().logLandUnclaims)

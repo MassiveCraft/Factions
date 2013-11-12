@@ -41,7 +41,7 @@ public class CmdFactionsOpen extends FCommand
 		
 		// Inform
 		String descTarget = usenderFaction.isOpen() ? "open" : "closed";
-		usenderFaction.msg("%s<i> changed the faction to <h>%s<i>.", usender.describeTo(usenderFaction, true), descTarget);
+		usenderFaction.msg("%s<i> 变更你的公会邀请状态 <h>%s<i>.", usender.describeTo(usenderFaction, true), descTarget);
 	}
 	
 }

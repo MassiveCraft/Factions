@@ -40,8 +40,8 @@ public class CmdFactionsInvite extends FCommand
 		// Allready member?
 		if (uplayer.getFaction() == usenderFaction)
 		{
-			msg("%s<i> is already a member of %s", uplayer.getName(), usenderFaction.getName());
-			msg("<i>You might want to: " + Factions.get().getOuterCmdFactions().cmdFactionsKick.getUseageTemplate(false));
+			msg("%s<i> 已是 %s 工会的成员.", uplayer.getName(), usenderFaction.getName());
+			msg("<i>你想要: " + Factions.get().getOuterCmdFactions().cmdFactionsKick.getUseageTemplate(false));
 			return;
 		}
 		

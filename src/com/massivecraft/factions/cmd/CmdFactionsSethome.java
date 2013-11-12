@@ -37,7 +37,7 @@ public class CmdFactionsSethome extends FCommand
 		// Validate
 		if ( ! UConf.get(faction).homesEnabled)
 		{
-			usender.msg("<b>Sorry, Faction homes are disabled on this server.");
+			usender.msg("<b>对不起, 服务器禁止公会回城点功能.");
 			return;
 		}
 		
@@ -47,7 +47,7 @@ public class CmdFactionsSethome extends FCommand
 		// Verify
 		if (!usender.isUsingAdminMode() && !faction.isValidHome(newHome))
 		{
-			usender.msg("<b>Sorry, your faction home can only be set inside your own claimed territory.");
+			usender.msg("<b>对不起, 你只能在你的领土内设置公会回城点.");
 			return;
 		}
 		
@@ -61,11 +61,11 @@ public class CmdFactionsSethome extends FCommand
 		faction.setHome(newHome);
 		
 		// Inform
-		faction.msg("%s<i> set the home for your faction. You can now use:", usender.describeTo(usenderFaction, true));
+		faction.msg("%s<i> 设置了你的公会回城点. 你现在可以使用回城命令:", usender.describeTo(usenderFaction, true));
 		faction.sendMessage(Factions.get().getOuterCmdFactions().cmdFactionsHome.getUseageTemplate());
 		if (faction != usenderFaction)
 		{
-			usender.msg("<b>You have set the home for the "+faction.getName(usender)+"<i> faction.");
+			usender.msg("<b>你设置了 "+faction.getName(usender)+"<i> 公会的回城点.");
 		}
 	}
 	

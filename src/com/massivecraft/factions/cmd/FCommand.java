@@ -37,7 +37,7 @@ public abstract class FCommand extends MCommand
 	{
 		if ( ! i.getFaction().equals(you.getFaction()))
 		{
-			i.sendMessage(Txt.parse("%s <b>is not in the same faction as you.",you.describeTo(i, true)));
+			i.sendMessage(Txt.parse("%s <b>和你不在同一个公会.",you.describeTo(i, true)));
 			return false;
 		}
 		
@@ -48,7 +48,7 @@ public abstract class FCommand extends MCommand
 		
 		if (you.getRole().equals(Rel.LEADER))
 		{
-			i.sendMessage(Txt.parse("<b>Only the faction leader can do that."));
+			i.sendMessage(Txt.parse("<b>只有公会会长才能这么做."));
 		}
 		else if (i.getRole().equals(Rel.OFFICER))
 		{
@@ -58,12 +58,12 @@ public abstract class FCommand extends MCommand
 			}
 			else
 			{
-				i.sendMessage(Txt.parse("<b>Moderators can't control each other..."));
+				i.sendMessage(Txt.parse("<b>主持人不能控制彼此..."));
 			}
 		}
 		else
 		{
-			i.sendMessage(Txt.parse("<b>You must be a faction moderator to do that."));
+			i.sendMessage(Txt.parse("<b>你必须是工会主席才能那么做."));
 		}
 		
 		return false;

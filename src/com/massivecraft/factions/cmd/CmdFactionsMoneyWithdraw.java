@@ -23,7 +23,7 @@ public class CmdFactionsMoneyWithdraw extends FCommand
 	{
 		this.addAliases("w", "withdraw");
 		
-		this.addRequiredArg("amount");
+		this.addRequiredArg("金额");
 		this.addOptionalArg("faction", "you");
 		
 		this.addRequirements(ReqFactionsEnabled.get());

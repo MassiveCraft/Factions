@@ -31,25 +31,25 @@ public class CmdFactionsOfficer extends FCommand
 
 		if (targetFaction != usenderFaction && !permAny)
 		{
-			msg("%s<b> is not a member in your faction.", you.describeTo(usender, true));
+			msg("%s<b> 不是你公会的会员.", you.describeTo(usender, true));
 			return;
 		}
 		
 		if (usender != null && usender.getRole() != Rel.LEADER && !permAny)
 		{
-			msg("<b>You are not the faction leader.");
+			msg("<b>你不是公会会长.");
 			return;
 		}
 
 		if (you == usender && !permAny)
 		{
-			msg("<b>The target player musn't be yourself.");
+			msg("<b>目标用户不能是你自己.");
 			return;
 		}
 
 		if (you.getRole() == Rel.LEADER)
 		{
-			msg("<b>The target player is a faction leader. Demote them first.");
+			msg("<b>目标用户是公会会长. 必须先进行降级.");
 			return;
 		}
 
@@ -57,15 +57,15 @@ public class CmdFactionsOfficer extends FCommand
 		{
 			// Revoke
 			you.setRole(Rel.MEMBER);
-			targetFaction.msg("%s<i> is no longer officer in your faction.", you.describeTo(targetFaction, true));
-			msg("<i>You have removed officer status from %s<i>.", you.describeTo(usender, true));
+			targetFaction.msg("%s<i> 不再担任你的公会助理.", you.describeTo(targetFaction, true));
+			msg("<i>你取消了 %s<i> 的公会助理职务.", you.describeTo(usender, true));
 		}
 		else
 		{
 			// Give
 			you.setRole(Rel.OFFICER);
-			targetFaction.msg("%s<i> was promoted to officer in your faction.", you.describeTo(targetFaction, true));
-			msg("<i>You have promoted %s<i> to officer.", you.describeTo(usender, true));
+			targetFaction.msg("%s<i> 晋级为你的公会助理.", you.describeTo(targetFaction, true));
+			msg("<i>你晋级 %s<i> 成为公会助理.", you.describeTo(usender, true));
 		}
 	}
 	

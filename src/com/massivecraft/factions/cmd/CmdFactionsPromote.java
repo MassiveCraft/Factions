@@ -31,13 +31,13 @@ public class CmdFactionsPromote extends FCommand
 		
 		if (you.getFaction() != usenderFaction)
 		{
-			msg("%s<b> is not a member in your faction.", you.describeTo(usender, true));
+			msg("%s<b> 不是你的公会成员.", you.describeTo(usender, true));
 			return;
 		}
 		
 		if (you == usender)
 		{
-			msg("<b>The target player mustn't be yourself.");
+			msg("<b>目标不能是你自己.");
 			return;
 		}
 
@@ -45,22 +45,22 @@ public class CmdFactionsPromote extends FCommand
 		{
 			if (!usender.getRole().isAtLeast(Rel.OFFICER))
 			{
-				msg("<b>You must be an officer to promote someone to member.");
+				msg("<b>你必须是公会助理才能提升别人成为会员.");
 				return;
 			}
 			you.setRole(Rel.MEMBER);
-			usenderFaction.msg("%s<i> was promoted to being a member of your faction.", you.describeTo(usenderFaction, true));
+			usenderFaction.msg("%s<i> 被提升为你的公会会员.", you.describeTo(usenderFaction, true));
 		}
 		else if (you.getRole() == Rel.MEMBER)
 		{
 			if (!usender.getRole().isAtLeast(Rel.LEADER))
 			{
-				msg("<b>You must be the leader to promote someone to officer.");
+				msg("<b>你必须是公会会长才能提升别人成为公会助理.");
 				return;
 			}
 			// Give
 			you.setRole(Rel.OFFICER);
-			usenderFaction.msg("%s<i> was promoted to being a officer in your faction.", you.describeTo(usenderFaction, true));
+			usenderFaction.msg("%s<i> 被提升为你的公会助理.", you.describeTo(usenderFaction, true));
 		}
 	}
 	

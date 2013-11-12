@@ -20,7 +20,7 @@ public class CmdFactionsClaim extends FCommand
 	{
 		this.addAliases("claim");
 		
-		this.addOptionalArg("radius", "1");
+		this.addOptionalArg("半径", "1");
 		this.addOptionalArg("faction", "you");
 		
 		this.addRequirements(ReqFactionsEnabled.get());
@@ -44,13 +44,13 @@ public class CmdFactionsClaim extends FCommand
 		// Validate
 		if (radius < 1)
 		{
-			msg("<b>If you specify a radius, it must be at least 1.");
+			msg("<b>如果你指定半径, 最小值为1.");
 			return;
 		}
 		
 		if (radius > MConf.get().radiusClaimRadiusLimit && !usender.isUsingAdminMode())
 		{
-			msg("<b>The maximum radius allowed is <h>%s<b>.", MConf.get().radiusClaimRadiusLimit);
+			msg("<b>允许的最大半径 <h>%s<b>.", MConf.get().radiusClaimRadiusLimit);
 			return;
 		}
 		
@@ -66,7 +66,7 @@ public class CmdFactionsClaim extends FCommand
 		// radius claim
 		if (!Perm.CLAIM_RADIUS.has(sender, false))
 		{
-			msg("<b>You do not have permission to claim in a radius.");
+			msg("<b>你没有圈地权限.");
 			return;
 		}
 
