@@ -83,7 +83,7 @@ public class FactionsListenerEcon implements Listener
 		Faction faction = event.getFaction();
 	
 		double amount = Money.get(faction);
-		String amountString = Money.format(faction, amount);
+		String amountString = Money.format(amount);
 		
 		Econ.transferMoney(usender, faction, usender, amount, true);
 		

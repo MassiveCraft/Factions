@@ -104,13 +104,13 @@ public class CmdFactionsFaction extends FCommand
 						money *= -1;
 					}
 					
-					msg("<a>Total land %s %s: <i>%s", type.toString().toLowerCase(), word, Money.format(faction, money));
+					msg("<a>Total land %s %s: <i>%s", type.toString().toLowerCase(), word, Money.format(money));
 				}
 				
 				// Show bank contents
 				if (UConf.get(faction).bankEnabled)
 				{
-					msg("<a>Bank contains: <i>"+Money.format(faction, Money.get(faction)));
+					msg("<a>Bank contains: <i>"+Money.format(Money.get(faction)));
 				}
 			}
 			

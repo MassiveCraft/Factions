@@ -57,7 +57,7 @@ public class CmdFactionsMoneyWithdraw extends FCommand
 
 		if (success && MConf.get().logMoneyTransactions)
 		{
-			Factions.get().log(ChatColor.stripColor(Txt.parse("%s withdrew %s from the faction bank: %s", usender.getName(), Money.format(from, amount), from.describeTo(null))));
+			Factions.get().log(ChatColor.stripColor(Txt.parse("%s withdrew %s from the faction bank: %s", usender.getName(), Money.format(amount), from.describeTo(null))));
 		}
 	}
 	

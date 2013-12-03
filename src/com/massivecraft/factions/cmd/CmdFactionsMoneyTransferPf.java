@@ -60,7 +60,7 @@ public class CmdFactionsMoneyTransferPf extends FCommand
 
 		if (success && MConf.get().logMoneyTransactions)
 		{
-			Factions.get().log(ChatColor.stripColor(Txt.parse("%s transferred %s from the player \"%s\" to the faction \"%s\"", usender.getName(), Money.format(from, amount), from.describeTo(null), to.describeTo(null))));
+			Factions.get().log(ChatColor.stripColor(Txt.parse("%s transferred %s from the player \"%s\" to the faction \"%s\"", usender.getName(), Money.format(amount), from.describeTo(null), to.describeTo(null))));
 		}
 	}
 	
