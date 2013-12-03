@@ -61,7 +61,7 @@ public class Econ
 		
 		if (!Money.exists(uconf.econUniverseAccount)) return;
 
-		Money.spawn(delta, null, uconf.econUniverseAccount);
+		Money.spawn(uconf.econUniverseAccount, null, delta);
 	}
 
 	public static void sendBalanceInfo(UPlayer to, EconomyParticipator about)
@@ -102,9 +102,9 @@ public class Econ
 	
 	public static boolean transferMoney(EconomyParticipator invoker, EconomyParticipator from, EconomyParticipator to, double amount)
 	{
-		return transferMoney(invoker, from, to, amount, true);
+		return transferMoney(from, to, invoker, amount, true);
 	}
-	public static boolean transferMoney(EconomyParticipator invoker, EconomyParticipator from, EconomyParticipator to, double amount, boolean notify)
+	public static boolean transferMoney(EconomyParticipator from, EconomyParticipator to, EconomyParticipator by, double amount, boolean notify)
 	{
 		if (!isEnabled(from)) return false;
 
@@ -119,34 +119,34 @@ public class Econ
 		}
 		
 		// Check the rights
-		if ( ! canIControllYou(invoker, from)) return false;
+		if ( ! canIControllYou(by, from)) return false;
 		
 		// Is there enough money for the transaction to happen?
 		if (Money.get(from) < amount)
 		{
 			// There was not enough money to pay
-			if (invoker != null && notify)
+			if (by != null && notify)
 			{
-				invoker.msg("<h>%s<b> can't afford to transfer <h>%s<b> to %s<b>.", from.describeTo(invoker, true), Money.format(amount), to.describeTo(invoker));
+				by.msg("<h>%s<b> can't afford to transfer <h>%s<b> to %s<b>.", from.describeTo(by, true), Money.format(amount), to.describeTo(by));
 			}
 			return false;
 		}
 		
 		// Transfer money
-		if (Money.move(amount, invoker, from, to))
+		if (Money.move(from, to, by, amount))
 		{
 			if (notify)
 			{
-				sendTransferInfo(invoker, from, to, amount);
+				sendTransferInfo(by, from, to, amount);
 			}
 			return true;
 		}
 		else
 		{
 			// if we get here something with the transaction failed
-			if (invoker != null && notify)
+			if (by != null && notify)
 			{
-				invoker.msg("Unable to transfer %s<b> to <h>%s<b> from <h>%s<b>.", Money.format(amount), to.describeTo(invoker), from.describeTo(invoker, true));
+				by.msg("Unable to transfer %s<b> to <h>%s<b> from <h>%s<b>.", Money.format(amount), to.describeTo(by), from.describeTo(by, true));
 			}
 			return false;
 		}
@@ -233,7 +233,7 @@ public class Econ
 		
 		boolean hasActionDesctription = (actionDescription != null && !actionDescription.isEmpty());
 
-		if (Money.spawn(delta, null, ep))
+		if (Money.spawn(ep, null, delta))
 		{
 			modifyUniverseMoney(ep, -delta);
 			
