@@ -23,7 +23,7 @@ public class ExtractorFactionAccountId implements Extractor
 		{
 			String factionId = ((Faction)o).getId();
 			if (factionId == null) return null;
-			return "faction-"+factionId;
+			return Factions.FACTION_MONEY_ACCOUNT_ID_PREFIX + factionId;
 		}
 		
 		return null;

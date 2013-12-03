@@ -53,6 +53,12 @@ import com.massivecraft.mcore.xlib.gson.GsonBuilder;
 public class Factions extends MPlugin
 {
 	// -------------------------------------------- //
+	// CONSTANTS
+	// -------------------------------------------- //
+	
+	public final static String FACTION_MONEY_ACCOUNT_ID_PREFIX = "faction-"; 
+	
+	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
