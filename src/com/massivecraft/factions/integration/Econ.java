@@ -133,30 +133,23 @@ public class Econ
 		}
 		
 		// Transfer money
-		if (Money.despawn(amount, null, from))
+		if (Money.move(amount, invoker, from, to))
 		{
-			if (Money.spawn(amount, null, to))
+			if (notify)
 			{
-				if (notify)
-				{
-					sendTransferInfo(invoker, from, to, amount);
-				}
-				return true;
+				sendTransferInfo(invoker, from, to, amount);
 			}
-			else
-			{
-				// We failed. Try a rollback
-				Money.spawn(amount, null, from);
-			}
+			return true;
 		}
-		
-		// if we get here something with the transaction failed
-		if (notify)
+		else
 		{
-			invoker.msg("Unable to transfer %s<b> to <h>%s<b> from <h>%s<b>.", Money.format(amount), to.describeTo(invoker), from.describeTo(invoker, true));
+			// if we get here something with the transaction failed
+			if (invoker != null && notify)
+			{
+				invoker.msg("Unable to transfer %s<b> to <h>%s<b> from <h>%s<b>.", Money.format(amount), to.describeTo(invoker), from.describeTo(invoker, true));
+			}
+			return false;
 		}
-		
-		return false;
 	}
 	
 	public static Set<UPlayer> getUPlayers(EconomyParticipator ep)
