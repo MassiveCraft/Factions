@@ -96,7 +96,6 @@ public class Econ
 		}
 		
 		// Otherwise you may not! ;,,;
-		i.msg("<h>%s<i> lacks permission to control <h>%s's<i> money.", i.describeTo(i, true), you.describeTo(i));
 		return false;
 	}
 	
@@ -119,7 +118,11 @@ public class Econ
 		}
 		
 		// Check the rights
-		if ( ! canIControllYou(by, from)) return false;
+		if ( ! canIControllYou(by, from))
+		{
+			by.msg("<h>%s<i> lacks permission to control <h>%s's<i> money.", by.describeTo(by, true), from.describeTo(by));
+			return false;
+		}
 		
 		// Is there enough money for the transaction to happen?
 		if (Money.get(from) < amount)
