@@ -31,7 +31,7 @@ public class PowerMixinDefault implements PowerMixin
 	@Override
 	public double getMin(UPlayer uplayer)
 	{
-		return UConf.get(uplayer).powerMin;
+		return UConf.get(uplayer).powerMin - uplayer.getPowerBoost();
 	}
 
 	@Override
