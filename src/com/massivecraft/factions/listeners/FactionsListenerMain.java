@@ -14,6 +14,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Enderman;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
@@ -786,6 +787,26 @@ public class FactionsListenerMain implements Listener
 		{
 			event.setCancelled(true);
 		}
+	}
+	
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void itemFrameDamage(EntityDamageByEntityEvent event)
+	{
+		// If the damagee is an ItemFrame ...
+		Entity edamagee = event.getEntity();
+		if (!(edamagee instanceof ItemFrame)) return;
+		ItemFrame itemFrame = (ItemFrame)edamagee;
+		
+		// ... and the liable damager is a player ...
+		Entity edamager = MUtil.getLiableDamager(event);
+		if (!(edamager instanceof Player)) return;
+		Player player = (Player)edamager;
+		
+		// ... and the player can't build there ...
+		if (canPlayerBuildAt(player, PS.valueOf(itemFrame), true)) return;
+		
+		// ... then cancel the event.
+		event.setCancelled(true);
 	}
 	
 	@EventHandler(priority = EventPriority.NORMAL)
