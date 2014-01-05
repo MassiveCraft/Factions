@@ -144,9 +144,9 @@ public class Factions extends MPlugin
 		);
 		
 		// Schedule recurring non-tps-dependent tasks
-		TaskPlayerPowerUpdate.get().schedule(this);
-		TaskPlayerDataRemove.get().schedule(this);
-		TaskEconLandReward.get().schedule(this);
+		TaskPlayerPowerUpdate.get().activate(this);
+		TaskPlayerDataRemove.get().activate(this);
+		TaskEconLandReward.get().activate(this);
 		
 		// Register built in chat modifiers
 		ChatModifierLc.get().register();

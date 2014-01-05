@@ -84,6 +84,12 @@ public class UConf extends Entity<UConf>
 	public Map<FPerm, Set<Rel>> defaultFactionPerms = FPerm.getDefaultDefaults();
 
 	// -------------------------------------------- //
+	// MESSAGES
+	// -------------------------------------------- //
+	
+	public boolean broadcastNameChange = false;
+	
+	// -------------------------------------------- //
 	// POWER
 	// -------------------------------------------- //
 	
