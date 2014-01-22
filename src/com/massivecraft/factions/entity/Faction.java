@@ -990,7 +990,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 
 			for (UPlayer uplayer : UPlayerColls.get().get(this).getAllOnline())
 			{
-				uplayer.msg("The faction %s<i> was disbanded.", this.getName(uplayer));
+				uplayer.msg("<i>The faction %s<i> was disbanded.", this.getName(uplayer));
 			}
 
 			this.detach();
