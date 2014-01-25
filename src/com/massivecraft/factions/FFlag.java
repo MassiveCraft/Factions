@@ -95,7 +95,7 @@ public enum FFlag
 		if (str.startsWith("per")) return PERMANENT;
 		if (str.startsWith("pea")) return PEACEFUL;
 		if (str.startsWith("i")) return INFPOWER;
-		if (str.startsWith("powl") || str.startsWith("powerl") return POWERLOSS;
+		if (str.startsWith("powl") || str.startsWith("powerl")) return POWERLOSS;
 		if (str.startsWith("powerg") || str.startsWith("powg")) return POWERGAIN;
 		if (str.startsWith("pvp")) return PVP;
 		if (str.startsWith("fr") || str.startsWith("ff")) return FRIENDLYFIRE;
