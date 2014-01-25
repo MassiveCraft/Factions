@@ -83,7 +83,7 @@ public class CmdFactionsName extends FCommand
 			{
 				continue;
 			}
-			faction.msg("<i>The faction %s<i> changed their name to %s.", usender.getColorTo(faction)+oldName, usenderFaction.getName(faction));
+			faction.msg("<i>The player %s<i> changed their faction name from %s<i> to %s<i>.", usender.describeTo(faction, true), usender.getColorTo(faction)+oldName, usenderFaction.getName(faction));
 		}
 	}
 	
