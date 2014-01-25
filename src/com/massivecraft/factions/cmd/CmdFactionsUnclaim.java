@@ -45,7 +45,6 @@ public class CmdFactionsUnclaim extends FCommand
 		if (radius == null) return;
 
 		PS chunk = PS.valueOf(me).getChunk(true);
-		Faction newFaction = FactionColls.get().get(me).getNone();
 
 		// Apply
 		// single chunk
