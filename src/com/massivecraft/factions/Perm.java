@@ -59,6 +59,7 @@ public enum Perm
 	TITLE_COLOR("title.color"),
 	UNCLAIM("unclaim"),
 	UNCLAIM_ALL("unclaimall"),
+	UNCLAIM_RADIUS("unclaim.radius"),
 	VERSION("version"),
 	
 	// END OF LIST
