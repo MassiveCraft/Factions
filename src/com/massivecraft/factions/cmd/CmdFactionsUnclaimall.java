@@ -53,7 +53,7 @@ public class CmdFactionsUnclaimall extends FCommand
 		Faction newFaction = FactionColls.get().get(faction).getNone();
 
 		Boolean val = this.arg(0, ARBoolean.get(), null);
-		if (val == null) return;
+		if (val == null) val = false;
 
 		// FPerm
 		if (!FPerm.TERRITORY.has(usender, faction, true)) return;
