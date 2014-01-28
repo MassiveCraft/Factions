@@ -28,6 +28,7 @@ public enum FFlag
 	// (Faction) Territory flags
 	// If a faction later could have many different territories this would probably be in another enum
 	POWERLOSS("powerloss", "<i>Is power lost on death in this territory?", true),
+	POWERGAIN("powergain", "<i>Is power gaining allowed in this territory?", true),
 	PVP("pvp", "<i>Can you PVP in territory?", true),
 	FRIENDLYFIRE("friendlyfire", "<i>Can friends hurt eachother here?", false),
 	MONSTERS("monsters", "<i>Can monsters spawn in this territory?", true),
@@ -94,7 +95,8 @@ public enum FFlag
 		if (str.startsWith("per")) return PERMANENT;
 		if (str.startsWith("pea")) return PEACEFUL;
 		if (str.startsWith("i")) return INFPOWER;
-		if (str.startsWith("pow")) return POWERLOSS;
+		if (str.startsWith("powl") || str.startsWith("powerl")) return POWERLOSS;
+		if (str.startsWith("powerg") || str.startsWith("powg")) return POWERGAIN;
 		if (str.startsWith("pvp")) return PVP;
 		if (str.startsWith("fr") || str.startsWith("ff")) return FRIENDLYFIRE;
 		if (str.startsWith("m")) return MONSTERS;

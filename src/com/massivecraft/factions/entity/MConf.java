@@ -73,6 +73,17 @@ public class MConf extends Entity<MConf>
 	public int radiusClaimRadiusLimit = 5;
 	
 	// -------------------------------------------- //
+	// UNCLAIM LIMITS
+	// -------------------------------------------- //
+	
+	// if someone is doing a radius unclaim and the process fails to claim land this many times in a row, it will exit
+	public int radiusUnClaimFailureLimit = 9; 
+	
+	// the maximum radius allowed when using the unclaim command.
+	public int radiusUnClaimRadiusLimit = 5;
+	
+	// -------------------------------------------- //
+
 	// CHAT
 	// -------------------------------------------- //
 	
