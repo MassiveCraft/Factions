@@ -17,7 +17,6 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
 import org.bukkit.entity.Wither;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.EventHandler;
@@ -53,6 +52,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.projectiles.ProjectileSource;
 
 import com.massivecraft.factions.FFlag;
 import com.massivecraft.factions.FPerm;
@@ -260,7 +260,10 @@ public class FactionsListenerMain implements Listener
 		// If a harmful potion is splashing ...
 		if (!MUtil.isHarmfulPotion(event.getPotion())) return;
 		
-		Entity thrower = event.getPotion().getShooter();
+		ProjectileSource projectileSource = event.getPotion().getShooter();
+		if (! (projectileSource instanceof Entity)) return;
+		
+		Entity thrower = (Entity)projectileSource;
 
 		// ... scan through affected entities to make sure they're all valid targets.
 		for (LivingEntity affectedEntity : event.getAffectedEntities())
@@ -295,11 +298,8 @@ public class FactionsListenerMain implements Listener
 		if (UConf.isDisabled(defender)) return true;
 		
 		// ... and the attacker is someone else ...
-		Entity eattacker = event.getDamager();
-		if (eattacker instanceof Projectile)
-		{
-			eattacker = ((Projectile)eattacker).getShooter();
-		}
+		Entity eattacker = MUtil.getLiableDamager(event);
+		
 		// (we check null here since there may not be an attacker)
 		// (lack of attacker situations can be caused by other bukkit plugins)
 		if (eattacker != null && eattacker.equals(edefender)) return true;
