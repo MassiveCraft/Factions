@@ -1,94 +1,79 @@
 package com.massivecraft.factions.util;
 
+import com.massivecraft.factions.*;
+import com.massivecraft.factions.struct.Role;
+import org.bukkit.scheduler.BukkitRunnable;
+
 import java.util.ArrayList;
 import java.util.ListIterator;
 
-import org.bukkit.scheduler.BukkitRunnable;
+public class AutoLeaveProcessTask extends BukkitRunnable {
+    private transient boolean readyToGo = false;
+    private transient boolean finished = false;
+    private transient ArrayList<FPlayer> fplayers;
+    private transient ListIterator<FPlayer> iterator;
+    private transient double toleranceMillis;
 
-import com.massivecraft.factions.Conf;
-import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.FPlayers;
-import com.massivecraft.factions.P;
-import com.massivecraft.factions.struct.Role;
+    public AutoLeaveProcessTask() {
+        fplayers = new ArrayList<FPlayer>(FPlayers.i.get());
+        this.iterator = fplayers.listIterator();
+        this.toleranceMillis = Conf.autoLeaveAfterDaysOfInactivity * 24 * 60 * 60 * 1000;
+        this.readyToGo = true;
+        this.finished = false;
+    }
 
-public class AutoLeaveProcessTask extends BukkitRunnable
-{
-	private transient boolean readyToGo = false;
-	private transient boolean finished = false;
-	private transient ArrayList<FPlayer> fplayers;
-	private transient ListIterator<FPlayer> iterator;
-	private transient double toleranceMillis;
+    public void run() {
+        if (Conf.autoLeaveAfterDaysOfInactivity <= 0.0 || Conf.autoLeaveRoutineMaxMillisecondsPerTick <= 0.0) {
+            this.stop();
+            return;
+        }
 
-	public AutoLeaveProcessTask()
-	{
-		fplayers = new ArrayList<FPlayer>(FPlayers.i.get());
-		this.iterator = fplayers.listIterator();
-		this.toleranceMillis = Conf.autoLeaveAfterDaysOfInactivity * 24 * 60 * 60 * 1000;
-		this.readyToGo = true;
-		this.finished = false;
-	}
+        if (!readyToGo) return;
+        // this is set so it only does one iteration at a time, no matter how frequently the timer fires
+        readyToGo = false;
+        // and this is tracked to keep one iteration from dragging on too long and possibly choking the system if there are a very large number of players to go through
+        long loopStartTime = System.currentTimeMillis();
 
-	public void run()
-	{
-		if (Conf.autoLeaveAfterDaysOfInactivity <= 0.0 || Conf.autoLeaveRoutineMaxMillisecondsPerTick <= 0.0)
-		{
-			this.stop();
-			return;
-		}
+        while (iterator.hasNext()) {
+            long now = System.currentTimeMillis();
 
-		if ( ! readyToGo) return;
-		// this is set so it only does one iteration at a time, no matter how frequently the timer fires
-		readyToGo = false;
-		// and this is tracked to keep one iteration from dragging on too long and possibly choking the system if there are a very large number of players to go through
-		long loopStartTime = System.currentTimeMillis();
+            // if this iteration has been running for maximum time, stop to take a breather until next tick
+            if (now > loopStartTime + Conf.autoLeaveRoutineMaxMillisecondsPerTick) {
+                readyToGo = true;
+                return;
+            }
 
-		while(iterator.hasNext())
-		{
-			long now = System.currentTimeMillis();
+            FPlayer fplayer = iterator.next();
+            if (fplayer.isOffline() && now - fplayer.getLastLoginTime() > toleranceMillis) {
+                if (Conf.logFactionLeave || Conf.logFactionKick)
+                    P.p.log("Player " + fplayer.getName() + " was auto-removed due to inactivity.");
 
-			// if this iteration has been running for maximum time, stop to take a breather until next tick
-			if (now > loopStartTime + Conf.autoLeaveRoutineMaxMillisecondsPerTick)
-			{
-				readyToGo = true;
-				return;
-			}
+                // if player is faction admin, sort out the faction since he's going away
+                if (fplayer.getRole() == Role.ADMIN) {
+                    Faction faction = fplayer.getFaction();
+                    if (faction != null)
+                        fplayer.getFaction().promoteNewLeader();
+                }
 
-			FPlayer fplayer = iterator.next();
-			if (fplayer.isOffline() && now - fplayer.getLastLoginTime() > toleranceMillis)
-			{
-				if (Conf.logFactionLeave || Conf.logFactionKick)
-					P.p.log("Player "+fplayer.getName()+" was auto-removed due to inactivity.");
+                fplayer.leave(false);
+                iterator.remove();  // go ahead and remove this list's link to the FPlayer object
+                fplayer.detach();
+            }
+        }
 
-				// if player is faction admin, sort out the faction since he's going away
-				if (fplayer.getRole() == Role.ADMIN)
-				{
-					Faction faction = fplayer.getFaction();
-					if (faction != null)
-						fplayer.getFaction().promoteNewLeader();
-				}
+        // looks like we've finished
+        this.stop();
+    }
 
-				fplayer.leave(false);
-				iterator.remove();  // go ahead and remove this list's link to the FPlayer object
-				fplayer.detach();
-			}
-		}
+    // we're done, shut down
+    public void stop() {
+        readyToGo = false;
+        finished = true;
 
-		// looks like we've finished
-		this.stop();
-	}
+        this.cancel();
+    }
 
-	// we're done, shut down
-	public void stop()
-	{
-		readyToGo = false;
-		finished = true;
-
-		this.cancel();
-	}
-
-	public boolean isFinished()
-	{
-		return finished;
-	}
+    public boolean isFinished() {
+        return finished;
+    }
 }
