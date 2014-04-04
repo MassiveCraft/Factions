@@ -98,7 +98,6 @@ public class P extends MPlugin {
         this.getBaseCommands().add(cmdBase);
 
         EssentialsFeatures.setup();
-        SpoutFeatures.setup();
         Econ.setup();
         CapiFeatures.setup();
         LWCFeatures.setup();
