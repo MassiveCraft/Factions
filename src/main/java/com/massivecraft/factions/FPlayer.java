@@ -342,7 +342,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator {
     }
 
 	/*public String getNameAndTag(Faction faction)
-	{
+    {
 		return this.getRelationColor(faction)+this.getNameAndTag();
 	}
 	public String getNameAndTag(FPlayer fplayer)
@@ -351,9 +351,9 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator {
 	}*/
 
     // TODO: REmovded for refactoring.
-	
+
 	/*public String getNameAndRelevant(Faction faction)
-	{
+    {
 		// Which relation?
 		Relation rel = this.getRelationTo(faction);
 		

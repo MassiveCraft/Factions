@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static com.sk89q.worldguard.bukkit.BukkitUtil.*;
+import static com.sk89q.worldguard.bukkit.BukkitUtil.toVector;
 
 /*
  *  Worldguard Region Checking

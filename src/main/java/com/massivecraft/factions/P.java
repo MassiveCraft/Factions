@@ -2,8 +2,10 @@ package com.massivecraft.factions;
 
 import com.massivecraft.factions.cmd.CmdAutoHelp;
 import com.massivecraft.factions.cmd.FCmdRoot;
-import com.massivecraft.factions.integration.*;
-import com.massivecraft.factions.integration.capi.CapiFeatures;
+import com.massivecraft.factions.integration.Econ;
+import com.massivecraft.factions.integration.EssentialsFeatures;
+import com.massivecraft.factions.integration.LWCFeatures;
+import com.massivecraft.factions.integration.Worldguard;
 import com.massivecraft.factions.listeners.*;
 import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.util.AutoLeaveTask;
@@ -99,7 +101,6 @@ public class P extends MPlugin {
 
         EssentialsFeatures.setup();
         Econ.setup();
-        CapiFeatures.setup();
         LWCFeatures.setup();
 
         if (Conf.worldGuardChecking || Conf.worldGuardBuildPriority) {

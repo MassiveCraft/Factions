@@ -2,13 +2,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.minetime</groupId>
+    <groupId>com.massivecraft</groupId>
     <artifactId>Factions</artifactId>
     <version>1.6.9.5-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>Factions</name>
-    <url>http://maven.apache.org</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -61,6 +60,26 @@
             <artifactId>lwc</artifactId>
             <version>4.4.0-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>net.ess3</groupId>
+            <artifactId>Essentials</artifactId>
+            <version>2.x-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>net.ess3</groupId>
+            <artifactId>EssentialsChat</artifactId>
+            <version>2.x-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sk89q</groupId>
+            <artifactId>worldguard</artifactId>
+            <version>5.8.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sk89q</groupId>
+            <artifactId>worldedit</artifactId>
+            <version>5.6.1</version>
+        </dependency>
     </dependencies>
 
     <repositories>
@@ -76,6 +95,14 @@
             <id>mcstats.releases</id>
             <name>mcstats.org releases</name>
             <url>http://repo.mcstats.org/content/repositories/</url>
+        </repository>
+        <repository>
+            <id>essrel</id>
+            <url>http://repo.ess3.net/content/repositories/essrel</url>
+        </repository>
+        <repository>
+            <id>maven.sk89q.com</id>
+            <url>http://maven.sk89q.com/repo/</url>
         </repository>
     </repositories>
 </project>

@@ -1,7 +1,7 @@
 name: Factions
 version: 1.6.9.5
 main: com.massivecraft.factions.P
-authors: [Olof Larsson, Brett Flannigan]
+authors: [Olof Larsson, Brett Flannigan, drtshock]
 softdepend: [PermissionsEx, Permissions, Essentials, EssentialsChat, HeroChat, iChat, LocalAreaChat, LWC, nChat, ChatManager, CAPI, AuthMe, Vault, Spout, WorldEdit, WorldGuard, AuthDB, CaptureThePoints, CombatTag]
 commands:
   factions:

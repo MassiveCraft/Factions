@@ -8,7 +8,7 @@ public class WorldUtil {
     // Previously We had crappy support for multiworld management.
     // This should however be handled by an external plugin!
     /*public static boolean load(String name) {
-		if (isWorldLoaded(name)) {
+        if (isWorldLoaded(name)) {
 			return true;
 		}
 		
