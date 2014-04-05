@@ -4,7 +4,6 @@ import com.massivecraft.factions.cmd.CmdAutoHelp;
 import com.massivecraft.factions.cmd.FCmdRoot;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.integration.EssentialsFeatures;
-import com.massivecraft.factions.integration.LWCFeatures;
 import com.massivecraft.factions.integration.Worldguard;
 import com.massivecraft.factions.listeners.*;
 import com.massivecraft.factions.struct.ChatMode;
@@ -101,7 +100,6 @@ public class P extends MPlugin {
 
         EssentialsFeatures.setup();
         Econ.setup();
-        LWCFeatures.setup();
 
         if (Conf.worldGuardChecking || Conf.worldGuardBuildPriority) {
             Worldguard.init(this);

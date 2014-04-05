@@ -5,7 +5,6 @@ import com.massivecraft.factions.event.LandClaimEvent;
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.iface.RelationParticipator;
 import com.massivecraft.factions.integration.Econ;
-import com.massivecraft.factions.integration.LWCFeatures;
 import com.massivecraft.factions.integration.Worldguard;
 import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.struct.Permission;
@@ -734,10 +733,6 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator {
 
         // then make 'em pay (if applicable)
         if (mustPay && !Econ.modifyMoney(payee, -cost, "to claim this land", "for claiming this land")) return false;
-
-        if (LWCFeatures.getEnabled() && forFaction.isNormal() && Conf.onCaptureResetLwcLocks) {
-            LWCFeatures.clearOtherChests(flocation, this.getFaction());
-        }
 
         // announce success
         Set<FPlayer> informTheseFPlayers = new HashSet<FPlayer>();

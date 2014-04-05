@@ -3,7 +3,6 @@ package com.massivecraft.factions;
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.iface.RelationParticipator;
 import com.massivecraft.factions.integration.Econ;
-import com.massivecraft.factions.integration.LWCFeatures;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
@@ -545,9 +544,6 @@ public class Faction extends Entity implements EconomyParticipator {
     }
 
     public void clearClaimOwnership(FLocation loc) {
-        if (Conf.onUnclaimResetLwcLocks && LWCFeatures.getEnabled()) {
-            LWCFeatures.clearAllChests(loc);
-        }
         claimOwnership.remove(loc);
     }
 
@@ -572,9 +568,6 @@ public class Faction extends Entity implements EconomyParticipator {
             }
 
             if (ownerData.isEmpty()) {
-                if (Conf.onUnclaimResetLwcLocks && LWCFeatures.getEnabled()) {
-                    LWCFeatures.clearAllChests(entry.getKey());
-                }
                 claimOwnership.remove(entry.getKey());
             }
         }

@@ -1,6 +1,5 @@
 package com.massivecraft.factions;
 
-import com.massivecraft.factions.integration.LWCFeatures;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.util.AsciiCompass;
 import com.massivecraft.factions.zcore.util.DiscUtil;
@@ -69,9 +68,6 @@ public class Board {
         while (iter.hasNext()) {
             Entry<FLocation, String> entry = iter.next();
             if (entry.getValue().equals(factionId)) {
-                if (Conf.onUnclaimResetLwcLocks && LWCFeatures.getEnabled()) {
-                    LWCFeatures.clearAllChests(entry.getKey());
-                }
                 iter.remove();
             }
         }
@@ -107,9 +103,7 @@ public class Board {
         while (iter.hasNext()) {
             Entry<FLocation, String> entry = iter.next();
             if (!Factions.i.exists(entry.getValue())) {
-                if (Conf.onUnclaimResetLwcLocks && LWCFeatures.getEnabled()) {
-                    LWCFeatures.clearAllChests(entry.getKey());
-                }
+
                 P.p.log("Board cleaner removed " + entry.getValue() + " from " + entry.getKey());
                 iter.remove();
             }
