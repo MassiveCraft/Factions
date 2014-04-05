@@ -19,17 +19,11 @@ public class FactionsServerListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPluginDisable(PluginDisableEvent event) {
         String name = event.getPlugin().getDescription().getName();
-        if (name.equals("Spout")) {
-            SpoutFeatures.setAvailable(false, "");
-        }
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPluginEnable(PluginEnableEvent event) {
         Plugin plug = event.getPlugin();
         String name = plug.getDescription().getName();
-        if (name.equals("Spout")) {
-            SpoutFeatures.setAvailable(true, plug.getDescription().getFullName());
-        }
     }
 }

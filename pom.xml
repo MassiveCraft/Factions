@@ -93,7 +93,6 @@
         </repository>
         <repository>
             <id>mcstats.releases</id>
-            <name>mcstats.org releases</name>
             <url>http://repo.mcstats.org/content/repositories/</url>
         </repository>
         <repository>

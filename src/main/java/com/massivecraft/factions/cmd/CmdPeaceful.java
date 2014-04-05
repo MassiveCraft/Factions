@@ -46,7 +46,6 @@ public class CmdPeaceful extends FCommand {
             }
         }
 
-        SpoutFeatures.updateAppearances(faction);
     }
 
 }

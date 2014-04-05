@@ -85,7 +85,5 @@ public class CmdDisband extends FCommand {
         }
 
         faction.detach();
-
-        SpoutFeatures.updateAppearances();
     }
 }

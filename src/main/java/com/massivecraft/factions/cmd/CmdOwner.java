@@ -75,14 +75,12 @@ public class CmdOwner extends FCommand {
         // if no player name was passed, and this claim does already have owners set, clear them
         if (args.isEmpty() && myFaction.doesLocationHaveOwnersSet(flocation)) {
             myFaction.clearClaimOwnership(flocation);
-            SpoutFeatures.updateOwnerListLoc(flocation);
             fme.msg("<i>You have cleared ownership for this claimed area.");
             return;
         }
 
         if (myFaction.isPlayerInOwnerList(playerName, flocation)) {
             myFaction.removePlayerAsOwner(playerName, flocation);
-            SpoutFeatures.updateOwnerListLoc(flocation);
             fme.msg("<i>You have removed ownership of this claimed land from %s<i>.", playerName);
             return;
         }
@@ -92,7 +90,6 @@ public class CmdOwner extends FCommand {
             return;
 
         myFaction.setPlayerAsOwner(playerName, flocation);
-        SpoutFeatures.updateOwnerListLoc(flocation);
 
         fme.msg("<i>You have added %s<i> to the owner list for this claimed land.", playerName);
     }

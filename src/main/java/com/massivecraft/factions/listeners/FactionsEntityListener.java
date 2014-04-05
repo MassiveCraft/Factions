@@ -19,6 +19,7 @@ import org.bukkit.event.hanging.HangingBreakEvent.RemoveCause;
 import org.bukkit.event.hanging.HangingPlaceEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.projectiles.ProjectileSource;
 
 import java.text.MessageFormat;
 import java.util.*;
@@ -219,13 +220,16 @@ public class FactionsEntityListener implements Listener {
         }
         if (!badjuju) return;
 
-        Entity thrower = event.getPotion().getShooter();
+        ProjectileSource thrower = event.getPotion().getShooter();
+        if (!(thrower instanceof Entity)) {
+            return;
+        }
 
         // scan through affected entities to make sure they're all valid targets
         Iterator<LivingEntity> iter = event.getAffectedEntities().iterator();
         while (iter.hasNext()) {
             LivingEntity target = iter.next();
-            EntityDamageByEntityEvent sub = new EntityDamageByEntityEvent(thrower, target, EntityDamageEvent.DamageCause.CUSTOM, 0);
+            EntityDamageByEntityEvent sub = new EntityDamageByEntityEvent((Entity) thrower, target, EntityDamageEvent.DamageCause.CUSTOM, 0);
             if (!this.canDamagerHurtDamagee(sub, true))
                 event.setIntensity(target, 0.0);  // affected entity list doesn't accept modification (so no iter.remove()), but this works
             sub = null;
@@ -249,7 +253,8 @@ public class FactionsEntityListener implements Listener {
     public boolean canDamagerHurtDamagee(EntityDamageByEntityEvent sub, boolean notify) {
         Entity damager = sub.getDamager();
         Entity damagee = sub.getEntity();
-        int damage = sub.getDamage();
+        ProjectileSource shooter = null;
+        double damage = sub.getDamage();
 
         if (!(damagee instanceof Player))
             return true;
@@ -263,10 +268,11 @@ public class FactionsEntityListener implements Listener {
         Faction defLocFaction = Board.getFactionAt(new FLocation(defenderLoc));
 
         // for damage caused by projectiles, getDamager() returns the projectile... what we need to know is the source
-        if (damager instanceof Projectile)
-            damager = ((Projectile) damager).getShooter();
+        if (damager instanceof Projectile) {
+            shooter = ((Projectile) damager).getShooter();
+        }
 
-        if (damager == damagee)  // ender pearl usage and other self-inflicted damage
+        if (shooter != null && shooter == damagee)  // ender pearl usage and other self-inflicted damage
             return true;
 
         // Players can not take attack damage in a SafeZone, or possibly peaceful territory

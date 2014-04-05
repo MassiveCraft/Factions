@@ -236,9 +236,6 @@ public class CmdConfig extends FCommand {
         }
         // save change to disk
         Conf.save();
-
-        // in case some Spout related setting was changed
-        SpoutFeatures.updateAppearances();
     }
 
 }

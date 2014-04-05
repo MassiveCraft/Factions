@@ -38,10 +38,6 @@ public class CmdTitle extends FCommand {
 
         // Inform
         myFaction.msg("%s<i> changed a title: %s", fme.describeTo(myFaction, true), you.describeTo(myFaction, true));
-
-        if (Conf.spoutFactionTitlesOverNames) {
-            SpoutFeatures.updateAppearances(me);
-        }
     }
 
 }

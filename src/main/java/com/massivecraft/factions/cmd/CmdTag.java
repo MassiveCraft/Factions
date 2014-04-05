@@ -67,9 +67,6 @@ public class CmdTag extends FCommand {
             faction.msg("<i>The faction %s<i> changed their name to %s.", fme.getColorTo(faction) + oldtag, myFaction.getTag(faction));
         }
 
-        if (Conf.spoutFactionTagsOverNames) {
-            SpoutFeatures.updateAppearances(myFaction);
-        }
     }
 
 }

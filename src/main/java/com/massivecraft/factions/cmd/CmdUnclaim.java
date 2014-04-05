@@ -32,7 +32,6 @@ public class CmdUnclaim extends FCommand {
         if (otherFaction.isSafeZone()) {
             if (Permission.MANAGE_SAFE_ZONE.has(sender)) {
                 Board.removeAt(flocation);
-                SpoutFeatures.updateTerritoryDisplayLoc(flocation);
                 msg("<i>Safe zone was unclaimed.");
 
                 if (Conf.logLandUnclaims)
@@ -44,7 +43,6 @@ public class CmdUnclaim extends FCommand {
         } else if (otherFaction.isWarZone()) {
             if (Permission.MANAGE_WAR_ZONE.has(sender)) {
                 Board.removeAt(flocation);
-                SpoutFeatures.updateTerritoryDisplayLoc(flocation);
                 msg("<i>War zone was unclaimed.");
 
                 if (Conf.logLandUnclaims)
@@ -57,7 +55,6 @@ public class CmdUnclaim extends FCommand {
 
         if (fme.isAdminBypassing()) {
             Board.removeAt(flocation);
-            SpoutFeatures.updateTerritoryDisplayLoc(flocation);
 
             otherFaction.msg("%s<i> unclaimed some of your land.", fme.describeTo(otherFaction, true));
             msg("<i>You unclaimed this land.");
@@ -97,7 +94,6 @@ public class CmdUnclaim extends FCommand {
         }
 
         Board.removeAt(flocation);
-        SpoutFeatures.updateTerritoryDisplayLoc(flocation);
         myFaction.msg("%s<i> unclaimed some land.", fme.describeTo(myFaction, true));
 
         if (Conf.logLandUnclaims)
