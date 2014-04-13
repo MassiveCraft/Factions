@@ -184,7 +184,7 @@ public abstract class EntityCollection<E extends Entity> {
         if (saveIsRunning) return true;
         saveIsRunning = true;
 
-        Map<String, E> entitiesThatShouldBeSaved = new HashMap<String, E>();
+        Map<String, E> entitiesThatShouldBeSaved = new HashMap<>();
         for (E entity : this.entities) {
             if (entity.shouldBeSaved()) {
                 entitiesThatShouldBeSaved.put(entity.getId(), entity);
@@ -212,7 +212,7 @@ public abstract class EntityCollection<E extends Entity> {
 
     private Map<String, E> loadCore() {
         if (!this.file.exists()) {
-            return new HashMap<String, E>();
+            return new HashMap<>();
         }
 
         String content = DiscUtil.readCatch(this.file);

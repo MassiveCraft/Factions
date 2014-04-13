@@ -103,7 +103,6 @@ public class Board {
         while (iter.hasNext()) {
             Entry<FLocation, String> entry = iter.next();
             if (!Factions.i.exists(entry.getValue())) {
-
                 P.p.log("Board cleaner removed " + entry.getValue() + " from " + entry.getKey());
                 iter.remove();
             }
@@ -234,7 +233,7 @@ public class Board {
     // -------------------------------------------- //
 
     public static Map<String, Map<String, String>> dumpAsSaveFormat() {
-        Map<String, Map<String, String>> worldCoordIds = new HashMap<String, Map<String, String>>();
+        Map<String, Map<String, String>> worldCoordIds = new HashMap<>();
 
         String worldName, coords;
         String id;
