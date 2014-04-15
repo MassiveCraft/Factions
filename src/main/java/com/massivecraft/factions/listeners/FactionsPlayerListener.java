@@ -108,8 +108,6 @@ public class FactionsPlayerListener implements Listener {
                                 &&
                                 Conf.ownedMessageOnBorder
                                 &&
-                                (!Conf.spoutTerritoryOwnersShow)
-                                &&
                                 myFaction == factionTo
                                 &&
                                 !ownersTo.isEmpty()

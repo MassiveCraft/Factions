@@ -81,11 +81,6 @@ public class Conf {
     public static boolean worldGuardChecking = false;
     public static boolean worldGuardBuildPriority = false;
 
-    //LWC
-    public static boolean lwcIntegration = false;
-    public static boolean onUnclaimResetLwcLocks = false;
-    public static boolean onCaptureResetLwcLocks = false;
-
     // server logging options
     public static boolean logFactionCreate = true;
     public static boolean logFactionDisband = true;
@@ -221,27 +216,6 @@ public class Conf {
     public static Set<Material> territoryDenyUseageMaterialsWhenOffline = EnumSet.noneOf(Material.class);
 
     public static transient Set<EntityType> safeZoneNerfedCreatureTypes = EnumSet.noneOf(EntityType.class);
-
-    // Spout features
-    public static boolean spoutFactionTagsOverNames = true;  // show faction tags over names over player heads
-    public static boolean spoutFactionTitlesOverNames = true;  // whether to include player's title in that
-    public static boolean spoutFactionAdminCapes = true;  // Show capes on faction admins, colored based on the viewer's relation to the target player
-    public static boolean spoutFactionModeratorCapes = true;  // same, but for faction moderators
-    public static int spoutTerritoryDisplayPosition = 1;  // permanent territory display, instead of by chat; 0 = disabled, 1 = top left, 2 = top center, 3+ = top right
-    public static float spoutTerritoryDisplaySize = 1.0f;  // text scale (size) for territory display
-    public static boolean spoutTerritoryDisplayShowDescription = true;  // whether to show the faction description, not just the faction tag
-    public static boolean spoutTerritoryOwnersShow = true;  // show territory owner list as well
-    public static boolean spoutTerritoryNoticeShow = true;  // show additional brief territory notice near center of screen, to be sure player notices transition
-    public static int spoutTerritoryNoticeTop = 40;  // how far down the screen to place the additional notice
-    public static boolean spoutTerritoryNoticeShowDescription = false;  // whether to show the faction description in the notice, not just the faction tag
-    public static float spoutTerritoryNoticeSize = 1.5f;  // text scale (size) for notice
-    public static float spoutTerritoryNoticeLeaveAfterSeconds = 2.00f;  // how many seconds before the notice goes away
-    public static String capeAlly = "https://github.com/MassiveCraft/Factions/raw/master/capes/ally.png";
-    public static String capeEnemy = "https://github.com/MassiveCraft/Factions/raw/master/capes/enemy.png";
-    public static String capeMember = "https://github.com/MassiveCraft/Factions/raw/master/capes/member.png";
-    public static String capeNeutral = "https://github.com/MassiveCraft/Factions/raw/master/capes/neutral.png";
-    public static String capePeaceful = "https://github.com/MassiveCraft/Factions/raw/master/capes/peaceful.png";
-
     // Economy settings
     public static boolean econEnabled = false;
     public static String econUniverseAccount = "";
