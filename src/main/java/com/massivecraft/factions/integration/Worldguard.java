@@ -124,10 +124,6 @@ public class Worldguard {
             e.printStackTrace();
         }
 
-        region = null;
-        allregionslist = null;
-        overlaps = null;
-
         return foundregions;
     }
 }

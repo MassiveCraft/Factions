@@ -10,12 +10,11 @@ import java.util.ListIterator;
 public class AutoLeaveProcessTask extends BukkitRunnable {
     private transient boolean readyToGo = false;
     private transient boolean finished = false;
-    private transient ArrayList<FPlayer> fplayers;
     private transient ListIterator<FPlayer> iterator;
     private transient double toleranceMillis;
 
     public AutoLeaveProcessTask() {
-        fplayers = new ArrayList<FPlayer>(FPlayers.i.get());
+        ArrayList<FPlayer> fplayers = new ArrayList<FPlayer>(FPlayers.i.get());
         this.iterator = fplayers.listIterator();
         this.toleranceMillis = Conf.autoLeaveAfterDaysOfInactivity * 24 * 60 * 60 * 1000;
         this.readyToGo = true;

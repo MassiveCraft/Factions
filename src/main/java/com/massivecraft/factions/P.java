@@ -41,7 +41,6 @@ public class P extends MPlugin {
     public final FactionsEntityListener entityListener;
     public final FactionsExploitListener exploitListener;
     public final FactionsBlockListener blockListener;
-    public final FactionsServerListener serverListener;
 
     // Persistance related
     private boolean locked = false;
@@ -68,7 +67,6 @@ public class P extends MPlugin {
         this.entityListener = new FactionsEntityListener(this);
         this.exploitListener = new FactionsExploitListener();
         this.blockListener = new FactionsBlockListener(this);
-        this.serverListener = new FactionsServerListener(this);
     }
 
 
@@ -112,7 +110,6 @@ public class P extends MPlugin {
         getServer().getPluginManager().registerEvents(entityListener, this);
         getServer().getPluginManager().registerEvents(exploitListener, this);
         getServer().getPluginManager().registerEvents(blockListener, this);
-        getServer().getPluginManager().registerEvents(serverListener, this);
 
         // since some other plugins execute commands directly through this command interface, provide it
         this.getCommand(this.refCommand).setExecutor(this);

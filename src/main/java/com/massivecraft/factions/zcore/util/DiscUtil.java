@@ -1,9 +1,6 @@
 package com.massivecraft.factions.zcore.util;
 
 import java.io.*;
-import java.net.URL;
-import java.nio.channels.Channels;
-import java.nio.channels.ReadableByteChannel;
 
 public class DiscUtil {
     // -------------------------------------------- //
@@ -65,42 +62,6 @@ public class DiscUtil {
         } catch (IOException e) {
             return null;
         }
-    }
-
-    // -------------------------------------------- //
-    // DOWNLOAD
-    // -------------------------------------------- //
-
-    public static boolean downloadUrl(String urlstring, File file) {
-        try {
-            URL url = new URL(urlstring);
-            ReadableByteChannel rbc = Channels.newChannel(url.openStream());
-            FileOutputStream fos = new FileOutputStream(file);
-            fos.getChannel().transferFrom(rbc, 0, 1 << 24);
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    public static boolean downloadUrl(String urlstring, String filename) {
-        return downloadUrl(urlstring, new File(filename));
-    }
-
-    // -------------------------------------------- //
-    // FILE DELETION
-    // -------------------------------------------- //
-
-    public static boolean deleteRecursive(File path) throws FileNotFoundException {
-        if (!path.exists()) throw new FileNotFoundException(path.getAbsolutePath());
-        boolean ret = true;
-        if (path.isDirectory()) {
-            for (File f : path.listFiles()) {
-                ret = ret && deleteRecursive(f);
-            }
-        }
-        return ret && path.delete();
     }
 
     // -------------------------------------------- //

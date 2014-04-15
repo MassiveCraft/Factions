@@ -55,7 +55,7 @@ public class CmdConfig extends FCommand {
             return;
         }
 
-        String success = "";
+        String success;
 
         String value = args.get(1);
         for (int i = 2; i < args.size(); i++) {

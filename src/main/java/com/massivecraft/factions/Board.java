@@ -34,7 +34,7 @@ public class Board {
     public static void setIdAt(String id, FLocation flocation) {
         clearOwnershipAt(flocation);
 
-        if (id == "0") {
+        if (id.equals("0")) {
             removeAt(flocation);
         }
 
