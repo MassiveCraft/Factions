@@ -233,7 +233,7 @@ public class Board {
     // -------------------------------------------- //
 
     public static Map<String, Map<String, String>> dumpAsSaveFormat() {
-        Map<String, Map<String, String>> worldCoordIds = new HashMap<>();
+        Map<String, Map<String, String>> worldCoordIds = new HashMap<String, Map<String, String>>();
 
         String worldName, coords;
         String id;

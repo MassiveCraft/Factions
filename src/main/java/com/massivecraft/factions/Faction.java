@@ -24,11 +24,11 @@ public class Faction extends Entity implements EconomyParticipator {
     private Map<String, Relation> relationWish;
 
     // FIELD: claimOwnership
-    private Map<FLocation, Set<String>> claimOwnership = new ConcurrentHashMap<>();
+    private Map<FLocation, Set<String>> claimOwnership = new ConcurrentHashMap<FLocation, Set<String>>();
 
     // FIELD: fplayers
     // speedy lookup of players in faction
-    private transient Set<FPlayer> fplayers = new HashSet<>();
+    private transient Set<FPlayer> fplayers = new HashSet<FPlayer>();
 
     // FIELD: invites
     // Where string is a lowercase player name
@@ -217,7 +217,7 @@ public class Faction extends Entity implements EconomyParticipator {
     // -------------------------------------------- //
 
     public Faction() {
-        this.relationWish = new HashMap<>();
+        this.relationWish = new HashMap<String, Relation>();
         this.invites = new HashSet<String>();
         this.open = Conf.newFactionsDefaultOpen;
         this.tag = "???";
@@ -395,12 +395,12 @@ public class Faction extends Entity implements EconomyParticipator {
 
     public Set<FPlayer> getFPlayers() {
         // return a shallow copy of the FPlayer list, to prevent tampering and concurrency issues
-        Set<FPlayer> ret = new HashSet<>(fplayers);
+        Set<FPlayer> ret = new HashSet<FPlayer>(fplayers);
         return ret;
     }
 
     public Set<FPlayer> getFPlayersWhereOnline(boolean online) {
-        Set<FPlayer> ret = new HashSet<>();
+        Set<FPlayer> ret = new HashSet<FPlayer>();
 
         for (FPlayer fplayer : fplayers) {
             if (fplayer.isOnline() == online) {
@@ -423,7 +423,7 @@ public class Faction extends Entity implements EconomyParticipator {
     }
 
     public ArrayList<FPlayer> getFPlayersWhereRole(Role role) {
-        ArrayList<FPlayer> ret = new ArrayList<>();
+        ArrayList<FPlayer> ret = new ArrayList<FPlayer>();
         if (!this.isNormal()) return ret;
 
         for (FPlayer fplayer : fplayers) {
@@ -436,7 +436,7 @@ public class Faction extends Entity implements EconomyParticipator {
     }
 
     public ArrayList<Player> getOnlinePlayers() {
-        ArrayList<Player> ret = new ArrayList<>();
+        ArrayList<Player> ret = new ArrayList<Player>();
         if (this.isPlayerFreeType()) return ret;
 
         for (Player player : P.p.getServer().getOnlinePlayers()) {
