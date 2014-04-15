@@ -1,15 +1,15 @@
 package com.massivecraft.factions.zcore.persist;
 
+import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.zcore.util.DiscUtil;
 import com.massivecraft.factions.zcore.util.TextUtil;
+import com.massivecraft.factions.zcore.util.UUIDFetcher;
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.libs.com.google.gson.Gson;
 
 import java.io.File;
 import java.lang.reflect.Type;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
 import java.util.logging.Level;
 
@@ -221,6 +221,34 @@ public abstract class EntityCollection<E extends Entity> {
         }
 
         Type type = this.getMapType();
+        if (type.toString().contains("FPlayer")) {
+            Map<String, FPlayer> data = this.gson.fromJson(content, type);
+            // Convert any leftover player names in this file
+            ArrayList<String> list = new ArrayList<String>();
+            for (String value : data.keySet()) {
+                if (value.matches("[a-z0-9_]{2,16}")) {
+                    list.add(value);
+                }
+            }
+            if (list.size() > 0) {
+                UUIDFetcher fetcher = new UUIDFetcher(list);
+                try {
+                    Map<String, UUID> response = fetcher.call();
+                    for (String value : response.keySet()) {
+                        String id = response.get(value).toString();
+
+                        FPlayer player = data.get(value);
+                        data.remove(value); // Out with the old...
+                        data.put(response.get(value).toString(), player); // And in with the new
+                        player.setId(id); // Update the object so it knows
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                Bukkit.getLogger().log(Level.INFO, "Converted " + list.size() + " old player names to UUID");
+            }
+            return (Map<String, E>) data;
+        }
         try {
             return this.gson.fromJson(content, type);
         } catch (Exception ex) {
