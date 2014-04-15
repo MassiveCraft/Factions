@@ -3,7 +3,6 @@ package com.massivecraft.factions;
 import com.massivecraft.factions.cmd.CmdAutoHelp;
 import com.massivecraft.factions.cmd.FCmdRoot;
 import com.massivecraft.factions.integration.Econ;
-import com.massivecraft.factions.integration.EssentialsFeatures;
 import com.massivecraft.factions.integration.Worldguard;
 import com.massivecraft.factions.listeners.*;
 import com.massivecraft.factions.struct.ChatMode;
@@ -98,7 +97,6 @@ public class P extends MPlugin {
         this.cmdAutoHelp = new CmdAutoHelp();
         this.getBaseCommands().add(cmdBase);
 
-        EssentialsFeatures.setup();
         Econ.setup();
 
         if (Conf.worldGuardChecking || Conf.worldGuardBuildPriority) {
@@ -143,7 +141,6 @@ public class P extends MPlugin {
             Board.save();
             Conf.save();
         }
-        EssentialsFeatures.unhookChat();
         if (AutoLeaveTask != null) {
             this.getServer().getScheduler().cancelTask(AutoLeaveTask);
             AutoLeaveTask = null;
