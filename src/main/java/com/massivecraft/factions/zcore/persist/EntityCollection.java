@@ -4,6 +4,7 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.zcore.util.DiscUtil;
 import com.massivecraft.factions.zcore.util.TextUtil;
 import com.massivecraft.factions.zcore.util.UUIDFetcher;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.libs.com.google.gson.Gson;
 
@@ -223,29 +224,61 @@ public abstract class EntityCollection<E extends Entity> {
         Type type = this.getMapType();
         if (type.toString().contains("FPlayer")) {
             Map<String, FPlayer> data = this.gson.fromJson(content, type);
+            List<String> invalidNames = new ArrayList<String>();
             // Convert any leftover player names in this file
             ArrayList<String> list = new ArrayList<String>();
             for (String value : data.keySet()) {
-                if (value.matches("[a-z0-9_]{2,16}")) {
-                    list.add(value);
+                if (!value.matches("[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}")) {
+                    // Not a valid UUID..
+                    if (!value.matches("[a-zA-Z0-9_]{2,16}")) {
+                        // Not even a valid player name.. go ahead and mark it for removal
+                        invalidNames.add(value);
+                    } else {
+                        // We'll mark this as one for conversion to UUID
+                        list.add(value);
+                    }
                 }
             }
             if (list.size() > 0) {
+                Bukkit.getLogger().log(Level.INFO, "Please wait while Factions converts " + list.size() + " old player names to UUID. This may take a while.");
                 UUIDFetcher fetcher = new UUIDFetcher(list);
                 try {
                     Map<String, UUID> response = fetcher.call();
+                    for (String s : list) {
+                        // Are we missing any responses?
+                        if (!response.containsKey(s)) {
+                            // They don't have a UUID so they should just be removed
+                            invalidNames.add(s);
+                        }
+                    }
                     for (String value : response.keySet()) {
+                        // For all the valid responses, let's replace their old named entry with a UUID key
                         String id = response.get(value).toString();
 
                         FPlayer player = data.get(value);
+
+                        if (player == null) {
+                            // The player never existed here, and shouldn't persist
+                            invalidNames.add(value);
+                            continue;
+                        }
+
                         data.remove(value); // Out with the old...
-                        data.put(response.get(value).toString(), player); // And in with the new
+                        data.put(id, player); // And in with the new
                         player.setId(id); // Update the object so it knows
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                Bukkit.getLogger().log(Level.INFO, "Converted " + list.size() + " old player names to UUID");
+                if (invalidNames.size() > 0) {
+                    for (String name : invalidNames) {
+                        // Remove all the invalid names we collected
+                        data.remove(name);
+                    }
+                    Bukkit.getLogger().log(Level.INFO, "While converting we found names that either don't have a UUID or aren't players and removed them from storage.");
+                    Bukkit.getLogger().log(Level.INFO, "The following names were detected as being invalid: " + StringUtils.join(invalidNames, ", "));
+                }
+                Bukkit.getLogger().log(Level.INFO, "Done converting to UUID.");
             }
             return (Map<String, E>) data;
         }
