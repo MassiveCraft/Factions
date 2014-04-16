@@ -304,19 +304,4 @@ public class P extends MPlugin {
         }
         return players;
     }
-
-    // check if player is allowed to build/destroy in a particular location
-    public boolean isPlayerAllowedToBuildHere(Player player, Location location) {
-        return FactionsBlockListener.playerCanBuildDestroyBlock(player, location, "", true);
-    }
-
-    // check if player is allowed to interact with the specified block (doors/chests/whatever)
-    public boolean isPlayerAllowedToInteractWith(Player player, Block block) {
-        return FactionsPlayerListener.canPlayerUseBlock(player, block, true);
-    }
-
-    // check if player is allowed to use a specified item (flint&steel, buckets, etc) in a particular location
-    public boolean isPlayerAllowedToUseThisHere(Player player, Location location, Material material) {
-        return FactionsPlayerListener.playerCanUseItemHere(player, location, material, true);
-    }
 }
