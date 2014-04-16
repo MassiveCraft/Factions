@@ -134,7 +134,7 @@ public class FactionsBlockListener implements Listener {
         String name = player.getName();
         if (Conf.playersWhoBypassAllProtection.contains(name)) return true;
 
-        FPlayer me = FPlayers.i.get(name);
+        FPlayer me = FPlayers.i.get(player.getUniqueId().toString());
         if (me.isAdminBypassing()) return true;
 
         FLocation loc = new FLocation(location);
