@@ -9,6 +9,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.libs.com.google.gson.Gson;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.*;
 import java.util.Map.Entry;
@@ -193,11 +194,11 @@ public abstract class EntityCollection<E extends Entity> {
         }
 
         saveIsRunning = false;
-        return this.saveCore(entitiesThatShouldBeSaved);
+        return this.saveCore(this.file, entitiesThatShouldBeSaved);
     }
 
-    private boolean saveCore(Map<String, E> entities) {
-        return DiscUtil.writeCatch(this.file, this.gson.toJson(entities));
+    private boolean saveCore(File target, Map<String, E> entities) {
+        return DiscUtil.writeCatch(target, this.gson.toJson(entities));
     }
 
     public boolean loadFromDisc() {
@@ -240,7 +241,20 @@ public abstract class EntityCollection<E extends Entity> {
                 }
             }
             if (list.size() > 0) {
+                // We've got some converting to do!
                 Bukkit.getLogger().log(Level.INFO, "Please wait while Factions converts " + list.size() + " old player names to UUID. This may take a while.");
+
+                // First we'll make a backup, because god forbid anybody heed a warning
+                File file = new File(this.file.getParentFile(), "players.json.old");
+                try {
+                    file.createNewFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                saveCore(file, (Map<String, E>) data);
+                Bukkit.getLogger().log(Level.INFO, "Backed up your old data at " + file.getAbsolutePath());
+
+                // Start fetching those UUIDs
                 UUIDFetcher fetcher = new UUIDFetcher(list);
                 try {
                     Map<String, UUID> response = fetcher.call();
@@ -278,6 +292,7 @@ public abstract class EntityCollection<E extends Entity> {
                     Bukkit.getLogger().log(Level.INFO, "While converting we found names that either don't have a UUID or aren't players and removed them from storage.");
                     Bukkit.getLogger().log(Level.INFO, "The following names were detected as being invalid: " + StringUtils.join(invalidNames, ", "));
                 }
+                saveToDisc(); // Update the flatfile
                 Bukkit.getLogger().log(Level.INFO, "Done converting to UUID.");
             }
             return (Map<String, E>) data;
