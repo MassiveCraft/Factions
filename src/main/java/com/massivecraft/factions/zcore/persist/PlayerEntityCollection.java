@@ -1,6 +1,7 @@
 package com.massivecraft.factions.zcore.persist;
 
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.craftbukkit.libs.com.google.gson.Gson;
 import org.bukkit.entity.Player;
 
@@ -24,7 +25,7 @@ public abstract class PlayerEntityCollection<E extends Entity> extends EntityCol
         super(entityClass, entities, id2entity, file, gson, true);
     }
 
-    public E get(Player player) {
+    public E get(OfflinePlayer player) {
         return this.get(player.getUniqueId().toString());
     }
 
