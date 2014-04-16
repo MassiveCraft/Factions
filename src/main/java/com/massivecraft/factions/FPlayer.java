@@ -300,7 +300,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator {
     }
 
     public String getName() {
-        return this.getId(); // TODO: ... display name or remove completeley
+        return getPlayer().getName();
     }
 
     public String getTag() {
