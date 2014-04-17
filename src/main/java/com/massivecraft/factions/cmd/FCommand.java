@@ -131,9 +131,12 @@ public abstract class FCommand extends MCommand<P> {
         FPlayer ret = def;
 
         if (name != null) {
-            FPlayer fplayer = FPlayers.i.get(name);
-            if (fplayer != null) {
-                ret = fplayer;
+            OfflinePlayer player = Bukkit.getOfflinePlayer(name);
+            if (player.getName() != null) {
+                FPlayer fplayer = FPlayers.i.get(player);
+                if (fplayer != null) {
+                    ret = fplayer;
+                }
             }
         }
 
@@ -158,20 +161,7 @@ public abstract class FCommand extends MCommand<P> {
 
     // BEST FPLAYER MATCH ======================
     public FPlayer strAsBestFPlayerMatch(String name, FPlayer def, boolean msg) {
-        FPlayer ret = def;
-
-        if (name != null) {
-            FPlayer fplayer = FPlayers.i.getBestIdMatch(name);
-            if (fplayer != null) {
-                ret = fplayer;
-            }
-        }
-
-        if (msg && ret == null) {
-            this.msg("<b>No player match found for \"<p>%s<b>\".", name);
-        }
-
-        return ret;
+        return strAsFPlayer(name, def, msg);
     }
 
     public FPlayer argAsBestFPlayerMatch(int idx, FPlayer def, boolean msg) {
