@@ -220,7 +220,7 @@ public class FactionsPlayerListener implements Listener {
         String name = player.getName();
         if (Conf.playersWhoBypassAllProtection.contains(name)) return true;
 
-        FPlayer me = FPlayers.i.get(player.getUniqueId().toString());
+        FPlayer me = FPlayers.i.get(player);
         if (me.isAdminBypassing()) return true;
 
         FLocation loc = new FLocation(location);
@@ -283,10 +283,9 @@ public class FactionsPlayerListener implements Listener {
     }
 
     public static boolean canPlayerUseBlock(Player player, Block block, boolean justCheck) {
-        String name = player.getName();
-        if (Conf.playersWhoBypassAllProtection.contains(player.getUniqueId())) return true;
+        if (Conf.playersWhoBypassAllProtection.contains(player.getName())) return true;
 
-        FPlayer me = FPlayers.i.get(name);
+        FPlayer me = FPlayers.i.get(player);
         if (me.isAdminBypassing()) return true;
 
         Material material = block.getType();
