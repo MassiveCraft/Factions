@@ -222,7 +222,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator {
             Faction currentFaction = this.getFaction();
             currentFaction.removeFPlayer(this);
             if (currentFaction.isNormal()) {
-                currentFaction.clearClaimOwnership(this.getId());
+                currentFaction.clearClaimOwnership(this);
             }
         }
 
@@ -302,7 +302,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator {
     }
 
     public String getName() {
-        if(getPlayer() != null) {
+        if(isOnline()) {
             return getPlayer().getName();
         }
         /*OfflinePlayer player = Bukkit.getOfflinePlayer(UUID.fromString(getId()));

@@ -31,19 +31,22 @@ public class Faction extends Entity implements EconomyParticipator {
     private transient Set<FPlayer> fplayers = new HashSet<FPlayer>();
 
     // FIELD: invites
-    // Where string is a lowercase player name
     private Set<String> invites;
 
+    public Set<String> getInvites() {
+        return invites;
+    }
+
     public void invite(FPlayer fplayer) {
-        this.invites.add(fplayer.getName().toLowerCase());
+        this.invites.add(fplayer.getId());
     }
 
     public void deinvite(FPlayer fplayer) {
-        this.invites.remove(fplayer.getName().toLowerCase());
+        this.invites.remove(fplayer.getId());
     }
 
     public boolean isInvited(FPlayer fplayer) {
-        return this.invites.contains(fplayer.getName().toLowerCase());
+        return this.invites.contains(fplayer.getId());
     }
 
     // FIELD: open
@@ -539,6 +542,10 @@ public class Faction extends Entity implements EconomyParticipator {
     // Ownership of specific claims
     //----------------------------------------------//
 
+    public Map<FLocation, Set<String>> getClaimOwnership() {
+        return claimOwnership;
+    }
+
     public void clearAllClaimOwnership() {
         claimOwnership.clear();
     }
@@ -547,13 +554,12 @@ public class Faction extends Entity implements EconomyParticipator {
         claimOwnership.remove(loc);
     }
 
-    public void clearClaimOwnership(String playerName) {
-        if (playerName == null || playerName.isEmpty()) {
+    public void clearClaimOwnership(FPlayer player) {
+        if (id == null || id.isEmpty()) {
             return;
         }
 
         Set<String> ownerData;
-        String player = playerName.toLowerCase();
 
         for (Entry<FLocation, Set<String>> entry : claimOwnership.entrySet()) {
             ownerData = entry.getValue();
@@ -562,7 +568,7 @@ public class Faction extends Entity implements EconomyParticipator {
 
             Iterator<String> iter = ownerData.iterator();
             while (iter.hasNext()) {
-                if (iter.next().equals(player)) {
+                if (iter.next().equals(player.getId())) {
                     iter.remove();
                 }
             }
@@ -586,7 +592,7 @@ public class Faction extends Entity implements EconomyParticipator {
         return ownerData != null && !ownerData.isEmpty();
     }
 
-    public boolean isPlayerInOwnerList(String playerName, FLocation loc) {
+    public boolean isPlayerInOwnerList(FPlayer player, FLocation loc) {
         if (claimOwnership.isEmpty()) {
             return false;
         }
@@ -594,28 +600,28 @@ public class Faction extends Entity implements EconomyParticipator {
         if (ownerData == null) {
             return false;
         }
-        if (ownerData.contains(playerName.toLowerCase())) {
+        if (ownerData.contains(player.getId())) {
             return true;
         }
 
         return false;
     }
 
-    public void setPlayerAsOwner(String playerName, FLocation loc) {
+    public void setPlayerAsOwner(FPlayer player, FLocation loc) {
         Set<String> ownerData = claimOwnership.get(loc);
         if (ownerData == null) {
             ownerData = new HashSet<String>();
         }
-        ownerData.add(playerName.toLowerCase());
+        ownerData.add(player.getId());
         claimOwnership.put(loc, ownerData);
     }
 
-    public void removePlayerAsOwner(String playerName, FLocation loc) {
+    public void removePlayerAsOwner(FPlayer player, FLocation loc) {
         Set<String> ownerData = claimOwnership.get(loc);
         if (ownerData == null) {
             return;
         }
-        ownerData.remove(playerName.toLowerCase());
+        ownerData.remove(player.getId());
         claimOwnership.put(loc, ownerData);
     }
 
@@ -664,7 +670,7 @@ public class Faction extends Entity implements EconomyParticipator {
         Set<String> ownerData = claimOwnership.get(loc);
 
         // if no owner list, owner list is empty, or player is in owner list, they're allowed
-        if (ownerData == null || ownerData.isEmpty() || ownerData.contains(fplayer.getName().toLowerCase()))
+        if (ownerData == null || ownerData.isEmpty() || ownerData.contains(fplayer.getId()))
             return true;
 
         return false;
