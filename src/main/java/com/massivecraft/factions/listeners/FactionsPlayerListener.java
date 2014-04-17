@@ -284,7 +284,7 @@ public class FactionsPlayerListener implements Listener {
 
     public static boolean canPlayerUseBlock(Player player, Block block, boolean justCheck) {
         String name = player.getName();
-        if (Conf.playersWhoBypassAllProtection.contains(name)) return true;
+        if (Conf.playersWhoBypassAllProtection.contains(player.getUniqueId())) return true;
 
         FPlayer me = FPlayers.i.get(name);
         if (me.isAdminBypassing()) return true;
