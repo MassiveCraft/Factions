@@ -765,7 +765,7 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 		}
 		
 		// Event
-		FactionsEventChunkChange event = new FactionsEventChunkChange(sender, chunk, newFaction);
+		FactionsEventChunkChange event = new FactionsEventChunkChange(this.getSender(), chunk, newFaction);
 		event.run();
 		if (event.isCancelled()) return false;
 
