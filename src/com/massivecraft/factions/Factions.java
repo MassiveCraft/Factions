@@ -128,6 +128,7 @@ public class Factions extends MPlugin
 		this.outerCmdFactions.register();
 
 		// Setup Listeners
+		EngineIdUpdate.get().activate();
 		FactionsListenerMain.get().setup();
 		FactionsListenerChat.get().setup();
 		FactionsListenerExploit.get().setup();

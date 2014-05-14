@@ -21,8 +21,8 @@ import com.massivecraft.mcore.mixin.Mixin;
 import com.massivecraft.mcore.money.Money;
 import com.massivecraft.mcore.ps.PS;
 import com.massivecraft.mcore.store.Entity;
+import com.massivecraft.mcore.util.IdUtil;
 import com.massivecraft.mcore.util.MUtil;
-import com.massivecraft.mcore.util.SenderUtil;
 import com.massivecraft.mcore.util.Txt;
 
 public class Faction extends Entity<Faction> implements EconomyParticipator
@@ -931,7 +931,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	public List<CommandSender> getOnlineCommandSenders()
 	{
 		List<CommandSender> ret = new ArrayList<CommandSender>();
-		for (CommandSender player : SenderUtil.getOnlineSenders())
+		for (CommandSender player : IdUtil.getOnlineSenders())
 		{
 			UPlayer uplayer = UPlayer.get(player);
 			if (!MUtil.equals(uplayer.getUniverse(), this.getUniverse())) continue;
@@ -1050,34 +1050,34 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	
 	public boolean sendMessage(String message)
 	{
-		return Mixin.message(new FactionEqualsPredictate(this), message);
+		return Mixin.messagePredictate(new FactionEqualsPredictate(this), message);
 	}
 	
 	public boolean sendMessage(String... messages)
 	{
-		return Mixin.message(new FactionEqualsPredictate(this), messages);
+		return Mixin.messagePredictate(new FactionEqualsPredictate(this), messages);
 	}
 	
 	public boolean sendMessage(Collection<String> messages)
 	{
-		return Mixin.message(new FactionEqualsPredictate(this), messages);
+		return Mixin.messagePredictate(new FactionEqualsPredictate(this), messages);
 	}
 	
 	// CONVENIENCE MSG
 	
 	public boolean msg(String msg)
 	{
-		return Mixin.msg(new FactionEqualsPredictate(this), msg);
+		return Mixin.msgPredictate(new FactionEqualsPredictate(this), msg);
 	}
 	
 	public boolean msg(String msg, Object... args)
 	{
-		return Mixin.msg(new FactionEqualsPredictate(this), msg, args);
+		return Mixin.msgPredictate(new FactionEqualsPredictate(this), msg, args);
 	}
 	
 	public boolean msg(Collection<String> msgs)
 	{
-		return Mixin.msg(new FactionEqualsPredictate(this), msgs);
+		return Mixin.msgPredictate(new FactionEqualsPredictate(this), msgs);
 	}
 	
 }

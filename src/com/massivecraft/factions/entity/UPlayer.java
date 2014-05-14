@@ -21,8 +21,8 @@ import com.massivecraft.mcore.mixin.Mixin;
 import com.massivecraft.mcore.ps.PS;
 import com.massivecraft.mcore.ps.PSFormatHumanSpace;
 import com.massivecraft.mcore.store.SenderEntity;
+import com.massivecraft.mcore.util.IdUtil;
 import com.massivecraft.mcore.util.MUtil;
-import com.massivecraft.mcore.util.SenderUtil;
 import com.massivecraft.mcore.util.Txt;
 
 
@@ -74,7 +74,7 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 		Faction faction = this.getFaction();
 		faction.uplayers.add(this);
 		
-		Factions.get().log(Txt.parse("<g>postAttach added <h>%s <i>aka <h>%s <i>to <h>%s <i>aka <h>%s<i>.", id, Mixin.getDisplayName(id), faction.getId(), faction.getName()));
+		//Factions.get().log(Txt.parse("<g>postAttach added <h>%s <i>aka <h>%s <i>to <h>%s <i>aka <h>%s<i>.", id, Mixin.getDisplayName(id), faction.getId(), faction.getName()));
 	}
 	
 	@Override
@@ -87,7 +87,7 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 		Faction faction = this.getFaction();
 		faction.uplayers.remove(this);
 		
-		Factions.get().log(Txt.parse("<b>preDetach removed <h>%s <i>aka <h>%s <i>to <h>%s <i>aka <h>%s<i>.", id, Mixin.getDisplayName(id), faction.getId(), faction.getName()));
+		//Factions.get().log(Txt.parse("<b>preDetach removed <h>%s <i>aka <h>%s <i>to <h>%s <i>aka <h>%s<i>.", id, Mixin.getDisplayName(id), faction.getId(), faction.getName()));
 	}
 	
 	// -------------------------------------------- //
@@ -475,11 +475,6 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 	// TITLE, NAME, FACTION NAME AND CHAT
 	// -------------------------------------------- //
 	
-	public String getName()
-	{
-		return this.getFixedId();
-	}
-	
 	public String getFactionName()
 	{
 		Faction faction = this.getFaction();
@@ -785,7 +780,7 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 		}
 		if (MConf.get().logLandClaims)
 		{
-			informees.add(UPlayer.get(SenderUtil.getConsole()));
+			informees.add(UPlayer.get(IdUtil.getConsole()));
 		}
 		
 		String chunkString = chunk.toString(PSFormatHumanSpace.get());

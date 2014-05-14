@@ -9,6 +9,7 @@ import com.massivecraft.factions.entity.FactionColl;
 import com.massivecraft.factions.entity.FactionColls;
 import com.massivecraft.mcore.cmd.arg.ArgReaderAbstract;
 import com.massivecraft.mcore.cmd.arg.ArgResult;
+import com.massivecraft.mcore.util.IdUtil;
 import com.massivecraft.mcore.util.Txt;
 
 public class ARFaction extends ArgReaderAbstract<Faction>
@@ -48,7 +49,8 @@ public class ARFaction extends ArgReaderAbstract<Faction>
 		if (result.hasResult()) return result;
 		
 		// UPlayer Name Exact
-		UPlayer uplayer = UPlayerColls.get().get(this.getColl()).get(str);
+		String id = IdUtil.getId(str);
+		UPlayer uplayer = UPlayerColls.get().get(this.getColl()).get(id);
 		if (uplayer != null)
 		{
 			result.setResult(uplayer.getFaction());

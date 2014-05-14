@@ -32,8 +32,9 @@ public class TerritoryAccess
 	private final Set<String> factionIds;
 	public Set<String> getFactionIds() { return this.factionIds; }
 	
+	// TODO: remate private final
 	// default is empty
-	private final Set<String> playerIds;
+	public Set<String> playerIds;
 	public Set<String> getPlayerIds() { return this.playerIds; }
 	
 	// -------------------------------------------- //
