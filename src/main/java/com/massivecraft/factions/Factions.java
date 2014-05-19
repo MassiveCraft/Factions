@@ -133,6 +133,7 @@ public class Factions extends EntityCollection<Faction> {
         return errors;
     }
 
+    // Loops through all faction tags. Case and color insensitive.
     public Faction getByTag(String str) {
         String compStr = MiscUtil.getComparisonString(str);
         for (Faction faction : this.get()) {

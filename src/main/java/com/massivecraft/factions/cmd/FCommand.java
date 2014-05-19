@@ -185,7 +185,7 @@ public abstract class FCommand extends MCommand<P> {
 
             // First we try an exact match
             if (faction == null) {
-                faction = Factions.i.getByTag(name);
+                faction = Factions.i.getByTag(name); // Checks for faction name match.
             }
 
             // Next we match faction tags
@@ -196,11 +196,9 @@ public abstract class FCommand extends MCommand<P> {
             // Next we match player names
             if (faction == null) {
                 OfflinePlayer player = Bukkit.getOfflinePlayer(name);
-                if (player.hasPlayedBefore()) {
                     FPlayer fplayer = FPlayers.i.get(player);
                     if (fplayer != null) {
                         faction = fplayer.getFaction();
-                    }
                 }
             }
 
