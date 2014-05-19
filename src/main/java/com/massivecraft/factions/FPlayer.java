@@ -15,12 +15,10 @@ import com.massivecraft.factions.zcore.persist.PlayerEntity;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
 
 /**
@@ -302,7 +300,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator {
     }
 
     public String getName() {
-        if(isOnline()) {
+        if (isOnline()) {
             return getPlayer().getName();
         }
         /*OfflinePlayer player = Bukkit.getOfflinePlayer(UUID.fromString(getId()));

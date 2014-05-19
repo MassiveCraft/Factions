@@ -1,6 +1,7 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.*;
+import com.massivecraft.factions.integration.Essentials;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
@@ -107,6 +108,10 @@ public class CmdHome extends FCommand {
                 return;
             }
         }
+
+        // if Essentials teleport handling is enabled and available, pass the teleport off to it (for delay and cooldown)
+        if (Essentials.handleTeleport(me, myFaction.getHome())) return;
+
         // if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
         if (!payForCommand(Conf.econCostHome, "to teleport to your faction home", "for teleporting to your faction home"))
             return;

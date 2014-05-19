@@ -16,7 +16,7 @@ public class Essentials {
 
     public static void setup() {
         Plugin ess = Bukkit.getPluginManager().getPlugin("Essentials");
-        if(ess != null) {
+        if (ess != null) {
             essentials = (IEssentials) ess;
         }
     }
