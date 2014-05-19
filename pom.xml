@@ -65,12 +65,22 @@
             <artifactId>worldedit</artifactId>
             <version>5.6.1</version>
         </dependency>
+        <dependency>
+            <groupId>net.ess3</groupId>
+            <artifactId>Essentials</artifactId>
+            <version>2.x-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <repositories>
         <repository>
             <id>repo-daboross-net</id>
             <url>http://repo.daboross.net/</url>
+        </repository>
+        <repository>
+            <id>ess-repo</id>
+            <url>http://repo.ess3.net/content/groups/public</url>
         </repository>
         <repository>
             <id>bukkit-repo</id>

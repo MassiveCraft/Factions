@@ -3,6 +3,7 @@ package com.massivecraft.factions;
 import com.massivecraft.factions.cmd.CmdAutoHelp;
 import com.massivecraft.factions.cmd.FCmdRoot;
 import com.massivecraft.factions.integration.Econ;
+import com.massivecraft.factions.integration.Essentials;
 import com.massivecraft.factions.integration.Worldguard;
 import com.massivecraft.factions.listeners.*;
 import com.massivecraft.factions.struct.ChatMode;
@@ -86,6 +87,7 @@ public class P extends MPlugin {
 
         // Load Conf from disk
         Conf.load();
+        Essentials.setup();
         FPlayers.i.loadFromDisc();
         Factions.i.loadFromDisc();
         Board.load();
