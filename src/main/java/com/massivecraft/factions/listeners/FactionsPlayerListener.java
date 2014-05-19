@@ -90,8 +90,10 @@ public class FactionsPlayerListener implements Listener {
         Faction factionTo = Board.getFactionAt(to);
         boolean changedFaction = (factionFrom != factionTo);
 
+        /* Was used for displaying on Spout but we removed Spout compatibility.
         if (changedFaction)
             changedFaction = false;
+            */
 
         if (me.isMapAutoUpdating()) {
             me.sendMessage(Board.getMap(me.getFaction(), to, player.getLocation().getYaw()));
