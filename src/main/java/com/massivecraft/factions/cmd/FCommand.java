@@ -132,12 +132,10 @@ public abstract class FCommand extends MCommand<P> {
 
         if (name != null) {
             OfflinePlayer player = Bukkit.getOfflinePlayer(name);
-            if (player.hasPlayedBefore()) {
                 FPlayer fplayer = FPlayers.i.get(player);
                 if (fplayer != null) {
                     ret = fplayer;
                 }
-            }
         }
 
         if (msg && ret == null) {

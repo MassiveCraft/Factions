@@ -116,6 +116,7 @@ public class FactionsEntityListener implements Listener {
 
         boolean online = faction.hasPlayersOnline();
 
+        //TODO: :(
         if
                 (
                 boomer instanceof Creeper
