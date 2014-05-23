@@ -132,10 +132,10 @@ public abstract class FCommand extends MCommand<P> {
 
         if (name != null) {
             OfflinePlayer player = Bukkit.getOfflinePlayer(name);
-                FPlayer fplayer = FPlayers.i.get(player);
-                if (fplayer != null) {
-                    ret = fplayer;
-                }
+            FPlayer fplayer = FPlayers.i.get(player);
+            if (fplayer != null) {
+                ret = fplayer;
+            }
         }
 
         if (msg && ret == null) {
@@ -194,9 +194,9 @@ public abstract class FCommand extends MCommand<P> {
             // Next we match player names
             if (faction == null) {
                 OfflinePlayer player = Bukkit.getOfflinePlayer(name);
-                    FPlayer fplayer = FPlayers.i.get(player);
-                    if (fplayer != null) {
-                        faction = fplayer.getFaction();
+                FPlayer fplayer = FPlayers.i.get(player);
+                if (fplayer != null) {
+                    faction = fplayer.getFaction();
                 }
             }
 
