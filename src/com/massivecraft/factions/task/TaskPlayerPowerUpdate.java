@@ -8,8 +8,8 @@ import com.massivecraft.factions.entity.UConf;
 import com.massivecraft.factions.entity.UPlayer;
 import com.massivecraft.factions.event.FactionsEventPowerChange;
 import com.massivecraft.factions.event.FactionsEventPowerChange.PowerChangeReason;
-import com.massivecraft.mcore.ModuloRepeatTask;
-import com.massivecraft.mcore.util.TimeUnit;
+import com.massivecraft.massivecore.ModuloRepeatTask;
+import com.massivecraft.massivecore.util.TimeUnit;
 
 public class TaskPlayerPowerUpdate extends ModuloRepeatTask
 {

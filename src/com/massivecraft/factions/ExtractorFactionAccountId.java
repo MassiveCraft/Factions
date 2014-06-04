@@ -1,7 +1,7 @@
 package com.massivecraft.factions;
 
 import com.massivecraft.factions.entity.Faction;
-import com.massivecraft.mcore.util.extractor.Extractor;
+import com.massivecraft.massivecore.util.extractor.Extractor;
 
 public class ExtractorFactionAccountId implements Extractor
 {

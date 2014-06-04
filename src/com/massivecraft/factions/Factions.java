@@ -29,8 +29,8 @@ import com.massivecraft.factions.entity.UConfColls;
 import com.massivecraft.factions.entity.UPlayerColls;
 import com.massivecraft.factions.entity.FactionColls;
 import com.massivecraft.factions.entity.MConfColl;
-import com.massivecraft.factions.integration.herochat.HerochatFeatures;
-import com.massivecraft.factions.integration.lwc.LwcFeatures;
+import com.massivecraft.factions.integration.herochat.IntegrationHerochat;
+import com.massivecraft.factions.integration.lwc.IntegrationLwc;
 import com.massivecraft.factions.listeners.FactionsListenerChat;
 import com.massivecraft.factions.listeners.FactionsListenerEcon;
 import com.massivecraft.factions.listeners.FactionsListenerExploit;
@@ -40,17 +40,16 @@ import com.massivecraft.factions.mixin.PowerMixinDefault;
 import com.massivecraft.factions.task.TaskPlayerDataRemove;
 import com.massivecraft.factions.task.TaskEconLandReward;
 import com.massivecraft.factions.task.TaskPlayerPowerUpdate;
+import com.massivecraft.massivecore.Aspect;
+import com.massivecraft.massivecore.AspectColl;
+import com.massivecraft.massivecore.MassivePlugin;
+import com.massivecraft.massivecore.Multiverse;
+import com.massivecraft.massivecore.util.MUtil;
+import com.massivecraft.massivecore.xlib.gson.Gson;
+import com.massivecraft.massivecore.xlib.gson.GsonBuilder;
 
-import com.massivecraft.mcore.Aspect;
-import com.massivecraft.mcore.AspectColl;
-import com.massivecraft.mcore.MPlugin;
-import com.massivecraft.mcore.Multiverse;
-import com.massivecraft.mcore.util.MUtil;
-import com.massivecraft.mcore.xlib.gson.Gson;
-import com.massivecraft.mcore.xlib.gson.GsonBuilder;
 
-
-public class Factions extends MPlugin
+public class Factions extends MassivePlugin
 {
 	// -------------------------------------------- //
 	// CONSTANTS
@@ -140,8 +139,8 @@ public class Factions extends MPlugin
 		
 		// Integrate
 		this.integrate(
-			HerochatFeatures.get(),
-			LwcFeatures.get()
+			IntegrationHerochat.get(),
+			IntegrationLwc.get()
 		);
 		
 		// Schedule recurring non-tps-dependent tasks

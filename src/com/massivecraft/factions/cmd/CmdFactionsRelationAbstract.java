@@ -10,7 +10,7 @@ import com.massivecraft.factions.cmd.req.ReqRoleIsAtLeast;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.event.FactionsEventRelationChange;
-import com.massivecraft.mcore.cmd.req.ReqHasPerm;
+import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 
 public abstract class CmdFactionsRelationAbstract extends FCommand
 {

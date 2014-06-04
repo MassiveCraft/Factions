@@ -8,10 +8,10 @@ import com.massivecraft.factions.cmd.req.ReqFactionsEnabled;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.integration.Econ;
-import com.massivecraft.mcore.cmd.arg.ARDouble;
-import com.massivecraft.mcore.cmd.req.ReqHasPerm;
-import com.massivecraft.mcore.money.Money;
-import com.massivecraft.mcore.util.Txt;
+import com.massivecraft.massivecore.cmd.arg.ARDouble;
+import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
+import com.massivecraft.massivecore.money.Money;
+import com.massivecraft.massivecore.util.Txt;
 
 import org.bukkit.ChatColor;
 

@@ -6,7 +6,7 @@ import com.massivecraft.factions.cmd.arg.ARUPlayer;
 import com.massivecraft.factions.cmd.req.ReqFactionsEnabled;
 import com.massivecraft.factions.entity.UPlayer;
 import com.massivecraft.factions.entity.Faction;
-import com.massivecraft.mcore.cmd.req.ReqHasPerm;
+import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 
 public class CmdFactionsOfficer extends FCommand
 {

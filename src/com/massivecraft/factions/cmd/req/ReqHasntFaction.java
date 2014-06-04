@@ -3,9 +3,9 @@ package com.massivecraft.factions.cmd.req;
 import org.bukkit.command.CommandSender;
 
 import com.massivecraft.factions.entity.UPlayer;
-import com.massivecraft.mcore.cmd.MCommand;
-import com.massivecraft.mcore.cmd.req.ReqAbstract;
-import com.massivecraft.mcore.util.Txt;
+import com.massivecraft.massivecore.cmd.MassiveCommand;
+import com.massivecraft.massivecore.cmd.req.ReqAbstract;
+import com.massivecraft.massivecore.util.Txt;
 
 public class ReqHasntFaction extends ReqAbstract
 {
@@ -23,13 +23,13 @@ public class ReqHasntFaction extends ReqAbstract
 	// -------------------------------------------- //
 	
 	@Override
-	public boolean apply(CommandSender sender, MCommand command)
+	public boolean apply(CommandSender sender, MassiveCommand command)
 	{
 		return !UPlayer.get(sender).hasFaction();
 	}
 	
 	@Override
-	public String createErrorMessage(CommandSender sender, MCommand command)
+	public String createErrorMessage(CommandSender sender, MassiveCommand command)
 	{
 		return Txt.parse("<b>You must leave your current faction before you "+(command == null ? "do that" : command.getDesc())+".");
 	}

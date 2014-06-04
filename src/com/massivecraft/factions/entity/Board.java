@@ -17,10 +17,10 @@ import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.RelationParticipator;
 import com.massivecraft.factions.TerritoryAccess;
 import com.massivecraft.factions.util.AsciiCompass;
-import com.massivecraft.mcore.ps.PS;
-import com.massivecraft.mcore.store.Entity;
-import com.massivecraft.mcore.util.Txt;
-import com.massivecraft.mcore.xlib.gson.reflect.TypeToken;
+import com.massivecraft.massivecore.ps.PS;
+import com.massivecraft.massivecore.store.Entity;
+import com.massivecraft.massivecore.util.Txt;
+import com.massivecraft.massivecore.xlib.gson.reflect.TypeToken;
 
 public class Board extends Entity<Board> implements BoardInterface
 {

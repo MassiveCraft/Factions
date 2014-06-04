@@ -4,7 +4,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.event.HandlerList;
 
 import com.massivecraft.factions.entity.Faction;
-import com.massivecraft.mcore.ps.PS;
+import com.massivecraft.massivecore.ps.PS;
 
 public class FactionsEventHomeChange extends FactionsEventAbstractSender
 {	

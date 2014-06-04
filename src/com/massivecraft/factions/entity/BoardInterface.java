@@ -5,7 +5,7 @@ import java.util.Set;
 
 import com.massivecraft.factions.RelationParticipator;
 import com.massivecraft.factions.TerritoryAccess;
-import com.massivecraft.mcore.ps.PS;
+import com.massivecraft.massivecore.ps.PS;
 
 public interface BoardInterface
 {

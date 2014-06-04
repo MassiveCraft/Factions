@@ -13,10 +13,10 @@ import com.massivecraft.factions.FFlag;
 import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.event.FactionsEventChunkChangeType;
-import com.massivecraft.mcore.store.Entity;
-import com.massivecraft.mcore.store.SenderEntity;
-import com.massivecraft.mcore.util.MUtil;
-import com.massivecraft.mcore.util.Txt;
+import com.massivecraft.massivecore.store.Entity;
+import com.massivecraft.massivecore.store.SenderEntity;
+import com.massivecraft.massivecore.util.MUtil;
+import com.massivecraft.massivecore.util.Txt;
 
 public class UConf extends Entity<UConf>
 {

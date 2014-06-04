@@ -11,8 +11,8 @@ import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.event.FactionsEventMembershipChange;
 import com.massivecraft.factions.event.FactionsEventMembershipChange.MembershipChangeReason;
 import com.massivecraft.factions.util.RelationUtil;
-import com.massivecraft.mcore.cmd.req.ReqHasPerm;
-import com.massivecraft.mcore.util.Txt;
+import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
+import com.massivecraft.massivecore.util.Txt;
 
 public class CmdFactionsLeader extends FCommand
 {

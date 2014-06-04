@@ -3,7 +3,7 @@ package com.massivecraft.factions;
 import java.util.Comparator;
 
 import com.massivecraft.factions.entity.Faction;
-import com.massivecraft.mcore.util.MUtil;
+import com.massivecraft.massivecore.util.MUtil;
 
 public class FactionListComparator implements Comparator<Faction>
 {

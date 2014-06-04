@@ -13,7 +13,7 @@ import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.entity.UConf;
 import com.massivecraft.factions.event.FactionsEventMembershipChange;
 import com.massivecraft.factions.event.FactionsEventMembershipChange.MembershipChangeReason;
-import com.massivecraft.mcore.cmd.req.ReqHasPerm;
+import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 
 public class CmdFactionsKick extends FCommand
 {

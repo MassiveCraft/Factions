@@ -12,11 +12,11 @@ import com.massivecraft.factions.Const;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.RelationParticipator;
 import com.massivecraft.factions.TerritoryAccess;
-import com.massivecraft.mcore.Aspect;
-import com.massivecraft.mcore.ps.PS;
-import com.massivecraft.mcore.ps.PSBuilder;
-import com.massivecraft.mcore.util.DiscUtil;
-import com.massivecraft.mcore.xlib.gson.reflect.TypeToken;
+import com.massivecraft.massivecore.Aspect;
+import com.massivecraft.massivecore.ps.PS;
+import com.massivecraft.massivecore.ps.PSBuilder;
+import com.massivecraft.massivecore.util.DiscUtil;
+import com.massivecraft.massivecore.xlib.gson.reflect.TypeToken;
 
 public class BoardColls extends XColls<BoardColl, Board> implements BoardInterface
 {

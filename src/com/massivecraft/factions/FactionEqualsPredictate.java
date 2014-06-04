@@ -6,7 +6,7 @@ import org.bukkit.command.CommandSender;
 
 import com.massivecraft.factions.entity.UPlayer;
 import com.massivecraft.factions.entity.Faction;
-import com.massivecraft.mcore.Predictate;
+import com.massivecraft.massivecore.Predictate;
 
 public class FactionEqualsPredictate implements Predictate<CommandSender>, Serializable
 {

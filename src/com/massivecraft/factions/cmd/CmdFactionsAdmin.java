@@ -2,8 +2,8 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
-import com.massivecraft.mcore.cmd.arg.ARBoolean;
-import com.massivecraft.mcore.cmd.req.ReqHasPerm;
+import com.massivecraft.massivecore.cmd.arg.ARBoolean;
+import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 
 public class CmdFactionsAdmin extends FCommand
 {

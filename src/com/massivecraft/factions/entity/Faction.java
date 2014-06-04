@@ -17,13 +17,13 @@ import com.massivecraft.factions.Lang;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.RelationParticipator;
 import com.massivecraft.factions.util.*;
-import com.massivecraft.mcore.mixin.Mixin;
-import com.massivecraft.mcore.money.Money;
-import com.massivecraft.mcore.ps.PS;
-import com.massivecraft.mcore.store.Entity;
-import com.massivecraft.mcore.util.IdUtil;
-import com.massivecraft.mcore.util.MUtil;
-import com.massivecraft.mcore.util.Txt;
+import com.massivecraft.massivecore.mixin.Mixin;
+import com.massivecraft.massivecore.money.Money;
+import com.massivecraft.massivecore.ps.PS;
+import com.massivecraft.massivecore.store.Entity;
+import com.massivecraft.massivecore.util.IdUtil;
+import com.massivecraft.massivecore.util.MUtil;
+import com.massivecraft.massivecore.util.Txt;
 
 public class Faction extends Entity<Faction> implements EconomyParticipator
 {

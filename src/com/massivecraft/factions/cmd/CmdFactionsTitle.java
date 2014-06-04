@@ -9,9 +9,9 @@ import com.massivecraft.factions.cmd.req.ReqFactionsEnabled;
 import com.massivecraft.factions.cmd.req.ReqRoleIsAtLeast;
 import com.massivecraft.factions.entity.UPlayer;
 import com.massivecraft.factions.event.FactionsEventTitleChange;
-import com.massivecraft.mcore.cmd.arg.ARString;
-import com.massivecraft.mcore.cmd.req.ReqHasPerm;
-import com.massivecraft.mcore.util.Txt;
+import com.massivecraft.massivecore.cmd.arg.ARString;
+import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
+import com.massivecraft.massivecore.util.Txt;
 
 public class CmdFactionsTitle extends FCommand
 {

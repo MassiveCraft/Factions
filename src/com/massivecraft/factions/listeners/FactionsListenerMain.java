@@ -70,10 +70,10 @@ import com.massivecraft.factions.event.FactionsEventPvpDisallowed;
 import com.massivecraft.factions.event.FactionsEventPowerChange;
 import com.massivecraft.factions.event.FactionsEventPowerChange.PowerChangeReason;
 import com.massivecraft.factions.util.VisualizeUtil;
-import com.massivecraft.mcore.ps.PS;
-import com.massivecraft.mcore.util.MUtil;
-import com.massivecraft.mcore.util.PlayerUtil;
-import com.massivecraft.mcore.util.Txt;
+import com.massivecraft.massivecore.ps.PS;
+import com.massivecraft.massivecore.util.MUtil;
+import com.massivecraft.massivecore.util.PlayerUtil;
+import com.massivecraft.massivecore.util.Txt;
 
 public class FactionsListenerMain implements Listener
 {

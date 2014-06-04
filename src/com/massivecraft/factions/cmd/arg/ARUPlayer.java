@@ -2,8 +2,8 @@ package com.massivecraft.factions.cmd.arg;
 
 import com.massivecraft.factions.entity.UPlayer;
 import com.massivecraft.factions.entity.UPlayerColls;
-import com.massivecraft.mcore.cmd.arg.ARSenderEntity;
-import com.massivecraft.mcore.cmd.arg.ArgReader;
+import com.massivecraft.massivecore.cmd.arg.ARSenderEntity;
+import com.massivecraft.massivecore.cmd.arg.ArgReader;
 
 public class ARUPlayer
 {

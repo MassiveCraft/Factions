@@ -9,7 +9,7 @@ import com.massivecraft.factions.entity.UConf;
 import com.massivecraft.factions.entity.UPlayer;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.util.RelationUtil;
-import com.massivecraft.mcore.money.Money;
+import com.massivecraft.massivecore.money.Money;
 
 public class Econ
 {

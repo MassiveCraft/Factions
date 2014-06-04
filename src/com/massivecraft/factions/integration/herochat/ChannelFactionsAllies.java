@@ -8,7 +8,7 @@ import org.bukkit.ChatColor;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.entity.MConf;
 
-public class AlliesChannel extends FactionsChannelAbstract
+public class ChannelFactionsAllies extends ChannelFactionsAbstract
 {
 	public static final Set<Rel> targetRelations = EnumSet.of(Rel.MEMBER, Rel.RECRUIT, Rel.ALLY);
 	@Override public Set<Rel> getTargetRelations() { return targetRelations; }

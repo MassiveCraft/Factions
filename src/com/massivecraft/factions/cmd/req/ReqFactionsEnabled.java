@@ -3,8 +3,8 @@ package com.massivecraft.factions.cmd.req;
 import org.bukkit.command.CommandSender;
 
 import com.massivecraft.factions.entity.UConf;
-import com.massivecraft.mcore.cmd.MCommand;
-import com.massivecraft.mcore.cmd.req.ReqAbstract;
+import com.massivecraft.massivecore.cmd.MassiveCommand;
+import com.massivecraft.massivecore.cmd.req.ReqAbstract;
 
 public class ReqFactionsEnabled extends ReqAbstract
 {
@@ -22,13 +22,13 @@ public class ReqFactionsEnabled extends ReqAbstract
 	// -------------------------------------------- //
 	
 	@Override
-	public boolean apply(CommandSender sender, MCommand command)
+	public boolean apply(CommandSender sender, MassiveCommand command)
 	{
 		return !UConf.isDisabled(sender);
 	}
 	
 	@Override
-	public String createErrorMessage(CommandSender sender, MCommand command)
+	public String createErrorMessage(CommandSender sender, MassiveCommand command)
 	{
 		return UConf.getDisabledMessage(sender);
 	}

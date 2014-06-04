@@ -17,12 +17,12 @@ import com.massivecraft.factions.FFlag;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.PlayerRoleComparator;
 import com.massivecraft.factions.Rel;
-import com.massivecraft.mcore.cmd.req.ReqHasPerm;
-import com.massivecraft.mcore.mixin.Mixin;
-import com.massivecraft.mcore.money.Money;
-import com.massivecraft.mcore.util.TimeDiffUtil;
-import com.massivecraft.mcore.util.TimeUnit;
-import com.massivecraft.mcore.util.Txt;
+import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
+import com.massivecraft.massivecore.mixin.Mixin;
+import com.massivecraft.massivecore.money.Money;
+import com.massivecraft.massivecore.util.TimeDiffUtil;
+import com.massivecraft.massivecore.util.TimeUnit;
+import com.massivecraft.massivecore.util.Txt;
 
 public class CmdFactionsFaction extends FCommand
 {

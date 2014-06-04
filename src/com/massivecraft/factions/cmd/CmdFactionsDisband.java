@@ -14,8 +14,8 @@ import com.massivecraft.factions.FFlag;
 import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
-import com.massivecraft.mcore.cmd.req.ReqHasPerm;
-import com.massivecraft.mcore.util.Txt;
+import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
+import com.massivecraft.massivecore.util.Txt;
 
 public class CmdFactionsDisband extends FCommand
 {

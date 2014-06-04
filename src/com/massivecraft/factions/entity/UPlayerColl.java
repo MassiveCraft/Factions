@@ -2,11 +2,11 @@ package com.massivecraft.factions.entity;
 
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Rel;
-import com.massivecraft.mcore.mixin.Mixin;
-import com.massivecraft.mcore.store.MStore;
-import com.massivecraft.mcore.store.SenderColl;
-import com.massivecraft.mcore.util.TimeUnit;
-import com.massivecraft.mcore.util.Txt;
+import com.massivecraft.massivecore.mixin.Mixin;
+import com.massivecraft.massivecore.store.MStore;
+import com.massivecraft.massivecore.store.SenderColl;
+import com.massivecraft.massivecore.util.TimeUnit;
+import com.massivecraft.massivecore.util.Txt;
 
 public class UPlayerColl extends SenderColl<UPlayer>
 {

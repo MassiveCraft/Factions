@@ -6,9 +6,9 @@ import com.massivecraft.factions.cmd.arg.ARFaction;
 import com.massivecraft.factions.cmd.req.ReqFactionsEnabled;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.UConf;
-import com.massivecraft.mcore.cmd.req.ReqHasPerm;
-import com.massivecraft.mcore.cmd.req.ReqIsPlayer;
-import com.massivecraft.mcore.ps.PS;
+import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
+import com.massivecraft.massivecore.cmd.req.ReqIsPlayer;
+import com.massivecraft.massivecore.ps.PS;
 
 public class CmdFactionsAutoClaim extends FCommand
 {

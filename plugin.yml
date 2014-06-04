@@ -4,7 +4,7 @@ version: 2.4.0
 website: http://massivecraft.com/factions
 authors: [Cayorion, Brettflan]
 description: §eFactions allows the players to team up and claim land as their own and start wars with other factions. This way we hope to inspire politics, intrigue, and team spirit. §aCayorion §efrom the minecraft server §aMassiveCraft §eis the lead Factions programmer. Feel free to visit us at §bhttp://massivecraft.com
-depend: [mcore]
+depend: [MassiveCore]
 softdepend: [PermissionsEx, Permissions, Essentials, EssentialsChat, HeroChat, iChat, LocalAreaChat, LWC, nChat, ChatManager, AuthMe, Vault, Spout, WorldEdit, WorldGuard, AuthDB, CaptureThePoints, CombatTag]
 permissions:
 # -------------------------------------------- #

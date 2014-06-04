@@ -16,8 +16,8 @@ import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.event.FactionsEventCreate;
 import com.massivecraft.factions.event.FactionsEventMembershipChange;
 import com.massivecraft.factions.event.FactionsEventMembershipChange.MembershipChangeReason;
-import com.massivecraft.mcore.cmd.req.ReqHasPerm;
-import com.massivecraft.mcore.store.MStore;
+import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
+import com.massivecraft.massivecore.store.MStore;
 
 public class CmdFactionsCreate extends FCommand
 {

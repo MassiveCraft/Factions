@@ -7,7 +7,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 
 import com.massivecraft.factions.Factions;
-import com.massivecraft.mcore.ps.PS;
+import com.massivecraft.massivecore.ps.PS;
 
 
 /*

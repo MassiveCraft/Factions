@@ -2,8 +2,8 @@ package com.massivecraft.factions.entity;
 
 import com.massivecraft.factions.Const;
 import com.massivecraft.factions.Factions;
-import com.massivecraft.mcore.Aspect;
-import com.massivecraft.mcore.MCore;
+import com.massivecraft.massivecore.Aspect;
+import com.massivecraft.massivecore.MassiveCore;
 
 public class UConfColls extends XColls<UConfColl, UConf>
 {
@@ -41,7 +41,7 @@ public class UConfColls extends XColls<UConfColl, UConf>
 	{
 		UConfColl coll = this.get(worldNameExtractable);
 		if (coll == null) return null;
-		return coll.get(MCore.INSTANCE);
+		return coll.get(MassiveCore.INSTANCE);
 	}
 	
 }

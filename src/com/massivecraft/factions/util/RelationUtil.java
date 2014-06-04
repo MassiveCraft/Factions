@@ -8,7 +8,7 @@ import com.massivecraft.factions.RelationParticipator;
 import com.massivecraft.factions.entity.UPlayer;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MConf;
-import com.massivecraft.mcore.util.Txt;
+import com.massivecraft.massivecore.util.Txt;
 
 public class RelationUtil
 {

@@ -25,7 +25,7 @@ import com.massivecraft.factions.event.FactionsEventRelationChange;
 import com.massivecraft.factions.event.FactionsEventNameChange;
 import com.massivecraft.factions.event.FactionsEventTitleChange;
 import com.massivecraft.factions.integration.Econ;
-import com.massivecraft.mcore.money.Money;
+import com.massivecraft.massivecore.money.Money;
 
 public class FactionsListenerEcon implements Listener
 {

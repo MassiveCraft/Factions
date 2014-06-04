@@ -7,10 +7,10 @@ import java.util.Set;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.RelationParticipator;
 import com.massivecraft.factions.TerritoryAccess;
-import com.massivecraft.mcore.ps.PS;
-import com.massivecraft.mcore.store.Coll;
-import com.massivecraft.mcore.store.MStore;
-import com.massivecraft.mcore.util.MUtil;
+import com.massivecraft.massivecore.ps.PS;
+import com.massivecraft.massivecore.store.Coll;
+import com.massivecraft.massivecore.store.MStore;
+import com.massivecraft.massivecore.util.MUtil;
 
 public class BoardColl extends Coll<Board> implements BoardInterface
 {

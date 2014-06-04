@@ -1,16 +1,16 @@
 package com.massivecraft.factions.integration.lwc;
 
-import com.massivecraft.mcore.integration.IntegrationFeaturesAbstract;
+import com.massivecraft.massivecore.integration.IntegrationAbstract;
 
-public class LwcFeatures extends IntegrationFeaturesAbstract
+public class IntegrationLwc extends IntegrationAbstract
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static LwcFeatures i = new LwcFeatures();
-	public static LwcFeatures get() { return i; }
-	private LwcFeatures() { super("LWC"); }
+	private static IntegrationLwc i = new IntegrationLwc();
+	public static IntegrationLwc get() { return i; }
+	private IntegrationLwc() { super("LWC"); }
 	
 	// -------------------------------------------- //
 	// OVERRIDE
@@ -19,13 +19,13 @@ public class LwcFeatures extends IntegrationFeaturesAbstract
 	@Override
 	public void activate()
 	{
-		LwcEngine.get().activate();
+		EngineLwc.get().activate();
 	}
 	
 	@Override
 	public void deactivate()
 	{
-		LwcEngine.get().deactivate();
+		EngineLwc.get().deactivate();
 	}
 	
 }

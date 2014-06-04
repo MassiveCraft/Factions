@@ -21,18 +21,18 @@ import com.massivecraft.factions.entity.UConf;
 import com.massivecraft.factions.entity.UPlayer;
 import com.massivecraft.factions.event.FactionsEventChunkChange;
 import com.massivecraft.factions.event.FactionsEventChunkChangeType;
-import com.massivecraft.mcore.ps.PS;
+import com.massivecraft.massivecore.ps.PS;
 
 
-public class LwcEngine implements Listener
+public class EngineLwc implements Listener
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static LwcEngine i = new LwcEngine();
-	public static LwcEngine get() { return i; }
-	private LwcEngine() {}
+	private static EngineLwc i = new EngineLwc();
+	public static EngineLwc get() { return i; }
+	private EngineLwc() {}
 	
 	// -------------------------------------------- //
 	// ACTIVATE & DEACTIVATE

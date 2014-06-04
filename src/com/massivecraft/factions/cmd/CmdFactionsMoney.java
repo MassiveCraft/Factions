@@ -3,7 +3,7 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.cmd.req.ReqBankCommandsEnabled;
 import com.massivecraft.factions.cmd.req.ReqFactionsEnabled;
-import com.massivecraft.mcore.cmd.req.ReqHasPerm;
+import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 
 public class CmdFactionsMoney extends FCommand
 {

@@ -12,7 +12,7 @@ import org.bukkit.plugin.EventExecutor;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.chat.ChatFormatter;
 import com.massivecraft.factions.entity.MConf;
-import com.massivecraft.mcore.event.MCorePlayerToRecipientChatEvent;
+import com.massivecraft.massivecore.event.EventMassiveCorePlayerToRecipientChat;
 
 public class FactionsListenerChat implements Listener
 {
@@ -43,7 +43,7 @@ public class FactionsListenerChat implements Listener
 		
 		if (MConf.get().chatParseTags)
 		{
-			Bukkit.getPluginManager().registerEvent(MCorePlayerToRecipientChatEvent.class, this, EventPriority.NORMAL, new ParseRelcolorEventExecutor(), Factions.get(), true);
+			Bukkit.getPluginManager().registerEvent(EventMassiveCorePlayerToRecipientChat.class, this, EventPriority.NORMAL, new ParseRelcolorEventExecutor(), Factions.get(), true);
 		}
 		
 	}
@@ -113,8 +113,8 @@ public class FactionsListenerChat implements Listener
 		{
 			try
 			{
-				if (!(event instanceof MCorePlayerToRecipientChatEvent)) return;
-				parseRelcolor((MCorePlayerToRecipientChatEvent)event);
+				if (!(event instanceof EventMassiveCorePlayerToRecipientChat)) return;
+				parseRelcolor((EventMassiveCorePlayerToRecipientChat)event);
 			}
 			catch (Throwable t)
 			{
@@ -123,7 +123,7 @@ public class FactionsListenerChat implements Listener
 		}
 	}
 
-	public static void parseRelcolor(MCorePlayerToRecipientChatEvent event)
+	public static void parseRelcolor(EventMassiveCorePlayerToRecipientChat event)
 	{
 		String format = event.getFormat();
 		format = ChatFormatter.format(format, event.getSender(), event.getRecipient());

@@ -15,8 +15,8 @@ import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.FactionColls;
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.event.FactionsEventChunkChange;
-import com.massivecraft.mcore.cmd.req.ReqHasPerm;
-import com.massivecraft.mcore.ps.PS;
+import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
+import com.massivecraft.massivecore.ps.PS;
 
 public class CmdFactionsUnclaimall extends FCommand
 {	

@@ -6,11 +6,11 @@ import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.cmd.arg.ARUPlayer;
 import com.massivecraft.factions.cmd.req.ReqFactionsEnabled;
 import com.massivecraft.factions.entity.UPlayer;
-import com.massivecraft.mcore.Progressbar;
-import com.massivecraft.mcore.cmd.req.ReqHasPerm;
-import com.massivecraft.mcore.util.TimeDiffUtil;
-import com.massivecraft.mcore.util.TimeUnit;
-import com.massivecraft.mcore.util.Txt;
+import com.massivecraft.massivecore.Progressbar;
+import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
+import com.massivecraft.massivecore.util.TimeDiffUtil;
+import com.massivecraft.massivecore.util.TimeUnit;
+import com.massivecraft.massivecore.util.Txt;
 
 public class CmdFactionsPlayer extends FCommand
 {

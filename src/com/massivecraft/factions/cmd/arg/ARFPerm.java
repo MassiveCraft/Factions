@@ -7,8 +7,8 @@ import java.util.List;
 import org.bukkit.command.CommandSender;
 
 import com.massivecraft.factions.FPerm;
-import com.massivecraft.mcore.cmd.arg.ARAbstractSelect;
-import com.massivecraft.mcore.util.Txt;
+import com.massivecraft.massivecore.cmd.arg.ARAbstractSelect;
+import com.massivecraft.massivecore.util.Txt;
 
 public class ARFPerm extends ARAbstractSelect<FPerm>
 {

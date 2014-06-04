@@ -15,10 +15,10 @@ import com.massivecraft.factions.entity.FactionColls;
 import com.massivecraft.factions.entity.MPlayerColl;
 import com.massivecraft.factions.entity.UPlayerColl;
 import com.massivecraft.factions.entity.UPlayerColls;
-import com.massivecraft.mcore.EngineAbstract;
-import com.massivecraft.mcore.event.MCoreUuidUpdateEvent;
-import com.massivecraft.mcore.util.IdUpdateUtil;
-import com.massivecraft.mcore.util.MUtil;
+import com.massivecraft.massivecore.EngineAbstract;
+import com.massivecraft.massivecore.event.EventMassiveCoreUuidUpdate;
+import com.massivecraft.massivecore.util.IdUpdateUtil;
+import com.massivecraft.massivecore.util.MUtil;
 
 public class EngineIdUpdate extends EngineAbstract
 {
@@ -44,7 +44,7 @@ public class EngineIdUpdate extends EngineAbstract
 	// -------------------------------------------- //
 
 	@EventHandler(priority = EventPriority.MONITOR)
-	public void update(MCoreUuidUpdateEvent event)
+	public void update(EventMassiveCoreUuidUpdate event)
 	{
 		for (FactionColl coll : FactionColls.get().getColls())
 		{

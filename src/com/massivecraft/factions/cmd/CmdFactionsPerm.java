@@ -8,9 +8,9 @@ import com.massivecraft.factions.cmd.arg.ARFaction;
 import com.massivecraft.factions.cmd.arg.ARRel;
 import com.massivecraft.factions.cmd.req.ReqFactionsEnabled;
 import com.massivecraft.factions.entity.Faction;
-import com.massivecraft.mcore.cmd.arg.ARBoolean;
-import com.massivecraft.mcore.cmd.req.ReqHasPerm;
-import com.massivecraft.mcore.util.Txt;
+import com.massivecraft.massivecore.cmd.arg.ARBoolean;
+import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
+import com.massivecraft.massivecore.util.Txt;
 
 public class CmdFactionsPerm extends FCommand
 {

@@ -13,15 +13,15 @@ import com.massivecraft.factions.chat.ChatFormatter;
 import com.massivecraft.factions.entity.MConf;
 
 
-public class HerochatEngine implements Listener
+public class EngineHerochat implements Listener
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static HerochatEngine i = new HerochatEngine();
-	public static HerochatEngine get() { return i; }
-	private HerochatEngine() {}
+	private static EngineHerochat i = new EngineHerochat();
+	public static EngineHerochat get() { return i; }
+	private EngineHerochat() {}
 	
 	// -------------------------------------------- //
 	// ACTIVATE & DEACTIVATE
@@ -29,8 +29,8 @@ public class HerochatEngine implements Listener
 	
 	public void activate()
 	{
-		Herochat.getChannelManager().addChannel(new FactionChannel());
-		Herochat.getChannelManager().addChannel(new AlliesChannel());
+		Herochat.getChannelManager().addChannel(new ChannelFactionsFaction());
+		Herochat.getChannelManager().addChannel(new ChannelFactionsAllies());
 		
 		Bukkit.getPluginManager().registerEvents(this, Factions.get());
 	}

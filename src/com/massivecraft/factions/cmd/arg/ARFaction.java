@@ -7,10 +7,10 @@ import com.massivecraft.factions.entity.UPlayerColls;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.FactionColl;
 import com.massivecraft.factions.entity.FactionColls;
-import com.massivecraft.mcore.cmd.arg.ArgReaderAbstract;
-import com.massivecraft.mcore.cmd.arg.ArgResult;
-import com.massivecraft.mcore.util.IdUtil;
-import com.massivecraft.mcore.util.Txt;
+import com.massivecraft.massivecore.cmd.arg.ArgReaderAbstract;
+import com.massivecraft.massivecore.cmd.arg.ArgResult;
+import com.massivecraft.massivecore.util.IdUtil;
+import com.massivecraft.massivecore.util.Txt;
 
 public class ARFaction extends ArgReaderAbstract<Faction>
 {

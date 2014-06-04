@@ -11,8 +11,8 @@ import com.massivecraft.factions.entity.BoardColls;
 import com.massivecraft.factions.entity.UPlayer;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.UConf;
-import com.massivecraft.mcore.ps.PS;
-import com.massivecraft.mcore.util.Txt;
+import com.massivecraft.massivecore.ps.PS;
+import com.massivecraft.massivecore.util.Txt;
 
 /**
  * Permissions that you (a player) may or may not have in the territory of a certain faction.

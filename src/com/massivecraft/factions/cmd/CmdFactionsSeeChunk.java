@@ -7,10 +7,10 @@ import org.bukkit.entity.Player;
 
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.util.VisualizeUtil;
-import com.massivecraft.mcore.cmd.req.ReqHasPerm;
-import com.massivecraft.mcore.cmd.req.ReqIsPlayer;
-import com.massivecraft.mcore.ps.PS;
-import com.massivecraft.mcore.ps.PSFormatHumanSpace;
+import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
+import com.massivecraft.massivecore.cmd.req.ReqIsPlayer;
+import com.massivecraft.massivecore.ps.PS;
+import com.massivecraft.massivecore.ps.PSFormatHumanSpace;
 
 public class CmdFactionsSeeChunk extends FCommand
 {

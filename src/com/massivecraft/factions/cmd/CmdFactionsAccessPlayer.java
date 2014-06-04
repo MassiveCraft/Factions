@@ -5,8 +5,8 @@ import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.cmd.arg.ARUPlayer;
 import com.massivecraft.factions.entity.BoardColls;
 import com.massivecraft.factions.entity.UPlayer;
-import com.massivecraft.mcore.cmd.arg.ARBoolean;
-import com.massivecraft.mcore.cmd.req.ReqHasPerm;
+import com.massivecraft.massivecore.cmd.arg.ARBoolean;
+import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 
 public class CmdFactionsAccessPlayer extends CmdFactionsAccessAbstract
 {

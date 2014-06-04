@@ -3,14 +3,13 @@ package com.massivecraft.factions.adapter;
 import java.lang.reflect.Type;
 import java.util.Map;
 
-import com.massivecraft.mcore.ps.PS;
-import com.massivecraft.mcore.xlib.gson.JsonDeserializationContext;
-import com.massivecraft.mcore.xlib.gson.JsonDeserializer;
-import com.massivecraft.mcore.xlib.gson.JsonElement;
-import com.massivecraft.mcore.xlib.gson.JsonParseException;
-import com.massivecraft.mcore.xlib.gson.JsonSerializationContext;
-import com.massivecraft.mcore.xlib.gson.JsonSerializer;
-
+import com.massivecraft.massivecore.ps.PS;
+import com.massivecraft.massivecore.xlib.gson.JsonDeserializationContext;
+import com.massivecraft.massivecore.xlib.gson.JsonDeserializer;
+import com.massivecraft.massivecore.xlib.gson.JsonElement;
+import com.massivecraft.massivecore.xlib.gson.JsonParseException;
+import com.massivecraft.massivecore.xlib.gson.JsonSerializationContext;
+import com.massivecraft.massivecore.xlib.gson.JsonSerializer;
 import com.massivecraft.factions.TerritoryAccess;
 import com.massivecraft.factions.entity.Board;
 

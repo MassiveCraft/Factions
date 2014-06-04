@@ -9,10 +9,10 @@ import com.massivecraft.factions.TerritoryAccess;
 import com.massivecraft.factions.cmd.req.ReqFactionsEnabled;
 import com.massivecraft.factions.entity.BoardColls;
 import com.massivecraft.factions.entity.Faction;
-import com.massivecraft.mcore.cmd.req.ReqIsPlayer;
-import com.massivecraft.mcore.ps.PS;
-import com.massivecraft.mcore.ps.PSFormatHumanSpace;
-import com.massivecraft.mcore.util.Txt;
+import com.massivecraft.massivecore.cmd.req.ReqIsPlayer;
+import com.massivecraft.massivecore.ps.PS;
+import com.massivecraft.massivecore.ps.PSFormatHumanSpace;
+import com.massivecraft.massivecore.util.Txt;
 
 
 public abstract class CmdFactionsAccessAbstract extends FCommand

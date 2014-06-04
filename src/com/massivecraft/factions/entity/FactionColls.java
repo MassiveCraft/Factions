@@ -8,11 +8,11 @@ import java.util.Set;
 
 import com.massivecraft.factions.Const;
 import com.massivecraft.factions.Factions;
-import com.massivecraft.mcore.Aspect;
-import com.massivecraft.mcore.MCore;
-import com.massivecraft.mcore.util.DiscUtil;
-import com.massivecraft.mcore.util.MUtil;
-import com.massivecraft.mcore.xlib.gson.reflect.TypeToken;
+import com.massivecraft.massivecore.Aspect;
+import com.massivecraft.massivecore.MassiveCore;
+import com.massivecraft.massivecore.util.DiscUtil;
+import com.massivecraft.massivecore.util.MUtil;
+import com.massivecraft.massivecore.xlib.gson.reflect.TypeToken;
 
 public class FactionColls extends XColls<FactionColl, Faction>
 {
@@ -73,7 +73,7 @@ public class FactionColls extends XColls<FactionColl, Faction>
 		Map<String, Faction> id2faction = Factions.get().gson.fromJson(DiscUtil.readCatch(oldFile), type);
 		
 		// The Coll
-		FactionColl coll = this.getForUniverse(MCore.DEFAULT);
+		FactionColl coll = this.getForUniverse(MassiveCore.DEFAULT);
 		
 		// Set the data
 		for (Entry<String, Faction> entry : id2faction.entrySet())

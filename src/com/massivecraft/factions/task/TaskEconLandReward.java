@@ -4,8 +4,8 @@ import com.massivecraft.factions.entity.FactionColl;
 import com.massivecraft.factions.entity.FactionColls;
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.entity.UConf;
-import com.massivecraft.mcore.ModuloRepeatTask;
-import com.massivecraft.mcore.util.TimeUnit;
+import com.massivecraft.massivecore.ModuloRepeatTask;
+import com.massivecraft.massivecore.util.TimeUnit;
 
 public class TaskEconLandReward extends ModuloRepeatTask
 {

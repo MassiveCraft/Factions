@@ -2,9 +2,9 @@ package com.massivecraft.factions.entity;
 
 import com.massivecraft.factions.Const;
 import com.massivecraft.factions.Factions;
-import com.massivecraft.mcore.MCore;
-import com.massivecraft.mcore.store.Coll;
-import com.massivecraft.mcore.store.MStore;
+import com.massivecraft.massivecore.MassiveCore;
+import com.massivecraft.massivecore.store.Coll;
+import com.massivecraft.massivecore.store.MStore;
 
 public class MConfColl extends Coll<MConf>
 {
@@ -28,7 +28,7 @@ public class MConfColl extends Coll<MConf>
 	{
 		super.init();
 		
-		MConf.i = this.get(MCore.INSTANCE, true);
+		MConf.i = this.get(MassiveCore.INSTANCE, true);
 	}
 	
 }

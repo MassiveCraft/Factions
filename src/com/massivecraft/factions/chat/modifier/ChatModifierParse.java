@@ -3,7 +3,7 @@ package com.massivecraft.factions.chat.modifier;
 import org.bukkit.command.CommandSender;
 
 import com.massivecraft.factions.chat.ChatModifierAbstract;
-import com.massivecraft.mcore.util.Txt;
+import com.massivecraft.massivecore.util.Txt;
 
 public class ChatModifierParse extends ChatModifierAbstract
 {

@@ -26,7 +26,7 @@ import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.entity.UPlayer;
 import com.massivecraft.factions.entity.Faction;
 
-public abstract class FactionsChannelAbstract implements Channel
+public abstract class ChannelFactionsAbstract implements Channel
 {
 	private static final Pattern msgPattern = Pattern.compile("(.*)<(.*)%1\\$s(.*)> %2\\$s");
 	private final ChannelStorage storage = Herochat.getChannelManager().getStorage();

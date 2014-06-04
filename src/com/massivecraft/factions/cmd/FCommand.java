@@ -5,10 +5,10 @@ import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.entity.UConf;
 import com.massivecraft.factions.entity.UPlayer;
 import com.massivecraft.factions.entity.Faction;
-import com.massivecraft.mcore.cmd.MCommand;
-import com.massivecraft.mcore.util.Txt;
+import com.massivecraft.massivecore.cmd.MassiveCommand;
+import com.massivecraft.massivecore.util.Txt;
 
-public abstract class FCommand extends MCommand
+public abstract class FCommand extends MassiveCommand
 {
 	// -------------------------------------------- //
 	// FIELDS

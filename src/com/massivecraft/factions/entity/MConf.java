@@ -13,8 +13,8 @@ import org.bukkit.event.EventPriority;
 
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.listeners.FactionsListenerChat;
-import com.massivecraft.mcore.store.Entity;
-import com.massivecraft.mcore.util.MUtil;
+import com.massivecraft.massivecore.store.Entity;
+import com.massivecraft.massivecore.util.MUtil;
 
 public class MConf extends Entity<MConf>
 {

@@ -17,13 +17,13 @@ import com.massivecraft.factions.event.FactionsEventChunkChange;
 import com.massivecraft.factions.event.FactionsEventMembershipChange;
 import com.massivecraft.factions.event.FactionsEventMembershipChange.MembershipChangeReason;
 import com.massivecraft.factions.util.RelationUtil;
-import com.massivecraft.mcore.mixin.Mixin;
-import com.massivecraft.mcore.ps.PS;
-import com.massivecraft.mcore.ps.PSFormatHumanSpace;
-import com.massivecraft.mcore.store.SenderEntity;
-import com.massivecraft.mcore.util.IdUtil;
-import com.massivecraft.mcore.util.MUtil;
-import com.massivecraft.mcore.util.Txt;
+import com.massivecraft.massivecore.mixin.Mixin;
+import com.massivecraft.massivecore.ps.PS;
+import com.massivecraft.massivecore.ps.PSFormatHumanSpace;
+import com.massivecraft.massivecore.store.SenderEntity;
+import com.massivecraft.massivecore.util.IdUtil;
+import com.massivecraft.massivecore.util.MUtil;
+import com.massivecraft.massivecore.util.Txt;
 
 
 public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipator

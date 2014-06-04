@@ -4,10 +4,9 @@ import java.util.*;
 
 import org.bukkit.ChatColor;
 
-import com.massivecraft.mcore.store.Coll;
-import com.massivecraft.mcore.store.MStore;
-import com.massivecraft.mcore.util.Txt;
-
+import com.massivecraft.massivecore.store.Coll;
+import com.massivecraft.massivecore.store.MStore;
+import com.massivecraft.massivecore.util.Txt;
 import com.massivecraft.factions.FFlag;
 import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.Factions;

@@ -13,7 +13,7 @@ import com.massivecraft.factions.entity.FactionColls;
 import com.massivecraft.factions.entity.UConf;
 import com.massivecraft.factions.event.FactionsEventNameChange;
 import com.massivecraft.factions.util.MiscUtil;
-import com.massivecraft.mcore.cmd.req.ReqHasPerm;
+import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 
 public class CmdFactionsName extends FCommand
 {
