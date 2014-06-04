@@ -3,7 +3,7 @@ package com.massivecraft.factions.event;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.HandlerList;
 
-public class FactionsEventCreate extends FactionsEventAbstractSender
+public class EventFactionsCreate extends EventFactionsAbstractSender
 {
 	// -------------------------------------------- //
 	// REQUIRED EVENT CODE
@@ -30,7 +30,7 @@ public class FactionsEventCreate extends FactionsEventAbstractSender
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public FactionsEventCreate(CommandSender sender, String universe, String factionId, String factionName)
+	public EventFactionsCreate(CommandSender sender, String universe, String factionId, String factionName)
 	{
 		super(sender);
 		this.universe = universe;

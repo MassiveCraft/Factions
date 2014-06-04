@@ -6,7 +6,7 @@ import org.bukkit.event.HandlerList;
 import com.massivecraft.factions.entity.UPlayer;
 import com.massivecraft.factions.entity.Faction;
 
-public class FactionsEventMembershipChange extends FactionsEventAbstractSender
+public class EventFactionsMembershipChange extends EventFactionsAbstractSender
 {
 	// -------------------------------------------- //
 	// REQUIRED EVENT CODE
@@ -40,7 +40,7 @@ public class FactionsEventMembershipChange extends FactionsEventAbstractSender
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public FactionsEventMembershipChange(CommandSender sender, UPlayer uplayer, Faction newFaction, MembershipChangeReason reason)
+	public EventFactionsMembershipChange(CommandSender sender, UPlayer uplayer, Faction newFaction, MembershipChangeReason reason)
 	{
 		super(sender);
 		this.uplayer = uplayer;

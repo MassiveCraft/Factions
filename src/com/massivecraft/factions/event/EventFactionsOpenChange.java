@@ -5,7 +5,7 @@ import org.bukkit.event.HandlerList;
 
 import com.massivecraft.factions.entity.Faction;
 
-public class FactionsEventDescriptionChange extends FactionsEventAbstractSender
+public class EventFactionsOpenChange extends EventFactionsAbstractSender
 {	
 	// -------------------------------------------- //
 	// REQUIRED EVENT CODE
@@ -22,19 +22,19 @@ public class FactionsEventDescriptionChange extends FactionsEventAbstractSender
 	private final Faction faction;
 	public Faction getFaction() { return this.faction; }
 	
-	private String newDescription;
-	public String getNewDescription() { return this.newDescription; }
-	public void setNewDescription(String newDescription) { this.newDescription = newDescription; }
+	private boolean newOpen;
+	public boolean isNewOpen() { return this.newOpen; }
+	public void setNewOpen(boolean newOpen) { this.newOpen = newOpen; }
 	
 	// -------------------------------------------- //
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public FactionsEventDescriptionChange(CommandSender sender, Faction faction, String newDescription)
+	public EventFactionsOpenChange(CommandSender sender, Faction faction, boolean newOpen)
 	{
 		super(sender);
 		this.faction = faction;
-		this.newDescription = newDescription;
+		this.newOpen = newOpen;
 	}
 	
 }

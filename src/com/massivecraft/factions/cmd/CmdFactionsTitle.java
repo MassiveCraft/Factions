@@ -8,7 +8,7 @@ import com.massivecraft.factions.cmd.arg.ARUPlayer;
 import com.massivecraft.factions.cmd.req.ReqFactionsEnabled;
 import com.massivecraft.factions.cmd.req.ReqRoleIsAtLeast;
 import com.massivecraft.factions.entity.UPlayer;
-import com.massivecraft.factions.event.FactionsEventTitleChange;
+import com.massivecraft.factions.event.EventFactionsTitleChange;
 import com.massivecraft.massivecore.cmd.arg.ARString;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.util.Txt;
@@ -58,7 +58,7 @@ public class CmdFactionsTitle extends FCommand
 		if ( ! canIAdministerYou(usender, you)) return;
 
 		// Event
-		FactionsEventTitleChange event = new FactionsEventTitleChange(sender, you, newTitle);
+		EventFactionsTitleChange event = new EventFactionsTitleChange(sender, you, newTitle);
 		event.run();
 		if (event.isCancelled()) return;
 		newTitle = event.getNewTitle();

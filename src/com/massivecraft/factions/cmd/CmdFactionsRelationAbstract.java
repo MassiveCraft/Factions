@@ -9,7 +9,7 @@ import com.massivecraft.factions.cmd.req.ReqHasFaction;
 import com.massivecraft.factions.cmd.req.ReqRoleIsAtLeast;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MConf;
-import com.massivecraft.factions.event.FactionsEventRelationChange;
+import com.massivecraft.factions.event.EventFactionsRelationChange;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 
 public abstract class CmdFactionsRelationAbstract extends FCommand
@@ -66,7 +66,7 @@ public abstract class CmdFactionsRelationAbstract extends FCommand
 		}
 		
 		// Event
-		FactionsEventRelationChange event = new FactionsEventRelationChange(sender, usenderFaction, otherFaction, newRelation);
+		EventFactionsRelationChange event = new EventFactionsRelationChange(sender, usenderFaction, otherFaction, newRelation);
 		event.run();
 		if (event.isCancelled()) return;
 		newRelation = event.getNewRelation();

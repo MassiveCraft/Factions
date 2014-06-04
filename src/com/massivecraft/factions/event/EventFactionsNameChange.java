@@ -5,7 +5,7 @@ import org.bukkit.event.HandlerList;
 
 import com.massivecraft.factions.entity.Faction;
 
-public class FactionsEventNameChange extends FactionsEventAbstractSender
+public class EventFactionsNameChange extends EventFactionsAbstractSender
 {
 	// -------------------------------------------- //
 	// REQUIRED EVENT CODE
@@ -30,7 +30,7 @@ public class FactionsEventNameChange extends FactionsEventAbstractSender
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public FactionsEventNameChange(CommandSender sender, Faction faction, String newName) 
+	public EventFactionsNameChange(CommandSender sender, Faction faction, String newName) 
 	{
 		super(sender);
 		this.faction = faction;

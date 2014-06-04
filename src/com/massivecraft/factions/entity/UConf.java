@@ -12,7 +12,7 @@ import org.bukkit.event.EventPriority;
 import com.massivecraft.factions.FFlag;
 import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.Rel;
-import com.massivecraft.factions.event.FactionsEventChunkChangeType;
+import com.massivecraft.factions.event.EventFactionsChunkChangeType;
 import com.massivecraft.massivecore.store.Entity;
 import com.massivecraft.massivecore.store.SenderEntity;
 import com.massivecraft.massivecore.util.MUtil;
@@ -219,11 +219,11 @@ public class UConf extends Entity<UConf>
 	// INTEGRATION: LWC
 	// -------------------------------------------- //
 	
-	public Map<FactionsEventChunkChangeType, Boolean> lwcRemoveOnChange = MUtil.map(
-		FactionsEventChunkChangeType.BUY, false,
-		FactionsEventChunkChangeType.SELL, false,
-		FactionsEventChunkChangeType.CONQUER, false,
-		FactionsEventChunkChangeType.PILLAGE, false
+	public Map<EventFactionsChunkChangeType, Boolean> lwcRemoveOnChange = MUtil.map(
+		EventFactionsChunkChangeType.BUY, false,
+		EventFactionsChunkChangeType.SELL, false,
+		EventFactionsChunkChangeType.CONQUER, false,
+		EventFactionsChunkChangeType.PILLAGE, false
 	);
 	
 	// -------------------------------------------- //
@@ -237,11 +237,11 @@ public class UConf extends Entity<UConf>
 	
 	public String econUniverseAccount = "";
 	
-	public Map<FactionsEventChunkChangeType, Double> econChunkCost = MUtil.map(
-		FactionsEventChunkChangeType.BUY, 30.0,
-		FactionsEventChunkChangeType.SELL, -20.0,
-		FactionsEventChunkChangeType.CONQUER, -10.0,
-		FactionsEventChunkChangeType.PILLAGE, -10.0
+	public Map<EventFactionsChunkChangeType, Double> econChunkCost = MUtil.map(
+		EventFactionsChunkChangeType.BUY, 30.0,
+		EventFactionsChunkChangeType.SELL, -20.0,
+		EventFactionsChunkChangeType.CONQUER, -10.0,
+		EventFactionsChunkChangeType.PILLAGE, -10.0
 	);
 	
 	public double econCostCreate = 200.0;

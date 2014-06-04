@@ -5,7 +5,7 @@ import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.cmd.req.ReqFactionsEnabled;
 import com.massivecraft.factions.cmd.req.ReqHasFaction;
 import com.massivecraft.factions.cmd.req.ReqRoleIsAtLeast;
-import com.massivecraft.factions.event.FactionsEventOpenChange;
+import com.massivecraft.factions.event.EventFactionsOpenChange;
 import com.massivecraft.massivecore.cmd.arg.ARBoolean;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 
@@ -42,7 +42,7 @@ public class CmdFactionsOpen extends FCommand
 		if (newOpen == null) return;
 
 		// Event
-		FactionsEventOpenChange event = new FactionsEventOpenChange(sender, usenderFaction, newOpen);
+		EventFactionsOpenChange event = new EventFactionsOpenChange(sender, usenderFaction, newOpen);
 		event.run();
 		if (event.isCancelled()) return;
 		newOpen = event.isNewOpen();

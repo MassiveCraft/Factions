@@ -3,9 +3,11 @@ package com.massivecraft.factions.event;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.HandlerList;
 
+import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.entity.Faction;
 
-public class FactionsEventDisband extends FactionsEventAbstractSender
+
+public class EventFactionsRelationChange extends EventFactionsAbstractSender
 {
 	// -------------------------------------------- //
 	// REQUIRED EVENT CODE
@@ -22,18 +24,23 @@ public class FactionsEventDisband extends FactionsEventAbstractSender
 	private final Faction faction;
 	public Faction getFaction() { return this.faction; }
 	
-	private final String factionId;
-	public String getFactionId() { return this.factionId; }
+	private final Faction otherFaction;
+	public Faction getOtherFaction() { return this.otherFaction; }
 	
+	private Rel newRelation;
+	public Rel getNewRelation() { return this.newRelation; }
+	public void setNewRelation(Rel newRelation) { this.newRelation = newRelation; }
+
 	// -------------------------------------------- //
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public FactionsEventDisband(CommandSender sender, Faction faction)
+	public EventFactionsRelationChange(CommandSender sender, Faction faction, Faction otherFaction, Rel newRelation)
 	{
 		super(sender);
 		this.faction = faction;
-		this.factionId = faction.getId();
+		this.otherFaction = otherFaction;
+		this.newRelation = newRelation;
 	}
 	
 }

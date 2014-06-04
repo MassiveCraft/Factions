@@ -3,9 +3,9 @@ package com.massivecraft.factions.event;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.HandlerList;
 
-import com.massivecraft.factions.entity.Faction;
+import com.massivecraft.factions.entity.UPlayer;
 
-public class FactionsEventOpenChange extends FactionsEventAbstractSender
+public class EventFactionsTitleChange extends EventFactionsAbstractSender
 {	
 	// -------------------------------------------- //
 	// REQUIRED EVENT CODE
@@ -19,22 +19,22 @@ public class FactionsEventOpenChange extends FactionsEventAbstractSender
 	// FIELDS
 	// -------------------------------------------- //
 	
-	private final Faction faction;
-	public Faction getFaction() { return this.faction; }
+	private final UPlayer uplayer;
+	public UPlayer getUPlayer() { return this.uplayer; }
 	
-	private boolean newOpen;
-	public boolean isNewOpen() { return this.newOpen; }
-	public void setNewOpen(boolean newOpen) { this.newOpen = newOpen; }
+	private String newTitle;
+	public String getNewTitle() { return this.newTitle; }
+	public void setNewTitle(String newTitle) { this.newTitle = newTitle; }
 	
 	// -------------------------------------------- //
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public FactionsEventOpenChange(CommandSender sender, Faction faction, boolean newOpen)
+	public EventFactionsTitleChange(CommandSender sender, UPlayer uplayer, String newTitle)
 	{
 		super(sender);
-		this.faction = faction;
-		this.newOpen = newOpen;
+		this.uplayer = uplayer;
+		this.newTitle = newTitle;
 	}
 	
 }

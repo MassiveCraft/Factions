@@ -66,9 +66,9 @@ import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.entity.UConf;
 import com.massivecraft.factions.entity.UPlayerColl;
 import com.massivecraft.factions.entity.UPlayerColls;
-import com.massivecraft.factions.event.FactionsEventPvpDisallowed;
-import com.massivecraft.factions.event.FactionsEventPowerChange;
-import com.massivecraft.factions.event.FactionsEventPowerChange.PowerChangeReason;
+import com.massivecraft.factions.event.EventFactionsPvpDisallowed;
+import com.massivecraft.factions.event.EventFactionsPowerChange;
+import com.massivecraft.factions.event.EventFactionsPowerChange.PowerChangeReason;
 import com.massivecraft.factions.util.VisualizeUtil;
 import com.massivecraft.massivecore.ps.PS;
 import com.massivecraft.massivecore.util.MUtil;
@@ -218,7 +218,7 @@ public class FactionsListenerMain implements Listener
 		// ... alter the power ...
 		double newPower = uplayer.getPower() + uplayer.getPowerPerDeath();
 		
-		FactionsEventPowerChange powerChangeEvent = new FactionsEventPowerChange(null, uplayer, PowerChangeReason.DEATH, newPower);
+		EventFactionsPowerChange powerChangeEvent = new EventFactionsPowerChange(null, uplayer, PowerChangeReason.DEATH, newPower);
 		powerChangeEvent.run();
 		if (powerChangeEvent.isCancelled()) return;
 		newPower = powerChangeEvent.getNewPower();
@@ -279,7 +279,7 @@ public class FactionsListenerMain implements Listener
 	// Utility method used in "canCombatDamageHappen" below.
 	public static boolean falseUnlessDisallowedPvpEventCancelled(Player attacker, Player defender, EntityDamageByEntityEvent event)
 	{
-		FactionsEventPvpDisallowed dpe = new FactionsEventPvpDisallowed(attacker, defender, event);
+		EventFactionsPvpDisallowed dpe = new EventFactionsPvpDisallowed(attacker, defender, event);
 		dpe.run();
 		return dpe.isCancelled();
 	}

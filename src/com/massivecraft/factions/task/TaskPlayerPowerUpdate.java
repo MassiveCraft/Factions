@@ -6,8 +6,8 @@ import org.bukkit.entity.Player;
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.entity.UConf;
 import com.massivecraft.factions.entity.UPlayer;
-import com.massivecraft.factions.event.FactionsEventPowerChange;
-import com.massivecraft.factions.event.FactionsEventPowerChange.PowerChangeReason;
+import com.massivecraft.factions.event.EventFactionsPowerChange;
+import com.massivecraft.factions.event.EventFactionsPowerChange.PowerChangeReason;
 import com.massivecraft.massivecore.ModuloRepeatTask;
 import com.massivecraft.massivecore.util.TimeUnit;
 
@@ -51,7 +51,7 @@ public class TaskPlayerPowerUpdate extends ModuloRepeatTask
 			UPlayer uplayer = UPlayer.get(player);
 			double newPower = uplayer.getPower() + uplayer.getPowerPerHour() * millis / TimeUnit.MILLIS_PER_HOUR;
 			
-			FactionsEventPowerChange event = new FactionsEventPowerChange(null, uplayer, PowerChangeReason.TIME, newPower);
+			EventFactionsPowerChange event = new EventFactionsPowerChange(null, uplayer, PowerChangeReason.TIME, newPower);
 			event.run();
 			if (event.isCancelled()) continue;
 			newPower = event.getNewPower();

@@ -14,7 +14,7 @@ import com.massivecraft.factions.entity.BoardColls;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.FactionColls;
 import com.massivecraft.factions.entity.MConf;
-import com.massivecraft.factions.event.FactionsEventChunkChange;
+import com.massivecraft.factions.event.EventFactionsChunkChange;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.ps.PS;
 
@@ -58,7 +58,7 @@ public class CmdFactionsUnclaimall extends FCommand
 		int countFail = 0;
 		for (PS chunk : chunks)
 		{
-			FactionsEventChunkChange event = new FactionsEventChunkChange(sender, chunk, newFaction);
+			EventFactionsChunkChange event = new EventFactionsChunkChange(sender, chunk, newFaction);
 			event.run();
 			if (event.isCancelled())
 			{

@@ -7,7 +7,7 @@ import com.massivecraft.factions.cmd.arg.ARUPlayer;
 import com.massivecraft.factions.cmd.req.ReqFactionsEnabled;
 import com.massivecraft.factions.cmd.req.ReqHasFaction;
 import com.massivecraft.factions.entity.UPlayer;
-import com.massivecraft.factions.event.FactionsEventInvitedChange;
+import com.massivecraft.factions.event.EventFactionsInvitedChange;
 import com.massivecraft.massivecore.cmd.arg.ARBoolean;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.cmd.req.ReqIsPlayer;
@@ -60,7 +60,7 @@ public class CmdFactionsInvite extends FCommand
 		if ( ! FPerm.INVITE.has(usender, usenderFaction, true)) return;
 		
 		// Event
-		FactionsEventInvitedChange event = new FactionsEventInvitedChange(sender, uplayer, usenderFaction, newInvited);
+		EventFactionsInvitedChange event = new EventFactionsInvitedChange(sender, uplayer, usenderFaction, newInvited);
 		event.run();
 		if (event.isCancelled()) return;
 		newInvited = event.isNewInvited();

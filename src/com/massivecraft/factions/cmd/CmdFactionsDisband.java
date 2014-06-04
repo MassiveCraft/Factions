@@ -7,9 +7,9 @@ import com.massivecraft.factions.entity.UPlayerColls;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.FactionColls;
 import com.massivecraft.factions.entity.MConf;
-import com.massivecraft.factions.event.FactionsEventDisband;
-import com.massivecraft.factions.event.FactionsEventMembershipChange;
-import com.massivecraft.factions.event.FactionsEventMembershipChange.MembershipChangeReason;
+import com.massivecraft.factions.event.EventFactionsDisband;
+import com.massivecraft.factions.event.EventFactionsMembershipChange;
+import com.massivecraft.factions.event.EventFactionsMembershipChange.MembershipChangeReason;
 import com.massivecraft.factions.FFlag;
 import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.Factions;
@@ -58,7 +58,7 @@ public class CmdFactionsDisband extends FCommand
 		}
 
 		// Event
-		FactionsEventDisband event = new FactionsEventDisband(me, faction);
+		EventFactionsDisband event = new EventFactionsDisband(me, faction);
 		event.run();
 		if (event.isCancelled()) return;
 
@@ -67,7 +67,7 @@ public class CmdFactionsDisband extends FCommand
 		// Run event for each player in the faction
 		for (UPlayer uplayer : faction.getUPlayers())
 		{
-			FactionsEventMembershipChange membershipChangeEvent = new FactionsEventMembershipChange(sender, uplayer, FactionColls.get().get(faction).getNone(), MembershipChangeReason.DISBAND);
+			EventFactionsMembershipChange membershipChangeEvent = new EventFactionsMembershipChange(sender, uplayer, FactionColls.get().get(faction).getNone(), MembershipChangeReason.DISBAND);
 			membershipChangeEvent.run();
 		}
 

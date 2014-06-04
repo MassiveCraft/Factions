@@ -9,21 +9,21 @@ import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.UConf;
 import com.massivecraft.factions.entity.UPlayer;
-import com.massivecraft.factions.event.FactionsEventAbstractSender;
-import com.massivecraft.factions.event.FactionsEventChunkChange;
-import com.massivecraft.factions.event.FactionsEventChunkChangeType;
-import com.massivecraft.factions.event.FactionsEventCreate;
-import com.massivecraft.factions.event.FactionsEventDescriptionChange;
-import com.massivecraft.factions.event.FactionsEventDisband;
-import com.massivecraft.factions.event.FactionsEventHomeChange;
-import com.massivecraft.factions.event.FactionsEventHomeTeleport;
-import com.massivecraft.factions.event.FactionsEventInvitedChange;
-import com.massivecraft.factions.event.FactionsEventMembershipChange;
-import com.massivecraft.factions.event.FactionsEventMembershipChange.MembershipChangeReason;
-import com.massivecraft.factions.event.FactionsEventOpenChange;
-import com.massivecraft.factions.event.FactionsEventRelationChange;
-import com.massivecraft.factions.event.FactionsEventNameChange;
-import com.massivecraft.factions.event.FactionsEventTitleChange;
+import com.massivecraft.factions.event.EventFactionsAbstractSender;
+import com.massivecraft.factions.event.EventFactionsChunkChange;
+import com.massivecraft.factions.event.EventFactionsChunkChangeType;
+import com.massivecraft.factions.event.EventFactionsCreate;
+import com.massivecraft.factions.event.EventFactionsDescriptionChange;
+import com.massivecraft.factions.event.EventFactionsDisband;
+import com.massivecraft.factions.event.EventFactionsHomeChange;
+import com.massivecraft.factions.event.EventFactionsHomeTeleport;
+import com.massivecraft.factions.event.EventFactionsInvitedChange;
+import com.massivecraft.factions.event.EventFactionsMembershipChange;
+import com.massivecraft.factions.event.EventFactionsMembershipChange.MembershipChangeReason;
+import com.massivecraft.factions.event.EventFactionsNameChange;
+import com.massivecraft.factions.event.EventFactionsOpenChange;
+import com.massivecraft.factions.event.EventFactionsRelationChange;
+import com.massivecraft.factions.event.EventFactionsTitleChange;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.massivecore.money.Money;
 
@@ -51,7 +51,7 @@ public class FactionsListenerEcon implements Listener
 	// -------------------------------------------- //
 	
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-	public void takeOnLeave(FactionsEventMembershipChange event)
+	public void takeOnLeave(EventFactionsMembershipChange event)
 	{
 		// If a player is leaving the faction ...
 		if (event.getReason() != MembershipChangeReason.LEAVE) return;
@@ -70,7 +70,7 @@ public class FactionsListenerEcon implements Listener
 	// -------------------------------------------- //
 	
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-	public void takeOnDisband(FactionsEventDisband event)
+	public void takeOnDisband(EventFactionsDisband event)
 	{
 		// If there is a usender ...
 		UPlayer usender = event.getUSender();
@@ -95,7 +95,7 @@ public class FactionsListenerEcon implements Listener
 	// PAY FOR ACTION
 	// -------------------------------------------- //
 	
-	public static void payForAction(FactionsEventAbstractSender event, Double cost, String desc)
+	public static void payForAction(EventFactionsAbstractSender event, Double cost, String desc)
 	{
 		// If there is a sender ...
 		UPlayer usender = event.getUSender();
@@ -113,11 +113,11 @@ public class FactionsListenerEcon implements Listener
 	}
 	
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
-	public void payForAction(FactionsEventChunkChange event)
+	public void payForAction(EventFactionsChunkChange event)
 	{
 		Faction newFaction = event.getNewFaction();
 		UConf uconf = UConf.get(newFaction);
-		FactionsEventChunkChangeType type = event.getType();
+		EventFactionsChunkChangeType type = event.getType();
 		Double cost = uconf.econChunkCost.get(type);
 		
 		String desc = type.toString().toLowerCase() + " this land";
@@ -126,7 +126,7 @@ public class FactionsListenerEcon implements Listener
 	}
 	
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
-	public void payForAction(FactionsEventMembershipChange event)
+	public void payForAction(EventFactionsMembershipChange event)
 	{
 		Double cost = null;		
 		String desc = null;
@@ -158,7 +158,7 @@ public class FactionsListenerEcon implements Listener
 	}
 	
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
-	public void payForCommand(FactionsEventRelationChange event)
+	public void payForCommand(EventFactionsRelationChange event)
 	{
 		Double cost = UConf.get(event.getSender()).econRelCost.get(event.getNewRelation());
 		String desc = Factions.get().getOuterCmdFactions().cmdFactionsRelationNeutral.getDesc();
@@ -167,7 +167,7 @@ public class FactionsListenerEcon implements Listener
 	}
 	
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
-	public void payForCommand(FactionsEventHomeChange event)
+	public void payForCommand(EventFactionsHomeChange event)
 	{
 		Double cost = UConf.get(event.getSender()).econCostSethome;
 		String desc = Factions.get().getOuterCmdFactions().cmdFactionsSethome.getDesc();
@@ -176,7 +176,7 @@ public class FactionsListenerEcon implements Listener
 	}
 	
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
-	public void payForCommand(FactionsEventCreate event)
+	public void payForCommand(EventFactionsCreate event)
 	{
 		Double cost = UConf.get(event.getSender()).econCostCreate;
 		String desc = Factions.get().getOuterCmdFactions().cmdFactionsCreate.getDesc();
@@ -185,7 +185,7 @@ public class FactionsListenerEcon implements Listener
 	}
 	
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
-	public void payForCommand(FactionsEventDescriptionChange event)
+	public void payForCommand(EventFactionsDescriptionChange event)
 	{
 		Double cost = UConf.get(event.getSender()).econCostDescription;
 		String desc = Factions.get().getOuterCmdFactions().cmdFactionsDescription.getDesc();
@@ -194,7 +194,7 @@ public class FactionsListenerEcon implements Listener
 	}
 	
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
-	public void payForCommand(FactionsEventNameChange event)
+	public void payForCommand(EventFactionsNameChange event)
 	{
 		Double cost = UConf.get(event.getSender()).econCostName;
 		String desc = Factions.get().getOuterCmdFactions().cmdFactionsName.getDesc();
@@ -203,7 +203,7 @@ public class FactionsListenerEcon implements Listener
 	}
 	
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
-	public void payForCommand(FactionsEventTitleChange event)
+	public void payForCommand(EventFactionsTitleChange event)
 	{
 		Double cost = UConf.get(event.getSender()).econCostTitle;
 		String desc = Factions.get().getOuterCmdFactions().cmdFactionsTitle.getDesc();
@@ -212,7 +212,7 @@ public class FactionsListenerEcon implements Listener
 	}
 	
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
-	public void payForCommand(FactionsEventOpenChange event)
+	public void payForCommand(EventFactionsOpenChange event)
 	{
 		Double cost = UConf.get(event.getSender()).econCostOpen;
 		String desc = Factions.get().getOuterCmdFactions().cmdFactionsOpen.getDesc();
@@ -221,7 +221,7 @@ public class FactionsListenerEcon implements Listener
 	}
 	
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
-	public void payForCommand(FactionsEventInvitedChange event)
+	public void payForCommand(EventFactionsInvitedChange event)
 	{
 		Double cost = event.isNewInvited() ? UConf.get(event.getSender()).econCostInvite : UConf.get(event.getSender()).econCostDeinvite;
 		String desc = Factions.get().getOuterCmdFactions().cmdFactionsInvite.getDesc();
@@ -230,7 +230,7 @@ public class FactionsListenerEcon implements Listener
 	}
 	
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
-	public void payForCommand(FactionsEventHomeTeleport event)
+	public void payForCommand(EventFactionsHomeTeleport event)
 	{
 		Double cost = UConf.get(event.getSender()).econCostHome;
 		String desc = Factions.get().getOuterCmdFactions().cmdFactionsHome.getDesc();

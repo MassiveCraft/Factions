@@ -11,8 +11,8 @@ import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.FactionColls;
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.entity.UConf;
-import com.massivecraft.factions.event.FactionsEventMembershipChange;
-import com.massivecraft.factions.event.FactionsEventMembershipChange.MembershipChangeReason;
+import com.massivecraft.factions.event.EventFactionsMembershipChange;
+import com.massivecraft.factions.event.EventFactionsMembershipChange.MembershipChangeReason;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 
 public class CmdFactionsKick extends FCommand
@@ -70,7 +70,7 @@ public class CmdFactionsKick extends FCommand
 		if (!FPerm.KICK.has(usender, uplayerFaction, true)) return;
 
 		// Event
-		FactionsEventMembershipChange event = new FactionsEventMembershipChange(sender, uplayer, FactionColls.get().get(uplayer).getNone(), MembershipChangeReason.KICK);
+		EventFactionsMembershipChange event = new EventFactionsMembershipChange(sender, uplayer, FactionColls.get().get(uplayer).getNone(), MembershipChangeReason.KICK);
 		event.run();
 		if (event.isCancelled()) return;
 

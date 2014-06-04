@@ -13,9 +13,9 @@ import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.FactionColl;
 import com.massivecraft.factions.entity.FactionColls;
 import com.massivecraft.factions.entity.MConf;
-import com.massivecraft.factions.event.FactionsEventCreate;
-import com.massivecraft.factions.event.FactionsEventMembershipChange;
-import com.massivecraft.factions.event.FactionsEventMembershipChange.MembershipChangeReason;
+import com.massivecraft.factions.event.EventFactionsCreate;
+import com.massivecraft.factions.event.EventFactionsMembershipChange;
+import com.massivecraft.factions.event.EventFactionsMembershipChange.MembershipChangeReason;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.store.MStore;
 
@@ -69,7 +69,7 @@ public class CmdFactionsCreate extends FCommand
 		String factionId = MStore.createId();
 		
 		// Event
-		FactionsEventCreate createEvent = new FactionsEventCreate(sender, coll.getUniverse(), factionId, newName);
+		EventFactionsCreate createEvent = new EventFactionsCreate(sender, coll.getUniverse(), factionId, newName);
 		createEvent.run();
 		if (createEvent.isCancelled()) return;
 		
@@ -80,7 +80,7 @@ public class CmdFactionsCreate extends FCommand
 		usender.setRole(Rel.LEADER);
 		usender.setFaction(faction);
 		
-		FactionsEventMembershipChange joinEvent = new FactionsEventMembershipChange(sender, usender, faction, MembershipChangeReason.CREATE);
+		EventFactionsMembershipChange joinEvent = new EventFactionsMembershipChange(sender, usender, faction, MembershipChangeReason.CREATE);
 		joinEvent.run();
 		// NOTE: join event cannot be cancelled or you'll have an empty faction
 		

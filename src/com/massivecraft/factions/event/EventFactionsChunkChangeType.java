@@ -1,6 +1,6 @@
 package com.massivecraft.factions.event;
 
-public enum FactionsEventChunkChangeType
+public enum EventFactionsChunkChangeType
 {
 	BUY,
 	SELL,

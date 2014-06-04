@@ -8,8 +8,8 @@ import com.massivecraft.factions.cmd.req.ReqFactionsEnabled;
 import com.massivecraft.factions.entity.UPlayer;
 import com.massivecraft.factions.entity.UPlayerColls;
 import com.massivecraft.factions.entity.Faction;
-import com.massivecraft.factions.event.FactionsEventMembershipChange;
-import com.massivecraft.factions.event.FactionsEventMembershipChange.MembershipChangeReason;
+import com.massivecraft.factions.event.EventFactionsMembershipChange;
+import com.massivecraft.factions.event.EventFactionsMembershipChange.MembershipChangeReason;
 import com.massivecraft.factions.util.RelationUtil;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.util.Txt;
@@ -78,7 +78,7 @@ public class CmdFactionsLeader extends FCommand
 		// only run event when newLeader isn't actually in the faction
 		if (newLeader.getFaction() != targetFaction)
 		{
-			FactionsEventMembershipChange event = new FactionsEventMembershipChange(sender, newLeader, targetFaction, MembershipChangeReason.LEADER);
+			EventFactionsMembershipChange event = new EventFactionsMembershipChange(sender, newLeader, targetFaction, MembershipChangeReason.LEADER);
 			event.run();
 			if (event.isCancelled()) return;
 		}

@@ -9,8 +9,8 @@ import com.massivecraft.factions.entity.UPlayer;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.entity.UConf;
-import com.massivecraft.factions.event.FactionsEventMembershipChange;
-import com.massivecraft.factions.event.FactionsEventMembershipChange.MembershipChangeReason;
+import com.massivecraft.factions.event.EventFactionsMembershipChange;
+import com.massivecraft.factions.event.EventFactionsMembershipChange.MembershipChangeReason;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.util.Txt;
 
@@ -93,7 +93,7 @@ public class CmdFactionsJoin extends FCommand
 		}
 
 		// Event
-		FactionsEventMembershipChange membershipChangeEvent = new FactionsEventMembershipChange(sender, usender, faction, MembershipChangeReason.JOIN);
+		EventFactionsMembershipChange membershipChangeEvent = new EventFactionsMembershipChange(sender, usender, faction, MembershipChangeReason.JOIN);
 		membershipChangeEvent.run();
 		if (membershipChangeEvent.isCancelled()) return;
 		

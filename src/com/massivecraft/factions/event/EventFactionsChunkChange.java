@@ -8,7 +8,7 @@ import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.UPlayer;
 import com.massivecraft.massivecore.ps.PS;
 
-public class FactionsEventChunkChange extends FactionsEventAbstractSender
+public class EventFactionsChunkChange extends EventFactionsAbstractSender
 {	
 	// -------------------------------------------- //
 	// REQUIRED EVENT CODE
@@ -33,7 +33,7 @@ public class FactionsEventChunkChange extends FactionsEventAbstractSender
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public FactionsEventChunkChange(CommandSender sender, PS chunk, Faction newFaction)
+	public EventFactionsChunkChange(CommandSender sender, PS chunk, Faction newFaction)
 	{
 		super(sender);
 		this.chunk = chunk.getChunk(true);
@@ -45,15 +45,15 @@ public class FactionsEventChunkChange extends FactionsEventAbstractSender
 	// UTIL
 	// -------------------------------------------- //
 	
-	public FactionsEventChunkChangeType getType()
+	public EventFactionsChunkChangeType getType()
 	{
-		if (currentFaction.isNone()) return FactionsEventChunkChangeType.BUY;
-		if (newFaction.isNormal()) return FactionsEventChunkChangeType.CONQUER;
+		if (currentFaction.isNone()) return EventFactionsChunkChangeType.BUY;
+		if (newFaction.isNormal()) return EventFactionsChunkChangeType.CONQUER;
 		
 		UPlayer usender = this.getUSender();
-		if (usender != null && usender.getFaction() == currentFaction) return FactionsEventChunkChangeType.SELL;
+		if (usender != null && usender.getFaction() == currentFaction) return EventFactionsChunkChangeType.SELL;
 		
-		return FactionsEventChunkChangeType.PILLAGE;
+		return EventFactionsChunkChangeType.PILLAGE;
 	}
 	
 }

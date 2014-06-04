@@ -13,9 +13,9 @@ import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Lang;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.RelationParticipator;
-import com.massivecraft.factions.event.FactionsEventChunkChange;
-import com.massivecraft.factions.event.FactionsEventMembershipChange;
-import com.massivecraft.factions.event.FactionsEventMembershipChange.MembershipChangeReason;
+import com.massivecraft.factions.event.EventFactionsChunkChange;
+import com.massivecraft.factions.event.EventFactionsMembershipChange;
+import com.massivecraft.factions.event.EventFactionsMembershipChange.MembershipChangeReason;
 import com.massivecraft.factions.util.RelationUtil;
 import com.massivecraft.massivecore.mixin.Mixin;
 import com.massivecraft.massivecore.ps.PS;
@@ -620,7 +620,7 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 		}
 
 		// Event
-		FactionsEventMembershipChange membershipChangeEvent = new FactionsEventMembershipChange(this.getSender(), this, myFaction, MembershipChangeReason.LEAVE);
+		EventFactionsMembershipChange membershipChangeEvent = new EventFactionsMembershipChange(this.getSender(), this, myFaction, MembershipChangeReason.LEAVE);
 		membershipChangeEvent.run();
 		if (membershipChangeEvent.isCancelled()) return;
 		
@@ -760,7 +760,7 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 		}
 		
 		// Event
-		FactionsEventChunkChange event = new FactionsEventChunkChange(sender, chunk, newFaction);
+		EventFactionsChunkChange event = new EventFactionsChunkChange(sender, chunk, newFaction);
 		event.run();
 		if (event.isCancelled()) return false;
 

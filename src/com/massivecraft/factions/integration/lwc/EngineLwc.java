@@ -19,8 +19,8 @@ import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.UConf;
 import com.massivecraft.factions.entity.UPlayer;
-import com.massivecraft.factions.event.FactionsEventChunkChange;
-import com.massivecraft.factions.event.FactionsEventChunkChangeType;
+import com.massivecraft.factions.event.EventFactionsChunkChange;
+import com.massivecraft.factions.event.EventFactionsChunkChangeType;
 import com.massivecraft.massivecore.ps.PS;
 
 
@@ -53,12 +53,12 @@ public class EngineLwc implements Listener
 	// -------------------------------------------- //
 	
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-	public void removeProtectionsOnChunkChange(FactionsEventChunkChange event)
+	public void removeProtectionsOnChunkChange(EventFactionsChunkChange event)
 	{
 		// If we are supposed to clear at this chunk change type ...
 		Faction newFaction = event.getNewFaction();
 		UConf uconf = UConf.get(newFaction);
-		FactionsEventChunkChangeType type = event.getType();
+		EventFactionsChunkChangeType type = event.getType();
 		Boolean remove = uconf.lwcRemoveOnChange.get(type);
 		if (remove == null) return;
 		if (remove == false) return;

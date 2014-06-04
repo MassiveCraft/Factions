@@ -5,7 +5,7 @@ import org.bukkit.event.HandlerList;
 
 import com.massivecraft.factions.entity.UPlayer;
 
-public class FactionsEventPowerChange extends FactionsEventAbstractSender
+public class EventFactionsPowerChange extends EventFactionsAbstractSender
 {
 	// -------------------------------------------- //
 	// REQUIRED EVENT CODE
@@ -33,7 +33,7 @@ public class FactionsEventPowerChange extends FactionsEventAbstractSender
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public FactionsEventPowerChange(CommandSender sender, UPlayer uplayer, PowerChangeReason reason, double newPower)
+	public EventFactionsPowerChange(CommandSender sender, UPlayer uplayer, PowerChangeReason reason, double newPower)
 	{
 		super(sender);
 		this.uplayer = uplayer;

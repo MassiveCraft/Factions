@@ -14,7 +14,7 @@ import com.massivecraft.factions.entity.BoardColls;
 import com.massivecraft.factions.entity.UConf;
 import com.massivecraft.factions.entity.UPlayer;
 import com.massivecraft.factions.entity.Faction;
-import com.massivecraft.factions.event.FactionsEventHomeTeleport;
+import com.massivecraft.factions.event.EventFactionsHomeTeleport;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.cmd.req.ReqIsPlayer;
 import com.massivecraft.massivecore.mixin.Mixin;
@@ -133,7 +133,7 @@ public class CmdFactionsHome extends FCommand
 		}
 
 		// Event
-		FactionsEventHomeTeleport event = new FactionsEventHomeTeleport(sender);
+		EventFactionsHomeTeleport event = new EventFactionsHomeTeleport(sender);
 		event.run();
 		if (event.isCancelled()) return;
 		

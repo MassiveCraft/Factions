@@ -3,7 +3,7 @@ package com.massivecraft.factions.event;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.HandlerList;
 
-public class FactionsEventHomeTeleport extends FactionsEventAbstractSender
+public class EventFactionsHomeTeleport extends EventFactionsAbstractSender
 {	
 	// -------------------------------------------- //
 	// REQUIRED EVENT CODE
@@ -17,7 +17,7 @@ public class FactionsEventHomeTeleport extends FactionsEventAbstractSender
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public FactionsEventHomeTeleport(CommandSender sender)
+	public EventFactionsHomeTeleport(CommandSender sender)
 	{
 		super(sender);
 	}

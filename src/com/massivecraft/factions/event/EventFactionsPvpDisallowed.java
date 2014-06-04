@@ -13,7 +13,7 @@ import com.massivecraft.factions.entity.UPlayer;
  * Note that the defender field always is set but the attacker can be null.
  * Some other plugins seem to fire EntityDamageByEntityEvent without an attacker.
  */
-public class FactionsEventPvpDisallowed extends FactionsEventAbstract
+public class EventFactionsPvpDisallowed extends EventFactionsAbstract
 {
 	// -------------------------------------------- //
 	// REQUIRED EVENT CODE
@@ -42,7 +42,7 @@ public class FactionsEventPvpDisallowed extends FactionsEventAbstract
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public FactionsEventPvpDisallowed(Player attacker, Player defender, EntityDamageByEntityEvent event)
+	public EventFactionsPvpDisallowed(Player attacker, Player defender, EntityDamageByEntityEvent event)
 	{
 		this.attacker = attacker;
 		this.defender = defender;

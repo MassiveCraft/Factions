@@ -6,7 +6,7 @@ import org.bukkit.event.HandlerList;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.massivecore.ps.PS;
 
-public class FactionsEventHomeChange extends FactionsEventAbstractSender
+public class EventFactionsHomeChange extends EventFactionsAbstractSender
 {	
 	// -------------------------------------------- //
 	// REQUIRED EVENT CODE
@@ -31,7 +31,7 @@ public class FactionsEventHomeChange extends FactionsEventAbstractSender
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public FactionsEventHomeChange(CommandSender sender, Faction faction, PS newHome)
+	public EventFactionsHomeChange(CommandSender sender, Faction faction, PS newHome)
 	{
 		super(sender);
 		this.faction = faction;

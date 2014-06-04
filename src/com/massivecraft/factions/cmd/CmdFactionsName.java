@@ -11,7 +11,7 @@ import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.FactionColl;
 import com.massivecraft.factions.entity.FactionColls;
 import com.massivecraft.factions.entity.UConf;
-import com.massivecraft.factions.event.FactionsEventNameChange;
+import com.massivecraft.factions.event.EventFactionsNameChange;
 import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 
@@ -64,7 +64,7 @@ public class CmdFactionsName extends FCommand
 		}
 
 		// Event
-		FactionsEventNameChange event = new FactionsEventNameChange(sender, usenderFaction, newName);
+		EventFactionsNameChange event = new EventFactionsNameChange(sender, usenderFaction, newName);
 		event.run();
 		if (event.isCancelled()) return;
 		newName = event.getNewName();
