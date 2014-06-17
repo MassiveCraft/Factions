@@ -254,7 +254,6 @@ public class FactionsEntityListener implements Listener {
     public boolean canDamagerHurtDamagee(EntityDamageByEntityEvent sub, boolean notify) {
         Entity damager = sub.getDamager();
         Entity damagee = sub.getEntity();
-        ProjectileSource shooter = null;
         double damage = sub.getDamage();
 
         if (!(damagee instanceof Player))
@@ -270,10 +269,10 @@ public class FactionsEntityListener implements Listener {
 
         // for damage caused by projectiles, getDamager() returns the projectile... what we need to know is the source
         if (damager instanceof Projectile) {
-            shooter = ((Projectile) damager).getShooter();
+            damager = (Entity) ((Projectile) damager).getShooter();
         }
 
-        if (shooter != null && shooter == damagee)  // ender pearl usage and other self-inflicted damage
+        if (damager == damagee)  // ender pearl usage and other self-inflicted damage
             return true;
 
         // Players can not take attack damage in a SafeZone, or possibly peaceful territory
