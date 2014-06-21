@@ -260,7 +260,7 @@ public class UPlayer extends SenderEntity<UPlayer> implements EconomyParticipato
 			factionNameDesc = faction.getName();
 		}
 		
-		Factions.get().log(Txt.parse("<i>setFactionId moved <h>%s <i>aka <h>%s <i>from <h>%s <i>aka <h>%s <i>to <h>%s <i>aka <h>%s<i>.", this.getId(), Mixin.getDisplayName(this.getId()), oldFactionIdDesc, oldFactionNameDesc, factionIdDesc, factionNameDesc));
+		Factions.get().log(Txt.parse("<i>setFactionId moved <h>%s <i>aka <h>%s <i>from <h>%s <i>aka <h>%s <i>to <h>%s <i>aka <h>%s<i>.", this.getId(), this.getDisplayName(IdUtil.getConsole()), oldFactionIdDesc, oldFactionNameDesc, factionIdDesc, factionNameDesc));
 		
 		// Mark as changed
 		this.changed();

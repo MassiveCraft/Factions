@@ -14,6 +14,7 @@ import com.massivecraft.factions.entity.UConf;
 import com.massivecraft.factions.event.EventFactionsMembershipChange;
 import com.massivecraft.factions.event.EventFactionsMembershipChange.MembershipChangeReason;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
+import com.massivecraft.massivecore.util.IdUtil;
 
 public class CmdFactionsKick extends FCommand
 {
@@ -84,7 +85,7 @@ public class CmdFactionsKick extends FCommand
 
 		if (MConf.get().logFactionKick)
 		{
-			Factions.get().log(usender.getDisplayName() + " kicked " + uplayer.getName() + " from the faction " + uplayerFaction.getName());
+			Factions.get().log(usender.getDisplayName(IdUtil.getConsole()) + " kicked " + uplayer.getName() + " from the faction " + uplayerFaction.getName());
 		}
 
 		// Apply

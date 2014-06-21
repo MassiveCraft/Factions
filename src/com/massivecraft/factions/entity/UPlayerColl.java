@@ -5,6 +5,7 @@ import com.massivecraft.factions.Rel;
 import com.massivecraft.massivecore.mixin.Mixin;
 import com.massivecraft.massivecore.store.MStore;
 import com.massivecraft.massivecore.store.SenderColl;
+import com.massivecraft.massivecore.util.IdUtil;
 import com.massivecraft.massivecore.util.TimeUnit;
 import com.massivecraft.massivecore.util.Txt;
 
@@ -34,7 +35,7 @@ public class UPlayerColl extends SenderColl<UPlayer>
 			
 			uplayer.resetFactionData();
 			
-			String message = Txt.parse("<i>Reset data for <h>%s <i>in <h>%s <i>universe. Unknown factionId <h>%s", uplayer.getDisplayName(), universe, factionId);
+			String message = Txt.parse("<i>Reset data for <h>%s <i>in <h>%s <i>universe. Unknown factionId <h>%s", uplayer.getDisplayName(IdUtil.getConsole()), universe, factionId);
 			Factions.get().log(message);
 		}
 	}
