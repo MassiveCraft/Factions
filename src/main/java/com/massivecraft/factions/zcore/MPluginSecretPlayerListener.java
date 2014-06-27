@@ -1,10 +1,13 @@
 package com.massivecraft.factions.zcore;
 
+import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.P;
 import com.massivecraft.factions.zcore.persist.EM;
 import com.massivecraft.factions.zcore.persist.Entity;
 import com.massivecraft.factions.zcore.persist.EntityCollection;
 import com.massivecraft.factions.zcore.persist.PlayerEntityCollection;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -19,10 +22,8 @@ public class MPluginSecretPlayerListener implements Listener {
         this.p = p;
     }
 
-    @EventHandler(priority = EventPriority.LOW)
+    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
-        if (event.isCancelled()) return;
-
         if (p.handleCommand(event.getPlayer(), event.getMessage())) {
             if (p.logPlayerCommands())
                 Bukkit.getLogger().info("[PLAYER_COMMAND] " + event.getPlayer().getName() + ": " + event.getMessage());
@@ -30,15 +31,18 @@ public class MPluginSecretPlayerListener implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.LOW)
+    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onPlayerChat(AsyncPlayerChatEvent event) {
-        if (event.isCancelled()) return;
-
         if (p.handleCommand(event.getPlayer(), event.getMessage(), false, true)) {
             if (p.logPlayerCommands())
                 Bukkit.getLogger().info("[PLAYER_COMMAND] " + event.getPlayer().getName() + ": " + event.getMessage());
             event.setCancelled(true);
         }
+
+        Player speaker = event.getPlayer();
+        String format = event.getFormat();
+        format = format.replace(Conf.chatTagReplaceString, P.p.getPlayerFactionTag(speaker)).replace("[FACTION_TITLE]", P.p.getPlayerTitle(speaker));
+        event.setFormat(format);
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
