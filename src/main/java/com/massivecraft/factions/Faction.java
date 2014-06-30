@@ -10,8 +10,10 @@ import com.massivecraft.factions.util.LazyLocation;
 import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.factions.util.RelationUtil;
 import com.massivecraft.factions.zcore.persist.Entity;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import java.util.*;
@@ -642,7 +644,8 @@ public class Faction extends Entity implements EconomyParticipator {
             if (!ownerList.isEmpty()) {
                 ownerList += ", ";
             }
-            ownerList += iter.next();
+            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(iter.next()));
+            ownerList += offlinePlayer != null ? offlinePlayer.getName() : "null player";
         }
         return ownerList;
     }
