@@ -16,9 +16,7 @@ public class FactionCreateEvent extends Event implements Cancellable {
     private boolean cancelled;
 
     public FactionCreateEvent(Player sender, String tag) {
-        this.factionTag = tag;
-        this.sender = sender;
-        this.cancelled = false;
+        this.factionTag = tag; this.sender = sender; this.cancelled = false;
     }
 
     public FPlayer getFPlayer() {

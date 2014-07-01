@@ -9,8 +9,7 @@ public enum ChatMode {
     public final String nicename;
 
     private ChatMode(final int value, final String nicename) {
-        this.value = value;
-        this.nicename = nicename;
+        this.value = value; this.nicename = nicename;
     }
 
     public boolean isAtLeast(ChatMode role) {
@@ -27,8 +26,6 @@ public enum ChatMode {
     }
 
     public ChatMode getNext() {
-        if (this == PUBLIC) { return ALLIANCE; }
-        if (this == ALLIANCE) { return FACTION; }
-        return PUBLIC;
+        if (this == PUBLIC) { return ALLIANCE; } if (this == ALLIANCE) { return FACTION; } return PUBLIC;
     }
 }

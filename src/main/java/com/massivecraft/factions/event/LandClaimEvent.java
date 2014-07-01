@@ -17,10 +17,7 @@ public class LandClaimEvent extends Event implements Cancellable {
     private FPlayer fplayer;
 
     public LandClaimEvent(FLocation loc, Faction f, FPlayer p) {
-        cancelled = false;
-        location = loc;
-        faction = f;
-        fplayer = p;
+        cancelled = false; location = loc; faction = f; fplayer = p;
     }
 
     public HandlerList getHandlers() {

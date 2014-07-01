@@ -27,18 +27,14 @@ public class FactionsChatListener implements Listener {
     public void onPlayerEarlyChat(PlayerChatEvent event) {
         if (event.isCancelled()) { return; }
 
-        Player talkingPlayer = event.getPlayer();
-        String msg = event.getMessage();
-        FPlayer me = FPlayers.i.get(talkingPlayer);
-        ChatMode chat = me.getChatMode();
+        Player talkingPlayer = event.getPlayer(); String msg = event.getMessage();
+        FPlayer me = FPlayers.i.get(talkingPlayer); ChatMode chat = me.getChatMode();
 
         // slashless factions commands need to be handled here if the user isn't in public chat mode
         if (chat != ChatMode.PUBLIC && p.handleCommand(talkingPlayer, msg, false, true)) {
             if (Conf.logPlayerCommands) {
                 Bukkit.getLogger().log(Level.INFO, "[PLAYER_COMMAND] " + talkingPlayer.getName() + ": " + msg);
-            }
-            event.setCancelled(true);
-            return;
+            } event.setCancelled(true); return;
         }
 
         // Is it a faction chat message?
@@ -57,10 +53,8 @@ public class FactionsChatListener implements Listener {
                 }
             }
 
-            event.setCancelled(true);
-            return;
-        }
-        else if (chat == ChatMode.ALLIANCE) {
+            event.setCancelled(true); return;
+        } else if (chat == ChatMode.ALLIANCE) {
             Faction myFaction = me.getFaction();
 
             String message = String.format(Conf.allianceChatFormat, ChatColor.stripColor(me.getNameAndTag()), msg);
@@ -78,8 +72,7 @@ public class FactionsChatListener implements Listener {
 
             Bukkit.getLogger().log(Level.INFO, ChatColor.stripColor("AllianceChat: " + message));
 
-            event.setCancelled(true);
-            return;
+            event.setCancelled(true); return;
         }
     }
 
@@ -92,35 +85,26 @@ public class FactionsChatListener implements Listener {
         // If we are not to insert it - we are done.
         if (!Conf.chatTagEnabled || Conf.chatTagHandledByAnotherPlugin) { return; }
 
-        Player talkingPlayer = event.getPlayer();
-        String msg = event.getMessage();
-        String eventFormat = event.getFormat();
-        FPlayer me = FPlayers.i.get(talkingPlayer);
-        int InsertIndex;
+        Player talkingPlayer = event.getPlayer(); String msg = event.getMessage();
+        String eventFormat = event.getFormat(); FPlayer me = FPlayers.i.get(talkingPlayer); int InsertIndex;
 
         if (!Conf.chatTagReplaceString.isEmpty() && eventFormat.contains(Conf.chatTagReplaceString)) {
             // we're using the "replace" method of inserting the faction tags
             // if they stuck "[FACTION_TITLE]" in there, go ahead and do it too
             if (eventFormat.contains("[FACTION_TITLE]")) {
                 eventFormat = eventFormat.replace("[FACTION_TITLE]", me.getTitle());
-            }
-            InsertIndex = eventFormat.indexOf(Conf.chatTagReplaceString);
-            eventFormat = eventFormat.replace(Conf.chatTagReplaceString, "");
-            Conf.chatTagPadAfter = false;
+            } InsertIndex = eventFormat.indexOf(Conf.chatTagReplaceString);
+            eventFormat = eventFormat.replace(Conf.chatTagReplaceString, ""); Conf.chatTagPadAfter = false;
             Conf.chatTagPadBefore = false;
-        }
-        else if (!Conf.chatTagInsertAfterString.isEmpty() && eventFormat.contains(Conf.chatTagInsertAfterString)) {
+        } else if (!Conf.chatTagInsertAfterString.isEmpty() && eventFormat.contains(Conf.chatTagInsertAfterString)) {
             // we're using the "insert after string" method
             InsertIndex = eventFormat.indexOf(Conf.chatTagInsertAfterString) + Conf.chatTagInsertAfterString.length();
-        }
-        else if (!Conf.chatTagInsertBeforeString.isEmpty() && eventFormat.contains(Conf.chatTagInsertBeforeString)) {
+        } else if (!Conf.chatTagInsertBeforeString.isEmpty() && eventFormat.contains(Conf.chatTagInsertBeforeString)) {
             // we're using the "insert before string" method
             InsertIndex = eventFormat.indexOf(Conf.chatTagInsertBeforeString);
-        }
-        else {
+        } else {
             // we'll fall back to using the index place method
-            InsertIndex = Conf.chatTagInsertIndex;
-            if (InsertIndex > eventFormat.length()) { return; }
+            InsertIndex = Conf.chatTagInsertIndex; if (InsertIndex > eventFormat.length()) { return; }
         }
 
         String formatStart = eventFormat.substring(0, InsertIndex) + ((Conf.chatTagPadBefore && !me.getChatTag().isEmpty()) ? " " : "");
@@ -136,12 +120,10 @@ public class FactionsChatListener implements Listener {
 
             for (Player listeningPlayer : event.getRecipients()) {
                 FPlayer you = FPlayers.i.get(listeningPlayer);
-                String yourFormat = formatStart + me.getChatTag(you).trim() + formatEnd;
-                try {
+                String yourFormat = formatStart + me.getChatTag(you).trim() + formatEnd; try {
                     listeningPlayer.sendMessage(String.format(yourFormat, talkingPlayer.getDisplayName(), msg));
                 } catch (UnknownFormatConversionException ex) {
-                    Conf.chatTagInsertIndex = 0;
-                    P.p.log(Level.SEVERE, "Critical error in chat message formatting!");
+                    Conf.chatTagInsertIndex = 0; P.p.log(Level.SEVERE, "Critical error in chat message formatting!");
                     P.p.log(Level.SEVERE, "NOTE: This has been automatically fixed right now by setting chatTagInsertIndex to 0.");
                     P.p.log(Level.SEVERE, "For a more proper fix, please read this regarding chat configuration: http://massivecraft.com/plugins/factions/config#Chat_configuration");
                     return;
@@ -151,8 +133,7 @@ public class FactionsChatListener implements Listener {
             // Write to the log... We will write the non colored message.
             String nonColoredMsg = ChatColor.stripColor(String.format(nonColoredMsgFormat, talkingPlayer.getDisplayName(), msg));
             Bukkit.getLogger().log(Level.INFO, nonColoredMsg);
-        }
-        else {
+        } else {
             // No relation color.
             event.setFormat(nonColoredMsgFormat);
         }

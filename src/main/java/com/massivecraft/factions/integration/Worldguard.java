@@ -33,14 +33,9 @@ public class Worldguard {
     public static void init(Plugin plugin) {
         Plugin wgplug = plugin.getServer().getPluginManager().getPlugin("WorldGuard");
         if (wgplug == null || !(wgplug instanceof WorldGuardPlugin)) {
-            enabled = false;
-            wg = null;
-            P.p.log("Could not hook to WorldGuard. WorldGuard checks are disabled.");
-        }
-        else {
-            wg = (WorldGuardPlugin) wgplug;
-            enabled = true;
-            P.p.log("Successfully hooked to WorldGuard.");
+            enabled = false; wg = null; P.p.log("Could not hook to WorldGuard. WorldGuard checks are disabled.");
+        } else {
+            wg = (WorldGuardPlugin) wgplug; enabled = true; P.p.log("Successfully hooked to WorldGuard.");
         }
     }
 
@@ -58,13 +53,10 @@ public class Worldguard {
             return true;
         }
 
-        Location loc = player.getLocation();
-        World world = loc.getWorld();
-        Vector pt = toVector(loc);
+        Location loc = player.getLocation(); World world = loc.getWorld(); Vector pt = toVector(loc);
 
         RegionManager regionManager = wg.getRegionManager(world);
-        ApplicableRegionSet set = regionManager.getApplicableRegions(pt);
-        return set.allows(DefaultFlag.PVP);
+        ApplicableRegionSet set = regionManager.getApplicableRegions(pt); return set.allows(DefaultFlag.PVP);
     }
 
     // Check if player can build at location by worldguards rules.
@@ -77,8 +69,7 @@ public class Worldguard {
             return false;
         }
 
-        World world = loc.getWorld();
-        Vector pt = toVector(loc);
+        World world = loc.getWorld(); Vector pt = toVector(loc);
 
         if (wg.getRegionManager(world).getApplicableRegions(pt).size() > 0) { return wg.canBuild(player, loc); }
         return false;
@@ -94,12 +85,8 @@ public class Worldguard {
             return false;
         }
 
-        World world = loc.getWorld();
-        Chunk chunk = world.getChunkAt(loc);
-        int minChunkX = chunk.getX() << 4;
-        int minChunkZ = chunk.getZ() << 4;
-        int maxChunkX = minChunkX + 15;
-        int maxChunkZ = minChunkZ + 15;
+        World world = loc.getWorld(); Chunk chunk = world.getChunkAt(loc); int minChunkX = chunk.getX() << 4;
+        int minChunkZ = chunk.getZ() << 4; int maxChunkX = minChunkX + 15; int maxChunkZ = minChunkZ + 15;
 
         int worldHeight = world.getMaxHeight(); // Allow for heights other than default
 
@@ -110,15 +97,12 @@ public class Worldguard {
         ProtectedCuboidRegion region = new ProtectedCuboidRegion("wgfactionoverlapcheck", minChunk, maxChunk);
         Map<String, ProtectedRegion> allregions = regionManager.getRegions();
         List<ProtectedRegion> allregionslist = new ArrayList<ProtectedRegion>(allregions.values());
-        List<ProtectedRegion> overlaps;
-        boolean foundregions = false;
+        List<ProtectedRegion> overlaps; boolean foundregions = false;
 
         try {
-            overlaps = region.getIntersectingRegions(allregionslist);
-            if (overlaps == null || overlaps.isEmpty()) {
+            overlaps = region.getIntersectingRegions(allregionslist); if (overlaps == null || overlaps.isEmpty()) {
                 foundregions = false;
-            }
-            else {
+            } else {
                 foundregions = true;
             }
         } catch (Exception e) {

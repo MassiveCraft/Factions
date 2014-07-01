@@ -8,20 +8,14 @@ import com.massivecraft.factions.zcore.util.TextUtil;
 
 public class CmdDescription extends FCommand {
     public CmdDescription() {
-        super();
-        this.aliases.add("desc");
+        super(); this.aliases.add("desc");
 
-        this.requiredArgs.add("desc");
-        this.errorOnToManyArgs = false;
+        this.requiredArgs.add("desc"); this.errorOnToManyArgs = false;
         //this.optionalArgs
 
-        this.permission = Permission.DESCRIPTION.node;
-        this.disableOnLock = true;
+        this.permission = Permission.DESCRIPTION.node; this.disableOnLock = true;
 
-        senderMustBePlayer = true;
-        senderMustBeMember = false;
-        senderMustBeModerator = true;
-        senderMustBeAdmin = false;
+        senderMustBePlayer = true; senderMustBeMember = false; senderMustBeModerator = true; senderMustBeAdmin = false;
     }
 
     @Override
@@ -35,8 +29,7 @@ public class CmdDescription extends FCommand {
 
         if (!Conf.broadcastDescriptionChanges) {
             fme.msg("You have changed the description for <h>%s<i> to:", myFaction.describeTo(fme));
-            fme.sendMessage(myFaction.getDescription());
-            return;
+            fme.sendMessage(myFaction.getDescription()); return;
         }
 
         // Broadcast the description to everyone

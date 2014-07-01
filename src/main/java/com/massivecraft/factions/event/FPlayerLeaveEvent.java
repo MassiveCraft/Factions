@@ -18,9 +18,7 @@ public class FPlayerLeaveEvent extends Event implements Cancellable {
     }
 
     public FPlayerLeaveEvent(FPlayer p, Faction f, PlayerLeaveReason r) {
-        FPlayer = p;
-        Faction = f;
-        reason = r;
+        FPlayer = p; Faction = f; reason = r;
     }
 
     public HandlerList getHandlers() {
@@ -51,9 +49,7 @@ public class FPlayerLeaveEvent extends Event implements Cancellable {
     @Override
     public void setCancelled(boolean c) {
         if (reason == PlayerLeaveReason.DISBAND || reason == PlayerLeaveReason.RESET) {
-            cancelled = false;
-            return;
-        }
-        cancelled = c;
+            cancelled = false; return;
+        } cancelled = c;
     }
 }

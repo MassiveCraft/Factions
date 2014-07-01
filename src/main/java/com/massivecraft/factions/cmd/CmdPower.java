@@ -7,26 +7,20 @@ import com.massivecraft.factions.struct.Permission;
 public class CmdPower extends FCommand {
 
     public CmdPower() {
-        super();
-        this.aliases.add("power");
-        this.aliases.add("pow");
+        super(); this.aliases.add("power"); this.aliases.add("pow");
 
         //this.requiredArgs.add("faction tag");
         this.optionalArgs.put("player name", "you");
 
-        this.permission = Permission.POWER.node;
-        this.disableOnLock = false;
+        this.permission = Permission.POWER.node; this.disableOnLock = false;
 
-        senderMustBePlayer = false;
-        senderMustBeMember = false;
-        senderMustBeModerator = false;
+        senderMustBePlayer = false; senderMustBeMember = false; senderMustBeModerator = false;
         senderMustBeAdmin = false;
     }
 
     @Override
     public void perform() {
-        FPlayer target = this.argAsBestFPlayerMatch(0, fme);
-        if (target == null) { return; }
+        FPlayer target = this.argAsBestFPlayerMatch(0, fme); if (target == null) { return; }
 
         if (target != fme && !Permission.POWER_ANY.has(sender, true)) { return; }
 

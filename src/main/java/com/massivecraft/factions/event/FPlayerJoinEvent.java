@@ -19,9 +19,7 @@ public class FPlayerJoinEvent extends Event implements Cancellable {
     }
 
     public FPlayerJoinEvent(FPlayer fp, Faction f, PlayerJoinReason r) {
-        fplayer = fp;
-        faction = f;
-        reason = r;
+        fplayer = fp; faction = f; reason = r;
     }
 
     public FPlayer getFPlayer() {

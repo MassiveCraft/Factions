@@ -63,12 +63,10 @@ public abstract class MPlugin extends JavaPlugin {
     private long timeEnableStart;
 
     public boolean preEnable() {
-        log("=== ENABLE START ===");
-        timeEnableStart = System.currentTimeMillis();
+        log("=== ENABLE START ==="); timeEnableStart = System.currentTimeMillis();
 
         try {
-            Metrics metrics = new Metrics(this);
-            metrics.start();
+            Metrics metrics = new Metrics(this); metrics.start();
         } catch (IOException e) {
             // Failed to submit the stats :-(
         }
@@ -76,15 +74,13 @@ public abstract class MPlugin extends JavaPlugin {
         this.getDataFolder().mkdirs();
 
         // Create Utility Instances
-        this.perm = new PermUtil(this);
-        this.persist = new Persist(this);
+        this.perm = new PermUtil(this); this.persist = new Persist(this);
 
         // GSON 2.1 is now embedded in CraftBukkit, used by the auto-updater: https://github.com/Bukkit/CraftBukkit/commit/0ed1d1fdbb1e0bc09a70bc7bfdf40c1de8411665
 //		if ( ! lib.require("gson.jar", "http://search.maven.org/remotecontent?filepath=com/google/code/gson/gson/2.1/gson-2.1.jar")) return false;
         this.gson = this.getGsonBuilder().create();
 
-        this.txt = new TextUtil();
-        initTXT();
+        this.txt = new TextUtil(); initTXT();
 
         // attempt to get first command defined in plugin.yml as reference command, if any commands are defined in there
         // reference command will be used to prevent "unknown command" console messages
@@ -110,8 +106,7 @@ public abstract class MPlugin extends JavaPlugin {
 
         loadLang();
 
-        loadSuccessful = true;
-        return true;
+        loadSuccessful = true; return true;
     }
 
     public void postEnable() {
@@ -119,24 +114,16 @@ public abstract class MPlugin extends JavaPlugin {
     }
 
     private void loadLang() {
-        File lang = new File(getDataFolder(), "lang.yml");
-        OutputStream out = null;
-        InputStream defLangStream = this.getResource("lang.yml");
-        if (!lang.exists()) {
+        File lang = new File(getDataFolder(), "lang.yml"); OutputStream out = null;
+        InputStream defLangStream = this.getResource("lang.yml"); if (!lang.exists()) {
             try {
-                getDataFolder().mkdir();
-                lang.createNewFile();
-                if (defLangStream != null) {
-                    out = new FileOutputStream(lang);
-                    int read;
-                    byte[] bytes = new byte[1024];
+                getDataFolder().mkdir(); lang.createNewFile(); if (defLangStream != null) {
+                    out = new FileOutputStream(lang); int read; byte[] bytes = new byte[1024];
 
                     while ((read = defLangStream.read(bytes)) != -1) {
                         out.write(bytes, 0, read);
-                    }
-                    YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defLangStream);
-                    TL.setFile(defConfig);
-                    return;
+                    } YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defLangStream);
+                    TL.setFile(defConfig); return;
                 }
             } catch (IOException e) {
                 e.printStackTrace(); // So they notice
@@ -150,8 +137,7 @@ public abstract class MPlugin extends JavaPlugin {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                }
-                if (out != null) {
+                } if (out != null) {
                     try {
                         out.close();
                     } catch (IOException e) {
@@ -162,36 +148,30 @@ public abstract class MPlugin extends JavaPlugin {
             }
         }
 
-        YamlConfiguration conf = YamlConfiguration.loadConfiguration(lang);
-        for (TL item : TL.values()) {
+        YamlConfiguration conf = YamlConfiguration.loadConfiguration(lang); for (TL item : TL.values()) {
             if (conf.getString(item.getPath()) == null) {
                 conf.set(item.getPath(), item.getDefault());
             }
         }
 
-        TL.setFile(conf);
-        try {
+        TL.setFile(conf); try {
             conf.save(lang);
         } catch (IOException e) {
             getLogger().log(Level.WARNING, "Factions: Failed to save lang.yml.");
-            getLogger().log(Level.WARNING, "Factions: Report this stack trace to drtshock.");
-            e.printStackTrace();
+            getLogger().log(Level.WARNING, "Factions: Report this stack trace to drtshock."); e.printStackTrace();
         }
     }
 
     public void onDisable() {
         if (saveTask != null) {
-            this.getServer().getScheduler().cancelTask(saveTask);
-            saveTask = null;
+            this.getServer().getScheduler().cancelTask(saveTask); saveTask = null;
         }
         // only save data if plugin actually loaded successfully
-        if (loadSuccessful) { EM.saveAllToDisc(); }
-        log("Disabled");
+        if (loadSuccessful) { EM.saveAllToDisc(); } log("Disabled");
     }
 
     public void suicide() {
-        log("Now I suicide!");
-        this.getServer().getPluginManager().disablePlugin(this);
+        log("Now I suicide!"); this.getServer().getPluginManager().disablePlugin(this);
     }
 
     // -------------------------------------------- //
@@ -201,11 +181,7 @@ public abstract class MPlugin extends JavaPlugin {
     // -------------------------------------------- //
 
     public GsonBuilder getGsonBuilder() {
-        return new GsonBuilder()
-                       .setPrettyPrinting()
-                       .disableHtmlEscaping()
-                       .serializeNulls()
-                       .excludeFieldsWithModifiers(Modifier.TRANSIENT, Modifier.VOLATILE);
+        return new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().serializeNulls().excludeFieldsWithModifiers(Modifier.TRANSIENT, Modifier.VOLATILE);
     }
 
     // -------------------------------------------- //
@@ -231,12 +207,10 @@ public abstract class MPlugin extends JavaPlugin {
     public void initTXT() {
         this.addRawTags();
 
-        Type type = new TypeToken<Map<String, String>>() {
-        }.getType();
+        Type type = new TypeToken<Map<String, String>>() {}.getType();
 
         Map<String, String> tagsFromFile = this.persist.load(type, "tags");
-        if (tagsFromFile != null) { this.rawTags.putAll(tagsFromFile); }
-        this.persist.save(this.rawTags, "tags");
+        if (tagsFromFile != null) { this.rawTags.putAll(tagsFromFile); } this.persist.save(this.rawTags, "tags");
 
         for (Entry<String, String> rawTag : this.rawTags.entrySet()) {
             this.txt.tags.put(rawTag.getKey(), TextUtil.parseColor(rawTag.getValue()));
@@ -257,10 +231,8 @@ public abstract class MPlugin extends JavaPlugin {
     }
 
     public boolean handleCommand(final CommandSender sender, String commandString, boolean testOnly, boolean async) {
-        boolean noSlash = true;
-        if (commandString.startsWith("/")) {
-            noSlash = false;
-            commandString = commandString.substring(1);
+        boolean noSlash = true; if (commandString.startsWith("/")) {
+            noSlash = false; commandString = commandString.substring(1);
         }
 
         for (final MCommand<?> command : this.getBaseCommands()) {
@@ -283,14 +255,12 @@ public abstract class MPlugin extends JavaPlugin {
                                 command.execute(sender, args);
                             }
                         });
-                    }
-                    else { command.execute(sender, args); }
+                    } else { command.execute(sender, args); }
 
                     return true;
                 }
             }
-        }
-        return false;
+        } return false;
     }
 
     public boolean handleCommand(CommandSender sender, String commandString) {

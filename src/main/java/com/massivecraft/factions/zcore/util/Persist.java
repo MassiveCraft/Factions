@@ -65,9 +65,7 @@ public class Persist {
 
     public <T> T loadOrSaveDefault(T def, Class<T> clazz, File file) {
         if (!file.exists()) {
-            p.log("Creating default: " + file);
-            this.save(def, file);
-            return def;
+            p.log("Creating default: " + file); this.save(def, file); return def;
         }
 
         T loaded = this.load(clazz, file);
@@ -76,10 +74,8 @@ public class Persist {
             p.log(Level.WARNING, "Using default as I failed to load: " + file);
 
             // backup bad file, so user can attempt to recover their changes from it
-            File backup = new File(file.getPath() + "_bad");
-            if (backup.exists()) { backup.delete(); }
-            p.log(Level.WARNING, "Backing up copy of bad file to: " + backup);
-            file.renameTo(backup);
+            File backup = new File(file.getPath() + "_bad"); if (backup.exists()) { backup.delete(); }
+            p.log(Level.WARNING, "Backing up copy of bad file to: " + backup); file.renameTo(backup);
 
             return def;
         }
@@ -112,14 +108,12 @@ public class Persist {
     }
 
     public <T> T load(Class<T> clazz, File file) {
-        String content = DiscUtil.readCatch(file);
-        if (content == null) {
+        String content = DiscUtil.readCatch(file); if (content == null) {
             return null;
         }
 
         try {
-            T instance = p.gson.fromJson(content, clazz);
-            return instance;
+            T instance = p.gson.fromJson(content, clazz); return instance;
         } catch (Exception ex) {    // output the error message rather than full stack trace; error parsing the file, most likely
             p.log(Level.WARNING, ex.getMessage());
         }
@@ -136,8 +130,7 @@ public class Persist {
 
     @SuppressWarnings("unchecked")
     public <T> T load(Type typeOfT, File file) {
-        String content = DiscUtil.readCatch(file);
-        if (content == null) {
+        String content = DiscUtil.readCatch(file); if (content == null) {
             return null;
         }
 

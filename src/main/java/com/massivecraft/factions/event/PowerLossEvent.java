@@ -17,9 +17,7 @@ public class PowerLossEvent extends Event implements Cancellable {
     private String message;
 
     public PowerLossEvent(Faction f, FPlayer p) {
-        cancelled = false;
-        faction = f;
-        fplayer = p;
+        cancelled = false; faction = f; fplayer = p;
     }
 
     @Override

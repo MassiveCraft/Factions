@@ -18,13 +18,9 @@ public class CmdTag extends FCommand {
         this.requiredArgs.add("faction tag");
         //this.optionalArgs.put("", "");
 
-        this.permission = Permission.TAG.node;
-        this.disableOnLock = true;
+        this.permission = Permission.TAG.node; this.disableOnLock = true;
 
-        senderMustBePlayer = true;
-        senderMustBeMember = false;
-        senderMustBeModerator = true;
-        senderMustBeAdmin = false;
+        senderMustBePlayer = true; senderMustBeMember = false; senderMustBeModerator = true; senderMustBeAdmin = false;
     }
 
     @Override
@@ -33,15 +29,12 @@ public class CmdTag extends FCommand {
 
         // TODO does not first test cover selfcase?
         if (Factions.i.isTagTaken(tag) && !MiscUtil.getComparisonString(tag).equals(myFaction.getComparisonTag())) {
-            msg("<b>That tag is already taken");
-            return;
+            msg("<b>That tag is already taken"); return;
         }
 
-        ArrayList<String> errors = new ArrayList<String>();
-        errors.addAll(Factions.validateTag(tag));
+        ArrayList<String> errors = new ArrayList<String>(); errors.addAll(Factions.validateTag(tag));
         if (errors.size() > 0) {
-            sendMessage(errors);
-            return;
+            sendMessage(errors); return;
         }
 
         // if economy is enabled, they're not on the bypass list, and this command has a cost set, make sure they can pay
@@ -49,14 +42,12 @@ public class CmdTag extends FCommand {
 
         // trigger the faction rename event (cancellable)
         FactionRenameEvent renameEvent = new FactionRenameEvent(fme, tag);
-        Bukkit.getServer().getPluginManager().callEvent(renameEvent);
-        if (renameEvent.isCancelled()) { return; }
+        Bukkit.getServer().getPluginManager().callEvent(renameEvent); if (renameEvent.isCancelled()) { return; }
 
         // then make 'em pay (if applicable)
         if (!payForCommand(Conf.econCostTag, "to change the faction tag", "for changing the faction tag")) { return; }
 
-        String oldtag = myFaction.getTag();
-        myFaction.setTag(tag);
+        String oldtag = myFaction.getTag(); myFaction.setTag(tag);
 
         // Inform
         myFaction.msg("%s<i> changed your faction tag to %s", fme.describeTo(myFaction, true), myFaction.getTag(myFaction));

@@ -6,31 +6,23 @@ import com.massivecraft.factions.struct.Permission;
 
 public class CmdInvite extends FCommand {
     public CmdInvite() {
-        super();
-        this.aliases.add("invite");
-        this.aliases.add("inv");
+        super(); this.aliases.add("invite"); this.aliases.add("inv");
 
         this.requiredArgs.add("player name");
         //this.optionalArgs.put("", "");
 
-        this.permission = Permission.INVITE.node;
-        this.disableOnLock = true;
+        this.permission = Permission.INVITE.node; this.disableOnLock = true;
 
-        senderMustBePlayer = true;
-        senderMustBeMember = false;
-        senderMustBeModerator = true;
-        senderMustBeAdmin = false;
+        senderMustBePlayer = true; senderMustBeMember = false; senderMustBeModerator = true; senderMustBeAdmin = false;
     }
 
     @Override
     public void perform() {
-        FPlayer you = this.argAsBestFPlayerMatch(0);
-        if (you == null) { return; }
+        FPlayer you = this.argAsBestFPlayerMatch(0); if (you == null) { return; }
 
         if (you.getFaction() == myFaction) {
             msg("%s<i> is already a member of %s", you.getName(), myFaction.getTag());
-            msg("<i>You might want to: " + p.cmdBase.cmdKick.getUseageTemplate(false));
-            return;
+            msg("<i>You might want to: " + p.cmdBase.cmdKick.getUseageTemplate(false)); return;
         }
 
         // if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay

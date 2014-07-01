@@ -10,19 +10,14 @@ import org.bukkit.Bukkit;
 
 public class CmdUnclaimall extends FCommand {
     public CmdUnclaimall() {
-        this.aliases.add("unclaimall");
-        this.aliases.add("declaimall");
+        this.aliases.add("unclaimall"); this.aliases.add("declaimall");
 
         //this.requiredArgs.add("");
         //this.optionalArgs.put("", "");
 
-        this.permission = Permission.UNCLAIM_ALL.node;
-        this.disableOnLock = true;
+        this.permission = Permission.UNCLAIM_ALL.node; this.disableOnLock = true;
 
-        senderMustBePlayer = true;
-        senderMustBeMember = false;
-        senderMustBeModerator = true;
-        senderMustBeAdmin = false;
+        senderMustBePlayer = true; senderMustBeMember = false; senderMustBeModerator = true; senderMustBeAdmin = false;
     }
 
     @Override
@@ -33,8 +28,7 @@ public class CmdUnclaimall extends FCommand {
                 if (!Econ.modifyMoney(myFaction, refund, "to unclaim all faction land", "for unclaiming all faction land")) {
                     return;
                 }
-            }
-            else {
+            } else {
                 if (!Econ.modifyMoney(fme, refund, "to unclaim all faction land", "for unclaiming all faction land")) {
                     return;
                 }

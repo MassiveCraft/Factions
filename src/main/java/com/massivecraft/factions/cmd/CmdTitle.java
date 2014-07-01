@@ -9,25 +9,18 @@ public class CmdTitle extends FCommand {
     public CmdTitle() {
         this.aliases.add("title");
 
-        this.requiredArgs.add("player name");
-        this.optionalArgs.put("title", "");
+        this.requiredArgs.add("player name"); this.optionalArgs.put("title", "");
 
-        this.permission = Permission.TITLE.node;
-        this.disableOnLock = true;
+        this.permission = Permission.TITLE.node; this.disableOnLock = true;
 
-        senderMustBePlayer = true;
-        senderMustBeMember = false;
-        senderMustBeModerator = true;
-        senderMustBeAdmin = false;
+        senderMustBePlayer = true; senderMustBeMember = false; senderMustBeModerator = true; senderMustBeAdmin = false;
     }
 
     @Override
     public void perform() {
-        FPlayer you = this.argAsBestFPlayerMatch(0);
-        if (you == null) { return; }
+        FPlayer you = this.argAsBestFPlayerMatch(0); if (you == null) { return; }
 
-        args.remove(0);
-        String title = TextUtil.implode(args, " ");
+        args.remove(0); String title = TextUtil.implode(args, " ");
 
         if (!canIAdministerYou(fme, you)) { return; }
 

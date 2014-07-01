@@ -10,49 +10,39 @@ import org.bukkit.Bukkit;
 
 public class CmdAdmin extends FCommand {
     public CmdAdmin() {
-        super();
-        this.aliases.add("admin");
+        super(); this.aliases.add("admin");
 
         this.requiredArgs.add("player name");
         //this.optionalArgs.put("", "");
 
-        this.permission = Permission.ADMIN.node;
-        this.disableOnLock = true;
+        this.permission = Permission.ADMIN.node; this.disableOnLock = true;
 
-        senderMustBePlayer = false;
-        senderMustBeMember = false;
-        senderMustBeModerator = false;
+        senderMustBePlayer = false; senderMustBeMember = false; senderMustBeModerator = false;
         senderMustBeAdmin = false;
     }
 
     @Override
     public void perform() {
-        FPlayer fyou = this.argAsBestFPlayerMatch(0);
-        if (fyou == null) { return; }
+        FPlayer fyou = this.argAsBestFPlayerMatch(0); if (fyou == null) { return; }
 
-        boolean permAny = Permission.ADMIN_ANY.has(sender, false);
-        Faction targetFaction = fyou.getFaction();
+        boolean permAny = Permission.ADMIN_ANY.has(sender, false); Faction targetFaction = fyou.getFaction();
 
         if (targetFaction != myFaction && !permAny) {
-            msg("%s<i> is not a member in your faction.", fyou.describeTo(fme, true));
-            return;
+            msg("%s<i> is not a member in your faction.", fyou.describeTo(fme, true)); return;
         }
 
         if (fme != null && fme.getRole() != Role.ADMIN && !permAny) {
-            msg("<b>You are not the faction admin.");
-            return;
+            msg("<b>You are not the faction admin."); return;
         }
 
         if (fyou == fme && !permAny) {
-            msg("<b>The target player musn't be yourself.");
-            return;
+            msg("<b>The target player musn't be yourself."); return;
         }
 
         // only perform a FPlayerJoinEvent when newLeader isn't actually in the faction
         if (fyou.getFaction() != targetFaction) {
             FPlayerJoinEvent event = new FPlayerJoinEvent(FPlayers.i.get(me), targetFaction, FPlayerJoinEvent.PlayerJoinReason.LEADER);
-            Bukkit.getServer().getPluginManager().callEvent(event);
-            if (event.isCancelled()) { return; }
+            Bukkit.getServer().getPluginManager().callEvent(event); if (event.isCancelled()) { return; }
         }
 
         FPlayer admin = targetFaction.getFPlayerAdmin();
@@ -66,8 +56,7 @@ public class CmdAdmin extends FCommand {
         }
 
         // promote target player, and demote existing admin if one exists
-        if (admin != null) { admin.setRole(Role.MODERATOR); }
-        fyou.setRole(Role.ADMIN);
+        if (admin != null) { admin.setRole(Role.MODERATOR); } fyou.setRole(Role.ADMIN);
         msg("<i>You have promoted %s<i> to the position of faction admin.", fyou.describeTo(fme, true));
 
         // Inform all players

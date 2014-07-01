@@ -14,17 +14,14 @@ public class AutoLeaveProcessTask extends BukkitRunnable {
     private transient double toleranceMillis;
 
     public AutoLeaveProcessTask() {
-        ArrayList<FPlayer> fplayers = new ArrayList<FPlayer>(FPlayers.i.get());
-        this.iterator = fplayers.listIterator();
-        this.toleranceMillis = Conf.autoLeaveAfterDaysOfInactivity * 24 * 60 * 60 * 1000;
-        this.readyToGo = true;
+        ArrayList<FPlayer> fplayers = new ArrayList<FPlayer>(FPlayers.i.get()); this.iterator = fplayers.listIterator();
+        this.toleranceMillis = Conf.autoLeaveAfterDaysOfInactivity * 24 * 60 * 60 * 1000; this.readyToGo = true;
         this.finished = false;
     }
 
     public void run() {
         if (Conf.autoLeaveAfterDaysOfInactivity <= 0.0 || Conf.autoLeaveRoutineMaxMillisecondsPerTick <= 0.0) {
-            this.stop();
-            return;
+            this.stop(); return;
         }
 
         if (!readyToGo) { return; }
@@ -38,8 +35,7 @@ public class AutoLeaveProcessTask extends BukkitRunnable {
 
             // if this iteration has been running for maximum time, stop to take a breather until next tick
             if (now > loopStartTime + Conf.autoLeaveRoutineMaxMillisecondsPerTick) {
-                readyToGo = true;
-                return;
+                readyToGo = true; return;
             }
 
             FPlayer fplayer = iterator.next();
@@ -54,8 +50,7 @@ public class AutoLeaveProcessTask extends BukkitRunnable {
                     if (faction != null) { fplayer.getFaction().promoteNewLeader(); }
                 }
 
-                fplayer.leave(false);
-                iterator.remove();  // go ahead and remove this list's link to the FPlayer object
+                fplayer.leave(false); iterator.remove();  // go ahead and remove this list's link to the FPlayer object
                 fplayer.detach();
             }
         }
@@ -66,8 +61,7 @@ public class AutoLeaveProcessTask extends BukkitRunnable {
 
     // we're done, shut down
     public void stop() {
-        readyToGo = false;
-        finished = true;
+        readyToGo = false; finished = true;
 
         this.cancel();
     }

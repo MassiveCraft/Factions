@@ -14,21 +14,14 @@ public class DiscUtil {
     // -------------------------------------------- //
 
     public static byte[] readBytes(File file) throws IOException {
-        int length = (int) file.length();
-        byte[] output = new byte[length];
-        InputStream in = new FileInputStream(file);
-        int offset = 0;
-        while (offset < length) {
+        int length = (int) file.length(); byte[] output = new byte[length]; InputStream in = new FileInputStream(file);
+        int offset = 0; while (offset < length) {
             offset += in.read(output, offset, (length - offset));
-        }
-        in.close();
-        return output;
+        } in.close(); return output;
     }
 
     public static void writeBytes(File file, byte[] bytes) throws IOException {
-        FileOutputStream out = new FileOutputStream(file);
-        out.write(bytes);
-        out.close();
+        FileOutputStream out = new FileOutputStream(file); out.write(bytes); out.close();
     }
 
     // -------------------------------------------- //
@@ -49,8 +42,7 @@ public class DiscUtil {
 
     public static boolean writeCatch(File file, String content) {
         try {
-            write(file, content);
-            return true;
+            write(file, content); return true;
         } catch (Exception e) {
             return false;
         }
@@ -72,8 +64,7 @@ public class DiscUtil {
         try {
             return string.getBytes(UTF8);
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-            return null;
+            e.printStackTrace(); return null;
         }
     }
 
@@ -81,8 +72,7 @@ public class DiscUtil {
         try {
             return new String(bytes, UTF8);
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-            return null;
+            e.printStackTrace(); return null;
         }
     }
 

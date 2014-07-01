@@ -17,9 +17,7 @@ public class FactionDisbandEvent extends Event implements Cancellable {
     private Player sender;
 
     public FactionDisbandEvent(Player sender, String factionId) {
-        cancelled = false;
-        this.sender = sender;
-        this.id = factionId;
+        cancelled = false; this.sender = sender; this.id = factionId;
     }
 
     public HandlerList getHandlers() {

@@ -5,19 +5,14 @@ import com.massivecraft.factions.struct.Permission;
 public class CmdLeave extends FCommand {
 
     public CmdLeave() {
-        super();
-        this.aliases.add("leave");
+        super(); this.aliases.add("leave");
 
         //this.requiredArgs.add("");
         //this.optionalArgs.put("", "");
 
-        this.permission = Permission.LEAVE.node;
-        this.disableOnLock = true;
+        this.permission = Permission.LEAVE.node; this.disableOnLock = true;
 
-        senderMustBePlayer = true;
-        senderMustBeMember = true;
-        senderMustBeModerator = false;
-        senderMustBeAdmin = false;
+        senderMustBePlayer = true; senderMustBeMember = true; senderMustBeModerator = false; senderMustBeAdmin = false;
     }
 
     @Override

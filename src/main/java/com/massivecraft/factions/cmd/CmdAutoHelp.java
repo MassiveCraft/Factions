@@ -8,10 +8,7 @@ import java.util.ArrayList;
 
 public class CmdAutoHelp extends MCommand<P> {
     public CmdAutoHelp() {
-        super(P.p);
-        this.aliases.add("?");
-        this.aliases.add("h");
-        this.aliases.add("help");
+        super(P.p); this.aliases.add("?"); this.aliases.add("h"); this.aliases.add("help");
 
         this.setHelpShort("");
 
@@ -28,12 +25,7 @@ public class CmdAutoHelp extends MCommand<P> {
         lines.addAll(pcmd.helpLong);
 
         for (MCommand<?> scmd : pcmd.subCommands) {
-            if
-                    (
-                    scmd.visibility == CommandVisibility.VISIBLE
-                            ||
-                            (scmd.visibility == CommandVisibility.SECRET && scmd.validSenderPermissions(sender, false))
-                    ) {
+            if (scmd.visibility == CommandVisibility.VISIBLE || (scmd.visibility == CommandVisibility.SECRET && scmd.validSenderPermissions(sender, false))) {
                 lines.add(scmd.getUseageTemplate(this.commandChain, true));
             }
         }

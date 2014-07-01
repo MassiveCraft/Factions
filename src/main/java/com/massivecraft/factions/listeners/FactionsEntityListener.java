@@ -34,13 +34,11 @@ public class FactionsEntityListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onEntityDeath(EntityDeathEvent event) {
-        Entity entity = event.getEntity();
-        if (!(entity instanceof Player)) {
+        Entity entity = event.getEntity(); if (!(entity instanceof Player)) {
             return;
         }
 
-        Player player = (Player) entity;
-        FPlayer fplayer = FPlayers.i.get(player);
+        Player player = (Player) entity; FPlayer fplayer = FPlayers.i.get(player);
         Faction faction = Board.getFactionAt(new FLocation(player.getLocation()));
 
         PowerLossEvent powerLossEvent = new PowerLossEvent(faction, fplayer);
@@ -50,24 +48,19 @@ public class FactionsEntityListener implements Listener {
             if (!Conf.warZonePowerLoss) {
                 powerLossEvent.setMessage("<i>You didn't lose any power since you were in a war zone.");
                 powerLossEvent.setCancelled(true);
-            }
-            if (Conf.worldsNoPowerLoss.contains(player.getWorld().getName())) {
+            } if (Conf.worldsNoPowerLoss.contains(player.getWorld().getName())) {
                 powerLossEvent.setMessage("<b>The world you are in has power loss normally disabled, but you still lost power since you were in a war zone.\n<i>Your power is now <h>%d / %d");
             }
-        }
-        else if (faction.isNone() && !Conf.wildernessPowerLoss && !Conf.worldsNoWildernessProtection.contains(player.getWorld().getName())) {
+        } else if (faction.isNone() && !Conf.wildernessPowerLoss && !Conf.worldsNoWildernessProtection.contains(player.getWorld().getName())) {
             powerLossEvent.setMessage("<i>You didn't lose any power since you were in the wilderness.");
             powerLossEvent.setCancelled(true);
-        }
-        else if (Conf.worldsNoPowerLoss.contains(player.getWorld().getName())) {
+        } else if (Conf.worldsNoPowerLoss.contains(player.getWorld().getName())) {
             powerLossEvent.setMessage("<i>You didn't lose any power due to the world you died in.");
             powerLossEvent.setCancelled(true);
-        }
-        else if (Conf.peacefulMembersDisablePowerLoss && fplayer.hasFaction() && fplayer.getFaction().isPeaceful()) {
+        } else if (Conf.peacefulMembersDisablePowerLoss && fplayer.hasFaction() && fplayer.getFaction().isPeaceful()) {
             powerLossEvent.setMessage("<i>You didn't lose any power since you are in a peaceful faction.");
             powerLossEvent.setCancelled(true);
-        }
-        else {
+        } else {
             powerLossEvent.setMessage("<i>Your power is now <h>%d / %d");
         }
 
@@ -79,8 +72,7 @@ public class FactionsEntityListener implements Listener {
             fplayer.onDeath();
         }
         // Send the message from the powerLossEvent
-        final String msg = powerLossEvent.getMessage();
-        if (msg != null && !msg.isEmpty()) {
+        final String msg = powerLossEvent.getMessage(); if (msg != null && !msg.isEmpty()) {
             fplayer.msg(msg, fplayer.getPowerRounded(), fplayer.getPowerMaxRounded());
         }
     }
@@ -98,8 +90,7 @@ public class FactionsEntityListener implements Listener {
             if (!this.canDamagerHurtDamagee(sub, true)) {
                 event.setCancelled(true);
             }
-        }
-        else if (Conf.safeZonePreventAllDamageToPlayers && isPlayerInSafeZone(event.getEntity())) {
+        } else if (Conf.safeZonePreventAllDamageToPlayers && isPlayerInSafeZone(event.getEntity())) {
             // Players can not take any damage in a Safe Zone
             event.setCancelled(true);
         }
@@ -109,86 +100,47 @@ public class FactionsEntityListener implements Listener {
     public void onEntityExplode(EntityExplodeEvent event) {
         if (event.isCancelled()) { return; }
 
-        Location loc = event.getLocation();
-        Entity boomer = event.getEntity();
+        Location loc = event.getLocation(); Entity boomer = event.getEntity();
         Faction faction = Board.getFactionAt(new FLocation(loc));
 
         if (faction.noExplosionsInTerritory()) {
             // faction is peaceful and has explosions set to disabled
-            event.setCancelled(true);
-            return;
+            event.setCancelled(true); return;
         }
 
         boolean online = faction.hasPlayersOnline();
 
         //TODO: :(
-        if
-                (
-                boomer instanceof Creeper
-                        &&
-                        (
-                                (faction.isNone() && Conf.wildernessBlockCreepers && !Conf.worldsNoWildernessProtection.contains(loc.getWorld().getName()))
-                                        ||
-                                        (faction.isNormal() && (online ? Conf.territoryBlockCreepers : Conf.territoryBlockCreepersWhenOffline))
-                                        ||
-                                        (faction.isWarZone() && Conf.warZoneBlockCreepers)
-                                        ||
-                                        faction.isSafeZone()
-                        )
-                ) {
+        if (boomer instanceof Creeper && ((faction.isNone() && Conf.wildernessBlockCreepers && !Conf.worldsNoWildernessProtection.contains(loc.getWorld().getName())) ||
+                                                  (faction.isNormal() && (online ? Conf.territoryBlockCreepers : Conf.territoryBlockCreepersWhenOffline)) ||
+                                                  (faction.isWarZone() && Conf.warZoneBlockCreepers) ||
+                                                  faction.isSafeZone())) {
             // creeper which needs prevention
             event.setCancelled(true);
-        }
-        else if
-                     (
+        } else if (
             // it's a bit crude just using fireball protection for Wither boss too, but I'd rather not add in a whole new set of xxxBlockWitherExplosion or whatever
-                     (boomer instanceof Fireball || boomer instanceof WitherSkull || boomer instanceof Wither)
-                             &&
-                             (
-                                     (faction.isNone() && Conf.wildernessBlockFireballs && !Conf.worldsNoWildernessProtection.contains(loc.getWorld().getName()))
-                                             ||
-                                             (faction.isNormal() && (online ? Conf.territoryBlockFireballs : Conf.territoryBlockFireballsWhenOffline))
-                                             ||
-                                             (faction.isWarZone() && Conf.warZoneBlockFireballs)
-                                             ||
-                                             faction.isSafeZone()
-                             )
-                     ) {
+                       (boomer instanceof Fireball || boomer instanceof WitherSkull || boomer instanceof Wither) && ((faction.isNone() && Conf.wildernessBlockFireballs && !Conf.worldsNoWildernessProtection.contains(loc.getWorld().getName())) ||
+                                                                                                                             (faction.isNormal() && (online ? Conf.territoryBlockFireballs : Conf.territoryBlockFireballsWhenOffline)) ||
+                                                                                                                             (faction.isWarZone() && Conf.warZoneBlockFireballs) ||
+                                                                                                                             faction.isSafeZone())) {
             // ghast fireball which needs prevention
             event.setCancelled(true);
-        }
-        else if
-                     (
-                     (boomer instanceof TNTPrimed || boomer instanceof ExplosiveMinecart)
-                             &&
-                             (
-                                     (faction.isNone() && Conf.wildernessBlockTNT && !Conf.worldsNoWildernessProtection.contains(loc.getWorld().getName()))
-                                             ||
-                                             (faction.isNormal() && (online ? Conf.territoryBlockTNT : Conf.territoryBlockTNTWhenOffline))
-                                             ||
-                                             (faction.isWarZone() && Conf.warZoneBlockTNT)
-                                             ||
-                                             (faction.isSafeZone() && Conf.safeZoneBlockTNT)
-                             )
-                     ) {
+        } else if ((boomer instanceof TNTPrimed || boomer instanceof ExplosiveMinecart) && ((faction.isNone() && Conf.wildernessBlockTNT && !Conf.worldsNoWildernessProtection.contains(loc.getWorld().getName())) ||
+                                                                                                    (faction.isNormal() && (online ? Conf.territoryBlockTNT : Conf.territoryBlockTNTWhenOffline)) ||
+                                                                                                    (faction.isWarZone() && Conf.warZoneBlockTNT) ||
+                                                                                                    (faction.isSafeZone() && Conf.safeZoneBlockTNT))) {
             // TNT which needs prevention
             event.setCancelled(true);
-        }
-        else if ((boomer instanceof TNTPrimed || boomer instanceof ExplosiveMinecart) && Conf.handleExploitTNTWaterlog) {
+        } else if ((boomer instanceof TNTPrimed || boomer instanceof ExplosiveMinecart) && Conf.handleExploitTNTWaterlog) {
             // TNT in water/lava doesn't normally destroy any surrounding blocks, which is usually desired behavior, but...
             // this change below provides workaround for waterwalling providing perfect protection,
             // and makes cheap (non-obsidian) TNT cannons require minor maintenance between shots
-            Block center = loc.getBlock();
-            if (center.isLiquid()) {
+            Block center = loc.getBlock(); if (center.isLiquid()) {
                 // a single surrounding block in all 6 directions is broken if the material is weak enough
-                List<Block> targets = new ArrayList<Block>();
-                targets.add(center.getRelative(0, 0, 1));
-                targets.add(center.getRelative(0, 0, -1));
-                targets.add(center.getRelative(0, 1, 0));
-                targets.add(center.getRelative(0, -1, 0));
-                targets.add(center.getRelative(1, 0, 0));
-                targets.add(center.getRelative(-1, 0, 0));
-                for (Block target : targets) {
+                List<Block> targets = new ArrayList<Block>(); targets.add(center.getRelative(0, 0, 1));
+                targets.add(center.getRelative(0, 0, -1)); targets.add(center.getRelative(0, 1, 0));
+                targets.add(center.getRelative(0, -1, 0)); targets.add(center.getRelative(1, 0, 0));
+                targets.add(center.getRelative(-1, 0, 0)); for (Block target : targets) {
                     int id = target.getTypeId();
                     // ignore air, bedrock, water, lava, obsidian, enchanting table, etc.... too bad we can't get a blast resistance value through Bukkit yet
                     if (id != 0 && (id < 7 || id > 11) && id != 49 && id != 90 && id != 116 && id != 119 && id != 120 && id != 130) {
@@ -205,55 +157,42 @@ public class FactionsEntityListener implements Listener {
         if (event.isCancelled()) { return; }
 
         EntityDamageByEntityEvent sub = new EntityDamageByEntityEvent(event.getCombuster(), event.getEntity(), EntityDamageEvent.DamageCause.FIRE, 0);
-        if (!this.canDamagerHurtDamagee(sub, false)) { event.setCancelled(true); }
-        sub = null;
+        if (!this.canDamagerHurtDamagee(sub, false)) { event.setCancelled(true); } sub = null;
     }
 
-    private static final Set<PotionEffectType> badPotionEffects = new LinkedHashSet<PotionEffectType>(Arrays.asList(
-                                                                                                                           PotionEffectType.BLINDNESS, PotionEffectType.CONFUSION, PotionEffectType.HARM, PotionEffectType.HUNGER,
-                                                                                                                           PotionEffectType.POISON, PotionEffectType.SLOW, PotionEffectType.SLOW_DIGGING, PotionEffectType.WEAKNESS,
-                                                                                                                           PotionEffectType.WITHER
-    ));
+    private static final Set<PotionEffectType> badPotionEffects = new LinkedHashSet<PotionEffectType>(Arrays.asList(PotionEffectType.BLINDNESS, PotionEffectType.CONFUSION, PotionEffectType.HARM, PotionEffectType.HUNGER, PotionEffectType.POISON, PotionEffectType.SLOW, PotionEffectType.SLOW_DIGGING, PotionEffectType.WEAKNESS, PotionEffectType.WITHER));
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onPotionSplashEvent(PotionSplashEvent event) {
         if (event.isCancelled()) { return; }
 
         // see if the potion has a harmful effect
-        boolean badjuju = false;
-        for (PotionEffect effect : event.getPotion().getEffects()) {
+        boolean badjuju = false; for (PotionEffect effect : event.getPotion().getEffects()) {
             if (badPotionEffects.contains(effect.getType())) {
-                badjuju = true;
-                break;
+                badjuju = true; break;
             }
-        }
-        if (!badjuju) { return; }
+        } if (!badjuju) { return; }
 
-        ProjectileSource thrower = event.getPotion().getShooter();
-        if (!(thrower instanceof Entity)) {
+        ProjectileSource thrower = event.getPotion().getShooter(); if (!(thrower instanceof Entity)) {
             return;
         }
 
         // scan through affected entities to make sure they're all valid targets
-        Iterator<LivingEntity> iter = event.getAffectedEntities().iterator();
-        while (iter.hasNext()) {
+        Iterator<LivingEntity> iter = event.getAffectedEntities().iterator(); while (iter.hasNext()) {
             LivingEntity target = iter.next();
             EntityDamageByEntityEvent sub = new EntityDamageByEntityEvent((Entity) thrower, target, EntityDamageEvent.DamageCause.CUSTOM, 0);
             if (!this.canDamagerHurtDamagee(sub, true)) {
                 event.setIntensity(target, 0.0);  // affected entity list doesn't accept modification (so no iter.remove()), but this works
-            }
-            sub = null;
+            } sub = null;
         }
     }
 
     public boolean isPlayerInSafeZone(Entity damagee) {
         if (!(damagee instanceof Player)) {
             return false;
-        }
-        if (Board.getFactionAt(new FLocation(damagee.getLocation())).isSafeZone()) {
+        } if (Board.getFactionAt(new FLocation(damagee.getLocation())).isSafeZone()) {
             return true;
-        }
-        return false;
+        } return false;
     }
 
     public boolean canDamagerHurtDamagee(EntityDamageByEntityEvent sub) {
@@ -261,9 +200,7 @@ public class FactionsEntityListener implements Listener {
     }
 
     public boolean canDamagerHurtDamagee(EntityDamageByEntityEvent sub, boolean notify) {
-        Entity damager = sub.getDamager();
-        Entity damagee = sub.getEntity();
-        double damage = sub.getDamage();
+        Entity damager = sub.getDamager(); Entity damagee = sub.getEntity(); double damage = sub.getDamage();
 
         if (!(damagee instanceof Player)) { return true; }
 
@@ -288,10 +225,8 @@ public class FactionsEntityListener implements Listener {
                 if (notify) {
                     FPlayer attacker = FPlayers.i.get((Player) damager);
                     attacker.msg("<i>You can't hurt other players in " + (defLocFaction.isSafeZone() ? "a SafeZone." : "peaceful territory."));
-                }
-                return false;
-            }
-            return !defLocFaction.noMonstersInTerritory();
+                } return false;
+            } return !defLocFaction.noMonstersInTerritory();
         }
 
         if (!(damager instanceof Player)) { return true; }
@@ -305,8 +240,7 @@ public class FactionsEntityListener implements Listener {
         if (attacker.hasLoginPvpDisabled()) {
             if (notify) {
                 attacker.msg("<i>You can't hurt other players for " + Conf.noPVPDamageToOthersForXSecondsAfterLogin + " seconds after logging in.");
-            }
-            return false;
+            } return false;
         }
 
         Faction locFaction = Board.getFactionAt(new FLocation(attacker));
@@ -315,37 +249,30 @@ public class FactionsEntityListener implements Listener {
         if (locFaction.noPvPInTerritory()) {
             if (notify) {
                 attacker.msg("<i>You can't hurt other players while you are in " + (locFaction.isSafeZone() ? "a SafeZone." : "peaceful territory."));
-            }
-            return false;
+            } return false;
         }
 
         if (locFaction.isWarZone() && Conf.warZoneFriendlyFire) { return true; }
 
         if (Conf.worldsIgnorePvP.contains(defenderLoc.getWorld().getName())) { return true; }
 
-        Faction defendFaction = defender.getFaction();
-        Faction attackFaction = attacker.getFaction();
+        Faction defendFaction = defender.getFaction(); Faction attackFaction = attacker.getFaction();
 
         if (attackFaction.isNone() && Conf.disablePVPForFactionlessPlayers) {
-            if (notify) { attacker.msg("<i>You can't hurt other players until you join a faction."); }
-            return false;
-        }
-        else if (defendFaction.isNone()) {
+            if (notify) { attacker.msg("<i>You can't hurt other players until you join a faction."); } return false;
+        } else if (defendFaction.isNone()) {
             if (defLocFaction == attackFaction && Conf.enablePVPAgainstFactionlessInAttackersLand) {
                 // Allow PVP vs. Factionless in attacker's faction territory
                 return true;
-            }
-            else if (Conf.disablePVPForFactionlessPlayers) {
+            } else if (Conf.disablePVPForFactionlessPlayers) {
                 if (notify) { attacker.msg("<i>You can't hurt players who are not currently in a faction."); }
                 return false;
             }
         }
 
         if (defendFaction.isPeaceful()) {
-            if (notify) { attacker.msg("<i>You can't hurt players who are in a peaceful faction."); }
-            return false;
-        }
-        else if (attackFaction.isPeaceful()) {
+            if (notify) { attacker.msg("<i>You can't hurt players who are in a peaceful faction."); } return false;
+        } else if (attackFaction.isPeaceful()) {
             if (notify) { attacker.msg("<i>You can't hurt players while you are in a peaceful faction."); }
             return false;
         }
@@ -354,8 +281,7 @@ public class FactionsEntityListener implements Listener {
 
         // You can not hurt neutral factions
         if (Conf.disablePVPBetweenNeutralFactions && relation.isNeutral()) {
-            if (notify) { attacker.msg("<i>You can't hurt neutral factions. Declare them as an enemy."); }
-            return false;
+            if (notify) { attacker.msg("<i>You can't hurt neutral factions. Declare them as an enemy."); } return false;
         }
 
         // Players without faction may be hurt anywhere
@@ -363,8 +289,7 @@ public class FactionsEntityListener implements Listener {
 
         // You can never hurt faction members or allies
         if (relation.isMember() || relation.isAlly()) {
-            if (notify) { attacker.msg("<i>You can't hurt %s<i>.", defender.describeTo(attacker)); }
-            return false;
+            if (notify) { attacker.msg("<i>You can't hurt %s<i>.", defender.describeTo(attacker)); } return false;
         }
 
         boolean ownTerritory = defender.isInOwnTerritory();
@@ -374,14 +299,12 @@ public class FactionsEntityListener implements Listener {
             if (notify) {
                 attacker.msg("<i>You can't hurt %s<i> in their own territory unless you declare them as an enemy.", defender.describeTo(attacker));
                 defender.msg("%s<i> tried to hurt you.", attacker.describeTo(defender, true));
-            }
-            return false;
+            } return false;
         }
 
         // Damage will be dealt. However check if the damage should be reduced.
         if (damage > 0.0 && ownTerritory && Conf.territoryShieldFactor > 0) {
-            int newDamage = (int) Math.ceil(damage * (1D - Conf.territoryShieldFactor));
-            sub.setDamage(newDamage);
+            int newDamage = (int) Math.ceil(damage * (1D - Conf.territoryShieldFactor)); sub.setDamage(newDamage);
 
             // Send message
             if (notify) {
@@ -409,8 +332,7 @@ public class FactionsEntityListener implements Listener {
         if (event.isCancelled()) { return; }
 
         // if there is a target
-        Entity target = event.getTarget();
-        if (target == null) {
+        Entity target = event.getTarget(); if (target == null) {
             return;
         }
 
@@ -427,42 +349,19 @@ public class FactionsEntityListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onPaintingBreak(HangingBreakEvent event) {
-        if (event.isCancelled()) { return; }
-        if (event.getCause() == RemoveCause.EXPLOSION) {
-            Location loc = event.getEntity().getLocation();
-            Faction faction = Board.getFactionAt(new FLocation(loc));
+        if (event.isCancelled()) { return; } if (event.getCause() == RemoveCause.EXPLOSION) {
+            Location loc = event.getEntity().getLocation(); Faction faction = Board.getFactionAt(new FLocation(loc));
             if (faction.noExplosionsInTerritory()) {
                 // faction is peaceful and has explosions set to disabled
-                event.setCancelled(true);
-                return;
+                event.setCancelled(true); return;
             }
 
             boolean online = faction.hasPlayersOnline();
 
-            if
-                    (
-                    (
-                            faction.isNone()
-                                    && !Conf.worldsNoWildernessProtection.contains(loc.getWorld().getName())
-                                    && (Conf.wildernessBlockCreepers || Conf.wildernessBlockFireballs || Conf.wildernessBlockTNT)
-                    )
-                            ||
-                            (
-                                    faction.isNormal()
-                                            &&
-                                            (online
-                                             ? (Conf.territoryBlockCreepers || Conf.territoryBlockFireballs || Conf.territoryBlockTNT)
-                                             : (Conf.territoryBlockCreepersWhenOffline || Conf.territoryBlockFireballsWhenOffline || Conf.territoryBlockTNTWhenOffline)
-                                            )
-                            )
-                            ||
-                            (
-                                    faction.isWarZone()
-                                            && (Conf.warZoneBlockCreepers || Conf.warZoneBlockFireballs || Conf.warZoneBlockTNT)
-                            )
-                            ||
-                            faction.isSafeZone()
-                    ) {
+            if ((faction.isNone() && !Conf.worldsNoWildernessProtection.contains(loc.getWorld().getName()) && (Conf.wildernessBlockCreepers || Conf.wildernessBlockFireballs || Conf.wildernessBlockTNT)) ||
+                        (faction.isNormal() && (online ? (Conf.territoryBlockCreepers || Conf.territoryBlockFireballs || Conf.territoryBlockTNT) : (Conf.territoryBlockCreepersWhenOffline || Conf.territoryBlockFireballsWhenOffline || Conf.territoryBlockTNTWhenOffline))) ||
+                        (faction.isWarZone() && (Conf.warZoneBlockCreepers || Conf.warZoneBlockFireballs || Conf.warZoneBlockTNT)) ||
+                        faction.isSafeZone()) {
                 // explosion which needs prevention
                 event.setCancelled(true);
             }
@@ -472,8 +371,7 @@ public class FactionsEntityListener implements Listener {
             return;
         }
 
-        Entity breaker = ((HangingBreakByEntityEvent) event).getRemover();
-        if (!(breaker instanceof Player)) {
+        Entity breaker = ((HangingBreakByEntityEvent) event).getRemover(); if (!(breaker instanceof Player)) {
             return;
         }
 
@@ -504,20 +402,13 @@ public class FactionsEntityListener implements Listener {
 
         if (entity instanceof Enderman) {
             if (stopEndermanBlockManipulation(loc)) { event.setCancelled(true); }
-        }
-        else if (entity instanceof Wither) {
+        } else if (entity instanceof Wither) {
             Faction faction = Board.getFactionAt(new FLocation(loc));
             // it's a bit crude just using fireball protection, but I'd rather not add in a whole new set of xxxBlockWitherExplosion or whatever
-            if
-                    (
-                    (faction.isNone() && Conf.wildernessBlockFireballs && !Conf.worldsNoWildernessProtection.contains(loc.getWorld().getName()))
-                            ||
-                            (faction.isNormal() && (faction.hasPlayersOnline() ? Conf.territoryBlockFireballs : Conf.territoryBlockFireballsWhenOffline))
-                            ||
-                            (faction.isWarZone() && Conf.warZoneBlockFireballs)
-                            ||
-                            faction.isSafeZone()
-                    ) { event.setCancelled(true); }
+            if ((faction.isNone() && Conf.wildernessBlockFireballs && !Conf.worldsNoWildernessProtection.contains(loc.getWorld().getName())) ||
+                        (faction.isNormal() && (faction.hasPlayersOnline() ? Conf.territoryBlockFireballs : Conf.territoryBlockFireballsWhenOffline)) ||
+                        (faction.isWarZone() && Conf.warZoneBlockFireballs) ||
+                        faction.isSafeZone()) { event.setCancelled(true); }
         }
     }
 
@@ -526,34 +417,23 @@ public class FactionsEntityListener implements Listener {
             return false;
         }
         // quick check to see if all Enderman deny options are enabled; if so, no need to check location
-        if
-                (
-                Conf.wildernessDenyEndermanBlocks
-                        &&
-                        Conf.territoryDenyEndermanBlocks
-                        &&
-                        Conf.territoryDenyEndermanBlocksWhenOffline
-                        &&
-                        Conf.safeZoneDenyEndermanBlocks
-                        &&
-                        Conf.warZoneDenyEndermanBlocks
-                ) {
+        if (Conf.wildernessDenyEndermanBlocks &&
+                    Conf.territoryDenyEndermanBlocks &&
+                    Conf.territoryDenyEndermanBlocksWhenOffline &&
+                    Conf.safeZoneDenyEndermanBlocks &&
+                    Conf.warZoneDenyEndermanBlocks) {
             return true;
         }
 
-        FLocation fLoc = new FLocation(loc);
-        Faction claimFaction = Board.getFactionAt(fLoc);
+        FLocation fLoc = new FLocation(loc); Faction claimFaction = Board.getFactionAt(fLoc);
 
         if (claimFaction.isNone()) {
             return Conf.wildernessDenyEndermanBlocks;
-        }
-        else if (claimFaction.isNormal()) {
+        } else if (claimFaction.isNormal()) {
             return claimFaction.hasPlayersOnline() ? Conf.territoryDenyEndermanBlocks : Conf.territoryDenyEndermanBlocksWhenOffline;
-        }
-        else if (claimFaction.isSafeZone()) {
+        } else if (claimFaction.isSafeZone()) {
             return Conf.safeZoneDenyEndermanBlocks;
-        }
-        else if (claimFaction.isWarZone()) {
+        } else if (claimFaction.isWarZone()) {
             return Conf.warZoneDenyEndermanBlocks;
         }
 

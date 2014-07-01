@@ -15,8 +15,7 @@ public class Essentials {
     private static IEssentials essentials;
 
     public static void setup() {
-        Plugin ess = Bukkit.getPluginManager().getPlugin("Essentials");
-        if (ess != null) {
+        Plugin ess = Bukkit.getPluginManager().getPlugin("Essentials"); if (ess != null) {
             essentials = (IEssentials) ess;
         }
     }
@@ -26,12 +25,10 @@ public class Essentials {
         if (!Conf.homesTeleportCommandEssentialsIntegration || essentials == null) { return false; }
 
         Teleport teleport = (Teleport) essentials.getUser(player).getTeleport();
-        Trade trade = new Trade(Conf.econCostHome, essentials);
-        try {
+        Trade trade = new Trade(Conf.econCostHome, essentials); try {
             teleport.teleport(loc, trade);
         } catch (Exception e) {
             player.sendMessage(ChatColor.RED.toString() + e.getMessage());
-        }
-        return true;
+        } return true;
     }
 }

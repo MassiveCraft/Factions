@@ -42,8 +42,7 @@ public enum TL {
      * @param start The default string.
      */
     TL(String path, String start) {
-        this.path = path;
-        this.def = start;
+        this.path = path; this.def = start;
     }
 
     /**

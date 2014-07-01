@@ -14,7 +14,6 @@ public class FCommandHandler implements CommandExecutor {
             if (P.p.logPlayerCommands()) {
                 Bukkit.getLogger().info("[PLAYER_COMMAND] " + sender.getName() + ": " + cmd.getName() + args);
             }
-        }
-        return false;
+        } return false;
     }
 }

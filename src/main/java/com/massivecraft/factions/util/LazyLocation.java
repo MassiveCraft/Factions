@@ -27,30 +27,19 @@ public class LazyLocation {
     }
 
     public LazyLocation(final String worldName, final double x, final double y, final double z, final float yaw, final float pitch) {
-        this.worldName = worldName;
-        this.x = x;
-        this.y = y;
-        this.z = z;
-        this.yaw = yaw;
-        this.pitch = pitch;
+        this.worldName = worldName; this.x = x; this.y = y; this.z = z; this.yaw = yaw; this.pitch = pitch;
     }
 
     // This returns the actual Location
     public final Location getLocation() {
         // make sure Location is initialized before returning it
-        initLocation();
-        return location;
+        initLocation(); return location;
     }
 
     // change the Location
     public final void setLocation(Location loc) {
-        this.location = loc;
-        this.worldName = loc.getWorld().getName();
-        this.x = loc.getX();
-        this.y = loc.getY();
-        this.z = loc.getZ();
-        this.yaw = loc.getYaw();
-        this.pitch = loc.getPitch();
+        this.location = loc; this.worldName = loc.getWorld().getName(); this.x = loc.getX(); this.y = loc.getY();
+        this.z = loc.getZ(); this.yaw = loc.getYaw(); this.pitch = loc.getPitch();
     }
 
 
@@ -60,8 +49,7 @@ public class LazyLocation {
         if (location != null) { return; }
 
         // get World; hopefully it's initialized at this point
-        World world = Bukkit.getWorld(worldName);
-        if (world == null) { return; }
+        World world = Bukkit.getWorld(worldName); if (world == null) { return; }
 
         // store the Location for future calls, and pass it on
         location = new Location(world, x, y, z, yaw, pitch);

@@ -28,8 +28,7 @@ public class MPluginSecretPlayerListener implements Listener {
         if (p.handleCommand(event.getPlayer(), event.getMessage())) {
             if (p.logPlayerCommands()) {
                 Bukkit.getLogger().info("[PLAYER_COMMAND] " + event.getPlayer().getName() + ": " + event.getMessage());
-            }
-            event.setCancelled(true);
+            } event.setCancelled(true);
         }
     }
 
@@ -38,12 +37,10 @@ public class MPluginSecretPlayerListener implements Listener {
         if (p.handleCommand(event.getPlayer(), event.getMessage(), false, true)) {
             if (p.logPlayerCommands()) {
                 Bukkit.getLogger().info("[PLAYER_COMMAND] " + event.getPlayer().getName() + ": " + event.getMessage());
-            }
-            event.setCancelled(true);
+            } event.setCancelled(true);
         }
 
-        Player speaker = event.getPlayer();
-        String format = event.getFormat();
+        Player speaker = event.getPlayer(); String format = event.getFormat();
         format = format.replace(Conf.chatTagReplaceString, P.p.getPlayerFactionTag(speaker)).replace("[FACTION_TITLE]", P.p.getPlayerTitle(speaker));
         event.setFormat(format);
     }

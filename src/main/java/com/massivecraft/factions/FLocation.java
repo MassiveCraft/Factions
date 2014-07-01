@@ -26,9 +26,7 @@ public class FLocation {
     }
 
     public FLocation(String worldName, int x, int z) {
-        this.worldName = worldName;
-        this.x = x;
-        this.z = z;
+        this.worldName = worldName; this.x = x; this.z = z;
     }
 
     public FLocation(Location location) {
@@ -126,22 +124,17 @@ public class FLocation {
     }
 
     public double getDistanceTo(FLocation that) {
-        double dx = that.x - this.x;
-        double dz = that.z - this.z;
-        return Math.sqrt(dx * dx + dz * dz);
+        double dx = that.x - this.x; double dz = that.z - this.z; return Math.sqrt(dx * dx + dz * dz);
     }
 
     //----------------------------------------------//
     // Some Geometry
     //----------------------------------------------//
     public Set<FLocation> getCircle(double radius) {
-        Set<FLocation> ret = new LinkedHashSet<FLocation>();
-        if (radius <= 0) { return ret; }
+        Set<FLocation> ret = new LinkedHashSet<FLocation>(); if (radius <= 0) { return ret; }
 
-        int xfrom = (int) Math.floor(this.x - radius);
-        int xto = (int) Math.ceil(this.x + radius);
-        int zfrom = (int) Math.floor(this.z - radius);
-        int zto = (int) Math.ceil(this.z + radius);
+        int xfrom = (int) Math.floor(this.x - radius); int xto = (int) Math.ceil(this.x + radius);
+        int zfrom = (int) Math.floor(this.z - radius); int zto = (int) Math.ceil(this.z + radius);
 
         for (int x = xfrom; x <= xto; x++) {
             for (int z = zfrom; z <= zto; z++) {
@@ -177,8 +170,7 @@ public class FLocation {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == this) { return true; }
-        if (!(obj instanceof FLocation)) { return false; }
+        if (obj == this) { return true; } if (!(obj instanceof FLocation)) { return false; }
 
         FLocation that = (FLocation) obj;
         return this.x == that.x && this.z == that.z && (this.worldName == null ? that.worldName == null : this.worldName.equals(that.worldName));

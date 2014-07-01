@@ -13,8 +13,7 @@ public class LandUnclaimAllEvent extends Event {
     private FPlayer fplayer;
 
     public LandUnclaimAllEvent(Faction f, FPlayer p) {
-        faction = f;
-        fplayer = p;
+        faction = f; fplayer = p;
     }
 
     public HandlerList getHandlers() {

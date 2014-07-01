@@ -6,32 +6,25 @@ import com.massivecraft.factions.struct.Permission;
 
 public class CmdPermanentPower extends FCommand {
     public CmdPermanentPower() {
-        super();
-        this.aliases.add("permanentpower");
+        super(); this.aliases.add("permanentpower");
 
-        this.requiredArgs.add("faction");
-        this.optionalArgs.put("power", "reset");
+        this.requiredArgs.add("faction"); this.optionalArgs.put("power", "reset");
 
-        this.permission = Permission.SET_PERMANENTPOWER.node;
-        this.disableOnLock = true;
+        this.permission = Permission.SET_PERMANENTPOWER.node; this.disableOnLock = true;
 
-        senderMustBePlayer = false;
-        senderMustBeMember = false;
-        senderMustBeModerator = false;
+        senderMustBePlayer = false; senderMustBeMember = false; senderMustBeModerator = false;
         senderMustBeAdmin = false;
     }
 
     @Override
     public void perform() {
-        Faction targetFaction = this.argAsFaction(0);
-        if (targetFaction == null) { return; }
+        Faction targetFaction = this.argAsFaction(0); if (targetFaction == null) { return; }
 
         Integer targetPower = this.argAsInt(1);
 
         targetFaction.setPermanentPower(targetPower);
 
-        String change = "removed permanentpower status from";
-        if (targetFaction.hasPermanentPower()) {
+        String change = "removed permanentpower status from"; if (targetFaction.hasPermanentPower()) {
             change = "added permanentpower status to";
         }
 

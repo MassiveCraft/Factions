@@ -11,12 +11,9 @@ public class CmdVersion extends FCommand {
         //this.requiredArgs.add("");
         //this.optionalArgs.put("", "");
 
-        this.permission = Permission.VERSION.node;
-        this.disableOnLock = false;
+        this.permission = Permission.VERSION.node; this.disableOnLock = false;
 
-        senderMustBePlayer = false;
-        senderMustBeMember = false;
-        senderMustBeModerator = false;
+        senderMustBePlayer = false; senderMustBeMember = false; senderMustBeModerator = false;
         senderMustBeAdmin = false;
     }
 
