@@ -33,14 +33,15 @@ public class Factions extends EntityCollection<Faction> {
 
     @Override
     public boolean loadFromDisc() {
-        if (!super.loadFromDisc()) return false;
+        if (!super.loadFromDisc()) { return false; }
 
         // Make sure the default neutral faction exists
         if (!this.exists("0")) {
             Faction faction = this.create("0");
             faction.setTag(TL.WILDERNESS.toString());
             faction.setDescription(TL.WILDERNESS_DESCRIPTION.toString());
-        } else {
+        }
+        else {
             if (!this.get("0").getTag().equalsIgnoreCase(TL.WILDERNESS.toString())) {
                 get("0").setTag(TL.WILDERNESS.toString());
             }
@@ -54,17 +55,17 @@ public class Factions extends EntityCollection<Faction> {
             Faction faction = this.create("-1");
             faction.setTag(TL.SAFEZONE.toString());
             faction.setDescription(TL.SAFEZONE_DESCRIPTION.toString());
-        } else {
+        }
+        else {
             if (!getSafeZone().getTag().equalsIgnoreCase(TL.SAFEZONE.toString())) {
                 getSafeZone().setTag(TL.SAFEZONE.toString());
             }
-            if(!getSafeZone().getDescription().equalsIgnoreCase(TL.SAFEZONE_DESCRIPTION.toString())) {
+            if (!getSafeZone().getDescription().equalsIgnoreCase(TL.SAFEZONE_DESCRIPTION.toString())) {
                 getSafeZone().setDescription(TL.SAFEZONE_DESCRIPTION.toString());
             }
             // if SafeZone has old pre-1.6.0 name, rename it to remove troublesome " "
             Faction faction = this.getSafeZone();
-            if (faction.getTag().contains(" "))
-                faction.setTag(TL.SAFEZONE.toString());
+            if (faction.getTag().contains(" ")) { faction.setTag(TL.SAFEZONE.toString()); }
         }
 
         // Make sure the war zone faction exists
@@ -72,17 +73,17 @@ public class Factions extends EntityCollection<Faction> {
             Faction faction = this.create("-2");
             faction.setTag(TL.WARZONE.toString());
             faction.setDescription(TL.WARZONE_DESCRIPTION.toString());
-        } else {
+        }
+        else {
             if (!getWarZone().getTag().equalsIgnoreCase(TL.WARZONE.toString())) {
                 getWarZone().setTag(TL.WARZONE.toString());
             }
-            if(!getWarZone().getDescription().equalsIgnoreCase(TL.WARZONE_DESCRIPTION.toString())) {
+            if (!getWarZone().getDescription().equalsIgnoreCase(TL.WARZONE_DESCRIPTION.toString())) {
                 getWarZone().setDescription(TL.WARZONE_DESCRIPTION.toString());
             }
             // if WarZone has old pre-1.6.0 name, rename it to remove troublesome " "
             Faction faction = this.getWarZone();
-            if (faction.getTag().contains(" "))
-                faction.setTag(TL.WARZONE.toString());
+            if (faction.getTag().contains(" ")) { faction.setTag(TL.WARZONE.toString()); }
         }
 
         // populate all faction player lists
@@ -166,7 +167,7 @@ public class Factions extends EntityCollection<Faction> {
         }
 
         String tag = TextUtil.getBestStartWithCI(tag2faction.keySet(), searchFor);
-        if (tag == null) return null;
+        if (tag == null) { return null; }
         return tag2faction.get(tag);
     }
 

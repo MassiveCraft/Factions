@@ -26,7 +26,7 @@ public class CmdMod extends FCommand {
     @Override
     public void perform() {
         FPlayer you = this.argAsBestFPlayerMatch(0);
-        if (you == null) return;
+        if (you == null) { return; }
 
         boolean permAny = Permission.MOD_ANY.has(sender, false);
         Faction targetFaction = you.getFaction();
@@ -56,7 +56,8 @@ public class CmdMod extends FCommand {
             you.setRole(Role.NORMAL);
             targetFaction.msg("%s<i> is no longer moderator in your faction.", you.describeTo(targetFaction, true));
             msg("<i>You have removed moderator status from %s<i>.", you.describeTo(fme, true));
-        } else {
+        }
+        else {
             // Give
             you.setRole(Role.MODERATOR);
             targetFaction.msg("%s<i> was promoted to moderator in your faction.", you.describeTo(targetFaction, true));

@@ -58,7 +58,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator {
 
     public void setFaction(Faction faction) {
         Faction oldFaction = this.getFaction();
-        if (oldFaction != null) oldFaction.removeFPlayer(this);
+        if (oldFaction != null) { oldFaction.removeFPlayer(this); }
         faction.addFPlayer(this);
         this.factionId = faction.getId();
     }
@@ -458,10 +458,8 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator {
 
     protected void alterPower(double delta) {
         this.power += delta;
-        if (this.power > this.getPowerMax())
-            this.power = this.getPowerMax();
-        else if (this.power < this.getPowerMin())
-            this.power = this.getPowerMin();
+        if (this.power > this.getPowerMax()) { this.power = this.getPowerMax(); }
+        else if (this.power < this.getPowerMin()) { this.power = this.getPowerMin(); }
     }
 
     public double getPowerMax() {
@@ -496,8 +494,9 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator {
         this.lastPowerUpdateTime = now;
 
         Player thisPlayer = this.getPlayer();
-        if (thisPlayer != null && thisPlayer.isDead())
+        if (thisPlayer != null && thisPlayer.isDead()) {
             return;  // don't let dead players regain power until they respawn
+        }
 
         int millisPerMinute = 60 * 1000;
         this.alterPower(millisPassed * Conf.powerPerMinute / millisPerMinute);
@@ -581,21 +580,23 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator {
         }
 
         // if economy is enabled and they're not on the bypass list, make sure they can pay
-        if (makePay && !Econ.hasAtLeast(this, Conf.econCostLeave, "to leave your faction.")) return;
+        if (makePay && !Econ.hasAtLeast(this, Conf.econCostLeave, "to leave your faction.")) { return; }
 
         FPlayerLeaveEvent leaveEvent = new FPlayerLeaveEvent(this, myFaction, FPlayerLeaveEvent.PlayerLeaveReason.LEAVE);
         Bukkit.getServer().getPluginManager().callEvent(leaveEvent);
-        if (leaveEvent.isCancelled()) return;
+        if (leaveEvent.isCancelled()) { return; }
 
         // then make 'em pay (if applicable)
-        if (makePay && !Econ.modifyMoney(this, -Conf.econCostLeave, "to leave your faction.", "for leaving your faction."))
+        if (makePay && !Econ.modifyMoney(this, -Conf.econCostLeave, "to leave your faction.", "for leaving your faction.")) {
             return;
+        }
 
         // Am I the last one in the faction?
         if (myFaction.getFPlayers().size() == 1) {
             // Transfer all money
-            if (Econ.shouldBeUsed())
+            if (Econ.shouldBeUsed()) {
                 Econ.transferMoney(this, myFaction, this, Econ.getBalance(myFaction.getAccountId()));
+            }
         }
 
         if (myFaction.isNormal()) {
@@ -603,8 +604,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator {
                 fplayer.msg("%s<i> left %s<i>.", this.describeTo(fplayer, true), myFaction.describeTo(fplayer));
             }
 
-            if (Conf.logFactionLeave)
-                P.p.log(this.getName() + " left the faction: " + myFaction.getTag());
+            if (Conf.logFactionLeave) { P.p.log(this.getName() + " left the faction: " + myFaction.getTag()); }
         }
 
         this.resetFactionData();
@@ -616,18 +616,19 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator {
             }
 
             myFaction.detach();
-            if (Conf.logFactionDisband)
+            if (Conf.logFactionDisband) {
                 P.p.log("The faction " + myFaction.getTag() + " (" + myFaction.getId() + ") was disbanded due to the last player (" + this.getName() + ") leaving.");
+            }
         }
     }
 
     public boolean canClaimForFaction(Faction forFaction) {
-        if (forFaction.isNone()) return false;
+        if (forFaction.isNone()) { return false; }
 
         if (this.isAdminBypassing()
-                        || (forFaction == this.getFaction() && this.getRole().isAtLeast(Role.MODERATOR))
-                        || (forFaction.isSafeZone() && Permission.MANAGE_SAFE_ZONE.has(getPlayer()))
-                        || (forFaction.isWarZone() && Permission.MANAGE_WAR_ZONE.has(getPlayer()))) {
+                    || (forFaction == this.getFaction() && this.getRole().isAtLeast(Role.MODERATOR))
+                    || (forFaction.isSafeZone() && Permission.MANAGE_SAFE_ZONE.has(getPlayer()))
+                    || (forFaction.isWarZone() && Permission.MANAGE_WAR_ZONE.has(getPlayer()))) {
             return true;
         }
 
@@ -644,50 +645,70 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator {
         if (Conf.worldGuardChecking && Worldguard.checkForRegionsInChunk(location)) {
             // Checks for WorldGuard regions in the chunk attempting to be claimed
             error = P.p.txt.parse("<b>This land is protected");
-        } else if (Conf.worldsNoClaiming.contains(flocation.getWorldName())) {
+        }
+        else if (Conf.worldsNoClaiming.contains(flocation.getWorldName())) {
             error = P.p.txt.parse("<b>Sorry, this world has land claiming disabled.");
-        } else if (this.isAdminBypassing()) {
+        }
+        else if (this.isAdminBypassing()) {
             return true;
-        } else if (forFaction.isSafeZone() && Permission.MANAGE_SAFE_ZONE.has(getPlayer())) {
+        }
+        else if (forFaction.isSafeZone() && Permission.MANAGE_SAFE_ZONE.has(getPlayer())) {
             return true;
-        } else if (forFaction.isWarZone() && Permission.MANAGE_WAR_ZONE.has(getPlayer())) {
+        }
+        else if (forFaction.isWarZone() && Permission.MANAGE_WAR_ZONE.has(getPlayer())) {
             return true;
-        } else if (myFaction != forFaction) {
+        }
+        else if (myFaction != forFaction) {
             error = P.p.txt.parse("<b>You can't claim land for <h>%s<b>.", forFaction.describeTo(this));
-        } else if (forFaction == currentFaction) {
+        }
+        else if (forFaction == currentFaction) {
             error = P.p.txt.parse("%s<i> already own this land.", forFaction.describeTo(this, true));
-        } else if (this.getRole().value < Role.MODERATOR.value) {
+        }
+        else if (this.getRole().value < Role.MODERATOR.value) {
             error = P.p.txt.parse("<b>You must be <h>%s<b> to claim land.", Role.MODERATOR.toString());
-        } else if (forFaction.getFPlayers().size() < Conf.claimsRequireMinFactionMembers) {
+        }
+        else if (forFaction.getFPlayers().size() < Conf.claimsRequireMinFactionMembers) {
             error = P.p.txt.parse("Factions must have at least <h>%s<b> members to claim land.", Conf.claimsRequireMinFactionMembers);
-        } else if (currentFaction.isSafeZone()) {
+        }
+        else if (currentFaction.isSafeZone()) {
             error = P.p.txt.parse("<b>You can not claim a Safe Zone.");
-        } else if (currentFaction.isWarZone()) {
+        }
+        else if (currentFaction.isWarZone()) {
             error = P.p.txt.parse("<b>You can not claim a War Zone.");
-        } else if (ownedLand >= forFaction.getPowerRounded()) {
+        }
+        else if (ownedLand >= forFaction.getPowerRounded()) {
             error = P.p.txt.parse("<b>You can't claim more land! You need more power!");
-        } else if (Conf.claimedLandsMax != 0 && ownedLand >= Conf.claimedLandsMax && forFaction.isNormal()) {
+        }
+        else if (Conf.claimedLandsMax != 0 && ownedLand >= Conf.claimedLandsMax && forFaction.isNormal()) {
             error = P.p.txt.parse("<b>Limit reached. You can't claim more land!");
-        } else if (currentFaction.getRelationTo(forFaction) == Relation.ALLY) {
+        }
+        else if (currentFaction.getRelationTo(forFaction) == Relation.ALLY) {
             error = P.p.txt.parse("<b>You can't claim the land of your allies.");
-        } else if (Conf.claimsMustBeConnected
-                        && !this.isAdminBypassing()
-                        && myFaction.getLandRoundedInWorld(flocation.getWorldName()) > 0
-                        && !Board.isConnectedLocation(flocation, myFaction)
-                        && (!Conf.claimsCanBeUnconnectedIfOwnedByOtherFaction || !currentFaction.isNormal())) {
-            if (Conf.claimsCanBeUnconnectedIfOwnedByOtherFaction)
+        }
+        else if (Conf.claimsMustBeConnected
+                         && !this.isAdminBypassing()
+                         && myFaction.getLandRoundedInWorld(flocation.getWorldName()) > 0
+                         && !Board.isConnectedLocation(flocation, myFaction)
+                         && (!Conf.claimsCanBeUnconnectedIfOwnedByOtherFaction || !currentFaction.isNormal())) {
+            if (Conf.claimsCanBeUnconnectedIfOwnedByOtherFaction) {
                 error = P.p.txt.parse("<b>You can only claim additional land which is connected to your first claim or controlled by another faction!");
-            else
+            }
+            else {
                 error = P.p.txt.parse("<b>You can only claim additional land which is connected to your first claim!");
-        } else if (currentFaction.isNormal()) {
+            }
+        }
+        else if (currentFaction.isNormal()) {
             if (myFaction.isPeaceful()) {
                 error = P.p.txt.parse("%s<i> owns this land. Your faction is peaceful, so you cannot claim land from other factions.", currentFaction.getTag(this));
-            } else if (currentFaction.isPeaceful()) {
+            }
+            else if (currentFaction.isPeaceful()) {
                 error = P.p.txt.parse("%s<i> owns this land, and is a peaceful faction. You cannot claim land from them.", currentFaction.getTag(this));
-            } else if (!currentFaction.hasLandInflation()) {
+            }
+            else if (!currentFaction.hasLandInflation()) {
                 // TODO more messages WARN current faction most importantly
                 error = P.p.txt.parse("%s<i> owns this land and is strong enough to keep it.", currentFaction.getTag(this));
-            } else if (!Board.isBorderLocation(flocation)) {
+            }
+            else if (!Board.isBorderLocation(flocation)) {
                 error = P.p.txt.parse("<b>You must start claiming land at the border of the territory.");
             }
         }
@@ -707,7 +728,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator {
 
         int ownedLand = forFaction.getLandRounded();
 
-        if (!this.canClaimForFactionAtLocation(forFaction, location, notifyFailure)) return false;
+        if (!this.canClaimForFactionAtLocation(forFaction, location, notifyFailure)) { return false; }
 
         // if economy is enabled and they're not on the bypass list, make sure they can pay
         boolean mustPay = Econ.shouldBeUsed() && !this.isAdminBypassing() && !forFaction.isSafeZone() && !forFaction.isWarZone();
@@ -716,23 +737,24 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator {
         if (mustPay) {
             cost = Econ.calculateClaimCost(ownedLand, currentFaction.isNormal());
 
-            if (Conf.econClaimUnconnectedFee != 0.0 && forFaction.getLandRoundedInWorld(flocation.getWorldName()) > 0 && !Board.isConnectedLocation(flocation, forFaction))
+            if (Conf.econClaimUnconnectedFee != 0.0 && forFaction.getLandRoundedInWorld(flocation.getWorldName()) > 0 && !Board.isConnectedLocation(flocation, forFaction)) {
                 cost += Conf.econClaimUnconnectedFee;
+            }
 
-            if (Conf.bankEnabled && Conf.bankFactionPaysLandCosts && this.hasFaction())
-                payee = this.getFaction();
-            else
-                payee = this;
+            if (Conf.bankEnabled && Conf.bankFactionPaysLandCosts && this.hasFaction()) { payee = this.getFaction(); }
+            else { payee = this; }
 
-            if (!Econ.hasAtLeast(payee, cost, "to claim this land")) return false;
+            if (!Econ.hasAtLeast(payee, cost, "to claim this land")) { return false; }
         }
 
         LandClaimEvent claimEvent = new LandClaimEvent(flocation, forFaction, this);
         Bukkit.getServer().getPluginManager().callEvent(claimEvent);
-        if (claimEvent.isCancelled()) return false;
+        if (claimEvent.isCancelled()) { return false; }
 
         // then make 'em pay (if applicable)
-        if (mustPay && !Econ.modifyMoney(payee, -cost, "to claim this land", "for claiming this land")) return false;
+        if (mustPay && !Econ.modifyMoney(payee, -cost, "to claim this land", "for claiming this land")) {
+            return false;
+        }
 
         // announce success
         Set<FPlayer> informTheseFPlayers = new HashSet<FPlayer>();
@@ -744,8 +766,9 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator {
 
         Board.setFactionAt(forFaction, flocation);
 
-        if (Conf.logLandClaims)
+        if (Conf.logLandClaims) {
             P.p.log(this.getName() + " claimed land at (" + flocation.getCoordString() + ") for the faction: " + forFaction.getTag());
+        }
 
         return true;
     }
@@ -756,8 +779,9 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator {
 
     @Override
     public boolean shouldBeSaved() {
-        if (!this.hasFaction() && (this.getPowerRounded() == this.getPowerMaxRounded() || this.getPowerRounded() == (int) Math.round(Conf.powerPlayerStarting)))
+        if (!this.hasFaction() && (this.getPowerRounded() == this.getPowerMaxRounded() || this.getPowerRounded() == (int) Math.round(Conf.powerPlayerStarting))) {
             return false;
+        }
         return !this.deleteMe;
     }
 

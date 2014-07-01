@@ -37,11 +37,14 @@ public class CmdChat extends FCommand {
             modeString.toLowerCase();
             if (modeString.startsWith("p")) {
                 modeTarget = ChatMode.PUBLIC;
-            } else if (modeString.startsWith("a")) {
+            }
+            else if (modeString.startsWith("a")) {
                 modeTarget = ChatMode.ALLIANCE;
-            } else if (modeString.startsWith("f")) {
+            }
+            else if (modeString.startsWith("f")) {
                 modeTarget = ChatMode.FACTION;
-            } else {
+            }
+            else {
                 msg("<b>Unrecognised chat mode. <i>Please enter either 'a','f' or 'p'");
                 return;
             }
@@ -51,9 +54,11 @@ public class CmdChat extends FCommand {
 
         if (fme.getChatMode() == ChatMode.PUBLIC) {
             msg("<i>Public chat mode.");
-        } else if (fme.getChatMode() == ChatMode.ALLIANCE) {
+        }
+        else if (fme.getChatMode() == ChatMode.ALLIANCE) {
             msg("<i>Alliance only chat mode.");
-        } else {
+        }
+        else {
             msg("<i>Faction only chat mode.");
         }
     }

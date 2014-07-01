@@ -25,7 +25,7 @@ public class FactionsChatListener implements Listener {
     // this is for handling slashless command usage and faction/alliance chat, set at lowest priority so Factions gets to them first
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerEarlyChat(PlayerChatEvent event) {
-        if (event.isCancelled()) return;
+        if (event.isCancelled()) { return; }
 
         Player talkingPlayer = event.getPlayer();
         String msg = event.getMessage();
@@ -34,8 +34,9 @@ public class FactionsChatListener implements Listener {
 
         // slashless factions commands need to be handled here if the user isn't in public chat mode
         if (chat != ChatMode.PUBLIC && p.handleCommand(talkingPlayer, msg, false, true)) {
-            if (Conf.logPlayerCommands)
+            if (Conf.logPlayerCommands) {
                 Bukkit.getLogger().log(Level.INFO, "[PLAYER_COMMAND] " + talkingPlayer.getName() + ": " + msg);
+            }
             event.setCancelled(true);
             return;
         }
@@ -51,13 +52,15 @@ public class FactionsChatListener implements Listener {
 
             //Send to any players who are spying chat
             for (FPlayer fplayer : FPlayers.i.getOnline()) {
-                if (fplayer.isSpyingChat() && fplayer.getFaction() != myFaction)
+                if (fplayer.isSpyingChat() && fplayer.getFaction() != myFaction) {
                     fplayer.sendMessage("[FCspy] " + myFaction.getTag() + ": " + message);
+                }
             }
 
             event.setCancelled(true);
             return;
-        } else if (chat == ChatMode.ALLIANCE) {
+        }
+        else if (chat == ChatMode.ALLIANCE) {
             Faction myFaction = me.getFaction();
 
             String message = String.format(Conf.allianceChatFormat, ChatColor.stripColor(me.getNameAndTag()), msg);
@@ -67,12 +70,10 @@ public class FactionsChatListener implements Listener {
 
             //Send to all our allies
             for (FPlayer fplayer : FPlayers.i.getOnline()) {
-                if (myFaction.getRelationTo(fplayer) == Relation.ALLY)
-                    fplayer.sendMessage(message);
+                if (myFaction.getRelationTo(fplayer) == Relation.ALLY) { fplayer.sendMessage(message); }
 
-                    //Send to any players who are spying chat
-                else if (fplayer.isSpyingChat())
-                    fplayer.sendMessage("[ACspy]: " + message);
+                //Send to any players who are spying chat
+                else if (fplayer.isSpyingChat()) { fplayer.sendMessage("[ACspy]: " + message); }
             }
 
             Bukkit.getLogger().log(Level.INFO, ChatColor.stripColor("AllianceChat: " + message));
@@ -85,11 +86,11 @@ public class FactionsChatListener implements Listener {
     // this is for handling insertion of the player's faction tag, set at highest priority to give other plugins a chance to modify chat first
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerChat(PlayerChatEvent event) {
-        if (event.isCancelled()) return;
+        if (event.isCancelled()) { return; }
 
         // Are we to insert the Faction tag into the format?
         // If we are not to insert it - we are done.
-        if (!Conf.chatTagEnabled || Conf.chatTagHandledByAnotherPlugin) return;
+        if (!Conf.chatTagEnabled || Conf.chatTagHandledByAnotherPlugin) { return; }
 
         Player talkingPlayer = event.getPlayer();
         String msg = event.getMessage();
@@ -107,17 +108,19 @@ public class FactionsChatListener implements Listener {
             eventFormat = eventFormat.replace(Conf.chatTagReplaceString, "");
             Conf.chatTagPadAfter = false;
             Conf.chatTagPadBefore = false;
-        } else if (!Conf.chatTagInsertAfterString.isEmpty() && eventFormat.contains(Conf.chatTagInsertAfterString)) {
+        }
+        else if (!Conf.chatTagInsertAfterString.isEmpty() && eventFormat.contains(Conf.chatTagInsertAfterString)) {
             // we're using the "insert after string" method
             InsertIndex = eventFormat.indexOf(Conf.chatTagInsertAfterString) + Conf.chatTagInsertAfterString.length();
-        } else if (!Conf.chatTagInsertBeforeString.isEmpty() && eventFormat.contains(Conf.chatTagInsertBeforeString)) {
+        }
+        else if (!Conf.chatTagInsertBeforeString.isEmpty() && eventFormat.contains(Conf.chatTagInsertBeforeString)) {
             // we're using the "insert before string" method
             InsertIndex = eventFormat.indexOf(Conf.chatTagInsertBeforeString);
-        } else {
+        }
+        else {
             // we'll fall back to using the index place method
             InsertIndex = Conf.chatTagInsertIndex;
-            if (InsertIndex > eventFormat.length())
-                return;
+            if (InsertIndex > eventFormat.length()) { return; }
         }
 
         String formatStart = eventFormat.substring(0, InsertIndex) + ((Conf.chatTagPadBefore && !me.getChatTag().isEmpty()) ? " " : "");
@@ -148,7 +151,8 @@ public class FactionsChatListener implements Listener {
             // Write to the log... We will write the non colored message.
             String nonColoredMsg = ChatColor.stripColor(String.format(nonColoredMsgFormat, talkingPlayer.getDisplayName(), msg));
             Bukkit.getLogger().log(Level.INFO, nonColoredMsg);
-        } else {
+        }
+        else {
             // No relation color.
             event.setFormat(nonColoredMsgFormat);
         }

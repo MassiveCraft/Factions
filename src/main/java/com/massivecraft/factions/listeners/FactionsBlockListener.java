@@ -23,21 +23,22 @@ public class FactionsBlockListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onBlockPlace(BlockPlaceEvent event) {
-        if (event.isCancelled()) return;
-        if (!event.canBuild()) return;
+        if (event.isCancelled()) { return; }
+        if (!event.canBuild()) { return; }
 
         // special case for flint&steel, which should only be prevented by DenyUsage list
         if (event.getBlockPlaced().getType() == Material.FIRE) {
             return;
         }
 
-        if (!playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock().getLocation(), "build", false))
+        if (!playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock().getLocation(), "build", false)) {
             event.setCancelled(true);
+        }
     }
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onBlockBreak(BlockBreakEvent event) {
-        if (event.isCancelled()) return;
+        if (event.isCancelled()) { return; }
 
         if (!playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock().getLocation(), "destroy", false)) {
             event.setCancelled(true);
@@ -46,7 +47,7 @@ public class FactionsBlockListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onBlockDamage(BlockDamageEvent event) {
-        if (event.isCancelled()) return;
+        if (event.isCancelled()) { return; }
 
         if (event.getInstaBreak() && !playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock().getLocation(), "destroy", false)) {
             event.setCancelled(true);
@@ -55,8 +56,8 @@ public class FactionsBlockListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onBlockPistonExtend(BlockPistonExtendEvent event) {
-        if (event.isCancelled()) return;
-        if (!Conf.pistonProtectionThroughDenyBuild) return;
+        if (event.isCancelled()) { return; }
+        if (!Conf.pistonProtectionThroughDenyBuild) { return; }
 
         Faction pistonFaction = Board.getFactionAt(new FLocation(event.getBlock()));
 
@@ -102,75 +103,69 @@ public class FactionsBlockListener implements Listener {
 
         Faction otherFaction = Board.getFactionAt(new FLocation(target));
 
-        if (pistonFaction == otherFaction)
-            return true;
+        if (pistonFaction == otherFaction) { return true; }
 
         if (otherFaction.isNone()) {
-            if (!Conf.wildernessDenyBuild || Conf.worldsNoWildernessProtection.contains(target.getWorld().getName()))
+            if (!Conf.wildernessDenyBuild || Conf.worldsNoWildernessProtection.contains(target.getWorld().getName())) {
                 return true;
+            }
 
             return false;
-        } else if (otherFaction.isSafeZone()) {
-            if (!Conf.safeZoneDenyBuild)
-                return true;
+        }
+        else if (otherFaction.isSafeZone()) {
+            if (!Conf.safeZoneDenyBuild) { return true; }
 
             return false;
-        } else if (otherFaction.isWarZone()) {
-            if (!Conf.warZoneDenyBuild)
-                return true;
+        }
+        else if (otherFaction.isWarZone()) {
+            if (!Conf.warZoneDenyBuild) { return true; }
 
             return false;
         }
 
         Relation rel = pistonFaction.getRelationTo(otherFaction);
 
-        if (rel.confDenyBuild(otherFaction.hasPlayersOnline()))
-            return false;
+        if (rel.confDenyBuild(otherFaction.hasPlayersOnline())) { return false; }
 
         return true;
     }
 
     public static boolean playerCanBuildDestroyBlock(Player player, Location location, String action, boolean justCheck) {
         String name = player.getName();
-        if (Conf.playersWhoBypassAllProtection.contains(name)) return true;
+        if (Conf.playersWhoBypassAllProtection.contains(name)) { return true; }
 
         FPlayer me = FPlayers.i.get(player.getUniqueId().toString());
-        if (me.isAdminBypassing()) return true;
+        if (me.isAdminBypassing()) { return true; }
 
         FLocation loc = new FLocation(location);
         Faction otherFaction = Board.getFactionAt(loc);
 
         if (otherFaction.isNone()) {
-            if (Conf.worldGuardBuildPriority && Worldguard.playerCanBuild(player, location))
-                return true;
+            if (Conf.worldGuardBuildPriority && Worldguard.playerCanBuild(player, location)) { return true; }
 
-            if (!Conf.wildernessDenyBuild || Conf.worldsNoWildernessProtection.contains(location.getWorld().getName()))
+            if (!Conf.wildernessDenyBuild || Conf.worldsNoWildernessProtection.contains(location.getWorld().getName())) {
                 return true; // This is not faction territory. Use whatever you like here.
+            }
 
-            if (!justCheck)
-                me.msg("<b>You can't " + action + " in the wilderness.");
-
-            return false;
-        } else if (otherFaction.isSafeZone()) {
-            if (Conf.worldGuardBuildPriority && Worldguard.playerCanBuild(player, location))
-                return true;
-
-            if (!Conf.safeZoneDenyBuild || Permission.MANAGE_SAFE_ZONE.has(player))
-                return true;
-
-            if (!justCheck)
-                me.msg("<b>You can't " + action + " in a safe zone.");
+            if (!justCheck) { me.msg("<b>You can't " + action + " in the wilderness."); }
 
             return false;
-        } else if (otherFaction.isWarZone()) {
-            if (Conf.worldGuardBuildPriority && Worldguard.playerCanBuild(player, location))
-                return true;
+        }
+        else if (otherFaction.isSafeZone()) {
+            if (Conf.worldGuardBuildPriority && Worldguard.playerCanBuild(player, location)) { return true; }
 
-            if (!Conf.warZoneDenyBuild || Permission.MANAGE_WAR_ZONE.has(player))
-                return true;
+            if (!Conf.safeZoneDenyBuild || Permission.MANAGE_SAFE_ZONE.has(player)) { return true; }
 
-            if (!justCheck)
-                me.msg("<b>You can't " + action + " in a war zone.");
+            if (!justCheck) { me.msg("<b>You can't " + action + " in a safe zone."); }
+
+            return false;
+        }
+        else if (otherFaction.isWarZone()) {
+            if (Conf.worldGuardBuildPriority && Worldguard.playerCanBuild(player, location)) { return true; }
+
+            if (!Conf.warZoneDenyBuild || Permission.MANAGE_WAR_ZONE.has(player)) { return true; }
+
+            if (!justCheck) { me.msg("<b>You can't " + action + " in a war zone."); }
 
             return false;
         }
@@ -185,14 +180,16 @@ public class FactionsBlockListener implements Listener {
         if (pain) {
             player.damage(Conf.actionDeniedPainAmount);
 
-            if (!deny)
+            if (!deny) {
                 me.msg("<b>It is painful to try to " + action + " in the territory of " + otherFaction.getTag(myFaction));
+            }
         }
 
         // cancel building/destroying in other territory?
         if (deny) {
-            if (!justCheck)
+            if (!justCheck) {
                 me.msg("<b>You can't " + action + " in the territory of " + otherFaction.getTag(myFaction));
+            }
 
             return false;
         }
@@ -202,12 +199,14 @@ public class FactionsBlockListener implements Listener {
             if (!pain && Conf.ownedAreaPainBuild && !justCheck) {
                 player.damage(Conf.actionDeniedPainAmount);
 
-                if (!Conf.ownedAreaDenyBuild)
+                if (!Conf.ownedAreaDenyBuild) {
                     me.msg("<b>It is painful to try to " + action + " in this territory, it is owned by: " + otherFaction.getOwnerListString(loc));
+                }
             }
             if (Conf.ownedAreaDenyBuild) {
-                if (!justCheck)
+                if (!justCheck) {
                     me.msg("<b>You can't " + action + " in this territory, it is owned by: " + otherFaction.getOwnerListString(loc));
+                }
 
                 return false;
             }

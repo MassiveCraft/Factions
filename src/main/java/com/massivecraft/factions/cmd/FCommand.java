@@ -42,7 +42,8 @@ public abstract class FCommand extends MCommand<P> {
         if (sender instanceof Player) {
             this.fme = FPlayers.i.get((Player) sender);
             this.myFaction = this.fme.getFaction();
-        } else {
+        }
+        else {
             this.fme = null;
             this.myFaction = null;
         }
@@ -72,11 +73,11 @@ public abstract class FCommand extends MCommand<P> {
     @Override
     public boolean validSenderType(CommandSender sender, boolean informSenderIfNot) {
         boolean superValid = super.validSenderType(sender, informSenderIfNot);
-        if (!superValid) return false;
+        if (!superValid) { return false; }
 
-        if (!(this.senderMustBeMember || this.senderMustBeModerator || this.senderMustBeAdmin)) return true;
+        if (!(this.senderMustBeMember || this.senderMustBeModerator || this.senderMustBeAdmin)) { return true; }
 
-        if (!(sender instanceof Player)) return false;
+        if (!(sender instanceof Player)) { return false; }
 
         FPlayer fplayer = FPlayers.i.get((Player) sender);
 
@@ -103,7 +104,7 @@ public abstract class FCommand extends MCommand<P> {
     // -------------------------------------------- //
 
     public boolean assertHasFaction() {
-        if (me == null) return true;
+        if (me == null) { return true; }
 
         if (!fme.hasFaction()) {
             sendMessage("You are not member of any faction.");
@@ -113,7 +114,7 @@ public abstract class FCommand extends MCommand<P> {
     }
 
     public boolean assertMinRole(Role role) {
-        if (me == null) return true;
+        if (me == null) { return true; }
 
         if (fme.getRole().value < role.value) {
             msg("<b>You <h>must be " + role + "<b> to " + this.getHelpShort() + ".");
@@ -240,13 +241,16 @@ public abstract class FCommand extends MCommand<P> {
 
         if (you.getRole().equals(Role.ADMIN)) {
             i.sendMessage(p.txt.parse("<b>Only the faction admin can do that."));
-        } else if (i.getRole().equals(Role.MODERATOR)) {
+        }
+        else if (i.getRole().equals(Role.MODERATOR)) {
             if (i == you) {
                 return true; //Moderators can control themselves
-            } else {
+            }
+            else {
                 i.sendMessage(p.txt.parse("<b>Moderators can't control each other..."));
             }
-        } else {
+        }
+        else {
             i.sendMessage(p.txt.parse("<b>You must be a faction moderator to do that."));
         }
 
@@ -255,21 +259,21 @@ public abstract class FCommand extends MCommand<P> {
 
     // if economy is enabled and they're not on the bypass list, make 'em pay; returns true unless person can't afford the cost
     public boolean payForCommand(double cost, String toDoThis, String forDoingThis) {
-        if (!Econ.shouldBeUsed() || this.fme == null || cost == 0.0 || fme.isAdminBypassing()) return true;
+        if (!Econ.shouldBeUsed() || this.fme == null || cost == 0.0 || fme.isAdminBypassing()) { return true; }
 
-        if (Conf.bankEnabled && Conf.bankFactionPaysCosts && fme.hasFaction())
+        if (Conf.bankEnabled && Conf.bankFactionPaysCosts && fme.hasFaction()) {
             return Econ.modifyMoney(myFaction, -cost, toDoThis, forDoingThis);
-        else
-            return Econ.modifyMoney(fme, -cost, toDoThis, forDoingThis);
+        }
+        else { return Econ.modifyMoney(fme, -cost, toDoThis, forDoingThis); }
     }
 
     // like above, but just make sure they can pay; returns true unless person can't afford the cost
     public boolean canAffordCommand(double cost, String toDoThis) {
-        if (!Econ.shouldBeUsed() || this.fme == null || cost == 0.0 || fme.isAdminBypassing()) return true;
+        if (!Econ.shouldBeUsed() || this.fme == null || cost == 0.0 || fme.isAdminBypassing()) { return true; }
 
-        if (Conf.bankEnabled && Conf.bankFactionPaysCosts && fme.hasFaction())
+        if (Conf.bankEnabled && Conf.bankFactionPaysCosts && fme.hasFaction()) {
             return Econ.hasAtLeast(myFaction, cost, toDoThis);
-        else
-            return Econ.hasAtLeast(fme, cost, toDoThis);
+        }
+        else { return Econ.hasAtLeast(fme, cost, toDoThis); }
     }
 }

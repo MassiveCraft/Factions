@@ -31,10 +31,8 @@ public class CmdAutoClaim extends FCommand {
         }
 
         if (!fme.canClaimForFaction(forFaction)) {
-            if (myFaction == forFaction)
-                msg("<b>You must be <h>%s<b> to claim land.", Role.MODERATOR.toString());
-            else
-                msg("<b>You can't claim land for <h>%s<b>.", forFaction.describeTo(fme));
+            if (myFaction == forFaction) { msg("<b>You must be <h>%s<b> to claim land.", Role.MODERATOR.toString()); }
+            else { msg("<b>You can't claim land for <h>%s<b>.", forFaction.describeTo(fme)); }
 
             return;
         }

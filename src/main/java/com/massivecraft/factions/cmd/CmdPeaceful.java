@@ -26,13 +26,14 @@ public class CmdPeaceful extends FCommand {
     @Override
     public void perform() {
         Faction faction = this.argAsFaction(0);
-        if (faction == null) return;
+        if (faction == null) { return; }
 
         String change;
         if (faction.isPeaceful()) {
             change = "removed peaceful status from";
             faction.setPeaceful(false);
-        } else {
+        }
+        else {
             change = "granted peaceful status to";
             faction.setPeaceful(true);
         }
@@ -41,7 +42,8 @@ public class CmdPeaceful extends FCommand {
         for (FPlayer fplayer : FPlayers.i.getOnline()) {
             if (fplayer.getFaction() == faction) {
                 fplayer.msg((fme == null ? "A server admin" : fme.describeTo(fplayer, true)) + "<i> has " + change + " your faction.");
-            } else {
+            }
+            else {
                 fplayer.msg((fme == null ? "A server admin" : fme.describeTo(fplayer, true)) + "<i> has " + change + " the faction \"" + faction.getTag(fplayer) + "<i>\".");
             }
         }

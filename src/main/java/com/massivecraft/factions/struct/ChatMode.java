@@ -27,8 +27,8 @@ public enum ChatMode {
     }
 
     public ChatMode getNext() {
-        if (this == PUBLIC) return ALLIANCE;
-        if (this == ALLIANCE) return FACTION;
+        if (this == PUBLIC) { return ALLIANCE; }
+        if (this == ALLIANCE) { return FACTION; }
         return PUBLIC;
     }
 }

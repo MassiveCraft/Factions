@@ -34,11 +34,13 @@ public class CmdShow extends FCommand {
         Faction faction = myFaction;
         if (this.argIsSet(0)) {
             faction = this.argAsFaction(0);
-            if (faction == null) return;
+            if (faction == null) { return; }
         }
 
         // if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-        if (!payForCommand(Conf.econCostShow, "to show faction information", "for showing faction information")) return;
+        if (!payForCommand(Conf.econCostShow, "to show faction information", "for showing faction information")) {
+            return;
+        }
 
         Collection<FPlayer> admins = faction.getFPlayersWhereRole(Role.ADMIN);
         Collection<FPlayer> mods = faction.getFPlayersWhereRole(Role.MODERATOR);
@@ -87,22 +89,19 @@ public class CmdShow extends FCommand {
         String allyList = p.txt.parse("<a>Allies: ");
         String enemyList = p.txt.parse("<a>Enemies: ");
         for (Faction otherFaction : Factions.i.get()) {
-            if (otherFaction == faction) continue;
+            if (otherFaction == faction) { continue; }
 
             Relation rel = otherFaction.getRelationTo(faction);
-            if (!rel.isAlly() && !rel.isEnemy())
+            if (!rel.isAlly() && !rel.isEnemy()) {
                 continue;  // if not ally or enemy, drop out now so we're not wasting time on it; good performance boost
+            }
 
             listpart = otherFaction.getTag(fme) + p.txt.parse("<i>") + ", ";
-            if (rel.isAlly())
-                allyList += listpart;
-            else if (rel.isEnemy())
-                enemyList += listpart;
+            if (rel.isAlly()) { allyList += listpart; }
+            else if (rel.isEnemy()) { enemyList += listpart; }
         }
-        if (allyList.endsWith(", "))
-            allyList = allyList.substring(0, allyList.length() - 2);
-        if (enemyList.endsWith(", "))
-            enemyList = enemyList.substring(0, enemyList.length() - 2);
+        if (allyList.endsWith(", ")) { allyList = allyList.substring(0, allyList.length() - 2); }
+        if (enemyList.endsWith(", ")) { enemyList = enemyList.substring(0, enemyList.length() - 2); }
 
         sendMessage(allyList);
         sendMessage(enemyList);
@@ -114,7 +113,8 @@ public class CmdShow extends FCommand {
             listpart = follower.getNameAndTitle(fme) + p.txt.parse("<i>") + ", ";
             if (follower.isOnlineAndVisibleTo(me)) {
                 onlineList += listpart;
-            } else {
+            }
+            else {
                 offlineList += listpart;
             }
         }
@@ -123,7 +123,8 @@ public class CmdShow extends FCommand {
             if
                     (follower.isOnlineAndVisibleTo(me)) {
                 onlineList += listpart;
-            } else {
+            }
+            else {
                 offlineList += listpart;
             }
         }
@@ -131,7 +132,8 @@ public class CmdShow extends FCommand {
             listpart = follower.getNameAndTitle(fme) + p.txt.parse("<i>") + ", ";
             if (follower.isOnlineAndVisibleTo(me)) {
                 onlineList += listpart;
-            } else {
+            }
+            else {
                 offlineList += listpart;
             }
         }

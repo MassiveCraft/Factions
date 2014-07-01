@@ -77,7 +77,7 @@ public class Persist {
 
             // backup bad file, so user can attempt to recover their changes from it
             File backup = new File(file.getPath() + "_bad");
-            if (backup.exists()) backup.delete();
+            if (backup.exists()) { backup.delete(); }
             p.log(Level.WARNING, "Backing up copy of bad file to: " + backup);
             file.renameTo(backup);
 

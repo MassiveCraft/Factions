@@ -47,7 +47,7 @@ public class PermUtil {
      * This method tests if me has a certain permission and returns true if me has. Otherwise false
      */
     public boolean has(CommandSender me, String perm) {
-        if (me == null) return false;
+        if (me == null) { return false; }
 
         if (!(me instanceof Player)) {
             return me.hasPermission(perm);
@@ -59,19 +59,20 @@ public class PermUtil {
     public boolean has(CommandSender me, String perm, boolean informSenderIfNot) {
         if (has(me, perm)) {
             return true;
-        } else if (informSenderIfNot && me != null) {
+        }
+        else if (informSenderIfNot && me != null) {
             me.sendMessage(this.getForbiddenMessage(perm));
         }
         return false;
     }
 
     public <T> T pickFirstVal(CommandSender me, Map<String, T> perm2val) {
-        if (perm2val == null) return null;
+        if (perm2val == null) { return null; }
         T ret = null;
 
         for (Entry<String, T> entry : perm2val.entrySet()) {
             ret = entry.getValue();
-            if (has(me, entry.getKey())) break;
+            if (has(me, entry.getKey())) { break; }
         }
 
         return ret;

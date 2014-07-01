@@ -28,7 +28,7 @@ public class CmdAdmin extends FCommand {
     @Override
     public void perform() {
         FPlayer fyou = this.argAsBestFPlayerMatch(0);
-        if (fyou == null) return;
+        if (fyou == null) { return; }
 
         boolean permAny = Permission.ADMIN_ANY.has(sender, false);
         Faction targetFaction = fyou.getFaction();
@@ -52,7 +52,7 @@ public class CmdAdmin extends FCommand {
         if (fyou.getFaction() != targetFaction) {
             FPlayerJoinEvent event = new FPlayerJoinEvent(FPlayers.i.get(me), targetFaction, FPlayerJoinEvent.PlayerJoinReason.LEADER);
             Bukkit.getServer().getPluginManager().callEvent(event);
-            if (event.isCancelled()) return;
+            if (event.isCancelled()) { return; }
         }
 
         FPlayer admin = targetFaction.getFPlayerAdmin();
@@ -66,8 +66,7 @@ public class CmdAdmin extends FCommand {
         }
 
         // promote target player, and demote existing admin if one exists
-        if (admin != null)
-            admin.setRole(Role.MODERATOR);
+        if (admin != null) { admin.setRole(Role.MODERATOR); }
         fyou.setRole(Role.ADMIN);
         msg("<i>You have promoted %s<i> to the position of faction admin.", fyou.describeTo(fme, true));
 

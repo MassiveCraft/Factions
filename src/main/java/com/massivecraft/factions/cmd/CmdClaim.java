@@ -40,7 +40,8 @@ public class CmdClaim extends FCommand {
         if (radius < 2) {
             // single chunk
             fme.attemptClaim(forFaction, me.getLocation(), true);
-        } else {
+        }
+        else {
             // radius claim
             if (!Permission.CLAIM_RADIUS.has(sender, false)) {
                 msg("<b>You do not have permission to claim in a radius.");
@@ -54,8 +55,7 @@ public class CmdClaim extends FCommand {
                 @Override
                 public boolean work() {
                     boolean success = fme.attemptClaim(forFaction, this.currentLocation(), true);
-                    if (success)
-                        failCount = 0;
+                    if (success) { failCount = 0; }
                     else if (!success && failCount++ >= limit) {
                         this.stop();
                         return false;

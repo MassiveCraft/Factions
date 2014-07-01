@@ -48,15 +48,15 @@ public class CmdCreate extends FCommand {
         }
 
         // if economy is enabled, they're not on the bypass list, and this command has a cost set, make sure they can pay
-        if (!canAffordCommand(Conf.econCostCreate, "to create a new faction")) return;
+        if (!canAffordCommand(Conf.econCostCreate, "to create a new faction")) { return; }
 
         // trigger the faction creation event (cancellable)
         FactionCreateEvent createEvent = new FactionCreateEvent(me, tag);
         Bukkit.getServer().getPluginManager().callEvent(createEvent);
-        if (createEvent.isCancelled()) return;
+        if (createEvent.isCancelled()) { return; }
 
         // then make 'em pay (if applicable)
-        if (!payForCommand(Conf.econCostCreate, "to create a new faction", "for creating a new faction")) return;
+        if (!payForCommand(Conf.econCostCreate, "to create a new faction", "for creating a new faction")) { return; }
 
         Faction faction = Factions.i.create();
 
@@ -84,8 +84,7 @@ public class CmdCreate extends FCommand {
 
         msg("<i>You should now: %s", p.cmdBase.cmdDescription.getUseageTemplate());
 
-        if (Conf.logFactionCreate)
-            P.p.log(fme.getName() + " created a new faction: " + tag);
+        if (Conf.logFactionCreate) { P.p.log(fme.getName() + " created a new faction: " + tag); }
     }
 
 }

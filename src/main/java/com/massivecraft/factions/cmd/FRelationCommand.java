@@ -28,7 +28,7 @@ public abstract class FRelationCommand extends FCommand {
     @Override
     public void perform() {
         Faction them = this.argAsFaction(0);
-        if (them == null) return;
+        if (them == null) { return; }
 
         if (!them.isNormal()) {
             msg("<b>Nope! You can't.");
@@ -46,8 +46,9 @@ public abstract class FRelationCommand extends FCommand {
         }
 
         // if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-        if (!payForCommand(targetRelation.getRelationCost(), "to change a relation wish", "for changing a relation wish"))
+        if (!payForCommand(targetRelation.getRelationCost(), "to change a relation wish", "for changing a relation wish")) {
             return;
+        }
 
         // try to set the new relation
         Relation oldRelation = myFaction.getRelationTo(them, true);

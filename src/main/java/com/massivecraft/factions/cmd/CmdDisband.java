@@ -30,13 +30,14 @@ public class CmdDisband extends FCommand {
     public void perform() {
         // The faction, default to your own.. but null if console sender.
         Faction faction = this.argAsFaction(0, fme == null ? null : myFaction);
-        if (faction == null) return;
+        if (faction == null) { return; }
 
         boolean isMyFaction = fme == null ? false : faction == myFaction;
 
         if (isMyFaction) {
-            if (!assertMinRole(Role.ADMIN)) return;
-        } else {
+            if (!assertMinRole(Role.ADMIN)) { return; }
+        }
+        else {
             if (!Permission.DISBAND_ANY.has(sender, true)) {
                 return;
             }
@@ -53,7 +54,7 @@ public class CmdDisband extends FCommand {
 
         FactionDisbandEvent disbandEvent = new FactionDisbandEvent(me, faction.getId());
         Bukkit.getServer().getPluginManager().callEvent(disbandEvent);
-        if (disbandEvent.isCancelled()) return;
+        if (disbandEvent.isCancelled()) { return; }
 
         // Send FPlayerLeaveEvent for each player in the faction
         for (FPlayer fplayer : faction.getFPlayers()) {
@@ -65,12 +66,14 @@ public class CmdDisband extends FCommand {
             String who = senderIsConsole ? "A server admin" : fme.describeTo(fplayer);
             if (fplayer.getFaction() == faction) {
                 fplayer.msg("<h>%s<i> disbanded your faction.", who);
-            } else {
+            }
+            else {
                 fplayer.msg("<h>%s<i> disbanded the faction %s.", who, faction.getTag(fplayer));
             }
         }
-        if (Conf.logFactionDisband)
+        if (Conf.logFactionDisband) {
             P.p.log("The faction " + faction.getTag() + " (" + faction.getId() + ") was disbanded by " + (senderIsConsole ? "console command" : fme.getName()) + ".");
+        }
 
         if (Econ.shouldBeUsed() && !senderIsConsole) {
             //Give all the faction's money to the disbander

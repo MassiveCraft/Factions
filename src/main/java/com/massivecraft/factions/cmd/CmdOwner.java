@@ -63,7 +63,7 @@ public class CmdOwner extends FCommand {
         }
 
         FPlayer target = this.argAsBestFPlayerMatch(0, fme);
-        if (target == null) return;
+        if (target == null) { return; }
 
         String playerName = target.getName();
 
@@ -86,8 +86,9 @@ public class CmdOwner extends FCommand {
         }
 
         // if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-        if (!payForCommand(Conf.econCostOwner, "to set ownership of claimed land", "for setting ownership of claimed land"))
+        if (!payForCommand(Conf.econCostOwner, "to set ownership of claimed land", "for setting ownership of claimed land")) {
             return;
+        }
 
         myFaction.setPlayerAsOwner(target, flocation);
 

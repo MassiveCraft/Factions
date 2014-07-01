@@ -79,7 +79,7 @@ public class P extends MPlugin {
             return;
         }
 
-        if (!preEnable()) return;
+        if (!preEnable()) { return; }
         this.loadSuccessful = false;
 
         // Load Conf from disk
@@ -123,11 +123,11 @@ public class P extends MPlugin {
         }.getType();
 
         return new GsonBuilder()
-                .setPrettyPrinting()
-                .disableHtmlEscaping()
-                .excludeFieldsWithModifiers(Modifier.TRANSIENT, Modifier.VOLATILE)
-                .registerTypeAdapter(LazyLocation.class, new MyLocationTypeAdapter())
-                .registerTypeAdapter(mapFLocToStringSetType, new MapFLocToStringSetTypeAdapter());
+                       .setPrettyPrinting()
+                       .disableHtmlEscaping()
+                       .excludeFieldsWithModifiers(Modifier.TRANSIENT, Modifier.VOLATILE)
+                       .registerTypeAdapter(LazyLocation.class, new MyLocationTypeAdapter())
+                       .registerTypeAdapter(mapFLocToStringSetType, new MapFLocToStringSetTypeAdapter());
     }
 
     @Override
@@ -146,7 +146,7 @@ public class P extends MPlugin {
 
     public void startAutoLeaveTask(boolean restartIfRunning) {
         if (AutoLeaveTask != null) {
-            if (!restartIfRunning) return;
+            if (!restartIfRunning) { return; }
             this.getServer().getScheduler().cancelTask(AutoLeaveTask);
         }
 
@@ -169,8 +169,9 @@ public class P extends MPlugin {
 
     @Override
     public boolean handleCommand(CommandSender sender, String commandString, boolean testOnly) {
-        if (sender instanceof Player && FactionsPlayerListener.preventCommand(commandString, (Player) sender))
+        if (sender instanceof Player && FactionsPlayerListener.preventCommand(commandString, (Player) sender)) {
             return true;
+        }
 
         return super.handleCommand(sender, commandString, testOnly);
     }
@@ -178,7 +179,7 @@ public class P extends MPlugin {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] split) {
         // if bare command at this point, it has already been handled by MPlugin's command listeners
-        if (split == null || split.length == 0) return true;
+        if (split == null || split.length == 0) { return true; }
 
         // otherwise, needs to be handled; presumably another plugin directly ran the command
         String cmd = Conf.baseCommandAliases.isEmpty() ? "/f" : "/" + Conf.baseCommandAliases.get(0);
@@ -204,17 +205,17 @@ public class P extends MPlugin {
     // enabled or use of the Factions f command without a slash; combination of isPlayerFactionChatting() and isFactionsCommand()
 
     public boolean shouldLetFactionsHandleThisChat(AsyncPlayerChatEvent event) {
-        if (event == null) return false;
+        if (event == null) { return false; }
         return (isPlayerFactionChatting(event.getPlayer()) || isFactionsCommand(event.getMessage()));
     }
 
     // Does player have Faction Chat enabled? If so, chat plugins should preferably not do channels,
     // local chat, or anything else which targets individual recipients, so Faction Chat can be done
     public boolean isPlayerFactionChatting(Player player) {
-        if (player == null) return false;
+        if (player == null) { return false; }
         FPlayer me = FPlayers.i.get(player);
 
-        if (me == null) return false;
+        if (me == null) { return false; }
         return me.getChatMode().isAtLeast(ChatMode.ALLIANCE);
     }
 
@@ -223,7 +224,7 @@ public class P extends MPlugin {
     // TODO: GET THIS BACK AND WORKING
 
     public boolean isFactionsCommand(String check) {
-        if (check == null || check.isEmpty()) return false;
+        if (check == null || check.isEmpty()) { return false; }
         return this.handleCommand(null, check, true);
     }
 
@@ -236,37 +237,32 @@ public class P extends MPlugin {
     public String getPlayerFactionTagRelation(Player speaker, Player listener) {
         String tag = "~";
 
-        if (speaker == null)
-            return tag;
+        if (speaker == null) { return tag; }
 
         FPlayer me = FPlayers.i.get(speaker);
-        if (me == null)
-            return tag;
+        if (me == null) { return tag; }
 
         // if listener isn't set, or config option is disabled, give back uncolored tag
         if (listener == null || !Conf.chatTagRelationColored) {
             tag = me.getChatTag().trim();
-        } else {
-            FPlayer you = FPlayers.i.get(listener);
-            if (you == null)
-                tag = me.getChatTag().trim();
-            else  // everything checks out, give the colored tag
-                tag = me.getChatTag(you).trim();
         }
-        if (tag.isEmpty())
-            tag = "~";
+        else {
+            FPlayer you = FPlayers.i.get(listener);
+            if (you == null) { tag = me.getChatTag().trim(); }
+            else  // everything checks out, give the colored tag
+            { tag = me.getChatTag(you).trim(); }
+        }
+        if (tag.isEmpty()) { tag = "~"; }
 
         return tag;
     }
 
     // Get a player's title within their faction, mainly for usage by chat plugins for local/channel chat
     public String getPlayerTitle(Player player) {
-        if (player == null)
-            return "";
+        if (player == null) { return ""; }
 
         FPlayer me = FPlayers.i.get(player);
-        if (me == null)
-            return "";
+        if (me == null) { return ""; }
 
         return me.getTitle().trim();
     }

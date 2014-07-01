@@ -173,33 +173,39 @@ public class Board {
             for (int dx = 0; dx < width; dx++) {
                 if (dx == halfWidth && dz == halfHeight) {
                     row += ChatColor.AQUA + "+";
-                } else {
+                }
+                else {
                     FLocation flocationHere = topLeft.getRelative(dx, dz);
                     Faction factionHere = getFactionAt(flocationHere);
                     Relation relation = faction.getRelationTo(factionHere);
                     if (factionHere.isNone()) {
                         row += ChatColor.GRAY + "-";
-                    } else if (factionHere.isSafeZone()) {
+                    }
+                    else if (factionHere.isSafeZone()) {
                         row += Conf.colorPeaceful + "+";
-                    } else if (factionHere.isWarZone()) {
+                    }
+                    else if (factionHere.isWarZone()) {
                         row += ChatColor.DARK_RED + "+";
-                    } else if
-                            (
-                            factionHere == faction
-                                    ||
-                                    factionHere == factionLoc
-                                    ||
-                                    relation.isAtLeast(Relation.ALLY)
-                                    ||
-                                    (Conf.showNeutralFactionsOnMap && relation.equals(Relation.NEUTRAL))
-                                    ||
-                                    (Conf.showEnemyFactionsOnMap && relation.equals(Relation.ENEMY))
-                            ) {
-                        if (!fList.containsKey(factionHere.getTag()))
+                    }
+                    else if
+                                 (
+                                 factionHere == faction
+                                         ||
+                                         factionHere == factionLoc
+                                         ||
+                                         relation.isAtLeast(Relation.ALLY)
+                                         ||
+                                         (Conf.showNeutralFactionsOnMap && relation.equals(Relation.NEUTRAL))
+                                         ||
+                                         (Conf.showEnemyFactionsOnMap && relation.equals(Relation.ENEMY))
+                                 ) {
+                        if (!fList.containsKey(factionHere.getTag())) {
                             fList.put(factionHere.getTag(), Conf.mapKeyChrs[chrIdx++]);
+                        }
                         char tag = fList.get(factionHere.getTag());
                         row += factionHere.getColorTo(faction) + "" + tag;
-                    } else {
+                    }
+                    else {
                         row += ChatColor.GRAY + "-";
                     }
                 }

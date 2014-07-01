@@ -90,8 +90,7 @@ public abstract class MPlugin extends JavaPlugin {
         // reference command will be used to prevent "unknown command" console messages
         try {
             Map<String, Map<String, Object>> refCmd = this.getDescription().getCommands();
-            if (refCmd != null && !refCmd.isEmpty())
-                this.refCommand = (String) (refCmd.keySet().toArray()[0]);
+            if (refCmd != null && !refCmd.isEmpty()) { this.refCommand = (String) (refCmd.keySet().toArray()[0]); }
         } catch (ClassCastException ex) {
         }
 
@@ -186,8 +185,7 @@ public abstract class MPlugin extends JavaPlugin {
             saveTask = null;
         }
         // only save data if plugin actually loaded successfully
-        if (loadSuccessful)
-            EM.saveAllToDisc();
+        if (loadSuccessful) { EM.saveAllToDisc(); }
         log("Disabled");
     }
 
@@ -204,10 +202,10 @@ public abstract class MPlugin extends JavaPlugin {
 
     public GsonBuilder getGsonBuilder() {
         return new GsonBuilder()
-                .setPrettyPrinting()
-                .disableHtmlEscaping()
-                .serializeNulls()
-                .excludeFieldsWithModifiers(Modifier.TRANSIENT, Modifier.VOLATILE);
+                       .setPrettyPrinting()
+                       .disableHtmlEscaping()
+                       .serializeNulls()
+                       .excludeFieldsWithModifiers(Modifier.TRANSIENT, Modifier.VOLATILE);
     }
 
     // -------------------------------------------- //
@@ -237,7 +235,7 @@ public abstract class MPlugin extends JavaPlugin {
         }.getType();
 
         Map<String, String> tagsFromFile = this.persist.load(type, "tags");
-        if (tagsFromFile != null) this.rawTags.putAll(tagsFromFile);
+        if (tagsFromFile != null) { this.rawTags.putAll(tagsFromFile); }
         this.persist.save(this.rawTags, "tags");
 
         for (Entry<String, String> rawTag : this.rawTags.entrySet()) {
@@ -266,17 +264,17 @@ public abstract class MPlugin extends JavaPlugin {
         }
 
         for (final MCommand<?> command : this.getBaseCommands()) {
-            if (noSlash && !command.allowNoSlashAccess) continue;
+            if (noSlash && !command.allowNoSlashAccess) { continue; }
 
             for (String alias : command.aliases) {
                 // disallow double-space after alias, so specific commands can be prevented (preventing "f home" won't prevent "f  home")
-                if (commandString.startsWith(alias + "  ")) return false;
+                if (commandString.startsWith(alias + "  ")) { return false; }
 
                 if (commandString.startsWith(alias + " ") || commandString.equals(alias)) {
                     final List<String> args = new ArrayList<String>(Arrays.asList(commandString.split("\\s+")));
                     args.remove(0);
 
-                    if (testOnly) return true;
+                    if (testOnly) { return true; }
 
                     if (async) {
                         Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
@@ -285,8 +283,8 @@ public abstract class MPlugin extends JavaPlugin {
                                 command.execute(sender, args);
                             }
                         });
-                    } else
-                        command.execute(sender, args);
+                    }
+                    else { command.execute(sender, args); }
 
                     return true;
                 }

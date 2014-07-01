@@ -25,7 +25,7 @@ public class CmdDeinvite extends FCommand {
     @Override
     public void perform() {
         FPlayer you = this.argAsBestFPlayerMatch(0);
-        if (you == null) return;
+        if (you == null) { return; }
 
         if (you.getFaction() == myFaction) {
             msg("%s<i> is already a member of %s", you.getName(), myFaction.getTag());

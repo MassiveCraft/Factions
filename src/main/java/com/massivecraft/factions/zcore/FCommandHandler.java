@@ -11,8 +11,9 @@ public class FCommandHandler implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (P.p.handleCommand(sender, cmd.getName() + args)) {
-            if (P.p.logPlayerCommands())
+            if (P.p.logPlayerCommands()) {
                 Bukkit.getLogger().info("[PLAYER_COMMAND] " + sender.getName() + ": " + cmd.getName() + args);
+            }
         }
         return false;
     }

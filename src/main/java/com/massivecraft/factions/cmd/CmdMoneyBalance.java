@@ -29,8 +29,8 @@ public class CmdMoneyBalance extends FCommand {
             faction = this.argAsFaction(0);
         }
 
-        if (faction == null) return;
-        if (faction != myFaction && !Permission.MONEY_BALANCE_ANY.has(sender, true)) return;
+        if (faction == null) { return; }
+        if (faction != myFaction && !Permission.MONEY_BALANCE_ANY.has(sender, true)) { return; }
 
         Econ.sendBalanceInfo(fme, faction);
     }

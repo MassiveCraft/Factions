@@ -27,13 +27,14 @@ public class CmdPermanent extends FCommand {
     @Override
     public void perform() {
         Faction faction = this.argAsFaction(0);
-        if (faction == null) return;
+        if (faction == null) { return; }
 
         String change;
         if (faction.isPermanent()) {
             change = "removed permanent status from";
             faction.setPermanent(false);
-        } else {
+        }
+        else {
             change = "added permanent status to";
             faction.setPermanent(true);
         }
@@ -44,7 +45,8 @@ public class CmdPermanent extends FCommand {
         for (FPlayer fplayer : FPlayers.i.getOnline()) {
             if (fplayer.getFaction() == faction) {
                 fplayer.msg((fme == null ? "A server admin" : fme.describeTo(fplayer, true)) + "<i> " + change + " your faction.");
-            } else {
+            }
+            else {
                 fplayer.msg((fme == null ? "A server admin" : fme.describeTo(fplayer, true)) + "<i> " + change + " the faction \"" + faction.getTag(fplayer) + "\".");
             }
         }

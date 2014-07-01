@@ -24,7 +24,7 @@ public class CmdPermanentPower extends FCommand {
     @Override
     public void perform() {
         Faction targetFaction = this.argAsFaction(0);
-        if (targetFaction == null) return;
+        if (targetFaction == null) { return; }
 
         Integer targetPower = this.argAsInt(1);
 

@@ -14,7 +14,7 @@ public class MPluginSecretServerListener implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onServerCommand(ServerCommandEvent event) {
-        if (event.getCommand().length() == 0) return;
+        if (event.getCommand().length() == 0) { return; }
 
         if (p.handleCommand(event.getSender(), event.getCommand())) {
             event.setCommand(p.refCommand);

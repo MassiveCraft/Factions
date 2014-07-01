@@ -31,8 +31,7 @@ public class CmdSafeunclaimall extends FCommand {
         Board.unclaimAll(Factions.i.getSafeZone().getId());
         msg("<i>You unclaimed ALL safe zone land.");
 
-        if (Conf.logLandUnclaims)
-            P.p.log(fme.getName() + " unclaimed all safe zones.");
+        if (Conf.logLandUnclaims) { P.p.log(fme.getName() + " unclaimed all safe zones."); }
     }
 
 }

@@ -36,7 +36,8 @@ public class Worldguard {
             enabled = false;
             wg = null;
             P.p.log("Could not hook to WorldGuard. WorldGuard checks are disabled.");
-        } else {
+        }
+        else {
             wg = (WorldGuardPlugin) wgplug;
             enabled = true;
             P.p.log("Successfully hooked to WorldGuard.");
@@ -79,8 +80,7 @@ public class Worldguard {
         World world = loc.getWorld();
         Vector pt = toVector(loc);
 
-        if (wg.getRegionManager(world).getApplicableRegions(pt).size() > 0)
-            return wg.canBuild(player, loc);
+        if (wg.getRegionManager(world).getApplicableRegions(pt).size() > 0) { return wg.canBuild(player, loc); }
         return false;
     }
 
@@ -117,7 +117,8 @@ public class Worldguard {
             overlaps = region.getIntersectingRegions(allregionslist);
             if (overlaps == null || overlaps.isEmpty()) {
                 foundregions = false;
-            } else {
+            }
+            else {
                 foundregions = true;
             }
         } catch (Exception e) {

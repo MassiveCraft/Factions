@@ -31,8 +31,7 @@ public class CmdWarunclaimall extends FCommand {
         Board.unclaimAll(Factions.i.getWarZone().getId());
         msg("<i>You unclaimed ALL war zone land.");
 
-        if (Conf.logLandUnclaims)
-            P.p.log(fme.getName() + " unclaimed all war zones.");
+        if (Conf.logLandUnclaims) { P.p.log(fme.getName() + " unclaimed all war zones."); }
     }
 
 }

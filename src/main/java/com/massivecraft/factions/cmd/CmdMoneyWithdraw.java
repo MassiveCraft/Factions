@@ -29,10 +29,11 @@ public class CmdMoneyWithdraw extends FCommand {
     public void perform() {
         double amount = this.argAsDouble(0, 0d);
         EconomyParticipator faction = this.argAsFaction(1, myFaction);
-        if (faction == null) return;
+        if (faction == null) { return; }
         boolean success = Econ.transferMoney(fme, faction, fme, amount);
 
-        if (success && Conf.logMoneyTransactions)
+        if (success && Conf.logMoneyTransactions) {
             P.p.log(ChatColor.stripColor(P.p.txt.parse("%s withdrew %s from the faction bank: %s", fme.getName(), Econ.moneyString(amount), faction.describeTo(null))));
+        }
     }
 }

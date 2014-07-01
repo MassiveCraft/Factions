@@ -31,13 +31,14 @@ public class CmdSethome extends FCommand {
         }
 
         Faction faction = this.argAsFaction(0, myFaction);
-        if (faction == null) return;
+        if (faction == null) { return; }
 
         // Can the player set the home for this faction?
         if (faction == myFaction) {
-            if (!Permission.SETHOME_ANY.has(sender) && !assertMinRole(Role.MODERATOR)) return;
-        } else {
-            if (!Permission.SETHOME_ANY.has(sender, true)) return;
+            if (!Permission.SETHOME_ANY.has(sender) && !assertMinRole(Role.MODERATOR)) { return; }
+        }
+        else {
+            if (!Permission.SETHOME_ANY.has(sender, true)) { return; }
         }
 
         // Can the player set the faction home HERE?
@@ -54,7 +55,7 @@ public class CmdSethome extends FCommand {
         }
 
         // if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-        if (!payForCommand(Conf.econCostSethome, "to set the faction home", "for setting the faction home")) return;
+        if (!payForCommand(Conf.econCostSethome, "to set the faction home", "for setting the faction home")) { return; }
 
         faction.setHome(me.getLocation());
 

@@ -25,7 +25,7 @@ public class CmdJoin extends FCommand {
     @Override
     public void perform() {
         Faction faction = this.argAsFaction(0);
-        if (faction == null) return;
+        if (faction == null) { return; }
 
         FPlayer fplayer = this.argAsBestFPlayerMatch(1, fme, false);
         boolean samePlayer = fplayer == fme;
@@ -62,26 +62,26 @@ public class CmdJoin extends FCommand {
 
         if (!(faction.getOpen() || faction.isInvited(fplayer) || fme.isAdminBypassing() || Permission.JOIN_ANY.has(sender, false))) {
             msg("<i>This faction requires invitation.");
-            if (samePlayer)
-                faction.msg("%s<i> tried to join your faction.", fplayer.describeTo(faction, true));
+            if (samePlayer) { faction.msg("%s<i> tried to join your faction.", fplayer.describeTo(faction, true)); }
             return;
         }
 
         // if economy is enabled, they're not on the bypass list, and this command has a cost set, make sure they can pay
-        if (samePlayer && !canAffordCommand(Conf.econCostJoin, "to join a faction")) return;
+        if (samePlayer && !canAffordCommand(Conf.econCostJoin, "to join a faction")) { return; }
 
         // trigger the join event (cancellable)
         FPlayerJoinEvent joinEvent = new FPlayerJoinEvent(FPlayers.i.get(me), faction, FPlayerJoinEvent.PlayerJoinReason.COMMAND);
         Bukkit.getServer().getPluginManager().callEvent(joinEvent);
-        if (joinEvent.isCancelled()) return;
+        if (joinEvent.isCancelled()) { return; }
 
         // then make 'em pay (if applicable)
-        if (samePlayer && !payForCommand(Conf.econCostJoin, "to join a faction", "for joining a faction")) return;
+        if (samePlayer && !payForCommand(Conf.econCostJoin, "to join a faction", "for joining a faction")) { return; }
 
         fme.msg("<i>%s successfully joined %s.", fplayer.describeTo(fme, true), faction.getTag(fme));
 
-        if (!samePlayer)
+        if (!samePlayer) {
             fplayer.msg("<i>%s moved you into the faction %s.", fme.describeTo(fplayer, true), faction.getTag(fplayer));
+        }
         faction.msg("<i>%s joined your faction.", fplayer.describeTo(faction, true));
 
         fplayer.resetFactionData();
@@ -89,10 +89,10 @@ public class CmdJoin extends FCommand {
         faction.deinvite(fplayer);
 
         if (Conf.logFactionJoin) {
-            if (samePlayer)
-                P.p.log("%s joined the faction %s.", fplayer.getName(), faction.getTag());
-            else
+            if (samePlayer) { P.p.log("%s joined the faction %s.", fplayer.getName(), faction.getTag()); }
+            else {
                 P.p.log("%s moved the player %s into the faction %s.", fme.getName(), fplayer.getName(), faction.getTag());
+            }
         }
     }
 }

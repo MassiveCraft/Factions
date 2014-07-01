@@ -301,7 +301,8 @@ public final class Metrics {
         // It does not reroute POST requests so we need to go around it
         if (isMineshafterPresent()) {
             connection = url.openConnection(Proxy.NO_PROXY);
-        } else {
+        }
+        else {
             connection = url.openConnection();
         }
 
@@ -339,7 +340,8 @@ public final class Metrics {
         if (response == null || response.startsWith("ERR") || response.startsWith("7")) {
             if (response == null) {
                 response = "null";
-            } else if (response.startsWith("7")) {
+            }
+            else if (response.startsWith("7")) {
                 response = response.substring(response.startsWith("7,") ? 2 : 1);
             }
 
@@ -419,7 +421,8 @@ public final class Metrics {
 
         if (isValueNumeric) {
             json.append(value);
-        } else {
+        }
+        else {
             json.append(escapeJSON(value));
         }
     }
@@ -460,7 +463,8 @@ public final class Metrics {
                     if (chr < ' ') {
                         String t = "000" + Integer.toHexString(chr);
                         builder.append("\\u").append(t.substring(t.length() - 4));
-                    } else {
+                    }
+                    else {
                         builder.append(chr);
                     }
                     break;

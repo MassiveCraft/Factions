@@ -28,7 +28,7 @@ public class CmdBoom extends FCommand {
         }
 
         // if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-        if (!payForCommand(Conf.econCostNoBoom, "to toggle explosions", "for toggling explosions")) return;
+        if (!payForCommand(Conf.econCostNoBoom, "to toggle explosions", "for toggling explosions")) { return; }
 
         myFaction.setPeacefulExplosionsEnabled(this.argAsBool(0, !myFaction.getPeacefulExplosionsEnabled()));
 

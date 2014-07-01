@@ -26,7 +26,8 @@ public class CmdChatSpy extends FCommand {
         if (fme.isSpyingChat()) {
             fme.msg("<i>You have enabled chat spying mode.");
             P.p.log(fme.getName() + " has ENABLED chat spying mode.");
-        } else {
+        }
+        else {
             fme.msg("<i>You have disabled chat spying mode.");
             P.p.log(fme.getName() + " DISABLED chat spying mode.");
         }

@@ -44,7 +44,8 @@ public class TextUtil {
             String repl = tags.get(tag);
             if (repl == null) {
                 matcher.appendReplacement(ret, "<" + tag + ">");
-            } else {
+            }
+            else {
                 matcher.appendReplacement(ret, repl);
             }
         }
@@ -72,34 +73,34 @@ public class TextUtil {
 
     public static String parseColorAcc(String string) {
         return string.replace("`e", "")
-                .replace("`r", ChatColor.RED.toString()).replace("`R", ChatColor.DARK_RED.toString())
-                .replace("`y", ChatColor.YELLOW.toString()).replace("`Y", ChatColor.GOLD.toString())
-                .replace("`g", ChatColor.GREEN.toString()).replace("`G", ChatColor.DARK_GREEN.toString())
-                .replace("`a", ChatColor.AQUA.toString()).replace("`A", ChatColor.DARK_AQUA.toString())
-                .replace("`b", ChatColor.BLUE.toString()).replace("`B", ChatColor.DARK_BLUE.toString())
-                .replace("`p", ChatColor.LIGHT_PURPLE.toString()).replace("`P", ChatColor.DARK_PURPLE.toString())
-                .replace("`k", ChatColor.BLACK.toString()).replace("`s", ChatColor.GRAY.toString())
-                .replace("`S", ChatColor.DARK_GRAY.toString()).replace("`w", ChatColor.WHITE.toString());
+                       .replace("`r", ChatColor.RED.toString()).replace("`R", ChatColor.DARK_RED.toString())
+                       .replace("`y", ChatColor.YELLOW.toString()).replace("`Y", ChatColor.GOLD.toString())
+                       .replace("`g", ChatColor.GREEN.toString()).replace("`G", ChatColor.DARK_GREEN.toString())
+                       .replace("`a", ChatColor.AQUA.toString()).replace("`A", ChatColor.DARK_AQUA.toString())
+                       .replace("`b", ChatColor.BLUE.toString()).replace("`B", ChatColor.DARK_BLUE.toString())
+                       .replace("`p", ChatColor.LIGHT_PURPLE.toString()).replace("`P", ChatColor.DARK_PURPLE.toString())
+                       .replace("`k", ChatColor.BLACK.toString()).replace("`s", ChatColor.GRAY.toString())
+                       .replace("`S", ChatColor.DARK_GRAY.toString()).replace("`w", ChatColor.WHITE.toString());
     }
 
     public static String parseColorTags(String string) {
         return string.replace("<empty>", "")
-                .replace("<black>", "\u00A70")
-                .replace("<navy>", "\u00A71")
-                .replace("<green>", "\u00A72")
-                .replace("<teal>", "\u00A73")
-                .replace("<red>", "\u00A74")
-                .replace("<purple>", "\u00A75")
-                .replace("<gold>", "\u00A76")
-                .replace("<silver>", "\u00A77")
-                .replace("<gray>", "\u00A78")
-                .replace("<blue>", "\u00A79")
-                .replace("<lime>", "\u00A7a")
-                .replace("<aqua>", "\u00A7b")
-                .replace("<rose>", "\u00A7c")
-                .replace("<pink>", "\u00A7d")
-                .replace("<yellow>", "\u00A7e")
-                .replace("<white>", "\u00A7f");
+                       .replace("<black>", "\u00A70")
+                       .replace("<navy>", "\u00A71")
+                       .replace("<green>", "\u00A72")
+                       .replace("<teal>", "\u00A73")
+                       .replace("<red>", "\u00A74")
+                       .replace("<purple>", "\u00A75")
+                       .replace("<gold>", "\u00A76")
+                       .replace("<silver>", "\u00A77")
+                       .replace("<gray>", "\u00A78")
+                       .replace("<blue>", "\u00A79")
+                       .replace("<lime>", "\u00A7a")
+                       .replace("<aqua>", "\u00A7b")
+                       .replace("<rose>", "\u00A7c")
+                       .replace("<pink>", "\u00A7d")
+                       .replace("<yellow>", "\u00A7e")
+                       .replace("<white>", "\u00A7f");
     }
 
     // -------------------------------------------- //
@@ -122,8 +123,8 @@ public class TextUtil {
     }
 
     public static String repeat(String s, int times) {
-        if (times <= 0) return "";
-        else return s + repeat(s, times - 1);
+        if (times <= 0) { return ""; }
+        else { return s + repeat(s, times - 1); }
     }
 
     // -------------------------------------------- //
@@ -152,10 +153,10 @@ public class TextUtil {
         int eatLeft = (centerlen / 2) - titleizeBalance;
         int eatRight = (centerlen - eatLeft) + titleizeBalance;
 
-        if (eatLeft < pivot)
+        if (eatLeft < pivot) {
             return parseTags("<a>") + titleizeLine.substring(0, pivot - eatLeft) + center + titleizeLine.substring(pivot + eatRight);
-        else
-            return parseTags("<a>") + center;
+        }
+        else { return parseTags("<a>") + center; }
     }
 
     public ArrayList<String> getPage(List<String> lines, int pageHumanBased, String title) {
@@ -169,7 +170,8 @@ public class TextUtil {
         if (pagecount == 0) {
             ret.add(this.parseTags("<i>Sorry. No Pages available."));
             return ret;
-        } else if (pageZeroBased < 0 || pageHumanBased > pagecount) {
+        }
+        else if (pageZeroBased < 0 || pageHumanBased > pagecount) {
             ret.add(this.parseTags("<i>Invalid page. Must be between 1 and " + pagecount));
             return ret;
         }
@@ -192,8 +194,8 @@ public class TextUtil {
         start = start.toLowerCase();
         int minlength = start.length();
         for (String candidate : candidates) {
-            if (candidate.length() < minlength) continue;
-            if (!candidate.toLowerCase().startsWith(start)) continue;
+            if (candidate.length() < minlength) { continue; }
+            if (!candidate.toLowerCase().startsWith(start)) { continue; }
 
             // The closer to zero the better
             int lendiff = candidate.length() - minlength;

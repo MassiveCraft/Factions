@@ -57,11 +57,11 @@ public class LazyLocation {
     // This initializes the Location
     private void initLocation() {
         // if location is already initialized, simply return
-        if (location != null) return;
+        if (location != null) { return; }
 
         // get World; hopefully it's initialized at this point
         World world = Bukkit.getWorld(worldName);
-        if (world == null) return;
+        if (world == null) { return; }
 
         // store the Location for future calls, and pass it on
         location = new Location(world, x, y, z, yaw, pitch);

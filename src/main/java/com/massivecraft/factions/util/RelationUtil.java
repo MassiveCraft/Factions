@@ -13,7 +13,9 @@ public class RelationUtil {
         String ret = "";
 
         Faction thatFaction = getFaction(that);
-        if (thatFaction == null) return "ERROR"; // ERROR
+        if (thatFaction == null) {
+            return "ERROR"; // ERROR
+        }
 
         Faction myFaction = getFaction(me);
 //		if (myFaction == null) return that.describeTo(null); // no relation, but can show basic name or tag
@@ -21,16 +23,20 @@ public class RelationUtil {
         if (that instanceof Faction) {
             if (me instanceof FPlayer && myFaction == thatFaction) {
                 ret = "your faction";
-            } else {
+            }
+            else {
                 ret = thatFaction.getTag();
             }
-        } else if (that instanceof FPlayer) {
+        }
+        else if (that instanceof FPlayer) {
             FPlayer fplayerthat = (FPlayer) that;
             if (that == me) {
                 ret = "you";
-            } else if (thatFaction == myFaction) {
+            }
+            else if (thatFaction == myFaction) {
                 ret = fplayerthat.getNameAndTitle();
-            } else {
+            }
+            else {
                 ret = fplayerthat.getNameAndTag();
             }
         }
@@ -52,10 +58,14 @@ public class RelationUtil {
 
     public static Relation getRelationTo(RelationParticipator me, RelationParticipator that, boolean ignorePeaceful) {
         Faction fthat = getFaction(that);
-        if (fthat == null) return Relation.NEUTRAL; // ERROR
+        if (fthat == null) {
+            return Relation.NEUTRAL; // ERROR
+        }
 
         Faction fme = getFaction(me);
-        if (fme == null) return Relation.NEUTRAL; // ERROR
+        if (fme == null) {
+            return Relation.NEUTRAL; // ERROR
+        }
 
         if (!fthat.isNormal() || !fme.isNormal()) {
             return Relation.NEUTRAL;

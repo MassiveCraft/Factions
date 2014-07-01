@@ -26,8 +26,9 @@ public class MPluginSecretPlayerListener implements Listener {
     //@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
         if (p.handleCommand(event.getPlayer(), event.getMessage())) {
-            if (p.logPlayerCommands())
+            if (p.logPlayerCommands()) {
                 Bukkit.getLogger().info("[PLAYER_COMMAND] " + event.getPlayer().getName() + ": " + event.getMessage());
+            }
             event.setCancelled(true);
         }
     }
@@ -35,8 +36,9 @@ public class MPluginSecretPlayerListener implements Listener {
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onPlayerChat(AsyncPlayerChatEvent event) {
         if (p.handleCommand(event.getPlayer(), event.getMessage(), false, true)) {
-            if (p.logPlayerCommands())
+            if (p.logPlayerCommands()) {
                 Bukkit.getLogger().info("[PLAYER_COMMAND] " + event.getPlayer().getName() + ": " + event.getMessage());
+            }
             event.setCancelled(true);
         }
 

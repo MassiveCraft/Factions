@@ -87,12 +87,10 @@ public class CmdHome extends FCommand {
             double z = loc.getZ();
 
             for (Player p : me.getServer().getOnlinePlayers()) {
-                if (p == null || !p.isOnline() || p.isDead() || p == me || p.getWorld() != w)
-                    continue;
+                if (p == null || !p.isOnline() || p.isDead() || p == me || p.getWorld() != w) { continue; }
 
                 FPlayer fp = FPlayers.i.get(p);
-                if (fme.getRelationTo(fp) != Relation.ENEMY)
-                    continue;
+                if (fme.getRelationTo(fp) != Relation.ENEMY) { continue; }
 
                 Location l = p.getLocation();
                 double dx = Math.abs(x - l.getX());
@@ -101,8 +99,7 @@ public class CmdHome extends FCommand {
                 double max = Conf.homesTeleportAllowedEnemyDistance;
 
                 // box-shaped distance check
-                if (dx > max || dy > max || dz > max)
-                    continue;
+                if (dx > max || dy > max || dz > max) { continue; }
 
                 fme.msg("<b>You cannot teleport to your faction home while an enemy is within " + Conf.homesTeleportAllowedEnemyDistance + " blocks of you.");
                 return;
@@ -110,11 +107,12 @@ public class CmdHome extends FCommand {
         }
 
         // if Essentials teleport handling is enabled and available, pass the teleport off to it (for delay and cooldown)
-        if (Essentials.handleTeleport(me, myFaction.getHome())) return;
+        if (Essentials.handleTeleport(me, myFaction.getHome())) { return; }
 
         // if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-        if (!payForCommand(Conf.econCostHome, "to teleport to your faction home", "for teleporting to your faction home"))
+        if (!payForCommand(Conf.econCostHome, "to teleport to your faction home", "for teleporting to your faction home")) {
             return;
+        }
 
         // Create a smoke effect
         if (Conf.homesTeleportCommandSmokeEffectEnabled) {

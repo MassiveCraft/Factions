@@ -31,22 +31,27 @@ public class CmdReload extends FCommand {
         if (file.startsWith("c")) {
             Conf.load();
             fileName = "conf.json";
-        } else if (file.startsWith("b")) {
+        }
+        else if (file.startsWith("b")) {
             Board.load();
             fileName = "board.json";
-        } else if (file.startsWith("f")) {
+        }
+        else if (file.startsWith("f")) {
             Factions.i.loadFromDisc();
             fileName = "factions.json";
-        } else if (file.startsWith("p")) {
+        }
+        else if (file.startsWith("p")) {
             FPlayers.i.loadFromDisc();
             fileName = "players.json";
-        } else if (file.startsWith("a")) {
+        }
+        else if (file.startsWith("a")) {
             fileName = "all";
             Conf.load();
             FPlayers.i.loadFromDisc();
             Factions.i.loadFromDisc();
             Board.load();
-        } else {
+        }
+        else {
             P.p.log("RELOAD CANCELLED - SPECIFIED FILE INVALID");
             msg("<b>Invalid file specified. <i>Valid files: all, conf, board, factions, players");
             return;

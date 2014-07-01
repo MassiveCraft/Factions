@@ -30,7 +30,7 @@ public class CmdHelp extends FCommand {
 
     @Override
     public void perform() {
-        if (helpPages == null) updateHelp();
+        if (helpPages == null) { updateHelp(); }
 
         int page = this.argAsInt(0, 1);
 

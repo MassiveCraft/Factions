@@ -23,7 +23,7 @@ public class Essentials {
 
     // return false if feature is disabled or Essentials isn't available
     public static boolean handleTeleport(Player player, Location loc) {
-        if (!Conf.homesTeleportCommandEssentialsIntegration || essentials == null) return false;
+        if (!Conf.homesTeleportCommandEssentialsIntegration || essentials == null) { return false; }
 
         Teleport teleport = (Teleport) essentials.getUser(player).getTeleport();
         Trade trade = new Trade(Conf.econCostHome, essentials);

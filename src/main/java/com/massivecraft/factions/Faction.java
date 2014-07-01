@@ -165,8 +165,9 @@ public class Faction extends Entity implements EconomyParticipator {
     }
 
     public void confirmValidHome() {
-        if (!Conf.homesMustBeInClaimedTerritory || this.home == null || (this.home.getLocation() != null && Board.getFactionAt(new FLocation(this.home.getLocation())) == this))
+        if (!Conf.homesMustBeInClaimedTerritory || this.home == null || (this.home.getLocation() != null && Board.getFactionAt(new FLocation(this.home.getLocation())) == this)) {
             return;
+        }
 
         msg("<b>Your faction home has been un-set since it is no longer in your territory.");
         this.home = null;
@@ -183,8 +184,7 @@ public class Faction extends Entity implements EconomyParticipator {
         String aid = "faction-" + this.getId();
 
         // We need to override the default money given to players.
-        if (!Econ.hasAccount(aid))
-            Econ.setBalance(aid, 0);
+        if (!Econ.hasAccount(aid)) { Econ.setBalance(aid, 0); }
 
         return aid;
     }
@@ -312,7 +312,8 @@ public class Faction extends Entity implements EconomyParticipator {
     public void setRelationWish(Faction otherFaction, Relation relation) {
         if (this.relationWish.containsKey(otherFaction.getId()) && relation.equals(Relation.NEUTRAL)) {
             this.relationWish.remove(otherFaction.getId());
-        } else {
+        }
+        else {
             this.relationWish.put(otherFaction.getId(), relation);
         }
     }
@@ -377,7 +378,7 @@ public class Faction extends Entity implements EconomyParticipator {
     // maintain the reference list of FPlayers in this faction
     public void refreshFPlayers() {
         fplayers.clear();
-        if (this.isPlayerFreeType()) return;
+        if (this.isPlayerFreeType()) { return; }
 
         for (FPlayer fplayer : FPlayers.i.get()) {
             if (fplayer.getFaction() == this) {
@@ -387,13 +388,13 @@ public class Faction extends Entity implements EconomyParticipator {
     }
 
     protected boolean addFPlayer(FPlayer fplayer) {
-        if (this.isPlayerFreeType()) return false;
+        if (this.isPlayerFreeType()) { return false; }
 
         return fplayers.add(fplayer);
     }
 
     protected boolean removeFPlayer(FPlayer fplayer) {
-        if (this.isPlayerFreeType()) return false;
+        if (this.isPlayerFreeType()) { return false; }
 
         return fplayers.remove(fplayer);
     }
@@ -417,7 +418,7 @@ public class Faction extends Entity implements EconomyParticipator {
     }
 
     public FPlayer getFPlayerAdmin() {
-        if (!this.isNormal()) return null;
+        if (!this.isNormal()) { return null; }
 
         for (FPlayer fplayer : fplayers) {
             if (fplayer.getRole() == Role.ADMIN) {
@@ -429,7 +430,7 @@ public class Faction extends Entity implements EconomyParticipator {
 
     public ArrayList<FPlayer> getFPlayersWhereRole(Role role) {
         ArrayList<FPlayer> ret = new ArrayList<FPlayer>();
-        if (!this.isNormal()) return ret;
+        if (!this.isNormal()) { return ret; }
 
         for (FPlayer fplayer : fplayers) {
             if (fplayer.getRole() == role) {
@@ -442,7 +443,7 @@ public class Faction extends Entity implements EconomyParticipator {
 
     public ArrayList<Player> getOnlinePlayers() {
         ArrayList<Player> ret = new ArrayList<Player>();
-        if (this.isPlayerFreeType()) return ret;
+        if (this.isPlayerFreeType()) { return ret; }
 
         for (Player player : P.p.getServer().getOnlinePlayers()) {
             FPlayer fplayer = FPlayers.i.get(player);
@@ -457,7 +458,7 @@ public class Faction extends Entity implements EconomyParticipator {
     // slightly faster check than getOnlinePlayers() if you just want to see if there are any players online
     public boolean hasPlayersOnline() {
         // only real factions can have players online, not safe zone / war zone
-        if (this.isPlayerFreeType()) return false;
+        if (this.isPlayerFreeType()) { return false; }
 
         for (Player player : P.p.getServer().getOnlinePlayers()) {
             FPlayer fplayer = FPlayers.i.get(player);
@@ -481,35 +482,34 @@ public class Faction extends Entity implements EconomyParticipator {
 
     // used when current leader is about to be removed from the faction; promotes new leader, or disbands faction if no other members left
     public void promoteNewLeader() {
-        if (!this.isNormal()) return;
-        if (this.isPermanent() && Conf.permanentFactionsDisableLeaderPromotion) return;
+        if (!this.isNormal()) { return; }
+        if (this.isPermanent() && Conf.permanentFactionsDisableLeaderPromotion) { return; }
 
         FPlayer oldLeader = this.getFPlayerAdmin();
 
         // get list of moderators, or list of normal members if there are no moderators
         ArrayList<FPlayer> replacements = this.getFPlayersWhereRole(Role.MODERATOR);
-        if (replacements == null || replacements.isEmpty())
-            replacements = this.getFPlayersWhereRole(Role.NORMAL);
+        if (replacements == null || replacements.isEmpty()) { replacements = this.getFPlayersWhereRole(Role.NORMAL); }
 
         if (replacements == null || replacements.isEmpty()) {    // faction admin is the only member; one-man faction
             if (this.isPermanent()) {
-                if (oldLeader != null)
-                    oldLeader.setRole(Role.NORMAL);
+                if (oldLeader != null) { oldLeader.setRole(Role.NORMAL); }
                 return;
             }
 
             // no members left and faction isn't permanent, so disband it
-            if (Conf.logFactionDisband)
+            if (Conf.logFactionDisband) {
                 P.p.log("The faction " + this.getTag() + " (" + this.getId() + ") has been disbanded since it has no members left.");
+            }
 
             for (FPlayer fplayer : FPlayers.i.getOnline()) {
                 fplayer.msg("The faction %s<i> was disbanded.", this.getTag(fplayer));
             }
 
             this.detach();
-        } else {    // promote new faction admin
-            if (oldLeader != null)
-                oldLeader.setRole(Role.NORMAL);
+        }
+        else {    // promote new faction admin
+            if (oldLeader != null) { oldLeader.setRole(Role.NORMAL); }
             replacements.get(0).setRole(Role.ADMIN);
             this.msg("<i>Faction admin <h>%s<i> has been removed. %s<i> has been promoted as the new faction admin.", oldLeader == null ? "" : oldLeader.getName(), replacements.get(0).getName());
             P.p.log("Faction " + this.getTag() + " (" + this.getId() + ") admin was removed. Replacement admin: " + replacements.get(0).getName());
@@ -566,7 +566,7 @@ public class Faction extends Entity implements EconomyParticipator {
         for (Entry<FLocation, Set<String>> entry : claimOwnership.entrySet()) {
             ownerData = entry.getValue();
 
-            if (ownerData == null) continue;
+            if (ownerData == null) { continue; }
 
             Iterator<String> iter = ownerData.iterator();
             while (iter.hasNext()) {
@@ -653,21 +653,19 @@ public class Faction extends Entity implements EconomyParticipator {
     public boolean playerHasOwnershipRights(FPlayer fplayer, FLocation loc) {
         // in own faction, with sufficient role or permission to bypass ownership?
         if (fplayer.getFaction() == this
-                && (fplayer.getRole().isAtLeast(Conf.ownedAreaModeratorsBypass ? Role.MODERATOR : Role.ADMIN)
-                || Permission.OWNERSHIP_BYPASS.has(fplayer.getPlayer()))) {
+                    && (fplayer.getRole().isAtLeast(Conf.ownedAreaModeratorsBypass ? Role.MODERATOR : Role.ADMIN)
+                                || Permission.OWNERSHIP_BYPASS.has(fplayer.getPlayer()))) {
             return true;
         }
 
         // make sure claimOwnership is initialized
-        if (claimOwnership.isEmpty())
-            return true;
+        if (claimOwnership.isEmpty()) { return true; }
 
         // need to check the ownership list, then
         Set<String> ownerData = claimOwnership.get(loc);
 
         // if no owner list, owner list is empty, or player is in owner list, they're allowed
-        if (ownerData == null || ownerData.isEmpty() || ownerData.contains(fplayer.getId()))
-            return true;
+        if (ownerData == null || ownerData.isEmpty() || ownerData.contains(fplayer.getId())) { return true; }
 
         return false;
     }

@@ -91,7 +91,8 @@ public abstract class MCommand<T extends MPlugin> {
         if (sender instanceof Player) {
             this.me = (Player) sender;
             this.senderIsConsole = false;
-        } else {
+        }
+        else {
             this.me = null;
             this.senderIsConsole = true;
         }
@@ -110,9 +111,9 @@ public abstract class MCommand<T extends MPlugin> {
             }
         }
 
-        if (!validCall(this.sender, this.args)) return;
+        if (!validCall(this.sender, this.args)) { return; }
 
-        if (!this.isEnabled()) return;
+        if (!this.isEnabled()) { return; }
 
         perform();
     }
@@ -164,7 +165,7 @@ public abstract class MCommand<T extends MPlugin> {
     }
 
     public boolean validSenderPermissions(CommandSender sender, boolean informSenderIfNot) {
-        if (this.permission == null) return true;
+        if (this.permission == null) { return true; }
         return p.perm.has(sender, this.permission, informSenderIfNot);
     }
 
@@ -219,7 +220,8 @@ public abstract class MCommand<T extends MPlugin> {
             String val = optionalArg.getValue();
             if (val == null) {
                 val = "";
-            } else {
+            }
+            else {
                 val = "=" + val;
             }
             args.add("[" + optionalArg.getKey() + val + "]");
@@ -290,7 +292,7 @@ public abstract class MCommand<T extends MPlugin> {
 
     // INT ======================
     public Integer strAsInt(String str, Integer def) {
-        if (str == null) return def;
+        if (str == null) { return def; }
         try {
             Integer ret = Integer.parseInt(str);
             return ret;
@@ -309,7 +311,7 @@ public abstract class MCommand<T extends MPlugin> {
 
     // Double ======================
     public Double strAsDouble(String str, Double def) {
-        if (str == null) return def;
+        if (str == null) { return def; }
         try {
             Double ret = Double.parseDouble(str);
             return ret;
@@ -338,7 +340,7 @@ public abstract class MCommand<T extends MPlugin> {
 
     public Boolean argAsBool(int idx, boolean def) {
         String str = this.argAsString(idx);
-        if (str == null) return def;
+        if (str == null) { return def; }
 
         return strAsBool(str);
     }

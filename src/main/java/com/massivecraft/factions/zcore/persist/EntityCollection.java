@@ -99,24 +99,24 @@ public abstract class EntityCollection<E extends Entity> {
     }
 
     public E get(String id) {
-        if (this.creative) return this.getCreative(id);
+        if (this.creative) { return this.getCreative(id); }
         return id2entity.get(id);
     }
 
     public E getCreative(String id) {
         E e = id2entity.get(id);
-        if (e != null) return e;
+        if (e != null) { return e; }
         return this.create(id);
     }
 
     public boolean exists(String id) {
-        if (id == null) return false;
+        if (id == null) { return false; }
         return id2entity.get(id) != null;
     }
 
     public E getBestIdMatch(String pattern) {
         String id = TextUtil.getBestStartWithCI(this.id2entity.keySet(), pattern);
-        if (id == null) return null;
+        if (id == null) { return null; }
         return this.id2entity.get(id);
     }
 
@@ -129,7 +129,7 @@ public abstract class EntityCollection<E extends Entity> {
     }
 
     public synchronized E create(String id) {
-        if (!this.isIdFree(id)) return null;
+        if (!this.isIdFree(id)) { return null; }
 
         E e = null;
         try {
@@ -150,7 +150,7 @@ public abstract class EntityCollection<E extends Entity> {
     // -------------------------------------------- //
 
     public void attach(E entity) {
-        if (entity.getId() != null) return;
+        if (entity.getId() != null) { return; }
         entity.setId(this.getNextId());
         this.entities.add(entity);
         this.id2entity.put(entity.getId(), entity);
@@ -165,7 +165,7 @@ public abstract class EntityCollection<E extends Entity> {
 
     public void detach(String id) {
         E entity = this.id2entity.get(id);
-        if (entity == null) return;
+        if (entity == null) { return; }
         this.detach(entity);
     }
 
@@ -185,7 +185,7 @@ public abstract class EntityCollection<E extends Entity> {
     private boolean saveIsRunning = false;
 
     public boolean saveToDisc() {
-        if (saveIsRunning) return true;
+        if (saveIsRunning) { return true; }
         saveIsRunning = true;
 
         Map<String, E> entitiesThatShouldBeSaved = new HashMap<String, E>();
@@ -205,7 +205,7 @@ public abstract class EntityCollection<E extends Entity> {
 
     public boolean loadFromDisc() {
         Map<String, E> id2entity = this.loadCore();
-        if (id2entity == null) return false;
+        if (id2entity == null) { return false; }
         this.entities.clear();
         this.entities.addAll(id2entity.values());
         this.id2entity.clear();
@@ -289,7 +289,8 @@ public abstract class EntityCollection<E extends Entity> {
                 Bukkit.getLogger().log(Level.INFO, "Done converting players.json to UUID.");
             }
             return (Map<String, E>) data;
-        } else {
+        }
+        else {
             Map<String, Faction> data = this.gson.fromJson(content, type);
 
             // Do we have any names that need updating in claims or invites?

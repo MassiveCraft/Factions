@@ -72,7 +72,8 @@ public class CmdConfig extends FCommand {
 
                 if (targetValue) {
                     success = "\"" + fieldName + "\" option set to true (enabled).";
-                } else {
+                }
+                else {
                     success = "\"" + fieldName + "\" option set to false (disabled).";
                 }
             }
@@ -231,8 +232,9 @@ public class CmdConfig extends FCommand {
             if (sender instanceof Player) {
                 sendMessage(success);
                 P.p.log(success + " Command was run by " + fme.getName() + ".");
-            } else  // using P.p.log() instead of sendMessage if run from server console so that "[Factions v#.#.#]" is prepended in server log
-                P.p.log(success);
+            }
+            else  // using P.p.log() instead of sendMessage if run from server console so that "[Factions v#.#.#]" is prepended in server log
+            { P.p.log(success); }
         }
         // save change to disk
         Conf.save();

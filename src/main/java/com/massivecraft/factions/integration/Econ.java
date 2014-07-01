@@ -19,7 +19,7 @@ public class Econ {
     private static Economy econ = null;
 
     public static void setup() {
-        if (isSetup()) return;
+        if (isSetup()) { return; }
 
         String integrationFail = "Economy integration is " + (Conf.econEnabled ? "enabled, but" : "disabled, and") + " the plugin \"Vault\" ";
 
@@ -37,8 +37,9 @@ public class Econ {
 
         P.p.log("Economy integration through Vault plugin successful.");
 
-        if (!Conf.econEnabled)
+        if (!Conf.econEnabled) {
             P.p.log("NOTE: Economy is disabled. You can enable it with the command: f config econEnabled true");
+        }
 
         P.p.cmdBase.cmdHelp.updateHelp();
 
@@ -55,11 +56,11 @@ public class Econ {
 
 
     public static void modifyUniverseMoney(double delta) {
-        if (!shouldBeUsed()) return;
+        if (!shouldBeUsed()) { return; }
 
-        if (Conf.econUniverseAccount == null) return;
-        if (Conf.econUniverseAccount.length() == 0) return;
-        if (!econ.hasAccount(Conf.econUniverseAccount)) return;
+        if (Conf.econUniverseAccount == null) { return; }
+        if (Conf.econUniverseAccount.length() == 0) { return; }
+        if (!econ.hasAccount(Conf.econUniverseAccount)) { return; }
 
         modifyBalance(Conf.econUniverseAccount, delta);
     }
@@ -77,25 +78,26 @@ public class Econ {
         Faction fYou = RelationUtil.getFaction(you);
 
         // This is a system invoker. Accept it.
-        if (fI == null) return true;
+        if (fI == null) { return true; }
 
         // Bypassing players can do any kind of transaction
-        if (i instanceof FPlayer && ((FPlayer) i).isAdminBypassing()) return true;
+        if (i instanceof FPlayer && ((FPlayer) i).isAdminBypassing()) { return true; }
 
         // Players with the any withdraw can do.
-        if (i instanceof FPlayer && Permission.MONEY_WITHDRAW_ANY.has(((FPlayer) i).getPlayer())) return true;
+        if (i instanceof FPlayer && Permission.MONEY_WITHDRAW_ANY.has(((FPlayer) i).getPlayer())) { return true; }
 
         // You can deposit to anywhere you feel like. It's your loss if you can't withdraw it again.
-        if (i == you) return true;
+        if (i == you) { return true; }
 
         // A faction can always transfer away the money of it's members and its own money...
         // This will however probably never happen as a faction does not have free will.
         // Ohh by the way... Yes it could. For daily rent to the faction.
-        if (i == fI && fI == fYou) return true;
+        if (i == fI && fI == fYou) { return true; }
 
         // Factions can be controlled by members that are moderators... or any member if any member can withdraw.
-        if (you instanceof Faction && fI == fYou && (Conf.bankMembersCanWithdraw || ((FPlayer) i).getRole().value >= Role.MODERATOR.value))
+        if (you instanceof Faction && fI == fYou && (Conf.bankMembersCanWithdraw || ((FPlayer) i).getRole().value >= Role.MODERATOR.value)) {
             return true;
+        }
 
         // Otherwise you may not! ;,,;
         i.msg("<h>%s<i> lacks permission to control <h>%s's<i> money.", i.describeTo(i, true), you.describeTo(i));
@@ -107,7 +109,7 @@ public class Econ {
     }
 
     public static boolean transferMoney(EconomyParticipator invoker, EconomyParticipator from, EconomyParticipator to, double amount, boolean notify) {
-        if (!shouldBeUsed()) return false;
+        if (!shouldBeUsed()) { return false; }
 
         // The amount must be positive.
         // If the amount is negative we must flip and multiply amount with -1.
@@ -119,13 +121,14 @@ public class Econ {
         }
 
         // Check the rights
-        if (!canIControllYou(invoker, from)) return false;
+        if (!canIControllYou(invoker, from)) { return false; }
 
         // Is there enough money for the transaction to happen?
         if (!econ.has(from.getAccountId(), amount)) {
             // There was not enough money to pay
-            if (invoker != null && notify)
+            if (invoker != null && notify) {
                 invoker.msg("<h>%s<b> can't afford to transfer <h>%s<b> to %s<b>.", from.describeTo(invoker, true), moneyString(amount), to.describeTo(invoker));
+            }
 
             return false;
         }
@@ -136,17 +139,19 @@ public class Econ {
         if (erw.transactionSuccess()) {
             EconomyResponse erd = econ.depositPlayer(to.getAccountId(), amount);
             if (erd.transactionSuccess()) {
-                if (notify) sendTransferInfo(invoker, from, to, amount);
+                if (notify) { sendTransferInfo(invoker, from, to, amount); }
                 return true;
-            } else {
+            }
+            else {
                 // transaction failed, refund account
                 econ.depositPlayer(from.getAccountId(), amount);
             }
         }
 
         // if we get here something with the transaction failed
-        if (notify)
+        if (notify) {
             invoker.msg("Unable to transfer %s<b> to <h>%s<b> from <h>%s<b>.", moneyString(amount), to.describeTo(invoker), from.describeTo(invoker, true));
+        }
 
         return false;
     }
@@ -156,9 +161,11 @@ public class Econ {
 
         if (ep == null) {
             // Add nothing
-        } else if (ep instanceof FPlayer) {
+        }
+        else if (ep instanceof FPlayer) {
             fplayers.add((FPlayer) ep);
-        } else if (ep instanceof Faction) {
+        }
+        else if (ep instanceof Faction) {
             fplayers.addAll(((Faction) ep).getFPlayers());
         }
 
@@ -175,15 +182,18 @@ public class Econ {
             for (FPlayer recipient : recipients) {
                 recipient.msg("<h>%s<i> was transfered from <h>%s<i> to <h>%s<i>.", moneyString(amount), from.describeTo(recipient), to.describeTo(recipient));
             }
-        } else if (invoker == from) {
+        }
+        else if (invoker == from) {
             for (FPlayer recipient : recipients) {
                 recipient.msg("<h>%s<i> <h>gave %s<i> to <h>%s<i>.", from.describeTo(recipient, true), moneyString(amount), to.describeTo(recipient));
             }
-        } else if (invoker == to) {
+        }
+        else if (invoker == to) {
             for (FPlayer recipient : recipients) {
                 recipient.msg("<h>%s<i> <h>took %s<i> from <h>%s<i>.", to.describeTo(recipient, true), moneyString(amount), from.describeTo(recipient));
             }
-        } else {
+        }
+        else {
             for (FPlayer recipient : recipients) {
                 recipient.msg("<h>%s<i> transfered <h>%s<i> from <h>%s<i> to <h>%s<i>.", invoker.describeTo(recipient, true), moneyString(amount), from.describeTo(recipient), to.describeTo(recipient));
             }
@@ -191,18 +201,19 @@ public class Econ {
     }
 
     public static boolean hasAtLeast(EconomyParticipator ep, double delta, String toDoThis) {
-        if (!shouldBeUsed()) return true;
+        if (!shouldBeUsed()) { return true; }
 
         if (!econ.has(ep.getAccountId(), delta)) {
-            if (toDoThis != null && !toDoThis.isEmpty())
+            if (toDoThis != null && !toDoThis.isEmpty()) {
                 ep.msg("<h>%s<i> can't afford <h>%s<i> %s.", ep.describeTo(ep, true), moneyString(delta), toDoThis);
+            }
             return false;
         }
         return true;
     }
 
     public static boolean modifyMoney(EconomyParticipator ep, double delta, String toDoThis, String forDoingThis) {
-        if (!shouldBeUsed()) return false;
+        if (!shouldBeUsed()) { return false; }
 
         String acc = ep.getAccountId();
         String You = ep.describeTo(ep, true);
@@ -219,29 +230,36 @@ public class Econ {
             EconomyResponse er = econ.depositPlayer(acc, delta);
             if (er.transactionSuccess()) {
                 modifyUniverseMoney(-delta);
-                if (forDoingThis != null && !forDoingThis.isEmpty())
+                if (forDoingThis != null && !forDoingThis.isEmpty()) {
                     ep.msg("<h>%s<i> gained <h>%s<i> %s.", You, moneyString(delta), forDoingThis);
+                }
                 return true;
-            } else {
+            }
+            else {
                 // transfer to account failed
-                if (forDoingThis != null && !forDoingThis.isEmpty())
+                if (forDoingThis != null && !forDoingThis.isEmpty()) {
                     ep.msg("<h>%s<i> would have gained <h>%s<i> %s, but the deposit failed.", You, moneyString(delta), forDoingThis);
+                }
                 return false;
             }
-        } else {
+        }
+        else {
             // The player should loose money
             // The player might not have enough.
 
             if (econ.has(acc, -delta) && econ.withdrawPlayer(acc, -delta).transactionSuccess()) {
                 // There is enough money to pay
                 modifyUniverseMoney(-delta);
-                if (forDoingThis != null && !forDoingThis.isEmpty())
+                if (forDoingThis != null && !forDoingThis.isEmpty()) {
                     ep.msg("<h>%s<i> lost <h>%s<i> %s.", You, moneyString(-delta), forDoingThis);
+                }
                 return true;
-            } else {
+            }
+            else {
                 // There was not enough money to pay
-                if (toDoThis != null && !toDoThis.isEmpty())
+                if (toDoThis != null && !toDoThis.isEmpty()) {
                     ep.msg("<h>%s<i> can't afford <h>%s<i> %s.", You, moneyString(-delta), toDoThis);
+                }
                 return false;
             }
         }
@@ -253,7 +271,7 @@ public class Econ {
     }
 
     public static void oldMoneyDoTransfer() {
-        if (!shouldBeUsed()) return;
+        if (!shouldBeUsed()) { return; }
 
         for (Faction faction : Factions.i.get()) {
             if (faction.money > 0) {
@@ -271,8 +289,8 @@ public class Econ {
 
         // basic claim cost, plus land inflation cost, minus the potential bonus given for claiming from another faction
         return Conf.econCostClaimWilderness
-                + (Conf.econCostClaimWilderness * Conf.econClaimAdditionalMultiplier * ownedLand)
-                - (takingFromAnotherFaction ? Conf.econCostClaimFromFactionBonus : 0);
+                       + (Conf.econCostClaimWilderness * Conf.econClaimAdditionalMultiplier * ownedLand)
+                       - (takingFromAnotherFaction ? Conf.econCostClaimFromFactionBonus : 0);
     }
 
     // calculate refund amount for unclaiming land
@@ -309,17 +327,13 @@ public class Econ {
 
     public static boolean setBalance(String account, double amount) {
         double current = econ.getBalance(account);
-        if (current > amount)
-            return econ.withdrawPlayer(account, current - amount).transactionSuccess();
-        else
-            return econ.depositPlayer(account, amount - current).transactionSuccess();
+        if (current > amount) { return econ.withdrawPlayer(account, current - amount).transactionSuccess(); }
+        else { return econ.depositPlayer(account, amount - current).transactionSuccess(); }
     }
 
     public static boolean modifyBalance(String account, double amount) {
-        if (amount < 0)
-            return econ.withdrawPlayer(account, -amount).transactionSuccess();
-        else
-            return econ.depositPlayer(account, amount).transactionSuccess();
+        if (amount < 0) { return econ.withdrawPlayer(account, -amount).transactionSuccess(); }
+        else { return econ.depositPlayer(account, amount).transactionSuccess(); }
     }
 
     public static boolean deposit(String account, double amount) {

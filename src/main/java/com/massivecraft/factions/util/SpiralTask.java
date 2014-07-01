@@ -98,19 +98,18 @@ public abstract class SpiralTask implements Runnable {
  */
 
     public final void setTaskID(int ID) {
-        if (ID == -1)
-            this.stop();
+        if (ID == -1) { this.stop(); }
         taskID = ID;
     }
 
     public final void run() {
-        if (!this.valid() || !readyToGo) return;
+        if (!this.valid() || !readyToGo) { return; }
 
         // this is set so it only does one iteration at a time, no matter how frequently the timer fires
         readyToGo = false;
 
         // make sure we're still inside the specified radius
-        if (!this.insideRadius()) return;
+        if (!this.insideRadius()) { return; }
 
         // track this to keep one iteration from dragging on too long and possibly choking the system
         long loopStartTime = now();
@@ -124,8 +123,7 @@ public abstract class SpiralTask implements Runnable {
             }
 
             // move on to next chunk in spiral
-            if (!this.moveToNext())
-                return;
+            if (!this.moveToNext()) { return; }
         }
 
         // ready for the next iteration to run
@@ -134,15 +132,16 @@ public abstract class SpiralTask implements Runnable {
 
     // step through chunks in spiral pattern from center; returns false if we're done, otherwise returns true
     public final boolean moveToNext() {
-        if (!this.valid()) return false;
+        if (!this.valid()) { return false; }
 
         // make sure we don't need to turn down the next leg of the spiral
         if (current < length) {
             current++;
 
             // if we're outside the radius, we're done
-            if (!this.insideRadius()) return false;
-        } else {    // one leg/side of the spiral down...
+            if (!this.insideRadius()) { return false; }
+        }
+        else {    // one leg/side of the spiral down...
             current = 0;
             isZLeg ^= true;
             // every second leg (between X and Z legs, negative or positive), length increases
@@ -153,18 +152,15 @@ public abstract class SpiralTask implements Runnable {
         }
 
         // move one chunk further in the appropriate direction
-        if (isZLeg)
-            z += (isNeg) ? -1 : 1;
-        else
-            x += (isNeg) ? -1 : 1;
+        if (isZLeg) { z += (isNeg) ? -1 : 1; }
+        else { x += (isNeg) ? -1 : 1; }
 
         return true;
     }
 
     public final boolean insideRadius() {
         boolean inside = current < limit;
-        if (!inside)
-            this.finish();
+        if (!inside) { this.finish(); }
         return inside;
     }
 
@@ -176,7 +172,7 @@ public abstract class SpiralTask implements Runnable {
 
     // we're done, whether finished or cancelled
     public final void stop() {
-        if (!this.valid()) return;
+        if (!this.valid()) { return; }
 
         readyToGo = false;
         Bukkit.getServer().getScheduler().cancelTask(taskID);

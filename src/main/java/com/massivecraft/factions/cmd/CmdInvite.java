@@ -25,7 +25,7 @@ public class CmdInvite extends FCommand {
     @Override
     public void perform() {
         FPlayer you = this.argAsBestFPlayerMatch(0);
-        if (you == null) return;
+        if (you == null) { return; }
 
         if (you.getFaction() == myFaction) {
             msg("%s<i> is already a member of %s", you.getName(), myFaction.getTag());
@@ -34,7 +34,7 @@ public class CmdInvite extends FCommand {
         }
 
         // if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-        if (!payForCommand(Conf.econCostInvite, "to invite someone", "for inviting someone")) return;
+        if (!payForCommand(Conf.econCostInvite, "to invite someone", "for inviting someone")) { return; }
 
         myFaction.invite(you);
 

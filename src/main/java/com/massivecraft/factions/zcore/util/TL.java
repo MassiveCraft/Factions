@@ -38,7 +38,7 @@ public enum TL {
     /**
      * Lang enum constructor.
      *
-     * @param path The string path.
+     * @param path  The string path.
      * @param start The default string.
      */
     TL(String path, String start) {
