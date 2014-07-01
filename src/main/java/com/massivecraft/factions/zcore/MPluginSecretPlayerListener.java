@@ -22,7 +22,8 @@ public class MPluginSecretPlayerListener implements Listener {
         this.p = p;
     }
 
-    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
+    // We're now using FCommandHandler for this to do things properly.
+    //@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
         if (p.handleCommand(event.getPlayer(), event.getMessage())) {
             if (p.logPlayerCommands())

@@ -29,10 +29,9 @@ public abstract class PlayerEntityCollection<E extends Entity> extends EntityCol
         return this.get(player.getUniqueId().toString());
     }
 
-	public E get(Player player)
-	{
-		return this.get(player.getUniqueId().toString());
-	}
+    public E get(Player player) {
+        return this.get(player.getUniqueId().toString());
+    }
 
     public Set<E> getOnline() {
         Set<E> entities = new HashSet<E>();

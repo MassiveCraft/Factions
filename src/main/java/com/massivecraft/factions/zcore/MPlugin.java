@@ -6,15 +6,17 @@ import com.massivecraft.factions.zcore.persist.EM;
 import com.massivecraft.factions.zcore.persist.SaveTask;
 import com.massivecraft.factions.zcore.util.PermUtil;
 import com.massivecraft.factions.zcore.util.Persist;
+import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TextUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.craftbukkit.libs.com.google.gson.Gson;
 import org.bukkit.craftbukkit.libs.com.google.gson.GsonBuilder;
 import org.bukkit.craftbukkit.libs.com.google.gson.reflect.TypeToken;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.IOException;
+import java.io.*;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
 import java.util.*;
@@ -98,6 +100,7 @@ public abstract class MPlugin extends JavaPlugin {
         this.mPluginSecretServerListener = new MPluginSecretServerListener(this);
         getServer().getPluginManager().registerEvents(this.mPluginSecretPlayerListener, this);
         getServer().getPluginManager().registerEvents(this.mPluginSecretServerListener, this);
+        getCommand("factions").setExecutor(new FCommandHandler());
 
 
         // Register recurring tasks
@@ -106,12 +109,75 @@ public abstract class MPlugin extends JavaPlugin {
             saveTask = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, new SaveTask(this), saveTicks, saveTicks);
         }
 
+        loadLang();
+
         loadSuccessful = true;
         return true;
     }
 
     public void postEnable() {
         log("=== ENABLE DONE (Took " + (System.currentTimeMillis() - timeEnableStart) + "ms) ===");
+    }
+
+    private void loadLang() {
+        File lang = new File(getDataFolder(), "lang.yml");
+        OutputStream out = null;
+        InputStream defLangStream = this.getResource("lang.yml");
+        if (!lang.exists()) {
+            try {
+                getDataFolder().mkdir();
+                lang.createNewFile();
+                if (defLangStream != null) {
+                    out = new FileOutputStream(lang);
+                    int read;
+                    byte[] bytes = new byte[1024];
+
+                    while ((read = defLangStream.read(bytes)) != -1) {
+                        out.write(bytes, 0, read);
+                    }
+                    YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defLangStream);
+                    TL.setFile(defConfig);
+                    return;
+                }
+            } catch (IOException e) {
+                e.printStackTrace(); // So they notice
+                getLogger().severe("[Factions] Couldn't create language file.");
+                getLogger().severe("[Factions] This is a fatal error. Now disabling");
+                this.setEnabled(false); // Without it loaded, we can't send them messages
+            } finally {
+                if (defLangStream != null) {
+                    try {
+                        defLangStream.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                if (out != null) {
+                    try {
+                        out.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            }
+        }
+
+        YamlConfiguration conf = YamlConfiguration.loadConfiguration(lang);
+        for (TL item : TL.values()) {
+            if (conf.getString(item.getPath()) == null) {
+                conf.set(item.getPath(), item.getDefault());
+            }
+        }
+
+        TL.setFile(conf);
+        try {
+            conf.save(lang);
+        } catch (IOException e) {
+            getLogger().log(Level.WARNING, "Factions: Failed to save lang.yml.");
+            getLogger().log(Level.WARNING, "Factions: Report this stack trace to drtshock.");
+            e.printStackTrace();
+        }
     }
 
     public void onDisable() {

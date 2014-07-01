@@ -2,6 +2,7 @@ package com.massivecraft.factions;
 
 import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.factions.zcore.persist.EntityCollection;
+import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TextUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.craftbukkit.libs.com.google.gson.reflect.TypeToken;
@@ -21,14 +22,7 @@ public class Factions extends EntityCollection<Faction> {
     P p = P.p;
 
     private Factions() {
-        super
-                (
-                        Faction.class,
-                        new CopyOnWriteArrayList<Faction>(),
-                        new ConcurrentHashMap<String, Faction>(),
-                        new File(P.p.getDataFolder(), "factions.json"),
-                        P.p.gson
-                );
+        super(Faction.class, new CopyOnWriteArrayList<Faction>(), new ConcurrentHashMap<String, Faction>(), new File(P.p.getDataFolder(), "factions.json"), P.p.gson);
     }
 
     @Override
@@ -44,32 +38,32 @@ public class Factions extends EntityCollection<Faction> {
         // Make sure the default neutral faction exists
         if (!this.exists("0")) {
             Faction faction = this.create("0");
-            faction.setTag(ChatColor.DARK_GREEN + "Wilderness");
-            faction.setDescription("");
+            faction.setTag(TL.WILDERNESS.toString());
+            faction.setDescription(TL.WILDERNESS_DESCRIPTION.toString());
         }
 
         // Make sure the safe zone faction exists
         if (!this.exists("-1")) {
             Faction faction = this.create("-1");
-            faction.setTag("SafeZone");
-            faction.setDescription("Free from PVP and monsters");
+            faction.setTag(TL.SAFEZONE.toString());
+            faction.setDescription(TL.SAFEZONE_DESCRIPTION.toString());
         } else {
             // if SafeZone has old pre-1.6.0 name, rename it to remove troublesome " "
             Faction faction = this.getSafeZone();
             if (faction.getTag().contains(" "))
-                faction.setTag("SafeZone");
+                faction.setTag(TL.SAFEZONE.toString());
         }
 
         // Make sure the war zone faction exists
         if (!this.exists("-2")) {
             Faction faction = this.create("-2");
-            faction.setTag("WarZone");
-            faction.setDescription("Not the safest place to be");
+            faction.setTag(TL.WARZONE.toString());
+            faction.setDescription(TL.WARZONE_DESCRIPTION.toString());
         } else {
             // if WarZone has old pre-1.6.0 name, rename it to remove troublesome " "
             Faction faction = this.getWarZone();
             if (faction.getTag().contains(" "))
-                faction.setTag("WarZone");
+                faction.setTag(TL.WARZONE.toString());
         }
 
         // populate all faction player lists
