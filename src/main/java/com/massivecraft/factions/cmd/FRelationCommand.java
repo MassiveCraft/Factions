@@ -12,28 +12,39 @@ public abstract class FRelationCommand extends FCommand {
     public Relation targetRelation;
 
     public FRelationCommand() {
-        super(); this.requiredArgs.add("faction tag");
+        super();
+        this.requiredArgs.add("faction tag");
         //this.optionalArgs.put("player name", "you");
 
-        this.permission = Permission.RELATION.node; this.disableOnLock = true;
+        this.permission = Permission.RELATION.node;
+        this.disableOnLock = true;
 
-        senderMustBePlayer = true; senderMustBeMember = false; senderMustBeModerator = true; senderMustBeAdmin = false;
+        senderMustBePlayer = true;
+        senderMustBeMember = false;
+        senderMustBeModerator = true;
+        senderMustBeAdmin = false;
     }
 
     @Override
     public void perform() {
-        Faction them = this.argAsFaction(0); if (them == null) { return; }
+        Faction them = this.argAsFaction(0);
+        if (them == null) {
+            return;
+        }
 
         if (!them.isNormal()) {
-            msg("<b>Nope! You can't."); return;
+            msg("<b>Nope! You can't.");
+            return;
         }
 
         if (them == myFaction) {
-            msg("<b>Nope! You can't declare a relation to yourself :)"); return;
+            msg("<b>Nope! You can't declare a relation to yourself :)");
+            return;
         }
 
         if (myFaction.getRelationWish(them) == targetRelation) {
-            msg("<b>You already have that relation wish set with %s.", them.getTag()); return;
+            msg("<b>You already have that relation wish set with %s.", them.getTag());
+            return;
         }
 
         // if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
@@ -42,7 +53,8 @@ public abstract class FRelationCommand extends FCommand {
         }
 
         // try to set the new relation
-        Relation oldRelation = myFaction.getRelationTo(them, true); myFaction.setRelationWish(them, targetRelation);
+        Relation oldRelation = myFaction.getRelationTo(them, true);
+        myFaction.setRelationWish(them, targetRelation);
         Relation currentRelation = myFaction.getRelationTo(them, true);
         ChatColor currentRelationColor = currentRelation.getColor();
 

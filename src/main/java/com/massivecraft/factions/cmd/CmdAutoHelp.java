@@ -8,7 +8,10 @@ import java.util.ArrayList;
 
 public class CmdAutoHelp extends MCommand<P> {
     public CmdAutoHelp() {
-        super(P.p); this.aliases.add("?"); this.aliases.add("h"); this.aliases.add("help");
+        super(P.p);
+        this.aliases.add("?");
+        this.aliases.add("h");
+        this.aliases.add("help");
 
         this.setHelpShort("");
 
@@ -17,7 +20,9 @@ public class CmdAutoHelp extends MCommand<P> {
 
     @Override
     public void perform() {
-        if (this.commandChain.size() == 0) { return; }
+        if (this.commandChain.size() == 0) {
+            return;
+        }
         MCommand<?> pcmd = this.commandChain.get(this.commandChain.size() - 1);
 
         ArrayList<String> lines = new ArrayList<String>();

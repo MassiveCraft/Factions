@@ -22,7 +22,8 @@ public class FPlayers extends PlayerEntityCollection<FPlayer> {
 
     @Override
     public Type getMapType() {
-        return new TypeToken<Map<String, FPlayer>>() {}.getType();
+        return new TypeToken<Map<String, FPlayer>>() {
+        }.getType();
     }
 
     public void clean() {

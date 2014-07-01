@@ -12,7 +12,8 @@ public class RelationUtil {
     public static String describeThatToMe(RelationParticipator that, RelationParticipator me, boolean ucfirst) {
         String ret = "";
 
-        Faction thatFaction = getFaction(that); if (thatFaction == null) {
+        Faction thatFaction = getFaction(that);
+        if (thatFaction == null) {
             return "ERROR"; // ERROR
         }
 
@@ -26,7 +27,8 @@ public class RelationUtil {
                 ret = thatFaction.getTag();
             }
         } else if (that instanceof FPlayer) {
-            FPlayer fplayerthat = (FPlayer) that; if (that == me) {
+            FPlayer fplayerthat = (FPlayer) that;
+            if (that == me) {
                 ret = "you";
             } else if (thatFaction == myFaction) {
                 ret = fplayerthat.getNameAndTitle();
@@ -51,11 +53,13 @@ public class RelationUtil {
     }
 
     public static Relation getRelationTo(RelationParticipator me, RelationParticipator that, boolean ignorePeaceful) {
-        Faction fthat = getFaction(that); if (fthat == null) {
+        Faction fthat = getFaction(that);
+        if (fthat == null) {
             return Relation.NEUTRAL; // ERROR
         }
 
-        Faction fme = getFaction(me); if (fme == null) {
+        Faction fme = getFaction(me);
+        if (fme == null) {
             return Relation.NEUTRAL; // ERROR
         }
 
@@ -92,7 +96,8 @@ public class RelationUtil {
     }
 
     public static ChatColor getColorOfThatToMe(RelationParticipator that, RelationParticipator me) {
-        Faction thatFaction = getFaction(that); if (thatFaction != null) {
+        Faction thatFaction = getFaction(that);
+        if (thatFaction != null) {
             if (thatFaction.isPeaceful() && thatFaction != getFaction(me)) {
                 return Conf.colorPeaceful;
             }

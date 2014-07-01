@@ -17,7 +17,8 @@ public class PermUtil {
     protected MPlugin p;
 
     public PermUtil(MPlugin p) {
-        this.p = p; this.setup();
+        this.p = p;
+        this.setup();
     }
 
     public String getForbiddenMessage(String perm) {
@@ -35,16 +36,20 @@ public class PermUtil {
     }
 
     public String getPermissionDescription(String perm) {
-        String desc = permissionDescriptions.get(perm); if (desc == null) {
+        String desc = permissionDescriptions.get(perm);
+        if (desc == null) {
             return Lang.permDoThat;
-        } return desc;
+        }
+        return desc;
     }
 
     /**
      * This method tests if me has a certain permission and returns true if me has. Otherwise false
      */
     public boolean has(CommandSender me, String perm) {
-        if (me == null) { return false; }
+        if (me == null) {
+            return false;
+        }
 
         if (!(me instanceof Player)) {
             return me.hasPermission(perm);
@@ -58,14 +63,21 @@ public class PermUtil {
             return true;
         } else if (informSenderIfNot && me != null) {
             me.sendMessage(this.getForbiddenMessage(perm));
-        } return false;
+        }
+        return false;
     }
 
     public <T> T pickFirstVal(CommandSender me, Map<String, T> perm2val) {
-        if (perm2val == null) { return null; } T ret = null;
+        if (perm2val == null) {
+            return null;
+        }
+        T ret = null;
 
         for (Entry<String, T> entry : perm2val.entrySet()) {
-            ret = entry.getValue(); if (has(me, entry.getKey())) { break; }
+            ret = entry.getValue();
+            if (has(me, entry.getKey())) {
+                break;
+            }
         }
 
         return ret;

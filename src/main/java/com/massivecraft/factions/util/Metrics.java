@@ -97,10 +97,12 @@ public final class Metrics {
         this.plugin = plugin;
 
         // load the config
-        configurationFile = getConfigFile(); configuration = YamlConfiguration.loadConfiguration(configurationFile);
+        configurationFile = getConfigFile();
+        configuration = YamlConfiguration.loadConfiguration(configurationFile);
 
         // add some defaults
-        configuration.addDefault("opt-out", false); configuration.addDefault("guid", UUID.randomUUID().toString());
+        configuration.addDefault("opt-out", false);
+        configuration.addDefault("guid", UUID.randomUUID().toString());
         configuration.addDefault("debug", false);
 
         // Do we need to create the file?
@@ -110,7 +112,8 @@ public final class Metrics {
         }
 
         // Load the guid then
-        guid = configuration.getString("guid"); debug = configuration.getBoolean("debug", false);
+        guid = configuration.getString("guid");
+        debug = configuration.getBoolean("debug", false);
     }
 
     /**
@@ -143,7 +146,8 @@ public final class Metrics {
                         synchronized (optOutLock) {
                             // Disable Task, if it is running and the server owner decided to opt-out
                             if (isOptOut() && task != null) {
-                                task.cancel(); task = null;
+                                task.cancel();
+                                task = null;
                             }
                         }
 
@@ -186,7 +190,8 @@ public final class Metrics {
         synchronized (optOutLock) {
             // Check if the server owner has already set opt-out, if not, set it.
             if (isOptOut()) {
-                configuration.set("opt-out", false); configuration.save(configurationFile);
+                configuration.set("opt-out", false);
+                configuration.save(configurationFile);
             }
 
             // Enable Task, if it is not running
@@ -206,12 +211,14 @@ public final class Metrics {
         synchronized (optOutLock) {
             // Check if the server owner has already set opt-out, if not, set it.
             if (!isOptOut()) {
-                configuration.set("opt-out", true); configuration.save(configurationFile);
+                configuration.set("opt-out", true);
+                configuration.save(configurationFile);
             }
 
             // Disable Task, if it is running
             if (task != null) {
-                task.cancel(); task = null;
+                task.cancel();
+                task = null;
             }
         }
     }
@@ -238,24 +245,30 @@ public final class Metrics {
      */
     private void postPlugin(boolean isPing) throws IOException {
         // Server software specific section
-        PluginDescriptionFile description = plugin.getDescription(); String pluginName = description.getName();
+        PluginDescriptionFile description = plugin.getDescription();
+        String pluginName = description.getName();
         boolean onlineMode = Bukkit.getServer().getOnlineMode(); // TRUE if online mode is enabled
-        String pluginVersion = description.getVersion(); String serverVersion = Bukkit.getVersion();
+        String pluginVersion = description.getVersion();
+        String serverVersion = Bukkit.getVersion();
         int playersOnline = Bukkit.getServer().getOnlinePlayers().size();
 
         // END server software specific section -- all code below does not use any code outside of this class / Java
 
         // Construct the post data
-        StringBuilder json = new StringBuilder(1024); json.append('{');
+        StringBuilder json = new StringBuilder(1024);
+        json.append('{');
 
         // The plugin's description file containg all of the plugin data such as name, version, author, etc
-        appendJSONPair(json, "guid", guid); appendJSONPair(json, "plugin_version", pluginVersion);
+        appendJSONPair(json, "guid", guid);
+        appendJSONPair(json, "plugin_version", pluginVersion);
         appendJSONPair(json, "server_version", serverVersion);
         appendJSONPair(json, "players_online", Integer.toString(playersOnline));
 
         // New data as of R6
-        String osname = System.getProperty("os.name"); String osarch = System.getProperty("os.arch");
-        String osversion = System.getProperty("os.version"); String java_version = System.getProperty("java.version");
+        String osname = System.getProperty("os.name");
+        String osarch = System.getProperty("os.arch");
+        String osversion = System.getProperty("os.version");
+        String java_version = System.getProperty("java.version");
         int coreCount = Runtime.getRuntime().availableProcessors();
 
         // normalize os arch .. amd64 -> x86_64
@@ -263,9 +276,12 @@ public final class Metrics {
             osarch = "x86_64";
         }
 
-        appendJSONPair(json, "osname", osname); appendJSONPair(json, "osarch", osarch);
-        appendJSONPair(json, "osversion", osversion); appendJSONPair(json, "cores", Integer.toString(coreCount));
-        appendJSONPair(json, "auth_mode", onlineMode ? "1" : "0"); appendJSONPair(json, "java_version", java_version);
+        appendJSONPair(json, "osname", osname);
+        appendJSONPair(json, "osarch", osarch);
+        appendJSONPair(json, "osversion", osversion);
+        appendJSONPair(json, "cores", Integer.toString(coreCount));
+        appendJSONPair(json, "auth_mode", onlineMode ? "1" : "0");
+        appendJSONPair(json, "java_version", java_version);
 
         // If we're pinging, append it
         if (isPing) {
@@ -290,7 +306,8 @@ public final class Metrics {
         }
 
 
-        byte[] uncompressed = json.toString().getBytes(); byte[] compressed = gzip(json.toString());
+        byte[] uncompressed = json.toString().getBytes();
+        byte[] compressed = gzip(json.toString());
 
         // Headers
         connection.addRequestProperty("User-Agent", "MCStats/" + REVISION);
@@ -307,14 +324,17 @@ public final class Metrics {
         }
 
         // Write the data
-        OutputStream os = connection.getOutputStream(); os.write(compressed); os.flush();
+        OutputStream os = connection.getOutputStream();
+        os.write(compressed);
+        os.flush();
 
         // Now read the response
         final BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
         String response = reader.readLine();
 
         // close resources
-        os.close(); reader.close();
+        os.close();
+        reader.close();
 
         if (response == null || response.startsWith("ERR") || response.startsWith("7")) {
             if (response == null) {
@@ -335,10 +355,12 @@ public final class Metrics {
      * @return
      */
     public static byte[] gzip(String input) {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream(); GZIPOutputStream gzos = null;
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        GZIPOutputStream gzos = null;
 
         try {
-            gzos = new GZIPOutputStream(baos); gzos.write(input.getBytes("UTF-8"));
+            gzos = new GZIPOutputStream(baos);
+            gzos.write(input.getBytes("UTF-8"));
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -360,7 +382,8 @@ public final class Metrics {
      */
     private boolean isMineshafterPresent() {
         try {
-            Class.forName("mineshafter.MineServer"); return true;
+            Class.forName("mineshafter.MineServer");
+            return true;
         } catch (Exception e) {
             return false;
         }
@@ -380,7 +403,8 @@ public final class Metrics {
 
         try {
             if (value.equals("0") || !value.endsWith("0")) {
-                Double.parseDouble(value); isValueNumeric = true;
+                Double.parseDouble(value);
+                isValueNumeric = true;
             }
         } catch (NumberFormatException e) {
             isValueNumeric = false;
@@ -390,7 +414,8 @@ public final class Metrics {
             json.append(',');
         }
 
-        json.append(escapeJSON(key)); json.append(':');
+        json.append(escapeJSON(key));
+        json.append(':');
 
         if (isValueNumeric) {
             json.append(value);
@@ -409,21 +434,39 @@ public final class Metrics {
     private static String escapeJSON(String text) {
         StringBuilder builder = new StringBuilder();
 
-        builder.append('"'); for (int index = 0; index < text.length(); index++) {
+        builder.append('"');
+        for (int index = 0; index < text.length(); index++) {
             char chr = text.charAt(index);
 
             switch (chr) {
-                case '"': case '\\': builder.append('\\'); builder.append(chr); break;
-                case '\b': builder.append("\\b"); break; case '\t': builder.append("\\t"); break;
-                case '\n': builder.append("\\n"); break; case '\r': builder.append("\\r"); break;
-                default: if (chr < ' ') {
-                    String t = "000" + Integer.toHexString(chr);
-                    builder.append("\\u").append(t.substring(t.length() - 4));
-                } else {
+                case '"':
+                case '\\':
+                    builder.append('\\');
                     builder.append(chr);
-                } break;
+                    break;
+                case '\b':
+                    builder.append("\\b");
+                    break;
+                case '\t':
+                    builder.append("\\t");
+                    break;
+                case '\n':
+                    builder.append("\\n");
+                    break;
+                case '\r':
+                    builder.append("\\r");
+                    break;
+                default:
+                    if (chr < ' ') {
+                        String t = "000" + Integer.toHexString(chr);
+                        builder.append("\\u").append(t.substring(t.length() - 4));
+                    } else {
+                        builder.append(chr);
+                    }
+                    break;
             }
-        } builder.append('"');
+        }
+        builder.append('"');
 
         return builder.toString();
     }

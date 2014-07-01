@@ -7,14 +7,19 @@ import com.massivecraft.factions.struct.Permission;
 
 public class CmdOpen extends FCommand {
     public CmdOpen() {
-        super(); this.aliases.add("open");
+        super();
+        this.aliases.add("open");
 
         //this.requiredArgs.add("");
         this.optionalArgs.put("yes/no", "flip");
 
-        this.permission = Permission.OPEN.node; this.disableOnLock = false;
+        this.permission = Permission.OPEN.node;
+        this.disableOnLock = false;
 
-        senderMustBePlayer = true; senderMustBeMember = false; senderMustBeModerator = true; senderMustBeAdmin = false;
+        senderMustBePlayer = true;
+        senderMustBeMember = false;
+        senderMustBeModerator = true;
+        senderMustBeAdmin = false;
     }
 
     @Override
@@ -33,7 +38,8 @@ public class CmdOpen extends FCommand {
         for (Faction faction : Factions.i.get()) {
             if (faction == myFaction) {
                 continue;
-            } faction.msg("<i>The faction %s<i> is now %s", myFaction.getTag(faction), open);
+            }
+            faction.msg("<i>The faction %s<i> is now %s", myFaction.getTag(faction), open);
         }
     }
 

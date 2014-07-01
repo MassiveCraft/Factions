@@ -9,25 +9,35 @@ import com.massivecraft.factions.struct.Permission;
 
 public class CmdPermanent extends FCommand {
     public CmdPermanent() {
-        super(); this.aliases.add("permanent");
+        super();
+        this.aliases.add("permanent");
 
         this.requiredArgs.add("faction tag");
         //this.optionalArgs.put("", "");
 
-        this.permission = Permission.SET_PERMANENT.node; this.disableOnLock = true;
+        this.permission = Permission.SET_PERMANENT.node;
+        this.disableOnLock = true;
 
-        senderMustBePlayer = false; senderMustBeMember = false; senderMustBeModerator = false;
+        senderMustBePlayer = false;
+        senderMustBeMember = false;
+        senderMustBeModerator = false;
         senderMustBeAdmin = false;
     }
 
     @Override
     public void perform() {
-        Faction faction = this.argAsFaction(0); if (faction == null) { return; }
+        Faction faction = this.argAsFaction(0);
+        if (faction == null) {
+            return;
+        }
 
-        String change; if (faction.isPermanent()) {
-            change = "removed permanent status from"; faction.setPermanent(false);
+        String change;
+        if (faction.isPermanent()) {
+            change = "removed permanent status from";
+            faction.setPermanent(false);
         } else {
-            change = "added permanent status to"; faction.setPermanent(true);
+            change = "added permanent status to";
+            faction.setPermanent(true);
         }
 
         P.p.log((fme == null ? "A server admin" : fme.getName()) + " " + change + " the faction \"" + faction.getTag() + "\".");

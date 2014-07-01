@@ -9,40 +9,50 @@ import org.bukkit.Bukkit;
 
 public class CmdUnclaim extends FCommand {
     public CmdUnclaim() {
-        this.aliases.add("unclaim"); this.aliases.add("declaim");
+        this.aliases.add("unclaim");
+        this.aliases.add("declaim");
 
         //this.requiredArgs.add("");
         //this.optionalArgs.put("", "");
 
-        this.permission = Permission.UNCLAIM.node; this.disableOnLock = true;
+        this.permission = Permission.UNCLAIM.node;
+        this.disableOnLock = true;
 
-        senderMustBePlayer = true; senderMustBeMember = false; senderMustBeModerator = false; senderMustBeAdmin = false;
+        senderMustBePlayer = true;
+        senderMustBeMember = false;
+        senderMustBeModerator = false;
+        senderMustBeAdmin = false;
     }
 
     @Override
     public void perform() {
-        FLocation flocation = new FLocation(fme); Faction otherFaction = Board.getFactionAt(flocation);
+        FLocation flocation = new FLocation(fme);
+        Faction otherFaction = Board.getFactionAt(flocation);
 
         if (otherFaction.isSafeZone()) {
             if (Permission.MANAGE_SAFE_ZONE.has(sender)) {
-                Board.removeAt(flocation); msg("<i>Safe zone was unclaimed.");
+                Board.removeAt(flocation);
+                msg("<i>Safe zone was unclaimed.");
 
                 if (Conf.logLandUnclaims) {
                     P.p.log(fme.getName() + " unclaimed land at (" + flocation.getCoordString() + ") from the faction: " + otherFaction.getTag());
                 }
             } else {
                 msg("<b>This is a safe zone. You lack permissions to unclaim.");
-            } return;
+            }
+            return;
         } else if (otherFaction.isWarZone()) {
             if (Permission.MANAGE_WAR_ZONE.has(sender)) {
-                Board.removeAt(flocation); msg("<i>War zone was unclaimed.");
+                Board.removeAt(flocation);
+                msg("<i>War zone was unclaimed.");
 
                 if (Conf.logLandUnclaims) {
                     P.p.log(fme.getName() + " unclaimed land at (" + flocation.getCoordString() + ") from the faction: " + otherFaction.getTag());
                 }
             } else {
                 msg("<b>This is a war zone. You lack permissions to unclaim.");
-            } return;
+            }
+            return;
         }
 
         if (fme.isAdminBypassing()) {
@@ -68,11 +78,15 @@ public class CmdUnclaim extends FCommand {
 
 
         if (myFaction != otherFaction) {
-            msg("<b>You don't own this land."); return;
+            msg("<b>You don't own this land.");
+            return;
         }
 
         LandUnclaimEvent unclaimEvent = new LandUnclaimEvent(flocation, otherFaction, fme);
-        Bukkit.getServer().getPluginManager().callEvent(unclaimEvent); if (unclaimEvent.isCancelled()) { return; }
+        Bukkit.getServer().getPluginManager().callEvent(unclaimEvent);
+        if (unclaimEvent.isCancelled()) {
+            return;
+        }
 
         if (Econ.shouldBeUsed()) {
             double refund = Econ.calculateClaimRefund(myFaction.getLandRounded());
@@ -82,11 +96,14 @@ public class CmdUnclaim extends FCommand {
                     return;
                 }
             } else {
-                if (!Econ.modifyMoney(fme, refund, "to unclaim this land", "for unclaiming this land")) { return; }
+                if (!Econ.modifyMoney(fme, refund, "to unclaim this land", "for unclaiming this land")) {
+                    return;
+                }
             }
         }
 
-        Board.removeAt(flocation); myFaction.msg("%s<i> unclaimed some land.", fme.describeTo(myFaction, true));
+        Board.removeAt(flocation);
+        myFaction.msg("%s<i> unclaimed some land.", fme.describeTo(myFaction, true));
 
         if (Conf.logLandUnclaims) {
             P.p.log(fme.getName() + " unclaimed land at (" + flocation.getCoordString() + ") from the faction: " + otherFaction.getTag());

@@ -44,7 +44,8 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator {
     public Faction getFaction() {
         if (this.factionId == null) {
             return null;
-        } return Factions.i.get(this.factionId);
+        }
+        return Factions.i.get(this.factionId);
     }
 
     public String getFactionId() {
@@ -56,8 +57,12 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator {
     }
 
     public void setFaction(Faction faction) {
-        Faction oldFaction = this.getFaction(); if (oldFaction != null) { oldFaction.removeFPlayer(this); }
-        faction.addFPlayer(this); this.factionId = faction.getId();
+        Faction oldFaction = this.getFaction();
+        if (oldFaction != null) {
+            oldFaction.removeFPlayer(this);
+        }
+        faction.addFPlayer(this);
+        this.factionId = faction.getId();
     }
 
     // FIELD: role
@@ -106,9 +111,11 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator {
     }
 
     public void setAutoClaimFor(Faction faction) {
-        this.autoClaimFor = faction; if (this.autoClaimFor != null) {
+        this.autoClaimFor = faction;
+        if (this.autoClaimFor != null) {
             // TODO: merge these into same autoclaim
-            this.autoSafeZoneEnabled = false; this.autoWarZoneEnabled = false;
+            this.autoSafeZoneEnabled = false;
+            this.autoWarZoneEnabled = false;
         }
     }
 
@@ -120,8 +127,10 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator {
     }
 
     public void setIsAutoSafeClaimEnabled(boolean enabled) {
-        this.autoSafeZoneEnabled = enabled; if (enabled) {
-            this.autoClaimFor = null; this.autoWarZoneEnabled = false;
+        this.autoSafeZoneEnabled = enabled;
+        if (enabled) {
+            this.autoClaimFor = null;
+            this.autoWarZoneEnabled = false;
         }
     }
 
@@ -133,8 +142,10 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator {
     }
 
     public void setIsAutoWarClaimEnabled(boolean enabled) {
-        this.autoWarZoneEnabled = enabled; if (enabled) {
-            this.autoClaimFor = null; this.autoSafeZoneEnabled = false;
+        this.autoWarZoneEnabled = enabled;
+        if (enabled) {
+            this.autoClaimFor = null;
+            this.autoSafeZoneEnabled = false;
         }
     }
 
@@ -164,7 +175,8 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator {
     public ChatMode getChatMode() {
         if (this.factionId.equals("0") || !Conf.factionOnlyChat) {
             this.chatMode = ChatMode.PUBLIC;
-        } return chatMode;
+        }
+        return chatMode;
     }
 
     // FIELD: chatSpy
@@ -189,12 +201,17 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator {
 
     // GSON need this noarg constructor.
     public FPlayer() {
-        this.resetFactionData(false); this.power = Conf.powerPlayerStarting;
-        this.lastPowerUpdateTime = System.currentTimeMillis(); this.lastLoginTime = System.currentTimeMillis();
-        this.mapAutoUpdating = false; this.autoClaimFor = null; this.autoSafeZoneEnabled = false;
+        this.resetFactionData(false);
+        this.power = Conf.powerPlayerStarting;
+        this.lastPowerUpdateTime = System.currentTimeMillis();
+        this.lastLoginTime = System.currentTimeMillis();
+        this.mapAutoUpdating = false;
+        this.autoClaimFor = null;
+        this.autoSafeZoneEnabled = false;
         this.autoWarZoneEnabled = false;
         this.loginPvpDisabled = (Conf.noPVPDamageToOthersForXSecondsAfterLogin > 0) ? true : false;
-        this.deleteMe = false; this.powerBoost = 0.0;
+        this.deleteMe = false;
+        this.powerBoost = 0.0;
 
         if (!Conf.newPlayerStartingFactionID.equals("0") && Factions.i.exists(Conf.newPlayerStartingFactionID)) {
             this.factionId = Conf.newPlayerStartingFactionID;
@@ -204,14 +221,18 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator {
     public final void resetFactionData(boolean doSpoutUpdate) {
         // clean up any territory ownership in old faction, if there is one
         if (Factions.i.exists(this.getFactionId())) {
-            Faction currentFaction = this.getFaction(); currentFaction.removeFPlayer(this);
+            Faction currentFaction = this.getFaction();
+            currentFaction.removeFPlayer(this);
             if (currentFaction.isNormal()) {
                 currentFaction.clearClaimOwnership(this);
             }
         }
 
         this.factionId = "0"; // The default neutral faction
-        this.chatMode = ChatMode.PUBLIC; this.role = Role.NORMAL; this.title = ""; this.autoClaimFor = null;
+        this.chatMode = ChatMode.PUBLIC;
+        this.role = Role.NORMAL;
+        this.title = "";
+        this.autoClaimFor = null;
     }
 
     public void resetFactionData() {
@@ -229,7 +250,9 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator {
 
 
     public void setLastLoginTime(long lastLoginTime) {
-        losePowerFromBeingOffline(); this.lastLoginTime = lastLoginTime; this.lastPowerUpdateTime = lastLoginTime;
+        losePowerFromBeingOffline();
+        this.lastLoginTime = lastLoginTime;
+        this.lastPowerUpdateTime = lastLoginTime;
         if (Conf.noPVPDamageToOthersForXSecondsAfterLogin > 0) {
             this.loginPvpDisabled = true;
         }
@@ -248,8 +271,10 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator {
             return false;
         }
         if (this.lastLoginTime + (Conf.noPVPDamageToOthersForXSecondsAfterLogin * 1000) < System.currentTimeMillis()) {
-            this.loginPvpDisabled = false; return false;
-        } return true;
+            this.loginPvpDisabled = false;
+            return false;
+        }
+        return true;
     }
 
     public FLocation getLastStoodAt() {
@@ -281,22 +306,27 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator {
     public String getName() {
         if (isOnline()) {
             return getPlayer().getName();
-        } OfflinePlayer player = Bukkit.getOfflinePlayer(UUID.fromString(getId()));
+        }
+        OfflinePlayer player = Bukkit.getOfflinePlayer(UUID.fromString(getId()));
         return player.getName() != null ? player.getName() : getId();
     }
 
     public String getTag() {
         if (!this.hasFaction()) {
             return "";
-        } return this.getFaction().getTag();
+        }
+        return this.getFaction().getTag();
     }
 
     // Base concatenations:
 
     public String getNameAndSomething(String something) {
-        String ret = this.role.getPrefix(); if (something.length() > 0) {
+        String ret = this.role.getPrefix();
+        if (something.length() > 0) {
             ret += something + " ";
-        } ret += this.getName(); return ret;
+        }
+        ret += this.getName();
+        return ret;
     }
 
     public String getNameAndTitle() {
@@ -412,9 +442,11 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator {
     // Health
     //----------------------------------------------//
     public void heal(int amnt) {
-        Player player = this.getPlayer(); if (player == null) {
+        Player player = this.getPlayer();
+        if (player == null) {
             return;
-        } player.setHealth(player.getHealth() + amnt);
+        }
+        player.setHealth(player.getHealth() + amnt);
     }
 
 
@@ -422,13 +454,17 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator {
     // Power
     //----------------------------------------------//
     public double getPower() {
-        this.updatePower(); return this.power;
+        this.updatePower();
+        return this.power;
     }
 
     protected void alterPower(double delta) {
-        this.power += delta; if (this.power > this.getPowerMax()) {
+        this.power += delta;
+        if (this.power > this.getPowerMax()) {
             this.power = this.getPowerMax();
-        } else if (this.power < this.getPowerMin()) { this.power = this.getPowerMin(); }
+        } else if (this.power < this.getPowerMin()) {
+            this.power = this.getPowerMin();
+        }
     }
 
     public double getPowerMax() {
@@ -453,33 +489,41 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator {
 
     protected void updatePower() {
         if (this.isOffline()) {
-            losePowerFromBeingOffline(); if (!Conf.powerRegenOffline) {
+            losePowerFromBeingOffline();
+            if (!Conf.powerRegenOffline) {
                 return;
             }
-        } long now = System.currentTimeMillis(); long millisPassed = now - this.lastPowerUpdateTime;
+        }
+        long now = System.currentTimeMillis();
+        long millisPassed = now - this.lastPowerUpdateTime;
         this.lastPowerUpdateTime = now;
 
-        Player thisPlayer = this.getPlayer(); if (thisPlayer != null && thisPlayer.isDead()) {
+        Player thisPlayer = this.getPlayer();
+        if (thisPlayer != null && thisPlayer.isDead()) {
             return;  // don't let dead players regain power until they respawn
         }
 
-        int millisPerMinute = 60 * 1000; this.alterPower(millisPassed * Conf.powerPerMinute / millisPerMinute);
+        int millisPerMinute = 60 * 1000;
+        this.alterPower(millisPassed * Conf.powerPerMinute / millisPerMinute);
     }
 
     protected void losePowerFromBeingOffline() {
         if (Conf.powerOfflineLossPerDay > 0.0 && this.power > Conf.powerOfflineLossLimit) {
-            long now = System.currentTimeMillis(); long millisPassed = now - this.lastPowerUpdateTime;
+            long now = System.currentTimeMillis();
+            long millisPassed = now - this.lastPowerUpdateTime;
             this.lastPowerUpdateTime = now;
 
             double loss = millisPassed * Conf.powerOfflineLossPerDay / (24 * 60 * 60 * 1000);
             if (this.power - loss < Conf.powerOfflineLossLimit) {
                 loss = this.power;
-            } this.alterPower(-loss);
+            }
+            this.alterPower(-loss);
         }
     }
 
     public void onDeath() {
-        this.updatePower(); this.alterPower(-Conf.powerPerDeath);
+        this.updatePower();
+        this.alterPower(-Conf.powerPerDeath);
     }
 
     //----------------------------------------------//
@@ -511,7 +555,8 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator {
         String msg = P.p.txt.parse("<i>") + " ~ " + factionHere.getTag(this);
         if (factionHere.getDescription().length() > 0) {
             msg += " - " + factionHere.getDescription();
-        } this.sendMessage(msg);
+        }
+        this.sendMessage(msg);
     }
 
     // -------------------------------
@@ -519,27 +564,36 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator {
     // -------------------------------
 
     public void leave(boolean makePay) {
-        Faction myFaction = this.getFaction(); makePay = makePay && Econ.shouldBeUsed() && !this.isAdminBypassing();
+        Faction myFaction = this.getFaction();
+        makePay = makePay && Econ.shouldBeUsed() && !this.isAdminBypassing();
 
         if (myFaction == null) {
-            resetFactionData(); return;
+            resetFactionData();
+            return;
         }
 
         boolean perm = myFaction.isPermanent();
 
         if (!perm && this.getRole() == Role.ADMIN && myFaction.getFPlayers().size() > 1) {
-            msg("<b>You must give the admin role to someone else first."); return;
+            msg("<b>You must give the admin role to someone else first.");
+            return;
         }
 
         if (!Conf.canLeaveWithNegativePower && this.getPower() < 0) {
-            msg("<b>You cannot leave until your power is positive."); return;
+            msg("<b>You cannot leave until your power is positive.");
+            return;
         }
 
         // if economy is enabled and they're not on the bypass list, make sure they can pay
-        if (makePay && !Econ.hasAtLeast(this, Conf.econCostLeave, "to leave your faction.")) { return; }
+        if (makePay && !Econ.hasAtLeast(this, Conf.econCostLeave, "to leave your faction.")) {
+            return;
+        }
 
         FPlayerLeaveEvent leaveEvent = new FPlayerLeaveEvent(this, myFaction, FPlayerLeaveEvent.PlayerLeaveReason.LEAVE);
-        Bukkit.getServer().getPluginManager().callEvent(leaveEvent); if (leaveEvent.isCancelled()) { return; }
+        Bukkit.getServer().getPluginManager().callEvent(leaveEvent);
+        if (leaveEvent.isCancelled()) {
+            return;
+        }
 
         // then make 'em pay (if applicable)
         if (makePay && !Econ.modifyMoney(this, -Conf.econCostLeave, "to leave your faction.", "for leaving your faction.")) {
@@ -559,7 +613,9 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator {
                 fplayer.msg("%s<i> left %s<i>.", this.describeTo(fplayer, true), myFaction.describeTo(fplayer));
             }
 
-            if (Conf.logFactionLeave) { P.p.log(this.getName() + " left the faction: " + myFaction.getTag()); }
+            if (Conf.logFactionLeave) {
+                P.p.log(this.getName() + " left the faction: " + myFaction.getTag());
+            }
         }
 
         this.resetFactionData();
@@ -570,14 +626,17 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator {
                 fplayer.msg("<i>%s<i> was disbanded.", myFaction.describeTo(fplayer, true));
             }
 
-            myFaction.detach(); if (Conf.logFactionDisband) {
+            myFaction.detach();
+            if (Conf.logFactionDisband) {
                 P.p.log("The faction " + myFaction.getTag() + " (" + myFaction.getId() + ") was disbanded due to the last player (" + this.getName() + ") leaving.");
             }
         }
     }
 
     public boolean canClaimForFaction(Faction forFaction) {
-        if (forFaction.isNone()) { return false; }
+        if (forFaction.isNone()) {
+            return false;
+        }
 
         if (this.isAdminBypassing() || (forFaction == this.getFaction() && this.getRole().isAtLeast(Role.MODERATOR)) || (forFaction.isSafeZone() && Permission.MANAGE_SAFE_ZONE.has(getPlayer())) || (forFaction.isWarZone() && Permission.MANAGE_WAR_ZONE.has(getPlayer()))) {
             return true;
@@ -587,8 +646,11 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator {
     }
 
     public boolean canClaimForFactionAtLocation(Faction forFaction, Location location, boolean notifyFailure) {
-        String error = null; FLocation flocation = new FLocation(location); Faction myFaction = getFaction();
-        Faction currentFaction = Board.getFactionAt(flocation); int ownedLand = forFaction.getLandRounded();
+        String error = null;
+        FLocation flocation = new FLocation(location);
+        Faction myFaction = getFaction();
+        Faction currentFaction = Board.getFactionAt(flocation);
+        int ownedLand = forFaction.getLandRounded();
 
         if (Conf.worldGuardChecking && Worldguard.checkForRegionsInChunk(location)) {
             // Checks for WorldGuard regions in the chunk attempting to be claimed
@@ -640,22 +702,28 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator {
 
         if (notifyFailure && error != null) {
             msg(error);
-        } return error == null;
+        }
+        return error == null;
     }
 
     public boolean attemptClaim(Faction forFaction, Location location, boolean notifyFailure) {
         // notifyFailure is false if called by auto-claim; no need to notify on every failure for it
         // return value is false on failure, true on success
 
-        FLocation flocation = new FLocation(location); Faction currentFaction = Board.getFactionAt(flocation);
+        FLocation flocation = new FLocation(location);
+        Faction currentFaction = Board.getFactionAt(flocation);
 
         int ownedLand = forFaction.getLandRounded();
 
-        if (!this.canClaimForFactionAtLocation(forFaction, location, notifyFailure)) { return false; }
+        if (!this.canClaimForFactionAtLocation(forFaction, location, notifyFailure)) {
+            return false;
+        }
 
         // if economy is enabled and they're not on the bypass list, make sure they can pay
         boolean mustPay = Econ.shouldBeUsed() && !this.isAdminBypassing() && !forFaction.isSafeZone() && !forFaction.isWarZone();
-        double cost = 0.0; EconomyParticipator payee = null; if (mustPay) {
+        double cost = 0.0;
+        EconomyParticipator payee = null;
+        if (mustPay) {
             cost = Econ.calculateClaimCost(ownedLand, currentFaction.isNormal());
 
             if (Conf.econClaimUnconnectedFee != 0.0 && forFaction.getLandRoundedInWorld(flocation.getWorldName()) > 0 && !Board.isConnectedLocation(flocation, forFaction)) {
@@ -664,13 +732,20 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator {
 
             if (Conf.bankEnabled && Conf.bankFactionPaysLandCosts && this.hasFaction()) {
                 payee = this.getFaction();
-            } else { payee = this; }
+            } else {
+                payee = this;
+            }
 
-            if (!Econ.hasAtLeast(payee, cost, "to claim this land")) { return false; }
+            if (!Econ.hasAtLeast(payee, cost, "to claim this land")) {
+                return false;
+            }
         }
 
         LandClaimEvent claimEvent = new LandClaimEvent(flocation, forFaction, this);
-        Bukkit.getServer().getPluginManager().callEvent(claimEvent); if (claimEvent.isCancelled()) { return false; }
+        Bukkit.getServer().getPluginManager().callEvent(claimEvent);
+        if (claimEvent.isCancelled()) {
+            return false;
+        }
 
         // then make 'em pay (if applicable)
         if (mustPay && !Econ.modifyMoney(payee, -cost, "to claim this land", "for claiming this land")) {
@@ -678,8 +753,10 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator {
         }
 
         // announce success
-        Set<FPlayer> informTheseFPlayers = new HashSet<FPlayer>(); informTheseFPlayers.add(this);
-        informTheseFPlayers.addAll(forFaction.getFPlayersWhereOnline(true)); for (FPlayer fp : informTheseFPlayers) {
+        Set<FPlayer> informTheseFPlayers = new HashSet<FPlayer>();
+        informTheseFPlayers.add(this);
+        informTheseFPlayers.addAll(forFaction.getFPlayersWhereOnline(true));
+        for (FPlayer fp : informTheseFPlayers) {
             fp.msg("<h>%s<i> claimed land for <h>%s<i> from <h>%s<i>.", this.describeTo(fp, true), forFaction.describeTo(fp), currentFaction.describeTo(fp));
         }
 
@@ -700,7 +777,8 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator {
     public boolean shouldBeSaved() {
         if (!this.hasFaction() && (this.getPowerRounded() == this.getPowerMaxRounded() || this.getPowerRounded() == (int) Math.round(Conf.powerPlayerStarting))) {
             return false;
-        } return !this.deleteMe;
+        }
+        return !this.deleteMe;
     }
 
     public void msg(String str, Object... args) {

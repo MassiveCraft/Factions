@@ -12,14 +12,18 @@ public class CmdLock extends FCommand {
 	 */
 
     public CmdLock() {
-        super(); this.aliases.add("lock");
+        super();
+        this.aliases.add("lock");
 
         //this.requiredArgs.add("");
         this.optionalArgs.put("on/off", "flip");
 
-        this.permission = Permission.LOCK.node; this.disableOnLock = false;
+        this.permission = Permission.LOCK.node;
+        this.disableOnLock = false;
 
-        senderMustBePlayer = false; senderMustBeMember = false; senderMustBeModerator = false;
+        senderMustBePlayer = false;
+        senderMustBeMember = false;
+        senderMustBeModerator = false;
         senderMustBeAdmin = false;
     }
 

@@ -10,14 +10,19 @@ import org.bukkit.Bukkit;
 
 public class CmdUnclaimall extends FCommand {
     public CmdUnclaimall() {
-        this.aliases.add("unclaimall"); this.aliases.add("declaimall");
+        this.aliases.add("unclaimall");
+        this.aliases.add("declaimall");
 
         //this.requiredArgs.add("");
         //this.optionalArgs.put("", "");
 
-        this.permission = Permission.UNCLAIM_ALL.node; this.disableOnLock = true;
+        this.permission = Permission.UNCLAIM_ALL.node;
+        this.disableOnLock = true;
 
-        senderMustBePlayer = true; senderMustBeMember = false; senderMustBeModerator = true; senderMustBeAdmin = false;
+        senderMustBePlayer = true;
+        senderMustBeMember = false;
+        senderMustBeModerator = true;
+        senderMustBeAdmin = false;
     }
 
     @Override

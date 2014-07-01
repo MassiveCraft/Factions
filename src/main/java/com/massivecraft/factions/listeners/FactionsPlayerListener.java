@@ -49,24 +49,29 @@ public class FactionsPlayerListener implements Listener {
         // and update their last login time to point to when the logged off, for auto-remove routine
         me.setLastLoginTime(System.currentTimeMillis());
 
-        Faction myFaction = me.getFaction(); if (myFaction != null) {
+        Faction myFaction = me.getFaction();
+        if (myFaction != null) {
             myFaction.memberLoggedOff();
         }
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerMove(PlayerMoveEvent event) {
-        if (event.isCancelled()) { return; }
+        if (event.isCancelled()) {
+            return;
+        }
 
         // quick check to make sure player is moving between chunks; good performance boost
         if (event.getFrom().getBlockX() >> 4 == event.getTo().getBlockX() >> 4 && event.getFrom().getBlockZ() >> 4 == event.getTo().getBlockZ() >> 4 && event.getFrom().getWorld() == event.getTo().getWorld()) {
             return;
         }
 
-        Player player = event.getPlayer(); FPlayer me = FPlayers.i.get(player);
+        Player player = event.getPlayer();
+        FPlayer me = FPlayers.i.get(player);
 
         // Did we change coord?
-        FLocation from = me.getLastStoodAt(); FLocation to = new FLocation(event.getTo());
+        FLocation from = me.getLastStoodAt();
+        FLocation to = new FLocation(event.getTo());
 
         if (from.equals(to)) {
             return;
@@ -77,7 +82,8 @@ public class FactionsPlayerListener implements Listener {
         me.setLastStoodAt(to);
 
         // Did we change "host"(faction)?
-        Faction factionFrom = Board.getFactionAt(from); Faction factionTo = Board.getFactionAt(to);
+        Faction factionFrom = Board.getFactionAt(from);
+        Faction factionTo = Board.getFactionAt(to);
         boolean changedFaction = (factionFrom != factionTo);
 
         /* Was used for displaying on Spout but we removed Spout compatibility.
@@ -88,7 +94,8 @@ public class FactionsPlayerListener implements Listener {
         if (me.isMapAutoUpdating()) {
             me.sendMessage(Board.getMap(me.getFaction(), to, player.getLocation().getYaw()));
         } else {
-            Faction myFaction = me.getFaction(); String ownersTo = myFaction.getOwnerListString(to);
+            Faction myFaction = me.getFaction();
+            String ownersTo = myFaction.getOwnerListString(to);
 
             if (changedFaction) {
                 me.sendFactionHereMessage();
@@ -100,7 +107,9 @@ public class FactionsPlayerListener implements Listener {
                 if (Conf.ownedMessageByChunk || !ownersFrom.equals(ownersTo)) {
                     if (!ownersTo.isEmpty()) {
                         me.sendMessage(Conf.ownedLandMessage + ownersTo);
-                    } else if (!Conf.publicLandMessage.isEmpty()) { me.sendMessage(Conf.publicLandMessage); }
+                    } else if (!Conf.publicLandMessage.isEmpty()) {
+                        me.sendMessage(Conf.publicLandMessage);
+                    }
                 }
             }
         }
@@ -112,7 +121,8 @@ public class FactionsPlayerListener implements Listener {
                 me.setIsAutoSafeClaimEnabled(false);
             } else {
                 if (!Board.getFactionAt(to).isSafeZone()) {
-                    Board.setFactionAt(Factions.i.getSafeZone(), to); me.msg("<i>This land is now a safe zone.");
+                    Board.setFactionAt(Factions.i.getSafeZone(), to);
+                    me.msg("<i>This land is now a safe zone.");
                 }
             }
         } else if (me.isAutoWarClaimEnabled()) {
@@ -120,7 +130,8 @@ public class FactionsPlayerListener implements Listener {
                 me.setIsAutoWarClaimEnabled(false);
             } else {
                 if (!Board.getFactionAt(to).isWarZone()) {
-                    Board.setFactionAt(Factions.i.getWarZone(), to); me.msg("<i>This land is now a war zone.");
+                    Board.setFactionAt(Factions.i.getWarZone(), to);
+                    me.msg("<i>This land is now a war zone.");
                 }
             }
         }
@@ -128,27 +139,38 @@ public class FactionsPlayerListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onPlayerInteract(PlayerInteractEvent event) {
-        if (event.isCancelled()) { return; }
+        if (event.isCancelled()) {
+            return;
+        }
         // only need to check right-clicks and physical as of MC 1.4+; good performance boost
-        if (event.getAction() != Action.RIGHT_CLICK_BLOCK && event.getAction() != Action.PHYSICAL) { return; }
+        if (event.getAction() != Action.RIGHT_CLICK_BLOCK && event.getAction() != Action.PHYSICAL) {
+            return;
+        }
 
-        Block block = event.getClickedBlock(); Player player = event.getPlayer();
+        Block block = event.getClickedBlock();
+        Player player = event.getPlayer();
 
         if (block == null) {
             return;  // clicked in air, apparently
         }
 
         if (!canPlayerUseBlock(player, block, false)) {
-            event.setCancelled(true); if (Conf.handleExploitInteractionSpam) {
-                String name = player.getName(); InteractAttemptSpam attempt = interactSpammers.get(name);
+            event.setCancelled(true);
+            if (Conf.handleExploitInteractionSpam) {
+                String name = player.getName();
+                InteractAttemptSpam attempt = interactSpammers.get(name);
                 if (attempt == null) {
-                    attempt = new InteractAttemptSpam(); interactSpammers.put(name, attempt);
-                } int count = attempt.increment(); if (count >= 10) {
+                    attempt = new InteractAttemptSpam();
+                    interactSpammers.put(name, attempt);
+                }
+                int count = attempt.increment();
+                if (count >= 10) {
                     FPlayer me = FPlayers.i.get(name);
                     me.msg("<b>Ouch, that is starting to hurt. You should give it a rest.");
                     player.damage(NumberConversions.floor((double) count / 10));
                 }
-            } return;
+            }
+            return;
         }
 
         if (event.getAction() != Action.RIGHT_CLICK_BLOCK) {
@@ -156,7 +178,8 @@ public class FactionsPlayerListener implements Listener {
         }
 
         if (!playerCanUseItemHere(player, block.getLocation(), event.getMaterial(), false)) {
-            event.setCancelled(true); return;
+            event.setCancelled(true);
+            return;
         }
     }
 
@@ -170,18 +193,31 @@ public class FactionsPlayerListener implements Listener {
 
         // returns the current attempt count
         public int increment() {
-            long Now = System.currentTimeMillis(); if (Now > lastAttempt + 2000) { attempts = 1; } else { attempts++; }
-            lastAttempt = Now; return attempts;
+            long Now = System.currentTimeMillis();
+            if (Now > lastAttempt + 2000) {
+                attempts = 1;
+            } else {
+                attempts++;
+            }
+            lastAttempt = Now;
+            return attempts;
         }
     }
 
 
     public static boolean playerCanUseItemHere(Player player, Location location, Material material, boolean justCheck) {
-        String name = player.getName(); if (Conf.playersWhoBypassAllProtection.contains(name)) { return true; }
+        String name = player.getName();
+        if (Conf.playersWhoBypassAllProtection.contains(name)) {
+            return true;
+        }
 
-        FPlayer me = FPlayers.i.get(player); if (me.isAdminBypassing()) { return true; }
+        FPlayer me = FPlayers.i.get(player);
+        if (me.isAdminBypassing()) {
+            return true;
+        }
 
-        FLocation loc = new FLocation(location); Faction otherFaction = Board.getFactionAt(loc);
+        FLocation loc = new FLocation(location);
+        Faction otherFaction = Board.getFactionAt(loc);
 
         if (otherFaction.hasPlayersOnline()) {
             if (!Conf.territoryDenyUseageMaterials.contains(material)) {
@@ -204,20 +240,29 @@ public class FactionsPlayerListener implements Listener {
 
             return false;
         } else if (otherFaction.isSafeZone()) {
-            if (!Conf.safeZoneDenyUseage || Permission.MANAGE_SAFE_ZONE.has(player)) { return true; }
+            if (!Conf.safeZoneDenyUseage || Permission.MANAGE_SAFE_ZONE.has(player)) {
+                return true;
+            }
 
-            if (!justCheck) { me.msg("<b>You can't use <h>%s<b> in a safe zone.", TextUtil.getMaterialName(material)); }
+            if (!justCheck) {
+                me.msg("<b>You can't use <h>%s<b> in a safe zone.", TextUtil.getMaterialName(material));
+            }
 
             return false;
         } else if (otherFaction.isWarZone()) {
-            if (!Conf.warZoneDenyUseage || Permission.MANAGE_WAR_ZONE.has(player)) { return true; }
+            if (!Conf.warZoneDenyUseage || Permission.MANAGE_WAR_ZONE.has(player)) {
+                return true;
+            }
 
-            if (!justCheck) { me.msg("<b>You can't use <h>%s<b> in a war zone.", TextUtil.getMaterialName(material)); }
+            if (!justCheck) {
+                me.msg("<b>You can't use <h>%s<b> in a war zone.", TextUtil.getMaterialName(material));
+            }
 
             return false;
         }
 
-        Faction myFaction = me.getFaction(); Relation rel = myFaction.getRelationTo(otherFaction);
+        Faction myFaction = me.getFaction();
+        Relation rel = myFaction.getRelationTo(otherFaction);
 
         // Cancel if we are not in our own territory
         if (rel.confDenyUseage()) {
@@ -241,24 +286,37 @@ public class FactionsPlayerListener implements Listener {
     }
 
     public static boolean canPlayerUseBlock(Player player, Block block, boolean justCheck) {
-        if (Conf.playersWhoBypassAllProtection.contains(player.getName())) { return true; }
+        if (Conf.playersWhoBypassAllProtection.contains(player.getName())) {
+            return true;
+        }
 
-        FPlayer me = FPlayers.i.get(player); if (me.isAdminBypassing()) { return true; }
+        FPlayer me = FPlayers.i.get(player);
+        if (me.isAdminBypassing()) {
+            return true;
+        }
 
-        Material material = block.getType(); FLocation loc = new FLocation(block);
+        Material material = block.getType();
+        FLocation loc = new FLocation(block);
         Faction otherFaction = Board.getFactionAt(loc);
 
         // no door/chest/whatever protection in wilderness, war zones, or safe zones
-        if (!otherFaction.isNormal()) { return true; }
+        if (!otherFaction.isNormal()) {
+            return true;
+        }
 
         // We only care about some material types.
         if (otherFaction.hasPlayersOnline()) {
-            if (!Conf.territoryProtectedMaterials.contains(material)) { return true; }
+            if (!Conf.territoryProtectedMaterials.contains(material)) {
+                return true;
+            }
         } else {
-            if (!Conf.territoryProtectedMaterialsWhenOffline.contains(material)) { return true; }
+            if (!Conf.territoryProtectedMaterialsWhenOffline.contains(material)) {
+                return true;
+            }
         }
 
-        Faction myFaction = me.getFaction(); Relation rel = myFaction.getRelationTo(otherFaction);
+        Faction myFaction = me.getFaction();
+        Relation rel = myFaction.getRelationTo(otherFaction);
 
         // You may use any block unless it is another faction's territory...
         if (rel.isNeutral() || (rel.isEnemy() && Conf.territoryEnemyProtectMaterials) || (rel.isAlly() && Conf.territoryAllyProtectMaterials)) {
@@ -287,10 +345,11 @@ public class FactionsPlayerListener implements Listener {
 
         me.getPower();  // update power, so they won't have gained any while dead
 
-        Location home = me.getFaction().getHome(); if (Conf.homesEnabled &&
-                                                               Conf.homesTeleportToOnDeath &&
-                                                               home != null &&
-                                                               (Conf.homesRespawnFromNoPowerLossWorlds || !Conf.worldsNoPowerLoss.contains(event.getPlayer().getWorld().getName()))) {
+        Location home = me.getFaction().getHome();
+        if (Conf.homesEnabled &&
+                    Conf.homesTeleportToOnDeath &&
+                    home != null &&
+                    (Conf.homesRespawnFromNoPowerLossWorlds || !Conf.worldsNoPowerLoss.contains(event.getPlayer().getWorld().getName()))) {
             event.setRespawnLocation(home);
         }
     }
@@ -299,23 +358,31 @@ public class FactionsPlayerListener implements Listener {
     // but these separate bucket events below always fire without fail
     @EventHandler(priority = EventPriority.NORMAL)
     public void onPlayerBucketEmpty(PlayerBucketEmptyEvent event) {
-        if (event.isCancelled()) { return; }
+        if (event.isCancelled()) {
+            return;
+        }
 
-        Block block = event.getBlockClicked(); Player player = event.getPlayer();
+        Block block = event.getBlockClicked();
+        Player player = event.getPlayer();
 
         if (!playerCanUseItemHere(player, block.getLocation(), event.getBucket(), false)) {
-            event.setCancelled(true); return;
+            event.setCancelled(true);
+            return;
         }
     }
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onPlayerBucketFill(PlayerBucketFillEvent event) {
-        if (event.isCancelled()) { return; }
+        if (event.isCancelled()) {
+            return;
+        }
 
-        Block block = event.getBlockClicked(); Player player = event.getPlayer();
+        Block block = event.getBlockClicked();
+        Player player = event.getPlayer();
 
         if (!playerCanUseItemHere(player, block.getLocation(), event.getBucket(), false)) {
-            event.setCancelled(true); return;
+            event.setCancelled(true);
+            return;
         }
     }
 
@@ -329,8 +396,11 @@ public class FactionsPlayerListener implements Listener {
         FPlayer me = FPlayers.i.get(player);
 
         String shortCmd;  // command without the slash at the beginning
-        if (fullCmd.startsWith("/")) { shortCmd = fullCmd.substring(1); } else {
-            shortCmd = fullCmd; fullCmd = "/" + fullCmd;
+        if (fullCmd.startsWith("/")) {
+            shortCmd = fullCmd.substring(1);
+        } else {
+            shortCmd = fullCmd;
+            fullCmd = "/" + fullCmd;
         }
 
         if (me.hasFaction() &&
@@ -346,45 +416,60 @@ public class FactionsPlayerListener implements Listener {
             return false;
         }
 
-        Relation rel = me.getRelationToLocation(); if (rel.isAtLeast(Relation.ALLY)) {
+        Relation rel = me.getRelationToLocation();
+        if (rel.isAtLeast(Relation.ALLY)) {
             return false;
         }
 
         if (rel.isNeutral() && !Conf.territoryNeutralDenyCommands.isEmpty() && !me.isAdminBypassing() && isCommandInList(fullCmd, shortCmd, Conf.territoryNeutralDenyCommands.iterator())) {
-            me.msg("<b>You can't use the command \"" + fullCmd + "\" in neutral territory."); return true;
+            me.msg("<b>You can't use the command \"" + fullCmd + "\" in neutral territory.");
+            return true;
         }
 
         if (rel.isEnemy() && !Conf.territoryEnemyDenyCommands.isEmpty() && !me.isAdminBypassing() && isCommandInList(fullCmd, shortCmd, Conf.territoryEnemyDenyCommands.iterator())) {
-            me.msg("<b>You can't use the command \"" + fullCmd + "\" in enemy territory."); return true;
+            me.msg("<b>You can't use the command \"" + fullCmd + "\" in enemy territory.");
+            return true;
         }
 
         return false;
     }
 
     private static boolean isCommandInList(String fullCmd, String shortCmd, Iterator<String> iter) {
-        String cmdCheck; while (iter.hasNext()) {
-            cmdCheck = iter.next(); if (cmdCheck == null) {
-                iter.remove(); continue;
+        String cmdCheck;
+        while (iter.hasNext()) {
+            cmdCheck = iter.next();
+            if (cmdCheck == null) {
+                iter.remove();
+                continue;
             }
 
             cmdCheck = cmdCheck.toLowerCase();
-            if (fullCmd.startsWith(cmdCheck) || shortCmd.startsWith(cmdCheck)) { return true; }
-        } return false;
+            if (fullCmd.startsWith(cmdCheck) || shortCmd.startsWith(cmdCheck)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onPlayerKick(PlayerKickEvent event) {
-        if (event.isCancelled()) { return; }
+        if (event.isCancelled()) {
+            return;
+        }
 
-        FPlayer badGuy = FPlayers.i.get(event.getPlayer()); if (badGuy == null) {
+        FPlayer badGuy = FPlayers.i.get(event.getPlayer());
+        if (badGuy == null) {
             return;
         }
 
         // if player was banned (not just kicked), get rid of their stored info
         if (Conf.removePlayerDataWhenBanned && event.getReason().equals("Banned by admin.")) {
-            if (badGuy.getRole() == Role.ADMIN) { badGuy.getFaction().promoteNewLeader(); }
+            if (badGuy.getRole() == Role.ADMIN) {
+                badGuy.getFaction().promoteNewLeader();
+            }
 
-            badGuy.leave(false); badGuy.detach();
+            badGuy.leave(false);
+            badGuy.detach();
         }
     }
 }

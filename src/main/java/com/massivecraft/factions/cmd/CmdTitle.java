@@ -9,23 +9,36 @@ public class CmdTitle extends FCommand {
     public CmdTitle() {
         this.aliases.add("title");
 
-        this.requiredArgs.add("player name"); this.optionalArgs.put("title", "");
+        this.requiredArgs.add("player name");
+        this.optionalArgs.put("title", "");
 
-        this.permission = Permission.TITLE.node; this.disableOnLock = true;
+        this.permission = Permission.TITLE.node;
+        this.disableOnLock = true;
 
-        senderMustBePlayer = true; senderMustBeMember = false; senderMustBeModerator = true; senderMustBeAdmin = false;
+        senderMustBePlayer = true;
+        senderMustBeMember = false;
+        senderMustBeModerator = true;
+        senderMustBeAdmin = false;
     }
 
     @Override
     public void perform() {
-        FPlayer you = this.argAsBestFPlayerMatch(0); if (you == null) { return; }
+        FPlayer you = this.argAsBestFPlayerMatch(0);
+        if (you == null) {
+            return;
+        }
 
-        args.remove(0); String title = TextUtil.implode(args, " ");
+        args.remove(0);
+        String title = TextUtil.implode(args, " ");
 
-        if (!canIAdministerYou(fme, you)) { return; }
+        if (!canIAdministerYou(fme, you)) {
+            return;
+        }
 
         // if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-        if (!payForCommand(Conf.econCostTitle, "to change a players title", "for changing a players title")) { return; }
+        if (!payForCommand(Conf.econCostTitle, "to change a players title", "for changing a players title")) {
+            return;
+        }
 
         you.setTitle(title);
 

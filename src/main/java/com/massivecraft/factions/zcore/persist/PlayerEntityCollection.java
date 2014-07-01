@@ -34,8 +34,10 @@ public abstract class PlayerEntityCollection<E extends Entity> extends EntityCol
     }
 
     public Set<E> getOnline() {
-        Set<E> entities = new HashSet<E>(); for (Player player : Bukkit.getServer().getOnlinePlayers()) {
+        Set<E> entities = new HashSet<E>();
+        for (Player player : Bukkit.getServer().getOnlinePlayers()) {
             entities.add(this.get(player));
-        } return entities;
+        }
+        return entities;
     }
 }

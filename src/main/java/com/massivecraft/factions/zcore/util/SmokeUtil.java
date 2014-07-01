@@ -31,7 +31,10 @@ public class SmokeUtil {
 
     // Single ========
     public static void spawnSingle(Location location, int direction) {
-        if (location == null) { return; } location.getWorld().playEffect(location.clone(), Effect.SMOKE, direction);
+        if (location == null) {
+            return;
+        }
+        location.getWorld().playEffect(location.clone(), Effect.SMOKE, direction);
     }
 
     public static void spawnSingle(Location location) {
@@ -57,7 +60,8 @@ public class SmokeUtil {
 
     // Random Cloud ========
     public static void spawnCloudRandom(Location location, float thickness) {
-        int singles = (int) Math.floor(thickness * 9); for (int i = 0; i < singles; i++) {
+        int singles = (int) Math.floor(thickness * 9);
+        for (int i = 0; i < singles; i++) {
             spawnSingleRandom(location.clone());
         }
     }

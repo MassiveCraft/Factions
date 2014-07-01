@@ -7,33 +7,43 @@ import com.massivecraft.factions.struct.Permission;
 public class CmdChat extends FCommand {
 
     public CmdChat() {
-        super(); this.aliases.add("c"); this.aliases.add("chat");
+        super();
+        this.aliases.add("c");
+        this.aliases.add("chat");
 
         //this.requiredArgs.add("");
         this.optionalArgs.put("mode", "next");
 
-        this.permission = Permission.CHAT.node; this.disableOnLock = false;
+        this.permission = Permission.CHAT.node;
+        this.disableOnLock = false;
 
-        senderMustBePlayer = true; senderMustBeMember = true; senderMustBeModerator = false; senderMustBeAdmin = false;
+        senderMustBePlayer = true;
+        senderMustBeMember = true;
+        senderMustBeModerator = false;
+        senderMustBeAdmin = false;
     }
 
     @Override
     public void perform() {
         if (!Conf.factionOnlyChat) {
-            msg("<b>The built in chat chat channels are disabled on this server."); return;
+            msg("<b>The built in chat chat channels are disabled on this server.");
+            return;
         }
 
-        String modeString = this.argAsString(0); ChatMode modeTarget = fme.getChatMode().getNext();
+        String modeString = this.argAsString(0);
+        ChatMode modeTarget = fme.getChatMode().getNext();
 
         if (modeString != null) {
-            modeString.toLowerCase(); if (modeString.startsWith("p")) {
+            modeString.toLowerCase();
+            if (modeString.startsWith("p")) {
                 modeTarget = ChatMode.PUBLIC;
             } else if (modeString.startsWith("a")) {
                 modeTarget = ChatMode.ALLIANCE;
             } else if (modeString.startsWith("f")) {
                 modeTarget = ChatMode.FACTION;
             } else {
-                msg("<b>Unrecognised chat mode. <i>Please enter either 'a','f' or 'p'"); return;
+                msg("<b>Unrecognised chat mode. <i>Please enter either 'a','f' or 'p'");
+                return;
             }
         }
 

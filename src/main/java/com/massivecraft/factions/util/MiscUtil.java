@@ -14,7 +14,8 @@ public class MiscUtil {
             return null;
         }
 
-        String name = entity.getClass().getSimpleName(); name = name.substring(5); // Remove "Craft"
+        String name = entity.getClass().getSimpleName();
+        name = name.substring(5); // Remove "Craft"
 
         return EntityType.fromName(name);
     }
@@ -24,7 +25,9 @@ public class MiscUtil {
         long[] values = new long[(int) Math.abs(end - start) + 1];
 
         if (end < start) {
-            long oldstart = start; start = end; end = oldstart;
+            long oldstart = start;
+            start = end;
+            end = oldstart;
         }
 
         for (long i = start; i <= end; i++) {
@@ -40,13 +43,15 @@ public class MiscUtil {
     public static String getComparisonString(String str) {
         String ret = "";
 
-        str = ChatColor.stripColor(str); str = str.toLowerCase();
+        str = ChatColor.stripColor(str);
+        str = str.toLowerCase();
 
         for (char c : str.toCharArray()) {
             if (substanceChars.contains(String.valueOf(c))) {
                 ret += c;
             }
-        } return ret.toLowerCase();
+        }
+        return ret.toLowerCase();
     }
 
 }

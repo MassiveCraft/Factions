@@ -8,25 +8,35 @@ import com.massivecraft.factions.struct.Permission;
 public class CmdPeaceful extends FCommand {
 
     public CmdPeaceful() {
-        super(); this.aliases.add("peaceful");
+        super();
+        this.aliases.add("peaceful");
 
         this.requiredArgs.add("faction tag");
         //this.optionalArgs.put("", "");
 
-        this.permission = Permission.SET_PEACEFUL.node; this.disableOnLock = true;
+        this.permission = Permission.SET_PEACEFUL.node;
+        this.disableOnLock = true;
 
-        senderMustBePlayer = false; senderMustBeMember = false; senderMustBeModerator = false;
+        senderMustBePlayer = false;
+        senderMustBeMember = false;
+        senderMustBeModerator = false;
         senderMustBeAdmin = false;
     }
 
     @Override
     public void perform() {
-        Faction faction = this.argAsFaction(0); if (faction == null) { return; }
+        Faction faction = this.argAsFaction(0);
+        if (faction == null) {
+            return;
+        }
 
-        String change; if (faction.isPeaceful()) {
-            change = "removed peaceful status from"; faction.setPeaceful(false);
+        String change;
+        if (faction.isPeaceful()) {
+            change = "removed peaceful status from";
+            faction.setPeaceful(false);
         } else {
-            change = "granted peaceful status to"; faction.setPeaceful(true);
+            change = "granted peaceful status to";
+            faction.setPeaceful(true);
         }
 
         // Inform all players

@@ -12,7 +12,13 @@ public class SaveTask implements Runnable {
     }
 
     public void run() {
-        if (!p.getAutoSave() || running) { return; } running = true; p.preAutoSave(); EM.saveAllToDisc();
-        p.postAutoSave(); running = false;
+        if (!p.getAutoSave() || running) {
+            return;
+        }
+        running = true;
+        p.preAutoSave();
+        EM.saveAllToDisc();
+        p.postAutoSave();
+        running = false;
     }
 }

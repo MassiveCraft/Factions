@@ -19,20 +19,27 @@ public class MapFLocToStringSetTypeAdapter implements JsonDeserializer<Map<FLoca
     @Override
     public Map<FLocation, Set<String>> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         try {
-            JsonObject obj = json.getAsJsonObject(); if (obj == null) {
+            JsonObject obj = json.getAsJsonObject();
+            if (obj == null) {
                 return null;
             }
 
             Map<FLocation, Set<String>> locationMap = new ConcurrentHashMap<FLocation, Set<String>>();
-            Set<String> nameSet; Iterator<JsonElement> iter; String worldName; String[] coords; int x, z;
+            Set<String> nameSet;
+            Iterator<JsonElement> iter;
+            String worldName;
+            String[] coords;
+            int x, z;
 
             for (Entry<String, JsonElement> entry : obj.entrySet()) {
                 worldName = entry.getKey();
                 for (Entry<String, JsonElement> entry2 : entry.getValue().getAsJsonObject().entrySet()) {
-                    coords = entry2.getKey().trim().split("[,\\s]+"); x = Integer.parseInt(coords[0]);
+                    coords = entry2.getKey().trim().split("[,\\s]+");
+                    x = Integer.parseInt(coords[0]);
                     z = Integer.parseInt(coords[1]);
 
-                    nameSet = new HashSet<String>(); iter = entry2.getValue().getAsJsonArray().iterator();
+                    nameSet = new HashSet<String>();
+                    iter = entry2.getValue().getAsJsonArray().iterator();
                     while (iter.hasNext()) {
                         nameSet.add(iter.next().getAsString());
                     }
@@ -56,18 +63,27 @@ public class MapFLocToStringSetTypeAdapter implements JsonDeserializer<Map<FLoca
 
         try {
             if (src != null) {
-                FLocation loc; String locWorld; Set<String> nameSet; Iterator<String> iter; JsonArray nameArray;
+                FLocation loc;
+                String locWorld;
+                Set<String> nameSet;
+                Iterator<String> iter;
+                JsonArray nameArray;
                 JsonPrimitive nameElement;
 
                 for (Entry<FLocation, Set<String>> entry : src.entrySet()) {
-                    loc = entry.getKey(); locWorld = loc.getWorldName(); nameSet = entry.getValue();
+                    loc = entry.getKey();
+                    locWorld = loc.getWorldName();
+                    nameSet = entry.getValue();
 
                     if (nameSet == null || nameSet.isEmpty()) {
                         continue;
                     }
 
-                    nameArray = new JsonArray(); iter = nameSet.iterator(); while (iter.hasNext()) {
-                        nameElement = new JsonPrimitive(iter.next()); nameArray.add(nameElement);
+                    nameArray = new JsonArray();
+                    iter = nameSet.iterator();
+                    while (iter.hasNext()) {
+                        nameElement = new JsonPrimitive(iter.next());
+                        nameArray.add(nameElement);
                     }
 
                     if (!obj.has(locWorld)) {
@@ -76,7 +92,8 @@ public class MapFLocToStringSetTypeAdapter implements JsonDeserializer<Map<FLoca
 
                     obj.get(locWorld).getAsJsonObject().add(loc.getCoordString(), nameArray);
                 }
-            } return obj;
+            }
+            return obj;
 
         } catch (Exception ex) {
             ex.printStackTrace();

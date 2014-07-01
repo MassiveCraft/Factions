@@ -266,24 +266,37 @@ public class Conf {
     static {
         baseCommandAliases.add("f");
 
-        territoryEnemyDenyCommands.add("home"); territoryEnemyDenyCommands.add("sethome");
-        territoryEnemyDenyCommands.add("spawn"); territoryEnemyDenyCommands.add("tpahere");
-        territoryEnemyDenyCommands.add("tpaccept"); territoryEnemyDenyCommands.add("tpa");
+        territoryEnemyDenyCommands.add("home");
+        territoryEnemyDenyCommands.add("sethome");
+        territoryEnemyDenyCommands.add("spawn");
+        territoryEnemyDenyCommands.add("tpahere");
+        territoryEnemyDenyCommands.add("tpaccept");
+        territoryEnemyDenyCommands.add("tpa");
 
-        territoryProtectedMaterials.add(Material.WOODEN_DOOR); territoryProtectedMaterials.add(Material.TRAP_DOOR);
-        territoryProtectedMaterials.add(Material.FENCE_GATE); territoryProtectedMaterials.add(Material.DISPENSER);
-        territoryProtectedMaterials.add(Material.CHEST); territoryProtectedMaterials.add(Material.FURNACE);
+        territoryProtectedMaterials.add(Material.WOODEN_DOOR);
+        territoryProtectedMaterials.add(Material.TRAP_DOOR);
+        territoryProtectedMaterials.add(Material.FENCE_GATE);
+        territoryProtectedMaterials.add(Material.DISPENSER);
+        territoryProtectedMaterials.add(Material.CHEST);
+        territoryProtectedMaterials.add(Material.FURNACE);
         territoryProtectedMaterials.add(Material.BURNING_FURNACE);
         territoryProtectedMaterials.add(Material.DIODE_BLOCK_OFF);
-        territoryProtectedMaterials.add(Material.DIODE_BLOCK_ON); territoryProtectedMaterials.add(Material.JUKEBOX);
+        territoryProtectedMaterials.add(Material.DIODE_BLOCK_ON);
+        territoryProtectedMaterials.add(Material.JUKEBOX);
         territoryProtectedMaterials.add(Material.BREWING_STAND);
-        territoryProtectedMaterials.add(Material.ENCHANTMENT_TABLE); territoryProtectedMaterials.add(Material.CAULDRON);
-        territoryProtectedMaterials.add(Material.SOIL); territoryProtectedMaterials.add(Material.BEACON);
-        territoryProtectedMaterials.add(Material.ANVIL); territoryProtectedMaterials.add(Material.TRAPPED_CHEST);
-        territoryProtectedMaterials.add(Material.DROPPER); territoryProtectedMaterials.add(Material.HOPPER);
+        territoryProtectedMaterials.add(Material.ENCHANTMENT_TABLE);
+        territoryProtectedMaterials.add(Material.CAULDRON);
+        territoryProtectedMaterials.add(Material.SOIL);
+        territoryProtectedMaterials.add(Material.BEACON);
+        territoryProtectedMaterials.add(Material.ANVIL);
+        territoryProtectedMaterials.add(Material.TRAPPED_CHEST);
+        territoryProtectedMaterials.add(Material.DROPPER);
+        territoryProtectedMaterials.add(Material.HOPPER);
 
-        territoryDenyUseageMaterials.add(Material.FIREBALL); territoryDenyUseageMaterials.add(Material.FLINT_AND_STEEL);
-        territoryDenyUseageMaterials.add(Material.BUCKET); territoryDenyUseageMaterials.add(Material.WATER_BUCKET);
+        territoryDenyUseageMaterials.add(Material.FIREBALL);
+        territoryDenyUseageMaterials.add(Material.FLINT_AND_STEEL);
+        territoryDenyUseageMaterials.add(Material.BUCKET);
+        territoryDenyUseageMaterials.add(Material.WATER_BUCKET);
         territoryDenyUseageMaterials.add(Material.LAVA_BUCKET);
 
         territoryProtectedMaterialsWhenOffline.add(Material.WOODEN_DOOR);
@@ -312,13 +325,20 @@ public class Conf {
         territoryDenyUseageMaterialsWhenOffline.add(Material.WATER_BUCKET);
         territoryDenyUseageMaterialsWhenOffline.add(Material.LAVA_BUCKET);
 
-        safeZoneNerfedCreatureTypes.add(EntityType.BLAZE); safeZoneNerfedCreatureTypes.add(EntityType.CAVE_SPIDER);
-        safeZoneNerfedCreatureTypes.add(EntityType.CREEPER); safeZoneNerfedCreatureTypes.add(EntityType.ENDER_DRAGON);
-        safeZoneNerfedCreatureTypes.add(EntityType.ENDERMAN); safeZoneNerfedCreatureTypes.add(EntityType.GHAST);
-        safeZoneNerfedCreatureTypes.add(EntityType.MAGMA_CUBE); safeZoneNerfedCreatureTypes.add(EntityType.PIG_ZOMBIE);
-        safeZoneNerfedCreatureTypes.add(EntityType.SILVERFISH); safeZoneNerfedCreatureTypes.add(EntityType.SKELETON);
-        safeZoneNerfedCreatureTypes.add(EntityType.SPIDER); safeZoneNerfedCreatureTypes.add(EntityType.SLIME);
-        safeZoneNerfedCreatureTypes.add(EntityType.WITCH); safeZoneNerfedCreatureTypes.add(EntityType.WITHER);
+        safeZoneNerfedCreatureTypes.add(EntityType.BLAZE);
+        safeZoneNerfedCreatureTypes.add(EntityType.CAVE_SPIDER);
+        safeZoneNerfedCreatureTypes.add(EntityType.CREEPER);
+        safeZoneNerfedCreatureTypes.add(EntityType.ENDER_DRAGON);
+        safeZoneNerfedCreatureTypes.add(EntityType.ENDERMAN);
+        safeZoneNerfedCreatureTypes.add(EntityType.GHAST);
+        safeZoneNerfedCreatureTypes.add(EntityType.MAGMA_CUBE);
+        safeZoneNerfedCreatureTypes.add(EntityType.PIG_ZOMBIE);
+        safeZoneNerfedCreatureTypes.add(EntityType.SILVERFISH);
+        safeZoneNerfedCreatureTypes.add(EntityType.SKELETON);
+        safeZoneNerfedCreatureTypes.add(EntityType.SPIDER);
+        safeZoneNerfedCreatureTypes.add(EntityType.SLIME);
+        safeZoneNerfedCreatureTypes.add(EntityType.WITCH);
+        safeZoneNerfedCreatureTypes.add(EntityType.WITHER);
         safeZoneNerfedCreatureTypes.add(EntityType.ZOMBIE);
     }
 

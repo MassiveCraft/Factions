@@ -9,14 +9,18 @@ import com.massivecraft.factions.struct.Permission;
 public class CmdWarunclaimall extends FCommand {
 
     public CmdWarunclaimall() {
-        this.aliases.add("warunclaimall"); this.aliases.add("wardeclaimall");
+        this.aliases.add("warunclaimall");
+        this.aliases.add("wardeclaimall");
 
         //this.requiredArgs.add("");
         //this.optionalArgs.put("", "");
 
-        this.permission = Permission.MANAGE_WAR_ZONE.node; this.disableOnLock = true;
+        this.permission = Permission.MANAGE_WAR_ZONE.node;
+        this.disableOnLock = true;
 
-        senderMustBePlayer = false; senderMustBeMember = false; senderMustBeModerator = false;
+        senderMustBePlayer = false;
+        senderMustBeMember = false;
+        senderMustBeModerator = false;
         senderMustBeAdmin = false;
 
         this.setHelpShort("unclaim all warzone land");
@@ -24,9 +28,12 @@ public class CmdWarunclaimall extends FCommand {
 
     @Override
     public void perform() {
-        Board.unclaimAll(Factions.i.getWarZone().getId()); msg("<i>You unclaimed ALL war zone land.");
+        Board.unclaimAll(Factions.i.getWarZone().getId());
+        msg("<i>You unclaimed ALL war zone land.");
 
-        if (Conf.logLandUnclaims) { P.p.log(fme.getName() + " unclaimed all war zones."); }
+        if (Conf.logLandUnclaims) {
+            P.p.log(fme.getName() + " unclaimed all war zones.");
+        }
     }
 
 }

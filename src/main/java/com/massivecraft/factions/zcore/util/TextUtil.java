@@ -37,13 +37,19 @@ public class TextUtil {
     public static final transient Pattern patternTag = Pattern.compile("<([a-zA-Z0-9_]*)>");
 
     public static String replaceTags(String str, Map<String, String> tags) {
-        StringBuffer ret = new StringBuffer(); Matcher matcher = patternTag.matcher(str); while (matcher.find()) {
-            String tag = matcher.group(1); String repl = tags.get(tag); if (repl == null) {
+        StringBuffer ret = new StringBuffer();
+        Matcher matcher = patternTag.matcher(str);
+        while (matcher.find()) {
+            String tag = matcher.group(1);
+            String repl = tags.get(tag);
+            if (repl == null) {
                 matcher.appendReplacement(ret, "<" + tag + ">");
             } else {
                 matcher.appendReplacement(ret, repl);
             }
-        } matcher.appendTail(ret); return ret.toString();
+        }
+        matcher.appendTail(ret);
+        return ret.toString();
     }
 
     // -------------------------------------------- //
@@ -51,12 +57,17 @@ public class TextUtil {
     // -------------------------------------------- //
 
     public static String parseColor(String string) {
-        string = parseColorAmp(string); string = parseColorAcc(string); string = parseColorTags(string); return string;
+        string = parseColorAmp(string);
+        string = parseColorAcc(string);
+        string = parseColorTags(string);
+        return string;
     }
 
     public static String parseColorAmp(String string) {
         string = string.replaceAll("(§([a-z0-9]))", "\u00A7$2");
-        string = string.replaceAll("(&([a-z0-9]))", "\u00A7$2"); string = string.replace("&&", "&"); return string;
+        string = string.replaceAll("(&([a-z0-9]))", "\u00A7$2");
+        string = string.replace("&&", "&");
+        return string;
     }
 
     public static String parseColorAcc(String string) {
@@ -76,15 +87,22 @@ public class TextUtil {
     }
 
     public static String implode(List<String> list, String glue) {
-        StringBuilder ret = new StringBuilder(); for (int i = 0; i < list.size(); i++) {
+        StringBuilder ret = new StringBuilder();
+        for (int i = 0; i < list.size(); i++) {
             if (i != 0) {
                 ret.append(glue);
-            } ret.append(list.get(i));
-        } return ret.toString();
+            }
+            ret.append(list.get(i));
+        }
+        return ret.toString();
     }
 
     public static String repeat(String s, int times) {
-        if (times <= 0) { return ""; } else { return s + repeat(s, times - 1); }
+        if (times <= 0) {
+            return "";
+        } else {
+            return s + repeat(s, times - 1);
+        }
     }
 
     // -------------------------------------------- //
@@ -108,27 +126,37 @@ public class TextUtil {
 
     public String titleize(String str) {
         String center = ".[ " + parseTags("<l>") + str + parseTags("<a>") + " ].";
-        int centerlen = ChatColor.stripColor(center).length(); int pivot = titleizeLine.length() / 2;
-        int eatLeft = (centerlen / 2) - titleizeBalance; int eatRight = (centerlen - eatLeft) + titleizeBalance;
+        int centerlen = ChatColor.stripColor(center).length();
+        int pivot = titleizeLine.length() / 2;
+        int eatLeft = (centerlen / 2) - titleizeBalance;
+        int eatRight = (centerlen - eatLeft) + titleizeBalance;
 
         if (eatLeft < pivot) {
             return parseTags("<a>") + titleizeLine.substring(0, pivot - eatLeft) + center + titleizeLine.substring(pivot + eatRight);
-        } else { return parseTags("<a>") + center; }
+        } else {
+            return parseTags("<a>") + center;
+        }
     }
 
     public ArrayList<String> getPage(List<String> lines, int pageHumanBased, String title) {
-        ArrayList<String> ret = new ArrayList<String>(); int pageZeroBased = pageHumanBased - 1; int pageheight = 9;
+        ArrayList<String> ret = new ArrayList<String>();
+        int pageZeroBased = pageHumanBased - 1;
+        int pageheight = 9;
         int pagecount = (lines.size() / pageheight) + 1;
 
         ret.add(this.titleize(title + " " + pageHumanBased + "/" + pagecount));
 
         if (pagecount == 0) {
-            ret.add(this.parseTags("<i>Sorry. No Pages available.")); return ret;
+            ret.add(this.parseTags("<i>Sorry. No Pages available."));
+            return ret;
         } else if (pageZeroBased < 0 || pageHumanBased > pagecount) {
-            ret.add(this.parseTags("<i>Invalid page. Must be between 1 and " + pagecount)); return ret;
+            ret.add(this.parseTags("<i>Invalid page. Must be between 1 and " + pagecount));
+            return ret;
         }
 
-        int from = pageZeroBased * pageheight; int to = from + pageheight; if (to > lines.size()) {
+        int from = pageZeroBased * pageheight;
+        int to = from + pageheight;
+        if (to > lines.size()) {
             to = lines.size();
         }
 
@@ -138,18 +166,29 @@ public class TextUtil {
     }
 
     public static String getBestStartWithCI(Collection<String> candidates, String start) {
-        String ret = null; int best = 0;
+        String ret = null;
+        int best = 0;
 
-        start = start.toLowerCase(); int minlength = start.length(); for (String candidate : candidates) {
-            if (candidate.length() < minlength) { continue; }
-            if (!candidate.toLowerCase().startsWith(start)) { continue; }
+        start = start.toLowerCase();
+        int minlength = start.length();
+        for (String candidate : candidates) {
+            if (candidate.length() < minlength) {
+                continue;
+            }
+            if (!candidate.toLowerCase().startsWith(start)) {
+                continue;
+            }
 
             // The closer to zero the better
-            int lendiff = candidate.length() - minlength; if (lendiff == 0) {
+            int lendiff = candidate.length() - minlength;
+            if (lendiff == 0) {
                 return candidate;
-            } if (lendiff < best || best == 0) {
-                best = lendiff; ret = candidate;
             }
-        } return ret;
+            if (lendiff < best || best == 0) {
+                best = lendiff;
+                ret = candidate;
+            }
+        }
+        return ret;
     }
 }

@@ -15,7 +15,10 @@ public class FactionRelationEvent extends Event {
     private Relation frel;
 
     public FactionRelationEvent(Faction sender, Faction target, Relation oldrel, Relation rel) {
-        fsender = sender; ftarget = target; foldrel = oldrel; frel = rel;
+        fsender = sender;
+        ftarget = target;
+        foldrel = oldrel;
+        frel = rel;
     }
 
     public HandlerList getHandlers() {

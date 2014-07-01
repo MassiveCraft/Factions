@@ -48,7 +48,8 @@ public class P extends MPlugin {
     }
 
     public void setLocked(boolean val) {
-        this.locked = val; this.setAutoSave(val);
+        this.locked = val;
+        this.setAutoSave(val);
     }
 
     private Integer AutoLeaveTask = null;
@@ -58,9 +59,12 @@ public class P extends MPlugin {
     public CmdAutoHelp cmdAutoHelp;
 
     public P() {
-        p = this; this.playerListener = new FactionsPlayerListener(this);
-        this.chatListener = new FactionsChatListener(this); this.entityListener = new FactionsEntityListener(this);
-        this.exploitListener = new FactionsExploitListener(); this.blockListener = new FactionsBlockListener(this);
+        p = this;
+        this.playerListener = new FactionsPlayerListener(this);
+        this.chatListener = new FactionsChatListener(this);
+        this.entityListener = new FactionsEntityListener(this);
+        this.exploitListener = new FactionsExploitListener();
+        this.blockListener = new FactionsBlockListener(this);
     }
 
 
@@ -71,16 +75,26 @@ public class P extends MPlugin {
             Class.forName("org.bukkit.craftbukkit.libs.com.google.gson.reflect.TypeToken");
         } catch (ClassNotFoundException ex) {
             this.log(Level.SEVERE, "GSON lib not found. Your CraftBukkit build is too old (< 1.3.2) or otherwise not compatible.");
-            this.suicide(); return;
+            this.suicide();
+            return;
         }
 
-        if (!preEnable()) { return; } this.loadSuccessful = false;
+        if (!preEnable()) {
+            return;
+        }
+        this.loadSuccessful = false;
 
         // Load Conf from disk
-        Conf.load(); Essentials.setup(); FPlayers.i.loadFromDisc(); Factions.i.loadFromDisc(); Board.load();
+        Conf.load();
+        Essentials.setup();
+        FPlayers.i.loadFromDisc();
+        Factions.i.loadFromDisc();
+        Board.load();
 
         // Add Base Commands
-        this.cmdBase = new FCmdRoot(); this.cmdAutoHelp = new CmdAutoHelp(); this.getBaseCommands().add(cmdBase);
+        this.cmdBase = new FCmdRoot();
+        this.cmdAutoHelp = new CmdAutoHelp();
+        this.getBaseCommands().add(cmdBase);
 
         Econ.setup();
 
@@ -101,12 +115,14 @@ public class P extends MPlugin {
         // since some other plugins execute commands directly through this command interface, provide it
         this.getCommand(this.refCommand).setExecutor(this);
 
-        postEnable(); this.loadSuccessful = true;
+        postEnable();
+        this.loadSuccessful = true;
     }
 
     @Override
     public GsonBuilder getGsonBuilder() {
-        Type mapFLocToStringSetType = new TypeToken<Map<FLocation, Set<String>>>() {}.getType();
+        Type mapFLocToStringSetType = new TypeToken<Map<FLocation, Set<String>>>() {
+        }.getType();
 
         return new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().excludeFieldsWithModifiers(Modifier.TRANSIENT, Modifier.VOLATILE).registerTypeAdapter(LazyLocation.class, new MyLocationTypeAdapter()).registerTypeAdapter(mapFLocToStringSetType, new MapFLocToStringSetTypeAdapter());
     }
@@ -115,15 +131,22 @@ public class P extends MPlugin {
     public void onDisable() {
         // only save data if plugin actually completely loaded successfully
         if (this.loadSuccessful) {
-            Board.save(); Conf.save();
-        } if (AutoLeaveTask != null) {
-            this.getServer().getScheduler().cancelTask(AutoLeaveTask); AutoLeaveTask = null;
-        } super.onDisable();
+            Board.save();
+            Conf.save();
+        }
+        if (AutoLeaveTask != null) {
+            this.getServer().getScheduler().cancelTask(AutoLeaveTask);
+            AutoLeaveTask = null;
+        }
+        super.onDisable();
     }
 
     public void startAutoLeaveTask(boolean restartIfRunning) {
         if (AutoLeaveTask != null) {
-            if (!restartIfRunning) { return; } this.getServer().getScheduler().cancelTask(AutoLeaveTask);
+            if (!restartIfRunning) {
+                return;
+            }
+            this.getServer().getScheduler().cancelTask(AutoLeaveTask);
         }
 
         if (Conf.autoLeaveRoutineRunsEveryXMinutes > 0.0) {
@@ -134,7 +157,8 @@ public class P extends MPlugin {
 
     @Override
     public void postAutoSave() {
-        Board.save(); Conf.save();
+        Board.save();
+        Conf.save();
     }
 
     @Override
@@ -154,7 +178,9 @@ public class P extends MPlugin {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] split) {
         // if bare command at this point, it has already been handled by MPlugin's command listeners
-        if (split == null || split.length == 0) { return true; }
+        if (split == null || split.length == 0) {
+            return true;
+        }
 
         // otherwise, needs to be handled; presumably another plugin directly ran the command
         String cmd = Conf.baseCommandAliases.isEmpty() ? "/f" : "/" + Conf.baseCommandAliases.get(0);
@@ -180,16 +206,24 @@ public class P extends MPlugin {
     // enabled or use of the Factions f command without a slash; combination of isPlayerFactionChatting() and isFactionsCommand()
 
     public boolean shouldLetFactionsHandleThisChat(AsyncPlayerChatEvent event) {
-        if (event == null) { return false; }
+        if (event == null) {
+            return false;
+        }
         return (isPlayerFactionChatting(event.getPlayer()) || isFactionsCommand(event.getMessage()));
     }
 
     // Does player have Faction Chat enabled? If so, chat plugins should preferably not do channels,
     // local chat, or anything else which targets individual recipients, so Faction Chat can be done
     public boolean isPlayerFactionChatting(Player player) {
-        if (player == null) { return false; } FPlayer me = FPlayers.i.get(player);
+        if (player == null) {
+            return false;
+        }
+        FPlayer me = FPlayers.i.get(player);
 
-        if (me == null) { return false; } return me.getChatMode().isAtLeast(ChatMode.ALLIANCE);
+        if (me == null) {
+            return false;
+        }
+        return me.getChatMode().isAtLeast(ChatMode.ALLIANCE);
     }
 
     // Is this chat message actually a Factions command, and thus should be left alone by other plugins?
@@ -197,7 +231,10 @@ public class P extends MPlugin {
     // TODO: GET THIS BACK AND WORKING
 
     public boolean isFactionsCommand(String check) {
-        if (check == null || check.isEmpty()) { return false; } return this.handleCommand(null, check, true);
+        if (check == null || check.isEmpty()) {
+            return false;
+        }
+        return this.handleCommand(null, check, true);
     }
 
     // Get a player's faction tag (faction name), mainly for usage by chat plugins for local/channel chat
@@ -209,55 +246,78 @@ public class P extends MPlugin {
     public String getPlayerFactionTagRelation(Player speaker, Player listener) {
         String tag = "~";
 
-        if (speaker == null) { return tag; }
+        if (speaker == null) {
+            return tag;
+        }
 
-        FPlayer me = FPlayers.i.get(speaker); if (me == null) { return tag; }
+        FPlayer me = FPlayers.i.get(speaker);
+        if (me == null) {
+            return tag;
+        }
 
         // if listener isn't set, or config option is disabled, give back uncolored tag
         if (listener == null || !Conf.chatTagRelationColored) {
             tag = me.getChatTag().trim();
         } else {
             FPlayer you = FPlayers.i.get(listener);
-            if (you == null) { tag = me.getChatTag().trim(); } else  // everything checks out, give the colored tag
-            { tag = me.getChatTag(you).trim(); }
-        } if (tag.isEmpty()) { tag = "~"; }
+            if (you == null) {
+                tag = me.getChatTag().trim();
+            } else  // everything checks out, give the colored tag
+            {
+                tag = me.getChatTag(you).trim();
+            }
+        }
+        if (tag.isEmpty()) {
+            tag = "~";
+        }
 
         return tag;
     }
 
     // Get a player's title within their faction, mainly for usage by chat plugins for local/channel chat
     public String getPlayerTitle(Player player) {
-        if (player == null) { return ""; }
+        if (player == null) {
+            return "";
+        }
 
-        FPlayer me = FPlayers.i.get(player); if (me == null) { return ""; }
+        FPlayer me = FPlayers.i.get(player);
+        if (me == null) {
+            return "";
+        }
 
         return me.getTitle().trim();
     }
 
     // Get a list of all faction tags (names)
     public Set<String> getFactionTags() {
-        Set<String> tags = new HashSet<String>(); for (Faction faction : Factions.i.get()) {
+        Set<String> tags = new HashSet<String>();
+        for (Faction faction : Factions.i.get()) {
             tags.add(faction.getTag());
-        } return tags;
+        }
+        return tags;
     }
 
     // Get a list of all players in the specified faction
     public Set<String> getPlayersInFaction(String factionTag) {
-        Set<String> players = new HashSet<String>(); Faction faction = Factions.i.getByTag(factionTag);
+        Set<String> players = new HashSet<String>();
+        Faction faction = Factions.i.getByTag(factionTag);
         if (faction != null) {
             for (FPlayer fplayer : faction.getFPlayers()) {
                 players.add(fplayer.getName());
             }
-        } return players;
+        }
+        return players;
     }
 
     // Get a list of all online players in the specified faction
     public Set<String> getOnlinePlayersInFaction(String factionTag) {
-        Set<String> players = new HashSet<String>(); Faction faction = Factions.i.getByTag(factionTag);
+        Set<String> players = new HashSet<String>();
+        Faction faction = Factions.i.getByTag(factionTag);
         if (faction != null) {
             for (FPlayer fplayer : faction.getFPlayersWhereOnline(true)) {
                 players.add(fplayer.getName());
             }
-        } return players;
+        }
+        return players;
     }
 }

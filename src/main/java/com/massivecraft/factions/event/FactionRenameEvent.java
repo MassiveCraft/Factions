@@ -16,7 +16,10 @@ public class FactionRenameEvent extends Event implements Cancellable {
     private String tag;
 
     public FactionRenameEvent(FPlayer sender, String newTag) {
-        fplayer = sender; faction = sender.getFaction(); tag = newTag; this.cancelled = false;
+        fplayer = sender;
+        faction = sender.getFaction();
+        tag = newTag;
+        this.cancelled = false;
     }
 
     public Faction getFaction() {
