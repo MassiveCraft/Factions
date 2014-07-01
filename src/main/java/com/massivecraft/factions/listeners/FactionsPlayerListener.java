@@ -60,14 +60,9 @@ public class FactionsPlayerListener implements Listener {
         if (event.isCancelled()) return;
 
         // quick check to make sure player is moving between chunks; good performance boost
-        if
-                (
-                event.getFrom().getBlockX() >> 4 == event.getTo().getBlockX() >> 4
-                        &&
-                        event.getFrom().getBlockZ() >> 4 == event.getTo().getBlockZ() >> 4
-                        &&
-                        event.getFrom().getWorld() == event.getTo().getWorld()
-                )
+        if(event.getFrom().getBlockX() >> 4 == event.getTo().getBlockX() >> 4
+                && event.getFrom().getBlockZ() >> 4 == event.getTo().getBlockZ() >> 4
+                && event.getFrom().getWorld() == event.getTo().getWorld())
             return;
 
         Player player = event.getPlayer();
@@ -97,35 +92,16 @@ public class FactionsPlayerListener implements Listener {
 
         if (me.isMapAutoUpdating()) {
             me.sendMessage(Board.getMap(me.getFaction(), to, player.getLocation().getYaw()));
-
         } else {
             Faction myFaction = me.getFaction();
             String ownersTo = myFaction.getOwnerListString(to);
 
             if (changedFaction) {
                 me.sendFactionHereMessage();
-                if
-                        (
-                        Conf.ownedAreasEnabled
-                                &&
-                                Conf.ownedMessageOnBorder
-                                &&
-                                myFaction == factionTo
-                                &&
-                                !ownersTo.isEmpty()
-                        ) {
+                if (Conf.ownedAreasEnabled && Conf.ownedMessageOnBorder &&myFaction == factionTo && !ownersTo.isEmpty()) {
                     me.sendMessage(Conf.ownedLandMessage + ownersTo);
                 }
-            } else if
-                    (
-                    Conf.ownedAreasEnabled
-                            &&
-                            Conf.ownedMessageInsideTerritory
-                            &&
-                            factionFrom == factionTo
-                            &&
-                            myFaction == factionTo
-                    ) {
+            } else if (Conf.ownedAreasEnabled && Conf.ownedMessageInsideTerritory && factionFrom == factionTo &&myFaction == factionTo) {
                 String ownersFrom = myFaction.getOwnerListString(from);
                 if (Conf.ownedMessageByChunk || !ownersFrom.equals(ownersTo)) {
                     if (!ownersTo.isEmpty())
@@ -423,30 +399,12 @@ public class FactionsPlayerListener implements Listener {
             return false;
         }
 
-        if
-                (
-                rel.isNeutral()
-                        &&
-                        !Conf.territoryNeutralDenyCommands.isEmpty()
-                        &&
-                        !me.isAdminBypassing()
-                        &&
-                        isCommandInList(fullCmd, shortCmd, Conf.territoryNeutralDenyCommands.iterator())
-                ) {
+        if (rel.isNeutral() && !Conf.territoryNeutralDenyCommands.isEmpty() && !me.isAdminBypassing() && isCommandInList(fullCmd, shortCmd, Conf.territoryNeutralDenyCommands.iterator())) {
             me.msg("<b>You can't use the command \"" + fullCmd + "\" in neutral territory.");
             return true;
         }
 
-        if
-                (
-                rel.isEnemy()
-                        &&
-                        !Conf.territoryEnemyDenyCommands.isEmpty()
-                        &&
-                        !me.isAdminBypassing()
-                        &&
-                        isCommandInList(fullCmd, shortCmd, Conf.territoryEnemyDenyCommands.iterator())
-                ) {
+        if (rel.isEnemy() && !Conf.territoryEnemyDenyCommands.isEmpty() && !me.isAdminBypassing() && isCommandInList(fullCmd, shortCmd, Conf.territoryEnemyDenyCommands.iterator())) {
             me.msg("<b>You can't use the command \"" + fullCmd + "\" in enemy territory.");
             return true;
         }

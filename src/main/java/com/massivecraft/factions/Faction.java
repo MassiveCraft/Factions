@@ -461,7 +461,7 @@ public class Faction extends Entity implements EconomyParticipator {
 
         for (Player player : P.p.getServer().getOnlinePlayers()) {
             FPlayer fplayer = FPlayers.i.get(player);
-            if (fplayer.getFaction() == this) {
+            if (fplayer != null && fplayer.getFaction() == this) {
                 return true;
             }
         }

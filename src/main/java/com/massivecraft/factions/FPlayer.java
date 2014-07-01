@@ -355,7 +355,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator {
 		return this.getRelationColor(fplayer)+this.getNameAndTag();
 	}*/
 
-    // TODO: REmovded for refactoring.
+    // TODO: Removed for refactoring.
 
 	/*public String getNameAndRelevant(Faction faction)
     {
@@ -624,13 +624,10 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator {
     public boolean canClaimForFaction(Faction forFaction) {
         if (forFaction.isNone()) return false;
 
-        if
-                (
-                this.isAdminBypassing()
+        if (this.isAdminBypassing()
                         || (forFaction == this.getFaction() && this.getRole().isAtLeast(Role.MODERATOR))
                         || (forFaction.isSafeZone() && Permission.MANAGE_SAFE_ZONE.has(getPlayer()))
-                        || (forFaction.isWarZone() && Permission.MANAGE_WAR_ZONE.has(getPlayer()))
-                ) {
+                        || (forFaction.isWarZone() && Permission.MANAGE_WAR_ZONE.has(getPlayer()))) {
             return true;
         }
 
@@ -673,14 +670,11 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator {
             error = P.p.txt.parse("<b>Limit reached. You can't claim more land!");
         } else if (currentFaction.getRelationTo(forFaction) == Relation.ALLY) {
             error = P.p.txt.parse("<b>You can't claim the land of your allies.");
-        } else if
-                (
-                Conf.claimsMustBeConnected
+        } else if (Conf.claimsMustBeConnected
                         && !this.isAdminBypassing()
                         && myFaction.getLandRoundedInWorld(flocation.getWorldName()) > 0
                         && !Board.isConnectedLocation(flocation, myFaction)
-                        && (!Conf.claimsCanBeUnconnectedIfOwnedByOtherFaction || !currentFaction.isNormal())
-                ) {
+                        && (!Conf.claimsCanBeUnconnectedIfOwnedByOtherFaction || !currentFaction.isNormal())) {
             if (Conf.claimsCanBeUnconnectedIfOwnedByOtherFaction)
                 error = P.p.txt.parse("<b>You can only claim additional land which is connected to your first claim or controlled by another faction!");
             else
@@ -762,9 +756,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator {
 
     @Override
     public boolean shouldBeSaved() {
-        if (!this.hasFaction() &&
-                (this.getPowerRounded() == this.getPowerMaxRounded() || this.getPowerRounded() == (int) Math.round(Conf.powerPlayerStarting))
-                )
+        if (!this.hasFaction() && (this.getPowerRounded() == this.getPowerMaxRounded() || this.getPowerRounded() == (int) Math.round(Conf.powerPlayerStarting)))
             return false;
         return !this.deleteMe;
     }
