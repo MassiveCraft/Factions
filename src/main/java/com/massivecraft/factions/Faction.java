@@ -391,25 +391,18 @@ public class Faction extends Entity implements EconomyParticipator {
     }
 
     protected boolean addFPlayer(FPlayer fplayer) {
-        if (this.isPlayerFreeType()) {
-            return false;
-        }
+        return !this.isPlayerFreeType() && fplayers.add(fplayer);
 
-        return fplayers.add(fplayer);
     }
 
     protected boolean removeFPlayer(FPlayer fplayer) {
-        if (this.isPlayerFreeType()) {
-            return false;
-        }
+        return !this.isPlayerFreeType() && fplayers.remove(fplayer);
 
-        return fplayers.remove(fplayer);
     }
 
     public Set<FPlayer> getFPlayers() {
         // return a shallow copy of the FPlayer list, to prevent tampering and concurrency issues
-        Set<FPlayer> ret = new HashSet<FPlayer>(fplayers);
-        return ret;
+        return new HashSet<FPlayer>(fplayers);
     }
 
     public Set<FPlayer> getFPlayersWhereOnline(boolean online) {
@@ -483,10 +476,7 @@ public class Faction extends Entity implements EconomyParticipator {
         }
 
         // even if all players are technically logged off, maybe someone was on recently enough to not consider them officially offline yet
-        if (Conf.considerFactionsReallyOfflineAfterXMinutes > 0 && System.currentTimeMillis() < lastPlayerLoggedOffTime + (Conf.considerFactionsReallyOfflineAfterXMinutes * 60000)) {
-            return true;
-        }
-        return false;
+        return Conf.considerFactionsReallyOfflineAfterXMinutes > 0 && System.currentTimeMillis() < lastPlayerLoggedOffTime + (Conf.considerFactionsReallyOfflineAfterXMinutes * 60000);
     }
 
     public void memberLoggedOff() {
@@ -628,11 +618,7 @@ public class Faction extends Entity implements EconomyParticipator {
         if (ownerData == null) {
             return false;
         }
-        if (ownerData.contains(player.getId())) {
-            return true;
-        }
-
-        return false;
+        return ownerData.contains(player.getId());
     }
 
     public void setPlayerAsOwner(FPlayer player, FLocation loc) {
@@ -691,11 +677,7 @@ public class Faction extends Entity implements EconomyParticipator {
         Set<String> ownerData = claimOwnership.get(loc);
 
         // if no owner list, owner list is empty, or player is in owner list, they're allowed
-        if (ownerData == null || ownerData.isEmpty() || ownerData.contains(fplayer.getId())) {
-            return true;
-        }
-
-        return false;
+        return ownerData == null || ownerData.isEmpty() || ownerData.contains(fplayer.getId());
     }
 
 

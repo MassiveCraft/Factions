@@ -168,11 +168,8 @@ public class P extends MPlugin {
 
     @Override
     public boolean handleCommand(CommandSender sender, String commandString, boolean testOnly) {
-        if (sender instanceof Player && FactionsPlayerListener.preventCommand(commandString, (Player) sender)) {
-            return true;
-        }
+        return sender instanceof Player && FactionsPlayerListener.preventCommand(commandString, (Player) sender) || super.handleCommand(sender, commandString, testOnly);
 
-        return super.handleCommand(sender, commandString, testOnly);
     }
 
     @Override
@@ -206,10 +203,7 @@ public class P extends MPlugin {
     // enabled or use of the Factions f command without a slash; combination of isPlayerFactionChatting() and isFactionsCommand()
 
     public boolean shouldLetFactionsHandleThisChat(AsyncPlayerChatEvent event) {
-        if (event == null) {
-            return false;
-        }
-        return (isPlayerFactionChatting(event.getPlayer()) || isFactionsCommand(event.getMessage()));
+        return event != null && (isPlayerFactionChatting(event.getPlayer()) || isFactionsCommand(event.getMessage()));
     }
 
     // Does player have Faction Chat enabled? If so, chat plugins should preferably not do channels,
@@ -220,10 +214,7 @@ public class P extends MPlugin {
         }
         FPlayer me = FPlayers.i.get(player);
 
-        if (me == null) {
-            return false;
-        }
-        return me.getChatMode().isAtLeast(ChatMode.ALLIANCE);
+        return me != null && me.getChatMode().isAtLeast(ChatMode.ALLIANCE);
     }
 
     // Is this chat message actually a Factions command, and thus should be left alone by other plugins?
@@ -231,10 +222,7 @@ public class P extends MPlugin {
     // TODO: GET THIS BACK AND WORKING
 
     public boolean isFactionsCommand(String check) {
-        if (check == null || check.isEmpty()) {
-            return false;
-        }
-        return this.handleCommand(null, check, true);
+        return !(check == null || check.isEmpty()) && this.handleCommand(null, check, true);
     }
 
     // Get a player's faction tag (faction name), mainly for usage by chat plugins for local/channel chat
