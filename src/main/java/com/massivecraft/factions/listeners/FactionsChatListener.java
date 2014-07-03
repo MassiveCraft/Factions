@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerChatEvent;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import java.util.UnknownFormatConversionException;
 import java.util.logging.Level;
@@ -24,7 +24,7 @@ public class FactionsChatListener implements Listener {
 
     // this is for handling slashless command usage and faction/alliance chat, set at lowest priority so Factions gets to them first
     @EventHandler(priority = EventPriority.LOWEST)
-    public void onPlayerEarlyChat(PlayerChatEvent event) {
+    public void onPlayerEarlyChat(AsyncPlayerChatEvent event) {
         if (event.isCancelled()) {
             return;
         }
@@ -33,15 +33,6 @@ public class FactionsChatListener implements Listener {
         String msg = event.getMessage();
         FPlayer me = FPlayers.i.get(talkingPlayer);
         ChatMode chat = me.getChatMode();
-
-        // slashless factions commands need to be handled here if the user isn't in public chat mode
-        if (chat != ChatMode.PUBLIC && p.handleCommand(talkingPlayer, msg, false, true)) {
-            if (Conf.logPlayerCommands) {
-                Bukkit.getLogger().log(Level.INFO, "[PLAYER_COMMAND] " + talkingPlayer.getName() + ": " + msg);
-            }
-            event.setCancelled(true);
-            return;
-        }
 
         // Is it a faction chat message?
         if (chat == ChatMode.FACTION) {
@@ -60,7 +51,6 @@ public class FactionsChatListener implements Listener {
             }
 
             event.setCancelled(true);
-            return;
         } else if (chat == ChatMode.ALLIANCE) {
             Faction myFaction = me.getFaction();
 
@@ -84,13 +74,12 @@ public class FactionsChatListener implements Listener {
             Bukkit.getLogger().log(Level.INFO, ChatColor.stripColor("AllianceChat: " + message));
 
             event.setCancelled(true);
-            return;
         }
     }
 
     // this is for handling insertion of the player's faction tag, set at highest priority to give other plugins a chance to modify chat first
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void onPlayerChat(PlayerChatEvent event) {
+    public void onPlayerChat(AsyncPlayerChatEvent event) {
         if (event.isCancelled()) {
             return;
         }
