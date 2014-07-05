@@ -2,6 +2,7 @@ package com.massivecraft.factions.zcore;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.P;
+import com.massivecraft.factions.listeners.FactionsPlayerListener;
 import com.massivecraft.factions.zcore.persist.EM;
 import com.massivecraft.factions.zcore.persist.Entity;
 import com.massivecraft.factions.zcore.persist.EntityCollection;
@@ -22,10 +23,9 @@ public class MPluginSecretPlayerListener implements Listener {
         this.p = p;
     }
 
-    // We're now using FCommandHandler for this to do things properly.
-    //@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
-        if (p.handleCommand(event.getPlayer(), event.getMessage())) {
+        if (FactionsPlayerListener.preventCommand(event.getMessage(), event.getPlayer())) {
             if (p.logPlayerCommands()) {
                 Bukkit.getLogger().info("[PLAYER_COMMAND] " + event.getPlayer().getName() + ": " + event.getMessage());
             }
