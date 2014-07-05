@@ -1,7 +1,6 @@
 package com.massivecraft.factions.zcore;
 
 import com.massivecraft.factions.Conf;
-import com.massivecraft.factions.util.Metrics;
 import com.massivecraft.factions.zcore.persist.EM;
 import com.massivecraft.factions.zcore.persist.SaveTask;
 import com.massivecraft.factions.zcore.util.PermUtil;
@@ -66,12 +65,6 @@ public abstract class MPlugin extends JavaPlugin {
         log("=== ENABLE START ===");
         timeEnableStart = System.currentTimeMillis();
 
-        try {
-            Metrics metrics = new Metrics(this);
-            metrics.start();
-        } catch (IOException e) {
-            // Failed to submit the stats :-(
-        }
         // Ensure basefolder exists!
         this.getDataFolder().mkdirs();
 
