@@ -378,7 +378,7 @@ public class FactionsEntityListener implements Listener {
 
         // Damage will be dealt. However check if the damage should be reduced.
         if (damage > 0.0 && ownTerritory && Conf.territoryShieldFactor > 0) {
-            int newDamage = (int) Math.ceil(damage * (1D - Conf.territoryShieldFactor));
+            double newDamage = Math.ceil(damage * (1D - Conf.territoryShieldFactor));
             sub.setDamage(newDamage);
 
             // Send message
