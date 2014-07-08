@@ -433,7 +433,8 @@ public class FactionsListenerMain implements Listener
 		Player player = event.getPlayer();
 
 		// ... and if the if player was banned (not just kicked) ...
-		if (!event.getReason().equals("Banned by admin.")) return;
+		//if (!event.getReason().equals("Banned by admin.")) return;
+		if (!player.isBanned()) return;
 		
 		// ... and we remove player data when banned ...
 		if (!MConf.get().removePlayerDataWhenBanned) return;
