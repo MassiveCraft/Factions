@@ -7,6 +7,7 @@ import com.massivecraft.factions.P;
 import com.massivecraft.factions.event.FPlayerLeaveEvent;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
 
 public class CmdKick extends FCommand {
@@ -29,33 +30,38 @@ public class CmdKick extends FCommand {
 
     @Override
     public void perform() {
-        FPlayer you = this.argAsBestFPlayerMatch(0);
-        if (you == null) {
+        FPlayer toKick = this.argAsBestFPlayerMatch(0);
+        if (toKick == null) {
             return;
         }
 
-        if (fme == you) {
+        if (fme == toKick) {
             msg("<b>You cannot kick yourself.");
             msg("<i>You might want to: %s", p.cmdBase.cmdLeave.getUseageTemplate(false));
             return;
         }
 
-        Faction yourFaction = you.getFaction();
+        Faction toKickFaction = toKick.getFaction();
+
+        // The PlayerEntityCollection only holds online players, this was a specific issue that kept happening.
+        if(toKickFaction.getTag().equalsIgnoreCase(TL.WILDERNESS.toString())) {
+            sender.sendMessage("Something went wrong with getting the offline player's faction.");
+            return;
+        }
 
         // players with admin-level "disband" permission can bypass these requirements
         if (!Permission.KICK_ANY.has(sender)) {
-            if (yourFaction != myFaction) {
-                msg("%s<b> is not a member of %s", you.describeTo(fme, true), myFaction.describeTo(fme));
+            if (toKickFaction != myFaction) {
+                msg("%s<b> is not a member of %s", toKick.describeTo(fme, true), myFaction.describeTo(fme));
                 return;
             }
 
-            if (you.getRole().value >= fme.getRole().value) {
-                // TODO add more informative messages.
+            if (toKick.getRole().value >= fme.getRole().value) {
                 msg("<b>Your rank is too low to kick this player.");
                 return;
             }
 
-            if (!Conf.canLeaveWithNegativePower && you.getPower() < 0) {
+            if (!Conf.canLeaveWithNegativePower && toKick.getPower() < 0) {
                 msg("<b>You cannot kick that member until their power is positive.");
                 return;
             }
@@ -67,7 +73,7 @@ public class CmdKick extends FCommand {
         }
 
         // trigger the leave event (cancellable) [reason:kicked]
-        FPlayerLeaveEvent event = new FPlayerLeaveEvent(you, you.getFaction(), FPlayerLeaveEvent.PlayerLeaveReason.KICKED);
+        FPlayerLeaveEvent event = new FPlayerLeaveEvent(toKick, toKick.getFaction(), FPlayerLeaveEvent.PlayerLeaveReason.KICKED);
         Bukkit.getServer().getPluginManager().callEvent(event);
         if (event.isCancelled()) {
             return;
@@ -78,22 +84,22 @@ public class CmdKick extends FCommand {
             return;
         }
 
-        yourFaction.msg("%s<i> kicked %s<i> from the faction! :O", fme.describeTo(yourFaction, true), you.describeTo(yourFaction, true));
-        you.msg("%s<i> kicked you from %s<i>! :O", fme.describeTo(you, true), yourFaction.describeTo(you));
-        if (yourFaction != myFaction) {
-            fme.msg("<i>You kicked %s<i> from the faction %s<i>!", you.describeTo(fme), yourFaction.describeTo(fme));
+        toKickFaction.msg("%s<i> kicked %s<i> from the faction! :O", fme.describeTo(toKickFaction, true), toKick.describeTo(toKickFaction, true));
+        toKick.msg("%s<i> kicked you from %s<i>! :O", fme.describeTo(toKick, true), toKickFaction.describeTo(toKick));
+        if (toKickFaction != myFaction) {
+            fme.msg("<i>You kicked %s<i> from the faction %s<i>!", toKick.describeTo(fme), toKickFaction.describeTo(fme));
         }
 
         if (Conf.logFactionKick) {
-            P.p.log((senderIsConsole ? "A console command" : fme.getName()) + " kicked " + you.getName() + " from the faction: " + yourFaction.getTag());
+            P.p.log((senderIsConsole ? "A console command" : fme.getName()) + " kicked " + toKick.getName() + " from the faction: " + toKickFaction.getTag());
         }
 
-        if (you.getRole() == Role.ADMIN) {
-            yourFaction.promoteNewLeader();
+        if (toKick.getRole() == Role.ADMIN) {
+            toKickFaction.promoteNewLeader();
         }
 
-        yourFaction.deinvite(you);
-        you.resetFactionData();
+        toKickFaction.deinvite(toKick);
+        toKick.resetFactionData();
     }
 
 }
