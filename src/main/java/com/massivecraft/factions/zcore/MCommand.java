@@ -138,19 +138,8 @@ public abstract class MCommand<T extends MPlugin> {
      */
     // TODO: There should be a boolean for silence
     public boolean validCall(CommandSender sender, List<String> args) {
-        if (!validSenderType(sender, true)) {
-            return false;
-        }
+        return validSenderType(sender, true) && validSenderPermissions(sender, true) && validArgs(args, sender);
 
-        if (!validSenderPermissions(sender, true)) {
-            return false;
-        }
-
-        if (!validArgs(args, sender)) {
-            return false;
-        }
-
-        return true;
     }
 
     public boolean isEnabled() {
@@ -168,10 +157,7 @@ public abstract class MCommand<T extends MPlugin> {
     }
 
     public boolean validSenderPermissions(CommandSender sender, boolean informSenderIfNot) {
-        if (this.permission == null) {
-            return true;
-        }
-        return p.perm.has(sender, this.permission, informSenderIfNot);
+        return this.permission == null || p.perm.has(sender, this.permission, informSenderIfNot);
     }
 
     public boolean validArgs(List<String> args, CommandSender sender) {
@@ -276,10 +262,7 @@ public abstract class MCommand<T extends MPlugin> {
 
     // Is set? ======================
     public boolean argIsSet(int idx) {
-        if (this.args.size() < idx + 1) {
-            return false;
-        }
-        return true;
+        return this.args.size() >= idx + 1;
     }
 
     // STRING ======================
@@ -300,8 +283,7 @@ public abstract class MCommand<T extends MPlugin> {
             return def;
         }
         try {
-            Integer ret = Integer.parseInt(str);
-            return ret;
+            return Integer.parseInt(str);
         } catch (Exception e) {
             return def;
         }
@@ -321,8 +303,7 @@ public abstract class MCommand<T extends MPlugin> {
             return def;
         }
         try {
-            Double ret = Double.parseDouble(str);
-            return ret;
+            return Double.parseDouble(str);
         } catch (Exception e) {
             return def;
         }
@@ -340,10 +321,7 @@ public abstract class MCommand<T extends MPlugin> {
     // Boolean ======================
     public Boolean strAsBool(String str) {
         str = str.toLowerCase();
-        if (str.startsWith("y") || str.startsWith("t") || str.startsWith("on") || str.startsWith("+") || str.startsWith("1")) {
-            return true;
-        }
-        return false;
+        return str.startsWith("y") || str.startsWith("t") || str.startsWith("on") || str.startsWith("+") || str.startsWith("1");
     }
 
     public Boolean argAsBool(int idx, boolean def) {

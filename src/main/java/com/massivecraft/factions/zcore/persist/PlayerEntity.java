@@ -46,5 +46,4 @@ public class PlayerEntity extends Entity {
             this.sendMessage(msg);
         }
     }
-
 }
