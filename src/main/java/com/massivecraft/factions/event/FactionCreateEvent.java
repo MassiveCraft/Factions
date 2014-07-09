@@ -8,8 +8,11 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
+/**
+ * Event called when a Faction is created.
+ */
 public class FactionCreateEvent extends Event implements Cancellable {
-    
+
     private static final HandlerList handlers = new HandlerList();
 
     private String factionTag;

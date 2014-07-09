@@ -3,8 +3,6 @@ package com.massivecraft.factions.event;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import org.bukkit.event.Cancellable;
-import org.bukkit.event.Event;
-import org.bukkit.event.HandlerList;
 
 public class FPlayerLeaveEvent extends FactionPlayerEvent implements Cancellable {
 
@@ -20,6 +18,11 @@ public class FPlayerLeaveEvent extends FactionPlayerEvent implements Cancellable
         reason = r;
     }
 
+    /**
+     * Get the reason the player left the faction.
+     *
+     * @return reason player left the faction.
+     */
     public PlayerLeaveReason getReason() {
         return reason;
     }
@@ -34,7 +37,7 @@ public class FPlayerLeaveEvent extends FactionPlayerEvent implements Cancellable
         if (reason == PlayerLeaveReason.DISBAND || reason == PlayerLeaveReason.RESET) {
             cancelled = false; // Don't let them cancel factions disbanding.
         } else {
-        cancelled = c;
+            cancelled = c;
         }
     }
 }

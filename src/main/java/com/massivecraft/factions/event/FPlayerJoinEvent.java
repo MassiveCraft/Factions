@@ -3,9 +3,10 @@ package com.massivecraft.factions.event;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import org.bukkit.event.Cancellable;
-import org.bukkit.event.Event;
-import org.bukkit.event.HandlerList;
 
+/**
+ * Event called when an FPlayer joins a Faction.
+ */
 public class FPlayerJoinEvent extends FactionPlayerEvent implements Cancellable {
 
     PlayerJoinReason reason;
@@ -20,6 +21,11 @@ public class FPlayerJoinEvent extends FactionPlayerEvent implements Cancellable 
         reason = r;
     }
 
+    /**
+     * Get the reason the player joined the faction.
+     *
+     * @return reason player joined the faction.
+     */
     public PlayerJoinReason getReason() {
         return reason;
     }

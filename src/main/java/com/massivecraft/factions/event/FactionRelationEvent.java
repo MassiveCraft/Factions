@@ -5,7 +5,9 @@ import com.massivecraft.factions.struct.Relation;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-
+/**
+ * Event called when a Faction relation is called.
+ */
 public class FactionRelationEvent extends Event {
 
     private static final HandlerList handlers = new HandlerList();

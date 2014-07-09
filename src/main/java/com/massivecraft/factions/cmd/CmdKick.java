@@ -44,7 +44,7 @@ public class CmdKick extends FCommand {
         Faction toKickFaction = toKick.getFaction();
 
         // The PlayerEntityCollection only holds online players, this was a specific issue that kept happening.
-        if(toKickFaction.getTag().equalsIgnoreCase(TL.WILDERNESS.toString())) {
+        if (toKickFaction.getTag().equalsIgnoreCase(TL.WILDERNESS.toString())) {
             sender.sendMessage("Something went wrong with getting the offline player's faction.");
             return;
         }

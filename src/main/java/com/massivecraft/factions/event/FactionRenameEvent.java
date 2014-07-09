@@ -1,11 +1,8 @@
 package com.massivecraft.factions.event;
 
 import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.Faction;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
-import org.bukkit.event.Event;
-import org.bukkit.event.HandlerList;
 
 public class FactionRenameEvent extends FactionPlayerEvent implements Cancellable {
 
@@ -17,16 +14,35 @@ public class FactionRenameEvent extends FactionPlayerEvent implements Cancellabl
         tag = newTag;
     }
 
+    /**
+     * Get the player involved in the event.
+     *
+     * @return Player involved in the event.
+     *
+     * @deprecated use getfPlayer().getPlayer() instead.
+     */
     @Deprecated
     public Player getPlayer() {
         return getfPlayer().getPlayer();
     }
 
+    /**
+     * Get the faction tag before it was renamed.
+     *
+     * @return old faction tag.
+     *
+     * @deprecated use getFaction().getTag() instead.
+     */
     @Deprecated
     public String getOldFactionTag() {
         return getFaction().getTag();
     }
 
+    /**
+     * Get the new faction tag.
+     *
+     * @return new faction tag as String.
+     */
     public String getFactionTag() {
         return tag;
     }

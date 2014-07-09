@@ -21,7 +21,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.projectiles.ProjectileSource;
 
-import java.text.MessageFormat;
 import java.util.*;
 
 
