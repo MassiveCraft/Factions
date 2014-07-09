@@ -9,29 +9,14 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-public class FactionDisbandEvent extends Event implements Cancellable {
-    private static final HandlerList handlers = new HandlerList();
+public class FactionDisbandEvent extends FactionEvent implements Cancellable {
 
-    private boolean cancelled;
-    private String id;
+    private boolean cancelled = false;
     private Player sender;
 
     public FactionDisbandEvent(Player sender, String factionId) {
-        cancelled = false;
+        super(Factions.i.get(factionId));
         this.sender = sender;
-        this.id = factionId;
-    }
-
-    public HandlerList getHandlers() {
-        return handlers;
-    }
-
-    public static HandlerList getHandlerList() {
-        return handlers;
-    }
-
-    public Faction getFaction() {
-        return Factions.i.get(id);
     }
 
     public FPlayer getFPlayer() {

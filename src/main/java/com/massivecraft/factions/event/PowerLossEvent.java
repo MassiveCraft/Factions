@@ -7,48 +7,28 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
+public class PowerLossEvent extends FactionPlayerEvent implements Cancellable {
 
-public class PowerLossEvent extends Event implements Cancellable {
-    private static final HandlerList handlers = new HandlerList();
-
-    private boolean cancelled;
-    private Faction faction;
-    private FPlayer fplayer;
+    private boolean cancelled = false;
     private String message;
 
     public PowerLossEvent(Faction f, FPlayer p) {
-        cancelled = false;
-        faction = f;
-        fplayer = p;
+        super(f, p);
     }
 
-    @Override
-    public HandlerList getHandlers() {
-        return handlers;
-    }
-
-    public static HandlerList getHandlerList() {
-        return handlers;
-    }
-
-    public Faction getFaction() {
-        return faction;
-    }
-
+    @Deprecated
     public String getFactionId() {
-        return faction.getId();
+        return getFaction().getId();
     }
 
+    @Deprecated
     public String getFactionTag() {
-        return faction.getTag();
+        return getFaction().getTag();
     }
 
-    public FPlayer getFPlayer() {
-        return fplayer;
-    }
-
+    @Deprecated
     public Player getPlayer() {
-        return fplayer.getPlayer();
+        return getfPlayer().getPlayer();
     }
 
     public String getMessage() {

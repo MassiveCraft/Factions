@@ -6,42 +6,24 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-public class LandUnclaimAllEvent extends Event {
-    private static final HandlerList handlers = new HandlerList();
-
-    private Faction faction;
-    private FPlayer fplayer;
+public class LandUnclaimAllEvent extends FactionPlayerEvent {
 
     public LandUnclaimAllEvent(Faction f, FPlayer p) {
-        faction = f;
-        fplayer = p;
+        super(f, p);
     }
 
-    public HandlerList getHandlers() {
-        return handlers;
-    }
-
-    public static HandlerList getHandlerList() {
-        return handlers;
-    }
-
-    public Faction getFaction() {
-        return faction;
-    }
-
+    @Deprecated
     public String getFactionId() {
-        return faction.getId();
+        return getFaction().getId();
     }
 
+    @Deprecated
     public String getFactionTag() {
-        return faction.getTag();
+        return getFaction().getTag();
     }
 
-    public FPlayer getFPlayer() {
-        return fplayer;
-    }
-
+    @Deprecated
     public Player getPlayer() {
-        return fplayer.getPlayer();
+        return getfPlayer().getPlayer();
     }
 }

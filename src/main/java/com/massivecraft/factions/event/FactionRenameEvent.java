@@ -7,47 +7,28 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-public class FactionRenameEvent extends Event implements Cancellable {
-    private static final HandlerList handlers = new HandlerList();
+public class FactionRenameEvent extends FactionPlayerEvent implements Cancellable {
 
-    private boolean cancelled;
-    private FPlayer fplayer;
-    private Faction faction;
+    private boolean cancelled = false;
     private String tag;
 
     public FactionRenameEvent(FPlayer sender, String newTag) {
-        fplayer = sender;
-        faction = sender.getFaction();
+        super(sender.getFaction(), sender);
         tag = newTag;
-        this.cancelled = false;
     }
 
-    public Faction getFaction() {
-        return (faction);
-    }
-
-    public FPlayer getFPlayer() {
-        return (fplayer);
-    }
-
+    @Deprecated
     public Player getPlayer() {
-        return (fplayer.getPlayer());
+        return getfPlayer().getPlayer();
     }
 
+    @Deprecated
     public String getOldFactionTag() {
-        return (faction.getTag());
+        return getFaction().getTag();
     }
 
     public String getFactionTag() {
-        return (tag);
-    }
-
-    public HandlerList getHandlers() {
-        return handlers;
-    }
-
-    public static HandlerList getHandlerList() {
-        return handlers;
+        return tag;
     }
 
     @Override
