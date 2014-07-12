@@ -169,14 +169,13 @@ public class P extends MPlugin {
     @Override
     public boolean handleCommand(CommandSender sender, String commandString, boolean testOnly) {
         return sender instanceof Player && FactionsPlayerListener.preventCommand(commandString, (Player) sender) || super.handleCommand(sender, commandString, testOnly);
-
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] split) {
         // if bare command at this point, it has already been handled by MPlugin's command listeners
         if (split == null || split.length == 0) {
-            return true;
+            return handleCommand(sender, "/f help", false);
         }
 
         // otherwise, needs to be handled; presumably another plugin directly ran the command

@@ -94,8 +94,6 @@ public abstract class MPlugin extends JavaPlugin {
         this.mPluginSecretServerListener = new MPluginSecretServerListener(this);
         getServer().getPluginManager().registerEvents(this.mPluginSecretPlayerListener, this);
         getServer().getPluginManager().registerEvents(this.mPluginSecretServerListener, this);
-        getCommand("factions").setExecutor(new FCommandHandler());
-
 
         // Register recurring tasks
         if (saveTask == null && Conf.saveToFileEveryXMinutes > 0.0) {
