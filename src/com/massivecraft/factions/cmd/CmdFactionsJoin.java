@@ -45,7 +45,7 @@ public class CmdFactionsJoin extends FCommand
 		Faction faction = this.arg(0, ARFaction.get(sender));
 		if (faction == null) return;
 
-		UPlayer uplayer = this.arg(1, ARUPlayer.getStartAny(sender), usender);
+		UPlayer uplayer = this.arg(1, ARUPlayer.getAny(sender), usender);
 		if (uplayer == null) return;
 		Faction uplayerFaction = uplayer.getFaction();
 		

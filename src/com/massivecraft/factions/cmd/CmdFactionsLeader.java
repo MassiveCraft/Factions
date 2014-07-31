@@ -40,7 +40,7 @@ public class CmdFactionsLeader extends FCommand
 	@Override
 	public void perform()
 	{
-		UPlayer newLeader = this.arg(0, ARUPlayer.getStartAny(sender));
+		UPlayer newLeader = this.arg(0, ARUPlayer.getAny(sender));
 		if (newLeader == null) return;
 		
 		Faction targetFaction = this.arg(1, ARFaction.get(sender), usenderFaction);

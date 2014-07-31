@@ -35,7 +35,7 @@ public class CmdFactionsAccessPlayer extends CmdFactionsAccessAbstract
 	public void innerPerform()
 	{
 		// Args
-		UPlayer uplayer = this.arg(0, ARUPlayer.getStartAny(usender));
+		UPlayer uplayer = this.arg(0, ARUPlayer.getAny(usender));
 		if (uplayer == null) return;
 		
 		Boolean newValue = this.arg(1, ARBoolean.get(), !ta.isPlayerIdGranted(uplayer.getId()));

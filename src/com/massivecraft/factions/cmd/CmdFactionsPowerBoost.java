@@ -58,7 +58,7 @@ public class CmdFactionsPowerBoost extends FCommand
 
 		if (doPlayer)
 		{
-			UPlayer targetPlayer = this.arg(1, ARUPlayer.getStartAny(sender));
+			UPlayer targetPlayer = this.arg(1, ARUPlayer.getAny(sender));
 			if (targetPlayer == null) return;
 			
 			targetPlayer.setPowerBoost(targetPower);

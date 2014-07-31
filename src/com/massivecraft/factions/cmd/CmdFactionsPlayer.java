@@ -39,7 +39,7 @@ public class CmdFactionsPlayer extends FCommand
 	public void perform()
 	{
 		// Args
-		UPlayer uplayer = this.arg(0, ARUPlayer.getStartAny(sender), usender);
+		UPlayer uplayer = this.arg(0, ARUPlayer.getAny(sender), usender);
 		if (uplayer == null) return;
 		
 		// INFO: Title

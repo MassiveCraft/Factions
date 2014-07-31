@@ -37,7 +37,7 @@ public class CmdFactionsDemote extends FCommand
 	@Override
 	public void perform()
 	{	
-		UPlayer you = this.arg(0, ARUPlayer.getStartAny(usender));
+		UPlayer you = this.arg(0, ARUPlayer.getAny(usender));
 		if (you == null) return;
 		
 		if (you.getFaction() != usenderFaction)

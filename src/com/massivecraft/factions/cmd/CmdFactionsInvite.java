@@ -42,7 +42,7 @@ public class CmdFactionsInvite extends FCommand
 	public void perform()
 	{
 		// Args
-		UPlayer uplayer = this.arg(0, ARUPlayer.getStartAny(sender));
+		UPlayer uplayer = this.arg(0, ARUPlayer.getAny(sender));
 		if (uplayer == null) return;
 		
 		Boolean newInvited = this.arg(1, ARBoolean.get(), !usenderFaction.isInvited(uplayer));

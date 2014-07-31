@@ -53,7 +53,7 @@ public class CmdFactionsMoneyTransferFp extends FCommand
 		Faction from = this.arg(1, ARFaction.get(sender));
 		if (from == null) return;
 		
-		UPlayer to = this.arg(2, ARUPlayer.getStartAny(sender));
+		UPlayer to = this.arg(2, ARUPlayer.getAny(sender));
 		if (to == null) return;
 		
 		boolean success = Econ.transferMoney(usender, from, to, amount);

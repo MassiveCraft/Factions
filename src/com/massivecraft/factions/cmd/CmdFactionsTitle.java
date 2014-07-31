@@ -42,7 +42,7 @@ public class CmdFactionsTitle extends FCommand
 	public void perform()
 	{
 		// Args
-		UPlayer you = this.arg(0, ARUPlayer.getStartAny(sender));
+		UPlayer you = this.arg(0, ARUPlayer.getAny(sender));
 		if (you == null) return;
 		
 		String newTitle = this.argConcatFrom(1, ARString.get(), "");

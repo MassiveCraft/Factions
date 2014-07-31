@@ -37,7 +37,7 @@ public class CmdFactionsPromote extends FCommand
 	@Override
 	public void perform()
 	{
-		UPlayer you = this.arg(0, ARUPlayer.getStartAny(sender));
+		UPlayer you = this.arg(0, ARUPlayer.getAny(sender));
 		if (you == null) return;
 		
 		if (you.getFaction() != usenderFaction)
