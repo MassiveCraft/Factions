@@ -98,12 +98,8 @@ public class FactionsChatListener implements Listener {
 
         if (!Conf.chatTagReplaceString.isEmpty() && eventFormat.contains(Conf.chatTagReplaceString)) {
             // we're using the "replace" method of inserting the faction tags
-            // if they stuck "[FACTION_TITLE]" in there, go ahead and do it too
-            if (eventFormat.contains("[FACTION_TITLE]")) {
-                eventFormat = eventFormat.replace("[FACTION_TITLE]", me.getTitle());
-            }
+            eventFormat = eventFormat.replace(Conf.chatTagReplaceString, me.getTitle());
             InsertIndex = eventFormat.indexOf(Conf.chatTagReplaceString);
-            eventFormat = eventFormat.replace(Conf.chatTagReplaceString, "");
             Conf.chatTagPadAfter = false;
             Conf.chatTagPadBefore = false;
         } else if (!Conf.chatTagInsertAfterString.isEmpty() && eventFormat.contains(Conf.chatTagInsertAfterString)) {

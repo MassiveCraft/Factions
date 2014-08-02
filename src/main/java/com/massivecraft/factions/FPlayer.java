@@ -296,7 +296,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator {
     // Base:
 
     public String getTitle() {
-        return this.title;
+        return this.hasFaction() ? title : "";
     }
 
     public void setTitle(String title) {
@@ -312,10 +312,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator {
     }
 
     public String getTag() {
-        if (!this.hasFaction()) {
-            return "";
-        }
-        return this.getFaction().getTag();
+        return this.hasFaction() ? this.getFaction().getTag() : "";
     }
 
     // Base concatenations:
@@ -381,28 +378,16 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator {
     // These are injected into the format of global chat messages.
 
     public String getChatTag() {
-        if (!this.hasFaction()) {
-            return "";
-        }
-
-        return String.format(Conf.chatTagFormat, this.role.getPrefix() + this.getTag());
+        return this.hasFaction() ? String.format(Conf.chatTagFormat, this.role.getPrefix() + this.getTag()) : "";
     }
 
     // Colored Chat Tag
     public String getChatTag(Faction faction) {
-        if (!this.hasFaction()) {
-            return "";
-        }
-
-        return this.getRelationTo(faction).getColor() + getChatTag();
+        return this.hasFaction() ? this.getRelationTo(faction).getColor() + getChatTag() : "";
     }
 
     public String getChatTag(FPlayer fplayer) {
-        if (!this.hasFaction()) {
-            return "";
-        }
-
-        return this.getColorTo(fplayer) + getChatTag();
+        return this.hasFaction() ? this.getColorTo(fplayer) + getChatTag() : "";
     }
 
     // -------------------------------
