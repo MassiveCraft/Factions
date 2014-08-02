@@ -42,10 +42,12 @@ public class MPluginSecretPlayerListener implements Listener {
             event.setCancelled(true);
         }
 
+        /* Should be handled by stuff in FactionsChatListener
         Player speaker = event.getPlayer();
         String format = event.getFormat();
         format = format.replace(Conf.chatTagReplaceString, P.p.getPlayerFactionTag(speaker)).replace("[FACTION_TITLE]", P.p.getPlayerTitle(speaker));
         event.setFormat(format);
+        */
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
