@@ -9,6 +9,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
 public abstract class FRelationCommand extends FCommand {
+
     public Relation targetRelation;
 
     public FRelationCommand() {

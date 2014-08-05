@@ -7,6 +7,7 @@ import com.massivecraft.factions.struct.Permission;
 
 
 public class CmdMap extends FCommand {
+
     public CmdMap() {
         super();
         this.aliases.add("map");

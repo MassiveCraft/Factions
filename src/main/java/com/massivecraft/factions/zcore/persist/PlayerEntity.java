@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import java.util.List;
 
 public class PlayerEntity extends Entity {
+
     public Player getPlayer() {
         for (Player player : Bukkit.getServer().getOnlinePlayers()) {
             if (player.getUniqueId().toString().equals(this.getId())) {

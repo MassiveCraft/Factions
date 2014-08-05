@@ -9,6 +9,7 @@ import com.massivecraft.factions.struct.Permission;
 import org.bukkit.Bukkit;
 
 public class CmdUnclaimall extends FCommand {
+
     public CmdUnclaimall() {
         this.aliases.add("unclaimall");
         this.aliases.add("declaimall");

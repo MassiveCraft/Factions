@@ -4,6 +4,7 @@ import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.P;
 
 public class AutoLeaveTask implements Runnable {
+
     private static AutoLeaveProcessTask task;
     double rate;
 

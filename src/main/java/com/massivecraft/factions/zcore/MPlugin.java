@@ -24,6 +24,7 @@ import java.util.logging.Level;
 
 
 public abstract class MPlugin extends JavaPlugin {
+
     // Some utils
     public Persist persist;
     public TextUtil txt;

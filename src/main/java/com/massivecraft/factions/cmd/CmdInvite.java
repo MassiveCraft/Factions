@@ -5,6 +5,7 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.struct.Permission;
 
 public class CmdInvite extends FCommand {
+
     public CmdInvite() {
         super();
         this.aliases.add("invite");

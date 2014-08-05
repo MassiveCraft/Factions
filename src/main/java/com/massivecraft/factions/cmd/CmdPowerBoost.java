@@ -6,6 +6,7 @@ import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Permission;
 
 public class CmdPowerBoost extends FCommand {
+
     public CmdPowerBoost() {
         super();
         this.aliases.add("powerboost");

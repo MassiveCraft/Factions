@@ -4,6 +4,7 @@ import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.struct.Permission;
 
 public class CmdBoom extends FCommand {
+
     public CmdBoom() {
         super();
         this.aliases.add("noboom");

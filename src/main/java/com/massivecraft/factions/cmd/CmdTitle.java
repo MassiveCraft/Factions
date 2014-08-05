@@ -6,6 +6,7 @@ import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TextUtil;
 
 public class CmdTitle extends FCommand {
+
     public CmdTitle() {
         this.aliases.add("title");
 

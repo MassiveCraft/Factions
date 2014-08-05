@@ -10,6 +10,7 @@ import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class FPlayers extends PlayerEntityCollection<FPlayer> {
+
     public static FPlayers i = new FPlayers();
 
     P p = P.p;

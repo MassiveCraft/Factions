@@ -16,6 +16,7 @@ import java.util.logging.Level;
 
 
 public class Econ {
+
     private static Economy econ = null;
 
     public static void setup() {

@@ -5,6 +5,7 @@ import com.massivecraft.factions.struct.Permission;
 
 
 public class CmdVersion extends FCommand {
+
     public CmdVersion() {
         this.aliases.add("version");
 

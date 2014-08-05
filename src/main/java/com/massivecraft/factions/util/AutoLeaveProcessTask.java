@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.ListIterator;
 
 public class AutoLeaveProcessTask extends BukkitRunnable {
+
     private transient boolean readyToGo = false;
     private transient boolean finished = false;
     private transient ListIterator<FPlayer> iterator;

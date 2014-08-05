@@ -8,6 +8,7 @@ import com.massivecraft.factions.struct.Role;
 import org.bukkit.Bukkit;
 
 public class CmdUnclaim extends FCommand {
+
     public CmdUnclaim() {
         this.aliases.add("unclaim");
         this.aliases.add("declaim");

@@ -22,6 +22,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 
 public class Faction extends Entity implements EconomyParticipator {
+
     // FIELD: relationWish
     private Map<String, Relation> relationWish;
 

@@ -7,6 +7,7 @@ import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TextUtil;
 
 public class CmdDescription extends FCommand {
+
     public CmdDescription() {
         super();
         this.aliases.add("desc");

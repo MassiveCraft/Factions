@@ -5,6 +5,7 @@ import com.massivecraft.factions.Conf;
 import java.util.Collections;
 
 public class FCmdRoot extends FCommand {
+
     public CmdAdmin cmdAdmin = new CmdAdmin();
     public CmdAutoClaim cmdAutoClaim = new CmdAutoClaim();
     public CmdBoom cmdBoom = new CmdBoom();
@@ -50,6 +51,7 @@ public class FCmdRoot extends FCommand {
     public CmdUnclaimall cmdUnclaimall = new CmdUnclaimall();
     public CmdVersion cmdVersion = new CmdVersion();
     public CmdWarunclaimall cmdWarunclaimall = new CmdWarunclaimall();
+    public CmdSB cmdSB = new CmdSB();
 
     public FCmdRoot() {
         super();
@@ -117,6 +119,7 @@ public class FCmdRoot extends FCommand {
         this.addSubCommand(this.cmdUnclaimall);
         this.addSubCommand(this.cmdVersion);
         this.addSubCommand(this.cmdWarunclaimall);
+        this.addSubCommand(this.cmdSB);
     }
 
     @Override

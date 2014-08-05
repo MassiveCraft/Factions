@@ -9,6 +9,7 @@ import com.massivecraft.factions.struct.Role;
 import org.bukkit.Bukkit;
 
 public class CmdAdmin extends FCommand {
+
     public CmdAdmin() {
         super();
         this.aliases.add("admin");

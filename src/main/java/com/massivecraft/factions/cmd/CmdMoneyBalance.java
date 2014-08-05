@@ -5,6 +5,7 @@ import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Permission;
 
 public class CmdMoneyBalance extends FCommand {
+
     public CmdMoneyBalance() {
         super();
         this.aliases.add("b");

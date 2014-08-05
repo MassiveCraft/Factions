@@ -4,6 +4,7 @@ import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Permission;
 
 public class CmdChatSpy extends FCommand {
+
     public CmdChatSpy() {
         super();
         this.aliases.add("chatspy");

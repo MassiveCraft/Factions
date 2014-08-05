@@ -21,6 +21,7 @@ import java.util.Set;
  * PlayerEntityCollection.getOnline()
  */
 public abstract class PlayerEntityCollection<E extends Entity> extends EntityCollection<E> {
+
     public PlayerEntityCollection(Class<E> entityClass, Collection<E> entities, Map<String, E> id2entity, File file, Gson gson) {
         super(entityClass, entities, id2entity, file, gson, true);
     }

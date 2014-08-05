@@ -12,6 +12,7 @@ import java.util.Map.Entry;
 
 
 public abstract class MCommand<T extends MPlugin> {
+
     public T p;
 
     // The sub-commands to this command

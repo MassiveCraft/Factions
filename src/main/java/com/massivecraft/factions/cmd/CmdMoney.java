@@ -3,6 +3,7 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.P;
 
 public class CmdMoney extends FCommand {
+
     public CmdMoneyBalance cmdMoneyBalance = new CmdMoneyBalance();
     public CmdMoneyDeposit cmdMoneyDeposit = new CmdMoneyDeposit();
     public CmdMoneyWithdraw cmdMoneyWithdraw = new CmdMoneyWithdraw();

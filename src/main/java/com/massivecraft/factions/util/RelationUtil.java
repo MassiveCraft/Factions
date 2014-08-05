@@ -9,6 +9,7 @@ import com.massivecraft.factions.zcore.util.TextUtil;
 import org.bukkit.ChatColor;
 
 public class RelationUtil {
+
     public static String describeThatToMe(RelationParticipator that, RelationParticipator me, boolean ucfirst) {
         String ret = "";
 

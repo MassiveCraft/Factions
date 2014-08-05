@@ -8,6 +8,7 @@ import com.massivecraft.factions.struct.Permission;
 
 
 public class CmdPermanent extends FCommand {
+
     public CmdPermanent() {
         super();
         this.aliases.add("permanent");

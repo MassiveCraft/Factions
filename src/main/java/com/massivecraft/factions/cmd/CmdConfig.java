@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.Set;
 
 public class CmdConfig extends FCommand {
+
     private static HashMap<String, String> properFieldNames = new HashMap<String, String>();
 
     public CmdConfig() {

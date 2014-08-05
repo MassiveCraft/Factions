@@ -10,6 +10,7 @@ import org.bukkit.Bukkit;
 
 
 public class CmdDisband extends FCommand {
+
     public CmdDisband() {
         super();
         this.aliases.add("disband");

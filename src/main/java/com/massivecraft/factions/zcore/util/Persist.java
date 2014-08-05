@@ -6,7 +6,7 @@ import java.io.File;
 import java.lang.reflect.Type;
 import java.util.logging.Level;
 
-// TODO: Give better name and place to differenciate from the entity-orm-ish system in "com.massivecraft.core.persist".
+// TODO: Give better name and place to differentiate from the entity-orm-ish system in "com.massivecraft.core.persist".
 
 public class Persist {
 

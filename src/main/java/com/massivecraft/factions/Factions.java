@@ -17,6 +17,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 
 public class Factions extends EntityCollection<Faction> {
+
     public static Factions i = new Factions();
 
     P p = P.p;

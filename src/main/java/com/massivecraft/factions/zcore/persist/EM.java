@@ -4,6 +4,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class EM {
+
     public static Map<Class<? extends Entity>, EntityCollection<? extends Entity>> class2Entities = new LinkedHashMap<Class<? extends Entity>, EntityCollection<? extends Entity>>();
 
     @SuppressWarnings("unchecked")

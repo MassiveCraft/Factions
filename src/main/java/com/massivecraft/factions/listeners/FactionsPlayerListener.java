@@ -22,6 +22,7 @@ import java.util.Map;
 
 
 public class FactionsPlayerListener implements Listener {
+
     public P p;
 
     public FactionsPlayerListener(P p) {

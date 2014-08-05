@@ -30,7 +30,9 @@ import java.util.logging.Level;
 
 
 public class P extends MPlugin {
-    // Our single plugin instance
+
+    // Our single plugin instance.
+    // Single 4 life.
     public static P p;
 
     // Listeners
@@ -40,7 +42,7 @@ public class P extends MPlugin {
     public final FactionsExploitListener exploitListener;
     public final FactionsBlockListener blockListener;
 
-    // Persistance related
+    // Persistence related
     private boolean locked = false;
 
     public boolean getLocked() {
@@ -112,6 +114,8 @@ public class P extends MPlugin {
         getServer().getPluginManager().registerEvents(exploitListener, this);
         getServer().getPluginManager().registerEvents(blockListener, this);
 
+        saveDefaultConfig();
+
         // since some other plugins execute commands directly through this command interface, provide it
         this.getCommand(this.refCommand).setExecutor(this);
 
@@ -138,6 +142,8 @@ public class P extends MPlugin {
             this.getServer().getScheduler().cancelTask(AutoLeaveTask);
             AutoLeaveTask = null;
         }
+
+        cmdBase.cmdSB.save();
         super.onDisable();
     }
 
@@ -306,5 +312,15 @@ public class P extends MPlugin {
             }
         }
         return players;
+    }
+
+    public void debug(Level level, String s) {
+        if (getConfig().getBoolean("debug", false)) {
+            getLogger().log(level, s);
+        }
+    }
+
+    public void debug(String s) {
+        debug(Level.INFO, s);
     }
 }

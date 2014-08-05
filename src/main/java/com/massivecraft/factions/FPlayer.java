@@ -6,6 +6,7 @@ import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.iface.RelationParticipator;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.integration.Worldguard;
+import com.massivecraft.factions.scoreboards.FInfoBoard;
 import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
@@ -536,12 +537,18 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator {
     }
 
     public void sendFactionHereMessage() {
-        Faction factionHere = Board.getFactionAt(this.getLastStoodAt());
-        String msg = P.p.txt.parse("<i>") + " ~ " + factionHere.getTag(this);
-        if (factionHere.getDescription().length() > 0) {
-            msg += " - " + factionHere.getDescription();
+        Faction toShow = Board.getFactionAt(getLastStoodAt());
+        if (!toShow.isWarZone() && !toShow.isNone() && !toShow.isSafeZone() && P.p.getConfig().contains("scoreboard.finfo") && P.p.cmdBase.cmdSB.showBoard(this)) {
+            // Shows them the scoreboard instead of sending a message in chat. Will disappear after a few seconds.
+            new FInfoBoard(getPlayer(), toShow, true);
+        } else {
+            Faction factionHere = Board.getFactionAt(this.getLastStoodAt());
+            String msg = P.p.txt.parse("<i>") + " ~ " + factionHere.getTag(this);
+            if (factionHere.getDescription().length() > 0) {
+                msg += " - " + factionHere.getDescription();
+            }
+            this.sendMessage(msg);
         }
-        this.sendMessage(msg);
     }
 
     // -------------------------------
@@ -676,6 +683,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator {
                 error = P.p.txt.parse("<b>You must start claiming land at the border of the territory.");
             }
         }
+        // TODO: Add more else if statements.
 
         if (notifyFailure && error != null) {
             msg(error);
@@ -747,7 +755,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator {
     }
 
     // -------------------------------------------- //
-    // Persistance
+    // Persistence
     // -------------------------------------------- //
 
     @Override

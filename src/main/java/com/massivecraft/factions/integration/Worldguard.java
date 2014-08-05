@@ -27,6 +27,7 @@ import static com.sk89q.worldguard.bukkit.BukkitUtil.toVector;
  */
 
 public class Worldguard {
+
     private static WorldGuardPlugin wg;
     private static boolean enabled = false;
 

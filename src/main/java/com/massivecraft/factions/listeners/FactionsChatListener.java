@@ -16,6 +16,7 @@ import java.util.logging.Level;
 
 
 public class FactionsChatListener implements Listener {
+
     public P p;
 
     public FactionsChatListener(P p) {

@@ -7,6 +7,7 @@ import com.massivecraft.factions.zcore.MCommand;
 import java.util.ArrayList;
 
 public class CmdAutoHelp extends MCommand<P> {
+
     public CmdAutoHelp() {
         super(P.p);
         this.aliases.add("?");

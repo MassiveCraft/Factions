@@ -4,6 +4,7 @@ import com.massivecraft.factions.struct.Relation;
 import org.bukkit.ChatColor;
 
 public interface RelationParticipator {
+
     public String describeTo(RelationParticipator that);
 
     public String describeTo(RelationParticipator that, boolean ucfirst);

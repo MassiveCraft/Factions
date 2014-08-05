@@ -5,6 +5,7 @@ import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
 
 public class CmdAutoClaim extends FCommand {
+
     public CmdAutoClaim() {
         super();
         this.aliases.add("autoclaim");

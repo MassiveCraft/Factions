@@ -1,14 +1,11 @@
 package com.massivecraft.factions.zcore;
 
-import com.massivecraft.factions.Conf;
-import com.massivecraft.factions.P;
 import com.massivecraft.factions.listeners.FactionsPlayerListener;
 import com.massivecraft.factions.zcore.persist.EM;
 import com.massivecraft.factions.zcore.persist.Entity;
 import com.massivecraft.factions.zcore.persist.EntityCollection;
 import com.massivecraft.factions.zcore.persist.PlayerEntityCollection;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -17,6 +14,7 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 
 public class MPluginSecretPlayerListener implements Listener {
+
     private MPlugin p;
 
     public MPluginSecretPlayerListener(MPlugin p) {

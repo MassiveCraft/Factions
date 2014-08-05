@@ -7,6 +7,7 @@ import org.bukkit.entity.EntityType;
 import java.util.*;
 
 public class Conf {
+
     public static List<String> baseCommandAliases = new ArrayList<String>();
     public static boolean allowNoSlashCommand = true;
 

@@ -6,6 +6,7 @@ import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.struct.Permission;
 
 public class CmdOpen extends FCommand {
+
     public CmdOpen() {
         super();
         this.aliases.add("open");

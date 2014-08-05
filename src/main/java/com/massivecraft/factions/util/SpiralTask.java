@@ -23,6 +23,7 @@ import java.util.logging.Level;
  */
 
 public abstract class SpiralTask implements Runnable {
+
     // general task-related reference data
     private transient World world = null;
     private transient boolean readyToGo = false;

@@ -3,7 +3,8 @@ package com.massivecraft.factions.zcore.persist;
 import com.massivecraft.factions.zcore.MPlugin;
 
 public class SaveTask implements Runnable {
-    static private boolean running = false;
+
+    private static boolean running = false;
 
     MPlugin p;
 

@@ -10,6 +10,7 @@ import org.bukkit.World;
  */
 
 public class LazyLocation {
+
     private Location location = null;
     private String worldName;
     private double x;

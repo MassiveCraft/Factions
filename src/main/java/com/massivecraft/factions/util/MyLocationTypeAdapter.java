@@ -8,6 +8,7 @@ import java.util.logging.Level;
 
 
 public class MyLocationTypeAdapter implements JsonDeserializer<LazyLocation>, JsonSerializer<LazyLocation> {
+
     private static final String WORLD = "world";
     private static final String X = "x";
     private static final String Y = "y";

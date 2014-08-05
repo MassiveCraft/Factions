@@ -6,6 +6,7 @@ import com.massivecraft.factions.struct.Permission;
 import org.bukkit.Bukkit;
 
 public class CmdJoin extends FCommand {
+
     public CmdJoin() {
         super();
         this.aliases.add("join");

@@ -4,6 +4,7 @@ import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Permission;
 
 public class CmdBypass extends FCommand {
+
     public CmdBypass() {
         super();
         this.aliases.add("bypass");

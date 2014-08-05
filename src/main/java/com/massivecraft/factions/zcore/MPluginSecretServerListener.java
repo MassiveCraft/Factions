@@ -6,6 +6,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.server.ServerCommandEvent;
 
 public class MPluginSecretServerListener implements Listener {
+
     private MPlugin p;
 
     public MPluginSecretServerListener(MPlugin p) {

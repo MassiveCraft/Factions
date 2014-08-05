@@ -9,6 +9,7 @@ import org.bukkit.ChatColor;
 
 
 public class CmdMoneyWithdraw extends FCommand {
+
     public CmdMoneyWithdraw() {
         this.aliases.add("w");
         this.aliases.add("withdraw");

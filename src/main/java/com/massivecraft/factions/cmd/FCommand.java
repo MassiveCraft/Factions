@@ -13,6 +13,7 @@ import java.util.List;
 
 
 public abstract class FCommand extends MCommand<P> {
+
     public boolean disableOnLock;
 
     public FPlayer fme;

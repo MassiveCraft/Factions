@@ -18,6 +18,7 @@ import java.util.Map.Entry;
 import java.util.logging.Level;
 
 public abstract class EntityCollection<E extends Entity> {
+
     // -------------------------------------------- //
     // FIELDS
     // -------------------------------------------- //

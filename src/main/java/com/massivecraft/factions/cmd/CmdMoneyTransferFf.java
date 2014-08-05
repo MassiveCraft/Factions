@@ -9,6 +9,7 @@ import org.bukkit.ChatColor;
 
 
 public class CmdMoneyTransferFf extends FCommand {
+
     public CmdMoneyTransferFf() {
         this.aliases.add("ff");
 

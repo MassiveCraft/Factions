@@ -8,6 +8,7 @@ import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
 
 public class CmdSethome extends FCommand {
+
     public CmdSethome() {
         this.aliases.add("sethome");
 

@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 
 public class MiscUtil {
+
     public static EntityType creatureTypeFromEntity(Entity entity) {
         if (!(entity instanceof Creature)) {
             return null;
