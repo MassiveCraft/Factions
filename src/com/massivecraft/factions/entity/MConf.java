@@ -3,6 +3,7 @@ package com.massivecraft.factions.entity;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -12,6 +13,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventPriority;
 
 import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.integration.dynmap.DynmapStyle;
 import com.massivecraft.factions.listeners.FactionsListenerChat;
 import com.massivecraft.massivecore.store.Entity;
 import com.massivecraft.massivecore.util.MUtil;
@@ -245,6 +247,92 @@ public class MConf extends Entity<MConf>
 		EntityType.WITCH,
 		EntityType.WITHER,
 		EntityType.ZOMBIE
+	);
+	
+	// -------------------------------------------- //
+	// DYNMAP
+	// -------------------------------------------- //
+	
+	// Should the dynmap intagration be used?
+	public boolean dynmapUse = true;
+	
+	// Should the dynmap updates be logged to console output?
+	public boolean dynmapUpdateLog = false;
+	
+	// Name of the Factions layer
+	public String dynmapLayerName = "Factions";
+	
+	// Should the layer be visible per default
+	public boolean dynmapLayerVisible = true;
+	
+	// Ordering priority in layer menu (low goes before high - default is 0)
+	public int dynmapLayerPriority = 2;
+	
+	// (optional) set minimum zoom level before layer is visible (0 = defalt, always visible)
+	public int dynmapLayerMinimumZoom = 0;
+	
+	// Format for popup - substitute values for macros
+	//public String dynmapInfowindowFormat = "<div class=\"infowindow\"><span style=\"font-size:120%;\">%regionname%</span><br />Flags<br /><span style=\"font-weight:bold;\">%flags%</span></div>";
+	public String dynmapDescription = 
+		"<div class=\"infowindow\">\n" +
+		"<span style=\"font-weight: bold; font-size: 150%;\">%name%</span></br>\n" +
+		"<span style=\"font-style: italic; font-size: 110%;\">%description%</span></br>\n" +
+		"</br>\n" +
+		"<span style=\"font-weight: bold;\">Leader:</span> %players.leader%</br>\n" +
+		"<span style=\"font-weight: bold;\">Officers:</span> %players.officers.count%</br>\n" +
+		"<span style=\"font-weight: bold;\">Members:</span> %players.members.count%</br>\n" +
+		"<span style=\"font-weight: bold;\">Recruits:</span> %players.recruits.count%</br>\n" +
+		"<span style=\"font-weight: bold;\">TOTAL:</span> %players.count%</br>\n" +
+		"</br>\n" +
+		"<span style=\"font-weight: bold;\">Age:</span> %age%</br>\n" +
+		"<span style=\"font-weight: bold;\">Bank:</span> %money%</br>\n" +
+		"</br>\n" +
+		"<span style=\"font-weight: bold;\">Flags:</span></br>\n" +
+		"%open.color% | %permanent.color% | %peaceful.color% | %infpower.color% | %powerloss.color%</br>\n" +
+		"%pvp.color% | %friendlyfire.color% | %monsters.color% | %explosions.color%</br>\n" +
+		"%offlineexplosions.color% | %firespread.color% | %endergrief.color%\n" +
+		"</div>";
+	
+	// Enable the %money% macro. Only do this if you know your economy manager is thread safe.
+	public boolean dynmapDescriptionMoney = false;
+	
+	// Allow players in faction to see one another on Dynmap (only relevant if Dynmap has 'player-info-protected' enabled)
+	public boolean dynmapVisibilityByFaction = true;
+	
+	// Optional setting to limit which regions to show.
+	// If empty all regions are shown.
+	// Specify Faction either by name or UUID.
+	// To show all regions on a given world, add 'world:<worldname>' to the list.
+	public Set<String> dynmapVisibleFactions = new LinkedHashSet<String>();
+	  
+	// Optional setting to hide specific Factions.
+	// Specify Faction either by name or UUID.
+	// To hide all regions on a given world, add 'world:<worldname>' to the list.
+	public Set<String> dynmapHiddenFactions = new LinkedHashSet<String>();
+	
+	// Region Style
+	public final static transient String DYNMAP_STYLE_LINE_COLOR = "#00FF00";
+	public final static transient double DYNMAP_STYLE_LINE_OPACITY = 0.8D;
+	public final static transient int DYNMAP_STYLE_LINE_WEIGHT = 3;
+	public final static transient String DYNMAP_STYLE_FILL_COLOR = "#00FF00";
+	public final static transient double DYNMAP_STYLE_FILL_OPACITY = 0.35D;
+	public final static transient String DYNMAP_STYLE_HOME_MARKER = "greenflag";
+	public final static transient boolean DYNMAP_STYLE_BOOST = false;
+	
+	public DynmapStyle dynmapDefaultStyle = new DynmapStyle()
+	.setStrokeColor(DYNMAP_STYLE_LINE_COLOR)
+	.setLineOpacity(DYNMAP_STYLE_LINE_OPACITY)
+	.setLineWeight(DYNMAP_STYLE_LINE_WEIGHT)
+	.setFillColor(DYNMAP_STYLE_FILL_COLOR)
+	.setFillOpacity(DYNMAP_STYLE_FILL_OPACITY)
+	.setHomeMarker(DYNMAP_STYLE_HOME_MARKER)
+	.setBoost(DYNMAP_STYLE_BOOST);
+	
+	// Optional per Faction style overrides. Any defined replace those in dynmapDefaultStyle.
+	// Specify Faction either by name or UUID.
+	public Map<String, DynmapStyle> dynmapFactionStyles = MUtil.map(
+		"SafeZone", new DynmapStyle().setStrokeColor("#FF00FF").setFillColor("#FF00FF").setBoost(false),
+		"WarZone", new DynmapStyle().setStrokeColor("#FF0000").setFillColor("#FF0000").setBoost(false)
 	);
 
 }
