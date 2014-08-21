@@ -121,6 +121,8 @@ public class UConf extends Entity<UConf>
 	public int claimsRequireMinFactionMembers = 1;
 	public int claimedLandsMax = 0;
 	
+	public boolean claimsEnemyPresenceReverts = true;
+
 	// -------------------------------------------- //
 	// HOMES
 	// -------------------------------------------- //

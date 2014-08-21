@@ -60,6 +60,7 @@ import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.TerritoryAccess;
 import com.massivecraft.factions.entity.BoardColls;
+import com.massivecraft.factions.entity.FactionColls;
 import com.massivecraft.factions.entity.UPlayer;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MConf;
@@ -119,7 +120,8 @@ public class FactionsListenerMain implements Listener
 		
 		// ... and send info onwards.
 		this.chunkChangeTerritoryInfo(uplayer, player, chunkFrom, chunkTo, factionFrom, factionTo);
-		this.chunkChangeAutoClaim(uplayer, chunkTo);
+		boolean autoClaimed = this.chunkChangeAutoClaim(uplayer, chunkTo);
+		if (!autoClaimed) this.chunkChangeEnemyRevert(uplayer, player, chunkFrom, chunkTo, factionFrom, factionTo);
 	}
 	
 	// -------------------------------------------- //
@@ -167,18 +169,39 @@ public class FactionsListenerMain implements Listener
 		}
 	}
 	
+	/**
+	 * Enemy presence on vulnerable land automatically reverts the land to wilderness
+	 */
+	public void chunkChangeEnemyRevert(UPlayer uplayer, Player player, PS chunkFrom, PS chunkTo, Faction factionFrom, Faction factionTo) {
+		UConf uconf = UConf.get(uplayer);
+		if
+		(
+			uconf.claimsEnemyPresenceReverts
+			&&
+			factionTo.getRelationTo(uplayer) == Rel.ENEMY
+			&&
+			factionTo.hasLandInflation()
+			&&
+			BoardColls.get().isBorderPs(chunkTo)
+		)
+		{
+			uplayer.tryClaim(FactionColls.get().get(uplayer).getNone(), chunkTo, true, true);
+			//TODO award player for reverting enemy land take award from enemy faction
+		}
+	}
+
 	// -------------------------------------------- //
 	// CHUNK CHANGE: AUTO CLAIM
 	// -------------------------------------------- //
 	
-	public void chunkChangeAutoClaim(UPlayer uplayer, PS chunkTo)
+	public boolean chunkChangeAutoClaim(UPlayer uplayer, PS chunkTo)
 	{
 		// If the player is auto claiming ...
 		Faction autoClaimFaction = uplayer.getAutoClaimFaction();
-		if (autoClaimFaction == null) return;
+		if (autoClaimFaction == null) return false;
 		
 		// ... try claim.
-		uplayer.tryClaim(autoClaimFaction, chunkTo, true, true);
+		return uplayer.tryClaim(autoClaimFaction, chunkTo, true, true);
 	}
 	
 	// -------------------------------------------- //
