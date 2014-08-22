@@ -221,8 +221,8 @@ public class Board extends Entity<Board> implements BoardInterface
 		
 	// Is this coord NOT completely surrounded by coords claimed by the same faction?
 	// Simpler: Is there any nearby coord with a faction other than the faction here?
-	@Override
-	public boolean isBorderPs(PS ps)
+	// @Override
+	public boolean isBorderPsOriginal(PS ps)
 	{
 		ps = ps.getChunk(true);
 		
@@ -342,4 +342,11 @@ public class Board extends Entity<Board> implements BoardInterface
 		return ret;
 	}
 	
+
+	@Override
+	public boolean isBorderPs(PS ps) {
+		UConf uConf = UConf.get(this);
+		BorderAlgo algo = uConf.claimsBorderAlgo != null ? uConf.claimsBorderAlgo : BorderAlgo.ORIGINAL;
+		return algo.isBorderPs(ps, this);
+	}
 }
