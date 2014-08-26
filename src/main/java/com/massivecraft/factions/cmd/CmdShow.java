@@ -114,8 +114,22 @@ public class CmdShow extends FCommand {
             enemyList = enemyList.substring(0, enemyList.length() - 2);
         }
 
-        sendMessage(allyList);
-        sendMessage(enemyList);
+        if(allyList.length() > 2048) {
+            String[] lines = splitString(allyList, 2048, 256000);
+            for (int i=0; i < lines.length; i++) {
+                sendMessage(lines[i]);
+            }
+        } else {
+            sendMessage(allyList);
+        }
+        if(enemyList.length() > 2048) {
+            String[] lines = splitString(enemyList, 2048, 256000);
+            for (int i=0; i < lines.length; i++) {
+                sendMessage(lines[i]);
+            }
+        } else {
+            sendMessage(enemyList);
+        }
 
         // List the members...
         String onlineList = p.txt.parse("<a>") + "Members online: ";
@@ -152,8 +166,34 @@ public class CmdShow extends FCommand {
             offlineList = offlineList.substring(0, offlineList.length() - 2);
         }
 
-        sendMessage(onlineList);
-        sendMessage(offlineList);
+        if(onlineList.length() > 2048) {
+            String[] lines = splitString(onlineList, 2048, 256000);
+            for (int i=0; i < lines.length; i++) {
+                sendMessage(lines[i]);
+            }
+        } else {
+            sendMessage(onlineList);
+        }
+        if(offlineList.length() > 2048) {
+            String[] lines = splitString(offlineList, 2048, 256000);
+            for (int i=0; i < lines.length; i++) {
+                sendMessage(lines[i]);
+            }
+        } else {
+            sendMessage(offlineList);
+        }
+    }
+
+    private String[] splitString(String text, int chunkSize, int maxLength) {
+        char[] data = text.toCharArray();
+        int len = Math.min(data.length,maxLength);
+        String[] result = new String[(len+chunkSize-1)/chunkSize];
+        int linha = 0;
+        for (int i=0; i < len; i+=chunkSize) {
+            result[linha] = new String(data, i, Math.min(chunkSize,len-i));
+            linha++;
+        }
+        return result;
     }
 
 }
