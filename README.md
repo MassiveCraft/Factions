@@ -1,4 +1,4 @@
-Factions - Guilding and user-controlled antigrief plugin for Minecraft - Now working with UUIDs
+FactionsUUID
 ====================
 This plugin will allow the players on the server to create factions/guilds. The factions can claim territory that will be protected from non-members. Factions can forge alliances and declare themselves enemies with others. Land may be taken from other factions through war.
 
@@ -7,6 +7,7 @@ The goals of this plugin:
  * The players should be able to take care of anti-griefing themselves.
  * Inspire politics and intrigues on your server.
  * Guilding and team spirit! :)
+ * Auto convert old 1.6.9.x versions to save with UUIDs.
 
 Usage
 ---------
@@ -36,9 +37,8 @@ Note that you may optionally skip the slash and just write
 
 Installing
 ----------
-1. Download the latest release: [https://github.com/MassiveCraft/Factions/downloads](https://github.com/MassiveCraft/Factions/downloads)<br>
+1. Download the latest release: [http://ci.drtshock.net/job/FactionsUUID/](http://ci.drtshock.net/job/FactionsUUID/)<br>
 1. Put Factions.jar in the plugins folder.
-1. [Download gson.jar to your lib folder](http://massivecraft.com/plugins/libraries)
 
 A default config file will be created on the first run.
 
