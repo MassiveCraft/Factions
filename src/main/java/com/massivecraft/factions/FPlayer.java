@@ -538,7 +538,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator {
 
     public void sendFactionHereMessage() {
         Faction toShow = Board.getFactionAt(getLastStoodAt());
-        if (!toShow.isWarZone() && !toShow.isNone() && !toShow.isSafeZone() && P.p.getConfig().contains("scoreboard.finfo") && P.p.cmdBase.cmdSB.showBoard(this)) {
+        if (shouldShowScoreboard(toShow)) {
             // Shows them the scoreboard instead of sending a message in chat. Will disappear after a few seconds.
             new FInfoBoard(getPlayer(), toShow, true);
         } else {
@@ -549,6 +549,15 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator {
             }
             this.sendMessage(msg);
         }
+    }
+
+    /**
+     * Check if the scoreboard should be shown. Simple method to be used by above method.
+     * @param toShow Faction to be shown.
+     * @return true if should show, otherwise false.
+     */
+    private boolean shouldShowScoreboard(Faction toShow) {
+        return !toShow.isWarZone() && !toShow.isNone() && !toShow.isSafeZone() && P.p.getConfig().contains("scoreboard.finfo") && P.p.getConfig().getBoolean("scoreboard.finfo-enabled", false) && P.p.cmdBase.cmdSB.showBoard(this);
     }
 
     // -------------------------------
