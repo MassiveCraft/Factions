@@ -3,10 +3,10 @@ package com.massivecraft.factions.adapter;
 import java.lang.reflect.Type;
 
 import com.massivecraft.factions.FFlag;
-import com.massivecraft.massivecore.xlib.gson.JsonDeserializationContext;
-import com.massivecraft.massivecore.xlib.gson.JsonDeserializer;
-import com.massivecraft.massivecore.xlib.gson.JsonElement;
-import com.massivecraft.massivecore.xlib.gson.JsonParseException;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
 
 public class FFlagAdapter implements JsonDeserializer<FFlag>
 {

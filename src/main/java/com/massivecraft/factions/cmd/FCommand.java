@@ -37,6 +37,15 @@ public abstract class FCommand extends MassiveCommand
 		this.usenderFaction = this.usender.getFaction();
 	}
 	
+	
+	@Override
+	public void unsetSenderVars()
+	{
+		this.msender = null;
+		this.usender = null;
+		this.usenderFaction = null;
+	}
+	
 	// -------------------------------------------- //
 	// COMMONLY USED LOGIC
 	// -------------------------------------------- //

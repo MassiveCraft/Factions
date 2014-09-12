@@ -2,10 +2,10 @@ package com.massivecraft.factions.adapter;
 
 import java.lang.reflect.Type;
 
-import com.massivecraft.massivecore.xlib.gson.JsonDeserializationContext;
-import com.massivecraft.massivecore.xlib.gson.JsonDeserializer;
-import com.massivecraft.massivecore.xlib.gson.JsonElement;
-import com.massivecraft.massivecore.xlib.gson.JsonParseException;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
 import com.massivecraft.factions.Rel;
 
 public class RelAdapter implements JsonDeserializer<Rel>
