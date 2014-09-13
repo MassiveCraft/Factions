@@ -12,7 +12,7 @@ import com.massivecraft.massivecore.Aspect;
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.util.DiscUtil;
 import com.massivecraft.massivecore.util.MUtil;
-import com.google.gson.reflect.TypeToken;
+import com.massivecraft.massivecore.xlib.gson.reflect.TypeToken;
 
 public class FactionColls extends XColls<FactionColl, Faction>
 {

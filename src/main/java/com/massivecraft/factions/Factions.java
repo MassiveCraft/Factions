@@ -47,8 +47,8 @@ import com.massivecraft.massivecore.AspectColl;
 import com.massivecraft.massivecore.MassivePlugin;
 import com.massivecraft.massivecore.Multiverse;
 import com.massivecraft.massivecore.util.MUtil;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.massivecraft.massivecore.xlib.gson.Gson;
+import com.massivecraft.massivecore.xlib.gson.GsonBuilder;
 
 
 public class Factions extends MassivePlugin

@@ -20,7 +20,7 @@ import com.massivecraft.factions.util.AsciiCompass;
 import com.massivecraft.massivecore.ps.PS;
 import com.massivecraft.massivecore.store.Entity;
 import com.massivecraft.massivecore.util.Txt;
-import com.google.gson.reflect.TypeToken;
+import com.massivecraft.massivecore.xlib.gson.reflect.TypeToken;
 
 public class Board extends Entity<Board> implements BoardInterface
 {

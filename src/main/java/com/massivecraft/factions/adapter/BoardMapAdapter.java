@@ -6,13 +6,13 @@ import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentSkipListMap;
 
 import com.massivecraft.massivecore.ps.PS;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.JsonSerializationContext;
-import com.google.gson.JsonSerializer;
+import com.massivecraft.massivecore.xlib.gson.JsonDeserializationContext;
+import com.massivecraft.massivecore.xlib.gson.JsonDeserializer;
+import com.massivecraft.massivecore.xlib.gson.JsonElement;
+import com.massivecraft.massivecore.xlib.gson.JsonObject;
+import com.massivecraft.massivecore.xlib.gson.JsonParseException;
+import com.massivecraft.massivecore.xlib.gson.JsonSerializationContext;
+import com.massivecraft.massivecore.xlib.gson.JsonSerializer;
 import com.massivecraft.factions.TerritoryAccess;
 
 public class BoardMapAdapter implements JsonDeserializer<Map<PS, TerritoryAccess>>, JsonSerializer<Map<PS, TerritoryAccess>>

@@ -16,7 +16,7 @@ import com.massivecraft.massivecore.Aspect;
 import com.massivecraft.massivecore.ps.PS;
 import com.massivecraft.massivecore.ps.PSBuilder;
 import com.massivecraft.massivecore.util.DiscUtil;
-import com.google.gson.reflect.TypeToken;
+import com.massivecraft.massivecore.xlib.gson.reflect.TypeToken;
 
 public class BoardColls extends XColls<BoardColl, Board> implements BoardInterface
 {

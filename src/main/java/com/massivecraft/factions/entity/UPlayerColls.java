@@ -10,7 +10,7 @@ import com.massivecraft.factions.Factions;
 import com.massivecraft.massivecore.Aspect;
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.util.DiscUtil;
-import com.google.gson.reflect.TypeToken;
+import com.massivecraft.massivecore.xlib.gson.reflect.TypeToken;
 
 public class UPlayerColls extends XColls<UPlayerColl, UPlayer>
 {
