@@ -1,0 +1,194 @@
+main: com.massivecraft.factions.Factions
+name: Factions
+version: 2.6.0
+website: http://massivecraft.com/factions
+authors: [Cayorion, Brettflan]
+description: §eFactions allows the players to team up and claim land as their own and start wars with other factions. This way we hope to inspire politics, intrigue, and team spirit. §aCayorion §efrom the minecraft server §aMassiveCraft §eis the lead Factions programmer. Feel free to visit us at §bhttp://massivecraft.com
+depend: [MassiveCore]
+softdepend: [PermissionsEx, Permissions, Essentials, EssentialsChat, HeroChat, iChat, LocalAreaChat, LWC, nChat, ChatManager, AuthMe, Vault, Spout, WorldEdit, WorldGuard, AuthDB, CaptureThePoints, CombatTag]
+permissions:
+# -------------------------------------------- #
+# THE REAL NODES
+# -------------------------------------------- #
+  factions.access: {description: manage access, with the proper fperm, default: false}
+  factions.access.faction: {description: grant faction access, with the proper fperm, default: false}
+  factions.access.player: {description: grant player access, with the proper fperm, default: false}
+  factions.access.view: {description: view access, default: false}
+  factions.admin: {description: enable adminmode, default: false}
+  factions.autoclaim: {description: autoclaim when walking, default: false}
+  factions.claim: {description: claim land where you stand, default: false}
+  factions.claim.radius: {description: claim land with radius, default: false}
+  factions.create: {description: create new faction, default: false}
+  factions.demote: {description: demote lesser members in your faction, default: false}
+  factions.description: {description: change faction description, default: false}
+  factions.disband: {description: disband faction, default: false}
+  factions.faction: {description: show faction information, default: false}
+  factions.flag: {description: manage faction flags, default: false}
+  factions.flag.set: {description: set faction flags, default: false}
+  factions.home: {description: teleport to faction home, default: false}
+  factions.invite: {description: set if player is invited, default: false}
+  factions.join: {description: join faction, default: false}
+  factions.join.any: {description: join closed faction, default: false}
+  factions.join.others: {description: have another player join faction, default: false}
+  factions.kick: {description: kick player from faction, default: false}
+  factions.leader: {description: set leader for faction, default: false}
+  factions.leader.any: {description: set leader for another faction, default: false}
+  factions.leave: {description: leave your faction, default: false}
+  factions.list: {description: list all factions, default: false}
+  factions.map: {description: show territory map, default: false}
+  factions.money: {description: manage faction money, default: false}
+  factions.money.balance: {description: show faction money, default: false}
+  factions.money.balance.any: {description: show another factions money, default: false}
+  factions.money.deposit: {description: deposit to faction, default: false}
+  factions.money.f2f: {description: transfer f --> f, default: false}
+  factions.money.f2p: {description: transfer f --> p, default: false}
+  factions.money.p2f: {description: transfer p --> f, default: false}
+  factions.money.withdraw: {description: withdraw from faction, default: false}
+  factions.officer: {description: make player officer, default: false}
+  factions.officer.any: {description: set officers for another faction, default: false}
+  factions.open: {description: set if invitation is required to join, default: false}
+  factions.perm: {description: change faction permissions, default: false}
+  factions.player: {description: show player information}
+  factions.powerboost: {description: set powerboost, default: false}
+  factions.promote: {description: promote lesser members in your faction, default: false}
+  factions.relation: {description: set relation wish to another faction, default: false}
+  factions.seechunk: {description: see the chunk you stand in, default: false}
+  factions.sethome: {description: set the faction home, default: false}
+  factions.name: {description: set faction name, default: false}
+  factions.title: {description: set player title, default: false}
+  factions.title.color: {description: set player title with color, default: false}
+  factions.unclaim: {description: unclaim land where you stand, default: false}
+  factions.unclaimall: {description: unclaim all land, default: false}
+  factions.version: {description: see plugin version, default: false}
+# -------------------------------------------- #
+# STAR NOTATION
+# -------------------------------------------- #
+  factions.*:
+    children:
+      factions.access: true
+      factions.access.faction: true
+      factions.access.player: true
+      factions.access.view: true
+      factions.admin: true
+      factions.autoclaim: true
+      factions.claim: true
+      factions.claim.radius: true
+      factions.create: true
+      factions.demote: true
+      factions.description: true
+      factions.disband: true
+      factions.faction: true
+      factions.flag: true
+      factions.flag.set: true
+      factions.home: true
+      factions.invite: true
+      factions.join: true
+      factions.join.any: true
+      factions.join.others: true
+      factions.kick: true
+      factions.leader: true
+      factions.leader.any: true
+      factions.leave: true
+      factions.list: true
+      factions.map: true
+      factions.money: true
+      factions.money.balance: true
+      factions.money.balance.any: true
+      factions.money.deposit: true
+      factions.money.f2f: true
+      factions.money.f2p: true
+      factions.money.p2f: true
+      factions.money.withdraw: true
+      factions.officer: true
+      factions.officer.any: true
+      factions.open: true
+      factions.perm: true
+      factions.player: true
+      factions.powerboost: true
+      factions.promote: true
+      factions.relation: true
+      factions.seechunk: true
+      factions.sethome: true
+      factions.name: true
+      factions.title: true
+      factions.title.color: true
+      factions.unclaim: true
+      factions.unclaimall: true
+      factions.version: true
+# -------------------------------------------- #
+# KITS
+# -------------------------------------------- #
+  factions.kit.op:
+    default: op
+    children:
+      factions.*: true
+  factions.kit.rank3:
+    default: false
+    children:
+      factions.kit.rank2: true
+  factions.kit.rank2:
+    default: false
+    children:
+      factions.kit.rank1: true
+      factions.flag.set: true
+      factions.powerboost: true
+      factions.join.any: true
+      factions.join.others: true
+      factions.leader.any: true
+      factions.officer.any: true
+      factions.access.any: true
+  factions.kit.rank1:
+    default: false
+    children:
+      factions.kit.rank0: true
+      factions.admin: true
+  factions.kit.rank0:
+    default: false
+    children:
+      factions.access: true
+      factions.access.faction: true
+      factions.access.player: true
+      factions.access.view: true
+      factions.autoclaim: true
+      factions.claim: true
+      factions.claim.radius: true
+      factions.create: true
+      factions.demote: true
+      factions.description: true
+      factions.disband: true
+      factions.faction: true
+      factions.flag: true
+      factions.home: true
+      factions.invite: true
+      factions.join: true
+      factions.kick: true
+      factions.leader: true
+      factions.leave: true
+      factions.list: true
+      factions.map: true
+      factions.money: true
+      factions.money.balance: true
+      factions.money.balance.any: true
+      factions.money.deposit: true
+      factions.money.f2f: true
+      factions.money.f2p: true
+      factions.money.p2f: true
+      factions.money.withdraw: true
+      factions.officer: true
+      factions.open: true
+      factions.perm: true
+      factions.player: true
+      factions.promote: true
+      factions.relation: true
+      factions.seechunk: true
+      factions.sethome: true
+      factions.name: true
+      factions.title: true
+      factions.title.color: true
+      factions.unclaim: true
+      factions.unclaimall: true
+      factions.version: true
+  factions.kit.default:
+    default: true
+    children:
+      factions.kit.rank0: true
