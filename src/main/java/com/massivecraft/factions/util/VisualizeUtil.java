@@ -14,7 +14,7 @@ import org.bukkit.entity.Player;
 
 // TODO: Only send blocks in visual range
 // TODO: Only send blocks that where changed when clearing?
-// TODO: Create packed queue to avoid freezes. 
+// TODO: Create packed queue to avoid freezes.
 
 public class VisualizeUtil
 {
