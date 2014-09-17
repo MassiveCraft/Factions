@@ -121,16 +121,16 @@ public class FactionsListenerMain implements Listener
 	// CHUNK CHANGE: TERRITORY INFO
 	// -------------------------------------------- //
 	
-	public void chunkChangeTerritoryInfo(MPlayer uplayer, Player player, PS chunkFrom, PS chunkTo, Faction factionFrom, Faction factionTo)
+	public void chunkChangeTerritoryInfo(MPlayer mplayer, Player player, PS chunkFrom, PS chunkTo, Faction factionFrom, Faction factionTo)
 	{
 		// send host faction info updates
-		if (uplayer.isMapAutoUpdating())
+		if (mplayer.isMapAutoUpdating())
 		{
-			uplayer.sendMessage(BoardColl.get().getMap(uplayer, chunkTo, player.getLocation().getYaw()));
+			mplayer.sendMessage(BoardColl.get().getMap(mplayer, chunkTo, player.getLocation().getYaw()));
 		}
 		else if (factionFrom != factionTo)
 		{
-			String msg = Txt.parse("<i>") + " ~ " + factionTo.getName(uplayer);
+			String msg = Txt.parse("<i>") + " ~ " + factionTo.getName(mplayer);
 			if (factionTo.hasDescription())
 			{
 				msg += " - " + factionTo.getDescription();
@@ -140,24 +140,24 @@ public class FactionsListenerMain implements Listener
 
 		// Show access level message if it changed.
 		TerritoryAccess accessFrom = BoardColl.get().getTerritoryAccessAt(chunkFrom);
-		Boolean hasTerritoryAccessFrom = accessFrom.hasTerritoryAccess(uplayer);
+		Boolean hasTerritoryAccessFrom = accessFrom.hasTerritoryAccess(mplayer);
 		
 		TerritoryAccess accessTo = BoardColl.get().getTerritoryAccessAt(chunkTo);
-		Boolean hasTerritoryAccessTo = accessTo.hasTerritoryAccess(uplayer);
+		Boolean hasTerritoryAccessTo = accessTo.hasTerritoryAccess(mplayer);
 		
 		if (!MUtil.equals(hasTerritoryAccessFrom, hasTerritoryAccessTo))
 		{
 			if (hasTerritoryAccessTo == null)
 			{
-				uplayer.msg("<i>You have standard access to this area.");
+				mplayer.msg("<i>You have standard access to this area.");
 			}
 			else if (hasTerritoryAccessTo)
 			{
-				uplayer.msg("<g>You have elevated access to this area.");
+				mplayer.msg("<g>You have elevated access to this area.");
 			}
 			else
 			{
-				uplayer.msg("<b>You have decreased access to this area.");
+				mplayer.msg("<b>You have decreased access to this area.");
 			}
 		}
 	}
@@ -166,14 +166,14 @@ public class FactionsListenerMain implements Listener
 	// CHUNK CHANGE: AUTO CLAIM
 	// -------------------------------------------- //
 	
-	public void chunkChangeAutoClaim(MPlayer uplayer, PS chunkTo)
+	public void chunkChangeAutoClaim(MPlayer mplayer, PS chunkTo)
 	{
 		// If the player is auto claiming ...
-		Faction autoClaimFaction = uplayer.getAutoClaimFaction();
+		Faction autoClaimFaction = mplayer.getAutoClaimFaction();
 		if (autoClaimFaction == null) return;
 		
 		// ... try claim.
-		uplayer.tryClaim(autoClaimFaction, chunkTo, true, true);
+		mplayer.tryClaim(autoClaimFaction, chunkTo, true, true);
 	}
 	
 	// -------------------------------------------- //
@@ -462,10 +462,10 @@ public class FactionsListenerMain implements Listener
 		// If a player is trying to run a command ...
 		Player player = event.getPlayer();
 		
-		MPlayer uplayer = MPlayer.get(player);
+		MPlayer mplayer = MPlayer.get(player);
 		
 		// ... and the player does not have adminmode ...
-		if (uplayer.isUsingAdminMode()) return;
+		if (mplayer.isUsingAdminMode()) return;
 		
 		// ... clean up the command ...
 		String command = event.getMessage();
@@ -474,9 +474,9 @@ public class FactionsListenerMain implements Listener
 		command = command.trim();
 		
 		// ... the command may be denied for members of permanent factions ...
-		if (uplayer.hasFaction() && uplayer.getFaction().getFlag(FFlag.PERMANENT) && containsCommand(command, MConf.get().denyCommandsPermanentFactionMember))
+		if (mplayer.hasFaction() && mplayer.getFaction().getFlag(FFlag.PERMANENT) && containsCommand(command, MConf.get().denyCommandsPermanentFactionMember))
 		{
-			uplayer.msg("<b>You can't use \"<h>/%s<b>\" as member of a permanent faction.", command);
+			mplayer.msg("<b>You can't use \"<h>/%s<b>\" as member of a permanent faction.", command);
 			event.setCancelled(true);
 			return;
 		}
@@ -487,13 +487,13 @@ public class FactionsListenerMain implements Listener
 		if (factionAtPs.isNone()) return; // TODO: An NPE can arise here? Why?
 		
 		// ... the command may be denied in the territory of this relation type ...
-		Rel rel = factionAtPs.getRelationTo(uplayer);
+		Rel rel = factionAtPs.getRelationTo(mplayer);
 		
 		List<String> deniedCommands = MConf.get().denyCommandsTerritoryRelation.get(rel);
 		if (deniedCommands == null) return;
 		if (!containsCommand(command, deniedCommands)) return;
 		
-		uplayer.msg("<b>You can't use \"<h>/%s<b>\" in %s territory.", command, Txt.getNicedEnum(rel));
+		mplayer.msg("<b>You can't use \"<h>/%s<b>\" in %s territory.", command, Txt.getNicedEnum(rel));
 		event.setCancelled(true);
 	}
 
@@ -712,21 +712,21 @@ public class FactionsListenerMain implements Listener
 		String name = player.getName();
 		if (MConf.get().playersWhoBypassAllProtection.contains(name)) return true;
 
-		MPlayer uplayer = MPlayer.get(player);
-		if (uplayer.isUsingAdminMode()) return true;
+		MPlayer mplayer = MPlayer.get(player);
+		if (mplayer.isUsingAdminMode()) return true;
 
-		if (!FPerm.BUILD.has(uplayer, ps, false) && FPerm.PAINBUILD.has(uplayer, ps, false))
+		if (!FPerm.BUILD.has(mplayer, ps, false) && FPerm.PAINBUILD.has(mplayer, ps, false))
 		{
 			if (verboose)
 			{
 				Faction hostFaction = BoardColl.get().getFactionAt(ps);
-				uplayer.msg("<b>It is painful to build in the territory of %s<b>.", hostFaction.describeTo(uplayer));
+				mplayer.msg("<b>It is painful to build in the territory of %s<b>.", hostFaction.describeTo(mplayer));
 				player.damage(MConf.get().actionDeniedPainAmount);
 			}
 			return true;
 		}
 		
-		return FPerm.BUILD.has(uplayer, ps, verboose);
+		return FPerm.BUILD.has(mplayer, ps, verboose);
 	}
 	
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
@@ -891,10 +891,10 @@ public class FactionsListenerMain implements Listener
 		String name = player.getName();
 		if (MConf.get().playersWhoBypassAllProtection.contains(name)) return true;
 
-		MPlayer uplayer = MPlayer.get(player);
-		if (uplayer.isUsingAdminMode()) return true;
+		MPlayer mplayer = MPlayer.get(player);
+		if (mplayer.isUsingAdminMode()) return true;
 		
-		return FPerm.BUILD.has(uplayer, ps, !justCheck);
+		return FPerm.BUILD.has(mplayer, ps, !justCheck);
 	}
 	
 	public static boolean canPlayerUseBlock(Player player, Block block, boolean justCheck)
@@ -948,7 +948,7 @@ public class FactionsListenerMain implements Listener
 	{
 		// If a player is respawning ...
 		final Player player = event.getPlayer();
-		final MPlayer uplayer = MPlayer.get(player);
+		final MPlayer mplayer = MPlayer.get(player);
 		
 		// ... homes are enabled, active and at this priority ...
 		if (!MConf.get().homesEnabled) return;
@@ -956,7 +956,7 @@ public class FactionsListenerMain implements Listener
 		if (MConf.get().homesTeleportToOnDeathPriority != priority) return;
 		
 		// ... and the player has a faction ...
-		final Faction faction = uplayer.getFaction();
+		final Faction faction = mplayer.getFaction();
 		if (faction.isNone()) return;
 		
 		// ... and the faction has a home ...

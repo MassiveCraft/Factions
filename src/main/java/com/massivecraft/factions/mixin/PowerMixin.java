@@ -4,9 +4,9 @@ import com.massivecraft.factions.entity.MPlayer;
 
 public interface PowerMixin
 {
-	public double getMaxUniversal(MPlayer uplayer);
-	public double getMax(MPlayer uplayer);
-	public double getMin(MPlayer uplayer);
-	public double getPerHour(MPlayer uplayer);
-	public double getPerDeath(MPlayer uplayer);
+	public double getMaxUniversal(MPlayer mplayer);
+	public double getMax(MPlayer mplayer);
+	public double getMin(MPlayer mplayer);
+	public double getPerHour(MPlayer mplayer);
+	public double getPerDeath(MPlayer mplayer);
 }

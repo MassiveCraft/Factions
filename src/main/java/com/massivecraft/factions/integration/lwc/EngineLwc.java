@@ -113,7 +113,7 @@ public class EngineLwc implements Listener
 	
 	public static void removeAlienProtections(PS chunkPs, Faction faction)
 	{
-		List<MPlayer> nonAliens = faction.getUPlayers();
+		List<MPlayer> nonAliens = faction.getMPlayers();
 		for (Protection protection : getProtectionsInChunk(chunkPs))
 		{
 			MPlayer owner = MPlayer.get(protection.getOwner());

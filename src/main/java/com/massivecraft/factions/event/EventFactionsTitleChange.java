@@ -19,8 +19,8 @@ public class EventFactionsTitleChange extends EventFactionsAbstractSender
 	// FIELDS
 	// -------------------------------------------- //
 	
-	private final MPlayer uplayer;
-	public MPlayer getUPlayer() { return this.uplayer; }
+	private final MPlayer mplayer;
+	public MPlayer getMPlayer() { return this.mplayer; }
 	
 	private String newTitle;
 	public String getNewTitle() { return this.newTitle; }
@@ -30,10 +30,10 @@ public class EventFactionsTitleChange extends EventFactionsAbstractSender
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public EventFactionsTitleChange(CommandSender sender, MPlayer uplayer, String newTitle)
+	public EventFactionsTitleChange(CommandSender sender, MPlayer mplayer, String newTitle)
 	{
 		super(sender);
-		this.uplayer = uplayer;
+		this.mplayer = mplayer;
 		this.newTitle = newTitle;
 	}
 	

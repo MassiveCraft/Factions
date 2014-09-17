@@ -91,15 +91,15 @@ public class TerritoryAccess
 	}
 	
 	// -------------------------------------------- //
-	// FIELDS: UNIVERSED
+	// FIELDS: DIRECT
 	// -------------------------------------------- //
 	
-	public Faction getHostFaction(Object universe)
+	public Faction getHostFaction()
 	{
 		return FactionColl.get().get(this.getHostFactionId());
 	}
 	
-	public LinkedHashSet<MPlayer> getGrantedUPlayers(Object universe)
+	public LinkedHashSet<MPlayer> getGrantedMPlayers()
 	{
 		LinkedHashSet<MPlayer> ret = new LinkedHashSet<MPlayer>();
 		for (String playerId : this.getPlayerIds())
@@ -109,7 +109,7 @@ public class TerritoryAccess
 		return ret;
 	}
 	
-	public LinkedHashSet<Faction> getGrantedFactions(Object universe)
+	public LinkedHashSet<Faction> getGrantedFactions()
 	{
 		LinkedHashSet<Faction> ret = new LinkedHashSet<Faction>();
 		for (String factionId : this.getFactionIds())
@@ -200,11 +200,11 @@ public class TerritoryAccess
 	// true means elevated access
 	// false means decreased access
 	// null means standard access
-	public Boolean hasTerritoryAccess(MPlayer uplayer)
+	public Boolean hasTerritoryAccess(MPlayer mplayer)
 	{
-		if (this.getPlayerIds().contains(uplayer.getId())) return true;
+		if (this.getPlayerIds().contains(mplayer.getId())) return true;
 		
-		String factionId = uplayer.getFactionId();
+		String factionId = mplayer.getFactionId();
 		if (this.getFactionIds().contains(factionId)) return true;
 		
 		if (this.getHostFactionId().equals(factionId) && !this.isHostFactionAllowed()) return false;

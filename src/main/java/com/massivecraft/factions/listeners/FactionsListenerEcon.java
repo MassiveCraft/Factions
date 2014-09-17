@@ -57,12 +57,12 @@ public class FactionsListenerEcon implements Listener
 		if (event.getReason() != MembershipChangeReason.LEAVE) return;
 		
 		// ... and that player was the last one in the faction ...
-		MPlayer uplayer = event.getUPlayer();
-		Faction oldFaction = uplayer.getFaction();
-		if (oldFaction.getUPlayers().size() > 1) return;
+		MPlayer mplayer = event.getMPlayer();
+		Faction oldFaction = mplayer.getFaction();
+		if (oldFaction.getMPlayers().size() > 1) return;
 		
 		// ... then transfer all money to the player. 
-		Econ.transferMoney(uplayer, oldFaction, uplayer, Money.get(oldFaction));
+		Econ.transferMoney(mplayer, oldFaction, mplayer, Money.get(oldFaction));
 	}
 	
 	// -------------------------------------------- //

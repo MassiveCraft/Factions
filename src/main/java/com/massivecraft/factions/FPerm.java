@@ -125,10 +125,10 @@ public enum FPerm
 	// HAS?
 	// -------------------------------------------- //
 	
-	public String createDeniedMessage(MPlayer uplayer, Faction hostFaction)
+	public String createDeniedMessage(MPlayer mplayer, Faction hostFaction)
 	{
-		String ret = Txt.parse("%s<b> does not allow you to %s<b>.", hostFaction.describeTo(uplayer, true), this.getDescription());
-		if (Perm.ADMIN.has(uplayer.getPlayer()))
+		String ret = Txt.parse("%s<b> does not allow you to %s<b>.", hostFaction.describeTo(mplayer, true), this.getDescription());
+		if (Perm.ADMIN.has(mplayer.getPlayer()))
 		{
 			ret += Txt.parse("\n<i>You can bypass by using " + Factions.get().getOuterCmdFactions().cmdFactionsAdmin.getUseageTemplate(false));
 		}
@@ -141,39 +141,39 @@ public enum FPerm
 		return hostFaction.getPermittedRelations(this).contains(rel);
 	}
 	
-	public boolean has(MPlayer uplayer, Faction hostFaction, boolean verboose)
+	public boolean has(MPlayer mplayer, Faction hostFaction, boolean verboose)
 	{
-		if (uplayer.isUsingAdminMode()) return true;
+		if (mplayer.isUsingAdminMode()) return true;
 		
-		Rel rel = uplayer.getRelationTo(hostFaction);
+		Rel rel = mplayer.getRelationTo(hostFaction);
 		if (hostFaction.getPermittedRelations(this).contains(rel)) return true;
 		
-		if (verboose) uplayer.sendMessage(this.createDeniedMessage(uplayer, hostFaction));
+		if (verboose) mplayer.sendMessage(this.createDeniedMessage(mplayer, hostFaction));
 		
 		return false;
 	}
 	
-	public boolean has(MPlayer uplayer, PS ps, boolean verboose)
+	public boolean has(MPlayer mplayer, PS ps, boolean verboose)
 	{
-		if (uplayer.isUsingAdminMode()) return true;
+		if (mplayer.isUsingAdminMode()) return true;
 		
 		TerritoryAccess ta = BoardColl.get().getTerritoryAccessAt(ps);
-		Faction hostFaction = ta.getHostFaction(ps);
+		Faction hostFaction = ta.getHostFaction();
 		
 		if (this.isTerritoryPerm())
 		{
-			Boolean hasTerritoryAccess = ta.hasTerritoryAccess(uplayer);
+			Boolean hasTerritoryAccess = ta.hasTerritoryAccess(mplayer);
 			if (hasTerritoryAccess != null)
 			{
 				if (verboose && !hasTerritoryAccess)
 				{
-					uplayer.sendMessage(this.createDeniedMessage(uplayer, hostFaction));
+					mplayer.sendMessage(this.createDeniedMessage(mplayer, hostFaction));
 				}
 				return hasTerritoryAccess;
 			}
 		}
 		
-		return this.has(uplayer, hostFaction, verboose);
+		return this.has(mplayer, hostFaction, verboose);
 	}
 
 	// -------------------------------------------- //

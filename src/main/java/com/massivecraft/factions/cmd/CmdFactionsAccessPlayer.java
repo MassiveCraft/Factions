@@ -2,7 +2,7 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.Perm;
-import com.massivecraft.factions.cmd.arg.ARUPlayer;
+import com.massivecraft.factions.cmd.arg.ARMPlayer;
 import com.massivecraft.factions.entity.BoardColl;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.massivecore.cmd.arg.ARBoolean;
@@ -35,17 +35,17 @@ public class CmdFactionsAccessPlayer extends CmdFactionsAccessAbstract
 	public void innerPerform()
 	{
 		// Args
-		MPlayer uplayer = this.arg(0, ARUPlayer.getAny());
-		if (uplayer == null) return;
+		MPlayer mplayer = this.arg(0, ARMPlayer.getAny());
+		if (mplayer == null) return;
 		
-		Boolean newValue = this.arg(1, ARBoolean.get(), !ta.isPlayerIdGranted(uplayer.getId()));
+		Boolean newValue = this.arg(1, ARBoolean.get(), !ta.isPlayerIdGranted(mplayer.getId()));
 		if (newValue == null) return;
 		
 		// FPerm
 		if (!FPerm.ACCESS.has(usender, hostFaction, true)) return;
 		
 		// Apply
-		ta = ta.withPlayerId(uplayer.getId(), newValue);
+		ta = ta.withPlayerId(mplayer.getId(), newValue);
 		BoardColl.get().setTerritoryAccessAt(chunk, ta);
 		
 		// Inform

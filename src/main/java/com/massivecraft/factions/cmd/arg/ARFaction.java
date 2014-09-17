@@ -36,12 +36,12 @@ public class ARFaction extends ArgReaderAbstract<Faction>
 		result.setResult(FactionColl.get().getBestNameMatch(str));
 		if (result.hasResult()) return result;
 		
-		// UPlayer Name Exact
+		// MPlayer Name Exact
 		String id = IdUtil.getId(str);
-		MPlayer uplayer = MPlayer.get(id);
-		if (uplayer != null)
+		MPlayer mplayer = MPlayer.get(id);
+		if (mplayer != null)
 		{
-			result.setResult(uplayer.getFaction());
+			result.setResult(mplayer.getFaction());
 			return result;
 		}
 		

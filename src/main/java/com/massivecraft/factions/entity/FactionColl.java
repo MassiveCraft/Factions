@@ -50,7 +50,7 @@ public class FactionColl extends Coll<Faction>
 		// Example Reason: When creating the special factions for the first time "createSpecialFactions" a clean would be triggered otherwise.
 		if (ret == null && Factions.get().isDatabaseInitialized())
 		{
-			String message = Txt.parse("<b>Non existing factionId <h>%s <b>requested. <i>Cleaning all boards and uplayers.", this.fixId(oid));
+			String message = Txt.parse("<b>Non existing factionId <h>%s <b>requested. <i>Cleaning all boards and mplayers.", this.fixId(oid));
 			Factions.get().log(message);
 			
 			BoardColl.get().clean();
@@ -64,11 +64,11 @@ public class FactionColl extends Coll<Faction>
 	// INDEX
 	// -------------------------------------------- //
 	
-	public void reindexUPlayers()
+	public void reindexMPlayers()
 	{
 		for (Faction faction : this.getAll())
 		{
-			faction.reindexUPlayers();
+			faction.reindexMPlayers();
 		}
 	}
 	
@@ -199,7 +199,7 @@ public class FactionColl extends Coll<Faction>
 			int landCount = faction.getLandCount();
 			if (!faction.getFlag(FFlag.PEACEFUL) && landCount > 0)
 			{
-				List<MPlayer> players = faction.getUPlayers();
+				List<MPlayer> players = faction.getMPlayers();
 				int playerCount = players.size();
 				double reward = econLandReward * landCount / playerCount;
 				for (MPlayer player : players)
@@ -320,11 +320,11 @@ public class FactionColl extends Coll<Faction>
 	// INDEX
 	// -------------------------------------------- //
 	
-	public void reindexUPlayers()
+	public void reindexMPlayers()
 	{
 		for (FactionColl coll : this.getColls())
 		{
-			coll.reindexUPlayers();
+			coll.reindexMPlayers();
 		}
 	}
 	 */

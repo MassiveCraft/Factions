@@ -57,7 +57,7 @@ public class CmdFactionsFaction extends FCommand
 		boolean normal = faction.isNormal();
 		
 		// INFO: Title
-		msg(Txt.titleize(Txt.upperCaseFirst(faction.getUniverse()) + " Faction " + faction.getName(usender)));
+		msg(Txt.titleize("Faction " + faction.getName(usender)));
 		
 		// INFO: Description
 		msg("<a>Description: <i>%s", faction.getDescription());	
@@ -145,7 +145,7 @@ public class CmdFactionsFaction extends FCommand
 		List<String> followerNamesOnline = new ArrayList<String>();
 		List<String> followerNamesOffline = new ArrayList<String>();
 		
-		List<MPlayer> followers = faction.getUPlayers();
+		List<MPlayer> followers = faction.getMPlayers();
 		Collections.sort(followers, PlayerRoleComparator.get());
 		
 		for (MPlayer follower : followers)

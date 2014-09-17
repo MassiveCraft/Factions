@@ -99,7 +99,7 @@ public class Board extends Entity<Board> implements BoardInterface
 	{
 		if (ps == null) return null;
 		TerritoryAccess ta = this.getTerritoryAccessAt(ps);
-		return ta.getHostFaction(this);
+		return ta.getHostFaction();
 	}
 	
 	// SET

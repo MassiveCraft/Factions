@@ -2,7 +2,7 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
-import com.massivecraft.factions.cmd.arg.ARUPlayer;
+import com.massivecraft.factions.cmd.arg.ARMPlayer;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 
@@ -35,7 +35,7 @@ public class CmdFactionsPromote extends FCommand
 	@Override
 	public void perform()
 	{
-		MPlayer you = this.arg(0, ARUPlayer.getAny());
+		MPlayer you = this.arg(0, ARMPlayer.getAny());
 		if (you == null) return;
 		
 		if (you.getFaction() != usenderFaction)

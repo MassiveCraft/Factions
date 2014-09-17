@@ -40,18 +40,18 @@ public class RelationUtil
 		}
 		else if (that instanceof MPlayer)
 		{
-			MPlayer uplayerthat = (MPlayer) that;
+			MPlayer mplayerthat = (MPlayer) that;
 			if (that == me)
 			{
 				ret = "you";
 			}
 			else if (thatFaction == myFaction)
 			{
-				ret = uplayerthat.getNameAndTitle(myFaction);
+				ret = mplayerthat.getNameAndTitle(myFaction);
 			}
 			else
 			{
-				ret = uplayerthat.getNameAndFactionName();
+				ret = mplayerthat.getNameAndFactionName();
 			}
 		}
 

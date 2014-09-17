@@ -19,8 +19,8 @@ public class EventFactionsPowerChange extends EventFactionsAbstractSender
 	// FIELDS
 	// -------------------------------------------- //
 	
-	private final MPlayer uplayer;
-	public MPlayer getUPlayer() { return this.uplayer; }
+	private final MPlayer mplayer;
+	public MPlayer getMPlayer() { return this.mplayer; }
 	
 	private final PowerChangeReason reason;
 	public PowerChangeReason getReason() { return this.reason; }
@@ -33,12 +33,12 @@ public class EventFactionsPowerChange extends EventFactionsAbstractSender
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public EventFactionsPowerChange(CommandSender sender, MPlayer uplayer, PowerChangeReason reason, double newPower)
+	public EventFactionsPowerChange(CommandSender sender, MPlayer mplayer, PowerChangeReason reason, double newPower)
 	{
 		super(sender);
-		this.uplayer = uplayer;
+		this.mplayer = mplayer;
 		this.reason = reason;
-		this.newPower = uplayer.getLimitedPower(newPower);
+		this.newPower = mplayer.getLimitedPower(newPower);
 	}
 	
 	// -------------------------------------------- //

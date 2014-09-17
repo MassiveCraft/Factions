@@ -33,8 +33,8 @@ public class ReqRoleIsAtLeast extends ReqAbstract
 	@Override
 	public boolean apply(CommandSender sender, MassiveCommand command)
 	{
-		MPlayer uplayer = MPlayer.get(sender);
-		return uplayer.getRole().isAtLeast(this.rel);
+		MPlayer mplayer = MPlayer.get(sender);
+		return mplayer.getRole().isAtLeast(this.rel);
 	}
 	
 	@Override
