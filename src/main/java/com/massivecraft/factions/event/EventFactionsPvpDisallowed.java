@@ -4,7 +4,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
-import com.massivecraft.factions.entity.UPlayer;
+import com.massivecraft.factions.entity.MPlayer;
 
 /**
  * This event is fired when PVP is disallowed between players due to any rules in Factions.
@@ -29,11 +29,11 @@ public class EventFactionsPvpDisallowed extends EventFactionsAbstract
 	
 	private final Player attacker;
 	public Player getAttacker() { return this.attacker; }
-	public UPlayer getUAttacker() { return this.attacker == null ? null : UPlayer.get(this.attacker); }
+	public MPlayer getUAttacker() { return this.attacker == null ? null : MPlayer.get(this.attacker); }
 	
 	private final Player defender;
 	public Player getDefender() { return this.defender; }
-	public UPlayer getUDefender() { return this.defender == null ? null : UPlayer.get(this.defender); }
+	public MPlayer getUDefender() { return this.defender == null ? null : MPlayer.get(this.defender); }
 	
 	private final EntityDamageByEntityEvent event;
 	public EntityDamageByEntityEvent getEvent() { return this.event; }

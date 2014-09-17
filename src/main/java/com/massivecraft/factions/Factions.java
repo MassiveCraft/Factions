@@ -22,12 +22,10 @@ import com.massivecraft.factions.chat.tag.ChatTagRoleprefixforce;
 import com.massivecraft.factions.chat.tag.ChatTagTitle;
 import com.massivecraft.factions.cmd.*;
 import com.massivecraft.factions.entity.Board;
-import com.massivecraft.factions.entity.BoardColls;
+import com.massivecraft.factions.entity.BoardColl;
 import com.massivecraft.factions.entity.Faction;
+import com.massivecraft.factions.entity.FactionColl;
 import com.massivecraft.factions.entity.MPlayerColl;
-import com.massivecraft.factions.entity.UConfColls;
-import com.massivecraft.factions.entity.UPlayerColls;
-import com.massivecraft.factions.entity.FactionColls;
 import com.massivecraft.factions.entity.MConfColl;
 import com.massivecraft.factions.integration.dynmap.IntegrationDynmap;
 import com.massivecraft.factions.integration.dynmap.IntegrationDynmapFactions;
@@ -117,11 +115,9 @@ public class Factions extends MassivePlugin
 		this.databaseInitialized = false;
 		MConfColl.get().init();
 		MPlayerColl.get().init();
-		UConfColls.get().init();
-		UPlayerColls.get().init();
-		FactionColls.get().init();
-		BoardColls.get().init();
-		FactionColls.get().reindexUPlayers();
+		FactionColl.get().init();
+		BoardColl.get().init();
+		FactionColl.get().reindexUPlayers();
 		this.databaseInitialized = true;
 		
 		// Commands
@@ -129,7 +125,6 @@ public class Factions extends MassivePlugin
 		this.outerCmdFactions.register();
 
 		// Setup Listeners
-		EngineIdUpdate.get().activate();
 		FactionsListenerMain.get().setup();
 		FactionsListenerChat.get().setup();
 		FactionsListenerExploit.get().setup();

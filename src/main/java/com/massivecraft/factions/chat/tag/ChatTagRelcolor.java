@@ -3,8 +3,7 @@ package com.massivecraft.factions.chat.tag;
 import org.bukkit.command.CommandSender;
 
 import com.massivecraft.factions.chat.ChatTagAbstract;
-import com.massivecraft.factions.entity.UConf;
-import com.massivecraft.factions.entity.UPlayer;
+import com.massivecraft.factions.entity.MPlayer;
 
 public class ChatTagRelcolor extends ChatTagAbstract
 {
@@ -23,15 +22,12 @@ public class ChatTagRelcolor extends ChatTagAbstract
 	@Override
 	public String getReplacement(CommandSender sender, CommandSender recipient)
 	{
-		// Check disabled
-		if (UConf.isDisabled(sender)) return "";
-		
 		// Opt out if no recipient
 		if (recipient == null) return null;
 
 		// Get entities
-		UPlayer usender = UPlayer.get(sender);
-		UPlayer urecipient = UPlayer.get(recipient);
+		MPlayer usender = MPlayer.get(sender);
+		MPlayer urecipient = MPlayer.get(recipient);
 		
 		return urecipient.getRelationTo(usender).getColor().toString();
 	}

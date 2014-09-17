@@ -2,7 +2,7 @@ package com.massivecraft.factions.cmd.req;
 
 import org.bukkit.command.CommandSender;
 
-import com.massivecraft.factions.entity.UPlayer;
+import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.massivecore.cmd.MassiveCommand;
 import com.massivecraft.massivecore.cmd.req.ReqAbstract;
 import com.massivecraft.massivecore.util.Txt;
@@ -25,7 +25,7 @@ public class ReqHasFaction extends ReqAbstract
 	@Override
 	public boolean apply(CommandSender sender, MassiveCommand command)
 	{
-		return UPlayer.get(sender).hasFaction();
+		return MPlayer.get(sender).hasFaction();
 	}
 	
 	@Override

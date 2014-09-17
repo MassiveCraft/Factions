@@ -4,9 +4,8 @@ import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.cmd.arg.ARUPlayer;
-import com.massivecraft.factions.cmd.req.ReqFactionsEnabled;
 import com.massivecraft.factions.cmd.req.ReqHasFaction;
-import com.massivecraft.factions.entity.UPlayer;
+import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.event.EventFactionsInvitedChange;
 import com.massivecraft.massivecore.cmd.arg.ARBoolean;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
@@ -28,7 +27,6 @@ public class CmdFactionsInvite extends FCommand
 		this.addOptionalArg("yes/no", "toggle");
 
 		// Requirements
-		this.addRequirements(ReqFactionsEnabled.get());
 		this.addRequirements(ReqHasPerm.get(Perm.INVITE.node));
 		this.addRequirements(ReqHasFaction.get());
 		this.addRequirements(ReqIsPlayer.get());
@@ -42,7 +40,7 @@ public class CmdFactionsInvite extends FCommand
 	public void perform()
 	{
 		// Args
-		UPlayer uplayer = this.arg(0, ARUPlayer.getAny(sender));
+		MPlayer uplayer = this.arg(0, ARUPlayer.getAny());
 		if (uplayer == null) return;
 		
 		Boolean newInvited = this.arg(1, ARBoolean.get(), !usenderFaction.isInvited(uplayer));

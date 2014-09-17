@@ -4,10 +4,9 @@ import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.cmd.arg.ARUPlayer;
 import com.massivecraft.factions.cmd.arg.ARFaction;
-import com.massivecraft.factions.cmd.req.ReqFactionsEnabled;
-import com.massivecraft.factions.entity.UPlayer;
-import com.massivecraft.factions.entity.UPlayerColls;
+import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.entity.Faction;
+import com.massivecraft.factions.entity.MPlayerColl;
 import com.massivecraft.factions.event.EventFactionsMembershipChange;
 import com.massivecraft.factions.event.EventFactionsMembershipChange.MembershipChangeReason;
 import com.massivecraft.factions.util.RelationUtil;
@@ -29,7 +28,6 @@ public class CmdFactionsLeader extends FCommand
 		this.addOptionalArg("faction", "you");
 
 		// Requirements
-		this.addRequirements(ReqFactionsEnabled.get());
 		this.addRequirements(ReqHasPerm.get(Perm.LEADER.node));
 	}
 
@@ -40,13 +38,13 @@ public class CmdFactionsLeader extends FCommand
 	@Override
 	public void perform()
 	{
-		UPlayer newLeader = this.arg(0, ARUPlayer.getAny(sender));
+		MPlayer newLeader = this.arg(0, ARUPlayer.getAny());
 		if (newLeader == null) return;
 		
-		Faction targetFaction = this.arg(1, ARFaction.get(sender), usenderFaction);
+		Faction targetFaction = this.arg(1, ARFaction.get(), usenderFaction);
 		if (targetFaction == null) return;
 		
-		UPlayer targetFactionCurrentLeader = targetFaction.getLeader();
+		MPlayer targetFactionCurrentLeader = targetFaction.getLeader();
 		
 		// We now have uplayer and the target faction
 		if (this.senderIsConsole || usender.isUsingAdminMode() || Perm.LEADER_ANY.has(sender, false))
@@ -102,7 +100,7 @@ public class CmdFactionsLeader extends FCommand
 		msg("<i>You have promoted %s<i> to the position of faction leader.", newLeader.describeTo(usender, true));
 		
 		// Inform all players
-		for (UPlayer uplayer : UPlayerColls.get().get(sender).getAllOnline())
+		for (MPlayer uplayer : MPlayerColl.get().getAllOnline())
 		{
 			uplayer.msg("%s<i> gave %s<i> the leadership of %s<i>.", senderIsConsole ? "A server admin" : RelationUtil.describeThatToMe(usender, uplayer, true), newLeader.describeTo(uplayer), targetFaction.describeTo(uplayer));
 		}

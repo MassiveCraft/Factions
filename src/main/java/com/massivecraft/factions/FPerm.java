@@ -7,10 +7,10 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
-import com.massivecraft.factions.entity.BoardColls;
-import com.massivecraft.factions.entity.UPlayer;
+import com.massivecraft.factions.entity.BoardColl;
+import com.massivecraft.factions.entity.MConf;
+import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.entity.Faction;
-import com.massivecraft.factions.entity.UConf;
 import com.massivecraft.massivecore.ps.PS;
 import com.massivecraft.massivecore.util.Txt;
 
@@ -79,9 +79,9 @@ public enum FPerm
 	// DEFAULTS
 	// -------------------------------------------- //
 	
-	public Set<Rel> getDefault(Object o)
+	public Set<Rel> getDefault()
 	{
-		Set<Rel> ret = UConf.get(o).defaultFactionPerms.get(this);
+		Set<Rel> ret = MConf.get().defaultFactionPerms.get(this);
 		if (ret == null) return this.getDefaultDefault();
 		ret = new LinkedHashSet<Rel>(ret);
 		return ret;
@@ -125,7 +125,7 @@ public enum FPerm
 	// HAS?
 	// -------------------------------------------- //
 	
-	public String createDeniedMessage(UPlayer uplayer, Faction hostFaction)
+	public String createDeniedMessage(MPlayer uplayer, Faction hostFaction)
 	{
 		String ret = Txt.parse("%s<b> does not allow you to %s<b>.", hostFaction.describeTo(uplayer, true), this.getDescription());
 		if (Perm.ADMIN.has(uplayer.getPlayer()))
@@ -141,7 +141,7 @@ public enum FPerm
 		return hostFaction.getPermittedRelations(this).contains(rel);
 	}
 	
-	public boolean has(UPlayer uplayer, Faction hostFaction, boolean verboose)
+	public boolean has(MPlayer uplayer, Faction hostFaction, boolean verboose)
 	{
 		if (uplayer.isUsingAdminMode()) return true;
 		
@@ -153,11 +153,11 @@ public enum FPerm
 		return false;
 	}
 	
-	public boolean has(UPlayer uplayer, PS ps, boolean verboose)
+	public boolean has(MPlayer uplayer, PS ps, boolean verboose)
 	{
 		if (uplayer.isUsingAdminMode()) return true;
 		
-		TerritoryAccess ta = BoardColls.get().getTerritoryAccessAt(ps);
+		TerritoryAccess ta = BoardColl.get().getTerritoryAccessAt(ps);
 		Faction hostFaction = ta.getHostFaction(ps);
 		
 		if (this.isTerritoryPerm())

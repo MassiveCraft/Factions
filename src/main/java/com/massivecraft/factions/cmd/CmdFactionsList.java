@@ -5,9 +5,8 @@ import java.util.List;
 
 import com.massivecraft.factions.FactionListComparator;
 import com.massivecraft.factions.Perm;
-import com.massivecraft.factions.cmd.req.ReqFactionsEnabled;
 import com.massivecraft.factions.entity.Faction;
-import com.massivecraft.factions.entity.FactionColls;
+import com.massivecraft.factions.entity.FactionColl;
 import com.massivecraft.massivecore.cmd.arg.ARInteger;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.util.Txt;
@@ -28,7 +27,6 @@ public class CmdFactionsList extends FCommand
 		this.addOptionalArg("page", "1");
 
 		// Requirements
-		this.addRequirements(ReqFactionsEnabled.get());
 		this.addRequirements(ReqHasPerm.get(Perm.LIST.node));
 	}
 
@@ -45,7 +43,7 @@ public class CmdFactionsList extends FCommand
 		// Create Messages
 		List<String> lines = new ArrayList<String>();
 		
-		ArrayList<Faction> factionList = new ArrayList<Faction>(FactionColls.get().get(sender).getAll(null, FactionListComparator.get()));
+		ArrayList<Faction> factionList = new ArrayList<Faction>(FactionColl.get().getAll(null, FactionListComparator.get()));
 
 		final int pageheight = 9;
 		
@@ -65,7 +63,7 @@ public class CmdFactionsList extends FCommand
 		{
 			if (faction.isNone())
 			{
-				lines.add(Txt.parse("<i>Factionless<i> %d online", FactionColls.get().get(sender).getNone().getUPlayersWhereOnline(true).size()));
+				lines.add(Txt.parse("<i>Factionless<i> %d online", FactionColl.get().getNone().getUPlayersWhereOnline(true).size()));
 				continue;
 			}
 			lines.add(Txt.parse("%s<i> %d/%d online, %d/%d/%d",

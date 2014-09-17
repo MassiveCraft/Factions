@@ -1,7 +1,7 @@
 package com.massivecraft.factions.cmd.arg;
 
-import com.massivecraft.factions.entity.UPlayer;
-import com.massivecraft.factions.entity.UPlayerColls;
+import com.massivecraft.factions.entity.MPlayer;
+import com.massivecraft.factions.entity.MPlayerColl;
 import com.massivecraft.massivecore.cmd.arg.ArgReader;
 
 public class ARUPlayer
@@ -10,8 +10,14 @@ public class ARUPlayer
 	// INSTANCE
 	// -------------------------------------------- //
 	
-	public static ArgReader<UPlayer> getAny(Object o) { return UPlayerColls.get().get(o).getAREntity(); }
+	public static ArgReader<MPlayer> getAny()
+	{
+		return MPlayerColl.get().getAREntity();
+	}
 	
-	public static ArgReader<UPlayer> getOnline(Object o) { return UPlayerColls.get().get(o).getAREntity(true); }
+	public static ArgReader<MPlayer> getOnline()
+	{
+		return MPlayerColl.get().getAREntity(true);
+	}
 	
 }

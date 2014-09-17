@@ -3,7 +3,6 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.cmd.arg.ARFaction;
-import com.massivecraft.factions.cmd.req.ReqFactionsEnabled;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.task.SpiralTask;
@@ -29,7 +28,6 @@ public class CmdFactionsClaim extends FCommand
 		this.addOptionalArg("faction", "you");
 
 		// Requirements
-		this.addRequirements(ReqFactionsEnabled.get());
 		this.addRequirements(ReqIsPlayer.get());
 		this.addRequirements(ReqHasPerm.get(Perm.CLAIM.node));
 	}
@@ -45,7 +43,7 @@ public class CmdFactionsClaim extends FCommand
 		Integer radius = this.arg(0, ARInteger.get(), 1);
 		if (radius == null) return;
 		
-		final Faction forFaction = this.arg(1, ARFaction.get(me), usenderFaction);
+		final Faction forFaction = this.arg(1, ARFaction.get(), usenderFaction);
 		if (forFaction == null) return;
 		
 		// FPerm

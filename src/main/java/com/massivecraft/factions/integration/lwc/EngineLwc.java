@@ -17,8 +17,8 @@ import com.griefcraft.lwc.LWC;
 import com.griefcraft.model.Protection;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.entity.Faction;
-import com.massivecraft.factions.entity.UConf;
-import com.massivecraft.factions.entity.UPlayer;
+import com.massivecraft.factions.entity.MConf;
+import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.event.EventFactionsChunkChange;
 import com.massivecraft.factions.event.EventFactionsChunkChangeType;
 import com.massivecraft.massivecore.ps.PS;
@@ -57,9 +57,8 @@ public class EngineLwc implements Listener
 	{
 		// If we are supposed to clear at this chunk change type ...
 		Faction newFaction = event.getNewFaction();
-		UConf uconf = UConf.get(newFaction);
 		EventFactionsChunkChangeType type = event.getType();
-		Boolean remove = uconf.lwcRemoveOnChange.get(type);
+		Boolean remove = MConf.get().lwcRemoveOnChange.get(type);
 		if (remove == null) return;
 		if (remove == false) return;
 		
@@ -73,10 +72,10 @@ public class EngineLwc implements Listener
 	
 	public static void removeAlienProtections(PS chunkPs, Faction faction)
 	{
-		List<UPlayer> nonAliens = faction.getUPlayers();
+		List<MPlayer> nonAliens = faction.getUPlayers();
 		for (Protection protection : getProtectionsInChunk(chunkPs))
 		{
-			UPlayer owner = UPlayer.get(protection.getOwner());
+			MPlayer owner = MPlayer.get(protection.getOwner());
 			if (nonAliens.contains(owner)) continue;
 			protection.remove();
 		}

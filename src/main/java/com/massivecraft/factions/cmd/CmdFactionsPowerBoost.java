@@ -4,8 +4,7 @@ import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.cmd.arg.ARUPlayer;
 import com.massivecraft.factions.cmd.arg.ARFaction;
-import com.massivecraft.factions.cmd.req.ReqFactionsEnabled;
-import com.massivecraft.factions.entity.UPlayer;
+import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.massivecore.cmd.arg.ARDouble;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
@@ -27,7 +26,6 @@ public class CmdFactionsPowerBoost extends FCommand
 		this.addRequiredArg("#");
 
 		// Requirements
-		this.addRequirements(ReqFactionsEnabled.get());
 		this.addRequirements(ReqHasPerm.get(Perm.POWERBOOST.node));
 	}
 
@@ -58,7 +56,7 @@ public class CmdFactionsPowerBoost extends FCommand
 
 		if (doPlayer)
 		{
-			UPlayer targetPlayer = this.arg(1, ARUPlayer.getAny(sender));
+			MPlayer targetPlayer = this.arg(1, ARUPlayer.getAny());
 			if (targetPlayer == null) return;
 			
 			targetPlayer.setPowerBoost(targetPower);
@@ -66,7 +64,7 @@ public class CmdFactionsPowerBoost extends FCommand
 		}
 		else
 		{
-			Faction targetFaction = this.arg(1, ARFaction.get(sender));
+			Faction targetFaction = this.arg(1, ARFaction.get());
 			if (targetFaction == null) return;
 			
 			targetFaction.setPowerBoost(targetPower);

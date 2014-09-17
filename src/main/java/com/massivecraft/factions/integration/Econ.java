@@ -5,8 +5,8 @@ import java.util.Set;
 
 import com.massivecraft.factions.EconomyParticipator;
 import com.massivecraft.factions.FPerm;
-import com.massivecraft.factions.entity.UConf;
-import com.massivecraft.factions.entity.UPlayer;
+import com.massivecraft.factions.entity.MConf;
+import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.util.RelationUtil;
 import com.massivecraft.massivecore.money.Money;
@@ -17,27 +17,25 @@ public class Econ
 	// STATE
 	// -------------------------------------------- //
 	
-	// TODO: Do we really need that config option?
-	// TODO: Could we not have it enabled as long as Money.enabled is true?
-	public static boolean isEnabled(Object universe)
+	public static boolean isEnabled()
 	{
-		return UConf.get(universe).econEnabled && Money.enabled();
+		return MConf.get().econEnabled && Money.enabled();
 	}
 	
 	// -------------------------------------------- //
 	// UTIL
 	// -------------------------------------------- //
 	
-	public static boolean payForAction(double cost, UPlayer usender, String actionDescription)
+	public static boolean payForAction(double cost, MPlayer usender, String actionDescription)
 	{
-		if (!isEnabled(usender)) return true;
+		if (!isEnabled()) return true;
 		if (cost == 0D) return true;
 		
 		if (usender.isUsingAdminMode()) return true;
-		UConf uconf = UConf.get(usender);
+		
 		Faction usenderFaction = usender.getFaction();
 		
-		if (uconf.bankEnabled && uconf.bankFactionPaysCosts && usenderFaction.isNormal())
+		if (MConf.get().bankEnabled && MConf.get().bankFactionPaysCosts && usenderFaction.isNormal())
 		{
 			return modifyMoney(usenderFaction, -cost, actionDescription);
 		}
@@ -53,18 +51,17 @@ public class Econ
 
 	public static void modifyUniverseMoney(Object universe, double delta)
 	{
-		if (!isEnabled(universe)) return;
-		UConf uconf = UConf.get(universe);
+		if (!isEnabled()) return;
 
-		if (uconf.econUniverseAccount == null) return;
-		if (uconf.econUniverseAccount.length() == 0) return;
+		if (MConf.get().econUniverseAccount == null) return;
+		if (MConf.get().econUniverseAccount.length() == 0) return;
 		
-		if (!Money.exists(uconf.econUniverseAccount)) return;
+		if (!Money.exists(MConf.get().econUniverseAccount)) return;
 
-		Money.spawn(uconf.econUniverseAccount, null, delta);
+		Money.spawn(MConf.get().econUniverseAccount, null, delta);
 	}
 
-	public static void sendBalanceInfo(UPlayer to, EconomyParticipator about)
+	public static void sendBalanceInfo(MPlayer to, EconomyParticipator about)
 	{
 		to.msg("<a>%s's<i> balance is <h>%s<i>.", about.describeTo(to, true), Money.format(Money.get(about)));
 	}
@@ -78,7 +75,7 @@ public class Econ
 		if (fI == null) return true;
 		
 		// Bypassing players can do any kind of transaction
-		if (i instanceof UPlayer && ((UPlayer)i).isUsingAdminMode()) return true;
+		if (i instanceof MPlayer && ((MPlayer)i).isUsingAdminMode()) return true;
 		
 		// You can deposit to anywhere you feel like. It's your loss if you can't withdraw it again.
 		if (i == you) return true;
@@ -92,7 +89,7 @@ public class Econ
 		if (you instanceof Faction)
 		{
 			if (i instanceof Faction && FPerm.WITHDRAW.has((Faction)i, fYou)) return true;
-			if (i instanceof UPlayer && FPerm.WITHDRAW.has((UPlayer)i, fYou, false)) return true;
+			if (i instanceof MPlayer && FPerm.WITHDRAW.has((MPlayer)i, fYou, false)) return true;
 		}
 		
 		// Otherwise you may not! ;,,;
@@ -105,7 +102,7 @@ public class Econ
 	}
 	public static boolean transferMoney(EconomyParticipator from, EconomyParticipator to, EconomyParticipator by, double amount, boolean notify)
 	{
-		if (!isEnabled(from)) return false;
+		if (!isEnabled()) return false;
 
 		// The amount must be positive.
 		// If the amount is negative we must flip and multiply amount with -1.
@@ -155,17 +152,17 @@ public class Econ
 		}
 	}
 	
-	public static Set<UPlayer> getUPlayers(EconomyParticipator ep)
+	public static Set<MPlayer> getUPlayers(EconomyParticipator ep)
 	{
-		Set<UPlayer> uplayers = new HashSet<UPlayer>();
+		Set<MPlayer> uplayers = new HashSet<MPlayer>();
 		
 		if (ep == null)
 		{
 			// Add nothing
 		}
-		else if (ep instanceof UPlayer)
+		else if (ep instanceof MPlayer)
 		{
-			uplayers.add((UPlayer)ep);
+			uplayers.add((MPlayer)ep);
 		}
 		else if (ep instanceof Faction)
 		{
@@ -177,35 +174,35 @@ public class Econ
 	
 	public static void sendTransferInfo(EconomyParticipator invoker, EconomyParticipator from, EconomyParticipator to, double amount)
 	{
-		Set<UPlayer> recipients = new HashSet<UPlayer>();
+		Set<MPlayer> recipients = new HashSet<MPlayer>();
 		recipients.addAll(getUPlayers(invoker));
 		recipients.addAll(getUPlayers(from));
 		recipients.addAll(getUPlayers(to));
 		
 		if (invoker == null)
 		{
-			for (UPlayer recipient : recipients)
+			for (MPlayer recipient : recipients)
 			{
 				recipient.msg("<h>%s<i> was transfered from <h>%s<i> to <h>%s<i>.", Money.format(amount), from.describeTo(recipient), to.describeTo(recipient));
 			}
 		}
 		else if (invoker == from)
 		{
-			for (UPlayer recipient : recipients)
+			for (MPlayer recipient : recipients)
 			{
 				recipient.msg("<h>%s<i> <h>gave %s<i> to <h>%s<i>.", from.describeTo(recipient, true), Money.format(amount), to.describeTo(recipient));
 			}
 		}
 		else if (invoker == to)
 		{
-			for (UPlayer recipient : recipients)
+			for (MPlayer recipient : recipients)
 			{
 				recipient.msg("<h>%s<i> <h>took %s<i> from <h>%s<i>.", to.describeTo(recipient, true), Money.format(amount), from.describeTo(recipient));
 			}
 		}
 		else
 		{
-			for (UPlayer recipient : recipients)
+			for (MPlayer recipient : recipients)
 			{
 				recipient.msg("<h>%s<i> transfered <h>%s<i> from <h>%s<i> to <h>%s<i>.", invoker.describeTo(recipient, true), Money.format(amount), from.describeTo(recipient), to.describeTo(recipient));
 			}
@@ -214,7 +211,7 @@ public class Econ
 
 	public static boolean hasAtLeast(EconomyParticipator ep, double delta, String toDoThis)
 	{
-		if (!isEnabled(ep)) return true;
+		if (!isEnabled()) return true;
 
 		if (Money.get(ep) < delta)
 		{
@@ -229,7 +226,7 @@ public class Econ
 
 	public static boolean modifyMoney(EconomyParticipator ep, double delta, String actionDescription)
 	{
-		if (!isEnabled(ep)) return false;
+		if (!isEnabled()) return false;
 		if (delta == 0) return true;
 		
 		String You = ep.describeTo(ep, true);

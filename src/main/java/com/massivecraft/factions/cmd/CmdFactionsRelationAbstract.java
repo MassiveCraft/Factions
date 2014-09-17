@@ -4,7 +4,6 @@ import com.massivecraft.factions.FFlag;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.cmd.arg.ARFaction;
-import com.massivecraft.factions.cmd.req.ReqFactionsEnabled;
 import com.massivecraft.factions.cmd.req.ReqHasFaction;
 import com.massivecraft.factions.cmd.req.ReqRoleIsAtLeast;
 import com.massivecraft.factions.entity.Faction;
@@ -26,7 +25,6 @@ public abstract class CmdFactionsRelationAbstract extends FCommand
 		this.addRequiredArg("faction");
 
 		// Requirements
-		this.addRequirements(ReqFactionsEnabled.get());
 		this.addRequirements(ReqHasPerm.get(Perm.RELATION.node));
 		this.addRequirements(ReqHasFaction.get());
 		this.addRequirements(ReqRoleIsAtLeast.get(Rel.OFFICER));
@@ -40,7 +38,7 @@ public abstract class CmdFactionsRelationAbstract extends FCommand
 	public void perform()
 	{
 		// Args
-		Faction otherFaction = this.arg(0, ARFaction.get(sender));
+		Faction otherFaction = this.arg(0, ARFaction.get());
 		if (otherFaction == null) return;
 		
 		Rel newRelation = targetRelation;

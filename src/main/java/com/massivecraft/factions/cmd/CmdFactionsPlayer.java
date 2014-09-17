@@ -4,8 +4,7 @@ import java.util.LinkedHashMap;
 
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.cmd.arg.ARUPlayer;
-import com.massivecraft.factions.cmd.req.ReqFactionsEnabled;
-import com.massivecraft.factions.entity.UPlayer;
+import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.massivecore.Progressbar;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.util.TimeDiffUtil;
@@ -27,7 +26,6 @@ public class CmdFactionsPlayer extends FCommand
 		this.addOptionalArg("player", "you");
 
 		// Requirements
-		this.addRequirements(ReqFactionsEnabled.get());
 		this.addRequirements(ReqHasPerm.get(Perm.PLAYER.node));
 	}
 
@@ -39,7 +37,7 @@ public class CmdFactionsPlayer extends FCommand
 	public void perform()
 	{
 		// Args
-		UPlayer uplayer = this.arg(0, ARUPlayer.getAny(sender), usender);
+		MPlayer uplayer = this.arg(0, ARUPlayer.getAny(), usender);
 		if (uplayer == null) return;
 		
 		// INFO: Title

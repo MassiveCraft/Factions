@@ -32,7 +32,7 @@ public class Board extends Entity<Board> implements BoardInterface
 	
 	public static Board get(Object oid)
 	{
-		return BoardColls.get().get2(oid);
+		return BoardColl.get().get(oid);
 	}
 	
 	// -------------------------------------------- //
@@ -90,7 +90,7 @@ public class Board extends Entity<Board> implements BoardInterface
 		if (ps == null) return null;
 		ps = ps.getChunkCoords(true);
 		TerritoryAccess ret = this.map.get(ps);
-		if (ret == null) ret = TerritoryAccess.valueOf(UConf.get(this).factionIdNone);
+		if (ret == null) ret = TerritoryAccess.valueOf(MConf.get().factionIdNone);
 		return ret;
 	}
 	
@@ -109,7 +109,7 @@ public class Board extends Entity<Board> implements BoardInterface
 	{
 		ps = ps.getChunkCoords(true);
 		
-		if (territoryAccess == null || (territoryAccess.getHostFactionId().equals(UConf.get(this).factionIdNone) && territoryAccess.isDefault()))
+		if (territoryAccess == null || (territoryAccess.getHostFactionId().equals(MConf.get().factionIdNone) && territoryAccess.isDefault()))
 		{	
 			this.map.remove(ps);
 		}
@@ -159,13 +159,12 @@ public class Board extends Entity<Board> implements BoardInterface
 	@Override
 	public void clean()
 	{
-		FactionColl factionColl = FactionColls.get().get(this);
-		
 		for (Entry<PS, TerritoryAccess> entry : this.map.entrySet())
 		{
 			TerritoryAccess territoryAccess = entry.getValue();
 			String factionId = territoryAccess.getHostFactionId();
-			if (factionColl.containsId(factionId)) continue;
+			
+			if (FactionColl.get().containsId(factionId)) continue;
 			
 			PS ps = entry.getKey();
 			this.removeAt(ps);

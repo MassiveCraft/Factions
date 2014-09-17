@@ -23,7 +23,7 @@ import com.dthielke.herochat.Herochat;
 import com.dthielke.herochat.MessageFormatSupplier;
 import com.dthielke.herochat.MessageNotFoundException;
 import com.massivecraft.factions.Rel;
-import com.massivecraft.factions.entity.UPlayer;
+import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.entity.Faction;
 
 public abstract class ChannelFactionsAbstract implements Channel
@@ -228,13 +228,13 @@ public abstract class ChannelFactionsAbstract implements Channel
 	{
 		Set<Player> ret = new HashSet<Player>();
 		
-		UPlayer fpsender = UPlayer.get(sender);
+		MPlayer fpsender = MPlayer.get(sender);
 		Faction faction = fpsender.getFaction();
 		String universe = fpsender.getUniverse();
 		
 		for (Player player : Bukkit.getOnlinePlayers())
 		{
-			UPlayer frecipient = UPlayer.get(player);
+			MPlayer frecipient = MPlayer.get(player);
 			if (!frecipient.getUniverse().equals(universe)) continue;
 			if (!this.getTargetRelations().contains(faction.getRelationTo(frecipient))) continue;
 			ret.add(player);

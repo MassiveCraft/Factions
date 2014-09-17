@@ -2,9 +2,9 @@ package com.massivecraft.factions;
 
 import java.util.Comparator;
 
-import com.massivecraft.factions.entity.UPlayer;
+import com.massivecraft.factions.entity.MPlayer;
 
-public class PlayerRoleComparator implements Comparator<UPlayer>
+public class PlayerRoleComparator implements Comparator<MPlayer>
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -18,7 +18,7 @@ public class PlayerRoleComparator implements Comparator<UPlayer>
 	// -------------------------------------------- //
 	
 	@Override
-	public int compare(UPlayer o1, UPlayer o2)
+	public int compare(MPlayer o1, MPlayer o2)
 	{
 		int ret = 0;
 		

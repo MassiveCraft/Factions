@@ -3,7 +3,6 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.cmd.arg.ARFaction;
 import com.massivecraft.factions.cmd.req.ReqBankCommandsEnabled;
-import com.massivecraft.factions.cmd.req.ReqFactionsEnabled;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.Factions;
@@ -33,7 +32,6 @@ public class CmdFactionsMoneyTransferFf extends FCommand
 		this.addRequiredArg("faction");
 
 		// Requirements
-		this.addRequirements(ReqFactionsEnabled.get());
 		this.addRequirements(ReqHasPerm.get(Perm.MONEY_F2F.node));
 		this.addRequirements(ReqBankCommandsEnabled.get());
 	}
@@ -48,10 +46,10 @@ public class CmdFactionsMoneyTransferFf extends FCommand
 		Double amount = this.arg(0, ARDouble.get());
 		if (amount == null) return;
 		
-		Faction from = this.arg(1, ARFaction.get(sender));
+		Faction from = this.arg(1, ARFaction.get());
 		if (from == null) return;
 		
-		Faction to = this.arg(2, ARFaction.get(sender));
+		Faction to = this.arg(2, ARFaction.get());
 		if (to == null) return;
 		
 		boolean success = Econ.transferMoney(usender, from, to, amount);

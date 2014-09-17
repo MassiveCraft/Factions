@@ -28,13 +28,10 @@ import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.TerritoryAccess;
 import com.massivecraft.factions.entity.Board;
 import com.massivecraft.factions.entity.BoardColl;
-import com.massivecraft.factions.entity.BoardColls;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.FactionColl;
-import com.massivecraft.factions.entity.FactionColls;
 import com.massivecraft.factions.entity.MConf;
-import com.massivecraft.factions.entity.UConf;
-import com.massivecraft.factions.entity.UPlayer;
+import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.massivecore.EngineAbstract;
 import com.massivecraft.massivecore.money.Money;
 import com.massivecraft.massivecore.ps.PS;
@@ -241,28 +238,25 @@ public class EngineDynmap extends EngineAbstract
 		Map<String, TempMarker> ret = new HashMap<String, TempMarker>();
 		
 		// Loop current factions
-		for (FactionColl coll : FactionColls.get().getColls())
+		for (Faction faction : FactionColl.get().getAll())
 		{
-			for (Faction faction : coll.getAll())
-			{
-				PS ps = faction.getHome();
-				if (ps == null) continue;
-				
-				DynmapStyle style = getStyle(faction);
-				
-				String markerId = FACTIONS_HOME_ + faction.getId();
-				
-				TempMarker temp = new TempMarker();
-				temp.label = ChatColor.stripColor(faction.getName());
-				temp.world = ps.getWorld();
-				temp.x = ps.getLocationX();
-				temp.y = ps.getLocationY();
-				temp.z = ps.getLocationZ();
-				temp.iconName = style.getHomeMarker();
-				temp.description = getDescription(faction);
-				
-				ret.put(markerId, temp);
-			}
+			PS ps = faction.getHome();
+			if (ps == null) continue;
+			
+			DynmapStyle style = getStyle(faction);
+			
+			String markerId = FACTIONS_HOME_ + faction.getId();
+			
+			TempMarker temp = new TempMarker();
+			temp.label = ChatColor.stripColor(faction.getName());
+			temp.world = ps.getWorld();
+			temp.x = ps.getLocationX();
+			temp.y = ps.getLocationY();
+			temp.z = ps.getLocationZ();
+			temp.iconName = style.getHomeMarker();
+			temp.description = getDescription(faction);
+			
+			ret.put(markerId, temp);
 		}
 		
 		return ret;
@@ -327,42 +321,41 @@ public class EngineDynmap extends EngineAbstract
 	{
 		// Create map "world name --> faction --> set of chunk coords"
 		Map<String, Map<Faction, Set<PS>>> worldFactionChunks = new HashMap<String, Map<Faction, Set<PS>>>();
-		for (BoardColl coll : BoardColls.get().getColls())
+	
+		// Note: The board is the world. The board id is the world name.
+		for (Board board : BoardColl.get().getAll())
 		{
-			// Note: The board is the world. The board id is the world name.
-			for (Board board : coll.getAll())
+			String world = board.getId();
+			
+			// Get the factionChunks creatively.
+			Map<Faction, Set<PS>> factionChunks = worldFactionChunks.get(world);
+			if (factionChunks == null)
 			{
-				String world = board.getId();
+				factionChunks = new HashMap<Faction, Set<PS>>();
+				worldFactionChunks.put(world, factionChunks);
+			}
+					
+			// Populate the factionChunks
+			for (Entry<PS, TerritoryAccess> entry : board.getMap().entrySet())
+			{
+				PS chunk = entry.getKey();
+				TerritoryAccess territoryAccess = entry.getValue();
+				String factionId = territoryAccess.getHostFactionId();
+				Faction faction = Faction.get(factionId);
+				if (faction == null) continue;
 				
-				// Get the factionChunks creatively.
-				Map<Faction, Set<PS>> factionChunks = worldFactionChunks.get(world);
-				if (factionChunks == null)
+				// Get the chunks creatively.
+				Set<PS> chunks = factionChunks.get(faction);
+				if (chunks == null)
 				{
-					factionChunks = new HashMap<Faction, Set<PS>>();
-					worldFactionChunks.put(world, factionChunks);
+					chunks = new HashSet<PS>();
+					factionChunks.put(faction, chunks);
 				}
-						
-				// Populate the factionChunks
-				for (Entry<PS, TerritoryAccess> entry : board.getMap().entrySet())
-				{
-					PS chunk = entry.getKey();
-					TerritoryAccess territoryAccess = entry.getValue();
-					String factionId = territoryAccess.getHostFactionId();
-					Faction faction = FactionColls.get().getForWorld(world).get(factionId);
-					if (faction == null) continue;
-					
-					// Get the chunks creatively.
-					Set<PS> chunks = factionChunks.get(faction);
-					if (chunks == null)
-					{
-						chunks = new HashSet<PS>();
-						factionChunks.put(faction, chunks);
-					}
-					
-					chunks.add(chunk);
-				}
+				
+				chunks.add(chunk);
 			}
 		}
+
 		return worldFactionChunks;
 	}
 	
@@ -659,7 +652,7 @@ public class EngineDynmap extends EngineAbstract
 		
 		Set<String> ret = new HashSet<String>();
 		
-		for (UPlayer uplayer : faction.getUPlayers())
+		for (MPlayer uplayer : faction.getUPlayers())
 		{
 			// NOTE: We add both UUID and name. This might be a good idea for future proofing.
 			ret.add(uplayer.getId());
@@ -675,17 +668,14 @@ public class EngineDynmap extends EngineAbstract
 		if (!MConf.get().dynmapVisibilityByFaction) return null;
 		
 		Map<String, Set<String>> ret = new HashMap<String, Set<String>>();
-
-		for (FactionColl coll : FactionColls.get().getColls())
+	
+		for (Faction faction : FactionColl.get().getAll())
 		{
-			for (Faction faction : coll.getAll())
-			{
-				String playersetId = createPlayersetId(faction);
-				if (playersetId == null) continue;
-				Set<String> playerIds = createPlayerset(faction);
-				if (playerIds == null) continue;
-				ret.put(playersetId, playerIds);
-			}
+			String playersetId = createPlayersetId(faction);
+			if (playersetId == null) continue;
+			Set<String> playerIds = createPlayerset(faction);
+			if (playerIds == null) continue;
+			ret.put(playersetId, playerIds);
 		}
 		
 		return ret;
@@ -761,7 +751,7 @@ public class EngineDynmap extends EngineAbstract
 		
 		// Money
 		String money = "unavailable";
-		if (UConf.get(faction).bankEnabled && MConf.get().dynmapDescriptionMoney)
+		if (MConf.get().bankEnabled && MConf.get().dynmapDescriptionMoney)
 		{
 			money = Money.format(Money.get(faction));
 		}
@@ -789,22 +779,22 @@ public class EngineDynmap extends EngineAbstract
 		}
 		
 		// Players
-		List<UPlayer> playersList = faction.getUPlayers();
+		List<MPlayer> playersList = faction.getUPlayers();
 		String playersCount = String.valueOf(playersList.size());
 		String players = getPlayerString(playersList);
 		
-		UPlayer playersLeaderObject = faction.getLeader();
+		MPlayer playersLeaderObject = faction.getLeader();
 		String playersLeader = getPlayerName(playersLeaderObject);
 		
-		List<UPlayer> playersOfficersList = faction.getUPlayersWhereRole(Rel.OFFICER);
+		List<MPlayer> playersOfficersList = faction.getUPlayersWhereRole(Rel.OFFICER);
 		String playersOfficersCount = String.valueOf(playersOfficersList.size());
 		String playersOfficers = getPlayerString(playersOfficersList);
 		
-		List<UPlayer> playersMembersList = faction.getUPlayersWhereRole(Rel.MEMBER);
+		List<MPlayer> playersMembersList = faction.getUPlayersWhereRole(Rel.MEMBER);
 		String playersMembersCount = String.valueOf(playersMembersList.size());
 		String playersMembers = getPlayerString(playersMembersList);
 		
-		List<UPlayer> playersRecruitsList = faction.getUPlayersWhereRole(Rel.RECRUIT);
+		List<MPlayer> playersRecruitsList = faction.getUPlayersWhereRole(Rel.RECRUIT);
 		String playersRecruitsCount = String.valueOf(playersRecruitsList.size());
 		String playersRecruits = getPlayerString(playersRecruitsList);
 		
@@ -822,10 +812,10 @@ public class EngineDynmap extends EngineAbstract
 		return ret;
 	}
 	
-	public static String getPlayerString(List<UPlayer> uplayers)
+	public static String getPlayerString(List<MPlayer> uplayers)
 	{
 		String ret = "";
-		for (UPlayer uplayer : uplayers)
+		for (MPlayer uplayer : uplayers)
 		{
 			if (ret.length() > 0) ret += ", ";
 			ret += getPlayerName(uplayer);
@@ -833,7 +823,7 @@ public class EngineDynmap extends EngineAbstract
 		return ret;
 	}
 	
-	public static String getPlayerName(UPlayer uplayer)
+	public static String getPlayerName(MPlayer uplayer)
 	{
 		if (uplayer == null) return "none";
 		return escapeHtml(uplayer.getName());

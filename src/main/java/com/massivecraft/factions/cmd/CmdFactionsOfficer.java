@@ -3,8 +3,7 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.cmd.arg.ARUPlayer;
-import com.massivecraft.factions.cmd.req.ReqFactionsEnabled;
-import com.massivecraft.factions.entity.UPlayer;
+import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 
@@ -23,7 +22,6 @@ public class CmdFactionsOfficer extends FCommand
 		this.addRequiredArg("player");
 
 		// Requirements
-		this.addRequirements(ReqFactionsEnabled.get());
 		this.addRequirements(ReqHasPerm.get(Perm.OFFICER.node));
 	}
 
@@ -34,7 +32,7 @@ public class CmdFactionsOfficer extends FCommand
 	@Override
 	public void perform()
 	{
-		UPlayer you = this.arg(0, ARUPlayer.getAny(sender));
+		MPlayer you = this.arg(0, ARUPlayer.getAny());
 		if (you == null) return;
 
 		boolean permAny = Perm.OFFICER_ANY.has(sender, false);
