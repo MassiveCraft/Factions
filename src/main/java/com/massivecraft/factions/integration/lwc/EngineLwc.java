@@ -24,6 +24,7 @@ import com.massivecraft.factions.event.EventFactionsChunkChange;
 import com.massivecraft.factions.event.EventFactionsChunkChangeType;
 import com.massivecraft.factions.listeners.FactionsListenerMain;
 import com.massivecraft.massivecore.ps.PS;
+import com.massivecraft.massivecore.util.MUtil;
 
 
 public class EngineLwc implements Listener
@@ -79,6 +80,19 @@ public class EngineLwc implements Listener
 	// UTIL
 	// -------------------------------------------- //
 	
+	public static List<Material> protectable = MUtil.list(
+		Material.CHEST,
+		Material.FURNACE,
+		Material.BURNING_FURNACE,
+		Material.WALL_SIGN,
+		Material.SIGN_POST,
+		Material.DISPENSER,
+		Material.HOPPER,
+		Material.WOODEN_DOOR,
+		Material.IRON_DOOR_BLOCK,
+		Material.TRAP_DOOR
+	);
+	
 	public static void removeAlienProtections(PS chunkPs, Faction faction)
 	{
 		List<MPlayer> nonAliens = faction.getMPlayers();
@@ -107,9 +121,8 @@ public class EngineLwc implements Listener
 		
 		for (BlockState blockState : chunk.getTileEntities())
 		{
-			// TODO: Can something else be protected by LWC? Or is it really only chests?
 			// TODO: How about we run through each block in the chunk just to be on the safe side?
-			if (blockState.getType() != Material.CHEST) continue;
+			if (protectable.contains(blockState.getType())) continue;
 			Block block = blockState.getBlock();
 			
 			Protection protection = LWC.getInstance().findProtection(block);
