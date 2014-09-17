@@ -37,6 +37,8 @@ public class UpdateUtil
 		String universe = getUniverse();
 		if (universe == null) return;
 		
+		Factions.get().log("Updating Database to New Version!");
+		
 		// ... load the old uconf data ...
 		OldConfColls.get().init();
 		OldConf oldConf = OldConfColls.get().getForUniverse(universe).get(MassiveCore.INSTANCE, true);
@@ -46,6 +48,10 @@ public class UpdateUtil
 		
 		// ... rename target collections ...
 		Db db = MStore.getDb();
+		
+		// The old mplayer data we don't care much for.
+		// Could even delete it but let's just move it out of the way.
+		db.getDriver().renameColl(db, Const.COLLECTION_MPLAYER, "old_"+Const.COLLECTION_MPLAYER);
 		
 		db.getDriver().renameColl(db, "factions_board@" + universe, Const.COLLECTION_BOARD);
 		db.getDriver().renameColl(db, "factions_faction@" + universe, Const.COLLECTION_FACTION);
@@ -111,9 +117,5 @@ public class UpdateUtil
 		
 		return ret;
 	}
-	
-	
-	
-	
 	
 }

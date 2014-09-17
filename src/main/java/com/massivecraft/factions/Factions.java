@@ -77,12 +77,6 @@ public class Factions extends MassivePlugin
 	private CmdFactions outerCmdFactions;
 	public CmdFactions getOuterCmdFactions() { return this.outerCmdFactions; }
 	
-	// Aspects
-	// TODO: Remove this. It's used for the update procedure only.
-	private Aspect aspect;
-	public Aspect getAspect() { return this.aspect; }
-	public Multiverse getMultiverse() { return this.getAspect().getMultiverse(); }
-	
 	// Database Initialized
 	private boolean databaseInitialized;
 	public boolean isDatabaseInitialized() { return this.databaseInitialized; }
@@ -94,27 +88,15 @@ public class Factions extends MassivePlugin
 	
 	// Gson without preprocessors
 	public final Gson gsonWithoutPreprocessors = this.getGsonBuilderWithoutPreprocessors().create();
-
 	
 	// -------------------------------------------- //
 	// OVERRIDE
 	// -------------------------------------------- //
 	
-	
-	
-	
 	@Override
 	public void onEnable()
 	{
 		if ( ! preEnable()) return;
-		
-		// Initialize Aspects
-		this.aspect = AspectColl.get().get(Const.ASPECT, true);
-		this.aspect.register();
-		this.aspect.setDesc(
-			"<i>If the factions system even is enabled and how it's configured.",
-			"<i>What factions exists and what players belong to them."
-		);
 		
 		// Register Faction accountId Extractor
 		// TODO: Perhaps this should be placed in the econ integration somewhere?
@@ -123,7 +105,7 @@ public class Factions extends MassivePlugin
 		// Initialize Database
 		this.databaseInitialized = false;
 		MConfColl.get().init();
-		UpdateUtil.update();		
+		UpdateUtil.update();	
 		MPlayerColl.get().init();
 		FactionColl.get().init();
 		BoardColl.get().init();
@@ -138,6 +120,7 @@ public class Factions extends MassivePlugin
 		FactionsListenerMain.get().setup();
 		FactionsListenerChat.get().setup();
 		FactionsListenerExploit.get().setup();
+		EngineIdUpdate.get().activate();
 		
 		// TODO: This listener is a work in progress.
 		// The goal is that the Econ integration should be completely based on listening to our own events.
