@@ -3,30 +3,27 @@ package com.massivecraft.factions.integration.lwc;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.HandlerList;
-import org.bukkit.event.Listener;
+import org.bukkit.plugin.Plugin;
 
 import com.griefcraft.lwc.LWC;
 import com.griefcraft.model.Protection;
-import com.griefcraft.scripting.event.LWCProtectionRegisterEvent;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.event.EventFactionsChunkChange;
 import com.massivecraft.factions.event.EventFactionsChunkChangeType;
-import com.massivecraft.factions.listeners.FactionsListenerMain;
+import com.massivecraft.massivecore.EngineAbstract;
 import com.massivecraft.massivecore.ps.PS;
 
 
-public class EngineLwc implements Listener
+public class EngineLwc extends EngineAbstract
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -37,17 +34,13 @@ public class EngineLwc implements Listener
 	private EngineLwc() {}
 	
 	// -------------------------------------------- //
-	// ACTIVATE & DEACTIVATE
+	// OVERRIDE
 	// -------------------------------------------- //
 	
-	public void activate()
+	@Override
+	public Plugin getPlugin()
 	{
-		Bukkit.getPluginManager().registerEvents(this, Factions.get());
-	}
-	
-	public void deactivate()
-	{
-		HandlerList.unregisterAll(this);
+		return Factions.get();
 	}
 	
 	// -------------------------------------------- //
@@ -66,13 +59,6 @@ public class EngineLwc implements Listener
 		
 		// ... then remove for all other factions than the new one.
 		removeAlienProtections(event.getChunk(), newFaction);
-	}
-	
-	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-	public void onCreateProtection(LWCProtectionRegisterEvent event)
-	{
-		if (FactionsListenerMain.canPlayerBuildAt(event.getPlayer(), PS.valueOf(event.getBlock()), false)) return;
-		event.setCancelled(true);
 	}
 	
 	// -------------------------------------------- //
@@ -120,5 +106,6 @@ public class EngineLwc implements Listener
 		
 		return ret;
 	}
+	
 	
 }
