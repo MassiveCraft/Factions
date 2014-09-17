@@ -201,7 +201,7 @@ public class FactionsListenerMain implements Listener
 			return;
 		}
 		
-		if (MConf.get().getWorldsNoPowerLoss().contains(player.getWorld().getName()))
+		if (!MConf.get().worldsPowerLossEnabled.contains(player.getWorld()))
 		{
 			mplayer.msg("<i>You didn't lose any power due to the world you died in.");
 			return;
@@ -342,7 +342,7 @@ public class FactionsListenerMain implements Listener
 		}
 
 		// ... are PVP rules completely ignored in this world? ...
-		if (MConf.get().getWorldsIgnlorePvP().contains(defenderPs.getWorld())) return true;
+		if (!MConf.get().worldsPvpRulesEnabled.contains(defenderPs.getWorld())) return true;
 
 		Faction defendFaction = udefender.getFaction();
 		Faction attackFaction = uattacker.getFaction();

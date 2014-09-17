@@ -6,7 +6,6 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeSet;
 import java.util.UUID;
 
 import org.bukkit.ChatColor;
@@ -18,6 +17,7 @@ import com.massivecraft.factions.FFlag;
 import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Rel;
+import com.massivecraft.factions.WorldExceptionSet;
 import com.massivecraft.factions.event.EventFactionsChunkChangeType;
 import com.massivecraft.factions.integration.dynmap.DynmapStyle;
 import com.massivecraft.factions.listeners.FactionsListenerChat;
@@ -54,6 +54,21 @@ public class MConf extends Entity<MConf>
 	// -------------------------------------------- //
 	
 	public List<String> aliasesF = MUtil.list("f");
+	
+	// -------------------------------------------- //
+	// WORLDS FEATURE ENABLED
+	// -------------------------------------------- //
+	
+	public WorldExceptionSet worldsClaimingEnabled = new WorldExceptionSet();
+	public WorldExceptionSet worldsPowerLossEnabled = new WorldExceptionSet();
+	public WorldExceptionSet worldsPvpRulesEnabled = new WorldExceptionSet();
+	
+	// -------------------------------------------- //
+	// DERPY OVERRIDES
+	// -------------------------------------------- //
+	
+	// mainly for other plugins/mods that use a fake player to take actions, which shouldn't be subject to our protections
+	public Set<String> playersWhoBypassAllProtection = new LinkedHashSet<String>();
 	
 	// -------------------------------------------- //
 	// TASKS
@@ -267,41 +282,6 @@ public class MConf extends Entity<MConf>
 	public String prefixOfficer = "*";
 	public String prefixMember = "+";
 	public String prefixRecruit = "-";
-	
-	// -------------------------------------------- //
-	// DERPY OVERRIDES
-	// -------------------------------------------- //
-	// TODO: Should worldsNoPowerLoss rather be a bukkit permission node?
-	// TODO: These are derpy because they possibly use an invalid design approach.
-	// After universe support is added. Would some of these be removed?
-	// Could it also be more customizeable using some sort of permission lookup map?
-	
-	// mainly for other plugins/mods that use a fake player to take actions, which shouldn't be subject to our protections
-	public Set<String> playersWhoBypassAllProtection = new LinkedHashSet<String>();
-
-	public Set<String> worldsNoClaiming = new LinkedHashSet<String>();
-	public Set<String> getWorldsNoClaiming()
-	{
-		Set<String> ret = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
-		ret.addAll(this.worldsNoClaiming);
-		return ret;
-	}
-	
-	public Set<String> worldsNoPowerLoss = new LinkedHashSet<String>();
-	public Set<String> getWorldsNoPowerLoss()
-	{
-		Set<String> ret = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
-		ret.addAll(this.worldsNoPowerLoss);
-		return ret;
-	}
-	
-	public Set<String> worldsIgnorePvP = new LinkedHashSet<String>();
-	public Set<String> getWorldsIgnlorePvP()
-	{
-		Set<String> ret = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
-		ret.addAll(this.worldsIgnorePvP);
-		return ret;
-	}
 	
 	// -------------------------------------------- //
 	// EXPLOITS

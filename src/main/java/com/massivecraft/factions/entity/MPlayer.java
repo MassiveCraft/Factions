@@ -702,11 +702,11 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 			return true;
 		}
 		
-		if (!this.isUsingAdminMode())
+		if ( ! this.isUsingAdminMode())
 		{
 			if (newFaction.isNormal())
 			{
-				if (mconf.getWorldsNoClaiming().contains(ps.getWorld()))
+				if (!mconf.worldsClaimingEnabled.contains(ps.getWorld()))
 				{
 					msg("<b>Sorry, this world has land claiming disabled.");
 					return false;
