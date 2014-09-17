@@ -15,13 +15,17 @@ import org.bukkit.event.Listener;
 
 import com.griefcraft.lwc.LWC;
 import com.griefcraft.model.Protection;
+import com.griefcraft.scripting.event.LWCProtectionRegisterEvent;
 import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.Rel;
+import com.massivecraft.factions.entity.BoardColl;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.event.EventFactionsChunkChange;
 import com.massivecraft.factions.event.EventFactionsChunkChangeType;
 import com.massivecraft.massivecore.ps.PS;
+import com.massivecraft.massivecore.util.Txt;
 
 
 public class EngineLwc implements Listener
@@ -66,6 +70,43 @@ public class EngineLwc implements Listener
 		removeAlienProtections(event.getChunk(), newFaction);
 	}
 	
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	public void onCreateProtection(LWCProtectionRegisterEvent event)
+	{
+		Faction factionHere = BoardColl.get().getFactionAt(PS.valueOf(event.getBlock()));
+		MPlayer mplayer = MPlayer.get(event.getPlayer());
+		
+		Rel relation = factionHere.getRelationTo(mplayer.getFaction());
+		
+		Boolean notAllowedHere = false;
+		
+		// Are they allowed to have LWC protections in this faction land 
+		if(MConf.get().lwcDisallowIn.contains(factionHere.getId())) {
+			notAllowedHere = true;
+		}
+		
+		// Should we ignore the relationship check? 
+		Boolean ignore =
+				factionHere.getId().equals(MConf.get().factionIdNone) ||
+				factionHere.getId().equals(MConf.get().factionIdSafezone) ||
+				factionHere.getId().equals(MConf.get().factionIdWarzone);
+		
+		if(!ignore) {
+			if(!MConf.get().lwcAllowIn.containsKey(relation)) {
+				notAllowedHere = true;
+			} else {
+				if(!MConf.get().lwcAllowIn.get(relation)) {
+					notAllowedHere = true;
+				}
+			}
+		}
+		
+		if(notAllowedHere) {
+			event.setCancelled(true);
+			mplayer.msg(Txt.parse("<red>You cannot create this LWC protection in this faction."));
+		}
+	}
+	
 	// -------------------------------------------- //
 	// UTIL
 	// -------------------------------------------- //
@@ -77,6 +118,22 @@ public class EngineLwc implements Listener
 		{
 			MPlayer owner = MPlayer.get(protection.getOwner());
 			if (nonAliens.contains(owner)) continue;
+			
+			// Compare the relationship to the faction
+			Rel rel = owner.getRelationTo(faction);
+			Boolean passRelationTest = true;
+			
+			// If the relationship isn't in the MConf, consider it failed
+			if(!MConf.get().lwcAllowIn.containsKey(rel)) {
+				passRelationTest = false;
+			} else {
+				if(!MConf.get().lwcAllowIn.get(rel)) {
+					passRelationTest = false;
+				}
+			}
+			
+			if(!passRelationTest) continue;
+			
 			protection.remove();
 		}
 	}
