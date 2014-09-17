@@ -16,6 +16,7 @@ import org.bukkit.event.Listener;
 import com.griefcraft.lwc.LWC;
 import com.griefcraft.model.Protection;
 import com.griefcraft.scripting.event.LWCProtectionRegisterEvent;
+import com.griefcraft.scripting.event.LWCBlockInteractEvent;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MConf;
@@ -74,6 +75,21 @@ public class EngineLwc implements Listener
 	{
 		if (FactionsListenerMain.canPlayerBuildAt(event.getPlayer(), PS.valueOf(event.getBlock()), false)) return;
 		event.setCancelled(true);
+	}
+	
+	@EventHandler
+	public void onInteractWithProtection(LWCBlockInteractEvent event)
+	{		
+		// Find existing protected block
+		Protection protection = event.getLWC().findProtection(event.getBlock());
+		if (protection == null) return;
+		
+		// Check if the owner can build here
+		if (FactionsListenerMain.canPlayerBuildAt(protection.getBukkitOwner(), PS.valueOf(event.getBlock()), false)) return;
+		
+		// They can't, so remove the existing protection 
+		protection.remove();
+
 	}
 	
 	// -------------------------------------------- //
