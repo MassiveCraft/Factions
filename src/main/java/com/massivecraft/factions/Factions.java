@@ -27,6 +27,7 @@ import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.FactionColl;
 import com.massivecraft.factions.entity.MPlayerColl;
 import com.massivecraft.factions.entity.MConfColl;
+import com.massivecraft.factions.integration.cannons.IntegrationCannons;
 import com.massivecraft.factions.integration.dynmap.IntegrationDynmap;
 import com.massivecraft.factions.integration.dynmap.IntegrationDynmapFactions;
 import com.massivecraft.factions.integration.herochat.IntegrationHerochat;
@@ -139,7 +140,8 @@ public class Factions extends MassivePlugin
 			IntegrationHerochat.get(),
 			IntegrationLwc.get(),
 			IntegrationDynmap.get(),
-			IntegrationDynmapFactions.get()
+			IntegrationDynmapFactions.get(),
+			IntegrationCannons.get()
 		);
 		
 		// Schedule recurring non-tps-dependent tasks
