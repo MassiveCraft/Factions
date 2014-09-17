@@ -40,10 +40,14 @@ import com.massivecraft.factions.mixin.PowerMixinDefault;
 import com.massivecraft.factions.task.TaskPlayerDataRemove;
 import com.massivecraft.factions.task.TaskEconLandReward;
 import com.massivecraft.factions.task.TaskPlayerPowerUpdate;
+import com.massivecraft.factions.update.OldConfColls;
+import com.massivecraft.factions.update.UpdateUtil;
 import com.massivecraft.massivecore.Aspect;
 import com.massivecraft.massivecore.AspectColl;
 import com.massivecraft.massivecore.MassivePlugin;
 import com.massivecraft.massivecore.Multiverse;
+import com.massivecraft.massivecore.store.Coll;
+import com.massivecraft.massivecore.store.MStore;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.xlib.gson.Gson;
 import com.massivecraft.massivecore.xlib.gson.GsonBuilder;
@@ -74,6 +78,7 @@ public class Factions extends MassivePlugin
 	public CmdFactions getOuterCmdFactions() { return this.outerCmdFactions; }
 	
 	// Aspects
+	// TODO: Remove this. It's used for the update procedure only.
 	private Aspect aspect;
 	public Aspect getAspect() { return this.aspect; }
 	public Multiverse getMultiverse() { return this.getAspect().getMultiverse(); }
@@ -90,9 +95,13 @@ public class Factions extends MassivePlugin
 	// Gson without preprocessors
 	public final Gson gsonWithoutPreprocessors = this.getGsonBuilderWithoutPreprocessors().create();
 
+	
 	// -------------------------------------------- //
 	// OVERRIDE
 	// -------------------------------------------- //
+	
+	
+	
 	
 	@Override
 	public void onEnable()
@@ -114,6 +123,7 @@ public class Factions extends MassivePlugin
 		// Initialize Database
 		this.databaseInitialized = false;
 		MConfColl.get().init();
+		UpdateUtil.update();		
 		MPlayerColl.get().init();
 		FactionColl.get().init();
 		BoardColl.get().init();

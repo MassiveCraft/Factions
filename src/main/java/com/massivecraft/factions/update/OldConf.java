@@ -1,4 +1,4 @@
-package com.massivecraft.factions.entity.old;
+package com.massivecraft.factions.update;
 
 import java.util.List;
 import java.util.Map;
@@ -9,11 +9,83 @@ import org.bukkit.event.EventPriority;
 import com.massivecraft.factions.FFlag;
 import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.Rel;
+import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.event.EventFactionsChunkChangeType;
 import com.massivecraft.massivecore.store.Entity;
 
 public class OldConf extends Entity<OldConf>
 {
+	// -------------------------------------------- //
+	// META
+	// -------------------------------------------- //
+	
+	public void transferTo(MConf mconf)
+	{
+		//mconf.enabled = this.enabled;
+		mconf.factionIdNone = this.factionIdNone;
+		mconf.factionIdSafezone = this.factionIdSafezone;
+		mconf.factionIdWarzone = this.factionIdWarzone;
+		mconf.defaultPlayerFactionId = this.defaultPlayerFactionId;
+		mconf.defaultPlayerRole = this.defaultPlayerRole;
+		mconf.defaultPlayerPower = this.defaultPlayerPower;
+		mconf.defaultFactionOpen = this.defaultFactionOpen;
+		mconf.defaultFactionFlags = this.defaultFactionFlags;
+		mconf.defaultFactionPerms = this.defaultFactionPerms;
+		mconf.broadcastNameChange = this.broadcastNameChange;
+		mconf.powerMax = this.powerMax;
+		mconf.powerMin = this.powerMin;
+		mconf.powerPerHour = this.powerPerHour;
+		mconf.powerPerDeath = this.powerPerDeath;
+		mconf.canLeaveWithNegativePower = this.canLeaveWithNegativePower;
+		mconf.factionMemberLimit = this.factionMemberLimit;
+		mconf.factionPowerMax = this.factionPowerMax;
+		mconf.factionNameLengthMin = this.factionNameLengthMin;
+		mconf.factionNameLengthMax = this.factionNameLengthMax;
+		mconf.factionNameForceUpperCase = this.factionNameForceUpperCase;
+		mconf.claimsMustBeConnected = this.claimsMustBeConnected;
+		mconf.claimingFromOthersAllowed = this.claimingFromOthersAllowed;
+		mconf.claimsCanBeUnconnectedIfOwnedByOtherFaction = this.claimsCanBeUnconnectedIfOwnedByOtherFaction;
+		mconf.claimsRequireMinFactionMembers = this.claimsRequireMinFactionMembers;
+		mconf.claimedLandsMax = this.claimedLandsMax;
+		mconf.homesEnabled = this.homesEnabled;
+		mconf.homesMustBeInClaimedTerritory = this.homesMustBeInClaimedTerritory;
+		mconf.homesTeleportCommandEnabled = this.homesTeleportCommandEnabled;
+		mconf.homesTeleportAllowedFromEnemyTerritory = this.homesTeleportAllowedFromEnemyTerritory;
+		mconf.homesTeleportAllowedFromDifferentWorld = this.homesTeleportAllowedFromDifferentWorld;
+		mconf.homesTeleportAllowedEnemyDistance = this.homesTeleportAllowedEnemyDistance;
+		mconf.homesTeleportIgnoreEnemiesIfInOwnTerritory = this.homesTeleportIgnoreEnemiesIfInOwnTerritory;
+		mconf.homesTeleportToOnDeathActive = this.homesTeleportToOnDeathActive;
+		mconf.homesTeleportToOnDeathPriority = this.homesTeleportToOnDeathPriority;
+		mconf.permanentFactionsDisableLeaderPromotion = this.permanentFactionsDisableLeaderPromotion;
+		mconf.actionDeniedPainAmount = this.actionDeniedPainAmount;
+		mconf.disablePVPForFactionlessPlayers = this.disablePVPForFactionlessPlayers;
+		mconf.enablePVPAgainstFactionlessInAttackersLand = this.enablePVPAgainstFactionlessInAttackersLand;
+		mconf.territoryShieldFactor = this.territoryShieldFactor;
+		mconf.denyCommandsPermanentFactionMember = this.denyCommandsPermanentFactionMember;
+		mconf.denyCommandsTerritoryRelation = this.denyCommandsTerritoryRelation;
+		mconf.lwcRemoveOnChange = this.lwcRemoveOnChange;
+		mconf.econEnabled = this.econEnabled;
+		mconf.econLandReward = this.econLandReward;
+		mconf.econUniverseAccount = this.econUniverseAccount;
+		mconf.econChunkCost = this.econChunkCost;
+		mconf.econCostCreate = this.econCostCreate;
+		mconf.econCostSethome = this.econCostSethome;
+		mconf.econCostJoin = this.econCostJoin;
+		mconf.econCostLeave = this.econCostLeave;
+		mconf.econCostKick = this.econCostKick;
+		mconf.econCostInvite = this.econCostInvite;
+		mconf.econCostDeinvite = this.econCostDeinvite;
+		mconf.econCostHome = this.econCostHome;
+		mconf.econCostName = this.econCostName;
+		mconf.econCostDescription = this.econCostDescription;
+		mconf.econCostTitle = this.econCostTitle;
+		mconf.econCostOpen = this.econCostOpen;
+		mconf.econRelCost = this.econRelCost;
+		mconf.bankEnabled = this.bankEnabled;
+		mconf.bankFactionPaysCosts = this.bankFactionPaysCosts;
+		mconf.bankFactionPaysLandCosts = this.bankFactionPaysLandCosts;
+	}
+	
 	// -------------------------------------------- //
 	// UNIVERSE ENABLE SWITCH
 	// -------------------------------------------- //

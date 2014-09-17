@@ -1,4 +1,4 @@
-package com.massivecraft.factions.entity.old;
+package com.massivecraft.factions.update;
 
 import com.massivecraft.factions.Factions;
 import com.massivecraft.massivecore.Aspect;
