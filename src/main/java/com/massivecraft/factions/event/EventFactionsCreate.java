@@ -17,9 +17,6 @@ public class EventFactionsCreate extends EventFactionsAbstractSender
 	// FIELDS
 	// -------------------------------------------- //
 	
-	private final String universe;
-	public final String getUniverse() { return this.universe; }
-	
 	private final String factionId;
 	public final String getFactionId() { return this.factionId; }
 	
@@ -30,10 +27,9 @@ public class EventFactionsCreate extends EventFactionsAbstractSender
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public EventFactionsCreate(CommandSender sender, String universe, String factionId, String factionName)
+	public EventFactionsCreate(CommandSender sender, String factionId, String factionName)
 	{
 		super(sender);
-		this.universe = universe;
 		this.factionId = factionId;
 		this.factionName = factionName;
 	}

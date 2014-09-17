@@ -27,7 +27,6 @@ public class MConfColl extends Coll<MConf>
 	public void init()
 	{
 		super.init();
-		
 		MConf.i = this.get(MassiveCore.INSTANCE, true);
 	}
 	

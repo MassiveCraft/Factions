@@ -3,7 +3,7 @@ package com.massivecraft.factions;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import com.massivecraft.factions.entity.UConf;
+import com.massivecraft.factions.entity.MConf;
 
 
 /**
@@ -67,9 +67,9 @@ public enum FFlag
 	// DEFAULTS
 	// -------------------------------------------- //
 	
-	public boolean getDefault(Object o)
+	public boolean getDefault()
 	{
-		Boolean ret = UConf.get(o).defaultFactionFlags.get(this);
+		Boolean ret = MConf.get().defaultFactionFlags.get(this);
 		if (ret == null) return this.getDefaultDefault();
 		return ret; 
 	}

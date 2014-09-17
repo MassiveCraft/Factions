@@ -1,12 +1,12 @@
 package com.massivecraft.factions.mixin;
 
-import com.massivecraft.factions.entity.UPlayer;
+import com.massivecraft.factions.entity.MPlayer;
 
 public interface PowerMixin
 {
-	public double getMaxUniversal(UPlayer uplayer);
-	public double getMax(UPlayer uplayer);
-	public double getMin(UPlayer uplayer);
-	public double getPerHour(UPlayer uplayer);
-	public double getPerDeath(UPlayer uplayer);
+	public double getMaxUniversal(MPlayer uplayer);
+	public double getMax(MPlayer uplayer);
+	public double getMin(MPlayer uplayer);
+	public double getPerHour(MPlayer uplayer);
+	public double getPerDeath(MPlayer uplayer);
 }

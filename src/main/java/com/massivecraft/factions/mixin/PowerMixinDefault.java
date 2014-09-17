@@ -1,7 +1,7 @@
 package com.massivecraft.factions.mixin;
 
-import com.massivecraft.factions.entity.UConf;
-import com.massivecraft.factions.entity.UPlayer;
+import com.massivecraft.factions.entity.MConf;
+import com.massivecraft.factions.entity.MPlayer;
 
 public class PowerMixinDefault implements PowerMixin
 {
@@ -17,33 +17,33 @@ public class PowerMixinDefault implements PowerMixin
 	// -------------------------------------------- //
 
 	@Override
-	public double getMaxUniversal(UPlayer uplayer)
+	public double getMaxUniversal(MPlayer mplayer)
 	{
-		return this.getMax(uplayer);
+		return this.getMax(mplayer);
 	}
 	
 	@Override
-	public double getMax(UPlayer uplayer)
+	public double getMax(MPlayer mplayer)
 	{
-		return UConf.get(uplayer).powerMax + uplayer.getPowerBoost();
+		return MConf.get().powerMax + mplayer.getPowerBoost();
 	}
 
 	@Override
-	public double getMin(UPlayer uplayer)
+	public double getMin(MPlayer mplayer)
 	{
-		return UConf.get(uplayer).powerMin;
+		return MConf.get().powerMin;
 	}
 
 	@Override
-	public double getPerHour(UPlayer uplayer)
+	public double getPerHour(MPlayer mplayer)
 	{
-		return UConf.get(uplayer).powerPerHour;
+		return MConf.get().powerPerHour;
 	}
 
 	@Override
-	public double getPerDeath(UPlayer uplayer)
+	public double getPerDeath(MPlayer mplayer)
 	{
-		return UConf.get(uplayer).powerPerDeath;
+		return MConf.get().powerPerDeath;
 	}
 
 }

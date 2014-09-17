@@ -1,8 +1,7 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Perm;
-import com.massivecraft.factions.cmd.req.ReqFactionsEnabled;
-import com.massivecraft.factions.entity.BoardColls;
+import com.massivecraft.factions.entity.BoardColl;
 import com.massivecraft.massivecore.cmd.arg.ARBoolean;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.cmd.req.ReqIsPlayer;
@@ -23,7 +22,6 @@ public class CmdFactionsMap extends FCommand
 		this.addOptionalArg("on/off", "once");
 
 		// Requirements
-		this.addRequirements(ReqFactionsEnabled.get());
 		this.addRequirements(ReqHasPerm.get(Perm.MAP.node));
 		this.addRequirements(ReqIsPlayer.get());
 	}
@@ -60,7 +58,7 @@ public class CmdFactionsMap extends FCommand
 	
 	public void showMap()
 	{
-		sendMessage(BoardColls.get().getMap(usenderFaction, PS.valueOf(me), me.getLocation().getYaw()));
+		sendMessage(BoardColl.get().getMap(usenderFaction, PS.valueOf(me), me.getLocation().getYaw()));
 	}
 	
 }

@@ -4,7 +4,6 @@ import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.cmd.arg.ARFaction;
 import com.massivecraft.factions.cmd.req.ReqBankCommandsEnabled;
-import com.massivecraft.factions.cmd.req.ReqFactionsEnabled;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.integration.Econ;
@@ -31,7 +30,6 @@ public class CmdFactionsMoneyDeposit extends FCommand
 		this.addOptionalArg("faction", "you");
 
 		// Requirements
-		this.addRequirements(ReqFactionsEnabled.get());
 		this.addRequirements(ReqHasPerm.get(Perm.MONEY_DEPOSIT.node));
 		this.addRequirements(ReqBankCommandsEnabled.get());
 	}
@@ -46,7 +44,7 @@ public class CmdFactionsMoneyDeposit extends FCommand
 		Double amount = this.arg(0, ARDouble.get());
 		if (amount == null) return;
 		
-		Faction faction = this.arg(1, ARFaction.get(sender), usenderFaction);
+		Faction faction = this.arg(1, ARFaction.get(), usenderFaction);
 		if (faction == null) return;
 		
 		boolean success = Econ.transferMoney(usender, usender, faction, amount);

@@ -5,14 +5,12 @@ import java.util.ArrayList;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
-import com.massivecraft.factions.cmd.req.ReqFactionsEnabled;
 import com.massivecraft.factions.cmd.req.ReqHasntFaction;
-import com.massivecraft.factions.entity.UPlayer;
-import com.massivecraft.factions.entity.UPlayerColls;
+import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.FactionColl;
-import com.massivecraft.factions.entity.FactionColls;
 import com.massivecraft.factions.entity.MConf;
+import com.massivecraft.factions.entity.MPlayerColl;
 import com.massivecraft.factions.event.EventFactionsCreate;
 import com.massivecraft.factions.event.EventFactionsMembershipChange;
 import com.massivecraft.factions.event.EventFactionsMembershipChange.MembershipChangeReason;
@@ -34,7 +32,6 @@ public class CmdFactionsCreate extends FCommand
 		this.addRequiredArg("name");
 
 		// Requirements
-		this.addRequirements(ReqFactionsEnabled.get());
 		this.addRequirements(ReqHasntFaction.get());
 		this.addRequirements(ReqHasPerm.get(Perm.CREATE.node));
 	}
@@ -50,15 +47,13 @@ public class CmdFactionsCreate extends FCommand
 		String newName = this.arg(0);
 		
 		// Verify
-		FactionColl coll = FactionColls.get().get(usender);
-		
-		if (coll.isNameTaken(newName))
+		if (FactionColl.get().isNameTaken(newName))
 		{
 			msg("<b>That name is already in use.");
 			return;
 		}
 		
-		ArrayList<String> nameValidationErrors = coll.validateName(newName);
+		ArrayList<String> nameValidationErrors = FactionColl.get().validateName(newName);
 		if (nameValidationErrors.size() > 0)
 		{
 			sendMessage(nameValidationErrors);
@@ -69,12 +64,12 @@ public class CmdFactionsCreate extends FCommand
 		String factionId = MStore.createId();
 		
 		// Event
-		EventFactionsCreate createEvent = new EventFactionsCreate(sender, coll.getUniverse(), factionId, newName);
+		EventFactionsCreate createEvent = new EventFactionsCreate(sender, factionId, newName);
 		createEvent.run();
 		if (createEvent.isCancelled()) return;
 		
 		// Apply
-		Faction faction = coll.create(factionId);
+		Faction faction = FactionColl.get().create(factionId);
 		faction.setName(newName);
 		
 		usender.setRole(Rel.LEADER);
@@ -85,7 +80,7 @@ public class CmdFactionsCreate extends FCommand
 		// NOTE: join event cannot be cancelled or you'll have an empty faction
 		
 		// Inform
-		for (UPlayer follower : UPlayerColls.get().get(usender).getAllOnline())
+		for (MPlayer follower : MPlayerColl.get().getAllOnline())
 		{
 			follower.msg("%s<i> created a new faction %s", usender.describeTo(follower, true), faction.getName(follower));
 		}

@@ -1,7 +1,6 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Perm;
-import com.massivecraft.factions.cmd.req.ReqFactionsEnabled;
 import com.massivecraft.massivecore.cmd.HelpCommand;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.cmd.req.ReqIsPlayer;
@@ -32,7 +31,6 @@ public class CmdFactionsAccess extends FCommand
 		this.addAliases("access");
 		
 		// Requirements
-		this.addRequirements(ReqFactionsEnabled.get());
 		this.addRequirements(ReqIsPlayer.get());
 		this.addRequirements(ReqHasPerm.get(Perm.ACCESS.node));
 	}

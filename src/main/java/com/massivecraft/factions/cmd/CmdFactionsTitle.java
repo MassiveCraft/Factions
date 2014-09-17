@@ -5,9 +5,8 @@ import org.bukkit.ChatColor;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.cmd.arg.ARUPlayer;
-import com.massivecraft.factions.cmd.req.ReqFactionsEnabled;
 import com.massivecraft.factions.cmd.req.ReqRoleIsAtLeast;
-import com.massivecraft.factions.entity.UPlayer;
+import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.event.EventFactionsTitleChange;
 import com.massivecraft.massivecore.cmd.arg.ARString;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
@@ -29,7 +28,6 @@ public class CmdFactionsTitle extends FCommand
 		this.addOptionalArg("title", "");
 
 		// Requirements
-		this.addRequirements(ReqFactionsEnabled.get());
 		this.addRequirements(ReqHasPerm.get(Perm.TITLE.node));
 		this.addRequirements(ReqRoleIsAtLeast.get(Rel.OFFICER));
 	}
@@ -42,7 +40,7 @@ public class CmdFactionsTitle extends FCommand
 	public void perform()
 	{
 		// Args
-		UPlayer you = this.arg(0, ARUPlayer.getAny(sender));
+		MPlayer you = this.arg(0, ARUPlayer.getAny());
 		if (you == null) return;
 		
 		String newTitle = this.argConcatFrom(1, ARString.get(), "");

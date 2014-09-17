@@ -1,12 +1,11 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.cmd.arg.ARFaction;
-import com.massivecraft.factions.cmd.req.ReqFactionsEnabled;
-import com.massivecraft.factions.entity.UPlayer;
-import com.massivecraft.factions.entity.UPlayerColls;
+import com.massivecraft.factions.entity.FactionColl;
+import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.entity.Faction;
-import com.massivecraft.factions.entity.FactionColls;
 import com.massivecraft.factions.entity.MConf;
+import com.massivecraft.factions.entity.MPlayerColl;
 import com.massivecraft.factions.event.EventFactionsDisband;
 import com.massivecraft.factions.event.EventFactionsMembershipChange;
 import com.massivecraft.factions.event.EventFactionsMembershipChange.MembershipChangeReason;
@@ -33,7 +32,6 @@ public class CmdFactionsDisband extends FCommand
 		this.addOptionalArg("faction", "you");
 
 		// Requirements
-		this.addRequirements(ReqFactionsEnabled.get());
 		this.addRequirements(ReqHasPerm.get(Perm.DISBAND.node));
 	}
 
@@ -45,7 +43,7 @@ public class CmdFactionsDisband extends FCommand
 	public void perform()
 	{	
 		// Args
-		Faction faction = this.arg(0, ARFaction.get(usender), usenderFaction);
+		Faction faction = this.arg(0, ARFaction.get(), usenderFaction);
 		if (faction == null) return;
 		
 		// FPerm
@@ -66,14 +64,14 @@ public class CmdFactionsDisband extends FCommand
 		// Merged Apply and Inform
 		
 		// Run event for each player in the faction
-		for (UPlayer uplayer : faction.getUPlayers())
+		for (MPlayer uplayer : faction.getUPlayers())
 		{
-			EventFactionsMembershipChange membershipChangeEvent = new EventFactionsMembershipChange(sender, uplayer, FactionColls.get().get(faction).getNone(), MembershipChangeReason.DISBAND);
+			EventFactionsMembershipChange membershipChangeEvent = new EventFactionsMembershipChange(sender, uplayer, FactionColl.get().getNone(), MembershipChangeReason.DISBAND);
 			membershipChangeEvent.run();
 		}
 
 		// Inform all players
-		for (UPlayer uplayer : UPlayerColls.get().get(usender).getAllOnline())
+		for (MPlayer uplayer : MPlayerColl.get().getAllOnline())
 		{
 			String who = usender.describeTo(uplayer);
 			if (uplayer.getFaction() == faction)

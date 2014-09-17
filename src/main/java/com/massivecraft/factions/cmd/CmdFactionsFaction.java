@@ -7,9 +7,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.massivecraft.factions.cmd.arg.ARFaction;
-import com.massivecraft.factions.cmd.req.ReqFactionsEnabled;
-import com.massivecraft.factions.entity.UConf;
-import com.massivecraft.factions.entity.UPlayer;
+import com.massivecraft.factions.entity.MConf;
+import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.event.EventFactionsChunkChangeType;
 import com.massivecraft.factions.integration.Econ;
@@ -39,7 +38,6 @@ public class CmdFactionsFaction extends FCommand
 		this.addOptionalArg("faction", "you");
 
 		// Requirements
-		this.addRequirements(ReqFactionsEnabled.get());
 		this.addRequirements(ReqHasPerm.get(Perm.FACTION.node));
 	}
 
@@ -51,11 +49,10 @@ public class CmdFactionsFaction extends FCommand
 	public void perform()
 	{
 		// Args
-		Faction faction = this.arg(0, ARFaction.get(usenderFaction), usenderFaction);
+		Faction faction = this.arg(0, ARFaction.get(), usenderFaction);
 		if (faction == null) return;
 		
 		// Data precalculation 
-		UConf uconf = UConf.get(faction);
 		//boolean none = faction.isNone();
 		boolean normal = faction.isNormal();
 		
@@ -82,13 +79,13 @@ public class CmdFactionsFaction extends FCommand
 			msg("<a>Land / Power / Maxpower: <i> %d/%d/%d %s", faction.getLandCount(), faction.getPowerRounded(), faction.getPowerMaxRounded(), boost);
 			
 			// show the land value
-			if (Econ.isEnabled(faction))
+			if (Econ.isEnabled())
 			{
 				long landCount = faction.getLandCount();
 				
 				for (EventFactionsChunkChangeType type : EventFactionsChunkChangeType.values())
 				{
-					Double money = uconf.econChunkCost.get(type);
+					Double money = MConf.get().econChunkCost.get(type);
 					if (money == null) continue;
 					if (money == 0D) continue;
 					money *= landCount;
@@ -108,7 +105,7 @@ public class CmdFactionsFaction extends FCommand
 				}
 				
 				// Show bank contents
-				if (UConf.get(faction).bankEnabled)
+				if (MConf.get().bankEnabled)
 				{
 					msg("<a>Bank contains: <i>"+Money.format(Money.get(faction)));
 				}
@@ -148,10 +145,10 @@ public class CmdFactionsFaction extends FCommand
 		List<String> followerNamesOnline = new ArrayList<String>();
 		List<String> followerNamesOffline = new ArrayList<String>();
 		
-		List<UPlayer> followers = faction.getUPlayers();
+		List<MPlayer> followers = faction.getUPlayers();
 		Collections.sort(followers, PlayerRoleComparator.get());
 		
-		for (UPlayer follower : followers)
+		for (MPlayer follower : followers)
 		{
 			if (follower.isOnline() && Mixin.canSee(sender, follower.getId()))
 			{

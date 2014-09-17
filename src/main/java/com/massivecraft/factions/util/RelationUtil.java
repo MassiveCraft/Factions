@@ -5,7 +5,7 @@ import org.bukkit.ChatColor;
 import com.massivecraft.factions.FFlag;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.RelationParticipator;
-import com.massivecraft.factions.entity.UPlayer;
+import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.massivecore.util.Txt;
@@ -29,7 +29,7 @@ public class RelationUtil
 
 		if (that instanceof Faction)
 		{
-			if (me instanceof UPlayer && myFaction == thatFaction)
+			if (me instanceof MPlayer && myFaction == thatFaction)
 			{
 				ret = "your faction";
 			}
@@ -38,9 +38,9 @@ public class RelationUtil
 				ret = thatFaction.getName();
 			}
 		}
-		else if (that instanceof UPlayer)
+		else if (that instanceof MPlayer)
 		{
-			UPlayer uplayerthat = (UPlayer) that;
+			MPlayer uplayerthat = (MPlayer) that;
 			if (that == me)
 			{
 				ret = "you";
@@ -98,9 +98,9 @@ public class RelationUtil
 			ret = Rel.MEMBER;
 			// Do officer and leader check
 			//P.p.log("getRelationOfThatToMe the factions are the same for "+that.getClass().getSimpleName()+" and observer "+me.getClass().getSimpleName());
-			if (that instanceof UPlayer)
+			if (that instanceof MPlayer)
 			{
-				ret = ((UPlayer)that).getRole();
+				ret = ((MPlayer)that).getRole();
 				//P.p.log("getRelationOfThatToMe it was a player and role is "+ret);
 			}
 		}
@@ -119,9 +119,9 @@ public class RelationUtil
 			return (Faction) rp;
 		}
 
-		if (rp instanceof UPlayer)
+		if (rp instanceof MPlayer)
 		{
-			return ((UPlayer) rp).getFaction();
+			return ((MPlayer) rp).getFaction();
 		}
 
 		// ERROR

@@ -4,11 +4,9 @@ import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.cmd.arg.ARUPlayer;
 import com.massivecraft.factions.cmd.arg.ARFaction;
-import com.massivecraft.factions.cmd.req.ReqFactionsEnabled;
-import com.massivecraft.factions.entity.UPlayer;
-import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MConf;
-import com.massivecraft.factions.entity.UConf;
+import com.massivecraft.factions.entity.MPlayer;
+import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.event.EventFactionsMembershipChange;
 import com.massivecraft.factions.event.EventFactionsMembershipChange.MembershipChangeReason;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
@@ -30,7 +28,6 @@ public class CmdFactionsJoin extends FCommand
 		this.addOptionalArg("player", "you");
 
 		// Requirements
-		this.addRequirements(ReqFactionsEnabled.get());
 		this.addRequirements(ReqHasPerm.get(Perm.JOIN.node));
 	}
 
@@ -42,10 +39,10 @@ public class CmdFactionsJoin extends FCommand
 	public void perform()
 	{
 		// Args
-		Faction faction = this.arg(0, ARFaction.get(sender));
+		Faction faction = this.arg(0, ARFaction.get());
 		if (faction == null) return;
 
-		UPlayer uplayer = this.arg(1, ARUPlayer.getAny(sender), usender);
+		MPlayer uplayer = this.arg(1, ARUPlayer.getAny(), usender);
 		if (uplayer == null) return;
 		Faction uplayerFaction = uplayer.getFaction();
 		
@@ -64,9 +61,9 @@ public class CmdFactionsJoin extends FCommand
 			return;
 		}
 
-		if (UConf.get(faction).factionMemberLimit > 0 && faction.getUPlayers().size() >= UConf.get(faction).factionMemberLimit)
+		if (MConf.get().factionMemberLimit > 0 && faction.getUPlayers().size() >= MConf.get().factionMemberLimit)
 		{
-			msg(" <b>!<white> The faction %s is at the limit of %d members, so %s cannot currently join.", faction.getName(usender), UConf.get(faction).factionMemberLimit, uplayer.describeTo(usender, false));
+			msg(" <b>!<white> The faction %s is at the limit of %d members, so %s cannot currently join.", faction.getName(usender), MConf.get().factionMemberLimit, uplayer.describeTo(usender, false));
 			return;
 		}
 
@@ -76,7 +73,7 @@ public class CmdFactionsJoin extends FCommand
 			return;
 		}
 
-		if (!UConf.get(faction).canLeaveWithNegativePower && uplayer.getPower() < 0)
+		if (!MConf.get().canLeaveWithNegativePower && uplayer.getPower() < 0)
 		{
 			msg("<b>%s cannot join a faction with a negative power level.", uplayer.describeTo(usender, true));
 			return;

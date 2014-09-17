@@ -1,9 +1,8 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.cmd.req.ReqFactionsEnabled;
 import com.massivecraft.factions.cmd.req.ReqHasFaction;
 import com.massivecraft.factions.entity.Faction;
-import com.massivecraft.factions.entity.FactionColls;
+import com.massivecraft.factions.entity.FactionColl;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.cmd.req.ReqIsPlayer;
@@ -21,7 +20,6 @@ public class CmdFactionsUnclaim extends FCommand
 		this.addAliases("unclaim");
 
 		// Requirements
-		this.addRequirements(ReqFactionsEnabled.get());
 		this.addRequirements(ReqHasPerm.get(Perm.UNCLAIM.node));
 		this.addRequirements(ReqHasFaction.get());
 		this.addRequirements(ReqIsPlayer.get());
@@ -36,7 +34,7 @@ public class CmdFactionsUnclaim extends FCommand
 	{
 		// Args
 		PS chunk = PS.valueOf(me).getChunk(true);
-		Faction newFaction = FactionColls.get().get(me).getNone();
+		Faction newFaction = FactionColl.get().getNone();
 
 		// Apply
 		if (usender.tryClaim(newFaction, chunk, true, true)) return;

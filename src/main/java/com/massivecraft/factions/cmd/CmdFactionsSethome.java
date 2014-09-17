@@ -4,9 +4,8 @@ import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.cmd.arg.ARFaction;
-import com.massivecraft.factions.cmd.req.ReqFactionsEnabled;
 import com.massivecraft.factions.entity.Faction;
-import com.massivecraft.factions.entity.UConf;
+import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.event.EventFactionsHomeChange;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.cmd.req.ReqIsPlayer;
@@ -27,7 +26,6 @@ public class CmdFactionsSethome extends FCommand
 		this.addOptionalArg("faction", "you");
 
 		// Requirements
-		this.addRequirements(ReqFactionsEnabled.get());
 		this.addRequirements(ReqIsPlayer.get());
 		this.addRequirements(ReqHasPerm.get(Perm.SETHOME.node));
 	}
@@ -40,13 +38,13 @@ public class CmdFactionsSethome extends FCommand
 	public void perform()
 	{
 		// Args
-		Faction faction = this.arg(0, ARFaction.get(usenderFaction), usenderFaction);
+		Faction faction = this.arg(0, ARFaction.get(), usenderFaction);
 		if (faction == null) return;
 		
 		PS newHome = PS.valueOf(me.getLocation());
 		
 		// Validate
-		if ( ! UConf.get(faction).homesEnabled)
+		if ( ! MConf.get().homesEnabled)
 		{
 			usender.msg("<b>Sorry, Faction homes are disabled on this server.");
 			return;

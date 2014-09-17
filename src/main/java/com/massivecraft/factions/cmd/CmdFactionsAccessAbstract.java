@@ -6,8 +6,7 @@ import java.util.List;
 
 import com.massivecraft.factions.RelationParticipator;
 import com.massivecraft.factions.TerritoryAccess;
-import com.massivecraft.factions.cmd.req.ReqFactionsEnabled;
-import com.massivecraft.factions.entity.BoardColls;
+import com.massivecraft.factions.entity.BoardColl;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.massivecore.cmd.req.ReqIsPlayer;
 import com.massivecraft.massivecore.ps.PS;
@@ -32,7 +31,6 @@ public abstract class CmdFactionsAccessAbstract extends FCommand
 	public CmdFactionsAccessAbstract()
 	{
 		// Requirements
-		this.addRequirements(ReqFactionsEnabled.get());
 		this.addRequirements(ReqIsPlayer.get());
 	}
 	
@@ -44,7 +42,7 @@ public abstract class CmdFactionsAccessAbstract extends FCommand
 	public void perform()
 	{
 		chunk = PS.valueOf(me).getChunk(true);
-		ta = BoardColls.get().getTerritoryAccessAt(chunk);
+		ta = BoardColl.get().getTerritoryAccessAt(chunk);
 		hostFaction = ta.getHostFaction(usender);
 		
 		this.innerPerform();

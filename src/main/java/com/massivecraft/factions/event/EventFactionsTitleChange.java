@@ -3,7 +3,7 @@ package com.massivecraft.factions.event;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.HandlerList;
 
-import com.massivecraft.factions.entity.UPlayer;
+import com.massivecraft.factions.entity.MPlayer;
 
 public class EventFactionsTitleChange extends EventFactionsAbstractSender
 {	
@@ -19,8 +19,8 @@ public class EventFactionsTitleChange extends EventFactionsAbstractSender
 	// FIELDS
 	// -------------------------------------------- //
 	
-	private final UPlayer uplayer;
-	public UPlayer getUPlayer() { return this.uplayer; }
+	private final MPlayer uplayer;
+	public MPlayer getUPlayer() { return this.uplayer; }
 	
 	private String newTitle;
 	public String getNewTitle() { return this.newTitle; }
@@ -30,7 +30,7 @@ public class EventFactionsTitleChange extends EventFactionsAbstractSender
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public EventFactionsTitleChange(CommandSender sender, UPlayer uplayer, String newTitle)
+	public EventFactionsTitleChange(CommandSender sender, MPlayer uplayer, String newTitle)
 	{
 		super(sender);
 		this.uplayer = uplayer;

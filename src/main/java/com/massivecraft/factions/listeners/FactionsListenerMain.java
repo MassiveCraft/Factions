@@ -59,13 +59,11 @@ import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.TerritoryAccess;
-import com.massivecraft.factions.entity.BoardColls;
-import com.massivecraft.factions.entity.UPlayer;
+import com.massivecraft.factions.entity.BoardColl;
+import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MConf;
-import com.massivecraft.factions.entity.UConf;
-import com.massivecraft.factions.entity.UPlayerColl;
-import com.massivecraft.factions.entity.UPlayerColls;
+import com.massivecraft.factions.entity.MPlayerColl;
 import com.massivecraft.factions.event.EventFactionsPvpDisallowed;
 import com.massivecraft.factions.event.EventFactionsPowerChange;
 import com.massivecraft.factions.event.EventFactionsPowerChange.PowerChangeReason;
@@ -105,33 +103,30 @@ public class FactionsListenerMain implements Listener
 		if (MUtil.isSameChunk(event)) return;
 		Player player = event.getPlayer();
 		
-		// Check Disabled
-		if (UConf.isDisabled(player)) return;
-		
 		// ... gather info on the player and the move ...
-		UPlayer uplayer = UPlayerColls.get().get(event.getTo()).get(player);
+		MPlayer mplayer = MPlayer.get(player);
 		
 		PS chunkFrom = PS.valueOf(event.getFrom()).getChunk(true);
 		PS chunkTo = PS.valueOf(event.getTo()).getChunk(true);
 		
-		Faction factionFrom = BoardColls.get().getFactionAt(chunkFrom);
-		Faction factionTo = BoardColls.get().getFactionAt(chunkTo);
+		Faction factionFrom = BoardColl.get().getFactionAt(chunkFrom);
+		Faction factionTo = BoardColl.get().getFactionAt(chunkTo);
 		
 		// ... and send info onwards.
-		this.chunkChangeTerritoryInfo(uplayer, player, chunkFrom, chunkTo, factionFrom, factionTo);
-		this.chunkChangeAutoClaim(uplayer, chunkTo);
+		this.chunkChangeTerritoryInfo(mplayer, player, chunkFrom, chunkTo, factionFrom, factionTo);
+		this.chunkChangeAutoClaim(mplayer, chunkTo);
 	}
 	
 	// -------------------------------------------- //
 	// CHUNK CHANGE: TERRITORY INFO
 	// -------------------------------------------- //
 	
-	public void chunkChangeTerritoryInfo(UPlayer uplayer, Player player, PS chunkFrom, PS chunkTo, Faction factionFrom, Faction factionTo)
+	public void chunkChangeTerritoryInfo(MPlayer uplayer, Player player, PS chunkFrom, PS chunkTo, Faction factionFrom, Faction factionTo)
 	{
 		// send host faction info updates
 		if (uplayer.isMapAutoUpdating())
 		{
-			uplayer.sendMessage(BoardColls.get().getMap(uplayer, chunkTo, player.getLocation().getYaw()));
+			uplayer.sendMessage(BoardColl.get().getMap(uplayer, chunkTo, player.getLocation().getYaw()));
 		}
 		else if (factionFrom != factionTo)
 		{
@@ -144,10 +139,10 @@ public class FactionsListenerMain implements Listener
 		}
 
 		// Show access level message if it changed.
-		TerritoryAccess accessFrom = BoardColls.get().getTerritoryAccessAt(chunkFrom);
+		TerritoryAccess accessFrom = BoardColl.get().getTerritoryAccessAt(chunkFrom);
 		Boolean hasTerritoryAccessFrom = accessFrom.hasTerritoryAccess(uplayer);
 		
-		TerritoryAccess accessTo = BoardColls.get().getTerritoryAccessAt(chunkTo);
+		TerritoryAccess accessTo = BoardColl.get().getTerritoryAccessAt(chunkTo);
 		Boolean hasTerritoryAccessTo = accessTo.hasTerritoryAccess(uplayer);
 		
 		if (!MUtil.equals(hasTerritoryAccessFrom, hasTerritoryAccessTo))
@@ -171,7 +166,7 @@ public class FactionsListenerMain implements Listener
 	// CHUNK CHANGE: AUTO CLAIM
 	// -------------------------------------------- //
 	
-	public void chunkChangeAutoClaim(UPlayer uplayer, PS chunkTo)
+	public void chunkChangeAutoClaim(MPlayer uplayer, PS chunkTo)
 	{
 		// If the player is auto claiming ...
 		Faction autoClaimFaction = uplayer.getAutoClaimFaction();
@@ -195,39 +190,36 @@ public class FactionsListenerMain implements Listener
 		// (yeah other plugins can case death event to fire twice the same tick)
 		if (PlayerUtil.isDuplicateDeathEvent(event)) return;
 		
-		// Check Disabled
-		if (UConf.isDisabled(player)) return;
-		
-		UPlayer uplayer = UPlayer.get(player);
+		MPlayer mplayer = MPlayer.get(player);
 		
 		// ... and powerloss can happen here ...
-		Faction faction = BoardColls.get().getFactionAt(PS.valueOf(player));
+		Faction faction = BoardColl.get().getFactionAt(PS.valueOf(player));
 		
 		if (!faction.getFlag(FFlag.POWERLOSS))
 		{
-			uplayer.msg("<i>You didn't lose any power since the territory you died in works that way.");
+			mplayer.msg("<i>You didn't lose any power since the territory you died in works that way.");
 			return;
 		}
 		
 		if (MConf.get().getWorldsNoPowerLoss().contains(player.getWorld().getName()))
 		{
-			uplayer.msg("<i>You didn't lose any power due to the world you died in.");
+			mplayer.msg("<i>You didn't lose any power due to the world you died in.");
 			return;
 		}
 		
 		// ... alter the power ...
-		double newPower = uplayer.getPower() + uplayer.getPowerPerDeath();
+		double newPower = mplayer.getPower() + mplayer.getPowerPerDeath();
 		
-		EventFactionsPowerChange powerChangeEvent = new EventFactionsPowerChange(null, uplayer, PowerChangeReason.DEATH, newPower);
+		EventFactionsPowerChange powerChangeEvent = new EventFactionsPowerChange(null, mplayer, PowerChangeReason.DEATH, newPower);
 		powerChangeEvent.run();
 		if (powerChangeEvent.isCancelled()) return;
 		newPower = powerChangeEvent.getNewPower();
 		
-		uplayer.setPower(newPower);
+		mplayer.setPower(newPower);
 		
 		// ... and inform the player.
 		// TODO: A progress bar here would be epic :)
-		uplayer.msg("<i>Your power is now <h>%.2f / %.2f", newPower, uplayer.getPowerMax());
+		mplayer.msg("<i>Your power is now <h>%.2f / %.2f", newPower, mplayer.getPowerMax());
 	}
 	
 	// -------------------------------------------- //
@@ -292,10 +284,7 @@ public class FactionsListenerMain implements Listener
 		Entity edefender = event.getEntity();
 		if (!(edefender instanceof Player)) return true;
 		Player defender = (Player)edefender;
-		UPlayer udefender = UPlayer.get(edefender);
-		
-		// Check Disabled
-		if (UConf.isDisabled(defender)) return true;
+		MPlayer udefender = MPlayer.get(edefender);
 		
 		// ... and the attacker is someone else ...
 		Entity eattacker = MUtil.getLiableDamager(event);
@@ -306,7 +295,7 @@ public class FactionsListenerMain implements Listener
 		
 		// ... gather defender PS and faction information ...
 		PS defenderPs = PS.valueOf(defender);
-		Faction defenderPsFaction = BoardColls.get().getFactionAt(defenderPs);
+		Faction defenderPsFaction = BoardColl.get().getFactionAt(defenderPs);
 		
 		// ... PVP flag may cause a damage block ...
 		if (defenderPsFaction.getFlag(FFlag.PVP) == false)
@@ -322,7 +311,7 @@ public class FactionsListenerMain implements Listener
 				ret = falseUnlessDisallowedPvpEventCancelled((Player)eattacker, defender, event);
 				if (!ret && notify)
 				{
-					UPlayer attacker = UPlayer.get(eattacker);
+					MPlayer attacker = MPlayer.get(eattacker);
 					attacker.msg("<i>PVP is disabled in %s.", defenderPsFaction.describeTo(attacker));
 				}
 				return ret;
@@ -333,14 +322,14 @@ public class FactionsListenerMain implements Listener
 		// ... and if the attacker is a player ...
 		if (!(eattacker instanceof Player)) return true;
 		Player attacker = (Player)eattacker;
-		UPlayer uattacker = UPlayer.get(attacker);
+		MPlayer uattacker = MPlayer.get(attacker);
 		
 		// ... does this player bypass all protection? ...
 		if (MConf.get().playersWhoBypassAllProtection.contains(attacker.getName())) return true;
 
 		// ... gather attacker PS and faction information ...
 		PS attackerPs = PS.valueOf(attacker);
-		Faction attackerPsFaction = BoardColls.get().getFactionAt(attackerPs);
+		Faction attackerPsFaction = BoardColl.get().getFactionAt(attackerPs);
 
 		// ... PVP flag may cause a damage block ...
 		// (just checking the defender as above isn't enough. What about the attacker? It could be in a no-pvp area)
@@ -357,9 +346,8 @@ public class FactionsListenerMain implements Listener
 
 		Faction defendFaction = udefender.getFaction();
 		Faction attackFaction = uattacker.getFaction();
-		UConf uconf = UConf.get(attackFaction);
 
-		if (attackFaction.isNone() && uconf.disablePVPForFactionlessPlayers)
+		if (attackFaction.isNone() && MConf.get().disablePVPForFactionlessPlayers)
 		{
 			ret = falseUnlessDisallowedPvpEventCancelled(attacker, defender, event);
 			if (!ret && notify) uattacker.msg("<i>You can't hurt other players until you join a faction.");
@@ -367,12 +355,12 @@ public class FactionsListenerMain implements Listener
 		}
 		else if (defendFaction.isNone())
 		{
-			if (defenderPsFaction == attackFaction && uconf.enablePVPAgainstFactionlessInAttackersLand)
+			if (defenderPsFaction == attackFaction && MConf.get().enablePVPAgainstFactionlessInAttackersLand)
 			{
 				// Allow PVP vs. Factionless in attacker's faction territory
 				return true;
 			}
-			else if (uconf.disablePVPForFactionlessPlayers)
+			else if (MConf.get().disablePVPForFactionlessPlayers)
 			{
 				ret = falseUnlessDisallowedPvpEventCancelled(attacker, defender, event);
 				if (!ret && notify) uattacker.msg("<i>You can't hurt players who are not currently in a faction.");
@@ -406,15 +394,15 @@ public class FactionsListenerMain implements Listener
 
 		// Damage will be dealt. However check if the damage should be reduced.
 		double damage = event.getDamage();
-		if (damage > 0.0 && udefender.hasFaction() && ownTerritory && uconf.territoryShieldFactor > 0)
+		if (damage > 0.0 && udefender.hasFaction() && ownTerritory && MConf.get().territoryShieldFactor > 0)
 		{
-			double newDamage = damage * (1D - uconf.territoryShieldFactor);
+			double newDamage = damage * (1D - MConf.get().territoryShieldFactor);
 			event.setDamage(newDamage);
 
 			// Send message
 			if (notify)
 			{
-				String perc = MessageFormat.format("{0,number,#%}", (uconf.territoryShieldFactor)); // TODO does this display correctly??
+				String perc = MessageFormat.format("{0,number,#%}", (MConf.get().territoryShieldFactor)); // TODO does this display correctly??
 				udefender.msg("<i>Enemy damage reduced by <rose>%s<i>.", perc);
 			}
 		}
@@ -440,18 +428,16 @@ public class FactionsListenerMain implements Listener
 		if (!MConf.get().removePlayerDataWhenBanned) return;
 		
 		// ... get rid of their stored info.
-		for (UPlayerColl coll : UPlayerColls.get().getColls())
+		MPlayer mplayer = MPlayerColl.get().get(player, false);
+		if (mplayer == null) return;
+		
+		if (mplayer.getRole() == Rel.LEADER)
 		{
-			UPlayer uplayer = coll.get(player, false);
-			if (uplayer == null) continue;
-			
-			if (uplayer.getRole() == Rel.LEADER)
-			{
-				uplayer.getFaction().promoteNewLeader();
-			}
-			uplayer.leave();
-			uplayer.detach();
+			mplayer.getFaction().promoteNewLeader();
 		}
+		
+		mplayer.leave();
+		mplayer.detach();
 	}
 	
 	// -------------------------------------------- //
@@ -476,10 +462,7 @@ public class FactionsListenerMain implements Listener
 		// If a player is trying to run a command ...
 		Player player = event.getPlayer();
 		
-		// Check Disabled
-		if (UConf.isDisabled(player)) return;
-		
-		UPlayer uplayer = UPlayer.get(player);
+		MPlayer uplayer = MPlayer.get(player);
 		
 		// ... and the player does not have adminmode ...
 		if (uplayer.isUsingAdminMode()) return;
@@ -491,7 +474,7 @@ public class FactionsListenerMain implements Listener
 		command = command.trim();
 		
 		// ... the command may be denied for members of permanent factions ...
-		if (uplayer.hasFaction() && uplayer.getFaction().getFlag(FFlag.PERMANENT) && containsCommand(command, UConf.get(player).denyCommandsPermanentFactionMember))
+		if (uplayer.hasFaction() && uplayer.getFaction().getFlag(FFlag.PERMANENT) && containsCommand(command, MConf.get().denyCommandsPermanentFactionMember))
 		{
 			uplayer.msg("<b>You can't use \"<h>/%s<b>\" as member of a permanent faction.", command);
 			event.setCancelled(true);
@@ -500,13 +483,13 @@ public class FactionsListenerMain implements Listener
 		
 		// ... if there is a faction at the players location ...
 		PS ps = PS.valueOf(player).getChunk(true);
-		Faction factionAtPs = BoardColls.get().getFactionAt(ps);
+		Faction factionAtPs = BoardColl.get().getFactionAt(ps);
 		if (factionAtPs.isNone()) return; // TODO: An NPE can arise here? Why?
 		
 		// ... the command may be denied in the territory of this relation type ...
 		Rel rel = factionAtPs.getRelationTo(uplayer);
 		
-		List<String> deniedCommands = UConf.get(player).denyCommandsTerritoryRelation.get(rel);
+		List<String> deniedCommands = MConf.get().denyCommandsTerritoryRelation.get(rel);
 		if (deniedCommands == null) return;
 		if (!containsCommand(command, deniedCommands)) return;
 		
@@ -542,12 +525,9 @@ public class FactionsListenerMain implements Listener
 		// If a monster is spawning ...
 		if ( ! MConf.get().entityTypesMonsters.contains(event.getEntityType())) return;
 		
-		// Check Disabled
-		if (UConf.isDisabled(event.getLocation())) return;
-		
 		// ... at a place where monsters are forbidden ...
 		PS ps = PS.valueOf(event.getLocation());
-		Faction faction = BoardColls.get().getFactionAt(ps);
+		Faction faction = BoardColl.get().getFactionAt(ps);
 		if (faction.getFlag(FFlag.MONSTERS)) return;
 		
 		// ... block the spawn.
@@ -564,12 +544,9 @@ public class FactionsListenerMain implements Listener
 		Entity target = event.getTarget();
 		if (target == null) return;
 		
-		// Check Disabled
-		if (UConf.isDisabled(target)) return;
-		
 		// ... at a place where monsters are forbidden ...
 		PS ps = PS.valueOf(target);
-		Faction faction = BoardColls.get().getFactionAt(ps);
+		Faction faction = BoardColl.get().getFactionAt(ps);
 		if (faction.getFlag(FFlag.MONSTERS)) return;
 		
 		// ... then if ghast target nothing ...
@@ -593,12 +570,9 @@ public class FactionsListenerMain implements Listener
 		// If a hanging entity was broken by an explosion ...
 		if (event.getCause() != RemoveCause.EXPLOSION) return;
 		Entity entity = event.getEntity();
-		
-		// Check Disabled
-		if (UConf.isDisabled(entity)) return;
 	
 		// ... and the faction there has explosions disabled ...
-		Faction faction = BoardColls.get().getFactionAt(PS.valueOf(entity));
+		Faction faction = BoardColl.get().getFactionAt(PS.valueOf(entity));
 		if (faction.isExplosionsAllowed()) return;
 		
 		// ... then cancel.
@@ -619,11 +593,8 @@ public class FactionsListenerMain implements Listener
 		// If an explosion occurs at a location ...
 		Location location = event.getLocation();
 		
-		// Check Disabled
-		if (UConf.isDisabled(location)) return;
-		
 		// Check the entity. Are explosions disabled there? 
-		faction = BoardColls.get().getFactionAt(PS.valueOf(location));
+		faction = BoardColl.get().getFactionAt(PS.valueOf(location));
 		allowed = faction.isExplosionsAllowed();
 		if (allowed == false)
 		{
@@ -637,7 +608,7 @@ public class FactionsListenerMain implements Listener
 		while (iter.hasNext())
 		{
 			Block block = iter.next();
-			faction = BoardColls.get().getFactionAt(PS.valueOf(block));
+			faction = BoardColl.get().getFactionAt(PS.valueOf(block));
 			allowed = faction2allowed.get(faction);
 			if (allowed == null)
 			{
@@ -655,13 +626,10 @@ public class FactionsListenerMain implements Listener
 		// If a wither is changing a block ...
 		Entity entity = event.getEntity();
 		if (!(entity instanceof Wither)) return;
-		
-		// Check Disabled
-		if (UConf.isDisabled(entity)) return;
 
 		// ... and the faction there has explosions disabled ...
 		PS ps = PS.valueOf(event.getBlock());
-		Faction faction = BoardColls.get().getFactionAt(ps);
+		Faction faction = BoardColl.get().getFactionAt(ps);
 		
 		if (faction.isExplosionsAllowed()) return;
 		
@@ -680,12 +648,9 @@ public class FactionsListenerMain implements Listener
 		Entity entity = event.getEntity();
 		if (!(entity instanceof Enderman)) return;
 		
-		// Check Disabled
-		if (UConf.isDisabled(entity)) return;
-		
 		// ... and the faction there has endergrief disabled ...
 		PS ps = PS.valueOf(event.getBlock());
-		Faction faction = BoardColls.get().getFactionAt(ps);
+		Faction faction = BoardColl.get().getFactionAt(ps);
 		if (faction.getFlag(FFlag.ENDERGRIEF)) return;
 		
 		// ... stop the block alteration.
@@ -698,12 +663,9 @@ public class FactionsListenerMain implements Listener
 	
 	public void blockFireSpread(Block block, Cancellable cancellable)
 	{
-		// Check Disabled
-		if (UConf.isDisabled(block)) return;
-		
 		// If the faction at the block has firespread disabled ...
 		PS ps = PS.valueOf(block);
-		Faction faction = BoardColls.get().getFactionAt(ps);
+		Faction faction = BoardColl.get().getFactionAt(ps);
 			
 		if (faction.getFlag(FFlag.FIRESPREAD)) return;
 		
@@ -750,16 +712,16 @@ public class FactionsListenerMain implements Listener
 		String name = player.getName();
 		if (MConf.get().playersWhoBypassAllProtection.contains(name)) return true;
 
-		UPlayer uplayer = UPlayer.get(player);
+		MPlayer uplayer = MPlayer.get(player);
 		if (uplayer.isUsingAdminMode()) return true;
 
 		if (!FPerm.BUILD.has(uplayer, ps, false) && FPerm.PAINBUILD.has(uplayer, ps, false))
 		{
 			if (verboose)
 			{
-				Faction hostFaction = BoardColls.get().getFactionAt(ps);
+				Faction hostFaction = BoardColl.get().getFactionAt(ps);
 				uplayer.msg("<b>It is painful to build in the territory of %s<b>.", hostFaction.describeTo(uplayer));
-				player.damage(UConf.get(player).actionDeniedPainAmount);
+				player.damage(MConf.get().actionDeniedPainAmount);
 			}
 			return true;
 		}
@@ -844,13 +806,13 @@ public class FactionsListenerMain implements Listener
 	{
 		Block block = event.getBlock();
 
-		Faction pistonFaction = BoardColls.get().getFactionAt(PS.valueOf(block));
+		Faction pistonFaction = BoardColl.get().getFactionAt(PS.valueOf(block));
 
 		// target end-of-the-line empty (air) block which is being pushed into, including if piston itself would extend into air
 		Block targetBlock = block.getRelative(event.getDirection(), event.getLength() + 1);
 
 		// members of faction might not have build rights in their own territory, but pistons should still work regardless; so, address that corner case
-		Faction targetFaction = BoardColls.get().getFactionAt(PS.valueOf(targetBlock));
+		Faction targetFaction = BoardColl.get().getFactionAt(PS.valueOf(targetBlock));
 		if (targetFaction == pistonFaction) return;
 
 		// if potentially pushing into air/water/lava in another territory, we need to check it out
@@ -878,10 +840,10 @@ public class FactionsListenerMain implements Listener
 		// if potentially retracted block is just air/water/lava, no worries
 		if (retractBlock.isEmpty() || retractBlock.isLiquid()) return;
 
-		Faction pistonFaction = BoardColls.get().getFactionAt(PS.valueOf(event.getBlock()));
+		Faction pistonFaction = BoardColl.get().getFactionAt(PS.valueOf(event.getBlock()));
 
 		// members of faction might not have build rights in their own territory, but pistons should still work regardless; so, address that corner case
-		Faction targetFaction = BoardColls.get().getFactionAt(retractPs);
+		Faction targetFaction = BoardColl.get().getFactionAt(retractPs);
 		if (targetFaction == pistonFaction) return;
 
 		if (!FPerm.BUILD.has(pistonFaction, targetFaction))
@@ -929,7 +891,7 @@ public class FactionsListenerMain implements Listener
 		String name = player.getName();
 		if (MConf.get().playersWhoBypassAllProtection.contains(name)) return true;
 
-		UPlayer uplayer = UPlayer.get(player);
+		MPlayer uplayer = MPlayer.get(player);
 		if (uplayer.isUsingAdminMode()) return true;
 		
 		return FPerm.BUILD.has(uplayer, ps, !justCheck);
@@ -940,7 +902,7 @@ public class FactionsListenerMain implements Listener
 		String name = player.getName();
 		if (MConf.get().playersWhoBypassAllProtection.contains(name)) return true;
 
-		UPlayer me = UPlayer.get(player);
+		MPlayer me = MPlayer.get(player);
 		if (me.isUsingAdminMode()) return true;
 		
 		PS ps = PS.valueOf(block);
@@ -986,13 +948,12 @@ public class FactionsListenerMain implements Listener
 	{
 		// If a player is respawning ...
 		final Player player = event.getPlayer();
-		final UPlayer uplayer = UPlayer.get(player);
-		final UConf uconf = UConf.get(player);
+		final MPlayer uplayer = MPlayer.get(player);
 		
 		// ... homes are enabled, active and at this priority ...
-		if (!uconf.homesEnabled) return;
-		if (!uconf.homesTeleportToOnDeathActive) return;
-		if (uconf.homesTeleportToOnDeathPriority != priority) return;
+		if (!MConf.get().homesEnabled) return;
+		if (!MConf.get().homesTeleportToOnDeathActive) return;
+		if (MConf.get().homesTeleportToOnDeathPriority != priority) return;
 		
 		// ... and the player has a faction ...
 		final Faction faction = uplayer.getFaction();

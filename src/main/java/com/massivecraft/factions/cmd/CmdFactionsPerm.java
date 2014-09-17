@@ -6,7 +6,6 @@ import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.cmd.arg.ARFPerm;
 import com.massivecraft.factions.cmd.arg.ARFaction;
 import com.massivecraft.factions.cmd.arg.ARRel;
-import com.massivecraft.factions.cmd.req.ReqFactionsEnabled;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.massivecore.cmd.arg.ARBoolean;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
@@ -31,7 +30,6 @@ public class CmdFactionsPerm extends FCommand
 		this.setErrorOnToManyArgs(false);
 
 		// Requirements
-		this.addRequirements(ReqFactionsEnabled.get());
 		this.addRequirements(ReqHasPerm.get(Perm.PERM.node));
 	}
 
@@ -42,7 +40,7 @@ public class CmdFactionsPerm extends FCommand
 	@Override
 	public void perform()
 	{
-		Faction faction = this.arg(0, ARFaction.get(usenderFaction), usenderFaction);
+		Faction faction = this.arg(0, ARFaction.get(), usenderFaction);
 		if (faction == null) return;
 		
 		if ( ! this.argIsSet(1))
@@ -88,7 +86,7 @@ public class CmdFactionsPerm extends FCommand
 		faction.setRelationPermitted(perm, rel, val);
 		
 		// The following is to make sure the leader always has the right to change perms if that is our goal.
-		if (perm == FPerm.PERMS && FPerm.PERMS.getDefault(faction).contains(Rel.LEADER))
+		if (perm == FPerm.PERMS && FPerm.PERMS.getDefault().contains(Rel.LEADER))
 		{
 			faction.setRelationPermitted(FPerm.PERMS, Rel.LEADER, true);
 		}

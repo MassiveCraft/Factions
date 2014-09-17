@@ -8,11 +8,10 @@ import com.massivecraft.factions.FFlag;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
-import com.massivecraft.factions.cmd.req.ReqFactionsEnabled;
 import com.massivecraft.factions.cmd.req.ReqHasFaction;
-import com.massivecraft.factions.entity.BoardColls;
-import com.massivecraft.factions.entity.UConf;
-import com.massivecraft.factions.entity.UPlayer;
+import com.massivecraft.factions.entity.BoardColl;
+import com.massivecraft.factions.entity.MConf;
+import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.event.EventFactionsHomeTeleport;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
@@ -34,7 +33,6 @@ public class CmdFactionsHome extends FCommand
 		this.addAliases("home");
 
 		// Requirements
-		this.addRequirements(ReqFactionsEnabled.get());
 		this.addRequirements(ReqHasPerm.get(Perm.HOME.node));
 		this.addRequirements(ReqHasFaction.get());
 		this.addRequirements(ReqIsPlayer.get());
@@ -47,16 +45,14 @@ public class CmdFactionsHome extends FCommand
 	@Override
 	public void perform()
 	{
-		UConf uconf = UConf.get(sender);
-		
 		// TODO: Hide this command on help also.
-		if ( ! uconf.homesEnabled)
+		if ( ! MConf.get().homesEnabled)
 		{
 			usender.msg("<b>Sorry, Faction homes are disabled on this server.");
 			return;
 		}
 
-		if ( ! uconf.homesTeleportCommandEnabled)
+		if ( ! MConf.get().homesTeleportCommandEnabled)
 		{
 			usender.msg("<b>Sorry, the ability to teleport to Faction homes is disabled on this server.");
 			return;
@@ -69,26 +65,26 @@ public class CmdFactionsHome extends FCommand
 			return;
 		}
 		
-		if ( ! uconf.homesTeleportAllowedFromEnemyTerritory && usender.isInEnemyTerritory())
+		if ( ! MConf.get().homesTeleportAllowedFromEnemyTerritory && usender.isInEnemyTerritory())
 		{
 			usender.msg("<b>You cannot teleport to your faction home while in the territory of an enemy faction.");
 			return;
 		}
 		
-		if (!uconf.homesTeleportAllowedFromDifferentWorld && !me.getWorld().getName().equalsIgnoreCase(usenderFaction.getHome().getWorld()))
+		if ( ! MConf.get().homesTeleportAllowedFromDifferentWorld && !me.getWorld().getName().equalsIgnoreCase(usenderFaction.getHome().getWorld()))
 		{
 			usender.msg("<b>You cannot teleport to your faction home while in a different world.");
 			return;
 		}
 		
 		
-		Faction faction = BoardColls.get().getFactionAt(PS.valueOf(me));
+		Faction faction = BoardColl.get().getFactionAt(PS.valueOf(me));
 		Location loc = me.getLocation().clone();
 		
 		// if player is not in a safe zone or their own faction territory, only allow teleport if no enemies are nearby
 		if
 		(
-				uconf.homesTeleportAllowedEnemyDistance > 0
+			MConf.get().homesTeleportAllowedEnemyDistance > 0
 			&&
 			faction.getFlag(FFlag.PVP)
 			&&
@@ -98,7 +94,7 @@ public class CmdFactionsHome extends FCommand
 				(
 					usender.isInOwnTerritory()
 					&&
-					! uconf.homesTeleportIgnoreEnemiesIfInOwnTerritory
+					! MConf.get().homesTeleportIgnoreEnemiesIfInOwnTerritory
 				)
 			)
 		)
@@ -113,7 +109,7 @@ public class CmdFactionsHome extends FCommand
 				if (p == null || !p.isOnline() || p.isDead() || p == me || p.getWorld() != w)
 					continue;
 
-				UPlayer fp = UPlayer.get(p);
+				MPlayer fp = MPlayer.get(p);
 				if (usender.getRelationTo(fp) != Rel.ENEMY)
 					continue;
 
@@ -121,13 +117,13 @@ public class CmdFactionsHome extends FCommand
 				double dx = Math.abs(x - l.getX());
 				double dy = Math.abs(y - l.getY());
 				double dz = Math.abs(z - l.getZ());
-				double max = uconf.homesTeleportAllowedEnemyDistance;
+				double max = MConf.get().homesTeleportAllowedEnemyDistance;
 
 				// box-shaped distance check
 				if (dx > max || dy > max || dz > max)
 					continue;
 
-				usender.msg("<b>You cannot teleport to your faction home while an enemy is within " + uconf.homesTeleportAllowedEnemyDistance + " blocks of you.");
+				usender.msg("<b>You cannot teleport to your faction home while an enemy is within " + MConf.get().homesTeleportAllowedEnemyDistance + " blocks of you.");
 				return;
 			}
 		}
