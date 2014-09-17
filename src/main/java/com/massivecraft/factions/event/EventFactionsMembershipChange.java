@@ -27,8 +27,8 @@ public class EventFactionsMembershipChange extends EventFactionsAbstractSender
 		super.setCancelled(cancelled);		
 	}
 	
-	private final MPlayer uplayer;
-	public MPlayer getUPlayer() { return this.uplayer; }
+	private final MPlayer mplayer;
+	public MPlayer getMPlayer() { return this.mplayer; }
 	
 	private final Faction newFaction;
 	public Faction getNewFaction() { return this.newFaction; }
@@ -40,10 +40,10 @@ public class EventFactionsMembershipChange extends EventFactionsAbstractSender
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public EventFactionsMembershipChange(CommandSender sender, MPlayer uplayer, Faction newFaction, MembershipChangeReason reason)
+	public EventFactionsMembershipChange(CommandSender sender, MPlayer mplayer, Faction newFaction, MembershipChangeReason reason)
 	{
 		super(sender);
-		this.uplayer = uplayer;
+		this.mplayer = mplayer;
 		this.newFaction = newFaction;
 		this.reason = reason;
 	}

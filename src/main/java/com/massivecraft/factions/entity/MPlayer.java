@@ -77,7 +77,7 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 		
 		// ... update the index.
 		Faction faction = this.getFaction();
-		faction.uplayers.add(this);
+		faction.mplayers.add(this);
 		
 		//Factions.get().log(Txt.parse("<g>postAttach added <h>%s <i>aka <h>%s <i>to <h>%s <i>aka <h>%s<i>.", id, Mixin.getDisplayName(id), faction.getId(), faction.getName()));
 	}
@@ -90,7 +90,7 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 		
 		// ... update the index.
 		Faction faction = this.getFaction();
-		faction.uplayers.remove(this);
+		faction.mplayers.remove(this);
 		
 		//Factions.get().log(Txt.parse("<b>preDetach removed <h>%s <i>aka <h>%s <i>to <h>%s <i>aka <h>%s<i>.", id, Mixin.getDisplayName(id), faction.getId(), faction.getName()));
 	}
@@ -140,7 +140,7 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 	// Null means false
 	private Boolean usingAdminMode = null;
 	
-	// The id for the faction this uplayer is currently autoclaiming for.
+	// The id for the faction this player is currently autoclaiming for.
 	// NOTE: This field will not be saved to the database ever.
 	// Null means the player isn't auto claiming.
 	private transient Faction autoClaimFaction = null;
@@ -214,8 +214,8 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 		Faction oldFaction = Faction.get(oldFactionId);
 		Faction faction = this.getFaction();
 		
-		if (oldFaction != null) oldFaction.uplayers.remove(this);
-		if (faction != null) faction.uplayers.add(this);
+		if (oldFaction != null) oldFaction.mplayers.remove(this);
+		if (faction != null) faction.mplayers.add(this);
 		
 		String oldFactionIdDesc = "NULL";
 		String oldFactionNameDesc = "NULL";
@@ -556,9 +556,9 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 	{
 		return this.getNameAndTitle(this.getColorTo(faction).toString());
 	}
-	public String getNameAndTitle(MPlayer uplayer)
+	public String getNameAndTitle(MPlayer mplayer)
 	{
-		return this.getNameAndTitle(this.getColorTo(uplayer).toString());
+		return this.getNameAndTitle(this.getColorTo(mplayer).toString());
 	}
 	
 	// -------------------------------------------- //
@@ -637,7 +637,7 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 
 		boolean permanent = myFaction.getFlag(FFlag.PERMANENT);
 		
-		if (myFaction.getUPlayers().size() > 1)
+		if (myFaction.getMPlayers().size() > 1)
 		{
 			if (!permanent && this.getRole() == Rel.LEADER)
 			{
@@ -659,9 +659,9 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 		
 		if (myFaction.isNormal())
 		{
-			for (MPlayer uplayer : myFaction.getUPlayersWhereOnline(true))
+			for (MPlayer mplayer : myFaction.getMPlayersWhereOnline(true))
 			{
-				uplayer.msg("%s<i> left %s<i>.", this.describeTo(uplayer, true), myFaction.describeTo(uplayer));
+				mplayer.msg("%s<i> left %s<i>.", this.describeTo(mplayer, true), myFaction.describeTo(mplayer));
 			}
 
 			if (MConf.get().logFactionLeave)
@@ -672,7 +672,7 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 		
 		this.resetFactionData();
 
-		if (myFaction.isNormal() && !permanent && myFaction.getUPlayers().isEmpty())
+		if (myFaction.isNormal() && !permanent && myFaction.getMPlayers().isEmpty())
 		{
 			// Remove this faction
 			for (MPlayer mplayer : MPlayerColl.get().getAllOnline())
@@ -717,7 +717,7 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 					return false;
 				}
 				
-				if (newFaction.getUPlayers().size() < mconf.claimsRequireMinFactionMembers)
+				if (newFaction.getMPlayers().size() < mconf.claimsRequireMinFactionMembers)
 				{
 					msg("Factions must have at least <h>%s<b> members to claim land.", mconf.claimsRequireMinFactionMembers);
 					return false;
@@ -804,11 +804,11 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 		informees.add(this);
 		if (newFaction.isNormal())
 		{
-			informees.addAll(newFaction.getUPlayers());
+			informees.addAll(newFaction.getMPlayers());
 		}
 		if (oldFaction.isNormal())
 		{
-			informees.addAll(oldFaction.getUPlayers());
+			informees.addAll(oldFaction.getMPlayers());
 		}
 		if (MConf.get().logLandClaims)
 		{

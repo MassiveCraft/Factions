@@ -4,7 +4,7 @@ import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.entity.MPlayerColl;
 import com.massivecraft.massivecore.cmd.arg.ArgReader;
 
-public class ARUPlayer
+public class ARMPlayer
 {
 	// -------------------------------------------- //
 	// INSTANCE

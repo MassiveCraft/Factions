@@ -2,7 +2,7 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
-import com.massivecraft.factions.cmd.arg.ARUPlayer;
+import com.massivecraft.factions.cmd.arg.ARMPlayer;
 import com.massivecraft.factions.cmd.arg.ARFaction;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.entity.Faction;
@@ -38,7 +38,7 @@ public class CmdFactionsLeader extends FCommand
 	@Override
 	public void perform()
 	{
-		MPlayer newLeader = this.arg(0, ARUPlayer.getAny());
+		MPlayer newLeader = this.arg(0, ARMPlayer.getAny());
 		if (newLeader == null) return;
 		
 		Faction targetFaction = this.arg(1, ARFaction.get(), usenderFaction);
@@ -46,7 +46,7 @@ public class CmdFactionsLeader extends FCommand
 		
 		MPlayer targetFactionCurrentLeader = targetFaction.getLeader();
 		
-		// We now have uplayer and the target faction
+		// We now have mplayer and the target faction
 		if (this.senderIsConsole || usender.isUsingAdminMode() || Perm.LEADER_ANY.has(sender, false))
 		{
 			// Do whatever you wish
@@ -100,9 +100,9 @@ public class CmdFactionsLeader extends FCommand
 		msg("<i>You have promoted %s<i> to the position of faction leader.", newLeader.describeTo(usender, true));
 		
 		// Inform all players
-		for (MPlayer uplayer : MPlayerColl.get().getAllOnline())
+		for (MPlayer mplayer : MPlayerColl.get().getAllOnline())
 		{
-			uplayer.msg("%s<i> gave %s<i> the leadership of %s<i>.", senderIsConsole ? "A server admin" : RelationUtil.describeThatToMe(usender, uplayer, true), newLeader.describeTo(uplayer), targetFaction.describeTo(uplayer));
+			mplayer.msg("%s<i> gave %s<i> the leadership of %s<i>.", senderIsConsole ? "A server admin" : RelationUtil.describeThatToMe(usender, mplayer, true), newLeader.describeTo(mplayer), targetFaction.describeTo(mplayer));
 		}
 	}
 	

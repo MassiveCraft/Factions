@@ -50,7 +50,7 @@ public class CmdFactionsDescription extends FCommand
 		usenderFaction.setDescription(newDescription);
 		
 		// Inform
-		for (MPlayer follower : usenderFaction.getUPlayers())
+		for (MPlayer follower : usenderFaction.getMPlayers())
 		{
 			follower.msg("<i>%s <i>set your faction description to:\n%s", Mixin.getDisplayName(sender, follower), usenderFaction.getDescription());
 		}

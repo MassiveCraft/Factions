@@ -30,14 +30,14 @@ public class MPlayerColl extends SenderColl<MPlayer>
 	public void clean()
 	{
 		String universe = this.getUniverse();
-		for (MPlayer uplayer : this.getAll())
+		for (MPlayer mplayer : this.getAll())
 		{
-			String factionId = uplayer.getFactionId();
+			String factionId = mplayer.getFactionId();
 			if (FactionColl.get().containsId(factionId)) continue;
 			
-			uplayer.resetFactionData();
+			mplayer.resetFactionData();
 			
-			String message = Txt.parse("<i>Reset data for <h>%s <i>in <h>%s <i>universe. Unknown factionId <h>%s", uplayer.getDisplayName(IdUtil.getConsole()), universe, factionId);
+			String message = Txt.parse("<i>Reset data for <h>%s <i>in <h>%s <i>universe. Unknown factionId <h>%s", mplayer.getDisplayName(IdUtil.getConsole()), universe, factionId);
 			Factions.get().log(message);
 		}
 	}
@@ -49,31 +49,31 @@ public class MPlayerColl extends SenderColl<MPlayer>
 		long now = System.currentTimeMillis();
 		double toleranceMillis = MConf.get().removePlayerDataAfterInactiveDays * TimeUnit.MILLIS_PER_DAY;
 		
-		for (MPlayer uplayer : this.getAll())
+		for (MPlayer mplayer : this.getAll())
 		{
-			Long lastPlayed = Mixin.getLastPlayed(uplayer.getId());
+			Long lastPlayed = Mixin.getLastPlayed(mplayer.getId());
 			if (lastPlayed == null) continue;
 			
-			if (uplayer.isOnline()) continue;
+			if (mplayer.isOnline()) continue;
 			if (now - lastPlayed <= toleranceMillis) continue;
 			
 			if (MConf.get().logFactionLeave || MConf.get().logFactionKick)
 			{
-				Factions.get().log("Player "+uplayer.getName()+" was auto-removed due to inactivity.");
+				Factions.get().log("Player "+mplayer.getName()+" was auto-removed due to inactivity.");
 			}
 
 			// if player is faction leader, sort out the faction since he's going away
-			if (uplayer.getRole() == Rel.LEADER)
+			if (mplayer.getRole() == Rel.LEADER)
 			{
-				Faction faction = uplayer.getFaction();
+				Faction faction = mplayer.getFaction();
 				if (faction != null)
 				{
-					uplayer.getFaction().promoteNewLeader();
+					mplayer.getFaction().promoteNewLeader();
 				}
 			}
 
-			uplayer.leave();
-			uplayer.detach();
+			mplayer.leave();
+			mplayer.detach();
 		}
 	}
 	
@@ -89,18 +89,18 @@ public class MPlayerColl extends SenderColl<MPlayer>
 		if ( ! oldFile.exists()) return;
 		
 		// Read the file content through GSON.
-		Type type = new TypeToken<Map<String, UPlayer>>(){}.getType();
-		Map<String, UPlayer> id2uplayer = Factions.get().gson.fromJson(DiscUtil.readCatch(oldFile), type);
+		Type type = new TypeToken<Map<String, MPlayer>>(){}.getType();
+		Map<String, MPlayer> id2mplayer = Factions.get().gson.fromJson(DiscUtil.readCatch(oldFile), type);
 		
 		// The Coll
-		UPlayerColl coll = this.getForUniverse(MassiveCore.DEFAULT);
+		MPlayerColl coll = this.getForUniverse(MassiveCore.DEFAULT);
 		
 		// Set the data
-		for (Entry<String, UPlayer> entry : id2uplayer.entrySet())
+		for (Entry<String, MPlayer> entry : id2mplayer.entrySet())
 		{
 			String playerId = entry.getKey();
-			UPlayer uplayer = entry.getValue();
-			coll.attach(uplayer, playerId);
+			MPlayer mplayer = entry.getValue();
+			coll.attach(mplayer, playerId);
 		}
 		
 		// Mark as migrated
@@ -113,7 +113,7 @@ public class MPlayerColl extends SenderColl<MPlayer>
 	
 	public void clean()
 	{
-		for (UPlayerColl coll : this.getColls())
+		for (MPlayerColl coll : this.getColls())
 		{
 			coll.clean();
 		}

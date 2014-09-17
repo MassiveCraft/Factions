@@ -4,7 +4,7 @@ import org.bukkit.ChatColor;
 
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
-import com.massivecraft.factions.cmd.arg.ARUPlayer;
+import com.massivecraft.factions.cmd.arg.ARMPlayer;
 import com.massivecraft.factions.cmd.req.ReqRoleIsAtLeast;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.event.EventFactionsTitleChange;
@@ -40,7 +40,7 @@ public class CmdFactionsTitle extends FCommand
 	public void perform()
 	{
 		// Args
-		MPlayer you = this.arg(0, ARUPlayer.getAny());
+		MPlayer you = this.arg(0, ARMPlayer.getAny());
 		if (you == null) return;
 		
 		String newTitle = this.argConcatFrom(1, ARString.get(), "");

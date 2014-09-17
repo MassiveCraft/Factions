@@ -652,11 +652,11 @@ public class EngineDynmap extends EngineAbstract
 		
 		Set<String> ret = new HashSet<String>();
 		
-		for (MPlayer uplayer : faction.getUPlayers())
+		for (MPlayer mplayer : faction.getMPlayers())
 		{
 			// NOTE: We add both UUID and name. This might be a good idea for future proofing.
-			ret.add(uplayer.getId());
-			ret.add(uplayer.getName());
+			ret.add(mplayer.getId());
+			ret.add(mplayer.getName());
 		}
 		
 		return ret;
@@ -779,22 +779,22 @@ public class EngineDynmap extends EngineAbstract
 		}
 		
 		// Players
-		List<MPlayer> playersList = faction.getUPlayers();
+		List<MPlayer> playersList = faction.getMPlayers();
 		String playersCount = String.valueOf(playersList.size());
 		String players = getPlayerString(playersList);
 		
 		MPlayer playersLeaderObject = faction.getLeader();
 		String playersLeader = getPlayerName(playersLeaderObject);
 		
-		List<MPlayer> playersOfficersList = faction.getUPlayersWhereRole(Rel.OFFICER);
+		List<MPlayer> playersOfficersList = faction.getMPlayersWhereRole(Rel.OFFICER);
 		String playersOfficersCount = String.valueOf(playersOfficersList.size());
 		String playersOfficers = getPlayerString(playersOfficersList);
 		
-		List<MPlayer> playersMembersList = faction.getUPlayersWhereRole(Rel.MEMBER);
+		List<MPlayer> playersMembersList = faction.getMPlayersWhereRole(Rel.MEMBER);
 		String playersMembersCount = String.valueOf(playersMembersList.size());
 		String playersMembers = getPlayerString(playersMembersList);
 		
-		List<MPlayer> playersRecruitsList = faction.getUPlayersWhereRole(Rel.RECRUIT);
+		List<MPlayer> playersRecruitsList = faction.getMPlayersWhereRole(Rel.RECRUIT);
 		String playersRecruitsCount = String.valueOf(playersRecruitsList.size());
 		String playersRecruits = getPlayerString(playersRecruitsList);
 		
@@ -812,21 +812,21 @@ public class EngineDynmap extends EngineAbstract
 		return ret;
 	}
 	
-	public static String getPlayerString(List<MPlayer> uplayers)
+	public static String getPlayerString(List<MPlayer> mplayers)
 	{
 		String ret = "";
-		for (MPlayer uplayer : uplayers)
+		for (MPlayer mplayer : mplayers)
 		{
 			if (ret.length() > 0) ret += ", ";
-			ret += getPlayerName(uplayer);
+			ret += getPlayerName(mplayer);
 		}
 		return ret;
 	}
 	
-	public static String getPlayerName(MPlayer uplayer)
+	public static String getPlayerName(MPlayer mplayer)
 	{
-		if (uplayer == null) return "none";
-		return escapeHtml(uplayer.getName());
+		if (mplayer == null) return "none";
+		return escapeHtml(mplayer.getName());
 	}
 	
 	public static String boolcolor(String string, boolean bool)

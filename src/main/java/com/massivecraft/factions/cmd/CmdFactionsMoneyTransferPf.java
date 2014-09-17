@@ -1,7 +1,7 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Perm;
-import com.massivecraft.factions.cmd.arg.ARUPlayer;
+import com.massivecraft.factions.cmd.arg.ARMPlayer;
 import com.massivecraft.factions.cmd.arg.ARFaction;
 import com.massivecraft.factions.cmd.req.ReqBankCommandsEnabled;
 import com.massivecraft.factions.entity.MPlayer;
@@ -48,7 +48,7 @@ public class CmdFactionsMoneyTransferPf extends FCommand
 		Double amount = this.arg(0, ARDouble.get());
 		if (amount == null) return;
 		
-		MPlayer from = this.arg(1, ARUPlayer.getAny());
+		MPlayer from = this.arg(1, ARMPlayer.getAny());
 		if (from == null) return;
 		
 		Faction to = this.arg(2, ARFaction.get());

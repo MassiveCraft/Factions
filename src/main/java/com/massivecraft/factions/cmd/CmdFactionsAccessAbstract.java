@@ -43,7 +43,7 @@ public abstract class CmdFactionsAccessAbstract extends FCommand
 	{
 		chunk = PS.valueOf(me).getChunk(true);
 		ta = BoardColl.get().getTerritoryAccessAt(chunk);
-		hostFaction = ta.getHostFaction(usender);
+		hostFaction = ta.getHostFaction();
 		
 		this.innerPerform();
 	}
@@ -55,8 +55,8 @@ public abstract class CmdFactionsAccessAbstract extends FCommand
 		sendMessage(Txt.titleize("Access at " + chunk.toString(PSFormatHumanSpace.get())));
 		msg("<k>Host Faction: %s", hostFaction.describeTo(usender, true));
 		msg("<k>Host Faction Allowed: %s", ta.isHostFactionAllowed() ? Txt.parse("<lime>TRUE") : Txt.parse("<rose>FALSE"));
-		msg("<k>Granted Players: %s", describeRelationParticipators(ta.getGrantedUPlayers(usender), usender));
-		msg("<k>Granted Factions: %s", describeRelationParticipators(ta.getGrantedFactions(usender), usender));
+		msg("<k>Granted Players: %s", describeRelationParticipators(ta.getGrantedMPlayers(), usender));
+		msg("<k>Granted Factions: %s", describeRelationParticipators(ta.getGrantedFactions(), usender));
 	}
 	
 	public static String describeRelationParticipators(Collection<? extends RelationParticipator> relationParticipators, RelationParticipator observer)

@@ -35,8 +35,8 @@ public class FactionEqualsPredictate implements Predictate<CommandSender>, Seria
 	@Override
 	public boolean apply(CommandSender sender)
 	{
-		MPlayer uplayer = MPlayer.get(sender);
-		return this.factionId.equals(uplayer.getFactionId());
+		MPlayer mplayer = MPlayer.get(sender);
+		return this.factionId.equals(mplayer.getFactionId());
 	}
 
 }

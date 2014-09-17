@@ -145,7 +145,7 @@ public class CmdFactionsFaction extends FCommand
 		List<String> followerNamesOnline = new ArrayList<String>();
 		List<String> followerNamesOffline = new ArrayList<String>();
 		
-		List<MPlayer> followers = faction.getUPlayers();
+		List<MPlayer> followers = faction.getMPlayers();
 		Collections.sort(followers, PlayerRoleComparator.get());
 		
 		for (MPlayer follower : followers)

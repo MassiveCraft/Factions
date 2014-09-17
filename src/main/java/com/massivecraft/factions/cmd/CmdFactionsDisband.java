@@ -64,23 +64,23 @@ public class CmdFactionsDisband extends FCommand
 		// Merged Apply and Inform
 		
 		// Run event for each player in the faction
-		for (MPlayer uplayer : faction.getUPlayers())
+		for (MPlayer mplayer : faction.getMPlayers())
 		{
-			EventFactionsMembershipChange membershipChangeEvent = new EventFactionsMembershipChange(sender, uplayer, FactionColl.get().getNone(), MembershipChangeReason.DISBAND);
+			EventFactionsMembershipChange membershipChangeEvent = new EventFactionsMembershipChange(sender, mplayer, FactionColl.get().getNone(), MembershipChangeReason.DISBAND);
 			membershipChangeEvent.run();
 		}
 
 		// Inform all players
-		for (MPlayer uplayer : MPlayerColl.get().getAllOnline())
+		for (MPlayer mplayer : MPlayerColl.get().getAllOnline())
 		{
-			String who = usender.describeTo(uplayer);
-			if (uplayer.getFaction() == faction)
+			String who = usender.describeTo(mplayer);
+			if (mplayer.getFaction() == faction)
 			{
-				uplayer.msg("<h>%s<i> disbanded your faction.", who);
+				mplayer.msg("<h>%s<i> disbanded your faction.", who);
 			}
 			else
 			{
-				uplayer.msg("<h>%s<i> disbanded the faction %s.", who, faction.getName(uplayer));
+				mplayer.msg("<h>%s<i> disbanded the faction %s.", who, faction.getName(mplayer));
 			}
 		}
 		
