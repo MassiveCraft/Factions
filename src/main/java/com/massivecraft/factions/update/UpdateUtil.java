@@ -45,6 +45,8 @@ public class UpdateUtil
 		
 		// ... transfer the old uconf data over to the new mconf ...
 		oldConf.transferTo(MConf.get());
+		MConf.get().changed();
+		MConf.get().sync();
 		
 		// ... rename target collections ...
 		Db db = MStore.getDb();

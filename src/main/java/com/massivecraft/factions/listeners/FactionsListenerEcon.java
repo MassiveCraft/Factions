@@ -62,7 +62,9 @@ public class FactionsListenerEcon implements Listener
 		if (oldFaction.getMPlayers().size() > 1) return;
 		
 		// ... then transfer all money to the player. 
-		Econ.transferMoney(mplayer, oldFaction, mplayer, Money.get(oldFaction));
+		double money = Money.get(oldFaction);
+		if (money == 0) return;
+		Econ.transferMoney(mplayer, oldFaction, mplayer, money);
 	}
 	
 	// -------------------------------------------- //
