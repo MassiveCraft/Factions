@@ -422,6 +422,8 @@ public class MConf extends Entity<MConf>
 		EventFactionsChunkChangeType.PILLAGE, false
 	);
 	
+	public boolean lwcLeaderAccess = true;
+	
 	// -------------------------------------------- //
 	// INTEGRATION: ECONOMY
 	// -------------------------------------------- //

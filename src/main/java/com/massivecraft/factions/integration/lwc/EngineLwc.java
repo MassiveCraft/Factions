@@ -15,9 +15,11 @@ import org.bukkit.event.Listener;
 
 import com.griefcraft.lwc.LWC;
 import com.griefcraft.model.Protection;
+import com.griefcraft.scripting.Module;
 import com.griefcraft.scripting.event.LWCProtectionRegisterEvent;
 import com.griefcraft.scripting.event.LWCBlockInteractEvent;
 import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.entity.BoardColl;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.entity.MPlayer;
@@ -83,6 +85,15 @@ public class EngineLwc implements Listener
 		// Find existing protected block
 		Protection protection = event.getLWC().findProtection(event.getBlock());
 		if (protection == null) return;
+		
+		Faction faction = BoardColl.get().getFactionAt(PS.valueOf(event.getBlock()));
+		MPlayer mplayer = MPlayer.get(event.getPlayer());
+		
+		// LWC Leader Access option
+		if (MConf.get().lwcLeaderAccess && !event.getResult().equals(Module.Result.ALLOW) && faction.getLeader().equals(mplayer))
+		{
+			event.setResult(Module.Result.ALLOW);
+		}
 		
 		// Check if the owner can build here
 		if (FactionsListenerMain.canPlayerBuildAt(protection.getBukkitOwner(), PS.valueOf(event.getBlock()), false)) return;
