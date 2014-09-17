@@ -81,7 +81,8 @@ public class EngineLwc implements Listener
 		Boolean notAllowedHere = false;
 		
 		// Are they allowed to have LWC protections in this faction land 
-		if(MConf.get().lwcDisallowIn.contains(factionHere.getId())) {
+		if (MConf.get().lwcDisallowIn.contains(factionHere.getId()))
+		{
 			notAllowedHere = true;
 		}
 		
@@ -91,17 +92,23 @@ public class EngineLwc implements Listener
 				factionHere.getId().equals(MConf.get().factionIdSafezone) ||
 				factionHere.getId().equals(MConf.get().factionIdWarzone);
 		
-		if(!ignore) {
-			if(!MConf.get().lwcAllowIn.containsKey(relation)) {
+		if ( ! ignore)
+		{
+			if (!MConf.get().lwcAllowIn.containsKey(relation))
+			{
 				notAllowedHere = true;
-			} else {
-				if(!MConf.get().lwcAllowIn.get(relation)) {
+			}
+			else
+			{
+				if(!MConf.get().lwcAllowIn.get(relation))
+				{
 					notAllowedHere = true;
 				}
 			}
 		}
 		
-		if(notAllowedHere) {
+		if (notAllowedHere)
+		{
 			event.setCancelled(true);
 			mplayer.msg(Txt.parse("<red>You cannot create this LWC protection in this faction."));
 		}
@@ -124,15 +131,19 @@ public class EngineLwc implements Listener
 			Boolean passRelationTest = true;
 			
 			// If the relationship isn't in the MConf, consider it failed
-			if(!MConf.get().lwcAllowIn.containsKey(rel)) {
+			if ( ! MConf.get().lwcAllowIn.containsKey(rel))
+			{
 				passRelationTest = false;
-			} else {
-				if(!MConf.get().lwcAllowIn.get(rel)) {
+			}
+			else
+			{
+				if ( ! MConf.get().lwcAllowIn.get(rel))
+				{
 					passRelationTest = false;
 				}
 			}
 			
-			if(!passRelationTest) continue;
+			if ( ! passRelationTest) continue;
 			
 			protection.remove();
 		}

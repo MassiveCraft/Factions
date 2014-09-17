@@ -435,7 +435,6 @@ public class MConf extends Entity<MConf>
 		MConf.get().factionIdNone
 	);
 	
-	
 	// -------------------------------------------- //
 	// INTEGRATION: ECONOMY
 	// -------------------------------------------- //
