@@ -102,7 +102,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	// Can anyone join the Faction?
 	// If the faction is open they can.
 	// If the faction is closed an invite is required.
-	// Null means default for the universe.
+	// Null means default.
 	private Boolean open = null;
 	
 	// This is the ids of the invited players.
@@ -115,11 +115,11 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	private Map<String, Rel> relationWishes = null;
 	
 	// The flag overrides are modifications to the default values.
-	// Null means default for the universe.
+	// Null means default.
 	private Map<FFlag, Boolean> flags = null;
 
 	// The perm overrides are modifications to the default values.
-	// Null means default for the universe.
+	// Null means default.
 	private Map<FPerm, Set<Rel>> perms = null;
 	
 	// -------------------------------------------- //

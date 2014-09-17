@@ -91,7 +91,7 @@ public class TerritoryAccess
 	}
 	
 	// -------------------------------------------- //
-	// FIELDS: UNIVERSED
+	// FIELDS: DIRECT
 	// -------------------------------------------- //
 	
 	public Faction getHostFaction()

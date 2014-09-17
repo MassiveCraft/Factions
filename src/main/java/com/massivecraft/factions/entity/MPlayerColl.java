@@ -29,7 +29,6 @@ public class MPlayerColl extends SenderColl<MPlayer>
 	
 	public void clean()
 	{
-		String universe = this.getUniverse();
 		for (MPlayer mplayer : this.getAll())
 		{
 			String factionId = mplayer.getFactionId();
@@ -37,7 +36,7 @@ public class MPlayerColl extends SenderColl<MPlayer>
 			
 			mplayer.resetFactionData();
 			
-			String message = Txt.parse("<i>Reset data for <h>%s <i>in <h>%s <i>universe. Unknown factionId <h>%s", mplayer.getDisplayName(IdUtil.getConsole()), universe, factionId);
+			String message = Txt.parse("<i>Reset data for <h>%s <i>. Unknown factionId <h>%s", mplayer.getDisplayName(IdUtil.getConsole()), factionId);
 			Factions.get().log(message);
 		}
 	}

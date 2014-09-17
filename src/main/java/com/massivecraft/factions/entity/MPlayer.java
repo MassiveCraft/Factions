@@ -103,11 +103,11 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 	
 	// This is a foreign key.
 	// Each player belong to a faction.
-	// Null means default for the universe.
+	// Null means default.
 	private String factionId = null;
 	
 	// What role does the player have in the faction?
-	// Null means default for the universe.
+	// Null means default.
 	private Rel role = null;
 	
 	// What title does the player have in the faction?
@@ -129,7 +129,7 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 	// Each player has an individual power level.
 	// The power level for online players is occasionally updated by a recurring task and the power should stay the same for offline players.
 	// For that reason the value is to be considered correct when you pick it. Do not call the power update method.
-	// Null means default for the universe.
+	// Null means default.
 	private Double power = null;
 	
 	// Has this player requested an auto-updating ascii art map?

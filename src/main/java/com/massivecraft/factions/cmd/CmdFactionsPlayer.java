@@ -41,7 +41,7 @@ public class CmdFactionsPlayer extends FCommand
 		if (mplayer == null) return;
 		
 		// INFO: Title
-		msg(Txt.titleize(Txt.upperCaseFirst(mplayer.getUniverse()) + " Player " + mplayer.describeTo(usender)));
+		msg(Txt.titleize("Player " + mplayer.describeTo(usender)));
 		
 		// INFO: Power (as progress bar)
 		double progressbarQuota = mplayer.getPower() / mplayer.getPowerMax();

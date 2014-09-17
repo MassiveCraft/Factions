@@ -57,7 +57,7 @@ public class CmdFactionsFaction extends FCommand
 		boolean normal = faction.isNormal();
 		
 		// INFO: Title
-		msg(Txt.titleize(Txt.upperCaseFirst(faction.getUniverse()) + " Faction " + faction.getName(usender)));
+		msg(Txt.titleize("Faction " + faction.getName(usender)));
 		
 		// INFO: Description
 		msg("<a>Description: <i>%s", faction.getDescription());	
