@@ -422,20 +422,6 @@ public class MConf extends Entity<MConf>
 		EventFactionsChunkChangeType.PILLAGE, false
 	);
 	
-	public Map<Rel, Boolean> lwcAllowIn = MUtil.map(
-		Rel.ALLY, false,
-		Rel.ENEMY, false,
-		Rel.NEUTRAL, false,
-		Rel.TRUCE, false
-	);
-	
-	public Set<String> lwcDisallowIn = MUtil.set(
-		MConf.get().factionIdWarzone,
-		MConf.get().factionIdSafezone,
-		MConf.get().factionIdNone
-	);
-	
-	
 	// -------------------------------------------- //
 	// INTEGRATION: ECONOMY
 	// -------------------------------------------- //

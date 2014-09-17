@@ -458,7 +458,7 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 	{
 		// Clean input
 		Boolean target = mapAutoUpdating;
-		if (target == false) target = null;
+		if (MUtil.equals(target, false)) target = null;
 		
 		// Detect Nochange
 		if (MUtil.equals(this.mapAutoUpdating, target)) return;
@@ -492,7 +492,7 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 	{
 		// Clean input
 		Boolean target = usingAdminMode;
-		if (target == false) target = null;
+		if (MUtil.equals(target, false)) target = null;
 		
 		// Detect Nochange
 		if (MUtil.equals(this.usingAdminMode, target)) return;
