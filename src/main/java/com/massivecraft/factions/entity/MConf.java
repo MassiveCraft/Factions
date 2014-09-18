@@ -128,12 +128,6 @@ public class MConf extends Entity<MConf>
 	public boolean factionNameForceUpperCase = false;
 	
 	// -------------------------------------------- //
-	// MESSAGES
-	// -------------------------------------------- //
-	
-	public boolean broadcastNameChange = false;
-	
-	// -------------------------------------------- //
 	// CLAIM LIMITS
 	// -------------------------------------------- //
 	

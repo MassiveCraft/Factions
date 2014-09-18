@@ -6,9 +6,7 @@ import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.cmd.req.ReqHasFaction;
 import com.massivecraft.factions.cmd.req.ReqRoleIsAtLeast;
-import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.FactionColl;
-import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.event.EventFactionsNameChange;
 import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
@@ -66,21 +64,10 @@ public class CmdFactionsName extends FactionsCommand
 		newName = event.getNewName();
 
 		// Apply
-		String oldName = msenderFaction.getName();
 		msenderFaction.setName(newName);
 
 		// Inform
 		msenderFaction.msg("%s<i> changed your faction name to %s", msender.describeTo(msenderFaction, true), msenderFaction.getName(msenderFaction));
-		
-		if (!MConf.get().broadcastNameChange) return;
-		for (Faction faction : FactionColl.get().getAll())
-		{
-			if (faction == msenderFaction)
-			{
-				continue;
-			}
-			faction.msg("<i>The player %s<i> changed their faction name from %s<i> to %s<i>.", msender.describeTo(faction, true), msender.getColorTo(faction)+oldName, msenderFaction.getName(faction));
-		}
 	}
 	
 }
