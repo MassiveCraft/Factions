@@ -11,7 +11,7 @@ import com.massivecraft.massivecore.util.TimeDiffUtil;
 import com.massivecraft.massivecore.util.TimeUnit;
 import com.massivecraft.massivecore.util.Txt;
 
-public class CmdFactionsPlayer extends FCommand
+public class CmdFactionsPlayer extends FactionsCommand
 {
 	// -------------------------------------------- //
 	// CONSTRUCT
@@ -37,11 +37,11 @@ public class CmdFactionsPlayer extends FCommand
 	public void perform()
 	{
 		// Args
-		MPlayer mplayer = this.arg(0, ARMPlayer.getAny(), usender);
+		MPlayer mplayer = this.arg(0, ARMPlayer.getAny(), msender);
 		if (mplayer == null) return;
 		
 		// INFO: Title
-		msg(Txt.titleize("Player " + mplayer.describeTo(usender)));
+		msg(Txt.titleize("Player " + mplayer.describeTo(msender)));
 		
 		// INFO: Power (as progress bar)
 		double progressbarQuota = mplayer.getPower() / mplayer.getPowerMax();

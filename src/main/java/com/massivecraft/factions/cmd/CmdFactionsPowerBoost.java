@@ -9,7 +9,7 @@ import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.massivecore.cmd.arg.ARDouble;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 
-public class CmdFactionsPowerBoost extends FCommand
+public class CmdFactionsPowerBoost extends FactionsCommand
 {
 	// -------------------------------------------- //
 	// CONSTRUCT
@@ -72,7 +72,7 @@ public class CmdFactionsPowerBoost extends FCommand
 		}
 
 		msg("<i>"+target+" now has a power bonus/penalty of "+targetPower+" to min and max power levels.");
-		Factions.get().log(usender.getName()+" has set the power bonus/penalty for "+target+" to "+targetPower+".");
+		Factions.get().log(msender.getName()+" has set the power bonus/penalty for "+target+" to "+targetPower+".");
 	}
 	
 }

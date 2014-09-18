@@ -7,7 +7,7 @@ import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 
-public class CmdFactionsMoneyBalance extends FCommand
+public class CmdFactionsMoneyBalance extends FactionsCommand
 {
 	// -------------------------------------------- //
 	// CONSTRUCT
@@ -33,12 +33,12 @@ public class CmdFactionsMoneyBalance extends FCommand
 	@Override
 	public void perform()
 	{
-		Faction faction = this.arg(0, ARFaction.get(), usenderFaction);
+		Faction faction = this.arg(0, ARFaction.get(), msenderFaction);
 		if (faction == null) return;
 			
-		if (faction != usenderFaction && ! Perm.MONEY_BALANCE_ANY.has(sender, true)) return;
+		if (faction != msenderFaction && ! Perm.MONEY_BALANCE_ANY.has(sender, true)) return;
 		
-		Econ.sendBalanceInfo(usender, faction);
+		Econ.sendBalanceInfo(msender, faction);
 	}
 	
 }

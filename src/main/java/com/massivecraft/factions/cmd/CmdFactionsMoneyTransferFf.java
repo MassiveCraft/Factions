@@ -15,7 +15,7 @@ import com.massivecraft.massivecore.util.Txt;
 import org.bukkit.ChatColor;
 
 
-public class CmdFactionsMoneyTransferFf extends FCommand
+public class CmdFactionsMoneyTransferFf extends FactionsCommand
 {
 	// -------------------------------------------- //
 	// CONSTRUCT
@@ -52,11 +52,11 @@ public class CmdFactionsMoneyTransferFf extends FCommand
 		Faction to = this.arg(2, ARFaction.get());
 		if (to == null) return;
 		
-		boolean success = Econ.transferMoney(usender, from, to, amount);
+		boolean success = Econ.transferMoney(msender, from, to, amount);
 
 		if (success && MConf.get().logMoneyTransactions)
 		{
-			Factions.get().log(ChatColor.stripColor(Txt.parse("%s transferred %s from the faction \"%s\" to the faction \"%s\"", usender.getName(), Money.format(amount), from.describeTo(null), to.describeTo(null))));
+			Factions.get().log(ChatColor.stripColor(Txt.parse("%s transferred %s from the faction \"%s\" to the faction \"%s\"", msender.getName(), Money.format(amount), from.describeTo(null), to.describeTo(null))));
 		}
 	}
 	

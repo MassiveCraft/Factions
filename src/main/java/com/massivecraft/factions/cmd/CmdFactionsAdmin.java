@@ -5,7 +5,7 @@ import com.massivecraft.factions.Perm;
 import com.massivecraft.massivecore.cmd.arg.ARBoolean;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 
-public class CmdFactionsAdmin extends FCommand
+public class CmdFactionsAdmin extends FactionsCommand
 {
 	// -------------------------------------------- //
 	// CONSTRUCT

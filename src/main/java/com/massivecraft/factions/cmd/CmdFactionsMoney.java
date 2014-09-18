@@ -4,7 +4,7 @@ import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.cmd.req.ReqBankCommandsEnabled;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 
-public class CmdFactionsMoney extends FCommand
+public class CmdFactionsMoney extends FactionsCommand
 {
 	// -------------------------------------------- //
 	// FIELDS

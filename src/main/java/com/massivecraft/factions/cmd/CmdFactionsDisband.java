@@ -17,7 +17,7 @@ import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.util.IdUtil;
 import com.massivecraft.massivecore.util.Txt;
 
-public class CmdFactionsDisband extends FCommand
+public class CmdFactionsDisband extends FactionsCommand
 {
 	// -------------------------------------------- //
 	// CONSTRUCT
@@ -43,11 +43,11 @@ public class CmdFactionsDisband extends FCommand
 	public void perform()
 	{	
 		// Args
-		Faction faction = this.arg(0, ARFaction.get(), usenderFaction);
+		Faction faction = this.arg(0, ARFaction.get(), msenderFaction);
 		if (faction == null) return;
 		
 		// FPerm
-		if ( ! FPerm.DISBAND.has(usender, faction, true)) return;
+		if ( ! FPerm.DISBAND.has(msender, faction, true)) return;
 
 		// Verify
 		if (faction.getFlag(FFlag.PERMANENT))
@@ -73,7 +73,7 @@ public class CmdFactionsDisband extends FCommand
 		// Inform all players
 		for (MPlayer mplayer : MPlayerColl.get().getAllOnline())
 		{
-			String who = usender.describeTo(mplayer);
+			String who = msender.describeTo(mplayer);
 			if (mplayer.getFaction() == faction)
 			{
 				mplayer.msg("<h>%s<i> disbanded your faction.", who);
@@ -86,7 +86,7 @@ public class CmdFactionsDisband extends FCommand
 		
 		if (MConf.get().logFactionDisband)
 		{
-			Factions.get().log(Txt.parse("<i>The faction <h>%s <i>(<h>%s<i>) was disbanded by <h>%s<i>.", faction.getName(), faction.getId(), usender.getDisplayName(IdUtil.getConsole())));
+			Factions.get().log(Txt.parse("<i>The faction <h>%s <i>(<h>%s<i>) was disbanded by <h>%s<i>.", faction.getName(), faction.getId(), msender.getDisplayName(IdUtil.getConsole())));
 		}		
 		
 		faction.detach();

@@ -13,7 +13,7 @@ import com.massivecraft.factions.event.EventFactionsNameChange;
 import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 
-public class CmdFactionsName extends FCommand
+public class CmdFactionsName extends FactionsCommand
 {
 	// -------------------------------------------- //
 	// CONSTRUCT
@@ -45,7 +45,7 @@ public class CmdFactionsName extends FCommand
 		
 		// TODO does not first test cover selfcase?
 		
-		if (FactionColl.get().isNameTaken(newName) && ! MiscUtil.getComparisonString(newName).equals(usenderFaction.getComparisonName()))
+		if (FactionColl.get().isNameTaken(newName) && ! MiscUtil.getComparisonString(newName).equals(msenderFaction.getComparisonName()))
 		{
 			msg("<b>That name is already taken");
 			return;
@@ -60,26 +60,26 @@ public class CmdFactionsName extends FCommand
 		}
 
 		// Event
-		EventFactionsNameChange event = new EventFactionsNameChange(sender, usenderFaction, newName);
+		EventFactionsNameChange event = new EventFactionsNameChange(sender, msenderFaction, newName);
 		event.run();
 		if (event.isCancelled()) return;
 		newName = event.getNewName();
 
 		// Apply
-		String oldName = usenderFaction.getName();
-		usenderFaction.setName(newName);
+		String oldName = msenderFaction.getName();
+		msenderFaction.setName(newName);
 
 		// Inform
-		usenderFaction.msg("%s<i> changed your faction name to %s", usender.describeTo(usenderFaction, true), usenderFaction.getName(usenderFaction));
+		msenderFaction.msg("%s<i> changed your faction name to %s", msender.describeTo(msenderFaction, true), msenderFaction.getName(msenderFaction));
 		
 		if (!MConf.get().broadcastNameChange) return;
 		for (Faction faction : FactionColl.get().getAll())
 		{
-			if (faction == usenderFaction)
+			if (faction == msenderFaction)
 			{
 				continue;
 			}
-			faction.msg("<i>The player %s<i> changed their faction name from %s<i> to %s<i>.", usender.describeTo(faction, true), usender.getColorTo(faction)+oldName, usenderFaction.getName(faction));
+			faction.msg("<i>The player %s<i> changed their faction name from %s<i> to %s<i>.", msender.describeTo(faction, true), msender.getColorTo(faction)+oldName, msenderFaction.getName(faction));
 		}
 	}
 	

@@ -8,7 +8,7 @@ import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.cmd.req.ReqIsPlayer;
 import com.massivecraft.massivecore.ps.PS;
 
-public class CmdFactionsUnclaim extends FCommand
+public class CmdFactionsUnclaim extends FactionsCommand
 {
 	// -------------------------------------------- //
 	// CONSTRUCT
@@ -37,7 +37,7 @@ public class CmdFactionsUnclaim extends FCommand
 		Faction newFaction = FactionColl.get().getNone();
 
 		// Apply
-		if (usender.tryClaim(newFaction, chunk, true, true)) return;
+		if (msender.tryClaim(newFaction, chunk, true, true)) return;
 	}
 	
 }

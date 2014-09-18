@@ -23,7 +23,7 @@ import com.massivecraft.massivecore.util.TimeDiffUtil;
 import com.massivecraft.massivecore.util.TimeUnit;
 import com.massivecraft.massivecore.util.Txt;
 
-public class CmdFactionsFaction extends FCommand
+public class CmdFactionsFaction extends FactionsCommand
 {
 	// -------------------------------------------- //
 	// CONSTRUCT
@@ -49,7 +49,7 @@ public class CmdFactionsFaction extends FCommand
 	public void perform()
 	{
 		// Args
-		Faction faction = this.arg(0, ARFaction.get(), usenderFaction);
+		Faction faction = this.arg(0, ARFaction.get(), msenderFaction);
 		if (faction == null) return;
 		
 		// Data precalculation 
@@ -57,7 +57,7 @@ public class CmdFactionsFaction extends FCommand
 		boolean normal = faction.isNormal();
 		
 		// INFO: Title
-		msg(Txt.titleize("Faction " + faction.getName(usender)));
+		msg(Txt.titleize("Faction " + faction.getName(msender)));
 		
 		// INFO: Description
 		msg("<a>Description: <i>%s", faction.getDescription());	
@@ -127,7 +127,7 @@ public class CmdFactionsFaction extends FCommand
 		String sepparator = Txt.parse("<i>")+", ";
 		
 		// List the relations to other factions
-		Map<Rel, List<String>> relationNames = faction.getFactionNamesPerRelation(usender, true);
+		Map<Rel, List<String>> relationNames = faction.getFactionNamesPerRelation(msender, true);
 		
 		if (faction.getFlag(FFlag.PEACEFUL))
 		{
@@ -152,12 +152,12 @@ public class CmdFactionsFaction extends FCommand
 		{
 			if (follower.isOnline() && Mixin.canSee(sender, follower.getId()))
 			{
-				followerNamesOnline.add(follower.getNameAndTitle(usender));
+				followerNamesOnline.add(follower.getNameAndTitle(msender));
 			}
 			else if (normal)
 			{
 				// For the non-faction we skip the offline members since they are far to many (infinate almost)
-				followerNamesOffline.add(follower.getNameAndTitle(usender));
+				followerNamesOffline.add(follower.getNameAndTitle(msender));
 			}
 		}
 		

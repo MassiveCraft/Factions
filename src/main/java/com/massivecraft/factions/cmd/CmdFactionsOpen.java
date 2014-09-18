@@ -8,7 +8,7 @@ import com.massivecraft.factions.event.EventFactionsOpenChange;
 import com.massivecraft.massivecore.cmd.arg.ARBoolean;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 
-public class CmdFactionsOpen extends FCommand
+public class CmdFactionsOpen extends FactionsCommand
 {
 	// -------------------------------------------- //
 	// CONSTRUCT
@@ -36,21 +36,21 @@ public class CmdFactionsOpen extends FCommand
 	public void perform()
 	{
 		// Args
-		Boolean newOpen = this.arg(0, ARBoolean.get(), !usenderFaction.isOpen());
+		Boolean newOpen = this.arg(0, ARBoolean.get(), !msenderFaction.isOpen());
 		if (newOpen == null) return;
 
 		// Event
-		EventFactionsOpenChange event = new EventFactionsOpenChange(sender, usenderFaction, newOpen);
+		EventFactionsOpenChange event = new EventFactionsOpenChange(sender, msenderFaction, newOpen);
 		event.run();
 		if (event.isCancelled()) return;
 		newOpen = event.isNewOpen();
 		
 		// Apply
-		usenderFaction.setOpen(newOpen);
+		msenderFaction.setOpen(newOpen);
 		
 		// Inform
-		String descTarget = usenderFaction.isOpen() ? "open" : "closed";
-		usenderFaction.msg("%s<i> changed the faction to <h>%s<i>.", usender.describeTo(usenderFaction, true), descTarget);
+		String descTarget = msenderFaction.isOpen() ? "open" : "closed";
+		msenderFaction.msg("%s<i> changed the faction to <h>%s<i>.", msender.describeTo(msenderFaction, true), descTarget);
 	}
 	
 }

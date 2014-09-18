@@ -11,7 +11,7 @@ import com.massivecraft.massivecore.cmd.arg.ARBoolean;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.cmd.req.ReqIsPlayer;
 
-public class CmdFactionsInvite extends FCommand
+public class CmdFactionsInvite extends FactionsCommand
 {
 	// -------------------------------------------- //
 	// CONSTRUCT
@@ -43,39 +43,39 @@ public class CmdFactionsInvite extends FCommand
 		MPlayer mplayer = this.arg(0, ARMPlayer.getAny());
 		if (mplayer == null) return;
 		
-		Boolean newInvited = this.arg(1, ARBoolean.get(), !usenderFaction.isInvited(mplayer));
+		Boolean newInvited = this.arg(1, ARBoolean.get(), !msenderFaction.isInvited(mplayer));
 		if (newInvited == null) return;
 		
 		// Allready member?
-		if (mplayer.getFaction() == usenderFaction)
+		if (mplayer.getFaction() == msenderFaction)
 		{
-			msg("%s<i> is already a member of %s", mplayer.getName(), usenderFaction.getName());
+			msg("%s<i> is already a member of %s", mplayer.getName(), msenderFaction.getName());
 			msg("<i>You might want to: " + Factions.get().getOuterCmdFactions().cmdFactionsKick.getUseageTemplate(false));
 			return;
 		}
 		
 		// FPerm
-		if ( ! FPerm.INVITE.has(usender, usenderFaction, true)) return;
+		if ( ! FPerm.INVITE.has(msender, msenderFaction, true)) return;
 		
 		// Event
-		EventFactionsInvitedChange event = new EventFactionsInvitedChange(sender, mplayer, usenderFaction, newInvited);
+		EventFactionsInvitedChange event = new EventFactionsInvitedChange(sender, mplayer, msenderFaction, newInvited);
 		event.run();
 		if (event.isCancelled()) return;
 		newInvited = event.isNewInvited();
 
 		// Apply
-		usenderFaction.setInvited(mplayer, newInvited);
+		msenderFaction.setInvited(mplayer, newInvited);
 		
 		// Inform
 		if (newInvited)
 		{
-			mplayer.msg("%s<i> invited you to %s", usender.describeTo(mplayer, true), usenderFaction.describeTo(mplayer));
-			usenderFaction.msg("%s<i> invited %s<i> to your faction.", usender.describeTo(usenderFaction, true), mplayer.describeTo(usenderFaction));
+			mplayer.msg("%s<i> invited you to %s", msender.describeTo(mplayer, true), msenderFaction.describeTo(mplayer));
+			msenderFaction.msg("%s<i> invited %s<i> to your faction.", msender.describeTo(msenderFaction, true), mplayer.describeTo(msenderFaction));
 		}
 		else
 		{
-			mplayer.msg("%s<i> revoked your invitation to <h>%s<i>.", usender.describeTo(mplayer), usenderFaction.describeTo(mplayer));
-			usenderFaction.msg("%s<i> revoked %s's<i> invitation.", usender.describeTo(usenderFaction), mplayer.describeTo(usenderFaction));
+			mplayer.msg("%s<i> revoked your invitation to <h>%s<i>.", msender.describeTo(mplayer), msenderFaction.describeTo(mplayer));
+			msenderFaction.msg("%s<i> revoked %s's<i> invitation.", msender.describeTo(msenderFaction), mplayer.describeTo(msenderFaction));
 		}
 	}
 	

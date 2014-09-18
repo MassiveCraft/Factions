@@ -12,7 +12,7 @@ import com.massivecraft.massivecore.cmd.arg.ARString;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.util.Txt;
 
-public class CmdFactionsTitle extends FCommand
+public class CmdFactionsTitle extends FactionsCommand
 {
 	// -------------------------------------------- //
 	// CONSTRUCT
@@ -53,7 +53,7 @@ public class CmdFactionsTitle extends FCommand
 		}
 		
 		// Verify
-		if ( ! canIAdministerYou(usender, you)) return;
+		if ( ! canIAdministerYou(msender, you)) return;
 
 		// Event
 		EventFactionsTitleChange event = new EventFactionsTitleChange(sender, you, newTitle);
@@ -65,7 +65,7 @@ public class CmdFactionsTitle extends FCommand
 		you.setTitle(newTitle);
 		
 		// Inform
-		usenderFaction.msg("%s<i> changed a title: %s", usender.describeTo(usenderFaction, true), you.describeTo(usenderFaction, true));
+		msenderFaction.msg("%s<i> changed a title: %s", msender.describeTo(msenderFaction, true), you.describeTo(msenderFaction, true));
 	}
 	
 }

@@ -14,7 +14,7 @@ import com.massivecraft.massivecore.util.Txt;
 
 import org.bukkit.ChatColor;
 
-public class CmdFactionsMoneyDeposit extends FCommand
+public class CmdFactionsMoneyDeposit extends FactionsCommand
 {
 	// -------------------------------------------- //
 	// CONSTRUCT
@@ -44,14 +44,14 @@ public class CmdFactionsMoneyDeposit extends FCommand
 		Double amount = this.arg(0, ARDouble.get());
 		if (amount == null) return;
 		
-		Faction faction = this.arg(1, ARFaction.get(), usenderFaction);
+		Faction faction = this.arg(1, ARFaction.get(), msenderFaction);
 		if (faction == null) return;
 		
-		boolean success = Econ.transferMoney(usender, usender, faction, amount);
+		boolean success = Econ.transferMoney(msender, msender, faction, amount);
 		
 		if (success && MConf.get().logMoneyTransactions)
 		{
-			Factions.get().log(ChatColor.stripColor(Txt.parse("%s deposited %s in the faction bank: %s", usender.getName(), Money.format(amount), faction.describeTo(null))));
+			Factions.get().log(ChatColor.stripColor(Txt.parse("%s deposited %s in the faction bank: %s", msender.getName(), Money.format(amount), faction.describeTo(null))));
 		}
 	}
 	

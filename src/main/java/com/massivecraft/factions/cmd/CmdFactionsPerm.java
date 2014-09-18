@@ -11,7 +11,7 @@ import com.massivecraft.massivecore.cmd.arg.ARBoolean;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.util.Txt;
 
-public class CmdFactionsPerm extends FCommand
+public class CmdFactionsPerm extends FactionsCommand
 {
 	// -------------------------------------------- //
 	// CONSTRUCT
@@ -40,12 +40,12 @@ public class CmdFactionsPerm extends FCommand
 	@Override
 	public void perform()
 	{
-		Faction faction = this.arg(0, ARFaction.get(), usenderFaction);
+		Faction faction = this.arg(0, ARFaction.get(), msenderFaction);
 		if (faction == null) return;
 		
 		if ( ! this.argIsSet(1))
 		{
-			msg(Txt.titleize("Perms for " + faction.describeTo(usender, true)));
+			msg(Txt.titleize("Perms for " + faction.describeTo(msender, true)));
 			msg(FPerm.getStateHeaders());
 			for (FPerm perm : FPerm.values())
 			{
@@ -60,14 +60,14 @@ public class CmdFactionsPerm extends FCommand
 		
 		if ( ! this.argIsSet(2))
 		{
-			msg(Txt.titleize("Perm for " + faction.describeTo(usender, true)));
+			msg(Txt.titleize("Perm for " + faction.describeTo(msender, true)));
 			msg(FPerm.getStateHeaders());
 			msg(perm.getStateInfo(faction.getPermittedRelations(perm), true));
 			return;
 		}
 		
 		// Do the sender have the right to change perms for this faction?
-		if ( ! FPerm.PERMS.has(usender, faction, true)) return;
+		if ( ! FPerm.PERMS.has(msender, faction, true)) return;
 		
 		Rel rel = this.arg(2, ARRel.get());
 		if (rel == null) return;
@@ -91,7 +91,7 @@ public class CmdFactionsPerm extends FCommand
 			faction.setRelationPermitted(FPerm.PERMS, Rel.LEADER, true);
 		}
 		
-		msg(Txt.titleize("Perm for " + faction.describeTo(usender, true)));
+		msg(Txt.titleize("Perm for " + faction.describeTo(msender, true)));
 		msg(FPerm.getStateHeaders());
 		msg(perm.getStateInfo(faction.getPermittedRelations(perm), true));
 	}

@@ -17,7 +17,7 @@ import com.massivecraft.factions.event.EventFactionsMembershipChange.MembershipC
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.store.MStore;
 
-public class CmdFactionsCreate extends FCommand
+public class CmdFactionsCreate extends FactionsCommand
 {
 	// -------------------------------------------- //
 	// CONSTRUCT
@@ -72,24 +72,24 @@ public class CmdFactionsCreate extends FCommand
 		Faction faction = FactionColl.get().create(factionId);
 		faction.setName(newName);
 		
-		usender.setRole(Rel.LEADER);
-		usender.setFaction(faction);
+		msender.setRole(Rel.LEADER);
+		msender.setFaction(faction);
 		
-		EventFactionsMembershipChange joinEvent = new EventFactionsMembershipChange(sender, usender, faction, MembershipChangeReason.CREATE);
+		EventFactionsMembershipChange joinEvent = new EventFactionsMembershipChange(sender, msender, faction, MembershipChangeReason.CREATE);
 		joinEvent.run();
 		// NOTE: join event cannot be cancelled or you'll have an empty faction
 		
 		// Inform
 		for (MPlayer follower : MPlayerColl.get().getAllOnline())
 		{
-			follower.msg("%s<i> created a new faction %s", usender.describeTo(follower, true), faction.getName(follower));
+			follower.msg("%s<i> created a new faction %s", msender.describeTo(follower, true), faction.getName(follower));
 		}
 		
 		msg("<i>You should now: %s", Factions.get().getOuterCmdFactions().cmdFactionsDescription.getUseageTemplate());
 
 		if (MConf.get().logFactionCreate)
 		{
-			Factions.get().log(usender.getName()+" created a new faction: "+newName);
+			Factions.get().log(msender.getName()+" created a new faction: "+newName);
 		}
 	}
 	

@@ -29,6 +29,10 @@ public class RelationUtil
 
 		if (that instanceof Faction)
 		{
+			if (thatFaction.isNone())
+			{
+				ret = thatFaction.getName();
+			}
 			if (me instanceof MPlayer && myFaction == thatFaction)
 			{
 				ret = "your faction";

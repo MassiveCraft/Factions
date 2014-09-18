@@ -1,32 +1,28 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.FPerm;
-import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.cmd.arg.ARFaction;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.event.EventFactionsHomeChange;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
-import com.massivecraft.massivecore.cmd.req.ReqIsPlayer;
-import com.massivecraft.massivecore.ps.PS;
 
-public class CmdFactionsSethome extends FactionsCommandHome
+public class CmdFactionsUnsethome extends FactionsCommandHome
 {
 	// -------------------------------------------- //
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public CmdFactionsSethome()
+	public CmdFactionsUnsethome()
 	{
 		// Aliases
-		this.addAliases("sethome");
+		this.addAliases("unsethome");
 
 		// Args
 		this.addOptionalArg("faction", "you");
 
 		// Requirements
-		this.addRequirements(ReqHasPerm.get(Perm.SETHOME.node));
-		this.addRequirements(ReqIsPlayer.get());
+		this.addRequirements(ReqHasPerm.get(Perm.UNSETHOME.node));
 	}
 
 	// -------------------------------------------- //
@@ -40,33 +36,32 @@ public class CmdFactionsSethome extends FactionsCommandHome
 		Faction faction = this.arg(0, ARFaction.get(), msenderFaction);
 		if (faction == null) return;
 		
-		PS newHome = PS.valueOf(me.getLocation());
+		// Other Perm
+		if (faction != msenderFaction && !Perm.HOME_OTHER.has(sender, true)) return;
 		
 		// FPerm
 		if ( ! FPerm.SETHOME.has(msender, faction, true)) return;
 		
-		// Verify
-		if (!msender.isUsingAdminMode() && !faction.isValidHome(newHome))
+		// NoChange
+		if ( ! faction.hasHome())
 		{
-			msender.msg("<b>Sorry, your faction home can only be set inside your own claimed territory.");
+			msender.msg("<i>%s <i>does already not have a home.", faction.describeTo(msender));
 			return;
 		}
 		
 		// Event
-		EventFactionsHomeChange event = new EventFactionsHomeChange(sender, faction, newHome);
+		EventFactionsHomeChange event = new EventFactionsHomeChange(sender, faction, null);
 		event.run();
 		if (event.isCancelled()) return;
-		newHome = event.getNewHome();
 
 		// Apply
-		faction.setHome(newHome);
+		faction.setHome(null);
 		
 		// Inform
-		faction.msg("%s<i> set the home for your faction. You can now use:", msender.describeTo(msenderFaction, true));
-		faction.sendMessage(Factions.get().getOuterCmdFactions().cmdFactionsHome.getUseageTemplate());
+		faction.msg("%s<i> unset the home for your faction.", msender.describeTo(msenderFaction, true));
 		if (faction != msenderFaction)
 		{
-			msender.msg("<i>You have set the home for " + faction.getName(msender) + "<i>.");
+			msender.msg("<i>You have unset the home for " + faction.getName(msender) + "<i>.");
 		}
 	}
 	

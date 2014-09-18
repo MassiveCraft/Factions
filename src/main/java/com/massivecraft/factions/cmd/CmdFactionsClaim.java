@@ -12,7 +12,7 @@ import com.massivecraft.massivecore.cmd.req.ReqIsPlayer;
 import com.massivecraft.massivecore.ps.PS;
 
 
-public class CmdFactionsClaim extends FCommand
+public class CmdFactionsClaim extends FactionsCommand
 {
 	// -------------------------------------------- //
 	// CONSTRUCT
@@ -43,11 +43,11 @@ public class CmdFactionsClaim extends FCommand
 		Integer radius = this.arg(0, ARInteger.get(), 1);
 		if (radius == null) return;
 		
-		final Faction forFaction = this.arg(1, ARFaction.get(), usenderFaction);
+		final Faction forFaction = this.arg(1, ARFaction.get(), msenderFaction);
 		if (forFaction == null) return;
 		
 		// FPerm
-		if (forFaction.isNormal() && !FPerm.TERRITORY.has(usender, forFaction, true)) return;
+		if (forFaction.isNormal() && !FPerm.TERRITORY.has(msender, forFaction, true)) return;
 		
 		// Validate
 		if (radius < 1)
@@ -56,7 +56,7 @@ public class CmdFactionsClaim extends FCommand
 			return;
 		}
 		
-		if (radius > MConf.get().radiusClaimRadiusLimit && !usender.isUsingAdminMode())
+		if (radius > MConf.get().radiusClaimRadiusLimit && !msender.isUsingAdminMode())
 		{
 			msg("<b>The maximum radius allowed is <h>%s<b>.", MConf.get().radiusClaimRadiusLimit);
 			return;
@@ -67,7 +67,7 @@ public class CmdFactionsClaim extends FCommand
 		// single chunk
 		if (radius < 2)
 		{
-			usender.tryClaim(forFaction, PS.valueOf(me), true, true);
+			msender.tryClaim(forFaction, PS.valueOf(me), true, true);
 			return;
 		}
 		
@@ -91,7 +91,7 @@ public class CmdFactionsClaim extends FCommand
 			@Override
 			public boolean work()
 			{
-				boolean success = usender.tryClaim(forFaction, PS.valueOf(this.currentLocation()), true, true);
+				boolean success = msender.tryClaim(forFaction, PS.valueOf(this.currentLocation()), true, true);
 				if (success)
 				{
 					this.failCount = 0;

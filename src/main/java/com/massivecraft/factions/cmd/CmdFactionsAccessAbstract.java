@@ -14,7 +14,7 @@ import com.massivecraft.massivecore.ps.PSFormatHumanSpace;
 import com.massivecraft.massivecore.util.Txt;
 
 
-public abstract class CmdFactionsAccessAbstract extends FCommand
+public abstract class CmdFactionsAccessAbstract extends FactionsCommand
 {
 	// -------------------------------------------- //
 	// FIELDS
@@ -53,10 +53,10 @@ public abstract class CmdFactionsAccessAbstract extends FCommand
 	public void sendAccessInfo()
 	{
 		sendMessage(Txt.titleize("Access at " + chunk.toString(PSFormatHumanSpace.get())));
-		msg("<k>Host Faction: %s", hostFaction.describeTo(usender, true));
+		msg("<k>Host Faction: %s", hostFaction.describeTo(msender, true));
 		msg("<k>Host Faction Allowed: %s", ta.isHostFactionAllowed() ? Txt.parse("<lime>TRUE") : Txt.parse("<rose>FALSE"));
-		msg("<k>Granted Players: %s", describeRelationParticipators(ta.getGrantedMPlayers(), usender));
-		msg("<k>Granted Factions: %s", describeRelationParticipators(ta.getGrantedFactions(), usender));
+		msg("<k>Granted Players: %s", describeRelationParticipators(ta.getGrantedMPlayers(), msender));
+		msg("<k>Granted Factions: %s", describeRelationParticipators(ta.getGrantedFactions(), msender));
 	}
 	
 	public static String describeRelationParticipators(Collection<? extends RelationParticipator> relationParticipators, RelationParticipator observer)

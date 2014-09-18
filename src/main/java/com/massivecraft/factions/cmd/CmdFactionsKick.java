@@ -14,7 +14,7 @@ import com.massivecraft.factions.event.EventFactionsMembershipChange.MembershipC
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.util.IdUtil;
 
-public class CmdFactionsKick extends FCommand
+public class CmdFactionsKick extends FactionsCommand
 {
 	// -------------------------------------------- //
 	// CONSTRUCT
@@ -44,14 +44,14 @@ public class CmdFactionsKick extends FCommand
 		if (mplayer == null) return;
 		
 		// Validate
-		if (usender == mplayer)
+		if (msender == mplayer)
 		{
 			msg("<b>You cannot kick yourself.");
 			msg("<i>You might want to: %s", Factions.get().getOuterCmdFactions().cmdFactionsLeave.getUseageTemplate(false));
 			return;
 		}
 		
-		if (mplayer.getRole() == Rel.LEADER && !(this.senderIsConsole || usender.isUsingAdminMode()))
+		if (mplayer.getRole() == Rel.LEADER && !(this.senderIsConsole || msender.isUsingAdminMode()))
 		{
 			msg("<b>The leader can not be kicked.");
 			return;
@@ -65,7 +65,7 @@ public class CmdFactionsKick extends FCommand
 		
 		// FPerm
 		Faction mplayerFaction = mplayer.getFaction();
-		if (!FPerm.KICK.has(usender, mplayerFaction, true)) return;
+		if (!FPerm.KICK.has(msender, mplayerFaction, true)) return;
 
 		// Event
 		EventFactionsMembershipChange event = new EventFactionsMembershipChange(sender, mplayer, FactionColl.get().getNone(), MembershipChangeReason.KICK);
@@ -73,16 +73,16 @@ public class CmdFactionsKick extends FCommand
 		if (event.isCancelled()) return;
 
 		// Inform
-		mplayerFaction.msg("%s<i> kicked %s<i> from the faction! :O", usender.describeTo(mplayerFaction, true), mplayer.describeTo(mplayerFaction, true));
-		mplayer.msg("%s<i> kicked you from %s<i>! :O", usender.describeTo(mplayer, true), mplayerFaction.describeTo(mplayer));
-		if (mplayerFaction != usenderFaction)
+		mplayerFaction.msg("%s<i> kicked %s<i> from the faction! :O", msender.describeTo(mplayerFaction, true), mplayer.describeTo(mplayerFaction, true));
+		mplayer.msg("%s<i> kicked you from %s<i>! :O", msender.describeTo(mplayer, true), mplayerFaction.describeTo(mplayer));
+		if (mplayerFaction != msenderFaction)
 		{
-			usender.msg("<i>You kicked %s<i> from the faction %s<i>!", mplayer.describeTo(usender), mplayerFaction.describeTo(usender));
+			msender.msg("<i>You kicked %s<i> from the faction %s<i>!", mplayer.describeTo(msender), mplayerFaction.describeTo(msender));
 		}
 
 		if (MConf.get().logFactionKick)
 		{
-			Factions.get().log(usender.getDisplayName(IdUtil.getConsole()) + " kicked " + mplayer.getName() + " from the faction " + mplayerFaction.getName());
+			Factions.get().log(msender.getDisplayName(IdUtil.getConsole()) + " kicked " + mplayer.getName() + " from the faction " + mplayerFaction.getName());
 		}
 
 		// Apply

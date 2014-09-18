@@ -12,7 +12,7 @@ import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.util.Txt;
 
 
-public class CmdFactionsList extends FCommand
+public class CmdFactionsList extends FactionsCommand
 {
 	// -------------------------------------------- //
 	// CONSTRUCT
@@ -67,7 +67,7 @@ public class CmdFactionsList extends FCommand
 				continue;
 			}
 			lines.add(Txt.parse("%s<i> %d/%d online, %d/%d/%d",
-				faction.getName(usender),
+				faction.getName(msender),
 				faction.getMPlayersWhereOnline(true).size(),
 				faction.getMPlayers().size(),
 				faction.getLandCount(),

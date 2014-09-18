@@ -26,6 +26,7 @@ public enum Perm
 	FLAG("flag"),
 	FLAG_SET("flag.set"),
 	HOME("home"),
+	HOME_OTHER("home.other"),
 	INVITE("invite"),
 	JOIN("join"),
 	JOIN_ANY("join.any"),
@@ -59,6 +60,8 @@ public enum Perm
 	TITLE_COLOR("title.color"),
 	UNCLAIM("unclaim"),
 	UNCLAIM_ALL("unclaimall"),
+	UNSETHOME("unsethome"),
+	UNSETHOME_OTHER("unsethome.other"),
 	VERSION("version"),
 	
 	// END OF LIST

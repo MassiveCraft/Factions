@@ -9,7 +9,7 @@ import com.massivecraft.factions.event.EventFactionsDescriptionChange;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.mixin.Mixin;
 
-public class CmdFactionsDescription extends FCommand
+public class CmdFactionsDescription extends FactionsCommand
 {
 	// -------------------------------------------- //
 	// CONSTRUCT
@@ -41,18 +41,18 @@ public class CmdFactionsDescription extends FCommand
 		String newDescription = this.argConcatFrom(0);
 		
 		// Event
-		EventFactionsDescriptionChange event = new EventFactionsDescriptionChange(sender, usenderFaction, newDescription);
+		EventFactionsDescriptionChange event = new EventFactionsDescriptionChange(sender, msenderFaction, newDescription);
 		event.run();
 		if (event.isCancelled()) return;
 		newDescription = event.getNewDescription();
 
 		// Apply
-		usenderFaction.setDescription(newDescription);
+		msenderFaction.setDescription(newDescription);
 		
 		// Inform
-		for (MPlayer follower : usenderFaction.getMPlayers())
+		for (MPlayer follower : msenderFaction.getMPlayers())
 		{
-			follower.msg("<i>%s <i>set your faction description to:\n%s", Mixin.getDisplayName(sender, follower), usenderFaction.getDescription());
+			follower.msg("<i>%s <i>set your faction description to:\n%s", Mixin.getDisplayName(sender, follower), msenderFaction.getDescription());
 		}
 	}
 	

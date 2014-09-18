@@ -9,7 +9,7 @@ import com.massivecraft.massivecore.cmd.arg.ARBoolean;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.util.Txt;
 
-public class CmdFactionsFlag extends FCommand
+public class CmdFactionsFlag extends FactionsCommand
 {
 	// -------------------------------------------- //
 	// CONSTRUCT
@@ -36,12 +36,12 @@ public class CmdFactionsFlag extends FCommand
 	@Override
 	public void perform()
 	{	
-		Faction faction = this.arg(0, ARFaction.get(), usenderFaction);
+		Faction faction = this.arg(0, ARFaction.get(), msenderFaction);
 		if (faction == null) return;
 		
 		if ( ! this.argIsSet(1))
 		{
-			msg(Txt.titleize("Flags for " + faction.describeTo(usender, true)));
+			msg(Txt.titleize("Flags for " + faction.describeTo(msender, true)));
 			for (FFlag flag : FFlag.values())
 			{
 				msg(flag.getStateInfo(faction.getFlag(flag), true));
@@ -54,7 +54,7 @@ public class CmdFactionsFlag extends FCommand
 		
 		if ( ! this.argIsSet(2))
 		{
-			msg(Txt.titleize("Flag for " + faction.describeTo(usender, true)));
+			msg(Txt.titleize("Flag for " + faction.describeTo(msender, true)));
 			msg(flag.getStateInfo(faction.getFlag(flag), true));
 			return;
 		}
@@ -66,7 +66,7 @@ public class CmdFactionsFlag extends FCommand
 		if ( ! Perm.FLAG_SET.has(sender, true)) return;
 		
 		// Do the change
-		msg(Txt.titleize("Flag for " + faction.describeTo(usender, true)));
+		msg(Txt.titleize("Flag for " + faction.describeTo(msender, true)));
 		faction.setFlag(flag, targetValue);
 		msg(flag.getStateInfo(faction.getFlag(flag), true));
 	}

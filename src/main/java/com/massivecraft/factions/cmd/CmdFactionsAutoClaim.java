@@ -8,7 +8,7 @@ import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.cmd.req.ReqIsPlayer;
 import com.massivecraft.massivecore.ps.PS;
 
-public class CmdFactionsAutoClaim extends FCommand
+public class CmdFactionsAutoClaim extends FactionsCommand
 {
 	// -------------------------------------------- //
 	// CONSTRUCT
@@ -35,22 +35,22 @@ public class CmdFactionsAutoClaim extends FCommand
 	public void perform()
 	{	
 		// Args
-		Faction forFaction = this.arg(0, ARFaction.get(), usenderFaction);
+		Faction forFaction = this.arg(0, ARFaction.get(), msenderFaction);
 		
-		if (forFaction == null || forFaction == usender.getAutoClaimFaction())
+		if (forFaction == null || forFaction == msender.getAutoClaimFaction())
 		{
-			usender.setAutoClaimFaction(null);
+			msender.setAutoClaimFaction(null);
 			msg("<i>Auto-claiming of land disabled.");
 			return;
 		}
 		
 		// FPerm
-		if (forFaction.isNormal() && !FPerm.TERRITORY.has(usender, forFaction, true)) return;
+		if (forFaction.isNormal() && !FPerm.TERRITORY.has(msender, forFaction, true)) return;
 		
-		usender.setAutoClaimFaction(forFaction);
+		msender.setAutoClaimFaction(forFaction);
 		
-		msg("<i>Now auto-claiming land for <h>%s<i>.", forFaction.describeTo(usender));
-		usender.tryClaim(forFaction, PS.valueOf(me), true, true);
+		msg("<i>Now auto-claiming land for <h>%s<i>.", forFaction.describeTo(msender));
+		msender.tryClaim(forFaction, PS.valueOf(me), true, true);
 	}
 	
 }

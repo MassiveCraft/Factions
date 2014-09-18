@@ -8,7 +8,7 @@ import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.massivecore.cmd.HelpCommand;
 import com.massivecraft.massivecore.cmd.VersionCommand;
 
-public class CmdFactions extends FCommand
+public class CmdFactions extends FactionsCommand
 {
 	// -------------------------------------------- //
 	// FIELDS
@@ -25,6 +25,7 @@ public class CmdFactions extends FCommand
 	public CmdFactionsName cmdFactionsName = new CmdFactionsName();
 	public CmdFactionsDescription cmdFactionsDescription = new CmdFactionsDescription();
 	public CmdFactionsSethome cmdFactionsSethome = new CmdFactionsSethome();
+	public CmdFactionsUnsethome cmdFactionsUnsethome = new CmdFactionsUnsethome();
 	public CmdFactionsOpen cmdFactionsOpen = new CmdFactionsOpen();
 	public CmdFactionsInvite cmdFactionsInvite = new CmdFactionsInvite();
 	public CmdFactionsKick cmdFactionsKick = new CmdFactionsKick();
@@ -57,7 +58,7 @@ public class CmdFactions extends FCommand
 	
 	public CmdFactions()
 	{
-		// Add SubCommands
+		// SubCommands
 		this.addSubCommand(HelpCommand.get());
 		this.addSubCommand(this.cmdFactionsList);
 		this.addSubCommand(this.cmdFactionsFaction);
@@ -70,6 +71,7 @@ public class CmdFactions extends FCommand
 		this.addSubCommand(this.cmdFactionsName);
 		this.addSubCommand(this.cmdFactionsDescription);
 		this.addSubCommand(this.cmdFactionsSethome);
+		this.addSubCommand(this.cmdFactionsUnsethome);
 		this.addSubCommand(this.cmdFactionsOpen);
 		this.addSubCommand(this.cmdFactionsInvite);
 		this.addSubCommand(this.cmdFactionsKick);
@@ -95,10 +97,6 @@ public class CmdFactions extends FCommand
 		this.addSubCommand(this.cmdFactionsAdmin);
 		this.addSubCommand(this.cmdFactionsPowerBoost);
 		this.addSubCommand(this.cmdFactionsVersion);
-		
-		// Misc
-		this.setDesc("The faction base command");
-		this.setHelp("This command contains all faction stuff.");
 	}
 	
 	// -------------------------------------------- //

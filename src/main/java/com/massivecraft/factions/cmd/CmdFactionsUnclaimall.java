@@ -16,7 +16,7 @@ import com.massivecraft.factions.event.EventFactionsChunkChange;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.ps.PS;
 
-public class CmdFactionsUnclaimall extends FCommand
+public class CmdFactionsUnclaimall extends FactionsCommand
 {	
 	// -------------------------------------------- //
 	// CONSTRUCT
@@ -41,11 +41,11 @@ public class CmdFactionsUnclaimall extends FCommand
 	public void perform()
 	{
 		// Args
-		Faction faction = usenderFaction;
+		Faction faction = msenderFaction;
 		Faction newFaction = FactionColl.get().getNone();
 		
 		// FPerm
-		if (!FPerm.TERRITORY.has(usender, faction, true)) return;
+		if (!FPerm.TERRITORY.has(msender, faction, true)) return;
 
 		// Apply
 		Set<PS> chunks = BoardColl.get().getChunks(faction);
@@ -68,12 +68,12 @@ public class CmdFactionsUnclaimall extends FCommand
 		}
 		
 		// Inform
-		usenderFaction.msg("%s<i> unclaimed <h>%d <i>of your <h>%d <i>faction land. You now have <h>%d <i>land claimed.", usender.describeTo(usenderFaction, true), countSuccess, countTotal, countFail);
+		msenderFaction.msg("%s<i> unclaimed <h>%d <i>of your <h>%d <i>faction land. You now have <h>%d <i>land claimed.", msender.describeTo(msenderFaction, true), countSuccess, countTotal, countFail);
 
 		// Log
 		if (MConf.get().logLandUnclaims)
 		{
-			Factions.get().log(usender.getName()+" unclaimed everything for the faction: "+usenderFaction.getName());
+			Factions.get().log(msender.getName()+" unclaimed everything for the faction: "+msenderFaction.getName());
 		}
 	}
 	

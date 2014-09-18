@@ -4,7 +4,7 @@ import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.cmd.req.ReqHasFaction;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 
-public class CmdFactionsLeave extends FCommand
+public class CmdFactionsLeave extends FactionsCommand
 {
 	// -------------------------------------------- //
 	// CONSTRUCT
@@ -27,7 +27,7 @@ public class CmdFactionsLeave extends FCommand
 	@Override
 	public void perform()
 	{
-		usender.leave();
+		msender.leave();
 	}
 	
 }

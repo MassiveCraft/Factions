@@ -6,7 +6,7 @@ import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.cmd.req.ReqIsPlayer;
 
 
-public class CmdFactionsAccess extends FCommand
+public class CmdFactionsAccess extends FactionsCommand
 {
 	// -------------------------------------------- //
 	// FIELDS

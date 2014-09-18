@@ -12,7 +12,7 @@ import com.massivecraft.massivecore.cmd.req.ReqIsPlayer;
 import com.massivecraft.massivecore.ps.PS;
 import com.massivecraft.massivecore.ps.PSFormatHumanSpace;
 
-public class CmdFactionsSeeChunk extends FCommand
+public class CmdFactionsSeeChunk extends FactionsCommand
 {
 	// -------------------------------------------- //
 	// CONSTRUCT

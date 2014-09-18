@@ -12,7 +12,7 @@ import com.massivecraft.factions.event.EventFactionsMembershipChange.MembershipC
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.util.Txt;
 
-public class CmdFactionsJoin extends FCommand
+public class CmdFactionsJoin extends FactionsCommand
 {
 	// -------------------------------------------- //
 	// CONSTRUCT
@@ -42,11 +42,11 @@ public class CmdFactionsJoin extends FCommand
 		Faction faction = this.arg(0, ARFaction.get());
 		if (faction == null) return;
 
-		MPlayer mplayer = this.arg(1, ARMPlayer.getAny(), usender);
+		MPlayer mplayer = this.arg(1, ARMPlayer.getAny(), msender);
 		if (mplayer == null) return;
 		Faction mplayerFaction = mplayer.getFaction();
 		
-		boolean samePlayer = mplayer == usender;
+		boolean samePlayer = mplayer == msender;
 		
 		// Validate
 		if (!samePlayer  && ! Perm.JOIN_OTHERS.has(sender, false))
@@ -57,29 +57,29 @@ public class CmdFactionsJoin extends FCommand
 
 		if (faction == mplayerFaction)
 		{
-			msg("<i>%s <i>%s already a member of %s<i>.", mplayer.describeTo(usender, true), (samePlayer ? "are" : "is"), faction.getName(usender));
+			msg("<i>%s <i>%s already a member of %s<i>.", mplayer.describeTo(msender, true), (samePlayer ? "are" : "is"), faction.getName(msender));
 			return;
 		}
 
 		if (MConf.get().factionMemberLimit > 0 && faction.getMPlayers().size() >= MConf.get().factionMemberLimit)
 		{
-			msg(" <b>!<white> The faction %s is at the limit of %d members, so %s cannot currently join.", faction.getName(usender), MConf.get().factionMemberLimit, mplayer.describeTo(usender, false));
+			msg(" <b>!<white> The faction %s is at the limit of %d members, so %s cannot currently join.", faction.getName(msender), MConf.get().factionMemberLimit, mplayer.describeTo(msender, false));
 			return;
 		}
 
 		if (mplayerFaction.isNormal())
 		{
-			msg("<b>%s must leave %s current faction first.", mplayer.describeTo(usender, true), (samePlayer ? "your" : "their"));
+			msg("<b>%s must leave %s current faction first.", mplayer.describeTo(msender, true), (samePlayer ? "your" : "their"));
 			return;
 		}
 
 		if (!MConf.get().canLeaveWithNegativePower && mplayer.getPower() < 0)
 		{
-			msg("<b>%s cannot join a faction with a negative power level.", mplayer.describeTo(usender, true));
+			msg("<b>%s cannot join a faction with a negative power level.", mplayer.describeTo(msender, true));
 			return;
 		}
 
-		if( ! (faction.isOpen() || faction.isInvited(mplayer) || usender.isUsingAdminMode() || Perm.JOIN_ANY.has(sender, false)))
+		if( ! (faction.isOpen() || faction.isInvited(mplayer) || msender.isUsingAdminMode() || Perm.JOIN_ANY.has(sender, false)))
 		{
 			msg("<i>This faction requires invitation.");
 			if (samePlayer)
@@ -90,17 +90,17 @@ public class CmdFactionsJoin extends FCommand
 		}
 
 		// Event
-		EventFactionsMembershipChange membershipChangeEvent = new EventFactionsMembershipChange(sender, usender, faction, MembershipChangeReason.JOIN);
+		EventFactionsMembershipChange membershipChangeEvent = new EventFactionsMembershipChange(sender, msender, faction, MembershipChangeReason.JOIN);
 		membershipChangeEvent.run();
 		if (membershipChangeEvent.isCancelled()) return;
 		
 		// Inform
 		if (!samePlayer)
 		{
-			mplayer.msg("<i>%s <i>moved you into the faction %s<i>.", usender.describeTo(mplayer, true), faction.getName(mplayer));
+			mplayer.msg("<i>%s <i>moved you into the faction %s<i>.", msender.describeTo(mplayer, true), faction.getName(mplayer));
 		}
 		faction.msg("<i>%s <i>joined <lime>your faction<i>.", mplayer.describeTo(faction, true));
-		usender.msg("<i>%s <i>successfully joined %s<i>.", mplayer.describeTo(usender, true), faction.getName(usender));
+		msender.msg("<i>%s <i>successfully joined %s<i>.", mplayer.describeTo(msender, true), faction.getName(msender));
 		
 		// Apply
 		mplayer.resetFactionData();
@@ -117,7 +117,7 @@ public class CmdFactionsJoin extends FCommand
 			}
 			else
 			{
-				Factions.get().log(Txt.parse("%s moved the player %s into the faction %s.", usender.getName(), mplayer.getName(), faction.getName()));
+				Factions.get().log(Txt.parse("%s moved the player %s into the faction %s.", msender.getName(), mplayer.getName(), faction.getName()));
 			}
 		}
 	}

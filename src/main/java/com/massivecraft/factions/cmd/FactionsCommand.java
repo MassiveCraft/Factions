@@ -6,15 +6,14 @@ import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.massivecore.cmd.MassiveCommand;
 import com.massivecraft.massivecore.util.Txt;
 
-public abstract class FCommand extends MassiveCommand
+public abstract class FactionsCommand extends MassiveCommand
 {
 	// -------------------------------------------- //
 	// FIELDS
 	// -------------------------------------------- //
 	
 	public MPlayer msender;
-	public MPlayer usender;
-	public Faction usenderFaction;
+	public Faction msenderFaction;
 	
 	// -------------------------------------------- //
 	// OVERRIDE
@@ -24,12 +23,7 @@ public abstract class FCommand extends MassiveCommand
 	public void fixSenderVars()
 	{
 		this.msender = MPlayer.get(sender);
-		
-		this.usender = null;
-		this.usenderFaction = null;			
-		
-		this.usender = MPlayer.get(this.sender);
-		this.usenderFaction = this.usender.getFaction();
+		this.msenderFaction = this.msender.getFaction();
 	}
 	
 	
@@ -37,8 +31,7 @@ public abstract class FCommand extends MassiveCommand
 	public void unsetSenderVars()
 	{
 		this.msender = null;
-		this.usender = null;
-		this.usenderFaction = null;
+		this.msenderFaction = null;
 	}
 	
 	// -------------------------------------------- //

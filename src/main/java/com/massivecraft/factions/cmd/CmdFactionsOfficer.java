@@ -7,7 +7,7 @@ import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 
-public class CmdFactionsOfficer extends FCommand
+public class CmdFactionsOfficer extends FactionsCommand
 {
 	// -------------------------------------------- //
 	// CONSTRUCT
@@ -38,19 +38,19 @@ public class CmdFactionsOfficer extends FCommand
 		boolean permAny = Perm.OFFICER_ANY.has(sender, false);
 		Faction targetFaction = you.getFaction();
 
-		if (targetFaction != usenderFaction && !permAny)
+		if (targetFaction != msenderFaction && !permAny)
 		{
-			msg("%s<b> is not a member in your faction.", you.describeTo(usender, true));
+			msg("%s<b> is not a member in your faction.", you.describeTo(msender, true));
 			return;
 		}
 		
-		if (usender != null && usender.getRole() != Rel.LEADER && !permAny)
+		if (msender != null && msender.getRole() != Rel.LEADER && !permAny)
 		{
 			msg("<b>You are not the faction leader.");
 			return;
 		}
 
-		if (you == usender && !permAny)
+		if (you == msender && !permAny)
 		{
 			msg("<b>The target player musn't be yourself.");
 			return;
@@ -67,14 +67,14 @@ public class CmdFactionsOfficer extends FCommand
 			// Revoke
 			you.setRole(Rel.MEMBER);
 			targetFaction.msg("%s<i> is no longer officer in your faction.", you.describeTo(targetFaction, true));
-			msg("<i>You have removed officer status from %s<i>.", you.describeTo(usender, true));
+			msg("<i>You have removed officer status from %s<i>.", you.describeTo(msender, true));
 		}
 		else
 		{
 			// Give
 			you.setRole(Rel.OFFICER);
 			targetFaction.msg("%s<i> was promoted to officer in your faction.", you.describeTo(targetFaction, true));
-			msg("<i>You have promoted %s<i> to officer.", you.describeTo(usender, true));
+			msg("<i>You have promoted %s<i> to officer.", you.describeTo(msender, true));
 		}
 	}
 	

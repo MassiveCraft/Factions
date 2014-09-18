@@ -7,7 +7,7 @@ import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.cmd.req.ReqIsPlayer;
 import com.massivecraft.massivecore.ps.PS;
 
-public class CmdFactionsMap extends FCommand
+public class CmdFactionsMap extends FactionsCommand
 {
 	// -------------------------------------------- //
 	// CONSTRUCT
@@ -58,7 +58,7 @@ public class CmdFactionsMap extends FCommand
 	
 	public void showMap()
 	{
-		sendMessage(BoardColl.get().getMap(usenderFaction, PS.valueOf(me), me.getLocation().getYaw()));
+		sendMessage(BoardColl.get().getMap(msenderFaction, PS.valueOf(me), me.getLocation().getYaw()));
 	}
 	
 }
