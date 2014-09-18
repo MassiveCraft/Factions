@@ -1,13 +1,11 @@
 package com.massivecraft.factions.integration.lwc;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockState;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
@@ -107,58 +105,54 @@ public class EngineLwc implements Listener
 	// UTIL
 	// -------------------------------------------- //
 	
-	public static List<Material> protectable = MUtil.list(
-		Material.CHEST,
-		Material.FURNACE,
-		Material.BURNING_FURNACE,
-		Material.WALL_SIGN,
-		Material.SIGN_POST,
-		Material.DISPENSER,
-		Material.HOPPER,
-		Material.WOODEN_DOOR,
-		Material.IRON_DOOR_BLOCK,
-		Material.TRAP_DOOR
-	);
-	
+
 	public static void removeAlienProtections(PS chunkPs, Faction faction)
 	{
-		List<MPlayer> nonAliens = faction.getMPlayers();
-		for (Protection protection : getProtectionsInChunk(chunkPs))
+		final Chunk chunk = chunkPs.asBukkitChunk(true);
+		final List<MPlayer> nonAliens = faction.getMPlayers();
+		final List<Material> protectable = MUtil.list(
+			Material.CHEST,
+			Material.FURNACE,
+			Material.BURNING_FURNACE,
+			Material.WALL_SIGN,
+			Material.SIGN_POST,
+			Material.DISPENSER,
+			Material.HOPPER,
+			Material.WOODEN_DOOR,
+			Material.IRON_DOOR_BLOCK,
+			Material.TRAP_DOOR
+		);
+		
+		Bukkit.getScheduler().runTask(Factions.get(), new Runnable()
 		{
-			MPlayer owner = MPlayer.get(protection.getOwner());
-			if (nonAliens.contains(owner)) continue;
-			protection.remove();
-		}
+			@Override
+			public void run() {
+				for (int x = 0; x < 16; x++)
+				{
+					for (int z = 0; z < 16; z++)
+					{
+						for (int y = 0; y < 256; y++)
+						{
+							Block block = chunk.getBlock(x, y, z);
+							
+							Material blockType = block.getType();
+							
+							if (blockType == Material.AIR) continue; 
+							
+							if (protectable.contains(blockType))
+							{
+								Protection protection = LWC.getInstance().findProtection(block);
+								if (protection == null) continue;
+								
+								MPlayer owner = MPlayer.get(protection.getOwner());
+								
+								if (!nonAliens.contains(owner)) protection.remove();
+								
+							}
+						}
+					}
+				}
+			}
+		});
 	}
-	
-	public static List<Protection> getProtectionsInChunk(PS chunkPs)
-	{
-		List<Protection> ret = new ArrayList<Protection>();
-		
-		// Get the chunk
-		Chunk chunk = null;
-		try
-		{
-			chunk = chunkPs.asBukkitChunk(true);
-		}
-		catch (Exception e)
-		{
-			return ret;
-		}
-		
-		for (BlockState blockState : chunk.getTileEntities())
-		{
-			// TODO: How about we run through each block in the chunk just to be on the safe side?
-			if (protectable.contains(blockState.getType())) continue;
-			Block block = blockState.getBlock();
-			
-			Protection protection = LWC.getInstance().findProtection(block);
-			if (protection == null) continue;
-			
-			ret.add(protection);
-		}
-		
-		return ret;
-	}
-	
 }
