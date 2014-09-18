@@ -50,6 +50,11 @@ public class MPlayerColl extends SenderColl<MPlayer>
 		
 		for (MPlayer mplayer : this.getAll())
 		{
+			// This may or may not be required.
+			// Some users have been reporting a loop issue with the same player detaching over and over again.
+			// Maybe skipping ahead if the player is detached will solve the issue.
+			if (mplayer.detached()) continue;
+			
 			Long lastPlayed = Mixin.getLastPlayed(mplayer.getId());
 			if (lastPlayed == null) continue;
 			

@@ -31,7 +31,6 @@ public class OldConf extends Entity<OldConf>
 		mconf.defaultFactionOpen = this.defaultFactionOpen;
 		mconf.defaultFactionFlags = this.defaultFactionFlags;
 		mconf.defaultFactionPerms = this.defaultFactionPerms;
-		mconf.broadcastNameChange = this.broadcastNameChange;
 		mconf.powerMax = this.powerMax;
 		mconf.powerMin = this.powerMin;
 		mconf.powerPerHour = this.powerPerHour;
