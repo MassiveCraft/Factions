@@ -6,11 +6,9 @@ import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.cmd.req.ReqHasntFaction;
-import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.FactionColl;
 import com.massivecraft.factions.entity.MConf;
-import com.massivecraft.factions.entity.MPlayerColl;
 import com.massivecraft.factions.event.EventFactionsCreate;
 import com.massivecraft.factions.event.EventFactionsMembershipChange;
 import com.massivecraft.factions.event.EventFactionsMembershipChange.MembershipChangeReason;
@@ -80,13 +78,10 @@ public class CmdFactionsCreate extends FactionsCommand
 		// NOTE: join event cannot be cancelled or you'll have an empty faction
 		
 		// Inform
-		for (MPlayer follower : MPlayerColl.get().getAllOnline())
-		{
-			follower.msg("%s<i> created a new faction %s", msender.describeTo(follower, true), faction.getName(follower));
-		}
-		
+		msg("<i>You created the faction %s", faction.getName(msender));
 		msg("<i>You should now: %s", Factions.get().getOuterCmdFactions().cmdFactionsDescription.getUseageTemplate());
 
+		// Log
 		if (MConf.get().logFactionCreate)
 		{
 			Factions.get().log(msender.getName()+" created a new faction: "+newName);

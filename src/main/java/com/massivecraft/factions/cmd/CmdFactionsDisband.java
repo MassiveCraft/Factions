@@ -5,7 +5,6 @@ import com.massivecraft.factions.entity.FactionColl;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MConf;
-import com.massivecraft.factions.entity.MPlayerColl;
 import com.massivecraft.factions.event.EventFactionsDisband;
 import com.massivecraft.factions.event.EventFactionsMembershipChange;
 import com.massivecraft.factions.event.EventFactionsMembershipChange.MembershipChangeReason;
@@ -70,25 +69,24 @@ public class CmdFactionsDisband extends FactionsCommand
 			membershipChangeEvent.run();
 		}
 
-		// Inform all players
-		for (MPlayer mplayer : MPlayerColl.get().getAllOnline())
+		// Inform
+		for (MPlayer mplayer : faction.getMPlayersWhereOnline(true))
 		{
-			String who = msender.describeTo(mplayer);
-			if (mplayer.getFaction() == faction)
-			{
-				mplayer.msg("<h>%s<i> disbanded your faction.", who);
-			}
-			else
-			{
-				mplayer.msg("<h>%s<i> disbanded the faction %s.", who, faction.getName(mplayer));
-			}
+			mplayer.msg("<h>%s<i> disbanded your faction.", msender.describeTo(mplayer));
 		}
 		
+		if (msenderFaction != faction)
+		{
+			msender.msg("<i>You disbanded <h>%s<i>." , faction.describeTo(msender));
+		}
+		
+		// Log
 		if (MConf.get().logFactionDisband)
 		{
 			Factions.get().log(Txt.parse("<i>The faction <h>%s <i>(<h>%s<i>) was disbanded by <h>%s<i>.", faction.getName(), faction.getId(), msender.getDisplayName(IdUtil.getConsole())));
 		}		
 		
+		// Apply
 		faction.detach();
 	}
 	
