@@ -1,12 +1,10 @@
 package com.massivecraft.factions.integration.lwc;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockState;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.plugin.Plugin;
@@ -67,45 +65,40 @@ public class EngineLwc extends EngineAbstract
 	
 	public static void removeAlienProtections(PS chunkPs, Faction faction)
 	{
-		List<MPlayer> nonAliens = faction.getMPlayers();
-		for (Protection protection : getProtectionsInChunk(chunkPs))
+		final List<MPlayer> nonAliens = faction.getMPlayers();
+		
+		final Chunk chunk = chunkPs.asBukkitChunk();
+		final LWC lwc = LWC.getInstance();
+		
+		// run 
+		Bukkit.getScheduler().runTask(Factions.get(), new Runnable()
 		{
-			MPlayer owner = MPlayer.get(protection.getOwner());
-			if (nonAliens.contains(owner)) continue;
-			protection.remove();
-		}
+			@Override
+			public void run()
+			{
+				for (int x = 0; x < 16; x++)
+				{
+					for (int z = 0; z < 16; z++)
+					{
+						for (int y = 0; y < chunk.getWorld().getMaxHeight(); y++)
+						{
+							Block block = chunk.getBlock(x, y, z);
+							
+							if (lwc.isProtectable(block))
+							{
+								Protection protection = lwc.findProtection(block);
+								
+								if (null != protection)
+								{
+									MPlayer player = MPlayer.get(protection.getOwner());
+									
+									if (!nonAliens.contains(player)) protection.remove();
+								}
+							}
+						}
+					}
+				}				
+			}
+		});
 	}
-	
-	public static List<Protection> getProtectionsInChunk(PS chunkPs)
-	{
-		List<Protection> ret = new ArrayList<Protection>();
-		
-		// Get the chunk
-		Chunk chunk = null;
-		try
-		{
-			chunk = chunkPs.asBukkitChunk(true);
-		}
-		catch (Exception e)
-		{
-			return ret;
-		}
-		
-		for (BlockState blockState : chunk.getTileEntities())
-		{
-			// TODO: Can something else be protected by LWC? Or is it really only chests?
-			// TODO: How about we run through each block in the chunk just to be on the safe side?
-			if (blockState.getType() != Material.CHEST) continue;
-			Block block = blockState.getBlock();
-			
-			Protection protection = LWC.getInstance().findProtection(block);
-			if (protection == null) continue;
-			
-			ret.add(protection);
-		}
-		
-		return ret;
-	}
-	
-	
 }
