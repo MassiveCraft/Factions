@@ -706,13 +706,15 @@ public class FactionsListenerMain implements Listener
 	// -------------------------------------------- //
 	// FLAG: BUILD
 	// -------------------------------------------- //
-
-	public static boolean canPlayerBuildAt(Player player, PS ps, boolean verboose)
+	
+	public static boolean canPlayerBuildAt(Object senderObject, PS ps, boolean verboose)
 	{
-		String name = player.getName();
+		MPlayer mplayer = MPlayer.get(senderObject);
+		if (mplayer == null) return false;
+		
+		String name = mplayer.getName();
 		if (MConf.get().playersWhoBypassAllProtection.contains(name)) return true;
 
-		MPlayer mplayer = MPlayer.get(player);
 		if (mplayer.isUsingAdminMode()) return true;
 
 		if (!FPerm.BUILD.has(mplayer, ps, false) && FPerm.PAINBUILD.has(mplayer, ps, false))
@@ -721,7 +723,11 @@ public class FactionsListenerMain implements Listener
 			{
 				Faction hostFaction = BoardColl.get().getFactionAt(ps);
 				mplayer.msg("<b>It is painful to build in the territory of %s<b>.", hostFaction.describeTo(mplayer));
-				player.damage(MConf.get().actionDeniedPainAmount);
+				Player player = mplayer.getPlayer();
+				if (player != null)
+				{
+					player.damage(MConf.get().actionDeniedPainAmount);
+				}
 			}
 			return true;
 		}
@@ -746,7 +752,7 @@ public class FactionsListenerMain implements Listener
 		Entity breaker = entityEvent.getRemover();
 		if (! (breaker instanceof Player)) return;
 
-		if ( ! canPlayerBuildAt((Player)breaker, PS.valueOf(event.getEntity()), true))
+		if ( ! canPlayerBuildAt(breaker, PS.valueOf(event.getEntity()), true))
 		{
 			event.setCancelled(true);
 		}
