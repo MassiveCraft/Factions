@@ -37,7 +37,7 @@ public class FactionsBlockListener implements Listener {
         }
 
         if (!playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock().getLocation(), "build", false)) {
-            event.setCancelled(true);
+            event.setBuild(false);
         }
     }
 
