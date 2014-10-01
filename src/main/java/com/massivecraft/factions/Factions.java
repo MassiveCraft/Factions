@@ -58,6 +58,10 @@ public class Factions extends MassivePlugin
 	
 	public final static String FACTION_MONEY_ACCOUNT_ID_PREFIX = "faction-"; 
 	
+	public final static String ID_NONE = "none";
+	public final static String ID_SAFEZONE = "safezone";
+	public final static String ID_WARZONE = "warzone";
+	
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
@@ -120,6 +124,7 @@ public class Factions extends MassivePlugin
 		MPlayerColl.get().init();
 		FactionColl.get().init();
 		BoardColl.get().init();
+		UpdateUtil.updateSpecialIds();
 		FactionColl.get().reindexMPlayers();
 		this.databaseInitialized = true;
 		

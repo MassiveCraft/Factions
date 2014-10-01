@@ -6,7 +6,6 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -88,16 +87,21 @@ public class MConf extends Entity<MConf>
 	// -------------------------------------------- //
 	// SPECIAL FACTION IDS
 	// -------------------------------------------- //
+	// These are a deprecated remnant from the universe system.
+	// We needed these to understand the difference between wilderness in different universes.
+	// Now that we are back to one universe only, we can have static names like simply "none", "safezone" and "warzone".
+	// Previously we set them to UUID.randomUUID().toString() but now we set them to null.
+	// If the value is set we use it to update map entries and then set it to null really quick.
 	
-	public String factionIdNone = UUID.randomUUID().toString();
-	public String factionIdSafezone = UUID.randomUUID().toString();
-	public String factionIdWarzone = UUID.randomUUID().toString();
+	public String factionIdNone = null;
+	public String factionIdSafezone = null;
+	public String factionIdWarzone = null;
 	
 	// -------------------------------------------- //
 	// DEFAULTS
 	// -------------------------------------------- //
 	
-	public String defaultPlayerFactionId = this.factionIdNone;
+	public String defaultPlayerFactionId = Factions.ID_NONE;
 	public Rel defaultPlayerRole = Rel.RECRUIT;
 	public double defaultPlayerPower = 0.0;
 	

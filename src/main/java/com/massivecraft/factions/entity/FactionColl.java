@@ -85,7 +85,7 @@ public class FactionColl extends Coll<Faction>
 	
 	public Faction getNone()
 	{
-		String id = MConf.get().factionIdNone;
+		String id = Factions.ID_NONE;
 		Faction faction = this.get(id);
 		if (faction != null) return faction;
 		
@@ -118,7 +118,7 @@ public class FactionColl extends Coll<Faction>
 	
 	public Faction getSafezone()
 	{
-		String id = MConf.get().factionIdSafezone;
+		String id = Factions.ID_SAFEZONE;
 		Faction faction = this.get(id);
 		if (faction != null) return faction;
 		
@@ -151,7 +151,7 @@ public class FactionColl extends Coll<Faction>
 	
 	public Faction getWarzone()
 	{
-		String id = MConf.get().factionIdWarzone;
+		String id = Factions.ID_WARZONE;
 		Faction faction = this.get(id);
 		if (faction != null) return faction;
 		

@@ -2,10 +2,17 @@ package com.massivecraft.factions.update;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.massivecraft.factions.Const;
 import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.TerritoryAccess;
+import com.massivecraft.factions.entity.Board;
+import com.massivecraft.factions.entity.BoardColl;
+import com.massivecraft.factions.entity.Faction;
+import com.massivecraft.factions.entity.FactionColl;
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.store.Coll;
@@ -118,6 +125,131 @@ public class UpdateUtil
 		}
 		
 		return ret;
+	}
+	
+	// -------------------------------------------- //
+	// UPDATE SPECIAL IDS
+	// -------------------------------------------- //
+	
+	public static void updateSpecialIds()
+	{
+		if (MConf.get().factionIdNone != null)
+		{
+			updateSpecialId(MConf.get().factionIdNone, Factions.ID_NONE);
+			MConf.get().factionIdNone = null;
+		}
+		
+		if (MConf.get().factionIdSafezone != null)
+		{
+			updateSpecialId(MConf.get().factionIdSafezone, Factions.ID_SAFEZONE);
+			MConf.get().factionIdSafezone = null;
+		}
+		
+		if (MConf.get().factionIdWarzone != null)
+		{
+			updateSpecialId(MConf.get().factionIdWarzone, Factions.ID_WARZONE);
+			MConf.get().factionIdWarzone = null;
+		}
+		
+		MConf.get().sync();
+	}
+	
+	public static void updateSpecialId(String from, String to)
+	{
+		// Get the coll.
+		FactionColl coll = FactionColl.get();
+		
+		// A faction may already be occupying the to-id.
+		// We must remove it to make space for renaming.
+		// This faction is simply an auto-created faction with no references yet.
+		coll.detachId(to);
+		coll.syncId(to);
+				
+		// Get the faction and detach it
+		Faction faction = coll.detachId(from);
+		coll.syncId(from);
+		
+		// Attach it
+		coll.attach(faction, to);
+		coll.syncId(to);
+		
+		// Update that config special config option.
+		if (MConf.get().defaultPlayerFactionId.equals(from))
+		{
+			MConf.get().defaultPlayerFactionId = to;
+			MConf.get().sync();
+		}
+		
+		// Update all board entries.
+		updateBoards(from, to);
+	}
+	
+	public static void updateBoards(String from, String to)
+	{
+		for (Board board : BoardColl.get().getAll())
+		{
+			updateBoard(board, from, to);
+		}
+	}
+	
+	public static void updateBoard(Board board, String from, String to)
+	{
+		boolean changed = false;
+		for (TerritoryAccess ta : board.getMap().values())
+		{
+			changed |= updateTerritoryAccess(ta, from, to);
+		}
+		if (changed)
+		{
+			board.changed();
+			board.sync();
+		}
+	}
+	
+	public static boolean updateTerritoryAccess(TerritoryAccess entity, String from, String to)
+	{
+		boolean changed = false;
+		changed |= updateTerritoryHostFactionId(entity, from, to);
+		changed |= updateTerritoryAccessFactionIds(entity, from, to);
+		return changed;
+	}
+
+	public static boolean updateTerritoryHostFactionId(TerritoryAccess entity, String from, String to)
+	{
+		String before = entity.hostFactionId;
+		if (before == null) return false;
+		if (!before.equals(from)) return false;
+		
+		entity.hostFactionId = to;
+		return true;
+	}
+	
+	public static boolean updateTerritoryAccessFactionIds(TerritoryAccess entity, String from, String to)
+	{
+		// Before and After
+		Set<String> before = entity.factionIds;
+		if (before == null) return false;
+		Set<String> after = new LinkedHashSet<String>();
+		for (String id : before)
+		{
+			if (id == null) continue;
+			if (id.equals(from))
+			{
+				after.add(to);
+			}
+			else
+			{
+				after.add(from);
+			}
+		}
+		
+		// NoChange
+		if (MUtil.equals(before, after)) return false;
+		
+		// Apply
+		entity.factionIds = after;
+		//entity.sync();
+		return true;
 	}
 	
 }

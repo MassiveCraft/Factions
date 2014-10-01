@@ -186,7 +186,7 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 	
 	public boolean hasFaction()
 	{
-		return !this.getFactionId().equals(MConf.get().factionIdNone);
+		return !this.getFactionId().equals(Factions.ID_NONE);
 	}
 	
 	// This setter is so long because it search for default/null case and takes care of updating the faction member index 

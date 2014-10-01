@@ -13,7 +13,7 @@
 	</properties>
 	
 	<build>
-		<defaultGoal>clean install</defaultGoal>
+		<defaultGoal>install</defaultGoal>
 		<finalName>Factions</finalName>
 		<sourceDirectory>${basedir}/src/main/java/</sourceDirectory>
 		<resources>

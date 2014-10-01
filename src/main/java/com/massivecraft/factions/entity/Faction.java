@@ -60,6 +60,11 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	@Override
 	public void preDetach(String id)
 	{
+		// The database must be fully inited.
+		// We may move factions around during upgrades.
+		if (!Factions.get().isDatabaseInitialized()) return;
+		
+		// Zero balance
 		Money.set(this, null, 0);
 		
 		// Clean the board
@@ -130,7 +135,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	
 	public boolean isNone()
 	{
-		return this.getId().equals(MConf.get().factionIdNone);
+		return this.getId().equals(Factions.ID_NONE);
 	}
 	
 	public boolean isNormal()
