@@ -43,6 +43,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	{
 		this.setName(that.name);
 		this.setDescription(that.description);
+		this.setMotd(that.motd);
 		this.setCreatedAtMillis(that.createdAtMillis);
 		this.setHome(that.home);
 		this.setPowerBoost(that.powerBoost);
@@ -86,6 +87,11 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	// This description can for example be seen in territorial alerts.
 	// Null means the faction has no description.
 	private String description = null;
+	
+	// Factions can optionally set a message of the day.
+	// This message will be shown when logging on to the server.
+	// Null means the faction has no motd
+	private String motd = null;
 	
 	// We store the creation date for the faction.
 	// It can be displayed on info pages etc.
@@ -230,6 +236,56 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 		
 		// Mark as changed
 		this.changed();
+	}
+	
+	// -------------------------------------------- //
+	// FIELD: motd
+	// -------------------------------------------- //
+	
+	// RAW
+	
+	public boolean hasMotd()
+	{
+		return this.motd != null;
+	}
+	
+	public String getMotd()
+	{
+		if (this.hasMotd()) return Txt.parse(this.motd);
+		return Lang.FACTION_NOMOTD;
+	}
+	
+	public void setMotd(String motd)
+	{
+		// Clean input
+		String target = motd;
+		if (target != null)
+		{
+			target = target.trim();
+			if (target.length() == 0)
+			{
+				target = null;
+			}
+		}
+		
+		// Detect Nochange
+		if (MUtil.equals(this.motd, target)) return;
+
+		// Apply
+		this.motd = target;
+		
+		// Mark as changed
+		this.changed();
+	}
+	
+	// FINER
+	
+	public List<String> getMotdMessages()
+	{
+		final String title = Txt.titleize(this.getName() + " - Message of the Day");
+		final String motd = "<i>" + this.getMotd();
+		final List<String> messages = Txt.parse(MUtil.list(title, motd));
+		return messages;
 	}
 	
 	// -------------------------------------------- //

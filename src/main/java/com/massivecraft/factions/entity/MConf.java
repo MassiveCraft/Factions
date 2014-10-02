@@ -102,6 +102,13 @@ public class MConf extends Entity<MConf>
 	public String defaultPlayerFactionId = Factions.ID_NONE;
 	public Rel defaultPlayerRole = Rel.RECRUIT;
 	public double defaultPlayerPower = 0.0;
+	
+	// -------------------------------------------- //
+	// MOTD
+	// -------------------------------------------- //
+	
+	public EventPriority motdPriority = EventPriority.NORMAL;
+	public int motdDelayTicks = -1;
 
 	// -------------------------------------------- //
 	// POWER

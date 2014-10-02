@@ -44,6 +44,7 @@ public enum Perm
 	MONEY_F2P("money.f2p"),
 	MONEY_P2F("money.p2f"),
 	MONEY_WITHDRAW("money.withdraw"),
+	MOTD("motd"),
 	OFFICER("officer"),
 	OFFICER_ANY("officer.any"),
 	OPEN("open"),

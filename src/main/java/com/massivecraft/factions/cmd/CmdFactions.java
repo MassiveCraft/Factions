@@ -24,6 +24,7 @@ public class CmdFactions extends FactionsCommand
 	public CmdFactionsCreate cmdFactionsCreate = new CmdFactionsCreate();
 	public CmdFactionsName cmdFactionsName = new CmdFactionsName();
 	public CmdFactionsDescription cmdFactionsDescription = new CmdFactionsDescription();
+	public CmdFactionsMotd cmdFactionsMotd = new CmdFactionsMotd();
 	public CmdFactionsSethome cmdFactionsSethome = new CmdFactionsSethome();
 	public CmdFactionsUnsethome cmdFactionsUnsethome = new CmdFactionsUnsethome();
 	public CmdFactionsInvite cmdFactionsInvite = new CmdFactionsInvite();
@@ -69,6 +70,7 @@ public class CmdFactions extends FactionsCommand
 		this.addSubCommand(this.cmdFactionsCreate);
 		this.addSubCommand(this.cmdFactionsName);
 		this.addSubCommand(this.cmdFactionsDescription);
+		this.addSubCommand(this.cmdFactionsMotd);
 		this.addSubCommand(this.cmdFactionsSethome);
 		this.addSubCommand(this.cmdFactionsUnsethome);
 		this.addSubCommand(this.cmdFactionsInvite);

@@ -49,6 +49,7 @@ import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerBucketFillEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
@@ -68,6 +69,7 @@ import com.massivecraft.factions.event.EventFactionsPvpDisallowed;
 import com.massivecraft.factions.event.EventFactionsPowerChange;
 import com.massivecraft.factions.event.EventFactionsPowerChange.PowerChangeReason;
 import com.massivecraft.factions.util.VisualizeUtil;
+import com.massivecraft.massivecore.mixin.Mixin;
 import com.massivecraft.massivecore.ps.PS;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.PlayerUtil;
@@ -92,6 +94,89 @@ public class FactionsListenerMain implements Listener
 		Bukkit.getPluginManager().registerEvents(this, Factions.get());
 	}
 
+	// -------------------------------------------- //
+	// MOTD
+	// -------------------------------------------- //
+	
+	public static void motd(PlayerJoinEvent event, EventPriority currentPriority)
+	{
+		// Gather info ...
+		final Player player = event.getPlayer();
+		final MPlayer mplayer = MPlayer.get(player);
+		final Faction faction = mplayer.getFaction();
+		
+		// ... if there is a motd ...
+		if ( ! faction.hasMotd()) return; 
+				
+		// ... and this is the priority we are supposed to act on ...
+		if (currentPriority != MConf.get().motdPriority) return;
+		
+		// ... and this is an actual join ...
+		if (!Mixin.isActualJoin(event)) return;
+		
+		// ... then prepare the messages ...
+		final List<String> messages = faction.getMotdMessages();
+		
+		// ... and send to the player.
+		if (MConf.get().motdDelayTicks < 0)
+		{
+			Mixin.messageOne(player, messages);
+		}
+		else
+		{
+			Bukkit.getScheduler().scheduleSyncDelayedTask(Factions.get(), new Runnable()
+			{
+				@Override
+				public void run()
+				{
+					Mixin.messageOne(player, messages);
+				}
+			}, MConf.get().motdDelayTicks);
+		}
+	}
+	
+	// Can't be cancelled
+	@EventHandler(priority = EventPriority.LOWEST)
+	public void motdLowest(PlayerJoinEvent event)
+	{
+		motd(event, EventPriority.LOWEST);
+	}
+	
+	// Can't be cancelled
+	@EventHandler(priority = EventPriority.LOW)
+	public void motdLow(PlayerJoinEvent event)
+	{
+		motd(event, EventPriority.LOW);
+	}
+	
+	// Can't be cancelled
+	@EventHandler(priority = EventPriority.NORMAL)
+	public void motdNormal(PlayerJoinEvent event)
+	{
+		motd(event, EventPriority.NORMAL);
+	}
+	
+	// Can't be cancelled
+	@EventHandler(priority = EventPriority.HIGH)
+	public void motdHigh(PlayerJoinEvent event)
+	{
+		motd(event, EventPriority.HIGH);
+	}
+	
+	// Can't be cancelled
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public void motdHighest(PlayerJoinEvent event)
+	{
+		motd(event, EventPriority.HIGHEST);
+	}
+	
+	// Can't be cancelled
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void motdMonitor(PlayerJoinEvent event)
+	{
+		motd(event, EventPriority.MONITOR);
+	}
+	
 	// -------------------------------------------- //
 	// CHUNK CHANGE: DETECT
 	// -------------------------------------------- //
