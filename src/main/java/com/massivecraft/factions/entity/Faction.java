@@ -255,10 +255,10 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 		return Lang.FACTION_NOMOTD;
 	}
 	
-	public void setMotd(String motd)
+	public void setMotd(String description)
 	{
 		// Clean input
-		String target = motd;
+		String target = description;
 		if (target != null)
 		{
 			target = target.trim();
