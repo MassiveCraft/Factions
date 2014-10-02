@@ -761,7 +761,6 @@ public class EngineDynmap extends EngineAbstract
 		Map<String, Boolean> flags = new HashMap<String, Boolean>();
 		for (MFlag mflag : MFlag.getAll())
 		{
-			if (!mflag.isVisible()) continue;
 			flags.put(mflag.getName(), faction.getFlag(mflag));
 		}
 		for (Entry<String, Boolean> entry : flags.entrySet())
