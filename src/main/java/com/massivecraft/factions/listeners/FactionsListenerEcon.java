@@ -21,7 +21,7 @@ import com.massivecraft.factions.event.EventFactionsInvitedChange;
 import com.massivecraft.factions.event.EventFactionsMembershipChange;
 import com.massivecraft.factions.event.EventFactionsMembershipChange.MembershipChangeReason;
 import com.massivecraft.factions.event.EventFactionsNameChange;
-import com.massivecraft.factions.event.EventFactionsOpenChange;
+import com.massivecraft.factions.event.EventFactionsFlagChange;
 import com.massivecraft.factions.event.EventFactionsRelationChange;
 import com.massivecraft.factions.event.EventFactionsTitleChange;
 import com.massivecraft.factions.integration.Econ;
@@ -209,10 +209,10 @@ public class FactionsListenerEcon implements Listener
 	}
 	
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
-	public void payForCommand(EventFactionsOpenChange event)
+	public void payForCommand(EventFactionsFlagChange event)
 	{
-		Double cost = MConf.get().econCostOpen;
-		String desc = Factions.get().getOuterCmdFactions().cmdFactionsOpen.getDesc();
+		Double cost = MConf.get().econCostFlag;
+		String desc = Factions.get().getOuterCmdFactions().cmdFactionsFlag.getDesc();
 		
 		payForAction(event, cost, desc);
 	}

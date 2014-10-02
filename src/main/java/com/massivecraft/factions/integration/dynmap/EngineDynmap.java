@@ -22,7 +22,6 @@ import org.dynmap.markers.MarkerSet;
 import org.dynmap.markers.PlayerSet;
 import org.dynmap.utils.TileFlags;
 
-import com.massivecraft.factions.FFlag;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.TerritoryAccess;
@@ -31,6 +30,7 @@ import com.massivecraft.factions.entity.BoardColl;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.FactionColl;
 import com.massivecraft.factions.entity.MConf;
+import com.massivecraft.factions.entity.MFlag;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.massivecore.EngineAbstract;
 import com.massivecraft.massivecore.money.Money;
@@ -759,10 +759,10 @@ public class EngineDynmap extends EngineAbstract
 		
 		// Flags and Open
 		Map<String, Boolean> flags = new HashMap<String, Boolean>();
-		flags.put("open", faction.isOpen());
-		for (FFlag fflag : FFlag.values())
+		for (MFlag mflag : MFlag.getAll())
 		{
-			flags.put(fflag.getNicename(), faction.getFlag(fflag));
+			if (!mflag.isVisible()) continue;
+			flags.put(mflag.getName(), faction.getFlag(mflag));
 		}
 		for (Entry<String, Boolean> entry : flags.entrySet())
 		{

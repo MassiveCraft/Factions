@@ -24,7 +24,6 @@ public enum Perm
 	DISBAND("disband"),
 	FACTION("faction"),
 	FLAG("flag"),
-	FLAG_SET("flag.set"),
 	HOME("home"),
 	HOME_OTHER("home.other"),
 	INVITE("invite"),

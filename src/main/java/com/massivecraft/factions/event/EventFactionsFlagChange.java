@@ -4,8 +4,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.event.HandlerList;
 
 import com.massivecraft.factions.entity.Faction;
+import com.massivecraft.factions.entity.MFlag;
 
-public class EventFactionsOpenChange extends EventFactionsAbstractSender
+public class EventFactionsFlagChange extends EventFactionsAbstractSender
 {	
 	// -------------------------------------------- //
 	// REQUIRED EVENT CODE
@@ -22,19 +23,23 @@ public class EventFactionsOpenChange extends EventFactionsAbstractSender
 	private final Faction faction;
 	public Faction getFaction() { return this.faction; }
 	
-	private boolean newOpen;
-	public boolean isNewOpen() { return this.newOpen; }
-	public void setNewOpen(boolean newOpen) { this.newOpen = newOpen; }
+	private final MFlag flag;
+	public MFlag getFlag() { return this.flag; }
+	
+	private boolean newValue;
+	public boolean isNewValue() { return this.newValue; }
+	public void setNewValue(boolean newValue) { this.newValue = newValue; }
 	
 	// -------------------------------------------- //
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public EventFactionsOpenChange(CommandSender sender, Faction faction, boolean newOpen)
+	public EventFactionsFlagChange(CommandSender sender, Faction faction, MFlag flag, boolean newValue)
 	{
 		super(sender);
 		this.faction = faction;
-		this.newOpen = newOpen;
+		this.flag = flag;
+		this.newValue = newValue;
 	}
 	
 }

@@ -24,7 +24,6 @@ permissions:
   factions.disband: {description: disband faction, default: false}
   factions.faction: {description: show faction information, default: false}
   factions.flag: {description: manage faction flags, default: false}
-  factions.flag.set: {description: set faction flags, default: false}
   factions.home: {description: teleport to faction home, default: false}
   factions.home.other: {description: teleport to another faction home, default: false}
   factions.invite: {description: set if player is invited, default: false}
@@ -82,7 +81,6 @@ permissions:
       factions.disband: true
       factions.faction: true
       factions.flag: true
-      factions.flag.set: true
       factions.home: true
       factions.home.other: true
       factions.invite: true
@@ -136,7 +134,6 @@ permissions:
     default: false
     children:
       factions.kit.rank1: true
-      factions.flag.set: true
       factions.powerboost: true
       factions.join.any: true
       factions.join.others: true

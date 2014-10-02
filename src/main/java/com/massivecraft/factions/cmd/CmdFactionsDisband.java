@@ -2,13 +2,13 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.cmd.arg.ARFaction;
 import com.massivecraft.factions.entity.FactionColl;
+import com.massivecraft.factions.entity.MFlag;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.event.EventFactionsDisband;
 import com.massivecraft.factions.event.EventFactionsMembershipChange;
 import com.massivecraft.factions.event.EventFactionsMembershipChange.MembershipChangeReason;
-import com.massivecraft.factions.FFlag;
 import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
@@ -49,7 +49,7 @@ public class CmdFactionsDisband extends FactionsCommand
 		if ( ! FPerm.DISBAND.has(msender, faction, true)) return;
 
 		// Verify
-		if (faction.getFlag(FFlag.PERMANENT))
+		if (faction.getFlag(MFlag.getPermanent()))
 		{
 			msg("<i>This faction is designated as permanent, so you cannot disband it.");
 			return;

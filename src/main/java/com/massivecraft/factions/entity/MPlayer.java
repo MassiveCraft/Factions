@@ -7,7 +7,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import com.massivecraft.factions.EconomyParticipator;
-import com.massivecraft.factions.FFlag;
 import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Lang;
@@ -635,7 +634,7 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 	{
 		Faction myFaction = this.getFaction();
 
-		boolean permanent = myFaction.getFlag(FFlag.PERMANENT);
+		boolean permanent = myFaction.getFlag(MFlag.getPermanent());
 		
 		if (myFaction.getMPlayers().size() > 1)
 		{
@@ -725,7 +724,7 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 				
 				int ownedLand = newFaction.getLandCount();
 				
-				if (mconf.claimedLandsMax != 0 && ownedLand >= mconf.claimedLandsMax && ! newFaction.getFlag(FFlag.INFPOWER))
+				if (mconf.claimedLandsMax != 0 && ownedLand >= mconf.claimedLandsMax && ! newFaction.getFlag(MFlag.getInfpower()))
 				{
 					msg("<b>Limit reached. You can't claim more land.");
 					return false;

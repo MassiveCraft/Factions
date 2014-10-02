@@ -1,10 +1,12 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.FFlag;
+import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.Perm;
-import com.massivecraft.factions.cmd.arg.ARFFlag;
+import com.massivecraft.factions.cmd.arg.ARMFlag;
 import com.massivecraft.factions.cmd.arg.ARFaction;
 import com.massivecraft.factions.entity.Faction;
+import com.massivecraft.factions.entity.MFlag;
+import com.massivecraft.factions.event.EventFactionsFlagChange;
 import com.massivecraft.massivecore.cmd.arg.ARBoolean;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.util.Txt;
@@ -36,39 +38,67 @@ public class CmdFactionsFlag extends FactionsCommand
 	@Override
 	public void perform()
 	{	
+		// Arg: Faction
 		Faction faction = this.arg(0, ARFaction.get(), msenderFaction);
 		if (faction == null) return;
 		
+		// Case: Show All
 		if ( ! this.argIsSet(1))
 		{
 			msg(Txt.titleize("Flags for " + faction.describeTo(msender, true)));
-			for (FFlag flag : FFlag.values())
+			for (MFlag mflag : MFlag.getAll())
 			{
-				msg(flag.getStateInfo(faction.getFlag(flag), true));
+				if (!mflag.isVisible() && !msender.isUsingAdminMode()) continue;
+				msg(mflag.getStateInfo(faction.getFlag(mflag), true));
 			}
 			return;
 		}
 		
-		FFlag flag = this.arg(1, ARFFlag.get());
-		if (flag == null) return;
+		// Arg: MFlag
+		MFlag mflag = this.arg(1, ARMFlag.get());
+		if (mflag == null) return;
 		
+		// Case: Show One
 		if ( ! this.argIsSet(2))
 		{
 			msg(Txt.titleize("Flag for " + faction.describeTo(msender, true)));
-			msg(flag.getStateInfo(faction.getFlag(flag), true));
+			msg(mflag.getStateInfo(faction.getFlag(mflag), true));
 			return;
 		}
 		
+		// Do the sender have the right to change flags for this faction?
+		if ( ! FPerm.PERMS.has(msender, faction, true)) return;
+		
+		// Is this flag editable?
+		if (!msender.isUsingAdminMode() && !mflag.isEditable())
+		{
+			msg("<b>The flag <h>%s <b>is not editable.", mflag.getName());
+			return;
+		}
+		
+		// Arg: Target Value
 		Boolean targetValue = this.arg(2, ARBoolean.get());
 		if (targetValue == null) return;
-
-		// Do the sender have the right to change flags?
-		if ( ! Perm.FLAG_SET.has(sender, true)) return;
 		
-		// Do the change
-		msg(Txt.titleize("Flag for " + faction.describeTo(msender, true)));
-		faction.setFlag(flag, targetValue);
-		msg(flag.getStateInfo(faction.getFlag(flag), true));
+		// Event
+		EventFactionsFlagChange event = new EventFactionsFlagChange(sender, faction, mflag, targetValue);
+		event.run();
+		if (event.isCancelled()) return;
+		targetValue = event.isNewValue();
+		
+		// Apply
+		faction.setFlag(mflag, targetValue);
+		
+		// Inform
+		String stateInfo = mflag.getStateInfo(faction.getFlag(mflag), true);
+		if (msender.getFaction() != faction)
+		{
+			// Send message to sender
+			msg("<h>%s <i>set a flag for <h>%s", msender.describeTo(msender, true), faction.describeTo(msender, true));
+			msg(stateInfo);
+		}
+		faction.msg("<h>%s <i>set a flag for <h>%s", msender.describeTo(faction, true), faction.describeTo(faction, true));
+		faction.msg(stateInfo);
 	}
 	
 }

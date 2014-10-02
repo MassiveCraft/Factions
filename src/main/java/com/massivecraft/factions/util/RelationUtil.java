@@ -2,9 +2,9 @@ package com.massivecraft.factions.util;
 
 import org.bukkit.ChatColor;
 
-import com.massivecraft.factions.FFlag;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.RelationParticipator;
+import com.massivecraft.factions.entity.MFlag;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MConf;
@@ -108,7 +108,7 @@ public class RelationUtil
 				//P.p.log("getRelationOfThatToMe it was a player and role is "+ret);
 			}
 		}
-		else if (!ignorePeaceful && (thatFaction.getFlag(FFlag.PEACEFUL) || myFaction.getFlag(FFlag.PEACEFUL)))
+		else if (!ignorePeaceful && (thatFaction.getFlag(MFlag.getPeaceful()) || myFaction.getFlag(MFlag.getPeaceful())))
 		{
 			ret = Rel.TRUCE;
 		}
@@ -137,12 +137,12 @@ public class RelationUtil
 		Faction thatFaction = getFaction(that);
 		if (thatFaction != null && thatFaction != getFaction(me))
 		{
-			if (thatFaction.getFlag(FFlag.FRIENDLYFIRE) == true)
+			if (thatFaction.getFlag(MFlag.getFriendlyire()) == true)
 			{
 				return MConf.get().colorFriendlyFire;
 			}
 			
-			if (thatFaction.getFlag(FFlag.PVP) == false)
+			if (thatFaction.getFlag(MFlag.getPvp()) == false)
 			{
 				return MConf.get().colorNoPVP;
 			}

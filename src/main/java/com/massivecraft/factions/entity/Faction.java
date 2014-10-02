@@ -9,7 +9,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.massivecraft.factions.EconomyParticipator;
-import com.massivecraft.factions.FFlag;
 import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.FactionEqualsPredictate;
 import com.massivecraft.factions.Factions;
@@ -48,10 +47,9 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 		this.setCreatedAtMillis(that.createdAtMillis);
 		this.setHome(that.home);
 		this.setPowerBoost(that.powerBoost);
-		this.setOpen(that.open);
 		this.setInvitedPlayerIds(that.invitedPlayerIds);
 		this.setRelationWishes(that.relationWishes);
-		this.setFlags(that.flags);
+		this.setFlagIds(that.flags);
 		this.setPerms(that.perms);
 		
 		return this;
@@ -108,7 +106,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	// If the faction is open they can.
 	// If the faction is closed an invite is required.
 	// Null means default.
-	private Boolean open = null;
+	// private Boolean open = null;
 	
 	// This is the ids of the invited players.
 	// They are actually "senderIds" since you can invite "@console" to your faction.
@@ -121,7 +119,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	
 	// The flag overrides are modifications to the default values.
 	// Null means default.
-	private Map<FFlag, Boolean> flags = null;
+	private Map<String, Boolean> flags = null;
 
 	// The perm overrides are modifications to the default values.
 	// Null means default.
@@ -338,6 +336,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	// FIELD: open
 	// -------------------------------------------- //
 	
+	/*
 	public boolean isDefaultOpen()
 	{
 		return MConf.get().defaultFactionOpen;
@@ -363,7 +362,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 		
 		// Mark as changed
 		this.changed();
-	}
+	}*/
 	
 	// -------------------------------------------- //
 	// FIELD: invitedPlayerIds
@@ -538,45 +537,53 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	
 	// RAW
 	
-	public Map<FFlag, Boolean> getFlags()
+	public Map<MFlag, Boolean> getFlags()
 	{
-		Map<FFlag, Boolean> ret = new LinkedHashMap<FFlag, Boolean>();
-		
-		for (FFlag fflag : FFlag.values())
+		// We start with default values ...
+		Map<MFlag, Boolean> ret = new LinkedHashMap<MFlag, Boolean>();
+		for (MFlag mflag : MFlag.getAll())
 		{
-			ret.put(fflag, fflag.getDefault());
+			ret.put(mflag, mflag.isStandard());
 		}
 		
+		// ... and if anything is explicitly set ...
 		if (this.flags != null)
 		{
-			for (Entry<FFlag, Boolean> entry : this.flags.entrySet())
+			// ... we we use that info.
+			for (Entry<String, Boolean> entry : this.flags.entrySet())
 			{
-				ret.put(entry.getKey(), entry.getValue());
+				String id = entry.getKey();
+				if (id == null) continue;
+				
+				MFlag mflag = MFlag.get(id);
+				if (mflag == null) continue;
+				
+				ret.put(mflag, entry.getValue());
 			}
 		}
 		
 		return ret;
 	}
 	
-	public void setFlags(Map<FFlag, Boolean> flags)
+	public void setFlagIds(Map<String, Boolean> flags)
 	{
 		// Clean input
-		Map<FFlag, Boolean> target;
-		if (flags == null)
+		Map<String, Boolean> target = null;
+		if (flags != null)
 		{
-			target = null;
-		}
-		else
-		{
-			target = new LinkedHashMap<FFlag, Boolean>(flags);
+			// We start out with what was suggested
+			target = new LinkedHashMap<String, Boolean>(flags);
 			
+			// However if the context is fully live we try to throw some default values away.
 			if (this.attached() && Factions.get().isDatabaseInitialized())
 			{
-				Iterator<Entry<FFlag, Boolean>> iter = target.entrySet().iterator();
+				Iterator<Entry<String, Boolean>> iter = target.entrySet().iterator();
 				while (iter.hasNext())
 				{
-					Entry<FFlag, Boolean> entry = iter.next();
-					if (entry.getKey().getDefault() == entry.getValue())
+					Entry<String, Boolean> entry = iter.next();
+					String id = entry.getKey();
+					MFlag mflag = MFlag.get(id);
+					if (mflag != null && mflag.isStandard() == entry.getValue())
 					{
 						iter.remove();
 					}
@@ -596,15 +603,25 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 		this.changed();
 	}
 	
+	public void setFlags(Map<MFlag, Boolean> flags)
+	{
+		Map<String, Boolean> flagIds = new LinkedHashMap<String, Boolean>();
+		for (Entry<MFlag, Boolean> entry : flags.entrySet())
+		{
+			flagIds.put(entry.getKey().getId(), entry.getValue());
+		}
+		setFlagIds(flagIds);
+	}
+	
 	// FINER
 	
-	public boolean getFlag(FFlag flag)
+	public boolean getFlag(MFlag flag)
 	{
 		return this.getFlags().get(flag);
 	}
-	public void setFlag(FFlag flag, boolean value)
+	public void setFlag(MFlag flag, boolean value)
 	{
-		Map<FFlag, Boolean> flags = this.getFlags();
+		Map<MFlag, Boolean> flags = this.getFlags();
 		flags.put(flag, value);
 		this.setFlags(flags);
 	}
@@ -776,7 +793,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	
 	public double getPower()
 	{
-		if (this.getFlag(FFlag.INFPOWER)) return 999999;
+		if (this.getFlag(MFlag.getInfpower())) return 999999;
 		
 		double ret = 0;
 		for (MPlayer mplayer : this.getMPlayers())
@@ -797,7 +814,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	
 	public double getPowerMax()
 	{
-		if (this.getFlag(FFlag.INFPOWER)) return 999999;
+		if (this.getFlag(MFlag.getInfpower())) return 999999;
 	
 		double ret = 0;
 		for (MPlayer mplayer : this.getMPlayers())
@@ -956,7 +973,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	public void promoteNewLeader()
 	{
 		if ( ! this.isNormal()) return;
-		if (this.getFlag(FFlag.PERMANENT) && MConf.get().permanentFactionsDisableLeaderPromotion) return;
+		if (this.getFlag(MFlag.getPermanent()) && MConf.get().permanentFactionsDisableLeaderPromotion) return;
 
 		MPlayer oldLeader = this.getLeader();
 
@@ -970,7 +987,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 		if (replacements == null || replacements.isEmpty())
 		{
 			// faction leader is the only member; one-man faction
-			if (this.getFlag(FFlag.PERMANENT))
+			if (this.getFlag(MFlag.getPermanent()))
 			{
 				if (oldLeader != null)
 				{
@@ -1032,8 +1049,8 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	
 	public boolean isExplosionsAllowed()
 	{
-		boolean explosions = this.getFlag(FFlag.EXPLOSIONS);
-		boolean offlineexplosions = this.getFlag(FFlag.OFFLINE_EXPLOSIONS);
+		boolean explosions = this.getFlag(MFlag.getExplosions());
+		boolean offlineexplosions = this.getFlag(MFlag.getOfflineexplosions());
 		boolean online = this.isFactionConsideredOnline();
 		
 		return (online && explosions) || (!online && offlineexplosions);

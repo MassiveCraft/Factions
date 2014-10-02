@@ -2,7 +2,6 @@ package com.massivecraft.factions;
 
 import com.massivecraft.factions.adapter.BoardAdapter;
 import com.massivecraft.factions.adapter.BoardMapAdapter;
-import com.massivecraft.factions.adapter.FFlagAdapter;
 import com.massivecraft.factions.adapter.FPermAdapter;
 import com.massivecraft.factions.adapter.FactionPreprocessAdapter;
 import com.massivecraft.factions.adapter.RelAdapter;
@@ -25,6 +24,7 @@ import com.massivecraft.factions.entity.Board;
 import com.massivecraft.factions.entity.BoardColl;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.FactionColl;
+import com.massivecraft.factions.entity.MFlagColl;
 import com.massivecraft.factions.entity.MPlayerColl;
 import com.massivecraft.factions.entity.MConfColl;
 import com.massivecraft.factions.integration.dynmap.IntegrationDynmap;
@@ -119,6 +119,7 @@ public class Factions extends MassivePlugin
 
 		// Initialize Database
 		this.databaseInitialized = false;
+		MFlagColl.get().init();
 		MConfColl.get().init();
 		UpdateUtil.update();	
 		MPlayerColl.get().init();
@@ -184,7 +185,6 @@ public class Factions extends MassivePlugin
 		.registerTypeAdapter(Board.MAP_TYPE, BoardMapAdapter.get())
 		.registerTypeAdapter(Rel.class, RelAdapter.get())
 		.registerTypeAdapter(FPerm.class, FPermAdapter.get())
-		.registerTypeAdapter(FFlag.class, FFlagAdapter.get())
 		;
 	}
 	

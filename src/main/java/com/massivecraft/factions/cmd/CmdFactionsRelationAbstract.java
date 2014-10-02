@@ -1,6 +1,5 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.FFlag;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.cmd.arg.ARFaction;
@@ -8,6 +7,7 @@ import com.massivecraft.factions.cmd.req.ReqHasFaction;
 import com.massivecraft.factions.cmd.req.ReqRoleIsAtLeast;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MConf;
+import com.massivecraft.factions.entity.MFlag;
 import com.massivecraft.factions.event.EventFactionsRelationChange;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 
@@ -89,13 +89,13 @@ public abstract class CmdFactionsRelationAbstract extends FactionsCommand
 		
 		// TODO: The ally case should work!!
 		//   * this might have to be bumped up to make that happen, & allow ALLY,NEUTRAL only
-		if ( newRelation != Rel.TRUCE && otherFaction.getFlag(FFlag.PEACEFUL))
+		if ( newRelation != Rel.TRUCE && otherFaction.getFlag(MFlag.getPeaceful()))
 		{
 			otherFaction.msg("<i>This will have no effect while your faction is peaceful.");
 			msenderFaction.msg("<i>This will have no effect while their faction is peaceful.");
 		}
 		
-		if ( newRelation != Rel.TRUCE && msenderFaction.getFlag(FFlag.PEACEFUL))
+		if ( newRelation != Rel.TRUCE && msenderFaction.getFlag(MFlag.getPeaceful()))
 		{
 			otherFaction.msg("<i>This will have no effect while their faction is peaceful.");
 			msenderFaction.msg("<i>This will have no effect while your faction is peaceful.");

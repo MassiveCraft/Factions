@@ -6,7 +6,6 @@ import java.util.Set;
 
 import org.bukkit.event.EventPriority;
 
-import com.massivecraft.factions.FFlag;
 import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.entity.MConf;
@@ -28,8 +27,8 @@ public class OldConf extends Entity<OldConf>
 		mconf.defaultPlayerFactionId = this.defaultPlayerFactionId;
 		mconf.defaultPlayerRole = this.defaultPlayerRole;
 		mconf.defaultPlayerPower = this.defaultPlayerPower;
-		mconf.defaultFactionOpen = this.defaultFactionOpen;
-		mconf.defaultFactionFlags = this.defaultFactionFlags;
+		//mconf.defaultFactionOpen = this.defaultFactionOpen;
+		//mconf.defaultFactionFlags = this.defaultFactionFlags;
 		mconf.defaultFactionPerms = this.defaultFactionPerms;
 		mconf.powerMax = this.powerMax;
 		mconf.powerMin = this.powerMin;
@@ -78,7 +77,7 @@ public class OldConf extends Entity<OldConf>
 		mconf.econCostName = this.econCostName;
 		mconf.econCostDescription = this.econCostDescription;
 		mconf.econCostTitle = this.econCostTitle;
-		mconf.econCostOpen = this.econCostOpen;
+		mconf.econCostFlag = this.econCostOpen;
 		mconf.econRelCost = this.econRelCost;
 		mconf.bankEnabled = this.bankEnabled;
 		mconf.bankFactionPaysCosts = this.bankFactionPaysCosts;
@@ -108,7 +107,7 @@ public class OldConf extends Entity<OldConf>
 	public double defaultPlayerPower = 0.0;
 	
 	public boolean defaultFactionOpen = false;
-	public Map<FFlag, Boolean> defaultFactionFlags = null;
+	//public Map<FFlag, Boolean> defaultFactionFlags = null;
 	public Map<FPerm, Set<Rel>> defaultFactionPerms = null;
 
 	// -------------------------------------------- //

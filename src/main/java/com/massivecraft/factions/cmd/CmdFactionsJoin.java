@@ -5,6 +5,7 @@ import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.cmd.arg.ARMPlayer;
 import com.massivecraft.factions.cmd.arg.ARFaction;
 import com.massivecraft.factions.entity.MConf;
+import com.massivecraft.factions.entity.MFlag;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.event.EventFactionsMembershipChange;
@@ -79,7 +80,7 @@ public class CmdFactionsJoin extends FactionsCommand
 			return;
 		}
 
-		if( ! (faction.isOpen() || faction.isInvited(mplayer) || msender.isUsingAdminMode() || Perm.JOIN_ANY.has(sender, false)))
+		if( ! (faction.getFlag(MFlag.getOpen()) || faction.isInvited(mplayer) || msender.isUsingAdminMode() || Perm.JOIN_ANY.has(sender, false)))
 		{
 			msg("<i>This faction requires invitation.");
 			if (samePlayer)

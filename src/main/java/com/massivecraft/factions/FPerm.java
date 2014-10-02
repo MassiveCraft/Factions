@@ -39,6 +39,7 @@ public enum FPerm
 	ACCESS(false, "access", "grant territory",            Rel.LEADER, Rel.OFFICER),
 	DISBAND(false, "disband", "disband the faction",      Rel.LEADER),
 	PERMS(false, "perms", "manage permissions",           Rel.LEADER),
+	FLAGS(false, "flags", "manage flags",                 Rel.LEADER),
 	
 	// END OF LIST
 	;
@@ -118,6 +119,7 @@ public enum FPerm
 		if (str.startsWith("t"))   return TERRITORY;
 		if (str.startsWith("di"))  return DISBAND;
 		if (str.startsWith("pe"))  return PERMS;
+		if (str.startsWith("f"))   return FLAGS;
 		return null;
 	}
 	

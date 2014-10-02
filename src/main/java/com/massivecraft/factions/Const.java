@@ -8,6 +8,8 @@ public class Const
 	
 	public static final String COLLECTION_BOARD = BASENAME_+"board";
 	public static final String COLLECTION_FACTION = BASENAME_+"faction";
+	public static final String COLLECTION_MFLAG = BASENAME_+"mflag";
+	public static final String COLLECTION_MPERM = BASENAME_+"mperm";
 	public static final String COLLECTION_MPLAYER = BASENAME_+"mplayer";
 	public static final String COLLECTION_MCONF = BASENAME_+"mconf";
 	

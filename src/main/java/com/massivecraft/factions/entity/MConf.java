@@ -12,7 +12,6 @@ import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventPriority;
 
-import com.massivecraft.factions.FFlag;
 import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Rel;
@@ -105,8 +104,6 @@ public class MConf extends Entity<MConf>
 	public Rel defaultPlayerRole = Rel.RECRUIT;
 	public double defaultPlayerPower = 0.0;
 	
-	public boolean defaultFactionOpen = false;
-	public Map<FFlag, Boolean> defaultFactionFlags = FFlag.getDefaultDefaults();
 	public Map<FPerm, Set<Rel>> defaultFactionPerms = FPerm.getDefaultDefaults();
 
 	// -------------------------------------------- //
@@ -429,7 +426,7 @@ public class MConf extends Entity<MConf>
 	public double econCostName = 0.0;
 	public double econCostDescription = 0.0;
 	public double econCostTitle = 0.0;
-	public double econCostOpen = 0.0;
+	public double econCostFlag = 0.0;
 	
 	public Map<Rel, Double> econRelCost = MUtil.map(
 		Rel.ENEMY, 0.0,

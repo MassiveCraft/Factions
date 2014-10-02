@@ -54,12 +54,12 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.projectiles.ProjectileSource;
 
-import com.massivecraft.factions.FFlag;
 import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.TerritoryAccess;
 import com.massivecraft.factions.entity.BoardColl;
+import com.massivecraft.factions.entity.MFlag;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MConf;
@@ -195,7 +195,7 @@ public class FactionsListenerMain implements Listener
 		// ... and powerloss can happen here ...
 		Faction faction = BoardColl.get().getFactionAt(PS.valueOf(player));
 		
-		if (!faction.getFlag(FFlag.POWERLOSS))
+		if (!faction.getFlag(MFlag.getPowerloss()))
 		{
 			mplayer.msg("<i>You didn't lose any power since the territory you died in works that way.");
 			return;
@@ -298,7 +298,7 @@ public class FactionsListenerMain implements Listener
 		Faction defenderPsFaction = BoardColl.get().getFactionAt(defenderPs);
 		
 		// ... PVP flag may cause a damage block ...
-		if (defenderPsFaction.getFlag(FFlag.PVP) == false)
+		if (defenderPsFaction.getFlag(MFlag.getPvp()) == false)
 		{
 			if (eattacker == null)
 			{
@@ -316,7 +316,7 @@ public class FactionsListenerMain implements Listener
 				}
 				return ret;
 			}
-			return defenderPsFaction.getFlag(FFlag.MONSTERS);
+			return defenderPsFaction.getFlag(MFlag.getMonsters());
 		}
 
 		// ... and if the attacker is a player ...
@@ -334,7 +334,7 @@ public class FactionsListenerMain implements Listener
 		// ... PVP flag may cause a damage block ...
 		// (just checking the defender as above isn't enough. What about the attacker? It could be in a no-pvp area)
 		// NOTE: This check is probably not that important but we could keep it anyways.
-		if (attackerPsFaction.getFlag(FFlag.PVP) == false)
+		if (attackerPsFaction.getFlag(MFlag.getPvp()) == false)
 		{
 			ret = falseUnlessDisallowedPvpEventCancelled(attacker, defender, event);
 			if (!ret && notify) uattacker.msg("<i>PVP is disabled in %s.", attackerPsFaction.describeTo(uattacker));
@@ -371,7 +371,7 @@ public class FactionsListenerMain implements Listener
 		Rel relation = defendFaction.getRelationTo(attackFaction);
 
 		// Check the relation
-		if (udefender.hasFaction() && relation.isFriend() && defenderPsFaction.getFlag(FFlag.FRIENDLYFIRE) == false)
+		if (udefender.hasFaction() && relation.isFriend() && defenderPsFaction.getFlag(MFlag.getFriendlyire()) == false)
 		{
 			ret = falseUnlessDisallowedPvpEventCancelled(attacker, defender, event);
 			if (!ret && notify) uattacker.msg("<i>You can't hurt %s<i>.", relation.getDescPlayerMany());
@@ -474,7 +474,7 @@ public class FactionsListenerMain implements Listener
 		command = command.trim();
 		
 		// ... the command may be denied for members of permanent factions ...
-		if (mplayer.hasFaction() && mplayer.getFaction().getFlag(FFlag.PERMANENT) && containsCommand(command, MConf.get().denyCommandsPermanentFactionMember))
+		if (mplayer.hasFaction() && mplayer.getFaction().getFlag(MFlag.getPermanent()) && containsCommand(command, MConf.get().denyCommandsPermanentFactionMember))
 		{
 			mplayer.msg("<b>You can't use \"<h>/%s<b>\" as member of a permanent faction.", command);
 			event.setCancelled(true);
@@ -528,7 +528,7 @@ public class FactionsListenerMain implements Listener
 		// ... at a place where monsters are forbidden ...
 		PS ps = PS.valueOf(event.getLocation());
 		Faction faction = BoardColl.get().getFactionAt(ps);
-		if (faction.getFlag(FFlag.MONSTERS)) return;
+		if (faction.getFlag(MFlag.getMonsters())) return;
 		
 		// ... block the spawn.
 		event.setCancelled(true);
@@ -547,7 +547,7 @@ public class FactionsListenerMain implements Listener
 		// ... at a place where monsters are forbidden ...
 		PS ps = PS.valueOf(target);
 		Faction faction = BoardColl.get().getFactionAt(ps);
-		if (faction.getFlag(FFlag.MONSTERS)) return;
+		if (faction.getFlag(MFlag.getMonsters())) return;
 		
 		// ... then if ghast target nothing ...
 		if (event.getEntityType() == EntityType.GHAST)
@@ -651,7 +651,7 @@ public class FactionsListenerMain implements Listener
 		// ... and the faction there has endergrief disabled ...
 		PS ps = PS.valueOf(event.getBlock());
 		Faction faction = BoardColl.get().getFactionAt(ps);
-		if (faction.getFlag(FFlag.ENDERGRIEF)) return;
+		if (faction.getFlag(MFlag.getEndergrief())) return;
 		
 		// ... stop the block alteration.
 		event.setCancelled(true);
@@ -667,7 +667,7 @@ public class FactionsListenerMain implements Listener
 		PS ps = PS.valueOf(block);
 		Faction faction = BoardColl.get().getFactionAt(ps);
 			
-		if (faction.getFlag(FFlag.FIRESPREAD)) return;
+		if (faction.getFlag(MFlag.getFirespread())) return;
 		
 		// then cancel the event.
 		cancellable.setCancelled(true);

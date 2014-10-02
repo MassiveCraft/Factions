@@ -8,11 +8,11 @@ import java.util.Map;
 
 import com.massivecraft.factions.cmd.arg.ARFaction;
 import com.massivecraft.factions.entity.MConf;
+import com.massivecraft.factions.entity.MFlag;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.event.EventFactionsChunkChangeType;
 import com.massivecraft.factions.integration.Econ;
-import com.massivecraft.factions.FFlag;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.PlayerRoleComparator;
 import com.massivecraft.factions.Rel;
@@ -59,6 +59,12 @@ public class CmdFactionsFaction extends FactionsCommand
 		// INFO: Title
 		msg(Txt.titleize("Faction " + faction.getName(msender)));
 		
+		// INFO: Id (admin mode output only)
+		if (msender.isUsingAdminMode())
+		{
+			msg("<a>ID: <i>%s", faction.getId());	
+		}
+		
 		// INFO: Description
 		msg("<a>Description: <i>%s", faction.getDescription());	
 		
@@ -71,7 +77,8 @@ public class CmdFactionsFaction extends FactionsCommand
 			msg("<a>Age: <i>%s", ageString);
 			
 			// INFO: Open
-			msg("<a>Open: <i>"+(faction.isOpen() ? "<lime>Yes<i>, anyone can join" : "<rose>No<i>, only invited people can join"));
+			// TODO: Why hardcode displaying the open flag only? We should rather display everything publicly editable.
+			msg("<a>Open: <i>"+(faction.getFlag(MFlag.getOpen()) ? "<lime>Yes<i>, anyone can join" : "<rose>No<i>, only invited people can join"));
 	
 			// INFO: Power
 			double powerBoost = faction.getPowerBoost();
@@ -113,12 +120,12 @@ public class CmdFactionsFaction extends FactionsCommand
 			
 			// Display important flags
 			// TODO: Find the non default flags, and display them instead.
-			if (faction.getFlag(FFlag.PERMANENT))
+			if (faction.getFlag(MFlag.getPermanent()))
 			{
 				msg("<a>This faction is permanent - remaining even with no followers.");
 			}
 			
-			if (faction.getFlag(FFlag.PEACEFUL))
+			if (faction.getFlag(MFlag.getPeaceful()))
 			{
 				msg("<a>This faction is peaceful - in truce with everyone.");
 			}
@@ -129,7 +136,7 @@ public class CmdFactionsFaction extends FactionsCommand
 		// List the relations to other factions
 		Map<Rel, List<String>> relationNames = faction.getFactionNamesPerRelation(msender, true);
 		
-		if (faction.getFlag(FFlag.PEACEFUL))
+		if (faction.getFlag(MFlag.getPeaceful()))
 		{
 			sendMessage(Txt.parse("<a>In Truce with:<i> *everyone*"));
 		}
