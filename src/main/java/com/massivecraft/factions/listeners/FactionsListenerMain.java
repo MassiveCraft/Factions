@@ -54,12 +54,12 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.projectiles.ProjectileSource;
 
-import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.TerritoryAccess;
 import com.massivecraft.factions.entity.BoardColl;
 import com.massivecraft.factions.entity.MFlag;
+import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MConf;
@@ -717,7 +717,7 @@ public class FactionsListenerMain implements Listener
 
 		if (mplayer.isUsingAdminMode()) return true;
 
-		if (!FPerm.BUILD.has(mplayer, ps, false) && FPerm.PAINBUILD.has(mplayer, ps, false))
+		if (!MPerm.getBuild().has(mplayer, ps, false) && MPerm.getPainbuild().has(mplayer, ps, false))
 		{
 			if (verboose)
 			{
@@ -732,7 +732,7 @@ public class FactionsListenerMain implements Listener
 			return true;
 		}
 		
-		return FPerm.BUILD.has(mplayer, ps, verboose);
+		return MPerm.getBuild().has(mplayer, ps, verboose);
 	}
 	
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
@@ -822,7 +822,7 @@ public class FactionsListenerMain implements Listener
 		if (targetFaction == pistonFaction) return;
 
 		// if potentially pushing into air/water/lava in another territory, we need to check it out
-		if ((targetBlock.isEmpty() || targetBlock.isLiquid()) && ! FPerm.BUILD.has(pistonFaction, targetFaction))
+		if ((targetBlock.isEmpty() || targetBlock.isLiquid()) && ! MPerm.getBuild().has(pistonFaction, targetFaction))
 		{
 			event.setCancelled(true);
 		}
@@ -852,7 +852,7 @@ public class FactionsListenerMain implements Listener
 		Faction targetFaction = BoardColl.get().getFactionAt(retractPs);
 		if (targetFaction == pistonFaction) return;
 
-		if (!FPerm.BUILD.has(pistonFaction, targetFaction))
+		if (!MPerm.getBuild().has(pistonFaction, targetFaction))
 		{
 			event.setCancelled(true);
 		}
@@ -900,7 +900,7 @@ public class FactionsListenerMain implements Listener
 		MPlayer mplayer = MPlayer.get(player);
 		if (mplayer.isUsingAdminMode()) return true;
 		
-		return FPerm.BUILD.has(mplayer, ps, !justCheck);
+		return MPerm.getBuild().has(mplayer, ps, !justCheck);
 	}
 	
 	public static boolean canPlayerUseBlock(Player player, Block block, boolean justCheck)
@@ -914,11 +914,11 @@ public class FactionsListenerMain implements Listener
 		PS ps = PS.valueOf(block);
 		Material material = block.getType();
 		
-		if (MConf.get().materialsEditOnInteract.contains(material) && ! FPerm.BUILD.has(me, ps, ! justCheck)) return false;
-		if (MConf.get().materialsContainer.contains(material) && ! FPerm.CONTAINER.has(me, ps, ! justCheck)) return false;
-		if (MConf.get().materialsDoor.contains(material) && ! FPerm.DOOR.has(me, ps, ! justCheck)) return false;
-		if (material == Material.STONE_BUTTON && ! FPerm.BUTTON.has(me, ps, ! justCheck)) return false;
-		if (material == Material.LEVER && ! FPerm.LEVER.has(me, ps, ! justCheck)) return false;
+		if (MConf.get().materialsEditOnInteract.contains(material) && ! MPerm.getBuild().has(me, ps, ! justCheck)) return false;
+		if (MConf.get().materialsContainer.contains(material) && ! MPerm.getContainer().has(me, ps, ! justCheck)) return false;
+		if (MConf.get().materialsDoor.contains(material) && ! MPerm.getDoor().has(me, ps, ! justCheck)) return false;
+		if (material == Material.STONE_BUTTON && ! MPerm.getButton().has(me, ps, ! justCheck)) return false;
+		if (material == Material.LEVER && ! MPerm.getLever().has(me, ps, ! justCheck)) return false;
 		return true;
 	}
 

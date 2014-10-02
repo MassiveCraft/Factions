@@ -9,7 +9,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.massivecraft.factions.EconomyParticipator;
-import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.FactionEqualsPredictate;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Lang;
@@ -50,7 +49,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 		this.setInvitedPlayerIds(that.invitedPlayerIds);
 		this.setRelationWishes(that.relationWishes);
 		this.setFlagIds(that.flags);
-		this.setPerms(that.perms);
+		this.setPermIds(that.perms);
 		
 		return this;
 	}
@@ -123,7 +122,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 
 	// The perm overrides are modifications to the default values.
 	// Null means default.
-	private Map<FPerm, Set<Rel>> perms = null;
+	private Map<String, Set<Rel>> perms = null;
 	
 	// -------------------------------------------- //
 	// FIELD: id
@@ -546,15 +545,24 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 			ret.put(mflag, mflag.isStandard());
 		}
 		
-		// ... and if anything is explicitly set ...
+		// ... and if anything is explicitly set we use that info ...
 		if (this.flags != null)
 		{
-			// ... we we use that info.
-			for (Entry<String, Boolean> entry : this.flags.entrySet())
+			Iterator<Entry<String, Boolean>> iter = this.flags.entrySet().iterator();
+			while (iter.hasNext())
 			{
-				String id = entry.getKey();
-				if (id == null) continue;
+				// ... for each entry ...
+				Entry<String, Boolean> entry = iter.next();
 				
+				// ... extract id and remove null values ...
+				String id = entry.getKey();					
+				if (id == null)
+				{
+					iter.remove();
+					continue;
+				}
+				
+				// ... resolve object and skip unknowns ...
 				MFlag mflag = MFlag.get(id);
 				if (mflag == null) continue;
 				
@@ -580,8 +588,18 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 				Iterator<Entry<String, Boolean>> iter = target.entrySet().iterator();
 				while (iter.hasNext())
 				{
+					// For each entry ...
 					Entry<String, Boolean> entry = iter.next();
+					
+					// ... extract id and remove null values ...
 					String id = entry.getKey();
+					if (id == null)
+					{
+						iter.remove();
+						continue;
+					}
+						
+					// ... remove if known and standard ...
 					MFlag mflag = MFlag.get(id);
 					if (mflag != null && mflag.isStandard() == entry.getValue())
 					{
@@ -632,62 +650,76 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	
 	// RAW
 	
-	public Map<FPerm, Set<Rel>> getPerms()
+	public Map<MPerm, Set<Rel>> getPerms()
 	{
-		Map<FPerm, Set<Rel>> ret = new LinkedHashMap<FPerm, Set<Rel>>();
-		
-		for (FPerm fperm : FPerm.values())
+		// We start with default values ...
+		Map<MPerm, Set<Rel>> ret = new LinkedHashMap<MPerm, Set<Rel>>();
+		for (MPerm mperm : MPerm.getAll())
 		{
-			ret.put(fperm, fperm.getDefault());
+			ret.put(mperm, new LinkedHashSet<Rel>(mperm.getStandard()));
 		}
 		
+		// ... and if anything is explicitly set we use that info ...
 		if (this.perms != null)
 		{
-			for (Entry<FPerm, Set<Rel>> entry : this.perms.entrySet())
+			Iterator<Entry<String, Set<Rel>>> iter = this.perms.entrySet().iterator();
+			while (iter.hasNext())
 			{
-				ret.put(entry.getKey(), new LinkedHashSet<Rel>(entry.getValue()));
+				// ... for each entry ...
+				Entry<String, Set<Rel>> entry = iter.next();
+				
+				// ... extract id and remove null values ...
+				String id = entry.getKey();					
+				if (id == null)
+				{
+					iter.remove();
+					continue;
+				}
+				
+				// ... resolve object and skip unknowns ...
+				MPerm mperm = MPerm.get(id);
+				if (mperm == null) continue;
+				
+				ret.put(mperm, new LinkedHashSet<Rel>(entry.getValue()));
 			}
 		}
 		
 		return ret;
 	}
 	
-	public void setPerms(Map<FPerm, Set<Rel>> perms)
+	public void setPermIds(Map<String, Set<Rel>> perms)
 	{
 		// Clean input
-		Map<FPerm, Set<Rel>> target;
-		if (perms == null)
+		Map<String, Set<Rel>> target = null;
+		if (perms != null)
 		{
-			target = null;
-		}
-		else
-		{
-			target = new LinkedHashMap<FPerm, Set<Rel>>();
-			for (Entry<FPerm, Set<Rel>> entry : perms.entrySet())
+			// We start out with what was suggested
+			target = new LinkedHashMap<String, Set<Rel>>();
+			for (Entry<String, Set<Rel>> entry : perms.entrySet())
 			{
 				target.put(entry.getKey(), new LinkedHashSet<Rel>(entry.getValue()));
 			}
 			
+			// However if the context is fully live we try to throw some default values away.
 			if (this.attached() && Factions.get().isDatabaseInitialized())
 			{
-				Iterator<Entry<FPerm, Set<Rel>>> iter = target.entrySet().iterator();
+				Iterator<Entry<String, Set<Rel>>> iter = target.entrySet().iterator();
 				while (iter.hasNext())
 				{
-					Entry<FPerm, Set<Rel>> entry = iter.next();
+					// For each entry ...
+					Entry<String, Set<Rel>> entry = iter.next();
 					
-					FPerm key = entry.getKey();					
-					if (key == null)
+					// ... extract id and remove null values ...
+					String id = entry.getKey();					
+					if (id == null)
 					{
-						// TODO: I have no idea why this key is null at times... Why?
-						System.out.println("key was null :/");
 						iter.remove();
 						continue;
 					}
 					
-					Set<Rel> keyDefault = key.getDefault();
-					Set<Rel> value = entry.getValue();
-					
-					if (keyDefault.equals(value))
+					// ... remove if known and standard ...
+					MPerm mperm = MPerm.get(id);
+					if (mperm != null && mperm.getStandard().equals(entry.getValue()))
 					{
 						iter.remove();
 					}
@@ -707,33 +739,40 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 		this.changed();
 	}
 	
+	public void setPerms(Map<MPerm, Set<Rel>> perms)
+	{
+		Map<String, Set<Rel>> permIds = new LinkedHashMap<String, Set<Rel>>();
+		for (Entry<MPerm, Set<Rel>> entry : perms.entrySet())
+		{
+			permIds.put(entry.getKey().getId(), entry.getValue());
+		}
+		setPermIds(permIds);
+	}
+	
 	// FINER
 	
-	public Set<Rel> getPermittedRelations(FPerm perm)
+	public Set<Rel> getPermittedRelations(MPerm perm)
 	{
 		return this.getPerms().get(perm);
 	}
 	
-	public void setPermittedRelations(FPerm perm, Set<Rel> rels)
+	public void setPermittedRelations(MPerm perm, Set<Rel> rels)
 	{
-		Map<FPerm, Set<Rel>> perms = this.getPerms();
+		Map<MPerm, Set<Rel>> perms = this.getPerms();
 		perms.put(perm, rels);
 		this.setPerms(perms);
 	}
 	
-	public void setPermittedRelations(FPerm perm, Rel... rels)
+	public void setPermittedRelations(MPerm perm, Rel... rels)
 	{
 		Set<Rel> temp = new HashSet<Rel>();
 		temp.addAll(Arrays.asList(rels));
 		this.setPermittedRelations(perm, temp);
 	}
 	
-	public void setRelationPermitted(FPerm perm, Rel rel, boolean permitted)
+	public void setRelationPermitted(MPerm perm, Rel rel, boolean permitted)
 	{
-		Map<FPerm, Set<Rel>> perms = this.getPerms();
-		
-		//System.out.println("setRelationPermitted before:");
-		//System.out.println(Factions.get().gson.toJson(perms, new TypeToken<Map<FPerm, Set<Rel>>>(){}.getType()));
+		Map<MPerm, Set<Rel>> perms = this.getPerms();
 		
 		Set<Rel> rels = perms.get(perm);
 
@@ -745,9 +784,6 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 		{
 			rels.remove(rel);
 		}
-		
-		//System.out.println("setRelationPermitted after:");
-		//System.out.println(Factions.get().gson.toJson(perms, new TypeToken<Map<FPerm, Set<Rel>>>(){}.getType()));
 		
 		this.setPerms(perms);
 	}

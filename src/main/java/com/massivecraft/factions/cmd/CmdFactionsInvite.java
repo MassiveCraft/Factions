@@ -1,10 +1,10 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.cmd.arg.ARMPlayer;
 import com.massivecraft.factions.cmd.req.ReqHasFaction;
+import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.event.EventFactionsInvitedChange;
 import com.massivecraft.massivecore.cmd.arg.ARBoolean;
@@ -54,8 +54,8 @@ public class CmdFactionsInvite extends FactionsCommand
 			return;
 		}
 		
-		// FPerm
-		if ( ! FPerm.INVITE.has(msender, msenderFaction, true)) return;
+		// MPerm
+		if ( ! MPerm.getInvite().has(msender, msenderFaction, true)) return;
 		
 		// Event
 		EventFactionsInvitedChange event = new EventFactionsInvitedChange(sender, mplayer, msenderFaction, newInvited);

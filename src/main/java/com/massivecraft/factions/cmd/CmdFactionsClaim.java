@@ -1,10 +1,10 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.cmd.arg.ARFaction;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MConf;
+import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.factions.task.SpiralTask;
 import com.massivecraft.massivecore.cmd.arg.ARInteger;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
@@ -46,8 +46,8 @@ public class CmdFactionsClaim extends FactionsCommand
 		final Faction forFaction = this.arg(1, ARFaction.get(), msenderFaction);
 		if (forFaction == null) return;
 		
-		// FPerm
-		if (forFaction.isNormal() && !FPerm.TERRITORY.has(msender, forFaction, true)) return;
+		// MPerm
+		if (forFaction.isNormal() && !MPerm.getTerritory().has(msender, forFaction, true)) return;
 		
 		// Validate
 		if (radius < 1)

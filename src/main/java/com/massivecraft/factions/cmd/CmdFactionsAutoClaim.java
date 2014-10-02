@@ -1,9 +1,9 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.cmd.arg.ARFaction;
 import com.massivecraft.factions.entity.Faction;
+import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.cmd.req.ReqIsPlayer;
 import com.massivecraft.massivecore.ps.PS;
@@ -44,8 +44,8 @@ public class CmdFactionsAutoClaim extends FactionsCommand
 			return;
 		}
 		
-		// FPerm
-		if (forFaction.isNormal() && !FPerm.TERRITORY.has(msender, forFaction, true)) return;
+		// MPerm
+		if (forFaction.isNormal() && !MPerm.getTerritory().has(msender, forFaction, true)) return;
 		
 		msender.setAutoClaimFaction(forFaction);
 		

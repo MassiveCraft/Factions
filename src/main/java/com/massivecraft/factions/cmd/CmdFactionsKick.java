@@ -1,11 +1,11 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.cmd.arg.ARMPlayer;
 import com.massivecraft.factions.entity.FactionColl;
+import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MConf;
@@ -63,9 +63,9 @@ public class CmdFactionsKick extends FactionsCommand
 			return;
 		}
 		
-		// FPerm
+		// MPerm
 		Faction mplayerFaction = mplayer.getFaction();
-		if (!FPerm.KICK.has(msender, mplayerFaction, true)) return;
+		if ( ! MPerm.getKick().has(msender, mplayerFaction, true)) return;
 
 		// Event
 		EventFactionsMembershipChange event = new EventFactionsMembershipChange(sender, mplayer, FactionColl.get().getNone(), MembershipChangeReason.KICK);

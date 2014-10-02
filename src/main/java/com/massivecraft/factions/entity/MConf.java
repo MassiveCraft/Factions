@@ -12,7 +12,6 @@ import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventPriority;
 
-import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.WorldExceptionSet;
@@ -103,8 +102,6 @@ public class MConf extends Entity<MConf>
 	public String defaultPlayerFactionId = Factions.ID_NONE;
 	public Rel defaultPlayerRole = Rel.RECRUIT;
 	public double defaultPlayerPower = 0.0;
-	
-	public Map<FPerm, Set<Rel>> defaultFactionPerms = FPerm.getDefaultDefaults();
 
 	// -------------------------------------------- //
 	// POWER

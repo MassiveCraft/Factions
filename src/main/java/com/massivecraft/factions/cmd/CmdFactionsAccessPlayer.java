@@ -1,9 +1,9 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.cmd.arg.ARMPlayer;
 import com.massivecraft.factions.entity.BoardColl;
+import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.massivecore.cmd.arg.ARBoolean;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
@@ -41,8 +41,8 @@ public class CmdFactionsAccessPlayer extends CmdFactionsAccessAbstract
 		Boolean newValue = this.arg(1, ARBoolean.get(), !ta.isPlayerIdGranted(mplayer.getId()));
 		if (newValue == null) return;
 		
-		// FPerm
-		if (!FPerm.ACCESS.has(msender, hostFaction, true)) return;
+		// MPerm
+		if (!MPerm.getAccess().has(msender, hostFaction, true)) return;
 		
 		// Apply
 		ta = ta.withPlayerId(mplayer.getId(), newValue);

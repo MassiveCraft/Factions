@@ -7,7 +7,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import com.massivecraft.factions.EconomyParticipator;
-import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Lang;
 import com.massivecraft.factions.Perm;
@@ -711,7 +710,7 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 					return false;
 				}
 				
-				if (!FPerm.TERRITORY.has(this, newFaction, true))
+				if (!MPerm.getTerritory().has(this, newFaction, true))
 				{
 					return false;
 				}
@@ -761,7 +760,7 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 			
 			if (oldFaction.isNormal())
 			{
-				if (!FPerm.TERRITORY.has(this, oldFaction, false))
+				if (!MPerm.getTerritory().has(this, oldFaction, false))
 				{
 					if (!mconf.claimingFromOthersAllowed)
 					{

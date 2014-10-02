@@ -1,12 +1,12 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
-import com.massivecraft.factions.cmd.arg.ARFPerm;
+import com.massivecraft.factions.cmd.arg.ARMPerm;
 import com.massivecraft.factions.cmd.arg.ARFaction;
 import com.massivecraft.factions.cmd.arg.ARRel;
 import com.massivecraft.factions.entity.Faction;
+import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.massivecore.cmd.arg.ARBoolean;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.util.Txt;
@@ -40,60 +40,72 @@ public class CmdFactionsPerm extends FactionsCommand
 	@Override
 	public void perform()
 	{
+		// Arg: Faction
 		Faction faction = this.arg(0, ARFaction.get(), msenderFaction);
 		if (faction == null) return;
 		
+		// Case: Show All
 		if ( ! this.argIsSet(1))
 		{
 			msg(Txt.titleize("Perms for " + faction.describeTo(msender, true)));
-			msg(FPerm.getStateHeaders());
-			for (FPerm perm : FPerm.values())
+			msg(MPerm.getStateHeaders());
+			for (MPerm perm : MPerm.getAll())
 			{
 				msg(perm.getStateInfo(faction.getPermittedRelations(perm), true));
 			}
 			return;
 		}
 		
-		FPerm perm = this.arg(1, ARFPerm.get());
-		if (perm == null) return;
-		//System.out.println("perm = "+perm);
+		// Arg: MPerm
+		MPerm mperm = this.arg(1, ARMPerm.get());
+		if (mperm == null) return;
 		
+		// Case: Show One
 		if ( ! this.argIsSet(2))
 		{
 			msg(Txt.titleize("Perm for " + faction.describeTo(msender, true)));
-			msg(FPerm.getStateHeaders());
-			msg(perm.getStateInfo(faction.getPermittedRelations(perm), true));
+			msg(MPerm.getStateHeaders());
+			msg(mperm.getStateInfo(faction.getPermittedRelations(mperm), true));
 			return;
 		}
 		
 		// Do the sender have the right to change perms for this faction?
-		if ( ! FPerm.PERMS.has(msender, faction, true)) return;
+		if ( ! MPerm.getPerms().has(msender, faction, true)) return;
 		
+		// Is this perm editable?
+		if (!msender.isUsingAdminMode() && !mperm.isEditable())
+		{
+			msg("<b>The perm <h>%s <b>is not editable.", mperm.getName());
+			return;
+		}
+
+		// Arg: Rel
 		Rel rel = this.arg(2, ARRel.get());
 		if (rel == null) return;
 		
-		if (!this.argIsSet(3))
+		if ( ! this.argIsSet(3))
 		{
-			msg("<b>Should <h>%s <b>have the <h>%s <b>permission or not?\nYou must <h>add \"yes\" or \"no\" <b>at the end.", Txt.getNicedEnum(rel), Txt.getNicedEnum(perm));
+			msg("<b>Should <h>%s <b>have the <h>%s <b>permission or not?\nYou must <h>add \"yes\" or \"no\" <b>at the end.", Txt.getNicedEnum(rel), Txt.upperCaseFirst(mperm.getName()));
 			return;
 		}
 		
-		Boolean val = this.arg(3, ARBoolean.get(), null);
-		if (val == null) return;
+		// Arg: Target Value
+		Boolean targetValue = this.arg(3, ARBoolean.get(), null);
+		if (targetValue == null) return;
 		
-		// Do the change
-		//System.out.println("setRelationPermitted perm "+perm+", rel "+rel+", val "+val);
-		faction.setRelationPermitted(perm, rel, val);
+		// Apply
+		faction.setRelationPermitted(mperm, rel, targetValue);
 		
 		// The following is to make sure the leader always has the right to change perms if that is our goal.
-		if (perm == FPerm.PERMS && FPerm.PERMS.getDefault().contains(Rel.LEADER))
+		if (mperm == MPerm.getPerms() && MPerm.getPerms().getStandard().contains(Rel.LEADER))
 		{
-			faction.setRelationPermitted(FPerm.PERMS, Rel.LEADER, true);
+			faction.setRelationPermitted(MPerm.getPerms(), Rel.LEADER, true);
 		}
 		
+		// Inform
 		msg(Txt.titleize("Perm for " + faction.describeTo(msender, true)));
-		msg(FPerm.getStateHeaders());
-		msg(perm.getStateInfo(faction.getPermittedRelations(perm), true));
+		msg(MPerm.getStateHeaders());
+		msg(mperm.getStateInfo(faction.getPermittedRelations(mperm), true));
 	}
 	
 }

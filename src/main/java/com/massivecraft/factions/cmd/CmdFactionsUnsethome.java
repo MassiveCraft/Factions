@@ -1,9 +1,9 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.cmd.arg.ARFaction;
 import com.massivecraft.factions.entity.Faction;
+import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.factions.event.EventFactionsHomeChange;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 
@@ -39,8 +39,8 @@ public class CmdFactionsUnsethome extends FactionsCommandHome
 		// Other Perm
 		if (faction != msenderFaction && !Perm.HOME_OTHER.has(sender, true)) return;
 		
-		// FPerm
-		if ( ! FPerm.SETHOME.has(msender, faction, true)) return;
+		// MPerm
+		if ( ! MPerm.getSethome().has(msender, faction, true)) return;
 		
 		// NoChange
 		if ( ! faction.hasHome())

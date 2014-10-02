@@ -2,11 +2,9 @@ package com.massivecraft.factions.update;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.bukkit.event.EventPriority;
 
-import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.event.EventFactionsChunkChangeType;
@@ -29,7 +27,7 @@ public class OldConf extends Entity<OldConf>
 		mconf.defaultPlayerPower = this.defaultPlayerPower;
 		//mconf.defaultFactionOpen = this.defaultFactionOpen;
 		//mconf.defaultFactionFlags = this.defaultFactionFlags;
-		mconf.defaultFactionPerms = this.defaultFactionPerms;
+		//mconf.defaultFactionPerms = this.defaultFactionPerms;
 		mconf.powerMax = this.powerMax;
 		mconf.powerMin = this.powerMin;
 		mconf.powerPerHour = this.powerPerHour;
@@ -106,9 +104,9 @@ public class OldConf extends Entity<OldConf>
 	public Rel defaultPlayerRole = null;
 	public double defaultPlayerPower = 0.0;
 	
-	public boolean defaultFactionOpen = false;
+	//public boolean defaultFactionOpen = false;
 	//public Map<FFlag, Boolean> defaultFactionFlags = null;
-	public Map<FPerm, Set<Rel>> defaultFactionPerms = null;
+	//public Map<FPerm, Set<Rel>> defaultFactionPerms = null;
 
 	// -------------------------------------------- //
 	// MESSAGES

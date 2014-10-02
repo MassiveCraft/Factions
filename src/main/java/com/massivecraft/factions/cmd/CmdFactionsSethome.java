@@ -1,10 +1,10 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.cmd.arg.ARFaction;
 import com.massivecraft.factions.entity.Faction;
+import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.factions.event.EventFactionsHomeChange;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.cmd.req.ReqIsPlayer;
@@ -42,8 +42,8 @@ public class CmdFactionsSethome extends FactionsCommandHome
 		
 		PS newHome = PS.valueOf(me.getLocation());
 		
-		// FPerm
-		if ( ! FPerm.SETHOME.has(msender, faction, true)) return;
+		// MPerm
+		if ( ! MPerm.getSethome().has(msender, faction, true)) return;
 		
 		// Verify
 		if (!msender.isUsingAdminMode() && !faction.isValidHome(newHome))

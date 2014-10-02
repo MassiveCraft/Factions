@@ -152,7 +152,7 @@ public class MFlag extends Entity<MFlag> implements Prioritized, Registerable
 	public boolean isStandard() { return this.standard; }
 	public MFlag setStandard(boolean standard) { this.standard = standard; this.changed(); return this; }
 	
-	// If the flag is editable by the faction leader (or however the flag permission is configured)
+	// If it editable by the faction leader (or for who ever the permission is configured)
 	// Example: true (if players want to turn mob spawning on I guess they should be able to)
 	private boolean editable = false;
 	public boolean isEditable() { return this.editable; }

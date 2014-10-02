@@ -1,11 +1,11 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.cmd.arg.ARMFlag;
 import com.massivecraft.factions.cmd.arg.ARFaction;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MFlag;
+import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.factions.event.EventFactionsFlagChange;
 import com.massivecraft.massivecore.cmd.arg.ARBoolean;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
@@ -67,7 +67,7 @@ public class CmdFactionsFlag extends FactionsCommand
 		}
 		
 		// Do the sender have the right to change flags for this faction?
-		if ( ! FPerm.PERMS.has(msender, faction, true)) return;
+		if ( ! MPerm.getFlags().has(msender, faction, true)) return;
 		
 		// Is this flag editable?
 		if (!msender.isUsingAdminMode() && !mflag.isEditable())

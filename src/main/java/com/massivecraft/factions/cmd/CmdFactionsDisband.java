@@ -3,13 +3,13 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.cmd.arg.ARFaction;
 import com.massivecraft.factions.entity.FactionColl;
 import com.massivecraft.factions.entity.MFlag;
+import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.event.EventFactionsDisband;
 import com.massivecraft.factions.event.EventFactionsMembershipChange;
 import com.massivecraft.factions.event.EventFactionsMembershipChange.MembershipChangeReason;
-import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
@@ -45,8 +45,8 @@ public class CmdFactionsDisband extends FactionsCommand
 		Faction faction = this.arg(0, ARFaction.get(), msenderFaction);
 		if (faction == null) return;
 		
-		// FPerm
-		if ( ! FPerm.DISBAND.has(msender, faction, true)) return;
+		// MPerm
+		if ( ! MPerm.getDisband().has(msender, faction, true)) return;
 
 		// Verify
 		if (faction.getFlag(MFlag.getPermanent()))

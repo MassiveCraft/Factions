@@ -4,8 +4,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.massivecraft.factions.EconomyParticipator;
-import com.massivecraft.factions.FPerm;
 import com.massivecraft.factions.entity.MConf;
+import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.util.RelationUtil;
@@ -88,8 +88,8 @@ public class Econ
 		// Factions can be controlled by those that have permissions
 		if (you instanceof Faction)
 		{
-			if (i instanceof Faction && FPerm.WITHDRAW.has((Faction)i, fYou)) return true;
-			if (i instanceof MPlayer && FPerm.WITHDRAW.has((MPlayer)i, fYou, false)) return true;
+			if (i instanceof Faction && MPerm.getWithdraw().has((Faction)i, fYou)) return true;
+			if (i instanceof MPlayer && MPerm.getWithdraw().has((MPlayer)i, fYou, false)) return true;
 		}
 		
 		// Otherwise you may not! ;,,;
