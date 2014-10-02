@@ -284,7 +284,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	{
 		final String title = Txt.titleize(this.getName() + " - Message of the Day");
 		final String motd = "<i>" + this.getMotd();
-		final List<String> messages = Txt.parse(MUtil.list(title, motd));
+		final List<String> messages = Txt.parse(MUtil.list(title, motd, ""));
 		return messages;
 	}
 	
