@@ -48,6 +48,7 @@ import org.bukkit.event.hanging.HangingBreakEvent.RemoveCause;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerBucketFillEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
@@ -952,13 +953,13 @@ public class FactionsListenerMain implements Listener
 	{
 		// only need to check right-clicks and physical as of MC 1.4+; good performance boost
 		if (event.getAction() != Action.RIGHT_CLICK_BLOCK && event.getAction() != Action.PHYSICAL) return;
-
+		
 		Block block = event.getClickedBlock();
 		Player player = event.getPlayer();
 
 		if (block == null) return;  // clicked in air, apparently
 
-		if ( ! canPlayerUseBlock(player, block, false))
+		if ( ! canPlayerUseBlock(player, block, true))
 		{
 			event.setCancelled(true);
 			return;
@@ -966,16 +967,14 @@ public class FactionsListenerMain implements Listener
 
 		if (event.getAction() != Action.RIGHT_CLICK_BLOCK) return;  // only interested on right-clicks for below
 
-		if ( ! playerCanUseItemHere(player, PS.valueOf(block), event.getMaterial(), false))
+		if ( ! playerCanUseItemHere(player, PS.valueOf(block), event.getMaterial(), true))
 		{
 			event.setCancelled(true);
 			return;
 		}
 	}
 
-	// TODO: Refactor ! justCheck    -> to informIfNot
-	// TODO: Possibly incorporate pain build... 
-	public static boolean playerCanUseItemHere(Player player, PS ps, Material material, boolean justCheck)
+	public static boolean playerCanUseItemHere(Player player, PS ps, Material material, boolean verboose)
 	{
 		if ( ! MConf.get().materialsEditTools.contains(material) && ! MConf.get().materialsEditToolsDupeBug.contains(material)) return true;
 		
@@ -985,10 +984,10 @@ public class FactionsListenerMain implements Listener
 		MPlayer mplayer = MPlayer.get(player);
 		if (mplayer.isUsingAdminMode()) return true;
 		
-		return MPerm.getPermBuild().has(mplayer, ps, !justCheck);
+		return MPerm.getPermBuild().has(mplayer, ps, verboose);
 	}
 	
-	public static boolean canPlayerUseBlock(Player player, Block block, boolean justCheck)
+	public static boolean canPlayerUseBlock(Player player, Block block, boolean verboose)
 	{
 		String name = player.getName();
 		if (MConf.get().playersWhoBypassAllProtection.contains(name)) return true;
@@ -999,11 +998,44 @@ public class FactionsListenerMain implements Listener
 		PS ps = PS.valueOf(block);
 		Material material = block.getType();
 		
-		if (MConf.get().materialsEditOnInteract.contains(material) && ! MPerm.getPermBuild().has(me, ps, ! justCheck)) return false;
-		if (MConf.get().materialsContainer.contains(material) && ! MPerm.getPermContainer().has(me, ps, ! justCheck)) return false;
-		if (MConf.get().materialsDoor.contains(material) && ! MPerm.getPermDoor().has(me, ps, ! justCheck)) return false;
-		if (material == Material.STONE_BUTTON && ! MPerm.getPermButton().has(me, ps, ! justCheck)) return false;
-		if (material == Material.LEVER && ! MPerm.getPermLever().has(me, ps, ! justCheck)) return false;
+		if (MConf.get().materialsEditOnInteract.contains(material) && ! MPerm.getPermBuild().has(me, ps, verboose)) return false;
+		if (MConf.get().materialsContainer.contains(material) && ! MPerm.getPermContainer().has(me, ps, verboose)) return false;
+		if (MConf.get().materialsDoor.contains(material) && ! MPerm.getPermDoor().has(me, ps, verboose)) return false;
+		if (material == Material.STONE_BUTTON && ! MPerm.getPermButton().has(me, ps, verboose)) return false;
+		if (material == Material.LEVER && ! MPerm.getPermLever().has(me, ps, verboose)) return false;
+		return true;
+	}
+	
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void onPlayerInteractEntity(PlayerInteractEntityEvent event)
+	{
+		// If a player ...
+		final Player player = event.getPlayer();
+		
+		// ... right clicked an entity ...
+		final Entity entity = event.getRightClicked();
+		if (entity == null) return;
+
+		// ... and using that entity is forbidden ...
+		if (canPlayerUseEntity(player, entity, true)) return;
+		
+		// ... then cancel the event.
+		event.setCancelled(true);
+	}
+	
+	public static boolean canPlayerUseEntity(Player player, Entity entity, boolean verboose)
+	{
+		String name = player.getName();
+		if (MConf.get().playersWhoBypassAllProtection.contains(name)) return true;
+
+		MPlayer me = MPlayer.get(player);
+		if (me.isUsingAdminMode()) return true;
+		
+		PS ps = PS.valueOf(entity);
+		EntityType type = entity.getType();
+		
+		if (MConf.get().entityTypesContainer.contains(type) && ! MPerm.getPermContainer().has(me, ps, verboose)) return false;
+		
 		return true;
 	}
 
@@ -1015,7 +1047,7 @@ public class FactionsListenerMain implements Listener
 		Block block = event.getBlockClicked();
 		Player player = event.getPlayer();
 		
-		if (playerCanUseItemHere(player, PS.valueOf(block), event.getBucket(), false)) return;
+		if (playerCanUseItemHere(player, PS.valueOf(block), event.getBucket(), true)) return;
 		
 		event.setCancelled(true);
 	}
@@ -1026,7 +1058,7 @@ public class FactionsListenerMain implements Listener
 		Block block = event.getBlockClicked();
 		Player player = event.getPlayer();
 
-		if (playerCanUseItemHere(player, PS.valueOf(block), event.getBucket(), false)) return;
+		if (playerCanUseItemHere(player, PS.valueOf(block), event.getBucket(), true)) return;
 		
 		event.setCancelled(true);
 	}

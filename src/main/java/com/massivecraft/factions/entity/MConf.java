@@ -356,6 +356,11 @@ public class MConf extends Entity<MConf>
 		Material.DROPPER
 	);
 	
+	public Set<EntityType> entityTypesContainer = MUtil.set(
+		EntityType.MINECART_CHEST,
+		EntityType.MINECART_HOPPER
+	);
+	
 	public Set<EntityType> entityTypesMonsters = MUtil.set(
 		EntityType.BLAZE,
 		EntityType.CAVE_SPIDER,
