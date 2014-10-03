@@ -324,6 +324,17 @@ public class MConf extends Entity<MConf>
 		Material.LAVA_BUCKET
 	);
 	
+	// The duplication bug found in Spigot 1.8 protocol patch
+	// https://github.com/MassiveCraft/Factions/issues/693
+	public Set<Material> materialsEditToolsDupeBug = MUtil.set(
+		Material.CHEST,
+		Material.SIGN_POST,
+		Material.TRAPPED_CHEST,
+		Material.SIGN,
+		Material.WOOD_DOOR,
+		Material.IRON_DOOR
+	);
+	
 	public Set<Material> materialsDoor = MUtil.set(
 		Material.WOODEN_DOOR,
 		Material.TRAP_DOOR,

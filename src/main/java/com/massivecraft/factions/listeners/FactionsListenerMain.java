@@ -977,7 +977,7 @@ public class FactionsListenerMain implements Listener
 	// TODO: Possibly incorporate pain build... 
 	public static boolean playerCanUseItemHere(Player player, PS ps, Material material, boolean justCheck)
 	{
-		if (!MConf.get().materialsEditTools.contains(material)) return true;
+		if ( ! MConf.get().materialsEditTools.contains(material) && ! MConf.get().materialsEditToolsDupeBug.contains(material)) return true;
 		
 		String name = player.getName();
 		if (MConf.get().playersWhoBypassAllProtection.contains(name)) return true;
