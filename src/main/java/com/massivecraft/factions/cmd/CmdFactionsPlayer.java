@@ -44,7 +44,13 @@ public class CmdFactionsPlayer extends FactionsCommand
 		msg(Txt.titleize("Player " + mplayer.describeTo(msender)));
 		
 		// INFO: Power (as progress bar)
-		double progressbarQuota = mplayer.getPower() / mplayer.getPowerMax();
+		double progressbarQuota = 0;
+		double playerPowerMax = mplayer.getPowerMax();
+		if (playerPowerMax != 0)
+		{
+			progressbarQuota = mplayer.getPower() / playerPowerMax;
+		}
+		
 		int progressbarWidth = (int) Math.round(mplayer.getPowerMax() / mplayer.getPowerMaxUniversal() * 100);
 		msg("<k>Power: <v>%s", Progressbar.HEALTHBAR_CLASSIC.withQuota(progressbarQuota).withWidth(progressbarWidth).render());
 				
