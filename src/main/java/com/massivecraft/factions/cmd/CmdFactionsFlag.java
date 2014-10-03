@@ -67,7 +67,7 @@ public class CmdFactionsFlag extends FactionsCommand
 		}
 		
 		// Do the sender have the right to change flags for this faction?
-		if ( ! MPerm.getFlags().has(msender, faction, true)) return;
+		if ( ! MPerm.getPermFlags().has(msender, faction, true)) return;
 		
 		// Is this flag editable?
 		if (!msender.isUsingAdminMode() && !mflag.isEditable())

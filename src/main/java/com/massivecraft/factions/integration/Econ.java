@@ -88,8 +88,8 @@ public class Econ
 		// Factions can be controlled by those that have permissions
 		if (you instanceof Faction)
 		{
-			if (i instanceof Faction && MPerm.getWithdraw().has((Faction)i, fYou)) return true;
-			if (i instanceof MPlayer && MPerm.getWithdraw().has((MPlayer)i, fYou, false)) return true;
+			if (i instanceof Faction && MPerm.getPermWithdraw().has((Faction)i, fYou)) return true;
+			if (i instanceof MPlayer && MPerm.getPermWithdraw().has((MPlayer)i, fYou, false)) return true;
 		}
 		
 		// Otherwise you may not! ;,,;

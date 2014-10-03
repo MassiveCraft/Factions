@@ -3,9 +3,8 @@ package com.massivecraft.factions.cmd;
 import org.bukkit.ChatColor;
 
 import com.massivecraft.factions.Perm;
-import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.cmd.arg.ARMPlayer;
-import com.massivecraft.factions.cmd.req.ReqRoleIsAtLeast;
+import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.event.EventFactionsTitleChange;
 import com.massivecraft.massivecore.cmd.arg.ARString;
@@ -29,7 +28,6 @@ public class CmdFactionsTitle extends FactionsCommand
 
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(Perm.TITLE.node));
-		this.addRequirements(ReqRoleIsAtLeast.get(Rel.OFFICER));
 	}
 
 	// -------------------------------------------- //
@@ -51,6 +49,9 @@ public class CmdFactionsTitle extends FactionsCommand
 		{
 			newTitle = ChatColor.stripColor(newTitle);
 		}
+		
+		// MPerm
+		if ( ! MPerm.getPermTitle().has(msender, you.getFaction(), true)) return;
 		
 		// Verify
 		if ( ! canIAdministerYou(msender, you)) return;

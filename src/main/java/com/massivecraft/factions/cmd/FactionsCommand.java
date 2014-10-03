@@ -63,12 +63,12 @@ public abstract class FactionsCommand extends MassiveCommand
 			}
 			else
 			{
-				i.sendMessage(Txt.parse("<b>Moderators can't control each other..."));
+				i.sendMessage(Txt.parse("<b>Officers can't control each other..."));
 			}
 		}
 		else
 		{
-			i.sendMessage(Txt.parse("<b>You must be a faction moderator to do that."));
+			i.sendMessage(Txt.parse("<b>You must be a faction officer to do that."));
 		}
 		
 		return false;

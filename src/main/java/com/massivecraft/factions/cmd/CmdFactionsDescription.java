@@ -1,9 +1,8 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Perm;
-import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.cmd.req.ReqHasFaction;
-import com.massivecraft.factions.cmd.req.ReqRoleIsAtLeast;
+import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.event.EventFactionsDescriptionChange;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
@@ -27,7 +26,6 @@ public class CmdFactionsDescription extends FactionsCommand
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(Perm.DESCRIPTION.node));
 		this.addRequirements(ReqHasFaction.get());
-		this.addRequirements(ReqRoleIsAtLeast.get(Rel.OFFICER));
 	}
 
 	// -------------------------------------------- //
@@ -39,6 +37,9 @@ public class CmdFactionsDescription extends FactionsCommand
 	{	
 		// Args
 		String newDescription = this.argConcatFrom(0);
+		
+		// MPerm
+		if ( ! MPerm.getPermDesc().has(msender, msenderFaction, true)) return;
 		
 		// Event
 		EventFactionsDescriptionChange event = new EventFactionsDescriptionChange(sender, msenderFaction, newDescription);

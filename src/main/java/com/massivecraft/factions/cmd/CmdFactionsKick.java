@@ -65,7 +65,7 @@ public class CmdFactionsKick extends FactionsCommand
 		
 		// MPerm
 		Faction mplayerFaction = mplayer.getFaction();
-		if ( ! MPerm.getKick().has(msender, mplayerFaction, true)) return;
+		if ( ! MPerm.getPermKick().has(msender, mplayerFaction, true)) return;
 
 		// Event
 		EventFactionsMembershipChange event = new EventFactionsMembershipChange(sender, mplayer, FactionColl.get().getNone(), MembershipChangeReason.KICK);

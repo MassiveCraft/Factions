@@ -47,7 +47,7 @@ public class CmdFactionsClaim extends FactionsCommand
 		if (forFaction == null) return;
 		
 		// MPerm
-		if (forFaction.isNormal() && !MPerm.getTerritory().has(msender, forFaction, true)) return;
+		if (forFaction.isNormal() && !MPerm.getPermTerritory().has(msender, forFaction, true)) return;
 		
 		// Validate
 		if (radius < 1)

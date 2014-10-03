@@ -4,10 +4,10 @@ import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.cmd.arg.ARFaction;
 import com.massivecraft.factions.cmd.req.ReqHasFaction;
-import com.massivecraft.factions.cmd.req.ReqRoleIsAtLeast;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.entity.MFlag;
+import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.factions.event.EventFactionsRelationChange;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 
@@ -27,7 +27,6 @@ public abstract class CmdFactionsRelationAbstract extends FactionsCommand
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(Perm.RELATION.node));
 		this.addRequirements(ReqHasFaction.get());
-		this.addRequirements(ReqRoleIsAtLeast.get(Rel.OFFICER));
 	}
 
 	// -------------------------------------------- //
@@ -48,6 +47,9 @@ public abstract class CmdFactionsRelationAbstract extends FactionsCommand
 			msg("<b>Nope! You can't.");
 			return;
 		}*/
+		
+		// MPerm
+		if ( ! MPerm.getPermRel().has(msender, msenderFaction, true)) return;
 		
 		// Verify
 		

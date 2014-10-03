@@ -45,7 +45,7 @@ public class CmdFactionsAutoClaim extends FactionsCommand
 		}
 		
 		// MPerm
-		if (forFaction.isNormal() && !MPerm.getTerritory().has(msender, forFaction, true)) return;
+		if (forFaction.isNormal() && !MPerm.getPermTerritory().has(msender, forFaction, true)) return;
 		
 		msender.setAutoClaimFaction(forFaction);
 		

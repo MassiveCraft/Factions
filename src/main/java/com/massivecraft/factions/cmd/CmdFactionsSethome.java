@@ -43,7 +43,7 @@ public class CmdFactionsSethome extends FactionsCommandHome
 		PS newHome = PS.valueOf(me.getLocation());
 		
 		// MPerm
-		if ( ! MPerm.getSethome().has(msender, faction, true)) return;
+		if ( ! MPerm.getPermSethome().has(msender, faction, true)) return;
 		
 		// Verify
 		if (!msender.isUsingAdminMode() && !faction.isValidHome(newHome))

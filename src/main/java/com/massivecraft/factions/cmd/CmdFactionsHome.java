@@ -57,18 +57,17 @@ public class CmdFactionsHome extends FactionsCommandHome
 		// Args
 		Faction faction = this.arg(0, ARFaction.get(), msenderFaction);
 		if (faction == null) return;
-		boolean other = faction != msenderFaction;
 		PS home = faction.getHome();
 		String homeDesc = "home for " + faction.describeTo(msender, false);
 		
-		// Other Perm
-		if (other && !Perm.HOME_OTHER.has(sender, true)) return;
+		// Any and MPerm
+		if ( ! MPerm.getPermHome().has(msender, faction, true)) return;
 		
 		if (home == null)
 		{
 			msender.msg("<b>%s <b>does not have a home.", faction.describeTo(msender, true));
 			
-			if (MPerm.getSethome().has(msender, faction, false))
+			if (MPerm.getPermSethome().has(msender, faction, false))
 			{
 				msender.msg("<i>You should:");
 				msender.sendMessage(Factions.get().getOuterCmdFactions().cmdFactionsSethome.getUseageTemplate());

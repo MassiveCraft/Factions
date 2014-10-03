@@ -710,7 +710,7 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 					return false;
 				}
 				
-				if (!MPerm.getTerritory().has(this, newFaction, true))
+				if (!MPerm.getPermTerritory().has(this, newFaction, true))
 				{
 					return false;
 				}
@@ -760,7 +760,7 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 			
 			if (oldFaction.isNormal())
 			{
-				if (!MPerm.getTerritory().has(this, oldFaction, false))
+				if (!MPerm.getPermTerritory().has(this, oldFaction, false))
 				{
 					if (!mconf.claimingFromOthersAllowed)
 					{

@@ -70,7 +70,7 @@ public class CmdFactionsPerm extends FactionsCommand
 		}
 		
 		// Do the sender have the right to change perms for this faction?
-		if ( ! MPerm.getPerms().has(msender, faction, true)) return;
+		if ( ! MPerm.getPermPerms().has(msender, faction, true)) return;
 		
 		// Is this perm editable?
 		if (!msender.isUsingAdminMode() && !mperm.isEditable())
@@ -97,9 +97,9 @@ public class CmdFactionsPerm extends FactionsCommand
 		faction.setRelationPermitted(mperm, rel, targetValue);
 		
 		// The following is to make sure the leader always has the right to change perms if that is our goal.
-		if (mperm == MPerm.getPerms() && MPerm.getPerms().getStandard().contains(Rel.LEADER))
+		if (mperm == MPerm.getPermPerms() && MPerm.getPermPerms().getStandard().contains(Rel.LEADER))
 		{
-			faction.setRelationPermitted(MPerm.getPerms(), Rel.LEADER, true);
+			faction.setRelationPermitted(MPerm.getPermPerms(), Rel.LEADER, true);
 		}
 		
 		// Inform

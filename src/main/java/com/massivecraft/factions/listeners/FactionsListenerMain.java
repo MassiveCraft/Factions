@@ -802,7 +802,7 @@ public class FactionsListenerMain implements Listener
 
 		if (mplayer.isUsingAdminMode()) return true;
 
-		if (!MPerm.getBuild().has(mplayer, ps, false) && MPerm.getPainbuild().has(mplayer, ps, false))
+		if (!MPerm.getPermBuild().has(mplayer, ps, false) && MPerm.getPermPainbuild().has(mplayer, ps, false))
 		{
 			if (verboose)
 			{
@@ -817,7 +817,7 @@ public class FactionsListenerMain implements Listener
 			return true;
 		}
 		
-		return MPerm.getBuild().has(mplayer, ps, verboose);
+		return MPerm.getPermBuild().has(mplayer, ps, verboose);
 	}
 	
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
@@ -907,7 +907,7 @@ public class FactionsListenerMain implements Listener
 		if (targetFaction == pistonFaction) return;
 
 		// if potentially pushing into air/water/lava in another territory, we need to check it out
-		if ((targetBlock.isEmpty() || targetBlock.isLiquid()) && ! MPerm.getBuild().has(pistonFaction, targetFaction))
+		if ((targetBlock.isEmpty() || targetBlock.isLiquid()) && ! MPerm.getPermBuild().has(pistonFaction, targetFaction))
 		{
 			event.setCancelled(true);
 		}
@@ -937,7 +937,7 @@ public class FactionsListenerMain implements Listener
 		Faction targetFaction = BoardColl.get().getFactionAt(retractPs);
 		if (targetFaction == pistonFaction) return;
 
-		if (!MPerm.getBuild().has(pistonFaction, targetFaction))
+		if (!MPerm.getPermBuild().has(pistonFaction, targetFaction))
 		{
 			event.setCancelled(true);
 		}
@@ -985,7 +985,7 @@ public class FactionsListenerMain implements Listener
 		MPlayer mplayer = MPlayer.get(player);
 		if (mplayer.isUsingAdminMode()) return true;
 		
-		return MPerm.getBuild().has(mplayer, ps, !justCheck);
+		return MPerm.getPermBuild().has(mplayer, ps, !justCheck);
 	}
 	
 	public static boolean canPlayerUseBlock(Player player, Block block, boolean justCheck)
@@ -999,11 +999,11 @@ public class FactionsListenerMain implements Listener
 		PS ps = PS.valueOf(block);
 		Material material = block.getType();
 		
-		if (MConf.get().materialsEditOnInteract.contains(material) && ! MPerm.getBuild().has(me, ps, ! justCheck)) return false;
-		if (MConf.get().materialsContainer.contains(material) && ! MPerm.getContainer().has(me, ps, ! justCheck)) return false;
-		if (MConf.get().materialsDoor.contains(material) && ! MPerm.getDoor().has(me, ps, ! justCheck)) return false;
-		if (material == Material.STONE_BUTTON && ! MPerm.getButton().has(me, ps, ! justCheck)) return false;
-		if (material == Material.LEVER && ! MPerm.getLever().has(me, ps, ! justCheck)) return false;
+		if (MConf.get().materialsEditOnInteract.contains(material) && ! MPerm.getPermBuild().has(me, ps, ! justCheck)) return false;
+		if (MConf.get().materialsContainer.contains(material) && ! MPerm.getPermContainer().has(me, ps, ! justCheck)) return false;
+		if (MConf.get().materialsDoor.contains(material) && ! MPerm.getPermDoor().has(me, ps, ! justCheck)) return false;
+		if (material == Material.STONE_BUTTON && ! MPerm.getPermButton().has(me, ps, ! justCheck)) return false;
+		if (material == Material.LEVER && ! MPerm.getPermLever().has(me, ps, ! justCheck)) return false;
 		return true;
 	}
 

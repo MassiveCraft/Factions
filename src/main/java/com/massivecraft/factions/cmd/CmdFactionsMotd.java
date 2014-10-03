@@ -1,8 +1,7 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Perm;
-import com.massivecraft.factions.Rel;
-import com.massivecraft.factions.cmd.req.ReqRoleIsAtLeast;
+import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.mixin.Mixin;
@@ -42,12 +41,8 @@ public class CmdFactionsMotd extends FactionsCommand
 			return;
 		}
 		
-		// Check Role
-		if ( ! ReqRoleIsAtLeast.get(Rel.OFFICER).apply(sender, this))
-		{
-			sendMessage(ReqRoleIsAtLeast.get(Rel.OFFICER).createErrorMessage(sender, this));
-			return;
-		}
+		// MPerm
+		if ( ! MPerm.getPermMotd().has(msender, msenderFaction, true)) return;
 		
 		// Args
 		String target = this.argConcatFrom(0);

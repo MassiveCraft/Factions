@@ -55,7 +55,7 @@ public class CmdFactionsInvite extends FactionsCommand
 		}
 		
 		// MPerm
-		if ( ! MPerm.getInvite().has(msender, msenderFaction, true)) return;
+		if ( ! MPerm.getPermInvite().has(msender, msenderFaction, true)) return;
 		
 		// Event
 		EventFactionsInvitedChange event = new EventFactionsInvitedChange(sender, mplayer, msenderFaction, newInvited);

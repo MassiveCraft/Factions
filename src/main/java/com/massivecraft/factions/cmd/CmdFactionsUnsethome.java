@@ -36,11 +36,8 @@ public class CmdFactionsUnsethome extends FactionsCommandHome
 		Faction faction = this.arg(0, ARFaction.get(), msenderFaction);
 		if (faction == null) return;
 		
-		// Other Perm
-		if (faction != msenderFaction && !Perm.HOME_OTHER.has(sender, true)) return;
-		
-		// MPerm
-		if ( ! MPerm.getSethome().has(msender, faction, true)) return;
+		// Any and MPerm
+		if ( ! MPerm.getPermSethome().has(msender, faction, true)) return;
 		
 		// NoChange
 		if ( ! faction.hasHome())

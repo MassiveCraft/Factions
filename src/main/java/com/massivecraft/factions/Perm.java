@@ -25,7 +25,6 @@ public enum Perm
 	FACTION("faction"),
 	FLAG("flag"),
 	HOME("home"),
-	HOME_OTHER("home.other"),
 	INVITE("invite"),
 	JOIN("join"),
 	JOIN_ANY("join.any"),
@@ -61,7 +60,6 @@ public enum Perm
 	UNCLAIM("unclaim"),
 	UNCLAIM_ALL("unclaimall"),
 	UNSETHOME("unsethome"),
-	UNSETHOME_OTHER("unsethome.other"),
 	VERSION("version"),
 	
 	// END OF LIST

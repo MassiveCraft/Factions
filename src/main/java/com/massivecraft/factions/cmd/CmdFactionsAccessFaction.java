@@ -42,7 +42,7 @@ public class CmdFactionsAccessFaction extends CmdFactionsAccessAbstract
 		if (newValue == null) return;
 		
 		// MPerm
-		if (!MPerm.getAccess().has(msender, hostFaction, true)) return;
+		if (!MPerm.getPermAccess().has(msender, hostFaction, true)) return;
 		
 		// Apply
 		ta = ta.withFactionId(faction.getId(), newValue);

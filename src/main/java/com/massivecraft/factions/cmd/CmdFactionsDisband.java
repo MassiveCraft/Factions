@@ -46,7 +46,7 @@ public class CmdFactionsDisband extends FactionsCommand
 		if (faction == null) return;
 		
 		// MPerm
-		if ( ! MPerm.getDisband().has(msender, faction, true)) return;
+		if ( ! MPerm.getPermDisband().has(msender, faction, true)) return;
 
 		// Verify
 		if (faction.getFlag(MFlag.getPermanent()))

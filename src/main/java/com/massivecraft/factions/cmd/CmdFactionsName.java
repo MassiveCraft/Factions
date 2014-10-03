@@ -3,10 +3,9 @@ package com.massivecraft.factions.cmd;
 import java.util.ArrayList;
 
 import com.massivecraft.factions.Perm;
-import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.cmd.req.ReqHasFaction;
-import com.massivecraft.factions.cmd.req.ReqRoleIsAtLeast;
 import com.massivecraft.factions.entity.FactionColl;
+import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.factions.event.EventFactionsNameChange;
 import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
@@ -28,7 +27,6 @@ public class CmdFactionsName extends FactionsCommand
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(Perm.NAME.node));
 		this.addRequirements(ReqHasFaction.get());
-		this.addRequirements(ReqRoleIsAtLeast.get(Rel.OFFICER));
 	}
 
 	// -------------------------------------------- //
@@ -41,8 +39,10 @@ public class CmdFactionsName extends FactionsCommand
 		// Arg
 		String newName = this.arg(0);
 		
-		// TODO does not first test cover selfcase?
+		// MPerm
+		if ( ! MPerm.getPermName().has(msender, msenderFaction, true)) return;
 		
+		// TODO does not first test cover selfcase?
 		if (FactionColl.get().isNameTaken(newName) && ! MiscUtil.getComparisonString(newName).equals(msenderFaction.getComparisonName()))
 		{
 			msg("<b>That name is already taken");

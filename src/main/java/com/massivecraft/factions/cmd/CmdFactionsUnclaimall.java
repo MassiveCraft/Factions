@@ -45,7 +45,7 @@ public class CmdFactionsUnclaimall extends FactionsCommand
 		Faction newFaction = FactionColl.get().getNone();
 		
 		// MPerm
-		if ( ! MPerm.getTerritory().has(msender, faction, true)) return;
+		if ( ! MPerm.getPermTerritory().has(msender, faction, true)) return;
 
 		// Apply
 		Set<PS> chunks = BoardColl.get().getChunks(faction);
