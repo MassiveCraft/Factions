@@ -29,11 +29,11 @@ public class EventFactionsPvpDisallowed extends EventFactionsAbstract
 	
 	private final Player attacker;
 	public Player getAttacker() { return this.attacker; }
-	public MPlayer getUAttacker() { return this.attacker == null ? null : MPlayer.get(this.attacker); }
+	public MPlayer getMAttacker() { return this.attacker == null ? null : MPlayer.get(this.attacker); }
 	
 	private final Player defender;
 	public Player getDefender() { return this.defender; }
-	public MPlayer getUDefender() { return this.defender == null ? null : MPlayer.get(this.defender); }
+	public MPlayer getMDefender() { return this.defender == null ? null : MPlayer.get(this.defender); }
 	
 	private final EntityDamageByEntityEvent event;
 	public EntityDamageByEntityEvent getEvent() { return this.event; }

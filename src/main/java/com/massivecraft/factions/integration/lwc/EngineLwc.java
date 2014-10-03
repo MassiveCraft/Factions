@@ -1,18 +1,15 @@
 package com.massivecraft.factions.integration.lwc;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.Chunk;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockState;
+import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.plugin.Plugin;
 
 import com.griefcraft.lwc.LWC;
 import com.griefcraft.model.Protection;
+import com.griefcraft.sql.PhysDB;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MConf;
@@ -21,6 +18,7 @@ import com.massivecraft.factions.event.EventFactionsChunkChange;
 import com.massivecraft.factions.event.EventFactionsChunkChangeType;
 import com.massivecraft.massivecore.EngineAbstract;
 import com.massivecraft.massivecore.ps.PS;
+import com.massivecraft.massivecore.util.IdUtil;
 
 
 public class EngineLwc extends EngineAbstract
@@ -72,54 +70,70 @@ public class EngineLwc extends EngineAbstract
 		if (remove == false) return;
 		
 		// ... then remove for all other factions than the new one.
-		removeAlienProtections(event.getChunk(), newFaction);
+		// First we wait one tick to make sure the chunk ownership changes have been applied.
+		// Then we remove the protections but we do it asynchronously to not lock the main thread.
+		removeAlienProtectionsAsyncNextTick(event.getChunk(), newFaction);
 	}
 	
 	// -------------------------------------------- //
 	// UTIL
 	// -------------------------------------------- //
 	
-	public static void removeAlienProtections(PS chunkPs, Faction faction)
+	// This method causes LWC to run an SQL query which can take a few milliseconds.
+	// For that reason this method should not be executed in the main server thread.
+	// After looking through the source code of LWC I am also hopeful this is thread safe. 
+	public static List<Protection> getProtectionsInChunk(PS chunkPs)
+	{
+		final int xmin = chunkPs.getChunkX() * 16;
+		final int xmax = xmin + 15;
+		
+		final int ymin = 0;
+		final int ymax = 255;
+		
+		final int zmin = chunkPs.getChunkZ() * 16;
+		final int zmax = zmin + 15;
+		
+		PhysDB db = LWC.getInstance().getPhysicalDatabase();
+		return db.loadProtections(chunkPs.getWorld(), xmin, xmax, ymin, ymax, zmin, zmax);
+	}
+	
+	// As with the method above: Thread safe and slow. Do run asynchronously.
+	public static void removeAlienProtectionsRaw(PS chunkPs, Faction faction)
 	{
 		List<MPlayer> nonAliens = faction.getMPlayers();
 		for (Protection protection : getProtectionsInChunk(chunkPs))
 		{
-			MPlayer owner = MPlayer.get(protection.getOwner());
+			// NOTE: The LWC protection owner is still the name and not the UUID. For that reason we must convert it. 
+			String ownerName = protection.getOwner();
+			String ownerId = IdUtil.getId(ownerName);
+			MPlayer owner = MPlayer.get(ownerId);
 			if (nonAliens.contains(owner)) continue;
 			protection.remove();
 		}
 	}
 	
-	public static List<Protection> getProtectionsInChunk(PS chunkPs)
+	public static void removeAlienProtectionsAsync(final PS chunkPs, final Faction faction)
 	{
-		List<Protection> ret = new ArrayList<Protection>();
-		
-		// Get the chunk
-		Chunk chunk = null;
-		try
+		Bukkit.getScheduler().runTaskAsynchronously(Factions.get(), new Runnable()
 		{
-			chunk = chunkPs.asBukkitChunk(true);
-		}
-		catch (Exception e)
-		{
-			return ret;
-		}
-		
-		for (BlockState blockState : chunk.getTileEntities())
-		{
-			// TODO: Can something else be protected by LWC? Or is it really only chests?
-			// TODO: How about we run through each block in the chunk just to be on the safe side?
-			if (blockState.getType() != Material.CHEST) continue;
-			Block block = blockState.getBlock();
-			
-			Protection protection = LWC.getInstance().findProtection(block);
-			if (protection == null) continue;
-			
-			ret.add(protection);
-		}
-		
-		return ret;
+			@Override
+			public void run()
+			{
+				removeAlienProtectionsRaw(chunkPs, faction);
+			}
+		});
 	}
 	
+	public static void removeAlienProtectionsAsyncNextTick(final PS chunkPs, final Faction faction)
+	{
+		Bukkit.getScheduler().runTaskLater(Factions.get(), new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				removeAlienProtectionsAsync(chunkPs, faction);
+			}
+		}, 0);
+	}
 	
 }

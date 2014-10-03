@@ -394,6 +394,9 @@ public class MConf extends Entity<MConf>
 	// INTEGRATION: LWC
 	// -------------------------------------------- //
 	
+	public boolean lwcMustHaveBuildRightsToCreate = true;
+	public boolean lwcRemoveIfNoBuildRights = false;
+	
 	public Map<EventFactionsChunkChangeType, Boolean> lwcRemoveOnChange = MUtil.map(
 		EventFactionsChunkChangeType.BUY, false,
 		EventFactionsChunkChangeType.SELL, false,

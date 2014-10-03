@@ -50,7 +50,7 @@ public class EventFactionsChunkChange extends EventFactionsAbstractSender
 		if (currentFaction.isNone()) return EventFactionsChunkChangeType.BUY;
 		if (newFaction.isNormal()) return EventFactionsChunkChangeType.CONQUER;
 		
-		MPlayer usender = this.getUSender();
+		MPlayer usender = this.getMSender();
 		if (usender != null && usender.getFaction() == currentFaction) return EventFactionsChunkChangeType.SELL;
 		
 		return EventFactionsChunkChangeType.PILLAGE;

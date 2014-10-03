@@ -228,6 +228,8 @@ public abstract class ChannelFactionsAbstract implements Channel
 	{
 		Set<Player> ret = new HashSet<Player>();
 		
+		// TODO: Dormant non-erased universe support?
+		
 		MPlayer fpsender = MPlayer.get(sender);
 		Faction faction = fpsender.getFaction();
 		String universe = fpsender.getUniverse();

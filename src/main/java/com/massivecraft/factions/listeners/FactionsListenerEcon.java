@@ -75,7 +75,7 @@ public class FactionsListenerEcon implements Listener
 	public void takeOnDisband(EventFactionsDisband event)
 	{
 		// If there is a usender ...
-		MPlayer usender = event.getUSender();
+		MPlayer usender = event.getMSender();
 		if (usender == null) return;
 		
 		// ... and economy is enabled ...
@@ -100,7 +100,7 @@ public class FactionsListenerEcon implements Listener
 	public static void payForAction(EventFactionsAbstractSender event, Double cost, String desc)
 	{
 		// If there is a sender ...
-		MPlayer usender = event.getUSender();
+		MPlayer usender = event.getMSender();
 		if (usender == null) return;
 		
 		// ... and there is a cost ...

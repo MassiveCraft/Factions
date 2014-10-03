@@ -13,7 +13,7 @@ public abstract class EventFactionsAbstractSender extends EventMassiveCore
 	
 	private final CommandSender sender;
 	public CommandSender getSender() { return this.sender; }
-	public MPlayer getUSender() { return this.sender == null ? null : MPlayer.get(this.sender); }
+	public MPlayer getMSender() { return this.sender == null ? null : MPlayer.get(this.sender); }
 	
 	// -------------------------------------------- //
 	// CONSTRUCT

@@ -814,10 +814,10 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 		}
 		
 		String chunkString = chunk.toString(PSFormatHumanSpace.get());
-		String typeString = event.getType().toString().toLowerCase();
+		String typeString = event.getType().past;
 		for (MPlayer informee : informees)
 		{
-			informee.msg("<h>%s<i> did %s %s <i>for <h>%s<i> from <h>%s<i>.", this.describeTo(informee, true), typeString, chunkString, newFaction.describeTo(informee), oldFaction.describeTo(informee));
+			informee.msg("<h>%s<i> %s %s <i>| <h>%s<i> --> <h>%s", this.describeTo(informee, true), typeString, chunkString, oldFaction.describeTo(informee, true), newFaction.describeTo(informee, true));
 		}
 
 		return true;
