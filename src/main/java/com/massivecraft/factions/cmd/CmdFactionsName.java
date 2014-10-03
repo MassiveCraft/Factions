@@ -3,7 +3,8 @@ package com.massivecraft.factions.cmd;
 import java.util.ArrayList;
 
 import com.massivecraft.factions.Perm;
-import com.massivecraft.factions.cmd.req.ReqHasFaction;
+import com.massivecraft.factions.cmd.arg.ARFaction;
+import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.FactionColl;
 import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.factions.event.EventFactionsNameChange;
@@ -23,10 +24,10 @@ public class CmdFactionsName extends FactionsCommand
 
 		// Args
 		this.addRequiredArg("new name");
+		this.addOptionalArg("faction", "you");
 
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(Perm.NAME.node));
-		this.addRequirements(ReqHasFaction.get());
 	}
 
 	// -------------------------------------------- //
@@ -36,14 +37,17 @@ public class CmdFactionsName extends FactionsCommand
 	@Override
 	public void perform()
 	{
-		// Arg
+		// Args
 		String newName = this.arg(0);
 		
+		Faction faction = this.arg(1, ARFaction.get(), msenderFaction);
+		if (faction == null) return;
+		
 		// MPerm
-		if ( ! MPerm.getPermName().has(msender, msenderFaction, true)) return;
+		if ( ! MPerm.getPermName().has(msender, faction, true)) return;
 		
 		// TODO does not first test cover selfcase?
-		if (FactionColl.get().isNameTaken(newName) && ! MiscUtil.getComparisonString(newName).equals(msenderFaction.getComparisonName()))
+		if (FactionColl.get().isNameTaken(newName) && ! MiscUtil.getComparisonString(newName).equals(faction.getComparisonName()))
 		{
 			msg("<b>That name is already taken");
 			return;
@@ -58,16 +62,20 @@ public class CmdFactionsName extends FactionsCommand
 		}
 
 		// Event
-		EventFactionsNameChange event = new EventFactionsNameChange(sender, msenderFaction, newName);
+		EventFactionsNameChange event = new EventFactionsNameChange(sender, faction, newName);
 		event.run();
 		if (event.isCancelled()) return;
 		newName = event.getNewName();
 
 		// Apply
-		msenderFaction.setName(newName);
+		faction.setName(newName);
 
 		// Inform
-		msenderFaction.msg("%s<i> changed your faction name to %s", msender.describeTo(msenderFaction, true), msenderFaction.getName(msenderFaction));
+		faction.msg("%s<i> changed your faction name to %s", msender.describeTo(faction, true), faction.getName(faction));
+		if (msenderFaction != faction)
+		{
+			msg("<i>You changed the faction name to %s", faction.getName(msender));
+		}
 	}
 	
 }
