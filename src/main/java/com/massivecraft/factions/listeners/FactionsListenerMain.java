@@ -41,6 +41,7 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.entity.PotionSplashEvent;
+import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.hanging.HangingBreakEvent;
 import org.bukkit.event.hanging.HangingPlaceEvent;
@@ -608,10 +609,17 @@ public class FactionsListenerMain implements Listener
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void blockMonsters(CreatureSpawnEvent event)
 	{
-		// If a monster is spawning ...
-		if ( ! MConf.get().entityTypesMonsters.contains(event.getEntityType())) return;
+		// If a creature is spawning ...
+		EntityType type = event.getEntityType();
 		
-		// ... at a place where monsters are forbidden ...
+		// ... and that creature is a monster ...
+		if ( ! MConf.get().entityTypesMonsters.contains(type)) return;
+		
+		// ... and the reason for the spawn is natural ...
+		SpawnReason reason = event.getSpawnReason();
+		if (reason != SpawnReason.NATURAL && reason != SpawnReason.JOCKEY) return;
+		
+		// ... and monsters are forbidden at the location ...
 		PS ps = PS.valueOf(event.getLocation());
 		Faction faction = BoardColl.get().getFactionAt(ps);
 		if (faction.getFlag(MFlag.getMonsters())) return;

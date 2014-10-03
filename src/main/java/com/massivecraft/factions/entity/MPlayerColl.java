@@ -55,10 +55,10 @@ public class MPlayerColl extends SenderColl<MPlayer>
 			// Maybe skipping ahead if the player is detached will solve the issue.
 			if (mplayer.detached()) continue;
 			
+			if (mplayer.isOnline()) continue;
+			
 			Long lastPlayed = Mixin.getLastPlayed(mplayer.getId());
 			if (lastPlayed == null) continue;
-			
-			if (mplayer.isOnline()) continue;
 			if (now - lastPlayed <= toleranceMillis) continue;
 			
 			if (MConf.get().logFactionLeave || MConf.get().logFactionKick)
