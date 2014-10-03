@@ -2,8 +2,10 @@ package com.massivecraft.factions.integration.dynmap;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -758,44 +760,62 @@ public class EngineDynmap extends EngineAbstract
 		ret = ret.replace("%money%", money);
 		
 		// Flags and Open
-		Map<String, Boolean> flags = new HashMap<String, Boolean>();
+		Map<MFlag, Boolean> flags = new LinkedHashMap<MFlag, Boolean>();
 		for (MFlag mflag : MFlag.getAll())
 		{
-			flags.put(mflag.getName(), faction.getFlag(mflag));
+			flags.put(mflag, faction.getFlag(mflag));
 		}
-		for (Entry<String, Boolean> entry : flags.entrySet())
+
+		List<String> flagMapParts = new ArrayList<String>();
+		List<String> flagTableParts = new ArrayList<String>();
+		
+		for (Entry<MFlag, Boolean> entry : flags.entrySet())
 		{
-			String flag = entry.getKey();
+			MFlag mflag = entry.getKey();
+			String flag = mflag.getName();
 			boolean value = entry.getValue();
 			
 			String bool = String.valueOf(value);
 			String color = boolcolor(flag, value);
 			String boolcolor = boolcolor(String.valueOf(value), value);
 			
-			ret = ret.replace("%" + flag + ".bool%", bool);
-			ret = ret.replace("%" + flag + ".color%", color);
-			ret = ret.replace("%" + flag + ".boolcolor%", boolcolor);
+			ret = ret.replace("%" + flag + ".bool%", bool); // true
+			ret = ret.replace("%" + flag + ".color%", color); // monsters (red or green)
+			ret = ret.replace("%" + flag + ".boolcolor%", boolcolor); // true (red or green)
+			
+			if (!mflag.isVisible()) continue;
+			flagMapParts.add(flag + ": " + boolcolor);
+			flagTableParts.add(color);
+		}
+		
+		String flagMap = Txt.implode(flagMapParts, "<br>\n");
+		ret = ret.replace("%flags.map%", flagMap);
+		
+		for (int cols = 1; cols <= 10; cols++)
+		{
+			String flagTable = getHtmlAsciTable(flagTableParts, cols);
+			ret = ret.replace("%flags.table" + cols + "%", flagTable);
 		}
 		
 		// Players
 		List<MPlayer> playersList = faction.getMPlayers();
 		String playersCount = String.valueOf(playersList.size());
-		String players = getPlayerString(playersList);
+		String players = getHtmlPlayerString(playersList);
 		
 		MPlayer playersLeaderObject = faction.getLeader();
-		String playersLeader = getPlayerName(playersLeaderObject);
+		String playersLeader = getHtmlPlayerName(playersLeaderObject);
 		
 		List<MPlayer> playersOfficersList = faction.getMPlayersWhereRole(Rel.OFFICER);
 		String playersOfficersCount = String.valueOf(playersOfficersList.size());
-		String playersOfficers = getPlayerString(playersOfficersList);
+		String playersOfficers = getHtmlPlayerString(playersOfficersList);
 		
 		List<MPlayer> playersMembersList = faction.getMPlayersWhereRole(Rel.MEMBER);
 		String playersMembersCount = String.valueOf(playersMembersList.size());
-		String playersMembers = getPlayerString(playersMembersList);
+		String playersMembers = getHtmlPlayerString(playersMembersList);
 		
 		List<MPlayer> playersRecruitsList = faction.getMPlayersWhereRole(Rel.RECRUIT);
 		String playersRecruitsCount = String.valueOf(playersRecruitsList.size());
-		String playersRecruits = getPlayerString(playersRecruitsList);
+		String playersRecruits = getHtmlPlayerString(playersRecruitsList);
 		
 		
 		ret = ret.replace("%players%", players);
@@ -811,18 +831,47 @@ public class EngineDynmap extends EngineAbstract
 		return ret;
 	}
 	
-	public static String getPlayerString(List<MPlayer> mplayers)
+	public static String getHtmlAsciTable(Collection<String> strings, int cols)
+	{
+		StringBuilder ret = new StringBuilder();
+		
+		int count = 0;
+		Iterator<String> iter = strings.iterator();
+		while (iter.hasNext())
+		{
+			String string = iter.next();
+			count++;
+			
+			ret.append(string);
+			if (iter.hasNext())
+			{
+				if (count == cols)
+				{
+					ret.append("<br>\n");
+					count = 0;
+				}
+				else
+				{
+					ret.append(" | ");
+				}
+			}
+		}
+		
+		return ret.toString();
+	}
+	
+	public static String getHtmlPlayerString(List<MPlayer> mplayers)
 	{
 		String ret = "";
 		for (MPlayer mplayer : mplayers)
 		{
 			if (ret.length() > 0) ret += ", ";
-			ret += getPlayerName(mplayer);
+			ret += getHtmlPlayerName(mplayer);
 		}
 		return ret;
 	}
 	
-	public static String getPlayerName(MPlayer mplayer)
+	public static String getHtmlPlayerName(MPlayer mplayer)
 	{
 		if (mplayer == null) return "none";
 		return escapeHtml(mplayer.getName());

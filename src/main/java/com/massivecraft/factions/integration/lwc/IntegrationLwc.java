@@ -1,7 +1,5 @@
 package com.massivecraft.factions.integration.lwc;
 
-import com.griefcraft.lwc.LWC;
-import com.massivecraft.factions.Factions;
 import com.massivecraft.massivecore.integration.IntegrationAbstract;
 
 public class IntegrationLwc extends IntegrationAbstract
@@ -22,16 +20,12 @@ public class IntegrationLwc extends IntegrationAbstract
 	public void activate()
 	{
 		EngineLwc.get().activate();
-		
-		LWC.getInstance().getModuleLoader().registerModule(Factions.get(), new FactionsLwcModule(Factions.get()));
 	}
 	
 	@Override
 	public void deactivate()
 	{
 		EngineLwc.get().deactivate();
-		
-		LWC.getInstance().getModuleLoader().removeModules(Factions.get());
 	}
 	
 }

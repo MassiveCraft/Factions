@@ -484,9 +484,7 @@ public class MConf extends Entity<MConf>
 		"<span style=\"font-weight: bold;\">Bank:</span> %money%</br>\n" +
 		"</br>\n" +
 		"<span style=\"font-weight: bold;\">Flags:</span></br>\n" +
-		"%open.color% | %permanent.color% | %peaceful.color% | %infpower.color% | %powerloss.color%</br>\n" +
-		"%pvp.color% | %friendlyfire.color% | %monsters.color% | %explosions.color%</br>\n" +
-		"%offlineexplosions.color% | %firespread.color% | %endergrief.color%\n" +
+		"%flags.table3%\n" +
 		"</div>";
 	
 	// Enable the %money% macro. Only do this if you know your economy manager is thread safe.

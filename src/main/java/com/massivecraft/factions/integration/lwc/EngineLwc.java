@@ -43,6 +43,20 @@ public class EngineLwc extends EngineAbstract
 		return Factions.get();
 	}
 	
+	@Override
+	public void activate()
+	{
+		super.activate();
+		LWC.getInstance().getModuleLoader().registerModule(Factions.get(), new FactionsLwcModule(Factions.get()));
+	}
+	
+	@Override
+	public void deactivate()
+	{
+		super.deactivate();
+		LWC.getInstance().getModuleLoader().removeModules(Factions.get());
+	}
+	
 	// -------------------------------------------- //
 	// LISTENER
 	// -------------------------------------------- //
