@@ -4,6 +4,8 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.bukkit.entity.Player;
+
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
@@ -245,26 +247,44 @@ public class MPerm extends Entity<MPerm> implements Prioritized, Registerable
 	
 	public String createDeniedMessage(MPlayer mplayer, Faction hostFaction)
 	{
+		// Null Check
+		if (mplayer == null) throw new NullPointerException("mplayer");
+		if (hostFaction == null) throw new NullPointerException("hostFaction");
+		
 		String ret = Txt.parse("%s<b> does not allow you to %s<b>.", hostFaction.describeTo(mplayer, true), this.getDesc());
-		if (Perm.ADMIN.has(mplayer.getPlayer()))
+		
+		Player player = mplayer.getPlayer();
+		if (player != null && Perm.ADMIN.has(player))
 		{
 			ret += Txt.parse("\n<i>You can bypass by using " + Factions.get().getOuterCmdFactions().cmdFactionsAdmin.getUseageTemplate(false));
 		}
+		
 		return ret;
 	}
 	
 	public boolean has(Faction faction, Faction hostFaction)
 	{
+		// Null Check
+		if (faction == null) throw new NullPointerException("faction");
+		if (hostFaction == null) throw new NullPointerException("hostFaction");
+		
 		Rel rel = faction.getRelationTo(hostFaction);
-		return hostFaction.getPermittedRelations(this).contains(rel);
+		
+		Set<Rel> permittedRelations = hostFaction.getPermittedRelations(this);
+		return permittedRelations.contains(rel);
 	}
 	
 	public boolean has(MPlayer mplayer, Faction hostFaction, boolean verboose)
 	{
+		// Null Check
+		if (mplayer == null) throw new NullPointerException("mplayer");
+		if (hostFaction == null) throw new NullPointerException("hostFaction");
+		
 		if (mplayer.isUsingAdminMode()) return true;
 		
 		Rel rel = mplayer.getRelationTo(hostFaction);
-		if (hostFaction.getPermittedRelations(this).contains(rel)) return true;
+		Set<Rel> permittedRelations = hostFaction.getPermittedRelations(this);
+		if (permittedRelations.contains(rel)) return true;
 		
 		if (verboose) mplayer.sendMessage(this.createDeniedMessage(mplayer, hostFaction));
 		
@@ -273,6 +293,10 @@ public class MPerm extends Entity<MPerm> implements Prioritized, Registerable
 	
 	public boolean has(MPlayer mplayer, PS ps, boolean verboose)
 	{
+		// Null Check
+		if (mplayer == null) throw new NullPointerException("mplayer");
+		if (ps == null) throw new NullPointerException("ps");
+		
 		if (mplayer.isUsingAdminMode()) return true;
 		
 		TerritoryAccess ta = BoardColl.get().getTerritoryAccessAt(ps);
