@@ -665,8 +665,14 @@ public class FactionsListenerMain implements Listener
 		if (reason != SpawnReason.NATURAL && reason != SpawnReason.JOCKEY) return;
 		
 		// ... and monsters are forbidden at the location ...
-		PS ps = PS.valueOf(event.getLocation());
+		Location location = event.getLocation();
+		if (location == null) return;		
+		
+		PS ps = PS.valueOf(location);
+		
 		Faction faction = BoardColl.get().getFactionAt(ps);
+		if (faction == null) return;
+		
 		if (faction.getFlag(MFlag.getMonsters())) return;
 		
 		// ... block the spawn.
