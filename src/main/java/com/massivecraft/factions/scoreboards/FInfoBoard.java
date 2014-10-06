@@ -64,9 +64,10 @@ public class FInfoBoard extends FScoreboard {
      * @return new String with values instead of placeholders.
      */
     private String replace(String s) {
+        boolean raidable = faction.getLandRounded() > faction.getPower();
         FPlayer fLeader = faction.getFPlayerAdmin();
         String leader = fLeader == null ? "Server" : fLeader.getName().substring(0, fLeader.getName().length() > 14 ? 13 : fLeader.getName().length());
-        return ChatColor.translateAlternateColorCodes('&', s.replace("{power}", String.valueOf(faction.getPowerRounded())).replace("{online}", String.valueOf(faction.getOnlinePlayers().size())).replace("{members}", String.valueOf(faction.getFPlayers().size())).replace("{leader}", leader).replace("{chunks}", String.valueOf(faction.getLandRounded())));
+        return ChatColor.translateAlternateColorCodes('&', s.replace("{power}", String.valueOf(faction.getPowerRounded())).replace("{online}", String.valueOf(faction.getOnlinePlayers().size())).replace("{members}", String.valueOf(faction.getFPlayers().size())).replace("{leader}", leader).replace("{chunks}", String.valueOf(faction.getLandRounded())).replace("{raidable}", String.valueOf(raidable)));
     }
 
 }

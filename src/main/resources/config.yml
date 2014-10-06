@@ -25,6 +25,7 @@ scoreboard:
 # Things to be replaced in this:
 # {power} - faction's power. {chunks} - total claimed chunks. {members} - total members.
 # {online} - online members. {leader} - faction's leader. {open} - shows either true or false if open.
+# {raidable} - true if the faction can be claimed over, otherwise false.
 # The title of the scoreboard will be the Faction's tag and colored according to the relation with the player's Faction.
 # Commenting this section out will cause the info to appear in chat as the plugin originally did.
   finfo-enabled: false # Default to false to keep original functionality.
