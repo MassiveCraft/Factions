@@ -33,7 +33,7 @@ public class TaskPlayerDataRemove extends ModuloRepeatTask
 	@Override
 	public void invoke(long now)
 	{
-		MPlayerColl.get().removePlayerDataAfterInactiveDaysRoutine();
+		MPlayerColl.get().considerRemovePlayerMillis();
 	}
 	
 }

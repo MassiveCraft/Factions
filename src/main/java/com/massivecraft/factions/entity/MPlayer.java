@@ -14,6 +14,7 @@ import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.RelationParticipator;
 import com.massivecraft.factions.event.EventFactionsChunkChange;
 import com.massivecraft.factions.event.EventFactionsMembershipChange;
+import com.massivecraft.factions.event.EventFactionsRemovePlayerMillis;
 import com.massivecraft.factions.event.EventFactionsMembershipChange.MembershipChangeReason;
 import com.massivecraft.factions.util.RelationUtil;
 import com.massivecraft.massivecore.mixin.Mixin;
@@ -43,6 +44,7 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 	@Override
 	public MPlayer load(MPlayer that)
 	{
+		this.setLastActivityMillis(that.lastActivityMillis);
 		this.setFactionId(that.factionId);
 		this.setRole(that.role);
 		this.setTitle(that.title);
@@ -57,11 +59,13 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 	@Override
 	public boolean isDefault()
 	{
+		// Last activity millis is data we use for clearing out inactive players. So it does not in itself make the player data worth keeping.
 		if (this.hasFaction()) return false;
 		// Role means nothing without a faction.
 		// Title means nothing without a faction.
+		if (this.hasPowerBoost()) return false;
 		if (this.getPowerRounded() != (int) Math.round(MConf.get().defaultPlayerPower)) return false;
-		if (this.isMapAutoUpdating()) return false;
+		// if (this.isMapAutoUpdating()) return false; // Just having an auto updating map is not in itself reason enough for database storage.
 		if (this.isUsingAdminMode()) return false;
 		
 		return true;
@@ -98,6 +102,12 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 	// -------------------------------------------- //
 	// In this section of the source code we place the field declarations only.
 	// Each field has it's own section further down since just the getter and setter logic takes up quite some place.
+	
+	// The last known time of explicit player activity, such as login or logout.
+	// Null means "unknown" (as opposed to "never played on the server").
+	// The player might have been active very recently but we could lack that data.
+	// The reason being this data field was added in a version upgrade and has not been around for forever.
+	private Long lastActivityMillis = null;
 	
 	// This is a foreign key.
 	// Each player belong to a faction.
@@ -156,6 +166,46 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 		this.setRole(null);
 		this.setTitle(null);
 		this.setAutoClaimFaction(null);
+	}
+	
+	// -------------------------------------------- //
+	// FIELD: lastActivityMillis
+	// -------------------------------------------- //
+	
+	// Raw: Using only what we have stored
+	
+	public Long getLastActivityMillisRaw()
+	{
+		return this.lastActivityMillis;
+	}
+	
+	public void setLastActivityMillis(Long lastActivityMillis)
+	{
+		// Clean input
+		Long target = lastActivityMillis;
+		
+		// Detect Nochange
+		if (MUtil.equals(this.lastActivityMillis, target)) return;
+		
+		// Apply
+		this.lastActivityMillis = target;
+		
+		// Mark as changed
+		this.changed();
+	}
+	
+	public void setLastActivityMillis()
+	{
+		this.setLastActivityMillis(System.currentTimeMillis());
+	}
+	
+	// Finer: Using our raw data but also underlying system as fallback
+	
+	public Long getLastActivityMillis()
+	{
+		Long ret = this.getLastActivityMillisRaw();
+		if (ret != null) return ret;
+		return Mixin.getLastPlayed(this);
 	}
 	
 	// -------------------------------------------- //
@@ -623,6 +673,57 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 		PS ps = Mixin.getSenderPs(this.getId());
 		if (ps == null) return false;
 		return BoardColl.get().getFactionAt(ps).getRelationTo(this) == Rel.ENEMY;
+	}
+	
+	// -------------------------------------------- //
+	// INACTIVITY TIMEOUT
+	// -------------------------------------------- //
+	
+	public long getRemovePlayerMillis(boolean async)
+	{
+		EventFactionsRemovePlayerMillis event = new EventFactionsRemovePlayerMillis(async, this);
+		event.run();
+		return event.getMillis();
+	}
+	
+	public boolean considerRemovePlayerMillis(boolean async)
+	{
+		// This may or may not be required.
+		// Some users have been reporting a loop issue with the same player detaching over and over again.
+		// Maybe skipping ahead if the player is detached will solve the issue.
+		if (this.detached()) return false;
+		
+		// Get the last activity millis.
+		// Null means "unknown" in which case we does nothing.
+		Long lastActivityMillis = this.getLastActivityMillis();
+		if (lastActivityMillis == null) return false;
+		
+		// Consider
+		long toleranceMillis = this.getRemovePlayerMillis(async);
+		if (System.currentTimeMillis() - lastActivityMillis <= toleranceMillis) return false;
+		
+		// Inform
+		if (MConf.get().logFactionLeave || MConf.get().logFactionKick)
+		{
+			Factions.get().log("Player " + this.getName() + " was auto-removed due to inactivity.");
+		}
+
+		// Apply
+		
+		// Promote a new leader if required.
+		if (this.getRole() == Rel.LEADER)
+		{
+			Faction faction = this.getFaction();
+			if (faction != null)
+			{
+				this.getFaction().promoteNewLeader();
+			}
+		}
+
+		this.leave();
+		this.detach();
+		
+		return true;
 	}
 	
 	// -------------------------------------------- //

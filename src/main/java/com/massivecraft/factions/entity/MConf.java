@@ -20,6 +20,7 @@ import com.massivecraft.factions.integration.dynmap.DynmapStyle;
 import com.massivecraft.factions.listeners.FactionsListenerChat;
 import com.massivecraft.massivecore.store.Entity;
 import com.massivecraft.massivecore.util.MUtil;
+import com.massivecraft.massivecore.util.TimeUnit;
 
 public class MConf extends Entity<MConf>
 {
@@ -79,8 +80,21 @@ public class MConf extends Entity<MConf>
 	// REMOVE DATA
 	// -------------------------------------------- //
 	
-	public boolean removePlayerDataWhenBanned = true;
-	public double removePlayerDataAfterInactiveDays = 20.0;
+	public boolean removePlayerWhenBanned = true;
+	
+	// The Default
+	public long removePlayerMillisDefault = 10 * TimeUnit.MILLIS_PER_DAY;
+	
+	// Player Age Bonus
+	public Map<Long, Long> removePlayerMillisPlayerAgeToBonus = MUtil.map(
+		2 * TimeUnit.MILLIS_PER_WEEK, 10 * TimeUnit.MILLIS_PER_DAY  // +10 after 2 weeks
+	);
+	
+	// Faction Age Bonus
+	public Map<Long, Long> removePlayerMillisFactionAgeToBonus = MUtil.map(
+		4 * TimeUnit.MILLIS_PER_WEEK, 10 * TimeUnit.MILLIS_PER_DAY, // +10 after 4 weeks
+		2 * TimeUnit.MILLIS_PER_WEEK,  5 * TimeUnit.MILLIS_PER_DAY  // +5 after 2 weeks
+	);
 	
 	// -------------------------------------------- //
 	// SPECIAL FACTION IDS

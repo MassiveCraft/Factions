@@ -11,6 +11,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Enderman;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -71,6 +72,7 @@ import com.massivecraft.factions.event.EventFactionsPvpDisallowed;
 import com.massivecraft.factions.event.EventFactionsPowerChange;
 import com.massivecraft.factions.event.EventFactionsPowerChange.PowerChangeReason;
 import com.massivecraft.factions.util.VisualizeUtil;
+import com.massivecraft.massivecore.event.EventMassiveCorePlayerLeave;
 import com.massivecraft.massivecore.mixin.Mixin;
 import com.massivecraft.massivecore.ps.PS;
 import com.massivecraft.massivecore.util.MUtil;
@@ -95,7 +97,50 @@ public class FactionsListenerMain implements Listener
 	{
 		Bukkit.getPluginManager().registerEvents(this, Factions.get());
 	}
+	
+	// -------------------------------------------- //
+	// UPDATE LAST ACTIVITY
+	// -------------------------------------------- //
 
+	public static void updateLastActivity(CommandSender sender)
+	{
+		if (sender == null) throw new RuntimeException("sender");
+		MPlayer mplayer = MPlayer.get(sender);
+		mplayer.setLastActivityMillis();
+	}
+	
+	public static void updateLastActivitySoon(final CommandSender sender)
+	{
+		if (sender == null) throw new RuntimeException("sender");
+		Bukkit.getScheduler().scheduleSyncDelayedTask(Factions.get(), new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				updateLastActivity(sender);
+			}
+		});
+	}
+	
+	// Can't be cancelled
+	@EventHandler(priority = EventPriority.LOWEST)
+	public void updateLastActivity(PlayerJoinEvent event)
+	{
+		// During the join event itself we want to be able to reach the old data.
+		// That is also the way the underlying fallback Mixin system does it and we do it that way for the sake of symmetry. 
+		// For that reason we wait till the next tick with updating the value.
+		updateLastActivitySoon(event.getPlayer());
+	}
+	
+	// Can't be cancelled
+	@EventHandler(priority = EventPriority.LOWEST)
+	public void updateLastActivity(EventMassiveCorePlayerLeave event)
+	{
+		// Here we do however update immediately.
+		// The player data should be fully updated before leaving the server.
+		updateLastActivity(event.getPlayer());
+	}
+	
 	// -------------------------------------------- //
 	// MOTD
 	// -------------------------------------------- //
@@ -512,7 +557,7 @@ public class FactionsListenerMain implements Listener
 		if (!player.isBanned()) return;
 		
 		// ... and we remove player data when banned ...
-		if (!MConf.get().removePlayerDataWhenBanned) return;
+		if (!MConf.get().removePlayerWhenBanned) return;
 		
 		// ... get rid of their stored info.
 		MPlayer mplayer = MPlayerColl.get().get(player, false);

@@ -1103,7 +1103,8 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 			this.detach();
 		}
 		else
-		{	// promote new faction leader
+		{
+			// promote new faction leader
 			if (oldLeader != null)
 			{
 				oldLeader.setRole(Rel.MEMBER);

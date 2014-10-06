@@ -1,10 +1,13 @@
 package com.massivecraft.factions.cmd;
 
 import java.util.LinkedHashMap;
+import java.util.Map.Entry;
 
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.cmd.arg.ARMPlayer;
+import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.entity.MPlayer;
+import com.massivecraft.factions.event.EventFactionsRemovePlayerMillis;
 import com.massivecraft.massivecore.Progressbar;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.util.TimeDiffUtil;
@@ -52,17 +55,17 @@ public class CmdFactionsPlayer extends FactionsCommand
 		}
 		
 		int progressbarWidth = (int) Math.round(mplayer.getPowerMax() / mplayer.getPowerMaxUniversal() * 100);
-		msg("<k>Power: <v>%s", Progressbar.HEALTHBAR_CLASSIC.withQuota(progressbarQuota).withWidth(progressbarWidth).render());
+		msg("<a>Power: <v>%s", Progressbar.HEALTHBAR_CLASSIC.withQuota(progressbarQuota).withWidth(progressbarWidth).render());
 				
 		// INFO: Power (as digits)
-		msg("<k>Power: <v>%.2f / %.2f", mplayer.getPower(), mplayer.getPowerMax());
+		msg("<a>Power: <v>%.2f / %.2f", mplayer.getPower(), mplayer.getPowerMax());
 		
 		// INFO: Power Boost
 		if (mplayer.hasPowerBoost())
 		{
 			double powerBoost = mplayer.getPowerBoost();
 			String powerBoostType = (powerBoost > 0 ? "bonus" : "penalty");
-			msg("<k>Power Boost: <v>%f <i>(a manually granted %s)", powerBoost, powerBoostType);
+			msg("<a>Power Boost: <v>%f <i>(a manually granted %s)", powerBoost, powerBoostType);
 		}
 		
 		// INFO: Power per Hour
@@ -79,11 +82,33 @@ public class CmdFactionsPlayer extends FactionsCommand
 			stringTillMax = Txt.parse(" <i>(%s <i>left till max)", unitcountsTillMaxFormated);
 		}
 		
-		msg("<k>Power per Hour: <v>%.2f%s", mplayer.getPowerPerHour(), stringTillMax);
+		msg("<a>Power per Hour: <v>%.2f%s", mplayer.getPowerPerHour(), stringTillMax);
 		
 		// INFO: Power per Death
-		msg("<k>Power per Death: <v>%.2f", mplayer.getPowerPerDeath());
+		msg("<a>Power per Death: <v>%.2f", mplayer.getPowerPerDeath());
 		
+		// Display automatic kick / remove info if the system is in use
+		if (MConf.get().removePlayerMillisDefault <= 0) return;
+		
+		EventFactionsRemovePlayerMillis event = new EventFactionsRemovePlayerMillis(false, mplayer);
+		event.run();
+		msg("<i>Automatic removal after %s <i>of inactivity:", format(event.getMillis()));
+		for (Entry<String, Long> causeMillis : event.getCauseMillis().entrySet())
+		{
+			String cause = causeMillis.getKey();
+			long millis = causeMillis.getValue();
+			msg("<a>%s<a>: <v>%s", cause, format(millis));
+		}
+	}
+	
+	// -------------------------------------------- //
+	// TIME FORMAT
+	// -------------------------------------------- //
+	
+	public static String format(long millis)
+	{
+		LinkedHashMap<TimeUnit, Long> unitcounts = TimeDiffUtil.unitcounts(millis, TimeUnit.getAllBut(TimeUnit.MILLISECOND, TimeUnit.WEEK, TimeUnit.MONTH));
+		return TimeDiffUtil.formatedVerboose(unitcounts);
 	}
 	
 }
