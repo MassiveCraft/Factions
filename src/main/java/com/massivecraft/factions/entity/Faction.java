@@ -885,7 +885,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	
 	public double getPower()
 	{
-		if (this.getFlag(MFlag.getInfpower())) return 999999;
+		if (this.getFlag(MFlag.getFlagInfpower())) return 999999;
 		
 		double ret = 0;
 		for (MPlayer mplayer : this.getMPlayers())
@@ -906,7 +906,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	
 	public double getPowerMax()
 	{
-		if (this.getFlag(MFlag.getInfpower())) return 999999;
+		if (this.getFlag(MFlag.getFlagInfpower())) return 999999;
 	
 		double ret = 0;
 		for (MPlayer mplayer : this.getMPlayers())
@@ -1065,7 +1065,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	public void promoteNewLeader()
 	{
 		if ( ! this.isNormal()) return;
-		if (this.getFlag(MFlag.getPermanent()) && MConf.get().permanentFactionsDisableLeaderPromotion) return;
+		if (this.getFlag(MFlag.getFlagPermanent()) && MConf.get().permanentFactionsDisableLeaderPromotion) return;
 
 		MPlayer oldLeader = this.getLeader();
 
@@ -1079,7 +1079,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 		if (replacements == null || replacements.isEmpty())
 		{
 			// faction leader is the only member; one-man faction
-			if (this.getFlag(MFlag.getPermanent()))
+			if (this.getFlag(MFlag.getFlagPermanent()))
 			{
 				if (oldLeader != null)
 				{
@@ -1142,8 +1142,8 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	
 	public boolean isExplosionsAllowed()
 	{
-		boolean explosions = this.getFlag(MFlag.getExplosions());
-		boolean offlineexplosions = this.getFlag(MFlag.getOfflineexplosions());
+		boolean explosions = this.getFlag(MFlag.getFlagExplosions());
+		boolean offlineexplosions = this.getFlag(MFlag.getFlagOfflineexplosions());
 		boolean online = this.isFactionConsideredOnline();
 		
 		return (online && explosions) || (!online && offlineexplosions);

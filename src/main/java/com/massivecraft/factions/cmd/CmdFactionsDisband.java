@@ -49,7 +49,7 @@ public class CmdFactionsDisband extends FactionsCommand
 		if ( ! MPerm.getPermDisband().has(msender, faction, true)) return;
 
 		// Verify
-		if (faction.getFlag(MFlag.getPermanent()))
+		if (faction.getFlag(MFlag.getFlagPermanent()))
 		{
 			msg("<i>This faction is designated as permanent, so you cannot disband it.");
 			return;

@@ -734,7 +734,7 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 	{
 		Faction myFaction = this.getFaction();
 
-		boolean permanent = myFaction.getFlag(MFlag.getPermanent());
+		boolean permanent = myFaction.getFlag(MFlag.getFlagPermanent());
 		
 		if (myFaction.getMPlayers().size() > 1)
 		{
@@ -824,7 +824,7 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 				
 				int ownedLand = newFaction.getLandCount();
 				
-				if (mconf.claimedLandsMax != 0 && ownedLand >= mconf.claimedLandsMax && ! newFaction.getFlag(MFlag.getInfpower()))
+				if (mconf.claimedLandsMax != 0 && ownedLand >= mconf.claimedLandsMax && ! newFaction.getFlag(MFlag.getFlagInfpower()))
 				{
 					msg("<b>Limit reached. You can't claim more land.");
 					return false;

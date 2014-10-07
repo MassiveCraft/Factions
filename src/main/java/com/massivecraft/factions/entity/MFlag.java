@@ -56,32 +56,32 @@ public class MFlag extends Entity<MFlag> implements Prioritized, Registerable
 	
 	public static void setupStandardFlags()
 	{
-		getOpen();
-		getMonsters();
-		getPowerloss();
-		getPvp();
-		getFriendlyire();
-		getExplosions();
-		getOfflineexplosions();
-		getFirespread();
-		getEndergrief();
-		getPermanent();
-		getPeaceful();
-		getInfpower();
+		getFlagOpen();
+		getFlagMonsters();
+		getFlagPowerloss();
+		getFlagPvp();
+		getFlagFriendlyire();
+		getFlagExplosions();
+		getFlagOfflineexplosions();
+		getFlagFirespread();
+		getFlagEndergrief();
+		getFlagPermanent();
+		getFlagPeaceful();
+		getFlagInfpower();
 	}
 	
-	public static MFlag getOpen() { return getCreative(PRIORITY_OPEN, ID_OPEN, ID_OPEN, "Open factions can be joined without invite.", false, true, true); }
-	public static MFlag getMonsters() { return getCreative(PRIORITY_MONSTERS, ID_MONSTERS, ID_MONSTERS, "Can monsters spawn in this territory?", false, true, true); }
-	public static MFlag getPowerloss() { return getCreative(PRIORITY_POWERLOSS, ID_POWERLOSS, ID_POWERLOSS, "Is power lost on death in this territory?", true, false, true); }
-	public static MFlag getPvp() { return getCreative(PRIORITY_PVP, ID_PVP, ID_PVP, "Can you PVP in territory?", true, false, true); }
-	public static MFlag getFriendlyire() { return getCreative(PRIORITY_FRIENDLYFIRE, ID_FRIENDLYFIRE, ID_FRIENDLYFIRE, "Can friends hurt eachother here?", false, false, true); }
-	public static MFlag getExplosions() { return getCreative(PRIORITY_EXPLOSIONS, ID_EXPLOSIONS, ID_EXPLOSIONS, "Can explosions occur in this territory?", true, false, true); }
-	public static MFlag getOfflineexplosions() { return getCreative(PRIORITY_OFFLINEEXPLOSIONS, ID_OFFLINEEXPLOSIONS, ID_OFFLINEEXPLOSIONS, "Can explosions occur if faction is offline?", false, false, true); }
-	public static MFlag getFirespread() { return getCreative(PRIORITY_FIRESPREAD, ID_FIRESPREAD, ID_FIRESPREAD, "Can fire spread in territory?", true, false, true); }
-	public static MFlag getEndergrief() { return getCreative(PRIORITY_ENDERGRIEF, ID_ENDERGRIEF, ID_ENDERGRIEF, "Can endermen grief in this territory?", false, false, true); }
-	public static MFlag getPermanent() { return getCreative(PRIORITY_PERMANENT, ID_PERMANENT, ID_PERMANENT, "A permanent faction will never be deleted.", false, false, true); }
-	public static MFlag getPeaceful() { return getCreative(PRIORITY_PEACEFUL, ID_PEACEFUL, ID_PEACEFUL, "Always in truce with other factions.", false, false, true); }
-	public static MFlag getInfpower() { return getCreative(PRIORITY_INFPOWER, ID_INFPOWER, ID_INFPOWER, "This flag gives the faction infinite power.", false, false, true); }
+	public static MFlag getFlagOpen() { return getCreative(PRIORITY_OPEN, ID_OPEN, ID_OPEN, "Open factions can be joined without invite.", false, true, true); }
+	public static MFlag getFlagMonsters() { return getCreative(PRIORITY_MONSTERS, ID_MONSTERS, ID_MONSTERS, "Can monsters spawn in this territory?", false, true, true); }
+	public static MFlag getFlagPowerloss() { return getCreative(PRIORITY_POWERLOSS, ID_POWERLOSS, ID_POWERLOSS, "Is power lost on death in this territory?", true, false, true); }
+	public static MFlag getFlagPvp() { return getCreative(PRIORITY_PVP, ID_PVP, ID_PVP, "Can you PVP in territory?", true, false, true); }
+	public static MFlag getFlagFriendlyire() { return getCreative(PRIORITY_FRIENDLYFIRE, ID_FRIENDLYFIRE, ID_FRIENDLYFIRE, "Can friends hurt eachother here?", false, false, true); }
+	public static MFlag getFlagExplosions() { return getCreative(PRIORITY_EXPLOSIONS, ID_EXPLOSIONS, ID_EXPLOSIONS, "Can explosions occur in this territory?", true, false, true); }
+	public static MFlag getFlagOfflineexplosions() { return getCreative(PRIORITY_OFFLINEEXPLOSIONS, ID_OFFLINEEXPLOSIONS, ID_OFFLINEEXPLOSIONS, "Can explosions occur if faction is offline?", false, false, true); }
+	public static MFlag getFlagFirespread() { return getCreative(PRIORITY_FIRESPREAD, ID_FIRESPREAD, ID_FIRESPREAD, "Can fire spread in territory?", true, false, true); }
+	public static MFlag getFlagEndergrief() { return getCreative(PRIORITY_ENDERGRIEF, ID_ENDERGRIEF, ID_ENDERGRIEF, "Can endermen grief in this territory?", false, false, true); }
+	public static MFlag getFlagPermanent() { return getCreative(PRIORITY_PERMANENT, ID_PERMANENT, ID_PERMANENT, "A permanent faction will never be deleted.", false, false, true); }
+	public static MFlag getFlagPeaceful() { return getCreative(PRIORITY_PEACEFUL, ID_PEACEFUL, ID_PEACEFUL, "Always in truce with other factions.", false, false, true); }
+	public static MFlag getFlagInfpower() { return getCreative(PRIORITY_INFPOWER, ID_INFPOWER, ID_INFPOWER, "This flag gives the faction infinite power.", false, false, true); }
 	
 	public static MFlag getCreative(int priority, String id, String name, String desc, boolean standard, boolean editable, boolean visible)
 	{

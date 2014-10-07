@@ -80,7 +80,7 @@ public class CmdFactionsJoin extends FactionsCommand
 			return;
 		}
 
-		if( ! (faction.getFlag(MFlag.getOpen()) || faction.isInvited(mplayer) || msender.isUsingAdminMode() || Perm.JOIN_ANY.has(sender, false)))
+		if( ! (faction.getFlag(MFlag.getFlagOpen()) || faction.isInvited(mplayer) || msender.isUsingAdminMode() || Perm.JOIN_ANY.has(sender, false)))
 		{
 			msg("<i>This faction requires invitation.");
 			if (samePlayer)

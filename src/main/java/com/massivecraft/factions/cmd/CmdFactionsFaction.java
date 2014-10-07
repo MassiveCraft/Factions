@@ -78,7 +78,7 @@ public class CmdFactionsFaction extends FactionsCommand
 			
 			// INFO: Open
 			// TODO: Why hardcode displaying the open flag only? We should rather display everything publicly editable.
-			msg("<a>Open: <i>"+(faction.getFlag(MFlag.getOpen()) ? "<lime>Yes<i>, anyone can join" : "<rose>No<i>, only invited people can join"));
+			msg("<a>Open: <i>"+(faction.getFlag(MFlag.getFlagOpen()) ? "<lime>Yes<i>, anyone can join" : "<rose>No<i>, only invited people can join"));
 	
 			// INFO: Power
 			double powerBoost = faction.getPowerBoost();
@@ -120,12 +120,12 @@ public class CmdFactionsFaction extends FactionsCommand
 			
 			// Display important flags
 			// TODO: Find the non default flags, and display them instead.
-			if (faction.getFlag(MFlag.getPermanent()))
+			if (faction.getFlag(MFlag.getFlagPermanent()))
 			{
 				msg("<a>This faction is permanent - remaining even with no followers.");
 			}
 			
-			if (faction.getFlag(MFlag.getPeaceful()))
+			if (faction.getFlag(MFlag.getFlagPeaceful()))
 			{
 				msg("<a>This faction is peaceful - in truce with everyone.");
 			}
@@ -136,7 +136,7 @@ public class CmdFactionsFaction extends FactionsCommand
 		// List the relations to other factions
 		Map<Rel, List<String>> relationNames = faction.getFactionNamesPerRelation(msender, true);
 		
-		if (faction.getFlag(MFlag.getPeaceful()))
+		if (faction.getFlag(MFlag.getFlagPeaceful()))
 		{
 			sendMessage(Txt.parse("<a>In Truce with:<i> *everyone*"));
 		}

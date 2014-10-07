@@ -97,7 +97,7 @@ public class CmdFactionsHome extends FactionsCommandHome
 		(
 			MConf.get().homesTeleportAllowedEnemyDistance > 0
 			&&
-			factionHere.getFlag(MFlag.getPvp())
+			factionHere.getFlag(MFlag.getFlagPvp())
 			&&
 			(
 				! msender.isInOwnTerritory()

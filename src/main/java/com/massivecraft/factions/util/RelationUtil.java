@@ -108,7 +108,7 @@ public class RelationUtil
 				//P.p.log("getRelationOfThatToMe it was a player and role is "+ret);
 			}
 		}
-		else if (!ignorePeaceful && (thatFaction.getFlag(MFlag.getPeaceful()) || myFaction.getFlag(MFlag.getPeaceful())))
+		else if (!ignorePeaceful && (thatFaction.getFlag(MFlag.getFlagPeaceful()) || myFaction.getFlag(MFlag.getFlagPeaceful())))
 		{
 			ret = Rel.TRUCE;
 		}
@@ -137,12 +137,12 @@ public class RelationUtil
 		Faction thatFaction = getFaction(that);
 		if (thatFaction != null && thatFaction != getFaction(me))
 		{
-			if (thatFaction.getFlag(MFlag.getFriendlyire()) == true)
+			if (thatFaction.getFlag(MFlag.getFlagFriendlyire()) == true)
 			{
 				return MConf.get().colorFriendlyFire;
 			}
 			
-			if (thatFaction.getFlag(MFlag.getPvp()) == false)
+			if (thatFaction.getFlag(MFlag.getFlagPvp()) == false)
 			{
 				return MConf.get().colorNoPVP;
 			}

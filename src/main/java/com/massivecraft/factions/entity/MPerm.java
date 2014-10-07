@@ -39,6 +39,7 @@ public class MPerm extends Entity<MPerm> implements Prioritized, Registerable
 	public final static transient String ID_TITLE = "title";
 	public final static transient String ID_HOME = "home";
 	public final static transient String ID_SETHOME = "sethome";
+	public final static transient String ID_DEPOSIT = "deposit";
 	public final static transient String ID_WITHDRAW = "withdraw";
 	public final static transient String ID_TERRITORY = "territory";
 	public final static transient String ID_ACCESS = "access";
@@ -62,13 +63,14 @@ public class MPerm extends Entity<MPerm> implements Prioritized, Registerable
 	public final static transient int PRIORITY_TITLE = 12000;
 	public final static transient int PRIORITY_HOME = 13000;
 	public final static transient int PRIORITY_SETHOME = 14000;
-	public final static transient int PRIORITY_WITHDRAW = 15000;
-	public final static transient int PRIORITY_TERRITORY = 16000;
-	public final static transient int PRIORITY_ACCESS = 17000;
-	public final static transient int PRIORITY_REL = 18000;
-	public final static transient int PRIORITY_DISBAND = 19000;
-	public final static transient int PRIORITY_FLAGS = 20000;
-	public final static transient int PRIORITY_PERMS = 21000;
+	public final static transient int PRIORITY_DEPOSIT = 15000;
+	public final static transient int PRIORITY_WITHDRAW = 16000;
+	public final static transient int PRIORITY_TERRITORY = 17000;
+	public final static transient int PRIORITY_ACCESS = 18000;
+	public final static transient int PRIORITY_REL = 19000;
+	public final static transient int PRIORITY_DISBAND = 20000;
+	public final static transient int PRIORITY_FLAGS = 21000;
+	public final static transient int PRIORITY_PERMS = 22000;
 	
 	// -------------------------------------------- //
 	// META: CORE
@@ -101,6 +103,7 @@ public class MPerm extends Entity<MPerm> implements Prioritized, Registerable
 		getPermTitle();
 		getPermHome();
 		getPermSethome();
+		getPermDeposit();
 		getPermWithdraw();
 		getPermTerritory();
 		getPermAccess();
@@ -125,6 +128,7 @@ public class MPerm extends Entity<MPerm> implements Prioritized, Registerable
 	public static MPerm getPermTitle() { return getCreative(PRIORITY_TITLE, ID_TITLE, ID_TITLE, "set titles", MUtil.set(Rel.LEADER, Rel.OFFICER), false, true, true); }
 	public static MPerm getPermHome() { return getCreative(PRIORITY_HOME, ID_HOME, ID_HOME, "teleport home", MUtil.set(Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY), false, true, true); }
 	public static MPerm getPermSethome() { return getCreative(PRIORITY_SETHOME, ID_SETHOME, ID_SETHOME, "set the home", MUtil.set(Rel.LEADER, Rel.OFFICER), false, true, true); }
+	public static MPerm getPermDeposit() { return getCreative(PRIORITY_DEPOSIT, ID_DEPOSIT, ID_DEPOSIT, "deposit money", MUtil.set(Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY), false, false, false); } // non editable, non visible.
 	public static MPerm getPermWithdraw() { return getCreative(PRIORITY_WITHDRAW, ID_WITHDRAW, ID_WITHDRAW, "withdraw money", MUtil.set(Rel.LEADER, Rel.OFFICER), false, true, true); }
 	public static MPerm getPermTerritory() { return getCreative(PRIORITY_TERRITORY, ID_TERRITORY, ID_TERRITORY, "claim or unclaim", MUtil.set(Rel.LEADER, Rel.OFFICER), false, true, true); }
 	public static MPerm getPermAccess() { return getCreative(PRIORITY_ACCESS, ID_ACCESS, ID_ACCESS, "grant territory", MUtil.set(Rel.LEADER, Rel.OFFICER), false, true, true); }

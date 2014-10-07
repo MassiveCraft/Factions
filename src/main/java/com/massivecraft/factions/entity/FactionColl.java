@@ -92,24 +92,25 @@ public class FactionColl extends Coll<Faction>
 		faction.setName(ChatColor.DARK_GREEN+"Wilderness");
 		faction.setDescription(null);
 		
-		faction.setFlag(MFlag.getOpen(), false);
-		faction.setFlag(MFlag.getPermanent(), true);
-		faction.setFlag(MFlag.getPeaceful(), false);
-		faction.setFlag(MFlag.getInfpower(), true);
-		faction.setFlag(MFlag.getPowerloss(), true);
-		faction.setFlag(MFlag.getPvp(), true);
-		faction.setFlag(MFlag.getFriendlyire(), false);
-		faction.setFlag(MFlag.getMonsters(), true);
-		faction.setFlag(MFlag.getExplosions(), true);
-		faction.setFlag(MFlag.getOfflineexplosions(), true);
-		faction.setFlag(MFlag.getFirespread(), true);
-		faction.setFlag(MFlag.getEndergrief(), true);
+		faction.setFlag(MFlag.getFlagOpen(), false);
+		faction.setFlag(MFlag.getFlagPermanent(), true);
+		faction.setFlag(MFlag.getFlagPeaceful(), false);
+		faction.setFlag(MFlag.getFlagInfpower(), true);
+		faction.setFlag(MFlag.getFlagPowerloss(), true);
+		faction.setFlag(MFlag.getFlagPvp(), true);
+		faction.setFlag(MFlag.getFlagFriendlyire(), false);
+		faction.setFlag(MFlag.getFlagMonsters(), true);
+		faction.setFlag(MFlag.getFlagExplosions(), true);
+		faction.setFlag(MFlag.getFlagOfflineexplosions(), true);
+		faction.setFlag(MFlag.getFlagFirespread(), true);
+		faction.setFlag(MFlag.getFlagEndergrief(), true);
 		
 		faction.setPermittedRelations(MPerm.getPermBuild(), Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
 		faction.setPermittedRelations(MPerm.getPermDoor(), Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
 		faction.setPermittedRelations(MPerm.getPermContainer(), Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
 		faction.setPermittedRelations(MPerm.getPermButton(), Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
 		faction.setPermittedRelations(MPerm.getPermLever(), Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
+		faction.setPermittedRelations(MPerm.getPermDeposit(), Rel.LEADER, Rel.OFFICER); // Wilderness deposit should be limited as an anti spam meassure.
 		
 		return faction;
 	}
@@ -125,18 +126,18 @@ public class FactionColl extends Coll<Faction>
 		faction.setName("SafeZone");
 		faction.setDescription("Free from PVP and monsters");
 		
-		faction.setFlag(MFlag.getOpen(), false);
-		faction.setFlag(MFlag.getPermanent(), true);
-		faction.setFlag(MFlag.getPeaceful(), true);
-		faction.setFlag(MFlag.getInfpower(), true);
-		faction.setFlag(MFlag.getPowerloss(), false);
-		faction.setFlag(MFlag.getPvp(), false);
-		faction.setFlag(MFlag.getFriendlyire(), false);
-		faction.setFlag(MFlag.getMonsters(), false);
-		faction.setFlag(MFlag.getExplosions(), false);
-		faction.setFlag(MFlag.getOfflineexplosions(), false);
-		faction.setFlag(MFlag.getFirespread(), false);
-		faction.setFlag(MFlag.getEndergrief(), false);
+		faction.setFlag(MFlag.getFlagOpen(), false);
+		faction.setFlag(MFlag.getFlagPermanent(), true);
+		faction.setFlag(MFlag.getFlagPeaceful(), true);
+		faction.setFlag(MFlag.getFlagInfpower(), true);
+		faction.setFlag(MFlag.getFlagPowerloss(), false);
+		faction.setFlag(MFlag.getFlagPvp(), false);
+		faction.setFlag(MFlag.getFlagFriendlyire(), false);
+		faction.setFlag(MFlag.getFlagMonsters(), false);
+		faction.setFlag(MFlag.getFlagExplosions(), false);
+		faction.setFlag(MFlag.getFlagOfflineexplosions(), false);
+		faction.setFlag(MFlag.getFlagFirespread(), false);
+		faction.setFlag(MFlag.getFlagEndergrief(), false);
 		
 		faction.setPermittedRelations(MPerm.getPermDoor(), Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
 		faction.setPermittedRelations(MPerm.getPermContainer(), Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
@@ -158,18 +159,18 @@ public class FactionColl extends Coll<Faction>
 		faction.setName("WarZone");
 		faction.setDescription("Not the safest place to be");
 		
-		faction.setFlag(MFlag.getOpen(), false);
-		faction.setFlag(MFlag.getPermanent(), true);
-		faction.setFlag(MFlag.getPeaceful(), true);
-		faction.setFlag(MFlag.getInfpower(), true);
-		faction.setFlag(MFlag.getPowerloss(), true);
-		faction.setFlag(MFlag.getPvp(), true);
-		faction.setFlag(MFlag.getFriendlyire(), true);
-		faction.setFlag(MFlag.getMonsters(), true);
-		faction.setFlag(MFlag.getExplosions(), true);
-		faction.setFlag(MFlag.getOfflineexplosions(), true);
-		faction.setFlag(MFlag.getFirespread(), true);
-		faction.setFlag(MFlag.getEndergrief(), true);
+		faction.setFlag(MFlag.getFlagOpen(), false);
+		faction.setFlag(MFlag.getFlagPermanent(), true);
+		faction.setFlag(MFlag.getFlagPeaceful(), true);
+		faction.setFlag(MFlag.getFlagInfpower(), true);
+		faction.setFlag(MFlag.getFlagPowerloss(), true);
+		faction.setFlag(MFlag.getFlagPvp(), true);
+		faction.setFlag(MFlag.getFlagFriendlyire(), true);
+		faction.setFlag(MFlag.getFlagMonsters(), true);
+		faction.setFlag(MFlag.getFlagExplosions(), true);
+		faction.setFlag(MFlag.getFlagOfflineexplosions(), true);
+		faction.setFlag(MFlag.getFlagFirespread(), true);
+		faction.setFlag(MFlag.getFlagEndergrief(), true);
 		
 		faction.setPermittedRelations(MPerm.getPermDoor(), Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
 		faction.setPermittedRelations(MPerm.getPermContainer(), Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
@@ -195,7 +196,7 @@ public class FactionColl extends Coll<Faction>
 		for (Faction faction : this.getAll())
 		{
 			int landCount = faction.getLandCount();
-			if (!faction.getFlag(MFlag.getPeaceful()) && landCount > 0)
+			if (!faction.getFlag(MFlag.getFlagPeaceful()) && landCount > 0)
 			{
 				List<MPlayer> players = faction.getMPlayers();
 				int playerCount = players.size();

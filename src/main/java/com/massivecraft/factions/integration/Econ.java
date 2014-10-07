@@ -51,12 +51,12 @@ public class Econ
 
 	public static void modifyUniverseMoney(Object universe, double delta)
 	{
-		if (!isEnabled()) return;
+		if ( ! isEnabled()) return;
 
 		if (MConf.get().econUniverseAccount == null) return;
 		if (MConf.get().econUniverseAccount.length() == 0) return;
 		
-		if (!Money.exists(MConf.get().econUniverseAccount)) return;
+		if ( ! Money.exists(MConf.get().econUniverseAccount)) return;
 
 		Money.spawn(MConf.get().econUniverseAccount, null, delta);
 	}
@@ -66,30 +66,30 @@ public class Econ
 		to.msg("<a>%s's<i> balance is <h>%s<i>.", about.describeTo(to, true), Money.format(Money.get(about)));
 	}
 
-	public static boolean canIControllYou(EconomyParticipator i, EconomyParticipator you)
+	public static boolean isMePermittedYou(EconomyParticipator me, EconomyParticipator you, MPerm mperm)
 	{
-		Faction fI = RelationUtil.getFaction(i);
+		// Null means special system invocation and is always to be accepted.
+		if (me == null) return true;
+		
+		// Always accept when in admin mode.
+		if (me instanceof MPlayer && ((MPlayer)me).isUsingAdminMode()) return true;
+		
+		// Always accept control of self
+		if (me == you) return true;
+		
+		Faction fMe = RelationUtil.getFaction(me);
 		Faction fYou = RelationUtil.getFaction(you);
-		
-		// This is a system invoker. Accept it.
-		if (fI == null) return true;
-		
-		// Bypassing players can do any kind of transaction
-		if (i instanceof MPlayer && ((MPlayer)i).isUsingAdminMode()) return true;
-		
-		// You can deposit to anywhere you feel like. It's your loss if you can't withdraw it again.
-		if (i == you) return true;
 		
 		// A faction can always transfer away the money of it's members and its own money...
 		// This will however probably never happen as a faction does not have free will.
 		// Ohh by the way... Yes it could. For daily rent to the faction.
-		if (i == fI && fI == fYou) return true;
+		if (me == fMe && fMe == fYou) return true;
 		
 		// Factions can be controlled by those that have permissions
 		if (you instanceof Faction)
 		{
-			if (i instanceof Faction && MPerm.getPermWithdraw().has((Faction)i, fYou)) return true;
-			if (i instanceof MPlayer && MPerm.getPermWithdraw().has((MPlayer)i, fYou, false)) return true;
+			if (me instanceof Faction && mperm.has((Faction)me, fYou)) return true;
+			if (me instanceof MPlayer && mperm.has((MPlayer)me, fYou, false)) return true;
 		}
 		
 		// Otherwise you may not! ;,,;
@@ -102,7 +102,7 @@ public class Econ
 	}
 	public static boolean transferMoney(EconomyParticipator from, EconomyParticipator to, EconomyParticipator by, double amount, boolean notify)
 	{
-		if (!isEnabled()) return false;
+		if ( ! isEnabled()) return false;
 
 		// The amount must be positive.
 		// If the amount is negative we must flip and multiply amount with -1.
@@ -114,10 +114,16 @@ public class Econ
 			to = temp;
 		}
 		
-		// Check the rights
-		if ( ! canIControllYou(by, from))
+		// Check Permissions
+		if ( ! isMePermittedYou(by, from, MPerm.getPermWithdraw()))
 		{
-			by.msg("<h>%s<i> lacks permission to control <h>%s's<i> money.", by.describeTo(by, true), from.describeTo(by));
+			by.msg("<h>%s<i> lack permission to withdraw money from <h>%s's<i>.", by.describeTo(by, true), from.describeTo(by));
+			return false;
+		}
+		
+		if ( ! isMePermittedYou(by, to, MPerm.getPermDeposit()))
+		{
+			by.msg("<h>%s<i> lack permission to deposit money to <h>%s's<i>.", by.describeTo(by, true), to.describeTo(by));
 			return false;
 		}
 		
@@ -211,7 +217,7 @@ public class Econ
 
 	public static boolean hasAtLeast(EconomyParticipator ep, double delta, String toDoThis)
 	{
-		if (!isEnabled()) return true;
+		if ( ! isEnabled()) return true;
 
 		if (Money.get(ep) < delta)
 		{
@@ -226,7 +232,7 @@ public class Econ
 
 	public static boolean modifyMoney(EconomyParticipator ep, double delta, String actionDescription)
 	{
-		if (!isEnabled()) return false;
+		if ( ! isEnabled()) return false;
 		if (delta == 0) return true;
 		
 		String You = ep.describeTo(ep, true);
