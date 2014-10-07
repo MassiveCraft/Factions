@@ -43,6 +43,7 @@ public class MPerm extends Entity<MPerm> implements Prioritized, Registerable
 	public final static transient String ID_WITHDRAW = "withdraw";
 	public final static transient String ID_TERRITORY = "territory";
 	public final static transient String ID_ACCESS = "access";
+	public final static transient String ID_CLAIMNEAR = "claimnear";
 	public final static transient String ID_REL = "rel";
 	public final static transient String ID_DISBAND = "disband";
 	public final static transient String ID_FLAGS = "flags";
@@ -67,10 +68,11 @@ public class MPerm extends Entity<MPerm> implements Prioritized, Registerable
 	public final static transient int PRIORITY_WITHDRAW = 16000;
 	public final static transient int PRIORITY_TERRITORY = 17000;
 	public final static transient int PRIORITY_ACCESS = 18000;
-	public final static transient int PRIORITY_REL = 19000;
-	public final static transient int PRIORITY_DISBAND = 20000;
-	public final static transient int PRIORITY_FLAGS = 21000;
-	public final static transient int PRIORITY_PERMS = 22000;
+	public final static transient int PRIORITY_CLAIMNEAR = 19000;
+	public final static transient int PRIORITY_REL = 20000;
+	public final static transient int PRIORITY_DISBAND = 21000;
+	public final static transient int PRIORITY_FLAGS = 22000;
+	public final static transient int PRIORITY_PERMS = 23000;
 	
 	// -------------------------------------------- //
 	// META: CORE
@@ -107,6 +109,7 @@ public class MPerm extends Entity<MPerm> implements Prioritized, Registerable
 		getPermWithdraw();
 		getPermTerritory();
 		getPermAccess();
+		getPermClaimnear();
 		getPermRel();
 		getPermDisband();
 		getPermFlags();
@@ -132,6 +135,7 @@ public class MPerm extends Entity<MPerm> implements Prioritized, Registerable
 	public static MPerm getPermWithdraw() { return getCreative(PRIORITY_WITHDRAW, ID_WITHDRAW, ID_WITHDRAW, "withdraw money", MUtil.set(Rel.LEADER, Rel.OFFICER), false, true, true); }
 	public static MPerm getPermTerritory() { return getCreative(PRIORITY_TERRITORY, ID_TERRITORY, ID_TERRITORY, "claim or unclaim", MUtil.set(Rel.LEADER, Rel.OFFICER), false, true, true); }
 	public static MPerm getPermAccess() { return getCreative(PRIORITY_ACCESS, ID_ACCESS, ID_ACCESS, "grant territory", MUtil.set(Rel.LEADER, Rel.OFFICER), false, true, true); }
+	public static MPerm getPermClaimnear() { return getCreative(PRIORITY_CLAIMNEAR, ID_CLAIMNEAR, ID_CLAIMNEAR, "claim nearby", MUtil.set(Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY), false, false, false); } // non editable, non visible.
 	public static MPerm getPermRel() { return getCreative(PRIORITY_REL, ID_REL, ID_REL, "change relations", MUtil.set(Rel.LEADER, Rel.OFFICER), false, true, true); }
 	public static MPerm getPermDisband() { return getCreative(PRIORITY_DISBAND, ID_DISBAND, ID_DISBAND, "disband the faction", MUtil.set(Rel.LEADER), false, true, true); }
 	public static MPerm getPermFlags() { return getCreative(PRIORITY_FLAGS, ID_FLAGS, ID_FLAGS, "manage flags", MUtil.set(Rel.LEADER), false, true, true); }

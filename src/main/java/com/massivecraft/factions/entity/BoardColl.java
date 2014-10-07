@@ -1,7 +1,9 @@
 package com.massivecraft.factions.entity;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import com.massivecraft.factions.Const;
@@ -168,51 +170,63 @@ public class BoardColl extends Coll<Board> implements BoardInterface
 		return board.getMap(observer, centerPs, inDegrees);
 	}
 	
-	/*
-	@Override
-	public void init()
-	{
-		super.init();
-
-		this.migrate();
-	}
+	// -------------------------------------------- //
+	// UTIL
+	// -------------------------------------------- //
 	
-	// This method is for the 1.8.X --> 2.0.0 migration
-	public void migrate()
+	// Distance -1 returns 0 chunks always.
+	// Distance 0 returns 1 chunk only (the one supplied).
+	// Distance 1 returns 3x3 = 9 chunks.
+	public static Set<PS> getNearbyChunks(PS chunk, int distance, boolean includeSelf)
 	{
-		// Create file objects
-		File oldFile = new File(Factions.get().getDataFolder(), "board.json");
-		File newFile = new File(Factions.get().getDataFolder(), "board.json.migrated");
+		// Fix Args
+		if (chunk == null) throw new NullPointerException("chunk");
+		chunk = chunk.getChunk(true);
 		
-		// Already migrated?
-		if ( ! oldFile.exists()) return;
+		// Create Ret
+		Set<PS> ret = new LinkedHashSet<PS>();
 		
-		// Read the file content through GSON. 
-		Type type = new TypeToken<Map<String,Map<String,TerritoryAccess>>>(){}.getType();
-		Map<String,Map<String,TerritoryAccess>> worldCoordIds = Factions.get().gson.fromJson(DiscUtil.readCatch(oldFile), type);
+		if (distance < 0) return ret;
+		// if (distance == 0 && ! includeSelf) return ret; // This will be done by the code below.
 		
-		// Set the data
-		for (Entry<String,Map<String,TerritoryAccess>> entry : worldCoordIds.entrySet())
+		// Main
+		int xmin = chunk.getChunkX() - distance;
+		int xmax = chunk.getChunkX() + distance;
+		
+		int zmin = chunk.getChunkZ() - distance;
+		int zmax = chunk.getChunkZ() + distance;
+		
+		for (int x = xmin; x <= xmax; x++)
 		{
-			String worldName = entry.getKey();
-			BoardColl boardColl = this.getForWorld(worldName);
-			Board board = boardColl.get(worldName);
-			for (Entry<String,TerritoryAccess> entry2 : entry.getValue().entrySet())
+			for (int z = zmin; z <= zmax; z++)
 			{
-				String[] ChunkCoordParts = entry2.getKey().trim().split("[,\\s]+");
-				int chunkX = Integer.parseInt(ChunkCoordParts[0]);
-				int chunkZ = Integer.parseInt(ChunkCoordParts[1]);
-				PS ps = new PSBuilder().chunkX(chunkX).chunkZ(chunkZ).build();
-				
-				TerritoryAccess territoryAccess = entry2.getValue();
-				
-				board.setTerritoryAccessAt(ps, territoryAccess);
+				if ( ! includeSelf && x == chunk.getChunkX() && z == chunk.getChunkZ()) continue;
+				ret.add(chunk.withChunkX(x).withChunkZ(z));
 			}
 		}
 		
-		// Mark as migrated
-		oldFile.renameTo(newFile);
+		// Return Ret
+		return ret;
 	}
-	 */
+	
+	public static Set<Faction> getDistinctFactions(Collection<PS> chunks)
+	{
+		// Fix Args
+		if (chunks == null) throw new NullPointerException("chunks");
+		
+		// Create Ret
+		Set<Faction> ret = new LinkedHashSet<Faction>();
+		
+		// Main
+		for (PS chunk : chunks)
+		{
+			Faction faction = BoardColl.get().getFactionAt(chunk);
+			if (faction == null) continue;
+			ret.add(faction);
+		}
+		
+		// Return Ret
+		return ret;
+	}
 	
 }

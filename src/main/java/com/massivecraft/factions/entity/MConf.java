@@ -161,8 +161,14 @@ public class MConf extends Entity<MConf>
 	// -------------------------------------------- //
 	
 	public boolean claimsMustBeConnected = true;
-	public boolean claimingFromOthersAllowed = true;
 	public boolean claimsCanBeUnconnectedIfOwnedByOtherFaction = false;
+	
+	public boolean claimingFromOthersAllowed = true;
+	
+	// 0 means you can claim just next to others
+	// 1 means you must have a single chunk of padding in between.
+	public int claimMinimumChunksDistanceToOthers = 0; 
+	
 	public int claimsRequireMinFactionMembers = 1;
 	public int claimedLandsMax = 0;
 	

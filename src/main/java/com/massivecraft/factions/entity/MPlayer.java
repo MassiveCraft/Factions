@@ -794,7 +794,7 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 		
 		MConf mconf = MConf.get();
 		
-		// Validate
+		// NoChange
 		if (newFaction == oldFaction)
 		{
 			msg("%s<i> already owns this land.", newFaction.describeTo(this, true));
@@ -836,6 +836,21 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 					return false;
 				}
 				
+				// Calculate the factions nearby, excluding the chunk itself, the faction itself and the wilderness faction.
+				// The chunk itself is handled in the "if (oldFaction.isNormal())" section below. 
+				Set<PS> nearbyChunks = BoardColl.getNearbyChunks(chunk, MConf.get().claimMinimumChunksDistanceToOthers, false);
+				Set<Faction> nearbyFactions = BoardColl.getDistinctFactions(nearbyChunks);
+				nearbyFactions.remove(FactionColl.get().getNone());
+				nearbyFactions.remove(newFaction);
+				// Next we check if the new faction has permission to claim nearby the nearby factions.
+				MPerm claimnear = MPerm.getPermClaimnear();
+				for (Faction nearbyFaction : nearbyFactions)
+				{
+					if (claimnear.has(newFaction, nearbyFaction)) continue;
+					sendMessage(claimnear.createDeniedMessage(this, nearbyFaction));
+					return false;
+				}
+				
 				if
 				(
 					mconf.claimsMustBeConnected
@@ -863,6 +878,12 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 			{
 				if (!MPerm.getPermTerritory().has(this, oldFaction, false))
 				{
+					if (this.hasFaction() && this.getFaction() == oldFaction)
+					{
+						sendMessage(MPerm.getPermTerritory().createDeniedMessage(this, oldFaction));
+						return false;
+					}
+					
 					if (!mconf.claimingFromOthersAllowed)
 					{
 						msg("<b>You may not claim land from others.");
@@ -888,6 +909,7 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 					}
 				}
 			}
+			
 		}
 		
 		// Event
