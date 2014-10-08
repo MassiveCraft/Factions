@@ -101,9 +101,14 @@ public class EngineSeeChunk extends EngineAbstract
 		// For each player
 		for (Player player : Bukkit.getOnlinePlayers())
 		{
+			// Hide for dead players since the death screen looks better without.
+			if (player.isDead()) continue;
+			
+			// The player must obviously have the feature activated.
 			MPlayer mplayer = MPlayer.get(player);
 			if ( ! mplayer.isSeeingChunk()) continue;
 			
+			// Calculate locations and play the effect there.
 			List<Location> locations = getLocations(player, steps, step);
 			for (Location location : locations)
 			{
