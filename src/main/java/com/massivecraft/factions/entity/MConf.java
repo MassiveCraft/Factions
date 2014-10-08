@@ -42,7 +42,8 @@ public class MConf extends Entity<MConf>
 		
 		if (!Factions.get().isDatabaseInitialized()) return this;
 		
-		FactionsListenerChat.get().setup();
+		FactionsListenerChat.get().deactivate();
+		FactionsListenerChat.get().activate();
 		
 		return this;
 	}

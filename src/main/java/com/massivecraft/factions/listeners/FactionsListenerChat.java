@@ -4,17 +4,18 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventException;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.EventExecutor;
+import org.bukkit.plugin.Plugin;
 
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.chat.ChatFormatter;
 import com.massivecraft.factions.entity.MConf;
+import com.massivecraft.massivecore.EngineAbstract;
 import com.massivecraft.massivecore.event.EventMassiveCorePlayerToRecipientChat;
 
-public class FactionsListenerChat implements Listener
+public class FactionsListenerChat extends EngineAbstract
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -24,12 +25,19 @@ public class FactionsListenerChat implements Listener
 	public static FactionsListenerChat get() { return i; }
 	
 	// -------------------------------------------- //
-	// SETUP
+	// OVERRIDE
 	// -------------------------------------------- //
 	
-	public void setup()
+	@Override
+	public Plugin getPlugin()
 	{
-		HandlerList.unregisterAll(this);
+		return Factions.get();
+	}
+	
+	@Override
+	public void activate()
+	{
+		super.activate();
 		
 		if (MConf.get().chatSetFormat)
 		{
@@ -45,7 +53,6 @@ public class FactionsListenerChat implements Listener
 		{
 			Bukkit.getPluginManager().registerEvent(EventMassiveCorePlayerToRecipientChat.class, this, EventPriority.NORMAL, new ParseRelcolorEventExecutor(), Factions.get(), true);
 		}
-		
 	}
 	
 	// -------------------------------------------- //

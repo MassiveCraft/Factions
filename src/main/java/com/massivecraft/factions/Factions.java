@@ -135,9 +135,9 @@ public class Factions extends MassivePlugin
 		this.outerCmdFactions.register();
 
 		// Setup Listeners
-		FactionsListenerMain.get().setup();
-		FactionsListenerChat.get().setup();
-		FactionsListenerExploit.get().setup();
+		FactionsListenerMain.get().activate();
+		FactionsListenerChat.get().activate();
+		FactionsListenerExploit.get().activate();
 		EngineIdUpdate.get().activate();
 		
 		// TODO: This listener is a work in progress.
