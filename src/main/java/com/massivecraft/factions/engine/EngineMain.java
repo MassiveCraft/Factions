@@ -1,4 +1,4 @@
-package com.massivecraft.factions.listeners;
+package com.massivecraft.factions.engine;
 
 import java.text.MessageFormat;
 import java.util.Collection;
@@ -80,15 +80,15 @@ import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.PlayerUtil;
 import com.massivecraft.massivecore.util.Txt;
 
-public class FactionsListenerMain extends EngineAbstract
+public class EngineMain extends EngineAbstract
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static FactionsListenerMain i = new FactionsListenerMain();
-	public static FactionsListenerMain get() { return i; }
-	public FactionsListenerMain() {}
+	private static EngineMain i = new EngineMain();
+	public static EngineMain get() { return i; }
+	public EngineMain() {}
 	
 	// -------------------------------------------- //
 	// OVERRIDE

@@ -1,4 +1,4 @@
-package com.massivecraft.factions.listeners;
+package com.massivecraft.factions.engine;
 
 import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
@@ -15,14 +15,14 @@ import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.massivecore.EngineAbstract;
 import com.massivecraft.massivecore.event.EventMassiveCorePlayerToRecipientChat;
 
-public class FactionsListenerChat extends EngineAbstract
+public class EngineChat extends EngineAbstract
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static FactionsListenerChat i = new FactionsListenerChat();
-	public static FactionsListenerChat get() { return i; }
+	private static EngineChat i = new EngineChat();
+	public static EngineChat get() { return i; }
 	
 	// -------------------------------------------- //
 	// OVERRIDE

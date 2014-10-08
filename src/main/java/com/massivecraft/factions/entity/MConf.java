@@ -15,9 +15,9 @@ import org.bukkit.event.EventPriority;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.WorldExceptionSet;
+import com.massivecraft.factions.engine.EngineChat;
 import com.massivecraft.factions.event.EventFactionsChunkChangeType;
 import com.massivecraft.factions.integration.dynmap.DynmapStyle;
-import com.massivecraft.factions.listeners.FactionsListenerChat;
 import com.massivecraft.massivecore.store.Entity;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.TimeUnit;
@@ -42,8 +42,8 @@ public class MConf extends Entity<MConf>
 		
 		if (!Factions.get().isDatabaseInitialized()) return this;
 		
-		FactionsListenerChat.get().deactivate();
-		FactionsListenerChat.get().activate();
+		EngineChat.get().deactivate();
+		EngineChat.get().activate();
 		
 		return this;
 	}

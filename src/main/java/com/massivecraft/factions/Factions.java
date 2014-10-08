@@ -19,6 +19,11 @@ import com.massivecraft.factions.chat.tag.ChatTagNameforce;
 import com.massivecraft.factions.chat.tag.ChatTagRoleprefixforce;
 import com.massivecraft.factions.chat.tag.ChatTagTitle;
 import com.massivecraft.factions.cmd.*;
+import com.massivecraft.factions.engine.EngineChat;
+import com.massivecraft.factions.engine.EngineEcon;
+import com.massivecraft.factions.engine.EngineExploit;
+import com.massivecraft.factions.engine.EngineMain;
+import com.massivecraft.factions.engine.EngineSeeChunk;
 import com.massivecraft.factions.entity.Board;
 import com.massivecraft.factions.entity.BoardColl;
 import com.massivecraft.factions.entity.Faction;
@@ -31,10 +36,6 @@ import com.massivecraft.factions.integration.dynmap.IntegrationDynmap;
 import com.massivecraft.factions.integration.dynmap.IntegrationDynmapFactions;
 import com.massivecraft.factions.integration.herochat.IntegrationHerochat;
 import com.massivecraft.factions.integration.lwc.IntegrationLwc;
-import com.massivecraft.factions.listeners.FactionsListenerChat;
-import com.massivecraft.factions.listeners.FactionsListenerEcon;
-import com.massivecraft.factions.listeners.FactionsListenerExploit;
-import com.massivecraft.factions.listeners.FactionsListenerMain;
 import com.massivecraft.factions.mixin.PowerMixin;
 import com.massivecraft.factions.mixin.PowerMixinDefault;
 import com.massivecraft.factions.task.TaskPlayerDataRemove;
@@ -134,16 +135,13 @@ public class Factions extends MassivePlugin
 		this.outerCmdFactions = new CmdFactions();
 		this.outerCmdFactions.register();
 
-		// Setup Listeners
-		FactionsListenerMain.get().activate();
-		FactionsListenerChat.get().activate();
-		FactionsListenerExploit.get().activate();
+		// Engines
+		EngineMain.get().activate();
+		EngineChat.get().activate();
+		EngineExploit.get().activate();
 		EngineIdUpdate.get().activate();
-		
-		// TODO: This listener is a work in progress.
-		// The goal is that the Econ integration should be completely based on listening to our own events.
-		// Right now only a few situations are handled through this listener.
-		FactionsListenerEcon.get().setup();
+		EngineSeeChunk.get().activate();
+		EngineEcon.get().activate(); // TODO: Take an extra look and make sure all economy stuff is handled using events. 
 		
 		// Integrate
 		this.integrate(
@@ -153,7 +151,7 @@ public class Factions extends MassivePlugin
 			IntegrationDynmapFactions.get()
 		);
 		
-		// Schedule recurring non-tps-dependent tasks
+		// Modulo Repeat Tasks
 		TaskPlayerPowerUpdate.get().activate(this);
 		TaskPlayerDataRemove.get().activate(this);
 		TaskEconLandReward.get().activate(this);

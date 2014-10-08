@@ -1,9 +1,8 @@
-package com.massivecraft.factions.listeners;
+package com.massivecraft.factions.engine;
 
-import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
+import org.bukkit.plugin.Plugin;
 
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.entity.Faction;
@@ -25,25 +24,27 @@ import com.massivecraft.factions.event.EventFactionsFlagChange;
 import com.massivecraft.factions.event.EventFactionsRelationChange;
 import com.massivecraft.factions.event.EventFactionsTitleChange;
 import com.massivecraft.factions.integration.Econ;
+import com.massivecraft.massivecore.EngineAbstract;
 import com.massivecraft.massivecore.money.Money;
 
-public class FactionsListenerEcon implements Listener
+public class EngineEcon extends EngineAbstract
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static FactionsListenerEcon i = new FactionsListenerEcon();
-	public static FactionsListenerEcon get() { return i; }
-	public FactionsListenerEcon() {}
+	private static EngineEcon i = new EngineEcon();
+	public static EngineEcon get() { return i; }
+	public EngineEcon() {}
 	
 	// -------------------------------------------- //
-	// SETUP
+	// OVERRIDE
 	// -------------------------------------------- //
 	
-	public void setup()
+	@Override
+	public Plugin getPlugin()
 	{
-		Bukkit.getPluginManager().registerEvents(this, Factions.get());
+		return Factions.get();
 	}
 
 	// -------------------------------------------- //

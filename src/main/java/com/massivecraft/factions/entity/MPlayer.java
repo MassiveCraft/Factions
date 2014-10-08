@@ -149,11 +149,17 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 	private Boolean usingAdminMode = null;
 	
 	// The id for the faction this player is currently autoclaiming for.
-	// NOTE: This field will not be saved to the database ever.
 	// Null means the player isn't auto claiming.
+	// NOTE: This field will not be saved to the database ever.
 	private transient Faction autoClaimFaction = null;
 	public Faction getAutoClaimFaction() { return this.autoClaimFaction; }
 	public void setAutoClaimFaction(Faction autoClaimFaction) { this.autoClaimFaction = autoClaimFaction; }
+	
+	// Does the player have /f seechunk activated?
+	// NOTE: This field will not be saved to the database ever.
+	private transient boolean seeingChunk = false;
+	public boolean isSeeingChunk() { return this.seeingChunk; }
+	public void setSeeingChunk(boolean seeingChunk) { this.seeingChunk = seeingChunk; }
 	
 	// -------------------------------------------- //
 	// CORE UTILITIES
