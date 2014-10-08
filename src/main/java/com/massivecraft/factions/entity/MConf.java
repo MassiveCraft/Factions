@@ -316,8 +316,13 @@ public class MConf extends Entity<MConf>
 	// -------------------------------------------- //
 	
 	// Use 1 or multiple of 3, 4 or 5.
-	public int seeChunkSteps = 5;
-	public long seeChunkPeriodMillis = 1000;
+	public int seeChunkSteps = 1;
+	
+	// White/Black List for creating sparse patterns.
+	public int seeChunkKeepEvery = 5;
+	public int seeChunkSkipEvery = 0;
+	
+	public long seeChunkPeriodMillis = 500;
 	public int seeChunkParticleAmount = 30;
 	public float seeChunkParticleOffsetY = 2;
 	public float seeChunkParticleDeltaY = 2;

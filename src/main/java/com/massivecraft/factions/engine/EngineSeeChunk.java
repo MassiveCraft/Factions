@@ -92,9 +92,9 @@ public class EngineSeeChunk extends EngineAbstract
 		final int step = (int) (period % steps); // Example: 0, 1, 2, 3
 		
 		// Load other related config options
-		final float offsetX = 0.2f;
+		final float offsetX = 0.0f;
 		final float offsetY = MConf.get().seeChunkParticleOffsetY;
-		final float offsetZ = 0.2f;
+		final float offsetZ = 0.0f;
 		final float speed = 0;
 		final int amount = MConf.get().seeChunkParticleAmount;
 		
@@ -138,6 +138,12 @@ public class EngineSeeChunk extends EngineAbstract
 		final int zmin = chunk.getChunkZ() * 16;
 		final int zmax = zmin + 15;
 		
+		int keepEvery = MConf.get().seeChunkKeepEvery;
+		if (keepEvery <= 0) keepEvery = Integer.MAX_VALUE;
+		
+		int skipEvery = MConf.get().seeChunkSkipEvery;
+		if (skipEvery <= 0) skipEvery = Integer.MAX_VALUE;
+		
 		int x = xmin;
 		int z = zmin;
 		int i = 0;
@@ -147,7 +153,7 @@ public class EngineSeeChunk extends EngineAbstract
 		{
 			x++;
 			i++;
-			if (i % steps == step) ret.add(new Location(world, x + 0.5, y + 0.5, z + 0.5));
+			if (i % steps == step && (i % keepEvery == 0 && i % skipEvery != 0)) ret.add(new Location(world, x + 0.5, y + 0.5, z + 0.5));
 		}
 		
 		// Add #2
@@ -155,7 +161,7 @@ public class EngineSeeChunk extends EngineAbstract
 		{
 			z++;
 			i++;
-			if (i % steps == step) ret.add(new Location(world, x + 0.5, y + 0.5, z + 0.5));
+			if (i % steps == step && (i % keepEvery == 0 && i % skipEvery != 0)) ret.add(new Location(world, x + 0.5, y + 0.5, z + 0.5));
 		}
 		
 		// Add #3
@@ -163,7 +169,7 @@ public class EngineSeeChunk extends EngineAbstract
 		{
 			x--;
 			i++;
-			if (i % steps == step) ret.add(new Location(world, x + 0.5, y + 0.5, z + 0.5));
+			if (i % steps == step && (i % keepEvery == 0 && i % skipEvery != 0)) ret.add(new Location(world, x + 0.5, y + 0.5, z + 0.5));
 		}
 		
 		// Add #4
@@ -171,7 +177,7 @@ public class EngineSeeChunk extends EngineAbstract
 		{
 			z--;
 			i++;
-			if (i % steps == step) ret.add(new Location(world, x + 0.5, y + 0.5, z + 0.5));
+			if (i % steps == step && (i % keepEvery == 0 && i % skipEvery != 0)) ret.add(new Location(world, x + 0.5, y + 0.5, z + 0.5));
 		}
 		
 		// Return Ret
