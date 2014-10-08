@@ -1,5 +1,12 @@
 package com.massivecraft.factions.engine;
 
+import java.security.InvalidParameterException;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -7,12 +14,16 @@ import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.plugin.Plugin;
 
 import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.massivecore.EngineAbstract;
 import com.massivecraft.massivecore.event.EventMassiveCorePlayerLeave;
+import com.massivecraft.massivecore.particleeffect.ParticleEffect;
+import com.massivecraft.massivecore.ps.PS;
+import com.massivecraft.massivecore.util.PeriodUtil;
 
 public class EngineSeeChunk extends EngineAbstract
-{
+{	
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
@@ -29,6 +40,12 @@ public class EngineSeeChunk extends EngineAbstract
 	public Plugin getPlugin()
 	{
 		return Factions.get();
+	}
+	
+	@Override
+	public Long getPeriod()
+	{
+		return 1L;
 	}
 	
 	// -------------------------------------------- //
@@ -55,4 +72,104 @@ public class EngineSeeChunk extends EngineAbstract
 		leaveAndWorldChangeRemoval(event.getPlayer());
 	}
 	
+	// -------------------------------------------- //
+	// MODULO REPEAT TASK
+	// -------------------------------------------- //
+	
+	@Override
+	public void run()
+	{
+		// Do we have a new period?
+		final long now = System.currentTimeMillis();
+		final long length = MConf.get().seeChunkPeriodMillis;
+		if ( ! PeriodUtil.isNewPeriod(this, length, now)) return;
+		
+		// Get the period number
+		final long period = PeriodUtil.getPeriod(length, now);
+		
+		// Calculate the "step" from the period number
+		final int steps = MConf.get().seeChunkSteps; // Example: 4
+		final int step = (int) (period % steps); // Example: 0, 1, 2, 3
+		
+		// Load other related config options
+		final float offsetX = 0.2f;
+		final float offsetY = MConf.get().seeChunkParticleOffsetY;
+		final float offsetZ = 0.2f;
+		final float speed = 0;
+		final int amount = MConf.get().seeChunkParticleAmount;
+		
+		// For each player
+		for (Player player : Bukkit.getOnlinePlayers())
+		{
+			MPlayer mplayer = MPlayer.get(player);
+			if ( ! mplayer.isSeeingChunk()) continue;
+			
+			List<Location> locations = getLocations(player, steps, step);
+			for (Location location : locations)
+			{
+				ParticleEffect.EXPLODE.display(location, offsetX, offsetY, offsetZ, speed, amount, player);
+			}
+		}
+	}
+	
+	public static List<Location> getLocations(Player player, int steps, int step)
+	{
+		// Clean Args
+		if (player == null) throw new NullPointerException("player");
+		if (steps < 1) throw new InvalidParameterException("steps must be larger than 0");
+		if (step < 0) throw new InvalidParameterException("step must at least be 0");
+		if (step >= steps) throw new InvalidParameterException("step must be less than steps");
+		
+		// Create Ret
+		List<Location> ret = new ArrayList<Location>();
+		
+		final Location location = player.getLocation();
+		final World world = location.getWorld();
+		PS chunk = PS.valueOf(location).getChunk(true);
+		
+		final int xmin = chunk.getChunkX() * 16;
+		final int xmax = xmin + 15;
+		final double y = location.getBlockY() + MConf.get().seeChunkParticleDeltaY;
+		final int zmin = chunk.getChunkZ() * 16;
+		final int zmax = zmin + 15;
+		
+		int x = xmin;
+		int z = zmin;
+		int i = 0;
+		
+		// Add #1
+		while (x + 1 <= xmax)
+		{
+			x++;
+			i++;
+			if (i % steps == step) ret.add(new Location(world, x + 0.5, y + 0.5, z + 0.5));
+		}
+		
+		// Add #2
+		while (z + 1 <= zmax)
+		{
+			z++;
+			i++;
+			if (i % steps == step) ret.add(new Location(world, x + 0.5, y + 0.5, z + 0.5));
+		}
+		
+		// Add #3
+		while (x - 1 >= xmin)
+		{
+			x--;
+			i++;
+			if (i % steps == step) ret.add(new Location(world, x + 0.5, y + 0.5, z + 0.5));
+		}
+		
+		// Add #4
+		while (z - 1 >= zmin)
+		{
+			z--;
+			i++;
+			if (i % steps == step) ret.add(new Location(world, x + 0.5, y + 0.5, z + 0.5));
+		}
+		
+		// Return Ret
+		return ret;
+	}
 }

@@ -53,6 +53,7 @@ permissions:
   factions.promote: {description: promote lesser members in your faction, default: false}
   factions.relation: {description: set relation wish to another faction, default: false}
   factions.seechunk: {description: see the chunk you stand in, default: false}
+  factions.seechunkold: {description: see the chunk you stand in, default: false}
   factions.sethome: {description: set the faction home, default: false}
   factions.name: {description: set faction name, default: false}
   factions.title: {description: set player title, default: false}
@@ -109,6 +110,7 @@ permissions:
       factions.promote: true
       factions.relation: true
       factions.seechunk: true
+      factions.seechunkold: true
       factions.sethome: true
       factions.name: true
       factions.title: true
@@ -183,6 +185,7 @@ permissions:
       factions.promote: true
       factions.relation: true
       factions.seechunk: true
+      factions.seechunkold: true
       factions.sethome: true
       factions.name: true
       factions.title: true

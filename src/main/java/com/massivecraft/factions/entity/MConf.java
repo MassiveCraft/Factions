@@ -312,6 +312,17 @@ public class MConf extends Entity<MConf>
 	public boolean handleExploitTNTWaterlog = false;
 	
 	// -------------------------------------------- //
+	// SEE CHUNK
+	// -------------------------------------------- //
+	
+	// Use 1 or multiple of 3, 4 or 5.
+	public int seeChunkSteps = 5;
+	public long seeChunkPeriodMillis = 1000;
+	public int seeChunkParticleAmount = 30;
+	public float seeChunkParticleOffsetY = 2;
+	public float seeChunkParticleDeltaY = 2;
+	
+	// -------------------------------------------- //
 	// LOGGING
 	// -------------------------------------------- //
 	

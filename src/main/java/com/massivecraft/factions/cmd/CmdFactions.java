@@ -36,6 +36,7 @@ public class CmdFactions extends FactionsCommand
 	public CmdFactionsLeader cmdFactionsLeader = new CmdFactionsLeader();
 	public CmdFactionsMoney cmdFactionsMoney = new CmdFactionsMoney();
 	public CmdFactionsSeeChunk cmdFactionsSeeChunk = new CmdFactionsSeeChunk();
+	public CmdFactionsSeeChunkOld cmdFactionsSeeChunkOld = new CmdFactionsSeeChunkOld();
 	public CmdFactionsClaim cmdFactionsClaim = new CmdFactionsClaim();
 	public CmdFactionsAutoClaim cmdFactionsAutoClaim = new CmdFactionsAutoClaim();
 	public CmdFactionsUnclaim cmdFactionsUnclaim = new CmdFactionsUnclaim();
@@ -82,6 +83,7 @@ public class CmdFactions extends FactionsCommand
 		this.addSubCommand(this.cmdFactionsLeader);
 		this.addSubCommand(this.cmdFactionsMoney);
 		this.addSubCommand(this.cmdFactionsSeeChunk);
+		this.addSubCommand(this.cmdFactionsSeeChunkOld);
 		this.addSubCommand(this.cmdFactionsClaim);
 		this.addSubCommand(this.cmdFactionsAutoClaim);
 		this.addSubCommand(this.cmdFactionsUnclaim);

@@ -1,4 +1,4 @@
-package com.massivecraft.factions;
+package com.massivecraft.factions.engine;
 
 import java.util.Set;
 
@@ -6,6 +6,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.plugin.Plugin;
 
+import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.TerritoryAccess;
 import com.massivecraft.factions.entity.Board;
 import com.massivecraft.factions.entity.BoardColl;
 import com.massivecraft.factions.entity.Faction;

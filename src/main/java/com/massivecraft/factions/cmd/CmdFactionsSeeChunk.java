@@ -1,16 +1,10 @@
 package com.massivecraft.factions.cmd;
 
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
-import org.bukkit.entity.Player;
-
 import com.massivecraft.factions.Perm;
-import com.massivecraft.factions.util.VisualizeUtil;
+import com.massivecraft.massivecore.cmd.arg.ARBoolean;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.cmd.req.ReqIsPlayer;
-import com.massivecraft.massivecore.ps.PS;
-import com.massivecraft.massivecore.ps.PSFormatHumanSpace;
+import com.massivecraft.massivecore.util.Txt;
 
 public class CmdFactionsSeeChunk extends FactionsCommand
 {
@@ -22,9 +16,12 @@ public class CmdFactionsSeeChunk extends FactionsCommand
 	{
 		// Aliases
 		this.addAliases("sc", "seechunk");
+		
+		// Args
+		this.addOptionalArg("active", "toggle");
 
 		// Requirements
-		this.addRequirements(ReqHasPerm.get(Perm.SEE_CHUNK.node));
+		this.addRequirements(ReqHasPerm.get(Perm.SEECHUNK.node));
 		this.addRequirements(ReqIsPlayer.get());
 	}
 
@@ -36,45 +33,24 @@ public class CmdFactionsSeeChunk extends FactionsCommand
 	public void perform()
 	{
 		// Args
-		World world = me.getWorld();
-		PS chunk = PS.valueOf(me).getChunk(true);
-		int chunkX = chunk.getChunkX();
-		int chunkZ = chunk.getChunkZ();
+		boolean old = msender.isSeeingChunk();
+		boolean targetDefault = !old;
+		Boolean target = this.arg(0, ARBoolean.get(), targetDefault);
+		if (target == null) return;
+		String targetDesc = Txt.parse(target ? "<g>ON": "<b>OFF");
+		
+		// NoChange
+		if (target.equals(old))
+		{
+			msg("<i>See Chunk is already %s<i>.", targetDesc);
+			return;
+		}
 		
 		// Apply
-		int blockX;
-		int blockZ;
-		
-		blockX = chunkX*16;
-		blockZ = chunkZ*16;
-		showPillar(me, world, blockX, blockZ);
-		
-		blockX = chunkX*16 + 15;
-		blockZ = chunkZ*16;
-		showPillar(me, world, blockX, blockZ);
-		
-		blockX = chunkX*16;
-		blockZ = chunkZ*16 + 15;
-		showPillar(me, world, blockX, blockZ);
-		
-		blockX = chunkX*16 + 15;
-		blockZ = chunkZ*16 + 15;
-		showPillar(me, world, blockX, blockZ);
+		msender.setSeeingChunk(target);
 		
 		// Inform
-		msg("<i>Visualized %s", chunk.toString(PSFormatHumanSpace.get()));
+		msg("<i>See Chunk is now %s<i>.", targetDesc);
 	}
-	
-	@SuppressWarnings("deprecation")
-	public static void showPillar(Player player, World world, int blockX, int blockZ)
-	{
-		for (int blockY = 0; blockY < world.getMaxHeight(); blockY++)
-		{
-			Location loc = new Location(world, blockX, blockY, blockZ);
-			if (loc.getBlock().getType() != Material.AIR) continue;
-			int typeId = blockY % 5 == 0 ? Material.GLOWSTONE.getId() : Material.GLASS.getId();
-			VisualizeUtil.addLocation(player, loc, typeId);
-		}
-	}
-	
+
 }
