@@ -664,7 +664,7 @@ public class EngineMain extends EngineAbstract
 		
 		// ... and the reason for the spawn is natural ...
 		SpawnReason reason = event.getSpawnReason();
-		if (reason != SpawnReason.NATURAL && reason != SpawnReason.JOCKEY) return;
+		if (reason != SpawnReason.NATURAL && reason != SpawnReason.JOCKEY && reason != SpawnReason.NETHER_PORTAL) return;
 		
 		// ... and monsters are forbidden at the location ...
 		Location location = event.getLocation();
