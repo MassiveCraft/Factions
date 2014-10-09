@@ -10,6 +10,14 @@
 # It's suggested that you only turn this on at the direction of a developer.
 debug: false
 
+# Prevent find factions exploit
+# This will help limit how many times a player can be sent a map of factions.
+# Set this to the cooldown you want, in miliseconds, for a map to be shown to a player.
+# If you want to log when a player violates this (only happens on chunk enter so it shouldn't be too spammy),
+#   set log to true and it will be logged to console as "player tried to show a faction map too soon and triggered exploit blocker."
+findfactionsexploit:
+  cooldown: 2000 # in miliseconds. 2000 = 2 seconds.
+  log: false
 
 # Configuration section for Scoreboards
 # This will allow you to completely customize how your scoreboards look.

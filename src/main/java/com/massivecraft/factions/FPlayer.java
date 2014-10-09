@@ -542,10 +542,9 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator {
             // Shows them the scoreboard instead of sending a message in chat. Will disappear after a few seconds.
             new FInfoBoard(getPlayer(), toShow, true);
         } else {
-            Faction factionHere = Board.getFactionAt(this.getLastStoodAt());
-            String msg = P.p.txt.parse("<i>") + " ~ " + factionHere.getTag(this);
-            if (factionHere.getDescription().length() > 0) {
-                msg += " - " + factionHere.getDescription();
+            String msg = P.p.txt.parse("<i>") + " ~ " + toShow.getTag(this);
+            if (toShow.getDescription().length() > 0) {
+                msg += " - " + toShow.getDescription();
             }
             this.sendMessage(msg);
         }

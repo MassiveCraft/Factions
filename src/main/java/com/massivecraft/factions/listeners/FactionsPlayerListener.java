@@ -16,9 +16,8 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.*;
 import org.bukkit.util.NumberConversions;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
+import java.util.logging.Level;
 
 
 public class FactionsPlayerListener implements Listener {
@@ -56,6 +55,9 @@ public class FactionsPlayerListener implements Listener {
         }
     }
 
+    // Holds the next time a player can have a map shown.
+    private HashMap<UUID, Long> showTimes = new HashMap<UUID, Long>();
+
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerMove(PlayerMoveEvent event) {
         if (event.isCancelled()) {
@@ -87,13 +89,15 @@ public class FactionsPlayerListener implements Listener {
         Faction factionTo = Board.getFactionAt(to);
         boolean changedFaction = (factionFrom != factionTo);
 
-        /* Was used for displaying on Spout but we removed Spout compatibility.
-        if (changedFaction)
-            changedFaction = false;
-            */
-
         if (me.isMapAutoUpdating()) {
-            me.sendMessage(Board.getMap(me.getFaction(), to, player.getLocation().getYaw()));
+            if(showTimes.containsKey(player.getUniqueId()) && (showTimes.get(player.getUniqueId()) > System.currentTimeMillis())) {
+                if(P.p.getConfig().getBoolean("findfactionsexploit.log", false)) {
+                    P.p.log(Level.WARNING, "%s tried to show a faction map too soon and triggered exploit blocker.", player.getName());
+                }
+            } else {
+                me.sendMessage(Board.getMap(me.getFaction(), to, player.getLocation().getYaw()));
+                showTimes.put(player.getUniqueId(), System.currentTimeMillis() + P.p.getConfig().getLong("findfactionsexploit.cooldown", 2000));
+            }
         } else {
             Faction myFaction = me.getFaction();
             String ownersTo = myFaction.getOwnerListString(to);
