@@ -242,6 +242,16 @@ public class Board extends Entity<Board> implements BoardInterface
 		
 		return false;
 	}
+	
+	@Override
+	public boolean isAnyBorderPs(Set<PS> pss)
+	{
+		for (PS ps : pss)
+		{
+			if (this.isBorderPs(ps)) return true;
+		}
+		return false;
+	}
 
 	// Is this coord connected to any coord claimed by the specified faction?
 	@Override
@@ -263,6 +273,16 @@ public class Board extends Entity<Board> implements BoardInterface
 		nearby = ps.withChunkZ(ps.getChunkZ() -1);
 		if (faction == this.getFactionAt(nearby)) return true;
 		
+		return false;
+	}
+	
+	@Override
+	public boolean isAnyConnectedPs(Set<PS> pss, Faction faction)
+	{
+		for (PS ps : pss)
+		{
+			if (this.isConnectedPs(ps, faction)) return true;
+		}
 		return false;
 	}
 	

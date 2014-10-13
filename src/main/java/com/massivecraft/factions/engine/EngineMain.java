@@ -2,10 +2,12 @@ package com.massivecraft.factions.engine;
 
 import java.text.MessageFormat;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -62,12 +64,14 @@ import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.TerritoryAccess;
 import com.massivecraft.factions.entity.BoardColl;
+import com.massivecraft.factions.entity.FactionColl;
 import com.massivecraft.factions.entity.MFlag;
 import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.entity.MPlayerColl;
+import com.massivecraft.factions.event.EventFactionsChunksChange;
 import com.massivecraft.factions.event.EventFactionsPvpDisallowed;
 import com.massivecraft.factions.event.EventFactionsPowerChange;
 import com.massivecraft.factions.event.EventFactionsPowerChange.PowerChangeReason;
@@ -230,6 +234,167 @@ public class EngineMain extends EngineAbstract
 	// CHUNK CHANGE: DETECT
 	// -------------------------------------------- //
 	
+	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
+	public void onChunksChange(EventFactionsChunksChange event)
+	{
+		// Args
+		final MPlayer msender = event.getMSender();
+		final Faction newFaction = event.getNewFaction();
+		final Map<Faction, Set<PS>> currentFactionChunks = event.getOldFactionChunks();
+		final Set<Faction> currentFactions = currentFactionChunks.keySet();
+		final Set<PS> chunks = event.getChunks();
+		
+		// Admin Mode? Sure!
+		if (msender.isUsingAdminMode()) return;
+		
+		// CALC: Is there at least one normal faction among the current ones?
+		boolean currentFactionsContainsAtLeastOneNormal = false;
+		for (Faction currentFaction : currentFactions)
+		{
+			if (currentFaction.isNormal())
+			{
+				currentFactionsContainsAtLeastOneNormal = true;
+				break;
+			}
+		}
+		
+		// If the new faction is normal (not wilderness/none), meaning if we are claiming for a faction ...
+		if (newFaction.isNormal())
+		{
+			// ... ensure claiming is enabled for the worlds of all chunks ...
+			for (PS chunk : chunks)
+			{
+				String worldId = chunk.getWorld();
+				if ( ! MConf.get().worldsClaimingEnabled.contains(worldId))
+				{
+					String worldName = Mixin.getWorldDisplayName(worldId);
+					msender.msg("<b>Land claiming is disabled in <h>%s<b>.", worldName);
+					event.setCancelled(true);
+					return;
+				}
+			}
+			
+			// ... ensure we have permission to alter the territory of the new faction ...
+			if ( ! MPerm.getPermTerritory().has(msender, newFaction, true))
+			{
+				// NOTE: No need to send a message. We send message from the permission check itself.
+				event.setCancelled(true);
+				return;
+			}
+			
+			// ... ensure the new faction has enough players to claim ...
+			if (newFaction.getMPlayers().size() < MConf.get().claimsRequireMinFactionMembers)
+			{
+				msender.msg("<b>Factions must have at least <h>%s<b> members to claim land.", MConf.get().claimsRequireMinFactionMembers);
+				event.setCancelled(true);
+				return;
+			}
+			
+			// ... ensure the claim would not bypass the global max limit ...
+			int ownedLand = newFaction.getLandCount();
+			if (MConf.get().claimedLandsMax != 0 && ownedLand + chunks.size() > MConf.get().claimedLandsMax && ! newFaction.getFlag(MFlag.getFlagInfpower()))
+			{
+				msender.msg("<b>Limit reached. You can't claim more land.");
+				event.setCancelled(true);
+				return;
+			}
+			
+			// ... ensure the claim would not bypass the faction power ...
+			if (ownedLand + chunks.size() > newFaction.getPowerRounded())
+			{
+				msender.msg("<b>You don't have enough power to claim that land.");
+				event.setCancelled(true);
+				return;
+			}
+			
+			// ... ensure the claim would not violate distance to neighbors ...
+			// HOW: Calculate the factions nearby, excluding the chunks themselves, the faction itself and the wilderness faction.
+			// HOW: The chunks themselves will be handled in the "if (oldFaction.isNormal())" section below. 
+			Set<PS> nearbyChunks = BoardColl.getNearbyChunks(chunks, MConf.get().claimMinimumChunksDistanceToOthers);
+			nearbyChunks.removeAll(chunks);
+			Set<Faction> nearbyFactions = BoardColl.getDistinctFactions(nearbyChunks);
+			nearbyFactions.remove(FactionColl.get().getNone());
+			nearbyFactions.remove(newFaction);
+			// HOW: Next we check if the new faction has permission to claim nearby the nearby factions.
+			MPerm claimnear = MPerm.getPermClaimnear();
+			for (Faction nearbyFaction : nearbyFactions)
+			{
+				if (claimnear.has(newFaction, nearbyFaction)) continue;
+				msender.sendMessage(claimnear.createDeniedMessage(msender, nearbyFaction));
+				event.setCancelled(true);
+				return;
+			}
+			
+			// ... ensure claims are properly connected ...
+			if
+			(
+				// If claims must be connected ...
+				MConf.get().claimsMustBeConnected
+				// ... and this faction already has claimed something on this map (meaning it's not their first claim) ... 
+				&&
+				newFaction.getLandCountInWorld(chunks.iterator().next().getWorld()) > 0
+				// ... and none of the chunks are connected to an already claimed chunk for the faction ...
+				&&
+				! BoardColl.get().isAnyConnectedPs(chunks, newFaction)
+				// ... and either claims must always be connected or there is at least one normal faction among the old factions ...
+				&&
+				( ! MConf.get().claimsCanBeUnconnectedIfOwnedByOtherFaction || currentFactionsContainsAtLeastOneNormal)
+			)
+			{
+				if (MConf.get().claimsCanBeUnconnectedIfOwnedByOtherFaction)
+				{
+					msender.msg("<b>You can only claim additional land which is connected to your first claim or controlled by another faction!");
+				}
+				else
+				{
+					msender.msg("<b>You can only claim additional land which is connected to your first claim!");
+				}
+				event.setCancelled(true);
+				return;
+			}
+		}
+		
+		// For each of the old factions ...
+		for (Faction oldFaction : currentFactions)
+		{
+			// ... that is an actual faction ...
+			if (oldFaction.isNone()) continue;
+			
+			// ... for which the msender lacks permission ...
+			if (MPerm.getPermTerritory().has(msender, oldFaction, false)) continue;
+			
+			// ... print the error message of choice ...
+			if (msender.hasFaction() && msender.getFaction() == oldFaction)
+			{
+				msender.sendMessage(MPerm.getPermTerritory().createDeniedMessage(msender, oldFaction));
+			}
+			else if ( ! MConf.get().claimingFromOthersAllowed)
+			{
+				msender.msg("<b>You may not claim land from others.");
+			}
+			else if (oldFaction.getRelationTo(newFaction).isAtLeast(Rel.TRUCE))
+			{
+				msender.msg("<b>You can't claim this land due to your relation with the current owner.");
+			}
+			else if ( ! oldFaction.hasLandInflation())
+			{
+				msender.msg("%s<i> owns this land and is strong enough to keep it.", oldFaction.getName(msender));
+			}
+			else if ( ! BoardColl.get().isAnyBorderPs(chunks))
+			{
+				msender.msg("<b>You must start claiming land at the border of the territory.");
+			}
+			
+			// ... and cancel.
+			event.setCancelled(true);
+			return;
+		}
+	}
+	
+	// -------------------------------------------- //
+	// CHUNK CHANGE: DETECT
+	// -------------------------------------------- //
+	
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void chunkChangeDetect(PlayerMoveEvent event)
 	{
@@ -307,7 +472,7 @@ public class EngineMain extends EngineAbstract
 		if (autoClaimFaction == null) return;
 		
 		// ... try claim.
-		mplayer.tryClaim(autoClaimFaction, chunkTo, true, true);
+		mplayer.tryClaim(autoClaimFaction, Collections.singletonList(chunkTo));
 	}
 	
 	// -------------------------------------------- //

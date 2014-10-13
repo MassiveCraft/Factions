@@ -1,5 +1,7 @@
 package com.massivecraft.factions.cmd;
 
+import java.util.Collections;
+
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.cmd.arg.ARFaction;
 import com.massivecraft.factions.entity.Faction;
@@ -50,7 +52,8 @@ public class CmdFactionsAutoClaim extends FactionsCommand
 		msender.setAutoClaimFaction(forFaction);
 		
 		msg("<i>Now auto-claiming land for <h>%s<i>.", forFaction.describeTo(msender));
-		msender.tryClaim(forFaction, PS.valueOf(me), true, true);
+		
+		msender.tryClaim(forFaction, Collections.singletonList(PS.valueOf(me).getChunk(true)));
 	}
 	
 }

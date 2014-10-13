@@ -1,5 +1,10 @@
 package com.massivecraft.factions.engine;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map.Entry;
+import java.util.Set;
+
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.plugin.Plugin;
@@ -9,7 +14,7 @@ import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.event.EventFactionsAbstractSender;
-import com.massivecraft.factions.event.EventFactionsChunkChange;
+import com.massivecraft.factions.event.EventFactionsChunksChange;
 import com.massivecraft.factions.event.EventFactionsChunkChangeType;
 import com.massivecraft.factions.event.EventFactionsCreate;
 import com.massivecraft.factions.event.EventFactionsDescriptionChange;
@@ -26,6 +31,8 @@ import com.massivecraft.factions.event.EventFactionsTitleChange;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.massivecore.EngineAbstract;
 import com.massivecraft.massivecore.money.Money;
+import com.massivecraft.massivecore.ps.PS;
+import com.massivecraft.massivecore.util.Txt;
 
 public class EngineEcon extends EngineAbstract
 {
@@ -116,13 +123,27 @@ public class EngineEcon extends EngineAbstract
 	}
 	
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
-	public void payForAction(EventFactionsChunkChange event)
+	public void payForAction(EventFactionsChunksChange event)
 	{
-		EventFactionsChunkChangeType type = event.getType();
-		Double cost = MConf.get().econChunkCost.get(type);
+		double cost = 0;
+		List<String> typeNames = new ArrayList<String>();
 		
-		String desc = type.toString().toLowerCase() + " this land";
+		for (Entry<EventFactionsChunkChangeType, Set<PS>> typeChunks : event.getTypeChunks().entrySet())
+		{
+			final EventFactionsChunkChangeType type = typeChunks.getKey();
+			final Set<PS> chunks = typeChunks.getValue();
+			
+			Double typeCost = MConf.get().econChunkCost.get(type);
+			if (typeCost == null) continue;
+			if (typeCost == 0) continue;
+			
+			typeCost *= chunks.size();
+			cost += typeCost;
+			
+			typeNames.add(type.now);
+		}
 		
+		String desc = Txt.implodeCommaAnd(typeNames) + " this land";
 		payForAction(event, cost, desc);
 	}
 	

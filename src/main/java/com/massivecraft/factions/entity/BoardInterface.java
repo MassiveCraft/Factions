@@ -30,7 +30,9 @@ public interface BoardInterface
 	
 	// NEARBY DETECTION
 	public boolean isBorderPs(PS ps);
+	public boolean isAnyBorderPs(Set<PS> pss);
 	public boolean isConnectedPs(PS ps, Faction faction);
+	public boolean isAnyConnectedPs(Set<PS> pss, Faction faction);
 	
 	// MAP
 	// TODO: Could the degrees be embedded in centerPs yaw instead?

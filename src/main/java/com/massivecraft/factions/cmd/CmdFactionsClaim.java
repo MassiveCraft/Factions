@@ -1,11 +1,13 @@
 package com.massivecraft.factions.cmd;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.cmd.arg.ARFaction;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.entity.MPerm;
-import com.massivecraft.factions.task.SpiralTask;
 import com.massivecraft.massivecore.cmd.arg.ARInteger;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.cmd.req.ReqIsPlayer;
@@ -43,68 +45,52 @@ public class CmdFactionsClaim extends FactionsCommand
 		Integer radius = this.arg(0, ARInteger.get(), 1);
 		if (radius == null) return;
 		
-		final Faction forFaction = this.arg(1, ARFaction.get(), msenderFaction);
-		if (forFaction == null) return;
+		final Faction newFaction = this.arg(1, ARFaction.get(), msenderFaction);
+		if (newFaction == null) return;
 		
 		// MPerm
-		if (forFaction.isNormal() && !MPerm.getPermTerritory().has(msender, forFaction, true)) return;
+		if (newFaction.isNormal() && ! MPerm.getPermTerritory().has(msender, newFaction, true)) return;
 		
-		// Validate
+		// Radius Claim Min
 		if (radius < 1)
 		{
 			msg("<b>If you specify a radius, it must be at least 1.");
 			return;
 		}
 		
-		if (radius > MConf.get().radiusClaimRadiusLimit && !msender.isUsingAdminMode())
+		// Radius Claim Perm
+		if (radius > 1 && ! Perm.CLAIM_RADIUS.has(sender, false))
+		{
+			msg("<b>You do not have permission to claim in a radius.");
+			return;
+		}
+		
+		// Radius Claim Max
+		if (radius > MConf.get().radiusClaimRadiusLimit && ! msender.isUsingAdminMode())
 		{
 			msg("<b>The maximum radius allowed is <h>%s<b>.", MConf.get().radiusClaimRadiusLimit);
 			return;
 		}
 		
-		// Apply
-		
-		// single chunk
-		if (radius < 2)
+		// Get Chunks
+		final int radiusZero = radius -1;
+		final PS chunk = PS.valueOf(me).getChunk(true);
+		final int xmin = chunk.getChunkX() - radiusZero;
+		final int xmax = chunk.getChunkX() + radiusZero;
+		final int zmin = chunk.getChunkZ() - radiusZero;
+		final int zmax = chunk.getChunkZ() + radiusZero;
+		Set<PS> chunks = new LinkedHashSet<PS>();
+		chunks.add(chunk); // The center should come first for pretty messages
+		for (int x = xmin; x <= xmax; x++)
 		{
-			msender.tryClaim(forFaction, PS.valueOf(me), true, true);
-			return;
-		}
-		
-		// radius claim
-		if (!Perm.CLAIM_RADIUS.has(sender, false))
-		{
-			msg("<b>You do not have permission to claim in a radius.");
-			return;
-		}
-
-		// TODO: There must be a better way than using a spiral task.
-		// TODO: Do some research to allow for claming sets of chunks in a batch with atomicity.
-		// This will probably result in an alteration to the owner change event.
-		// It would possibly contain a set of chunks instead of a single chunk.
-		
-		new SpiralTask(PS.valueOf(me), radius)
-		{
-			private int failCount = 0;
-			private final int limit = MConf.get().radiusClaimFailureLimit - 1;
-
-			@Override
-			public boolean work()
+			for (int z = zmin; z <= zmax; z++)
 			{
-				boolean success = msender.tryClaim(forFaction, PS.valueOf(this.currentLocation()), true, true);
-				if (success)
-				{
-					this.failCount = 0;
-				}
-				else if (this.failCount++ >= this.limit)
-				{
-					this.stop();
-					return false;
-				}
-				return true;
+				chunks.add(chunk.withChunkX(x).withChunkZ(z));
 			}
-		};
+		}
 		
+		// Apply / Inform
+		msender.tryClaim(newFaction, chunks);
 	}
 	
 }

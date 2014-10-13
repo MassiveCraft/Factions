@@ -1,6 +1,9 @@
 package com.massivecraft.factions.integration.lwc;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
@@ -14,7 +17,7 @@ import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.entity.MPlayer;
-import com.massivecraft.factions.event.EventFactionsChunkChange;
+import com.massivecraft.factions.event.EventFactionsChunksChange;
 import com.massivecraft.factions.event.EventFactionsChunkChangeType;
 import com.massivecraft.massivecore.EngineAbstract;
 import com.massivecraft.massivecore.ps.PS;
@@ -59,12 +62,9 @@ public class EngineLwc extends EngineAbstract
 	// LISTENER
 	// -------------------------------------------- //
 	
-	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-	public void removeProtectionsOnChunkChange(EventFactionsChunkChange event)
+	public void removeProtectionsOnChunkChange(Faction newFaction, EventFactionsChunkChangeType type, Set<PS> chunks)
 	{
 		// If we are supposed to clear at this chunk change type ...
-		Faction newFaction = event.getNewFaction();
-		EventFactionsChunkChangeType type = event.getType();
 		Boolean remove = MConf.get().lwcRemoveOnChange.get(type);
 		if (remove == null) return;
 		if (remove == false) return;
@@ -72,7 +72,26 @@ public class EngineLwc extends EngineAbstract
 		// ... then remove for all other factions than the new one.
 		// First we wait one tick to make sure the chunk ownership changes have been applied.
 		// Then we remove the protections but we do it asynchronously to not lock the main thread.
-		removeAlienProtectionsAsyncNextTick(event.getChunk(), newFaction);
+		for (PS chunk : chunks)
+		{
+			removeAlienProtectionsAsyncNextTick(chunk, newFaction);
+		}
+	}
+	
+	public void removeProtectionsOnChunkChange(Faction newFaction, Map<EventFactionsChunkChangeType, Set<PS>> typeChunks)
+	{
+		for (Entry<EventFactionsChunkChangeType, Set<PS>> typeChunk : typeChunks.entrySet())
+		{
+			final EventFactionsChunkChangeType type = typeChunk.getKey();
+			final Set<PS> chunks = typeChunk.getValue();
+			removeProtectionsOnChunkChange(newFaction, type, chunks);
+		}
+	}
+	
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	public void removeProtectionsOnChunkChange(EventFactionsChunksChange event)
+	{
+		removeProtectionsOnChunkChange(event.getNewFaction(), event.getTypeChunks());
 	}
 	
 	// -------------------------------------------- //

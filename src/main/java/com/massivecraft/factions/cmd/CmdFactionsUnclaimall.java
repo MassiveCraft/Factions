@@ -2,7 +2,6 @@ package com.massivecraft.factions.cmd;
 
 import java.util.Set;
 
-import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.cmd.req.ReqHasFaction;
@@ -10,9 +9,7 @@ import com.massivecraft.factions.cmd.req.ReqRoleIsAtLeast;
 import com.massivecraft.factions.entity.BoardColl;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.FactionColl;
-import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.entity.MPerm;
-import com.massivecraft.factions.event.EventFactionsChunkChange;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.ps.PS;
 
@@ -49,12 +46,15 @@ public class CmdFactionsUnclaimall extends FactionsCommand
 
 		// Apply
 		Set<PS> chunks = BoardColl.get().getChunks(faction);
+		msender.tryClaim(newFaction, chunks);
+		
+		/*
 		int countTotal = chunks.size();
 		int countSuccess = 0;
 		int countFail = 0;
 		for (PS chunk : chunks)
 		{
-			EventFactionsChunkChange event = new EventFactionsChunkChange(sender, chunk, newFaction);
+			EventFactionsChunksChange event = new EventFactionsChunksChange(sender, chunk, newFaction);
 			event.run();
 			if (event.isCancelled())
 			{
@@ -74,7 +74,8 @@ public class CmdFactionsUnclaimall extends FactionsCommand
 		if (MConf.get().logLandUnclaims)
 		{
 			Factions.get().log(msender.getName()+" unclaimed everything for the faction: "+msenderFaction.getName());
-		}
+		}*/
+		
 	}
 	
 }

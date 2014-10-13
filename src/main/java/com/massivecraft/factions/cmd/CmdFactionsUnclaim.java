@@ -1,5 +1,7 @@
 package com.massivecraft.factions.cmd;
 
+import java.util.Collections;
+
 import com.massivecraft.factions.cmd.req.ReqHasFaction;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.FactionColl;
@@ -37,7 +39,7 @@ public class CmdFactionsUnclaim extends FactionsCommand
 		Faction newFaction = FactionColl.get().getNone();
 
 		// Apply
-		if (msender.tryClaim(newFaction, chunk, true, true)) return;
+		if (msender.tryClaim(newFaction, Collections.singletonList(chunk))) return;
 	}
 	
 }

@@ -1,6 +1,9 @@
 package com.massivecraft.factions.entity;
 
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.bukkit.ChatColor;
@@ -12,7 +15,8 @@ import com.massivecraft.factions.Lang;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.RelationParticipator;
-import com.massivecraft.factions.event.EventFactionsChunkChange;
+import com.massivecraft.factions.event.EventFactionsChunkChangeType;
+import com.massivecraft.factions.event.EventFactionsChunksChange;
 import com.massivecraft.factions.event.EventFactionsMembershipChange;
 import com.massivecraft.factions.event.EventFactionsRemovePlayerMillis;
 import com.massivecraft.factions.event.EventFactionsMembershipChange.MembershipChangeReason;
@@ -793,163 +797,91 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 		}
 	}
 	
-	public boolean tryClaim(Faction newFaction, PS ps, boolean verbooseChange, boolean verbooseSame)
+	// NEW
+	public boolean tryClaim(Faction newFaction, Collection<PS> pss)
 	{
-		PS chunk = ps.getChunk(true);
-		Faction oldFaction = BoardColl.get().getFactionAt(chunk);
+		// Args
+		if (newFaction == null) throw new NullPointerException("newFaction");
 		
-		MConf mconf = MConf.get();
+		if (pss == null) throw new NullPointerException("pss");
+		final Set<PS> chunks = PS.getDistinctChunks(pss);
 		
 		// NoChange
-		if (newFaction == oldFaction)
+		// We clean the chunks further by removing what does not change.
+		// This is also very suggested cleaning of EventFactionsChunksChange input. 
+		Iterator<PS> iter = chunks.iterator();
+		while (iter.hasNext())
+		{
+			PS chunk = iter.next();
+			Faction oldFaction = BoardColl.get().getFactionAt(chunk);
+			if (newFaction == oldFaction) iter.remove();
+		}
+		if (chunks.isEmpty())
 		{
 			msg("%s<i> already owns this land.", newFaction.describeTo(this, true));
 			return true;
 		}
 		
-		if ( ! this.isUsingAdminMode())
-		{
-			if (newFaction.isNormal())
-			{
-				if ( ! mconf.worldsClaimingEnabled.contains(ps.getWorld()))
-				{
-					msg("<b>Sorry, this world has land claiming disabled.");
-					return false;
-				}
-				
-				if ( ! MPerm.getPermTerritory().has(this, newFaction, true))
-				{
-					return false;
-				}
-				
-				if (newFaction.getMPlayers().size() < mconf.claimsRequireMinFactionMembers)
-				{
-					msg("Factions must have at least <h>%s<b> members to claim land.", mconf.claimsRequireMinFactionMembers);
-					return false;
-				}
-				
-				int ownedLand = newFaction.getLandCount();
-				
-				if (mconf.claimedLandsMax != 0 && ownedLand >= mconf.claimedLandsMax && ! newFaction.getFlag(MFlag.getFlagInfpower()))
-				{
-					msg("<b>Limit reached. You can't claim more land.");
-					return false;
-				}
-				
-				if (ownedLand >= newFaction.getPowerRounded())
-				{
-					msg("<b>You can't claim more land. You need more power.");
-					return false;
-				}
-				
-				// Calculate the factions nearby, excluding the chunk itself, the faction itself and the wilderness faction.
-				// The chunk itself is handled in the "if (oldFaction.isNormal())" section below. 
-				Set<PS> nearbyChunks = BoardColl.getNearbyChunks(chunk, MConf.get().claimMinimumChunksDistanceToOthers, false);
-				Set<Faction> nearbyFactions = BoardColl.getDistinctFactions(nearbyChunks);
-				nearbyFactions.remove(FactionColl.get().getNone());
-				nearbyFactions.remove(newFaction);
-				// Next we check if the new faction has permission to claim nearby the nearby factions.
-				MPerm claimnear = MPerm.getPermClaimnear();
-				for (Faction nearbyFaction : nearbyFactions)
-				{
-					if (claimnear.has(newFaction, nearbyFaction)) continue;
-					sendMessage(claimnear.createDeniedMessage(this, nearbyFaction));
-					return false;
-				}
-				
-				if
-				(
-					mconf.claimsMustBeConnected
-					&&
-					newFaction.getLandCountInWorld(ps.getWorld()) > 0
-					&&
-					! BoardColl.get().isConnectedPs(chunk, newFaction)
-					&&
-					( ! mconf.claimsCanBeUnconnectedIfOwnedByOtherFaction || oldFaction.isNone())
-				)
-				{
-					if (mconf.claimsCanBeUnconnectedIfOwnedByOtherFaction)
-					{
-						msg("<b>You can only claim additional land which is connected to your first claim or controlled by another faction!");
-					}
-					else
-					{
-						msg("<b>You can only claim additional land which is connected to your first claim!");
-					}
-					return false;
-				}
-			}
-			
-			if (oldFaction.isNormal())
-			{
-				if ( ! MPerm.getPermTerritory().has(this, oldFaction, false))
-				{
-					if (this.hasFaction() && this.getFaction() == oldFaction)
-					{
-						sendMessage(MPerm.getPermTerritory().createDeniedMessage(this, oldFaction));
-						return false;
-					}
-					
-					if ( ! mconf.claimingFromOthersAllowed)
-					{
-						msg("<b>You may not claim land from others.");
-						return false;
-					}
-					
-					if (oldFaction.getRelationTo(newFaction).isAtLeast(Rel.TRUCE))
-					{
-						msg("<b>You can't claim this land due to your relation with the current owner.");
-						return false;
-					}
-					
-					if ( ! oldFaction.hasLandInflation())
-					{
-						msg("%s<i> owns this land and is strong enough to keep it.", oldFaction.getName(this));
-						return false;
-					}
-					
-					if ( ! BoardColl.get().isBorderPs(chunk))
-					{
-						msg("<b>You must start claiming land at the border of the territory.");
-						return false;
-					}
-				}
-			}
-			
-		}
-		
 		// Event
-		EventFactionsChunkChange event = new EventFactionsChunkChange(this.getSender(), chunk, newFaction);
+		// NOTE: We listen to this event ourselves at LOW.
+		// NOTE: That is where we apply the standard checks.
+		EventFactionsChunksChange event = new EventFactionsChunksChange(this.getSender(), chunks, newFaction);
 		event.run();
 		if (event.isCancelled()) return false;
-
+		
 		// Apply
-		BoardColl.get().setFactionAt(chunk, newFaction);
+		for (PS chunk : chunks)
+		{
+			BoardColl.get().setFactionAt(chunk, newFaction);
+		}
 		
 		// Inform
-		Set<MPlayer> informees = new HashSet<MPlayer>();
-		informees.add(this);
-		if (newFaction.isNormal())
+		for (Entry<Faction, Set<PS>> entry : event.getOldFactionChunks().entrySet())
 		{
-			informees.addAll(newFaction.getMPlayers());
-		}
-		if (oldFaction.isNormal())
-		{
-			informees.addAll(oldFaction.getMPlayers());
-		}
-		if (MConf.get().logLandClaims)
-		{
-			informees.add(MPlayer.get(IdUtil.getConsole()));
+			final Faction oldFaction = entry.getKey();
+			final Set<PS> oldChunks = entry.getValue();
+			final PS oldChunk = oldChunks.iterator().next();
+			final Set<MPlayer> informees = getClaimInformees(this, oldFaction, newFaction);
+			final EventFactionsChunkChangeType type = EventFactionsChunkChangeType.get(oldFaction, newFaction, this.getFaction());
+			
+			String chunkString = oldChunk.toString(PSFormatHumanSpace.get());
+			String typeString = type.past;
+			
+			for (MPlayer informee : informees)
+			{
+				informee.msg("<h>%s<i> %s <h>%d <i>" + (oldChunks.size() == 1 ? "chunk" : "chunks") + " near %s", this.describeTo(informee, true), typeString, oldChunks.size(), chunkString);
+				informee.msg("  <h>%s<i> --> <h>%s", oldFaction.describeTo(informee, true), newFaction.describeTo(informee, true));
+			}
 		}
 		
-		String chunkString = chunk.toString(PSFormatHumanSpace.get());
-		String typeString = event.getType().past;
-		for (MPlayer informee : informees)
-		{
-			informee.msg("<h>%s<i> %s %s <i>| <h>%s<i> --> <h>%s", this.describeTo(informee, true), typeString, chunkString, oldFaction.describeTo(informee, true), newFaction.describeTo(informee, true));
-		}
-
+		// Success
 		return true;
+	}
+	
+	// -------------------------------------------- //
+	// UTIL
+	// -------------------------------------------- //
+	
+	public static Set<MPlayer> getClaimInformees(MPlayer msender, Faction... factions)
+	{
+		Set<MPlayer> ret = new HashSet<MPlayer>();
+		
+		ret.add(msender);
+		
+		for (Faction faction : factions)
+		{
+			if (faction.isNormal())
+			{
+				ret.addAll(faction.getMPlayers());
+			}
+		}
+		
+		if (MConf.get().logLandClaims)
+		{
+			ret.add(MPlayer.get(IdUtil.getConsole()));
+		}
+		
+		return ret;
 	}
 	
 }

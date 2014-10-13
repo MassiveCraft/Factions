@@ -3,7 +3,9 @@ package com.massivecraft.factions.entity;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.Set;
 
 import com.massivecraft.factions.Const;
@@ -151,12 +153,32 @@ public class BoardColl extends Coll<Board> implements BoardInterface
 	}
 
 	@Override
+	public boolean isAnyBorderPs(Set<PS> pss)
+	{
+		for (PS ps : pss)
+		{
+			if (this.isBorderPs(ps)) return true;
+		}
+		return false;
+	}
+	
+	@Override
 	public boolean isConnectedPs(PS ps, Faction faction)
 	{
 		if (ps == null) return false;
 		Board board = this.get(ps.getWorld());
 		if (board == null) return false;
 		return board.isConnectedPs(ps, faction);
+	}
+	
+	@Override
+	public boolean isAnyConnectedPs(Set<PS> pss, Faction faction)
+	{
+		for (PS ps : pss)
+		{
+			if (this.isConnectedPs(ps, faction)) return true;
+		}
+		return false;
 	}
 	
 	// MAP GENERATION
@@ -177,7 +199,7 @@ public class BoardColl extends Coll<Board> implements BoardInterface
 	// Distance -1 returns 0 chunks always.
 	// Distance 0 returns 1 chunk only (the one supplied).
 	// Distance 1 returns 3x3 = 9 chunks.
-	public static Set<PS> getNearbyChunks(PS chunk, int distance, boolean includeSelf)
+	public static Set<PS> getNearbyChunks(PS chunk, int distance)
 	{
 		// Fix Args
 		if (chunk == null) throw new NullPointerException("chunk");
@@ -187,7 +209,6 @@ public class BoardColl extends Coll<Board> implements BoardInterface
 		Set<PS> ret = new LinkedHashSet<PS>();
 		
 		if (distance < 0) return ret;
-		// if (distance == 0 && ! includeSelf) return ret; // This will be done by the code below.
 		
 		// Main
 		int xmin = chunk.getChunkX() - distance;
@@ -200,9 +221,28 @@ public class BoardColl extends Coll<Board> implements BoardInterface
 		{
 			for (int z = zmin; z <= zmax; z++)
 			{
-				if ( ! includeSelf && x == chunk.getChunkX() && z == chunk.getChunkZ()) continue;
 				ret.add(chunk.withChunkX(x).withChunkZ(z));
 			}
+		}
+		
+		// Return Ret
+		return ret;
+	}
+	
+	public static Set<PS> getNearbyChunks(Collection<PS> chunks, int distance)
+	{
+		// Fix Args
+		if (chunks == null) throw new NullPointerException("chunks");
+		
+		// Create Ret
+		Set<PS> ret = new LinkedHashSet<PS>();
+		
+		if (distance < 0) return ret;
+		
+		// Main
+		for (PS chunk : chunks)
+		{
+			ret.addAll(getNearbyChunks(chunk, distance));
 		}
 		
 		// Return Ret
@@ -226,6 +266,21 @@ public class BoardColl extends Coll<Board> implements BoardInterface
 		}
 		
 		// Return Ret
+		return ret;
+	}
+	
+	public static Map<PS, Faction> getChunkFaction(Collection<PS> chunks)
+	{
+		Map<PS, Faction> ret = new LinkedHashMap<PS, Faction>();
+		
+		for (PS chunk : chunks)
+		{
+			chunk = chunk.getChunk(true);
+			Faction faction = get().getFactionAt(chunk);
+			if (faction == null) faction = FactionColl.get().getNone();
+			ret.put(chunk, faction);
+		}
+		
 		return ret;
 	}
 	
