@@ -220,7 +220,7 @@ public class Econ {
 
         if (invoker == null) {
             for (FPlayer recipient : recipients) {
-                recipient.msg("<h>%s<i> was transfered from <h>%s<i> to <h>%s<i>.", moneyString(amount), from.describeTo(recipient), to.describeTo(recipient));
+                recipient.msg("<h>%s<i> was transferred from <h>%s<i> to <h>%s<i>.", moneyString(amount), from.describeTo(recipient), to.describeTo(recipient));
             }
         } else if (invoker == from) {
             for (FPlayer recipient : recipients) {
@@ -232,7 +232,7 @@ public class Econ {
             }
         } else {
             for (FPlayer recipient : recipients) {
-                recipient.msg("<h>%s<i> transfered <h>%s<i> from <h>%s<i> to <h>%s<i>.", invoker.describeTo(recipient, true), moneyString(amount), from.describeTo(recipient), to.describeTo(recipient));
+                recipient.msg("<h>%s<i> transferred <h>%s<i> from <h>%s<i> to <h>%s<i>.", invoker.describeTo(recipient, true), moneyString(amount), from.describeTo(recipient), to.describeTo(recipient));
             }
         }
     }
