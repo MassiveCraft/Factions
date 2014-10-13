@@ -5,6 +5,7 @@ import org.bukkit.command.CommandSender;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.FactionColl;
+import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.cmd.arg.ArgReaderAbstract;
 import com.massivecraft.massivecore.cmd.arg.ArgResult;
 import com.massivecraft.massivecore.util.IdUtil;
@@ -28,12 +29,22 @@ public class ARFaction extends ArgReaderAbstract<Faction>
 	{
 		ArgResult<Faction> result = new ArgResult<Faction>();
 		
-		// Faction Name Exact 
-		result.setResult(FactionColl.get().getByName(str));
-		if (result.hasResult()) return result;
+		// Nothing/Remove targets Wilderness
+		if (MassiveCore.NOTHING_REMOVE.contains(str))
+		{
+			result.setResult(FactionColl.get().getNone());
+			return result;
+		}
 		
-		// Faction Name Match
-		result.setResult(FactionColl.get().getBestNameMatch(str));
+		// Faction Id Exact
+		if (FactionColl.get().containsId(str))
+		{
+			result.setResult(FactionColl.get().get(str));
+			if (result.hasResult()) return result;
+		}
+		
+		// Faction Name Exact
+		result.setResult(FactionColl.get().getByName(str));
 		if (result.hasResult()) return result;
 		
 		// MPlayer Name Exact

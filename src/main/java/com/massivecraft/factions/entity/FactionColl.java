@@ -238,9 +238,9 @@ public class FactionColl extends Coll<Faction>
 		return errors;
 	}
 	
-	public Faction getByName(String str)
+	public Faction getByName(String name)
 	{
-		String compStr = MiscUtil.getComparisonString(str);
+		String compStr = MiscUtil.getComparisonString(name);
 		for (Faction faction : this.getAll())
 		{
 			if (faction.getComparisonName().equals(compStr))
@@ -249,21 +249,6 @@ public class FactionColl extends Coll<Faction>
 			}
 		}
 		return null;
-	}
-	
-	public Faction getBestNameMatch(String searchFor)
-	{
-		Map<String, Faction> name2faction = new HashMap<String, Faction>();
-		
-		// TODO: Slow index building
-		for (Faction faction : this.getAll())
-		{
-			name2faction.put(ChatColor.stripColor(faction.getName()), faction);
-		}
-		
-		String tag = Txt.getBestCIStart(name2faction.keySet(), searchFor);
-		if (tag == null) return null;
-		return name2faction.get(tag);
 	}
 	
 	public boolean isNameTaken(String str)

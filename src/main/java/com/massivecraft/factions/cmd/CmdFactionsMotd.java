@@ -3,6 +3,7 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.factions.entity.MPlayer;
+import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.mixin.Mixin;
 import com.massivecraft.massivecore.util.MUtil;
@@ -50,7 +51,7 @@ public class CmdFactionsMotd extends FactionsCommand
 		target = Txt.parse(target);
 		
 		// Removal
-		if (target != null && MUtil.set("", "r", "remove", "d", "delete", "del", "e", "erase", "none", "null", "nothing").contains(target))
+		if (target != null && MassiveCore.NOTHING_REMOVE.contains(target))
 		{
 			target = null;
 		}

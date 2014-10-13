@@ -811,13 +811,13 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 		{
 			if (newFaction.isNormal())
 			{
-				if (!mconf.worldsClaimingEnabled.contains(ps.getWorld()))
+				if ( ! mconf.worldsClaimingEnabled.contains(ps.getWorld()))
 				{
 					msg("<b>Sorry, this world has land claiming disabled.");
 					return false;
 				}
 				
-				if (!MPerm.getPermTerritory().has(this, newFaction, true))
+				if ( ! MPerm.getPermTerritory().has(this, newFaction, true))
 				{
 					return false;
 				}
@@ -863,9 +863,9 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 					&&
 					newFaction.getLandCountInWorld(ps.getWorld()) > 0
 					&&
-					!BoardColl.get().isConnectedPs(chunk, newFaction)
+					! BoardColl.get().isConnectedPs(chunk, newFaction)
 					&&
-					(!mconf.claimsCanBeUnconnectedIfOwnedByOtherFaction || oldFaction.isNone())
+					( ! mconf.claimsCanBeUnconnectedIfOwnedByOtherFaction || oldFaction.isNone())
 				)
 				{
 					if (mconf.claimsCanBeUnconnectedIfOwnedByOtherFaction)
@@ -882,7 +882,7 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 			
 			if (oldFaction.isNormal())
 			{
-				if (!MPerm.getPermTerritory().has(this, oldFaction, false))
+				if ( ! MPerm.getPermTerritory().has(this, oldFaction, false))
 				{
 					if (this.hasFaction() && this.getFaction() == oldFaction)
 					{
@@ -890,7 +890,7 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 						return false;
 					}
 					
-					if (!mconf.claimingFromOthersAllowed)
+					if ( ! mconf.claimingFromOthersAllowed)
 					{
 						msg("<b>You may not claim land from others.");
 						return false;
@@ -902,7 +902,7 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 						return false;
 					}
 					
-					if (!oldFaction.hasLandInflation())
+					if ( ! oldFaction.hasLandInflation())
 					{
 						msg("%s<i> owns this land and is strong enough to keep it.", oldFaction.getName(this));
 						return false;
