@@ -148,11 +148,11 @@ public class MConf extends Entity<MConf>
 	public boolean factionNameForceUpperCase = false;
 	
 	// -------------------------------------------- //
-	// CLAIM LIMITS
+	// SET LIMITS
 	// -------------------------------------------- //
 	
-	// the maximum radius allowed when using the claim command.
-	public int radiusClaimRadiusLimit = 5;
+	public int setRadiusMax = 5;
+	public int setFillMax = 1000;
 	
 	// -------------------------------------------- //
 	// CLAIMS

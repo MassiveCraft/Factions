@@ -25,6 +25,7 @@ public class CmdFactions extends FactionsCommand
 	public CmdFactionsName cmdFactionsName = new CmdFactionsName();
 	public CmdFactionsDescription cmdFactionsDescription = new CmdFactionsDescription();
 	public CmdFactionsMotd cmdFactionsMotd = new CmdFactionsMotd();
+	public CmdFactionsSet cmdFactionsSet = new CmdFactionsSet();
 	public CmdFactionsSethome cmdFactionsSethome = new CmdFactionsSethome();
 	public CmdFactionsUnsethome cmdFactionsUnsethome = new CmdFactionsUnsethome();
 	public CmdFactionsInvite cmdFactionsInvite = new CmdFactionsInvite();
@@ -37,10 +38,6 @@ public class CmdFactions extends FactionsCommand
 	public CmdFactionsMoney cmdFactionsMoney = new CmdFactionsMoney();
 	public CmdFactionsSeeChunk cmdFactionsSeeChunk = new CmdFactionsSeeChunk();
 	public CmdFactionsSeeChunkOld cmdFactionsSeeChunkOld = new CmdFactionsSeeChunkOld();
-	public CmdFactionsClaim cmdFactionsClaim = new CmdFactionsClaim();
-	public CmdFactionsAutoClaim cmdFactionsAutoClaim = new CmdFactionsAutoClaim();
-	public CmdFactionsUnclaim cmdFactionsUnclaim = new CmdFactionsUnclaim();
-	public CmdFactionsUnclaimall cmdFactionsUnclaimall = new CmdFactionsUnclaimall();
 	public CmdFactionsAccess cmdFactionsAccess = new CmdFactionsAccess();
 	public CmdFactionsRelationAlly cmdFactionsRelationAlly = new CmdFactionsRelationAlly();
 	public CmdFactionsRelationTruce cmdFactionsRelationTruce = new CmdFactionsRelationTruce();
@@ -72,6 +69,7 @@ public class CmdFactions extends FactionsCommand
 		this.addSubCommand(this.cmdFactionsName);
 		this.addSubCommand(this.cmdFactionsDescription);
 		this.addSubCommand(this.cmdFactionsMotd);
+		this.addSubCommand(this.cmdFactionsSet);
 		this.addSubCommand(this.cmdFactionsSethome);
 		this.addSubCommand(this.cmdFactionsUnsethome);
 		this.addSubCommand(this.cmdFactionsInvite);
@@ -84,10 +82,6 @@ public class CmdFactions extends FactionsCommand
 		this.addSubCommand(this.cmdFactionsMoney);
 		this.addSubCommand(this.cmdFactionsSeeChunk);
 		this.addSubCommand(this.cmdFactionsSeeChunkOld);
-		this.addSubCommand(this.cmdFactionsClaim);
-		this.addSubCommand(this.cmdFactionsAutoClaim);
-		this.addSubCommand(this.cmdFactionsUnclaim);
-		this.addSubCommand(this.cmdFactionsUnclaimall);
 		this.addSubCommand(this.cmdFactionsAccess);
 		this.addSubCommand(this.cmdFactionsRelationAlly);
 		this.addSubCommand(this.cmdFactionsRelationTruce);

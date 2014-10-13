@@ -1,45 +1,40 @@
 package com.massivecraft.factions.cmd;
 
 import java.util.Collections;
+import java.util.Set;
 
-import com.massivecraft.factions.cmd.req.ReqHasFaction;
-import com.massivecraft.factions.entity.Faction;
-import com.massivecraft.factions.entity.FactionColl;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.cmd.req.ReqIsPlayer;
 import com.massivecraft.massivecore.ps.PS;
 
-public class CmdFactionsUnclaim extends FactionsCommand
+
+public class CmdFactionsSetOne extends CmdFactionsSetXSimple
 {
 	// -------------------------------------------- //
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public CmdFactionsUnclaim()
+	public CmdFactionsSetOne()
 	{
 		// Aliases
-		this.addAliases("unclaim");
+		this.addAliases("o", "one");
 
 		// Requirements
-		this.addRequirements(ReqHasPerm.get(Perm.UNCLAIM.node));
-		this.addRequirements(ReqHasFaction.get());
 		this.addRequirements(ReqIsPlayer.get());
+		this.addRequirements(ReqHasPerm.get(Perm.SET_ONE.node));
 	}
 
 	// -------------------------------------------- //
 	// OVERRIDE
 	// -------------------------------------------- //
-	
-	@Override
-	public void perform()
-	{
-		// Args
-		PS chunk = PS.valueOf(me).getChunk(true);
-		Faction newFaction = FactionColl.get().getNone();
 
-		// Apply
-		if (msender.tryClaim(newFaction, Collections.singletonList(chunk))) return;
+	@Override
+	public Set<PS> getChunks()
+	{
+		final PS chunk = PS.valueOf(me).getChunk(true);
+		final Set<PS> chunks = Collections.singleton(chunk);
+		return chunks;
 	}
 	
 }

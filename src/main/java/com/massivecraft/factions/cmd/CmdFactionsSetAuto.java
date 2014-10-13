@@ -1,6 +1,7 @@
 package com.massivecraft.factions.cmd;
 
 import java.util.Collections;
+import java.util.Set;
 
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.cmd.arg.ARFaction;
@@ -10,23 +11,24 @@ import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.cmd.req.ReqIsPlayer;
 import com.massivecraft.massivecore.ps.PS;
 
-public class CmdFactionsAutoClaim extends FactionsCommand
+
+public class CmdFactionsSetAuto extends FactionsCommand
 {
 	// -------------------------------------------- //
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public CmdFactionsAutoClaim()
+	public CmdFactionsSetAuto()
 	{
 		// Aliases
-		this.addAliases("autoclaim");
+		this.addAliases("a", "auto");
 
 		// Args
 		this.addOptionalArg("faction", "you");
 
 		// Requirements
-		this.addRequirements(ReqHasPerm.get(Perm.AUTOCLAIM.node));
 		this.addRequirements(ReqIsPlayer.get());
+		this.addRequirements(ReqHasPerm.get(Perm.SET_AUTO.node));
 	}
 
 	// -------------------------------------------- //
@@ -37,23 +39,29 @@ public class CmdFactionsAutoClaim extends FactionsCommand
 	public void perform()
 	{	
 		// Args
-		Faction forFaction = this.arg(0, ARFaction.get(), msenderFaction);
+		final Faction newFaction = this.arg(0, ARFaction.get(), msenderFaction);
 		
-		if (forFaction == null || forFaction == msender.getAutoClaimFaction())
+		// Disable?
+		if (newFaction == null || newFaction == msender.getAutoClaimFaction())
 		{
 			msender.setAutoClaimFaction(null);
-			msg("<i>Auto-claiming of land disabled.");
+			msg("<i>Disabled auto-setting as you walk around.");
 			return;
 		}
 		
-		// MPerm
-		if (forFaction.isNormal() && !MPerm.getPermTerritory().has(msender, forFaction, true)) return;
+		// MPerm Preemptive Check
+		if (newFaction.isNormal() && ! MPerm.getPermTerritory().has(msender, newFaction, true)) return;
 		
-		msender.setAutoClaimFaction(forFaction);
+		// Apply / Inform
+		msender.setAutoClaimFaction(newFaction);
+		msg("<i>Now auto-setting <h>%s<i> land.", newFaction.describeTo(msender));
 		
-		msg("<i>Now auto-claiming land for <h>%s<i>.", forFaction.describeTo(msender));
+		// Chunks
+		final PS chunk = PS.valueOf(me).getChunk(true);
+		Set<PS> chunks = Collections.singleton(chunk);		
 		
-		msender.tryClaim(forFaction, Collections.singletonList(PS.valueOf(me).getChunk(true)));
+		// Apply / Inform
+		msender.tryClaim(newFaction, chunks);
 	}
 	
 }
