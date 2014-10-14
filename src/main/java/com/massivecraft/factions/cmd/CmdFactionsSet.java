@@ -36,7 +36,6 @@ public class CmdFactionsSet extends FactionsCommand
 		this.addSubCommand(this.cmdFactionsSetTransfer);
 		
 		// Requirements
-		this.addRequirements(ReqIsPlayer.get());
 		this.addRequirements(ReqHasPerm.get(Perm.SET.node));
 	}
 	

@@ -93,6 +93,14 @@ public class CmdFactions extends FactionsCommand
 		this.addSubCommand(this.cmdFactionsAdmin);
 		this.addSubCommand(this.cmdFactionsPowerBoost);
 		this.addSubCommand(this.cmdFactionsVersion);
+		
+		// Deprecated Commands
+		this.addSubCommand(new CmdFactionsXDeprecated(this.cmdFactionsSet, "claim"));
+		this.addSubCommand(new CmdFactionsXDeprecated(this.cmdFactionsSet, "unclaim"));
+		this.addSubCommand(new CmdFactionsXDeprecated(this.cmdFactionsSet, "autoclaim"));
+		this.addSubCommand(new CmdFactionsXDeprecated(this.cmdFactionsSet, "unclaimall"));
+		
+		this.addSubCommand(new CmdFactionsXDeprecated(this.cmdFactionsFaction, "show", "who"));
 	}
 	
 	// -------------------------------------------- //
