@@ -50,6 +50,7 @@ public enum Permission {
     SET_PEACEFUL("setpeaceful"),
     SET_PERMANENT("setpermanent"),
     SET_PERMANENTPOWER("setpermanentpower"),
+    SHOW_INVITES("showinvites"),
     POWERBOOST("powerboost"),
     POWER("power"),
     POWER_ANY("power.any"),

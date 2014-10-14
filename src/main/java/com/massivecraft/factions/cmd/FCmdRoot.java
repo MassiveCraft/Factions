@@ -52,6 +52,7 @@ public class FCmdRoot extends FCommand {
     public CmdVersion cmdVersion = new CmdVersion();
     public CmdWarunclaimall cmdWarunclaimall = new CmdWarunclaimall();
     public CmdSB cmdSB = new CmdSB();
+    public CmdShowInvites cmdShowInvites = new CmdShowInvites();
 
     public FCmdRoot() {
         super();
@@ -120,6 +121,7 @@ public class FCmdRoot extends FCommand {
         this.addSubCommand(this.cmdVersion);
         this.addSubCommand(this.cmdWarunclaimall);
         this.addSubCommand(this.cmdSB);
+        this.addSubCommand(this.cmdShowInvites);
     }
 
     @Override
