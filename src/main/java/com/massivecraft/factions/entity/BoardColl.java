@@ -184,12 +184,12 @@ public class BoardColl extends Coll<Board> implements BoardInterface
 	// MAP GENERATION
 	
 	@Override
-	public ArrayList<String> getMap(RelationParticipator observer, PS centerPs, double inDegrees)
+	public ArrayList<String> getMap(RelationParticipator observer, PS centerPs, double inDegrees, int width, int height)
 	{
 		if (centerPs == null) return null;
 		Board board = this.get(centerPs.getWorld());
 		if (board == null) return null;
-		return board.getMap(observer, centerPs, inDegrees);
+		return board.getMap(observer, centerPs, inDegrees, width, height);
 	}
 	
 	// -------------------------------------------- //

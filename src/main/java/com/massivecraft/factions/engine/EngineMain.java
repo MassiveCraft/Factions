@@ -60,6 +60,7 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.projectiles.ProjectileSource;
 
+import com.massivecraft.factions.Const;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.TerritoryAccess;
@@ -425,7 +426,8 @@ public class EngineMain extends EngineAbstract
 		// send host faction info updates
 		if (mplayer.isMapAutoUpdating())
 		{
-			mplayer.sendMessage(BoardColl.get().getMap(mplayer, chunkTo, player.getLocation().getYaw()));
+			List<String> message = BoardColl.get().getMap(mplayer, chunkTo, player.getLocation().getYaw(), Const.MAP_WIDTH, Const.MAP_HEIGHT);
+			mplayer.sendMessage(message);
 		}
 		else if (factionFrom != factionTo)
 		{

@@ -1,5 +1,8 @@
 package com.massivecraft.factions.cmd;
 
+import java.util.List;
+
+import com.massivecraft.factions.Const;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.entity.BoardColl;
 import com.massivecraft.massivecore.cmd.arg.ARBoolean;
@@ -33,16 +36,16 @@ public class CmdFactionsMap extends FactionsCommand
 	@Override
 	public void perform()
 	{
-		if (!this.argIsSet(0))
+		if ( ! this.argIsSet(0))
 		{
-			showMap();
+			showMap(Const.MAP_WIDTH, Const.MAP_HEIGHT_FULL);
 			return;
 		}
 		
 		if (this.arg(0, ARBoolean.get(), !msender.isMapAutoUpdating()))
 		{
 			// And show the map once
-			showMap();
+			showMap(Const.MAP_WIDTH, Const.MAP_HEIGHT);
 			
 			// Turn on
 			msender.setMapAutoUpdating(true);
@@ -56,9 +59,10 @@ public class CmdFactionsMap extends FactionsCommand
 		}
 	}
 	
-	public void showMap()
+	public void showMap(int width, int height)
 	{
-		sendMessage(BoardColl.get().getMap(msenderFaction, PS.valueOf(me), me.getLocation().getYaw()));
+		List<String> message = BoardColl.get().getMap(msenderFaction, PS.valueOf(me), me.getLocation().getYaw(), width, height);
+		sendMessage(message);
 	}
 	
 }

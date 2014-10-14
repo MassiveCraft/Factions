@@ -36,6 +36,6 @@ public interface BoardInterface
 	
 	// MAP
 	// TODO: Could the degrees be embedded in centerPs yaw instead?
-	public ArrayList<String> getMap(RelationParticipator observer, PS centerPs, double inDegrees);
+	public ArrayList<String> getMap(RelationParticipator observer, PS centerPs, double inDegrees, int width, int height);
 	
 }

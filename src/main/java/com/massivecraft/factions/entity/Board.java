@@ -289,7 +289,7 @@ public class Board extends Entity<Board> implements BoardInterface
 	// MAP GENERATION
 	
 	@Override
-	public ArrayList<String> getMap(RelationParticipator observer, PS centerPs, double inDegrees)
+	public ArrayList<String> getMap(RelationParticipator observer, PS centerPs, double inDegrees, int width, int height)
 	{
 		centerPs = centerPs.getChunkCoords(true);
 		
@@ -298,13 +298,12 @@ public class Board extends Entity<Board> implements BoardInterface
 		
 		ret.add(Txt.titleize("("+centerPs.getChunkX() + "," + centerPs.getChunkZ()+") "+centerFaction.getName(observer)));
 		
-		int halfWidth = Const.MAP_WIDTH / 2;
-		int halfHeight = Const.MAP_HEIGHT / 2;
+		int halfWidth = width / 2;
+		int halfHeight = height / 2;
+		width = halfWidth * 2 + 1;
+		height = halfHeight * 2 + 1;
 		
 		PS topLeftPs = centerPs.plusChunkCoords(-halfWidth, -halfHeight);
-		
-		int width = halfWidth * 2 + 1;
-		int height = halfHeight * 2 + 1;
 		
 		// Make room for the list of names
 		height--;
