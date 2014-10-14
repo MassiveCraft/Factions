@@ -45,8 +45,8 @@ public class CmdFactionsSetTransfer extends CmdFactionsSetXTransfer
 		if (MUtil.list("a", "al", "all").contains(this.arg(0).toLowerCase()))
 		{
 			chunks = BoardColl.get().getChunks(oldFaction);
-			this.setFormatOne("<h>%s<i> %s all <h>%d <i>chunks.");
-			this.setFormatMany("<h>%s<i> %s all <h>%d <i>chunks.");
+			this.setFormatOne("<h>%s<i> %s <h>%d <i>chunk using transfer all.");
+			this.setFormatMany("<h>%s<i> %s <h>%d <i>chunks using transfer all.");
 		}
 		else
 		{
@@ -71,8 +71,9 @@ public class CmdFactionsSetTransfer extends CmdFactionsSetXTransfer
 			Board board = BoardColl.get().get(worldId);
 			chunks = board.getChunks(oldFaction);
 			String worldDisplayName = Mixin.getWorldDisplayName(worldId);
-			this.setFormatOne("<h>%s<i> %s all <h>%d <i>chunks in <h>" + worldDisplayName + "<i>.");
-			this.setFormatMany("<h>%s<i> %s all <h>%d <i>chunks in <h>" + worldDisplayName + "<i>.");
+			this.setFormatOne("<h>%s<i> %s <h>%d <i>chunk using transfer <h>" + worldDisplayName + "<i>.");
+			this.setFormatMany("<h>%s<i> %s <h>%d <i>chunks using transfer <h>" + worldDisplayName + "<i>.");
+			
 		}
 		
 		// Return Ret

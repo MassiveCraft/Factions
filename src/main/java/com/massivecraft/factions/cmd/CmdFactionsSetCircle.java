@@ -21,8 +21,8 @@ public class CmdFactionsSetCircle extends CmdFactionsSetXRadius
 		this.addAliases("c", "circle");
 
 		// Format
-		this.setFormatOne(null);
-		this.setFormatMany("<h>%s<i> %s <h>%d <i>chunks using circle near %s<i>.");
+		this.setFormatOne("<h>%s<i> %s <h>%d <i>chunk %s<i> using circle.");
+		this.setFormatMany("<h>%s<i> %s <h>%d <i>chunks near %s<i> using circle.");
 		
 		// Requirements
 		this.addRequirements(ReqIsPlayer.get());
