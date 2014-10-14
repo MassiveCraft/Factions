@@ -800,7 +800,14 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 	// NEW
 	public boolean tryClaim(Faction newFaction, Collection<PS> pss)
 	{
+		return this.tryClaim(newFaction, pss, null, null);
+	}
+	public boolean tryClaim(Faction newFaction, Collection<PS> pss, String formatOne, String formatMany)
+	{
 		// Args
+		if (formatOne == null) formatOne = "<h>%s<i> %s <h>%d <i>chunk %s<i>.";
+		if (formatMany == null) formatMany = "<h>%s<i> %s <h>%d <i>chunks near %s<i>.";
+		
 		if (newFaction == null) throw new NullPointerException("newFaction");
 		
 		if (pss == null) throw new NullPointerException("pss");
@@ -849,7 +856,7 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 			
 			for (MPlayer informee : informees)
 			{
-				informee.msg("<h>%s<i> %s <h>%d <i>" + (oldChunks.size() == 1 ? "chunk" : "chunks") + " near %s", this.describeTo(informee, true), typeString, oldChunks.size(), chunkString);
+				informee.msg((oldChunks.size() == 1 ? formatOne : formatMany), this.describeTo(informee, true), typeString, oldChunks.size(), chunkString);
 				informee.msg("  <h>%s<i> --> <h>%s", oldFaction.describeTo(informee, true), newFaction.describeTo(informee, true));
 			}
 		}

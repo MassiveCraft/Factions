@@ -10,6 +10,18 @@ import com.massivecraft.massivecore.ps.PS;
 public abstract class CmdFactionsSetX extends FactionsCommand
 {
 	// -------------------------------------------- //
+	// FIELDS
+	// -------------------------------------------- //
+	
+	private String formatOne = null;
+	public String getFormatOne() { return this.formatOne; }
+	public void setFormatOne(String formatOne) { this.formatOne = formatOne; }
+	
+	private String formatMany = null;
+	public String getFormatMany() { return this.formatMany; }
+	public void setFormatMany(String formatMany) { this.formatMany = formatMany; }
+	
+	// -------------------------------------------- //
 	// OVERRIDE
 	// -------------------------------------------- //
 	
@@ -24,7 +36,7 @@ public abstract class CmdFactionsSetX extends FactionsCommand
 		if (chunks == null) return;
 		
 		// Apply / Inform
-		msender.tryClaim(newFaction, chunks);
+		msender.tryClaim(newFaction, chunks, this.getFormatOne(), this.getFormatMany());
 	}
 	
 	// -------------------------------------------- //

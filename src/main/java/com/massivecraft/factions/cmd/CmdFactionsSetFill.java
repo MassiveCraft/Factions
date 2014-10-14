@@ -24,6 +24,10 @@ public class CmdFactionsSetFill extends CmdFactionsSetXSimple
 		// Aliases
 		this.addAliases("f", "fill");
 
+		// Format
+		this.setFormatOne(null);
+		this.setFormatMany("<h>%s<i> %s <h>%d <i>chunks using fill near %s<i>.");
+		
 		// Requirements
 		this.addRequirements(ReqIsPlayer.get());
 		this.addRequirements(ReqHasPerm.get(Perm.SET_FILL.node));
