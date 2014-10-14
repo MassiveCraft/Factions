@@ -33,7 +33,7 @@ public class RelationUtil
 			{
 				ret = thatFaction.getName();
 			}
-			if (me instanceof MPlayer && myFaction == thatFaction)
+			else if (me instanceof MPlayer && myFaction == thatFaction)
 			{
 				ret = "your faction";
 			}
