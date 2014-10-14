@@ -35,15 +35,4 @@ public class CmdFactionsAccess extends FactionsCommand
 		this.addRequirements(ReqHasPerm.get(Perm.ACCESS.node));
 	}
 	
-	// -------------------------------------------- //
-	// OVERRIDE
-	// -------------------------------------------- //
-	
-	@Override
-	public void perform()
-	{
-		this.getCommandChain().add(this);
-		HelpCommand.get().execute(this.sender, this.args, this.commandChain);
-	}
-	
 }
