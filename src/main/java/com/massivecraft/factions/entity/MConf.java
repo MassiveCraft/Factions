@@ -151,7 +151,7 @@ public class MConf extends Entity<MConf>
 	// SET LIMITS
 	// -------------------------------------------- //
 	
-	public int setRadiusMax = 5;
+	public int setRadiusMax = 30;
 	public int setFillMax = 1000;
 	
 	// -------------------------------------------- //

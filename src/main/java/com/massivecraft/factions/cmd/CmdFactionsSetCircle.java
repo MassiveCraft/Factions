@@ -36,26 +36,22 @@ public class CmdFactionsSetCircle extends CmdFactionsSetXRadius
 		final PS chunk = PS.valueOf(me).getChunk(true);
 		final Set<PS> chunks = new LinkedHashSet<PS>();
 		
+		chunks.add(chunk); // The center should come first for pretty messages
+		
 		Integer radiusZero = this.getRadiusZero();
 		if (radiusZero == null) return null;
 		
-		double radius = radiusZero + 1.5; // Tweak ze magic constant to get ze requested behavior.
-		double radiusSquared = radius * radius;
+		double radiusSquared = radiusZero * radiusZero;
 		
-		chunks.add(chunk); // The center should come first for pretty messages
-		
-		final int xmin = chunk.getChunkX() - radiusZero;
-		final int xmax = chunk.getChunkX() + radiusZero;
-		final int zmin = chunk.getChunkZ() - radiusZero;
-		final int zmax = chunk.getChunkZ() + radiusZero;
-		
-		for (int x = xmin; x <= xmax; x++)
+		for (int dx = -radiusZero; dx <= radiusZero; dx++)
 		{
-			for (int z = zmin; z <= zmax; z++)
+			for (int dz = -radiusZero; dz <= radiusZero; dz++)
 			{
-				double dx = x - chunk.getChunkX();
-				double dz = z - chunk.getChunkZ();
 				if (dx*dx + dz*dz > radiusSquared) continue;
+				
+				int x = chunk.getChunkX() + dx;
+				int z = chunk.getChunkZ() + dz;
+				
 				chunks.add(chunk.withChunkX(x).withChunkZ(z));
 			}
 		}
