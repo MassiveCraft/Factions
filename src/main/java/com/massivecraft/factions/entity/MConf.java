@@ -193,7 +193,7 @@ public class MConf extends Entity<MConf>
 	public double actionDeniedPainAmount = 2.0D;
 	public boolean disablePVPForFactionlessPlayers = false;
 	public boolean enablePVPAgainstFactionlessInAttackersLand = false;
-	public double territoryShieldFactor = 0.3D;
+	public double territoryShieldFactor = 0.1D;
 	
 	// -------------------------------------------- //
 	// DENY COMMANDS
