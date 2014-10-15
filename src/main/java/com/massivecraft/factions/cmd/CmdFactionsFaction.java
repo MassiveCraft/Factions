@@ -62,7 +62,7 @@ public class CmdFactionsFaction extends FactionsCommand
 		// INFO: Id (admin mode output only)
 		if (msender.isUsingAdminMode())
 		{
-			msg("<a>ID: <i>%s", faction.getId());	
+			msg("<a>ID: <i>%s", faction.getId());
 		}
 		
 		// INFO: Description

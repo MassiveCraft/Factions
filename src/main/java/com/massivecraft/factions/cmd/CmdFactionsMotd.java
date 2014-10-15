@@ -3,6 +3,7 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.factions.entity.MPlayer;
+import com.massivecraft.factions.event.EventFactionsMotdChange;
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.mixin.Mixin;
@@ -74,6 +75,12 @@ public class CmdFactionsMotd extends FactionsCommand
 			return;
 		}
 
+		// Event
+		EventFactionsMotdChange event = new EventFactionsMotdChange(sender, msenderFaction, target);
+		event.run();
+		if (event.isCancelled()) return;
+		target = event.getNewMotd();
+		
 		// Apply
 		msenderFaction.setMotd(target);
 		

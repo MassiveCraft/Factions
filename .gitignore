@@ -27,5 +27,8 @@
 /dist
 /manifest.mf
 
-# Mac filesystem dust
+# Mac Filesystem Dust
 .DS_Store
+
+# Windows Filesystem Dust
+Thumbs.db
