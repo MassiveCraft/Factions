@@ -6,7 +6,7 @@ import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.iface.RelationParticipator;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.integration.Worldguard;
-import com.massivecraft.factions.scoreboards.FInfoBoard;
+import com.massivecraft.factions.scoreboards.sidebar.FInfoSidebar;
 import com.massivecraft.factions.scoreboards.FScoreboard;
 import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.struct.Permission;
@@ -119,16 +119,6 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator {
             this.autoSafeZoneEnabled = false;
             this.autoWarZoneEnabled = false;
         }
-    }
-
-    public FScoreboard activeBoard;
-
-    public FScoreboard getActiveBoard() {
-        return this.activeBoard;
-    }
-
-    public void setActiveBoard(FScoreboard board) {
-        this.activeBoard = board;
     }
 
     // FIELD: autoSafeZoneEnabled
@@ -551,7 +541,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator {
         Faction toShow = Board.getFactionAt(getLastStoodAt());
         if (shouldShowScoreboard(toShow)) {
             // Shows them the scoreboard instead of sending a message in chat. Will disappear after a few seconds.
-            new FInfoBoard(getPlayer(), toShow, true);
+            FScoreboard.get(this).setTemporarySidebar(new FInfoSidebar(toShow));
         } else {
             String msg = P.p.txt.parse("<i>") + " ~ " + toShow.getTag(this);
             if (toShow.getDescription().length() > 0) {
