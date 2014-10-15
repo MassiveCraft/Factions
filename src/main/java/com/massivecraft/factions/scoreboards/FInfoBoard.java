@@ -10,6 +10,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Score;
+import org.bukkit.scoreboard.Scoreboard;
 
 import java.util.List;
 import java.util.logging.Level;
@@ -20,12 +21,13 @@ public class FInfoBoard extends FScoreboard {
 
     public FInfoBoard(Player player, Faction faction, boolean timed) {
         this.faction = faction;
+        Scoreboard former = player.getScoreboard();
         scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
         setup(player);
         apply(player);
 
         if (timed) {
-            new ExpirationTask(player.getName(), scoreboard).runTaskLater(P.p, P.p.getConfig().getInt("scoreboard.expiration", 7) * 20L); // remove after 10 seconds.
+            new ExpirationTask(player.getName(), scoreboard, former).runTaskLater(P.p, P.p.getConfig().getInt("scoreboard.expiration", 7) * 20L); // remove after 10 seconds.
         }
     }
 

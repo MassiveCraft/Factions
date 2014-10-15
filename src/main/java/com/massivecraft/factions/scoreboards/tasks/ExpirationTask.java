@@ -12,10 +12,17 @@ public class ExpirationTask extends BukkitRunnable {
 
     private String name;
     private Scoreboard board;
+    private Scoreboard former;
 
     public ExpirationTask(String name, Scoreboard scoreboard) {
         this.board = scoreboard;
         this.name = name;
+    }
+
+    public ExpirationTask(String name, Scoreboard scoreboard, Scoreboard former) {
+        this.board = scoreboard;
+        this.name = name;
+        this.former = former;
     }
 
     @Override
@@ -25,8 +32,12 @@ public class ExpirationTask extends BukkitRunnable {
             return;
         }
 
-        if (player.getScoreboard().equals(board)) { // Incase someone else changed the board.
-            player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
+        if (player.getScoreboard().equals(board)) { // In case someone else changed the board.
+            if(former != null) {
+                player.setScoreboard(former); // restore their old scoreboard
+            } else {
+                player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
+            }
         }
     }
 }
