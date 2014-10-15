@@ -562,27 +562,29 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 		this.setRelationWish(faction.getId(), rel);
 	}
 	
-	// TODO: What is this and where is it used?
-	
-	public Map<Rel, List<String>> getFactionNamesPerRelation(RelationParticipator rp)
+	public Map<Rel, List<String>> getRelationNames(RelationParticipator rp, Set<Rel> rels, boolean skipPeaceful)
 	{
-		return getFactionNamesPerRelation(rp, false);
-	}
-
-	// onlyNonNeutral option provides substantial performance boost on large servers for listing only non-neutral factions
-	public Map<Rel, List<String>> getFactionNamesPerRelation(RelationParticipator rp, boolean onlyNonNeutral)
-	{
-		Map<Rel, List<String>> ret = new HashMap<Rel, List<String>>();
-		for (Rel rel : Rel.values())
+		// Create Ret
+		Map<Rel, List<String>> ret = new LinkedHashMap<Rel, List<String>>();
+		for (Rel rel : rels)
 		{
 			ret.put(rel, new ArrayList<String>());
 		}
+		
 		for (Faction faction : FactionColl.get().getAll())
 		{
-			Rel relation = faction.getRelationTo(this);
-			if (onlyNonNeutral && relation == Rel.NEUTRAL) continue;
-			ret.get(relation).add(faction.getName(rp));
+			if (skipPeaceful && faction.getFlag(MFlag.getFlagPeaceful())) continue;
+			
+			Rel rel = faction.getRelationTo(this);
+			
+			List<String> names = ret.get(rel);
+			if (names == null) continue;
+			
+			String name = faction.getName(rp);
+			names.add(name);
 		}
+		
+		// Return Ret
 		return ret;
 	}
 	

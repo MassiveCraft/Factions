@@ -188,6 +188,13 @@ public class MFlag extends Entity<MFlag> implements Prioritized, Registerable
 	// EXTRAS
 	// -------------------------------------------- //
 	
+	public boolean isInteresting(boolean value)
+	{
+		if ( ! this.isVisible()) return false;
+		if (this.isEditable()) return true;
+		return this.isStandard() != value;
+	}
+	
 	public String getStateInfo(boolean value, boolean withDesc)
 	{
 		String valueDesc = value ? "<g>YES" : "<b>NOO";

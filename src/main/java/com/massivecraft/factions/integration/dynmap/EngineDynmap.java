@@ -783,7 +783,7 @@ public class EngineDynmap extends EngineAbstract
 			ret = ret.replace("%" + flag + ".color%", color); // monsters (red or green)
 			ret = ret.replace("%" + flag + ".boolcolor%", boolcolor); // true (red or green)
 			
-			if (!mflag.isVisible()) continue;
+			if ( ! mflag.isInteresting(value)) continue;
 			flagMapParts.add(flag + ": " + boolcolor);
 			flagTableParts.add(color);
 		}
