@@ -1,0 +1,5 @@
+# This file is handled via the plugin.
+# This is a list of players that DO NOT want to have ANY scoreboards shown to them via this plugin.
+# It can be toggled with /f sb
+off:
+  - someuuidhere

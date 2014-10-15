@@ -1,0 +1,12 @@
+# Lang file for FactionsUUID by drtshock
+# Use & for color codes.
+# Made with love <3
+
+title: "&bFactions &0|&r"
+wilderness: "&2Wilderness"
+wilderness-description: " "
+warzone: "&4Warzone"
+warzone-description: "Not the safest place to be."
+safezone: "&6Safezone"
+safezone-description: "Free from pvp and monsters."
+toggle-sb: "You now have scoreboards set to {value}"

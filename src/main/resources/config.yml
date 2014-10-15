@@ -1,0 +1,48 @@
+# FactionsUUID by drtshock
+# Report issues https://github.com/drtshock/Factions/issues?state=open
+# Live support http://webchat.esper.net/?channels=drtshock&prompt=1
+
+# Made with love <3
+
+# Debug
+# Turn this on if you are having issues with something and working on resolving them.
+# This will spam your console with information that is useful if you know how to read the source.
+# It's suggested that you only turn this on at the direction of a developer.
+debug: false
+
+# Prevent find factions exploit
+# This will help limit how many times a player can be sent a map of factions.
+# Set this to the cooldown you want, in miliseconds, for a map to be shown to a player.
+# If you want to log when a player violates this (only happens on chunk enter so it shouldn't be too spammy),
+#   set log to true and it will be logged to console as "player tried to show a faction map too soon and triggered exploit blocker."
+findfactionsexploit:
+  cooldown: 2000 # in miliseconds. 2000 = 2 seconds.
+  log: false
+
+# Configuration section for Scoreboards
+# This will allow you to completely customize how your scoreboards look.
+# Make sure that no lines are duplicates of each other otherwise only the first will display.
+# Use &0-9a-f for colors and include messages in "quotes"
+scoreboard:
+
+# How long do we want scoreboards to stay if set temporarily.
+  expiration: 7
+
+# FInfo scoreboard is displayed when a player walks into a new Faction's territory.
+# Scoreboard disappears after <expiration> seconds.
+# Things to be replaced in this:
+# {power} - faction's power. {chunks} - total claimed chunks. {members} - total members.
+# {online} - online members. {leader} - faction's leader. {open} - shows either true or false if open.
+# {raidable} - true if the faction can be claimed over, otherwise false.
+# The title of the scoreboard will be the Faction's tag and colored according to the relation with the player's Faction.
+# Commenting this section out will cause the info to appear in chat as the plugin originally did.
+  finfo-enabled: false # Default to false to keep original functionality.
+  finfo:
+    - "&6Power"
+    - "{power}"
+    - "&3Members"
+    - "{online}/{members}"
+    - "&4Leader"
+    - "{leader}"
+    - "&bTerritory"
+    - "{chunks}"
