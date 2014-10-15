@@ -60,6 +60,7 @@ public enum Permission {
     SETHOME("sethome"),
     SETHOME_ANY("sethome.any"),
     SHOW("show"),
+    STATUS("status"),
     TAG("tag"),
     TITLE("title"),
     UNCLAIM("unclaim"),
