@@ -13,7 +13,7 @@ import java.util.UUID;
 
 public class CmdSB extends FCommand {
 
-    private YamlConfiguration settings;
+    private YamlConfiguration yml;
     private File file;
 
     public CmdSB() {
@@ -31,13 +31,12 @@ public class CmdSB extends FCommand {
             }
         }
 
-        settings = YamlConfiguration.loadConfiguration(file);
+        yml = YamlConfiguration.loadConfiguration(file);
     }
 
     @Override
     public void perform() {
-        boolean toggle = toggle(me.getPlayer().getUniqueId());
-        me.sendMessage(TL.TOGGLE_SB.toString().replace("{value}", String.valueOf(toggle)));
+        me.sendMessage(TL.TOGGLE_SB.toString().replace("{value}", String.valueOf(toggle(me.getPlayer().getUniqueId()))));
     }
 
     /**
@@ -48,12 +47,12 @@ public class CmdSB extends FCommand {
      * @return - true if now set to seeing scoreboards, otherwise false.
      */
     public boolean toggle(UUID uuid) {
-        if (settings.getStringList("off").contains(uuid.toString())) {
-            settings.getStringList("off").remove(uuid.toString());
+        if(!yml.getBoolean(uuid.toString(), false)) { // check if it's false, if never been toggled, default to false.
+            yml.set(uuid.toString(), true);
             save();
             return true;
         } else {
-            settings.getStringList("off").add(uuid.toString());
+            yml.set(uuid.toString(), false);
             save();
             return false;
         }
@@ -61,7 +60,7 @@ public class CmdSB extends FCommand {
 
     public void save() {
         try {
-            settings.save(file);
+            yml.save(file);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -86,6 +85,17 @@ public class CmdSB extends FCommand {
      * @return - true if should show, otherwise false.
      */
     public boolean showBoard(Player player) {
-        return !settings.getStringList("off").contains(player.getUniqueId().toString());
+        return showBoard(player.getUniqueId());
+    }
+
+    /**
+     * Determines whether or not to show the player a scoreboard.
+     *
+     * @param uuid - UUID of player in question.
+     *
+     * @return - true if should show, otherwise false.
+     */
+    public boolean showBoard(UUID uuid) {
+        return yml.getBoolean(uuid.toString(), false);
     }
 }
