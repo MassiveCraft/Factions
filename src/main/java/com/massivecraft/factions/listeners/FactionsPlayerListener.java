@@ -1,10 +1,12 @@
 package com.massivecraft.factions.listeners;
 
 import com.massivecraft.factions.*;
+import com.massivecraft.factions.scoreboards.FDefaultBoard;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.util.TextUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -16,7 +18,10 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.*;
 import org.bukkit.util.NumberConversions;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.UUID;
 import java.util.logging.Level;
 
 
@@ -38,6 +43,17 @@ public class FactionsPlayerListener implements Listener {
 
         // Store player's current FLocation and notify them where they are
         me.setLastStoodAt(new FLocation(event.getPlayer().getLocation()));
+
+        if (P.p.getConfig().getBoolean("scoreboard.default-enabled", false)) {
+            Bukkit.getScheduler().runTaskLater(P.p, new Runnable() { // I think we still have to delay this a few seconds.
+                @Override
+                public void run() {
+                    if (me.getPlayer().isOnline()) { // In case people are quickly joining and quitting.
+                        new FDefaultBoard(me);
+                    }
+                }
+            }, 20L);
+        }
     }
 
     @EventHandler(priority = EventPriority.NORMAL)
@@ -90,8 +106,8 @@ public class FactionsPlayerListener implements Listener {
         boolean changedFaction = (factionFrom != factionTo);
 
         if (me.isMapAutoUpdating()) {
-            if(showTimes.containsKey(player.getUniqueId()) && (showTimes.get(player.getUniqueId()) > System.currentTimeMillis())) {
-                if(P.p.getConfig().getBoolean("findfactionsexploit.log", false)) {
+            if (showTimes.containsKey(player.getUniqueId()) && (showTimes.get(player.getUniqueId()) > System.currentTimeMillis())) {
+                if (P.p.getConfig().getBoolean("findfactionsexploit.log", false)) {
                     P.p.log(Level.WARNING, "%s tried to show a faction map too soon and triggered exploit blocker.", player.getName());
                 }
             } else {

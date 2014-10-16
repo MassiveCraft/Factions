@@ -11,6 +11,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
+import java.text.DecimalFormat;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -382,6 +383,12 @@ public class Econ {
 
     public static double getBalance(String account) {
         return econ.getBalance(Bukkit.getOfflinePlayer(account));
+    }
+
+    private static final DecimalFormat format =  new DecimalFormat("#,###");
+
+    public static String getFriendlyBalance(UUID uuid) {
+        return format.format(econ.getBalance(Bukkit.getOfflinePlayer(uuid)));
     }
 
     public static boolean setBalance(String account, double amount) {

@@ -9,21 +9,25 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
+import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
 
 import java.util.List;
 import java.util.logging.Level;
 
-public class FInfoBoard extends FScoreboard {
+public class FInfoBoard implements FScoreboard {
 
     private Faction faction;
+    private Objective objective;
+    private Scoreboard scoreboard;
+    private FPlayer fPlayer;
 
     public FInfoBoard(Player player, Faction faction, boolean timed) {
+        this.fPlayer = FPlayers.i.get(player);
         this.faction = faction;
         Scoreboard former = player.getScoreboard();
-        scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
-        setup(player);
+        setup();
         apply(player);
 
         if (timed) {
@@ -31,10 +35,36 @@ public class FInfoBoard extends FScoreboard {
         }
     }
 
-    private void setup(Player player) {
-        FPlayer fPlayer = FPlayers.i.get(player);
+    public void setup() {
+        scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
         objective = scoreboard.registerNewObjective("FBoard", "dummy");
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
+        update(objective);
+    }
+
+    /**
+     * Filters lots of things in accordance with le config.
+     *
+     * @param s String to replace.
+     *
+     * @return new String with values instead of placeholders.
+     */
+    private String replace(String s) {
+        boolean raidable = faction.getLandRounded() > faction.getPower();
+        FPlayer fLeader = faction.getFPlayerAdmin();
+        String leader = fLeader == null ? "Server" : fLeader.getName().substring(0, fLeader.getName().length() > 14 ? 13 : fLeader.getName().length());
+        return ChatColor.translateAlternateColorCodes('&', s.replace("{power}", String.valueOf(faction.getPowerRounded())).replace("{online}", String.valueOf(faction.getOnlinePlayers().size())).replace("{members}", String.valueOf(faction.getFPlayers().size())).replace("{leader}", leader).replace("{chunks}", String.valueOf(faction.getLandRounded())).replace("{raidable}", String.valueOf(raidable)));
+    }
+
+    public void apply(Player player) {
+        player.setScoreboard(scoreboard);
+    }
+
+    public void remove(Player player) {
+        player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
+    }
+
+    public void update(Objective objective) {
         objective.setDisplayName(faction.getRelationTo(fPlayer).getColor() + faction.getTag());
 
         List<String> list = P.p.getConfig().getStringList("scoreboard.finfo");
@@ -58,18 +88,7 @@ public class FInfoBoard extends FScoreboard {
         }
     }
 
-    /**
-     * Filters lots of things in accordance with le config.
-     *
-     * @param s String to replace.
-     *
-     * @return new String with values instead of placeholders.
-     */
-    private String replace(String s) {
-        boolean raidable = faction.getLandRounded() > faction.getPower();
-        FPlayer fLeader = faction.getFPlayerAdmin();
-        String leader = fLeader == null ? "Server" : fLeader.getName().substring(0, fLeader.getName().length() > 14 ? 13 : fLeader.getName().length());
-        return ChatColor.translateAlternateColorCodes('&', s.replace("{power}", String.valueOf(faction.getPowerRounded())).replace("{online}", String.valueOf(faction.getOnlinePlayers().size())).replace("{members}", String.valueOf(faction.getFPlayers().size())).replace("{leader}", leader).replace("{chunks}", String.valueOf(faction.getLandRounded())).replace("{raidable}", String.valueOf(raidable)));
+    public Scoreboard getScoreboard() {
+        return this.scoreboard;
     }
-
 }
