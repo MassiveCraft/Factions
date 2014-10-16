@@ -15,4 +15,6 @@ public interface FScoreboard {
     public void setup();
 
     public Scoreboard getScoreboard();
+
+    public void cancel();
 }

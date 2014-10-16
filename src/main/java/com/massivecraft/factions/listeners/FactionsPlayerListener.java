@@ -2,6 +2,7 @@ package com.massivecraft.factions.listeners;
 
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.scoreboards.FDefaultBoard;
+import com.massivecraft.factions.scoreboards.FScoreboard;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
@@ -44,12 +45,13 @@ public class FactionsPlayerListener implements Listener {
         // Store player's current FLocation and notify them where they are
         me.setLastStoodAt(new FLocation(event.getPlayer().getLocation()));
 
-        if (P.p.getConfig().getBoolean("scoreboard.default-enabled", false)) {
+        if (P.p.getConfig().getBoolean("scoreboard.default-enabled", false) && P.p.cmdBase.cmdSB.showBoard(me)) {
             Bukkit.getScheduler().runTaskLater(P.p, new Runnable() { // I think we still have to delay this a few seconds.
                 @Override
                 public void run() {
                     if (me.getPlayer().isOnline()) { // In case people are quickly joining and quitting.
-                        new FDefaultBoard(me);
+                        FScoreboard board = new FDefaultBoard(me);
+                        me.setActiveBoard(board);
                     }
                 }
             }, 20L);

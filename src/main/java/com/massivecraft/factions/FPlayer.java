@@ -7,6 +7,7 @@ import com.massivecraft.factions.iface.RelationParticipator;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.integration.Worldguard;
 import com.massivecraft.factions.scoreboards.FInfoBoard;
+import com.massivecraft.factions.scoreboards.FScoreboard;
 import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
@@ -118,6 +119,16 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator {
             this.autoSafeZoneEnabled = false;
             this.autoWarZoneEnabled = false;
         }
+    }
+
+    public FScoreboard activeBoard;
+
+    public FScoreboard getActiveBoard() {
+        return this.activeBoard;
+    }
+
+    public void setActiveBoard(FScoreboard board) {
+        this.activeBoard = board;
     }
 
     // FIELD: autoSafeZoneEnabled

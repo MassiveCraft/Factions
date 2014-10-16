@@ -2,6 +2,8 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.P;
+import com.massivecraft.factions.scoreboards.FDefaultBoard;
+import com.massivecraft.factions.scoreboards.FScoreboard;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -36,7 +38,14 @@ public class CmdSB extends FCommand {
 
     @Override
     public void perform() {
-        me.sendMessage(TL.TOGGLE_SB.toString().replace("{value}", String.valueOf(toggle(me.getPlayer().getUniqueId()))));
+        boolean toggle = toggle(me.getPlayer().getUniqueId());
+        if(!toggle && fme.getActiveBoard() != null) {
+            fme.getActiveBoard().cancel();
+        } else if(toggle && P.p.getConfig().getBoolean("scoreboards.default-enabled", false)){
+            FScoreboard board = new FDefaultBoard(fme);
+            fme.setActiveBoard(board);
+        }
+        me.sendMessage(TL.TOGGLE_SB.toString().replace("{value}", String.valueOf(toggle)));
     }
 
     /**

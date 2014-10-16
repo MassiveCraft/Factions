@@ -88,6 +88,10 @@ public class FInfoBoard implements FScoreboard {
         }
     }
 
+    public void cancel() {
+
+    }
+
     public Scoreboard getScoreboard() {
         return this.scoreboard;
     }

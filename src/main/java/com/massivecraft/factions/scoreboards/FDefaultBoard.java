@@ -47,7 +47,7 @@ public class FDefaultBoard implements FScoreboard {
 
     public void update(Objective buffer) {
         if(fPlayer.getPlayer() == null || !fPlayer.getPlayer().isOnline()) {
-            Bukkit.getScheduler().cancelTask(taskId);
+            cancel();
             return;
         }
         buffer.setDisplayName(ChatColor.translateAlternateColorCodes('&', P.p.getConfig().getString("scoreboard.default-title", "i love drt")));
@@ -87,6 +87,10 @@ public class FDefaultBoard implements FScoreboard {
                 .replace("{maxPower}", String.valueOf(fPlayer.getPowerMaxRounded()))
                 .replace("{totalOnline}", String.valueOf(Bukkit.getServer().getOnlinePlayers().size()));
         return ChatColor.translateAlternateColorCodes('&', s);
+    }
+
+    public void cancel() {
+        Bukkit.getScheduler().cancelTask(taskId);
     }
 
     public Scoreboard getScoreboard() {
