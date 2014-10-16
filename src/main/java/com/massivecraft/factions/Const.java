@@ -16,7 +16,7 @@ public class Const
 	public static final String ASPECT = BASENAME;
 	
 	// ASCII Map
-	public static final int MAP_WIDTH = 47;
+	public static final int MAP_WIDTH = 48;
 	public static final int MAP_HEIGHT = 8;
 	public static final int MAP_HEIGHT_FULL = 17;
 	

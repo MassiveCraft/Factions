@@ -87,16 +87,12 @@ public enum Rel
 			return MEMBER;
 		}
 		
-		// This is how we check: Based on first char.
-		char c = str.charAt(0);
-		if (c == 'l') return LEADER;
-		if (c == 'o') return OFFICER;
-		if (c == 'm') return MEMBER;
-		if (c == 'r') return RECRUIT;
-		if (c == 'a') return ALLY;
-		if (c == 't') return TRUCE;
-		if (c == 'n') return NEUTRAL;
-		if (c == 'e') return ENEMY;
+		// NOTE: This assumes the first char is different for all.
+		for (Rel rel : values())
+		{
+			String relStr = rel.toString().toLowerCase();
+			if (relStr.startsWith(str)) return rel;
+		}
 		return null;
 	}
 	

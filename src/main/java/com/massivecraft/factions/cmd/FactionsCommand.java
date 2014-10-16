@@ -6,7 +6,7 @@ import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.massivecore.cmd.MassiveCommand;
 import com.massivecraft.massivecore.util.Txt;
 
-public abstract class FactionsCommand extends MassiveCommand
+public class FactionsCommand extends MassiveCommand
 {
 	// -------------------------------------------- //
 	// FIELDS
