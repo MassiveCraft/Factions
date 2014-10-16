@@ -86,6 +86,8 @@ permissions:
       factions.version: true
       factions.unclaim: true
       factions.unclaimall: true
+      factions.scoreboard: true
+      factions.showinvites: true
   factions.admin:
     description: hand over your admin rights
   factions.admin.any:
@@ -225,3 +227,7 @@ permissions:
     description: unclaim the land where you are standing
   factions.unclaimall:
     description: unclaim all of your factions land
+  factions.scoreboard:
+    description: ability to toggle scoreboards
+  factions.showinvites:
+    description: show pending invites to your faction

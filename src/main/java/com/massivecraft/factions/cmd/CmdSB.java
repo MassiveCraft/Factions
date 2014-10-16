@@ -41,7 +41,7 @@ public class CmdSB extends FCommand {
         boolean toggle = toggle(me.getPlayer().getUniqueId());
         if(!toggle && fme.getActiveBoard() != null) {
             fme.getActiveBoard().cancel();
-        } else if(toggle && P.p.getConfig().getBoolean("scoreboards.default-enabled", false)){
+        } else if(toggle && P.p.getConfig().getBoolean("scoreboards.default-enabled", true)){
             FScoreboard board = new FDefaultBoard(fme);
             fme.setActiveBoard(board);
         }
@@ -56,7 +56,7 @@ public class CmdSB extends FCommand {
      * @return - true if now set to seeing scoreboards, otherwise false.
      */
     public boolean toggle(UUID uuid) {
-        if(!yml.getBoolean(uuid.toString(), false)) { // check if it's false, if never been toggled, default to false.
+        if(!yml.getBoolean(uuid.toString(), true)) { // check if it's false, if never been toggled, default to false.
             yml.set(uuid.toString(), true);
             save();
             return true;
@@ -105,6 +105,6 @@ public class CmdSB extends FCommand {
      * @return - true if should show, otherwise false.
      */
     public boolean showBoard(UUID uuid) {
-        return yml.getBoolean(uuid.toString(), false);
+        return yml.getBoolean(uuid.toString(), true);
     }
 }
