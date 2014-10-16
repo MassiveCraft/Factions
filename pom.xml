@@ -130,7 +130,7 @@
         </repository>
         <repository>
             <id>fanciful-mvn-repo</id>
-            <url>https://raw.github.com/mkremins/fanciful/mvn-repo/</url>
+            <url>https://github.com/mkremins/fanciful/mvn-repo/</url>
         </repository>
     </repositories>
 </project>
