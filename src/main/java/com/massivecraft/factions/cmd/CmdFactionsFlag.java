@@ -49,7 +49,7 @@ public class CmdFactionsFlag extends FactionsCommand
 			for (MFlag mflag : MFlag.getAll())
 			{
 				if (!mflag.isVisible() && !msender.isUsingAdminMode()) continue;
-				msg(mflag.getStateInfo(faction.getFlag(mflag), true));
+				msg(mflag.getStateDesc(faction.getFlag(mflag), true, true, true, true, false));
 			}
 			return;
 		}
@@ -62,7 +62,7 @@ public class CmdFactionsFlag extends FactionsCommand
 		if ( ! this.argIsSet(2))
 		{
 			msg(Txt.titleize("Flag for " + faction.describeTo(msender, true)));
-			msg(mflag.getStateInfo(faction.getFlag(mflag), true));
+			msg(mflag.getStateDesc(faction.getFlag(mflag), true, true, true, true, false));
 			return;
 		}
 		
@@ -90,7 +90,7 @@ public class CmdFactionsFlag extends FactionsCommand
 		faction.setFlag(mflag, targetValue);
 		
 		// Inform
-		String stateInfo = mflag.getStateInfo(faction.getFlag(mflag), true);
+		String stateInfo = mflag.getStateDesc(faction.getFlag(mflag), true, false, true, true, true);
 		if (msender.getFaction() != faction)
 		{
 			// Send message to sender

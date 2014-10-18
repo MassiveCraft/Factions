@@ -27,6 +27,7 @@ public interface BoardInterface
 	
 	// COUNT
 	public int getCount(Faction faction);
+	public int getCount(String factionId);
 	
 	// NEARBY DETECTION
 	public boolean isBorderPs(PS ps);

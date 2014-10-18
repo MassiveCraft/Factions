@@ -122,7 +122,7 @@ public class EngineMain extends EngineAbstract
 	// FACTION SHOW
 	// -------------------------------------------- //
 	
-	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
 	public void onFactionShow(EventFactionsFactionShow event)
 	{
 		final int tableCols = 4;
@@ -191,7 +191,6 @@ public class EngineMain extends EngineAbstract
 					Double money = MConf.get().econChunkCost.get(type);
 					if (money == null) continue;
 					if (money == 0) continue;
-					System.out.println("money: "+money);
 					money *= landCount;
 					
 					String word = "Cost";
@@ -202,7 +201,7 @@ public class EngineMain extends EngineAbstract
 					}
 					
 					String key = Txt.parse("Total Land %s %s", type.toString().toLowerCase(), word);
-					String value = Money.format(money);
+					String value = Txt.parse("<h>%s", Money.format(money));
 					String line = show(key, value);
 					landvalueLines.add(line);
 				}
@@ -211,7 +210,8 @@ public class EngineMain extends EngineAbstract
 				// BANK
 				if (MConf.get().bankEnabled)
 				{
-					String bankDesc = Money.format(Money.get(faction));
+					double bank = Money.get(faction);
+					String bankDesc = Txt.parse("<h>%s", Money.format(bank, true));
 					show(idPriorityLiness, Const.SHOW_ID_FACTION_BANK, Const.SHOW_PRIORITY_FACTION_BANK, "Bank", bankDesc);
 				}
 			}

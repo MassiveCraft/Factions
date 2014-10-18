@@ -5,6 +5,7 @@ import java.util.List;
 import com.massivecraft.massivecore.PredictateIsRegistered;
 import com.massivecraft.massivecore.Prioritized;
 import com.massivecraft.massivecore.Registerable;
+import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.store.Entity;
 import com.massivecraft.massivecore.util.Txt;
 
@@ -70,20 +71,20 @@ public class MFlag extends Entity<MFlag> implements Prioritized, Registerable
 		getFlagInfpower();
 	}
 	
-	public static MFlag getFlagOpen() { return getCreative(PRIORITY_OPEN, ID_OPEN, ID_OPEN, "Open factions can be joined without invite.", false, true, true); }
-	public static MFlag getFlagMonsters() { return getCreative(PRIORITY_MONSTERS, ID_MONSTERS, ID_MONSTERS, "Can monsters spawn in this territory?", false, true, true); }
-	public static MFlag getFlagPowerloss() { return getCreative(PRIORITY_POWERLOSS, ID_POWERLOSS, ID_POWERLOSS, "Is power lost on death in this territory?", true, false, true); }
-	public static MFlag getFlagPvp() { return getCreative(PRIORITY_PVP, ID_PVP, ID_PVP, "Can you PVP in territory?", true, false, true); }
-	public static MFlag getFlagFriendlyire() { return getCreative(PRIORITY_FRIENDLYFIRE, ID_FRIENDLYFIRE, ID_FRIENDLYFIRE, "Can friends hurt eachother here?", false, false, true); }
-	public static MFlag getFlagExplosions() { return getCreative(PRIORITY_EXPLOSIONS, ID_EXPLOSIONS, ID_EXPLOSIONS, "Can explosions occur in this territory?", true, false, true); }
-	public static MFlag getFlagOfflineexplosions() { return getCreative(PRIORITY_OFFLINEEXPLOSIONS, ID_OFFLINEEXPLOSIONS, ID_OFFLINEEXPLOSIONS, "Can explosions occur if faction is offline?", false, false, true); }
-	public static MFlag getFlagFirespread() { return getCreative(PRIORITY_FIRESPREAD, ID_FIRESPREAD, ID_FIRESPREAD, "Can fire spread in territory?", true, false, true); }
-	public static MFlag getFlagEndergrief() { return getCreative(PRIORITY_ENDERGRIEF, ID_ENDERGRIEF, ID_ENDERGRIEF, "Can endermen grief in this territory?", false, false, true); }
-	public static MFlag getFlagPermanent() { return getCreative(PRIORITY_PERMANENT, ID_PERMANENT, ID_PERMANENT, "A permanent faction will never be deleted.", false, false, true); }
-	public static MFlag getFlagPeaceful() { return getCreative(PRIORITY_PEACEFUL, ID_PEACEFUL, ID_PEACEFUL, "Always in truce with other factions.", false, false, true); }
-	public static MFlag getFlagInfpower() { return getCreative(PRIORITY_INFPOWER, ID_INFPOWER, ID_INFPOWER, "This flag gives the faction infinite power.", false, false, true); }
+	public static MFlag getFlagOpen() { return getCreative(PRIORITY_OPEN, ID_OPEN, ID_OPEN, "Can the faction be joined without an invite?", "An invite is required to join.", "Anyone can join. No invite required.", false, true, true); }
+	public static MFlag getFlagMonsters() { return getCreative(PRIORITY_MONSTERS, ID_MONSTERS, ID_MONSTERS, "Can monsters spawn in this territory?", "Monsters can spawn in this territory.", "Monsters can NOT spawn in this territory.", false, true, true); }
+	public static MFlag getFlagPowerloss() { return getCreative(PRIORITY_POWERLOSS, ID_POWERLOSS, ID_POWERLOSS, "Is power lost on death in this territory?", "Power is lost on death in this territory.", "Power is NOT lost on death in this territory.", true, false, true); }
+	public static MFlag getFlagPvp() { return getCreative(PRIORITY_PVP, ID_PVP, ID_PVP, "Can you PVP in territory?", "You can PVP in this territory.", "You can NOT PVP in this territory.", true, false, true); }
+	public static MFlag getFlagFriendlyire() { return getCreative(PRIORITY_FRIENDLYFIRE, ID_FRIENDLYFIRE, ID_FRIENDLYFIRE, "Can friends hurt eachother in this territory?", "Friends can hurt eachother in this territory.", "Friends can NOT hurt eachother in this territory.", false, false, true); }
+	public static MFlag getFlagExplosions() { return getCreative(PRIORITY_EXPLOSIONS, ID_EXPLOSIONS, ID_EXPLOSIONS, "Can explosions occur in this territory?", "Explosions can occur in this territory.", "Explosions can NOT occur in this territory.", true, false, true); }
+	public static MFlag getFlagOfflineexplosions() { return getCreative(PRIORITY_OFFLINEEXPLOSIONS, ID_OFFLINEEXPLOSIONS, ID_OFFLINEEXPLOSIONS, "Can explosions occur if faction is offline?", "Explosions can occur if faction is offline.", "Explosions can NOT occur if faction is offline.", false, false, true); }
+	public static MFlag getFlagFirespread() { return getCreative(PRIORITY_FIRESPREAD, ID_FIRESPREAD, ID_FIRESPREAD, "Can fire spread in territory?", "Fire can spread in this territory.", "Fire can NOT spread in this territory.", true, false, true); }
+	public static MFlag getFlagEndergrief() { return getCreative(PRIORITY_ENDERGRIEF, ID_ENDERGRIEF, ID_ENDERGRIEF, "Can endermen grief in this territory?", "Endermen can grief in this territory", "Endermen can NOT grief in this territory.", false, false, true); }
+	public static MFlag getFlagPermanent() { return getCreative(PRIORITY_PERMANENT, ID_PERMANENT, ID_PERMANENT, "Is the faction immune to deletion?", "The faction can NOT be deleted.", "The faction can be deleted.", false, false, true); }
+	public static MFlag getFlagPeaceful() { return getCreative(PRIORITY_PEACEFUL, ID_PEACEFUL, ID_PEACEFUL, "Is the faction in truce with everyone?", "The faction is in truce with everyone.", "The faction relations work as usual.", false, false, true); }
+	public static MFlag getFlagInfpower() { return getCreative(PRIORITY_INFPOWER, ID_INFPOWER, ID_INFPOWER, "Does the faction have infinite power?", "The faction has infinite power.", "The faction power works as usual.", false, false, true); }
 	
-	public static MFlag getCreative(int priority, String id, String name, String desc, boolean standard, boolean editable, boolean visible)
+	public static MFlag getCreative(int priority, String id, String name, String desc, String descYes, String descNo, boolean standard, boolean editable, boolean visible)
 	{
 		MFlag ret = MFlagColl.get().get(id, false);
 		if (ret != null)
@@ -92,7 +93,7 @@ public class MFlag extends Entity<MFlag> implements Prioritized, Registerable
 			return ret;
 		}
 		
-		ret = new MFlag(priority, name, desc, standard, editable, visible);
+		ret = new MFlag(priority, name, desc, descYes, descNo, standard, editable, visible);
 		MFlagColl.get().attach(ret, id);
 		ret.setRegistered(true);
 		ret.sync();
@@ -110,6 +111,8 @@ public class MFlag extends Entity<MFlag> implements Prioritized, Registerable
 		this.priority = that.priority;
 		this.name = that.name;
 		this.desc = that.desc;
+		this.descYes = that.descYes;
+		this.descNo = that.descNo;
 		this.standard = that.standard;
 		this.editable = that.editable;
 		this.visible = that.visible;
@@ -140,11 +143,23 @@ public class MFlag extends Entity<MFlag> implements Prioritized, Registerable
 	public String getName() { return this.name; }
 	public MFlag setName(String name) { this.name = name; this.changed(); return this; }
 	
-	// Short description
+	// Description
 	// Example: "Can monsters spawn in this territory?"
 	private String desc = "defaultDesc";
 	public String getDesc() { return this.desc; }
 	public MFlag setDesc(String desc) { this.desc = desc; this.changed(); return this; }
+	
+	// Description Yes
+	// Example: "Monsters can spawn in this territory."
+	private String descYes = "defaultDescYes";
+	public String getDescYes() { return this.descYes; }
+	public MFlag setDescYes(String descYes) { this.descYes = descYes; this.changed(); return this; }
+	
+	// Description No
+	// Example: "Monsters can NOT spawn in this territory."
+	private String descNo = "defaultDescNo";
+	public String getDescNo() { return this.descNo; }
+	public MFlag setDescNo(String descNo) { this.descNo = descNo; this.changed(); return this; }
 	
 	// Standard value
 	// Example: false (per default monsters do not spawn in faction territory)
@@ -174,11 +189,13 @@ public class MFlag extends Entity<MFlag> implements Prioritized, Registerable
 		// No argument constructor for GSON
 	}
 	
-	public MFlag(int priority, String name, String desc, boolean standard, boolean editable, boolean visible)
+	public MFlag(int priority, String name, String desc, String descYes, String descNo, boolean standard, boolean editable, boolean visible)
 	{
 		this.priority = priority;
 		this.name = name;
 		this.desc = desc;
+		this.descYes = descYes;
+		this.descNo = descNo;
 		this.standard = standard;
 		this.editable = editable;
 		this.visible = visible;
@@ -195,27 +212,64 @@ public class MFlag extends Entity<MFlag> implements Prioritized, Registerable
 		return this.isStandard() != value;
 	}
 	
+	public String getStateDesc(boolean value, boolean withValue, boolean monospaceValue, boolean withName, boolean withDesc, boolean specificDesc)
+	{
+		List<String> parts = new MassiveList<>();
+		
+		if (withValue)
+		{
+			if (monospaceValue)
+			{
+				parts.add(Txt.parse(value ? "<g>YES" : "<b>NOO"));
+			}
+			else
+			{
+				parts.add(Txt.parse(value ? "<g>YES" : "<b>NO"));
+			}
+		}
+		
+		if (withName)
+		{
+			String nameFormat;
+			if ( ! this.isVisible())
+			{
+				nameFormat = "<silver>%s";
+			}
+			else if (this.isEditable())
+			{
+				nameFormat = "<pink>%s";
+			}
+			else
+			{
+				nameFormat = "<aqua>%s";
+			}
+			String name = this.getName();
+			String nameDesc = Txt.parse(nameFormat, name);
+			parts.add(nameDesc);
+		}
+		
+		if (withDesc)
+		{
+			String desc;
+			if (specificDesc)
+			{
+				desc = value ? this.getDescYes() : this.getDescNo();
+			}
+			else
+			{
+				desc = this.getDesc();
+			}
+			String descDesc = Txt.parse("<i>%s", desc);
+			parts.add(descDesc);
+		}
+		
+		return Txt.implode(parts, " ");
+	}
+	
+	@Deprecated
 	public String getStateInfo(boolean value, boolean withDesc)
 	{
-		String valueDesc = value ? "<g>YES" : "<b>NOO";
-		
-		String color = "<aqua>";
-		if (!this.isVisible())
-		{
-			color = "<silver>";
-		}
-		else if (this.isEditable())
-		{
-			color = "<pink>";
-		}
-		
-		String ret = valueDesc + " " + color + this.getName();
-		
-		if (withDesc) ret += " <i>" + this.getDesc();
-		
-		ret = Txt.parse(ret);
-		
-		return ret;
+		return this.getStateDesc(value, true, true, true, true, false);
 	}
 	
 }

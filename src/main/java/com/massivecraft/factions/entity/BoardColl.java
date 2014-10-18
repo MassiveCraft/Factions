@@ -133,10 +133,16 @@ public class BoardColl extends Coll<Board> implements BoardInterface
 	@Override
 	public int getCount(Faction faction)
 	{
+		return this.getCount(faction.getId());
+	}
+	
+	@Override
+	public int getCount(String factionId)
+	{
 		int ret = 0;
 		for (Board board : this.getAll())
 		{
-			ret += board.getCount(faction);
+			ret += board.getCount(factionId);
 		}
 		return ret;
 	}

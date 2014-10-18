@@ -1,9 +1,9 @@
 package com.massivecraft.factions;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
-
 import org.bukkit.World;
+
+import com.massivecraft.massivecore.CaseInsensitiveComparator;
+import com.massivecraft.massivecore.collections.MassiveTreeSet;
 
 public class WorldExceptionSet
 {
@@ -13,7 +13,7 @@ public class WorldExceptionSet
 	
 	public boolean standard = true;
 	
-	public Set<String> exceptions = new LinkedHashSet<String>();
+	public MassiveTreeSet<String, CaseInsensitiveComparator> exceptions = new MassiveTreeSet<String, CaseInsensitiveComparator>(CaseInsensitiveComparator.get());
 	
 	// -------------------------------------------- //
 	// CONTAINS

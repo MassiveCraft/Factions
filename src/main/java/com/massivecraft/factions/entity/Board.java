@@ -204,13 +204,13 @@ public class Board extends Entity<Board> implements BoardInterface
 		return this.getCount(faction.getId());
 	}
 	
+	@Override
 	public int getCount(String factionId)
 	{
 		int ret = 0;
 		for (TerritoryAccess ta : this.map.values())
 		{
 			if (!ta.getHostFactionId().equals(factionId)) continue;
-			
 			ret += 1;
 		}
 		return ret;
