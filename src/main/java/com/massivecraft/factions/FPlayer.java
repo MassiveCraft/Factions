@@ -563,7 +563,9 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator {
 
     /**
      * Check if the scoreboard should be shown. Simple method to be used by above method.
+     *
      * @param toShow Faction to be shown.
+     *
      * @return true if should show, otherwise false.
      */
     private boolean shouldShowScoreboard(Faction toShow) {
@@ -629,6 +631,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator {
             }
         }
 
+        myFaction.removeAnnouncements(this);
         this.resetFactionData();
 
         if (myFaction.isNormal() && !perm && myFaction.getFPlayers().isEmpty()) {

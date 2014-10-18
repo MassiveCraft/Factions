@@ -44,6 +44,7 @@ public class CmdInvite extends FCommand {
         }
 
         myFaction.invite(you);
+        if(!you.isOnline()) return;
 
         // Tooltips, colors, and commands only apply to the string immediately before it.
         FancyMessage message = new FancyMessage(fme.describeTo(you, true))

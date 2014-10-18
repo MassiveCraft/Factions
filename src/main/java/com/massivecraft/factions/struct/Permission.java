@@ -9,6 +9,7 @@ public enum Permission {
     OWNERSHIP_BYPASS("ownershipbypass"),
     ADMIN("admin"),
     ADMIN_ANY("admin.any"),
+    ANNOUNCE("announce"),
     AUTOCLAIM("autoclaim"),
     BYPASS("bypass"),
     CHAT("chat"),

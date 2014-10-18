@@ -33,6 +33,37 @@ public class Faction extends Entity implements EconomyParticipator {
     // speedy lookup of players in faction
     private transient Set<FPlayer> fplayers = new HashSet<FPlayer>();
 
+    private HashMap<String, List<String>> announcements;
+
+    public HashMap<String, List<String>> getAnnouncements() {
+        return this.announcements;
+    }
+
+    public void addAnnouncement(FPlayer fPlayer, String msg) {
+        List<String> list = announcements.containsKey(fPlayer.getId()) ? announcements.get(fPlayer.getId()) : new ArrayList<String>();
+        list.add(msg);
+        announcements.put(fPlayer.getId(), list);
+    }
+
+    public void sendUnreadAnnouncements(FPlayer fPlayer) {
+        if (!announcements.containsKey(fPlayer.getId())) {
+            return;
+        }
+        fPlayer.sendMessage(ChatColor.LIGHT_PURPLE + "--Unread Faction Announcements--");
+        for (String s : announcements.get(fPlayer.getPlayer().getUniqueId().toString())) {
+            fPlayer.sendMessage(s);
+        }
+        fPlayer.sendMessage(ChatColor.LIGHT_PURPLE + "--Unread Faction Announcements--");
+        announcements.remove(fPlayer.getId());
+    }
+
+    public void removeAnnouncements(FPlayer fPlayer) {
+        if (announcements.containsKey(fPlayer.getId())) {
+            announcements.remove(fPlayer.getId());
+        }
+    }
+
+
     // FIELD: invites
     private Set<String> invites;
 
@@ -236,6 +267,7 @@ public class Faction extends Entity implements EconomyParticipator {
         this.permanent = false;
         this.money = 0.0;
         this.powerBoost = 0.0;
+        this.announcements = new HashMap<String, List<String>>();
     }
 
     // -------------------------------------------- //

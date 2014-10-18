@@ -22,10 +22,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Level;
 
 
@@ -125,8 +122,7 @@ public class P extends MPlugin {
 
     @Override
     public GsonBuilder getGsonBuilder() {
-        Type mapFLocToStringSetType = new TypeToken<Map<FLocation, Set<String>>>() {
-        }.getType();
+        Type mapFLocToStringSetType = new TypeToken<Map<FLocation, Set<String>>>() {}.getType();
 
         return new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().excludeFieldsWithModifiers(Modifier.TRANSIENT, Modifier.VOLATILE).registerTypeAdapter(LazyLocation.class, new MyLocationTypeAdapter()).registerTypeAdapter(mapFLocToStringSetType, new MapFLocToStringSetTypeAdapter());
     }

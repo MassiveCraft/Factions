@@ -45,6 +45,16 @@ public class FactionsPlayerListener implements Listener {
         // Store player's current FLocation and notify them where they are
         me.setLastStoodAt(new FLocation(event.getPlayer().getLocation()));
 
+        // Check for Faction announcements. Let's delay this so they actually see it.
+        Bukkit.getScheduler().runTaskLater(P.p, new Runnable() {
+            @Override
+            public void run() {
+                if (me.isOnline()) {
+                    me.getFaction().sendUnreadAnnouncements(me);
+                }
+            }
+        }, 33L); // Don't ask me why.
+
         if (P.p.getConfig().getBoolean("scoreboard.default-enabled", false) && P.p.cmdBase.cmdSB.showBoard(me)) {
             Bukkit.getScheduler().runTaskLater(P.p, new Runnable() { // I think we still have to delay this a few seconds.
                 @Override
