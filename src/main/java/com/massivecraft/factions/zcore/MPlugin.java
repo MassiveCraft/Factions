@@ -3,13 +3,16 @@ package com.massivecraft.factions.zcore;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import com.massivecraft.factions.Board;
 import com.massivecraft.factions.Conf;
-import com.massivecraft.factions.zcore.persist.EM;
+import com.massivecraft.factions.FPlayers;
+import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.zcore.persist.SaveTask;
 import com.massivecraft.factions.zcore.util.PermUtil;
 import com.massivecraft.factions.zcore.util.Persist;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TextUtil;
+
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -180,7 +183,9 @@ public abstract class MPlugin extends JavaPlugin {
         }
         // only save data if plugin actually loaded successfully
         if (loadSuccessful) {
-            EM.saveAllToDisc();
+            Factions.getInstance().forceSave();
+            FPlayers.getInstance().forceSave();
+            Board.getInstance().forceSave();
         }
         log("Disabled");
     }

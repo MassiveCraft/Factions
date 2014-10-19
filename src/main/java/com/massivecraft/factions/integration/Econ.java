@@ -47,8 +47,6 @@ public class Econ {
         }
 
         P.p.cmdBase.cmdHelp.updateHelp();
-
-        oldMoneyDoTransfer();
     }
 
     public static boolean shouldBeUsed() {
@@ -328,19 +326,6 @@ public class Econ {
     // format money string based on server's set currency type, like "24 gold" or "$24.50"
     public static String moneyString(double amount) {
         return econ.format(amount);
-    }
-
-    public static void oldMoneyDoTransfer() {
-        if (!shouldBeUsed()) {
-            return;
-        }
-
-        for (Faction faction : Factions.i.get()) {
-            if (faction.money > 0) {
-                econ.depositPlayer(faction.getAccountId(), faction.money);
-                faction.money = 0;
-            }
-        }
     }
 
     // calculate the cost for claiming land

@@ -1,18 +1,20 @@
 package com.massivecraft.factions;
 
 import com.massivecraft.factions.util.MiscUtil;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-public class FLocation {
-
+public class FLocation implements Serializable {
+    private static final long serialVersionUID = -8292915234027387983L;
     private String worldName = "world";
     private int x = 0;
     private int z = 0;
@@ -86,6 +88,17 @@ public class FLocation {
     @Override
     public String toString() {
         return "[" + this.getWorldName() + "," + this.getCoordString() + "]";
+    }
+
+    public static FLocation fromString(String string) {
+        int index = string.indexOf(",", 0);
+        int start = 1;
+        String worldName = string.substring(start, index);
+        start = index + 1;
+        index = string.indexOf(",", start);
+        int x = Integer.valueOf(string.substring(start, index));
+        int y = Integer.valueOf(string.substring(index + 1, string.length() - 1));
+        return new FLocation(worldName, x, y);
     }
 
     //----------------------------------------------//

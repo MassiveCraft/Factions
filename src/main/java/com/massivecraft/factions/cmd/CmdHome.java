@@ -61,7 +61,7 @@ public class CmdHome extends FCommand {
             return;
         }
 
-        Faction faction = Board.getFactionAt(new FLocation(me.getLocation()));
+        Faction faction = Board.getInstance().getFactionAt(new FLocation(me.getLocation()));
         Location loc = me.getLocation().clone();
 
         // if player is not in a safe zone or their own faction territory, only allow teleport if no enemies are nearby
@@ -78,7 +78,7 @@ public class CmdHome extends FCommand {
                     continue;
                 }
 
-                FPlayer fp = FPlayers.i.get(p);
+                FPlayer fp = FPlayers.getInstance().getByPlayer(p);
                 if (fme.getRelationTo(fp) != Relation.ENEMY) {
                     continue;
                 }

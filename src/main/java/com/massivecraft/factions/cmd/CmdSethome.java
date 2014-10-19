@@ -50,7 +50,7 @@ public class CmdSethome extends FCommand {
         // Can the player set the faction home HERE?
         if (!Permission.BYPASS.has(me) &&
                     Conf.homesMustBeInClaimedTerritory &&
-                    Board.getFactionAt(new FLocation(me)) != faction) {
+                    Board.getInstance().getFactionAt(new FLocation(me)) != faction) {
             fme.msg("<b>Sorry, your faction home can only be set inside your own claimed territory.");
             return;
         }

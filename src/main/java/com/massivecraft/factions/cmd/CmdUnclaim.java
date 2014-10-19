@@ -28,11 +28,11 @@ public class CmdUnclaim extends FCommand {
     @Override
     public void perform() {
         FLocation flocation = new FLocation(fme);
-        Faction otherFaction = Board.getFactionAt(flocation);
+        Faction otherFaction = Board.getInstance().getFactionAt(flocation);
 
         if (otherFaction.isSafeZone()) {
             if (Permission.MANAGE_SAFE_ZONE.has(sender)) {
-                Board.removeAt(flocation);
+                Board.getInstance().removeAt(flocation);
                 msg("<i>Safe zone was unclaimed.");
 
                 if (Conf.logLandUnclaims) {
@@ -44,7 +44,7 @@ public class CmdUnclaim extends FCommand {
             return;
         } else if (otherFaction.isWarZone()) {
             if (Permission.MANAGE_WAR_ZONE.has(sender)) {
-                Board.removeAt(flocation);
+                Board.getInstance().removeAt(flocation);
                 msg("<i>War zone was unclaimed.");
 
                 if (Conf.logLandUnclaims) {
@@ -57,7 +57,7 @@ public class CmdUnclaim extends FCommand {
         }
 
         if (fme.isAdminBypassing()) {
-            Board.removeAt(flocation);
+            Board.getInstance().removeAt(flocation);
 
             otherFaction.msg("%s<i> unclaimed some of your land.", fme.describeTo(otherFaction, true));
             msg("<i>You unclaimed this land.");
@@ -103,7 +103,7 @@ public class CmdUnclaim extends FCommand {
             }
         }
 
-        Board.removeAt(flocation);
+        Board.getInstance().removeAt(flocation);
         myFaction.msg("%s<i> unclaimed some land.", fme.describeTo(myFaction, true));
 
         if (Conf.logLandUnclaims) {

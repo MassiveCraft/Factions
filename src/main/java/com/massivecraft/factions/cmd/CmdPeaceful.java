@@ -40,7 +40,7 @@ public class CmdPeaceful extends FCommand {
         }
 
         // Inform all players
-        for (FPlayer fplayer : FPlayers.i.getOnline()) {
+        for (FPlayer fplayer : FPlayers.getInstance().getOnlinePlayers()) {
             if (fplayer.getFaction() == faction) {
                 fplayer.msg((fme == null ? "A server admin" : fme.describeTo(fplayer, true)) + "<i> has " + change + " your faction.");
             } else {

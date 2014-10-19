@@ -1,38 +1,40 @@
 package com.massivecraft.factions;
 
-import com.google.gson.reflect.TypeToken;
-import com.massivecraft.factions.zcore.persist.PlayerEntityCollection;
+import java.util.Collection;
 
-import java.io.File;
-import java.lang.reflect.Type;
-import java.util.Map;
-import java.util.concurrent.ConcurrentSkipListMap;
-import java.util.concurrent.CopyOnWriteArrayList;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 
-public class FPlayers extends PlayerEntityCollection<FPlayer> {
+import com.massivecraft.factions.zcore.persist.json.JSONFPlayers;
 
-    public static FPlayers i = new FPlayers();
+public abstract class FPlayers {
+    protected static FPlayers instance = getFPlayersImpl();
 
-    P p = P.p;
+    public abstract void clean();
 
-    private FPlayers() {
-        super(FPlayer.class, new CopyOnWriteArrayList<FPlayer>(), new ConcurrentSkipListMap<String, FPlayer>(String.CASE_INSENSITIVE_ORDER), new File(P.p.getDataFolder(), "players.json"), P.p.gson);
-
-        this.setCreative(true);
+    public static FPlayers getInstance() {
+        return instance;
     }
 
-    @Override
-    public Type getMapType() {
-        return new TypeToken<Map<String, FPlayer>>() {
-        }.getType();
-    }
-
-    public void clean() {
-        for (FPlayer fplayer : this.get()) {
-            if (!Factions.i.exists(fplayer.getFactionId())) {
-                p.log("Reset faction data (invalid faction) for player " + fplayer.getName());
-                fplayer.resetFactionData(false);
-            }
+    private static FPlayers getFPlayersImpl() {
+        switch (Conf.backEnd) {
+            case JSON:
+                return new JSONFPlayers();
         }
+        return null;
     }
+
+    public abstract Collection<FPlayer> getOnlinePlayers();
+
+    public abstract FPlayer getByPlayer(Player player);
+
+    public abstract Collection<FPlayer> getAllFPlayers();
+
+    public abstract void forceSave();
+
+    public abstract FPlayer getByOfflinePlayer(OfflinePlayer player);
+
+    public abstract FPlayer getById(String string);
+
+    public abstract void load();
 }

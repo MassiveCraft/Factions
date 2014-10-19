@@ -72,7 +72,7 @@ public class FactionsBlockListener implements Listener {
             return;
         }
 
-        Faction pistonFaction = Board.getFactionAt(new FLocation(event.getBlock()));
+        Faction pistonFaction = Board.getInstance().getFactionAt(new FLocation(event.getBlock()));
 
         // target end-of-the-line empty (air) block which is being pushed into, including if piston itself would extend into air
         Block targetBlock = event.getBlock().getRelative(event.getDirection(), event.getLength() + 1);
@@ -104,7 +104,7 @@ public class FactionsBlockListener implements Listener {
             return;
         }
 
-        Faction pistonFaction = Board.getFactionAt(new FLocation(event.getBlock()));
+        Faction pistonFaction = Board.getInstance().getFactionAt(new FLocation(event.getBlock()));
 
         if (!canPistonMoveBlock(pistonFaction, targetLoc)) {
             event.setCancelled(true);
@@ -114,7 +114,7 @@ public class FactionsBlockListener implements Listener {
 
     private boolean canPistonMoveBlock(Faction pistonFaction, Location target) {
 
-        Faction otherFaction = Board.getFactionAt(new FLocation(target));
+        Faction otherFaction = Board.getInstance().getFactionAt(new FLocation(target));
 
         if (pistonFaction == otherFaction) {
             return true;
@@ -155,13 +155,13 @@ public class FactionsBlockListener implements Listener {
             return true;
         }
 
-        FPlayer me = FPlayers.i.get(player.getUniqueId().toString());
+        FPlayer me = FPlayers.getInstance().getById(player.getUniqueId().toString());
         if (me.isAdminBypassing()) {
             return true;
         }
 
         FLocation loc = new FLocation(location);
-        Faction otherFaction = Board.getFactionAt(loc);
+        Faction otherFaction = Board.getInstance().getFactionAt(loc);
 
         if (otherFaction.isNone()) {
             if (Conf.worldGuardBuildPriority && Worldguard.playerCanBuild(player, location)) {

@@ -27,9 +27,9 @@ public class CmdSaveAll extends FCommand {
 
     @Override
     public void perform() {
-        FPlayers.i.saveToDisc();
-        Factions.i.saveToDisc();
-        Board.save();
+        FPlayers.getInstance().forceSave();
+        Factions.getInstance().forceSave();
+        Board.getInstance().forceSave();
         Conf.save();
         msg("<i>Factions saved to disk!");
     }

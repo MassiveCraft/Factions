@@ -77,7 +77,7 @@ public class CmdJoin extends FCommand {
         }
 
         // trigger the join event (cancellable)
-        FPlayerJoinEvent joinEvent = new FPlayerJoinEvent(FPlayers.i.get(me), faction, FPlayerJoinEvent.PlayerJoinReason.COMMAND);
+        FPlayerJoinEvent joinEvent = new FPlayerJoinEvent(FPlayers.getInstance().getByPlayer(me), faction, FPlayerJoinEvent.PlayerJoinReason.COMMAND);
         Bukkit.getServer().getPluginManager().callEvent(joinEvent);
         if (joinEvent.isCancelled()) {
             return;

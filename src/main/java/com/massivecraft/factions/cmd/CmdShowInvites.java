@@ -19,7 +19,7 @@ public class CmdShowInvites extends FCommand {
     public void perform() {
         StringBuilder sb = new StringBuilder();
         for (String id : myFaction.getInvites()) {
-            FPlayer fp = FPlayers.i.get(id);
+            FPlayer fp = FPlayers.getInstance().getById(id);
             sb.append(fp != null ? fp.getName() : id).append(" ");
         }
         msg("<a>Players with pending invites: <i> %s", sb.toString().trim());

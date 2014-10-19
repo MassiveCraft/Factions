@@ -68,7 +68,7 @@ public class CmdDisband extends FCommand {
         }
 
         // Inform all players
-        for (FPlayer fplayer : FPlayers.i.getOnline()) {
+        for (FPlayer fplayer : FPlayers.getInstance().getOnlinePlayers()) {
             String who = senderIsConsole ? "A server admin" : fme.describeTo(fplayer);
             if (fplayer.getFaction() == faction) {
                 fplayer.msg("<h>%s<i> disbanded your faction.", who);
@@ -92,6 +92,6 @@ public class CmdDisband extends FCommand {
             }
         }
 
-        faction.detach();
+        Factions.getInstance().removeFaction(faction.getId());
     }
 }

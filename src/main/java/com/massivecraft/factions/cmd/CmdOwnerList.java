@@ -39,13 +39,13 @@ public class CmdOwnerList extends FCommand {
 
         FLocation flocation = new FLocation(fme);
 
-        if (Board.getFactionAt(flocation) != myFaction) {
+        if (Board.getInstance().getFactionAt(flocation) != myFaction) {
             if (!hasBypass) {
                 fme.msg("<b>This land is not claimed by your faction.");
                 return;
             }
 
-            myFaction = Board.getFactionAt(flocation);
+            myFaction = Board.getInstance().getFactionAt(flocation);
             if (!myFaction.isNormal()) {
                 fme.msg("<i>This land is not claimed by any faction, thus no owners.");
                 return;

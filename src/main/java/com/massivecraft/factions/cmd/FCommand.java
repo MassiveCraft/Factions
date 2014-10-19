@@ -41,7 +41,7 @@ public abstract class FCommand extends MCommand<P> {
     @Override
     public void execute(CommandSender sender, List<String> args, List<MCommand<?>> commandChain) {
         if (sender instanceof Player) {
-            this.fme = FPlayers.i.get((Player) sender);
+            this.fme = FPlayers.getInstance().getByPlayer((Player) sender);
             this.myFaction = this.fme.getFaction();
         } else {
             this.fme = null;
@@ -85,19 +85,17 @@ public abstract class FCommand extends MCommand<P> {
             return false;
         }
 
-        FPlayer fplayer = FPlayers.i.get((Player) sender);
-
-        if (!fplayer.hasFaction()) {
+        if (!fme.hasFaction()) {
             sender.sendMessage(p.txt.parse("<b>You are not member of any faction."));
             return false;
         }
 
-        if (this.senderMustBeModerator && !fplayer.getRole().isAtLeast(Role.MODERATOR)) {
+        if (this.senderMustBeModerator && !fme.getRole().isAtLeast(Role.MODERATOR)) {
             sender.sendMessage(p.txt.parse("<b>Only faction moderators can %s.", this.getHelpShort()));
             return false;
         }
 
-        if (this.senderMustBeAdmin && !fplayer.getRole().isAtLeast(Role.ADMIN)) {
+        if (this.senderMustBeAdmin && !fme.getRole().isAtLeast(Role.ADMIN)) {
             sender.sendMessage(p.txt.parse("<b>Only faction admins can %s.", this.getHelpShort()));
             return false;
         }
@@ -143,7 +141,7 @@ public abstract class FCommand extends MCommand<P> {
 
         if (name != null) {
             OfflinePlayer player = Bukkit.getOfflinePlayer(name);
-            FPlayer fplayer = FPlayers.i.get(player);
+            FPlayer fplayer = FPlayers.getInstance().getByOfflinePlayer(player);
             if (fplayer != null) {
                 ret = fplayer;
             }
@@ -194,18 +192,18 @@ public abstract class FCommand extends MCommand<P> {
 
             // First we try an exact match
             if (faction == null) {
-                faction = Factions.i.getByTag(name); // Checks for faction name match.
+                faction = Factions.getInstance().getByTag(name); // Checks for faction name match.
             }
 
             // Next we match faction tags
             if (faction == null) {
-                faction = Factions.i.getBestTagMatch(name);
+                faction = Factions.getInstance().getBestTagMatch(name);
             }
 
             // Next we match player names
             if (faction == null) {
                 OfflinePlayer player = Bukkit.getOfflinePlayer(name);
-                FPlayer fplayer = FPlayers.i.get(player);
+                FPlayer fplayer = FPlayers.getInstance().getByOfflinePlayer(player);
                 if (fplayer != null) {
                     faction = fplayer.getFaction();
                 }

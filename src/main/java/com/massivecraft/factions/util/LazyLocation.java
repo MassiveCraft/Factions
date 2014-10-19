@@ -1,5 +1,7 @@
 package com.massivecraft.factions.util;
 
+import java.io.Serializable;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -9,9 +11,9 @@ import org.bukkit.World;
  * yet when an object of this class is created, only when the Location is first accessed.
  */
 
-public class LazyLocation {
-
-    private Location location = null;
+public class LazyLocation implements Serializable {
+    private static final long serialVersionUID = -6049901271320963314L;
+    private transient Location location = null;
     private String worldName;
     private double x;
     private double y;

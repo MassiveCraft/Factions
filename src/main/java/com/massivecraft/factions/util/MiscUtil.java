@@ -5,6 +5,10 @@ import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 
+import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.P;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 
@@ -55,5 +59,24 @@ public class MiscUtil {
         return ret.toLowerCase();
     }
 
+    public static ArrayList<String> validateTag(String str) {
+        ArrayList<String> errors = new ArrayList<String>();
+
+        if (getComparisonString(str).length() < Conf.factionTagLengthMin) {
+            errors.add(P.p.txt.parse("<i>The faction tag can't be shorter than <h>%s<i> chars.", Conf.factionTagLengthMin));
+        }
+
+        if (str.length() > Conf.factionTagLengthMax) {
+            errors.add(P.p.txt.parse("<i>The faction tag can't be longer than <h>%s<i> chars.", Conf.factionTagLengthMax));
+        }
+
+        for (char c : str.toCharArray()) {
+            if (!substanceChars.contains(String.valueOf(c))) {
+                errors.add(P.p.txt.parse("<i>Faction tag must be alphanumeric. \"<h>%s<i>\" is not allowed.", c));
+            }
+        }
+
+        return errors;
+    }
 }
 

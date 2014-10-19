@@ -2,733 +2,214 @@ package com.massivecraft.factions;
 
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.iface.RelationParticipator;
-import com.massivecraft.factions.integration.Econ;
-import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
-import com.massivecraft.factions.util.LazyLocation;
-import com.massivecraft.factions.util.MiscUtil;
-import com.massivecraft.factions.util.RelationUtil;
-import com.massivecraft.factions.zcore.persist.Entity;
-import org.bukkit.Bukkit;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import java.util.*;
-import java.util.Map.Entry;
-import java.util.concurrent.ConcurrentHashMap;
 
+public interface Faction extends EconomyParticipator {
+    public HashMap<String, List<String>> getAnnouncements();
 
-public class Faction extends Entity implements EconomyParticipator {
+    public void addAnnouncement(FPlayer fPlayer, String msg);
 
-    // FIELD: relationWish
-    private Map<String, Relation> relationWish;
+    public void sendUnreadAnnouncements(FPlayer fPlayer);
 
-    // FIELD: claimOwnership
-    private Map<FLocation, Set<String>> claimOwnership = new ConcurrentHashMap<FLocation, Set<String>>();
+    public void removeAnnouncements(FPlayer fPlayer);
 
-    // FIELD: fplayers
-    // speedy lookup of players in faction
-    private transient Set<FPlayer> fplayers = new HashSet<FPlayer>();
+    public Set<String> getInvites();
 
-    private HashMap<String, List<String>> announcements;
+    public String getId();
 
-    public HashMap<String, List<String>> getAnnouncements() {
-        return this.announcements;
-    }
+    public void invite(FPlayer fplayer);
 
-    public void addAnnouncement(FPlayer fPlayer, String msg) {
-        List<String> list = announcements.containsKey(fPlayer.getId()) ? announcements.get(fPlayer.getId()) : new ArrayList<String>();
-        list.add(msg);
-        announcements.put(fPlayer.getId(), list);
-    }
+    public void deinvite(FPlayer fplayer);
 
-    public void sendUnreadAnnouncements(FPlayer fPlayer) {
-        if (!announcements.containsKey(fPlayer.getId())) {
-            return;
-        }
-        fPlayer.sendMessage(ChatColor.LIGHT_PURPLE + "--Unread Faction Announcements--");
-        for (String s : announcements.get(fPlayer.getPlayer().getUniqueId().toString())) {
-            fPlayer.sendMessage(s);
-        }
-        fPlayer.sendMessage(ChatColor.LIGHT_PURPLE + "--Unread Faction Announcements--");
-        announcements.remove(fPlayer.getId());
-    }
-
-    public void removeAnnouncements(FPlayer fPlayer) {
-        if (announcements.containsKey(fPlayer.getId())) {
-            announcements.remove(fPlayer.getId());
-        }
-    }
-
-
-    // FIELD: invites
-    private Set<String> invites;
-
-    public Set<String> getInvites() {
-        return invites;
-    }
-
-    public void invite(FPlayer fplayer) {
-        this.invites.add(fplayer.getId());
-    }
-
-    public void deinvite(FPlayer fplayer) {
-        this.invites.remove(fplayer.getId());
-    }
-
-    public boolean isInvited(FPlayer fplayer) {
-        return this.invites.contains(fplayer.getId());
-    }
-
-    // FIELD: open
-    private boolean open;
-
-    public boolean getOpen() {
-        return open;
-    }
-
-    public void setOpen(boolean isOpen) {
-        open = isOpen;
-    }
-
-    // FIELD: peaceful
-    // "peaceful" status can only be set by server admins/moderators/ops, and prevents PvP and land capture to/from the faction
-    private boolean peaceful;
-
-    public boolean isPeaceful() {
-        return this.peaceful;
-    }
-
-    public void setPeaceful(boolean isPeaceful) {
-        this.peaceful = isPeaceful;
-    }
-
-    // FIELD: peacefulExplosionsEnabled
-    private boolean peacefulExplosionsEnabled;
-
-    public void setPeacefulExplosionsEnabled(boolean val) {
-        peacefulExplosionsEnabled = val;
-    }
-
-    public boolean getPeacefulExplosionsEnabled() {
-        return this.peacefulExplosionsEnabled;
-    }
-
-    public boolean noExplosionsInTerritory() {
-        return this.peaceful && !peacefulExplosionsEnabled;
-    }
-
-    // FIELD: permanent
-    // "permanent" status can only be set by server admins/moderators/ops, and allows the faction to remain even with 0 members
-    private boolean permanent;
-
-    public boolean isPermanent() {
-        return permanent || !this.isNormal();
-    }
-
-    public void setPermanent(boolean isPermanent) {
-        permanent = isPermanent;
-    }
-
-    // FIELD: tag
-    private String tag;
-
-    public String getTag() {
-        return this.tag;
-    }
-
-    public String getTag(String prefix) {
-        return prefix + this.tag;
-    }
-
-    public String getTag(Faction otherFaction) {
-        if (otherFaction == null) {
-            return getTag();
-        }
-        return this.getTag(this.getColorTo(otherFaction).toString());
-    }
-
-    public String getTag(FPlayer otherFplayer) {
-        if (otherFplayer == null) {
-            return getTag();
-        }
-        return this.getTag(this.getColorTo(otherFplayer).toString());
-    }
-
-    public void setTag(String str) {
-        if (Conf.factionTagForceUpperCase) {
-            str = str.toUpperCase();
-        }
-        this.tag = str;
-    }
-
-    public String getComparisonTag() {
-        return MiscUtil.getComparisonString(this.tag);
-    }
-
-    // FIELD: description
-    private String description;
-
-    public String getDescription() {
-        return this.description;
-    }
-
-    public void setDescription(String value) {
-        this.description = value;
-    }
-
-    // FIELD: home
-    private LazyLocation home;
-
-    public void setHome(Location home) {
-        this.home = new LazyLocation(home);
-    }
-
-    public boolean hasHome() {
-        return this.getHome() != null;
-    }
-
-    public Location getHome() {
-        confirmValidHome();
-        return (this.home != null) ? this.home.getLocation() : null;
-    }
-
-    public void confirmValidHome() {
-        if (!Conf.homesMustBeInClaimedTerritory || this.home == null || (this.home.getLocation() != null && Board.getFactionAt(new FLocation(this.home.getLocation())) == this)) {
-            return;
-        }
-
-        msg("<b>Your faction home has been un-set since it is no longer in your territory.");
-        this.home = null;
-    }
-
-    // FIELD: lastPlayerLoggedOffTime
-    private transient long lastPlayerLoggedOffTime;
-
-    // FIELD: account (fake field)
-    // Bank functions
-    public double money;
-
-    public String getAccountId() {
-        String aid = "faction-" + this.getId();
-
-        // We need to override the default money given to players.
-        if (!Econ.hasAccount(aid)) {
-            Econ.setBalance(aid, 0);
-        }
-
-        return aid;
-    }
-
-    // FIELD: permanentPower
-    private Integer permanentPower;
-
-    public Integer getPermanentPower() {
-        return this.permanentPower;
-    }
-
-    public void setPermanentPower(Integer permanentPower) {
-        this.permanentPower = permanentPower;
-    }
-
-    public boolean hasPermanentPower() {
-        return this.permanentPower != null;
-    }
-
-    // FIELD: powerBoost
-    // special increase/decrease to default and max power for this faction
-    private double powerBoost;
-
-    public double getPowerBoost() {
-        return this.powerBoost;
-    }
-
-    public void setPowerBoost(double powerBoost) {
-        this.powerBoost = powerBoost;
-    }
-
-
-    // -------------------------------------------- //
-    // Construct
-    // -------------------------------------------- //
-
-    public Faction() {
-        this.relationWish = new HashMap<String, Relation>();
-        this.invites = new HashSet<String>();
-        this.open = Conf.newFactionsDefaultOpen;
-        this.tag = "???";
-        this.description = "Default faction description :(";
-        this.lastPlayerLoggedOffTime = 0;
-        this.peaceful = false;
-        this.peacefulExplosionsEnabled = false;
-        this.permanent = false;
-        this.money = 0.0;
-        this.powerBoost = 0.0;
-        this.announcements = new HashMap<String, List<String>>();
-    }
-
-    // -------------------------------------------- //
-    // Extra Getters And Setters
-    // -------------------------------------------- //
-
-    public boolean noPvPInTerritory() {
-        return isSafeZone() || (peaceful && Conf.peacefulTerritoryDisablePVP);
-    }
-
-    public boolean noMonstersInTerritory() {
-        return isSafeZone() || (peaceful && Conf.peacefulTerritoryDisableMonsters);
-    }
-
-
-    // -------------------------------
-    // Understand the types
-    // -------------------------------
-
-    public boolean isNormal() {
-        return !(this.isNone() || this.isSafeZone() || this.isWarZone());
-    }
-
-    public boolean isNone() {
-        return this.getId().equals("0");
-    }
-
-    public boolean isSafeZone() {
-        return this.getId().equals("-1");
-    }
-
-    public boolean isWarZone() {
-        return this.getId().equals("-2");
-    }
-
-    public boolean isPlayerFreeType() {
-        return this.isSafeZone() || this.isWarZone();
-    }
+    public boolean isInvited(FPlayer fplayer);
 
+    public boolean getOpen();
+
+    public void setOpen(boolean isOpen);
+
+    public boolean isPeaceful();
+
+    public void setPeaceful(boolean isPeaceful);
+
+    public void setPeacefulExplosionsEnabled(boolean val);
+
+    public boolean getPeacefulExplosionsEnabled();
+
+    public boolean noExplosionsInTerritory();
+
+    public boolean isPermanent();
+
+    public void setPermanent(boolean isPermanent);
+
+    public String getTag();
+
+    public String getTag(String prefix);
+
+    public String getTag(Faction otherFaction);
+
+    public String getTag(FPlayer otherFplayer);
+
+    public void setTag(String str);
+
+    public String getComparisonTag();
+
+    public String getDescription();
+
+    public void setDescription(String value);
+
+    public void setHome(Location home);
+
+    public boolean hasHome();
+
+    public Location getHome();
+
+    public void confirmValidHome();
+
+    public String getAccountId();
+
+    public Integer getPermanentPower();
+
+    public void setPermanentPower(Integer permanentPower);
+
+    public boolean hasPermanentPower();
+
+    public double getPowerBoost();
+
+    public void setPowerBoost(double powerBoost);
+
+    public boolean noPvPInTerritory();
+
+    public boolean noMonstersInTerritory();
+
+    public boolean isNormal();
+
+    public boolean isNone();
+
+    public boolean isSafeZone();
+
+    public boolean isWarZone();
+
+    public boolean isPlayerFreeType();
 
     // -------------------------------
     // Relation and relation colors
     // -------------------------------
 
     @Override
-    public String describeTo(RelationParticipator that, boolean ucfirst) {
-        return RelationUtil.describeThatToMe(this, that, ucfirst);
-    }
+    public String describeTo(RelationParticipator that, boolean ucfirst);
 
     @Override
-    public String describeTo(RelationParticipator that) {
-        return RelationUtil.describeThatToMe(this, that);
-    }
+    public String describeTo(RelationParticipator that);
 
     @Override
-    public Relation getRelationTo(RelationParticipator rp) {
-        return RelationUtil.getRelationTo(this, rp);
-    }
+    public Relation getRelationTo(RelationParticipator rp);
 
     @Override
-    public Relation getRelationTo(RelationParticipator rp, boolean ignorePeaceful) {
-        return RelationUtil.getRelationTo(this, rp, ignorePeaceful);
-    }
+    public Relation getRelationTo(RelationParticipator rp, boolean ignorePeaceful);
 
     @Override
-    public ChatColor getColorTo(RelationParticipator rp) {
-        return RelationUtil.getColorOfThatToMe(this, rp);
-    }
+    public ChatColor getColorTo(RelationParticipator rp);
 
-    public Relation getRelationWish(Faction otherFaction) {
-        if (this.relationWish.containsKey(otherFaction.getId())) {
-            return this.relationWish.get(otherFaction.getId());
-        }
-        return Relation.NEUTRAL;
-    }
+    public Relation getRelationWish(Faction otherFaction);
 
-    public void setRelationWish(Faction otherFaction, Relation relation) {
-        if (this.relationWish.containsKey(otherFaction.getId()) && relation.equals(Relation.NEUTRAL)) {
-            this.relationWish.remove(otherFaction.getId());
-        } else {
-            this.relationWish.put(otherFaction.getId(), relation);
-        }
-    }
+    public void setRelationWish(Faction otherFaction, Relation relation);
 
-    //----------------------------------------------//
+    // ----------------------------------------------//
     // Power
-    //----------------------------------------------//
-    public double getPower() {
-        if (this.hasPermanentPower()) {
-            return this.getPermanentPower();
-        }
+    // ----------------------------------------------//
+    public double getPower();
 
-        double ret = 0;
-        for (FPlayer fplayer : fplayers) {
-            ret += fplayer.getPower();
-        }
-        if (Conf.powerFactionMax > 0 && ret > Conf.powerFactionMax) {
-            ret = Conf.powerFactionMax;
-        }
-        return ret + this.powerBoost;
-    }
+    public double getPowerMax();
 
-    public double getPowerMax() {
-        if (this.hasPermanentPower()) {
-            return this.getPermanentPower();
-        }
+    public int getPowerRounded();
 
-        double ret = 0;
-        for (FPlayer fplayer : fplayers) {
-            ret += fplayer.getPowerMax();
-        }
-        if (Conf.powerFactionMax > 0 && ret > Conf.powerFactionMax) {
-            ret = Conf.powerFactionMax;
-        }
-        return ret + this.powerBoost;
-    }
+    public int getPowerMaxRounded();
 
-    public int getPowerRounded() {
-        return (int) Math.round(this.getPower());
-    }
+    public int getLandRounded();
 
-    public int getPowerMaxRounded() {
-        return (int) Math.round(this.getPowerMax());
-    }
+    public int getLandRoundedInWorld(String worldName);
 
-    public int getLandRounded() {
-        return Board.getFactionCoordCount(this);
-    }
-
-    public int getLandRoundedInWorld(String worldName) {
-        return Board.getFactionCoordCountInWorld(this, worldName);
-    }
-
-    public boolean hasLandInflation() {
-        return this.getLandRounded() > this.getPowerRounded();
-    }
+    public boolean hasLandInflation();
 
     // -------------------------------
     // FPlayers
     // -------------------------------
 
     // maintain the reference list of FPlayers in this faction
-    public void refreshFPlayers() {
-        fplayers.clear();
-        if (this.isPlayerFreeType()) {
-            return;
-        }
+    public void refreshFPlayers();
 
-        for (FPlayer fplayer : FPlayers.i.get()) {
-            if (fplayer.getFaction() == this) {
-                fplayers.add(fplayer);
-            }
-        }
-    }
+    public boolean addFPlayer(FPlayer fplayer);
 
-    protected boolean addFPlayer(FPlayer fplayer) {
-        return !this.isPlayerFreeType() && fplayers.add(fplayer);
+    public boolean removeFPlayer(FPlayer fplayer);
 
-    }
+    public Set<FPlayer> getFPlayers();
 
-    protected boolean removeFPlayer(FPlayer fplayer) {
-        return !this.isPlayerFreeType() && fplayers.remove(fplayer);
+    public Set<FPlayer> getFPlayersWhereOnline(boolean online);
 
-    }
+    public FPlayer getFPlayerAdmin();
 
-    public Set<FPlayer> getFPlayers() {
-        // return a shallow copy of the FPlayer list, to prevent tampering and concurrency issues
-        return new HashSet<FPlayer>(fplayers);
-    }
+    public ArrayList<FPlayer> getFPlayersWhereRole(Role role);
 
-    public Set<FPlayer> getFPlayersWhereOnline(boolean online) {
-        Set<FPlayer> ret = new HashSet<FPlayer>();
+    public ArrayList<Player> getOnlinePlayers();
 
-        for (FPlayer fplayer : fplayers) {
-            if (fplayer.isOnline() == online) {
-                ret.add(fplayer);
-            }
-        }
+    // slightly faster check than getOnlinePlayers() if you just want to see if
+    // there are any players online
+    public boolean hasPlayersOnline();
 
-        return ret;
-    }
+    public void memberLoggedOff();
 
-    public FPlayer getFPlayerAdmin() {
-        if (!this.isNormal()) {
-            return null;
-        }
+    // used when current leader is about to be removed from the faction;
+    // promotes new leader, or disbands faction if no other members left
+    public void promoteNewLeader();
 
-        for (FPlayer fplayer : fplayers) {
-            if (fplayer.getRole() == Role.ADMIN) {
-                return fplayer;
-            }
-        }
-        return null;
-    }
-
-    public ArrayList<FPlayer> getFPlayersWhereRole(Role role) {
-        ArrayList<FPlayer> ret = new ArrayList<FPlayer>();
-        if (!this.isNormal()) {
-            return ret;
-        }
-
-        for (FPlayer fplayer : fplayers) {
-            if (fplayer.getRole() == role) {
-                ret.add(fplayer);
-            }
-        }
-
-        return ret;
-    }
-
-    public ArrayList<Player> getOnlinePlayers() {
-        ArrayList<Player> ret = new ArrayList<Player>();
-        if (this.isPlayerFreeType()) {
-            return ret;
-        }
-
-        for (Player player : P.p.getServer().getOnlinePlayers()) {
-            FPlayer fplayer = FPlayers.i.get(player);
-            if (fplayer.getFaction() == this) {
-                ret.add(player);
-            }
-        }
-
-        return ret;
-    }
-
-    // slightly faster check than getOnlinePlayers() if you just want to see if there are any players online
-    public boolean hasPlayersOnline() {
-        // only real factions can have players online, not safe zone / war zone
-        if (this.isPlayerFreeType()) {
-            return false;
-        }
-
-        for (Player player : P.p.getServer().getOnlinePlayers()) {
-            FPlayer fplayer = FPlayers.i.get(player);
-            if (fplayer != null && fplayer.getFaction() == this) {
-                return true;
-            }
-        }
-
-        // even if all players are technically logged off, maybe someone was on recently enough to not consider them officially offline yet
-        return Conf.considerFactionsReallyOfflineAfterXMinutes > 0 && System.currentTimeMillis() < lastPlayerLoggedOffTime + (Conf.considerFactionsReallyOfflineAfterXMinutes * 60000);
-    }
-
-    public void memberLoggedOff() {
-        if (this.isNormal()) {
-            lastPlayerLoggedOffTime = System.currentTimeMillis();
-        }
-    }
-
-    // used when current leader is about to be removed from the faction; promotes new leader, or disbands faction if no other members left
-    public void promoteNewLeader() {
-        if (!this.isNormal()) {
-            return;
-        }
-        if (this.isPermanent() && Conf.permanentFactionsDisableLeaderPromotion) {
-            return;
-        }
-
-        FPlayer oldLeader = this.getFPlayerAdmin();
-
-        // get list of moderators, or list of normal members if there are no moderators
-        ArrayList<FPlayer> replacements = this.getFPlayersWhereRole(Role.MODERATOR);
-        if (replacements == null || replacements.isEmpty()) {
-            replacements = this.getFPlayersWhereRole(Role.NORMAL);
-        }
-
-        if (replacements == null || replacements.isEmpty()) {    // faction admin is the only member; one-man faction
-            if (this.isPermanent()) {
-                if (oldLeader != null) {
-                    oldLeader.setRole(Role.NORMAL);
-                }
-                return;
-            }
-
-            // no members left and faction isn't permanent, so disband it
-            if (Conf.logFactionDisband) {
-                P.p.log("The faction " + this.getTag() + " (" + this.getId() + ") has been disbanded since it has no members left.");
-            }
-
-            for (FPlayer fplayer : FPlayers.i.getOnline()) {
-                fplayer.msg("The faction %s<i> was disbanded.", this.getTag(fplayer));
-            }
-
-            this.detach();
-        } else {    // promote new faction admin
-            if (oldLeader != null) {
-                oldLeader.setRole(Role.NORMAL);
-            }
-            replacements.get(0).setRole(Role.ADMIN);
-            this.msg("<i>Faction admin <h>%s<i> has been removed. %s<i> has been promoted as the new faction admin.", oldLeader == null ? "" : oldLeader.getName(), replacements.get(0).getName());
-            P.p.log("Faction " + this.getTag() + " (" + this.getId() + ") admin was removed. Replacement admin: " + replacements.get(0).getName());
-        }
-    }
-
-
-    //----------------------------------------------//
+    // ----------------------------------------------//
     // Messages
-    //----------------------------------------------//
-    public void msg(String message, Object... args) {
-        message = P.p.txt.parse(message, args);
+    // ----------------------------------------------//
+    public void msg(String message, Object... args);
 
-        for (FPlayer fplayer : this.getFPlayersWhereOnline(true)) {
-            fplayer.sendMessage(message);
-        }
-    }
+    public void sendMessage(String message);
 
-    public void sendMessage(String message) {
-        for (FPlayer fplayer : this.getFPlayersWhereOnline(true)) {
-            fplayer.sendMessage(message);
-        }
-    }
+    public void sendMessage(List<String> messages);
 
-    public void sendMessage(List<String> messages) {
-        for (FPlayer fplayer : this.getFPlayersWhereOnline(true)) {
-            fplayer.sendMessage(messages);
-        }
-    }
-
-    //----------------------------------------------//
+    // ----------------------------------------------//
     // Ownership of specific claims
-    //----------------------------------------------//
+    // ----------------------------------------------//
 
-    public Map<FLocation, Set<String>> getClaimOwnership() {
-        return claimOwnership;
-    }
+    public Map<FLocation, Set<String>> getClaimOwnership();
 
-    public void clearAllClaimOwnership() {
-        claimOwnership.clear();
-    }
+    public void clearAllClaimOwnership();
 
-    public void clearClaimOwnership(FLocation loc) {
-        claimOwnership.remove(loc);
-    }
+    public void clearClaimOwnership(FLocation loc);
 
-    public void clearClaimOwnership(FPlayer player) {
-        if (id == null || id.isEmpty()) {
-            return;
-        }
+    public void clearClaimOwnership(FPlayer player);
 
-        Set<String> ownerData;
+    public int getCountOfClaimsWithOwners();
 
-        for (Entry<FLocation, Set<String>> entry : claimOwnership.entrySet()) {
-            ownerData = entry.getValue();
+    public boolean doesLocationHaveOwnersSet(FLocation loc);
 
-            if (ownerData == null) {
-                continue;
-            }
+    public boolean isPlayerInOwnerList(FPlayer player, FLocation loc);
 
-            Iterator<String> iter = ownerData.iterator();
-            while (iter.hasNext()) {
-                if (iter.next().equals(player.getId())) {
-                    iter.remove();
-                }
-            }
+    public void setPlayerAsOwner(FPlayer player, FLocation loc);
 
-            if (ownerData.isEmpty()) {
-                claimOwnership.remove(entry.getKey());
-            }
-        }
-    }
+    public void removePlayerAsOwner(FPlayer player, FLocation loc);
 
-    public int getCountOfClaimsWithOwners() {
-        return claimOwnership.isEmpty() ? 0 : claimOwnership.size();
-    }
+    public Set<String> getOwnerList(FLocation loc);
 
-    public boolean doesLocationHaveOwnersSet(FLocation loc) {
-        if (claimOwnership.isEmpty() || !claimOwnership.containsKey(loc)) {
-            return false;
-        }
+    public String getOwnerListString(FLocation loc);
 
-        Set<String> ownerData = claimOwnership.get(loc);
-        return ownerData != null && !ownerData.isEmpty();
-    }
+    public boolean playerHasOwnershipRights(FPlayer fplayer, FLocation loc);
 
-    public boolean isPlayerInOwnerList(FPlayer player, FLocation loc) {
-        if (claimOwnership.isEmpty()) {
-            return false;
-        }
-        Set<String> ownerData = claimOwnership.get(loc);
-        if (ownerData == null) {
-            return false;
-        }
-        return ownerData.contains(player.getId());
-    }
-
-    public void setPlayerAsOwner(FPlayer player, FLocation loc) {
-        Set<String> ownerData = claimOwnership.get(loc);
-        if (ownerData == null) {
-            ownerData = new HashSet<String>();
-        }
-        ownerData.add(player.getId());
-        claimOwnership.put(loc, ownerData);
-    }
-
-    public void removePlayerAsOwner(FPlayer player, FLocation loc) {
-        Set<String> ownerData = claimOwnership.get(loc);
-        if (ownerData == null) {
-            return;
-        }
-        ownerData.remove(player.getId());
-        claimOwnership.put(loc, ownerData);
-    }
-
-    public Set<String> getOwnerList(FLocation loc) {
-        return claimOwnership.get(loc);
-    }
-
-    public String getOwnerListString(FLocation loc) {
-        Set<String> ownerData = claimOwnership.get(loc);
-        if (ownerData == null || ownerData.isEmpty()) {
-            return "";
-        }
-
-        String ownerList = "";
-
-        Iterator<String> iter = ownerData.iterator();
-        while (iter.hasNext()) {
-            if (!ownerList.isEmpty()) {
-                ownerList += ", ";
-            }
-            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(iter.next()));
-            ownerList += offlinePlayer != null ? offlinePlayer.getName() : "null player";
-        }
-        return ownerList;
-    }
-
-    public boolean playerHasOwnershipRights(FPlayer fplayer, FLocation loc) {
-        // in own faction, with sufficient role or permission to bypass ownership?
-        if (fplayer.getFaction() == this && (fplayer.getRole().isAtLeast(Conf.ownedAreaModeratorsBypass ? Role.MODERATOR : Role.ADMIN) || Permission.OWNERSHIP_BYPASS.has(fplayer.getPlayer()))) {
-            return true;
-        }
-
-        // make sure claimOwnership is initialized
-        if (claimOwnership.isEmpty()) {
-            return true;
-        }
-
-        // need to check the ownership list, then
-        Set<String> ownerData = claimOwnership.get(loc);
-
-        // if no owner list, owner list is empty, or player is in owner list, they're allowed
-        return ownerData == null || ownerData.isEmpty() || ownerData.contains(fplayer.getId());
-    }
-
-
-    //----------------------------------------------//
+    // ----------------------------------------------//
     // Persistance and entity management
-    //----------------------------------------------//
+    // ----------------------------------------------//
+    public void remove();
 
-
-    @Override
-    public void postDetach() {
-        if (Econ.shouldBeUsed()) {
-            Econ.setBalance(getAccountId(), 0);
-        }
-
-        // Clean the board
-        Board.clean();
-
-        // Clean the fplayers
-        FPlayers.i.clean();
-    }
+    public void setId(String id);
 }

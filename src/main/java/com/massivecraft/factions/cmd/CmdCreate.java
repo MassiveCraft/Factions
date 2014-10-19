@@ -5,6 +5,8 @@ import com.massivecraft.factions.event.FPlayerJoinEvent;
 import com.massivecraft.factions.event.FactionCreateEvent;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.util.MiscUtil;
+
 import org.bukkit.Bukkit;
 
 import java.util.ArrayList;
@@ -37,12 +39,12 @@ public class CmdCreate extends FCommand {
             return;
         }
 
-        if (Factions.i.isTagTaken(tag)) {
+        if (Factions.getInstance().isTagTaken(tag)) {
             msg("<b>That tag is already in use.");
             return;
         }
 
-        ArrayList<String> tagValidationErrors = Factions.validateTag(tag);
+        ArrayList<String> tagValidationErrors = MiscUtil.validateTag(tag);
         if (tagValidationErrors.size() > 0) {
             sendMessage(tagValidationErrors);
             return;
@@ -65,7 +67,7 @@ public class CmdCreate extends FCommand {
             return;
         }
 
-        Faction faction = Factions.i.create();
+        Faction faction = Factions.getInstance().createFaction();
 
         // TODO: Why would this even happen??? Auto increment clash??
         if (faction == null) {
@@ -77,7 +79,7 @@ public class CmdCreate extends FCommand {
         faction.setTag(tag);
 
         // trigger the faction join event for the creator
-        FPlayerJoinEvent joinEvent = new FPlayerJoinEvent(FPlayers.i.get(me), faction, FPlayerJoinEvent.PlayerJoinReason.CREATE);
+        FPlayerJoinEvent joinEvent = new FPlayerJoinEvent(FPlayers.getInstance().getByPlayer(me), faction, FPlayerJoinEvent.PlayerJoinReason.CREATE);
         Bukkit.getServer().getPluginManager().callEvent(joinEvent);
         // join event cannot be cancelled or you'll have an empty faction
 
@@ -85,7 +87,7 @@ public class CmdCreate extends FCommand {
         fme.setRole(Role.ADMIN);
         fme.setFaction(faction);
 
-        for (FPlayer follower : FPlayers.i.getOnline()) {
+        for (FPlayer follower : FPlayers.getInstance().getOnlinePlayers()) {
             follower.msg("%s<i> created a new faction %s", fme.describeTo(follower, true), faction.getTag(follower));
         }
 

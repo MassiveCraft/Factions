@@ -15,7 +15,7 @@ public class AutoLeaveProcessTask extends BukkitRunnable {
     private transient double toleranceMillis;
 
     public AutoLeaveProcessTask() {
-        ArrayList<FPlayer> fplayers = new ArrayList<FPlayer>(FPlayers.i.get());
+        ArrayList<FPlayer> fplayers = new ArrayList<FPlayer>(FPlayers.getInstance().getAllFPlayers());
         this.iterator = fplayers.listIterator();
         this.toleranceMillis = Conf.autoLeaveAfterDaysOfInactivity * 24 * 60 * 60 * 1000;
         this.readyToGo = true;
@@ -61,7 +61,7 @@ public class AutoLeaveProcessTask extends BukkitRunnable {
 
                 fplayer.leave(false);
                 iterator.remove();  // go ahead and remove this list's link to the FPlayer object
-                fplayer.detach();
+                fplayer.remove();
             }
         }
 

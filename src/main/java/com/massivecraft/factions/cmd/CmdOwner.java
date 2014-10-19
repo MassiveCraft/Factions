@@ -49,7 +49,7 @@ public class CmdOwner extends FCommand {
 
         FLocation flocation = new FLocation(fme);
 
-        Faction factionHere = Board.getFactionAt(flocation);
+        Faction factionHere = Board.getInstance().getFactionAt(flocation);
         if (factionHere != myFaction) {
             if (!hasBypass) {
                 fme.msg("<b>This land is not claimed by your faction, so you can't set ownership of it.");

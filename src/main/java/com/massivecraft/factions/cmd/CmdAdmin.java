@@ -53,7 +53,7 @@ public class CmdAdmin extends FCommand {
 
         // only perform a FPlayerJoinEvent when newLeader isn't actually in the faction
         if (fyou.getFaction() != targetFaction) {
-            FPlayerJoinEvent event = new FPlayerJoinEvent(FPlayers.i.get(me), targetFaction, FPlayerJoinEvent.PlayerJoinReason.LEADER);
+            FPlayerJoinEvent event = new FPlayerJoinEvent(FPlayers.getInstance().getByPlayer(me), targetFaction, FPlayerJoinEvent.PlayerJoinReason.LEADER);
             Bukkit.getServer().getPluginManager().callEvent(event);
             if (event.isCancelled()) {
                 return;
@@ -78,7 +78,7 @@ public class CmdAdmin extends FCommand {
         msg("<i>You have promoted %s<i> to the position of faction admin.", fyou.describeTo(fme, true));
 
         // Inform all players
-        for (FPlayer fplayer : FPlayers.i.getOnline()) {
+        for (FPlayer fplayer : FPlayers.getInstance().getOnlinePlayers()) {
             fplayer.msg("%s<i> gave %s<i> the leadership of %s<i>.", senderIsConsole ? "A server admin" : fme.describeTo(fplayer, true), fyou.describeTo(fplayer), targetFaction.describeTo(fplayer));
         }
     }

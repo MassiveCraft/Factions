@@ -32,7 +32,7 @@ public class FactionsChatListener implements Listener {
 
         Player talkingPlayer = event.getPlayer();
         String msg = event.getMessage();
-        FPlayer me = FPlayers.i.get(talkingPlayer);
+        FPlayer me = FPlayers.getInstance().getByPlayer(talkingPlayer);
         ChatMode chat = me.getChatMode();
 
         // Is it a faction chat message?
@@ -45,7 +45,7 @@ public class FactionsChatListener implements Listener {
             Bukkit.getLogger().log(Level.INFO, ChatColor.stripColor("FactionChat " + myFaction.getTag() + ": " + message));
 
             //Send to any players who are spying chat
-            for (FPlayer fplayer : FPlayers.i.getOnline()) {
+            for (FPlayer fplayer : FPlayers.getInstance().getOnlinePlayers()) {
                 if (fplayer.isSpyingChat() && fplayer.getFaction() != myFaction) {
                     fplayer.sendMessage("[FCspy] " + myFaction.getTag() + ": " + message);
                 }
@@ -61,7 +61,7 @@ public class FactionsChatListener implements Listener {
             myFaction.sendMessage(message);
 
             //Send to all our allies
-            for (FPlayer fplayer : FPlayers.i.getOnline()) {
+            for (FPlayer fplayer : FPlayers.getInstance().getOnlinePlayers()) {
                 if (myFaction.getRelationTo(fplayer) == Relation.ALLY) {
                     fplayer.sendMessage(message);
                 }
@@ -94,7 +94,7 @@ public class FactionsChatListener implements Listener {
         Player talkingPlayer = event.getPlayer();
         String msg = event.getMessage();
         String eventFormat = event.getFormat();
-        FPlayer me = FPlayers.i.get(talkingPlayer);
+        FPlayer me = FPlayers.getInstance().getByPlayer(talkingPlayer);
         int InsertIndex;
 
         if (!Conf.chatTagReplaceString.isEmpty() && eventFormat.contains(Conf.chatTagReplaceString)) {
@@ -132,7 +132,7 @@ public class FactionsChatListener implements Listener {
             event.setCancelled(true);
 
             for (Player listeningPlayer : event.getRecipients()) {
-                FPlayer you = FPlayers.i.get(listeningPlayer);
+                FPlayer you = FPlayers.getInstance().getByPlayer(listeningPlayer);
                 String yourFormat = formatStart + me.getChatTag(you).trim() + formatEnd;
                 try {
                     listeningPlayer.sendMessage(String.format(yourFormat, talkingPlayer.getDisplayName(), msg));

@@ -1,12 +1,15 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.event.FactionRenameEvent;
 import com.massivecraft.factions.scoreboards.FTeamWrapper;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.MiscUtil;
+
 import org.bukkit.Bukkit;
 
 import java.util.ArrayList;
@@ -33,13 +36,12 @@ public class CmdTag extends FCommand {
         String tag = this.argAsString(0);
 
         // TODO does not first test cover selfcase?
-        if (Factions.i.isTagTaken(tag) && !MiscUtil.getComparisonString(tag).equals(myFaction.getComparisonTag())) {
+        if (Factions.getInstance().isTagTaken(tag) && !MiscUtil.getComparisonString(tag).equals(myFaction.getComparisonTag())) {
             msg("<b>That tag is already taken");
             return;
         }
 
-        ArrayList<String> errors = new ArrayList<String>();
-        errors.addAll(Factions.validateTag(tag));
+        ArrayList<String> errors = MiscUtil.validateTag(tag);
         if (errors.size() > 0) {
             sendMessage(errors);
             return;
@@ -66,12 +68,13 @@ public class CmdTag extends FCommand {
         myFaction.setTag(tag);
 
         // Inform
-        myFaction.msg("%s<i> changed your faction tag to %s", fme.describeTo(myFaction, true), myFaction.getTag(myFaction));
-        for (Faction faction : Factions.i.get()) {
-            if (faction == myFaction) {
+        for (FPlayer fplayer : FPlayers.getInstance().getOnlinePlayers()) {
+            if (fplayer.getFactionId() == myFaction.getId()) {
+                fplayer.msg("%s<i> changed your faction tag to %s", fme.describeTo(myFaction, true), myFaction.getTag(myFaction));
                 continue;
             }
-            faction.msg("<i>The faction %s<i> changed their name to %s.", fme.getColorTo(faction) + oldtag, myFaction.getTag(faction));
+            Faction faction = fplayer.getFaction();
+            fplayer.msg("<i>The faction %s<i> changed their name to %s.", fme.getColorTo(faction) + oldtag, myFaction.getTag(faction));
         }
 
         FTeamWrapper.updatePrefixes(myFaction);

@@ -28,7 +28,7 @@ public class CmdSafeunclaimall extends FCommand {
 
     @Override
     public void perform() {
-        Board.unclaimAll(Factions.i.getSafeZone().getId());
+        Board.getInstance().unclaimAll(Factions.getInstance().getSafeZone().getId());
         msg("<i>You unclaimed ALL safe zone land.");
 
         if (Conf.logLandUnclaims) {

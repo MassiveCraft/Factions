@@ -12,6 +12,7 @@ import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.util.*;
 import com.massivecraft.factions.zcore.MPlugin;
 import com.massivecraft.factions.zcore.util.TextUtil;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -77,9 +78,18 @@ public class P extends MPlugin {
         // Load Conf from disk
         Conf.load();
         Essentials.setup();
-        FPlayers.i.loadFromDisc();
-        Factions.i.loadFromDisc();
-        Board.load();
+        FPlayers.getInstance().load();
+        Factions.getInstance().load();
+        for (FPlayer fPlayer : FPlayers.getInstance().getAllFPlayers()) {
+            Faction faction = Factions.getInstance().getFactionById(fPlayer.getFactionId());
+            if (faction == null) {
+                log("Invalid faction id on " + fPlayer.getName() + ":" + fPlayer.getFactionId());
+                fPlayer.resetFactionData(false);
+                continue;
+            }
+            faction.addFPlayer(fPlayer);
+        }
+        Board.getInstance().load();
 
         // Add Base Commands
         this.cmdBase = new FCmdRoot();
@@ -122,7 +132,6 @@ public class P extends MPlugin {
     public void onDisable() {
         // only save data if plugin actually completely loaded successfully
         if (this.loadSuccessful) {
-            Board.save();
             Conf.save();
         }
         if (AutoLeaveTask != null) {
@@ -150,7 +159,7 @@ public class P extends MPlugin {
 
     @Override
     public void postAutoSave() {
-        Board.save();
+        Board.getInstance().forceSave();
         Conf.save();
     }
 
@@ -204,7 +213,7 @@ public class P extends MPlugin {
         if (player == null) {
             return false;
         }
-        FPlayer me = FPlayers.i.get(player);
+        FPlayer me = FPlayers.getInstance().getByPlayer(player);
 
         return me != null && me.getChatMode().isAtLeast(ChatMode.ALLIANCE);
     }
@@ -230,7 +239,7 @@ public class P extends MPlugin {
             return tag;
         }
 
-        FPlayer me = FPlayers.i.get(speaker);
+        FPlayer me = FPlayers.getInstance().getByPlayer(speaker);
         if (me == null) {
             return tag;
         }
@@ -239,7 +248,7 @@ public class P extends MPlugin {
         if (listener == null || !Conf.chatTagRelationColored) {
             tag = me.getChatTag().trim();
         } else {
-            FPlayer you = FPlayers.i.get(listener);
+            FPlayer you = FPlayers.getInstance().getByPlayer(listener);
             if (you == null) {
                 tag = me.getChatTag().trim();
             } else  // everything checks out, give the colored tag
@@ -260,7 +269,7 @@ public class P extends MPlugin {
             return "";
         }
 
-        FPlayer me = FPlayers.i.get(player);
+        FPlayer me = FPlayers.getInstance().getByPlayer(player);
         if (me == null) {
             return "";
         }
@@ -270,17 +279,13 @@ public class P extends MPlugin {
 
     // Get a list of all faction tags (names)
     public Set<String> getFactionTags() {
-        Set<String> tags = new HashSet<String>();
-        for (Faction faction : Factions.i.get()) {
-            tags.add(faction.getTag());
-        }
-        return tags;
+        return Factions.getInstance().getFactionTags();
     }
 
     // Get a list of all players in the specified faction
     public Set<String> getPlayersInFaction(String factionTag) {
         Set<String> players = new HashSet<String>();
-        Faction faction = Factions.i.getByTag(factionTag);
+        Faction faction = Factions.getInstance().getByTag(factionTag);
         if (faction != null) {
             for (FPlayer fplayer : faction.getFPlayers()) {
                 players.add(fplayer.getName());
@@ -292,7 +297,7 @@ public class P extends MPlugin {
     // Get a list of all online players in the specified faction
     public Set<String> getOnlinePlayersInFaction(String factionTag) {
         Set<String> players = new HashSet<String>();
-        Faction faction = Factions.i.getByTag(factionTag);
+        Faction faction = Factions.getInstance().getByTag(factionTag);
         if (faction != null) {
             for (FPlayer fplayer : faction.getFPlayersWhereOnline(true)) {
                 players.add(fplayer.getName());

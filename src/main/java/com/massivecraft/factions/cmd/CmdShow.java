@@ -90,7 +90,7 @@ public class CmdShow extends FCommand {
         // List relation
         String allyList = p.txt.parse("<a>Allies: ");
         String enemyList = p.txt.parse("<a>Enemies: ");
-        for (Faction otherFaction : Factions.i.get()) {
+        for (Faction otherFaction : Factions.getInstance().getAllFactions()) {
             if (otherFaction == faction) {
                 continue;
             }

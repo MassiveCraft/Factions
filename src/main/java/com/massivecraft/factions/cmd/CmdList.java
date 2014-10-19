@@ -36,10 +36,10 @@ public class CmdList extends FCommand {
             return;
         }
 
-        ArrayList<Faction> factionList = new ArrayList<Faction>(Factions.i.get());
-        factionList.remove(Factions.i.getNone());
-        factionList.remove(Factions.i.getSafeZone());
-        factionList.remove(Factions.i.getWarZone());
+        ArrayList<Faction> factionList = Factions.getInstance().getAllFactions();
+        factionList.remove(Factions.getInstance().getNone());
+        factionList.remove(Factions.getInstance().getSafeZone());
+        factionList.remove(Factions.getInstance().getWarZone());
 
         // Sort by total followers first
         Collections.sort(factionList, new Comparator<Faction>() {
@@ -90,7 +90,7 @@ public class CmdList extends FCommand {
 		sendMessage(p.txt.getPage(lines, this.argAsInt(0, 1), "Faction List"));
  */
 
-        factionList.add(0, Factions.i.getNone());
+        factionList.add(0, Factions.getInstance().getNone());
 
         final int pageheight = 9;
         int pagenumber = this.argAsInt(0, 1);
@@ -110,7 +110,7 @@ public class CmdList extends FCommand {
 
         for (Faction faction : factionList.subList(start, end)) {
             if (faction.isNone()) {
-                lines.add(p.txt.parse("<i>Factionless<i> %d online", Factions.i.getNone().getFPlayersWhereOnline(true).size()));
+                lines.add(p.txt.parse("<i>Factionless<i> %d online", Factions.getInstance().getNone().getFPlayersWhereOnline(true).size()));
                 continue;
             }
             lines.add(p.txt.parse("%s<i> %d/%d online, %d/%d/%d", faction.getTag(fme), faction.getFPlayersWhereOnline(true).size(), faction.getFPlayers().size(), faction.getLandRounded(), faction.getPowerRounded(), faction.getPowerMaxRounded()));

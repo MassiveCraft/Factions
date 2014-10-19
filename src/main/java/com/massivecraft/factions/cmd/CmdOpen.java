@@ -1,8 +1,8 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Conf;
-import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.struct.Permission;
 
 public class CmdOpen extends FCommand {
@@ -35,12 +35,12 @@ public class CmdOpen extends FCommand {
         String open = myFaction.getOpen() ? "open" : "closed";
 
         // Inform
-        myFaction.msg("%s<i> changed the faction to <h>%s<i>.", fme.describeTo(myFaction, true), open);
-        for (Faction faction : Factions.i.get()) {
-            if (faction == myFaction) {
+        for (FPlayer fplayer : FPlayers.getInstance().getOnlinePlayers()) {
+            if (fplayer.getFactionId() == myFaction.getId()) {
+                fplayer.msg("%s<i> changed the faction to <h>%s<i>.", open);
                 continue;
             }
-            faction.msg("<i>The faction %s<i> is now %s", myFaction.getTag(faction), open);
+            fplayer.msg("<i>The faction %s<i> is now %s", myFaction.getTag(fplayer.getFaction()), open);
         }
     }
 

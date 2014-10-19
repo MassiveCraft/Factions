@@ -260,9 +260,11 @@ public class Conf {
     public static Set<String> worldsIgnorePvP = new LinkedHashSet<String>();
     public static Set<String> worldsNoWildernessProtection = new LinkedHashSet<String>();
 
+    public static Backend backEnd = Backend.JSON;
+
     public static transient int mapHeight = 8;
     public static transient int mapWidth = 39;
-    public static transient char[] mapKeyChrs = "\\/#?$%=&^ABCDEFGHJKLMNOPQRSTUVWXYZ1234567890abcdeghjmnopqrsuvwxyz".toCharArray();
+    public static transient char[] mapKeyChrs = "\\/#$%=&^ABCDEFGHJKLMNOPQRSTUVWXYZ1234567890abcdeghjmnopqrsuvwxyz?".toCharArray();
 
     static {
         baseCommandAliases.add("f");
@@ -354,6 +356,12 @@ public class Conf {
 
     public static void save() {
         P.p.persist.save(i);
+    }
+
+    public enum Backend {
+        JSON,
+        //MYSQL,  TODO
+        ;
     }
 }
 

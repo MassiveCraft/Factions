@@ -40,7 +40,7 @@ public class FTeamWrapper {
         FTeamWrapper wrapper = wrappers.get(faction);
         Set<FPlayer> factionMembers = faction.getFPlayers();
 
-        if (wrapper != null && !Factions.i.get().contains(faction)) {
+        if (wrapper != null && Factions.getInstance().getFactionById(faction.getId()) != null) {
             // Faction was disbanded
             wrapper.unregister();
             wrappers.remove(faction);
@@ -53,7 +53,7 @@ public class FTeamWrapper {
         }
 
         for (OfflinePlayer player : wrapper.getPlayers()) {
-            if (!player.isOnline() || !factionMembers.contains(FPlayers.i.get(player))) {
+            if (!player.isOnline() || !factionMembers.contains(FPlayers.getInstance().getByOfflinePlayer(player))) {
                 // Player is offline or no longer in faction
                 wrapper.removePlayer(player);
             }
