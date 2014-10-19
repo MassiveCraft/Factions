@@ -67,7 +67,8 @@ public enum Permission {
     UNCLAIM("unclaim"),
     UNCLAIM_ALL("unclaimall"),
     VERSION("version"),
-    SCOREBOARD("scoreboard");
+    SCOREBOARD("scoreboard"),
+    SEECHUNK("seechunk");
 
     public final String node;
 

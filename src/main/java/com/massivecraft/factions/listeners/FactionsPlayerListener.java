@@ -8,6 +8,7 @@ import com.massivecraft.factions.scoreboards.sidebar.FDefaultSidebar;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.util.VisualizeUtil;
 import com.massivecraft.factions.zcore.util.TextUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -88,6 +89,11 @@ public class FactionsPlayerListener implements Listener {
     public void onPlayerMove(PlayerMoveEvent event) {
         if (event.isCancelled()) {
             return;
+        }
+
+        // clear visualization
+        if (event.getFrom().getBlockX() != event.getTo().getBlockX() || event.getFrom().getBlockY() != event.getTo().getBlockY() || event.getFrom().getBlockZ() != event.getTo().getBlockZ()) {
+            VisualizeUtil.clear(event.getPlayer());
         }
 
         // quick check to make sure player is moving between chunks; good performance boost

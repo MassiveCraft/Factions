@@ -88,6 +88,7 @@ permissions:
       factions.unclaimall: true
       factions.scoreboard: true
       factions.showinvites: true
+      factions.seechunk: true
   factions.admin:
     description: hand over your admin rights
   factions.admin.any:
@@ -231,3 +232,5 @@ permissions:
     description: ability to toggle scoreboards
   factions.showinvites:
     description: show pending invites to your faction
+  factions.seechunk:
+    description: see the chunk you stand in

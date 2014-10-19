@@ -55,6 +55,7 @@ public class FCmdRoot extends FCommand {
     public CmdSB cmdSB = new CmdSB();
     public CmdShowInvites cmdShowInvites = new CmdShowInvites();
     public CmdAnnounce cmdAnnounce = new CmdAnnounce();
+    public CmdSeeChunk cmdSeeChunk = new CmdSeeChunk();
 
     public FCmdRoot() {
         super();
@@ -126,6 +127,7 @@ public class FCmdRoot extends FCommand {
         this.addSubCommand(this.cmdSB);
         this.addSubCommand(this.cmdShowInvites);
         this.addSubCommand(this.cmdAnnounce);
+        this.addSubCommand(this.cmdSeeChunk);
     }
 
     @Override
