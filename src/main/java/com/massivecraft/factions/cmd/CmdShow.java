@@ -134,8 +134,14 @@ public class CmdShow extends FCommand {
         // List the members...
         String onlineList = p.txt.parse("<a>") + "Members online: ";
         String offlineList = p.txt.parse("<a>") + "Members offline: ";
+        boolean canSeePower = Permission.POWER_ANY.has(me);
         for (FPlayer follower : admins) {
-            listpart = follower.getNameAndTitle(fme) + p.txt.parse("<i>") + ", ";
+            listpart = follower.getNameAndTitle(fme);
+            if (canSeePower) {
+                listpart += p.txt.parse("<i>(%d), ", follower.getPowerRounded());
+            } else {
+                listpart += p.txt.parse("<i>, ");
+            }
             if (follower.isOnlineAndVisibleTo(me)) {
                 onlineList += listpart;
             } else {
@@ -143,7 +149,12 @@ public class CmdShow extends FCommand {
             }
         }
         for (FPlayer follower : mods) {
-            listpart = follower.getNameAndTitle(fme) + p.txt.parse("<i>") + ", ";
+            listpart = follower.getNameAndTitle(fme);
+            if (canSeePower) {
+                listpart += p.txt.parse("<i>(%d), ", follower.getPowerRounded());
+            } else {
+                listpart += p.txt.parse("<i>, ");
+            }
             if (follower.isOnlineAndVisibleTo(me)) {
                 onlineList += listpart;
             } else {
@@ -151,7 +162,12 @@ public class CmdShow extends FCommand {
             }
         }
         for (FPlayer follower : normals) {
-            listpart = follower.getNameAndTitle(fme) + p.txt.parse("<i>") + ", ";
+            listpart = follower.getNameAndTitle(fme);
+            if (canSeePower) {
+                listpart += p.txt.parse("<i>(%d), ", follower.getPowerRounded());
+            } else {
+                listpart += p.txt.parse("<i>, ");
+            }
             if (follower.isOnlineAndVisibleTo(me)) {
                 onlineList += listpart;
             } else {
