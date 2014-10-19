@@ -1,8 +1,10 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.event.FactionRelationEvent;
+import com.massivecraft.factions.scoreboards.FScoreboard;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import org.bukkit.Bukkit;
@@ -83,6 +85,19 @@ public abstract class FRelationCommand extends FCommand {
         if (!targetRelation.isNeutral() && myFaction.isPeaceful()) {
             them.msg("<i>This will have no effect while their faction is peaceful.");
             myFaction.msg("<i>This will have no effect while your faction is peaceful.");
+        }
+
+        for (FPlayer ourMember : myFaction.getFPlayers()) {
+            if (!ourMember.isOnline()) {
+                continue;
+            }
+            for (FPlayer theirMember : them.getFPlayers()) {
+                if (!theirMember.isOnline()) {
+                    continue;
+                }
+                FScoreboard.get(ourMember).updateColor(theirMember);
+                FScoreboard.get(theirMember).updateColor(ourMember);
+            }
         }
 
     }

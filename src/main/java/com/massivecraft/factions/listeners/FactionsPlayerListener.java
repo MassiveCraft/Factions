@@ -1,6 +1,8 @@
 package com.massivecraft.factions.listeners;
 
 import com.massivecraft.factions.*;
+import com.massivecraft.factions.event.FPlayerJoinEvent;
+import com.massivecraft.factions.event.FPlayerLeaveEvent;
 import com.massivecraft.factions.scoreboards.FScoreboard;
 import com.massivecraft.factions.scoreboards.sidebar.FDefaultSidebar;
 import com.massivecraft.factions.struct.Permission;
@@ -514,5 +516,17 @@ public class FactionsPlayerListener implements Listener {
             badGuy.leave(false);
             badGuy.detach();
         }
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    final public void onFactionJoin(FPlayerJoinEvent event) {
+        FScoreboard.updateColorToAllLater(event.getfPlayer());
+        FScoreboard.updateColorsFromAllLater(event.getfPlayer());
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onFactionLeave(FPlayerLeaveEvent event) {
+        FScoreboard.updateColorToAllLater(event.getfPlayer());
+        FScoreboard.updateColorsFromAllLater(event.getfPlayer());
     }
 }
