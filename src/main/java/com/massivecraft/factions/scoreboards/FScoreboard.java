@@ -26,6 +26,9 @@ public class FScoreboard {
 
     public static void init(FPlayer fplayer) {
         fscoreboards.put(fplayer.getPlayer(), new FScoreboard(fplayer));
+        if (fplayer.hasFaction()) {
+            FScoreboard.applyUpdates(fplayer.getFaction());
+        }
     }
 
     public static void remove(FPlayer fplayer) {
