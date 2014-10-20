@@ -4,6 +4,7 @@ import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.event.FactionRenameEvent;
+import com.massivecraft.factions.scoreboards.FScoreboard;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.MiscUtil;
 import org.bukkit.Bukkit;
@@ -73,6 +74,7 @@ public class CmdTag extends FCommand {
             faction.msg("<i>The faction %s<i> changed their name to %s.", fme.getColorTo(faction) + oldtag, myFaction.getTag(faction));
         }
 
+        FScoreboard.applyUpdates(myFaction);
     }
 
 }

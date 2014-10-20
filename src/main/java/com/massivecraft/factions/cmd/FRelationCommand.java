@@ -1,7 +1,6 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Conf;
-import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.event.FactionRelationEvent;
 import com.massivecraft.factions.scoreboards.FScoreboard;
@@ -87,18 +86,7 @@ public abstract class FRelationCommand extends FCommand {
             myFaction.msg("<i>This will have no effect while your faction is peaceful.");
         }
 
-        for (FPlayer ourMember : myFaction.getFPlayers()) {
-            if (!ourMember.isOnline()) {
-                continue;
-            }
-            for (FPlayer theirMember : them.getFPlayers()) {
-                if (!theirMember.isOnline()) {
-                    continue;
-                }
-                FScoreboard.get(ourMember).updateColor(theirMember);
-                FScoreboard.get(theirMember).updateColor(ourMember);
-            }
-        }
-
+        FScoreboard.applyUpdates(myFaction);
+        FScoreboard.applyUpdates(them);
     }
 }

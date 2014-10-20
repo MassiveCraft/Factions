@@ -526,13 +526,11 @@ public class FactionsPlayerListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     final public void onFactionJoin(FPlayerJoinEvent event) {
-        FScoreboard.updateColorToAllLater(event.getfPlayer());
-        FScoreboard.updateColorsFromAllLater(event.getfPlayer());
+        FScoreboard.applyUpdatesLater(event.getFaction());
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onFactionLeave(FPlayerLeaveEvent event) {
-        FScoreboard.updateColorToAllLater(event.getfPlayer());
-        FScoreboard.updateColorsFromAllLater(event.getfPlayer());
+        FScoreboard.applyUpdatesLater(event.getFaction());
     }
 }

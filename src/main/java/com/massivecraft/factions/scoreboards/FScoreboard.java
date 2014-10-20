@@ -1,10 +1,8 @@
 package com.massivecraft.factions.scoreboards;
 
-import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.FPlayers;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.*;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.DisplaySlot;
@@ -20,16 +18,14 @@ public class FScoreboard {
     private final Scoreboard scoreboard;
     private final FPlayer fplayer;
     private final BufferedObjective bufferedObjective;
-    private final Map<ChatColor, Team> colorTeams = new HashMap<ChatColor, Team>();
+    private final Map<Faction, Team> factionTeams = new HashMap<Faction, Team>();
+    private int factionTeamPtr;
     private FSidebarProvider defaultProvider;
     private FSidebarProvider temporaryProvider;
     private boolean removed = false;
 
     public static void init(FPlayer fplayer) {
         fscoreboards.put(fplayer.getPlayer(), new FScoreboard(fplayer));
-
-        updateColorToAllLater(fplayer);
-        updateColorsFromAllLater(fplayer);
     }
 
     public static void remove(FPlayer fplayer) {
@@ -44,28 +40,19 @@ public class FScoreboard {
         return fscoreboards.get(player);
     }
 
-    public static void updateColorToAllLater(final FPlayer fplayer) {
-        // We're delaying by a tick here to simplify logic in other areas
-        // (e.g. for FPlayer{Join,Leave}Event handlers; CmdDisband)
+    public static void applyUpdatesLater(final Faction faction) {
         Bukkit.getScheduler().runTask(P.p, new Runnable() {
             @Override
             public void run() {
-                for (FPlayer other : FPlayers.i.getOnline()) {
-                    get(other).updateColor(fplayer);
-                }
+                applyUpdates(faction);
             }
         });
     }
 
-    public static void updateColorsFromAllLater(final FPlayer fplayer) {
-        Bukkit.getScheduler().runTask(P.p, new Runnable() {
-            @Override
-            public void run() {
-                for (FPlayer other : FPlayers.i.getOnline()) {
-                    get(fplayer).updateColor(other);
-                }
-            }
-        });
+    public static void applyUpdates(Faction faction) {
+        for (FScoreboard fscoreboard : fscoreboards.values()) {
+            fscoreboard.updateFactionTeam(faction);
+        }
     }
 
     private FScoreboard(FPlayer fplayer) {
@@ -73,10 +60,8 @@ public class FScoreboard {
         this.scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
         this.bufferedObjective = new BufferedObjective(scoreboard);
 
-        for (ChatColor color : ChatColor.values()) {
-            Team team = scoreboard.registerNewTeam(color.name());
-            team.setPrefix(color.toString());
-            colorTeams.put(color, team);
+        for (Faction faction : Factions.i.get()) {
+            updateFactionTeam(faction);
         }
 
         fplayer.getPlayer().setScoreboard(scoreboard);
@@ -139,16 +124,44 @@ public class FScoreboard {
         }
     }
 
-    public void updateColor(FPlayer other) {
-        if (!other.isOnline()) {
+    public void updateFactionTeam(Faction faction) {
+        Team team = factionTeams.get(faction);
+
+        if (!Factions.i.get().contains(faction)) {
+            // Faction was disbanded
+            if (team != null) {
+                factionTeams.remove(faction);
+                team.unregister();
+            }
             return;
         }
 
-        ChatColor newColor = fplayer.getRelationTo(other).getColor();
-        Team team = colorTeams.get(newColor);
+        if (team == null) {
+            team = scoreboard.registerNewTeam("faction_" + (factionTeamPtr++));
+            factionTeams.put(faction, team);
+        }
 
-        if (!team.hasPlayer(other.getPlayer())) {
-            team.addPlayer(other.getPlayer());
+        for (OfflinePlayer player : team.getPlayers()) {
+            if (!player.isOnline() || !faction.getFPlayers().contains(FPlayers.i.get(player.getPlayer()))) {
+                // Player is offline or no longer in faction
+                team.removePlayer(player);
+            }
+        }
+
+        for (FPlayer fmember : faction.getFPlayers()) {
+            if (!fmember.isOnline()) {
+                continue;
+            }
+            if (!team.hasPlayer(fmember.getPlayer())) {
+                // Scoreboard team doesn't have player; add him/her
+                team.addPlayer(fmember.getPlayer());
+            }
+        }
+
+        // Update faction prefix
+        String prefix = faction.getTag().substring(0, Math.min(13, faction.getTag().length())) + " " + faction.getRelationTo(this.fplayer).getColor();
+        if (team.getPrefix() == null || !team.getPrefix().equals(prefix)) {
+            team.setPrefix(prefix);
         }
     }
 }
