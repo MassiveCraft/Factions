@@ -52,10 +52,10 @@ public class CmdSeeChunk extends FCommand {
 
     @SuppressWarnings("deprecation")
     public static void showPillar(Player player, World world, int blockX, int blockZ) {
-        for (int blockY = 0; blockY < world.getMaxHeight(); blockY++) {
+        for (int blockY = 0; blockY < player.getLocation().getBlockY() + 30; blockY++) {
             Location loc = new Location(world, blockX, blockY, blockZ);
             if (loc.getBlock().getType() != Material.AIR) continue;
-            int typeId = blockY % 5 == 0 ? Material.GLOWSTONE.getId() : Material.GLASS.getId();
+            int typeId = blockY % 5 == 0 ? Material.REDSTONE_LAMP_ON.getId() : Material.STAINED_GLASS.getId();
             VisualizeUtil.addLocation(player, loc, typeId);
         }
     }
