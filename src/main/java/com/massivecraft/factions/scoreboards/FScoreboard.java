@@ -2,6 +2,7 @@ package com.massivecraft.factions.scoreboards;
 
 import com.massivecraft.factions.*;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -162,7 +163,7 @@ public class FScoreboard {
         }
 
         // Update faction prefix
-        String prefix = faction.getTag().substring(0, Math.min(13, faction.getTag().length())) + " " + faction.getRelationTo(this.fplayer).getColor();
+        String prefix = faction.getRelationTo(this.fplayer).getColor() + "[" + faction.getTag().substring(0, Math.min(9, faction.getTag().length())) + "] " + ChatColor.RESET;
         if (team.getPrefix() == null || !team.getPrefix().equals(prefix)) {
             team.setPrefix(prefix);
         }
