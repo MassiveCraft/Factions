@@ -8,6 +8,7 @@ import com.massivecraft.factions.integration.Worldguard;
 import com.massivecraft.factions.listeners.*;
 import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.util.AutoLeaveTask;
+import com.massivecraft.factions.util.EnumTypeAdapter;
 import com.massivecraft.factions.util.LazyLocation;
 import com.massivecraft.factions.util.MapFLocToStringSetTypeAdapter;
 import com.massivecraft.factions.util.MyLocationTypeAdapter;
@@ -124,7 +125,7 @@ public class P extends MPlugin {
     public GsonBuilder getGsonBuilder() {
         Type mapFLocToStringSetType = new TypeToken<Map<FLocation, Set<String>>>() {}.getType();
 
-        return new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().excludeFieldsWithModifiers(Modifier.TRANSIENT, Modifier.VOLATILE).registerTypeAdapter(LazyLocation.class, new MyLocationTypeAdapter()).registerTypeAdapter(mapFLocToStringSetType, new MapFLocToStringSetTypeAdapter());
+        return new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().excludeFieldsWithModifiers(Modifier.TRANSIENT, Modifier.VOLATILE).registerTypeAdapter(LazyLocation.class, new MyLocationTypeAdapter()).registerTypeAdapter(mapFLocToStringSetType, new MapFLocToStringSetTypeAdapter()).registerTypeAdapterFactory(EnumTypeAdapter.ENUM_FACTORY);
     }
 
     @Override
