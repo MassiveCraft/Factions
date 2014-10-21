@@ -52,9 +52,15 @@ scoreboard:
 # Replace {name} - player's name. {faction} - player's faction title, factionless if none.
 # {totalOnline} - total players on the server. {balance} - player's balance.
 # {maxPower} - player's max power.
+
   default-enabled: false # Default to false to keep original functionality.
   default-title: "i love drt" # Can use any of the values from above but this won't update once it's set (so don't set {balance}).
   default-update-interval: 2 # in seconds.
+
+  # This will show faction prefixes colored based on relation on nametags and in the tab.
+  #   The scoreboard needs to be enabled for this to work.
+  default-prefixes: true
+
   default:
     - "&6Your Faction"
     - "{faction}"

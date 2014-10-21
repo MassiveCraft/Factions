@@ -165,9 +165,11 @@ public class FScoreboard {
         }
 
         // Update faction prefix
-        String prefix = faction.getRelationTo(this.fplayer).getColor() + "[" + faction.getTag().substring(0, Math.min(9, faction.getTag().length())) + "] " + ChatColor.RESET;
-        if (team.getPrefix() == null || !team.getPrefix().equals(prefix)) {
-            team.setPrefix(prefix);
+        if(P.p.getConfig().getBoolean("scoreboard.default-prefixes", false)) {
+            String prefix = faction.getRelationTo(this.fplayer).getColor() + "[" + faction.getTag().substring(0, Math.min(9, faction.getTag().length())) + "] " + ChatColor.RESET;
+            if (team.getPrefix() == null || !team.getPrefix().equals(prefix)) {
+                team.setPrefix(prefix);
+            }
         }
     }
 }
