@@ -12,6 +12,7 @@ import org.bukkit.scoreboard.Team;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class FScoreboard {
     private static Map<FPlayer, FScoreboard> fscoreboards = new HashMap<FPlayer, FScoreboard>();
@@ -130,6 +131,7 @@ public class FScoreboard {
 
     public void updateFactionTeam(Faction faction) {
         Team team = factionTeams.get(faction);
+        Set<FPlayer> factionMembers = faction.getFPlayers();
 
         if (!Factions.i.get().contains(faction)) {
             // Faction was disbanded
@@ -146,13 +148,13 @@ public class FScoreboard {
         }
 
         for (OfflinePlayer player : team.getPlayers()) {
-            if (!player.isOnline() || !faction.getFPlayers().contains(FPlayers.i.get(player.getPlayer()))) {
+            if (!player.isOnline() || !factionMembers.contains(FPlayers.i.get(player.getPlayer()))) {
                 // Player is offline or no longer in faction
                 team.removePlayer(player);
             }
         }
 
-        for (FPlayer fmember : faction.getFPlayers()) {
+        for (FPlayer fmember : factionMembers) {
             if (!fmember.isOnline()) {
                 continue;
             }
