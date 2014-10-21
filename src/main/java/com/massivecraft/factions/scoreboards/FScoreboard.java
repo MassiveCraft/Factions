@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class FScoreboard {
-    private static Map<Player, FScoreboard> fscoreboards = new HashMap<Player, FScoreboard>();
+    private static Map<FPlayer, FScoreboard> fscoreboards = new HashMap<FPlayer, FScoreboard>();
 
     private final Scoreboard scoreboard;
     private final FPlayer fplayer;
@@ -26,22 +26,22 @@ public class FScoreboard {
     private boolean removed = false;
 
     public static void init(FPlayer fplayer) {
-        fscoreboards.put(fplayer.getPlayer(), new FScoreboard(fplayer));
+        fscoreboards.put(fplayer, new FScoreboard(fplayer));
         if (fplayer.hasFaction()) {
             FScoreboard.applyUpdates(fplayer.getFaction());
         }
     }
 
     public static void remove(FPlayer fplayer) {
-        fscoreboards.remove(fplayer.getPlayer()).removed = true;
+        fscoreboards.remove(fplayer).removed = true;
     }
 
-    public static FScoreboard get(FPlayer player) {
-        return get(player.getPlayer());
+    public static FScoreboard get(FPlayer fplayer) {
+        return fscoreboards.get(fplayer);
     }
 
     public static FScoreboard get(Player player) {
-        return fscoreboards.get(player);
+        return fscoreboards.get(FPlayers.i.get(player));
     }
 
     public static void applyUpdatesLater(final Faction faction) {
