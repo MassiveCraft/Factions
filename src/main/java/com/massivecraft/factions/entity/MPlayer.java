@@ -17,6 +17,7 @@ import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.RelationParticipator;
 import com.massivecraft.factions.event.EventFactionsChunkChangeType;
 import com.massivecraft.factions.event.EventFactionsChunksChange;
+import com.massivecraft.factions.event.EventFactionsDisband;
 import com.massivecraft.factions.event.EventFactionsMembershipChange;
 import com.massivecraft.factions.event.EventFactionsRemovePlayerMillis;
 import com.massivecraft.factions.event.EventFactionsMembershipChange.MembershipChangeReason;
@@ -783,17 +784,18 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 
 		if (myFaction.isNormal() && !permanent && myFaction.getMPlayers().isEmpty())
 		{
-			// Remove this faction
-			for (MPlayer mplayer : MPlayerColl.get().getAllOnline())
+			EventFactionsDisband eventFactionsDisband = new EventFactionsDisband(this.getSender(), myFaction);
+			eventFactionsDisband.run();
+			if ( ! eventFactionsDisband.isCancelled())
 			{
-				mplayer.msg("<i>%s<i> was disbanded.", myFaction.describeTo(mplayer, true));
-			}
-
-			if (MConf.get().logFactionDisband)
-			{
-				Factions.get().log("The faction "+myFaction.getName()+" ("+myFaction.getId()+") was disbanded due to the last player ("+this.getName()+") leaving.");
-			}
-			myFaction.detach();
+				// Remove this faction
+				this.msg("%s <i>was disbanded since you were the last player.", myFaction.describeTo(this, true));
+				if (MConf.get().logFactionDisband)
+				{
+					Factions.get().log("The faction "+myFaction.getName()+" ("+myFaction.getId()+") was disbanded due to the last player ("+this.getName()+") leaving.");
+				}
+				myFaction.detach();
+			}			
 		}
 	}
 	
