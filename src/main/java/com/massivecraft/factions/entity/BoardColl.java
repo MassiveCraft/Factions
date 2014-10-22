@@ -6,12 +6,14 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import com.massivecraft.factions.Const;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.RelationParticipator;
 import com.massivecraft.factions.TerritoryAccess;
+import com.massivecraft.massivecore.collections.MassiveMap;
 import com.massivecraft.massivecore.ps.PS;
 import com.massivecraft.massivecore.store.Coll;
 import com.massivecraft.massivecore.store.MStore;
@@ -128,6 +130,51 @@ public class BoardColl extends Coll<Board> implements BoardInterface
 		return ret;
 	}
 	
+	@Override
+	public Set<PS> getChunks(String factionId)
+	{
+		Set<PS> ret = new HashSet<PS>();
+		for (Board board : this.getAll())
+		{
+			ret.addAll(board.getChunks(factionId));
+		}
+		return ret;
+	}
+	
+	@Override
+	public Map<Faction, Set<PS>> getFactionToChunks()
+	{
+		Map<Faction, Set<PS>> ret = null;
+		for (Board board : this.getAll())
+		{
+			// Use the first board directly
+			Map<Faction, Set<PS>> factionToChunks = board.getFactionToChunks();
+			if (ret == null)
+			{
+				ret = factionToChunks;
+				continue;
+			}
+			
+			// Merge the following boards
+			for (Entry<Faction, Set<PS>> entry : factionToChunks.entrySet())
+			{
+				Faction faction = entry.getKey();
+				Set<PS> chunks = ret.get(faction);
+				if (chunks == null)
+				{
+					ret.put(faction, entry.getValue());
+				}
+				else
+				{
+					chunks.addAll(entry.getValue());
+				}
+			}
+		}
+		
+		if (ret == null) ret = new MassiveMap<>();
+		return ret;
+	}
+	
 	// COUNT
 	
 	@Override
@@ -144,6 +191,40 @@ public class BoardColl extends Coll<Board> implements BoardInterface
 		{
 			ret += board.getCount(factionId);
 		}
+		return ret;
+	}
+	
+	@Override
+	public Map<Faction, Integer> getFactionToCount()
+	{
+		Map<Faction, Integer> ret = null;
+		for (Board board : this.getAll())
+		{
+			// Use the first board directly
+			Map<Faction, Integer> factionToCount = board.getFactionToCount();
+			if (ret == null)
+			{
+				ret = factionToCount;
+				continue;
+			}
+			
+			// Merge the following boards
+			for (Entry<Faction, Integer> entry : factionToCount.entrySet())
+			{
+				Faction faction = entry.getKey();
+				Integer count = ret.get(faction);
+				if (count == null)
+				{
+					ret.put(faction, entry.getValue());
+				}
+				else
+				{
+					ret.put(faction, count + entry.getValue());
+				}
+			}
+		}
+		
+		if (ret == null) ret = new MassiveMap<>();
 		return ret;
 	}
 	

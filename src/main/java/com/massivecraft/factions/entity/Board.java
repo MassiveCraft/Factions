@@ -17,6 +17,8 @@ import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.RelationParticipator;
 import com.massivecraft.factions.TerritoryAccess;
 import com.massivecraft.factions.util.AsciiCompass;
+import com.massivecraft.massivecore.collections.MassiveMap;
+import com.massivecraft.massivecore.collections.MassiveSet;
 import com.massivecraft.massivecore.ps.PS;
 import com.massivecraft.massivecore.store.Entity;
 import com.massivecraft.massivecore.util.Txt;
@@ -181,6 +183,7 @@ public class Board extends Entity<Board> implements BoardInterface
 		return this.getChunks(faction.getId());
 	}
 	
+	@Override
 	public Set<PS> getChunks(String factionId)
 	{
 		Set<PS> ret = new HashSet<PS>();
@@ -193,6 +196,35 @@ public class Board extends Entity<Board> implements BoardInterface
 			ps = ps.withWorld(this.getId());
 			ret.add(ps);
 		}
+		return ret;
+	}
+	
+	@Override
+	public Map<Faction, Set<PS>> getFactionToChunks()
+	{
+		Map<Faction, Set<PS>> ret = new MassiveMap<>();
+		
+		for (Entry<PS, TerritoryAccess> entry : this.map.entrySet())
+		{
+			// Get Faction
+			TerritoryAccess ta = entry.getValue();
+			Faction faction = ta.getHostFaction();
+			if (faction == null) continue;
+			
+			// Get Chunks
+			Set<PS> chunks = ret.get(faction);
+			if (chunks == null)
+			{
+				chunks = new MassiveSet<>();
+				ret.put(faction, chunks);
+			}
+			
+			// Add Chunk
+			PS chunk = entry.getKey();
+			chunk = chunk.withWorld(this.getId());
+			chunks.add(chunk);
+		}
+		
 		return ret;
 	}
 	
@@ -213,6 +245,32 @@ public class Board extends Entity<Board> implements BoardInterface
 			if (!ta.getHostFactionId().equals(factionId)) continue;
 			ret += 1;
 		}
+		return ret;
+	}
+	
+	@Override
+	public Map<Faction, Integer> getFactionToCount()
+	{
+		Map<Faction, Integer> ret = new MassiveMap<>();
+		
+		for (Entry<PS, TerritoryAccess> entry : this.map.entrySet())
+		{
+			// Get Faction
+			TerritoryAccess ta = entry.getValue();
+			Faction faction = ta.getHostFaction();
+			if (faction == null) continue;
+			
+			// Get Count
+			Integer count = ret.get(faction);
+			if (count == null)
+			{
+				count = 0;
+			}
+			
+			// Add Chunk
+			ret.put(faction, count + 1);
+		}
+		
 		return ret;
 	}
 	

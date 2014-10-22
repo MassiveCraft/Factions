@@ -804,6 +804,7 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 	{
 		return this.tryClaim(newFaction, pss, null, null);
 	}
+	
 	public boolean tryClaim(Faction newFaction, Collection<PS> pss, String formatOne, String formatMany)
 	{
 		// Args
@@ -875,14 +876,13 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 	{
 		Set<MPlayer> ret = new HashSet<MPlayer>();
 		
-		ret.add(msender);
+		if (msender != null) ret.add(msender);
 		
 		for (Faction faction : factions)
 		{
-			if (faction.isNormal())
-			{
-				ret.addAll(faction.getMPlayers());
-			}
+			if (faction == null) continue;
+			if (faction.isNone()) continue;
+			ret.addAll(faction.getMPlayers());
 		}
 		
 		if (MConf.get().logLandClaims)

@@ -1,6 +1,7 @@
 package com.massivecraft.factions.entity;
 
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Set;
 
 import com.massivecraft.factions.RelationParticipator;
@@ -24,10 +25,13 @@ public interface BoardInterface
 
 	// CHUNKS
 	public Set<PS> getChunks(Faction faction);
+	public Set<PS> getChunks(String factionId);
+	public Map<Faction, Set<PS>> getFactionToChunks();
 	
 	// COUNT
 	public int getCount(Faction faction);
 	public int getCount(String factionId);
+	public Map<Faction, Integer> getFactionToCount();
 	
 	// NEARBY DETECTION
 	public boolean isBorderPs(PS ps);

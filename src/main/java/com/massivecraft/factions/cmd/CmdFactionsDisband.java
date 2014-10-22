@@ -40,7 +40,7 @@ public class CmdFactionsDisband extends FactionsCommand
 	
 	@Override
 	public void perform()
-	{	
+	{
 		// Args
 		Faction faction = this.arg(0, ARFaction.get(), msenderFaction);
 		if (faction == null) return;

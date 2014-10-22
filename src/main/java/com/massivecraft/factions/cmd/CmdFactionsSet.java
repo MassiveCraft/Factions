@@ -33,9 +33,13 @@ public class CmdFactionsSet extends FactionsCommand
 		this.addSubCommand(this.cmdFactionsSetSquare);
 		this.addSubCommand(this.cmdFactionsSetCircle);
 		this.addSubCommand(this.cmdFactionsSetTransfer);
+
+		this.setHelp("Tip: Set faction <h>none <i>to unclaim.");
 		
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(Perm.SET.node));
 	}
+	
+	
 	
 }
