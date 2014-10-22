@@ -4,6 +4,7 @@ import com.massivecraft.factions.*;
 import com.massivecraft.factions.event.FPlayerJoinEvent;
 import com.massivecraft.factions.event.FPlayerLeaveEvent;
 import com.massivecraft.factions.scoreboards.FScoreboard;
+import com.massivecraft.factions.scoreboards.FTeamWrapper;
 import com.massivecraft.factions.scoreboards.sidebar.FDefaultSidebar;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
@@ -526,11 +527,11 @@ public class FactionsPlayerListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     final public void onFactionJoin(FPlayerJoinEvent event) {
-        FScoreboard.applyUpdatesLater(event.getFaction());
+        FTeamWrapper.applyUpdatesLater(event.getFaction());
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onFactionLeave(FPlayerLeaveEvent event) {
-        FScoreboard.applyUpdatesLater(event.getFaction());
+        FTeamWrapper.applyUpdatesLater(event.getFaction());
     }
 }
