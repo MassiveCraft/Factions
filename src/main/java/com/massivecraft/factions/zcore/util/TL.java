@@ -30,7 +30,8 @@ public enum TL {
     WARZONE_DESCRIPTION("warzone-description", "Not the safest place to be."),
     SAFEZONE("safezone", "&6Safezone"),
     SAFEZONE_DESCRIPTION("safezone-description", "Free from pvp and monsters."),
-    TOGGLE_SB("toggle-sb", "You now have scoreboards set to {value}");
+    TOGGLE_SB("toggle-sb", "You now have scoreboards set to {value}"),
+    DEFAULT_PREFIX("default-prefix", "{relationcolor}[{faction}] &r");
 
     private String path;
     private String def;
