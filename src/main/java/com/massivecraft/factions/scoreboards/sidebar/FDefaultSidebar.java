@@ -35,7 +35,7 @@ public class FDefaultSidebar extends FSidebarProvider {
              .replace("{balance}", String.valueOf(Econ.getFriendlyBalance(fplayer.getPlayer().getUniqueId())))
              .replace("{faction}", faction)
              .replace("{maxPower}", String.valueOf(fplayer.getPowerMaxRounded()))
-             .replace("{totalOnline}", String.valueOf(Bukkit.getServer().getOnlinePlayers().size()));
+             .replace("{totalOnline}", String.valueOf(Bukkit.getServer().getOnlinePlayers().length));
         return ChatColor.translateAlternateColorCodes('&', s);
     }
 }
