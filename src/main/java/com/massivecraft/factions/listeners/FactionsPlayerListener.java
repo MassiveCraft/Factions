@@ -80,7 +80,7 @@ public class FactionsPlayerListener implements Listener {
             myFaction.memberLoggedOff();
         }
 
-        //FScoreboard.remove(me);
+        FScoreboard.remove(me);
     }
 
     // Holds the next time a player can have a map shown.
