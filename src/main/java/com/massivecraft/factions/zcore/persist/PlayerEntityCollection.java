@@ -1,8 +1,8 @@
 package com.massivecraft.factions.zcore.persist;
 
+import com.google.gson.Gson;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.craftbukkit.libs.com.google.gson.Gson;
 import org.bukkit.entity.Player;
 
 import java.io.File;

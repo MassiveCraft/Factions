@@ -20,6 +20,13 @@ public class FScoreboard {
     private FSidebarProvider temporaryProvider;
     private boolean removed = false;
 
+    // Glowstone doesn't support scoreboards.
+    // All references to this and related workarounds can be safely
+    // removed when scoreboards are supported.
+    public static boolean isSupportedByServer() {
+        return Bukkit.getScoreboardManager() != null;
+    }
+
     public static void init(FPlayer fplayer) {
         FScoreboard fboard = new FScoreboard(fplayer);
         fscoreboards.put(fplayer, fboard);
@@ -47,10 +54,16 @@ public class FScoreboard {
 
     private FScoreboard(FPlayer fplayer) {
         this.fplayer = fplayer;
-        this.scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
-        this.bufferedObjective = new BufferedObjective(scoreboard);
 
-        fplayer.getPlayer().setScoreboard(scoreboard);
+        if (isSupportedByServer()) {
+            this.scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
+            this.bufferedObjective = new BufferedObjective(scoreboard);
+
+            fplayer.getPlayer().setScoreboard(scoreboard);
+        } else {
+            this.scoreboard = null;
+            this.bufferedObjective = null;
+        }
     }
 
     protected FPlayer getFPlayer() {
@@ -62,10 +75,18 @@ public class FScoreboard {
     }
 
     public void setSidebarVisibility(boolean visible) {
+        if (!isSupportedByServer()) {
+            return;
+        }
+
         bufferedObjective.setDisplaySlot(visible ? DisplaySlot.SIDEBAR : null);
     }
 
     public void setDefaultSidebar(final FSidebarProvider provider, int updateInterval) {
+        if (!isSupportedByServer()) {
+            return;
+        }
+
         defaultProvider = provider;
         if (temporaryProvider == null) {
             // We have no temporary provider; update the BufferedObjective!
@@ -88,6 +109,10 @@ public class FScoreboard {
     }
 
     public void setTemporarySidebar(final FSidebarProvider provider) {
+        if (!isSupportedByServer()) {
+            return;
+        }
+
         temporaryProvider = provider;
         updateObjective();
 

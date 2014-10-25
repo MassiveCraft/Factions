@@ -1,13 +1,13 @@
 package com.massivecraft.factions.util;
 
-import org.bukkit.craftbukkit.libs.com.google.gson.Gson;
-import org.bukkit.craftbukkit.libs.com.google.gson.TypeAdapter;
-import org.bukkit.craftbukkit.libs.com.google.gson.TypeAdapterFactory;
-import org.bukkit.craftbukkit.libs.com.google.gson.annotations.SerializedName;
-import org.bukkit.craftbukkit.libs.com.google.gson.reflect.TypeToken;
-import org.bukkit.craftbukkit.libs.com.google.gson.stream.JsonReader;
-import org.bukkit.craftbukkit.libs.com.google.gson.stream.JsonToken;
-import org.bukkit.craftbukkit.libs.com.google.gson.stream.JsonWriter;
+import com.google.gson.Gson;
+import com.google.gson.TypeAdapter;
+import com.google.gson.TypeAdapterFactory;
+import com.google.gson.annotations.SerializedName;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonToken;
+import com.google.gson.stream.JsonWriter;
 
 import java.io.IOException;
 import java.util.HashMap;

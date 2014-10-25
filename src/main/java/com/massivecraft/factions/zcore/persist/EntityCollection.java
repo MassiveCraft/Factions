@@ -1,5 +1,6 @@
 package com.massivecraft.factions.zcore.persist;
 
+import com.google.gson.Gson;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
@@ -8,7 +9,6 @@ import com.massivecraft.factions.zcore.util.TextUtil;
 import com.massivecraft.factions.zcore.util.UUIDFetcher;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.libs.com.google.gson.Gson;
 
 import java.io.File;
 import java.io.IOException;

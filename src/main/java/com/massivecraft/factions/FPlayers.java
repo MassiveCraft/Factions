@@ -1,7 +1,7 @@
 package com.massivecraft.factions;
 
+import com.google.gson.reflect.TypeToken;
 import com.massivecraft.factions.zcore.persist.PlayerEntityCollection;
-import org.bukkit.craftbukkit.libs.com.google.gson.reflect.TypeToken;
 
 import java.io.File;
 import java.lang.reflect.Type;

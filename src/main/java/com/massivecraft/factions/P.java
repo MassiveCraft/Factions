@@ -1,5 +1,7 @@
 package com.massivecraft.factions;
 
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import com.massivecraft.factions.cmd.CmdAutoHelp;
 import com.massivecraft.factions.cmd.FCmdRoot;
 import com.massivecraft.factions.integration.Econ;
@@ -7,23 +9,20 @@ import com.massivecraft.factions.integration.Essentials;
 import com.massivecraft.factions.integration.Worldguard;
 import com.massivecraft.factions.listeners.*;
 import com.massivecraft.factions.struct.ChatMode;
-import com.massivecraft.factions.util.AutoLeaveTask;
-import com.massivecraft.factions.util.EnumTypeAdapter;
-import com.massivecraft.factions.util.LazyLocation;
-import com.massivecraft.factions.util.MapFLocToStringSetTypeAdapter;
-import com.massivecraft.factions.util.MyLocationTypeAdapter;
+import com.massivecraft.factions.util.*;
 import com.massivecraft.factions.zcore.MPlugin;
 import com.massivecraft.factions.zcore.util.TextUtil;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.craftbukkit.libs.com.google.gson.GsonBuilder;
-import org.bukkit.craftbukkit.libs.com.google.gson.reflect.TypeToken;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 
 
@@ -70,15 +69,6 @@ public class P extends MPlugin {
 
     @Override
     public void onEnable() {
-        // bit of (apparently absolutely necessary) idiot-proofing for CB version support due to changed GSON lib package name
-        try {
-            Class.forName("org.bukkit.craftbukkit.libs.com.google.gson.reflect.TypeToken");
-        } catch (ClassNotFoundException ex) {
-            this.log(Level.SEVERE, "GSON lib not found. Your CraftBukkit build is too old (< 1.3.2) or otherwise not compatible.");
-            this.suicide();
-            return;
-        }
-
         if (!preEnable()) {
             return;
         }

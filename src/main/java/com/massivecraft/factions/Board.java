@@ -1,10 +1,10 @@
 package com.massivecraft.factions;
 
+import com.google.gson.reflect.TypeToken;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.util.AsciiCompass;
 import com.massivecraft.factions.zcore.util.DiscUtil;
 import org.bukkit.ChatColor;
-import org.bukkit.craftbukkit.libs.com.google.gson.reflect.TypeToken;
 
 import java.io.File;
 import java.lang.reflect.Type;

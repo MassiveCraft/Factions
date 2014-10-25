@@ -44,12 +44,17 @@
                     <artifactSet>
                         <includes>
                             <include>mkremins:fanciful</include>
+                            <include>com.google.code.gson:gson</include>
                         </includes>
                     </artifactSet>
                     <relocations>
                         <relocation>
                             <pattern>mkremins.fanciful</pattern>
                             <shadedPattern>com.massivecraft.factions.shade.mkremins.fanciful</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>com.google</pattern>
+                            <shadedPattern>com.massivecraft.factions.shade.com.google</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>
@@ -69,11 +74,6 @@
         <dependency>
             <groupId>org.bukkit</groupId>
             <artifactId>bukkit</artifactId>
-            <version>1.7.10-R0.1-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.bukkit</groupId>
-            <artifactId>craftbukkit</artifactId>
             <version>1.7.10-R0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
@@ -108,6 +108,11 @@
             <groupId>mkremins</groupId>
             <artifactId>fanciful</artifactId>
             <version>0.2.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.1</version>
         </dependency>
     </dependencies>
 
