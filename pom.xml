@@ -53,8 +53,8 @@
                             <shadedPattern>com.massivecraft.factions.shade.mkremins.fanciful</shadedPattern>
                         </relocation>
                         <relocation>
-                            <pattern>com.google</pattern>
-                            <shadedPattern>com.massivecraft.factions.shade.com.google</shadedPattern>
+                            <pattern>com.google.gson</pattern>
+                            <shadedPattern>com.massivecraft.factions.shade.com.google.gson</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>
