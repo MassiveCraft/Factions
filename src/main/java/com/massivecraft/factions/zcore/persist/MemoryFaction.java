@@ -41,11 +41,11 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     protected transient long lastPlayerLoggedOffTime;
     protected double money;
     protected double powerBoost;
-    protected Map<String, Relation> relationWish;
+    protected Map<String, Relation> relationWish = new HashMap<String, Relation>();
     protected Map<FLocation, Set<String>> claimOwnership = new ConcurrentHashMap<FLocation, Set<String>>();
     protected transient Set<FPlayer> fplayers = new HashSet<FPlayer>();
-    protected Set<String> invites;
-    protected HashMap<String, List<String>> announcements;
+    protected Set<String> invites = new HashSet<String>();
+    protected HashMap<String, List<String>> announcements = new HashMap<String, List<String>>();
 
     public HashMap<String, List<String>> getAnnouncements() {
         return this.announcements;
@@ -236,8 +236,6 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
     public MemoryFaction(String id) {
         this.id = id;
-        this.relationWish = new HashMap<String, Relation>();
-        this.invites = new HashSet<String>();
         this.open = Conf.newFactionsDefaultOpen;
         this.tag = "???";
         this.description = "Default faction description :(";
@@ -247,7 +245,6 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         this.permanent = false;
         this.money = 0.0;
         this.powerBoost = 0.0;
-        this.announcements = new HashMap<String, List<String>>();
     }
 
     public MemoryFaction(MemoryFaction old) {
