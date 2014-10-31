@@ -40,8 +40,10 @@ public class FScoreboard {
     public static void remove(FPlayer fplayer) {
         FScoreboard fboard = fscoreboards.remove(fplayer);
 
-        fboard.removed = true;
-        FTeamWrapper.untrack(fboard);
+        if (fboard != null) {
+            fboard.removed = true;
+            FTeamWrapper.untrack(fboard);
+        }
     }
 
     public static FScoreboard get(FPlayer fplayer) {
