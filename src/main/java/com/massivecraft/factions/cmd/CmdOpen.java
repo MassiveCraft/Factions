@@ -36,8 +36,8 @@ public class CmdOpen extends FCommand {
 
         // Inform
         for (FPlayer fplayer : FPlayers.getInstance().getOnlinePlayers()) {
-            if (fplayer.getFactionId() == myFaction.getId()) {
-                fplayer.msg("%s<i> changed the faction to <h>%s<i>.", open);
+            if (fplayer.getFactionId().equals(myFaction.getId())) {
+                fplayer.msg("%s<i> changed the faction to <h>%s<i>.", fme.getName(), open);
                 continue;
             }
             fplayer.msg("<i>The faction %s<i> is now %s", myFaction.getTag(fplayer.getFaction()), open);
