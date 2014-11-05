@@ -104,6 +104,9 @@ public class CmdHelp extends FCommand {
         pageLines.add(p.cmdBase.cmdMod.getUseageTemplate(true));
         pageLines.add(p.cmdBase.cmdAdmin.getUseageTemplate(true));
         pageLines.add(p.cmdBase.cmdTitle.getUseageTemplate(true));
+        pageLines.add(p.cmdBase.cmdSB.getUseageTemplate(true));
+        pageLines.add(p.cmdBase.cmdSeeChunk.getUseageTemplate(true));
+        pageLines.add(p.cmdBase.cmdStatus.getUseageTemplate(true));
         pageLines.add(p.txt.parse("<i>Player titles are just for fun. No rules connected to them."));
         helpPages.add(pageLines);
 
