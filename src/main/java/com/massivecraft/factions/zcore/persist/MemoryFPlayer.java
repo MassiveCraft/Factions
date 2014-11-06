@@ -97,7 +97,7 @@ public abstract class MemoryFPlayer implements FPlayer {
 
     public Faction getFaction() {
         if (this.factionId == null) {
-            return null;
+            this.factionId = "0";
         }
         return Factions.getInstance().getFactionById(this.factionId);
     }
