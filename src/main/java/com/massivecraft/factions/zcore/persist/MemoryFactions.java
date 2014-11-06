@@ -122,6 +122,7 @@ public abstract class MemoryFactions extends Factions {
     public boolean isTagTaken(String str) {
         return this.getByTag(str) != null;
     }
+
     public boolean isValidFactionId(String id) {
         return factions.containsKey(id);
     }

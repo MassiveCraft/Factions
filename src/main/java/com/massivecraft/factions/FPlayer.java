@@ -1,16 +1,15 @@
 package com.massivecraft.factions;
 
-import java.util.List;
-
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.iface.RelationParticipator;
 import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
-
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+
+import java.util.List;
 
 
 /**
@@ -24,7 +23,7 @@ import org.bukkit.entity.Player;
  * necessary.
  */
 
-public interface FPlayer extends  EconomyParticipator {
+public interface FPlayer extends EconomyParticipator {
     public Faction getFaction();
 
     public String getFactionId();

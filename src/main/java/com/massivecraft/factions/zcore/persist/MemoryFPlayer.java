@@ -1,13 +1,6 @@
 package com.massivecraft.factions.zcore.persist;
 
-import com.massivecraft.factions.Board;
-import com.massivecraft.factions.Conf;
-import com.massivecraft.factions.FLocation;
-import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.FPlayers;
-import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.Factions;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.*;
 import com.massivecraft.factions.event.FPlayerLeaveEvent;
 import com.massivecraft.factions.event.LandClaimEvent;
 import com.massivecraft.factions.iface.EconomyParticipator;
@@ -21,7 +14,6 @@ import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.RelationUtil;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -86,7 +78,7 @@ public abstract class MemoryFPlayer implements FPlayer {
 
     // FIELD: autoWarZoneEnabled
     protected transient boolean autoWarZoneEnabled;
-    
+
     protected transient boolean isAdminBypassing = false;
 
     // FIELD: loginPvpDisabled
@@ -204,7 +196,8 @@ public abstract class MemoryFPlayer implements FPlayer {
         return this.getId();
     }
 
-    public MemoryFPlayer() { }
+    public MemoryFPlayer() {
+    }
 
     public MemoryFPlayer(String id) {
         this.id = id;
@@ -543,7 +536,9 @@ public abstract class MemoryFPlayer implements FPlayer {
 
     /**
      * Check if the scoreboard should be shown. Simple method to be used by above method.
+     *
      * @param toShow Faction to be shown.
+     *
      * @return true if should show, otherwise false.
      */
     public boolean shouldShowScoreboard(Faction toShow) {
@@ -764,7 +759,7 @@ public abstract class MemoryFPlayer implements FPlayer {
     public void msg(String str, Object... args) {
         this.sendMessage(P.p.txt.parse(str, args));
     }
-    
+
     public Player getPlayer() {
         for (Player player : Bukkit.getServer().getOnlinePlayers()) {
             if (player.getUniqueId().toString().equals(this.getId())) {

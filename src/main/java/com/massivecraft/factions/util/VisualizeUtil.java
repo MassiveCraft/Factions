@@ -67,7 +67,9 @@ public class VisualizeUtil {
     @SuppressWarnings("deprecation")
     public static void clear(Player player) {
         Set<Location> locations = getPlayerLocations(player);
-        if (locations == null) return;
+        if (locations == null) {
+            return;
+        }
         for (Location location : locations) {
             Block block = location.getWorld().getBlockAt(location);
             player.sendBlockChange(location, block.getTypeId(), block.getData());

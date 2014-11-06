@@ -33,6 +33,7 @@ public final class EnumTypeAdapter<T extends Enum<T>> extends TypeAdapter<T> {
             // ignore since it could be a modified enum
         }
     }
+
     public T read(JsonReader in) throws IOException {
         if (in.peek() == JsonToken.NULL) {
             in.nextNull();

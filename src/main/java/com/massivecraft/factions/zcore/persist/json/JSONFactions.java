@@ -2,6 +2,8 @@ package com.massivecraft.factions.zcore.persist.json;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Maps;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
@@ -10,10 +12,7 @@ import com.massivecraft.factions.zcore.persist.MemoryFaction;
 import com.massivecraft.factions.zcore.persist.MemoryFactions;
 import com.massivecraft.factions.zcore.util.DiscUtil;
 import com.massivecraft.factions.zcore.util.UUIDFetcher;
-
 import org.bukkit.Bukkit;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import java.io.File;
 import java.io.IOException;
@@ -70,7 +69,7 @@ public class JSONFactions extends MemoryFactions {
         super.load();
         Map<String, JSONFaction> factions = this.loadCore();
         if (factions == null) {
-            return ;
+            return;
         }
         this.factions.putAll(factions);
         P.p.log("Loaded " + factions.size() + " Factions");
@@ -86,7 +85,8 @@ public class JSONFactions extends MemoryFactions {
             return null;
         }
 
-        Map<String, JSONFaction> data = this.gson.fromJson(content, new TypeToken<Map<String, JSONFaction>>(){}.getType());
+        Map<String, JSONFaction> data = this.gson.fromJson(content, new TypeToken<Map<String, JSONFaction>>() {
+        }.getType());
 
         this.nextId = 1;
         // Do we have any names that need updating in claims or invites?
@@ -139,7 +139,7 @@ public class JSONFactions extends MemoryFactions {
                                 // UUID key
                                 String id = response.get(value).toString();
                                 set.remove(value.toLowerCase()); // Out with the
-                                                                 // old...
+                                // old...
                                 set.add(id); // And in with the new
                             }
                         } catch (Exception e) {
@@ -166,7 +166,7 @@ public class JSONFactions extends MemoryFactions {
                             // key
                             String id = response.get(value).toString();
                             invites.remove(value.toLowerCase()); // Out with the
-                                                                 // old...
+                            // old...
                             invites.add(id); // And in with the new
                         }
                     } catch (Exception e) {

@@ -76,7 +76,7 @@ public class FTeamWrapper {
         if (!FScoreboard.isSupportedByServer()) {
             return;
         }
-        if(!wrappers.containsKey(faction)) {
+        if (!wrappers.containsKey(faction)) {
             P.p.log(Level.WARNING, "Something went wrong when updating the prefix for %s", faction.getTag());
             return;
         }

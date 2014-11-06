@@ -1,6 +1,9 @@
 package com.massivecraft.factions.integration;
 
-import com.massivecraft.factions.*;
+import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.P;
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
@@ -148,20 +151,20 @@ public class Econ {
             return false;
         }
 
-	    OfflinePlayer fromAcc;
-	    OfflinePlayer toAcc;
+        OfflinePlayer fromAcc;
+        OfflinePlayer toAcc;
 
-	    if(isUUID(from.getAccountId())) {
-		    fromAcc = Bukkit.getOfflinePlayer(UUID.fromString(from.getAccountId()));
-	    } else {
-		    fromAcc = Bukkit.getOfflinePlayer(from.getAccountId());
-	    }
+        if (isUUID(from.getAccountId())) {
+            fromAcc = Bukkit.getOfflinePlayer(UUID.fromString(from.getAccountId()));
+        } else {
+            fromAcc = Bukkit.getOfflinePlayer(from.getAccountId());
+        }
 
-	    if(isUUID(to.getAccountId())) {
-		    toAcc = Bukkit.getOfflinePlayer(UUID.fromString(to.getAccountId()));
-	    } else {
-		    toAcc = Bukkit.getOfflinePlayer(to.getAccountId());
-	    }
+        if (isUUID(to.getAccountId())) {
+            toAcc = Bukkit.getOfflinePlayer(UUID.fromString(to.getAccountId()));
+        } else {
+            toAcc = Bukkit.getOfflinePlayer(to.getAccountId());
+        }
 
         // Is there enough money for the transaction to happen?
         if (!econ.has(fromAcc, amount)) {
@@ -201,11 +204,11 @@ public class Econ {
         Set<FPlayer> fplayers = new HashSet<FPlayer>();
 
         if (ep != null) {
-	        if (ep instanceof FPlayer) {
-		        fplayers.add((FPlayer) ep);
-	        } else if (ep instanceof Faction) {
-		        fplayers.addAll(((Faction) ep).getFPlayers());
-	        }
+            if (ep instanceof FPlayer) {
+                fplayers.add((FPlayer) ep);
+            } else if (ep instanceof Faction) {
+                fplayers.addAll(((Faction) ep).getFPlayers());
+            }
         }
 
         return fplayers;
@@ -241,19 +244,19 @@ public class Econ {
             return true;
         }
 
-	    // going the hard way round as econ.has refuses to work.
-	    boolean affordable = false;
-	    double currentBalance;
+        // going the hard way round as econ.has refuses to work.
+        boolean affordable = false;
+        double currentBalance;
 
-	    if(isUUID(ep.getAccountId())) {
-		    currentBalance = econ.getBalance(Bukkit.getOfflinePlayer(UUID.fromString(ep.getAccountId())));
-	    } else {
-		    currentBalance = econ.getBalance(Bukkit.getOfflinePlayer(ep.getAccountId()));
-	    }
+        if (isUUID(ep.getAccountId())) {
+            currentBalance = econ.getBalance(Bukkit.getOfflinePlayer(UUID.fromString(ep.getAccountId())));
+        } else {
+            currentBalance = econ.getBalance(Bukkit.getOfflinePlayer(ep.getAccountId()));
+        }
 
-	    if(currentBalance >= delta) {
-		    affordable = true;
-	    }
+        if (currentBalance >= delta) {
+            affordable = true;
+        }
 
         if (!affordable) {
             if (toDoThis != null && !toDoThis.isEmpty()) {
@@ -271,11 +274,11 @@ public class Econ {
 
         OfflinePlayer acc;
 
-	    if(isUUID(ep.getAccountId())) {
-		    acc = Bukkit.getOfflinePlayer(UUID.fromString(ep.getAccountId()));
-	    } else {
-		    acc = Bukkit.getOfflinePlayer(ep.getAccountId());
-	    }
+        if (isUUID(ep.getAccountId())) {
+            acc = Bukkit.getOfflinePlayer(UUID.fromString(ep.getAccountId()));
+        } else {
+            acc = Bukkit.getOfflinePlayer(ep.getAccountId());
+        }
 
         String You = ep.describeTo(ep, true);
 
@@ -370,7 +373,7 @@ public class Econ {
         return econ.getBalance(Bukkit.getOfflinePlayer(account));
     }
 
-    private static final DecimalFormat format =  new DecimalFormat("#,###");
+    private static final DecimalFormat format = new DecimalFormat("#,###");
 
     public static String getFriendlyBalance(UUID uuid) {
         return format.format(econ.getBalance(Bukkit.getOfflinePlayer(uuid)));
@@ -401,17 +404,17 @@ public class Econ {
         return econ.withdrawPlayer(Bukkit.getOfflinePlayer(account), amount).transactionSuccess();
     }
 
-	// ---------------------------------------
-	// Helpful Utilities
-	// ---------------------------------------
+    // ---------------------------------------
+    // Helpful Utilities
+    // ---------------------------------------
 
-	public static boolean isUUID(String uuid) {
-		try {
-			UUID.fromString(uuid);
-		} catch(IllegalArgumentException ex) {
-			return false;
-		}
+    public static boolean isUUID(String uuid) {
+        try {
+            UUID.fromString(uuid);
+        } catch (IllegalArgumentException ex) {
+            return false;
+        }
 
-		return true;
-	}
+        return true;
+    }
 }

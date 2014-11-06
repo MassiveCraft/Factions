@@ -2,6 +2,8 @@ package com.massivecraft.factions.zcore.persist.json;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Maps;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.P;
@@ -9,11 +11,8 @@ import com.massivecraft.factions.zcore.persist.MemoryFPlayer;
 import com.massivecraft.factions.zcore.persist.MemoryFPlayers;
 import com.massivecraft.factions.zcore.util.DiscUtil;
 import com.massivecraft.factions.zcore.util.UUIDFetcher;
-
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import java.io.File;
 import java.io.IOException;
@@ -85,7 +84,8 @@ public class JSONFPlayers extends MemoryFPlayers {
             return null;
         }
 
-        Map<String, JSONFPlayer> data = this.gson.fromJson(content, new TypeToken<Map<String, JSONFPlayer>>(){}.getType());
+        Map<String, JSONFPlayer> data = this.gson.fromJson(content, new TypeToken<Map<String, JSONFPlayer>>() {
+        }.getType());
         Set<String> list = new HashSet<String>();
         Set<String> invalidList = new HashSet<String>();
         for (Entry<String, JSONFPlayer> entry : data.entrySet()) {
@@ -157,7 +157,7 @@ public class JSONFPlayers extends MemoryFPlayers {
                 Bukkit.getLogger().log(Level.INFO, "The following names were detected as being invalid: " + StringUtils.join(invalidList, ", "));
             }
             saveCore(this.file, (Map<String, JSONFPlayer>) data); // Update the
-                                                              // flatfile
+            // flatfile
             Bukkit.getLogger().log(Level.INFO, "Done converting players.json to UUID.");
         }
         return (Map<String, JSONFPlayer>) data;

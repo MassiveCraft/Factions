@@ -1,10 +1,9 @@
 package com.massivecraft.factions.cmd;
 
-import org.bukkit.command.ConsoleCommandSender;
-
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.Conf.Backend;
 import com.massivecraft.factions.zcore.persist.json.FactionsJSON;
+import org.bukkit.command.ConsoleCommandSender;
 
 public class CmdConvert extends FCommand {
 
@@ -31,7 +30,7 @@ public class CmdConvert extends FCommand {
             default:
                 this.sender.sendMessage("Invalid backend");
                 return;
-            
+
         }
         Conf.backEnd = nb;
     }

@@ -1,12 +1,11 @@
 package com.massivecraft.factions.util;
 
+import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.P;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
-
-import com.massivecraft.factions.Conf;
-import com.massivecraft.factions.P;
 
 import java.util.ArrayList;
 import java.util.Arrays;

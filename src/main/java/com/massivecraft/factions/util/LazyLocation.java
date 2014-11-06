@@ -1,10 +1,10 @@
 package com.massivecraft.factions.util;
 
-import java.io.Serializable;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
+
+import java.io.Serializable;
 
 /*
  * This class provides a lazy-load Location, so that World doesn't need to be initialized

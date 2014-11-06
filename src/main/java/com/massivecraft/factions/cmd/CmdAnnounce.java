@@ -35,7 +35,7 @@ public class CmdAnnounce extends FCommand {
 
         // Add for offline players.
         for (FPlayer fp : myFaction.getFPlayersWhereOnline(false)) {
-                myFaction.addAnnouncement(fp, prefix + message);
+            myFaction.addAnnouncement(fp, prefix + message);
         }
     }
 

@@ -1,6 +1,8 @@
 package com.massivecraft.factions.scoreboards;
 
-import com.massivecraft.factions.*;
+import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.FPlayers;
+import com.massivecraft.factions.P;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;

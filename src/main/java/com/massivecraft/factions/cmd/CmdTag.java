@@ -1,15 +1,10 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.Conf;
-import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.FPlayers;
-import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.*;
 import com.massivecraft.factions.event.FactionRenameEvent;
 import com.massivecraft.factions.scoreboards.FTeamWrapper;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.MiscUtil;
-
 import org.bukkit.Bukkit;
 
 import java.util.ArrayList;

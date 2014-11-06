@@ -12,7 +12,6 @@ import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.util.*;
 import com.massivecraft.factions.zcore.MPlugin;
 import com.massivecraft.factions.zcore.util.TextUtil;
-
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -123,7 +122,8 @@ public class P extends MPlugin {
 
     @Override
     public GsonBuilder getGsonBuilder() {
-        Type mapFLocToStringSetType = new TypeToken<Map<FLocation, Set<String>>>() {}.getType();
+        Type mapFLocToStringSetType = new TypeToken<Map<FLocation, Set<String>>>() {
+        }.getType();
 
         return new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().excludeFieldsWithModifiers(Modifier.TRANSIENT, Modifier.VOLATILE).registerTypeAdapter(LazyLocation.class, new MyLocationTypeAdapter()).registerTypeAdapter(mapFLocToStringSetType, new MapFLocToStringSetTypeAdapter()).registerTypeAdapterFactory(EnumTypeAdapter.ENUM_FACTORY);
     }

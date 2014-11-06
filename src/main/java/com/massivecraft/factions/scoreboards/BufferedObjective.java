@@ -54,7 +54,7 @@ public class BufferedObjective {
     }
 
     public void setAllLines(List<String> lines) {
-        if(lines.size() != contents.size()) {
+        if (lines.size() != contents.size()) {
             contents.clear();
         }
         for (int i = 0; i < lines.size(); i++) {

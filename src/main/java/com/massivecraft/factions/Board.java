@@ -1,12 +1,13 @@
 package com.massivecraft.factions;
 
-import java.util.*;
-
 import com.massivecraft.factions.zcore.persist.json.JSONBoard;
+
+import java.util.ArrayList;
 
 
 public abstract class Board {
     protected static Board instance = getBoardImpl();
+
     //----------------------------------------------//
     // Get and Set
     //----------------------------------------------//

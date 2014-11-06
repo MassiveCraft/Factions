@@ -1,17 +1,18 @@
 package com.massivecraft.factions.zcore.persist.json;
 
+import com.google.gson.reflect.TypeToken;
 import com.massivecraft.factions.Board;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.zcore.persist.MemoryBoard;
 import com.massivecraft.factions.zcore.util.DiscUtil;
 
-import com.google.gson.reflect.TypeToken;
-
 import java.io.File;
 import java.lang.reflect.Type;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.TreeMap;
 
 
 public class JSONBoard extends MemoryBoard {

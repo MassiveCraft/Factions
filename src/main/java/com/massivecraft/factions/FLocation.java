@@ -1,7 +1,6 @@
 package com.massivecraft.factions;
 
 import com.massivecraft.factions.util.MiscUtil;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;

@@ -205,10 +205,10 @@ public class FactionsEntityListener implements Listener {
             return;
         }
 
-        if(thrower instanceof Player){
+        if (thrower instanceof Player) {
             Player player = (Player) thrower;
             FPlayer fPlayer = FPlayers.getInstance().getByPlayer(player);
-            if(badjuju && fPlayer.getFaction().isPeaceful()){
+            if (badjuju && fPlayer.getFaction().isPeaceful()) {
                 event.setCancelled(true);
                 return;
             }

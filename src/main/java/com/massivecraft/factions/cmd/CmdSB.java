@@ -50,7 +50,7 @@ public class CmdSB extends FCommand {
      * @return - true if now set to seeing scoreboards, otherwise false.
      */
     public boolean toggle(UUID uuid) {
-        if(!yml.getBoolean(uuid.toString(), true)) { // check if it's false, if never been toggled, default to false.
+        if (!yml.getBoolean(uuid.toString(), true)) { // check if it's false, if never been toggled, default to false.
             yml.set(uuid.toString(), true);
             save();
             return true;

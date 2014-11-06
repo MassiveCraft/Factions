@@ -30,12 +30,7 @@ public class FDefaultSidebar extends FSidebarProvider {
 
     private String replace(FPlayer fplayer, String s) {
         String faction = !fplayer.getFaction().isNone() ? fplayer.getFaction().getTag() : "factionless";
-        s = s.replace("{name}", fplayer.getName())
-             .replace("{power}", String.valueOf(fplayer.getPowerRounded()))
-             .replace("{balance}", String.valueOf(Econ.getFriendlyBalance(fplayer.getPlayer().getUniqueId())))
-             .replace("{faction}", faction)
-             .replace("{maxPower}", String.valueOf(fplayer.getPowerMaxRounded()))
-             .replace("{totalOnline}", String.valueOf(Bukkit.getServer().getOnlinePlayers().length));
+        s = s.replace("{name}", fplayer.getName()).replace("{power}", String.valueOf(fplayer.getPowerRounded())).replace("{balance}", String.valueOf(Econ.getFriendlyBalance(fplayer.getPlayer().getUniqueId()))).replace("{faction}", faction).replace("{maxPower}", String.valueOf(fplayer.getPowerMaxRounded())).replace("{totalOnline}", String.valueOf(Bukkit.getServer().getOnlinePlayers().length));
         return ChatColor.translateAlternateColorCodes('&', s);
     }
 }

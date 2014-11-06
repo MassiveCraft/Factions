@@ -1,9 +1,9 @@
 package com.massivecraft.factions;
 
+import com.massivecraft.factions.zcore.persist.json.JSONFactions;
+
 import java.util.ArrayList;
 import java.util.Set;
-
-import com.massivecraft.factions.zcore.persist.json.JSONFactions;
 
 public abstract class Factions {
     protected static Factions instance = getFactionsImpl();

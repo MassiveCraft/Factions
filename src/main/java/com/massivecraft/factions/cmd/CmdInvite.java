@@ -44,15 +44,12 @@ public class CmdInvite extends FCommand {
         }
 
         myFaction.invite(you);
-        if(!you.isOnline()) return;
+        if (!you.isOnline()) {
+            return;
+        }
 
         // Tooltips, colors, and commands only apply to the string immediately before it.
-        FancyMessage message = new FancyMessage(fme.describeTo(you, true))
-                                       .tooltip("Click to join!").command("f join " + myFaction.getTag())
-                                       .then(" has invited you to join ").color(ChatColor.YELLOW)
-                                       .tooltip("Click to join!").command("f join " + myFaction.getTag())
-                                       .then(myFaction.describeTo(you))
-                                       .tooltip("Click to join!").command("f join " + myFaction.getTag());
+        FancyMessage message = new FancyMessage(fme.describeTo(you, true)).tooltip("Click to join!").command("f join " + myFaction.getTag()).then(" has invited you to join ").color(ChatColor.YELLOW).tooltip("Click to join!").command("f join " + myFaction.getTag()).then(myFaction.describeTo(you)).tooltip("Click to join!").command("f join " + myFaction.getTag());
 
         message.send(you.getPlayer());
 

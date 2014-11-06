@@ -6,7 +6,6 @@ import com.massivecraft.factions.event.FactionCreateEvent;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.MiscUtil;
-
 import org.bukkit.Bukkit;
 
 import java.util.ArrayList;
