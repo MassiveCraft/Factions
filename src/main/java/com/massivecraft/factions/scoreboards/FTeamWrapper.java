@@ -139,17 +139,14 @@ public class FTeamWrapper {
 
     private void updatePrefix(FScoreboard fboard) {
         if (P.p.getConfig().getBoolean("scoreboard.default-prefixes", false)) {
+            FPlayer fplayer = fboard.getFPlayer();
+            Team team = teams.get(fboard);
 
-            for (Map.Entry<FScoreboard, Team> entry : teams.entrySet()) {
-                FPlayer fplayer = entry.getKey().getFPlayer();
-                Team team = entry.getValue();
-
-                String prefix = TL.DEFAULT_PREFIX.toString();
-                prefix = prefix.replace("{relationcolor}", faction.getRelationTo(fplayer).getColor().toString());
-                prefix = prefix.replace("{faction}", faction.getTag().substring(0, Math.min("{faction}".length() + 16 - prefix.length(), faction.getTag().length())));
-                if (team.getPrefix() == null || !team.getPrefix().equals(prefix)) {
-                    team.setPrefix(prefix);
-                }
+            String prefix = TL.DEFAULT_PREFIX.toString();
+            prefix = prefix.replace("{relationcolor}", faction.getRelationTo(fplayer).getColor().toString());
+            prefix = prefix.replace("{faction}", faction.getTag().substring(0, Math.min("{faction}".length() + 16 - prefix.length(), faction.getTag().length())));
+            if (team.getPrefix() == null || !team.getPrefix().equals(prefix)) {
+                team.setPrefix(prefix);
             }
         }
     }
