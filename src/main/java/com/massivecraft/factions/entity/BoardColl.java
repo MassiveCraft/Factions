@@ -171,7 +171,7 @@ public class BoardColl extends Coll<Board> implements BoardInterface
 			}
 		}
 		
-		if (ret == null) ret = new MassiveMap<>();
+		if (ret == null) ret = new MassiveMap<Faction, Set<PS>>();
 		return ret;
 	}
 	
@@ -224,7 +224,7 @@ public class BoardColl extends Coll<Board> implements BoardInterface
 			}
 		}
 		
-		if (ret == null) ret = new MassiveMap<>();
+		if (ret == null) ret = new MassiveMap<Faction, Integer>();
 		return ret;
 	}
 	

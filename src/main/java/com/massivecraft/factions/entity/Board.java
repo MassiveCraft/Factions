@@ -202,7 +202,7 @@ public class Board extends Entity<Board> implements BoardInterface
 	@Override
 	public Map<Faction, Set<PS>> getFactionToChunks()
 	{
-		Map<Faction, Set<PS>> ret = new MassiveMap<>();
+		Map<Faction, Set<PS>> ret = new MassiveMap<Faction, Set<PS>>();
 		
 		for (Entry<PS, TerritoryAccess> entry : this.map.entrySet())
 		{
@@ -215,7 +215,7 @@ public class Board extends Entity<Board> implements BoardInterface
 			Set<PS> chunks = ret.get(faction);
 			if (chunks == null)
 			{
-				chunks = new MassiveSet<>();
+				chunks = new MassiveSet<PS>();
 				ret.put(faction, chunks);
 			}
 			
@@ -251,7 +251,7 @@ public class Board extends Entity<Board> implements BoardInterface
 	@Override
 	public Map<Faction, Integer> getFactionToCount()
 	{
-		Map<Faction, Integer> ret = new MassiveMap<>();
+		Map<Faction, Integer> ret = new MassiveMap<Faction, Integer>();
 		
 		for (Entry<PS, TerritoryAccess> entry : this.map.entrySet())
 		{

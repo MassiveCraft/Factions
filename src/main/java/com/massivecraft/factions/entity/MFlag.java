@@ -214,7 +214,7 @@ public class MFlag extends Entity<MFlag> implements Prioritized, Registerable
 	
 	public String getStateDesc(boolean value, boolean withValue, boolean monospaceValue, boolean withName, boolean withDesc, boolean specificDesc)
 	{
-		List<String> parts = new MassiveList<>();
+		List<String> parts = new MassiveList<String>();
 		
 		if (withValue)
 		{

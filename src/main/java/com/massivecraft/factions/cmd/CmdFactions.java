@@ -99,7 +99,7 @@ public class CmdFactions extends FactionsCommand
 		this.addSubCommand(new CmdFactionsXDeprecated(this.cmdFactionsSet, "unclaim"));
 		this.addSubCommand(new CmdFactionsXDeprecated(this.cmdFactionsSet, "autoclaim"));
 		this.addSubCommand(new CmdFactionsXDeprecated(this.cmdFactionsSet, "unclaimall"));
-		
+		this.addSubCommand(new CmdFactionsXDeprecated(this.cmdFactionsFlag, "open"));
 		this.addSubCommand(new CmdFactionsXDeprecated(this.cmdFactionsFaction, "show", "who"));
 	}
 	
