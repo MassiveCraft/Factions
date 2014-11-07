@@ -33,8 +33,6 @@ import com.massivecraft.factions.entity.MFlagColl;
 import com.massivecraft.factions.entity.MPermColl;
 import com.massivecraft.factions.entity.MPlayerColl;
 import com.massivecraft.factions.entity.MConfColl;
-import com.massivecraft.factions.integration.dynmap.IntegrationDynmap;
-import com.massivecraft.factions.integration.dynmap.IntegrationDynmapFactions;
 import com.massivecraft.factions.integration.herochat.IntegrationHerochat;
 import com.massivecraft.factions.integration.lwc.IntegrationLwc;
 import com.massivecraft.factions.mixin.PowerMixin;
@@ -50,7 +48,6 @@ import com.massivecraft.massivecore.Multiverse;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.xlib.gson.Gson;
 import com.massivecraft.massivecore.xlib.gson.GsonBuilder;
-
 
 public class Factions extends MassivePlugin
 {
@@ -147,9 +144,7 @@ public class Factions extends MassivePlugin
 		// Integrate
 		this.integrate(
 			IntegrationHerochat.get(),
-			IntegrationLwc.get(),
-			IntegrationDynmap.get(),
-			IntegrationDynmapFactions.get()
+			IntegrationLwc.get()
 		);
 		
 		// Modulo Repeat Tasks
