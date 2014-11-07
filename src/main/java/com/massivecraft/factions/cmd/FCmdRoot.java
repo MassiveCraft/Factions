@@ -57,6 +57,9 @@ public class FCmdRoot extends FCommand {
     public CmdAnnounce cmdAnnounce = new CmdAnnounce();
     public CmdSeeChunk cmdSeeChunk = new CmdSeeChunk();
     public CmdConvert cmdConvert = new CmdConvert();
+    public CmdFWarp cmdFWarp = new CmdFWarp();
+    public CmdSetFWarp cmdSetFWarp = new CmdSetFWarp();
+    public CmdDelFWarp cmdDelFWarp = new CmdDelFWarp();
 
     public FCmdRoot() {
         super();
@@ -130,6 +133,9 @@ public class FCmdRoot extends FCommand {
         this.addSubCommand(this.cmdAnnounce);
         this.addSubCommand(this.cmdSeeChunk);
         this.addSubCommand(this.cmdConvert);
+        this.addSubCommand(this.cmdFWarp);
+        this.addSubCommand(this.cmdSetFWarp);
+        this.addSubCommand(this.cmdDelFWarp);
     }
 
     @Override

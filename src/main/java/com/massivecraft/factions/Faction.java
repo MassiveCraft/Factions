@@ -4,14 +4,28 @@ import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.iface.RelationParticipator;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.util.LazyLocation;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public interface Faction extends EconomyParticipator {
     public HashMap<String, List<String>> getAnnouncements();
+
+    public ConcurrentHashMap<String, LazyLocation> getWarps();
+
+    public LazyLocation getWarp(String name);
+
+    public void setWarp(String name, LazyLocation loc);
+
+    public boolean isWarp(String name);
+
+    public boolean removeWarp(String name);
+
+    public void clearWarps();
 
     public void addAnnouncement(FPlayer fPlayer, String msg);
 

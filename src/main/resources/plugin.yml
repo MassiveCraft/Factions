@@ -234,3 +234,7 @@ permissions:
     description: show pending invites to your faction
   factions.seechunk:
     description: see the chunk you stand in
+  factions.setwarp:
+    description: set a warp for your faction
+  factions.warp:
+    description: access your faction warps

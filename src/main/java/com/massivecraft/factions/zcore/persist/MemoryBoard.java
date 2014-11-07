@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.logging.Level;
 
 
 public abstract class MemoryBoard extends Board {
@@ -45,6 +46,13 @@ public abstract class MemoryBoard extends Board {
     }
 
     public void removeAt(FLocation flocation) {
+        Faction faction = getFactionAt(flocation);
+        for (String s : faction.getWarps().keySet()) {
+            if (flocation.isInChunk(faction.getWarp(s).getLocation())) {
+                faction.removeWarp(s);
+                P.p.log(Level.INFO, "Removed warp %s from faction %s", s, faction.getTag());
+            }
+        }
         clearOwnershipAt(flocation);
         flocationIds.remove(flocation);
     }
@@ -62,6 +70,7 @@ public abstract class MemoryBoard extends Board {
         if (faction != null && faction.isNormal()) {
             faction.clearAllClaimOwnership();
         }
+        faction.clearWarps();
         clean(factionId);
     }
 

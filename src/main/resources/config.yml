@@ -19,6 +19,10 @@ findfactionsexploit:
   cooldown: 2000 # in miliseconds. 2000 = 2 seconds.
   log: false
 
+# Warps
+# What should be the max amount of warps that a Factoin can set?
+max-warps: 5
+
 # Configuration section for Scoreboards
 # This will allow you to completely customize how your scoreboards look.
 # Make sure that no lines are duplicates of each other otherwise only the first will display.
@@ -34,6 +38,7 @@ scoreboard:
 # {power} - faction's power. {chunks} - total claimed chunks. {members} - total members.
 # {online} - online members. {leader} - faction's leader. {open} - shows either true or false if open.
 # {raidable} - true if the faction can be claimed over, otherwise false.
+# {warps} - the number of warps that a faction has set.
 # The title of the scoreboard will be the Faction's tag and colored according to the relation with the player's Faction.
 # Commenting this section out will cause the info to appear in chat as the plugin originally did.
   finfo-enabled: false # Default to false to keep original functionality.
@@ -52,6 +57,7 @@ scoreboard:
 # Replace {name} - player's name. {faction} - player's faction title, factionless if none.
 # {totalOnline} - total players on the server. {balance} - player's balance.
 # {maxPower} - player's max power.
+# {powerBoost} - player's powerboost.
 
   default-enabled: false # Default to false to keep original functionality.
   default-title: "i love drt" # Can use any of the values from above but this won't update once it's set (so don't set {balance}).

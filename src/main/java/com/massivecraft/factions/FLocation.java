@@ -2,6 +2,7 @@ package com.massivecraft.factions;
 
 import com.massivecraft.factions.util.MiscUtil;
 import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -147,6 +148,14 @@ public class FLocation implements Serializable {
         double dx = that.x - this.x;
         double dz = that.z - this.z;
         return dx * dx + dz * dz;
+    }
+
+    public boolean isInChunk(Location loc) {
+        if (loc == null) {
+            return false;
+        }
+        Chunk chunk = loc.getChunk();
+        return loc.getWorld().getName().equalsIgnoreCase(getWorldName()) && chunk.getX() == x && chunk.getZ() == z;
     }
 
     //----------------------------------------------//

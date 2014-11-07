@@ -68,7 +68,9 @@ public enum Permission {
     UNCLAIM_ALL("unclaimall"),
     VERSION("version"),
     SCOREBOARD("scoreboard"),
-    SEECHUNK("seechunk");
+    SEECHUNK("seechunk"),
+    SETWARP("setwarp"),
+    WARP("warp");
 
     public final String node;
 

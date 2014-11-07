@@ -38,6 +38,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     protected transient Set<FPlayer> fplayers = new HashSet<FPlayer>();
     protected Set<String> invites = new HashSet<String>();
     protected HashMap<String, List<String>> announcements = new HashMap<String, List<String>>();
+    protected ConcurrentHashMap<String, LazyLocation> warps = new ConcurrentHashMap<String, LazyLocation>();
 
     public HashMap<String, List<String>> getAnnouncements() {
         return this.announcements;
@@ -65,6 +66,34 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         if (announcements.containsKey(fPlayer.getId())) {
             announcements.remove(fPlayer.getId());
         }
+    }
+
+    public ConcurrentHashMap<String, LazyLocation> getWarps() {
+        return this.warps;
+    }
+
+    public LazyLocation getWarp(String name) {
+        return this.warps.get(name);
+    }
+
+    public void setWarp(String name, LazyLocation loc) {
+        this.warps.put(name, loc);
+    }
+
+    public boolean isWarp(String name) {
+        return this.warps.containsKey(name);
+    }
+
+    public boolean removeWarp(String name) {
+        if (warps.containsKey(name)) {
+            warps.remove(name);
+            return true;
+        }
+        return false;
+    }
+
+    public void clearWarps() {
+        warps.clear();
     }
 
     public Set<String> getInvites() {
