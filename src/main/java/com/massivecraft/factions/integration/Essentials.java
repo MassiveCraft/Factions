@@ -36,4 +36,8 @@ public class Essentials {
         }
         return true;
     }
+
+    public static boolean isVanished(Player player) {
+        return essentials.getUser(player).isVanished();
+    }
 }
