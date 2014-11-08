@@ -92,6 +92,14 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         return false;
     }
 
+    public boolean removeWarp(LazyLocation loc) {
+        if(warps.containsValue(loc)) {
+            warps.remove(loc);
+            return true;
+        }
+        return false;
+    }
+
     public void clearWarps() {
         warps.clear();
     }

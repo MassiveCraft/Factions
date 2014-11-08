@@ -3,6 +3,7 @@ package com.massivecraft.factions.zcore.persist;
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.util.AsciiCompass;
+import com.massivecraft.factions.util.LazyLocation;
 import org.bukkit.ChatColor;
 
 import java.util.ArrayList;
@@ -47,10 +48,9 @@ public abstract class MemoryBoard extends Board {
 
     public void removeAt(FLocation flocation) {
         Faction faction = getFactionAt(flocation);
-        for (String s : faction.getWarps().keySet()) {
-            if (flocation.isInChunk(faction.getWarp(s).getLocation())) {
-                faction.removeWarp(s);
-                P.p.log(Level.INFO, "Removed warp %s from faction %s", s, faction.getTag());
+        for(LazyLocation loc : faction.getWarps().values()) {
+            if(flocation.isInChunk(loc.getLocation())) {
+                faction.removeWarp(loc);
             }
         }
         clearOwnershipAt(flocation);
