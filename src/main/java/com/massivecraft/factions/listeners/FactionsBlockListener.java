@@ -98,6 +98,13 @@ public class FactionsBlockListener implements Listener {
         }
 
         Location targetLoc = event.getRetractLocation();
+        Faction otherFaction = Board.getInstance().getFactionAt(new FLocation(targetLoc));
+        
+        // Check if the piston is moving in a faction's territory. This disables pistons entirely in faction territory.
+        if(otherFaction.isNormal() && P.p.getConfig().getBoolean("disable-pistons-in-territory", false)) {
+            event.setCancelled(true);
+            return;
+        }
 
         // if potentially retracted block is just air/water/lava, no worries
         if (targetLoc.getBlock().isEmpty() || targetLoc.getBlock().isLiquid()) {
