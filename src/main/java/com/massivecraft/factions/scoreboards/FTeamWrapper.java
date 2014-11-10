@@ -14,6 +14,7 @@ public class FTeamWrapper {
     private static final Map<Faction, FTeamWrapper> wrappers = new HashMap<Faction, FTeamWrapper>();
     private static final List<FScoreboard> tracking = new ArrayList<FScoreboard>();
     private static int factionTeamPtr;
+    private static final Set<Faction> updating = new HashSet<Faction>();
 
     private final Map<FScoreboard, Team> teams = new HashMap<FScoreboard, Team>();
     private final String teamName;
@@ -25,16 +26,24 @@ public class FTeamWrapper {
             return;
         }
 
-        Bukkit.getScheduler().runTask(P.p, new Runnable() {
-            @Override
-            public void run() {
-                applyUpdates(faction);
-            }
-        });
+        if (updating.add(faction)) {
+            Bukkit.getScheduler().runTask(P.p, new Runnable() {
+                @Override
+                public void run() {
+                    updating.remove(faction);
+                    applyUpdates(faction);
+                }
+            });
+        }
     }
 
     public static void applyUpdates(Faction faction) {
         if (!FScoreboard.isSupportedByServer()) {
+            return;
+        }
+
+        if (updating.contains(faction)) {
+            // Faction will be updated soon.
             return;
         }
 
