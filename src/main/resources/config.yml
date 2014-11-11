@@ -23,6 +23,16 @@ findfactionsexploit:
 # What should be the max amount of warps that a Factoin can set?
 max-warps: 5
 
+# This is the cost section for warps.
+# It will charge them each time the command would be successful. (won't charge on erroneous /f warp attempts).
+# You can use decimal places here.
+# If enabled is set to false, it will ignore the values.
+warp-cost:
+  enabled: false
+  setwarp: 5
+  delwarp: 5
+  warp: 5
+
 # Pistons
 # Should we disable pistons in Faction territory? This will prevent people from doing something like:
 # http://i.gyazo.com/6a1a31222e58a5d60ff341c13f6a8404.gif

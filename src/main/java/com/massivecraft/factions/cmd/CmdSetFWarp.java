@@ -1,6 +1,8 @@
 package com.massivecraft.factions.cmd;
 
+import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.P;
+import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.util.LazyLocation;
@@ -31,9 +33,17 @@ public class CmdSetFWarp extends FCommand {
             return;
         }
 
+        if (!transact(fme)) {
+            return;
+        }
+
         String warp = argAsString(0);
         LazyLocation loc = new LazyLocation(fme.getPlayer().getLocation());
         myFaction.setWarp(warp, loc);
         fme.msg("<i>Set warp <a>%s <i>to your location.", warp);
+    }
+
+    private boolean transact(FPlayer player) {
+        return P.p.getConfig().getBoolean("warp-cost.enabled", false) && !player.isAdminBypassing() && Econ.modifyMoney(player, P.p.getConfig().getDouble("warp-cost.setwarp", 5), "to set warp", "for setting warp");
     }
 }

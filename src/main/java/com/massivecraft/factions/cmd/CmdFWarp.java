@@ -1,5 +1,8 @@
 package com.massivecraft.factions.cmd;
 
+import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.P;
+import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Permission;
 
 public class CmdFWarp extends FCommand {
@@ -29,11 +32,18 @@ public class CmdFWarp extends FCommand {
         } else {
             String warpName = argAsString(0);
             if (myFaction.isWarp(argAsString(0))) {
+                if (!transact(fme)) {
+                    return;
+                }
                 fme.getPlayer().teleport(myFaction.getWarp(warpName).getLocation());
                 fme.msg("<i>Warped to <a>%s", warpName);
             } else {
                 fme.msg("<i>Couldn't find warp <a>%s", warpName);
             }
         }
+    }
+
+    private boolean transact(FPlayer player) {
+        return P.p.getConfig().getBoolean("warp-cost.enabled", false) && !player.isAdminBypassing() && Econ.modifyMoney(player, P.p.getConfig().getDouble("warp-cost.warp", 5), "to warp", "for warping");
     }
 }
