@@ -36,6 +36,7 @@ public class CmdFactions extends FactionsCommand
 	public CmdFactionsOfficer cmdFactionsOfficer = new CmdFactionsOfficer();
 	public CmdFactionsLeader cmdFactionsLeader = new CmdFactionsLeader();
 	public CmdFactionsMoney cmdFactionsMoney = new CmdFactionsMoney();
+	public CmdFactionsXPlaceholder cmdFactionsTax = new CmdFactionsXPlaceholder("FactionsTax", "tax");
 	public CmdFactionsSeeChunk cmdFactionsSeeChunk = new CmdFactionsSeeChunk();
 	public CmdFactionsSeeChunkOld cmdFactionsSeeChunkOld = new CmdFactionsSeeChunkOld();
 	public CmdFactionsAccess cmdFactionsAccess = new CmdFactionsAccess();
@@ -46,6 +47,8 @@ public class CmdFactions extends FactionsCommand
 	public CmdFactionsPerm cmdFactionsPerm = new CmdFactionsPerm();
 	public CmdFactionsFlag cmdFactionsFlag = new CmdFactionsFlag();
 	public CmdFactionsDisband cmdFactionsDisband = new CmdFactionsDisband();
+	public CmdFactionsExpansions cmdFactionsExpansions = new CmdFactionsExpansions();
+	public CmdFactionsXPlaceholder cmdFactionsDynmap = new CmdFactionsXPlaceholder("FactionsDynmap", "dynmap");
 	public CmdFactionsAdmin cmdFactionsAdmin = new CmdFactionsAdmin();
 	public CmdFactionsPowerBoost cmdFactionsPowerBoost = new CmdFactionsPowerBoost();
 	public VersionCommand cmdFactionsVersion = new VersionCommand(Factions.get(), Perm.VERSION.node, "v", "version");
@@ -80,6 +83,7 @@ public class CmdFactions extends FactionsCommand
 		this.addSubCommand(this.cmdFactionsOfficer);
 		this.addSubCommand(this.cmdFactionsLeader);
 		this.addSubCommand(this.cmdFactionsMoney);
+		this.addSubCommand(this.cmdFactionsTax);
 		this.addSubCommand(this.cmdFactionsSeeChunk);
 		this.addSubCommand(this.cmdFactionsSeeChunkOld);
 		this.addSubCommand(this.cmdFactionsAccess);
@@ -90,6 +94,8 @@ public class CmdFactions extends FactionsCommand
 		this.addSubCommand(this.cmdFactionsPerm);
 		this.addSubCommand(this.cmdFactionsFlag);
 		this.addSubCommand(this.cmdFactionsDisband);
+		this.addSubCommand(this.cmdFactionsExpansions);
+		this.addSubCommand(this.cmdFactionsDynmap);
 		this.addSubCommand(this.cmdFactionsAdmin);
 		this.addSubCommand(this.cmdFactionsPowerBoost);
 		this.addSubCommand(this.cmdFactionsVersion);

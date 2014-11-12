@@ -19,6 +19,7 @@ permissions:
   factions.demote: {description: demote lesser members in your faction, default: false}
   factions.description: {description: change faction description, default: false}
   factions.disband: {description: disband faction, default: false}
+  factions.expansions: {description: list expansions, default: false}
   factions.faction: {description: show faction information, default: false}
   factions.flag: {description: manage faction flags, default: false}
   factions.home: {description: teleport to faction home, default: false}
@@ -78,6 +79,7 @@ permissions:
       factions.demote: true
       factions.description: true
       factions.disband: true
+      factions.expansions: true
       factions.faction: true
       factions.flag: true
       factions.home: true
@@ -160,6 +162,7 @@ permissions:
       factions.demote: true
       factions.description: true
       factions.disband: true
+      factions.expansions: true
       factions.faction: true
       factions.flag: true
       factions.home: true

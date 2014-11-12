@@ -19,6 +19,7 @@ public enum Perm
 	DEMOTE("demote"),
 	DESCRIPTION("description"),
 	DISBAND("disband"),
+	EXPANSIONS("expansions"),
 	FACTION("faction"),
 	FLAG("flag"),
 	HOME("home"),
