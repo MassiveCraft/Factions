@@ -38,6 +38,20 @@ warp-cost:
 # http://i.gyazo.com/6a1a31222e58a5d60ff341c13f6a8404.gif
 disable-pistons-in-territory: false
 
+# ToolTips
+# This section is to configure tooltips for things like /f list
+tooltips:
+
+  # This shows up when someone does /f list for the top factions.
+  # It will not sure up for factionless of course, just actual factions.
+  # You can't use color codes here.
+  list:
+    - "Leader: {leader}"
+    - "Claimed: {chunks}"
+    - "Raidable: {raidable}"
+    - "Warps: {warps}"
+    - "Power: {power}/{maxPower}"
+
 # Configuration section for Scoreboards
 # This will allow you to completely customize how your scoreboards look.
 # Make sure that no lines are duplicates of each other otherwise only the first will display.

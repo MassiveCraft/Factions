@@ -1,13 +1,17 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.struct.Permission;
+import mkremins.fanciful.FancyMessage;
+import org.bukkit.ChatColor;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 
 public class CmdList extends FCommand {
@@ -71,7 +75,7 @@ public class CmdList extends FCommand {
             }
         });
 
-        ArrayList<String> lines = new ArrayList<String>();
+        ArrayList<FancyMessage> lines = new ArrayList<FancyMessage>();
 
         factionList.add(0, Factions.getInstance().getNone());
 
@@ -89,16 +93,37 @@ public class CmdList extends FCommand {
             end = factionList.size();
         }
 
-        lines.add(p.txt.titleize("Faction List " + pagenumber + "/" + pagecount));
+        lines.add(new FancyMessage(p.txt.titleize("Faction List " + pagenumber + "/" + pagecount)));
 
         for (Faction faction : factionList.subList(start, end)) {
             if (faction.isNone()) {
-                lines.add(p.txt.parse("<i>Factionless<i> %d online", Factions.getInstance().getNone().getFPlayersWhereOnline(true).size()));
+                String online = String.valueOf(faction.getFPlayersWhereOnline(true).size());
+                FancyMessage msg = new FancyMessage("Factionless " + online + " online").color(ChatColor.YELLOW);
+                lines.add(msg);
                 continue;
             }
-            lines.add(p.txt.parse("%s<i> %d/%d online, %d/%d/%d", faction.getTag(fme), faction.getFPlayersWhereOnline(true).size(), faction.getFPlayers().size(), faction.getLandRounded(), faction.getPowerRounded(), faction.getPowerMaxRounded()));
+            String online = " " + faction.getFPlayersWhereOnline(true).size() + "/" + faction.getFPlayers().size() + " online";
+
+            FancyMessage msg = new FancyMessage(faction.getTag(fme) + online).color(ChatColor.YELLOW).tooltip(getToolTips(faction));
+            lines.add(msg);
+            //lines.add(p.txt.parse("%s<i> %d/%d online, %d/%d/%d", faction.getTag(fme), faction.getFPlayersWhereOnline(true).size(), faction.getFPlayers().size(), faction.getLandRounded(), faction.getPowerRounded(), faction.getPowerMaxRounded()));
         }
 
-        sendMessage(lines);
+        sendFancyMessage(lines);
+    }
+
+    private List<String> getToolTips(Faction faction) {
+        List<String> lines = new ArrayList<String>();
+        for (String s : p.getConfig().getStringList("tooltips.list")) {
+            lines.add(replaceFInfoTags(s, faction));
+        }
+        return lines;
+    }
+
+    private String replaceFInfoTags(String s, Faction faction) {
+        boolean raidable = faction.getLandRounded() > faction.getPower();
+        FPlayer fLeader = faction.getFPlayerAdmin();
+        String leader = fLeader == null ? "Server" : fLeader.getName().substring(0, fLeader.getName().length() > 14 ? 13 : fLeader.getName().length());
+        return s.replace("{power}", String.valueOf(faction.getPowerRounded())).replace("{maxPower}", String.valueOf(faction.getPowerMaxRounded())).replace("{leader}", leader).replace("{chunks}", String.valueOf(faction.getLandRounded())).replace("{raidable}", String.valueOf(raidable)).replace("{warps}", String.valueOf(faction.getWarps().size()));
     }
 }

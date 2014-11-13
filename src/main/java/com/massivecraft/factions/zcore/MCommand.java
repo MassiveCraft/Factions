@@ -1,6 +1,7 @@
 package com.massivecraft.factions.zcore;
 
 import com.massivecraft.factions.zcore.util.TextUtil;
+import mkremins.fanciful.FancyMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -254,6 +255,16 @@ public abstract class MCommand<T extends MPlugin> {
     public void sendMessage(List<String> msgs) {
         for (String msg : msgs) {
             this.sendMessage(msg);
+        }
+    }
+
+    public void sendFancyMessage(FancyMessage message) {
+        message.send(sender);
+    }
+
+    public void sendFancyMessage(List<FancyMessage> messages) {
+        for(FancyMessage m : messages) {
+            sendFancyMessage(m);
         }
     }
 
