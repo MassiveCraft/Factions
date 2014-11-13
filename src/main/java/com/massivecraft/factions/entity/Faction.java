@@ -15,6 +15,9 @@ import com.massivecraft.factions.Lang;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.RelationParticipator;
 import com.massivecraft.factions.util.*;
+import com.massivecraft.massivecore.CaseInsensitiveComparator;
+import com.massivecraft.massivecore.collections.MassiveMapDef;
+import com.massivecraft.massivecore.collections.MassiveTreeSetDef;
 import com.massivecraft.massivecore.mixin.Mixin;
 import com.massivecraft.massivecore.money.Money;
 import com.massivecraft.massivecore.ps.PS;
@@ -116,19 +119,19 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	// This is the ids of the invited players.
 	// They are actually "senderIds" since you can invite "@console" to your faction.
 	// Null means no one is invited
-	private Set<String> invitedPlayerIds = null;
+	private MassiveTreeSetDef<String, CaseInsensitiveComparator> invitedPlayerIds = new MassiveTreeSetDef<String, CaseInsensitiveComparator>(CaseInsensitiveComparator.get());
 	
 	// The keys in this map are factionIds.
 	// Null means no special relation whishes.
-	private Map<String, Rel> relationWishes = null;
+	private MassiveMapDef<String, Rel> relationWishes = new MassiveMapDef<String, Rel>();
 	
 	// The flag overrides are modifications to the default values.
 	// Null means default.
-	private Map<String, Boolean> flags = null;
+	private MassiveMapDef<String, Boolean> flags = new MassiveMapDef<String, Boolean>();
 
 	// The perm overrides are modifications to the default values.
 	// Null means default.
-	private Map<String, Set<Rel>> perms = null;
+	private MassiveMapDef<String, Set<Rel>> perms = new MassiveMapDef<String, Set<Rel>>();
 	
 	// -------------------------------------------- //
 	// FIELD: id
@@ -391,33 +394,27 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	// FIELD: open
 	// -------------------------------------------- //
 	
-	/*
+	// Nowadays this is a flag!
+	
+	@Deprecated
 	public boolean isDefaultOpen()
 	{
-		return MConf.get().defaultFactionOpen;
+		return MFlag.getFlagOpen().isStandard();
 	}
 	
+	@Deprecated
 	public boolean isOpen()
 	{
-		Boolean ret = this.open;
-		if (ret == null) ret = this.isDefaultOpen();
-		return ret;
+		return this.getFlag(MFlag.getFlagOpen());
 	}
 	
+	@Deprecated
 	public void setOpen(Boolean open)
 	{
-		// Clean input
-		Boolean target = open;
-		
-		// Detect Nochange
-		if (MUtil.equals(this.open, target)) return;
-		
-		// Apply
-		this.open = target;
-		
-		// Mark as changed
-		this.changed();
-	}*/
+		MFlag flag = MFlag.getFlagOpen();
+		if (open == null) open = flag.isStandard();
+		this.setFlag(flag, open);
+	}
 	
 	// -------------------------------------------- //
 	// FIELD: invitedPlayerIds
@@ -427,22 +424,15 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	
 	public TreeSet<String> getInvitedPlayerIds()
 	{
-		TreeSet<String> ret = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
-		if (this.invitedPlayerIds != null) ret.addAll(this.invitedPlayerIds);
-		return ret;
+		return this.invitedPlayerIds;
 	}
 	
 	public void setInvitedPlayerIds(Collection<String> invitedPlayerIds)
 	{
 		// Clean input
-		TreeSet<String> target;
-		if (invitedPlayerIds == null || invitedPlayerIds.isEmpty())
+		MassiveTreeSetDef<String, CaseInsensitiveComparator> target = new MassiveTreeSetDef<String, CaseInsensitiveComparator>(CaseInsensitiveComparator.get());
+		if (invitedPlayerIds != null)
 		{
-			target = null;
-		}
-		else
-		{
-			target = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
 			for (String invitedPlayerId : invitedPlayerIds)
 			{
 				target.add(invitedPlayerId.toLowerCase());
@@ -501,23 +491,13 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	
 	public Map<String, Rel> getRelationWishes()
 	{
-		Map<String, Rel> ret = new LinkedHashMap<String, Rel>();
-		if (this.relationWishes != null) ret.putAll(this.relationWishes);
-		return ret;
+		return this.relationWishes;
 	}
 	
 	public void setRelationWishes(Map<String, Rel> relationWishes)
 	{
 		// Clean input
-		Map<String, Rel> target;
-		if (relationWishes == null || relationWishes.isEmpty())
-		{
-			target = null;
-		}
-		else
-		{
-			target = new LinkedHashMap<String, Rel>(relationWishes);
-		}
+		MassiveMapDef<String, Rel> target = new MassiveMapDef<String, Rel>(relationWishes);
 		
 		// Detect Nochange
 		if (MUtil.equals(this.relationWishes, target)) return;
@@ -604,79 +584,29 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 		}
 		
 		// ... and if anything is explicitly set we use that info ...
-		if (this.flags != null)
+		Iterator<Entry<String, Boolean>> iter = this.flags.entrySet().iterator();
+		while (iter.hasNext())
 		{
-			Iterator<Entry<String, Boolean>> iter = this.flags.entrySet().iterator();
-			while (iter.hasNext())
+			// ... for each entry ...
+			Entry<String, Boolean> entry = iter.next();
+			
+			// ... extract id and remove null values ...
+			String id = entry.getKey();					
+			if (id == null)
 			{
-				// ... for each entry ...
-				Entry<String, Boolean> entry = iter.next();
-				
-				// ... extract id and remove null values ...
-				String id = entry.getKey();					
-				if (id == null)
-				{
-					iter.remove();
-					continue;
-				}
-				
-				// ... resolve object and skip unknowns ...
-				MFlag mflag = MFlag.get(id);
-				if (mflag == null) continue;
-				
-				ret.put(mflag, entry.getValue());
+				iter.remove();
+				this.changed();
+				continue;
 			}
+			
+			// ... resolve object and skip unknowns ...
+			MFlag mflag = MFlag.get(id);
+			if (mflag == null) continue;
+			
+			ret.put(mflag, entry.getValue());
 		}
 		
 		return ret;
-	}
-	
-	public void setFlagIds(Map<String, Boolean> flags)
-	{
-		// Clean input
-		Map<String, Boolean> target = null;
-		if (flags != null)
-		{
-			// We start out with what was suggested
-			target = new LinkedHashMap<String, Boolean>(flags);
-			
-			// However if the context is fully live we try to throw some default values away.
-			if (this.attached() && Factions.get().isDatabaseInitialized())
-			{
-				Iterator<Entry<String, Boolean>> iter = target.entrySet().iterator();
-				while (iter.hasNext())
-				{
-					// For each entry ...
-					Entry<String, Boolean> entry = iter.next();
-					
-					// ... extract id and remove null values ...
-					String id = entry.getKey();
-					if (id == null)
-					{
-						iter.remove();
-						continue;
-					}
-						
-					// ... remove if known and standard ...
-					MFlag mflag = MFlag.get(id);
-					if (mflag != null && mflag.isStandard() == entry.getValue())
-					{
-						iter.remove();
-					}
-				}
-				
-				if (target.isEmpty()) target = null;
-			}
-		}
-
-		// Detect Nochange
-		if (MUtil.equals(this.flags, target)) return;
-		
-		// Apply
-		this.flags = target;
-		
-		// Mark as changed
-		this.changed();
 	}
 	
 	public void setFlags(Map<MFlag, Boolean> flags)
@@ -689,17 +619,79 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 		setFlagIds(flagIds);
 	}
 	
+	public void setFlagIds(Map<String, Boolean> flagIds)
+	{
+		// Clean input
+		MassiveMapDef<String, Boolean> target = new MassiveMapDef<String, Boolean>();
+		for (Entry<String, Boolean> entry : flagIds.entrySet())
+		{
+			String key = entry.getKey();
+			if (key == null) continue;
+			key = key.toLowerCase(); // Lowercased Keys Version 2.6.0 --> 2.7.0
+			
+			Boolean value = entry.getValue();
+			if (value == null) continue;
+			
+			target.put(key, value);
+		}
+
+		// Detect Nochange
+		if (MUtil.equals(this.flags, target)) return;
+		
+		// Apply
+		this.flags = new MassiveMapDef<String, Boolean>(target);
+		
+		// Mark as changed
+		this.changed();
+	}
+	
 	// FINER
+	
+	public boolean getFlag(String flagId)
+	{
+		if (flagId == null) throw new NullPointerException("flagId");
+		
+		Boolean ret = this.flags.get(flagId);
+		if (ret != null) return ret;
+		
+		MFlag flag = MFlag.get(flagId);
+		if (flag == null) throw new NullPointerException("flag");
+		
+		return flag.isStandard();
+	}
 	
 	public boolean getFlag(MFlag flag)
 	{
-		return this.getFlags().get(flag);
+		if (flag == null) throw new NullPointerException("flag");
+		
+		String flagId = flag.getId();
+		if (flagId == null) throw new NullPointerException("flagId");
+		
+		Boolean ret = this.flags.get(flagId);
+		if (ret != null) return ret;
+		
+		return flag.isStandard();
 	}
-	public void setFlag(MFlag flag, boolean value)
+	
+	public Boolean setFlag(String flagId, boolean value)
 	{
-		Map<MFlag, Boolean> flags = this.getFlags();
-		flags.put(flag, value);
-		this.setFlags(flags);
+		if (flagId == null) throw new NullPointerException("flagId");
+		
+		Boolean ret = this.flags.put(flagId, value);
+		if (ret == null || ret != value) this.changed();
+		return ret;
+	}
+	
+	public Boolean setFlag(MFlag flag, boolean value)
+	{
+		if (flag == null) throw new NullPointerException("flag");
+		
+		String flagId = flag.getId();
+		if (flagId == null) throw new NullPointerException("flagId");
+		
+		Boolean ret = this.flags.put(flagId, value);
+		if (ret == null || ret != value) this.changed();
+		return ret;
 	}
 	
 	// -------------------------------------------- //
@@ -718,83 +710,28 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 		}
 		
 		// ... and if anything is explicitly set we use that info ...
-		if (this.perms != null)
+		Iterator<Entry<String, Set<Rel>>> iter = this.perms.entrySet().iterator();
+		while (iter.hasNext())
 		{
-			Iterator<Entry<String, Set<Rel>>> iter = this.perms.entrySet().iterator();
-			while (iter.hasNext())
+			// ... for each entry ...
+			Entry<String, Set<Rel>> entry = iter.next();
+			
+			// ... extract id and remove null values ...
+			String id = entry.getKey();					
+			if (id == null)
 			{
-				// ... for each entry ...
-				Entry<String, Set<Rel>> entry = iter.next();
-				
-				// ... extract id and remove null values ...
-				String id = entry.getKey();					
-				if (id == null)
-				{
-					iter.remove();
-					continue;
-				}
-				
-				// ... resolve object and skip unknowns ...
-				MPerm mperm = MPerm.get(id);
-				if (mperm == null) continue;
-				
-				ret.put(mperm, new LinkedHashSet<Rel>(entry.getValue()));
+				iter.remove();
+				continue;
 			}
+			
+			// ... resolve object and skip unknowns ...
+			MPerm mperm = MPerm.get(id);
+			if (mperm == null) continue;
+			
+			ret.put(mperm, new LinkedHashSet<Rel>(entry.getValue()));
 		}
 		
 		return ret;
-	}
-	
-	public void setPermIds(Map<String, Set<Rel>> perms)
-	{
-		// Clean input
-		Map<String, Set<Rel>> target = null;
-		if (perms != null)
-		{
-			// We start out with what was suggested
-			target = new LinkedHashMap<String, Set<Rel>>();
-			for (Entry<String, Set<Rel>> entry : perms.entrySet())
-			{
-				target.put(entry.getKey(), new LinkedHashSet<Rel>(entry.getValue()));
-			}
-			
-			// However if the context is fully live we try to throw some default values away.
-			if (this.attached() && Factions.get().isDatabaseInitialized())
-			{
-				Iterator<Entry<String, Set<Rel>>> iter = target.entrySet().iterator();
-				while (iter.hasNext())
-				{
-					// For each entry ...
-					Entry<String, Set<Rel>> entry = iter.next();
-					
-					// ... extract id and remove null values ...
-					String id = entry.getKey();					
-					if (id == null)
-					{
-						iter.remove();
-						continue;
-					}
-					
-					// ... remove if known and standard ...
-					MPerm mperm = MPerm.get(id);
-					if (mperm != null && mperm.getStandard().equals(entry.getValue()))
-					{
-						iter.remove();
-					}
-				}
-				
-				if (target.isEmpty()) target = null;
-			}
-		}
-		
-		// Detect Nochange
-		if (MUtil.equals(this.perms, target)) return;
-		
-		// Apply
-		this.perms = target;
-		
-		// Mark as changed
-		this.changed();
 	}
 	
 	public void setPerms(Map<MPerm, Set<Rel>> perms)
@@ -807,12 +744,97 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 		setPermIds(permIds);
 	}
 	
+	public void setPermIds(Map<String, Set<Rel>> perms)
+	{
+		// Clean input
+		MassiveMapDef<String, Set<Rel>> target = new MassiveMapDef<String, Set<Rel>>();
+		for (Entry<String, Set<Rel>> entry : perms.entrySet())
+		{
+			String key = entry.getKey();
+			if (key == null) continue;
+			key = key.toLowerCase(); // Lowercased Keys Version 2.6.0 --> 2.7.0
+			
+			Set<Rel> value = entry.getValue();
+			if (value == null) continue;
+			
+			target.put(key, value);
+		}
+		
+		// Detect Nochange
+		if (MUtil.equals(this.perms, target)) return;
+		
+		// Apply
+		this.perms = target;
+		
+		// Mark as changed
+		this.changed();
+	}
+	
 	// FINER
 	
+	public boolean isPermitted(String permId, Rel rel)
+	{
+		if (permId == null) throw new NullPointerException("permId");
+		
+		Set<Rel> rels = this.perms.get(permId);
+		if (rels != null) return rels.contains(rel);
+		
+		MPerm perm = MPerm.get(permId);
+		if (perm == null) throw new NullPointerException("perm");
+		
+		return perm.getStandard().contains(rel);
+	}
+	
+	public boolean isPermitted(MPerm perm, Rel rel)
+	{
+		if (perm == null) throw new NullPointerException("perm");
+		
+		String permId = perm.getId();
+		if (permId == null) throw new NullPointerException("permId");
+		
+		Set<Rel> rels = this.perms.get(permId);
+		if (rels != null) return rels.contains(rel);
+		
+		return perm.getStandard().contains(rel);
+	}
+	
+	// ---
+	
+	public Set<Rel> getPermitted(MPerm perm)
+	{
+		if (perm == null) throw new NullPointerException("perm");
+		
+		String permId = perm.getId();
+		if (permId == null) throw new NullPointerException("permId");
+		
+		Set<Rel> rels = this.perms.get(permId);
+		if (rels != null) return rels;
+		
+		return perm.getStandard();
+	}
+	
+	public Set<Rel> getPermitted(String permId)
+	{
+		if (permId == null) throw new NullPointerException("permId");
+		
+		Set<Rel> rels = this.perms.get(permId);
+		if (rels != null) return rels;
+		
+		MPerm perm = MPerm.get(permId);
+		if (perm == null) throw new NullPointerException("perm");
+		
+		return perm.getStandard();
+	}
+	
+	@Deprecated
+	// Use getPermitted instead. It's much quicker although not immutable.
 	public Set<Rel> getPermittedRelations(MPerm perm)
 	{
 		return this.getPerms().get(perm);
 	}
+	
+	// ---
+	// TODO: Fix these below. They are reworking the whole map.
 	
 	public void setPermittedRelations(MPerm perm, Set<Rel> rels)
 	{

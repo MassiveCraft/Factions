@@ -43,7 +43,11 @@ public class FactionPreprocessAdapter implements JsonDeserializer<Faction>
 		rename(jsonObject, "permOverrides", "perms");
 	}
 	
-	public void rename(final JsonObject jsonObject, final String from, final String to)
+	// -------------------------------------------- //
+	// UTIL
+	// -------------------------------------------- //
+	
+	public static void rename(final JsonObject jsonObject, final String from, final String to)
 	{
 		JsonElement element = jsonObject.remove(from);
 		if (element != null) jsonObject.add(to, element);

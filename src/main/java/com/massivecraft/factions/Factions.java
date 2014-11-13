@@ -1,5 +1,7 @@
 package com.massivecraft.factions;
 
+import org.bukkit.ChatColor;
+
 import com.massivecraft.factions.adapter.BoardAdapter;
 import com.massivecraft.factions.adapter.BoardMapAdapter;
 import com.massivecraft.factions.adapter.FactionPreprocessAdapter;
@@ -60,6 +62,10 @@ public class Factions extends MassivePlugin
 	public final static String ID_NONE = "none";
 	public final static String ID_SAFEZONE = "safezone";
 	public final static String ID_WARZONE = "warzone";
+	
+	public final static String NAME_NONE_DEFAULT = ChatColor.DARK_GREEN.toString() + "Wilderness";
+	public final static String NAME_SAFEZONE_DEFAULT = "SafeZone";
+	public final static String NAME_WARZONE_DEFAULT = "WarZone";
 	
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT

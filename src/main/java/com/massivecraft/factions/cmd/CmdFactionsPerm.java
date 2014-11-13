@@ -51,7 +51,7 @@ public class CmdFactionsPerm extends FactionsCommand
 			msg(MPerm.getStateHeaders());
 			for (MPerm perm : MPerm.getAll())
 			{
-				msg(perm.getStateInfo(faction.getPermittedRelations(perm), true));
+				msg(perm.getStateInfo(faction.getPermitted(perm), true));
 			}
 			return;
 		}
@@ -65,7 +65,7 @@ public class CmdFactionsPerm extends FactionsCommand
 		{
 			msg(Txt.titleize("Perm for " + faction.describeTo(msender, true)));
 			msg(MPerm.getStateHeaders());
-			msg(mperm.getStateInfo(faction.getPermittedRelations(mperm), true));
+			msg(mperm.getStateInfo(faction.getPermitted(mperm), true));
 			return;
 		}
 		
@@ -105,7 +105,7 @@ public class CmdFactionsPerm extends FactionsCommand
 		// Inform
 		msg(Txt.titleize("Perm for " + faction.describeTo(msender, true)));
 		msg(MPerm.getStateHeaders());
-		msg(mperm.getStateInfo(faction.getPermittedRelations(mperm), true));
+		msg(mperm.getStateInfo(faction.getPermitted(mperm), true));
 	}
 	
 }

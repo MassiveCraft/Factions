@@ -2,8 +2,6 @@ package com.massivecraft.factions.entity;
 
 import java.util.*;
 
-import org.bukkit.ChatColor;
-
 import com.massivecraft.massivecore.store.Coll;
 import com.massivecraft.massivecore.store.MStore;
 import com.massivecraft.massivecore.util.Txt;
@@ -89,7 +87,7 @@ public class FactionColl extends Coll<Faction>
 		
 		faction = this.create(id);
 		
-		faction.setName(ChatColor.DARK_GREEN+"Wilderness");
+		faction.setName(Factions.NAME_NONE_DEFAULT);
 		faction.setDescription(null);
 		
 		faction.setFlag(MFlag.getFlagOpen(), false);
@@ -123,7 +121,7 @@ public class FactionColl extends Coll<Faction>
 		
 		faction = this.create(id);
 		
-		faction.setName("SafeZone");
+		faction.setName(Factions.NAME_SAFEZONE_DEFAULT);
 		faction.setDescription("Free from PVP and monsters");
 		
 		faction.setFlag(MFlag.getFlagOpen(), false);
@@ -156,7 +154,7 @@ public class FactionColl extends Coll<Faction>
 		
 		faction = this.create(id);
 		
-		faction.setName("WarZone");
+		faction.setName(Factions.NAME_WARZONE_DEFAULT);
 		faction.setDescription("Not the safest place to be");
 		
 		faction.setFlag(MFlag.getFlagOpen(), false);

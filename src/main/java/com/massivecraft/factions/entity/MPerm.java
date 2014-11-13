@@ -277,9 +277,7 @@ public class MPerm extends Entity<MPerm> implements Prioritized, Registerable
 		if (hostFaction == null) throw new NullPointerException("hostFaction");
 		
 		Rel rel = faction.getRelationTo(hostFaction);
-		
-		Set<Rel> permittedRelations = hostFaction.getPermittedRelations(this);
-		return permittedRelations.contains(rel);
+		return hostFaction.isPermitted(this, rel);
 	}
 	
 	public boolean has(MPlayer mplayer, Faction hostFaction, boolean verboose)
@@ -291,8 +289,7 @@ public class MPerm extends Entity<MPerm> implements Prioritized, Registerable
 		if (mplayer.isUsingAdminMode()) return true;
 		
 		Rel rel = mplayer.getRelationTo(hostFaction);
-		Set<Rel> permittedRelations = hostFaction.getPermittedRelations(this);
-		if (permittedRelations.contains(rel)) return true;
+		if (hostFaction.isPermitted(this, rel)) return true;
 		
 		if (verboose) mplayer.sendMessage(this.createDeniedMessage(mplayer, hostFaction));
 		
