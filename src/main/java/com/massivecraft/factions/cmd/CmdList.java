@@ -1,7 +1,6 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Conf;
-import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.struct.Permission;
@@ -11,7 +10,6 @@ import org.bukkit.ChatColor;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 
 
 public class CmdList extends FCommand {
@@ -110,20 +108,5 @@ public class CmdList extends FCommand {
         }
 
         sendFancyMessage(lines);
-    }
-
-    private List<String> getToolTips(Faction faction) {
-        List<String> lines = new ArrayList<String>();
-        for (String s : p.getConfig().getStringList("tooltips.list")) {
-            lines.add(ChatColor.translateAlternateColorCodes('&',replaceFInfoTags(s, faction)));
-        }
-        return lines;
-    }
-
-    private String replaceFInfoTags(String s, Faction faction) {
-        boolean raidable = faction.getLandRounded() > faction.getPower();
-        FPlayer fLeader = faction.getFPlayerAdmin();
-        String leader = fLeader == null ? "Server" : fLeader.getName().substring(0, fLeader.getName().length() > 14 ? 13 : fLeader.getName().length());
-        return s.replace("{power}", String.valueOf(faction.getPowerRounded())).replace("{maxPower}", String.valueOf(faction.getPowerMaxRounded())).replace("{leader}", leader).replace("{chunks}", String.valueOf(faction.getLandRounded())).replace("{raidable}", String.valueOf(raidable)).replace("{warps}", String.valueOf(faction.getWarps().size()));
     }
 }

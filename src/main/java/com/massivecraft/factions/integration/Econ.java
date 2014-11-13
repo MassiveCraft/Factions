@@ -379,6 +379,10 @@ public class Econ {
         return format.format(econ.getBalance(Bukkit.getOfflinePlayer(uuid)));
     }
 
+    public static String getFriendlyBalance(FPlayer player) {
+        return format.format(econ.getBalance(Bukkit.getOfflinePlayer(player.getName())));
+    }
+
     public static boolean setBalance(String account, double amount) {
         double current = econ.getBalance(Bukkit.getOfflinePlayer(account));
         if (current > amount) {

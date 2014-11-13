@@ -42,15 +42,29 @@ disable-pistons-in-territory: false
 # This section is to configure tooltips for things like /f list
 tooltips:
 
+  # List
   # This shows up when someone does /f list for the top factions.
   # It will not sure up for factionless of course, just actual factions.
   # You can use color codes here.
   list:
-    - "Leader: {leader}"
-    - "Claimed: {chunks}"
-    - "Raidable: {raidable}"
-    - "Warps: {warps}"
-    - "Power: {power}/{maxPower}"
+    - "&6Leader: &f{leader}"
+    - "&6Claimed: &f{chunks}"
+    - "&6Raidable: &f{raidable}"
+    - "&6Warps: &f{warps}"
+    - "&6Power: &f{power}/{maxPower}"
+    - "&6Members: &f{online}/{members}"
+
+  # Show
+  # This shows up when someone does /f show.
+  # It adds tooltips to each player in the list here, nothing else.
+  # {group} will show the players primary group if you have vault installed.
+  # {balance} will show their balance if you have vault installed.
+  # {lastSeen} will show human readable info on when the player was last seen, or online.
+  show:
+    - "&6Last Seen: &f{lastSeen}"
+    - "&6Power: &f{power}"
+    - "&6Rank: &f{group}"
+    - "&6Balance: &a${balance}"
 
 # Configuration section for Scoreboards
 # This will allow you to completely customize how your scoreboards look.

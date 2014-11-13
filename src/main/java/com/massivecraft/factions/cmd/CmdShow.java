@@ -8,6 +8,8 @@ import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
+import mkremins.fanciful.FancyMessage;
+import org.bukkit.ChatColor;
 
 import java.util.Collection;
 
@@ -85,131 +87,39 @@ public class CmdShow extends FCommand {
             }
         }
 
-        String listpart;
-
-        // List relation
-        String allyList = p.txt.parse("<a>Allies: ");
-        String enemyList = p.txt.parse("<a>Enemies: ");
+        FancyMessage allies = new FancyMessage("Allies: ").color(ChatColor.GOLD);
+        FancyMessage enemies = new FancyMessage("Enemies: ").color(ChatColor.GOLD);
         for (Faction otherFaction : Factions.getInstance().getAllFactions()) {
             if (otherFaction == faction) {
                 continue;
             }
 
             Relation rel = otherFaction.getRelationTo(faction);
-            if (!rel.isAlly() && !rel.isEnemy()) {
-                continue;  // if not ally or enemy, drop out now so we're not wasting time on it; good performance boost
-            }
-
-            listpart = otherFaction.getTag(fme) + p.txt.parse("<i>") + ", ";
+            String s = otherFaction.getTag(fme);
             if (rel.isAlly()) {
-                allyList += listpart;
+                allies.then(s).tooltip(getToolTips(otherFaction));
             } else if (rel.isEnemy()) {
-                enemyList += listpart;
-            }
-        }
-        if (allyList.endsWith(", ")) {
-            allyList = allyList.substring(0, allyList.length() - 2);
-        }
-        if (enemyList.endsWith(", ")) {
-            enemyList = enemyList.substring(0, enemyList.length() - 2);
-        }
-
-        if (allyList.length() > 2048) {
-            String[] lines = splitString(allyList, 2048, 256000);
-            for (int i = 0; i < lines.length; i++) {
-                sendMessage(lines[i]);
-            }
-        } else {
-            sendMessage(allyList);
-        }
-        if (enemyList.length() > 2048) {
-            String[] lines = splitString(enemyList, 2048, 256000);
-            for (int i = 0; i < lines.length; i++) {
-                sendMessage(lines[i]);
-            }
-        } else {
-            sendMessage(enemyList);
-        }
-
-        // List the members...
-        String onlineList = p.txt.parse("<a>") + "Members online: ";
-        String offlineList = p.txt.parse("<a>") + "Members offline: ";
-        boolean canSeePower = Permission.POWER_ANY.has(me);
-        for (FPlayer follower : admins) {
-            listpart = follower.getNameAndTitle(fme);
-            if (canSeePower) {
-                listpart += p.txt.parse("<i>(%d), ", follower.getPowerRounded());
-            } else {
-                listpart += p.txt.parse("<i>, ");
-            }
-            if (follower.isOnlineAndVisibleTo(me)) {
-                onlineList += listpart;
-            } else {
-                offlineList += listpart;
-            }
-        }
-        for (FPlayer follower : mods) {
-            listpart = follower.getNameAndTitle(fme);
-            if (canSeePower) {
-                listpart += p.txt.parse("<i>(%d), ", follower.getPowerRounded());
-            } else {
-                listpart += p.txt.parse("<i>, ");
-            }
-            if (follower.isOnlineAndVisibleTo(me)) {
-                onlineList += listpart;
-            } else {
-                offlineList += listpart;
-            }
-        }
-        for (FPlayer follower : normals) {
-            listpart = follower.getNameAndTitle(fme);
-            if (canSeePower) {
-                listpart += p.txt.parse("<i>(%d), ", follower.getPowerRounded());
-            } else {
-                listpart += p.txt.parse("<i>, ");
-            }
-            if (follower.isOnlineAndVisibleTo(me)) {
-                onlineList += listpart;
-            } else {
-                offlineList += listpart;
+                enemies.then(s).tooltip(getToolTips(otherFaction));
             }
         }
 
-        if (onlineList.endsWith(", ")) {
-            onlineList = onlineList.substring(0, onlineList.length() - 2);
-        }
-        if (offlineList.endsWith(", ")) {
-            offlineList = offlineList.substring(0, offlineList.length() - 2);
+
+        FancyMessage online = new FancyMessage("Members online: ").color(ChatColor.GOLD);
+        FancyMessage offline = new FancyMessage("Members offline: ").color(ChatColor.GOLD);
+        for (FPlayer p : faction.getFPlayers()) {
+            String name = p.getNameAndTitle();
+            if (p.isOnline()) {
+                online.then(name).tooltip(getToolTips(p));
+            } else {
+                offline.then(name).tooltip(getToolTips(p));
+            }
         }
 
-        if (onlineList.length() > 2048) {
-            String[] lines = splitString(onlineList, 2048, 256000);
-            for (int i = 0; i < lines.length; i++) {
-                sendMessage(lines[i]);
-            }
-        } else {
-            sendMessage(onlineList);
-        }
-        if (offlineList.length() > 2048) {
-            String[] lines = splitString(offlineList, 2048, 256000);
-            for (int i = 0; i < lines.length; i++) {
-                sendMessage(lines[i]);
-            }
-        } else {
-            sendMessage(offlineList);
-        }
-    }
-
-    private String[] splitString(String text, int chunkSize, int maxLength) {
-        char[] data = text.toCharArray();
-        int len = Math.min(data.length, maxLength);
-        String[] result = new String[(len + chunkSize - 1) / chunkSize];
-        int linha = 0;
-        for (int i = 0; i < len; i += chunkSize) {
-            result[linha] = new String(data, i, Math.min(chunkSize, len - i));
-            linha++;
-        }
-        return result;
+        // Send all at once ;D
+        sendFancyMessage(allies);
+        sendFancyMessage(enemies);
+        sendFancyMessage(online);
+        sendFancyMessage(offline);
     }
 
 }
