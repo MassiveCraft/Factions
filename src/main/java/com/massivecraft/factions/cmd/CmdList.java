@@ -115,7 +115,7 @@ public class CmdList extends FCommand {
     private List<String> getToolTips(Faction faction) {
         List<String> lines = new ArrayList<String>();
         for (String s : p.getConfig().getStringList("tooltips.list")) {
-            lines.add(replaceFInfoTags(s, faction));
+            lines.add(ChatColor.translateAlternateColorCodes('&',replaceFInfoTags(s, faction)));
         }
         return lines;
     }

@@ -44,7 +44,7 @@ tooltips:
 
   # This shows up when someone does /f list for the top factions.
   # It will not sure up for factionless of course, just actual factions.
-  # You can't use color codes here.
+  # You can use color codes here.
   list:
     - "Leader: {leader}"
     - "Claimed: {chunks}"
