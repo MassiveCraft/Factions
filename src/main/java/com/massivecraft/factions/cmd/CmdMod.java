@@ -4,6 +4,8 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
+import mkremins.fanciful.FancyMessage;
+import org.bukkit.ChatColor;
 
 public class CmdMod extends FCommand {
 
@@ -11,7 +13,7 @@ public class CmdMod extends FCommand {
         super();
         this.aliases.add("mod");
 
-        this.requiredArgs.add("player name");
+        this.optionalArgs.put("player name", "name");
         //this.optionalArgs.put("", "");
 
         this.permission = Permission.MOD.node;
@@ -27,7 +29,13 @@ public class CmdMod extends FCommand {
     public void perform() {
         FPlayer you = this.argAsBestFPlayerMatch(0);
         if (you == null) {
-            return;
+            FancyMessage msg = new FancyMessage("Players you can promote: ").color(ChatColor.GOLD);
+            for (FPlayer player : myFaction.getFPlayersWhereRole(Role.NORMAL)) {
+                String s = player.getName();
+                msg.then(s + " ").color(ChatColor.WHITE).tooltip("Click to promote " + s).command("f mod " + s);
+            }
+            
+            sendFancyMessage(msg);
         }
 
         boolean permAny = Permission.MOD_ANY.has(sender, false);
