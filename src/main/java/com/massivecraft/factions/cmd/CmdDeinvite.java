@@ -1,7 +1,10 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.struct.Permission;
+import mkremins.fanciful.FancyMessage;
+import org.bukkit.ChatColor;
 
 public class CmdDeinvite extends FCommand {
 
@@ -10,7 +13,7 @@ public class CmdDeinvite extends FCommand {
         this.aliases.add("deinvite");
         this.aliases.add("deinv");
 
-        this.requiredArgs.add("player name");
+        this.optionalArgs.put("player name", "name");
         //this.optionalArgs.put("", "");
 
         this.permission = Permission.DEINVITE.node;
@@ -26,7 +29,13 @@ public class CmdDeinvite extends FCommand {
     public void perform() {
         FPlayer you = this.argAsBestFPlayerMatch(0);
         if (you == null) {
-            return;
+            FancyMessage msg = new FancyMessage("Players you can deinvite: ").color(ChatColor.GOLD);
+            for (String id : myFaction.getInvites()) {
+                FPlayer fp = FPlayers.getInstance().getById(id);
+                String name = fp != null ? fp.getName() : id;
+                msg.then(name + " ").color(ChatColor.WHITE).tooltip("Click to revoke invite for " + name).command("f deinvite " + name);
+            }
+            sendFancyMessage(msg);
         }
 
         if (you.getFaction() == myFaction) {
