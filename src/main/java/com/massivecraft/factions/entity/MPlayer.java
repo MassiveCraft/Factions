@@ -223,6 +223,7 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 	// FIELD: factionId
 	// -------------------------------------------- //
 	
+	@Deprecated
 	public String getDefaultFactionId()
 	{
 		return MConf.get().defaultPlayerFactionId;
@@ -231,7 +232,7 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 	// This method never returns null
 	public String getFactionId()
 	{
-		if (this.factionId == null) return this.getDefaultFactionId();
+		if (this.factionId == null) return MConf.get().defaultPlayerFactionId;
 		return this.factionId;
 	}
 	
@@ -267,7 +268,7 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 		if (!this.attached()) return;
 		if (!Factions.get().isDatabaseInitialized()) return;
 		
-		if (oldFactionId == null) oldFactionId = this.getDefaultFactionId();
+		if (oldFactionId == null) oldFactionId = MConf.get().defaultPlayerFactionId;
 		
 		// Update index
 		Faction oldFaction = Faction.get(oldFactionId);
@@ -306,6 +307,7 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 	// FIELD: role
 	// -------------------------------------------- //
 	
+	@Deprecated
 	public Rel getDefaultRole()
 	{
 		return MConf.get().defaultPlayerRole;
@@ -313,7 +315,7 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 	
 	public Rel getRole()
 	{
-		if (this.role == null) return this.getDefaultRole();
+		if (this.role == null) return MConf.get().defaultPlayerRole;
 		return this.role;
 	}
 	
@@ -467,6 +469,7 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 	
 	// RAW
 	
+	@Deprecated
 	public double getDefaultPower()
 	{
 		return MConf.get().defaultPlayerPower;
@@ -475,7 +478,7 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 	public double getPower()
 	{
 		Double ret = this.power;
-		if (ret == null) ret = this.getDefaultPower();
+		if (ret == null) ret = MConf.get().defaultPlayerPower;
 		ret = this.getLimitedPower(ret);
 		return ret;
 	}
@@ -542,6 +545,7 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 		if (this.getSender() != null && !Perm.ADMIN.has(this.getSender(), false))
 		{
 			this.setUsingAdminMode(false);
+			return false;
 		}
 		
 		return true;

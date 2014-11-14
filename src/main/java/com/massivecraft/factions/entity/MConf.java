@@ -51,12 +51,16 @@ public class MConf extends Entity<MConf>
 	// COMMAND ALIASES
 	// -------------------------------------------- //
 	
+	// Don't you want "f" as the base command alias? Simply change it here.
 	public List<String> aliasesF = MUtil.list("f");
 	
 	// -------------------------------------------- //
 	// WORLDS FEATURE ENABLED
 	// -------------------------------------------- //
 	
+	// Use this blacklist/whitelist system to toggle features on a per world basis.
+	// Do you only want claiming enabled on the one map called "Hurr"?
+	// In such case set standard to false and add "Hurr" as an exeption to worldsClaimingEnabled.
 	public WorldExceptionSet worldsClaimingEnabled = new WorldExceptionSet();
 	public WorldExceptionSet worldsPowerLossEnabled = new WorldExceptionSet();
 	public WorldExceptionSet worldsPvpRulesEnabled = new WorldExceptionSet();
@@ -65,13 +69,16 @@ public class MConf extends Entity<MConf>
 	// DERPY OVERRIDES
 	// -------------------------------------------- //
 	
-	// mainly for other plugins/mods that use a fake player to take actions, which shouldn't be subject to our protections
+	// Add player names here who should bypass all protections.
+	// Should /not/ be used for admins. There is "/f adminmode" for that.
+	// This is for other plugins/mods that use a fake player to take actions, which shouldn't be subject to our protections.
 	public Set<String> playersWhoBypassAllProtection = new LinkedHashSet<String>();
 	
 	// -------------------------------------------- //
 	// TASKS
 	// -------------------------------------------- //
 	
+	// Define the time in minutes between certain Factions system tasks is ran.
 	public double taskPlayerPowerUpdateMinutes = 1;
 	public double taskPlayerDataRemoveMinutes = 5;
 	public double taskEconLandRewardMinutes = 20;
@@ -80,20 +87,23 @@ public class MConf extends Entity<MConf>
 	// REMOVE DATA
 	// -------------------------------------------- //
 	
+	// Should players be kicked from their faction and their data erased when banned?
 	public boolean removePlayerWhenBanned = true;
 	
+	// After how many milliseconds should players be automatically kicked from their faction?
+	
 	// The Default
-	public long removePlayerMillisDefault = 10 * TimeUnit.MILLIS_PER_DAY;
+	public long removePlayerMillisDefault = 10 * TimeUnit.MILLIS_PER_DAY; // 10 days
 	
 	// Player Age Bonus
 	public Map<Long, Long> removePlayerMillisPlayerAgeToBonus = MUtil.map(
-		2 * TimeUnit.MILLIS_PER_WEEK, 10 * TimeUnit.MILLIS_PER_DAY  // +10 after 2 weeks
+		2 * TimeUnit.MILLIS_PER_WEEK, 10 * TimeUnit.MILLIS_PER_DAY  // +10 days after 2 weeks
 	);
 	
 	// Faction Age Bonus
 	public Map<Long, Long> removePlayerMillisFactionAgeToBonus = MUtil.map(
-		4 * TimeUnit.MILLIS_PER_WEEK, 10 * TimeUnit.MILLIS_PER_DAY, // +10 after 4 weeks
-		2 * TimeUnit.MILLIS_PER_WEEK,  5 * TimeUnit.MILLIS_PER_DAY  // +5 after 2 weeks
+		4 * TimeUnit.MILLIS_PER_WEEK, 10 * TimeUnit.MILLIS_PER_DAY, // +10 days after 4 weeks
+		2 * TimeUnit.MILLIS_PER_WEEK,  5 * TimeUnit.MILLIS_PER_DAY  // +5 days after 2 weeks
 	);
 	
 	// -------------------------------------------- //
@@ -113,95 +123,183 @@ public class MConf extends Entity<MConf>
 	// DEFAULTS
 	// -------------------------------------------- //
 	
+	// Which faction should new players be followers of?
+	// "none" means Wilderness. Remember to specify the id, like "3defeec7-b3b1-48d9-82bb-2a8903df24e3" and not the name.
 	public String defaultPlayerFactionId = Factions.ID_NONE;
+	
+	// What rank should new players joining a faction get?
+	// If not RECRUIT then MEMBER might make sense.
 	public Rel defaultPlayerRole = Rel.RECRUIT;
+	
+	// What power should the player start with?
 	public double defaultPlayerPower = 0.0;
 	
 	// -------------------------------------------- //
 	// MOTD
 	// -------------------------------------------- //
 	
+	// During which event priority should the faction message of the day be displayed?
+	// Choose between: LOWEST, LOW, NORMAL, HIGH, HIGHEST and MONITOR.
+	// This setting only matters if "motdDelayTicks" is set to -1
 	public EventPriority motdPriority = EventPriority.NORMAL;
+	
+	// How many ticks should we delay the faction message of the day with?
+	// -1 means we don't delay at all. We display it at once.
+	// 0 means it's deferred to the upcomming server tick.
+	// 5 means we delay it yet another 5 ticks.
 	public int motdDelayTicks = -1;
 
 	// -------------------------------------------- //
 	// POWER
 	// -------------------------------------------- //
 	
+	// What is the maximum player power?
 	public double powerMax = 10.0;
+	
+	// What is the minimum player power?
+	// NOTE: Negative minimum values is possible.
 	public double powerMin = 0.0;
+	
+	// How much power should be regained per hour online on the server?
 	public double powerPerHour = 2.0;
+	
+	// How much power should be lost on death?
 	public double powerPerDeath = -2.0;
 	
+	// Can players with negative power leave their faction?
+	// NOTE: This only makes sense to set to false if your "powerMin" setting is negative.
 	public boolean canLeaveWithNegativePower = true;
 	
 	// -------------------------------------------- //
 	// CORE
 	// -------------------------------------------- //
 
+	// Is there a maximum amount of members per faction?
+	// 0 means there is not. If you set it to 100 then there can at most be 100 members per faction.
 	public int factionMemberLimit = 0;
+	
+	// Is there a maximum faction power cap?
+	// 0 means there is not. Set it to a positive value in case you wan't to use this feature.
 	public double factionPowerMax = 0.0;
 	
+	// Limit the length of faction names here.
 	public int factionNameLengthMin = 3;
 	public int factionNameLengthMax = 16;
+	
+	// Should faction names automatically be converted to upper case?
+	// You probably don't want this feature.
+	// It's a remnant from old faction versions.
 	public boolean factionNameForceUpperCase = false;
 	
 	// -------------------------------------------- //
 	// SET LIMITS
 	// -------------------------------------------- //
 	
+	// When using radius setting of faction territory, what is the maximum radius allowed?
 	public int setRadiusMax = 30;
+	
+	// When using fill setting of faction territory, what is the maximum chunk count allowed?
 	public int setFillMax = 1000;
 	
 	// -------------------------------------------- //
 	// CLAIMS
 	// -------------------------------------------- //
 	
+	// Must claims be connected to each other?
+	// If you set this to false you will allow factions to claim more than one base per world map.
+	// That would makes outposts possible but also potentially ugly weird claims messing up your Dynmap and ingame experiance.
 	public boolean claimsMustBeConnected = true;
+	
+	// Would you like to allow unconnected claims when conquering land from another faction?
+	// Setting this to true would allow taking over someone elses base even if claims normally have to be connected.
+	// Note that even without this you can pillage/unclaim another factions territory in war.
+	// You just won't be able to take the land as your own.
 	public boolean claimsCanBeUnconnectedIfOwnedByOtherFaction = false;
 	
+	// Is claiming from other factions even allowed?
+	// Set this to false to disable territorial warfare altogether.
 	public boolean claimingFromOthersAllowed = true;
 	
-	// 0 means you can claim just next to others
-	// 1 means you must have a single chunk of padding in between.
-	public int claimMinimumChunksDistanceToOthers = 0; 
+	// Is a minimum distance (measured in chunks) to other factions required?
+	// 0 means the feature is disabled.
+	// Set the feature to 10 and there must be 10 chunks of wilderness between factions.
+	// Factions may optionally allow their allies to bypass this limit by configuring their faction permissions ingame themselves.
+	public int claimMinimumChunksDistanceToOthers = 0;
 	
+	// Do you need a minimum amount of faction members to claim land?
+	// 1 means just the faction leader alone is enough.
 	public int claimsRequireMinFactionMembers = 1;
+	
+	// Is there a maximum limit to chunks claimed?
+	// 0 means there isn't.
 	public int claimedLandsMax = 0;
 	
 	// -------------------------------------------- //
 	// HOMES
 	// -------------------------------------------- //
 	
+	// Is the home feature enabled?
+	// If you set this to false players can't set homes or teleport home.
 	public boolean homesEnabled = true;
+	
+	// Must homes be located inside the faction's territory?
+	// It's usually a wise idea keeping this true.
+	// Otherwise players can set their homes inside enemy territory.
 	public boolean homesMustBeInClaimedTerritory = true;
+	
+	// Is the home teleport command available?
+	// One reason you might set this to false is if you only want players going home on respawn after death.
 	public boolean homesTeleportCommandEnabled = true;
+	
+	// These options can be used to limit rights to tp home under different circumstances.
 	public boolean homesTeleportAllowedFromEnemyTerritory = true;
 	public boolean homesTeleportAllowedFromDifferentWorld = true;
 	public double homesTeleportAllowedEnemyDistance = 32.0;
 	public boolean homesTeleportIgnoreEnemiesIfInOwnTerritory = true;
 	
+	// Should players teleport to faction home on death?
+	// Set this to true to override the default respawn location.
 	public boolean homesTeleportToOnDeathActive = false;
+	
+	// This value can be used to tweak compatibility with other plugins altering the respawn location.
+	// Choose between: LOWEST, LOW, NORMAL, HIGH, HIGHEST and MONITOR.
 	public EventPriority homesTeleportToOnDeathPriority = EventPriority.NORMAL;
 	
 	// -------------------------------------------- //
 	// ASSORTED
 	// -------------------------------------------- //
 	
+	// Set this to true if want to block the promotion of new leaders for permanent factions.
+	// I don't really understand the user case for this option.
 	public boolean permanentFactionsDisableLeaderPromotion = false;
+	
+	// How much health damage should a player take upon placing or breaking a block in a "pain build" territory?
+	// 2.0 means one heart.
 	public double actionDeniedPainAmount = 2.0D;
+	
+	// If you set this option to true then factionless players cant partake in PVP.
+	// It works in both directions. Meaning you must join a faction to hurt players and get hurt by players.
 	public boolean disablePVPForFactionlessPlayers = false;
+	
+	// Set this option to true to create an exception to the rule above.
+	// Players inside their own faction territory can then hurt facitonless players.
+	// This way you may "evict" factionless trolls messing around in your home base.
 	public boolean enablePVPAgainstFactionlessInAttackersLand = false;
+	
+	// Inside your own faction territory you take less damage.
+	// 0.1 means that you take 10% less damage at home.
 	public double territoryShieldFactor = 0.1D;
 	
 	// -------------------------------------------- //
 	// DENY COMMANDS
 	// -------------------------------------------- //
 	
-	// commands which will be prevented if the player is a member of a permanent faction
+	// A list of commands to block for members of permanent factions.
+	// I don't really understand the user case for this option.
 	public List<String> denyCommandsPermanentFactionMember = new ArrayList<String>();
 
-	// commands which will be prevented when in claimed territory of another faction
+	// Lists of commands to deny depending on your relation to the current faction territory.
+	// You may for example not type /home (might be the plugin Essentials) in the territory of your enemies.
 	public Map<Rel, List<String>> denyCommandsTerritoryRelation = MUtil.map(
 		Rel.ENEMY, MUtil.list(
 			// Essentials commands
@@ -267,33 +365,51 @@ public class MConf extends Entity<MConf>
 	// CHAT
 	// -------------------------------------------- //
 	
-	// We offer a simple standard way to set the format
+	// Should Factions set the chat format?
+	// This should be kept at false if you use an external chat format plugin.
+	// If you are planning on running a more lightweight server you can set this to true.
 	public boolean chatSetFormat = false;
+	
+	// At which event priority should the chat format be set in such case?
+	// Choose between: LOWEST, LOW, NORMAL, HIGH and HIGHEST.
 	public EventPriority chatSetFormatAt = EventPriority.LOWEST;
+	
+	// What format should be set?
 	public String chatSetFormatTo = "<{factions_relcolor}§l{factions_roleprefix}§r{factions_relcolor}{factions_name|rp}§f%1$s> %2$s";
 	
-	// We offer a simple standard way to parse the chat tags
+	// Should the chat tags such as {factions_name} be parsed?
+	// NOTE: You can set this to true even with chatSetFormat = false.
+	// But in such case you must set the chat format using an external chat format plugin.
 	public boolean chatParseTags = true;
+	
+	// At which event priority should the faction chat tags be parsed in such case?
+	// Choose between: LOWEST, LOW, NORMAL, HIGH, HIGHEST.
 	public EventPriority chatParseTagsAt = EventPriority.LOW;
 	
 	// -------------------------------------------- //
 	// COLORS
 	// -------------------------------------------- //
 	
+	// Here you can alter the colors tied to certain faction relations and settings.
+	// You probably don't want to edit these to much.
+	// Doing so might confuse players that are used to Factions.
 	public ChatColor colorMember = ChatColor.GREEN;
 	public ChatColor colorAlly = ChatColor.DARK_PURPLE;
 	public ChatColor colorTruce = ChatColor.LIGHT_PURPLE;
 	public ChatColor colorNeutral = ChatColor.WHITE;
 	public ChatColor colorEnemy = ChatColor.RED;
 	
+	// This one is for example applied to SafeZone since that faction has the pvp flag set to false.
 	public ChatColor colorNoPVP = ChatColor.GOLD;
+	
+	// This one is for example applied to WarZone since that faction has the friendly fire flag set to true.
 	public ChatColor colorFriendlyFire = ChatColor.DARK_RED;
-	//public ChatColor colorWilderness = ChatColor.DARK_GREEN;
 	
 	// -------------------------------------------- //
 	// PREFIXES
 	// -------------------------------------------- //
 	
+	// Here you may edit the name prefixes associated with different faction ranks.
 	public String prefixLeader = "**";
 	public String prefixOfficer = "*";
 	public String prefixMember = "+";
@@ -311,6 +427,9 @@ public class MConf extends Entity<MConf>
 	// SEE CHUNK
 	// -------------------------------------------- //
 	
+	// These options can be used to tweak the "/f seechunk" particle effect.
+	// They are fine as is but feel free to experiment with them if you want to.
+	
 	// Use 1 or multiple of 3, 4 or 5.
 	public int seeChunkSteps = 1;
 	
@@ -327,6 +446,8 @@ public class MConf extends Entity<MConf>
 	// LOGGING
 	// -------------------------------------------- //
 	
+	// Here you can disable logging of certain events to the server console.
+	
 	public boolean logFactionCreate = true;
 	public boolean logFactionDisband = true;
 	public boolean logFactionJoin = true;
@@ -340,6 +461,10 @@ public class MConf extends Entity<MConf>
 	// -------------------------------------------- //
 	// ENUMERATIONS
 	// -------------------------------------------- //
+	
+	// These values are fine for most standard bukkit/spigot servers.
+	// If you however are using Forge with mods that add new container types you might want to add them here.
+	// This way they can be protected in Faction territory.
 	
 	public Set<Material> materialsEditOnInteract = MUtil.set(
 		Material.DIODE_BLOCK_OFF,
@@ -417,7 +542,14 @@ public class MConf extends Entity<MConf>
 	// INTEGRATION: HeroChat
 	// -------------------------------------------- //
 	
-	// HeroChat: The Faction Channel
+	// I you are using the chat plugin HeroChat Factions ship with built in integration.
+	// The two channels Faction and Allies will be created.
+	// Their data is actually stored right here in the factions config.
+	// NOTE: HeroChat will create it's own database files for these two channels.
+	// You should ignore those and edit the channel settings from here.
+	// Those HeroChat channel database files aren't read for the Faction and Allies channels.
+	
+	// The Faction Channel
 	public String herochatFactionName = "Faction";
 	public String herochatFactionNick = "F";
 	public String herochatFactionFormat = "{color}[&l{nick}&r{color} &l{factions_roleprefix}&r{color}{factions_title|rp}{sender}{color}] &f{msg}";
@@ -428,7 +560,7 @@ public class MConf extends Entity<MConf>
 	public boolean herochatFactionMuted = false;
 	public Set<String> herochatFactionWorlds = new HashSet<String>();
 	
-	// HeroChat: The Allies Channel
+	// The Allies Channel
 	public String herochatAlliesName = "Allies";
 	public String herochatAlliesNick = "A";
 	public String herochatAlliesFormat = "{color}[&l{nick}&r&f {factions_relcolor}&l{factions_roleprefix}&r{factions_relcolor}{factions_name|rp}{sender}{color}] &f{msg}";

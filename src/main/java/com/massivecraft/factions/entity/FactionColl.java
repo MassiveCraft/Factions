@@ -254,6 +254,10 @@ public class FactionColl extends Coll<Faction>
 		return this.getByName(str) != null;
 	}
 	
+	// -------------------------------------------- //
+	// OLD MIGRATION COMMENT
+	// -------------------------------------------- //
+	
 	/*
 @Override
 	public void init()
@@ -297,18 +301,7 @@ public class FactionColl extends Coll<Faction>
 		// Mark as migrated
 		oldFile.renameTo(newFile);
 	}
-	
-	// -------------------------------------------- //
-	// INDEX
-	// -------------------------------------------- //
-	
-	public void reindexMPlayers()
-	{
-		for (FactionColl coll : this.getColls())
-		{
-			coll.reindexMPlayers();
-		}
-	}
+
 	 */
 
 }

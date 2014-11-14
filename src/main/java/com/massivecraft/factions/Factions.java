@@ -127,11 +127,15 @@ public class Factions extends MassivePlugin
 		MFlagColl.get().init();
 		MPermColl.get().init();
 		MConfColl.get().init();
-		UpdateUtil.update();	
+		
+		UpdateUtil.update();
+		
 		MPlayerColl.get().init();
 		FactionColl.get().init();
 		BoardColl.get().init();
+		
 		UpdateUtil.updateSpecialIds();
+		
 		FactionColl.get().reindexMPlayers();
 		this.databaseInitialized = true;
 		
