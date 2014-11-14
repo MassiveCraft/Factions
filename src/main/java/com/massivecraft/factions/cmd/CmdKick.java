@@ -8,7 +8,9 @@ import com.massivecraft.factions.event.FPlayerLeaveEvent;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.util.TL;
+import mkremins.fanciful.FancyMessage;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 
 public class CmdKick extends FCommand {
 
@@ -16,7 +18,7 @@ public class CmdKick extends FCommand {
         super();
         this.aliases.add("kick");
 
-        this.requiredArgs.add("player name");
+        this.optionalArgs.put("player name", "player name");
         //this.optionalArgs.put("", "");
 
         this.permission = Permission.KICK.node;
@@ -32,7 +34,19 @@ public class CmdKick extends FCommand {
     public void perform() {
         FPlayer toKick = this.argAsBestFPlayerMatch(0);
         if (toKick == null) {
-            return;
+            FancyMessage msg = new FancyMessage("Players you can kick: ").color(ChatColor.GOLD);
+            for (FPlayer player : myFaction.getFPlayersWhereRole(Role.NORMAL)) {
+                String s = player.getName();
+                msg.then(s + " ").color(ChatColor.WHITE).tooltip("Click to kick " + s).command("f kick " + s);
+            }
+            if (fme.getRole() == Role.ADMIN) {
+                for (FPlayer player : myFaction.getFPlayersWhereRole(Role.MODERATOR)) {
+                    String s = player.getName();
+                    msg.then(s + " ").color(ChatColor.GRAY).tooltip("Click to kick " + s).command("f kick " + s);
+                }
+            }
+
+            sendFancyMessage(msg);
         }
 
         if (fme == toKick) {
