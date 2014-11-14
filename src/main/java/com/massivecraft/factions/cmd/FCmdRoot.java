@@ -60,6 +60,7 @@ public class FCmdRoot extends FCommand {
     public CmdFWarp cmdFWarp = new CmdFWarp();
     public CmdSetFWarp cmdSetFWarp = new CmdSetFWarp();
     public CmdDelFWarp cmdDelFWarp = new CmdDelFWarp();
+    public CmdModifyPower cmdModifyPower = new CmdModifyPower();
 
     public FCmdRoot() {
         super();
@@ -136,6 +137,7 @@ public class FCmdRoot extends FCommand {
         this.addSubCommand(this.cmdFWarp);
         this.addSubCommand(this.cmdSetFWarp);
         this.addSubCommand(this.cmdDelFWarp);
+        this.addSubCommand(this.cmdModifyPower);
     }
 
     @Override

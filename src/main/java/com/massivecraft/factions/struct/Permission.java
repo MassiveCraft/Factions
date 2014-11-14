@@ -36,6 +36,7 @@ public enum Permission {
     MAP("map"),
     MOD("mod"),
     MOD_ANY("mod.any"),
+    MODIFY_POWER("modifypower"),
     MONEY_BALANCE("money.balance"),
     MONEY_BALANCE_ANY("money.balance.any"),
     MONEY_DEPOSIT("money.deposit"),

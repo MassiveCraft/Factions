@@ -16,6 +16,7 @@ permissions:
       factions.lock: true
       factions.reload: true
       factions.save: true
+      factions.modifypower: true
   factions.*:
     description: This is just an alias for factions.kit.admin
     children:
@@ -238,3 +239,5 @@ permissions:
     description: set a warp for your faction
   factions.warp:
     description: access your faction warps
+  factions.modifypower:
+    description: modify other player's power
