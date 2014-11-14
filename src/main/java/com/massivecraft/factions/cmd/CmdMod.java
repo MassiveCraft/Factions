@@ -34,7 +34,7 @@ public class CmdMod extends FCommand {
                 String s = player.getName();
                 msg.then(s + " ").color(ChatColor.WHITE).tooltip("Click to promote " + s).command("f mod " + s);
             }
-            
+
             sendFancyMessage(msg);
         }
 
