@@ -19,7 +19,7 @@ public class FTeamWrapper {
     private final Map<FScoreboard, Team> teams = new HashMap<FScoreboard, Team>();
     private final String teamName;
     private final Faction faction;
-    private final Set<UUID> members = new HashSet<UUID>();
+    private final Set<OfflinePlayer> members = new HashSet<OfflinePlayer>();
 
     public static void applyUpdatesLater(final Faction faction) {
         if (!FScoreboard.isSupportedByServer()) {
@@ -161,7 +161,7 @@ public class FTeamWrapper {
     }
 
     private void addPlayer(OfflinePlayer player) {
-        if (members.add(player.getUniqueId())) {
+        if (members.add(player)) {
             for (Team team : teams.values()) {
                 team.addPlayer(player);
             }
@@ -169,7 +169,7 @@ public class FTeamWrapper {
     }
 
     private void removePlayer(OfflinePlayer player) {
-        if (members.remove(player.getUniqueId())) {
+        if (members.remove(player)) {
             for (Team team : teams.values()) {
                 team.removePlayer(player);
             }
@@ -177,11 +177,7 @@ public class FTeamWrapper {
     }
 
     private Set<OfflinePlayer> getPlayers() {
-        Set<OfflinePlayer> ret = new HashSet<OfflinePlayer>();
-        for (UUID uuid : members) {
-            ret.add(Bukkit.getOfflinePlayer(uuid));
-        }
-        return ret;
+        return new HashSet<OfflinePlayer>(this.members);
     }
 
     private void unregister() {
