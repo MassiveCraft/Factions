@@ -27,8 +27,6 @@ public class CmdShowInvites extends FCommand {
         }
 
         sendFancyMessage(msg);
-
-
     }
 
 

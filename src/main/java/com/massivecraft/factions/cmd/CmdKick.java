@@ -47,6 +47,7 @@ public class CmdKick extends FCommand {
             }
 
             sendFancyMessage(msg);
+            return;
         }
 
         if (fme == toKick) {

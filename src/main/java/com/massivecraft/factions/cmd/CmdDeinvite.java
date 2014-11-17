@@ -36,6 +36,7 @@ public class CmdDeinvite extends FCommand {
                 msg.then(name + " ").color(ChatColor.WHITE).tooltip("Click to revoke invite for " + name).command("f deinvite " + name);
             }
             sendFancyMessage(msg);
+            return;
         }
 
         if (you.getFaction() == myFaction) {

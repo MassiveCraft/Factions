@@ -7,12 +7,10 @@ import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
-import com.massivecraft.factions.struct.Role;
 import mkremins.fanciful.FancyMessage;
 import org.bukkit.ChatColor;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
 public class CmdShow extends FCommand {
 
@@ -46,10 +44,6 @@ public class CmdShow extends FCommand {
         if (!payForCommand(Conf.econCostShow, "to show faction information", "for showing faction information")) {
             return;
         }
-
-        Collection<FPlayer> admins = faction.getFPlayersWhereRole(Role.ADMIN);
-        Collection<FPlayer> mods = faction.getFPlayersWhereRole(Role.MODERATOR);
-        Collection<FPlayer> normals = faction.getFPlayersWhereRole(Role.NORMAL);
 
         msg(p.txt.titleize(faction.getTag(fme)));
         msg("<a>Description: <i>%s", faction.getDescription());
@@ -88,46 +82,48 @@ public class CmdShow extends FCommand {
             }
         }
 
-		ArrayList<FancyMessage> allies = new ArrayList<FancyMessage>();
-		ArrayList<FancyMessage> enemies = new ArrayList<FancyMessage>();
-		FancyMessage currentAllies = new FancyMessage("Allies: ").color(ChatColor.GOLD);
-		FancyMessage currentEnemies = new FancyMessage("Enemies: ").color(ChatColor.GOLD);
+        ArrayList<FancyMessage> allies = new ArrayList<FancyMessage>();
+        ArrayList<FancyMessage> enemies = new ArrayList<FancyMessage>();
+        FancyMessage currentAllies = new FancyMessage("Allies: ").color(ChatColor.GOLD);
+        FancyMessage currentEnemies = new FancyMessage("Enemies: ").color(ChatColor.GOLD);
 
-		boolean firstAlly = true;
-		boolean firstEnemy = true;
-		for (Faction otherFaction : Factions.getInstance().getAllFactions()) {
-			if (otherFaction == faction) {
-				continue;
-			}
+        boolean firstAlly = true;
+        boolean firstEnemy = true;
+        for (Faction otherFaction : Factions.getInstance().getAllFactions()) {
+            if (otherFaction == faction) {
+                continue;
+            }
 
-			Relation rel = otherFaction.getRelationTo(faction);
-			String s = otherFaction.getTag(fme);
-			if (rel.isAlly()) {
-				if (firstAlly)
-					currentAllies.then(s).tooltip(getToolTips(otherFaction));
-				else
-					currentAllies.then(", " + s).tooltip(getToolTips(otherFaction));
-				firstAlly = false;
+            Relation rel = otherFaction.getRelationTo(faction);
+            String s = otherFaction.getTag(fme);
+            if (rel.isAlly()) {
+                if (firstAlly) {
+                    currentAllies.then(s).tooltip(getToolTips(otherFaction));
+                } else {
+                    currentAllies.then(", " + s).tooltip(getToolTips(otherFaction));
+                }
+                firstAlly = false;
 
-				if (currentAllies.toJSONString().length() >= 32700) { // Client gets kicked at 32767, some leniency  
-					allies.add(currentAllies);
-					currentAllies = new FancyMessage();
-				}
-			} else if (rel.isEnemy()) {
-				if (firstEnemy)
-					currentEnemies.then(s).tooltip(getToolTips(otherFaction));
-				else
-					currentEnemies.then(", " + s).tooltip(getToolTips(otherFaction));
-				firstEnemy = false;
+                if (currentAllies.toJSONString().length() >= 32700) { // Client gets kicked at 32767, some leniency
+                    allies.add(currentAllies);
+                    currentAllies = new FancyMessage();
+                }
+            } else if (rel.isEnemy()) {
+                if (firstEnemy) {
+                    currentEnemies.then(s).tooltip(getToolTips(otherFaction));
+                } else {
+                    currentEnemies.then(", " + s).tooltip(getToolTips(otherFaction));
+                }
+                firstEnemy = false;
 
-				if (currentEnemies.toJSONString().length() >= 32700) { // Client gets kicked at 32767, some leniency  
-					enemies.add(currentEnemies);
-					currentEnemies = new FancyMessage();
-				}
-			}
-		}
-		allies.add(currentAllies);
-		enemies.add(currentEnemies);
+                if (currentEnemies.toJSONString().length() >= 32700) { // Client gets kicked at 32767, some leniency
+                    enemies.add(currentEnemies);
+                    currentEnemies = new FancyMessage();
+                }
+            }
+        }
+        allies.add(currentAllies);
+        enemies.add(currentEnemies);
 
         FancyMessage online = new FancyMessage("Members online: ").color(ChatColor.GOLD);
         FancyMessage offline = new FancyMessage("Members offline: ").color(ChatColor.GOLD);
@@ -136,16 +132,18 @@ public class CmdShow extends FCommand {
         for (FPlayer p : faction.getFPlayers()) {
             String name = p.getNameAndTitle();
             if (p.isOnline()) {
-                if (firstOnline)
+                if (firstOnline) {
                     online.then(name).tooltip(getToolTips(p));
-                else
+                } else {
                     online.then(", " + name).tooltip(getToolTips(p));
+                }
                 firstOnline = false;
             } else {
-                if (firstOffline)
+                if (firstOffline) {
                     offline.then(name).tooltip(getToolTips(p));
-                else
+                } else {
                     offline.then(", " + name).tooltip(getToolTips(p));
+                }
                 firstOffline = false;
             }
         }
