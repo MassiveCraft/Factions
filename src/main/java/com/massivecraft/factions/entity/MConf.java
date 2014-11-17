@@ -368,7 +368,7 @@ public class MConf extends Entity<MConf>
 	// Should Factions set the chat format?
 	// This should be kept at false if you use an external chat format plugin.
 	// If you are planning on running a more lightweight server you can set this to true.
-	public boolean chatSetFormat = false;
+	public boolean chatSetFormat = true;
 	
 	// At which event priority should the chat format be set in such case?
 	// Choose between: LOWEST, LOW, NORMAL, HIGH and HIGHEST.
@@ -575,35 +575,52 @@ public class MConf extends Entity<MConf>
 	// INTEGRATION: LWC
 	// -------------------------------------------- //
 	
+	// Do you need faction build rights in the territory to create an LWC protection there?
 	public boolean lwcMustHaveBuildRightsToCreate = true;
+	
+	// The config option above does not handle situations where a player creates an LWC protection in Faction territory and then leaves the faction.
+	// The player would then have an LWC protection in a territory where they can not build.
+	// Set this config option to true to enable an automatic removal feature.
+	// LWC protections that couldn't be created will be removed on an attempt to open them by any player.
 	public boolean lwcRemoveIfNoBuildRights = false;
 	
+	// WARN: Experimental and semi buggy.
+	// If you change this to true: alien LWC protections will be removed upon using /f set.
 	public Map<EventFactionsChunkChangeType, Boolean> lwcRemoveOnChange = MUtil.map(
-		EventFactionsChunkChangeType.BUY, false,
-		EventFactionsChunkChangeType.SELL, false,
-		EventFactionsChunkChangeType.CONQUER, false,
-		EventFactionsChunkChangeType.PILLAGE, false
+		EventFactionsChunkChangeType.BUY, false, // when claiming from wilderness
+		EventFactionsChunkChangeType.SELL, false, // when selling back to wilderness
+		EventFactionsChunkChangeType.CONQUER, false, // when claiming from another player faction
+		EventFactionsChunkChangeType.PILLAGE, false // when unclaiming (to wilderness) from another player faction
 	);
 	
 	// -------------------------------------------- //
 	// INTEGRATION: ECONOMY
 	// -------------------------------------------- //
 	
-	public boolean econEnabled = false;
+	// Should economy features be enabled?
+	// This requires that you have the external plugin called "Vault" installed.
+	public boolean econEnabled = true;
 	
-	// TODO: Rename to include unit.
+	// A money reward per chunk. This reward is divided among the players in the faction.
+	// You set the time inbetween each reward almost at the top of this config file. (taskEconLandRewardMinutes)
 	public double econLandReward = 0.00;
 	
+	// When paying a cost you may specify an account that should receive the money here.
+	// Per default "" the money is just destroyed.
 	public String econUniverseAccount = "";
 	
+	// What is the price per chunk when using /f set?
 	public Map<EventFactionsChunkChangeType, Double> econChunkCost = MUtil.map(
-		EventFactionsChunkChangeType.BUY, 30.0,
-		EventFactionsChunkChangeType.SELL, -20.0,
-		EventFactionsChunkChangeType.CONQUER, -10.0,
-		EventFactionsChunkChangeType.PILLAGE, -10.0
+		EventFactionsChunkChangeType.BUY, 1.0, // when claiming from wilderness
+		EventFactionsChunkChangeType.SELL, 0.0, // when selling back to wilderness
+		EventFactionsChunkChangeType.CONQUER, 0.0, // when claiming from another player faction
+		EventFactionsChunkChangeType.PILLAGE, 0.0 // when unclaiming (to wilderness) from another player faction
 	);
 	
-	public double econCostCreate = 200.0;
+	// What is the price to create a faction?
+	public double econCostCreate = 100.0;
+	
+	// And so on and so forth ... you get the idea.
 	public double econCostSethome = 0.0;
 	public double econCostJoin = 0.0;
 	public double econCostLeave = 0.0;
@@ -623,10 +640,13 @@ public class MConf extends Entity<MConf>
 		Rel.NEUTRAL, 0.0
 	);
 	
-	//Faction banks, to pay for land claiming and other costs instead of individuals paying for them
+	// Should the faction bank system be enabled?
+	// This enables the command /f money.
 	public boolean bankEnabled = true;
-	//public static boolean bankMembersCanWithdraw = false; //Have to be at least moderator to withdraw or pay money to another faction
-	public boolean bankFactionPaysCosts = true; //The faction pays for faction command costs, such as sethome
-	public boolean bankFactionPaysLandCosts = true; //The faction pays for land claiming costs.
+	
+	// That costs should the faciton bank take care of?
+	// If you set this to false the player executing the command will pay instead.
+	public boolean bankFactionPaysCosts = true;
+	public boolean bankFactionPaysLandCosts = true;
 
 }
