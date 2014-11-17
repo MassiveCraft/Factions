@@ -26,6 +26,11 @@ public class FTeamWrapper {
             return;
         }
 
+        if (!P.p.getConfig().getBoolean("scoreboard.default-prefixes", false)) {
+            return;
+        }
+
+
         if (updating.add(faction)) {
             Bukkit.getScheduler().runTask(P.p, new Runnable() {
                 @Override
@@ -39,6 +44,10 @@ public class FTeamWrapper {
 
     public static void applyUpdates(Faction faction) {
         if (!FScoreboard.isSupportedByServer()) {
+            return;
+        }
+
+        if (!P.p.getConfig().getBoolean("scoreboard.default-prefixes", false)) {
             return;
         }
 
