@@ -89,6 +89,8 @@ public class CmdShow extends FCommand {
 
         FancyMessage allies = new FancyMessage("Allies: ").color(ChatColor.GOLD);
         FancyMessage enemies = new FancyMessage("Enemies: ").color(ChatColor.GOLD);
+        boolean firstAlly = true;
+        boolean firstEnemy = true;
         for (Faction otherFaction : Factions.getInstance().getAllFactions()) {
             if (otherFaction == faction) {
                 continue;
@@ -97,21 +99,39 @@ public class CmdShow extends FCommand {
             Relation rel = otherFaction.getRelationTo(faction);
             String s = otherFaction.getTag(fme);
             if (rel.isAlly()) {
-                allies.then(s).tooltip(getToolTips(otherFaction));
+                if (firstAlly)
+                    allies.then(s).tooltip(getToolTips(otherFaction));
+                else
+                    alies.then(", " + s).tooltip(getToolTips(otherFaction));
+                firstAlly = false;
             } else if (rel.isEnemy()) {
-                enemies.then(s).tooltip(getToolTips(otherFaction));
+                if (firstEnemy)
+                    enemies.then(s).tooltip(getToolTips(otherFaction));
+                else
+                    enemies.then(", " + s).tooltip(getToolTips(otherFaction));
+                firstEnemy = false;
             }
         }
 
 
         FancyMessage online = new FancyMessage("Members online: ").color(ChatColor.GOLD);
         FancyMessage offline = new FancyMessage("Members offline: ").color(ChatColor.GOLD);
+        boolean firstOnline = true;
+        boolean firstOffline = true;
         for (FPlayer p : faction.getFPlayers()) {
             String name = p.getNameAndTitle();
             if (p.isOnline()) {
-                online.then(name).tooltip(getToolTips(p));
+                if (firstOnline)
+                    online.then(name).tooltip(getToolTips(p));
+                else
+                    online.then(", " + name).tooltip(getToolTips(p));
+                firstOnline = false;
             } else {
-                offline.then(name).tooltip(getToolTips(p));
+                if (firstOffline)
+                    offline.then(name).tooltip(getToolTips(p));
+                else
+                    offline.then(", " + name).tooltip(getToolTips(p));
+                firstOffline = false;
             }
         }
 
