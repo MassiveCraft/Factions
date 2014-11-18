@@ -41,7 +41,7 @@ public abstract class CmdFactionsAccessAbstract extends FactionsCommand
 	@Override
 	public void perform()
 	{
-		chunk = PS.valueOf(me).getChunk(true);
+		chunk = PS.valueOf(me.getLocation()).getChunk(true);
 		ta = BoardColl.get().getTerritoryAccessAt(chunk);
 		hostFaction = ta.getHostFaction();
 		

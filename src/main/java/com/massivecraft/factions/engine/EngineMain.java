@@ -728,7 +728,7 @@ public class EngineMain extends EngineAbstract
 		MPlayer mplayer = MPlayer.get(player);
 		
 		// ... and powerloss can happen here ...
-		Faction faction = BoardColl.get().getFactionAt(PS.valueOf(player));
+		Faction faction = BoardColl.get().getFactionAt(PS.valueOf(player.getLocation()));
 		
 		if (!faction.getFlag(MFlag.getFlagPowerloss()))
 		{
@@ -829,7 +829,7 @@ public class EngineMain extends EngineAbstract
 		if (eattacker != null && eattacker.equals(edefender)) return true;
 		
 		// ... gather defender PS and faction information ...
-		PS defenderPs = PS.valueOf(defender);
+		PS defenderPs = PS.valueOf(defender.getLocation());
 		Faction defenderPsFaction = BoardColl.get().getFactionAt(defenderPs);
 		
 		// ... PVP flag may cause a damage block ...
@@ -863,7 +863,7 @@ public class EngineMain extends EngineAbstract
 		if (MConf.get().playersWhoBypassAllProtection.contains(attacker.getName())) return true;
 
 		// ... gather attacker PS and faction information ...
-		PS attackerPs = PS.valueOf(attacker);
+		PS attackerPs = PS.valueOf(attacker.getLocation());
 		Faction attackerPsFaction = BoardColl.get().getFactionAt(attackerPs);
 
 		// ... PVP flag may cause a damage block ...
@@ -1017,7 +1017,7 @@ public class EngineMain extends EngineAbstract
 		}
 		
 		// ... if there is a faction at the players location ...
-		PS ps = PS.valueOf(player).getChunk(true);
+		PS ps = PS.valueOf(player.getLocation()).getChunk(true);
 		Faction factionAtPs = BoardColl.get().getFactionAt(ps);
 		if (factionAtPs.isNone()) return; // TODO: An NPE can arise here? Why?
 		
@@ -1093,7 +1093,7 @@ public class EngineMain extends EngineAbstract
 		if (target == null) return;
 		
 		// ... at a place where monsters are forbidden ...
-		PS ps = PS.valueOf(target);
+		PS ps = PS.valueOf(target.getLocation());
 		Faction faction = BoardColl.get().getFactionAt(ps);
 		if (faction.getFlag(MFlag.getFlagMonsters())) return;
 		
@@ -1120,7 +1120,7 @@ public class EngineMain extends EngineAbstract
 		Entity entity = event.getEntity();
 	
 		// ... and the faction there has explosions disabled ...
-		Faction faction = BoardColl.get().getFactionAt(PS.valueOf(entity));
+		Faction faction = BoardColl.get().getFactionAt(PS.valueOf(entity.getLocation()));
 		if (faction.isExplosionsAllowed()) return;
 		
 		// ... then cancel.
@@ -1286,7 +1286,7 @@ public class EngineMain extends EngineAbstract
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void blockBuild(HangingPlaceEvent event)
 	{
-		if (canPlayerBuildAt(event.getPlayer(), PS.valueOf(event.getEntity()), true)) return;
+		if (canPlayerBuildAt(event.getPlayer(), PS.valueOf(event.getEntity().getLocation()), true)) return;
 		
 		event.setCancelled(true);
 	}
@@ -1300,7 +1300,7 @@ public class EngineMain extends EngineAbstract
 		Entity breaker = entityEvent.getRemover();
 		if (! (breaker instanceof Player)) return;
 
-		if ( ! canPlayerBuildAt(breaker, PS.valueOf(event.getEntity()), true))
+		if ( ! canPlayerBuildAt(breaker, PS.valueOf(event.getEntity().getLocation()), true))
 		{
 			event.setCancelled(true);
 		}
@@ -1320,7 +1320,7 @@ public class EngineMain extends EngineAbstract
 		Player player = (Player)edamager;
 		
 		// ... and the player can't build there ...
-		if (canPlayerBuildAt(player, PS.valueOf(itemFrame), true)) return;
+		if (canPlayerBuildAt(player, PS.valueOf(itemFrame.getLocation()), true)) return;
 		
 		// ... then cancel the event.
 		event.setCancelled(true);
@@ -1493,7 +1493,7 @@ public class EngineMain extends EngineAbstract
 		MPlayer me = MPlayer.get(player);
 		if (me.isUsingAdminMode()) return true;
 		
-		PS ps = PS.valueOf(entity);
+		PS ps = PS.valueOf(entity.getLocation());
 		EntityType type = entity.getType();
 		
 		if (MConf.get().entityTypesContainer.contains(type) && ! MPerm.getPermContainer().has(me, ps, verboose)) return false;

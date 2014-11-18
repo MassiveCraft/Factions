@@ -2,6 +2,8 @@ package com.massivecraft.factions.cmd;
 
 import java.util.List;
 
+import org.bukkit.Location;
+
 import com.massivecraft.factions.Const;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.entity.BoardColl;
@@ -61,7 +63,8 @@ public class CmdFactionsMap extends FactionsCommand
 	
 	public void showMap(int width, int height)
 	{
-		List<String> message = BoardColl.get().getMap(msenderFaction, PS.valueOf(me), me.getLocation().getYaw(), width, height);
+		Location location = me.getLocation();
+		List<String> message = BoardColl.get().getMap(msenderFaction, PS.valueOf(location), location.getYaw(), width, height);
 		sendMessage(message);
 	}
 	

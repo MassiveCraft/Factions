@@ -89,7 +89,7 @@ public class CmdFactionsHome extends FactionsCommandHome
 		}
 		
 		
-		Faction factionHere = BoardColl.get().getFactionAt(PS.valueOf(me));
+		Faction factionHere = BoardColl.get().getFactionAt(PS.valueOf(me.getLocation()));
 		Location locationHere = me.getLocation().clone();
 		
 		// if player is not in a safe zone or their own faction territory, only allow teleport if no enemies are nearby

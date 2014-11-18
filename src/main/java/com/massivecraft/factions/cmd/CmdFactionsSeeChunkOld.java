@@ -37,7 +37,7 @@ public class CmdFactionsSeeChunkOld extends FactionsCommand
 	{
 		// Args
 		World world = me.getWorld();
-		PS chunk = PS.valueOf(me).getChunk(true);
+		PS chunk = PS.valueOf(me.getLocation()).getChunk(true);
 		int chunkX = chunk.getChunkX();
 		int chunkZ = chunk.getChunkZ();
 		

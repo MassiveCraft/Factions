@@ -41,7 +41,7 @@ public class CmdFactionsSetFill extends CmdFactionsSetXSimple
 	public Set<PS> getChunks()
 	{
 		// Common Startup
-		final PS chunk = PS.valueOf(me).getChunk(true);
+		final PS chunk = PS.valueOf(me.getLocation()).getChunk(true);
 		final Set<PS> chunks = new LinkedHashSet<PS>();
 		
 		// What faction (aka color) resides there?

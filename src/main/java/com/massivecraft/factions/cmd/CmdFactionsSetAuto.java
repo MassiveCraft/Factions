@@ -57,7 +57,7 @@ public class CmdFactionsSetAuto extends FactionsCommand
 		msg("<i>Now auto-setting <h>%s<i> land.", newFaction.describeTo(msender));
 		
 		// Chunks
-		final PS chunk = PS.valueOf(me).getChunk(true);
+		final PS chunk = PS.valueOf(me.getLocation()).getChunk(true);
 		Set<PS> chunks = Collections.singleton(chunk);		
 		
 		// Apply / Inform

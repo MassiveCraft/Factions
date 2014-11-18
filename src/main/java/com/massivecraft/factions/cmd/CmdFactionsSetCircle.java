@@ -37,7 +37,7 @@ public class CmdFactionsSetCircle extends CmdFactionsSetXRadius
 	public Set<PS> getChunks()
 	{
 		// Common Startup
-		final PS chunk = PS.valueOf(me).getChunk(true);
+		final PS chunk = PS.valueOf(me.getLocation()).getChunk(true);
 		final Set<PS> chunks = new LinkedHashSet<PS>();
 		
 		chunks.add(chunk); // The center should come first for pretty messages
