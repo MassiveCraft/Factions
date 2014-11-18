@@ -132,50 +132,63 @@ public class MFlag extends Entity<MFlag> implements Prioritized, Registerable
 	// FIELDS
 	// -------------------------------------------- //
 	
-	// The sort order priority 1 is high up, 99999 is far down.
+	// The sort priority. Low values appear first in sorted lists.
+	// 1 is high up, 99999 is far down.
+	// Standard Faction flags use "thousand values" like 1000, 2000, 3000 etc to allow adding new flags inbetween.
+	// So 1000 might sound like a lot but it's actually the priority for the first flag.
 	private int priority = 0;
 	@Override public int getPriority() { return this.priority; }
 	public MFlag setPriority(int priority) { this.priority = priority; this.changed(); return this; }
 	
-	// Nice name / Display name
+	// The name of the flag. According to standard it should be fully lowercase just like the flag id.
+	// In fact the name and the id of all standard flags are the same.
+	// I just added the name in case anyone feel like renaming their flags for some reason.
 	// Example: "monsters"
 	private String name = "defaultName";
 	public String getName() { return this.name; }
 	public MFlag setName(String name) { this.name = name; this.changed(); return this; }
 	
-	// Description
+	// The flag function described as a question.
 	// Example: "Can monsters spawn in this territory?"
 	private String desc = "defaultDesc";
 	public String getDesc() { return this.desc; }
 	public MFlag setDesc(String desc) { this.desc = desc; this.changed(); return this; }
 	
-	// Description Yes
+	// The flag function described when true.
 	// Example: "Monsters can spawn in this territory."
 	private String descYes = "defaultDescYes";
 	public String getDescYes() { return this.descYes; }
 	public MFlag setDescYes(String descYes) { this.descYes = descYes; this.changed(); return this; }
 	
-	// Description No
+	// The flag function described when false.
 	// Example: "Monsters can NOT spawn in this territory."
 	private String descNo = "defaultDescNo";
 	public String getDescNo() { return this.descNo; }
 	public MFlag setDescNo(String descNo) { this.descNo = descNo; this.changed(); return this; }
 	
-	// Standard value
+	// What is the standard (aka default) flag value?
+	// This value will be set for factions from the beginning.
 	// Example: false (per default monsters do not spawn in faction territory)
 	private boolean standard = true;
 	public boolean isStandard() { return this.standard; }
 	public MFlag setStandard(boolean standard) { this.standard = standard; this.changed(); return this; }
 	
-	// If it editable by the faction leader (or for who ever the permission is configured)
+	// Is this flag editable by players?
+	// With this we mean standard non administrator players.
+	// All flags can be changed using /f admin.
 	// Example: true (if players want to turn mob spawning on I guess they should be able to)
 	private boolean editable = false;
 	public boolean isEditable() { return this.editable; }
 	public MFlag setEditable(boolean editable) { this.editable = editable; this.changed(); return this; }
 	
-	// If the flag is visible or hidden.
+	// Is this flag visible to players?
+	// With this we mean standard non administrator players.
+	// All flags can be seen using /f admin.
+	// Some flags can be rendered meaningless by settings in Factions or external plugins.
+	// Say we set "editable" to false and "standard" to true for the "open" flag to force all factions being open.
+	// In such case we might want to hide the open flag by setting "visible" false.
+	// If it can't be changed, why bother showing it?
 	// Example: true (yeah we need to see this flag)
-	// Explanation: Some flags are rendered meaningless by other plugins. Say we have a creative mode server without any mobs. The server owner might want to hide this flag.
 	private boolean visible = true;
 	public boolean isVisible() { return this.visible; }
 	public MFlag setVisible(boolean visible) { this.visible = visible; this.changed(); return this; }

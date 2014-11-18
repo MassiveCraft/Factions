@@ -188,43 +188,61 @@ public class MPerm extends Entity<MPerm> implements Prioritized, Registerable
 	// FIELDS
 	// -------------------------------------------- //
 	
-	// The sort order priority 1 is high up, 99999 is far down.
+	// The sort priority. Low values appear first in sorted lists.
+	// 1 is high up, 99999 is far down.
+	// Standard Faction perms use "thousand values" like 1000, 2000, 3000 etc to allow adding new perms inbetween.
+	// So 1000 might sound like a lot but it's actually the priority for the first perm.
 	private int priority = 0;
 	@Override public int getPriority() { return this.priority; }
 	public MPerm setPriority(int priority) { this.priority = priority; this.changed(); return this; }
 	
-	// Nice name / Display name
+	// The name of the perm. According to standard it should be fully lowercase just like the perm id.
+	// In fact the name and the id of all standard perms are the same.
+	// I just added the name in case anyone feel like renaming their perms for some reason.
 	// Example: "build"
 	private String name = "defaultName";
 	public String getName() { return this.name; }
 	public MPerm setName(String name) { this.name = name; this.changed(); return this; }
 	
-	// Short description
+	// The perm function described as an "order".
+	// The desc should match the format:
+	// "You are not allowed to X."
+	// "You are not allowed to edit the terrain."
 	// Example: "edit the terrain"
 	private String desc = "defaultDesc";
 	public String getDesc() { return this.desc; }
 	public MPerm setDesc(String desc) { this.desc = desc; this.changed(); return this; }
 	
-	// Standard value
+	// What is the standard (aka default) perm value?
+	// This value will be set for factions from the beginning.
 	// Example: ... set of relations ...
 	private Set<Rel> standard = new LinkedHashSet<Rel>();
 	public Set<Rel> getStandard() { return this.standard; }
 	public MPerm setStandard(Set<Rel> standard) { this.standard = standard; this.changed(); return this; }
 	
-	// Is this a territory permission?
+	// Is this a territory perm meaning it has to do with territory construction, modification or interaction?
+	// True Examples: build, container, door, lever etc.
+	// False Examples: name, invite, home, sethome, deposit, withdraw etc.
 	private boolean territory = false;
 	public boolean isTerritory() { return this.territory; }
 	public MPerm setTerritory(boolean territory) { this.territory = territory; this.changed(); return this; }
 	
-	// If it editable by the faction leader (or for who ever the permission is configured)
+	// Is this perm editable by players?
+	// With this we mean standard non administrator players.
+	// All perms can be changed using /f admin.
 	// Example: true (all perms are editable by default)
 	private boolean editable = false;
 	public boolean isEditable() { return this.editable; }
 	public MPerm setEditable(boolean editable) { this.editable = editable; this.changed(); return this; }
 	
-	// If the flag is visible or hidden.
+	// Is this perm visible to players?
+	// With this we mean standard non administrator players.
+	// All perms can be seen using /f admin.
+	// Some perms can be rendered meaningless by settings in Factions or external plugins.
+	// Say we set "editable" to false.
+	// In such case we might want to hide the perm by setting "visible" false.
+	// If it can't be changed, why bother showing it?
 	// Example: true (yeah we need to see this permission)
-	// Explanation: Some flags are rendered meaningless by other plugins.
 	private boolean visible = true;
 	public boolean isVisible() { return this.visible; }
 	public MPerm setVisible(boolean visible) { this.visible = visible; this.changed(); return this; }
