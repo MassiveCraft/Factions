@@ -15,6 +15,13 @@ permissions:
   factions.access.player: {description: grant player access, with the proper fperm, default: false}
   factions.access.view: {description: view access, default: false}
   factions.admin: {description: enable adminmode, default: false}
+  factions.claim: {description: claim faction territory, default: false}
+  factions.claim.one: {description: claim a single chunk, default: false}
+  factions.claim.auto: {description: claim as you walk around, default: false}
+  factions.claim.fill: {description: claim by filling, default: false}
+  factions.claim.square: {description: claim by square and radius, default: false}
+  factions.claim.circle: {description: claim by circle and radius, default: false}
+  factions.claim.all: {description: claim all faction land, default: false}
   factions.create: {description: create new faction, default: false}
   factions.demote: {description: demote lesser members in your faction, default: false}
   factions.description: {description: change faction description, default: false}
@@ -52,17 +59,17 @@ permissions:
   factions.relation: {description: set relation wish to another faction, default: false}
   factions.seechunk: {description: see the chunk you stand in, default: false}
   factions.seechunkold: {description: see the chunk you stand in, default: false}
-  factions.set: {description: set faction territory, default: false}
-  factions.set.one: {description: set faction for a single chunk, default: false}
-  factions.set.auto: {description: set faction as you walk around, default: false}
-  factions.set.fill: {description: set faction by filling, default: false}
-  factions.set.square: {description: set faction by square and radius, default: false}
-  factions.set.circle: {description: set faction by circle and radius, default: false}
-  factions.set.transfer: {description: set faction by transfer, default: false}
   factions.sethome: {description: set the faction home, default: false}
   factions.name: {description: set faction name, default: false}
   factions.title: {description: set player title, default: false}
   factions.title.color: {description: set player title with color, default: false}
+  factions.unclaim: {description: unclaim faction territory, default: false}
+  factions.unclaim.one: {description: unclaim a single chunk, default: false}
+  factions.unclaim.auto: {description: unclaim as you walk around, default: false}
+  factions.unclaim.fill: {description: unclaim by filling, default: false}
+  factions.unclaim.square: {description: unclaim by square and radius, default: false}
+  factions.unclaim.circle: {description: unclaim by circle and radius, default: false}
+  factions.unclaim.all: {description: unclaim all faction land, default: false}
   factions.unsethome: {description: unset faction home, default: false}
   factions.version: {description: see plugin version, default: false}
 # -------------------------------------------- #
@@ -75,6 +82,13 @@ permissions:
       factions.access.player: true
       factions.access.view: true
       factions.admin: true
+      factions.claim: true
+      factions.claim.one: true
+      factions.claim.auto: true
+      factions.claim.fill: true
+      factions.claim.square: true
+      factions.claim.circle: true
+      factions.claim.all: true
       factions.create: true
       factions.demote: true
       factions.description: true
@@ -112,17 +126,17 @@ permissions:
       factions.relation: true
       factions.seechunk: true
       factions.seechunkold: true
-      factions.set: true
-      factions.set.one: true
-      factions.set.auto: true
-      factions.set.fill: true
-      factions.set.square: true
-      factions.set.circle: true
-      factions.set.transfer: true
       factions.sethome: true
       factions.name: true
       factions.title: true
       factions.title.color: true
+      factions.unclaim: true
+      factions.unclaim.one: true
+      factions.unclaim.auto: true
+      factions.unclaim.fill: true
+      factions.unclaim.square: true
+      factions.unclaim.circle: true
+      factions.unclaim.all: true
       factions.unsethome: true
       factions.version: true
 # -------------------------------------------- #
@@ -158,6 +172,13 @@ permissions:
       factions.access.faction: true
       factions.access.player: true
       factions.access.view: true
+      factions.claim: true
+      factions.claim.one: true
+      factions.claim.auto: true
+      factions.claim.fill: true
+      factions.claim.square: true
+      factions.claim.circle: true
+      factions.claim.all: true
       factions.create: true
       factions.demote: true
       factions.description: true
@@ -190,17 +211,17 @@ permissions:
       factions.relation: true
       factions.seechunk: true
       factions.seechunkold: true
-      factions.set: true
-      factions.set.one: true
-      factions.set.auto: true
-      factions.set.fill: true
-      factions.set.square: true
-      factions.set.circle: true
-      factions.set.transfer: true
       factions.sethome: true
       factions.name: true
       factions.title: true
       factions.title.color: true
+      factions.unclaim: true
+      factions.unclaim.one: true
+      factions.unclaim.auto: true
+      factions.unclaim.fill: true
+      factions.unclaim.square: true
+      factions.unclaim.circle: true
+      factions.unclaim.all: true
       factions.unsethome: true
       factions.version: true
   factions.kit.default:

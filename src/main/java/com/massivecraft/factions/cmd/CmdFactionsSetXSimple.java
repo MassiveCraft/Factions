@@ -6,20 +6,17 @@ public abstract class CmdFactionsSetXSimple extends CmdFactionsSetX
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public CmdFactionsSetXSimple()
+	public CmdFactionsSetXSimple(boolean claim)
 	{
+		// Super
+		super(claim);
+		
 		// Args
-		this.addOptionalArg("faction", "you");
-	}
-	
-	// -------------------------------------------- //
-	// OVERRIDE
-	// -------------------------------------------- //
-	
-	@Override
-	public int getFactionArgIndex()
-	{
-		return 0;
+		if (claim)
+		{
+			this.addOptionalArg("faction", "you");
+			this.setFactionArgIndex(0);
+		}
 	}
 	
 }

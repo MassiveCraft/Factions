@@ -15,8 +15,11 @@ public class CmdFactionsSetSquare extends CmdFactionsSetXRadius
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public CmdFactionsSetSquare()
+	public CmdFactionsSetSquare(boolean claim)
 	{
+		// Super
+		super(claim);
+		
 		// Aliases
 		this.addAliases("s", "square");
 
@@ -26,7 +29,8 @@ public class CmdFactionsSetSquare extends CmdFactionsSetXRadius
 		
 		// Requirements
 		this.addRequirements(ReqIsPlayer.get());
-		this.addRequirements(ReqHasPerm.get(Perm.SET_SQUARE.node));
+		String node = claim ? Perm.CLAIM_SQUARE.node : Perm.UNCLAIM_SQUARE.node;
+		this.addRequirements(ReqHasPerm.get(node));		
 	}
 
 	// -------------------------------------------- //

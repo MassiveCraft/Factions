@@ -15,14 +15,18 @@ public class CmdFactionsSetOne extends CmdFactionsSetXSimple
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public CmdFactionsSetOne()
+	public CmdFactionsSetOne(boolean claim)
 	{
+		// Super
+		super(claim);
+		
 		// Aliases
 		this.addAliases("o", "one");
 
 		// Requirements
 		this.addRequirements(ReqIsPlayer.get());
-		this.addRequirements(ReqHasPerm.get(Perm.SET_ONE.node));
+		String node = claim ? Perm.CLAIM_ONE.node : Perm.UNCLAIM_ONE.node;
+		this.addRequirements(ReqHasPerm.get(node));
 	}
 
 	// -------------------------------------------- //

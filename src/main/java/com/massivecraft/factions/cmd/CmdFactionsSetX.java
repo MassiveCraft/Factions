@@ -4,6 +4,7 @@ import java.util.Set;
 
 import com.massivecraft.factions.cmd.arg.ARFaction;
 import com.massivecraft.factions.entity.Faction;
+import com.massivecraft.factions.entity.FactionColl;
 import com.massivecraft.massivecore.ps.PS;
 
 
@@ -20,6 +21,23 @@ public abstract class CmdFactionsSetX extends FactionsCommand
 	private String formatMany = null;
 	public String getFormatMany() { return this.formatMany; }
 	public void setFormatMany(String formatMany) { this.formatMany = formatMany; }
+	
+	private boolean claim = true;
+	public boolean isClaim() { return this.claim; }
+	public void setClaim(boolean claim) { this.claim = claim; }
+	
+	private int factionArgIndex = 0;
+	public int getFactionArgIndex() { return this.factionArgIndex; }
+	public void setFactionArgIndex(int factionArgIndex) { this.factionArgIndex = factionArgIndex; }
+	
+	// -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
+	
+	public CmdFactionsSetX(boolean claim)
+	{
+		this.setClaim(claim);
+	}
 	
 	// -------------------------------------------- //
 	// OVERRIDE
@@ -43,8 +61,6 @@ public abstract class CmdFactionsSetX extends FactionsCommand
 	// ABSTRACT
 	// -------------------------------------------- //
 	
-	public abstract int getFactionArgIndex();
-	
 	public abstract Set<PS> getChunks();
 	
 	// -------------------------------------------- //
@@ -53,7 +69,14 @@ public abstract class CmdFactionsSetX extends FactionsCommand
 	
 	public Faction getNewFaction()
 	{
-		return this.arg(this.getFactionArgIndex(), ARFaction.get(), msenderFaction);
+		if (this.isClaim())
+		{
+			return this.arg(this.getFactionArgIndex(), ARFaction.get(), msenderFaction);
+		}
+		else
+		{
+			return FactionColl.get().getNone();
+		}
 	}
 	
 }

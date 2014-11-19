@@ -15,8 +15,11 @@ public class CmdFactionsSetCircle extends CmdFactionsSetXRadius
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public CmdFactionsSetCircle()
+	public CmdFactionsSetCircle(boolean claim)
 	{
+		// Super
+		super(claim);
+		
 		// Aliases
 		this.addAliases("c", "circle");
 
@@ -26,7 +29,8 @@ public class CmdFactionsSetCircle extends CmdFactionsSetXRadius
 		
 		// Requirements
 		this.addRequirements(ReqIsPlayer.get());
-		this.addRequirements(ReqHasPerm.get(Perm.SET_CIRCLE.node));
+		String node = claim ? Perm.CLAIM_CIRCLE.node : Perm.UNCLAIM_CIRCLE.node;
+		this.addRequirements(ReqHasPerm.get(node));
 	}
 
 	// -------------------------------------------- //

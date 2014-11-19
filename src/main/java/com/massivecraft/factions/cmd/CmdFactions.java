@@ -25,7 +25,6 @@ public class CmdFactions extends FactionsCommand
 	public CmdFactionsName cmdFactionsName = new CmdFactionsName();
 	public CmdFactionsDescription cmdFactionsDescription = new CmdFactionsDescription();
 	public CmdFactionsMotd cmdFactionsMotd = new CmdFactionsMotd();
-	public CmdFactionsSet cmdFactionsSet = new CmdFactionsSet();
 	public CmdFactionsSethome cmdFactionsSethome = new CmdFactionsSethome();
 	public CmdFactionsUnsethome cmdFactionsUnsethome = new CmdFactionsUnsethome();
 	public CmdFactionsInvite cmdFactionsInvite = new CmdFactionsInvite();
@@ -36,9 +35,10 @@ public class CmdFactions extends FactionsCommand
 	public CmdFactionsOfficer cmdFactionsOfficer = new CmdFactionsOfficer();
 	public CmdFactionsLeader cmdFactionsLeader = new CmdFactionsLeader();
 	public CmdFactionsMoney cmdFactionsMoney = new CmdFactionsMoney();
-	public CmdFactionsXPlaceholder cmdFactionsTax = new CmdFactionsXPlaceholder("FactionsTax", "tax");
 	public CmdFactionsSeeChunk cmdFactionsSeeChunk = new CmdFactionsSeeChunk();
 	public CmdFactionsSeeChunkOld cmdFactionsSeeChunkOld = new CmdFactionsSeeChunkOld();
+	public CmdFactionsClaim cmdFactionsClaim = new CmdFactionsClaim();
+	public CmdFactionsUnclaim cmdFactionsUnclaim = new CmdFactionsUnclaim();
 	public CmdFactionsAccess cmdFactionsAccess = new CmdFactionsAccess();
 	public CmdFactionsRelationAlly cmdFactionsRelationAlly = new CmdFactionsRelationAlly();
 	public CmdFactionsRelationTruce cmdFactionsRelationTruce = new CmdFactionsRelationTruce();
@@ -46,10 +46,11 @@ public class CmdFactions extends FactionsCommand
 	public CmdFactionsRelationEnemy cmdFactionsRelationEnemy = new CmdFactionsRelationEnemy();
 	public CmdFactionsPerm cmdFactionsPerm = new CmdFactionsPerm();
 	public CmdFactionsFlag cmdFactionsFlag = new CmdFactionsFlag();
-	public CmdFactionsDisband cmdFactionsDisband = new CmdFactionsDisband();
 	public CmdFactionsExpansions cmdFactionsExpansions = new CmdFactionsExpansions();
+	public CmdFactionsXPlaceholder cmdFactionsTax = new CmdFactionsXPlaceholder("FactionsTax", "tax");
 	public CmdFactionsXPlaceholder cmdFactionsDynmap = new CmdFactionsXPlaceholder("FactionsDynmap", "dynmap");
 	public CmdFactionsAdmin cmdFactionsAdmin = new CmdFactionsAdmin();
+	public CmdFactionsDisband cmdFactionsDisband = new CmdFactionsDisband();
 	public CmdFactionsPowerBoost cmdFactionsPowerBoost = new CmdFactionsPowerBoost();
 	public VersionCommand cmdFactionsVersion = new VersionCommand(Factions.get(), Perm.VERSION.node, "v", "version");
 	
@@ -72,7 +73,6 @@ public class CmdFactions extends FactionsCommand
 		this.addSubCommand(this.cmdFactionsName);
 		this.addSubCommand(this.cmdFactionsDescription);
 		this.addSubCommand(this.cmdFactionsMotd);
-		this.addSubCommand(this.cmdFactionsSet);
 		this.addSubCommand(this.cmdFactionsSethome);
 		this.addSubCommand(this.cmdFactionsUnsethome);
 		this.addSubCommand(this.cmdFactionsInvite);
@@ -83,9 +83,10 @@ public class CmdFactions extends FactionsCommand
 		this.addSubCommand(this.cmdFactionsOfficer);
 		this.addSubCommand(this.cmdFactionsLeader);
 		this.addSubCommand(this.cmdFactionsMoney);
-		this.addSubCommand(this.cmdFactionsTax);
 		this.addSubCommand(this.cmdFactionsSeeChunk);
 		this.addSubCommand(this.cmdFactionsSeeChunkOld);
+		this.addSubCommand(this.cmdFactionsClaim);
+		this.addSubCommand(this.cmdFactionsUnclaim);
 		this.addSubCommand(this.cmdFactionsAccess);
 		this.addSubCommand(this.cmdFactionsRelationAlly);
 		this.addSubCommand(this.cmdFactionsRelationTruce);
@@ -93,18 +94,17 @@ public class CmdFactions extends FactionsCommand
 		this.addSubCommand(this.cmdFactionsRelationEnemy);
 		this.addSubCommand(this.cmdFactionsPerm);
 		this.addSubCommand(this.cmdFactionsFlag);
-		this.addSubCommand(this.cmdFactionsDisband);
 		this.addSubCommand(this.cmdFactionsExpansions);
+		this.addSubCommand(this.cmdFactionsTax);
 		this.addSubCommand(this.cmdFactionsDynmap);
 		this.addSubCommand(this.cmdFactionsAdmin);
+		this.addSubCommand(this.cmdFactionsDisband);
 		this.addSubCommand(this.cmdFactionsPowerBoost);
 		this.addSubCommand(this.cmdFactionsVersion);
 		
 		// Deprecated Commands
-		this.addSubCommand(new CmdFactionsXDeprecated(this.cmdFactionsSet, "claim"));
-		this.addSubCommand(new CmdFactionsXDeprecated(this.cmdFactionsSet, "unclaim"));
-		this.addSubCommand(new CmdFactionsXDeprecated(this.cmdFactionsSet, "autoclaim"));
-		this.addSubCommand(new CmdFactionsXDeprecated(this.cmdFactionsSet, "unclaimall"));
+		this.addSubCommand(new CmdFactionsXDeprecated(this.cmdFactionsClaim.cmdFactionsClaimAuto, "autoclaim"));
+		this.addSubCommand(new CmdFactionsXDeprecated(this.cmdFactionsUnclaim.cmdFactionsUnclaimAll, "unclaimall"));
 		this.addSubCommand(new CmdFactionsXDeprecated(this.cmdFactionsFlag, "open"));
 		this.addSubCommand(new CmdFactionsXDeprecated(this.cmdFactionsFaction, "show", "who"));
 	}

@@ -6,6 +6,7 @@ import java.util.Set;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.cmd.arg.ARFaction;
 import com.massivecraft.factions.entity.Faction;
+import com.massivecraft.factions.entity.FactionColl;
 import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.cmd.req.ReqIsPlayer;
@@ -15,20 +16,35 @@ import com.massivecraft.massivecore.ps.PS;
 public class CmdFactionsSetAuto extends FactionsCommand
 {
 	// -------------------------------------------- //
+	// FIELDS
+	// -------------------------------------------- //
+	
+	private boolean claim = true;
+	public boolean isClaim() { return this.claim; }
+	public void setClaim(boolean claim) { this.claim = claim; }
+	
+	// -------------------------------------------- //
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public CmdFactionsSetAuto()
+	public CmdFactionsSetAuto(boolean claim)
 	{
+		// Fields
+		this.setClaim(claim);
+		
 		// Aliases
 		this.addAliases("a", "auto");
 
 		// Args
-		this.addOptionalArg("faction", "you");
+		if (claim)
+		{
+			this.addOptionalArg("faction", "you");
+		}
 
 		// Requirements
 		this.addRequirements(ReqIsPlayer.get());
-		this.addRequirements(ReqHasPerm.get(Perm.SET_AUTO.node));
+		String node = claim ? Perm.CLAIM_AUTO.node : Perm.UNCLAIM_AUTO.node;
+		this.addRequirements(ReqHasPerm.get(node));
 	}
 
 	// -------------------------------------------- //
@@ -39,7 +55,15 @@ public class CmdFactionsSetAuto extends FactionsCommand
 	public void perform()
 	{	
 		// Args
-		final Faction newFaction = this.arg(0, ARFaction.get(), msenderFaction);
+		final Faction newFaction;
+		if (claim)
+		{
+			newFaction = this.arg(0, ARFaction.get(), msenderFaction);
+		}
+		else
+		{
+			newFaction = FactionColl.get().getNone();
+		}
 		
 		// Disable?
 		if (newFaction == null || newFaction == msender.getAutoClaimFaction())

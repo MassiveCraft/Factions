@@ -10,21 +10,18 @@ public abstract class CmdFactionsSetXRadius extends CmdFactionsSetX
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public CmdFactionsSetXRadius()
+	public CmdFactionsSetXRadius(boolean claim)
 	{
+		// Super
+		super(claim);
+		
 		// Args
 		this.addOptionalArg("radius", "1");
-		this.addOptionalArg("faction", "you");
-	}
-	
-	// -------------------------------------------- //
-	// OVERRIDE
-	// -------------------------------------------- //
-
-	@Override
-	public int getFactionArgIndex()
-	{
-		return 1;
+		if (claim)
+		{
+			this.addOptionalArg("faction", "you");
+			this.setFactionArgIndex(1);
+		}
 	}
 	
 	// -------------------------------------------- //

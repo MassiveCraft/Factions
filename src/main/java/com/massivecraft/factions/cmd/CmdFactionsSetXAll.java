@@ -3,28 +3,25 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.cmd.arg.ARFaction;
 import com.massivecraft.factions.entity.Faction;
 
-public abstract class CmdFactionsSetXTransfer extends CmdFactionsSetX
+public abstract class CmdFactionsSetXAll extends CmdFactionsSetX
 {
 	// -------------------------------------------- //
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public CmdFactionsSetXTransfer()
+	public CmdFactionsSetXAll(boolean claim)
 	{
+		// Super
+		super(claim);
+		
 		// Args
 		this.addRequiredArg("all|map");
-		this.addRequiredArg("old");
-		this.addRequiredArg("new");
-	}
-	
-	// -------------------------------------------- //
-	// OVERRIDE
-	// -------------------------------------------- //
-	
-	@Override
-	public int getFactionArgIndex()
-	{
-		return 2;
+		this.addRequiredArg("faction");
+		if (claim)
+		{
+			this.addRequiredArg("newfaction");
+			this.setFactionArgIndex(2);
+		}
 	}
 	
 	// -------------------------------------------- //

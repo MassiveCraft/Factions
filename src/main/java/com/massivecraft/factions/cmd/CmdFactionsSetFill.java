@@ -19,8 +19,11 @@ public class CmdFactionsSetFill extends CmdFactionsSetXSimple
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public CmdFactionsSetFill()
+	public CmdFactionsSetFill(boolean claim)
 	{
+		// Super
+		super(claim);
+		
 		// Aliases
 		this.addAliases("f", "fill");
 
@@ -30,7 +33,8 @@ public class CmdFactionsSetFill extends CmdFactionsSetXSimple
 		
 		// Requirements
 		this.addRequirements(ReqIsPlayer.get());
-		this.addRequirements(ReqHasPerm.get(Perm.SET_FILL.node));
+		String node = claim ? Perm.CLAIM_FILL.node : Perm.UNCLAIM_FILL.node;
+		this.addRequirements(ReqHasPerm.get(node));
 	}
 
 	// -------------------------------------------- //
