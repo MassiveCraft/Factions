@@ -142,7 +142,7 @@ public class Factions extends MassivePlugin
 		
 		// Commands
 		this.outerCmdFactions = new CmdFactions();
-		this.outerCmdFactions.register();
+		this.outerCmdFactions.register(this);
 
 		// Engines
 		EngineMain.get().activate();
