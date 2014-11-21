@@ -109,10 +109,14 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 	// Each field has it's own section further down since just the getter and setter logic takes up quite some place.
 	
 	// The last known time of explicit player activity, such as login or logout.
-	// Null means "unknown" (as opposed to "never played on the server").
-	// The player might have been active very recently but we could lack that data.
-	// The reason being this data field was added in a version upgrade and has not been around for forever.
-	private Long lastActivityMillis = null;
+	// This value is most importantly used for removing inactive players.
+	// For that reason it defaults to the current time.
+	// Really inactive players will be considered newly active when upgrading Factions from 2.6 --> 2.7.
+	// There is actually more than one reason we store this data ourselves and don't use the OfflinePlayer#getLastPlayed.
+	// 1. I don't trust that method. It's been very buggy or even completely broken in previous Bukkit versions.
+	// 2. The method depends on the player.dat files being present.
+	//    Server owners clear those files at times, or move their database data around between different servers.
+	private long lastActivityMillis = System.currentTimeMillis();
 	
 	// This is a foreign key.
 	// Each player belong to a faction.
@@ -183,17 +187,15 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 	// FIELD: lastActivityMillis
 	// -------------------------------------------- //
 	
-	// Raw: Using only what we have stored
-	
-	public Long getLastActivityMillisRaw()
+	public long getLastActivityMillis()
 	{
 		return this.lastActivityMillis;
 	}
 	
-	public void setLastActivityMillis(Long lastActivityMillis)
+	public void setLastActivityMillis(long lastActivityMillis)
 	{
 		// Clean input
-		Long target = lastActivityMillis;
+		long target = lastActivityMillis;
 		
 		// Detect Nochange
 		if (MUtil.equals(this.lastActivityMillis, target)) return;
@@ -208,15 +210,6 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 	public void setLastActivityMillis()
 	{
 		this.setLastActivityMillis(System.currentTimeMillis());
-	}
-	
-	// Finer: Using our raw data but also underlying system as fallback
-	
-	public Long getLastActivityMillis()
-	{
-		Long ret = this.getLastActivityMillisRaw();
-		if (ret != null) return ret;
-		return Mixin.getLastPlayed(this);
 	}
 	
 	// -------------------------------------------- //
@@ -709,9 +702,7 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 		if (this.detached()) return false;
 		
 		// Get the last activity millis.
-		// Null means "unknown" in which case we does nothing.
-		Long lastActivityMillis = this.getLastActivityMillis();
-		if (lastActivityMillis == null) return false;
+		long lastActivityMillis = this.getLastActivityMillis();
 		
 		// Consider
 		long toleranceMillis = this.getRemovePlayerMillis(async);
