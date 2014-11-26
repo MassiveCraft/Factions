@@ -1019,7 +1019,8 @@ public class EngineMain extends EngineAbstract
 		// ... if there is a faction at the players location ...
 		PS ps = PS.valueOf(player.getLocation()).getChunk(true);
 		Faction factionAtPs = BoardColl.get().getFactionAt(ps);
-		if (factionAtPs.isNone()) return; // TODO: An NPE can arise here? Why?
+		if (factionAtPs == null) return;
+		if (factionAtPs.isNone()) return;
 		
 		// ... the command may be denied in the territory of this relation type ...
 		Rel rel = factionAtPs.getRelationTo(mplayer);
