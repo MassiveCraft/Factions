@@ -38,6 +38,6 @@ public class CmdModifyPower extends FCommand {
 
         player.alterPower(number);
         int newPower = player.getPowerRounded(); // int so we don't have super long doubles.
-        msg("<i>Added <a>%d <i>power to <a>%s. <i>New total rounded power: <a>%d", number, player.getName(), newPower);
+        msg("<i>Added <a>%f <i>power to <a>%s. <i>New total rounded power: <a>%d", number, player.getName(), newPower);
     }
 }
