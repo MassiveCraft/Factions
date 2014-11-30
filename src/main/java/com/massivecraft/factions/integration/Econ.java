@@ -239,7 +239,7 @@ public class Econ
 		
 		boolean hasActionDesctription = (actionDescription != null && !actionDescription.isEmpty());
 
-		if (Money.spawn(ep, null, delta))
+		if (Money.spawn(ep, null, delta, "Factions"))
 		{
 			modifyUniverseMoney(ep, -delta);
 			
