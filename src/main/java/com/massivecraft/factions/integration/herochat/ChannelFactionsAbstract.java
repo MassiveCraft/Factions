@@ -25,6 +25,7 @@ import com.dthielke.herochat.MessageNotFoundException;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.entity.Faction;
+import com.massivecraft.massivecore.util.MUtil;
 
 public abstract class ChannelFactionsAbstract implements Channel
 {
@@ -234,7 +235,7 @@ public abstract class ChannelFactionsAbstract implements Channel
 		Faction faction = fpsender.getFaction();
 		String universe = fpsender.getUniverse();
 		
-		for (Player player : Bukkit.getOnlinePlayers())
+		for (Player player : MUtil.getOnlinePlayers())
 		{
 			MPlayer frecipient = MPlayer.get(player);
 			if (!frecipient.getUniverse().equals(universe)) continue;

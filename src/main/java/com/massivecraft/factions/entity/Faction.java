@@ -3,7 +3,6 @@ package com.massivecraft.factions.entity;
 import java.util.*;
 import java.util.Map.Entry;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -1076,7 +1075,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	public List<Player> getOnlinePlayers()
 	{
 		List<Player> ret = new ArrayList<Player>();
-		for (Player player : Bukkit.getOnlinePlayers())
+		for (Player player : MUtil.getOnlinePlayers())
 		{
 			MPlayer mplayer = MPlayer.get(player);
 			if (mplayer.getFaction() != this) continue;
