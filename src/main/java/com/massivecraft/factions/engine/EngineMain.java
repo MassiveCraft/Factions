@@ -590,39 +590,52 @@ public class EngineMain extends EngineAbstract
 		}
 		
 		// For each of the old factions ...
-		for (Faction oldFaction : currentFactions)
+		for (Entry<Faction, Set<PS>> entry : currentFactionChunks.entrySet())
 		{
+			Faction oldFaction = entry.getKey();
+			Set<PS> oldChunks = entry.getValue();
+			
 			// ... that is an actual faction ...
 			if (oldFaction.isNone()) continue;
 			
 			// ... for which the msender lacks permission ...
 			if (MPerm.getPermTerritory().has(msender, oldFaction, false)) continue;
 			
-			// ... print the error message of choice ...
-			if (msender.hasFaction() && msender.getFaction() == oldFaction)
-			{
-				msender.sendMessage(MPerm.getPermTerritory().createDeniedMessage(msender, oldFaction));
-			}
-			else if ( ! MConf.get().claimingFromOthersAllowed)
+			// ... consider all reasons to forbid "overclaiming/warclaiming" ...
+			
+			// ... claiming from others may be forbidden ...
+			if ( ! MConf.get().claimingFromOthersAllowed)
 			{
 				msender.msg("<b>You may not claim land from others.");
-			}
-			else if (oldFaction.getRelationTo(newFaction).isAtLeast(Rel.TRUCE))
-			{
-				msender.msg("<b>You can't claim this land due to your relation with the current owner.");
-			}
-			else if ( ! oldFaction.hasLandInflation())
-			{
-				msender.msg("%s<i> owns this land and is strong enough to keep it.", oldFaction.getName(msender));
-			}
-			else if ( ! BoardColl.get().isAnyBorderPs(chunks))
-			{
-				msender.msg("<b>You must start claiming land at the border of the territory.");
+				event.setCancelled(true);
+				return;
 			}
 			
-			// ... and cancel.
-			event.setCancelled(true);
-			return;
+			// ... the relation may forbid ...
+			if (oldFaction.getRelationTo(newFaction).isAtLeast(Rel.TRUCE))
+			{
+				msender.msg("<b>You can't claim this land due to your relation with the current owner.");
+				event.setCancelled(true);
+				return;
+			}
+			
+			// ... the old faction might not be inflated enough ...
+			if (oldFaction.getPowerRounded() > oldFaction.getLandCount() - oldChunks.size())
+			{
+				msender.msg("%s<i> owns this land and is strong enough to keep it.", oldFaction.getName(msender));
+				event.setCancelled(true);
+				return;
+			}
+			
+			// ... and you might be trying to claim without starting at the border ...
+			if ( ! BoardColl.get().isAnyBorderPs(chunks))
+			{
+				msender.msg("<b>You must start claiming land at the border of the territory.");
+				event.setCancelled(true);
+				return;
+			}
+			
+			// ... otherwise you may claim from this old faction even though you lack explicit permission from them.
 		}
 	}
 	
