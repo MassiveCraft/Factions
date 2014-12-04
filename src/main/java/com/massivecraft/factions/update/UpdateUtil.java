@@ -159,15 +159,16 @@ public class UpdateUtil
 		// Get the coll.
 		FactionColl coll = FactionColl.get();
 		
+		// Get the faction and detach it
+		Faction faction = coll.detachId(from);
+		if (faction == null) return;
+		coll.syncId(from);
+		
 		// A faction may already be occupying the to-id.
 		// We must remove it to make space for renaming.
 		// This faction is simply an auto-created faction with no references yet.
 		coll.detachId(to);
 		coll.syncId(to);
-				
-		// Get the faction and detach it
-		Faction faction = coll.detachId(from);
-		coll.syncId(from);
 		
 		// Attach it
 		coll.attach(faction, to);
