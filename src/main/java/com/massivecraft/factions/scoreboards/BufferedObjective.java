@@ -1,16 +1,19 @@
 package com.massivecraft.factions.scoreboards;
 
 import com.google.common.base.Splitter;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
+import java.lang.reflect.Method;
 import java.util.*;
 
 public class BufferedObjective {
+    private static final Method addEntryMethod;
+    private static final int MAX_LINE_LENGTH;
+
     private final Scoreboard scoreboard;
     private final String baseName;
 
@@ -24,6 +27,25 @@ public class BufferedObjective {
     private boolean requiresUpdate = false;
 
     private final Map<Integer, String> contents = new HashMap<Integer, String>();
+
+    static {
+        // Check for long line support.
+        // We require use of Spigot's `addEntry(String)` method on
+        // Teams, as adding OfflinePlayers to a team is far too slow.
+
+        Method addEntryMethodLookup = null;
+        try {
+            addEntryMethodLookup = Team.class.getMethod("addEntry", String.class);
+        } catch (NoSuchMethodException ignored) {}
+
+        addEntryMethod = addEntryMethodLookup;
+
+        if (addEntryMethod != null) {
+            MAX_LINE_LENGTH = 48;
+        } else {
+            MAX_LINE_LENGTH = 16;
+        }
+    }
 
     public BufferedObjective(Scoreboard scoreboard) {
         this.scoreboard = scoreboard;
@@ -63,8 +85,8 @@ public class BufferedObjective {
     }
 
     public void setLine(int lineNumber, String content) {
-        if (content.length() > 48) {
-            content = content.substring(0, 48);
+        if (content.length() > MAX_LINE_LENGTH) {
+            content = content.substring(0, MAX_LINE_LENGTH);
         }
         content = ChatColor.translateAlternateColorCodes('&', content);
 
@@ -106,7 +128,9 @@ public class BufferedObjective {
                     team.setSuffix(split.next());
                 }
 
-                team.addPlayer(Bukkit.getOfflinePlayer(name));
+                try {
+                    addEntryMethod.invoke(team, name);
+                } catch (ReflectiveOperationException ignored) {}
                 buffer.getScore(name).setScore(entry.getKey());
             } else {
                 buffer.getScore(entry.getValue()).setScore(entry.getKey());
