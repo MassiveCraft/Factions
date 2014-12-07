@@ -2,7 +2,6 @@ package com.massivecraft.factions.util;
 
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.struct.Role;
-
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;

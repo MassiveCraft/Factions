@@ -11,7 +11,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.logging.Level;
 
 
 public abstract class MemoryBoard extends Board {
@@ -48,8 +47,8 @@ public abstract class MemoryBoard extends Board {
 
     public void removeAt(FLocation flocation) {
         Faction faction = getFactionAt(flocation);
-        for(LazyLocation loc : faction.getWarps().values()) {
-            if(flocation.isInChunk(loc.getLocation())) {
+        for (LazyLocation loc : faction.getWarps().values()) {
+            if (flocation.isInChunk(loc.getLocation())) {
                 faction.removeWarp(loc);
             }
         }

@@ -36,7 +36,8 @@ public class BufferedObjective {
         Method addEntryMethodLookup = null;
         try {
             addEntryMethodLookup = Team.class.getMethod("addEntry", String.class);
-        } catch (NoSuchMethodException ignored) {}
+        } catch (NoSuchMethodException ignored) {
+        }
 
         addEntryMethod = addEntryMethodLookup;
 
@@ -130,7 +131,8 @@ public class BufferedObjective {
 
                 try {
                     addEntryMethod.invoke(team, name);
-                } catch (ReflectiveOperationException ignored) {}
+                } catch (ReflectiveOperationException ignored) {
+                }
                 buffer.getScore(name).setScore(entry.getKey());
             } else {
                 buffer.getScore(entry.getValue()).setScore(entry.getKey());

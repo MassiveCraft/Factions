@@ -38,7 +38,7 @@ public class Essentials {
     }
 
     public static boolean isVanished(Player player) {
-        if(essentials == null) {
+        if (essentials == null) {
             return false;
         }
         return essentials.getUser(player).isVanished();
