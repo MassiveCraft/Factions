@@ -5,6 +5,7 @@ import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.SpiralTask;
+import com.massivecraft.factions.zcore.util.TL;
 
 
 public class CmdClaim extends FCommand {
@@ -33,7 +34,7 @@ public class CmdClaim extends FCommand {
         int radius = this.argAsInt(1, 1);
 
         if (radius < 1) {
-            msg("<b>If you specify a radius, it must be at least 1.");
+            msg(TL.COMMAND_CLAIM_INVALIDRADIUS);
             return;
         }
 
@@ -43,7 +44,7 @@ public class CmdClaim extends FCommand {
         } else {
             // radius claim
             if (!Permission.CLAIM_RADIUS.has(sender, false)) {
-                msg("<b>You do not have permission to claim in a radius.");
+                msg(TL.COMMAND_CLAIM_DENIED);
                 return;
             }
 

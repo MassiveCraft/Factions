@@ -4,6 +4,8 @@ import com.massivecraft.factions.*;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.MCommand;
+import com.massivecraft.factions.zcore.util.TL;
+
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -273,6 +275,10 @@ public abstract class FCommand extends MCommand<P> {
         } else {
             return Econ.modifyMoney(fme, -cost, toDoThis, forDoingThis);
         }
+    }
+    
+    public boolean payForCommand(double cost,TL toDoThis,TL forDoingThis){
+    	return payForCommand(cost,toDoThis.toString(),forDoingThis.toString());
     }
 
     // like above, but just make sure they can pay; returns true unless person can't afford the cost

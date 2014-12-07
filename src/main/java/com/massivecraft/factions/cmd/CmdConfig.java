@@ -3,6 +3,8 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.zcore.util.TL;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -52,7 +54,7 @@ public class CmdConfig extends FCommand {
         String fieldName = properFieldNames.get(field);
 
         if (fieldName == null || fieldName.isEmpty()) {
-            msg("<b>No configuration setting \"<h>%s<b>\" exists.", field);
+            msg(TL.COMMAND_CONFIG_NOEXIST, field);
             return;
         }
 
@@ -72,9 +74,9 @@ public class CmdConfig extends FCommand {
                 target.setBoolean(null, targetValue);
 
                 if (targetValue) {
-                    success = "\"" + fieldName + "\" option set to true (enabled).";
+                    success = "\"" + fieldName + TL.COMMAND_CONFIG_SET_TRUE.toString();
                 } else {
-                    success = "\"" + fieldName + "\" option set to false (disabled).";
+                    success = "\"" + fieldName + TL.COMMAND_CONFIG_SET_FALSE.toString();
                 }
             }
 
@@ -83,9 +85,9 @@ public class CmdConfig extends FCommand {
                 try {
                     int intVal = Integer.parseInt(value);
                     target.setInt(null, intVal);
-                    success = "\"" + fieldName + "\" option set to " + intVal + ".";
+                    success = "\"" + fieldName + TL.COMMAND_CONFIG_OPTIONSET.toString() + intVal + ".";
                 } catch (NumberFormatException ex) {
-                    sendMessage("Cannot set \"" + fieldName + "\": integer (whole number) value required.");
+                    sendMessage(TL.COMMAND_CONFIG_INTREQUIRED.format(fieldName));
                     return;
                 }
             }
@@ -95,9 +97,9 @@ public class CmdConfig extends FCommand {
                 try {
                     long longVal = Long.parseLong(value);
                     target.setLong(null, longVal);
-                    success = "\"" + fieldName + "\" option set to " + longVal + ".";
+                    success = "\"" + fieldName + TL.COMMAND_CONFIG_OPTIONSET.toString() + longVal + ".";
                 } catch (NumberFormatException ex) {
-                    sendMessage("Cannot set \"" + fieldName + "\": long integer (whole number) value required.");
+                    sendMessage(TL.COMMAND_CONFIG_LONGREQUIRED.format(fieldName));
                     return;
                 }
             }
@@ -107,9 +109,9 @@ public class CmdConfig extends FCommand {
                 try {
                     double doubleVal = Double.parseDouble(value);
                     target.setDouble(null, doubleVal);
-                    success = "\"" + fieldName + "\" option set to " + doubleVal + ".";
+                    success = "\"" + fieldName + TL.COMMAND_CONFIG_OPTIONSET.toString() + doubleVal + ".";
                 } catch (NumberFormatException ex) {
-                    sendMessage("Cannot set \"" + fieldName + "\": double (numeric) value required.");
+                    sendMessage(TL.COMMAND_CONFIG_DOUBLEREQUIRED.format(fieldName));
                     return;
                 }
             }
@@ -119,9 +121,9 @@ public class CmdConfig extends FCommand {
                 try {
                     float floatVal = Float.parseFloat(value);
                     target.setFloat(null, floatVal);
-                    success = "\"" + fieldName + "\" option set to " + floatVal + ".";
+                    success = "\"" + fieldName + TL.COMMAND_CONFIG_OPTIONSET.toString() + floatVal + ".";
                 } catch (NumberFormatException ex) {
-                    sendMessage("Cannot set \"" + fieldName + "\": float (numeric) value required.");
+                    sendMessage(TL.COMMAND_CONFIG_FLOATREQUIRED.format(fieldName));
                     return;
                 }
             }
@@ -129,7 +131,7 @@ public class CmdConfig extends FCommand {
             // String
             else if (target.getType() == String.class) {
                 target.set(null, value);
-                success = "\"" + fieldName + "\" option set to \"" + value + "\".";
+                success = "\"" + fieldName + TL.COMMAND_CONFIG_OPTIONSET.toString() + value + "\".";
             }
 
             // ChatColor
@@ -141,11 +143,11 @@ public class CmdConfig extends FCommand {
 
                 }
                 if (newColor == null) {
-                    sendMessage("Cannot set \"" + fieldName + "\": \"" + value.toUpperCase() + "\" is not a valid color.");
+                    sendMessage(TL.COMMAND_CONFIG_INVALID_COLOUR.format(fieldName,value.toUpperCase()));
                     return;
                 }
                 target.set(null, newColor);
-                success = "\"" + fieldName + "\" color option set to \"" + value.toUpperCase() + "\".";
+                success = "\"" + fieldName + TL.COMMAND_CONFIG_COLOURSET.toString() + value.toUpperCase() + "\".";
             }
 
             // Set<?> or other parameterized collection
@@ -155,7 +157,7 @@ public class CmdConfig extends FCommand {
 
                 // not a Set, somehow, and that should be the only collection we're using in Conf.java
                 if (targSet.getRawType() != Set.class) {
-                    sendMessage("\"" + fieldName + "\" is not a data collection type which can be modified with this command.");
+                    sendMessage(TL.COMMAND_CONFIG_INVALID_COLLECTION.format(fieldName));
                     return;
                 }
 
@@ -168,7 +170,7 @@ public class CmdConfig extends FCommand {
 
                     }
                     if (newMat == null) {
-                        sendMessage("Cannot change \"" + fieldName + "\" set: \"" + value.toUpperCase() + "\" is not a valid material.");
+                        sendMessage(TL.COMMAND_CONFIG_INVALID_MATERIAL.format(fieldName,value.toUpperCase()));
                         return;
                     }
 
@@ -178,13 +180,13 @@ public class CmdConfig extends FCommand {
                     if (matSet.contains(newMat)) {
                         matSet.remove(newMat);
                         target.set(null, matSet);
-                        success = "\"" + fieldName + "\" set: Material \"" + value.toUpperCase() + "\" removed.";
+                        success = TL.COMMAND_CONFIG_MATERIAL_REMOVED.format(fieldName,value.toUpperCase());
                     }
                     // Material not present yet, add it
                     else {
                         matSet.add(newMat);
                         target.set(null, matSet);
-                        success = "\"" + fieldName + "\" set: Material \"" + value.toUpperCase() + "\" added.";
+                        success = TL.COMMAND_CONFIG_MATERIAL_ADDED.format(fieldName,value.toUpperCase());
                     }
                 }
 
@@ -196,40 +198,40 @@ public class CmdConfig extends FCommand {
                     if (stringSet.contains(value)) {
                         stringSet.remove(value);
                         target.set(null, stringSet);
-                        success = "\"" + fieldName + "\" set: \"" + value + "\" removed.";
+                        success = TL.COMMAND_CONFIG_SET_REMOVED.format(fieldName,value);
                     }
                     // String not present yet, add it
                     else {
                         stringSet.add(value);
                         target.set(null, stringSet);
-                        success = "\"" + fieldName + "\" set: \"" + value + "\" added.";
+                        success = TL.COMMAND_CONFIG_SET_ADDED.format(fieldName,value);
                     }
                 }
 
                 // Set of unknown type
                 else {
-                    sendMessage("\"" + fieldName + "\" is not a data type set which can be modified with this command.");
+                    sendMessage(TL.COMMAND_CONFIG_INVALID_TYPESET.format(fieldName));
                     return;
                 }
             }
 
             // unknown type
             else {
-                sendMessage("\"" + fieldName + "\" is not a data type which can be modified with this command.");
+                sendMessage(TL.COMMAND_CONFIG_ERROR_TYPE.format(fieldName,target.getClass().getName()));
                 return;
             }
         } catch (NoSuchFieldException ex) {
-            sendMessage("Configuration setting \"" + fieldName + "\" couldn't be matched, though it should be... please report this error.");
+            sendMessage(TL.COMMAND_CONFIG_ERROR_MATCHING.format(fieldName));
             return;
         } catch (IllegalAccessException ex) {
-            sendMessage("Error setting configuration setting \"" + fieldName + "\" to \"" + value + "\".");
+            sendMessage(TL.COMMAND_CONFIG_ERROR_SETTING.format(fieldName,value));
             return;
         }
 
         if (!success.isEmpty()) {
             if (sender instanceof Player) {
                 sendMessage(success);
-                P.p.log(success + " Command was run by " + fme.getName() + ".");
+                P.p.log(success + TL.COMMAND_CONFIG_LOG.format((Player)sender));
             } else  // using P.p.log() instead of sendMessage if run from server console so that "[Factions v#.#.#]" is prepended in server log
             {
                 P.p.log(success);

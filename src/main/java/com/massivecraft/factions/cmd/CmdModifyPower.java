@@ -2,6 +2,7 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdModifyPower extends FCommand {
 
@@ -38,6 +39,6 @@ public class CmdModifyPower extends FCommand {
 
         player.alterPower(number);
         int newPower = player.getPowerRounded(); // int so we don't have super long doubles.
-        msg("<i>Added <a>%f <i>power to <a>%s. <i>New total rounded power: <a>%d", number, player.getName(), newPower);
+        msg(TL.COMMAND_MODIFYPOWER_ADDED, number, player.getName(), newPower);
     }
 }

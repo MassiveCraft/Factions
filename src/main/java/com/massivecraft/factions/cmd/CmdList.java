@@ -4,7 +4,10 @@ import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.zcore.util.TL;
+
 import mkremins.fanciful.FancyMessage;
+
 import org.bukkit.ChatColor;
 
 import java.util.ArrayList;
@@ -34,7 +37,7 @@ public class CmdList extends FCommand {
     @Override
     public void perform() {
         // if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-        if (!payForCommand(Conf.econCostList, "to list the factions", "for listing the factions")) {
+        if (!payForCommand(Conf.econCostList, TL.COMMAND_LIST_TOLIST.toString() , TL.COMMAND_LIST_FORLIST.toString())) {
             return;
         }
 
@@ -91,12 +94,12 @@ public class CmdList extends FCommand {
             end = factionList.size();
         }
 
-        lines.add(new FancyMessage(p.txt.titleize("Faction List " + pagenumber + "/" + pagecount)));
+        lines.add(new FancyMessage(p.txt.titleize(TL.COMMAND_LIST_FACTIONLIST.toString() + pagenumber + "/" + pagecount)));
 
         for (Faction faction : factionList.subList(start, end)) {
             if (faction.isNone()) {
                 String online = String.valueOf(faction.getFPlayersWhereOnline(true).size());
-                FancyMessage msg = new FancyMessage("Factionless " + online + " online").color(ChatColor.YELLOW);
+                FancyMessage msg = new FancyMessage(TL.COMMAND_LIST_ONLINEFACTIONLESS.toString() + online).color(ChatColor.YELLOW);
                 lines.add(msg);
                 continue;
             }

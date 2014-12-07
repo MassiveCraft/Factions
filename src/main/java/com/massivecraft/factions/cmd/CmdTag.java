@@ -5,6 +5,8 @@ import com.massivecraft.factions.event.FactionRenameEvent;
 import com.massivecraft.factions.scoreboards.FTeamWrapper;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.MiscUtil;
+import com.massivecraft.factions.zcore.util.TL;
+
 import org.bukkit.Bukkit;
 
 import java.util.ArrayList;
@@ -32,7 +34,7 @@ public class CmdTag extends FCommand {
 
         // TODO does not first test cover selfcase?
         if (Factions.getInstance().isTagTaken(tag) && !MiscUtil.getComparisonString(tag).equals(myFaction.getComparisonTag())) {
-            msg("<b>That tag is already taken");
+            msg(TL.COMMAND_TAG_TAKEN);
             return;
         }
 
@@ -43,7 +45,7 @@ public class CmdTag extends FCommand {
         }
 
         // if economy is enabled, they're not on the bypass list, and this command has a cost set, make sure they can pay
-        if (!canAffordCommand(Conf.econCostTag, "to change the faction tag")) {
+        if (!canAffordCommand(Conf.econCostTag, TL.COMMAND_TAG_TOCHANGE.toString())) {
             return;
         }
 
@@ -55,7 +57,7 @@ public class CmdTag extends FCommand {
         }
 
         // then make 'em pay (if applicable)
-        if (!payForCommand(Conf.econCostTag, "to change the faction tag", "for changing the faction tag")) {
+        if (!payForCommand(Conf.econCostTag, TL.COMMAND_TAG_TOCHANGE,TL.COMMAND_TAG_FORCHANGE)) {
             return;
         }
 
@@ -65,11 +67,11 @@ public class CmdTag extends FCommand {
         // Inform
         for (FPlayer fplayer : FPlayers.getInstance().getOnlinePlayers()) {
             if (fplayer.getFactionId() == myFaction.getId()) {
-                fplayer.msg("%s<i> changed your faction tag to %s", fme.describeTo(myFaction, true), myFaction.getTag(myFaction));
+                fplayer.msg(TL.COMMAND_TAG_FACTION, fme.describeTo(myFaction, true), myFaction.getTag(myFaction));
                 continue;
             }
             Faction faction = fplayer.getFaction();
-            fplayer.msg("<i>The faction %s<i> changed their name to %s.", fme.getColorTo(faction) + oldtag, myFaction.getTag(faction));
+            fplayer.msg(TL.COMMAND_TAG_CHANGED, fme.getColorTo(faction) + oldtag, myFaction.getTag(faction));
         }
 
         FTeamWrapper.updatePrefixes(myFaction);

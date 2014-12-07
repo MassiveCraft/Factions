@@ -6,6 +6,7 @@ import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.util.LazyLocation;
+import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdSetFWarp extends FCommand {
 
@@ -23,13 +24,13 @@ public class CmdSetFWarp extends FCommand {
     @Override
     public void perform() {
         if (!(fme.getRelationToLocation() == Relation.MEMBER)) {
-            fme.msg("<i>You can only set warps in your faction territory.");
+            fme.msg(TL.COMMAND_SETFWARP_NOTCLAIMED);
             return;
         }
 
         int maxWarps = P.p.getConfig().getInt("max-warps", 5);
         if (maxWarps <= myFaction.getWarps().size()) {
-            fme.msg("<i>Your Faction already has the max amount of warps set <a>(%d).", maxWarps);
+            fme.msg(TL.COMMAND_SETFWARP_LIMIT, maxWarps);
             return;
         }
 
@@ -40,10 +41,10 @@ public class CmdSetFWarp extends FCommand {
         String warp = argAsString(0);
         LazyLocation loc = new LazyLocation(fme.getPlayer().getLocation());
         myFaction.setWarp(warp, loc);
-        fme.msg("<i>Set warp <a>%s <i>to your location.", warp);
+        fme.msg(TL.COMMAND_SETFWARP_SET, warp);
     }
 
     private boolean transact(FPlayer player) {
-        return P.p.getConfig().getBoolean("warp-cost.enabled", false) && !player.isAdminBypassing() && Econ.modifyMoney(player, P.p.getConfig().getDouble("warp-cost.setwarp", 5), "to set warp", "for setting warp");
+        return P.p.getConfig().getBoolean("warp-cost.enabled", false) && !player.isAdminBypassing() && Econ.modifyMoney(player, P.p.getConfig().getDouble("warp-cost.setwarp", 5), TL.COMMAND_SETFWARP_TOSET.toString() , TL.COMMAND_SETFWARP_FORSET.toString());
     }
 }

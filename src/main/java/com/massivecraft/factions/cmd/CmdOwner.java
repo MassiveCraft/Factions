@@ -3,6 +3,7 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.zcore.util.TL;
 
 
 public class CmdOwner extends FCommand {
@@ -34,12 +35,12 @@ public class CmdOwner extends FCommand {
         }
 
         if (!Conf.ownedAreasEnabled) {
-            fme.msg("<b>Sorry, but owned areas are disabled on this server.");
+            fme.msg(TL.COMMAND_OWNER_DISABLED);
             return;
         }
 
         if (!hasBypass && Conf.ownedAreasLimitPerFaction > 0 && myFaction.getCountOfClaimsWithOwners() >= Conf.ownedAreasLimitPerFaction) {
-            fme.msg("<b>Sorry, but you have reached the server's <h>limit of %d <b>owned areas per faction.", Conf.ownedAreasLimitPerFaction);
+            fme.msg(TL.COMMAND_OWNER_LIMIT, Conf.ownedAreasLimitPerFaction);
             return;
         }
 
@@ -51,15 +52,16 @@ public class CmdOwner extends FCommand {
 
         Faction factionHere = Board.getInstance().getFactionAt(flocation);
         if (factionHere != myFaction) {
-            if (!hasBypass) {
-                fme.msg("<b>This land is not claimed by your faction, so you can't set ownership of it.");
+            if (!factionHere.isNormal()) {
+                fme.msg(TL.COMMAND_OWNER_NOTCLAIMED);
+                return;
+            }
+        	
+        	if (!hasBypass) {
+                fme.msg(TL.COMMAND_OWNER_WRONGFACTION);
                 return;
             }
 
-            if (!factionHere.isNormal()) {
-                fme.msg("<b>This land is not claimed by a faction. Ownership is not possible.");
-                return;
-            }
         }
 
         FPlayer target = this.argAsBestFPlayerMatch(0, fme);
@@ -70,30 +72,30 @@ public class CmdOwner extends FCommand {
         String playerName = target.getName();
 
         if (target.getFaction() != myFaction) {
-            fme.msg("%s<i> is not a member of this faction.", playerName);
+            fme.msg(TL.COMMAND_OWNER_NOTMEMBER, playerName);
             return;
         }
 
         // if no player name was passed, and this claim does already have owners set, clear them
         if (args.isEmpty() && myFaction.doesLocationHaveOwnersSet(flocation)) {
             myFaction.clearClaimOwnership(flocation);
-            fme.msg("<i>You have cleared ownership for this claimed area.");
+            fme.msg(TL.COMMAND_OWNER_CLEARED);
             return;
         }
 
         if (myFaction.isPlayerInOwnerList(target, flocation)) {
             myFaction.removePlayerAsOwner(target, flocation);
-            fme.msg("<i>You have removed ownership of this claimed land from %s<i>.", playerName);
+            fme.msg(TL.COMMAND_OWNER_REMOVED, playerName);
             return;
         }
 
         // if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-        if (!payForCommand(Conf.econCostOwner, "to set ownership of claimed land", "for setting ownership of claimed land")) {
+        if (!payForCommand(Conf.econCostOwner, TL.COMMAND_OWNER_TOSET , TL.COMMAND_OWNER_FORSET)) {
             return;
         }
 
         myFaction.setPlayerAsOwner(target, flocation);
 
-        fme.msg("<i>You have added %s<i> to the owner list for this claimed land.", playerName);
+        fme.msg(TL.COMMAND_OWNER_ADDED, playerName);
     }
 }

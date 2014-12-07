@@ -5,6 +5,8 @@ import com.massivecraft.factions.P;
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.zcore.util.TL;
+
 import org.bukkit.ChatColor;
 
 
@@ -18,7 +20,7 @@ public class CmdMoneyWithdraw extends FCommand {
         this.optionalArgs.put("faction", "yours");
 
         this.permission = Permission.MONEY_WITHDRAW.node;
-        this.setHelpShort("withdraw money");
+        this.setHelpShort(TL.COMMAND_MONEYWITHDRAW_SHORT.toString());
 
         senderMustBePlayer = true;
         senderMustBeMember = false;
@@ -36,7 +38,7 @@ public class CmdMoneyWithdraw extends FCommand {
         boolean success = Econ.transferMoney(fme, faction, fme, amount);
 
         if (success && Conf.logMoneyTransactions) {
-            P.p.log(ChatColor.stripColor(P.p.txt.parse("%s withdrew %s from the faction bank: %s", fme.getName(), Econ.moneyString(amount), faction.describeTo(null))));
+            P.p.log(ChatColor.stripColor(P.p.txt.parse(TL.COMMAND_MONEYWITHDRAW_WITHDRAW.toString(), fme.getName(), Econ.moneyString(amount), faction.describeTo(null))));
         }
     }
 }

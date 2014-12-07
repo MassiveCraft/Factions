@@ -4,6 +4,7 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdDelFWarp extends FCommand {
 
@@ -27,13 +28,13 @@ public class CmdDelFWarp extends FCommand {
                 return;
             }
             myFaction.removeWarp(warp);
-            fme.msg("<i>Deleted warp <a>%s", warp);
+            fme.msg(TL.COMMAND_DELFWARP_DELETED, warp);
         } else {
-            fme.msg("<i>Couldn't find warp <a>%s", warp);
+            fme.msg(TL.COMMAND_DELFWARP_INVALID, warp);
         }
     }
 
     private boolean transact(FPlayer player) {
-        return P.p.getConfig().getBoolean("warp-cost.enabled", false) && !player.isAdminBypassing() && Econ.modifyMoney(player, P.p.getConfig().getDouble("warp-cost.delwarp", 5), "to delete warp", "for deleting warp");
+        return P.p.getConfig().getBoolean("warp-cost.enabled", false) && !player.isAdminBypassing() && Econ.modifyMoney(player, P.p.getConfig().getDouble("warp-cost.delwarp", 5), TL.COMMAND_DELFWARP_TODELETE.toString(), TL.COMMAND_DELFWARP_FORDELETE.toString());
     }
 }

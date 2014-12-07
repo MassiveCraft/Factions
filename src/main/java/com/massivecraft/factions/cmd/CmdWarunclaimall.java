@@ -5,6 +5,7 @@ import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdWarunclaimall extends FCommand {
 
@@ -23,16 +24,16 @@ public class CmdWarunclaimall extends FCommand {
         senderMustBeModerator = false;
         senderMustBeAdmin = false;
 
-        this.setHelpShort("unclaim all warzone land");
+        this.setHelpShort(TL.COMMAND_WARUNCLAIMALL_SHORT.toString());
     }
 
     @Override
     public void perform() {
         Board.getInstance().unclaimAll(Factions.getInstance().getWarZone().getId());
-        msg("<i>You unclaimed ALL war zone land.");
+        msg(TL.COMMAND_WARUNCLAIMALL_SUCCESS);
 
         if (Conf.logLandUnclaims) {
-            P.p.log(fme.getName() + " unclaimed all war zones.");
+            P.p.log(TL.COMMAND_WARUNCLAIMALL_LOG.format(fme.getName()));
         }
     }
 

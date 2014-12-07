@@ -6,6 +6,7 @@ import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdSethome extends FCommand {
 
@@ -27,7 +28,7 @@ public class CmdSethome extends FCommand {
     @Override
     public void perform() {
         if (!Conf.homesEnabled) {
-            fme.msg("<b>Sorry, Faction homes are disabled on this server.");
+            fme.msg(TL.COMMAND_SETHOME_DISABLED);
             return;
         }
 
@@ -51,21 +52,21 @@ public class CmdSethome extends FCommand {
         if (!Permission.BYPASS.has(me) &&
                     Conf.homesMustBeInClaimedTerritory &&
                     Board.getInstance().getFactionAt(new FLocation(me)) != faction) {
-            fme.msg("<b>Sorry, your faction home can only be set inside your own claimed territory.");
+            fme.msg(TL.COMMAND_SETHOME_NOTCLAIMED);
             return;
         }
 
         // if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-        if (!payForCommand(Conf.econCostSethome, "to set the faction home", "for setting the faction home")) {
+        if (!payForCommand(Conf.econCostSethome, TL.COMMAND_SETHOME_TOSET, TL.COMMAND_SETHOME_FORSET)) {
             return;
         }
 
         faction.setHome(me.getLocation());
 
-        faction.msg("%s<i> set the home for your faction. You can now use:", fme.describeTo(myFaction, true));
+        faction.msg(TL.COMMAND_SETHOME_SET, fme.describeTo(myFaction, true));
         faction.sendMessage(p.cmdBase.cmdHome.getUseageTemplate());
         if (faction != myFaction) {
-            fme.msg("<b>You have set the home for the " + faction.getTag(fme) + "<i> faction.");
+            fme.msg(TL.COMMAND_SETHOME_SETOTHER,faction.getTag(fme));
         }
     }
 

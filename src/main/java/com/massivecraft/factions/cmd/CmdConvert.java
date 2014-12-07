@@ -3,6 +3,8 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.Conf.Backend;
 import com.massivecraft.factions.zcore.persist.json.FactionsJSON;
+import com.massivecraft.factions.zcore.util.TL;
+
 import org.bukkit.command.ConsoleCommandSender;
 
 public class CmdConvert extends FCommand {
@@ -16,11 +18,11 @@ public class CmdConvert extends FCommand {
     @Override
     public void perform() {
         if (!(this.sender instanceof ConsoleCommandSender)) {
-            this.sender.sendMessage("Console only command");
+            this.sender.sendMessage(TL.GENERIC_CONSOLEONLY.toString());
         }
         Backend nb = Backend.valueOf(this.argAsString(0).toUpperCase());
         if (nb == Conf.backEnd) {
-            this.sender.sendMessage("Already running that backend");
+            this.sender.sendMessage(TL.COMMAND_CONVERT_BACKEND_RUNNING.toString());
             return;
         }
         switch (nb) {
@@ -28,7 +30,7 @@ public class CmdConvert extends FCommand {
                 FactionsJSON.convertTo();
                 break;
             default:
-                this.sender.sendMessage("Invalid backend");
+                this.sender.sendMessage(TL.COMMAND_CONVERT_BACKEND_INVALID.toString());
                 return;
 
         }

@@ -5,6 +5,7 @@ import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdSafeunclaimall extends FCommand {
 
@@ -23,16 +24,16 @@ public class CmdSafeunclaimall extends FCommand {
         senderMustBeModerator = false;
         senderMustBeAdmin = false;
 
-        this.setHelpShort("Unclaim all safezone land");
+        this.setHelpShort(TL.COMMAND_SAFEUNCLAIMALL_SHORT.toString());
     }
 
     @Override
     public void perform() {
         Board.getInstance().unclaimAll(Factions.getInstance().getSafeZone().getId());
-        msg("<i>You unclaimed ALL safe zone land.");
+        msg(TL.COMMAND_SAFEUNCLAIMALL_UNCLAIMED);
 
         if (Conf.logLandUnclaims) {
-            P.p.log(fme.getName() + " unclaimed all safe zones.");
+            P.p.log(TL.COMMAND_SAFEUNCLAIMALL_UNCLAIMEDLOG.format(sender.getName()));
         }
     }
 

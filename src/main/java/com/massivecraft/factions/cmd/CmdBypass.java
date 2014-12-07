@@ -2,6 +2,7 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdBypass extends FCommand {
 
@@ -27,11 +28,11 @@ public class CmdBypass extends FCommand {
 
         // TODO: Move this to a transient field in the model??
         if (fme.isAdminBypassing()) {
-            fme.msg("<i>You have enabled admin bypass mode. You will be able to build or destroy anywhere.");
-            P.p.log(fme.getName() + " has ENABLED admin bypass mode.");
+            fme.msg(TL.COMMAND_BYPASS_ENABLE.toString());
+            P.p.log(fme.getName() + TL.COMMAND_BYPASS_ENABLELOG.toString());
         } else {
-            fme.msg("<i>You have disabled admin bypass mode.");
-            P.p.log(fme.getName() + " DISABLED admin bypass mode.");
+            fme.msg(TL.COMMAND_BYPASS_DISABLE.toString());
+            P.p.log(fme.getName() + TL.COMMAND_BYPASS_DISABLELOG.toString());
         }
     }
 }

@@ -5,6 +5,8 @@ import com.massivecraft.factions.event.LandUnclaimEvent;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.zcore.util.TL;
+
 import org.bukkit.Bukkit;
 
 public class CmdUnclaim extends FCommand {
@@ -33,25 +35,25 @@ public class CmdUnclaim extends FCommand {
         if (otherFaction.isSafeZone()) {
             if (Permission.MANAGE_SAFE_ZONE.has(sender)) {
                 Board.getInstance().removeAt(flocation);
-                msg("<i>Safe zone was unclaimed.");
+                msg(TL.COMMAND_UNCLAIM_SAFEZONE_SUCCESS);
 
                 if (Conf.logLandUnclaims) {
-                    P.p.log(fme.getName() + " unclaimed land at (" + flocation.getCoordString() + ") from the faction: " + otherFaction.getTag());
+                    P.p.log(TL.COMMAND_UNCLAIM_LOG.format(fme.getName(),flocation.getCoordString(),otherFaction.getTag()));
                 }
             } else {
-                msg("<b>This is a safe zone. You lack permissions to unclaim.");
+                msg(TL.COMMAND_UNCLAIM_SAFEZONE_NOPERM);
             }
             return;
         } else if (otherFaction.isWarZone()) {
             if (Permission.MANAGE_WAR_ZONE.has(sender)) {
                 Board.getInstance().removeAt(flocation);
-                msg("<i>War zone was unclaimed.");
+                msg(TL.COMMAND_UNCLAIM_WARZONE_SUCCESS);
 
                 if (Conf.logLandUnclaims) {
-                    P.p.log(fme.getName() + " unclaimed land at (" + flocation.getCoordString() + ") from the faction: " + otherFaction.getTag());
+                    P.p.log(TL.COMMAND_UNCLAIM_LOG.format(fme.getName(),flocation.getCoordString(),otherFaction.getTag()));
                 }
             } else {
-                msg("<b>This is a war zone. You lack permissions to unclaim.");
+                msg(TL.COMMAND_UNCLAIM_WARZONE_NOPERM);
             }
             return;
         }
@@ -59,11 +61,11 @@ public class CmdUnclaim extends FCommand {
         if (fme.isAdminBypassing()) {
             Board.getInstance().removeAt(flocation);
 
-            otherFaction.msg("%s<i> unclaimed some of your land.", fme.describeTo(otherFaction, true));
-            msg("<i>You unclaimed this land.");
+            otherFaction.msg(TL.COMMAND_UNCLAIM_UNCLAIMED, fme.describeTo(otherFaction, true));
+            msg(TL.COMMAND_UNCLAIM_UNCLAIMS);
 
             if (Conf.logLandUnclaims) {
-                P.p.log(fme.getName() + " unclaimed land at (" + flocation.getCoordString() + ") from the faction: " + otherFaction.getTag());
+            	P.p.log(TL.COMMAND_UNCLAIM_LOG.format(fme.getName(),flocation.getCoordString(),otherFaction.getTag()));
             }
 
             return;
@@ -79,7 +81,7 @@ public class CmdUnclaim extends FCommand {
 
 
         if (myFaction != otherFaction) {
-            msg("<b>You don't own this land.");
+            msg(TL.COMMAND_UNCLAIM_WRONGFACTION);
             return;
         }
 
@@ -93,21 +95,21 @@ public class CmdUnclaim extends FCommand {
             double refund = Econ.calculateClaimRefund(myFaction.getLandRounded());
 
             if (Conf.bankEnabled && Conf.bankFactionPaysLandCosts) {
-                if (!Econ.modifyMoney(myFaction, refund, "to unclaim this land", "for unclaiming this land")) {
+                if (!Econ.modifyMoney(myFaction, refund, TL.COMMAND_UNCLAIM_TOUNCLAIM.toString(), TL.COMMAND_UNCLAIM_FORUNCLAIM.toString())) {
                     return;
                 }
             } else {
-                if (!Econ.modifyMoney(fme, refund, "to unclaim this land", "for unclaiming this land")) {
+                if (!Econ.modifyMoney(fme, refund, TL.COMMAND_UNCLAIM_TOUNCLAIM.toString(), TL.COMMAND_UNCLAIM_FORUNCLAIM.toString())) {
                     return;
                 }
             }
         }
 
         Board.getInstance().removeAt(flocation);
-        myFaction.msg("%s<i> unclaimed some land.", fme.describeTo(myFaction, true));
+        myFaction.msg(TL.COMMAND_UNCLAIM_FACTIONUNCLAIMED, fme.describeTo(myFaction, true));
 
         if (Conf.logLandUnclaims) {
-            P.p.log(fme.getName() + " unclaimed land at (" + flocation.getCoordString() + ") from the faction: " + otherFaction.getTag());
+        	P.p.log(TL.COMMAND_UNCLAIM_LOG.format(fme.getName(),flocation.getCoordString(),otherFaction.getTag()));
         }
     }
 

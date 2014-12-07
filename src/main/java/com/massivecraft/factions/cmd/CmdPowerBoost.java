@@ -4,6 +4,7 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdPowerBoost extends FCommand {
 
@@ -31,14 +32,14 @@ public class CmdPowerBoost extends FCommand {
         if (type.equals("f") || type.equals("faction")) {
             doPlayer = false;
         } else if (!type.equals("p") && !type.equals("player")) {
-            msg("<b>You must specify \"p\" or \"player\" to target a player or \"f\" or \"faction\" to target a faction.");
-            msg("<b>ex. /f powerboost p SomePlayer 0.5  -or-  /f powerboost f SomeFaction -5");
+            msg(TL.COMMAND_POWERBOOST_HELP_1);
+            msg(TL.COMMAND_POWERBOOST_HELP_2);
             return;
         }
 
         Double targetPower = this.argAsDouble(2);
         if (targetPower == null) {
-            msg("<b>You must specify a valid numeric value for the power bonus/penalty amount.");
+            msg(TL.COMMAND_POWERBOOST_INVALIDNUM);
             return;
         }
 
@@ -50,19 +51,19 @@ public class CmdPowerBoost extends FCommand {
                 return;
             }
             targetPlayer.setPowerBoost(targetPower);
-            target = "Player \"" + targetPlayer.getName() + "\"";
+            target = TL.COMMAND_POWERBOOST_PLAYER.format(targetPlayer.getName());
         } else {
             Faction targetFaction = this.argAsFaction(1);
             if (targetFaction == null) {
                 return;
             }
             targetFaction.setPowerBoost(targetPower);
-            target = "Faction \"" + targetFaction.getTag() + "\"";
+            target = TL.COMMAND_POWERBOOST_FACTION.format(targetFaction.getTag());
         }
 
-        msg("<i>" + target + " now has a power bonus/penalty of " + targetPower + " to min and max power levels.");
+        msg(TL.COMMAND_POWERBOOST_BOOST,target,targetPower);
         if (!senderIsConsole) {
-            P.p.log(fme.getName() + " has set the power bonus/penalty for " + target + " to " + targetPower + ".");
+            P.p.log(TL.COMMAND_POWERBOOST_BOOSTLOG.toString(),fme.getName(),target,targetPower);
         }
     }
 }

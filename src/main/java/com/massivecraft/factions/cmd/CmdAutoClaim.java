@@ -3,6 +3,7 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdAutoClaim extends FCommand {
 
@@ -27,15 +28,15 @@ public class CmdAutoClaim extends FCommand {
         Faction forFaction = this.argAsFaction(0, myFaction);
         if (forFaction == null || forFaction == fme.getAutoClaimFor()) {
             fme.setAutoClaimFor(null);
-            msg("<i>Auto-claiming of land disabled.");
+            msg(TL.COMMAND_AUTOCLAIM_DISABLED);
             return;
         }
 
         if (!fme.canClaimForFaction(forFaction)) {
             if (myFaction == forFaction) {
-                msg("<b>You must be <h>%s<b> to claim land.", Role.MODERATOR.toString());
+                msg(TL.COMMAND_AUTOCLAIM_REQUIREDRANK, Role.MODERATOR.toString());
             } else {
-                msg("<b>You can't claim land for <h>%s<b>.", forFaction.describeTo(fme));
+                msg(TL.COMMAND_AUTOCLAIM_OTHERFACTION, forFaction.describeTo(fme));
             }
 
             return;
@@ -43,7 +44,7 @@ public class CmdAutoClaim extends FCommand {
 
         fme.setAutoClaimFor(forFaction);
 
-        msg("<i>Now auto-claiming land for <h>%s<i>.", forFaction.describeTo(fme));
+        msg(TL.COMMAND_AUTOCLAIM_ENABLED, forFaction.describeTo(fme));
         fme.attemptClaim(forFaction, me.getLocation(), true);
     }
 

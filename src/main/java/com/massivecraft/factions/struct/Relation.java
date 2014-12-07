@@ -1,6 +1,8 @@
 package com.massivecraft.factions.struct;
 
 import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.zcore.util.TL;
+
 import org.bukkit.ChatColor;
 
 
@@ -21,6 +23,13 @@ public enum Relation {
     @Override
     public String toString() {
         return this.nicename;
+    }
+    
+    public String getTranslation(){
+    	for(TL t:TL.values()){
+    		if(t.name().equals("RELATION_" + name())) return t.toString();
+    	}
+    	return toString();
     }
 
     public boolean isMember() {

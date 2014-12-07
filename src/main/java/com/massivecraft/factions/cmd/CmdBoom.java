@@ -2,6 +2,7 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdBoom extends FCommand {
 
@@ -24,20 +25,20 @@ public class CmdBoom extends FCommand {
     @Override
     public void perform() {
         if (!myFaction.isPeaceful()) {
-            fme.msg("<b>This command is only usable by factions which are specially designated as peaceful.");
+            fme.msg(TL.COMMAND_BOOM_PEACEFULONLY);
             return;
         }
 
         // if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-        if (!payForCommand(Conf.econCostNoBoom, "to toggle explosions", "for toggling explosions")) {
+        if (!payForCommand(Conf.econCostNoBoom, TL.COMMAND_BOOM_TOTOGGLE, TL.COMMAND_BOOM_FORTOGGLE)) {
             return;
         }
 
         myFaction.setPeacefulExplosionsEnabled(this.argAsBool(0, !myFaction.getPeacefulExplosionsEnabled()));
 
-        String enabled = myFaction.noExplosionsInTerritory() ? "disabled" : "enabled";
+        String enabled = myFaction.noExplosionsInTerritory() ? TL.GENERIC_DISABLED.toString() : TL.GENERIC_ENABLED.toString();
 
         // Inform
-        myFaction.msg("%s<i> has " + enabled + " explosions in your faction's territory.", fme.describeTo(myFaction));
+        myFaction.msg(TL.COMMAND_BOOM_ENABLED, fme.describeTo(myFaction),enabled);
     }
 }

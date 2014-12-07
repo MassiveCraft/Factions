@@ -4,6 +4,7 @@ import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdOpen extends FCommand {
 
@@ -26,21 +27,21 @@ public class CmdOpen extends FCommand {
     @Override
     public void perform() {
         // if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-        if (!payForCommand(Conf.econCostOpen, "to open or close the faction", "for opening or closing the faction")) {
+        if (!payForCommand(Conf.econCostOpen, TL.COMMAND_OPEN_TOOPEN, TL.COMMAND_OPEN_FOROPEN)) {
             return;
         }
 
         myFaction.setOpen(this.argAsBool(0, !myFaction.getOpen()));
 
-        String open = myFaction.getOpen() ? "open" : "closed";
+        String open = myFaction.getOpen() ? TL.COMMAND_OPEN_OPEN.toString() : TL.COMMAND_OPEN_CLOSED.toString();
 
         // Inform
         for (FPlayer fplayer : FPlayers.getInstance().getOnlinePlayers()) {
             if (fplayer.getFactionId().equals(myFaction.getId())) {
-                fplayer.msg("%s<i> changed the faction to <h>%s<i>.", fme.getName(), open);
+                fplayer.msg(TL.COMMAND_OPEN_CHANGES, fme.getName(), open);
                 continue;
             }
-            fplayer.msg("<i>The faction %s<i> is now %s", myFaction.getTag(fplayer.getFaction()), open);
+            fplayer.msg(TL.COMMAND_OPEN_CHANGED, myFaction.getTag(fplayer.getFaction()), open);
         }
     }
 

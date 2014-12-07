@@ -8,7 +8,10 @@ import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.util.MiscUtil;
+import com.massivecraft.factions.zcore.util.TL;
+
 import mkremins.fanciful.FancyMessage;
+
 import org.bukkit.ChatColor;
 
 import java.util.ArrayList;
@@ -42,29 +45,29 @@ public class CmdShow extends FCommand {
         }
 
         // if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-        if (!payForCommand(Conf.econCostShow, "to show faction information", "for showing faction information")) {
+        if (!payForCommand(Conf.econCostShow, TL.COMMAND_SHOW_TOSHOW, TL.COMMAND_SHOW_FORSHOW)) {
             return;
         }
 
         msg(p.txt.titleize(faction.getTag(fme)));
-        msg("<a>Description: <i>%s", faction.getDescription());
+        msg(TL.COMMAND_SHOW_DESCRIPTION, faction.getDescription());
         if (!faction.isNormal()) {
             return;
         }
 
         String peaceStatus = "";
         if (faction.isPeaceful()) {
-            peaceStatus = "     " + Conf.colorNeutral + "This faction is Peaceful";
+            peaceStatus = "     " + Conf.colorNeutral + TL.COMMAND_SHOW_PEACEFUL.toString();
         }
 
-        msg("<a>Joining: <i>" + (faction.getOpen() ? "no invitation is needed" : "invitation is required") + peaceStatus);
+        msg(TL.COMMAND_SHOW_JOINING.toString() + peaceStatus,(faction.getOpen() ? TL.COMMAND_SHOW_UNINVITED.toString() : TL.COMMAND_SHOW_INVITATION.toString()));
 
         double powerBoost = faction.getPowerBoost();
-        String boost = (powerBoost == 0.0) ? "" : (powerBoost > 0.0 ? " (bonus: " : " (penalty: ") + powerBoost + ")";
-        msg("<a>Land / Power / Maxpower: <i> %d/%d/%d %s", faction.getLandRounded(), faction.getPowerRounded(), faction.getPowerMaxRounded(), boost);
+        String boost = (powerBoost == 0.0) ? "" : (powerBoost > 0.0 ? TL.COMMAND_SHOW_BONUS.toString():TL.COMMAND_SHOW_PENALTY.toString() + powerBoost + ")");
+        msg(TL.COMMAND_SHOW_POWER, faction.getLandRounded(), faction.getPowerRounded(), faction.getPowerMaxRounded(), boost);
 
         if (faction.isPermanent()) {
-            msg("<a>This faction is permanent, remaining even with no members.");
+            msg(TL.COMMAND_SHOW_PERMANENT);
         }
 
         // show the land value
@@ -73,20 +76,20 @@ public class CmdShow extends FCommand {
             double refund = value * Conf.econClaimRefundMultiplier;
             if (value > 0) {
                 String stringValue = Econ.moneyString(value);
-                String stringRefund = (refund > 0.0) ? (" (" + Econ.moneyString(refund) + " depreciated)") : "";
-                msg("<a>Total land value: <i>" + stringValue + stringRefund);
+                String stringRefund = (refund > 0.0) ? (TL.COMMAND_SHOW_DEPRECIATED.format(Econ.moneyString(refund))) : "";
+                msg(TL.COMMAND_SHOW_LANDVALUE,stringValue,stringRefund);
             }
 
             //Show bank contents
             if (Conf.bankEnabled) {
-                msg("<a>Bank contains: <i>" + Econ.moneyString(Econ.getBalance(faction.getAccountId())));
+                msg(TL.COMMAND_SHOW_BANKCONTAINS,Econ.moneyString(Econ.getBalance(faction.getAccountId())));
             }
         }
 
         ArrayList<FancyMessage> allies = new ArrayList<FancyMessage>();
         ArrayList<FancyMessage> enemies = new ArrayList<FancyMessage>();
-        FancyMessage currentAllies = new FancyMessage("Allies: ").color(ChatColor.GOLD);
-        FancyMessage currentEnemies = new FancyMessage("Enemies: ").color(ChatColor.GOLD);
+        FancyMessage currentAllies = new FancyMessage(TL.COMMAND_SHOW_ALLIES.toString()).color(ChatColor.GOLD);
+        FancyMessage currentEnemies = new FancyMessage(TL.COMMAND_SHOW_ENEMIES.toString()).color(ChatColor.GOLD);
 
         boolean firstAlly = true;
         boolean firstEnemy = true;
@@ -126,8 +129,8 @@ public class CmdShow extends FCommand {
         allies.add(currentAllies);
         enemies.add(currentEnemies);
 
-        FancyMessage online = new FancyMessage("Members online: ").color(ChatColor.GOLD);
-        FancyMessage offline = new FancyMessage("Members offline: ").color(ChatColor.GOLD);
+        FancyMessage online = new FancyMessage(TL.COMMAND_SHOW_MEMBERSONLINE.toString()).color(ChatColor.GOLD);
+        FancyMessage offline = new FancyMessage(TL.COMMAND_SHOW_MEMBERSOFFLINE.toString()).color(ChatColor.GOLD);
         boolean firstOnline = true;
         boolean firstOffline = true;
         for (FPlayer p : MiscUtil.rankOrder(faction.getFPlayers())) {

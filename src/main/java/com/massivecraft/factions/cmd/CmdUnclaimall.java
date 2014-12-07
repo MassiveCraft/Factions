@@ -6,6 +6,8 @@ import com.massivecraft.factions.P;
 import com.massivecraft.factions.event.LandUnclaimAllEvent;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.zcore.util.TL;
+
 import org.bukkit.Bukkit;
 
 public class CmdUnclaimall extends FCommand {
@@ -31,11 +33,11 @@ public class CmdUnclaimall extends FCommand {
         if (Econ.shouldBeUsed()) {
             double refund = Econ.calculateTotalLandRefund(myFaction.getLandRounded());
             if (Conf.bankEnabled && Conf.bankFactionPaysLandCosts) {
-                if (!Econ.modifyMoney(myFaction, refund, "to unclaim all faction land", "for unclaiming all faction land")) {
+                if (!Econ.modifyMoney(myFaction, refund, TL.COMMAND_UNCLAIMALL_TOUNCLAIM.toString(), TL.COMMAND_UNCLAIMALL_FORUNCLAIM.toString())) {
                     return;
                 }
             } else {
-                if (!Econ.modifyMoney(fme, refund, "to unclaim all faction land", "for unclaiming all faction land")) {
+                if (!Econ.modifyMoney(fme, refund, TL.COMMAND_UNCLAIMALL_TOUNCLAIM.toString(), TL.COMMAND_UNCLAIMALL_FORUNCLAIM.toString())) {
                     return;
                 }
             }
@@ -46,10 +48,10 @@ public class CmdUnclaimall extends FCommand {
         // this event cannot be cancelled
 
         Board.getInstance().unclaimAll(myFaction.getId());
-        myFaction.msg("%s<i> unclaimed ALL of your faction's land.", fme.describeTo(myFaction, true));
+        myFaction.msg(TL.COMMAND_UNCLAIMALL_UNCLAIMED, fme.describeTo(myFaction, true));
 
         if (Conf.logLandUnclaims) {
-            P.p.log(fme.getName() + " unclaimed everything for the faction: " + myFaction.getTag());
+            P.p.log(TL.COMMAND_UNCLAIMALL_LOG.format(fme.getName(),myFaction.getTag()));
         }
     }
 

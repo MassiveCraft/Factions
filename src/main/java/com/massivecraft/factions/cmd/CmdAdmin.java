@@ -6,6 +6,8 @@ import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.event.FPlayerJoinEvent;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.zcore.util.TL;
+
 import org.bukkit.Bukkit;
 
 public class CmdAdmin extends FCommand {
@@ -37,17 +39,17 @@ public class CmdAdmin extends FCommand {
         Faction targetFaction = fyou.getFaction();
 
         if (targetFaction != myFaction && !permAny) {
-            msg("%s<i> is not a member in your faction.", fyou.describeTo(fme, true));
+            msg(TL.COMMAND_ADMIN_NOTMEMBER, fyou.describeTo(fme, true));
             return;
         }
 
         if (fme != null && fme.getRole() != Role.ADMIN && !permAny) {
-            msg("<b>You are not the faction admin.");
+            msg(TL.COMMAND_ADMIN_NOTADMIN);
             return;
         }
 
         if (fyou == fme && !permAny) {
-            msg("<b>The target player musn't be yourself.");
+            msg(TL.COMMAND_ADMIN_TARGETSELF);
             return;
         }
 
@@ -65,8 +67,8 @@ public class CmdAdmin extends FCommand {
         // if target player is currently admin, demote and replace him
         if (fyou == admin) {
             targetFaction.promoteNewLeader();
-            msg("<i>You have demoted %s<i> from the position of faction admin.", fyou.describeTo(fme, true));
-            fyou.msg("<i>You have been demoted from the position of faction admin by %s<i>.", senderIsConsole ? "a server admin" : fme.describeTo(fyou, true));
+            msg(TL.COMMAND_ADMIN_DEMOTES, fyou.describeTo(fme, true));
+            fyou.msg(TL.COMMAND_ADMIN_DEMOTED, senderIsConsole ? TL.GENERIC_SERVERADMIN.toString() : fme.describeTo(fyou, true));
             return;
         }
 
@@ -75,11 +77,11 @@ public class CmdAdmin extends FCommand {
             admin.setRole(Role.MODERATOR);
         }
         fyou.setRole(Role.ADMIN);
-        msg("<i>You have promoted %s<i> to the position of faction admin.", fyou.describeTo(fme, true));
+        msg(TL.COMMAND_ADMIN_PROMOTES, fyou.describeTo(fme, true));
 
         // Inform all players
         for (FPlayer fplayer : FPlayers.getInstance().getOnlinePlayers()) {
-            fplayer.msg("%s<i> gave %s<i> the leadership of %s<i>.", senderIsConsole ? "A server admin" : fme.describeTo(fplayer, true), fyou.describeTo(fplayer), targetFaction.describeTo(fplayer));
+            fplayer.msg(TL.COMMAND_ADMIN_PROMOTED, senderIsConsole ? TL.GENERIC_SERVERADMIN.toString() : fme.describeTo(fplayer, true), fyou.describeTo(fplayer), targetFaction.describeTo(fplayer));
         }
     }
 

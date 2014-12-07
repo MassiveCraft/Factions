@@ -148,10 +148,10 @@ public class TextUtil {
         ret.add(this.titleize(title + " " + pageHumanBased + "/" + pagecount));
 
         if (pagecount == 0) {
-            ret.add(this.parseTags("<i>Sorry. No Pages available."));
+            ret.add(this.parseTags(TL.NOPAGES.toString()));
             return ret;
         } else if (pageZeroBased < 0 || pageHumanBased > pagecount) {
-            ret.add(this.parseTags("<i>Invalid page. Must be between 1 and " + pagecount));
+            ret.add(this.parseTags(TL.INVALIDPAGE.format(pagecount)));
             return ret;
         }
 

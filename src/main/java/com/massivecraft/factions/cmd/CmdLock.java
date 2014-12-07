@@ -1,6 +1,7 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdLock extends FCommand {
 
@@ -30,12 +31,7 @@ public class CmdLock extends FCommand {
     @Override
     public void perform() {
         p.setLocked(this.argAsBool(0, !p.getLocked()));
-
-        if (p.getLocked()) {
-            msg("<i>Factions is now locked");
-        } else {
-            msg("<i>Factions in now unlocked");
-        }
+        msg(p.getLocked()?TL.COMMAND_LOCK_LOCKED:TL.COMMAND_LOCK_UNLOCKED);
     }
 
 }

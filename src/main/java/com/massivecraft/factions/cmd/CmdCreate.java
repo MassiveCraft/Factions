@@ -6,6 +6,8 @@ import com.massivecraft.factions.event.FactionCreateEvent;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.MiscUtil;
+import com.massivecraft.factions.zcore.util.TL;
+
 import org.bukkit.Bukkit;
 
 import java.util.ArrayList;
@@ -34,12 +36,12 @@ public class CmdCreate extends FCommand {
         String tag = this.argAsString(0);
 
         if (fme.hasFaction()) {
-            msg("<b>You must leave your current faction first.");
+            msg(TL.COMMAND_CREATE_MUSTLEAVE);
             return;
         }
 
         if (Factions.getInstance().isTagTaken(tag)) {
-            msg("<b>That tag is already in use.");
+            msg(TL.COMMAND_CREATE_INUSE);
             return;
         }
 
@@ -50,7 +52,7 @@ public class CmdCreate extends FCommand {
         }
 
         // if economy is enabled, they're not on the bypass list, and this command has a cost set, make sure they can pay
-        if (!canAffordCommand(Conf.econCostCreate, "to create a new faction")) {
+        if (!canAffordCommand(Conf.econCostCreate, TL.COMMAND_CREATE_TOCREATE.toString())) {
             return;
         }
 
@@ -62,7 +64,7 @@ public class CmdCreate extends FCommand {
         }
 
         // then make 'em pay (if applicable)
-        if (!payForCommand(Conf.econCostCreate, "to create a new faction", "for creating a new faction")) {
+        if (!payForCommand(Conf.econCostCreate, TL.COMMAND_CREATE_TOCREATE, TL.COMMAND_CREATE_FORCREATE)) {
             return;
         }
 
@@ -70,7 +72,7 @@ public class CmdCreate extends FCommand {
 
         // TODO: Why would this even happen??? Auto increment clash??
         if (faction == null) {
-            msg("<b>There was an internal error while trying to create your faction. Please try again.");
+            msg(TL.COMMAND_CREATE_ERROR);
             return;
         }
 
@@ -87,13 +89,13 @@ public class CmdCreate extends FCommand {
         fme.setFaction(faction);
 
         for (FPlayer follower : FPlayers.getInstance().getOnlinePlayers()) {
-            follower.msg("%s<i> created a new faction %s", fme.describeTo(follower, true), faction.getTag(follower));
+            follower.msg(TL.COMMAND_CREATE_CREATED, fme.describeTo(follower, true), faction.getTag(follower));
         }
 
-        msg("<i>You should now: %s", p.cmdBase.cmdDescription.getUseageTemplate());
+        msg(TL.COMMAND_CREATE_YOUSHOULD, p.cmdBase.cmdDescription.getUseageTemplate());
 
         if (Conf.logFactionCreate) {
-            P.p.log(fme.getName() + " created a new faction: " + tag);
+            P.p.log(fme.getName() + TL.COMMAND_CREATE_CREATED_LOG.toString() + tag);
         }
     }
 

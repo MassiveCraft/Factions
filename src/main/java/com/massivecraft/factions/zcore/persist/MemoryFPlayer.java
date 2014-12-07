@@ -15,6 +15,8 @@ import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.RelationUtil;
+import com.massivecraft.factions.zcore.util.TL;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -763,6 +765,10 @@ public abstract class MemoryFPlayer implements FPlayer {
 
     public void msg(String str, Object... args) {
         this.sendMessage(P.p.txt.parse(str, args));
+    }
+    
+    public void msg(TL translation,Object... args){
+    	this.msg(translation.toString(), args);
     }
 
     public Player getPlayer() {

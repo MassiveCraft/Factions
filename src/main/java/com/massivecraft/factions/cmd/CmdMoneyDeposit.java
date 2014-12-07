@@ -5,6 +5,8 @@ import com.massivecraft.factions.P;
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.zcore.util.TL;
+
 import org.bukkit.ChatColor;
 
 
@@ -19,7 +21,7 @@ public class CmdMoneyDeposit extends FCommand {
         this.optionalArgs.put("faction", "yours");
 
         this.permission = Permission.MONEY_DEPOSIT.node;
-        this.setHelpShort("deposit money");
+        this.setHelpShort(TL.COMMAND_MONEYDEPOSIT_SHORT.toString());
 
         senderMustBePlayer = true;
         senderMustBeMember = false;
@@ -37,7 +39,7 @@ public class CmdMoneyDeposit extends FCommand {
         boolean success = Econ.transferMoney(fme, fme, faction, amount);
 
         if (success && Conf.logMoneyTransactions) {
-            P.p.log(ChatColor.stripColor(P.p.txt.parse("%s deposited %s in the faction bank: %s", fme.getName(), Econ.moneyString(amount), faction.describeTo(null))));
+            P.p.log(ChatColor.stripColor(P.p.txt.parse(TL.COMMAND_MONEYDEPOSIT_DEPOSITED.toString(), fme.getName(), Econ.moneyString(amount), faction.describeTo(null))));
         }
     }
 

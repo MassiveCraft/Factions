@@ -21,6 +21,7 @@ public class CmdPermanentPower extends FCommand {
         senderMustBeAdmin = false;
     }
 
+    //TODO: TL
     @Override
     public void perform() {
         Faction targetFaction = this.argAsFaction(0);

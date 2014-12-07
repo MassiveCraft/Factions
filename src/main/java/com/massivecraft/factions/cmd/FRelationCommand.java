@@ -6,6 +6,8 @@ import com.massivecraft.factions.event.FactionRelationEvent;
 import com.massivecraft.factions.scoreboards.FTeamWrapper;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
+import com.massivecraft.factions.zcore.util.TL;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
@@ -35,22 +37,22 @@ public abstract class FRelationCommand extends FCommand {
         }
 
         if (!them.isNormal()) {
-            msg("<b>Nope! You can't.");
+            msg(TL.COMMAND_RELATIONS_ALLTHENOPE);
             return;
         }
 
         if (them == myFaction) {
-            msg("<b>Nope! You can't declare a relation to yourself :)");
+            msg(TL.COMMAND_RELATIONS_MORENOPE);
             return;
         }
 
         if (myFaction.getRelationWish(them) == targetRelation) {
-            msg("<b>You already have that relation wish set with %s.", them.getTag());
+            msg(TL.COMMAND_RELATIONS_ALREADYINRELATIONSHIP, them.getTag());
             return;
         }
 
         // if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-        if (!payForCommand(targetRelation.getRelationCost(), "to change a relation wish", "for changing a relation wish")) {
+        if (!payForCommand(targetRelation.getRelationCost(),TL.COMMAND_RELATIONS_TOMARRY , TL.COMMAND_RELATIONS_FORMARRY)) {
             return;
         }
 
@@ -66,24 +68,25 @@ public abstract class FRelationCommand extends FCommand {
             FactionRelationEvent relationEvent = new FactionRelationEvent(myFaction, them, oldRelation, currentRelation);
             Bukkit.getServer().getPluginManager().callEvent(relationEvent);
 
-            them.msg("<i>Your faction is now " + currentRelationColor + targetRelation.toString() + "<i> to " + currentRelationColor + myFaction.getTag());
-            myFaction.msg("<i>Your faction is now " + currentRelationColor + targetRelation.toString() + "<i> to " + currentRelationColor + them.getTag());
+            them.msg(TL.COMMAND_RELATIONS_MUTUAL, currentRelationColor + targetRelation.getTranslation() ,currentRelationColor + myFaction.getTag());
+            myFaction.msg(TL.COMMAND_RELATIONS_MUTUAL, currentRelationColor + targetRelation.getTranslation() ,currentRelationColor + myFaction.getTag());
         }
         // inform the other faction of your request
         else {
-            them.msg(currentRelationColor + myFaction.getTag() + "<i> wishes to be your " + targetRelation.getColor() + targetRelation.toString());
-            them.msg("<i>Type <c>/" + Conf.baseCommandAliases.get(0) + " " + targetRelation + " " + myFaction.getTag() + "<i> to accept.");
-            myFaction.msg(currentRelationColor + them.getTag() + "<i> were informed that you wish to be " + targetRelation.getColor() + targetRelation);
+        	
+            them.msg(TL.COMMAND_RELATIONS_PROPOSAL_1,currentRelationColor + myFaction.getTag(),targetRelation.getColor() + targetRelation.getTranslation());
+            them.msg(TL.COMMAND_RELATIONS_PROPOSAL_2,Conf.baseCommandAliases.get(0),targetRelation,myFaction.getTag());
+            myFaction.msg(TL.COMMAND_RELATIONS_PROPOSAL_SENT,currentRelationColor + them.getTag(),"" + targetRelation.getColor() + targetRelation);
         }
 
         if (!targetRelation.isNeutral() && them.isPeaceful()) {
-            them.msg("<i>This will have no effect while your faction is peaceful.");
-            myFaction.msg("<i>This will have no effect while their faction is peaceful.");
+            them.msg(TL.COMMAND_RELATIONS_PEACEFUL);
+            myFaction.msg(TL.COMMAND_RELATIONS_PEACEFULOTHER);
         }
 
         if (!targetRelation.isNeutral() && myFaction.isPeaceful()) {
-            them.msg("<i>This will have no effect while their faction is peaceful.");
-            myFaction.msg("<i>This will have no effect while your faction is peaceful.");
+            them.msg(TL.COMMAND_RELATIONS_PEACEFULOTHER);
+            myFaction.msg(TL.COMMAND_RELATIONS_PEACEFUL);
         }
 
         FTeamWrapper.updatePrefixes(myFaction);

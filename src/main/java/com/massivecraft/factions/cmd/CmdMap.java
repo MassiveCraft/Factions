@@ -4,6 +4,7 @@ import com.massivecraft.factions.Board;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.zcore.util.TL;
 
 
 public class CmdMap extends FCommand {
@@ -36,18 +37,18 @@ public class CmdMap extends FCommand {
                 }
 
                 fme.setMapAutoUpdating(true);
-                msg("<i>Map auto update <green>ENABLED.");
+                msg(TL.COMMAND_MAP_UPDATE_ENABLED);
 
                 // And show the map once
                 showMap();
             } else {
                 // Turn off
                 fme.setMapAutoUpdating(false);
-                msg("<i>Map auto update <red>DISABLED.");
+                msg(TL.COMMAND_MAP_UPDATE_DISABLED);
             }
         } else {
             // if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-            if (!payForCommand(Conf.econCostMap, "to show the map", "for showing the map")) {
+            if (!payForCommand(Conf.econCostMap, TL.COMMAND_MAP_TOSHOW, TL.COMMAND_MAP_FORSHOW)) {
                 return;
             }
 
@@ -55,7 +56,7 @@ public class CmdMap extends FCommand {
         }
     }
 
-    public void showMap() {
+	public void showMap() {
         sendMessage(Board.getInstance().getMap(myFaction, new FLocation(fme), fme.getPlayer().getLocation().getYaw()));
     }
 

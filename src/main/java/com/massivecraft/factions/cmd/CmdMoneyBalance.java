@@ -3,6 +3,7 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdMoneyBalance extends FCommand {
 
@@ -15,7 +16,7 @@ public class CmdMoneyBalance extends FCommand {
         this.optionalArgs.put("faction", "yours");
 
         this.permission = Permission.MONEY_BALANCE.node;
-        this.setHelpShort("show faction balance");
+        this.setHelpShort(TL.COMMAND_MONEYBALANCE_SHORT.toString());
 
         senderMustBePlayer = false;
         senderMustBeMember = false;

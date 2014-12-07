@@ -3,6 +3,7 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdReload extends FCommand {
 
@@ -30,6 +31,6 @@ public class CmdReload extends FCommand {
 
         long timeReload = (System.currentTimeMillis() - timeInitStart);
 
-        msg("<i>Reloaded <h>conf.json <i>from disk, took <h>%dms<i>.", timeReload);
+        msg(TL.COMMAND_RELOAD_TIME, timeReload);
     }
 }

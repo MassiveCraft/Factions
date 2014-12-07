@@ -4,6 +4,7 @@ import com.massivecraft.factions.Board;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.zcore.util.TL;
 
 
 public class CmdOwnerList extends FCommand {
@@ -33,7 +34,7 @@ public class CmdOwnerList extends FCommand {
         }
 
         if (!Conf.ownedAreasEnabled) {
-            fme.msg("<b>Owned areas are disabled on this server.");
+            fme.msg(TL.COMMAND_OWNERLIST_DISABLED);
             return;
         }
 
@@ -41,13 +42,13 @@ public class CmdOwnerList extends FCommand {
 
         if (Board.getInstance().getFactionAt(flocation) != myFaction) {
             if (!hasBypass) {
-                fme.msg("<b>This land is not claimed by your faction.");
+                fme.msg(TL.COMMAND_OWNERLIST_WRONGFACTION);
                 return;
             }
-
+            //TODO: This code won't ever be called.
             myFaction = Board.getInstance().getFactionAt(flocation);
             if (!myFaction.isNormal()) {
-                fme.msg("<i>This land is not claimed by any faction, thus no owners.");
+                fme.msg(TL.COMMAND_OWNERLIST_NOTCLAIMED);
                 return;
             }
         }
@@ -55,10 +56,10 @@ public class CmdOwnerList extends FCommand {
         String owners = myFaction.getOwnerListString(flocation);
 
         if (owners == null || owners.isEmpty()) {
-            fme.msg("<i>No owners are set here; everyone in the faction has access.");
+            fme.msg(TL.COMMAND_OWNERLIST_NONE);
             return;
         }
 
-        fme.msg("<i>Current owner(s) of this land: %s", owners);
+        fme.msg(TL.COMMAND_OWNERLIST_OWNERS, owners);
     }
 }
