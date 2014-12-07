@@ -104,7 +104,7 @@ public class CmdShow extends FCommand {
                 }
                 firstAlly = false;
 
-                if (currentAllies.toJSONString().length() >= 32700) { // Client gets kicked at 32767, some leniency
+                if (currentAllies.toJSONString().length() > Short.MAX_VALUE) {
                     allies.add(currentAllies);
                     currentAllies = new FancyMessage();
                 }
@@ -116,7 +116,7 @@ public class CmdShow extends FCommand {
                 }
                 firstEnemy = false;
 
-                if (currentEnemies.toJSONString().length() >= 32700) { // Client gets kicked at 32767, some leniency
+                if (currentEnemies.toJSONString().length() > Short.MAX_VALUE) {
                     enemies.add(currentEnemies);
                     currentEnemies = new FancyMessage();
                 }
@@ -138,6 +138,9 @@ public class CmdShow extends FCommand {
                     online.then(", " + name).tooltip(getToolTips(p));
                 }
                 firstOnline = false;
+                if (online.toJSONString().length() > Short.MAX_VALUE) {
+                    online = new FancyMessage();
+                }
             } else {
                 if (firstOffline) {
                     offline.then(name).tooltip(getToolTips(p));
@@ -145,6 +148,9 @@ public class CmdShow extends FCommand {
                     offline.then(", " + name).tooltip(getToolTips(p));
                 }
                 firstOffline = false;
+                if (offline.toJSONString().length() > Short.MAX_VALUE) {
+                    offline = new FancyMessage();
+                }
             }
         }
 
