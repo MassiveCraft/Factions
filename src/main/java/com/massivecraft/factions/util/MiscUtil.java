@@ -1,6 +1,7 @@
 package com.massivecraft.factions.util;
 
 import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.P;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Creature;
@@ -10,6 +11,7 @@ import org.bukkit.entity.EntityType;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 
 public class MiscUtil {
 
@@ -76,6 +78,34 @@ public class MiscUtil {
         }
 
         return errors;
+    }
+
+    public static Iterable<FPlayer> rankOrder(Iterable<FPlayer> players) {
+        List<FPlayer> admins = new ArrayList<FPlayer>();
+        List<FPlayer> moderators = new ArrayList<FPlayer>();
+        List<FPlayer> normal = new ArrayList<FPlayer>();
+
+        for (FPlayer player : players) {
+            switch (player.getRole()) {
+                case ADMIN:
+                    admins.add(player);
+                    break;
+
+                case MODERATOR:
+                    moderators.add(player);
+                    break;
+
+                case NORMAL:
+                    normal.add(player);
+                    break;
+            }
+        }
+
+        List<FPlayer> ret = new ArrayList<FPlayer>();
+        ret.addAll(admins);
+        ret.addAll(moderators);
+        ret.addAll(normal);
+        return ret;
     }
 }
 

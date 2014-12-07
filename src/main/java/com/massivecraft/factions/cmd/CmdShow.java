@@ -7,6 +7,7 @@ import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
+import com.massivecraft.factions.util.MiscUtil;
 import mkremins.fanciful.FancyMessage;
 import org.bukkit.ChatColor;
 
@@ -129,7 +130,7 @@ public class CmdShow extends FCommand {
         FancyMessage offline = new FancyMessage("Members offline: ").color(ChatColor.GOLD);
         boolean firstOnline = true;
         boolean firstOffline = true;
-        for (FPlayer p : faction.getFPlayers()) {
+        for (FPlayer p : MiscUtil.rankOrder(faction.getFPlayers())) {
             String name = p.getNameAndTitle();
             if (p.isOnline()) {
                 if (firstOnline) {
