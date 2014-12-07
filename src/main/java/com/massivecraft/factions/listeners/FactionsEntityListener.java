@@ -260,7 +260,13 @@ public class FactionsEntityListener implements Listener {
 
         // for damage caused by projectiles, getDamager() returns the projectile... what we need to know is the source
         if (damager instanceof Projectile) {
-            damager = (Entity) ((Projectile) damager).getShooter();
+            Projectile projectile = (Projectile) damager;
+
+            if (!(projectile.getShooter() instanceof Entity)) {
+                return true;
+            }
+
+            damager = (Entity) projectile.getShooter();
         }
 
         if (damager == damagee)  // ender pearl usage and other self-inflicted damage
