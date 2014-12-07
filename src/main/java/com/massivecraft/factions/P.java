@@ -96,6 +96,7 @@ public class P extends MPlugin {
             faction.addFPlayer(fPlayer);
         }
         Board.getInstance().load();
+        Board.getInstance().clean();
 
         // Add Base Commands
         this.cmdBase = new FCmdRoot();
