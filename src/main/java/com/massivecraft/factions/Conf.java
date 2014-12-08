@@ -269,7 +269,20 @@ public class Conf {
     public static int dynmapLayerMinimumZoom = 0;
 
     // Format for popup - substitute values for macros
-    public static String dynmapDescription = "<div class=\"infowindow\">\n" + "<span style=\"font-weight: bold; font-size: 150%;\">%name%</span><br>\n" + "<span style=\"font-style: italic; font-size: 110%;\">%description%</span><br>" + "<br>\n" + "<span style=\"font-weight: bold;\">Leader:</span> %players.leader%<br>\n" + "<span style=\"font-weight: bold;\">Admins:</span> %players.admins.count%<br>\n" + "<span style=\"font-weight: bold;\">Moderators:</span> %players.moderators.count%<br>\n" + "<span style=\"font-weight: bold;\">Members:</span> %players.normals.count%<br>\n" + "<span style=\"font-weight: bold;\">TOTAL:</span> %players.count%<br>\n" + "</br>\n" + "<span style=\"font-weight: bold;\">Bank:</span> %money%<br>\n" + "<br>\n" + "</div>";
+    public static String dynmapDescription =
+        "<div class=\"infowindow\">\n"
+          + "<span style=\"font-weight: bold; font-size: 150%;\">%name%</span><br>\n"
+          + "<span style=\"font-style: italic; font-size: 110%;\">%description%</span><br>"
+          + "<br>\n"
+          + "<span style=\"font-weight: bold;\">Leader:</span> %players.leader%<br>\n"
+          + "<span style=\"font-weight: bold;\">Admins:</span> %players.admins.count%<br>\n"
+          + "<span style=\"font-weight: bold;\">Moderators:</span> %players.moderators.count%<br>\n"
+          + "<span style=\"font-weight: bold;\">Members:</span> %players.normals.count%<br>\n"
+          + "<span style=\"font-weight: bold;\">TOTAL:</span> %players.count%<br>\n"
+          + "</br>\n"
+          + "<span style=\"font-weight: bold;\">Bank:</span> %money%<br>\n"
+          + "<br>\n"
+      + "</div>";
 
     // Enable the %money% macro. Only do this if you know your economy manager is thread-safe.
     public static boolean dynmapDescriptionMoney = false;
@@ -297,11 +310,21 @@ public class Conf {
     public static final transient String DYNMAP_STYLE_HOME_MARKER = "greenflag";
     public static final transient boolean DYNMAP_STYLE_BOOST = false;
 
-    public static DynmapStyle dynmapDefaultStyle = new DynmapStyle().setStrokeColor(DYNMAP_STYLE_LINE_COLOR).setLineOpacity(DYNMAP_STYLE_LINE_OPACITY).setLineWeight(DYNMAP_STYLE_LINE_WEIGHT).setFillColor(DYNMAP_STYLE_FILL_COLOR).setFillOpacity(DYNMAP_STYLE_FILL_OPACITY).setHomeMarker(DYNMAP_STYLE_HOME_MARKER).setBoost(DYNMAP_STYLE_BOOST);
+    public static DynmapStyle dynmapDefaultStyle = new DynmapStyle()
+            .setStrokeColor(DYNMAP_STYLE_LINE_COLOR)
+            .setLineOpacity(DYNMAP_STYLE_LINE_OPACITY)
+            .setLineWeight(DYNMAP_STYLE_LINE_WEIGHT)
+            .setFillColor(DYNMAP_STYLE_FILL_COLOR)
+            .setFillOpacity(DYNMAP_STYLE_FILL_OPACITY)
+            .setHomeMarker(DYNMAP_STYLE_HOME_MARKER)
+            .setBoost(DYNMAP_STYLE_BOOST);
 
     // Optional per Faction style overrides. Any defined replace those in dynmapDefaultStyle.
     // Specify Faction either by name or UUID.
-    public static Map<String, DynmapStyle> dynmapFactionStyles = ImmutableMap.of("SafeZone", new DynmapStyle().setStrokeColor("#FF00FF").setFillColor("#FF00FF").setBoost(false), "WarZone", new DynmapStyle().setStrokeColor("#FF0000").setFillColor("#FF0000").setBoost(false));
+    public static Map<String, DynmapStyle> dynmapFactionStyles = ImmutableMap.of(
+            "SafeZone", new DynmapStyle().setStrokeColor("#FF00FF").setFillColor("#FF00FF").setBoost(false),
+            "WarZone", new DynmapStyle().setStrokeColor("#FF0000").setFillColor("#FF0000").setBoost(false)
+    );
 
 
     //Faction banks, to pay for land claiming and other costs instead of individuals paying for them
