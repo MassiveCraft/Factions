@@ -19,6 +19,19 @@ findfactionsexploit:
   cooldown: 2000 # in miliseconds. 2000 = 2 seconds.
   log: false
 
+### Hard Core Settings ###
+# Many of the features that are / are to come in this section have been requested by
+#   people in relation to HCF servers. All settings are set to the normal Factions
+#   behavior by default.
+
+# Default Relation allows you to change the default relation for Factions.
+# Example usage would be so people can't leave then make a new Faction while Raiding
+#   in order to be able to execute commands if the default relation is neutral.
+# This has always been neutral.
+default-relation: "neutral"
+
+### Hard Core Settings ###
+
 # Warps
 # What should be the max amount of warps that a Factoin can set?
 max-warps: 5

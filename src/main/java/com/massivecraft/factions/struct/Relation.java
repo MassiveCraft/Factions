@@ -2,7 +2,6 @@ package com.massivecraft.factions.struct;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.zcore.util.TL;
-
 import org.bukkit.ChatColor;
 
 
@@ -24,12 +23,27 @@ public enum Relation {
     public String toString() {
         return this.nicename;
     }
-    
-    public String getTranslation(){
-    	for(TL t:TL.values()){
-    		if(t.name().equals("RELATION_" + name())) return t.toString();
-    	}
-    	return toString();
+
+    public static Relation fromString(String s) {
+        // Because Java 6 doesn't allow String switches :(
+        if (s.equalsIgnoreCase("member")) {
+            return Relation.MEMBER;
+        } else if (s.equalsIgnoreCase("ally")) {
+            return Relation.ALLY;
+        } else if (s.equalsIgnoreCase("enemy")) {
+            return Relation.ENEMY;
+        } else {
+            return Relation.NEUTRAL; // If they somehow mess things up, go back to default behavior.
+        }
+    }
+
+    public String getTranslation() {
+        for (TL t : TL.values()) {
+            if (t.name().equals("RELATION_" + name())) {
+                return t.toString();
+            }
+        }
+        return toString();
     }
 
     public boolean isMember() {
