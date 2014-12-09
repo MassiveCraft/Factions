@@ -495,8 +495,18 @@ public class MConf extends Entity<MConf>
 	
 	public Set<Material> materialsDoor = MUtil.set(
 		Material.WOODEN_DOOR,
+		Material.ACACIA_DOOR,
+		Material.BIRCH_DOOR,
+		Material.DARK_OAK_DOOR,
+		Material.JUNGLE_DOOR,
+		Material.SPRUCE_DOOR,
 		Material.TRAP_DOOR,
-		Material.FENCE_GATE
+		Material.FENCE_GATE,
+		Material.ACACIA_FENCE_GATE,
+		Material.BIRCH_FENCE_GATE,
+		Material.DARK_OAK_FENCE_GATE,
+		Material.JUNGLE_FENCE_GATE,
+		Material.SPRUCE_FENCE_GATE
 	);
 	
 	public Set<Material> materialsContainer = MUtil.set(
@@ -516,7 +526,8 @@ public class MConf extends Entity<MConf>
 	
 	public Set<EntityType> entityTypesContainer = MUtil.set(
 		EntityType.MINECART_CHEST,
-		EntityType.MINECART_HOPPER
+		EntityType.MINECART_HOPPER,
+		EntityType.ARMOR_STAND
 	);
 	
 	public Set<EntityType> entityTypesMonsters = MUtil.set(
@@ -525,6 +536,7 @@ public class MConf extends Entity<MConf>
 		EntityType.CREEPER,
 		EntityType.ENDERMAN,
 		EntityType.ENDER_DRAGON,
+		EntityType.GAURDIAN,
 		EntityType.GHAST,
 		EntityType.GIANT,
 		EntityType.MAGMA_CUBE,
