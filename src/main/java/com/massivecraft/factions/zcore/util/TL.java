@@ -28,10 +28,22 @@ public enum TL {
 	 * Translation meta
 	 */
 	_AUTHOR("misc"),
+	_RESPONSIBLE("misc"),
 	_LANGUAGE("English"),
 	_ENCODING("UTF-8"),
+	_LOCALE("en_US"),
 	_REQUIRESUNICODE("false"),
 	_DEFAULT("true"),
+	_STATE("complete"), //incomplete, limited, partial, majority, complete
+	/**
+	 * Localised translation meta
+	 */
+	_LOCAL_AUTHOR("misc"),
+	_LOCAL_RESPONSIBLE("misc"),
+	_LOCAL_LANGUAGE("English"),
+	_LOCAL_REGION("US"),
+	_LOCAL_STATE("complete"), //And this is the English version. It's not ever going to be not complete.
+	
 	/**
 	 * Command translations
 	 */
@@ -110,7 +122,7 @@ public enum TL {
 	COMMAND_CREATE_CREATED_LOG(" created a new faction: "),
 	
 	COMMAND_DEINVITE_CANDEINVITE("Players you can deinvite: "),
-	COMMAND_DEINVITE_CLICKTODEINVITE("Click to revoke invite for "),
+	COMMAND_DEINVITE_CLICKTODEINVITE("Click to revoke invite for %s"),
 	COMMAND_DEINVITE_ALREADYMEMBER("%s<i> is already a member of %s"),
 	COMMAND_DEINVITE_MIGHTWANT("<i>You might want to: %s"),
 	COMMAND_DEINVITE_REVOKED("%s<i> revoked your invitation to <h>%s<i>."),
@@ -405,13 +417,17 @@ public enum TL {
 	/**
 	 * More generic translations, which will apply to more than one class. 
 	 */
-	GENERIC_SERVERADMIN("generic.serveradmin","A server admin"),
-	GENERIC_DISABLED("generic.disabled","disabled"),
-	GENERIC_ENABLED("generic.enabled","enabled"),
-	GENERIC_CONSOLEONLY("generic.consoleonly","This command cannot be run as a player."),
+	GENERIC_SERVERADMIN("A server admin"),
+	GENERIC_DISABLED("disabled"),
+	GENERIC_ENABLED("enabled"),
+	GENERIC_CONSOLEONLY("This command cannot be run as a player."),
 	GENERIC_ASKYOURLEADER("<i> Ask your leader to:"),
 	GENERIC_YOUSHOULD("<i>You should:"),
 	GENERIC_YOUMAYWANT("<i>You may want to: "),
+	GENERIC_TRANSLATION_VERSION("Translation: %s(%s,%s) State: %s"),
+	GENERIC_TRANSLATION_CONTRIBUTORS("Translation contributors: %s"),
+	GENERIC_TRANSLATION_RESPONSIBLE("Responsible for translation: %s"),
+	
 	/**
 	 * Relations
 	 */

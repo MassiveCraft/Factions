@@ -25,5 +25,8 @@ public class CmdVersion extends FCommand {
     @Override
     public void perform() {
         msg(TL.COMMAND_VERSION_VERSION,P.p.getDescription().getFullName());
+        msg(TL.GENERIC_TRANSLATION_VERSION,TL._LOCALE,TL._LOCAL_LANGUAGE,TL._LOCAL_REGION,TL._LOCAL_STATE);
+        msg(TL.GENERIC_TRANSLATION_CONTRIBUTORS,TL._LOCAL_AUTHOR);
+        msg(TL.GENERIC_TRANSLATION_RESPONSIBLE,TL._LOCAL_RESPONSIBLE);
     }
 }
