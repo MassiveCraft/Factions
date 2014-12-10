@@ -7,6 +7,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.massivecraft.factions.EconomyParticipator;
@@ -830,7 +831,16 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 		// Event
 		// NOTE: We listen to this event ourselves at LOW.
 		// NOTE: That is where we apply the standard checks.
-		EventFactionsChunksChange event = new EventFactionsChunksChange(this.getSender(), chunks, newFaction);
+		CommandSender sender = this.getSender();
+		if (sender == null)
+		{
+			msg("<b>ERROR: Your \"CommandSender Link\" has been severed. This shouldn't happen.");
+			msg("<b>Help the Factions developers by reporting this at: <aqua>https://github.com/MassiveCraft/Factions/issues");
+			msg("<b>Describe what you were doing, what client you are using, if this is your first time on the server etc. The more the better.");
+			msg("<g>Relogging to the server should fix the issue.");
+			return false;
+		}
+		EventFactionsChunksChange event = new EventFactionsChunksChange(sender, chunks, newFaction);
 		event.run();
 		if (event.isCancelled()) return false;
 		

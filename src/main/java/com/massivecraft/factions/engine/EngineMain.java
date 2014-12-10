@@ -472,6 +472,20 @@ public class EngineMain extends EngineAbstract
 	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
 	public void onChunksChange(EventFactionsChunksChange event)
 	{
+		// For security reasons we block the chunk change on any error since an error might block security checks from happening.
+		try
+		{
+			onChunksChangeInner(event);
+		}
+		catch (Throwable throwable)
+		{
+			event.setCancelled(true);
+			throwable.printStackTrace();
+		}
+	}
+	
+	public void onChunksChangeInner(EventFactionsChunksChange event)
+	{
 		// Args
 		final MPlayer msender = event.getMSender();
 		final Faction newFaction = event.getNewFaction();
