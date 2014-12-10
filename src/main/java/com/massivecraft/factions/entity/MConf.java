@@ -536,7 +536,7 @@ public class MConf extends Entity<MConf>
 		EntityType.CREEPER,
 		EntityType.ENDERMAN,
 		EntityType.ENDER_DRAGON,
-		EntityType.GAURDIAN,
+		EntityType.GUARDIAN,
 		EntityType.GHAST,
 		EntityType.GIANT,
 		EntityType.MAGMA_CUBE,
