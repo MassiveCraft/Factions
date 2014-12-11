@@ -9,9 +9,7 @@ import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.factions.zcore.util.TL;
-
 import mkremins.fanciful.FancyMessage;
-
 import org.bukkit.ChatColor;
 
 import java.util.ArrayList;
@@ -49,42 +47,13 @@ public class CmdShow extends FCommand {
             return;
         }
 
-        msg(p.txt.titleize(faction.getTag(fme)));
-        msg(TL.COMMAND_SHOW_DESCRIPTION, faction.getDescription());
-        if (!faction.isNormal()) {
-            return;
-        }
-
         String peaceStatus = "";
         if (faction.isPeaceful()) {
             peaceStatus = "     " + Conf.colorNeutral + TL.COMMAND_SHOW_PEACEFUL.toString();
         }
 
-        msg(TL.COMMAND_SHOW_JOINING.toString() + peaceStatus,(faction.getOpen() ? TL.COMMAND_SHOW_UNINVITED.toString() : TL.COMMAND_SHOW_INVITATION.toString()));
-
         double powerBoost = faction.getPowerBoost();
-        String boost = (powerBoost == 0.0) ? "" : (powerBoost > 0.0 ? TL.COMMAND_SHOW_BONUS.toString():TL.COMMAND_SHOW_PENALTY.toString() + powerBoost + ")");
-        msg(TL.COMMAND_SHOW_POWER, faction.getLandRounded(), faction.getPowerRounded(), faction.getPowerMaxRounded(), boost);
-
-        if (faction.isPermanent()) {
-            msg(TL.COMMAND_SHOW_PERMANENT);
-        }
-
-        // show the land value
-        if (Econ.shouldBeUsed()) {
-            double value = Econ.calculateTotalLandValue(faction.getLandRounded());
-            double refund = value * Conf.econClaimRefundMultiplier;
-            if (value > 0) {
-                String stringValue = Econ.moneyString(value);
-                String stringRefund = (refund > 0.0) ? (TL.COMMAND_SHOW_DEPRECIATED.format(Econ.moneyString(refund))) : "";
-                msg(TL.COMMAND_SHOW_LANDVALUE,stringValue,stringRefund);
-            }
-
-            //Show bank contents
-            if (Conf.bankEnabled) {
-                msg(TL.COMMAND_SHOW_BANKCONTAINS,Econ.moneyString(Econ.getBalance(faction.getAccountId())));
-            }
-        }
+        String boost = (powerBoost == 0.0) ? "" : (powerBoost > 0.0 ? TL.COMMAND_SHOW_BONUS.toString() : TL.COMMAND_SHOW_PENALTY.toString() + powerBoost + ")");
 
         ArrayList<FancyMessage> allies = new ArrayList<FancyMessage>();
         ArrayList<FancyMessage> enemies = new ArrayList<FancyMessage>();
@@ -159,6 +128,32 @@ public class CmdShow extends FCommand {
         }
 
         // Send all at once ;D
+        msg(p.txt.titleize(faction.getTag(fme)));
+        msg(TL.COMMAND_SHOW_DESCRIPTION, faction.getDescription());
+        if (!faction.isNormal()) {
+            return;
+        }
+        msg(TL.COMMAND_SHOW_JOINING.toString() + peaceStatus, (faction.getOpen() ? TL.COMMAND_SHOW_UNINVITED.toString() : TL.COMMAND_SHOW_INVITATION.toString()));
+        msg(TL.COMMAND_SHOW_POWER, faction.getLandRounded(), faction.getPowerRounded(), faction.getPowerMaxRounded(), boost);
+        if (faction.isPermanent()) {
+            msg(TL.COMMAND_SHOW_PERMANENT);
+        }
+        // show the land value
+        if (Econ.shouldBeUsed()) {
+            double value = Econ.calculateTotalLandValue(faction.getLandRounded());
+            double refund = value * Conf.econClaimRefundMultiplier;
+            if (value > 0) {
+                String stringValue = Econ.moneyString(value);
+                String stringRefund = (refund > 0.0) ? (TL.COMMAND_SHOW_DEPRECIATED.format(Econ.moneyString(refund))) : "";
+                msg(TL.COMMAND_SHOW_LANDVALUE, stringValue, stringRefund);
+            }
+
+            //Show bank contents
+            if (Conf.bankEnabled) {
+                msg(TL.COMMAND_SHOW_BANKCONTAINS, Econ.moneyString(Econ.getBalance(faction.getAccountId())));
+            }
+        }
+        
         sendFancyMessage(allies);
         sendFancyMessage(enemies);
         sendFancyMessage(online);
