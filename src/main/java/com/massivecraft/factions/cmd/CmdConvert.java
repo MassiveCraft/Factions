@@ -4,7 +4,6 @@ import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.Conf.Backend;
 import com.massivecraft.factions.zcore.persist.json.FactionsJSON;
 import com.massivecraft.factions.zcore.util.TL;
-
 import org.bukkit.command.ConsoleCommandSender;
 
 public class CmdConvert extends FCommand {

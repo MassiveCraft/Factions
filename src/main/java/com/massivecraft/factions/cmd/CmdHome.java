@@ -7,7 +7,6 @@ import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.util.SmokeUtil;
 import com.massivecraft.factions.zcore.util.TL;
-
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -96,7 +95,7 @@ public class CmdHome extends FCommand {
                     continue;
                 }
 
-                fme.msg(TL.COMMAND_HOME_ENEMYNEAR,String.valueOf(Conf.homesTeleportAllowedEnemyDistance));
+                fme.msg(TL.COMMAND_HOME_ENEMYNEAR, String.valueOf(Conf.homesTeleportAllowedEnemyDistance));
                 return;
             }
         }

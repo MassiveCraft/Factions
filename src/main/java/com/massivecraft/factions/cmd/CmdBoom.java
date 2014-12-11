@@ -39,6 +39,6 @@ public class CmdBoom extends FCommand {
         String enabled = myFaction.noExplosionsInTerritory() ? TL.GENERIC_DISABLED.toString() : TL.GENERIC_ENABLED.toString();
 
         // Inform
-        myFaction.msg(TL.COMMAND_BOOM_ENABLED, fme.describeTo(myFaction),enabled);
+        myFaction.msg(TL.COMMAND_BOOM_ENABLED, fme.describeTo(myFaction), enabled);
     }
 }

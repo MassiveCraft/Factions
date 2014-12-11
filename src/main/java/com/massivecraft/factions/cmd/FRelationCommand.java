@@ -7,7 +7,6 @@ import com.massivecraft.factions.scoreboards.FTeamWrapper;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.zcore.util.TL;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
@@ -52,7 +51,7 @@ public abstract class FRelationCommand extends FCommand {
         }
 
         // if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-        if (!payForCommand(targetRelation.getRelationCost(),TL.COMMAND_RELATIONS_TOMARRY , TL.COMMAND_RELATIONS_FORMARRY)) {
+        if (!payForCommand(targetRelation.getRelationCost(), TL.COMMAND_RELATIONS_TOMARRY, TL.COMMAND_RELATIONS_FORMARRY)) {
             return;
         }
 
@@ -68,15 +67,15 @@ public abstract class FRelationCommand extends FCommand {
             FactionRelationEvent relationEvent = new FactionRelationEvent(myFaction, them, oldRelation, currentRelation);
             Bukkit.getServer().getPluginManager().callEvent(relationEvent);
 
-            them.msg(TL.COMMAND_RELATIONS_MUTUAL, currentRelationColor + targetRelation.getTranslation() ,currentRelationColor + myFaction.getTag());
-            myFaction.msg(TL.COMMAND_RELATIONS_MUTUAL, currentRelationColor + targetRelation.getTranslation() ,currentRelationColor + myFaction.getTag());
+            them.msg(TL.COMMAND_RELATIONS_MUTUAL, currentRelationColor + targetRelation.getTranslation(), currentRelationColor + myFaction.getTag());
+            myFaction.msg(TL.COMMAND_RELATIONS_MUTUAL, currentRelationColor + targetRelation.getTranslation(), currentRelationColor + myFaction.getTag());
         }
         // inform the other faction of your request
         else {
-        	
-            them.msg(TL.COMMAND_RELATIONS_PROPOSAL_1,currentRelationColor + myFaction.getTag(),targetRelation.getColor() + targetRelation.getTranslation());
-            them.msg(TL.COMMAND_RELATIONS_PROPOSAL_2,Conf.baseCommandAliases.get(0),targetRelation,myFaction.getTag());
-            myFaction.msg(TL.COMMAND_RELATIONS_PROPOSAL_SENT,currentRelationColor + them.getTag(),"" + targetRelation.getColor() + targetRelation);
+
+            them.msg(TL.COMMAND_RELATIONS_PROPOSAL_1, currentRelationColor + myFaction.getTag(), targetRelation.getColor() + targetRelation.getTranslation());
+            them.msg(TL.COMMAND_RELATIONS_PROPOSAL_2, Conf.baseCommandAliases.get(0), targetRelation, myFaction.getTag());
+            myFaction.msg(TL.COMMAND_RELATIONS_PROPOSAL_SENT, currentRelationColor + them.getTag(), "" + targetRelation.getColor() + targetRelation);
         }
 
         if (!targetRelation.isNeutral() && them.isPeaceful()) {

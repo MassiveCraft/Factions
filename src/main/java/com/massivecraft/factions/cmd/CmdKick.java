@@ -106,7 +106,7 @@ public class CmdKick extends FCommand {
         }
 
         if (Conf.logFactionKick) {
-        	//TODO:TL
+            //TODO:TL
             P.p.log((senderIsConsole ? "A console command" : fme.getName()) + " kicked " + toKick.getName() + " from the faction: " + toKickFaction.getTag());
         }
 

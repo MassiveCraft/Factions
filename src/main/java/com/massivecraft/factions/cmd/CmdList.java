@@ -5,9 +5,7 @@ import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
-
 import mkremins.fanciful.FancyMessage;
-
 import org.bukkit.ChatColor;
 
 import java.util.ArrayList;
@@ -37,7 +35,7 @@ public class CmdList extends FCommand {
     @Override
     public void perform() {
         // if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-        if (!payForCommand(Conf.econCostList, TL.COMMAND_LIST_TOLIST.toString() , TL.COMMAND_LIST_FORLIST.toString())) {
+        if (!payForCommand(Conf.econCostList, TL.COMMAND_LIST_TOLIST.toString(), TL.COMMAND_LIST_FORLIST.toString())) {
             return;
         }
 

@@ -66,7 +66,7 @@ public class CmdSethome extends FCommand {
         faction.msg(TL.COMMAND_SETHOME_SET, fme.describeTo(myFaction, true));
         faction.sendMessage(p.cmdBase.cmdHome.getUseageTemplate());
         if (faction != myFaction) {
-            fme.msg(TL.COMMAND_SETHOME_SETOTHER,faction.getTag(fme));
+            fme.msg(TL.COMMAND_SETHOME_SETOTHER, faction.getTag(fme));
         }
     }
 

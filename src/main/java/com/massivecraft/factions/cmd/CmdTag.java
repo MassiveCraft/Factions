@@ -6,7 +6,6 @@ import com.massivecraft.factions.scoreboards.FTeamWrapper;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.factions.zcore.util.TL;
-
 import org.bukkit.Bukkit;
 
 import java.util.ArrayList;
@@ -57,7 +56,7 @@ public class CmdTag extends FCommand {
         }
 
         // then make 'em pay (if applicable)
-        if (!payForCommand(Conf.econCostTag, TL.COMMAND_TAG_TOCHANGE,TL.COMMAND_TAG_FORCHANGE)) {
+        if (!payForCommand(Conf.econCostTag, TL.COMMAND_TAG_TOCHANGE, TL.COMMAND_TAG_FORCHANGE)) {
             return;
         }
 

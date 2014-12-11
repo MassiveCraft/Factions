@@ -31,7 +31,7 @@ public class CmdLock extends FCommand {
     @Override
     public void perform() {
         p.setLocked(this.argAsBool(0, !p.getLocked()));
-        msg(p.getLocked()?TL.COMMAND_LOCK_LOCKED:TL.COMMAND_LOCK_UNLOCKED);
+        msg(p.getLocked() ? TL.COMMAND_LOCK_LOCKED : TL.COMMAND_LOCK_UNLOCKED);
     }
 
 }

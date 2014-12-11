@@ -11,7 +11,6 @@ import com.massivecraft.factions.util.LazyLocation;
 import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.factions.util.RelationUtil;
 import com.massivecraft.factions.zcore.util.TL;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -603,9 +602,9 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
             fplayer.sendMessage(message);
         }
     }
-    
-    public void msg(TL translation, Object... args){
-    	msg(translation.toString(),args);
+
+    public void msg(TL translation, Object... args) {
+        msg(translation.toString(), args);
     }
 
     public void sendMessage(String message) {

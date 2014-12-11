@@ -137,7 +137,7 @@ public class CmdHelp extends FCommand {
         pageLines.add(p.txt.parse(TL.COMMAND_HELP_RELATIONS_5.toString()));
         pageLines.add(p.txt.parse(TL.COMMAND_HELP_RELATIONS_6.toString()));
         pageLines.add(p.txt.parse(TL.COMMAND_HELP_RELATIONS_7.toString()));
-        			pageLines.add(TL.COMMAND_HELP_RELATIONS_8.toString());
+        pageLines.add(TL.COMMAND_HELP_RELATIONS_8.toString());
         pageLines.add(p.txt.parse(TL.COMMAND_HELP_RELATIONS_9.toString()));
         pageLines.add(p.txt.parse(TL.COMMAND_HELP_RELATIONS_10.toString()));
         pageLines.add(p.txt.parse(TL.COMMAND_HELP_RELATIONS_11.toString()));
@@ -149,7 +149,7 @@ public class CmdHelp extends FCommand {
         pageLines.add(p.txt.parse(TL.COMMAND_HELP_PERMISSIONS_1.toString()));
         pageLines.add(p.txt.parse(TL.COMMAND_HELP_PERMISSIONS_2.toString()));
         pageLines.add(p.txt.parse(TL.COMMAND_HELP_PERMISSIONS_3.toString()));
-        			pageLines.add(TL.COMMAND_HELP_PERMISSIONS_4.toString());
+        pageLines.add(TL.COMMAND_HELP_PERMISSIONS_4.toString());
         pageLines.add(p.txt.parse(TL.COMMAND_HELP_PERMISSIONS_5.toString()));
         pageLines.add(p.txt.parse(TL.COMMAND_HELP_PERMISSIONS_6.toString()));
         pageLines.add(p.txt.parse(TL.COMMAND_HELP_PERMISSIONS_7.toString()));

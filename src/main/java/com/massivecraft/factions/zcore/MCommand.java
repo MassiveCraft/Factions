@@ -6,9 +6,7 @@ import com.massivecraft.factions.P;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TextUtil;
-
 import mkremins.fanciful.FancyMessage;
-
 import org.apache.commons.lang.time.DurationFormatUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -256,9 +254,9 @@ public abstract class MCommand<T extends MPlugin> {
     public void msg(String str, Object... args) {
         sender.sendMessage(p.txt.parse(str, args));
     }
-    
-    public void msg(TL translation,Object... args){
-    	sender.sendMessage(p.txt.parse(translation.toString(),args));
+
+    public void msg(TL translation, Object... args) {
+        sender.sendMessage(p.txt.parse(translation.toString(), args));
     }
 
     public void sendMessage(String msg) {

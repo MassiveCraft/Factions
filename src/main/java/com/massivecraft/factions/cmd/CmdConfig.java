@@ -4,7 +4,6 @@ import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
-
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -143,7 +142,7 @@ public class CmdConfig extends FCommand {
 
                 }
                 if (newColor == null) {
-                    sendMessage(TL.COMMAND_CONFIG_INVALID_COLOUR.format(fieldName,value.toUpperCase()));
+                    sendMessage(TL.COMMAND_CONFIG_INVALID_COLOUR.format(fieldName, value.toUpperCase()));
                     return;
                 }
                 target.set(null, newColor);
@@ -170,7 +169,7 @@ public class CmdConfig extends FCommand {
 
                     }
                     if (newMat == null) {
-                        sendMessage(TL.COMMAND_CONFIG_INVALID_MATERIAL.format(fieldName,value.toUpperCase()));
+                        sendMessage(TL.COMMAND_CONFIG_INVALID_MATERIAL.format(fieldName, value.toUpperCase()));
                         return;
                     }
 
@@ -180,13 +179,13 @@ public class CmdConfig extends FCommand {
                     if (matSet.contains(newMat)) {
                         matSet.remove(newMat);
                         target.set(null, matSet);
-                        success = TL.COMMAND_CONFIG_MATERIAL_REMOVED.format(fieldName,value.toUpperCase());
+                        success = TL.COMMAND_CONFIG_MATERIAL_REMOVED.format(fieldName, value.toUpperCase());
                     }
                     // Material not present yet, add it
                     else {
                         matSet.add(newMat);
                         target.set(null, matSet);
-                        success = TL.COMMAND_CONFIG_MATERIAL_ADDED.format(fieldName,value.toUpperCase());
+                        success = TL.COMMAND_CONFIG_MATERIAL_ADDED.format(fieldName, value.toUpperCase());
                     }
                 }
 
@@ -198,13 +197,13 @@ public class CmdConfig extends FCommand {
                     if (stringSet.contains(value)) {
                         stringSet.remove(value);
                         target.set(null, stringSet);
-                        success = TL.COMMAND_CONFIG_SET_REMOVED.format(fieldName,value);
+                        success = TL.COMMAND_CONFIG_SET_REMOVED.format(fieldName, value);
                     }
                     // String not present yet, add it
                     else {
                         stringSet.add(value);
                         target.set(null, stringSet);
-                        success = TL.COMMAND_CONFIG_SET_ADDED.format(fieldName,value);
+                        success = TL.COMMAND_CONFIG_SET_ADDED.format(fieldName, value);
                     }
                 }
 
@@ -217,21 +216,21 @@ public class CmdConfig extends FCommand {
 
             // unknown type
             else {
-                sendMessage(TL.COMMAND_CONFIG_ERROR_TYPE.format(fieldName,target.getClass().getName()));
+                sendMessage(TL.COMMAND_CONFIG_ERROR_TYPE.format(fieldName, target.getClass().getName()));
                 return;
             }
         } catch (NoSuchFieldException ex) {
             sendMessage(TL.COMMAND_CONFIG_ERROR_MATCHING.format(fieldName));
             return;
         } catch (IllegalAccessException ex) {
-            sendMessage(TL.COMMAND_CONFIG_ERROR_SETTING.format(fieldName,value));
+            sendMessage(TL.COMMAND_CONFIG_ERROR_SETTING.format(fieldName, value));
             return;
         }
 
         if (!success.isEmpty()) {
             if (sender instanceof Player) {
                 sendMessage(success);
-                P.p.log(success + TL.COMMAND_CONFIG_LOG.format((Player)sender));
+                P.p.log(success + TL.COMMAND_CONFIG_LOG.format((Player) sender));
             } else  // using P.p.log() instead of sendMessage if run from server console so that "[Factions v#.#.#]" is prepended in server log
             {
                 P.p.log(success);

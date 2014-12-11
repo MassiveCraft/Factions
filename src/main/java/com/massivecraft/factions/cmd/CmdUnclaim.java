@@ -6,7 +6,6 @@ import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.util.TL;
-
 import org.bukkit.Bukkit;
 
 public class CmdUnclaim extends FCommand {
@@ -38,7 +37,7 @@ public class CmdUnclaim extends FCommand {
                 msg(TL.COMMAND_UNCLAIM_SAFEZONE_SUCCESS);
 
                 if (Conf.logLandUnclaims) {
-                    P.p.log(TL.COMMAND_UNCLAIM_LOG.format(fme.getName(),flocation.getCoordString(),otherFaction.getTag()));
+                    P.p.log(TL.COMMAND_UNCLAIM_LOG.format(fme.getName(), flocation.getCoordString(), otherFaction.getTag()));
                 }
             } else {
                 msg(TL.COMMAND_UNCLAIM_SAFEZONE_NOPERM);
@@ -50,7 +49,7 @@ public class CmdUnclaim extends FCommand {
                 msg(TL.COMMAND_UNCLAIM_WARZONE_SUCCESS);
 
                 if (Conf.logLandUnclaims) {
-                    P.p.log(TL.COMMAND_UNCLAIM_LOG.format(fme.getName(),flocation.getCoordString(),otherFaction.getTag()));
+                    P.p.log(TL.COMMAND_UNCLAIM_LOG.format(fme.getName(), flocation.getCoordString(), otherFaction.getTag()));
                 }
             } else {
                 msg(TL.COMMAND_UNCLAIM_WARZONE_NOPERM);
@@ -65,7 +64,7 @@ public class CmdUnclaim extends FCommand {
             msg(TL.COMMAND_UNCLAIM_UNCLAIMS);
 
             if (Conf.logLandUnclaims) {
-            	P.p.log(TL.COMMAND_UNCLAIM_LOG.format(fme.getName(),flocation.getCoordString(),otherFaction.getTag()));
+                P.p.log(TL.COMMAND_UNCLAIM_LOG.format(fme.getName(), flocation.getCoordString(), otherFaction.getTag()));
             }
 
             return;
@@ -109,7 +108,7 @@ public class CmdUnclaim extends FCommand {
         myFaction.msg(TL.COMMAND_UNCLAIM_FACTIONUNCLAIMED, fme.describeTo(myFaction, true));
 
         if (Conf.logLandUnclaims) {
-        	P.p.log(TL.COMMAND_UNCLAIM_LOG.format(fme.getName(),flocation.getCoordString(),otherFaction.getTag()));
+            P.p.log(TL.COMMAND_UNCLAIM_LOG.format(fme.getName(), flocation.getCoordString(), otherFaction.getTag()));
         }
     }
 

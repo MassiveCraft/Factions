@@ -8,7 +8,6 @@ import com.massivecraft.factions.scoreboards.FTeamWrapper;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.util.TL;
-
 import org.bukkit.Bukkit;
 
 
@@ -80,7 +79,7 @@ public class CmdDisband extends FCommand {
             }
         }
         if (Conf.logFactionDisband) {
-        	//TODO: Format this correctly and translate.
+            //TODO: Format this correctly and translate.
             P.p.log("The faction " + faction.getTag() + " (" + faction.getId() + ") was disbanded by " + (senderIsConsole ? "console command" : fme.getName()) + ".");
         }
 

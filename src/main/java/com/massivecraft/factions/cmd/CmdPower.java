@@ -36,7 +36,7 @@ public class CmdPower extends FCommand {
         }
 
         // if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-        if (!payForCommand(Conf.econCostPower, TL.COMMAND_POWER_TOSHOW , TL.COMMAND_POWER_FORSHOW)) {
+        if (!payForCommand(Conf.econCostPower, TL.COMMAND_POWER_TOSHOW, TL.COMMAND_POWER_FORSHOW)) {
             return;
         }
 

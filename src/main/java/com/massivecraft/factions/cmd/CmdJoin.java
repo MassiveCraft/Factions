@@ -4,7 +4,6 @@ import com.massivecraft.factions.*;
 import com.massivecraft.factions.event.FPlayerJoinEvent;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
-
 import org.bukkit.Bukkit;
 
 public class CmdJoin extends FCommand {
@@ -46,7 +45,7 @@ public class CmdJoin extends FCommand {
         }
 
         if (faction == fplayer.getFaction()) {
-        	//TODO:TL
+            //TODO:TL
             msg(TL.COMMAND_JOIN_ALREADYMEMBER, fplayer.describeTo(fme, true), (samePlayer ? "are" : "is"), faction.getTag(fme));
             return;
         }
@@ -57,7 +56,7 @@ public class CmdJoin extends FCommand {
         }
 
         if (fplayer.hasFaction()) {
-        	//TODO:TL
+            //TODO:TL
             msg(TL.COMMAND_JOIN_INOTHERFACTION, fplayer.describeTo(fme, true), (samePlayer ? "your" : "their"));
             return;
         }

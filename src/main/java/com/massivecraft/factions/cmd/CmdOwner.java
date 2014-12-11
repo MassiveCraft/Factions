@@ -56,8 +56,8 @@ public class CmdOwner extends FCommand {
                 fme.msg(TL.COMMAND_OWNER_NOTCLAIMED);
                 return;
             }
-        	
-        	if (!hasBypass) {
+
+            if (!hasBypass) {
                 fme.msg(TL.COMMAND_OWNER_WRONGFACTION);
                 return;
             }
@@ -90,7 +90,7 @@ public class CmdOwner extends FCommand {
         }
 
         // if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-        if (!payForCommand(Conf.econCostOwner, TL.COMMAND_OWNER_TOSET , TL.COMMAND_OWNER_FORSET)) {
+        if (!payForCommand(Conf.econCostOwner, TL.COMMAND_OWNER_TOSET, TL.COMMAND_OWNER_FORSET)) {
             return;
         }
 
