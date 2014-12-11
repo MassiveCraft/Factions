@@ -114,7 +114,7 @@ public abstract class MPlugin extends JavaPlugin {
         log("=== ENABLE DONE (Took " + (System.currentTimeMillis() - timeEnableStart) + "ms) ===");
     }
 
-    private void loadLang() {
+    public void loadLang() {
         File lang = new File(getDataFolder(), "lang.yml");
         OutputStream out = null;
         InputStream defLangStream = this.getResource("lang.yml");
