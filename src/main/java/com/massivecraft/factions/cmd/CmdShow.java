@@ -26,7 +26,6 @@ public class CmdShow extends FCommand {
         this.permission = Permission.SHOW.node;
         this.disableOnLock = false;
 
-        senderMustBePlayer = true;
         senderMustBeMember = false;
         senderMustBeModerator = false;
         senderMustBeAdmin = false;
@@ -153,7 +152,7 @@ public class CmdShow extends FCommand {
                 msg(TL.COMMAND_SHOW_BANKCONTAINS, Econ.moneyString(Econ.getBalance(faction.getAccountId())));
             }
         }
-        
+
         sendFancyMessage(allies);
         sendFancyMessage(enemies);
         sendFancyMessage(online);
