@@ -112,7 +112,7 @@ public class EngineSeeChunk extends EngineAbstract
 			List<Location> locations = getLocations(player, steps, step);
 			for (Location location : locations)
 			{
-				ParticleEffect.EXPLODE.display(location, offsetX, offsetY, offsetZ, speed, amount, player);
+				ParticleEffect.EXPLOSION_NORMAL.display(location, offsetX, offsetY, offsetZ, speed, amount, player);
 			}
 		}
 	}
