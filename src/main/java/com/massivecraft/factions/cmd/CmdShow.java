@@ -13,6 +13,7 @@ import mkremins.fanciful.FancyMessage;
 import org.bukkit.ChatColor;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class CmdShow extends FCommand {
 
@@ -54,8 +55,8 @@ public class CmdShow extends FCommand {
         double powerBoost = faction.getPowerBoost();
         String boost = (powerBoost == 0.0) ? "" : (powerBoost > 0.0 ? TL.COMMAND_SHOW_BONUS.toString() : TL.COMMAND_SHOW_PENALTY.toString() + powerBoost + ")");
 
-        ArrayList<FancyMessage> allies = new ArrayList<FancyMessage>();
-        ArrayList<FancyMessage> enemies = new ArrayList<FancyMessage>();
+        List<FancyMessage> allies = new ArrayList<FancyMessage>();
+        List<FancyMessage> enemies = new ArrayList<FancyMessage>();
         FancyMessage currentAllies = new FancyMessage(TL.COMMAND_SHOW_ALLIES.toString()).color(ChatColor.GOLD);
         FancyMessage currentEnemies = new FancyMessage(TL.COMMAND_SHOW_ENEMIES.toString()).color(ChatColor.GOLD);
 
@@ -69,6 +70,11 @@ public class CmdShow extends FCommand {
             Relation rel = otherFaction.getRelationTo(faction);
             String s = otherFaction.getTag(fme);
             if (rel.isAlly()) {
+                FancyMessage beforeAdd = null;
+                try {
+                    beforeAdd = currentAllies.clone();
+                } catch (CloneNotSupportedException ignored) {}
+
                 if (firstAlly) {
                     currentAllies.then(s).tooltip(getToolTips(otherFaction));
                 } else {
@@ -77,10 +83,15 @@ public class CmdShow extends FCommand {
                 firstAlly = false;
 
                 if (currentAllies.toJSONString().length() > Short.MAX_VALUE) {
-                    allies.add(currentAllies);
-                    currentAllies = new FancyMessage();
+                    allies.add(beforeAdd);
+                    currentAllies = new FancyMessage(s).tooltip(getToolTips(otherFaction));
                 }
             } else if (rel.isEnemy()) {
+                FancyMessage beforeAdd = null;
+                try {
+                    beforeAdd = currentEnemies.clone();
+                } catch (CloneNotSupportedException ignored) {}
+
                 if (firstEnemy) {
                     currentEnemies.then(s).tooltip(getToolTips(otherFaction));
                 } else {
@@ -89,42 +100,60 @@ public class CmdShow extends FCommand {
                 firstEnemy = false;
 
                 if (currentEnemies.toJSONString().length() > Short.MAX_VALUE) {
-                    enemies.add(currentEnemies);
-                    currentEnemies = new FancyMessage();
+                    enemies.add(beforeAdd);
+                    currentEnemies = new FancyMessage(s).tooltip(getToolTips(otherFaction));
                 }
             }
         }
         allies.add(currentAllies);
         enemies.add(currentEnemies);
 
-        FancyMessage online = new FancyMessage(TL.COMMAND_SHOW_MEMBERSONLINE.toString()).color(ChatColor.GOLD);
-        FancyMessage offline = new FancyMessage(TL.COMMAND_SHOW_MEMBERSOFFLINE.toString()).color(ChatColor.GOLD);
+        List<FancyMessage> online = new ArrayList<FancyMessage>();
+        List<FancyMessage> offline = new ArrayList<FancyMessage>();
+        FancyMessage currentOnline = new FancyMessage(TL.COMMAND_SHOW_MEMBERSONLINE.toString()).color(ChatColor.GOLD);
+        FancyMessage currentOffline = new FancyMessage(TL.COMMAND_SHOW_MEMBERSOFFLINE.toString()).color(ChatColor.GOLD);
         boolean firstOnline = true;
         boolean firstOffline = true;
         for (FPlayer p : MiscUtil.rankOrder(faction.getFPlayers())) {
             String name = p.getNameAndTitle();
             if (p.isOnline()) {
+                FancyMessage beforeAdd = null;
+                try {
+                    beforeAdd = currentOnline.clone();
+                } catch (CloneNotSupportedException ignored) {}
+
                 if (firstOnline) {
-                    online.then(name).tooltip(getToolTips(p));
+                    currentOnline.then(name).tooltip(getToolTips(p));
                 } else {
-                    online.then(", " + name).tooltip(getToolTips(p));
+                    currentOnline.then(", " + name).tooltip(getToolTips(p));
                 }
                 firstOnline = false;
-                if (online.toJSONString().length() > Short.MAX_VALUE) {
-                    online = new FancyMessage();
+
+                if (currentOnline.toJSONString().length() > Short.MAX_VALUE) {
+                    online.add(beforeAdd);
+                    currentOnline = new FancyMessage(name).tooltip(getToolTips(p));
                 }
             } else {
+                FancyMessage beforeAdd = null;
+                try {
+                    beforeAdd = currentOffline.clone();
+                } catch (CloneNotSupportedException ignored) {}
+
                 if (firstOffline) {
-                    offline.then(name).tooltip(getToolTips(p));
+                    currentOffline.then(name).tooltip(getToolTips(p));
                 } else {
-                    offline.then(", " + name).tooltip(getToolTips(p));
+                    currentOffline.then(", " + name).tooltip(getToolTips(p));
                 }
                 firstOffline = false;
-                if (offline.toJSONString().length() > Short.MAX_VALUE) {
-                    offline = new FancyMessage();
+
+                if (currentOffline.toJSONString().length() > Short.MAX_VALUE) {
+                    offline.add(beforeAdd);
+                    currentOffline = new FancyMessage(name).tooltip(getToolTips(p));
                 }
             }
         }
+        online.add(currentOnline);
+        offline.add(currentOffline);
 
         // Send all at once ;D
         msg(p.txt.titleize(faction.getTag(fme)));
