@@ -8,7 +8,6 @@ import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
 import java.util.*;
-import java.util.logging.Level;
 
 public class FTeamWrapper {
     private static final Map<Faction, FTeamWrapper> wrappers = new HashMap<Faction, FTeamWrapper>();
@@ -94,11 +93,12 @@ public class FTeamWrapper {
         if (!FScoreboard.isSupportedByServer()) {
             return;
         }
+
         if (!wrappers.containsKey(faction)) {
-            P.p.log(Level.WARNING, "Something went wrong when updating the prefix for %s", faction.getTag());
-            return;
+            applyUpdates(faction);
+        } else {
+            wrappers.get(faction).updatePrefixes();
         }
-        wrappers.get(faction).updatePrefixes();
     }
 
     protected static void track(FScoreboard fboard) {
