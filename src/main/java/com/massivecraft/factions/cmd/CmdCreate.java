@@ -94,7 +94,7 @@ public class CmdCreate extends FCommand {
         msg(TL.COMMAND_CREATE_YOUSHOULD, p.cmdBase.cmdDescription.getUseageTemplate());
 
         if (Conf.logFactionCreate) {
-            P.p.log(fme.getName() + TL.COMMAND_CREATE_CREATED_LOG.toString() + tag);
+            P.p.log(fme.getName() + TL.COMMAND_CREATE_CREATEDLOG.toString() + tag);
         }
     }
 

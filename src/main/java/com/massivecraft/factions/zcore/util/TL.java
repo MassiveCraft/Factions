@@ -119,7 +119,7 @@ public enum TL {
     COMMAND_CREATE_ERROR("<b>There was an internal error while trying to create your faction. Please try again."),
     COMMAND_CREATE_CREATED("%s<i> created a new faction %s"),
     COMMAND_CREATE_YOUSHOULD("<i>You should now: %s"),
-    COMMAND_CREATE_CREATED_LOG(" created a new faction: "),
+    COMMAND_CREATE_CREATEDLOG(" created a new faction: "),
 
     COMMAND_DEINVITE_CANDEINVITE("Players you can deinvite: "),
     COMMAND_DEINVITE_CLICKTODEINVITE("Click to revoke invite for %s"),
