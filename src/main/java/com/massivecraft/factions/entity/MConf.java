@@ -17,6 +17,7 @@ import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.WorldExceptionSet;
 import com.massivecraft.factions.engine.EngineChat;
 import com.massivecraft.factions.event.EventFactionsChunkChangeType;
+import com.massivecraft.massivecore.collections.BackstringEnumSet;
 import com.massivecraft.massivecore.store.Entity;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.TimeUnit;
@@ -466,88 +467,88 @@ public class MConf extends Entity<MConf>
 	// If you however are using Forge with mods that add new container types you might want to add them here.
 	// This way they can be protected in Faction territory.
 	
-	public Set<Material> materialsEditOnInteract = MUtil.set(
-		Material.DIODE_BLOCK_OFF,
-		Material.DIODE_BLOCK_ON,
-		Material.NOTE_BLOCK,
-		Material.CAULDRON,
-		Material.SOIL
+	public BackstringEnumSet<Material> materialsEditOnInteract = new BackstringEnumSet<Material>(Material.class,
+		"DIODE_BLOCK_OFF", // Minecraft 1.?
+		"DIODE_BLOCK_ON", // Minecraft 1.?
+		"NOTE_BLOCK", // Minecraft 1.?
+		"CAULDRON", // Minecraft 1.?
+		"SOIL" // Minecraft 1.?
 	);
 	
-	public Set<Material> materialsEditTools = MUtil.set(
-		Material.FIREBALL,
-		Material.FLINT_AND_STEEL,
-		Material.BUCKET,
-		Material.WATER_BUCKET,
-		Material.LAVA_BUCKET
+	public BackstringEnumSet<Material> materialsEditTools = new BackstringEnumSet<Material>(Material.class,
+		"FIREBALL", // Minecraft 1.?
+		"FLINT_AND_STEEL", // Minecraft 1.?
+		"BUCKET", // Minecraft 1.?
+		"WATER_BUCKET", // Minecraft 1.?
+		"LAVA_BUCKET" // Minecraft 1.?
 	);
 	
 	// The duplication bug found in Spigot 1.8 protocol patch
 	// https://github.com/MassiveCraft/Factions/issues/693
-	public Set<Material> materialsEditToolsDupeBug = MUtil.set(
-		Material.CHEST,
-		Material.SIGN_POST,
-		Material.TRAPPED_CHEST,
-		Material.SIGN,
-		Material.WOOD_DOOR,
-		Material.IRON_DOOR
+	public BackstringEnumSet<Material> materialsEditToolsDupeBug = new BackstringEnumSet<Material>(Material.class,
+		"CHEST", // Minecraft 1.?
+		"SIGN_POST", // Minecraft 1.?
+		"TRAPPED_CHEST", // Minecraft 1.?
+		"SIGN", // Minecraft 1.?
+		"WOOD_DOOR", // Minecraft 1.?
+		"IRON_DOOR" // Minecraft 1.?
 	);
 	
-	public Set<Material> materialsDoor = MUtil.set(
-		Material.WOODEN_DOOR,
-		Material.ACACIA_DOOR,
-		Material.BIRCH_DOOR,
-		Material.DARK_OAK_DOOR,
-		Material.JUNGLE_DOOR,
-		Material.SPRUCE_DOOR,
-		Material.TRAP_DOOR,
-		Material.FENCE_GATE,
-		Material.ACACIA_FENCE_GATE,
-		Material.BIRCH_FENCE_GATE,
-		Material.DARK_OAK_FENCE_GATE,
-		Material.JUNGLE_FENCE_GATE,
-		Material.SPRUCE_FENCE_GATE
+	public BackstringEnumSet<Material> materialsDoor = new BackstringEnumSet<Material>(Material.class,
+		"WOODEN_DOOR", // Minecraft 1.?
+		"ACACIA_DOOR", // Minecraft 1.8
+		"BIRCH_DOOR", // Minecraft 1.8
+		"DARK_OAK_DOOR", // Minecraft 1.8
+		"JUNGLE_DOOR", // Minecraft 1.8
+		"SPRUCE_DOOR", // Minecraft 1.8
+		"TRAP_DOOR", // Minecraft 1.?
+		"FENCE_GATE", // Minecraft 1.?
+		"ACACIA_FENCE_GATE", // Minecraft 1.8
+		"BIRCH_FENCE_GATE", // Minecraft 1.8
+		"DARK_OAK_FENCE_GATE", // Minecraft 1.8
+		"JUNGLE_FENCE_GATE", // Minecraft 1.8
+		"SPRUCE_FENCE_GATE" // Minecraft 1.8
 	);
 	
-	public Set<Material> materialsContainer = MUtil.set(
-		Material.DISPENSER,
-		Material.CHEST,
-		Material.FURNACE,
-		Material.BURNING_FURNACE,
-		Material.JUKEBOX,
-		Material.BREWING_STAND,
-		Material.ENCHANTMENT_TABLE,
-		Material.ANVIL,
-		Material.BEACON,
-		Material.TRAPPED_CHEST,
-		Material.HOPPER,
-		Material.DROPPER
+	public BackstringEnumSet<Material> materialsContainer = new BackstringEnumSet<Material>(Material.class,
+		"DISPENSER", // Minecraft 1.?
+		"CHEST", // Minecraft 1.?
+		"FURNACE", // Minecraft 1.?
+		"BURNING_FURNACE", // Minecraft 1.?
+		"JUKEBOX", // Minecraft 1.?
+		"BREWING_STAND", // Minecraft 1.?
+		"ENCHANTMENT_TABLE", // Minecraft 1.?
+		"ANVIL", // Minecraft 1.?
+		"BEACON", // Minecraft 1.?
+		"TRAPPED_CHEST", // Minecraft 1.?
+		"HOPPER", // Minecraft 1.?
+		"DROPPER" // Minecraft 1.?
 	);
 	
-	public Set<EntityType> entityTypesContainer = MUtil.set(
-		EntityType.MINECART_CHEST,
-		EntityType.MINECART_HOPPER,
-		EntityType.ARMOR_STAND
+	public BackstringEnumSet<EntityType> entityTypesContainer = new BackstringEnumSet<EntityType>(EntityType.class,
+		"MINECART_CHEST", // Minecraft 1.?
+		"MINECART_HOPPER", // Minecraft 1.?
+		"ARMOR_STAND" // Minecraft 1.?
 	);
 	
-	public Set<EntityType> entityTypesMonsters = MUtil.set(
-		EntityType.BLAZE,
-		EntityType.CAVE_SPIDER,
-		EntityType.CREEPER,
-		EntityType.ENDERMAN,
-		EntityType.ENDER_DRAGON,
-		EntityType.GUARDIAN,
-		EntityType.GHAST,
-		EntityType.GIANT,
-		EntityType.MAGMA_CUBE,
-		EntityType.PIG_ZOMBIE,
-		EntityType.SILVERFISH,
-		EntityType.SKELETON,
-		EntityType.SLIME,
-		EntityType.SPIDER,
-		EntityType.WITCH,
-		EntityType.WITHER,
-		EntityType.ZOMBIE
+	public BackstringEnumSet<EntityType> entityTypesMonsters = new BackstringEnumSet<EntityType>(EntityType.class,
+		"BLAZE", // Minecraft 1.?
+		"CAVE_SPIDER", // Minecraft 1.?
+		"CREEPER", // Minecraft 1.?
+		"ENDERMAN", // Minecraft 1.?
+		"ENDER_DRAGON", // Minecraft 1.?
+		"GUARDIAN", // Minecraft 1.8
+		"GHAST", // Minecraft 1.?
+		"GIANT", // Minecraft 1.?
+		"MAGMA_CUBE", // Minecraft 1.?
+		"PIG_ZOMBIE", // Minecraft 1.?
+		"SILVERFISH", // Minecraft 1.?
+		"SKELETON", // Minecraft 1.?
+		"SLIME", // Minecraft 1.?
+		"SPIDER", // Minecraft 1.?
+		"WITCH", // Minecraft 1.?
+		"WITHER", // Minecraft 1.?
+		"ZOMBIE" // Minecraft 1.?
 	);
 	
 	// -------------------------------------------- //
