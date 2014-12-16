@@ -85,6 +85,7 @@ import com.massivecraft.factions.event.EventFactionsPvpDisallowed;
 import com.massivecraft.factions.event.EventFactionsPowerChange;
 import com.massivecraft.factions.event.EventFactionsPowerChange.PowerChangeReason;
 import com.massivecraft.factions.integration.Econ;
+import com.massivecraft.factions.spigot.SpigotFeatures;
 import com.massivecraft.factions.util.VisualizeUtil;
 import com.massivecraft.massivecore.EngineAbstract;
 import com.massivecraft.massivecore.PriorityLines;
@@ -1496,37 +1497,49 @@ public class EngineMain extends EngineAbstract
 		return true;
 	}
 	
+	// This event will not fire for Minecraft 1.8 armor stands.
+	// Armor stands are handled in EngineSpigot instead.
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onPlayerInteractEntity(PlayerInteractEntityEvent event)
 	{
-		// If a player ...
+		// Gather Info
 		final Player player = event.getPlayer();
-		
-		// ... right clicked an entity ...
 		final Entity entity = event.getRightClicked();
-		if (entity == null) return;
-
-		// ... and using that entity is forbidden ...
-		if (canPlayerUseEntity(player, entity, true)) return;
+		final boolean verboose = true;
 		
-		// ... then cancel the event.
+		// If we can't use ...
+		if (EngineMain.canPlayerUseEntity(player, entity, verboose)) return;
+		
+		// ... block use.
 		event.setCancelled(true);
 	}
 	
 	public static boolean canPlayerUseEntity(Player player, Entity entity, boolean verboose)
 	{
+		// If a player ...
+		if (player == null) return true;
+		
+		// ... interacts with an entity ...
+		if (entity == null) return true;
+		
+		// ... and the player does not bypass all protections ...
 		String name = player.getName();
 		if (MConf.get().playersWhoBypassAllProtection.contains(name)) return true;
 
+		// ... and the player is not using admin mode ...
 		MPlayer me = MPlayer.get(player);
 		if (me.isUsingAdminMode()) return true;
 		
-		PS ps = PS.valueOf(entity.getLocation());
+		// ... and the entity is of a container type ...
 		EntityType type = entity.getType();
+		if ( ! MConf.get().entityTypesContainer.contains(type)) return true;
 		
-		if (MConf.get().entityTypesContainer.contains(type) && ! MPerm.getPermContainer().has(me, ps, verboose)) return false;
+		// ... and the player lacks the container perm ...
+		PS ps = PS.valueOf(entity.getLocation());
+		if (MPerm.getPermContainer().has(me, ps, verboose)) return true;
 		
-		return true;
+		// ... then we can't use the entity.
+		return false;
 	}
 
 	// For some reason onPlayerInteract() sometimes misses bucket events depending on distance (something like 2-3 blocks away isn't detected),

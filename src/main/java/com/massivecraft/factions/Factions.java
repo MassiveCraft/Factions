@@ -39,6 +39,7 @@ import com.massivecraft.factions.integration.herochat.IntegrationHerochat;
 import com.massivecraft.factions.integration.lwc.IntegrationLwc;
 import com.massivecraft.factions.mixin.PowerMixin;
 import com.massivecraft.factions.mixin.PowerMixinDefault;
+import com.massivecraft.factions.spigot.SpigotFeatures;
 import com.massivecraft.factions.task.TaskFlagPermCreate;
 import com.massivecraft.factions.task.TaskPlayerDataRemove;
 import com.massivecraft.factions.task.TaskEconLandReward;
@@ -157,6 +158,9 @@ public class Factions extends MassivePlugin
 			IntegrationHerochat.get(),
 			IntegrationLwc.get()
 		);
+		
+		// Spigot
+		SpigotFeatures.activate();
 		
 		// Modulo Repeat Tasks
 		TaskPlayerPowerUpdate.get().activate(this);

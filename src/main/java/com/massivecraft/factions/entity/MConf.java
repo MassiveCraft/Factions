@@ -528,7 +528,7 @@ public class MConf extends Entity<MConf>
 	public BackstringEnumSet<EntityType> entityTypesContainer = new BackstringEnumSet<EntityType>(EntityType.class,
 		"MINECART_CHEST", // Minecraft 1.?
 		"MINECART_HOPPER", // Minecraft 1.?
-		"ARMOR_STAND" // Minecraft 1.?
+		"ARMOR_STAND" // Minecraft 1.8
 	);
 	
 	public BackstringEnumSet<EntityType> entityTypesMonsters = new BackstringEnumSet<EntityType>(EntityType.class,
