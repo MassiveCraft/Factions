@@ -3,6 +3,7 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.event.FactionRelationEvent;
+import com.massivecraft.factions.event.FactionRelationWishEvent;
 import com.massivecraft.factions.scoreboards.FTeamWrapper;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
@@ -50,13 +51,19 @@ public abstract class FRelationCommand extends FCommand {
             return;
         }
 
+        Relation oldRelation = myFaction.getRelationTo(them, true);
+        FactionRelationWishEvent wishEvent = new FactionRelationWishEvent(fme, myFaction, them, oldRelation, targetRelation);
+        Bukkit.getPluginManager().callEvent(wishEvent);
+        if (wishEvent.isCancelled()) {
+            return;
+        }
+
         // if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
         if (!payForCommand(targetRelation.getRelationCost(), TL.COMMAND_RELATIONS_TOMARRY, TL.COMMAND_RELATIONS_FORMARRY)) {
             return;
         }
 
         // try to set the new relation
-        Relation oldRelation = myFaction.getRelationTo(them, true);
         myFaction.setRelationWish(them, targetRelation);
         Relation currentRelation = myFaction.getRelationTo(them, true);
         ChatColor currentRelationColor = currentRelation.getColor();
