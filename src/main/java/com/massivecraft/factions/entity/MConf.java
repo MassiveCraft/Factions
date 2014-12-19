@@ -14,10 +14,10 @@ import org.bukkit.event.EventPriority;
 
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Rel;
-import com.massivecraft.factions.WorldExceptionSet;
 import com.massivecraft.factions.engine.EngineChat;
 import com.massivecraft.factions.event.EventFactionsChunkChangeType;
 import com.massivecraft.massivecore.collections.BackstringEnumSet;
+import com.massivecraft.massivecore.collections.WorldExceptionSet;
 import com.massivecraft.massivecore.store.Entity;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.TimeUnit;
