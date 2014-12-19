@@ -22,7 +22,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Enderman;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Wither;
@@ -85,7 +84,6 @@ import com.massivecraft.factions.event.EventFactionsPvpDisallowed;
 import com.massivecraft.factions.event.EventFactionsPowerChange;
 import com.massivecraft.factions.event.EventFactionsPowerChange.PowerChangeReason;
 import com.massivecraft.factions.integration.Econ;
-import com.massivecraft.factions.spigot.SpigotFeatures;
 import com.massivecraft.factions.util.VisualizeUtil;
 import com.massivecraft.massivecore.EngineAbstract;
 import com.massivecraft.massivecore.PriorityLines;
@@ -1312,49 +1310,6 @@ public class EngineMain extends EngineAbstract
 		return MPerm.getPermBuild().has(mplayer, ps, verboose);
 	}
 	
-	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-	public void blockBuild(HangingPlaceEvent event)
-	{
-		if (canPlayerBuildAt(event.getPlayer(), PS.valueOf(event.getEntity().getLocation()), true)) return;
-		
-		event.setCancelled(true);
-	}
-	
-	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-	public void blockBuild(HangingBreakEvent event)
-	{
-		if (! (event instanceof HangingBreakByEntityEvent)) return;
-		HangingBreakByEntityEvent entityEvent = (HangingBreakByEntityEvent)event;
-		
-		Entity breaker = entityEvent.getRemover();
-		if (! (breaker instanceof Player)) return;
-
-		if ( ! canPlayerBuildAt(breaker, PS.valueOf(event.getEntity().getLocation()), true))
-		{
-			event.setCancelled(true);
-		}
-	}
-	
-	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-	public void itemFrameDamage(EntityDamageByEntityEvent event)
-	{
-		// If the damagee is an ItemFrame ...
-		Entity edamagee = event.getEntity();
-		if (!(edamagee instanceof ItemFrame)) return;
-		ItemFrame itemFrame = (ItemFrame)edamagee;
-		
-		// ... and the liable damager is a player ...
-		Entity edamager = MUtil.getLiableDamager(event);
-		if (!(edamager instanceof Player)) return;
-		Player player = (Player)edamager;
-		
-		// ... and the player can't build there ...
-		if (canPlayerBuildAt(player, PS.valueOf(itemFrame.getLocation()), true)) return;
-		
-		// ... then cancel the event.
-		event.setCancelled(true);
-	}
-	
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void blockBuild(BlockPlaceEvent event)
 	{
@@ -1435,9 +1390,52 @@ public class EngineMain extends EngineAbstract
 		}
 	}
 	
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void blockBuild(HangingPlaceEvent event)
+	{
+		if (canPlayerBuildAt(event.getPlayer(), PS.valueOf(event.getEntity().getLocation()), true)) return;
+		
+		event.setCancelled(true);
+	}
+	
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void blockBuild(HangingBreakEvent event)
+	{
+		if (! (event instanceof HangingBreakByEntityEvent)) return;
+		HangingBreakByEntityEvent entityEvent = (HangingBreakByEntityEvent)event;
+		
+		Entity breaker = entityEvent.getRemover();
+		if (! (breaker instanceof Player)) return;
+
+		if ( ! canPlayerBuildAt(breaker, PS.valueOf(event.getEntity().getLocation()), true))
+		{
+			event.setCancelled(true);
+		}
+	}
+	
 	// -------------------------------------------- //
 	// ASSORTED BUILD AND INTERACT
 	// -------------------------------------------- //
+	
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void onPlayerDamageEntity(EntityDamageByEntityEvent event)
+	{
+		// If a player ... 
+		Entity edamager = MUtil.getLiableDamager(event);
+		if (!(edamager instanceof Player)) return;
+		Player player = (Player)edamager;
+		
+		// ... damages an entity which is edited on damage ...
+		Entity edamagee = event.getEntity();
+		if (edamagee == null) return;
+		if ( ! MConf.get().entityTypesEditOnDamage.contains(edamagee.getType())) return;
+		
+		// ... and the player can't build there ...
+		if (canPlayerBuildAt(player, PS.valueOf(edamagee.getLocation()), true)) return;
+		
+		// ... then cancel the event.
+		event.setCancelled(true);
+	}
 	
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onPlayerInteract(PlayerInteractEvent event)
@@ -1521,6 +1519,8 @@ public class EngineMain extends EngineAbstract
 		
 		// ... interacts with an entity ...
 		if (entity == null) return true;
+		EntityType type = entity.getType();
+		PS ps = PS.valueOf(entity.getLocation());
 		
 		// ... and the player does not bypass all protections ...
 		String name = player.getName();
@@ -1530,16 +1530,14 @@ public class EngineMain extends EngineAbstract
 		MPlayer me = MPlayer.get(player);
 		if (me.isUsingAdminMode()) return true;
 		
-		// ... and the entity is of a container type ...
-		EntityType type = entity.getType();
-		if ( ! MConf.get().entityTypesContainer.contains(type)) return true;
+		// ... check container entity rights ...
+		if (MConf.get().entityTypesContainer.contains(type) && ! MPerm.getPermContainer().has(me, ps, verboose)) return false;
 		
-		// ... and the player lacks the container perm ...
-		PS ps = PS.valueOf(entity.getLocation());
-		if (MPerm.getPermContainer().has(me, ps, verboose)) return true;
+		// ... check build entity rights ...
+		if (MConf.get().entityTypesEditOnInteract.contains(type) && ! MPerm.getPermBuild().has(me, ps, verboose)) return false;
 		
-		// ... then we can't use the entity.
-		return false;
+		// ... otherwise we may use the entity.
+		return true;
 	}
 
 	// For some reason onPlayerInteract() sometimes misses bucket events depending on distance (something like 2-3 blocks away isn't detected),

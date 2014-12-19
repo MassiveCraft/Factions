@@ -467,6 +467,7 @@ public class MConf extends Entity<MConf>
 	// If you however are using Forge with mods that add new container types you might want to add them here.
 	// This way they can be protected in Faction territory.
 	
+	// Interacting with these materials when they are already placed in the terrain results in an edit.
 	public BackstringEnumSet<Material> materialsEditOnInteract = new BackstringEnumSet<Material>(Material.class,
 		"DIODE_BLOCK_OFF", // Minecraft 1.?
 		"DIODE_BLOCK_ON", // Minecraft 1.?
@@ -475,12 +476,15 @@ public class MConf extends Entity<MConf>
 		"SOIL" // Minecraft 1.?
 	);
 	
+	// Interacting with the the terrain holding this item in hand results in an edit.
+	// There's no need to add all block materials here. Only special items other than blocks.
 	public BackstringEnumSet<Material> materialsEditTools = new BackstringEnumSet<Material>(Material.class,
 		"FIREBALL", // Minecraft 1.?
 		"FLINT_AND_STEEL", // Minecraft 1.?
 		"BUCKET", // Minecraft 1.?
 		"WATER_BUCKET", // Minecraft 1.?
-		"LAVA_BUCKET" // Minecraft 1.?
+		"LAVA_BUCKET", // Minecraft 1.?
+		"ARMOR_STAND" // Minecraft 1.8
 	);
 	
 	// The duplication bug found in Spigot 1.8 protocol patch
@@ -494,6 +498,7 @@ public class MConf extends Entity<MConf>
 		"IRON_DOOR" // Minecraft 1.?
 	);
 	
+	// Interacting with these materials placed in the terrain results in door toggling.
 	public BackstringEnumSet<Material> materialsDoor = new BackstringEnumSet<Material>(Material.class,
 		"WOODEN_DOOR", // Minecraft 1.?
 		"ACACIA_DOOR", // Minecraft 1.8
@@ -510,6 +515,7 @@ public class MConf extends Entity<MConf>
 		"SPRUCE_FENCE_GATE" // Minecraft 1.8
 	);
 	
+	// Interacting with these materials placed in the terrain results in opening a container.
 	public BackstringEnumSet<Material> materialsContainer = new BackstringEnumSet<Material>(Material.class,
 		"DISPENSER", // Minecraft 1.?
 		"CHEST", // Minecraft 1.?
@@ -525,12 +531,25 @@ public class MConf extends Entity<MConf>
 		"DROPPER" // Minecraft 1.?
 	);
 	
-	public BackstringEnumSet<EntityType> entityTypesContainer = new BackstringEnumSet<EntityType>(EntityType.class,
-		"MINECART_CHEST", // Minecraft 1.?
-		"MINECART_HOPPER", // Minecraft 1.?
+	// Interacting with these entities results in an edit.
+	public BackstringEnumSet<EntityType> entityTypesEditOnInteract = new BackstringEnumSet<EntityType>(EntityType.class,
+		"ITEM_FRAME", // Minecraft 1.?
 		"ARMOR_STAND" // Minecraft 1.8
 	);
 	
+	// Damaging these entities results in an edit.
+	public BackstringEnumSet<EntityType> entityTypesEditOnDamage = new BackstringEnumSet<EntityType>(EntityType.class,
+		"ITEM_FRAME", // Minecraft 1.?
+		"ARMOR_STAND" // Minecraft 1.8
+	);
+	
+	// Interacting with these entities results in opening a container.
+	public BackstringEnumSet<EntityType> entityTypesContainer = new BackstringEnumSet<EntityType>(EntityType.class,
+		"MINECART_CHEST", // Minecraft 1.?
+		"MINECART_HOPPER" // Minecraft 1.?
+	);
+	
+	// The complete list of entities considered to be monsters.
 	public BackstringEnumSet<EntityType> entityTypesMonsters = new BackstringEnumSet<EntityType>(EntityType.class,
 		"BLAZE", // Minecraft 1.?
 		"CAVE_SPIDER", // Minecraft 1.?
