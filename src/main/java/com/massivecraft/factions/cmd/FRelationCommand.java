@@ -75,7 +75,7 @@ public abstract class FRelationCommand extends FCommand {
             Bukkit.getServer().getPluginManager().callEvent(relationEvent);
 
             them.msg(TL.COMMAND_RELATIONS_MUTUAL, currentRelationColor + targetRelation.getTranslation(), currentRelationColor + myFaction.getTag());
-            myFaction.msg(TL.COMMAND_RELATIONS_MUTUAL, currentRelationColor + targetRelation.getTranslation(), currentRelationColor + myFaction.getTag());
+            myFaction.msg(TL.COMMAND_RELATIONS_MUTUAL, currentRelationColor + targetRelation.getTranslation(), currentRelationColor + them.getTag());
         }
         // inform the other faction of your request
         else {
