@@ -136,7 +136,7 @@
         </repository>
         <repository>
             <id>ess-repo</id>
-            <url>http://repo.ess3.net/content/groups/public</url>
+            <url>http://repo.ess3.net/content/repositories/essdev</url>
         </repository>
         <repository>
             <id>bukkit-repo</id>
