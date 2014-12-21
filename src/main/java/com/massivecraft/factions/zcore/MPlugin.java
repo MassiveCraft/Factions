@@ -132,7 +132,6 @@ public abstract class MPlugin extends JavaPlugin {
                     }
                     YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defLangStream);
                     TL.setFile(defConfig);
-                    return;
                 }
             } catch (IOException e) {
                 e.printStackTrace(); // So they notice

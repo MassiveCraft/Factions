@@ -90,8 +90,8 @@ COMMAND:
     TOCREATE: to create a new faction
     FORCREATE: for creating a new faction
     ERROR: <b>There was an internal error while trying to create your faction. Please try again.
-    CREATED:
-      LOG: ' は新しい党派を造りました: '
+    CREATED: %s<i> created a new faction %s
+    CREATEDLOG: ' は新しい党派を造りました: '
     YOUSHOULD: '<i>You should now: %s'
   DEINVITE:
     CANDEINVITE: 'Players you can deinvite: '

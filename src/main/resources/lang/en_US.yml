@@ -91,8 +91,8 @@ COMMAND:
     TOCREATE: to create a new faction
     FORCREATE: for creating a new faction
     ERROR: <b>There was an internal error while trying to create your faction. Please try again.
-    CREATED:
-      LOG: ' created a new faction: '
+    CREATED: %s<i> created a new faction %s
+    CREATEDLOG: ' created a new faction: '
     YOUSHOULD: '<i>You should now: %s'
   DEINVITE:
     CANDEINVITE: 'Players you can deinvite: '
