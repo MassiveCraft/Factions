@@ -61,9 +61,10 @@ public class CmdPowerBoost extends FCommand {
             target = TL.COMMAND_POWERBOOST_FACTION.format(targetFaction.getTag());
         }
 
-        msg(TL.COMMAND_POWERBOOST_BOOST, target, targetPower);
+        int roundedPower = (int)Math.round(targetPower);
+        msg(TL.COMMAND_POWERBOOST_BOOST, target, roundedPower);
         if (!senderIsConsole) {
-            P.p.log(TL.COMMAND_POWERBOOST_BOOSTLOG.toString(), fme.getName(), target, targetPower);
+            P.p.log(TL.COMMAND_POWERBOOST_BOOSTLOG.toString(), fme.getName(), target, roundedPower);
         }
     }
 }
