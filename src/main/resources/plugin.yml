@@ -23,7 +23,6 @@ permissions:
   factions.claim.circle: {description: claim by circle and radius, default: false}
   factions.claim.all: {description: claim all faction land, default: false}
   factions.create: {description: create new faction, default: false}
-  factions.demote: {description: demote lesser members in your faction, default: false}
   factions.description: {description: change faction description, default: false}
   factions.disband: {description: disband faction, default: false}
   factions.expansions: {description: list expansions, default: false}
@@ -35,8 +34,6 @@ permissions:
   factions.join.any: {description: join closed faction, default: false}
   factions.join.others: {description: have another player join faction, default: false}
   factions.kick: {description: kick player from faction, default: false}
-  factions.leader: {description: set leader for faction, default: false}
-  factions.leader.any: {description: set leader for another faction, default: false}
   factions.leave: {description: leave your faction, default: false}
   factions.list: {description: list all factions, default: false}
   factions.map: {description: show territory map, default: false}
@@ -49,13 +46,13 @@ permissions:
   factions.money.p2f: {description: transfer p --> f, default: false}
   factions.money.withdraw: {description: withdraw from faction, default: false}
   factions.motd: {description: faction motd, default: false}
-  factions.officer: {description: make player officer, default: false}
-  factions.officer.any: {description: set officers for another faction, default: false}
   factions.open: {description: set if invitation is required to join, default: false}
   factions.perm: {description: change faction permissions, default: false}
   factions.player: {description: show player information}
   factions.powerboost: {description: set powerboost, default: false}
-  factions.promote: {description: promote lesser members in your faction, default: false}
+  factions.rank: {description: manage/show ranks, default: false}
+  factions.rank.show: {description: show rank, default: false}
+  factions.rank.action: {description: change rank, default: false}
   factions.relation: {description: set relation wish to another faction, default: false}
   factions.seechunk: {description: see the chunk you stand in, default: false}
   factions.seechunkold: {description: see the chunk you stand in, default: false}
@@ -208,6 +205,9 @@ permissions:
       factions.perm: true
       factions.player: true
       factions.promote: true
+      factions.rank: true
+      factions.rank.show: true
+      factions.rank.action: true
       factions.relation: true
       factions.seechunk: true
       factions.seechunkold: true
