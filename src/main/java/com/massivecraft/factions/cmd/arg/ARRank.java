@@ -12,11 +12,11 @@ import com.massivecraft.massivecore.util.Txt;
 
 public class ARRank extends ARAbstractSelect<Rel>
 {
-	//----------------------------------------------//
+	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	//Default constructor. Can't use promote and demote.
+	// Default constructor. Can't use promote and demote.
 	private static ARRank i = new ARRank();
 	public static ARRank get() { return i; }
 	
@@ -25,7 +25,7 @@ public class ARRank extends ARAbstractSelect<Rel>
 		this.startRank = null;
 	}
 	
-	//Fancy constructor. Can use promote and demote
+	// Fancy constructor. Can use promote and demote.
 	public static ARRank get(Rel rank) { return new ARRank(rank); }
 	
 	public ARRank(Rel rank)
@@ -33,11 +33,12 @@ public class ARRank extends ARAbstractSelect<Rel>
 		this.startRank = rank;
 	}
 	
-	//----------------------------------------------//
+	// -------------------------------------------- //
 	// FIELDS
 	// -------------------------------------------- //
 	
-	final Rel startRank;
+	private final Rel startRank;
+	public Rel getStartRank() { return this.startRank; }
 	
 	// -------------------------------------------- //
 	// OVERRIDE
@@ -52,67 +53,57 @@ public class ARRank extends ARAbstractSelect<Rel>
 	@Override
 	public Rel select(String arg, CommandSender sender)
 	{
-		//Default it is nothing
-		Rel ret = null;
-		
 		// This is especially useful when one rank can have aliases.
 		// In the case of promote/demote, 
 		// that would require 10 lines of code repeated for each alias.
 		arg = this.prepareArg(arg);
 		
-		switch(arg)
+		// All the normal ranks
+		if (arg.equals("leader")) return Rel.LEADER;
+		if (arg.equals("officer")) return Rel.OFFICER;
+		if (arg.equals("member")) return Rel.MEMBER;
+		if (arg.equals("recruit")) return Rel.RECRUIT;
+		
+		// No start rank?
+		if (startRank == null)
 		{
-			// All the normal ranks
-			case "leader": ret = Rel.LEADER; break;
-			case "officer": ret = Rel.OFFICER; break;
-			case "member": ret = Rel.MEMBER; break;
-			case "recruit": ret = Rel.RECRUIT; break;
-			
-			// Promote
-			case "promote":
-				switch(startRank)
-				{
-					case LEADER : ret = Rel.LEADER; break;
-					case OFFICER : ret = Rel.LEADER; break;
-					case MEMBER : ret = Rel.OFFICER; break;
-					case RECRUIT : ret = Rel.MEMBER; break;
-					// This should not happen
-					default:
-						//This might happen of the default constrcutor is used
-						Mixin.msgOne(sender, Txt.parse("<b>You can't use promote & demote"));
-						ret = null; break;
-			
-				} break;
-			
-			// Demote
-			case "demote": 
-				switch(startRank)
-				{
-					case LEADER : ret = Rel.OFFICER; break;
-					case OFFICER : ret = Rel.MEMBER; break;
-					case MEMBER : ret = Rel.RECRUIT; break;
-					case RECRUIT : ret = Rel.RECRUIT; break;
-					// This should not happen
-					default:
-						//This might happen of the default constrcutor is used
-						Mixin.msgOne(sender, Txt.parse("<b>You can't use promote & demote"));
-						ret = null; break;
-				} break;
+			// This might happen of the default constructor is used
+			Mixin.msgOne(sender, Txt.parse("<b>You can't use promote & demote"));
+			return null;
 		}
 		
-		return ret;
+		// Promote
+		if (arg.equals("promote"))
+		{
+			if (Rel.LEADER.equals(startRank)) return Rel.LEADER;
+			if (Rel.OFFICER.equals(startRank)) return Rel.LEADER;
+			if (Rel.MEMBER.equals(startRank)) return Rel.OFFICER;
+			if (Rel.RECRUIT.equals(startRank)) return Rel.MEMBER;
+		}
+		
+		// Demote
+		if (arg.equals("demote"))
+		{
+			if (Rel.LEADER.equals(startRank)) return Rel.OFFICER;
+			if (Rel.OFFICER.equals(startRank)) return Rel.MEMBER;
+			if (Rel.MEMBER.equals(startRank)) return Rel.RECRUIT;
+			if (Rel.RECRUIT.equals(startRank)) return Rel.RECRUIT;
+		}
+		
+		return null;
 	}
 
 	@Override
 	public Collection<String> altNames(CommandSender sender)
 	{
 		return MUtil.list(
-				Txt.getNicedEnum(Rel.LEADER),
-				Txt.getNicedEnum(Rel.OFFICER),
-				Txt.getNicedEnum(Rel.MEMBER),
-				Txt.getNicedEnum(Rel.RECRUIT),
-				"Promote",
-				"Demote");
+			Txt.getNicedEnum(Rel.LEADER),
+			Txt.getNicedEnum(Rel.OFFICER),
+			Txt.getNicedEnum(Rel.MEMBER),
+			Txt.getNicedEnum(Rel.RECRUIT),
+			"Promote",
+			"Demote"
+		);
 	}
 	
 	// -------------------------------------------- //
@@ -121,29 +112,29 @@ public class ARRank extends ARAbstractSelect<Rel>
 	
 	private String prepareArg(String str)
 	{
-		String ret = str;
+		String ret = str.toLowerCase();
 		
-		if (str.startsWith("admin") || str.startsWith("lea"))
+		if (ret.startsWith("admin") || ret.startsWith("lea"))
 		{
 			ret = "leader";
 		}
-		else if (str.startsWith("mod") || str.startsWith("off"))
+		else if (ret.startsWith("mod") || ret.startsWith("off"))
 		{
 			ret = "officer";
 		}
-		else if (str.startsWith("mem"))
+		else if (ret.startsWith("mem"))
 		{
 			ret = "member";
 		}
-		else if (str.startsWith("rec"))
+		else if (ret.startsWith("rec"))
 		{
 			ret = "recruit";
 		}
-		else if (str.startsWith("+") || str.startsWith("plus"))
+		else if (ret.startsWith("+") || ret.startsWith("plus") || ret.startsWith("up"))
 		{
 			ret = "promote";
 		}
-		else if (str.startsWith("-") || str.startsWith("minus"))
+		else if (ret.startsWith("-") || ret.startsWith("minus") || ret.startsWith("down"))
 		{
 			ret = "demote";
 		}

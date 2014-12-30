@@ -10,7 +10,7 @@ public class CmdFactionsRankOld extends FactionsCommand
 	// FIELDS
 	// -------------------------------------------- //
 		
-	final String rankName;
+	public final String rankName;
 		
 	// -------------------------------------------- //
 	// CONSTRUCT
@@ -18,6 +18,7 @@ public class CmdFactionsRankOld extends FactionsCommand
 	
 	public CmdFactionsRankOld(String rank)
 	{
+		// Fields
 		this.rankName = rank.toLowerCase();
 		
 		// Aliases
@@ -26,6 +27,7 @@ public class CmdFactionsRankOld extends FactionsCommand
 		// Args
 		this.addRequiredArg("player");
 		
+		// VisibilityMode
 		this.setVisibilityMode(VisibilityMode.INVISIBLE);
 	}
 	
@@ -36,6 +38,7 @@ public class CmdFactionsRankOld extends FactionsCommand
 	@Override
 	public void perform()
 	{
-		Factions.get().getOuterCmdFactions().cmdFactionsRank.execute(sender, MUtil.list(arg(0),rankName));
+		Factions.get().getOuterCmdFactions().cmdFactionsRank.execute(sender, MUtil.list(this.arg(0), this.rankName));
 	}
+	
 }
