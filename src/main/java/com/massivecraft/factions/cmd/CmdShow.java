@@ -42,6 +42,11 @@ public class CmdShow extends FCommand {
             }
         }
 
+        if (faction.isNone()) {
+            msg(TL.COMMAND_SHOW_NOFACTION);
+            return;
+        }
+
         // if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
         if (!payForCommand(Conf.econCostShow, TL.COMMAND_SHOW_TOSHOW, TL.COMMAND_SHOW_FORSHOW)) {
             return;
