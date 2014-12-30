@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CmdShow extends FCommand {
-
+    private static final int ARBITRARY_LIMIT = 25000;
     public CmdShow() {
         this.aliases.add("show");
         this.aliases.add("who");
@@ -70,11 +70,6 @@ public class CmdShow extends FCommand {
             Relation rel = otherFaction.getRelationTo(faction);
             String s = otherFaction.getTag(fme);
             if (rel.isAlly()) {
-                FancyMessage beforeAdd = null;
-                try {
-                    beforeAdd = currentAllies.clone();
-                } catch (CloneNotSupportedException ignored) {}
-
                 if (firstAlly) {
                     currentAllies.then(s).tooltip(getToolTips(otherFaction));
                 } else {
@@ -82,16 +77,11 @@ public class CmdShow extends FCommand {
                 }
                 firstAlly = false;
 
-                if (currentAllies.toJSONString().length() > Short.MAX_VALUE) {
-                    allies.add(beforeAdd);
-                    currentAllies = new FancyMessage(s).tooltip(getToolTips(otherFaction));
+                if (currentAllies.toJSONString().length() > ARBITRARY_LIMIT) {
+                    allies.add(currentAllies);
+                    currentAllies = new FancyMessage();
                 }
             } else if (rel.isEnemy()) {
-                FancyMessage beforeAdd = null;
-                try {
-                    beforeAdd = currentEnemies.clone();
-                } catch (CloneNotSupportedException ignored) {}
-
                 if (firstEnemy) {
                     currentEnemies.then(s).tooltip(getToolTips(otherFaction));
                 } else {
@@ -99,9 +89,9 @@ public class CmdShow extends FCommand {
                 }
                 firstEnemy = false;
 
-                if (currentEnemies.toJSONString().length() > Short.MAX_VALUE) {
-                    enemies.add(beforeAdd);
-                    currentEnemies = new FancyMessage(s).tooltip(getToolTips(otherFaction));
+                if (currentEnemies.toJSONString().length() > ARBITRARY_LIMIT) {
+                    enemies.add(currentEnemies);
+                    currentEnemies = new FancyMessage();
                 }
             }
         }
@@ -117,11 +107,6 @@ public class CmdShow extends FCommand {
         for (FPlayer p : MiscUtil.rankOrder(faction.getFPlayers())) {
             String name = p.getNameAndTitle();
             if (p.isOnline()) {
-                FancyMessage beforeAdd = null;
-                try {
-                    beforeAdd = currentOnline.clone();
-                } catch (CloneNotSupportedException ignored) {}
-
                 if (firstOnline) {
                     currentOnline.then(name).tooltip(getToolTips(p));
                 } else {
@@ -129,16 +114,11 @@ public class CmdShow extends FCommand {
                 }
                 firstOnline = false;
 
-                if (currentOnline.toJSONString().length() > Short.MAX_VALUE) {
-                    online.add(beforeAdd);
-                    currentOnline = new FancyMessage(name).tooltip(getToolTips(p));
+                if (currentOnline.toJSONString().length() > ARBITRARY_LIMIT) {
+                    online.add(currentOnline);
+                    currentOnline = new FancyMessage();
                 }
             } else {
-                FancyMessage beforeAdd = null;
-                try {
-                    beforeAdd = currentOffline.clone();
-                } catch (CloneNotSupportedException ignored) {}
-
                 if (firstOffline) {
                     currentOffline.then(name).tooltip(getToolTips(p));
                 } else {
@@ -146,9 +126,9 @@ public class CmdShow extends FCommand {
                 }
                 firstOffline = false;
 
-                if (currentOffline.toJSONString().length() > Short.MAX_VALUE) {
-                    offline.add(beforeAdd);
-                    currentOffline = new FancyMessage(name).tooltip(getToolTips(p));
+                if (currentOffline.toJSONString().length() > ARBITRARY_LIMIT) {
+                    offline.add(currentOffline);
+                    currentOffline = new FancyMessage();
                 }
             }
         }
