@@ -139,7 +139,7 @@ public class Econ
 		}
 		
 		// Transfer money
-		if (Money.move(from, to, by, amount))
+		if (Money.move(from, to, by, amount, "Factions"))
 		{
 			if (notify)
 			{
