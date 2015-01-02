@@ -4,9 +4,6 @@ import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.zcore.util.TL;
-import mkremins.fanciful.FancyMessage;
-import org.bukkit.ChatColor;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -35,7 +32,7 @@ public class CmdList extends FCommand {
     @Override
     public void perform() {
         // if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-        if (!payForCommand(Conf.econCostList, TL.COMMAND_LIST_TOLIST.toString(), TL.COMMAND_LIST_FORLIST.toString())) {
+        if (!payForCommand(Conf.econCostList, "to list the factions", "for listing the factions")) {
             return;
         }
 
@@ -74,7 +71,7 @@ public class CmdList extends FCommand {
             }
         });
 
-        ArrayList<FancyMessage> lines = new ArrayList<FancyMessage>();
+        ArrayList<String> lines = new ArrayList<String>();
 
         factionList.add(0, Factions.getInstance().getNone());
 
@@ -92,22 +89,16 @@ public class CmdList extends FCommand {
             end = factionList.size();
         }
 
-        lines.add(new FancyMessage(p.txt.titleize(TL.COMMAND_LIST_FACTIONLIST.toString() + pagenumber + "/" + pagecount)));
+        lines.add(p.txt.titleize("Faction List " + pagenumber + "/" + pagecount));
 
         for (Faction faction : factionList.subList(start, end)) {
             if (faction.isNone()) {
-                String online = String.valueOf(faction.getFPlayersWhereOnline(true).size());
-                FancyMessage msg = new FancyMessage(TL.COMMAND_LIST_ONLINEFACTIONLESS.toString() + online).color(ChatColor.YELLOW);
-                lines.add(msg);
+                lines.add(p.txt.parse("<i>Factionless<i> %d online", Factions.getInstance().getNone().getFPlayersWhereOnline(true).size()));
                 continue;
             }
-            String online = " " + faction.getFPlayersWhereOnline(true).size() + "/" + faction.getFPlayers().size() + " online";
-
-            FancyMessage msg = new FancyMessage(faction.getTag(fme) + online).color(ChatColor.YELLOW).tooltip(getToolTips(faction));
-            lines.add(msg);
-            //lines.add(p.txt.parse("%s<i> %d/%d online, %d/%d/%d", faction.getTag(fme), faction.getFPlayersWhereOnline(true).size(), faction.getFPlayers().size(), faction.getLandRounded(), faction.getPowerRounded(), faction.getPowerMaxRounded()));
+            lines.add(p.txt.parse("%s<i> %d/%d online, %d/%d/%d", faction.getTag(fme), faction.getFPlayersWhereOnline(true).size(), faction.getFPlayers().size(), faction.getLandRounded(), faction.getPowerRounded(), faction.getPowerMaxRounded()));
         }
 
-        sendFancyMessage(lines);
+        sendMessage(lines);
     }
 }

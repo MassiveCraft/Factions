@@ -279,40 +279,6 @@ public abstract class MCommand<T extends MPlugin> {
         }
     }
 
-    public List<String> getToolTips(FPlayer player) {
-        List<String> lines = new ArrayList<String>();
-        for (String s : p.getConfig().getStringList("tooltips.show")) {
-            lines.add(ChatColor.translateAlternateColorCodes('&', replaceFPlayerTags(s, player)));
-        }
-        return lines;
-    }
-
-    public List<String> getToolTips(Faction faction) {
-        List<String> lines = new ArrayList<String>();
-        for (String s : p.getConfig().getStringList("tooltips.list")) {
-            lines.add(ChatColor.translateAlternateColorCodes('&', replaceFactionTags(s, faction)));
-        }
-        return lines;
-    }
-
-    public String replaceFPlayerTags(String s, FPlayer player) {
-        String humanized = DurationFormatUtils.formatDurationWords(System.currentTimeMillis() - player.getLastLoginTime(), true, true) + " ago";
-        String lastSeen = player.isOnline() ? ChatColor.GREEN + "Online" : (System.currentTimeMillis() - player.getLastLoginTime() < 432000000 ? ChatColor.YELLOW + humanized : ChatColor.RED + humanized);
-        String balance = Econ.isSetup() ? Econ.getFriendlyBalance(player) : "no balance";
-        String power = player.getPowerRounded() + "/" + player.getPowerMaxRounded();
-        String group = P.p.getPrimaryGroup(Bukkit.getOfflinePlayer(player.getName()));
-        return s.replace("{balance}", balance).replace("{lastSeen}", lastSeen).replace("{power}", power).replace("{group}", group);
-    }
-
-    public String replaceFactionTags(String s, Faction faction) {
-        boolean raidable = faction.getLandRounded() > faction.getPower();
-        FPlayer fLeader = faction.getFPlayerAdmin();
-        String online = String.valueOf(faction.getFPlayersWhereOnline(true).size());
-        String members = String.valueOf(faction.getFPlayers().size());
-        String leader = fLeader == null ? "Server" : fLeader.getName().substring(0, fLeader.getName().length() > 14 ? 13 : fLeader.getName().length());
-        return s.replace("{power}", String.valueOf(faction.getPowerRounded())).replace("{maxPower}", String.valueOf(faction.getPowerMaxRounded())).replace("{leader}", leader).replace("{chunks}", String.valueOf(faction.getLandRounded())).replace("{raidable}", String.valueOf(raidable)).replace("{warps}", String.valueOf(faction.getWarps().size())).replace("{online}", online).replace("{members}", members);
-    }
-
     // -------------------------------------------- //
     // Argument Readers
     // -------------------------------------------- //
