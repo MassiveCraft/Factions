@@ -307,8 +307,8 @@ public abstract class MCommand<T extends MPlugin> {
     public String replaceFactionTags(String s, Faction faction) {
         boolean raidable = faction.getLandRounded() > faction.getPower();
         FPlayer fLeader = faction.getFPlayerAdmin();
-        String online = String.valueOf(faction.getFPlayersWhereOnline(true).size());
-        String members = String.valueOf(faction.getFPlayers().size());
+        String online = String.valueOf(faction.getOnlinePlayers().size());
+        String members = String.valueOf(faction.getSize());
         String leader = fLeader == null ? "Server" : fLeader.getName().substring(0, fLeader.getName().length() > 14 ? 13 : fLeader.getName().length());
         return s.replace("{power}", String.valueOf(faction.getPowerRounded())).replace("{maxPower}", String.valueOf(faction.getPowerMaxRounded())).replace("{leader}", leader).replace("{chunks}", String.valueOf(faction.getLandRounded())).replace("{raidable}", String.valueOf(raidable)).replace("{warps}", String.valueOf(faction.getWarps().size())).replace("{online}", online).replace("{members}", members);
     }
