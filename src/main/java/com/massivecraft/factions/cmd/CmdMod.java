@@ -38,6 +38,7 @@ public class CmdMod extends FCommand {
             }
 
             sendFancyMessage(msg);
+            return;
         }
 
         boolean permAny = Permission.MOD_ANY.has(sender, false);
