@@ -13,14 +13,10 @@ import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.util.*;
 import com.massivecraft.factions.zcore.MPlugin;
 import com.massivecraft.factions.zcore.util.TextUtil;
-import net.milkbowl.vault.permission.Permission;
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.plugin.RegisteredServiceProvider;
 
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
@@ -47,8 +43,6 @@ public class P extends MPlugin {
     // Persistence related
     private boolean locked = false;
 
-    public static Permission perms = null;
-
     public boolean getLocked() {
         return this.locked;
     }
@@ -72,7 +66,6 @@ public class P extends MPlugin {
         this.exploitListener = new FactionsExploitListener();
         this.blockListener = new FactionsBlockListener(this);
     }
-
 
     @Override
     public void onEnable() {
@@ -122,19 +115,12 @@ public class P extends MPlugin {
         getServer().getPluginManager().registerEvents(blockListener, this);
 
         saveDefaultConfig();
-        setupPermissions();
 
         // since some other plugins execute commands directly through this command interface, provide it
         this.getCommand(this.refCommand).setExecutor(this);
 
         postEnable();
         this.loadSuccessful = true;
-    }
-
-    private boolean setupPermissions() {
-        RegisteredServiceProvider<Permission> rsp = getServer().getServicesManager().getRegistration(Permission.class);
-        perms = rsp.getProvider();
-        return perms != null;
     }
 
     @Override
@@ -321,10 +307,6 @@ public class P extends MPlugin {
             }
         }
         return players;
-    }
-
-    public String getPrimaryGroup(OfflinePlayer player) {
-        return perms == null ? " " : perms.getPrimaryGroup(Bukkit.getWorlds().get(0).toString(), player);
     }
 
     public void debug(Level level, String s) {
