@@ -150,5 +150,9 @@
             <id>repo.mikeprimm.com</id>
             <url>http://repo.mikeprimm.com/</url>
         </repository>
+        <repository>
+            <id>franga2000-repo</id>
+            <url>http://repo.franga2000.com/artifactory/public</url>
+        </repository>
     </repositories>
 </project>
