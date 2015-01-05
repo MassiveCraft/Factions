@@ -30,6 +30,17 @@ findfactionsexploit:
 # This has always been neutral.
 default-relation: "neutral"
 
+# Portal Creation
+# Do you want to limit portal creation?
+portals:
+  limit: false # will disable the below check if set to false
+
+  # What should the minimum relation be to create a portal in territory?
+  # Goes in the order of: ENEMY, NEUTRAL, ALLY, MEMBER.
+  # Minimum relation allows that and all listed to the right to create portals.
+  # Example: put ALLY to allow ALLY and MEMBER to be able to create portals.
+  minimum-relation: MEMBER # If typed incorrectly, defaults to NEUTRAL.
+
 ### Hard Core Settings ###
 
 # Warps
