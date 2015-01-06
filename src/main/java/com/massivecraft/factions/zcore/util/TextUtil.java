@@ -61,7 +61,7 @@ public class TextUtil {
         string = parseColorAmp(string);
         string = parseColorAcc(string);
         string = parseColorTags(string);
-        return string;
+        return ChatColor.translateAlternateColorCodes('&', string);
     }
 
     public static String parseColorAmp(String string) {

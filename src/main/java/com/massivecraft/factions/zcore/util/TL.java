@@ -246,6 +246,8 @@ public enum TL {
     COMMAND_LOCK_LOCKED("<i>Factions is now locked"),
     COMMAND_LOCK_UNLOCKED("<i>Factions in now unlocked"),
 
+    COMMAND_LOGINS_TOGGLE("<i>Set login / logout notifications for Faction members to: <a>%s"),
+
     COMMAND_MAP_TOSHOW("to show the map"),
     COMMAND_MAP_FORSHOW("for showing the map"),
     COMMAND_MAP_UPDATE_ENABLED("<i>Map auto update <green>ENABLED."),
@@ -453,7 +455,10 @@ public enum TL {
     SAFEZONE("safezone", "&6Safezone"),
     SAFEZONE_DESCRIPTION("safezone-description", "Free from pvp and monsters."),
     TOGGLE_SB("toggle-sb", "You now have scoreboards set to {value}"),
-    DEFAULT_PREFIX("default-prefix", "{relationcolor}[{faction}] &r");
+    DEFAULT_PREFIX("default-prefix", "{relationcolor}[{faction}] &r"),
+    FACTION_LOGIN("faction-login", "&e%s &9logged in."),
+    FACTION_LOGOUT("faction-logout", "&e%s &9logged out.."),
+    ;
 
     private String path;
     private String def;

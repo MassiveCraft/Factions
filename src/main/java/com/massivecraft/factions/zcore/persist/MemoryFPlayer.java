@@ -66,6 +66,8 @@ public abstract class MemoryFPlayer implements FPlayer {
 
     protected String id;
 
+    protected boolean monitorJoins;
+
     //private transient String playerName;
     protected transient FLocation lastStoodAt = new FLocation(); // Where did this player stand the last time we checked?
 
@@ -111,6 +113,14 @@ public abstract class MemoryFPlayer implements FPlayer {
         }
         faction.addFPlayer(this);
         this.factionId = faction.getId();
+    }
+
+    public void setMonitorJoins(boolean monitor) {
+        this.monitorJoins = monitor;
+    }
+
+    public boolean isMonitoringJoins() {
+        return this.monitorJoins;
     }
 
     public Role getRole() {

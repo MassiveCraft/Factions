@@ -90,6 +90,7 @@ permissions:
       factions.scoreboard: true
       factions.showinvites: true
       factions.seechunk: true
+      factions.monitorlogins: true
   factions.admin:
     description: hand over your admin rights
   factions.admin.any:
@@ -241,3 +242,5 @@ permissions:
     description: access your faction warps
   factions.modifypower:
     description: modify other player's power
+  factions.monitorlogins:
+    description: monitor join and leaves of faction members

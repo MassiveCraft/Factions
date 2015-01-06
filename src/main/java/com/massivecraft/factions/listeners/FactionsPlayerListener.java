@@ -10,6 +10,7 @@ import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.VisualizeUtil;
+import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TextUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -64,6 +65,15 @@ public class FactionsPlayerListener implements Listener {
             FScoreboard.get(me).setDefaultSidebar(new FDefaultSidebar(), P.p.getConfig().getInt("default-update-interval", 20));
         }
         FScoreboard.get(me).setSidebarVisibility(P.p.cmdBase.cmdSB.showBoard(me));
+
+        Faction myFaction = me.getFaction();
+        if (!myFaction.isNone()) {
+            for (FPlayer player : myFaction.getFPlayersWhereOnline(true)) {
+                if (player != me && player.isMonitoringJoins()) {
+                    player.msg(TL.FACTION_LOGIN, me.getName());
+                }
+            }
+        }
     }
 
     @EventHandler(priority = EventPriority.NORMAL)
@@ -76,8 +86,16 @@ public class FactionsPlayerListener implements Listener {
         me.setLastLoginTime(System.currentTimeMillis());
 
         Faction myFaction = me.getFaction();
-        if (myFaction != null) {
+        if (!myFaction.isNone()) {
             myFaction.memberLoggedOff();
+        }
+
+        if (!myFaction.isNone()) {
+            for (FPlayer player : myFaction.getFPlayersWhereOnline(true)) {
+                if (player != me && player.isMonitoringJoins()) {
+                    player.msg(TL.FACTION_LOGOUT, me.getName());
+                }
+            }
         }
 
         FScoreboard.remove(me);

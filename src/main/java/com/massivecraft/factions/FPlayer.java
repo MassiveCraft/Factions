@@ -32,6 +32,10 @@ public interface FPlayer extends EconomyParticipator {
 
     public void setFaction(Faction faction);
 
+    public void setMonitorJoins(boolean monitor);
+
+    public boolean isMonitoringJoins();
+
     public Role getRole();
 
     public void setRole(Role role);
