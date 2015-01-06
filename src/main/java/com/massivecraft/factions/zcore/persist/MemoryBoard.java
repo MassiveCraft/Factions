@@ -47,9 +47,10 @@ public abstract class MemoryBoard extends Board {
 
     public void removeAt(FLocation flocation) {
         Faction faction = getFactionAt(flocation);
-        for (LazyLocation loc : faction.getWarps().values()) {
-            if (flocation.isInChunk(loc.getLocation())) {
-                faction.removeWarp(loc);
+        Iterator<LazyLocation> it = faction.getWarps().values().iterator();
+        while (it.hasNext()) {
+            if (flocation.isInChunk(it.next().getLocation())) {
+                it.remove();
             }
         }
         clearOwnershipAt(flocation);

@@ -25,8 +25,6 @@ public interface Faction extends EconomyParticipator {
 
     public boolean removeWarp(String name);
 
-    public boolean removeWarp(LazyLocation loc);
-
     public void clearWarps();
 
     public void addAnnouncement(FPlayer fPlayer, String msg);
