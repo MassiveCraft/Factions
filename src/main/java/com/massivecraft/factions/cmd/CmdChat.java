@@ -35,7 +35,7 @@ public class CmdChat extends FCommand {
         ChatMode modeTarget = fme.getChatMode().getNext();
 
         if (modeString != null) {
-            modeString.toLowerCase();
+            modeString = modeString.toLowerCase();
             if (modeString.startsWith("p")) {
                 modeTarget = ChatMode.PUBLIC;
             } else if (modeString.startsWith("a")) {

@@ -65,7 +65,7 @@ public class CmdTag extends FCommand {
 
         // Inform
         for (FPlayer fplayer : FPlayers.getInstance().getOnlinePlayers()) {
-            if (fplayer.getFactionId() == myFaction.getId()) {
+            if (fplayer.getFactionId().equals(myFaction.getId())) {
                 fplayer.msg(TL.COMMAND_TAG_FACTION, fme.describeTo(myFaction, true), myFaction.getTag(myFaction));
                 continue;
             }
