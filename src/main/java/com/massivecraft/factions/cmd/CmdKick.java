@@ -32,7 +32,7 @@ public class CmdKick extends FCommand {
 
     @Override
     public void perform() {
-        FPlayer toKick = this.argAsBestFPlayerMatch(0);
+        FPlayer toKick = this.argIsSet(0) ? this.argAsBestFPlayerMatch(0) : null;
         if (toKick == null) {
             FancyMessage msg = new FancyMessage(TL.COMMAND_KICK_CANDIDATES.toString()).color(ChatColor.GOLD);
             for (FPlayer player : myFaction.getFPlayersWhereRole(Role.NORMAL)) {
