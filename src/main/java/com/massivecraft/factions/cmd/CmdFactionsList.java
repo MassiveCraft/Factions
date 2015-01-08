@@ -1,16 +1,21 @@
 package com.massivecraft.factions.cmd;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
+
 import com.massivecraft.factions.FactionListComparator;
+import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.FactionColl;
 import com.massivecraft.massivecore.cmd.arg.ARInteger;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
+import com.massivecraft.massivecore.mixin.Mixin;
+import com.massivecraft.massivecore.pager.PagerSimple;
+import com.massivecraft.massivecore.pager.Stringifier;
 import com.massivecraft.massivecore.util.Txt;
-
 
 public class CmdFactionsList extends FactionsCommand
 {
@@ -37,46 +42,49 @@ public class CmdFactionsList extends FactionsCommand
 	@Override
 	public void perform()
 	{
-		Integer pageHumanBased = this.arg(0, ARInteger.get(), 1);
+		// Args
+		final Integer pageHumanBased = this.arg(0, ARInteger.get(), 1);
 		if (pageHumanBased == null) return;
 		
-		// Create Messages
-		List<String> lines = new ArrayList<String>();
+		// Create Pager
+		final List<Faction> timings = FactionColl.get().getAll(null, FactionListComparator.get());
+		final PagerSimple<Faction> pager = new PagerSimple<Faction>(timings, sender);
 		
-		ArrayList<Faction> factionList = new ArrayList<Faction>(FactionColl.get().getAll(null, FactionListComparator.get()));
-
-		final int pageheight = 9;
-		
-		int pagecount = (factionList.size() / pageheight) + 1;
-		if (pageHumanBased > pagecount)
-			pageHumanBased = pagecount;
-		else if (pageHumanBased < 1)
-			pageHumanBased = 1;
-		int start = (pageHumanBased - 1) * pageheight;
-		int end = start + pageheight;
-		if (end > factionList.size())
-			end = factionList.size();
-
-		lines.add(Txt.titleize("Faction List "+pageHumanBased+"/"+pagecount));
-
-		for (Faction faction : factionList.subList(start, end))
+		// NOTE: The faction list is quite slow and mostly thread safe.
+		// We run it asynchronously to spare the primary server thread.
+		final CommandSender sender = this.sender;
+		Bukkit.getScheduler().runTaskAsynchronously(Factions.get(), new Runnable()
 		{
-			if (faction.isNone())
+			@Override
+			public void run()
 			{
-				lines.add(Txt.parse("<i>Factionless<i> %d online", FactionColl.get().getNone().getMPlayersWhereOnline(true).size()));
-				continue;
+				// Use Pager
+				List<String> messages = pager.getPageTxt(pageHumanBased, "Faction List", new Stringifier<Faction>() {
+					@Override
+					public String toString(Faction faction)
+					{
+						if (faction.isNone())
+						{
+							return Txt.parse("<i>Factionless<i> %d online", FactionColl.get().getNone().getMPlayersWhereOnline(true).size());
+						}
+						else
+						{
+							return Txt.parse("%s<i> %d/%d online, %d/%d/%d",
+								faction.getName(msender),
+								faction.getMPlayersWhereOnline(true).size(),
+								faction.getMPlayers().size(),
+								faction.getLandCount(),
+								faction.getPowerRounded(),
+								faction.getPowerMaxRounded()
+							);
+						}
+					}
+				});
+				
+				// Send Messages
+				Mixin.messageOne(sender, messages);
 			}
-			lines.add(Txt.parse("%s<i> %d/%d online, %d/%d/%d",
-				faction.getName(msender),
-				faction.getMPlayersWhereOnline(true).size(),
-				faction.getMPlayers().size(),
-				faction.getLandCount(),
-				faction.getPowerRounded(),
-				faction.getPowerMaxRounded())
-			);
-		}
-
-		sendMessage(lines);
+		});
 	}
 	
 }
