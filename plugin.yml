@@ -28,6 +28,9 @@ permissions:
   factions.expansions: {description: list expansions, default: false}
   factions.faction: {description: show faction information, default: false}
   factions.flag: {description: manage faction flags, default: false}
+  factions.flag.list: {description: list flags, default: false}
+  factions.flag.set: {description: set flags, default: false}
+  factions.flag.show: {description: show flags, default: false}
   factions.home: {description: teleport to faction home, default: false}
   factions.invite: {description: manage invites, default: false}
   factions.invite.list: {description: list invited players, default: false}
@@ -52,6 +55,9 @@ permissions:
   factions.motd: {description: faction motd, default: false}
   factions.open: {description: set if invitation is required to join, default: false}
   factions.perm: {description: change faction permissions, default: false}
+  factions.perm.list: {description: list perms, default: false}
+  factions.perm.set: {description: set perms, default: false}
+  factions.perm.show: {description: show perms, default: false}
   factions.player: {description: show player information}
   factions.powerboost: {description: set powerboost, default: false}
   factions.rank: {description: manage/show ranks, default: false}
@@ -98,6 +104,9 @@ permissions:
       factions.expansions: true
       factions.faction: true
       factions.flag: true
+      factions.flag.list: true
+      factions.flag.set: true
+      factions.flag.show: true
       factions.home: true
       factions.invite: true
       factions.invite.list: true
@@ -126,6 +135,9 @@ permissions:
       factions.officer.any: true
       factions.open: true
       factions.perm: true
+      factions.perm.list: true
+      factions.perm.set: true
+      factions.perm.show: true
       factions.player: true
       factions.powerboost: true
       factions.promote: true
@@ -195,6 +207,9 @@ permissions:
       factions.expansions: true
       factions.faction: true
       factions.flag: true
+      factions.flag.list: true
+      factions.flag.set: true
+      factions.flag.show: true
       factions.home: true
       factions.invite: true
       factions.invite.list: true
@@ -218,6 +233,9 @@ permissions:
       factions.officer: true
       factions.open: true
       factions.perm: true
+      factions.perm.list: true
+      factions.perm.set: true
+      factions.perm.show: true
       factions.player: true
       factions.promote: true
       factions.rank: true

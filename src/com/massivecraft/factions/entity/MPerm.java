@@ -1,5 +1,6 @@
 package com.massivecraft.factions.entity;
 
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -295,6 +296,41 @@ public class MPerm extends Entity<MPerm> implements Prioritized, Registerable
 		}
 		
 		return ret;
+	}
+	
+	public String getDesc(boolean withName, boolean withDesc)
+	{
+		List<String> parts = new ArrayList<String>();
+		
+		if (withName)
+		{
+			String nameFormat;
+			if ( ! this.isVisible())
+			{
+				nameFormat = "<silver>%s";
+			}
+			else if (this.isEditable())
+			{
+				nameFormat = "<pink>%s";
+			}
+			else
+			{
+				nameFormat = "<aqua>%s";
+			}
+			String name = this.getName();
+			String nameDesc = Txt.parse(nameFormat, name);
+			parts.add(nameDesc);
+		}
+		
+		if (withDesc)
+		{
+			String desc = this.getDesc();
+			
+			String descDesc = Txt.parse("<i>%s", desc);
+			parts.add(descDesc);
+		}
+		
+		return Txt.implode(parts, " ");
 	}
 	
 	public boolean has(Faction faction, Faction hostFaction)
