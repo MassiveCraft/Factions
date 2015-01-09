@@ -251,7 +251,7 @@ public class Econ {
         if (isUUID(ep.getAccountId())) {
             currentBalance = econ.getBalance(Bukkit.getOfflinePlayer(UUID.fromString(ep.getAccountId())));
         } else {
-            currentBalance = econ.getBalance(Bukkit.getOfflinePlayer(ep.getAccountId()));
+            currentBalance = econ.getBalance(ep.getAccountId());
         }
 
         if (currentBalance >= delta) {
@@ -366,11 +366,11 @@ public class Econ {
     // -------------------------------------------- //
 
     public static boolean hasAccount(String name) {
-        return econ.hasAccount(Bukkit.getOfflinePlayer(name));
+        return econ.hasAccount(name);
     }
 
     public static double getBalance(String account) {
-        return econ.getBalance(Bukkit.getOfflinePlayer(account));
+        return econ.getBalance(account);
     }
 
     private static final DecimalFormat format = new DecimalFormat("#,###");
@@ -380,32 +380,36 @@ public class Econ {
     }
 
     public static String getFriendlyBalance(FPlayer player) {
-        return format.format(econ.getBalance(Bukkit.getOfflinePlayer(player.getName())));
+        OfflinePlayer offline = Bukkit.getOfflinePlayer(UUID.fromString(player.getId()));
+        if (offline.getName() == null) {
+            return "0";
+        }
+        return format.format(econ.getBalance(offline));
     }
 
     public static boolean setBalance(String account, double amount) {
-        double current = econ.getBalance(Bukkit.getOfflinePlayer(account));
+        double current = econ.getBalance(account);
         if (current > amount) {
-            return econ.withdrawPlayer(Bukkit.getOfflinePlayer(account), current - amount).transactionSuccess();
+            return econ.withdrawPlayer(account, current - amount).transactionSuccess();
         } else {
-            return econ.depositPlayer(Bukkit.getOfflinePlayer(account), amount - current).transactionSuccess();
+            return econ.depositPlayer(account, amount - current).transactionSuccess();
         }
     }
 
     public static boolean modifyBalance(String account, double amount) {
         if (amount < 0) {
-            return econ.withdrawPlayer(Bukkit.getOfflinePlayer(account), -amount).transactionSuccess();
+            return econ.withdrawPlayer(account, -amount).transactionSuccess();
         } else {
-            return econ.depositPlayer(Bukkit.getOfflinePlayer(account), amount).transactionSuccess();
+            return econ.depositPlayer(account, amount).transactionSuccess();
         }
     }
 
     public static boolean deposit(String account, double amount) {
-        return econ.depositPlayer(Bukkit.getOfflinePlayer(account), amount).transactionSuccess();
+        return econ.depositPlayer(account, amount).transactionSuccess();
     }
 
     public static boolean withdraw(String account, double amount) {
-        return econ.withdrawPlayer(Bukkit.getOfflinePlayer(account), amount).transactionSuccess();
+        return econ.withdrawPlayer(account, amount).transactionSuccess();
     }
 
     // ---------------------------------------

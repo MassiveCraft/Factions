@@ -5,8 +5,6 @@ import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.MCommand;
 import com.massivecraft.factions.zcore.util.TL;
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -141,10 +139,11 @@ public abstract class FCommand extends MCommand<P> {
         FPlayer ret = def;
 
         if (name != null) {
-            OfflinePlayer player = Bukkit.getOfflinePlayer(name);
-            FPlayer fplayer = FPlayers.getInstance().getByOfflinePlayer(player);
-            if (fplayer != null) {
-                ret = fplayer;
+            for (FPlayer fplayer : FPlayers.getInstance().getAllFPlayers()) {
+                if (fplayer.getName().equalsIgnoreCase(name)) {
+                    ret = fplayer;
+                    break;
+                }
             }
         }
 
@@ -203,8 +202,7 @@ public abstract class FCommand extends MCommand<P> {
 
             // Next we match player names
             if (faction == null) {
-                OfflinePlayer player = Bukkit.getOfflinePlayer(name);
-                FPlayer fplayer = FPlayers.getInstance().getByOfflinePlayer(player);
+                FPlayer fplayer = strAsFPlayer(name, null, false);
                 if (fplayer != null) {
                     faction = fplayer.getFaction();
                 }
