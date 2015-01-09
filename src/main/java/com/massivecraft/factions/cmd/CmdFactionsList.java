@@ -46,10 +46,6 @@ public class CmdFactionsList extends FactionsCommand
 		final Integer pageHumanBased = this.arg(0, ARInteger.get(), 1);
 		if (pageHumanBased == null) return;
 		
-		// Create Pager
-		final List<Faction> timings = FactionColl.get().getAll(null, FactionListComparator.get());
-		final PagerSimple<Faction> pager = new PagerSimple<Faction>(timings, sender);
-		
 		// NOTE: The faction list is quite slow and mostly thread safe.
 		// We run it asynchronously to spare the primary server thread.
 		final CommandSender sender = this.sender;
@@ -58,6 +54,10 @@ public class CmdFactionsList extends FactionsCommand
 			@Override
 			public void run()
 			{
+				// Create Pager
+				final List<Faction> factions = FactionColl.get().getAll(null, FactionListComparator.get());
+				final PagerSimple<Faction> pager = new PagerSimple<Faction>(factions, sender);
+				
 				// Use Pager
 				List<String> messages = pager.getPageTxt(pageHumanBased, "Faction List", new Stringifier<Faction>() {
 					@Override
