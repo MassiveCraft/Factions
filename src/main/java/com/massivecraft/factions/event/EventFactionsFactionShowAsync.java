@@ -9,7 +9,7 @@ import org.bukkit.event.HandlerList;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.massivecore.PriorityLines;
 
-public class EventFactionsFactionShow extends EventFactionsAbstractSender
+public class EventFactionsFactionShowAsync extends EventFactionsAbstractSender
 {
 	// -------------------------------------------- //
 	// REQUIRED EVENT CODE
@@ -33,9 +33,9 @@ public class EventFactionsFactionShow extends EventFactionsAbstractSender
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public EventFactionsFactionShow(CommandSender sender, Faction faction)
+	public EventFactionsFactionShowAsync(CommandSender sender, Faction faction)
 	{
-		super(sender);
+		super(true, sender);
 		this.faction = faction;
 		this.idPriorityLiness = new HashMap<String, PriorityLines>();
 	}

@@ -23,4 +23,10 @@ public abstract class EventFactionsAbstractSender extends EventMassiveCore
 	{
 		this.sender = sender;
 	}
+	
+	public EventFactionsAbstractSender(boolean async, CommandSender sender)
+	{
+		super(async);
+		this.sender = sender;
+	}
 }

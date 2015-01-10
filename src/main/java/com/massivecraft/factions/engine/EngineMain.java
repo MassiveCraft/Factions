@@ -79,7 +79,7 @@ import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.entity.MPlayerColl;
 import com.massivecraft.factions.event.EventFactionsChunkChangeType;
 import com.massivecraft.factions.event.EventFactionsChunksChange;
-import com.massivecraft.factions.event.EventFactionsFactionShow;
+import com.massivecraft.factions.event.EventFactionsFactionShowAsync;
 import com.massivecraft.factions.event.EventFactionsPvpDisallowed;
 import com.massivecraft.factions.event.EventFactionsPowerChange;
 import com.massivecraft.factions.event.EventFactionsPowerChange.PowerChangeReason;
@@ -122,7 +122,7 @@ public class EngineMain extends EngineAbstract
 	// -------------------------------------------- //
 	
 	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
-	public void onFactionShow(EventFactionsFactionShow event)
+	public void onFactionShow(EventFactionsFactionShowAsync event)
 	{
 		final int tableCols = 4;
 		final CommandSender sender = event.getSender();
