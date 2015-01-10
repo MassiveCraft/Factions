@@ -33,13 +33,6 @@ public class P extends MPlugin {
     // Single 4 life.
     public static P p;
 
-    // Listeners
-    public final FactionsPlayerListener playerListener;
-    public final FactionsChatListener chatListener;
-    public final FactionsEntityListener entityListener;
-    public final FactionsExploitListener exploitListener;
-    public final FactionsBlockListener blockListener;
-
     // Persistence related
     private boolean locked = false;
 
@@ -60,11 +53,6 @@ public class P extends MPlugin {
 
     public P() {
         p = this;
-        this.playerListener = new FactionsPlayerListener(this);
-        this.chatListener = new FactionsChatListener(this);
-        this.entityListener = new FactionsEntityListener(this);
-        this.exploitListener = new FactionsExploitListener();
-        this.blockListener = new FactionsBlockListener(this);
     }
 
     @Override
@@ -73,6 +61,7 @@ public class P extends MPlugin {
             return;
         }
         this.loadSuccessful = false;
+        saveDefaultConfig();
 
         // Load Conf from disk
         Conf.load();
@@ -108,13 +97,11 @@ public class P extends MPlugin {
         startAutoLeaveTask(false);
 
         // Register Event Handlers
-        getServer().getPluginManager().registerEvents(playerListener, this);
-        getServer().getPluginManager().registerEvents(chatListener, this);
-        getServer().getPluginManager().registerEvents(entityListener, this);
-        getServer().getPluginManager().registerEvents(exploitListener, this);
-        getServer().getPluginManager().registerEvents(blockListener, this);
-
-        saveDefaultConfig();
+        getServer().getPluginManager().registerEvents(new FactionsPlayerListener(this), this);
+        getServer().getPluginManager().registerEvents(new FactionsChatListener(this), this);
+        getServer().getPluginManager().registerEvents(new FactionsEntityListener(this), this);
+        getServer().getPluginManager().registerEvents(new FactionsExploitListener(), this);
+        getServer().getPluginManager().registerEvents(new FactionsBlockListener(this), this);
 
         // since some other plugins execute commands directly through this command interface, provide it
         this.getCommand(this.refCommand).setExecutor(this);

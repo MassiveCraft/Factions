@@ -37,18 +37,25 @@ public class FactionsPlayerListener implements Listener {
 
     public FactionsPlayerListener(P p) {
         this.p = p;
+        for (Player player : p.getServer().getOnlinePlayers()) {
+            initPlayer(player);
+        }
     }
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onPlayerJoin(PlayerJoinEvent event) {
+        initPlayer(event.getPlayer());
+    }
+
+    private void initPlayer(Player player) {
         // Make sure that all online players do have a fplayer.
-        final FPlayer me = FPlayers.getInstance().getByPlayer(event.getPlayer());
+        final FPlayer me = FPlayers.getInstance().getByPlayer(player);
 
         // Update the lastLoginTime for this fplayer
         me.setLastLoginTime(System.currentTimeMillis());
 
         // Store player's current FLocation and notify them where they are
-        me.setLastStoodAt(new FLocation(event.getPlayer().getLocation()));
+        me.setLastStoodAt(new FLocation(player.getLocation()));
 
         // Check for Faction announcements. Let's delay this so they actually see it.
         Bukkit.getScheduler().runTaskLater(P.p, new Runnable() {
@@ -68,9 +75,9 @@ public class FactionsPlayerListener implements Listener {
 
         Faction myFaction = me.getFaction();
         if (!myFaction.isNone()) {
-            for (FPlayer player : myFaction.getFPlayersWhereOnline(true)) {
-                if (player != me && player.isMonitoringJoins()) {
-                    player.msg(TL.FACTION_LOGIN, me.getName());
+            for (FPlayer other : myFaction.getFPlayersWhereOnline(true)) {
+                if (other != me && other.isMonitoringJoins()) {
+                    other.msg(TL.FACTION_LOGIN, me.getName());
                 }
             }
         }
