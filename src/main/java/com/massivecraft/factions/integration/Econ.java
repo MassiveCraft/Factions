@@ -156,12 +156,18 @@ public class Econ {
 
         if (isUUID(from.getAccountId())) {
             fromAcc = Bukkit.getOfflinePlayer(UUID.fromString(from.getAccountId()));
+            if (fromAcc.getName() == null) {
+                return false;
+            }
         } else {
             fromAcc = Bukkit.getOfflinePlayer(from.getAccountId());
         }
 
         if (isUUID(to.getAccountId())) {
             toAcc = Bukkit.getOfflinePlayer(UUID.fromString(to.getAccountId()));
+            if (toAcc.getName() == null) {
+                return false;
+            }
         } else {
             toAcc = Bukkit.getOfflinePlayer(to.getAccountId());
         }
@@ -249,7 +255,12 @@ public class Econ {
         double currentBalance;
 
         if (isUUID(ep.getAccountId())) {
-            currentBalance = econ.getBalance(Bukkit.getOfflinePlayer(UUID.fromString(ep.getAccountId())));
+            OfflinePlayer offline = Bukkit.getOfflinePlayer(UUID.fromString(ep.getAccountId()));
+            if (offline.getName() != null) {
+                currentBalance = econ.getBalance(Bukkit.getOfflinePlayer(UUID.fromString(ep.getAccountId())));
+            } else {
+                currentBalance = 0;
+            }
         } else {
             currentBalance = econ.getBalance(ep.getAccountId());
         }
@@ -276,6 +287,9 @@ public class Econ {
 
         if (isUUID(ep.getAccountId())) {
             acc = Bukkit.getOfflinePlayer(UUID.fromString(ep.getAccountId()));
+            if (acc.getName() == null) {
+                return false;
+            }
         } else {
             acc = Bukkit.getOfflinePlayer(ep.getAccountId());
         }
@@ -376,15 +390,15 @@ public class Econ {
     private static final DecimalFormat format = new DecimalFormat("#,###");
 
     public static String getFriendlyBalance(UUID uuid) {
-        return format.format(econ.getBalance(Bukkit.getOfflinePlayer(uuid)));
-    }
-
-    public static String getFriendlyBalance(FPlayer player) {
-        OfflinePlayer offline = Bukkit.getOfflinePlayer(UUID.fromString(player.getId()));
+        OfflinePlayer offline = Bukkit.getOfflinePlayer(uuid);
         if (offline.getName() == null) {
             return "0";
         }
         return format.format(econ.getBalance(offline));
+    }
+
+    public static String getFriendlyBalance(FPlayer player) {
+        return getFriendlyBalance(UUID.fromString(player.getId()));
     }
 
     public static boolean setBalance(String account, double amount) {
