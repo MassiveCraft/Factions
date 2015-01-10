@@ -208,7 +208,7 @@ COMMAND:
     CANDIDATES: 'Players you can kick: '
     CLICKTOKICK: 'Click to kick '
     SELF: <b>You cannot kick yourself.
-    OFFLINE: Something went wrong with getting the offline player's faction.
+    NONE: That player is not in a faction.
     NOTMEMBER: '%s<b> is not a member of %s'
     INSUFFICIENTRANK: <b>Your rank is too low to kick this player.
     NEGATIVEPOWER: <b>You cannot kick that member until their power is positive.

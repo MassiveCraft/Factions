@@ -227,7 +227,7 @@ public enum TL {
     COMMAND_KICK_CANDIDATES("Players you can kick: "),
     COMMAND_KICK_CLICKTOKICK("Click to kick "),
     COMMAND_KICK_SELF("<b>You cannot kick yourself."),
-    COMMAND_KICK_OFFLINE("Something went wrong with getting the offline player's faction."),
+    COMMAND_KICK_NONE("That player is not in a faction."),
     COMMAND_KICK_NOTMEMBER("%s<b> is not a member of %s"),
     COMMAND_KICK_INSUFFICIENTRANK("<b>Your rank is too low to kick this player."),
     COMMAND_KICK_NEGATIVEPOWER("<b>You cannot kick that member until their power is positive."),

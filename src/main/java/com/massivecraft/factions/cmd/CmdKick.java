@@ -58,9 +58,8 @@ public class CmdKick extends FCommand {
 
         Faction toKickFaction = toKick.getFaction();
 
-        // The PlayerEntityCollection only holds online players, this was a specific issue that kept happening.
-        if (toKickFaction.getTag().equalsIgnoreCase(TL.WILDERNESS.toString())) {
-            sender.sendMessage(TL.COMMAND_KICK_OFFLINE.toString());
+        if (toKickFaction.isNone()) {
+            sender.sendMessage(TL.COMMAND_KICK_NONE.toString());
             return;
         }
 
