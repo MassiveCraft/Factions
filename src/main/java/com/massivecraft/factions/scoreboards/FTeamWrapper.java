@@ -25,6 +25,10 @@ public class FTeamWrapper {
             return;
         }
 
+        if (faction.isNone()) {
+            return;
+        }
+
         if (!P.p.getConfig().getBoolean("scoreboard.default-prefixes", false)) {
             return;
         }
@@ -43,6 +47,10 @@ public class FTeamWrapper {
 
     public static void applyUpdates(Faction faction) {
         if (!FScoreboard.isSupportedByServer()) {
+            return;
+        }
+
+        if (faction.isNone()) {
             return;
         }
 
