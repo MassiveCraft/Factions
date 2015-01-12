@@ -116,6 +116,11 @@ public enum Rel
 		return this.value > rel.value;
 	}
 	
+	public boolean isRank()
+	{
+		return this.isAtLeast(Rel.RECRUIT);
+	}
+	
 	public ChatColor getColor()
 	{
 		if (this.isAtLeast(RECRUIT))

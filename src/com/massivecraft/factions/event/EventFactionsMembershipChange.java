@@ -57,7 +57,10 @@ public class EventFactionsMembershipChange extends EventFactionsAbstractSender
 		// Join
 		JOIN      (true),
 		CREATE    (false),
+		// Leader is not used, but temporarily kept to avoid other plugins crashing
+		@Deprecated
 		LEADER    (true),
+		RANK      (true),
 		
 		// Leave
 		LEAVE     (true),
