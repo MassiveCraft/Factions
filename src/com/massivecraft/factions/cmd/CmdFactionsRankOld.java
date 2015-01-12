@@ -26,6 +26,7 @@ public class CmdFactionsRankOld extends FactionsCommand
 	
 		// Args
 		this.addRequiredArg("player");
+		this.addOptionalArg("faction", "their");
 		
 		// VisibilityMode
 		this.setVisibilityMode(VisibilityMode.INVISIBLE);
@@ -38,7 +39,7 @@ public class CmdFactionsRankOld extends FactionsCommand
 	@Override
 	public void perform()
 	{
-		Factions.get().getOuterCmdFactions().cmdFactionsRank.execute(sender, MUtil.list(this.arg(0), this.rankName));
+		Factions.get().getOuterCmdFactions().cmdFactionsRank.execute(sender, MUtil.list(this.arg(0), this.rankName, this.arg(1)));
 	}
 	
 }

@@ -5,8 +5,8 @@ import java.util.Collection;
 import org.bukkit.command.CommandSender;
 
 import com.massivecraft.factions.Rel;
+import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.cmd.arg.ARAbstractSelect;
-import com.massivecraft.massivecore.mixin.Mixin;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.Txt;
 
@@ -30,6 +30,8 @@ public class ARRank extends ARAbstractSelect<Rel>
 	
 	public ARRank(Rel rank)
 	{
+		if (rank == null) throw new IllegalArgumentException("Do not use null, the default constructor can be used however.");
+		if ( ! rank.isRank()) throw new IllegalArgumentException(rank + " is not a valid rank");
 		this.startRank = rank;
 	}
 	
@@ -43,15 +45,9 @@ public class ARRank extends ARAbstractSelect<Rel>
 	// -------------------------------------------- //
 	// OVERRIDE
 	// -------------------------------------------- //
-	
-	@Override
-	public String typename()
-	{
-		return "rank";
-	}
 
 	@Override
-	public Rel select(String arg, CommandSender sender)
+	public Rel select(String arg, CommandSender sender) throws MassiveException
 	{
 		// This is especially useful when one rank can have aliases.
 		// In the case of promote/demote, 
@@ -65,17 +61,16 @@ public class ARRank extends ARAbstractSelect<Rel>
 		if (arg.equals("recruit")) return Rel.RECRUIT;
 		
 		// No start rank?
-		if (startRank == null)
+		if (startRank == null && (arg.equals("promote") || arg.equals("demote")))
 		{
-			// This might happen of the default constructor is used
-			Mixin.msgOne(sender, Txt.parse("<b>You can't use promote & demote"));
-			return null;
+			// This might happen if the default constructor is used
+			throw new MassiveException().addMsg("<b>You can't use promote & demote.");
 		}
 		
 		// Promote
 		if (arg.equals("promote"))
 		{
-			if (Rel.LEADER.equals(startRank)) return Rel.LEADER;
+			if (Rel.LEADER.equals(startRank)) throw new MassiveException().addMsg("<b>You can't promote the leader.");
 			if (Rel.OFFICER.equals(startRank)) return Rel.LEADER;
 			if (Rel.MEMBER.equals(startRank)) return Rel.OFFICER;
 			if (Rel.RECRUIT.equals(startRank)) return Rel.MEMBER;
@@ -87,7 +82,7 @@ public class ARRank extends ARAbstractSelect<Rel>
 			if (Rel.LEADER.equals(startRank)) return Rel.OFFICER;
 			if (Rel.OFFICER.equals(startRank)) return Rel.MEMBER;
 			if (Rel.MEMBER.equals(startRank)) return Rel.RECRUIT;
-			if (Rel.RECRUIT.equals(startRank)) return Rel.RECRUIT;
+			if (Rel.RECRUIT.equals(startRank)) throw new MassiveException().addMsg("<b>You can't demote a recruit.");
 		}
 		
 		return null;
@@ -106,11 +101,17 @@ public class ARRank extends ARAbstractSelect<Rel>
 		);
 	}
 	
+	@Override
+	public String typename()
+	{
+		return "rank";
+	}
+	
 	// -------------------------------------------- //
-	// PRIVATE
+	// ARG
 	// -------------------------------------------- //
 	
-	private String prepareArg(String str)
+	public String prepareArg(String str)
 	{
 		String ret = str.toLowerCase();
 		
@@ -122,7 +123,7 @@ public class ARRank extends ARAbstractSelect<Rel>
 		{
 			ret = "officer";
 		}
-		else if (ret.startsWith("mem"))
+		else if (ret.startsWith("mem") || ret.startsWith("nor"))
 		{
 			ret = "member";
 		}
@@ -141,4 +142,5 @@ public class ARRank extends ARAbstractSelect<Rel>
 		
 		return ret;
 	}
+
 }
