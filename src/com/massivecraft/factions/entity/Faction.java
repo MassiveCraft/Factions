@@ -482,6 +482,18 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 		this.setInvited(mplayer.getId(), invited);
 	}
 	
+	public List<MPlayer> getInvitedMPlayers()
+	{
+		List<MPlayer> mplayers = new ArrayList<MPlayer>();
+		
+		for (String id : this.getInvitedPlayerIds())
+		{	
+			MPlayer mplayer = MPlayer.get(id);
+			mplayers.add(mplayer);
+		}
+		return mplayers;
+	}
+	
 	// -------------------------------------------- //
 	// FIELD: relationWish
 	// -------------------------------------------- //

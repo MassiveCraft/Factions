@@ -29,7 +29,11 @@ permissions:
   factions.faction: {description: show faction information, default: false}
   factions.flag: {description: manage faction flags, default: false}
   factions.home: {description: teleport to faction home, default: false}
-  factions.invite: {description: set if player is invited, default: false}
+  factions.invite: {description: manage invites, default: false}
+  factions.invite.list: {description: list invited players, default: false}
+  factions.invite.list.other: {description: list invited players of another factions, default: false}
+  factions.invite.add: {description: invite player, default: false}
+  factions.invite.remove: {description: revoke an invite, default: false}
   factions.join: {description: join faction, default: false}
   factions.join.any: {description: join closed faction, default: false}
   factions.join.others: {description: have another player join faction, default: false}
@@ -95,6 +99,10 @@ permissions:
       factions.flag: true
       factions.home: true
       factions.invite: true
+      factions.invite.list: true
+      factions.invite.list.other: true
+      factions.invite.add: true
+      factions.invite.remove: true
       factions.join: true
       factions.join.any: true
       factions.join.others: true
@@ -162,6 +170,7 @@ permissions:
     children:
       factions.kit.rank0: true
       factions.admin: true
+      factions.invite.list.other: true
   factions.kit.rank0:
     default: false
     children:
@@ -185,6 +194,9 @@ permissions:
       factions.flag: true
       factions.home: true
       factions.invite: true
+      factions.invite.list: true
+      factions.invite.add: true
+      factions.invite.remove: true
       factions.join: true
       factions.kick: true
       factions.leader: true
