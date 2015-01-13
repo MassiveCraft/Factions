@@ -65,6 +65,7 @@ public abstract class MemoryFPlayer implements FPlayer {
     protected ChatMode chatMode;
 
     protected String id;
+    protected String name;
 
     protected boolean monitorJoins;
 
@@ -333,11 +334,18 @@ public abstract class MemoryFPlayer implements FPlayer {
     }
 
     public String getName() {
-        if (isOnline()) {
-            return getPlayer().getName();
+        if (this.name == null) {
+            // Older versions of FactionsUUID don't save the name,
+            // so `name` will be null the first time it's retrieved
+            // after updating
+            OfflinePlayer offline = Bukkit.getOfflinePlayer(UUID.fromString(getId()));
+            this.name = offline.getName() != null ? offline.getName() : getId();
         }
-        OfflinePlayer player = Bukkit.getOfflinePlayer(UUID.fromString(getId()));
-        return player.getName() != null ? player.getName() : getId();
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getTag() {
@@ -780,12 +788,7 @@ public abstract class MemoryFPlayer implements FPlayer {
     }
 
     public Player getPlayer() {
-        for (Player player : Bukkit.getServer().getOnlinePlayers()) {
-            if (player.getUniqueId().toString().equals(this.getId())) {
-                return player;
-            }
-        }
-        return null;
+        return Bukkit.getPlayer(UUID.fromString(this.getId()));
     }
 
     public boolean isOnline() {
