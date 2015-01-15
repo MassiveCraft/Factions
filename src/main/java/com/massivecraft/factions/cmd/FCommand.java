@@ -188,12 +188,8 @@ public abstract class FCommand extends MCommand<P> {
         Faction ret = def;
 
         if (name != null) {
-            Faction faction = null;
-
             // First we try an exact match
-            if (faction == null) {
-                faction = Factions.getInstance().getByTag(name); // Checks for faction name match.
-            }
+            Faction faction = Factions.getInstance().getByTag(name); // Checks for faction name match.
 
             // Next we match faction tags
             if (faction == null) {

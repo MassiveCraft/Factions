@@ -15,8 +15,8 @@ public class CmdClaim extends FCommand {
         this.aliases.add("claim");
 
         //this.requiredArgs.add("");
-        this.optionalArgs.put("faction", "your");
         this.optionalArgs.put("radius", "1");
+        this.optionalArgs.put("faction", "your");
 
         this.permission = Permission.CLAIM.node;
         this.disableOnLock = true;
@@ -30,8 +30,8 @@ public class CmdClaim extends FCommand {
     @Override
     public void perform() {
         // Read and validate input
-        final Faction forFaction = this.argAsFaction(0, myFaction);
-        int radius = this.argAsInt(1, 1);
+        int radius = this.argAsInt(0, 1); // Default to 1
+        final Faction forFaction = this.argAsFaction(1, myFaction); // Default to own
 
         if (radius < 1) {
             msg(TL.COMMAND_CLAIM_INVALIDRADIUS);
@@ -57,7 +57,7 @@ public class CmdClaim extends FCommand {
                     boolean success = fme.attemptClaim(forFaction, this.currentLocation(), true);
                     if (success) {
                         failCount = 0;
-                    } else if (!success && failCount++ >= limit) {
+                    } else if (failCount++ >= limit) {
                         this.stop();
                         return false;
                     }
