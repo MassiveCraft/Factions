@@ -16,6 +16,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -111,7 +112,7 @@ public class Worldguard {
         RegionManager regionManager = wg.getRegionManager(world);
         ProtectedCuboidRegion region = new ProtectedCuboidRegion("wgfactionoverlapcheck", minChunk, maxChunk);
         Map<String, ProtectedRegion> allregions = regionManager.getRegions();
-        List<ProtectedRegion> allregionslist = new ArrayList<ProtectedRegion>(allregions.values());
+        Collection<ProtectedRegion> allregionslist = new ArrayList<ProtectedRegion>(allregions.values());
         List<ProtectedRegion> overlaps;
         boolean foundregions = false;
 
