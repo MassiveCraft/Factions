@@ -11,7 +11,7 @@ public class ChatTagRoleprefixforce extends ChatTagAbstract
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private ChatTagRoleprefixforce() { super("factions_roleprefix"); }
+	private ChatTagRoleprefixforce() { super("factions_roleprefixforce"); }
 	private static ChatTagRoleprefixforce i = new ChatTagRoleprefixforce();
 	public static ChatTagRoleprefixforce get() { return i; }
 	
