@@ -63,7 +63,7 @@ public class CmdHome extends FCommand {
         }
 
         Faction faction = Board.getInstance().getFactionAt(new FLocation(me.getLocation()));
-        Location loc = me.getLocation().clone();
+        final Location loc = me.getLocation().clone();
 
         // if player is not in a safe zone or their own faction territory, only allow teleport if no enemies are nearby
         if (Conf.homesTeleportAllowedEnemyDistance > 0 &&
@@ -110,17 +110,22 @@ public class CmdHome extends FCommand {
             return;
         }
 
-        // Create a smoke effect
-        if (Conf.homesTeleportCommandSmokeEffectEnabled) {
-            List<Location> smokeLocations = new ArrayList<Location>();
-            smokeLocations.add(loc);
-            smokeLocations.add(loc.add(0, 1, 0));
-            smokeLocations.add(myFaction.getHome());
-            smokeLocations.add(myFaction.getHome().clone().add(0, 1, 0));
-            SmokeUtil.spawnCloudRandom(smokeLocations, Conf.homesTeleportCommandSmokeEffectThickness);
-        }
+        this.doWarmUp(TL.WARMUPS_NOTIFY_TELEPORT, "Home", new Runnable() {
+            @Override
+            public void run() {
+                // Create a smoke effect
+                if (Conf.homesTeleportCommandSmokeEffectEnabled) {
+                    List<Location> smokeLocations = new ArrayList<Location>();
+                    smokeLocations.add(loc);
+                    smokeLocations.add(loc.add(0, 1, 0));
+                    smokeLocations.add(CmdHome.this.myFaction.getHome());
+                    smokeLocations.add(CmdHome.this.myFaction.getHome().clone().add(0, 1, 0));
+                    SmokeUtil.spawnCloudRandom(smokeLocations, Conf.homesTeleportCommandSmokeEffectThickness);
+                }
 
-        me.teleport(myFaction.getHome());
+                CmdHome.this.me.teleport(CmdHome.this.myFaction.getHome());
+            }
+        }, this.p.getConfig().getLong("warmups.f-home", 0));
     }
 
 }

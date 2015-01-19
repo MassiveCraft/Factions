@@ -141,3 +141,11 @@ scoreboard:
     - "{power}"
     - "&aBalance"
     - "${balance}"
+
+# Configration section for warmups.
+# Warmup times are in seconds - if a value of 0 is set, there is no warmup.
+warmups:
+  # Delay for /f home
+  f-home: 0
+  # Delay for /f warp
+  f-warp: 0

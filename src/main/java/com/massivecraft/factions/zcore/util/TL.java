@@ -458,6 +458,10 @@ public enum TL {
     DEFAULT_PREFIX("default-prefix", "{relationcolor}[{faction}] &r"),
     FACTION_LOGIN("faction-login", "&e%s &9logged in."),
     FACTION_LOGOUT("faction-logout", "&e%s &9logged out.."),
+    /**
+     * Warmups
+     */
+    WARMUPS_NOTIFY_TELEPORT("&eYou will teleport to &d%s &ein &d%d &eseconds."),
     ;
 
     private String path;

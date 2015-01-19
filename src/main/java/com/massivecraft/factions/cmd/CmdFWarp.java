@@ -37,13 +37,18 @@ public class CmdFWarp extends FCommand {
         } else if (args.size() > 1) {
             fme.msg(TL.COMMAND_FWARP_COMMANDFORMAT);
         } else {
-            String warpName = argAsString(0);
+            final String warpName = argAsString(0);
             if (myFaction.isWarp(argAsString(0))) {
                 if (!transact(fme)) {
                     return;
                 }
-                fme.getPlayer().teleport(myFaction.getWarp(warpName).getLocation());
-                fme.msg(TL.COMMAND_FWARP_WARPED, warpName);
+                this.doWarmUp(TL.WARMUPS_NOTIFY_TELEPORT, warpName, new Runnable() {
+                    @Override
+                    public void run() {
+                        CmdFWarp.this.fme.getPlayer().teleport(CmdFWarp.this.myFaction.getWarp(warpName).getLocation());
+                        CmdFWarp.this.fme.msg(TL.COMMAND_FWARP_WARPED, warpName);
+                    }
+                }, this.p.getConfig().getLong("warmups.f-warp", 0));
             } else {
                 fme.msg(TL.COMMAND_FWARP_INVALID, warpName);
             }

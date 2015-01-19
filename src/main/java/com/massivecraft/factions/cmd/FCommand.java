@@ -3,6 +3,7 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.util.WarmUpUtil;
 import com.massivecraft.factions.zcore.MCommand;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.command.CommandSender;
@@ -285,5 +286,13 @@ public abstract class FCommand extends MCommand<P> {
         } else {
             return Econ.hasAtLeast(fme, cost, toDoThis);
         }
+    }
+
+    public void doWarmUp(TL translationKey, String action, Runnable runnable, long delay) {
+        this.doWarmUp(this.fme, translationKey, action, runnable, delay);
+    }
+
+    public void doWarmUp(FPlayer player, TL translationKey, String action, Runnable runnable, long delay) {
+        WarmUpUtil.process(player, translationKey, action, runnable, delay);
     }
 }
