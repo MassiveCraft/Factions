@@ -847,7 +847,7 @@ public class EngineMain extends EngineAbstract
 		Entity edefender = event.getEntity();
 		if (!(edefender instanceof Player)) return true;
 		Player defender = (Player)edefender;
-		MPlayer udefender = MPlayer.get(edefender);
+		MPlayer mdefender = MPlayer.get(edefender);
 		
 		// ... and the attacker is someone else ...
 		Entity eattacker = MUtil.getLiableDamager(event);
@@ -907,7 +907,7 @@ public class EngineMain extends EngineAbstract
 		// ... are PVP rules completely ignored in this world? ...
 		if (!MConf.get().worldsPvpRulesEnabled.contains(defenderPs.getWorld())) return true;
 
-		Faction defendFaction = udefender.getFaction();
+		Faction defendFaction = mdefender.getFaction();
 		Faction attackFaction = uattacker.getFaction();
 
 		if (attackFaction.isNone() && MConf.get().disablePVPForFactionlessPlayers)
@@ -934,7 +934,7 @@ public class EngineMain extends EngineAbstract
 		Rel relation = defendFaction.getRelationTo(attackFaction);
 
 		// Check the relation
-		if (udefender.hasFaction() && relation.isFriend() && defenderPsFaction.getFlag(MFlag.getFlagFriendlyire()) == false)
+		if (mdefender.hasFaction() && relation.isFriend() && defenderPsFaction.getFlag(MFlag.getFlagFriendlyire()) == false)
 		{
 			ret = falseUnlessDisallowedPvpEventCancelled(attacker, defender, event);
 			if (!ret && notify) uattacker.msg("<i>You can't hurt %s<i>.", relation.getDescPlayerMany());
@@ -942,35 +942,51 @@ public class EngineMain extends EngineAbstract
 		}
 
 		// You can not hurt neutrals in their own territory.
-		boolean ownTerritory = udefender.isInOwnTerritory();
+		boolean ownTerritory = mdefender.isInOwnTerritory();
 		
-		if (udefender.hasFaction() && ownTerritory && relation == Rel.NEUTRAL)
+		if (mdefender.hasFaction() && ownTerritory && relation == Rel.NEUTRAL)
 		{
 			ret = falseUnlessDisallowedPvpEventCancelled(attacker, defender, event);
 			if (!ret && notify)
 			{
-				uattacker.msg("<i>You can't hurt %s<i> in their own territory unless you declare them as an enemy.", udefender.describeTo(uattacker));
-				udefender.msg("%s<i> tried to hurt you.", uattacker.describeTo(udefender, true));
+				uattacker.msg("<i>You can't hurt %s<i> in their own territory unless you declare them as an enemy.", mdefender.describeTo(uattacker));
+				mdefender.msg("%s<i> tried to hurt you.", uattacker.describeTo(mdefender, true));
 			}
 			return ret;
 		}
 
-		// Damage will be dealt. However check if the damage should be reduced.
-		double damage = event.getDamage();
-		if (damage > 0.0 && udefender.hasFaction() && ownTerritory && MConf.get().territoryShieldFactor > 0)
-		{
-			double newDamage = damage * (1D - MConf.get().territoryShieldFactor);
-			MUtil.setDamage(event, newDamage);
-
-			// Send message
-			if (notify)
-			{
-				String perc = MessageFormat.format("{0,number,#%}", (MConf.get().territoryShieldFactor)); // TODO does this display correctly??
-				udefender.msg("<i>Enemy damage reduced by <rose>%s<i>.", perc);
-			}
-		}
-
 		return true;
+	}
+	
+	// -------------------------------------------- //
+	// TERRITORY SHIELD
+	// -------------------------------------------- //
+	
+	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+	public void territoryShield(EntityDamageByEntityEvent event)
+	{
+		// If the entity is a player ...
+		Entity entity = event.getEntity();
+		if (!(entity instanceof Player)) return;
+		Player player = (Player)entity;
+		MPlayer mplayer = MPlayer.get(player);
+		
+		// ... and that player has a faction ...
+		if ( ! mplayer.hasFaction()) return;
+		
+		// ... and that player is in their own territory ...
+		if ( ! mplayer.isInOwnTerritory()) return;
+		
+		// ... and a territoryShieldFactor is configured ...
+		if (MConf.get().territoryShieldFactor <= 0) return;
+		
+		// ... then scale the damage ...
+		double factor = 1D - MConf.get().territoryShieldFactor;
+		MUtil.scaleDamage(event, factor);
+		
+		// ... and inform.
+		String perc = MessageFormat.format("{0,number,#%}", (MConf.get().territoryShieldFactor));
+		mplayer.msg("<i>Enemy damage reduced by <rose>%s<i>.", perc);
 	}
 	
 	// -------------------------------------------- //
