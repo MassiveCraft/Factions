@@ -163,10 +163,10 @@ public class Factions extends MassivePlugin
 		SpigotFeatures.activate();
 		
 		// Modulo Repeat Tasks
-		TaskPlayerPowerUpdate.get().activate(this);
-		TaskPlayerDataRemove.get().activate(this);
-		TaskEconLandReward.get().activate(this);
-		TaskFlagPermCreate.get().activate(this);
+		TaskPlayerPowerUpdate.get().activate();
+		TaskPlayerDataRemove.get().activate();
+		TaskEconLandReward.get().activate();
+		TaskFlagPermCreate.get().activate();
 		
 		// Register built in chat modifiers
 		ChatModifierLc.get().register();

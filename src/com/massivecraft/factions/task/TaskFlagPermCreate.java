@@ -1,5 +1,8 @@
 package com.massivecraft.factions.task;
 
+import org.bukkit.plugin.Plugin;
+
+import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.entity.MFlag;
 import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.massivecore.ModuloRepeatTask;
@@ -17,6 +20,12 @@ public class TaskFlagPermCreate extends ModuloRepeatTask
 	// -------------------------------------------- //
 	// OVERRIDE: MODULO REPEAT TASK
 	// -------------------------------------------- //
+	
+	@Override
+	public Plugin getPlugin()
+	{
+		return Factions.get();
+	}
 	
 	@Override
 	public long getDelayMillis()
