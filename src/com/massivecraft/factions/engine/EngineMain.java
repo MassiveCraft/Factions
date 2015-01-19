@@ -960,7 +960,7 @@ public class EngineMain extends EngineAbstract
 		if (damage > 0.0 && udefender.hasFaction() && ownTerritory && MConf.get().territoryShieldFactor > 0)
 		{
 			double newDamage = damage * (1D - MConf.get().territoryShieldFactor);
-			event.setDamage(newDamage);
+			MUtil.setDamage(event, newDamage);
 
 			// Send message
 			if (notify)
