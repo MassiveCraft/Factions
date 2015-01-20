@@ -165,15 +165,15 @@ public class FactionsPlayerListener implements Listener {
             if (changedFaction) {
                 me.sendFactionHereMessage();
                 if (Conf.ownedAreasEnabled && Conf.ownedMessageOnBorder && myFaction == factionTo && !ownersTo.isEmpty()) {
-                    me.sendMessage(Conf.ownedLandMessage + ownersTo);
+                    me.sendMessage(TL.GENERIC_OWNERS.format(ownersTo));
                 }
             } else if (Conf.ownedAreasEnabled && Conf.ownedMessageInsideTerritory && factionFrom == factionTo && myFaction == factionTo) {
                 String ownersFrom = myFaction.getOwnerListString(from);
                 if (Conf.ownedMessageByChunk || !ownersFrom.equals(ownersTo)) {
                     if (!ownersTo.isEmpty()) {
-                        me.sendMessage(Conf.ownedLandMessage + ownersTo);
-                    } else if (!Conf.publicLandMessage.isEmpty()) {
-                        me.sendMessage(Conf.publicLandMessage);
+                        me.sendMessage(TL.GENERIC_OWNERS.format(ownersTo));
+                    } else if (!TL.GENERIC_PUBLICLAND.toString().isEmpty()) {
+                        me.sendMessage(TL.GENERIC_PUBLICLAND.toString());
                     }
                 }
             }

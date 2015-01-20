@@ -2,11 +2,14 @@ package com.massivecraft.factions.util;
 
 import org.bukkit.ChatColor;
 
+import com.massivecraft.factions.zcore.util.TL;
+
 import java.util.ArrayList;
 
 public class AsciiCompass {
 
     public enum Point {
+
         N('N'),
         NE('/'),
         E('E'),
@@ -27,8 +30,16 @@ public class AsciiCompass {
             return String.valueOf(this.asciiChar);
         }
 
+        public String getTranslation(){
+            if(this==N) return TL.COMPASS_SHORT_NORTH.toString();
+            if(this==E) return TL.COMPASS_SHORT_EAST.toString();
+            if(this==S) return TL.COMPASS_SHORT_SOUTH.toString();
+            if(this==W) return TL.COMPASS_SHORT_WEST.toString();
+            return toString();
+        }
+
         public String toString(boolean isActive, ChatColor colorActive, String colorDefault) {
-            return (isActive ? colorActive : colorDefault) + String.valueOf(this.asciiChar);
+            return (isActive ? colorActive : colorDefault) + getTranslation();
         }
     }
 

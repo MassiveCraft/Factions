@@ -205,8 +205,6 @@ public class Conf {
     public static boolean ownedAreaProtectMaterials = true;
     public static boolean ownedAreaDenyUseage = true;
 
-    public static String ownedLandMessage = "Owner(s): ";
-    public static String publicLandMessage = "Public faction land.";
     public static boolean ownedMessageOnBorder = true;
     public static boolean ownedMessageInsideTerritory = true;
     public static boolean ownedMessageByChunk = false;

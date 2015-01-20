@@ -3,6 +3,8 @@ package com.massivecraft.factions.util;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.P;
+import com.massivecraft.factions.zcore.util.TL;
+
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
@@ -64,16 +66,16 @@ public class MiscUtil {
         ArrayList<String> errors = new ArrayList<String>();
 
         if (getComparisonString(str).length() < Conf.factionTagLengthMin) {
-            errors.add(P.p.txt.parse("<i>The faction tag can't be shorter than <h>%s<i> chars.", Conf.factionTagLengthMin));
+            errors.add(P.p.txt.parse(TL.GENERIC_FACTIONTAG_TOOSHORT.toString(), Conf.factionTagLengthMin));
         }
 
         if (str.length() > Conf.factionTagLengthMax) {
-            errors.add(P.p.txt.parse("<i>The faction tag can't be longer than <h>%s<i> chars.", Conf.factionTagLengthMax));
+            errors.add(P.p.txt.parse(TL.GENERIC_FACTIONTAG_TOOLONG.toString(), Conf.factionTagLengthMax));
         }
 
         for (char c : str.toCharArray()) {
             if (!substanceChars.contains(String.valueOf(c))) {
-                errors.add(P.p.txt.parse("<i>Faction tag must be alphanumeric. \"<h>%s<i>\" is not allowed.", c));
+                errors.add(P.p.txt.parse(TL.GENERIC_FACTIONTAG_ALPHANUMERIC.toString(), c));
             }
         }
 

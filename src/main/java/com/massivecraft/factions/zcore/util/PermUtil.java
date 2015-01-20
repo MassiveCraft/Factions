@@ -1,6 +1,5 @@
 package com.massivecraft.factions.zcore.util;
 
-import com.massivecraft.factions.zcore.Lang;
 import com.massivecraft.factions.zcore.MPlugin;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -23,7 +22,7 @@ public class PermUtil {
     }
 
     public String getForbiddenMessage(String perm) {
-        return p.txt.parse(Lang.permForbidden, getPermissionDescription(perm));
+        return p.txt.parse(TL.GENERIC_NOPERMISSION.toString(), getPermissionDescription(perm));
     }
 
     /**
@@ -39,7 +38,7 @@ public class PermUtil {
     public String getPermissionDescription(String perm) {
         String desc = permissionDescriptions.get(perm);
         if (desc == null) {
-            return Lang.permDoThat;
+            return TL.GENERIC_DOTHAT.toString();
         }
         return desc;
     }

@@ -419,19 +419,135 @@ public enum TL {
     COMMAND_RELATIONS_PROPOSAL_2("<i>Type <c>/%1$s %2$s %3$s<i> to accept."),
     COMMAND_RELATIONS_PROPOSAL_SENT("%1$s<i> were informed that you wish to be %2$s"),
     /**
-     * More generic translations, which will apply to more than one class.
+     * Leaving
      */
+    LEAVE_PASSADMIN("<b>You must give the admin role to someone else first."),
+    LEAVE_NEGATIVEPOWER("<b>You cannot leave until your power is positive."),
+    LEAVE_TOLEAVE("to leave your faction."),
+    LEAVE_FORLEAVE("for leaving your faction."),
+    LEAVE_LEFT("%s<i> left faction %s<i>."),
+    LEAVE_DISBANDED("<i>%s<i> was disbanded."),
+    LEAVE_DISBANDEDLOG("The faction %s (%s) was disbanded due to the last player (%s) leaving."),
+    /**
+     * Claiming
+     */
+    CLAIM_PROTECTED("<b>This land is protected"),
+    CLAIM_DISABLED("<b>Sorry, this world has land claiming disabled."),
+    CLAIM_CANTCLAIM("<b>You can't claim land for <h>%s<b>."),
+    CLAIM_ALREADYOWN("%s<i> already own this land."),
+    CLAIM_MUSTBE("<b>You must be <h>%s<b> to claim land."),
+    CLAIM_MEMBERS("Factions must have at least <h>%s<b> members to claim land."),
+    CLAIM_SAFEZONE("<b>You can not claim a Safe Zone."),
+    CLAIM_WARZONE("<b>You can not claim a War Zone."),
+    CLAIM_POWER("<b>You can't claim more land! You need more power!"),
+    CLAIM_LIMIT("<b>Limit reached. You can't claim more land!"),
+    CLAIM_ALLY("<b>You can't claim the land of your allies."),
+    CLAIM_CONTIGIOUS("<b>You can only claim additional land which is connected to your first claim or controlled by another faction!"),
+    CLAIM_FACTIONCONTIGUOUS("<b>You can only claim additional land which is connected to your first claim!"),
+    CLAIM_PEACEFUL("%s<i> owns this land. Your faction is peaceful, so you cannot claim land from other factions."),
+    CLAIM_PEACEFULTARGET("%s<i> owns this land, and is a peaceful faction. You cannot claim land from them."),
+    CLAIM_THISISSPARTA("%s<i> owns this land and is strong enough to keep it."),
+    CLAIM_BORDER("<b>You must start claiming land at the border of the territory."),
+    CLAIM_TOCLAIM("to claim this land"),
+    CLAIM_FORCLAIM("for claiming this land"),
+    CLAIM_CLAIMED("<h>%s<i> claimed land for <h>%s<i> from <h>%s<i>."),
+    CLAIM_CLAIMEDLOG("%s claimed land at (%s) for the faction: %s"),
+    /**
+     * Command descriptions
+     */
+    FACTIONS_ADMIN("hand over your admin rights"),
+    FACTIONS_AUTOCLAIM("auto-claim land as you walk around"),
+    FACTIONS_BYPASS("enable admin bypass mode"),
+    FACTIONS_CHAT("change chat mode"),
+    FACTIONS_CHATSPY("enable admin chat spy mode"),
+    FACTIONS_CLAIM("claim land where you are standing"),
+    FACTIONS_CONFIG("change a conf.json setting"),
+    FACTIONS_CREATE("create a new faction"),
+    FACTIONS_DEINVITE("remove a pending invitation"),
+    FACTIONS_DISBAND("disband a faction"),
+    FACTIONS_HELP("display a help page"),
+    FACTIONS_HOME("teleport to the faction home"),
+    FACTIONS_INVITE("invite a player to your faction"),
+    FACTIONS_JOIN("join a faction"),
+    FACTIONS_KICK("kick a player from the faction"),
+    FACTIONS_LEAVE("leave your faction"),
+    FACTIONS_LIST("see a list of the factions"),
+    FACTIONS_LOCK("lock all write stuff"),
+    FACTIONS_MANAGESAFEZONE("claim land as a safe zone and build/destroy within safe zones"),
+    FACTIONS_MANAGEWARZONE("claim land as a war zone and build/destroy within war zones"),
+    FACTIONS_MAP("show the territory map, and set optional auto update"),
+    FACTIONS_MOD("give or revoke moderator rights"),
+    FACTIONS_MONEY_BALANCE ("show your factions current money balance"),
+    FACTIONS_MONEY_DEPOSIT ("deposit money into a faction bank"),
+    FACTIONS_MONEY_WITHDRAW ("withdraw money from your faction bank"),
+    FACTIONS_MONEY_F2F ("transfer money from faction to faction"),
+    FACTIONS_MONEY_F2P ("transfer money from faction to player"),
+    FACTIONS_MONEY_P2F ("transfer money from player to faction"),
+    FACTIONS_NOBOOM ("toggle explosions (peaceful factions only),"),
+    FACTIONS_OPEN ("switch if invitation is required to join"),
+    FACTIONS_OWNER ("set ownership of claimed land"),
+    FACTIONS_OWNERLIST ("list owner(s), of this claimed land"),
+    FACTIONS_SETPEACEFUL("designate a faction as peaceful"),
+    FACTIONS_SETPERMANENT("designate a faction as permanent"),
+    FACTIONS_SETPERMANENTPOWER("set permanent power for a faction"),
+    FACTIONS_POWER("show player power info"),
+    FACTIONS_POWERBOOST("apply permanent power bonus/penalty to specified player or faction"),
+    FACTIONS_RELATION("set relation wish to another faction"),
+    FACTIONS_RELOAD("reload data file(s), from disk"),
+    FACTIONS_SAVE("save all data to disk"),
+    FACTIONS_SETHOME("set the faction home"),
+    FACTIONS_SHOW("show faction information"),
+    FACTIONS_TAG("change the faction tag"),
+    FACTIONS_TITLE("set or remove a players title"),
+    FACTIONS_VERSION("see the version of the plugin"),
+    FACTIONS_UNCLAIM("unclaim the land where you are standing"),
+    FACTIONS_UNCLAIMALL("unclaim all of your factions land"),
+    FACTIONS_SCOREBOARD("ability to toggle scoreboards"),
+    FACTIONS_SHOWINVITES("show pending invites to your faction"),
+    FACTIONS_SEECHUNK("see the chunk you stand in"),
+    FACTIONS_SETWARP("set a warp for your faction"),
+    FACTIONS_WARP("access your faction warps"),
+    FACTIONS_MODIFYPOWER("modify other player's power"),
+    FACTIONS_MONITORLOGINS("monitor join and leaves of faction members"),
+    /**
+     * More generic, or less easily categorisable translations, which may apply to more than one class
+     */
+    GENERIC_NOPERMISSION("<b>You don't have permission to %1$s."),
+    GENERIC_DOTHAT("do that"),  //Ugh nuke this from high orbit
+    GENERIC_NOPLAYERMATCH("<b>No player match found for \"<p>%1$s<b>\"."),
+    GENERIC_NOPLAYERFOUND("<b>No player \"<p>%1$s<b>\" could not be found."),
+    GENERIC_ARGS_TOOFEW("<b>Too few arguments. <i>Use like this:"),
+    GENERIC_ARGS_TOOMANY("<b>Strange argument \"<p>%1$s<b>\". <i>Use the command like this:"),
+    GENERIC_OWNERS("Owner(s): %1$s"),
+    GENERIC_PUBLICLAND("Public faction land."),
+    GENERIC_FACTIONLESS("factionless"),
     GENERIC_SERVERADMIN("A server admin"),
     GENERIC_DISABLED("disabled"),
     GENERIC_ENABLED("enabled"),
     GENERIC_CONSOLEONLY("This command cannot be run as a player."),
+    GENERIC_PLAYERONLY("<b>This command can only be used by ingame players."),
     GENERIC_ASKYOURLEADER("<i> Ask your leader to:"),
     GENERIC_YOUSHOULD("<i>You should:"),
     GENERIC_YOUMAYWANT("<i>You may want to: "),
     GENERIC_TRANSLATION_VERSION("Translation: %1$s(%2$s,%3$s) State: %4$s"),
     GENERIC_TRANSLATION_CONTRIBUTORS("Translation contributors: %1$s"),
     GENERIC_TRANSLATION_RESPONSIBLE("Responsible for translation: %1$s"),
-
+    GENERIC_FACTIONTAG_TOOSHORT("<i>The faction tag can't be shorter than <h>%1$s<i> chars."),
+    GENERIC_FACTIONTAG_TOOLONG("<i>The faction tag can't be longer than <h>%s<i> chars."),
+    GENERIC_FACTIONTAG_ALPHANUMERIC("<i>Faction tag must be alphanumeric. \"<h>%s<i>\" is not allowed."),
+    /**
+     * ASCII compass (for chat map)
+     */
+    COMPASS_SHORT_NORTH("N"),
+    COMPASS_SHORT_EAST("E"),
+    COMPASS_SHORT_SOUTH("S"),
+    COMPASS_SHORT_WEST("W"),
+    /**
+     * Chat modes
+     */
+    CHAT_FACTION("faction chat"),
+    CHAT_ALLIANCE("alliance chat"),
+    CHAT_PUBLIC("public chat"),
     /**
      * Relations
      */
@@ -461,7 +577,7 @@ public enum TL {
     /**
      * Warmups
      */
-    WARMUPS_NOTIFY_TELEPORT("&eYou will teleport to &d%1$s &ein &d%2$d &eseconds."),
+    WARMUPS_NOTIFY_TELEPORT("&eYou will teleport to &d%1$s &ein &d%2$d &eseconds.")
     ;
 
     private String path;

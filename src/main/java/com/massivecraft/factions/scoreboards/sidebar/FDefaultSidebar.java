@@ -4,6 +4,8 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.scoreboards.FSidebarProvider;
+import com.massivecraft.factions.zcore.util.TL;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
@@ -29,7 +31,7 @@ public class FDefaultSidebar extends FSidebarProvider {
     }
 
     private String replace(FPlayer fplayer, String s) {
-        String faction = !fplayer.getFaction().isNone() ? fplayer.getFaction().getTag() : "factionless";
+        String faction = !fplayer.getFaction().isNone() ? fplayer.getFaction().getTag() : TL.GENERIC_FACTIONLESS.toString();
         String powerBoost = String.valueOf((int) fplayer.getPowerBoost());
         s = s.replace("{name}", fplayer.getName()).replace("{power}", String.valueOf(fplayer.getPowerRounded())).replace("{balance}", String.valueOf(Econ.getFriendlyBalance(fplayer.getPlayer().getUniqueId()))).replace("{faction}", faction).replace("{maxPower}", String.valueOf(fplayer.getPowerMaxRounded())).replace("{totalOnline}", String.valueOf(Bukkit.getServer().getOnlinePlayers().length)).replace("{powerBoost}", powerBoost);
         return ChatColor.translateAlternateColorCodes('&', s);

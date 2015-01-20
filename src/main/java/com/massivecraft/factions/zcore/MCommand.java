@@ -52,9 +52,9 @@ public abstract class MCommand<T extends MPlugin> {
 
     public String getHelpShort() {
         if (this.helpShort == null) {
-            String pdesc = p.perm.getPermissionDescription(this.permission);
+            TL pdesc = TL.valueOf(this.permission.toUpperCase().replace('.', '_'));
             if (pdesc != null) {
-                return pdesc;
+                return pdesc.toString();
             }
             return "*info unavailable*";
         }
@@ -158,7 +158,7 @@ public abstract class MCommand<T extends MPlugin> {
     public boolean validSenderType(CommandSender sender, boolean informSenderIfNot) {
         if (this.senderMustBePlayer && !(sender instanceof Player)) {
             if (informSenderIfNot) {
-                msg(Lang.commandSenderMustBePlayer);
+                msg(TL.GENERIC_PLAYERONLY);
             }
             return false;
         }
@@ -172,7 +172,7 @@ public abstract class MCommand<T extends MPlugin> {
     public boolean validArgs(List<String> args, CommandSender sender) {
         if (args.size() < this.requiredArgs.size()) {
             if (sender != null) {
-                msg(Lang.commandToFewArgs);
+                msg(TL.GENERIC_ARGS_TOOFEW);
                 sender.sendMessage(this.getUseageTemplate());
             }
             return false;
@@ -182,7 +182,7 @@ public abstract class MCommand<T extends MPlugin> {
             if (sender != null) {
                 // Get the to many string slice
                 List<String> theToMany = args.subList(this.requiredArgs.size() + this.optionalArgs.size(), args.size());
-                msg(Lang.commandToManyArgs, TextUtil.implode(theToMany, " "));
+                msg(TL.GENERIC_ARGS_TOOMANY, TextUtil.implode(theToMany, " "));
                 sender.sendMessage(this.getUseageTemplate());
             }
             return false;
@@ -372,7 +372,7 @@ public abstract class MCommand<T extends MPlugin> {
         }
 
         if (msg && ret == null) {
-            this.msg("<b>No player \"<p>%s<b>\" could not be found.", name);
+            this.msg(TL.GENERIC_NOPLAYERFOUND, name);
         }
 
         return ret;
@@ -402,7 +402,7 @@ public abstract class MCommand<T extends MPlugin> {
         }
 
         if (msg && ret == null) {
-            this.msg("<b>No player match found for \"<p>%s<b>\".", name);
+            this.msg(TL.GENERIC_NOPLAYERMATCH, name);
         }
 
         return ret;

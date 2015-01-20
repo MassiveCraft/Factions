@@ -584,17 +584,17 @@ public abstract class MemoryFPlayer implements FPlayer {
         boolean perm = myFaction.isPermanent();
 
         if (!perm && this.getRole() == Role.ADMIN && myFaction.getFPlayers().size() > 1) {
-            msg("<b>You must give the admin role to someone else first.");
+            msg(TL.LEAVE_PASSADMIN);
             return;
         }
 
         if (!Conf.canLeaveWithNegativePower && this.getPower() < 0) {
-            msg("<b>You cannot leave until your power is positive.");
+            msg(TL.LEAVE_NEGATIVEPOWER);
             return;
         }
 
         // if economy is enabled and they're not on the bypass list, make sure they can pay
-        if (makePay && !Econ.hasAtLeast(this, Conf.econCostLeave, "to leave your faction.")) {
+        if (makePay && !Econ.hasAtLeast(this, Conf.econCostLeave, TL.LEAVE_TOLEAVE.toString())) {
             return;
         }
 
@@ -605,7 +605,7 @@ public abstract class MemoryFPlayer implements FPlayer {
         }
 
         // then make 'em pay (if applicable)
-        if (makePay && !Econ.modifyMoney(this, -Conf.econCostLeave, "to leave your faction.", "for leaving your faction.")) {
+        if (makePay && !Econ.modifyMoney(this, -Conf.econCostLeave, TL.LEAVE_TOLEAVE.toString(), TL.LEAVE_FORLEAVE.toString())) {
             return;
         }
 
@@ -619,11 +619,11 @@ public abstract class MemoryFPlayer implements FPlayer {
 
         if (myFaction.isNormal()) {
             for (FPlayer fplayer : myFaction.getFPlayersWhereOnline(true)) {
-                fplayer.msg("%s<i> left %s<i>.", this.describeTo(fplayer, true), myFaction.describeTo(fplayer));
+                fplayer.msg(TL.LEAVE_LEFT, this.describeTo(fplayer, true), myFaction.describeTo(fplayer));
             }
 
             if (Conf.logFactionLeave) {
-                P.p.log(this.getName() + " left the faction: " + myFaction.getTag());
+                P.p.log(TL.LEAVE_LEFT.format(this.getName(),myFaction.getTag()));
             }
         }
 
@@ -633,12 +633,12 @@ public abstract class MemoryFPlayer implements FPlayer {
         if (myFaction.isNormal() && !perm && myFaction.getFPlayers().isEmpty()) {
             // Remove this faction
             for (FPlayer fplayer : FPlayers.getInstance().getOnlinePlayers()) {
-                fplayer.msg("<i>%s<i> was disbanded.", myFaction.describeTo(fplayer, true));
+                fplayer.msg(TL.LEAVE_DISBANDED, myFaction.describeTo(fplayer, true));
             }
 
             Factions.getInstance().removeFaction(myFaction.getId());
             if (Conf.logFactionDisband) {
-                P.p.log("The faction " + myFaction.getTag() + " (" + myFaction.getId() + ") was disbanded due to the last player (" + this.getName() + ") leaving.");
+                P.p.log(TL.LEAVE_DISBANDEDLOG.format(myFaction.getTag(),myFaction.getId(),this.getName()));
             }
         }
     }
@@ -656,9 +656,9 @@ public abstract class MemoryFPlayer implements FPlayer {
 
         if (Conf.worldGuardChecking && Worldguard.checkForRegionsInChunk(location)) {
             // Checks for WorldGuard regions in the chunk attempting to be claimed
-            error = P.p.txt.parse("<b>This land is protected");
+            error = P.p.txt.parse(TL.CLAIM_PROTECTED.toString());
         } else if (Conf.worldsNoClaiming.contains(flocation.getWorldName())) {
-            error = P.p.txt.parse("<b>Sorry, this world has land claiming disabled.");
+            error = P.p.txt.parse(TL.CLAIM_DISABLED.toString());
         } else if (this.isAdminBypassing()) {
             return true;
         } else if (forFaction.isSafeZone() && Permission.MANAGE_SAFE_ZONE.has(getPlayer())) {
@@ -666,39 +666,39 @@ public abstract class MemoryFPlayer implements FPlayer {
         } else if (forFaction.isWarZone() && Permission.MANAGE_WAR_ZONE.has(getPlayer())) {
             return true;
         } else if (myFaction != forFaction) {
-            error = P.p.txt.parse("<b>You can't claim land for <h>%s<b>.", forFaction.describeTo(this));
+            error = P.p.txt.parse(TL.CLAIM_CANTCLAIM.toString(), forFaction.describeTo(this));
         } else if (forFaction == currentFaction) {
-            error = P.p.txt.parse("%s<i> already own this land.", forFaction.describeTo(this, true));
+            error = P.p.txt.parse(TL.CLAIM_ALREADYOWN.toString(), forFaction.describeTo(this, true));
         } else if (this.getRole().value < Role.MODERATOR.value) {
-            error = P.p.txt.parse("<b>You must be <h>%s<b> to claim land.", Role.MODERATOR.toString());
+            error = P.p.txt.parse(TL.CLAIM_MUSTBE.toString(), Role.MODERATOR.toString());
         } else if (forFaction.getFPlayers().size() < Conf.claimsRequireMinFactionMembers) {
-            error = P.p.txt.parse("Factions must have at least <h>%s<b> members to claim land.", Conf.claimsRequireMinFactionMembers);
+            error = P.p.txt.parse(TL.CLAIM_MEMBERS.toString(), Conf.claimsRequireMinFactionMembers);
         } else if (currentFaction.isSafeZone()) {
-            error = P.p.txt.parse("<b>You can not claim a Safe Zone.");
+            error = P.p.txt.parse(TL.CLAIM_SAFEZONE.toString());
         } else if (currentFaction.isWarZone()) {
-            error = P.p.txt.parse("<b>You can not claim a War Zone.");
+            error = P.p.txt.parse(TL.CLAIM_WARZONE.toString());
         } else if (ownedLand >= forFaction.getPowerRounded()) {
-            error = P.p.txt.parse("<b>You can't claim more land! You need more power!");
+            error = P.p.txt.parse(TL.CLAIM_POWER.toString());
         } else if (Conf.claimedLandsMax != 0 && ownedLand >= Conf.claimedLandsMax && forFaction.isNormal()) {
-            error = P.p.txt.parse("<b>Limit reached. You can't claim more land!");
+            error = P.p.txt.parse(TL.CLAIM_LIMIT.toString());
         } else if (currentFaction.getRelationTo(forFaction) == Relation.ALLY) {
-            error = P.p.txt.parse("<b>You can't claim the land of your allies.");
+            error = P.p.txt.parse(TL.CLAIM_ALLY.toString());
         } else if (Conf.claimsMustBeConnected && !this.isAdminBypassing() && myFaction.getLandRoundedInWorld(flocation.getWorldName()) > 0 && !Board.getInstance().isConnectedLocation(flocation, myFaction) && (!Conf.claimsCanBeUnconnectedIfOwnedByOtherFaction || !currentFaction.isNormal())) {
             if (Conf.claimsCanBeUnconnectedIfOwnedByOtherFaction) {
-                error = P.p.txt.parse("<b>You can only claim additional land which is connected to your first claim or controlled by another faction!");
+                error = P.p.txt.parse(TL.CLAIM_CONTIGIOUS.toString());
             } else {
-                error = P.p.txt.parse("<b>You can only claim additional land which is connected to your first claim!");
+                error = P.p.txt.parse(TL.CLAIM_FACTIONCONTIGUOUS.toString());
             }
         } else if (currentFaction.isNormal()) {
             if (myFaction.isPeaceful()) {
-                error = P.p.txt.parse("%s<i> owns this land. Your faction is peaceful, so you cannot claim land from other factions.", currentFaction.getTag(this));
+                error = P.p.txt.parse(TL.CLAIM_PEACEFUL.toString(), currentFaction.getTag(this));
             } else if (currentFaction.isPeaceful()) {
-                error = P.p.txt.parse("%s<i> owns this land, and is a peaceful faction. You cannot claim land from them.", currentFaction.getTag(this));
+                error = P.p.txt.parse(TL.CLAIM_PEACEFULTARGET.toString(), currentFaction.getTag(this));
             } else if (!currentFaction.hasLandInflation()) {
                 // TODO more messages WARN current faction most importantly
-                error = P.p.txt.parse("%s<i> owns this land and is strong enough to keep it.", currentFaction.getTag(this));
+                error = P.p.txt.parse(TL.CLAIM_THISISSPARTA.toString(), currentFaction.getTag(this));
             } else if (!Board.getInstance().isBorderLocation(flocation)) {
-                error = P.p.txt.parse("<b>You must start claiming land at the border of the territory.");
+                error = P.p.txt.parse(TL.CLAIM_BORDER.toString());
             }
         }
         // TODO: Add more else if statements.
@@ -739,7 +739,7 @@ public abstract class MemoryFPlayer implements FPlayer {
                 payee = this;
             }
 
-            if (!Econ.hasAtLeast(payee, cost, "to claim this land")) {
+            if (!Econ.hasAtLeast(payee, cost, TL.CLAIM_TOCLAIM.toString())) {
                 return false;
             }
         }
@@ -751,7 +751,7 @@ public abstract class MemoryFPlayer implements FPlayer {
         }
 
         // then make 'em pay (if applicable)
-        if (mustPay && !Econ.modifyMoney(payee, -cost, "to claim this land", "for claiming this land")) {
+        if (mustPay && !Econ.modifyMoney(payee, -cost, TL.CLAIM_TOCLAIM.toString(), TL.CLAIM_FORCLAIM.toString())) {
             return false;
         }
 
@@ -760,13 +760,13 @@ public abstract class MemoryFPlayer implements FPlayer {
         informTheseFPlayers.add(this);
         informTheseFPlayers.addAll(forFaction.getFPlayersWhereOnline(true));
         for (FPlayer fp : informTheseFPlayers) {
-            fp.msg("<h>%s<i> claimed land for <h>%s<i> from <h>%s<i>.", this.describeTo(fp, true), forFaction.describeTo(fp), currentFaction.describeTo(fp));
+            fp.msg(TL.CLAIM_CLAIMED, this.describeTo(fp, true), forFaction.describeTo(fp), currentFaction.describeTo(fp));
         }
 
         Board.getInstance().setFactionAt(forFaction, flocation);
 
         if (Conf.logLandClaims) {
-            P.p.log(this.getName() + " claimed land at (" + flocation.getCoordString() + ") for the faction: " + forFaction.getTag());
+            P.p.log(TL.CLAIM_CLAIMEDLOG.toString(),this.getName(),flocation.getCoordString(),forFaction.getTag());
         }
 
         return true;

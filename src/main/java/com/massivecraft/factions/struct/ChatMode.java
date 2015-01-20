@@ -1,14 +1,16 @@
 package com.massivecraft.factions.struct;
 
+import com.massivecraft.factions.zcore.util.TL;
+
 public enum ChatMode {
-    FACTION(2, "faction chat"),
-    ALLIANCE(1, "alliance chat"),
-    PUBLIC(0, "public chat");
+    FACTION(2, TL.CHAT_FACTION),
+    ALLIANCE(1, TL.CHAT_ALLIANCE),
+    PUBLIC(0, TL.CHAT_PUBLIC);
 
     public final int value;
-    public final String nicename;
+    public final TL nicename;
 
-    private ChatMode(final int value, final String nicename) {
+    private ChatMode(final int value, final TL nicename) {
         this.value = value;
         this.nicename = nicename;
     }
@@ -23,7 +25,7 @@ public enum ChatMode {
 
     @Override
     public String toString() {
-        return this.nicename;
+        return this.nicename.toString();
     }
 
     public ChatMode getNext() {
