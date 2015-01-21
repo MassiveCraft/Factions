@@ -128,4 +128,9 @@ public class CmdHome extends FCommand {
         }, this.p.getConfig().getLong("warmups.f-home", 0));
     }
 
+    @Override
+    public TL getUsageTranslation() {
+        return TL.COMMAND_HOME_DESCRIPTION;
+    }
+
 }

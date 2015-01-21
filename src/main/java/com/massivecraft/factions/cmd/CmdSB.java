@@ -101,4 +101,9 @@ public class CmdSB extends FCommand {
     public boolean showBoard(UUID uuid) {
         return yml.getBoolean(uuid.toString(), true);
     }
+
+    @Override
+    public TL getUsageTranslation() {
+        return TL.COMMAND_SCOREBOARD_DESCRIPTION;
+    }
 }

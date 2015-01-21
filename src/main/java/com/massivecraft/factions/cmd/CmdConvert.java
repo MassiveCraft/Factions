@@ -36,4 +36,9 @@ public class CmdConvert extends FCommand {
         Conf.backEnd = nb;
     }
 
+    @Override
+    public TL getUsageTranslation() {
+        return TL.COMMAND_CONVERT_DESCRIPTION;
+    }
+
 }

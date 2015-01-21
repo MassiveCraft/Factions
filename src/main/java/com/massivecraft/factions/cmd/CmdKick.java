@@ -117,4 +117,9 @@ public class CmdKick extends FCommand {
         toKick.resetFactionData();
     }
 
+    @Override
+    public TL getUsageTranslation() {
+        return TL.COMMAND_KICK_DESCRIPTION;
+    }
+
 }

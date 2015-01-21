@@ -8,6 +8,7 @@ import com.massivecraft.factions.scoreboards.FTeamWrapper;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.zcore.util.TL;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
@@ -97,5 +98,10 @@ public abstract class FRelationCommand extends FCommand {
 
         FTeamWrapper.updatePrefixes(myFaction);
         FTeamWrapper.updatePrefixes(them);
+    }
+
+    @Override
+    public TL getUsageTranslation() {
+        return TL.COMMAND_RELATIONS_DESCRIPTION;
     }
 }

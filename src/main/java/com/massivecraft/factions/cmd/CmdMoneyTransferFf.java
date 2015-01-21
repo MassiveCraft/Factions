@@ -21,7 +21,6 @@ public class CmdMoneyTransferFf extends FCommand {
         //this.optionalArgs.put("", "");
 
         this.permission = Permission.MONEY_F2F.node;
-        this.setHelpShort(TL.COMMAND_MONEYTRANSFERFF_SHORT.toString());
 
         senderMustBePlayer = false;
         senderMustBeMember = false;
@@ -46,5 +45,10 @@ public class CmdMoneyTransferFf extends FCommand {
         if (success && Conf.logMoneyTransactions) {
             P.p.log(ChatColor.stripColor(P.p.txt.parse(TL.COMMAND_MONEYTRANSFERFF_TRANSFER.toString(), fme.getName(), Econ.moneyString(amount), from.describeTo(null), to.describeTo(null))));
         }
+    }
+
+    @Override
+    public TL getUsageTranslation() {
+        return TL.COMMAND_MONEYTRANSFERFF_DESCRIPTION;
     }
 }

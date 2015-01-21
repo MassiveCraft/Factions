@@ -68,4 +68,9 @@ public class CmdClaim extends FCommand {
         }
     }
 
+    @Override
+    public TL getUsageTranslation() {
+        return TL.COMMAND_CLAIM_DESCRIPTION;
+    }
+
 }

@@ -1,15 +1,9 @@
 package com.massivecraft.factions.zcore;
 
-import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.P;
-import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TextUtil;
 import mkremins.fanciful.FancyMessage;
-import org.apache.commons.lang.time.DurationFormatUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -52,14 +46,13 @@ public abstract class MCommand<T extends MPlugin> {
 
     public String getHelpShort() {
         if (this.helpShort == null) {
-            TL pdesc = TL.valueOf(this.permission.toUpperCase().replace('.', '_'));
-            if (pdesc != null) {
-                return pdesc.toString();
-            }
-            return "*info unavailable*";
+           return getUsageTranslation().toString();
         }
+
         return this.helpShort;
     }
+
+    public abstract TL getUsageTranslation();
 
     public List<String> helpLong;
     public CommandVisibility visibility;

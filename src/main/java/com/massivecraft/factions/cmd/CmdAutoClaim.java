@@ -34,7 +34,7 @@ public class CmdAutoClaim extends FCommand {
 
         if (!fme.canClaimForFaction(forFaction)) {
             if (myFaction == forFaction) {
-                msg(TL.COMMAND_AUTOCLAIM_REQUIREDRANK, Role.MODERATOR.toString());
+                msg(TL.COMMAND_AUTOCLAIM_REQUIREDRANK, Role.MODERATOR.getTranslation());
             } else {
                 msg(TL.COMMAND_AUTOCLAIM_OTHERFACTION, forFaction.describeTo(fme));
             }
@@ -46,6 +46,11 @@ public class CmdAutoClaim extends FCommand {
 
         msg(TL.COMMAND_AUTOCLAIM_ENABLED, forFaction.describeTo(fme));
         fme.attemptClaim(forFaction, me.getLocation(), true);
+    }
+
+    @Override
+    public TL getUsageTranslation() {
+        return TL.COMMAND_AUTOCLAIM_DESCRIPTION;
     }
 
 }

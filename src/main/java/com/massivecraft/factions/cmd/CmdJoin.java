@@ -110,4 +110,9 @@ public class CmdJoin extends FCommand {
             }
         }
     }
+
+    @Override
+    public TL getUsageTranslation() {
+        return TL.COMMAND_JOIN_DESCRIPTION;
+    }
 }

@@ -3,6 +3,7 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdPermanentPower extends FCommand {
     public CmdPermanentPower() {
@@ -21,7 +22,6 @@ public class CmdPermanentPower extends FCommand {
         senderMustBeAdmin = false;
     }
 
-    //TODO: TL
     @Override
     public void perform() {
         Faction targetFaction = this.argAsFaction(0);
@@ -33,16 +33,22 @@ public class CmdPermanentPower extends FCommand {
 
         targetFaction.setPermanentPower(targetPower);
 
-        String change = "removed permanentpower status from";
+        String change = TL.COMMAND_PERMANENTPOWER_REVOKE.toString();
         if (targetFaction.hasPermanentPower()) {
-            change = "added permanentpower status to";
+            change = TL.COMMAND_PERMANENTPOWER_GRANT.toString();
         }
 
-        msg("<i>You %s <h>%s<i>.", change, targetFaction.describeTo(fme));
+        msg(TL.COMMAND_PERMANENTPOWER_SUCCESS, change, targetFaction.describeTo(fme));
 
         // Inform all players
         for (FPlayer fplayer : targetFaction.getFPlayersWhereOnline(true)) {
-            fplayer.msg((fme == null ? "A server admin" : fme.describeTo(fplayer, true)) + "<i> " + change + " your faction.");
+            String blame = (fme == null ? TL.GENERIC_SERVERADMIN.toString() : fme.describeTo(fplayer, true));
+            fplayer.msg(TL.COMMAND_PERMANENTPOWER_FACTION, blame, change);
         }
+    }
+
+    @Override
+    public TL getUsageTranslation() {
+        return TL.COMMAND_PERMANENTPOWER_DESCRIPTION;
     }
 }

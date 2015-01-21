@@ -48,4 +48,9 @@ public class CmdDescription extends FCommand {
         }
     }
 
+    @Override
+    public TL getUsageTranslation() {
+        return TL.COMMAND_DESCRIPTION_DESCRIPTION;
+    }
+
 }

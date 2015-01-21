@@ -33,4 +33,9 @@ public class CmdChatSpy extends FCommand {
             P.p.log(fme.getName() + TL.COMMAND_CHATSPY_DISABLELOG.toString());
         }
     }
+
+    @Override
+    public TL getUsageTranslation() {
+        return TL.COMMAND_CHATSPY_DESCRIPTION;
+    }
 }

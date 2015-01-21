@@ -24,7 +24,6 @@ public class CmdSafeunclaimall extends FCommand {
         senderMustBeModerator = false;
         senderMustBeAdmin = false;
 
-        this.setHelpShort(TL.COMMAND_SAFEUNCLAIMALL_SHORT.toString());
     }
 
     @Override
@@ -35,6 +34,11 @@ public class CmdSafeunclaimall extends FCommand {
         if (Conf.logLandUnclaims) {
             P.p.log(TL.COMMAND_SAFEUNCLAIMALL_UNCLAIMEDLOG.format(sender.getName()));
         }
+    }
+
+    @Override
+    public TL getUsageTranslation() {
+        return TL.COMMAND_SAFEUNCLAIMALL_DESCRIPTION;
     }
 
 }

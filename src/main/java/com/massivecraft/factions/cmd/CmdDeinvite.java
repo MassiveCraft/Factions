@@ -54,4 +54,9 @@ public class CmdDeinvite extends FCommand {
         myFaction.msg(TL.COMMAND_DEINVITE_REVOKES, fme.describeTo(myFaction), you.describeTo(myFaction));
     }
 
+    @Override
+    public TL getUsageTranslation() {
+        return TL.COMMAND_DEINVITE_DESCRIPTION;
+    }
+
 }

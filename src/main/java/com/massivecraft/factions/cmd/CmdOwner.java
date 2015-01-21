@@ -98,4 +98,9 @@ public class CmdOwner extends FCommand {
 
         fme.msg(TL.COMMAND_OWNER_ADDED, playerName);
     }
+
+    @Override
+    public TL getUsageTranslation() {
+        return TL.COMMAND_OWNER_DESCRIPTION;
+    }
 }

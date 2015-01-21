@@ -20,7 +20,6 @@ public class CmdMoneyDeposit extends FCommand {
         this.optionalArgs.put("faction", "yours");
 
         this.permission = Permission.MONEY_DEPOSIT.node;
-        this.setHelpShort(TL.COMMAND_MONEYDEPOSIT_SHORT.toString());
 
         senderMustBePlayer = true;
         senderMustBeMember = false;
@@ -40,6 +39,11 @@ public class CmdMoneyDeposit extends FCommand {
         if (success && Conf.logMoneyTransactions) {
             P.p.log(ChatColor.stripColor(P.p.txt.parse(TL.COMMAND_MONEYDEPOSIT_DEPOSITED.toString(), fme.getName(), Econ.moneyString(amount), faction.describeTo(null))));
         }
+    }
+
+    @Override
+    public TL getUsageTranslation() {
+        return TL.COMMAND_MONEYDEPOSIT_DESCRIPTION;
     }
 
 }

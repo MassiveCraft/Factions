@@ -22,4 +22,9 @@ public class CmdLogins extends FCommand {
         fme.msg(TL.COMMAND_LOGINS_TOGGLE, String.valueOf(!monitor));
         fme.setMonitorJoins(!monitor);
     }
+
+    @Override
+    public TL getUsageTranslation() {
+        return TL.COMMAND_LOGINS_DESCRIPTION;
+    }
 }

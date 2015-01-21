@@ -77,4 +77,9 @@ public class CmdMod extends FCommand {
         }
     }
 
+    @Override
+    public TL getUsageTranslation() {
+        return TL.COMMAND_MOD_DESCRIPTION;
+    }
+
 }

@@ -34,4 +34,9 @@ public class CmdLock extends FCommand {
         msg(p.getLocked() ? TL.COMMAND_LOCK_LOCKED : TL.COMMAND_LOCK_UNLOCKED);
     }
 
+    @Override
+    public TL getUsageTranslation() {
+        return TL.COMMAND_LOCK_DESCRIPTION;
+    }
+
 }

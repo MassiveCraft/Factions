@@ -23,8 +23,6 @@ public class CmdWarunclaimall extends FCommand {
         senderMustBeMember = false;
         senderMustBeModerator = false;
         senderMustBeAdmin = false;
-
-        this.setHelpShort(TL.COMMAND_WARUNCLAIMALL_SHORT.toString());
     }
 
     @Override
@@ -35,6 +33,11 @@ public class CmdWarunclaimall extends FCommand {
         if (Conf.logLandUnclaims) {
             P.p.log(TL.COMMAND_WARUNCLAIMALL_LOG.format(fme.getName()));
         }
+    }
+
+    @Override
+    public TL getUsageTranslation() {
+        return TL.COMMAND_WARUNCLAIMALL_DESCRIPTION;
     }
 
 }

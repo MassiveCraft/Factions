@@ -41,4 +41,9 @@ public class CmdModifyPower extends FCommand {
         int newPower = player.getPowerRounded(); // int so we don't have super long doubles.
         msg(TL.COMMAND_MODIFYPOWER_ADDED, number, player.getName(), newPower);
     }
+
+    @Override
+    public TL getUsageTranslation() {
+        return TL.COMMAND_MODIFYPOWER_DESCRIPTION;
+    }
 }

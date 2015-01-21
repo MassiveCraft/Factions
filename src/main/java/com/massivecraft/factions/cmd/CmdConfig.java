@@ -240,4 +240,9 @@ public class CmdConfig extends FCommand {
         Conf.save();
     }
 
+    @Override
+    public TL getUsageTranslation() {
+        return TL.COMMAND_CONFIG_DESCRIPTION;
+    }
+
 }

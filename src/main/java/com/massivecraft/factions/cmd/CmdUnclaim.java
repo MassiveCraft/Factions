@@ -112,4 +112,9 @@ public class CmdUnclaim extends FCommand {
         }
     }
 
+    @Override
+    public TL getUsageTranslation() {
+        return TL.COMMAND_UNCLAIM_DESCRIPTION;
+    }
+
 }

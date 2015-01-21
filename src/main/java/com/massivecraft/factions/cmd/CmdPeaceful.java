@@ -4,6 +4,7 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdPeaceful extends FCommand {
 
@@ -23,7 +24,6 @@ public class CmdPeaceful extends FCommand {
         senderMustBeAdmin = false;
     }
 
-    //TODO: TL
     @Override
     public void perform() {
         Faction faction = this.argAsFaction(0);
@@ -33,22 +33,28 @@ public class CmdPeaceful extends FCommand {
 
         String change;
         if (faction.isPeaceful()) {
-            change = "removed peaceful status from";
+            change = TL.COMMAND_PEACEFUL_REVOKE.toString();
             faction.setPeaceful(false);
         } else {
-            change = "granted peaceful status to";
+            change = TL.COMMAND_PEACEFUL_GRANT.toString();
             faction.setPeaceful(true);
         }
 
         // Inform all players
         for (FPlayer fplayer : FPlayers.getInstance().getOnlinePlayers()) {
+            String blame=(fme == null ? TL.GENERIC_SERVERADMIN.toString() : fme.describeTo(fplayer, true));
             if (fplayer.getFaction() == faction) {
-                fplayer.msg((fme == null ? "A server admin" : fme.describeTo(fplayer, true)) + "<i> has " + change + " your faction.");
+                fplayer.msg(TL.COMMAND_PEACEFUL_YOURS, blame, change);
             } else {
-                fplayer.msg((fme == null ? "A server admin" : fme.describeTo(fplayer, true)) + "<i> has " + change + " the faction \"" + faction.getTag(fplayer) + "<i>\".");
+                fplayer.msg(TL.COMMAND_PEACEFUL_OTHER, blame, change, faction.getTag(fplayer));
             }
         }
 
+    }
+
+    @Override
+    public TL getUsageTranslation() {
+        return TL.COMMAND_PEACEFUL_DESCRIPTION;
     }
 
 }

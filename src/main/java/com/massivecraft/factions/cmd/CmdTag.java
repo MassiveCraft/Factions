@@ -76,4 +76,9 @@ public class CmdTag extends FCommand {
         FTeamWrapper.updatePrefixes(myFaction);
     }
 
+    @Override
+    public TL getUsageTranslation() {
+        return TL.COMMAND_TAG_DESCRIPTION;
+    }
+
 }

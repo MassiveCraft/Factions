@@ -58,4 +58,9 @@ public class CmdInvite extends FCommand {
         myFaction.msg(TL.COMMAND_INVITE_INVITED, fme.describeTo(myFaction, true), you.describeTo(myFaction));
     }
 
+    @Override
+    public TL getUsageTranslation() {
+        return TL.COMMAND_INVITE_DESCRIPTION;
+    }
+
 }

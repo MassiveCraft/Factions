@@ -70,4 +70,9 @@ public class CmdSethome extends FCommand {
         }
     }
 
+    @Override
+    public TL getUsageTranslation() {
+        return TL.COMMAND_SETHOME_DESCRIPTION;
+    }
+
 }

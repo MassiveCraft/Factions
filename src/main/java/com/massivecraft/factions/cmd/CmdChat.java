@@ -58,4 +58,9 @@ public class CmdChat extends FCommand {
             msg(TL.COMMAND_CHAT_MODE_FACTION);
         }
     }
+
+    @Override
+    public TL getUsageTranslation() {
+        return TL.COMMAND_CHAT_DESCRIPTION;
+    }
 }

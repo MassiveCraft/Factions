@@ -45,4 +45,9 @@ public class CmdOpen extends FCommand {
         }
     }
 
+    @Override
+    public TL getUsageTranslation() {
+        return TL.COMMAND_OPEN_DESCRIPTION;
+    }
+
 }

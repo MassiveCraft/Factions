@@ -39,4 +39,9 @@ public class CmdAutoHelp extends MCommand<P> {
 
         sendMessage(p.txt.getPage(lines, this.argAsInt(0, 1), TL.COMMAND_AUTOHELP_HELPFOR.toString() + pcmd.aliases.get(0) + "\""));
     }
+
+    @Override
+    public TL getUsageTranslation() {
+        return TL.COMMAND_HELP_DESCRIPTION;
+    }
 }

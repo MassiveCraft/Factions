@@ -41,4 +41,9 @@ public class CmdMoneyBalance extends FCommand {
         Econ.sendBalanceInfo(fme, faction);
     }
 
+    @Override
+    public TL getUsageTranslation() {
+        return TL.COMMAND_MONEYBALANCE_DESCRIPTION;
+    }
+
 }

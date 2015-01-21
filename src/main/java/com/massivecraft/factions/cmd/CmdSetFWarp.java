@@ -46,4 +46,9 @@ public class CmdSetFWarp extends FCommand {
     private boolean transact(FPlayer player) {
         return !P.p.getConfig().getBoolean("warp-cost.enabled", false) || player.isAdminBypassing() || payForCommand(P.p.getConfig().getDouble("warp-cost.setwarp", 5), TL.COMMAND_SETFWARP_TOSET.toString(), TL.COMMAND_SETFWARP_FORSET.toString());
     }
+
+    @Override
+    public TL getUsageTranslation() {
+        return TL.COMMAND_SETFWARP_DESCRIPTION;
+    }
 }

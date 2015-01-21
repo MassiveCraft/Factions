@@ -5,6 +5,7 @@ import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.zcore.util.TL;
 
 
 public class CmdPermanent extends FCommand {
@@ -25,7 +26,6 @@ public class CmdPermanent extends FCommand {
         senderMustBeAdmin = false;
     }
 
-    //TODO: TL
     @Override
     public void perform() {
         Faction faction = this.argAsFaction(0);
@@ -35,10 +35,10 @@ public class CmdPermanent extends FCommand {
 
         String change;
         if (faction.isPermanent()) {
-            change = "removed permanent status from";
+            change = TL.COMMAND_PERMANENT_REVOKE.toString();
             faction.setPermanent(false);
         } else {
-            change = "added permanent status to";
+            change = TL.COMMAND_PERMANENT_GRANT.toString();
             faction.setPermanent(true);
         }
 
@@ -46,11 +46,17 @@ public class CmdPermanent extends FCommand {
 
         // Inform all players
         for (FPlayer fplayer : FPlayers.getInstance().getOnlinePlayers()) {
+            String blame=(fme == null ? TL.GENERIC_SERVERADMIN.toString() : fme.describeTo(fplayer, true));
             if (fplayer.getFaction() == faction) {
-                fplayer.msg((fme == null ? "A server admin" : fme.describeTo(fplayer, true)) + "<i> " + change + " your faction.");
+                fplayer.msg(TL.COMMAND_PERMANENT_YOURS, blame, change);
             } else {
-                fplayer.msg((fme == null ? "A server admin" : fme.describeTo(fplayer, true)) + "<i> " + change + " the faction \"" + faction.getTag(fplayer) + "\".");
+                fplayer.msg(TL.COMMAND_PERMANENT_OTHER, blame, change, faction.getTag(fplayer));
             }
         }
+    }
+
+    @Override
+    public TL getUsageTranslation() {
+        return TL.COMMAND_PERMANENT_DESCRIPTION;
     }
 }

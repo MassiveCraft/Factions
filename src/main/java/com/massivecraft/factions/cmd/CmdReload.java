@@ -33,4 +33,9 @@ public class CmdReload extends FCommand {
 
         msg(TL.COMMAND_RELOAD_TIME, timeReload);
     }
+
+    @Override
+    public TL getUsageTranslation() {
+        return TL.COMMAND_RELOAD_DESCRIPTION;
+    }
 }

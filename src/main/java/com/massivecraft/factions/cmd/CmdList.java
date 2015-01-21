@@ -4,6 +4,7 @@ import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.zcore.util.TL;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -100,5 +101,10 @@ public class CmdList extends FCommand {
         }
 
         sendMessage(lines);
+    }
+
+    @Override
+    public TL getUsageTranslation() {
+        return TL.COMMAND_LIST_DESCRIPTION;
     }
 }

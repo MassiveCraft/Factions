@@ -35,4 +35,9 @@ public class CmdBypass extends FCommand {
             P.p.log(fme.getName() + TL.COMMAND_BYPASS_DISABLELOG.toString());
         }
     }
+
+    @Override
+    public TL getUsageTranslation() {
+        return TL.COMMAND_BYPASS_DESCRIPTION;
+    }
 }

@@ -19,7 +19,6 @@ public class CmdMoneyWithdraw extends FCommand {
         this.optionalArgs.put("faction", "yours");
 
         this.permission = Permission.MONEY_WITHDRAW.node;
-        this.setHelpShort(TL.COMMAND_MONEYWITHDRAW_SHORT.toString());
 
         senderMustBePlayer = true;
         senderMustBeMember = false;
@@ -39,5 +38,10 @@ public class CmdMoneyWithdraw extends FCommand {
         if (success && Conf.logMoneyTransactions) {
             P.p.log(ChatColor.stripColor(P.p.txt.parse(TL.COMMAND_MONEYWITHDRAW_WITHDRAW.toString(), fme.getName(), Econ.moneyString(amount), faction.describeTo(null))));
         }
+    }
+
+    @Override
+    public TL getUsageTranslation() {
+        return TL.COMMAND_MONEYWITHDRAW_DESCRIPTION;
     }
 }

@@ -1,6 +1,7 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdLeave extends FCommand {
 
@@ -23,6 +24,11 @@ public class CmdLeave extends FCommand {
     @Override
     public void perform() {
         fme.leave(true);
+    }
+
+    @Override
+    public TL getUsageTranslation() {
+        return TL.LEAVE_DESCRIPTION;
     }
 
 }

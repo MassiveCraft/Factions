@@ -99,4 +99,9 @@ public class CmdDisband extends FCommand {
         Factions.getInstance().removeFaction(faction.getId());
         FTeamWrapper.applyUpdates(faction);
     }
+
+    @Override
+    public TL getUsageTranslation() {
+        return TL.COMMAND_DISBAND_DESCRIPTION;
+    }
 }

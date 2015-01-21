@@ -1,6 +1,7 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.zcore.util.TL;
 
 import java.util.Collections;
 
@@ -146,6 +147,11 @@ public class FCmdRoot extends FCommand {
     public void perform() {
         this.commandChain.add(this);
         this.cmdHelp.execute(this.sender, this.args, this.commandChain);
+    }
+
+    @Override
+    public TL getUsageTranslation() {
+        return TL.GENERIC_PLACEHOLDER;
     }
 
 }

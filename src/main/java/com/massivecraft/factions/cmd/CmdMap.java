@@ -60,4 +60,9 @@ public class CmdMap extends FCommand {
         sendMessage(Board.getInstance().getMap(myFaction, new FLocation(fme), fme.getPlayer().getLocation().getYaw()));
     }
 
+    @Override
+    public TL getUsageTranslation() {
+        return TL.COMMAND_MAP_DESCRIPTION;
+    }
+
 }

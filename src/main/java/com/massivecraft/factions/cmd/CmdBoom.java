@@ -41,4 +41,9 @@ public class CmdBoom extends FCommand {
         // Inform
         myFaction.msg(TL.COMMAND_BOOM_ENABLED, fme.describeTo(myFaction), enabled);
     }
+
+    @Override
+    public TL getUsageTranslation() {
+        return TL.COMMAND_BOOM_DESCRIPTION;
+    }
 }

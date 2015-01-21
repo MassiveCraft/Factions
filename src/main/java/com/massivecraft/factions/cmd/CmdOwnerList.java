@@ -62,4 +62,9 @@ public class CmdOwnerList extends FCommand {
 
         fme.msg(TL.COMMAND_OWNERLIST_OWNERS, owners);
     }
+
+    @Override
+    public TL getUsageTranslation() {
+        return TL.COMMAND_OWNERLIST_DESCRIPTION;
+    }
 }

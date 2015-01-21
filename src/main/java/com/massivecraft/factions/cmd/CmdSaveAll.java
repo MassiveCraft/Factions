@@ -35,4 +35,9 @@ public class CmdSaveAll extends FCommand {
         msg(TL.COMMAND_SAVEALL);
     }
 
+    @Override
+    public TL getUsageTranslation() {
+        return TL.COMMAND_SAVEALL_DESCRIPTION;
+    }
+
 }

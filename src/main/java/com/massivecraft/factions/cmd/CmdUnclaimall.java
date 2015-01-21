@@ -56,4 +56,9 @@ public class CmdUnclaimall extends FCommand {
         }
     }
 
+    @Override
+    public TL getUsageTranslation() {
+        return TL.COMMAND_UNCLAIMALL_DESCRIPTION;
+    }
+
 }

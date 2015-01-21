@@ -98,4 +98,9 @@ public class CmdCreate extends FCommand {
         }
     }
 
+    @Override
+    public TL getUsageTranslation() {
+        return TL.COMMAND_CREATE_DESCRIPTION;
+    }
+
 }

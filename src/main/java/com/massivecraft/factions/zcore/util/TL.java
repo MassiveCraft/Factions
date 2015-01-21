@@ -35,6 +35,7 @@ public enum TL {
     _REQUIRESUNICODE("false"),
     _DEFAULT("true"),
     _STATE("complete"), //incomplete, limited, partial, majority, complete
+
     /**
      * Localised translation meta
      */
@@ -54,11 +55,15 @@ public enum TL {
     COMMAND_ADMIN_DEMOTED("<i>You have been demoted from the position of faction admin by %1$s<i>."),
     COMMAND_ADMIN_PROMOTES("<i>You have promoted %1$s<i> to the position of faction admin."),
     COMMAND_ADMIN_PROMOTED("%1$s<i> gave %2$s<i> the leadership of %3$s<i>."),
+    COMMAND_ADMIN_DESCRIPTION("Hand over your admin rights"),
+
+    COMMAND_ANNOUNCE_DESCRIPTION("Announce a message to players in faction."),
 
     COMMAND_AUTOCLAIM_ENABLED("<i>Now auto-claiming land for <h>%1$s<i>."),
     COMMAND_AUTOCLAIM_DISABLED("<i>Auto-claiming of land disabled."),
     COMMAND_AUTOCLAIM_REQUIREDRANK("<b>You must be <h>%1$s<b> to claim land."),
     COMMAND_AUTOCLAIM_OTHERFACTION("<b>You can't claim land for <h>%1$s<b>."),
+    COMMAND_AUTOCLAIM_DESCRIPTION("Auto-claim land as you walk around"),
 
     COMMAND_AUTOHELP_HELPFOR("Help for command \""),
 
@@ -66,14 +71,17 @@ public enum TL {
     COMMAND_BOOM_TOTOGGLE("to toggle explosions"),
     COMMAND_BOOM_FORTOGGLE("for toggling explosions"),
     COMMAND_BOOM_ENABLED("%1$s<i> has %2$s explosions in your faction's territory."),
+    COMMAND_BOOM_DESCRIPTION("Toggle explosions (peaceful factions only)"),
 
     COMMAND_BYPASS_ENABLE("<i>You have enabled admin bypass mode. You will be able to build or destroy anywhere."),
     COMMAND_BYPASS_ENABLELOG(" has ENABLED admin bypass mode."),
     COMMAND_BYPASS_DISABLE("<i>You have disabled admin bypass mode."),
     COMMAND_BYPASS_DISABLELOG(" has DISABLED admin bypass mode."),
+    COMMAND_BYPASS_DESCRIPTION("Enable admin bypass mode"),
 
     COMMAND_CHAT_DISABLED("<b>The built in chat chat channels are disabled on this server."),
     COMMAND_CHAT_INVALIDMODE("<b>Unrecognised chat mode. <i>Please enter either 'a','f' or 'p'"),
+    COMMAND_CHAT_DESCRIPTION("Change chat mode"),
 
     COMMAND_CHAT_MODE_PUBLIC("<i>Public chat mode."),
     COMMAND_CHAT_MODE_ALLIANCE("<i>Alliance only chat mode."),
@@ -83,9 +91,11 @@ public enum TL {
     COMMAND_CHATSPY_ENABLELOG(" has ENABLED chat spying mode."),
     COMMAND_CHATSPY_DISABLE("<i>You have disabled chat spying mode."),
     COMMAND_CHATSPY_DISABLELOG(" has DISABLED chat spying mode."),
+    COMMAND_CHATSPY_DESCRIPTION("Enable admin chat spy mode"),
 
     COMMAND_CLAIM_INVALIDRADIUS("<b>If you specify a radius, it must be at least 1."),
     COMMAND_CLAIM_DENIED("<b>You do not have permission to claim in a radius."),
+    COMMAND_CLAIM_DESCRIPTION("Claim land from where you are standing"),
 
     COMMAND_CONFIG_NOEXIST("<b>No configuration setting \"<h>%1$s<b>\" exists."),
     COMMAND_CONFIG_SET_TRUE("\" option set to true (enabled)."),
@@ -108,9 +118,11 @@ public enum TL {
     COMMAND_CONFIG_ERROR_SETTING("Error setting configuration setting \"%1$s\" to \"%2$s\"."),
     COMMAND_CONFIG_ERROR_MATCHING("Configuration setting \"%1$s\" couldn't be matched, though it should be... please report this error."),
     COMMAND_CONFIG_ERROR_TYPE("'%1$s' is of type '%2$s', which cannot be modified with this command."),
+    COMMAND_CONFIG_DESCRIPTION("Change a conf.json setting"),
 
-    COMMAND_CONVERT_BACKEND_RUNNING("command.convert.backend.running", "Already running that backend."),
-    COMMAND_CONVERT_BACKEND_INVALID("command.convert.backend.invalid", "Invalid backend"),
+    COMMAND_CONVERT_BACKEND_RUNNING("Already running that backend."),
+    COMMAND_CONVERT_BACKEND_INVALID("Invalid backend"),
+    COMMAND_CONVERT_DESCRIPTION("Convert the plugin backend"),
 
     COMMAND_CREATE_MUSTLEAVE("<b>You must leave your current faction first."),
     COMMAND_CREATE_INUSE("<b>That tag is already in use."),
@@ -120,6 +132,7 @@ public enum TL {
     COMMAND_CREATE_CREATED("%1$s<i> created a new faction %2$s"),
     COMMAND_CREATE_YOUSHOULD("<i>You should now: %1$s"),
     COMMAND_CREATE_CREATEDLOG(" created a new faction: "),
+    COMMAND_CREATE_DESCRIPTION("Create a new faction"),
 
     COMMAND_DEINVITE_CANDEINVITE("Players you can deinvite: "),
     COMMAND_DEINVITE_CLICKTODEINVITE("Click to revoke invite for %1$s"),
@@ -127,22 +140,26 @@ public enum TL {
     COMMAND_DEINVITE_MIGHTWANT("<i>You might want to: %1$s"),
     COMMAND_DEINVITE_REVOKED("%1$s<i> revoked your invitation to <h>%2$s<i>."),
     COMMAND_DEINVITE_REVOKES("%1$s<i> revoked %2$s's<i> invitation."),
+    COMMAND_DEINVITE_DESCRIPTION("Remove a pending invitation"),
 
     COMMAND_DELFWARP_DELETED("<i>Deleted warp <a>%1$s"),
     COMMAND_DELFWARP_INVALID("<i>Couldn't find warp <a>%1$s"),
     COMMAND_DELFWARP_TODELETE("to delete warp"),
     COMMAND_DELFWARP_FORDELETE("for deleting warp"),
+    COMMAND_DELFWARP_DESCRIPTION("Delete a faction warp"),
 
     COMMAND_DESCRIPTION_CHANGES("You have changed the description for <h>%1$s<i> to:"),
     COMMAND_DESCRIPTION_CHANGED("<i>The faction %1$s<i> changed their description to:"),
     COMMAND_DESCRIPTION_TOCHANGE("to change faction description"),
     COMMAND_DESCRIPTION_FORCHANGE("for changing faction description"),
+    COMMAND_DESCRIPTION_DESCRIPTION("Change the faction description"),
 
     COMMAND_DISBAND_IMMUTABLE("<i>You cannot disband the Wilderness, SafeZone, or WarZone."),
     COMMAND_DISBAND_MARKEDPERMANENT("<i>This faction is designated as permanent, so you cannot disband it."),
     COMMAND_DISBAND_BROADCAST_YOURS("<h>%1$s<i> disbanded your faction."),
     COMMAND_DISBAND_BROADCAST_NOTYOURS("<h>%1$s<i> disbanded the faction %2$s."),
     COMMAND_DISBAND_HOLDINGS("<i>You have been given the disbanded faction's bank, totaling %1$s."),
+    COMMAND_DISBAND_DESCRIPTION("Disband a faction"),
 
     COMMAND_FWARP_CLICKTOWARP("Click to warp!"),
     COMMAND_FWARP_COMMANDFORMAT("<i>/f warp <warpname>"),
@@ -151,6 +168,7 @@ public enum TL {
     COMMAND_FWARP_TOWARP("to warp"),
     COMMAND_FWARP_FORWARPING("for warping"),
     COMMAND_FWARP_WARPS("Warps: "),
+    COMMAND_FWARP_DESCRIPTION("Teleport to a faction warp"),
 
     COMMAND_HELP_404("<b>This page does not exist"),
     COMMAND_HELP_NEXTCREATE("<i>Learn how to create a faction on the next page."),
@@ -191,6 +209,7 @@ public enum TL {
     COMMAND_HELP_MOAR_1("Finally some commands for the server admins:"),
     COMMAND_HELP_MOAR_2("<i>More commands for server admins:"),
     COMMAND_HELP_MOAR_3("<i>Even more commands for server admins:"),
+    COMMAND_HELP_DESCRIPTION("Display a help page"),
 
     COMMAND_HOME_DISABLED("<b>Sorry, Faction homes are disabled on this server."),
     COMMAND_HOME_TELEPORTDISABLED("<b>Sorry, the ability to teleport to Faction homes is disabled on this server."),
@@ -200,6 +219,7 @@ public enum TL {
     COMMAND_HOME_ENEMYNEAR("<b>You cannot teleport to your faction home while an enemy is within %s blocks of you."),
     COMMAND_HOME_TOTELEPORT("to teleport to your faction home"),
     COMMAND_HOME_FORTELEPORT("for teleporting to your faction home"),
+    COMMAND_HOME_DESCRIPTION("Teleport to the faction home"),
 
     COMMAND_INVITE_TOINVITE("to invite someone"),
     COMMAND_INVITE_FORINVITE("for inviting someone"),
@@ -207,6 +227,7 @@ public enum TL {
     COMMAND_INVITE_INVITEDYOU(" has invited you to join "),
     COMMAND_INVITE_INVITED("%1$s<i> invited %2$s<i> to your faction."),
     COMMAND_INVITE_ALREADYMEMBER("%1$s<i> is already a member of %2$s"),
+    COMMAND_INVITE_DESCRIPTION("Invite a player to your faction"),
 
     COMMAND_JOIN_CANNOTFORCE("<b>You do not have permission to move other players into a faction."),
     COMMAND_JOIN_SYSTEMFACTION("<b>Players may only join normal factions. This is a system faction."),
@@ -223,6 +244,7 @@ public enum TL {
     COMMAND_JOIN_JOINED("<i>%1$s joined your faction."),
     COMMAND_JOIN_JOINEDLOG("%1$s joined the faction %2$s."),
     COMMAND_JOIN_MOVEDLOG("%1$s moved the player %2$s into the faction %3$s."),
+    COMMAND_JOIN_DESCRIPTION("Join a faction"),
 
     COMMAND_KICK_CANDIDATES("Players you can kick: "),
     COMMAND_KICK_CLICKTOKICK("Click to kick "),
@@ -236,22 +258,26 @@ public enum TL {
     COMMAND_KICK_FACTION("%1$s<i> kicked %2$s<i> from the faction! :O"), //message given to faction members
     COMMAND_KICK_KICKS("<i>You kicked %1$s<i> from the faction %2$s<i>!"), //kicker perspective
     COMMAND_KICK_KICKED("%1$s<i> kicked you from %2$s<i>! :O"), //kicked player perspective
-
+    COMMAND_KICK_DESCRIPTION("Kick a player from the faction"),
 
     COMMAND_LIST_FACTIONLIST("Faction List "),
     COMMAND_LIST_TOLIST("to list the factions"),
     COMMAND_LIST_FORLIST("for listing the factions"),
     COMMAND_LIST_ONLINEFACTIONLESS("Online factionless: "),
+    COMMAND_LIST_DESCRIPTION("See a list of the factions"),
 
     COMMAND_LOCK_LOCKED("<i>Factions is now locked"),
     COMMAND_LOCK_UNLOCKED("<i>Factions in now unlocked"),
+    COMMAND_LOCK_DESCRIPTION("Lock all write stuff. Apparently."),
 
     COMMAND_LOGINS_TOGGLE("<i>Set login / logout notifications for Faction members to: <a>%s"),
+    COMMAND_LOGINS_DESCRIPTION("Toggle(?) login / logout notifications for Faction members"),
 
     COMMAND_MAP_TOSHOW("to show the map"),
     COMMAND_MAP_FORSHOW("for showing the map"),
     COMMAND_MAP_UPDATE_ENABLED("<i>Map auto update <green>ENABLED."),
     COMMAND_MAP_UPDATE_DISABLED("<i>Map auto update <red>DISABLED."),
+    COMMAND_MAP_DESCRIPTION("Show the territory map, and set optional auto update"),
 
     COMMAND_MOD_CANDIDATES("Players you can promote: "),
     COMMAND_MOD_CLICKTOPROMOTE("Click to promote "),
@@ -263,27 +289,30 @@ public enum TL {
     COMMAND_MOD_REVOKED("%1$s<i> is no longer moderator in your faction."),
     COMMAND_MOD_PROMOTES("%1$s<i> was promoted to moderator in your faction."),
     COMMAND_MOD_PROMOTED("<i>You have promoted %1$s<i> to moderator."),
+    COMMAND_MOD_DESCRIPTION("Give or revoke moderator rights"),
 
     COMMAND_MODIFYPOWER_ADDED("<i>Added <a>%1$f <i>power to <a>%2$s. <i>New total rounded power: <a>%3$d"),
+    COMMAND_MODIFYPOWER_DESCRIPTION("Modify the power of a faction/player"),
 
-    COMMAND_MONEY_SHORT("faction money commands"),
     COMMAND_MONEY_LONG("<i>The faction money commands."),
+    COMMAND_MONEY_DESCRIPTION("Faction money commands"),
 
     COMMAND_MONEYBALANCE_SHORT("show faction balance"),
+    COMMAND_MONEYBALANCE_DESCRIPTION("Show your factions current money balance"),
 
-    COMMAND_MONEYDEPOSIT_SHORT("deposit money"),
+    COMMAND_MONEYDEPOSIT_DESCRIPTION("Deposit money"),
     COMMAND_MONEYDEPOSIT_DEPOSITED("%1$s deposited %2$s in the faction bank: %3$s"),
 
-    COMMAND_MONEYTRANSFERFF_SHORT("transfer f -> f"),
+    COMMAND_MONEYTRANSFERFF_DESCRIPTION("Transfer f -> f"),
     COMMAND_MONEYTRANSFERFF_TRANSFER("%1$s transferred %2$s from the faction \"%3$s\" to the faction \"%4$s\""),
 
-    COMMAND_MONEYTRANSFERFP_SHORT("transfer f -> p"),
+    COMMAND_MONEYTRANSFERFP_DESCRIPTION("Transfer f -> p"),
     COMMAND_MONEYTRANSFERFP_TRANSFER("%1$s transferred %2$s from the faction \"%3$s\" to the player \"%4$s\""),
 
-    COMMAND_MONEYTRANSFERPF_SHORT("transfer p -> f"),
+    COMMAND_MONEYTRANSFERPF_DESCRIPTION("Transfer p -> f"),
     COMMAND_MONEYTRANSFERPF_TRANSFER("%1$s transferred %2$s from the player \"%3$s\" to the faction \"%4$s\""),
 
-    COMMAND_MONEYWITHDRAW_SHORT("withdraw money"),
+    COMMAND_MONEYWITHDRAW_DESCRIPTION("Withdraw money"),
     COMMAND_MONEYWITHDRAW_WITHDRAW("%1$s withdrew %2$s from the faction bank: %3$s"),
 
     COMMAND_OPEN_TOOPEN("to open or close the faction"),
@@ -292,6 +321,7 @@ public enum TL {
     COMMAND_OPEN_CLOSED("closed"),
     COMMAND_OPEN_CHANGES("%1$s<i> changed the faction to <h>%2$s<i>."),
     COMMAND_OPEN_CHANGED("<i>The faction %1$s<i> is now %2$s"),
+    COMMAND_OPEN_DESCRIPTION("Switch if invitation is required to join"),
 
     COMMAND_OWNER_DISABLED("<b>Sorry, but owned areas are disabled on this server."),
     COMMAND_OWNER_LIMIT("<b>Sorry, but you have reached the server's <h>limit of %1$d <b>owned areas per faction."),
@@ -303,18 +333,39 @@ public enum TL {
     COMMAND_OWNER_TOSET("to set ownership of claimed land"),
     COMMAND_OWNER_FORSET("for setting ownership of claimed land"),
     COMMAND_OWNER_ADDED("<i>You have added %1$s<i> to the owner list for this claimed land."),
+    COMMAND_OWNER_DESCRIPTION("Set ownership of claimed land"),
 
     COMMAND_OWNERLIST_DISABLED("<b>Sorry, but owned areas are disabled on this server."),//dup->
     COMMAND_OWNERLIST_WRONGFACTION("<b>This land is not claimed by your faction."),//eq
     COMMAND_OWNERLIST_NOTCLAIMED("<i>This land is not claimed by any faction, thus no owners."),//eq
     COMMAND_OWNERLIST_NONE("<i>No owners are set here; everyone in the faction has access."),
     COMMAND_OWNERLIST_OWNERS("<i>Current owner(s) of this land: %1$s"),
+    COMMAND_OWNERLIST_DESCRIPTION("List owner(s) of this claimed land"),
+
+    COMMAND_PEACEFUL_DESCRIPTION("Set a faction to peaceful"),
+    COMMAND_PEACEFUL_YOURS("%1$s has %2$s your faction"),
+    COMMAND_PEACEFUL_OTHER("%s<i> has %s the faction '%s<i>'."),
+    COMMAND_PEACEFUL_GRANT("granted peaceful status to"),
+    COMMAND_PEACEFUL_REVOKE("removed peaceful status from"),
+
+    COMMAND_PERMANENT_DESCRIPTION("Toggles a faction's permanence"), //TODO: Real word?
+    COMMAND_PERMANENT_GRANT("added permanent status to"),
+    COMMAND_PERMANENT_REVOKE("removed permanent status from"),
+    COMMAND_PERMANENT_YOURS("%1$s has %2$s your faction"),
+    COMMAND_PERMANENT_OTHER("%s<i> has %s the faction '%s<i>'."),
+
+    COMMAND_PERMANENTPOWER_DESCRIPTION("Toggle faction power permanence"), //TODO: This a real word?
+    COMMAND_PERMANENTPOWER_GRANT("added permanentpower status to"),
+    COMMAND_PERMANENTPOWER_REVOKE("removed permanentpower status from"),
+    COMMAND_PERMANENTPOWER_SUCCESS("<i>You %s <h>%s<i>."),
+    COMMAND_PERMANENTPOWER_FACTION("%s<i> %s your faction"),
 
     COMMAND_POWER_TOSHOW("to show player power info"),
     COMMAND_POWER_FORSHOW("for showing player power info"),
     COMMAND_POWER_POWER("%1$s<a> - Power / Maxpower: <i>%2$d / %3$d %4$s"),
     COMMAND_POWER_BONUS(" (bonus: "),
     COMMAND_POWER_PENALTY(" (penalty: "),
+    COMMAND_POWER_DESCRIPTION("Show player power info"),
 
     COMMAND_POWERBOOST_HELP_1("<b>You must specify \"p\" or \"player\" to target a player or \"f\" or \"faction\" to target a faction."),
     COMMAND_POWERBOOST_HELP_2("<b>ex. /f powerboost p SomePlayer 0.5  -or-  /f powerboost f SomeFaction -5"),
@@ -323,20 +374,26 @@ public enum TL {
     COMMAND_POWERBOOST_FACTION("Faction \"%1$s\""),
     COMMAND_POWERBOOST_BOOST("<i>%1$s now has a power bonus/penalty of %2$d to min and max power levels."),
     COMMAND_POWERBOOST_BOOSTLOG("%1$s has set the power bonus/penalty for %2$s to %3$d."),
+    COMMAND_POWERBOOST_DESCRIPTION("Apply permanent power bonus/penalty to specified player or faction"),
 
     COMMAND_RELOAD_TIME("<i>Reloaded <h>conf.json <i>from disk, took <h>%1$d ms<i>."),
+    COMMAND_RELOAD_DESCRIPTION("Reload data file(s) from disk"),
 
-    COMMAND_SAFEUNCLAIMALL_SHORT("Unclaim all safezone land"),
+    COMMAND_SAFEUNCLAIMALL_DESCRIPTION("Unclaim all safezone land"),
     COMMAND_SAFEUNCLAIMALL_UNCLAIMED("<i>You unclaimed ALL safe zone land."),
     COMMAND_SAFEUNCLAIMALL_UNCLAIMEDLOG("%1$s unclaimed all safe zones."),
 
     COMMAND_SAVEALL("<i>Factions saved to disk!"),
+    COMMAND_SAVEALL_DESCRIPTION("Save all data to disk"),
+
+    COMMAND_SCOREBOARD_DESCRIPTION("Scoreboardy things"),
 
     COMMAND_SETFWARP_NOTCLAIMED("<i>You can only set warps in your faction territory."),
     COMMAND_SETFWARP_LIMIT("<i>Your Faction already has the max amount of warps set <a>(%1$d)."),
     COMMAND_SETFWARP_SET("<i>Set warp <a>%1$s <i>to your location."),
     COMMAND_SETFWARP_TOSET("to set warp"),
     COMMAND_SETFWARP_FORSET("for setting warp"),
+    COMMAND_SETFWARP_DESCRIPTION("Set a faction warp"),
 
     COMMAND_SETHOME_DISABLED("<b>Sorry, Faction homes are disabled on this server."),
     COMMAND_SETHOME_NOTCLAIMED("<b>Sorry, your faction home can only be set inside your own claimed territory."),
@@ -344,6 +401,7 @@ public enum TL {
     COMMAND_SETHOME_FORSET("for setting the faction home"),
     COMMAND_SETHOME_SET("%1$s<i> set the home for your faction. You can now use:"),
     COMMAND_SETHOME_SETOTHER("<b>You have set the home for the %1$s<i> faction."),
+    COMMAND_SETHOME_DESCRIPTION("Set the faction home"),
 
     COMMAND_SHOW_NOFACTION_SELF("You are not in a faction"),
     COMMAND_SHOW_NOFACTION_OTHER("That's not a faction"),
@@ -365,23 +423,28 @@ public enum TL {
     COMMAND_SHOW_ENEMIES("Enemies: "),
     COMMAND_SHOW_MEMBERSONLINE("Members online: "),
     COMMAND_SHOW_MEMBERSOFFLINE("Members offline: "),
+    COMMAND_SHOW_COMMANDDESCRIPTION("Show faction information"),
 
     COMMAND_SHOWINVITES_PENDING("Players with pending invites: "),
     COMMAND_SHOWINVITES_CLICKTOREVOKE("Click to revoke invite for %1$s"),
+    COMMAND_SHOWINVITES_DESCRIPTION("Show pending faction invites"),
 
     COMMAND_STATUS_FORMAT("%1$s Power: %2$s Last Seen: %3$s"),
     COMMAND_STATUS_ONLINE("Online"),
     COMMAND_STATUS_AGOSUFFIX(" ago."),
+    COMMAND_STATUS_DESCRIPTION("Show the status of a player"),
 
     COMMAND_TAG_TAKEN("<b>That tag is already taken"),
     COMMAND_TAG_TOCHANGE("to change the faction tag"),
     COMMAND_TAG_FORCHANGE("for changing the faction tag"),
     COMMAND_TAG_FACTION("%1$s<i> changed your faction tag to %2$s"),
     COMMAND_TAG_CHANGED("<i>The faction %1$s<i> changed their name to %2$s."),
+    COMMAND_TAG_DESCRIPTION("Change the faction tag"),
 
     COMMAND_TITLE_TOCHANGE("to change a players title"),
     COMMAND_TITLE_FORCHANGE("for changing a players title"),
     COMMAND_TITLE_CHANGED("%1$s<i> changed a title: %2$s"),
+    COMMAND_TITLE_DESCRIPTION("Set or remove a players title"),
 
     COMMAND_UNCLAIM_SAFEZONE_SUCCESS("<i>Safe zone was unclaimed."),
     COMMAND_UNCLAIM_SAFEZONE_NOPERM("<b>This is a safe zone. You lack permissions to unclaim."),
@@ -394,15 +457,18 @@ public enum TL {
     COMMAND_UNCLAIM_TOUNCLAIM("to unclaim this land"),
     COMMAND_UNCLAIM_FORUNCLAIM("for unclaiming this land"),
     COMMAND_UNCLAIM_FACTIONUNCLAIMED("%1$s<i> unclaimed some land."),
+    COMMAND_UNCLAIM_DESCRIPTION("Unclaim the land where you are standing"),
 
     COMMAND_UNCLAIMALL_TOUNCLAIM("to unclaim all faction land"),
     COMMAND_UNCLAIMALL_FORUNCLAIM("for unclaiming all faction land"),
     COMMAND_UNCLAIMALL_UNCLAIMED("%1$s<i> unclaimed ALL of your faction's land."),
     COMMAND_UNCLAIMALL_LOG("%1$s unclaimed everything for the faction: %2$s"),
+    COMMAND_UNCLAIMALL_DESCRIPTION("Unclaim all of your factions land"),
 
     COMMAND_VERSION_VERSION("<i>You are running %1$s"),
+    COMMAND_VERSION_DESCRIPTION("Show plugin and translation version information"),
 
-    COMMAND_WARUNCLAIMALL_SHORT("unclaim all warzone land"),
+    COMMAND_WARUNCLAIMALL_DESCRIPTION("Unclaim all warzone land"),
     COMMAND_WARUNCLAIMALL_SUCCESS("<i>You unclaimed ALL war zone land."),
     COMMAND_WARUNCLAIMALL_LOG("%1$s unclaimed all war zones."),
 
@@ -414,12 +480,14 @@ public enum TL {
     COMMAND_RELATIONS_MUTUAL("<i>Your faction is now %1$s<i> to %2$s"),
     COMMAND_RELATIONS_PEACEFUL("<i>This will have no effect while your faction is peaceful."),
     COMMAND_RELATIONS_PEACEFULOTHER("<i>This will have no effect while their faction is peaceful."),
+    COMMAND_RELATIONS_DESCRIPTION("Set relation wish to another faction"),
 
     COMMAND_RELATIONS_PROPOSAL_1("%1$s<i> wishes to be your %2$s"),
     COMMAND_RELATIONS_PROPOSAL_2("<i>Type <c>/%1$s %2$s %3$s<i> to accept."),
     COMMAND_RELATIONS_PROPOSAL_SENT("%1$s<i> were informed that you wish to be %2$s"),
+
     /**
-     * Leaving
+     * Leaving - This is accessed through a command, and so it MAY need a COMMAND_* slug :s
      */
     LEAVE_PASSADMIN("<b>You must give the admin role to someone else first."),
     LEAVE_NEGATIVEPOWER("<b>You cannot leave until your power is positive."),
@@ -428,8 +496,10 @@ public enum TL {
     LEAVE_LEFT("%s<i> left faction %s<i>."),
     LEAVE_DISBANDED("<i>%s<i> was disbanded."),
     LEAVE_DISBANDEDLOG("The faction %s (%s) was disbanded due to the last player (%s) leaving."),
+    LEAVE_DESCRIPTION("Leave your faction"),
+
     /**
-     * Claiming
+     * Claiming - Same as above basically. No COMMAND_* because it's not in a command class, but... 
      */
     CLAIM_PROTECTED("<b>This land is protected"),
     CLAIM_DISABLED("<b>Sorry, this world has land claiming disabled."),
@@ -452,63 +522,7 @@ public enum TL {
     CLAIM_FORCLAIM("for claiming this land"),
     CLAIM_CLAIMED("<h>%s<i> claimed land for <h>%s<i> from <h>%s<i>."),
     CLAIM_CLAIMEDLOG("%s claimed land at (%s) for the faction: %s"),
-    /**
-     * Command descriptions
-     */
-    FACTIONS_ADMIN("hand over your admin rights"),
-    FACTIONS_AUTOCLAIM("auto-claim land as you walk around"),
-    FACTIONS_BYPASS("enable admin bypass mode"),
-    FACTIONS_CHAT("change chat mode"),
-    FACTIONS_CHATSPY("enable admin chat spy mode"),
-    FACTIONS_CLAIM("claim land where you are standing"),
-    FACTIONS_CONFIG("change a conf.json setting"),
-    FACTIONS_CREATE("create a new faction"),
-    FACTIONS_DEINVITE("remove a pending invitation"),
-    FACTIONS_DISBAND("disband a faction"),
-    FACTIONS_HELP("display a help page"),
-    FACTIONS_HOME("teleport to the faction home"),
-    FACTIONS_INVITE("invite a player to your faction"),
-    FACTIONS_JOIN("join a faction"),
-    FACTIONS_KICK("kick a player from the faction"),
-    FACTIONS_LEAVE("leave your faction"),
-    FACTIONS_LIST("see a list of the factions"),
-    FACTIONS_LOCK("lock all write stuff"),
-    FACTIONS_MANAGESAFEZONE("claim land as a safe zone and build/destroy within safe zones"),
-    FACTIONS_MANAGEWARZONE("claim land as a war zone and build/destroy within war zones"),
-    FACTIONS_MAP("show the territory map, and set optional auto update"),
-    FACTIONS_MOD("give or revoke moderator rights"),
-    FACTIONS_MONEY_BALANCE ("show your factions current money balance"),
-    FACTIONS_MONEY_DEPOSIT ("deposit money into a faction bank"),
-    FACTIONS_MONEY_WITHDRAW ("withdraw money from your faction bank"),
-    FACTIONS_MONEY_F2F ("transfer money from faction to faction"),
-    FACTIONS_MONEY_F2P ("transfer money from faction to player"),
-    FACTIONS_MONEY_P2F ("transfer money from player to faction"),
-    FACTIONS_NOBOOM ("toggle explosions (peaceful factions only),"),
-    FACTIONS_OPEN ("switch if invitation is required to join"),
-    FACTIONS_OWNER ("set ownership of claimed land"),
-    FACTIONS_OWNERLIST ("list owner(s), of this claimed land"),
-    FACTIONS_SETPEACEFUL("designate a faction as peaceful"),
-    FACTIONS_SETPERMANENT("designate a faction as permanent"),
-    FACTIONS_SETPERMANENTPOWER("set permanent power for a faction"),
-    FACTIONS_POWER("show player power info"),
-    FACTIONS_POWERBOOST("apply permanent power bonus/penalty to specified player or faction"),
-    FACTIONS_RELATION("set relation wish to another faction"),
-    FACTIONS_RELOAD("reload data file(s), from disk"),
-    FACTIONS_SAVE("save all data to disk"),
-    FACTIONS_SETHOME("set the faction home"),
-    FACTIONS_SHOW("show faction information"),
-    FACTIONS_TAG("change the faction tag"),
-    FACTIONS_TITLE("set or remove a players title"),
-    FACTIONS_VERSION("see the version of the plugin"),
-    FACTIONS_UNCLAIM("unclaim the land where you are standing"),
-    FACTIONS_UNCLAIMALL("unclaim all of your factions land"),
-    FACTIONS_SCOREBOARD("ability to toggle scoreboards"),
-    FACTIONS_SHOWINVITES("show pending invites to your faction"),
-    FACTIONS_SEECHUNK("see the chunk you stand in"),
-    FACTIONS_SETWARP("set a warp for your faction"),
-    FACTIONS_WARP("access your faction warps"),
-    FACTIONS_MODIFYPOWER("modify other player's power"),
-    FACTIONS_MONITORLOGINS("monitor join and leaves of faction members"),
+
     /**
      * More generic, or less easily categorisable translations, which may apply to more than one class
      */
@@ -535,6 +549,8 @@ public enum TL {
     GENERIC_FACTIONTAG_TOOSHORT("<i>The faction tag can't be shorter than <h>%1$s<i> chars."),
     GENERIC_FACTIONTAG_TOOLONG("<i>The faction tag can't be longer than <h>%s<i> chars."),
     GENERIC_FACTIONTAG_ALPHANUMERIC("<i>Faction tag must be alphanumeric. \"<h>%s<i>\" is not allowed."),
+    GENERIC_PLACEHOLDER("<This is a placeholder for a message you should not see>"),
+
     /**
      * ASCII compass (for chat map)
      */
@@ -542,12 +558,14 @@ public enum TL {
     COMPASS_SHORT_EAST("E"),
     COMPASS_SHORT_SOUTH("S"),
     COMPASS_SHORT_WEST("W"),
+
     /**
      * Chat modes
      */
     CHAT_FACTION("faction chat"),
     CHAT_ALLIANCE("alliance chat"),
     CHAT_PUBLIC("public chat"),
+
     /**
      * Relations
      */
@@ -555,11 +573,20 @@ public enum TL {
     RELATION_ALLY("ally"),
     RELATION_NEUTRAL("neutral"),
     RELATION_ENEMY("enemy"),
+
+    /**
+     * Roles
+     */
+    ROLE_ADMIN("admin"),
+    ROLE_MODERATOR("moderator"),
+    ROLE_NORMAL("normal member"),
+
     /**
      * Strings lying around in other bits of the plugins
      */
     NOPAGES("<i>Sorry. No Pages available."),
     INVALIDPAGE("<i>Invalid page. Must be between 1 and %1$d"),
+
     /**
      * The ones here before I started messing around with this
      */
@@ -574,6 +601,7 @@ public enum TL {
     DEFAULT_PREFIX("default-prefix", "{relationcolor}[{faction}] &r"),
     FACTION_LOGIN("faction-login", "&e%1$s &9logged in."),
     FACTION_LOGOUT("faction-logout", "&e%1$s &9logged out.."),
+
     /**
      * Warmups
      */

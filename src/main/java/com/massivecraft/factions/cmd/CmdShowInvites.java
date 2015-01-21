@@ -31,5 +31,10 @@ public class CmdShowInvites extends FCommand {
         sendFancyMessage(msg);
     }
 
+    @Override
+    public TL getUsageTranslation() {
+        return TL.COMMAND_SHOWINVITES_DESCRIPTION;
+    }
+
 
 }

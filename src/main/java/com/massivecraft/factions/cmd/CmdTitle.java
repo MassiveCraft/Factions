@@ -48,4 +48,9 @@ public class CmdTitle extends FCommand {
         myFaction.msg(TL.COMMAND_TITLE_CHANGED, fme.describeTo(myFaction, true), you.describeTo(myFaction, true));
     }
 
+    @Override
+    public TL getUsageTranslation() {
+        return TL.COMMAND_TITLE_DESCRIPTION;
+    }
+
 }

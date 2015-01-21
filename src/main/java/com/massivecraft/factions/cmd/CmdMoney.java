@@ -26,7 +26,6 @@ public class CmdMoney extends FCommand {
         senderMustBeModerator = false;
         senderMustBeAdmin = false;
 
-        this.setHelpShort(TL.COMMAND_MONEY_SHORT.toString());
         this.helpLong.add(p.txt.parseTags(TL.COMMAND_MONEY_LONG.toString()));
 
         this.addSubCommand(this.cmdMoneyBalance);
@@ -41,6 +40,11 @@ public class CmdMoney extends FCommand {
     public void perform() {
         this.commandChain.add(this);
         P.p.cmdAutoHelp.execute(this.sender, this.args, this.commandChain);
+    }
+
+    @Override
+    public TL getUsageTranslation() {
+        return TL.COMMAND_MONEY_DESCRIPTION;
     }
 
 }

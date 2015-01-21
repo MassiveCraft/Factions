@@ -670,7 +670,7 @@ public abstract class MemoryFPlayer implements FPlayer {
         } else if (forFaction == currentFaction) {
             error = P.p.txt.parse(TL.CLAIM_ALREADYOWN.toString(), forFaction.describeTo(this, true));
         } else if (this.getRole().value < Role.MODERATOR.value) {
-            error = P.p.txt.parse(TL.CLAIM_MUSTBE.toString(), Role.MODERATOR.toString());
+            error = P.p.txt.parse(TL.CLAIM_MUSTBE.toString(), Role.MODERATOR.getTranslation());
         } else if (forFaction.getFPlayers().size() < Conf.claimsRequireMinFactionMembers) {
             error = P.p.txt.parse(TL.CLAIM_MEMBERS.toString(), Conf.claimsRequireMinFactionMembers);
         } else if (currentFaction.isSafeZone()) {

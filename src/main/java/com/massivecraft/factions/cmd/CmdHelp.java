@@ -187,5 +187,10 @@ public class CmdHelp extends FCommand {
         pageLines.add(p.cmdBase.cmdVersion.getUseageTemplate(true));
         helpPages.add(pageLines);
     }
+
+    @Override
+    public TL getUsageTranslation() {
+        return TL.COMMAND_HELP_DESCRIPTION;
+    }
 }
 

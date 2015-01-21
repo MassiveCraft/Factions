@@ -3,6 +3,8 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.VisualizeUtil;
+import com.massivecraft.factions.zcore.util.TL;
+
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -60,6 +62,11 @@ public class CmdSeeChunk extends FCommand {
             int typeId = blockY % 5 == 0 ? Material.REDSTONE_LAMP_ON.getId() : Material.STAINED_GLASS.getId();
             VisualizeUtil.addLocation(player, loc, typeId);
         }
+    }
+
+    @Override
+    public TL getUsageTranslation() {
+        return TL.GENERIC_PLACEHOLDER;
     }
 
 }

@@ -29,4 +29,9 @@ public class CmdVersion extends FCommand {
         msg(TL.GENERIC_TRANSLATION_CONTRIBUTORS, TL._LOCAL_AUTHOR);
         msg(TL.GENERIC_TRANSLATION_RESPONSIBLE, TL._LOCAL_RESPONSIBLE);
     }
+
+    @Override
+    public TL getUsageTranslation() {
+        return TL.COMMAND_VERSION_DESCRIPTION;
+    }
 }

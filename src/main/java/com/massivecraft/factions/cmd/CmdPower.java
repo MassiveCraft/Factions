@@ -45,4 +45,9 @@ public class CmdPower extends FCommand {
         msg(TL.COMMAND_POWER_POWER, target.describeTo(fme, true), target.getPowerRounded(), target.getPowerMaxRounded(), boost);
     }
 
+    @Override
+    public TL getUsageTranslation() {
+        return TL.COMMAND_POWER_DESCRIPTION;
+    }
+
 }

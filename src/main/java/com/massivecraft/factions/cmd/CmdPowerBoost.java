@@ -67,4 +67,9 @@ public class CmdPowerBoost extends FCommand {
             P.p.log(TL.COMMAND_POWERBOOST_BOOSTLOG.toString(), fme.getName(), target, roundedPower);
         }
     }
+
+    @Override
+    public TL getUsageTranslation() {
+        return TL.COMMAND_POWERBOOST_DESCRIPTION;
+    }
 }
