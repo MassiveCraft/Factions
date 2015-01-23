@@ -49,6 +49,7 @@ public class EventFactionsPowerChange extends EventFactionsAbstractSender
 	{
 		TIME,
 		DEATH,
+		COMMAND,
 		UNDEFINED,
 		;
 	}
