@@ -20,7 +20,6 @@ public class CmdShow extends FCommand {
         this.permission = Permission.SHOW.node;
         this.disableOnLock = false;
 
-        this.senderMustBePlayer = true;
         this.senderMustBeMember = false;
         this.senderMustBeModerator = false;
         this.senderMustBeAdmin = false;
