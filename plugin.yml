@@ -61,6 +61,7 @@ permissions:
   factions.seechunk: {description: see the chunk you stand in, default: false}
   factions.seechunkold: {description: see the chunk you stand in, default: false}
   factions.sethome: {description: set the faction home, default: false}
+  factions.setpower: {description: set power, default: false}
   factions.name: {description: set faction name, default: false}
   factions.title: {description: set player title, default: false}
   factions.title.color: {description: set player title with color, default: false}
@@ -132,6 +133,7 @@ permissions:
       factions.seechunk: true
       factions.seechunkold: true
       factions.sethome: true
+      factions.setpower: true
       factions.name: true
       factions.title: true
       factions.title.color: true
@@ -165,6 +167,7 @@ permissions:
       factions.leader.any: true
       factions.officer.any: true
       factions.access.any: true
+      factions.setpower: true
   factions.kit.rank1:
     default: false
     children:
