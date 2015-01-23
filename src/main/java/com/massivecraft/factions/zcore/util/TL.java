@@ -596,6 +596,39 @@ public enum TL {
     ROLE_NORMAL("normal member"),
 
     /**
+     * In the player and entity listeners
+     */
+    PLAYER_SAFEAUTO("<i>This land is now a safe zone."),
+    PLAYER_WARAUTO("<i>This land is now a war zone."),
+    PLAYER_OUCH("<b>Ouch, that is starting to hurt. You should give it a rest."),
+    PLAYER_USE_WILDERNESS("<b>You can't use <h>%s<b> in the wilderness."),
+    PLAYER_USE_SAFEZONE("<b>You can't use <h>%s<b> in a safe zone."),
+    PLAYER_USE_WARZONE("<b>You can't use <h>%s<b> in a war zone."),
+    PLAYER_USE_TERRITORY("<b>You can't use <h>%s<b> in the territory of <h>%s<b>."),
+    PLAYER_USE_OWNED("<b>You can't use <h>%s<b> in this territory, it is owned by: %s<b>."),
+    PLAYER_COMMAND_WARZONE("<b>You can't use the command '%s' in warzone."),
+    PLAYER_COMMAND_NEUTRAL("<b>You can't use the command '%s' in neutral territory."),
+    PLAYER_COMMAND_ENEMY("<b>You can't use the command '%s' in enemy territory."),
+    PLAYER_COMMAND_PERMANENT("<b>You can't use the command '%s' because you are in a permanent faction."),
+
+    PLAYER_POWER_NOLOSS_PEACEFUL("<i>You didn't lose any power since you are in a peaceful faction."),
+    PLAYER_POWER_NOLOSS_WORLD("<i>You didn't lose any power due to the world you died in."),
+    PLAYER_POWER_NOLOSS_WILDERNESS("<i>You didn't lose any power since you were in the wilderness."),
+    PLAYER_POWER_NOLOSS_WARZONE("<i>You didn't lose any power since you were in a war zone."),
+    PLAYER_POWER_LOSS_WARZONE("<b>The world you are in has power loss normally disabled, but you still lost power since you were in a war zone.\n<i>Your power is now <h>%d / %d"),
+    PLAYER_POWER_NOW("<i>Your power is now <h>%d / %d"),
+
+    PLAYER_PVP_LOGIN("<i>You can't hurt other players for %d seconds after logging in."),
+    PLAYER_PVP_REQUIREFACTION("<i>You can't hurt other players until you join a faction."),
+    PLAYER_PVP_FACTIONLESS("<i>You can't hurt players who are not currently in a faction."),
+    PLAYER_PVP_PEACEFUL("<i>Peaceful players cannot participate in combat."),
+    PLAYER_PVP_NEUTRAL("<i>You can't hurt neutral factions. Declare them as an enemy."),
+    PLAYER_PVP_CANTHURT("<i>You can't hurt %s<i>."),
+
+    PLAYER_PVP_NEUTRALFAIL("<i>You can't hurt %s<i> in their own territory unless you declare them as an enemy."),
+    PLAYER_PVP_TRIED("%s<i> tried to hurt you."),
+
+    /**
      * Strings lying around in other bits of the plugins
      */
     NOPAGES("<i>Sorry. No Pages available."),

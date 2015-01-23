@@ -4,6 +4,8 @@ import com.massivecraft.factions.*;
 import com.massivecraft.factions.event.PowerLossEvent;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.util.MiscUtil;
+import com.massivecraft.factions.zcore.util.TL;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.TravelAgent;
@@ -50,23 +52,23 @@ public class FactionsEntityListener implements Listener {
         if (faction.isWarZone()) {
             // war zones always override worldsNoPowerLoss either way, thus this layout
             if (!Conf.warZonePowerLoss) {
-                powerLossEvent.setMessage("<i>You didn't lose any power since you were in a war zone.");
+                powerLossEvent.setMessage(TL.PLAYER_POWER_NOLOSS_WARZONE.toString());
                 powerLossEvent.setCancelled(true);
             }
             if (Conf.worldsNoPowerLoss.contains(player.getWorld().getName())) {
-                powerLossEvent.setMessage("<b>The world you are in has power loss normally disabled, but you still lost power since you were in a war zone.\n<i>Your power is now <h>%d / %d");
+                powerLossEvent.setMessage(TL.PLAYER_POWER_LOSS_WARZONE.toString());
             }
         } else if (faction.isNone() && !Conf.wildernessPowerLoss && !Conf.worldsNoWildernessProtection.contains(player.getWorld().getName())) {
-            powerLossEvent.setMessage("<i>You didn't lose any power since you were in the wilderness.");
+            powerLossEvent.setMessage(TL.PLAYER_POWER_NOLOSS_WILDERNESS.toString());
             powerLossEvent.setCancelled(true);
         } else if (Conf.worldsNoPowerLoss.contains(player.getWorld().getName())) {
-            powerLossEvent.setMessage("<i>You didn't lose any power due to the world you died in.");
+            powerLossEvent.setMessage(TL.PLAYER_POWER_NOLOSS_WORLD.toString());
             powerLossEvent.setCancelled(true);
         } else if (Conf.peacefulMembersDisablePowerLoss && fplayer.hasFaction() && fplayer.getFaction().isPeaceful()) {
-            powerLossEvent.setMessage("<i>You didn't lose any power since you are in a peaceful faction.");
+            powerLossEvent.setMessage(TL.PLAYER_POWER_NOLOSS_PEACEFUL.toString());
             powerLossEvent.setCancelled(true);
         } else {
-            powerLossEvent.setMessage("<i>Your power is now <h>%d / %d");
+            powerLossEvent.setMessage(TL.PLAYER_POWER_NOW.toString());
         }
 
         // call Event
@@ -304,7 +306,7 @@ public class FactionsEntityListener implements Listener {
 
         if (attacker.hasLoginPvpDisabled()) {
             if (notify) {
-                attacker.msg("<i>You can't hurt other players for " + Conf.noPVPDamageToOthersForXSecondsAfterLogin + " seconds after logging in.");
+                attacker.msg(TL.PLAYER_PVP_LOGIN, Conf.noPVPDamageToOthersForXSecondsAfterLogin);
             }
             return false;
         }
@@ -332,7 +334,7 @@ public class FactionsEntityListener implements Listener {
 
         if (attackFaction.isNone() && Conf.disablePVPForFactionlessPlayers) {
             if (notify) {
-                attacker.msg("<i>You can't hurt other players until you join a faction.");
+                attacker.msg(TL.PLAYER_PVP_REQUIREFACTION);
             }
             return false;
         } else if (defendFaction.isNone()) {
@@ -341,7 +343,7 @@ public class FactionsEntityListener implements Listener {
                 return true;
             } else if (Conf.disablePVPForFactionlessPlayers) {
                 if (notify) {
-                    attacker.msg("<i>You can't hurt players who are not currently in a faction.");
+                    attacker.msg(TL.PLAYER_PVP_FACTIONLESS);
                 }
                 return false;
             }
@@ -349,12 +351,12 @@ public class FactionsEntityListener implements Listener {
 
         if (defendFaction.isPeaceful()) {
             if (notify) {
-                attacker.msg("<i>You can't hurt players who are in a peaceful faction.");
+                attacker.msg(TL.PLAYER_PVP_PEACEFUL);
             }
             return false;
         } else if (attackFaction.isPeaceful()) {
             if (notify) {
-                attacker.msg("<i>You can't hurt players while you are in a peaceful faction.");
+                attacker.msg(TL.PLAYER_PVP_PEACEFUL);
             }
             return false;
         }
@@ -364,7 +366,7 @@ public class FactionsEntityListener implements Listener {
         // You can not hurt neutral factions
         if (Conf.disablePVPBetweenNeutralFactions && relation.isNeutral()) {
             if (notify) {
-                attacker.msg("<i>You can't hurt neutral factions. Declare them as an enemy.");
+                attacker.msg(TL.PLAYER_PVP_NEUTRAL);
             }
             return false;
         }
@@ -377,7 +379,7 @@ public class FactionsEntityListener implements Listener {
         // You can never hurt faction members or allies
         if (relation.isMember() || relation.isAlly()) {
             if (notify) {
-                attacker.msg("<i>You can't hurt %s<i>.", defender.describeTo(attacker));
+                attacker.msg(TL.PLAYER_PVP_CANTHURT, defender.describeTo(attacker));
             }
             return false;
         }
@@ -387,8 +389,8 @@ public class FactionsEntityListener implements Listener {
         // You can not hurt neutrals in their own territory.
         if (ownTerritory && relation.isNeutral()) {
             if (notify) {
-                attacker.msg("<i>You can't hurt %s<i> in their own territory unless you declare them as an enemy.", defender.describeTo(attacker));
-                defender.msg("%s<i> tried to hurt you.", attacker.describeTo(defender, true));
+                attacker.msg(TL.PLAYER_PVP_NEUTRALFAIL, defender.describeTo(attacker));
+                defender.msg(TL.PLAYER_PVP_TRIED, attacker.describeTo(defender, true));
             }
             return false;
         }

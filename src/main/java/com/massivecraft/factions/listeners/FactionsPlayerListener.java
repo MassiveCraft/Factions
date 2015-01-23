@@ -187,7 +187,7 @@ public class FactionsPlayerListener implements Listener {
             } else {
                 if (!Board.getInstance().getFactionAt(to).isSafeZone()) {
                     Board.getInstance().setFactionAt(Factions.getInstance().getSafeZone(), to);
-                    me.msg("<i>This land is now a safe zone.");
+                    me.msg(TL.PLAYER_SAFEAUTO);
                 }
             }
         } else if (me.isAutoWarClaimEnabled()) {
@@ -196,7 +196,7 @@ public class FactionsPlayerListener implements Listener {
             } else {
                 if (!Board.getInstance().getFactionAt(to).isWarZone()) {
                     Board.getInstance().setFactionAt(Factions.getInstance().getWarZone(), to);
-                    me.msg("<i>This land is now a war zone.");
+                    me.msg(TL.PLAYER_WARAUTO);
                 }
             }
         }
@@ -231,7 +231,7 @@ public class FactionsPlayerListener implements Listener {
                 int count = attempt.increment();
                 if (count >= 10) {
                     FPlayer me = FPlayers.getInstance().getByPlayer(player);
-                    me.msg("<b>Ouch, that is starting to hurt. You should give it a rest.");
+                    me.msg(TL.PLAYER_OUCH);
                     player.damage(NumberConversions.floor((double) count / 10));
                 }
             }
@@ -300,7 +300,7 @@ public class FactionsPlayerListener implements Listener {
             }
 
             if (!justCheck) {
-                me.msg("<b>You can't use <h>%s<b> in the wilderness.", TextUtil.getMaterialName(material));
+                me.msg(TL.PLAYER_USE_WILDERNESS, TextUtil.getMaterialName(material));
             }
 
             return false;
@@ -310,7 +310,7 @@ public class FactionsPlayerListener implements Listener {
             }
 
             if (!justCheck) {
-                me.msg("<b>You can't use <h>%s<b> in a safe zone.", TextUtil.getMaterialName(material));
+                me.msg(TL.PLAYER_USE_SAFEZONE, TextUtil.getMaterialName(material));
             }
 
             return false;
@@ -320,7 +320,7 @@ public class FactionsPlayerListener implements Listener {
             }
 
             if (!justCheck) {
-                me.msg("<b>You can't use <h>%s<b> in a war zone.", TextUtil.getMaterialName(material));
+                me.msg(TL.PLAYER_USE_WARZONE, TextUtil.getMaterialName(material));
             }
 
             return false;
@@ -332,7 +332,7 @@ public class FactionsPlayerListener implements Listener {
         // Cancel if we are not in our own territory
         if (rel.confDenyUseage()) {
             if (!justCheck) {
-                me.msg("<b>You can't use <h>%s<b> in the territory of <h>%s<b>.", TextUtil.getMaterialName(material), otherFaction.getTag(myFaction));
+                me.msg(TL.PLAYER_USE_TERRITORY, TextUtil.getMaterialName(material), otherFaction.getTag(myFaction));
             }
 
             return false;
@@ -341,7 +341,7 @@ public class FactionsPlayerListener implements Listener {
         // Also cancel if player doesn't have ownership rights for this claim
         if (Conf.ownedAreasEnabled && Conf.ownedAreaDenyUseage && !otherFaction.playerHasOwnershipRights(me, loc)) {
             if (!justCheck) {
-                me.msg("<b>You can't use <h>%s<b> in this territory, it is owned by: %s<b>.", TextUtil.getMaterialName(material), otherFaction.getOwnerListString(loc));
+                me.msg(TL.PLAYER_USE_OWNED, TextUtil.getMaterialName(material), otherFaction.getOwnerListString(loc));
             }
 
             return false;
@@ -400,7 +400,7 @@ public class FactionsPlayerListener implements Listener {
         // You may use any block unless it is another faction's territory...
         if (rel.isNeutral() || (rel.isEnemy() && Conf.territoryEnemyProtectMaterials) || (rel.isAlly() && Conf.territoryAllyProtectMaterials) || (rel.isTruce() && Conf.territoryTruceProtectMaterials)) {
             if (!justCheck) {
-                me.msg("<b>You can't %s <h>%s<b> in the territory of <h>%s<b>.", (material == Material.SOIL ? "trample" : "use"), TextUtil.getMaterialName(material), otherFaction.getTag(myFaction));
+                me.msg(TL.PLAYER_USE_TERRITORY, (material == Material.SOIL ? "trample" : "use"), TextUtil.getMaterialName(material), otherFaction.getTag(myFaction));
             }
 
             return false;
@@ -409,7 +409,7 @@ public class FactionsPlayerListener implements Listener {
         // Also cancel if player doesn't have ownership rights for this claim
         if (Conf.ownedAreasEnabled && Conf.ownedAreaProtectMaterials && !otherFaction.playerHasOwnershipRights(me, loc)) {
             if (!justCheck) {
-                me.msg("<b>You can't use <h>%s<b> in this territory, it is owned by: %s<b>.", TextUtil.getMaterialName(material), otherFaction.getOwnerListString(loc));
+                me.msg(TL.PLAYER_USE_OWNED, TextUtil.getMaterialName(material), otherFaction.getOwnerListString(loc));
             }
 
             return false;
@@ -487,7 +487,7 @@ public class FactionsPlayerListener implements Listener {
                     !Conf.permanentFactionMemberDenyCommands.isEmpty() &&
                     me.getFaction().isPermanent() &&
                     isCommandInList(fullCmd, shortCmd, Conf.permanentFactionMemberDenyCommands.iterator())) {
-            me.msg("<b>You can't use the command \"" + fullCmd + "\" because you are in a permanent faction.");
+            me.msg(TL.PLAYER_COMMAND_PERMANENT, fullCmd);
             return true;
         }
 
@@ -501,17 +501,17 @@ public class FactionsPlayerListener implements Listener {
         }
 
         if (rel.isNeutral() && !Conf.territoryNeutralDenyCommands.isEmpty() && !me.isAdminBypassing() && isCommandInList(fullCmd, shortCmd, Conf.territoryNeutralDenyCommands.iterator())) {
-            me.msg("<b>You can't use the command \"" + fullCmd + "\" in neutral territory.");
+            me.msg(TL.PLAYER_COMMAND_NEUTRAL, fullCmd);
             return true;
         }
 
         if (rel.isEnemy() && !Conf.territoryEnemyDenyCommands.isEmpty() && !me.isAdminBypassing() && isCommandInList(fullCmd, shortCmd, Conf.territoryEnemyDenyCommands.iterator())) {
-            me.msg("<b>You can't use the command \"" + fullCmd + "\" in enemy territory.");
+            me.msg(TL.PLAYER_COMMAND_ENEMY, fullCmd);
             return true;
         }
 
         if(Board.getInstance().getFactionAt(new FLocation(me)).isWarZone() && !Conf.warzoneDenyCommands.isEmpty() && !me.isAdminBypassing() && isCommandInList(fullCmd, shortCmd, Conf.warzoneDenyCommands.iterator())) {
-            me.msg("<b>You can't use the command \"" + fullCmd + "\" in warzone.");
+            me.msg(TL.PLAYER_COMMAND_WARZONE, fullCmd);
             return true;
         }
 
