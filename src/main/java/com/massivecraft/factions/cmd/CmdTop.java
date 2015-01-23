@@ -110,7 +110,7 @@ public class CmdTop extends FCommand {
                         f1Size = f1Size + Econ.getBalance(fp.getAccountId());
                     }
                     double f2Size = Econ.getBalance(f2.getAccountId());
-                    for(FPlayer fp : f1.getFPlayers()) {
+                    for(FPlayer fp : f2.getFPlayers()) {
                         f2Size = f2Size + Econ.getBalance(fp.getAccountId());
                     }
                     if (f1Size < f2Size) {
