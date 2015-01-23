@@ -466,7 +466,7 @@ public class FactionsPlayerListener implements Listener {
     }
 
     public static boolean preventCommand(String fullCmd, Player player) {
-        if ((Conf.territoryNeutralDenyCommands.isEmpty() && Conf.territoryEnemyDenyCommands.isEmpty() && Conf.permanentFactionMemberDenyCommands.isEmpty())) {
+        if ((Conf.territoryNeutralDenyCommands.isEmpty() && Conf.territoryEnemyDenyCommands.isEmpty() && Conf.permanentFactionMemberDenyCommands.isEmpty() && Conf.warzoneDenyCommands.isEmpty())) {
             return false;
         }
 
@@ -507,6 +507,11 @@ public class FactionsPlayerListener implements Listener {
 
         if (rel.isEnemy() && !Conf.territoryEnemyDenyCommands.isEmpty() && !me.isAdminBypassing() && isCommandInList(fullCmd, shortCmd, Conf.territoryEnemyDenyCommands.iterator())) {
             me.msg("<b>You can't use the command \"" + fullCmd + "\" in enemy territory.");
+            return true;
+        }
+
+        if(Board.getInstance().getFactionAt(new FLocation(me)).isWarZone() && !Conf.warzoneDenyCommands.isEmpty() && !me.isAdminBypassing() && isCommandInList(fullCmd, shortCmd, Conf.warzoneDenyCommands.iterator())) {
+            me.msg("<b>You can't use the command \"" + fullCmd + "\" in warzone.");
             return true;
         }
 
