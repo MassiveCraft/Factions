@@ -64,6 +64,7 @@ public class FCmdRoot extends FCommand {
     public CmdModifyPower cmdModifyPower = new CmdModifyPower();
     public CmdLogins cmdLogins = new CmdLogins();
     public CmdClaimLine cmdClaimLine = new CmdClaimLine();
+    public CmdTop cmdTop = new CmdTop();
 
     public FCmdRoot() {
         super();
@@ -143,6 +144,7 @@ public class FCmdRoot extends FCommand {
         this.addSubCommand(this.cmdModifyPower);
         this.addSubCommand(this.cmdLogins);
         this.addSubCommand(this.cmdClaimLine);
+        this.addSubCommand(this.cmdTop);
     }
 
     @Override

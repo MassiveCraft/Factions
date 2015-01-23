@@ -453,6 +453,11 @@ public enum TL {
     COMMAND_TITLE_CHANGED("%1$s<i> changed a title: %2$s"),
     COMMAND_TITLE_DESCRIPTION("Set or remove a players title"),
 
+    COMMAND_TOP_DESCRIPTION("Sort Factions to see the top of some criteria."),
+    COMMAND_TOP_TOP("Top Factions by %s. Page %d/%d"),
+    COMMAND_TOP_LINE("%d. &6%s: &c%s"), // Rank. Faction: Value
+    COMMAND_TOP_INVALID("Could not sort by %s. Try balance, online, members, power or land."),
+
     COMMAND_UNCLAIM_SAFEZONE_SUCCESS("<i>Safe zone was unclaimed."),
     COMMAND_UNCLAIM_SAFEZONE_NOPERM("<b>This is a safe zone. You lack permissions to unclaim."),
     COMMAND_UNCLAIM_WARZONE_SUCCESS("<i>War zone was unclaimed."),

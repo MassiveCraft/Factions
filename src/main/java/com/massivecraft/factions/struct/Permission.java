@@ -73,6 +73,7 @@ public enum Permission {
     SCOREBOARD("scoreboard"),
     SEECHUNK("seechunk"),
     SETWARP("setwarp"),
+    TOP("top"),
     WARP("warp");
 
     public final String node;

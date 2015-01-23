@@ -92,6 +92,7 @@ permissions:
       factions.showinvites: true
       factions.seechunk: true
       factions.monitorlogins: true
+      factions.top: true
   factions.admin:
     description: hand over your admin rights
   factions.admin.any:
@@ -247,3 +248,5 @@ permissions:
     description: monitor join and leaves of faction members
   factions.claim.line:
     description: claim in a line
+  factions.top:
+    description: sort factions
