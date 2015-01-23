@@ -3,8 +3,9 @@ package com.massivecraft.factions.struct;
 import com.massivecraft.factions.zcore.util.TL;
 
 public enum ChatMode {
-    FACTION(2, TL.CHAT_FACTION),
-    ALLIANCE(1, TL.CHAT_ALLIANCE),
+    FACTION(3, TL.CHAT_FACTION),
+    ALLIANCE(2, TL.CHAT_ALLIANCE),
+    TRUCE(1, TL.CHAT_TRUCE),
     PUBLIC(0, TL.CHAT_PUBLIC);
 
     public final int value;

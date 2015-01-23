@@ -16,12 +16,12 @@ public class Conf {
     // Colors
     public static ChatColor colorMember = ChatColor.GREEN;
     public static ChatColor colorAlly = ChatColor.LIGHT_PURPLE;
+    public static ChatColor colorTruce = ChatColor.DARK_PURPLE;
     public static ChatColor colorNeutral = ChatColor.WHITE;
     public static ChatColor colorEnemy = ChatColor.RED;
 
     public static ChatColor colorPeaceful = ChatColor.GOLD;
     public static ChatColor colorWar = ChatColor.DARK_RED;
-    //public static ChatColor colorWilderness = ChatColor.DARK_GREEN;
 
     // Power
     public static double powerPlayerMax = 10.0;
@@ -71,6 +71,7 @@ public class Conf {
     public static String chatTagFormat = "%s" + ChatColor.WHITE;
     public static String factionChatFormat = "%s:" + ChatColor.WHITE + " %s";
     public static String allianceChatFormat = ChatColor.LIGHT_PURPLE + "%s:" + ChatColor.WHITE + " %s";
+    public static String truceChatFormat = ChatColor.DARK_PURPLE + "%s:" + ChatColor.WHITE + " %s";
 
     public static boolean broadcastDescriptionChanges = false;
 
@@ -163,6 +164,12 @@ public class Conf {
     public static boolean territoryAllyPainBuildWhenOffline = false;
     public static boolean territoryAllyDenyUseage = true;
     public static boolean territoryAllyProtectMaterials = true;
+    public static boolean territoryTruceDenyBuild = true;
+    public static boolean territoryTruceDenyBuildWhenOffline = true;
+    public static boolean territoryTrucePainBuild = false;
+    public static boolean territoryTrucePainBuildWhenOffline = false;
+    public static boolean territoryTruceDenyUseage = true;
+    public static boolean territoryTruceProtectMaterials = true;
     public static boolean territoryBlockCreepers = false;
     public static boolean territoryBlockCreepersWhenOffline = false;
     public static boolean territoryBlockFireballs = false;
@@ -242,6 +249,7 @@ public class Conf {
     public static double econCostShow = 0.0;
     public static double econCostOpen = 0.0;
     public static double econCostAlly = 0.0;
+    public static double econCostTruce = 0.0;
     public static double econCostEnemy = 0.0;
     public static double econCostNeutral = 0.0;
     public static double econCostNoBoom = 0.0;

@@ -6,8 +6,9 @@ import org.bukkit.ChatColor;
 
 
 public enum Relation {
-    MEMBER(3, "member"),
-    ALLY(2, "ally"),
+    MEMBER(4, "member"),
+    ALLY(3, "ally"),
+    TRUCE(2, "truce"),
     NEUTRAL(1, "neutral"),
     ENEMY(0, "enemy");
 
@@ -27,13 +28,15 @@ public enum Relation {
     public static Relation fromString(String s) {
         // Because Java 6 doesn't allow String switches :(
         if (s.equalsIgnoreCase("member")) {
-            return Relation.MEMBER;
+            return MEMBER;
         } else if (s.equalsIgnoreCase("ally")) {
-            return Relation.ALLY;
+            return ALLY;
+        } else if(s.equalsIgnoreCase("truce")) {
+            return TRUCE;
         } else if (s.equalsIgnoreCase("enemy")) {
-            return Relation.ENEMY;
+            return ENEMY;
         } else {
-            return Relation.NEUTRAL; // If they somehow mess things up, go back to default behavior.
+            return NEUTRAL; // If they somehow mess things up, go back to default behavior.
         }
     }
 
@@ -52,6 +55,10 @@ public enum Relation {
 
     public boolean isAlly() {
         return this == ALLY;
+    }
+
+    public boolean isTruce() {
+        return this == TRUCE;
     }
 
     public boolean isNeutral() {
@@ -77,6 +84,8 @@ public enum Relation {
             return Conf.colorAlly;
         } else if (this == NEUTRAL) {
             return Conf.colorNeutral;
+        } else if (this == TRUCE) {
+            return Conf.colorTruce;
         } else {
             return Conf.colorEnemy;
         }
@@ -93,6 +102,8 @@ public enum Relation {
                 return Conf.territoryEnemyDenyBuild;
             } else if (isAlly()) {
                 return Conf.territoryAllyDenyBuild;
+            } else if (isTruce()) {
+                return Conf.territoryTruceDenyBuild;
             } else {
                 return Conf.territoryDenyBuild;
             }
@@ -101,6 +112,8 @@ public enum Relation {
                 return Conf.territoryEnemyDenyBuildWhenOffline;
             } else if (isAlly()) {
                 return Conf.territoryAllyDenyBuildWhenOffline;
+            } else if (isTruce()) {
+                return Conf.territoryTruceDenyBuildWhenOffline;
             } else {
                 return Conf.territoryDenyBuildWhenOffline;
             }
@@ -118,6 +131,8 @@ public enum Relation {
                 return Conf.territoryEnemyPainBuild;
             } else if (isAlly()) {
                 return Conf.territoryAllyPainBuild;
+            } else if (isTruce()) {
+                return Conf.territoryTrucePainBuild;
             } else {
                 return Conf.territoryPainBuild;
             }
@@ -126,6 +141,8 @@ public enum Relation {
                 return Conf.territoryEnemyPainBuildWhenOffline;
             } else if (isAlly()) {
                 return Conf.territoryAllyPainBuildWhenOffline;
+            } else if (isTruce()) {
+                return Conf.territoryTrucePainBuildWhenOffline;
             } else {
                 return Conf.territoryPainBuildWhenOffline;
             }
@@ -140,6 +157,8 @@ public enum Relation {
             return Conf.territoryEnemyDenyUseage;
         } else if (isAlly()) {
             return Conf.territoryAllyDenyUseage;
+        } else if (isTruce()) {
+            return Conf.territoryTruceDenyUseage;
         } else {
             return Conf.territoryDenyUseage;
         }
@@ -150,6 +169,8 @@ public enum Relation {
             return Conf.econCostEnemy;
         } else if (isAlly()) {
             return Conf.econCostAlly;
+        } else if (isTruce()) {
+            return Conf.econCostTruce;
         } else {
             return Conf.econCostNeutral;
         }

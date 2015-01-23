@@ -75,6 +75,28 @@ public class FactionsChatListener implements Listener {
             Bukkit.getLogger().log(Level.INFO, ChatColor.stripColor("AllianceChat: " + message));
 
             event.setCancelled(true);
+        } else if (chat == ChatMode.TRUCE) {
+            Faction myFaction = me.getFaction();
+
+            String message = String.format(Conf.truceChatFormat, ChatColor.stripColor(me.getNameAndTag()), msg);
+
+            //Send message to our own faction
+            myFaction.sendMessage(message);
+
+            //Send to all our truces
+            for (FPlayer fplayer : FPlayers.getInstance().getOnlinePlayers()) {
+                if (myFaction.getRelationTo(fplayer) == Relation.TRUCE) {
+                    fplayer.sendMessage(message);
+                }
+
+                //Send to any players who are spying chat
+                else if (fplayer.isSpyingChat()) {
+                    fplayer.sendMessage("[TCspy]: " + message);
+                }
+            }
+
+            Bukkit.getLogger().log(Level.INFO, ChatColor.stripColor("TruceChat: " + message));
+            event.setCancelled(true);
         }
     }
 

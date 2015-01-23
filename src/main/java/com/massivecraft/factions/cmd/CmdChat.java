@@ -42,6 +42,8 @@ public class CmdChat extends FCommand {
                 modeTarget = ChatMode.ALLIANCE;
             } else if (modeString.startsWith("f")) {
                 modeTarget = ChatMode.FACTION;
+            } else if (modeString.startsWith("t")) {
+                modeTarget = ChatMode.TRUCE;
             } else {
                 msg(TL.COMMAND_CHAT_INVALIDMODE);
                 return;
@@ -54,6 +56,8 @@ public class CmdChat extends FCommand {
             msg(TL.COMMAND_CHAT_MODE_PUBLIC);
         } else if (fme.getChatMode() == ChatMode.ALLIANCE) {
             msg(TL.COMMAND_CHAT_MODE_ALLIANCE);
+        } else if (fme.getChatMode() == ChatMode.TRUCE) {
+            msg(TL.COMMAND_CHAT_MODE_TRUCE);
         } else {
             msg(TL.COMMAND_CHAT_MODE_FACTION);
         }
