@@ -98,6 +98,12 @@ public enum TL {
     COMMAND_CLAIM_DENIED("<b>You do not have permission to claim in a radius."),
     COMMAND_CLAIM_DESCRIPTION("Claim land from where you are standing"),
 
+    COMMAND_CLAIMLINE_INVALIDRADIUS("<b>If you specify a distance, it must be at least 1."),
+    COMMAND_CLAIMLINE_DENIED("<b>You do not have permission to claim in a line."),
+    COMMAND_CLAIMLINE_DESCRIPTION("Claim land in a straight line."),
+    COMMAND_CLAIMLINE_ABOVEMAX("<b>The maximum limit for claim line is <b>%s<b>."),
+    COMMAND_CLAIMLINE_NOTVALID("%s<b> is not a cardinal direction. You may use <h>north<b>, <h>east<b>, <h>south <b>or <h>west<b>."),
+
     COMMAND_CONFIG_NOEXIST("<b>No configuration setting \"<h>%1$s<b>\" exists."),
     COMMAND_CONFIG_SET_TRUE("\" option set to true (enabled)."),
     COMMAND_CONFIG_SET_FALSE("\" option set to false (disabled)."),

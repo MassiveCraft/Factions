@@ -59,6 +59,7 @@ permissions:
       factions.autoclaim: true
       factions.chat: true
       factions.claim: true
+      factions.claim.line: true
       factions.claim.radius: true
       factions.deinvite: true
       factions.description: true
@@ -244,3 +245,5 @@ permissions:
     description: modify other player's power
   factions.monitorlogins:
     description: monitor join and leaves of faction members
+  factions.claim.line:
+    description: claim in a line

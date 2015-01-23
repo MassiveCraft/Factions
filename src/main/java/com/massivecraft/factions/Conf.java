@@ -131,6 +131,7 @@ public class Conf {
     public static boolean claimsCanBeUnconnectedIfOwnedByOtherFaction = true;
     public static int claimsRequireMinFactionMembers = 1;
     public static int claimedLandsMax = 0;
+    public static int lineClaimLimit = 5;
 
     // if someone is doing a radius claim and the process fails to claim land this many times in a row, it will exit
     public static int radiusClaimFailureLimit = 9;
