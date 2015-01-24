@@ -32,7 +32,7 @@ public class CmdSaveAll extends FCommand {
         Factions.getInstance().forceSave();
         Board.getInstance().forceSave();
         Conf.save();
-        msg(TL.COMMAND_SAVEALL);
+        msg(TL.COMMAND_SAVEALL_SUCCESS);
     }
 
     @Override

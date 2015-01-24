@@ -390,7 +390,7 @@ public enum TL {
     COMMAND_SAFEUNCLAIMALL_UNCLAIMED("<i>You unclaimed ALL safe zone land."),
     COMMAND_SAFEUNCLAIMALL_UNCLAIMEDLOG("%1$s unclaimed all safe zones."),
 
-    COMMAND_SAVEALL("<i>Factions saved to disk!"),
+    COMMAND_SAVEALL_SUCCESS("<i>Factions saved to disk!"),
     COMMAND_SAVEALL_DESCRIPTION("Save all data to disk"),
 
     COMMAND_SCOREBOARD_DESCRIPTION("Scoreboardy things"),
