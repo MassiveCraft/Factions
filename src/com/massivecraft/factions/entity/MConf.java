@@ -305,6 +305,10 @@ public class MConf extends Entity<MConf>
 	// 0.1 means that you take 10% less damage at home.
 	public double territoryShieldFactor = 0.1D;
 	
+	// Protects the faction land from piston extending/retracting
+	// through the denying of MPerm build
+	public boolean handlePistonProtectionThroughDenyBuild = true;
+	
 	// -------------------------------------------- //
 	// DENY COMMANDS
 	// -------------------------------------------- //

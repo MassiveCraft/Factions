@@ -84,6 +84,7 @@ import com.massivecraft.factions.event.EventFactionsPvpDisallowed;
 import com.massivecraft.factions.event.EventFactionsPowerChange;
 import com.massivecraft.factions.event.EventFactionsPowerChange.PowerChangeReason;
 import com.massivecraft.factions.integration.Econ;
+import com.massivecraft.factions.spigot.SpigotFeatures;
 import com.massivecraft.factions.util.VisualizeUtil;
 import com.massivecraft.massivecore.EngineAbstract;
 import com.massivecraft.massivecore.PriorityLines;
@@ -1383,15 +1384,19 @@ public class EngineMain extends EngineAbstract
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void blockBuild(BlockPistonExtendEvent event)
 	{
+		// Is using Spigot or is checking deactivated by MConf?
+		if (SpigotFeatures.isActive() || ! MConf.get().handlePistonProtectionThroughDenyBuild) return;
+		
 		Block block = event.getBlock();
-
-		Faction pistonFaction = BoardColl.get().getFactionAt(PS.valueOf(block));
-
-		// target end-of-the-line empty (air) block which is being pushed into, including if piston itself would extend into air
+		
+		// Targets end-of-the-line empty (air) block which is being pushed into, including if piston itself would extend into air
 		Block targetBlock = block.getRelative(event.getDirection(), event.getLength() + 1);
 
-		// members of faction might not have build rights in their own territory, but pistons should still work regardless; so, address that corner case
+		// Factions involved
+		Faction pistonFaction = BoardColl.get().getFactionAt(PS.valueOf(block));
 		Faction targetFaction = BoardColl.get().getFactionAt(PS.valueOf(targetBlock));
+
+		// Members of a faction might not have build rights in their own territory, but pistons should still work regardless
 		if (targetFaction == pistonFaction) return;
 
 		// if potentially pushing into air/water/lava in another territory, we need to check it out
@@ -1405,30 +1410,34 @@ public class EngineMain extends EngineAbstract
 		 * up to 12 blocks and the width of any territory is 16 blocks, it should be safe (and much more lightweight) to test
 		 * only the final target block as done above
 		 */
+
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void blockBuild(BlockPistonRetractEvent event)
 	{	
-		// if not a sticky piston, retraction should be fine
-		if (!event.isSticky()) return;
-
+		// Is using Spigot or is checking deactivated by MConf?
+		if (SpigotFeatures.isActive() || ! MConf.get().handlePistonProtectionThroughDenyBuild) return;
+				
+		// If not a sticky piston, retraction should be fine
+		if ( ! event.isSticky()) return;
+		
 		Block retractBlock = event.getRetractLocation().getBlock();
 		PS retractPs = PS.valueOf(retractBlock);
 
 		// if potentially retracted block is just air/water/lava, no worries
 		if (retractBlock.isEmpty() || retractBlock.isLiquid()) return;
 
+		// Factions involved
 		Faction pistonFaction = BoardColl.get().getFactionAt(PS.valueOf(event.getBlock()));
-
-		// members of faction might not have build rights in their own territory, but pistons should still work regardless; so, address that corner case
 		Faction targetFaction = BoardColl.get().getFactionAt(retractPs);
+
+		// Members of a faction might not have build rights in their own territory, but pistons should still work regardless
 		if (targetFaction == pistonFaction) return;
 
-		if (!MPerm.getPermBuild().has(pistonFaction, targetFaction))
-		{
-			event.setCancelled(true);
-		}
+		if (MPerm.getPermBuild().has(pistonFaction, targetFaction)) return;
+		
+		event.setCancelled(true);
 	}
 	
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
