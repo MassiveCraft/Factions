@@ -68,6 +68,7 @@ public enum Perm
 	SEECHUNKOLD("seechunkold"),
 	SETHOME("sethome"),
 	SETPOWER("setpower"),
+	STATUS("status"),
 	NAME("name"),
 	TITLE("title"),
 	TITLE_COLOR("title.color"),

@@ -50,6 +50,7 @@ public class MPerm extends Entity<MPerm> implements Prioritized, Registerable
 	public final static transient String ID_DISBAND = "disband";
 	public final static transient String ID_FLAGS = "flags";
 	public final static transient String ID_PERMS = "perms";
+	public final static transient String ID_STATUS = "status";
 
 	public final static transient int PRIORITY_BUILD = 1000;
 	public final static transient int PRIORITY_PAINBUILD = 2000;
@@ -75,6 +76,7 @@ public class MPerm extends Entity<MPerm> implements Prioritized, Registerable
 	public final static transient int PRIORITY_DISBAND = 21000;
 	public final static transient int PRIORITY_FLAGS = 22000;
 	public final static transient int PRIORITY_PERMS = 23000;
+	public final static transient int PRIORITY_STATUS = 24000;
 	
 	// -------------------------------------------- //
 	// META: CORE
@@ -114,6 +116,7 @@ public class MPerm extends Entity<MPerm> implements Prioritized, Registerable
 		getPermKick();
 		getPermTitle();
 		getPermHome();
+		getPermStatus();
 		getPermSethome();
 		getPermDeposit();
 		getPermWithdraw();
@@ -137,6 +140,7 @@ public class MPerm extends Entity<MPerm> implements Prioritized, Registerable
 	public static MPerm getPermDesc() { return getCreative(PRIORITY_DESC, ID_DESC, ID_DESC, "set description", MUtil.set(Rel.LEADER, Rel.OFFICER), false, true, true); }
 	public static MPerm getPermMotd() { return getCreative(PRIORITY_MOTD, ID_MOTD, ID_MOTD, "set motd", MUtil.set(Rel.LEADER, Rel.OFFICER), false, true, true); }
 	public static MPerm getPermInvite() { return getCreative(PRIORITY_INVITE, ID_INVITE, ID_INVITE, "invite players", MUtil.set(Rel.LEADER, Rel.OFFICER), false, true, true); }
+	public static MPerm getPermStatus() { return getCreative(PRIORITY_STATUS, ID_STATUS, ID_STATUS, "show status", MUtil.set(Rel.LEADER, Rel.OFFICER), false, true, true); }
 	public static MPerm getPermKick() { return getCreative(PRIORITY_KICK, ID_KICK, ID_KICK, "kick members", MUtil.set(Rel.LEADER, Rel.OFFICER), false, true, true); }
 	public static MPerm getPermTitle() { return getCreative(PRIORITY_TITLE, ID_TITLE, ID_TITLE, "set titles", MUtil.set(Rel.LEADER, Rel.OFFICER), false, true, true); }
 	public static MPerm getPermHome() { return getCreative(PRIORITY_HOME, ID_HOME, ID_HOME, "teleport home", MUtil.set(Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY), false, true, true); }

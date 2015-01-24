@@ -4,14 +4,14 @@ import java.util.Comparator;
 
 import com.massivecraft.factions.entity.MPlayer;
 
-public class PlayerRoleComparator implements Comparator<MPlayer>
+public class PlayerInactivityComparator implements Comparator<MPlayer>
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static PlayerRoleComparator i = new PlayerRoleComparator();
-	public static PlayerRoleComparator get() { return i; }
+	private static PlayerInactivityComparator i = new PlayerInactivityComparator();
+	public static PlayerInactivityComparator get() { return i; }
 	
 	// -------------------------------------------- //
 	// OVERRIDE: COMPARATOR
@@ -24,11 +24,20 @@ public class PlayerRoleComparator implements Comparator<MPlayer>
 		if (m1 == null && m2 == null) return 0;
 		else if (m1 == null) return -1;
 		else if (m2 == null) return +1;
-		
-		// Rank
-		Rel r1 = m1.getRole();
-		Rel r2 = m2.getRole();
-		return r2.getValue() - r1.getValue();
-	}
 
+		// Online
+		boolean o1 = m1.isOnline();
+		boolean o2 = m2.isOnline();
+		
+		if (o1 && o2) return 0;
+		else if (o1) return -1;
+		else if (o2) return +1;
+		
+		// Inactivity Time
+		long r1 = m1.getLastActivityMillis();
+		long r2 = m2.getLastActivityMillis();
+		
+		return (int) (r1 - r2);
+	}
+	
 }
