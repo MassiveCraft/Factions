@@ -81,6 +81,7 @@ public class Conf {
     public static double autoLeaveRoutineRunsEveryXMinutes = 5.0;
     public static int autoLeaveRoutineMaxMillisecondsPerTick = 5;  // 1 server tick is roughly 50ms, so default max 10% of a tick
     public static boolean removePlayerDataWhenBanned = true;
+    public static boolean autoLeaveDeleteFPlayerData = true; // Let them just remove player from Faction.
 
     public static boolean worldGuardChecking = false;
     public static boolean worldGuardBuildPriority = false;
