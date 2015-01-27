@@ -177,6 +177,9 @@ max-relations:
 hcf:
   raidable: false
 
+  # DTR (death til raidable) will be in /f show if enabled. Configure the message in the lang.yml
+  dtr: false
+
   # Should we allow Factions to over claim if they are raidable (above has no effect on this)?
   # This has always been true, allowing factions to over claim others.
   overclaim: true
