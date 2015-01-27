@@ -58,7 +58,8 @@ public class CmdShow extends FCommand {
 
         double powerBoost = faction.getPowerBoost();
         String boost = (powerBoost == 0.0) ? "" : (powerBoost > 0.0 ? TL.COMMAND_SHOW_BONUS.toString():TL.COMMAND_SHOW_PENALTY.toString() + powerBoost + ")");
-        msg(TL.COMMAND_SHOW_POWER, faction.getLandRounded(), faction.getPowerRounded(), faction.getPowerMaxRounded(), boost);
+        String raidable = faction.getLandRounded() > faction.getPowerRounded() ? TL.RAIDABLE_TRUE.toString() : TL.RAIDABLE_FALSE.toString();
+        msg(TL.COMMAND_SHOW_POWER, faction.getLandRounded(), faction.getPowerRounded(), faction.getPowerMaxRounded(), boost, raidable);
 
         if (faction.isPermanent()) {
             msg(TL.COMMAND_SHOW_PERMANENT);

@@ -420,7 +420,7 @@ public enum TL {
     COMMAND_SHOW_JOINING("<a>Joining: <i>%1$s "),
     COMMAND_SHOW_INVITATION("invitation is required"),
     COMMAND_SHOW_UNINVITED("no invitation is needed"),
-    COMMAND_SHOW_POWER("<a>Land / Power / Maxpower: <i> %1$d/%2$d/%3$d %4$s"),
+    COMMAND_SHOW_POWER("<a>Land / Power / Maxpower: <i> %1$d/%2$d/%3$d %4$s. <a>Raidable: <i>%5$s"),
     COMMAND_SHOW_BONUS(" (bonus: "),
     COMMAND_SHOW_PENALTY(" (penalty: "),
     COMMAND_SHOW_DEPRECIATED("(%1$s depreciated)"), //This is spelled correctly.
@@ -649,6 +649,11 @@ public enum TL {
     FACTION_LOGIN("faction-login", "&e%1$s &9logged in."),
     FACTION_LOGOUT("faction-logout", "&e%1$s &9logged out.."),
 
+    /**
+     * Raidable is used in multiple places. Allow more than just true/false.
+     */
+    RAIDABLE_TRUE("raidable-true", "true"),
+    RAIDABLE_FALSE("raidable-false", "false"),
     /**
      * Warmups
      */
