@@ -543,6 +543,8 @@ public enum TL {
     /**
      * More generic, or less easily categorisable translations, which may apply to more than one class
      */
+    GENERIC_YOU("you"),
+    GENERIC_YOURFACTION("your faction"),
     GENERIC_NOPERMISSION("<b>You don't have permission to %1$s."),
     GENERIC_DOTHAT("do that"),  //Ugh nuke this from high orbit
     GENERIC_NOPLAYERMATCH("<b>No player match found for \"<p>%1$s<b>\"."),
@@ -606,8 +608,17 @@ public enum TL {
     ROLE_NORMAL("normal member"),
 
     /**
+     * Region types.
+     */
+    REGION_SAFEZONE("safezone"),
+    REGION_WARZONE("warzone"),
+    REGION_WILDERNESS("wilderness"),
+
+    REGION_PEACEFUL("peaceful territory"),
+    /**
      * In the player and entity listeners
      */
+    PLAYER_CANTHURT("<i>You may not harm other players in %s"),
     PLAYER_SAFEAUTO("<i>This land is now a safe zone."),
     PLAYER_WARAUTO("<i>This land is now a war zone."),
     PLAYER_OUCH("<b>Ouch, that is starting to hurt. You should give it a rest."),

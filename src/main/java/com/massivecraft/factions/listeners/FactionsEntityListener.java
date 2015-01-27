@@ -283,7 +283,7 @@ public class FactionsEntityListener implements Listener {
             if (damager instanceof Player) {
                 if (notify) {
                     FPlayer attacker = FPlayers.getInstance().getByPlayer((Player) damager);
-                    attacker.msg("<i>You can't hurt other players in " + (defLocFaction.isSafeZone() ? "a SafeZone." : "peaceful territory."));
+                    attacker.msg(TL.PLAYER_CANTHURT, (defLocFaction.isSafeZone() ? TL.REGION_SAFEZONE.toString() : TL.REGION_PEACEFUL.toString()));
                 }
                 return false;
             }
@@ -316,7 +316,7 @@ public class FactionsEntityListener implements Listener {
         // so we know from above that the defender isn't in a safezone... what about the attacker, sneaky dog that he might be?
         if (locFaction.noPvPInTerritory()) {
             if (notify) {
-                attacker.msg("<i>You can't hurt other players while you are in " + (locFaction.isSafeZone() ? "a SafeZone." : "peaceful territory."));
+                attacker.msg(TL.PLAYER_CANTHURT, (locFaction.isSafeZone() ? TL.REGION_SAFEZONE.toString() : TL.REGION_PEACEFUL.toString()));
             }
             return false;
         }

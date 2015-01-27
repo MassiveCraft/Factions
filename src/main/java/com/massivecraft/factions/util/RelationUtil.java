@@ -5,7 +5,9 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.iface.RelationParticipator;
 import com.massivecraft.factions.struct.Relation;
+import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TextUtil;
+
 import org.bukkit.ChatColor;
 
 public class RelationUtil {
@@ -23,14 +25,14 @@ public class RelationUtil {
 
         if (that instanceof Faction) {
             if (me instanceof FPlayer && myFaction == thatFaction) {
-                ret = "your faction";
+                ret = TL.GENERIC_YOURFACTION.toString();
             } else {
                 ret = thatFaction.getTag();
             }
         } else if (that instanceof FPlayer) {
             FPlayer fplayerthat = (FPlayer) that;
             if (that == me) {
-                ret = "you";
+                ret = TL.GENERIC_YOU.toString();
             } else if (thatFaction == myFaction) {
                 ret = fplayerthat.getNameAndTitle();
             } else {
