@@ -31,7 +31,7 @@ public enum Relation {
             return MEMBER;
         } else if (s.equalsIgnoreCase("ally")) {
             return ALLY;
-        } else if(s.equalsIgnoreCase("truce")) {
+        } else if (s.equalsIgnoreCase("truce")) {
             return TRUCE;
         } else if (s.equalsIgnoreCase("enemy")) {
             return ENEMY;
@@ -42,7 +42,16 @@ public enum Relation {
 
     public String getTranslation() {
         for (TL t : TL.values()) {
-            if (t.name().equals("RELATION_" + name())) {
+            if (t.name().equalsIgnoreCase("RELATION_" + name())) {
+                return t.toString();
+            }
+        }
+        return toString();
+    }
+
+    public String getPluralTranslation() {
+        for (TL t : TL.values()) {
+            if (t.name().equalsIgnoreCase("RELATION_" + name() + "_PLURAL")) {
                 return t.toString();
             }
         }

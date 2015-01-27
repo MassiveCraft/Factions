@@ -365,6 +365,16 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         }
     }
 
+    public int getRelationCount(Relation relation) {
+        int count = 0;
+        for (Faction faction : Factions.getInstance().getAllFactions()) {
+            if (faction.getRelationTo(this) == relation) {
+                count++;
+            }
+        }
+        return count;
+    }
+
     // ----------------------------------------------//
     // Power
     // ----------------------------------------------//

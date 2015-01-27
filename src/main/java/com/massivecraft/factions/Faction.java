@@ -134,6 +134,8 @@ public interface Faction extends EconomyParticipator {
 
     public void setRelationWish(Faction otherFaction, Relation relation);
 
+    public int getRelationCount(Relation relation);
+
     // ----------------------------------------------//
     // Power
     // ----------------------------------------------//

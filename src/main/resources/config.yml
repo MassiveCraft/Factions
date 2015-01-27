@@ -149,3 +149,20 @@ warmups:
   f-home: 0
   # Delay for /f warp
   f-warp: 0
+
+# HCF Features
+# These features were requested as part of Hardcore Factions or something.
+# All of them are disabled by default.
+
+# Max Relation Types
+# Limits factions to having a max number of each relation.
+# Setting to 0 means none allowed. -1 for disabled.
+# This will have no effect on default or existing relations, only when relations are changed.
+# It is advised that you set the default relation to -1 so they can always go back to that.
+# Otherwise Factions could be stuck with not being able to unenemy other Factions.
+max-relations:
+  enabled: false
+  ally: 10
+  truce: 10
+  neutral: -1
+  enemy: 10

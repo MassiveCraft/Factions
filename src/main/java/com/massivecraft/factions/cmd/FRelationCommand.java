@@ -2,13 +2,13 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.P;
 import com.massivecraft.factions.event.FactionRelationEvent;
 import com.massivecraft.factions.event.FactionRelationWishEvent;
 import com.massivecraft.factions.scoreboards.FTeamWrapper;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.zcore.util.TL;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
@@ -52,6 +52,10 @@ public abstract class FRelationCommand extends FCommand {
             return;
         }
 
+        if (exceedsMaxRelations(targetRelation)) {
+            // We message them down there with the count.
+            return;
+        }
         Relation oldRelation = myFaction.getRelationTo(them, true);
         FactionRelationWishEvent wishEvent = new FactionRelationWishEvent(fme, myFaction, them, oldRelation, targetRelation);
         Bukkit.getPluginManager().callEvent(wishEvent);
@@ -96,6 +100,19 @@ public abstract class FRelationCommand extends FCommand {
 
         FTeamWrapper.updatePrefixes(myFaction);
         FTeamWrapper.updatePrefixes(them);
+    }
+
+    private boolean exceedsMaxRelations(Relation targetRelation) {
+        if (P.p.getConfig().getBoolean("max-relations.enabled", false)) {
+            int max = P.p.getConfig().getInt("max-relations." + targetRelation.toString(), -1);
+            // -1 means don't care.
+            if (max != -1 && myFaction.getRelationCount(targetRelation) >= max) {
+                // Message them now as long as we have the count.
+                msg(TL.COMMAND_RELATIONS_EXCEEDS_MAX, max, targetRelation.getPluralTranslation());
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

@@ -383,6 +383,21 @@ public enum TL {
     COMMAND_POWERBOOST_BOOSTLOG("%1$s has set the power bonus/penalty for %2$s to %3$d."),
     COMMAND_POWERBOOST_DESCRIPTION("Apply permanent power bonus/penalty to specified player or faction"),
 
+    COMMAND_RELATIONS_ALLTHENOPE("<b>Nope! You can't."),
+    COMMAND_RELATIONS_MORENOPE("<b>Nope! You can't declare a relation to yourself :)"),
+    COMMAND_RELATIONS_ALREADYINRELATIONSHIP("<b>You already have that relation wish set with %1$s."),
+    COMMAND_RELATIONS_TOMARRY("to change a relation wish"),
+    COMMAND_RELATIONS_FORMARRY("for changing a relation wish"),
+    COMMAND_RELATIONS_MUTUAL("<i>Your faction is now %1$s<i> to %2$s"),
+    COMMAND_RELATIONS_PEACEFUL("<i>This will have no effect while your faction is peaceful."),
+    COMMAND_RELATIONS_PEACEFULOTHER("<i>This will have no effect while their faction is peaceful."),
+    COMMAND_RELATIONS_DESCRIPTION("Set relation wish to another faction"),
+    COMMAND_RELATIONS_EXCEEDS_MAX("<i>Failed to set relation wish. You can only have %1$d %2%s."),
+
+    COMMAND_RELATIONS_PROPOSAL_1("%1$s<i> wishes to be your %2$s"),
+    COMMAND_RELATIONS_PROPOSAL_2("<i>Type <c>/%1$s %2$s %3$s<i> to accept."),
+    COMMAND_RELATIONS_PROPOSAL_SENT("%1$s<i> were informed that you wish to be %2$s"),
+
     COMMAND_RELOAD_TIME("<i>Reloaded <h>conf.json <i>from disk, took <h>%1$d ms<i>."),
     COMMAND_RELOAD_DESCRIPTION("Reload data file(s) from disk"),
 
@@ -484,20 +499,6 @@ public enum TL {
     COMMAND_WARUNCLAIMALL_SUCCESS("<i>You unclaimed ALL war zone land."),
     COMMAND_WARUNCLAIMALL_LOG("%1$s unclaimed all war zones."),
 
-    COMMAND_RELATIONS_ALLTHENOPE("<b>Nope! You can't."),
-    COMMAND_RELATIONS_MORENOPE("<b>Nope! You can't declare a relation to yourself :)"),
-    COMMAND_RELATIONS_ALREADYINRELATIONSHIP("<b>You already have that relation wish set with %1$s."),
-    COMMAND_RELATIONS_TOMARRY("to change a relation wish"),
-    COMMAND_RELATIONS_FORMARRY("for changing a relation wish"),
-    COMMAND_RELATIONS_MUTUAL("<i>Your faction is now %1$s<i> to %2$s"),
-    COMMAND_RELATIONS_PEACEFUL("<i>This will have no effect while your faction is peaceful."),
-    COMMAND_RELATIONS_PEACEFULOTHER("<i>This will have no effect while their faction is peaceful."),
-    COMMAND_RELATIONS_DESCRIPTION("Set relation wish to another faction"),
-
-    COMMAND_RELATIONS_PROPOSAL_1("%1$s<i> wishes to be your %2$s"),
-    COMMAND_RELATIONS_PROPOSAL_2("<i>Type <c>/%1$s %2$s %3$s<i> to accept."),
-    COMMAND_RELATIONS_PROPOSAL_SENT("%1$s<i> were informed that you wish to be %2$s"),
-
     /**
      * Leaving - This is accessed through a command, and so it MAY need a COMMAND_* slug :s
      */
@@ -511,7 +512,7 @@ public enum TL {
     LEAVE_DESCRIPTION("Leave your faction"),
 
     /**
-     * Claiming - Same as above basically. No COMMAND_* because it's not in a command class, but... 
+     * Claiming - Same as above basically. No COMMAND_* because it's not in a command class, but...
      */
     CLAIM_PROTECTED("<b>This land is protected"),
     CLAIM_DISABLED("<b>Sorry, this world has land claiming disabled."),
@@ -583,10 +584,15 @@ public enum TL {
      * Relations
      */
     RELATION_MEMBER("member"),
+    RELATION_MEMBER_PURAL("members"),
     RELATION_ALLY("ally"),
+    RELATION_ALLY_PURAL("allies"),
     RELATION_TRUCE("truce"),
+    RELATION_TRUCE_PLURAL("truces"),
     RELATION_NEUTRAL("neutral"),
+    RELATION_NEUTRAL_PURAL("neutrals"),
     RELATION_ENEMY("enemy"),
+    RELATION_ENEMY_PLURAL("enemies"),
 
     /**
      * Roles
@@ -657,8 +663,7 @@ public enum TL {
     /**
      * Warmups
      */
-    WARMUPS_NOTIFY_TELEPORT("&eYou will teleport to &d%1$s &ein &d%2$d &eseconds.")
-    ;
+    WARMUPS_NOTIFY_TELEPORT("&eYou will teleport to &d%1$s &ein &d%2$d &eseconds.");
 
     private String path;
     private String def;
