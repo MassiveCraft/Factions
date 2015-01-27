@@ -623,7 +623,7 @@ public abstract class MemoryFPlayer implements FPlayer {
             }
 
             if (Conf.logFactionLeave) {
-                P.p.log(TL.LEAVE_LEFT.format(this.getName(),myFaction.getTag()));
+                P.p.log(TL.LEAVE_LEFT.format(this.getName(), myFaction.getTag()));
             }
         }
 
@@ -638,7 +638,7 @@ public abstract class MemoryFPlayer implements FPlayer {
 
             Factions.getInstance().removeFaction(myFaction.getId());
             if (Conf.logFactionDisband) {
-                P.p.log(TL.LEAVE_DISBANDEDLOG.format(myFaction.getTag(),myFaction.getId(),this.getName()));
+                P.p.log(TL.LEAVE_DISBANDEDLOG.format(myFaction.getTag(), myFaction.getId(), this.getName()));
             }
         }
     }
@@ -677,7 +677,7 @@ public abstract class MemoryFPlayer implements FPlayer {
             error = P.p.txt.parse(TL.CLAIM_SAFEZONE.toString());
         } else if (currentFaction.isWarZone()) {
             error = P.p.txt.parse(TL.CLAIM_WARZONE.toString());
-        } else if (ownedLand >= forFaction.getPowerRounded()) {
+        } else if (P.p.getConfig().getBoolean("hcf.overclaim", true) && ownedLand >= forFaction.getPowerRounded()) {
             error = P.p.txt.parse(TL.CLAIM_POWER.toString());
         } else if (Conf.claimedLandsMax != 0 && ownedLand >= Conf.claimedLandsMax && forFaction.isNormal()) {
             error = P.p.txt.parse(TL.CLAIM_LIMIT.toString());
@@ -766,7 +766,7 @@ public abstract class MemoryFPlayer implements FPlayer {
         Board.getInstance().setFactionAt(forFaction, flocation);
 
         if (Conf.logLandClaims) {
-            P.p.log(TL.CLAIM_CLAIMEDLOG.toString(),this.getName(),flocation.getCoordString(),forFaction.getTag());
+            P.p.log(TL.CLAIM_CLAIMEDLOG.toString(), this.getName(), flocation.getCoordString(), forFaction.getTag());
         }
 
         return true;

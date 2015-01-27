@@ -150,7 +150,9 @@ warmups:
   # Delay for /f warp
   f-warp: 0
 
-# HCF Features
+######################################################
+#################### HCF Features ####################
+######################################################
 # These features were requested as part of Hardcore Factions or something.
 # All of them are disabled by default.
 
@@ -166,3 +168,15 @@ max-relations:
   truce: 10
   neutral: -1
   enemy: 10
+
+# Raids
+# Allow a faction to be raided if they have more land than power.
+# This will make claimed territory lose all protections
+#   allowing factions to open chests, break blocks, etc. if they
+#   have claimed chunks >= power.
+hcf:
+  raidable: false
+
+  # Should we allow Factions to over claim if they are raidable (above has no effect on this)?
+  # This has always been true, allowing factions to over claim others.
+  overclaim: true

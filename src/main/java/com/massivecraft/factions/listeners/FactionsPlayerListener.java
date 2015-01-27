@@ -51,7 +51,7 @@ public class FactionsPlayerListener implements Listener {
     private void initPlayer(Player player) {
         // Make sure that all online players do have a fplayer.
         final FPlayer me = FPlayers.getInstance().getByPlayer(player);
-        ((MemoryFPlayer)me).setName(player.getName());
+        ((MemoryFPlayer) me).setName(player.getName());
 
         // Update the lastLoginTime for this fplayer
         me.setLastLoginTime(System.currentTimeMillis());
@@ -244,7 +244,6 @@ public class FactionsPlayerListener implements Listener {
 
         if (!playerCanUseItemHere(player, block.getLocation(), event.getMaterial(), false)) {
             event.setCancelled(true);
-            return;
         }
     }
 
@@ -283,6 +282,10 @@ public class FactionsPlayerListener implements Listener {
 
         FLocation loc = new FLocation(location);
         Faction otherFaction = Board.getInstance().getFactionAt(loc);
+
+        if (P.p.getConfig().getBoolean("hcf.raidable", false) && otherFaction.getLandRounded() >= otherFaction.getPowerRounded()) {
+            return true;
+        }
 
         if (otherFaction.hasPlayersOnline()) {
             if (!Conf.territoryDenyUseageMaterials.contains(material)) {
@@ -366,6 +369,10 @@ public class FactionsPlayerListener implements Listener {
 
         // no door/chest/whatever protection in wilderness, war zones, or safe zones
         if (!otherFaction.isNormal()) {
+            return true;
+        }
+
+        if (P.p.getConfig().getBoolean("hcf.raidable", false) && otherFaction.getLandRounded() >= otherFaction.getPowerRounded()) {
             return true;
         }
 
@@ -510,7 +517,7 @@ public class FactionsPlayerListener implements Listener {
             return true;
         }
 
-        if(Board.getInstance().getFactionAt(new FLocation(me)).isWarZone() && !Conf.warzoneDenyCommands.isEmpty() && !me.isAdminBypassing() && isCommandInList(fullCmd, shortCmd, Conf.warzoneDenyCommands.iterator())) {
+        if (Board.getInstance().getFactionAt(new FLocation(me)).isWarZone() && !Conf.warzoneDenyCommands.isEmpty() && !me.isAdminBypassing() && isCommandInList(fullCmd, shortCmd, Conf.warzoneDenyCommands.iterator())) {
             me.msg(TL.PLAYER_COMMAND_WARZONE, fullCmd);
             return true;
         }
