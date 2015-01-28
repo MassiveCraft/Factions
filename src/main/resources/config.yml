@@ -183,3 +183,9 @@ hcf:
   # Should we allow Factions to over claim if they are raidable (above has no effect on this)?
   # This has always been true, allowing factions to over claim others.
   overclaim: true
+
+  # Power Freeze
+  # After a player dies, how long should the faction not be able to regen power?
+  # This resets on each death but does not accumulate.
+  # Set to 0 for no freeze. Time is in seconds.
+  powerfreeze: 0

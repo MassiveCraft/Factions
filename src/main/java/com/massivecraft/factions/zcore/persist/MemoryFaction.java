@@ -40,6 +40,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     protected Set<String> invites = new HashSet<String>();
     protected HashMap<String, List<String>> announcements = new HashMap<String, List<String>>();
     protected ConcurrentHashMap<String, LazyLocation> warps = new ConcurrentHashMap<String, LazyLocation>();
+    protected long lastDeath;
 
     public HashMap<String, List<String>> getAnnouncements() {
         return this.announcements;
@@ -245,6 +246,19 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
     public void setPowerBoost(double powerBoost) {
         this.powerBoost = powerBoost;
+    }
+
+    public boolean isPowerFrozen() {
+        int freezeSeconds = P.p.getConfig().getInt("hcf.powerfreeze", 0);
+        if (freezeSeconds == 0) {
+            return false;
+        }
+
+        return System.currentTimeMillis() - lastDeath < freezeSeconds * 1000;
+    }
+
+    public void setLastDeath(long time) {
+        this.lastDeath = time;
     }
 
     // -------------------------------------------- //

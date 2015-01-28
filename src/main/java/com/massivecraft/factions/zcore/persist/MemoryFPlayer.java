@@ -486,6 +486,8 @@ public abstract class MemoryFPlayer implements FPlayer {
             if (!Conf.powerRegenOffline) {
                 return;
             }
+        } else if (hasFaction() && getFaction().isPowerFrozen()) {
+            return; // Don't let power regen if faction power is frozen.
         }
         long now = System.currentTimeMillis();
         long millisPassed = now - this.lastPowerUpdateTime;
@@ -517,6 +519,9 @@ public abstract class MemoryFPlayer implements FPlayer {
     public void onDeath() {
         this.updatePower();
         this.alterPower(-Conf.powerPerDeath);
+        if (hasFaction()) {
+            getFaction().setLastDeath(System.currentTimeMillis());
+        }
     }
 
     //----------------------------------------------//

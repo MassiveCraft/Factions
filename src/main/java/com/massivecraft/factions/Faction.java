@@ -111,6 +111,10 @@ public interface Faction extends EconomyParticipator {
 
     public boolean isPlayerFreeType();
 
+    public boolean isPowerFrozen();
+
+    public void setLastDeath(long time);
+
     // -------------------------------
     // Relation and relation colors
     // -------------------------------
