@@ -702,6 +702,9 @@ public abstract class MemoryFPlayer implements FPlayer {
             } else if (!currentFaction.hasLandInflation()) {
                 // TODO more messages WARN current faction most importantly
                 error = P.p.txt.parse(TL.CLAIM_THISISSPARTA.toString(), currentFaction.getTag(this));
+            } else if (currentFaction.hasLandInflation() && !P.p.getConfig().getBoolean("hcf.allow-overclaim", true)) {
+                // deny over claim when it normally would be allowed.
+                error = P.p.txt.parse(TL.CLAIM_OVERCLAIM_DISABLED.toString());
             } else if (!Board.getInstance().isBorderLocation(flocation)) {
                 error = P.p.txt.parse(TL.CLAIM_BORDER.toString());
             }
