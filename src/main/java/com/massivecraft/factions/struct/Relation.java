@@ -41,12 +41,11 @@ public enum Relation {
     }
 
     public String getTranslation() {
-        for (TL t : TL.values()) {
-            if (t.name().equalsIgnoreCase("RELATION_" + name())) {
-                return t.toString();
-            }
+        try {
+            return TL.valueOf("RELATION_" + name() + "_SINGULAR").toString();
+        } catch (IllegalArgumentException e) {
+            return toString();
         }
-        return toString();
     }
 
     public String getPluralTranslation() {

@@ -584,15 +584,15 @@ public enum TL {
     /**
      * Relations
      */
-    RELATION_MEMBER("member"),
-    RELATION_MEMBER_PURAL("members"),
-    RELATION_ALLY("ally"),
-    RELATION_ALLY_PURAL("allies"),
-    RELATION_TRUCE("truce"),
+    RELATION_MEMBER_SINGULAR("member"),
+    RELATION_MEMBER_PLURAL("members"),
+    RELATION_ALLY_SINGULAR("ally"),
+    RELATION_ALLY_PLURAL("allies"),
+    RELATION_TRUCE_SINGULAR("truce"),
     RELATION_TRUCE_PLURAL("truces"),
-    RELATION_NEUTRAL("neutral"),
-    RELATION_NEUTRAL_PURAL("neutrals"),
-    RELATION_ENEMY("enemy"),
+    RELATION_NEUTRAL_SINGULAR("neutral"),
+    RELATION_NEUTRAL_PLURAL("neutrals"),
+    RELATION_ENEMY_SINGULAR("enemy"),
     RELATION_ENEMY_PLURAL("enemies"),
 
     /**
