@@ -537,6 +537,7 @@ public enum TL {
     CLAIM_CLAIMED("<h>%s<i> claimed land for <h>%s<i> from <h>%s<i>."),
     CLAIM_CLAIMEDLOG("%s claimed land at (%s) for the faction: %s"),
     CLAIM_OVERCLAIM_DISABLED("<i>Over claiming is disabled on this server."),
+    CLAIM_TOOCLOSETOOTHERFACTION("<i>Your claim is too close to another Faction. Buffer required is %d"),
 
     /**
      * More generic, or less easily categorisable translations, which may apply to more than one class

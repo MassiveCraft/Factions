@@ -189,3 +189,15 @@ hcf:
   # This resets on each death but does not accumulate.
   # Set to 0 for no freeze. Time is in seconds.
   powerfreeze: 0
+
+  # Buffer Zone
+  # Buffer Zone is an chunk area required between claims of different Factions.
+  # This is default to 0 and has always been that way. Meaning Factions can have
+  #   claims that border each other.
+  # If this is set to 3, then Factions need to have 3 chunks between their claim
+  #   and another Faction's claim.
+  # It's recommended to keep this pretty low as the radius check could be a
+  #   heavy operation if set to a large number.
+  # If this is set to 0, we won't even bother checking which is how Factions has
+  #   always been.
+  buffer-zone: 0

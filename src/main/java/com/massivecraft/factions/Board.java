@@ -45,6 +45,7 @@ public abstract class Board {
     // Is this coord connected to any coord claimed by the specified faction?
     public abstract boolean isConnectedLocation(FLocation flocation, Faction faction);
 
+    public abstract boolean hasFactionWithin(FLocation flocation, Faction faction, int radius);
 
     //----------------------------------------------//
     // Cleaner. Remove orphaned foreign keys

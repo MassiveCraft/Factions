@@ -104,6 +104,39 @@ public abstract class MemoryBoard extends Board {
         return faction == getFactionAt(a) || faction == getFactionAt(b) || faction == getFactionAt(c) || faction == getFactionAt(d);
     }
 
+    /**
+     * Checks if there is another faction within a given radius other than Wilderness.
+     * Used for HCF feature that requires a 'buffer' between factions.
+     * @param flocation - center location.
+     * @param faction - faction checking for.
+     * @param radius - chunk radius to check.
+     * @return true if another Faction is within the radius, otherwise false.
+     */
+    public boolean hasFactionWithin(FLocation flocation, Faction faction, int radius) {
+        for(int i = 1; i <= radius; i++) {
+            FLocation a = flocation.getRelative(i, 0);
+            FLocation b = flocation.getRelative(-i, 0);
+            FLocation c = flocation.getRelative(0, i);
+            FLocation d = flocation.getRelative(0, -i);
+            if(isDifferentFaction(a, faction) || isDifferentFaction(b, faction) || isDifferentFaction(c, faction) || isDifferentFaction(d, faction)) {
+                return false; // Return if the Faction found is a different one.
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Checks if the faction at the flocation is not wilderness and different than given faction.
+     * @param flocation - location to check.
+     * @param faction - faction to compare.
+     * @return true if not wilderness, safezone, or warzone and different faction, otherwise false.
+     */
+    private boolean isDifferentFaction(FLocation flocation, Faction faction) {
+        Faction other = getFactionAt(flocation);
+        // Check if faction is
+        return other.isNormal() && other != faction;
+    }
+
 
     //----------------------------------------------//
     // Cleaner. Remove orphaned foreign keys
