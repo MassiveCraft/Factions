@@ -21,6 +21,16 @@ public class MFlagColl extends Coll<MFlag>
 	{
 		super(Const.COLLECTION_MFLAG, MFlag.class, MStore.getDb(), Factions.get(), false, false, true, null, PriorityComparator.get());
 	}
+
+	// -------------------------------------------- //
+	// STACK TRACEABILITY
+	// -------------------------------------------- //
+	
+	@Override
+	public void onTick()
+	{
+		super.onTick();
+	}
 	
 	// -------------------------------------------- //
 	// OVERRIDE

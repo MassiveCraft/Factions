@@ -31,6 +31,16 @@ public class BoardColl extends Coll<Board> implements BoardInterface
 	{
 		super(Const.COLLECTION_BOARD, Board.class, MStore.getDb(), Factions.get(), false, true, true);
 	}
+
+	// -------------------------------------------- //
+	// STACK TRACEABILITY
+	// -------------------------------------------- //
+	
+	@Override
+	public void onTick()
+	{
+		super.onTick();
+	}
 	
 	// -------------------------------------------- //
 	// OVERRIDE: COLL

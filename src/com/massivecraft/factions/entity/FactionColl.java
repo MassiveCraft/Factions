@@ -23,6 +23,16 @@ public class FactionColl extends Coll<Faction>
 	{
 		super(Const.COLLECTION_FACTION, Faction.class, MStore.getDb(), Factions.get());
 	}
+
+	// -------------------------------------------- //
+	// STACK TRACEABILITY
+	// -------------------------------------------- //
+	
+	@Override
+	public void onTick()
+	{
+		super.onTick();
+	}
 	
 	// -------------------------------------------- //
 	// OVERRIDE: COLL

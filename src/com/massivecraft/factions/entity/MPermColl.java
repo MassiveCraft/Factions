@@ -21,6 +21,16 @@ public class MPermColl extends Coll<MPerm>
 	{
 		super(Const.COLLECTION_MPERM, MPerm.class, MStore.getDb(), Factions.get(), false, false, true, null, PriorityComparator.get());
 	}
+
+	// -------------------------------------------- //
+	// STACK TRACEABILITY
+	// -------------------------------------------- //
+	
+	@Override
+	public void onTick()
+	{
+		super.onTick();
+	}
 	
 	// -------------------------------------------- //
 	// OVERRIDE
