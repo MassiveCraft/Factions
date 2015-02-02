@@ -267,6 +267,20 @@ public class MConf extends Entity<MConf>
 	public EventPriority homesTeleportToOnDeathPriority = EventPriority.NORMAL;
 	
 	// -------------------------------------------- //
+	// TERRITORY INFO
+	// -------------------------------------------- //
+	
+	public boolean territoryInfoUseScreen = true;
+
+	public String territoryInfoScreenMaintitle = "{relcolor}{name}";
+	public String territoryInfoScreenSubtitle = "<i>{desc}";
+	public int territoryInfoScreenTicksIn = 5;
+	public int territoryInfoScreenTicksStay = 60;
+	public int territoryInfoScreenTicksOut = 5;
+
+	public String territoryInfoChat = "<i> ~ {relcolor}{name} <i>{desc}";
+	
+	// -------------------------------------------- //
 	// ASSORTED
 	// -------------------------------------------- //
 	

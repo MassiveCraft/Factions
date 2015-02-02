@@ -691,12 +691,17 @@ public class EngineMain extends EngineAbstract
 		}
 		else if (factionFrom != factionTo)
 		{
-			String msg = Txt.parse("<i>") + " ~ " + factionTo.getName(mplayer);
-			if (factionTo.hasDescription())
+			if (this.isTerritoryInfoUsingScreen())
 			{
-				msg += " - " + factionTo.getDescription();
+				String maintitle = parseTerritoryInfo(MConf.get().territoryInfoScreenMaintitle, mplayer, factionTo);
+				String subtitle = parseTerritoryInfo(MConf.get().territoryInfoScreenSubtitle, mplayer, factionTo);
+				Mixin.sendTitleMessage(player, MConf.get().territoryInfoScreenTicksIn, MConf.get().territoryInfoScreenTicksStay, MConf.get().territoryInfoScreenTicksOut, maintitle, subtitle);
 			}
-			player.sendMessage(msg);
+			else
+			{
+				String message = parseTerritoryInfo(MConf.get().territoryInfoChat, mplayer, factionTo);
+				player.sendMessage(message);
+			}
 		}
 
 		// Show access level message if it changed.
@@ -706,7 +711,7 @@ public class EngineMain extends EngineAbstract
 		TerritoryAccess accessTo = BoardColl.get().getTerritoryAccessAt(chunkTo);
 		Boolean hasTerritoryAccessTo = accessTo.hasTerritoryAccess(mplayer);
 		
-		if (!MUtil.equals(hasTerritoryAccessFrom, hasTerritoryAccessTo))
+		if ( ! MUtil.equals(hasTerritoryAccessFrom, hasTerritoryAccessTo))
 		{
 			if (hasTerritoryAccessTo == null)
 			{
@@ -721,6 +726,24 @@ public class EngineMain extends EngineAbstract
 				mplayer.msg("<b>You have decreased access to this area.");
 			}
 		}
+	}
+	
+	public String parseTerritoryInfo(String string, MPlayer mplayer, Faction faction)
+	{
+		string = Txt.parse(string);
+		
+		string = string.replace("{name}", faction.getName());
+		string = string.replace("{relcolor}", faction.getColorTo(mplayer).toString());
+		string = string.replace("{desc}", faction.getDescription());
+		
+		return string;
+	}
+	
+	public boolean isTerritoryInfoUsingScreen()
+	{
+		if ( ! MConf.get().territoryInfoUseScreen) return false;
+		if ( ! Mixin.isTitlesAvailable()) return false;
+		return true;
 	}
 	
 	// -------------------------------------------- //
