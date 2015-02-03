@@ -98,7 +98,7 @@ public class FactionColl extends Coll<Faction>
 		faction = this.create(id);
 		
 		faction.setName(Factions.NAME_NONE_DEFAULT);
-		faction.setDescription(null);
+		faction.setDescription("It's dangerous to go alone.");
 		
 		faction.setFlag(MFlag.getFlagOpen(), false);
 		faction.setFlag(MFlag.getFlagPermanent(), true);
