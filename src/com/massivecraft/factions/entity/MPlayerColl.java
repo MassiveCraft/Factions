@@ -23,6 +23,16 @@ public class MPlayerColl extends SenderColl<MPlayer>
 	{
 		super(Const.COLLECTION_MPLAYER, MPlayer.class, MStore.getDb(), Factions.get());
 	}
+
+	// -------------------------------------------- //
+	// STACK TRACEABILITY
+	// -------------------------------------------- //
+	
+	@Override
+	public void onTick()
+	{
+		super.onTick();
+	}
 	
 	// -------------------------------------------- //
 	// EXTRAS
