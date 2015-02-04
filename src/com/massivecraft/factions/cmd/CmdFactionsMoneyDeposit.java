@@ -7,6 +7,7 @@ import com.massivecraft.factions.cmd.req.ReqBankCommandsEnabled;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.integration.Econ;
+import com.massivecraft.massivecore.cmd.MassiveCommandException;
 import com.massivecraft.massivecore.cmd.arg.ARDouble;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.money.Money;
@@ -39,13 +40,11 @@ public class CmdFactionsMoneyDeposit extends FactionsCommand
 	// -------------------------------------------- //
 	
 	@Override
-	public void perform()
+	public void perform() throws MassiveCommandException
 	{
 		Double amount = this.arg(0, ARDouble.get());
-		if (amount == null) return;
 		
 		Faction faction = this.arg(1, ARFaction.get(), msenderFaction);
-		if (faction == null) return;
 		
 		boolean success = Econ.transferMoney(msender, msender, faction, amount);
 		

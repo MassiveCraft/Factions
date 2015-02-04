@@ -9,6 +9,7 @@ import com.massivecraft.factions.entity.FactionColl;
 import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.factions.event.EventFactionsNameChange;
 import com.massivecraft.factions.util.MiscUtil;
+import com.massivecraft.massivecore.cmd.MassiveCommandException;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 
 public class CmdFactionsName extends FactionsCommand
@@ -35,13 +36,12 @@ public class CmdFactionsName extends FactionsCommand
 	// -------------------------------------------- //
 	
 	@Override
-	public void perform()
+	public void perform() throws MassiveCommandException
 	{
 		// Args
 		String newName = this.arg(0);
 		
 		Faction faction = this.arg(1, ARFaction.get(), msenderFaction);
-		if (faction == null) return;
 		
 		// MPerm
 		if ( ! MPerm.getPermName().has(msender, faction, true)) return;

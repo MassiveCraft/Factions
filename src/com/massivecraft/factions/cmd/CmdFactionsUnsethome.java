@@ -5,6 +5,7 @@ import com.massivecraft.factions.cmd.arg.ARFaction;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.factions.event.EventFactionsHomeChange;
+import com.massivecraft.massivecore.cmd.MassiveCommandException;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 
 public class CmdFactionsUnsethome extends FactionsCommandHome
@@ -30,11 +31,10 @@ public class CmdFactionsUnsethome extends FactionsCommandHome
 	// -------------------------------------------- //
 	
 	@Override
-	public void perform()
+	public void perform() throws MassiveCommandException
 	{
 		// Args
 		Faction faction = this.arg(0, ARFaction.get(), msenderFaction);
-		if (faction == null) return;
 		
 		// Any and MPerm
 		if ( ! MPerm.getPermSethome().has(msender, faction, true)) return;

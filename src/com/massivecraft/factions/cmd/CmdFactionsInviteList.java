@@ -8,6 +8,7 @@ import com.massivecraft.factions.cmd.arg.ARFaction;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.factions.entity.MPlayer;
+import com.massivecraft.massivecore.cmd.MassiveCommandException;
 import com.massivecraft.massivecore.cmd.arg.ARInteger;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.pager.PagerSimple;
@@ -38,14 +39,12 @@ public class CmdFactionsInviteList extends FactionsCommand
 	// -------------------------------------------- //	
 	
 	@Override
-	public void perform()
+	public void perform() throws MassiveCommandException
 	{		
 		// Args	
 		Integer pageHumanBased = this.arg(0, ARInteger.get(), 1);
-		if (pageHumanBased == null) return;
 		
 		Faction faction = this.arg(1, ARFaction.get(), msenderFaction);
-		if (faction == null) return;
 		
 		if ( faction != msenderFaction && ! Perm.INVITE_LIST_OTHER.has(sender, true)) return;
 		

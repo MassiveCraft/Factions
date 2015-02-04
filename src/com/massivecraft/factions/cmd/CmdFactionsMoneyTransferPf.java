@@ -9,6 +9,7 @@ import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.integration.Econ;
+import com.massivecraft.massivecore.cmd.MassiveCommandException;
 import com.massivecraft.massivecore.cmd.arg.ARDouble;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.money.Money;
@@ -43,16 +44,11 @@ public class CmdFactionsMoneyTransferPf extends FactionsCommand
 	// -------------------------------------------- //
 	
 	@Override
-	public void perform()
+	public void perform() throws MassiveCommandException
 	{
 		Double amount = this.arg(0, ARDouble.get());
-		if (amount == null) return;
-		
 		MPlayer from = this.arg(1, ARMPlayer.getAny());
-		if (from == null) return;
-		
 		Faction to = this.arg(2, ARFaction.get());
-		if (to == null) return;
 		
 		boolean success = Econ.transferMoney(msender, from, to, amount);
 

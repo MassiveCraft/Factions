@@ -8,6 +8,7 @@ import com.massivecraft.factions.cmd.arg.ARFaction;
 import com.massivecraft.factions.cmd.arg.ARMPerm;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MPerm;
+import com.massivecraft.massivecore.cmd.MassiveCommandException;
 import com.massivecraft.massivecore.cmd.arg.ARList;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.util.Txt;
@@ -37,11 +38,10 @@ public class CmdFactionsPermShow extends FactionsCommand
 	// -------------------------------------------- //
 	
 	@Override
-	public void perform()
+	public void perform() throws MassiveCommandException
 	{
 		// Arg: Faction
 		Faction faction = this.arg(0, ARFaction.get(), msenderFaction);
-		if (faction == null) return;
 		
 		List<MPerm> perms = new ArrayList<MPerm>();
 		
@@ -59,7 +59,6 @@ public class CmdFactionsPermShow extends FactionsCommand
 		{	
 			// Arg perm. Maybe we should use ARSet but that is currently buggy.
 			List<MPerm> mperms = this.arg(this.argConcatFrom(1), ARList.get(ARMPerm.get()));
-			if (mperms == null) return;
 			perms.addAll(mperms);
 		}
 		

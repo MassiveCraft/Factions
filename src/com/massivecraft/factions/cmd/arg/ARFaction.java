@@ -6,10 +6,9 @@ import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.FactionColl;
 import com.massivecraft.massivecore.MassiveCore;
+import com.massivecraft.massivecore.cmd.MassiveCommandException;
 import com.massivecraft.massivecore.cmd.arg.ArgReaderAbstract;
-import com.massivecraft.massivecore.cmd.arg.ArgResult;
 import com.massivecraft.massivecore.util.IdUtil;
-import com.massivecraft.massivecore.util.Txt;
 
 public class ARFaction extends ArgReaderAbstract<Faction>
 {
@@ -25,39 +24,36 @@ public class ARFaction extends ArgReaderAbstract<Faction>
 	// -------------------------------------------- //
 	
 	@Override
-	public ArgResult<Faction> read(String str, CommandSender sender)
+	public Faction read(String str, CommandSender sender) throws MassiveCommandException
 	{
-		ArgResult<Faction> result = new ArgResult<Faction>();
+		Faction ret;
 		
 		// Nothing/Remove targets Wilderness
 		if (MassiveCore.NOTHING_REMOVE.contains(str))
 		{
-			result.setResult(FactionColl.get().getNone());
-			return result;
+			return FactionColl.get().getNone();
 		}
 		
 		// Faction Id Exact
 		if (FactionColl.get().containsId(str))
 		{
-			result.setResult(FactionColl.get().get(str));
-			if (result.hasResult()) return result;
+			ret = FactionColl.get().get(str);
+			if (ret != null) return ret;
 		}
 		
 		// Faction Name Exact
-		result.setResult(FactionColl.get().getByName(str));
-		if (result.hasResult()) return result;
+		ret = FactionColl.get().getByName(str);
+		if (ret != null) return ret;
 		
 		// MPlayer Name Exact
 		String id = IdUtil.getId(str);
 		MPlayer mplayer = MPlayer.get(id);
 		if (mplayer != null)
 		{
-			result.setResult(mplayer.getFaction());
-			return result;
+			return mplayer.getFaction();
 		}
 		
-		result.setErrors(Txt.parse("<b>No faction or player matching \"<p>%s<b>\".", str));
-		return result;
+		throw new MassiveCommandException().addMsg("<b>No faction or player matching \"<p>%s<b>\".", str);
 	}
 	
 }

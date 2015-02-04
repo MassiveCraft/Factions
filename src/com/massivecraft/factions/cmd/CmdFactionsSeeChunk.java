@@ -1,6 +1,7 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Perm;
+import com.massivecraft.massivecore.cmd.MassiveCommandException;
 import com.massivecraft.massivecore.cmd.arg.ARBoolean;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.cmd.req.ReqIsPlayer;
@@ -30,13 +31,12 @@ public class CmdFactionsSeeChunk extends FactionsCommand
 	// -------------------------------------------- //
 	
 	@Override
-	public void perform()
+	public void perform() throws MassiveCommandException
 	{
 		// Args
 		boolean old = msender.isSeeingChunk();
 		boolean targetDefault = !old;
 		Boolean target = this.arg(0, ARBoolean.get(), targetDefault);
-		if (target == null) return;
 		String targetDesc = Txt.parse(target ? "<g>ON": "<b>OFF");
 		
 		// NoChange

@@ -10,6 +10,7 @@ import com.massivecraft.factions.cmd.arg.ARMPlayer;
 import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.event.EventFactionsInvitedChange;
+import com.massivecraft.massivecore.cmd.MassiveCommandException;
 import com.massivecraft.massivecore.cmd.arg.ARSet;
 import com.massivecraft.massivecore.cmd.arg.ARString;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
@@ -37,7 +38,7 @@ public class CmdFactionsInviteRemove extends FactionsCommand
 	// -------------------------------------------- //	
 	
 	@Override
-	public void perform()
+	public void perform() throws MassiveCommandException
 	{
 		Set<MPlayer> mplayers = new HashSet<MPlayer>();
 		boolean all = false;
@@ -58,7 +59,6 @@ public class CmdFactionsInviteRemove extends FactionsCommand
 		else
 		{
 			Set<MPlayer> senderInput = this.argConcatFrom(0, ARSet.get(ARMPlayer.getAny(), true));
-			if (senderInput == null) return;
 			
 			mplayers.addAll(senderInput);
 		}

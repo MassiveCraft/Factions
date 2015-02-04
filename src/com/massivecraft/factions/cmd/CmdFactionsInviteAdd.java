@@ -8,6 +8,7 @@ import com.massivecraft.factions.cmd.arg.ARMPlayer;
 import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.event.EventFactionsInvitedChange;
+import com.massivecraft.massivecore.cmd.MassiveCommandException;
 import com.massivecraft.massivecore.cmd.arg.ARSet;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 
@@ -34,11 +35,10 @@ public class CmdFactionsInviteAdd extends FactionsCommand
 	// -------------------------------------------- //	
 	
 	@Override
-	public void perform()
+	public void perform() throws MassiveCommandException
 	{
 		// Args
 		Set<MPlayer> mplayers = this.argConcatFrom(0, ARSet.get(ARMPlayer.getAny(), true));
-		if (mplayers == null) return;
 		
 		// MPerm
 		if ( ! MPerm.getPermInvite().has(msender, msenderFaction, true)) return;

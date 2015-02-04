@@ -7,6 +7,7 @@ import com.massivecraft.factions.cmd.arg.ARMPlayer;
 import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.event.EventFactionsTitleChange;
+import com.massivecraft.massivecore.cmd.MassiveCommandException;
 import com.massivecraft.massivecore.cmd.arg.ARString;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.util.Txt;
@@ -35,14 +36,11 @@ public class CmdFactionsTitle extends FactionsCommand
 	// -------------------------------------------- //
 	
 	@Override
-	public void perform()
+	public void perform() throws MassiveCommandException
 	{
 		// Args
 		MPlayer you = this.arg(0, ARMPlayer.getAny());
-		if (you == null) return;
-		
 		String newTitle = this.argConcatFrom(1, ARString.get(), "");
-		if (newTitle == null) return;
 		
 		newTitle = Txt.parse(newTitle);
 		if (!Perm.TITLE_COLOR.has(sender, false))

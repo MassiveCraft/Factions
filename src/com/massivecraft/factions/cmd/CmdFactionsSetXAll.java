@@ -2,6 +2,7 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.cmd.arg.ARFaction;
 import com.massivecraft.factions.entity.Faction;
+import com.massivecraft.massivecore.cmd.MassiveCommandException;
 
 public abstract class CmdFactionsSetXAll extends CmdFactionsSetX
 {
@@ -28,7 +29,7 @@ public abstract class CmdFactionsSetXAll extends CmdFactionsSetX
 	// EXTRAS
 	// -------------------------------------------- //
 	
-	public Faction getOldFaction()
+	public Faction getOldFaction() throws MassiveCommandException
 	{
 		return this.arg(1, ARFaction.get());
 	}

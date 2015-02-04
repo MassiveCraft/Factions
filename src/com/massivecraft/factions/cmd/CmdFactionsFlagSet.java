@@ -7,6 +7,7 @@ import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MFlag;
 import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.factions.event.EventFactionsFlagChange;
+import com.massivecraft.massivecore.cmd.MassiveCommandException;
 import com.massivecraft.massivecore.cmd.arg.ARBoolean;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 
@@ -35,15 +36,12 @@ public class CmdFactionsFlagSet extends FactionsCommand
 	// -------------------------------------------- //
 	
 	@Override
-	public void perform()
+	public void perform() throws MassiveCommandException
 	{
 		// Args
 		MFlag flag = this.arg(0, ARMFlag.get());
-		if (flag == null) return;
 		Boolean value = this.arg(1, ARBoolean.get());
-		if (value == null) return;
 		Faction faction = this.arg(2, ARFaction.get(), msenderFaction);
-		if (faction == null) return;
 		
 		// Do the sender have the right to change flags for this faction?
 		if ( ! MPerm.getPermFlags().has(msender, faction, true)) return;

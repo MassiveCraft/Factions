@@ -15,6 +15,7 @@ import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.event.EventFactionsHomeTeleport;
+import com.massivecraft.massivecore.cmd.MassiveCommandException;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.cmd.req.ReqIsPlayer;
 import com.massivecraft.massivecore.mixin.Mixin;
@@ -46,7 +47,7 @@ public class CmdFactionsHome extends FactionsCommandHome
 	// -------------------------------------------- //
 	
 	@Override
-	public void perform()
+	public void perform() throws MassiveCommandException
 	{
 		if ( ! MConf.get().homesTeleportCommandEnabled)
 		{
@@ -56,7 +57,6 @@ public class CmdFactionsHome extends FactionsCommandHome
 		
 		// Args
 		Faction faction = this.arg(0, ARFaction.get(), msenderFaction);
-		if (faction == null) return;
 		PS home = faction.getHome();
 		String homeDesc = "home for " + faction.describeTo(msender, false);
 		

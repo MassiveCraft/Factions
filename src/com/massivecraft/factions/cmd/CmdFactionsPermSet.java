@@ -11,6 +11,7 @@ import com.massivecraft.factions.cmd.arg.ARRel;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.factions.entity.MPlayer;
+import com.massivecraft.massivecore.cmd.MassiveCommandException;
 import com.massivecraft.massivecore.cmd.arg.ARBoolean;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.util.Txt;
@@ -41,17 +42,13 @@ public class CmdFactionsPermSet extends FactionsCommand
 	// -------------------------------------------- //
 	
 	@Override
-	public void perform()
+	public void perform() throws MassiveCommandException
 	{
 		// Args
 		MPerm perm = this.arg(0, ARMPerm.get());
-		if (perm == null) return;
 		Rel rel = this.arg(1, ARRel.get());
-		if (rel == null) return;
 		Boolean value = this.arg(2, ARBoolean.get());
-		if (value == null) return;
 		Faction faction = this.arg(3, ARFaction.get(), msenderFaction);
-		if (faction == null) return;
 		
 		// Do the sender have the right to change perms for this faction?
 		if ( ! MPerm.getPermPerms().has(msender, faction, true)) return;

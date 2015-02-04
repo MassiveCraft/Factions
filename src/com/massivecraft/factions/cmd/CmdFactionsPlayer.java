@@ -9,6 +9,7 @@ import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.event.EventFactionsRemovePlayerMillis;
 import com.massivecraft.massivecore.Progressbar;
+import com.massivecraft.massivecore.cmd.MassiveCommandException;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.util.TimeDiffUtil;
 import com.massivecraft.massivecore.util.TimeUnit;
@@ -37,11 +38,10 @@ public class CmdFactionsPlayer extends FactionsCommand
 	// -------------------------------------------- //
 	
 	@Override
-	public void perform()
+	public void perform() throws MassiveCommandException
 	{
 		// Args
 		MPlayer mplayer = this.arg(0, ARMPlayer.getAny(), msender);
-		if (mplayer == null) return;
 		
 		// INFO: Title
 		msg(Txt.titleize("Player " + mplayer.describeTo(msender)));

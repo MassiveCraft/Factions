@@ -8,6 +8,7 @@ import com.massivecraft.factions.cmd.arg.ARFaction;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.FactionColl;
 import com.massivecraft.factions.entity.MPerm;
+import com.massivecraft.massivecore.cmd.MassiveCommandException;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.cmd.req.ReqIsPlayer;
 import com.massivecraft.massivecore.ps.PS;
@@ -52,7 +53,7 @@ public class CmdFactionsSetAuto extends FactionsCommand
 	// -------------------------------------------- //
 	
 	@Override
-	public void perform()
+	public void perform() throws MassiveCommandException
 	{	
 		// Args
 		final Faction newFaction;

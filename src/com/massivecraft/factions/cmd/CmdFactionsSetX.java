@@ -5,6 +5,7 @@ import java.util.Set;
 import com.massivecraft.factions.cmd.arg.ARFaction;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.FactionColl;
+import com.massivecraft.massivecore.cmd.MassiveCommandException;
 import com.massivecraft.massivecore.ps.PS;
 
 
@@ -44,14 +45,11 @@ public abstract class CmdFactionsSetX extends FactionsCommand
 	// -------------------------------------------- //
 	
 	@Override
-	public void perform()
+	public void perform() throws MassiveCommandException
 	{	
 		// Args
 		final Faction newFaction = this.getNewFaction();
-		if (newFaction == null) return;
-		
 		final Set<PS> chunks = this.getChunks();
-		if (chunks == null) return;
 		
 		// Apply / Inform
 		msender.tryClaim(newFaction, chunks, this.getFormatOne(), this.getFormatMany());
@@ -61,13 +59,13 @@ public abstract class CmdFactionsSetX extends FactionsCommand
 	// ABSTRACT
 	// -------------------------------------------- //
 	
-	public abstract Set<PS> getChunks();
+	public abstract Set<PS> getChunks() throws MassiveCommandException;
 	
 	// -------------------------------------------- //
 	// EXTRAS
 	// -------------------------------------------- //
 	
-	public Faction getNewFaction()
+	public Faction getNewFaction() throws MassiveCommandException
 	{
 		if (this.isClaim())
 		{

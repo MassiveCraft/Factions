@@ -10,6 +10,7 @@ import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.event.EventFactionsMembershipChange;
 import com.massivecraft.factions.event.EventFactionsMembershipChange.MembershipChangeReason;
+import com.massivecraft.massivecore.cmd.MassiveCommandException;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.util.Txt;
 
@@ -37,14 +38,12 @@ public class CmdFactionsJoin extends FactionsCommand
 	// -------------------------------------------- //
 	
 	@Override
-	public void perform()
+	public void perform() throws MassiveCommandException
 	{
 		// Args
-		Faction faction = this.arg(0, ARFaction.get());
-		if (faction == null) return;
+		Faction faction = this.arg(0, ARFaction.get());		
 
 		MPlayer mplayer = this.arg(1, ARMPlayer.getAny(), msender);
-		if (mplayer == null) return;
 		Faction mplayerFaction = mplayer.getFaction();
 		
 		boolean samePlayer = mplayer == msender;

@@ -2,6 +2,7 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
+import com.massivecraft.massivecore.cmd.MassiveCommandException;
 import com.massivecraft.massivecore.cmd.arg.ARBoolean;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.util.IdUtil;
@@ -30,11 +31,10 @@ public class CmdFactionsAdmin extends FactionsCommand
 	// -------------------------------------------- //
 	
 	@Override
-	public void perform()
+	public void perform() throws MassiveCommandException
 	{
 		// Args
 		Boolean target = this.arg(0, ARBoolean.get(), !msender.isUsingAdminMode());
-		if (target == null) return;
 		
 		// Apply
 		msender.setUsingAdminMode(target);		

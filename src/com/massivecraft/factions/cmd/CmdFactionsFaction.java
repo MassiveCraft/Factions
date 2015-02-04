@@ -11,6 +11,7 @@ import com.massivecraft.factions.event.EventFactionsFactionShowAsync;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.massivecore.PriorityLines;
+import com.massivecraft.massivecore.cmd.MassiveCommandException;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.mixin.Mixin;
 import com.massivecraft.massivecore.util.Txt;
@@ -38,11 +39,10 @@ public class CmdFactionsFaction extends FactionsCommand
 	// -------------------------------------------- //
 	
 	@Override
-	public void perform()
+	public void perform() throws MassiveCommandException
 	{
 		// Args
 		final Faction faction = this.arg(0, ARFaction.get(), msenderFaction);
-		if (faction == null) return;
 		
 		final CommandSender sender = this.sender;
 		

@@ -6,6 +6,7 @@ import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.entity.Board;
 import com.massivecraft.factions.entity.BoardColl;
 import com.massivecraft.factions.entity.Faction;
+import com.massivecraft.massivecore.cmd.MassiveCommandException;
 import com.massivecraft.massivecore.cmd.arg.ARWorldId;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.cmd.req.ReqIsPlayer;
@@ -39,7 +40,7 @@ public class CmdFactionsSetAll extends CmdFactionsSetXAll
 	// -------------------------------------------- //
 	
 	@Override
-	public Set<PS> getChunks()
+	public Set<PS> getChunks() throws MassiveCommandException
 	{
 		// World
 		String word = (this.isClaim() ? "claim" : "unclaim");
