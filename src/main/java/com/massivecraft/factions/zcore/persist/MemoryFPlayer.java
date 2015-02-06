@@ -554,7 +554,7 @@ public abstract class MemoryFPlayer implements FPlayer {
             // Shows them the scoreboard instead of sending a message in chat. Will disappear after a few seconds.
             FScoreboard.get(this).setTemporarySidebar(new FInfoSidebar(toShow));
         } else {
-            String msg = P.p.txt.parse("<i>") + " ~ " + toShow.getTag(this);
+            String msg = toShow.getTag(this);
             if (toShow.getDescription().length() > 0) {
                 msg += " - " + toShow.getDescription();
             }
