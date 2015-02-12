@@ -4,7 +4,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 import com.massivecraft.factions.Perm;
-import com.massivecraft.massivecore.cmd.MassiveCommandException;
+import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.cmd.req.ReqIsPlayer;
 import com.massivecraft.massivecore.ps.PS;
@@ -39,7 +39,7 @@ public class CmdFactionsSetCircle extends CmdFactionsSetXRadius
 	// -------------------------------------------- //
 	
 	@Override
-	public Set<PS> getChunks() throws MassiveCommandException
+	public Set<PS> getChunks() throws MassiveException
 	{
 		// Common Startup
 		final PS chunk = PS.valueOf(me.getLocation()).getChunk(true);

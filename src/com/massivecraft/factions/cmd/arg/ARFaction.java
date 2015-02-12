@@ -6,7 +6,7 @@ import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.FactionColl;
 import com.massivecraft.massivecore.MassiveCore;
-import com.massivecraft.massivecore.cmd.MassiveCommandException;
+import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.cmd.arg.ArgReaderAbstract;
 import com.massivecraft.massivecore.util.IdUtil;
 
@@ -24,7 +24,7 @@ public class ARFaction extends ArgReaderAbstract<Faction>
 	// -------------------------------------------- //
 	
 	@Override
-	public Faction read(String str, CommandSender sender) throws MassiveCommandException
+	public Faction read(String str, CommandSender sender) throws MassiveException
 	{
 		Faction ret;
 		
@@ -53,7 +53,7 @@ public class ARFaction extends ArgReaderAbstract<Faction>
 			return mplayer.getFaction();
 		}
 		
-		throw new MassiveCommandException().addMsg("<b>No faction or player matching \"<p>%s<b>\".", str);
+		throw new MassiveException().addMsg("<b>No faction or player matching \"<p>%s<b>\".", str);
 	}
 	
 }

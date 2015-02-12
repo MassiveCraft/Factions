@@ -5,7 +5,7 @@ import com.massivecraft.factions.cmd.req.ReqBankCommandsEnabled;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.Perm;
-import com.massivecraft.massivecore.cmd.MassiveCommandException;
+import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 
 public class CmdFactionsMoneyBalance extends FactionsCommand
@@ -32,7 +32,7 @@ public class CmdFactionsMoneyBalance extends FactionsCommand
 	// -------------------------------------------- //
 	
 	@Override
-	public void perform() throws MassiveCommandException
+	public void perform() throws MassiveException
 	{
 		Faction faction = this.arg(0, ARFaction.get(), msenderFaction);
 					

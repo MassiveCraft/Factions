@@ -8,7 +8,7 @@ import com.massivecraft.factions.RelationParticipator;
 import com.massivecraft.factions.TerritoryAccess;
 import com.massivecraft.factions.entity.BoardColl;
 import com.massivecraft.factions.entity.Faction;
-import com.massivecraft.massivecore.cmd.MassiveCommandException;
+import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.cmd.req.ReqIsPlayer;
 import com.massivecraft.massivecore.ps.PS;
 import com.massivecraft.massivecore.ps.PSFormatHumanSpace;
@@ -40,7 +40,7 @@ public abstract class CmdFactionsAccessAbstract extends FactionsCommand
 	// -------------------------------------------- //
 	
 	@Override
-	public void perform() throws MassiveCommandException
+	public void perform() throws MassiveException
 	{
 		chunk = PS.valueOf(me.getLocation()).getChunk(true);
 		ta = BoardColl.get().getTerritoryAccessAt(chunk);
@@ -49,7 +49,7 @@ public abstract class CmdFactionsAccessAbstract extends FactionsCommand
 		this.innerPerform();
 	}
 	
-	public abstract void innerPerform() throws MassiveCommandException;
+	public abstract void innerPerform() throws MassiveException;
 
 	public void sendAccessInfo()
 	{

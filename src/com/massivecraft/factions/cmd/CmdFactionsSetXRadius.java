@@ -1,7 +1,7 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.entity.MConf;
-import com.massivecraft.massivecore.cmd.MassiveCommandException;
+import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.cmd.arg.ARInteger;
 
 
@@ -29,7 +29,7 @@ public abstract class CmdFactionsSetXRadius extends CmdFactionsSetX
 	// EXTRAS
 	// -------------------------------------------- //
 	
-	public Integer getRadius() throws MassiveCommandException
+	public Integer getRadius() throws MassiveException
 	{
 		Integer radius = this.arg(0, ARInteger.get(), 1);
 		if (radius == null) return radius;
@@ -51,7 +51,7 @@ public abstract class CmdFactionsSetXRadius extends CmdFactionsSetX
 		return radius;
 	}
 	
-	public Integer getRadiusZero() throws MassiveCommandException
+	public Integer getRadiusZero() throws MassiveException
 	{
 		Integer ret = this.getRadius();
 		if (ret == null) return ret;

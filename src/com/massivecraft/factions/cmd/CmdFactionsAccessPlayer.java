@@ -5,7 +5,7 @@ import com.massivecraft.factions.cmd.arg.ARMPlayer;
 import com.massivecraft.factions.entity.BoardColl;
 import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.factions.entity.MPlayer;
-import com.massivecraft.massivecore.cmd.MassiveCommandException;
+import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.cmd.arg.ARBoolean;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 
@@ -33,7 +33,7 @@ public class CmdFactionsAccessPlayer extends CmdFactionsAccessAbstract
 	// -------------------------------------------- //
 	
 	@Override
-	public void innerPerform() throws MassiveCommandException
+	public void innerPerform() throws MassiveException
 	{
 		// Args
 		MPlayer mplayer = this.arg(0, ARMPlayer.getAny());

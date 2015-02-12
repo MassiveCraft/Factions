@@ -5,7 +5,7 @@ import java.util.Set;
 import com.massivecraft.factions.cmd.arg.ARFaction;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.FactionColl;
-import com.massivecraft.massivecore.cmd.MassiveCommandException;
+import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.ps.PS;
 
 
@@ -45,7 +45,7 @@ public abstract class CmdFactionsSetX extends FactionsCommand
 	// -------------------------------------------- //
 	
 	@Override
-	public void perform() throws MassiveCommandException
+	public void perform() throws MassiveException
 	{	
 		// Args
 		final Faction newFaction = this.getNewFaction();
@@ -59,13 +59,13 @@ public abstract class CmdFactionsSetX extends FactionsCommand
 	// ABSTRACT
 	// -------------------------------------------- //
 	
-	public abstract Set<PS> getChunks() throws MassiveCommandException;
+	public abstract Set<PS> getChunks() throws MassiveException;
 	
 	// -------------------------------------------- //
 	// EXTRAS
 	// -------------------------------------------- //
 	
-	public Faction getNewFaction() throws MassiveCommandException
+	public Faction getNewFaction() throws MassiveException
 	{
 		if (this.isClaim())
 		{

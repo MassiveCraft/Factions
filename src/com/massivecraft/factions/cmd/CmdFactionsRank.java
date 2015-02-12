@@ -13,7 +13,7 @@ import com.massivecraft.factions.entity.MFlag;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.entity.MPlayerColl;
 import com.massivecraft.factions.event.EventFactionsRankChange;
-import com.massivecraft.massivecore.cmd.MassiveCommandException;
+import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.util.IdUtil;
 import com.massivecraft.massivecore.util.MUtil;
@@ -64,7 +64,7 @@ public class CmdFactionsRank extends FactionsCommand
 	// -------------------------------------------- //
 	
 	@Override
-	public void perform() throws MassiveCommandException
+	public void perform() throws MassiveException
 	{
 		// This sets target and much other. Returns false if not succeeded.
 		if ( ! this.registerFields())
@@ -122,7 +122,7 @@ public class CmdFactionsRank extends FactionsCommand
 	// PRIVATE
 	// -------------------------------------------- //
 
-	private boolean registerFields() throws MassiveCommandException
+	private boolean registerFields() throws MassiveException
 	{
 		// Getting the target and faction.
 		target = this.arg(0, ARMPlayer.getAny(), msender);
