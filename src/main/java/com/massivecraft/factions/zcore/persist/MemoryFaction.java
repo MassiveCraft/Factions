@@ -40,7 +40,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     protected Set<String> invites = new HashSet<String>();
     protected HashMap<String, List<String>> announcements = new HashMap<String, List<String>>();
     protected ConcurrentHashMap<String, LazyLocation> warps = new ConcurrentHashMap<String, LazyLocation>();
-    protected long lastDeath;
+    private long lastDeath;
 
     public HashMap<String, List<String>> getAnnouncements() {
         return this.announcements;
@@ -259,6 +259,10 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
     public void setLastDeath(long time) {
         this.lastDeath = time;
+    }
+
+    public long getLastDeath() {
+    	return this.lastDeath;
     }
 
     // -------------------------------------------- //
