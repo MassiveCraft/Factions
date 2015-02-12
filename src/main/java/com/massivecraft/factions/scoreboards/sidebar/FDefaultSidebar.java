@@ -33,7 +33,7 @@ public class FDefaultSidebar extends FSidebarProvider {
     private String replace(FPlayer fplayer, String s) {
         String faction = !fplayer.getFaction().isNone() ? fplayer.getFaction().getTag() : TL.GENERIC_FACTIONLESS.toString();
         String powerBoost = String.valueOf((int) fplayer.getPowerBoost());
-        s = s.replace("{name}", fplayer.getName()).replace("{power}", String.valueOf(fplayer.getPowerRounded())).replace("{balance}", String.valueOf(Econ.getFriendlyBalance(fplayer.getPlayer().getUniqueId()))).replace("{faction}", faction).replace("{maxPower}", String.valueOf(fplayer.getPowerMaxRounded())).replace("{totalOnline}", String.valueOf(Bukkit.getServer().getOnlinePlayers().length)).replace("{powerBoost}", powerBoost);
+        s = s.replace("{name}", fplayer.getName()).replace("{power}", String.valueOf(fplayer.getPowerRounded())).replace("{balance}", String.valueOf(Econ.getFriendlyBalance(fplayer.getPlayer().getUniqueId()))).replace("{faction}", faction).replace("{maxPower}", String.valueOf(fplayer.getPowerMaxRounded())).replace("{totalOnline}", String.valueOf(Bukkit.getServer().getOnlinePlayers().size())).replace("{powerBoost}", powerBoost);
         return ChatColor.translateAlternateColorCodes('&', s);
     }
 }
