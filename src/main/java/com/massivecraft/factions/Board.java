@@ -45,6 +45,9 @@ public abstract class Board {
     // Is this coord connected to any coord claimed by the specified faction?
     public abstract boolean isConnectedLocation(FLocation flocation, Faction faction);
 
+    // Is this location outside the world border?
+    public abstract boolean isOutsideWorldBorder(FLocation flocation);
+    
     public abstract boolean hasFactionWithin(FLocation flocation, Faction faction, int radius);
 
     //----------------------------------------------//
