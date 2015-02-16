@@ -16,7 +16,7 @@ public class FDefaultSidebar extends FSidebarProvider {
 
     @Override
     public String getTitle(FPlayer fplayer) {
-        return ChatColor.translateAlternateColorCodes('&', P.p.getConfig().getString("scoreboard.default-title", "i love drt"));
+        return replace(fplayer, P.p.getConfig().getString("scoreboard.default-title", "i love drt"));
     }
 
     @Override
