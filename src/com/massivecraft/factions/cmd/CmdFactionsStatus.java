@@ -69,7 +69,7 @@ public class CmdFactionsStatus extends FactionsCommand
 		List<String> messages = pager.getPageTxt(pageHumanBased, pagerTitle, new Stringifier<MPlayer>(){
 			
 			@Override
-			public String toString(MPlayer mplayer)
+			public String toString(MPlayer mplayer, int index)
 			{
 				// Name
 				String displayName = mplayer.getNameAndSomething(msender.getColorTo(mplayer).toString(), "");

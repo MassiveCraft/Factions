@@ -61,7 +61,7 @@ public class CmdFactionsList extends FactionsCommand
 				// Use Pager
 				List<String> messages = pager.getPageTxt(pageHumanBased, "Faction List", new Stringifier<Faction>() {
 					@Override
-					public String toString(Faction faction)
+					public String toString(Faction faction, int index)
 					{
 						if (faction.isNone())
 						{

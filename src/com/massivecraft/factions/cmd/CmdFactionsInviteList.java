@@ -58,7 +58,7 @@ public class CmdFactionsInviteList extends FactionsCommand
 		// Use Pager
 		List<String> messages = pager.getPageTxt(pageHumanBased, "Invited Players List", new Stringifier<MPlayer>(){
 			
-			public String toString(MPlayer target)
+			public String toString(MPlayer target, int index)
 			{
 				// TODO: Madus would like to implement this in MPlayer
 				String targetName = target.getDisplayName(msender);
