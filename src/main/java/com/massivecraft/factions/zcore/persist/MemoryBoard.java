@@ -134,14 +134,14 @@ public abstract class MemoryBoard extends Board {
      * @param flocation claim chunk
      * @return if claim chunk is outside world border
      */
-    public boolean isOutsideWorldBorder(FLocation flocation) {
+    public boolean isOutsideWorldBorder(FLocation flocation, int buffer) {
         World world = flocation.getWorld();
         WorldBorder border = world.getWorldBorder();
         Chunk chunk = border.getCenter().getChunk();
-        int lim = FLocation.blockToChunk((int) border.getSize());
+        int lim = FLocation.chunkToRegion((int) border.getSize()) - buffer;
         int diffX = (int) Math.abs(chunk.getX() - flocation.getX());
         int diffZ = (int) Math.abs(chunk.getZ() - flocation.getZ());
-        return diffX + diffZ > lim;
+        return diffX > lim || diffZ > lim;
     }
 
     /**

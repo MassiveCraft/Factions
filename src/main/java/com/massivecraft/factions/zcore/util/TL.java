@@ -538,8 +538,8 @@ public enum TL {
     CLAIM_CLAIMEDLOG("%s claimed land at (%s) for the faction: %s"),
     CLAIM_OVERCLAIM_DISABLED("<i>Over claiming is disabled on this server."),
     CLAIM_TOOCLOSETOOTHERFACTION("<i>Your claim is too close to another Faction. Buffer required is %d"),
-    CLAIM_OUTSIDEWORLDBORDER("<i>Your claim is outside the border. Buffer is %d chunks from world edge."),
-
+    CLAIM_OUTSIDEWORLDBORDER("<i>Your claim is outside the border."),
+    CLAIM_OUTSIDEBORDERBUFFER("<i>Your claim is outside the border. %d chunks away world edge required."),
     /**
      * More generic, or less easily categorisable translations, which may apply to more than one class
      */
