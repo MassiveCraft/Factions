@@ -38,10 +38,14 @@ public class CmdPermanentPower extends FCommand {
             change = TL.COMMAND_PERMANENTPOWER_GRANT.toString();
         }
 
+        // Inform sender
         msg(TL.COMMAND_PERMANENTPOWER_SUCCESS, change, targetFaction.describeTo(fme));
 
-        // Inform all players
+        // Inform all other players
         for (FPlayer fplayer : targetFaction.getFPlayersWhereOnline(true)) {
+            if(fplayer == fme) {
+                continue;
+            }
             String blame = (fme == null ? TL.GENERIC_SERVERADMIN.toString() : fme.describeTo(fplayer, true));
             fplayer.msg(TL.COMMAND_PERMANENTPOWER_FACTION, blame, change);
         }
