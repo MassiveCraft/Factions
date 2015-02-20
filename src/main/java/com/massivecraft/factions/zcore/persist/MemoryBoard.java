@@ -4,11 +4,7 @@ import com.massivecraft.factions.*;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.util.AsciiCompass;
 import com.massivecraft.factions.util.LazyLocation;
-
 import org.bukkit.ChatColor;
-import org.bukkit.Chunk;
-import org.bukkit.World;
-import org.bukkit.WorldBorder;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -127,21 +123,6 @@ public abstract class MemoryBoard extends Board {
             }
         }
         return false;
-    }
-    
-    /**
-     * Checks if a claim chunk is outside the world border
-     * @param flocation claim chunk
-     * @return if claim chunk is outside world border
-     */
-    public boolean isOutsideWorldBorder(FLocation flocation, int buffer) {
-        World world = flocation.getWorld();
-        WorldBorder border = world.getWorldBorder();
-        Chunk chunk = border.getCenter().getChunk();
-        int lim = FLocation.chunkToRegion((int) border.getSize()) - buffer;
-        int diffX = (int) Math.abs(chunk.getX() - flocation.getX());
-        int diffZ = (int) Math.abs(chunk.getZ() - flocation.getZ());
-        return diffX > lim || diffZ > lim;
     }
 
     /**

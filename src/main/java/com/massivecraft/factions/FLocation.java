@@ -1,10 +1,7 @@
 package com.massivecraft.factions;
 
 import com.massivecraft.factions.util.MiscUtil;
-import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
-import org.bukkit.Location;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
@@ -15,9 +12,20 @@ import java.util.Set;
 
 public class FLocation implements Serializable {
     private static final long serialVersionUID = -8292915234027387983L;
+    private static final boolean worldBorderSupport;
     private String worldName = "world";
     private int x = 0;
     private int z = 0;
+
+    static {
+        boolean worldBorderClassPresent = false;
+        try {
+            Class.forName("org.bukkit.WorldBorder");
+            worldBorderClassPresent = true;
+        } catch (ClassNotFoundException ignored) {}
+
+        worldBorderSupport = worldBorderClassPresent;
+    }
 
     //----------------------------------------------//
     // Constructors
@@ -156,6 +164,26 @@ public class FLocation implements Serializable {
         }
         Chunk chunk = loc.getChunk();
         return loc.getWorld().getName().equalsIgnoreCase(getWorldName()) && chunk.getX() == x && chunk.getZ() == z;
+    }
+
+    /**
+     * Checks if the chunk represented by this FLocation is outside the world border
+     *
+     * @param buffer the number of chunks from the border that will be treated as "outside"
+     * @return whether this location is outside of the border
+     */
+    public boolean isOutsideWorldBorder(int buffer) {
+        if (!worldBorderSupport) {
+            return false;
+        }
+
+        WorldBorder border = getWorld().getWorldBorder();
+        Chunk chunk = border.getCenter().getChunk();
+
+        int lim = FLocation.chunkToRegion((int) border.getSize()) - buffer;
+        int diffX = Math.abs(chunk.getX() - x);
+        int diffZ = Math.abs(chunk.getZ() - z);
+        return diffX > lim || diffZ > lim;
     }
 
     //----------------------------------------------//
