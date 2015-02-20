@@ -113,28 +113,21 @@ public abstract class MemoryBoard extends Board {
      * @return true if another Faction is within the radius, otherwise false.
      */
     public boolean hasFactionWithin(FLocation flocation, Faction faction, int radius) {
-        for(int i = 1; i <= radius; i++) {
-            FLocation a = flocation.getRelative(i, 0);
-            FLocation b = flocation.getRelative(-i, 0);
-            FLocation c = flocation.getRelative(0, i);
-            FLocation d = flocation.getRelative(0, -i);
-            if(isDifferentFaction(a, faction) || isDifferentFaction(b, faction) || isDifferentFaction(c, faction) || isDifferentFaction(d, faction)) {
-                return false; // Return if the Faction found is a different one.
+        for (int x = -radius; x <= radius; x++) {
+            for (int z = -radius; z <= radius; z++) {
+                if (x == 0 && z == 0) {
+                    continue;
+                }
+
+                FLocation relative = flocation.getRelative(x, z);
+                Faction other = getFactionAt(relative);
+
+                if (other.isNormal() && other != faction) {
+                    return true;
+                }
             }
         }
         return false;
-    }
-
-    /**
-     * Checks if the faction at the flocation is not wilderness and different than given faction.
-     * @param flocation - location to check.
-     * @param faction - faction to compare.
-     * @return true if not wilderness, safezone, or warzone and different faction, otherwise false.
-     */
-    private boolean isDifferentFaction(FLocation flocation, Faction faction) {
-        Faction other = getFactionAt(flocation);
-        // Check if faction is
-        return other.isNormal() && other != faction;
     }
 
 
