@@ -57,7 +57,7 @@ public class CmdFactionsKick extends FactionsCommand
 			return;
 		}
 
-		if ( ! MConf.get().canLeaveWithNegativePower && mplayer.getPower() < 0)
+		if ( ! MConf.get().canLeaveWithNegativePower && mplayer.getPower() < 0 && ! msender.isUsingAdminMode())
 		{
 			msg("<b>You cannot kick that member until their power is positive.");
 			return;
