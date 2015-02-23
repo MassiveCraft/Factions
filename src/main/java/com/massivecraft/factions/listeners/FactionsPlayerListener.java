@@ -113,12 +113,8 @@ public class FactionsPlayerListener implements Listener {
     // Holds the next time a player can have a map shown.
     private HashMap<UUID, Long> showTimes = new HashMap<UUID, Long>();
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerMove(PlayerMoveEvent event) {
-        if (event.isCancelled()) {
-            return;
-        }
-
         // clear visualization
         if (event.getFrom().getBlockX() != event.getTo().getBlockX() || event.getFrom().getBlockY() != event.getTo().getBlockY() || event.getFrom().getBlockZ() != event.getTo().getBlockZ()) {
             VisualizeUtil.clear(event.getPlayer());
@@ -202,11 +198,8 @@ public class FactionsPlayerListener implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.NORMAL)
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onPlayerInteract(PlayerInteractEvent event) {
-        if (event.isCancelled()) {
-            return;
-        }
         // only need to check right-clicks and physical as of MC 1.4+; good performance boost
         if (event.getAction() != Action.RIGHT_CLICK_BLOCK && event.getAction() != Action.PHYSICAL) {
             return;
@@ -442,12 +435,8 @@ public class FactionsPlayerListener implements Listener {
 
     // For some reason onPlayerInteract() sometimes misses bucket events depending on distance (something like 2-3 blocks away isn't detected),
     // but these separate bucket events below always fire without fail
-    @EventHandler(priority = EventPriority.NORMAL)
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onPlayerBucketEmpty(PlayerBucketEmptyEvent event) {
-        if (event.isCancelled()) {
-            return;
-        }
-
         Block block = event.getBlockClicked();
         Player player = event.getPlayer();
 
@@ -457,12 +446,8 @@ public class FactionsPlayerListener implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.NORMAL)
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onPlayerBucketFill(PlayerBucketFillEvent event) {
-        if (event.isCancelled()) {
-            return;
-        }
-
         Block block = event.getBlockClicked();
         Player player = event.getPlayer();
 
@@ -542,12 +527,8 @@ public class FactionsPlayerListener implements Listener {
         return false;
     }
 
-    @EventHandler(priority = EventPriority.NORMAL)
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onPlayerKick(PlayerKickEvent event) {
-        if (event.isCancelled()) {
-            return;
-        }
-
         FPlayer badGuy = FPlayers.getInstance().getByPlayer(event.getPlayer());
         if (badGuy == null) {
             return;
