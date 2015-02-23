@@ -149,7 +149,6 @@ public class Conf {
     public static Set<String> territoryEnemyDenyCommands = new LinkedHashSet<String>();
     public static Set<String> warzoneDenyCommands = new LinkedHashSet<String>();
 
-    public static double territoryShieldFactor = 0.3;
     public static boolean territoryDenyBuild = true;
     public static boolean territoryDenyBuildWhenOffline = true;
     public static boolean territoryPainBuild = false;
