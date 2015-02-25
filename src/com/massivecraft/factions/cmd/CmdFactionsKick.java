@@ -46,7 +46,7 @@ public class CmdFactionsKick extends FactionsCommand
 		// Validate
 		if (msender == mplayer)
 		{
-			msg("<b>You cannot kick yourself.");
+			msg("<b>You can't kick yourself.");
 			msg("<i>You might want to: %s", Factions.get().getOuterCmdFactions().cmdFactionsLeave.getUseageTemplate(false));
 			return;
 		}
@@ -56,10 +56,16 @@ public class CmdFactionsKick extends FactionsCommand
 			msg("<b>The leader can not be kicked.");
 			return;
 		}
+		
+		if (mplayer.getRole().compareTo(msender.getRole()) < 0 && !(this.senderIsConsole || msender.isUsingAdminMode()))
+		{
+			msg("<b>You can't kick people of higher rank than yourself.");
+			return;
+		}
 
 		if ( ! MConf.get().canLeaveWithNegativePower && mplayer.getPower() < 0 && ! msender.isUsingAdminMode())
 		{
-			msg("<b>You cannot kick that member until their power is positive.");
+			msg("<b>You can't kick that person until their power is positive.");
 			return;
 		}
 		
