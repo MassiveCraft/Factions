@@ -262,7 +262,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
 
     public long getLastDeath() {
-    	return this.lastDeath;
+        return this.lastDeath;
     }
 
     // -------------------------------------------- //
@@ -474,6 +474,10 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
     }
 
+    public int getSize() {
+        return fplayers.size();
+    }
+
     public Set<FPlayer> getFPlayers() {
         // return a shallow copy of the FPlayer list, to prevent tampering and
         // concurrency issues
@@ -482,6 +486,9 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
     public Set<FPlayer> getFPlayersWhereOnline(boolean online) {
         Set<FPlayer> ret = new HashSet<FPlayer>();
+        if (!this.isNormal()) {
+            return ret;
+        }
 
         for (FPlayer fplayer : fplayers) {
             if (fplayer.isOnline() == online) {
