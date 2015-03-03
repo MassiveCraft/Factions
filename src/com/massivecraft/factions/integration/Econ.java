@@ -236,6 +236,7 @@ public class Econ
 		if (delta == 0) return true;
 		
 		String You = ep.describeTo(ep, true);
+		String you = ep.describeTo(ep, false);
 		
 		boolean hasActionDesctription = (actionDescription != null && !actionDescription.isEmpty());
 
@@ -247,11 +248,11 @@ public class Econ
 			{
 				if (delta > 0)
 				{
-					ep.msg("<h>%s<i> gained <h>%s<i> since did %s.", You, Money.format(delta), actionDescription);
+					ep.msg("<h>%s<i> gained <h>%s<i> since %s did %s.", You, Money.format(delta), you, actionDescription);
 				}
 				else
 				{
-					ep.msg("<h>%s<i> lost <h>%s<i> since did %s.", You, Money.format(-delta), actionDescription);
+					ep.msg("<h>%s<i> lost <h>%s<i> since %s did %s.", You, Money.format(-delta), you, actionDescription);
 				}
 			}
 			return true;
@@ -262,7 +263,7 @@ public class Econ
 			{
 				if (delta > 0)
 				{
-					ep.msg("<h>%s<i> would have gained <h>%s<i> since did %s, but the deposit failed.", You, Money.format(delta), actionDescription);
+					ep.msg("<h>%s<i> would have gained <h>%s<i> since %s did %s, but the deposit failed.", You, Money.format(delta), you, actionDescription);
 				}
 				else
 				{
