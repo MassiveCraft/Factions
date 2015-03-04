@@ -29,7 +29,7 @@ public class BoardColl extends Coll<Board> implements BoardInterface
 	public static BoardColl get() { return i; }
 	private BoardColl()
 	{
-		super(Const.COLLECTION_BOARD, Board.class, MStore.getDb(), Factions.get(), false, true, true);
+		super(Const.COLLECTION_BOARD, Board.class, MStore.getDb(), Factions.get(), true, true);
 	}
 
 	// -------------------------------------------- //

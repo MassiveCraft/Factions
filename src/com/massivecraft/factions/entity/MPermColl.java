@@ -19,7 +19,7 @@ public class MPermColl extends Coll<MPerm>
 	public static MPermColl get() { return i; }
 	private MPermColl()
 	{
-		super(Const.COLLECTION_MPERM, MPerm.class, MStore.getDb(), Factions.get(), false, false, true, null, PriorityComparator.get());
+		super(Const.COLLECTION_MPERM, MPerm.class, MStore.getDb(), Factions.get(), false, true, null, PriorityComparator.get());
 	}
 
 	// -------------------------------------------- //

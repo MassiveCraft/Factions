@@ -19,7 +19,7 @@ public class MFlagColl extends Coll<MFlag>
 	public static MFlagColl get() { return i; }
 	private MFlagColl()
 	{
-		super(Const.COLLECTION_MFLAG, MFlag.class, MStore.getDb(), Factions.get(), false, false, true, null, PriorityComparator.get());
+		super(Const.COLLECTION_MFLAG, MFlag.class, MStore.getDb(), Factions.get(), false, true, null, PriorityComparator.get());
 	}
 
 	// -------------------------------------------- //
