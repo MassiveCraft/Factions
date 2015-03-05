@@ -168,6 +168,8 @@ public interface Faction extends EconomyParticipator {
 
     public boolean removeFPlayer(FPlayer fplayer);
 
+    public int getSize();
+
     public Set<FPlayer> getFPlayers();
 
     public Set<FPlayer> getFPlayersWhereOnline(boolean online);
