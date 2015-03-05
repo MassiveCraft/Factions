@@ -60,18 +60,18 @@ public class UpdateUtil
 		
 		// The old mplayer data we don't care much for.
 		// Could even delete it but let's just move it out of the way.
-		db.getDriver().renameColl(db, Const.COLLECTION_MPLAYER, "old_"+Const.COLLECTION_MPLAYER);
+		db.renameColl(Const.COLLECTION_MPLAYER, "old_"+Const.COLLECTION_MPLAYER);
 		
-		db.getDriver().renameColl(db, "factions_board@" + universe, Const.COLLECTION_BOARD);
-		db.getDriver().renameColl(db, "factions_faction@" + universe, Const.COLLECTION_FACTION);
-		db.getDriver().renameColl(db, "factions_uplayer@" + universe, Const.COLLECTION_MPLAYER);
+		db.renameColl("factions_board@" + universe, Const.COLLECTION_BOARD);
+		db.renameColl("factions_faction@" + universe, Const.COLLECTION_FACTION);
+		db.renameColl("factions_uplayer@" + universe, Const.COLLECTION_MPLAYER);
 		
 		// ... rename remaining collections ...
 		for (String collname : db.getCollnames())
 		{
 			if (!collname.startsWith("factions_")) continue;
 			if (!collname.contains("@")) continue;
-			db.getDriver().renameColl(db, collname, "old_" + collname);
+			db.renameColl(collname, "old_" + collname);
 		}
 		
 	}
@@ -104,7 +104,7 @@ public class UpdateUtil
 	{
 		Coll<Object> coll = new Coll<Object>("factions_faction@"+universe, Object.class, MStore.getDb(), Factions.get());
 		
-		Collection<String> ids = MStore.getDb().getDriver().getIds(coll);
+		Collection<String> ids = MStore.getDb().getIds(coll);
 		
 		return ids.size();
 	}
