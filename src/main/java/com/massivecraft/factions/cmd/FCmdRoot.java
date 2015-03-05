@@ -49,6 +49,7 @@ public class FCmdRoot extends FCommand {
     public CmdStatus cmdStatus = new CmdStatus();
     public CmdTag cmdTag = new CmdTag();
     public CmdTitle cmdTitle = new CmdTitle();
+    public CmdToggleAllianceChat cmdToggleAllianceChat = new CmdToggleAllianceChat();
     public CmdUnclaim cmdUnclaim = new CmdUnclaim();
     public CmdUnclaimall cmdUnclaimall = new CmdUnclaimall();
     public CmdVersion cmdVersion = new CmdVersion();
@@ -92,6 +93,7 @@ public class FCmdRoot extends FCommand {
         this.addSubCommand(this.cmdBoom);
         this.addSubCommand(this.cmdBypass);
         this.addSubCommand(this.cmdChat);
+        this.addSubCommand(this.cmdToggleAllianceChat);
         this.addSubCommand(this.cmdChatSpy);
         this.addSubCommand(this.cmdClaim);
         this.addSubCommand(this.cmdConfig);
