@@ -66,6 +66,7 @@ public class CmdHelp extends FCommand {
         pageLines.add(p.cmdBase.cmdJoin.getUseageTemplate(true));
         pageLines.add(p.cmdBase.cmdLeave.getUseageTemplate(true));
         pageLines.add(p.cmdBase.cmdChat.getUseageTemplate(true));
+        pageLines.add(p.cmdBase.cmdToggleAllianceChat.getUseageTemplate(true));
         pageLines.add(p.cmdBase.cmdHome.getUseageTemplate(true));
         pageLines.add(p.txt.parse(TL.COMMAND_HELP_NEXTCREATE.toString()));
         helpPages.add(pageLines);

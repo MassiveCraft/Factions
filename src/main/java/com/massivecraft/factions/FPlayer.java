@@ -66,6 +66,10 @@ public interface FPlayer extends EconomyParticipator {
 
     public ChatMode getChatMode();
 
+    public void setIgnoreAllianceChat(boolean ignore);
+
+    public boolean isIgnoreAllianceChat();
+
     public void setSpyingChat(boolean chatSpying);
 
     public boolean isSpyingChat();

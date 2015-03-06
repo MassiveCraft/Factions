@@ -64,6 +64,9 @@ public abstract class MemoryFPlayer implements FPlayer {
     // FIELD: chatMode
     protected ChatMode chatMode;
 
+    // FIELD: ignoreAllianceChat
+    protected boolean ignoreAllianceChat = false;
+
     protected String id;
     protected String name;
 
@@ -197,6 +200,14 @@ public abstract class MemoryFPlayer implements FPlayer {
             this.chatMode = ChatMode.PUBLIC;
         }
         return chatMode;
+    }
+
+    public void setIgnoreAllianceChat(boolean ignore) {
+        this.ignoreAllianceChat = ignore;
+    }
+
+    public boolean isIgnoreAllianceChat() {
+        return ignoreAllianceChat;
     }
 
     public void setSpyingChat(boolean chatSpying) {

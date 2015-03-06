@@ -58,7 +58,7 @@ public class FactionsChatListener implements Listener {
 
             //Send to all our allies
             for (FPlayer fplayer : FPlayers.getInstance().getOnlinePlayers()) {
-                if (myFaction.getRelationTo(fplayer) == Relation.ALLY) {
+                if (myFaction.getRelationTo(fplayer) == Relation.ALLY && !fplayer.isIgnoreAllianceChat()) {
                     fplayer.sendMessage(message);
                 }
 

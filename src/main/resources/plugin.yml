@@ -93,6 +93,7 @@ permissions:
       factions.seechunk: true
       factions.monitorlogins: true
       factions.top: true
+      factions.togglealliancechat
   factions.admin:
     description: hand over your admin rights
   factions.admin.any:
@@ -250,3 +251,5 @@ permissions:
     description: claim in a line
   factions.top:
     description: sort factions
+  factions.togglealliancechat:
+    description: toggle alliance chat on and off

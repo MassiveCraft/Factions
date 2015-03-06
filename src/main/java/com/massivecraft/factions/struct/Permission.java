@@ -67,6 +67,7 @@ public enum Permission {
     STATUS("status"),
     TAG("tag"),
     TITLE("title"),
+    TOGGLE_ALLIANCE_CHAT("togglealliancechat"),
     UNCLAIM("unclaim"),
     UNCLAIM_ALL("unclaimall"),
     VERSION("version"),
