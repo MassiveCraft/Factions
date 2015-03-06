@@ -69,11 +69,11 @@ public class FactionsPlayerListener implements Listener {
             }
         }, 33L); // Don't ask me why.
 
-        FScoreboard.init(me);
         if (P.p.getConfig().getBoolean("scoreboard.default-enabled", false)) {
+            FScoreboard.init(me);
             FScoreboard.get(me).setDefaultSidebar(new FDefaultSidebar(), P.p.getConfig().getInt("default-update-interval", 20));
+            FScoreboard.get(me).setSidebarVisibility(P.p.cmdBase.cmdSB.showBoard(me));
         }
-        FScoreboard.get(me).setSidebarVisibility(P.p.cmdBase.cmdSB.showBoard(me));
 
         Faction myFaction = me.getFaction();
         if (!myFaction.isNone()) {
