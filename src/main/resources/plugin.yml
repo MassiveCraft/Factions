@@ -93,7 +93,7 @@ permissions:
       factions.seechunk: true
       factions.monitorlogins: true
       factions.top: true
-      factions.togglealliancechat
+      factions.togglealliancechat: true
   factions.admin:
     description: hand over your admin rights
   factions.admin.any:
