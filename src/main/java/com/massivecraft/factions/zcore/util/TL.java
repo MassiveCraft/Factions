@@ -473,6 +473,8 @@ public enum TL {
     COMMAND_TOGGLEALLIANCECHAT_IGNORE("Alliance chat is now ignored"),
     COMMAND_TOGGLEALLIANCECHAT_UNIGNORE("Alliance chat is no longer ignored"),
 
+    COMMAND_TOGGLESB_DISABLED("You can't toggle scoreboards while they are disabled."),
+
     COMMAND_TOP_DESCRIPTION("Sort Factions to see the top of some criteria."),
     COMMAND_TOP_TOP("Top Factions by %s. Page %d/%d"),
     COMMAND_TOP_LINE("%d. &6%s: &c%s"), // Rank. Faction: Value
