@@ -44,7 +44,6 @@ import org.bukkit.event.entity.EntityCombustByEntityEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
-import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
@@ -1148,32 +1147,6 @@ public class EngineMain extends EngineAbstract
 		if (faction.getFlag(MFlag.getFlagMonsters())) return;
 		
 		// ... block the spawn.
-		event.setCancelled(true);
-	}
-
-	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-	public void blockMonsters(EntityTargetEvent event)
-	{
-		// If a monster ...
-		if ( ! MConf.get().entityTypesMonsters.contains(event.getEntityType())) return;
-		
-		// ... is targeting something ...
-		Entity target = event.getTarget();
-		if (target == null) return;
-		
-		// ... at a place where monsters are forbidden ...
-		PS ps = PS.valueOf(target.getLocation());
-		Faction faction = BoardColl.get().getFactionAt(ps);
-		if (faction.getFlag(MFlag.getFlagMonsters())) return;
-		
-		// ... then if ghast target nothing ...
-		if (event.getEntityType() == EntityType.GHAST)
-		{
-			event.setTarget(null);
-			return;
-		}
-		
-		// ... otherwise simply cancel.
 		event.setCancelled(true);
 	}
 	
