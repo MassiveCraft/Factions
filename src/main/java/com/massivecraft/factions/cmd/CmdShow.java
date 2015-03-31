@@ -85,7 +85,7 @@ public class CmdShow extends FCommand {
 
                     if (currentAllies.toJSONString().length() > ARBITRARY_LIMIT) {
                         allies.add(currentAllies);
-                        currentAllies = new FancyMessage();
+                        currentAllies = new FancyMessage("");
                     }
                 } else if (rel.isEnemy()) {
                     if (firstEnemy) {
@@ -97,7 +97,7 @@ public class CmdShow extends FCommand {
 
                     if (currentEnemies.toJSONString().length() > ARBITRARY_LIMIT) {
                         enemies.add(currentEnemies);
-                        currentEnemies = new FancyMessage();
+                        currentEnemies = new FancyMessage("");
                     }
                 }
             }
