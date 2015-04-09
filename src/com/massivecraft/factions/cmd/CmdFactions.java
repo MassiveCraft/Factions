@@ -5,6 +5,7 @@ import java.util.List;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.entity.MConf;
+import com.massivecraft.massivecore.cmd.DeprecatedCommand;
 import com.massivecraft.massivecore.cmd.HelpCommand;
 import com.massivecraft.massivecore.cmd.VersionCommand;
 
@@ -109,10 +110,10 @@ public class CmdFactions extends FactionsCommand
 		this.addSubCommand(this.cmdFactionsVersion);
 		
 		// Deprecated Commands
-		this.addSubCommand(new CmdFactionsXDeprecated(this.cmdFactionsClaim.cmdFactionsClaimAuto, "autoclaim"));
-		this.addSubCommand(new CmdFactionsXDeprecated(this.cmdFactionsUnclaim.cmdFactionsUnclaimAll, "unclaimall"));
-		this.addSubCommand(new CmdFactionsXDeprecated(this.cmdFactionsFlag, "open"));
-		this.addSubCommand(new CmdFactionsXDeprecated(this.cmdFactionsFaction, "show", "who"));
+		this.addSubCommand(new DeprecatedCommand(this.cmdFactionsClaim.cmdFactionsClaimAuto, "autoclaim"));
+		this.addSubCommand(new DeprecatedCommand(this.cmdFactionsUnclaim.cmdFactionsUnclaimAll, "unclaimall"));
+		this.addSubCommand(new DeprecatedCommand(this.cmdFactionsFlag, "open"));
+		this.addSubCommand(new DeprecatedCommand(this.cmdFactionsFaction, "show", "who"));
 	}
 	
 	// -------------------------------------------- //
