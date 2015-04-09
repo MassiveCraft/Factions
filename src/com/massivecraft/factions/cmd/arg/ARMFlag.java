@@ -24,7 +24,7 @@ public class ARMFlag extends ARAbstractSelect<MFlag>
 	// -------------------------------------------- //
 	
 	@Override
-	public String typename()
+	public String getTypeName()
 	{
 		return "faction flag";
 	}
@@ -70,6 +70,12 @@ public class ARMFlag extends ARAbstractSelect<MFlag>
 		
 		return ret;
 	}
+
+	@Override
+	public Collection<String> getTabList(CommandSender sender, String arg)
+	{
+		return this.altNames(sender);
+	}
 	
 	// -------------------------------------------- //
 	// UTIL
@@ -84,5 +90,5 @@ public class ARMFlag extends ARAbstractSelect<MFlag>
 	{
 		return getComparable(mflag.getName());
 	}
-	
+
 }

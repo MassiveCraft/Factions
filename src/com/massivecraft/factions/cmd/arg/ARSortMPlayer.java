@@ -1,7 +1,9 @@
 package com.massivecraft.factions.cmd.arg;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 import org.bukkit.command.CommandSender;
 
@@ -15,6 +17,12 @@ import com.massivecraft.massivecore.util.MUtil;
 public class ARSortMPlayer extends ARAbstractSelect<Comparator<MPlayer>>
 {
 	// -------------------------------------------- //
+	// CONSTANTS
+	// -------------------------------------------- //
+	
+	public static final List<String> ALT_NAMES = Collections.unmodifiableList(MUtil.list("rank", "power", "time"));
+	
+	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
@@ -26,7 +34,7 @@ public class ARSortMPlayer extends ARAbstractSelect<Comparator<MPlayer>>
 	// -------------------------------------------- //
 	
 	@Override
-	public String typename()
+	public String getTypeName()
 	{
 		return "player sorter";
 	}
@@ -58,7 +66,13 @@ public class ARSortMPlayer extends ARAbstractSelect<Comparator<MPlayer>>
 	@Override
 	public Collection<String> altNames(CommandSender sender)
 	{
-		return MUtil.list("rank", "power", "time");
+		return ALT_NAMES;
+	}
+
+	@Override
+	public Collection<String> getTabList(CommandSender sender, String arg)
+	{
+		return this.altNames(sender);
 	}
 	
 }

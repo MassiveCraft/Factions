@@ -1,6 +1,8 @@
 package com.massivecraft.factions.cmd.arg;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 import org.bukkit.command.CommandSender;
 
@@ -12,6 +14,19 @@ import com.massivecraft.massivecore.util.Txt;
 
 public class ARRank extends ARAbstractSelect<Rel>
 {
+	// -------------------------------------------- //
+	// CONSTANTS
+	// -------------------------------------------- //
+	
+	public static final List<String> ALT_NAMES = Collections.unmodifiableList(MUtil.list(
+			Txt.getNicedEnum(Rel.LEADER),
+			Txt.getNicedEnum(Rel.OFFICER),
+			Txt.getNicedEnum(Rel.MEMBER),
+			Txt.getNicedEnum(Rel.RECRUIT),
+			"Promote",
+			"Demote"
+		));
+	
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
@@ -52,7 +67,7 @@ public class ARRank extends ARAbstractSelect<Rel>
 		// This is especially useful when one rank can have aliases.
 		// In the case of promote/demote, 
 		// that would require 10 lines of code repeated for each alias.
-		arg = this.prepareArg(arg);
+		arg = getComparable(arg);
 		
 		// All the normal ranks
 		if (arg.equals("leader")) return Rel.LEADER;
@@ -91,27 +106,34 @@ public class ARRank extends ARAbstractSelect<Rel>
 	@Override
 	public Collection<String> altNames(CommandSender sender)
 	{
-		return MUtil.list(
-			Txt.getNicedEnum(Rel.LEADER),
-			Txt.getNicedEnum(Rel.OFFICER),
-			Txt.getNicedEnum(Rel.MEMBER),
-			Txt.getNicedEnum(Rel.RECRUIT),
-			"Promote",
-			"Demote"
-		);
+		return ALT_NAMES;
+	}
+
+
+	@Override
+	public Collection<String> getTabList(CommandSender sender, String arg)
+	{
+		return this.altNames(sender);
 	}
 	
 	@Override
-	public String typename()
+	public boolean isValid(String arg, CommandSender sender)
 	{
-		return "rank";
+		try
+		{
+			return this.select(arg, sender) != null;
+		}
+		catch (MassiveException e)
+		{
+			return true;
+		}
 	}
 	
 	// -------------------------------------------- //
 	// ARG
 	// -------------------------------------------- //
 	
-	public String prepareArg(String str)
+	public static String getComparable(String str)
 	{
 		String ret = str.toLowerCase();
 		

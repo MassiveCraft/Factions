@@ -24,7 +24,7 @@ public class ARMPerm extends ARAbstractSelect<MPerm>
 	// -------------------------------------------- //
 	
 	@Override
-	public String typename()
+	public String getTypeName()
 	{
 		return "faction permission";
 	}
@@ -70,6 +70,12 @@ public class ARMPerm extends ARAbstractSelect<MPerm>
 		
 		return ret;
 	}
+
+	@Override
+	public Collection<String> getTabList(CommandSender sender, String arg)
+	{
+		return this.altNames(sender);
+	}
 	
 	// -------------------------------------------- //
 	// UTIL
@@ -84,5 +90,5 @@ public class ARMPerm extends ARAbstractSelect<MPerm>
 	{
 		return getComparable(mperm.getName());
 	}
-	
+
 }

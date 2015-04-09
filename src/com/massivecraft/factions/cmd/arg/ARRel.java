@@ -24,7 +24,7 @@ public class ARRel extends ARAbstractSelect<Rel>
 	// -------------------------------------------- //
 	
 	@Override
-	public String typename()
+	public String getTypeName()
 	{
 		return "role";
 	}
@@ -46,6 +46,12 @@ public class ARRel extends ARAbstractSelect<Rel>
 		}
 		
 		return ret;
+	}
+
+	@Override
+	public Collection<String> getTabList(CommandSender sender, String arg)
+	{
+		return this.altNames(sender);
 	}
 	
 }

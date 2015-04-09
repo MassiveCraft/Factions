@@ -1,16 +1,20 @@
 package com.massivecraft.factions.cmd.arg;
 
+import java.util.Collection;
+import java.util.List;
+
 import org.bukkit.command.CommandSender;
 
-import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.FactionColl;
+import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.cmd.arg.ArgReaderAbstract;
+import com.massivecraft.massivecore.cmd.arg.ARAbstract;
+import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.util.IdUtil;
 
-public class ARFaction extends ArgReaderAbstract<Faction>
+public class ARFaction extends ARAbstract<Faction>
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -54,6 +58,19 @@ public class ARFaction extends ArgReaderAbstract<Faction>
 		}
 		
 		throw new MassiveException().addMsg("<b>No faction or player matching \"<p>%s<b>\".", str);
+	}
+
+	@Override
+	public Collection<String> getTabList(CommandSender sender, String arg)
+	{
+		List<String> ret = new MassiveList<String>();
+		
+		for (Faction faction : FactionColl.get().getAll())
+		{
+			ret.add(faction.getName());
+		}
+		
+		return ret;
 	}
 	
 }

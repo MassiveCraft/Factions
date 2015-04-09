@@ -2,7 +2,7 @@ package com.massivecraft.factions.cmd.arg;
 
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.entity.MPlayerColl;
-import com.massivecraft.massivecore.cmd.arg.ArgReader;
+import com.massivecraft.massivecore.cmd.arg.AR;
 
 public class ARMPlayer
 {
@@ -10,12 +10,12 @@ public class ARMPlayer
 	// INSTANCE
 	// -------------------------------------------- //
 	
-	public static ArgReader<MPlayer> getAny()
+	public static AR<MPlayer> getAny()
 	{
 		return MPlayerColl.get().getAREntity();
 	}
 	
-	public static ArgReader<MPlayer> getOnline()
+	public static AR<MPlayer> getOnline()
 	{
 		return MPlayerColl.get().getAREntity(true);
 	}
