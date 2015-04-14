@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.UUID;
 
 
 public abstract class MCommand<T extends MPlugin> {
@@ -299,7 +300,7 @@ public abstract class MCommand<T extends MPlugin> {
         String lastSeen = player.isOnline() ? ChatColor.GREEN + "Online" : (System.currentTimeMillis() - player.getLastLoginTime() < 432000000 ? ChatColor.YELLOW + humanized : ChatColor.RED + humanized);
         String balance = Econ.isSetup() ? Econ.getFriendlyBalance(player) : "no balance";
         String power = player.getPowerRounded() + "/" + player.getPowerMaxRounded();
-        String group = P.p.getPrimaryGroup(Bukkit.getOfflinePlayer(player.getName()));
+        String group = P.p.getPrimaryGroup(Bukkit.getOfflinePlayer(UUID.fromString(player.getId())));
         return s.replace("{balance}", balance).replace("{lastSeen}", lastSeen).replace("{power}", power).replace("{group}", group);
     }
 
