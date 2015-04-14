@@ -1,5 +1,7 @@
 package com.massivecraft.factions.spigot;
 
+import org.bukkit.event.player.PlayerInteractAtEntityEvent;
+
 public class SpigotFeatures
 {
 	// -------------------------------------------- //
@@ -20,6 +22,10 @@ public class SpigotFeatures
 	{
 		try
 		{
+			// This line will throw if the class does not exist.
+			PlayerInteractAtEntityEvent.class.getName();
+			
+			// But if the event class exists we activate.
 			EngineSpigot.get().activate();
 		}
 		catch (Throwable t)
