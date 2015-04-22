@@ -253,3 +253,5 @@ permissions:
     description: sort factions
   factions.togglealliancechat:
     description: toggle alliance chat on and off
+  factions.dontlosepoweroffline:
+    description: Don't lose power for being offline.
