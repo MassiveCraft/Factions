@@ -56,9 +56,7 @@ public class CmdShow extends FCommand {
 
         double powerBoost = faction.getPowerBoost();
         String boost = (powerBoost == 0.0) ? "" : (powerBoost > 0.0 ? TL.COMMAND_SHOW_BONUS.toString() : TL.COMMAND_SHOW_PENALTY.toString() + powerBoost + ")");
-
-        String raidable = faction.getLandRounded() > faction.getPowerRounded() ? TL.RAIDABLE_TRUE.toString() : TL.RAIDABLE_FALSE.toString();
-
+        
         List<FancyMessage> allies = new ArrayList<FancyMessage>();
         List<FancyMessage> enemies = new ArrayList<FancyMessage>();
         if (!faction.isNone()) {
