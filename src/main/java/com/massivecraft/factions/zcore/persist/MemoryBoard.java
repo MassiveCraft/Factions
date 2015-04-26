@@ -82,8 +82,8 @@ public abstract class MemoryBoard extends Board {
         Faction faction = Factions.getInstance().getFactionById(factionId);
         if (faction != null && faction.isNormal()) {
             faction.clearAllClaimOwnership();
+            faction.clearWarps();
         }
-        faction.clearWarps();
         clean(factionId);
     }
 
