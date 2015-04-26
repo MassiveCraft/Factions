@@ -514,9 +514,6 @@ public abstract class MemoryFPlayer implements FPlayer {
     }
 
     public void losePowerFromBeingOffline() {
-        if(P.perms != null && P.perms.playerHas((String) null, getName(), "factions.dontlosepoweroffline")) {
-            return;
-        }
         if (Conf.powerOfflineLossPerDay > 0.0 && this.power > Conf.powerOfflineLossLimit) {
             long now = System.currentTimeMillis();
             long millisPassed = now - this.lastPowerUpdateTime;

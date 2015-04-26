@@ -296,21 +296,49 @@ public abstract class MCommand<T extends MPlugin> {
     }
 
     public String replaceFPlayerTags(String s, FPlayer player) {
-        String humanized = DurationFormatUtils.formatDurationWords(System.currentTimeMillis() - player.getLastLoginTime(), true, true) + " ago";
-        String lastSeen = player.isOnline() ? ChatColor.GREEN + "Online" : (System.currentTimeMillis() - player.getLastLoginTime() < 432000000 ? ChatColor.YELLOW + humanized : ChatColor.RED + humanized);
-        String balance = Econ.isSetup() ? Econ.getFriendlyBalance(player) : "no balance";
-        String power = player.getPowerRounded() + "/" + player.getPowerMaxRounded();
-        String group = P.p.getPrimaryGroup(Bukkit.getOfflinePlayer(UUID.fromString(player.getId())));
-        return s.replace("{balance}", balance).replace("{lastSeen}", lastSeen).replace("{power}", power).replace("{group}", group);
+        if (s.contains("{balance}")) {
+            String balance = Econ.isSetup() ? Econ.getFriendlyBalance(player) : "no balance";
+            s = s.replace("{balance}", balance);
+        }
+        if (s.contains("{lastSeen}")) {
+            String humanized = DurationFormatUtils.formatDurationWords(System.currentTimeMillis() - player.getLastLoginTime(), true, true) + " ago";
+            String lastSeen = player.isOnline() ? ChatColor.GREEN + "Online" : (System.currentTimeMillis() - player.getLastLoginTime() < 432000000 ? ChatColor.YELLOW + humanized : ChatColor.RED + humanized);
+            s = s.replace("{lastSeen}", lastSeen);
+        }
+        if (s.contains("{power}")) {
+            String power = player.getPowerRounded() + "/" + player.getPowerMaxRounded();
+            s = s.replace("{power}", power);
+        }
+        if (s.contains("{group}")) {
+            String group = P.p.getPrimaryGroup(Bukkit.getOfflinePlayer(UUID.fromString(player.getId())));
+            s = s.replace("{group}", group);
+        }
+        return s;
     }
 
     public String replaceFactionTags(String s, Faction faction) {
-        boolean raidable = faction.getLandRounded() > faction.getPower();
-        FPlayer fLeader = faction.getFPlayerAdmin();
-        String online = String.valueOf(faction.getOnlinePlayers().size());
-        String members = String.valueOf(faction.getSize());
-        String leader = fLeader == null ? "Server" : fLeader.getName().substring(0, fLeader.getName().length() > 14 ? 13 : fLeader.getName().length());
-        return s.replace("{power}", String.valueOf(faction.getPowerRounded())).replace("{maxPower}", String.valueOf(faction.getPowerMaxRounded())).replace("{leader}", leader).replace("{chunks}", String.valueOf(faction.getLandRounded())).replace("{raidable}", String.valueOf(raidable)).replace("{warps}", String.valueOf(faction.getWarps().size())).replace("{online}", online).replace("{members}", members);
+        if (s.contains("{power}")) {
+            s = s.replace("{power}", String.valueOf(faction.getPowerRounded()));
+        }
+        if (s.contains("{maxPower}")) {
+            s = s.replace("{maxPower}", String.valueOf(faction.getPowerMaxRounded()));
+        }
+        if (s.contains("{leader}")) {
+            FPlayer fLeader = faction.getFPlayerAdmin();
+            String leader = fLeader == null ? "Server" : fLeader.getName().substring(0, fLeader.getName().length() > 14 ? 13 : fLeader.getName().length());
+            s = s.replace("{leader}", leader);
+        }
+        if (s.contains("{chunks}")) {
+            s = s.replace("{chunks}", String.valueOf(faction.getLandRounded()));
+        }
+        if (s.contains("{members}")) {
+            s = s.replace("{members}", String.valueOf(faction.getSize()));
+
+        }
+        if (s.contains("{online}")) {
+            s = s.replace("{online}", String.valueOf(faction.getOnlinePlayers().size()));
+        }
+        return s;
     }
 
     // -------------------------------------------- //
