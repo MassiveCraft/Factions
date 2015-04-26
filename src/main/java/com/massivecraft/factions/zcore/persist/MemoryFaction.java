@@ -787,4 +787,8 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
             fPlayer.resetFactionData(false);
         }
     }
+
+    public Set<FLocation> getAllClaims() {
+        return Board.getInstance().getAllClaims(this);
+    }
 }

@@ -232,5 +232,7 @@ public interface Faction extends EconomyParticipator {
     // ----------------------------------------------//
     public void remove();
 
+    public Set<FLocation> getAllClaims();
+
     public void setId(String id);
 }

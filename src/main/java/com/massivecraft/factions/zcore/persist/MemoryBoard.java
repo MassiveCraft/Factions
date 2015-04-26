@@ -6,10 +6,7 @@ import com.massivecraft.factions.util.AsciiCompass;
 import com.massivecraft.factions.util.LazyLocation;
 import org.bukkit.ChatColor;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
 
 
@@ -55,6 +52,22 @@ public abstract class MemoryBoard extends Board {
         }
         clearOwnershipAt(flocation);
         flocationIds.remove(flocation);
+    }
+
+    public Set<FLocation> getAllClaims(String factionId) {
+        Set<FLocation> locs = new HashSet<FLocation>();
+        Iterator<Entry<FLocation, String>> iter = flocationIds.entrySet().iterator();
+        while (iter.hasNext()) {
+            Entry<FLocation, String> entry = iter.next();
+            if (entry.getValue().equals(factionId)) {
+                locs.add(entry.getKey());
+            }
+        }
+        return locs;
+    }
+
+    public Set<FLocation> getAllClaims(Faction faction) {
+        return getAllClaims(faction.getId());
     }
 
     // not to be confused with claims, ownership referring to further member-specific ownership of a claim
@@ -105,11 +118,13 @@ public abstract class MemoryBoard extends Board {
     }
 
     /**
-     * Checks if there is another faction within a given radius other than Wilderness.
-     * Used for HCF feature that requires a 'buffer' between factions.
+     * Checks if there is another faction within a given radius other than Wilderness. Used for HCF feature that
+     * requires a 'buffer' between factions.
+     *
      * @param flocation - center location.
-     * @param faction - faction checking for.
-     * @param radius - chunk radius to check.
+     * @param faction   - faction checking for.
+     * @param radius    - chunk radius to check.
+     *
      * @return true if another Faction is within the radius, otherwise false.
      */
     public boolean hasFactionWithin(FLocation flocation, Faction faction, int radius) {

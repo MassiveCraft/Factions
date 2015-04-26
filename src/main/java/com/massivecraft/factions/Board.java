@@ -3,6 +3,7 @@ package com.massivecraft.factions;
 import com.massivecraft.factions.zcore.persist.json.JSONBoard;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 
 public abstract class Board {
@@ -32,6 +33,10 @@ public abstract class Board {
     public abstract void setFactionAt(Faction faction, FLocation flocation);
 
     public abstract void removeAt(FLocation flocation);
+
+    public abstract Set<FLocation> getAllClaims(String factionId);
+
+    public abstract Set<FLocation> getAllClaims(Faction faction);
 
     // not to be confused with claims, ownership referring to further member-specific ownership of a claim
     public abstract void clearOwnershipAt(FLocation flocation);
