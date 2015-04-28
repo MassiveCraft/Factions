@@ -573,6 +573,7 @@ public class MConf extends Entity<MConf>
 		"CAVE_SPIDER", // Minecraft 1.?
 		"CREEPER", // Minecraft 1.?
 		"ENDERMAN", // Minecraft 1.?
+		"ENDERMITE", // Minecraft 1.8
 		"ENDER_DRAGON", // Minecraft 1.?
 		"GUARDIAN", // Minecraft 1.8
 		"GHAST", // Minecraft 1.?
