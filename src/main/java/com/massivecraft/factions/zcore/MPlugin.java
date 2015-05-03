@@ -164,6 +164,12 @@ public abstract class MPlugin extends JavaPlugin {
             }
         }
 
+        // Remove this here because I'm sick of dealing with bug reports due to bad decisions on my part.
+        if (conf.getString(TL.COMMAND_SHOW_POWER.getPath(), "").contains("%5$s")) {
+            conf.set(TL.COMMAND_SHOW_POWER.getPath(), TL.COMMAND_SHOW_POWER.getDefault());
+            log(Level.INFO, "Removed errant format specifier from f show power.");
+        }
+
         TL.setFile(conf);
         try {
             conf.save(lang);
