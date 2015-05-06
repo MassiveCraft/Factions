@@ -30,7 +30,7 @@ public class CmdFactionsList extends FactionsCommand
 		this.addAliases("l", "list");
 
 		// Args
-		this.addOptionalArg("page", "1");
+		this.addArg(ARInteger.get(), "page", "1");
 
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(Perm.LIST.node));
@@ -44,7 +44,7 @@ public class CmdFactionsList extends FactionsCommand
 	public void perform() throws MassiveException
 	{
 		// Args
-		final Integer pageHumanBased = this.arg(0, ARInteger.get(), 1);
+		final int pageHumanBased = this.readArg(1);
 		
 		// NOTE: The faction list is quite slow and mostly thread safe.
 		// We run it asynchronously to spare the primary server thread.

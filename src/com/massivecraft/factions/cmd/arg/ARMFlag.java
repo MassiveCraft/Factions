@@ -8,9 +8,10 @@ import org.bukkit.command.CommandSender;
 
 import com.massivecraft.factions.entity.MFlag;
 import com.massivecraft.massivecore.cmd.arg.ARAbstractSelect;
+import com.massivecraft.massivecore.cmd.arg.ARAllAble;
 import com.massivecraft.massivecore.util.Txt;
 
-public class ARMFlag extends ARAbstractSelect<MFlag>
+public class ARMFlag extends ARAbstractSelect<MFlag> implements ARAllAble<MFlag>
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -75,6 +76,12 @@ public class ARMFlag extends ARAbstractSelect<MFlag>
 	public Collection<String> getTabList(CommandSender sender, String arg)
 	{
 		return this.altNames(sender);
+	}
+
+	@Override
+	public Collection<MFlag> getAll(CommandSender sender)
+	{
+		return MFlag.getAll();
 	}
 	
 	// -------------------------------------------- //

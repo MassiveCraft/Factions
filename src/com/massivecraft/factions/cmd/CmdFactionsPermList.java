@@ -22,7 +22,7 @@ public class CmdFactionsPermList extends FactionsCommand
 		this.addAliases("l", "list");
 		
 		// Args
-		this.addOptionalArg("page", "1");
+		this.addArg(ARInteger.get(), "page", "1");
 		
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(Perm.PERM_LIST.node));
@@ -36,7 +36,7 @@ public class CmdFactionsPermList extends FactionsCommand
 	public void perform() throws MassiveException
 	{
 		// Args
-		Integer pageHumanBased = this.arg(0, ARInteger.get(), 1);
+		int pageHumanBased = this.readArg(1);
 		
 		// Create messages
 		List<String> messages = new ArrayList<String>();

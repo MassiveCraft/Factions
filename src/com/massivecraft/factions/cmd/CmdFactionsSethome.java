@@ -23,7 +23,7 @@ public class CmdFactionsSethome extends FactionsCommandHome
 		this.addAliases("sethome");
 
 		// Args
-		this.addOptionalArg("faction", "you");
+		this.addArg(ARFaction.get(), "faction", "you");
 
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(Perm.SETHOME.node));
@@ -38,7 +38,7 @@ public class CmdFactionsSethome extends FactionsCommandHome
 	public void perform() throws MassiveException
 	{
 		// Args
-		Faction faction = this.arg(0, ARFaction.get(), msenderFaction);
+		Faction faction = this.readArg(msenderFaction);
 		
 		PS newHome = PS.valueOf(me.getLocation());
 		

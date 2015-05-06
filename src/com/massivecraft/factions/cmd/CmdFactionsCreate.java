@@ -12,6 +12,8 @@ import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.event.EventFactionsCreate;
 import com.massivecraft.factions.event.EventFactionsMembershipChange;
 import com.massivecraft.factions.event.EventFactionsMembershipChange.MembershipChangeReason;
+import com.massivecraft.massivecore.MassiveException;
+import com.massivecraft.massivecore.cmd.arg.ARString;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.store.MStore;
 
@@ -27,7 +29,7 @@ public class CmdFactionsCreate extends FactionsCommand
 		this.addAliases("create");
 
 		// Args
-		this.addRequiredArg("name");
+		this.addArg(ARString.get(), "name");
 
 		// Requirements
 		this.addRequirements(ReqHasntFaction.get());
@@ -39,10 +41,10 @@ public class CmdFactionsCreate extends FactionsCommand
 	// -------------------------------------------- //
 	
 	@Override
-	public void perform()
+	public void perform() throws MassiveException
 	{
 		// Args
-		String newName = this.arg(0);
+		String newName = this.readArg();
 		
 		// Verify
 		if (FactionColl.get().isNameTaken(newName))

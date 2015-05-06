@@ -1,5 +1,7 @@
 package com.massivecraft.factions.cmd;
 
+import com.massivecraft.factions.cmd.arg.ARFaction;
+
 public abstract class CmdFactionsSetXSimple extends CmdFactionsSetX
 {
 	// -------------------------------------------- //
@@ -14,7 +16,7 @@ public abstract class CmdFactionsSetXSimple extends CmdFactionsSetX
 		// Args
 		if (claim)
 		{
-			this.addOptionalArg("faction", "you");
+			this.addArg(ARFaction.get(), "faction", "you");
 			this.setFactionArgIndex(0);
 		}
 	}

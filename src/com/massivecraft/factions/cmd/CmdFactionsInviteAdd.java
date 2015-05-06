@@ -1,6 +1,6 @@
 package com.massivecraft.factions.cmd;
 
-import java.util.Set;
+import java.util.Collection;
 
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
@@ -23,8 +23,7 @@ public class CmdFactionsInviteAdd extends FactionsCommand
 		this.addAliases("a", "add");
 
 		// Args
-		this.addRequiredArg("players");
-		this.setErrorOnToManyArgs(false);
+		this.addArg(ARSet.get(ARMPlayer.getAny(), true), "players", true);
 		
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(Perm.INVITE_ADD.node));
@@ -38,7 +37,7 @@ public class CmdFactionsInviteAdd extends FactionsCommand
 	public void perform() throws MassiveException
 	{
 		// Args
-		Set<MPlayer> mplayers = this.argConcatFrom(0, ARSet.get(ARMPlayer.getAny(), true));
+		Collection<MPlayer> mplayers = this.readArg();
 		
 		// MPerm
 		if ( ! MPerm.getPermInvite().has(msender, msenderFaction, true)) return;

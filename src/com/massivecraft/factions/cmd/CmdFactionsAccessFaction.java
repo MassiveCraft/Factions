@@ -21,8 +21,8 @@ public class CmdFactionsAccessFaction extends CmdFactionsAccessAbstract
 		this.addAliases("f", "faction");
 		
 		// Args
-		this.addRequiredArg("faction");
-		this.addOptionalArg("yes/no", "toggle");
+		this.addArg(ARFaction.get(), "faction");
+		this.addArg(ARBoolean.get(), "yes/no", "toggle");
 
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(Perm.ACCESS_FACTION.node));
@@ -36,8 +36,8 @@ public class CmdFactionsAccessFaction extends CmdFactionsAccessAbstract
 	public void innerPerform() throws MassiveException
 	{
 		// Args
-		Faction faction = this.arg(0, ARFaction.get());
-		Boolean newValue = this.arg(1, ARBoolean.get(), !ta.isFactionIdGranted(faction.getId()));
+		Faction faction = this.readArg();
+		boolean newValue = this.readArg(!ta.isFactionIdGranted(faction.getId()));
 		
 		// MPerm
 		if (!MPerm.getPermAccess().has(msender, hostFaction, true)) return;

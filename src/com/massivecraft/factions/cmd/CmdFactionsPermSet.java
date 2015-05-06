@@ -28,10 +28,10 @@ public class CmdFactionsPermSet extends FactionsCommand
 		this.addAliases("set");
 		
 		// Args
-		this.addRequiredArg("perm");
-		this.addRequiredArg("relation");
-		this.addRequiredArg("yes/no");
-		this.addOptionalArg("faction", "you");
+		this.addArg(ARMPerm.get(), "perm");
+		this.addArg(ARRel.get(), "relation");
+		this.addArg(ARBoolean.get(), "yes/no");
+		this.addArg(ARFaction.get(), "faction", "you");
 		
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(Perm.PERM_SET.node));
@@ -45,10 +45,10 @@ public class CmdFactionsPermSet extends FactionsCommand
 	public void perform() throws MassiveException
 	{
 		// Args
-		MPerm perm = this.arg(0, ARMPerm.get());
-		Rel rel = this.arg(1, ARRel.get());
-		Boolean value = this.arg(2, ARBoolean.get());
-		Faction faction = this.arg(3, ARFaction.get(), msenderFaction);
+		MPerm perm = this.readArg();
+		Rel rel = this.readArg();
+		Boolean value = this.readArg();
+		Faction faction = this.readArg(msenderFaction);
 		
 		// Do the sender have the right to change perms for this faction?
 		if ( ! MPerm.getPermPerms().has(msender, faction, true)) return;

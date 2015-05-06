@@ -21,8 +21,8 @@ public class CmdFactionsSetpower extends FactionsCommand
 		this.addAliases("sp", "setpower");
 		
 		// Args
-		this.addRequiredArg("player");
-		this.addRequiredArg("power");
+		this.addArg(ARMPlayer.getAny(), "player");
+		this.addArg(ARDouble.get(), "power");
 		
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(Perm.SETPOWER.node));
@@ -36,8 +36,8 @@ public class CmdFactionsSetpower extends FactionsCommand
 	public void perform() throws MassiveException
 	{
 		// Args
-		MPlayer mplayer = this.arg(0, ARMPlayer.getAny());
-		Double power = this.arg(1, ARDouble.get());
+		MPlayer mplayer = this.readArg();
+		double power = this.readArg();
 		
 		// Power
 		double oldPower = mplayer.getPower();
@@ -48,7 +48,7 @@ public class CmdFactionsSetpower extends FactionsCommand
 		double maxDifference = 0.1d;
 		if (difference < maxDifference)
 		{
-			msender.msg("%s's <i>power is already <h>%.2f<i>.", mplayer.getDisplayName(msender), newPower);
+			msg("%s's <i>power is already <h>%.2f<i>.", mplayer.getDisplayName(msender), newPower);
 			return;
 		}
 
@@ -58,7 +58,7 @@ public class CmdFactionsSetpower extends FactionsCommand
 		if (event.isCancelled()) return;
 		
 		// Inform
-		msender.msg("<i>You changed %s's <i>power from <h>%.2f <i>to <h>%.2f<i>.", mplayer.getDisplayName(msender),  oldPower, newPower);
+		msg("<i>You changed %s's <i>power from <h>%.2f <i>to <h>%.2f<i>.", mplayer.getDisplayName(msender),  oldPower, newPower);
 		if (msender != mplayer)
 		{
 			mplayer.msg("%s <i>changed your power from <h>%.2f <i>to <h>%.2f<i>.", msender.getDisplayName(mplayer), oldPower, newPower);

@@ -25,7 +25,7 @@ public class CmdFactionsMap extends FactionsCommand
 		this.addAliases("map");
 
 		// Args
-		this.addOptionalArg("on/off", "once");
+		this.addArg(ARBoolean.get(), "on/off", "once");
 
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(Perm.MAP.node));
@@ -39,13 +39,13 @@ public class CmdFactionsMap extends FactionsCommand
 	@Override
 	public void perform() throws MassiveException
 	{
-		if ( ! this.argIsSet(0))
+		if ( ! this.argIsSet())
 		{
 			showMap(Const.MAP_WIDTH, Const.MAP_HEIGHT_FULL);
 			return;
 		}
 		
-		if (this.arg(0, ARBoolean.get(), !msender.isMapAutoUpdating()))
+		if (this.readArg(!msender.isMapAutoUpdating()))
 		{
 			// And show the map once
 			showMap(Const.MAP_WIDTH, Const.MAP_HEIGHT);

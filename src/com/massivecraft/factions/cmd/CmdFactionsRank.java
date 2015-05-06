@@ -48,6 +48,9 @@ public class CmdFactionsRank extends FactionsCommand
 	private Rel targetRank = null;
 	private Rel rank = null;
 	
+	// This one is permanent
+	private ARRank rankReader = new ARRank();
+	
 	// -------------------------------------------- //
 	// CONSTRUCT
 	// -------------------------------------------- //
@@ -58,9 +61,9 @@ public class CmdFactionsRank extends FactionsCommand
 		this.addAliases("rank");
 	
 		// Args
-		this.addRequiredArg("player");
-		this.addOptionalArg("action", "show");
-		this.addOptionalArg("faction", "their");
+		this.addArg(ARMPlayer.getAny(), "player");
+		this.addArg(rankReader, "action", "show");
+		this.addArg(ARFaction.get(), "faction", "their");
 	
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(Perm.RANK.node));
@@ -123,22 +126,25 @@ public class CmdFactionsRank extends FactionsCommand
 	private void registerFields() throws MassiveException
 	{
 		// Getting the target and faction.
-		target = this.arg(0, ARMPlayer.getAny(), msender);
+		target = this.readArg(msender);
 		targetFaction = target.getFaction();
 		
-		// Rank if any passed.
-		if (this.argIsSet(1))
-		{
-			rank = this.arg(1, ARRank.get(target.getRole()));
-		}
-		
-		// Changing peoples faction.
-		endFaction = this.arg(2, ARFaction.get(), targetFaction);
-		factionChange = (endFaction != targetFaction);
 		
 		// Ranks
 		senderRank = msender.getRole();
 		targetRank = target.getRole();
+		
+		// Rank if any passed.
+		if (this.argIsSet(1))
+		{
+			this.rankReader.setStartRank(targetRank);
+			rank = this.readArg();
+		}
+		
+		// Changing peoples faction.
+		endFaction = this.readArgAt(2, targetFaction);
+		factionChange = (endFaction != targetFaction);
+
 	}
 	
 	private void unregisterFields()

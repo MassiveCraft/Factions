@@ -24,8 +24,8 @@ public class CmdFactionsTitle extends FactionsCommand
 		this.addAliases("title");
 
 		// Args
-		this.addRequiredArg("player");
-		this.addOptionalArg("title", "");
+		this.addArg(ARMPlayer.getAny(), "player");
+		this.addArg(ARString.get(), "title", "", true);
 
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(Perm.TITLE.node));
@@ -39,8 +39,8 @@ public class CmdFactionsTitle extends FactionsCommand
 	public void perform() throws MassiveException
 	{
 		// Args
-		MPlayer you = this.arg(0, ARMPlayer.getAny());
-		String newTitle = this.argConcatFrom(1, ARString.get(), "");
+		MPlayer you = this.readArg();
+		String newTitle = this.readArg("");
 		
 		newTitle = Txt.parse(newTitle);
 		if (!Perm.TITLE_COLOR.has(sender, false))

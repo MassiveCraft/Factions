@@ -5,6 +5,8 @@ import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.event.EventFactionsMotdChange;
 import com.massivecraft.massivecore.MassiveCore;
+import com.massivecraft.massivecore.MassiveException;
+import com.massivecraft.massivecore.cmd.arg.ARString;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.mixin.Mixin;
 import com.massivecraft.massivecore.util.MUtil;
@@ -22,8 +24,7 @@ public class CmdFactionsMotd extends FactionsCommand
 		this.addAliases("motd");
 
 		// Args
-		this.addOptionalArg("new", "read");
-		this.setErrorOnToManyArgs(false);
+		this.addArg(ARString.get(), "new", "read", true);
 
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(Perm.MOTD.node));
@@ -34,7 +35,7 @@ public class CmdFactionsMotd extends FactionsCommand
 	// -------------------------------------------- //
 	
 	@Override
-	public void perform()
+	public void perform() throws MassiveException
 	{	
 		// Read
 		if ( ! this.argIsSet(0))
@@ -47,7 +48,7 @@ public class CmdFactionsMotd extends FactionsCommand
 		if ( ! MPerm.getPermMotd().has(msender, msenderFaction, true)) return;
 		
 		// Args
-		String target = this.argConcatFrom(0);
+		String target = this.readArg();
 		target = target.trim();
 		target = Txt.parse(target);
 		

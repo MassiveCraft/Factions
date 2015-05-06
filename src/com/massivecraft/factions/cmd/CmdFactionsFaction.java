@@ -28,7 +28,7 @@ public class CmdFactionsFaction extends FactionsCommand
 		this.addAliases("f", "faction");
 
 		// Args
-		this.addOptionalArg("faction", "you");
+		this.addArg(ARFaction.get(), "faction", "you");
 
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(Perm.FACTION.node));
@@ -42,7 +42,7 @@ public class CmdFactionsFaction extends FactionsCommand
 	public void perform() throws MassiveException
 	{
 		// Args
-		final Faction faction = this.arg(0, ARFaction.get(), msenderFaction);
+		final Faction faction = this.readArg(msenderFaction);
 		
 		final CommandSender sender = this.sender;
 		

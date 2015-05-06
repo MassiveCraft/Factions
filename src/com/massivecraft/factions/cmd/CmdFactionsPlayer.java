@@ -27,7 +27,7 @@ public class CmdFactionsPlayer extends FactionsCommand
 		this.addAliases("p", "player");
 
 		// Args
-		this.addOptionalArg("player", "you");
+		this.addArg(ARMPlayer.getAny(), "player", "you");
 
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(Perm.PLAYER.node));
@@ -41,7 +41,7 @@ public class CmdFactionsPlayer extends FactionsCommand
 	public void perform() throws MassiveException
 	{
 		// Args
-		MPlayer mplayer = this.arg(0, ARMPlayer.getAny(), msender);
+		MPlayer mplayer = this.readArg(msender);
 		
 		// INFO: Title
 		msg(Txt.titleize("Player " + mplayer.describeTo(msender)));

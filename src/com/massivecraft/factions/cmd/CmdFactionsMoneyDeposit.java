@@ -27,8 +27,8 @@ public class CmdFactionsMoneyDeposit extends FactionsCommand
 		this.addAliases("d", "deposit");
 
 		// Args
-		this.addRequiredArg("amount");
-		this.addOptionalArg("faction", "you");
+		this.addArg(ARDouble.get(), "amount");
+		this.addArg(ARFaction.get(), "faction", "you");
 
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(Perm.MONEY_DEPOSIT.node));
@@ -42,9 +42,9 @@ public class CmdFactionsMoneyDeposit extends FactionsCommand
 	@Override
 	public void perform() throws MassiveException
 	{
-		Double amount = this.arg(0, ARDouble.get());
+		double amount = this.readArg();
 		
-		Faction faction = this.arg(1, ARFaction.get(), msenderFaction);
+		Faction faction = this.readArg(msenderFaction);
 		
 		boolean success = Econ.transferMoney(msender, msender, faction, amount);
 		

@@ -26,8 +26,8 @@ public class CmdFactionsJoin extends FactionsCommand
 		this.addAliases("join");
 
 		// Args
-		this.addRequiredArg("faction");
-		this.addOptionalArg("player", "you");
+		this.addArg(ARFaction.get(), "faction");
+		this.addArg(ARMPlayer.getAny(), "player", "you");
 
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(Perm.JOIN.node));
@@ -41,9 +41,9 @@ public class CmdFactionsJoin extends FactionsCommand
 	public void perform() throws MassiveException
 	{
 		// Args
-		Faction faction = this.arg(0, ARFaction.get());		
+		Faction faction = this.readArg();		
 
-		MPlayer mplayer = this.arg(1, ARMPlayer.getAny(), msender);
+		MPlayer mplayer = this.readArg(msender);
 		Faction mplayerFaction = mplayer.getFaction();
 		
 		boolean samePlayer = mplayer == msender;

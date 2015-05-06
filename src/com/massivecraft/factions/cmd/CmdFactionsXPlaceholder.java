@@ -24,7 +24,7 @@ public class CmdFactionsXPlaceholder extends FactionsCommand
 		this.setDesc("Use " + extensionName);
 		
 		// Args
-		this.setErrorOnToManyArgs(false);
+		this.setGivingErrorOnTooManyArgs(false);
 	}
 	
 	// -------------------------------------------- //

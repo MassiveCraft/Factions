@@ -37,7 +37,7 @@ public class CmdFactionsHome extends FactionsCommandHome
 		this.addAliases("home");
 		
 		// Args
-		this.addOptionalArg("faction", "you");
+		this.addArg(ARFaction.get(), "faction", "you");
 
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(Perm.HOME.node));
@@ -58,7 +58,7 @@ public class CmdFactionsHome extends FactionsCommandHome
 		}
 		
 		// Args
-		Faction faction = this.arg(0, ARFaction.get(), msenderFaction);
+		Faction faction = this.readArg(msenderFaction);
 		PS home = faction.getHome();
 		String homeDesc = "home for " + faction.describeTo(msender, false);
 		

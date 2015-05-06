@@ -21,8 +21,8 @@ public class CmdFactionsAccessPlayer extends CmdFactionsAccessAbstract
 		this.addAliases("p", "player");
 
 		// Args
-		this.addRequiredArg("player");
-		this.addOptionalArg("yes/no", "toggle");
+		this.addArg(ARMPlayer.getAny(), "player");
+		this.addArg(ARBoolean.get(), "yes/no", "toggle");
 
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(Perm.ACCESS_PLAYER.node));
@@ -36,8 +36,8 @@ public class CmdFactionsAccessPlayer extends CmdFactionsAccessAbstract
 	public void innerPerform() throws MassiveException
 	{
 		// Args
-		MPlayer mplayer = this.arg(0, ARMPlayer.getAny());
-		Boolean newValue = this.arg(1, ARBoolean.get(), !ta.isPlayerIdGranted(mplayer.getId()));
+		MPlayer mplayer = this.readArg();
+		boolean newValue = this.readArg(!ta.isPlayerIdGranted(mplayer.getId()));
 		
 		// MPerm
 		if (!MPerm.getPermAccess().has(msender, hostFaction, true)) return;

@@ -7,11 +7,19 @@ import com.massivecraft.factions.cmd.arg.ARFaction;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.massivecore.MassiveException;
+import com.massivecraft.massivecore.cmd.ArgSetting;
 import com.massivecraft.massivecore.cmd.arg.ARDouble;
+import com.massivecraft.massivecore.cmd.arg.ARString;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 
 public class CmdFactionsPowerBoost extends FactionsCommand
 {
+	// -------------------------------------------- //
+	// FIELDS
+	// -------------------------------------------- //
+	
+	private ArgSetting setting = ArgSetting.of(ARMPlayer.getAny(), false, "name", null);
+	
 	// -------------------------------------------- //
 	// CONSTRUCT
 	// -------------------------------------------- //
@@ -22,9 +30,9 @@ public class CmdFactionsPowerBoost extends FactionsCommand
 		this.addAliases("powerboost");
 
 		// Args
-		this.addRequiredArg("p|f|player|faction");
-		this.addRequiredArg("name");
-		this.addRequiredArg("#");
+		this.addArg(ARString.get(), "p|f|player|faction");
+		this.addArg(setting);
+		this.addArg(ARDouble.get(), "#");
 
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(Perm.POWERBOOST.node));
@@ -37,7 +45,7 @@ public class CmdFactionsPowerBoost extends FactionsCommand
 	@Override
 	public void perform() throws MassiveException
 	{
-		String type = this.arg(0).toLowerCase();
+		String type = this.<String>readArg().toLowerCase();
 		boolean doPlayer = true;
 		if (type.equals("f") || type.equals("faction"))
 		{
@@ -50,20 +58,22 @@ public class CmdFactionsPowerBoost extends FactionsCommand
 			return;
 		}
 		
-		Double targetPower = this.arg(2, ARDouble.get());
+		double targetPower = this.readArgAt(2);
 
 		String target;
 
 		if (doPlayer)
 		{
-			MPlayer targetPlayer = this.arg(1, ARMPlayer.getAny());
+			setting.setReader(ARMPlayer.getAny());
+			MPlayer targetPlayer = this.readArgAt(1);
 			
 			targetPlayer.setPowerBoost(targetPower);
 			target = "Player \""+targetPlayer.getName()+"\"";
 		}
 		else
 		{
-			Faction targetFaction = this.arg(1, ARFaction.get());
+			setting.setReader(ARFaction.get());
+			Faction targetFaction = this.readArgAt(1);
 			
 			targetFaction.setPowerBoost(targetPower);
 			target = "Faction \""+targetFaction.getName()+"\"";

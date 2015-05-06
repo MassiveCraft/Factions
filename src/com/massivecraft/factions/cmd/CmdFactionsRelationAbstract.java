@@ -23,7 +23,7 @@ public abstract class CmdFactionsRelationAbstract extends FactionsCommand
 	public CmdFactionsRelationAbstract()
 	{
 		// Aliases
-		this.addRequiredArg("faction");
+		this.addArg(ARFaction.get(), "faction");
 
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(Perm.RELATION.node));
@@ -38,7 +38,7 @@ public abstract class CmdFactionsRelationAbstract extends FactionsCommand
 	public void perform() throws MassiveException
 	{
 		// Args
-		Faction otherFaction = this.arg(0, ARFaction.get());
+		Faction otherFaction = this.readArg();
 		
 		Rel newRelation = targetRelation;
 		

@@ -20,7 +20,7 @@ public class CmdFactionsAdmin extends FactionsCommand
 		this.addAliases("admin");
 
 		// Args
-		this.addOptionalArg("on/off", "flip");
+		this.addArg(ARBoolean.get(), "on/off", "flip");
 		
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(Perm.ADMIN.node));
@@ -34,7 +34,7 @@ public class CmdFactionsAdmin extends FactionsCommand
 	public void perform() throws MassiveException
 	{
 		// Args
-		Boolean target = this.arg(0, ARBoolean.get(), !msender.isUsingAdminMode());
+		boolean target = this.readArg(!msender.isUsingAdminMode());
 		
 		// Apply
 		msender.setUsingAdminMode(target);		

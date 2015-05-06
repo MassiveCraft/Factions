@@ -20,7 +20,7 @@ public class CmdFactionsMoneyBalance extends FactionsCommand
 		this.addAliases("b", "balance");
 
 		// Args
-		this.addOptionalArg("faction", "you");
+		this.addArg(ARFaction.get(), "faction", "you");
 
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(Perm.MONEY_BALANCE.node));
@@ -34,7 +34,7 @@ public class CmdFactionsMoneyBalance extends FactionsCommand
 	@Override
 	public void perform() throws MassiveException
 	{
-		Faction faction = this.arg(0, ARFaction.get(), msenderFaction);
+		Faction faction = this.readArg(msenderFaction);
 					
 		if (faction != msenderFaction && ! Perm.MONEY_BALANCE_ANY.has(sender, true)) return;
 		

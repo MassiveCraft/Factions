@@ -27,7 +27,7 @@ public class CmdFactionsKick extends FactionsCommand
 		this.addAliases("kick");
 
 		// Args
-		this.addRequiredArg("player");
+		this.addArg(ARMPlayer.getAny(), "player");
 
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(Perm.KICK.node));
@@ -41,7 +41,7 @@ public class CmdFactionsKick extends FactionsCommand
 	public void perform() throws MassiveException
 	{
 		// Arg
-		MPlayer mplayer = this.arg(0, ARMPlayer.getAny());
+		MPlayer mplayer = this.readArg();
 		
 		// Validate
 		if (msender == mplayer)

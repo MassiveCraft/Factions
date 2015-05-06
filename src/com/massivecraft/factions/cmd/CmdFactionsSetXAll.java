@@ -3,6 +3,7 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.cmd.arg.ARFaction;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.massivecore.MassiveException;
+import com.massivecraft.massivecore.cmd.arg.ARString;
 
 public abstract class CmdFactionsSetXAll extends CmdFactionsSetX
 {
@@ -16,11 +17,11 @@ public abstract class CmdFactionsSetXAll extends CmdFactionsSetX
 		super(claim);
 		
 		// Args
-		this.addRequiredArg("all|map");
-		this.addRequiredArg("faction");
+		this.addArg(ARString.get(), "all|map");
+		this.addArg(ARFaction.get(), "faction");
 		if (claim)
 		{
-			this.addRequiredArg("newfaction");
+			this.addArg(ARFaction.get(), "newfaction");
 			this.setFactionArgIndex(2);
 		}
 	}
@@ -31,7 +32,7 @@ public abstract class CmdFactionsSetXAll extends CmdFactionsSetX
 	
 	public Faction getOldFaction() throws MassiveException
 	{
-		return this.arg(1, ARFaction.get());
+		return this.readArgAt(1);
 	}
 	
 }

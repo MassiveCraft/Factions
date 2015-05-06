@@ -2,12 +2,10 @@ package com.massivecraft.factions.cmd;
 
 import java.util.Set;
 
-import com.massivecraft.factions.cmd.arg.ARFaction;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.FactionColl;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.ps.PS;
-
 
 public abstract class CmdFactionsSetX extends FactionsCommand
 {
@@ -69,7 +67,7 @@ public abstract class CmdFactionsSetX extends FactionsCommand
 	{
 		if (this.isClaim())
 		{
-			return this.arg(this.getFactionArgIndex(), ARFaction.get(), msenderFaction);
+			return this.readArgAt(this.getFactionArgIndex(), msenderFaction);
 		}
 		else
 		{

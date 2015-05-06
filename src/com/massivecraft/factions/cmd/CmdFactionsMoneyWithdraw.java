@@ -29,8 +29,8 @@ public class CmdFactionsMoneyWithdraw extends FactionsCommand
 		this.addAliases("w", "withdraw");
 
 		// Args
-		this.addRequiredArg("amount");
-		this.addOptionalArg("faction", "you");
+		this.addArg(ARDouble.get(), "amount");
+		this.addArg(ARFaction.get(), "faction", "you");
 
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(Perm.MONEY_WITHDRAW.node));
@@ -44,8 +44,8 @@ public class CmdFactionsMoneyWithdraw extends FactionsCommand
 	@Override
 	public void perform() throws MassiveException
 	{
-		Double amount = this.arg(0, ARDouble.get());
-		Faction from = this.arg(1, ARFaction.get(), msenderFaction);
+		Double amount = this.readArg();
+		Faction from = this.readArg(msenderFaction);
 		
 		MPlayer to = msender;
 		

@@ -34,9 +34,9 @@ public class CmdFactionsStatus extends FactionsCommand
 		this.addAliases("s", "status");
 
 		// Args
-		this.addOptionalArg("page", "1");
-		this.addOptionalArg("faction", "you");
-		this.addOptionalArg("sort by", "time");
+		this.addArg(ARInteger.get(), "page", "1");
+		this.addArg(ARFaction.get(), "faction", "you");
+		this.addArg(ARSortMPlayer.get(), "sort by", "time");
 
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(Perm.STATUS.node));
@@ -50,9 +50,9 @@ public class CmdFactionsStatus extends FactionsCommand
 	public void perform() throws MassiveException
 	{
 		// Args
-		Integer pageHumanBased = this.arg(0, ARInteger.get(), 1);
-		Faction faction = this.arg(1, ARFaction.get(), msenderFaction);
-		Comparator<MPlayer> sortedBy = this.arg(2, ARSortMPlayer.get(), PlayerInactivityComparator.get());
+		Integer pageHumanBased = this.readArg(1);
+		Faction faction = this.readArg(msenderFaction);
+		Comparator<MPlayer> sortedBy = this.readArg(PlayerInactivityComparator.get());
 
 		// MPerm
 		if ( ! MPerm.getPermStatus().has(msender, faction, true)) return;

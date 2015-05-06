@@ -27,8 +27,8 @@ public class CmdFactionsInviteList extends FactionsCommand
 		this.addAliases("l", "list");
 
 		// Args
-		this.addOptionalArg("page", "1");
-		this.addOptionalArg("faction", "you");
+		this.addArg(ARInteger.get(), "page", "1");
+		this.addArg(ARFaction.get(), "faction", "you");
 		
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(Perm.INVITE_LIST.node));
@@ -42,9 +42,9 @@ public class CmdFactionsInviteList extends FactionsCommand
 	public void perform() throws MassiveException
 	{		
 		// Args	
-		Integer pageHumanBased = this.arg(0, ARInteger.get(), 1);
+		int pageHumanBased = this.readArg(1);
 		
-		Faction faction = this.arg(1, ARFaction.get(), msenderFaction);
+		Faction faction = this.readArg(msenderFaction);
 		
 		if ( faction != msenderFaction && ! Perm.INVITE_LIST_OTHER.has(sender, true)) return;
 		

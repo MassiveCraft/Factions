@@ -1,5 +1,7 @@
 package com.massivecraft.factions.cmd;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 import com.massivecraft.factions.Perm;
@@ -7,9 +9,7 @@ import com.massivecraft.factions.entity.Board;
 import com.massivecraft.factions.entity.BoardColl;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.cmd.arg.ARWorldId;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
-import com.massivecraft.massivecore.cmd.req.ReqIsPlayer;
 import com.massivecraft.massivecore.mixin.Mixin;
 import com.massivecraft.massivecore.ps.PS;
 import com.massivecraft.massivecore.util.MUtil;
@@ -17,6 +17,13 @@ import com.massivecraft.massivecore.util.MUtil;
 
 public class CmdFactionsSetAll extends CmdFactionsSetXAll
 {
+	// -------------------------------------------- //
+	// CONSTANTS
+	// -------------------------------------------- //
+	
+	public static final List<String> LIST_ALL = Collections.unmodifiableList(MUtil.list("a", "al", "all"));
+	public static final List<String> LIST_MAP = Collections.singletonList("map");
+	
 	// -------------------------------------------- //
 	// CONSTRUCT
 	// -------------------------------------------- //
@@ -30,7 +37,6 @@ public class CmdFactionsSetAll extends CmdFactionsSetXAll
 		this.addAliases("all");
 		
 		// Requirements
-		this.addRequirements(ReqIsPlayer.get());
 		String node = claim ? Perm.CLAIM_ALL.node : Perm.UNCLAIM_ALL.node;
 		this.addRequirements(ReqHasPerm.get(node));
 	}
@@ -52,7 +58,7 @@ public class CmdFactionsSetAll extends CmdFactionsSetXAll
 		Faction oldFaction = this.getOldFaction();
 		if (oldFaction == null) return null;
 		
-		if (MUtil.list("a", "al", "all").contains(this.arg(0).toLowerCase()))
+		if (LIST_ALL.contains(this.argAt(0).toLowerCase()))
 		{
 			chunks = BoardColl.get().getChunks(oldFaction);
 			this.setFormatOne("<h>%s<i> %s <h>%d <i>chunk using " + word + " all.");
@@ -61,7 +67,7 @@ public class CmdFactionsSetAll extends CmdFactionsSetXAll
 		else
 		{
 			String worldId = null;
-			if (MUtil.list("map").contains(this.arg(0).toLowerCase()))
+			if (LIST_MAP.contains(this.argAt(0).toLowerCase()))
 			{
 				if (me != null)
 				{
@@ -75,7 +81,7 @@ public class CmdFactionsSetAll extends CmdFactionsSetXAll
 			}
 			else
 			{
-				worldId = this.arg(0, ARWorldId.get());
+				worldId = this.argAt(0);
 				if (worldId == null) return null;
 			}
 			Board board = BoardColl.get().get(worldId);

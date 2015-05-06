@@ -9,7 +9,8 @@ import com.massivecraft.factions.cmd.arg.ARMPerm;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.cmd.arg.ARList;
+import com.massivecraft.massivecore.cmd.arg.ARAll;
+import com.massivecraft.massivecore.cmd.arg.ARSet;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.util.Txt;
 
@@ -25,9 +26,8 @@ public class CmdFactionsPermShow extends FactionsCommand
 		this.addAliases("s", "show");
 		
 		// Args
-		this.addOptionalArg("faction", "you");
-		this.addOptionalArg("perms", "all");
-		this.setErrorOnToManyArgs(false);
+		this.addArg(ARFaction.get(), "faction", "you");
+		this.addArg(ARAll.get(ARSet.get(ARMPerm.get(), false)), "perms", "all", true);
 		
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(Perm.PERM_SHOW.node));
@@ -41,33 +41,15 @@ public class CmdFactionsPermShow extends FactionsCommand
 	public void perform() throws MassiveException
 	{
 		// Arg: Faction
-		Faction faction = this.arg(0, ARFaction.get(), msenderFaction);
-		
-		List<MPerm> perms = new ArrayList<MPerm>();
-		
-		// Case: Show All
-		if ( ! this.argIsSet(1) || "all".equalsIgnoreCase(this.arg(1)))
-		{
-			for (MPerm mperm : MPerm.getAll())
-			{
-				if ( ! mperm.isVisible() && ! msender.isUsingAdminMode()) continue;
-				perms.add(mperm);
-			}
-		}
-		// Case: Show Some
-		else
-		{	
-			// Arg perm. Maybe we should use ARSet but that is currently buggy.
-			List<MPerm> mperms = this.arg(this.argConcatFrom(1), ARList.get(ARMPerm.get()));
-			perms.addAll(mperms);
-		}
-		
+		Faction faction = this.readArg(msenderFaction);
+		List<MPerm> mperms = this.readArg(MPerm.getAll());
+
 		// Create messages
 		List<String> messages = new ArrayList<String>();
 
 		messages.add(Txt.titleize("Perm for " + faction.describeTo(msender, true)));
 		messages.add(MPerm.getStateHeaders());
-		for (MPerm mperm : perms)
+		for (MPerm mperm : mperms)
 		{
 			messages.add(Txt.parse(mperm.getStateInfo(faction.getPermitted(mperm), true)));
 		}

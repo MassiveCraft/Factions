@@ -29,7 +29,7 @@ public class CmdFactionsDisband extends FactionsCommand
 		this.addAliases("disband");
 
 		// Args
-		this.addOptionalArg("faction", "you");
+		this.addArg(ARFaction.get(), "faction", "you");
 
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(Perm.DISBAND.node));
@@ -43,7 +43,7 @@ public class CmdFactionsDisband extends FactionsCommand
 	public void perform() throws MassiveException
 	{
 		// Args
-		Faction faction = this.arg(0, ARFaction.get(), msenderFaction);
+		Faction faction = this.readArg(msenderFaction);
 		
 		// MPerm
 		if ( ! MPerm.getPermDisband().has(msender, faction, true)) return;

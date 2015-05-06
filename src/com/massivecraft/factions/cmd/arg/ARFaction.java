@@ -1,17 +1,19 @@
 package com.massivecraft.factions.cmd.arg;
 
 import java.util.Collection;
-import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.FactionColl;
 import com.massivecraft.factions.entity.MPlayer;
+import com.massivecraft.massivecore.CaseInsensitiveComparator;
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.cmd.arg.ARAbstract;
-import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.util.IdUtil;
 
 public class ARFaction extends ARAbstract<Faction>
@@ -63,11 +65,11 @@ public class ARFaction extends ARAbstract<Faction>
 	@Override
 	public Collection<String> getTabList(CommandSender sender, String arg)
 	{
-		List<String> ret = new MassiveList<String>();
+		Set<String> ret = new TreeSet<String>(CaseInsensitiveComparator.get());
 		
 		for (Faction faction : FactionColl.get().getAll())
 		{
-			ret.add(faction.getName());
+			ret.add(ChatColor.stripColor(faction.getName()));
 		}
 		
 		return ret;

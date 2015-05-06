@@ -19,7 +19,7 @@ public class CmdFactionsSeeChunk extends FactionsCommand
 		this.addAliases("sc", "seechunk");
 		
 		// Args
-		this.addOptionalArg("active", "toggle");
+		this.addArg(ARBoolean.get(), "active", "toggle");
 
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(Perm.SEECHUNK.node));
@@ -36,11 +36,11 @@ public class CmdFactionsSeeChunk extends FactionsCommand
 		// Args
 		boolean old = msender.isSeeingChunk();
 		boolean targetDefault = !old;
-		Boolean target = this.arg(0, ARBoolean.get(), targetDefault);
+		boolean target = this.readArg(targetDefault);
 		String targetDesc = Txt.parse(target ? "<g>ON": "<b>OFF");
 		
 		// NoChange
-		if (target.equals(old))
+		if (target == old)
 		{
 			msg("<i>See Chunk is already %s<i>.", targetDesc);
 			return;

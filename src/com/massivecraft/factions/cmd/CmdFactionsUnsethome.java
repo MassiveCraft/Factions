@@ -20,7 +20,7 @@ public class CmdFactionsUnsethome extends FactionsCommandHome
 		this.addAliases("unsethome");
 
 		// Args
-		this.addOptionalArg("faction", "you");
+		this.addArg(ARFaction.get(), "faction", "you");
 
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(Perm.UNSETHOME.node));
@@ -34,7 +34,7 @@ public class CmdFactionsUnsethome extends FactionsCommandHome
 	public void perform() throws MassiveException
 	{
 		// Args
-		Faction faction = this.arg(0, ARFaction.get(), msenderFaction);
+		Faction faction = this.readArg(msenderFaction);
 		
 		// Any and MPerm
 		if ( ! MPerm.getPermSethome().has(msender, faction, true)) return;

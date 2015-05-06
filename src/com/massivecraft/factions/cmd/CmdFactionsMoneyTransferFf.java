@@ -28,9 +28,9 @@ public class CmdFactionsMoneyTransferFf extends FactionsCommand
 		this.addAliases("ff");
 
 		// Args
-		this.addRequiredArg("amount");
-		this.addRequiredArg("faction");
-		this.addRequiredArg("faction");
+		this.addArg(ARDouble.get(), "amount");
+		this.addArg(ARFaction.get(), "faction");
+		this.addArg(ARFaction.get(), "faction");
 
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(Perm.MONEY_F2F.node));
@@ -44,9 +44,9 @@ public class CmdFactionsMoneyTransferFf extends FactionsCommand
 	@Override
 	public void perform() throws MassiveException
 	{
-		Double amount = this.arg(0, ARDouble.get());
-		Faction from = this.arg(1, ARFaction.get());
-		Faction to = this.arg(2, ARFaction.get());
+		double amount = this.readArg();
+		Faction from = this.readArg();
+		Faction to = this.readArg();
 		
 		boolean success = Econ.transferMoney(msender, from, to, amount);
 

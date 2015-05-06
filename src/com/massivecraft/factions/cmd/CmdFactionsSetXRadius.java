@@ -1,5 +1,6 @@
 package com.massivecraft.factions.cmd;
 
+import com.massivecraft.factions.cmd.arg.ARFaction;
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.cmd.arg.ARInteger;
@@ -17,10 +18,10 @@ public abstract class CmdFactionsSetXRadius extends CmdFactionsSetX
 		super(claim);
 		
 		// Args
-		this.addOptionalArg("radius", "1");
+		this.addArg(ARInteger.get(), "radius", "1");
 		if (claim)
 		{
-			this.addOptionalArg("faction", "you");
+			this.addArg(ARFaction.get(), "faction", "you");
 			this.setFactionArgIndex(1);
 		}
 	}
@@ -31,8 +32,7 @@ public abstract class CmdFactionsSetXRadius extends CmdFactionsSetX
 	
 	public Integer getRadius() throws MassiveException
 	{
-		Integer radius = this.arg(0, ARInteger.get(), 1);
-		if (radius == null) return radius;
+		int radius = this.readArg(1);
 		
 		// Radius Claim Min
 		if (radius < 1)

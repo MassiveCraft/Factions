@@ -10,6 +10,7 @@ import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.factions.event.EventFactionsNameChange;
 import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.massivecore.MassiveException;
+import com.massivecraft.massivecore.cmd.arg.ARString;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 
 public class CmdFactionsName extends FactionsCommand
@@ -24,8 +25,8 @@ public class CmdFactionsName extends FactionsCommand
 		this.addAliases("name");
 
 		// Args
-		this.addRequiredArg("new name");
-		this.addOptionalArg("faction", "you");
+		this.addArg(ARString.get(), "new name");
+		this.addArg(ARFaction.get(), "faction", "you");
 
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(Perm.NAME.node));
@@ -39,9 +40,8 @@ public class CmdFactionsName extends FactionsCommand
 	public void perform() throws MassiveException
 	{
 		// Args
-		String newName = this.arg(0);
-		
-		Faction faction = this.arg(1, ARFaction.get(), msenderFaction);
+		String newName = this.readArg();
+		Faction faction = this.readArg(msenderFaction);
 		
 		// MPerm
 		if ( ! MPerm.getPermName().has(msender, faction, true)) return;

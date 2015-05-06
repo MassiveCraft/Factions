@@ -12,7 +12,6 @@ import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.event.EventFactionsInvitedChange;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.cmd.arg.ARSet;
-import com.massivecraft.massivecore.cmd.arg.ARString;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 
 public class CmdFactionsInviteRemove extends FactionsCommand
@@ -26,8 +25,7 @@ public class CmdFactionsInviteRemove extends FactionsCommand
 		this.addAliases("r", "remove");
 
 		// Args
-		this.addRequiredArg("players/all");
-		this.setErrorOnToManyArgs(false);
+		this.addArg(ARSet.get(ARMPlayer.getAny(), true), "players/all", true);
 		
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(Perm.INVITE_REMOVE.node));
@@ -44,7 +42,7 @@ public class CmdFactionsInviteRemove extends FactionsCommand
 		boolean all = false;
 		
 		// Args
-		if (this.arg(0, ARString.get()).equalsIgnoreCase("all"))
+		if ("all".equalsIgnoreCase(this.argAt(0)))
 		{
 			List<MPlayer> invitedPlayers = msenderFaction.getInvitedMPlayers();
 			// Doesn't show up if list is empty. Test at home if it worked.
@@ -58,9 +56,7 @@ public class CmdFactionsInviteRemove extends FactionsCommand
 		}
 		else
 		{
-			Set<MPlayer> senderInput = this.argConcatFrom(0, ARSet.get(ARMPlayer.getAny(), true));
-			
-			mplayers.addAll(senderInput);
+			mplayers = this.readArgAt(0);
 		}
 		
 		// MPerm

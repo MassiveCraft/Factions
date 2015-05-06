@@ -23,9 +23,9 @@ public class CmdFactionsFlagSet extends FactionsCommand
 		this.addAliases("set");
 		
 		// Args
-		this.addRequiredArg("flag");
-		this.addRequiredArg("yes/no");
-		this.addOptionalArg("faction", "you");
+		this.addArg(ARMFlag.get(), "flag");
+		this.addArg(ARBoolean.get(), "yes/no");
+		this.addArg(ARFaction.get(), "faction", "you");
 		
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(Perm.FLAG_SET.node));
@@ -39,9 +39,9 @@ public class CmdFactionsFlagSet extends FactionsCommand
 	public void perform() throws MassiveException
 	{
 		// Args
-		MFlag flag = this.arg(0, ARMFlag.get());
-		Boolean value = this.arg(1, ARBoolean.get());
-		Faction faction = this.arg(2, ARFaction.get(), msenderFaction);
+		MFlag flag = this.readArg();
+		boolean value = this.readArg();
+		Faction faction = this.readArg(msenderFaction);
 		
 		// Do the sender have the right to change flags for this faction?
 		if ( ! MPerm.getPermFlags().has(msender, faction, true)) return;

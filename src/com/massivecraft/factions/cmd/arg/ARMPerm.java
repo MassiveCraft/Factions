@@ -8,9 +8,10 @@ import org.bukkit.command.CommandSender;
 
 import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.massivecore.cmd.arg.ARAbstractSelect;
+import com.massivecraft.massivecore.cmd.arg.ARAllAble;
 import com.massivecraft.massivecore.util.Txt;
 
-public class ARMPerm extends ARAbstractSelect<MPerm>
+public class ARMPerm extends ARAbstractSelect<MPerm> implements ARAllAble<MPerm>
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -75,6 +76,12 @@ public class ARMPerm extends ARAbstractSelect<MPerm>
 	public Collection<String> getTabList(CommandSender sender, String arg)
 	{
 		return this.altNames(sender);
+	}
+
+	@Override
+	public Collection<MPerm> getAll(CommandSender sender)
+	{
+		return MPerm.getAll();
 	}
 	
 	// -------------------------------------------- //

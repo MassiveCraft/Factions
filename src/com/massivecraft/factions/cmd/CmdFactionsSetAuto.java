@@ -39,7 +39,7 @@ public class CmdFactionsSetAuto extends FactionsCommand
 		// Args
 		if (claim)
 		{
-			this.addOptionalArg("faction", "you");
+			this.addArg(ARFaction.get(), "faction", "you");
 		}
 
 		// Requirements
@@ -59,7 +59,7 @@ public class CmdFactionsSetAuto extends FactionsCommand
 		final Faction newFaction;
 		if (claim)
 		{
-			newFaction = this.arg(0, ARFaction.get(), msenderFaction);
+			newFaction = this.readArg(msenderFaction);
 		}
 		else
 		{

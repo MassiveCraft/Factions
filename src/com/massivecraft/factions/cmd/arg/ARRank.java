@@ -54,8 +54,9 @@ public class ARRank extends ARAbstractSelect<Rel>
 	// FIELDS
 	// -------------------------------------------- //
 	
-	private final Rel startRank;
+	private Rel startRank;
 	public Rel getStartRank() { return this.startRank; }
+	public void setStartRank(Rel startRank) { this.startRank = startRank; }
 	
 	// -------------------------------------------- //
 	// OVERRIDE
