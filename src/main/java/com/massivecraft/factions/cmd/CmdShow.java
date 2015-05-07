@@ -38,9 +38,10 @@ public class CmdShow extends FCommand {
         Faction faction = myFaction;
         if (this.argIsSet(0)) {
             faction = this.argAsFaction(0);
-            if (faction == null) {
-                return;
-            }
+        }
+
+        if (faction == null) {
+            return;
         }
 
         // if economy is enabled, they're not on the bypass list, and this
