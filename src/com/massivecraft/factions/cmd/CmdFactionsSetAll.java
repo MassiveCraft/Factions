@@ -56,7 +56,6 @@ public class CmdFactionsSetAll extends CmdFactionsSetXAll
 		
 		// Args
 		Faction oldFaction = this.getOldFaction();
-		if (oldFaction == null) return null;
 		
 		if (LIST_ALL.contains(this.argAt(0).toLowerCase()))
 		{

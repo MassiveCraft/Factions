@@ -1,6 +1,7 @@
 package com.massivecraft.factions.cmd;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import com.massivecraft.factions.Perm;
@@ -42,7 +43,7 @@ public class CmdFactionsPermShow extends FactionsCommand
 	{
 		// Arg: Faction
 		Faction faction = this.readArg(msenderFaction);
-		List<MPerm> mperms = this.readArg(MPerm.getAll());
+		Collection<MPerm> mperms = this.readArg(MPerm.getAll());
 
 		// Create messages
 		List<String> messages = new ArrayList<String>();
