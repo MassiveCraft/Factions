@@ -39,6 +39,30 @@ public class FactionsBlockListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+    public void onBlockFromTo(BlockFromToEvent event) {
+        if (!Conf.handleExploitLiquidFlow) {
+            return;
+        }
+        if (event.getBlock().isLiquid()) {
+            if (event.getToBlock().isEmpty()) {
+                Faction from = Board.getInstance().getFactionAt(new FLocation(event.getBlock()));
+                Faction to = Board.getInstance().getFactionAt(new FLocation(event.getToBlock()));
+                if (from == to) {
+                    // not concerned with inter-faction events
+                    return;
+                }
+                // from faction != to faction
+                if (to.isNormal()) {
+                    if (from.isNormal() && from.getRelationTo(to).isAlly()) {
+                        return;
+                    }
+                    event.setCancelled(true);
+                }
+            }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event) {
         if (!playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock().getLocation(), "destroy", false)) {
             event.setCancelled(true);
