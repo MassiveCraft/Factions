@@ -83,6 +83,10 @@ public interface Faction extends EconomyParticipator {
 
     public Location getHome();
 
+    public long getFoundedDate();
+
+    public void setFoundedDate(long newDate);
+
     public void confirmValidHome();
 
     public String getAccountId();

@@ -58,6 +58,21 @@ public class CmdTop extends FCommand {
                     return 0;
                 }
             });
+        } else if (criteria.equalsIgnoreCase("start")) {
+            Collections.sort(factionList, new Comparator<Faction>() {
+                @Override
+                public int compare(Faction f1, Faction f2) {
+                    long f1start = f1.getFoundedDate();
+                    long f2start = f2.getFoundedDate();
+                    // flip signs because a smaller date is farther in the past
+                    if (f1start > f2start) {
+                        return 1;
+                    } else if (f1start < f2start) {
+                        return -1;
+                    }
+                    return 0;
+                }
+            });
         } else if (criteria.equalsIgnoreCase("power")) {
             Collections.sort(factionList, new Comparator<Faction>() {
                 @Override
@@ -106,11 +121,11 @@ public class CmdTop extends FCommand {
                 public int compare(Faction f1, Faction f2) {
                     double f1Size = Econ.getBalance(f1.getAccountId());
                     // Lets get the balance of /all/ the players in the Faction.
-                    for(FPlayer fp : f1.getFPlayers()) {
+                    for (FPlayer fp : f1.getFPlayers()) {
                         f1Size = f1Size + Econ.getBalance(fp.getAccountId());
                     }
                     double f2Size = Econ.getBalance(f2.getAccountId());
-                    for(FPlayer fp : f2.getFPlayers()) {
+                    for (FPlayer fp : f2.getFPlayers()) {
                         f2Size = f2Size + Econ.getBalance(fp.getAccountId());
                     }
                     if (f1Size < f2Size) {
@@ -162,11 +177,13 @@ public class CmdTop extends FCommand {
             return String.valueOf(faction.getFPlayers().size());
         } else if (criteria.equalsIgnoreCase("land")) {
             return String.valueOf(faction.getLandRounded());
+        } else if (criteria.equalsIgnoreCase("start")) {
+            return sdf.format(faction.getFoundedDate());
         } else if (criteria.equalsIgnoreCase("power")) {
             return String.valueOf(faction.getPowerRounded());
         } else { // Last one is balance, and it has 3 different things it could be.
             double balance = Econ.getBalance(faction.getAccountId());
-            for(FPlayer fp : faction.getFPlayers()) {
+            for (FPlayer fp : faction.getFPlayers()) {
                 balance = balance + Econ.getBalance(fp.getAccountId());
             }
             return String.valueOf(balance);

@@ -676,6 +676,7 @@ public enum TL {
     DEFAULT_PREFIX("default-prefix", "{relationcolor}[{faction}] &r"),
     FACTION_LOGIN("faction-login", "&e%1$s &9logged in."),
     FACTION_LOGOUT("faction-logout", "&e%1$s &9logged out.."),
+    DATE_FORMAT("date-format", "MM/d/yy h:ma"), // 3/31/15 07:49AM
 
     /**
      * Raidable is used in multiple places. Allow more than just true/false.
