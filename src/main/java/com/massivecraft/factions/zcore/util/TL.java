@@ -392,7 +392,8 @@ public enum TL {
     COMMAND_RELATIONS_PEACEFUL("<i>This will have no effect while your faction is peaceful."),
     COMMAND_RELATIONS_PEACEFULOTHER("<i>This will have no effect while their faction is peaceful."),
     COMMAND_RELATIONS_DESCRIPTION("Set relation wish to another faction"),
-    COMMAND_RELATIONS_EXCEEDS_MAX("<i>Failed to set relation wish. You can only have %1$d %2%s."),
+    COMMAND_RELATIONS_EXCEEDS_ME("<i>Failed to set relation wish. You can only have %1$s %2$s."),
+    COMMAND_RELATIONS_EXCEEDS_THEY("<i>Failed to set relation wish. They can only have %1$s %2$s."),
 
     COMMAND_RELATIONS_PROPOSAL_1("%1$s<i> wishes to be your %2$s"),
     COMMAND_RELATIONS_PROPOSAL_2("<i>Type <c>/%1$s %2$s %3$s<i> to accept."),
