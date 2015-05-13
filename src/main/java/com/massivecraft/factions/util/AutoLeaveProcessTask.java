@@ -61,7 +61,7 @@ public class AutoLeaveProcessTask extends BukkitRunnable {
 
                 fplayer.leave(false);
                 iterator.remove();  // go ahead and remove this list's link to the FPlayer object
-                if(Conf.autoLeaveDeleteFPlayerData) {
+                if (Conf.autoLeaveDeleteFPlayerData) {
                     fplayer.remove();
                 }
             }

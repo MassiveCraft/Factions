@@ -42,7 +42,7 @@ public class CmdPeaceful extends FCommand {
 
         // Inform all players
         for (FPlayer fplayer : FPlayers.getInstance().getOnlinePlayers()) {
-            String blame=(fme == null ? TL.GENERIC_SERVERADMIN.toString() : fme.describeTo(fplayer, true));
+            String blame = (fme == null ? TL.GENERIC_SERVERADMIN.toString() : fme.describeTo(fplayer, true));
             if (fplayer.getFaction() == faction) {
                 fplayer.msg(TL.COMMAND_PEACEFUL_YOURS, blame, change);
             } else {

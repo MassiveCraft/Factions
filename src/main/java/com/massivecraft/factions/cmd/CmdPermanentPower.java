@@ -43,7 +43,7 @@ public class CmdPermanentPower extends FCommand {
 
         // Inform all other players
         for (FPlayer fplayer : targetFaction.getFPlayersWhereOnline(true)) {
-            if(fplayer == fme) {
+            if (fplayer == fme) {
                 continue;
             }
             String blame = (fme == null ? TL.GENERIC_SERVERADMIN.toString() : fme.describeTo(fplayer, true));

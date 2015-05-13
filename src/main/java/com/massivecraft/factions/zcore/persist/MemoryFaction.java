@@ -210,7 +210,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
 
     public long getFoundedDate() {
-        if(this.foundedDate == 0) {
+        if (this.foundedDate == 0) {
             setFoundedDate(System.currentTimeMillis());
         }
         return this.foundedDate;

@@ -68,22 +68,22 @@ public class TextUtil {
         ChatColor color = null;
         char[] chars = first.toCharArray();
 
-        for(int i = 0; i < chars.length; i++){
+        for (int i = 0; i < chars.length; i++) {
             if (chars[i] == '§') {
-                if(color != null) {
+                if (color != null) {
                     message.then(text).color(color);
                     text = "";
-                    color = ChatColor.getByChar(chars[i+1]);
+                    color = ChatColor.getByChar(chars[i + 1]);
                 } else {
-                    color = ChatColor.getByChar(chars[i+1]);
+                    color = ChatColor.getByChar(chars[i + 1]);
                 }
                 i++; // skip color char
             } else {
                 text += chars[i];
             }
         }
-        if(text.length() > 0) {
-            if(color != null) {
+        if (text.length() > 0) {
+            if (color != null) {
                 message.then(text).color(color);
             } else {
                 message.text(text);

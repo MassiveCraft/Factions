@@ -39,7 +39,7 @@ public class CmdSB extends FCommand {
     public void perform() {
         boolean toggle = toggle(me.getPlayer().getUniqueId());
         FScoreboard board = FScoreboard.get(fme);
-        if(board == null) {
+        if (board == null) {
             me.sendMessage(TL.COMMAND_TOGGLESB_DISABLED.toString());
         } else {
             me.sendMessage(TL.TOGGLE_SB.toString().replace("{value}", String.valueOf(toggle)));
