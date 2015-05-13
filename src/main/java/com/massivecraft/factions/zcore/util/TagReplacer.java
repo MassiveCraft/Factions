@@ -31,7 +31,7 @@ public enum TagReplacer {
      * Player variables, require a player
      */
     PLAYER_GROUP(TagType.PLAYER, "{group}"),
-    LAST_SEEN(TagType.PLAYER, "{last-seen}"),
+    LAST_SEEN(TagType.PLAYER, "{lastSeen}"),
     PLAYER_BALANCE(TagType.PLAYER, "{player-balance}"),
 
     /**
