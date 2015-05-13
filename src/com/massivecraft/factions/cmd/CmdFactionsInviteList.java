@@ -9,7 +9,7 @@ import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.cmd.arg.ARInteger;
+import com.massivecraft.massivecore.cmd.ArgSetting;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.pager.PagerSimple;
 import com.massivecraft.massivecore.pager.Stringifier;
@@ -27,7 +27,7 @@ public class CmdFactionsInviteList extends FactionsCommand
 		this.addAliases("l", "list");
 
 		// Args
-		this.addArg(ARInteger.get(), "page", "1");
+		this.addArg(ArgSetting.getPage());
 		this.addArg(ARFaction.get(), "faction", "you");
 		
 		// Requirements
@@ -42,7 +42,7 @@ public class CmdFactionsInviteList extends FactionsCommand
 	public void perform() throws MassiveException
 	{		
 		// Args	
-		int pageHumanBased = this.readArg(1);
+		int page = this.readArg();
 		
 		Faction faction = this.readArg(msenderFaction);
 		
@@ -56,7 +56,7 @@ public class CmdFactionsInviteList extends FactionsCommand
 		final PagerSimple<MPlayer> pager = new PagerSimple<MPlayer>(mplayers, sender);
 		
 		// Use Pager
-		List<String> messages = pager.getPageTxt(pageHumanBased, "Invited Players List", new Stringifier<MPlayer>(){
+		List<String> messages = pager.getPageTxt(page, "Invited Players List", new Stringifier<MPlayer>(){
 			
 			public String toString(MPlayer target, int index)
 			{

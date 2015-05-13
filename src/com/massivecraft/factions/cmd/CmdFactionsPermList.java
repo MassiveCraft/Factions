@@ -6,7 +6,7 @@ import java.util.List;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.cmd.arg.ARInteger;
+import com.massivecraft.massivecore.cmd.ArgSetting;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.util.Txt;
 
@@ -22,7 +22,7 @@ public class CmdFactionsPermList extends FactionsCommand
 		this.addAliases("l", "list");
 		
 		// Args
-		this.addArg(ARInteger.get(), "page", "1");
+		this.addArg(ArgSetting.getPage());
 		
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(Perm.PERM_LIST.node));
@@ -36,7 +36,7 @@ public class CmdFactionsPermList extends FactionsCommand
 	public void perform() throws MassiveException
 	{
 		// Args
-		int pageHumanBased = this.readArg(1);
+		int page = this.readArg();
 		
 		// Create messages
 		List<String> messages = new ArrayList<String>();
@@ -48,7 +48,7 @@ public class CmdFactionsPermList extends FactionsCommand
 		}
 		
 		// Send messages
-		sendMessage(Txt.getPage(messages, pageHumanBased, "Available Faction Perms", sender));
+		sendMessage(Txt.getPage(messages, page, "Available Faction Perms", sender));
 	}
 
 }

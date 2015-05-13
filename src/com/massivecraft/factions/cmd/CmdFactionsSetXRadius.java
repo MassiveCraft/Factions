@@ -18,7 +18,7 @@ public abstract class CmdFactionsSetXRadius extends CmdFactionsSetX
 		super(claim);
 		
 		// Args
-		this.addArg(ARInteger.get(), "radius", "1");
+		this.addArg(1, ARInteger.get(), "radius");
 		if (claim)
 		{
 			this.addArg(ARFaction.get(), "faction", "you");
@@ -32,7 +32,7 @@ public abstract class CmdFactionsSetXRadius extends CmdFactionsSetX
 	
 	public Integer getRadius() throws MassiveException
 	{
-		int radius = this.readArg(1);
+		int radius = this.readArg();
 		
 		// Radius Claim Min
 		if (radius < 1)

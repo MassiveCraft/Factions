@@ -13,7 +13,7 @@ import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.cmd.arg.ARInteger;
+import com.massivecraft.massivecore.cmd.ArgSetting;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.pager.PagerSimple;
 import com.massivecraft.massivecore.pager.Stringifier;
@@ -34,7 +34,7 @@ public class CmdFactionsStatus extends FactionsCommand
 		this.addAliases("s", "status");
 
 		// Args
-		this.addArg(ARInteger.get(), "page", "1");
+		this.addArg(ArgSetting.getPage());
 		this.addArg(ARFaction.get(), "faction", "you");
 		this.addArg(ARSortMPlayer.get(), "sort by", "time");
 
@@ -50,7 +50,7 @@ public class CmdFactionsStatus extends FactionsCommand
 	public void perform() throws MassiveException
 	{
 		// Args
-		Integer pageHumanBased = this.readArg(1);
+		int page = this.readArg();
 		Faction faction = this.readArg(msenderFaction);
 		Comparator<MPlayer> sortedBy = this.readArg(PlayerInactivityComparator.get());
 
@@ -66,7 +66,7 @@ public class CmdFactionsStatus extends FactionsCommand
 		String pagerTitle = Txt.parse("<i>Status of %s<i>.", faction.describeTo(msender, true));
 		
 		// Use Pager
-		List<String> messages = pager.getPageTxt(pageHumanBased, pagerTitle, new Stringifier<MPlayer>(){
+		List<String> messages = pager.getPageTxt(page, pagerTitle, new Stringifier<MPlayer>(){
 			
 			@Override
 			public String toString(MPlayer mplayer, int index)

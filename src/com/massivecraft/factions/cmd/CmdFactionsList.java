@@ -11,7 +11,7 @@ import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.FactionColl;
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.cmd.arg.ARInteger;
+import com.massivecraft.massivecore.cmd.ArgSetting;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.mixin.Mixin;
 import com.massivecraft.massivecore.pager.PagerSimple;
@@ -30,7 +30,7 @@ public class CmdFactionsList extends FactionsCommand
 		this.addAliases("l", "list");
 
 		// Args
-		this.addArg(ARInteger.get(), "page", "1");
+		this.addArg(ArgSetting.getPage());
 
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(Perm.LIST.node));
@@ -44,7 +44,7 @@ public class CmdFactionsList extends FactionsCommand
 	public void perform() throws MassiveException
 	{
 		// Args
-		final int pageHumanBased = this.readArg(1);
+		final int page = this.readArg();
 		
 		// NOTE: The faction list is quite slow and mostly thread safe.
 		// We run it asynchronously to spare the primary server thread.
@@ -59,7 +59,7 @@ public class CmdFactionsList extends FactionsCommand
 				final PagerSimple<Faction> pager = new PagerSimple<Faction>(factions, sender);
 				
 				// Use Pager
-				List<String> messages = pager.getPageTxt(pageHumanBased, "Faction List", new Stringifier<Faction>() {
+				List<String> messages = pager.getPageTxt(page, "Faction List", new Stringifier<Faction>() {
 					@Override
 					public String toString(Faction faction, int index)
 					{

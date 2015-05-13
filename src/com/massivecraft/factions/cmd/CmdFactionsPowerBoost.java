@@ -18,7 +18,8 @@ public class CmdFactionsPowerBoost extends FactionsCommand
 	// FIELDS
 	// -------------------------------------------- //
 	
-	private ArgSetting setting = ArgSetting.of(ARMPlayer.getAny(), false, "name", null);
+	private ArgSetting<MPlayer> settingMplayer = new ArgSetting<MPlayer>(ARMPlayer.getAny(), "name");
+	private ArgSetting<Faction> settingFaction = new ArgSetting<Faction>(ARFaction.get(), "name");
 	
 	// -------------------------------------------- //
 	// CONSTRUCT
@@ -31,7 +32,7 @@ public class CmdFactionsPowerBoost extends FactionsCommand
 
 		// Args
 		this.addArg(ARString.get(), "p|f|player|faction");
-		this.addArg(setting);
+		this.addArg(settingMplayer);
 		this.addArg(ARDouble.get(), "#");
 
 		// Requirements
@@ -64,7 +65,7 @@ public class CmdFactionsPowerBoost extends FactionsCommand
 
 		if (doPlayer)
 		{
-			setting.setReader(ARMPlayer.getAny());
+			this.getArgSettings().set(1, settingMplayer);
 			MPlayer targetPlayer = this.readArgAt(1);
 			
 			targetPlayer.setPowerBoost(targetPower);
@@ -72,7 +73,7 @@ public class CmdFactionsPowerBoost extends FactionsCommand
 		}
 		else
 		{
-			setting.setReader(ARFaction.get());
+			this.getArgSettings().set(1, settingFaction);
 			Faction targetFaction = this.readArgAt(1);
 			
 			targetFaction.setPowerBoost(targetPower);
