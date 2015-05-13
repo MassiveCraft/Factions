@@ -126,7 +126,7 @@ public class FCmdRoot extends FCommand {
         this.addSubCommand(this.cmdRelationNeutral);
         this.addSubCommand(this.cmdReload);
         this.addSubCommand(this.cmdSafeunclaimall);
-        this.addSubCommand(this.cmdSaveAll); 
+        this.addSubCommand(this.cmdSaveAll);
         this.addSubCommand(this.cmdSethome);
         this.addSubCommand(this.cmdShow);
         this.addSubCommand(this.cmdStatus);
