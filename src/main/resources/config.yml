@@ -315,7 +315,7 @@ help:
 #  - {faction}   : Factions tag (if none, uses lang.yml for factionless name)
 #  - {joining}   : How to join this faction
 #  - {power}     : Factions deaths until raidable value
-#  - {powerBoost}  : DTR Symbol based on current DTR (max, regen, frozen, raidable)
+#  - {power-boost}  : DTR Symbol based on current DTR (max, regen, frozen, raidable)
 #  - {maxPower}  : Factions max deaths until raidable value
 #  - {chunks}    : # of claims faction has (in chunks)
 #  - {warps}     : # of warps faction has
