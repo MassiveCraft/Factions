@@ -88,7 +88,7 @@ tooltips:
     - "&6Last Seen: &f{lastSeen}"
     - "&6Power: &f{power}"
     - "&6Rank: &f{group}"
-    - "&6Balance: &a${balance}"
+    - "&6Balance: &a${player-balance}"
 
 # Configuration section for Scoreboards
 # This will allow you to completely customize how your scoreboards look.
@@ -245,3 +245,89 @@ list:
   factionless: '<i>Factionless<i> {factionless} online'
   # You can use any variable here
   entry: '<a>{faction} <i>{online} / {members} online, <a>Land / Power / Maxpower: <i>{chunks}/{power}/{maxPower}'
+
+############################################################
+# +------------------------------------------------------+ #
+# |                Configurable /f help                  | #
+# +------------------------------------------------------+ #
+############################################################
+
+# set to true to use legacy factions help
+use-old-help: true
+
+help:
+  # You can change the page name to whatever you like
+  # We use '1' to preserve default functionality of /f help 1
+  '1':
+    - '&e&m----------------------------------------------'
+    - '                  &c&lFactions Help               '
+    - '&e&m----------------------------------------------'
+    - '&3/f create  &e>>  &7Create your own faction'
+    - '&3/f who      &e>>  &7Show factions info'
+    - '&3/f tag      &e>>  &7Change faction tag'
+    - '&3/f join     &e>>  &7Join faction'
+    - '&3/f list      &e>>  &7List all factions'
+    - '&e&m--------------&r &2/f help 2 for more &e&m--------------'
+  '2':
+    - '&e&m------------------&r&c&l Page 2 &e&m--------------------'
+    - '&3/f home     &e>>  &7Teleport to faction home'
+    - '&3/f sethome &e>>  &7Set your faction home'
+    - '&3/f leave    &e>>  &7Leave your faction'
+    - '&3/f invite    &e>>  &7Invite a player to your faction'
+    - '&3/f deinvite &e>>  &7Revoke invitation to player'
+    - '&e&m--------------&r &2/f help 3 for more &e&m--------------'
+  '3':
+    - '&e&m------------------&r&c&l Page 3 &e&m--------------------'
+    - '&3/f claim     &e>>  &7Claim land'
+    - '&3/f unclaim  &e>>  &7Unclaim land'
+    - '&3/f kick      &e>>  &7Kick player from your faction'
+    - '&3/f mod      &e>>  &7Set player role in faction'
+    - '&3/f chat     &e>>  &7Switch to faction chat'
+    - '&e&m--------------&r &2/f help 4 for more &e&m--------------'
+  '4':
+    - '&e&m------------------&r&c&l Page 4 &e&m--------------------'
+    - '&3/f version &e>>  &7Display version information'
+    - '&e&m--------------&r&2 End of /f help &e&m-----------------'
+
+############################################################
+# +------------------------------------------------------+ #
+# |                Big List of variables                 | #
+# +------------------------------------------------------+ #
+############################################################
+# Fancy variables. Can only be used in /f show
+#  - {allies-list}  : Lists each faction ally with tooltips
+#  - {enemies-list} : Lists each faction enemy with tooltips
+#  - {online-list}  : Lists all online members with tooltips
+#  - {offline-list} : Lists all offline members with tooltips
+# Player variables. Can be used in tooltips.show, scoreboards, or /f show
+#  - {group}     : Players group
+#  - {name}      : Players name
+#  - {lastSeen}  : Last time player was seen (if offline), or just 'Online'
+#  - {player-balance} : Players balance
+# Faction variables. Can be used in tooltips.list, scoreboards, or /f show
+#  - {header}    : Default factions header (ex. /f show)
+#  - {faction}   : Factions tag (if none, uses lang.yml for factionless name)
+#  - {joining}   : How to join this faction
+#  - {power}     : Factions deaths until raidable value
+#  - {powerBoost}  : DTR Symbol based on current DTR (max, regen, frozen, raidable)
+#  - {maxPower}  : Factions max deaths until raidable value
+#  - {chunks}    : # of claims faction has (in chunks)
+#  - {warps}     : # of warps faction has
+#  - {description} : Factions description
+#  - {create-date} : Date faction was created
+#  - {leader}    : Faction leader
+#  - {land-value}  : Value of all claims
+#  - {land-refund} : Calculated refund value
+#  - {allies}    : # of allies faction has
+#  - {enemies}   : # of enemies faction has
+#  - {online}    : # of faction members online
+#  - {offline}   : # of faction members offline
+#  - {members}   : # of faction members (includes offline)
+#  - {balance}      : Faction bank balance
+#  - {world}, {x}, {y}, {z} : Faction home variables. You don't need to use them all.
+# General variables. Can be used anywhere.
+# - {total-online}  : Total # of players on the server
+# - {max-warps}     : Max # of warps a faction can set
+# - {max-allies}    : Max # of allies a faction can have
+# - {max-enemies}   : Max # of enemies a faction can have
+# - {factionless}   : Count of all factionless players online
