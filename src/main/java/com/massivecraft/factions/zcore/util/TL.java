@@ -561,6 +561,7 @@ public enum TL {
     GENERIC_NOPLAYERFOUND("<b>No player \"<p>%1$s<b>\" could not be found."),
     GENERIC_ARGS_TOOFEW("<b>Too few arguments. <i>Use like this:"),
     GENERIC_ARGS_TOOMANY("<b>Strange argument \"<p>%1$s<b>\". <i>Use the command like this:"),
+    GENERIC_DEFAULTDESCRIPTION("Default faction description :("),
     GENERIC_OWNERS("Owner(s): %1$s"),
     GENERIC_PUBLICLAND("Public faction land."),
     GENERIC_FACTIONLESS("factionless"),
