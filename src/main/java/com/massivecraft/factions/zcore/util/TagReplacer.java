@@ -6,7 +6,6 @@ import com.massivecraft.factions.struct.Relation;
 import org.apache.commons.lang.time.DurationFormatUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.OfflinePlayer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -139,12 +138,8 @@ public enum TagReplacer {
                 case FACTION:
                     return !fac.isNone() ? fac.getTag(fp) : TL.GENERIC_FACTIONLESS.toString();
                 case LAST_SEEN:
-                    long lastSeen = System.currentTimeMillis() - fp.getLastLoginTime();
-                    String humanized = DurationFormatUtils.formatDurationWords(lastSeen, true, true) + TL.COMMAND_STATUS_AGOSUFFIX;
-                    String last = fp.isOnline() ? ChatColor.GREEN + TL.COMMAND_STATUS_ONLINE.toString() :
-                            (lastSeen < 432000000 ? ChatColor.YELLOW + humanized : ChatColor.RED + humanized);
-                    return String.format(TL.COMMAND_STATUS_FORMAT.toString(),
-                            ChatColor.GOLD + fp.getRole().getPrefix() + fp.getName() + ChatColor.RESET, last).trim();
+                    String humanized = DurationFormatUtils.formatDurationWords(System.currentTimeMillis() - fp.getLastLoginTime(), true, true) + TL.COMMAND_STATUS_AGOSUFFIX;
+                    return fp.isOnline() ? ChatColor.GREEN + TL.COMMAND_STATUS_ONLINE.toString() : (System.currentTimeMillis() - fp.getLastLoginTime() < 432000000 ? ChatColor.YELLOW + humanized : ChatColor.RED + humanized);
                 case PLAYER_GROUP:
                     return P.p.getPrimaryGroup(Bukkit.getOfflinePlayer(UUID.fromString(fp.getId())));
                 case PLAYER_BALANCE:
