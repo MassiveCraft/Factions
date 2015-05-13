@@ -2,12 +2,7 @@ package com.massivecraft.factions.scoreboards.sidebar;
 
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.P;
-import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.scoreboards.FSidebarProvider;
-import com.massivecraft.factions.zcore.util.TL;
-
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 
 import java.util.List;
 import java.util.ListIterator;
@@ -16,7 +11,7 @@ public class FDefaultSidebar extends FSidebarProvider {
 
     @Override
     public String getTitle(FPlayer fplayer) {
-        return replace(fplayer, P.p.getConfig().getString("scoreboard.default-title", "i love drt"));
+        return replaceTags(fplayer, P.p.getConfig().getString("scoreboard.default-title", "i love drt"));
     }
 
     @Override
@@ -25,15 +20,8 @@ public class FDefaultSidebar extends FSidebarProvider {
 
         ListIterator<String> it = lines.listIterator();
         while (it.hasNext()) {
-            it.set(replace(fplayer, it.next()));
+            it.set(replaceTags(fplayer, it.next()));
         }
         return lines;
-    }
-
-    private String replace(FPlayer fplayer, String s) {
-        String faction = !fplayer.getFaction().isNone() ? fplayer.getFaction().getTag() : TL.GENERIC_FACTIONLESS.toString();
-        String powerBoost = String.valueOf((int) fplayer.getPowerBoost());
-        s = s.replace("{name}", fplayer.getName()).replace("{power}", String.valueOf(fplayer.getPowerRounded())).replace("{balance}", String.valueOf(Econ.getFriendlyBalance(fplayer.getPlayer().getUniqueId()))).replace("{faction}", faction).replace("{maxPower}", String.valueOf(fplayer.getPowerMaxRounded())).replace("{totalOnline}", String.valueOf(Bukkit.getServer().getOnlinePlayers().size())).replace("{powerBoost}", powerBoost);
-        return ChatColor.translateAlternateColorCodes('&', s);
     }
 }

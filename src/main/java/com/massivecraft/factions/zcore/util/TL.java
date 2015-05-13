@@ -19,6 +19,8 @@ package com.massivecraft.factions.zcore.util;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 
+import java.text.SimpleDateFormat;
+
 /**
  * An enum for requesting strings from the language file. The contents of this enum file may be subject to frequent
  * changes.
@@ -436,6 +438,7 @@ public enum TL {
     COMMAND_SHOW_JOINING("<a>Joining: <i>%1$s "),
     COMMAND_SHOW_INVITATION("invitation is required"),
     COMMAND_SHOW_UNINVITED("no invitation is needed"),
+    COMMAND_SHOW_NOHOME("n/a"),
     COMMAND_SHOW_POWER("<a>Land / Power / Maxpower: <i> %1$d/%2$d/%3$d %4$s."),
     COMMAND_SHOW_BONUS(" (bonus: "),
     COMMAND_SHOW_PENALTY(" (penalty: "),
@@ -564,6 +567,7 @@ public enum TL {
     GENERIC_SERVERADMIN("A server admin"),
     GENERIC_DISABLED("disabled"),
     GENERIC_ENABLED("enabled"),
+    GENERIC_INFINITY("∞"),
     GENERIC_CONSOLEONLY("This command cannot be run as a player."),
     GENERIC_PLAYERONLY("<b>This command can only be used by ingame players."),
     GENERIC_ASKYOURLEADER("<i> Ask your leader to:"),
@@ -592,6 +596,12 @@ public enum TL {
     CHAT_ALLIANCE("alliance chat"),
     CHAT_TRUCE("truce chat"),
     CHAT_PUBLIC("public chat"),
+
+    /**
+     * Economy stuff
+     */
+
+    ECON_OFF("no %s"), // no balance, no value, no refund, etc
 
     /**
      * Relations
@@ -691,6 +701,7 @@ public enum TL {
     private String path;
     private String def;
     private static YamlConfiguration LANG;
+    public static SimpleDateFormat sdf;
 
     /**
      * Lang enum constructor.
@@ -723,6 +734,7 @@ public enum TL {
      */
     public static void setFile(YamlConfiguration config) {
         LANG = config;
+        sdf = new SimpleDateFormat(DATE_FORMAT.toString());
     }
 
     @Override

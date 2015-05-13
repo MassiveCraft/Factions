@@ -31,6 +31,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     protected boolean peaceful;
     protected Integer permanentPower;
     protected LazyLocation home;
+    protected long foundedDate;
     protected transient long lastPlayerLoggedOffTime;
     protected double money;
     protected double powerBoost;
@@ -208,6 +209,17 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         return (this.home != null) ? this.home.getLocation() : null;
     }
 
+    public long getFoundedDate() {
+        if(this.foundedDate == 0) {
+            setFoundedDate(System.currentTimeMillis());
+        }
+        return this.foundedDate;
+    }
+
+    public void setFoundedDate(long newDate) {
+        this.foundedDate = newDate;
+    }
+
     public void confirmValidHome() {
         if (!Conf.homesMustBeInClaimedTerritory || this.home == null || (this.home.getLocation() != null && Board.getInstance().getFactionAt(new FLocation(this.home.getLocation())) == this)) {
             return;
@@ -282,6 +294,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         this.permanent = false;
         this.money = 0.0;
         this.powerBoost = 0.0;
+        this.foundedDate = System.currentTimeMillis();
     }
 
     public MemoryFaction(MemoryFaction old) {
@@ -291,6 +304,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         tag = old.tag;
         description = old.description;
         open = old.open;
+        foundedDate = old.foundedDate;
         peaceful = old.peaceful;
         permanentPower = old.permanentPower;
         home = old.home;

@@ -173,6 +173,8 @@ public class CmdTop extends FCommand {
     private String getValue(Faction faction, String criteria) {
         if (criteria.equalsIgnoreCase("online")) {
             return String.valueOf(faction.getFPlayersWhereOnline(true).size());
+        } else if (criteria.equalsIgnoreCase("start")) {
+            return TL.sdf.format(faction.getFoundedDate());
         } else if (criteria.equalsIgnoreCase("members")) {
             return String.valueOf(faction.getFPlayers().size());
         } else if (criteria.equalsIgnoreCase("land")) {

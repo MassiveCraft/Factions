@@ -1,5 +1,6 @@
 package com.massivecraft.factions.zcore.util;
 
+import mkremins.fanciful.FancyMessage;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 
@@ -51,6 +52,44 @@ public class TextUtil {
         }
         matcher.appendTail(ret);
         return ret.toString();
+    }
+
+    // -------------------------------------------- //
+    // Fancy parsing
+    // -------------------------------------------- //
+
+    public FancyMessage parseFancy(String prefix) {
+        return toFancy(parse(prefix));
+    }
+
+    public static FancyMessage toFancy(String first) {
+        String text = "";
+        FancyMessage message = new FancyMessage(text);
+        ChatColor color = null;
+        char[] chars = first.toCharArray();
+
+        for(int i = 0; i < chars.length; i++){
+            if (chars[i] == '§') {
+                if(color != null) {
+                    message.then(text).color(color);
+                    text = "";
+                    color = ChatColor.getByChar(chars[i+1]);
+                } else {
+                    color = ChatColor.getByChar(chars[i+1]);
+                }
+                i++; // skip color char
+            } else {
+                text += chars[i];
+            }
+        }
+        if(text.length() > 0) {
+            if(color != null) {
+                message.then(text).color(color);
+            } else {
+                message.text(text);
+            }
+        }
+        return message;
     }
 
     // -------------------------------------------- //

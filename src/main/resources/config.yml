@@ -208,3 +208,26 @@ hcf:
   # If this is set to 0, we won't even bother checking which is how Factions has
   #   always been.
   buffer-zone: 0
+
+############################################################
+# +------------------------------------------------------+ #
+# |                Configurable /f show                  | #
+# +------------------------------------------------------+ #
+############################################################
+
+# You can use any variable here, including fancy messages. Color codes and or tags work fine.
+# Lines that arent defined wont be sent (home not set, faction not peaceful / permanent, dtr freeze)
+show:
+  # First line can be {header} for default header, or any string (we recommend &m for smooth lines ;p)
+  - '{header}'
+  - '<a>Description: <i>{description}'
+  - '<a>Joining: <i>{joining}    {peaceful}'
+  - '<a>Land / Power / Maxpower: <i> {chunks}/{power}/{maxPower}'
+  - '<a>Faction Home: <i>{world}, {x}, {y}, {z}' # if no home is set, {z} = COMMAND_SHOW_NOHOME, from lang.yml
+  - '<a>Founded: <i>{create-date}'
+  - '<a>This faction is permanent, remaining even with no members.' # only shows if faction is permanent
+  - '<a>Land value: <i>{land-value} {land-refund}'
+  - '<a>Balance: <i>{balance}'
+  - '<a>Allies(<i>{allies}<a>/<i>{max-allies}<a>): {allies-list} '
+  - '<a>Online: (<i>{online}<a>/<i>{members}<a>): {online-list}'
+  - '<a>Offline: (<i>{offline}<a>/<i>{members}<a>): {offline-list}'
