@@ -83,6 +83,7 @@ permissions:
       factions.relation: true
       factions.sethome: true
       factions.show: true
+      factions.stuck: true
       factions.tag: true
       factions.title: true
       factions.version: true
@@ -205,6 +206,8 @@ permissions:
     description: designate a faction as permanent
   factions.setpermanentpower:
     description: set permanent power for a faction
+  factions.stuck:
+    description: teleports player outside a faction
   factions.power:
     description: show player power info
   factions.power.any:

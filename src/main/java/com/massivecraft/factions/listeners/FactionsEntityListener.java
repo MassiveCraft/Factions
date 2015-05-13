@@ -5,7 +5,6 @@ import com.massivecraft.factions.event.PowerLossEvent;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.factions.zcore.util.TL;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.TravelAgent;
@@ -96,9 +95,35 @@ public class FactionsEntityListener implements Listener {
             if (!this.canDamagerHurtDamagee(sub, true)) {
                 event.setCancelled(true);
             }
+            // event is not cancelled by factions
+
+            Entity damagee = sub.getEntity();
+            Entity damager = sub.getDamager();
+
+            if (damagee != null && damagee instanceof Player) {
+                cancelFStuckTeleport((Player) damagee);
+            }
+            if (damager instanceof Player) {
+                cancelFStuckTeleport((Player) damager);
+            }
         } else if (Conf.safeZonePreventAllDamageToPlayers && isPlayerInSafeZone(event.getEntity())) {
             // Players can not take any damage in a Safe Zone
             event.setCancelled(true);
+        }
+
+        // entity took generic damage?
+        Entity entity = event.getEntity();
+        if (entity instanceof Player) {
+            cancelFStuckTeleport((Player) event.getEntity());
+        }
+    }
+
+    public void cancelFStuckTeleport(Player player) {
+        if (player == null) return;
+        UUID uuid = player.getUniqueId();
+        if (P.p.getStuckMap().containsKey(uuid)) {
+            FPlayers.getInstance().getByPlayer(player).msg(TL.COMMAND_STUCK_CANCELLED);
+            P.p.getStuckMap().remove(uuid);
         }
     }
 

@@ -65,6 +65,7 @@ public enum Permission {
     SETHOME_ANY("sethome.any"),
     SHOW("show"),
     STATUS("status"),
+    STUCK("stuck"),
     TAG("tag"),
     TITLE("title"),
     TOGGLE_ALLIANCE_CHAT("togglealliancechat"),

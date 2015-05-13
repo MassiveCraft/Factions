@@ -250,6 +250,7 @@ public class Conf {
     public static double econCostMap = 0.0;
     public static double econCostPower = 0.0;
     public static double econCostShow = 0.0;
+    public static double econCostStuck = 0.0;
     public static double econCostOpen = 0.0;
     public static double econCostAlly = 0.0;
     public static double econCostTruce = 0.0;

@@ -59,6 +59,12 @@ public abstract class MPlugin extends JavaPlugin {
         return this.baseCommands;
     }
 
+    // holds f stuck start times
+    private Map<UUID, Long> timers = new HashMap<UUID, Long>();
+
+    //holds f stuck taskids
+    public Map<UUID, Integer> stuckMap = new HashMap<UUID, Integer>();
+
     // -------------------------------------------- //
     // ENABLE
     // -------------------------------------------- //
@@ -316,6 +322,14 @@ public abstract class MPlugin extends JavaPlugin {
 
     public void postAutoSave() {
 
+    }
+
+    public Map<UUID, Integer> getStuckMap() {
+        return this.stuckMap;
+    }
+
+    public Map<UUID, Long> getTimers() {
+        return this.timers;
     }
 
     // -------------------------------------------- //

@@ -461,6 +461,16 @@ public enum TL {
     COMMAND_STATUS_AGOSUFFIX(" ago."),
     COMMAND_STATUS_DESCRIPTION("Show the status of a player"),
 
+    COMMAND_STUCK_TIMEFORMAT("m 'minutes', s 'seconds.'"),
+    COMMAND_STUCK_CANCELLED("<a>Teleport cancelled because you were damaged"),
+    COMMAND_STUCK_OUTSIDE("<a>Teleport cancelled because you left <i>%1$d <a>block radius"),
+    COMMAND_STUCK_EXISTS("<a>You are already teleporting, you must wait <i>%1$s"),
+    COMMAND_STUCK_START("<a>Teleport will commence in <i>%s<a>. Don't take or deal damage. "),
+    COMMAND_STUCK_TELEPORT("<a>Teleported safely to %1$d, %2$d, %3$d."),
+    COMMAND_STUCK_TOSTUCK("to safely teleport %1$s out"),
+    COMMAND_STUCK_FORSTUCK("for %1$s initiating a safe teleport out"),
+    COMMAND_STUCK_DESCRIPTION("Safely teleports you out of enemy faction"),
+
     COMMAND_TAG_TAKEN("<b>That tag is already taken"),
     COMMAND_TAG_TOCHANGE("to change the faction tag"),
     COMMAND_TAG_FORCHANGE("for changing the faction tag"),
