@@ -5,6 +5,7 @@ import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
+import com.massivecraft.factions.zcore.util.TagUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,10 +14,17 @@ import java.util.Comparator;
 
 public class CmdList extends FCommand {
 
+    private String[] defaults = new String[3];
+
     public CmdList() {
         super();
         this.aliases.add("list");
         this.aliases.add("ls");
+
+        // default values in case user has old config
+        defaults[0] = "&e&m----------&r&e[ &2Faction List &9{pagenumber}&e/&9{pagecount} &e]&m----------";
+        defaults[1] = "<i>Factionless<i> {factionless} online";
+        defaults[2] = "<a>{faction} <i>{online} / {members} online, <a>Land / Power / Maxpower: <i>{chunks}/{power}/{maxPower}";
 
         //this.requiredArgs.add("");
         this.optionalArgs.put("page", "1");
@@ -90,16 +98,18 @@ public class CmdList extends FCommand {
             end = factionList.size();
         }
 
-        lines.add(p.txt.titleize("Faction List " + pagenumber + "/" + pagecount));
+
+        String header = p.getConfig().getString("list.header", defaults[0]);
+        header = header.replace("{pagenumber}", String.valueOf(pagenumber)).replace("{pagecount}", String.valueOf(pagecount));
+        lines.add(p.txt.parse(header));
 
         for (Faction faction : factionList.subList(start, end)) {
             if (faction.isNone()) {
-                lines.add(p.txt.parse("<i>Factionless<i> %d online", Factions.getInstance().getNone().getFPlayersWhereOnline(true).size()));
+                lines.add(p.txt.parse(TagUtil.parsePlain(faction, p.getConfig().getString("list.factionless", defaults[1]))));
                 continue;
             }
-            lines.add(p.txt.parse("%s<i> %d/%d online, %d/%d/%d", faction.getTag(fme), faction.getFPlayersWhereOnline(true).size(), faction.getFPlayers().size(), faction.getLandRounded(), faction.getPowerRounded(), faction.getPowerMaxRounded()));
+            lines.add(p.txt.parse(TagUtil.parsePlain(faction, fme, p.getConfig().getString("list.entry", defaults[2]))));
         }
-
         sendMessage(lines);
     }
 
