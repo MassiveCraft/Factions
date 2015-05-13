@@ -191,7 +191,7 @@ public interface FPlayer extends EconomyParticipator {
 
     public boolean isInEnemyTerritory();
 
-    public void sendFactionHereMessage();
+    public void sendFactionHereMessage(Faction from);
 
     /**
      * Check if the scoreboard should be shown. Simple method to be used by above method.
