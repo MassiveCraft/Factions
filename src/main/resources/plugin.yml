@@ -99,6 +99,8 @@ permissions:
     description: hand over your admin rights
   factions.admin.any:
     description: give or revoke admin status for any player in any faction
+  factions.announce:
+    description: announce things to the peasants
   factions.autoclaim:
     description: auto-claim land as you walk around
   factions.bypass:
