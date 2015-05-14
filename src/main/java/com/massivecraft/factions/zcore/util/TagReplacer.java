@@ -30,7 +30,7 @@ public enum TagReplacer {
      */
     PLAYER_GROUP(TagType.PLAYER, "{group}"),
     LAST_SEEN(TagType.PLAYER, "{lastSeen}"),
-    PLAYER_BALANCE(TagType.PLAYER, "{player-balance}"),
+    PLAYER_BALANCE(TagType.PLAYER, "{balance}"),
 
     /**
      * Faction variables, require at least a player
@@ -57,7 +57,7 @@ public enum TagReplacer {
     DESCRIPTION(TagType.FACTION, "{description}"),
     CREATE_DATE(TagType.FACTION, "{create-date}"),
     LAND_REFUND(TagType.FACTION, "{land-refund}"),
-    BANK_BALANCE(TagType.FACTION, "{balance}"),
+    BANK_BALANCE(TagType.FACTION, "{faction-balance}"),
     ALLIES_COUNT(TagType.FACTION, "{allies}"),
     ENEMIES_COUNT(TagType.FACTION, "{enemies}"),
     ONLINE_COUNT(TagType.FACTION, "{online}"),

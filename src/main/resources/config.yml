@@ -309,7 +309,7 @@ help:
 #  - {group}     : Players group
 #  - {name}      : Players name
 #  - {lastSeen}  : Last time player was seen (if offline), or just 'Online'
-#  - {player-balance} : Players balance
+#  - {balance} : Players balance
 # Faction variables. Can be used in tooltips.list, scoreboards, or /f show
 #  - {header}    : Default factions header (ex. /f show)
 #  - {faction}   : Factions tag (if none, uses lang.yml for factionless name)
@@ -329,7 +329,7 @@ help:
 #  - {online}    : # of faction members online
 #  - {offline}   : # of faction members offline
 #  - {members}   : # of faction members (includes offline)
-#  - {balance}      : Faction bank balance
+#  - {faction-balance}      : Faction bank balance
 #  - {world}, {x}, {y}, {z} : Faction home variables. You don't need to use them all.
 # General variables. Can be used anywhere.
 # - {total-online}  : Total # of players on the server
