@@ -345,6 +345,7 @@ public class EngineMain extends EngineAbstract
 	public static void updateLastActivity(CommandSender sender)
 	{
 		if (sender == null) throw new RuntimeException("sender");
+		if (MUtil.isNpc(sender)) return;
 		MPlayer mplayer = MPlayer.get(sender);
 		mplayer.setLastActivityMillis();
 	}
@@ -389,6 +390,7 @@ public class EngineMain extends EngineAbstract
 	{
 		// Gather info ...
 		final Player player = event.getPlayer();
+		if (MUtil.isNpc(player)) return;
 		final MPlayer mplayer = MPlayer.get(player);
 		final Faction faction = mplayer.getFaction();
 		
@@ -662,6 +664,7 @@ public class EngineMain extends EngineAbstract
 		// If the player is moving from one chunk to another ...
 		if (MUtil.isSameChunk(event)) return;
 		Player player = event.getPlayer();
+		if (MUtil.isNpc(player)) return;
 		
 		// ... gather info on the player and the move ...
 		MPlayer mplayer = MPlayer.get(player);
@@ -769,6 +772,7 @@ public class EngineMain extends EngineAbstract
 	{
 		// If a player dies ...
 		Player player = event.getEntity();
+		if (MUtil.isNpc(player)) return;
 		
 		// ... and this is the first death event this tick ...
 		// (yeah other plugins can case death event to fire twice the same tick)
@@ -870,6 +874,7 @@ public class EngineMain extends EngineAbstract
 		Entity edefender = event.getEntity();
 		if (!(edefender instanceof Player)) return true;
 		Player defender = (Player)edefender;
+		if (MUtil.isNpc(defender)) return true;
 		MPlayer mdefender = MPlayer.get(edefender);
 		
 		// ... and the attacker is someone else ...
@@ -992,6 +997,7 @@ public class EngineMain extends EngineAbstract
 		Entity entity = event.getEntity();
 		if (!(entity instanceof Player)) return;
 		Player player = (Player)entity;
+		if (MUtil.isNpc(player)) return;
 		MPlayer mplayer = MPlayer.get(player);
 		
 		// ... and that player has a faction ...
@@ -1063,7 +1069,7 @@ public class EngineMain extends EngineAbstract
 	{
 		// If a player is trying to run a command ...
 		Player player = event.getPlayer();
-		
+		if (MUtil.isNpc(player)) return;
 		MPlayer mplayer = MPlayer.get(player);
 		
 		// ... and the player does not have adminmode ...
@@ -1488,6 +1494,8 @@ public class EngineMain extends EngineAbstract
 
 	public static boolean playerCanUseItemHere(Player player, PS ps, Material material, boolean verboose)
 	{
+		if (MUtil.isNpc(player)) return true;
+		
 		if ( ! MConf.get().materialsEditTools.contains(material) && ! MConf.get().materialsEditToolsDupeBug.contains(material)) return true;
 		
 		String name = player.getName();
@@ -1501,6 +1509,8 @@ public class EngineMain extends EngineAbstract
 	
 	public static boolean canPlayerUseBlock(Player player, Block block, boolean verboose)
 	{
+		if (MUtil.isNpc(player)) return true;
+		
 		String name = player.getName();
 		if (MConf.get().playersWhoBypassAllProtection.contains(name)) return true;
 
@@ -1539,6 +1549,7 @@ public class EngineMain extends EngineAbstract
 	{
 		// If a player ...
 		if (player == null) return true;
+		if (MUtil.isNpc(player)) return true;
 		
 		// ... interacts with an entity ...
 		if (entity == null) return true;
@@ -1595,6 +1606,7 @@ public class EngineMain extends EngineAbstract
 	{
 		// If a player is respawning ...
 		final Player player = event.getPlayer();
+		if (MUtil.isNpc(player)) return;
 		final MPlayer mplayer = MPlayer.get(player);
 		
 		// ... homes are enabled, active and at this priority ...

@@ -23,6 +23,7 @@ import com.massivecraft.massivecore.mixin.TeleporterException;
 import com.massivecraft.massivecore.ps.PS;
 import com.massivecraft.massivecore.teleport.Destination;
 import com.massivecraft.massivecore.teleport.DestinationSimple;
+import com.massivecraft.massivecore.util.MUtil;
 
 
 public class CmdFactionsHome extends FactionsCommandHome
@@ -119,6 +120,8 @@ public class CmdFactionsHome extends FactionsCommandHome
 
 			for (Player p : me.getServer().getOnlinePlayers())
 			{
+				if (MUtil.isNpc(p)) continue;
+				
 				if (p == null || !p.isOnline() || p.isDead() || p == me || p.getWorld() != w)
 					continue;
 

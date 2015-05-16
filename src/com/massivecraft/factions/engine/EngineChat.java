@@ -1,6 +1,7 @@
 package com.massivecraft.factions.engine;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventException;
 import org.bukkit.event.EventPriority;
@@ -14,6 +15,7 @@ import com.massivecraft.factions.chat.ChatFormatter;
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.massivecore.EngineAbstract;
 import com.massivecraft.massivecore.event.EventMassiveCorePlayerToRecipientChat;
+import com.massivecraft.massivecore.util.MUtil;
 
 public class EngineChat extends EngineAbstract
 {
@@ -104,8 +106,11 @@ public class EngineChat extends EngineAbstract
 
 	public static void parseTags(AsyncPlayerChatEvent event)
 	{
+		Player player = event.getPlayer();
+		if (MUtil.isNpc(player)) return;
+		
 		String format = event.getFormat();
-		format = ChatFormatter.format(format, event.getPlayer(), null);
+		format = ChatFormatter.format(format, player, null);
 		event.setFormat(format);
 	}
 	

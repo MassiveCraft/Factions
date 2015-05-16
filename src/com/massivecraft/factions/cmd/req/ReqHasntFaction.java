@@ -5,6 +5,7 @@ import org.bukkit.command.CommandSender;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.massivecore.cmd.MassiveCommand;
 import com.massivecraft.massivecore.cmd.req.ReqAbstract;
+import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.Txt;
 
 public class ReqHasntFaction extends ReqAbstract
@@ -25,7 +26,9 @@ public class ReqHasntFaction extends ReqAbstract
 	@Override
 	public boolean apply(CommandSender sender, MassiveCommand command)
 	{
-		return !MPlayer.get(sender).hasFaction();
+		if (MUtil.isNpc(sender)) return true;
+		MPlayer mplayer = MPlayer.get(sender);
+		return !mplayer.hasFaction();
 	}
 	
 	@Override

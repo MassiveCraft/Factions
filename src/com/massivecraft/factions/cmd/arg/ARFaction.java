@@ -10,6 +10,7 @@ import org.bukkit.command.CommandSender;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.FactionColl;
 import com.massivecraft.factions.entity.MPlayer;
+import com.massivecraft.factions.entity.MPlayerColl;
 import com.massivecraft.massivecore.CaseInsensitiveComparator;
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.MassiveException;
@@ -53,7 +54,7 @@ public class ARFaction extends ARAbstract<Faction>
 		
 		// MPlayer Name Exact
 		String id = IdUtil.getId(str);
-		MPlayer mplayer = MPlayer.get(id);
+		MPlayer mplayer = MPlayerColl.get().get(id, false);
 		if (mplayer != null)
 		{
 			return mplayer.getFaction();

@@ -17,7 +17,7 @@ public class TerritoryAccess
 	// FIELDS: RAW
 	// -------------------------------------------- //
 	
-	// TODO: remake private final
+	// TODO: Remake private final
 	// no default value, can't be null
 	public String hostFactionId;
 	public String getHostFactionId() { return this.hostFactionId; }
@@ -26,14 +26,13 @@ public class TerritoryAccess
 	private final boolean hostFactionAllowed;
 	public boolean isHostFactionAllowed() { return this.hostFactionAllowed; }
 	
-	// TODO: remake private final
+	// TODO: Remake private final
 	// default is empty
 	public Set<String> factionIds;
 	public Set<String> getFactionIds() { return this.factionIds; }
 	
-	// TODO: remake private final
 	// default is empty
-	public Set<String> playerIds;
+	private final Set<String> playerIds;
 	public Set<String> getPlayerIds() { return this.playerIds; }
 	
 	// -------------------------------------------- //

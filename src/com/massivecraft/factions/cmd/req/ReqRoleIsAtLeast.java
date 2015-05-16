@@ -6,6 +6,7 @@ import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.massivecore.cmd.MassiveCommand;
 import com.massivecraft.massivecore.cmd.req.ReqAbstract;
+import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.Txt;
 
 public class ReqRoleIsAtLeast extends ReqAbstract
@@ -33,6 +34,7 @@ public class ReqRoleIsAtLeast extends ReqAbstract
 	@Override
 	public boolean apply(CommandSender sender, MassiveCommand command)
 	{
+		if (MUtil.isNpc(sender)) return false;
 		MPlayer mplayer = MPlayer.get(sender);
 		return mplayer.getRole().isAtLeast(this.rel);
 	}

@@ -1077,6 +1077,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 		List<CommandSender> ret = new ArrayList<CommandSender>();
 		for (CommandSender player : IdUtil.getOnlineSenders())
 		{
+			if (MUtil.isNpc(player)) continue;
 			MPlayer mplayer = MPlayer.get(player);
 			if (mplayer.getFaction() != this) continue;
 			ret.add(player);
@@ -1089,6 +1090,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 		List<Player> ret = new ArrayList<Player>();
 		for (Player player : MUtil.getOnlinePlayers())
 		{
+			if (MUtil.isNpc(player)) continue;
 			MPlayer mplayer = MPlayer.get(player);
 			if (mplayer.getFaction() != this) continue;
 			ret.add(player);

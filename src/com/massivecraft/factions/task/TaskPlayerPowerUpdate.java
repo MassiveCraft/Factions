@@ -50,6 +50,7 @@ public class TaskPlayerPowerUpdate extends ModuloRepeatTask
 		
 		for (Player player : MUtil.getOnlinePlayers())
 		{
+			if (MUtil.isNpc(player)) continue;
 			if (player.isDead()) continue;
 			
 			MPlayer mplayer = MPlayer.get(player);

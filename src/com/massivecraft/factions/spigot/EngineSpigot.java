@@ -21,6 +21,7 @@ import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.massivecore.EngineAbstract;
 import com.massivecraft.massivecore.ps.PS;
+import com.massivecraft.massivecore.util.MUtil;
 
 
 public class EngineSpigot extends EngineAbstract
@@ -70,6 +71,7 @@ public class EngineSpigot extends EngineAbstract
 	{
 		// Gather Info
 		final Player player = event.getPlayer();
+		if (MUtil.isNpc(player)) return;
 		final Entity entity = event.getRightClicked();
 		final boolean verboose = true;
 		
