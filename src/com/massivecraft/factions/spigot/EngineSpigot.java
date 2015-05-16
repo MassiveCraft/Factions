@@ -71,7 +71,7 @@ public class EngineSpigot extends EngineAbstract
 	{
 		// Gather Info
 		final Player player = event.getPlayer();
-		if (MUtil.isNpc(player)) return;
+		if (MUtil.isntPlayer(player)) return;
 		final Entity entity = event.getRightClicked();
 		final boolean verboose = true;
 		

@@ -120,7 +120,7 @@ public class CmdFactionsHome extends FactionsCommandHome
 
 			for (Player p : me.getServer().getOnlinePlayers())
 			{
-				if (MUtil.isNpc(p)) continue;
+				if (MUtil.isntPlayer(p)) continue;
 				
 				if (p == null || !p.isOnline() || p.isDead() || p == me || p.getWorld() != w)
 					continue;

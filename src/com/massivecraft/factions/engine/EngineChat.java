@@ -107,7 +107,7 @@ public class EngineChat extends EngineAbstract
 	public static void parseTags(AsyncPlayerChatEvent event)
 	{
 		Player player = event.getPlayer();
-		if (MUtil.isNpc(player)) return;
+		if (MUtil.isntPlayer(player)) return;
 		
 		String format = event.getFormat();
 		format = ChatFormatter.format(format, player, null);

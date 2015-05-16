@@ -54,6 +54,8 @@ public class EngineSeeChunk extends EngineAbstract
 
 	public static void leaveAndWorldChangeRemoval(Player player)
 	{
+		if (MUtil.isntPlayer(player)) return;
+		
 		final MPlayer mplayer = MPlayer.get(player);
 		mplayer.setSeeingChunk(false);
 	}

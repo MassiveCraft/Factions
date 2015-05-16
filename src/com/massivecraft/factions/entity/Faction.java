@@ -1074,27 +1074,41 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	
 	public List<CommandSender> getOnlineCommandSenders()
 	{
+		// Create Ret
 		List<CommandSender> ret = new ArrayList<CommandSender>();
-		for (CommandSender player : IdUtil.getOnlineSenders())
+		
+		// Fill Ret
+		for (CommandSender sender : IdUtil.getOnlineSenders())
 		{
-			if (MUtil.isNpc(player)) continue;
-			MPlayer mplayer = MPlayer.get(player);
+			if (MUtil.isntSender(sender)) continue;
+			
+			MPlayer mplayer = MPlayer.get(sender);
 			if (mplayer.getFaction() != this) continue;
-			ret.add(player);
+			
+			ret.add(sender);
 		}
+		
+		// Return Ret
 		return ret;
 	}
 	
 	public List<Player> getOnlinePlayers()
 	{
+		// Create Ret
 		List<Player> ret = new ArrayList<Player>();
+		
+		// Fill Ret
 		for (Player player : MUtil.getOnlinePlayers())
 		{
-			if (MUtil.isNpc(player)) continue;
+			if (MUtil.isntPlayer(player)) continue;
+			
 			MPlayer mplayer = MPlayer.get(player);
 			if (mplayer.getFaction() != this) continue;
+			
 			ret.add(player);
 		}
+		
+		// Return Ret
 		return ret;
 	}
 

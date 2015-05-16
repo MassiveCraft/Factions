@@ -26,7 +26,8 @@ public class ReqHasntFaction extends ReqAbstract
 	@Override
 	public boolean apply(CommandSender sender, MassiveCommand command)
 	{
-		if (MUtil.isNpc(sender)) return true;
+		if (MUtil.isntSender(sender)) return true;
+		
 		MPlayer mplayer = MPlayer.get(sender);
 		return !mplayer.hasFaction();
 	}
