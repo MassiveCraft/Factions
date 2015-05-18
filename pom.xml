@@ -75,7 +75,7 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.8-R0.1-SNAPSHOT</version>
+            <version>1.8.4-R0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>net.milkbowl.vault</groupId>
@@ -96,14 +96,12 @@
         <dependency>
             <groupId>net.ess3</groupId>
             <artifactId>Essentials</artifactId>
-            <version>LATEST</version>
-            <scope>provided</scope>
+            <version>2.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>net.ess3</groupId>
             <artifactId>EssentialsChat</artifactId>
-            <version>LATEST</version>
-            <scope>provided</scope>
+            <version>2.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>mkremins</groupId>
@@ -136,7 +134,7 @@
         </repository>
         <repository>
             <id>ess-repo</id>
-            <url>http://repo.ess3.net/content/repositories/essdev</url>
+            <url>https://ci.drtshock.net/plugin/repository/everything/</url>
         </repository>
         <repository>
             <id>spigot-repo</id>
