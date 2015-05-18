@@ -74,6 +74,10 @@ public interface FPlayer extends EconomyParticipator {
 
     public boolean isSpyingChat();
 
+    public boolean showScoreboard();
+
+    public void setShowScoreboard(boolean show);
+
     // FIELD: account
     public String getAccountId();
 
@@ -192,15 +196,6 @@ public interface FPlayer extends EconomyParticipator {
     public boolean isInEnemyTerritory();
 
     public void sendFactionHereMessage(Faction from);
-
-    /**
-     * Check if the scoreboard should be shown. Simple method to be used by above method.
-     *
-     * @param toShow Faction to be shown.
-     *
-     * @return true if should show, otherwise false.
-     */
-    public boolean shouldShowScoreboard(Faction toShow);
 
     // -------------------------------
     // Actions

@@ -147,7 +147,6 @@ public class P extends MPlugin {
             AutoLeaveTask = null;
         }
 
-        cmdBase.cmdSB.save();
         super.onDisable();
     }
 

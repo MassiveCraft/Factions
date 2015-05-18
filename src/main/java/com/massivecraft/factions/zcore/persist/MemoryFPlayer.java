@@ -93,6 +93,7 @@ public abstract class MemoryFPlayer implements FPlayer {
     protected transient boolean loginPvpDisabled;
 
     protected boolean spyingChat = false;
+    protected boolean showScoreboard;
 
     public Faction getFaction() {
         if (this.factionId == null) {
@@ -238,6 +239,7 @@ public abstract class MemoryFPlayer implements FPlayer {
         this.autoWarZoneEnabled = false;
         this.loginPvpDisabled = Conf.noPVPDamageToOthersForXSecondsAfterLogin > 0;
         this.powerBoost = 0.0;
+        this.showScoreboard = P.p.getConfig().getBoolean("scoreboard.default-enabled", false);
 
         if (!Conf.newPlayerStartingFactionID.equals("0") && Factions.getInstance().isValidFactionId(Conf.newPlayerStartingFactionID)) {
             this.factionId = Conf.newPlayerStartingFactionID;
@@ -261,6 +263,7 @@ public abstract class MemoryFPlayer implements FPlayer {
         this.spyingChat = other.spyingChat;
         this.lastStoodAt = other.lastStoodAt;
         this.isAdminBypassing = other.isAdminBypassing;
+        this.showScoreboard = P.p.getConfig().getBoolean("scoreboard.default-enabled", false);
     }
 
     public void resetFactionData(boolean doSpoutUpdate) {
@@ -562,7 +565,7 @@ public abstract class MemoryFPlayer implements FPlayer {
     public void sendFactionHereMessage(Faction from) {
         Faction toShow = Board.getInstance().getFactionAt(getLastStoodAt());
         boolean showChat = true;
-        if (shouldShowScoreboard(toShow)) {
+        if (showInfoBoard(toShow)) {
             FScoreboard.get(this).setTemporarySidebar(new FInfoSidebar(toShow));
             showChat = P.p.getConfig().getBoolean("scoreboard.also-send-chat", true);
         }
@@ -578,8 +581,18 @@ public abstract class MemoryFPlayer implements FPlayer {
      *
      * @return true if should show, otherwise false.
      */
-    public boolean shouldShowScoreboard(Faction toShow) {
-        return !toShow.isWarZone() && !toShow.isNone() && !toShow.isSafeZone() && P.p.getConfig().contains("scoreboard.finfo") && P.p.getConfig().getBoolean("scoreboard.finfo-enabled", false) && P.p.cmdBase.cmdSB.showBoard(this) && FScoreboard.get(this) != null;
+    public boolean showInfoBoard(Faction toShow) {
+        return showScoreboard && !toShow.isWarZone() && !toShow.isNone() && !toShow.isSafeZone() && P.p.getConfig().contains("scoreboard.finfo") && P.p.getConfig().getBoolean("scoreboard.finfo-enabled", false) && FScoreboard.get(this) != null;
+    }
+
+    @Override
+    public boolean showScoreboard() {
+        return this.showScoreboard;
+    }
+
+    @Override
+    public void setShowScoreboard(boolean show) {
+        this.showScoreboard = show;
     }
 
     // -------------------------------
