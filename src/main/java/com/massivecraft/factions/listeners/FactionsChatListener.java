@@ -42,7 +42,7 @@ public class FactionsChatListener implements Listener {
 
             //Send to any players who are spying chat
             for (FPlayer fplayer : FPlayers.getInstance().getOnlinePlayers()) {
-                if (fplayer.isSpyingChat() && fplayer.getFaction() != myFaction) {
+                if (fplayer.isSpyingChat() && fplayer.getFaction() != myFaction && me != fplayer) {
                     fplayer.sendMessage("[FCspy] " + myFaction.getTag() + ": " + message);
                 }
             }
@@ -60,10 +60,7 @@ public class FactionsChatListener implements Listener {
             for (FPlayer fplayer : FPlayers.getInstance().getOnlinePlayers()) {
                 if (myFaction.getRelationTo(fplayer) == Relation.ALLY && !fplayer.isIgnoreAllianceChat()) {
                     fplayer.sendMessage(message);
-                }
-
-                //Send to any players who are spying chat
-                else if (fplayer.isSpyingChat()) {
+                } else if (fplayer.isSpyingChat() && me != fplayer) {
                     fplayer.sendMessage("[ACspy]: " + message);
                 }
             }
@@ -83,10 +80,7 @@ public class FactionsChatListener implements Listener {
             for (FPlayer fplayer : FPlayers.getInstance().getOnlinePlayers()) {
                 if (myFaction.getRelationTo(fplayer) == Relation.TRUCE) {
                     fplayer.sendMessage(message);
-                }
-
-                //Send to any players who are spying chat
-                else if (fplayer.isSpyingChat()) {
+                } else if (fplayer.isSpyingChat() && fplayer != me) {
                     fplayer.sendMessage("[TCspy]: " + message);
                 }
             }
