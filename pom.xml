@@ -95,12 +95,12 @@
         </dependency>
         <dependency>
             <groupId>net.ess3</groupId>
-            <artifactId>Essentials</artifactId>
+            <artifactId>EssentialsX</artifactId>
             <version>2.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>net.ess3</groupId>
-            <artifactId>EssentialsChat</artifactId>
+            <artifactId>EssentialsXChat</artifactId>
             <version>2.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
