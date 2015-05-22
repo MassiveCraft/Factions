@@ -32,7 +32,7 @@ public abstract class CmdFactionsSetXRadius extends CmdFactionsSetX
 	
 	public Integer getRadius() throws MassiveException
 	{
-		int radius = this.readArg();
+		int radius = this.readArgAt(0);
 		
 		// Radius Claim Min
 		if (radius < 1)
