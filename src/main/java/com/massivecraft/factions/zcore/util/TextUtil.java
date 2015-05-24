@@ -1,6 +1,7 @@
 package com.massivecraft.factions.zcore.util;
 
-import mkremins.fanciful.FancyMessage;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 
@@ -55,41 +56,24 @@ public class TextUtil {
     }
 
     // -------------------------------------------- //
-    // Fancy parsing
+    // Component parsing
     // -------------------------------------------- //
 
-    public FancyMessage parseFancy(String prefix) {
-        return toFancy(parse(prefix));
+    public BaseComponent parseComponent(String prefix) {
+        return toComponent(parse(prefix));
     }
 
-    public static FancyMessage toFancy(String first) {
-        String text = "";
-        FancyMessage message = new FancyMessage(text);
-        ChatColor color = null;
-        char[] chars = first.toCharArray();
-
-        for (int i = 0; i < chars.length; i++) {
-            if (chars[i] == '§') {
-                if (color != null) {
-                    message.then(text).color(color);
-                    text = "";
-                    color = ChatColor.getByChar(chars[i + 1]);
-                } else {
-                    color = ChatColor.getByChar(chars[i + 1]);
-                }
-                i++; // skip color char
-            } else {
-                text += chars[i];
-            }
+    public static BaseComponent toComponent(String first) {
+        BaseComponent[] components = TextComponent.fromLegacyText(first);
+        if (components.length == 0) {
+            return null;
         }
-        if (text.length() > 0) {
-            if (color != null) {
-                message.then(text).color(color);
-            } else {
-                message.text(text);
-            }
+        // convert it to a single component, for ease
+        BaseComponent component = components[0];
+        for (int i = 1; i < components.length; i++) {
+            component.addExtra(components[i]);
         }
-        return message;
+        return component;
     }
 
     // -------------------------------------------- //

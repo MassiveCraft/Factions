@@ -4,8 +4,7 @@ import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
-import mkremins.fanciful.FancyMessage;
-import org.bukkit.ChatColor;
+import net.md_5.bungee.api.chat.*;
 
 public class CmdInvite extends FCommand {
 
@@ -50,9 +49,13 @@ public class CmdInvite extends FCommand {
         }
 
         // Tooltips, colors, and commands only apply to the string immediately before it.
-        FancyMessage message = new FancyMessage(fme.describeTo(you, true)).tooltip(TL.COMMAND_INVITE_CLICKTOJOIN.toString()).command(Conf.baseCommandAliases.get(0) + " join " + myFaction.getTag()).then(TL.COMMAND_INVITE_INVITEDYOU.toString()).color(ChatColor.YELLOW).tooltip(TL.COMMAND_INVITE_CLICKTOJOIN.toString()).command(Conf.baseCommandAliases.get(0) + " join " + myFaction.getTag()).then(myFaction.describeTo(you)).tooltip(TL.COMMAND_INVITE_CLICKTOJOIN.toString()).command(Conf.baseCommandAliases.get(0) + " join " + myFaction.getTag());
+        TextComponent component = new TextComponent(fme.describeTo(you, true));
+        component.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new BaseComponent[]{new TextComponent(TL.COMMAND_INVITE_CLICKTOJOIN.toString())}));
+        component.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, Conf.baseCommandAliases.get(0) + " join " + myFaction.getTag()));
+        component.addExtra(new ComponentBuilder(TL.COMMAND_INVITE_INVITEDYOU.toString()).color(net.md_5.bungee.api.ChatColor.YELLOW).create()[0]);
+        component.addExtra(new ComponentBuilder(myFaction.describeTo(you)).color(net.md_5.bungee.api.ChatColor.YELLOW).create()[0]);
 
-        message.send(you.getPlayer());
+        you.getPlayer().spigot().sendMessage(component);
 
         //you.msg("%s<i> invited you to %s", fme.describeTo(you, true), myFaction.describeTo(you));
         myFaction.msg(TL.COMMAND_INVITE_INVITED, fme.describeTo(myFaction, true), you.describeTo(myFaction));

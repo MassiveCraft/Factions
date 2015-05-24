@@ -6,8 +6,10 @@ import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.util.TL;
-import mkremins.fanciful.FancyMessage;
-import org.bukkit.ChatColor;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 
 public class CmdMod extends FCommand {
 
@@ -31,13 +33,18 @@ public class CmdMod extends FCommand {
     public void perform() {
         FPlayer you = this.argAsBestFPlayerMatch(0);
         if (you == null) {
-            FancyMessage msg = new FancyMessage(TL.COMMAND_MOD_CANDIDATES.toString()).color(ChatColor.GOLD);
+            TextComponent component = new TextComponent(TL.COMMAND_MOD_CANDIDATES.toString());
+            component.setColor(net.md_5.bungee.api.ChatColor.GOLD);
             for (FPlayer player : myFaction.getFPlayersWhereRole(Role.NORMAL)) {
                 String s = player.getName();
-                msg.then(s + " ").color(ChatColor.WHITE).tooltip(TL.COMMAND_MOD_CLICKTOPROMOTE.toString() + s).command(Conf.baseCommandAliases.get(0) + " mod " + s);
+                TextComponent then = new TextComponent(s + " ");
+                then.setColor(net.md_5.bungee.api.ChatColor.WHITE);
+                then.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new BaseComponent[]{new TextComponent(TL.COMMAND_MOD_CLICKTOPROMOTE.toString() + s)}));
+                then.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, Conf.baseCommandAliases.get(0) + " mod " + s));
+                component.addExtra(then);
             }
 
-            sendFancyMessage(msg);
+            fme.getPlayer().spigot().sendMessage(component);
             return;
         }
 
