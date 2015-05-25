@@ -7,7 +7,7 @@ import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TagReplacer;
 import com.massivecraft.factions.zcore.util.TagUtil;
-import net.md_5.bungee.api.chat.BaseComponent;
+import mkremins.fanciful.FancyMessage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,10 +79,10 @@ public class CmdShow extends FCommand {
 
         for (String raw : show) {
             String parsed = TagUtil.parsePlain(faction, fme, raw); // use relations
-            if (TagUtil.hasComponent(parsed)) {
-                List<BaseComponent> components = TagUtil.parseComponent(faction, fme, parsed);
-                if (components != null) {
-                    fme.getPlayer().spigot().sendMessage(components.toArray(new BaseComponent[components.size()]));
+            if (TagUtil.hasFancy(parsed)) {
+                List<FancyMessage> fancy = TagUtil.parseFancy(faction, fme, parsed);
+                if (fancy != null) {
+                    sendFancyMessage(fancy);
                 }
                 continue;
             }

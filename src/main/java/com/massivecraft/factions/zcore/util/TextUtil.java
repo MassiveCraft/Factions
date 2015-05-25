@@ -1,7 +1,6 @@
 package com.massivecraft.factions.zcore.util;
 
-import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.TextComponent;
+import mkremins.fanciful.FancyMessage;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 
@@ -56,24 +55,41 @@ public class TextUtil {
     }
 
     // -------------------------------------------- //
-    // Component parsing
+    // Fancy parsing
     // -------------------------------------------- //
 
-    public BaseComponent parseComponent(String prefix) {
-        return toComponent(parse(prefix));
+    public FancyMessage parseFancy(String prefix) {
+        return toFancy(parse(prefix));
     }
 
-    public static BaseComponent toComponent(String first) {
-        BaseComponent[] components = TextComponent.fromLegacyText(first);
-        if (components.length == 0) {
-            return null;
+    public static FancyMessage toFancy(String first) {
+        String text = "";
+        FancyMessage message = new FancyMessage(text);
+        ChatColor color = null;
+        char[] chars = first.toCharArray();
+
+        for (int i = 0; i < chars.length; i++) {
+            if (chars[i] == '§') {
+                if (color != null) {
+                    message.then(text).color(color);
+                    text = "";
+                    color = ChatColor.getByChar(chars[i + 1]);
+                } else {
+                    color = ChatColor.getByChar(chars[i + 1]);
+                }
+                i++; // skip color char
+            } else {
+                text += chars[i];
+            }
         }
-        // convert it to a single component, for ease
-        BaseComponent component = components[0];
-        for (int i = 1; i < components.length; i++) {
-            component.addExtra(components[i]);
+        if (text.length() > 0) {
+            if (color != null) {
+                message.then(text).color(color);
+            } else {
+                message.text(text);
+            }
         }
-        return component;
+        return message;
     }
 
     // -------------------------------------------- //

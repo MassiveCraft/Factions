@@ -6,9 +6,7 @@ import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.util.MiscUtil;
-import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.HoverEvent;
-import net.md_5.bungee.api.chat.TextComponent;
+import mkremins.fanciful.FancyMessage;
 import org.bukkit.ChatColor;
 
 import java.util.ArrayList;
@@ -76,34 +74,33 @@ public class TagUtil {
         return line;
     }
 
-
     /**
-     * Scan a line and parse the component variable into a component list
+     * Scan a line and parse the fancy variable into a fancy list
      *
      * @param faction for faction (viewers faction)
      * @param fme     for player (viewer)
-     * @param line    component prefix
+     * @param line    fancy message prefix
      *
      * @return
      */
-    public static List<BaseComponent> parseComponent(Faction faction, FPlayer fme, String line) {
+    public static List<FancyMessage> parseFancy(Faction faction, FPlayer fme, String line) {
         for (TagReplacer tagReplacer : TagReplacer.getByType(TagType.FANCY)) {
             if (tagReplacer.contains(line)) {
                 String clean = line.replace(tagReplacer.getTag(), ""); // remove tag
-                return getComponent(faction, fme, tagReplacer, clean);
+                return getFancy(faction, fme, tagReplacer, clean);
             }
         }
         return null;
     }
 
     /**
-     * Checks if a line has component variables
+     * Checks if a line has fancy variables
      *
      * @param line raw line from config with variables
      *
      * @return if the line has fancy variables
      */
-    public static boolean hasComponent(String line) {
+    public static boolean hasFancy(String line) {
         for (TagReplacer tagReplacer : TagReplacer.getByType(TagType.FANCY)) {
             if (tagReplacer.contains(line)) {
                 return true;
@@ -112,9 +109,8 @@ public class TagUtil {
         return false;
     }
 
-
     /**
-     * Lets get components?
+     * Lets get fancy.
      *
      * @param target Faction to get relate from
      * @param fme    Player to relate to
@@ -122,11 +118,11 @@ public class TagUtil {
      *
      * @return list of fancy messages to send
      */
-    protected static List<BaseComponent> getComponent(Faction target, FPlayer fme, TagReplacer type, String prefix) {
-        List<BaseComponent> components = new ArrayList<BaseComponent>();
+    protected static List<FancyMessage> getFancy(Faction target, FPlayer fme, TagReplacer type, String prefix) {
+        List<FancyMessage> fancyMessages = new ArrayList<FancyMessage>();
         switch (type) {
             case ALLIES_LIST:
-                BaseComponent currentAllies = P.p.txt.parseComponent(prefix);
+                FancyMessage currentAllies = P.p.txt.parseFancy(prefix);
                 boolean firstAlly = true;
                 for (Faction otherFaction : Factions.getInstance().getAllFactions()) {
                     if (otherFaction == target) {
@@ -134,27 +130,19 @@ public class TagUtil {
                     }
                     String s = otherFaction.getTag(fme);
                     if (otherFaction.getRelationTo(target).isAlly()) {
-                        TextComponent then = new TextComponent(firstAlly ? s : ", " + s);
-                        List<String> list = tipFaction(otherFaction);
-                        TextComponent[] hover = new TextComponent[list.size()];
-                        for (int i = 0; i < list.size(); i++) {
-                            TextComponent component = new TextComponent(list.get(i));
-                            component.setColor(net.md_5.bungee.api.ChatColor.valueOf(fme.getColorTo(otherFaction).name()));
-                            hover[i] = component;
-                        }
-                        then.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, hover));
-                        currentAllies.addExtra(then);
+                        currentAllies.then(firstAlly ? s : ", " + s);
+                        currentAllies.tooltip(tipFaction(otherFaction)).color(fme.getColorTo(otherFaction));
                         firstAlly = false;
-                        if (currentAllies.toPlainText().length() > ARBITRARY_LIMIT) {
-                            components.add(currentAllies);
-                            currentAllies = new TextComponent("");
+                        if (currentAllies.toJSONString().length() > ARBITRARY_LIMIT) {
+                            fancyMessages.add(currentAllies);
+                            currentAllies = new FancyMessage("");
                         }
                     }
                 }
-                components.add(currentAllies);
-                return components; // we must return here and not outside the switch
+                fancyMessages.add(currentAllies);
+                return fancyMessages; // we must return here and not outside the switch
             case ENEMIES_LIST:
-                BaseComponent currentEnemies = P.p.txt.parseComponent(prefix);
+                FancyMessage currentEnemies = P.p.txt.parseFancy(prefix);
                 boolean firstEnemy = true;
                 for (Faction otherFaction : Factions.getInstance().getAllFactions()) {
                     if (otherFaction == target) {
@@ -162,73 +150,49 @@ public class TagUtil {
                     }
                     String s = otherFaction.getTag(fme);
                     if (otherFaction.getRelationTo(target).isEnemy()) {
-                        TextComponent then = new TextComponent(firstEnemy ? s : ", " + s);
-                        List<String> list = tipFaction(otherFaction);
-                        TextComponent[] hover = new TextComponent[list.size()];
-                        for (int i = 0; i < list.size(); i++) {
-                            TextComponent component = new TextComponent(list.get(i));
-                            component.setColor(net.md_5.bungee.api.ChatColor.valueOf(fme.getColorTo(otherFaction).name()));
-                            hover[i] = component;
-                        }
-                        then.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, hover));
-                        currentEnemies.addExtra(then);
+                        currentEnemies.then(firstEnemy ? s : ", " + s);
+                        currentEnemies.tooltip(tipFaction(otherFaction)).color(fme.getColorTo(otherFaction));
                         firstEnemy = false;
-                        if (currentEnemies.toPlainText().length() > ARBITRARY_LIMIT) {
-                            components.add(currentEnemies);
-                            currentEnemies = new TextComponent("");
+                        if (currentEnemies.toJSONString().length() > ARBITRARY_LIMIT) {
+                            fancyMessages.add(currentEnemies);
+                            currentEnemies = new FancyMessage("");
                         }
                     }
                 }
-                components.add(currentEnemies);
-                return components; // we must return here and not outside the switch
+                fancyMessages.add(currentEnemies);
+                return fancyMessages; // we must return here and not outside the switch
             case ONLINE_LIST:
-                BaseComponent currentOnline = P.p.txt.parseComponent(prefix);
+                FancyMessage currentOnline = P.p.txt.parseFancy(prefix);
                 boolean firstOnline = true;
                 for (FPlayer p : MiscUtil.rankOrder(target.getFPlayersWhereOnline(true))) {
                     String name = p.getNameAndTitle();
-                    TextComponent then = new TextComponent(firstOnline ? name : ", " + name);
-                    List<String> list = tipPlayer(p);
-                    TextComponent[] hover = new TextComponent[list.size()];
-                    for (int i = 0; i < list.size(); i++) {
-                        TextComponent component = new TextComponent(list.get(i));
-                        component.setColor(net.md_5.bungee.api.ChatColor.valueOf(fme.getColorTo(p).name()));
-                        hover[i] = component;
-                    }
-                    then.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, hover));
-                    currentOnline.addExtra(then);
+                    currentOnline.then(firstOnline ? name : ", " + name);
+                    currentOnline.tooltip(tipPlayer(p)).color(fme.getColorTo(p));
                     firstOnline = false;
-                    if (currentOnline.toPlainText().length() > ARBITRARY_LIMIT) {
-                        components.add(currentOnline);
-                        currentOnline = new TextComponent("");
+                    if (currentOnline.toJSONString().length() > ARBITRARY_LIMIT) {
+                        fancyMessages.add(currentOnline);
+                        currentOnline = new FancyMessage("");
                     }
                 }
-                components.add(currentOnline);
-                return components; // we must return here and not outside the switch
+                fancyMessages.add(currentOnline);
+                return fancyMessages; // we must return here and not outside the switch
             case OFFLINE_LIST:
-                BaseComponent currentOffline = P.p.txt.parseComponent(prefix);
+                FancyMessage currentOffline = P.p.txt.parseFancy(prefix);
                 boolean firstOffline = true;
                 for (FPlayer p : MiscUtil.rankOrder(target.getFPlayers())) {
                     String name = p.getNameAndTitle();
                     if (!p.isOnline()) {
-                        TextComponent then = new TextComponent(firstOffline ? name : ", " + name);
-                        List<String> list = tipPlayer(p);
-                        TextComponent[] hover = new TextComponent[list.size()];
-                        for (int i = 0; i < list.size(); i++) {
-                            TextComponent component = new TextComponent(list.get(i));
-                            component.setColor(net.md_5.bungee.api.ChatColor.valueOf(fme.getColorTo(p).name()));
-                            hover[i] = component;
-                        }
-                        then.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, hover));
-                        currentOffline.addExtra(then);
+                        currentOffline.then(firstOffline ? name : ", " + name);
+                        currentOffline.tooltip(tipPlayer(p)).color(fme.getColorTo(p));
                         firstOffline = false;
-                        if (currentOffline.toPlainText().length() > ARBITRARY_LIMIT) {
-                            components.add(currentOffline);
-                            currentOffline = new TextComponent("");
+                        if (currentOffline.toJSONString().length() > ARBITRARY_LIMIT) {
+                            fancyMessages.add(currentOffline);
+                            currentOffline = new FancyMessage("");
                         }
                     }
                 }
-                components.add(currentOffline);
-                return components; // we must return here and not outside the switch
+                fancyMessages.add(currentOffline);
+                return fancyMessages; // we must return here and not outside the switch
         }
         return null;
     }
