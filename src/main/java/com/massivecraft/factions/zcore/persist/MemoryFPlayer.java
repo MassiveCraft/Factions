@@ -916,5 +916,7 @@ public abstract class MemoryFPlayer implements FPlayer {
         if (this.warmup != null) {
             this.clearWarmup();
         }
+        this.warmup = warmup;
+        this.warmupTask = taskId;
     }
 }
