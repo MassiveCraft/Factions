@@ -15,6 +15,7 @@ import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.RelationUtil;
+import com.massivecraft.factions.util.WarmUpUtil;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -94,6 +95,9 @@ public abstract class MemoryFPlayer implements FPlayer {
 
     protected boolean spyingChat = false;
     protected boolean showScoreboard;
+
+    protected WarmUpUtil.Warmup warmup;
+    protected int warmupTask;
 
     public Faction getFaction() {
         if (this.factionId == null) {
@@ -882,5 +886,35 @@ public abstract class MemoryFPlayer implements FPlayer {
     @Override
     public void setId(String id) {
         this.id = id;
+    }
+
+    @Override
+    public void clearWarmup() {
+        if (warmup != null) {
+            Bukkit.getScheduler().cancelTask(warmupTask);
+            this.stopWarmup();
+        }
+    }
+
+    @Override
+    public void stopWarmup() {
+        warmup = null;
+    }
+
+    @Override
+    public boolean isWarmingUp() {
+        return warmup != null;
+    }
+
+    @Override
+    public WarmUpUtil.Warmup getWarmupType() {
+        return warmup;
+    }
+
+    @Override
+    public void addWarmup(WarmUpUtil.Warmup warmup, int taskId) {
+        if (this.warmup != null) {
+            this.clearWarmup();
+        }
     }
 }

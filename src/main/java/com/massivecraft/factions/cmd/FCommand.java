@@ -302,11 +302,11 @@ public abstract class FCommand extends MCommand<P> {
         }
     }
 
-    public void doWarmUp(TL translationKey, String action, Runnable runnable, long delay) {
-        this.doWarmUp(this.fme, translationKey, action, runnable, delay);
+    public void doWarmUp(WarmUpUtil.Warmup warmup, TL translationKey, String action, Runnable runnable, long delay) {
+        this.doWarmUp(this.fme, warmup, translationKey, action, runnable, delay);
     }
 
-    public void doWarmUp(FPlayer player, TL translationKey, String action, Runnable runnable, long delay) {
-        WarmUpUtil.process(player, translationKey, action, runnable, delay);
+    public void doWarmUp(FPlayer player, WarmUpUtil.Warmup warmup, TL translationKey, String action, Runnable runnable, long delay) {
+        WarmUpUtil.process(player, warmup, translationKey, action, runnable, delay);
     }
 }

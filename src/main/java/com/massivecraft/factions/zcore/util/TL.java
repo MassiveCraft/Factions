@@ -708,7 +708,9 @@ public enum TL {
     /**
      * Warmups
      */
-    WARMUPS_NOTIFY_TELEPORT("&eYou will teleport to &d%1$s &ein &d%2$d &eseconds.");
+    WARMUPS_NOTIFY_TELEPORT("&eYou will teleport to &d%1$s &ein &d%2$d &eseconds."),
+    WARMUPS_ALREADY("&cYou are already warming up."),
+    WARMUPS_CANCELLED("&cYou have cancelled your warmup.");
 
     private String path;
     private String def;

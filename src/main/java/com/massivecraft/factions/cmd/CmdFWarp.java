@@ -50,7 +50,7 @@ public class CmdFWarp extends FCommand {
                 if (!transact(fme)) {
                     return;
                 }
-                this.doWarmUp(TL.WARMUPS_NOTIFY_TELEPORT, warpName, new Runnable() {
+                this.doWarmUp(WarmUpUtil.Warmup.WARP, TL.WARMUPS_NOTIFY_TELEPORT, warpName, new Runnable() {
                     @Override
                     public void run() {
                         CmdFWarp.this.fme.getPlayer().teleport(CmdFWarp.this.myFaction.getWarp(warpName).getLocation());

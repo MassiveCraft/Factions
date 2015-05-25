@@ -5,6 +5,7 @@ import com.massivecraft.factions.integration.Essentials;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.util.WarmUpUtil;
 import com.massivecraft.factions.zcore.util.SmokeUtil;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Location;
@@ -110,7 +111,7 @@ public class CmdHome extends FCommand {
             return;
         }
 
-        this.doWarmUp(TL.WARMUPS_NOTIFY_TELEPORT, "Home", new Runnable() {
+        this.doWarmUp(WarmUpUtil.Warmup.HOME, TL.WARMUPS_NOTIFY_TELEPORT, "Home", new Runnable() {
             @Override
             public void run() {
                 // Create a smoke effect

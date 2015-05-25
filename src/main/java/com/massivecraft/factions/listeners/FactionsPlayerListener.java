@@ -122,18 +122,22 @@ public class FactionsPlayerListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerMove(PlayerMoveEvent event) {
+        Player player = event.getPlayer();
+        FPlayer me = FPlayers.getInstance().getByPlayer(player);
+
         // clear visualization
         if (event.getFrom().getBlockX() != event.getTo().getBlockX() || event.getFrom().getBlockY() != event.getTo().getBlockY() || event.getFrom().getBlockZ() != event.getTo().getBlockZ()) {
             VisualizeUtil.clear(event.getPlayer());
+            if (me.isWarmingUp()) {
+                me.clearWarmup();
+                me.msg(TL.WARMUPS_CANCELLED);
+            }
         }
 
         // quick check to make sure player is moving between chunks; good performance boost
         if (event.getFrom().getBlockX() >> 4 == event.getTo().getBlockX() >> 4 && event.getFrom().getBlockZ() >> 4 == event.getTo().getBlockZ() >> 4 && event.getFrom().getWorld() == event.getTo().getWorld()) {
             return;
         }
-
-        Player player = event.getPlayer();
-        FPlayer me = FPlayers.getInstance().getByPlayer(player);
 
         // Did we change coord?
         FLocation from = me.getLastStoodAt();

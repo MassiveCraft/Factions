@@ -15,12 +15,28 @@ public class WarmUpUtil {
      *                       <p/>
      *                       note: for translations: %s = action, %d = delay
      */
-    public static void process(FPlayer player, TL translationKey, String action, Runnable runnable, long delay) {
+    public static void process(final FPlayer player, Warmup warmup, TL translationKey, String action, final Runnable runnable, long delay) {
         if (delay > 0) {
-            player.msg(translationKey.format(action, delay));
-            P.p.getServer().getScheduler().runTaskLater(P.p, runnable, delay * 20);
+            if (player.isWarmingUp()) {
+                player.msg(TL.WARMUPS_ALREADY);
+            } else {
+                player.msg(translationKey.format(action, delay));
+                int id = P.p.getServer().getScheduler().runTaskLater(P.p, new Runnable() {
+                    @Override
+                    public void run() {
+                        player.stopWarmup();
+                        runnable.run();
+                    }
+                }, delay * 20).getTaskId();
+                player.addWarmup(warmup, id);
+            }
         } else {
             runnable.run();
         }
     }
+
+    public enum Warmup {
+        HOME, WARP;
+    }
+
 }

@@ -114,7 +114,13 @@ public class FactionsEntityListener implements Listener {
         // entity took generic damage?
         Entity entity = event.getEntity();
         if (entity instanceof Player) {
-            cancelFStuckTeleport((Player) event.getEntity());
+            Player player = (Player) entity;
+            FPlayer me = FPlayers.getInstance().getByPlayer(player);
+            cancelFStuckTeleport(player);
+            if (me.isWarmingUp()) {
+                me.clearWarmup();
+                me.msg(TL.WARMUPS_CANCELLED);
+            }
         }
     }
 
