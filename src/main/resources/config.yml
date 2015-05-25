@@ -229,7 +229,6 @@ show:
   - '<a>Description: <i>{description}'
   - '<a>Joining: <i>{joining}    {peaceful}'
   - '<a>Land / Power / Maxpower: <i> {chunks}/{power}/{maxPower}'
-  - '<a>Faction Home: <i>{world}, {x}, {y}, {z}' # if no home is set, {z} = COMMAND_SHOW_NOHOME, from lang.yml
   - '<a>Founded: <i>{create-date}'
   - '<a>This faction is permanent, remaining even with no members.' # only shows if faction is permanent
   - '<a>Land value: <i>{land-value} {land-refund}'
