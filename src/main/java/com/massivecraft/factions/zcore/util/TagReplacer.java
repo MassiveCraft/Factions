@@ -31,6 +31,8 @@ public enum TagReplacer {
     PLAYER_GROUP(TagType.PLAYER, "{group}"),
     LAST_SEEN(TagType.PLAYER, "{lastSeen}"),
     PLAYER_BALANCE(TagType.PLAYER, "{balance}"),
+    PLAYER_POWER(TagType.PLAYER, "{player-power}"),
+    PLAYER_MAXPOWER(TagType.PLAYER, "{player-maxpower}"),
 
     /**
      * Faction variables, require at least a player
@@ -144,6 +146,10 @@ public enum TagReplacer {
                     return P.p.getPrimaryGroup(Bukkit.getOfflinePlayer(UUID.fromString(fp.getId())));
                 case PLAYER_BALANCE:
                     return Econ.isSetup() ? Econ.getFriendlyBalance(fp) : TL.ECON_OFF.format("balance");
+                case PLAYER_POWER:
+                    return String.valueOf(fp.getPowerRounded());
+                case PLAYER_MAXPOWER:
+                    return String.valueOf(fp.getPowerMaxRounded());
             }
         }
         switch (this) {

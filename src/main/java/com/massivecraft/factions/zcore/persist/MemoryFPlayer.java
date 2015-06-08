@@ -94,7 +94,7 @@ public abstract class MemoryFPlayer implements FPlayer {
     protected transient boolean loginPvpDisabled;
 
     protected boolean spyingChat = false;
-    protected boolean showScoreboard;
+    protected boolean showScoreboard = true;
 
     protected WarmUpUtil.Warmup warmup;
     protected int warmupTask;
@@ -267,7 +267,7 @@ public abstract class MemoryFPlayer implements FPlayer {
         this.spyingChat = other.spyingChat;
         this.lastStoodAt = other.lastStoodAt;
         this.isAdminBypassing = other.isAdminBypassing;
-        this.showScoreboard = P.p.getConfig().getBoolean("scoreboard.default-enabled", false);
+        this.showScoreboard = P.p.getConfig().getBoolean("scoreboard.default-enabled", true);
     }
 
     public void resetFactionData(boolean doSpoutUpdate) {
