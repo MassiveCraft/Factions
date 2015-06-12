@@ -84,7 +84,11 @@ public class TextUtil {
         }
         if (text.length() > 0) {
             if (color != null) {
-                message.then(text).color(color);
+                if(color.isColor()) {
+                    message.then(text).color(color);
+                } else {
+                    message.then(text).style(color);
+                }
             } else {
                 message.text(text);
             }
