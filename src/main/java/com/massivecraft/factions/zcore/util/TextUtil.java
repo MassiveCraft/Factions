@@ -71,7 +71,11 @@ public class TextUtil {
         for (int i = 0; i < chars.length; i++) {
             if (chars[i] == '§') {
                 if (color != null) {
-                    message.then(text).color(color);
+                    if (color.isColor()) {
+                        message.then(text).color(color);
+                    } else {
+                        message.then(text).style(color);
+                    }
                     text = "";
                     color = ChatColor.getByChar(chars[i + 1]);
                 } else {
@@ -84,7 +88,7 @@ public class TextUtil {
         }
         if (text.length() > 0) {
             if (color != null) {
-                if(color.isColor()) {
+                if (color.isColor()) {
                     message.then(text).color(color);
                 } else {
                     message.then(text).style(color);
