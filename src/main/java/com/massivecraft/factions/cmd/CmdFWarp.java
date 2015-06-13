@@ -9,6 +9,7 @@ import com.massivecraft.factions.util.WarmUpUtil;
 import com.massivecraft.factions.zcore.util.TL;
 import mkremins.fanciful.FancyMessage;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 
 import java.util.Map;
 
@@ -46,8 +47,11 @@ public class CmdFWarp extends FCommand {
                 this.doWarmUp(WarmUpUtil.Warmup.WARP, TL.WARMUPS_NOTIFY_TELEPORT, warpName, new Runnable() {
                     @Override
                     public void run() {
-                        CmdFWarp.this.fme.getPlayer().teleport(CmdFWarp.this.myFaction.getWarp(warpName).getLocation());
-                        CmdFWarp.this.fme.msg(TL.COMMAND_FWARP_WARPED, warpName);
+                        Player player = CmdFWarp.this.fme.getPlayer();
+                        if (player != null) {
+                            player.teleport(CmdFWarp.this.myFaction.getWarp(warpName).getLocation());
+                            CmdFWarp.this.fme.msg(TL.COMMAND_FWARP_WARPED, warpName);
+                        }
                     }
                 }, this.p.getConfig().getLong("warmups.f-warp", 0));
             } else {
