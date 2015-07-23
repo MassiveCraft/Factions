@@ -26,7 +26,10 @@ public abstract class Factions {
 
     public abstract ArrayList<Faction> getAllFactions();
 
+    @Deprecated
     public abstract Faction getNone();
+
+    public abstract Faction getWilderness();
 
     public abstract Faction getSafeZone();
 

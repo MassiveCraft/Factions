@@ -158,6 +158,11 @@ public abstract class MemoryFactions extends Factions {
     }
 
     @Override
+    public Faction getWilderness() {
+        return factions.get("0");
+    }
+
+    @Override
     public Faction getSafeZone() {
         return factions.get("-1");
     }
