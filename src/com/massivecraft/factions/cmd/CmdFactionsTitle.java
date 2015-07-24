@@ -24,7 +24,7 @@ public class CmdFactionsTitle extends FactionsCommand
 		this.addAliases("title");
 
 		// Args
-		this.addArg(ARMPlayer.getAny(), "player");
+		this.addArg(ARMPlayer.get(), "player");
 		this.addArg(ARString.get(), "title", "", true);
 
 		// Requirements

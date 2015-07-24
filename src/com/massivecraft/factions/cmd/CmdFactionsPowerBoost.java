@@ -18,7 +18,7 @@ public class CmdFactionsPowerBoost extends FactionsCommand
 	// FIELDS
 	// -------------------------------------------- //
 	
-	private ArgSetting<MPlayer> settingMplayer = new ArgSetting<MPlayer>(ARMPlayer.getAny(), "name");
+	private ArgSetting<MPlayer> settingMplayer = new ArgSetting<MPlayer>(ARMPlayer.get(), "name");
 	private ArgSetting<Faction> settingFaction = new ArgSetting<Faction>(ARFaction.get(), "name");
 	
 	// -------------------------------------------- //

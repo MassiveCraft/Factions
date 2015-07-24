@@ -27,7 +27,7 @@ public class CmdFactionsRankOld extends FactionsCommand
 		this.addAliases(rankName);
 	
 		// Args
-		this.addArg(ARMPlayer.getAny(), "player");
+		this.addArg(ARMPlayer.get(), "player");
 		this.addArg(ARFaction.get(), "faction", "their");
 		
 		// VisibilityMode

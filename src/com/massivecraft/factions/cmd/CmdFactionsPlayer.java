@@ -27,7 +27,7 @@ public class CmdFactionsPlayer extends FactionsCommand
 		this.addAliases("p", "player");
 
 		// Args
-		this.addArg(ARMPlayer.getAny(), "player", "you");
+		this.addArg(ARMPlayer.get(), "player", "you");
 
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(Perm.PLAYER.node));

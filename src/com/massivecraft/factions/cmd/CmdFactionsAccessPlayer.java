@@ -21,7 +21,7 @@ public class CmdFactionsAccessPlayer extends CmdFactionsAccessAbstract
 		this.addAliases("p", "player");
 
 		// Args
-		this.addArg(ARMPlayer.getAny(), "player");
+		this.addArg(ARMPlayer.get(), "player");
 		this.addArg(ARBoolean.get(), "yes/no", "toggle");
 
 		// Requirements

@@ -23,7 +23,7 @@ public class CmdFactionsInviteAdd extends FactionsCommand
 		this.addAliases("a", "add");
 
 		// Args
-		this.addArg(ARSet.get(ARMPlayer.getAny(), true), "players", true);
+		this.addArg(ARSet.get(ARMPlayer.get(), true), "players", true);
 		
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(Perm.INVITE_ADD.node));

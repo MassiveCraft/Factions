@@ -27,7 +27,7 @@ public class CmdFactionsJoin extends FactionsCommand
 
 		// Args
 		this.addArg(ARFaction.get(), "faction");
-		this.addArg(ARMPlayer.getAny(), "player", "you");
+		this.addArg(ARMPlayer.get(), "player", "you");
 
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(Perm.JOIN.node));

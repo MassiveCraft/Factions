@@ -61,7 +61,7 @@ public class CmdFactionsRank extends FactionsCommand
 		this.addAliases("rank");
 	
 		// Args
-		this.addArg(ARMPlayer.getAny(), "player");
+		this.addArg(ARMPlayer.get(), "player");
 		this.addArg(rankReader, "action", "show");
 		this.addArg(ARFaction.get(), "faction", "their");
 	

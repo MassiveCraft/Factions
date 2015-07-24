@@ -25,7 +25,7 @@ public class CmdFactionsInviteRemove extends FactionsCommand
 		this.addAliases("r", "remove");
 
 		// Args
-		this.addArg(ARSet.get(ARMPlayer.getAny(), true), "players/all", true);
+		this.addArg(ARSet.get(ARMPlayer.get(), true), "players/all", true);
 		
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(Perm.INVITE_REMOVE.node));

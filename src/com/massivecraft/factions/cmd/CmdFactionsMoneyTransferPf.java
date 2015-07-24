@@ -31,7 +31,7 @@ public class CmdFactionsMoneyTransferPf extends FactionsCommand
 
 		// Args
 		this.addArg(ARDouble.get(), "amount");
-		this.addArg(ARMPlayer.getAny(), "player");
+		this.addArg(ARMPlayer.get(), "player");
 		this.addArg(ARFaction.get(), "faction");
 
 		// Requirements

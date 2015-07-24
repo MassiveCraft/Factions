@@ -10,14 +10,9 @@ public class ARMPlayer
 	// INSTANCE
 	// -------------------------------------------- //
 	
-	public static AR<MPlayer> getAny()
+	public static AR<MPlayer> get()
 	{
 		return MPlayerColl.get().getAREntity();
-	}
-	
-	public static AR<MPlayer> getOnline()
-	{
-		return MPlayerColl.get().getAREntity(true);
 	}
 	
 }

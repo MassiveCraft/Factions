@@ -1078,7 +1078,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 		List<CommandSender> ret = new ArrayList<CommandSender>();
 		
 		// Fill Ret
-		for (CommandSender sender : IdUtil.getOnlineSenders())
+		for (CommandSender sender : IdUtil.getLocalSenders())
 		{
 			if (MUtil.isntSender(sender)) continue;
 			

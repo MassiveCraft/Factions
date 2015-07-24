@@ -27,7 +27,7 @@ public class CmdFactionsKick extends FactionsCommand
 		this.addAliases("kick");
 
 		// Args
-		this.addArg(ARMPlayer.getAny(), "player");
+		this.addArg(ARMPlayer.get(), "player");
 
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(Perm.KICK.node));

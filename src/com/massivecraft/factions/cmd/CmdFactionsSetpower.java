@@ -21,7 +21,7 @@ public class CmdFactionsSetpower extends FactionsCommand
 		this.addAliases("sp", "setpower");
 		
 		// Args
-		this.addArg(ARMPlayer.getAny(), "player");
+		this.addArg(ARMPlayer.get(), "player");
 		this.addArg(ARDouble.get(), "power");
 		
 		// Requirements
