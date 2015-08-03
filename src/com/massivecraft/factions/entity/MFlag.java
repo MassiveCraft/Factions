@@ -5,6 +5,7 @@ import java.util.List;
 import com.massivecraft.factions.event.EventFactionsCreateFlags;
 import com.massivecraft.massivecore.PredictateIsRegistered;
 import com.massivecraft.massivecore.Prioritized;
+import com.massivecraft.massivecore.PriorityComparator;
 import com.massivecraft.massivecore.Registerable;
 import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.store.Entity;
@@ -60,7 +61,7 @@ public class MFlag extends Entity<MFlag> implements Prioritized, Registerable
 	{
 		setupStandardFlags();
 		new EventFactionsCreateFlags(isAsync).run();
-		return MFlagColl.get().getAll(PredictateIsRegistered.get());
+		return MFlagColl.get().getAll(PredictateIsRegistered.get(), PriorityComparator.get());
 	}
 	
 	public static void setupStandardFlags()

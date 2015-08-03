@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.massivecraft.factions.Const;
 import com.massivecraft.factions.Factions;
-import com.massivecraft.massivecore.PriorityComparator;
 import com.massivecraft.massivecore.store.Coll;
 import com.massivecraft.massivecore.store.MStore;
 
@@ -19,7 +18,7 @@ public class MFlagColl extends Coll<MFlag>
 	public static MFlagColl get() { return i; }
 	private MFlagColl()
 	{
-		super(Const.COLLECTION_MFLAG, MFlag.class, MStore.getDb(), Factions.get(), false, true, null, PriorityComparator.get());
+		super(Const.COLLECTION_MFLAG, MFlag.class, MStore.getDb(), Factions.get(), false, true);
 	}
 
 	// -------------------------------------------- //

@@ -14,6 +14,7 @@ import com.massivecraft.factions.TerritoryAccess;
 import com.massivecraft.factions.event.EventFactionsCreatePerms;
 import com.massivecraft.massivecore.PredictateIsRegistered;
 import com.massivecraft.massivecore.Prioritized;
+import com.massivecraft.massivecore.PriorityComparator;
 import com.massivecraft.massivecore.Registerable;
 import com.massivecraft.massivecore.ps.PS;
 import com.massivecraft.massivecore.store.Entity;
@@ -97,7 +98,7 @@ public class MPerm extends Entity<MPerm> implements Prioritized, Registerable
 		setupStandardPerms();
 		new EventFactionsCreatePerms().run();
 		
-		return MPermColl.get().getAll(PredictateIsRegistered.get());
+		return MPermColl.get().getAll(PredictateIsRegistered.get(), PriorityComparator.get());
 	}
 	
 	public static void setupStandardPerms()

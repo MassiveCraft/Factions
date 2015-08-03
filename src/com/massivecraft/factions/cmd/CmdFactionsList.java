@@ -55,7 +55,7 @@ public class CmdFactionsList extends FactionsCommand
 			public void run()
 			{
 				// Create Pager
-				final List<Faction> factions = FactionColl.get().getAll(null, FactionListComparator.get());
+				final List<Faction> factions = FactionColl.get().getAll(FactionListComparator.get());
 				final PagerSimple<Faction> pager = new PagerSimple<Faction>(factions, sender);
 				
 				// Use Pager
