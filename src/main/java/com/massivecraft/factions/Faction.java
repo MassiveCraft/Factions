@@ -119,6 +119,10 @@ public interface Faction extends EconomyParticipator {
 
     public void setLastDeath(long time);
 
+    public int getKills();
+
+    public int getDeaths();
+
     // -------------------------------
     // Relation and relation colors
     // -------------------------------

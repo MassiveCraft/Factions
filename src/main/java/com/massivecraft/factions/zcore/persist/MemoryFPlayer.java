@@ -17,10 +17,7 @@ import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.RelationUtil;
 import com.massivecraft.factions.util.WarmUpUtil;
 import com.massivecraft.factions.zcore.util.TL;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.OfflinePlayer;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 
 import java.util.HashSet;
@@ -41,63 +38,43 @@ import java.util.UUID;
  */
 
 public abstract class MemoryFPlayer implements FPlayer {
-    // FIELD: factionId
+
     protected String factionId;
-
-    // FIELD: role
     protected Role role;
-    // FIELD: title
     protected String title;
-
-    // FIELD: power
     protected double power;
-
-    // FIELD: powerBoost
-    // special increase/decrease to min and max power for this player
     protected double powerBoost;
-
-    // FIELD: lastPowerUpdateTime
     protected long lastPowerUpdateTime;
-
-    // FIELD: lastLoginTime
     protected long lastLoginTime;
-
-    // FIELD: chatMode
     protected ChatMode chatMode;
-
-    // FIELD: ignoreAllianceChat
     protected boolean ignoreAllianceChat = false;
-
     protected String id;
     protected String name;
-
     protected boolean monitorJoins;
-
-    //private transient String playerName;
-    protected transient FLocation lastStoodAt = new FLocation(); // Where did this player stand the last time we checked?
-
-    // FIELD: mapAutoUpdating
-    protected transient boolean mapAutoUpdating;
-
-    // FIELD: autoClaimEnabled
-    protected transient Faction autoClaimFor;
-
-    // FIELD: autoSafeZoneEnabled
-    protected transient boolean autoSafeZoneEnabled;
-
-    // FIELD: autoWarZoneEnabled
-    protected transient boolean autoWarZoneEnabled;
-
-    protected transient boolean isAdminBypassing = false;
-
-    // FIELD: loginPvpDisabled
-    protected transient boolean loginPvpDisabled;
-
     protected boolean spyingChat = false;
     protected boolean showScoreboard = true;
-
     protected WarmUpUtil.Warmup warmup;
     protected int warmupTask;
+    protected boolean isAdminBypassing = false;
+    protected int kills, deaths;
+
+    protected transient FLocation lastStoodAt = new FLocation(); // Where did this player stand the last time we checked?
+    protected transient boolean mapAutoUpdating;
+    protected transient Faction autoClaimFor;
+    protected transient boolean autoSafeZoneEnabled;
+    protected transient boolean autoWarZoneEnabled;
+    protected transient boolean loginPvpDisabled;
+
+
+    public void login() {
+        this.kills = getPlayer().getStatistic(Statistic.PLAYER_KILLS);
+        this.deaths = getPlayer().getStatistic(Statistic.DEATHS);
+    }
+
+    public void logout() {
+        this.kills = getPlayer().getStatistic(Statistic.PLAYER_KILLS);
+        this.deaths = getPlayer().getStatistic(Statistic.DEATHS);
+    }
 
     public Faction getFaction() {
         if (this.factionId == null) {
@@ -244,6 +221,8 @@ public abstract class MemoryFPlayer implements FPlayer {
         this.loginPvpDisabled = Conf.noPVPDamageToOthersForXSecondsAfterLogin > 0;
         this.powerBoost = 0.0;
         this.showScoreboard = P.p.getConfig().getBoolean("scoreboard.default-enabled", false);
+        this.kills = 0;
+        this.deaths = 0;
 
         if (!Conf.newPlayerStartingFactionID.equals("0") && Factions.getInstance().isValidFactionId(Conf.newPlayerStartingFactionID)) {
             this.factionId = Conf.newPlayerStartingFactionID;
@@ -268,6 +247,8 @@ public abstract class MemoryFPlayer implements FPlayer {
         this.lastStoodAt = other.lastStoodAt;
         this.isAdminBypassing = other.isAdminBypassing;
         this.showScoreboard = P.p.getConfig().getBoolean("scoreboard.default-enabled", true);
+        this.kills = other.kills;
+        this.deaths = other.deaths;
     }
 
     public void resetFactionData(boolean doSpoutUpdate) {
@@ -414,6 +395,15 @@ public abstract class MemoryFPlayer implements FPlayer {
 
     public String getChatTag(MemoryFPlayer fplayer) {
         return this.hasFaction() ? this.getColorTo(fplayer) + getChatTag() : "";
+    }
+
+    public int getKills() {
+        return isOnline() ? getPlayer().getStatistic(Statistic.PLAYER_KILLS) : this.kills;
+    }
+
+    public int getDeaths() {
+        return isOnline() ? getPlayer().getStatistic(Statistic.DEATHS) : this.deaths;
+
     }
 
     // -------------------------------

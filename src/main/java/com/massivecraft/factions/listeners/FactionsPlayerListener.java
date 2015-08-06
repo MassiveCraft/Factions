@@ -59,6 +59,8 @@ public class FactionsPlayerListener implements Listener {
         // Store player's current FLocation and notify them where they are
         me.setLastStoodAt(new FLocation(player.getLocation()));
 
+        me.login(); // set kills / deaths
+
         // Check for Faction announcements. Let's delay this so they actually see it.
         Bukkit.getScheduler().runTaskLater(P.p, new Runnable() {
             @Override
@@ -93,6 +95,8 @@ public class FactionsPlayerListener implements Listener {
         me.getPower();
         // and update their last login time to point to when the logged off, for auto-remove routine
         me.setLastLoginTime(System.currentTimeMillis());
+
+        me.logout(); // cache kills / deaths
 
         // if player is waiting for fstuck teleport but leaves, remove
         if (P.p.getStuckMap().containsKey(me.getPlayer().getUniqueId())) {

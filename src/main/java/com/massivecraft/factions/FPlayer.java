@@ -25,6 +25,10 @@ import java.util.List;
  */
 
 public interface FPlayer extends EconomyParticipator {
+    public void login();
+
+    public void logout();
+
     public Faction getFaction();
 
     public String getFactionId();
@@ -132,6 +136,11 @@ public interface FPlayer extends EconomyParticipator {
     public String getChatTag(Faction faction);
 
     public String getChatTag(FPlayer fplayer);
+
+    public int getKills();
+
+    public int getDeaths();
+
 
     // -------------------------------
     // Relation and relation colors

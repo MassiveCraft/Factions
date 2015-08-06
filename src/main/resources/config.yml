@@ -314,6 +314,8 @@ help:
 #  - {name}      : Players name
 #  - {lastSeen}  : Last time player was seen (if offline), or just 'Online'
 #  - {balance} : Players balance
+#  - {player-kills} : # of kills the player has
+#  - {player-deaths}: # of deaths the player has
 # Faction variables. Can be used in tooltips.list, scoreboards, or /f show
 #  - {header}    : Default factions header (ex. /f show)
 #  - {faction}   : Factions tag (if none, uses lang.yml for factionless name)
@@ -335,6 +337,8 @@ help:
 #  - {members}   : # of faction members (includes offline)
 #  - {faction-balance}      : Faction bank balance
 #  - {world}, {x}, {y}, {z} : Faction home variables. You don't need to use them all.
+#  - {faction-kills} : # of kills the faction has
+#  - {faction-deaths}: # of deaths the faction has
 # General variables. Can be used anywhere.
 # - {total-online}  : Total # of players on the server
 # - {max-warps}     : Max # of warps a faction can set

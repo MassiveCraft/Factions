@@ -33,6 +33,8 @@ public enum TagReplacer {
     PLAYER_BALANCE(TagType.PLAYER, "{balance}"),
     PLAYER_POWER(TagType.PLAYER, "{player-power}"),
     PLAYER_MAXPOWER(TagType.PLAYER, "{player-maxpower}"),
+    PLAYER_KILLS(TagType.PLAYER, "{player-kills}"),
+    PLAYER_DEATHS(TagType.PLAYER, "{player-deaths}"),
 
     /**
      * Faction variables, require at least a player
@@ -65,6 +67,8 @@ public enum TagReplacer {
     ONLINE_COUNT(TagType.FACTION, "{online}"),
     OFFLINE_COUNT(TagType.FACTION, "{offline}"),
     FACTION_SIZE(TagType.FACTION, "{members}"),
+    FACTION_KILLS(TagType.FACTION, "{faction-kills}"),
+    FACTION_DEATHS(TagType.FACTION, "{faction-deaths}"),
 
     /**
      * General variables, require no faction or player
@@ -150,6 +154,10 @@ public enum TagReplacer {
                     return String.valueOf(fp.getPowerRounded());
                 case PLAYER_MAXPOWER:
                     return String.valueOf(fp.getPowerMaxRounded());
+                case PLAYER_KILLS:
+                    return String.valueOf(fp.getKills());
+                case PLAYER_DEATHS:
+                    return String.valueOf(fp.getDeaths());
             }
         }
         switch (this) {
@@ -209,6 +217,10 @@ public enum TagReplacer {
                 return String.valueOf(fac.getFPlayers().size() - fac.getOnlinePlayers().size());
             case FACTION_SIZE:
                 return String.valueOf(fac.getFPlayers().size());
+            case FACTION_KILLS:
+                return String.valueOf(fac.getKills());
+            case FACTION_DEATHS:
+                return String.valueOf(fac.getDeaths());
         }
         return null;
     }
