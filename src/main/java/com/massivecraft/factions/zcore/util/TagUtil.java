@@ -68,7 +68,12 @@ public class TagUtil {
     public static String parsePlain(Faction faction, FPlayer fplayer, String line) {
         for (TagReplacer tagReplacer : TagReplacer.getByType(TagType.PLAYER)) {
             if (tagReplacer.contains(line)) {
-                line = tagReplacer.replace(line, tagReplacer.getValue(faction, fplayer));
+                String value = tagReplacer.getValue(faction, fplayer);
+                if (value != null) {
+                    line = tagReplacer.replace(line, value);
+                } else {
+                    return null; // minimal show, entire line to be ignored
+                }
             }
         }
         return line;
@@ -120,6 +125,8 @@ public class TagUtil {
      */
     protected static List<FancyMessage> getFancy(Faction target, FPlayer fme, TagReplacer type, String prefix) {
         List<FancyMessage> fancyMessages = new ArrayList<FancyMessage>();
+        boolean minimal = P.p.getConfig().getBoolean("minimal-show", false);
+
         switch (type) {
             case ALLIES_LIST:
                 FancyMessage currentAllies = P.p.txt.parseFancy(prefix);
@@ -140,7 +147,7 @@ public class TagUtil {
                     }
                 }
                 fancyMessages.add(currentAllies);
-                return fancyMessages; // we must return here and not outside the switch
+                return firstAlly && minimal ? null : fancyMessages; // we must return here and not outside the switch
             case ENEMIES_LIST:
                 FancyMessage currentEnemies = P.p.txt.parseFancy(prefix);
                 boolean firstEnemy = true;
@@ -160,7 +167,7 @@ public class TagUtil {
                     }
                 }
                 fancyMessages.add(currentEnemies);
-                return fancyMessages; // we must return here and not outside the switch
+                return firstEnemy && minimal ? null : fancyMessages; // we must return here and not outside the switch
             case ONLINE_LIST:
                 FancyMessage currentOnline = P.p.txt.parseFancy(prefix);
                 boolean firstOnline = true;
@@ -175,7 +182,7 @@ public class TagUtil {
                     }
                 }
                 fancyMessages.add(currentOnline);
-                return fancyMessages; // we must return here and not outside the switch
+                return firstOnline && minimal ? null : fancyMessages; // we must return here and not outside the switch
             case OFFLINE_LIST:
                 FancyMessage currentOffline = P.p.txt.parseFancy(prefix);
                 boolean firstOffline = true;
@@ -192,7 +199,7 @@ public class TagUtil {
                     }
                 }
                 fancyMessages.add(currentOffline);
-                return fancyMessages; // we must return here and not outside the switch
+                return firstOffline && minimal ? null : fancyMessages; // we must return here and not outside the switch
         }
         return null;
     }

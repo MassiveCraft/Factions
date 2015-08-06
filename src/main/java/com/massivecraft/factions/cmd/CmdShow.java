@@ -78,6 +78,9 @@ public class CmdShow extends FCommand {
 
         for (String raw : show) {
             String parsed = TagUtil.parsePlain(faction, fme, raw); // use relations
+            if (parsed == null) {
+                continue; // Due to minimal f show.
+            }
             if (TagUtil.hasFancy(parsed)) {
                 List<FancyMessage> fancy = TagUtil.parseFancy(faction, fme, parsed);
                 if (fancy != null) {
@@ -90,7 +93,7 @@ public class CmdShow extends FCommand {
                     // replaces all variables with no home TL
                     parsed = parsed.substring(0, parsed.indexOf("{ig}")) + TL.COMMAND_SHOW_NOHOME.toString();
                 }
-                if(parsed.contains("%")) {
+                if (parsed.contains("%")) {
                     parsed = parsed.replaceAll("%", ""); // Just in case it got in there before we disallowed it.
                 }
                 msg(p.txt.parse(parsed));

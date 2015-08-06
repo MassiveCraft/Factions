@@ -242,6 +242,9 @@ show:
   - '<a>Online: (<i>{online}<a>/<i>{members}<a>): {online-list}'
   - '<a>Offline: (<i>{offline}<a>/<i>{members}<a>): {offline-list}'
 
+# For a /f show that does not display fancy messages that are essentially empty, use minimal-show
+minimal-show: false
+
 ############################################################
 # +------------------------------------------------------+ #
 # |                Configurable /f list                  | #

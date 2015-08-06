@@ -135,6 +135,9 @@ public enum TagReplacer {
         if (this.type == TagType.GENERAL) {
             return getValue();
         }
+
+        boolean minimal = P.p.getConfig().getBoolean("minimal-show", false);
+
         if (fp != null) {
             switch (this) {
                 case HEADER:
@@ -191,22 +194,22 @@ public enum TagReplacer {
                 boolean raid = P.p.getConfig().getBoolean("hcf.raidable", false) && fac.getLandRounded() >= fac.getPowerRounded();
                 return raid ? TL.RAIDABLE_TRUE.toString() : TL.RAIDABLE_FALSE.toString();
             case HOME_WORLD:
-                return fac.hasHome() ? fac.getHome().getWorld().getName() : "{ig}";
+                return fac.hasHome() ? fac.getHome().getWorld().getName() : minimal ? null : "{ig}";
             case HOME_X:
-                return fac.hasHome() ? String.valueOf(fac.getHome().getBlockX()) : "{ig}";
+                return fac.hasHome() ? String.valueOf(fac.getHome().getBlockX()) : minimal ? null : "{ig}";
             case HOME_Y:
-                return fac.hasHome() ? String.valueOf(fac.getHome().getBlockY()) : "{ig}";
+                return fac.hasHome() ? String.valueOf(fac.getHome().getBlockY()) : minimal ? null : "{ig}";
             case HOME_Z:
-                return fac.hasHome() ? String.valueOf(fac.getHome().getBlockZ()) : "{ig}";
+                return fac.hasHome() ? String.valueOf(fac.getHome().getBlockZ()) : minimal ? null : "{ig}";
             case LAND_VALUE:
-                return Econ.shouldBeUsed() ? Econ.moneyString(Econ.calculateTotalLandValue(fac.getLandRounded())) : TL.ECON_OFF.format("value");
+                return Econ.shouldBeUsed() ? Econ.moneyString(Econ.calculateTotalLandValue(fac.getLandRounded())) : minimal ? null : TL.ECON_OFF.format("value");
             case LAND_REFUND:
-                return Econ.shouldBeUsed() ? Econ.moneyString(Econ.calculateTotalLandRefund(fac.getLandRounded())) : TL.ECON_OFF.format("refund");
+                return Econ.shouldBeUsed() ? Econ.moneyString(Econ.calculateTotalLandRefund(fac.getLandRounded())) : minimal ? null : TL.ECON_OFF.format("refund");
             case BANK_BALANCE:
                 if (Econ.shouldBeUsed()) {
-                    return Conf.bankEnabled ? Econ.moneyString(Econ.getBalance(fac.getAccountId())) : TL.ECON_OFF.format("balance");
+                    return Conf.bankEnabled ? Econ.moneyString(Econ.getBalance(fac.getAccountId())) : minimal ? null : TL.ECON_OFF.format("balance");
                 }
-                return TL.ECON_OFF.format("balance");
+                return minimal ? null : TL.ECON_OFF.format("balance");
             case ALLIES_COUNT:
                 return String.valueOf(fac.getRelationCount(Relation.ALLY));
             case ENEMIES_COUNT:
