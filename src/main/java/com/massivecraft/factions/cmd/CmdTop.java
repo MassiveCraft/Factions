@@ -141,7 +141,6 @@ public class CmdTop extends FCommand {
         }
 
         ArrayList<String> lines = new ArrayList<String>();
-        factionList.add(0, Factions.getInstance().getNone());
 
         final int pageheight = 9;
         int pagenumber = this.argAsInt(1, 1);
