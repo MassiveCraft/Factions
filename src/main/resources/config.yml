@@ -144,6 +144,11 @@ scoreboard:
     - "&aBalance"
     - "${balance}"
 
+  factionless-enabled: false
+  factionless:
+    - "Make a new Faction"
+    - "Use /f create"
+
 # Configration section for warmups.
 # Warmup times are in seconds - if a value of 0 is set, there is no warmup.
 warmups:
