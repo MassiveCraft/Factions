@@ -90,6 +90,9 @@ public class CmdShow extends FCommand {
                     // replaces all variables with no home TL
                     parsed = parsed.substring(0, parsed.indexOf("{ig}")) + TL.COMMAND_SHOW_NOHOME.toString();
                 }
+                if(parsed.contains("%")) {
+                    parsed = parsed.replaceAll("%", ""); // Just in case it got in there before we disallowed it.
+                }
                 msg(p.txt.parse(parsed));
             }
         }
