@@ -166,7 +166,7 @@ public class P extends MPlugin {
 
     @Override
     public void postAutoSave() {
-        Board.getInstance().forceSave();
+        //Board.getInstance().forceSave(); Not sure why this was there as it's called after the board is already saved.
         Conf.save();
     }
 

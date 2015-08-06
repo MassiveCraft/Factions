@@ -31,6 +31,8 @@ public abstract class FPlayers {
 
     public abstract void forceSave();
 
+    public abstract void forceSave(boolean sync);
+
     public abstract FPlayer getByOfflinePlayer(OfflinePlayer player);
 
     public abstract FPlayer getById(String string);

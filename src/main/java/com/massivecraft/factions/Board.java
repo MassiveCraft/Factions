@@ -80,5 +80,7 @@ public abstract class Board {
 
     public abstract boolean forceSave();
 
+    public abstract boolean forceSave(boolean sync);
+
     public abstract boolean load();
 }

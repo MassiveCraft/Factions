@@ -21,9 +21,9 @@ public class SaveTask implements Runnable {
         }
         running = true;
         p.preAutoSave();
-        Factions.getInstance().forceSave();
-        FPlayers.getInstance().forceSave();
-        Board.getInstance().forceSave();
+        Factions.getInstance().forceSave(false);
+        FPlayers.getInstance().forceSave(false);
+        Board.getInstance().forceSave(false);
         p.postAutoSave();
         running = false;
     }

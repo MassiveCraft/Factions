@@ -51,13 +51,27 @@ public class JSONFPlayers extends MemoryFPlayers {
     }
 
     public void forceSave() {
-        Map<String, JSONFPlayer> entitiesThatShouldBeSaved = new HashMap<String, JSONFPlayer>();
+        forceSave(true);
+    }
+
+    public void forceSave(boolean sync) {
+        final Map<String, JSONFPlayer> entitiesThatShouldBeSaved = new HashMap<String, JSONFPlayer>();
         for (FPlayer entity : this.fPlayers.values()) {
             if (((MemoryFPlayer) entity).shouldBeSaved()) {
                 entitiesThatShouldBeSaved.put(entity.getId(), (JSONFPlayer) entity);
             }
         }
-        this.saveCore(this.file, entitiesThatShouldBeSaved);
+
+        if (sync) {
+            saveCore(file, entitiesThatShouldBeSaved);
+        } else {
+            Bukkit.getScheduler().runTaskAsynchronously(P.p, new Runnable() {
+                @Override
+                public void run() {
+                    saveCore(file, entitiesThatShouldBeSaved);
+                }
+            });
+        }
     }
 
     private boolean saveCore(File target, Map<String, JSONFPlayer> data) {

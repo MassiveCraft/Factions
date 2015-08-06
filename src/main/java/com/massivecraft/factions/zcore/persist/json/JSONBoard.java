@@ -6,6 +6,7 @@ import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.zcore.persist.MemoryBoard;
 import com.massivecraft.factions.zcore.util.DiscUtil;
+import org.bukkit.Bukkit;
 
 import java.io.File;
 import java.lang.reflect.Type;
@@ -63,14 +64,30 @@ public class JSONBoard extends MemoryBoard {
     }
 
     public boolean forceSave() {
-        //Factions.log("Saving board to disk");
+        return forceSave(true);
+    }
 
-        try {
-            DiscUtil.write(file, P.p.gson.toJson(dumpAsSaveFormat()));
-        } catch (Exception e) {
-            e.printStackTrace();
-            P.p.log("Failed to save the board to disk.");
-            return false;
+    public boolean forceSave(boolean sync) {
+        if (sync) {
+            try {
+                DiscUtil.write(file, P.p.gson.toJson(dumpAsSaveFormat()));
+            } catch (Exception e) {
+                e.printStackTrace();
+                P.p.log("Failed to save the board to disk.");
+                return false;
+            }
+        } else {
+            Bukkit.getScheduler().runTaskAsynchronously(P.p, new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        DiscUtil.write(file, P.p.gson.toJson(dumpAsSaveFormat()));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        P.p.log("Failed to save the board to disk.");
+                    }
+                }
+            });
         }
 
         return true;

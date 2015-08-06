@@ -53,12 +53,25 @@ public class JSONFactions extends MemoryFactions {
     }
 
     public void forceSave() {
-        Map<String, JSONFaction> entitiesThatShouldBeSaved = new HashMap<String, JSONFaction>();
+        forceSave(true);
+    }
+
+    public void forceSave(boolean sync) {
+        final Map<String, JSONFaction> entitiesThatShouldBeSaved = new HashMap<String, JSONFaction>();
         for (Faction entity : this.factions.values()) {
             entitiesThatShouldBeSaved.put(entity.getId(), (JSONFaction) entity);
         }
 
-        this.saveCore(this.file, entitiesThatShouldBeSaved);
+        if (sync) {
+            saveCore(file, entitiesThatShouldBeSaved);
+        } else {
+            Bukkit.getScheduler().runTaskAsynchronously(P.p, new Runnable() {
+                @Override
+                public void run() {
+                    saveCore(file, entitiesThatShouldBeSaved);
+                }
+            });
+        }
     }
 
     private boolean saveCore(File target, Map<String, JSONFaction> entities) {
