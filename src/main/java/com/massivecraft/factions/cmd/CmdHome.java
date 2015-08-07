@@ -101,13 +101,13 @@ public class CmdHome extends FCommand {
             }
         }
 
-        // if Essentials teleport handling is enabled and available, pass the teleport off to it (for delay and cooldown)
-        if (Essentials.handleTeleport(me, myFaction.getHome())) {
+        // if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
+        if (!payForCommand(Conf.econCostHome, TL.COMMAND_HOME_TOTELEPORT.toString(), TL.COMMAND_HOME_FORTELEPORT.toString())) {
             return;
         }
 
-        // if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-        if (!payForCommand(Conf.econCostHome, TL.COMMAND_HOME_TOTELEPORT.toString(), TL.COMMAND_HOME_FORTELEPORT.toString())) {
+        // if Essentials teleport handling is enabled and available, pass the teleport off to it (for delay and cooldown)
+        if (Essentials.handleTeleport(me, myFaction.getHome())) {
             return;
         }
 
