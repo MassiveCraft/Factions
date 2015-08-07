@@ -1,6 +1,13 @@
 package com.massivecraft.factions.zcore.util;
 
+import com.massivecraft.factions.P;
+import org.bukkit.Bukkit;
+
 import java.io.*;
+import java.util.HashMap;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class DiscUtil {
 
@@ -13,6 +20,7 @@ public class DiscUtil {
     // -------------------------------------------- //
     // BYTE
     // -------------------------------------------- //
+
 
     public static byte[] readBytes(File file) throws IOException {
         int length = (int) file.length();
@@ -48,13 +56,52 @@ public class DiscUtil {
     // CATCH
     // -------------------------------------------- //
 
-    public static boolean writeCatch(File file, String content) {
-        try {
-            write(file, content);
-            return true;
-        } catch (Exception e) {
-            return false;
+    private static HashMap<String, Lock> locks = new HashMap<String, Lock>();
+
+    public static boolean writeCatch(final File file, final String content, boolean sync) {
+        final byte[] bytes = utf8(content);
+        String name = file.getName();
+        final Lock lock;
+
+        // Create lock for each file if there isn't already one.
+        if (locks.containsKey(name)) {
+            lock = locks.get(name);
+        } else {
+            ReadWriteLock rwl = new ReentrantReadWriteLock();
+            lock = rwl.writeLock();
+            locks.put(name, lock);
         }
+
+        if (sync) {
+            lock.lock();
+            try {
+                FileOutputStream out = new FileOutputStream(file);
+                out.write(bytes);
+                out.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                lock.unlock();
+            }
+        } else {
+            Bukkit.getScheduler().runTaskAsynchronously(P.p, new Runnable() {
+                @Override
+                public void run() {
+                    lock.lock();
+                    try {
+                        FileOutputStream out = new FileOutputStream(file);
+                        out.write(bytes);
+                        out.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } finally {
+                        lock.unlock();
+                    }
+                }
+            });
+        }
+
+        return true; // don't really care but for some reason this is a boolean.
     }
 
     public static String readCatch(File file) {

@@ -62,20 +62,11 @@ public class JSONFPlayers extends MemoryFPlayers {
             }
         }
 
-        if (sync) {
-            saveCore(file, entitiesThatShouldBeSaved);
-        } else {
-            Bukkit.getScheduler().runTaskAsynchronously(P.p, new Runnable() {
-                @Override
-                public void run() {
-                    saveCore(file, entitiesThatShouldBeSaved);
-                }
-            });
-        }
+        saveCore(file, entitiesThatShouldBeSaved, sync);
     }
 
-    private boolean saveCore(File target, Map<String, JSONFPlayer> data) {
-        return DiscUtil.writeCatch(target, this.gson.toJson(data));
+    private boolean saveCore(File target, Map<String, JSONFPlayer> data, boolean sync) {
+        return DiscUtil.writeCatch(target, this.gson.toJson(data), sync);
     }
 
     public void load() {
@@ -126,7 +117,7 @@ public class JSONFPlayers extends MemoryFPlayers {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            saveCore(file, (Map<String, JSONFPlayer>) data);
+            saveCore(file, (Map<String, JSONFPlayer>) data, true);
             Bukkit.getLogger().log(Level.INFO, "Backed up your old data at " + file.getAbsolutePath());
 
             // Start fetching those UUIDs
@@ -170,7 +161,7 @@ public class JSONFPlayers extends MemoryFPlayers {
                 Bukkit.getLogger().log(Level.INFO, "While converting we found names that either don't have a UUID or aren't players and removed them from storage.");
                 Bukkit.getLogger().log(Level.INFO, "The following names were detected as being invalid: " + StringUtils.join(invalidList, ", "));
             }
-            saveCore(this.file, (Map<String, JSONFPlayer>) data); // Update the
+            saveCore(this.file, (Map<String, JSONFPlayer>) data, true); // Update the
             // flatfile
             Bukkit.getLogger().log(Level.INFO, "Done converting players.json to UUID.");
         }

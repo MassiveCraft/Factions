@@ -62,20 +62,11 @@ public class JSONFactions extends MemoryFactions {
             entitiesThatShouldBeSaved.put(entity.getId(), (JSONFaction) entity);
         }
 
-        if (sync) {
-            saveCore(file, entitiesThatShouldBeSaved);
-        } else {
-            Bukkit.getScheduler().runTaskAsynchronously(P.p, new Runnable() {
-                @Override
-                public void run() {
-                    saveCore(file, entitiesThatShouldBeSaved);
-                }
-            });
-        }
+        saveCore(file, entitiesThatShouldBeSaved, sync);
     }
 
-    private boolean saveCore(File target, Map<String, JSONFaction> entities) {
-        return DiscUtil.writeCatch(target, this.gson.toJson(entities));
+    private boolean saveCore(File target, Map<String, JSONFaction> entities, boolean sync) {
+        return DiscUtil.writeCatch(target, this.gson.toJson(entities), sync);
     }
 
     public void load() {
@@ -129,7 +120,7 @@ public class JSONFactions extends MemoryFactions {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            saveCore(file, (Map<String, JSONFaction>) data);
+            saveCore(file, (Map<String, JSONFaction>) data, true);
             Bukkit.getLogger().log(Level.INFO, "Backed up your old data at " + file.getAbsolutePath());
 
             Bukkit.getLogger().log(Level.INFO, "Please wait while Factions converts " + needsUpdate + " old player names to UUID. This may take a while.");
@@ -189,7 +180,7 @@ public class JSONFactions extends MemoryFactions {
                 }
             }
 
-            saveCore(this.file, (Map<String, JSONFaction>) data); // Update the flatfile
+            saveCore(this.file, (Map<String, JSONFaction>) data, true); // Update the flatfile
             Bukkit.getLogger().log(Level.INFO, "Done converting factions.json to UUID.");
         }
         return data;
