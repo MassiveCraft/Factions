@@ -50,6 +50,8 @@ public class CmdPowerBoost extends FCommand {
             if (targetPlayer == null) {
                 return;
             }
+
+            targetPower += targetPlayer.getPowerBoost();
             targetPlayer.setPowerBoost(targetPower);
             target = TL.COMMAND_POWERBOOST_PLAYER.format(targetPlayer.getName());
         } else {
@@ -57,6 +59,8 @@ public class CmdPowerBoost extends FCommand {
             if (targetFaction == null) {
                 return;
             }
+
+            targetPower += targetFaction.getPowerBoost();
             targetFaction.setPowerBoost(targetPower);
             target = TL.COMMAND_POWERBOOST_FACTION.format(targetFaction.getTag());
         }
