@@ -834,10 +834,11 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 		CommandSender sender = this.getSender();
 		if (sender == null)
 		{
-			msg("<b>ERROR: Your \"CommandSender Link\" has been severed. This shouldn't happen.");
-			msg("<b>Help the Factions developers by reporting this at: <aqua>https://github.com/MassiveCraft/Factions/issues");
-			msg("<b>Describe what you were doing, what client you are using, if this is your first time on the server etc. The more the better.");
-			msg("<g>Relogging to the server should fix the issue.");
+			msg("<b>ERROR: Your \"CommandSender Link\" has been severed.");
+			msg("<b>It's likely that you are using Cauldron.");
+			msg("<b>We do currently not support Cauldron.");
+			msg("<b>We would love to but lack time to develop support ourselves.");
+			msg("<g>Do you know how to code? Please send us a pull request <3, sorry.");
 			return false;
 		}
 		EventFactionsChunksChange event = new EventFactionsChunksChange(sender, chunks, newFaction);
