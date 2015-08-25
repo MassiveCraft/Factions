@@ -1,5 +1,7 @@
 package com.massivecraft.factions.zcore.persist;
 
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.util.AsciiCompass;
@@ -11,8 +13,49 @@ import java.util.Map.Entry;
 
 
 public abstract class MemoryBoard extends Board {
-    public HashMap<FLocation, String> flocationIds = new HashMap<FLocation, String>();
+    
+    public class MemoryBoardMap extends HashMap<FLocation, String> {
+         Multimap<String, FLocation> factionToLandMap = HashMultimap.create();
 
+         @Override
+         public String put(FLocation floc, String factionId) {
+             String previousValue = super.put(floc, factionId);
+             if (previousValue != null) {
+                 factionToLandMap.remove(previousValue, floc);
+             }
+
+             factionToLandMap.put(factionId, floc);
+             return previousValue;
+         }
+
+         @Override
+         public String remove(Object key) {
+             String result = super.remove(key);
+             if (result != null) {
+                 FLocation floc = (FLocation) key;
+                 factionToLandMap.remove(result, floc);
+             }
+
+             return result;
+         }
+
+         @Override
+         public void clear() {
+             super.clear();
+             factionToLandMap.clear();
+         }
+
+         public int getOwnedLandCount(String factionId) {
+             return factionToLandMap.get(factionId).size();
+         }
+
+         public Collection<FLocation> getOwnedLand(String factionId) {
+            return factionToLandMap.get(factionId);
+         }
+    }
+
+    public MemoryBoardMap flocationIds = new MemoryBoardMap();
+    
     //----------------------------------------------//
     // Get and Set
     //----------------------------------------------//
@@ -88,12 +131,9 @@ public abstract class MemoryBoard extends Board {
     }
 
     public void clean(String factionId) {
-        Iterator<Entry<FLocation, String>> iter = flocationIds.entrySet().iterator();
-        while (iter.hasNext()) {
-            Entry<FLocation, String> entry = iter.next();
-            if (entry.getValue().equals(factionId)) {
-                iter.remove();
-            }
+        Collection<FLocation> keys = flocationIds.getOwnedLand(factionId);
+        for (FLocation key : keys) {
+            flocationIds.remove(key);
         }
     }
 
@@ -166,13 +206,7 @@ public abstract class MemoryBoard extends Board {
     //----------------------------------------------//
 
     public int getFactionCoordCount(String factionId) {
-        int ret = 0;
-        for (String thatFactionId : flocationIds.values()) {
-            if (thatFactionId.equals(factionId)) {
-                ret += 1;
-            }
-        }
-        return ret;
+        return flocationIds.getOwnedLandCount(factionId);
     }
 
     public int getFactionCoordCount(Faction faction) {
