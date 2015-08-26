@@ -51,8 +51,12 @@ public class CmdFactionsTitle extends FactionsCommand
 		// MPerm
 		if ( ! MPerm.getPermTitle().has(msender, you.getFaction(), true)) return;
 		
-		// Verify
-		if ( ! canIAdministerYou(msender, you)) return;
+		// Rank Check
+		if (you.getRole().isMoreThan(msender.getRole()))
+		{
+			msg("<b>You can not edit titles for higher ranks.");
+			return;
+		}
 
 		// Event
 		EventFactionsTitleChange event = new EventFactionsTitleChange(sender, you, newTitle);
