@@ -49,8 +49,11 @@ public abstract class MemoryBoard extends Board {
              return factionToLandMap.get(factionId).size();
          }
 
-         public Collection<FLocation> getOwnedLand(String factionId) {
-            return factionToLandMap.get(factionId);
+         public void removeFaction(String factionId) {
+             Collection<FLocation> flocations = factionToLandMap.removeAll(factionId);
+             for (FLocation floc : flocations) {
+                 super.remove(floc);
+             }
          }
     }
 
@@ -131,10 +134,7 @@ public abstract class MemoryBoard extends Board {
     }
 
     public void clean(String factionId) {
-        Collection<FLocation> keys = flocationIds.getOwnedLand(factionId);
-        for (FLocation key : keys) {
-            flocationIds.remove(key);
-        }
+        flocationIds.removeFaction(factionId);
     }
 
     // Is this coord NOT completely surrounded by coords claimed by the same faction?
