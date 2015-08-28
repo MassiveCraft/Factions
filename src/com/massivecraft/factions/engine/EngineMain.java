@@ -695,11 +695,11 @@ public class EngineMain extends EngineAbstract
 		}
 		else if (factionFrom != factionTo)
 		{
-			if (this.isTerritoryInfoUsingScreen())
+			if (mplayer.isTerritoryInfoTitles())
 			{
-				String maintitle = parseTerritoryInfo(MConf.get().territoryInfoScreenMaintitle, mplayer, factionTo);
-				String subtitle = parseTerritoryInfo(MConf.get().territoryInfoScreenSubtitle, mplayer, factionTo);
-				Mixin.sendTitleMessage(player, MConf.get().territoryInfoScreenTicksIn, MConf.get().territoryInfoScreenTicksStay, MConf.get().territoryInfoScreenTicksOut, maintitle, subtitle);
+				String maintitle = parseTerritoryInfo(MConf.get().territoryInfoTitlesMain, mplayer, factionTo);
+				String subtitle = parseTerritoryInfo(MConf.get().territoryInfoTitlesSub, mplayer, factionTo);
+				Mixin.sendTitleMessage(player, MConf.get().territoryInfoTitlesTicksIn, MConf.get().territoryInfoTitlesTicksStay, MConf.get().territoryInfoTitleTicksOut, maintitle, subtitle);
 			}
 			else
 			{
@@ -741,13 +741,6 @@ public class EngineMain extends EngineAbstract
 		string = string.replace("{desc}", faction.getDescription());
 		
 		return string;
-	}
-	
-	public boolean isTerritoryInfoUsingScreen()
-	{
-		if ( ! MConf.get().territoryInfoUseScreen) return false;
-		if ( ! Mixin.isTitlesAvailable()) return false;
-		return true;
 	}
 	
 	// -------------------------------------------- //

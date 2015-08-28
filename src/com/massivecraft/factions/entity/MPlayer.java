@@ -58,6 +58,7 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 		this.setPower(that.power);
 		this.setMapAutoUpdating(that.mapAutoUpdating);
 		this.setUsingAdminMode(that.usingAdminMode);
+		this.setTerritoryInfoTitles(that.territoryInfoTitles);
 		
 		return this;
 	}
@@ -73,6 +74,7 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 		if (this.getPowerRounded() != (int) Math.round(MConf.get().defaultPlayerPower)) return false;
 		// if (this.isMapAutoUpdating()) return false; // Just having an auto updating map is not in itself reason enough for database storage.
 		if (this.isUsingAdminMode()) return false;
+		if (this.isTerritoryInfoTitles() != MConf.get().territoryInfoTitlesDefault) return false;
 		
 		return true;
 	}
@@ -157,6 +159,10 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 	// Is this player using admin mode?
 	// Null means false
 	private Boolean usingAdminMode = null;
+	
+	// Does this player use titles for territory info?
+	// Null means default specified in MConf.
+	private Boolean territoryInfoTitles = null;
 	
 	// The id for the faction this player is currently autoclaiming for.
 	// Null means the player isn't auto claiming.
@@ -556,6 +562,33 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 		
 		// Apply
 		this.usingAdminMode = target;
+		
+		// Mark as changed
+		this.changed();
+	}
+	
+	// -------------------------------------------- //
+	// FIELD: territoryInfoTitles
+	// -------------------------------------------- //
+	
+	public boolean isTerritoryInfoTitles()
+	{
+		if ( ! Mixin.isTitlesAvailable()) return false;
+		if (this.territoryInfoTitles == null) return MConf.get().territoryInfoTitlesDefault;
+		return this.territoryInfoTitles;
+	}
+	
+	public void setTerritoryInfoTitles(Boolean territoryInfoTitles)
+	{
+		// Clean input
+		Boolean target = territoryInfoTitles;
+		if (MUtil.equals(target, MConf.get().territoryInfoTitlesDefault)) target = null;
+		
+		// Detect Nochange
+		if (MUtil.equals(this.territoryInfoTitles, target)) return;
+		
+		// Apply
+		this.territoryInfoTitles = target;
 		
 		// Mark as changed
 		this.changed();

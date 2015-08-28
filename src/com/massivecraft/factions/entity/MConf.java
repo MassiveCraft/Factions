@@ -270,13 +270,13 @@ public class MConf extends Entity<MConf>
 	// TERRITORY INFO
 	// -------------------------------------------- //
 	
-	public boolean territoryInfoUseScreen = true;
+	public boolean territoryInfoTitlesDefault = true;
 
-	public String territoryInfoScreenMaintitle = "{relcolor}{name}";
-	public String territoryInfoScreenSubtitle = "<i>{desc}";
-	public int territoryInfoScreenTicksIn = 5;
-	public int territoryInfoScreenTicksStay = 60;
-	public int territoryInfoScreenTicksOut = 5;
+	public String territoryInfoTitlesMain = "{relcolor}{name}";
+	public String territoryInfoTitlesSub = "<i>{desc}";
+	public int territoryInfoTitlesTicksIn = 5;
+	public int territoryInfoTitlesTicksStay = 60;
+	public int territoryInfoTitleTicksOut = 5;
 
 	public String territoryInfoChat = "<i> ~ {relcolor}{name} <i>{desc}";
 	
