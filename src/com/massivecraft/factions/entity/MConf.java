@@ -462,6 +462,13 @@ public class MConf extends Entity<MConf>
 	public float seeChunkParticleDeltaY = 2;
 	
 	// -------------------------------------------- //
+	// UNSTUCK
+	// -------------------------------------------- //
+	
+	public int unstuckSeconds = 30;
+	public int unstuckChunkRadius = 10; 
+	
+	// -------------------------------------------- //
 	// LOGGING
 	// -------------------------------------------- //
 	

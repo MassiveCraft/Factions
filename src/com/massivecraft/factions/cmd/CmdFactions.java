@@ -50,6 +50,7 @@ public class CmdFactions extends FactionsCommand
 	public CmdFactionsRelationEnemy cmdFactionsRelationEnemy = new CmdFactionsRelationEnemy();
 	public CmdFactionsPerm cmdFactionsPerm = new CmdFactionsPerm();
 	public CmdFactionsFlag cmdFactionsFlag = new CmdFactionsFlag();
+	public CmdFactionsUnstuck cmdFactionsUnstuck = new CmdFactionsUnstuck();
 	public CmdFactionsExpansions cmdFactionsExpansions = new CmdFactionsExpansions();
 	public CmdFactionsXPlaceholder cmdFactionsTax = new CmdFactionsXPlaceholder("FactionsTax", "tax");
 	public CmdFactionsXPlaceholder cmdFactionsDynmap = new CmdFactionsXPlaceholder("FactionsDynmap", "dynmap");
@@ -102,6 +103,7 @@ public class CmdFactions extends FactionsCommand
 		this.addSubCommand(this.cmdFactionsRelationEnemy);
 		this.addSubCommand(this.cmdFactionsPerm);
 		this.addSubCommand(this.cmdFactionsFlag);
+		this.addSubCommand(this.cmdFactionsUnstuck);
 		this.addSubCommand(this.cmdFactionsExpansions);
 		this.addSubCommand(this.cmdFactionsTax);
 		this.addSubCommand(this.cmdFactionsDynmap);

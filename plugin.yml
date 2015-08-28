@@ -81,6 +81,7 @@ permissions:
   factions.unclaim.circle: {description: unclaim by circle and radius, default: false}
   factions.unclaim.all: {description: unclaim all faction land, default: false}
   factions.unsethome: {description: unset faction home, default: false}
+  factions.unstuck: {description: teleport to nearest wilderness, default: false}
   factions.version: {description: see plugin version, default: false}
 # -------------------------------------------- #
 # STAR NOTATION
@@ -161,6 +162,7 @@ permissions:
       factions.unclaim.circle: true
       factions.unclaim.all: true
       factions.unsethome: true
+      factions.unstuck: true
       factions.version: true
 # -------------------------------------------- #
 # KITS
@@ -262,6 +264,7 @@ permissions:
       factions.unclaim.circle: true
       factions.unclaim.all: true
       factions.unsethome: true
+      factions.unstuck: true
       factions.version: true
   factions.kit.default:
     default: true
