@@ -52,6 +52,7 @@ public class CmdFactionsUnstuck extends FactionsCommand
 		if (isFree(msender, center))
 		{
 			msg("<b>You don't seem to be stuck.");
+			return;
 		}
 		
 		// ... get the nearest free top location ...
