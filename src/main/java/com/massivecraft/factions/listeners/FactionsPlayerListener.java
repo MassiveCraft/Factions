@@ -178,7 +178,7 @@ public class FactionsPlayerListener implements Listener {
                 if (Conf.ownedAreasEnabled && Conf.ownedMessageOnBorder && myFaction == factionTo && !ownersTo.isEmpty()) {
                     me.sendMessage(TL.GENERIC_OWNERS.format(ownersTo));
                 }
-            } else if (Conf.ownedAreasEnabled && Conf.ownedMessageInsideTerritory && factionFrom == factionTo && myFaction == factionTo) {
+            } else if (Conf.ownedAreasEnabled && Conf.ownedMessageInsideTerritory && myFaction == factionTo && !myFaction.isNone()) {
                 String ownersFrom = myFaction.getOwnerListString(from);
                 if (Conf.ownedMessageByChunk || !ownersFrom.equals(ownersTo)) {
                     if (!ownersTo.isEmpty()) {
