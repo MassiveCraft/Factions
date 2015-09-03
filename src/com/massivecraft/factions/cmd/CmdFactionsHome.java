@@ -73,7 +73,7 @@ public class CmdFactionsHome extends FactionsCommandHome
 			if (MPerm.getPermSethome().has(msender, faction, false))
 			{
 				msender.msg("<i>You should:");
-				msender.sendMessage(Factions.get().getOuterCmdFactions().cmdFactionsSethome.getUseageTemplate());
+				msender.message(Factions.get().getOuterCmdFactions().cmdFactionsSethome.getUseageTemplate());
 			}
 			
 			return;

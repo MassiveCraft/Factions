@@ -359,7 +359,7 @@ public class MPerm extends Entity<MPerm> implements Prioritized, Registerable
 		Rel rel = mplayer.getRelationTo(hostFaction);
 		if (hostFaction.isPermitted(this, rel)) return true;
 		
-		if (verboose) mplayer.sendMessage(this.createDeniedMessage(mplayer, hostFaction));
+		if (verboose) mplayer.message(this.createDeniedMessage(mplayer, hostFaction));
 		
 		return false;
 	}
@@ -382,7 +382,7 @@ public class MPerm extends Entity<MPerm> implements Prioritized, Registerable
 			{
 				if (verboose && !hasTerritoryAccess)
 				{
-					mplayer.sendMessage(this.createDeniedMessage(mplayer, hostFaction));
+					mplayer.message(this.createDeniedMessage(mplayer, hostFaction));
 				}
 				return hasTerritoryAccess;
 			}

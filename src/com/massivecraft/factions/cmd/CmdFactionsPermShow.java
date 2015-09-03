@@ -56,7 +56,7 @@ public class CmdFactionsPermShow extends FactionsCommand
 		}
 		
 		// Send messages
-		sendMessage(messages);
+		message(messages);
 	}
 	
 }

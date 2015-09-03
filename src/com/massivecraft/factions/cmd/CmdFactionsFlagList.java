@@ -48,7 +48,7 @@ public class CmdFactionsFlagList extends FactionsCommand
 		}
 		
 		//Send messages
-		sendMessage(Txt.getPage(messages, page, "Available Faction Flags", sender));
+		message(Txt.getPage(messages, page, "Available Faction Flags", sender));
 	}
 	
 }

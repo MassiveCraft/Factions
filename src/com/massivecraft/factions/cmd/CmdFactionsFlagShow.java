@@ -54,7 +54,7 @@ public class CmdFactionsFlagShow extends FactionsCommand
 		}
 
 		// Send messages
-		sendMessage(messages);
+		message(messages);
 	}
 	
 }

@@ -45,7 +45,7 @@ public class CmdFactionsAdmin extends FactionsCommand
 		String messageYou = Txt.parse("<i>%s %s <i>admin bypass mode.", msender.getDisplayName(msender), desc);
 		String messageLog = Txt.parse("<i>%s %s <i>admin bypass mode.", msender.getDisplayName(IdUtil.getConsole()), desc);
 		
-		msender.sendMessage(messageYou);
+		msender.message(messageYou);
 		Factions.get().log(messageLog);
 	}
 	

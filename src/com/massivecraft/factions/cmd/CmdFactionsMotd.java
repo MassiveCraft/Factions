@@ -40,7 +40,7 @@ public class CmdFactionsMotd extends FactionsCommand
 		// Read
 		if ( ! this.argIsSet(0))
 		{
-			sendMessage(msenderFaction.getMotdMessages());
+			message(msenderFaction.getMotdMessages());
 			return;
 		}
 		

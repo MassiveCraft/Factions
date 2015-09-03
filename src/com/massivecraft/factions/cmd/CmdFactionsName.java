@@ -57,7 +57,7 @@ public class CmdFactionsName extends FactionsCommand
 		errors.addAll(FactionColl.get().validateName(newName));
 		if (errors.size() > 0)
 		{
-			sendMessage(errors);
+			message(errors);
 			return;
 		}
 

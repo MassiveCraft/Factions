@@ -48,7 +48,7 @@ public class CmdFactionsPermList extends FactionsCommand
 		}
 		
 		// Send messages
-		sendMessage(Txt.getPage(messages, page, "Available Faction Perms", sender));
+		message(Txt.getPage(messages, page, "Available Faction Perms", sender));
 	}
 
 }

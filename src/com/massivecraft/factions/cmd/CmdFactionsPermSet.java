@@ -83,7 +83,7 @@ public class CmdFactionsPermSet extends FactionsCommand
 		messages.add(Txt.titleize("Perm for " + faction.describeTo(msender, true)));
 		messages.add(MPerm.getStateHeaders());
 		messages.add(Txt.parse(perm.getStateInfo(faction.getPermitted(perm), true)));
-		sendMessage(messages);
+		message(messages);
 		
 		// Inform faction (their message is slighly different)
 		List<MPlayer> recipients = faction.getMPlayers();
@@ -92,7 +92,7 @@ public class CmdFactionsPermSet extends FactionsCommand
 		for (MPlayer recipient : recipients)
 		{
 			messages.add(0, Txt.parse("<h>%s <i>set a perm for <h>%s<i>.", msender.describeTo(recipient, true), faction.describeTo(recipient, true)));
-			recipient.sendMessage(messages);
+			recipient.message(messages);
 		}
 	}
 	

@@ -66,7 +66,7 @@ public class CmdFactionsMap extends FactionsCommand
 	{
 		Location location = me.getLocation();
 		List<String> message = BoardColl.get().getMap(msenderFaction, PS.valueOf(location), location.getYaw(), width, height);
-		sendMessage(message);
+		message(message);
 	}
 	
 }

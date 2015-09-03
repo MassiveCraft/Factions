@@ -53,7 +53,7 @@ public abstract class CmdFactionsAccessAbstract extends FactionsCommand
 
 	public void sendAccessInfo()
 	{
-		sendMessage(Txt.titleize("Access at " + chunk.toString(PSFormatHumanSpace.get())));
+		message(Txt.titleize("Access at " + chunk.toString(PSFormatHumanSpace.get())));
 		msg("<k>Host Faction: %s", hostFaction.describeTo(msender, true));
 		msg("<k>Host Faction Allowed: %s", ta.isHostFactionAllowed() ? Txt.parse("<lime>TRUE") : Txt.parse("<rose>FALSE"));
 		msg("<k>Granted Players: %s", describeRelationParticipators(ta.getGrantedMPlayers(), msender));

@@ -75,7 +75,7 @@ public class CmdFactionsFlagSet extends FactionsCommand
 		{
 			// Send message to sender
 			msg("<h>%s <i>set a flag for <h>%s<i>.", msender.describeTo(msender, true), faction.describeTo(msender, true));
-			sendMessage(stateInfo);
+			message(stateInfo);
 		}
 		faction.msg("<h>%s <i>set a flag for <h>%s<i>.", msender.describeTo(faction, true), faction.describeTo(faction, true));
 		faction.sendMessage(stateInfo);

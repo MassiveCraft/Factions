@@ -78,7 +78,7 @@ public class CmdFactionsInviteList extends FactionsCommand
 		});
 		
 		// Send message
-		sendMessage(messages);
+		message(messages);
 	}
 	
 }

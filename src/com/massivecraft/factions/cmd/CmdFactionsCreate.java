@@ -56,7 +56,7 @@ public class CmdFactionsCreate extends FactionsCommand
 		ArrayList<String> nameValidationErrors = FactionColl.get().validateName(newName);
 		if (nameValidationErrors.size() > 0)
 		{
-			sendMessage(nameValidationErrors);
+			message(nameValidationErrors);
 			return;
 		}
 

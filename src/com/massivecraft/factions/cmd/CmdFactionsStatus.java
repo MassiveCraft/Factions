@@ -113,7 +113,7 @@ public class CmdFactionsStatus extends FactionsCommand
 		});
 		
 		// Send message
-		sendMessage(messages);
+		message(messages);
 	}
 	
 }

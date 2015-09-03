@@ -571,7 +571,7 @@ public class EngineMain extends EngineAbstract
 			for (Faction nearbyFaction : nearbyFactions)
 			{
 				if (claimnear.has(newFaction, nearbyFaction)) continue;
-				msender.sendMessage(claimnear.createDeniedMessage(msender, nearbyFaction));
+				msender.message(claimnear.createDeniedMessage(msender, nearbyFaction));
 				event.setCancelled(true);
 				return;
 			}
@@ -691,7 +691,7 @@ public class EngineMain extends EngineAbstract
 		if (mplayer.isMapAutoUpdating())
 		{
 			List<String> message = BoardColl.get().getMap(mplayer, chunkTo, player.getLocation().getYaw(), Const.MAP_WIDTH, Const.MAP_HEIGHT);
-			mplayer.sendMessage(message);
+			mplayer.message(message);
 		}
 		else if (factionFrom != factionTo)
 		{
