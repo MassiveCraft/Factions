@@ -61,9 +61,7 @@ public class EngineWorldGuard extends EngineAbstract
 	
 	@Override
 	public void deactivate()
-	{
-		HandlerList.unregisterAll(this);
-		
+	{		
 		worldGuard = null;
 		
 		super.deactivate();
