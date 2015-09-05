@@ -53,9 +53,7 @@ public class EngineWorldGuard extends EngineAbstract
 	public void activate()
 	{
 		worldGuard = (WorldGuardPlugin) Bukkit.getPluginManager().getPlugin("WorldGuard");
-		
-		Bukkit.getPluginManager().registerEvents(this, Factions.get());
-		
+				
 		super.activate();
 	}
 	
@@ -75,36 +73,34 @@ public class EngineWorldGuard extends EngineAbstract
 	public void checkForRegion(EventFactionsChunksChange event)
 	{
 		// Permanent Factions should not apply this rule 
-		if(event.getNewFaction().getFlag(MFlag.ID_PERMANENT)) return;
+		if (event.getNewFaction().getFlag(MFlag.ID_PERMANENT)) return;
 		
 		MPlayer player = event.getMSender();
 		
 		// Admin and ops don't bother checking 
-		if(player.isUsingAdminMode() || event.getSender().isOp()) return; 
-				
-		for(PS chunkChecking : event.getChunks())
+		if (player.isUsingAdminMode() || event.getSender().isOp()) return; 
+		
+		for (PS chunkChecking : event.getChunks())
 		{
 			// Grab any regions in the chunk
 			List<ProtectedRegion> regions = getProtectedRegionsFor(chunkChecking);
 			
 			// Ensure there are actually regions to go over 
-			if(regions != null && !regions.isEmpty())
+			if (regions == null || regions.isEmpty()) continue;
+			
+			for (ProtectedRegion region : regions)
 			{
-				for(ProtectedRegion region : regions)
+				// Ensure it's not the global region, and check if they're a member 
+				if (region.getId() == "__global__" || region.getMembers().contains(player.getUuid())) continue;
+				
+				// Check for a permission
+				if (!event.getMSender().getPlayer().hasPermission("factions.allowregionclaim." + region.getId()))
 				{
-					// Ensure it's not the global region, and check if they're a member 
-					if(region.getId() != "__global__" && !region.getMembers().contains(player.getUuid()))
-					{
-						// Check for a permission
-						if(!event.getMSender().getPlayer().hasPermission("factions.allowregionclaim." + region.getId()))
-						{	
-							// No permission, notify player and stop claiming
-							player.msg("<b>You cannot claim the chunk at %s, %s as there is a region in the way.", chunkChecking.getChunkX(), chunkChecking.getChunkZ());
-							
-							event.setCancelled(true);
-							return;
-						}
-					}
+					// No permission, notify player and stop claiming
+					player.msg("<b>You cannot claim the chunk at %s, %s as there is a region in the way.", chunkChecking.getChunkX(), chunkChecking.getChunkZ());
+					
+					event.setCancelled(true);
+					return;
 				}
 			}
 		}
