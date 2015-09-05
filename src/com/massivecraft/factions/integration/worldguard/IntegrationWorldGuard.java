@@ -2,7 +2,7 @@ package com.massivecraft.factions.integration.worldguard;
 
 import com.massivecraft.massivecore.integration.IntegrationAbstract;
 
-public class IntegrationWorldGuard  extends IntegrationAbstract
+public class IntegrationWorldGuard extends IntegrationAbstract
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
