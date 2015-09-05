@@ -3,7 +3,6 @@ package com.massivecraft.factions.cmd;
 import java.util.List;
 
 import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
 
 import com.massivecraft.factions.FactionListComparator;
 import com.massivecraft.factions.Factions;
@@ -14,7 +13,8 @@ import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.cmd.ArgSetting;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.mixin.Mixin;
-import com.massivecraft.massivecore.pager.PagerSimple;
+import com.massivecraft.massivecore.mson.Mson;
+import com.massivecraft.massivecore.pager.Pager;
 import com.massivecraft.massivecore.pager.Stringifier;
 import com.massivecraft.massivecore.util.Txt;
 
@@ -44,45 +44,45 @@ public class CmdFactionsList extends FactionsCommand
 	public void perform() throws MassiveException
 	{
 		// Args
-		final int page = this.readArg();
+		int page = this.readArg();
 		
 		// NOTE: The faction list is quite slow and mostly thread safe.
 		// We run it asynchronously to spare the primary server thread.
-		final CommandSender sender = this.sender;
+		
+		// Pager Create
+		final Pager<Faction> pager = new Pager<Faction>(this, "Faction List", page, new Stringifier<Faction>() {
+			@Override
+			public String toString(Faction faction, int index)
+			{
+				if (faction.isNone())
+				{
+					return Txt.parse("<i>Factionless<i> %d online", FactionColl.get().getNone().getMPlayersWhereOnline(true).size());
+				}
+				else
+				{
+					return Txt.parse("%s<i> %d/%d online, %d/%d/%d",
+						faction.getName(msender),
+						faction.getMPlayersWhereOnline(true).size(),
+						faction.getMPlayers().size(),
+						faction.getLandCount(),
+						faction.getPowerRounded(),
+						faction.getPowerMaxRounded()
+					);
+				}
+			}
+		});
+		
 		Bukkit.getScheduler().runTaskAsynchronously(Factions.get(), new Runnable()
 		{
 			@Override
 			public void run()
 			{
-				// Create Pager
+				// Pager Items
 				final List<Faction> factions = FactionColl.get().getAll(FactionListComparator.get());
-				final PagerSimple<Faction> pager = new PagerSimple<Faction>(factions, sender);
+				pager.setItems(factions);
 				
-				// Use Pager
-				List<String> messages = pager.getPageTxt(page, "Faction List", new Stringifier<Faction>() {
-					@Override
-					public String toString(Faction faction, int index)
-					{
-						if (faction.isNone())
-						{
-							return Txt.parse("<i>Factionless<i> %d online", FactionColl.get().getNone().getMPlayersWhereOnline(true).size());
-						}
-						else
-						{
-							return Txt.parse("%s<i> %d/%d online, %d/%d/%d",
-								faction.getName(msender),
-								faction.getMPlayersWhereOnline(true).size(),
-								faction.getMPlayers().size(),
-								faction.getLandCount(),
-								faction.getPowerRounded(),
-								faction.getPowerMaxRounded()
-							);
-						}
-					}
-				});
-				
-				// Send Messages
-				Mixin.messageOne(sender, messages);
+				// Pager Message
+				pager.message();
 			}
 		});
 	}

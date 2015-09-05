@@ -15,7 +15,8 @@ import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.cmd.ArgSetting;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
-import com.massivecraft.massivecore.pager.PagerSimple;
+import com.massivecraft.massivecore.mson.Mson;
+import com.massivecraft.massivecore.pager.Pager;
 import com.massivecraft.massivecore.pager.Stringifier;
 import com.massivecraft.massivecore.util.TimeDiffUtil;
 import com.massivecraft.massivecore.util.TimeUnit;
@@ -61,13 +62,9 @@ public class CmdFactionsStatus extends FactionsCommand
 		final List<MPlayer> mplayers = faction.getMPlayers();
 		Collections.sort(mplayers, sortedBy);
 		
-		// Create Pager
-		final PagerSimple<MPlayer> pager = new PagerSimple<MPlayer>(mplayers, sender);
-		String pagerTitle = Txt.parse("<i>Status of %s<i>.", faction.describeTo(msender, true));
-		
-		// Use Pager
-		List<String> messages = pager.getPageTxt(page, pagerTitle, new Stringifier<MPlayer>(){
-			
+		// Pager Create
+		String title = Txt.parse("<i>Status of %s<i>.", faction.describeTo(msender, true));
+		final Pager<MPlayer> pager = new Pager<MPlayer>(this, title, page, mplayers, new Stringifier<MPlayer>(){
 			@Override
 			public String toString(MPlayer mplayer, int index)
 			{
@@ -109,11 +106,11 @@ public class CmdFactionsStatus extends FactionsCommand
 				
 				return Txt.parse("%s%s %s %s", displayName, whiteSpace, power, lastActive);
 			}
-
 		});
 		
-		// Send message
-		message(messages);
+		
+		// Pager Message
+		pager.message();
 	}
 	
 }
