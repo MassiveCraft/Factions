@@ -652,6 +652,17 @@ public class MConf extends Entity<MConf>
 	);
 	
 	// -------------------------------------------- //
+	// INTEGRATION: WorldGuard
+	// -------------------------------------------- //
+	
+	// Global WorldGuard Integration Switch
+	public boolean worldguardCheckEnabled = false;
+	
+	// Enable the WorldGuard check per-world 
+	// Specify which worlds the WorldGuard Check can be used in
+	public WorldExceptionSet worldguardCheckWorldsEnabled = new WorldExceptionSet();
+	
+	// -------------------------------------------- //
 	// INTEGRATION: ECONOMY
 	// -------------------------------------------- //
 	
