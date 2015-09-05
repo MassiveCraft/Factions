@@ -74,10 +74,10 @@ public class EngineWorldGuard extends EngineAbstract
 		// Permanent Factions should not apply this rule 
 		if (event.getNewFaction().getFlag(MFlag.ID_PERMANENT)) return;
 		
-		MPlayer mplayer = event.getMSender();
+		MPlayer player = event.getMSender();
 		
-		// For admins and ops don't bother checking 
-		if (mplayer.isUsingAdminMode() || event.getSender().isOp()) return; 
+		// Admin and ops don't bother checking 
+		if (player.isUsingAdminMode() || event.getSender().isOp()) return; 
 		
 		for (PS chunkChecking : event.getChunks())
 		{
@@ -90,13 +90,13 @@ public class EngineWorldGuard extends EngineAbstract
 			for (ProtectedRegion region : regions)
 			{
 				// Ensure it's not the global region, and check if they're a member 
-				if (region.getId() == "__global__" || region.getMembers().contains(mplayer.getUuid())) continue;
+				if (region.getId() == "__global__" || region.getMembers().contains(player.getUuid())) continue;
 				
 				// Check for a permission
-				if ( ! mplayer.getPlayer().hasPermission("factions.allowregionclaim." + region.getId()))
+				if (!event.getMSender().getPlayer().hasPermission("factions.allowregionclaim." + region.getId()))
 				{
 					// No permission, notify player and stop claiming
-					mplayer.msg("<b>You cannot claim the chunk at %s, %s as there is a region in the way.", chunkChecking.getChunkX(), chunkChecking.getChunkZ());
+					player.msg("<b>You cannot claim the chunk at %s, %s as there is a region in the way.", chunkChecking.getChunkX(), chunkChecking.getChunkZ());
 					
 					event.setCancelled(true);
 					return;
