@@ -36,6 +36,7 @@ import com.massivecraft.factions.entity.MPlayerColl;
 import com.massivecraft.factions.entity.MConfColl;
 import com.massivecraft.factions.integration.herochat.IntegrationHerochat;
 import com.massivecraft.factions.integration.lwc.IntegrationLwc;
+import com.massivecraft.factions.integration.worldguard.IntegrationWorldGuard;
 import com.massivecraft.factions.mixin.PowerMixin;
 import com.massivecraft.factions.mixin.PowerMixinDefault;
 import com.massivecraft.factions.spigot.SpigotFeatures;
@@ -154,7 +155,8 @@ public class Factions extends MassivePlugin
 		// Integrate
 		this.integrate(
 			IntegrationHerochat.get(),
-			IntegrationLwc.get()
+			IntegrationLwc.get(),
+			IntegrationWorldGuard.get()
 		);
 		
 		// Spigot
