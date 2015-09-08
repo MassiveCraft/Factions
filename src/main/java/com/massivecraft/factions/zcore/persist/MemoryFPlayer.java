@@ -789,6 +789,12 @@ public abstract class MemoryFPlayer implements FPlayer {
             return false;
         }
 
+        // Was an over claim
+        if(currentFaction.isNormal() && currentFaction.hasLandInflation()) {
+            // Give them money for over claiming.
+            Econ.modifyMoney(payee, Conf.econOverclaimRewardMultiplier, TL.CLAIM_TOOVERCLAIM.toString(), TL.CLAIM_FOROVERCLAIM.toString());
+        }
+
         // announce success
         Set<FPlayer> informTheseFPlayers = new HashSet<FPlayer>();
         informTheseFPlayers.add(this);
