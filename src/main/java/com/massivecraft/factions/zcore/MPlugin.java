@@ -50,7 +50,6 @@ public abstract class MPlugin extends JavaPlugin {
 
     // Listeners
     private MPluginSecretPlayerListener mPluginSecretPlayerListener;
-    private MPluginSecretServerListener mPluginSecretServerListener;
 
     // Our stored base commands
     private List<MCommand<?>> baseCommands = new ArrayList<MCommand<?>>();
@@ -98,11 +97,9 @@ public abstract class MPlugin extends JavaPlugin {
         } catch (ClassCastException ex) {
         }
 
-        // Create and register listeners
+        // Create and register player command listener
         this.mPluginSecretPlayerListener = new MPluginSecretPlayerListener(this);
-        this.mPluginSecretServerListener = new MPluginSecretServerListener(this);
         getServer().getPluginManager().registerEvents(this.mPluginSecretPlayerListener, this);
-        getServer().getPluginManager().registerEvents(this.mPluginSecretServerListener, this);
 
         // Register recurring tasks
         if (saveTask == null && Conf.saveToFileEveryXMinutes > 0.0) {

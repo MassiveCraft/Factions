@@ -182,8 +182,7 @@ public class P extends MPlugin {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] split) {
-        // if bare command at this point, it has already been handled by MPlugin's command listeners
-        if (split == null || split.length == 0) {
+        if (split.length == 0) {
             return handleCommand(sender, "/f help", false);
         }
 
