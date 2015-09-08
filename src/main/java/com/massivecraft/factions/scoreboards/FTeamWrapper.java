@@ -25,7 +25,7 @@ public class FTeamWrapper {
             return;
         }
 
-        if (faction.isNone()) {
+        if (faction.isWilderness()) {
             return;
         }
 
@@ -50,7 +50,7 @@ public class FTeamWrapper {
             return;
         }
 
-        if (faction.isNone()) {
+        if (faction.isWilderness()) {
             return;
         }
 

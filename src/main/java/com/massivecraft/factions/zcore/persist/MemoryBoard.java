@@ -263,7 +263,7 @@ public abstract class MemoryBoard extends Board {
                     FLocation flocationHere = topLeft.getRelative(dx, dz);
                     Faction factionHere = getFactionAt(flocationHere);
                     Relation relation = faction.getRelationTo(factionHere);
-                    if (factionHere.isNone()) {
+                    if (factionHere.isWilderness()) {
                         row += ChatColor.GRAY + "-";
                     } else if (factionHere.isSafeZone()) {
                         row += Conf.colorPeaceful + "+";

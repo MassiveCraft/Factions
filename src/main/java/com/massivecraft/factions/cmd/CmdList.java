@@ -104,7 +104,7 @@ public class CmdList extends FCommand {
         lines.add(p.txt.parse(header));
 
         for (Faction faction : factionList.subList(start, end)) {
-            if (faction.isNone()) {
+            if (faction.isWilderness()) {
                 lines.add(p.txt.parse(TagUtil.parsePlain(faction, p.getConfig().getString("list.factionless", defaults[1]))));
                 continue;
             }

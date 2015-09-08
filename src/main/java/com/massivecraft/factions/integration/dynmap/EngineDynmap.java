@@ -491,7 +491,7 @@ public class EngineDynmap {
         if (faction == null) {
             return null;
         }
-        if (faction.isNone()) {
+        if (faction.isWilderness()) {
             return null;
         }
         String factionId = faction.getId();
@@ -506,7 +506,7 @@ public class EngineDynmap {
         if (faction == null) {
             return null;
         }
-        if (faction.isNone()) {
+        if (faction.isWilderness()) {
             return null;
         }
 

@@ -58,7 +58,7 @@ public class CmdKick extends FCommand {
 
         Faction toKickFaction = toKick.getFaction();
 
-        if (toKickFaction.isNone()) {
+        if (toKickFaction.isWilderness()) {
             sender.sendMessage(TL.COMMAND_KICK_NONE.toString());
             return;
         }
