@@ -148,7 +148,9 @@ public class Conf {
     // commands which will be prevented when in claimed territory of another faction
     public static Set<String> territoryNeutralDenyCommands = new LinkedHashSet<String>();
     public static Set<String> territoryEnemyDenyCommands = new LinkedHashSet<String>();
+    public static Set<String> territoryAllyDenyCommands = new LinkedHashSet<String>();
     public static Set<String> warzoneDenyCommands = new LinkedHashSet<String>();
+    public static Set<String> wildernessDenyCommands = new LinkedHashSet<String>();
 
     public static boolean territoryDenyBuild = true;
     public static boolean territoryDenyBuildWhenOffline = true;

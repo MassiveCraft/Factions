@@ -498,12 +498,15 @@ public class FactionsPlayerListener implements Listener {
             return true;
         }
 
-        if (!me.isInOthersTerritory()) {
-            return false;
+        Faction at = Board.getInstance().getFactionAt(new FLocation(player.getLocation()));
+        if (at.isWilderness() && !Conf.wildernessDenyCommands.isEmpty() && !me.isAdminBypassing() && isCommandInList(fullCmd, shortCmd, Conf.wildernessDenyCommands.iterator())) {
+            me.msg(TL.PLAYER_COMMAND_WILDERNESS, fullCmd);
+            return true;
         }
 
-        Relation rel = me.getRelationToLocation();
-        if (rel.isAtLeast(Relation.ALLY)) {
+        Relation rel = at.getRelationTo(me);
+        if (rel.isAlly() && !Conf.territoryAllyDenyCommands.isEmpty() && !me.isAdminBypassing() && isCommandInList(fullCmd, shortCmd, Conf.territoryAllyDenyCommands.iterator())) {
+            me.msg(TL.PLAYER_COMMAND_ALLY, fullCmd);
             return false;
         }
 
@@ -517,7 +520,7 @@ public class FactionsPlayerListener implements Listener {
             return true;
         }
 
-        if (Board.getInstance().getFactionAt(new FLocation(me)).isWarZone() && !Conf.warzoneDenyCommands.isEmpty() && !me.isAdminBypassing() && isCommandInList(fullCmd, shortCmd, Conf.warzoneDenyCommands.iterator())) {
+        if (at.isWarZone() && !Conf.warzoneDenyCommands.isEmpty() && !me.isAdminBypassing() && isCommandInList(fullCmd, shortCmd, Conf.warzoneDenyCommands.iterator())) {
             me.msg(TL.PLAYER_COMMAND_WARZONE, fullCmd);
             return true;
         }
