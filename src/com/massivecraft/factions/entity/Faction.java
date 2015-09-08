@@ -1207,17 +1207,17 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	
 	// CONVENIENCE SEND MESSAGE
 	
-	public boolean sendMessage(String message)
+	public boolean sendMessage(Object message)
 	{
 		return Mixin.messagePredictate(new FactionEqualsPredictate(this), message);
 	}
 	
-	public boolean sendMessage(String... messages)
+	public boolean sendMessage(Object... messages)
 	{
 		return Mixin.messagePredictate(new FactionEqualsPredictate(this), messages);
 	}
 	
-	public boolean sendMessage(Collection<String> messages)
+	public boolean sendMessage(Collection<Object> messages)
 	{
 		return Mixin.messagePredictate(new FactionEqualsPredictate(this), messages);
 	}

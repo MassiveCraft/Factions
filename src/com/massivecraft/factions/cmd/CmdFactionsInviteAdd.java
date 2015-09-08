@@ -2,6 +2,8 @@ package com.massivecraft.factions.cmd;
 
 import java.util.Collection;
 
+import org.bukkit.ChatColor;
+
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.cmd.arg.ARMPlayer;
@@ -11,6 +13,8 @@ import com.massivecraft.factions.event.EventFactionsInvitedChange;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.cmd.arg.ARSet;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
+import com.massivecraft.massivecore.mson.Mson;
+import com.massivecraft.massivecore.util.Txt;
 
 public class CmdFactionsInviteAdd extends FactionsCommand
 {
@@ -71,9 +75,18 @@ public class CmdFactionsInviteAdd extends FactionsCommand
 			}
 			else
 			{
+				// Mson
+				String command = Factions.get().getOuterCmdFactions().cmdFactionsInvite.cmdFactionsInviteRemove.getCommandLine(mplayer.getName());
+				String tooltip = Txt.parse("<i>Click to <c>%s<i>.", command);
+				
+				Mson remove = Mson.mson(
+					mson("You might want to remove him. ").color(ChatColor.YELLOW), 
+					mson("Click to " + command).color(ChatColor.RED).tooltip(tooltip).suggest(command)
+				);
+				
 				// Inform
 				msg("%s <i>is already invited to %s<i>.", mplayer.getName(), msenderFaction.getName());
-				msg("<i>You might want to: " + Factions.get().getOuterCmdFactions().cmdFactionsInvite.cmdFactionsInviteRemove.getUseageTemplate(false));
+				message(remove);
 			}
 		}
 	}

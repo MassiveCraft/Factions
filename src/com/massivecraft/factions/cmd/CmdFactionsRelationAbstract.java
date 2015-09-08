@@ -1,16 +1,19 @@
 package com.massivecraft.factions.cmd;
 
+import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.cmd.arg.ARFaction;
 import com.massivecraft.factions.cmd.req.ReqHasFaction;
 import com.massivecraft.factions.entity.Faction;
-import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.entity.MFlag;
 import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.factions.event.EventFactionsRelationChange;
 import com.massivecraft.massivecore.MassiveException;
+import com.massivecraft.massivecore.cmd.MassiveCommand;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
+import com.massivecraft.massivecore.mson.Mson;
+import com.massivecraft.massivecore.util.Txt;
 
 public abstract class CmdFactionsRelationAbstract extends FactionsCommand
 {
@@ -84,8 +87,22 @@ public abstract class CmdFactionsRelationAbstract extends FactionsCommand
 		// inform the other faction of your request
 		else
 		{
-			otherFaction.msg("%s<i> wishes to be %s.", msenderFaction.describeTo(otherFaction, true), newRelation.getColor()+newRelation.getDescFactionOne());
-			otherFaction.msg("<i>Type <c>/"+MConf.get().aliasesF.get(0)+" "+newRelation+" "+msenderFaction.getName()+"<i> to accept.");
+			MassiveCommand relationshipCommand = null;
+			if (newRelation.equals(Rel.NEUTRAL)) relationshipCommand = Factions.get().getOuterCmdFactions().cmdFactionsRelationNeutral;
+			else if (newRelation.equals(Rel.TRUCE)) relationshipCommand = Factions.get().getOuterCmdFactions().cmdFactionsRelationTruce;
+			else if (newRelation.equals(Rel.ALLY)) relationshipCommand = Factions.get().getOuterCmdFactions().cmdFactionsRelationAlly;
+			else if (newRelation.equals(Rel.ENEMY)) relationshipCommand = Factions.get().getOuterCmdFactions().cmdFactionsRelationEnemy;
+			
+			String command = relationshipCommand.getCommandLine(msenderFaction.getName());
+			String tooltip = Txt.parse("<g>Click to <c>%s<i>.", command);
+			
+			// Mson creation
+			Mson factionsRelationshipChange = mson(
+				Mson.parse("%s<i> wishes to be %s. ", msenderFaction.describeTo(otherFaction, true), newRelation.getColor()+newRelation.getDescFactionOne()),
+				mson(tooltip).tooltipParse(tooltip).command(command)
+			);
+			
+			otherFaction.sendMessage(factionsRelationshipChange);
 			msenderFaction.msg("%s<i> were informed that you wish to be %s<i>.", otherFaction.describeTo(msenderFaction, true), newRelation.getColor()+newRelation.getDescFactionOne());
 		}
 		

@@ -2,6 +2,8 @@ package com.massivecraft.factions.cmd;
 
 import java.util.ArrayList;
 
+import org.bukkit.ChatColor;
+
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
@@ -15,6 +17,7 @@ import com.massivecraft.factions.event.EventFactionsMembershipChange.MembershipC
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.cmd.arg.ARString;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
+import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.store.MStore;
 
 public class CmdFactionsCreate extends FactionsCommand
@@ -81,7 +84,7 @@ public class CmdFactionsCreate extends FactionsCommand
 		
 		// Inform
 		msg("<i>You created the faction %s", faction.getName(msender));
-		msg("<i>You should now: %s", Factions.get().getOuterCmdFactions().cmdFactionsDescription.getUseageTemplate());
+		message(Mson.mson(mson("You should now: ").color(ChatColor.YELLOW), Factions.get().getOuterCmdFactions().cmdFactionsDescription.getUseageTemplate()));
 
 		// Log
 		if (MConf.get().logFactionCreate)

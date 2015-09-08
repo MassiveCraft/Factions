@@ -297,7 +297,7 @@ public class MPerm extends Entity<MPerm> implements Prioritized, Registerable
 		Player player = mplayer.getPlayer();
 		if (player != null && Perm.ADMIN.has(player))
 		{
-			ret += Txt.parse("\n<i>You can bypass by using " + Factions.get().getOuterCmdFactions().cmdFactionsAdmin.getUseageTemplate(false));
+			ret += Txt.parse("\n<i>You can bypass by using " + Factions.get().getOuterCmdFactions().cmdFactionsAdmin.getUseageTemplate(false).toPlain(true));
 		}
 		
 		return ret;

@@ -1,5 +1,7 @@
 package com.massivecraft.factions.cmd;
 
+import org.bukkit.ChatColor;
+
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.cmd.arg.ARMPlayer;
@@ -12,6 +14,7 @@ import com.massivecraft.factions.event.EventFactionsMembershipChange;
 import com.massivecraft.factions.event.EventFactionsMembershipChange.MembershipChangeReason;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
+import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.util.Txt;
 
 public class CmdFactionsJoin extends FactionsCommand
@@ -57,7 +60,15 @@ public class CmdFactionsJoin extends FactionsCommand
 
 		if (faction == mplayerFaction)
 		{
-			msg("<i>%s <i>%s already a member of %s<i>.", mplayer.describeTo(msender, true), (samePlayer ? "are" : "is"), faction.getName(msender));
+			String command = Factions.get().getOuterCmdFactions().cmdFactionsKick.getCommandLine(mplayer.getName());
+			
+			// Mson creation
+			Mson alreadyMember = Mson.mson(
+				Mson.parse(mplayer.describeTo(msender, true)),
+				mson((samePlayer ? " are" : " is") + " already a member of " + faction.getName(msender) + ".").color(ChatColor.YELLOW)
+			);
+			
+			message(alreadyMember.suggest(command).tooltip(Txt.parse("<i>Click to <c>%s<i>.", command)));
 			return;
 		}
 
@@ -69,7 +80,15 @@ public class CmdFactionsJoin extends FactionsCommand
 
 		if (mplayerFaction.isNormal())
 		{
-			msg("<b>%s must leave %s current faction first.", mplayer.describeTo(msender, true), (samePlayer ? "your" : "their"));
+			String command = Factions.get().getOuterCmdFactions().cmdFactionsLeave.getCommandLine(mplayer.getName());
+			
+			// Mson creation
+			Mson leaveFirst = Mson.mson(
+				Mson.parse(mplayer.describeTo(msender, true)),
+				mson(" must leave " + (samePlayer ? "your" : "their") + " current faction first.").color(ChatColor.RED)
+			);
+			
+			message(leaveFirst.suggest(command).tooltip(Txt.parse("<i>Click to <c>%s<i>.", command)));
 			return;
 		}
 
