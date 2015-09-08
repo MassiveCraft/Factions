@@ -141,7 +141,7 @@ public class FactionsEntityListener implements Listener {
         Entity boomer = event.getEntity();
         Faction faction = Board.getInstance().getFactionAt(new FLocation(loc));
 
-        if (faction.noExplosionsInTerritory()) {
+        if (faction.noExplosionsInTerritory() || (faction.isPeaceful() && Conf.peacefulTerritoryDisableBoom)) {
             // faction is peaceful and has explosions set to disabled
             event.setCancelled(true);
             return;
