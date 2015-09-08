@@ -59,6 +59,12 @@ public enum TL {
     COMMAND_ADMIN_PROMOTED("%1$s<i> gave %2$s<i> the leadership of %3$s<i>."),
     COMMAND_ADMIN_DESCRIPTION("Hand over your admin rights"),
 
+    COMMAND_AHOME_DESCRIPTION("Send a player to their f home no matter what."),
+    COMMAND_AHOME_NOHOME("%1$s doesn't have an f home."),
+    COMMAND_AHOME_SUCCESS("$1%s was sent to their f home."),
+    COMMAND_AHOME_OFFLINE("%1$s is offline."),
+    COMMAND_AHOME_TARGET("You were sent to your f home."),
+
     COMMAND_ANNOUNCE_DESCRIPTION("Announce a message to players in faction."),
 
     COMMAND_AUTOCLAIM_ENABLED("<i>Now auto-claiming land for <h>%1$s<i>."),

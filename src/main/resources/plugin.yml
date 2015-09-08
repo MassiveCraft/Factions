@@ -17,6 +17,7 @@ permissions:
       factions.reload: true
       factions.save: true
       factions.modifypower: true
+      factions.ahome: true
   factions.*:
     description: This is just an alias for factions.kit.admin
     children:
@@ -260,3 +261,5 @@ permissions:
     description: toggle alliance chat on and off
   factions.dontlosepoweroffline:
     description: Don't lose power for being offline.
+  factions.ahome:
+    description: Ability to send players to their faction home.
