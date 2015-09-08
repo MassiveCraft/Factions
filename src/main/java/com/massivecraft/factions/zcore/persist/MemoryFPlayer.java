@@ -700,7 +700,7 @@ public abstract class MemoryFPlayer implements FPlayer {
             error = P.p.txt.parse(TL.CLAIM_SAFEZONE.toString());
         } else if (currentFaction.isWarZone()) {
             error = P.p.txt.parse(TL.CLAIM_WARZONE.toString());
-        } else if (P.p.getConfig().getBoolean("hcf.overclaim", true) && ownedLand >= forFaction.getPowerRounded()) {
+        } else if (P.p.getConfig().getBoolean("hcf.allow-overclaim", true) && ownedLand >= forFaction.getPowerRounded()) {
             error = P.p.txt.parse(TL.CLAIM_POWER.toString());
         } else if (Conf.claimedLandsMax != 0 && ownedLand >= Conf.claimedLandsMax && forFaction.isNormal()) {
             error = P.p.txt.parse(TL.CLAIM_LIMIT.toString());
