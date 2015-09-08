@@ -596,6 +596,19 @@ public class MConf extends Entity<MConf>
 		"ZOMBIE" // Minecraft 1.?
 	);
 	
+	// List of entities considered to be animals.
+	public BackstringEnumSet<EntityType> entityTypesAnimals = new BackstringEnumSet<EntityType>(EntityType.class,
+		"CHICKEN", // Minecraft 1.?
+		"COW", // Minecraft 1.?
+		"HORSE", // Minecraft 1.?
+		"MUSHROOM_COW", // Minecraft 1.?
+		"OCELOT", // Minecraft 1.?
+		"PIG", // Minecraft 1.?
+		"RABBIT", // Minecraft 1.?
+		"SHEEP", // Minecraft 1.?
+		"SQUID" // Minecraft 1.?
+	);
+	
 	// -------------------------------------------- //
 	// INTEGRATION: HeroChat
 	// -------------------------------------------- //

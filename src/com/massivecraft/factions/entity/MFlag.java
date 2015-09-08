@@ -19,6 +19,7 @@ public class MFlag extends Entity<MFlag> implements Prioritized, Registerable
 	
 	public final static transient String ID_OPEN = "open";
 	public final static transient String ID_MONSTERS = "monsters";
+	public final static transient String ID_ANIMALS = "animals";
 	public final static transient String ID_POWERLOSS = "powerloss";
 	public final static transient String ID_PVP = "pvp";
 	public final static transient String ID_FRIENDLYFIRE = "friendlyfire";
@@ -32,6 +33,7 @@ public class MFlag extends Entity<MFlag> implements Prioritized, Registerable
 	
 	public final static transient int PRIORITY_OPEN = 1000;
 	public final static transient int PRIORITY_MONSTERS = 2000;
+	public final static transient int PRIORITY_ANIMALS = 2500;
 	public final static transient int PRIORITY_POWERLOSS = 3000;
 	public final static transient int PRIORITY_PVP = 4000;
 	public final static transient int PRIORITY_FRIENDLYFIRE = 5000;
@@ -68,6 +70,7 @@ public class MFlag extends Entity<MFlag> implements Prioritized, Registerable
 	{
 		getFlagOpen();
 		getFlagMonsters();
+		getFlagAnimals();
 		getFlagPowerloss();
 		getFlagPvp();
 		getFlagFriendlyire();
@@ -82,6 +85,7 @@ public class MFlag extends Entity<MFlag> implements Prioritized, Registerable
 	
 	public static MFlag getFlagOpen() { return getCreative(PRIORITY_OPEN, ID_OPEN, ID_OPEN, "Can the faction be joined without an invite?", "Anyone can join. No invite required.", "An invite is required to join.", false, true, true); }
 	public static MFlag getFlagMonsters() { return getCreative(PRIORITY_MONSTERS, ID_MONSTERS, ID_MONSTERS, "Can monsters spawn in this territory?", "Monsters can spawn in this territory.", "Monsters can NOT spawn in this territory.", false, true, true); }
+	public static MFlag getFlagAnimals() { return getCreative(PRIORITY_ANIMALS, ID_ANIMALS, ID_ANIMALS, "Can animals spawn in this territory?", "Animals can spawn in this territory.", "Animals can NOT spawn in this territory.", true, true, true); }
 	public static MFlag getFlagPowerloss() { return getCreative(PRIORITY_POWERLOSS, ID_POWERLOSS, ID_POWERLOSS, "Is power lost on death in this territory?", "Power is lost on death in this territory.", "Power is NOT lost on death in this territory.", true, false, true); }
 	public static MFlag getFlagPvp() { return getCreative(PRIORITY_PVP, ID_PVP, ID_PVP, "Can you PVP in territory?", "You can PVP in this territory.", "You can NOT PVP in this territory.", true, false, true); }
 	public static MFlag getFlagFriendlyire() { return getCreative(PRIORITY_FRIENDLYFIRE, ID_FRIENDLYFIRE, ID_FRIENDLYFIRE, "Can friends hurt eachother in this territory?", "Friendly fire is on here.", "Friendly fire is off here.", false, false, true); }

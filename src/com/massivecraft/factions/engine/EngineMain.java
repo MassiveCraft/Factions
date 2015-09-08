@@ -87,6 +87,7 @@ import com.massivecraft.factions.spigot.SpigotFeatures;
 import com.massivecraft.factions.util.VisualizeUtil;
 import com.massivecraft.massivecore.EngineAbstract;
 import com.massivecraft.massivecore.PriorityLines;
+import com.massivecraft.massivecore.collections.MassiveSet;
 import com.massivecraft.massivecore.event.EventMassiveCorePlayerLeave;
 import com.massivecraft.massivecore.mixin.Mixin;
 import com.massivecraft.massivecore.money.Money;
@@ -116,6 +117,19 @@ public class EngineMain extends EngineAbstract
 	{
 		return Factions.get();
 	}
+	
+	// -------------------------------------------- //
+	// CONSTANTS
+	// -------------------------------------------- //
+	
+	public static final Set<SpawnReason> NATURAL_SPAWN_REASONS = new MassiveSet<SpawnReason>(
+		SpawnReason.NATURAL,
+		SpawnReason.JOCKEY,
+		SpawnReason.CHUNK_GEN,
+		SpawnReason.OCELOT_BABY,
+		SpawnReason.NETHER_PORTAL,
+		SpawnReason.MOUNT
+	);
 	
 	// -------------------------------------------- //
 	// FACTION SHOW
@@ -1117,23 +1131,16 @@ public class EngineMain extends EngineAbstract
 	}
 	
 	// -------------------------------------------- //
-	// FLAG: MONSTERS
+	// FLAG: MONSTERS & ANIMALS
 	// -------------------------------------------- //
 	
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-	public void blockMonsters(CreatureSpawnEvent event)
+	public void blockMonstersAndAnimals(CreatureSpawnEvent event)
 	{
-		// If a creature is spawning ...
-		EntityType type = event.getEntityType();
+		// First check that it's a natural spawn ..
+		if ( ! NATURAL_SPAWN_REASONS.contains(event.getSpawnReason())) return;
 		
-		// ... and that creature is a monster ...
-		if ( ! MConf.get().entityTypesMonsters.contains(type)) return;
-		
-		// ... and the reason for the spawn is natural ...
-		SpawnReason reason = event.getSpawnReason();
-		if (reason != SpawnReason.NATURAL && reason != SpawnReason.JOCKEY && reason != SpawnReason.NETHER_PORTAL) return;
-		
-		// ... and monsters are forbidden at the location ...
+		// .. and if they can spawn here ..
 		Location location = event.getLocation();
 		if (location == null) return;		
 		
@@ -1142,8 +1149,11 @@ public class EngineMain extends EngineAbstract
 		Faction faction = BoardColl.get().getFactionAt(ps);
 		if (faction == null) return;
 		
-		if (faction.getFlag(MFlag.getFlagMonsters())) return;
+		EntityType type = event.getEntityType();
 		
+		if ((faction.getFlag(MFlag.getFlagMonsters()) && MConf.get().entityTypesMonsters.contains(type)) && 
+			(faction.getFlag(MFlag.getFlagAnimals()) && MConf.get().entityTypesAnimals.contains(type))) return;
+				
 		// ... block the spawn.
 		event.setCancelled(true);
 	}

@@ -108,6 +108,7 @@ public class FactionColl extends Coll<Faction>
 		faction.setFlag(MFlag.getFlagPvp(), true);
 		faction.setFlag(MFlag.getFlagFriendlyire(), false);
 		faction.setFlag(MFlag.getFlagMonsters(), true);
+		faction.setFlag(MFlag.getFlagAnimals(), true);
 		faction.setFlag(MFlag.getFlagExplosions(), true);
 		faction.setFlag(MFlag.getFlagOfflineexplosions(), true);
 		faction.setFlag(MFlag.getFlagFirespread(), true);
@@ -142,6 +143,7 @@ public class FactionColl extends Coll<Faction>
 		faction.setFlag(MFlag.getFlagPvp(), false);
 		faction.setFlag(MFlag.getFlagFriendlyire(), false);
 		faction.setFlag(MFlag.getFlagMonsters(), false);
+		faction.setFlag(MFlag.getFlagAnimals(), true);
 		faction.setFlag(MFlag.getFlagExplosions(), false);
 		faction.setFlag(MFlag.getFlagOfflineexplosions(), false);
 		faction.setFlag(MFlag.getFlagFirespread(), false);
@@ -175,6 +177,7 @@ public class FactionColl extends Coll<Faction>
 		faction.setFlag(MFlag.getFlagPvp(), true);
 		faction.setFlag(MFlag.getFlagFriendlyire(), true);
 		faction.setFlag(MFlag.getFlagMonsters(), true);
+		faction.setFlag(MFlag.getFlagAnimals(), true);
 		faction.setFlag(MFlag.getFlagExplosions(), true);
 		faction.setFlag(MFlag.getFlagOfflineexplosions(), true);
 		faction.setFlag(MFlag.getFlagFirespread(), true);
