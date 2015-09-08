@@ -325,7 +325,7 @@ public abstract class MemoryFPlayer implements FPlayer {
     // Base:
 
     public String getTitle() {
-        return this.hasFaction() ? title : "";
+        return this.hasFaction() ? title : TL.NOFACTION_PREFIX.toString();
     }
 
     public void setTitle(String title) {
