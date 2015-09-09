@@ -6,7 +6,6 @@ import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.massivecore.cmd.DeprecatedCommand;
-import com.massivecraft.massivecore.cmd.HelpCommand;
 import com.massivecraft.massivecore.cmd.VersionCommand;
 
 public class CmdFactions extends FactionsCommand
@@ -67,7 +66,6 @@ public class CmdFactions extends FactionsCommand
 	public CmdFactions()
 	{
 		// SubCommands
-		this.addSubCommand(HelpCommand.get());
 		this.addSubCommand(this.cmdFactionsList);
 		this.addSubCommand(this.cmdFactionsFaction);
 		this.addSubCommand(this.cmdFactionsPlayer);
