@@ -1,0 +1,350 @@
+# FactionsUUID by drtshock
+# Report issues https://github.com/drtshock/Factions/issues?state=open
+# Live support http://webchat.esper.net/?channels=factions&prompt=1
+
+# Made with love <3
+
+# Debug
+# Turn this on if you are having issues with something and working on resolving them.
+# This will spam your console with information that is useful if you know how to read the source.
+# It's suggested that you only turn this on at the direction of a developer.
+debug: false
+
+# Prevent find factions exploit
+# This will help limit how many times a player can be sent a map of factions.
+# Set this to the cooldown you want, in miliseconds, for a map to be shown to a player.
+# If you want to log when a player violates this (only happens on chunk enter so it shouldn't be too spammy),
+#   set log to true and it will be logged to console as "player tried to show a faction map too soon and triggered exploit blocker."
+findfactionsexploit:
+  cooldown: 2000 # in miliseconds. 2000 = 2 seconds.
+  log: false
+
+### Hard Core Settings ###
+# Many of the features that are / are to come in this section have been requested by
+#   people in relation to HCF servers. All settings are set to the normal Factions
+#   behavior by default.
+
+# Default Relation allows you to change the default relation for Factions.
+# Example usage would be so people can't leave then make a new Faction while Raiding
+#   in order to be able to execute commands if the default relation is neutral.
+# This has always been neutral.
+default-relation: "neutral"
+
+# Portal Creation
+# Do you want to limit portal creation?
+portals:
+  limit: false # will disable the below check if set to false
+
+  # What should the minimum relation be to create a portal in territory?
+  # Goes in the order of: ENEMY, NEUTRAL, ALLY, MEMBER.
+  # Minimum relation allows that and all listed to the right to create portals.
+  # Example: put ALLY to allow ALLY and MEMBER to be able to create portals.
+  minimum-relation: MEMBER # If typed incorrectly, defaults to NEUTRAL.
+
+### Hard Core Settings ###
+
+# Warps
+# What should be the max amount of warps that a Factoin can set?
+max-warps: 5
+
+# This is the cost section for warps.
+# It will charge them each time the command would be successful. (won't charge on erroneous /f warp attempts).
+# You can use decimal places here.
+# If enabled is set to false, it will ignore the values.
+warp-cost:
+  enabled: false
+  setwarp: 5
+  delwarp: 5
+  warp: 5
+
+# Pistons
+# Should we disable pistons in Faction territory? This will prevent people from doing something like:
+# http://i.gyazo.com/6a1a31222e58a5d60ff341c13f6a8404.gif
+disable-pistons-in-territory: false
+
+# ToolTips
+# This section is to configure tooltips for things like /f list
+tooltips:
+
+  # List
+  # This shows up when someone does /f list for the top factions.
+  # It will not sure up for factionless of course, just actual factions.
+  # You can use color codes here.
+  list:
+    - "&6Leader: &f{leader}"
+    - "&6Claimed: &f{chunks}"
+    - "&6Raidable: &f{raidable}"
+    - "&6Warps: &f{warps}"
+    - "&6Power: &f{power}/{maxPower}"
+    - "&6Members: &f{online}/{members}"
+
+  # Show
+  # This shows up when someone does /f show.
+  # It adds tooltips to each player in the list here, nothing else.
+  # {group} will show the players primary group if you have vault installed.
+  # {balance} will show their balance if you have vault installed.
+  # {lastSeen} will show human readable info on when the player was last seen, or online.
+  show:
+    - "&6Last Seen: &f{lastSeen}"
+    - "&6Power: &f{power}"
+    - "&6Rank: &f{group}"
+    - "&6Balance: &a${player-balance}"
+
+# Configuration section for Scoreboards
+# This will allow you to completely customize how your scoreboards look.
+# Make sure that no lines are duplicates of each other otherwise only the first will display.
+# Use &0-9a-f for colors and include messages in "quotes"
+scoreboard:
+
+# send faction change message as well when scoreboard is up?
+  also-send-chat: true
+# How long do we want scoreboards to stay if set temporarily.
+  expiration: 7
+
+# FInfo scoreboard is displayed when a player walks into a new Faction's territory.
+# Scoreboard disappears after <expiration> seconds.
+# Things to be replaced in this:
+# {power} - faction's power. {chunks} - total claimed chunks. {members} - total members.
+# {online} - online members. {leader} - faction's leader. {open} - shows either true or false if open.
+# {raidable} - true if the faction can be claimed over, otherwise false.
+# {warps} - the number of warps that a faction has set.
+# The title of the scoreboard will be the Faction's tag and colored according to the relation with the player's Faction.
+# Commenting this section out will cause the info to appear in chat as the plugin originally did.
+  finfo-enabled: false # Default to false to keep original functionality.
+  finfo:
+    - "&6Power"
+    - "{power}"
+    - "&3Members"
+    - "{online}/{members}"
+    - "&4Leader"
+    - "{leader}"
+    - "&bTerritory"
+    - "{chunks}"
+
+# Default board that will always show up if a player wants it to.
+# This can show any arbitrary text or you can use a lot of variables to replace things.
+# Replace {name} - player's name. {faction} - player's faction title, factionless if none.
+# {totalOnline} - total players on the server. {balance} - player's balance.
+# {maxPower} - player's max power.
+# {powerBoost} - player's powerboost.
+
+  default-enabled: false # Default to false to keep original functionality.
+  default-title: "i love drt" # Can use any of the values from above but this won't update once it's set (so don't set {balance}).
+  default-update-interval: 2 # in seconds.
+
+  # This will show faction prefixes colored based on relation on nametags and in the tab.
+  #   The scoreboard needs to be enabled for this to work.
+  default-prefixes: true
+
+  default:
+    - "&6Your Faction"
+    - "{faction}"
+    - "&3Your Power"
+    - "{power}"
+    - "&aBalance"
+    - "${balance}"
+
+  factionless-enabled: false
+  factionless:
+    - "Make a new Faction"
+    - "Use /f create"
+
+# Configration section for warmups.
+# Warmup times are in seconds - if a value of 0 is set, there is no warmup.
+warmups:
+  # Delay for /f home
+  f-home: 0
+  # Delay for /f warp
+  f-warp: 0
+
+######################################################
+#################### HCF Features ####################
+######################################################
+# These features were requested as part of Hardcore Factions or something.
+# All of them are disabled by default.
+
+# Max Relation Types
+# Limits factions to having a max number of each relation.
+# Setting to 0 means none allowed. -1 for disabled.
+# This will have no effect on default or existing relations, only when relations are changed.
+# It is advised that you set the default relation to -1 so they can always go back to that.
+# Otherwise Factions could be stuck with not being able to unenemy other Factions.
+max-relations:
+  enabled: false
+  ally: 10
+  truce: 10
+  neutral: -1
+  enemy: 10
+
+# WorldBorder support 
+# A buffer of 0 means faction claims can go right up to the border of the world.
+# The buffer is in chunks, so 1 as a buffer means an entire chunk of buffer between 
+# the border of the world and what can be claimed to factions
+world-border:
+  buffer: 0
+  
+# Raids
+# Allow a faction to be raided if they have more land than power.
+# This will make claimed territory lose all protections
+#   allowing factions to open chests, break blocks, etc. if they
+#   have claimed chunks >= power.
+hcf:
+  raidable: false
+
+  # DTR (death til raidable) will be in /f show if enabled. Configure the message in the lang.yml
+  dtr: false
+
+  # Should we allow Factions to over claim if they are raidable (above has no effect on this)?
+  # This has always been true, allowing factions to over claim others.
+  allow-overclaim: true
+
+  # Power Freeze
+  # After a player dies, how long should the faction not be able to regen power?
+  # This resets on each death but does not accumulate.
+  # Set to 0 for no freeze. Time is in seconds.
+  powerfreeze: 0
+
+  # Buffer Zone
+  # Buffer Zone is an chunk area required between claims of different Factions.
+  # This is default to 0 and has always been that way. Meaning Factions can have
+  #   claims that border each other.
+  # If this is set to 3, then Factions need to have 3 chunks between their claim
+  #   and another Faction's claim.
+  # It's recommended to keep this pretty low as the radius check could be a
+  #   heavy operation if set to a large number.
+  # If this is set to 0, we won't even bother checking which is how Factions has
+  #   always been.
+  buffer-zone: 0
+
+  stuck:
+    delay: 30
+    radius: 10
+
+############################################################
+# +------------------------------------------------------+ #
+# |                Configurable /f show                  | #
+# +------------------------------------------------------+ #
+############################################################
+
+# You can use any variable here, including fancy messages. Color codes and or tags work fine.
+# Lines that arent defined wont be sent (home not set, faction not peaceful / permanent, dtr freeze)
+show:
+  # First line can be {header} for default header, or any string (we recommend &m for smooth lines ;p)
+  - '{header}'
+  - '<a>Description: <i>{description}'
+  - '<a>Joining: <i>{joining}    {peaceful}'
+  - '<a>Land / Power / Maxpower: <i> {chunks}/{power}/{maxPower}'
+  - '<a>Founded: <i>{create-date}'
+  - '<a>This faction is permanent, remaining even with no members.' # only shows if faction is permanent
+  - '<a>Land value: <i>{land-value} {land-refund}'
+  - '<a>Balance: <i>{balance}'
+  - '<a>Allies(<i>{allies}<a>/<i>{max-allies}<a>): {allies-list} '
+  - '<a>Online: (<i>{online}<a>/<i>{members}<a>): {online-list}'
+  - '<a>Offline: (<i>{offline}<a>/<i>{members}<a>): {offline-list}'
+
+# For a /f show that does not display fancy messages that are essentially empty, use minimal-show
+minimal-show: false
+
+############################################################
+# +------------------------------------------------------+ #
+# |                Configurable /f list                  | #
+# +------------------------------------------------------+ #
+############################################################
+
+list:
+  # You can only use {pagenumber} and {pagecount} in the header
+  header: '&e&m----------&r&e[ &2Faction List &9{pagenumber}&e/&9{pagecount} &e]&m----------'
+  # You can use any variables here
+  factionless: '<i>Factionless<i> {factionless} online'
+  # You can use any variable here
+  entry: '<a>{faction} <i>{online} / {members} online, <a>Land / Power / Maxpower: <i>{chunks}/{power}/{maxPower}'
+
+############################################################
+# +------------------------------------------------------+ #
+# |                Configurable /f help                  | #
+# +------------------------------------------------------+ #
+############################################################
+
+# set to true to use legacy factions help
+use-old-help: true
+
+help:
+  # You can change the page name to whatever you like
+  # We use '1' to preserve default functionality of /f help 1
+  '1':
+    - '&e&m----------------------------------------------'
+    - '                  &c&lFactions Help               '
+    - '&e&m----------------------------------------------'
+    - '&3/f create  &e>>  &7Create your own faction'
+    - '&3/f who      &e>>  &7Show factions info'
+    - '&3/f tag      &e>>  &7Change faction tag'
+    - '&3/f join     &e>>  &7Join faction'
+    - '&3/f list      &e>>  &7List all factions'
+    - '&e&m--------------&r &2/f help 2 for more &e&m--------------'
+  '2':
+    - '&e&m------------------&r&c&l Page 2 &e&m--------------------'
+    - '&3/f home     &e>>  &7Teleport to faction home'
+    - '&3/f sethome &e>>  &7Set your faction home'
+    - '&3/f leave    &e>>  &7Leave your faction'
+    - '&3/f invite    &e>>  &7Invite a player to your faction'
+    - '&3/f deinvite &e>>  &7Revoke invitation to player'
+    - '&e&m--------------&r &2/f help 3 for more &e&m--------------'
+  '3':
+    - '&e&m------------------&r&c&l Page 3 &e&m--------------------'
+    - '&3/f claim     &e>>  &7Claim land'
+    - '&3/f unclaim  &e>>  &7Unclaim land'
+    - '&3/f kick      &e>>  &7Kick player from your faction'
+    - '&3/f mod      &e>>  &7Set player role in faction'
+    - '&3/f chat     &e>>  &7Switch to faction chat'
+    - '&e&m--------------&r &2/f help 4 for more &e&m--------------'
+  '4':
+    - '&e&m------------------&r&c&l Page 4 &e&m--------------------'
+    - '&3/f version &e>>  &7Display version information'
+    - '&e&m--------------&r&2 End of /f help &e&m-----------------'
+
+############################################################
+# +------------------------------------------------------+ #
+# |                Big List of variables                 | #
+# +------------------------------------------------------+ #
+############################################################
+# Fancy variables. Can only be used in /f show
+#  - {allies-list}  : Lists each faction ally with tooltips
+#  - {enemies-list} : Lists each faction enemy with tooltips
+#  - {online-list}  : Lists all online members with tooltips
+#  - {offline-list} : Lists all offline members with tooltips
+# Player variables. Can be used in tooltips.show, scoreboards, or /f show
+#  - {group}     : Players group
+#  - {name}      : Players name
+#  - {lastSeen}  : Last time player was seen (if offline), or just 'Online'
+#  - {balance} : Players balance
+#  - {player-kills} : # of kills the player has
+#  - {player-deaths}: # of deaths the player has
+# Faction variables. Can be used in tooltips.list, scoreboards, or /f show
+#  - {header}    : Default factions header (ex. /f show)
+#  - {faction}   : Factions tag (if none, uses lang.yml for factionless name)
+#  - {joining}   : How to join this faction
+#  - {power}     : Factions deaths until raidable value
+#  - {power-boost}  : DTR Symbol based on current DTR (max, regen, frozen, raidable)
+#  - {maxPower}  : Factions max deaths until raidable value
+#  - {chunks}    : # of claims faction has (in chunks)
+#  - {warps}     : # of warps faction has
+#  - {description} : Factions description
+#  - {create-date} : Date faction was created
+#  - {leader}    : Faction leader
+#  - {land-value}  : Value of all claims
+#  - {land-refund} : Calculated refund value
+#  - {allies}    : # of allies faction has
+#  - {enemies}   : # of enemies faction has
+#  - {online}    : # of faction members online
+#  - {offline}   : # of faction members offline
+#  - {members}   : # of faction members (includes offline)
+#  - {faction-balance}      : Faction bank balance
+#  - {world}, {x}, {y}, {z} : Faction home variables. You don't need to use them all.
+#  - {faction-kills} : # of kills the faction has
+#  - {faction-deaths}: # of deaths the faction has
+# General variables. Can be used anywhere.
+# - {total-online}  : Total # of players on the server
+# - {max-warps}     : Max # of warps a faction can set
+# - {max-allies}    : Max # of allies a faction can have
+# - {max-enemies}   : Max # of enemies a faction can have
+# - {factionless}   : Count of all factionless players online
