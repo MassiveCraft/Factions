@@ -18,6 +18,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Enderman;
 import org.bukkit.entity.Entity;
@@ -1462,6 +1463,35 @@ public class EngineMain extends EngineAbstract
 		{
 			event.setCancelled(true);
 		}
+	}
+	
+	// Check for punching out fires where players should not be able to
+	@SuppressWarnings("deprecation")
+	@EventHandler(priority = EventPriority.NORMAL)
+	public void blockBuild(PlayerInteractEvent event)
+	{
+		// ... if it is a left click on block ...
+		if (event.getAction() != Action.LEFT_CLICK_BLOCK) return;
+		
+		// .. and the clicked block is not null ... 
+		if (event.getClickedBlock() == null) return;
+		
+		Block potentialBlock = event.getClickedBlock().getRelative(BlockFace.UP, 1);
+		
+		// .. and the potential block is not null ... 
+		if (potentialBlock == null) return;
+		
+		// ... and we're only going to check for fire ... (checking everything else would be bad performance wise)
+		if (potentialBlock.getType() != Material.FIRE) return;
+		
+		// ... check if they can build ...
+		if (canPlayerBuildAt(event.getPlayer(), PS.valueOf(potentialBlock), true)) return;
+		
+		// ... nope, cancel it
+		event.setCancelled(true);
+		
+		// .. and compensate for client side prediction
+		event.getPlayer().sendBlockChange(potentialBlock.getLocation(), potentialBlock.getType(), potentialBlock.getState().getRawData());
 	}
 	
 	// -------------------------------------------- //
