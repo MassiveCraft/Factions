@@ -35,7 +35,7 @@ public class CmdFWarp extends FCommand {
             FancyMessage msg = new FancyMessage(TL.COMMAND_FWARP_WARPS.toString()).color(ChatColor.GOLD);
             Map<String, LazyLocation> warps = myFaction.getWarps();
             for (String s : warps.keySet()) {
-                msg.then(s + " ").tooltip(TL.COMMAND_FWARP_CLICKTOWARP.toString()).command(Conf.baseCommandAliases.get(0) + " warp " + s).color(ChatColor.WHITE);
+                msg.then(s + " ").tooltip(TL.COMMAND_FWARP_CLICKTOWARP.toString()).command("/" + Conf.baseCommandAliases.get(0) + " warp " + s).color(ChatColor.WHITE);
             }
             sendFancyMessage(msg);
         } else if (args.size() > 1) {

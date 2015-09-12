@@ -50,7 +50,7 @@ public class CmdInvite extends FCommand {
         }
 
         // Tooltips, colors, and commands only apply to the string immediately before it.
-        FancyMessage message = new FancyMessage(fme.describeTo(you, true)).tooltip(TL.COMMAND_INVITE_CLICKTOJOIN.toString()).command(Conf.baseCommandAliases.get(0) + " join " + myFaction.getTag()).then(TL.COMMAND_INVITE_INVITEDYOU.toString()).color(ChatColor.YELLOW).tooltip(TL.COMMAND_INVITE_CLICKTOJOIN.toString()).command(Conf.baseCommandAliases.get(0) + " join " + myFaction.getTag()).then(myFaction.describeTo(you)).tooltip(TL.COMMAND_INVITE_CLICKTOJOIN.toString()).command(Conf.baseCommandAliases.get(0) + " join " + myFaction.getTag());
+        FancyMessage message = new FancyMessage(fme.describeTo(you, true)).tooltip(TL.COMMAND_INVITE_CLICKTOJOIN.toString()).command("/" + Conf.baseCommandAliases.get(0) + " join " + myFaction.getTag()).then(TL.COMMAND_INVITE_INVITEDYOU.toString()).color(ChatColor.YELLOW).tooltip(TL.COMMAND_INVITE_CLICKTOJOIN.toString()).command("/" + Conf.baseCommandAliases.get(0) + " join " + myFaction.getTag()).then(myFaction.describeTo(you)).tooltip(TL.COMMAND_INVITE_CLICKTOJOIN.toString()).command("/" + Conf.baseCommandAliases.get(0) + " join " + myFaction.getTag());
 
         message.send(you.getPlayer());
 

@@ -37,12 +37,12 @@ public class CmdKick extends FCommand {
             FancyMessage msg = new FancyMessage(TL.COMMAND_KICK_CANDIDATES.toString()).color(ChatColor.GOLD);
             for (FPlayer player : myFaction.getFPlayersWhereRole(Role.NORMAL)) {
                 String s = player.getName();
-                msg.then(s + " ").color(ChatColor.WHITE).tooltip(TL.COMMAND_KICK_CLICKTOKICK.toString() + s).command(Conf.baseCommandAliases.get(0) + " kick " + s);
+                msg.then(s + " ").color(ChatColor.WHITE).tooltip(TL.COMMAND_KICK_CLICKTOKICK.toString() + s).command("/" + Conf.baseCommandAliases.get(0) + " kick " + s);
             }
             if (fme.getRole() == Role.ADMIN) {
                 for (FPlayer player : myFaction.getFPlayersWhereRole(Role.MODERATOR)) {
                     String s = player.getName();
-                    msg.then(s + " ").color(ChatColor.GRAY).tooltip(TL.COMMAND_KICK_CLICKTOKICK.toString() + s).command(Conf.baseCommandAliases.get(0) + " kick " + s);
+                    msg.then(s + " ").color(ChatColor.GRAY).tooltip(TL.COMMAND_KICK_CLICKTOKICK.toString() + s).command("/" + Conf.baseCommandAliases.get(0) + " kick " + s);
                 }
             }
 
