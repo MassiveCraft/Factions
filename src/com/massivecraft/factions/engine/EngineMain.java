@@ -270,7 +270,7 @@ public class EngineMain extends EngineAbstract
 		Collections.sort(followers, PlayerRoleComparator.get());
 		for (MPlayer follower : followers)
 		{
-			if (follower.isOnline() && Mixin.canSee(sender, follower.getId()))
+			if (follower.isOnline(sender))
 			{
 				followerNamesOnline.add(follower.getNameAndTitle(msender));
 			}
