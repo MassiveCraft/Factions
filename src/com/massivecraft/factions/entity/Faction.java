@@ -1195,6 +1195,10 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	{
 		boolean explosions = this.getFlag(MFlag.getFlagExplosions());
 		boolean offlineexplosions = this.getFlag(MFlag.getFlagOfflineexplosions());
+
+		if (explosions && offlineexplosions) return true;
+		if ( ! explosions && ! offlineexplosions) return false;
+
 		boolean online = this.isFactionConsideredOnline();
 		
 		return (online && explosions) || (!online && offlineexplosions);
