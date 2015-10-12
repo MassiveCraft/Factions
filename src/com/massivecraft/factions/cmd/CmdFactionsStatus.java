@@ -101,7 +101,7 @@ public class CmdFactionsStatus extends FactionsCommand
 				// Time
 				long lastActiveMillis = mplayer.getLastActivityMillis() - System.currentTimeMillis();
 				LinkedHashMap<TimeUnit, Long> activeTimes = TimeDiffUtil.limit(TimeDiffUtil.unitcounts(lastActiveMillis, TimeUnit.getAllButMillis()), 3);
-				String lastActive = mplayer.isOnline() ? Txt.parse("<lime>Online right now.") : Txt.parse("<i>Last active: " + TimeDiffUtil.formatedMinimal(activeTimes, "<i>"));
+				String lastActive = mplayer.isOnline(msender) ? Txt.parse("<lime>Online right now.") : Txt.parse("<i>Last active: " + TimeDiffUtil.formatedMinimal(activeTimes, "<i>"));
 				
 				return Txt.parse("%s%s %s %s", displayName, whiteSpace, power, lastActive);
 			}
