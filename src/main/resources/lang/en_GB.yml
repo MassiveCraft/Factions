@@ -1,0 +1,31 @@
+# Lang file for FactionsUUID by drtshock
+# Use & for color codes.
+# Made with love <3
+
+#Slightly different localised variant for UK-style english (Color→Colour, etc)
+#It's cut down to the sections that were actually changed. Ie basically nothing. What ho, dear chap!
+
+root:
+  AUTHOR: misc
+  RESPONSIBLE: Korikisulda
+  LANGUAGE: English
+  ENCODING: UTF-8
+  LOCALE: en_GB
+  EXTENDS: en_US
+  REQUIRESUNICODE: 'false'
+  DEFAULT: 'false'
+  STATE: complete
+  LOCAL:
+    AUTHOR: misc
+    RESPONSIBLE: Korikisulda
+    LANGUAGE: English
+    REGION: UK
+    STATE: complete
+COMMAND:
+  CONFIG:
+    COLOURSET: '" colour option set to "'
+    INVALID:
+      COLOUR: 'Cannot set "%1$s": "%2$s" is not a valid colour.'
+      COLLECTION: '"%1$s" is not a data collection type which can be modified with this
+        command.'
+
