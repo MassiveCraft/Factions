@@ -2,7 +2,7 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.cmd.req.ReqFactionHomesEnabled;
 import com.massivecraft.factions.entity.MConf;
-import com.massivecraft.massivecore.cmd.VisibilityMode;
+import com.massivecraft.massivecore.cmd.Visibility;
 
 public class FactionsCommandHome extends FactionsCommand
 {
@@ -20,9 +20,9 @@ public class FactionsCommandHome extends FactionsCommand
 	// -------------------------------------------- //
 	
 	@Override
-	public VisibilityMode getVisibilityMode()
+	public Visibility getVisibility()
 	{
-		return MConf.get().homesEnabled ? super.getVisibilityMode() : VisibilityMode.INVISIBLE;  
+		return MConf.get().homesEnabled ? super.getVisibility() : Visibility.INVISIBLE;  
 	}
 	
 }

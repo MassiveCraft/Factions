@@ -12,7 +12,7 @@ import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.TerritoryAccess;
 import com.massivecraft.factions.event.EventFactionsCreatePerms;
-import com.massivecraft.massivecore.PredictateIsRegistered;
+import com.massivecraft.massivecore.PredicateIsRegistered;
 import com.massivecraft.massivecore.Prioritized;
 import com.massivecraft.massivecore.PriorityComparator;
 import com.massivecraft.massivecore.Registerable;
@@ -98,7 +98,7 @@ public class MPerm extends Entity<MPerm> implements Prioritized, Registerable
 		setupStandardPerms();
 		new EventFactionsCreatePerms().run();
 		
-		return MPermColl.get().getAll(PredictateIsRegistered.get(), PriorityComparator.get());
+		return MPermColl.get().getAll(PredicateIsRegistered.get(), PriorityComparator.get());
 	}
 	
 	public static void setupStandardPerms()
@@ -297,7 +297,7 @@ public class MPerm extends Entity<MPerm> implements Prioritized, Registerable
 		Player player = mplayer.getPlayer();
 		if (player != null && Perm.ADMIN.has(player))
 		{
-			ret += Txt.parse("\n<i>You can bypass by using " + Factions.get().getOuterCmdFactions().cmdFactionsAdmin.getUseageTemplate(false).toPlain(true));
+			ret += Txt.parse("\n<i>You can bypass by using " + Factions.get().getOuterCmdFactions().cmdFactionsAdmin.getTemplate(false).toPlain(true));
 		}
 		
 		return ret;

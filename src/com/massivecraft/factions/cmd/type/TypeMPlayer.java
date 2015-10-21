@@ -1,18 +1,18 @@
-package com.massivecraft.factions.cmd.arg;
+package com.massivecraft.factions.cmd.type;
 
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.entity.MPlayerColl;
-import com.massivecraft.massivecore.cmd.arg.AR;
+import com.massivecraft.massivecore.cmd.type.Type;
 
-public class ARMPlayer
+public class TypeMPlayer
 {
 	// -------------------------------------------- //
 	// INSTANCE
 	// -------------------------------------------- //
 	
-	public static AR<MPlayer> get()
+	public static Type<MPlayer> get()
 	{
-		return MPlayerColl.get().getAREntity();
+		return MPlayerColl.get().getTypeEntity();
 	}
 	
 }

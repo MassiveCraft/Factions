@@ -21,10 +21,10 @@ public class CmdFactionsAccess extends FactionsCommand
 	
 	public CmdFactionsAccess()
 	{
-		// Add SubCommands
-		this.addSubCommand(this.cmdFactionsAccessView);
-		this.addSubCommand(this.cmdFactionsAccessPlayer);
-		this.addSubCommand(this.cmdFactionsAccessFaction);
+		// Children
+		this.addChild(this.cmdFactionsAccessView);
+		this.addChild(this.cmdFactionsAccessPlayer);
+		this.addChild(this.cmdFactionsAccessFaction);
 		
 		// Aliases
 		this.addAliases("access");

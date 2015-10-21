@@ -1,15 +1,15 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Perm;
-import com.massivecraft.factions.cmd.arg.ARFaction;
 import com.massivecraft.factions.cmd.req.ReqBankCommandsEnabled;
+import com.massivecraft.factions.cmd.type.TypeFaction;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.cmd.arg.ARDouble;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
+import com.massivecraft.massivecore.cmd.type.TypeDouble;
 import com.massivecraft.massivecore.money.Money;
 import com.massivecraft.massivecore.util.Txt;
 
@@ -27,10 +27,10 @@ public class CmdFactionsMoneyTransferFf extends FactionsCommand
 		// Aliases
 		this.addAliases("ff");
 
-		// Args
-		this.addArg(ARDouble.get(), "amount");
-		this.addArg(ARFaction.get(), "faction");
-		this.addArg(ARFaction.get(), "faction");
+		// Parameters
+		this.addParameter(TypeDouble.get(), "amount");
+		this.addParameter(TypeFaction.get(), "faction");
+		this.addParameter(TypeFaction.get(), "faction");
 
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(Perm.MONEY_F2F.node));

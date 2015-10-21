@@ -1,6 +1,6 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.cmd.arg.ARFaction;
+import com.massivecraft.factions.cmd.type.TypeFaction;
 import com.massivecraft.factions.entity.FactionColl;
 import com.massivecraft.factions.entity.MFlag;
 import com.massivecraft.factions.entity.MPerm;
@@ -28,8 +28,8 @@ public class CmdFactionsDisband extends FactionsCommand
 		// Aliases
 		this.addAliases("disband");
 
-		// Args
-		this.addArg(ARFaction.get(), "faction", "you");
+		// Parameters
+		this.addParameter(TypeFaction.get(), "faction", "you");
 
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(Perm.DISBAND.node));

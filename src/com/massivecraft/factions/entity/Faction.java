@@ -8,7 +8,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.massivecraft.factions.EconomyParticipator;
-import com.massivecraft.factions.FactionEqualsPredictate;
+import com.massivecraft.factions.FactionEqualsPredicate;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Lang;
 import com.massivecraft.factions.Rel;
@@ -1213,34 +1213,34 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	
 	public boolean sendMessage(Object message)
 	{
-		return Mixin.messagePredictate(new FactionEqualsPredictate(this), message);
+		return Mixin.messagePredicate(new FactionEqualsPredicate(this), message);
 	}
 	
 	public boolean sendMessage(Object... messages)
 	{
-		return Mixin.messagePredictate(new FactionEqualsPredictate(this), messages);
+		return Mixin.messagePredicate(new FactionEqualsPredicate(this), messages);
 	}
 	
 	public boolean sendMessage(Collection<Object> messages)
 	{
-		return Mixin.messagePredictate(new FactionEqualsPredictate(this), messages);
+		return Mixin.messagePredicate(new FactionEqualsPredicate(this), messages);
 	}
 	
 	// CONVENIENCE MSG
 	
 	public boolean msg(String msg)
 	{
-		return Mixin.msgPredictate(new FactionEqualsPredictate(this), msg);
+		return Mixin.msgPredicate(new FactionEqualsPredicate(this), msg);
 	}
 	
 	public boolean msg(String msg, Object... args)
 	{
-		return Mixin.msgPredictate(new FactionEqualsPredictate(this), msg, args);
+		return Mixin.msgPredicate(new FactionEqualsPredicate(this), msg, args);
 	}
 	
 	public boolean msg(Collection<String> msgs)
 	{
-		return Mixin.msgPredictate(new FactionEqualsPredictate(this), msgs);
+		return Mixin.msgPredicate(new FactionEqualsPredicate(this), msgs);
 	}
 	
 }

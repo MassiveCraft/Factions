@@ -26,13 +26,13 @@ public class CmdFactionsUnclaim extends FactionsCommand
 		// Aliases
 		this.addAliases("unclaim");
 		
-		// Add SubCommands
-		this.addSubCommand(this.cmdFactionsUnclaimOne);
-		this.addSubCommand(this.cmdFactionsUnclaimAuto);
-		this.addSubCommand(this.cmdFactionsUnclaimFill);
-		this.addSubCommand(this.cmdFactionsUnclaimSquare);
-		this.addSubCommand(this.cmdFactionsUnclaimCircle);
-		this.addSubCommand(this.cmdFactionsUnclaimAll);
+		// Children
+		this.addChild(this.cmdFactionsUnclaimOne);
+		this.addChild(this.cmdFactionsUnclaimAuto);
+		this.addChild(this.cmdFactionsUnclaimFill);
+		this.addChild(this.cmdFactionsUnclaimSquare);
+		this.addChild(this.cmdFactionsUnclaimCircle);
+		this.addChild(this.cmdFactionsUnclaimAll);
 		
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(Perm.UNCLAIM.node));

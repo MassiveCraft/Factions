@@ -3,8 +3,8 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.cmd.arg.ARBoolean;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
+import com.massivecraft.massivecore.cmd.type.TypeBoolean;
 import com.massivecraft.massivecore.util.IdUtil;
 import com.massivecraft.massivecore.util.Txt;
 
@@ -19,8 +19,8 @@ public class CmdFactionsAdmin extends FactionsCommand
 		// Aliases
 		this.addAliases("admin");
 
-		// Args
-		this.addArg(ARBoolean.get(), "on/off", "flip");
+		// Parameters
+		this.addParameter(TypeBoolean.get(), "on/off", "flip");
 		
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(Perm.ADMIN.node));

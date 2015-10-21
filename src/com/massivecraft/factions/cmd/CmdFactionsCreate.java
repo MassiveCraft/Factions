@@ -15,8 +15,8 @@ import com.massivecraft.factions.event.EventFactionsCreate;
 import com.massivecraft.factions.event.EventFactionsMembershipChange;
 import com.massivecraft.factions.event.EventFactionsMembershipChange.MembershipChangeReason;
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.cmd.arg.ARString;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
+import com.massivecraft.massivecore.cmd.type.TypeString;
 import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.store.MStore;
 
@@ -31,8 +31,8 @@ public class CmdFactionsCreate extends FactionsCommand
 		// Aliases
 		this.addAliases("create");
 
-		// Args
-		this.addArg(ARString.get(), "name");
+		// Parameters
+		this.addParameter(TypeString.get(), "name");
 
 		// Requirements
 		this.addRequirements(ReqHasntFaction.get());
@@ -84,7 +84,7 @@ public class CmdFactionsCreate extends FactionsCommand
 		
 		// Inform
 		msg("<i>You created the faction %s", faction.getName(msender));
-		message(Mson.mson(mson("You should now: ").color(ChatColor.YELLOW), Factions.get().getOuterCmdFactions().cmdFactionsDescription.getUseageTemplate()));
+		message(Mson.mson(mson("You should now: ").color(ChatColor.YELLOW), Factions.get().getOuterCmdFactions().cmdFactionsDescription.getTemplate()));
 
 		// Log
 		if (MConf.get().logFactionCreate)

@@ -23,13 +23,13 @@ public class CmdFactionsMoney extends FactionsCommand
 	
 	public CmdFactionsMoney()
 	{
-		// Add SubCommands
-		this.addSubCommand(this.cmdMoneyBalance);
-		this.addSubCommand(this.cmdMoneyDeposit);
-		this.addSubCommand(this.cmdMoneyWithdraw);
-		this.addSubCommand(this.cmdMoneyTransferFf);
-		this.addSubCommand(this.cmdMoneyTransferFp);
-		this.addSubCommand(this.cmdMoneyTransferPf);
+		// Children
+		this.addChild(this.cmdMoneyBalance);
+		this.addChild(this.cmdMoneyDeposit);
+		this.addChild(this.cmdMoneyWithdraw);
+		this.addChild(this.cmdMoneyTransferFf);
+		this.addChild(this.cmdMoneyTransferFp);
+		this.addChild(this.cmdMoneyTransferPf);
 		
 		// Aliases
 		this.addAliases("money");

@@ -4,12 +4,12 @@ import java.util.List;
 
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
-import com.massivecraft.factions.cmd.arg.ARFaction;
+import com.massivecraft.factions.cmd.type.TypeFaction;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.cmd.ArgSetting;
+import com.massivecraft.massivecore.cmd.Parameter;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.pager.Pager;
 import com.massivecraft.massivecore.pager.Stringifier;
@@ -26,9 +26,9 @@ public class CmdFactionsInviteList extends FactionsCommand
 		// Aliases
 		this.addAliases("l", "list");
 
-		// Args
-		this.addArg(ArgSetting.getPage());
-		this.addArg(ARFaction.get(), "faction", "you");
+		// Parameters
+		this.addParameter(Parameter.getPage());
+		this.addParameter(TypeFaction.get(), "faction", "you");
 		
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(Perm.INVITE_LIST.node));

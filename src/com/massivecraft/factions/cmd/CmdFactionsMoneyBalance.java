@@ -1,7 +1,7 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.cmd.arg.ARFaction;
 import com.massivecraft.factions.cmd.req.ReqBankCommandsEnabled;
+import com.massivecraft.factions.cmd.type.TypeFaction;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.Perm;
@@ -19,8 +19,8 @@ public class CmdFactionsMoneyBalance extends FactionsCommand
 		// Aliases
 		this.addAliases("b", "balance");
 
-		// Args
-		this.addArg(ARFaction.get(), "faction", "you");
+		// Parameters
+		this.addParameter(TypeFaction.get(), "faction", "you");
 
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(Perm.MONEY_BALANCE.node));

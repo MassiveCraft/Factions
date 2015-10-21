@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.Set;
 
 import com.massivecraft.factions.Perm;
-import com.massivecraft.factions.cmd.arg.ARFaction;
+import com.massivecraft.factions.cmd.type.TypeFaction;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.FactionColl;
 import com.massivecraft.factions.entity.MPerm;
@@ -36,10 +36,10 @@ public class CmdFactionsSetAuto extends FactionsCommand
 		// Aliases
 		this.addAliases("a", "auto");
 
-		// Args
+		// Parameters
 		if (claim)
 		{
-			this.addArg(ARFaction.get(), "faction", "you");
+			this.addParameter(TypeFaction.get(), "faction", "you");
 		}
 
 		// Requirements

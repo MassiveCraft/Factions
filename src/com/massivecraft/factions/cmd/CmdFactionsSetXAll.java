@@ -1,9 +1,9 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.cmd.arg.ARFaction;
+import com.massivecraft.factions.cmd.type.TypeFaction;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.cmd.arg.ARString;
+import com.massivecraft.massivecore.cmd.type.TypeString;
 
 public abstract class CmdFactionsSetXAll extends CmdFactionsSetX
 {
@@ -16,12 +16,12 @@ public abstract class CmdFactionsSetXAll extends CmdFactionsSetX
 		// Super
 		super(claim);
 		
-		// Args
-		this.addArg(ARString.get(), "all|map");
-		this.addArg(ARFaction.get(), "faction");
+		// Parameters
+		this.addParameter(TypeString.get(), "all|map");
+		this.addParameter(TypeFaction.get(), "faction");
 		if (claim)
 		{
-			this.addArg(ARFaction.get(), "newfaction");
+			this.addParameter(TypeFaction.get(), "newfaction");
 			this.setFactionArgIndex(2);
 		}
 	}

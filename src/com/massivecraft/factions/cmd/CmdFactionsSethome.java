@@ -2,7 +2,7 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
-import com.massivecraft.factions.cmd.arg.ARFaction;
+import com.massivecraft.factions.cmd.type.TypeFaction;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.factions.event.EventFactionsHomeChange;
@@ -22,8 +22,8 @@ public class CmdFactionsSethome extends FactionsCommandHome
 		// Aliases
 		this.addAliases("sethome");
 
-		// Args
-		this.addArg(ARFaction.get(), "faction", "you");
+		// Parameters
+		this.addParameter(TypeFaction.get(), "faction", "you");
 
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(Perm.SETHOME.node));
@@ -63,7 +63,7 @@ public class CmdFactionsSethome extends FactionsCommandHome
 		
 		// Inform
 		faction.msg("%s<i> set the home for your faction. You can now use:", msender.describeTo(msenderFaction, true));
-		faction.sendMessage(Factions.get().getOuterCmdFactions().cmdFactionsHome.getUseageTemplate());
+		faction.sendMessage(Factions.get().getOuterCmdFactions().cmdFactionsHome.getTemplate());
 		if (faction != msenderFaction)
 		{
 			msender.msg("<i>You have set the home for " + faction.getName(msender) + "<i>.");

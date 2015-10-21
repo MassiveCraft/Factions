@@ -1,4 +1,4 @@
-package com.massivecraft.factions.cmd.arg;
+package com.massivecraft.factions.cmd.type;
 
 import java.util.Collection;
 import java.util.Set;
@@ -14,17 +14,17 @@ import com.massivecraft.factions.entity.MPlayerColl;
 import com.massivecraft.massivecore.CaseInsensitiveComparator;
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.cmd.arg.ARAbstract;
+import com.massivecraft.massivecore.cmd.type.TypeAbstract;
 import com.massivecraft.massivecore.util.IdUtil;
 
-public class ARFaction extends ARAbstract<Faction>
+public class TypeFaction extends TypeAbstract<Faction>
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static ARFaction i = new ARFaction();
-	public static ARFaction get() { return i; }
+	private static TypeFaction i = new TypeFaction();
+	public static TypeFaction get() { return i; }
 	
 	// -------------------------------------------- //
 	// OVERRIDE

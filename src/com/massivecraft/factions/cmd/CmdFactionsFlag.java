@@ -22,10 +22,10 @@ public class CmdFactionsFlag extends FactionsCommand
 		// Aliases
 		this.addAliases("flag");
 		
-		// Subcommands
-		this.addSubCommand(this.cmdFactionsFlagList);
-		this.addSubCommand(this.cmdFactionsFlagShow);
-		this.addSubCommand(this.cmdFactionsFlagSet);
+		// Children
+		this.addChild(this.cmdFactionsFlagList);
+		this.addChild(this.cmdFactionsFlagShow);
+		this.addChild(this.cmdFactionsFlagSet);
 		
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(Perm.FLAG.node));

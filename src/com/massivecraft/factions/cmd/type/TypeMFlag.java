@@ -1,4 +1,4 @@
-package com.massivecraft.factions.cmd.arg;
+package com.massivecraft.factions.cmd.type;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -7,18 +7,18 @@ import java.util.List;
 import org.bukkit.command.CommandSender;
 
 import com.massivecraft.factions.entity.MFlag;
-import com.massivecraft.massivecore.cmd.arg.ARAbstractSelect;
-import com.massivecraft.massivecore.cmd.arg.ARAllAble;
+import com.massivecraft.massivecore.cmd.type.TypeAbstractSelect;
+import com.massivecraft.massivecore.cmd.type.TypeAllAble;
 import com.massivecraft.massivecore.util.Txt;
 
-public class ARMFlag extends ARAbstractSelect<MFlag> implements ARAllAble<MFlag>
+public class TypeMFlag extends TypeAbstractSelect<MFlag> implements TypeAllAble<MFlag>
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static ARMFlag i = new ARMFlag();
-	public static ARMFlag get() { return i; }
+	private static TypeMFlag i = new TypeMFlag();
+	public static TypeMFlag get() { return i; }
 	
 	// -------------------------------------------- //
 	// OVERRIDE

@@ -1,4 +1,4 @@
-package com.massivecraft.factions.cmd.arg;
+package com.massivecraft.factions.cmd.type;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -11,10 +11,10 @@ import com.massivecraft.factions.PlayerInactivityComparator;
 import com.massivecraft.factions.PlayerPowerComparator;
 import com.massivecraft.factions.PlayerRoleComparator;
 import com.massivecraft.factions.entity.MPlayer;
-import com.massivecraft.massivecore.cmd.arg.ARAbstractSelect;
+import com.massivecraft.massivecore.cmd.type.TypeAbstractSelect;
 import com.massivecraft.massivecore.util.MUtil;
 
-public class ARSortMPlayer extends ARAbstractSelect<Comparator<MPlayer>>
+public class TypeSortMPlayer extends TypeAbstractSelect<Comparator<MPlayer>>
 {
 	// -------------------------------------------- //
 	// CONSTANTS
@@ -26,8 +26,8 @@ public class ARSortMPlayer extends ARAbstractSelect<Comparator<MPlayer>>
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static ARSortMPlayer i = new ARSortMPlayer();
-	public static ARSortMPlayer get() { return i; }
+	private static TypeSortMPlayer i = new TypeSortMPlayer();
+	public static TypeSortMPlayer get() { return i; }
 	
 	// -------------------------------------------- //
 	// OVERRIDE

@@ -5,14 +5,14 @@ import java.util.Collection;
 import java.util.List;
 
 import com.massivecraft.factions.Perm;
-import com.massivecraft.factions.cmd.arg.ARFaction;
-import com.massivecraft.factions.cmd.arg.ARMFlag;
+import com.massivecraft.factions.cmd.type.TypeFaction;
+import com.massivecraft.factions.cmd.type.TypeMFlag;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MFlag;
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.cmd.arg.ARAll;
-import com.massivecraft.massivecore.cmd.arg.ARSet;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
+import com.massivecraft.massivecore.cmd.type.TypeAll;
+import com.massivecraft.massivecore.cmd.type.TypeSet;
 import com.massivecraft.massivecore.util.Txt;
 
 public class CmdFactionsFlagShow extends FactionsCommand
@@ -26,9 +26,9 @@ public class CmdFactionsFlagShow extends FactionsCommand
 		// Aliases
 		this.addAliases("s", "show");
 		
-		// Args
-		this.addArg(ARFaction.get(), "faction", "you");
-		this.addArg(ARAll.get(ARSet.get(ARMFlag.get(), false)), "flags", "all", true);
+		// Parameters
+		this.addParameter(TypeFaction.get(), "faction", "you");
+		this.addParameter(TypeAll.get(TypeSet.get(TypeMFlag.get(), false)), "flags", "all", true);
 		
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(Perm.FLAG_SHOW.node));

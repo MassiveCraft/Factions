@@ -22,10 +22,10 @@ public class CmdFactionsInvite extends FactionsCommand
 		// Aliases
 		this.addAliases("i", "inv", "invite");
 		
-		// Add SubCommands
-		this.addSubCommand(this.cmdFactionsInviteAdd);
-		this.addSubCommand(this.cmdFactionsInviteRemove);
-		this.addSubCommand(this.cmdFactionsInviteList);
+		// Children
+		this.addChild(this.cmdFactionsInviteAdd);
+		this.addChild(this.cmdFactionsInviteRemove);
+		this.addChild(this.cmdFactionsInviteList);
 
 
 		// Requirements

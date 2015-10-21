@@ -1,4 +1,4 @@
-package com.massivecraft.factions.cmd.arg;
+package com.massivecraft.factions.cmd.type;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -7,18 +7,18 @@ import java.util.List;
 import org.bukkit.command.CommandSender;
 
 import com.massivecraft.factions.entity.MPerm;
-import com.massivecraft.massivecore.cmd.arg.ARAbstractSelect;
-import com.massivecraft.massivecore.cmd.arg.ARAllAble;
+import com.massivecraft.massivecore.cmd.type.TypeAbstractSelect;
+import com.massivecraft.massivecore.cmd.type.TypeAllAble;
 import com.massivecraft.massivecore.util.Txt;
 
-public class ARMPerm extends ARAbstractSelect<MPerm> implements ARAllAble<MPerm>
+public class TypeMPerm extends TypeAbstractSelect<MPerm> implements TypeAllAble<MPerm>
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static ARMPerm i = new ARMPerm();
-	public static ARMPerm get() { return i; }
+	private static TypeMPerm i = new TypeMPerm();
+	public static TypeMPerm get() { return i; }
 	
 	// -------------------------------------------- //
 	// OVERRIDE

@@ -3,15 +3,15 @@ package com.massivecraft.factions.cmd;
 import java.util.ArrayList;
 
 import com.massivecraft.factions.Perm;
-import com.massivecraft.factions.cmd.arg.ARFaction;
+import com.massivecraft.factions.cmd.type.TypeFaction;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.FactionColl;
 import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.factions.event.EventFactionsNameChange;
 import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.cmd.arg.ARString;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
+import com.massivecraft.massivecore.cmd.type.TypeString;
 
 public class CmdFactionsName extends FactionsCommand
 {
@@ -24,9 +24,9 @@ public class CmdFactionsName extends FactionsCommand
 		// Aliases
 		this.addAliases("name");
 
-		// Args
-		this.addArg(ARString.get(), "new name");
-		this.addArg(ARFaction.get(), "faction", "you");
+		// Parameters
+		this.addParameter(TypeString.get(), "new name");
+		this.addParameter(TypeFaction.get(), "faction", "you");
 
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(Perm.NAME.node));

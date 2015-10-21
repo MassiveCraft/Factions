@@ -23,8 +23,8 @@ public class CmdFactionsXPlaceholder extends FactionsCommand
 		// Desc
 		this.setDesc("Use " + extensionName);
 		
-		// Args
-		this.setGivingErrorOnTooManyArgs(false);
+		// Parameters
+		this.setOverflowSensitive(false);
 	}
 	
 	// -------------------------------------------- //

@@ -1,4 +1,4 @@
-package com.massivecraft.factions.cmd.arg;
+package com.massivecraft.factions.cmd.type;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -8,11 +8,11 @@ import org.bukkit.command.CommandSender;
 
 import com.massivecraft.factions.Rel;
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.cmd.arg.ARAbstractSelect;
+import com.massivecraft.massivecore.cmd.type.TypeAbstractSelect;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.Txt;
 
-public class ARRank extends ARAbstractSelect<Rel>
+public class TypeRank extends TypeAbstractSelect<Rel>
 {
 	// -------------------------------------------- //
 	// CONSTANTS
@@ -32,18 +32,18 @@ public class ARRank extends ARAbstractSelect<Rel>
 	// -------------------------------------------- //
 	
 	// Default constructor. Can't use promote and demote.
-	private static ARRank i = new ARRank();
-	public static ARRank get() { return i; }
+	private static TypeRank i = new TypeRank();
+	public static TypeRank get() { return i; }
 	
-	public ARRank()
+	public TypeRank()
 	{
 		this.startRank = null;
 	}
 	
 	// Fancy constructor. Can use promote and demote.
-	public static ARRank get(Rel rank) { return new ARRank(rank); }
+	public static TypeRank get(Rel rank) { return new TypeRank(rank); }
 	
-	public ARRank(Rel rank)
+	public TypeRank(Rel rank)
 	{
 		if (rank == null) throw new IllegalArgumentException("Do not use null, the default constructor can be used however.");
 		if ( ! rank.isRank()) throw new IllegalArgumentException(rank + " is not a valid rank");

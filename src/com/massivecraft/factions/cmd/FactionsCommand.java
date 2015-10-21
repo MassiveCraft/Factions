@@ -18,18 +18,10 @@ public class FactionsCommand extends MassiveCommand
 	// -------------------------------------------- //
 	
 	@Override
-	public void fixSenderVars()
+	public void senderFields(boolean set)
 	{
-		this.msender = MPlayer.get(sender);
-		this.msenderFaction = this.msender.getFaction();
-	}
-	
-	
-	@Override
-	public void unsetSenderVars()
-	{
-		this.msender = null;
-		this.msenderFaction = null;
+		this.msender = set ? MPlayer.get(sender) : null;
+		this.msenderFaction = set ? this.msender.getFaction() : null;
 	}
 	
 }

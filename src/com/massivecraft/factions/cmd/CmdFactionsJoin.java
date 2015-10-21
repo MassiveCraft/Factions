@@ -4,8 +4,8 @@ import org.bukkit.ChatColor;
 
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
-import com.massivecraft.factions.cmd.arg.ARMPlayer;
-import com.massivecraft.factions.cmd.arg.ARFaction;
+import com.massivecraft.factions.cmd.type.TypeFaction;
+import com.massivecraft.factions.cmd.type.TypeMPlayer;
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.entity.MFlag;
 import com.massivecraft.factions.entity.MPlayer;
@@ -28,9 +28,9 @@ public class CmdFactionsJoin extends FactionsCommand
 		// Aliases
 		this.addAliases("join");
 
-		// Args
-		this.addArg(ARFaction.get(), "faction");
-		this.addArg(ARMPlayer.get(), "player", "you");
+		// Parameters
+		this.addParameter(TypeFaction.get(), "faction");
+		this.addParameter(TypeMPlayer.get(), "player", "you");
 
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(Perm.JOIN.node));

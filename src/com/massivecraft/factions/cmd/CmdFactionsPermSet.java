@@ -5,15 +5,15 @@ import java.util.List;
 
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
-import com.massivecraft.factions.cmd.arg.ARFaction;
-import com.massivecraft.factions.cmd.arg.ARMPerm;
-import com.massivecraft.factions.cmd.arg.ARRel;
+import com.massivecraft.factions.cmd.type.TypeFaction;
+import com.massivecraft.factions.cmd.type.TypeMPerm;
+import com.massivecraft.factions.cmd.type.TypeRel;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.cmd.arg.ARBoolean;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
+import com.massivecraft.massivecore.cmd.type.TypeBoolean;
 import com.massivecraft.massivecore.util.Txt;
 
 public class CmdFactionsPermSet extends FactionsCommand
@@ -27,11 +27,11 @@ public class CmdFactionsPermSet extends FactionsCommand
 		// Aliases
 		this.addAliases("set");
 		
-		// Args
-		this.addArg(ARMPerm.get(), "perm");
-		this.addArg(ARRel.get(), "relation");
-		this.addArg(ARBoolean.get(), "yes/no");
-		this.addArg(ARFaction.get(), "faction", "you");
+		// Parameters
+		this.addParameter(TypeMPerm.get(), "perm");
+		this.addParameter(TypeRel.get(), "relation");
+		this.addParameter(TypeBoolean.get(), "yes/no");
+		this.addParameter(TypeFaction.get(), "faction", "you");
 		
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(Perm.PERM_SET.node));

@@ -6,10 +6,10 @@ import org.bukkit.command.CommandSender;
 
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.entity.Faction;
-import com.massivecraft.massivecore.Predictate;
+import com.massivecraft.massivecore.Predicate;
 import com.massivecraft.massivecore.util.MUtil;
 
-public class FactionEqualsPredictate implements Predictate<CommandSender>, Serializable
+public class FactionEqualsPredicate implements Predicate<CommandSender>, Serializable
 {
 	private static final long serialVersionUID = 1L;
 	
@@ -24,7 +24,7 @@ public class FactionEqualsPredictate implements Predictate<CommandSender>, Seria
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public FactionEqualsPredictate(Faction faction)
+	public FactionEqualsPredicate(Faction faction)
 	{
 		this.factionId = faction.getId();
 	}

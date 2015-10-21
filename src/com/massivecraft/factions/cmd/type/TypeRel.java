@@ -1,4 +1,4 @@
-package com.massivecraft.factions.cmd.arg;
+package com.massivecraft.factions.cmd.type;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -7,17 +7,17 @@ import java.util.List;
 import org.bukkit.command.CommandSender;
 
 import com.massivecraft.factions.Rel;
-import com.massivecraft.massivecore.cmd.arg.ARAbstractSelect;
+import com.massivecraft.massivecore.cmd.type.TypeAbstractSelect;
 import com.massivecraft.massivecore.util.Txt;
 
-public class ARRel extends ARAbstractSelect<Rel>
+public class TypeRel extends TypeAbstractSelect<Rel>
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static ARRel i = new ARRel();
-	public static ARRel get() { return i; }
+	private static TypeRel i = new TypeRel();
+	public static TypeRel get() { return i; }
 	
 	// -------------------------------------------- //
 	// OVERRIDE

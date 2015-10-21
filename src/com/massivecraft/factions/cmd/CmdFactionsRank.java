@@ -6,9 +6,9 @@ import java.util.Set;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
-import com.massivecraft.factions.cmd.arg.ARFaction;
-import com.massivecraft.factions.cmd.arg.ARMPlayer;
-import com.massivecraft.factions.cmd.arg.ARRank;
+import com.massivecraft.factions.cmd.type.TypeFaction;
+import com.massivecraft.factions.cmd.type.TypeMPlayer;
+import com.massivecraft.factions.cmd.type.TypeRank;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.entity.MFlag;
@@ -49,7 +49,7 @@ public class CmdFactionsRank extends FactionsCommand
 	private Rel rank = null;
 	
 	// This one is permanent
-	private ARRank rankReader = new ARRank();
+	private TypeRank rankReader = new TypeRank();
 	
 	// -------------------------------------------- //
 	// CONSTRUCT
@@ -60,10 +60,10 @@ public class CmdFactionsRank extends FactionsCommand
 		// Aliases
 		this.addAliases("rank");
 	
-		// Args
-		this.addArg(ARMPlayer.get(), "player");
-		this.addArg(rankReader, "action", "show");
-		this.addArg(ARFaction.get(), "faction", "their");
+		// Parameters
+		this.addParameter(TypeMPlayer.get(), "player");
+		this.addParameter(rankReader, "action", "show");
+		this.addParameter(TypeFaction.get(), "faction", "their");
 	
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(Perm.RANK.node));
@@ -113,10 +113,14 @@ public class CmdFactionsRank extends FactionsCommand
 
 	// This is always run after performing a MassiveCommand.
 	@Override
-	public void unsetSenderVars()
+	public void senderFields(boolean set)
 	{
-		super.unsetSenderVars();
-		this.unregisterFields();
+		super.senderFields(set);
+		
+		if ( ! set)
+		{
+			this.unregisterFields();			
+		}
 	}
 
 	// -------------------------------------------- //

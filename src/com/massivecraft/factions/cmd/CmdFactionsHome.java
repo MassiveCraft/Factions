@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
-import com.massivecraft.factions.cmd.arg.ARFaction;
+import com.massivecraft.factions.cmd.type.TypeFaction;
 import com.massivecraft.factions.entity.BoardColl;
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.entity.MFlag;
@@ -37,8 +37,8 @@ public class CmdFactionsHome extends FactionsCommandHome
 		// Aliases
 		this.addAliases("home");
 		
-		// Args
-		this.addArg(ARFaction.get(), "faction", "you");
+		// Parameters
+		this.addParameter(TypeFaction.get(), "faction", "you");
 
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(Perm.HOME.node));
@@ -73,7 +73,7 @@ public class CmdFactionsHome extends FactionsCommandHome
 			if (MPerm.getPermSethome().has(msender, faction, false))
 			{
 				msender.msg("<i>You should:");
-				msender.message(Factions.get().getOuterCmdFactions().cmdFactionsSethome.getUseageTemplate());
+				msender.message(Factions.get().getOuterCmdFactions().cmdFactionsSethome.getTemplate());
 			}
 			
 			return;

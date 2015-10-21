@@ -1,15 +1,15 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Perm;
-import com.massivecraft.factions.cmd.arg.ARFaction;
-import com.massivecraft.factions.cmd.arg.ARMFlag;
+import com.massivecraft.factions.cmd.type.TypeFaction;
+import com.massivecraft.factions.cmd.type.TypeMFlag;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MFlag;
 import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.factions.event.EventFactionsFlagChange;
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.cmd.arg.ARBoolean;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
+import com.massivecraft.massivecore.cmd.type.TypeBoolean;
 
 public class CmdFactionsFlagSet extends FactionsCommand
 {
@@ -22,10 +22,10 @@ public class CmdFactionsFlagSet extends FactionsCommand
 		// Aliases
 		this.addAliases("set");
 		
-		// Args
-		this.addArg(ARMFlag.get(), "flag");
-		this.addArg(ARBoolean.get(), "yes/no");
-		this.addArg(ARFaction.get(), "faction", "you");
+		// Parameters
+		this.addParameter(TypeMFlag.get(), "flag");
+		this.addParameter(TypeBoolean.get(), "yes/no");
+		this.addParameter(TypeFaction.get(), "faction", "you");
 		
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(Perm.FLAG_SET.node));

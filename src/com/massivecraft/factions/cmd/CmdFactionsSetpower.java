@@ -1,13 +1,13 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Perm;
-import com.massivecraft.factions.cmd.arg.ARMPlayer;
+import com.massivecraft.factions.cmd.type.TypeMPlayer;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.event.EventFactionsPowerChange;
 import com.massivecraft.factions.event.EventFactionsPowerChange.PowerChangeReason;
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.cmd.arg.ARDouble;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
+import com.massivecraft.massivecore.cmd.type.TypeDouble;
 
 public class CmdFactionsSetpower extends FactionsCommand
 {
@@ -20,9 +20,9 @@ public class CmdFactionsSetpower extends FactionsCommand
 		// Aliases
 		this.addAliases("sp", "setpower");
 		
-		// Args
-		this.addArg(ARMPlayer.get(), "player");
-		this.addArg(ARDouble.get(), "power");
+		// Parameters
+		this.addParameter(TypeMPlayer.get(), "player");
+		this.addParameter(TypeDouble.get(), "power");
 		
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(Perm.SETPOWER.node));

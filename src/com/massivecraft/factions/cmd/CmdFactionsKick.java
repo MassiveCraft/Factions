@@ -5,7 +5,7 @@ import org.bukkit.ChatColor;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
-import com.massivecraft.factions.cmd.arg.ARMPlayer;
+import com.massivecraft.factions.cmd.type.TypeMPlayer;
 import com.massivecraft.factions.entity.FactionColl;
 import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.factions.entity.MPlayer;
@@ -29,8 +29,8 @@ public class CmdFactionsKick extends FactionsCommand
 		// Aliases
 		this.addAliases("kick");
 
-		// Args
-		this.addArg(ARMPlayer.get(), "player");
+		// Parameters
+		this.addParameter(TypeMPlayer.get(), "player");
 
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(Perm.KICK.node));
@@ -50,7 +50,7 @@ public class CmdFactionsKick extends FactionsCommand
 		if (msender == mplayer)
 		{
 			msg("<b>You can't kick yourself.");
-			message(Mson.mson(mson("You might want to: ").color(ChatColor.YELLOW), Factions.get().getOuterCmdFactions().cmdFactionsLeave.getUseageTemplate(false)));
+			message(Mson.mson(mson("You might want to: ").color(ChatColor.YELLOW), Factions.get().getOuterCmdFactions().cmdFactionsLeave.getTemplate(false)));
 			return;
 		}
 		

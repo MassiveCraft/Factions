@@ -5,7 +5,7 @@ import java.util.TreeSet;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
-import com.massivecraft.factions.cmd.arg.ARFaction;
+import com.massivecraft.factions.cmd.type.TypeFaction;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.event.EventFactionsFactionShowAsync;
 import com.massivecraft.factions.Factions;
@@ -27,8 +27,8 @@ public class CmdFactionsFaction extends FactionsCommand
 		// Aliases
 		this.addAliases("f", "faction");
 
-		// Args
-		this.addArg(ARFaction.get(), "faction", "you");
+		// Parameters
+		this.addParameter(TypeFaction.get(), "faction", "you");
 
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(Perm.FACTION.node));

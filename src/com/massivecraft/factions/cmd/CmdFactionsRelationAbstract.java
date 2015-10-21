@@ -3,8 +3,8 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
-import com.massivecraft.factions.cmd.arg.ARFaction;
 import com.massivecraft.factions.cmd.req.ReqHasFaction;
+import com.massivecraft.factions.cmd.type.TypeFaction;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MFlag;
 import com.massivecraft.factions.entity.MPerm;
@@ -26,7 +26,7 @@ public abstract class CmdFactionsRelationAbstract extends FactionsCommand
 	public CmdFactionsRelationAbstract()
 	{
 		// Aliases
-		this.addArg(ARFaction.get(), "faction");
+		this.addParameter(TypeFaction.get(), "faction");
 
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(Perm.RELATION.node));

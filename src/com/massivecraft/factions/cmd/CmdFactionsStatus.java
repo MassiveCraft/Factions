@@ -7,13 +7,13 @@ import java.util.List;
 
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.PlayerInactivityComparator;
-import com.massivecraft.factions.cmd.arg.ARFaction;
-import com.massivecraft.factions.cmd.arg.ARSortMPlayer;
+import com.massivecraft.factions.cmd.type.TypeFaction;
+import com.massivecraft.factions.cmd.type.TypeSortMPlayer;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.cmd.ArgSetting;
+import com.massivecraft.massivecore.cmd.Parameter;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.pager.Pager;
 import com.massivecraft.massivecore.pager.Stringifier;
@@ -33,10 +33,10 @@ public class CmdFactionsStatus extends FactionsCommand
 		// Aliases
 		this.addAliases("s", "status");
 
-		// Args
-		this.addArg(ArgSetting.getPage());
-		this.addArg(ARFaction.get(), "faction", "you");
-		this.addArg(ARSortMPlayer.get(), "sort by", "time");
+		// Parameters
+		this.addParameter(Parameter.getPage());
+		this.addParameter(TypeFaction.get(), "faction", "you");
+		this.addParameter(TypeSortMPlayer.get(), "sort by", "time");
 
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(Perm.STATUS.node));

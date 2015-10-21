@@ -22,10 +22,10 @@ public class CmdFactionsPerm extends FactionsCommand
 		// Aliases
 		this.addAliases("perm");
 		
-		// Subcommands
-		this.addSubCommand(this.cmdFactionsPermList);
-		this.addSubCommand(this.cmdFactionsPermShow);
-		this.addSubCommand(this.cmdFactionsPermSet);
+		// Children
+		this.addChild(this.cmdFactionsPermList);
+		this.addChild(this.cmdFactionsPermShow);
+		this.addChild(this.cmdFactionsPermSet);
 		
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(Perm.PERM.node));
