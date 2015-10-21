@@ -21,7 +21,7 @@ public class CmdFactionsSetOne extends CmdFactionsSetXSimple
 		super(claim);
 		
 		// Aliases
-		this.addAliases("o", "one");
+		this.addAliases("one");
 
 		// Requirements
 		this.addRequirements(ReqIsPlayer.get());

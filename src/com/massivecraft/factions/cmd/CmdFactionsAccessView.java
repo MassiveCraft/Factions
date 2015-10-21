@@ -12,7 +12,7 @@ public class CmdFactionsAccessView extends CmdFactionsAccessAbstract
 	public CmdFactionsAccessView()
 	{
 		// Aliases
-		this.addAliases("v", "view");
+		this.addAliases("view");
 
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(Perm.ACCESS_VIEW.node));

@@ -22,7 +22,7 @@ public class CmdFactionsSetSquare extends CmdFactionsSetXRadius
 		super(claim);
 		
 		// Aliases
-		this.addAliases("s", "square");
+		this.addAliases("square");
 
 		// Format
 		this.setFormatOne("<h>%s<i> %s <h>%d <i>chunk %s<i> using square.");

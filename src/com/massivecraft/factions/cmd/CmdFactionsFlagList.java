@@ -19,7 +19,7 @@ public class CmdFactionsFlagList extends FactionsCommand
 	public CmdFactionsFlagList()
 	{
 		// Aliases
-		this.addAliases("l", "list");
+		this.addAliases("list");
 		
 		// Parameters
 		this.addParameter(Parameter.getPage());

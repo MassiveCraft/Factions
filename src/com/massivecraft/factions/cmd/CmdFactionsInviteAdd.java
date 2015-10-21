@@ -24,7 +24,7 @@ public class CmdFactionsInviteAdd extends FactionsCommand
 	public CmdFactionsInviteAdd()
 	{
 		// Aliases
-		this.addAliases("a", "add");
+		this.addAliases("add");
 
 		// Parameters
 		this.addParameter(TypeSet.get(TypeMPlayer.get(), true), "players", true);

@@ -19,7 +19,7 @@ public class CmdFactionsPermList extends FactionsCommand
 	public CmdFactionsPermList()
 	{
 		// Aliases
-		this.addAliases("l", "list");
+		this.addAliases("list");
 		
 		// Parameters
 		this.addParameter(Parameter.getPage());

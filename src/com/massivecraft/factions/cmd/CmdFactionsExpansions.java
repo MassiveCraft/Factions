@@ -16,7 +16,7 @@ public class CmdFactionsExpansions extends FactionsCommand
 	public CmdFactionsExpansions()
 	{
 		// Aliases
-		this.addAliases("e", "expansions");
+		this.addAliases("expansions");
 
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(Perm.EXPANSIONS.node));

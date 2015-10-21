@@ -24,7 +24,7 @@ public class CmdFactionsFlagShow extends FactionsCommand
 	public CmdFactionsFlagShow()
 	{
 		// Aliases
-		this.addAliases("s", "show");
+		this.addAliases("show");
 		
 		// Parameters
 		this.addParameter(TypeFaction.get(), "faction", "you");

@@ -22,7 +22,7 @@ public class CmdFactionsSetCircle extends CmdFactionsSetXRadius
 		super(claim);
 		
 		// Aliases
-		this.addAliases("c", "circle");
+		this.addAliases("circle");
 
 		// Format
 		this.setFormatOne("<h>%s<i> %s <h>%d <i>chunk %s<i> using circle.");

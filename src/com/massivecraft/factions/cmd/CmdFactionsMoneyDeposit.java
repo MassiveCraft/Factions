@@ -24,7 +24,7 @@ public class CmdFactionsMoneyDeposit extends FactionsCommand
 	public CmdFactionsMoneyDeposit()
 	{
 		// Aliases
-		this.addAliases("d", "deposit");
+		this.addAliases("deposit");
 
 		// Parameters
 		this.addParameter(TypeDouble.get(), "amount");

@@ -25,7 +25,7 @@ public class CmdFactionsSetFill extends CmdFactionsSetXSimple
 		super(claim);
 		
 		// Aliases
-		this.addAliases("f", "fill");
+		this.addAliases("fill");
 
 		// Format
 		this.setFormatOne("<h>%s<i> %s <h>%d <i>chunk %s<i> using fill.");

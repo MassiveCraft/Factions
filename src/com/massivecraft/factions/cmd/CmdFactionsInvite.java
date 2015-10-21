@@ -20,7 +20,7 @@ public class CmdFactionsInvite extends FactionsCommand
 	public CmdFactionsInvite()
 	{
 		// Aliases
-		this.addAliases("i", "inv", "invite");
+		this.addAliases("invite");
 		
 		// Children
 		this.addChild(this.cmdFactionsInviteAdd);

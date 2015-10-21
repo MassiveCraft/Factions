@@ -24,7 +24,7 @@ public class CmdFactionsPermShow extends FactionsCommand
 	public CmdFactionsPermShow()
 	{
 		// Aliases
-		this.addAliases("s", "show");
+		this.addAliases("show");
 		
 		// Parameters
 		this.addParameter(TypeFaction.get(), "faction", "you");

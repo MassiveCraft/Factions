@@ -27,7 +27,7 @@ public class CmdFactionsInviteRemove extends FactionsCommand
 	public CmdFactionsInviteRemove()
 	{
 		// Aliases
-		this.addAliases("r", "remove");
+		this.addAliases("remove");
 
 		// Parameters
 		this.addParameter(TypeSet.get(TypeMPlayer.get(), true), "players/all", true);

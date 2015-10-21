@@ -18,7 +18,7 @@ public class CmdFactionsAccessPlayer extends CmdFactionsAccessAbstract
 	public CmdFactionsAccessPlayer()
 	{
 		// Aliases
-		this.addAliases("p", "player");
+		this.addAliases("player");
 
 		// Parameters
 		this.addParameter(TypeMPlayer.get(), "player");

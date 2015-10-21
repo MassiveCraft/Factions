@@ -34,7 +34,7 @@ public class CmdFactionsSetAuto extends FactionsCommand
 		this.setClaim(claim);
 		
 		// Aliases
-		this.addAliases("a", "auto");
+		this.addAliases("auto");
 
 		// Parameters
 		if (claim)

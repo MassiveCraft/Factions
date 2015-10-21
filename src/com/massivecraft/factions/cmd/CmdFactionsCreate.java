@@ -29,7 +29,7 @@ public class CmdFactionsCreate extends FactionsCommand
 	public CmdFactionsCreate()
 	{
 		// Aliases
-		this.addAliases("create");
+		this.addAliases("create", "new");
 
 		// Parameters
 		this.addParameter(TypeString.get(), "name");

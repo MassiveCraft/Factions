@@ -19,7 +19,7 @@ public class CmdFactionsDescription extends FactionsCommand
 	public CmdFactionsDescription()
 	{
 		// Aliases
-		this.addAliases("desc");
+		this.addAliases("description");
 
 		// Parameters
 		this.addParameter(TypeString.get(), "desc", true);

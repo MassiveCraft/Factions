@@ -18,7 +18,7 @@ public class CmdFactionsAccessFaction extends CmdFactionsAccessAbstract
 	public CmdFactionsAccessFaction()
 	{
 		// Aliases
-		this.addAliases("f", "faction");
+		this.addAliases("faction");
 		
 		// Parameters
 		this.addParameter(TypeFaction.get(), "faction");
