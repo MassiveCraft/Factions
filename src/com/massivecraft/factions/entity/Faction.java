@@ -1015,7 +1015,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 			{
 				String msg = Txt.parse("<rose>WARN: <i>Faction <h>%s <i>aka <h>%s <i>had unattached mplayer in index:", this.getName(), this.getId());
 				Factions.get().log(msg);
-				Factions.get().log(Factions.get().gson.toJson(mplayer));
+				Factions.get().log(Factions.get().getGson().toJson(mplayer));
 				iter.remove();
 			}
 		}
