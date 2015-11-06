@@ -3,6 +3,7 @@ package com.massivecraft.factions.cmd.type;
 import java.util.Set;
 
 import com.massivecraft.factions.Rel;
+import com.massivecraft.massivecore.collections.MassiveSet;
 import com.massivecraft.massivecore.command.type.enumeration.TypeEnum;
 
 public class TypeRel extends TypeEnum<Rel>
@@ -28,7 +29,7 @@ public class TypeRel extends TypeEnum<Rel>
 	@Override
 	public Set<String> getNamesInner(Rel value)
 	{
-		Set<String> ret = super.getNamesInner(value);
+		Set<String> ret = new MassiveSet<String>(super.getNamesInner(value));
 		
 		if (value == Rel.LEADER)
 		{

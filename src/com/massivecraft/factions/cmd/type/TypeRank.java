@@ -69,7 +69,7 @@ public class TypeRank extends TypeEnum<Rel>
 	public Set<String> getNamesInner(Rel value)
 	{
 		// Create
-		Set<String> ret = super.getNamesInner(value);
+		Set<String> ret = new MassiveSet<String>(super.getNamesInner(value));
 		
 		// Fill Exact
 		if (value == Rel.LEADER)
