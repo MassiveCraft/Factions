@@ -3,6 +3,7 @@ package com.massivecraft.factions.entity;
 import java.util.List;
 
 import com.massivecraft.factions.event.EventFactionsCreateFlags;
+import com.massivecraft.massivecore.Named;
 import com.massivecraft.massivecore.PredicateIsRegistered;
 import com.massivecraft.massivecore.Prioritized;
 import com.massivecraft.massivecore.PriorityComparator;
@@ -11,7 +12,7 @@ import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.store.Entity;
 import com.massivecraft.massivecore.util.Txt;
 
-public class MFlag extends Entity<MFlag> implements Prioritized, Registerable
+public class MFlag extends Entity<MFlag> implements Prioritized, Registerable, Named
 {
 	// -------------------------------------------- //
 	// CONSTANTS
@@ -158,7 +159,7 @@ public class MFlag extends Entity<MFlag> implements Prioritized, Registerable
 	// I just added the name in case anyone feel like renaming their flags for some reason.
 	// Example: "monsters"
 	private String name = "defaultName";
-	public String getName() { return this.name; }
+	@Override public String getName() { return this.name; }
 	public MFlag setName(String name) { this.name = name; this.changed(); return this; }
 	
 	// The flag function described as a question.

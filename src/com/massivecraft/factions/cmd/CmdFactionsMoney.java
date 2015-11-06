@@ -2,7 +2,7 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.cmd.req.ReqBankCommandsEnabled;
-import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
+import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 
 public class CmdFactionsMoney extends FactionsCommand
 {
@@ -36,7 +36,7 @@ public class CmdFactionsMoney extends FactionsCommand
 
 		// Requirements
 		this.addRequirements(ReqBankCommandsEnabled.get());
-		this.addRequirements(ReqHasPerm.get(Perm.MONEY.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.MONEY.node));
 	}
 	
 }

@@ -1,16 +1,11 @@
 package com.massivecraft.factions.cmd.type;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import org.bukkit.command.CommandSender;
+import java.util.Set;
 
 import com.massivecraft.factions.Rel;
-import com.massivecraft.massivecore.cmd.type.TypeAbstractSelect;
-import com.massivecraft.massivecore.util.Txt;
+import com.massivecraft.massivecore.command.type.enumeration.TypeEnum;
 
-public class TypeRel extends TypeAbstractSelect<Rel>
+public class TypeRel extends TypeEnum<Rel>
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -18,6 +13,7 @@ public class TypeRel extends TypeAbstractSelect<Rel>
 	
 	private static TypeRel i = new TypeRel();
 	public static TypeRel get() { return i; }
+	public TypeRel() { super(Rel.class); }
 	
 	// -------------------------------------------- //
 	// OVERRIDE
@@ -28,30 +24,26 @@ public class TypeRel extends TypeAbstractSelect<Rel>
 	{
 		return "role";
 	}
-
+	
 	@Override
-	public Rel select(String str, CommandSender sender)
+	public Set<String> getNamesInner(Rel value)
 	{
-		return Rel.parse(str);
-	}
-
-	@Override
-	public Collection<String> altNames(CommandSender sender)
-	{
-		List<String> ret = new ArrayList<String>(); 
+		Set<String> ret = super.getNamesInner(value);
 		
-		for (Rel rel : Rel.values())
+		if (value == Rel.LEADER)
 		{
-			ret.add(Txt.getNicedEnum(rel));
+			ret.add("admin");
+		}
+		else if (value == Rel.OFFICER)
+		{
+			ret.add("moderator");
+		}
+		else if (value == Rel.MEMBER)
+		{
+			ret.add("normal");
 		}
 		
 		return ret;
-	}
-
-	@Override
-	public Collection<String> getTabList(CommandSender sender, String arg)
-	{
-		return this.altNames(sender);
 	}
 	
 }

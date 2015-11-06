@@ -2,10 +2,10 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Perm;
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.cmd.Visibility;
-import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
-import com.massivecraft.massivecore.cmd.req.ReqTitlesAvailable;
-import com.massivecraft.massivecore.cmd.type.TypeBoolean;
+import com.massivecraft.massivecore.command.Visibility;
+import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
+import com.massivecraft.massivecore.command.requirement.RequirementTitlesAvailable;
+import com.massivecraft.massivecore.command.type.primitive.TypeBoolean;
 import com.massivecraft.massivecore.mixin.Mixin;
 import com.massivecraft.massivecore.util.Txt;
 
@@ -21,11 +21,11 @@ public class CmdFactionsTerritorytitles extends FactionsCommand
 		this.addAliases("tt", "territorytitles");
 
 		// Parameters
-		this.addParameter(TypeBoolean.get(), "on|off", "toggle");
+		this.addParameter(TypeBoolean.getOn(), "on|off", "toggle");
 
 		// Requirements
-		this.addRequirements(ReqHasPerm.get(Perm.TERRITORYTITLES.node));
-		this.addRequirements(ReqTitlesAvailable.get());
+		this.addRequirements(RequirementHasPerm.get(Perm.TERRITORYTITLES.node));
+		this.addRequirements(RequirementTitlesAvailable.get());
 	}
 
 	// -------------------------------------------- //

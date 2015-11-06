@@ -3,6 +3,8 @@ package com.massivecraft.factions.adapter;
 import java.lang.reflect.Type;
 
 import com.massivecraft.factions.Rel;
+import com.massivecraft.factions.cmd.type.TypeRel;
+import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.xlib.gson.JsonDeserializationContext;
 import com.massivecraft.massivecore.xlib.gson.JsonDeserializer;
 import com.massivecraft.massivecore.xlib.gson.JsonElement;
@@ -24,7 +26,14 @@ public class RelAdapter implements JsonDeserializer<Rel>
 	@Override
 	public Rel deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException
 	{
-		return Rel.parse(json.getAsString());
+		try
+		{
+			return TypeRel.get().read(json.getAsString());
+		}
+		catch (MassiveException e)
+		{
+			return null;
+		}
 	}
 	
 }

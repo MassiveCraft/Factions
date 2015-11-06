@@ -12,7 +12,7 @@ import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.PriorityLines;
-import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
+import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.mixin.Mixin;
 import com.massivecraft.massivecore.util.Txt;
 
@@ -31,7 +31,7 @@ public class CmdFactionsFaction extends FactionsCommand
 		this.addParameter(TypeFaction.get(), "faction", "you");
 
 		// Requirements
-		this.addRequirements(ReqHasPerm.get(Perm.FACTION.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.FACTION.node));
 	}
 
 	// -------------------------------------------- //

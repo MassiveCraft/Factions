@@ -6,8 +6,8 @@ import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.event.EventFactionsPowerChange;
 import com.massivecraft.factions.event.EventFactionsPowerChange.PowerChangeReason;
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
-import com.massivecraft.massivecore.cmd.type.TypeDouble;
+import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
+import com.massivecraft.massivecore.command.type.primitive.TypeDouble;
 
 public class CmdFactionsSetpower extends FactionsCommand
 {
@@ -25,7 +25,7 @@ public class CmdFactionsSetpower extends FactionsCommand
 		this.addParameter(TypeDouble.get(), "power");
 		
 		// Requirements
-		this.addRequirements(ReqHasPerm.get(Perm.SETPOWER.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.SETPOWER.node));
 	}
 	
 	// -------------------------------------------- //

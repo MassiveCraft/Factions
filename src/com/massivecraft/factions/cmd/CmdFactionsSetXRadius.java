@@ -3,7 +3,7 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.cmd.type.TypeFaction;
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.cmd.type.TypeInteger;
+import com.massivecraft.massivecore.command.type.primitive.TypeInteger;
 
 
 public abstract class CmdFactionsSetXRadius extends CmdFactionsSetX

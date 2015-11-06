@@ -8,9 +8,9 @@ import com.massivecraft.factions.Const;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.entity.BoardColl;
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
-import com.massivecraft.massivecore.cmd.req.ReqIsPlayer;
-import com.massivecraft.massivecore.cmd.type.TypeBoolean;
+import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
+import com.massivecraft.massivecore.command.requirement.RequirementIsPlayer;
+import com.massivecraft.massivecore.command.type.primitive.TypeBoolean;
 import com.massivecraft.massivecore.ps.PS;
 
 public class CmdFactionsMap extends FactionsCommand
@@ -25,11 +25,11 @@ public class CmdFactionsMap extends FactionsCommand
 		this.addAliases("map");
 
 		// Parameters
-		this.addParameter(TypeBoolean.get(), "on/off", "once");
+		this.addParameter(TypeBoolean.getOn(), "on/off", "once");
 
 		// Requirements
-		this.addRequirements(ReqHasPerm.get(Perm.MAP.node));
-		this.addRequirements(ReqIsPlayer.get());
+		this.addRequirements(RequirementHasPerm.get(Perm.MAP.node));
+		this.addRequirements(RequirementIsPlayer.get());
 	}
 
 	// -------------------------------------------- //

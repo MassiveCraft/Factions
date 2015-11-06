@@ -3,8 +3,9 @@ package com.massivecraft.factions;
 import java.util.Comparator;
 
 import com.massivecraft.factions.entity.MPlayer;
+import com.massivecraft.massivecore.Named;
 
-public class PlayerRoleComparator implements Comparator<MPlayer>
+public class PlayerRoleComparator implements Comparator<MPlayer>, Named
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -12,6 +13,16 @@ public class PlayerRoleComparator implements Comparator<MPlayer>
 	
 	private static PlayerRoleComparator i = new PlayerRoleComparator();
 	public static PlayerRoleComparator get() { return i; }
+	
+	// -------------------------------------------- //
+	// OVERRIDE: NAMED
+	// -------------------------------------------- //
+	
+	@Override
+	public String getName()
+	{
+		return "Rank";
+	}
 	
 	// -------------------------------------------- //
 	// OVERRIDE: COMPARATOR
@@ -30,5 +41,7 @@ public class PlayerRoleComparator implements Comparator<MPlayer>
 		Rel r2 = m2.getRole();
 		return r2.getValue() - r1.getValue();
 	}
+
+
 
 }

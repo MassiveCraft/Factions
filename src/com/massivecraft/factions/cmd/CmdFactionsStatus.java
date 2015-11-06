@@ -13,8 +13,8 @@ import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.cmd.Parameter;
-import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
+import com.massivecraft.massivecore.command.Parameter;
+import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.pager.Pager;
 import com.massivecraft.massivecore.pager.Stringifier;
 import com.massivecraft.massivecore.util.TimeDiffUtil;
@@ -39,7 +39,7 @@ public class CmdFactionsStatus extends FactionsCommand
 		this.addParameter(TypeSortMPlayer.get(), "sort by", "time");
 
 		// Requirements
-		this.addRequirements(ReqHasPerm.get(Perm.STATUS.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.STATUS.node));
 	}
 
 	// -------------------------------------------- //

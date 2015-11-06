@@ -6,8 +6,8 @@ import java.util.List;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.entity.MFlag;
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.cmd.Parameter;
-import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
+import com.massivecraft.massivecore.command.Parameter;
+import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.util.Txt;
 
 public class CmdFactionsFlagList extends FactionsCommand
@@ -25,7 +25,7 @@ public class CmdFactionsFlagList extends FactionsCommand
 		this.addParameter(Parameter.getPage());
 		
 		// Requirements
-		this.addRequirements(ReqHasPerm.get(Perm.FLAG_LIST.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.FLAG_LIST.node));
 	}
 	
 	// -------------------------------------------- //

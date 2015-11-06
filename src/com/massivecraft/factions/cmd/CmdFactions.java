@@ -5,8 +5,8 @@ import java.util.List;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.entity.MConf;
-import com.massivecraft.massivecore.cmd.DeprecatedCommand;
-import com.massivecraft.massivecore.cmd.VersionCommand;
+import com.massivecraft.massivecore.command.DeprecatedCommand;
+import com.massivecraft.massivecore.command.VersionCommand;
 
 public class CmdFactions extends FactionsCommand
 {

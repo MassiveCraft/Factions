@@ -6,7 +6,7 @@ import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.factions.event.EventFactionsHomeChange;
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
+import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 
 public class CmdFactionsUnsethome extends FactionsCommandHome
 {
@@ -23,7 +23,7 @@ public class CmdFactionsUnsethome extends FactionsCommandHome
 		this.addParameter(TypeFaction.get(), "faction", "you");
 
 		// Requirements
-		this.addRequirements(ReqHasPerm.get(Perm.UNSETHOME.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.UNSETHOME.node));
 	}
 
 	// -------------------------------------------- //

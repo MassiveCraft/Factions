@@ -13,7 +13,7 @@ import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.event.EventFactionsMembershipChange;
 import com.massivecraft.factions.event.EventFactionsMembershipChange.MembershipChangeReason;
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
+import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.util.Txt;
 
@@ -33,7 +33,7 @@ public class CmdFactionsJoin extends FactionsCommand
 		this.addParameter(TypeMPlayer.get(), "player", "you");
 
 		// Requirements
-		this.addRequirements(ReqHasPerm.get(Perm.JOIN.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.JOIN.node));
 	}
 
 	// -------------------------------------------- //

@@ -7,8 +7,8 @@ import org.bukkit.entity.Player;
 
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.util.VisualizeUtil;
-import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
-import com.massivecraft.massivecore.cmd.req.ReqIsPlayer;
+import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
+import com.massivecraft.massivecore.command.requirement.RequirementIsPlayer;
 import com.massivecraft.massivecore.ps.PS;
 import com.massivecraft.massivecore.ps.PSFormatHumanSpace;
 
@@ -24,8 +24,8 @@ public class CmdFactionsSeeChunkOld extends FactionsCommand
 		this.addAliases("sco", "seechunkold");
 
 		// Requirements
-		this.addRequirements(ReqHasPerm.get(Perm.SEECHUNKOLD.node));
-		this.addRequirements(ReqIsPlayer.get());
+		this.addRequirements(RequirementHasPerm.get(Perm.SEECHUNKOLD.node));
+		this.addRequirements(RequirementIsPlayer.get());
 	}
 
 	// -------------------------------------------- //

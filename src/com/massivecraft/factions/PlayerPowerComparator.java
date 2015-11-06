@@ -3,8 +3,9 @@ package com.massivecraft.factions;
 import java.util.Comparator;
 
 import com.massivecraft.factions.entity.MPlayer;
+import com.massivecraft.massivecore.Named;
 
-public class PlayerPowerComparator implements Comparator<MPlayer>
+public class PlayerPowerComparator implements Comparator<MPlayer>, Named
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -12,6 +13,16 @@ public class PlayerPowerComparator implements Comparator<MPlayer>
 	
 	private static PlayerPowerComparator i = new PlayerPowerComparator();
 	public static PlayerPowerComparator get() { return i; }
+	
+	// -------------------------------------------- //
+	// OVERRIDE: NAMED
+	// -------------------------------------------- //
+	
+	@Override
+	public String getName()
+	{
+		return "Power";
+	}
 	
 	// -------------------------------------------- //
 	// OVERRIDE: COMPARATOR

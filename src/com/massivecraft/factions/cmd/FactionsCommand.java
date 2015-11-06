@@ -2,7 +2,7 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.entity.Faction;
-import com.massivecraft.massivecore.cmd.MassiveCommand;
+import com.massivecraft.massivecore.command.MassiveCommand;
 
 public class FactionsCommand extends MassiveCommand
 {

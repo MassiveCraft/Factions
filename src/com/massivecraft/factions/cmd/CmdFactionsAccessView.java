@@ -1,7 +1,7 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Perm;
-import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
+import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 
 public class CmdFactionsAccessView extends CmdFactionsAccessAbstract
 {
@@ -15,7 +15,7 @@ public class CmdFactionsAccessView extends CmdFactionsAccessAbstract
 		this.addAliases("view");
 
 		// Requirements
-		this.addRequirements(ReqHasPerm.get(Perm.ACCESS_VIEW.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.ACCESS_VIEW.node));
 	}
 
 	// -------------------------------------------- //

@@ -10,8 +10,8 @@ import com.massivecraft.factions.entity.MFlag;
 import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.factions.event.EventFactionsRelationChange;
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.cmd.MassiveCommand;
-import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
+import com.massivecraft.massivecore.command.MassiveCommand;
+import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.util.Txt;
 
@@ -29,7 +29,7 @@ public abstract class CmdFactionsRelationAbstract extends FactionsCommand
 		this.addParameter(TypeFaction.get(), "faction");
 
 		// Requirements
-		this.addRequirements(ReqHasPerm.get(Perm.RELATION.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.RELATION.node));
 		this.addRequirements(ReqHasFaction.get());
 	}
 

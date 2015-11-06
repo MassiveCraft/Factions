@@ -9,8 +9,8 @@ import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.FactionColl;
 import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
-import com.massivecraft.massivecore.cmd.req.ReqIsPlayer;
+import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
+import com.massivecraft.massivecore.command.requirement.RequirementIsPlayer;
 import com.massivecraft.massivecore.ps.PS;
 
 
@@ -43,9 +43,9 @@ public class CmdFactionsSetAuto extends FactionsCommand
 		}
 
 		// Requirements
-		this.addRequirements(ReqIsPlayer.get());
+		this.addRequirements(RequirementIsPlayer.get());
 		String node = claim ? Perm.CLAIM_AUTO.node : Perm.UNCLAIM_AUTO.node;
-		this.addRequirements(ReqHasPerm.get(node));
+		this.addRequirements(RequirementHasPerm.get(node));
 	}
 
 	// -------------------------------------------- //

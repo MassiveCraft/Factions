@@ -8,8 +8,8 @@ import com.massivecraft.factions.entity.MFlag;
 import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.factions.event.EventFactionsFlagChange;
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
-import com.massivecraft.massivecore.cmd.type.TypeBoolean;
+import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
+import com.massivecraft.massivecore.command.type.primitive.TypeBoolean;
 
 public class CmdFactionsFlagSet extends FactionsCommand
 {
@@ -24,11 +24,11 @@ public class CmdFactionsFlagSet extends FactionsCommand
 		
 		// Parameters
 		this.addParameter(TypeMFlag.get(), "flag");
-		this.addParameter(TypeBoolean.get(), "yes/no");
+		this.addParameter(TypeBoolean.getYes(), "yes/no");
 		this.addParameter(TypeFaction.get(), "faction", "you");
 		
 		// Requirements
-		this.addRequirements(ReqHasPerm.get(Perm.FLAG_SET.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.FLAG_SET.node));
 	}
 	
 	// -------------------------------------------- //

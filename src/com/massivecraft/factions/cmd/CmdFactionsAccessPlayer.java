@@ -6,8 +6,8 @@ import com.massivecraft.factions.entity.BoardColl;
 import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
-import com.massivecraft.massivecore.cmd.type.TypeBoolean;
+import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
+import com.massivecraft.massivecore.command.type.primitive.TypeBoolean;
 
 public class CmdFactionsAccessPlayer extends CmdFactionsAccessAbstract
 {
@@ -22,10 +22,10 @@ public class CmdFactionsAccessPlayer extends CmdFactionsAccessAbstract
 
 		// Parameters
 		this.addParameter(TypeMPlayer.get(), "player");
-		this.addParameter(TypeBoolean.get(), "yes/no", "toggle");
+		this.addParameter(TypeBoolean.getYes(), "yes/no", "toggle");
 
 		// Requirements
-		this.addRequirements(ReqHasPerm.get(Perm.ACCESS_PLAYER.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.ACCESS_PLAYER.node));
 	}
 	
 	// -------------------------------------------- //

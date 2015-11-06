@@ -10,8 +10,8 @@ import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.FactionColl;
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.cmd.Parameter;
-import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
+import com.massivecraft.massivecore.command.Parameter;
+import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.pager.Pager;
 import com.massivecraft.massivecore.pager.Stringifier;
 import com.massivecraft.massivecore.util.Txt;
@@ -31,7 +31,7 @@ public class CmdFactionsList extends FactionsCommand
 		this.addParameter(Parameter.getPage());
 
 		// Requirements
-		this.addRequirements(ReqHasPerm.get(Perm.LIST.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.LIST.node));
 	}
 
 	// -------------------------------------------- //

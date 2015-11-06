@@ -7,10 +7,10 @@ import com.massivecraft.factions.cmd.type.TypeMPlayer;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.cmd.Parameter;
-import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
-import com.massivecraft.massivecore.cmd.type.TypeDouble;
-import com.massivecraft.massivecore.cmd.type.TypeString;
+import com.massivecraft.massivecore.command.Parameter;
+import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
+import com.massivecraft.massivecore.command.type.primitive.TypeDouble;
+import com.massivecraft.massivecore.command.type.primitive.TypeString;
 
 public class CmdFactionsPowerBoost extends FactionsCommand
 {
@@ -36,7 +36,7 @@ public class CmdFactionsPowerBoost extends FactionsCommand
 		this.addParameter(TypeDouble.get(), "#");
 
 		// Requirements
-		this.addRequirements(ReqHasPerm.get(Perm.POWERBOOST.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.POWERBOOST.node));
 	}
 
 	// -------------------------------------------- //

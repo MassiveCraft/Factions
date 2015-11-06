@@ -1,7 +1,7 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Perm;
-import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
+import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 
 
 public class CmdFactionsUnclaim extends FactionsCommand
@@ -35,7 +35,7 @@ public class CmdFactionsUnclaim extends FactionsCommand
 		this.addChild(this.cmdFactionsUnclaimAll);
 		
 		// Requirements
-		this.addRequirements(ReqHasPerm.get(Perm.UNCLAIM.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.UNCLAIM.node));
 	}
 	
 }

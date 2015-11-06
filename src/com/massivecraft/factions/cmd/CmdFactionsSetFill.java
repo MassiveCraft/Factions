@@ -7,8 +7,8 @@ import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.entity.BoardColl;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MConf;
-import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
-import com.massivecraft.massivecore.cmd.req.ReqIsPlayer;
+import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
+import com.massivecraft.massivecore.command.requirement.RequirementIsPlayer;
 import com.massivecraft.massivecore.ps.PS;
 import com.massivecraft.massivecore.util.MUtil;
 
@@ -32,9 +32,9 @@ public class CmdFactionsSetFill extends CmdFactionsSetXSimple
 		this.setFormatMany("<h>%s<i> %s <h>%d <i>chunks near %s<i> using fill.");
 		
 		// Requirements
-		this.addRequirements(ReqIsPlayer.get());
+		this.addRequirements(RequirementIsPlayer.get());
 		String node = claim ? Perm.CLAIM_FILL.node : Perm.UNCLAIM_FILL.node;
-		this.addRequirements(ReqHasPerm.get(node));
+		this.addRequirements(RequirementHasPerm.get(node));
 	}
 
 	// -------------------------------------------- //

@@ -2,7 +2,7 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.cmd.req.ReqHasFaction;
-import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
+import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 
 public class CmdFactionsLeave extends FactionsCommand
 {
@@ -16,7 +16,7 @@ public class CmdFactionsLeave extends FactionsCommand
 		this.addAliases("leave");
 
 		// Requirements
-		this.addRequirements(ReqHasPerm.get(Perm.LEAVE.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.LEAVE.node));
 		this.addRequirements(ReqHasFaction.get());
 	}
 

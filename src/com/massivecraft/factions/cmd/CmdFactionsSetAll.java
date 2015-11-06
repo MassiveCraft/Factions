@@ -9,7 +9,7 @@ import com.massivecraft.factions.entity.Board;
 import com.massivecraft.factions.entity.BoardColl;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
+import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.mixin.Mixin;
 import com.massivecraft.massivecore.ps.PS;
 import com.massivecraft.massivecore.util.MUtil;
@@ -38,7 +38,7 @@ public class CmdFactionsSetAll extends CmdFactionsSetXAll
 		
 		// Requirements
 		String node = claim ? Perm.CLAIM_ALL.node : Perm.UNCLAIM_ALL.node;
-		this.addRequirements(ReqHasPerm.get(node));
+		this.addRequirements(RequirementHasPerm.get(node));
 	}
 
 	// -------------------------------------------- //

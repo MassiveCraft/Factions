@@ -3,8 +3,9 @@ package com.massivecraft.factions;
 import java.util.Comparator;
 
 import com.massivecraft.factions.entity.MPlayer;
+import com.massivecraft.massivecore.Named;
 
-public class PlayerInactivityComparator implements Comparator<MPlayer>
+public class PlayerInactivityComparator implements Comparator<MPlayer>, Named
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -12,6 +13,16 @@ public class PlayerInactivityComparator implements Comparator<MPlayer>
 	
 	private static PlayerInactivityComparator i = new PlayerInactivityComparator();
 	public static PlayerInactivityComparator get() { return i; }
+	
+	// -------------------------------------------- //
+	// OVERRIDE: NAMED
+	// -------------------------------------------- //
+	
+	@Override
+	public String getName()
+	{
+		return "Time";
+	}
 	
 	// -------------------------------------------- //
 	// OVERRIDE: COMPARATOR

@@ -11,8 +11,8 @@ import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.event.EventFactionsInvitedChange;
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
-import com.massivecraft.massivecore.cmd.type.TypeSet;
+import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
+import com.massivecraft.massivecore.command.type.collection.TypeSet;
 import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.util.Txt;
 
@@ -27,10 +27,10 @@ public class CmdFactionsInviteAdd extends FactionsCommand
 		this.addAliases("add");
 
 		// Parameters
-		this.addParameter(TypeSet.get(TypeMPlayer.get(), true), "players", true);
+		this.addParameter(TypeSet.get(TypeMPlayer.get()), "players", true);
 		
 		// Requirements
-		this.addRequirements(ReqHasPerm.get(Perm.INVITE_ADD.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.INVITE_ADD.node));
 	}
 	
 	// -------------------------------------------- //

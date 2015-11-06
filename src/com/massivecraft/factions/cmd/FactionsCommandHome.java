@@ -2,7 +2,7 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.cmd.req.ReqFactionHomesEnabled;
 import com.massivecraft.factions.entity.MConf;
-import com.massivecraft.massivecore.cmd.Visibility;
+import com.massivecraft.massivecore.command.Visibility;
 
 public class FactionsCommandHome extends FactionsCommand
 {

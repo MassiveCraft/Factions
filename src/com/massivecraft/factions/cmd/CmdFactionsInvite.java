@@ -1,7 +1,7 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Perm;
-import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
+import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 
 public class CmdFactionsInvite extends FactionsCommand
 {
@@ -29,7 +29,7 @@ public class CmdFactionsInvite extends FactionsCommand
 
 
 		// Requirements
-		this.addRequirements(ReqHasPerm.get(Perm.INVITE.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.INVITE.node));
 	}
 	
 }

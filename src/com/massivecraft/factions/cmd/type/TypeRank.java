@@ -1,53 +1,50 @@
 package com.massivecraft.factions.cmd.type;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-
-import org.bukkit.command.CommandSender;
+import java.util.Set;
 
 import com.massivecraft.factions.Rel;
-import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.cmd.type.TypeAbstractSelect;
-import com.massivecraft.massivecore.util.MUtil;
-import com.massivecraft.massivecore.util.Txt;
+import com.massivecraft.massivecore.collections.MassiveSet;
+import com.massivecraft.massivecore.command.type.enumeration.TypeEnum;
 
-public class TypeRank extends TypeAbstractSelect<Rel>
+public class TypeRank extends TypeEnum<Rel>
 {
 	// -------------------------------------------- //
 	// CONSTANTS
 	// -------------------------------------------- //
 	
-	public static final List<String> ALT_NAMES = Collections.unmodifiableList(MUtil.list(
-			Txt.getNicedEnum(Rel.LEADER),
-			Txt.getNicedEnum(Rel.OFFICER),
-			Txt.getNicedEnum(Rel.MEMBER),
-			Txt.getNicedEnum(Rel.RECRUIT),
-			"Promote",
-			"Demote"
-		));
+	public static final Set<String> NAMES_PROMOTE = new MassiveSet<String>(
+		"Promote",
+		"+",
+		"Plus",
+		"Up"
+	);
 	
+	public static final Set<String> NAMES_DEMOTE = new MassiveSet<String>(
+		"Demote",
+		"-",
+		"Minus",
+		"Down"
+	);
+
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	// Default constructor. Can't use promote and demote.
-	private static TypeRank i = new TypeRank();
-	public static TypeRank get() { return i; }
-	
-	public TypeRank()
-	{
-		this.startRank = null;
-	}
-	
-	// Fancy constructor. Can use promote and demote.
+	// Can be used to promote and demote.
 	public static TypeRank get(Rel rank) { return new TypeRank(rank); }
-	
 	public TypeRank(Rel rank)
 	{
-		if (rank == null) throw new IllegalArgumentException("Do not use null, the default constructor can be used however.");
-		if ( ! rank.isRank()) throw new IllegalArgumentException(rank + " is not a valid rank");
+		super(Rel.class);
+		if (rank != null && ! rank.isRank()) throw new IllegalArgumentException(rank + " is not a valid rank");
 		this.startRank = rank;
+	}
+	
+	// Can not be used to promote and demote.
+	private static TypeRank i = new TypeRank();
+	public static TypeRank get() { return i; }
+	public TypeRank()
+	{
+		this(null);
 	}
 	
 	// -------------------------------------------- //
@@ -61,108 +58,50 @@ public class TypeRank extends TypeAbstractSelect<Rel>
 	// -------------------------------------------- //
 	// OVERRIDE
 	// -------------------------------------------- //
-
+	
 	@Override
-	public Rel select(String arg, CommandSender sender) throws MassiveException
+	public String getTypeName()
 	{
-		// This is especially useful when one rank can have aliases.
-		// In the case of promote/demote, 
-		// that would require 10 lines of code repeated for each alias.
-		arg = getComparable(arg);
-		
-		// All the normal ranks
-		if (arg.equals("leader")) return Rel.LEADER;
-		if (arg.equals("officer")) return Rel.OFFICER;
-		if (arg.equals("member")) return Rel.MEMBER;
-		if (arg.equals("recruit")) return Rel.RECRUIT;
-		
-		// No start rank?
-		if (startRank == null && (arg.equals("promote") || arg.equals("demote")))
-		{
-			// This might happen if the default constructor is used
-			throw new MassiveException().addMsg("<b>You can't use promote & demote.");
-		}
-		
-		// Promote
-		if (arg.equals("promote"))
-		{
-			if (Rel.LEADER.equals(startRank)) throw new MassiveException().addMsg("<b>You can't promote the leader.");
-			if (Rel.OFFICER.equals(startRank)) return Rel.LEADER;
-			if (Rel.MEMBER.equals(startRank)) return Rel.OFFICER;
-			if (Rel.RECRUIT.equals(startRank)) return Rel.MEMBER;
-		}
-		
-		// Demote
-		if (arg.equals("demote"))
-		{
-			if (Rel.LEADER.equals(startRank)) return Rel.OFFICER;
-			if (Rel.OFFICER.equals(startRank)) return Rel.MEMBER;
-			if (Rel.MEMBER.equals(startRank)) return Rel.RECRUIT;
-			if (Rel.RECRUIT.equals(startRank)) throw new MassiveException().addMsg("<b>You can't demote a recruit.");
-		}
-		
-		return null;
-	}
-
-	@Override
-	public Collection<String> altNames(CommandSender sender)
-	{
-		return ALT_NAMES;
-	}
-
-
-	@Override
-	public Collection<String> getTabList(CommandSender sender, String arg)
-	{
-		return this.altNames(sender);
+		return "rank";
 	}
 	
 	@Override
-	public boolean isValid(String arg, CommandSender sender)
+	public Set<String> getNamesInner(Rel value)
 	{
-		try
-		{
-			return this.select(arg, sender) != null;
-		}
-		catch (MassiveException e)
-		{
-			return true;
-		}
-	}
-	
-	// -------------------------------------------- //
-	// ARG
-	// -------------------------------------------- //
-	
-	public static String getComparable(String str)
-	{
-		String ret = str.toLowerCase();
+		// Create
+		Set<String> ret = super.getNamesInner(value);
 		
-		if (ret.startsWith("admin") || ret.startsWith("lea"))
+		// Fill Exact
+		if (value == Rel.LEADER)
 		{
-			ret = "leader";
+			ret.add("admin");
 		}
-		else if (ret.startsWith("mod") || ret.startsWith("off"))
+		else if (value == Rel.OFFICER)
 		{
-			ret = "officer";
+			ret.add("moderator");
 		}
-		else if (ret.startsWith("mem") || ret.startsWith("nor"))
+		else if (value == Rel.MEMBER)
 		{
-			ret = "member";
-		}
-		else if (ret.startsWith("rec"))
-		{
-			ret = "recruit";
-		}
-		else if (ret.startsWith("+") || ret.startsWith("plus") || ret.startsWith("up"))
-		{
-			ret = "promote";
-		}
-		else if (ret.startsWith("-") || ret.startsWith("minus") || ret.startsWith("down"))
-		{
-			ret = "demote";
+			ret.add("member");
+			ret.add("normal");
 		}
 		
+		// Fill Relative
+		Rel start = this.getStartRank();
+		if (start != null)
+		{
+			if (value == Rel.LEADER && start == Rel.OFFICER) ret.addAll(NAMES_PROMOTE);
+			
+			if (value == Rel.OFFICER && start == Rel.MEMBER) ret.addAll(NAMES_PROMOTE);
+			if (value == Rel.OFFICER && start == Rel.LEADER) ret.addAll(NAMES_DEMOTE);
+			
+			if (value == Rel.MEMBER && start == Rel.RECRUIT) ret.addAll(NAMES_PROMOTE);
+			if (value == Rel.MEMBER && start == Rel.OFFICER) ret.addAll(NAMES_DEMOTE);
+			
+			if (value == Rel.RECRUIT && start == Rel.MEMBER) ret.addAll(NAMES_DEMOTE);
+		}
+		
+		// Return
 		return ret;
 	}
 

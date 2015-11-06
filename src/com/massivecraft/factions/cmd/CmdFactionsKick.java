@@ -14,7 +14,7 @@ import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.event.EventFactionsMembershipChange;
 import com.massivecraft.factions.event.EventFactionsMembershipChange.MembershipChangeReason;
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
+import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.util.IdUtil;
 
@@ -33,7 +33,7 @@ public class CmdFactionsKick extends FactionsCommand
 		this.addParameter(TypeMPlayer.get(), "player");
 
 		// Requirements
-		this.addRequirements(ReqHasPerm.get(Perm.KICK.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.KICK.node));
 	}
 
 	// -------------------------------------------- //

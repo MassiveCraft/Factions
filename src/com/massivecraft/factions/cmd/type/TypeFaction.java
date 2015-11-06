@@ -14,7 +14,7 @@ import com.massivecraft.factions.entity.MPlayerColl;
 import com.massivecraft.massivecore.CaseInsensitiveComparator;
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.cmd.type.TypeAbstract;
+import com.massivecraft.massivecore.command.type.TypeAbstract;
 import com.massivecraft.massivecore.util.IdUtil;
 
 public class TypeFaction extends TypeAbstract<Faction>
@@ -29,6 +29,18 @@ public class TypeFaction extends TypeAbstract<Faction>
 	// -------------------------------------------- //
 	// OVERRIDE
 	// -------------------------------------------- //
+	
+	@Override
+	public String getVisualInner(Faction value, CommandSender sender)
+	{
+		return value.describeTo(MPlayer.get(sender));
+	}
+
+	@Override
+	public String getNameInner(Faction value)
+	{
+		return ChatColor.stripColor(value.getName());
+	}
 	
 	@Override
 	public Faction read(String str, CommandSender sender) throws MassiveException

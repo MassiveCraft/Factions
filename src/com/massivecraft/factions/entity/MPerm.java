@@ -12,6 +12,7 @@ import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.TerritoryAccess;
 import com.massivecraft.factions.event.EventFactionsCreatePerms;
+import com.massivecraft.massivecore.Named;
 import com.massivecraft.massivecore.PredicateIsRegistered;
 import com.massivecraft.massivecore.Prioritized;
 import com.massivecraft.massivecore.PriorityComparator;
@@ -21,7 +22,7 @@ import com.massivecraft.massivecore.store.Entity;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.Txt;
 
-public class MPerm extends Entity<MPerm> implements Prioritized, Registerable
+public class MPerm extends Entity<MPerm> implements Prioritized, Registerable, Named
 {
 	// -------------------------------------------- //
 	// CONSTANTS
@@ -216,7 +217,7 @@ public class MPerm extends Entity<MPerm> implements Prioritized, Registerable
 	// I just added the name in case anyone feel like renaming their perms for some reason.
 	// Example: "build"
 	private String name = "defaultName";
-	public String getName() { return this.name; }
+	@Override public String getName() { return this.name; }
 	public MPerm setName(String name) { this.name = name; this.changed(); return this; }
 	
 	// The perm function described as an "order".

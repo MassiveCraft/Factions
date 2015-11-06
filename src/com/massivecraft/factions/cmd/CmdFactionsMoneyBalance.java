@@ -6,7 +6,7 @@ import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
+import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 
 public class CmdFactionsMoneyBalance extends FactionsCommand
 {
@@ -23,7 +23,7 @@ public class CmdFactionsMoneyBalance extends FactionsCommand
 		this.addParameter(TypeFaction.get(), "faction", "you");
 
 		// Requirements
-		this.addRequirements(ReqHasPerm.get(Perm.MONEY_BALANCE.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.MONEY_BALANCE.node));
 		this.addRequirements(ReqBankCommandsEnabled.get());
 	}
 

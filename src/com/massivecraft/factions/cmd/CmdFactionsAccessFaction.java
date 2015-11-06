@@ -6,8 +6,8 @@ import com.massivecraft.factions.entity.BoardColl;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
-import com.massivecraft.massivecore.cmd.type.TypeBoolean;
+import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
+import com.massivecraft.massivecore.command.type.primitive.TypeBoolean;
 
 public class CmdFactionsAccessFaction extends CmdFactionsAccessAbstract
 {
@@ -22,10 +22,10 @@ public class CmdFactionsAccessFaction extends CmdFactionsAccessAbstract
 		
 		// Parameters
 		this.addParameter(TypeFaction.get(), "faction");
-		this.addParameter(TypeBoolean.get(), "yes/no", "toggle");
+		this.addParameter(TypeBoolean.getYes(), "yes/no", "toggle");
 
 		// Requirements
-		this.addRequirements(ReqHasPerm.get(Perm.ACCESS_FACTION.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.ACCESS_FACTION.node));
 	}
 
 	// -------------------------------------------- //

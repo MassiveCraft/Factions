@@ -9,7 +9,7 @@ import com.massivecraft.factions.TerritoryAccess;
 import com.massivecraft.factions.entity.BoardColl;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.cmd.req.ReqIsPlayer;
+import com.massivecraft.massivecore.command.requirement.RequirementIsPlayer;
 import com.massivecraft.massivecore.ps.PS;
 import com.massivecraft.massivecore.ps.PSFormatHumanSpace;
 import com.massivecraft.massivecore.util.Txt;
@@ -32,7 +32,7 @@ public abstract class CmdFactionsAccessAbstract extends FactionsCommand
 	public CmdFactionsAccessAbstract()
 	{
 		// Requirements
-		this.addRequirements(ReqIsPlayer.get());
+		this.addRequirements(RequirementIsPlayer.get());
 	}
 	
 	// -------------------------------------------- //

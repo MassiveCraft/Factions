@@ -4,7 +4,7 @@ import java.util.Map.Entry;
 
 import com.massivecraft.factions.event.EventFactionsExpansions;
 import com.massivecraft.factions.Perm;
-import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
+import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.util.Txt;
 
 public class CmdFactionsExpansions extends FactionsCommand
@@ -19,7 +19,7 @@ public class CmdFactionsExpansions extends FactionsCommand
 		this.addAliases("expansions");
 
 		// Requirements
-		this.addRequirements(ReqHasPerm.get(Perm.EXPANSIONS.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.EXPANSIONS.node));
 	}
 
 	// -------------------------------------------- //
@@ -47,7 +47,7 @@ public class CmdFactionsExpansions extends FactionsCommand
 		
 		// URL Suggestion
 		msg("<i>Learn all about expansions in the online documentation:");
-		msg("<aqua>http://www.massivecraft.com/factions");
+		msg("<aqua>https://www.massivecraft.com/factions");
 	}
 	
 }

@@ -10,9 +10,8 @@ import com.massivecraft.factions.cmd.type.TypeMFlag;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MFlag;
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
-import com.massivecraft.massivecore.cmd.type.TypeAll;
-import com.massivecraft.massivecore.cmd.type.TypeSet;
+import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
+import com.massivecraft.massivecore.command.type.collection.TypeSet;
 import com.massivecraft.massivecore.util.Txt;
 
 public class CmdFactionsFlagShow extends FactionsCommand
@@ -28,10 +27,10 @@ public class CmdFactionsFlagShow extends FactionsCommand
 		
 		// Parameters
 		this.addParameter(TypeFaction.get(), "faction", "you");
-		this.addParameter(TypeAll.get(TypeSet.get(TypeMFlag.get(), false)), "flags", "all", true);
+		this.addParameter(TypeSet.get(TypeMFlag.get()), "flags", "all", true);
 		
 		// Requirements
-		this.addRequirements(ReqHasPerm.get(Perm.FLAG_SHOW.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.FLAG_SHOW.node));
 	}
 	
 	// -------------------------------------------- //

@@ -4,12 +4,12 @@ import org.bukkit.command.CommandSender;
 
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.entity.MPlayer;
-import com.massivecraft.massivecore.cmd.MassiveCommand;
-import com.massivecraft.massivecore.cmd.req.ReqAbstract;
+import com.massivecraft.massivecore.command.MassiveCommand;
+import com.massivecraft.massivecore.command.requirement.RequirementAbstract;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.Txt;
 
-public class ReqRoleIsAtLeast extends ReqAbstract
+public class ReqRoleIsAtLeast extends RequirementAbstract
 {
 	private static final long serialVersionUID = 1L;
 	

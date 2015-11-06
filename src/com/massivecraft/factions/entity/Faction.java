@@ -15,6 +15,7 @@ import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.RelationParticipator;
 import com.massivecraft.factions.util.*;
 import com.massivecraft.massivecore.CaseInsensitiveComparator;
+import com.massivecraft.massivecore.Named;
 import com.massivecraft.massivecore.collections.MassiveMapDef;
 import com.massivecraft.massivecore.collections.MassiveTreeSetDef;
 import com.massivecraft.massivecore.mixin.Mixin;
@@ -25,7 +26,7 @@ import com.massivecraft.massivecore.util.IdUtil;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.Txt;
 
-public class Faction extends Entity<Faction> implements EconomyParticipator
+public class Faction extends Entity<Faction> implements EconomyParticipator, Named
 {
 	// -------------------------------------------- //
 	// META
@@ -154,6 +155,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator
 	
 	// RAW
 	
+	@Override
 	public String getName()
 	{
 		String ret = this.name;

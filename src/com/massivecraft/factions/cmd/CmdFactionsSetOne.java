@@ -4,8 +4,8 @@ import java.util.Collections;
 import java.util.Set;
 
 import com.massivecraft.factions.Perm;
-import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
-import com.massivecraft.massivecore.cmd.req.ReqIsPlayer;
+import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
+import com.massivecraft.massivecore.command.requirement.RequirementIsPlayer;
 import com.massivecraft.massivecore.ps.PS;
 
 
@@ -24,9 +24,9 @@ public class CmdFactionsSetOne extends CmdFactionsSetXSimple
 		this.addAliases("one");
 
 		// Requirements
-		this.addRequirements(ReqIsPlayer.get());
+		this.addRequirements(RequirementIsPlayer.get());
 		String node = claim ? Perm.CLAIM_ONE.node : Perm.UNCLAIM_ONE.node;
-		this.addRequirements(ReqHasPerm.get(node));
+		this.addRequirements(RequirementHasPerm.get(node));
 	}
 
 	// -------------------------------------------- //

@@ -65,37 +65,6 @@ public enum Rel
 	// UTIL
 	// -------------------------------------------- //
 	
-	public static Rel parse(String str)
-	{
-		if (str == null || str.length() < 1) return null;
-		
-		str = str.toLowerCase();
-		
-		// These are to allow conversion from the old system.
-		if (str.equals("admin"))
-		{
-			return LEADER;
-		}
-		
-		if (str.equals("moderator"))
-		{
-			return OFFICER;
-		}
-		
-		if (str.equals("normal"))
-		{
-			return MEMBER;
-		}
-		
-		// NOTE: This assumes the first char is different for all.
-		for (Rel rel : values())
-		{
-			String relStr = rel.toString().toLowerCase();
-			if (relStr.startsWith(str)) return rel;
-		}
-		return null;
-	}
-	
 	public boolean isAtLeast(Rel rel)
 	{
 		return this.value >= rel.value;

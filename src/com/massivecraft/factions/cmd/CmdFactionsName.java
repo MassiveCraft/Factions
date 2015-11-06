@@ -10,8 +10,8 @@ import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.factions.event.EventFactionsNameChange;
 import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
-import com.massivecraft.massivecore.cmd.type.TypeString;
+import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
+import com.massivecraft.massivecore.command.type.primitive.TypeString;
 
 public class CmdFactionsName extends FactionsCommand
 {
@@ -29,7 +29,7 @@ public class CmdFactionsName extends FactionsCommand
 		this.addParameter(TypeFaction.get(), "faction", "you");
 
 		// Requirements
-		this.addRequirements(ReqHasPerm.get(Perm.NAME.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.NAME.node));
 	}
 
 	// -------------------------------------------- //

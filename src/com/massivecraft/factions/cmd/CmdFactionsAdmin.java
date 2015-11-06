@@ -3,8 +3,8 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
-import com.massivecraft.massivecore.cmd.type.TypeBoolean;
+import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
+import com.massivecraft.massivecore.command.type.primitive.TypeBoolean;
 import com.massivecraft.massivecore.util.IdUtil;
 import com.massivecraft.massivecore.util.Txt;
 
@@ -20,10 +20,10 @@ public class CmdFactionsAdmin extends FactionsCommand
 		this.addAliases("admin");
 
 		// Parameters
-		this.addParameter(TypeBoolean.get(), "on/off", "flip");
+		this.addParameter(TypeBoolean.getOn(), "on/off", "flip");
 		
 		// Requirements
-		this.addRequirements(ReqHasPerm.get(Perm.ADMIN.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.ADMIN.node));
 	}
 
 	// -------------------------------------------- //

@@ -10,9 +10,8 @@ import com.massivecraft.factions.cmd.type.TypeMPerm;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
-import com.massivecraft.massivecore.cmd.type.TypeAll;
-import com.massivecraft.massivecore.cmd.type.TypeSet;
+import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
+import com.massivecraft.massivecore.command.type.collection.TypeSet;
 import com.massivecraft.massivecore.util.Txt;
 
 public class CmdFactionsPermShow extends FactionsCommand
@@ -28,10 +27,10 @@ public class CmdFactionsPermShow extends FactionsCommand
 		
 		// Parameters
 		this.addParameter(TypeFaction.get(), "faction", "you");
-		this.addParameter(TypeAll.get(TypeSet.get(TypeMPerm.get(), false)), "perms", "all", true);
+		this.addParameter(TypeSet.get(TypeMPerm.get()), "perms", "all", true);
 		
 		// Requirements
-		this.addRequirements(ReqHasPerm.get(Perm.PERM_SHOW.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.PERM_SHOW.node));
 	}
 
 	// -------------------------------------------- //

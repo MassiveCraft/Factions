@@ -10,7 +10,7 @@ import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.event.EventFactionsRemovePlayerMillis;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.Progressbar;
-import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
+import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.util.TimeDiffUtil;
 import com.massivecraft.massivecore.util.TimeUnit;
 import com.massivecraft.massivecore.util.Txt;
@@ -30,7 +30,7 @@ public class CmdFactionsPlayer extends FactionsCommand
 		this.addParameter(TypeMPlayer.get(), "player", "you");
 
 		// Requirements
-		this.addRequirements(ReqHasPerm.get(Perm.PLAYER.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.PLAYER.node));
 	}
 
 	// -------------------------------------------- //

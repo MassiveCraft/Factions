@@ -3,7 +3,7 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.cmd.type.TypeFaction;
 import com.massivecraft.factions.cmd.type.TypeMPlayer;
-import com.massivecraft.massivecore.cmd.Visibility;
+import com.massivecraft.massivecore.command.Visibility;
 import com.massivecraft.massivecore.util.MUtil;
 
 public class CmdFactionsRankOld extends FactionsCommand
