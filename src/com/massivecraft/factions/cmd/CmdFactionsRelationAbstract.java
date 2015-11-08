@@ -119,6 +119,9 @@ public abstract class CmdFactionsRelationAbstract extends FactionsCommand
 			otherFaction.msg("<i>This will have no effect while their faction is peaceful.");
 			msenderFaction.msg("<i>This will have no effect while your faction is peaceful.");
 		}
+		
+		// Mark as changed
+		msenderFaction.changed();
 	}
 	
 }

@@ -868,17 +868,20 @@ public class Faction extends Entity<Faction> implements EconomyParticipator, Nam
 		Map<MPerm, Set<Rel>> perms = this.getPerms();
 		
 		Set<Rel> rels = perms.get(perm);
-
+		
+		boolean changed;
 		if (permitted)
 		{
-			rels.add(rel);
+			changed = rels.add(rel);
 		}
 		else
 		{
-			rels.remove(rel);
+			changed = rels.remove(rel);
 		}
 		
 		this.setPerms(perms);
+		
+		if (changed) this.changed();
 	}
 	
 	// -------------------------------------------- //

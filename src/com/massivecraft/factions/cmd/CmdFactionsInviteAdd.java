@@ -72,6 +72,7 @@ public class CmdFactionsInviteAdd extends FactionsCommand
 				
 				// Apply
 				msenderFaction.setInvited(mplayer, true);
+				msenderFaction.changed();
 			}
 			else
 			{

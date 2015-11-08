@@ -109,6 +109,9 @@ public class CmdFactionsInviteRemove extends FactionsCommand
 				
 				// Apply
 				msenderFaction.setInvited(mplayer, false);
+				
+				// If all, we do this at last. So we only do it once.
+				if (! all) msenderFaction.changed();
 			}
 			else
 			{
@@ -143,6 +146,7 @@ public class CmdFactionsInviteRemove extends FactionsCommand
 			);
 			
 			msenderFaction.sendMessage(factionsRevokeAll);
+			msenderFaction.changed();
 		}
 	}
 	
