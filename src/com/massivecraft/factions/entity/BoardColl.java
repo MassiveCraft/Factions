@@ -51,7 +51,7 @@ public class BoardColl extends Coll<Board> implements BoardInterface
 	{
 		if (oid == null) return null;
 		if (oid instanceof String) return (String)oid;
-		if (oid instanceof Board) return this.getId(oid);
+		if (oid instanceof Board) return ((Board)oid).getId();
 		
 		return MUtil.extract(String.class, "worldName", oid);
 	}
