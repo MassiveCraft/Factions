@@ -11,6 +11,7 @@ import com.massivecraft.factions.cmd.type.TypeRel;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.factions.entity.MPlayer;
+import com.massivecraft.factions.event.EventFactionsPermChange;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.command.type.primitive.TypeBoolean;
@@ -59,6 +60,12 @@ public class CmdFactionsPermSet extends FactionsCommand
 			msg("<b>The perm <h>%s <b>is not editable.", perm.getName());
 			return;
 		}
+		
+		// Event
+		EventFactionsPermChange event = new EventFactionsPermChange(sender, faction, perm, rel, value);
+		event.run();
+		if (event.isCancelled()) return;
+		value = event.getNewValue();
 		
 		// No change
 		if (faction.getPermitted(perm).contains(rel) == value)
