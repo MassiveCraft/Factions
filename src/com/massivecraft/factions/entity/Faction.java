@@ -330,6 +330,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator, Nam
 	{
 		if (this.isValidHome(this.home)) return;
 		this.home = null;
+		this.changed();
 		msg("<b>Your faction home has been un-set since it is no longer in your territory.");
 	}
 	
