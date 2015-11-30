@@ -464,15 +464,15 @@ public class Faction extends Entity<Faction> implements EconomyParticipator, Nam
 	
 	public boolean setInvited(String playerId, boolean invited)
 	{
-		TreeSet<String> invitedPlayerIds = this.getInvitedPlayerIds();
+		List<String> invitedPlayerIds = new ArrayList<String>(this.getInvitedPlayerIds());
 		boolean ret;
 		if (invited)
 		{
-			ret = invitedPlayerIds.add(playerId.toLowerCase());
+			ret = invitedPlayerIds.add(playerId);
 		}
 		else
 		{
-			ret = invitedPlayerIds.remove(playerId.toLowerCase());
+			ret = invitedPlayerIds.remove(playerId);
 		}
 		this.setInvitedPlayerIds(invitedPlayerIds);
 		return ret;
