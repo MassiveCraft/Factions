@@ -14,7 +14,7 @@ public class CmdPowerBoost extends FCommand {
 
         this.requiredArgs.add("p|f|player|faction");
         this.requiredArgs.add("name");
-        this.requiredArgs.add("#");
+        this.requiredArgs.add("# or reset");
 
         this.permission = Permission.POWERBOOST.node;
         this.disableOnLock = true;
@@ -39,8 +39,12 @@ public class CmdPowerBoost extends FCommand {
 
         Double targetPower = this.argAsDouble(2);
         if (targetPower == null) {
-            msg(TL.COMMAND_POWERBOOST_INVALIDNUM);
-            return;
+            if (this.argAsString(2).equalsIgnoreCase("reset")) {
+                targetPower = 0D;
+            } else {
+                msg(TL.COMMAND_POWERBOOST_INVALIDNUM);
+                return;
+            }
         }
 
         String target;
@@ -51,7 +55,9 @@ public class CmdPowerBoost extends FCommand {
                 return;
             }
 
-            targetPower += targetPlayer.getPowerBoost();
+            if (targetPower != 0) {
+                targetPower += targetPlayer.getPowerBoost();
+            }
             targetPlayer.setPowerBoost(targetPower);
             target = TL.COMMAND_POWERBOOST_PLAYER.format(targetPlayer.getName());
         } else {
@@ -60,7 +66,9 @@ public class CmdPowerBoost extends FCommand {
                 return;
             }
 
-            targetPower += targetFaction.getPowerBoost();
+            if (targetPower != 0) {
+                targetPower += targetFaction.getPowerBoost();
+            }
             targetFaction.setPowerBoost(targetPower);
             target = TL.COMMAND_POWERBOOST_FACTION.format(targetFaction.getTag());
         }
