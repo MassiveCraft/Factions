@@ -91,7 +91,7 @@ public class CmdFactionsPermSet extends FactionsCommand
 		
 		for (MPlayer recipient : recipients)
 		{
-			messages.add(0, Txt.parse("<h>%s <i>set a perm for <h>%s<i>.", msender.describeTo(recipient, true), faction.describeTo(recipient, true)));
+			recipient.msg("<h>%s <i>set a perm for <h>%s<i>.", msender.describeTo(recipient, true), faction.describeTo(recipient, true));
 			recipient.message(messages);
 		}
 	}
