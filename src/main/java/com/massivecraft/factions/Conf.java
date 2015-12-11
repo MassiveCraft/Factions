@@ -74,6 +74,7 @@ public class Conf {
     public static String truceChatFormat = ChatColor.DARK_PURPLE + "%s:" + ChatColor.WHITE + " %s";
 
     public static boolean broadcastDescriptionChanges = false;
+    public static boolean broadcastTagChanges = false;
 
     public static double saveToFileEveryXMinutes = 30.0;
 

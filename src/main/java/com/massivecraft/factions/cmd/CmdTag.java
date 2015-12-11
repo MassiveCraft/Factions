@@ -69,8 +69,12 @@ public class CmdTag extends FCommand {
                 fplayer.msg(TL.COMMAND_TAG_FACTION, fme.describeTo(myFaction, true), myFaction.getTag(myFaction));
                 continue;
             }
-            Faction faction = fplayer.getFaction();
-            fplayer.msg(TL.COMMAND_TAG_CHANGED, fme.getColorTo(faction) + oldtag, myFaction.getTag(faction));
+
+            // Broadcast the tag change (if applicable)
+            if (Conf.broadcastTagChanges) {
+                Faction faction = fplayer.getFaction();
+                fplayer.msg(TL.COMMAND_TAG_CHANGED, fme.getColorTo(faction) + oldtag, myFaction.getTag(faction));
+            }
         }
 
         FTeamWrapper.updatePrefixes(myFaction);
