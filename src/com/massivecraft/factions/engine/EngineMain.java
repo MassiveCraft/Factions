@@ -26,6 +26,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Wither;
+import org.bukkit.entity.Zombie;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -48,6 +49,7 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
+import org.bukkit.event.entity.EntityBreakDoorEvent;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.hanging.HangingBreakEvent;
 import org.bukkit.event.hanging.HangingPlaceEvent;
@@ -1275,7 +1277,27 @@ public class EngineMain extends EngineAbstract
 		// ... stop the block alteration.
 		event.setCancelled(true);
 	}
-
+	
+	// -------------------------------------------- //
+	// FLAG: ZOMBIEGRIEF
+	// -------------------------------------------- //
+	
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void denyZombieGrief(EntityBreakDoorEvent event)
+	{
+		// If a zombie is breaking a door ...
+		Entity entity = event.getEntity();
+		if (!(entity instanceof Zombie)) return;
+		
+		// ... and the faction there has zombiegrief disabled ...
+		PS ps = PS.valueOf(event.getBlock());
+		Faction faction = BoardColl.get().getFactionAt(ps);
+		if (faction.getFlag(MFlag.getFlagZombiegrief())) return;
+		
+		// ... stop the door breakage.
+		event.setCancelled(true);
+	}
+	
 	// -------------------------------------------- //
 	// FLAG: FIRE SPREAD
 	// -------------------------------------------- //

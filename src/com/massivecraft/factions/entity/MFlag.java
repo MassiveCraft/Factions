@@ -28,23 +28,25 @@ public class MFlag extends Entity<MFlag> implements Prioritized, Registerable, N
 	public final static transient String ID_OFFLINEEXPLOSIONS = "offlineexplosions";
 	public final static transient String ID_FIRESPREAD = "firespread";
 	public final static transient String ID_ENDERGRIEF = "endergrief";
+	public final static transient String ID_ZOMBIEGRIEF = "zombiegrief";
 	public final static transient String ID_PERMANENT = "permanent";
 	public final static transient String ID_PEACEFUL = "peaceful";
 	public final static transient String ID_INFPOWER = "infpower";
 	
-	public final static transient int PRIORITY_OPEN = 1000;
-	public final static transient int PRIORITY_MONSTERS = 2000;
-	public final static transient int PRIORITY_ANIMALS = 2500;
-	public final static transient int PRIORITY_POWERLOSS = 3000;
-	public final static transient int PRIORITY_PVP = 4000;
-	public final static transient int PRIORITY_FRIENDLYFIRE = 5000;
-	public final static transient int PRIORITY_EXPLOSIONS = 6000;
-	public final static transient int PRIORITY_OFFLINEEXPLOSIONS = 7000;
-	public final static transient int PRIORITY_FIRESPREAD = 8000;
-	public final static transient int PRIORITY_ENDERGRIEF = 9000;
-	public final static transient int PRIORITY_PERMANENT = 10000;
-	public final static transient int PRIORITY_PEACEFUL = 11000;
-	public final static transient int PRIORITY_INFPOWER = 12000;
+	public final static transient int PRIORITY_OPEN = 1_000;
+	public final static transient int PRIORITY_MONSTERS = 2_000;
+	public final static transient int PRIORITY_ANIMALS = 3_000;
+	public final static transient int PRIORITY_POWERLOSS = 4_000;
+	public final static transient int PRIORITY_PVP = 5_000;
+	public final static transient int PRIORITY_FRIENDLYFIRE = 6_000;
+	public final static transient int PRIORITY_EXPLOSIONS = 7_000;
+	public final static transient int PRIORITY_OFFLINEEXPLOSIONS = 8_000;
+	public final static transient int PRIORITY_FIRESPREAD = 9_000;
+	public final static transient int PRIORITY_ENDERGRIEF = 10_000;
+	public final static transient int PRIORITY_ZOMBIEGRIEF = 11_000;
+	public final static transient int PRIORITY_PERMANENT = 12_000;
+	public final static transient int PRIORITY_PEACEFUL = 13_000;
+	public final static transient int PRIORITY_INFPOWER = 14_000;
 	
 	// -------------------------------------------- //
 	// META: CORE
@@ -94,6 +96,7 @@ public class MFlag extends Entity<MFlag> implements Prioritized, Registerable, N
 	public static MFlag getFlagOfflineexplosions() { return getCreative(PRIORITY_OFFLINEEXPLOSIONS, ID_OFFLINEEXPLOSIONS, ID_OFFLINEEXPLOSIONS, "Can explosions occur if faction is offline?", "Explosions if faction is offline.", "No explosions if faction is offline.", false, false, true); }
 	public static MFlag getFlagFirespread() { return getCreative(PRIORITY_FIRESPREAD, ID_FIRESPREAD, ID_FIRESPREAD, "Can fire spread in territory?", "Fire can spread in this territory.", "Fire can NOT spread in this territory.", true, false, true); }
 	public static MFlag getFlagEndergrief() { return getCreative(PRIORITY_ENDERGRIEF, ID_ENDERGRIEF, ID_ENDERGRIEF, "Can endermen grief in this territory?", "Endermen can grief in this territory.", "Endermen can NOT grief in this territory.", false, false, true); }
+	public static MFlag getFlagZombiegrief() { return getCreative(PRIORITY_ZOMBIEGRIEF, ID_ZOMBIEGRIEF, ID_ZOMBIEGRIEF, "Can zombies break doors in this territory?", "Zombies can break doors in this territory.", "Zombies can NOT break doors in this territory.", false, false, true); }
 	public static MFlag getFlagPermanent() { return getCreative(PRIORITY_PERMANENT, ID_PERMANENT, ID_PERMANENT, "Is the faction immune to deletion?", "The faction can NOT be deleted.", "The faction can be deleted.", false, false, true); }
 	public static MFlag getFlagPeaceful() { return getCreative(PRIORITY_PEACEFUL, ID_PEACEFUL, ID_PEACEFUL, "Is the faction in truce with everyone?", "The faction is in truce with everyone.", "The faction relations work as usual.", false, false, true); }
 	public static MFlag getFlagInfpower() { return getCreative(PRIORITY_INFPOWER, ID_INFPOWER, ID_INFPOWER, "Does the faction have infinite power?", "The faction has infinite power.", "The faction power works as usual.", false, false, true); }
