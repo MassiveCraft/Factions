@@ -81,6 +81,7 @@ public class MFlag extends Entity<MFlag> implements Prioritized, Registerable, N
 		getFlagOfflineexplosions();
 		getFlagFirespread();
 		getFlagEndergrief();
+		getFlagZombiegrief();
 		getFlagPermanent();
 		getFlagPeaceful();
 		getFlagInfpower();
