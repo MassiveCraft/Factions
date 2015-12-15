@@ -5,6 +5,7 @@ import org.bukkit.plugin.Plugin;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.entity.MPlayerColl;
+import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.ModuloRepeatTask;
 import com.massivecraft.massivecore.util.TimeUnit;
 
@@ -42,6 +43,7 @@ public class TaskPlayerDataRemove extends ModuloRepeatTask
 	@Override
 	public void invoke(long now)
 	{
+		if ( ! MassiveCore.isTaskServer()) return;
 		MPlayerColl.get().considerRemovePlayerMillis();
 	}
 	
