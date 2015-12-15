@@ -34,13 +34,16 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockBurnEvent;
 import org.bukkit.event.block.BlockDamageEvent;
+import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.block.BlockIgniteEvent;
+import org.bukkit.event.block.BlockIgniteEvent.IgniteCause;
 import org.bukkit.event.block.BlockPistonExtendEvent;
 import org.bukkit.event.block.BlockPistonRetractEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.block.BlockSpreadEvent;
-import org.bukkit.event.block.BlockIgniteEvent.IgniteCause;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
+import org.bukkit.event.entity.EntityBreakDoorEvent;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityCombustByEntityEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -49,12 +52,10 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.entity.PotionSplashEvent;
-import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
-import org.bukkit.event.entity.EntityBreakDoorEvent;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.hanging.HangingBreakEvent;
-import org.bukkit.event.hanging.HangingPlaceEvent;
 import org.bukkit.event.hanging.HangingBreakEvent.RemoveCause;
+import org.bukkit.event.hanging.HangingPlaceEvent;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerBucketFillEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
@@ -72,20 +73,21 @@ import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.PlayerRoleComparator;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.TerritoryAccess;
+import com.massivecraft.factions.entity.Board;
 import com.massivecraft.factions.entity.BoardColl;
+import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.FactionColl;
+import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.entity.MFlag;
 import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.factions.entity.MPlayer;
-import com.massivecraft.factions.entity.Faction;
-import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.entity.MPlayerColl;
 import com.massivecraft.factions.event.EventFactionsChunkChangeType;
 import com.massivecraft.factions.event.EventFactionsChunksChange;
 import com.massivecraft.factions.event.EventFactionsFactionShowAsync;
-import com.massivecraft.factions.event.EventFactionsPvpDisallowed;
 import com.massivecraft.factions.event.EventFactionsPowerChange;
 import com.massivecraft.factions.event.EventFactionsPowerChange.PowerChangeReason;
+import com.massivecraft.factions.event.EventFactionsPvpDisallowed;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.spigot.SpigotFeatures;
 import com.massivecraft.factions.util.VisualizeUtil;
@@ -1533,6 +1535,44 @@ public class EngineMain extends EngineAbstract
 		
 		// .. and compensate for client side prediction
 		event.getPlayer().sendBlockChange(potentialBlock.getLocation(), potentialBlock.getType(), potentialBlock.getState().getRawData());
+	}
+	
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void blockLiquidFlow(BlockFromToEvent event)
+	{
+		// Prepare fields
+		Block fromBlock = event.getBlock();
+		int fromCX = fromBlock.getX() >> 4;
+		int fromCZ = fromBlock.getZ() >> 4;
+		BlockFace face = event.getFace();
+		int toCX = (fromBlock.getX() + face.getModX()) >> 4;
+		int toCZ = (fromBlock.getZ() + face.getModZ()) >> 4;
+		
+		// If a liquid (or dragon egg) moves from one chunk to another ...
+		if (toCX == fromCX && toCZ == fromCZ) return;
+		
+		Board board = BoardColl.get().getFixed(fromBlock.getWorld().getName().toLowerCase(), false);
+		if (board == null) return;
+		Map<PS, TerritoryAccess> map = board.getMapRaw();
+		if (map.isEmpty()) return;
+		
+		PS fromPs = PS.valueOf(fromCX, fromCZ);
+		PS toPs = PS.valueOf(toCX, toCZ);
+		TerritoryAccess fromTa = map.get(fromPs);
+		TerritoryAccess toTa = map.get(toPs);
+		String fromId = fromTa != null ? fromTa.getHostFactionId() : Factions.ID_NONE;
+		String toId = toTa != null ? toTa.getHostFactionId() : Factions.ID_NONE;
+		
+		// ... and the chunks belong to different factions ...
+		if (toId.equals(fromId)) return;
+		
+		// ... and the faction "from" can not build at "to" ...
+		Faction fromFac = FactionColl.get().getFixed(fromId);
+		Faction toFac = FactionColl.get().getFixed(toId);
+		if (MPerm.getPermBuild().has(fromFac, toFac)) return;
+		
+		// ... cancel!
+		event.setCancelled(true);
 	}
 	
 	// -------------------------------------------- //
