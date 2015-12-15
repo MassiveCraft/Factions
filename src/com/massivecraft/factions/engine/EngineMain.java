@@ -45,6 +45,7 @@ import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityCombustByEntityEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.entity.PotionSplashEvent;
@@ -1185,6 +1186,8 @@ public class EngineMain extends EngineAbstract
 	// FLAG: EXPLOSIONS
 	// -------------------------------------------- //
 	
+	protected Set<DamageCause> DAMAGE_CAUSE_EXPLOSIONS = EnumSet.of(DamageCause.BLOCK_EXPLOSION, DamageCause.ENTITY_EXPLOSION);
+	
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void blockExplosion(HangingBreakEvent event)
 	{
@@ -1197,6 +1200,22 @@ public class EngineMain extends EngineAbstract
 		if (faction.isExplosionsAllowed()) return;
 		
 		// ... then cancel.
+		event.setCancelled(true);
+	}
+	 
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void blockExplosion(EntityDamageEvent event)
+	{
+		// If an explosion damages ...
+		if (DAMAGE_CAUSE_EXPLOSIONS.contains(event.getCause())) return;
+		
+		// ... an entity that is modified on damage ...
+		if ( ! MConf.get().entityTypesEditOnDamage.contains(event.getEntityType())) return;
+		
+		// ... and the faction has explosions disabled ...
+		if (BoardColl.get().getFactionAt(PS.valueOf(event.getEntity())).isExplosionsAllowed()) return;
+		
+		// ... then cancel!
 		event.setCancelled(true);
 	}
 	
