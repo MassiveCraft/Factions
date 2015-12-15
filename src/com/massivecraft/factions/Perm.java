@@ -38,7 +38,6 @@ public enum Perm
 	INVITE_ADD,
 	INVITE_REMOVE,
 	JOIN,
-	JOIN_ANY,
 	JOIN_OTHERS,
 	KICK,
 	LEAVE,

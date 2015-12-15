@@ -38,7 +38,6 @@ permissions:
   factions.invite.add: {description: invite player, default: false}
   factions.invite.remove: {description: revoke an invite, default: false}
   factions.join: {description: join faction, default: false}
-  factions.join.any: {description: join closed faction, default: false}
   factions.join.others: {description: have another player join faction, default: false}
   factions.kick: {description: kick player from faction, default: false}
   factions.leave: {description: leave your faction, default: false}
@@ -117,7 +116,6 @@ permissions:
       factions.invite.add: true
       factions.invite.remove: true
       factions.join: true
-      factions.join.any: true
       factions.join.others: true
       factions.kick: true
       factions.leader: true
@@ -180,7 +178,6 @@ permissions:
     children:
       factions.kit.rank1: true
       factions.powerboost: true
-      factions.join.any: true
       factions.join.others: true
       factions.leader.any: true
       factions.officer.any: true
