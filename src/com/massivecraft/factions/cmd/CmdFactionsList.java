@@ -9,6 +9,7 @@ import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.FactionColl;
+import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.command.Parameter;
 import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
@@ -43,6 +44,7 @@ public class CmdFactionsList extends FactionsCommand
 	{
 		// Args
 		int page = this.readArg();
+		final MPlayer msender = this.msender;
 		
 		// NOTE: The faction list is quite slow and mostly thread safe.
 		// We run it asynchronously to spare the primary server thread.
