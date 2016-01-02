@@ -14,6 +14,9 @@ public class CmdMod extends FCommand {
     public CmdMod() {
         super();
         this.aliases.add("mod");
+        this.aliases.add("setmod");
+        this.aliases.add("officer");
+        this.aliases.add("setofficer");
 
         this.optionalArgs.put("player name", "name");
         //this.optionalArgs.put("", "");

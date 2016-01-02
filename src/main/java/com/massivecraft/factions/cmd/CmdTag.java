@@ -14,6 +14,7 @@ public class CmdTag extends FCommand {
 
     public CmdTag() {
         this.aliases.add("tag");
+        this.aliases.add("rename");
 
         this.requiredArgs.add("faction tag");
         //this.optionalArgs.put("", "");

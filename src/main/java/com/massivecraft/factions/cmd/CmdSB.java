@@ -8,6 +8,7 @@ public class CmdSB extends FCommand {
 
     public CmdSB() {
         this.aliases.add("sb");
+        this.aliases.add("scoreboard");
         this.permission = Permission.SCOREBOARD.node;
         this.senderMustBePlayer = true;
     }
