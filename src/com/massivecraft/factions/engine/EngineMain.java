@@ -904,6 +904,10 @@ public class EngineMain extends EngineAbstract
 		// ... gather defender PS and faction information ...
 		PS defenderPs = PS.valueOf(defender.getLocation());
 		Faction defenderPsFaction = BoardColl.get().getFactionAt(defenderPs);
+
+		// ... fast evaluate if the attacker is overriding ...
+		MPlayer mplayer = MPlayer.get(eattacker);
+		if (mplayer != null && mplayer.isUsingAdminMode()) return true;
 		
 		// ... PVP flag may cause a damage block ...
 		if (defenderPsFaction.getFlag(MFlag.getFlagPvp()) == false)
@@ -1421,7 +1425,9 @@ public class EngineMain extends EngineAbstract
 	{
 		if (!event.canBuild()) return;
 
-		if (canPlayerBuildAt(event.getPlayer(), PS.valueOf(event.getBlock()), true)) return;
+		boolean verboose = ! MUtil.isFakeEvent(event);
+
+		if (canPlayerBuildAt(event.getPlayer(), PS.valueOf(event.getBlock()), verboose)) return;
 		
 		event.setBuild(false);
 		event.setCancelled(true);
@@ -1430,7 +1436,9 @@ public class EngineMain extends EngineAbstract
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void blockBuild(BlockBreakEvent event)
 	{
-		if (canPlayerBuildAt(event.getPlayer(), PS.valueOf(event.getBlock()), true)) return;
+		boolean verboose = ! MUtil.isFakeEvent(event);
+
+		if (canPlayerBuildAt(event.getPlayer(), PS.valueOf(event.getBlock()), verboose)) return;
 		
 		event.setCancelled(true);
 	}
@@ -1440,7 +1448,9 @@ public class EngineMain extends EngineAbstract
 	{
 		if (!event.getInstaBreak()) return;
 
-		if (canPlayerBuildAt(event.getPlayer(), PS.valueOf(event.getBlock()), true)) return;
+		boolean verboose = ! MUtil.isFakeEvent(event);
+
+		if (canPlayerBuildAt(event.getPlayer(), PS.valueOf(event.getBlock()), verboose)) return;
 		
 		event.setCancelled(true);
 	}
@@ -1507,7 +1517,9 @@ public class EngineMain extends EngineAbstract
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void blockBuild(HangingPlaceEvent event)
 	{
-		if (canPlayerBuildAt(event.getPlayer(), PS.valueOf(event.getEntity().getLocation()), true)) return;
+		boolean verboose = ! MUtil.isFakeEvent(event);
+
+		if (canPlayerBuildAt(event.getPlayer(), PS.valueOf(event.getEntity().getLocation()), verboose)) return;
 		
 		event.setCancelled(true);
 	}
@@ -1521,7 +1533,9 @@ public class EngineMain extends EngineAbstract
 		Entity breaker = entityEvent.getRemover();
 		if (MUtil.isntPlayer(breaker)) return;
 
-		if ( ! canPlayerBuildAt(breaker, PS.valueOf(event.getEntity().getLocation()), true))
+		boolean verboose = ! MUtil.isFakeEvent(event);
+
+		if ( ! canPlayerBuildAt(breaker, PS.valueOf(event.getEntity().getLocation()), verboose))
 		{
 			event.setCancelled(true);
 		}
