@@ -25,7 +25,7 @@ public class CmdFactionsFaction extends FactionsCommand
 	public CmdFactionsFaction()
 	{
 		// Aliases
-		this.addAliases("f", "faction", "who");
+		this.addAliases("f", "faction", "show", "who");
 
 		// Parameters
 		this.addParameter(TypeFaction.get(), "faction", "you");
