@@ -754,6 +754,9 @@ public class EngineMain extends EngineAbstract
 	
 	public String parseTerritoryInfo(String string, MPlayer mplayer, Faction faction)
 	{
+		if (string == null) throw new NullPointerException("string");
+		if (faction == null) throw new NullPointerException("faction");
+		
 		string = Txt.parse(string);
 		
 		string = string.replace("{name}", faction.getName());
