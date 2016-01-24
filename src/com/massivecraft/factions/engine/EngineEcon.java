@@ -82,9 +82,9 @@ public class EngineEcon extends EngineAbstract
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void takeOnDisband(EventFactionsDisband event)
 	{
-		// If there is a usender ...
-		MPlayer usender = event.getMSender();
-		if (usender == null) return;
+		// If there is a mplayer ...
+		MPlayer mplayer = event.getMPlayer();
+		if (mplayer == null) return;
 		
 		// ... and economy is enabled ...
 		if (!Econ.isEnabled()) return;
@@ -95,10 +95,10 @@ public class EngineEcon extends EngineAbstract
 		double amount = Money.get(faction);
 		String amountString = Money.format(amount);
 		
-		Econ.transferMoney(faction, usender, usender, amount, true);
+		Econ.transferMoney(faction, mplayer, mplayer, amount, true);
 		
-		usender.msg("<i>You have been given the disbanded faction's bank, totaling %s.", amountString);
-		Factions.get().log(usender.getName() + " has been given bank holdings of "+amountString+" from disbanding "+faction.getName()+".");
+		mplayer.msg("<i>You have been given the disbanded faction's bank, totaling %s.", amountString);
+		Factions.get().log(mplayer.getName() + " has been given bank holdings of "+amountString+" from disbanding "+faction.getName()+".");
 	}
 	
 	// -------------------------------------------- //
@@ -107,16 +107,16 @@ public class EngineEcon extends EngineAbstract
 	
 	public static void payForAction(EventFactionsAbstractSender event, Double cost, String desc)
 	{
-		// If there is a sender ...
-		MPlayer usender = event.getMSender();
-		if (usender == null) return;
+		// If there is an mplayer ...
+		MPlayer mplayer = event.getMPlayer();
+		if (mplayer == null) return;
 		
 		// ... and there is a cost ...
 		if (cost == null) return;
 		if (cost == 0) return;
 		
 		// ... that the sender can't afford ...
-		if (Econ.payForAction(cost, usender, desc)) return;
+		if (Econ.payForAction(cost, mplayer, desc)) return;
 		
 		// ... then cancel.
 		event.setCancelled(true);

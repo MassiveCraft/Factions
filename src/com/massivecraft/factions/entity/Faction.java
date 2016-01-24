@@ -65,8 +65,13 @@ public class Faction extends Entity<Faction> implements EconomyParticipator, Nam
 		// We may move factions around during upgrades.
 		if (!Factions.get().isDatabaseInitialized()) return;
 		
-		// Zero balance
-		Money.set(this, null, 0);
+		// NOTE: Existence check is required for compatibility with some plugins.
+		// If they have money ...
+		if (Money.exists(this))
+		{
+			// ... remove it.
+			Money.set(this, null, 0);	
+		}
 		
 		// Clean the board
 		BoardColl.get().clean();

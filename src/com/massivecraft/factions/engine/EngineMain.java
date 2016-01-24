@@ -147,14 +147,14 @@ public class EngineMain extends EngineAbstract
 	{
 		final int tableCols = 4;
 		final CommandSender sender = event.getSender();
-		final MPlayer msender = event.getMSender();
+		final MPlayer mplayer = event.getMPlayer();
 		final Faction faction = event.getFaction();
 		final boolean normal = faction.isNormal();
 		final Map<String, PriorityLines> idPriorityLiness = event.getIdPriorityLiness();
 		final boolean peaceful = faction.getFlag(MFlag.getFlagPeaceful());
 		
 		// ID
-		if (msender.isUsingAdminMode())
+		if (mplayer.isUsingAdminMode())
 		{
 			show(idPriorityLiness, Const.SHOW_ID_FACTION_ID, Const.SHOW_PRIORITY_FACTION_ID, "ID", faction.getId());
 		}
@@ -242,7 +242,7 @@ public class EngineMain extends EngineAbstract
 		String none = Txt.parse("<silver><italic>none");
 		String everyone = MConf.get().colorTruce.toString() + Txt.parse("<italic>*EVERYONE*");
 		Set<Rel> rels = EnumSet.of(Rel.TRUCE, Rel.ALLY, Rel.ENEMY);
-		Map<Rel, List<String>> relNames = faction.getRelationNames(msender, rels, true);
+		Map<Rel, List<String>> relNames = faction.getRelationNames(mplayer, rels, true);
 		for (Entry<Rel, List<String>> entry : relNames.entrySet())
 		{
 			Rel rel = entry.getKey();
@@ -279,12 +279,12 @@ public class EngineMain extends EngineAbstract
 		{
 			if (follower.isOnline(sender))
 			{
-				followerNamesOnline.add(follower.getNameAndTitle(msender));
+				followerNamesOnline.add(follower.getNameAndTitle(mplayer));
 			}
 			else if (normal)
 			{
 				// For the non-faction we skip the offline members since they are far to many (infinite almost)
-				followerNamesOffline.add(follower.getNameAndTitle(msender));
+				followerNamesOffline.add(follower.getNameAndTitle(mplayer));
 			}
 		}
 		
@@ -510,14 +510,14 @@ public class EngineMain extends EngineAbstract
 	public void onChunksChangeInner(EventFactionsChunksChange event)
 	{
 		// Args
-		final MPlayer msender = event.getMSender();
+		final MPlayer mplayer = event.getMPlayer();
 		final Faction newFaction = event.getNewFaction();
 		final Map<Faction, Set<PS>> currentFactionChunks = event.getOldFactionChunks();
 		final Set<Faction> currentFactions = currentFactionChunks.keySet();
 		final Set<PS> chunks = event.getChunks();
 		
 		// Admin Mode? Sure!
-		if (msender.isUsingAdminMode()) return;
+		if (mplayer.isUsingAdminMode()) return;
 		
 		// CALC: Is there at least one normal faction among the current ones?
 		boolean currentFactionsContainsAtLeastOneNormal = false;
@@ -540,14 +540,14 @@ public class EngineMain extends EngineAbstract
 				if ( ! MConf.get().worldsClaimingEnabled.contains(worldId))
 				{
 					String worldName = Mixin.getWorldDisplayName(worldId);
-					msender.msg("<b>Land claiming is disabled in <h>%s<b>.", worldName);
+					mplayer.msg("<b>Land claiming is disabled in <h>%s<b>.", worldName);
 					event.setCancelled(true);
 					return;
 				}
 			}
 			
 			// ... ensure we have permission to alter the territory of the new faction ...
-			if ( ! MPerm.getPermTerritory().has(msender, newFaction, true))
+			if ( ! MPerm.getPermTerritory().has(mplayer, newFaction, true))
 			{
 				// NOTE: No need to send a message. We send message from the permission check itself.
 				event.setCancelled(true);
@@ -557,7 +557,7 @@ public class EngineMain extends EngineAbstract
 			// ... ensure the new faction has enough players to claim ...
 			if (newFaction.getMPlayers().size() < MConf.get().claimsRequireMinFactionMembers)
 			{
-				msender.msg("<b>Factions must have at least <h>%s<b> members to claim land.", MConf.get().claimsRequireMinFactionMembers);
+				mplayer.msg("<b>Factions must have at least <h>%s<b> members to claim land.", MConf.get().claimsRequireMinFactionMembers);
 				event.setCancelled(true);
 				return;
 			}
@@ -566,7 +566,7 @@ public class EngineMain extends EngineAbstract
 			int ownedLand = newFaction.getLandCount();
 			if (MConf.get().claimedLandsMax != 0 && ownedLand + chunks.size() > MConf.get().claimedLandsMax && ! newFaction.getFlag(MFlag.getFlagInfpower()))
 			{
-				msender.msg("<b>Limit reached. You can't claim more land.");
+				mplayer.msg("<b>Limit reached. You can't claim more land.");
 				event.setCancelled(true);
 				return;
 			}
@@ -574,7 +574,7 @@ public class EngineMain extends EngineAbstract
 			// ... ensure the claim would not bypass the faction power ...
 			if (ownedLand + chunks.size() > newFaction.getPowerRounded())
 			{
-				msender.msg("<b>You don't have enough power to claim that land.");
+				mplayer.msg("<b>You don't have enough power to claim that land.");
 				event.setCancelled(true);
 				return;
 			}
@@ -592,7 +592,7 @@ public class EngineMain extends EngineAbstract
 			for (Faction nearbyFaction : nearbyFactions)
 			{
 				if (claimnear.has(newFaction, nearbyFaction)) continue;
-				msender.message(claimnear.createDeniedMessage(msender, nearbyFaction));
+				mplayer.message(claimnear.createDeniedMessage(mplayer, nearbyFaction));
 				event.setCancelled(true);
 				return;
 			}
@@ -615,11 +615,11 @@ public class EngineMain extends EngineAbstract
 			{
 				if (MConf.get().claimsCanBeUnconnectedIfOwnedByOtherFaction)
 				{
-					msender.msg("<b>You can only claim additional land which is connected to your first claim or controlled by another faction!");
+					mplayer.msg("<b>You can only claim additional land which is connected to your first claim or controlled by another faction!");
 				}
 				else
 				{
-					msender.msg("<b>You can only claim additional land which is connected to your first claim!");
+					mplayer.msg("<b>You can only claim additional land which is connected to your first claim!");
 				}
 				event.setCancelled(true);
 				return;
@@ -635,15 +635,15 @@ public class EngineMain extends EngineAbstract
 			// ... that is an actual faction ...
 			if (oldFaction.isNone()) continue;
 			
-			// ... for which the msender lacks permission ...
-			if (MPerm.getPermTerritory().has(msender, oldFaction, false)) continue;
+			// ... for which the mplayer lacks permission ...
+			if (MPerm.getPermTerritory().has(mplayer, oldFaction, false)) continue;
 			
 			// ... consider all reasons to forbid "overclaiming/warclaiming" ...
 			
 			// ... claiming from others may be forbidden ...
 			if ( ! MConf.get().claimingFromOthersAllowed)
 			{
-				msender.msg("<b>You may not claim land from others.");
+				mplayer.msg("<b>You may not claim land from others.");
 				event.setCancelled(true);
 				return;
 			}
@@ -651,7 +651,7 @@ public class EngineMain extends EngineAbstract
 			// ... the relation may forbid ...
 			if (oldFaction.getRelationTo(newFaction).isAtLeast(Rel.TRUCE))
 			{
-				msender.msg("<b>You can't claim this land due to your relation with the current owner.");
+				mplayer.msg("<b>You can't claim this land due to your relation with the current owner.");
 				event.setCancelled(true);
 				return;
 			}
@@ -659,7 +659,7 @@ public class EngineMain extends EngineAbstract
 			// ... the old faction might not be inflated enough ...
 			if (oldFaction.getPowerRounded() > oldFaction.getLandCount() - oldChunks.size())
 			{
-				msender.msg("%s<i> owns this land and is strong enough to keep it.", oldFaction.getName(msender));
+				mplayer.msg("%s<i> owns this land and is strong enough to keep it.", oldFaction.getName(mplayer));
 				event.setCancelled(true);
 				return;
 			}
@@ -667,7 +667,7 @@ public class EngineMain extends EngineAbstract
 			// ... and you might be trying to claim without starting at the border ...
 			if ( ! BoardColl.get().isAnyBorderPs(chunks))
 			{
-				msender.msg("<b>You must start claiming land at the border of the territory.");
+				mplayer.msg("<b>You must start claiming land at the border of the territory.");
 				event.setCancelled(true);
 				return;
 			}

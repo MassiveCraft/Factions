@@ -60,7 +60,7 @@ public class EventFactionsChunksChange extends EventFactionsAbstractSender
 		this.oldChunkFaction = Collections.unmodifiableMap(BoardColl.getChunkFaction(chunks));
 		this.oldFactionChunks = Collections.unmodifiableMap(MUtil.reverseIndex(this.oldChunkFaction));
 		
-		MPlayer msender = this.getMSender();
+		MPlayer msender = this.getMPlayer();
 		Faction self = null;
 		if (msender != null) self = msender.getFaction();
 		Map<PS, EventFactionsChunkChangeType> currentChunkType = new LinkedHashMap<PS, EventFactionsChunkChangeType>();

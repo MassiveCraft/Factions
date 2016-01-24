@@ -77,7 +77,7 @@ public class EngineWorldGuard extends EngineAbstract
 		// Permanent Factions should not apply this rule 
 		if (event.getNewFaction().getFlag(MFlag.ID_PERMANENT)) return;
 		
-		MPlayer mplayer = event.getMSender();
+		MPlayer mplayer = event.getMPlayer();
 		
 		if ( ! MConf.get().worldguardCheckWorldsEnabled.contains(mplayer.getPlayer())) return;
 
