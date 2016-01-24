@@ -48,9 +48,6 @@ public class CmdFactionsRank extends FactionsCommand
 	private Rel targetRank = null;
 	private Rel rank = null;
 	
-	// This one is permanent
-	private TypeRank rankReader = new TypeRank();
-	
 	// -------------------------------------------- //
 	// CONSTRUCT
 	// -------------------------------------------- //
@@ -62,7 +59,7 @@ public class CmdFactionsRank extends FactionsCommand
 	
 		// Parameters
 		this.addParameter(TypeMPlayer.get(), "player");
-		this.addParameter(rankReader, "action", "show");
+		this.addParameter(TypeRank.get(), "action", "show");
 		this.addParameter(TypeFaction.get(), "faction", "their");
 	
 		// Requirements
@@ -141,7 +138,7 @@ public class CmdFactionsRank extends FactionsCommand
 		// Rank if any passed.
 		if (this.argIsSet(1))
 		{
-			this.rankReader.setStartRank(targetRank);
+			this.setParameterType(1, TypeRank.get(targetRank));
 			rank = this.readArg();
 		}
 		
@@ -235,7 +232,7 @@ public class CmdFactionsRank extends FactionsCommand
 		// Don't change their rank to something they already are.
 		if (target.getRole() == rank)
 		{
-			throw new MassiveException().addMsg("%s <b>is already %s<b>.", target.describeTo(msender), rank.getColor() + rank.getDescPlayerOne());
+			throw new MassiveException().addMsg("%s <b>is already %s.", target.describeTo(msender), rank.getDescPlayerOne());
 		}
 	}
 	

@@ -1,10 +1,16 @@
 package com.massivecraft.factions.cmd.type;
 
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import com.massivecraft.factions.Rel;
+import com.massivecraft.massivecore.collections.MassiveMap;
 import com.massivecraft.massivecore.collections.MassiveSet;
 import com.massivecraft.massivecore.command.type.enumeration.TypeEnum;
+import com.massivecraft.massivecore.util.MUtil;
 
 public class TypeRank extends TypeEnum<Rel>
 {
@@ -29,31 +35,51 @@ public class TypeRank extends TypeEnum<Rel>
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
+	// Because of the caching in TypeAbstractChoice, we want only one of each instance.
 	
-	// Can be used to promote and demote.
-	public static TypeRank get(Rel rank) { return new TypeRank(rank); }
+	// Null instance, doesn't allow promote and demote.
+	private static final TypeRank i = new TypeRank(null);
+	public static TypeRank get() { return i; }
+	
+	// Cached instances, does allow promote and demote.
+	private static final Map<Rel, TypeRank> instances;
+	static
+	{
+		Map<Rel, TypeRank> result = new MassiveMap<>();
+		for (Rel rel : Rel.values())
+		{
+			if ( ! rel.isRank()) continue;
+			result.put(rel, new TypeRank(rel));
+		}
+		result.put(null, i);
+		instances = Collections.unmodifiableMap(result);
+	}
+	public static TypeRank get(Rel rank) { return instances.get(rank); }
+	
+	// Constructor
 	public TypeRank(Rel rank)
 	{
 		super(Rel.class);
 		if (rank != null && ! rank.isRank()) throw new IllegalArgumentException(rank + " is not a valid rank");
 		this.startRank = rank;
-	}
-	
-	// Can not be used to promote and demote.
-	private static TypeRank i = new TypeRank();
-	public static TypeRank get() { return i; }
-	public TypeRank()
-	{
-		this(null);
+		
+		// Do setAll with only ranks.
+		List<Rel> all = MUtil.list(Rel.values());
+		for (Iterator<Rel> it = all.iterator(); it.hasNext(); )
+		{
+			if ( ! it.next().isRank()) it.remove();
+		}
+		
+		this.setAll(all);
 	}
 	
 	// -------------------------------------------- //
 	// FIELDS
 	// -------------------------------------------- //
 	
-	private Rel startRank;
+	// This must be final, for caching in TypeAbstractChoice to work.
+	private final Rel startRank;
 	public Rel getStartRank() { return this.startRank; }
-	public void setStartRank(Rel startRank) { this.startRank = startRank; }
 	
 	// -------------------------------------------- //
 	// OVERRIDE
