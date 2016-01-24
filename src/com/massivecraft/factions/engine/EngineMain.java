@@ -12,6 +12,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.regex.Pattern;
 import java.util.Set;
 
 import org.bukkit.Bukkit;
@@ -1133,7 +1134,22 @@ public class EngineMain extends EngineAbstract
 			straw = Txt.removeLeadingCommandDust(straw);
 			straw = straw.toLowerCase();
 			
-			if (needle.startsWith(straw)) return true;
+			// If it starts with then it is possibly a subject.
+			if (needle.startsWith(straw))
+			{
+				// Get the remainder.
+				String remainder = needle.substring(straw.length());
+				
+				// If they were equal, definitely true.
+				if (remainder.isEmpty()) return true;
+				
+				// If the next is a space, the space is used as separator for sub commands or arguments.
+				// Otherwise it might just have been another command coincidentally starting with the first command.
+				// The old behaviour was if (needle.startsWith(straw)) return true;
+				// If "s" was block, then all commands starting with "s" was, now it isn't.
+				if (remainder.startsWith(" ")) return true;
+			}
+			
 		}
 		
 		return false;
