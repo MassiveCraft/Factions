@@ -1020,6 +1020,10 @@ public class EngineMain extends EngineAbstract
 		Player player = (Player)entity;
 		MPlayer mplayer = MPlayer.get(player);
 		
+		// ... and the attacker is a player ...
+		Entity attacker = MUtil.getLiableDamager(event);
+		if (! (attacker instanceof Player)) return;
+		
 		// ... and that player has a faction ...
 		if ( ! mplayer.hasFaction()) return;
 		
