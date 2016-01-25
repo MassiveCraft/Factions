@@ -49,7 +49,7 @@ public class CmdFactionsList extends FactionsCommand
 		// Args
 		int page = this.readArg();
 		final MPlayer msender = this.msender;
-		Predicate<MPlayer> onlinePredicate = PredicateAnd.get(SenderColl.PREDICATE_ONLINE, PredicateVisibleTo.get(sender));
+		final Predicate<MPlayer> onlinePredicate = PredicateAnd.get(SenderColl.PREDICATE_ONLINE, PredicateVisibleTo.get(sender));
 		
 		// NOTE: The faction list is quite slow and mostly thread safe.
 		// We run it asynchronously to spare the primary server thread.
