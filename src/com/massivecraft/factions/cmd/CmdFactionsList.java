@@ -11,10 +11,14 @@ import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.FactionColl;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.massivecore.MassiveException;
+import com.massivecraft.massivecore.Predicate;
+import com.massivecraft.massivecore.PredicateAnd;
+import com.massivecraft.massivecore.PredicateVisibleTo;
 import com.massivecraft.massivecore.command.Parameter;
 import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.pager.Pager;
 import com.massivecraft.massivecore.pager.Stringifier;
+import com.massivecraft.massivecore.store.SenderColl;
 import com.massivecraft.massivecore.util.Txt;
 
 public class CmdFactionsList extends FactionsCommand
@@ -45,6 +49,7 @@ public class CmdFactionsList extends FactionsCommand
 		// Args
 		int page = this.readArg();
 		final MPlayer msender = this.msender;
+		Predicate<MPlayer> onlinePredicate = PredicateAnd.get(SenderColl.PREDICATE_ONLINE, PredicateVisibleTo.get(sender));
 		
 		// NOTE: The faction list is quite slow and mostly thread safe.
 		// We run it asynchronously to spare the primary server thread.
@@ -62,7 +67,7 @@ public class CmdFactionsList extends FactionsCommand
 				{
 					return Txt.parse("%s<i> %d/%d online, %d/%d/%d",
 						faction.getName(msender),
-						faction.getMPlayersWhereOnline(true).size(),
+						faction.getMPlayersWhere(onlinePredicate).size(),
 						faction.getMPlayers().size(),
 						faction.getLandCount(),
 						faction.getPowerRounded(),

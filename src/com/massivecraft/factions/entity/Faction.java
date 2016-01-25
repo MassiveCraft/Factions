@@ -1,7 +1,17 @@
 package com.massivecraft.factions.entity;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -11,17 +21,21 @@ import com.massivecraft.factions.EconomyParticipator;
 import com.massivecraft.factions.FactionEqualsPredicate;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Lang;
+import com.massivecraft.factions.PredicateRole;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.RelationParticipator;
-import com.massivecraft.factions.util.*;
+import com.massivecraft.factions.util.MiscUtil;
+import com.massivecraft.factions.util.RelationUtil;
 import com.massivecraft.massivecore.CaseInsensitiveComparator;
 import com.massivecraft.massivecore.Named;
+import com.massivecraft.massivecore.Predicate;
 import com.massivecraft.massivecore.collections.MassiveMapDef;
 import com.massivecraft.massivecore.collections.MassiveTreeSetDef;
 import com.massivecraft.massivecore.mixin.Mixin;
 import com.massivecraft.massivecore.money.Money;
 import com.massivecraft.massivecore.ps.PS;
 import com.massivecraft.massivecore.store.Entity;
+import com.massivecraft.massivecore.store.SenderColl;
 import com.massivecraft.massivecore.util.IdUtil;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.Txt;
@@ -1038,49 +1052,31 @@ public class Faction extends Entity<Faction> implements EconomyParticipator, Nam
 		return new ArrayList<MPlayer>(this.mplayers);
 	}
 	
-	public List<MPlayer> getMPlayersWhereOnline(boolean online)
+	public List<MPlayer> getMPlayersWhere(Predicate<? super MPlayer> predicate)
 	{
 		List<MPlayer> ret = this.getMPlayers();
-		Iterator<MPlayer> iter = ret.iterator();
-		while (iter.hasNext())
+		for (Iterator<MPlayer> it = ret.iterator(); it.hasNext();)
 		{
-			MPlayer mplayer = iter.next();
-			if (mplayer.isOnline() != online)
-			{
-				iter.remove();
-			}
-		}
-		return ret;
-	}	
-	
-	public List<MPlayer> getMPlayersWhereRole(Rel role)
-	{
-		List<MPlayer> ret = this.getMPlayers();
-		Iterator<MPlayer> iter = ret.iterator();
-		while (iter.hasNext())
-		{
-			MPlayer mplayer = iter.next();
-			if (mplayer.getRole() != role)
-			{
-				iter.remove();
-			}
+			if ( ! predicate.apply(it.next())) it.remove();
 		}
 		return ret;
 	}
 	
+	public List<MPlayer> getMPlayersWhereOnline(boolean online)
+	{
+		return this.getMPlayersWhere(online ? SenderColl.PREDICATE_ONLINE : SenderColl.PREDICATE_OFFLINE);
+	}	
+	
+	public List<MPlayer> getMPlayersWhereRole(Rel role)
+	{
+		return this.getMPlayersWhere(PredicateRole.get(role));
+	}
+	
 	public MPlayer getLeader()
 	{
-		List<MPlayer> ret = this.getMPlayers();
-		Iterator<MPlayer> iter = ret.iterator();
-		while (iter.hasNext())
-		{
-			MPlayer mplayer = iter.next();
-			if (mplayer.getRole() == Rel.LEADER)
-			{
-				return mplayer;
-			}
-		}
-		return null;
+		List<MPlayer> ret = this.getMPlayersWhereRole(Rel.LEADER);
+		if (ret.size() == 0) return null;
+		return ret.get(0);
 	}
 	
 	public List<CommandSender> getOnlineCommandSenders()
