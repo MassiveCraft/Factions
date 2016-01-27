@@ -106,7 +106,7 @@
         <dependency>
             <groupId>mkremins</groupId>
             <artifactId>fanciful</artifactId>
-            <version>0.3.2-SNAPSHOT</version>
+            <version>0.3.3-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.dynmap</groupId>
@@ -149,8 +149,8 @@
             <url>http://repo.mikeprimm.com/</url>
         </repository>
         <repository>
-            <id>franga2000-repo</id>
-            <url>http://repo.franga2000.com/artifactory/public</url>
+            <id>stealthyone-snapshots</id>
+            <url>http://repo.stealthyone.com/content/repositories/snapshots/</url>
         </repository>
     </repositories>
 </project>
