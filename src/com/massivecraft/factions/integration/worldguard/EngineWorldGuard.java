@@ -81,8 +81,8 @@ public class EngineWorldGuard extends EngineAbstract
 		
 		if ( ! MConf.get().worldguardCheckWorldsEnabled.contains(mplayer.getPlayer())) return;
 
-		// For admins don't bother checking 
-		if (mplayer.isUsingAdminMode()) return; 
+		// For overriders don't bother checking 
+		if (mplayer.isOverriding()) return; 
 		
 		for (PS chunkChecking : event.getChunks())
 		{

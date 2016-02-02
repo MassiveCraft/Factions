@@ -54,19 +54,19 @@ public class CmdFactionsKick extends FactionsCommand
 			return;
 		}
 		
-		if (mplayer.getRole() == Rel.LEADER && !(this.senderIsConsole || msender.isUsingAdminMode()))
+		if (mplayer.getRole() == Rel.LEADER && !(this.senderIsConsole || msender.isOverriding()))
 		{
 			msg("<b>The leader can not be kicked.");
 			return;
 		}
 		
-		if (mplayer.getRole().compareTo(msender.getRole()) < 0 && !(this.senderIsConsole || msender.isUsingAdminMode()))
+		if (mplayer.getRole().compareTo(msender.getRole()) < 0 && !(this.senderIsConsole || msender.isOverriding()))
 		{
 			msg("<b>You can't kick people of higher rank than yourself.");
 			return;
 		}
 
-		if ( ! MConf.get().canLeaveWithNegativePower && mplayer.getPower() < 0 && ! msender.isUsingAdminMode())
+		if ( ! MConf.get().canLeaveWithNegativePower && mplayer.getPower() < 0 && ! msender.isOverriding())
 		{
 			msg("<b>You can't kick that person until their power is positive.");
 			return;

@@ -193,7 +193,7 @@ public class MFlag extends Entity<MFlag> implements Prioritized, Registerable, N
 	
 	// Is this flag editable by players?
 	// With this we mean standard non administrator players.
-	// All flags can be changed using /f admin.
+	// All flags can be changed using /f override.
 	// Example: true (if players want to turn mob spawning on I guess they should be able to)
 	private boolean editable = false;
 	public boolean isEditable() { return this.editable; }
@@ -201,7 +201,7 @@ public class MFlag extends Entity<MFlag> implements Prioritized, Registerable, N
 	
 	// Is this flag visible to players?
 	// With this we mean standard non administrator players.
-	// All flags can be seen using /f admin.
+	// All flags can be seen using /f override.
 	// Some flags can be rendered meaningless by settings in Factions or external plugins.
 	// Say we set "editable" to false and "standard" to true for the "open" flag to force all factions being open.
 	// In such case we might want to hide the open flag by setting "visible" false.

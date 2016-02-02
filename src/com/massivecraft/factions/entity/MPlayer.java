@@ -30,6 +30,7 @@ import com.massivecraft.massivecore.store.SenderEntity;
 import com.massivecraft.massivecore.util.IdUtil;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.Txt;
+import com.massivecraft.massivecore.xlib.gson.annotations.SerializedName;
 
 
 public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipator
@@ -57,7 +58,7 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 		this.setPowerBoost(that.powerBoost);
 		this.setPower(that.power);
 		this.setMapAutoUpdating(that.mapAutoUpdating);
-		this.setUsingAdminMode(that.usingAdminMode);
+		this.setOverriding(that.overriding);
 		this.setTerritoryInfoTitles(that.territoryInfoTitles);
 		
 		return this;
@@ -73,7 +74,7 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 		if (this.hasPowerBoost()) return false;
 		if (this.getPowerRounded() != (int) Math.round(MConf.get().defaultPlayerPower)) return false;
 		// if (this.isMapAutoUpdating()) return false; // Just having an auto updating map is not in itself reason enough for database storage.
-		if (this.isUsingAdminMode()) return false;
+		if (this.isOverriding()) return false;
 		if (this.isTerritoryInfoTitles() != MConf.get().territoryInfoTitlesDefault) return false;
 		
 		return true;
@@ -156,9 +157,10 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 	// Null means false
 	private Boolean mapAutoUpdating = null;
 	
-	// Is this player using admin mode?
+	// Is this player overriding?
 	// Null means false
-	private Boolean usingAdminMode = null;
+	@SerializedName(value = "usingAdminMode")
+	private Boolean overriding = null;
 	
 	// Does this player use titles for territory info?
 	// Null means default specified in MConf.
@@ -533,35 +535,35 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 	}
 	
 	// -------------------------------------------- //
-	// FIELD: usingAdminMode
+	// FIELD: overriding
 	// -------------------------------------------- //
 	
-	public boolean isUsingAdminMode()
+	public boolean isOverriding()
 	{
-		if (this.usingAdminMode == null) return false;
-		if (this.usingAdminMode == false) return false;
+		if (this.overriding == null) return false;
+		if (this.overriding == false) return false;
 		
 		// Deactivate admin mode if we don't have permissions for it.
-		if (this.getSender() != null && !Perm.ADMIN.has(this.getSender(), false))
+		if (this.getSender() != null && ! Perm.OVERRIDE.has(this.getSender(), false))
 		{
-			this.setUsingAdminMode(false);
+			this.setOverriding(false);
 			return false;
 		}
 		
 		return true;
 	}
 	
-	public void setUsingAdminMode(Boolean usingAdminMode)
+	public void setOverriding(Boolean overriding)
 	{
 		// Clean input
-		Boolean target = usingAdminMode;
+		Boolean target = overriding;
 		if (MUtil.equals(target, false)) target = null;
 		
 		// Detect Nochange
-		if (MUtil.equals(this.usingAdminMode, target)) return;
+		if (MUtil.equals(this.overriding, target)) return;
 		
 		// Apply
-		this.usingAdminMode = target;
+		this.overriding = target;
 		
 		// Mark as changed
 		this.changed();

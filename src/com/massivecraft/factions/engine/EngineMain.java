@@ -154,7 +154,7 @@ public class EngineMain extends EngineAbstract
 		final boolean peaceful = faction.getFlag(MFlag.getFlagPeaceful());
 		
 		// ID
-		if (mplayer.isUsingAdminMode())
+		if (mplayer.isOverriding())
 		{
 			show(idPriorityLiness, Const.SHOW_ID_FACTION_ID, Const.SHOW_PRIORITY_FACTION_ID, "ID", faction.getId());
 		}
@@ -516,8 +516,8 @@ public class EngineMain extends EngineAbstract
 		final Set<Faction> currentFactions = currentFactionChunks.keySet();
 		final Set<PS> chunks = event.getChunks();
 		
-		// Admin Mode? Sure!
-		if (mplayer.isUsingAdminMode()) return;
+		// Override Mode? Sure!
+		if (mplayer.isOverriding()) return;
 		
 		// CALC: Is there at least one normal faction among the current ones?
 		boolean currentFactionsContainsAtLeastOneNormal = false;
@@ -907,7 +907,7 @@ public class EngineMain extends EngineAbstract
 
 		// ... fast evaluate if the attacker is overriding ...
 		MPlayer mplayer = MPlayer.get(eattacker);
-		if (mplayer != null && mplayer.isUsingAdminMode()) return true;
+		if (mplayer != null && mplayer.isOverriding()) return true;
 		
 		// ... PVP flag may cause a damage block ...
 		if (defenderPsFaction.getFlag(MFlag.getFlagPvp()) == false)
@@ -1096,8 +1096,8 @@ public class EngineMain extends EngineAbstract
 		if (MUtil.isntPlayer(player)) return;
 		MPlayer mplayer = MPlayer.get(player);
 		
-		// ... and the player does not have adminmode ...
-		if (mplayer.isUsingAdminMode()) return;
+		// ... and the player is not overriding ...
+		if (mplayer.isOverriding()) return;
 		
 		// ... clean up the command ...
 		String command = event.getMessage();
@@ -1404,7 +1404,7 @@ public class EngineMain extends EngineAbstract
 		String name = mplayer.getName();
 		if (MConf.get().playersWhoBypassAllProtection.contains(name)) return true;
 
-		if (mplayer.isUsingAdminMode()) return true;
+		if (mplayer.isOverriding()) return true;
 
 		if (!MPerm.getPermBuild().has(mplayer, ps, false) && MPerm.getPermPainbuild().has(mplayer, ps, false))
 		{
@@ -1672,7 +1672,7 @@ public class EngineMain extends EngineAbstract
 		if (MConf.get().playersWhoBypassAllProtection.contains(name)) return true;
 
 		MPlayer mplayer = MPlayer.get(player);
-		if (mplayer.isUsingAdminMode()) return true;
+		if (mplayer.isOverriding()) return true;
 		
 		return MPerm.getPermBuild().has(mplayer, ps, verboose);
 	}
@@ -1685,7 +1685,7 @@ public class EngineMain extends EngineAbstract
 		if (MConf.get().playersWhoBypassAllProtection.contains(name)) return true;
 
 		MPlayer me = MPlayer.get(player);
-		if (me.isUsingAdminMode()) return true;
+		if (me.isOverriding()) return true;
 		
 		PS ps = PS.valueOf(block);
 		Material material = block.getType();
@@ -1731,7 +1731,7 @@ public class EngineMain extends EngineAbstract
 
 		// ... and the player is not using admin mode ...
 		MPlayer me = MPlayer.get(player);
-		if (me.isUsingAdminMode()) return true;
+		if (me.isOverriding()) return true;
 		
 		// ... check container entity rights ...
 		if (MConf.get().entityTypesContainer.contains(type) && ! MPerm.getPermContainer().has(me, ps, verboose)) return false;

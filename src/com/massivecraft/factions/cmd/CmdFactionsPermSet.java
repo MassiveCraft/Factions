@@ -55,7 +55,7 @@ public class CmdFactionsPermSet extends FactionsCommand
 		if ( ! MPerm.getPermPerms().has(msender, faction, true)) return;
 		
 		// Is this perm editable?
-		if ( ! msender.isUsingAdminMode() && ! perm.isEditable())
+		if ( ! msender.isOverriding() && ! perm.isEditable())
 		{
 			msg("<b>The perm <h>%s <b>is not editable.", perm.getName());
 			return;

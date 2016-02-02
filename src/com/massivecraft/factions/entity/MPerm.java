@@ -245,7 +245,7 @@ public class MPerm extends Entity<MPerm> implements Prioritized, Registerable, N
 	
 	// Is this perm editable by players?
 	// With this we mean standard non administrator players.
-	// All perms can be changed using /f admin.
+	// All perms can be changed using /f override.
 	// Example: true (all perms are editable by default)
 	private boolean editable = false;
 	public boolean isEditable() { return this.editable; }
@@ -253,7 +253,7 @@ public class MPerm extends Entity<MPerm> implements Prioritized, Registerable, N
 	
 	// Is this perm visible to players?
 	// With this we mean standard non administrator players.
-	// All perms can be seen using /f admin.
+	// All perms can be seen using /f override.
 	// Some perms can be rendered meaningless by settings in Factions or external plugins.
 	// Say we set "editable" to false.
 	// In such case we might want to hide the perm by setting "visible" false.
@@ -296,9 +296,9 @@ public class MPerm extends Entity<MPerm> implements Prioritized, Registerable, N
 		String ret = Txt.parse("%s<b> does not allow you to %s<b>.", hostFaction.describeTo(mplayer, true), this.getDesc());
 		
 		Player player = mplayer.getPlayer();
-		if (player != null && Perm.ADMIN.has(player))
+		if (player != null && Perm.OVERRIDE.has(player))
 		{
-			ret += Txt.parse("\n<i>You can bypass by using " + Factions.get().getOuterCmdFactions().cmdFactionsAdmin.getTemplate(false).toPlain(true));
+			ret += Txt.parse("\n<i>You can bypass by using " + Factions.get().getOuterCmdFactions().cmdFactionsOverride.getTemplate(false).toPlain(true));
 		}
 		
 		return ret;
@@ -355,7 +355,7 @@ public class MPerm extends Entity<MPerm> implements Prioritized, Registerable, N
 		if (mplayer == null) throw new NullPointerException("mplayer");
 		if (hostFaction == null) throw new NullPointerException("hostFaction");
 		
-		if (mplayer.isUsingAdminMode()) return true;
+		if (mplayer.isOverriding()) return true;
 		
 		Rel rel = mplayer.getRelationTo(hostFaction);
 		if (hostFaction.isPermitted(this, rel)) return true;
@@ -371,7 +371,7 @@ public class MPerm extends Entity<MPerm> implements Prioritized, Registerable, N
 		if (mplayer == null) throw new NullPointerException("mplayer");
 		if (ps == null) throw new NullPointerException("ps");
 		
-		if (mplayer.isUsingAdminMode()) return true;
+		if (mplayer.isOverriding()) return true;
 		
 		TerritoryAccess ta = BoardColl.get().getTerritoryAccessAt(ps);
 		Faction hostFaction = ta.getHostFaction();

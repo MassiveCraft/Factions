@@ -32,7 +32,9 @@ public class CmdFactions extends FactionsCommand
 	public CmdFactionsTitle cmdFactionsTitle = new CmdFactionsTitle();
 	public CmdFactionsRank cmdFactionsRank = new CmdFactionsRank();
 	public CmdFactionsRankOld cmdFactionsRankOldLeader = new CmdFactionsRankOld("leader");
+	public CmdFactionsRankOld cmdFactionsRankOldOwner = new CmdFactionsRankOld("owner");
 	public CmdFactionsRankOld cmdFactionsRankOldOfficer = new CmdFactionsRankOld("officer");
+	public CmdFactionsRankOld cmdFactionsRankOldModerator = new CmdFactionsRankOld("moderator");
 	public CmdFactionsRankOld cmdFactionsRankOldPromote = new CmdFactionsRankOld("promote");
 	public CmdFactionsRankOld cmdFactionsRankOldDemote = new CmdFactionsRankOld("demote");
 	public CmdFactionsMoney cmdFactionsMoney = new CmdFactionsMoney();
@@ -53,7 +55,7 @@ public class CmdFactions extends FactionsCommand
 	public CmdFactionsExpansions cmdFactionsExpansions = new CmdFactionsExpansions();
 	public CmdFactionsXPlaceholder cmdFactionsTax = new CmdFactionsXPlaceholder("FactionsTax", "tax");
 	public CmdFactionsXPlaceholder cmdFactionsDynmap = new CmdFactionsXPlaceholder("FactionsDynmap", "dynmap");
-	public CmdFactionsAdmin cmdFactionsAdmin = new CmdFactionsAdmin();
+	public CmdFactionsOverride cmdFactionsOverride = new CmdFactionsOverride();
 	public CmdFactionsDisband cmdFactionsDisband = new CmdFactionsDisband();
 	public CmdFactionsPowerBoost cmdFactionsPowerBoost = new CmdFactionsPowerBoost();
 	public CmdFactionsSetpower cmdFactionsSetpower = new CmdFactionsSetpower();
@@ -85,7 +87,9 @@ public class CmdFactions extends FactionsCommand
 		this.addChild(this.cmdFactionsTitle);
 		this.addChild(this.cmdFactionsRank);
 		this.addChild(this.cmdFactionsRankOldLeader);
+		this.addChild(this.cmdFactionsRankOldOwner);
 		this.addChild(this.cmdFactionsRankOldOfficer);
+		this.addChild(this.cmdFactionsRankOldModerator);
 		this.addChild(this.cmdFactionsRankOldPromote);
 		this.addChild(this.cmdFactionsRankOldDemote);
 		this.addChild(this.cmdFactionsMoney);
@@ -105,7 +109,7 @@ public class CmdFactions extends FactionsCommand
 		this.addChild(this.cmdFactionsExpansions);
 		this.addChild(this.cmdFactionsTax);
 		this.addChild(this.cmdFactionsDynmap);
-		this.addChild(this.cmdFactionsAdmin);
+		this.addChild(this.cmdFactionsOverride);
 		this.addChild(this.cmdFactionsDisband);
 		this.addChild(this.cmdFactionsPowerBoost);
 		this.addChild(this.cmdFactionsSetpower);

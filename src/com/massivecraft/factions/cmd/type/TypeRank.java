@@ -92,25 +92,19 @@ public class TypeRank extends TypeEnum<Rel>
 	}
 	
 	@Override
+	public String getNameInner(Rel value)
+	{
+		return value.getName();
+	}
+	
+	@Override
 	public Set<String> getNamesInner(Rel value)
 	{
 		// Create
-		Set<String> ret = new MassiveSet<String>(super.getNamesInner(value));
+		Set<String> ret = new MassiveSet<String>();
 		
 		// Fill Exact
-		if (value == Rel.LEADER)
-		{
-			ret.add("admin");
-		}
-		else if (value == Rel.OFFICER)
-		{
-			ret.add("moderator");
-		}
-		else if (value == Rel.MEMBER)
-		{
-			ret.add("member");
-			ret.add("normal");
-		}
+		ret.addAll(value.getNames());
 		
 		// Fill Relative
 		Rel start = this.getStartRank();

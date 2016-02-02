@@ -1,8 +1,12 @@
 package com.massivecraft.factions;
 
+import java.util.Collections;
+import java.util.Set;
+
 import org.bukkit.ChatColor;
 
 import com.massivecraft.factions.entity.MConf;
+import com.massivecraft.massivecore.collections.MassiveSet;
 
 
 public enum Rel
@@ -11,14 +15,38 @@ public enum Rel
 	// ENUM
 	// -------------------------------------------- //
 	
-	LEADER (70, true, "your faction leader", "your faction leader", "", ""),
-	OFFICER (60, true, "an officer in your faction", "officers in your faction", "", ""),
-	MEMBER (50, true, "a member in your faction", "members in your faction", "your faction", "your factions"),
-	RECRUIT (45, true, "a recruit in your faction", "recruits in your faction", "", ""),
-	ALLY (40, true, "an ally", "allies", "an allied faction", "allied factions"),
-	TRUCE (30, true, "someone in truce with you", "those in truce with you", "a faction in truce", "factions in truce"),
-	NEUTRAL (20, false, "someone neutral to you", "those neutral to you", "a neutral faction", "neutral factions"),
-	ENEMY (10, false, "an enemy", "enemies", "an enemy faction", "enemy factions"),
+	ENEMY(
+		"an enemy", "enemies", "an enemy faction", "enemy factions",
+		"Enemy"
+	),
+	NEUTRAL(
+		"someone neutral to you", "those neutral to you", "a neutral faction", "neutral factions",
+		"Neutral"
+	),
+	TRUCE(
+		"someone in truce with you", "those in truce with you", "a faction in truce", "factions in truce",
+		"Truce"
+	),
+	ALLY(
+		"an ally", "allies", "an allied faction", "allied factions",
+		"Ally"
+	),
+	RECRUIT(
+		"a recruit in your faction", "recruits in your faction", "", "",
+		"Recruit"
+	),
+	MEMBER(
+		"a member in your faction", "members in your faction", "your faction", "your factions",
+		"Member"
+	),
+	OFFICER
+	(
+		"an officer in your faction", "officers in your faction", "", "",
+		"Officer", "Moderator"
+	),
+	LEADER("your faction leader", "your faction leader", "", "",
+		"Leader", "Admin", "Owner"
+	),
 	
 	// END OF LIST
 	;
@@ -27,13 +55,7 @@ public enum Rel
 	// FIELDS
 	// -------------------------------------------- //
 	
-	// TODO: Are not enums sorted without this?
-	private final int value;
-	public int getValue() { return this.value; }
-	
-	// Used for friendly fire.
-	private final boolean friend;
-	public boolean isFriend() { return this.friend; }
+	public int getValue() { return this.ordinal(); }
 	
 	private final String descPlayerOne;
 	public String getDescPlayerOne() { return this.descPlayerOne; }
@@ -47,18 +69,21 @@ public enum Rel
 	private final String descFactionMany;
 	public String getDescFactionMany() { return this.descFactionMany; }
 	
+	private final Set<String> names;
+	public Set<String> getNames() { return this.names; }
+	public String getName() { return this.getNames().iterator().next(); }
+	
 	// -------------------------------------------- //
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	private Rel(final int value, final boolean friend, final String descPlayerOne, final String descPlayerMany, final String descFactionOne, final String descFactionMany)
+	private Rel(String descPlayerOne, String descPlayerMany, String descFactionOne, String descFactionMany, String... names)
 	{
-		this.value = value;
-		this.friend = friend;
 		this.descPlayerOne = descPlayerOne;
 		this.descPlayerMany = descPlayerMany;
 		this.descFactionOne = descFactionOne;
 		this.descFactionMany = descFactionMany;
+		this.names = Collections.unmodifiableSet(new MassiveSet<String>(names));
 	}
 	
 	// -------------------------------------------- //
@@ -67,27 +92,33 @@ public enum Rel
 	
 	public boolean isAtLeast(Rel rel)
 	{
-		return this.value >= rel.value;
+		return this.getValue() >= rel.getValue();
 	}
 	
 	public boolean isAtMost(Rel rel)
 	{
-		return this.value <= rel.value;
+		return this.getValue() <= rel.getValue();
 	}
 	
 	public boolean isLessThan(Rel rel)
 	{
-		return this.value < rel.value;
+		return this.getValue() < rel.getValue();
 	}
 	
 	public boolean isMoreThan(Rel rel)
 	{
-		return this.value > rel.value;
+		return this.getValue() > rel.getValue();
 	}
 	
 	public boolean isRank()
 	{
 		return this.isAtLeast(Rel.RECRUIT);
+	}
+	
+	// Used for friendly fire.
+	public boolean isFriend()
+	{
+		return this.isAtLeast(TRUCE);
 	}
 	
 	public ChatColor getColor()

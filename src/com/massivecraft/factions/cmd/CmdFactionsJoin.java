@@ -98,7 +98,7 @@ public class CmdFactionsJoin extends FactionsCommand
 			return;
 		}
 
-		if( ! (faction.getFlag(MFlag.getFlagOpen()) || faction.isInvited(mplayer) || msender.isUsingAdminMode()))
+		if( ! (faction.getFlag(MFlag.getFlagOpen()) || faction.isInvited(mplayer) || msender.isOverriding()))
 		{
 			msg("<i>This faction requires invitation.");
 			if (samePlayer)

@@ -165,7 +165,7 @@ public class CmdFactionsRank extends FactionsCommand
 	private void ensureAllowed() throws MassiveException
 	{
 		// People with permission don't follow the normal rules.
-		if (msender.isUsingAdminMode()) return;
+		if (msender.isOverriding()) return;
 		
 		// If somone gets the leadership of wilderness (Which has happened before).
 		// We can at least try to limit their powers.

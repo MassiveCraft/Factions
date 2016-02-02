@@ -43,7 +43,7 @@ public class CmdFactionsFlagList extends FactionsCommand
 		
 		for (MFlag flag : MFlag.getAll())
 		{
-			if ( ! flag.isVisible() && ! msender.isUsingAdminMode()) continue;
+			if ( ! flag.isVisible() && ! msender.isOverriding()) continue;
 			messages.add(flag.getStateDesc(false, false, true, true, true, false));
 		}
 		

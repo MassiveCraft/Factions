@@ -42,7 +42,7 @@ public abstract class CmdFactionsSetXRadius extends CmdFactionsSetX
 		}
 		
 		// Radius Claim Max
-		if (radius > MConf.get().setRadiusMax && ! msender.isUsingAdminMode())
+		if (radius > MConf.get().setRadiusMax && ! msender.isOverriding())
 		{
 			msg("<b>The maximum radius allowed is <h>%s<b>.", MConf.get().setRadiusMax);
 			return null;

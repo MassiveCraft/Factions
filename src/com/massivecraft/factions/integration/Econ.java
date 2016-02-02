@@ -31,7 +31,7 @@ public class Econ
 		if (!isEnabled()) return true;
 		if (cost == 0D) return true;
 		
-		if (usender.isUsingAdminMode()) return true;
+		if (usender.isOverriding()) return true;
 		
 		Faction usenderFaction = usender.getFaction();
 		
@@ -72,7 +72,7 @@ public class Econ
 		if (me == null) return true;
 		
 		// Always accept when in admin mode.
-		if (me instanceof MPlayer && ((MPlayer)me).isUsingAdminMode()) return true;
+		if (me instanceof MPlayer && ((MPlayer)me).isOverriding()) return true;
 		
 		// Always accept control of self
 		if (me == you) return true;

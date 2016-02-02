@@ -47,7 +47,7 @@ public class CmdFactionsFlagSet extends FactionsCommand
 		if ( ! MPerm.getPermFlags().has(msender, faction, true)) return;
 		
 		// Is this flag editable?
-		if (!msender.isUsingAdminMode() && ! flag.isEditable())
+		if (!msender.isOverriding() && ! flag.isEditable())
 		{
 			msg("<b>The flag <h>%s <b>is not editable.", flag.getName());
 			return;

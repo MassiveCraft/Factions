@@ -43,7 +43,7 @@ public class CmdFactionsPermList extends FactionsCommand
 		
 		for (MPerm perm : MPerm.getAll())
 		{
-			if ( ! perm.isVisible() && ! msender.isUsingAdminMode()) continue;
+			if ( ! perm.isVisible() && ! msender.isOverriding()) continue;
 			messages.add(perm.getDesc(true, true));
 		}
 		
