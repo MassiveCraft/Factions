@@ -11,10 +11,10 @@ import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.FactionColl;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.entity.MPlayerColl;
-import com.massivecraft.massivecore.CaseInsensitiveComparator;
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.command.type.TypeAbstract;
+import com.massivecraft.massivecore.comparator.ComparatorCaseInsensitive;
 import com.massivecraft.massivecore.util.IdUtil;
 
 public class TypeFaction extends TypeAbstract<Faction>
@@ -78,7 +78,7 @@ public class TypeFaction extends TypeAbstract<Faction>
 	@Override
 	public Collection<String> getTabList(CommandSender sender, String arg)
 	{
-		Set<String> ret = new TreeSet<String>(CaseInsensitiveComparator.get());
+		Set<String> ret = new TreeSet<String>(ComparatorCaseInsensitive.get());
 		
 		for (Faction faction : FactionColl.get().getAll())
 		{

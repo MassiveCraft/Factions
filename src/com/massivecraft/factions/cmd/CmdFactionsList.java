@@ -11,13 +11,13 @@ import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.FactionColl;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.Predicate;
-import com.massivecraft.massivecore.PredicateAnd;
-import com.massivecraft.massivecore.PredicateVisibleTo;
 import com.massivecraft.massivecore.command.Parameter;
 import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.pager.Pager;
 import com.massivecraft.massivecore.pager.Stringifier;
+import com.massivecraft.massivecore.predicate.Predicate;
+import com.massivecraft.massivecore.predicate.PredicateAnd;
+import com.massivecraft.massivecore.predicate.PredicateVisibleTo;
 import com.massivecraft.massivecore.store.SenderColl;
 import com.massivecraft.massivecore.util.Txt;
 

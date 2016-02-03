@@ -13,10 +13,10 @@ import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.TerritoryAccess;
 import com.massivecraft.factions.event.EventFactionsCreatePerms;
 import com.massivecraft.massivecore.Named;
-import com.massivecraft.massivecore.PredicateIsRegistered;
 import com.massivecraft.massivecore.Prioritized;
-import com.massivecraft.massivecore.PriorityComparator;
 import com.massivecraft.massivecore.Registerable;
+import com.massivecraft.massivecore.comparator.ComparatorPriority;
+import com.massivecraft.massivecore.predicate.PredicateIsRegistered;
 import com.massivecraft.massivecore.ps.PS;
 import com.massivecraft.massivecore.store.Entity;
 import com.massivecraft.massivecore.util.MUtil;
@@ -99,7 +99,7 @@ public class MPerm extends Entity<MPerm> implements Prioritized, Registerable, N
 		setupStandardPerms();
 		new EventFactionsCreatePerms().run();
 		
-		return MPermColl.get().getAll(PredicateIsRegistered.get(), PriorityComparator.get());
+		return MPermColl.get().getAll(PredicateIsRegistered.get(), ComparatorPriority.get());
 	}
 	
 	public static void setupStandardPerms()

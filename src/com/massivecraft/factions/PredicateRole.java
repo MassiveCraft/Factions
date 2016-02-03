@@ -1,7 +1,7 @@
 package com.massivecraft.factions;
 
 import com.massivecraft.factions.entity.MPlayer;
-import com.massivecraft.massivecore.Predicate;
+import com.massivecraft.massivecore.predicate.Predicate;
 
 public class PredicateRole implements Predicate<MPlayer>
 {
