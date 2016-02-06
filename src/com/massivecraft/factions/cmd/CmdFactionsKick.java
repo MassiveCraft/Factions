@@ -6,16 +6,15 @@ import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.cmd.type.TypeMPlayer;
+import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.FactionColl;
+import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.factions.entity.MPlayer;
-import com.massivecraft.factions.entity.Faction;
-import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.event.EventFactionsMembershipChange;
 import com.massivecraft.factions.event.EventFactionsMembershipChange.MembershipChangeReason;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
-import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.util.IdUtil;
 
 public class CmdFactionsKick extends FactionsCommand
@@ -50,20 +49,23 @@ public class CmdFactionsKick extends FactionsCommand
 		if (msender == mplayer)
 		{
 			msg("<b>You can't kick yourself.");
-			message(Mson.mson(mson("You might want to: ").color(ChatColor.YELLOW), Factions.get().getOuterCmdFactions().cmdFactionsLeave.getTemplate(false)));
+			message(mson(mson("You might want to: ").color(ChatColor.YELLOW), Factions.get().getOuterCmdFactions().cmdFactionsLeave.getTemplate(false)));
 			return;
 		}
 		
-		if (mplayer.getRole() == Rel.LEADER && !(this.senderIsConsole || msender.isOverriding()))
+		if (mplayer.getRole() == Rel.LEADER && !msender.isOverriding())
 		{
-			msg("<b>The leader can not be kicked.");
-			return;
+			throw new MassiveException().addMsg("<b>The leader cannot be kicked.");
 		}
 		
-		if (mplayer.getRole().compareTo(msender.getRole()) < 0 && !(this.senderIsConsole || msender.isOverriding()))
+		if (mplayer.getRole().isMoreThan(msender.getRole()) && ! msender.isOverriding())
 		{
-			msg("<b>You can't kick people of higher rank than yourself.");
-			return;
+			throw new MassiveException().addMsg("<b>You can't kick people of higher rank than yourself.");
+		}
+		
+		if (mplayer.getRole() == msender.getRole() && ! msender.isOverriding())
+		{
+			throw new MassiveException().addMsg("<b>You can't kick people of the same rank as yourself.");
 		}
 
 		if ( ! MConf.get().canLeaveWithNegativePower && mplayer.getPower() < 0 && ! msender.isOverriding())
