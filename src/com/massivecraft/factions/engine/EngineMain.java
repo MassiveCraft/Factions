@@ -12,7 +12,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.regex.Pattern;
 import java.util.Set;
 
 import org.bukkit.Bukkit;
@@ -1429,7 +1428,7 @@ public class EngineMain extends EngineAbstract
 	{
 		if (!event.canBuild()) return;
 
-		boolean verboose = ! MUtil.isFakeEvent(event);
+		boolean verboose = ! isFake(event);
 
 		if (canPlayerBuildAt(event.getPlayer(), PS.valueOf(event.getBlock()), verboose)) return;
 		
@@ -1440,7 +1439,7 @@ public class EngineMain extends EngineAbstract
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void blockBuild(BlockBreakEvent event)
 	{
-		boolean verboose = ! MUtil.isFakeEvent(event);
+		boolean verboose = ! isFake(event);
 
 		if (canPlayerBuildAt(event.getPlayer(), PS.valueOf(event.getBlock()), verboose)) return;
 		
@@ -1450,9 +1449,9 @@ public class EngineMain extends EngineAbstract
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void blockBuild(BlockDamageEvent event)
 	{
-		if (!event.getInstaBreak()) return;
+		if ( ! event.getInstaBreak()) return;
 
-		boolean verboose = ! MUtil.isFakeEvent(event);
+		boolean verboose = ! isFake(event);
 
 		if (canPlayerBuildAt(event.getPlayer(), PS.valueOf(event.getBlock()), verboose)) return;
 		
@@ -1521,7 +1520,7 @@ public class EngineMain extends EngineAbstract
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void blockBuild(HangingPlaceEvent event)
 	{
-		boolean verboose = ! MUtil.isFakeEvent(event);
+		boolean verboose = ! isFake(event);
 
 		if (canPlayerBuildAt(event.getPlayer(), PS.valueOf(event.getEntity().getLocation()), verboose)) return;
 		
@@ -1537,7 +1536,7 @@ public class EngineMain extends EngineAbstract
 		Entity breaker = entityEvent.getRemover();
 		if (MUtil.isntPlayer(breaker)) return;
 
-		boolean verboose = ! MUtil.isFakeEvent(event);
+		boolean verboose = ! isFake(event);
 
 		if ( ! canPlayerBuildAt(breaker, PS.valueOf(event.getEntity().getLocation()), verboose))
 		{
