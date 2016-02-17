@@ -93,6 +93,10 @@ public class EngineEcon extends EngineAbstract
 		Faction faction = event.getFaction();
 	
 		double amount = Money.get(faction);
+	
+		// Check that there is an amount
+		if (amount == 0) return;
+
 		String amountString = Money.format(amount);
 		
 		Econ.transferMoney(faction, mplayer, mplayer, amount, true);
