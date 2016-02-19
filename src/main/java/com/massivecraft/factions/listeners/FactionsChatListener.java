@@ -24,7 +24,7 @@ public class FactionsChatListener implements Listener {
     }
 
     // this is for handling slashless command usage and faction/alliance chat, set at lowest priority so Factions gets to them first
-    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onPlayerEarlyChat(AsyncPlayerChatEvent event) {
         Player talkingPlayer = event.getPlayer();
         String msg = event.getMessage();
