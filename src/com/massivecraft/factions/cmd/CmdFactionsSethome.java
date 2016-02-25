@@ -1,6 +1,5 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.cmd.type.TypeFaction;
 import com.massivecraft.factions.entity.Faction;
@@ -63,7 +62,7 @@ public class CmdFactionsSethome extends FactionsCommandHome
 		
 		// Inform
 		faction.msg("%s<i> set the home for your faction. You can now use:", msender.describeTo(msenderFaction, true));
-		faction.sendMessage(Factions.get().getOuterCmdFactions().cmdFactionsHome.getTemplate());
+		faction.sendMessage(CmdFactions.get().cmdFactionsHome.getTemplate());
 		if (faction != msenderFaction)
 		{
 			msender.msg("<i>You have set the home for " + faction.getName(msender) + "<i>.");

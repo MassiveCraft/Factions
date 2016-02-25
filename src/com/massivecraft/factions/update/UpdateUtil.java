@@ -48,7 +48,7 @@ public class UpdateUtil
 		Factions.get().log("Updating Database to New Version!");
 		
 		// ... load the old uconf data ...
-		OldConfColls.get().init();
+		OldConfColls.get().setActive(true);
 		OldConf oldConf = OldConfColls.get().getForUniverse(universe).get(MassiveCore.INSTANCE, true);
 		
 		// ... transfer the old uconf data over to the new mconf ...

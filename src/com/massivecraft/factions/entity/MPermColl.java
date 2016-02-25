@@ -37,9 +37,10 @@ public class MPermColl extends Coll<MPerm>
 	// -------------------------------------------- //
 	
 	@Override
-	public void init()
+	public void setActive(boolean active)
 	{
-		super.init();
+		super.setActive(active);
+		if ( ! active) return;
 		MPerm.setupStandardPerms();
 	}
 	

@@ -1,8 +1,5 @@
 package com.massivecraft.factions.task;
 
-import org.bukkit.plugin.Plugin;
-
-import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.entity.FactionColl;
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.massivecore.MassiveCore;
@@ -17,16 +14,6 @@ public class TaskEconLandReward extends ModuloRepeatTask
 	
 	private static TaskEconLandReward i = new TaskEconLandReward();
 	public static TaskEconLandReward get() { return i; }
-	
-	// -------------------------------------------- //
-	// OVERRIDE: MODULO REPEAT TASK
-	// -------------------------------------------- //
-	
-	@Override
-	public Plugin getPlugin()
-	{
-		return Factions.get();
-	}
 	
 	@Override
 	public long getDelayMillis()

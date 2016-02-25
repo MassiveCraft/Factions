@@ -7,10 +7,10 @@ import java.util.Set;
 
 import org.bukkit.entity.Player;
 
-import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.TerritoryAccess;
+import com.massivecraft.factions.cmd.CmdFactions;
 import com.massivecraft.factions.event.EventFactionsCreatePerms;
 import com.massivecraft.massivecore.Named;
 import com.massivecraft.massivecore.Prioritized;
@@ -298,7 +298,7 @@ public class MPerm extends Entity<MPerm> implements Prioritized, Registerable, N
 		Player player = mplayer.getPlayer();
 		if (player != null && Perm.OVERRIDE.has(player))
 		{
-			ret += Txt.parse("\n<i>You can bypass by using " + Factions.get().getOuterCmdFactions().cmdFactionsOverride.getTemplate(false).toPlain(true));
+			ret += Txt.parse("\n<i>You can bypass by using " + CmdFactions.get().cmdFactionsOverride.getTemplate(false).toPlain(true));
 		}
 		
 		return ret;

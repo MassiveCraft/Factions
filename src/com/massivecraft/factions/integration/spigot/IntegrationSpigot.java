@@ -1,19 +1,19 @@
-package com.massivecraft.factions.integration.lwc;
+package com.massivecraft.factions.integration.spigot;
 
 import com.massivecraft.massivecore.Engine;
 import com.massivecraft.massivecore.Integration;
 
-public class IntegrationLwc extends Integration
+public class IntegrationSpigot extends Integration
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static IntegrationLwc i = new IntegrationLwc();
-	public static IntegrationLwc get() { return i; }
-	private IntegrationLwc()
+	private static IntegrationSpigot i = new IntegrationSpigot();
+	public static IntegrationSpigot get() { return i; }
+	private IntegrationSpigot()
 	{
-		this.setPluginName("LWC");
+		this.setPredicate(PredicateSpigot.get());
 	}
 	
 	// -------------------------------------------- //
@@ -23,7 +23,7 @@ public class IntegrationLwc extends Integration
 	@Override
 	public Engine getEngine()
 	{
-		return EngineLwc.get();
+		return EngineSpigot.get();
 	}
 	
 }

@@ -7,14 +7,11 @@ import java.util.Map;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.plugin.Plugin;
-
-import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.entity.MFlag;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.event.EventFactionsChunksChange;
-import com.massivecraft.massivecore.EngineAbstract;
+import com.massivecraft.massivecore.Engine;
 import com.massivecraft.massivecore.ps.PS;
 import com.sk89q.worldedit.BlockVector;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
@@ -22,7 +19,7 @@ import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 
-public class EngineWorldGuard extends EngineAbstract
+public class EngineWorldGuard extends Engine
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -30,7 +27,6 @@ public class EngineWorldGuard extends EngineAbstract
 	
 	private static EngineWorldGuard i = new EngineWorldGuard();
 	public static EngineWorldGuard get() { return i; }
-	private EngineWorldGuard() {}
 	
 	// -------------------------------------------- //
 	// FIELDS
@@ -43,25 +39,16 @@ public class EngineWorldGuard extends EngineAbstract
 	// -------------------------------------------- //
 	
 	@Override
-	public Plugin getPlugin()
+	public void setActiveInner(boolean active)
 	{
-		return Factions.get();
-	}
-	
-	@Override
-	public void activate()
-	{
-		this.worldGuard = (WorldGuardPlugin) Bukkit.getPluginManager().getPlugin("WorldGuard");
-		
-		super.activate();
-	}
-	
-	@Override
-	public void deactivate()
-	{		
-		this.worldGuard = null;
-		
-		super.deactivate();
+		if (active)
+		{
+			this.worldGuard = (WorldGuardPlugin) Bukkit.getPluginManager().getPlugin("WorldGuard");
+		}
+		else
+		{
+			this.worldGuard = null;
+		}
 	}
 	
 	// -------------------------------------------- //

@@ -11,6 +11,13 @@ import com.massivecraft.massivecore.command.VersionCommand;
 public class CmdFactions extends FactionsCommand
 {
 	// -------------------------------------------- //
+	// INSTANCE
+	// -------------------------------------------- //
+	
+	private static CmdFactions i = new CmdFactions();
+	public static CmdFactions get() { return i; }
+	
+	// -------------------------------------------- //
 	// FIELDS
 	// -------------------------------------------- //
 	

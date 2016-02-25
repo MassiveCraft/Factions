@@ -4,7 +4,6 @@ import java.util.Collection;
 
 import org.bukkit.ChatColor;
 
-import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.cmd.type.TypeMPlayer;
 import com.massivecraft.factions.entity.MPerm;
@@ -77,7 +76,7 @@ public class CmdFactionsInviteAdd extends FactionsCommand
 			else
 			{
 				// Mson
-				String command = Factions.get().getOuterCmdFactions().cmdFactionsInvite.cmdFactionsInviteRemove.getCommandLine(mplayer.getName());
+				String command = CmdFactions.get().cmdFactionsInvite.cmdFactionsInviteRemove.getCommandLine(mplayer.getName());
 				String tooltip = Txt.parse("<i>Click to <c>%s<i>.", command);
 				
 				Mson remove = Mson.mson(

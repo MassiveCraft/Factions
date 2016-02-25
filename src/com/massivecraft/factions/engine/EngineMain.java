@@ -65,7 +65,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.projectiles.ProjectileSource;
 
 import com.massivecraft.factions.Const;
@@ -89,9 +88,9 @@ import com.massivecraft.factions.event.EventFactionsPowerChange;
 import com.massivecraft.factions.event.EventFactionsPowerChange.PowerChangeReason;
 import com.massivecraft.factions.event.EventFactionsPvpDisallowed;
 import com.massivecraft.factions.integration.Econ;
-import com.massivecraft.factions.spigot.SpigotFeatures;
+import com.massivecraft.factions.integration.spigot.IntegrationSpigot;
 import com.massivecraft.factions.util.VisualizeUtil;
-import com.massivecraft.massivecore.EngineAbstract;
+import com.massivecraft.massivecore.Engine;
 import com.massivecraft.massivecore.PriorityLines;
 import com.massivecraft.massivecore.collections.MassiveSet;
 import com.massivecraft.massivecore.event.EventMassiveCorePlayerLeave;
@@ -104,7 +103,7 @@ import com.massivecraft.massivecore.util.TimeDiffUtil;
 import com.massivecraft.massivecore.util.TimeUnit;
 import com.massivecraft.massivecore.util.Txt;
 
-public class EngineMain extends EngineAbstract
+public class EngineMain extends Engine
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -112,17 +111,6 @@ public class EngineMain extends EngineAbstract
 	
 	private static EngineMain i = new EngineMain();
 	public static EngineMain get() { return i; }
-	public EngineMain() {}
-	
-	// -------------------------------------------- //
-	// OVERRIDE
-	// -------------------------------------------- //
-	
-	@Override
-	public Plugin getPlugin()
-	{
-		return Factions.get();
-	}
 	
 	// -------------------------------------------- //
 	// CONSTANTS
@@ -1462,7 +1450,7 @@ public class EngineMain extends EngineAbstract
 	public void blockBuild(BlockPistonExtendEvent event)
 	{
 		// Is using Spigot or is checking deactivated by MConf?
-		if (SpigotFeatures.isActive() || ! MConf.get().handlePistonProtectionThroughDenyBuild) return;
+		if (IntegrationSpigot.get().isIntegrationActive() || ! MConf.get().handlePistonProtectionThroughDenyBuild) return;
 		
 		Block block = event.getBlock();
 		
@@ -1494,7 +1482,7 @@ public class EngineMain extends EngineAbstract
 	public void blockBuild(BlockPistonRetractEvent event)
 	{	
 		// Is using Spigot or is checking deactivated by MConf?
-		if (SpigotFeatures.isActive() || ! MConf.get().handlePistonProtectionThroughDenyBuild) return;
+		if (IntegrationSpigot.get().isIntegrationActive() || ! MConf.get().handlePistonProtectionThroughDenyBuild) return;
 				
 		// If not a sticky piston, retraction should be fine
 		if ( ! event.isSticky()) return;

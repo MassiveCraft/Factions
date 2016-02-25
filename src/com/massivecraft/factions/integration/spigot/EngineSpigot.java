@@ -1,4 +1,4 @@
-package com.massivecraft.factions.spigot;
+package com.massivecraft.factions.integration.spigot;
 
 import java.util.List;
 
@@ -11,20 +11,17 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockPistonExtendEvent;
 import org.bukkit.event.block.BlockPistonRetractEvent;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
-import org.bukkit.plugin.Plugin;
-
-import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.engine.EngineMain;
 import com.massivecraft.factions.entity.BoardColl;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.entity.MPerm;
-import com.massivecraft.massivecore.EngineAbstract;
+import com.massivecraft.massivecore.Engine;
 import com.massivecraft.massivecore.ps.PS;
 import com.massivecraft.massivecore.util.MUtil;
 
 
-public class EngineSpigot extends EngineAbstract
+public class EngineSpigot extends Engine
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -32,31 +29,6 @@ public class EngineSpigot extends EngineAbstract
 	
 	private static EngineSpigot i = new EngineSpigot();
 	public static EngineSpigot get() { return i; }
-	private EngineSpigot() {}
-	
-	// -------------------------------------------- //
-	// OVERRIDE
-	// -------------------------------------------- //
-	
-	@Override
-	public Plugin getPlugin()
-	{
-		return Factions.get();
-	}
-	
-	@Override
-	public void activate()
-	{
-		super.activate();
-		SpigotFeatures.setActive(true);
-	}
-	
-	@Override
-	public void deactivate()
-	{
-		super.deactivate();
-		SpigotFeatures.setActive(false);
-	}
 	
 	// -------------------------------------------- //
 	// LISTENER

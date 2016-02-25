@@ -1,19 +1,14 @@
 package com.massivecraft.factions.integration.herochat;
 
-import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.HandlerList;
-import org.bukkit.event.Listener;
-
 import com.dthielke.herochat.ChannelChatEvent;
 import com.dthielke.herochat.Herochat;
-import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.chat.ChatFormatter;
 import com.massivecraft.factions.entity.MConf;
+import com.massivecraft.massivecore.Engine;
 
-
-public class EngineHerochat implements Listener
+public class EngineHerochat extends Engine
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -21,23 +16,18 @@ public class EngineHerochat implements Listener
 	
 	private static EngineHerochat i = new EngineHerochat();
 	public static EngineHerochat get() { return i; }
-	private EngineHerochat() {}
 	
 	// -------------------------------------------- //
 	// ACTIVATE & DEACTIVATE
 	// -------------------------------------------- //
 	
-	public void activate()
+	@Override
+	public void setActiveInner(boolean active)
 	{
+		if ( ! active) return;
+		
 		Herochat.getChannelManager().addChannel(new ChannelFactionsFaction());
 		Herochat.getChannelManager().addChannel(new ChannelFactionsAllies());
-		
-		Bukkit.getPluginManager().registerEvents(this, Factions.get());
-	}
-	
-	public void deactivate()
-	{
-		HandlerList.unregisterAll(this);
 	}
 	
 	// -------------------------------------------- //

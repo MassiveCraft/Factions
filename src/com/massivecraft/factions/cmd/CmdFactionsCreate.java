@@ -84,7 +84,7 @@ public class CmdFactionsCreate extends FactionsCommand
 		
 		// Inform
 		msg("<i>You created the faction %s", faction.getName(msender));
-		message(Mson.mson(mson("You should now: ").color(ChatColor.YELLOW), Factions.get().getOuterCmdFactions().cmdFactionsDescription.getTemplate()));
+		message(Mson.mson(mson("You should now: ").color(ChatColor.YELLOW), CmdFactions.get().cmdFactionsDescription.getTemplate()));
 
 		// Log
 		if (MConf.get().logFactionCreate)

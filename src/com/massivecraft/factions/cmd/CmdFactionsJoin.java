@@ -60,7 +60,7 @@ public class CmdFactionsJoin extends FactionsCommand
 
 		if (faction == mplayerFaction)
 		{
-			String command = Factions.get().getOuterCmdFactions().cmdFactionsKick.getCommandLine(mplayer.getName());
+			String command = CmdFactions.get().cmdFactionsKick.getCommandLine(mplayer.getName());
 			
 			// Mson creation
 			Mson alreadyMember = Mson.mson(
@@ -80,7 +80,7 @@ public class CmdFactionsJoin extends FactionsCommand
 
 		if (mplayerFaction.isNormal())
 		{
-			String command = Factions.get().getOuterCmdFactions().cmdFactionsLeave.getCommandLine(mplayer.getName());
+			String command = CmdFactions.get().cmdFactionsLeave.getCommandLine(mplayer.getName());
 			
 			// Mson creation
 			Mson leaveFirst = Mson.mson(

@@ -1,8 +1,9 @@
 package com.massivecraft.factions.integration.worldguard;
 
-import com.massivecraft.massivecore.integration.IntegrationAbstract;
+import com.massivecraft.massivecore.Engine;
+import com.massivecraft.massivecore.Integration;
 
-public class IntegrationWorldGuard extends IntegrationAbstract
+public class IntegrationWorldGuard extends Integration
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -10,22 +11,19 @@ public class IntegrationWorldGuard extends IntegrationAbstract
 	
 	private static IntegrationWorldGuard i = new IntegrationWorldGuard();
 	public static IntegrationWorldGuard get() { return i; }
-	private IntegrationWorldGuard() { super("WorldGuard"); }
+	private IntegrationWorldGuard()
+	{
+		this.setPluginName("WorldGuard");
+	}
 	
 	// -------------------------------------------- //
 	// OVERRIDE
 	// -------------------------------------------- //
 	
 	@Override
-	public void activate()
+	public Engine getEngine()
 	{
-		EngineWorldGuard.get().activate();
-	}
-	
-	@Override
-	public void deactivate()
-	{
-		EngineWorldGuard.get().deactivate();
+		return EngineWorldGuard.get();
 	}
 	
 }

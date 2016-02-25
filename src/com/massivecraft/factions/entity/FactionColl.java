@@ -39,9 +39,11 @@ public class FactionColl extends Coll<Faction>
 	// -------------------------------------------- //
 	
 	@Override
-	public void init()
+	public void setActive(boolean active)
 	{
-		super.init();
+		super.setActive(active);
+		
+		if ( ! active) return;
 		
 		this.createSpecialFactions();
 	}

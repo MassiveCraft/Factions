@@ -1,6 +1,5 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.cmd.req.ReqHasFaction;
@@ -88,10 +87,10 @@ public abstract class CmdFactionsRelationAbstract extends FactionsCommand
 		else
 		{
 			MassiveCommand relationshipCommand = null;
-			if (newRelation.equals(Rel.NEUTRAL)) relationshipCommand = Factions.get().getOuterCmdFactions().cmdFactionsRelationNeutral;
-			else if (newRelation.equals(Rel.TRUCE)) relationshipCommand = Factions.get().getOuterCmdFactions().cmdFactionsRelationTruce;
-			else if (newRelation.equals(Rel.ALLY)) relationshipCommand = Factions.get().getOuterCmdFactions().cmdFactionsRelationAlly;
-			else if (newRelation.equals(Rel.ENEMY)) relationshipCommand = Factions.get().getOuterCmdFactions().cmdFactionsRelationEnemy;
+			if (newRelation.equals(Rel.NEUTRAL)) relationshipCommand = CmdFactions.get().cmdFactionsRelationNeutral;
+			else if (newRelation.equals(Rel.TRUCE)) relationshipCommand = CmdFactions.get().cmdFactionsRelationTruce;
+			else if (newRelation.equals(Rel.ALLY)) relationshipCommand = CmdFactions.get().cmdFactionsRelationAlly;
+			else if (newRelation.equals(Rel.ENEMY)) relationshipCommand = CmdFactions.get().cmdFactionsRelationEnemy;
 			
 			String command = relationshipCommand.getCommandLine(msenderFaction.getName());
 			String tooltip = Txt.parse("<g>Click to <c>%s<i>.", command);

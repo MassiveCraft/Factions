@@ -42,8 +42,8 @@ public class MConf extends Entity<MConf>
 		
 		if (!Factions.get().isDatabaseInitialized()) return this;
 		
-		EngineChat.get().deactivate();
-		EngineChat.get().activate();
+		EngineChat.get().setActive(false);
+		EngineChat.get().setActive(true);
 		
 		return this;
 	}

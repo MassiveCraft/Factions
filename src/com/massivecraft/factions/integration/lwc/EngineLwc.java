@@ -8,7 +8,6 @@ import java.util.Set;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.plugin.Plugin;
 
 import com.griefcraft.lwc.LWC;
 import com.griefcraft.model.Protection;
@@ -19,12 +18,12 @@ import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.event.EventFactionsChunksChange;
 import com.massivecraft.factions.event.EventFactionsChunkChangeType;
-import com.massivecraft.massivecore.EngineAbstract;
+import com.massivecraft.massivecore.Engine;
 import com.massivecraft.massivecore.ps.PS;
 import com.massivecraft.massivecore.util.IdUtil;
 
 
-public class EngineLwc extends EngineAbstract
+public class EngineLwc extends Engine
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -32,30 +31,22 @@ public class EngineLwc extends EngineAbstract
 	
 	private static EngineLwc i = new EngineLwc();
 	public static EngineLwc get() { return i; }
-	private EngineLwc() {}
 	
 	// -------------------------------------------- //
 	// OVERRIDE
 	// -------------------------------------------- //
 	
 	@Override
-	public Plugin getPlugin()
+	public void setActiveInner(boolean active)
 	{
-		return Factions.get();
-	}
-	
-	@Override
-	public void activate()
-	{
-		super.activate();
-		LWC.getInstance().getModuleLoader().registerModule(Factions.get(), new FactionsLwcModule(Factions.get()));
-	}
-	
-	@Override
-	public void deactivate()
-	{
-		super.deactivate();
-		LWC.getInstance().getModuleLoader().removeModules(Factions.get());
+		if (active)
+		{
+			LWC.getInstance().getModuleLoader().registerModule(Factions.get(), new FactionsLwcModule(Factions.get()));
+		}
+		else
+		{
+			LWC.getInstance().getModuleLoader().removeModules(Factions.get());
+		}
 	}
 	
 	// -------------------------------------------- //

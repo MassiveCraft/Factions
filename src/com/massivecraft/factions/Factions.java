@@ -36,10 +36,10 @@ import com.massivecraft.factions.entity.MPlayerColl;
 import com.massivecraft.factions.entity.MConfColl;
 import com.massivecraft.factions.integration.herochat.IntegrationHerochat;
 import com.massivecraft.factions.integration.lwc.IntegrationLwc;
+import com.massivecraft.factions.integration.spigot.IntegrationSpigot;
 import com.massivecraft.factions.integration.worldguard.IntegrationWorldGuard;
 import com.massivecraft.factions.mixin.PowerMixin;
 import com.massivecraft.factions.mixin.PowerMixinDefault;
-import com.massivecraft.factions.spigot.SpigotFeatures;
 import com.massivecraft.factions.task.TaskFlagPermCreate;
 import com.massivecraft.factions.task.TaskPlayerDataRemove;
 import com.massivecraft.factions.task.TaskEconLandReward;
@@ -75,15 +75,17 @@ public class Factions extends MassivePlugin
 	
 	private static Factions i;
 	public static Factions get() { return i; }
-	public Factions() { Factions.i = this; }
+	public Factions()
+	{
+		Factions.i = this;
+		
+		// Version Synchronized
+		this.setVersionSynchronized(true);
+	}
 	
 	// -------------------------------------------- //
 	// FIELDS
 	// -------------------------------------------- //
-	
-	// Commands
-	private CmdFactions outerCmdFactions;
-	public CmdFactions getOuterCmdFactions() { return this.outerCmdFactions; }
 	
 	// Aspects
 	// TODO: Remove in the future when the update has been removed.
@@ -108,13 +110,8 @@ public class Factions extends MassivePlugin
 	// -------------------------------------------- //
 	
 	@Override
-	public void onEnable()
+	public void onEnableInner()
 	{
-		if ( ! preEnable()) return;
-		
-		// Version Synchronized
-		this.setVersionSynchronized(true);
-		
 		// Initialize Aspects
 		this.aspect = AspectColl.get().get(Const.ASPECT, true);
 		this.aspect.register();
@@ -129,47 +126,47 @@ public class Factions extends MassivePlugin
 
 		// Initialize Database
 		this.databaseInitialized = false;
-		MFlagColl.get().init();
-		MPermColl.get().init();
-		MConfColl.get().init();
+		MFlagColl.get().setActive(true);
+		MPermColl.get().setActive(true);
+		MConfColl.get().setActive(true);
 		
 		UpdateUtil.update();
 		
-		MPlayerColl.get().init();
-		FactionColl.get().init();
-		BoardColl.get().init();
+		MPlayerColl.get().setActive(true);
+		FactionColl.get().setActive(true);
+		BoardColl.get().setActive(true);
 		
 		UpdateUtil.updateSpecialIds();
 		
 		FactionColl.get().reindexMPlayers();
 		this.databaseInitialized = true;
 		
-		// Commands
-		this.outerCmdFactions = new CmdFactions();
-		this.outerCmdFactions.register(this);
-
-		// Engines
-		EngineMain.get().activate();
-		EngineChat.get().activate();
-		EngineExploit.get().activate();
-		EngineSeeChunk.get().activate();
-		EngineEcon.get().activate(); // TODO: Take an extra look and make sure all economy stuff is handled using events. 
+		// Activate
+		this.activate(
+			// Command
+			CmdFactions.get(),
 		
-		// Integrate
-		this.integrate(
+			// Engines
+			EngineMain.get(),
+			EngineChat.get(),
+			EngineExploit.get(),
+			EngineSeeChunk.get(),
+			EngineEcon.get(), // TODO: Take an extra look and make sure all economy stuff is handled using events. 
+			
+			// Integrate
 			IntegrationHerochat.get(),
 			IntegrationLwc.get(),
-			IntegrationWorldGuard.get()
+			IntegrationWorldGuard.get(),
+			
+			// Spigot
+			IntegrationSpigot.get(),
+			
+			// Modulo Repeat Tasks
+			TaskPlayerPowerUpdate.get(),
+			TaskPlayerDataRemove.get(),
+			TaskEconLandReward.get(),
+			TaskFlagPermCreate.get()
 		);
-		
-		// Spigot
-		SpigotFeatures.activate();
-		
-		// Modulo Repeat Tasks
-		TaskPlayerPowerUpdate.get().activate();
-		TaskPlayerDataRemove.get().activate();
-		TaskEconLandReward.get().activate();
-		TaskFlagPermCreate.get().activate();
 		
 		// Register built in chat modifiers
 		ChatModifierLc.get().register();

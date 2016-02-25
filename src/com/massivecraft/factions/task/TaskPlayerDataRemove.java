@@ -1,8 +1,5 @@
 package com.massivecraft.factions.task;
 
-import org.bukkit.plugin.Plugin;
-
-import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.entity.MPlayerColl;
 import com.massivecraft.massivecore.MassiveCore;
@@ -21,12 +18,6 @@ public class TaskPlayerDataRemove extends ModuloRepeatTask
 	// -------------------------------------------- //
 	// OVERRIDE: MODULO REPEAT TASK
 	// -------------------------------------------- //
-	
-	@Override
-	public Plugin getPlugin()
-	{
-		return Factions.get();
-	}
 	
 	@Override
 	public long getDelayMillis()

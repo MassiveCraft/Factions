@@ -10,19 +10,16 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
-import org.bukkit.plugin.Plugin;
-
-import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.entity.MPlayer;
-import com.massivecraft.massivecore.EngineAbstract;
+import com.massivecraft.massivecore.Engine;
 import com.massivecraft.massivecore.event.EventMassiveCorePlayerLeave;
 import com.massivecraft.massivecore.particleeffect.ParticleEffect;
 import com.massivecraft.massivecore.ps.PS;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.PeriodUtil;
 
-public class EngineSeeChunk extends EngineAbstract
+public class EngineSeeChunk extends Engine
 {	
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -30,22 +27,9 @@ public class EngineSeeChunk extends EngineAbstract
 	
 	private static EngineSeeChunk i = new EngineSeeChunk();
 	public static EngineSeeChunk get() { return i; }
-	public EngineSeeChunk() {}
-	
-	// -------------------------------------------- //
-	// OVERRIDE
-	// -------------------------------------------- //
-	
-	@Override
-	public Plugin getPlugin()
+	public EngineSeeChunk()
 	{
-		return Factions.get();
-	}
-	
-	@Override
-	public Long getPeriod()
-	{
-		return 1L;
+		this.setPeriod(1L);
 	}
 	
 	// -------------------------------------------- //

@@ -1,8 +1,9 @@
 package com.massivecraft.factions.integration.herochat;
 
-import com.massivecraft.massivecore.integration.IntegrationAbstract;
+import com.massivecraft.massivecore.Engine;
+import com.massivecraft.massivecore.Integration;
 
-public class IntegrationHerochat extends IntegrationAbstract
+public class IntegrationHerochat extends Integration
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -10,22 +11,19 @@ public class IntegrationHerochat extends IntegrationAbstract
 	
 	private static IntegrationHerochat i = new IntegrationHerochat();
 	public static IntegrationHerochat get() { return i; }
-	private IntegrationHerochat() { super("Herochat"); }
+	private IntegrationHerochat()
+	{
+		this.setPluginName("HeroChat");
+	}
 	
 	// -------------------------------------------- //
 	// OVERRIDE
 	// -------------------------------------------- //
 	
 	@Override
-	public void activate()
+	public Engine getEngine()
 	{
-		EngineHerochat.get().activate();
-	}
-	
-	@Override
-	public void deactivate()
-	{
-		EngineHerochat.get().deactivate();
+		return EngineHerochat.get();
 	}
 	
 }

@@ -4,7 +4,6 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
-import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.cmd.type.TypeFaction;
@@ -73,7 +72,7 @@ public class CmdFactionsHome extends FactionsCommandHome
 			if (MPerm.getPermSethome().has(msender, faction, false))
 			{
 				msender.msg("<i>You should:");
-				msender.message(Factions.get().getOuterCmdFactions().cmdFactionsSethome.getTemplate());
+				msender.message(CmdFactions.get().cmdFactionsSethome.getTemplate());
 			}
 			
 			return;
