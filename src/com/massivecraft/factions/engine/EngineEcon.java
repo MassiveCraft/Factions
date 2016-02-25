@@ -169,8 +169,7 @@ public class EngineEcon extends Engine
 	public void payForCommand(EventFactionsRelationChange event)
 	{
 		Double cost = MConf.get().econRelCost.get(event.getNewRelation());
-		String desc = CmdFactions.get().cmdFactionsRelationNeutral.getDesc();
-		
+		String desc = CmdFactions.get().cmdFactionsRelation.cmdFactionsRelationSet.getDesc();
 		payForAction(event, cost, desc);
 	}
 	

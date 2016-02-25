@@ -31,7 +31,6 @@ public class Const
 	public static final String SHOW_ID_FACTION_POWER = BASENAME_ + "power";
 	public static final String SHOW_ID_FACTION_LANDVALUES = BASENAME_ + "landvalue";
 	public static final String SHOW_ID_FACTION_BANK = BASENAME_ + "bank";
-	public static final String SHOW_ID_FACTION_RELATIONS = BASENAME_ + "relations";
 	public static final String SHOW_ID_FACTION_FOLLOWERS = BASENAME_ + "followers";
 	
 	public static final int SHOW_PRIORITY_FACTION_ID = 1000;
@@ -41,7 +40,6 @@ public class Const
 	public static final int SHOW_PRIORITY_FACTION_POWER = 5000;
 	public static final int SHOW_PRIORITY_FACTION_LANDVALUES = 6000;
 	public static final int SHOW_PRIORITY_FACTION_BANK = 7000;
-	public static final int SHOW_PRIORITY_FACTION_RELATIONS = 8000;
 	public static final int SHOW_PRIORITY_FACTION_FOLLOWERS = 9000;
 	
 }

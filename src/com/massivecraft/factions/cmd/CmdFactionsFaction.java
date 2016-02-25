@@ -43,7 +43,6 @@ public class CmdFactionsFaction extends FactionsCommand
 	{
 		// Args
 		final Faction faction = this.readArg(msenderFaction);
-		
 		final CommandSender sender = this.sender;
 		
 		Bukkit.getScheduler().runTaskAsynchronously(Factions.get(), new Runnable()

@@ -62,7 +62,10 @@ permissions:
   factions.rank: {description: manage/show ranks, default: false}
   factions.rank.show: {description: show rank, default: false}
   factions.rank.action: {description: change rank, default: false}
-  factions.relation: {description: set relation wish to another faction, default: false}
+  factions.relation: {description: manage faction relations, default: false}
+  factions.relation.list: {description: list all factions with certain relation, default: false}
+  factions.relation.set: {description: set relation wish to another faction, default: false}
+  factions.relation.wishes: {description: list the relation wishes, default: false}
   factions.seechunk: {description: see the chunk you stand in, default: false}
   factions.seechunkold: {description: see the chunk you stand in, default: false}
   factions.sethome: {description: set the faction home, default: false}
@@ -143,6 +146,9 @@ permissions:
       factions.powerboost: true
       factions.promote: true
       factions.relation: true
+      factions.relation.list: true
+      factions.relation.set: true
+      factions.relation.wishes: true
       factions.seechunk: true
       factions.seechunkold: true
       factions.sethome: true
@@ -245,6 +251,9 @@ permissions:
       factions.rank.show: true
       factions.rank.action: true
       factions.relation: true
+      factions.relation.list: true
+      factions.relation.set: true
+      factions.relation.wishes: true
       factions.seechunk: true
       factions.seechunkold: true
       factions.sethome: true

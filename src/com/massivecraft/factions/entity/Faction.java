@@ -27,6 +27,7 @@ import com.massivecraft.factions.RelationParticipator;
 import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.factions.util.RelationUtil;
 import com.massivecraft.massivecore.Named;
+import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.collections.MassiveMapDef;
 import com.massivecraft.massivecore.collections.MassiveTreeSetDef;
 import com.massivecraft.massivecore.comparator.ComparatorCaseInsensitive;
@@ -573,32 +574,6 @@ public class Faction extends Entity<Faction> implements EconomyParticipator, Nam
 	public void setRelationWish(Faction faction, Rel rel)
 	{
 		this.setRelationWish(faction.getId(), rel);
-	}
-	
-	public Map<Rel, List<String>> getRelationNames(RelationParticipator rp, Set<Rel> rels, boolean skipPeaceful)
-	{
-		// Create Ret
-		Map<Rel, List<String>> ret = new LinkedHashMap<Rel, List<String>>();
-		for (Rel rel : rels)
-		{
-			ret.put(rel, new ArrayList<String>());
-		}
-		
-		for (Faction faction : FactionColl.get().getAll())
-		{
-			if (skipPeaceful && faction.getFlag(MFlag.getFlagPeaceful())) continue;
-			
-			Rel rel = faction.getRelationTo(this);
-			
-			List<String> names = ret.get(rel);
-			if (names == null) continue;
-			
-			String name = faction.getName(rp);
-			names.add(name);
-		}
-		
-		// Return Ret
-		return ret;
 	}
 	
 	// -------------------------------------------- //

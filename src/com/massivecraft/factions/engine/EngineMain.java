@@ -138,7 +138,7 @@ public class EngineMain extends Engine
 		final Faction faction = event.getFaction();
 		final boolean normal = faction.isNormal();
 		final Map<String, PriorityLines> idPriorityLiness = event.getIdPriorityLiness();
-		final boolean peaceful = faction.getFlag(MFlag.getFlagPeaceful());
+		String none = Txt.parse("<silver><italic>none");
 		
 		// ID
 		if (mplayer.isOverriding())
@@ -223,37 +223,7 @@ public class EngineMain extends Engine
 				}
 			}
 		}
-		
-		// RELATIONS
-		List<String> relationLines = new ArrayList<String>();
-		String none = Txt.parse("<silver><italic>none");
-		String everyone = MConf.get().colorTruce.toString() + Txt.parse("<italic>*EVERYONE*");
-		Set<Rel> rels = EnumSet.of(Rel.TRUCE, Rel.ALLY, Rel.ENEMY);
-		Map<Rel, List<String>> relNames = faction.getRelationNames(mplayer, rels, true);
-		for (Entry<Rel, List<String>> entry : relNames.entrySet())
-		{
-			Rel rel = entry.getKey();
-			List<String> names = entry.getValue();
-			String header = Txt.parse("<a>Relation %s%s<a> (%d):", rel.getColor().toString(), Txt.getNicedEnum(rel), names.size());
-			relationLines.add(header);
-			if (rel == Rel.TRUCE && peaceful)
-			{
-				relationLines.add(everyone);
-			}
-			else
-			{
-				if (names.isEmpty())
-				{
-					relationLines.add(none);
-				}
-				else
-				{
-					relationLines.addAll(table(names, tableCols));
-				}
-			}
-		}
-		idPriorityLiness.put(Const.SHOW_ID_FACTION_RELATIONS, new PriorityLines(Const.SHOW_PRIORITY_FACTION_RELATIONS, relationLines));
-		
+
 		// FOLLOWERS
 		List<String> followerLines = new ArrayList<String>();
 		
