@@ -20,6 +20,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Enderman;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -790,14 +791,15 @@ public class EngineMain extends Engine
 	// -------------------------------------------- //
 	
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-	public void canCombatDamageHappen(EntityDamageEvent event)
+	public void canCombatDamageHappen(EntityDamageByEntityEvent event)
 	{
-		// TODO: Can't we just listen to the class type the sub is of?
-		if (!(event instanceof EntityDamageByEntityEvent)) return;
-		EntityDamageByEntityEvent sub = (EntityDamageByEntityEvent)event;
-		
-		if (this.canCombatDamageHappen(sub, true)) return;
+		if (this.canCombatDamageHappen(event, true)) return;
 		event.setCancelled(true);
+
+		Entity damager = event.getDamager();
+		if ( ! (damager instanceof Arrow)) return;
+
+		damager.remove();
 	}
 
 	// mainly for flaming arrows; don't want allies or people in safe zones to be ignited even after damage event is cancelled
