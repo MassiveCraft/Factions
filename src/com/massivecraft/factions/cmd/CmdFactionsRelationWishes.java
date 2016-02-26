@@ -76,6 +76,7 @@ public class CmdFactionsRelationWishes extends FactionsCommand
 				{
 					Rel rel = entry.getValue();
 					Faction fac = FactionColl.get().getFixed(entry.getKey());
+					if (fac == null) continue;
 
 					// A wish is not a wish anymore if both factions have atleast equal "wishes"
 					if (fac.getRelationTo(faction).isAtLeast(rel)) continue;
