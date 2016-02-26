@@ -8,7 +8,6 @@ import org.bukkit.Bukkit;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
-import com.massivecraft.factions.cmd.req.ReqHasFaction;
 import com.massivecraft.factions.cmd.type.TypeFaction;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.FactionColl;
@@ -39,7 +38,6 @@ public class CmdFactionsRelationWishes extends FactionsCommand
 
 		// Requirements
 		this.addRequirements(RequirementHasPerm.get(Perm.RELATION_WISHES.node));
-		this.addRequirements(ReqHasFaction.get());
 	}
 
 	// -------------------------------------------- //

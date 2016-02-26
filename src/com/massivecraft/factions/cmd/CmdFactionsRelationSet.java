@@ -1,12 +1,9 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.massivecore.command.MassiveCommand;
-
 import org.bukkit.ChatColor;
 
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
-import com.massivecraft.factions.cmd.req.ReqHasFaction;
 import com.massivecraft.factions.cmd.type.TypeFaction;
 import com.massivecraft.factions.cmd.type.TypeRelation;
 import com.massivecraft.factions.entity.Faction;
@@ -15,6 +12,7 @@ import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.factions.event.EventFactionsRelationChange;
 
 import com.massivecraft.massivecore.MassiveException;
+import com.massivecraft.massivecore.command.MassiveCommand;
 import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.mson.Mson;
 
@@ -35,7 +33,6 @@ public class CmdFactionsRelationSet extends FactionsCommand
 
 		// Requirements
 		this.addRequirements(RequirementHasPerm.get(Perm.RELATION_SET.node));
-		this.addRequirements(ReqHasFaction.get());
 	}
 
 	// -------------------------------------------- //
