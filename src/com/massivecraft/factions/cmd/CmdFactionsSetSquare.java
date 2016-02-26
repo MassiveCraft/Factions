@@ -48,8 +48,7 @@ public class CmdFactionsSetSquare extends CmdFactionsSetXRadius
 		chunks.add(chunk); // The center should come first for pretty messages
 		
 		Integer radiusZero = this.getRadiusZero();
-		if (radiusZero == null) return null;
-		
+
 		for (int dx = -radiusZero; dx <= radiusZero; dx++)
 		{
 			for (int dz = -radiusZero; dz <= radiusZero; dz++)
