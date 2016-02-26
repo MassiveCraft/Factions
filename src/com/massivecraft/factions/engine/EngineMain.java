@@ -942,7 +942,7 @@ public class EngineMain extends Engine
 		Rel relation = defendFaction.getRelationTo(attackFaction);
 
 		// Check the relation
-		if (mdefender.hasFaction() && relation.isFriend() && defenderPsFaction.getFlag(MFlag.getFlagFriendlyire()) == false)
+		if (relation.isFriend() && defenderPsFaction.getFlag(MFlag.getFlagFriendlyire()) == false)
 		{
 			ret = falseUnlessDisallowedPvpEventCancelled(attacker, defender, event);
 			if (!ret && notify) uattacker.msg("<i>You can't hurt %s<i>.", relation.getDescPlayerMany());
