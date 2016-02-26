@@ -38,7 +38,7 @@ public class CmdFactionsRelationWishes extends FactionsCommand
 		this.addParameter(TypeFaction.get(), "faction", "you");
 
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(Perm.RELATION_LIST.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.RELATION_WISHES.node));
 		this.addRequirements(ReqHasFaction.get());
 	}
 

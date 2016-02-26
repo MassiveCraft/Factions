@@ -20,7 +20,6 @@ import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.collections.MassiveSet;
 import com.massivecraft.massivecore.command.Parameter;
 import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
-import com.massivecraft.massivecore.command.type.TypeNullable;
 import com.massivecraft.massivecore.command.type.container.TypeSet;
 import com.massivecraft.massivecore.pager.Pager;
 import com.massivecraft.massivecore.pager.Stringifier;
@@ -47,7 +46,7 @@ public class CmdFactionsRelationList extends FactionsCommand
 		// Parameter
 		this.addParameter(Parameter.getPage());
 		this.addParameter(TypeFaction.get(), "faction", "you");
-		this.addParameter(TypeNullable.get(TypeSet.get(TypeRelation.get()), "all"), "relation|all", "all");
+		this.addParameter(TypeSet.get(TypeRelation.get()), "relations", "all");
 
 		// Requirements
 		this.addRequirements(RequirementHasPerm.get(Perm.RELATION_LIST.node));
@@ -64,8 +63,7 @@ public class CmdFactionsRelationList extends FactionsCommand
 		// Args
 		int page = this.readArg();
 		final Faction faction = this.readArg(msenderFaction);
-		final Set<Rel> rel = this.readArg();
-		final Set<Rel> relations = rel == null ? RELEVANT_RELATIONS : rel;
+		final Set<Rel> relations = this.readArg(RELEVANT_RELATIONS);
 
 		// Pager Create
 		final Pager<String> pager = new Pager<String>(this, "", page, new Stringifier<String>()
