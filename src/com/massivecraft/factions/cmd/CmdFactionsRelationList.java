@@ -9,7 +9,6 @@ import org.bukkit.Bukkit;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
-import com.massivecraft.factions.cmd.req.ReqHasFaction;
 import com.massivecraft.factions.cmd.type.TypeFaction;
 import com.massivecraft.factions.cmd.type.TypeRelation;
 import com.massivecraft.factions.entity.Faction;
@@ -50,7 +49,6 @@ public class CmdFactionsRelationList extends FactionsCommand
 
 		// Requirements
 		this.addRequirements(RequirementHasPerm.get(Perm.RELATION_LIST.node));
-		this.addRequirements(ReqHasFaction.get());
 	}
 
 	// -------------------------------------------- //
