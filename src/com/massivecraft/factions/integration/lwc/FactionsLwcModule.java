@@ -14,6 +14,8 @@ import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.engine.EngineMain;
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.entity.MPlayer;
+import com.massivecraft.massivecore.SoundEffect;
+import com.massivecraft.massivecore.command.type.enumeration.TypeSound;
 import com.massivecraft.massivecore.mixin.Mixin;
 import com.massivecraft.massivecore.ps.PS;
 import com.massivecraft.massivecore.util.IdUtil;
@@ -93,7 +95,8 @@ public class FactionsLwcModule extends JavaModule
 		// ... play FX ...
 		Location location = block.getLocation();
 		SmokeUtil.spawnCloudSimple(location);
-		location.getWorld().playSound(location, Sound.DOOR_OPEN, 1, 1);
+		
+		SoundEffect.valueOf("DOOR_OPEN", 1, 1).run(location);
 		
 		// ... and inform.
 		Player player = event.getPlayer();

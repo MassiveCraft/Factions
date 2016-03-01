@@ -2,14 +2,12 @@ package com.massivecraft.factions.entity;
 
 import java.util.*;
 
-import com.massivecraft.massivecore.predicate.Predicate;
 import com.massivecraft.massivecore.store.Coll;
 import com.massivecraft.massivecore.store.MStore;
 import com.massivecraft.massivecore.util.Txt;
 import com.massivecraft.factions.Const;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Rel;
-import com.massivecraft.factions.RelationParticipator;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.util.MiscUtil;
 

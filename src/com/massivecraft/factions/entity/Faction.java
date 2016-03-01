@@ -27,7 +27,6 @@ import com.massivecraft.factions.RelationParticipator;
 import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.factions.util.RelationUtil;
 import com.massivecraft.massivecore.Named;
-import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.collections.MassiveMapDef;
 import com.massivecraft.massivecore.collections.MassiveTreeSetDef;
 import com.massivecraft.massivecore.comparator.ComparatorCaseInsensitive;
