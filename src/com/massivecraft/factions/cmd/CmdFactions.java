@@ -5,8 +5,8 @@ import java.util.List;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.entity.MConf;
-import com.massivecraft.massivecore.command.DeprecatedCommand;
-import com.massivecraft.massivecore.command.VersionCommand;
+import com.massivecraft.massivecore.command.MassiveCommandDeprecated;
+import com.massivecraft.massivecore.command.MassiveCommandVersion;
 
 public class CmdFactions extends FactionsCommand
 {
@@ -67,7 +67,7 @@ public class CmdFactions extends FactionsCommand
 	public CmdFactionsDisband cmdFactionsDisband = new CmdFactionsDisband();
 	public CmdFactionsPowerBoost cmdFactionsPowerBoost = new CmdFactionsPowerBoost();
 	public CmdFactionsSetpower cmdFactionsSetpower = new CmdFactionsSetpower();
-	public VersionCommand cmdFactionsVersion = new VersionCommand(Factions.get(), Perm.VERSION.node, "v", "version");
+	public MassiveCommandVersion cmdFactionsVersion = new MassiveCommandVersion(Factions.get(), Perm.VERSION.node, "v", "version");
 	
 	// -------------------------------------------- //
 	// CONSTRUCT
@@ -125,10 +125,10 @@ public class CmdFactions extends FactionsCommand
 		this.addChild(this.cmdFactionsVersion);
 		
 		// Deprecated Commands
-		this.addChild(new DeprecatedCommand(this.cmdFactionsClaim.cmdFactionsClaimAuto, "autoclaim"));
-		this.addChild(new DeprecatedCommand(this.cmdFactionsUnclaim.cmdFactionsUnclaimAll, "unclaimall"));
-		this.addChild(new DeprecatedCommand(this.cmdFactionsFlag, "open"));
-		this.addChild(new DeprecatedCommand(this.cmdFactionsFaction, "show", "who"));
+		this.addChild(new MassiveCommandDeprecated(this.cmdFactionsClaim.cmdFactionsClaimAuto, "autoclaim"));
+		this.addChild(new MassiveCommandDeprecated(this.cmdFactionsUnclaim.cmdFactionsUnclaimAll, "unclaimall"));
+		this.addChild(new MassiveCommandDeprecated(this.cmdFactionsFlag, "open"));
+		this.addChild(new MassiveCommandDeprecated(this.cmdFactionsFaction, "show", "who"));
 	}
 	
 	// -------------------------------------------- //

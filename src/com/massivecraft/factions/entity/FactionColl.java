@@ -254,6 +254,7 @@ public class FactionColl extends Coll<Faction>
 		return errors;
 	}
 	
+	@Override
 	public Faction getByName(String name)
 	{
 		String compStr = MiscUtil.getComparisonString(name);
@@ -265,11 +266,6 @@ public class FactionColl extends Coll<Faction>
 			}
 		}
 		return null;
-	}
-	
-	public boolean isNameTaken(String str)
-	{
-		return this.getByName(str) != null;
 	}
 
 	// -------------------------------------------- //
