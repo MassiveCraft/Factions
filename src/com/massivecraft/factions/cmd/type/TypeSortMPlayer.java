@@ -30,7 +30,7 @@ public class TypeSortMPlayer extends TypeAbstractChoice<Comparator<MPlayer>>
 	// -------------------------------------------- //
 	
 	@Override
-	public String getTypeName()
+	public String getName()
 	{
 		return "player sorter";
 	}

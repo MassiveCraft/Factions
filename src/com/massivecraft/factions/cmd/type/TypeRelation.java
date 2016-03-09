@@ -17,7 +17,7 @@ public class TypeRelation extends TypeRel
 	// -------------------------------------------- //
 	
 	@Override
-	public String getTypeName()
+	public String getName()
 	{
 		return "relation";
 	}

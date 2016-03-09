@@ -86,7 +86,7 @@ public class TypeRank extends TypeEnum<Rel>
 	// -------------------------------------------- //
 	
 	@Override
-	public String getTypeName()
+	public String getName()
 	{
 		return "rank";
 	}
