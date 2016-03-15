@@ -40,7 +40,11 @@ public class CmdFactionsRankOld extends FactionsCommand
 	@Override
 	public void perform()
 	{
-		CmdFactions.get().cmdFactionsRank.execute(sender, MUtil.list(this.argAt(0), this.rankName, this.argAt(1)));
+		CmdFactions.get().cmdFactionsRank.execute(sender, MUtil.list(
+			this.argAt(0),
+			this.rankName,
+			this.argAt(1)
+		));
 	}
 	
 }
