@@ -44,7 +44,7 @@ public class CmdFactionsPlayer extends FactionsCommand
 		MPlayer mplayer = this.readArg(msender);
 		
 		// INFO: Title
-		msg(Txt.titleize("Player " + mplayer.describeTo(msender)));
+		message(Txt.titleize("Player " + mplayer.describeTo(msender)));
 		
 		// INFO: Power (as progress bar)
 		double progressbarQuota = 0;

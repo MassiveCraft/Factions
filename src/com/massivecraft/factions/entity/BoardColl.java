@@ -1,10 +1,10 @@
 package com.massivecraft.factions.entity;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -283,7 +283,7 @@ public class BoardColl extends Coll<Board> implements BoardInterface
 	// MAP GENERATION
 	
 	@Override
-	public ArrayList<String> getMap(RelationParticipator observer, PS centerPs, double inDegrees, int width, int height)
+	public List<Object> getMap(RelationParticipator observer, PS centerPs, double inDegrees, int width, int height)
 	{
 		if (centerPs == null) return null;
 		Board board = this.get(centerPs.getWorld());

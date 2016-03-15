@@ -1,6 +1,6 @@
 package com.massivecraft.factions.entity;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -41,6 +41,6 @@ public interface BoardInterface
 	
 	// MAP
 	// TODO: Could the degrees be embedded in centerPs yaw instead?
-	public ArrayList<String> getMap(RelationParticipator observer, PS centerPs, double inDegrees, int width, int height);
+	public List<Object> getMap(RelationParticipator observer, PS centerPs, double inDegrees, int width, int height);
 	
 }

@@ -384,7 +384,7 @@ public class EngineMain extends Engine
 		if (!Mixin.isActualJoin(event)) return;
 		
 		// ... then prepare the messages ...
-		final List<String> messages = faction.getMotdMessages();
+		final List<Object> messages = faction.getMotdMessages();
 		
 		// ... and send to the player.
 		if (MConf.get().motdDelayTicks < 0)
@@ -669,7 +669,7 @@ public class EngineMain extends Engine
 		// send host faction info updates
 		if (mplayer.isMapAutoUpdating())
 		{
-			List<String> message = BoardColl.get().getMap(mplayer, chunkTo, player.getLocation().getYaw(), Const.MAP_WIDTH, Const.MAP_HEIGHT);
+			List<Object> message = BoardColl.get().getMap(mplayer, chunkTo, player.getLocation().getYaw(), Const.MAP_WIDTH, Const.MAP_HEIGHT);
 			mplayer.message(message);
 		}
 		else if (factionFrom != factionTo)

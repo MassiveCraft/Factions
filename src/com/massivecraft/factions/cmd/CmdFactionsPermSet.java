@@ -84,7 +84,7 @@ public class CmdFactionsPermSet extends FactionsCommand
 		}
 		
 		// Create messages
-		List<String> messages = new ArrayList<String>();
+		List<Object> messages = new ArrayList<>();
 		
 		// Inform sender
 		messages.add(Txt.titleize("Perm for " + faction.describeTo(msender, true)));

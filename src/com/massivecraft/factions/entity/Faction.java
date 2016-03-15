@@ -27,11 +27,13 @@ import com.massivecraft.factions.RelationParticipator;
 import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.factions.util.RelationUtil;
 import com.massivecraft.massivecore.Named;
+import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.collections.MassiveMapDef;
 import com.massivecraft.massivecore.collections.MassiveTreeSetDef;
 import com.massivecraft.massivecore.comparator.ComparatorCaseInsensitive;
 import com.massivecraft.massivecore.mixin.Mixin;
 import com.massivecraft.massivecore.money.Money;
+import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.predicate.Predicate;
 import com.massivecraft.massivecore.ps.PS;
 import com.massivecraft.massivecore.store.Entity;
@@ -303,12 +305,23 @@ public class Faction extends Entity<Faction> implements EconomyParticipator, Nam
 	
 	// FINER
 	
-	public List<String> getMotdMessages()
+	public List<Object> getMotdMessages()
 	{
-		final String title = Txt.titleize(this.getName() + " - Message of the Day");
-		final String motd = "<i>" + this.getMotd();
-		final List<String> messages = Txt.parse(MUtil.list(title, motd, ""));
-		return messages;
+		// Create
+		List<Object> ret = new MassiveList<>();
+		
+		// Fill
+		Object title = this.getName() + " - Message of the Day";
+		title = Txt.titleize(title);
+		ret.add(title);
+		
+		String motd = Txt.parse("<i>" + this.getMotd());
+		ret.add(motd);
+		
+		ret.add("");
+		
+		// Return
+		return ret;
 	}
 	
 	// -------------------------------------------- //

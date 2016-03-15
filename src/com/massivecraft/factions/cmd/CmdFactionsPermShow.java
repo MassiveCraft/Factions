@@ -45,7 +45,7 @@ public class CmdFactionsPermShow extends FactionsCommand
 		Collection<MPerm> mperms = this.readArg(MPerm.getAll());
 
 		// Create messages
-		List<String> messages = new ArrayList<String>();
+		List<Object> messages = new ArrayList<>();
 
 		messages.add(Txt.titleize("Perm for " + faction.describeTo(msender, true)));
 		messages.add(MPerm.getStateHeaders());

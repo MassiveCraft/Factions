@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -348,11 +349,11 @@ public class Board extends Entity<Board> implements BoardInterface
 	// MAP GENERATION
 	
 	@Override
-	public ArrayList<String> getMap(RelationParticipator observer, PS centerPs, double inDegrees, int width, int height)
+	public List<Object> getMap(RelationParticipator observer, PS centerPs, double inDegrees, int width, int height)
 	{
 		centerPs = centerPs.getChunkCoords(true);
 		
-		ArrayList<String> ret = new ArrayList<String>();
+		List<Object> ret = new ArrayList<>();
 		Faction centerFaction = this.getFactionAt(centerPs);
 		
 		ret.add(Txt.titleize("(" + centerPs.getChunkX() + "," + centerPs.getChunkZ() + ") " + centerFaction.getName(observer)));
@@ -363,6 +364,9 @@ public class Board extends Entity<Board> implements BoardInterface
 		height = halfHeight * 2 + 1;
 		
 		PS topLeftPs = centerPs.plusChunkCoords(-halfWidth, -halfHeight);
+		
+		// Get the compass
+		ArrayList<String> asciiCompass = AsciiCompass.getAsciiCompass(inDegrees, ChatColor.RED, Txt.parse("<a>"));
 		
 		// Make room for the list of names
 		height--;
@@ -404,16 +408,16 @@ public class Board extends Entity<Board> implements BoardInterface
 					row.append(hereFaction.getColorTo(observer).toString()).append(fchar);
 				}
 			}
-			ret.add(row.toString());
+			
+			String line = row.toString();
+			
+			// Add the compass
+			if (dz == 0) line = asciiCompass.get(0) + line.substring(3*3);
+			if (dz == 1) line = asciiCompass.get(1) + line.substring(3*3);
+			if (dz == 2) line = asciiCompass.get(2) + line.substring(3*3);
+			
+			ret.add(line);
 		}
-		
-		// Get the compass
-		ArrayList<String> asciiCompass = AsciiCompass.getAsciiCompass(inDegrees, ChatColor.RED, Txt.parse("<a>"));
-
-		// Add the compass
-		ret.set(1, asciiCompass.get(0) + ret.get(1).substring(3*3));
-		ret.set(2, asciiCompass.get(1) + ret.get(2).substring(3*3));
-		ret.set(3, asciiCompass.get(2) + ret.get(3).substring(3*3));
 			
 		String fRow = "";
 		for (Faction keyfaction : fList.keySet())

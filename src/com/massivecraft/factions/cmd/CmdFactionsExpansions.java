@@ -34,7 +34,9 @@ public class CmdFactionsExpansions extends FactionsCommand
 		event.run();
 		
 		// Title
-		msg(Txt.titleize("Factions Expansions"));
+		Object title = "Factions Expansions";
+		title = Txt.titleize(title);
+		message(title);
 		
 		// Lines
 		for (Entry<String, Boolean> entry : event.getExpansions().entrySet())
