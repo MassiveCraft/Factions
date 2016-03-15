@@ -4,9 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.entity.MFlag;
 import com.massivecraft.factions.entity.MPlayer;
@@ -14,8 +15,11 @@ import com.massivecraft.factions.event.EventFactionsChunksChange;
 import com.massivecraft.massivecore.Engine;
 import com.massivecraft.massivecore.ps.PS;
 import com.sk89q.worldedit.BlockVector;
+import com.sk89q.worldguard.LocalPlayer;
+import com.sk89q.worldguard.bukkit.WGBukkit;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.managers.RegionManager;
+import com.sk89q.worldguard.protection.regions.GlobalProtectedRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 
@@ -43,7 +47,7 @@ public class EngineWorldGuard extends Engine
 	{
 		if (active)
 		{
-			this.worldGuard = (WorldGuardPlugin) Bukkit.getPluginManager().getPlugin("WorldGuard");
+			this.worldGuard = WGBukkit.getPlugin();
 		}
 		else
 		{
@@ -65,30 +69,36 @@ public class EngineWorldGuard extends Engine
 		if (event.getNewFaction().getFlag(MFlag.ID_PERMANENT)) return;
 		
 		MPlayer mplayer = event.getMPlayer();
+		Player player = mplayer.getPlayer();
 		
-		if ( ! MConf.get().worldguardCheckWorldsEnabled.contains(mplayer.getPlayer())) return;
+		// Only do this for players 
+		if (player == null) return;
+		
+		LocalPlayer wrapperPlayer = this.worldGuard.wrapPlayer(player);
+		
+		if ( ! MConf.get().worldguardCheckWorldsEnabled.contains(player)) return;
 
 		// For overriders don't bother checking 
 		if (mplayer.isOverriding()) return; 
 		
-		for (PS chunkChecking : event.getChunks())
+		for (PS chunk : event.getChunks())
 		{
 			// Grab any regions in the chunk
-			List<ProtectedRegion> regions = this.getProtectedRegionsFor(chunkChecking);
+			final List<ProtectedRegion> regions = this.getProtectedRegionsFor(chunk);
 			
 			// Ensure there are actually regions to go over 
 			if (regions == null || regions.isEmpty()) continue;
 			
 			for (ProtectedRegion region : regions)
 			{
-				// Ensure it's not the global region, and check if they're a member 
-				if (region.getId().equals("__global__") || region.getMembers().contains(mplayer.getUuid())) continue;
+				// Ensure it's not the global region, and check if they're a member
+				if (region instanceof GlobalProtectedRegion || region.isMember(wrapperPlayer)) continue;
 				
-				// Check for a permission
-				if (mplayer.getPlayer().hasPermission("factions.allowregionclaim." + region.getId())) continue;
+				// Check for a permission - can't use Perm enum for this 
+				if (player.hasPermission("factions.allowregionclaim." + region.getId())) continue;
 				
 				// No permission, notify player and stop claiming
-				mplayer.msg("<b>You cannot claim the chunk at %s, %s as there is a region in the way.", chunkChecking.getChunkX(), chunkChecking.getChunkZ());
+				mplayer.msg("<b>You cannot claim the chunk at %s, %s as there is a region in the way.", chunk.getChunkX(), chunk.getChunkZ());
 				
 				event.setCancelled(true);
 				return;
