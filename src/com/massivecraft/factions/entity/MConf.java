@@ -146,7 +146,7 @@ public class MConf extends Entity<MConf>
 	
 	// How many ticks should we delay the faction message of the day with?
 	// -1 means we don't delay at all. We display it at once.
-	// 0 means it's deferred to the upcomming server tick.
+	// 0 means it's deferred to the upcoming server tick.
 	// 5 means we delay it yet another 5 ticks.
 	public int motdDelayTicks = -1;
 
