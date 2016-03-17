@@ -36,7 +36,7 @@ public class CmdFactionsStatus extends FactionsCommand
 		// Parameters
 		this.addParameter(Parameter.getPage());
 		this.addParameter(TypeFaction.get(), "faction", "you");
-		this.addParameter(TypeSortMPlayer.get(), "sort by", "time");
+		this.addParameter(TypeSortMPlayer.get(), "sort", "time");
 
 		// Requirements
 		this.addRequirements(RequirementHasPerm.get(Perm.STATUS.node));

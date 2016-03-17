@@ -70,7 +70,7 @@ permissions:
   factions.seechunkold: {description: see the chunk you stand in, default: false}
   factions.sethome: {description: set the faction home, default: false}
   factions.setpower: {description: set power, default: false}
-  factions.status: {description: show faction status, default: false}
+  factions.status: {description: show status, default: false}
   factions.name: {description: set faction name, default: false}
   factions.title: {description: set player title, default: false}
   factions.title.color: {description: set player title with color, default: false}
