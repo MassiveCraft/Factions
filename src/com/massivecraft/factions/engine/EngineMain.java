@@ -1536,6 +1536,8 @@ public class EngineMain extends Engine
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void blockLiquidFlow(BlockFromToEvent event)
 	{
+		if ( ! MConf.get().protectionLiquidFlowEnabled) return;
+		
 		// Prepare fields
 		Block fromBlock = event.getBlock();
 		int fromCX = fromBlock.getX() >> 4;

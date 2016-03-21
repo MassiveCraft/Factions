@@ -236,6 +236,12 @@ public class MConf extends Entity<MConf>
 	public int claimedLandsMax = 0;
 	
 	// -------------------------------------------- //
+	// PROTECTION
+	// -------------------------------------------- //
+	
+	public boolean protectionLiquidFlowEnabled = true;
+	
+	// -------------------------------------------- //
 	// HOMES
 	// -------------------------------------------- //
 	
