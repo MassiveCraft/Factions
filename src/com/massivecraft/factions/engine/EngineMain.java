@@ -15,6 +15,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -93,9 +94,11 @@ import com.massivecraft.factions.integration.spigot.IntegrationSpigot;
 import com.massivecraft.factions.util.VisualizeUtil;
 import com.massivecraft.massivecore.Engine;
 import com.massivecraft.massivecore.PriorityLines;
+import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.collections.MassiveSet;
 import com.massivecraft.massivecore.event.EventMassiveCorePlayerLeave;
 import com.massivecraft.massivecore.mixin.Mixin;
+import com.massivecraft.massivecore.mixin.MixinWorld;
 import com.massivecraft.massivecore.money.Money;
 import com.massivecraft.massivecore.ps.PS;
 import com.massivecraft.massivecore.util.MUtil;
@@ -520,17 +523,51 @@ public class EngineMain extends Engine
 				return;
 			}
 			
-			// ... ensure the claim would not bypass the global max limit ...
-			int ownedLand = newFaction.getLandCount();
-			if (MConf.get().claimedLandsMax != 0 && ownedLand + chunks.size() > MConf.get().claimedLandsMax && ! newFaction.getFlag(MFlag.getFlagInfpower()))
+			int claimedLandCount = newFaction.getLandCount();
+			if ( ! newFaction.getFlag(MFlag.getFlagInfpower()))
 			{
-				mplayer.msg("<b>Limit reached. You can't claim more land.");
-				event.setCancelled(true);
-				return;
+				// ... ensure the claim would not bypass the global max limit ...
+				if (MConf.get().claimedLandsMax != 0 && claimedLandCount + chunks.size() > MConf.get().claimedLandsMax)
+				{
+					mplayer.msg("<b>Limit reached. You can't claim more land.");
+					event.setCancelled(true);
+					return;
+				}
+			
+				// ... ensure the claim would not bypass the global max limit ...
+				if (MConf.get().claimedWorldsMax >= 0)
+				{
+					Set<String> oldWorlds = newFaction.getClaimedWorlds();
+					Set<String> newWorlds = PS.getDistinctWorlds(chunks);
+					
+					Set<String> worlds = new MassiveSet<>();
+					worlds.addAll(oldWorlds);
+					worlds.addAll(newWorlds);
+					
+					if (worlds.size() > MConf.get().claimedWorldsMax)
+					{
+						List<String> worldNames = new MassiveList<>();
+						for (String world : oldWorlds)
+						{
+							worldNames.add(MixinWorld.get().getWorldDisplayName(world));
+						}
+						
+						String worldsMax = MConf.get().claimedWorldsMax == 1 ? "world" : "worlds";
+						String worldsAlready = oldWorlds.size() == 1 ? "world" : "worlds";
+						mplayer.msg("<b>A faction may only be present on <h>%d<b> different %s.", MConf.get().claimedWorldsMax, worldsMax);
+						mplayer.msg("%s<i> is already present on <h>%d<i> %s:", newFaction.describeTo(mplayer), oldWorlds.size(), worldsAlready);
+						mplayer.message(Txt.implodeCommaAndDot(worldNames, ChatColor.YELLOW.toString()));
+						mplayer.msg("<i>Please unclaim bases on other worlds to claim here.");
+						
+						event.setCancelled(true);
+						return;
+					}
+				}
+
 			}
 			
 			// ... ensure the claim would not bypass the faction power ...
-			if (ownedLand + chunks.size() > newFaction.getPowerRounded())
+			if (claimedLandCount + chunks.size() > newFaction.getPowerRounded())
 			{
 				mplayer.msg("<b>You don't have enough power to claim that land.");
 				event.setCancelled(true);

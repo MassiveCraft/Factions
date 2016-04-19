@@ -276,6 +276,25 @@ public class Board extends Entity<Board> implements BoardInterface
 		return ret;
 	}
 	
+	// CLAIMED
+	
+	@Override
+	public boolean hasClaimed(Faction faction)
+	{
+		return this.hasClaimed(faction.getId());
+	}
+	
+	@Override
+	public boolean hasClaimed(String factionId)
+	{
+		for (TerritoryAccess ta : this.map.values())
+		{
+			if ( ! ta.getHostFactionId().equals(factionId)) continue;
+			return true;
+		}
+		return false;
+	}
+	
 	// NEARBY DETECTION
 		
 	// Is this coord NOT completely surrounded by coords claimed by the same faction?
@@ -302,7 +321,7 @@ public class Board extends Entity<Board> implements BoardInterface
 		
 		return false;
 	}
-	
+
 	@Override
 	public boolean isAnyBorderPs(Set<PS> pss)
 	{

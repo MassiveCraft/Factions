@@ -14,6 +14,7 @@ import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.RelationParticipator;
 import com.massivecraft.factions.TerritoryAccess;
 import com.massivecraft.massivecore.collections.MassiveMap;
+import com.massivecraft.massivecore.collections.MassiveSet;
 import com.massivecraft.massivecore.ps.PS;
 import com.massivecraft.massivecore.store.Coll;
 import com.massivecraft.massivecore.store.MStore;
@@ -240,6 +241,25 @@ public class BoardColl extends Coll<Board> implements BoardInterface
 		return ret;
 	}
 	
+	// COUNT
+	
+	@Override
+	public boolean hasClaimed(Faction faction)
+	{
+		return this.hasClaimed(faction.getId());
+	}
+	
+	@Override
+	public boolean hasClaimed(String factionId)
+	{
+		for (Board board : this.getAll())
+		{
+			if ( ! board.hasClaimed(factionId)) continue;
+			return true;
+		}
+		return false;
+	}
+	
 	// NEARBY DETECTION
 	
 	@Override
@@ -289,6 +309,28 @@ public class BoardColl extends Coll<Board> implements BoardInterface
 		Board board = this.get(centerPs.getWorld());
 		if (board == null) return null;
 		return board.getMap(observer, centerPs, inDegrees, width, height);
+	}
+	
+	// -------------------------------------------- //
+	// WORLDS
+	// -------------------------------------------- //
+	
+	public Set<String> getClaimedWorlds(Faction faction)
+	{
+		return getClaimedWorlds(faction.getId());
+	}
+	
+	public Set<String> getClaimedWorlds(String factionId)
+	{
+		Set<String> ret = new MassiveSet<>();
+		
+		for (Board board : this.getAll())
+		{
+			if ( ! board.hasClaimed(factionId)) continue;
+			ret.add(board.getId());
+		}
+		
+		return ret;
 	}
 	
 	// -------------------------------------------- //

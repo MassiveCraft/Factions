@@ -996,6 +996,15 @@ public class Faction extends Entity<Faction> implements EconomyParticipator, Nam
 	}
 	
 	// -------------------------------------------- //
+	// WORLDS
+	// -------------------------------------------- //
+	
+	public Set<String> getClaimedWorlds()
+	{
+		return BoardColl.get().getClaimedWorlds(this);
+	}
+	
+	// -------------------------------------------- //
 	// FOREIGN KEY: MPLAYER
 	// -------------------------------------------- //
 	

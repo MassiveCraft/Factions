@@ -33,6 +33,10 @@ public interface BoardInterface
 	public int getCount(String factionId);
 	public Map<Faction, Integer> getFactionToCount();
 	
+	// CLAIMED
+	public boolean hasClaimed(Faction faction);
+	public boolean hasClaimed(String factionId);
+	
 	// NEARBY DETECTION
 	public boolean isBorderPs(PS ps);
 	public boolean isAnyBorderPs(Set<PS> pss);

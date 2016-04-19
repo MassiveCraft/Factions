@@ -235,6 +235,9 @@ public class MConf extends Entity<MConf>
 	// 0 means there isn't.
 	public int claimedLandsMax = 0;
 	
+	// The max amount of worlds in which a player can have claims in.
+	public int claimedWorldsMax = -1;
+	
 	// -------------------------------------------- //
 	// PROTECTION
 	// -------------------------------------------- //
