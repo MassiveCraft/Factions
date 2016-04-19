@@ -144,28 +144,28 @@ public class Factions extends MassivePlugin
 		// Activate
 		this.activate(
 			// Command
-			CmdFactions.get(),
+			CmdFactions.class,
 		
 			// Engines
-			EngineMain.get(),
-			EngineChat.get(),
-			EngineExploit.get(),
-			EngineSeeChunk.get(),
-			EngineEcon.get(), // TODO: Take an extra look and make sure all economy stuff is handled using events. 
+			EngineMain.class,
+			EngineChat.class,
+			EngineExploit.class,
+			EngineSeeChunk.class,
+			EngineEcon.class, // TODO: Take an extra look and make sure all economy stuff is handled using events. 
 			
 			// Integrate
-			IntegrationHerochat.get(),
-			IntegrationLwc.get(),
-			IntegrationWorldGuard.get(),
+			IntegrationHerochat.class,
+			IntegrationLwc.class,
+			IntegrationWorldGuard.class,
 			
 			// Spigot
-			IntegrationSpigot.get(),
+			IntegrationSpigot.class,
 			
 			// Modulo Repeat Tasks
-			TaskPlayerPowerUpdate.get(),
-			TaskPlayerDataRemove.get(),
-			TaskEconLandReward.get(),
-			TaskFlagPermCreate.get()
+			TaskPlayerPowerUpdate.class,
+			TaskPlayerDataRemove.class,
+			TaskEconLandReward.class,
+			TaskFlagPermCreate.class
 		);
 		
 		// Register built in chat modifiers
