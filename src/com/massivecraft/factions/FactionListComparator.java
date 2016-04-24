@@ -3,6 +3,7 @@ package com.massivecraft.factions;
 import java.util.Comparator;
 
 import com.massivecraft.factions.entity.Faction;
+import com.massivecraft.massivecore.comparator.ComparatorComparable;
 import com.massivecraft.massivecore.util.MUtil;
 
 public class FactionListComparator implements Comparator<Faction>
@@ -44,7 +45,7 @@ public class FactionListComparator implements Comparator<Faction>
 		if (ret != 0) return ret;
 		
 		// Tie by Id
-		return MUtil.compare(f1.getId(), f2.getId());
+		return ComparatorComparable.get().compare(f1.getId(), f2.getId());
 	}
 
 }
