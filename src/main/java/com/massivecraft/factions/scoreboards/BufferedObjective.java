@@ -104,7 +104,6 @@ public class BufferedObjective {
         }
     }
 
-    @SuppressWarnings("deprecation")
     public void flip() {
         if (!requiresUpdate) {
             return;

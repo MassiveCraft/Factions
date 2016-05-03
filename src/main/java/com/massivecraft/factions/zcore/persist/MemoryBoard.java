@@ -15,7 +15,9 @@ import java.util.Map.Entry;
 public abstract class MemoryBoard extends Board {
     
     public class MemoryBoardMap extends HashMap<FLocation, String> {
-         Multimap<String, FLocation> factionToLandMap = HashMultimap.create();
+        private static final long serialVersionUID = -6689617828610585368L;
+
+        Multimap<String, FLocation> factionToLandMap = HashMultimap.create();
 
          @Override
          public String put(FLocation floc, String factionId) {

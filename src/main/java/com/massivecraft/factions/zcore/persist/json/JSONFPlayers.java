@@ -122,7 +122,7 @@ public class JSONFPlayers extends MemoryFPlayers {
 
             // Start fetching those UUIDs
             Bukkit.getLogger().log(Level.INFO, "Please wait while Factions converts " + list.size() + " old player names to UUID. This may take a while.");
-            UUIDFetcher fetcher = new UUIDFetcher(new ArrayList(list));
+            UUIDFetcher fetcher = new UUIDFetcher(new ArrayList<String>(list));
             try {
                 Map<String, UUID> response = fetcher.call();
                 for (String s : list) {

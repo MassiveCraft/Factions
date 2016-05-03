@@ -12,11 +12,7 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.Random;
-
 public class CmdStuck extends FCommand {
-
-    private final static Random random = new Random();
 
     public CmdStuck() {
         super();

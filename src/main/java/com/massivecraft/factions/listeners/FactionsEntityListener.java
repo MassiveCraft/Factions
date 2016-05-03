@@ -264,7 +264,6 @@ public class FactionsEntityListener implements Listener {
     public boolean canDamagerHurtDamagee(EntityDamageByEntityEvent sub, boolean notify) {
         Entity damager = sub.getDamager();
         Entity damagee = sub.getEntity();
-        double damage = sub.getDamage();
 
         if (!(damagee instanceof Player)) {
             return true;
