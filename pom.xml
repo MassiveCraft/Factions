@@ -4,7 +4,7 @@
 
     <groupId>com.massivecraft</groupId>
     <artifactId>Factions</artifactId>
-    <version>1.6.9.5-U0.1.18-b${BUILD_NUMBER}</version>
+    <version>1.6.9.5-U0.1.19-b${BUILD_NUMBER}</version>
     <packaging>jar</packaging>
 
     <name>Factions</name>
@@ -15,22 +15,18 @@
 
     <build>
         <defaultGoal>clean package install</defaultGoal>
-        <finalName>Factions</finalName>
-        <sourceDirectory>${basedir}/src/main/java</sourceDirectory>
+        <finalName>${project.name}</finalName>
+        <sourceDirectory>src/main/java</sourceDirectory>
         <resources>
             <resource>
-                <targetPath>.</targetPath>
                 <filtering>true</filtering>
-                <directory>${basedir}/src/main/resources/</directory>
-                <includes>
-                    <include>*.yml</include>
-                </includes>
+                <directory>src/main/resources/</directory>
             </resource>
         </resources>
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.3.2</version>
+                <version>3.5.1</version>
                 <configuration>
                     <source>1.6</source>
                     <target>1.6</target>
@@ -39,15 +35,17 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>2.2</version>
+                <version>2.4.3</version>
                 <configuration>
                     <createDependencyReducedPom>false</createDependencyReducedPom>
+                    <!--
                     <artifactSet>
                         <includes>
                             <include>mkremins:fanciful</include>
                             <include>com.google.code.gson:gson</include>
                         </includes>
                     </artifactSet>
+                    -->
                     <relocations>
                         <relocation>
                             <pattern>mkremins.fanciful</pattern>
@@ -75,55 +73,230 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.8.4-R0.1-SNAPSHOT</version>
+            <version>1.9.2-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+            <exclusions>
+            	<exclusion>
+            		<artifactId>bungeecord-chat</artifactId>
+            		<groupId>net.md-5</groupId>
+            	</exclusion>
+            	<exclusion>
+            		<artifactId>persistence-api</artifactId>
+            		<groupId>javax.persistence</groupId>
+            	</exclusion>
+            	<exclusion>
+            		<artifactId>junit</artifactId>
+            		<groupId>junit</groupId>
+            	</exclusion>
+            	<exclusion>
+            		<artifactId>guava</artifactId>
+            		<groupId>com.google.guava</groupId>
+            	</exclusion>
+            	<exclusion>
+            		<artifactId>gson</artifactId>
+            		<groupId>com.google.code.gson</groupId>
+            	</exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>net.milkbowl.vault</groupId>
             <artifactId>VaultAPI</artifactId>
             <version>1.5</version>
             <scope>provided</scope>
+            <exclusions>
+            	<exclusion>
+            		<artifactId>bukkit</artifactId>
+            		<groupId>org.bukkit</groupId>
+            	</exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.sk89q</groupId>
             <artifactId>worldguard</artifactId>
-            <version>6.0.0-SNAPSHOT</version>
+            <version>6.1.1-SNAPSHOT</version>
+            <scope>provided</scope>
+            <exclusions>
+            	<exclusion>
+            		<artifactId>bukkit</artifactId>
+            		<groupId>org.bukkit</groupId>
+            	</exclusion>
+            	<exclusion>
+            		<artifactId>bukkit-classloader-check</artifactId>
+            		<groupId>com.sk89q.spigot</groupId>
+            	</exclusion>
+            	<exclusion>
+            		<artifactId>commandbook</artifactId>
+            		<groupId>com.sk89q</groupId>
+            	</exclusion>
+            	<exclusion>
+            		<artifactId>jsr305</artifactId>
+            		<groupId>com.google.code.findbugs</groupId>
+            	</exclusion>
+            	<exclusion>
+            		<artifactId>js</artifactId>
+            		<groupId>rhino</groupId>
+            	</exclusion>
+            	<exclusion>
+            		<artifactId>truezip</artifactId>
+            		<groupId>de.schlichtherle</groupId>
+            	</exclusion>
+            	<exclusion>
+            		<artifactId>jchronic</artifactId>
+            		<groupId>com.sk89q</groupId>
+            	</exclusion>
+            	<exclusion>
+            		<artifactId>worldedit</artifactId>
+            		<groupId>com.sk89q</groupId>
+            	</exclusion>
+            </exclusions>
         </dependency>
         <dependency>
-            <groupId>com.sk89q</groupId>
-            <artifactId>worldedit</artifactId>
-            <version>6.0.0-SNAPSHOT</version>
+            <groupId>com.sk89q.worldedit</groupId>
+            <artifactId>worldedit-bukkit</artifactId>
+            <version>6.1.1-SNAPSHOT</version>
+            <scope>provided</scope>
+            <exclusions>
+            	<exclusion>
+            		<artifactId>bukkit</artifactId>
+            		<groupId>org.bukkit</groupId>
+            	</exclusion>
+            	<exclusion>
+            		<artifactId>jsr305</artifactId>
+            		<groupId>com.google.code.findbugs</groupId>
+            	</exclusion>
+            	<exclusion>
+            		<artifactId>bukkit-classloader-check</artifactId>
+            		<groupId>org.sk89q.bukkit</groupId>
+            	</exclusion>
+            	<exclusion>
+            		<artifactId>dummypermscompat</artifactId>
+            		<groupId>com.sk89q</groupId>
+            	</exclusion>
+            	<exclusion>
+            		<artifactId>jchronic</artifactId>
+            		<groupId>com.sk89q</groupId>
+            	</exclusion>
+            	<exclusion>
+            		<artifactId>js</artifactId>
+            		<groupId>rhino</groupId>
+            	</exclusion>
+            	<exclusion>
+            		<artifactId>truezip</artifactId>
+            		<groupId>de.schlichtherle</groupId>
+            	</exclusion>
+            	<exclusion>
+            		<artifactId>jlibnoise</artifactId>
+            		<groupId>com.sk89q.lib</groupId>
+            	</exclusion>
+            	<exclusion>
+            		<artifactId>paranamer</artifactId>
+            		<groupId>com.thoughtworks.paranamer</groupId>
+            	</exclusion>
+            	<exclusion>
+            		<artifactId>guava</artifactId>
+            		<groupId>com.google.guava</groupId>
+            	</exclusion>
+            	<exclusion>
+            		<artifactId>gson</artifactId>
+            		<groupId>com.google.code.gson</groupId>
+            	</exclusion>
+            	<exclusion>
+            		<artifactId>snakeyaml</artifactId>
+            		<groupId>org.yaml</groupId>
+            	</exclusion>
+            </exclusions>
         </dependency>
+        <!--
         <dependency>
             <groupId>net.ess3</groupId>
             <artifactId>EssentialsX</artifactId>
             <version>2.0.1-SNAPSHOT</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>net.ess3</groupId>
             <artifactId>EssentialsXChat</artifactId>
             <version>2.0.1-SNAPSHOT</version>
+            <scope>provided</scope>
         </dependency>
+        -->
         <dependency>
             <groupId>mkremins</groupId>
             <artifactId>fanciful</artifactId>
             <version>0.3.3-SNAPSHOT</version>
+            <scope>compile</scope>
+            <exclusions>
+            	<exclusion>
+            		<artifactId>gson</artifactId>
+            		<groupId>com.google.code.gson</groupId>
+            	</exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.dynmap</groupId>
             <artifactId>dynmap</artifactId>
             <version>2.0</version>
             <scope>provided</scope>
+            <exclusions>
+            	<exclusion>
+            		<artifactId>bukkit</artifactId>
+            		<groupId>org.bukkit</groupId>
+            	</exclusion>
+            	<exclusion>
+            		<artifactId>Permissions</artifactId>
+            		<groupId>com.nijikokun.bukkit</groupId>
+            	</exclusion>
+            	<exclusion>
+            		<artifactId>bPermissions</artifactId>
+            		<groupId>de.bananaco</groupId>
+            	</exclusion>
+            	<exclusion>
+            		<artifactId>EssentialsGroupManager</artifactId>
+            		<groupId>org.anjocaido</groupId>
+            	</exclusion>
+            	<exclusion>
+            		<artifactId>spoutpluginapi</artifactId>
+            		<groupId>org.getspout</groupId>
+            	</exclusion>
+            	<exclusion>
+            		<artifactId>PermissionsBukkit</artifactId>
+            		<groupId>com.platymuus.bukkit.permissions</groupId>
+            	</exclusion>
+            	<exclusion>
+            		<artifactId>PermissionsEx</artifactId>
+            		<groupId>ru.tehkode</groupId>
+            	</exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>10.0.1</version>
             <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <artifactId>jsr305</artifactId>
+                    <groupId>com.google.code.findbugs</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
-            <version>2.1</version>
+            <version>2.6.2</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>10.0.1</version>
+            <scope>provided</scope>
+            <exclusions>
+            	<exclusion>
+            		<artifactId>jsr305</artifactId>
+            		<groupId>com.google.code.findbugs</groupId>
+            	</exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 
