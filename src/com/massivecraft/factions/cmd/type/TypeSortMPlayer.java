@@ -18,6 +18,7 @@ public class TypeSortMPlayer extends TypeAbstractChoice<Comparator<MPlayer>>
 	public static TypeSortMPlayer get() { return i; }
 	public TypeSortMPlayer()
 	{
+		super(Comparator.class);
 		this.setAll(
 			PlayerRoleComparator.get(),
 			PlayerPowerComparator.get(),

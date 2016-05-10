@@ -25,6 +25,7 @@ public class TypeFaction extends TypeAbstract<Faction>
 	
 	private static TypeFaction i = new TypeFaction();
 	public static TypeFaction get() { return i; }
+	public TypeFaction() { super(Faction.class); }
 	
 	// -------------------------------------------- //
 	// OVERRIDE
