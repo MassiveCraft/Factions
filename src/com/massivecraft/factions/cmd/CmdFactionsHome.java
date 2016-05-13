@@ -17,7 +17,7 @@ import com.massivecraft.factions.event.EventFactionsHomeTeleport;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.command.requirement.RequirementIsPlayer;
-import com.massivecraft.massivecore.mixin.Mixin;
+import com.massivecraft.massivecore.mixin.MixinTeleport;
 import com.massivecraft.massivecore.mixin.TeleporterException;
 import com.massivecraft.massivecore.ps.PS;
 import com.massivecraft.massivecore.teleport.Destination;
@@ -152,7 +152,7 @@ public class CmdFactionsHome extends FactionsCommandHome
 		try
 		{
 			Destination destination = new DestinationSimple(home, homeDesc);
-			Mixin.teleport(me, destination, sender);
+			MixinTeleport.get().teleport(me, destination, sender);
 		}
 		catch (TeleporterException e)
 		{

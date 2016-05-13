@@ -97,7 +97,9 @@ import com.massivecraft.massivecore.PriorityLines;
 import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.collections.MassiveSet;
 import com.massivecraft.massivecore.event.EventMassiveCorePlayerLeave;
-import com.massivecraft.massivecore.mixin.Mixin;
+import com.massivecraft.massivecore.mixin.MixinActual;
+import com.massivecraft.massivecore.mixin.MixinMessage;
+import com.massivecraft.massivecore.mixin.MixinTitle;
 import com.massivecraft.massivecore.mixin.MixinWorld;
 import com.massivecraft.massivecore.money.Money;
 import com.massivecraft.massivecore.ps.PS;
@@ -384,7 +386,7 @@ public class EngineMain extends Engine
 		if (currentPriority != MConf.get().motdPriority) return;
 		
 		// ... and this is an actual join ...
-		if (!Mixin.isActualJoin(event)) return;
+		if ( ! MixinActual.get().isActualJoin(event)) return;
 		
 		// ... then prepare the messages ...
 		final List<Object> messages = faction.getMotdMessages();
@@ -392,7 +394,7 @@ public class EngineMain extends Engine
 		// ... and send to the player.
 		if (MConf.get().motdDelayTicks < 0)
 		{
-			Mixin.messageOne(player, messages);
+			MixinMessage.get().messageOne(player, messages);
 		}
 		else
 		{
@@ -401,7 +403,7 @@ public class EngineMain extends Engine
 				@Override
 				public void run()
 				{
-					Mixin.messageOne(player, messages);
+					MixinMessage.get().messageOne(player, messages);
 				}
 			}, MConf.get().motdDelayTicks);
 		}
@@ -500,7 +502,7 @@ public class EngineMain extends Engine
 				String worldId = chunk.getWorld();
 				if ( ! MConf.get().worldsClaimingEnabled.contains(worldId))
 				{
-					String worldName = Mixin.getWorldDisplayName(worldId);
+					String worldName = MixinWorld.get().getWorldDisplayName(worldId);
 					mplayer.msg("<b>Land claiming is disabled in <h>%s<b>.", worldName);
 					event.setCancelled(true);
 					return;
@@ -715,7 +717,7 @@ public class EngineMain extends Engine
 			{
 				String maintitle = parseTerritoryInfo(MConf.get().territoryInfoTitlesMain, mplayer, factionTo);
 				String subtitle = parseTerritoryInfo(MConf.get().territoryInfoTitlesSub, mplayer, factionTo);
-				Mixin.sendTitleMessage(player, MConf.get().territoryInfoTitlesTicksIn, MConf.get().territoryInfoTitlesTicksStay, MConf.get().territoryInfoTitleTicksOut, maintitle, subtitle);
+				MixinTitle.get().sendTitleMessage(player, MConf.get().territoryInfoTitlesTicksIn, MConf.get().territoryInfoTitlesTicksStay, MConf.get().territoryInfoTitleTicksOut, maintitle, subtitle);
 			}
 			else
 			{

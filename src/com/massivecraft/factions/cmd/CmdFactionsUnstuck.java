@@ -16,7 +16,7 @@ import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.command.requirement.RequirementIsPlayer;
-import com.massivecraft.massivecore.mixin.Mixin;
+import com.massivecraft.massivecore.mixin.MixinTeleport;
 import com.massivecraft.massivecore.mixin.TeleporterException;
 import com.massivecraft.massivecore.ps.PS;
 import com.massivecraft.massivecore.teleport.Destination;
@@ -67,7 +67,7 @@ public class CmdFactionsUnstuck extends FactionsCommand
 		Destination destination = new DestinationSimple(PS.valueOf(location));
 		try
 		{
-			Mixin.teleport(me, destination, MConf.get().unstuckSeconds);
+			MixinTeleport.get().teleport(me, destination, MConf.get().unstuckSeconds);
 		}
 		catch (TeleporterException e)
 		{

@@ -4,7 +4,6 @@ import java.util.Comparator;
 
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.massivecore.comparator.ComparatorComparable;
-import com.massivecraft.massivecore.util.MUtil;
 
 public class FactionListComparator implements Comparator<Faction>
 {

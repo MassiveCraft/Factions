@@ -8,7 +8,7 @@ import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.command.type.primitive.TypeString;
-import com.massivecraft.massivecore.mixin.Mixin;
+import com.massivecraft.massivecore.mixin.MixinDisplayName;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.Txt;
 
@@ -88,7 +88,7 @@ public class CmdFactionsMotd extends FactionsCommand
 		// Inform
 		for (MPlayer follower : msenderFaction.getMPlayers())
 		{
-			follower.msg("<i>%s <i>set your faction motd to:\n%s", Mixin.getDisplayName(sender, follower), msenderFaction.getMotd());
+			follower.msg("<i>%s <i>set your faction motd to:\n%s", MixinDisplayName.get().getDisplayName(sender, follower), msenderFaction.getMotd());
 		}
 	}
 	

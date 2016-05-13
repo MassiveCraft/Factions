@@ -23,7 +23,8 @@ import com.massivecraft.factions.event.EventFactionsMembershipChange;
 import com.massivecraft.factions.event.EventFactionsRemovePlayerMillis;
 import com.massivecraft.factions.event.EventFactionsMembershipChange.MembershipChangeReason;
 import com.massivecraft.factions.util.RelationUtil;
-import com.massivecraft.massivecore.mixin.Mixin;
+import com.massivecraft.massivecore.mixin.MixinSenderPs;
+import com.massivecraft.massivecore.mixin.MixinTitle;
 import com.massivecraft.massivecore.ps.PS;
 import com.massivecraft.massivecore.ps.PSFormatHumanSpace;
 import com.massivecraft.massivecore.store.SenderEntity;
@@ -90,7 +91,7 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 		Faction faction = this.getFaction();
 		faction.mplayers.add(this);
 		
-		//Factions.get().log(Txt.parse("<g>postAttach added <h>%s <i>aka <h>%s <i>to <h>%s <i>aka <h>%s<i>.", id, Mixin.getDisplayName(id), faction.getId(), faction.getName()));
+		//Factions.get().log(Txt.parse("<g>postAttach added <h>%s <i>aka <h>%s <i>to <h>%s <i>aka <h>%s<i>.", id, MixinDisplayName.get().getDisplayName(id), faction.getId(), faction.getName()));
 	}
 	
 	@Override
@@ -103,7 +104,7 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 		Faction faction = this.getFaction();
 		faction.mplayers.remove(this);
 		
-		//Factions.get().log(Txt.parse("<b>preDetach removed <h>%s <i>aka <h>%s <i>to <h>%s <i>aka <h>%s<i>.", id, Mixin.getDisplayName(id), faction.getId(), faction.getName()));
+		//Factions.get().log(Txt.parse("<b>preDetach removed <h>%s <i>aka <h>%s <i>to <h>%s <i>aka <h>%s<i>.", id, MixinDisplayName.get().getDisplayName(id), faction.getId(), faction.getName()));
 	}
 	
 	// -------------------------------------------- //
@@ -575,7 +576,7 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 	
 	public boolean isTerritoryInfoTitles()
 	{
-		if ( ! Mixin.isTitlesAvailable()) return false;
+		if ( ! MixinTitle.get().isTitlesAvailable()) return false;
 		if (this.territoryInfoTitles == null) return MConf.get().territoryInfoTitlesDefault;
 		return this.territoryInfoTitles;
 	}
@@ -707,14 +708,14 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 	
 	public boolean isInOwnTerritory()
 	{
-		PS ps = Mixin.getSenderPs(this.getId());
+		PS ps = MixinSenderPs.get().getSenderPs(this.getId());
 		if (ps == null) return false;
 		return BoardColl.get().getFactionAt(ps) == this.getFaction();
 	}
 
 	public boolean isInEnemyTerritory()
 	{
-		PS ps = Mixin.getSenderPs(this.getId());
+		PS ps = MixinSenderPs.get().getSenderPs(this.getId());
 		if (ps == null) return false;
 		return BoardColl.get().getFactionAt(ps).getRelationTo(this) == Rel.ENEMY;
 	}

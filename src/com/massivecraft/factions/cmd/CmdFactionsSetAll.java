@@ -10,7 +10,7 @@ import com.massivecraft.factions.entity.BoardColl;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
-import com.massivecraft.massivecore.mixin.Mixin;
+import com.massivecraft.massivecore.mixin.MixinWorld;
 import com.massivecraft.massivecore.ps.PS;
 import com.massivecraft.massivecore.util.MUtil;
 
@@ -85,7 +85,7 @@ public class CmdFactionsSetAll extends CmdFactionsSetXAll
 			}
 			Board board = BoardColl.get().get(worldId);
 			chunks = board.getChunks(oldFaction);
-			String worldDisplayName = Mixin.getWorldDisplayName(worldId);
+			String worldDisplayName = MixinWorld.get().getWorldDisplayName(worldId);
 			this.setFormatOne("<h>%s<i> %s <h>%d <i>chunk using " + word + " <h>" + worldDisplayName + "<i>.");
 			this.setFormatMany("<h>%s<i> %s <h>%d <i>chunks using " + word + " <h>" + worldDisplayName + "<i>.");
 		}

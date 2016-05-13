@@ -13,7 +13,7 @@ import com.massivecraft.factions.Perm;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.PriorityLines;
 import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
-import com.massivecraft.massivecore.mixin.Mixin;
+import com.massivecraft.massivecore.mixin.MixinMessage;
 import com.massivecraft.massivecore.util.Txt;
 
 public class CmdFactionsFaction extends FactionsCommand
@@ -56,13 +56,13 @@ public class CmdFactionsFaction extends FactionsCommand
 				if (event.isCancelled()) return;
 				
 				// Title
-				Mixin.messageOne(sender, Txt.titleize("Faction " + faction.getName(msender)));
+				MixinMessage.get().messageOne(sender, Txt.titleize("Faction " + faction.getName(msender)));
 				
 				// Lines
 				TreeSet<PriorityLines> priorityLiness = new TreeSet<PriorityLines>(event.getIdPriorityLiness().values());
 				for (PriorityLines priorityLines : priorityLiness)
 				{
-					Mixin.messageOne(sender, priorityLines.getLines());
+					MixinMessage.get().messageOne(sender, priorityLines.getLines());
 				}
 			}
 		});

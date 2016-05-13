@@ -8,7 +8,7 @@ import com.massivecraft.factions.event.EventFactionsDescriptionChange;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.command.type.primitive.TypeString;
-import com.massivecraft.massivecore.mixin.Mixin;
+import com.massivecraft.massivecore.mixin.MixinDisplayName;
 
 public class CmdFactionsDescription extends FactionsCommand
 {
@@ -54,7 +54,7 @@ public class CmdFactionsDescription extends FactionsCommand
 		// Inform
 		for (MPlayer follower : msenderFaction.getMPlayers())
 		{
-			follower.msg("<i>%s <i>set your faction description to:\n%s", Mixin.getDisplayName(sender, follower), msenderFaction.getDescription());
+			follower.msg("<i>%s <i>set your faction description to:\n%s", MixinDisplayName.get().getDisplayName(sender, follower), msenderFaction.getDescription());
 		}
 	}
 	

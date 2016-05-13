@@ -6,7 +6,7 @@ import com.massivecraft.massivecore.command.Visibility;
 import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.command.requirement.RequirementTitlesAvailable;
 import com.massivecraft.massivecore.command.type.primitive.TypeBoolean;
-import com.massivecraft.massivecore.mixin.Mixin;
+import com.massivecraft.massivecore.mixin.MixinTitle;
 import com.massivecraft.massivecore.util.Txt;
 
 public class CmdFactionsTerritorytitles extends FactionsCommand
@@ -36,7 +36,7 @@ public class CmdFactionsTerritorytitles extends FactionsCommand
 	public Visibility getVisibility()
 	{
 		// We hide the command if titles aren't available.
-		if ( ! Mixin.isTitlesAvailable()) return Visibility.INVISIBLE;
+		if ( ! MixinTitle.get().isTitlesAvailable()) return Visibility.INVISIBLE;
 		return super.getVisibility();
 	}
 	

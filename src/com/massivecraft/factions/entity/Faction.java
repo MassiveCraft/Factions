@@ -31,7 +31,7 @@ import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.collections.MassiveMapDef;
 import com.massivecraft.massivecore.collections.MassiveTreeSetDef;
 import com.massivecraft.massivecore.comparator.ComparatorCaseInsensitive;
-import com.massivecraft.massivecore.mixin.Mixin;
+import com.massivecraft.massivecore.mixin.MixinMessage;
 import com.massivecraft.massivecore.money.Money;
 import com.massivecraft.massivecore.predicate.Predicate;
 import com.massivecraft.massivecore.ps.PS;
@@ -1215,34 +1215,34 @@ public class Faction extends Entity<Faction> implements EconomyParticipator, Nam
 	
 	public boolean sendMessage(Object message)
 	{
-		return Mixin.messagePredicate(new FactionEqualsPredicate(this), message);
+		return MixinMessage.get().messagePredicate(new FactionEqualsPredicate(this), message);
 	}
 	
 	public boolean sendMessage(Object... messages)
 	{
-		return Mixin.messagePredicate(new FactionEqualsPredicate(this), messages);
+		return MixinMessage.get().messagePredicate(new FactionEqualsPredicate(this), messages);
 	}
 	
 	public boolean sendMessage(Collection<Object> messages)
 	{
-		return Mixin.messagePredicate(new FactionEqualsPredicate(this), messages);
+		return MixinMessage.get().messagePredicate(new FactionEqualsPredicate(this), messages);
 	}
 	
 	// CONVENIENCE MSG
 	
 	public boolean msg(String msg)
 	{
-		return Mixin.msgPredicate(new FactionEqualsPredicate(this), msg);
+		return MixinMessage.get().msgPredicate(new FactionEqualsPredicate(this), msg);
 	}
 	
 	public boolean msg(String msg, Object... args)
 	{
-		return Mixin.msgPredicate(new FactionEqualsPredicate(this), msg, args);
+		return MixinMessage.get().msgPredicate(new FactionEqualsPredicate(this), msg, args);
 	}
 	
 	public boolean msg(Collection<String> msgs)
 	{
-		return Mixin.msgPredicate(new FactionEqualsPredicate(this), msgs);
+		return MixinMessage.get().msgPredicate(new FactionEqualsPredicate(this), msgs);
 	}
 	
 }
