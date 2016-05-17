@@ -102,6 +102,7 @@ import com.massivecraft.massivecore.mixin.MixinMessage;
 import com.massivecraft.massivecore.mixin.MixinTitle;
 import com.massivecraft.massivecore.mixin.MixinWorld;
 import com.massivecraft.massivecore.money.Money;
+import com.massivecraft.massivecore.nms.NmsChat;
 import com.massivecraft.massivecore.ps.PS;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.PlayerUtil;
