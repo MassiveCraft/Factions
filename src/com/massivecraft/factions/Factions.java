@@ -184,8 +184,6 @@ public class Factions extends MassivePlugin
 		ChatTagName.get().register();
 		ChatTagNameforce.get().register();
 		ChatTagTitle.get().register();
-		
-		postEnable();
 	}
 	
 	public GsonBuilder getGsonBuilderWithoutPreprocessors()
