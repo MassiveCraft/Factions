@@ -2,7 +2,6 @@ package com.massivecraft.factions.engine;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -102,7 +101,6 @@ import com.massivecraft.massivecore.mixin.MixinMessage;
 import com.massivecraft.massivecore.mixin.MixinTitle;
 import com.massivecraft.massivecore.mixin.MixinWorld;
 import com.massivecraft.massivecore.money.Money;
-import com.massivecraft.massivecore.nms.NmsChat;
 import com.massivecraft.massivecore.ps.PS;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.PlayerUtil;
@@ -1105,7 +1103,7 @@ public class EngineMain extends Engine
 		command = command.trim();
 		
 		// ... the command may be denied for members of permanent factions ...
-		if (mplayer.hasFaction() && mplayer.getFaction().getFlag(MFlag.getFlagPermanent()) && containsCommand(command, MConf.get().denyCommandsPermanentFactionMember))
+		if (mplayer.hasFaction() && mplayer.getFaction().getFlag(MFlag.getFlagPermanent()) && MUtil.containsCommand(command, MConf.get().denyCommandsPermanentFactionMember))
 		{
 			mplayer.msg("<b>You can't use \"<h>/%s<b>\" as member of a permanent faction.", command);
 			event.setCancelled(true);
@@ -1123,43 +1121,10 @@ public class EngineMain extends Engine
 		
 		List<String> deniedCommands = MConf.get().denyCommandsTerritoryRelation.get(rel);
 		if (deniedCommands == null) return;
-		if (!containsCommand(command, deniedCommands)) return;
+		if ( ! MUtil.containsCommand(command, deniedCommands)) return;
 		
 		mplayer.msg("<b>You can't use \"<h>/%s<b>\" in %s territory.", command, Txt.getNicedEnum(rel));
 		event.setCancelled(true);
-	}
-
-	private static boolean containsCommand(String needle, Collection<String> haystack)
-	{
-		if (needle == null) return false;
-		needle = Txt.removeLeadingCommandDust(needle);
-		needle = needle.toLowerCase();
-		
-		for (String straw : haystack)
-		{
-			if (straw == null) continue;
-			straw = Txt.removeLeadingCommandDust(straw);
-			straw = straw.toLowerCase();
-			
-			// If it starts with then it is possibly a subject.
-			if (needle.startsWith(straw))
-			{
-				// Get the remainder.
-				String remainder = needle.substring(straw.length());
-				
-				// If they were equal, definitely true.
-				if (remainder.isEmpty()) return true;
-				
-				// If the next is a space, the space is used as separator for sub commands or arguments.
-				// Otherwise it might just have been another command coincidentally starting with the first command.
-				// The old behaviour was if (needle.startsWith(straw)) return true;
-				// If "s" was block, then all commands starting with "s" was, now it isn't.
-				if (remainder.startsWith(" ")) return true;
-			}
-			
-		}
-		
-		return false;
 	}
 	
 	// -------------------------------------------- //
