@@ -110,7 +110,7 @@ public enum Perm
 	
 	public boolean has(Permissible permissible, boolean informSenderIfNot)
 	{
-		return PermissionUtil.has(permissible, this.node, informSenderIfNot);
+		return PermissionUtil.hasPermission(permissible, this.node, informSenderIfNot);
 	}
 	
 	public boolean has(Permissible permissible)
