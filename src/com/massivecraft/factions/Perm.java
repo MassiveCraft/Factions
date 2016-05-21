@@ -2,7 +2,7 @@ package com.massivecraft.factions;
 
 import org.bukkit.permissions.Permissible;
 
-import com.massivecraft.massivecore.util.PermUtil;
+import com.massivecraft.massivecore.util.PermissionUtil;
 
 public enum Perm
 {
@@ -110,7 +110,7 @@ public enum Perm
 	
 	public boolean has(Permissible permissible, boolean informSenderIfNot)
 	{
-		return PermUtil.has(permissible, this.node, informSenderIfNot);
+		return PermissionUtil.has(permissible, this.node, informSenderIfNot);
 	}
 	
 	public boolean has(Permissible permissible)
