@@ -32,7 +32,7 @@ public class CmdFactionsKick extends FactionsCommand
 		this.addParameter(TypeMPlayer.get(), "player");
 
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(Perm.KICK.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.KICK));
 	}
 
 	// -------------------------------------------- //

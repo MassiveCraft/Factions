@@ -29,7 +29,7 @@ public class CmdFactionsInviteAdd extends FactionsCommand
 		this.addParameter(TypeSet.get(TypeMPlayer.get()), "players", true);
 		
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(Perm.INVITE_ADD.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.INVITE_ADD));
 	}
 	
 	// -------------------------------------------- //

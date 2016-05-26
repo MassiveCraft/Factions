@@ -33,7 +33,7 @@ public class CmdFactionsMoneyWithdraw extends FactionsCommand
 		this.addParameter(TypeFaction.get(), "faction", "you");
 
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(Perm.MONEY_WITHDRAW.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.MONEY_WITHDRAW));
 		this.addRequirements(ReqBankCommandsEnabled.get());
 	}
 

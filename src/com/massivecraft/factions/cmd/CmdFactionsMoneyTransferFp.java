@@ -35,7 +35,7 @@ public class CmdFactionsMoneyTransferFp extends FactionsCommand
 		this.addParameter(TypeMPlayer.get(), "player");
 
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(Perm.MONEY_F2P.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.MONEY_F2P));
 		this.addRequirements(ReqBankCommandsEnabled.get());
 	}
 	

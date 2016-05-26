@@ -23,7 +23,7 @@ public class CmdFactionsOverride extends FactionsCommand
 		this.addParameter(TypeBoolean.getOn(), "on/off", "flip");
 		
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(Perm.OVERRIDE.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.OVERRIDE));
 	}
 
 	// -------------------------------------------- //

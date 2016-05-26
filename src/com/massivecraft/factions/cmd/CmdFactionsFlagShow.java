@@ -30,7 +30,7 @@ public class CmdFactionsFlagShow extends FactionsCommand
 		this.addParameter(TypeSet.get(TypeMFlag.get()), "flags", "all", true);
 		
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(Perm.FLAG_SHOW.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.FLAG_SHOW));
 	}
 	
 	// -------------------------------------------- //

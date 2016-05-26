@@ -25,7 +25,7 @@ public class CmdFactionsDescription extends FactionsCommand
 		this.addParameter(TypeString.get(), "desc", true);
 
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(Perm.DESCRIPTION.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.DESCRIPTION));
 		this.addRequirements(ReqHasFaction.get());
 	}
 

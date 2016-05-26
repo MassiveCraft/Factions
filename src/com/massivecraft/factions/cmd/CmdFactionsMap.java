@@ -28,7 +28,7 @@ public class CmdFactionsMap extends FactionsCommand
 		this.addParameter(TypeBoolean.getOn(), "on/off", "once");
 
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(Perm.MAP.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.MAP));
 		this.addRequirements(RequirementIsPlayer.get());
 	}
 

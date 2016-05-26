@@ -32,7 +32,7 @@ public class CmdFactionsDisband extends FactionsCommand
 		this.addParameter(TypeFaction.get(), "faction", "you");
 
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(Perm.DISBAND.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.DISBAND));
 	}
 
 	// -------------------------------------------- //

@@ -33,8 +33,8 @@ public class CmdFactionsSetFill extends CmdFactionsSetXSimple
 		
 		// Requirements
 		this.addRequirements(RequirementIsPlayer.get());
-		String node = claim ? Perm.CLAIM_FILL.node : Perm.UNCLAIM_FILL.node;
-		this.addRequirements(RequirementHasPerm.get(node));
+		Perm perm = claim ? Perm.CLAIM_FILL : Perm.UNCLAIM_FILL;
+		this.addRequirements(RequirementHasPerm.get(perm));
 	}
 
 	// -------------------------------------------- //

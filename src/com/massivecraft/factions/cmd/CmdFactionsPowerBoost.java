@@ -36,7 +36,7 @@ public class CmdFactionsPowerBoost extends FactionsCommand
 		this.addParameter(TypeDouble.get(), "#");
 
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(Perm.POWERBOOST.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.POWERBOOST));
 	}
 
 	// -------------------------------------------- //

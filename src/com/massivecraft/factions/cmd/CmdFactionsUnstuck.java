@@ -34,7 +34,7 @@ public class CmdFactionsUnstuck extends FactionsCommand
 		this.addAliases("unstuck");
 		
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(Perm.UNSTUCK.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.UNSTUCK));
 		this.addRequirements(RequirementIsPlayer.get());
 	}
 

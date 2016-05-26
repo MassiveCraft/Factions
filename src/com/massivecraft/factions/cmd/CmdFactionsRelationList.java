@@ -48,7 +48,7 @@ public class CmdFactionsRelationList extends FactionsCommand
 		this.addParameter(TypeSet.get(TypeRelation.get()), "relations", "all");
 
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(Perm.RELATION_LIST.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.RELATION_LIST));
 	}
 
 	// -------------------------------------------- //

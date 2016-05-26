@@ -29,7 +29,7 @@ public class CmdFactionsInvite extends FactionsCommand
 
 
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(Perm.INVITE.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.INVITE));
 	}
 	
 }

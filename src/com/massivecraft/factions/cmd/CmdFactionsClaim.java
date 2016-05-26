@@ -35,7 +35,7 @@ public class CmdFactionsClaim extends FactionsCommand
 		this.addChild(this.cmdFactionsClaimAll);
 		
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(Perm.CLAIM.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.CLAIM));
 	}
 	
 }

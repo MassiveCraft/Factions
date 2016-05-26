@@ -39,7 +39,7 @@ public class CmdFactionsStatus extends FactionsCommand
 		this.addParameter(TypeSortMPlayer.get(), "sort", "time");
 
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(Perm.STATUS.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.STATUS));
 	}
 
 	// -------------------------------------------- //

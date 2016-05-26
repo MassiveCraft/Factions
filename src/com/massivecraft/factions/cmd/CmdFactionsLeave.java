@@ -16,7 +16,7 @@ public class CmdFactionsLeave extends FactionsCommand
 		this.addAliases("leave");
 
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(Perm.LEAVE.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.LEAVE));
 		this.addRequirements(ReqHasFaction.get());
 	}
 

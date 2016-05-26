@@ -19,7 +19,7 @@ public class CmdFactionsExpansions extends FactionsCommand
 		this.addAliases("expansions");
 
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(Perm.EXPANSIONS.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.EXPANSIONS));
 	}
 
 	// -------------------------------------------- //

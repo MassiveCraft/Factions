@@ -23,7 +23,7 @@ public class CmdFactionsMoneyBalance extends FactionsCommand
 		this.addParameter(TypeFaction.get(), "faction", "you");
 
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(Perm.MONEY_BALANCE.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.MONEY_BALANCE));
 		this.addRequirements(ReqBankCommandsEnabled.get());
 	}
 

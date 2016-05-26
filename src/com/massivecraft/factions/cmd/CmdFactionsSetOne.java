@@ -25,8 +25,8 @@ public class CmdFactionsSetOne extends CmdFactionsSetXSimple
 
 		// Requirements
 		this.addRequirements(RequirementIsPlayer.get());
-		String node = claim ? Perm.CLAIM_ONE.node : Perm.UNCLAIM_ONE.node;
-		this.addRequirements(RequirementHasPerm.get(node));
+		Perm perm = claim ? Perm.CLAIM_ONE : Perm.UNCLAIM_ONE;
+		this.addRequirements(RequirementHasPerm.get(perm));
 	}
 
 	// -------------------------------------------- //

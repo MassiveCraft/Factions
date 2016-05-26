@@ -23,7 +23,7 @@ public class CmdFactionsUnsethome extends FactionsCommandHome
 		this.addParameter(TypeFaction.get(), "faction", "you");
 
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(Perm.UNSETHOME.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.UNSETHOME));
 	}
 
 	// -------------------------------------------- //

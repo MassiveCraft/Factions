@@ -7,6 +7,7 @@ import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.massivecore.command.MassiveCommandDeprecated;
 import com.massivecraft.massivecore.command.MassiveCommandVersion;
+import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 
 public class CmdFactions extends FactionsCommand
 {
@@ -67,7 +68,7 @@ public class CmdFactions extends FactionsCommand
 	public CmdFactionsDisband cmdFactionsDisband = new CmdFactionsDisband();
 	public CmdFactionsPowerBoost cmdFactionsPowerBoost = new CmdFactionsPowerBoost();
 	public CmdFactionsSetpower cmdFactionsSetpower = new CmdFactionsSetpower();
-	public MassiveCommandVersion cmdFactionsVersion = new MassiveCommandVersion(Factions.get(), Perm.VERSION.node, "v", "version");
+	public MassiveCommandVersion cmdFactionsVersion = new MassiveCommandVersion(Factions.get()).setAliases("v", "version").addRequirements(RequirementHasPerm.get(Perm.VERSION));
 	
 	// -------------------------------------------- //
 	// CONSTRUCT

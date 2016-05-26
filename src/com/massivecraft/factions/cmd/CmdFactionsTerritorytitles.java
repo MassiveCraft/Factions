@@ -7,7 +7,6 @@ import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.command.requirement.RequirementTitlesAvailable;
 import com.massivecraft.massivecore.command.type.primitive.TypeBoolean;
 import com.massivecraft.massivecore.mixin.MixinTitle;
-import com.massivecraft.massivecore.nms.NmsChat;
 import com.massivecraft.massivecore.util.Txt;
 
 public class CmdFactionsTerritorytitles extends FactionsCommand
@@ -25,7 +24,7 @@ public class CmdFactionsTerritorytitles extends FactionsCommand
 		this.addParameter(TypeBoolean.getOn(), "on|off", "toggle");
 
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(Perm.TERRITORYTITLES.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.TERRITORYTITLES));
 		this.addRequirements(RequirementTitlesAvailable.get());
 	}
 

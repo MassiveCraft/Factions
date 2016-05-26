@@ -27,7 +27,7 @@ public class CmdFactionsMotd extends FactionsCommand
 		this.addParameter(TypeString.get(), "new", "read", true);
 
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(Perm.MOTD.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.MOTD));
 	}
 
 	// -------------------------------------------- //

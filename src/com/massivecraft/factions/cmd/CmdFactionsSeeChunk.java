@@ -22,7 +22,7 @@ public class CmdFactionsSeeChunk extends FactionsCommand
 		this.addParameter(TypeBoolean.getOn(), "active", "toggle");
 
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(Perm.SEECHUNK.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.SEECHUNK));
 		this.addRequirements(RequirementIsPlayer.get());
 	}
 

@@ -40,7 +40,7 @@ public class CmdFactionsHome extends FactionsCommandHome
 		this.addParameter(TypeFaction.get(), "faction", "you");
 
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(Perm.HOME.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.HOME));
 		this.addRequirements(RequirementIsPlayer.get());
 	}
 	

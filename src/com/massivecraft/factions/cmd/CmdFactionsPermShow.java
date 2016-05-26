@@ -30,7 +30,7 @@ public class CmdFactionsPermShow extends FactionsCommand
 		this.addParameter(TypeSet.get(TypeMPerm.get()), "perms", "all", true);
 		
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(Perm.PERM_SHOW.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.PERM_SHOW));
 	}
 
 	// -------------------------------------------- //

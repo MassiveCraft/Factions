@@ -30,8 +30,8 @@ public class CmdFactionsSetSquare extends CmdFactionsSetXRadius
 		
 		// Requirements
 		this.addRequirements(RequirementIsPlayer.get());
-		String node = claim ? Perm.CLAIM_SQUARE.node : Perm.UNCLAIM_SQUARE.node;
-		this.addRequirements(RequirementHasPerm.get(node));		
+		Perm perm = claim ? Perm.CLAIM_SQUARE : Perm.UNCLAIM_SQUARE;
+		this.addRequirements(RequirementHasPerm.get(perm));		
 	}
 
 	// -------------------------------------------- //

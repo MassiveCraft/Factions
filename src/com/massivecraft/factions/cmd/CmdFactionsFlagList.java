@@ -25,7 +25,7 @@ public class CmdFactionsFlagList extends FactionsCommand
 		this.addParameter(Parameter.getPage());
 		
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(Perm.FLAG_LIST.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.FLAG_LIST));
 	}
 	
 	// -------------------------------------------- //

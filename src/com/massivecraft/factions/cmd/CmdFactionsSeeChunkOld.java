@@ -24,7 +24,7 @@ public class CmdFactionsSeeChunkOld extends FactionsCommand
 		this.addAliases("sco", "seechunkold");
 
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(Perm.SEECHUNKOLD.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.SEECHUNKOLD));
 		this.addRequirements(RequirementIsPlayer.get());
 	}
 

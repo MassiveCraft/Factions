@@ -35,7 +35,7 @@ public class CmdFactionsUnclaim extends FactionsCommand
 		this.addChild(this.cmdFactionsUnclaimAll);
 		
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(Perm.UNCLAIM.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.UNCLAIM));
 	}
 	
 }

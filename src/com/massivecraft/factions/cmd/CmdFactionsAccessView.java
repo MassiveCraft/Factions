@@ -15,7 +15,7 @@ public class CmdFactionsAccessView extends CmdFactionsAccessAbstract
 		this.addAliases("view");
 
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(Perm.ACCESS_VIEW.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.ACCESS_VIEW));
 	}
 
 	// -------------------------------------------- //

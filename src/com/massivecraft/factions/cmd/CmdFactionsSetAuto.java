@@ -44,8 +44,8 @@ public class CmdFactionsSetAuto extends FactionsCommand
 
 		// Requirements
 		this.addRequirements(RequirementIsPlayer.get());
-		String node = claim ? Perm.CLAIM_AUTO.node : Perm.UNCLAIM_AUTO.node;
-		this.addRequirements(RequirementHasPerm.get(node));
+		Perm perm = claim ? Perm.CLAIM_AUTO : Perm.UNCLAIM_AUTO;
+		this.addRequirements(RequirementHasPerm.get(perm));
 	}
 
 	// -------------------------------------------- //

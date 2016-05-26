@@ -31,7 +31,7 @@ public class CmdFactionsMoneyDeposit extends FactionsCommand
 		this.addParameter(TypeFaction.get(), "faction", "you");
 
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(Perm.MONEY_DEPOSIT.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.MONEY_DEPOSIT));
 		this.addRequirements(ReqBankCommandsEnabled.get());
 	}
 

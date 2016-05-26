@@ -25,7 +25,7 @@ public class CmdFactionsAccessFaction extends CmdFactionsAccessAbstract
 		this.addParameter(TypeBoolean.getYes(), "yes/no", "toggle");
 
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(Perm.ACCESS_FACTION.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.ACCESS_FACTION));
 	}
 
 	// -------------------------------------------- //

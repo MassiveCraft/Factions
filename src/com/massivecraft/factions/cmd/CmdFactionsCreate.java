@@ -36,7 +36,7 @@ public class CmdFactionsCreate extends FactionsCommand
 
 		// Requirements
 		this.addRequirements(ReqHasntFaction.get());
-		this.addRequirements(RequirementHasPerm.get(Perm.CREATE.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.CREATE));
 	}
 
 	// -------------------------------------------- //

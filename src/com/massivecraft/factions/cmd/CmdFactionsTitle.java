@@ -28,7 +28,7 @@ public class CmdFactionsTitle extends FactionsCommand
 		this.addParameter(TypeString.get(), "title", "", true);
 
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(Perm.TITLE.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.TITLE));
 	}
 
 	// -------------------------------------------- //

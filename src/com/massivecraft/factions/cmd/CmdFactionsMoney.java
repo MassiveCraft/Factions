@@ -36,7 +36,7 @@ public class CmdFactionsMoney extends FactionsCommand
 
 		// Requirements
 		this.addRequirements(ReqBankCommandsEnabled.get());
-		this.addRequirements(RequirementHasPerm.get(Perm.MONEY.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.MONEY));
 	}
 	
 }

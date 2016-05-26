@@ -31,7 +31,7 @@ public class CmdFactionsInviteList extends FactionsCommand
 		this.addParameter(TypeFaction.get(), "faction", "you");
 		
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(Perm.INVITE_LIST.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.INVITE_LIST));
 	}
 	
 	// -------------------------------------------- //

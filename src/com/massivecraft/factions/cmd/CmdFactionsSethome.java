@@ -25,7 +25,7 @@ public class CmdFactionsSethome extends FactionsCommandHome
 		this.addParameter(TypeFaction.get(), "faction", "you");
 
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(Perm.SETHOME.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.SETHOME));
 		this.addRequirements(RequirementIsPlayer.get());
 	}
 

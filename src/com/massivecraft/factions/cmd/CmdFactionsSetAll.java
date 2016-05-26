@@ -37,8 +37,8 @@ public class CmdFactionsSetAll extends CmdFactionsSetXAll
 		this.addAliases("all");
 		
 		// Requirements
-		String node = claim ? Perm.CLAIM_ALL.node : Perm.UNCLAIM_ALL.node;
-		this.addRequirements(RequirementHasPerm.get(node));
+		Perm perm = claim ? Perm.CLAIM_ALL : Perm.UNCLAIM_ALL;
+		this.addRequirements(RequirementHasPerm.get(perm));
 	}
 
 	// -------------------------------------------- //

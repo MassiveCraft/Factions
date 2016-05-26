@@ -63,7 +63,7 @@ public class CmdFactionsRank extends FactionsCommand
 		this.addParameter(TypeFaction.get(), "faction", "their");
 	
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(Perm.RANK.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.RANK));
 	}
 	
 	// -------------------------------------------- //

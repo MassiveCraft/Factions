@@ -31,7 +31,7 @@ public class CmdFactionsFaction extends FactionsCommand
 		this.addParameter(TypeFaction.get(), "faction", "you");
 
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(Perm.FACTION.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.FACTION));
 	}
 
 	// -------------------------------------------- //

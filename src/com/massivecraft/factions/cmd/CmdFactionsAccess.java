@@ -31,7 +31,7 @@ public class CmdFactionsAccess extends FactionsCommand
 		
 		// Requirements
 		this.addRequirements(RequirementIsPlayer.get());
-		this.addRequirements(RequirementHasPerm.get(Perm.ACCESS.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.ACCESS));
 	}
 	
 }

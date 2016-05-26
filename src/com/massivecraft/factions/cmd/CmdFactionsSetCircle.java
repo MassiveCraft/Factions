@@ -30,8 +30,8 @@ public class CmdFactionsSetCircle extends CmdFactionsSetXRadius
 		
 		// Requirements
 		this.addRequirements(RequirementIsPlayer.get());
-		String node = claim ? Perm.CLAIM_CIRCLE.node : Perm.UNCLAIM_CIRCLE.node;
-		this.addRequirements(RequirementHasPerm.get(node));
+		Perm perm = claim ? Perm.CLAIM_CIRCLE : Perm.UNCLAIM_CIRCLE;
+		this.addRequirements(RequirementHasPerm.get(perm));
 	}
 
 	// -------------------------------------------- //

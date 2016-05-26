@@ -25,7 +25,7 @@ public class CmdFactionsPermList extends FactionsCommand
 		this.addParameter(Parameter.getPage());
 		
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(Perm.PERM_LIST.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.PERM_LIST));
 	}
 	
 	// -------------------------------------------- //

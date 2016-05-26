@@ -33,7 +33,7 @@ public class CmdFactionsJoin extends FactionsCommand
 		this.addParameter(TypeMPlayer.get(), "player", "you");
 
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(Perm.JOIN.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.JOIN));
 	}
 
 	// -------------------------------------------- //

@@ -29,7 +29,7 @@ public class CmdFactionsRelation extends FactionsCommand
 		this.addAliases("relation");
 
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(Perm.RELATION.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.RELATION));
 	}
 
 }

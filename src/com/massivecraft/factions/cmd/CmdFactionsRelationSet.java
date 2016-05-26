@@ -32,7 +32,7 @@ public class CmdFactionsRelationSet extends FactionsCommand
 		this.addParameter(TypeRelation.get(), "relation");
 
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(Perm.RELATION_SET.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.RELATION_SET));
 	}
 
 	// -------------------------------------------- //

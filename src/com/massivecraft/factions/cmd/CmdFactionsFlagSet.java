@@ -28,7 +28,7 @@ public class CmdFactionsFlagSet extends FactionsCommand
 		this.addParameter(TypeFaction.get(), "faction", "you");
 		
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(Perm.FLAG_SET.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.FLAG_SET));
 	}
 	
 	// -------------------------------------------- //

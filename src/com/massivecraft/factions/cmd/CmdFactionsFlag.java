@@ -28,7 +28,7 @@ public class CmdFactionsFlag extends FactionsCommand
 		this.addChild(this.cmdFactionsFlagSet);
 		
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(Perm.FLAG.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.FLAG));
 	}
 	
 }

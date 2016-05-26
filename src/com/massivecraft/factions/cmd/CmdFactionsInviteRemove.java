@@ -32,7 +32,7 @@ public class CmdFactionsInviteRemove extends FactionsCommand
 		this.addParameter(TypeSet.get(TypeMPlayer.get()), "players/all", true);
 		
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(Perm.INVITE_REMOVE.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.INVITE_REMOVE));
 	}
 	
 	// -------------------------------------------- //

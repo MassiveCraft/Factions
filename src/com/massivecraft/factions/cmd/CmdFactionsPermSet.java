@@ -35,7 +35,7 @@ public class CmdFactionsPermSet extends FactionsCommand
 		this.addParameter(TypeFaction.get(), "faction", "you");
 		
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(Perm.PERM_SET.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.PERM_SET));
 	}
 
 	// -------------------------------------------- //

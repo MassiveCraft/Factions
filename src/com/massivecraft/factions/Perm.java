@@ -2,9 +2,10 @@ package com.massivecraft.factions;
 
 import org.bukkit.permissions.Permissible;
 
+import com.massivecraft.massivecore.Identified;
 import com.massivecraft.massivecore.util.PermissionUtil;
 
-public enum Perm
+public enum Perm implements Identified
 {
 	// -------------------------------------------- //
 	// ENUM
@@ -93,7 +94,8 @@ public enum Perm
 	// FIELDS
 	// -------------------------------------------- //
 	
-	public final String node;
+	private final String id;
+	@Override public String getId() { return this.id; }
 	
 	// -------------------------------------------- //
 	// CONSTRUCT
@@ -101,7 +103,7 @@ public enum Perm
 	
 	Perm()
 	{
-		this.node = "factions." + this.name().toLowerCase().replace('_', '.');
+		this.id = PermissionUtil.createPermissionId(Factions.get(), this);
 	}
 	
 	// -------------------------------------------- //
@@ -110,7 +112,7 @@ public enum Perm
 	
 	public boolean has(Permissible permissible, boolean informSenderIfNot)
 	{
-		return PermissionUtil.hasPermission(permissible, this.node, informSenderIfNot);
+		return PermissionUtil.hasPermission(permissible, this.id, informSenderIfNot);
 	}
 	
 	public boolean has(Permissible permissible)
