@@ -25,7 +25,6 @@ import com.massivecraft.factions.event.EventFactionsMembershipChange.MembershipC
 import com.massivecraft.factions.util.RelationUtil;
 import com.massivecraft.massivecore.mixin.MixinSenderPs;
 import com.massivecraft.massivecore.mixin.MixinTitle;
-import com.massivecraft.massivecore.nms.NmsChat;
 import com.massivecraft.massivecore.ps.PS;
 import com.massivecraft.massivecore.ps.PSFormatHumanSpace;
 import com.massivecraft.massivecore.store.SenderEntity;
