@@ -40,7 +40,7 @@ public class CmdUnclaim extends FCommand {
 
         if (radius < 2) {
             // single chunk
-            fme.attemptClaim(forFaction, me.getLocation(), true);
+            unClaim(new FLocation(me));
         } else {
             // radius claim
             if (!Permission.CLAIM_RADIUS.has(sender, false)) {
