@@ -85,6 +85,9 @@ public class FactionsPlayerListener implements Listener {
                 }
             }
         }
+
+        // If they have the permission, don't let them autoleave. Bad inverted setter :\
+        me.setAutoLeave(!player.hasPermission(Permission.AUTO_LEAVE_BYPASS.node));
     }
 
     @EventHandler(priority = EventPriority.NORMAL)

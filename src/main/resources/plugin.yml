@@ -263,3 +263,5 @@ permissions:
     description: Don't lose power for being offline.
   factions.ahome:
     description: Ability to send players to their faction home.
+  factions.autoleavebypass:
+    description: Bypass autoleave.

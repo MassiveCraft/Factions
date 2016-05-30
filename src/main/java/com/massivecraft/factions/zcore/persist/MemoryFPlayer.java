@@ -57,6 +57,7 @@ public abstract class MemoryFPlayer implements FPlayer {
     protected int warmupTask;
     protected boolean isAdminBypassing = false;
     protected int kills, deaths;
+    protected boolean willAutoLeave;
 
     protected transient FLocation lastStoodAt = new FLocation(); // Where did this player stand the last time we checked?
     protected transient boolean mapAutoUpdating;
@@ -122,6 +123,15 @@ public abstract class MemoryFPlayer implements FPlayer {
 
     public void setPowerBoost(double powerBoost) {
         this.powerBoost = powerBoost;
+    }
+
+    public boolean willAutoLeave() {
+        return this.willAutoLeave;
+    }
+
+    public void setAutoLeave(boolean willLeave) {
+        this.willAutoLeave = willLeave;
+        P.p.debug(name + " set autoLeave to " + willLeave);
     }
 
     public Faction getAutoClaimFor() {
@@ -790,7 +800,7 @@ public abstract class MemoryFPlayer implements FPlayer {
         }
 
         // Was an over claim
-        if(currentFaction.isNormal() && currentFaction.hasLandInflation()) {
+        if (currentFaction.isNormal() && currentFaction.hasLandInflation()) {
             // Give them money for over claiming.
             Econ.modifyMoney(payee, Conf.econOverclaimRewardMultiplier, TL.CLAIM_TOOVERCLAIM.toString(), TL.CLAIM_FOROVERCLAIM.toString());
         }

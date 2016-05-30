@@ -6,6 +6,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.ListIterator;
+import java.util.logging.Level;
 
 public class AutoLeaveProcessTask extends BukkitRunnable {
 
@@ -46,6 +47,13 @@ public class AutoLeaveProcessTask extends BukkitRunnable {
             }
 
             FPlayer fplayer = iterator.next();
+
+            // Check if they should be exempt from this.
+            if (!fplayer.willAutoLeave()) {
+                P.p.log(Level.INFO, fplayer.getName() + " was going to be auto-removed but was set not to.");
+                continue;
+            }
+
             if (fplayer.isOffline() && now - fplayer.getLastLoginTime() > toleranceMillis) {
                 if (Conf.logFactionLeave || Conf.logFactionKick) {
                     P.p.log("Player " + fplayer.getName() + " was auto-removed due to inactivity.");

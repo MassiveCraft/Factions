@@ -37,6 +37,10 @@ public interface FPlayer extends EconomyParticipator {
 
     public void setFaction(Faction faction);
 
+    public boolean willAutoLeave();
+
+    public void setAutoLeave(boolean autoLeave);
+
     public void setMonitorJoins(boolean monitor);
 
     public boolean isMonitoringJoins();
