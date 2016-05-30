@@ -437,7 +437,8 @@ public enum TL {
     COMMAND_SETMAXVAULTS_DESCRIPTION("Set max vaults for a Faction."),
     COMMAND_SETMAXVAULTS_SUCCESS("&aSet max vaults for &e%s &ato &b%d"),
 
-    COMMAND_VAULTS_TOOHIGH("You tried to open vault %d but your Faction only has %d vaults."),
+    COMMAND_VAULT_DESCRIPTION("/f vault <number> to open one of your Faction's vaults."),
+    COMMAND_VAULT_TOOHIGH("&cYou tried to open vault %d but your Faction only has %d vaults."),
 
     COMMAND_SHOW_NOFACTION_SELF("You are not in a faction"),
     COMMAND_SHOW_NOFACTION_OTHER("That's not a faction"),

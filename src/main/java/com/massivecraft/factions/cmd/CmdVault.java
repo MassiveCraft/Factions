@@ -46,7 +46,7 @@ public class CmdVault extends FCommand {
 
         int max = myFaction.getMaxVaults();
         if (number > max) {
-            me.sendMessage(TL.COMMAND_VAULTS_TOOHIGH.format(number, max));
+            me.sendMessage(TL.COMMAND_VAULT_TOOHIGH.format(number, max));
             return;
         }
 
@@ -79,6 +79,6 @@ public class CmdVault extends FCommand {
 
     @Override
     public TL getUsageTranslation() {
-        return TL.COMMAND_VERSION_DESCRIPTION;
+        return TL.COMMAND_VAULT_DESCRIPTION;
     }
 }
