@@ -434,6 +434,11 @@ public enum TL {
     COMMAND_SETHOME_SETOTHER("<b>You have set the home for the %1$s<i> faction."),
     COMMAND_SETHOME_DESCRIPTION("Set the faction home"),
 
+    COMMAND_SETMAXVAULTS_DESCRIPTION("Set max vaults for a Faction."),
+    COMMAND_SETMAXVAULTS_SUCCESS("&aSet max vaults for &e%s &ato &b%d"),
+
+    COMMAND_VAULTS_TOOHIGH("You tried to open vault %d but your Faction only has %d vaults."),
+
     COMMAND_SHOW_NOFACTION_SELF("You are not in a faction"),
     COMMAND_SHOW_NOFACTION_OTHER("That's not a faction"),
     COMMAND_SHOW_TOSHOW("to show faction information"),

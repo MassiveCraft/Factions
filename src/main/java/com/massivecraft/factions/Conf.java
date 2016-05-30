@@ -356,6 +356,9 @@ public class Conf {
     public static Set<String> worldsIgnorePvP = new LinkedHashSet<String>();
     public static Set<String> worldsNoWildernessProtection = new LinkedHashSet<String>();
 
+    // faction-<factionId>
+    public static String vaultPrefix = "faction-%s";
+
     public static Backend backEnd = Backend.JSON;
 
     public static transient int mapHeight = 8;

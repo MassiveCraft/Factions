@@ -78,6 +78,8 @@ public enum Permission {
     SEECHUNK("seechunk"),
     SETWARP("setwarp"),
     TOP("top"),
+    VAULT("vault"),
+    SETMAXVAULTS("setmaxvaults"),
     WARP("warp");
 
     public final String node;

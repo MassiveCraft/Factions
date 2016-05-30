@@ -27,6 +27,10 @@ public interface Faction extends EconomyParticipator {
 
     public void clearWarps();
 
+    public int getMaxVaults();
+
+    public void setMaxVaults(int value);
+
     public void addAnnouncement(FPlayer fPlayer, String msg);
 
     public void sendUnreadAnnouncements(FPlayer fPlayer);

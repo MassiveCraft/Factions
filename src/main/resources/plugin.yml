@@ -2,7 +2,7 @@ name: Factions
 version: ${project.version}
 main: com.massivecraft.factions.P
 authors: [Olof Larsson, Brett Flannigan, drtshock]
-softdepend: [PermissionsEx, Permissions, Essentials, EssentialsChat, HeroChat, iChat, LocalAreaChat, LWC, nChat, ChatManager, CAPI, AuthMe, Vault, Spout, WorldEdit, WorldGuard, AuthDB, CaptureThePoints, CombatTag, dynmap]
+softdepend: [PlayerVaults, PermissionsEx, Permissions, Essentials, EssentialsChat, HeroChat, iChat, LocalAreaChat, LWC, nChat, ChatManager, CAPI, AuthMe, Vault, Spout, WorldEdit, WorldGuard, AuthDB, CaptureThePoints, CombatTag, dynmap]
 commands:
   factions:
     description: Reference command for Factions.
@@ -18,6 +18,7 @@ permissions:
       factions.save: true
       factions.modifypower: true
       factions.ahome: true
+      factions.setmaxvaults: true
   factions.*:
     description: This is just an alias for factions.kit.admin
     children:
@@ -96,6 +97,7 @@ permissions:
       factions.monitorlogins: true
       factions.top: true
       factions.togglealliancechat: true
+      factions.vault: true
   factions.admin:
     description: hand over your admin rights
   factions.admin.any:
@@ -265,3 +267,7 @@ permissions:
     description: Ability to send players to their faction home.
   factions.autoleavebypass:
     description: Bypass autoleave.
+  factions.vault:
+    description: Access faction vault.
+  factions.setmaxvault:
+    description: Set a faction's max vaults.

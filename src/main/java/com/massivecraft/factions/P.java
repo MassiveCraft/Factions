@@ -20,6 +20,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
 import java.lang.reflect.Modifier;
@@ -56,6 +57,8 @@ public class P extends MPlugin {
     public FCmdRoot cmdBase;
     public CmdAutoHelp cmdAutoHelp;
 
+    private boolean hookedPlayervaults;
+
     public P() {
         p = this;
     }
@@ -71,6 +74,7 @@ public class P extends MPlugin {
         // Load Conf from disk
         Conf.load();
         Essentials.setup();
+        hookedPlayervaults = setupPlayervaults();
         FPlayers.getInstance().load();
         Factions.getInstance().load();
         for (FPlayer fPlayer : FPlayers.getInstance().getAllFPlayers()) {
@@ -126,6 +130,11 @@ public class P extends MPlugin {
             return false;
         }
         return perms != null;
+    }
+
+    private boolean setupPlayervaults() {
+        Plugin plugin = getServer().getPluginManager().getPlugin("PlayerVaults");
+        return plugin != null && plugin.isEnabled();
     }
 
     @Override
@@ -310,6 +319,10 @@ public class P extends MPlugin {
             }
         }
         return players;
+    }
+
+    public boolean isHookedPlayervaults() {
+        return hookedPlayervaults;
     }
 
     public String getPrimaryGroup(OfflinePlayer player) {
