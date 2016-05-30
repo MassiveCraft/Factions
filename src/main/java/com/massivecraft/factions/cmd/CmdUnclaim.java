@@ -5,6 +5,7 @@ import com.massivecraft.factions.event.LandUnclaimEvent;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.util.SpiralTask;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
 
@@ -14,8 +15,8 @@ public class CmdUnclaim extends FCommand {
         this.aliases.add("unclaim");
         this.aliases.add("declaim");
 
-        //this.requiredArgs.add("");
-        //this.optionalArgs.put("", "");
+        this.optionalArgs.put("radius", "1");
+        this.optionalArgs.put("faction", "your");
 
         this.permission = Permission.UNCLAIM.node;
         this.disableOnLock = true;
@@ -28,66 +29,106 @@ public class CmdUnclaim extends FCommand {
 
     @Override
     public void perform() {
-        FLocation flocation = new FLocation(fme);
-        Faction otherFaction = Board.getInstance().getFactionAt(flocation);
+        // Read and validate input
+        int radius = this.argAsInt(0, 1); // Default to 1
+        final Faction forFaction = this.argAsFaction(1, myFaction); // Default to own
 
-        if (otherFaction.isSafeZone()) {
+        if (radius < 1) {
+            msg(TL.COMMAND_CLAIM_INVALIDRADIUS);
+            return;
+        }
+
+        if (radius < 2) {
+            // single chunk
+            fme.attemptClaim(forFaction, me.getLocation(), true);
+        } else {
+            // radius claim
+            if (!Permission.CLAIM_RADIUS.has(sender, false)) {
+                msg(TL.COMMAND_CLAIM_DENIED);
+                return;
+            }
+
+            new SpiralTask(new FLocation(me), radius) {
+                private int failCount = 0;
+                private final int limit = Conf.radiusClaimFailureLimit - 1;
+
+                @Override
+                public boolean work() {
+                    boolean success = unClaim(this.currentFLocation());
+                    if (success) {
+                        failCount = 0;
+                    } else if (failCount++ >= limit) {
+                        this.stop();
+                        return false;
+                    }
+
+                    return true;
+                }
+            };
+        }
+    }
+
+    private boolean unClaim(FLocation target) {
+        Faction targetFaction = Board.getInstance().getFactionAt(target);
+        if (targetFaction.isSafeZone()) {
             if (Permission.MANAGE_SAFE_ZONE.has(sender)) {
-                Board.getInstance().removeAt(flocation);
+                Board.getInstance().removeAt(target);
                 msg(TL.COMMAND_UNCLAIM_SAFEZONE_SUCCESS);
 
                 if (Conf.logLandUnclaims) {
-                    P.p.log(TL.COMMAND_UNCLAIM_LOG.format(fme.getName(), flocation.getCoordString(), otherFaction.getTag()));
+                    P.p.log(TL.COMMAND_UNCLAIM_LOG.format(fme.getName(), target.getCoordString(), targetFaction.getTag()));
                 }
+                return true;
             } else {
                 msg(TL.COMMAND_UNCLAIM_SAFEZONE_NOPERM);
+                return false;
             }
-            return;
-        } else if (otherFaction.isWarZone()) {
+        } else if (targetFaction.isWarZone()) {
             if (Permission.MANAGE_WAR_ZONE.has(sender)) {
-                Board.getInstance().removeAt(flocation);
+                Board.getInstance().removeAt(target);
                 msg(TL.COMMAND_UNCLAIM_WARZONE_SUCCESS);
 
                 if (Conf.logLandUnclaims) {
-                    P.p.log(TL.COMMAND_UNCLAIM_LOG.format(fme.getName(), flocation.getCoordString(), otherFaction.getTag()));
+                    P.p.log(TL.COMMAND_UNCLAIM_LOG.format(fme.getName(), target.getCoordString(), targetFaction.getTag()));
                 }
+                return true;
             } else {
                 msg(TL.COMMAND_UNCLAIM_WARZONE_NOPERM);
+                return false;
             }
-            return;
         }
 
         if (fme.isAdminBypassing()) {
-            Board.getInstance().removeAt(flocation);
+            Board.getInstance().removeAt(target);
 
-            otherFaction.msg(TL.COMMAND_UNCLAIM_UNCLAIMED, fme.describeTo(otherFaction, true));
+            targetFaction.msg(TL.COMMAND_UNCLAIM_UNCLAIMED, fme.describeTo(targetFaction, true));
             msg(TL.COMMAND_UNCLAIM_UNCLAIMS);
 
             if (Conf.logLandUnclaims) {
-                P.p.log(TL.COMMAND_UNCLAIM_LOG.format(fme.getName(), flocation.getCoordString(), otherFaction.getTag()));
+                P.p.log(TL.COMMAND_UNCLAIM_LOG.format(fme.getName(), target.getCoordString(), targetFaction.getTag()));
             }
 
-            return;
+            return true;
         }
 
         if (!assertHasFaction()) {
-            return;
+            return false;
         }
 
         if (!assertMinRole(Role.MODERATOR)) {
-            return;
+            return false;
         }
 
 
-        if (myFaction != otherFaction) {
+        if (myFaction != targetFaction) {
             msg(TL.COMMAND_UNCLAIM_WRONGFACTION);
-            return;
+            return false;
         }
 
-        LandUnclaimEvent unclaimEvent = new LandUnclaimEvent(flocation, otherFaction, fme);
+        LandUnclaimEvent unclaimEvent = new LandUnclaimEvent(target, targetFaction, fme);
         Bukkit.getServer().getPluginManager().callEvent(unclaimEvent);
         if (unclaimEvent.isCancelled()) {
-            return;
+            return false;
         }
 
         if (Econ.shouldBeUsed()) {
@@ -95,21 +136,23 @@ public class CmdUnclaim extends FCommand {
 
             if (Conf.bankEnabled && Conf.bankFactionPaysLandCosts) {
                 if (!Econ.modifyMoney(myFaction, refund, TL.COMMAND_UNCLAIM_TOUNCLAIM.toString(), TL.COMMAND_UNCLAIM_FORUNCLAIM.toString())) {
-                    return;
+                    return false;
                 }
             } else {
                 if (!Econ.modifyMoney(fme, refund, TL.COMMAND_UNCLAIM_TOUNCLAIM.toString(), TL.COMMAND_UNCLAIM_FORUNCLAIM.toString())) {
-                    return;
+                    return false;
                 }
             }
         }
 
-        Board.getInstance().removeAt(flocation);
+        Board.getInstance().removeAt(target);
         myFaction.msg(TL.COMMAND_UNCLAIM_FACTIONUNCLAIMED, fme.describeTo(myFaction, true));
 
         if (Conf.logLandUnclaims) {
-            P.p.log(TL.COMMAND_UNCLAIM_LOG.format(fme.getName(), flocation.getCoordString(), otherFaction.getTag()));
+            P.p.log(TL.COMMAND_UNCLAIM_LOG.format(fme.getName(), target.getCoordString(), targetFaction.getTag()));
         }
+
+        return true;
     }
 
     @Override
