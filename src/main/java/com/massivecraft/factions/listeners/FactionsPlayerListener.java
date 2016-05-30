@@ -86,6 +86,16 @@ public class FactionsPlayerListener implements Listener {
             }
         }
 
+        if (me.isSpyingChat() && !player.hasPermission(Permission.CHATSPY.node)) {
+            me.setSpyingChat(false);
+            P.p.log(Level.INFO, "Found %s spying chat without permission on login. Disabled their chat spying.", player.getName());
+        }
+
+        if (me.isAdminBypassing() && !player.hasPermission(Permission.BYPASS.node)) {
+            me.setIsAdminBypassing(false);
+            P.p.log(Level.INFO, "Found %s on admin Bypass without permission on login. Disabled it for them.", player.getName());
+        }
+
         // If they have the permission, don't let them autoleave. Bad inverted setter :\
         me.setAutoLeave(!player.hasPermission(Permission.AUTO_LEAVE_BYPASS.node));
     }
