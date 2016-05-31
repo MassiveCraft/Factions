@@ -322,6 +322,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         this.money = 0.0;
         this.powerBoost = 0.0;
         this.foundedDate = System.currentTimeMillis();
+        this.maxVaults = Conf.defaultMaxVaults;
     }
 
     public MemoryFaction(MemoryFaction old) {

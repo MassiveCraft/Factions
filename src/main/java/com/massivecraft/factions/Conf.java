@@ -358,6 +358,7 @@ public class Conf {
 
     // faction-<factionId>
     public static String vaultPrefix = "faction-%s";
+    public static int defaultMaxVaults = 0;
 
     public static Backend backEnd = Backend.JSON;
 
