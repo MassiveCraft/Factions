@@ -15,6 +15,19 @@ The goals of this plugin:
  * Guilding and team spirit! :)
  * Auto convert old 1.6.9.x versions to save with UUIDs.
 
+Versioning
+----------
+All versions prefixed with `1.6.9.5` as that is the legacy version.
+Followed by -U noting that it's the FactionsUUID fork.
+
+FactionsUUID versioning: `U<major>.<minor>.<patch>-<tag>`
+
+* Major version: Incompatible API changes
+* Minor version: Add backwards compatible features
+* Patch: Fixing bugs 
+* SNAPSHOT: Version is in bug fixing stage
+* Release Candidate (RC): Potentially a release
+
 Usage
 ---------
 <b>Read the full userguide here: [http://massivecraft.com/dev/factions](http://massivecraft.com/dev/factions)</b>
@@ -43,7 +56,7 @@ Note that you may optionally skip the slash and just write
 
 Installing
 ----------
-1. Download the latest release: [http://ci.drtshock.net/job/FactionsUUID/](http://ci.drtshock.net/job/FactionsUUID/)<br>
+1. Download the latest release [on Spigot](https://www.spigotmc.org/resources/factionsuuid.1035/)<br>
 1. Put Factions.jar in the plugins folder.
 
 A default config file will be created on the first run.
