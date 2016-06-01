@@ -57,7 +57,7 @@ public abstract class MemoryFPlayer implements FPlayer {
     protected int warmupTask;
     protected boolean isAdminBypassing = false;
     protected int kills, deaths;
-    protected boolean willAutoLeave;
+    protected boolean willAutoLeave = true;
 
     protected transient FLocation lastStoodAt = new FLocation(); // Where did this player stand the last time we checked?
     protected transient boolean mapAutoUpdating;
