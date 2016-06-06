@@ -1669,6 +1669,9 @@ public class EngineMain extends Engine
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onPlayerInteractEntity(PlayerInteractEntityEvent event)
 	{
+		// Ignore Off Hand
+		if (isOffHand(event)) return;
+		
 		// Gather Info
 		final Player player = event.getPlayer();
 		final Entity entity = event.getRightClicked();

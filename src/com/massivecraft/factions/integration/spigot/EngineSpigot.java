@@ -41,6 +41,9 @@ public class EngineSpigot extends Engine
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onPlayerInteractAtEntity(PlayerInteractAtEntityEvent event)
 	{
+		// Ignore Off Hand
+		if (isOffHand(event)) return;
+		
 		// Gather Info
 		final Player player = event.getPlayer();
 		if (MUtil.isntPlayer(player)) return;
