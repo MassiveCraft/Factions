@@ -14,7 +14,7 @@ import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.event.EventFactionsPermChange;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
-import com.massivecraft.massivecore.command.type.primitive.TypeBoolean;
+import com.massivecraft.massivecore.command.type.primitive.TypeBooleanYes;
 import com.massivecraft.massivecore.util.Txt;
 
 public class CmdFactionsPermSet extends FactionsCommand
@@ -31,7 +31,7 @@ public class CmdFactionsPermSet extends FactionsCommand
 		// Parameters
 		this.addParameter(TypeMPerm.get(), "perm");
 		this.addParameter(TypeRel.get(), "relation");
-		this.addParameter(TypeBoolean.getYes(), "yes/no");
+		this.addParameter(TypeBooleanYes.get(), "yes/no");
 		this.addParameter(TypeFaction.get(), "faction", "you");
 		
 		// Requirements

@@ -7,7 +7,7 @@ import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
-import com.massivecraft.massivecore.command.type.primitive.TypeBoolean;
+import com.massivecraft.massivecore.command.type.primitive.TypeBooleanYes;
 
 public class CmdFactionsAccessPlayer extends CmdFactionsAccessAbstract
 {
@@ -22,7 +22,7 @@ public class CmdFactionsAccessPlayer extends CmdFactionsAccessAbstract
 
 		// Parameters
 		this.addParameter(TypeMPlayer.get(), "player");
-		this.addParameter(TypeBoolean.getYes(), "yes/no", "toggle");
+		this.addParameter(TypeBooleanYes.get(), "yes/no", "toggle");
 
 		// Requirements
 		this.addRequirements(RequirementHasPerm.get(Perm.ACCESS_PLAYER));
