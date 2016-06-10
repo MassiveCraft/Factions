@@ -7,6 +7,7 @@ import com.massivecraft.factions.struct.Relation;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -126,6 +127,21 @@ public class FactionsBlockListener implements Listener {
         if (!canPistonMoveBlock(pistonFaction, targetLoc)) {
             event.setCancelled(true);
             return;
+        }
+    }
+
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+    public void onFrostWalker(EntityBlockFormEvent event) {
+        if (event.getEntity() == null || event.getEntity().getType() != EntityType.PLAYER || event.getBlock() == null) {
+            return;
+        }
+
+        Player player = (Player) event.getEntity();
+        Location location = event.getBlock().getLocation();
+
+        // Check if they have build permissions here. If not, block this from happening.
+        if (!playerCanBuildDestroyBlock(player, location, "frost walk", false)) {
+            event.setCancelled(true);
         }
     }
 
