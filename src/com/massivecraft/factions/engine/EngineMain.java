@@ -1200,7 +1200,7 @@ public class EngineMain extends Engine
 	public void blockExplosion(EntityDamageEvent event)
 	{
 		// If an explosion damages ...
-		if (DAMAGE_CAUSE_EXPLOSIONS.contains(event.getCause())) return;
+		if ( ! DAMAGE_CAUSE_EXPLOSIONS.contains(event.getCause())) return;
 		
 		// ... an entity that is modified on damage ...
 		if ( ! MConf.get().entityTypesEditOnDamage.contains(event.getEntityType())) return;
