@@ -65,6 +65,7 @@ public abstract class MemoryFPlayer implements FPlayer {
     protected transient boolean autoSafeZoneEnabled;
     protected transient boolean autoWarZoneEnabled;
     protected transient boolean loginPvpDisabled;
+    protected transient long lastFrostwalkerMessage;
 
 
     public void login() {
@@ -132,6 +133,14 @@ public abstract class MemoryFPlayer implements FPlayer {
     public void setAutoLeave(boolean willLeave) {
         this.willAutoLeave = willLeave;
         P.p.debug(name + " set autoLeave to " + willLeave);
+    }
+
+    public long getLastFrostwalkerMessage() {
+        return this.lastFrostwalkerMessage;
+    }
+
+    public void setLastFrostwalkerMessage() {
+        this.lastFrostwalkerMessage = System.currentTimeMillis();
     }
 
     public Faction getAutoClaimFor() {

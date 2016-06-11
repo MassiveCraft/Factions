@@ -139,8 +139,15 @@ public class FactionsBlockListener implements Listener {
         Player player = (Player) event.getEntity();
         Location location = event.getBlock().getLocation();
 
+        // only notify every 10 seconds
+        FPlayer fPlayer = FPlayers.getInstance().getByPlayer(player);
+        boolean justCheck = fPlayer.getLastFrostwalkerMessage() + 10000 > System.currentTimeMillis();
+        if (!justCheck) {
+            fPlayer.setLastFrostwalkerMessage();
+        }
+
         // Check if they have build permissions here. If not, block this from happening.
-        if (!playerCanBuildDestroyBlock(player, location, "frost walk", false)) {
+        if (!playerCanBuildDestroyBlock(player, location, "frost walk", justCheck)) {
             event.setCancelled(true);
         }
     }

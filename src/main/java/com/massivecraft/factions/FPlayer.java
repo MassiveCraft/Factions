@@ -41,6 +41,10 @@ public interface FPlayer extends EconomyParticipator {
 
     public void setAutoLeave(boolean autoLeave);
 
+    public long getLastFrostwalkerMessage();
+
+    public void setLastFrostwalkerMessage();
+
     public void setMonitorJoins(boolean monitor);
 
     public boolean isMonitoringJoins();
