@@ -13,7 +13,7 @@ public class IntegrationHerochat extends Integration
 	public static IntegrationHerochat get() { return i; }
 	private IntegrationHerochat()
 	{
-		this.setPluginName("HeroChat");
+		this.setPluginName("Herochat");
 	}
 	
 	// -------------------------------------------- //
