@@ -544,8 +544,7 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 		if (this.overriding == null) return false;
 		if (this.overriding == false) return false;
 		
-		// Deactivate admin mode if we don't have permissions for it.
-		if (this.getSender() != null && ! Perm.OVERRIDE.has(this.getSender(), false))
+		if (!this.hasPermission(Perm.OVERRIDE, true))
 		{
 			this.setOverriding(false);
 			return false;
