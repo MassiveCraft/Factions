@@ -42,6 +42,7 @@ import org.bukkit.event.block.BlockPistonExtendEvent;
 import org.bukkit.event.block.BlockPistonRetractEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.block.BlockSpreadEvent;
+import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 import org.bukkit.event.entity.EntityBreakDoorEvent;
@@ -1416,6 +1417,16 @@ public class EngineMain extends Engine
 	{
 		if ( ! event.getInstaBreak()) return;
 
+		boolean verboose = ! isFake(event);
+
+		if (canPlayerBuildAt(event.getPlayer(), PS.valueOf(event.getBlock()), verboose)) return;
+		
+		event.setCancelled(true);
+	}
+	
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void blockBuild(SignChangeEvent event)
+	{
 		boolean verboose = ! isFake(event);
 
 		if (canPlayerBuildAt(event.getPlayer(), PS.valueOf(event.getBlock()), verboose)) return;
