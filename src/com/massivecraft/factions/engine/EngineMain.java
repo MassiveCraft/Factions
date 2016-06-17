@@ -1,6 +1,5 @@
 package com.massivecraft.factions.engine;
 
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumSet;
@@ -20,11 +19,9 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Enderman;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Wither;
 import org.bukkit.entity.Zombie;
@@ -47,13 +44,11 @@ import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 import org.bukkit.event.entity.EntityBreakDoorEvent;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
-import org.bukkit.event.entity.EntityCombustByEntityEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.hanging.HangingBreakEvent;
 import org.bukkit.event.hanging.HangingBreakEvent.RemoveCause;
@@ -67,7 +62,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
-import org.bukkit.projectiles.ProjectileSource;
 
 import com.massivecraft.factions.Const;
 import com.massivecraft.factions.Factions;
@@ -88,7 +82,6 @@ import com.massivecraft.factions.event.EventFactionsChunksChange;
 import com.massivecraft.factions.event.EventFactionsFactionShowAsync;
 import com.massivecraft.factions.event.EventFactionsPowerChange;
 import com.massivecraft.factions.event.EventFactionsPowerChange.PowerChangeReason;
-import com.massivecraft.factions.event.EventFactionsPvpDisallowed;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.integration.spigot.IntegrationSpigot;
 import com.massivecraft.factions.util.VisualizeUtil;
@@ -823,221 +816,6 @@ public class EngineMain extends Engine
 		// ... and inform the player.
 		// TODO: A progress bar here would be epic :)
 		mplayer.msg("<i>Your power is now <h>%.2f / %.2f", newPower, mplayer.getPowerMax());
-	}
-	
-	// -------------------------------------------- //
-	// CAN COMBAT DAMAGE HAPPEN
-	// -------------------------------------------- //
-	
-	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-	public void canCombatDamageHappen(EntityDamageByEntityEvent event)
-	{
-		if (this.canCombatDamageHappen(event, true)) return;
-		event.setCancelled(true);
-
-		Entity damager = event.getDamager();
-		if ( ! (damager instanceof Arrow)) return;
-
-		damager.remove();
-	}
-
-	// mainly for flaming arrows; don't want allies or people in safe zones to be ignited even after damage event is cancelled
-	@SuppressWarnings("deprecation")
-	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-	public void canCombatDamageHappen(EntityCombustByEntityEvent event)
-	{
-		EntityDamageByEntityEvent sub = new EntityDamageByEntityEvent(event.getCombuster(), event.getEntity(), EntityDamageEvent.DamageCause.FIRE, 0D);
-		if (this.canCombatDamageHappen(sub, false)) return;
-		event.setCancelled(true);
-	}
-
-	@SuppressWarnings("deprecation")
-	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-	public void canCombatDamageHappen(PotionSplashEvent event)
-	{
-		// If a harmful potion is splashing ...
-		if (!MUtil.isHarmfulPotion(event.getPotion())) return;
-		
-		ProjectileSource projectileSource = event.getPotion().getShooter();
-		if (! (projectileSource instanceof Entity)) return;
-		
-		Entity thrower = (Entity)projectileSource;
-
-		// ... scan through affected entities to make sure they're all valid targets.
-		for (LivingEntity affectedEntity : event.getAffectedEntities())
-		{
-			EntityDamageByEntityEvent sub = new EntityDamageByEntityEvent(thrower, affectedEntity, EntityDamageEvent.DamageCause.CUSTOM, 0D);
-			if (this.canCombatDamageHappen(sub, true)) continue;
-			
-			// affected entity list doesn't accept modification (iter.remove() is a no-go), but this works
-			event.setIntensity(affectedEntity, 0.0);
-		}
-	}
-
-	// Utility method used in "canCombatDamageHappen" below.
-	public static boolean falseUnlessDisallowedPvpEventCancelled(Player attacker, Player defender, EntityDamageByEntityEvent event)
-	{
-		EventFactionsPvpDisallowed dpe = new EventFactionsPvpDisallowed(attacker, defender, event);
-		dpe.run();
-		return dpe.isCancelled();
-	}
-	
-	public boolean canCombatDamageHappen(EntityDamageByEntityEvent event, boolean notify)
-	{
-		boolean ret = true;
-		
-		// If the defender is a player ...
-		Entity edefender = event.getEntity();
-		if (MUtil.isntPlayer(edefender)) return true;
-		Player defender = (Player)edefender;
-		MPlayer mdefender = MPlayer.get(edefender);
-		
-		// ... and the attacker is someone else ...
-		Entity eattacker = MUtil.getLiableDamager(event);
-		
-		// (we check null here since there may not be an attacker)
-		// (lack of attacker situations can be caused by other bukkit plugins)
-		if (eattacker != null && eattacker.equals(edefender)) return true;
-		
-		// ... gather defender PS and faction information ...
-		PS defenderPs = PS.valueOf(defender.getLocation());
-		Faction defenderPsFaction = BoardColl.get().getFactionAt(defenderPs);
-
-		// ... fast evaluate if the attacker is overriding ...
-		MPlayer mplayer = MPlayer.get(eattacker);
-		if (mplayer != null && mplayer.isOverriding()) return true;
-		
-		// ... PVP flag may cause a damage block ...
-		if (defenderPsFaction.getFlag(MFlag.getFlagPvp()) == false)
-		{
-			if (eattacker == null)
-			{
-				// No attacker?
-				// Let's behave as if it were a player
-				return falseUnlessDisallowedPvpEventCancelled(null, defender, event);
-			}
-			if (MUtil.isPlayer(eattacker))
-			{
-				ret = falseUnlessDisallowedPvpEventCancelled((Player)eattacker, defender, event);
-				if (!ret && notify)
-				{
-					MPlayer attacker = MPlayer.get(eattacker);
-					attacker.msg("<i>PVP is disabled in %s.", defenderPsFaction.describeTo(attacker));
-				}
-				return ret;
-			}
-			return defenderPsFaction.getFlag(MFlag.getFlagMonsters());
-		}
-
-		// ... and if the attacker is a player ...
-		if (MUtil.isntPlayer(eattacker)) return true;
-		Player attacker = (Player)eattacker;
-		MPlayer uattacker = MPlayer.get(attacker);
-		
-		// ... does this player bypass all protection? ...
-		if (MConf.get().playersWhoBypassAllProtection.contains(attacker.getName())) return true;
-
-		// ... gather attacker PS and faction information ...
-		PS attackerPs = PS.valueOf(attacker.getLocation());
-		Faction attackerPsFaction = BoardColl.get().getFactionAt(attackerPs);
-
-		// ... PVP flag may cause a damage block ...
-		// (just checking the defender as above isn't enough. What about the attacker? It could be in a no-pvp area)
-		// NOTE: This check is probably not that important but we could keep it anyways.
-		if (attackerPsFaction.getFlag(MFlag.getFlagPvp()) == false)
-		{
-			ret = falseUnlessDisallowedPvpEventCancelled(attacker, defender, event);
-			if (!ret && notify) uattacker.msg("<i>PVP is disabled in %s.", attackerPsFaction.describeTo(uattacker));
-			return ret;
-		}
-
-		// ... are PVP rules completely ignored in this world? ...
-		if (!MConf.get().worldsPvpRulesEnabled.contains(defenderPs.getWorld())) return true;
-
-		Faction defendFaction = mdefender.getFaction();
-		Faction attackFaction = uattacker.getFaction();
-
-		if (attackFaction.isNone() && MConf.get().disablePVPForFactionlessPlayers)
-		{
-			ret = falseUnlessDisallowedPvpEventCancelled(attacker, defender, event);
-			if (!ret && notify) uattacker.msg("<i>You can't hurt other players until you join a faction.");
-			return ret;
-		}
-		else if (defendFaction.isNone())
-		{
-			if (defenderPsFaction == attackFaction && MConf.get().enablePVPAgainstFactionlessInAttackersLand)
-			{
-				// Allow PVP vs. Factionless in attacker's faction territory
-				return true;
-			}
-			else if (MConf.get().disablePVPForFactionlessPlayers)
-			{
-				ret = falseUnlessDisallowedPvpEventCancelled(attacker, defender, event);
-				if (!ret && notify) uattacker.msg("<i>You can't hurt players who are not currently in a faction.");
-				return ret;
-			}
-		}
-
-		Rel relation = defendFaction.getRelationTo(attackFaction);
-
-		// Check the relation
-		if (relation.isFriend() && defenderPsFaction.getFlag(MFlag.getFlagFriendlyire()) == false)
-		{
-			ret = falseUnlessDisallowedPvpEventCancelled(attacker, defender, event);
-			if (!ret && notify) uattacker.msg("<i>You can't hurt %s<i>.", relation.getDescPlayerMany());
-			return ret;
-		}
-
-		// You can not hurt neutrals in their own territory.
-		boolean ownTerritory = mdefender.isInOwnTerritory();
-		
-		if (mdefender.hasFaction() && ownTerritory && relation == Rel.NEUTRAL)
-		{
-			ret = falseUnlessDisallowedPvpEventCancelled(attacker, defender, event);
-			if (!ret && notify)
-			{
-				uattacker.msg("<i>You can't hurt %s<i> in their own territory unless you declare them as an enemy.", mdefender.describeTo(uattacker));
-				mdefender.msg("%s<i> tried to hurt you.", uattacker.describeTo(mdefender, true));
-			}
-			return ret;
-		}
-
-		return true;
-	}
-	
-	// -------------------------------------------- //
-	// TERRITORY SHIELD
-	// -------------------------------------------- //
-	
-	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-	public void territoryShield(EntityDamageByEntityEvent event)
-	{
-		// If the entity is a player ...
-		Entity entity = event.getEntity();
-		if (MUtil.isntPlayer(entity)) return;
-		Player player = (Player)entity;
-		MPlayer mplayer = MPlayer.get(player);
-		
-		// ... and the attacker is a player ...
-		Entity attacker = MUtil.getLiableDamager(event);
-		if (! (attacker instanceof Player)) return;
-		
-		// ... and that player has a faction ...
-		if ( ! mplayer.hasFaction()) return;
-		
-		// ... and that player is in their own territory ...
-		if ( ! mplayer.isInOwnTerritory()) return;
-		
-		// ... and a territoryShieldFactor is configured ...
-		if (MConf.get().territoryShieldFactor <= 0) return;
-		
-		// ... then scale the damage ...
-		double factor = 1D - MConf.get().territoryShieldFactor;
-		MUtil.scaleDamage(event, factor);
-		
-		// ... and inform.
-		String perc = MessageFormat.format("{0,number,#%}", (MConf.get().territoryShieldFactor));
-		mplayer.msg("<i>Enemy damage reduced by <rose>%s<i>.", perc);
 	}
 	
 	// -------------------------------------------- //

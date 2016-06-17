@@ -22,6 +22,7 @@ import com.massivecraft.factions.chat.tag.ChatTagRoleprefixforce;
 import com.massivecraft.factions.chat.tag.ChatTagTitle;
 import com.massivecraft.factions.cmd.*;
 import com.massivecraft.factions.engine.EngineChat;
+import com.massivecraft.factions.engine.EngineCombat;
 import com.massivecraft.factions.engine.EngineEcon;
 import com.massivecraft.factions.engine.EngineExploit;
 import com.massivecraft.factions.engine.EngineMain;
@@ -149,6 +150,7 @@ public class Factions extends MassivePlugin
 			// Engines
 			EngineMain.class,
 			EngineChat.class,
+			EngineCombat.class,
 			EngineExploit.class,
 			EngineSeeChunk.class,
 			EngineEcon.class, // TODO: Take an extra look and make sure all economy stuff is handled using events. 

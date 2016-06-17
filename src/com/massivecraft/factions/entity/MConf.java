@@ -305,6 +305,10 @@ public class MConf extends Entity<MConf>
 	// It works in both directions. Meaning you must join a faction to hurt players and get hurt by players.
 	public boolean disablePVPForFactionlessPlayers = false;
 	
+	// If you set this option to true then factionless players cant damage each other.
+	// So two factionless can't PvP, but they can PvP with others if that is allowed.
+	public boolean enablePVPBetweenFactionlessPlayers = true;
+	
 	// Set this option to true to create an exception to the rule above.
 	// Players inside their own faction territory can then hurt facitonless players.
 	// This way you may "evict" factionless trolls messing around in your home base.
