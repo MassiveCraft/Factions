@@ -1,9 +1,7 @@
 package com.massivecraft.factions.update;
 
-import com.massivecraft.factions.Factions;
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.store.Coll;
-import com.massivecraft.massivecore.store.MStore;
 
 public class OldConfColl extends Coll<OldConf>
 {
@@ -11,9 +9,9 @@ public class OldConfColl extends Coll<OldConf>
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public OldConfColl(String name)
+	public OldConfColl(String id)
 	{
-		super(name, OldConf.class, MStore.getDb(), Factions.get());
+		super(id);
 	}
 	
 	// -------------------------------------------- //

@@ -3,9 +3,7 @@ package com.massivecraft.factions.entity;
 import java.util.*;
 
 import com.massivecraft.massivecore.store.Coll;
-import com.massivecraft.massivecore.store.MStore;
 import com.massivecraft.massivecore.util.Txt;
-import com.massivecraft.factions.Const;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.integration.Econ;
@@ -19,10 +17,6 @@ public class FactionColl extends Coll<Faction>
 	
 	private static FactionColl i = new FactionColl();
 	public static FactionColl get() { return i; }
-	private FactionColl()
-	{
-		super(Const.COLLECTION_FACTION, Faction.class, MStore.getDb(), Factions.get());
-	}
 
 	// -------------------------------------------- //
 	// STACK TRACEABILITY

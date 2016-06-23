@@ -4,9 +4,7 @@ import java.util.Collection;
 
 import org.bukkit.Bukkit;
 
-import com.massivecraft.factions.Const;
 import com.massivecraft.factions.Factions;
-import com.massivecraft.massivecore.store.MStore;
 import com.massivecraft.massivecore.store.SenderColl;
 import com.massivecraft.massivecore.util.IdUtil;
 import com.massivecraft.massivecore.util.Txt;
@@ -19,10 +17,6 @@ public class MPlayerColl extends SenderColl<MPlayer>
 	
 	private static MPlayerColl i = new MPlayerColl();
 	public static MPlayerColl get() { return i; }
-	private MPlayerColl()
-	{
-		super(Const.COLLECTION_MPLAYER, MPlayer.class, MStore.getDb(), Factions.get());
-	}
 
 	// -------------------------------------------- //
 	// STACK TRACEABILITY

@@ -9,15 +9,12 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import com.massivecraft.factions.Const;
-import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.RelationParticipator;
 import com.massivecraft.factions.TerritoryAccess;
 import com.massivecraft.massivecore.collections.MassiveMap;
 import com.massivecraft.massivecore.collections.MassiveSet;
 import com.massivecraft.massivecore.ps.PS;
 import com.massivecraft.massivecore.store.Coll;
-import com.massivecraft.massivecore.store.MStore;
 import com.massivecraft.massivecore.util.MUtil;
 
 public class BoardColl extends Coll<Board> implements BoardInterface
@@ -30,7 +27,6 @@ public class BoardColl extends Coll<Board> implements BoardInterface
 	public static BoardColl get() { return i; }
 	private BoardColl()
 	{
-		super(Const.COLLECTION_BOARD, Board.class, MStore.getDb(), Factions.get());
 		this.setCreative(true);
 		this.setLowercasing(true);
 	}
