@@ -22,24 +22,16 @@ import java.util.logging.Level;
 
 public class JSONFactions extends MemoryFactions {
     // Info on how to persist
-    private Gson gson;
+    private final Gson gson;
 
     public Gson getGson() {
         return gson;
     }
 
-    public void setGson(Gson gson) {
-        this.gson = gson;
-    }
-
-    private File file;
+    private final File file;
 
     public File getFile() {
         return file;
-    }
-
-    public void setFile(File file) {
-        this.file = file;
     }
 
     // -------------------------------------------- //
