@@ -36,7 +36,7 @@ public class CmdDescription extends FCommand {
 
         // since "&" color tags seem to work even through plain old FPlayer.sendMessage() for some reason, we need to break those up
         // And replace all the % because it messes with string formatting and this is easy way around that.
-        myFaction.setDescription(TextUtil.implode(args, " ").replaceAll("%", "").replaceAll("(&([a-f0-9]))", "& $2"));
+        myFaction.setDescription(TextUtil.implode(args, " ").replaceAll("%", "").replaceAll("(&([a-f0-9klmnor]))", "& $2"));
 
         if (!Conf.broadcastDescriptionChanges) {
             fme.msg(TL.COMMAND_DESCRIPTION_CHANGED, myFaction.describeTo(fme));
