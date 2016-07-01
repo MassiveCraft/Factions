@@ -64,6 +64,8 @@ public class MConf extends Entity<MConf>
 	// In such case set standard to false and add "Hurr" as an exeption to worldsClaimingEnabled.
 	public WorldExceptionSet worldsClaimingEnabled = new WorldExceptionSet();
 	public WorldExceptionSet worldsPowerLossEnabled = new WorldExceptionSet();
+	public WorldExceptionSet worldsPowerGainEnabled = new WorldExceptionSet();
+	
 	public WorldExceptionSet worldsPvpRulesEnabled = new WorldExceptionSet();
 	
 	// -------------------------------------------- //

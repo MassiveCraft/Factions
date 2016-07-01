@@ -22,6 +22,7 @@ public class MFlag extends Entity<MFlag> implements Prioritized, Registerable, N
 	public final static transient String ID_MONSTERS = "monsters";
 	public final static transient String ID_ANIMALS = "animals";
 	public final static transient String ID_POWERLOSS = "powerloss";
+	public final static transient String ID_POWERGAIN = "powergain";
 	public final static transient String ID_PVP = "pvp";
 	public final static transient String ID_FRIENDLYFIRE = "friendlyfire";
 	public final static transient String ID_EXPLOSIONS = "explosions";
@@ -37,16 +38,17 @@ public class MFlag extends Entity<MFlag> implements Prioritized, Registerable, N
 	public final static transient int PRIORITY_MONSTERS = 2_000;
 	public final static transient int PRIORITY_ANIMALS = 3_000;
 	public final static transient int PRIORITY_POWERLOSS = 4_000;
-	public final static transient int PRIORITY_PVP = 5_000;
-	public final static transient int PRIORITY_FRIENDLYFIRE = 6_000;
-	public final static transient int PRIORITY_EXPLOSIONS = 7_000;
-	public final static transient int PRIORITY_OFFLINEEXPLOSIONS = 8_000;
-	public final static transient int PRIORITY_FIRESPREAD = 9_000;
-	public final static transient int PRIORITY_ENDERGRIEF = 10_000;
-	public final static transient int PRIORITY_ZOMBIEGRIEF = 11_000;
-	public final static transient int PRIORITY_PERMANENT = 12_000;
-	public final static transient int PRIORITY_PEACEFUL = 13_000;
-	public final static transient int PRIORITY_INFPOWER = 14_000;
+	public final static transient int PRIORITY_POWERGAIN = 5_000;
+	public final static transient int PRIORITY_PVP = 6_000;
+	public final static transient int PRIORITY_FRIENDLYFIRE = 7_000;
+	public final static transient int PRIORITY_EXPLOSIONS = 8_000;
+	public final static transient int PRIORITY_OFFLINEEXPLOSIONS = 9_000;
+	public final static transient int PRIORITY_FIRESPREAD = 10_000;
+	public final static transient int PRIORITY_ENDERGRIEF = 11_000;
+	public final static transient int PRIORITY_ZOMBIEGRIEF = 12_000;
+	public final static transient int PRIORITY_PERMANENT = 13_000;
+	public final static transient int PRIORITY_PEACEFUL = 14_000;
+	public final static transient int PRIORITY_INFPOWER = 15_000;
 	
 	// -------------------------------------------- //
 	// META: CORE
@@ -75,6 +77,7 @@ public class MFlag extends Entity<MFlag> implements Prioritized, Registerable, N
 		getFlagMonsters();
 		getFlagAnimals();
 		getFlagPowerloss();
+		getFlagPowergain();
 		getFlagPvp();
 		getFlagFriendlyire();
 		getFlagExplosions();
@@ -91,6 +94,7 @@ public class MFlag extends Entity<MFlag> implements Prioritized, Registerable, N
 	public static MFlag getFlagMonsters() { return getCreative(PRIORITY_MONSTERS, ID_MONSTERS, ID_MONSTERS, "Can monsters spawn in this territory?", "Monsters can spawn in this territory.", "Monsters can NOT spawn in this territory.", false, true, true); }
 	public static MFlag getFlagAnimals() { return getCreative(PRIORITY_ANIMALS, ID_ANIMALS, ID_ANIMALS, "Can animals spawn in this territory?", "Animals can spawn in this territory.", "Animals can NOT spawn in this territory.", true, true, true); }
 	public static MFlag getFlagPowerloss() { return getCreative(PRIORITY_POWERLOSS, ID_POWERLOSS, ID_POWERLOSS, "Is power lost on death in this territory?", "Power is lost on death in this territory.", "Power is NOT lost on death in this territory.", true, false, true); }
+	public static MFlag getFlagPowergain() { return getCreative(PRIORITY_POWERGAIN, ID_POWERGAIN, ID_POWERGAIN, "Can power be gained in this territory?", "Power can be gained in this territory.", "Power is NOT gained in this territory.", true, false, true); }
 	public static MFlag getFlagPvp() { return getCreative(PRIORITY_PVP, ID_PVP, ID_PVP, "Can you PVP in territory?", "You can PVP in this territory.", "You can NOT PVP in this territory.", true, false, true); }
 	public static MFlag getFlagFriendlyire() { return getCreative(PRIORITY_FRIENDLYFIRE, ID_FRIENDLYFIRE, ID_FRIENDLYFIRE, "Can friends hurt eachother in this territory?", "Friendly fire is on here.", "Friendly fire is off here.", false, false, true); }
 	public static MFlag getFlagExplosions() { return getCreative(PRIORITY_EXPLOSIONS, ID_EXPLOSIONS, ID_EXPLOSIONS, "Can explosions occur in this territory?", "Explosions can occur in this territory.", "Explosions can NOT occur in this territory.", true, false, true); }
