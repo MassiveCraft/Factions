@@ -50,8 +50,7 @@ public class TaskPlayerPowerUpdate extends ModuloRepeatTask
 			if (player.isDead()) continue;
 			
 			// Check the powergain flag is not disabled
-			Faction faction = BoardColl.get().getFactionAt(PS.valueOf(player.getLocation()));
-			
+			Faction faction = BoardColl.get().getFactionAt(PS.valueOf(player));
 			if ( ! faction.getFlag(MFlag.getFlagPowergain())) return;
 			
 			// Check power gain has not been disabled in this world
