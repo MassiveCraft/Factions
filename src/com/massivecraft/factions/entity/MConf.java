@@ -603,6 +603,7 @@ public class MConf extends Entity<MConf>
 		"GIANT", // Minecraft 1.?
 		"MAGMA_CUBE", // Minecraft 1.?
 		"PIG_ZOMBIE", // Minecraft 1.?
+		"POLAR_BEAR", // Minecraft 1.10
 		"SILVERFISH", // Minecraft 1.?
 		"SKELETON", // Minecraft 1.?
 		"SLIME", // Minecraft 1.?
@@ -621,7 +622,6 @@ public class MConf extends Entity<MConf>
 		"MUSHROOM_COW", // Minecraft 1.?
 		"OCELOT", // Minecraft 1.?
 		"PIG", // Minecraft 1.?
-		"POLAR_BEAR", // Minecraft 1.10
 		"RABBIT", // Minecraft 1.?
 		"SHEEP", // Minecraft 1.?
 		"SQUID", // Minecraft 1.?
