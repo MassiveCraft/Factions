@@ -99,6 +99,12 @@ public class CmdUnclaim extends FCommand {
         }
 
         if (fme.isAdminBypassing()) {
+            LandUnclaimEvent unclaimEvent = new LandUnclaimEvent(target, targetFaction, fme);
+            Bukkit.getServer().getPluginManager().callEvent(unclaimEvent);
+            if (unclaimEvent.isCancelled()) {
+                return false;
+            }
+
             Board.getInstance().removeAt(target);
 
             targetFaction.msg(TL.COMMAND_UNCLAIM_UNCLAIMED, fme.describeTo(targetFaction, true));
