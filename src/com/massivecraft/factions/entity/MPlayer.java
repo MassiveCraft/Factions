@@ -46,7 +46,7 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 	}
 	
 	// -------------------------------------------- //
-	// OVERRIDE: ENTITY
+	// LOAD
 	// -------------------------------------------- //
 	
 	@Override
@@ -65,6 +65,10 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 		return this;
 	}
 	
+	// -------------------------------------------- //
+	// IS DEFAULT
+	// -------------------------------------------- //
+	
 	@Override
 	public boolean isDefault()
 	{
@@ -81,30 +85,38 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 		return true;
 	}
 	
+	// -------------------------------------------- //
+	// UPDATE FACTION INDEXES
+	// -------------------------------------------- //
+	
+	public void updateFactionIndexes(Faction before, Faction after)
+	{
+		// NoChange
+		if (MUtil.equals(before, after)) return;
+		
+		// Before
+		if (before != null) before.mplayers.remove(this);
+		
+		// After
+		if (after != null) after.mplayers.add(this);
+	}
+	
 	@Override
 	public void postAttach(String id)
 	{
-		// If inited ...
 		if (!Factions.get().isDatabaseInitialized()) return;
-		
-		// ... update the index.
-		Faction faction = this.getFaction();
-		faction.mplayers.add(this);
-		
-		//Factions.get().log(Txt.parse("<g>postAttach added <h>%s <i>aka <h>%s <i>to <h>%s <i>aka <h>%s<i>.", id, MixinDisplayName.get().getDisplayName(id), faction.getId(), faction.getName()));
+		Faction before = null;
+		Faction after = this.getFaction();
+		this.updateFactionIndexes(before, after);
 	}
 	
 	@Override
 	public void preDetach(String id)
 	{
-		// If inited ...
 		if (!Factions.get().isDatabaseInitialized()) return;
-		
-		// ... update the index.
-		Faction faction = this.getFaction();
-		faction.mplayers.remove(this);
-		
-		//Factions.get().log(Txt.parse("<b>preDetach removed <h>%s <i>aka <h>%s <i>to <h>%s <i>aka <h>%s<i>.", id, MixinDisplayName.get().getDisplayName(id), faction.getId(), faction.getName()));
+		Faction before = this.getFaction();
+		Faction after = null;
+		this.updateFactionIndexes(before, after);
 	}
 	
 	// -------------------------------------------- //
@@ -280,6 +292,7 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 		if (oldFaction != null) oldFaction.mplayers.remove(this);
 		if (faction != null) faction.mplayers.add(this);
 		
+		/*
 		String oldFactionIdDesc = "NULL";
 		String oldFactionNameDesc = "NULL";
 		if (oldFaction != null)
@@ -294,8 +307,8 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 			factionIdDesc = faction.getId();
 			factionNameDesc = faction.getName();
 		}
-		
 		Factions.get().log(Txt.parse("<i>setFactionId moved <h>%s <i>aka <h>%s <i>from <h>%s <i>aka <h>%s <i>to <h>%s <i>aka <h>%s<i>.", this.getId(), this.getDisplayName(IdUtil.getConsole()), oldFactionIdDesc, oldFactionNameDesc, factionIdDesc, factionNameDesc));
+		*/
 		
 		// Mark as changed
 		this.changed();

@@ -1,6 +1,7 @@
 package com.massivecraft.factions.entity;
 
 import java.util.Collection;
+import java.util.Map.Entry;
 
 import org.bukkit.Bukkit;
 
@@ -8,6 +9,7 @@ import com.massivecraft.factions.Factions;
 import com.massivecraft.massivecore.store.SenderColl;
 import com.massivecraft.massivecore.util.IdUtil;
 import com.massivecraft.massivecore.util.Txt;
+import com.massivecraft.massivecore.xlib.gson.JsonObject;
 
 public class MPlayerColl extends SenderColl<MPlayer>
 {
@@ -26,6 +28,55 @@ public class MPlayerColl extends SenderColl<MPlayer>
 	public void onTick()
 	{
 		super.onTick();
+	}
+	
+	// -------------------------------------------- //
+	// UPDATE FACTION INDEXES
+	// -------------------------------------------- //
+	
+	@Override
+	public synchronized MPlayer removeAtLocalFixed(String id)
+	{
+		if (!Factions.get().isDatabaseInitialized()) return super.removeAtLocalFixed(id);
+		
+		MPlayer mplayer = this.id2entity.get(id);
+		
+		if (mplayer != null)
+		{
+			Faction before = mplayer.getFaction();
+			Faction after = null;
+			mplayer.updateFactionIndexes(before, after);
+		}
+		
+		return super.removeAtLocalFixed(id);
+	}
+	
+	@Override
+	public synchronized void loadFromRemoteFixed(String id, Entry<JsonObject, Long> remoteEntry)
+	{
+		if (!Factions.get().isDatabaseInitialized())
+		{
+			super.loadFromRemoteFixed(id, remoteEntry);
+			return;
+		}
+		
+		MPlayer mplayer = null;
+		
+		// Before
+		Faction before = null;
+		if (mplayer == null) mplayer = this.id2entity.get(id);
+		if (mplayer != null) before = mplayer.getFaction();
+		
+		// Super
+		super.loadFromRemoteFixed(id, remoteEntry);
+		
+		// After
+		Faction after = null;
+		if (mplayer == null) mplayer = this.id2entity.get(id);
+		if (mplayer != null) after = mplayer.getFaction();
+		
+		// Perform
+		if (mplayer != null) mplayer.updateFactionIndexes(before, after);
 	}
 	
 	// -------------------------------------------- //
