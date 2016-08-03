@@ -29,6 +29,7 @@ import com.massivecraft.factions.util.RelationUtil;
 import com.massivecraft.massivecore.Named;
 import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.collections.MassiveMapDef;
+import com.massivecraft.massivecore.collections.MassiveSet;
 import com.massivecraft.massivecore.collections.MassiveTreeSetDef;
 import com.massivecraft.massivecore.comparator.ComparatorCaseInsensitive;
 import com.massivecraft.massivecore.mixin.MixinMessage;
@@ -1008,7 +1009,8 @@ public class Faction extends Entity<Faction> implements EconomyParticipator, Nam
 	// FOREIGN KEY: MPLAYER
 	// -------------------------------------------- //
 	
-	protected transient List<MPlayer> mplayers = new ArrayList<MPlayer>();
+	protected transient Set<MPlayer> mplayers = new MassiveSet<MPlayer>();
+	
 	public void reindexMPlayers()
 	{
 		this.mplayers.clear();

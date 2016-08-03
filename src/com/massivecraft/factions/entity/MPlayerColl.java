@@ -43,9 +43,9 @@ public class MPlayerColl extends SenderColl<MPlayer>
 		
 		if (mplayer != null)
 		{
-			Faction before = mplayer.getFaction();
-			Faction after = null;
-			mplayer.updateFactionIndexes(before, after);
+			String beforeId = mplayer.getFactionId();
+			String afterId = null;
+			mplayer.updateFactionIndexes(beforeId, afterId);
 		}
 		
 		return super.removeAtLocalFixed(id);
@@ -63,20 +63,20 @@ public class MPlayerColl extends SenderColl<MPlayer>
 		MPlayer mplayer = null;
 		
 		// Before
-		Faction before = null;
+		String beforeId = null;
 		if (mplayer == null) mplayer = this.id2entity.get(id);
-		if (mplayer != null) before = mplayer.getFaction();
+		if (mplayer != null) beforeId = mplayer.getFactionId();
 		
 		// Super
 		super.loadFromRemoteFixed(id, remoteEntry);
 		
 		// After
-		Faction after = null;
+		String afterId = null;
 		if (mplayer == null) mplayer = this.id2entity.get(id);
-		if (mplayer != null) after = mplayer.getFaction();
+		if (mplayer != null) afterId = mplayer.getFactionId();
 		
 		// Perform
-		if (mplayer != null) mplayer.updateFactionIndexes(before, after);
+		if (mplayer != null) mplayer.updateFactionIndexes(beforeId, afterId);
 	}
 	
 	// -------------------------------------------- //
