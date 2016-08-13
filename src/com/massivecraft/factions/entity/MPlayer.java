@@ -102,8 +102,8 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 		if (MUtil.equals(beforeId, afterId)) return;
 
 		// Resolve
-		Faction before = Faction.get(beforeId);
-		Faction after = Faction.get(afterId);
+		Faction before = FactionColl.get().get(beforeId, false);
+		Faction after = FactionColl.get().get(afterId, false);
 
 		// Apply
 		if (before != null) before.mplayers.remove(this);
