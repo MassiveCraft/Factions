@@ -1,26 +1,7 @@
 package com.massivecraft.factions.entity;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map.Entry;
-import java.util.Set;
-
-import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
-import com.massivecraft.factions.EconomyParticipator;
-import com.massivecraft.factions.Factions;
-import com.massivecraft.factions.Lang;
-import com.massivecraft.factions.Perm;
-import com.massivecraft.factions.Rel;
-import com.massivecraft.factions.RelationParticipator;
-import com.massivecraft.factions.event.EventFactionsChunkChangeType;
-import com.massivecraft.factions.event.EventFactionsChunksChange;
-import com.massivecraft.factions.event.EventFactionsDisband;
-import com.massivecraft.factions.event.EventFactionsMembershipChange;
-import com.massivecraft.factions.event.EventFactionsRemovePlayerMillis;
+import com.massivecraft.factions.*;
+import com.massivecraft.factions.event.*;
 import com.massivecraft.factions.event.EventFactionsMembershipChange.MembershipChangeReason;
 import com.massivecraft.factions.util.RelationUtil;
 import com.massivecraft.massivecore.mixin.MixinSenderPs;
@@ -32,6 +13,15 @@ import com.massivecraft.massivecore.util.IdUtil;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.Txt;
 import com.massivecraft.massivecore.xlib.gson.annotations.SerializedName;
+import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map.Entry;
+import java.util.Set;
 
 public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipator
 {
@@ -48,8 +38,7 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 	// LOAD
 	// -------------------------------------------- //
 
-	@Override
-	public MPlayer load(MPlayer that)
+	@Override public MPlayer load(MPlayer that)
 	{
 		this.setLastActivityMillis(that.lastActivityMillis);
 		this.setFactionId(that.factionId);
@@ -68,8 +57,7 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 	// IS DEFAULT
 	// -------------------------------------------- //
 
-	@Override
-	public boolean isDefault()
+	@Override public boolean isDefault()
 	{
 		// Last activity millis is data we use for clearing out inactive players. So it does not in itself make the player data worth keeping.
 		if (this.hasFaction()) return false;
@@ -110,16 +98,14 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 		if (after != null) after.mplayers.add(this);
 	}
 
-	@Override
-	public void postAttach(String id)
+	@Override public void postAttach(String id)
 	{
 		String beforeId = null;
 		String afterId = this.getFactionId();
 		this.updateFactionIndexes(beforeId, afterId);
 	}
 
-	@Override
-	public void preDetach(String id)
+	@Override public void preDetach(String id)
 	{
 		String before = this.getFactionId();
 		String after = null;
@@ -179,8 +165,7 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 
 	// Is this player overriding?
 	// Null means false
-	@SerializedName(value = "usingAdminMode")
-	private Boolean overriding = null;
+	@SerializedName(value = "usingAdminMode") private Boolean overriding = null;
 
 	// Does this player use titles for territory info?
 	// Null means default specified in MConf.
@@ -191,14 +176,29 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 	// NOTE: This field will not be saved to the database ever.
 	private transient Faction autoClaimFaction = null;
 
-	public Faction getAutoClaimFaction() { return this.autoClaimFaction; }
-	public void setAutoClaimFaction(Faction autoClaimFaction) { this.autoClaimFaction = autoClaimFaction; }
+	public Faction getAutoClaimFaction()
+	{
+		return this.autoClaimFaction;
+	}
+
+	public void setAutoClaimFaction(Faction autoClaimFaction)
+	{
+		this.autoClaimFaction = autoClaimFaction;
+	}
 
 	// Does the player have /f seechunk activated?
 	// NOTE: This field will not be saved to the database ever.
 	private transient boolean seeingChunk = false;
-	public boolean isSeeingChunk() { return this.seeingChunk; }
-	public void setSeeingChunk(boolean seeingChunk) { this.seeingChunk = seeingChunk; }
+
+	public boolean isSeeingChunk()
+	{
+		return this.seeingChunk;
+	}
+
+	public void setSeeingChunk(boolean seeingChunk)
+	{
+		this.seeingChunk = seeingChunk;
+	}
 
 	// -------------------------------------------- //
 	// CORE UTILITIES
@@ -246,8 +246,7 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 	// FIELD: factionId
 	// -------------------------------------------- //
 
-	@Deprecated
-	public String getDefaultFactionId()
+	@Deprecated public String getDefaultFactionId()
 	{
 		return MConf.get().defaultPlayerFactionId;
 	}
@@ -314,8 +313,7 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 	// FIELD: role
 	// -------------------------------------------- //
 
-	@Deprecated
-	public Rel getDefaultRole()
+	@Deprecated public Rel getDefaultRole()
 	{
 		return MConf.get().defaultPlayerRole;
 	}
@@ -415,6 +413,24 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 		this.changed();
 	}
 
+	public void addPowerBoost(Double powerBoost)
+	{
+		// If it's 0 or null, no need to set it
+		if (powerBoost == null || powerBoost == 0) return;
+
+		// The new boost after adding the new powerboost
+		double newBoost = getPowerBoost() + powerBoost;
+
+		// If the powerboost is less than 0, set it to 0
+		if (newBoost < 0) newBoost = 0D;
+
+		// Apply
+		this.powerBoost = newBoost;
+
+		// Mark as changed
+		this.changed();
+	}
+
 	public boolean hasPowerBoost()
 	{
 		return this.getPowerBoost() != 0D;
@@ -478,8 +494,7 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 
 	// RAW
 
-	@Deprecated
-	public double getDefaultPower()
+	@Deprecated public double getDefaultPower()
 	{
 		return MConf.get().defaultPlayerPower;
 	}
@@ -664,32 +679,27 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 	// RELATION AND RELATION COLORS
 	// -------------------------------------------- //
 
-	@Override
-	public String describeTo(RelationParticipator observer, boolean ucfirst)
+	@Override public String describeTo(RelationParticipator observer, boolean ucfirst)
 	{
 		return RelationUtil.describeThatToMe(this, observer, ucfirst);
 	}
 
-	@Override
-	public String describeTo(RelationParticipator observer)
+	@Override public String describeTo(RelationParticipator observer)
 	{
 		return RelationUtil.describeThatToMe(this, observer);
 	}
 
-	@Override
-	public Rel getRelationTo(RelationParticipator observer)
+	@Override public Rel getRelationTo(RelationParticipator observer)
 	{
 		return RelationUtil.getRelationOfThatToMe(this, observer);
 	}
 
-	@Override
-	public Rel getRelationTo(RelationParticipator observer, boolean ignorePeaceful)
+	@Override public Rel getRelationTo(RelationParticipator observer, boolean ignorePeaceful)
 	{
 		return RelationUtil.getRelationOfThatToMe(this, observer, ignorePeaceful);
 	}
 
-	@Override
-	public ChatColor getColorTo(RelationParticipator observer)
+	@Override public ChatColor getColorTo(RelationParticipator observer)
 	{
 		return RelationUtil.getColorOfThatToMe(this, observer);
 	}
