@@ -514,7 +514,9 @@ public class MConf extends Entity<MConf>
 		"DIODE_BLOCK_ON", // Minecraft 1.?
 		"NOTE_BLOCK", // Minecraft 1.?
 		"CAULDRON", // Minecraft 1.?
-		"SOIL" // Minecraft 1.?
+		"SOIL", // Minecraft 1.?
+		"DAYLIGHT_DETECTOR", // Minecraft 1.5
+		"DAYLIGHT_DETECTOR_INVERTED" // Minecraft 1.5
 	);
 	
 	// Interacting with the the terrain holding this item in hand results in an edit.
