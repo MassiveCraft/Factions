@@ -889,20 +889,46 @@ public class EngineMain extends Engine
 			return;
 		}
 		
-		// ... if there is a faction at the players location ...
+		// ... if there is a faction at the players location we fetch the relation now ...
 		PS ps = PS.valueOf(player.getLocation()).getChunk(true);
 		Faction factionAtPs = BoardColl.get().getFactionAt(ps);
-		if (factionAtPs == null) return;
-		if (factionAtPs.isNone()) return;
+		Rel factionAtRel = null;
 		
-		// ... the command may be denied in the territory of this relation type ...
-		Rel rel = factionAtPs.getRelationTo(mplayer);
+		if (factionAtPs != null && ! factionAtPs.isNone())
+		{
+			factionAtRel = factionAtPs.getRelationTo(mplayer);
+		}
 		
-		List<String> deniedCommands = MConf.get().denyCommandsTerritoryRelation.get(rel);
+		// ... there maybe be a player in the distance that denies the command ...
+		if (MConf.get().denyCommandsDistance > -1 && ! MConf.get().denyCommandsDistanceBypassIn.contains(factionAtRel))
+		{	
+			for (Player otherplayer : player.getWorld().getPlayers())
+			{
+				MPlayer othermplayer = MPlayer.get(otherplayer);
+				if (othermplayer == mplayer) continue;
+				
+				double distance = player.getLocation().distance(otherplayer.getLocation());
+				if (MConf.get().denyCommandsDistance > distance) continue;
+				
+				Rel playerRel = mplayer.getRelationTo(othermplayer);
+				if ( ! MConf.get().denyCommandsDistanceRelation.containsKey(playerRel)) continue;
+				
+				String desc = playerRel.getDescPlayerOne();
+				
+				mplayer.msg("<b>You can't use \"<h>/%s<b>\" as there is <h>%s<b> nearby.", command, desc);
+				event.setCancelled(true);
+				return;
+			}
+		}
+		
+		// ... if there is no relation here then there are no further checks ...
+		if (factionAtRel == null) return;
+		
+		List<String> deniedCommands = MConf.get().denyCommandsTerritoryRelation.get(factionAtRel);
 		if (deniedCommands == null) return;
 		if ( ! MUtil.containsCommand(command, deniedCommands)) return;
 		
-		mplayer.msg("<b>You can't use \"<h>/%s<b>\" in %s territory.", command, Txt.getNicedEnum(rel));
+		mplayer.msg("<b>You can't use \"<h>/%s<b>\" in %s territory.", command, Txt.getNicedEnum(factionAtRel));
 		event.setCancelled(true);
 	}
 	

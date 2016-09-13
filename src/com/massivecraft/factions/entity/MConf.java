@@ -395,6 +395,26 @@ public class MConf extends Entity<MConf>
 		Rel.MEMBER, new ArrayList<String>()
 	);
 	
+	// The distance for denying the following commands. Set to -1 to disable.
+	public double denyCommandsDistance = -1;
+	
+	// Lists of commands to deny depending on your relation to a nearby enemy in the above distance.
+	public Map<Rel, List<String>> denyCommandsDistanceRelation = MUtil.map(
+		Rel.ENEMY, MUtil.list(
+			"home"
+		),
+		Rel.NEUTRAL, new ArrayList<String>(),
+		Rel.TRUCE, new ArrayList<String>(),
+		Rel.ALLY, new ArrayList<String>(),
+		Rel.MEMBER, new ArrayList<String>()
+	);
+	
+	// Allow bypassing the above setting when in these territories.
+	public List<Rel> denyCommandsDistanceBypassIn = MUtil.list(
+		Rel.MEMBER,
+		Rel.ALLY
+	);
+	
 	// -------------------------------------------- //
 	// CHAT
 	// -------------------------------------------- //
