@@ -261,7 +261,7 @@ public class CmdFactionsRank extends FactionsCommand
 		}
 		else
 		{
-			// Derp    is  a   member in Faction
+			// Derp	is a member in Faction
 			msg("%s <i>%s %s <h>%s <i>%s %s<i>.", targetName, isAre, theAan, rankName, ofIn, factionName);
 		}
 	}

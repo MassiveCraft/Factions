@@ -55,19 +55,19 @@ public class EventFactionsMembershipChange extends EventFactionsAbstractSender
 	public enum MembershipChangeReason
 	{
 		// Join
-		JOIN      (true),
-		CREATE    (false),
+		JOIN (true),
+		CREATE (false),
 		// Leader is not used, but temporarily kept to avoid other plugins crashing
 		@Deprecated
-		LEADER    (true),
-		RANK      (true),
+		LEADER (true),
+		RANK (true),
 		
 		// Leave
-		LEAVE     (true),
+		LEAVE (true),
 		//JOINOTHER (true),
-		KICK      (true),
-		DISBAND   (false),
-		//RESET     (false),
+		KICK (true),
+		DISBAND (false),
+		//RESET	 (false),
 		;
 		
 		private final boolean cancellable;

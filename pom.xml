@@ -1,0 +1,81 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- Parent -->
+    <parent>
+        <groupId>com.massivecraft.massivesuper</groupId>
+        <artifactId>MassiveSuper</artifactId>
+        <version>2.8.22-SNAPSHOT</version>
+        <relativePath>../MassiveSuper</relativePath>
+    </parent>
+
+    <!-- Basics -->
+    <groupId>com.massivecraft.factions</groupId>
+    <artifactId>Factions</artifactId>
+    <packaging>jar</packaging>
+
+    <!-- Info -->
+    <name>${project.artifactId}</name>
+    <description>${massiveColorInfo}${project.name} allows the players to team up and claim land as their own and start wars with other factions. This way we hope to inspire politics, intrigue, and team spirit. ${massiveDescriptionSuffix}</description>
+    <url>${massiveBaseUrl}/factions</url>
+
+    <!-- Dependencies -->
+    <dependencies>
+        <!-- Spigot -->
+        <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot-api</artifactId>
+        </dependency>
+        <!-- MassiveCore -->
+        <dependency>
+            <groupId>com.massivecraft.massivecore</groupId>
+            <artifactId>MassiveCore</artifactId>
+        </dependency>
+        <!-- WorldEdit -->
+        <dependency>
+            <groupId>com.sk89q.worldedit</groupId>
+            <artifactId>worldedit-bukkit</artifactId>
+        </dependency>
+        <!-- WorldGuard -->
+        <dependency>
+            <groupId>com.sk89q.worldguard</groupId>
+            <artifactId>worldguard-legacy</artifactId>
+        </dependency>
+        <!-- Vault -->
+        <dependency>
+            <groupId>net.milkbowl.vault</groupId>
+            <artifactId>Vault</artifactId>
+        </dependency>
+        <!-- Herochat -->
+        <dependency>
+            <groupId>com.dthielke.herochat</groupId>
+            <artifactId>Herochat</artifactId>
+        </dependency>
+        <!-- LWC -->
+        <dependency>
+            <groupId>com.griefcraft</groupId>
+            <artifactId>lwc</artifactId>
+        </dependency>
+    </dependencies>
+
+    <!-- Build -->
+    <build>
+        <!-- Resources -->
+        <resources>
+            <!-- Standard -->
+            <resource>
+                <directory>${project.basedir}</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>*.yml</include>
+                </includes>
+            </resource>
+            <!-- OpenSource -->
+            <resource>
+                <directory>${project.build.sourceDirectory}</directory>
+                <filtering>false</filtering>
+            </resource>
+        </resources>
+    </build>
+    
+</project>

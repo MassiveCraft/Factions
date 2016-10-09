@@ -124,7 +124,7 @@ public class CmdFactionsJoin extends FactionsCommand
 		// Apply
 		mplayer.resetFactionData();
 		mplayer.setFaction(faction);
-	    
+		
 		faction.setInvited(mplayer, false);
 
 		// Derplog

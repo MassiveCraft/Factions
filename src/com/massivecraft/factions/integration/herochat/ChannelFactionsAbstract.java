@@ -93,7 +93,7 @@ public abstract class ChannelFactionsAbstract implements Channel
 			}
 		}
 		
-	    return true;
+		return true;
 	}
 	
 	@Override
