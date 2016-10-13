@@ -547,7 +547,8 @@ public class MConf extends Entity<MConf>
 		"BUCKET", // Minecraft 1.?
 		"WATER_BUCKET", // Minecraft 1.?
 		"LAVA_BUCKET", // Minecraft 1.?
-		"ARMOR_STAND" // Minecraft 1.8
+		"ARMOR_STAND", // Minecraft 1.8
+		"END_CRYSTAL" // Minecraft 1.10
 	);
 	
 	// The duplication bug found in Spigot 1.8 protocol patch
@@ -603,7 +604,8 @@ public class MConf extends Entity<MConf>
 	// Damaging these entities results in an edit.
 	public BackstringEnumSet<EntityType> entityTypesEditOnDamage = new BackstringEnumSet<EntityType>(EntityType.class,
 		"ITEM_FRAME", // Minecraft 1.?
-		"ARMOR_STAND" // Minecraft 1.8
+		"ARMOR_STAND", // Minecraft 1.8
+		"ENDER_CRYSTAL" // Minecraft 1.10
 	);
 	
 	// Interacting with these entities results in opening a container.
