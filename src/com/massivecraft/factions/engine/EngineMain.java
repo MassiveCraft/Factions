@@ -539,7 +539,7 @@ public class EngineMain extends Engine
 					worlds.addAll(oldWorlds);
 					worlds.addAll(newWorlds);
 					
-					if (worlds.size() > MConf.get().claimedWorldsMax)
+					if (!oldWorlds.containsAll(newWorlds) && worlds.size() > MConf.get().claimedWorldsMax)
 					{
 						List<String> worldNames = new MassiveList<>();
 						for (String world : oldWorlds)
