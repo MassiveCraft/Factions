@@ -35,6 +35,7 @@ import com.massivecraft.factions.entity.MFlagColl;
 import com.massivecraft.factions.entity.MPermColl;
 import com.massivecraft.factions.entity.MPlayerColl;
 import com.massivecraft.factions.entity.MConfColl;
+import com.massivecraft.factions.integration.V19.IntegrationV19;
 import com.massivecraft.factions.integration.herochat.IntegrationHerochat;
 import com.massivecraft.factions.integration.lwc.IntegrationLwc;
 import com.massivecraft.factions.integration.spigot.IntegrationSpigot;
@@ -159,6 +160,7 @@ public class Factions extends MassivePlugin
 			IntegrationHerochat.class,
 			IntegrationLwc.class,
 			IntegrationWorldGuard.class,
+			IntegrationV19.class,
 			
 			// Spigot
 			IntegrationSpigot.class,
