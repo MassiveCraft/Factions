@@ -3,13 +3,12 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TagUtil;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
+import java.util.*;
 
 
 public class CmdList extends FCommand {
@@ -49,6 +48,18 @@ public class CmdList extends FCommand {
         factionList.remove(Factions.getInstance().getNone());
         factionList.remove(Factions.getInstance().getSafeZone());
         factionList.remove(Factions.getInstance().getWarZone());
+
+        // remove exempt factions
+        if (!fme.getPlayer().hasPermission("factions.show.bypassexempt")) {
+            List<String> exemptFactions = P.p.getConfig().getStringList("show-exempt");
+            Iterator<Faction> factionIterator = factionList.iterator();
+            while (factionIterator.hasNext()) {
+                Faction next = factionIterator.next();
+                if (exemptFactions.contains(next.getTag())) {
+                    factionIterator.remove();
+                }
+            }
+        }
 
         // Sort by total followers first
         Collections.sort(factionList, new Comparator<Faction>() {
