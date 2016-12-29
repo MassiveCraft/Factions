@@ -1,13 +1,5 @@
 package com.massivecraft.factions.integration.worldguard;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.entity.MFlag;
 import com.massivecraft.factions.entity.MPlayer;
@@ -22,6 +14,13 @@ import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.GlobalProtectedRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class EngineWorldGuard extends Engine
 {
@@ -119,7 +118,7 @@ public class EngineWorldGuard extends Engine
 		int maxChunkZ = minChunkZ + 15;
 		
 		int worldHeight = ps.asBukkitWorld().getMaxHeight();
-
+		
 		BlockVector minChunk = new BlockVector(minChunkX, 0, minChunkZ);
 		BlockVector maxChunk = new BlockVector(maxChunkX, worldHeight, maxChunkZ);
 		
