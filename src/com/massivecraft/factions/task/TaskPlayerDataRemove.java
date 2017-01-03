@@ -37,5 +37,5 @@ public class TaskPlayerDataRemove extends ModuloRepeatTask
 		if ( ! MassiveCore.isTaskServer()) return;
 		MPlayerColl.get().considerRemovePlayerMillis();
 	}
-	
+
 }

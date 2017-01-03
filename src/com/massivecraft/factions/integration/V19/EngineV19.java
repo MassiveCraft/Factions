@@ -1,8 +1,10 @@
 package com.massivecraft.factions.integration.V19;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.engine.EngineCombat;
+import com.massivecraft.massivecore.Engine;
+import com.massivecraft.massivecore.MassivePlugin;
+import com.massivecraft.massivecore.util.MUtil;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
@@ -12,11 +14,8 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.projectiles.ProjectileSource;
 
-import com.massivecraft.factions.Factions;
-import com.massivecraft.factions.engine.EngineCombat;
-import com.massivecraft.massivecore.Engine;
-import com.massivecraft.massivecore.MassivePlugin;
-import com.massivecraft.massivecore.util.MUtil;
+import java.util.ArrayList;
+import java.util.List;
 
 public class EngineV19 extends Engine
 {

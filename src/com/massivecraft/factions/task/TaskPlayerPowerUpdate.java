@@ -1,5 +1,6 @@
 package com.massivecraft.factions.task;
 
+import com.massivecraft.massivecore.util.PlayerUtil;
 import org.bukkit.entity.Player;
 
 import com.massivecraft.factions.entity.BoardColl;
@@ -13,6 +14,9 @@ import com.massivecraft.massivecore.ModuloRepeatTask;
 import com.massivecraft.massivecore.ps.PS;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.TimeUnit;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.entity.PlayerDeathEvent;
 
 public class TaskPlayerPowerUpdate extends ModuloRepeatTask
 {
@@ -67,5 +71,5 @@ public class TaskPlayerPowerUpdate extends ModuloRepeatTask
 			mplayer.setPower(newPower);
 		}
 	}
-	
+
 }

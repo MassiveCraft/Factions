@@ -1,7 +1,13 @@
 package com.massivecraft.factions.integration.spigot;
 
-import java.util.List;
-
+import com.massivecraft.factions.engine.EnginePermBuild;
+import com.massivecraft.factions.entity.BoardColl;
+import com.massivecraft.factions.entity.Faction;
+import com.massivecraft.factions.entity.MConf;
+import com.massivecraft.factions.entity.MPerm;
+import com.massivecraft.massivecore.Engine;
+import com.massivecraft.massivecore.ps.PS;
+import com.massivecraft.massivecore.util.MUtil;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -11,14 +17,8 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockPistonExtendEvent;
 import org.bukkit.event.block.BlockPistonRetractEvent;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
-import com.massivecraft.factions.engine.EngineMain;
-import com.massivecraft.factions.entity.BoardColl;
-import com.massivecraft.factions.entity.Faction;
-import com.massivecraft.factions.entity.MConf;
-import com.massivecraft.factions.entity.MPerm;
-import com.massivecraft.massivecore.Engine;
-import com.massivecraft.massivecore.ps.PS;
-import com.massivecraft.massivecore.util.MUtil;
+
+import java.util.List;
 
 
 public class EngineSpigot extends Engine
@@ -54,7 +54,7 @@ public class EngineSpigot extends Engine
 		if (entity.getType() != EntityType.ARMOR_STAND) return;
 		
 		// If we can't use ...
-		if (EngineMain.canPlayerUseEntity(player, entity, verboose)) return;
+		if (EnginePermBuild.canPlayerUseEntity(player, entity, verboose)) return;
 		
 		// ... block use.
 		event.setCancelled(true);
