@@ -245,6 +245,11 @@ show:
 # For a /f show that does not display fancy messages that are essentially empty, use minimal-show
 minimal-show: false
 
+# Factions that should be exempt from /f show, case sensitive, useful for a
+# serverteam faction, since the command shows vanished players otherwise
+show-exempt:
+  - Put_faction_tag_here
+
 ############################################################
 # +------------------------------------------------------+ #
 # |                Configurable /f list                  | #

@@ -48,6 +48,7 @@ permissions:
       factions.kick.any: true
       factions.ownershipbypass: true
       factions.chatspy: true
+      factions.show.bypassexempt: true
   factions.kit.fullplayer:
     default: true
     description: Can also create new factions.
@@ -231,6 +232,8 @@ permissions:
     description: set faction home for another faction
   factions.show:
     description: show faction information
+  factions.show.bypassexempt:
+    description: show exempt faction information
   factions.tag:
     description: change the faction tag
   factions.title:

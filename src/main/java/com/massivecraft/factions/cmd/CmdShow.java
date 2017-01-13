@@ -54,6 +54,12 @@ public class CmdShow extends FCommand {
             return;
         }
 
+        if (!fme.getPlayer().hasPermission("factions.show.bypassexempt")
+                && P.p.getConfig().getStringList("show-exempt").contains(faction.getTag())) {
+            msg(TL.COMMAND_SHOW_EXEMPT);
+            return;
+        }
+
         // if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
         if (!payForCommand(Conf.econCostShow, TL.COMMAND_SHOW_TOSHOW, TL.COMMAND_SHOW_FORSHOW)) {
             return;
