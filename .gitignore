@@ -3,9 +3,14 @@
 /.project
 /.settings
 
-# NetBeans
+# netbeans
 /nbproject
+
+# we use maven!
 /build.xml
+
+# maven
+/target
 
 # vim
 .*.sw[a-p]
@@ -14,7 +19,16 @@
 /build
 /bin
 /dist
-/*.jardesc
+/manifest.mf
+
+/world
 
 # Mac filesystem dust
-.DS_Store
+/.DS_Store
+*.DS_Store
+
+# intellij
+*.iml
+*.ipr
+*.iws
+.idea/

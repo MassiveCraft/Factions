@@ -1,0 +1,505 @@
+# Lang file for FactionsUUID by drtshock
+# Use & for color codes.
+# Made with love <3
+
+
+
+root:
+  AUTHOR: misc
+  RESPONSIBLE: misc
+  LANGUAGE: English
+  ENCODING: UTF-8
+  LOCALE: en_US
+  REQUIRESUNICODE: 'false'
+  DEFAULT: 'true'
+  STATE: complete
+  LOCAL:
+    AUTHOR: misc
+    RESPONSIBLE: misc
+    LANGUAGE: English
+    REGION: US
+    STATE: complete
+COMMAND:
+  ADMIN:
+    NOTMEMBER: '%1$s<i> is not a member in your faction.'
+    NOTADMIN: <b>You are not the faction admin.
+    TARGETSELF: <b>The target player musn't be yourself.
+    DEMOTES: <i>You have demoted %1$s<i> from the position of faction admin.
+    DEMOTED: <i>You have been demoted from the position of faction admin by %1$s<i>.
+    PROMOTES: <i>You have promoted %1$s<i> to the position of faction admin.
+    PROMOTED: '%1$s<i> gave %2$s<i> the leadership of %3$s<i>.'
+  AUTOCLAIM:
+    ENABLED: <i>Now auto-claiming land for <h>%1$s<i>.
+    DISABLED: <i>Auto-claiming of land disabled.
+    REQUIREDRANK: <b>You must be <h>%1$s<b> to claim land.
+    OTHERFACTION: <b>You can't claim land for <h>%1$s<b>.
+  AUTOHELP:
+    HELPFOR: Help for command "
+  BOOM:
+    PEACEFULONLY: <b>This command is only usable by factions which are specifically designated as peaceful.
+    TOTOGGLE: to toggle explosions
+    FORTOGGLE: for toggling explosions
+    ENABLED: '%1$s<i> has %2$s explosions in your faction''s territory.'
+  BYPASS:
+    ENABLE: <i>You have enabled admin bypass mode. You will be able to build or destroy anywhere.
+    ENABLELOG: ' has ENABLED admin bypass mode.'
+    DISABLE: <i>You have disabled admin bypass mode.
+    DISABLELOG: ' has DISABLED admin bypass mode.'
+  CHAT:
+    DISABLED: <b>The built in chat chat channels are disabled on this server.
+    INVALIDMODE: <b>Unrecognised chat mode. <i>Please enter either 'a','f' or 'p'
+    MODE:
+      PUBLIC: <i>Public chat mode.
+      ALLIANCE: <i>Alliance only chat mode.
+      FACTION: <i>Faction only chat mode.
+  CHATSPY:
+    ENABLE: <i>You have enabled chat spying mode.
+    ENABLELOG: ' has ENABLED chat spying mode.'
+    DISABLE: <i>You have disabled chat spying mode.
+    DISABLELOG: ' has DISABLED chat spying mode.'
+  CLAIM:
+    INVALIDRADIUS: <b>If you specify a radius, it must be at least 1.
+    DENIED: <b>You do not have permission to claim in a radius.
+  CONFIG:
+    NOEXIST: <b>No configuration setting "<h>%1$s<b>" exists.
+    SET:
+      'TRUE': '" option set to true (enabled).'
+      'FALSE': '" option set to false (disabled).'
+      ADDED: '"%1$s" set: "%2$s" added.'
+      REMOVED: '"%1$s" set: "%2$s" removed.'
+    OPTIONSET: '" option set to '
+    COLOURSET: '" color option set to "'
+    INTREQUIRED: 'Cannot set "%1$s": An integer (whole number) value required.'
+    LONGREQUIRED: 'Cannot set "%1$s": A long integer (whole number) value required.'
+    DOUBLEREQUIRED: 'Cannot set "%1$s": A double (numeric) value required.'
+    FLOATREQUIRED: 'Cannot set "%1$s": A float (numeric) value required.'
+    INVALID:
+      COLOUR: 'Cannot set "%1$s": "%2$s" is not a valid color.'
+      COLLECTION: '"%1$s" is not a data collection type which can be modified with
+        this command.'
+      MATERIAL: 'Cannot change "%1$s" set: "%2$s" is not a valid material.'
+      TYPESET: '"%1$s" is not a data type set which can be modified with this command.'
+    MATERIAL:
+      ADDED: '"%1$s" set: Material "%2$s" added.'
+      REMOVED: '"%1$s" set: Material "%2$s" removed.'
+    LOG: ' (Command was run by %1$s.)'
+    ERROR:
+      SETTING: Error setting configuration setting "%1$s" to "%2$s".
+      MATCHING: Configuration setting "%1$s" couldn't be matched, though it should be... please report this error.
+      TYPE: '''%1$s'' is of type ''%2$s'', which cannot be modified with this command.'
+  CREATE:
+    MUSTLEAVE: <b>You must leave your current faction first.
+    INUSE: <b>That tag is already in use.
+    TOCREATE: to create a new faction
+    FORCREATE: for creating a new faction
+    ERROR: <b>There was an internal error while trying to create your faction. Please try again.
+    CREATED: '%1$s<i> created a new faction %2$s'
+    YOUSHOULD: '<i>You should now: %1$s'
+    CREATEDLOG: ' created a new faction: '
+  DEINVITE:
+    CANDEINVITE: 'Players you can deinvite: '
+    CLICKTODEINVITE: Click to revoke invite for %1$s
+    ALREADYMEMBER: '%1$s<i> is already a member of %2$s'
+    MIGHTWANT: '<i>You might want to: %1$s'
+    REVOKED: '%1$s<i> revoked your invitation to <h>%2$s<i>.'
+    REVOKES: '%1$s<i> revoked %2$s''s<i> invitation.'
+  DELFWARP:
+    DELETED: <i>Deleted warp <a>%1$s
+    INVALID: <i>Couldn't find warp <a>%1$s
+    TODELETE: to delete warp
+    FORDELETE: for deleting warp
+  DESCRIPTION:
+    CHANGES: 'You have changed the description for <h>%1$s<i> to:'
+    CHANGED: '<i>The faction %1$s<i> changed their description to:'
+    TOCHANGE: to change faction description
+    FORCHANGE: for changing faction description
+  DISBAND:
+    IMMUTABLE: <i>You cannot disband the Wilderness, SafeZone, or WarZone.
+    MARKEDPERMANENT: <i>This faction is designated as permanent, so you cannot disband it.
+    BROADCAST:
+      YOURS: <h>%1$s<i> disbanded your faction.
+      NOTYOURS: <h>%1$s<i> disbanded the faction %2$s.
+    HOLDINGS: <i>You have been given the disbanded faction's bank, totaling %1$s.
+  FWARP:
+    CLICKTOWARP: Click to warp!
+    COMMANDFORMAT: <i>/f warp <warpname>
+    WARPED: <i>Warped to <a>%1$s
+    INVALID: <i>Couldn't find warp <a>%1$s
+    TOWARP: to warp
+    FORWARPING: for warping
+    WARPS: 'Warps: '
+  HELP:
+    '404': <b>This page does not exist
+    NEXTCREATE: <i>Learn how to create a faction on the next page.
+    HOME: '<i>And don''t forget to set your home:'
+    BANK:
+      '1': <i>Your faction has a bank which is used to pay for certain
+      '2': <i>things, so it will need to have money deposited into it.
+      '3': <i>To learn more, use the money command.
+    PLAYERTITLES: <i>Player titles are just for fun. No rules connected to them.
+    OWNERSHIP:
+      '1': <i>Claimed land with ownership set is further protected so
+      '2': <i>that only the owner(s), faction admin, and possibly the
+      '3': <i>faction moderators have full access.
+    RELATIONS:
+      '1': <i>Set the relation you WISH to have with another faction.
+      '2': <i>Your default relation with other factions will be neutral.
+      '3': <i>If BOTH factions choose "ally" you will be allies.
+      '4': <i>If ONE faction chooses "enemy" you will be enemies.
+      '5': <i>You can never hurt members or allies.
+      '6': <i>You can not hurt neutrals in their own territory.
+      '7': <i>You can always hurt enemies and players without faction.
+      '8': ''
+      '9': <i>Damage from enemies is reduced in your own territory.
+      '10': <i>When you die you lose power. It is restored over time.
+      '11': <i>The power of a faction is the sum of all member power.
+      '12': <i>The power of a faction determines how much land it can hold.
+      '13': <i>You can claim land from factions with too little power.
+    PERMISSIONS:
+      '1': <i>Only faction members can build and destroy in their own
+      '2': '<i>territory. Usage of the following items is also restricted:'
+      '3': <i>Door, Chest, Furnace, Dispenser, Diode.
+      '4': ''
+      '5': <i>Make sure to put pressure plates in front of doors for your
+      '6': <i>guest visitors. Otherwise they can't get through. You can
+      '7': <i>also use this to create member only areas.
+      '8': <i>As dispensers are protected, you can create traps without
+      '9': <i>worrying about those arrows getting stolen.
+    ADMIN:
+      '1': <c>/f claim safezone <i>claim land for the Safe Zone
+      '2': <c>/f claim warzone <i>claim land for the War Zone
+      '3': <c>/f autoclaim [safezone|warzone] <i>take a guess
+    MOAR:
+      '1': 'Finally some commands for the server admins:'
+      '2': '<i>More commands for server admins:'
+      '3': '<i>Even more commands for server admins:'
+  HOME:
+    DISABLED: <b>Sorry, Faction homes are disabled on this server.
+    TELEPORTDISABLED: <b>Sorry, the ability to teleport to Faction homes is disabled on this server.
+    NOHOME: '<b>Your faction does not have a home. '
+    INENEMY: <b>You cannot teleport to your faction home while in the territory of an enemy faction.
+    WRONGWORLD: <b>You cannot teleport to your faction home while in a different world.
+    ENEMYNEAR: <b>You cannot teleport to your faction home while an enemy is within %s blocks of you.
+    TOTELEPORT: to teleport to your faction home
+    FORTELEPORT: for teleporting to your faction home
+  INVITE:
+    TOINVITE: to invite someone
+    FORINVITE: for inviting someone
+    CLICKTOJOIN: Click to join!
+    INVITEDYOU: ' has invited you to join '
+    INVITED: '%1$s<i> invited %2$s<i> to your faction.'
+    ALREADYMEMBER: '%1$s<i> is already a member of %2$s'
+  JOIN:
+    CANNOTFORCE: <b>You do not have permission to move other players into a faction.
+    SYSTEMFACTION: <b>Players may only join normal factions. This is a system faction.
+    ALREADYMEMBER: <b>%1$s %2$s already a member of %3$s
+    ATLIMIT: ' <b>!<white> The faction %1$s is at the limit of %2$d members, so %3$s
+      cannot currently join.'
+    INOTHERFACTION: <b>%1$s must leave %2$s current faction first.
+    NEGATIVEPOWER: <b>%1$s cannot join a faction with a negative power level.
+    REQUIRESINVITATION: <i>This faction requires invitation.
+    ATTEMPTEDJOIN: '%1$s<i> tried to join your faction.'
+    TOJOIN: to join a faction
+    FORJOIN: for joining a faction
+    SUCCESS: <i>%1$s successfully joined %2$s.
+    MOVED: <i>%1$s moved you into the faction %2$s.
+    JOINED: <i>%1$s joined your faction.
+    JOINEDLOG: '%1$s joined the faction %2$s.'
+    MOVEDLOG: '%1$s moved the player %2$s into the faction %3$s.'
+  KICK:
+    CANDIDATES: 'Players you can kick: '
+    CLICKTOKICK: 'Click to kick '
+    SELF: <b>You cannot kick yourself.
+    NONE: That player is not in a faction.
+    NOTMEMBER: '%1$s<b> is not a member of %2$s'
+    INSUFFICIENTRANK: <b>Your rank is too low to kick this player.
+    NEGATIVEPOWER: <b>You cannot kick that member until their power is positive.
+    TOKICK: to kick someone from the faction
+    FORKICK: for kicking someone from the faction
+    FACTION: '%1$s<i> kicked %2$s<i> from the faction! :O'
+    KICKS: <i>You kicked %1$s<i> from the faction %2$s<i>!
+    KICKED: '%1$s<i> kicked you from %2$s<i>! :O'
+  LIST:
+    FACTIONLIST: 'Faction List '
+    TOLIST: to list the factions
+    FORLIST: for listing the factions
+    ONLINEFACTIONLESS: 'Online factionless: '
+  LOCK:
+    LOCKED: <i>Factions is now locked
+    UNLOCKED: <i>Factions in now unlocked
+  LOGINS:
+    TOGGLE: '<i>Set login / logout notifications for Faction members to: <a>%s'
+  MAP:
+    TOSHOW: to show the map
+    FORSHOW: for showing the map
+    UPDATE:
+      ENABLED: <i>Map auto update <green>ENABLED.
+      DISABLED: <i>Map auto update <red>DISABLED.
+  MOD:
+    CANDIDATES: 'Players you can promote: '
+    CLICKTOPROMOTE: 'Click to promote '
+    NOTMEMBER: '%1$s<b> is not a member in your faction.'
+    NOTADMIN: <b>You are not the faction admin.
+    SELF: <b>The target player musn't be yourself.
+    TARGETISADMIN: <b>The target player is a faction admin. Demote them first.
+    REVOKES: <i>You have removed moderator status from %1$s<i>.
+    REVOKED: '%1$s<i> is no longer moderator in your faction.'
+    PROMOTES: '%1$s<i> was promoted to moderator in your faction.'
+    PROMOTED: <i>You have promoted %1$s<i> to moderator.
+  MODIFYPOWER:
+    ADDED: '<i>Added <a>%1$f <i>power to <a>%2$s. <i>New total rounded power: <a>%3$d'
+  MONEY:
+    SHORT: faction money commands
+    LONG: <i>The faction money commands.
+  MONEYBALANCE:
+    SHORT: show faction balance
+  MONEYDEPOSIT:
+    SHORT: deposit money
+    DEPOSITED: '%1$s deposited %2$s in the faction bank: %3$s'
+  MONEYTRANSFERFF:
+    SHORT: transfer f -> f
+    TRANSFER: '%1$s transferred %2$s from the faction "%3$s" to the faction "%4$s"'
+  MONEYTRANSFERFP:
+    SHORT: transfer f -> p
+    TRANSFER: '%1$s transferred %2$s from the faction "%3$s" to the player "%4$s"'
+  MONEYTRANSFERPF:
+    SHORT: transfer p -> f
+    TRANSFER: '%1$s transferred %2$s from the player "%3$s" to the faction "%4$s"'
+  MONEYWITHDRAW:
+    SHORT: withdraw money
+    WITHDRAW: '%1$s withdrew %2$s from the faction bank: %3$s'
+  OPEN:
+    TOOPEN: to open or close the faction
+    FOROPEN: for opening or closing the faction
+    OPEN: open
+    CLOSED: closed
+    CHANGES: '%1$s<i> changed the faction to <h>%2$s<i>.'
+    CHANGED: <i>The faction %1$s<i> is now %2$s
+  OWNER:
+    DISABLED: <b>Sorry, but owned areas are disabled on this server.
+    LIMIT: <b>Sorry, but you have reached the server's <h>limit of %1$d <b>owned areas per faction.
+    WRONGFACTION: <b>This land is not claimed by your faction, so you can't set ownership of it.
+    NOTCLAIMED: <b>This land is not claimed by a faction. Ownership is not possible.
+    NOTMEMBER: '%1$s<i> is not a member of this faction.'
+    CLEARED: <i>You have cleared ownership for this claimed area.
+    REMOVED: <i>You have removed ownership of this claimed land from %1$s<i>.
+    TOSET: to set ownership of claimed land
+    FORSET: for setting ownership of claimed land
+    ADDED: <i>You have added %1$s<i> to the owner list for this claimed land.
+  OWNERLIST:
+    DISABLED: <b>Sorry, but owned areas are disabled on this server.
+    WRONGFACTION: <b>This land is not claimed by your faction.
+    NOTCLAIMED: <i>This land is not claimed by any faction, thus no owners.
+    NONE: <i>No owners are set here; everyone in the faction has access.
+    OWNERS: '<i>Current owner(s) of this land: %1$s'
+  POWER:
+    TOSHOW: to show player power info
+    FORSHOW: for showing player power info
+    POWER: '%1$s<a> - Power / Maxpower: <i>%2$d / %3$d %4$s'
+    BONUS: ' (bonus: '
+    PENALTY: ' (penalty: '
+  POWERBOOST:
+    HELP:
+      '1': <b>You must specify "p" or "player" to target a player or "f" or "faction" to target a faction.
+      '2': <b>ex. /f powerboost p SomePlayer 0.5  -or-  /f powerboost f SomeFaction -5
+    INVALIDNUM: <b>You must specify a valid numeric value for the power bonus/penalty amount.
+    PLAYER: Player "%1$s"
+    FACTION: Faction "%1$s"
+    BOOST: <i>%1$s now has a power bonus/penalty of %2$d to min and max power levels.
+    BOOSTLOG: '%1$s has set the power bonus/penalty for %2$s to %3$d.'
+  RELOAD:
+    TIME: <i>Reloaded <h>conf.json <i>from disk, took <h>%1$d ms<i>.
+  SAFEUNCLAIMALL:
+    SHORT: Unclaim all safezone land
+    UNCLAIMED: <i>You unclaimed ALL safe zone land.
+    UNCLAIMEDLOG: '%1$s unclaimed all safe zones.'
+  SAVEALL: <i>Factions saved to disk!
+  SETFWARP:
+    NOTCLAIMED: <i>You can only set warps in your faction territory.
+    LIMIT: <i>Your Faction already has the max amount of warps set <a>(%1$d).
+    SET: <i>Set warp <a>%1$s <i>to your location.
+    TOSET: to set warp
+    FORSET: for setting warp
+  SETHOME:
+    DISABLED: <b>Sorry, Faction homes are disabled on this server.
+    NOTCLAIMED: <b>Sorry, your faction home can only be set inside your own claimed territory.
+    TOSET: to set the faction home
+    FORSET: for setting the faction home
+    SET: '%1$s<i> set the home for your faction. You can now use:'
+    SETOTHER: <b>You have set the home for the %1$s<i> faction.
+  SHOW:
+    NOFACTION:
+      SELF: You are not in a faction
+      OTHER: That's not a faction
+    TOSHOW: to show faction information
+    FORSHOW: for showing faction information
+    DESCRIPTION: '<a>Description: <i>%1$s'
+    PEACEFUL: This faction is Peaceful
+    PERMANENT: <a>This faction is permanent, remaining even with no members.
+    JOINING: '<a>Joining: <i>%1$s '
+    INVITATION: invitation is required
+    UNINVITED: no invitation is needed
+    POWER: '<a>Land / Power / Maxpower: <i> %1$d/%2$d/%3$d %4$s'
+    BONUS: ' (bonus: '
+    PENALTY: ' (penalty: '
+    DEPRECIATED: (%1$s depreciated)
+    LANDVALUE: '<a>Total land value: <i>%1$s %2$s'
+    BANKCONTAINS: '<a>Bank contains: <i>%1$s'
+    ALLIES: 'Allies: '
+    ENEMIES: 'Enemies: '
+    MEMBERSONLINE: 'Members online: '
+    MEMBERSOFFLINE: 'Members offline: '
+  SHOWINVITES:
+    PENDING: 'Players with pending invites: '
+    CLICKTOREVOKE: Click to revoke invite for %1$s
+  STATUS:
+    FORMAT: '%1$s Power: %2$s Last Seen: %3$s'
+    ONLINE: Online
+    AGOSUFFIX: ' ago.'
+  TAG:
+    TAKEN: <b>That tag is already taken
+    TOCHANGE: to change the faction tag
+    FORCHANGE: for changing the faction tag
+    FACTION: '%1$s<i> changed your faction tag to %2$s'
+    CHANGED: <i>The faction %1$s<i> changed their name to %2$s.
+  TITLE:
+    TOCHANGE: to change a players title
+    FORCHANGE: for changing a players title
+    CHANGED: '%1$s<i> changed a title: %2$s'
+  UNCLAIM:
+    SAFEZONE:
+      SUCCESS: <i>Safe zone was unclaimed.
+      NOPERM: <b>This is a safe zone. You lack permissions to unclaim.
+    WARZONE:
+      SUCCESS: <i>War zone was unclaimed.
+      NOPERM: <b>This is a war zone. You lack permissions to unclaim.
+    UNCLAIMED: '%1$s<i> unclaimed some of your land.'
+    UNCLAIMS: <i>You unclaimed this land.
+    LOG: '%1$s unclaimed land at (%2$s) from the faction: %3$s'
+    WRONGFACTION: <b>You don't own this land.
+    TOUNCLAIM: to unclaim this land
+    FORUNCLAIM: for unclaiming this land
+    FACTIONUNCLAIMED: '%1$s<i> unclaimed some land.'
+  UNCLAIMALL:
+    TOUNCLAIM: to unclaim all faction land
+    FORUNCLAIM: for unclaiming all faction land
+    UNCLAIMED: '%1$s<i> unclaimed ALL of your faction''s land.'
+    LOG: '%1$s unclaimed everything for the faction: %2$s'
+  VERSION:
+    VERSION: <i>You are running %1$s
+  WARUNCLAIMALL:
+    SHORT: unclaim all warzone land
+    SUCCESS: <i>You unclaimed ALL war zone land.
+    LOG: '%1$s unclaimed all war zones.'
+  RELATIONS:
+    ALLTHENOPE: <b>Nope! You can't.
+    MORENOPE: <b>Nope! You can't declare a relation to yourself :)
+    ALREADYINRELATIONSHIP: <b>You already have that relation wish set with %1$s.
+    TOMARRY: to change a relation wish
+    FORMARRY: for changing a relation wish
+    MUTUAL: <i>Your faction is now %1$s<i> to %2$s
+    PEACEFUL: <i>This will have no effect while your faction is peaceful.
+    PEACEFULOTHER: <i>This will have no effect while their faction is peaceful.
+    PROPOSAL:
+      '1': '%1$s<i> wishes to be your %2$s'
+      '2': <i>Type <c>/%1$s %2$s %3$s<i> to accept.
+      SENT: '%1$s<i> were informed that you wish to be %2$s'
+command:
+  convert:
+    backend:
+      running: Already running that backend.
+      invalid: Invalid backend
+  help:
+    invitations: '<i>You might want to close it and use invitations:'
+LEAVE:
+  PASSADMIN: <b>You must give the admin role to someone else first.
+  NEGATIVEPOWER: <b>You cannot leave until your power is positive.
+  TOLEAVE: to leave your faction.
+  FORLEAVE: for leaving your faction.
+  LEFT: '%s<i> left faction %s<i>.'
+  DISBANDED: <i>%s<i> was disbanded.
+  DISBANDEDLOG: The faction %s (%s) was disbanded due to the last player (%s) leaving.
+CLAIM:
+  PROTECTED: <b>This land is protected
+  DISABLED: <b>Sorry, this world has land claiming disabled.
+  CANTCLAIM: <b>You can't claim land for <h>%s<b>.
+  ALREADYOWN: '%s<i> already own this land.'
+  MUSTBE: <b>You must be <h>%s<b> to claim land.
+  MEMBERS: Factions must have at least <h>%s<b> members to claim land.
+  SAFEZONE: <b>You can not claim a Safe Zone.
+  WARZONE: <b>You can not claim a War Zone.
+  POWER: <b>You can't claim more land! You need more power!
+  LIMIT: <b>Limit reached. You can't claim more land!
+  ALLY: <b>You can't claim the land of your allies.
+  CONTIGIOUS: <b>You can only claim additional land which is connected to your first claim or controlled by another faction!
+  FACTIONCONTIGUOUS: <b>You can only claim additional land which is connected to your first claim!
+  PEACEFUL: '%s<i> owns this land. Your faction is peaceful, so you cannot claim land
+    from other factions.'
+  PEACEFULTARGET: '%s<i> owns this land, and is a peaceful faction. You cannot claim
+    land from them.'
+  THISISSPARTA: '%s<i> owns this land and is strong enough to keep it.'
+  BORDER: <b>You must start claiming land at the border of the territory.
+  TOCLAIM: to claim this land
+  FORCLAIM: for claiming this land
+  CLAIMED: <h>%s<i> claimed land for <h>%s<i> from <h>%s<i>.
+  CLAIMEDLOG: '%s claimed land at (%s) for the faction: %s'
+GENERIC:
+  NOPERMISSION: <b>You don't have permission to %1$s.
+  DOTHAT: do that
+  NOPLAYERMATCH: <b>No player match found for "<p>%1$s<b>".
+  NOPLAYERFOUND: <b>No player "<p>%1$s<b>" could not be found.
+  ARGS:
+    TOOFEW: '<b>Too few arguments. <i>Use like this:'
+    TOOMANY: '<b>Strange argument "<p>%1$s<b>". <i>Use the command like this:'
+  OWNERS: 'Owner(s): %1$s'
+  PUBLICLAND: Public faction land.
+  FACTIONLESS: factionless
+  SERVERADMIN: A server admin
+  DISABLED: disabled
+  ENABLED: enabled
+  CONSOLEONLY: This command cannot be run as a player.
+  PLAYERONLY: <b>This command can only be used by ingame players.
+  ASKYOURLEADER: '<i> Ask your leader to:'
+  YOUSHOULD: '<i>You should:'
+  YOUMAYWANT: '<i>You may want to: '
+  TRANSLATION:
+    VERSION: 'Translation: %1$s(%2$s,%3$s) State: %4$s'
+    CONTRIBUTORS: 'Translation contributors: %1$s'
+    RESPONSIBLE: 'Responsible for translation: %1$s'
+  FACTIONTAG:
+    TOOSHORT: <i>The faction tag can't be shorter than <h>%1$s<i> chars.
+    TOOLONG: <i>The faction tag can't be longer than <h>%s<i> chars.
+    ALPHANUMERIC: <i>Faction tag must be alphanumeric. "<h>%s<i>" is not allowed.
+COMPASS:
+  SHORT:
+    NORTH: N
+    EAST: E
+    SOUTH: S
+    WEST: W
+CHAT:
+  FACTION: faction chat
+  ALLIANCE: alliance chat
+  PUBLIC: public chat
+RELATION:
+  MEMBER: member
+  ALLY: ally
+  NEUTRAL: neutral
+  ENEMY: enemy
+NOPAGES: <i>Sorry. No Pages available.
+INVALIDPAGE: <i>Invalid page. Must be between 1 and %1$d
+title: '&bFactions &0|&r'
+wilderness: '&2Wilderness'
+wilderness-description: ''
+warzone: '&4Warzone'
+warzone-description: Not the safest place to be.
+safezone: '&6Safezone'
+safezone-description: Free from pvp and monsters.
+toggle-sb: You now have scoreboards set to {value}
+default-prefix: '{relationcolor}[{faction}] &r'
+faction-login: '&e%1$s &9logged in.'
+faction-logout: '&e%1$s &9logged out..'
+WARMUPS:
+  NOTIFY:
+    TELEPORT: '&eYou will teleport to &d%1$s &ein &d%2$d &eseconds.'
+  ALREADY: '&cYou are already warming up.'
+  CANCELLED: '&cYou have cancelled your warmup.'
