@@ -1,19 +1,33 @@
 package com.massivecraft.factions;
 
+import java.lang.ref.WeakReference;
 import java.util.Comparator;
+
+import org.bukkit.command.CommandSender;
 
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.massivecore.comparator.ComparatorComparable;
+import com.massivecraft.massivecore.util.IdUtil;
 
 public class FactionListComparator implements Comparator<Faction>
 {
 	// -------------------------------------------- //
+	// FIELDS
+	// -------------------------------------------- //
+
+	private final WeakReference<CommandSender> watcher;
+	public CommandSender getWatcher() { return this.watcher.get(); }
+
+	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
-	
-	private static FactionListComparator i = new FactionListComparator();
-	public static FactionListComparator get() { return i; }
-	
+
+	public static FactionListComparator get(Object watcherObject) { return new FactionListComparator(watcherObject); }
+	public FactionListComparator(Object watcherObject)
+	{
+		this.watcher = new WeakReference<>(IdUtil.getSender(watcherObject));
+	}
+
 	// -------------------------------------------- //
 	// OVERRIDE: COMPARATOR
 	// -------------------------------------------- //
@@ -36,7 +50,7 @@ public class FactionListComparator implements Comparator<Faction>
 		if (ret != 0) return ret;
 		
 		// Players Online
-		ret = f2.getMPlayersWhereOnline(true).size() - f1.getMPlayersWhereOnline(true).size();
+		ret = f2.getMPlayersWhereOnlineTo(this.getWatcher()).size() - f1.getMPlayersWhereOnlineTo(this.getWatcher()).size();
 		if (ret != 0) return ret;
 		
 		// Players Total

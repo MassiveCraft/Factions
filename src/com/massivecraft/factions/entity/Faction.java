@@ -35,6 +35,8 @@ import com.massivecraft.massivecore.comparator.ComparatorCaseInsensitive;
 import com.massivecraft.massivecore.mixin.MixinMessage;
 import com.massivecraft.massivecore.money.Money;
 import com.massivecraft.massivecore.predicate.Predicate;
+import com.massivecraft.massivecore.predicate.PredicateAnd;
+import com.massivecraft.massivecore.predicate.PredicateVisibleTo;
 import com.massivecraft.massivecore.ps.PS;
 import com.massivecraft.massivecore.store.Entity;
 import com.massivecraft.massivecore.store.SenderColl;
@@ -1062,7 +1064,12 @@ public class Faction extends Entity<Faction> implements EconomyParticipator, Nam
 	public List<MPlayer> getMPlayersWhereOnline(boolean online)
 	{
 		return this.getMPlayersWhere(online ? SenderColl.PREDICATE_ONLINE : SenderColl.PREDICATE_OFFLINE);
-	}	
+	}
+
+	public List<MPlayer> getMPlayersWhereOnlineTo(Object senderObject)
+	{
+		return this.getMPlayersWhere(PredicateAnd.get(SenderColl.PREDICATE_ONLINE, PredicateVisibleTo.get(senderObject)));
+	}
 	
 	public List<MPlayer> getMPlayersWhereRole(Rel role)
 	{
