@@ -35,10 +35,10 @@ public class CmdFactionsOverride extends FactionsCommand
 	{
 		// Args
 		boolean target = this.readArg( ! msender.isOverriding());
-		
+
 		// Apply
-		msender.setOverriding(target);		
-		
+		msender.setOverriding(target);
+
 		// Inform
 		String desc = Txt.parse(msender.isOverriding() ? "<g>ENABLED" : "<b>DISABLED");
 		
