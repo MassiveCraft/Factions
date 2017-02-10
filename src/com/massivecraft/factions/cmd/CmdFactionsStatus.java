@@ -5,7 +5,6 @@ import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.PlayerInactivityComparator;
 import com.massivecraft.factions.cmd.type.TypeFaction;
 import com.massivecraft.factions.cmd.type.TypeSortMPlayer;
@@ -14,13 +13,11 @@ import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.command.Parameter;
-import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.pager.Pager;
 import com.massivecraft.massivecore.pager.Stringifier;
 import com.massivecraft.massivecore.util.TimeDiffUtil;
 import com.massivecraft.massivecore.util.TimeUnit;
 import com.massivecraft.massivecore.util.Txt;
-
 
 public class CmdFactionsStatus extends FactionsCommand
 {
@@ -30,16 +27,10 @@ public class CmdFactionsStatus extends FactionsCommand
 	
 	public CmdFactionsStatus()
 	{
-		// Aliases
-		this.addAliases("s", "status");
-
 		// Parameters
 		this.addParameter(Parameter.getPage());
 		this.addParameter(TypeFaction.get(), "faction", "you");
 		this.addParameter(TypeSortMPlayer.get(), "sort", "time");
-
-		// Requirements
-		this.addRequirements(RequirementHasPerm.get(Perm.STATUS));
 	}
 
 	// -------------------------------------------- //

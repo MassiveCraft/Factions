@@ -22,6 +22,7 @@ public class CmdFactionsRelationOld extends FactionsCommand
 	{
 		// Fields
 		this.relName = rel.toLowerCase();
+		this.setSetupEnabled(false);
 
 		// Aliases
 		this.addAliases(relName);

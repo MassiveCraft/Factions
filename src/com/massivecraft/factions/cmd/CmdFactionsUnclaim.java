@@ -1,9 +1,5 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.Perm;
-import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
-
-
 public class CmdFactionsUnclaim extends FactionsCommand
 {
 	// -------------------------------------------- //
@@ -23,9 +19,6 @@ public class CmdFactionsUnclaim extends FactionsCommand
 	
 	public CmdFactionsUnclaim()
 	{
-		// Aliases
-		this.addAliases("unclaim");
-		
 		// Children
 		this.addChild(this.cmdFactionsUnclaimOne);
 		this.addChild(this.cmdFactionsUnclaimAuto);
@@ -33,9 +26,6 @@ public class CmdFactionsUnclaim extends FactionsCommand
 		this.addChild(this.cmdFactionsUnclaimSquare);
 		this.addChild(this.cmdFactionsUnclaimCircle);
 		this.addChild(this.cmdFactionsUnclaimAll);
-		
-		// Requirements
-		this.addRequirements(RequirementHasPerm.get(Perm.UNCLAIM));
 	}
 	
 }

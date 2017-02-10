@@ -3,7 +3,6 @@ package com.massivecraft.factions.cmd;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.cmd.type.TypeFaction;
 import com.massivecraft.factions.cmd.type.TypeMPerm;
@@ -13,7 +12,6 @@ import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.event.EventFactionsPermChange;
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.command.type.primitive.TypeBooleanYes;
 import com.massivecraft.massivecore.util.Txt;
 
@@ -25,17 +23,11 @@ public class CmdFactionsPermSet extends FactionsCommand
 	
 	public CmdFactionsPermSet()
 	{
-		// Aliases
-		this.addAliases("set");
-		
 		// Parameters
 		this.addParameter(TypeMPerm.get(), "perm");
 		this.addParameter(TypeRel.get(), "relation");
 		this.addParameter(TypeBooleanYes.get(), "yes/no");
 		this.addParameter(TypeFaction.get(), "faction", "you");
-		
-		// Requirements
-		this.addRequirements(RequirementHasPerm.get(Perm.PERM_SET));
 	}
 
 	// -------------------------------------------- //

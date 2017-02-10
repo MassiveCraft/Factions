@@ -8,7 +8,6 @@ import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.event.EventFactionsTitleChange;
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.command.type.primitive.TypeString;
 import com.massivecraft.massivecore.util.Txt;
 
@@ -20,15 +19,9 @@ public class CmdFactionsTitle extends FactionsCommand
 	
 	public CmdFactionsTitle()
 	{
-		// Aliases
-		this.addAliases("title");
-
 		// Parameters
 		this.addParameter(TypeMPlayer.get(), "player");
 		this.addParameter(TypeString.get(), "title", "", true);
-
-		// Requirements
-		this.addRequirements(RequirementHasPerm.get(Perm.TITLE));
 	}
 
 	// -------------------------------------------- //

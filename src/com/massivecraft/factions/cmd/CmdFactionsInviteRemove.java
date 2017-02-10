@@ -7,13 +7,11 @@ import java.util.Set;
 
 import org.bukkit.ChatColor;
 
-import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.cmd.type.TypeMPlayer;
 import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.event.EventFactionsInvitedChange;
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.command.type.container.TypeSet;
 import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.util.Txt;
@@ -25,14 +23,8 @@ public class CmdFactionsInviteRemove extends FactionsCommand
 	// -------------------------------------------- //
 	public CmdFactionsInviteRemove()
 	{
-		// Aliases
-		this.addAliases("remove");
-
 		// Parameters
 		this.addParameter(TypeSet.get(TypeMPlayer.get()), "players/all", true);
-		
-		// Requirements
-		this.addRequirements(RequirementHasPerm.get(Perm.INVITE_REMOVE));
 	}
 	
 	// -------------------------------------------- //

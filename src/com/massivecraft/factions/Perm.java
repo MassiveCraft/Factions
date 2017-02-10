@@ -16,6 +16,7 @@ public enum Perm implements Identified
 	ACCESS_PLAYER,
 	ACCESS_FACTION,
 	OVERRIDE,
+	BASECOMMAND,
 	CLAIM,
 	CLAIM_ONE,
 	CLAIM_AUTO,

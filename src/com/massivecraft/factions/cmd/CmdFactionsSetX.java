@@ -36,6 +36,7 @@ public abstract class CmdFactionsSetX extends FactionsCommand
 	public CmdFactionsSetX(boolean claim)
 	{
 		this.setClaim(claim);
+		this.setSetupEnabled(false);
 	}
 	
 	// -------------------------------------------- //

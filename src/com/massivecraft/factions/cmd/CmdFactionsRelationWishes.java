@@ -6,16 +6,13 @@ import java.util.Map.Entry;
 import org.bukkit.Bukkit;
 
 import com.massivecraft.factions.Factions;
-import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.cmd.type.TypeFaction;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.FactionColl;
-
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.collections.MassiveMap;
 import com.massivecraft.massivecore.command.Parameter;
-import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.pager.Pager;
 import com.massivecraft.massivecore.pager.Stringifier;
 import com.massivecraft.massivecore.util.MUtil;
@@ -29,15 +26,9 @@ public class CmdFactionsRelationWishes extends FactionsCommand
 
 	public CmdFactionsRelationWishes()
 	{
-		// Aliases
-		this.addAliases("wishes");
-
 		// Parameter
 		this.addParameter(Parameter.getPage());
 		this.addParameter(TypeFaction.get(), "faction", "you");
-
-		// Requirements
-		this.addRequirements(RequirementHasPerm.get(Perm.RELATION_WISHES));
 	}
 
 	// -------------------------------------------- //
