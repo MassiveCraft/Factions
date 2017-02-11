@@ -135,7 +135,7 @@ public class MConf extends Entity<MConf>
 	public Rel defaultPlayerRole = Rel.RECRUIT;
 	
 	// What power should the player start with?
-	public double defaultPlayerPower = 0.0;
+	public double defaultPlayerPower = 40.0;
 	
 	// -------------------------------------------- //
 	// MOTD
@@ -157,17 +157,17 @@ public class MConf extends Entity<MConf>
 	// -------------------------------------------- //
 	
 	// What is the maximum player power?
-	public double powerMax = 10.0;
+	public double powerMax = 40.0;
 	
 	// What is the minimum player power?
 	// NOTE: Negative minimum values is possible.
-	public double powerMin = 0.0;
+	public double powerMin = -40.0;
 	
 	// How much power should be regained per hour online on the server?
-	public double powerPerHour = 2.0;
+	public double powerPerHour = 40.0;
 	
 	// How much power should be lost on death?
-	public double powerPerDeath = -2.0;
+	public double powerPerDeath = -8.0;
 	
 	// Can players with negative power leave their faction?
 	// NOTE: This only makes sense to set to false if your "powerMin" setting is negative.
@@ -186,7 +186,7 @@ public class MConf extends Entity<MConf>
 	public double factionPowerMax = 0.0;
 	
 	// Limit the length of faction names here.
-	public int factionNameLengthMin = 3;
+	public int factionNameLengthMin = 1;
 	public int factionNameLengthMax = 16;
 	
 	// Should faction names automatically be converted to upper case?
@@ -211,13 +211,13 @@ public class MConf extends Entity<MConf>
 	// Must claims be connected to each other?
 	// If you set this to false you will allow factions to claim more than one base per world map.
 	// That would makes outposts possible but also potentially ugly weird claims messing up your Dynmap and ingame experiance.
-	public boolean claimsMustBeConnected = true;
+	public boolean claimsMustBeConnected = false;
 	
 	// Would you like to allow unconnected claims when conquering land from another faction?
 	// Setting this to true would allow taking over someone elses base even if claims normally have to be connected.
 	// Note that even without this you can pillage/unclaim another factions territory in war.
 	// You just won't be able to take the land as your own.
-	public boolean claimsCanBeUnconnectedIfOwnedByOtherFaction = false;
+	public boolean claimsCanBeUnconnectedIfOwnedByOtherFaction = true;
 	
 	// Is claiming from other factions even allowed?
 	// Set this to false to disable territorial warfare altogether.
@@ -227,7 +227,7 @@ public class MConf extends Entity<MConf>
 	// 0 means the feature is disabled.
 	// Set the feature to 10 and there must be 10 chunks of wilderness between factions.
 	// Factions may optionally allow their allies to bypass this limit by configuring their faction permissions ingame themselves.
-	public int claimMinimumChunksDistanceToOthers = 0;
+	public int claimMinimumChunksDistanceToOthers = 3;
 	
 	// Do you need a minimum amount of faction members to claim land?
 	// 1 means just the faction leader alone is enough.
@@ -266,7 +266,7 @@ public class MConf extends Entity<MConf>
 	// These options can be used to limit rights to tp home under different circumstances.
 	public boolean homesTeleportAllowedFromEnemyTerritory = true;
 	public boolean homesTeleportAllowedFromDifferentWorld = true;
-	public double homesTeleportAllowedEnemyDistance = 32.0;
+	public double homesTeleportAllowedEnemyDistance = 0.0;
 	public boolean homesTeleportIgnoreEnemiesIfInOwnTerritory = true;
 	
 	// Should players teleport to faction home on death?
@@ -281,7 +281,7 @@ public class MConf extends Entity<MConf>
 	// TERRITORY INFO
 	// -------------------------------------------- //
 	
-	public boolean territoryInfoTitlesDefault = true;
+	public boolean territoryInfoTitlesDefault = false;
 
 	public String territoryInfoTitlesMain = "{relcolor}{name}";
 	public String territoryInfoTitlesSub = "<i>{desc}";
@@ -309,12 +309,12 @@ public class MConf extends Entity<MConf>
 	
 	// If you set this option to true then factionless players cant damage each other.
 	// So two factionless can't PvP, but they can PvP with others if that is allowed.
-	public boolean enablePVPBetweenFactionlessPlayers = true;
+	public boolean enablePVPBetweenFactionlessPlayers = false;
 	
 	// Set this option to true to create an exception to the rule above.
 	// Players inside their own faction territory can then hurt facitonless players.
 	// This way you may "evict" factionless trolls messing around in your home base.
-	public boolean enablePVPAgainstFactionlessInAttackersLand = false;
+	public boolean enablePVPAgainstFactionlessInAttackersLand = true;
 	
 	// Inside your own faction territory you take less damage.
 	// 0.1 means that you take 10% less damage at home.
@@ -337,47 +337,14 @@ public class MConf extends Entity<MConf>
 	public Map<Rel, List<String>> denyCommandsTerritoryRelation = MUtil.map(
 		Rel.ENEMY, MUtil.list(
 			// Essentials commands
-			"home",
-			"homes",
 			"sethome",
 			"createhome",
-			"tpahere",
-			"tpaccept",
-			"tpyes",
-			"tpa",
-			"call",
-			"tpask",
-			"warp",
-			"warps",
-			"spawn",
 			// Essentials e-alliases
-			"ehome",
-			"ehomes",
 			"esethome",
 			"ecreatehome",
-			"etpahere",
-			"etpaccept",
-			"etpyes",
-			"etpa",
-			"ecall",
-			"etpask",
-			"ewarp",
-			"ewarps",
-			"espawn",
 			// Essentials fallback alliases
-			"essentials:home",
-			"essentials:homes",
 			"essentials:sethome",
 			"essentials:createhome",
-			"essentials:tpahere",
-			"essentials:tpaccept",
-			"essentials:tpyes",
-			"essentials:tpa",
-			"essentials:call",
-			"essentials:tpask",
-			"essentials:warp",
-			"essentials:warps",
-			"essentials:spawn",
 			// Other plugins
 			"wtp",
 			"uspawn",
@@ -389,9 +356,69 @@ public class MConf extends Entity<MConf>
 			"jspawn",
 			"jtp"
 		),
-		Rel.NEUTRAL, new ArrayList<String>(),
-		Rel.TRUCE, new ArrayList<String>(),
-		Rel.ALLY, new ArrayList<String>(),
+		Rel.NEUTRAL, MUtil.list(
+			// Essentials commands
+			"sethome",
+			"createhome",
+			// Essentials e-alliases
+			"esethome",
+			"ecreatehome",
+			// Essentials fallback alliases
+			"essentials:sethome",
+			"essentials:createhome",
+			// Other plugins
+			"wtp",
+			"uspawn",
+			"utp",
+			"mspawn",
+			"mtp",
+			"fspawn",
+			"ftp",
+			"jspawn",
+			"jtp"
+		),
+		Rel.TRUCE, MUtil.list(
+			// Essentials commands
+			"sethome",
+			"createhome",
+			// Essentials e-alliases
+			"esethome",
+			"ecreatehome",
+			// Essentials fallback alliases
+			"essentials:sethome",
+			"essentials:createhome",
+			// Other plugins
+			"wtp",
+			"uspawn",
+			"utp",
+			"mspawn",
+			"mtp",
+			"fspawn",
+			"ftp",
+			"jspawn",
+			"jtp"
+		),
+		Rel.ALLY, MUtil.list(
+			// Essentials commands
+			"sethome",
+			"createhome",
+			// Essentials e-alliases
+			"esethome",
+			"ecreatehome",
+			// Essentials fallback alliases
+			"essentials:sethome",
+			"essentials:createhome",
+			// Other plugins
+			"wtp",
+			"uspawn",
+			"utp",
+			"mspawn",
+			"mtp",
+			"fspawn",
+			"ftp",
+			"jspawn",
+			"jtp"
+		),
 		Rel.MEMBER, new ArrayList<String>()
 	);
 	
@@ -422,7 +449,7 @@ public class MConf extends Entity<MConf>
 	// Should Factions set the chat format?
 	// This should be kept at false if you use an external chat format plugin.
 	// If you are planning on running a more lightweight server you can set this to true.
-	public boolean chatSetFormat = true;
+	public boolean chatSetFormat = false;
 	
 	// At which event priority should the chat format be set in such case?
 	// Choose between: LOWEST, LOW, NORMAL, HIGH and HIGHEST.
@@ -771,14 +798,14 @@ public class MConf extends Entity<MConf>
 	
 	// What is the price per chunk when using /f set?
 	public Map<EventFactionsChunkChangeType, Double> econChunkCost = MUtil.map(
-		EventFactionsChunkChangeType.BUY, 1.0, // when claiming from wilderness
+		EventFactionsChunkChangeType.BUY, 0.0, // when claiming from wilderness
 		EventFactionsChunkChangeType.SELL, 0.0, // when selling back to wilderness
 		EventFactionsChunkChangeType.CONQUER, 0.0, // when claiming from another player faction
 		EventFactionsChunkChangeType.PILLAGE, 0.0 // when unclaiming (to wilderness) from another player faction
 	);
 	
 	// What is the price to create a faction?
-	public double econCostCreate = 100.0;
+	public double econCostCreate = 0.0;
 	
 	// And so on and so forth ... you get the idea.
 	public double econCostSethome = 0.0;
