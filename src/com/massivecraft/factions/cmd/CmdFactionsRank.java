@@ -338,7 +338,7 @@ public class CmdFactionsRank extends FactionsCommand
 		if (targetFactionCurrentLeader != null)
 		{
 			// Inform & demote the old leader.
-			targetFactionCurrentLeader.setRole(Rel.OFFICER);
+			targetFactionCurrentLeader.setRole(Rel.COLEADER);
 			if (targetFactionCurrentLeader != msender)
 			{
 				// They kinda know if they fired the command themself.
