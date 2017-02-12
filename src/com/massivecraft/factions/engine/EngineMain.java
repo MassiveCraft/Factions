@@ -1174,7 +1174,6 @@ public class EngineMain extends Engine
 		if (MConf.get().playersWhoBypassAllProtection.contains(name)) return true;
 
 		if (mplayer.isOverriding()) return true;
-
 		if (!MPerm.getPermBuild().has(mplayer, ps, false) && MPerm.getPermPainbuild().has(mplayer, ps, false))
 		{
 			if (verboose)
@@ -1329,28 +1328,33 @@ public class EngineMain extends Engine
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void blockBuild(PlayerInteractEvent event)
 	{
-		// ... if it is a left click on block ...
-		if (event.getAction() != Action.LEFT_CLICK_BLOCK) return;
+		// only need to check right-clicks and physical as of MC 1.4+; good performance boost
+		if (event.getAction() != Action.LEFT_CLICK_BLOCK && event.getAction() != Action.PHYSICAL) return;
 		
-		// .. and the clicked block is not null ... 
-		if (event.getClickedBlock() == null) return;
+		Block block = event.getClickedBlock();
+		Player player = event.getPlayer();
+
+		if (block == null) return;  // clicked in air, apparently
+
+		if ( ! canPlayerUseBlock(player, block, true))
+		{
+			event.setCancelled(true);
+			return;
+		}
+
+		if (event.getAction() != Action.LEFT_CLICK_BLOCK) return;  // only interested on right-clicks for below
+
+		if ( ! playerTrusted(player, PS.valueOf(block), event.getMaterial(), true))
+		{
+			event.setCancelled(true);
+			return;
+		}
 		
-		Block potentialBlock = event.getClickedBlock().getRelative(BlockFace.UP, 1);
-		
-		// .. and the potential block is not null ... 
-		if (potentialBlock == null) return;
-		
-		// ... and we're only going to check for fire ... (checking everything else would be bad performance wise)
-		if (potentialBlock.getType() != Material.FIRE) return;
-		
-		// ... check if they can build ...
-		if (canPlayerBuildAt(event.getPlayer(), PS.valueOf(potentialBlock), true)) return;
-		
-		// ... nope, cancel it
-		event.setCancelled(true);
-		
-		// .. and compensate for client side prediction
-		event.getPlayer().sendBlockChange(potentialBlock.getLocation(), potentialBlock.getType(), potentialBlock.getState().getRawData());
+		if ( ! playerCanUseItemHere(player, PS.valueOf(block), event.getMaterial(), true))
+		{
+			event.setCancelled(true);
+			return;
+		}
 	}
 	
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
@@ -1436,6 +1440,12 @@ public class EngineMain extends Engine
 
 		if (event.getAction() != Action.RIGHT_CLICK_BLOCK) return;  // only interested on right-clicks for below
 
+		if ( ! playerTrusted(player, PS.valueOf(block), event.getMaterial(), true))
+		{
+			event.setCancelled(true);
+			return;
+		}
+		
 		if ( ! playerCanUseItemHere(player, PS.valueOf(block), event.getMaterial(), true))
 		{
 			event.setCancelled(true);
@@ -1458,6 +1468,21 @@ public class EngineMain extends Engine
 		return MPerm.getPermBuild().has(mplayer, ps, verboose);
 	}
 	
+	public static boolean playerTrusted(Player player, PS ps, Material material, boolean verboose)
+	{
+		if (MUtil.isntPlayer(player)) return true;
+		
+		if ( ! MConf.get().materialsTrust.contains(material)) return true;
+		
+		String name = player.getName();
+		if (MConf.get().playersWhoBypassAllProtection.contains(name)) return true;
+
+		MPlayer mplayer = MPlayer.get(player);
+		if (mplayer.isOverriding()) return true;
+		
+		return MPerm.getPermTrusted().has(mplayer, ps, verboose);
+	}
+	
 	public static boolean canPlayerUseBlock(Player player, Block block, boolean verboose)
 	{
 		if (MUtil.isntPlayer(player)) return true;
@@ -1472,6 +1497,7 @@ public class EngineMain extends Engine
 		Material material = block.getType();
 		
 		if (MConf.get().materialsEditOnInteract.contains(material) && ! MPerm.getPermBuild().has(me, ps, verboose)) return false;
+		if (MConf.get().materialsTrust.contains(material) && ! MPerm.getPermTrusted().has(me, ps, verboose)) return false;
 		if (MConf.get().materialsContainer.contains(material) && ! MPerm.getPermContainer().has(me, ps, verboose)) return false;
 		if (MConf.get().materialsDoor.contains(material) && ! MPerm.getPermDoor().has(me, ps, verboose)) return false;
 		if (material == Material.STONE_BUTTON && ! MPerm.getPermButton().has(me, ps, verboose)) return false;

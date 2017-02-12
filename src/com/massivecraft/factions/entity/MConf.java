@@ -557,6 +557,15 @@ public class MConf extends Entity<MConf>
 	// This way they can be protected in Faction territory.
 	
 	// Interacting with these materials when they are already placed in the terrain results in an edit.
+	public BackstringEnumSet<Material> materialsTrust = new BackstringEnumSet<Material>(Material.class,
+		"OBSIDIAN", // Minecraft 1.?
+		"MOB_SPAWNER", // Minecraft 1.?
+		"TNT", // Minecraft 1.5
+		"MONSTER_EGG", // Minecraft 1.5
+		"FLINT_AND_STEEL", // Minecraft 1.5
+		"HOPPER", // Minecraft 1.?
+		"DISPENSER" // Minecraft 1.?
+	);
 	public BackstringEnumSet<Material> materialsEditOnInteract = new BackstringEnumSet<Material>(Material.class,
 		"DIODE_BLOCK_OFF", // Minecraft 1.?
 		"DIODE_BLOCK_ON", // Minecraft 1.?
@@ -566,9 +575,9 @@ public class MConf extends Entity<MConf>
 		"DAYLIGHT_DETECTOR", // Minecraft 1.5
 		"DAYLIGHT_DETECTOR_INVERTED", // Minecraft 1.5
 		"REDSTONE_COMPARATOR_OFF", // Minecraft 1.?
-		"REDSTONE_COMPARATOR_ON" // Minecraft 1.?
+		"REDSTONE_COMPARATOR_ON", // Minecraft 1.?
+		"DISPENSER" // Minecraft 1.?
 	);
-	
 	// Interacting with the the terrain holding this item in hand results in an edit.
 	// There's no need to add all block materials here. Only special items other than blocks.
 	public BackstringEnumSet<Material> materialsEditTools = new BackstringEnumSet<Material>(Material.class,
@@ -578,7 +587,8 @@ public class MConf extends Entity<MConf>
 		"WATER_BUCKET", // Minecraft 1.?
 		"LAVA_BUCKET", // Minecraft 1.?
 		"ARMOR_STAND", // Minecraft 1.8
-		"END_CRYSTAL" // Minecraft 1.10
+		"END_CRYSTAL", // Minecraft 1.10
+		"DISPENSER" // Minecraft 1.?
 	);
 	
 	// The duplication bug found in Spigot 1.8 protocol patch
@@ -589,7 +599,8 @@ public class MConf extends Entity<MConf>
 		"TRAPPED_CHEST", // Minecraft 1.?
 		"SIGN", // Minecraft 1.?
 		"WOOD_DOOR", // Minecraft 1.?
-		"IRON_DOOR" // Minecraft 1.?
+		"IRON_DOOR", // Minecraft 1.?
+		"DISPENSER" // Minecraft 1.?
 	);
 	
 	// Interacting with these materials placed in the terrain results in door toggling.
@@ -606,7 +617,8 @@ public class MConf extends Entity<MConf>
 		"BIRCH_FENCE_GATE", // Minecraft 1.8
 		"DARK_OAK_FENCE_GATE", // Minecraft 1.8
 		"JUNGLE_FENCE_GATE", // Minecraft 1.8
-		"SPRUCE_FENCE_GATE" // Minecraft 1.8
+		"SPRUCE_FENCE_GATE", // Minecraft 1.8
+		"DISPENSER" // Minecraft 1.8
 	);
 	
 	// Interacting with these materials placed in the terrain results in opening a container.
