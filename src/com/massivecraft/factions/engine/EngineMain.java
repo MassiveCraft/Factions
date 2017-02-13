@@ -1344,7 +1344,7 @@ public class EngineMain extends Engine
 
 		if (event.getAction() != Action.LEFT_CLICK_BLOCK) return;  // only interested on right-clicks for below
 
-		if ( ! playerTrusted(player, PS.valueOf(block), event.getMaterial(), true))
+		if ( ! playerTrustedCantBreak(player, PS.valueOf(block), event.getMaterial(), true))
 		{
 			event.setCancelled(true);
 			return;
@@ -1440,7 +1440,7 @@ public class EngineMain extends Engine
 
 		if (event.getAction() != Action.RIGHT_CLICK_BLOCK) return;  // only interested on right-clicks for below
 
-		if ( ! playerTrusted(player, PS.valueOf(block), event.getMaterial(), true))
+		if ( ! playerTrustedCantPlace(player, PS.valueOf(block), event.getMaterial(), true))
 		{
 			event.setCancelled(true);
 			return;
@@ -1468,11 +1468,26 @@ public class EngineMain extends Engine
 		return MPerm.getPermBuild().has(mplayer, ps, verboose);
 	}
 	
-	public static boolean playerTrusted(Player player, PS ps, Material material, boolean verboose)
+	public static boolean playerTrustedCantBreak(Player player, PS ps, Material material, boolean verboose)
 	{
 		if (MUtil.isntPlayer(player)) return true;
 		
-		if ( ! MConf.get().materialsTrust.contains(material)) return true;
+		if ( ! MConf.get().materialsTrustCantBreak.contains(material)) return true;
+		
+		String name = player.getName();
+		if (MConf.get().playersWhoBypassAllProtection.contains(name)) return true;
+
+		MPlayer mplayer = MPlayer.get(player);
+		if (mplayer.isOverriding()) return true;
+		
+		return MPerm.getPermTrusted().has(mplayer, ps, verboose);
+	}
+	
+	public static boolean playerTrustedCantPlace(Player player, PS ps, Material material, boolean verboose)
+	{
+		if (MUtil.isntPlayer(player)) return true;
+		
+		if ( ! MConf.get().materialsTrustCantPlace.contains(material)) return true;
 		
 		String name = player.getName();
 		if (MConf.get().playersWhoBypassAllProtection.contains(name)) return true;
@@ -1497,7 +1512,8 @@ public class EngineMain extends Engine
 		Material material = block.getType();
 		
 		if (MConf.get().materialsEditOnInteract.contains(material) && ! MPerm.getPermBuild().has(me, ps, verboose)) return false;
-		if (MConf.get().materialsTrust.contains(material) && ! MPerm.getPermTrusted().has(me, ps, verboose)) return false;
+		if (MConf.get().materialsTrustCantPlace.contains(material) && ! MPerm.getPermTrusted().has(me, ps, verboose)) return false;
+		if (MConf.get().materialsTrustCantBreak.contains(material) && ! MPerm.getPermTrusted().has(me, ps, verboose)) return false;
 		if (MConf.get().materialsContainer.contains(material) && ! MPerm.getPermContainer().has(me, ps, verboose)) return false;
 		if (MConf.get().materialsDoor.contains(material) && ! MPerm.getPermDoor().has(me, ps, verboose)) return false;
 		if (material == Material.STONE_BUTTON && ! MPerm.getPermButton().has(me, ps, verboose)) return false;

@@ -557,13 +557,20 @@ public class MConf extends Entity<MConf>
 	// This way they can be protected in Faction territory.
 	
 	// Interacting with these materials when they are already placed in the terrain results in an edit.
-	public BackstringEnumSet<Material> materialsTrust = new BackstringEnumSet<Material>(Material.class,
+	public BackstringEnumSet<Material> materialsTrustCantBreak = new BackstringEnumSet<Material>(Material.class,
 		"OBSIDIAN", // Minecraft 1.?
 		"MOB_SPAWNER", // Minecraft 1.?
 		"TNT", // Minecraft 1.5
 		"MONSTER_EGG", // Minecraft 1.5
 		"FLINT_AND_STEEL", // Minecraft 1.5
 		"HOPPER", // Minecraft 1.?
+		"DISPENSER" // Minecraft 1.?
+	);
+	public BackstringEnumSet<Material> materialsTrustCantPlace = new BackstringEnumSet<Material>(Material.class,
+		"OBSIDIAN", // Minecraft 1.?
+		"TNT", // Minecraft 1.5
+		"MONSTER_EGG", // Minecraft 1.5
+		"FLINT_AND_STEEL", // Minecraft 1.5
 		"DISPENSER" // Minecraft 1.?
 	);
 	public BackstringEnumSet<Material> materialsEditOnInteract = new BackstringEnumSet<Material>(Material.class,

@@ -1,5 +1,5 @@
 main: ${project.groupId}.${project.name}
-name: Competitive-Factions
+name: ${project.name}
 version: ${project.version}
 website: https://github.com/imaBASKET
 description: A forked version of MassiveCraft Factions. Improved for a more competitive style of play.

@@ -297,7 +297,7 @@ public class MPerm extends Entity<MPerm> implements Prioritized, Registerable, N
 		if (mplayer == null) throw new NullPointerException("mplayer");
 		if (hostFaction == null) throw new NullPointerException("hostFaction");
 		
-		String ret = Txt.parse("%s<b> does not allow you to %s<b>.", hostFaction.describeTo(mplayer, true), this.getDesc());
+		String ret = Txt.parse("%s<b> does not allow you to do that!", hostFaction.describeTo(mplayer, true), this.getDesc());
 		
 		Player player = mplayer.getPlayer();
 		if (player != null && Perm.OVERRIDE.has(player))
