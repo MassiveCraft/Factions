@@ -31,6 +31,10 @@ public enum Rel
 		"an ally", "allies", "an allied faction", "allied factions",
 		"Ally"
 	),
+	SISTER(
+		"a sister", "sisters", "a sister faction", "sister factions",
+		"Sister"
+	),
 	RECRUIT(
 		"a recruit in your faction", "recruits in your faction", "", "",
 		"Recruit"
@@ -130,6 +134,8 @@ public enum Rel
 	{
 		if (this.isAtLeast(RECRUIT))
 			return MConf.get().colorMember;
+		else if (this == SISTER)
+			return MConf.get().colorSister;
 		else if (this == ALLY)
 			return MConf.get().colorAlly;
 		else if (this == NEUTRAL)

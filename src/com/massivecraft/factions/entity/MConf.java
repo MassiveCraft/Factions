@@ -419,6 +419,7 @@ public class MConf extends Entity<MConf>
 			"jspawn",
 			"jtp"
 		),
+		Rel.SISTER, new ArrayList<String>(),
 		Rel.MEMBER, new ArrayList<String>()
 	);
 	
@@ -433,6 +434,7 @@ public class MConf extends Entity<MConf>
 		Rel.NEUTRAL, new ArrayList<String>(),
 		Rel.TRUCE, new ArrayList<String>(),
 		Rel.ALLY, new ArrayList<String>(),
+		Rel.SISTER, new ArrayList<String>(),
 		Rel.MEMBER, new ArrayList<String>()
 	);
 	
@@ -475,6 +477,7 @@ public class MConf extends Entity<MConf>
 	// You probably don't want to edit these to much.
 	// Doing so might confuse players that are used to Factions.
 	public ChatColor colorMember = ChatColor.GREEN;
+	public ChatColor colorSister = ChatColor.BLUE;
 	public ChatColor colorAlly = ChatColor.DARK_PURPLE;
 	public ChatColor colorTruce = ChatColor.LIGHT_PURPLE;
 	public ChatColor colorNeutral = ChatColor.WHITE;

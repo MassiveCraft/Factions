@@ -57,6 +57,7 @@ public class CmdFactions extends FactionsCommand
 	public CmdFactionsUnclaim cmdFactionsUnclaim = new CmdFactionsUnclaim();
 	public CmdFactionsAccess cmdFactionsAccess = new CmdFactionsAccess();
 	public CmdFactionsRelation cmdFactionsRelation = new CmdFactionsRelation();
+	public CmdFactionsRelationOld cmdFactionsRelationOldSister = new CmdFactionsRelationOld("sister");
 	public CmdFactionsRelationOld cmdFactionsRelationOldAlly = new CmdFactionsRelationOld("ally");
 	public CmdFactionsRelationOld cmdFactionsRelationOldTruce = new CmdFactionsRelationOld("truce");
 	public CmdFactionsRelationOld cmdFactionsRelationOldNeutral = new CmdFactionsRelationOld("neutral");
@@ -115,6 +116,7 @@ public class CmdFactions extends FactionsCommand
 		this.addChild(this.cmdFactionsUnclaim);
 		this.addChild(this.cmdFactionsAccess);
 		this.addChild(this.cmdFactionsRelation);
+		this.addChild(this.cmdFactionsRelationOldSister);
 		this.addChild(this.cmdFactionsRelationOldAlly);
 		this.addChild(this.cmdFactionsRelationOldTruce);
 		this.addChild(this.cmdFactionsRelationOldNeutral);

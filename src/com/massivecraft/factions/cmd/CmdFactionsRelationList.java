@@ -30,7 +30,7 @@ public class CmdFactionsRelationList extends FactionsCommand
 	// COSTANTS
 	// -------------------------------------------- //
 
-	public static final Set<Rel> RELEVANT_RELATIONS = new MassiveSet<Rel>(Rel.ENEMY, Rel.TRUCE, Rel.ALLY);
+	public static final Set<Rel> RELEVANT_RELATIONS = new MassiveSet<Rel>(Rel.ENEMY, Rel.TRUCE, Rel.ALLY, Rel.SISTER);
 	public static final String SEPERATOR = Txt.parse("<silver>: ");
 
 	// -------------------------------------------- //
