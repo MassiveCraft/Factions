@@ -134,13 +134,13 @@ public class MPerm extends Entity<MPerm> implements Prioritized, Registerable, N
 		getPermPerms();
 	}
 	
-	public static MPerm getPermBuild() { return getCreative(PRIORITY_BUILD, ID_BUILD, ID_BUILD, "", MUtil.set(Rel.LEADER, Rel.COLEADER, Rel.OFFICER, Rel.MEMBER), true, true, true); }
+	public static MPerm getPermBuild() { return getCreative(PRIORITY_BUILD, ID_BUILD, ID_BUILD, "", MUtil.set(Rel.LEADER, Rel.COLEADER, Rel.OFFICER, Rel.MEMBER, Rel.SISTER), true, true, true); }
 	public static MPerm getPermTrusted() { return getCreative(PRIORITY_TRUSTED, ID_TRUSTED, ID_TRUSTED, "", MUtil.set(Rel.LEADER, Rel.COLEADER, Rel.OFFICER), true, true, true); }
 	public static MPerm getPermPainbuild() { return getCreative(PRIORITY_PAINBUILD, ID_PAINBUILD, ID_PAINBUILD, "", new LinkedHashSet<Rel>(), false, false, false); }
-	public static MPerm getPermDoor() { return getCreative(PRIORITY_DOOR, ID_DOOR, ID_DOOR, "", MUtil.set(Rel.LEADER, Rel.COLEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY), true, true, true); }
-	public static MPerm getPermButton() { return getCreative(PRIORITY_BUTTON, ID_BUTTON, ID_BUTTON, "", MUtil.set(Rel.LEADER, Rel.COLEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY), true, true, true); }
-	public static MPerm getPermLever() { return getCreative(PRIORITY_LEVER, ID_LEVER, ID_LEVER, "", MUtil.set(Rel.LEADER, Rel.OFFICER, Rel.COLEADER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY), true, true, true); }
-	public static MPerm getPermContainer() { return getCreative(PRIORITY_CONTAINER, ID_CONTAINER, ID_CONTAINER, "", MUtil.set(Rel.LEADER, Rel.COLEADER, Rel.OFFICER, Rel.MEMBER, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY), true, false, false); }
+	public static MPerm getPermDoor() { return getCreative(PRIORITY_DOOR, ID_DOOR, ID_DOOR, "", MUtil.set(Rel.LEADER, Rel.COLEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.SISTER, Rel.ALLY), true, true, true); }
+	public static MPerm getPermButton() { return getCreative(PRIORITY_BUTTON, ID_BUTTON, ID_BUTTON, "", MUtil.set(Rel.LEADER, Rel.COLEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.SISTER, Rel.ALLY), true, true, true); }
+	public static MPerm getPermLever() { return getCreative(PRIORITY_LEVER, ID_LEVER, ID_LEVER, "", MUtil.set(Rel.LEADER, Rel.OFFICER, Rel.COLEADER, Rel.MEMBER, Rel.RECRUIT, Rel.SISTER, Rel.ALLY), true, true, true); }
+	public static MPerm getPermContainer() { return getCreative(PRIORITY_CONTAINER, ID_CONTAINER, ID_CONTAINER, "", MUtil.set(Rel.LEADER, Rel.COLEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.SISTER, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY), true, false, false); }
 	
 	public static MPerm getPermName() { return getCreative(PRIORITY_NAME, ID_NAME, ID_NAME, "", MUtil.set(Rel.LEADER), false, true, true); }
 	public static MPerm getPermDesc() { return getCreative(PRIORITY_DESC, ID_DESC, ID_DESC, "", MUtil.set(Rel.LEADER, Rel.COLEADER), false, true, true); }
