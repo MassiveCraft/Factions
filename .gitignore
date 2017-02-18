@@ -258,3 +258,7 @@ $RECYCLE.BIN/
 .dropbox
 .dropbox.attr
 .dropbox.cache
+.idea/modules.xml
+.idea/compiler.xml
+.idea/encodings.xml
+.idea/misc.xml
