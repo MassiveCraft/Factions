@@ -685,6 +685,25 @@ public class MConf extends Entity<MConf>
 		"WOLF", // Minecraft 1.?
 		"ZOMBIE_HORSE" // Minecraft 1.11
 	);
+	// List of blocks and items players without the trusted permission cannot place
+	public BackstringEnumSet<Material> materialsTrustedPlace = new BackstringEnumSet<Material>(Material.class,
+		"OBSIDIAN", // Minecraft 1.?
+		"TNT", // Minecraft 1.5
+		"MONSTER_EGG", // Minecraft 1.5
+		"FLINT_AND_STEEL", // Minecraft 1.5
+		"DISPENSER" // Minecraft 1.?
+	);
+		// List of blocks and items players without the trusted permission cannot break
+	public BackstringEnumSet<Material> materialsTrustedBreak = new BackstringEnumSet<Material>(Material.class,
+		"OBSIDIAN", // Minecraft 1.?
+		"FIRE", // Minecraft 1.?
+		"MOB_SPAWNER", // Minecraft 1.?
+		"TNT", // Minecraft 1.5
+		"MONSTER_EGG", // Minecraft 1.5
+		"FLINT_AND_STEEL", // Minecraft 1.5
+		"HOPPER", // Minecraft 1.?
+		"DISPENSER" // Minecraft 1.?
+	);
 	
 	// -------------------------------------------- //
 	// INTEGRATION: HeroChat

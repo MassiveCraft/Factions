@@ -29,6 +29,7 @@ public class MPerm extends Entity<MPerm> implements Prioritized, Registerable, N
 	// -------------------------------------------- //
 	
 	public final static transient String ID_BUILD = "build";
+	public final static transient String ID_TRUSTED = "trusted";
 	public final static transient String ID_PAINBUILD = "painbuild";
 	public final static transient String ID_DOOR = "door";
 	public final static transient String ID_BUTTON = "button";
@@ -55,6 +56,7 @@ public class MPerm extends Entity<MPerm> implements Prioritized, Registerable, N
 	public final static transient String ID_STATUS = "status";
 
 	public final static transient int PRIORITY_BUILD = 1000;
+	public final static transient int PRIORITY_TRUSTED = 1500;
 	public final static transient int PRIORITY_PAINBUILD = 2000;
 	public final static transient int PRIORITY_DOOR = 3000;
 	public final static transient int PRIORITY_BUTTON = 4000;
@@ -105,6 +107,7 @@ public class MPerm extends Entity<MPerm> implements Prioritized, Registerable, N
 	public static void setupStandardPerms()
 	{
 		getPermBuild();
+		getPermTrusted();
 		getPermPainbuild();
 		getPermDoor();
 		getPermButton();
