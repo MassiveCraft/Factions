@@ -135,6 +135,7 @@ public class MPerm extends Entity<MPerm> implements Prioritized, Registerable, N
 	}
 	
 	public static MPerm getPermBuild() { return getCreative(PRIORITY_BUILD, ID_BUILD, ID_BUILD, "edit the terrain", MUtil.set(Rel.LEADER, Rel.OFFICER, Rel.MEMBER), true, true, true); }
+	public static MPerm getPermTrusted() { return getCreative(PRIORITY_TRUSTED, ID_TRUSTED, ID_TRUSTED, "perform trusted actions", MUtil.set(Rel.LEADER, Rel.OFFICER, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY), true, false, true); }
 	public static MPerm getPermPainbuild() { return getCreative(PRIORITY_PAINBUILD, ID_PAINBUILD, ID_PAINBUILD, "edit, take damage", new LinkedHashSet<Rel>(), true, true, true); }
 	public static MPerm getPermDoor() { return getCreative(PRIORITY_DOOR, ID_DOOR, ID_DOOR, "use doors", MUtil.set(Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY), true, true, true); }
 	public static MPerm getPermButton() { return getCreative(PRIORITY_BUTTON, ID_BUTTON, ID_BUTTON, "use stone buttons", MUtil.set(Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY), true, true, true); }
