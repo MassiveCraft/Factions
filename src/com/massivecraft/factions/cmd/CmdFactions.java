@@ -68,6 +68,7 @@ public class CmdFactions extends FactionsCommand
 	public CmdFactionsDisband cmdFactionsDisband = new CmdFactionsDisband();
 	public CmdFactionsPowerBoost cmdFactionsPowerBoost = new CmdFactionsPowerBoost();
 	public CmdFactionsSetpower cmdFactionsSetpower = new CmdFactionsSetpower();
+	public CmdFactionsConfig cmdFactionsConfig = new CmdFactionsConfig();
 	public MassiveCommandVersion cmdFactionsVersion = new MassiveCommandVersion(Factions.get()).setAliases("v", "version").addRequirements(RequirementHasPerm.get(Perm.VERSION));
 	
 	// -------------------------------------------- //
@@ -123,6 +124,7 @@ public class CmdFactions extends FactionsCommand
 		this.addChild(this.cmdFactionsDisband);
 		this.addChild(this.cmdFactionsPowerBoost);
 		this.addChild(this.cmdFactionsSetpower);
+		this.addChild(this.cmdFactionsConfig);
 		this.addChild(this.cmdFactionsVersion);
 		
 		// Deprecated Commands
