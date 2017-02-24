@@ -29,6 +29,7 @@ public class MPerm extends Entity<MPerm> implements Prioritized, Registerable, N
 	// -------------------------------------------- //
 	
 	public final static transient String ID_BUILD = "build";
+	public final static transient String ID_TRUSTED = "trusted";
 	public final static transient String ID_PAINBUILD = "painbuild";
 	public final static transient String ID_DOOR = "door";
 	public final static transient String ID_BUTTON = "button";
@@ -55,6 +56,7 @@ public class MPerm extends Entity<MPerm> implements Prioritized, Registerable, N
 	public final static transient String ID_STATUS = "status";
 
 	public final static transient int PRIORITY_BUILD = 1000;
+	public final static transient int PRIORITY_TRUSTED = 1500;
 	public final static transient int PRIORITY_PAINBUILD = 2000;
 	public final static transient int PRIORITY_DOOR = 3000;
 	public final static transient int PRIORITY_BUTTON = 4000;
@@ -105,6 +107,7 @@ public class MPerm extends Entity<MPerm> implements Prioritized, Registerable, N
 	public static void setupStandardPerms()
 	{
 		getPermBuild();
+		getPermTrusted();
 		getPermPainbuild();
 		getPermDoor();
 		getPermButton();
@@ -132,6 +135,7 @@ public class MPerm extends Entity<MPerm> implements Prioritized, Registerable, N
 	}
 	
 	public static MPerm getPermBuild() { return getCreative(PRIORITY_BUILD, ID_BUILD, ID_BUILD, "edit the terrain", MUtil.set(Rel.LEADER, Rel.OFFICER, Rel.MEMBER), true, true, true); }
+	public static MPerm getPermTrusted() { return getCreative(PRIORITY_TRUSTED, ID_TRUSTED, ID_TRUSTED, "perform trusted actions", MUtil.set(Rel.LEADER, Rel.OFFICER, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY), true, false, true); }
 	public static MPerm getPermPainbuild() { return getCreative(PRIORITY_PAINBUILD, ID_PAINBUILD, ID_PAINBUILD, "edit, take damage", new LinkedHashSet<Rel>(), true, true, true); }
 	public static MPerm getPermDoor() { return getCreative(PRIORITY_DOOR, ID_DOOR, ID_DOOR, "use doors", MUtil.set(Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY), true, true, true); }
 	public static MPerm getPermButton() { return getCreative(PRIORITY_BUTTON, ID_BUTTON, ID_BUTTON, "use stone buttons", MUtil.set(Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY), true, true, true); }
