@@ -1329,16 +1329,15 @@ public class EngineMain extends Engine
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void blockBuild(PlayerInteractEvent event)
 	{
-		if (event.getAction() != Action.LEFT_CLICK_BLOCK && event.getAction() != Action.PHYSICAL) return; 
+		if (event.getAction() != Action.LEFT_CLICK_BLOCK && event.getAction() != Action.PHYSICAL) return;
+		
 		Block block = event.getClickedBlock();
 		Player player = event.getPlayer();
-		
-		Block potentialBlock = event.getClickedBlock().getRelative(BlockFace.UP, 1);
 
+		Block potentialBlock = event.getClickedBlock().getRelative(BlockFace.UP, 1);
+		
 		if (block == null) return;  // clicked in air, apparently
 		
-		if (potentialBlock.getType() != Material.FIRE) return;
-
 		if ( ! canPlayerUseBlock(player, block, true))
 		{
 			event.setCancelled(true);
@@ -1351,16 +1350,21 @@ public class EngineMain extends Engine
 		{
 			event.setCancelled(true);
 			return;
-		}	
+		}
+		
 		if ( ! playerCanUseItemHere(player, PS.valueOf(block), event.getMaterial(), true))
 		{
 			event.setCancelled(true);
 			return;
 		}
 		if (canPlayerBuildAt(event.getPlayer(), PS.valueOf(potentialBlock), true)) return;
-		event.setCancelled(true);
-		event.getPlayer().sendBlockChange(potentialBlock.getLocation(), potentialBlock.getType(), potentialBlock.getState().getRawData());
- 	}
+		
+		if (potentialBlock.getType() != Material.FIRE) return;
+		{
+			event.setCancelled(true);
+			event.getPlayer().sendBlockChange(potentialBlock.getLocation(), potentialBlock.getType(), potentialBlock.getState().getRawData());
+		}
+	}
 	
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void blockLiquidFlow(BlockFromToEvent event)
