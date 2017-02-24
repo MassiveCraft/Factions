@@ -1,10 +1,8 @@
 package com.massivecraft.factions.integration.V19;
 
-import com.massivecraft.factions.Factions;
-import com.massivecraft.factions.engine.EngineCombat;
-import com.massivecraft.massivecore.Engine;
-import com.massivecraft.massivecore.MassivePlugin;
-import com.massivecraft.massivecore.util.MUtil;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
@@ -14,8 +12,11 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.projectiles.ProjectileSource;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.engine.EngineCanCombatHappen;
+import com.massivecraft.massivecore.Engine;
+import com.massivecraft.massivecore.MassivePlugin;
+import com.massivecraft.massivecore.util.MUtil;
 
 public class EngineV19 extends Engine
 {
@@ -56,7 +57,7 @@ public class EngineV19 extends Engine
 		{
 			EntityDamageByEntityEvent sub = new EntityDamageByEntityEvent(thrower, affectedEntity, EntityDamageEvent.DamageCause.CUSTOM, 0D);
 			// Notification disabled due to the iterating nature of effect clouds.
-			if (EngineCombat.get().canCombatDamageHappen(sub, false)) continue;
+			if (EngineCanCombatHappen.get().canCombatDamageHappen(sub, false)) continue;
 			
 			affectedList.add(affectedEntity);
 		}
