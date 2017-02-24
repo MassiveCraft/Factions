@@ -1,5 +1,9 @@
 package com.massivecraft.factions;
 
+import com.massivecraft.factions.cmd.type.TypeFactionChunkChangeType;
+import com.massivecraft.factions.cmd.type.TypeRel;
+import com.massivecraft.factions.event.EventFactionsChunkChangeType;
+import com.massivecraft.massivecore.command.type.RegistryType;
 import org.bukkit.ChatColor;
 
 import com.massivecraft.factions.adapter.BoardAdapter;
@@ -121,6 +125,10 @@ public class Factions extends MassivePlugin
 			"<i>If the factions system even is enabled and how it's configured.",
 			"<i>What factions exists and what players belong to them."
 		);
+		
+		// Register types
+		RegistryType.register(Rel.class, TypeRel.get());
+		RegistryType.register(EventFactionsChunkChangeType.class, TypeFactionChunkChangeType.get());
 		
 		// Register Faction accountId Extractor
 		// TODO: Perhaps this should be placed in the econ integration somewhere?

@@ -84,6 +84,7 @@ permissions:
   factions.unclaim.all: {description: unclaim all faction land, default: false}
   factions.unsethome: {description: unset faction home, default: false}
   factions.unstuck: {description: teleport to nearest wilderness, default: false}
+  factions.config: {description: edit the factions config, default: false}
   factions.version: {description: see plugin version, default: false}
 # -------------------------------------------- #
 # STAR NOTATION
@@ -167,6 +168,7 @@ permissions:
       factions.unclaim.all: true
       factions.unsethome: true
       factions.unstuck: true
+      factions.config: true
       factions.version: true
 # -------------------------------------------- #
 # KITS
@@ -179,6 +181,7 @@ permissions:
     default: false
     children:
       factions.kit.rank2: true
+      factions.config: true
   factions.kit.rank2:
     default: false
     children:
