@@ -22,6 +22,7 @@ import com.massivecraft.factions.event.EventFactionsDisband;
 import com.massivecraft.factions.event.EventFactionsMembershipChange;
 import com.massivecraft.factions.event.EventFactionsRemovePlayerMillis;
 import com.massivecraft.factions.event.EventFactionsMembershipChange.MembershipChangeReason;
+import com.massivecraft.factions.mixin.PowerMixin;
 import com.massivecraft.factions.util.RelationUtil;
 import com.massivecraft.massivecore.mixin.MixinSenderPs;
 import com.massivecraft.massivecore.mixin.MixinTitle;
@@ -428,27 +429,27 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 
 	public double getPowerMaxUniversal()
 	{
-		return Factions.get().getPowerMixin().getMaxUniversal(this);
+		return PowerMixin.get().getMaxUniversal(this);
 	}
 
 	public double getPowerMax()
 	{
-		return Factions.get().getPowerMixin().getMax(this);
+		return PowerMixin.get().getMax(this);
 	}
 
 	public double getPowerMin()
 	{
-		return Factions.get().getPowerMixin().getMin(this);
+		return PowerMixin.get().getMin(this);
 	}
 
 	public double getPowerPerHour()
 	{
-		return Factions.get().getPowerMixin().getPerHour(this);
+		return PowerMixin.get().getPerHour(this);
 	}
 
 	public double getPowerPerDeath()
 	{
-		return Factions.get().getPowerMixin().getPerDeath(this);
+		return PowerMixin.get().getPerDeath(this);
 	}
 
 	// MIXIN: FINER
