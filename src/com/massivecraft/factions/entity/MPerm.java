@@ -135,7 +135,7 @@ public class MPerm extends Entity<MPerm> implements Prioritized, Registerable, N
 	}
 	
 	public static MPerm getPermBuild() { return getCreative(PRIORITY_BUILD, ID_BUILD, ID_BUILD, "", MUtil.set(Rel.LEADER, Rel.COLEADER, Rel.OFFICER, Rel.MEMBER, Rel.SISTER), true, true, true); }
-	public static MPerm getPermTrusted() { return getCreative(PRIORITY_TRUSTED, ID_TRUSTED, ID_TRUSTED, "", MUtil.set(Rel.LEADER, Rel.COLEADER, Rel.OFFICER), true, true, true); }
+	public static MPerm getPermTrusted() { return getCreative(PRIORITY_TRUSTED, ID_TRUSTED, ID_TRUSTED, "", MUtil.set(Rel.LEADER, Rel.COLEADER, Rel.OFFICER, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY), true, false, true); }
 	public static MPerm getPermPainbuild() { return getCreative(PRIORITY_PAINBUILD, ID_PAINBUILD, ID_PAINBUILD, "", new LinkedHashSet<Rel>(), false, false, false); }
 	public static MPerm getPermDoor() { return getCreative(PRIORITY_DOOR, ID_DOOR, ID_DOOR, "", MUtil.set(Rel.LEADER, Rel.COLEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.SISTER, Rel.ALLY), true, true, true); }
 	public static MPerm getPermButton() { return getCreative(PRIORITY_BUTTON, ID_BUTTON, ID_BUTTON, "", MUtil.set(Rel.LEADER, Rel.COLEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.SISTER, Rel.ALLY), true, true, true); }

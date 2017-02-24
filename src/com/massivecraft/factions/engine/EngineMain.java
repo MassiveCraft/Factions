@@ -1328,21 +1328,22 @@ public class EngineMain extends Engine
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void blockBuild(PlayerInteractEvent event)
 	{
-		// only need to check right-clicks and physical as of MC 1.4+; good performance boost
 		if (event.getAction() != Action.LEFT_CLICK_BLOCK && event.getAction() != Action.PHYSICAL) return;
 		
 		Block block = event.getClickedBlock();
 		Player player = event.getPlayer();
 
+		Block potentialBlock = event.getClickedBlock().getRelative(BlockFace.UP, 1);
+		
 		if (block == null) return;  // clicked in air, apparently
-
+		
 		if ( ! canPlayerUseBlock(player, block, true))
 		{
 			event.setCancelled(true);
 			return;
 		}
 
-		if (event.getAction() != Action.LEFT_CLICK_BLOCK) return;  // only interested on right-clicks for below
+		if (event.getAction() != Action.LEFT_CLICK_BLOCK) return;
 
 		if ( ! playerTrustedCantBreak(player, PS.valueOf(block), event.getMaterial(), true))
 		{
@@ -1354,6 +1355,13 @@ public class EngineMain extends Engine
 		{
 			event.setCancelled(true);
 			return;
+		}
+		if (canPlayerBuildAt(event.getPlayer(), PS.valueOf(potentialBlock), true)) return;
+		
+		if (potentialBlock.getType() != Material.FIRE) return;
+		{
+			event.setCancelled(true);
+			event.getPlayer().sendBlockChange(potentialBlock.getLocation(), potentialBlock.getType(), potentialBlock.getState().getRawData());
 		}
 	}
 	
