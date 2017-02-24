@@ -85,6 +85,7 @@ public enum Perm implements Identified
 	UNCLAIM_ALL,
 	UNSETHOME,
 	UNSTUCK,
+	CONFIG,
 	VERSION,
 	
 	// END OF LIST
