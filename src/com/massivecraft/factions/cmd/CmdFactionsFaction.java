@@ -56,7 +56,7 @@ public class CmdFactionsFaction extends FactionsCommand
 				if (event.isCancelled()) return;
 				
 				// Title
-				MixinMessage.get().messageOne(sender, Txt.titleize("Faction " + faction.getName(msender)));
+				MixinMessage.get().messageOne(sender, Txt.titleize(faction.getName(msender)));
 				
 				// Lines
 				TreeSet<PriorityLines> priorityLiness = new TreeSet<PriorityLines>(event.getIdPriorityLiness().values());
