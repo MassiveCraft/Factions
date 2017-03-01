@@ -2,10 +2,10 @@ package com.massivecraft.factions.chat.tag;
 
 import org.bukkit.command.CommandSender;
 
-import com.massivecraft.factions.chat.ChatTagAbstract;
+import com.massivecraft.factions.chat.ChatTag;
 import com.massivecraft.factions.entity.MPlayer;
 
-public class ChatTagRelcolor extends ChatTagAbstract
+public class ChatTagRelcolor extends ChatTag
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT

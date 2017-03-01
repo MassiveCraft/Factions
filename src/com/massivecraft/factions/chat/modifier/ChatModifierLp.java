@@ -2,10 +2,10 @@ package com.massivecraft.factions.chat.modifier;
 
 import org.bukkit.command.CommandSender;
 
-import com.massivecraft.factions.chat.ChatModifierAbstract;
+import com.massivecraft.factions.chat.ChatModifier;
 
 
-public class ChatModifierLp extends ChatModifierAbstract
+public class ChatModifierLp extends ChatModifier
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
