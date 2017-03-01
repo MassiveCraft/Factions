@@ -110,10 +110,13 @@ public class TypeRank extends TypeEnum<Rel>
 		Rel start = this.getStartRank();
 		if (start != null)
 		{
-			if (value == Rel.LEADER && start == Rel.OFFICER) ret.addAll(NAMES_PROMOTE);
+			if (value == Rel.LEADER && start == Rel.COLEADER) ret.addAll(NAMES_PROMOTE);
+			
+			if (value == Rel.COLEADER && start == Rel.OFFICER) ret.addAll(NAMES_PROMOTE);
+			if (value == Rel.COLEADER && start == Rel.LEADER) ret.addAll(NAMES_DEMOTE);
 			
 			if (value == Rel.OFFICER && start == Rel.MEMBER) ret.addAll(NAMES_PROMOTE);
-			if (value == Rel.OFFICER && start == Rel.LEADER) ret.addAll(NAMES_DEMOTE);
+			if (value == Rel.OFFICER && start == Rel.COLEADER) ret.addAll(NAMES_DEMOTE);
 			
 			if (value == Rel.MEMBER && start == Rel.RECRUIT) ret.addAll(NAMES_PROMOTE);
 			if (value == Rel.MEMBER && start == Rel.OFFICER) ret.addAll(NAMES_DEMOTE);
