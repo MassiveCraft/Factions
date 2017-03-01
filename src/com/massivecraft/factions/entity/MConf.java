@@ -472,7 +472,8 @@ public class MConf extends Entity<MConf>
 	// -------------------------------------------- //
 	
 	// Here you may edit the name prefixes associated with different faction ranks.
-	public String prefixLeader = "**";
+	public String prefixLeader = "@";
+	public String prefixCoLeader = "**";
 	public String prefixOfficer = "*";
 	public String prefixMember = "+";
 	public String prefixRecruit = "-";

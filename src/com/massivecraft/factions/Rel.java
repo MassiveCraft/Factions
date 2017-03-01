@@ -44,6 +44,11 @@ public enum Rel
 		"an officer in your faction", "officers in your faction", "", "",
 		"Officer", "Moderator"
 	),
+	COLEADER
+	(
+		"a coleader in your faction", "coleaders in your faction", "", "",
+		"Coleader"
+	),
 	LEADER("your faction leader", "your faction leader", "", "",
 		"Leader", "Admin", "Owner"
 	),
@@ -140,6 +145,11 @@ public enum Rel
 		if (this == LEADER)
 		{
 			return MConf.get().prefixLeader;
+		} 
+		
+		if (this == COLEADER)
+		{
+			return MConf.get().prefixCoLeader;
 		} 
 		
 		if (this == OFFICER)
