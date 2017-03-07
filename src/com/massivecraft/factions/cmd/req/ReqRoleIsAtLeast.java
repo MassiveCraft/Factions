@@ -11,6 +11,10 @@ import com.massivecraft.massivecore.util.Txt;
 
 public class ReqRoleIsAtLeast extends RequirementAbstract
 {
+	// -------------------------------------------- //
+	// SERIALIZABLE
+	// -------------------------------------------- //
+	
 	private static final long serialVersionUID = 1L;
 	
 	// -------------------------------------------- //
@@ -37,13 +41,13 @@ public class ReqRoleIsAtLeast extends RequirementAbstract
 		if (MUtil.isntSender(sender)) return false;
 		
 		MPlayer mplayer = MPlayer.get(sender);
-		return mplayer.getRole().isAtLeast(this.rel);
+		return mplayer.getRole().isAtLeast(this.getRel());
 	}
 	
 	@Override
 	public String createErrorMessage(CommandSender sender, MassiveCommand command)
 	{
-		return Txt.parse("<b>You must be <h>%s <b>or higher to "+(command == null ? "do that" : command.getDesc())+".", Txt.getNicedEnum(this.rel));
+		return Txt.parse("<b>You must be <h>%s <b>or higher to %s.", Txt.getNicedEnum(this.getRel()), getDesc(command));
 	}
 	
 }

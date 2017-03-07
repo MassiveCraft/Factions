@@ -10,6 +10,10 @@ import com.massivecraft.massivecore.util.Txt;
 
 public class ReqBankCommandsEnabled extends RequirementAbstract
 {
+	// -------------------------------------------- //
+	// SERIALIZABLE
+	// -------------------------------------------- //
+	
 	private static final long serialVersionUID = 1L;
 	
 	// -------------------------------------------- //
@@ -32,11 +36,8 @@ public class ReqBankCommandsEnabled extends RequirementAbstract
 	@Override
 	public String createErrorMessage(CommandSender sender, MassiveCommand command)
 	{
-		if ( ! MConf.get().bankEnabled)
-		{
-			return Txt.parse("<b>Faction banks are disabled.");
-		}
-		return Txt.parse("<b>Faction economy features are disabled.");
+		String what = !MConf.get().bankEnabled ? "banks" : "economy features";
+		return Txt.parse("<b>Faction %s are disabled.", what);
 	}
 	
 }
