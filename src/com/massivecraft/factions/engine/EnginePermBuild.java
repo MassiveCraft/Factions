@@ -422,9 +422,11 @@ public class EnginePermBuild extends Engine
 	public void onPlayerBucketEmpty(PlayerBucketEmptyEvent event)
 	{
 		Block block = event.getBlockClicked();
+		//Block where water/lava will potentially be placed
+		Block relative = block.getRelative(event.getBlockFace());
 		Player player = event.getPlayer();
 
-		if (playerCanUseItemHere(player, PS.valueOf(block), event.getBucket(), true)) return;
+		if (playerCanUseItemHere(player, PS.valueOf(relative), event.getBucket(), true)) return;
 
 		event.setCancelled(true);
 	}
