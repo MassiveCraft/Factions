@@ -1,18 +1,19 @@
 package com.massivecraft.factions.entity;
 
-import com.massivecraft.factions.Factions;
-import com.massivecraft.factions.Rel;
-import com.massivecraft.factions.integration.Econ;
-import com.massivecraft.factions.util.MiscUtil;
-import com.massivecraft.massivecore.store.Coll;
-import com.massivecraft.massivecore.util.Txt;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import com.massivecraft.factions.PermissibleId;
+import com.massivecraft.massivecore.store.Coll;
+import com.massivecraft.massivecore.util.Txt;
+import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.Rel;
+import com.massivecraft.factions.integration.Econ;
+import com.massivecraft.factions.util.MiscUtil;
 
 public class FactionColl extends Coll<Faction>
 {
@@ -84,12 +85,12 @@ public class FactionColl extends Coll<Faction>
 		faction.setFlag(MFlag.getFlagEndergrief(), true);
 		faction.setFlag(MFlag.getFlagZombiegrief(), true);
 		
-		faction.setPermittedRelations(MPerm.getPermBuild(), Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
-		faction.setPermittedRelations(MPerm.getPermDoor(), Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
-		faction.setPermittedRelations(MPerm.getPermContainer(), Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
-		faction.setPermittedRelations(MPerm.getPermButton(), Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
-		faction.setPermittedRelations(MPerm.getPermLever(), Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
-		faction.setPermittedRelations(MPerm.getPermDeposit(), Rel.LEADER, Rel.OFFICER); // Wilderness deposit should be limited as an anti spam meassure.
+		faction.setPermittedRelations(MPerm.getPermBuild(), PermissibleId.ALL);
+		faction.setPermittedRelations(MPerm.getPermDoor(), PermissibleId.ALL);
+		faction.setPermittedRelations(MPerm.getPermContainer(), PermissibleId.ALL);
+		faction.setPermittedRelations(MPerm.getPermButton(), PermissibleId.ALL);
+		faction.setPermittedRelations(MPerm.getPermLever(), PermissibleId.ALL);
+		faction.setPermittedRelations(MPerm.getPermDeposit(), PermissibleId.LEADER, PermissibleId.OFFICER); // Wilderness deposit should be limited as an anti spam meassure.
 		
 		return faction;
 	}
@@ -120,11 +121,11 @@ public class FactionColl extends Coll<Faction>
 		faction.setFlag(MFlag.getFlagEndergrief(), false);
 		faction.setFlag(MFlag.getFlagZombiegrief(), false);
 		
-		faction.setPermittedRelations(MPerm.getPermDoor(), Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
-		faction.setPermittedRelations(MPerm.getPermContainer(), Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
-		faction.setPermittedRelations(MPerm.getPermButton(), Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
-		faction.setPermittedRelations(MPerm.getPermLever(), Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
-		faction.setPermittedRelations(MPerm.getPermTerritory(), Rel.LEADER, Rel.OFFICER, Rel.MEMBER);
+		faction.setPermittedRelations(MPerm.getPermDoor(), PermissibleId.ALL);
+		faction.setPermittedRelations(MPerm.getPermContainer(), PermissibleId.ALL);
+		faction.setPermittedRelations(MPerm.getPermButton(), PermissibleId.ALL);
+		faction.setPermittedRelations(MPerm.getPermLever(), PermissibleId.ALL);
+		faction.setPermittedRelations(MPerm.getPermTerritory(), PermissibleId.LEADER, PermissibleId.OFFICER, PermissibleId.MEMBER);
 		
 		return faction;
 	}
@@ -155,11 +156,11 @@ public class FactionColl extends Coll<Faction>
 		faction.setFlag(MFlag.getFlagEndergrief(), true);
 		faction.setFlag(MFlag.getFlagZombiegrief(), true);
 		
-		faction.setPermittedRelations(MPerm.getPermDoor(), Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
-		faction.setPermittedRelations(MPerm.getPermContainer(), Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
-		faction.setPermittedRelations(MPerm.getPermButton(), Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
-		faction.setPermittedRelations(MPerm.getPermLever(), Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
-		faction.setPermittedRelations(MPerm.getPermTerritory(), Rel.LEADER, Rel.OFFICER, Rel.MEMBER);
+		faction.setPermittedRelations(MPerm.getPermDoor(), PermissibleId.ALL);
+		faction.setPermittedRelations(MPerm.getPermContainer(), PermissibleId.ALL);
+		faction.setPermittedRelations(MPerm.getPermButton(), PermissibleId.ALL);
+		faction.setPermittedRelations(MPerm.getPermLever(), PermissibleId.ALL);
+		faction.setPermittedRelations(MPerm.getPermTerritory(), PermissibleId.LEADER, PermissibleId.OFFICER, PermissibleId.MEMBER);
 		
 		return faction;
 	}
@@ -218,15 +219,15 @@ public class FactionColl extends Coll<Faction>
 		
 		// Fill
 		// Check minimum length
-		if (MiscUtil.getComparisonString(str).length() < MConf.get().factionNameLengthMin)
+		if (MiscUtil.getComparisonString(str).length() < MConf.get().nameLengthFactionMin)
 		{
-			errors.add(Txt.parse("<i>The faction name can't be shorter than <h>%s<i> chars.", MConf.get().factionNameLengthMin));
+			errors.add(Txt.parse("<i>The faction name can't be shorter than <h>%s<i> chars.", MConf.get().nameLengthFactionMin));
 		}
 		
 		// Check maximum length
-		if (str.length() > MConf.get().factionNameLengthMax)
+		if (str.length() > MConf.get().nameLengthFactionMax)
 		{
-			errors.add(Txt.parse("<i>The faction name can't be longer than <h>%s<i> chars.", MConf.get().factionNameLengthMax));
+			errors.add(Txt.parse("<i>The faction name can't be longer than <h>%s<i> chars.", MConf.get().nameLengthFactionMax));
 		}
 		
 		// Check characters used

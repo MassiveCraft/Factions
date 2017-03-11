@@ -44,7 +44,7 @@ public class CmdFactionsTitle extends FactionsCommand
 		if ( ! MPerm.getPermTitle().has(msender, you.getFaction(), true)) return;
 		
 		// Rank Check
-		if (!msender.isOverriding() && you.getRole().isMoreThan(msender.getRole()))
+		if (!msender.isOverriding() && you.getRank().isHigherThan(msender.getRank()))
 		{
 			msg("<b>You can not edit titles for higher ranks.");
 			return;

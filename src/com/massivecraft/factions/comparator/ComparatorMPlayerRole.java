@@ -1,10 +1,10 @@
 package com.massivecraft.factions.comparator;
 
-import com.massivecraft.factions.Rel;
+import java.util.Comparator;
+
+import com.massivecraft.factions.Rank;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.massivecore.Named;
-
-import java.util.Comparator;
 
 public class ComparatorMPlayerRole implements Comparator<MPlayer>, Named
 {
@@ -38,11 +38,9 @@ public class ComparatorMPlayerRole implements Comparator<MPlayer>, Named
 		else if (m2 == null) return +1;
 		
 		// Rank
-		Rel r1 = m1.getRole();
-		Rel r2 = m2.getRole();
-		return r2.getValue() - r1.getValue();
+		Rank r1 = m1.getRank();
+		Rank r2 = m2.getRank();
+		return r2.getOrder() - r1.getOrder();
 	}
-
-
-
+	
 }

@@ -1,5 +1,7 @@
 package com.massivecraft.factions;
 
+import org.bukkit.ChatColor;
+
 import com.massivecraft.factions.adapter.BoardAdapter;
 import com.massivecraft.factions.adapter.BoardMapAdapter;
 import com.massivecraft.factions.adapter.RelAdapter;
@@ -14,8 +16,6 @@ import com.massivecraft.factions.chat.tag.ChatTagName;
 import com.massivecraft.factions.chat.tag.ChatTagNameforce;
 import com.massivecraft.factions.chat.tag.ChatTagRelcolor;
 import com.massivecraft.factions.chat.tag.ChatTagRole;
-import com.massivecraft.factions.chat.tag.ChatTagRoleprefix;
-import com.massivecraft.factions.chat.tag.ChatTagRoleprefixforce;
 import com.massivecraft.factions.chat.tag.ChatTagTitle;
 import com.massivecraft.factions.cmd.CmdFactions;
 import com.massivecraft.factions.cmd.type.TypeFactionChunkChangeType;
@@ -65,7 +65,6 @@ import com.massivecraft.massivecore.MassivePlugin;
 import com.massivecraft.massivecore.command.type.RegistryType;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.xlib.gson.GsonBuilder;
-import org.bukkit.ChatColor;
 
 public class Factions extends MassivePlugin
 {
@@ -188,8 +187,6 @@ public class Factions extends MassivePlugin
 			// ChatTags,
 			ChatTagRelcolor.class,
 			ChatTagRole.class,
-			ChatTagRoleprefix.class,
-			ChatTagRoleprefixforce.class,
 			ChatTagName.class,
 			ChatTagNameforce.class,
 			ChatTagTitle.class

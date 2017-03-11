@@ -1,9 +1,10 @@
 package com.massivecraft.factions.event;
 
-import com.massivecraft.factions.Rel;
-import com.massivecraft.factions.entity.MPlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.HandlerList;
+
+import com.massivecraft.factions.Rank;
+import com.massivecraft.factions.entity.MPlayer;
 
 public class EventFactionsRankChange extends EventFactionsAbstractSender
 {
@@ -22,15 +23,15 @@ public class EventFactionsRankChange extends EventFactionsAbstractSender
 	private final MPlayer mplayer;
 	public MPlayer getMPlayer() { return this.mplayer; }
 	
-	private Rel newRank;
-	public Rel getNewRank() { return this.newRank; }
-	public void setNewRank(Rel newRole) { this.newRank = newRole; }
+	private Rank newRank;
+	public Rank getNewRank() { return this.newRank; }
+	public void setNewRank(Rank newRole) { this.newRank = newRole; }
 	
 	// -------------------------------------------- //
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public EventFactionsRankChange(CommandSender sender, MPlayer mplayer, Rel newRank)
+	public EventFactionsRankChange(CommandSender sender, MPlayer mplayer, Rank newRank)
 	{
 		super(sender);
 		this.mplayer = mplayer;

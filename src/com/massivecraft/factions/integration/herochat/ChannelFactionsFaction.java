@@ -1,16 +1,17 @@
 package com.massivecraft.factions.integration.herochat;
 
-import com.massivecraft.factions.Rel;
-import com.massivecraft.factions.entity.MConf;
-import org.bukkit.ChatColor;
-
 import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.bukkit.ChatColor;
+
+import com.massivecraft.factions.Rel;
+import com.massivecraft.factions.entity.MConf;
+
 public class ChannelFactionsFaction extends ChannelFactionsAbstract
 {
-	public static final Set<Rel> targetRelations = EnumSet.of(Rel.MEMBER, Rel.RECRUIT);
+	public static final Set<Rel> targetRelations = EnumSet.of(Rel.FACTION);
 	@Override public Set<Rel> getTargetRelations() { return targetRelations; }
 	
 	@Override public String getName() { return MConf.get().herochatFactionName; }

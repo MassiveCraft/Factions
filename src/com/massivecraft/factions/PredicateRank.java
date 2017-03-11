@@ -1,26 +1,25 @@
-package com.massivecraft.factions.predicate;
+package com.massivecraft.factions;
 
-import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.massivecore.predicate.Predicate;
 
-public class PredicateMPlayerRole implements Predicate<MPlayer>
+public class PredicateRank implements Predicate<MPlayer>
 {
 	// -------------------------------------------- //
 	// FIELDS
 	// -------------------------------------------- //
 	
-	private final Rel role;
-	public Rel getRole() { return this.role; }
+	private final Rank rank;
+	public Rank getRank() { return this.rank; }
 	
 	// -------------------------------------------- //
-	// INSTANCE AND CONTRUCT
+	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	public static PredicateMPlayerRole get(Rel role) { return new PredicateMPlayerRole(role); }
-	public PredicateMPlayerRole(Rel role)
+	public static PredicateRank get(Rank role) { return new PredicateRank(role); }
+	public PredicateRank(Rank rank)
 	{
-		this.role = role;
+		this.rank = rank;
 	}
 	
 	// -------------------------------------------- //
@@ -31,6 +30,7 @@ public class PredicateMPlayerRole implements Predicate<MPlayer>
 	public boolean apply(MPlayer mplayer)
 	{
 		if (mplayer == null) return false;
-		return mplayer.getRole() == this.role;
+		return mplayer.getRank().equals(this.getRank());
 	}
+	
 }

@@ -1,7 +1,7 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Factions;
-import com.massivecraft.factions.Rel;
+import com.massivecraft.factions.Rank;
 import com.massivecraft.factions.cmd.req.ReqHasntFaction;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.FactionColl;
@@ -70,8 +70,10 @@ public class CmdFactionsCreate extends FactionsCommand
 		// Apply
 		Faction faction = FactionColl.get().create(factionId);
 		faction.setName(newName);
+		faction.setRanks(Rank.createDefaultRanks());
+		faction.setRankManager(faction.getRankLeader());
 		
-		msender.setRole(Rel.LEADER);
+		msender.setRank(faction.getRankLeader());
 		msender.setFaction(faction);
 		
 		EventFactionsMembershipChange joinEvent = new EventFactionsMembershipChange(sender, msender, faction, MembershipChangeReason.CREATE);

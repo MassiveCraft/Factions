@@ -97,11 +97,7 @@ public class RelationUtil
 		Faction thatFaction = getFaction(that);
 		if (thatFaction == null) return Rel.NEUTRAL; // ERROR
 		
-		if (myFaction.equals(thatFaction))
-		{
-			if (that instanceof MPlayer) return ((MPlayer) that).getRole();
-			return Rel.MEMBER;
-		}
+		if (myFaction.equals(thatFaction)) return Rel.FACTION;
 		
 		MFlag flagPeaceful = MFlag.getFlagPeaceful();
 		if (!ignorePeaceful && (thatFaction.getFlag(flagPeaceful) || myFaction.getFlag(flagPeaceful))) return Rel.TRUCE;

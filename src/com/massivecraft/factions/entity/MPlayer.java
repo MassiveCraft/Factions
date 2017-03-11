@@ -1,9 +1,21 @@
 package com.massivecraft.factions.entity;
 
+import java.lang.ref.WeakReference;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map.Entry;
+import java.util.Set;
+
+import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.FactionsIndex;
 import com.massivecraft.factions.FactionsParticipator;
 import com.massivecraft.factions.Perm;
+import com.massivecraft.factions.Rank;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.RelationParticipator;
 import com.massivecraft.factions.event.EventFactionsChunkChangeType;
@@ -23,16 +35,6 @@ import com.massivecraft.massivecore.util.IdUtil;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.Txt;
 import com.massivecraft.massivecore.xlib.gson.annotations.SerializedName;
-import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
-import java.lang.ref.WeakReference;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map.Entry;
-import java.util.Set;
 
 public class MPlayer extends SenderEntity<MPlayer> implements FactionsParticipator
 {
@@ -60,7 +62,7 @@ public class MPlayer extends SenderEntity<MPlayer> implements FactionsParticipat
 	{
 		this.setLastActivityMillis(that.lastActivityMillis);
 		this.setFactionId(that.factionId);
-		this.setRole(that.role);
+		this.setRank(that.rank);
 		this.setTitle(that.title);
 		this.setPowerBoost(that.powerBoost);
 		this.setPower(that.power);
@@ -130,7 +132,7 @@ public class MPlayer extends SenderEntity<MPlayer> implements FactionsParticipat
 
 	// What role does the player have in the faction?
 	// Null means default.
-	private Rel role = null;
+	private Rank rank = null;
 
 	// What title does the player have in the faction?
 	// The title is just for fun. It's not connected to any game mechanic.
@@ -196,7 +198,7 @@ public class MPlayer extends SenderEntity<MPlayer> implements FactionsParticipat
 	{
 		// The default neutral faction
 		this.setFactionId(null);
-		this.setRole(null);
+		this.setRank(null);
 		this.setTitle(null);
 		this.setAutoClaimFaction(null);
 	}
@@ -301,27 +303,21 @@ public class MPlayer extends SenderEntity<MPlayer> implements FactionsParticipat
 	}
 
 	// -------------------------------------------- //
-	// FIELD: role
+	// FIELD: rank
 	// -------------------------------------------- //
-
-	public Rel getRole()
+	
+	public Rank getRank()
 	{
-		if (this.isFactionOrphan()) return Rel.RECRUIT;
-		
-		if (this.role == null) return MConf.get().defaultPlayerRole;
-		return this.role;
+		return this.rank;
 	}
 
-	public void setRole(Rel role)
+	public void setRank(Rank rank)
 	{
-		// Clean input
-		Rel target = role;
-
 		// Detect Nochange
-		if (MUtil.equals(this.role, target)) return;
+		if (MUtil.equals(this.rank, rank)) return;
 
 		// Apply
-		this.role = target;
+		this.rank = rank;
 
 		// Mark as changed
 		this.changed();
@@ -598,12 +594,10 @@ public class MPlayer extends SenderEntity<MPlayer> implements FactionsParticipat
 	}
 
 	// Base concatenations:
-
 	public String getNameAndSomething(String color, String something)
 	{
 		String ret = "";
 		ret += color;
-		ret += this.getRole().getPrefix();
 		if (something != null && something.length() > 0)
 		{
 			ret += something;
@@ -745,7 +739,7 @@ public class MPlayer extends SenderEntity<MPlayer> implements FactionsParticipat
 		// Apply
 
 		// Promote a new leader if required.
-		if (this.getRole() == Rel.LEADER)
+		if (this.getRank().isLeader())
 		{
 			Faction faction = this.getFaction();
 			if (faction != null)
@@ -772,7 +766,7 @@ public class MPlayer extends SenderEntity<MPlayer> implements FactionsParticipat
 
 		if (myFaction.getMPlayers().size() > 1)
 		{
-			if (!permanent && this.getRole() == Rel.LEADER)
+			if (!permanent && this.getRank().isLeader())
 			{
 				msg("<b>You must give the leader role to someone else first.");
 				return;

@@ -1,5 +1,17 @@
 package com.massivecraft.factions.entity;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.entity.EntityType;
+import org.bukkit.event.EventPriority;
+
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.engine.EngineChat;
@@ -13,17 +25,6 @@ import com.massivecraft.massivecore.command.type.TypeMillisDiff;
 import com.massivecraft.massivecore.store.Entity;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.TimeUnit;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.entity.EntityType;
-import org.bukkit.event.EventPriority;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 @EditorName("config")
 public class MConf extends Entity<MConf>
@@ -134,10 +135,6 @@ public class MConf extends Entity<MConf>
 	// "none" means Wilderness. Remember to specify the id, like "3defeec7-b3b1-48d9-82bb-2a8903df24e3" and not the name.
 	public String defaultPlayerFactionId = Factions.ID_NONE;
 	
-	// What rank should new players joining a faction get?
-	// If not RECRUIT then MEMBER might make sense.
-	public Rel defaultPlayerRole = Rel.RECRUIT;
-	
 	// What power should the player start with?
 	public double defaultPlayerPower = 0.0;
 	
@@ -190,8 +187,12 @@ public class MConf extends Entity<MConf>
 	public double factionPowerMax = 0.0;
 	
 	// Limit the length of faction names here.
-	public int factionNameLengthMin = 3;
-	public int factionNameLengthMax = 16;
+	public int nameLengthFactionMin = 3;
+	public int nameLengthFactionMax = 16;
+	
+	// Limit the length of rank names here.
+	public int nameLengthRankMin = 3;
+	public int nameLengthRankMax = 10;
 	
 	// Should faction names automatically be converted to upper case?
 	// You probably don't want this feature.
@@ -396,7 +397,7 @@ public class MConf extends Entity<MConf>
 		Rel.NEUTRAL, new ArrayList<String>(),
 		Rel.TRUCE, new ArrayList<String>(),
 		Rel.ALLY, new ArrayList<String>(),
-		Rel.MEMBER, new ArrayList<String>()
+		Rel.FACTION, new ArrayList<String>()
 	);
 	
 	// The distance for denying the following commands. Set to -1 to disable.
@@ -410,12 +411,12 @@ public class MConf extends Entity<MConf>
 		Rel.NEUTRAL, new ArrayList<String>(),
 		Rel.TRUCE, new ArrayList<String>(),
 		Rel.ALLY, new ArrayList<String>(),
-		Rel.MEMBER, new ArrayList<String>()
+		Rel.FACTION, new ArrayList<String>()
 	);
 	
 	// Allow bypassing the above setting when in these territories.
 	public List<Rel> denyCommandsDistanceBypassIn = MUtil.list(
-		Rel.MEMBER,
+		Rel.FACTION,
 		Rel.ALLY
 	);
 	

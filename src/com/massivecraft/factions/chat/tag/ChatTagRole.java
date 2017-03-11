@@ -25,7 +25,7 @@ public class ChatTagRole extends ChatTag
 		// Get entities
 		MPlayer usender = MPlayer.get(sender);
 		
-		return Txt.upperCaseFirst(usender.getRole().toString().toLowerCase());
+		return Txt.upperCaseFirst(usender.getRank().toString().toLowerCase());
 	}
 
 }

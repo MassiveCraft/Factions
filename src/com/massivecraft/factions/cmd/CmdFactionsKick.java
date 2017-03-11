@@ -1,7 +1,6 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Factions;
-import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.cmd.type.TypeMPlayer;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.FactionColl;
@@ -44,17 +43,17 @@ public class CmdFactionsKick extends FactionsCommand
 			return;
 		}
 		
-		if (mplayer.getRole() == Rel.LEADER && !msender.isOverriding())
+		if (mplayer.getRank().isLeader() && !msender.isOverriding())
 		{
 			throw new MassiveException().addMsg("<b>The leader cannot be kicked.");
 		}
 		
-		if (mplayer.getRole().isMoreThan(msender.getRole()) && ! msender.isOverriding())
+		if (mplayer.getRank().isHigherThan(msender.getRank()) && ! msender.isOverriding())
 		{
 			throw new MassiveException().addMsg("<b>You can't kick people of higher rank than yourself.");
 		}
 		
-		if (mplayer.getRole() == msender.getRole() && ! msender.isOverriding())
+		if (mplayer.getRank().equals(msender.getRank())&& ! msender.isOverriding())
 		{
 			throw new MassiveException().addMsg("<b>You can't kick people of the same rank as yourself.");
 		}
@@ -88,7 +87,7 @@ public class CmdFactionsKick extends FactionsCommand
 		}
 
 		// Apply
-		if (mplayer.getRole() == Rel.LEADER)
+		if (mplayer.getRank().isLeader())
 		{
 			mplayerFaction.promoteNewLeader();
 		}

@@ -1,5 +1,9 @@
 package com.massivecraft.factions.cmd;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.massivecraft.factions.PermissibleId;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.cmd.type.TypeFaction;
 import com.massivecraft.factions.cmd.type.TypeMPerm;
@@ -59,20 +63,23 @@ public class CmdFactionsPermSet extends FactionsCommand
 		if (event.isCancelled()) return;
 		value = event.getNewValue();
 		
+		// TODO: Change and use a TypePermissibleID or something like it
+		String permissibleId = rel.getName().toLowerCase();
+		
 		// No change
-		if (faction.getPermitted(perm).contains(rel) == value)
+		if (faction.getPermitted(perm).contains(permissibleId) == value)
 		{
 			msg("%s <i>already has %s <i>set to %s <i>for %s<i>.", faction.describeTo(msender), perm.getDesc(true, false), Txt.parse(value ? "<g>YES" : "<b>NOO"), rel.getColor() + rel.getDescPlayerMany());
 			return;
 		}
 		
 		// Apply
-		faction.setRelationPermitted(perm, rel, value);
+		faction.setRelationPermitted(perm, permissibleId, value);
 		
 		// The following is to make sure the leader always has the right to change perms if that is our goal.
-		if (perm == MPerm.getPermPerms() && MPerm.getPermPerms().getStandard().contains(Rel.LEADER))
+		if (perm == MPerm.getPermPerms() && MPerm.getPermPerms().getStandard().contains(PermissibleId.LEADER))
 		{
-			faction.setRelationPermitted(MPerm.getPermPerms(), Rel.LEADER, true);
+			faction.setRelationPermitted(MPerm.getPermPerms(), PermissibleId.LEADER, true);
 		}
 		
 		// Create messages

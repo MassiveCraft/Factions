@@ -1,7 +1,7 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Perm;
-import com.massivecraft.factions.Rel;
+import com.massivecraft.factions.Rank;
 import com.massivecraft.factions.cmd.type.TypeFaction;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MPerm;
@@ -50,19 +50,23 @@ public class CmdFactionsInviteList extends FactionsCommand
 		{
 			public String toString(MPlayer target, int index)
 			{
-				// TODO: Madus would like to implement this in MPlayer
+				
 				String targetName = target.getDisplayName(msender);
 				String isAre = target == msender ? "are" : "is";
-				Rel targetRank = target.getRole();
+				Rank targetRank = target.getRank();
+				boolean isLeader = targetRank.isLeader();
+				
 				Faction targetFaction = target.getFaction();
-				String theAan = targetRank == Rel.LEADER ? "the" : Txt.aan(targetRank.name());
-				String rankName = Txt.getNicedEnum(targetRank).toLowerCase();
-				String ofIn = targetRank == Rel.LEADER ? "of" : "in";
+				String rankName = targetRank.getName();
+				String theAan = isLeader ? "the" : Txt.aan(rankName);
+				String ofIn = isLeader ? "of" : "in";
+				
 				String factionName = targetFaction.describeTo(msender, true);
 				if (targetFaction == msenderFaction)
 				{
 					factionName = factionName.toLowerCase();
 				}
+				
 				return Txt.parse("%s <i>%s %s <h>%s <i>%s %s<i>.", targetName, isAre, theAan, rankName, ofIn, factionName);
 			}
 		});

@@ -1,12 +1,25 @@
 package com.massivecraft.factions.entity;
 
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+
+import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.FactionsIndex;
 import com.massivecraft.factions.FactionsParticipator;
+import com.massivecraft.factions.PermissionIdentifiable;
+import com.massivecraft.factions.PredicateRank;
+import com.massivecraft.factions.Rank;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.RelationParticipator;
 import com.massivecraft.factions.predicate.PredicateCommandSenderFaction;
-import com.massivecraft.factions.predicate.PredicateMPlayerRole;
 import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.factions.util.RelationUtil;
 import com.massivecraft.massivecore.collections.MassiveList;
@@ -25,18 +38,6 @@ import com.massivecraft.massivecore.store.SenderColl;
 import com.massivecraft.massivecore.util.IdUtil;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.Txt;
-import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
 
 public class Faction extends Entity<Faction> implements FactionsParticipator
 {
@@ -73,6 +74,7 @@ public class Faction extends Entity<Faction> implements FactionsParticipator
 		this.setRelationWishes(that.relationWishes);
 		this.setFlagIds(that.flags);
 		this.setPermIds(that.perms);
+		this.setRanks(that.ranks);
 		
 		return this;
 	}
@@ -87,7 +89,7 @@ public class Faction extends Entity<Faction> implements FactionsParticipator
 		if (Money.exists(this))
 		{
 			// ... remove it.
-			Money.set(this, null, 0);	
+			Money.set(this, null, 0);
 		}
 	}
 	
@@ -144,10 +146,15 @@ public class Faction extends Entity<Faction> implements FactionsParticipator
 	// The flag overrides are modifications to the default values.
 	// Null means default.
 	private MassiveMapDef<String, Boolean> flags = new MassiveMapDef<>();
-
+	
 	// The perm overrides are modifications to the default values.
 	// Null means default.
-	private MassiveMapDef<String, Set<Rel>> perms = new MassiveMapDef<>();
+	private MassiveMapDef<String, Set<String>> perms = new MassiveMapDef<>();
+	
+	private MassiveMapDef<String, Rank> ranks = new MassiveMapDef<>();
+	//private MassiveTreeSetDef<Rank, ComparatorPrioritized> ranks = new MassiveTreeSetDef<>(ComparatorPrioritized.get());
+	
+	private Rank rankManager;
 	
 	// -------------------------------------------- //
 	// FIELD: id
@@ -162,7 +169,7 @@ public class Faction extends Entity<Faction> implements FactionsParticipator
 	
 	public boolean isNormal()
 	{
-		return ! this.isNone();
+		return !this.isNone();
 	}
 	
 	// -------------------------------------------- //
@@ -191,7 +198,7 @@ public class Faction extends Entity<Faction> implements FactionsParticipator
 		
 		// Detect Nochange
 		if (MUtil.equals(this.name, target)) return;
-
+		
 		// Apply
 		this.name = target;
 		
@@ -249,7 +256,7 @@ public class Faction extends Entity<Faction> implements FactionsParticipator
 		
 		// Detect Nochange
 		if (MUtil.equals(this.description, target)) return;
-
+		
 		// Apply
 		this.description = target;
 		
@@ -289,7 +296,7 @@ public class Faction extends Entity<Faction> implements FactionsParticipator
 		
 		// Detect Nochange
 		if (MUtil.equals(this.motd, target)) return;
-
+		
 		// Apply
 		this.motd = target;
 		
@@ -334,7 +341,7 @@ public class Faction extends Entity<Faction> implements FactionsParticipator
 		
 		// Detect Nochange
 		if (MUtil.equals(this.createdAtMillis, createdAtMillis)) return;
-
+		
 		// Apply
 		this.createdAtMillis = target;
 		
@@ -509,7 +516,7 @@ public class Faction extends Entity<Faction> implements FactionsParticipator
 		List<MPlayer> mplayers = new MassiveList<>();
 		
 		for (String id : this.getInvitedPlayerIds())
-		{	
+		{
 			MPlayer mplayer = MPlayer.get(id);
 			mplayers.add(mplayer);
 		}
@@ -599,7 +606,7 @@ public class Faction extends Entity<Faction> implements FactionsParticipator
 			Entry<String, Boolean> entry = iter.next();
 			
 			// ... extract id and remove null values ...
-			String id = entry.getKey();					
+			String id = entry.getKey();
 			if (id == null)
 			{
 				iter.remove();
@@ -642,7 +649,7 @@ public class Faction extends Entity<Faction> implements FactionsParticipator
 			
 			target.put(key, value);
 		}
-
+		
 		// Detect Nochange
 		if (MUtil.equals(this.flags, target)) return;
 		
@@ -707,62 +714,22 @@ public class Faction extends Entity<Faction> implements FactionsParticipator
 	// -------------------------------------------- //
 	
 	// RAW
-	
-	public Map<MPerm, Set<Rel>> getPerms()
+	public MassiveMapDef<String, Set<String>> getPermIds()
 	{
-		// We start with default values ...
-		Map<MPerm, Set<Rel>> ret = new MassiveMap<>();
-		for (MPerm mperm : MPerm.getAll())
-		{
-			ret.put(mperm, new MassiveSet<>(mperm.getStandard()));
-		}
-		
-		// ... and if anything is explicitly set we use that info ...
-		Iterator<Entry<String, Set<Rel>>> iter = this.perms.entrySet().iterator();
-		while (iter.hasNext())
-		{
-			// ... for each entry ...
-			Entry<String, Set<Rel>> entry = iter.next();
-			
-			// ... extract id and remove null values ...
-			String id = entry.getKey();					
-			if (id == null)
-			{
-				iter.remove();
-				continue;
-			}
-			
-			// ... resolve object and skip unknowns ...
-			MPerm mperm = MPerm.get(id);
-			if (mperm == null) continue;
-			
-			ret.put(mperm, new MassiveSet<>(entry.getValue()));
-		}
-		
-		return ret;
+		return this.perms;
 	}
 	
-	public void setPerms(Map<MPerm, Set<Rel>> perms)
-	{
-		Map<String, Set<Rel>> permIds = new MassiveMap<>();
-		for (Entry<MPerm, Set<Rel>> entry : perms.entrySet())
-		{
-			permIds.put(entry.getKey().getId(), entry.getValue());
-		}
-		setPermIds(permIds);
-	}
-	
-	public void setPermIds(Map<String, Set<Rel>> perms)
+	public void setPermIds(MassiveMapDef<String, Set<String>> perms)
 	{
 		// Clean input
-		MassiveMapDef<String, Set<Rel>> target = new MassiveMapDef<>();
-		for (Entry<String, Set<Rel>> entry : perms.entrySet())
+		MassiveMapDef<String, Set<String>> target = new MassiveMapDef<String, Set<String>>();
+		for (Entry<String, Set<String>> entry : perms.entrySet())
 		{
 			String key = entry.getKey();
 			if (key == null) continue;
 			key = key.toLowerCase(); // Lowercased Keys Version 2.6.0 --> 2.7.0
 			
-			Set<Rel> value = entry.getValue();
+			Set<String> value = entry.getValue();
 			if (value == null) continue;
 			
 			target.put(key, value);
@@ -778,54 +745,78 @@ public class Faction extends Entity<Faction> implements FactionsParticipator
 		this.changed();
 	}
 	
-	// FINER
+	// Finer
+	public Map<MPerm, Set<String>> getPerms()
+	{
+		// We start with default values ...
+		Map<MPerm, Set<String>> ret = new MassiveMap<>();
+		for (MPerm mperm : MPerm.getAll())
+		{
+			ret.put(mperm, new MassiveSet<>(mperm.getStandard()));
+		}
+		
+		// ... and if anything is explicitly set we use that info ...
+		for (Iterator<Entry<String, Set<String>>> it = this.perms.entrySet().iterator(); it.hasNext(); )
+		{
+			// ... for each entry ...
+			Entry<String, Set<String>> entry = it.next();
+			
+			// ... extract id and remove null values ...
+			String id = entry.getKey();
+			if (id == null)
+			{
+				it.remove();
+				continue;
+			}
+			
+			// ... resolve object and skip unknowns ...
+			MPerm mperm = MPerm.get(id);
+			if (mperm == null) continue;
+			
+			ret.put(mperm, new MassiveSet<>(entry.getValue()));
+		}
+		
+		return ret;
+	}
 	
-	public boolean isPermitted(String permId, Rel rel)
+	public void setPerms(Map<MPerm, Set<String>> perms)
+	{
+		// Create
+		MassiveMapDef<String, Set<String>> permIds = new MassiveMapDef<>();
+		
+		// Fill
+		for (Entry<MPerm, Set<String>> entry : perms.entrySet())
+		{
+			permIds.put(entry.getKey().getId(), entry.getValue());
+		}
+		
+		// Set
+		this.setPermIds(permIds);
+	}
+	
+	// FINEST
+	private boolean isPermitted(String permId, String permissibleId)
 	{
 		if (permId == null) throw new NullPointerException("permId");
 		
-		Set<Rel> rels = this.perms.get(permId);
-		if (rels != null) return rels.contains(rel);
+		Set<String> rels = this.perms.get(permId);
+		if (rels != null) return rels.contains(permissibleId);
 		
 		MPerm perm = MPerm.get(permId);
 		if (perm == null) throw new NullPointerException("perm");
 		
-		return perm.getStandard().contains(rel);
+		return perm.getStandard().contains(permissibleId);
 	}
 	
-	public boolean isPermitted(MPerm perm, Rel rel)
+	public boolean isPermitted(MPerm perm, PermissionIdentifiable permissible)
 	{
 		if (perm == null) throw new NullPointerException("perm");
-		
-		String permId = perm.getId();
-		if (permId == null) throw new NullPointerException("permId");
-		
-		Set<Rel> rels = this.perms.get(permId);
-		if (rels != null) return rels.contains(rel);
-		
-		return perm.getStandard().contains(rel);
+		return this.isPermitted(perm.getId(), permissible.getPermissibleId());
 	}
 	
-	// ---
-	
-	public Set<Rel> getPermitted(MPerm perm)
+	private Set<String> getPermitted(String permId)
 	{
-		if (perm == null) throw new NullPointerException("perm");
-		
-		String permId = perm.getId();
-		if (permId == null) throw new NullPointerException("permId");
-		
-		Set<Rel> rels = this.perms.get(permId);
-		if (rels != null) return rels;
-		
-		return perm.getStandard();
-	}
-	
-	public Set<Rel> getPermitted(String permId)
-	{
-		if (permId == null) throw new NullPointerException("permId");
-		
-		Set<Rel> rels = this.perms.get(permId);
+		Set<String> rels = this.perms.get(permId);
 		if (rels != null) return rels;
 		
 		MPerm perm = MPerm.get(permId);
@@ -834,49 +825,223 @@ public class Faction extends Entity<Faction> implements FactionsParticipator
 		return perm.getStandard();
 	}
 	
-	@Deprecated
-	// Use getPermitted instead. It's much quicker although not immutable.
-	public Set<Rel> getPermittedRelations(MPerm perm)
+	public Set<String> getPermitted(MPerm perm)
 	{
-		return this.getPerms().get(perm);
+		if (perm == null) throw new NullPointerException("perm");
+		return this.getPermitted(perm.getId());
 	}
 	
-	// ---
-	// TODO: Fix these below. They are reworking the whole map.
-	
-	public void setPermittedRelations(MPerm perm, Set<Rel> rels)
+	public void setPermittedRelations(MPerm perm, Set<String> permissibleIds)
 	{
-		Map<MPerm, Set<Rel>> perms = this.getPerms();
-		perms.put(perm, rels);
-		this.setPerms(perms);
+		this.getPermIds().put(perm.getId(), permissibleIds);
+		this.changed();
 	}
 	
-	public void setPermittedRelations(MPerm perm, Rel... rels)
+	public void setPermittedRelations(MPerm perm, String... permissibleIds)
 	{
-		Set<Rel> temp = new HashSet<>();
-		temp.addAll(Arrays.asList(rels));
-		this.setPermittedRelations(perm, temp);
+		this.setPermittedRelations(perm, new MassiveSet<>(permissibleIds));
 	}
 	
-	public void setRelationPermitted(MPerm perm, Rel rel, boolean permitted)
+	public void setRelationPermitted(MPerm perm, String permissibleId, boolean permitted)
 	{
-		Map<MPerm, Set<Rel>> perms = this.getPerms();
+		// Get
+		Map<String, Set<String>> perms = this.getPermIds();
+		String permId = perm.getId();
+		Set<String> permissibleIds = perms.get(permId);
 		
-		Set<Rel> rels = perms.get(perm);
-		
-		boolean changed;
+		// Change
 		if (permitted)
 		{
-			changed = rels.add(rel);
+			permissibleIds.add(permissibleId);
 		}
 		else
 		{
-			changed = rels.remove(rel);
+			permissibleIds.remove(permissibleId);
 		}
 		
-		this.setPerms(perms);
+		// Set
+		this.setPermittedRelations(perm, permissibleIds);
+	}
+	
+	// -------------------------------------------- //
+	// FIELD: ranks
+	// -------------------------------------------- //
+	
+	// RAW
+	public Map<String, Rank> getRanks()
+	{
+		return this.ranks;
+	}
+	
+	public void setRanks(Map<String, Rank> ranks)
+	{
+		// NoChange
+		if (MUtil.equals(this.ranks, ranks)) return;
 		
-		if (changed) this.changed();
+		// Apply
+		this.ranks = new MassiveMapDef<>(ranks);
+		
+		// Changed
+		this.changed();
+	}
+	
+	// FINER
+	public Collection<Rank> getRankCollection()
+	{
+		return this.getRanks().values();
+	}
+	
+	private List<String> getRankIdsOrdered()
+	{
+		return new MassiveList<>(this.ranks.keySet());
+	}
+	
+	public Rank getRankLeader()
+	{
+		return this.ranks.get(this.getRankIdsOrdered().get(0));
+	}
+	
+	public Rank getRankLowest()
+	{
+		List<String> ids = this.getRankIdsOrdered();
+		return this.ranks.get(ids.get(ids.size() - 1));
+	}
+	
+	public void addRank(Rank rank)
+	{
+		if (rank == null) return;
+		
+		// Add
+		this.getRanks().put(rank.getId(), rank);
+		
+		// Changed
+		this.changed();
+	}
+	
+	public boolean removeRank(Rank rank)
+	{
+		// Check
+		if (rank == null) return false;
+		if (rank.equals(this.getRankLeader())) return false;
+		if (rank.equals(this.getRankLowest())) return false;
+		
+		// Remove
+		Rank ret = this.getRanks().remove(rank.getId());
+		
+		// Changed
+		boolean success = ret != null;
+		if (success)
+		{
+			this.adjustRankOrder(rank);
+			this.changed();
+		}
+		
+		// Return
+		return success;
+	}
+	
+	public boolean demote(MPlayer mplayer)
+	{
+		if (mplayer.getFaction() != this) return false;
+		if (mplayer.getRank().equals(this.getRankLowest())) return false;
+		
+		// Gather
+		Rank current = mplayer.getRank();
+		Rank demoted = this.getNextLowerRank(current);
+		
+		// Set
+		mplayer.setRank(demoted);
+		return true;
+	}
+	
+	public Rank getNextLowerRank(Rank rank)
+	{
+		// Get order
+		Rank ret = null;
+		
+		// Find next lower order
+		for (Rank otherRank : this.getRankCollection())
+		{
+			if (!otherRank.isLessThan(rank)) continue;
+			
+			ret = otherRank;
+			break;
+		}
+		
+		// Return
+		return ret;
+	}
+	
+	public Rank createRank(String name)
+	{
+		// Prepare
+		int order = this.getRankLowest().getOrder() + 1;
+		
+		// Create
+		Rank ret = Rank.DEFAULT.copy();
+		
+		// Fill
+		ret.setName(name);
+		ret.setOrder(order);
+		
+		// Return
+		return ret;
+	}
+	
+	private void adjustRankOrder(Rank rank)
+	{
+		for (Rank other : this.getRankCollection())
+		{
+			if (other.isHigherThan(rank)) continue;
+			
+			other.setOrder(other.getOrder() - 1);
+		}
+	}
+	
+	public void adjustRankOrder(Rank rank, int order)
+	{
+		// Get List
+		List<String> ids = this.getRankIdsOrdered();
+		
+		// Sort in rank
+		String rankId = rank.getId();
+		ids.remove(rankId);
+		ids.add(order - 1, rankId);
+		
+		// Create new order
+		Map<String, Rank> rankOrdered = new MassiveMap<>();
+		
+		for (int i = 0; i < ids.size(); i++)
+		{
+			String id = ids.get(i);
+			Rank ordered = this.ranks.get(id);
+			ordered.setOrder(i);
+			rankOrdered.put(id, ordered);
+		}
+		
+		this.setRanks(rankOrdered);
+	}
+	
+	// -------------------------------------------- //
+	// FIELD: rankManager
+	// -------------------------------------------- //
+	
+	// RAW
+	public Rank getRankManager()
+	{
+		return this.rankManager;
+	}
+	
+	public void setRankManager(Rank rankManager)
+	{
+		// NoChange
+		if (MUtil.equals(this.rankManager, rankManager)) return;
+		
+		// Apply
+		this.rankManager = rankManager;
+		
+		// Changed
+		this.changed();
 	}
 	
 	// -------------------------------------------- //
@@ -937,7 +1102,7 @@ public class Faction extends Entity<Faction> implements FactionsParticipator
 	public double getPowerMax()
 	{
 		if (this.getFlag(MFlag.getFlagInfpower())) return 999999;
-	
+		
 		double ret = 0;
 		for (MPlayer mplayer : this.getMPlayers())
 		{
@@ -972,6 +1137,7 @@ public class Faction extends Entity<Faction> implements FactionsParticipator
 	{
 		return BoardColl.get().getCount(this);
 	}
+	
 	public int getLandCountInWorld(String worldName)
 	{
 		return Board.get(worldName).getCount(this);
@@ -1003,9 +1169,9 @@ public class Faction extends Entity<Faction> implements FactionsParticipator
 	public List<MPlayer> getMPlayersWhere(Predicate<? super MPlayer> predicate)
 	{
 		List<MPlayer> ret = this.getMPlayers();
-		for (Iterator<MPlayer> it = ret.iterator(); it.hasNext();)
+		for (Iterator<MPlayer> it = ret.iterator(); it.hasNext(); )
 		{
-			if ( ! predicate.apply(it.next())) it.remove();
+			if (!predicate.apply(it.next())) it.remove();
 		}
 		return ret;
 	}
@@ -1014,20 +1180,25 @@ public class Faction extends Entity<Faction> implements FactionsParticipator
 	{
 		return this.getMPlayersWhere(online ? SenderColl.PREDICATE_ONLINE : SenderColl.PREDICATE_OFFLINE);
 	}
-
+	
 	public List<MPlayer> getMPlayersWhereOnlineTo(Object senderObject)
 	{
 		return this.getMPlayersWhere(PredicateAnd.get(SenderColl.PREDICATE_ONLINE, PredicateVisibleTo.get(senderObject)));
 	}
 	
-	public List<MPlayer> getMPlayersWhereRole(Rel role)
+	public List<MPlayer> getMPlayersWhereRank(Rank rank)
 	{
-		return this.getMPlayersWhere(PredicateMPlayerRole.get(role));
+		return this.getMPlayersWhere(PredicateRank.get(rank));
+	}
+	
+	public List<MPlayer> getMPlayersWhereLeader()
+	{
+		return this.getMPlayersWhere(PredicateRank.get(this.getRankLeader()));
 	}
 	
 	public MPlayer getLeader()
 	{
-		List<MPlayer> ret = this.getMPlayersWhereRole(Rel.LEADER);
+		List<MPlayer> ret = this.getMPlayersWhereLeader();
 		if (ret.size() == 0) return null;
 		return ret.get(0);
 	}
@@ -1071,66 +1242,57 @@ public class Faction extends Entity<Faction> implements FactionsParticipator
 		// Return Ret
 		return ret;
 	}
-
+	
 	// used when current leader is about to be removed from the faction; promotes new leader, or disbands faction if no other members left
 	public void promoteNewLeader()
 	{
-		if ( ! this.isNormal()) return;
+		if (!this.isNormal()) return;
 		if (this.getFlag(MFlag.getFlagPermanent()) && MConf.get().permanentFactionsDisableLeaderPromotion) return;
-
+		
 		MPlayer oldLeader = this.getLeader();
-
+		Rank rankLeader = this.getRankLeader();
+		Rank nextLower = this.getNextLowerRank(rankLeader);
+		
 		// get list of officers, or list of normal members if there are no officers
-		List<MPlayer> replacements = this.getMPlayersWhereRole(Rel.OFFICER);
-		if (replacements == null || replacements.isEmpty())
-		{
-			replacements = this.getMPlayersWhereRole(Rel.MEMBER);
-		}
-
+		List<MPlayer> replacements = this.getMPlayersWhereRank(nextLower);
 		if (replacements == null || replacements.isEmpty())
 		{
 			// faction leader is the only member; one-man faction
 			if (this.getFlag(MFlag.getFlagPermanent()))
 			{
-				if (oldLeader != null)
-				{
-					// TODO: Where is the logic in this? Why MEMBER? Why not LEADER again? And why not OFFICER or RECRUIT?
-					oldLeader.setRole(Rel.MEMBER);
-				}
+				if (oldLeader != null) oldLeader.setRank(rankLeader);
 				return;
 			}
-
+			
 			// no members left and faction isn't permanent, so disband it
 			if (MConf.get().logFactionDisband)
 			{
-				Factions.get().log("The faction "+this.getName()+" ("+this.getId()+") has been disbanded since it has no members left.");
+				Factions.get().log("The faction " + this.getName() + " (" + this.getId() + ") has been disbanded since it has no members left.");
 			}
-
+			
 			for (MPlayer mplayer : MPlayerColl.get().getAllOnline())
 			{
 				mplayer.msg("<i>The faction %s<i> was disbanded.", this.getName(mplayer));
 			}
-
+			
 			this.detach();
 		}
 		else
 		{
 			// promote new faction leader
-			if (oldLeader != null)
-			{
-				oldLeader.setRole(Rel.MEMBER);
-			}
-				
-			replacements.get(0).setRole(Rel.LEADER);
+			if (oldLeader != null) this.demote(oldLeader);
+			replacements.get(0).setRank(rankLeader);
+			
+			// Inform
 			this.msg("<i>Faction leader <h>%s<i> has been removed. %s<i> has been promoted as the new faction leader.", oldLeader == null ? "" : oldLeader.getName(), replacements.get(0).getName());
-			Factions.get().log("Faction "+this.getName()+" ("+this.getId()+") leader was removed. Replacement leader: "+replacements.get(0).getName());
+			Factions.get().log("Faction " + this.getName() + " (" + this.getId() + ") leader was removed. Replacement leader: " + replacements.get(0).getName());
 		}
 	}
 	
 	// -------------------------------------------- //
 	// FACTION ONLINE STATE
 	// -------------------------------------------- //
-
+	
 	public boolean isAllMPlayersOffline()
 	{
 		return this.getMPlayersWhereOnline(true).size() == 0;
@@ -1155,10 +1317,10 @@ public class Faction extends Entity<Faction> implements FactionsParticipator
 	{
 		boolean explosions = this.getFlag(MFlag.getFlagExplosions());
 		boolean offlineexplosions = this.getFlag(MFlag.getFlagOfflineexplosions());
-
+		
 		if (explosions && offlineexplosions) return true;
-		if ( ! explosions && ! offlineexplosions) return false;
-
+		if (!explosions && !offlineexplosions) return false;
+		
 		boolean online = this.isFactionConsideredOnline();
 		
 		return (online && explosions) || (!online && offlineexplosions);
