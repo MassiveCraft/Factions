@@ -17,6 +17,7 @@ public class CmdFactionsInviteAdd extends FactionsCommand
 	// -------------------------------------------- //
 	// CONSTRUCT
 	// -------------------------------------------- //
+
 	public CmdFactionsInviteAdd()
 	{
 		// Parameters

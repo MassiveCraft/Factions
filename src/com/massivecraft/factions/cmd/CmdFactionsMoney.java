@@ -21,14 +21,6 @@ public class CmdFactionsMoney extends FactionsCommand
 	
 	public CmdFactionsMoney()
 	{
-		// Children
-		this.addChild(this.cmdMoneyBalance);
-		this.addChild(this.cmdMoneyDeposit);
-		this.addChild(this.cmdMoneyWithdraw);
-		this.addChild(this.cmdMoneyTransferFf);
-		this.addChild(this.cmdMoneyTransferFp);
-		this.addChild(this.cmdMoneyTransferPf);
-
 		// Requirements
 		this.addRequirements(ReqBankCommandsEnabled.get());
 	}

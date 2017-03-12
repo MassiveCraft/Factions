@@ -78,57 +78,6 @@ public class CmdFactions extends FactionsCommand
 	
 	public CmdFactions()
 	{
-		// Children
-		this.addChild(this.cmdFactionsList);
-		this.addChild(this.cmdFactionsFaction);
-		this.addChild(this.cmdFactionsPlayer);
-		this.addChild(this.cmdFactionsStatus);
-		this.addChild(this.cmdFactionsJoin);
-		this.addChild(this.cmdFactionsLeave);
-		this.addChild(this.cmdFactionsHome);
-		this.addChild(this.cmdFactionsMap);
-		this.addChild(this.cmdFactionsCreate);
-		this.addChild(this.cmdFactionsName);
-		this.addChild(this.cmdFactionsDescription);
-		this.addChild(this.cmdFactionsMotd);
-		this.addChild(this.cmdFactionsSethome);
-		this.addChild(this.cmdFactionsUnsethome);
-		this.addChild(this.cmdFactionsInvite);
-		this.addChild(this.cmdFactionsKick);
-		this.addChild(this.cmdFactionsTitle);
-		this.addChild(this.cmdFactionsRank);
-		this.addChild(this.cmdFactionsRankOldLeader);
-		this.addChild(this.cmdFactionsRankOldOwner);
-		this.addChild(this.cmdFactionsRankOldOfficer);
-		this.addChild(this.cmdFactionsRankOldModerator);
-		this.addChild(this.cmdFactionsRankOldPromote);
-		this.addChild(this.cmdFactionsRankOldDemote);
-		this.addChild(this.cmdFactionsMoney);
-		this.addChild(this.cmdFactionsSeeChunk);
-		this.addChild(this.cmdFactionsSeeChunkOld);
-		this.addChild(this.cmdFactionsTerritorytitles);
-		this.addChild(this.cmdFactionsClaim);
-		this.addChild(this.cmdFactionsUnclaim);
-		this.addChild(this.cmdFactionsAccess);
-		this.addChild(this.cmdFactionsRelation);
-		this.addChild(this.cmdFactionsRelationOldAlly);
-		this.addChild(this.cmdFactionsRelationOldTruce);
-		this.addChild(this.cmdFactionsRelationOldNeutral);
-		this.addChild(this.cmdFactionsRelationOldEnemy);
-		this.addChild(this.cmdFactionsPerm);
-		this.addChild(this.cmdFactionsFlag);
-		this.addChild(this.cmdFactionsUnstuck);
-		this.addChild(this.cmdFactionsExpansions);
-		this.addChild(this.cmdFactionsTax);
-		this.addChild(this.cmdFactionsDynmap);
-		this.addChild(this.cmdFactionsOverride);
-		this.addChild(this.cmdFactionsDisband);
-		this.addChild(this.cmdFactionsPowerBoost);
-		this.addChild(this.cmdFactionsSetpower);
-		this.addChild(this.cmdFactionsConfig);
-		this.addChild(this.cmdFactionsClean);
-		this.addChild(this.cmdFactionsVersion);
-		
 		// Deprecated Commands
 		this.addChild(new MassiveCommandDeprecated(this.cmdFactionsClaim.cmdFactionsClaimAuto, "autoclaim"));
 		this.addChild(new MassiveCommandDeprecated(this.cmdFactionsUnclaim.cmdFactionsUnclaimAll, "unclaimall"));

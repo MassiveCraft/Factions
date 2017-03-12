@@ -8,15 +8,6 @@ import java.util.Map.Entry;
 public class CmdFactionsExpansions extends FactionsCommand
 {
 	// -------------------------------------------- //
-	// CONSTRUCT
-	// -------------------------------------------- //
-	
-	public CmdFactionsExpansions()
-	{
-
-	}
-
-	// -------------------------------------------- //
 	// OVERRIDE
 	// -------------------------------------------- //
 	

@@ -18,11 +18,6 @@ public class CmdFactionsAccess extends FactionsCommand
 	
 	public CmdFactionsAccess()
 	{
-		// Children
-		this.addChild(this.cmdFactionsAccessView);
-		this.addChild(this.cmdFactionsAccessPlayer);
-		this.addChild(this.cmdFactionsAccessFaction);
-
 		// Requirements
 		this.addRequirements(RequirementIsPlayer.get());
 	}
