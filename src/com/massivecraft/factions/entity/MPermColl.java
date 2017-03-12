@@ -36,7 +36,7 @@ public class MPermColl extends Coll<MPerm>
 	public void setActive(boolean active)
 	{
 		super.setActive(active);
-		if ( ! active) return;
+		if (!active) return;
 		MPerm.setupStandardPerms();
 	}
 	
@@ -46,12 +46,17 @@ public class MPermColl extends Coll<MPerm>
 	
 	public List<MPerm> getAll(boolean registered)
 	{
+		// Create
 		List<MPerm> ret = new ArrayList<MPerm>();
+		
+		// Fill
 		for (MPerm mperm : this.getAll())
 		{
 			if (mperm.isRegistered() != registered) continue;
 			ret.add(mperm);
 		}
+		
+		// Return
 		return ret;
 	}
 	

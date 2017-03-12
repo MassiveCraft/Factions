@@ -30,7 +30,7 @@ public class MConfColl extends Coll<MConf>
 	public void setActive(boolean active)
 	{
 		super.setActive(active);
-		if ( ! active) return;
+		if (!active) return;
 		MConf.i = this.get(MassiveCore.INSTANCE, true);
 	}
 	

@@ -1,13 +1,18 @@
 package com.massivecraft.factions.entity;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-import com.massivecraft.massivecore.store.Coll;
-import com.massivecraft.massivecore.util.Txt;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.util.MiscUtil;
+import com.massivecraft.massivecore.store.Coll;
+import com.massivecraft.massivecore.util.Txt;
 
 public class FactionColl extends Coll<Faction>
 {
@@ -37,7 +42,7 @@ public class FactionColl extends Coll<Faction>
 	{
 		super.setActive(active);
 		
-		if ( ! active) return;
+		if (!active) return;
 		
 		this.createSpecialFactions();
 	}
@@ -197,25 +202,40 @@ public class FactionColl extends Coll<Faction>
 	
 	public void econLandRewardRoutine()
 	{
+		// If econ is enabled ...
 		if (!Econ.isEnabled()) return;
 		
+		// ... and the land reward is non zero ...
 		double econLandReward = MConf.get().econLandReward;
 		if (econLandReward == 0.0) return;
 		
+		// ... log initiation ...
 		Factions.get().log("Running econLandRewardRoutine...");
+		MFlag flagPeaceful = MFlag.getFlagPeaceful();
+		
+		// ... and for each faction ...
 		for (Faction faction : this.getAll())
 		{
+			// ... get the land count ...
 			int landCount = faction.getLandCount();
-			if (!faction.getFlag(MFlag.getFlagPeaceful()) && landCount > 0)
+			
+			// ... and if the faction isn't peaceful and has land ...
+			if (faction.getFlag(flagPeaceful) || landCount > 0) continue;
+			
+			// ... get the faction's members ...
+			List<MPlayer> players = faction.getMPlayers();
+			
+			// ... calculate the reward ...
+			int playerCount = players.size();
+			double reward = econLandReward * landCount / playerCount;
+			
+			// ... and grant the reward.
+			String description = String.format("own %s faction land divided among %s members", landCount, playerCount);
+			for (MPlayer player : players)
 			{
-				List<MPlayer> players = faction.getMPlayers();
-				int playerCount = players.size();
-				double reward = econLandReward * landCount / playerCount;
-				for (MPlayer player : players)
-				{
-					Econ.modifyMoney(player, reward, "own " + landCount + " faction land divided among " + playerCount + " members");
-				}
+				Econ.modifyMoney(player, reward, description);
 			}
+			
 		}
 	}
 	
@@ -225,26 +245,32 @@ public class FactionColl extends Coll<Faction>
 	
 	public ArrayList<String> validateName(String str)
 	{
+		// Create
 		ArrayList<String> errors = new ArrayList<String>();
 		
+		// Fill
+		// Check minimum length
 		if (MiscUtil.getComparisonString(str).length() < MConf.get().factionNameLengthMin)
 		{
 			errors.add(Txt.parse("<i>The faction name can't be shorter than <h>%s<i> chars.", MConf.get().factionNameLengthMin));
 		}
 		
+		// Check maximum length
 		if (str.length() > MConf.get().factionNameLengthMax)
 		{
 			errors.add(Txt.parse("<i>The faction name can't be longer than <h>%s<i> chars.", MConf.get().factionNameLengthMax));
 		}
 		
+		// Check characters used
 		for (char c : str.toCharArray())
 		{
-			if ( ! MiscUtil.substanceChars.contains(String.valueOf(c)))
+			if (!MiscUtil.substanceChars.contains(String.valueOf(c)))
 			{
 				errors.add(Txt.parse("<i>Faction name must be alphanumeric. \"<h>%s<i>\" is not allowed.", c));
 			}
 		}
 		
+		// Return
 		return errors;
 	}
 	
@@ -270,7 +296,8 @@ public class FactionColl extends Coll<Faction>
 	{
 		// Create
 		Map<Rel, List<String>> ret = new LinkedHashMap<Rel, List<String>>();
-		boolean peaceful = faction.getFlag(MFlag.getFlagPeaceful());
+		MFlag flagPeaceful = MFlag.getFlagPeaceful();
+		boolean peaceful = faction.getFlag(flagPeaceful);
 		for (Rel rel : rels)
 		{
 			ret.put(rel, new ArrayList<String>());
@@ -279,7 +306,7 @@ public class FactionColl extends Coll<Faction>
 		// Fill
 		for (Faction fac : FactionColl.get().getAll())
 		{
-			if (fac.getFlag(MFlag.getFlagPeaceful())) continue;
+			if (fac.getFlag(flagPeaceful)) continue;
 
 			Rel rel = fac.getRelationTo(faction);
 			List<String> names = ret.get(rel);
@@ -289,8 +316,8 @@ public class FactionColl extends Coll<Faction>
 			names.add(name);
 		}
 
-		// Replace TRUCE if peasceful
-		if ( ! peaceful) return ret;
+		// Replace TRUCE if peaceful
+		if (!peaceful) return ret;
 
 		List<String> names = ret.get(Rel.TRUCE);
 		if (names == null) return ret;
