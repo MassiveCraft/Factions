@@ -229,23 +229,9 @@ public class EnginePermBuild extends Engine
 		
 		if (block == null) return;  // clicked in air, apparently
 		
-		if ( ! canPlayerUseBlock(player, block, true))
-		{
-			event.setCancelled(true);
-			return;
-		}
-		
 		if (event.getClickedBlock().getType() == Material.SPONGE && canPlayerUseBlock(player, block, true))
 		{
 			event.getClickedBlock().breakNaturally();
-			return;
-		}
-
-		if (event.getAction() != Action.LEFT_CLICK_BLOCK) return;
-
-		if ( ! canPlayerUseBlock(player, block, true))
-		{
-			event.setCancelled(true);
 			return;
 		}
 		
@@ -255,18 +241,13 @@ public class EnginePermBuild extends Engine
 			return;
 		}
 		
-		if ( ! playerCanUseItemHere(player, PS.valueOf(block), event.getMaterial(), true))
-		{
-			event.setCancelled(true);
-			return;
-		}
+		if (potentialBlock.getType() != Material.FIRE) return;
+		
 		if (canPlayerBuildAt(event.getPlayer(), PS.valueOf(potentialBlock), true)) return;
 		
-		if (potentialBlock.getType() != Material.FIRE) return;
-		{
-			event.setCancelled(true);
-			event.getPlayer().sendBlockChange(potentialBlock.getLocation(), potentialBlock.getType(), potentialBlock.getState().getRawData());
-		}
+		event.setCancelled(true);
+		
+		event.getPlayer().sendBlockChange(potentialBlock.getLocation(), potentialBlock.getType(), potentialBlock.getState().getRawData());
 		
 	}
 
