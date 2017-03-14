@@ -509,6 +509,12 @@ public class MConf extends Entity<MConf>
 	public String prefixRecruit = "-";
 	
 	// -------------------------------------------- //
+	// OTHER
+	// -------------------------------------------- //
+	
+	public boolean InstantSponge = true;
+	
+	// -------------------------------------------- //
 	// EXPLOITS
 	// -------------------------------------------- //
 	

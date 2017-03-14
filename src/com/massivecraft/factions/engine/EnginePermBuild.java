@@ -229,10 +229,13 @@ public class EnginePermBuild extends Engine
 		
 		if (block == null) return;  // clicked in air, apparently
 		
-		if (event.getClickedBlock().getType() == Material.SPONGE && canPlayerUseBlock(player, block, true))
+		if (!MConf.get().InstantSponge) return;
 		{
-			event.getClickedBlock().breakNaturally();
-			return;
+			if (event.getClickedBlock().getType() == Material.SPONGE && canPlayerUseBlock(player, block, true))
+			{
+				event.getClickedBlock().breakNaturally();
+				return;
+			}
 		}
 		
 		if (event.getAction() != Action.LEFT_CLICK_BLOCK) return;
