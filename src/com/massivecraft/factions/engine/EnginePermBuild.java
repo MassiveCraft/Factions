@@ -26,6 +26,7 @@ import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerBucketFillEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
 
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.TerritoryAccess;
@@ -222,8 +223,9 @@ public class EnginePermBuild extends Engine
 		
 		Block block = event.getClickedBlock();
 		Player player = event.getPlayer();
-
+		PS ps = PS.valueOf(block);
 		Block potentialBlock = event.getClickedBlock().getRelative(BlockFace.UP, 1);
+		MPlayer me = MPlayer.get(player);
 		
 		if (block == null) return;  // clicked in air, apparently
 		
@@ -232,9 +234,21 @@ public class EnginePermBuild extends Engine
 			event.setCancelled(true);
 			return;
 		}
+		
+		if (event.getClickedBlock().getType() == Material.SPONGE && canPlayerUseBlock(player, block, true))
+		{
+			event.getClickedBlock().breakNaturally();
+			return;
+		}
 
 		if (event.getAction() != Action.LEFT_CLICK_BLOCK) return;
 
+		if ( ! canPlayerUseBlock(player, block, true))
+		{
+			event.setCancelled(true);
+			return;
+		}
+		
 		if ( ! playerTrustedCantBreak(player, PS.valueOf(block), event.getMaterial(), true))
 		{
 			event.setCancelled(true);
@@ -253,6 +267,7 @@ public class EnginePermBuild extends Engine
 			event.setCancelled(true);
 			event.getPlayer().sendBlockChange(potentialBlock.getLocation(), potentialBlock.getType(), potentialBlock.getState().getRawData());
 		}
+		
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
@@ -386,6 +401,7 @@ public class EnginePermBuild extends Engine
 		if (MConf.get().materialsDoor.contains(material) && ! MPerm.getPermDoor().has(me, ps, verboose)) return false;
 		if (material == Material.STONE_BUTTON && ! MPerm.getPermButton().has(me, ps, verboose)) return false;
 		if (material == Material.LEVER && ! MPerm.getPermLever().has(me, ps, verboose)) return false;
+		if (material == Material.SPONGE && ! MPerm.getPermBuild().has(me, ps, verboose)) return false;
 		return true;
 	}
 	
