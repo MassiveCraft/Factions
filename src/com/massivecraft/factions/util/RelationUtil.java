@@ -12,34 +12,46 @@ import com.massivecraft.massivecore.util.Txt;
 
 public class RelationUtil
 {
+	// -------------------------------------------- //
+	// CONSTANTS
+	// -------------------------------------------- //
+	
+	private static final String UNKNOWN_RELATION_OTHER = "A server admin";
+	private static final String UNDEFINED_FACTION_OTHER = "ERROR";
+	private static final String OWN_FACTION = "your faction";
+	private static final String SELF = "you";
+	
+	// -------------------------------------------- //
+	// DESCRIBE
+	// -------------------------------------------- //
+	
 	public static String describeThatToMe(RelationParticipator that, RelationParticipator me, boolean ucfirst)
 	{
 		String ret = "";
 
-		if (that == null)
-		{
-			return "A server admin";
-		}
+		if (that == null) return UNKNOWN_RELATION_OTHER;
 		
 		Faction thatFaction = getFaction(that);
-		if (thatFaction == null) return "ERROR"; // ERROR
+		if (thatFaction == null) return UNDEFINED_FACTION_OTHER; // ERROR
 
 		Faction myFaction = getFaction(me);
-//		if (myFaction == null) return thatFaction.getTag(); // no relation, but can show basic name or tag
-
+		
+		boolean isSameFaction = thatFaction == myFaction;
+		
 		if (that instanceof Faction)
 		{
+			String thatFactionName = thatFaction.getName();
 			if (thatFaction.isNone())
 			{
-				ret = thatFaction.getName();
+				ret = thatFactionName;
 			}
-			else if (me instanceof MPlayer && myFaction == thatFaction)
+			else if (me instanceof MPlayer && isSameFaction)
 			{
-				ret = "your faction";
+				ret = OWN_FACTION;
 			}
 			else
 			{
-				ret = thatFaction.getName();
+				ret = thatFactionName;
 			}
 		}
 		else if (that instanceof MPlayer)
@@ -47,9 +59,9 @@ public class RelationUtil
 			MPlayer mplayerthat = (MPlayer) that;
 			if (that == me)
 			{
-				ret = "you";
+				ret = SELF;
 			}
-			else if (thatFaction == myFaction)
+			else if (isSameFaction)
 			{
 				ret = mplayerthat.getNameAndTitle(myFaction);
 			}
@@ -59,18 +71,19 @@ public class RelationUtil
 			}
 		}
 
-		if (ucfirst)
-		{
-			ret = Txt.upperCaseFirst(ret);
-		}
+		if (ucfirst) ret = Txt.upperCaseFirst(ret);
 
-		return "" + getColorOfThatToMe(that, me) + ret;
+		return getColorOfThatToMe(that, me).toString() + ret;
 	}
 
 	public static String describeThatToMe(RelationParticipator that, RelationParticipator me)
 	{
 		return describeThatToMe(that, me, false);
 	}
+	
+	// -------------------------------------------- //
+	// RELATION
+	// -------------------------------------------- //
 
 	public static Rel getRelationOfThatToMe(RelationParticipator that, RelationParticipator me)
 	{
@@ -79,74 +92,55 @@ public class RelationUtil
 
 	public static Rel getRelationOfThatToMe(RelationParticipator that, RelationParticipator me, boolean ignorePeaceful)
 	{
-		Rel ret = null;
-		
 		Faction myFaction = getFaction(me);
 		if (myFaction == null) return Rel.NEUTRAL; // ERROR
 
 		Faction thatFaction = getFaction(that);
 		if (thatFaction == null) return Rel.NEUTRAL; // ERROR
 		
-		// The faction with the lowest wish "wins"
-		if (thatFaction.getRelationWish(myFaction).isLessThan(myFaction.getRelationWish(thatFaction)))
-		{
-			ret = thatFaction.getRelationWish(myFaction);
-		}
-		else
-		{
-			ret = myFaction.getRelationWish(thatFaction);
-		}
-
 		if (myFaction.equals(thatFaction))
 		{
-			ret = Rel.MEMBER;
-			// Do officer and leader check
-			//P.p.log("getRelationOfThatToMe the factions are the same for "+that.getClass().getSimpleName()+" and observer "+me.getClass().getSimpleName());
-			if (that instanceof MPlayer)
-			{
-				ret = ((MPlayer)that).getRole();
-				//P.p.log("getRelationOfThatToMe it was a player and role is "+ret);
-			}
+			if (that instanceof MPlayer) return ((MPlayer) that).getRole();
+			return Rel.MEMBER;
 		}
-		else if (!ignorePeaceful && (thatFaction.getFlag(MFlag.getFlagPeaceful()) || myFaction.getFlag(MFlag.getFlagPeaceful())))
-		{
-			ret = Rel.TRUCE;
-		}
-
-		return ret;
+		
+		MFlag flagPeaceful = MFlag.getFlagPeaceful();
+		if (!ignorePeaceful && (thatFaction.getFlag(flagPeaceful) || myFaction.getFlag(flagPeaceful))) return Rel.TRUCE;
+		
+		// The faction with the lowest wish "wins"
+		Rel theirWish = thatFaction.getRelationWish(myFaction);
+		Rel myWish = myFaction.getRelationWish(thatFaction);
+		return theirWish.isLessThan(myWish) ? theirWish : myWish;
 	}
+	
+	// -------------------------------------------- //
+	// FACTION
+	// -------------------------------------------- //
 
 	public static Faction getFaction(RelationParticipator rp)
 	{
-		if (rp instanceof Faction)
-		{
-			return (Faction) rp;
-		}
+		if (rp instanceof Faction) return (Faction) rp;
 
-		if (rp instanceof MPlayer)
-		{
-			return ((MPlayer) rp).getFaction();
-		}
+		if (rp instanceof MPlayer) return ((MPlayer) rp).getFaction();
 
 		// ERROR
 		return null;
 	}
+	
+	// -------------------------------------------- //
+	// COLOR
+	// -------------------------------------------- //
 
 	public static ChatColor getColorOfThatToMe(RelationParticipator that, RelationParticipator me)
 	{
 		Faction thatFaction = getFaction(that);
 		if (thatFaction != null && thatFaction != getFaction(me))
 		{
-			if (thatFaction.getFlag(MFlag.getFlagFriendlyire()) == true)
-			{
-				return MConf.get().colorFriendlyFire;
-			}
+			if (thatFaction.getFlag(MFlag.getFlagFriendlyire())) return MConf.get().colorFriendlyFire;
 			
-			if (thatFaction.getFlag(MFlag.getFlagPvp()) == false)
-			{
-				return MConf.get().colorNoPVP;
-			}
+			if (!thatFaction.getFlag(MFlag.getFlagPvp())) return MConf.get().colorNoPVP;
 		}
 		return getRelationOfThatToMe(that, me).getColor();
 	}
+	
 }

@@ -18,7 +18,6 @@ import com.massivecraft.factions.event.EventFactionsMembershipChange;
 import com.massivecraft.factions.event.EventFactionsMembershipChange.MembershipChangeReason;
 import com.massivecraft.factions.event.EventFactionsRankChange;
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.util.Txt;
 
 public class CmdFactionsRank extends FactionsCommand
@@ -54,16 +53,10 @@ public class CmdFactionsRank extends FactionsCommand
 	
 	public CmdFactionsRank()
 	{
-		// Aliases
-		this.addAliases("rank");
-	
 		// Parameters
 		this.addParameter(TypeMPlayer.get(), "player");
 		this.addParameter(TypeRank.get(), "action", "show");
 		this.addParameter(TypeFaction.get(), "faction", "their");
-	
-		// Requirements
-		this.addRequirements(RequirementHasPerm.get(Perm.RANK));
 	}
 	
 	// -------------------------------------------- //

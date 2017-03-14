@@ -7,18 +7,15 @@ import java.util.Set;
 import org.bukkit.Bukkit;
 
 import com.massivecraft.factions.Factions;
-import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.cmd.type.TypeFaction;
 import com.massivecraft.factions.cmd.type.TypeRelation;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.FactionColl;
-
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.collections.MassiveSet;
 import com.massivecraft.massivecore.command.Parameter;
-import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.command.type.container.TypeSet;
 import com.massivecraft.massivecore.pager.Pager;
 import com.massivecraft.massivecore.pager.Stringifier;
@@ -39,16 +36,10 @@ public class CmdFactionsRelationList extends FactionsCommand
 
 	public CmdFactionsRelationList()
 	{
-		// Aliases
-		this.addAliases("list");
-
 		// Parameter
 		this.addParameter(Parameter.getPage());
 		this.addParameter(TypeFaction.get(), "faction", "you");
 		this.addParameter(TypeSet.get(TypeRelation.get()), "relations", "all");
-
-		// Requirements
-		this.addRequirements(RequirementHasPerm.get(Perm.RELATION_LIST));
 	}
 
 	// -------------------------------------------- //

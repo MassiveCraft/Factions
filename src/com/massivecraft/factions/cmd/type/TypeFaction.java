@@ -79,13 +79,16 @@ public class TypeFaction extends TypeAbstract<Faction>
 	@Override
 	public Collection<String> getTabList(CommandSender sender, String arg)
 	{
+		// Create
 		Set<String> ret = new TreeSet<String>(ComparatorCaseInsensitive.get());
 		
+		// Fill
 		for (Faction faction : FactionColl.get().getAll())
 		{
 			ret.add(ChatColor.stripColor(faction.getName()));
 		}
 		
+		// Return
 		return ret;
 	}
 	

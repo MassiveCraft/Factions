@@ -1,9 +1,5 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.Perm;
-
-import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
-
 public class CmdFactionsRelation extends FactionsCommand
 {
 	// -------------------------------------------- //
@@ -24,12 +20,6 @@ public class CmdFactionsRelation extends FactionsCommand
 		this.addChild(this.cmdFactionsRelationSet);
 		this.addChild(this.cmdFactionsRelationList);
 		this.addChild(this.cmdFactionsRelationWishes);
-
-		// Aliases
-		this.addAliases("relation");
-
-		// Requirements
-		this.addRequirements(RequirementHasPerm.get(Perm.RELATION));
 	}
 
 }

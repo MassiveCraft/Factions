@@ -235,6 +235,14 @@ public class EnginePermBuild extends Engine
 			return;
 		}
 		
+		if (event.getAction() != Action.LEFT_CLICK_BLOCK) return;
+
+		if ( ! canPlayerUseBlock(player, block, true))
+		{
+			event.setCancelled(true);
+			return;
+		}
+		
 		if ( ! playerTrustedCantBreak(player, PS.valueOf(block), event.getMaterial(), true))
 		{
 			event.setCancelled(true);

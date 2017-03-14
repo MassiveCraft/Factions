@@ -10,7 +10,6 @@ import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.command.Parameter;
-import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.pager.Pager;
 import com.massivecraft.massivecore.pager.Stringifier;
 import com.massivecraft.massivecore.util.Txt;
@@ -23,15 +22,9 @@ public class CmdFactionsInviteList extends FactionsCommand
 	
 	public CmdFactionsInviteList()
 	{
-		// Aliases
-		this.addAliases("list");
-
 		// Parameters
 		this.addParameter(Parameter.getPage());
 		this.addParameter(TypeFaction.get(), "faction", "you");
-		
-		// Requirements
-		this.addRequirements(RequirementHasPerm.get(Perm.INVITE_LIST));
 	}
 	
 	// -------------------------------------------- //

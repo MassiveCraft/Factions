@@ -1,9 +1,7 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Factions;
-import com.massivecraft.factions.Perm;
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.command.type.primitive.TypeBooleanYes;
 import com.massivecraft.massivecore.util.IdUtil;
 import com.massivecraft.massivecore.util.Txt;
@@ -17,13 +15,10 @@ public class CmdFactionsOverride extends FactionsCommand
 	public CmdFactionsOverride()
 	{
 		// Aliases
-		this.addAliases("override", "admin");
+		this.addAliases("admin");
 
 		// Parameters
 		this.addParameter(TypeBooleanYes.get(), "on/off", "flip");
-		
-		// Requirements
-		this.addRequirements(RequirementHasPerm.get(Perm.OVERRIDE));
 	}
 
 	// -------------------------------------------- //

@@ -4,13 +4,11 @@ import java.util.Collection;
 
 import org.bukkit.ChatColor;
 
-import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.cmd.type.TypeMPlayer;
 import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.event.EventFactionsInvitedChange;
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.command.type.container.TypeSet;
 import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.util.Txt;
@@ -22,14 +20,8 @@ public class CmdFactionsInviteAdd extends FactionsCommand
 	// -------------------------------------------- //
 	public CmdFactionsInviteAdd()
 	{
-		// Aliases
-		this.addAliases("add");
-
 		// Parameters
 		this.addParameter(TypeSet.get(TypeMPlayer.get()), "players", true);
-		
-		// Requirements
-		this.addRequirements(RequirementHasPerm.get(Perm.INVITE_ADD));
 	}
 	
 	// -------------------------------------------- //

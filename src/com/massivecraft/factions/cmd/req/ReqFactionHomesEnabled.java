@@ -9,6 +9,10 @@ import com.massivecraft.massivecore.util.Txt;
 
 public class ReqFactionHomesEnabled extends RequirementAbstract
 {
+	// -------------------------------------------- //
+	// SERIALIZABLE
+	// -------------------------------------------- //
+	
 	private static final long serialVersionUID = 1L;
 	
 	// -------------------------------------------- //
@@ -31,7 +35,7 @@ public class ReqFactionHomesEnabled extends RequirementAbstract
 	@Override
 	public String createErrorMessage(CommandSender sender, MassiveCommand command)
 	{
-		return Txt.parse("<b>Homes must be enabled on the server to "+(command == null ? "do that" : command.getDesc())+".");
+		return Txt.parse("<b>Homes must be enabled on the server to %s.", getDesc(command));
 	}
 	
 }

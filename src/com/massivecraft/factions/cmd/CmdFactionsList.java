@@ -7,13 +7,11 @@ import org.bukkit.command.CommandSender;
 
 import com.massivecraft.factions.FactionListComparator;
 import com.massivecraft.factions.Factions;
-import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.FactionColl;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.command.Parameter;
-import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.pager.Pager;
 import com.massivecraft.massivecore.pager.Stringifier;
 import com.massivecraft.massivecore.util.Txt;
@@ -26,14 +24,8 @@ public class CmdFactionsList extends FactionsCommand
 	
 	public CmdFactionsList()
 	{
-		// Aliases
-		this.addAliases("l", "list");
-
 		// Parameters
 		this.addParameter(Parameter.getPage());
-
-		// Requirements
-		this.addRequirements(RequirementHasPerm.get(Perm.LIST));
 	}
 
 	// -------------------------------------------- //

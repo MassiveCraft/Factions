@@ -11,8 +11,6 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListMap;
 
-import org.bukkit.ChatColor;
-
 import com.massivecraft.factions.Const;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.RelationParticipator;
@@ -385,7 +383,7 @@ public class Board extends Entity<Board> implements BoardInterface
 		PS topLeftPs = centerPs.plusChunkCoords(-halfWidth, -halfHeight);
 		
 		// Get the compass
-		ArrayList<String> asciiCompass = AsciiCompass.getAsciiCompass(inDegrees, ChatColor.RED, Txt.parse("<a>"));
+		List<String> asciiCompass = AsciiCompass.getAsciiCompass(inDegrees);
 		
 		// Make room for the list of names
 		height--;

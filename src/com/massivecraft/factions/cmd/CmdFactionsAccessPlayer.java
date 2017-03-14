@@ -1,12 +1,10 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.cmd.type.TypeMPlayer;
 import com.massivecraft.factions.entity.BoardColl;
 import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.command.type.primitive.TypeBooleanYes;
 
 public class CmdFactionsAccessPlayer extends CmdFactionsAccessAbstract
@@ -17,15 +15,9 @@ public class CmdFactionsAccessPlayer extends CmdFactionsAccessAbstract
 	
 	public CmdFactionsAccessPlayer()
 	{
-		// Aliases
-		this.addAliases("player");
-
 		// Parameters
 		this.addParameter(TypeMPlayer.get(), "player");
 		this.addParameter(TypeBooleanYes.get(), "yes/no", "toggle");
-
-		// Requirements
-		this.addRequirements(RequirementHasPerm.get(Perm.ACCESS_PLAYER));
 	}
 	
 	// -------------------------------------------- //

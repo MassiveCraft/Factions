@@ -4,6 +4,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
+import com.massivecraft.factions.engine.DisallowCause;
 import com.massivecraft.factions.entity.MPlayer;
 
 /**
@@ -35,6 +36,9 @@ public class EventFactionsPvpDisallowed extends EventFactionsAbstract
 	public Player getDefender() { return this.defender; }
 	public MPlayer getMDefender() { return this.defender == null ? null : MPlayer.get(this.defender); }
 	
+	private final DisallowCause cause;
+	public DisallowCause getCause() { return this.cause; }
+	
 	private final EntityDamageByEntityEvent event;
 	public EntityDamageByEntityEvent getEvent() { return this.event; }
 	
@@ -42,10 +46,11 @@ public class EventFactionsPvpDisallowed extends EventFactionsAbstract
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public EventFactionsPvpDisallowed(Player attacker, Player defender, EntityDamageByEntityEvent event)
+	public EventFactionsPvpDisallowed(Player attacker, Player defender, DisallowCause cause, EntityDamageByEntityEvent event)
 	{
 		this.attacker = attacker;
 		this.defender = defender;
+		this.cause = cause;
 		this.event = event;
 	}
 

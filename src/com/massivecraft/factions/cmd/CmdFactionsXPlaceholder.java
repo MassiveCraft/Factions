@@ -16,6 +16,7 @@ public class CmdFactionsXPlaceholder extends FactionsCommand
 	{
 		// Fields
 		this.extensionName = extensionName;
+		this.setSetupEnabled(false);
 		
 		// Aliases
 		this.addAliases(aliases);

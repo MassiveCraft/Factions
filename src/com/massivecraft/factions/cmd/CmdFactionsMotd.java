@@ -1,12 +1,10 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.event.EventFactionsMotdChange;
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.command.type.primitive.TypeString;
 import com.massivecraft.massivecore.mixin.MixinDisplayName;
 import com.massivecraft.massivecore.util.MUtil;
@@ -20,14 +18,8 @@ public class CmdFactionsMotd extends FactionsCommand
 	
 	public CmdFactionsMotd()
 	{
-		// Aliases
-		this.addAliases("motd");
-
 		// Parameters
 		this.addParameter(TypeString.get(), "new", "read", true);
-
-		// Requirements
-		this.addRequirements(RequirementHasPerm.get(Perm.MOTD));
 	}
 
 	// -------------------------------------------- //
