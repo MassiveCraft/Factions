@@ -9,28 +9,30 @@ import com.massivecraft.massivecore.util.TimeUnit;
 public class TaskEconLandReward extends ModuloRepeatTask
 {
 	// -------------------------------------------- //
-	// INSTANCE & CONSTRUCT
+	// INSTANCE
 	// -------------------------------------------- //
 	
 	private static TaskEconLandReward i = new TaskEconLandReward();
 	public static TaskEconLandReward get() { return i; }
 	
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
+	
 	@Override
 	public long getDelayMillis()
 	{
+		// The interval is determined by the MConf rather than being set with setDelayMillis.
 		return (long) (MConf.get().taskEconLandRewardMinutes * TimeUnit.MILLIS_PER_MINUTE);
-	}
-	
-	@Override
-	public void setDelayMillis(long delayMillis)
-	{
-		MConf.get().taskEconLandRewardMinutes = delayMillis / (double) TimeUnit.MILLIS_PER_MINUTE;
 	}
 	
 	@Override
 	public void invoke(long now)
 	{
-		if ( ! MassiveCore.isTaskServer()) return;
+		// If this is the task server ...
+		if (!MassiveCore.isTaskServer()) return;
+		
+		// ... process the econ land rewards.
 		FactionColl.get().econLandRewardRoutine();
 	}
 	
