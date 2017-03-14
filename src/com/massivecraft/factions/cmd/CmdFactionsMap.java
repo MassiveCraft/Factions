@@ -5,10 +5,8 @@ import java.util.List;
 import org.bukkit.Location;
 
 import com.massivecraft.factions.Const;
-import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.entity.BoardColl;
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.command.requirement.RequirementIsPlayer;
 import com.massivecraft.massivecore.command.type.primitive.TypeBooleanYes;
 import com.massivecraft.massivecore.ps.PS;
@@ -21,14 +19,10 @@ public class CmdFactionsMap extends FactionsCommand
 	
 	public CmdFactionsMap()
 	{
-		// Aliases
-		this.addAliases("map");
-
 		// Parameters
 		this.addParameter(TypeBooleanYes.get(), "on/off", "once");
 
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(Perm.MAP));
 		this.addRequirements(RequirementIsPlayer.get());
 	}
 

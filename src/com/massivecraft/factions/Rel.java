@@ -6,10 +6,11 @@ import java.util.Set;
 import org.bukkit.ChatColor;
 
 import com.massivecraft.factions.entity.MConf;
+import com.massivecraft.massivecore.Colorized;
+import com.massivecraft.massivecore.Named;
 import com.massivecraft.massivecore.collections.MassiveSet;
 
-
-public enum Rel
+public enum Rel implements Colorized, Named
 {
 	// -------------------------------------------- //
 	// ENUM
@@ -18,44 +19,52 @@ public enum Rel
 	ENEMY(
 		"an enemy", "enemies", "an enemy faction", "enemy factions",
 		"Enemy"
-	),
+	) { @Override public ChatColor getColor() { return MConf.get().colorEnemy; } },
+	
 	NEUTRAL(
 		"someone neutral to you", "those neutral to you", "a neutral faction", "neutral factions",
 		"Neutral"
-	),
+	) { @Override public ChatColor getColor() { return MConf.get().colorNeutral; } },
+	
 	TRUCE(
 		"someone in truce with you", "those in truce with you", "a faction in truce", "factions in truce",
 		"Truce"
-	),
+	) { @Override public ChatColor getColor() { return MConf.get().colorTruce; } },
+	
 	ALLY(
 		"an ally", "allies", "an allied faction", "allied factions",
 		"Ally"
-	),
+	) { @Override public ChatColor getColor() { return MConf.get().colorAlly; } },
 	SISTER(
 		"a sister", "sisters", "a sister faction", "sister factions",
 		"Sister"
-	),
+	) { @Override public ChatColor getColor() { return MConf.get().colorSister; } },
+	
 	RECRUIT(
 		"a recruit in your faction", "recruits in your faction", "", "",
 		"Recruit"
-	),
+	) { @Override public String getPrefix() { return MConf.get().prefixRecruit; } },
+	
 	MEMBER(
 		"a member in your faction", "members in your faction", "your faction", "your factions",
 		"Member"
-	),
-	OFFICER
-	(
+	) { @Override public String getPrefix() { return MConf.get().prefixMember; } },
+	
+	OFFICER(
 		"an officer in your faction", "officers in your faction", "", "",
 		"Officer", "Moderator"
-	),
+	) { @Override public String getPrefix() { return MConf.get().prefixOfficer; } },
+	
 	COLEADER
 	(
 		"a coleader in your faction", "coleaders in your faction", "", "",
 		"Coleader"
-	),
-	LEADER("your faction leader", "your faction leader", "", "",
+	) { @Override public String getPrefix() { return MConf.get().prefixColeader; } },
+	
+	LEADER(
+		"your faction leader", "your faction leader", "", "",
 		"Leader", "Admin", "Owner"
-	),
+	) { @Override public String getPrefix() { return MConf.get().prefixLeader; } },
 	
 	// END OF LIST
 	;
@@ -80,19 +89,29 @@ public enum Rel
 	
 	private final Set<String> names;
 	public Set<String> getNames() { return this.names; }
-	public String getName() { return this.getNames().iterator().next(); }
+	@Override public String getName() { return this.getNames().iterator().next(); }
 	
 	// -------------------------------------------- //
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	private Rel(String descPlayerOne, String descPlayerMany, String descFactionOne, String descFactionMany, String... names)
+	Rel(String descPlayerOne, String descPlayerMany, String descFactionOne, String descFactionMany, String... names)
 	{
 		this.descPlayerOne = descPlayerOne;
 		this.descPlayerMany = descPlayerMany;
 		this.descFactionOne = descFactionOne;
 		this.descFactionMany = descFactionMany;
 		this.names = Collections.unmodifiableSet(new MassiveSet<String>(names));
+	}
+	
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
+	
+	@Override
+	public ChatColor getColor()
+	{
+		return MConf.get().colorMember;
 	}
 	
 	// -------------------------------------------- //
@@ -129,50 +148,10 @@ public enum Rel
 	{
 		return this.isAtLeast(TRUCE);
 	}
-	
-	public ChatColor getColor()
-	{
-		if (this.isAtLeast(RECRUIT))
-			return MConf.get().colorMember;
-		else if (this == SISTER)
-			return MConf.get().colorSister;
-		else if (this == ALLY)
-			return MConf.get().colorAlly;
-		else if (this == NEUTRAL)
-			return MConf.get().colorNeutral;
-		else if (this == TRUCE)
-			return MConf.get().colorTruce;
-		else
-			return MConf.get().colorEnemy;
-	}
-	
+		
+
 	public String getPrefix()
 	{
-		if (this == LEADER)
-		{
-			return MConf.get().prefixLeader;
-		} 
-		
-		if (this == COLEADER)
-		{
-			return MConf.get().prefixCoLeader;
-		} 
-		
-		if (this == OFFICER)
-		{
-			return MConf.get().prefixOfficer;
-		}
-		
-		if (this == MEMBER)
-		{
-			return MConf.get().prefixMember;
-		}
-		
-		if (this == RECRUIT)
-		{
-			return MConf.get().prefixRecruit;
-		}
-		
 		return "";
 	}
 	

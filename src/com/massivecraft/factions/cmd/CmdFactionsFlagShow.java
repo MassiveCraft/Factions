@@ -4,13 +4,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.cmd.type.TypeFaction;
 import com.massivecraft.factions.cmd.type.TypeMFlag;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MFlag;
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.command.type.container.TypeSet;
 import com.massivecraft.massivecore.util.Txt;
 
@@ -22,15 +20,9 @@ public class CmdFactionsFlagShow extends FactionsCommand
 	
 	public CmdFactionsFlagShow()
 	{
-		// Aliases
-		this.addAliases("show");
-		
 		// Parameters
 		this.addParameter(TypeFaction.get(), "faction", "you");
 		this.addParameter(TypeSet.get(TypeMFlag.get()), "flags", "all", true);
-		
-		// Requirements
-		this.addRequirements(RequirementHasPerm.get(Perm.FLAG_SHOW));
 	}
 	
 	// -------------------------------------------- //

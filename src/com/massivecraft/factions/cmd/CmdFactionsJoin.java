@@ -6,14 +6,13 @@ import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.cmd.type.TypeFaction;
 import com.massivecraft.factions.cmd.type.TypeMPlayer;
+import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.entity.MFlag;
 import com.massivecraft.factions.entity.MPlayer;
-import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.event.EventFactionsMembershipChange;
 import com.massivecraft.factions.event.EventFactionsMembershipChange.MembershipChangeReason;
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.util.Txt;
 
@@ -25,15 +24,9 @@ public class CmdFactionsJoin extends FactionsCommand
 	
 	public CmdFactionsJoin()
 	{
-		// Aliases
-		this.addAliases("join");
-
 		// Parameters
 		this.addParameter(TypeFaction.get(), "faction");
 		this.addParameter(TypeMPlayer.get(), "player", "you");
-
-		// Requirements
-		this.addRequirements(RequirementHasPerm.get(Perm.JOIN));
 	}
 
 	// -------------------------------------------- //

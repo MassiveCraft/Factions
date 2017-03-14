@@ -2,7 +2,6 @@ package com.massivecraft.factions.cmd;
 
 import java.util.ArrayList;
 
-import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.cmd.type.TypeFaction;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.FactionColl;
@@ -10,7 +9,6 @@ import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.factions.event.EventFactionsNameChange;
 import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.command.type.primitive.TypeString;
 
 public class CmdFactionsName extends FactionsCommand
@@ -21,15 +19,9 @@ public class CmdFactionsName extends FactionsCommand
 	
 	public CmdFactionsName()
 	{
-		// Aliases
-		this.addAliases("name");
-
 		// Parameters
 		this.addParameter(TypeString.get(), "new name");
 		this.addParameter(TypeFaction.get(), "faction", "you");
-
-		// Requirements
-		this.addRequirements(RequirementHasPerm.get(Perm.NAME));
 	}
 
 	// -------------------------------------------- //

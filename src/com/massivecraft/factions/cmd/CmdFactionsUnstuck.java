@@ -6,7 +6,6 @@ import java.util.List;
 import org.bukkit.Location;
 import org.bukkit.World;
 
-import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.entity.BoardColl;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.FactionColl;
@@ -14,7 +13,6 @@ import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.command.requirement.RequirementIsPlayer;
 import com.massivecraft.massivecore.mixin.MixinTeleport;
 import com.massivecraft.massivecore.mixin.TeleporterException;
@@ -30,11 +28,7 @@ public class CmdFactionsUnstuck extends FactionsCommand
 	
 	public CmdFactionsUnstuck()
 	{
-		// Aliases
-		this.addAliases("unstuck");
-		
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(Perm.UNSTUCK));
 		this.addRequirements(RequirementIsPlayer.get());
 	}
 

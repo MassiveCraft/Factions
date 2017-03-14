@@ -3,7 +3,6 @@ package com.massivecraft.factions.cmd;
 import org.bukkit.ChatColor;
 
 import com.massivecraft.factions.Factions;
-import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.cmd.type.TypeMPlayer;
 import com.massivecraft.factions.entity.Faction;
@@ -14,7 +13,6 @@ import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.event.EventFactionsMembershipChange;
 import com.massivecraft.factions.event.EventFactionsMembershipChange.MembershipChangeReason;
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.util.IdUtil;
 
 public class CmdFactionsKick extends FactionsCommand
@@ -25,14 +23,8 @@ public class CmdFactionsKick extends FactionsCommand
 	
 	public CmdFactionsKick()
 	{
-		// Aliases
-		this.addAliases("kick");
-
 		// Parameters
 		this.addParameter(TypeMPlayer.get(), "player");
-
-		// Requirements
-		this.addRequirements(RequirementHasPerm.get(Perm.KICK));
 	}
 
 	// -------------------------------------------- //

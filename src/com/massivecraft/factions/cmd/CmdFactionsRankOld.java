@@ -21,6 +21,7 @@ public class CmdFactionsRankOld extends FactionsCommand
 	{
 		// Fields
 		this.rankName = rank.toLowerCase();
+		this.setSetupEnabled(false);
 		
 		// Aliases
 		this.addAliases(rankName);

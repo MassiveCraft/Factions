@@ -1,12 +1,11 @@
 package com.massivecraft.factions.cmd;
 
+import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.cmd.req.ReqBankCommandsEnabled;
 import com.massivecraft.factions.cmd.type.TypeFaction;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.integration.Econ;
-import com.massivecraft.factions.Perm;
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 
 public class CmdFactionsMoneyBalance extends FactionsCommand
 {
@@ -16,14 +15,10 @@ public class CmdFactionsMoneyBalance extends FactionsCommand
 	
 	public CmdFactionsMoneyBalance()
 	{
-		// Aliases
-		this.addAliases("balance");
-
 		// Parameters
 		this.addParameter(TypeFaction.get(), "faction", "you");
 
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(Perm.MONEY_BALANCE));
 		this.addRequirements(ReqBankCommandsEnabled.get());
 	}
 

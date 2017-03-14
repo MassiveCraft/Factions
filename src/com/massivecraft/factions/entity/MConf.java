@@ -7,11 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.massivecraft.massivecore.command.editor.annotation.EditorName;
-import com.massivecraft.massivecore.command.editor.annotation.EditorType;
-import com.massivecraft.massivecore.command.editor.annotation.EditorTypeInner;
-import com.massivecraft.massivecore.command.editor.annotation.EditorVisible;
-import com.massivecraft.massivecore.command.type.TypeMillisDiff;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
@@ -23,6 +18,10 @@ import com.massivecraft.factions.engine.EngineChat;
 import com.massivecraft.factions.event.EventFactionsChunkChangeType;
 import com.massivecraft.massivecore.collections.BackstringEnumSet;
 import com.massivecraft.massivecore.collections.WorldExceptionSet;
+import com.massivecraft.massivecore.command.editor.annotation.EditorName;
+import com.massivecraft.massivecore.command.editor.annotation.EditorType;
+import com.massivecraft.massivecore.command.editor.annotation.EditorTypeInner;
+import com.massivecraft.massivecore.command.type.TypeMillisDiff;
 import com.massivecraft.massivecore.store.Entity;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.TimeUnit;
@@ -504,7 +503,7 @@ public class MConf extends Entity<MConf>
 	
 	// Here you may edit the name prefixes associated with different faction ranks.
 	public String prefixLeader = "@";
-	public String prefixCoLeader = "**";
+	public String prefixColeader = "**";
 	public String prefixOfficer = "*";
 	public String prefixMember = "+";
 	public String prefixRecruit = "-";
@@ -570,7 +569,7 @@ public class MConf extends Entity<MConf>
 	// This way they can be protected in Faction territory.
 	
 	// Interacting with these materials when they are already placed in the terrain results in an edit.
-	@EditorVisible(false)
+
 	public BackstringEnumSet<Material> materialsTrustCantBreak = new BackstringEnumSet<Material>(Material.class,
 		"OBSIDIAN", // Minecraft 1.?
 		"MOB_SPAWNER", // Minecraft 1.?
@@ -581,7 +580,6 @@ public class MConf extends Entity<MConf>
 		"DISPENSER" // Minecraft 1.?
 	);
 	
-	@EditorVisible(false)
 	public BackstringEnumSet<Material> materialsTrustCantPlace = new BackstringEnumSet<Material>(Material.class,
 		"OBSIDIAN", // Minecraft 1.?
 		"TNT", // Minecraft 1.5
@@ -590,7 +588,6 @@ public class MConf extends Entity<MConf>
 		"DISPENSER" // Minecraft 1.?
 	);
 	
-	@EditorVisible(false)
 	public BackstringEnumSet<Material> materialsEditOnInteract = new BackstringEnumSet<Material>(Material.class,
 		"DIODE_BLOCK_OFF", // Minecraft 1.?
 		"DIODE_BLOCK_ON", // Minecraft 1.?
@@ -604,7 +601,6 @@ public class MConf extends Entity<MConf>
 	);
 	// Interacting with the the terrain holding this item in hand results in an edit.
 	// There's no need to add all block materials here. Only special items other than blocks.
-	@EditorVisible(false)
 	public BackstringEnumSet<Material> materialsEditTools = new BackstringEnumSet<Material>(Material.class,
 		"FIREBALL", // Minecraft 1.?
 		"FLINT_AND_STEEL", // Minecraft 1.?
@@ -617,7 +613,6 @@ public class MConf extends Entity<MConf>
 	
 	// The duplication bug found in Spigot 1.8 protocol patch
 	// https://github.com/MassiveCraft/Factions/issues/693
-	@EditorVisible(false)
 	public BackstringEnumSet<Material> materialsEditToolsDupeBug = new BackstringEnumSet<Material>(Material.class,
 		"CHEST", // Minecraft 1.?
 		"SIGN_POST", // Minecraft 1.?
@@ -628,7 +623,6 @@ public class MConf extends Entity<MConf>
 	);
 	
 	// Interacting with these materials placed in the terrain results in door toggling.
-	@EditorVisible(false)
 	public BackstringEnumSet<Material> materialsDoor = new BackstringEnumSet<Material>(Material.class,
 		"WOODEN_DOOR", // Minecraft 1.?
 		"ACACIA_DOOR", // Minecraft 1.8
@@ -646,7 +640,6 @@ public class MConf extends Entity<MConf>
 	);
 	
 	// Interacting with these materials placed in the terrain results in opening a container.
-	@EditorVisible(false)
 	public BackstringEnumSet<Material> materialsContainer = new BackstringEnumSet<Material>(Material.class,
 		"DISPENSER", // Minecraft 1.?
 		"CHEST", // Minecraft 1.?
@@ -681,14 +674,12 @@ public class MConf extends Entity<MConf>
 	);
 	
 	// Interacting with these entities results in an edit.
-	@EditorVisible(false)
 	public BackstringEnumSet<EntityType> entityTypesEditOnInteract = new BackstringEnumSet<EntityType>(EntityType.class,
 		"ITEM_FRAME", // Minecraft 1.?
 		"ARMOR_STAND" // Minecraft 1.8
 	);
 	
 	// Damaging these entities results in an edit.
-	@EditorVisible(false)
 	public BackstringEnumSet<EntityType> entityTypesEditOnDamage = new BackstringEnumSet<EntityType>(EntityType.class,
 		"ITEM_FRAME", // Minecraft 1.?
 		"ARMOR_STAND", // Minecraft 1.8
@@ -696,14 +687,12 @@ public class MConf extends Entity<MConf>
 	);
 	
 	// Interacting with these entities results in opening a container.
-	@EditorVisible(false)
 	public BackstringEnumSet<EntityType> entityTypesContainer = new BackstringEnumSet<EntityType>(EntityType.class,
 		"MINECART_CHEST", // Minecraft 1.?
 		"MINECART_HOPPER" // Minecraft 1.?
 	);
 	
 	// The complete list of entities considered to be monsters.
-	@EditorVisible(false)
 	public BackstringEnumSet<EntityType> entityTypesMonsters = new BackstringEnumSet<EntityType>(EntityType.class,
 		"BLAZE", // Minecraft 1.?
 		"CAVE_SPIDER", // Minecraft 1.?
@@ -736,7 +725,6 @@ public class MConf extends Entity<MConf>
 	);
 	
 	// List of entities considered to be animals.
-	@EditorVisible(false)
 	public BackstringEnumSet<EntityType> entityTypesAnimals = new BackstringEnumSet<EntityType>(EntityType.class,
 		"BAT", // Minecraft 1.?
 		"CHICKEN", // Minecraft 1.?

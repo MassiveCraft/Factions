@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import org.bukkit.ChatColor;
 
 import com.massivecraft.factions.Factions;
-import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.cmd.req.ReqHasntFaction;
 import com.massivecraft.factions.entity.Faction;
@@ -15,7 +14,6 @@ import com.massivecraft.factions.event.EventFactionsCreate;
 import com.massivecraft.factions.event.EventFactionsMembershipChange;
 import com.massivecraft.factions.event.EventFactionsMembershipChange.MembershipChangeReason;
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.command.type.primitive.TypeString;
 import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.store.MStore;
@@ -29,14 +27,13 @@ public class CmdFactionsCreate extends FactionsCommand
 	public CmdFactionsCreate()
 	{
 		// Aliases
-		this.addAliases("create", "new");
+		this.addAliases("new");
 
 		// Parameters
 		this.addParameter(TypeString.get(), "name");
 
 		// Requirements
 		this.addRequirements(ReqHasntFaction.get());
-		this.addRequirements(RequirementHasPerm.get(Perm.CREATE));
 	}
 
 	// -------------------------------------------- //

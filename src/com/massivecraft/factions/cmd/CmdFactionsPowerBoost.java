@@ -1,14 +1,12 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Factions;
-import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.cmd.type.TypeFaction;
 import com.massivecraft.factions.cmd.type.TypeMPlayer;
-import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.entity.Faction;
+import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.command.Parameter;
-import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.command.type.primitive.TypeDouble;
 import com.massivecraft.massivecore.command.type.primitive.TypeString;
 
@@ -27,16 +25,10 @@ public class CmdFactionsPowerBoost extends FactionsCommand
 	
 	public CmdFactionsPowerBoost()
 	{
-		// Aliases
-		this.addAliases("powerboost");
-
 		// Parameters
 		this.addParameter(TypeString.get(), "p|f|player|faction");
 		this.addParameter(parameterMplayer);
 		this.addParameter(TypeDouble.get(), "#");
-
-		// Requirements
-		this.addRequirements(RequirementHasPerm.get(Perm.POWERBOOST));
 	}
 
 	// -------------------------------------------- //
