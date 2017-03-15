@@ -36,7 +36,9 @@ public class EngineFlagSpawn extends Engine
 		"CHUNK_GEN",
 		"OCELOT_BABY",
 		"NETHER_PORTAL",
-		"MOUNT"
+		"MOUNT",
+		"REINFORCEMENTS",
+		"VILLAGE_INVASION"
 	);
 
 	// -------------------------------------------- //
