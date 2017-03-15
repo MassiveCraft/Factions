@@ -35,6 +35,10 @@ public enum Rel implements Colorized, Named
 		"an ally", "allies", "an allied faction", "allied factions",
 		"Ally"
 	) { @Override public ChatColor getColor() { return MConf.get().colorAlly; } },
+	SISTER(
+		"a sister", "sisters", "a sister faction", "sister factions",
+		"Sister"
+	) { @Override public ChatColor getColor() { return MConf.get().colorSister; } },
 	
 	RECRUIT(
 		"a recruit in your faction", "recruits in your faction", "", "",
@@ -50,6 +54,12 @@ public enum Rel implements Colorized, Named
 		"an officer in your faction", "officers in your faction", "", "",
 		"Officer", "Moderator"
 	) { @Override public String getPrefix() { return MConf.get().prefixOfficer; } },
+	
+	COLEADER
+	(
+		"a coleader in your faction", "coleaders in your faction", "", "",
+		"Coleader"
+	) { @Override public String getPrefix() { return MConf.get().prefixColeader; } },
 	
 	LEADER(
 		"your faction leader", "your faction leader", "", "",
@@ -138,7 +148,8 @@ public enum Rel implements Colorized, Named
 	{
 		return this.isAtLeast(TRUCE);
 	}
-	
+		
+
 	public String getPrefix()
 	{
 		return "";

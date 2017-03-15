@@ -41,8 +41,11 @@ public class CmdFactions extends FactionsCommand
 	public CmdFactionsRank cmdFactionsRank = new CmdFactionsRank();
 	public CmdFactionsRankOld cmdFactionsRankOldLeader = new CmdFactionsRankOld("leader");
 	public CmdFactionsRankOld cmdFactionsRankOldOwner = new CmdFactionsRankOld("owner");
+	public CmdFactionsRankOld cmdFactionsRankOldColeader = new CmdFactionsRankOld("coleader");
 	public CmdFactionsRankOld cmdFactionsRankOldOfficer = new CmdFactionsRankOld("officer");
 	public CmdFactionsRankOld cmdFactionsRankOldModerator = new CmdFactionsRankOld("moderator");
+	public CmdFactionsRankOld cmdFactionsRankOldMember = new CmdFactionsRankOld("member");
+	public CmdFactionsRankOld cmdFactionsRankOldRecruit = new CmdFactionsRankOld("recruit");
 	public CmdFactionsRankOld cmdFactionsRankOldPromote = new CmdFactionsRankOld("promote");
 	public CmdFactionsRankOld cmdFactionsRankOldDemote = new CmdFactionsRankOld("demote");
 	public CmdFactionsMoney cmdFactionsMoney = new CmdFactionsMoney();
@@ -54,6 +57,7 @@ public class CmdFactions extends FactionsCommand
 	public CmdFactionsUnclaim cmdFactionsUnclaim = new CmdFactionsUnclaim();
 	public CmdFactionsAccess cmdFactionsAccess = new CmdFactionsAccess();
 	public CmdFactionsRelation cmdFactionsRelation = new CmdFactionsRelation();
+	public CmdFactionsRelationOld cmdFactionsRelationOldSister = new CmdFactionsRelationOld("sister");
 	public CmdFactionsRelationOld cmdFactionsRelationOldAlly = new CmdFactionsRelationOld("ally");
 	public CmdFactionsRelationOld cmdFactionsRelationOldTruce = new CmdFactionsRelationOld("truce");
 	public CmdFactionsRelationOld cmdFactionsRelationOldNeutral = new CmdFactionsRelationOld("neutral");
@@ -98,8 +102,11 @@ public class CmdFactions extends FactionsCommand
 		this.addChild(this.cmdFactionsRank);
 		this.addChild(this.cmdFactionsRankOldLeader);
 		this.addChild(this.cmdFactionsRankOldOwner);
+		this.addChild(this.cmdFactionsRankOldColeader);
 		this.addChild(this.cmdFactionsRankOldOfficer);
 		this.addChild(this.cmdFactionsRankOldModerator);
+		this.addChild(this.cmdFactionsRankOldMember);
+		this.addChild(this.cmdFactionsRankOldRecruit);
 		this.addChild(this.cmdFactionsRankOldPromote);
 		this.addChild(this.cmdFactionsRankOldDemote);
 		this.addChild(this.cmdFactionsMoney);
@@ -110,6 +117,7 @@ public class CmdFactions extends FactionsCommand
 		this.addChild(this.cmdFactionsUnclaim);
 		this.addChild(this.cmdFactionsAccess);
 		this.addChild(this.cmdFactionsRelation);
+		this.addChild(this.cmdFactionsRelationOldSister);
 		this.addChild(this.cmdFactionsRelationOldAlly);
 		this.addChild(this.cmdFactionsRelationOldTruce);
 		this.addChild(this.cmdFactionsRelationOldNeutral);

@@ -10,7 +10,7 @@ public class TypeRelation extends TypeRel
 
 	private static TypeRelation i = new TypeRelation();
 	public static TypeRelation get() { return i; }
-	public TypeRelation() { this.setAll(Rel.NEUTRAL, Rel.TRUCE, Rel.ALLY, Rel.ENEMY); }
+	public TypeRelation() { this.setAll(Rel.NEUTRAL, Rel.TRUCE, Rel.ALLY, Rel.SISTER, Rel.ENEMY); }
 	
 	// -------------------------------------------- //
 	// OVERRIDE
