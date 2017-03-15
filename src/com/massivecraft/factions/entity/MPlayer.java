@@ -10,8 +10,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.massivecraft.factions.EconomyParticipator;
 import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.FactionsParticipator;
 import com.massivecraft.factions.Lang;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
@@ -20,8 +20,8 @@ import com.massivecraft.factions.event.EventFactionsChunkChangeType;
 import com.massivecraft.factions.event.EventFactionsChunksChange;
 import com.massivecraft.factions.event.EventFactionsDisband;
 import com.massivecraft.factions.event.EventFactionsMembershipChange;
-import com.massivecraft.factions.event.EventFactionsRemovePlayerMillis;
 import com.massivecraft.factions.event.EventFactionsMembershipChange.MembershipChangeReason;
+import com.massivecraft.factions.event.EventFactionsRemovePlayerMillis;
 import com.massivecraft.factions.mixin.PowerMixin;
 import com.massivecraft.factions.util.RelationUtil;
 import com.massivecraft.massivecore.mixin.MixinSenderPs;
@@ -34,7 +34,7 @@ import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.Txt;
 import com.massivecraft.massivecore.xlib.gson.annotations.SerializedName;
 
-public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipator
+public class MPlayer extends SenderEntity<MPlayer> implements FactionsParticipator
 {
 	// -------------------------------------------- //
 	// META
@@ -393,6 +393,7 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 	// FIELD: powerBoost
 	// -------------------------------------------- //
 
+	@Override
 	public double getPowerBoost()
 	{
 		Double ret = this.powerBoost;
@@ -400,6 +401,7 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 		return ret;
 	}
 
+	@Override
 	public void setPowerBoost(Double powerBoost)
 	{
 		// Clean input

@@ -17,16 +17,15 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.massivecraft.factions.EconomyParticipator;
 import com.massivecraft.factions.FactionEqualsPredicate;
 import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.FactionsParticipator;
 import com.massivecraft.factions.Lang;
 import com.massivecraft.factions.PredicateRole;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.RelationParticipator;
 import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.factions.util.RelationUtil;
-import com.massivecraft.massivecore.Named;
 import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.collections.MassiveMapDef;
 import com.massivecraft.massivecore.collections.MassiveSet;
@@ -44,7 +43,7 @@ import com.massivecraft.massivecore.util.IdUtil;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.Txt;
 
-public class Faction extends Entity<Faction> implements EconomyParticipator, Named
+public class Faction extends Entity<Faction> implements FactionsParticipator
 {
 	// -------------------------------------------- //
 	// META
@@ -401,7 +400,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator, Nam
 	// -------------------------------------------- //
 	
 	// RAW
-	
+	@Override
 	public double getPowerBoost()
 	{
 		Double ret = this.powerBoost;
@@ -409,6 +408,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator, Nam
 		return ret;
 	}
 	
+	@Override
 	public void setPowerBoost(Double powerBoost)
 	{
 		// Clean input
@@ -942,12 +942,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator, Nam
 			ret += mplayer.getPower();
 		}
 		
-		double factionPowerMax = MConf.get().factionPowerMax;
-		if (factionPowerMax > 0 && ret > factionPowerMax)
-		{
-			ret = factionPowerMax;
-		}
-		
+		ret = this.limitWithPowerMax(ret);
 		ret += this.getPowerBoost();
 		
 		return ret;
@@ -963,15 +958,18 @@ public class Faction extends Entity<Faction> implements EconomyParticipator, Nam
 			ret += mplayer.getPowerMax();
 		}
 		
-		double factionPowerMax = MConf.get().factionPowerMax;
-		if (factionPowerMax > 0 && ret > factionPowerMax)
-		{
-			ret = factionPowerMax;
-		}
-		
+		ret = this.limitWithPowerMax(ret);
 		ret += this.getPowerBoost();
 		
 		return ret;
+	}
+	
+	private double limitWithPowerMax(double power)
+	{
+		// NOTE: 0.0 powerMax means there is no max power
+		double powerMax = MConf.get().factionPowerMax;
+		
+		return powerMax <= 0 || power < powerMax ? power : powerMax;
 	}
 	
 	public int getPowerRounded()

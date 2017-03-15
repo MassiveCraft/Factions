@@ -59,7 +59,10 @@ permissions:
   factions.perm.set: {description: set perms, default: false}
   factions.perm.show: {description: show perms, default: false}
   factions.player: {description: show player information}
-  factions.powerboost: {description: set powerboost, default: false}
+  factions.powerboost: {description: manage powerboost, default: false}
+  factions.powerboost.faction: {description: show faction powerboost, default: false}
+  factions.powerboost.player: {description: show player powerboost, default: false}
+  factions.powerboost.set: {description: set powerboost, default: false}
   factions.rank: {description: manage/show ranks, default: false}
   factions.rank.show: {description: show rank, default: false}
   factions.rank.action: {description: change rank, default: false}
@@ -147,6 +150,9 @@ permissions:
       factions.perm.show: true
       factions.player: true
       factions.powerboost: true
+      factions.powerboost.faction: true
+      factions.powerboost.player: true
+      factions.powerboost.set: true
       factions.promote: true
       factions.relation: true
       factions.relation.list: true
@@ -188,7 +194,7 @@ permissions:
     default: false
     children:
       factions.kit.rank1: true
-      factions.powerboost: true
+      factions.powerboost.set: true
       factions.join.others: true
       factions.leader.any: true
       factions.officer.any: true
@@ -253,6 +259,9 @@ permissions:
       factions.perm.show: true
       factions.player: true
       factions.promote: true
+      factions.powerboost: true
+      factions.powerboost.faction: true
+      factions.powerboost.player: true
       factions.rank: true
       factions.rank.show: true
       factions.rank.action: true
