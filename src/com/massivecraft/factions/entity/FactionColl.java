@@ -107,21 +107,36 @@ public class FactionColl extends Coll<Faction>
 		faction.setFlag(MFlag.getFlagInfpower(), true);
 		faction.setFlag(MFlag.getFlagPowerloss(), true);
 		faction.setFlag(MFlag.getFlagPvp(), true);
-		faction.setFlag(MFlag.getFlagFriendlyire(), false);
+		faction.setFlag(MFlag.getFlagFriendlyire(), true);
 		faction.setFlag(MFlag.getFlagMonsters(), true);
 		faction.setFlag(MFlag.getFlagAnimals(), true);
 		faction.setFlag(MFlag.getFlagExplosions(), true);
 		faction.setFlag(MFlag.getFlagOfflineexplosions(), true);
 		faction.setFlag(MFlag.getFlagFirespread(), true);
-		faction.setFlag(MFlag.getFlagEndergrief(), true);
-		faction.setFlag(MFlag.getFlagZombiegrief(), true);
+		faction.setFlag(MFlag.getFlagEndergrief(), false);
+		faction.setFlag(MFlag.getFlagZombiegrief(), false);
 		
-		faction.setPermittedRelations(MPerm.getPermBuild(), Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
-		faction.setPermittedRelations(MPerm.getPermDoor(), Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
-		faction.setPermittedRelations(MPerm.getPermContainer(), Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
-		faction.setPermittedRelations(MPerm.getPermButton(), Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
-		faction.setPermittedRelations(MPerm.getPermLever(), Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
-		faction.setPermittedRelations(MPerm.getPermDeposit(), Rel.LEADER, Rel.OFFICER); // Wilderness deposit should be limited as an anti spam meassure.
+		faction.setPermittedRelations(MPerm.getPermBuild(), Rel.LEADER, Rel.COLEADER, Rel.OFFICER, Rel.MEMBER, Rel.SISTER, Rel.RECRUIT, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
+		faction.setPermittedRelations(MPerm.getPermTrusted(), Rel.LEADER, Rel.COLEADER, Rel.OFFICER, Rel.MEMBER, Rel.SISTER, Rel.RECRUIT, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
+		faction.setPermittedRelations(MPerm.getPermDoor(), Rel.LEADER, Rel.COLEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.SISTER, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
+		faction.setPermittedRelations(MPerm.getPermContainer(), Rel.LEADER, Rel.COLEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.SISTER, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
+		faction.setPermittedRelations(MPerm.getPermButton(), Rel.LEADER, Rel.COLEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.SISTER, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
+		faction.setPermittedRelations(MPerm.getPermLever(), Rel.LEADER, Rel.COLEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.SISTER, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
+		faction.setPermittedRelations(MPerm.getPermName(), Rel.LEADER);
+		faction.setPermittedRelations(MPerm.getPermDesc(), Rel.LEADER, Rel.COLEADER);
+		faction.setPermittedRelations(MPerm.getPermMotd(), Rel.LEADER, Rel.COLEADER);
+		faction.setPermittedRelations(MPerm.getPermInvite(), Rel.LEADER, Rel.COLEADER, Rel.OFFICER);
+		faction.setPermittedRelations(MPerm.getPermKick(), Rel.LEADER, Rel.COLEADER, Rel.OFFICER);
+		faction.setPermittedRelations(MPerm.getPermTitle(), Rel.LEADER, Rel.COLEADER, Rel.OFFICER);
+		faction.setPermittedRelations(MPerm.getPermHome(), Rel.LEADER, Rel.COLEADER, Rel.OFFICER, Rel.MEMBER);
+		faction.setPermittedRelations(MPerm.getPermSethome(), Rel.LEADER, Rel.COLEADER);
+		faction.setPermittedRelations(MPerm.getPermDeposit(), Rel.LEADER, Rel.COLEADER, Rel.OFFICER);
+		faction.setPermittedRelations(MPerm.getPermWithdraw(), Rel.LEADER, Rel.COLEADER);
+		faction.setPermittedRelations(MPerm.getPermTerritory(), Rel.LEADER, Rel.COLEADER, Rel.OFFICER);
+		faction.setPermittedRelations(MPerm.getPermAccess(), Rel.LEADER, Rel.COLEADER, Rel.OFFICER);
+		faction.setPermittedRelations(MPerm.getPermRel(), Rel.LEADER, Rel.COLEADER, Rel.OFFICER);
+		faction.setPermittedRelations(MPerm.getPermDisband(), Rel.LEADER);
+		faction.setPermittedRelations(MPerm.getPermPerms(), Rel.LEADER, Rel.COLEADER, Rel.OFFICER);
 		
 		return faction;
 	}
@@ -152,11 +167,27 @@ public class FactionColl extends Coll<Faction>
 		faction.setFlag(MFlag.getFlagEndergrief(), false);
 		faction.setFlag(MFlag.getFlagZombiegrief(), false);
 		
-		faction.setPermittedRelations(MPerm.getPermDoor(), Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
-		faction.setPermittedRelations(MPerm.getPermContainer(), Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
-		faction.setPermittedRelations(MPerm.getPermButton(), Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
-		faction.setPermittedRelations(MPerm.getPermLever(), Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
-		faction.setPermittedRelations(MPerm.getPermTerritory(), Rel.LEADER, Rel.OFFICER, Rel.MEMBER);
+		faction.setPermittedRelations(MPerm.getPermBuild(), Rel.LEADER, Rel.COLEADER, Rel.OFFICER, Rel.MEMBER);
+		faction.setPermittedRelations(MPerm.getPermTrusted(), Rel.LEADER, Rel.COLEADER, Rel.OFFICER);
+		faction.setPermittedRelations(MPerm.getPermDoor(), Rel.LEADER, Rel.COLEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT);
+		faction.setPermittedRelations(MPerm.getPermContainer(), Rel.LEADER, Rel.COLEADER, Rel.OFFICER, Rel.MEMBER);
+		faction.setPermittedRelations(MPerm.getPermButton(), Rel.LEADER, Rel.COLEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.SISTER, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
+		faction.setPermittedRelations(MPerm.getPermLever(), Rel.LEADER, Rel.COLEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.SISTER, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
+		faction.setPermittedRelations(MPerm.getPermName(), Rel.LEADER);
+		faction.setPermittedRelations(MPerm.getPermDesc(), Rel.LEADER, Rel.COLEADER);
+		faction.setPermittedRelations(MPerm.getPermMotd(), Rel.LEADER, Rel.COLEADER);
+		faction.setPermittedRelations(MPerm.getPermInvite(), Rel.LEADER, Rel.COLEADER, Rel.OFFICER);
+		faction.setPermittedRelations(MPerm.getPermKick(), Rel.LEADER, Rel.COLEADER);
+		faction.setPermittedRelations(MPerm.getPermTitle(), Rel.LEADER, Rel.COLEADER);
+		faction.setPermittedRelations(MPerm.getPermHome(), Rel.LEADER, Rel.COLEADER, Rel.OFFICER, Rel.MEMBER);
+		faction.setPermittedRelations(MPerm.getPermSethome(), Rel.LEADER, Rel.COLEADER);
+		faction.setPermittedRelations(MPerm.getPermDeposit(), Rel.LEADER, Rel.COLEADER, Rel.OFFICER);
+		faction.setPermittedRelations(MPerm.getPermWithdraw(), Rel.LEADER, Rel.COLEADER);
+		faction.setPermittedRelations(MPerm.getPermTerritory(), Rel.LEADER, Rel.COLEADER, Rel.OFFICER);
+		faction.setPermittedRelations(MPerm.getPermAccess(), Rel.LEADER, Rel.COLEADER, Rel.OFFICER);
+		faction.setPermittedRelations(MPerm.getPermRel(), Rel.LEADER, Rel.COLEADER, Rel.OFFICER);
+		faction.setPermittedRelations(MPerm.getPermDisband(), Rel.LEADER, Rel.COLEADER, Rel.OFFICER);
+		faction.setPermittedRelations(MPerm.getPermPerms(), Rel.LEADER, Rel.COLEADER, Rel.OFFICER);
 		
 		return faction;
 	}
@@ -187,11 +218,27 @@ public class FactionColl extends Coll<Faction>
 		faction.setFlag(MFlag.getFlagEndergrief(), true);
 		faction.setFlag(MFlag.getFlagZombiegrief(), true);
 		
-		faction.setPermittedRelations(MPerm.getPermDoor(), Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
-		faction.setPermittedRelations(MPerm.getPermContainer(), Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
-		faction.setPermittedRelations(MPerm.getPermButton(), Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
-		faction.setPermittedRelations(MPerm.getPermLever(), Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
-		faction.setPermittedRelations(MPerm.getPermTerritory(), Rel.LEADER, Rel.OFFICER, Rel.MEMBER);
+		faction.setPermittedRelations(MPerm.getPermBuild(), Rel.LEADER, Rel.COLEADER, Rel.OFFICER, Rel.MEMBER);
+		faction.setPermittedRelations(MPerm.getPermTrusted(), Rel.LEADER, Rel.COLEADER, Rel.OFFICER);
+		faction.setPermittedRelations(MPerm.getPermDoor(), Rel.LEADER, Rel.COLEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY, Rel.SISTER, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
+		faction.setPermittedRelations(MPerm.getPermContainer(), Rel.LEADER, Rel.COLEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY, Rel.SISTER, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
+		faction.setPermittedRelations(MPerm.getPermButton(), Rel.LEADER, Rel.COLEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY, Rel.SISTER, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
+		faction.setPermittedRelations(MPerm.getPermLever(), Rel.LEADER, Rel.COLEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY, Rel.SISTER, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY);
+		faction.setPermittedRelations(MPerm.getPermName(), Rel.LEADER);
+		faction.setPermittedRelations(MPerm.getPermDesc(), Rel.LEADER, Rel.COLEADER);
+		faction.setPermittedRelations(MPerm.getPermMotd(), Rel.LEADER, Rel.COLEADER);
+		faction.setPermittedRelations(MPerm.getPermInvite(), Rel.LEADER, Rel.COLEADER, Rel.OFFICER);
+		faction.setPermittedRelations(MPerm.getPermKick(), Rel.LEADER, Rel.COLEADER);
+		faction.setPermittedRelations(MPerm.getPermTitle(), Rel.LEADER, Rel.COLEADER);
+		faction.setPermittedRelations(MPerm.getPermHome(), Rel.LEADER, Rel.COLEADER, Rel.OFFICER, Rel.MEMBER);
+		faction.setPermittedRelations(MPerm.getPermSethome(), Rel.LEADER, Rel.COLEADER);
+		faction.setPermittedRelations(MPerm.getPermDeposit(), Rel.LEADER, Rel.COLEADER, Rel.OFFICER);
+		faction.setPermittedRelations(MPerm.getPermWithdraw(), Rel.LEADER, Rel.COLEADER);
+		faction.setPermittedRelations(MPerm.getPermTerritory(), Rel.LEADER, Rel.COLEADER, Rel.OFFICER);
+		faction.setPermittedRelations(MPerm.getPermAccess(), Rel.LEADER, Rel.COLEADER, Rel.OFFICER);
+		faction.setPermittedRelations(MPerm.getPermRel(), Rel.LEADER, Rel.COLEADER, Rel.OFFICER);
+		faction.setPermittedRelations(MPerm.getPermDisband(), Rel.LEADER, Rel.COLEADER, Rel.OFFICER);
+		faction.setPermittedRelations(MPerm.getPermPerms(), Rel.LEADER, Rel.COLEADER, Rel.OFFICER);
 		
 		return faction;
 	}

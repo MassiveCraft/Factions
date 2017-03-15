@@ -56,6 +56,12 @@
             <groupId>com.griefcraft</groupId>
             <artifactId>lwc</artifactId>
         </dependency>
+		<dependency>
+			<groupId>net.ess3</groupId>
+			<artifactId>EssentialsX</artifactId>
+			<version>2.01</version>
+			<type>jar</type>
+		</dependency>
     </dependencies>
 
     <!-- Build -->

@@ -1,9 +1,9 @@
 main: ${project.groupId}.${project.name}
 name: ${project.name}
 version: ${project.version}
-website: ${project.url}
-description: ${project.description}
-authors: [Cayorion, Madus, Ulumulu1510, MarkehMe, Brettflan]
+website: https://github.com/imaBASKET
+description: A forked version of MassiveCraft Factions. Improved for a more competitive style of play.
+authors: [imaBASKET]
 depend: [MassiveCore]
 softdepend: [PermissionsEx, Permissions, Essentials, EssentialsChat, HeroChat, iChat, LocalAreaChat, LWC, nChat, ChatManager, AuthMe, Vault, Spout, WorldEdit, WorldGuard, AuthDB, CaptureThePoints, CombatTag]
 permissions:
