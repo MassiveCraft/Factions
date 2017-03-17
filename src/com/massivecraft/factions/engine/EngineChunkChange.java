@@ -8,6 +8,12 @@ import java.util.Set;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerVelocityEvent;
+import org.bukkit.entity.EntityType;
+import org.bukkit.command.CommandSender;
+
 
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.entity.BoardColl;
@@ -18,6 +24,7 @@ import com.massivecraft.factions.entity.MFlag;
 import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.event.EventFactionsChunksChange;
+import com.massivecraft.factions.event.EventFactionsAbstractSender;
 import com.massivecraft.massivecore.Engine;
 import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.collections.MassiveSet;
@@ -99,7 +106,7 @@ public class EngineChunkChange extends Engine
 				event.setCancelled(true);
 				return;
 			}
-
+			
 			// ... ensure the new faction has enough players to claim ...
 			if (newFaction.getMPlayers().size() < MConf.get().claimsRequireMinFactionMembers)
 			{
@@ -255,5 +262,5 @@ public class EngineChunkChange extends Engine
 			// ... otherwise you may claim from this old faction even though you lack explicit permission from them.
 		}
 	}
-
+	
 }

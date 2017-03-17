@@ -30,6 +30,7 @@ public class MPerm extends Entity<MPerm> implements Prioritized, Registerable, N
 	
 	public final static transient String ID_BUILD = "build";
 	public final static transient String ID_TRUSTED = "trusted";
+	public final static transient String ID_FLY = "fly";
 	public final static transient String ID_PAINBUILD = "painbuild";
 	public final static transient String ID_DOOR = "door";
 	public final static transient String ID_BUTTON = "button";
@@ -57,6 +58,7 @@ public class MPerm extends Entity<MPerm> implements Prioritized, Registerable, N
 
 	public final static transient int PRIORITY_BUILD = 1000;
 	public final static transient int PRIORITY_TRUSTED = 1500;
+	public final static transient int PRIORITY_FLY = 1200;
 	public final static transient int PRIORITY_PAINBUILD = 2000;
 	public final static transient int PRIORITY_DOOR = 3000;
 	public final static transient int PRIORITY_BUTTON = 4000;
@@ -108,6 +110,7 @@ public class MPerm extends Entity<MPerm> implements Prioritized, Registerable, N
 	{
 		getPermBuild();
 		getPermTrusted();
+		getPermFly();
 		getPermPainbuild();
 		getPermDoor();
 		getPermButton();
@@ -135,6 +138,7 @@ public class MPerm extends Entity<MPerm> implements Prioritized, Registerable, N
 	}
 	
 	public static MPerm getPermBuild() { return getCreative(PRIORITY_BUILD, ID_BUILD, ID_BUILD, "", MUtil.set(Rel.LEADER, Rel.COLEADER, Rel.OFFICER, Rel.MEMBER, Rel.SISTER), true, true, true); }
+	public static MPerm getPermFly() { return getCreative(PRIORITY_FLY, ID_FLY, ID_FLY, "", MUtil.set(Rel.LEADER, Rel.COLEADER, Rel.OFFICER, Rel.MEMBER, Rel.SISTER), true, true, true); }
 	public static MPerm getPermTrusted() { return getCreative(PRIORITY_TRUSTED, ID_TRUSTED, ID_TRUSTED, "", MUtil.set(Rel.LEADER, Rel.COLEADER, Rel.OFFICER, Rel.TRUCE, Rel.NEUTRAL, Rel.ENEMY), true, false, true); }
 	public static MPerm getPermPainbuild() { return getCreative(PRIORITY_PAINBUILD, ID_PAINBUILD, ID_PAINBUILD, "", new LinkedHashSet<Rel>(), false, false, false); }
 	public static MPerm getPermDoor() { return getCreative(PRIORITY_DOOR, ID_DOOR, ID_DOOR, "", MUtil.set(Rel.LEADER, Rel.COLEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.SISTER, Rel.ALLY), true, true, true); }
@@ -366,6 +370,20 @@ public class MPerm extends Entity<MPerm> implements Prioritized, Registerable, N
 		
 		if (verboose) mplayer.message(this.createDeniedMessage(mplayer, hostFaction));
 		
+		return false;
+	}
+	
+	public boolean hasfly(MPlayer mplayer, Faction hostFaction, boolean verboose)
+	{
+		// Null Check
+		if (mplayer == null) throw new NullPointerException("mplayer");
+		if (hostFaction == null) throw new NullPointerException("hostFaction");
+		
+		if (mplayer.isOverriding()) return true;
+		
+		Rel rel = mplayer.getRelationTo(hostFaction);
+		if (hostFaction.isPermitted(this, rel)) return true;
+				
 		return false;
 	}
 	

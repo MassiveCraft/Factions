@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 
 import com.massivecraft.factions.Const;
 import com.massivecraft.factions.TerritoryAccess;
@@ -19,6 +20,8 @@ import com.massivecraft.massivecore.mixin.MixinTitle;
 import com.massivecraft.massivecore.ps.PS;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.Txt;
+import com.massivecraft.factions.entity.MPerm;
+
 
 public class EngineMoveChunk extends Engine
 {
@@ -53,6 +56,7 @@ public class EngineMoveChunk extends Engine
 		// ... and send info onwards.
 		this.moveChunkTerritoryInfo(mplayer, player, chunkFrom, chunkTo, factionFrom, factionTo);
 		this.moveChunkAutoClaim(mplayer, chunkTo);
+		this.canFly(mplayer, player, factionTo);
 	}
 
 	// -------------------------------------------- //
@@ -133,5 +137,24 @@ public class EngineMoveChunk extends Engine
 		// ... try claim.
 		mplayer.tryClaim(autoClaimFaction, Collections.singletonList(chunkTo));
 	}
-
+	
+	public void canFly(MPlayer mplayer, Player player, Faction factionTo)
+	{
+		PS ps = PS.valueOf(player.getLocation()).getChunk(true);
+		
+		if (mplayer.isOverriding()) return;
+		
+		if (MPerm.getPermFly().hasfly(mplayer, factionTo, true))
+		{
+			player.setAllowFlight(true);
+			return;
+		}
+		else
+		{
+			player.setAllowFlight(false);
+			player.setFlying(false);
+			return;
+		}
+	}
+	
 }
