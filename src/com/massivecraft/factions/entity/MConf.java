@@ -270,12 +270,15 @@ public class MConf extends Entity<MConf>
 	// Is the home teleport command available?
 	// One reason you might set this to false is if you only want players going home on respawn after death.
 	public boolean homesTeleportCommandEnabled = true;
+	public boolean flyEnabled = true;
 	
 	// These options can be used to limit rights to tp home under different circumstances.
 	public boolean homesTeleportAllowedFromEnemyTerritory = true;
 	public boolean homesTeleportAllowedFromDifferentWorld = true;
 	public double homesTeleportAllowedEnemyDistance = 0.0;
+	public double flyAllowedEnemyDistance = 64.0;
 	public boolean homesTeleportIgnoreEnemiesIfInOwnTerritory = true;
+	public boolean flyIgnoreEnemiesIfInOwnTerritory = false;
 	
 	// Should players teleport to faction home on death?
 	// Set this to true to override the default respawn location.

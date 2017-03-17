@@ -33,6 +33,7 @@ public class MFlag extends Entity<MFlag> implements Prioritized, Registerable, N
 	public final static transient String ID_PERMANENT = "permanent";
 	public final static transient String ID_PEACEFUL = "peaceful";
 	public final static transient String ID_INFPOWER = "infpower";
+	public final static transient String ID_FLY = "infpower";
 	
 	public final static transient int PRIORITY_OPEN = 1_000;
 	public final static transient int PRIORITY_MONSTERS = 2_000;
@@ -49,6 +50,7 @@ public class MFlag extends Entity<MFlag> implements Prioritized, Registerable, N
 	public final static transient int PRIORITY_PERMANENT = 13_000;
 	public final static transient int PRIORITY_PEACEFUL = 14_000;
 	public final static transient int PRIORITY_INFPOWER = 15_000;
+	public final static transient int PRIORITY_FLY = 16_000;
 	
 	// -------------------------------------------- //
 	// META: CORE
@@ -88,6 +90,7 @@ public class MFlag extends Entity<MFlag> implements Prioritized, Registerable, N
 		getFlagPermanent();
 		getFlagPeaceful();
 		getFlagInfpower();
+		getFlagFly();
 	}
 	
 	public static MFlag getFlagOpen() { return getCreative(PRIORITY_OPEN, ID_OPEN, ID_OPEN, "Can the faction be joined without an invite?", "Anyone can join. No invite required.", "An invite is required to join.", false, true, true); }
@@ -105,6 +108,7 @@ public class MFlag extends Entity<MFlag> implements Prioritized, Registerable, N
 	public static MFlag getFlagPermanent() { return getCreative(PRIORITY_PERMANENT, ID_PERMANENT, ID_PERMANENT, "Is the faction immune to deletion?", "The faction can NOT be deleted.", "The faction can be deleted.", false, false, false); }
 	public static MFlag getFlagPeaceful() { return getCreative(PRIORITY_PEACEFUL, ID_PEACEFUL, ID_PEACEFUL, "Is the faction in truce with everyone?", "The faction is in truce with everyone.", "The faction relations work as usual.", false, false, false); }
 	public static MFlag getFlagInfpower() { return getCreative(PRIORITY_INFPOWER, ID_INFPOWER, ID_INFPOWER, "Does the faction have infinite power?", "The faction has infinite power.", "The faction power works as usual.", false, false, false); }
+	public static MFlag getFlagFly() { return getCreative(PRIORITY_FLY, ID_FLY, ID_FLY, "Is fly on for everyone?", "The faction has infinite power.", "The faction power works as usual.", false, false, false); }
 	
 	public static MFlag getCreative(int priority, String id, String name, String desc, String descYes, String descNo, boolean standard, boolean editable, boolean visible)
 	{

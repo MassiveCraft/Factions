@@ -5,11 +5,13 @@ import java.util.List;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.Location;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
 import com.massivecraft.factions.Const;
+import com.massivecraft.factions.cmd.CmdFactionsFly;
 import com.massivecraft.factions.TerritoryAccess;
 import com.massivecraft.factions.entity.BoardColl;
 import com.massivecraft.factions.entity.Faction;
@@ -52,11 +54,13 @@ public class EngineMoveChunk extends Engine
 
 		Faction factionFrom = BoardColl.get().getFactionAt(chunkFrom);
 		Faction factionTo = BoardColl.get().getFactionAt(chunkTo);
+		Faction factionHere = BoardColl.get().getFactionAt(PS.valueOf(player.getLocation()));
+		Location locationHere = player.getLocation().clone();
 
 		// ... and send info onwards.
 		this.moveChunkTerritoryInfo(mplayer, player, chunkFrom, chunkTo, factionFrom, factionTo);
 		this.moveChunkAutoClaim(mplayer, chunkTo);
-		this.canFly(mplayer, player, factionTo);
+		this.canFly(mplayer, player, factionTo, locationHere, factionHere);
 	}
 
 	// -------------------------------------------- //
@@ -138,12 +142,18 @@ public class EngineMoveChunk extends Engine
 		mplayer.tryClaim(autoClaimFaction, Collections.singletonList(chunkTo));
 	}
 	
-	public void canFly(MPlayer mplayer, Player player, Faction factionTo)
+	public void canFly(MPlayer mplayer, Player player, Faction factionTo, Location locationHere, Faction factionHere)
 	{
+		if (mplayer.isOverriding())
+		{
+			player.setAllowFlight(true);
+			return;
+		}
+		
+		if ( ! CmdFactionsFly.flyradius(mplayer, player, factionHere, locationHere, factionTo, true)) return;
+		
 		PS ps = PS.valueOf(player.getLocation()).getChunk(true);
-		
-		if (mplayer.isOverriding()) return;
-		
+			
 		if (MPerm.getPermFly().hasfly(mplayer, factionTo, true))
 		{
 			player.setAllowFlight(true);
