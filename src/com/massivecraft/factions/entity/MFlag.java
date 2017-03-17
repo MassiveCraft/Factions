@@ -2,6 +2,8 @@ package com.massivecraft.factions.entity;
 
 import java.util.List;
 
+import org.bukkit.ChatColor;
+
 import com.massivecraft.factions.event.EventFactionsCreateFlags;
 import com.massivecraft.massivecore.Named;
 import com.massivecraft.massivecore.Prioritized;
@@ -249,62 +251,51 @@ public class MFlag extends Entity<MFlag> implements Prioritized, Registerable, N
 	
 	public String getStateDesc(boolean value, boolean withValue, boolean monospaceValue, boolean withName, boolean withDesc, boolean specificDesc)
 	{
-		List<String> parts = new MassiveList<String>();
+		// Create
+		List<String> ret = new MassiveList<>();
 		
-		if (withValue)
-		{
-			if (monospaceValue)
-			{
-				parts.add(Txt.parse(value ? "<g>YES" : "<b>NOO"));
-			}
-			else
-			{
-				parts.add(Txt.parse(value ? "<g>YES" : "<b>NO"));
-			}
-		}
+		// Fill
+		if (withValue) ret.add(getStateValue(value, monospaceValue));
+		if (withName) ret.add(this.getStateName());
+		if (withDesc) ret.add(this.getStateDescription(value, specificDesc));
 		
-		if (withName)
-		{
-			String nameFormat;
-			if ( ! this.isVisible())
-			{
-				nameFormat = "<silver>%s";
-			}
-			else if (this.isEditable())
-			{
-				nameFormat = "<pink>%s";
-			}
-			else
-			{
-				nameFormat = "<aqua>%s";
-			}
-			String name = this.getName();
-			String nameDesc = Txt.parse(nameFormat, name);
-			parts.add(nameDesc);
-		}
-		
-		if (withDesc)
-		{
-			String desc;
-			if (specificDesc)
-			{
-				desc = value ? this.getDescYes() : this.getDescNo();
-			}
-			else
-			{
-				desc = this.getDesc();
-			}
-			String descDesc = Txt.parse("<i>%s", desc);
-			parts.add(descDesc);
-		}
-		
-		return Txt.implode(parts, " ");
+		// Return
+		return Txt.implode(ret, " ");
 	}
 	
-	@Deprecated
-	public String getStateInfo(boolean value, boolean withDesc)
+	private static String getStateValue(boolean value, boolean monoSpace)
 	{
-		return this.getStateDesc(value, true, true, true, true, false);
+		String yes = "<g>YES";
+		String no = monoSpace ? "<b>NOO" : "<b>NO";
+		
+		return Txt.parse(value ? yes : no);
+	}
+	
+	private String getStateName()
+	{
+		return this.getStateColor().toString() + this.getName();
+	}
+	
+	private ChatColor getStateColor()
+	{
+		// Is special?
+		if (!this.isVisible()) return ChatColor.GRAY;
+		if (this.isEditable()) return ChatColor.LIGHT_PURPLE;
+		
+		// Return normal
+		return ChatColor.AQUA;
+	}
+	
+	private String getStateDescription(boolean value, boolean specific)
+	{
+		// Create
+		String desc = this.getDesc();
+		
+		// Is specific?
+		if (specific) desc = value ? this.getDescYes() : this.getDescNo();
+		
+		// Return
+		return Txt.parse("<i>%s", desc);
 	}
 	
 }
