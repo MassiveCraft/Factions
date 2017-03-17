@@ -85,13 +85,17 @@ public class MPlayerColl extends SenderColl<MPlayer>
 	
 	public void clean()
 	{
+		// For each player ...
 		for (MPlayer mplayer : this.getAll())
 		{
+			// ... who doesn't have a valid faction ...
 			String factionId = mplayer.getFactionId();
 			if (FactionColl.get().containsId(factionId)) continue;
 			
+			// ... reset their faction data ...
 			mplayer.resetFactionData();
 			
+			// ... and log.
 			String message = Txt.parse("<i>Reset data for <h>%s <i>. Unknown factionId <h>%s", mplayer.getDisplayName(IdUtil.getConsole()), factionId);
 			Factions.get().log(message);
 		}
@@ -112,8 +116,10 @@ public class MPlayerColl extends SenderColl<MPlayer>
 			@Override
 			public void run()
 			{
+				// For each offline player ...
 				for (MPlayer mplayer : mplayersOffline)
 				{
+					// ... see if they should be removed.
 					mplayer.considerRemovePlayerMillis(true);
 				}
 			}

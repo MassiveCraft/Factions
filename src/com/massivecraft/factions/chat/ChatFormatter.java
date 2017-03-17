@@ -2,9 +2,7 @@ package com.massivecraft.factions.chat;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -31,72 +29,6 @@ public class ChatFormatter
 	public final static String ESC_SEPARATOR = "\\"+SEPARATOR;
 	
 	public final static Pattern pattern = Pattern.compile(ESC_START+"([^"+ESC_START+ESC_END+"]+)"+ESC_END);
-	
-	// -------------------------------------------- //
-	// TAG REGISTER
-	// -------------------------------------------- //
-	
-	private final static Map<String, ChatTag> idToTag = new HashMap<String, ChatTag>();
-	public static ChatTag getTag(String tagId) { return idToTag.get(tagId); }
-	public static boolean registerTag(ChatTag tag)
-	{
-		if (tag == null) throw new NullPointerException("tag");
-		
-		String id = tag.getId();
-		if (id == null) throw new NullPointerException("tag id");
-		if (!id.equals(id.toLowerCase()))
-		{
-			throw new IllegalArgumentException("tag id must be lowercase");
-		}
-		
-		ChatTag current = idToTag.get(id);
-		if (current != null)
-		{
-			return current.equals(tag);
-		}
-		
-		idToTag.put(id, tag);
-		return true;
-	}
-	
-	public static boolean unregisterTag(ChatTag tag)
-	{
-		if (tag == null) return false;
-		return idToTag.remove(tag.getId()) != null;
-	}
-	
-	// -------------------------------------------- //
-	// MODIFIER REGISTER
-	// -------------------------------------------- //
-	
-	private final static Map<String, ChatModifier> idToModifier = new HashMap<String, ChatModifier>();
-	public static ChatModifier getModifier(String modifierId) { return idToModifier.get(modifierId); }
-	public static boolean registerModifier(ChatModifier modifier)
-	{
-		if (modifier == null) throw new NullPointerException("modifier");
-		
-		String id = modifier.getId();
-		if (id == null) throw new NullPointerException("modifier id");
-		if (!id.equals(id.toLowerCase()))
-		{
-			throw new IllegalArgumentException("modifier id must be lowercase");
-		}
-		
-		ChatModifier current = idToModifier.get(id);
-		if (current != null)
-		{
-			return current.equals(modifier);
-		}
-		
-		idToModifier.put(id, modifier);
-		return true;
-	}
-	
-	public static boolean unregisterModifier(ChatModifier modifier)
-	{
-		if (modifier == null) return false;
-		return idToModifier.remove(modifier.getId()) != null;
-	}
 	
 	// -------------------------------------------- //
 	// FORMAT
@@ -127,7 +59,7 @@ public class ChatFormatter
 			String tagId = modifierIds.remove(0);
 			
 			// Fetch tag for the id
-			ChatTag tag = getTag(tagId);
+			ChatTag tag = ChatTag.getTag(tagId);
 			
 			String replacement;
 			if (tag == null)
@@ -167,7 +99,7 @@ public class ChatFormatter
 		for (String modifierId : modifierIds)
 		{
 			// Find the modifier or skip
-			ChatModifier modifier = getModifier(modifierId);
+			ChatModifier modifier = ChatModifier.getModifier(modifierId);
 			if (modifier == null) continue;
 			
 			// Modify and ignore change if null.

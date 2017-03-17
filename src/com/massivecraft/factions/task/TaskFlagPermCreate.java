@@ -8,26 +8,31 @@ import com.massivecraft.massivecore.util.TimeUnit;
 public class TaskFlagPermCreate extends ModuloRepeatTask
 {
 	// -------------------------------------------- //
+	// CONSTANTS
+	// -------------------------------------------- //
+	
+	private static final long MILLIS_INTERVAL = TimeUnit.MILLIS_PER_SECOND * 3;
+	
+	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
 	private static TaskFlagPermCreate i = new TaskFlagPermCreate();
 	public static TaskFlagPermCreate get() { return i; }
 	
-	// -------------------------------------------- //
-	// OVERRIDE: MODULO REPEAT TASK
-	// -------------------------------------------- //
-	
-	@Override
-	public long getDelayMillis()
+	public TaskFlagPermCreate()
 	{
-		return TimeUnit.MILLIS_PER_SECOND * 3;
+		super(MILLIS_INTERVAL);
 	}
+	
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
 	
 	@Override
 	public void setDelayMillis(long delayMillis)
 	{
-		
+		// No operation
 	}
 	
 	@Override

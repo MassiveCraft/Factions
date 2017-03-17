@@ -36,7 +36,7 @@ public class MFlagColl extends Coll<MFlag>
 	public void setActive(boolean active)
 	{
 		super.setActive(active);
-		if ( ! active) return;
+		if (!active) return;
 		MFlag.setupStandardFlags();
 	}
 	
@@ -46,12 +46,17 @@ public class MFlagColl extends Coll<MFlag>
 	
 	public List<MFlag> getAll(boolean registered)
 	{
+		// Create
 		List<MFlag> ret = new ArrayList<MFlag>();
+		
+		// Fill
 		for (MFlag mflag : this.getAll())
 		{
 			if (mflag.isRegistered() != registered) continue;
 			ret.add(mflag);
 		}
+		
+		// Return
 		return ret;
 	}
 	

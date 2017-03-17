@@ -207,25 +207,25 @@ public class Factions extends MassivePlugin
 			TaskPlayerPowerUpdate.class,
 			TaskPlayerDataRemove.class,
 			TaskEconLandReward.class,
-			TaskFlagPermCreate.class
+			TaskFlagPermCreate.class,
+				
+			// ChatModifiers
+			ChatModifierLc.class,
+			ChatModifierLp.class,
+			ChatModifierParse.class,
+			ChatModifierRp.class,
+			ChatModifierUc.class,
+			ChatModifierUcf.class,
+				
+			// ChatTags,
+			ChatTagRelcolor.class,
+			ChatTagRole.class,
+			ChatTagRoleprefix.class,
+			ChatTagRoleprefixforce.class,
+			ChatTagName.class,
+			ChatTagNameforce.class,
+			ChatTagTitle.class
 		);
-		
-		// Register built in chat modifiers
-		ChatModifierLc.get().register();
-		ChatModifierLp.get().register();
-		ChatModifierParse.get().register();
-		ChatModifierRp.get().register();
-		ChatModifierUc.get().register();
-		ChatModifierUcf.get().register();
-		
-		// Register built in chat tags
-		ChatTagRelcolor.get().register();
-		ChatTagRole.get().register();
-		ChatTagRoleprefix.get().register();
-		ChatTagRoleprefixforce.get().register();
-		ChatTagName.get().register();
-		ChatTagNameforce.get().register();
-		ChatTagTitle.get().register();
 	}
 	
 	public GsonBuilder getGsonBuilderWithoutPreprocessors()
