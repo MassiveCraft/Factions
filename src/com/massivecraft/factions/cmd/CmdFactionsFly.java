@@ -53,7 +53,8 @@ public class CmdFactionsFly
 	{
 		if ( ! MConf.get().flyEnabled)
 		{
-			mplayer.msg("<b>Sorry, the ability to fly is disabled on this server.");
+			player.setAllowFlight(false);
+			player.setFlying(false);
 			return false;
 		}
 				
