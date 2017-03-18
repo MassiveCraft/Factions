@@ -39,7 +39,21 @@ public class EngineCanCombatHappen extends Engine
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void canCombatDamageHappen(EntityDamageByEntityEvent event)
 	{
-		if (this.canCombatDamageHappen(event, true)) return;
+		if (this.canCombatDamageHappen(event, true))
+		{
+			Entity edefender = event.getEntity();
+			if (MUtil.isntPlayer(edefender)) return;
+			Player defender = (Player)edefender;
+			Entity eattacker = MUtil.getLiableDamager(event);
+			if (eattacker != null && eattacker.equals(edefender)) return;
+			Player attacker = (Player)eattacker;
+			
+			defender.setAllowFlight(false);
+			defender.setFlying(false);
+			attacker.setAllowFlight(false);
+			attacker.setFlying(false);
+			return;
+		}
 		event.setCancelled(true);
 
 		Entity damager = event.getDamager();
@@ -112,7 +126,12 @@ public class EngineCanCombatHappen extends Engine
 
 		// ... fast evaluate if the attacker is overriding ...
 		MPlayer mplayer = MPlayer.get(eattacker);
-		if (mplayer != null && mplayer.isOverriding()) return true;
+		if (mplayer != null && mplayer.isOverriding()) 
+		{
+			defender.setAllowFlight(false);
+			defender.setFlying(false);
+			return true;
+		}
 		
 		// ... PVP flag may cause a damage block ...
 		if (defenderPsFaction.getFlag(MFlag.getFlagPvp()) == false)
@@ -142,7 +161,14 @@ public class EngineCanCombatHappen extends Engine
 		MPlayer uattacker = MPlayer.get(attacker);
 		
 		// ... does this player bypass all protection? ...
-		if (MConf.get().playersWhoBypassAllProtection.contains(attacker.getName())) return true;
+		if (MConf.get().playersWhoBypassAllProtection.contains(attacker.getName()))
+		{
+			defender.setAllowFlight(false);
+			defender.setFlying(false);
+			attacker.setAllowFlight(false);
+			attacker.setFlying(false);
+			return true;
+		}
 
 		// ... gather attacker PS and faction information ...
 		PS attackerPs = PS.valueOf(attacker.getLocation());
@@ -159,7 +185,14 @@ public class EngineCanCombatHappen extends Engine
 		}
 
 		// ... are PVP rules completely ignored in this world? ...
-		if (!MConf.get().worldsPvpRulesEnabled.contains(defenderPs.getWorld())) return true;
+		if (!MConf.get().worldsPvpRulesEnabled.contains(defenderPs.getWorld()))
+		{
+			defender.setAllowFlight(false);
+			defender.setFlying(false);
+			attacker.setAllowFlight(false);
+			attacker.setFlying(false);
+			return true;
+		}
 
 		Faction defendFaction = mdefender.getFaction();
 		Faction attackFaction = uattacker.getFaction();
@@ -174,7 +207,10 @@ public class EngineCanCombatHappen extends Engine
 		{
 			if (defenderPsFaction == attackFaction && MConf.get().enablePVPAgainstFactionlessInAttackersLand)
 			{
-				// Allow PVP vs. Factionless in attacker's faction territory
+				defender.setAllowFlight(false);
+				defender.setFlying(false);
+				attacker.setAllowFlight(false);
+				attacker.setFlying(false);
 				return true;
 			}
 			else if (MConf.get().disablePVPForFactionlessPlayers)
@@ -186,6 +222,10 @@ public class EngineCanCombatHappen extends Engine
 			else if (attackFaction.isNone() && MConf.get().enablePVPBetweenFactionlessPlayers)
 			{
 				// Allow factionless vs factionless
+				defender.setAllowFlight(false);
+				defender.setFlying(false);
+				attacker.setAllowFlight(false);
+				attacker.setFlying(false);
 				return true;
 			}
 		}
@@ -199,21 +239,11 @@ public class EngineCanCombatHappen extends Engine
 			if (!ret && notify) uattacker.msg("<i>You can't hurt %s<i>.", relation.getDescPlayerMany());
 			return ret;
 		}
-
-		// You can not hurt neutrals in their own territory.
-		boolean ownTerritory = mdefender.isInOwnTerritory();
 		
-		if (mdefender.hasFaction() && ownTerritory && relation == Rel.NEUTRAL)
-		{
-			ret = falseUnlessDisallowedPvpEventCancelled(attacker, defender, DisallowCause.OWN_TERRITORY, event);
-			if (!ret && notify)
-			{
-				uattacker.msg("<i>You can't hurt %s<i> in their own territory unless you declare them as an enemy.", mdefender.describeTo(uattacker));
-				mdefender.msg("%s<i> tried to hurt you.", uattacker.describeTo(mdefender, true));
-			}
-			return ret;
-		}
-
+		defender.setAllowFlight(false);
+		defender.setFlying(false);
+		attacker.setAllowFlight(false);
+		attacker.setFlying(false);
 		return true;
 	}
 
