@@ -4,11 +4,16 @@ import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.entity.Player;
+import org.bukkit.GameMode;
 import org.bukkit.event.EventHandler;
 import org.bukkit.Location;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.event.entity.EntityTeleportEvent;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.event.player.PlayerToggleFlightEvent;
 
 import com.massivecraft.factions.Const;
 import com.massivecraft.factions.cmd.CmdFactionsFly;
@@ -56,6 +61,7 @@ public class EngineMoveChunk extends Engine
 		Faction factionTo = BoardColl.get().getFactionAt(chunkTo);
 		Faction factionHere = BoardColl.get().getFactionAt(PS.valueOf(player.getLocation()));
 		Location locationHere = player.getLocation().clone();
+		Faction moveto = BoardColl.get().getFactionAt(PS.valueOf(event.getTo()));
 
 		// ... and send info onwards.
 		this.moveChunkTerritoryInfo(mplayer, player, chunkFrom, chunkTo, factionFrom, factionTo);
@@ -141,21 +147,43 @@ public class EngineMoveChunk extends Engine
 		// ... try claim.
 		mplayer.tryClaim(autoClaimFaction, Collections.singletonList(chunkTo));
 	}
-	
+		
 	public void canFly(MPlayer mplayer, Player player, Faction factionTo, Location locationHere, Faction factionHere)
+	{		
+		if ( ! CmdFactionsFly.flyradius(mplayer, player, factionHere, locationHere, factionTo, true)) return;
+	}
+	
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	public void flyCheckOnMove(PlayerMoveEvent event)
 	{
+		Player player = event.getPlayer();
+		if (MUtil.isntPlayer(player)) return;
+
+		// ... gather info on the player and the move ...
+		MPlayer mplayer = MPlayer.get(player);
+
+		PS chunkFrom = PS.valueOf(event.getFrom()).getChunk(true);
+		PS chunkTo = PS.valueOf(event.getTo()).getChunk(true);
+
+		Faction factionFrom = BoardColl.get().getFactionAt(chunkFrom);
+		Faction factionTo = BoardColl.get().getFactionAt(chunkTo);
+		Faction factionHere = BoardColl.get().getFactionAt(PS.valueOf(player.getLocation()));
+		Location locationHere = player.getLocation().clone();
+
+		if (player.getGameMode() == GameMode.CREATIVE) return;
+		
 		if (mplayer.isOverriding())
 		{
 			player.setAllowFlight(true);
 			return;
 		}
-		
-		if ( ! CmdFactionsFly.flyradius(mplayer, player, factionHere, locationHere, factionTo, true)) return;
-		
+				
 		PS ps = PS.valueOf(player.getLocation()).getChunk(true);
 			
 		if (MPerm.getPermFly().hasfly(mplayer, factionTo, true))
 		{
+			if ( ! CmdFactionsFly.flyradius(mplayer, player, factionHere, locationHere, factionTo, true)) return;
+			
 			player.setAllowFlight(true);
 			return;
 		}

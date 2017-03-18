@@ -11,6 +11,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.projectiles.ProjectileSource;
+import org.bukkit.GameMode;
 
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.entity.BoardColl;
@@ -45,8 +46,12 @@ public class EngineCanCombatHappen extends Engine
 			if (MUtil.isntPlayer(edefender)) return;
 			Player defender = (Player)edefender;
 			Entity eattacker = MUtil.getLiableDamager(event);
+			if (MUtil.isntPlayer(eattacker)) return;
 			if (eattacker != null && eattacker.equals(edefender)) return;
 			Player attacker = (Player)eattacker;
+			
+			if (attacker.getGameMode() == GameMode.CREATIVE) return;
+			if (defender.getGameMode() == GameMode.CREATIVE) return;
 			
 			defender.setAllowFlight(false);
 			defender.setFlying(false);
@@ -126,12 +131,7 @@ public class EngineCanCombatHappen extends Engine
 
 		// ... fast evaluate if the attacker is overriding ...
 		MPlayer mplayer = MPlayer.get(eattacker);
-		if (mplayer != null && mplayer.isOverriding()) 
-		{
-			defender.setAllowFlight(false);
-			defender.setFlying(false);
-			return true;
-		}
+		if (mplayer != null && mplayer.isOverriding()) return true;
 		
 		// ... PVP flag may cause a damage block ...
 		if (defenderPsFaction.getFlag(MFlag.getFlagPvp()) == false)
@@ -161,14 +161,7 @@ public class EngineCanCombatHappen extends Engine
 		MPlayer uattacker = MPlayer.get(attacker);
 		
 		// ... does this player bypass all protection? ...
-		if (MConf.get().playersWhoBypassAllProtection.contains(attacker.getName()))
-		{
-			defender.setAllowFlight(false);
-			defender.setFlying(false);
-			attacker.setAllowFlight(false);
-			attacker.setFlying(false);
-			return true;
-		}
+		if (MConf.get().playersWhoBypassAllProtection.contains(attacker.getName())) return true;
 
 		// ... gather attacker PS and faction information ...
 		PS attackerPs = PS.valueOf(attacker.getLocation());
@@ -185,14 +178,7 @@ public class EngineCanCombatHappen extends Engine
 		}
 
 		// ... are PVP rules completely ignored in this world? ...
-		if (!MConf.get().worldsPvpRulesEnabled.contains(defenderPs.getWorld()))
-		{
-			defender.setAllowFlight(false);
-			defender.setFlying(false);
-			attacker.setAllowFlight(false);
-			attacker.setFlying(false);
-			return true;
-		}
+		if (!MConf.get().worldsPvpRulesEnabled.contains(defenderPs.getWorld())) return true;
 
 		Faction defendFaction = mdefender.getFaction();
 		Faction attackFaction = uattacker.getFaction();
@@ -205,14 +191,7 @@ public class EngineCanCombatHappen extends Engine
 		}
 		else if (defendFaction.isNone())
 		{
-			if (defenderPsFaction == attackFaction && MConf.get().enablePVPAgainstFactionlessInAttackersLand)
-			{
-				defender.setAllowFlight(false);
-				defender.setFlying(false);
-				attacker.setAllowFlight(false);
-				attacker.setFlying(false);
-				return true;
-			}
+			if (defenderPsFaction == attackFaction && MConf.get().enablePVPAgainstFactionlessInAttackersLand) return true;
 			else if (MConf.get().disablePVPForFactionlessPlayers)
 			{
 				ret = falseUnlessDisallowedPvpEventCancelled(attacker, defender, DisallowCause.FACTIONLESS, event);
@@ -222,10 +201,6 @@ public class EngineCanCombatHappen extends Engine
 			else if (attackFaction.isNone() && MConf.get().enablePVPBetweenFactionlessPlayers)
 			{
 				// Allow factionless vs factionless
-				defender.setAllowFlight(false);
-				defender.setFlying(false);
-				attacker.setAllowFlight(false);
-				attacker.setFlying(false);
 				return true;
 			}
 		}
@@ -240,10 +215,6 @@ public class EngineCanCombatHappen extends Engine
 			return ret;
 		}
 		
-		defender.setAllowFlight(false);
-		defender.setFlying(false);
-		attacker.setAllowFlight(false);
-		attacker.setFlying(false);
 		return true;
 	}
 

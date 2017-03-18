@@ -93,7 +93,6 @@ public class CmdFactionsFly
 				if (dx > max || dy > max || dz > max)
 					continue;
 
-				mplayer.msg("<b>You cannot fly while an enemy is within %f blocks of you.", MConf.get().flyAllowedEnemyDistance);
 				player.setAllowFlight(false);
 				player.setFlying(false);
 				return false;
