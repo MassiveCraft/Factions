@@ -96,7 +96,7 @@ public class EngineShow extends Engine
 			// POWER
 			double powerBoost = faction.getPowerBoost();
 			String boost = (powerBoost == 0.0) ? "" : (powerBoost > 0.0 ? " (bonus: " : " (penalty: ") + powerBoost + ")";
-			String powerDesc = Txt.parse("%d/%d/%d%s", faction.getLandCount(), faction.getPowerRounded(), faction.getPowerMaxRounded(), boost);
+			String powerDesc = Txt.parse("<l>%d <n>/ <g>%d <n>/ <b>%d%s", faction.getLandCount(), faction.getPowerRounded(), faction.getPowerMaxRounded(), boost);
 			show(idPriorityLiness, Const.SHOW_ID_FACTION_POWER, Const.SHOW_PRIORITY_FACTION_POWER, "Land / Power / Maxpower", powerDesc);
 
 			// SECTION: ECON
@@ -157,7 +157,7 @@ public class EngineShow extends Engine
 			}
 		}
 
-		String headerOnline = Txt.parse("<a>Followers Online (%s):", followerNamesOnline.size());
+	String headerOnline = Txt.parse("<i>Followers Online (<g>%s<i>):", followerNamesOnline.size());
 		followerLines.add(headerOnline);
 		if (followerNamesOnline.isEmpty())
 		{
@@ -170,7 +170,7 @@ public class EngineShow extends Engine
 
 		if (normal)
 		{
-			String headerOffline = Txt.parse("<a>Followers Offline (%s):", followerNamesOffline.size());
+			String headerOffline = Txt.parse("<i>Followers Offline (<b>%s<i>):", followerNamesOffline.size());
 			followerLines.add(headerOffline);
 			if (followerNamesOffline.isEmpty())
 			{
@@ -186,7 +186,7 @@ public class EngineShow extends Engine
 
 	public static String show(String key, String value)
 	{
-		return Txt.parse("<a>%s: <i>%s", key, value);
+		return Txt.parse("<i>%s: <n>%s", key, value);
 	}
 
 	public static PriorityLines show(int priority, String key, String value)

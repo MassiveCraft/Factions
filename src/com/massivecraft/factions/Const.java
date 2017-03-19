@@ -18,9 +18,9 @@ public class Const
 	public static final String ASPECT = BASENAME;
 	
 	// ASCII Map
-	public static final int MAP_WIDTH = 48;
+	public static final int MAP_WIDTH = 52;
 	public static final int MAP_HEIGHT = 8;
-	public static final int MAP_HEIGHT_FULL = 17;
+	public static final int MAP_HEIGHT_FULL = 19;
 	
 	public static final char[] MAP_KEY_CHARS = "\\/#?ç¬£$%=&^ABCDEFGHJKLMNOPQRSTUVWXYZÄÖÜÆØÅ1234567890abcdeghjmnopqrsuvwxyÿzäöüæøåâêîûô".toCharArray();
 	public static final String MAP_KEY_WILDERNESS = ChatColor.GRAY.toString() + "-";
