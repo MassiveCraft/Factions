@@ -1,11 +1,26 @@
 package com.massivecraft.factions.engine;
 
 import com.massivecraft.factions.Const;
+import com.massivecraft.factions.cmd.type.TypeFaction;
+import com.massivecraft.factions.cmd.type.TypeRelation;
+import com.massivecraft.factions.entity.Faction;
+import com.massivecraft.factions.entity.FactionColl;
+import com.massivecraft.massivecore.MassiveException;
+import com.massivecraft.massivecore.collections.MassiveList;
+import com.massivecraft.massivecore.collections.MassiveSet;
+import com.massivecraft.massivecore.command.Parameter;
+import com.massivecraft.massivecore.command.type.container.TypeSet;
+import com.massivecraft.massivecore.pager.Pager;
+import com.massivecraft.massivecore.pager.Stringifier;
+import com.massivecraft.massivecore.util.Txt;
 import com.massivecraft.factions.PlayerRoleComparator;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.entity.MFlag;
 import com.massivecraft.factions.entity.MPlayer;
+import com.massivecraft.factions.Rel;
+import com.massivecraft.factions.entity.Faction;
+import com.massivecraft.factions.entity.FactionColl;
 import com.massivecraft.factions.event.EventFactionsChunkChangeType;
 import com.massivecraft.factions.event.EventFactionsFactionShowAsync;
 import com.massivecraft.factions.integration.Econ;
@@ -15,6 +30,20 @@ import com.massivecraft.massivecore.money.Money;
 import com.massivecraft.massivecore.util.TimeDiffUtil;
 import com.massivecraft.massivecore.util.TimeUnit;
 import com.massivecraft.massivecore.util.Txt;
+import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.Rel;
+import com.massivecraft.factions.cmd.type.TypeFaction;
+import com.massivecraft.factions.cmd.type.TypeRelation;
+import com.massivecraft.factions.entity.Faction;
+import com.massivecraft.factions.entity.FactionColl;
+import com.massivecraft.massivecore.MassiveException;
+import com.massivecraft.massivecore.collections.MassiveList;
+import com.massivecraft.massivecore.collections.MassiveSet;
+import com.massivecraft.massivecore.command.Parameter;
+import com.massivecraft.massivecore.command.type.container.TypeSet;
+import com.massivecraft.massivecore.pager.Pager;
+import com.massivecraft.massivecore.pager.Stringifier;
+import com.massivecraft.massivecore.util.Txt;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -22,11 +51,13 @@ import org.bukkit.event.EventPriority;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.EnumSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 public class EngineShow extends Engine
 {
@@ -47,8 +78,11 @@ public class EngineShow extends Engine
 		final int tableCols = 4;
 		final CommandSender sender = event.getSender();
 		final MPlayer mplayer = event.getMPlayer();
+		final MPlayer msender = event.getMPlayer();
 		final Faction faction = event.getFaction();
+		final Faction senderfac = msender.getFaction();
 		final boolean normal = faction.isNormal();
+		final boolean peaceful = faction.getFlag(MFlag.getFlagPeaceful());
 		final Map<String, PriorityLines> idPriorityLiness = event.getIdPriorityLiness();
 		String none = Txt.parse("<silver><italic>none");
 
@@ -182,6 +216,37 @@ public class EngineShow extends Engine
 			}
 		}
 		idPriorityLiness.put(Const.SHOW_ID_FACTION_FOLLOWERS, new PriorityLines(Const.SHOW_PRIORITY_FACTION_FOLLOWERS, followerLines));
+		
+
+		// RELATIONS
+		
+		List<String> relationLines = new ArrayList<String>();
+		String everyone = MConf.get().colorTruce.toString() + Txt.parse("<italic>*EVERYONE*");
+		Set<Rel> rels = EnumSet.of(Rel.TRUCE, Rel.ALLY, Rel.SISTER);
+		Map<Rel, List<String>> relNames = FactionColl.get().getRelationNames(faction, rels);
+		for (Entry<Rel, List<String>> entry : relNames.entrySet())
+		{
+			Rel rel = entry.getKey();
+			List<String> names = entry.getValue();
+			String header = Txt.parse("<i>%s to (%d):", Txt.getNicedEnum(rel), names.size());
+			relationLines.add(header);
+			if (rel == Rel.TRUCE && peaceful)
+			{
+				relationLines.add(everyone);
+			}
+			else
+			{
+				if (names.isEmpty())
+				{
+					relationLines.add(none);
+				}
+				else
+				{
+					relationLines.addAll(table(names, tableCols));
+				}
+			}
+		}
+		idPriorityLiness.put(Const.SHOW_ID_FACTION_RELATIONS, new PriorityLines(Const.SHOW_PRIORITY_FACTION_RELATIONS, relationLines));
 	}
 
 	public static String show(String key, String value)
@@ -215,7 +280,7 @@ public class EngineShow extends Engine
 
 			if (iter.hasNext() && count != cols)
 			{
-				row.append(Txt.parse(" <i>| "));
+				row.append(Txt.parse("<n>, "));
 			}
 			else
 			{
