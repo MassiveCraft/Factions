@@ -271,6 +271,7 @@ public class MConf extends Entity<MConf>
 	// One reason you might set this to false is if you only want players going home on respawn after death.
 	public boolean homesTeleportCommandEnabled = true;
 	public boolean flyEnabled = true;
+	public boolean fallDamageDisabled = true;
 	
 	// These options can be used to limit rights to tp home under different circumstances.
 	public boolean homesTeleportAllowedFromEnemyTerritory = true;

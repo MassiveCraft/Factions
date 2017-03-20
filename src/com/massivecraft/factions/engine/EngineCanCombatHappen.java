@@ -9,6 +9,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityCombustByEntityEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.GameMode;
@@ -65,6 +66,22 @@ public class EngineCanCombatHappen extends Engine
 		if ( ! (damager instanceof Arrow)) return;
 
 		damager.remove();
+	}
+	
+	@SuppressWarnings("deprecation")
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void flydamage(EntityDamageEvent event)
+	{
+		if ( ! MConf.get().fallDamageDisabled) return;
+			
+		if (event.getEntity() instanceof Player)
+		{
+			Player player = (Player)event.getEntity();
+			if(event.getCause() == DamageCause.FALL)
+			{
+				event.setCancelled(true);
+			}
+		}
 	}
 
 	// mainly for flaming arrows; don't want allies or people in safe zones to be ignited even after damage event is cancelled
