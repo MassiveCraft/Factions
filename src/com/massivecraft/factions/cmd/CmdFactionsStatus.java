@@ -87,12 +87,12 @@ public class CmdFactionsStatus extends FactionsCommand
 					color = "<red>";
 				}
 			
-				String power = Txt.parse("<art>Power: %s%.0f<gray>/<green>%.0f", Txt.parse(color), currentPower, maxPower);
+				String power = Txt.parse("<i>Power: %s%.0f<gray>/<green>%.0f", Txt.parse(color), currentPower, maxPower);
 				
 				// Time
 				long lastActiveMillis = mplayer.getLastActivityMillis() - System.currentTimeMillis();
 				LinkedHashMap<TimeUnit, Long> activeTimes = TimeDiffUtil.limit(TimeDiffUtil.unitcounts(lastActiveMillis, TimeUnit.getAllButMillis()), 3);
-				String lastActive = mplayer.isOnline(msender) ? Txt.parse("<lime>Online right now.") : Txt.parse("<i>Last active: " + TimeDiffUtil.formatedMinimal(activeTimes, "<i>"));
+				String lastActive = mplayer.isOnline(msender) ? Txt.parse("<lime>Online right now.") : Txt.parse("<n>Last active: " + TimeDiffUtil.formatedMinimal(activeTimes, "<i>"));
 				
 				return Txt.parse("%s%s %s %s", displayName, whiteSpace, power, lastActive);
 			}

@@ -93,7 +93,7 @@ public class EngineShow extends Engine
 		}
 
 		// DESCRIPTION
-		show(idPriorityLiness, Const.SHOW_ID_FACTION_DESCRIPTION, Const.SHOW_PRIORITY_FACTION_DESCRIPTION, "Description", faction.getDescription());
+		show(idPriorityLiness, Const.SHOW_ID_FACTION_DESCRIPTION, Const.SHOW_PRIORITY_FACTION_DESCRIPTION, "Desc", faction.getDescription());
 
 		// SECTION: NORMAL
 		if (normal)
@@ -101,7 +101,7 @@ public class EngineShow extends Engine
 			// AGE
 			long ageMillis = faction.getCreatedAtMillis() - System.currentTimeMillis();
 			LinkedHashMap<TimeUnit, Long> ageUnitcounts = TimeDiffUtil.limit(TimeDiffUtil.unitcounts(ageMillis, TimeUnit.getAllButMillis()), 3);
-			String ageDesc = TimeDiffUtil.formatedVerboose(ageUnitcounts, "<i>");
+			String ageDesc = TimeDiffUtil.formatedVerboose(ageUnitcounts, "<n>");
 			show(idPriorityLiness, Const.SHOW_ID_FACTION_AGE, Const.SHOW_PRIORITY_FACTION_AGE, "Age", ageDesc);
 
 			// FLAGS
@@ -123,14 +123,14 @@ public class EngineShow extends Engine
 			String flagsDesc = Txt.parse("<silver><italic>default");
 			if ( ! flagDescs.isEmpty())
 			{
-				flagsDesc = Txt.implode(flagDescs, Txt.parse(" <i>| "));
+				flagsDesc = Txt.implode(flagDescs, Txt.parse(" <n>| "));
 			}
 			show(idPriorityLiness, Const.SHOW_ID_FACTION_FLAGS, Const.SHOW_PRIORITY_FACTION_FLAGS, "Flags", flagsDesc);
 
 			// POWER
 			double powerBoost = faction.getPowerBoost();
 			String boost = (powerBoost == 0.0) ? "" : (powerBoost > 0.0 ? " (bonus: " : " (penalty: ") + powerBoost + ")";
-			String powerDesc = Txt.parse("<l>%d <n>/ <g>%d <n>/ <b>%d%s", faction.getLandCount(), faction.getPowerRounded(), faction.getPowerMaxRounded(), boost);
+			String powerDesc = Txt.parse("<g>%d <n>/ <g>%d <n>/ <g>%d%s", faction.getLandCount(), faction.getPowerRounded(), faction.getPowerMaxRounded(), boost);
 			show(idPriorityLiness, Const.SHOW_ID_FACTION_POWER, Const.SHOW_PRIORITY_FACTION_POWER, "Land / Power / Maxpower", powerDesc);
 
 			// SECTION: ECON
@@ -191,7 +191,7 @@ public class EngineShow extends Engine
 			}
 		}
 
-	String headerOnline = Txt.parse("<i>Followers Online (<g>%s<i>):", followerNamesOnline.size());
+		String headerOnline = Txt.parse("<i>Followers Online (<g>%s<i>):", followerNamesOnline.size());
 		followerLines.add(headerOnline);
 		if (followerNamesOnline.isEmpty())
 		{
@@ -219,34 +219,36 @@ public class EngineShow extends Engine
 		
 
 		// RELATIONS
-		
-		List<String> relationLines = new ArrayList<String>();
-		String everyone = MConf.get().colorTruce.toString() + Txt.parse("<italic>*EVERYONE*");
-		Set<Rel> rels = EnumSet.of(Rel.TRUCE, Rel.ALLY, Rel.SISTER);
-		Map<Rel, List<String>> relNames = FactionColl.get().getRelationNames(faction, rels);
-		for (Entry<Rel, List<String>> entry : relNames.entrySet())
+		if (normal)
 		{
-			Rel rel = entry.getKey();
-			List<String> names = entry.getValue();
-			String header = Txt.parse("<i>%s to (%d):", Txt.getNicedEnum(rel), names.size());
-			relationLines.add(header);
-			if (rel == Rel.TRUCE && peaceful)
+			List<String> relationLines = new ArrayList<String>();
+			String everyone = MConf.get().colorTruce.toString() + Txt.parse("<italic>*EVERYONE*");
+			Set<Rel> rels = EnumSet.of(Rel.TRUCE, Rel.ALLY, Rel.SISTER);
+			Map<Rel, List<String>> relNames = FactionColl.get().getRelationNames(faction, rels);
+			for (Entry<Rel, List<String>> entry : relNames.entrySet())
 			{
-				relationLines.add(everyone);
-			}
-			else
-			{
-				if (names.isEmpty())
+				Rel rel = entry.getKey();
+				List<String> names = entry.getValue();
+				String header = Txt.parse("<i>%s to (%d):", Txt.getNicedEnum(rel), names.size());
+				relationLines.add(header);
+				if (rel == Rel.TRUCE && peaceful)
 				{
-					relationLines.add(none);
+					relationLines.add(everyone);
 				}
 				else
 				{
-					relationLines.addAll(table(names, tableCols));
+					if (names.isEmpty())
+					{
+						relationLines.add(none);
+					}
+					else
+					{
+						relationLines.addAll(table(names, tableCols));
+					}
 				}
 			}
+			idPriorityLiness.put(Const.SHOW_ID_FACTION_RELATIONS, new PriorityLines(Const.SHOW_PRIORITY_FACTION_RELATIONS, relationLines));
 		}
-		idPriorityLiness.put(Const.SHOW_ID_FACTION_RELATIONS, new PriorityLines(Const.SHOW_PRIORITY_FACTION_RELATIONS, relationLines));
 	}
 
 	public static String show(String key, String value)

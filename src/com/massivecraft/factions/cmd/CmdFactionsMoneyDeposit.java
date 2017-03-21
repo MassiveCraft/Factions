@@ -44,7 +44,7 @@ public class CmdFactionsMoneyDeposit extends FactionsCommand
 		
 		if (success && MConf.get().logMoneyTransactions)
 		{
-			Factions.get().log(ChatColor.stripColor(Txt.parse("%s deposited %s in the faction bank: %s", msender.getName(), Money.format(amount), faction.describeTo(null))));
+			Factions.get().log(ChatColor.stripColor(Txt.parse("<b><bold>(!)<reset> %s deposited %s in the faction bank: %s", msender.getName(), Money.format(amount), faction.describeTo(null))));
 		}
 	}
 	

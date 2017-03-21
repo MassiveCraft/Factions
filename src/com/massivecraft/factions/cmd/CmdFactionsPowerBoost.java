@@ -46,8 +46,8 @@ public class CmdFactionsPowerBoost extends FactionsCommand
 		}
 		else if (!type.equals("p") && !type.equals("player"))
 		{
-			msg("<b>You must specify \"p\" or \"player\" to target a player or \"f\" or \"faction\" to target a faction.");
-			msg("<b>ex. /f powerboost p SomePlayer 0.5  -or-  /f powerboost f SomeFaction -5");
+			msg("<b><bold>(!)<reset> <i>You must specify \"p\" or \"player\" to target a player or \"f\" or \"faction\" to target a faction.");
+			msg("<i>ex. /f powerboost p SomePlayer 0.5  -or-  /f powerboost f SomeFaction -5");
 			return;
 		}
 		

@@ -57,10 +57,10 @@ public abstract class CmdFactionsAccessAbstract extends FactionsCommand
 		title = Txt.titleize(title);
 		message(title);
 		
-		msg("<k>Host Faction: %s", hostFaction.describeTo(msender, true));
-		msg("<k>Host Faction Allowed: %s", ta.isHostFactionAllowed() ? Txt.parse("<lime>TRUE") : Txt.parse("<rose>FALSE"));
-		msg("<k>Granted Players: %s", describeRelationParticipators(ta.getGrantedMPlayers(), msender));
-		msg("<k>Granted Factions: %s", describeRelationParticipators(ta.getGrantedFactions(), msender));
+		msg("<i>Host Faction: <n>%s", hostFaction.describeTo(msender, true));
+		msg("<i>Host Faction Allowed: <n>%s", ta.isHostFactionAllowed() ? Txt.parse("<lime>TRUE") : Txt.parse("<rose>FALSE"));
+		msg("<i>Granted Players: <n>%s", describeRelationParticipators(ta.getGrantedMPlayers(), msender));
+		msg("<i>Granted Factions: <n>%s", describeRelationParticipators(ta.getGrantedFactions(), msender));
 	}
 	
 	public static String describeRelationParticipators(Collection<? extends RelationParticipator> relationParticipators, RelationParticipator observer)
@@ -71,7 +71,7 @@ public abstract class CmdFactionsAccessAbstract extends FactionsCommand
 		{
 			descriptions.add(relationParticipator.describeTo(observer));
 		}
-		return Txt.implodeCommaAnd(descriptions, Txt.parse("<i>, "), Txt.parse(" <i>and "));
+		return Txt.implodeCommaAnd(descriptions, Txt.parse("<n>, "), Txt.parse(" <n>and "));
 	}
 	
 }

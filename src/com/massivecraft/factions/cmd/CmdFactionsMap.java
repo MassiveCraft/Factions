@@ -46,13 +46,13 @@ public class CmdFactionsMap extends FactionsCommand
 			
 			// Turn on
 			msender.setMapAutoUpdating(true);
-			msg("<i>Map auto update <green>ENABLED.");
+			msg("<b><bold>(!)<reset> <i>Map auto update <green>ENABLED.");
 		}
 		else
 		{
 			// Turn off
 			msender.setMapAutoUpdating(false);
-			msg("<i>Map auto update <red>DISABLED.");
+			msg("<b><bold>(!)<reset> <i>Map auto update <red>DISABLED.");
 		}
 	}
 	

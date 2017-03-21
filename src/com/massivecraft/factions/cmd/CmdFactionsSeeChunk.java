@@ -39,7 +39,7 @@ public class CmdFactionsSeeChunk extends FactionsCommand
 		// NoChange
 		if (target == old)
 		{
-			msg("<i>See Chunk is already %s<i>.", targetDesc);
+			msg("<b><bold>(!)<reset> <i>See Chunk is already %s<i>.", targetDesc);
 			return;
 		}
 		
@@ -47,7 +47,7 @@ public class CmdFactionsSeeChunk extends FactionsCommand
 		msender.setSeeingChunk(target);
 		
 		// Inform
-		msg("<i>See Chunk is now %s<i>.", targetDesc);
+		msg("<b><bold>(!)<reset> <i>See Chunk is now %s<i>.", targetDesc);
 	}
 
 }

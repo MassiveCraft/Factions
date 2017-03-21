@@ -71,7 +71,7 @@ public class CmdFactionsSetAuto extends FactionsCommand
 		if (newFaction == null || newFaction == msender.getAutoClaimFaction())
 		{
 			msender.setAutoClaimFaction(null);
-			msg("<i>Disabled auto-setting as you walk around.");
+			msg("<b><bold>(!)<reset> <i>Disabled auto-setting as you walk around.");
 			return;
 		}
 		
@@ -80,7 +80,7 @@ public class CmdFactionsSetAuto extends FactionsCommand
 		
 		// Apply / Inform
 		msender.setAutoClaimFaction(newFaction);
-		msg("<i>Now auto-setting <h>%s<i> land.", newFaction.describeTo(msender));
+		msg("<b><bold>(!)<reset> <i>Now auto-setting <h>%s<i> land.", newFaction.describeTo(msender));
 		
 		// Chunks
 		final PS chunk = PS.valueOf(me.getLocation()).getChunk(true);

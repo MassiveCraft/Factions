@@ -28,8 +28,8 @@ public class CmdFactionsSetFill extends CmdFactionsSetXSimple
 		this.addAliases("fill");
 
 		// Format
-		this.setFormatOne("<h>%s<i> %s <h>%d <i>chunk %s<i> using fill.");
-		this.setFormatMany("<h>%s<i> %s <h>%d <i>chunks near %s<i> using fill.");
+		this.setFormatOne("<b><bold>(!)<reset> <h>%s<i> %s <h>%d <i>chunk %s<i> using fill.");
+		this.setFormatMany("<b><bold>(!)<reset> <h>%s<i> %s <h>%d <i>chunks near %s<i> using fill.");
 		
 		// Requirements
 		this.addRequirements(RequirementIsPlayer.get());
@@ -62,7 +62,7 @@ public class CmdFactionsSetFill extends CmdFactionsSetXSimple
 		// Limit Reached?
 		if (chunks.size() >= max)
 		{
-			msg("<b>Fill limit of <h>%d <b>reached.", max);
+			msg("<b><bold>(!)<reset> <b>Fill limit of <h>%d <b>reached.", max);
 			return null;
 		}
 		

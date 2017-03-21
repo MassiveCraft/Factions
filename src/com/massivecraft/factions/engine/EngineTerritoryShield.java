@@ -54,7 +54,7 @@ public class EngineTerritoryShield extends Engine
 		
 		// ... and inform.
 		String perc = MessageFormat.format("{0,number,#%}", (MConf.get().territoryShieldFactor));
-		mplayer.msg("<i>Enemy damage reduced by <rose>%s<i>.", perc);
+		mplayer.msg("<b><bold>(!)<reset> <i>Enemy damage reduced by <rose>%s<i>.", perc);
 	}
 
 }

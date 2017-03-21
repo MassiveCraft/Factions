@@ -164,31 +164,31 @@ public class CmdFactionsRank extends FactionsCommand
 		// We can at least try to limit their powers.
 		if (endFaction.isNone())
 		{
-			throw new MassiveException().addMsg("%s <b>doesn't use ranks sorry :(", targetFaction.getName() );
+			throw new MassiveException().addMsg("<b><bold>(!)<reset> %s <i>doesn't use ranks sorry :(", targetFaction.getName() );
 		}
 		
 		if (target == msender)
 		{
 			// Don't change your own rank.
-			throw new MassiveException().addMsg("<b>The target player mustn't be yourself.");
+			throw new MassiveException().addMsg("<b><bold>(!)<reset> <i>The target player mustn't be yourself.");
 		}
 		
 		if (targetFaction != msenderFaction)
 		{
 			// Don't change ranks outside of your faction.
-			throw new MassiveException().addMsg("%s <b>is not in the same faction as you.", target.describeTo(msender, true));
+			throw new MassiveException().addMsg("<b><bold>(!)<reset> %s <i>is not in the same faction as you.", target.describeTo(msender, true));
 		}
 		
 		if (factionChange)
 		{
 			// Don't change peoples faction
-			throw new MassiveException().addMsg("<b>You can't change %s's <b>faction.", target.describeTo(msender));
+			throw new MassiveException().addMsg("<b><bold>(!)<reset> <i>You can't change %s's <b>faction.", target.describeTo(msender));
 		}
 
 		if (senderRank.isLessThan(rankReq))
 		{
 			// You need a specific rank to change ranks.
-			throw new MassiveException().addMsg("<b>You must be <h>%s <b>or higher to change ranks.", Txt.getNicedEnum(rankReq).toLowerCase());
+			throw new MassiveException().addMsg("<b><bold>(!)<reset> <i>You must be <h>%s <i>or higher to change ranks.", Txt.getNicedEnum(rankReq).toLowerCase());
 		}
 		
 		// The following two if statements could be merged. 
@@ -196,13 +196,13 @@ public class CmdFactionsRank extends FactionsCommand
 		if (senderRank == targetRank)
 		{
 			// You can't change someones rank if it is equal to yours.
-			throw new MassiveException().addMsg("<h>%s <b>can't manage eachother.", Txt.getNicedEnum(rankReq)+"s");
+			throw new MassiveException().addMsg("<b><bold>(!)<reset> <h>%s <i>can't manage eachother.", Txt.getNicedEnum(rankReq)+"s");
 		}
 		
 		if (senderRank.isLessThan(targetRank))
 		{
 			// You can't change someones rank if it is higher than yours.
-			throw new MassiveException().addMsg("<b>You can't manage people of higher rank.");
+			throw new MassiveException().addMsg("<b><bold>(!)<reset> <i>You can't manage people of higher rank.");
 		}
 		
 		// The following two if statements could be merged. 
@@ -210,13 +210,13 @@ public class CmdFactionsRank extends FactionsCommand
 		if (senderRank == rank && senderRank != Rel.LEADER)
 		{
 			// You can't set ranks equal to your own. Unless you are the leader.
-			throw new MassiveException().addMsg("<b>You can't set ranks equal to your own.");
+			throw new MassiveException().addMsg("<b><bold>(!)<reset> <i>You can't set ranks equal to your own.");
 		}
 		
 		if (senderRank.isLessThan(rank))
 		{
 			// You can't set ranks higher than your own.
-			throw new MassiveException().addMsg("<b>You can't set ranks higher than your own.");
+			throw new MassiveException().addMsg("<b><bold>(!)<reset> <i>You can't set ranks higher than your own.");
 		}
 	}
 	
@@ -225,7 +225,7 @@ public class CmdFactionsRank extends FactionsCommand
 		// Don't change their rank to something they already are.
 		if (target.getRole() == rank)
 		{
-			throw new MassiveException().addMsg("%s <b>is already %s.", target.describeTo(msender), rank.getDescPlayerOne());
+			throw new MassiveException().addMsg("<b><bold>(!)<reset> %s <i>is already %s.", target.describeTo(msender), rank.getDescPlayerOne());
 		}
 	}
 	
@@ -250,12 +250,12 @@ public class CmdFactionsRank extends FactionsCommand
 		if (targetFaction.isNone())
 		{
 			// Wilderness aka none doesn't use ranks
-			msg("%s <i>%s factionless", targetName, isAre);
+			msg("<b><bold>(!)<reset> %s <i>%s factionless", targetName, isAre);
 		}
 		else
 		{
 			// Derp	is a member in Faction
-			msg("%s <i>%s %s <h>%s <i>%s %s<i>.", targetName, isAre, theAan, rankName, ofIn, factionName);
+			msg("<b><bold>(!)<reset> %s <i>%s %s <h>%s <i>%s %s<i>.", targetName, isAre, theAan, rankName, ofIn, factionName);
 		}
 	}
 	
@@ -268,7 +268,7 @@ public class CmdFactionsRank extends FactionsCommand
 		// Don't change a leader to a new faction.
 		if (targetRank == Rel.LEADER)
 		{
-			throw new MassiveException().addMsg("<b>You cannot remove the present leader. Demote them first.");
+			throw new MassiveException().addMsg("<b><bold>(!)<reset> <i>You cannot remove the present leader. Demote them first.");
 		}
 		
 		// Event
@@ -292,13 +292,13 @@ public class CmdFactionsRank extends FactionsCommand
 		// Send message
 		for (MPlayer recipient : recipients)
 		{
-			recipient.msg("%s <i>was moved from <i>%s to <i>%s<i>.", target.describeTo(recipient), targetFaction.describeTo(recipient), endFaction.describeTo(recipient));
+			recipient.msg("<b><bold>(!)<reset> %s <i>was moved from <i>%s to <i>%s<i>.", target.describeTo(recipient), targetFaction.describeTo(recipient), endFaction.describeTo(recipient));
 		}
 		
 		// Derplog
 		if (MConf.get().logFactionJoin)
 		{
-			Factions.get().log(Txt.parse("%s moved %s from %s to %s.", msender.getName(), target.getName(), targetFaction.getName(), endFaction.getName()));
+			Factions.get().log(Txt.parse("<b><bold>(!)<reset> %s <i>moved %s from %s to %s.", msender.getName(), target.getName(), targetFaction.getName(), endFaction.getName()));
 		}
 		
 		// Now we don't need the old values.
@@ -335,7 +335,7 @@ public class CmdFactionsRank extends FactionsCommand
 			if (targetFactionCurrentLeader != msender)
 			{
 				// They kinda know if they fired the command themself.
-				targetFactionCurrentLeader.msg("<i>You have been demoted from the position of faction leader by %s<i>.", msender.describeTo(targetFactionCurrentLeader, true));
+				targetFactionCurrentLeader.msg("<b><bold>(!)<reset> <i>You have been demoted from the position of faction leader by %s<i>.", msender.describeTo(targetFactionCurrentLeader, true));
 			}
 		}
 		
@@ -345,7 +345,7 @@ public class CmdFactionsRank extends FactionsCommand
 		// Inform everyone, this includes sender and target.
 		for (MPlayer recipient : MPlayerColl.get().getAllOnline())
 		{
-			String changerName = senderIsConsole ? "A server admin" : msender.describeTo(recipient);
+			String changerName = senderIsConsole ? "<b><bold>(!)<reset> A server admin" : msender.describeTo(recipient);
 			recipient.msg("%s<i> gave %s<i> the leadership of %s<i>.", changerName, target.describeTo(recipient), targetFaction.describeTo(recipient));
 		}
 	}
@@ -364,7 +364,7 @@ public class CmdFactionsRank extends FactionsCommand
 			{
 				// ... we inform the sender.
 				target.resetFactionData();
-				throw new MassiveException().addMsg("<i>The target was a leader and got demoted. The faction disbanded and no rank was set.");
+				throw new MassiveException().addMsg("<b><bold>(!)<reset> <i>The target was a leader and got demoted. The faction disbanded and no rank was set.");
 			}
 		}
 
@@ -386,7 +386,7 @@ public class CmdFactionsRank extends FactionsCommand
 		{
 			String targetName = target.describeTo(recipient, true);
 			String wasWere = (recipient == target) ? "were" : "was";
-			recipient.msg("%s<i> %s %s from %s to <h>%s <i>in %s<i>.", targetName, wasWere, change, oldRankName, rankName, targetFaction.describeTo(msender));
+			recipient.msg("<b><bold>(!)<reset> %s<i> %s %s from %s to <h>%s <i>in %s<i>.", targetName, wasWere, change, oldRankName, rankName, targetFaction.describeTo(msender));
 		}
 	}
 	

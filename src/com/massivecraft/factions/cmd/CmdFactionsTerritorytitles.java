@@ -48,7 +48,7 @@ public class CmdFactionsTerritorytitles extends FactionsCommand
 		// NoChange
 		if (after == before)
 		{
-			msg("<i>Territory titles is already %s<i>.", desc);
+			msg("<b><bold>(!)<reset> <i>Territory titles is already %s<i>.", desc);
 			return;
 		}
 		
@@ -56,7 +56,7 @@ public class CmdFactionsTerritorytitles extends FactionsCommand
 		msender.setTerritoryInfoTitles(after);
 		
 		// Inform
-		msg("<i>Territory titles is now %s<i>.", desc);
+		msg("<b><bold>(!)<reset> <i>Territory titles is now %s<i>.", desc);
 	}
 	
 }

@@ -63,10 +63,10 @@ public class CmdFactionsName extends FactionsCommand
 		faction.setName(newName);
 
 		// Inform
-		faction.msg("%s<i> changed your faction name to %s", msender.describeTo(faction, true), faction.getName(faction));
+		faction.msg("<b><bold>(!)<reset> %s<i> changed your faction name to %s", msender.describeTo(faction, true), faction.getName(faction));
 		if (msenderFaction != faction)
 		{
-			msg("<i>You changed the faction name to %s", faction.getName(msender));
+			msg("<b><bold>(!)<reset> <i>You changed the faction name to %s", faction.getName(msender));
 		}
 	}
 	

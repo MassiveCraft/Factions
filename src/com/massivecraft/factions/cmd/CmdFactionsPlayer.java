@@ -47,17 +47,17 @@ public class CmdFactionsPlayer extends FactionsCommand
 		}
 		
 		int progressbarWidth = (int) Math.round(mplayer.getPowerMax() / mplayer.getPowerMaxUniversal() * 100);
-		msg("<a>Power: <v>%s", Progressbar.HEALTHBAR_CLASSIC.withQuota(progressbarQuota).withWidth(progressbarWidth).render());
+		msg("<i>Power: <g>%s", Progressbar.HEALTHBAR_CLASSIC.withQuota(progressbarQuota).withWidth(progressbarWidth).render());
 				
 		// INFO: Power (as digits)
-		msg("<a>Power: <v>%.2f / %.2f", mplayer.getPower(), mplayer.getPowerMax());
+		msg("<i>Power: <g>%.2f / %.2f", mplayer.getPower(), mplayer.getPowerMax());
 		
 		// INFO: Power Boost
 		if (mplayer.hasPowerBoost())
 		{
 			double powerBoost = mplayer.getPowerBoost();
 			String powerBoostType = (powerBoost > 0 ? "bonus" : "penalty");
-			msg("<a>Power Boost: <v>%f <i>(a manually granted %s)", powerBoost, powerBoostType);
+			msg("<i>Power Boost: <g>%f <n>(a manually granted %s)", powerBoost, powerBoostType);
 		}
 		
 		// INFO: Power per Hour
@@ -71,25 +71,25 @@ public class CmdFactionsPlayer extends FactionsCommand
 			LinkedHashMap<TimeUnit, Long> unitcountsTillMax = TimeDiffUtil.unitcounts(millisTillMax, TimeUnit.getAllButMillis());
 			unitcountsTillMax = TimeDiffUtil.limit(unitcountsTillMax, 2);
 			String unitcountsTillMaxFormated = TimeDiffUtil.formatedVerboose(unitcountsTillMax, "<i>");
-			stringTillMax = Txt.parse(" <i>(%s <i>left till max)", unitcountsTillMaxFormated);
+			stringTillMax = Txt.parse(" <n>(%s <n>left till max)", unitcountsTillMaxFormated);
 		}
 		
-		msg("<a>Power per Hour: <v>%.2f%s", mplayer.getPowerPerHour(), stringTillMax);
+		msg("<i>Power per Hour: <g>%.2f%s", mplayer.getPowerPerHour(), stringTillMax);
 		
 		// INFO: Power per Death
-		msg("<a>Power per Death: <v>%.2f", mplayer.getPowerPerDeath());
+		msg("<i>Power per Death: <g>%.2f", mplayer.getPowerPerDeath());
 		
 		// Display automatic kick / remove info if the system is in use
 		if (MConf.get().removePlayerMillisDefault <= 0) return;
 		
 		EventFactionsRemovePlayerMillis event = new EventFactionsRemovePlayerMillis(false, mplayer);
 		event.run();
-		msg("<i>Automatic removal after %s <i>of inactivity:", format(event.getMillis()));
+		msg("<b><bold>(!)<reset> <n>Automatic removal after %s <n>of inactivity:", format(event.getMillis()));
 		for (Entry<String, Long> causeMillis : event.getCauseMillis().entrySet())
 		{
 			String cause = causeMillis.getKey();
 			long millis = causeMillis.getValue();
-			msg("<a>%s<a>: <v>%s", cause, format(millis));
+			msg("<i>%s<i>: <g>%s", cause, format(millis));
 		}
 	}
 	

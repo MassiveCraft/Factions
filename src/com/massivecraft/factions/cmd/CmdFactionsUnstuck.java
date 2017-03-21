@@ -45,7 +45,7 @@ public class CmdFactionsUnstuck extends FactionsCommand
 		// ... that isn't free ...
 		if (isFree(msender, center))
 		{
-			msg("<b>You don't seem to be stuck.");
+			msg("<b><bold>(!)<reset> <b>You don't seem to be stuck.");
 			return;
 		}
 		
@@ -53,7 +53,7 @@ public class CmdFactionsUnstuck extends FactionsCommand
 		Location location = getNearestFreeTopLocation(msender, center);
 		if (location == null)
 		{
-			msg("<b>No nearby chunk with %s<b> or build rights found.", FactionColl.get().getNone().describeTo(msender));
+			msg("<b><bold>(!)<reset> <b>No nearby chunk with %s<b> or build rights found.", FactionColl.get().getNone().describeTo(msender));
 			return;
 		}
 		
@@ -65,7 +65,7 @@ public class CmdFactionsUnstuck extends FactionsCommand
 		}
 		catch (TeleporterException e)
 		{
-			msg("<b>%s", e.getMessage());
+			msg("<b><bold>(!)<reset> <b>%s", e.getMessage());
 		}
 	}
 	

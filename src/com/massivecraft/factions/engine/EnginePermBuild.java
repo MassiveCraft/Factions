@@ -70,7 +70,7 @@ public class EnginePermBuild extends Engine
 			if (verboose)
 			{
 				Faction hostFaction = BoardColl.get().getFactionAt(ps);
-				mplayer.msg("<b>It is painful to build in the territory of %s<b>.", hostFaction.describeTo(mplayer));
+				mplayer.msg("<b><bold>(!)<reset> <i>It is painful to build in the territory of %s<b>.", hostFaction.describeTo(mplayer));
 				Player player = mplayer.getPlayer();
 				if (player != null)
 				{

@@ -49,7 +49,7 @@ public class CmdFactionsPermSet extends FactionsCommand
 		// Is this perm editable?
 		if ( ! msender.isOverriding() && ! perm.isEditable())
 		{
-			msg("<b>The perm <h>%s <b>is not editable.", perm.getName());
+			msg("<b><bold>(!)<reset> <b>The perm <h>%s <b>is not editable.", perm.getName());
 			return;
 		}
 		
@@ -62,7 +62,7 @@ public class CmdFactionsPermSet extends FactionsCommand
 		// No change
 		if (faction.getPermitted(perm).contains(rel) == value)
 		{
-			msg("%s <i>already has %s <i>set to %s <i>for %s<i>.", faction.describeTo(msender), perm.getDesc(true, false), Txt.parse(value ? "<g>YES" : "<b>NOO"), rel.getColor() + rel.getDescPlayerMany());
+			msg("<b><bold>(!)<reset> %s <i>already has %s <i>set to %s <i>for %s<i>.", faction.describeTo(msender), perm.getDesc(true, false), Txt.parse(value ? "<g>YES" : "<b>NOO"), rel.getColor() + rel.getDescPlayerMany());
 			return;
 		}
 		
@@ -79,9 +79,9 @@ public class CmdFactionsPermSet extends FactionsCommand
 		List<Object> messages = new ArrayList<>();
 		
 		// Inform sender
-		messages.add(Txt.titleize("Perm for " + faction.describeTo(msender, true)));
+		messages.add(Txt.titleize("Perm for " + faction.describeTo(msender, false)));
 		messages.add(MPerm.getStateHeaders());
-		messages.add(Txt.parse(perm.getStateInfo(faction.getPermitted(perm), true)));
+		messages.add(Txt.parse(perm.getStateInfo(faction.getPermitted(perm), false)));
 		message(messages);
 		
 		// Inform faction (their message is slighly different)
@@ -90,7 +90,7 @@ public class CmdFactionsPermSet extends FactionsCommand
 		
 		for (MPlayer recipient : recipients)
 		{
-			recipient.msg("<h>%s <i>set a perm for <h>%s<i>.", msender.describeTo(recipient, true), faction.describeTo(recipient, true));
+			recipient.msg("<b><bold>(!)<reset> <h>%s <i>set a perm for <h>%s<i>.", msender.describeTo(recipient, true), faction.describeTo(recipient, true));
 			recipient.message(messages);
 		}
 	}

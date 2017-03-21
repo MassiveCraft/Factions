@@ -365,7 +365,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator, Nam
 		if (this.isValidHome(this.home)) return;
 		this.home = null;
 		this.changed();
-		msg("<b>Your faction home has been un-set since it is no longer in your territory.");
+		msg("<b><bold>(!)<reset> <i>Your faction home has been un-set since it is no longer in your territory.");
 	}
 	
 	public boolean isValidHome(PS ps)
@@ -1154,12 +1154,12 @@ public class Faction extends Entity<Faction> implements EconomyParticipator, Nam
 			// no members left and faction isn't permanent, so disband it
 			if (MConf.get().logFactionDisband)
 			{
-				Factions.get().log("The faction "+this.getName()+" ("+this.getId()+") has been disbanded since it has no members left.");
+				Factions.get().log("<b><bold>(!)<reset> The faction "+this.getName()+" ("+this.getId()+") has been disbanded since it has no members left.");
 			}
 
 			for (MPlayer mplayer : MPlayerColl.get().getAllOnline())
 			{
-				mplayer.msg("<i>The faction %s<i> was disbanded.", this.getName(mplayer));
+				mplayer.msg("<b><bold>(!)<reset> <i>The faction %s<i> was disbanded.", this.getName(mplayer));
 			}
 
 			this.detach();
@@ -1173,7 +1173,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator, Nam
 			}
 				
 			replacements.get(0).setRole(Rel.LEADER);
-			this.msg("<i>Faction leader <h>%s<i> has been removed. %s<i> has been promoted as the new faction leader.", oldLeader == null ? "" : oldLeader.getName(), replacements.get(0).getName());
+			this.msg("<b><bold>(!)<reset> <i>Faction leader <h>%s<i> has been removed. %s<i> has been promoted as the new faction leader.", oldLeader == null ? "" : oldLeader.getName(), replacements.get(0).getName());
 			Factions.get().log("Faction "+this.getName()+" ("+this.getId()+") leader was removed. Replacement leader: "+replacements.get(0).getName());
 		}
 	}

@@ -276,7 +276,7 @@ public class MFlag extends Entity<MFlag> implements Prioritized, Registerable, N
 			}
 			else if (this.isEditable())
 			{
-				nameFormat = "<pink>%s";
+				nameFormat = "<yellow>%s";
 			}
 			else
 			{
@@ -298,7 +298,7 @@ public class MFlag extends Entity<MFlag> implements Prioritized, Registerable, N
 			{
 				desc = this.getDesc();
 			}
-			String descDesc = Txt.parse("<i>%s", desc);
+			String descDesc = Txt.parse("<n>%s", desc);
 			parts.add(descDesc);
 		}
 		

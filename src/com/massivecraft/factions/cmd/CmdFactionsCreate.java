@@ -49,7 +49,7 @@ public class CmdFactionsCreate extends FactionsCommand
 		// Verify
 		if (FactionColl.get().isNameTaken(newName))
 		{
-			msg("<b>That name is already in use.");
+			msg("<b><bold>(!)<reset> <i>That name is already in use.");
 			return;
 		}
 		
@@ -80,7 +80,7 @@ public class CmdFactionsCreate extends FactionsCommand
 		// NOTE: join event cannot be cancelled or you'll have an empty faction
 		
 		// Inform
-		msg("<i>You created the faction %s", faction.getName(msender));
+		msg("<b><bold>(!)<reset> <i>You created the faction %s", faction.getName(msender));
 		message(Mson.mson(mson("You should now: ").color(ChatColor.YELLOW), CmdFactions.get().cmdFactionsDescription.getTemplate()));
 
 		// Log

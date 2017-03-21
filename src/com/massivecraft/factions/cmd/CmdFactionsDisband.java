@@ -43,7 +43,7 @@ public class CmdFactionsDisband extends FactionsCommand
 		// Verify
 		if (faction.getFlag(MFlag.getFlagPermanent()))
 		{
-			msg("<i>This faction is designated as permanent, so you cannot disband it.");
+			msg("<b><bold>(!)<reset> <i>This faction is designated as permanent, so you cannot disband it.");
 			return;
 		}
 
@@ -64,18 +64,18 @@ public class CmdFactionsDisband extends FactionsCommand
 		// Inform
 		for (MPlayer mplayer : faction.getMPlayersWhereOnline(true))
 		{
-			mplayer.msg("<h>%s<i> disbanded your faction.", msender.describeTo(mplayer));
+			mplayer.msg("<b><bold>(!)<reset> <h>%s<i> disbanded your faction.", msender.describeTo(mplayer));
 		}
 		
 		if (msenderFaction != faction)
 		{
-			msender.msg("<i>You disbanded <h>%s<i>." , faction.describeTo(msender));
+			msender.msg("<b><bold>(!)<reset> <i>You disbanded <h>%s<i>." , faction.describeTo(msender));
 		}
 		
 		// Log
 		if (MConf.get().logFactionDisband)
 		{
-			Factions.get().log(Txt.parse("<i>The faction <h>%s <i>(<h>%s<i>) was disbanded by <h>%s<i>.", faction.getName(), faction.getId(), msender.getDisplayName(IdUtil.getConsole())));
+			Factions.get().log(Txt.parse("<b><bold>(!)<reset> <i>The faction <h>%s <i>(<h>%s<i>) was disbanded by <h>%s<i>.", faction.getName(), faction.getId(), msender.getDisplayName(IdUtil.getConsole())));
 		}		
 		
 		// Apply

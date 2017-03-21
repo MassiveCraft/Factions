@@ -37,13 +37,13 @@ public abstract class CmdFactionsSetXRadius extends CmdFactionsSetX
 		// Radius Claim Min
 		if (radius < 1)
 		{
-			throw new MassiveException().setMsg("<b>If you specify a radius, it must be at least 1.");
+			throw new MassiveException().setMsg("<b><bold>(!)<reset> <b>If you specify a radius, it must be at least 1.");
 		}
 		
 		// Radius Claim Max
 		if (radius > MConf.get().setRadiusMax && ! msender.isOverriding())
 		{
-			throw new MassiveException().setMsg("<b>The maximum radius allowed is <h>%s<b>.", MConf.get().setRadiusMax);
+			throw new MassiveException().setMsg("<b><bold>(!)<reset> <b>The maximum radius allowed is <h>%s<b>.", MConf.get().setRadiusMax);
 		}
 		
 		return radius;

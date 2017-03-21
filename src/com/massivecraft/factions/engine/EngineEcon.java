@@ -90,7 +90,7 @@ public class EngineEcon extends Engine
 		
 		Econ.transferMoney(faction, mplayer, mplayer, amount, true);
 		
-		mplayer.msg("<i>You have been given the disbanded faction's bank, totaling %s.", amountString);
+		mplayer.msg("<b><bold>(!)<reset> <i>You have been given the disbanded faction's bank, totaling %s.", amountString);
 		Factions.get().log(mplayer.getName() + " has been given bank holdings of "+amountString+" from disbanding "+faction.getName()+".");
 	}
 	

@@ -39,11 +39,11 @@ public class CmdFactionsPermShow extends FactionsCommand
 		// Create messages
 		List<Object> messages = new ArrayList<>();
 
-		messages.add(Txt.titleize("Perm for " + faction.describeTo(msender, true)));
+		messages.add(Txt.titleize("Perm for " + faction.describeTo(msender, false)));
 		messages.add(MPerm.getStateHeaders());
 		for (MPerm mperm : mperms)
 		{
-			messages.add(Txt.parse(mperm.getStateInfo(faction.getPermitted(mperm), true)));
+			messages.add(Txt.parse(mperm.getStateInfo(faction.getPermitted(mperm), false)));
 		}
 		
 		// Send messages

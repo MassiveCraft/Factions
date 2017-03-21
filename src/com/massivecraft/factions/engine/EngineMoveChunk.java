@@ -107,15 +107,15 @@ public class EngineMoveChunk extends Engine
 		{
 			if (hasTerritoryAccessTo == null)
 			{
-				mplayer.msg("<i>You have standard access to this area.");
+				mplayer.msg("<b><bold>(!)<reset> <i>You have standard access to this area.");
 			}
 			else if (hasTerritoryAccessTo)
 			{
-				mplayer.msg("<g>You have elevated access to this area.");
+				mplayer.msg("<b><bold>(!)<reset> <g>You have elevated access to this area.");
 			}
 			else
 			{
-				mplayer.msg("<b>You have decreased access to this area.");
+				mplayer.msg("<b><bold>(!)<reset> <b>You have decreased access to this area.");
 			}
 		}
 	}

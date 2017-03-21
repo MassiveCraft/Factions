@@ -34,7 +34,7 @@ public class CmdFactionsUnsethome extends FactionsCommandHome
 		// NoChange
 		if ( ! faction.hasHome())
 		{
-			msender.msg("<i>%s <i>does already not have a home.", faction.describeTo(msender));
+			msender.msg("<b><bold>(!)<reset> <i>%s <i>does already not have a home.", faction.describeTo(msender));
 			return;
 		}
 		
@@ -47,10 +47,10 @@ public class CmdFactionsUnsethome extends FactionsCommandHome
 		faction.setHome(null);
 		
 		// Inform
-		faction.msg("%s<i> unset the home for your faction.", msender.describeTo(msenderFaction, true));
+		faction.msg("<b><bold>(!)<reset> %s<i> unset the home for your faction.", msender.describeTo(msenderFaction, true));
 		if (faction != msenderFaction)
 		{
-			msender.msg("<i>You have unset the home for " + faction.getName(msender) + "<i>.");
+			msender.msg("<b><bold>(!)<reset> <i>You have unset the home for " + faction.getName(msender) + "<i>.");
 		}
 	}
 	

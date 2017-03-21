@@ -43,11 +43,11 @@ public class CmdFactionsRelationSet extends FactionsCommand
 		// Verify
 		if (otherFaction == msenderFaction)
 		{
-			throw new MassiveException().setMsg("<b>Nope! You can't declare a relation to yourself :)");
+			throw new MassiveException().setMsg("<b><bold>(!)<reset> <b>Nope! You can't declare a relation to yourself :)");
 		}
 		if (msenderFaction.getRelationWish(otherFaction) == newRelation)
 		{
-			throw new MassiveException().setMsg("<b>You already have that relation wish set with %s.", otherFaction.getName());
+			throw new MassiveException().setMsg("<b><bold>(!)<reset> <b>You already have that relation wish set with %s.", otherFaction.getName());
 		}
 		
 		// Event
@@ -63,8 +63,8 @@ public class CmdFactionsRelationSet extends FactionsCommand
 		// if the relation change was successful
 		if (newRelation == currentRelation)
 		{
-			otherFaction.msg("%s<i> is now %s.", msenderFaction.describeTo(otherFaction, true), newRelation.getDescFactionOne());
-			msenderFaction.msg("%s<i> is now %s.", otherFaction.describeTo(msenderFaction, true), newRelation.getDescFactionOne());
+			otherFaction.msg("<b><bold>(!)<reset> %s<i> is now %s.", msenderFaction.describeTo(otherFaction, true), newRelation.getDescFactionOne());
+			msenderFaction.msg("<b><bold>(!)<reset> %s<i> is now %s.", otherFaction.describeTo(msenderFaction, true), newRelation.getDescFactionOne());
 		}
 		// inform the other faction of your request
 		else
@@ -74,27 +74,27 @@ public class CmdFactionsRelationSet extends FactionsCommand
 
 			// Mson creation
 			Mson factionsRelationshipChange = mson(
-				Mson.parse("%s<i> wishes to be %s.", msenderFaction.describeTo(otherFaction, true), colorOne),
+				Mson.parse("<b><bold>(!)<reset> %s<i> wishes to be %s.", msenderFaction.describeTo(otherFaction, true), colorOne),
 				Mson.SPACE,
 				mson("[Accept]").color(ChatColor.AQUA).command(command, msenderFaction.getName(), newRelation.name())
 			);
 			
 			otherFaction.sendMessage(factionsRelationshipChange);
-			msenderFaction.msg("%s<i> were informed that you wish to be %s<i>.", otherFaction.describeTo(msenderFaction, true), colorOne);
+			msenderFaction.msg("<b><bold>(!)<reset> %s<i> were informed that you wish to be %s<i>.", otherFaction.describeTo(msenderFaction, true), colorOne);
 		}
 		
 		// TODO: The ally case should work!!
 		//   * this might have to be bumped up to make that happen, & allow ALLY,NEUTRAL only
 		if (newRelation != Rel.TRUCE && otherFaction.getFlag(MFlag.getFlagPeaceful()))
 		{
-			otherFaction.msg("<i>This will have no effect while your faction is peaceful.");
-			msenderFaction.msg("<i>This will have no effect while their faction is peaceful.");
+			otherFaction.msg("<b><bold>(!)<reset> <i>This will have no effect while your faction is peaceful.");
+			msenderFaction.msg("<b><bold>(!)<reset> <i>This will have no effect while their faction is peaceful.");
 		}
 		
 		if (newRelation != Rel.TRUCE && msenderFaction.getFlag(MFlag.getFlagPeaceful()))
 		{
-			otherFaction.msg("<i>This will have no effect while their faction is peaceful.");
-			msenderFaction.msg("<i>This will have no effect while your faction is peaceful.");
+			otherFaction.msg("<b><bold>(!)<reset> <i>This will have no effect while their faction is peaceful.");
+			msenderFaction.msg("<b><bold>(!)<reset> <i>This will have no effect while your faction is peaceful.");
 		}
 		
 		// Mark as changed

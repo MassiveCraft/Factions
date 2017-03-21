@@ -47,7 +47,7 @@ public class CmdFactionsSethome extends FactionsCommandHome
 		// Verify
 		if (!msender.isOverriding() && !faction.isValidHome(newHome))
 		{
-			msender.msg("<b>Sorry, your faction home can only be set inside your own claimed territory.");
+			msender.msg("<b><bold>(!)<reset> <i>Sorry, your faction home can only be set inside your own claimed territory.");
 			return;
 		}
 		
@@ -61,11 +61,11 @@ public class CmdFactionsSethome extends FactionsCommandHome
 		faction.setHome(newHome);
 		
 		// Inform
-		faction.msg("%s<i> set the home for your faction. You can now use:", msender.describeTo(msenderFaction, true));
+		faction.msg("<b><bold>(!)<reset> %s<i> set the home for your faction.", msender.describeTo(msenderFaction, true));
 		faction.sendMessage(CmdFactions.get().cmdFactionsHome.getTemplate());
 		if (faction != msenderFaction)
 		{
-			msender.msg("<i>You have set the home for " + faction.getName(msender) + "<i>.");
+			msender.msg("<b><bold>(!)<reset> <i>You have set the home for " + faction.getName(msender) + "<i>.");
 		}
 	}
 	

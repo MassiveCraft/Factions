@@ -48,7 +48,7 @@ public class CmdFactionsSetpower extends FactionsCommand
 		double maxDifference = 0.1d;
 		if (difference < maxDifference)
 		{
-			msg("%s's <i>power is already <h>%.2f<i>.", mplayer.getDisplayName(msender), newPower);
+			msg("<b><bold>(!)<reset> %s's <i>power is already <h>%.2f<i>.", mplayer.getDisplayName(msender), newPower);
 			return;
 		}
 
@@ -58,10 +58,10 @@ public class CmdFactionsSetpower extends FactionsCommand
 		if (event.isCancelled()) return;
 		
 		// Inform
-		msg("<i>You changed %s's <i>power from <h>%.2f <i>to <h>%.2f<i>.", mplayer.getDisplayName(msender),  oldPower, newPower);
+		msg("<b><bold>(!)<reset> <i>You changed %s's <i>power from <h>%.2f <i>to <h>%.2f<i>.", mplayer.getDisplayName(msender),  oldPower, newPower);
 		if (msender != mplayer)
 		{
-			mplayer.msg("%s <i>changed your power from <h>%.2f <i>to <h>%.2f<i>.", msender.getDisplayName(mplayer), oldPower, newPower);
+			mplayer.msg("<b><bold>(!)<reset> %s <i>changed your power from <h>%.2f <i>to <h>%.2f<i>.", msender.getDisplayName(mplayer), oldPower, newPower);
 		}
 		
 		// Apply

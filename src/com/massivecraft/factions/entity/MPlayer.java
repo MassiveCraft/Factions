@@ -756,7 +756,7 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 		// Inform
 		if (MConf.get().logFactionLeave || MConf.get().logFactionKick)
 		{
-			Factions.get().log("Player " + this.getName() + " was auto-removed due to inactivity.");
+			Factions.get().log("<b><bold>(!)<reset> " + this.getName() + " <i>was auto-removed due to inactivity.");
 		}
 
 		// Apply
@@ -791,13 +791,13 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 		{
 			if (!permanent && this.getRole() == Rel.LEADER)
 			{
-				msg("<b>You must give the leader role to someone else first.");
+				msg("<b><bold>(!)<reset> <i>You must give the leader role to someone else first.");
 				return;
 			}
 
 			if (!MConf.get().canLeaveWithNegativePower && this.getPower() < 0)
 			{
-				msg("<b>You cannot leave until your power is positive.");
+				msg("<b><bold>(!)<reset> <i>You cannot leave until your power is positive.");
 				return;
 			}
 		}
@@ -811,7 +811,7 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 		{
 			for (MPlayer mplayer : myFaction.getMPlayersWhereOnline(true))
 			{
-				mplayer.msg("%s<i> left %s<i>.", this.describeTo(mplayer, true), myFaction.describeTo(mplayer));
+				mplayer.msg("<b><bold>(!)<reset> %s<i> left %s<i>.", this.describeTo(mplayer, true), myFaction.describeTo(mplayer));
 			}
 
 			if (MConf.get().logFactionLeave)
@@ -829,7 +829,7 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 			if (!eventFactionsDisband.isCancelled())
 			{
 				// Remove this faction
-				this.msg("%s <i>was disbanded since you were the last player.", myFaction.describeTo(this, true));
+				this.msg("<b><bold>(!)<reset> %s <i>was disbanded since you were the last player.", myFaction.describeTo(this, true));
 				if (MConf.get().logFactionDisband)
 				{
 					Factions.get().log("The faction " + myFaction.getName() + " (" + myFaction.getId() + ") was disbanded due to the last player (" + this.getName() + ") leaving.");
@@ -848,8 +848,8 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 	public boolean tryClaim(Faction newFaction, Collection<PS> pss, String formatOne, String formatMany)
 	{
 		// Args
-		if (formatOne == null) formatOne = "<h>%s<i> %s <h>%d <i>chunk %s<i>.";
-		if (formatMany == null) formatMany = "<h>%s<i> %s <h>%d <i>chunks near %s<i>.";
+		if (formatOne == null) formatOne = "<b><bold>(!)<reset> <h>%s<i> %s <h>%d <i>chunk %s<i>.";
+		if (formatMany == null) formatMany = "<b><bold>(!)<reset> <h>%s<i> %s <h>%d <i>chunks near %s<i>.";
 
 		if (newFaction == null) throw new NullPointerException("newFaction");
 
@@ -868,7 +868,7 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 		}
 		if (chunks.isEmpty())
 		{
-			msg("%s<i> already owns this land.", newFaction.describeTo(this, true));
+			msg("<b><bold>(!)<reset> %s<i> already owns this land.", newFaction.describeTo(this, true));
 			return true;
 		}
 

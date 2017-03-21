@@ -40,29 +40,29 @@ public class CmdFactionsKick extends FactionsCommand
 		// Validate
 		if (msender == mplayer)
 		{
-			msg("<b>You can't kick yourself.");
+			msg("<b><bold>(!)<reset> <i>You can't kick yourself.");
 			message(mson(mson("You might want to: ").color(ChatColor.YELLOW), CmdFactions.get().cmdFactionsLeave.getTemplate(false)));
 			return;
 		}
 		
 		if (mplayer.getRole() == Rel.LEADER && !msender.isOverriding())
 		{
-			throw new MassiveException().addMsg("<b>The leader cannot be kicked.");
+			throw new MassiveException().addMsg("<b><bold>(!)<reset> <b>The leader cannot be kicked.");
 		}
 		
 		if (mplayer.getRole().isMoreThan(msender.getRole()) && ! msender.isOverriding())
 		{
-			throw new MassiveException().addMsg("<b>You can't kick people of higher rank than yourself.");
+			throw new MassiveException().addMsg("<b><bold>(!)<reset> <i>You can't kick people of higher rank than yourself.");
 		}
 		
 		if (mplayer.getRole() == msender.getRole() && ! msender.isOverriding())
 		{
-			throw new MassiveException().addMsg("<b>You can't kick people of the same rank as yourself.");
+			throw new MassiveException().addMsg("<b><bold>(!)<reset> <i>You can't kick people of the same rank as yourself.");
 		}
 
 		if ( ! MConf.get().canLeaveWithNegativePower && mplayer.getPower() < 0 && ! msender.isOverriding())
 		{
-			msg("<b>You can't kick that person until their power is positive.");
+			msg("<b><bold>(!)<reset> <i>You can't kick that person until their power is positive.");
 			return;
 		}
 		
@@ -76,11 +76,11 @@ public class CmdFactionsKick extends FactionsCommand
 		if (event.isCancelled()) return;
 
 		// Inform
-		mplayerFaction.msg("%s<i> kicked %s<i> from the faction! :O", msender.describeTo(mplayerFaction, true), mplayer.describeTo(mplayerFaction, true));
-		mplayer.msg("%s<i> kicked you from %s<i>! :O", msender.describeTo(mplayer, true), mplayerFaction.describeTo(mplayer));
+		mplayerFaction.msg("<b><bold>(!)<reset> %s<i> kicked %s<i> from the faction! :O", msender.describeTo(mplayerFaction, true), mplayer.describeTo(mplayerFaction, true));
+		mplayer.msg("<b><bold>(!)<reset> %s<i> kicked you from %s<i>! :O", msender.describeTo(mplayer, true), mplayerFaction.describeTo(mplayer));
 		if (mplayerFaction != msenderFaction)
 		{
-			msender.msg("<i>You kicked %s<i> from the faction %s<i>!", mplayer.describeTo(msender), mplayerFaction.describeTo(msender));
+			msender.msg("<b><bold>(!)<reset> <i>You kicked %s<i> from the faction %s<i>!", mplayer.describeTo(msender), mplayerFaction.describeTo(msender));
 		}
 
 		if (MConf.get().logFactionKick)

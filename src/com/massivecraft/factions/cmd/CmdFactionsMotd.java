@@ -64,7 +64,7 @@ public class CmdFactionsMotd extends FactionsCommand
 		// NoChange
 		if (MUtil.equals(old, target))
 		{
-			msg("<i>The motd for %s <i>is already: <h>%s", msenderFaction.describeTo(msender, true), target);
+			msg("<b><bold>(!)<reset> <i>The motd for %s <i>is already: <h>%s", msenderFaction.describeTo(msender, true), target);
 			return;
 		}
 
@@ -80,7 +80,7 @@ public class CmdFactionsMotd extends FactionsCommand
 		// Inform
 		for (MPlayer follower : msenderFaction.getMPlayers())
 		{
-			follower.msg("<i>%s <i>set your faction motd to:\n%s", MixinDisplayName.get().getDisplayName(sender, follower), msenderFaction.getMotd());
+			follower.msg("<b><bold>(!)<reset> <i>%s <i>set your faction motd to:\n%s", MixinDisplayName.get().getDisplayName(sender, follower), msenderFaction.getMotd());
 		}
 	}
 	

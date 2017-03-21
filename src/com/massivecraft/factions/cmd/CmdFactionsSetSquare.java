@@ -25,8 +25,8 @@ public class CmdFactionsSetSquare extends CmdFactionsSetXRadius
 		this.addAliases("square");
 
 		// Format
-		this.setFormatOne("<h>%s<i> %s <h>%d <i>chunk %s<i> using square.");
-		this.setFormatMany("<h>%s<i> %s <h>%d <i>chunks near %s<i> using square.");
+		this.setFormatOne("<b><bold>(!)<reset> <h>%s<i> %s <h>%d <i>chunk %s<i> using square.");
+		this.setFormatMany("<b><bold>(!)<reset> <h>%s<i> %s <h>%d <i>chunks near %s<i> using square.");
 		
 		// Requirements
 		this.addRequirements(RequirementIsPlayer.get());

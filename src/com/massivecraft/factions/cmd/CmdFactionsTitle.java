@@ -47,7 +47,7 @@ public class CmdFactionsTitle extends FactionsCommand
 		// Rank Check
 		if (!msender.isOverriding() && you.getRole().isMoreThan(msender.getRole()))
 		{
-			msg("<b>You can not edit titles for higher ranks.");
+			msg("<b><bold>(!)<reset> <i>You can not edit titles for higher ranks.");
 			return;
 		}
 
@@ -61,7 +61,7 @@ public class CmdFactionsTitle extends FactionsCommand
 		you.setTitle(newTitle);
 		
 		// Inform
-		msenderFaction.msg("%s<i> changed a title: %s", msender.describeTo(msenderFaction, true), you.describeTo(msenderFaction, true));
+		msenderFaction.msg("<b><bold>(!)<reset> %s<i> changed a title: %s", msender.describeTo(msenderFaction, true), you.describeTo(msenderFaction, true));
 	}
 	
 }

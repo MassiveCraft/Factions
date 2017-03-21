@@ -48,13 +48,13 @@ public class EnginePower extends Engine
 
 		if (!faction.getFlag(MFlag.getFlagPowerloss()))
 		{
-			mplayer.msg("<i>You didn't lose any power since the territory you died in works that way.");
+			mplayer.msg("<b><bold>(!)<reset> <i>You didn't lose any power since the territory you died in works that way.");
 			return;
 		}
 
 		if (!MConf.get().worldsPowerLossEnabled.contains(player.getWorld()))
 		{
-			mplayer.msg("<i>You didn't lose any power due to the world you died in.");
+			mplayer.msg("<b><bold>(!)<reset> <i>You didn't lose any power due to the world you died in.");
 			return;
 		}
 
@@ -70,7 +70,7 @@ public class EnginePower extends Engine
 
 		// ... and inform the player.
 		// TODO: A progress bar here would be epic :)
-		mplayer.msg("<i>Your power is now <h>%.2f / %.2f", newPower, mplayer.getPowerMax());
+		mplayer.msg("<b><bold>(!)<reset> <i>Your power is now <g>%.2f <n>/ <g>%.2f", newPower, mplayer.getPowerMax());
 	}
 
 }

@@ -47,7 +47,7 @@ public class CmdFactionsJoin extends FactionsCommand
 		// Validate
 		if (!samePlayer  && ! Perm.JOIN_OTHERS.has(sender, false))
 		{
-			msg("<b>You do not have permission to move other players into a faction.");
+			msg("<b><bold>(!)<reset> <b>You do not have permission to move other players into a faction.");
 			return;
 		}
 
@@ -57,6 +57,7 @@ public class CmdFactionsJoin extends FactionsCommand
 			
 			// Mson creation
 			Mson alreadyMember = Mson.mson(
+				mson("(!) ").color(ChatColor.RED).bold(true),
 				Mson.parse(mplayer.describeTo(msender, true)),
 				mson((samePlayer ? " are" : " is") + " already a member of " + faction.getName(msender) + ".").color(ChatColor.YELLOW)
 			);
@@ -67,7 +68,7 @@ public class CmdFactionsJoin extends FactionsCommand
 
 		if (MConf.get().factionMemberLimit > 0 && faction.getMPlayers().size() >= MConf.get().factionMemberLimit)
 		{
-			msg(" <b>!<white> The faction %s is at the limit of %d members, so %s cannot currently join.", faction.getName(msender), MConf.get().factionMemberLimit, mplayer.describeTo(msender, false));
+			msg("<b><bold>(!)<reset>  <i>%s is at the limit of %d members, so %s cannot currently join.", faction.getName(msender), MConf.get().factionMemberLimit, mplayer.describeTo(msender, false));
 			return;
 		}
 
@@ -87,16 +88,16 @@ public class CmdFactionsJoin extends FactionsCommand
 
 		if (!MConf.get().canLeaveWithNegativePower && mplayer.getPower() < 0)
 		{
-			msg("<b>%s cannot join a faction with a negative power level.", mplayer.describeTo(msender, true));
+			msg("<b><bold>(!)<reset> <i>%s cannot join a faction with a negative power level.", mplayer.describeTo(msender, true));
 			return;
 		}
 
 		if( ! (faction.getFlag(MFlag.getFlagOpen()) || faction.isInvited(mplayer) || msender.isOverriding()))
 		{
-			msg("<i>This faction requires invitation.");
+			msg("<b><bold>(!)<reset> <i>This faction requires invitation.");
 			if (samePlayer)
 			{
-				faction.msg("%s<i> tried to join your faction.", mplayer.describeTo(faction, true));
+				faction.msg("<b><bold>(!)<reset> %s<i> tried to join your faction.", mplayer.describeTo(faction, true));
 			}
 			return;
 		}
@@ -109,10 +110,10 @@ public class CmdFactionsJoin extends FactionsCommand
 		// Inform
 		if (!samePlayer)
 		{
-			mplayer.msg("<i>%s <i>moved you into the faction %s<i>.", msender.describeTo(mplayer, true), faction.getName(mplayer));
+			mplayer.msg("<b><bold>(!)<reset> <i>%s <i>moved you into the faction %s<i>.", msender.describeTo(mplayer, true), faction.getName(mplayer));
 		}
-		faction.msg("<i>%s <i>joined <lime>your faction<i>.", mplayer.describeTo(faction, true));
-		msender.msg("<i>%s <i>successfully joined %s<i>.", mplayer.describeTo(msender, true), faction.getName(msender));
+		faction.msg("<b><bold>(!)<reset> <i>%s <i>joined <lime>your faction<i>.", mplayer.describeTo(faction, true));
+		msender.msg("<b><bold>(!)<reset> <i>%s <i>successfully joined %s<i>.", mplayer.describeTo(msender, true), faction.getName(msender));
 		
 		// Apply
 		mplayer.resetFactionData();
@@ -125,11 +126,11 @@ public class CmdFactionsJoin extends FactionsCommand
 		{
 			if (samePlayer)
 			{
-				Factions.get().log(Txt.parse("%s joined the faction %s.", mplayer.getName(), faction.getName()));
+				Factions.get().log(Txt.parse("<b><bold>(!)<reset> %s joined the faction %s.", mplayer.getName(), faction.getName()));
 			}
 			else
 			{
-				Factions.get().log(Txt.parse("%s moved the player %s into the faction %s.", msender.getName(), mplayer.getName(), faction.getName()));
+				Factions.get().log(Txt.parse("<b><bold>(!)<reset> %s moved the player %s into the faction %s.", msender.getName(), mplayer.getName(), faction.getName()));
 			}
 		}
 	}

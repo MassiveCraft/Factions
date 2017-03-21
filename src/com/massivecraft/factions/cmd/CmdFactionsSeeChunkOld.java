@@ -59,7 +59,7 @@ public class CmdFactionsSeeChunkOld extends FactionsCommand
 		showPillar(me, world, blockX, blockZ);
 		
 		// Inform
-		msg("<i>Visualized %s", chunk.toString(PSFormatHumanSpace.get()));
+		msg("<b><bold>(!)<reset> <i>Visualized %s", chunk.toString(PSFormatHumanSpace.get()));
 	}
 	
 	@SuppressWarnings("deprecation")

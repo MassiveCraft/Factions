@@ -44,7 +44,7 @@ public class CmdFactionsInviteRemove extends FactionsCommand
 			// Doesn't show up if list is empty. Test at home if it worked.
 			if (invitedPlayers == null || invitedPlayers.isEmpty())
 			{
-				msg("<b>Your faction has not invited anyone.");
+				msg("<b><bold>(!)<reset> <b>Your faction has not invited anyone.");
 				return;
 			}
 			all = true;
@@ -73,7 +73,7 @@ public class CmdFactionsInviteRemove extends FactionsCommand
 				);
 				
 				// Inform
-				msg("%s<i> is already a member of %s<i>.", mplayer.getName(), msenderFaction.getName());
+				msg("<b><bold>(!)<reset> %s<i> is already a member of %s<i>.", mplayer.getName(), msenderFaction.getName());
 				message(kick);
 				continue;
 			}
@@ -90,12 +90,12 @@ public class CmdFactionsInviteRemove extends FactionsCommand
 				isInvited = event.isNewInvited();
 				
 				// Inform Player
-				mplayer.msg("%s<i> revoked your invitation to <h>%s<i>.", msender.describeTo(mplayer, true), msenderFaction.describeTo(mplayer));
+				mplayer.msg("<b><bold>(!)<reset> %s<i> revoked your invitation to <h>%s<i>.", msender.describeTo(mplayer, true), msenderFaction.describeTo(mplayer));
 				
 				// Inform Faction
 				if ( ! all)
 				{
-					msenderFaction.msg("%s<i> revoked %s's<i> invitation.", msender.describeTo(msenderFaction), mplayer.describeTo(msenderFaction));
+					msenderFaction.msg("<b><bold>(!)<reset> %s<i> revoked %s's<i> invitation.", msender.describeTo(msenderFaction), mplayer.describeTo(msenderFaction));
 				}
 				
 				// Apply
@@ -131,7 +131,7 @@ public class CmdFactionsInviteRemove extends FactionsCommand
 			}
 			
 			Mson factionsRevokeAll = mson(
-				Mson.parse("%s<i> revoked ", msender.describeTo(msenderFaction)),
+				Mson.parse("<b><bold>(!)<reset> %s<i> revoked ", msender.describeTo(msenderFaction)),
 				Mson.parse("<i>all <h>%s <i>pending invitations", mplayers.size()).tooltip(names),
 				mson(" from your faction.").color(ChatColor.YELLOW)
 			);
