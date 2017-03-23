@@ -14,7 +14,7 @@ import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.entity.MFlag;
 import com.massivecraft.massivecore.Engine;
-import com.massivecraft.massivecore.collections.BackstringEnumSet;
+import com.massivecraft.massivecore.collections.BackstringSet;
 import com.massivecraft.massivecore.ps.PS;
 
 public class EngineFlagSpawn extends Engine
@@ -30,7 +30,7 @@ public class EngineFlagSpawn extends Engine
 	// CONSTANTS
 	// -------------------------------------------- //
 
-	public static final Set<SpawnReason> NATURAL_SPAWN_REASONS = new BackstringEnumSet<>(SpawnReason.class,
+	public static final Set<SpawnReason> NATURAL_SPAWN_REASONS = new BackstringSet<>(SpawnReason.class,
 		"NATURAL",
 		"JOCKEY",
 		"CHUNK_GEN",
