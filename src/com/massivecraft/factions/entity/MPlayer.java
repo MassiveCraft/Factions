@@ -61,7 +61,8 @@ public class MPlayer extends SenderEntity<MPlayer> implements FactionsParticipat
 		this.setMapAutoUpdating(that.mapAutoUpdating);
 		this.setOverriding(that.overriding);
 		this.setTerritoryInfoTitles(that.territoryInfoTitles);
-
+		this.setTerritoryInfoChats(that.territoryInfoChats);
+		
 		return this;
 	}
 
@@ -81,7 +82,7 @@ public class MPlayer extends SenderEntity<MPlayer> implements FactionsParticipat
 		// if (this.isMapAutoUpdating()) return false; // Just having an auto updating map is not in itself reason enough for database storage.
 		if (this.isOverriding()) return false;
 		if (this.isTerritoryInfoTitles() != MConf.get().territoryInfoTitlesDefault) return false;
-
+		if (this.isTerritoryInfoChats() != MConf.get().territoryInfoChatsDefault) return false;
 		return true;
 	}
 
@@ -600,6 +601,30 @@ public class MPlayer extends SenderEntity<MPlayer> implements FactionsParticipat
 
 		// Apply
 		this.territoryInfoTitles = target;
+
+		// Mark as changed
+		this.changed();
+	}
+	
+	
+	public boolean isTerritoryInfoChats()
+	{
+		if (!MixinTitle.get().isAvailable()) return false;
+		if (this.territoryInfoChats == null) return MConf.get().territoryInfoChatsDefault;
+		return this.territoryInfoChats;
+	}
+
+	public void setTerritoryInfoChats(Boolean territoryInfoChats)
+	{
+		// Clean input
+		Boolean target = territoryInfoChats;
+		if (MUtil.equals(target, MConf.get().territoryInfoChatsDefault)) target = null;
+
+		// Detect Nochange
+		if (MUtil.equals(this.territoryInfoChats, target)) return;
+
+		// Apply
+		this.territoryInfoChats = target;
 
 		// Mark as changed
 		this.changed();
