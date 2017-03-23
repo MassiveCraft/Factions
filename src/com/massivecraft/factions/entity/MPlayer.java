@@ -188,6 +188,8 @@ public class MPlayer extends SenderEntity<MPlayer> implements FactionsParticipat
 	// Null means default specified in MConf.
 	private Boolean territoryInfoTitles = null;
 
+	private Boolean territoryInfoChats = null;
+
 	// The id for the faction this player is currently autoclaiming for.
 	// Null means the player isn't auto claiming.
 	// NOTE: This field will not be saved to the database ever.
