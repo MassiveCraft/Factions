@@ -96,13 +96,7 @@ public class Factions extends MassivePlugin
 	
 	private static Factions i;
 	public static Factions get() { return i; }
-	public Factions()
-	{
-		Factions.i = this;
-		
-		// Version Synchronized
-		this.setVersionSynchronized(true);
-	}
+	public Factions() { Factions.i = this; }
 	
 	// -------------------------------------------- //
 	// FIELDS
