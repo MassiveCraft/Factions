@@ -286,7 +286,8 @@ public class MConf extends Entity<MConf>
 	// -------------------------------------------- //
 	
 	public boolean territoryInfoTitlesDefault = true;
-
+	public boolean territoryInfoChatsDefault = false;
+	
 	public String territoryInfoTitlesMain = "{relcolor}{name}";
 	public String territoryInfoTitlesSub = "<i>{desc}";
 	public int territoryInfoTitlesTicksIn = 5;

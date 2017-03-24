@@ -73,12 +73,11 @@ public class EngineMoveChunk extends Engine
 				String maintitle = parseTerritoryInfo(MConf.get().territoryInfoTitlesMain, mplayer, factionTo);
 				String subtitle = parseTerritoryInfo(MConf.get().territoryInfoTitlesSub, mplayer, factionTo);
 				MixinTitle.get().sendTitleMessage(player, MConf.get().territoryInfoTitlesTicksIn, MConf.get().territoryInfoTitlesTicksStay, MConf.get().territoryInfoTitleTicksOut, maintitle, subtitle);
-			}
-			else
-			{
+			} else if (mplayer.isTerritoryInfoChats()) {
 				String message = parseTerritoryInfo(MConf.get().territoryInfoChat, mplayer, factionTo);
 				player.sendMessage(message);
 			}
+			//NO information is the two boolean is false !
 		}
 
 		// Show access level message if it changed.
