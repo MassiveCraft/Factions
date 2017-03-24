@@ -1,13 +1,12 @@
 package com.massivecraft.factions.event;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import com.massivecraft.factions.entity.Faction;
+import com.massivecraft.massivecore.PriorityLines;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.HandlerList;
 
-import com.massivecraft.factions.entity.Faction;
-import com.massivecraft.massivecore.PriorityLines;
+import java.util.HashMap;
+import java.util.Map;
 
 public class EventFactionsFactionShowAsync extends EventFactionsAbstractSender
 {

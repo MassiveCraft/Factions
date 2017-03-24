@@ -1,8 +1,5 @@
 package com.massivecraft.factions.cmd;
 
-import java.util.LinkedHashMap;
-import java.util.Map.Entry;
-
 import com.massivecraft.factions.cmd.type.TypeMPlayer;
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.entity.MPlayer;
@@ -12,6 +9,9 @@ import com.massivecraft.massivecore.Progressbar;
 import com.massivecraft.massivecore.util.TimeDiffUtil;
 import com.massivecraft.massivecore.util.TimeUnit;
 import com.massivecraft.massivecore.util.Txt;
+
+import java.util.LinkedHashMap;
+import java.util.Map.Entry;
 
 public class CmdFactionsPlayer extends FactionsCommand
 {

@@ -1,9 +1,8 @@
 package com.massivecraft.factions.integration.spigot;
 
-import org.bukkit.event.player.PlayerInteractAtEntityEvent;
-
 import com.massivecraft.massivecore.Integration;
 import com.massivecraft.massivecore.predicate.Predicate;
+import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 
 public class PredicateSpigot implements Predicate<Integration>
 {

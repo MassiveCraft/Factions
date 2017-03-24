@@ -1,7 +1,5 @@
 package com.massivecraft.factions.cmd;
 
-import java.util.List;
-
 import com.massivecraft.factions.cmd.type.TypeFaction;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MFlag;
@@ -10,6 +8,8 @@ import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.command.Parameter;
 import com.massivecraft.massivecore.pager.Pager;
 import com.massivecraft.massivecore.pager.Stringifier;
+
+import java.util.List;
 
 public class CmdFactionsFlagShow extends FactionsCommand
 {

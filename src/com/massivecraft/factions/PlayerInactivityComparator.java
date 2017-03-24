@@ -1,9 +1,9 @@
 package com.massivecraft.factions;
 
-import java.util.Comparator;
-
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.massivecore.Named;
+
+import java.util.Comparator;
 
 public class PlayerInactivityComparator implements Comparator<MPlayer>, Named
 {

@@ -1,9 +1,5 @@
 package com.massivecraft.factions.cmd;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 import com.massivecraft.factions.RelationParticipator;
 import com.massivecraft.factions.TerritoryAccess;
 import com.massivecraft.factions.entity.BoardColl;
@@ -13,6 +9,10 @@ import com.massivecraft.massivecore.command.requirement.RequirementIsPlayer;
 import com.massivecraft.massivecore.ps.PS;
 import com.massivecraft.massivecore.ps.PSFormatHumanSpace;
 import com.massivecraft.massivecore.util.Txt;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 
 public abstract class CmdFactionsAccessAbstract extends FactionsCommand

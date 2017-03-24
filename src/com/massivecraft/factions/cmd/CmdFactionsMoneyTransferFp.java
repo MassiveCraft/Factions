@@ -1,7 +1,5 @@
 package com.massivecraft.factions.cmd;
 
-import org.bukkit.ChatColor;
-
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.cmd.req.ReqBankCommandsEnabled;
@@ -16,6 +14,7 @@ import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.command.type.primitive.TypeDouble;
 import com.massivecraft.massivecore.money.Money;
 import com.massivecraft.massivecore.util.Txt;
+import org.bukkit.ChatColor;
 
 public class CmdFactionsMoneyTransferFp extends FactionsCommand
 {

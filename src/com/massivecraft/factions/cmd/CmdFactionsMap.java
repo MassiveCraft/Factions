@@ -1,15 +1,14 @@
 package com.massivecraft.factions.cmd;
 
-import java.util.List;
-
-import org.bukkit.Location;
-
 import com.massivecraft.factions.Const;
 import com.massivecraft.factions.entity.BoardColl;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.command.requirement.RequirementIsPlayer;
 import com.massivecraft.massivecore.command.type.primitive.TypeBooleanYes;
 import com.massivecraft.massivecore.ps.PS;
+import org.bukkit.Location;
+
+import java.util.List;
 
 public class CmdFactionsMap extends FactionsCommand
 {

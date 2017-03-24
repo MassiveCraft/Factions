@@ -1,12 +1,11 @@
 package com.massivecraft.factions.event;
 
-import java.util.Map;
-
+import com.massivecraft.massivecore.collections.MassiveTreeMap;
+import com.massivecraft.massivecore.comparator.ComparatorCaseInsensitive;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.HandlerList;
 
-import com.massivecraft.massivecore.collections.MassiveTreeMap;
-import com.massivecraft.massivecore.comparator.ComparatorCaseInsensitive;
+import java.util.Map;
 
 public class EventFactionsExpansions extends EventFactionsAbstractSender
 {

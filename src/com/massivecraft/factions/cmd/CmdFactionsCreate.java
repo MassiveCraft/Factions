@@ -1,9 +1,5 @@
 package com.massivecraft.factions.cmd;
 
-import java.util.ArrayList;
-
-import org.bukkit.ChatColor;
-
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.cmd.req.ReqHasntFaction;
@@ -17,6 +13,9 @@ import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.command.type.primitive.TypeString;
 import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.store.MStore;
+import org.bukkit.ChatColor;
+
+import java.util.ArrayList;
 
 public class CmdFactionsCreate extends FactionsCommand
 {

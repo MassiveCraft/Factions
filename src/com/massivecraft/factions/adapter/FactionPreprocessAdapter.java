@@ -1,7 +1,5 @@
 package com.massivecraft.factions.adapter;
 
-import java.lang.reflect.Type;
-
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.massivecore.xlib.gson.JsonDeserializationContext;
@@ -9,6 +7,8 @@ import com.massivecraft.massivecore.xlib.gson.JsonDeserializer;
 import com.massivecraft.massivecore.xlib.gson.JsonElement;
 import com.massivecraft.massivecore.xlib.gson.JsonObject;
 import com.massivecraft.massivecore.xlib.gson.JsonParseException;
+
+import java.lang.reflect.Type;
 
 public class FactionPreprocessAdapter implements JsonDeserializer<Faction>
 {

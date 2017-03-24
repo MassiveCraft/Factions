@@ -1,9 +1,8 @@
 package com.massivecraft.factions.chat.tag;
 
-import org.bukkit.command.CommandSender;
-
 import com.massivecraft.factions.chat.ChatTag;
 import com.massivecraft.factions.entity.MPlayer;
+import org.bukkit.command.CommandSender;
 
 public class ChatTagRoleprefixforce extends ChatTag
 {

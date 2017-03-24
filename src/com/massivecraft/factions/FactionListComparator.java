@@ -1,13 +1,12 @@
 package com.massivecraft.factions;
 
-import java.lang.ref.WeakReference;
-import java.util.Comparator;
-
-import org.bukkit.command.CommandSender;
-
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.massivecore.comparator.ComparatorComparable;
 import com.massivecraft.massivecore.util.IdUtil;
+import org.bukkit.command.CommandSender;
+
+import java.lang.ref.WeakReference;
+import java.util.Comparator;
 
 public class FactionListComparator implements Comparator<Faction>
 {

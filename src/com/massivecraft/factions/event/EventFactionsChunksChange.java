@@ -1,19 +1,18 @@
 package com.massivecraft.factions.event;
 
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-
-import org.bukkit.command.CommandSender;
-import org.bukkit.event.HandlerList;
-
 import com.massivecraft.factions.entity.BoardColl;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.massivecore.ps.PS;
 import com.massivecraft.massivecore.util.MUtil;
+import org.bukkit.command.CommandSender;
+import org.bukkit.event.HandlerList;
+
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 public class EventFactionsChunksChange extends EventFactionsAbstractSender
 {	

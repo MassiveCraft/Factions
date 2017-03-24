@@ -1,9 +1,8 @@
 package com.massivecraft.factions.event;
 
-import org.bukkit.command.CommandSender;
-
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.massivecore.event.EventMassiveCore;
+import org.bukkit.command.CommandSender;
 
 public abstract class EventFactionsAbstractSender extends EventMassiveCore
 {

@@ -1,15 +1,15 @@
 package com.massivecraft.factions.integration;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import com.massivecraft.factions.EconomyParticipator;
+import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.factions.entity.MPlayer;
-import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.util.RelationUtil;
 import com.massivecraft.massivecore.money.Money;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class Econ
 {

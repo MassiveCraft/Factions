@@ -1,9 +1,9 @@
 package com.massivecraft.factions.cmd.type;
 
-import java.util.Set;
-
 import com.massivecraft.factions.Rel;
 import com.massivecraft.massivecore.command.type.enumeration.TypeEnum;
+
+import java.util.Set;
 
 public class TypeRel extends TypeEnum<Rel>
 {

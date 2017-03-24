@@ -1,9 +1,9 @@
 package com.massivecraft.factions.util;
 
+import org.bukkit.ChatColor;
+
 import java.util.Arrays;
 import java.util.HashSet;
-
-import org.bukkit.ChatColor;
 
 public class MiscUtil
 {	

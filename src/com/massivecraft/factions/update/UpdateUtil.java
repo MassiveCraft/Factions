@@ -1,11 +1,5 @@
 package com.massivecraft.factions.update;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
-
 import com.massivecraft.factions.Const;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.TerritoryAccess;
@@ -20,6 +14,12 @@ import com.massivecraft.massivecore.store.Db;
 import com.massivecraft.massivecore.store.Entity;
 import com.massivecraft.massivecore.store.MStore;
 import com.massivecraft.massivecore.util.MUtil;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 
 public class UpdateUtil
 {

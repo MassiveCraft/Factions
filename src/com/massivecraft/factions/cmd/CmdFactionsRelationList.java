@@ -1,11 +1,5 @@
 package com.massivecraft.factions.cmd;
 
-import java.util.List;
-import java.util.Map.Entry;
-import java.util.Set;
-
-import org.bukkit.Bukkit;
-
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.cmd.type.TypeFaction;
@@ -20,6 +14,11 @@ import com.massivecraft.massivecore.command.type.container.TypeSet;
 import com.massivecraft.massivecore.pager.Pager;
 import com.massivecraft.massivecore.pager.Stringifier;
 import com.massivecraft.massivecore.util.Txt;
+import org.bukkit.Bukkit;
+
+import java.util.List;
+import java.util.Map.Entry;
+import java.util.Set;
 
 public class CmdFactionsRelationList extends FactionsCommand
 {

@@ -1,12 +1,12 @@
 package com.massivecraft.factions.integration.herochat;
 
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import com.dthielke.herochat.ChannelChatEvent;
 import com.dthielke.herochat.Herochat;
 import com.massivecraft.factions.chat.ChatFormatter;
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.massivecore.Engine;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 
 public class EngineHerochat extends Engine
 {

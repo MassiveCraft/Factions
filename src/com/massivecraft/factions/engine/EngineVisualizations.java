@@ -1,12 +1,11 @@
 package com.massivecraft.factions.engine;
 
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.player.PlayerMoveEvent;
-
 import com.massivecraft.factions.util.VisualizeUtil;
 import com.massivecraft.massivecore.Engine;
 import com.massivecraft.massivecore.util.MUtil;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.player.PlayerMoveEvent;
 
 public class EngineVisualizations extends Engine
 {

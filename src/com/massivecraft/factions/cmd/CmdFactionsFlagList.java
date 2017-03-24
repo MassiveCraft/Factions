@@ -1,9 +1,5 @@
 package com.massivecraft.factions.cmd;
 
-import java.util.List;
-
-import org.bukkit.Bukkit;
-
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.entity.MFlag;
 import com.massivecraft.factions.entity.MFlagColl;
@@ -12,6 +8,9 @@ import com.massivecraft.massivecore.command.Parameter;
 import com.massivecraft.massivecore.pager.Pager;
 import com.massivecraft.massivecore.pager.Stringifier;
 import com.massivecraft.massivecore.predicate.Predicate;
+import org.bukkit.Bukkit;
+
+import java.util.List;
 
 public class CmdFactionsFlagList extends FactionsCommand
 {

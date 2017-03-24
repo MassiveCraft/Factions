@@ -1,14 +1,13 @@
 package com.massivecraft.factions.update;
 
-import java.util.List;
-import java.util.Map;
-
-import org.bukkit.event.EventPriority;
-
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.event.EventFactionsChunkChangeType;
 import com.massivecraft.massivecore.store.Entity;
+import org.bukkit.event.EventPriority;
+
+import java.util.List;
+import java.util.Map;
 
 public class OldConf extends Entity<OldConf>
 {

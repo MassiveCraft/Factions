@@ -1,9 +1,5 @@
 package com.massivecraft.factions.entity;
 
-import java.util.List;
-
-import org.bukkit.ChatColor;
-
 import com.massivecraft.factions.event.EventFactionsCreateFlags;
 import com.massivecraft.massivecore.Named;
 import com.massivecraft.massivecore.Prioritized;
@@ -13,6 +9,9 @@ import com.massivecraft.massivecore.comparator.ComparatorSmart;
 import com.massivecraft.massivecore.predicate.PredicateIsRegistered;
 import com.massivecraft.massivecore.store.Entity;
 import com.massivecraft.massivecore.util.Txt;
+import org.bukkit.ChatColor;
+
+import java.util.List;
 
 public class MFlag extends Entity<MFlag> implements Prioritized, Registerable, Named
 {

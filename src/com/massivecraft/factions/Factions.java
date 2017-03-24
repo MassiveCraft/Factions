@@ -1,7 +1,5 @@
 package com.massivecraft.factions;
 
-import org.bukkit.ChatColor;
-
 import com.massivecraft.factions.adapter.BoardAdapter;
 import com.massivecraft.factions.adapter.BoardMapAdapter;
 import com.massivecraft.factions.adapter.FactionPreprocessAdapter;
@@ -73,6 +71,7 @@ import com.massivecraft.massivecore.command.type.RegistryType;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.xlib.gson.Gson;
 import com.massivecraft.massivecore.xlib.gson.GsonBuilder;
+import org.bukkit.ChatColor;
 
 public class Factions extends MassivePlugin
 {

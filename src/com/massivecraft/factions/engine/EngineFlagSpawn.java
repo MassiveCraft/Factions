@@ -1,14 +1,5 @@
 package com.massivecraft.factions.engine;
 
-import java.util.Set;
-
-import org.bukkit.Location;
-import org.bukkit.entity.EntityType;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.entity.CreatureSpawnEvent;
-import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
-
 import com.massivecraft.factions.entity.BoardColl;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MConf;
@@ -16,6 +7,14 @@ import com.massivecraft.factions.entity.MFlag;
 import com.massivecraft.massivecore.Engine;
 import com.massivecraft.massivecore.collections.BackstringSet;
 import com.massivecraft.massivecore.ps.PS;
+import org.bukkit.Location;
+import org.bukkit.entity.EntityType;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
+
+import java.util.Set;
 
 public class EngineFlagSpawn extends Engine
 {

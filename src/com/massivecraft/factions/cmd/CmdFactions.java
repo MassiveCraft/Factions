@@ -1,13 +1,13 @@
 package com.massivecraft.factions.cmd;
 
-import java.util.List;
-
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.massivecore.command.MassiveCommandDeprecated;
 import com.massivecraft.massivecore.command.MassiveCommandVersion;
 import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
+
+import java.util.List;
 
 public class CmdFactions extends FactionsCommand
 {

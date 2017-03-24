@@ -1,15 +1,14 @@
 package com.massivecraft.factions.entity;
 
-import java.util.Collection;
-import java.util.Map.Entry;
-
-import org.bukkit.Bukkit;
-
 import com.massivecraft.factions.Factions;
 import com.massivecraft.massivecore.store.SenderColl;
 import com.massivecraft.massivecore.util.IdUtil;
 import com.massivecraft.massivecore.util.Txt;
 import com.massivecraft.massivecore.xlib.gson.JsonObject;
+import org.bukkit.Bukkit;
+
+import java.util.Collection;
+import java.util.Map.Entry;
 
 public class MPlayerColl extends SenderColl<MPlayer>
 {

@@ -1,9 +1,9 @@
 package com.massivecraft.factions.entity;
 
+import com.massivecraft.massivecore.store.Coll;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import com.massivecraft.massivecore.store.Coll;
 
 public class MFlagColl extends Coll<MFlag>
 {

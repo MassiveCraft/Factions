@@ -1,13 +1,12 @@
 package com.massivecraft.factions;
 
-import java.io.Serializable;
-
-import org.bukkit.command.CommandSender;
-
-import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.entity.Faction;
+import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.massivecore.predicate.Predicate;
 import com.massivecraft.massivecore.util.MUtil;
+import org.bukkit.command.CommandSender;
+
+import java.io.Serializable;
 
 public class FactionEqualsPredicate implements Predicate<CommandSender>, Serializable
 {

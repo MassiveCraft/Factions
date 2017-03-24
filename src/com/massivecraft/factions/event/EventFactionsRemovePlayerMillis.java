@@ -1,15 +1,14 @@
 package com.massivecraft.factions.event;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-
-import org.bukkit.event.HandlerList;
-
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.massivecore.event.EventMassiveCore;
+import org.bukkit.event.HandlerList;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 public class EventFactionsRemovePlayerMillis extends EventMassiveCore
 {

@@ -1,16 +1,16 @@
 package com.massivecraft.factions.cmd.type;
 
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import com.massivecraft.factions.Rel;
 import com.massivecraft.massivecore.collections.MassiveMap;
 import com.massivecraft.massivecore.collections.MassiveSet;
 import com.massivecraft.massivecore.command.type.enumeration.TypeEnum;
 import com.massivecraft.massivecore.util.MUtil;
+
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class TypeRank extends TypeEnum<Rel>
 {

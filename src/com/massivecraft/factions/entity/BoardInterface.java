@@ -1,12 +1,12 @@
 package com.massivecraft.factions.entity;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import com.massivecraft.factions.RelationParticipator;
 import com.massivecraft.factions.TerritoryAccess;
 import com.massivecraft.massivecore.ps.PS;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public interface BoardInterface
 {
