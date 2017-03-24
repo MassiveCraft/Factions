@@ -82,8 +82,12 @@ public class MPlayerColl extends SenderColl<MPlayer>
 	// EXTRAS
 	// -------------------------------------------- //
 	
-	public void clean()
+	public int clean()
 	{
+		int ret = 0;
+		
+		if (!FactionColl.get().isActive()) return ret;
+		
 		// For each player ...
 		for (MPlayer mplayer : this.getAll())
 		{
@@ -93,11 +97,14 @@ public class MPlayerColl extends SenderColl<MPlayer>
 			
 			// ... reset their faction data ...
 			mplayer.resetFactionData();
+			ret += 1;
 			
 			// ... and log.
 			String message = Txt.parse("<i>Reset data for <h>%s <i>. Unknown factionId <h>%s", mplayer.getDisplayName(IdUtil.getConsole()), factionId);
 			Factions.get().log(message);
 		}
+		
+		return ret;
 	}
 	
 	public void considerRemovePlayerMillis()

@@ -159,8 +159,12 @@ public class Board extends Entity<Board> implements BoardInterface
 	
 	// Removes orphaned foreign keys
 	@Override
-	public void clean()
+	public int clean()
 	{
+		int ret = 0;
+		
+		if (!FactionColl.get().isActive()) return ret;
+		
 		for (Entry<PS, TerritoryAccess> entry : this.map.entrySet())
 		{
 			TerritoryAccess territoryAccess = entry.getValue();
@@ -171,8 +175,12 @@ public class Board extends Entity<Board> implements BoardInterface
 			PS ps = entry.getKey();
 			this.removeAt(ps);
 			
+			ret += 0;
+			
 			Factions.get().log("Board cleaner removed "+factionId+" from "+ps);
 		}
+		
+		return ret;
 	}
 	
 	// CHUNKS

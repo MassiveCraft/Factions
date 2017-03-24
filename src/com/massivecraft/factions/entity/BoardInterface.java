@@ -21,7 +21,7 @@ public interface BoardInterface
 	// REMOVE
 	void removeAt(PS ps);
 	void removeAll(Faction faction);
-	void clean();
+	int clean();
 
 	// CHUNKS
 	Set<PS> getChunks(Faction faction);

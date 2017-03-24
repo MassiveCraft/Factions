@@ -89,6 +89,7 @@ public enum Perm implements Identified
 	UNSETHOME,
 	UNSTUCK,
 	CONFIG,
+	CLEAN,
 	VERSION,
 	
 	// END OF LIST

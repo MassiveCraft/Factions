@@ -118,12 +118,16 @@ public class BoardColl extends Coll<Board> implements BoardInterface
 	}
 	
 	@Override
-	public void clean()
+	public int clean()
 	{
+		int ret = 0;
+		
 		for (Board board : this.getAll())
 		{
-			board.clean();
+			ret += board.clean();
 		}
+		
+		return ret;
 	}
 	
 	// CHUNKS
