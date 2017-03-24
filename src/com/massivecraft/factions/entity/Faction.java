@@ -10,9 +10,10 @@ import com.massivecraft.factions.predicate.PredicateMPlayerRole;
 import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.factions.util.RelationUtil;
 import com.massivecraft.massivecore.collections.MassiveList;
+import com.massivecraft.massivecore.collections.MassiveMap;
 import com.massivecraft.massivecore.collections.MassiveMapDef;
-import com.massivecraft.massivecore.collections.MassiveTreeSetDef;
-import com.massivecraft.massivecore.comparator.ComparatorCaseInsensitive;
+import com.massivecraft.massivecore.collections.MassiveSet;
+import com.massivecraft.massivecore.collections.MassiveSetDef;
 import com.massivecraft.massivecore.mixin.MixinMessage;
 import com.massivecraft.massivecore.money.Money;
 import com.massivecraft.massivecore.predicate.Predicate;
@@ -28,18 +29,14 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.TreeSet;
 
 public class Faction extends Entity<Faction> implements FactionsParticipator
 {
@@ -83,9 +80,7 @@ public class Faction extends Entity<Faction> implements FactionsParticipator
 	@Override
 	public void preDetach(String id)
 	{
-		// The database must be fully inited.
-		// We may move factions around during upgrades.
-		if (!Factions.get().isDatabaseInitialized()) return;
+		if (!this.isLive()) return;
 		
 		// NOTE: Existence check is required for compatibility with some plugins.
 		// If they have money ...
@@ -94,12 +89,6 @@ public class Faction extends Entity<Faction> implements FactionsParticipator
 			// ... remove it.
 			Money.set(this, null, 0);	
 		}
-		
-		// Clean the board
-		BoardColl.get().clean();
-		
-		// Clean the mplayers
-		MPlayerColl.get().clean();
 	}
 	
 	// -------------------------------------------- //
@@ -146,7 +135,7 @@ public class Faction extends Entity<Faction> implements FactionsParticipator
 	// This is the ids of the invited players.
 	// They are actually "senderIds" since you can invite "@console" to your faction.
 	// Null means no one is invited
-	private MassiveTreeSetDef<String, ComparatorCaseInsensitive> invitedPlayerIds = new MassiveTreeSetDef<>(ComparatorCaseInsensitive.get());
+	private MassiveSetDef<String> invitedPlayerIds = new MassiveSetDef<>();
 	
 	// The keys in this map are factionIds.
 	// Null means no special relation whishes.
@@ -252,8 +241,7 @@ public class Faction extends Entity<Faction> implements FactionsParticipator
 		if (target != null)
 		{
 			target = target.trim();
-			// This code should be kept for a while to clean out the previous default text that was actually stored in the database.
-			if (target.length() == 0 || target.equals("Default faction description :("))
+			if (target.isEmpty())
 			{
 				target = null;
 			}
@@ -293,7 +281,7 @@ public class Faction extends Entity<Faction> implements FactionsParticipator
 		if (target != null)
 		{
 			target = target.trim();
-			if (target.length() == 0)
+			if (target.isEmpty())
 			{
 				target = null;
 			}
@@ -463,7 +451,7 @@ public class Faction extends Entity<Faction> implements FactionsParticipator
 	
 	// RAW
 	
-	public TreeSet<String> getInvitedPlayerIds()
+	public Set<String> getInvitedPlayerIds()
 	{
 		return this.invitedPlayerIds;
 	}
@@ -471,14 +459,7 @@ public class Faction extends Entity<Faction> implements FactionsParticipator
 	public void setInvitedPlayerIds(Collection<String> invitedPlayerIds)
 	{
 		// Clean input
-		MassiveTreeSetDef<String, ComparatorCaseInsensitive> target = new MassiveTreeSetDef<>(ComparatorCaseInsensitive.get());
-		if (invitedPlayerIds != null)
-		{
-			for (String invitedPlayerId : invitedPlayerIds)
-			{
-				target.add(invitedPlayerId.toLowerCase());
-			}
-		}
+		MassiveSetDef<String> target = new MassiveSetDef<>(invitedPlayerIds);
 		
 		// Detect Nochange
 		if (MUtil.equals(this.invitedPlayerIds, target)) return;
@@ -504,7 +485,7 @@ public class Faction extends Entity<Faction> implements FactionsParticipator
 	
 	public boolean setInvited(String playerId, boolean invited)
 	{
-		List<String> invitedPlayerIds = new ArrayList<>(this.getInvitedPlayerIds());
+		List<String> invitedPlayerIds = new MassiveList<>(this.getInvitedPlayerIds());
 		boolean ret;
 		if (invited)
 		{
@@ -516,7 +497,6 @@ public class Faction extends Entity<Faction> implements FactionsParticipator
 		}
 		this.setInvitedPlayerIds(invitedPlayerIds);
 		return ret;
-		
 	}
 	
 	public void setInvited(MPlayer mplayer, boolean invited)
@@ -526,13 +506,14 @@ public class Faction extends Entity<Faction> implements FactionsParticipator
 	
 	public List<MPlayer> getInvitedMPlayers()
 	{
-		List<MPlayer> mplayers = new ArrayList<>();
+		List<MPlayer> mplayers = new MassiveList<>();
 		
 		for (String id : this.getInvitedPlayerIds())
 		{	
 			MPlayer mplayer = MPlayer.get(id);
 			mplayers.add(mplayer);
 		}
+		
 		return mplayers;
 	}
 	
@@ -604,7 +585,7 @@ public class Faction extends Entity<Faction> implements FactionsParticipator
 	public Map<MFlag, Boolean> getFlags()
 	{
 		// We start with default values ...
-		Map<MFlag, Boolean> ret = new LinkedHashMap<>();
+		Map<MFlag, Boolean> ret = new MassiveMap<>();
 		for (MFlag mflag : MFlag.getAll())
 		{
 			ret.put(mflag, mflag.isStandard());
@@ -638,7 +619,7 @@ public class Faction extends Entity<Faction> implements FactionsParticipator
 	
 	public void setFlags(Map<MFlag, Boolean> flags)
 	{
-		Map<String, Boolean> flagIds = new LinkedHashMap<>();
+		Map<String, Boolean> flagIds = new MassiveMap<>();
 		for (Entry<MFlag, Boolean> entry : flags.entrySet())
 		{
 			flagIds.put(entry.getKey().getId(), entry.getValue());
@@ -730,10 +711,10 @@ public class Faction extends Entity<Faction> implements FactionsParticipator
 	public Map<MPerm, Set<Rel>> getPerms()
 	{
 		// We start with default values ...
-		Map<MPerm, Set<Rel>> ret = new LinkedHashMap<>();
+		Map<MPerm, Set<Rel>> ret = new MassiveMap<>();
 		for (MPerm mperm : MPerm.getAll())
 		{
-			ret.put(mperm, new LinkedHashSet<>(mperm.getStandard()));
+			ret.put(mperm, new MassiveSet<>(mperm.getStandard()));
 		}
 		
 		// ... and if anything is explicitly set we use that info ...
@@ -755,7 +736,7 @@ public class Faction extends Entity<Faction> implements FactionsParticipator
 			MPerm mperm = MPerm.get(id);
 			if (mperm == null) continue;
 			
-			ret.put(mperm, new LinkedHashSet<>(entry.getValue()));
+			ret.put(mperm, new MassiveSet<>(entry.getValue()));
 		}
 		
 		return ret;
@@ -763,7 +744,7 @@ public class Faction extends Entity<Faction> implements FactionsParticipator
 	
 	public void setPerms(Map<MPerm, Set<Rel>> perms)
 	{
-		Map<String, Set<Rel>> permIds = new LinkedHashMap<>();
+		Map<String, Set<Rel>> permIds = new MassiveMap<>();
 		for (Entry<MPerm, Set<Rel>> entry : perms.entrySet())
 		{
 			permIds.put(entry.getKey().getId(), entry.getValue());
@@ -1054,7 +1035,7 @@ public class Faction extends Entity<Faction> implements FactionsParticipator
 	public List<CommandSender> getOnlineCommandSenders()
 	{
 		// Create Ret
-		List<CommandSender> ret = new ArrayList<>();
+		List<CommandSender> ret = new MassiveList<>();
 		
 		// Fill Ret
 		for (CommandSender sender : IdUtil.getLocalSenders())
@@ -1074,7 +1055,7 @@ public class Faction extends Entity<Faction> implements FactionsParticipator
 	public List<Player> getOnlinePlayers()
 	{
 		// Create Ret
-		List<Player> ret = new ArrayList<>();
+		List<Player> ret = new MassiveList<>();
 		
 		// Fill Ret
 		for (Player player : MUtil.getOnlinePlayers())

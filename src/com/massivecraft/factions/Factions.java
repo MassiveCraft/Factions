@@ -95,10 +95,6 @@ public class Factions extends MassivePlugin
 	// FIELDS
 	// -------------------------------------------- //
 	
-	// Database Initialized
-	private boolean databaseInitialized;
-	public boolean isDatabaseInitialized() { return this.databaseInitialized; }
-	
 	// Mixins
 	@Deprecated public PowerMixin getPowerMixin() { return PowerMixin.get(); }
 	@Deprecated public void setPowerMixin(PowerMixin powerMixin) { PowerMixin.get().setInstance(powerMixin); }
@@ -117,28 +113,28 @@ public class Factions extends MassivePlugin
 		// Register Faction accountId Extractor
 		// TODO: Perhaps this should be placed in the econ integration somewhere?
 		MUtil.registerExtractor(String.class, "accountId", ExtractorFactionAccountId.get());
-
-		// Initialize Database
-		// MConf should always be activated first for all plugins. It's simply a standard. The config should have no dependencies.
-		// MFlag and MPerm are both dependency free.
-		// Next we activate Faction, MPlayer and Board. The order is carefully chosen based on foreign keys and indexing direction.
-		// MPlayer --> Faction
-		// We actually only have an index that we maintain for the MPlayer --> Faction one.
-		// The Board could currently be activated in any order but the current placement is an educated guess.
-		// In the future we might want to find all chunks from the faction or something similar.
-		// We also have the /f access system where the player can be granted specific access, possibly supporting the idea of such a reverse index.
-		this.databaseInitialized = false;
-		MigratorMConf001EnumerationUtil.get().setActive(true);
-		MConfColl.get().setActive(true);
-		MFlagColl.get().setActive(true);
-		MPermColl.get().setActive(true);
-		FactionColl.get().setActive(true);
-		MPlayerColl.get().setActive(true);
-		BoardColl.get().setActive(true);
-		this.databaseInitialized = true;
 		
 		// Activate
 		this.activate(
+			// Migrator
+			MigratorMConf001EnumerationUtil.class,
+			
+			// Coll
+			// MConf should always be activated first for all plugins. It's simply a standard. The config should have no dependencies.
+			// MFlag and MPerm are both dependency free.
+			// Next we activate Faction, MPlayer and Board. The order is carefully chosen based on foreign keys and indexing direction.
+			// MPlayer --> Faction
+			// We actually only have an index that we maintain for the MPlayer --> Faction one.
+			// The Board could currently be activated in any order but the current placement is an educated guess.
+			// In the future we might want to find all chunks from the faction or something similar.
+			// We also have the /f access system where the player can be granted specific access, possibly supporting the idea of such a reverse index.
+			MConfColl.class,
+			MFlagColl.class,
+			MPermColl.class,
+			FactionColl.class,
+			MPlayerColl.class,
+			BoardColl.class,
+			
 			// Command
 			CmdFactions.class,
 		

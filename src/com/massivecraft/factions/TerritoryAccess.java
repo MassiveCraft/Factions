@@ -3,13 +3,11 @@ package com.massivecraft.factions;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.FactionColl;
 import com.massivecraft.factions.entity.MPlayer;
+import com.massivecraft.massivecore.collections.MassiveSet;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.TreeSet;
 
 public class TerritoryAccess
 {
@@ -17,18 +15,16 @@ public class TerritoryAccess
 	// FIELDS: RAW
 	// -------------------------------------------- //
 	
-	// TODO: Remake private final
 	// no default value, can't be null
-	public String hostFactionId;
+	private final String hostFactionId;
 	public String getHostFactionId() { return this.hostFactionId; }
 	
 	// default is true
 	private final boolean hostFactionAllowed;
 	public boolean isHostFactionAllowed() { return this.hostFactionAllowed; }
 	
-	// TODO: Remake private final
 	// default is empty
-	public Set<String> factionIds;
+	private final Set<String> factionIds;
 	public Set<String> getFactionIds() { return this.factionIds; }
 	
 	// default is empty
@@ -53,7 +49,7 @@ public class TerritoryAccess
 			return valueOf(hostFactionId, with, factionIds, playerIds);
 		}
 		
-		Set<String> factionIds = new HashSet<>(this.getFactionIds());
+		Set<String> factionIds = new MassiveSet<>(this.getFactionIds());
 		if (with)
 		{
 			factionIds.add(factionId);
@@ -68,7 +64,7 @@ public class TerritoryAccess
 	public TerritoryAccess withPlayerId(String playerId, boolean with)
 	{
 		playerId = playerId.toLowerCase();
-		Set<String> playerIds = new HashSet<>(this.getPlayerIds());
+		Set<String> playerIds = new MassiveSet<>(this.getPlayerIds());
 		if (with)
 		{
 			playerIds.add(playerId);
@@ -80,17 +76,6 @@ public class TerritoryAccess
 		return valueOf(hostFactionId, hostFactionAllowed, factionIds, playerIds);
 	}
 	
-	// The complex ones
-	public TerritoryAccess toggleFactionId(String factionId)
-	{
-		return this.withFactionId(factionId, !this.isFactionIdGranted(factionId));
-	}
-	
-	public TerritoryAccess togglePlayerId(String playerId)
-	{
-		return this.withPlayerId(playerId, !this.isPlayerIdGranted(playerId));
-	}
-	
 	// -------------------------------------------- //
 	// FIELDS: DIRECT
 	// -------------------------------------------- //
@@ -100,23 +85,33 @@ public class TerritoryAccess
 		return FactionColl.get().get(this.getHostFactionId());
 	}
 	
-	public LinkedHashSet<MPlayer> getGrantedMPlayers()
+	public Set<MPlayer> getGrantedMPlayers()
 	{
-		LinkedHashSet<MPlayer> ret = new LinkedHashSet<>();
+		// Create
+		Set<MPlayer> ret = new MassiveSet<>();
+		
+		// Fill
 		for (String playerId : this.getPlayerIds())
 		{
 			ret.add(MPlayer.get(playerId));
 		}
+		
+		// Return
 		return ret;
 	}
 	
-	public LinkedHashSet<Faction> getGrantedFactions()
+	public Set<Faction> getGrantedFactions()
 	{
-		LinkedHashSet<Faction> ret = new LinkedHashSet<>();
+		// Create
+		Set<Faction> ret = new MassiveSet<>();
+		
+		// Fill
 		for (String factionId : this.getFactionIds())
 		{
 			ret.add(FactionColl.get().get(factionId));
 		}
+		
+		// Return
 		return ret;
 	}
 
@@ -129,7 +124,7 @@ public class TerritoryAccess
 		if (hostFactionId == null) throw new IllegalArgumentException("hostFactionId was null");
 		this.hostFactionId = hostFactionId;
 		
-		Set<String> factionIdsInner = new TreeSet<>();
+		Set<String> factionIdsInner = new MassiveSet<>();
 		if (factionIds != null)
 		{
 			factionIdsInner.addAll(factionIds);
@@ -140,7 +135,7 @@ public class TerritoryAccess
 		}
 		this.factionIds = Collections.unmodifiableSet(factionIdsInner);
 		
-		Set<String> playerIdsInner = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
+		Set<String> playerIdsInner = new MassiveSet<>();
 		if (playerIds != null)
 		{
 			for (String playerId : playerIds)
@@ -171,20 +166,24 @@ public class TerritoryAccess
 	// INSTANCE METHODS
 	// -------------------------------------------- //
 	
-	public boolean isFactionIdGranted(String factionId)
+	public boolean isFactionGranted(Faction faction)
 	{
+		String factionId = faction.getId();
+		
 		if (this.getHostFactionId().equals(factionId))
 		{
 			return this.isHostFactionAllowed();
 		}
+		
 		return this.getFactionIds().contains(factionId);
 	}
 	
 	// Note that the player can have access without being specifically granted.
 	// The player could for example be a member of a granted faction. 
-	public boolean isPlayerIdGranted(String playerId)
+	public boolean isMPlayerGranted(MPlayer mplayer)
 	{
-		return this.getPlayerIds().contains(playerId);
+		String mplayerId = mplayer.getId();
+		return this.getPlayerIds().contains(mplayerId);
 	}
 	
 	// A "default" TerritoryAccess could be serialized as a simple string only.
@@ -203,7 +202,7 @@ public class TerritoryAccess
 	// null means standard access
 	public Boolean hasTerritoryAccess(MPlayer mplayer)
 	{
-		if (this.getPlayerIds().contains(mplayer.getId())) return true;
+		if (this.isMPlayerGranted(mplayer)) return true;
 		
 		String factionId = mplayer.getFaction().getId();
 		if (this.getFactionIds().contains(factionId)) return true;

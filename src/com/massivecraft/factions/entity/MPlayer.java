@@ -27,6 +27,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.lang.ref.WeakReference;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -166,13 +167,20 @@ public class MPlayer extends SenderEntity<MPlayer> implements FactionsParticipat
 	// Null means default specified in MConf.
 	private Boolean territoryInfoTitles = null;
 
-	// The id for the faction this player is currently autoclaiming for.
+	// The Faction this player is currently autoclaiming for.
 	// Null means the player isn't auto claiming.
 	// NOTE: This field will not be saved to the database ever.
-	private transient Faction autoClaimFaction = null;
+	private transient WeakReference<Faction> autoClaimFaction = new WeakReference<>(null);
 
-	public Faction getAutoClaimFaction() { return this.autoClaimFaction; }
-	public void setAutoClaimFaction(Faction autoClaimFaction) { this.autoClaimFaction = autoClaimFaction; }
+	public Faction getAutoClaimFaction()
+	{
+		if (this.isFactionOrphan()) return null;
+		Faction ret = this.autoClaimFaction.get();
+		if (ret == null) return null;
+		if (ret.detached()) return null;
+		return ret;
+	}
+	public void setAutoClaimFaction(Faction autoClaimFaction) { this.autoClaimFaction = new WeakReference<>(autoClaimFaction); }
 
 	// Does the player have /f seechunk activated?
 	// NOTE: This field will not be saved to the database ever.
@@ -225,31 +233,43 @@ public class MPlayer extends SenderEntity<MPlayer> implements FactionsParticipat
 	// -------------------------------------------- //
 	// FIELD: factionId
 	// -------------------------------------------- //
-
-	@Deprecated
-	public String getDefaultFactionId()
+	
+	private Faction getFactionInternal()
 	{
-		return MConf.get().defaultPlayerFactionId;
+		String effectiveFactionId = this.convertGet(this.factionId, MConf.get().defaultPlayerFactionId);
+		return Faction.get(effectiveFactionId);
+	}
+	
+	public boolean isFactionOrphan()
+	{
+		return this.getFactionInternal() == null;
 	}
 
-	// This method never returns null
+	@Deprecated
 	public String getFactionId()
 	{
-		if (this.factionId == null) return MConf.get().defaultPlayerFactionId;
-		return this.factionId;
+		return this.getFaction().getId();
 	}
 
 	// This method never returns null
 	public Faction getFaction()
 	{
-		Faction ret = Faction.get(this.getFactionId());
-		if (ret == null) ret = Faction.get(MConf.get().defaultPlayerFactionId);
+		Faction ret;
+		
+		ret = this.getFactionInternal();
+		
+		// Adopt orphans
+		if (ret == null)
+		{
+			ret = FactionColl.get().getNone();
+		}
+		
 		return ret;
 	}
-
+	
 	public boolean hasFaction()
 	{
-		return !this.getFactionId().equals(Factions.ID_NONE);
+		return !this.getFaction().isNone();
 	}
 
 	// This setter is so long because it search for default/null case and takes
@@ -284,14 +304,10 @@ public class MPlayer extends SenderEntity<MPlayer> implements FactionsParticipat
 	// FIELD: role
 	// -------------------------------------------- //
 
-	@Deprecated
-	public Rel getDefaultRole()
-	{
-		return MConf.get().defaultPlayerRole;
-	}
-
 	public Rel getRole()
 	{
+		if (this.isFactionOrphan()) return Rel.RECRUIT;
+		
 		if (this.role == null) return MConf.get().defaultPlayerRole;
 		return this.role;
 	}
@@ -314,15 +330,20 @@ public class MPlayer extends SenderEntity<MPlayer> implements FactionsParticipat
 	// -------------------------------------------- //
 	// FIELD: title
 	// -------------------------------------------- //
-
+	// TODO: Improve upon the has and get stuff.
+	// TODO: Has should depend on get. Visualisation should be done elsewhere.
+	
 	public boolean hasTitle()
 	{
-		return this.title != null;
+		return !this.isFactionOrphan() && this.title != null;
 	}
 
 	public String getTitle()
 	{
+		if (this.isFactionOrphan()) return NOTITLE;
+		
 		if (this.hasTitle()) return this.title;
+		
 		return NOTITLE;
 	}
 
@@ -337,15 +358,6 @@ public class MPlayer extends SenderEntity<MPlayer> implements FactionsParticipat
 			{
 				target = null;
 			}
-		}
-
-		// NOTE: That we parse the title here is considered part of the 1.8 -->
-		// 2.0 migration.
-		// This should be removed once the migration phase is considered to be
-		// over.
-		if (target != null)
-		{
-			target = Txt.parse(target);
 		}
 
 		// Detect Nochange

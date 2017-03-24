@@ -29,7 +29,7 @@ public class CmdFactionsAccessFaction extends CmdFactionsAccessAbstract
 	{
 		// Args
 		Faction faction = this.readArg();
-		boolean newValue = this.readArg(!ta.isFactionIdGranted(faction.getId()));
+		boolean newValue = this.readArg(!ta.isFactionGranted(faction));
 		
 		// MPerm
 		if (!MPerm.getPermAccess().has(msender, hostFaction, true)) return;

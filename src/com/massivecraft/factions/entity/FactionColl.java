@@ -47,26 +47,6 @@ public class FactionColl extends Coll<Faction>
 		this.createSpecialFactions();
 	}
 	
-	@Override
-	public Faction get(Object oid)
-	{
-		Faction ret = super.get(oid);
-		
-		// We should only trigger automatic clean if the whole database system is initialized.
-		// A cleaning can only be successful if all data is available.
-		// Example Reason: When creating the special factions for the first time "createSpecialFactions" a clean would be triggered otherwise.
-		if (ret == null && Factions.get().isDatabaseInitialized())
-		{
-			String message = Txt.parse("<b>Non existing factionId <h>%s <b>requested. <i>Cleaning all boards and mplayers.", this.fixId(oid));
-			Factions.get().log(message);
-			
-			BoardColl.get().clean();
-			MPlayerColl.get().clean();
-		}
-		
-		return ret;
-	}
-	
 	// -------------------------------------------- //
 	// SPECIAL FACTIONS
 	// -------------------------------------------- //

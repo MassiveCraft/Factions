@@ -29,7 +29,7 @@ public class CmdFactionsAccessPlayer extends CmdFactionsAccessAbstract
 	{
 		// Args
 		MPlayer mplayer = this.readArg();
-		boolean newValue = this.readArg(!ta.isPlayerIdGranted(mplayer.getId()));
+		boolean newValue = this.readArg(!ta.isMPlayerGranted(mplayer));
 		
 		// MPerm
 		if (!MPerm.getPermAccess().has(msender, hostFaction, true)) return;
