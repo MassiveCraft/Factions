@@ -118,7 +118,7 @@ public class EngineEcon extends Engine
 	public void payForAction(EventFactionsChunksChange event)
 	{
 		double cost = 0;
-		List<String> typeNames = new ArrayList<String>();
+		List<String> typeNames = new ArrayList<>();
 		
 		for (Entry<EventFactionsChunkChangeType, Set<PS>> typeChunks : event.getTypeChunks().entrySet())
 		{

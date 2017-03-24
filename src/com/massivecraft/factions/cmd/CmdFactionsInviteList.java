@@ -46,7 +46,8 @@ public class CmdFactionsInviteList extends FactionsCommand
 		
 		// Pager Create
 		final List<MPlayer> mplayers = faction.getInvitedMPlayers();
-		final Pager<MPlayer> pager = new Pager<MPlayer>(this, "Invited Players List", page, mplayers, new Stringifier<MPlayer>(){
+		final Pager<MPlayer> pager = new Pager<>(this, "Invited Players List", page, mplayers, new Stringifier<MPlayer>()
+		{
 			public String toString(MPlayer target, int index)
 			{
 				// TODO: Madus would like to implement this in MPlayer

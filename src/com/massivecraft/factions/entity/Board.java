@@ -72,12 +72,12 @@ public class Board extends Entity<Board> implements BoardInterface
 	
 	public Board()
 	{
-		this.map = new ConcurrentSkipListMap<PS, TerritoryAccess>();
+		this.map = new ConcurrentSkipListMap<>();
 	}
 	
 	public Board(Map<PS, TerritoryAccess> map)
 	{
-		this.map = new ConcurrentSkipListMap<PS, TerritoryAccess>(map);
+		this.map = new ConcurrentSkipListMap<>(map);
 	}
 	
 	// -------------------------------------------- //
@@ -186,7 +186,7 @@ public class Board extends Entity<Board> implements BoardInterface
 	@Override
 	public Set<PS> getChunks(String factionId)
 	{
-		Set<PS> ret = new HashSet<PS>();
+		Set<PS> ret = new HashSet<>();
 		for (Entry<PS, TerritoryAccess> entry : this.map.entrySet())
 		{
 			TerritoryAccess ta = entry.getValue();
@@ -202,7 +202,7 @@ public class Board extends Entity<Board> implements BoardInterface
 	@Override
 	public Map<Faction, Set<PS>> getFactionToChunks()
 	{
-		Map<Faction, Set<PS>> ret = new MassiveMap<Faction, Set<PS>>();
+		Map<Faction, Set<PS>> ret = new MassiveMap<>();
 		
 		for (Entry<PS, TerritoryAccess> entry : this.map.entrySet())
 		{
@@ -215,7 +215,7 @@ public class Board extends Entity<Board> implements BoardInterface
 			Set<PS> chunks = ret.get(faction);
 			if (chunks == null)
 			{
-				chunks = new MassiveSet<PS>();
+				chunks = new MassiveSet<>();
 				ret.put(faction, chunks);
 			}
 			
@@ -251,7 +251,7 @@ public class Board extends Entity<Board> implements BoardInterface
 	@Override
 	public Map<Faction, Integer> getFactionToCount()
 	{
-		Map<Faction, Integer> ret = new MassiveMap<Faction, Integer>();
+		Map<Faction, Integer> ret = new MassiveMap<>();
 		
 		for (Entry<PS, TerritoryAccess> entry : this.map.entrySet())
 		{
@@ -388,7 +388,7 @@ public class Board extends Entity<Board> implements BoardInterface
 		// Make room for the list of names
 		height--;
 		
-		Map<Faction, Character> fList = new HashMap<Faction, Character>();
+		Map<Faction, Character> fList = new HashMap<>();
 		int chrIdx = 0;
 		boolean overflown = false;
 		

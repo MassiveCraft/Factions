@@ -113,7 +113,7 @@ public class UpdateUtil
 	
 	public static List<String> getUniverses()
 	{
-		List<String> ret = new ArrayList<String>();
+		List<String> ret = new ArrayList<>();
 		
 		for (String collname : MStore.getDb().getCollnames())
 		{
@@ -232,7 +232,7 @@ public class UpdateUtil
 		// Before and After
 		Set<String> before = entity.factionIds;
 		if (before == null) return false;
-		Set<String> after = new LinkedHashSet<String>();
+		Set<String> after = new LinkedHashSet<>();
 		for (String id : before)
 		{
 			if (id == null) continue;

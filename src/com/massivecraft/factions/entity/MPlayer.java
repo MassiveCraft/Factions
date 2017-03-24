@@ -925,7 +925,7 @@ public class MPlayer extends SenderEntity<MPlayer> implements FactionsParticipat
 
 	public static Set<MPlayer> getClaimInformees(MPlayer msender, Faction... factions)
 	{
-		Set<MPlayer> ret = new HashSet<MPlayer>();
+		Set<MPlayer> ret = new HashSet<>();
 
 		if (msender != null) ret.add(msender);
 

@@ -46,7 +46,7 @@ public class CmdFactionsSetFill extends CmdFactionsSetXSimple
 	{
 		// Common Startup
 		final PS chunk = PS.valueOf(me.getLocation()).getChunk(true);
-		final Set<PS> chunks = new LinkedHashSet<PS>();
+		final Set<PS> chunks = new LinkedHashSet<>();
 		
 		// What faction (aka color) resides there?
 		// NOTE: Wilderness/None is valid. 
@@ -81,7 +81,7 @@ public class CmdFactionsSetFill extends CmdFactionsSetXSimple
 		if (color == null) throw new NullPointerException("color");
 		
 		// Expand
-		Set<PS> expansion = new LinkedHashSet<PS>();
+		Set<PS> expansion = new LinkedHashSet<>();
 		for (PS chunk : set)
 		{
 			Set<PS> neighbours = MUtil.set(

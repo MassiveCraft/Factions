@@ -47,7 +47,7 @@ public class MFlagColl extends Coll<MFlag>
 	public List<MFlag> getAll(boolean registered)
 	{
 		// Create
-		List<MFlag> ret = new ArrayList<MFlag>();
+		List<MFlag> ret = new ArrayList<>();
 		
 		// Fill
 		for (MFlag mflag : this.getAll())

@@ -231,7 +231,7 @@ public class MPerm extends Entity<MPerm> implements Prioritized, Registerable, N
 	// What is the standard (aka default) perm value?
 	// This value will be set for factions from the beginning.
 	// Example: ... set of relations ...
-	private Set<Rel> standard = new LinkedHashSet<Rel>();
+	private Set<Rel> standard = new LinkedHashSet<>();
 	public Set<Rel> getStandard() { return this.standard; }
 	public MPerm setStandard(Set<Rel> standard) { this.standard = standard; this.changed(); return this; }
 	
@@ -305,7 +305,7 @@ public class MPerm extends Entity<MPerm> implements Prioritized, Registerable, N
 	
 	public String getDesc(boolean withName, boolean withDesc)
 	{
-		List<String> parts = new ArrayList<String>();
+		List<String> parts = new ArrayList<>();
 		
 		if (withName)
 		{

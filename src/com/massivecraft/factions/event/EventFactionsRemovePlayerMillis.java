@@ -31,7 +31,7 @@ public class EventFactionsRemovePlayerMillis extends EventMassiveCore
 	public long getMillis() { return this.millis; }
 	public void setMillis(long millis) { this.millis = millis; }
 	
-	private Map<String, Long> causeMillis = new LinkedHashMap<String, Long>();
+	private Map<String, Long> causeMillis = new LinkedHashMap<>();
 	public Map<String, Long> getCauseMillis() { return this.causeMillis; }
 	
 	// -------------------------------------------- //

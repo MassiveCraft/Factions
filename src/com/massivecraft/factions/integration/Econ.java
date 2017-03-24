@@ -160,7 +160,7 @@ public class Econ
 	
 	public static Set<MPlayer> getMPlayers(EconomyParticipator ep)
 	{
-		Set<MPlayer> mplayers = new HashSet<MPlayer>();
+		Set<MPlayer> mplayers = new HashSet<>();
 		
 		if (ep == null)
 		{
@@ -180,7 +180,7 @@ public class Econ
 	
 	public static void sendTransferInfo(EconomyParticipator invoker, EconomyParticipator from, EconomyParticipator to, double amount)
 	{
-		Set<MPlayer> recipients = new HashSet<MPlayer>();
+		Set<MPlayer> recipients = new HashSet<>();
 		recipients.addAll(getMPlayers(invoker));
 		recipients.addAll(getMPlayers(from));
 		recipients.addAll(getMPlayers(to));

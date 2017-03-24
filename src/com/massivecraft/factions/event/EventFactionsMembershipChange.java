@@ -72,7 +72,7 @@ public class EventFactionsMembershipChange extends EventFactionsAbstractSender
 		private final boolean cancellable;
 		public boolean isCancellable() { return this.cancellable; }
 		
-		private MembershipChangeReason(boolean cancellable)
+		MembershipChangeReason(boolean cancellable)
 		{
 			this.cancellable = cancellable;
 		}

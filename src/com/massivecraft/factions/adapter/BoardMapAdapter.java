@@ -31,7 +31,7 @@ public class BoardMapAdapter implements JsonDeserializer<Map<PS, TerritoryAccess
 	@Override
 	public Map<PS, TerritoryAccess> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException
 	{
-		Map<PS, TerritoryAccess> ret = new ConcurrentSkipListMap<PS, TerritoryAccess>();
+		Map<PS, TerritoryAccess> ret = new ConcurrentSkipListMap<>();
 		
 		JsonObject jsonObject = json.getAsJsonObject();
 		

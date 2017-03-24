@@ -62,7 +62,7 @@ public class EventFactionsChunksChange extends EventFactionsAbstractSender
 		MPlayer msender = this.getMPlayer();
 		Faction self = null;
 		if (msender != null) self = msender.getFaction();
-		Map<PS, EventFactionsChunkChangeType> currentChunkType = new LinkedHashMap<PS, EventFactionsChunkChangeType>();
+		Map<PS, EventFactionsChunkChangeType> currentChunkType = new LinkedHashMap<>();
 		for (Entry<PS, Faction> entry : this.oldChunkFaction.entrySet())
 		{
 			PS chunk = entry.getKey();

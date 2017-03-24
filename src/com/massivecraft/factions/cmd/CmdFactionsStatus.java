@@ -54,7 +54,8 @@ public class CmdFactionsStatus extends FactionsCommand
 		
 		// Pager Create
 		String title = Txt.parse("<i>Status of %s<i>.", faction.describeTo(msender, true));
-		final Pager<MPlayer> pager = new Pager<MPlayer>(this, title, page, mplayers, new Stringifier<MPlayer>(){
+		final Pager<MPlayer> pager = new Pager<>(this, title, page, mplayers, new Stringifier<MPlayer>()
+		{
 			@Override
 			public String toString(MPlayer mplayer, int index)
 			{
@@ -86,7 +87,7 @@ public class CmdFactionsStatus extends FactionsCommand
 				{
 					color = "<red>";
 				}
-			
+				
 				String power = Txt.parse("<art>Power: %s%.0f<gray>/<green>%.0f", Txt.parse(color), currentPower, maxPower);
 				
 				// Time

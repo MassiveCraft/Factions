@@ -49,7 +49,7 @@ public class EngineV19 extends Engine
 		Entity thrower = (Entity)projectileSource;
 		
 		// ... create a dummy list to avoid ConcurrentModificationException ...
-		List<LivingEntity> affectedList = new ArrayList<LivingEntity>();
+		List<LivingEntity> affectedList = new ArrayList<>();
 		
 		// ... then scan through affected entities to make sure they're all valid targets ...
 		for (LivingEntity affectedEntity : event.getAffectedEntities())

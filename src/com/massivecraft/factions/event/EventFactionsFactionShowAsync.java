@@ -36,7 +36,7 @@ public class EventFactionsFactionShowAsync extends EventFactionsAbstractSender
 	{
 		super(true, sender);
 		this.faction = faction;
-		this.idPriorityLiness = new HashMap<String, PriorityLines>();
+		this.idPriorityLiness = new HashMap<>();
 	}
 	
 }

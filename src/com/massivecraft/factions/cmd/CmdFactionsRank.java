@@ -284,7 +284,7 @@ public class CmdFactionsRank extends FactionsCommand
 		endFaction.setInvited(target, false);
 
 		// Create recipients
-		Set<MPlayer> recipients = new HashSet<MPlayer>();
+		Set<MPlayer> recipients = new HashSet<>();
 		recipients.addAll(targetFaction.getMPlayersWhereOnline(true));
 		recipients.addAll(endFaction.getMPlayersWhereOnline(true));
 		recipients.add(msender);
@@ -369,7 +369,7 @@ public class CmdFactionsRank extends FactionsCommand
 		}
 
 		// Create recipients
-		Set<MPlayer> recipients = new HashSet<MPlayer>();
+		Set<MPlayer> recipients = new HashSet<>();
 		recipients.addAll(targetFaction.getMPlayers());
 		recipients.add(msender);
 		

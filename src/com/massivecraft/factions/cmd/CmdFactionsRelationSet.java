@@ -83,7 +83,7 @@ public class CmdFactionsRelationSet extends FactionsCommand
 		}
 		
 		// TODO: The ally case should work!!
-		//   * this might have to be bumped up to make that happen, & allow ALLY,NEUTRAL only
+		// this might have to be bumped up to make that happen, & allow ALLY,NEUTRAL only
 		if (newRelation != Rel.TRUCE && otherFaction.getFlag(MFlag.getFlagPeaceful()))
 		{
 			otherFaction.msg("<i>This will have no effect while your faction is peaceful.");

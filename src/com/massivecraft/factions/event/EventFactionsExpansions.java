@@ -21,7 +21,7 @@ public class EventFactionsExpansions extends EventFactionsAbstractSender
 	// FIELDS
 	// -------------------------------------------- //
 	
-	private final MassiveTreeMap<String, Boolean, ComparatorCaseInsensitive> expansions = new MassiveTreeMap<String, Boolean, ComparatorCaseInsensitive>(ComparatorCaseInsensitive.get());
+	private final MassiveTreeMap<String, Boolean, ComparatorCaseInsensitive> expansions = new MassiveTreeMap<>(ComparatorCaseInsensitive.get());
 	public Map<String, Boolean> getExpansions() { return this.expansions; }
 	
 	// -------------------------------------------- //

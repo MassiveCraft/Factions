@@ -66,7 +66,7 @@ public abstract class CmdFactionsAccessAbstract extends FactionsCommand
 	public static String describeRelationParticipators(Collection<? extends RelationParticipator> relationParticipators, RelationParticipator observer)
 	{
 		if (relationParticipators.size() == 0) return Txt.parse("<silver><em>none");
-		List<String> descriptions = new ArrayList<String>();
+		List<String> descriptions = new ArrayList<>();
 		for (RelationParticipator relationParticipator : relationParticipators)
 		{
 			descriptions.add(relationParticipator.describeTo(observer));

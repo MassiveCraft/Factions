@@ -53,7 +53,7 @@ public class CmdFactionsFaction extends FactionsCommand
 				MixinMessage.get().messageOne(sender, Txt.titleize("Faction " + faction.getName(msender)));
 				
 				// Lines
-				TreeSet<PriorityLines> priorityLiness = new TreeSet<PriorityLines>(event.getIdPriorityLiness().values());
+				TreeSet<PriorityLines> priorityLiness = new TreeSet<>(event.getIdPriorityLiness().values());
 				for (PriorityLines priorityLines : priorityLiness)
 				{
 					MixinMessage.get().messageOne(sender, priorityLines.getLines());

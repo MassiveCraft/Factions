@@ -18,14 +18,14 @@ public class TypeRank extends TypeEnum<Rel>
 	// CONSTANTS
 	// -------------------------------------------- //
 	
-	public static final Set<String> NAMES_PROMOTE = new MassiveSet<String>(
+	public static final Set<String> NAMES_PROMOTE = new MassiveSet<>(
 		"Promote",
 		"+",
 		"Plus",
 		"Up"
 	);
 	
-	public static final Set<String> NAMES_DEMOTE = new MassiveSet<String>(
+	public static final Set<String> NAMES_DEMOTE = new MassiveSet<>(
 		"Demote",
 		"-",
 		"Minus",
@@ -101,7 +101,7 @@ public class TypeRank extends TypeEnum<Rel>
 	public Set<String> getNamesInner(Rel value)
 	{
 		// Create
-		Set<String> ret = new MassiveSet<String>();
+		Set<String> ret = new MassiveSet<>();
 		
 		// Fill Exact
 		ret.addAll(value.getNames());

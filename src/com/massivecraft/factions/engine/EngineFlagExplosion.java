@@ -79,7 +79,7 @@ public class EngineFlagExplosion extends Engine
 		// Current allowed
 		Boolean allowed = true;
 		// Caching to speed things up.
-		Map<Faction, Boolean> faction2allowed = new HashMap<Faction, Boolean>();
+		Map<Faction, Boolean> faction2allowed = new HashMap<>();
 
 		// If an explosion occurs at a location ...
 		Location location = event.getLocation();

@@ -33,7 +33,7 @@ public class CmdFactionsInviteRemove extends FactionsCommand
 	@Override
 	public void perform() throws MassiveException
 	{
-		Set<MPlayer> mplayers = new HashSet<MPlayer>();
+		Set<MPlayer> mplayers = new HashSet<>();
 		boolean all = false;
 		
 		// Args
@@ -123,7 +123,7 @@ public class CmdFactionsInviteRemove extends FactionsCommand
 		// Inform Faction if all
 		if (all)
 		{
-			List<String> names = new ArrayList<String>();
+			List<String> names = new ArrayList<>();
 			for (MPlayer mplayer : mplayers)
 			{
 				names.add(mplayer.describeTo(msender, true));

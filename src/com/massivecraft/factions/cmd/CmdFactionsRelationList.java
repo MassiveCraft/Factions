@@ -26,7 +26,7 @@ public class CmdFactionsRelationList extends FactionsCommand
 	// COSTANTS
 	// -------------------------------------------- //
 
-	public static final Set<Rel> RELEVANT_RELATIONS = new MassiveSet<Rel>(Rel.ENEMY, Rel.TRUCE, Rel.ALLY);
+	public static final Set<Rel> RELEVANT_RELATIONS = new MassiveSet<>(Rel.ENEMY, Rel.TRUCE, Rel.ALLY);
 	public static final String SEPERATOR = Txt.parse("<silver>: ");
 
 	// -------------------------------------------- //
@@ -54,7 +54,7 @@ public class CmdFactionsRelationList extends FactionsCommand
 		final Set<Rel> relations = this.readArg(RELEVANT_RELATIONS);
 
 		// Pager Create
-		final Pager<String> pager = new Pager<String>(this, "", page, new Stringifier<String>()
+		final Pager<String> pager = new Pager<>(this, "", page, new Stringifier<String>()
 		{
 			@Override
 			public String toString(String item, int index)

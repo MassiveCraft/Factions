@@ -97,7 +97,7 @@ public abstract class ChannelFactionsAbstract implements Channel
 	@Override
 	public Set<Chatter> getMembers()
 	{
-		Set<Chatter> ret = new HashSet<Chatter>();
+		Set<Chatter> ret = new HashSet<>();
 		for (Chatter chatter : Herochat.getChatterManager().getChatters())
 		{
 			if(chatter.hasChannel(this)) ret.add(chatter);
@@ -200,7 +200,7 @@ public abstract class ChannelFactionsAbstract implements Channel
 	{
 		message = this.applyFormat(this.getFormatSupplier().getEmoteFormat(), "").replace("%2$s", message);
 		
-		Set<Player> recipients = new HashSet<Player>();
+		Set<Player> recipients = new HashSet<>();
 		for (Chatter member : this.getMembers())
 		{
 			recipients.add(member.getPlayer());
@@ -225,7 +225,7 @@ public abstract class ChannelFactionsAbstract implements Channel
 	
 	public Set<Player> getRecipients(Player sender)
 	{
-		Set<Player> ret = new HashSet<Player>();
+		Set<Player> ret = new HashSet<>();
 		
 		MPlayer fsender = MPlayer.get(sender);
 		Faction faction = fsender.getFaction();

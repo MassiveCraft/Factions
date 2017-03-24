@@ -79,7 +79,7 @@ public class MConf extends Entity<MConf>
 	// Add player names here who should bypass all protections.
 	// Should /not/ be used for admins. There is "/f adminmode" for that.
 	// This is for other plugins/mods that use a fake player to take actions, which shouldn't be subject to our protections.
-	public Set<String> playersWhoBypassAllProtection = new LinkedHashSet<String>();
+	public Set<String> playersWhoBypassAllProtection = new LinkedHashSet<>();
 	
 	// -------------------------------------------- //
 	// TASKS
@@ -337,7 +337,7 @@ public class MConf extends Entity<MConf>
 	
 	// A list of commands to block for members of permanent factions.
 	// I don't really understand the user case for this option.
-	public List<String> denyCommandsPermanentFactionMember = new ArrayList<String>();
+	public List<String> denyCommandsPermanentFactionMember = new ArrayList<>();
 
 	// Lists of commands to deny depending on your relation to the current faction territory.
 	// You may for example not type /home (might be the plugin Essentials) in the territory of your enemies.
@@ -537,7 +537,7 @@ public class MConf extends Entity<MConf>
 	// This way they can be protected in Faction territory.
 	
 	// Interacting with these materials when they are already placed in the terrain results in an edit.
-	public BackstringSet<Material> materialsEditOnInteract = new BackstringSet<Material>(Material.class,
+	public BackstringSet<Material> materialsEditOnInteract = new BackstringSet<>(Material.class,
 		"DIODE_BLOCK_OFF", // Minecraft 1.?
 		"DIODE_BLOCK_ON", // Minecraft 1.?
 		"NOTE_BLOCK", // Minecraft 1.?
@@ -551,7 +551,7 @@ public class MConf extends Entity<MConf>
 	
 	// Interacting with the the terrain holding this item in hand results in an edit.
 	// There's no need to add all block materials here. Only special items other than blocks.
-	public BackstringSet<Material> materialsEditTools = new BackstringSet<Material>(Material.class,
+	public BackstringSet<Material> materialsEditTools = new BackstringSet<>(Material.class,
 		"FIREBALL", // Minecraft 1.?
 		"FLINT_AND_STEEL", // Minecraft 1.?
 		"BUCKET", // Minecraft 1.?
@@ -563,7 +563,7 @@ public class MConf extends Entity<MConf>
 	
 	// The duplication bug found in Spigot 1.8 protocol patch
 	// https://github.com/MassiveCraft/Factions/issues/693
-	public BackstringSet<Material> materialsEditToolsDupeBug = new BackstringSet<Material>(Material.class,
+	public BackstringSet<Material> materialsEditToolsDupeBug = new BackstringSet<>(Material.class,
 		"CHEST", // Minecraft 1.?
 		"SIGN_POST", // Minecraft 1.?
 		"TRAPPED_CHEST", // Minecraft 1.?
@@ -573,7 +573,7 @@ public class MConf extends Entity<MConf>
 	);
 	
 	// Interacting with these materials placed in the terrain results in door toggling.
-	public BackstringSet<Material> materialsDoor = new BackstringSet<Material>(Material.class,
+	public BackstringSet<Material> materialsDoor = new BackstringSet<>(Material.class,
 		"WOODEN_DOOR", // Minecraft 1.?
 		"ACACIA_DOOR", // Minecraft 1.8
 		"BIRCH_DOOR", // Minecraft 1.8
@@ -590,7 +590,7 @@ public class MConf extends Entity<MConf>
 	);
 	
 	// Interacting with these materials placed in the terrain results in opening a container.
-	public BackstringSet<Material> materialsContainer = new BackstringSet<Material>(Material.class,
+	public BackstringSet<Material> materialsContainer = new BackstringSet<>(Material.class,
 		"DISPENSER", // Minecraft 1.?
 		"CHEST", // Minecraft 1.?
 		"FURNACE", // Minecraft 1.?
@@ -624,26 +624,26 @@ public class MConf extends Entity<MConf>
 	);
 	
 	// Interacting with these entities results in an edit.
-	public BackstringSet<EntityType> entityTypesEditOnInteract = new BackstringSet<EntityType>(EntityType.class,
+	public BackstringSet<EntityType> entityTypesEditOnInteract = new BackstringSet<>(EntityType.class,
 		"ITEM_FRAME", // Minecraft 1.?
 		"ARMOR_STAND" // Minecraft 1.8
 	);
 	
 	// Damaging these entities results in an edit.
-	public BackstringSet<EntityType> entityTypesEditOnDamage = new BackstringSet<EntityType>(EntityType.class,
+	public BackstringSet<EntityType> entityTypesEditOnDamage = new BackstringSet<>(EntityType.class,
 		"ITEM_FRAME", // Minecraft 1.?
 		"ARMOR_STAND", // Minecraft 1.8
 		"ENDER_CRYSTAL" // Minecraft 1.10
 	);
 	
 	// Interacting with these entities results in opening a container.
-	public BackstringSet<EntityType> entityTypesContainer = new BackstringSet<EntityType>(EntityType.class,
+	public BackstringSet<EntityType> entityTypesContainer = new BackstringSet<>(EntityType.class,
 		"MINECART_CHEST", // Minecraft 1.?
 		"MINECART_HOPPER" // Minecraft 1.?
 	);
 	
 	// The complete list of entities considered to be monsters.
-	public BackstringSet<EntityType> entityTypesMonsters = new BackstringSet<EntityType>(EntityType.class,
+	public BackstringSet<EntityType> entityTypesMonsters = new BackstringSet<>(EntityType.class,
 		"BLAZE", // Minecraft 1.?
 		"CAVE_SPIDER", // Minecraft 1.?
 		"CREEPER", // Minecraft 1.?
@@ -675,7 +675,7 @@ public class MConf extends Entity<MConf>
 	);
 	
 	// List of entities considered to be animals.
-	public BackstringSet<EntityType> entityTypesAnimals = new BackstringSet<EntityType>(EntityType.class,
+	public BackstringSet<EntityType> entityTypesAnimals = new BackstringSet<>(EntityType.class,
 		"BAT", // Minecraft 1.?
 		"CHICKEN", // Minecraft 1.?
 		"COW", // Minecraft 1.?
@@ -714,7 +714,7 @@ public class MConf extends Entity<MConf>
 	public boolean herochatFactionIsShortcutAllowed = false;
 	public boolean herochatFactionCrossWorld = true;
 	public boolean herochatFactionMuted = false;
-	public Set<String> herochatFactionWorlds = new HashSet<String>();
+	public Set<String> herochatFactionWorlds = new HashSet<>();
 	
 	// The Allies Channel
 	public String herochatAlliesName = "Allies";
@@ -725,7 +725,7 @@ public class MConf extends Entity<MConf>
 	public boolean herochatAlliesIsShortcutAllowed = false;
 	public boolean herochatAlliesCrossWorld = true;
 	public boolean herochatAlliesMuted = false;
-	public Set<String> herochatAlliesWorlds = new HashSet<String>();
+	public Set<String> herochatAlliesWorlds = new HashSet<>();
 	
 	// -------------------------------------------- //
 	// INTEGRATION: LWC

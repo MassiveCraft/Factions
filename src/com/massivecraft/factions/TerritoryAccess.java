@@ -53,7 +53,7 @@ public class TerritoryAccess
 			return valueOf(hostFactionId, with, factionIds, playerIds);
 		}
 		
-		Set<String> factionIds = new HashSet<String>(this.getFactionIds());
+		Set<String> factionIds = new HashSet<>(this.getFactionIds());
 		if (with)
 		{
 			factionIds.add(factionId);
@@ -68,7 +68,7 @@ public class TerritoryAccess
 	public TerritoryAccess withPlayerId(String playerId, boolean with)
 	{
 		playerId = playerId.toLowerCase();
-		Set<String> playerIds = new HashSet<String>(this.getPlayerIds());
+		Set<String> playerIds = new HashSet<>(this.getPlayerIds());
 		if (with)
 		{
 			playerIds.add(playerId);
@@ -102,7 +102,7 @@ public class TerritoryAccess
 	
 	public LinkedHashSet<MPlayer> getGrantedMPlayers()
 	{
-		LinkedHashSet<MPlayer> ret = new LinkedHashSet<MPlayer>();
+		LinkedHashSet<MPlayer> ret = new LinkedHashSet<>();
 		for (String playerId : this.getPlayerIds())
 		{
 			ret.add(MPlayer.get(playerId));
@@ -112,7 +112,7 @@ public class TerritoryAccess
 	
 	public LinkedHashSet<Faction> getGrantedFactions()
 	{
-		LinkedHashSet<Faction> ret = new LinkedHashSet<Faction>();
+		LinkedHashSet<Faction> ret = new LinkedHashSet<>();
 		for (String factionId : this.getFactionIds())
 		{
 			ret.add(FactionColl.get().get(factionId));
@@ -129,7 +129,7 @@ public class TerritoryAccess
 		if (hostFactionId == null) throw new IllegalArgumentException("hostFactionId was null");
 		this.hostFactionId = hostFactionId;
 		
-		Set<String> factionIdsInner = new TreeSet<String>();
+		Set<String> factionIdsInner = new TreeSet<>();
 		if (factionIds != null)
 		{
 			factionIdsInner.addAll(factionIds);
@@ -140,7 +140,7 @@ public class TerritoryAccess
 		}
 		this.factionIds = Collections.unmodifiableSet(factionIdsInner);
 		
-		Set<String> playerIdsInner = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
+		Set<String> playerIdsInner = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
 		if (playerIds != null)
 		{
 			for (String playerId : playerIds)

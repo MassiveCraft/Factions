@@ -31,7 +31,7 @@ public class CmdFactionsPermList extends FactionsCommand
 		int page = this.readArg();
 		
 		// Create messages
-		List<String> messages = new ArrayList<String>();
+		List<String> messages = new ArrayList<>();
 		
 		for (MPerm perm : MPerm.getAll())
 		{

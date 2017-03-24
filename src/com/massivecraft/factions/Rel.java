@@ -90,7 +90,7 @@ public enum Rel implements Colorized, Named
 		this.descPlayerMany = descPlayerMany;
 		this.descFactionOne = descFactionOne;
 		this.descFactionMany = descFactionMany;
-		this.names = Collections.unmodifiableSet(new MassiveSet<String>(names));
+		this.names = Collections.unmodifiableSet(new MassiveSet<>(names));
 	}
 	
 	// -------------------------------------------- //

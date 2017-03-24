@@ -11,40 +11,40 @@ import java.util.Set;
 public interface BoardInterface
 {
 	// GET
-	public TerritoryAccess getTerritoryAccessAt(PS ps);	
-	public Faction getFactionAt(PS ps);
+	TerritoryAccess getTerritoryAccessAt(PS ps);
+	Faction getFactionAt(PS ps);
 	
 	// SET
-	public void setTerritoryAccessAt(PS ps, TerritoryAccess territoryAccess);
-	public void setFactionAt(PS ps, Faction faction);
+	void setTerritoryAccessAt(PS ps, TerritoryAccess territoryAccess);
+	void setFactionAt(PS ps, Faction faction);
 	
 	// REMOVE
-	public void removeAt(PS ps);
-	public void removeAll(Faction faction);
-	public void clean();
+	void removeAt(PS ps);
+	void removeAll(Faction faction);
+	void clean();
 
 	// CHUNKS
-	public Set<PS> getChunks(Faction faction);
-	public Set<PS> getChunks(String factionId);
-	public Map<Faction, Set<PS>> getFactionToChunks();
+	Set<PS> getChunks(Faction faction);
+	Set<PS> getChunks(String factionId);
+	Map<Faction, Set<PS>> getFactionToChunks();
 	
 	// COUNT
-	public int getCount(Faction faction);
-	public int getCount(String factionId);
-	public Map<Faction, Integer> getFactionToCount();
+	int getCount(Faction faction);
+	int getCount(String factionId);
+	Map<Faction, Integer> getFactionToCount();
 	
 	// CLAIMED
-	public boolean hasClaimed(Faction faction);
-	public boolean hasClaimed(String factionId);
+	boolean hasClaimed(Faction faction);
+	boolean hasClaimed(String factionId);
 	
 	// NEARBY DETECTION
-	public boolean isBorderPs(PS ps);
-	public boolean isAnyBorderPs(Set<PS> pss);
-	public boolean isConnectedPs(PS ps, Faction faction);
-	public boolean isAnyConnectedPs(Set<PS> pss, Faction faction);
+	boolean isBorderPs(PS ps);
+	boolean isAnyBorderPs(Set<PS> pss);
+	boolean isConnectedPs(PS ps, Faction faction);
+	boolean isAnyConnectedPs(Set<PS> pss, Faction faction);
 	
 	// MAP
 	// TODO: Could the degrees be embedded in centerPs yaw instead?
-	public List<Object> getMap(RelationParticipator observer, PS centerPs, double inDegrees, int width, int height);
+	List<Object> getMap(RelationParticipator observer, PS centerPs, double inDegrees, int width, int height);
 	
 }

@@ -112,7 +112,7 @@ public class EngineSeeChunk extends Engine
 		if (step >= steps) throw new InvalidParameterException("step must be less than steps");
 		
 		// Create Ret
-		List<Location> ret = new ArrayList<Location>();
+		List<Location> ret = new ArrayList<>();
 		
 		final Location location = player.getLocation();
 		final World world = location.getWorld();

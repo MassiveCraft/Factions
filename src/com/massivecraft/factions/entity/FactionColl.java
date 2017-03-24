@@ -246,7 +246,7 @@ public class FactionColl extends Coll<Faction>
 	public ArrayList<String> validateName(String str)
 	{
 		// Create
-		ArrayList<String> errors = new ArrayList<String>();
+		ArrayList<String> errors = new ArrayList<>();
 		
 		// Fill
 		// Check minimum length
@@ -295,7 +295,7 @@ public class FactionColl extends Coll<Faction>
 	public Map<Rel, List<String>> getRelationNames(Faction faction, Set<Rel> rels)
 	{
 		// Create
-		Map<Rel, List<String>> ret = new LinkedHashMap<Rel, List<String>>();
+		Map<Rel, List<String>> ret = new LinkedHashMap<>();
 		MFlag flagPeaceful = MFlag.getFlagPeaceful();
 		boolean peaceful = faction.getFlag(flagPeaceful);
 		for (Rel rel : rels)

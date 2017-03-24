@@ -79,7 +79,7 @@ public class TypeFaction extends TypeAbstract<Faction>
 	public Collection<String> getTabList(CommandSender sender, String arg)
 	{
 		// Create
-		Set<String> ret = new TreeSet<String>(ComparatorCaseInsensitive.get());
+		Set<String> ret = new TreeSet<>(ComparatorCaseInsensitive.get());
 		
 		// Fill
 		for (Faction faction : FactionColl.get().getAll())

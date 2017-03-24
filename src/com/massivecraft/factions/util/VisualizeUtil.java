@@ -18,7 +18,7 @@ import java.util.UUID;
 
 public class VisualizeUtil
 {
-	protected static Map<UUID, Set<Location>> playerLocations = new HashMap<UUID, Set<Location>>();
+	protected static Map<UUID, Set<Location>> playerLocations = new HashMap<>();
 	public static Set<Location> getPlayerLocations(Player player)
 	{
 		return getPlayerLocations(player.getUniqueId());
@@ -28,7 +28,7 @@ public class VisualizeUtil
 		Set<Location> ret = playerLocations.get(uuid);
 		if (ret == null)
 		{
-			ret = new HashSet<Location>();
+			ret = new HashSet<>();
 			playerLocations.put(uuid, ret);
 		}
 		return ret;

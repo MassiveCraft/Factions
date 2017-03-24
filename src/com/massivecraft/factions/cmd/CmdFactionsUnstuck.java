@@ -122,7 +122,7 @@ public class CmdFactionsUnstuck extends FactionsCommand
 	public static List<PS> getChunkSpiral(PS center)
 	{
 		// Create Ret
-		List<PS> ret = new ArrayList<PS>();
+		List<PS> ret = new ArrayList<>();
 		
 		// Fill Ret
 		center = center.getChunk(true);
