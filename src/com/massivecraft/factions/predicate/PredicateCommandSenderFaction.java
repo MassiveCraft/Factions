@@ -38,7 +38,7 @@ public class PredicateCommandSenderFaction implements Predicate<CommandSender>, 
 		if (MUtil.isntSender(sender)) return false;
 		
 		MPlayer mplayer = MPlayer.get(sender);
-		return this.factionId.equals(mplayer.getFactionId());
+		return this.factionId.equals(mplayer.getFaction().getId());
 	}
 
 }

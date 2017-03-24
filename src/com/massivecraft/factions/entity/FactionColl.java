@@ -68,18 +68,6 @@ public class FactionColl extends Coll<Faction>
 	}
 	
 	// -------------------------------------------- //
-	// INDEX
-	// -------------------------------------------- //
-	
-	public void reindexMPlayers()
-	{
-		for (Faction faction : this.getAll())
-		{
-			faction.reindexMPlayers();
-		}
-	}
-	
-	// -------------------------------------------- //
 	// SPECIAL FACTIONS
 	// -------------------------------------------- //
 	

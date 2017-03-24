@@ -205,7 +205,7 @@ public class TerritoryAccess
 	{
 		if (this.getPlayerIds().contains(mplayer.getId())) return true;
 		
-		String factionId = mplayer.getFactionId();
+		String factionId = mplayer.getFaction().getId();
 		if (this.getFactionIds().contains(factionId)) return true;
 		
 		if (this.getHostFactionId().equals(factionId) && !this.isHostFactionAllowed()) return false;

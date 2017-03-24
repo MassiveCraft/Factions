@@ -1,6 +1,7 @@
 package com.massivecraft.factions.entity;
 
 import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.FactionsIndex;
 import com.massivecraft.factions.FactionsParticipator;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
@@ -93,42 +94,16 @@ public class MPlayer extends SenderEntity<MPlayer> implements FactionsParticipat
 	// UPDATE FACTION INDEXES
 	// -------------------------------------------- //
 
-	public void updateFactionIndexes(String beforeId, String afterId)
-	{
-		// Really?
-		if (!Factions.get().isDatabaseInitialized()) return;
-		if (!this.attached()) return;
-
-		// Fix IDs
-		if (beforeId == null) beforeId = MConf.get().defaultPlayerFactionId;
-		if (afterId == null) afterId = MConf.get().defaultPlayerFactionId;
-
-		// NoChange
-		if (MUtil.equals(beforeId, afterId)) return;
-
-		// Resolve
-		Faction before = FactionColl.get().get(beforeId, false);
-		Faction after = FactionColl.get().get(afterId, false);
-
-		// Apply
-		if (before != null) before.mplayers.remove(this);
-		if (after != null) after.mplayers.add(this);
-	}
-
 	@Override
 	public void postAttach(String id)
 	{
-		String beforeId = null;
-		String afterId = this.getFactionId();
-		this.updateFactionIndexes(beforeId, afterId);
+		FactionsIndex.get().update(this);
 	}
 
 	@Override
 	public void preDetach(String id)
 	{
-		String before = this.getFactionId();
-		String after = null;
-		this.updateFactionIndexes(before, after);
+		FactionsIndex.get().update(this);
 	}
 
 	// -------------------------------------------- //
@@ -293,18 +268,8 @@ public class MPlayer extends SenderEntity<MPlayer> implements FactionsParticipat
 		// Apply
 		this.factionId = afterId;
 
-		// Must be attached and initialized
-		if (!this.attached()) return;
-		if (!Factions.get().isDatabaseInitialized()) return;
-
-		if (beforeId == null) beforeId = MConf.get().defaultPlayerFactionId;
-
-		// Update index
-		Faction before = Faction.get(beforeId);
-		Faction after = this.getFaction();
-
-		if (before != null) before.mplayers.remove(this);
-		if (after != null) after.mplayers.add(this);
+		// Index
+		FactionsIndex.get().update(this);
 
 		// Mark as changed
 		this.changed();

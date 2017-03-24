@@ -1,6 +1,7 @@
 package com.massivecraft.factions.entity;
 
 import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.FactionsIndex;
 import com.massivecraft.factions.FactionsParticipator;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.RelationParticipator;
@@ -10,7 +11,6 @@ import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.factions.util.RelationUtil;
 import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.collections.MassiveMapDef;
-import com.massivecraft.massivecore.collections.MassiveSet;
 import com.massivecraft.massivecore.collections.MassiveTreeSetDef;
 import com.massivecraft.massivecore.comparator.ComparatorCaseInsensitive;
 import com.massivecraft.massivecore.mixin.MixinMessage;
@@ -1014,44 +1014,9 @@ public class Faction extends Entity<Faction> implements FactionsParticipator
 	// FOREIGN KEY: MPLAYER
 	// -------------------------------------------- //
 	
-	protected transient Set<MPlayer> mplayers = new MassiveSet<>();
-	
-	public void reindexMPlayers()
-	{
-		this.mplayers.clear();
-		
-		String factionId = this.getId();
-		if (factionId == null) return;
-		
-		for (MPlayer mplayer : MPlayerColl.get().getAll())
-		{
-			if (!MUtil.equals(factionId, mplayer.getFactionId())) continue;
-			this.mplayers.add(mplayer);
-		}
-	}
-	
-	// TODO: Even though this check method removeds the invalid entries it's not a true solution.
-	// TODO: Find the bug causing non-attached MPlayers to be present in the index.
-	private void checkMPlayerIndex()
-	{
-		Iterator<MPlayer> iter = this.mplayers.iterator();
-		while (iter.hasNext())
-		{
-			MPlayer mplayer = iter.next();
-			if (!mplayer.attached())
-			{
-				String msg = Txt.parse("<rose>WARN: <i>Faction <h>%s <i>aka <h>%s <i>had unattached mplayer in index:", this.getName(), this.getId());
-				Factions.get().log(msg);
-				Factions.get().log(Factions.get().getGson().toJson(mplayer));
-				iter.remove();
-			}
-		}
-	}
-	
 	public List<MPlayer> getMPlayers()
 	{
-		this.checkMPlayerIndex();
-		return new ArrayList<>(this.mplayers);
+		return new MassiveList<>(FactionsIndex.get().getMPlayers(this));
 	}
 	
 	public List<MPlayer> getMPlayersWhere(Predicate<? super MPlayer> predicate)
