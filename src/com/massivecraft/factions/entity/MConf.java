@@ -44,10 +44,14 @@ public class MConf extends Entity<MConf>
 	{
 		super.load(that);
 		
-		if (!Factions.get().isDatabaseInitialized()) return this;
-		
-		EngineChat.get().setActive(false);
-		EngineChat.get().setActive(true);
+		// Reactivate EngineChat if currently active.
+		// This way some event listeners are registered with the correct priority based on the config.
+		EngineChat engine = EngineChat.get();
+		if (engine.isActive())
+		{
+			engine.setActive(false);
+			engine.setActive(true);
+		}
 		
 		return this;
 	}
