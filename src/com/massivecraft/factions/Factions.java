@@ -2,7 +2,6 @@ package com.massivecraft.factions;
 
 import com.massivecraft.factions.adapter.BoardAdapter;
 import com.massivecraft.factions.adapter.BoardMapAdapter;
-import com.massivecraft.factions.adapter.FactionPreprocessAdapter;
 import com.massivecraft.factions.adapter.RelAdapter;
 import com.massivecraft.factions.adapter.TerritoryAccessAdapter;
 import com.massivecraft.factions.chat.modifier.ChatModifierLc;
@@ -45,7 +44,6 @@ import com.massivecraft.factions.engine.EngineTerritoryShield;
 import com.massivecraft.factions.engine.EngineVisualizations;
 import com.massivecraft.factions.entity.Board;
 import com.massivecraft.factions.entity.BoardColl;
-import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.FactionColl;
 import com.massivecraft.factions.entity.MConfColl;
 import com.massivecraft.factions.entity.MFlagColl;
@@ -62,14 +60,9 @@ import com.massivecraft.factions.task.TaskEconLandReward;
 import com.massivecraft.factions.task.TaskFlagPermCreate;
 import com.massivecraft.factions.task.TaskPlayerDataRemove;
 import com.massivecraft.factions.task.TaskPlayerPowerUpdate;
-import com.massivecraft.factions.update.UpdateUtil;
-import com.massivecraft.massivecore.Aspect;
-import com.massivecraft.massivecore.AspectColl;
 import com.massivecraft.massivecore.MassivePlugin;
-import com.massivecraft.massivecore.Multiverse;
 import com.massivecraft.massivecore.command.type.RegistryType;
 import com.massivecraft.massivecore.util.MUtil;
-import com.massivecraft.massivecore.xlib.gson.Gson;
 import com.massivecraft.massivecore.xlib.gson.GsonBuilder;
 import org.bukkit.ChatColor;
 
@@ -101,12 +94,6 @@ public class Factions extends MassivePlugin
 	// FIELDS
 	// -------------------------------------------- //
 	
-	// Aspects
-	// TODO: Remove in the future when the update has been removed.
-	private Aspect aspect;
-	public Aspect getAspect() { return this.aspect; }
-	public Multiverse getMultiverse() { return this.getAspect().getMultiverse(); }
-	
 	// Database Initialized
 	private boolean databaseInitialized;
 	public boolean isDatabaseInitialized() { return this.databaseInitialized; }
@@ -115,9 +102,6 @@ public class Factions extends MassivePlugin
 	@Deprecated public PowerMixin getPowerMixin() { return PowerMixin.get(); }
 	@Deprecated public void setPowerMixin(PowerMixin powerMixin) { PowerMixin.get().setInstance(powerMixin); }
 	
-	// Gson without preprocessors
-	public final Gson gsonWithoutPreprocessors = this.getGsonBuilderWithoutPreprocessors().create();
-	
 	// -------------------------------------------- //
 	// OVERRIDE
 	// -------------------------------------------- //
@@ -125,14 +109,6 @@ public class Factions extends MassivePlugin
 	@Override
 	public void onEnableInner()
 	{
-		// Initialize Aspects
-		this.aspect = AspectColl.get().get(Const.ASPECT, true);
-		this.aspect.register();
-		this.aspect.setDesc(
-			"<i>If the factions system even is enabled and how it's configured.",
-			"<i>What factions exists and what players belong to them."
-		);
-		
 		// Register types
 		RegistryType.register(Rel.class, TypeRel.get());
 		RegistryType.register(EventFactionsChunkChangeType.class, TypeFactionChunkChangeType.get());
@@ -143,19 +119,16 @@ public class Factions extends MassivePlugin
 
 		// Initialize Database
 		this.databaseInitialized = false;
+		
 		MFlagColl.get().setActive(true);
 		MPermColl.get().setActive(true);
 		MConfColl.get().setActive(true);
-		
-		UpdateUtil.update();
-		
 		MPlayerColl.get().setActive(true);
 		FactionColl.get().setActive(true);
 		BoardColl.get().setActive(true);
 		
-		UpdateUtil.updateSpecialIds();
-		
 		FactionColl.get().reindexMPlayers();
+		
 		this.databaseInitialized = true;
 		
 		// Activate
@@ -221,21 +194,14 @@ public class Factions extends MassivePlugin
 		);
 	}
 	
-	public GsonBuilder getGsonBuilderWithoutPreprocessors()
+	@Override
+	public GsonBuilder getGsonBuilder()
 	{
 		return super.getGsonBuilder()
 		.registerTypeAdapter(TerritoryAccess.class, TerritoryAccessAdapter.get())
 		.registerTypeAdapter(Board.class, BoardAdapter.get())
 		.registerTypeAdapter(Board.MAP_TYPE, BoardMapAdapter.get())
 		.registerTypeAdapter(Rel.class, RelAdapter.get())
-		;
-	}
-	
-	@Override
-	public GsonBuilder getGsonBuilder()
-	{
-		return this.getGsonBuilderWithoutPreprocessors()
-		.registerTypeAdapter(Faction.class, FactionPreprocessAdapter.get())
 		;
 	}
 	

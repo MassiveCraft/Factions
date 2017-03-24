@@ -4,19 +4,6 @@ import org.bukkit.ChatColor;
 
 public class Const
 {
-	// Collections & Aspects
-	public static final String BASENAME = "factions";
-	public static final String BASENAME_ = BASENAME+"_";
-	
-	public static final String COLLECTION_BOARD = BASENAME_+"board";
-	public static final String COLLECTION_FACTION = BASENAME_+"faction";
-	public static final String COLLECTION_MFLAG = BASENAME_+"mflag";
-	public static final String COLLECTION_MPERM = BASENAME_+"mperm";
-	public static final String COLLECTION_MPLAYER = BASENAME_+"mplayer";
-	public static final String COLLECTION_MCONF = BASENAME_+"mconf";
-	
-	public static final String ASPECT = BASENAME;
-	
 	// ASCII Map
 	public static final int MAP_WIDTH = 48;
 	public static final int MAP_HEIGHT = 8;
@@ -29,6 +16,8 @@ public class Const
 	public static final String MAP_OVERFLOW_MESSAGE = MAP_KEY_OVERFLOW + ": Too Many Factions (>" + MAP_KEY_CHARS.length + ") on this Map.";
 	
 	// SHOW
+	public static final String BASENAME = "factions";
+	public static final String BASENAME_ = BASENAME+"_";
 	
 	public static final String SHOW_ID_FACTION_ID = BASENAME_ + "id";
 	public static final String SHOW_ID_FACTION_DESCRIPTION = BASENAME_ + "description";
