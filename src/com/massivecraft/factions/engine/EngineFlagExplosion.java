@@ -2,7 +2,7 @@ package com.massivecraft.factions.engine;
 
 import com.massivecraft.factions.entity.BoardColl;
 import com.massivecraft.factions.entity.Faction;
-import com.massivecraft.factions.entity.MConf;
+import com.massivecraft.factions.util.EnumerationUtil;
 import com.massivecraft.massivecore.Engine;
 import com.massivecraft.massivecore.ps.PS;
 import org.bukkit.Location;
@@ -61,7 +61,7 @@ public class EngineFlagExplosion extends Engine
 		if ( ! DAMAGE_CAUSE_EXPLOSIONS.contains(event.getCause())) return;
 
 		// ... an entity that is modified on damage ...
-		if ( ! MConf.get().entityTypesEditOnDamage.contains(event.getEntityType())) return;
+		if ( ! EnumerationUtil.isEntityTypeEditOnDamage(event.getEntityType())) return;
 
 		// ... and the faction has explosions disabled ...
 		if (BoardColl.get().getFactionAt(PS.valueOf(event.getEntity())).isExplosionsAllowed()) return;

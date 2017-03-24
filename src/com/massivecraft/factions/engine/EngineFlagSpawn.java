@@ -2,8 +2,8 @@ package com.massivecraft.factions.engine;
 
 import com.massivecraft.factions.entity.BoardColl;
 import com.massivecraft.factions.entity.Faction;
-import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.entity.MFlag;
+import com.massivecraft.factions.util.EnumerationUtil;
 import com.massivecraft.massivecore.Engine;
 import com.massivecraft.massivecore.collections.BackstringSet;
 import com.massivecraft.massivecore.ps.PS;
@@ -71,12 +71,12 @@ public class EngineFlagSpawn extends Engine
 
 	public static boolean canSpawn(Faction faction, EntityType type)
 	{
-		if (MConf.get().entityTypesMonsters.contains(type))
+		if (EnumerationUtil.isEntityTypeMonster(type))
 		{
 			// Monster
 			return faction.getFlag(MFlag.getFlagMonsters());
 		}
-		else if (MConf.get().entityTypesAnimals.contains(type))
+		else if (EnumerationUtil.isEntityTypeAnimal(type))
 		{
 			// Animal
 			return faction.getFlag(MFlag.getFlagAnimals());

@@ -10,6 +10,7 @@ import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.integration.spigot.IntegrationSpigot;
+import com.massivecraft.factions.util.EnumerationUtil;
 import com.massivecraft.massivecore.Engine;
 import com.massivecraft.massivecore.ps.PS;
 import com.massivecraft.massivecore.util.MUtil;
@@ -296,7 +297,7 @@ public class EnginePermBuild extends Engine
 		// ... damages an entity which is edited on damage ...
 		Entity edamagee = event.getEntity();
 		if (edamagee == null) return;
-		if ( ! MConf.get().entityTypesEditOnDamage.contains(edamagee.getType())) return;
+		if ( ! EnumerationUtil.isEntityTypeEditOnDamage(edamagee.getType())) return;
 
 		// ... and the player can't build there ...
 		if (canPlayerBuildAt(player, PS.valueOf(edamagee.getLocation()), true)) return;
@@ -334,8 +335,8 @@ public class EnginePermBuild extends Engine
 	public static boolean playerCanUseItemHere(Player player, PS ps, Material material, boolean verboose)
 	{
 		if (MUtil.isntPlayer(player)) return true;
-
-		if ( ! MConf.get().materialsEditTools.contains(material) && ! MConf.get().materialsEditToolsDupeBug.contains(material)) return true;
+		
+		if ( ! EnumerationUtil.isMaterialEditTool(material)) return true;
 
 		String name = player.getName();
 		if (MConf.get().playersWhoBypassAllProtection.contains(name)) return true;
@@ -359,9 +360,9 @@ public class EnginePermBuild extends Engine
 		PS ps = PS.valueOf(block);
 		Material material = block.getType();
 
-		if (MConf.get().materialsEditOnInteract.contains(material) && ! MPerm.getPermBuild().has(me, ps, verboose)) return false;
-		if (MConf.get().materialsContainer.contains(material) && ! MPerm.getPermContainer().has(me, ps, verboose)) return false;
-		if (MConf.get().materialsDoor.contains(material) && ! MPerm.getPermDoor().has(me, ps, verboose)) return false;
+		if (EnumerationUtil.isMaterialEditOnInteract(material) && ! MPerm.getPermBuild().has(me, ps, verboose)) return false;
+		if (EnumerationUtil.isMaterialContainer(material) && ! MPerm.getPermContainer().has(me, ps, verboose)) return false;
+		if (EnumerationUtil.isMaterialDoor(material) && ! MPerm.getPermDoor().has(me, ps, verboose)) return false;
 		if (material == Material.STONE_BUTTON && ! MPerm.getPermButton().has(me, ps, verboose)) return false;
 		if (material == Material.LEVER && ! MPerm.getPermLever().has(me, ps, verboose)) return false;
 		return true;
@@ -406,10 +407,10 @@ public class EnginePermBuild extends Engine
 		if (me.isOverriding()) return true;
 
 		// ... check container entity rights ...
-		if (MConf.get().entityTypesContainer.contains(type) && ! MPerm.getPermContainer().has(me, ps, verboose)) return false;
+		if (EnumerationUtil.isEntityTypeContainer(type) && ! MPerm.getPermContainer().has(me, ps, verboose)) return false;
 
 		// ... check build entity rights ...
-		if (MConf.get().entityTypesEditOnInteract.contains(type) && ! MPerm.getPermBuild().has(me, ps, verboose)) return false;
+		if (EnumerationUtil.isEntityTypeEditOnInteract(type) && ! MPerm.getPermBuild().has(me, ps, verboose)) return false;
 
 		// ... otherwise we may use the entity.
 		return true;
