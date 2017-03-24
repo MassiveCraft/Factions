@@ -1,12 +1,11 @@
 package com.massivecraft.factions.entity;
 
-import com.massivecraft.factions.predicate.PredicateCommandSenderFaction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.FactionsParticipator;
-import com.massivecraft.factions.Lang;
-import com.massivecraft.factions.predicate.PredicateMPlayerRole;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.RelationParticipator;
+import com.massivecraft.factions.predicate.PredicateCommandSenderFaction;
+import com.massivecraft.factions.predicate.PredicateMPlayerRole;
 import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.factions.util.RelationUtil;
 import com.massivecraft.massivecore.collections.MassiveList;
@@ -44,6 +43,13 @@ import java.util.TreeSet;
 
 public class Faction extends Entity<Faction> implements FactionsParticipator
 {
+	// -------------------------------------------- //
+	// CONSTANTS
+	// -------------------------------------------- //
+	
+	public static final transient String NODESCRIPTION = Txt.parse("<em><silver>no description set");
+	public static final transient String NOMOTD = Txt.parse("<em><silver>no message of the day set");
+	
 	// -------------------------------------------- //
 	// META
 	// -------------------------------------------- //
@@ -236,7 +242,7 @@ public class Faction extends Entity<Faction> implements FactionsParticipator
 	public String getDescription()
 	{
 		if (this.hasDescription()) return this.description;
-		return Lang.FACTION_NODESCRIPTION;
+		return NODESCRIPTION;
 	}
 	
 	public void setDescription(String description)
@@ -277,7 +283,7 @@ public class Faction extends Entity<Faction> implements FactionsParticipator
 	public String getMotd()
 	{
 		if (this.hasMotd()) return Txt.parse(this.motd);
-		return Lang.FACTION_NOMOTD;
+		return NOMOTD;
 	}
 	
 	public void setMotd(String description)

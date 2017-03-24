@@ -2,7 +2,6 @@ package com.massivecraft.factions.entity;
 
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.FactionsParticipator;
-import com.massivecraft.factions.Lang;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.RelationParticipator;
@@ -35,6 +34,12 @@ import java.util.Set;
 
 public class MPlayer extends SenderEntity<MPlayer> implements FactionsParticipator
 {
+	// -------------------------------------------- //
+	// META
+	// -------------------------------------------- //
+	
+	public static final transient String NOTITLE = Txt.parse("<em><silver>no title set");
+	
 	// -------------------------------------------- //
 	// META
 	// -------------------------------------------- //
@@ -353,7 +358,7 @@ public class MPlayer extends SenderEntity<MPlayer> implements FactionsParticipat
 	public String getTitle()
 	{
 		if (this.hasTitle()) return this.title;
-		return Lang.PLAYER_NOTITLE;
+		return NOTITLE;
 	}
 
 	public void setTitle(String title)
