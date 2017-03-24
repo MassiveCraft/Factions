@@ -1,8 +1,8 @@
 package com.massivecraft.factions.cmd.type;
 
-import com.massivecraft.factions.PlayerInactivityComparator;
-import com.massivecraft.factions.PlayerPowerComparator;
-import com.massivecraft.factions.PlayerRoleComparator;
+import com.massivecraft.factions.comparator.ComparatorMPlayerInactivity;
+import com.massivecraft.factions.comparator.ComparatorMPlayerPower;
+import com.massivecraft.factions.comparator.ComparatorMPlayerRole;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.massivecore.command.type.TypeAbstractChoice;
 
@@ -20,9 +20,9 @@ public class TypeSortMPlayer extends TypeAbstractChoice<Comparator<MPlayer>>
 	{
 		super(Comparator.class);
 		this.setAll(
-			PlayerRoleComparator.get(),
-			PlayerPowerComparator.get(),
-			PlayerInactivityComparator.get()
+			ComparatorMPlayerRole.get(),
+			ComparatorMPlayerPower.get(),
+			ComparatorMPlayerInactivity.get()
 		);
 	}
 	

@@ -1,18 +1,19 @@
-package com.massivecraft.factions;
+package com.massivecraft.factions.comparator;
 
+import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.massivecore.Named;
 
 import java.util.Comparator;
 
-public class PlayerRoleComparator implements Comparator<MPlayer>, Named
+public class ComparatorMPlayerRole implements Comparator<MPlayer>, Named
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static PlayerRoleComparator i = new PlayerRoleComparator();
-	public static PlayerRoleComparator get() { return i; }
+	private static ComparatorMPlayerRole i = new ComparatorMPlayerRole();
+	public static ComparatorMPlayerRole get() { return i; }
 	
 	// -------------------------------------------- //
 	// OVERRIDE: NAMED

@@ -1,10 +1,10 @@
 package com.massivecraft.factions.entity;
 
-import com.massivecraft.factions.FactionEqualsPredicate;
+import com.massivecraft.factions.predicate.PredicateCommandSenderFaction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.FactionsParticipator;
 import com.massivecraft.factions.Lang;
-import com.massivecraft.factions.PredicateRole;
+import com.massivecraft.factions.predicate.PredicateMPlayerRole;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.RelationParticipator;
 import com.massivecraft.factions.util.MiscUtil;
@@ -1070,7 +1070,7 @@ public class Faction extends Entity<Faction> implements FactionsParticipator
 	
 	public List<MPlayer> getMPlayersWhereRole(Rel role)
 	{
-		return this.getMPlayersWhere(PredicateRole.get(role));
+		return this.getMPlayersWhere(PredicateMPlayerRole.get(role));
 	}
 	
 	public MPlayer getLeader()
@@ -1221,34 +1221,34 @@ public class Faction extends Entity<Faction> implements FactionsParticipator
 	
 	public boolean sendMessage(Object message)
 	{
-		return MixinMessage.get().messagePredicate(new FactionEqualsPredicate(this), message);
+		return MixinMessage.get().messagePredicate(new PredicateCommandSenderFaction(this), message);
 	}
 	
 	public boolean sendMessage(Object... messages)
 	{
-		return MixinMessage.get().messagePredicate(new FactionEqualsPredicate(this), messages);
+		return MixinMessage.get().messagePredicate(new PredicateCommandSenderFaction(this), messages);
 	}
 	
 	public boolean sendMessage(Collection<Object> messages)
 	{
-		return MixinMessage.get().messagePredicate(new FactionEqualsPredicate(this), messages);
+		return MixinMessage.get().messagePredicate(new PredicateCommandSenderFaction(this), messages);
 	}
 	
 	// CONVENIENCE MSG
 	
 	public boolean msg(String msg)
 	{
-		return MixinMessage.get().msgPredicate(new FactionEqualsPredicate(this), msg);
+		return MixinMessage.get().msgPredicate(new PredicateCommandSenderFaction(this), msg);
 	}
 	
 	public boolean msg(String msg, Object... args)
 	{
-		return MixinMessage.get().msgPredicate(new FactionEqualsPredicate(this), msg, args);
+		return MixinMessage.get().msgPredicate(new PredicateCommandSenderFaction(this), msg, args);
 	}
 	
 	public boolean msg(Collection<String> msgs)
 	{
-		return MixinMessage.get().msgPredicate(new FactionEqualsPredicate(this), msgs);
+		return MixinMessage.get().msgPredicate(new PredicateCommandSenderFaction(this), msgs);
 	}
 	
 }

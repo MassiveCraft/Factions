@@ -1,6 +1,6 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.FactionListComparator;
+import com.massivecraft.factions.comparator.ComparatorFactionList;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.FactionColl;
@@ -71,7 +71,7 @@ public class CmdFactionsList extends FactionsCommand
 			public void run()
 			{
 				// Pager Items
-				final List<Faction> factions = FactionColl.get().getAll(FactionListComparator.get(sender));
+				final List<Faction> factions = FactionColl.get().getAll(ComparatorFactionList.get(sender));
 				pager.setItems(factions);
 				
 				// Pager Message

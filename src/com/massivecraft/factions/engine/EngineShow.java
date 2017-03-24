@@ -1,7 +1,7 @@
 package com.massivecraft.factions.engine;
 
 import com.massivecraft.factions.Const;
-import com.massivecraft.factions.PlayerRoleComparator;
+import com.massivecraft.factions.comparator.ComparatorMPlayerRole;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.entity.MFlag;
@@ -143,7 +143,7 @@ public class EngineShow extends Engine
 		List<String> followerNamesOffline = new ArrayList<>();
 
 		List<MPlayer> followers = faction.getMPlayers();
-		Collections.sort(followers, PlayerRoleComparator.get());
+		Collections.sort(followers, ComparatorMPlayerRole.get());
 		for (MPlayer follower : followers)
 		{
 			if (follower.isOnline(sender))
