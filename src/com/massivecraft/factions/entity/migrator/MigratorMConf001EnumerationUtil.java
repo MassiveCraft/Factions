@@ -2,7 +2,7 @@ package com.massivecraft.factions.entity.migrator;
 
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.util.EnumerationUtil;
-import com.massivecraft.massivecore.store.migration.VersionMigratorRoot;
+import com.massivecraft.massivecore.store.migrator.MigratorRoot;
 import com.massivecraft.massivecore.xlib.gson.JsonArray;
 import com.massivecraft.massivecore.xlib.gson.JsonElement;
 import com.massivecraft.massivecore.xlib.gson.JsonObject;
@@ -11,7 +11,7 @@ import com.massivecraft.massivecore.xlib.gson.JsonPrimitive;
 import java.util.Collection;
 import java.util.Iterator;
 
-public class MigratorMConf001EnumerationUtil extends VersionMigratorRoot
+public class MigratorMConf001EnumerationUtil extends MigratorRoot
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
