@@ -49,6 +49,7 @@ import com.massivecraft.factions.entity.MConfColl;
 import com.massivecraft.factions.entity.MFlagColl;
 import com.massivecraft.factions.entity.MPermColl;
 import com.massivecraft.factions.entity.MPlayerColl;
+import com.massivecraft.factions.entity.migrator.MigratorMConf001EnumerationUtil;
 import com.massivecraft.factions.event.EventFactionsChunkChangeType;
 import com.massivecraft.factions.integration.V19.IntegrationV19;
 import com.massivecraft.factions.integration.herochat.IntegrationHerochat;
@@ -119,6 +120,8 @@ public class Factions extends MassivePlugin
 
 		// Initialize Database
 		this.databaseInitialized = false;
+		
+		MigratorMConf001EnumerationUtil.get().setActive(true);
 		
 		MFlagColl.get().setActive(true);
 		MPermColl.get().setActive(true);

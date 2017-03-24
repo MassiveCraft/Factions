@@ -11,7 +11,7 @@ public class EnumerationUtil
 	// MATERIAL EDIT ON INTERACT
 	// -------------------------------------------- //
 	
-	private static final BackstringSet<Material> MATERIALS_EDIT_ON_INTERACT = new BackstringSet<>(Material.class,
+	public static final BackstringSet<Material> MATERIALS_EDIT_ON_INTERACT = new BackstringSet<>(Material.class,
 		"DIODE_BLOCK_OFF", // Minecraft 1.?
 		"DIODE_BLOCK_ON", // Minecraft 1.?
 		"NOTE_BLOCK", // Minecraft 1.?
@@ -32,7 +32,7 @@ public class EnumerationUtil
 	// MATERIAL EDIT TOOLS
 	// -------------------------------------------- //
 	
-	private static final BackstringSet<Material> MATERIALS_EDIT_TOOLS = new BackstringSet<>(Material.class,
+	public static final BackstringSet<Material> MATERIALS_EDIT_TOOL = new BackstringSet<>(Material.class,
 		"FIREBALL", // Minecraft 1.?
 		"FLINT_AND_STEEL", // Minecraft 1.?
 		"BUCKET", // Minecraft 1.?
@@ -53,7 +53,7 @@ public class EnumerationUtil
 	
 	public static boolean isMaterialEditTool(Material material)
 	{
-		return MATERIALS_EDIT_TOOLS.contains(material) || MConf.get().materialsEditTools.contains(material);
+		return MATERIALS_EDIT_TOOL.contains(material) || MConf.get().materialsEditTools.contains(material);
 	}
 	
 	// -------------------------------------------- //
@@ -61,7 +61,7 @@ public class EnumerationUtil
 	// -------------------------------------------- //
 	
 	// Interacting with these materials placed in the terrain results in door toggling.
-	private static final BackstringSet<Material> MATERIALS_DOOR = new BackstringSet<>(Material.class,
+	public static final BackstringSet<Material> MATERIALS_DOOR = new BackstringSet<>(Material.class,
 		"WOODEN_DOOR", // Minecraft 1.?
 		"ACACIA_DOOR", // Minecraft 1.8
 		"BIRCH_DOOR", // Minecraft 1.8
@@ -86,7 +86,7 @@ public class EnumerationUtil
 	// MATERIAL CONTAINER
 	// -------------------------------------------- //
 	
-	private static final BackstringSet<Material> MATERIALS_CONTAINER = new BackstringSet<>(Material.class,
+	public static final BackstringSet<Material> MATERIALS_CONTAINER = new BackstringSet<>(Material.class,
 		"DISPENSER", // Minecraft 1.?
 		"CHEST", // Minecraft 1.?
 		"FURNACE", // Minecraft 1.?
@@ -129,7 +129,7 @@ public class EnumerationUtil
 	// -------------------------------------------- //
 	
 	// Interacting with these entities results in an edit.
-	private static final BackstringSet<EntityType> ENTITY_TYPES_EDIT_ON_INTERACT = new BackstringSet<>(EntityType.class,
+	public static final BackstringSet<EntityType> ENTITY_TYPES_EDIT_ON_INTERACT = new BackstringSet<>(EntityType.class,
 		"ITEM_FRAME", // Minecraft 1.?
 		"ARMOR_STAND" // Minecraft 1.8
 	);
@@ -144,7 +144,7 @@ public class EnumerationUtil
 	// -------------------------------------------- //
 	
 	// Damaging these entities results in an edit.
-	private static final BackstringSet<EntityType> ENTITY_TYPES_EDIT_ON_DAMAGE = new BackstringSet<>(EntityType.class,
+	public static final BackstringSet<EntityType> ENTITY_TYPES_EDIT_ON_DAMAGE = new BackstringSet<>(EntityType.class,
 		"ITEM_FRAME", // Minecraft 1.?
 		"ARMOR_STAND", // Minecraft 1.8
 		"ENDER_CRYSTAL" // Minecraft 1.10
@@ -159,21 +159,21 @@ public class EnumerationUtil
 	// ENTITY TYPE CONTAINER
 	// -------------------------------------------- //
 	
-	private static final BackstringSet<EntityType> ENTITY_TYPE_CONTAINERS = new BackstringSet<>(EntityType.class,
+	public static final BackstringSet<EntityType> ENTITY_TYPES_CONTAINER = new BackstringSet<>(EntityType.class,
 		"MINECART_CHEST", // Minecraft 1.?
 		"MINECART_HOPPER" // Minecraft 1.?
 	);
 	
 	public static boolean isEntityTypeContainer(EntityType entityType)
 	{
-		return ENTITY_TYPE_CONTAINERS.contains(entityType) || MConf.get().entityTypesContainer.contains(entityType);
+		return ENTITY_TYPES_CONTAINER.contains(entityType) || MConf.get().entityTypesContainer.contains(entityType);
 	}
 	
 	// -------------------------------------------- //
 	// ENTITY TYPE MONSTER
 	// -------------------------------------------- //
 	
-	private static final BackstringSet<EntityType> ENTITY_TYPE_MONSTERS = new BackstringSet<>(EntityType.class,
+	public static final BackstringSet<EntityType> ENTITY_TYPES_MONSTER = new BackstringSet<>(EntityType.class,
 		"BLAZE", // Minecraft 1.?
 		"CAVE_SPIDER", // Minecraft 1.?
 		"CREEPER", // Minecraft 1.?
@@ -206,14 +206,14 @@ public class EnumerationUtil
 	
 	public static boolean isEntityTypeMonster(EntityType entityType)
 	{
-		return ENTITY_TYPE_MONSTERS.contains(entityType) || MConf.get().entityTypesMonsters.contains(entityType);
+		return ENTITY_TYPES_MONSTER.contains(entityType) || MConf.get().entityTypesMonsters.contains(entityType);
 	}
 	
 	// -------------------------------------------- //
 	// ENTITY TYPE ANIMAL
 	// -------------------------------------------- //
 	
-	private static final BackstringSet<EntityType> ENTITY_TYPE_ANIMALS = new BackstringSet<>(EntityType.class,
+	public static final BackstringSet<EntityType> ENTITY_TYPES_ANIMAL = new BackstringSet<>(EntityType.class,
 		"BAT", // Minecraft 1.?
 		"CHICKEN", // Minecraft 1.?
 		"COW", // Minecraft 1.?
@@ -234,8 +234,7 @@ public class EnumerationUtil
 	
 	public static boolean isEntityTypeAnimal(EntityType entityType)
 	{
-		return ENTITY_TYPE_ANIMALS.contains(entityType) || MConf.get().entityTypesAnimals.contains(entityType);
+		return ENTITY_TYPES_ANIMAL.contains(entityType) || MConf.get().entityTypesAnimals.contains(entityType);
 	}
-	
 	
 }
