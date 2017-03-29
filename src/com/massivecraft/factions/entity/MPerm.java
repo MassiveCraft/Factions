@@ -1,5 +1,6 @@
 package com.massivecraft.factions.entity;
 
+import com.massivecraft.factions.AccessStatus;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.TerritoryAccess;
@@ -377,14 +378,15 @@ public class MPerm extends Entity<MPerm> implements Prioritized, Registerable, N
 		
 		if (this.isTerritory())
 		{
-			Boolean hasTerritoryAccess = ta.hasTerritoryAccess(mplayer);
-			if (hasTerritoryAccess != null)
+			AccessStatus accessStatus = ta.getTerritoryAccess(mplayer);
+			if (accessStatus != AccessStatus.STANDARD)
 			{
-				if (verboose && !hasTerritoryAccess)
+				if (verboose && accessStatus == AccessStatus.DECREASED)
 				{
 					mplayer.message(this.createDeniedMessage(mplayer, hostFaction));
 				}
-				return hasTerritoryAccess;
+				
+				return accessStatus.hasAccess();
 			}
 		}
 		

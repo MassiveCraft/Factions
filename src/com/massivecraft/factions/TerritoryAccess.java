@@ -1,7 +1,6 @@
 package com.massivecraft.factions;
 
 import com.massivecraft.factions.entity.Faction;
-import com.massivecraft.factions.entity.FactionColl;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.massivecore.collections.MassiveSet;
 
@@ -198,22 +197,25 @@ public class TerritoryAccess
 	}
 
 	// -------------------------------------------- //
-	// HAS CHECK
+	// ACCESS STATUS
 	// -------------------------------------------- //
 	
-	// true means elevated access
-	// false means decreased access
-	// null means standard access
-	public Boolean hasTerritoryAccess(MPlayer mplayer)
+	public AccessStatus getTerritoryAccess(MPlayer mplayer)
 	{
-		if (this.isMPlayerGranted(mplayer)) return true;
+		if (this.isMPlayerGranted(mplayer)) return AccessStatus.ELEVATED;
 		
 		String factionId = mplayer.getFaction().getId();
-		if (this.getFactionIds().contains(factionId)) return true;
+		if (this.getFactionIds().contains(factionId)) return AccessStatus.ELEVATED;
 		
-		if (this.getHostFactionId().equals(factionId) && !this.isHostFactionAllowed()) return false;
+		if (this.getHostFactionId().equals(factionId) && !this.isHostFactionAllowed()) return AccessStatus.DECREASED;
 		
-		return null;
+		return AccessStatus.STANDARD;
+	}
+	
+	@Deprecated
+	public Boolean hasTerritoryAccess(MPlayer mplayer)
+	{
+		return this.getTerritoryAccess(mplayer).hasAccess();
 	}
 	
 }
