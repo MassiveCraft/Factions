@@ -1,10 +1,8 @@
 package com.massivecraft.factions.entity;
 
-import com.massivecraft.factions.RelationParticipator;
 import com.massivecraft.factions.TerritoryAccess;
 import com.massivecraft.massivecore.ps.PS;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -41,9 +39,5 @@ public interface BoardInterface
 	boolean isAnyBorderPs(Set<PS> pss);
 	boolean isConnectedPs(PS ps, Faction faction);
 	boolean isAnyConnectedPs(Set<PS> pss, Faction faction);
-	
-	// MAP
-	// TODO: Could the degrees be embedded in centerPs yaw instead?
-	List<Object> getMap(RelationParticipator observer, PS centerPs, double inDegrees, int width, int height);
 	
 }

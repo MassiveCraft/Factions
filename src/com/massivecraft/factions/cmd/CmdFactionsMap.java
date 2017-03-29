@@ -1,14 +1,10 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.Const;
-import com.massivecraft.factions.entity.BoardColl;
+import com.massivecraft.factions.util.AsciiMap;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.command.requirement.RequirementIsPlayer;
 import com.massivecraft.massivecore.command.type.primitive.TypeBooleanYes;
-import com.massivecraft.massivecore.ps.PS;
-import org.bukkit.Location;
-
-import java.util.List;
+import com.massivecraft.massivecore.util.Txt;
 
 public class CmdFactionsMap extends FactionsCommand
 {
@@ -32,34 +28,30 @@ public class CmdFactionsMap extends FactionsCommand
 	@Override
 	public void perform() throws MassiveException
 	{
-		if ( ! this.argIsSet())
-		{
-			showMap(Const.MAP_WIDTH, Const.MAP_HEIGHT_FULL);
-			return;
-		}
+		// NOTE: Map show is performed when auto == true || once
+		boolean argSet = this.argIsSet();
+		boolean showMap = true;
 		
-		if (this.readArg(!msender.isMapAutoUpdating()))
-		{
-			// And show the map once
-			showMap(Const.MAP_WIDTH, Const.MAP_HEIGHT);
-			
-			// Turn on
-			msender.setMapAutoUpdating(true);
-			msg("<i>Map auto update <green>ENABLED.");
-		}
-		else
-		{
-			// Turn off
-			msender.setMapAutoUpdating(false);
-			msg("<i>Map auto update <red>DISABLED.");
-		}
+		// Auto update
+		if (argSet) showMap = this.adjustAutoUpdating();
+		if (!showMap) return;
+		
+		// Show Map
+		AsciiMap map = new AsciiMap(msender, me, !argSet);
+		message(map.render());
 	}
 	
-	public void showMap(int width, int height)
+	private boolean adjustAutoUpdating() throws MassiveException
 	{
-		Location location = me.getLocation();
-		List<Object> message = BoardColl.get().getMap(msenderFaction, PS.valueOf(location), location.getYaw(), width, height);
-		message(message);
+		// Get
+		boolean autoUpdating = this.readArg(!msender.isMapAutoUpdating());
+		
+		// Set
+		msender.setMapAutoUpdating(autoUpdating);
+		
+		// Inform
+		msg("<i>Map auto update %s<i>.", Txt.parse(autoUpdating ? "<green>ENABLED" : "<red>DISABLED"));
+		return autoUpdating;
 	}
 	
 }

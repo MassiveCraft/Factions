@@ -1,23 +1,16 @@
 package com.massivecraft.factions.entity;
 
-import com.massivecraft.factions.Const;
 import com.massivecraft.factions.Factions;
-import com.massivecraft.factions.RelationParticipator;
 import com.massivecraft.factions.TerritoryAccess;
-import com.massivecraft.factions.util.AsciiCompass;
 import com.massivecraft.massivecore.collections.MassiveMap;
 import com.massivecraft.massivecore.collections.MassiveSet;
 import com.massivecraft.massivecore.ps.PS;
 import com.massivecraft.massivecore.store.Entity;
-import com.massivecraft.massivecore.util.Txt;
 import com.massivecraft.massivecore.xlib.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -343,91 +336,6 @@ public class Board extends Entity<Board> implements BoardInterface
 			if (this.isConnectedPs(ps, faction)) return true;
 		}
 		return false;
-	}
-	
-	// MAP GENERATION
-	
-	@Override
-	public List<Object> getMap(RelationParticipator observer, PS centerPs, double inDegrees, int width, int height)
-	{
-		centerPs = centerPs.getChunkCoords(true);
-		
-		List<Object> ret = new ArrayList<>();
-		Faction centerFaction = this.getFactionAt(centerPs);
-		
-		ret.add(Txt.titleize("(" + centerPs.getChunkX() + "," + centerPs.getChunkZ() + ") " + centerFaction.getName(observer)));
-		
-		int halfWidth = width / 2;
-		int halfHeight = height / 2;
-		width = halfWidth * 2 + 1;
-		height = halfHeight * 2 + 1;
-		
-		PS topLeftPs = centerPs.plusChunkCoords(-halfWidth, -halfHeight);
-		
-		// Get the compass
-		List<String> asciiCompass = AsciiCompass.getAsciiCompass(inDegrees);
-		
-		// Make room for the list of names
-		height--;
-		
-		Map<Faction, Character> fList = new HashMap<>();
-		int chrIdx = 0;
-		boolean overflown = false;
-		
-		// For each row
-		for (int dz = 0; dz < height; dz++)
-		{
-			// Draw and add that row
-			StringBuilder row = new StringBuilder();
-			for (int dx = 0; dx < width; dx++)
-			{
-				if (dx == halfWidth && dz == halfHeight)
-				{
-					row.append(Const.MAP_KEY_SEPARATOR);
-					continue;
-				}
-
-				if ( ! overflown && chrIdx >= Const.MAP_KEY_CHARS.length) overflown = true;
-
-				PS herePs = topLeftPs.plusChunkCoords(dx, dz);
-				Faction hereFaction = this.getFactionAt(herePs);
-				boolean contains = fList.containsKey(hereFaction);
-				if (hereFaction.isNone())
-				{
-					row.append(Const.MAP_KEY_WILDERNESS);
-				}
-				else if ( ! contains && overflown)
-				{
-					row.append(Const.MAP_KEY_OVERFLOW);
-				}
-				else
-				{
-					if ( ! contains) fList.put(hereFaction, Const.MAP_KEY_CHARS[chrIdx++]);
-					char fchar = fList.get(hereFaction);
-					row.append(hereFaction.getColorTo(observer).toString()).append(fchar);
-				}
-			}
-			
-			String line = row.toString();
-			
-			// Add the compass
-			if (dz == 0) line = asciiCompass.get(0) + line.substring(3*3);
-			if (dz == 1) line = asciiCompass.get(1) + line.substring(3*3);
-			if (dz == 2) line = asciiCompass.get(2) + line.substring(3*3);
-			
-			ret.add(line);
-		}
-			
-		String fRow = "";
-		for (Faction keyfaction : fList.keySet())
-		{
-			fRow += keyfaction.getColorTo(observer).toString() + fList.get(keyfaction) + ": " + keyfaction.getName() + " ";
-		}
-		if (overflown) fRow += Const.MAP_OVERFLOW_MESSAGE;
-		fRow = fRow.trim();
-		ret.add(fRow);
-		
-		return ret;
 	}
 	
 }
