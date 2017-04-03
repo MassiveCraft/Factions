@@ -53,11 +53,8 @@ public class EngineSpigot extends Engine
 		// Only care for armor stands.
 		if (entity.getType() != EntityType.ARMOR_STAND) return;
 		
-		// If we can't use ...
-		if (EnginePermBuild.canPlayerUseEntity(player, entity, verboose)) return;
-		
-		// ... block use.
-		event.setCancelled(true);
+		// If we can't use, block it
+		EnginePermBuild.useEntity(player, entity, verboose, event);
 	}
 	
 	/*

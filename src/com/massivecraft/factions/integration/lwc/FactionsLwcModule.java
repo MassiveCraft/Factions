@@ -52,7 +52,7 @@ public class FactionsLwcModule extends JavaModule
 		if ( ! MConf.get().lwcMustHaveBuildRightsToCreate) return;
 		
 		// ... and the player don't have build rights here ...
-		// NOTE: We verbosely check the build rights so that a proper info message is sent 
+		// NOTE: We verbosely check the build rights so that a proper info message is sent
 		if (EnginePermBuild.canPlayerBuildAt(event.getPlayer(), PS.valueOf(event.getBlock()), true)) return;
 		
 		// ... then cancel the event.

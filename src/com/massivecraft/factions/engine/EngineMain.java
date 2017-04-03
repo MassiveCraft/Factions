@@ -10,7 +10,8 @@ public class EngineMain
 	 */
 	public static boolean canPlayerBuildAt(Object senderObject, PS ps, boolean verboose)
 	{
-		return EnginePermBuild.canPlayerBuildAt(senderObject, ps, verboose);
+		Boolean ret = EnginePermBuild.protect(ProtectCase.BUILD, verboose, senderObject, ps, null, null);
+		return ret == null || !ret;
 	}
 
 }
