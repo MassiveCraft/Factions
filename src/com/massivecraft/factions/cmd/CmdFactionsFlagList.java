@@ -1,16 +1,18 @@
 package com.massivecraft.factions.cmd;
 
+import java.util.List;
+
+import org.bukkit.Bukkit;
+
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.entity.MFlag;
 import com.massivecraft.factions.entity.MFlagColl;
+import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.command.Parameter;
 import com.massivecraft.massivecore.pager.Pager;
 import com.massivecraft.massivecore.pager.Stringifier;
 import com.massivecraft.massivecore.predicate.Predicate;
-import org.bukkit.Bukkit;
-
-import java.util.List;
 
 public class CmdFactionsFlagList extends FactionsCommand
 {
@@ -33,9 +35,10 @@ public class CmdFactionsFlagList extends FactionsCommand
 	{
 		// Parameter
 		final int page = this.readArg();
+		final MPlayer mplayer = msender;
 		
 		// Pager create
-		String title = "Flag List for " + msenderFaction.describeTo(msender);
+		String title = "Flag List for " + msenderFaction.describeTo(mplayer);
 		final Pager<MFlag> pager = new Pager<>(this, title, page, new Stringifier<MFlag>()
 		{
 			@Override
@@ -51,7 +54,7 @@ public class CmdFactionsFlagList extends FactionsCommand
 			public void run()
 			{
 				// Get items
-				List<MFlag> items = MFlagColl.get().getAll(msender.isOverriding() ? null : new Predicate<MFlag>()
+				List<MFlag> items = MFlagColl.get().getAll(mplayer.isOverriding() ? null : new Predicate<MFlag>()
 				{
 					@Override
 					public boolean apply(MFlag mflag)
