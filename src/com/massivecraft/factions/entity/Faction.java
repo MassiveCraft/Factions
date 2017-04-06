@@ -5,6 +5,13 @@ import com.massivecraft.factions.FactionsIndex;
 import com.massivecraft.factions.FactionsParticipator;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.RelationParticipator;
+import com.massivecraft.factions.Selector;
+import com.massivecraft.factions.SelectorType;
+import com.massivecraft.factions.cmd.CmdFactions;
+import com.massivecraft.factions.cmd.type.TypeFaction;
+import com.massivecraft.factions.cmd.type.TypeMPlayer;
+import com.massivecraft.factions.cmd.type.TypeRel;
+import com.massivecraft.factions.cmd.type.TypeSelector;
 import com.massivecraft.factions.predicate.PredicateCommandSenderFaction;
 import com.massivecraft.factions.predicate.PredicateMPlayerRole;
 import com.massivecraft.factions.util.MiscUtil;
@@ -13,8 +20,11 @@ import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.collections.MassiveMap;
 import com.massivecraft.massivecore.collections.MassiveMapDef;
 import com.massivecraft.massivecore.collections.MassiveSet;
+import com.massivecraft.massivecore.collections.MassiveSetDef;
+import com.massivecraft.massivecore.command.type.Type;
 import com.massivecraft.massivecore.mixin.MixinMessage;
 import com.massivecraft.massivecore.money.Money;
+import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.predicate.Predicate;
 import com.massivecraft.massivecore.predicate.PredicateAnd;
 import com.massivecraft.massivecore.predicate.PredicateVisibleTo;
@@ -29,10 +39,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -74,6 +82,7 @@ public class Faction extends Entity<Faction> implements FactionsParticipator
 		this.setRelationWishes(that.relationWishes);
 		this.setFlagIds(that.flags);
 		this.setPermIds(that.perms);
+		this.factionBans.load(that.factionBans);
 		
 		return this;
 	}
@@ -96,7 +105,7 @@ public class Faction extends Entity<Faction> implements FactionsParticipator
 	// VERSION
 	// -------------------------------------------- //
 	
-	public int version = 1;
+	public int version = 2;
 	
 	// -------------------------------------------- //
 	// FIELDS: RAW
@@ -154,7 +163,10 @@ public class Faction extends Entity<Faction> implements FactionsParticipator
 
 	// The perm overrides are modifications to the default values.
 	// Null means default.
-	private MassiveMapDef<String, Set<Rel>> perms = new MassiveMapDef<>();
+	private MassiveMapDef<String, Set<String>> perms = new MassiveMapDef<>();
+	
+	// The perm blacklist of which selectors are not allowed in any way.
+	private EntityInternalMap<FactionBan> factionBans = new EntityInternalMap<>(this, FactionBan.class);
 	
 	// -------------------------------------------- //
 	// FIELD: id
@@ -459,12 +471,9 @@ public class Faction extends Entity<Faction> implements FactionsParticipator
 	// -------------------------------------------- //
 	
 	// RAW
-	
-	
 	public EntityInternalMap<Invitation> getInvitations() { return this.invitations; }
 	
 	// FINER
-	
 	public boolean isInvited(String playerId)
 	{
 		return this.getInvitations().containsKey(playerId);
@@ -678,66 +687,26 @@ public class Faction extends Entity<Faction> implements FactionsParticipator
 	}
 	
 	// -------------------------------------------- //
-	// FIELD: permOverrides
+	// FIELD: perms
 	// -------------------------------------------- //
 	
 	// RAW
-	
-	public Map<MPerm, Set<Rel>> getPerms()
+	public MassiveMapDef<String, Set<String>> getPermIds()
 	{
-		// We start with default values ...
-		Map<MPerm, Set<Rel>> ret = new MassiveMap<>();
-		for (MPerm mperm : MPerm.getAll())
-		{
-			ret.put(mperm, new MassiveSet<>(mperm.getStandard()));
-		}
-		
-		// ... and if anything is explicitly set we use that info ...
-		Iterator<Entry<String, Set<Rel>>> iter = this.perms.entrySet().iterator();
-		while (iter.hasNext())
-		{
-			// ... for each entry ...
-			Entry<String, Set<Rel>> entry = iter.next();
-			
-			// ... extract id and remove null values ...
-			String id = entry.getKey();					
-			if (id == null)
-			{
-				iter.remove();
-				continue;
-			}
-			
-			// ... resolve object and skip unknowns ...
-			MPerm mperm = MPerm.get(id);
-			if (mperm == null) continue;
-			
-			ret.put(mperm, new MassiveSet<>(entry.getValue()));
-		}
-		
-		return ret;
+		return this.perms;
 	}
 	
-	public void setPerms(Map<MPerm, Set<Rel>> perms)
-	{
-		Map<String, Set<Rel>> permIds = new MassiveMap<>();
-		for (Entry<MPerm, Set<Rel>> entry : perms.entrySet())
-		{
-			permIds.put(entry.getKey().getId(), entry.getValue());
-		}
-		setPermIds(permIds);
-	}
-	
-	public void setPermIds(Map<String, Set<Rel>> perms)
+	public void setPermIds(MassiveMapDef<String, Set<String>> perms)
 	{
 		// Clean input
-		MassiveMapDef<String, Set<Rel>> target = new MassiveMapDef<>();
-		for (Entry<String, Set<Rel>> entry : perms.entrySet())
+		MassiveMapDef<String, Set<String>> target = new MassiveMapDef<String, Set<String>>();
+		for (Entry<String, Set<String>> entry : perms.entrySet())
 		{
 			String key = entry.getKey();
 			if (key == null) continue;
 			key = key.toLowerCase(); // Lowercased Keys Version 2.6.0 --> 2.7.0
 			
-			Set<Rel> value = entry.getValue();
+			Set<String> value = entry.getValue();
 			if (value == null) continue;
 			
 			target.put(key, value);
@@ -753,105 +722,341 @@ public class Faction extends Entity<Faction> implements FactionsParticipator
 		this.changed();
 	}
 	
-	// FINER
-	
-	public boolean isPermitted(String permId, Rel rel)
+	// Finer
+	public Map<MPerm, Set<String>> getPerms()
 	{
-		if (permId == null) throw new NullPointerException("permId");
+		// We start with default values ...
+		Map<MPerm, Set<String>> ret = new MassiveMap<>();
 		
-		Set<Rel> rels = this.perms.get(permId);
-		if (rels != null) return rels.contains(rel);
-		
-		MPerm perm = MPerm.get(permId);
-		if (perm == null) throw new NullPointerException("perm");
-		
-		return perm.getStandard().contains(rel);
-	}
-	
-	public boolean isPermitted(MPerm perm, Rel rel)
-	{
-		if (perm == null) throw new NullPointerException("perm");
-		
-		String permId = perm.getId();
-		if (permId == null) throw new NullPointerException("permId");
-		
-		Set<Rel> rels = this.perms.get(permId);
-		if (rels != null) return rels.contains(rel);
-		
-		return perm.getStandard().contains(rel);
-	}
-	
-	// ---
-	
-	public Set<Rel> getPermitted(MPerm perm)
-	{
-		if (perm == null) throw new NullPointerException("perm");
-		
-		String permId = perm.getId();
-		if (permId == null) throw new NullPointerException("permId");
-		
-		Set<Rel> rels = this.perms.get(permId);
-		if (rels != null) return rels;
-		
-		return perm.getStandard();
-	}
-	
-	public Set<Rel> getPermitted(String permId)
-	{
-		if (permId == null) throw new NullPointerException("permId");
-		
-		Set<Rel> rels = this.perms.get(permId);
-		if (rels != null) return rels;
-		
-		MPerm perm = MPerm.get(permId);
-		if (perm == null) throw new NullPointerException("perm");
-		
-		return perm.getStandard();
-	}
-	
-	@Deprecated
-	// Use getPermitted instead. It's much quicker although not immutable.
-	public Set<Rel> getPermittedRelations(MPerm perm)
-	{
-		return this.getPerms().get(perm);
-	}
-	
-	// ---
-	// TODO: Fix these below. They are reworking the whole map.
-	
-	public void setPermittedRelations(MPerm perm, Set<Rel> rels)
-	{
-		Map<MPerm, Set<Rel>> perms = this.getPerms();
-		perms.put(perm, rels);
-		this.setPerms(perms);
-	}
-	
-	public void setPermittedRelations(MPerm perm, Rel... rels)
-	{
-		Set<Rel> temp = new HashSet<>();
-		temp.addAll(Arrays.asList(rels));
-		this.setPermittedRelations(perm, temp);
-	}
-	
-	public void setRelationPermitted(MPerm perm, Rel rel, boolean permitted)
-	{
-		Map<MPerm, Set<Rel>> perms = this.getPerms();
-		
-		Set<Rel> rels = perms.get(perm);
-		
-		boolean changed;
-		if (permitted)
+		// ... and if anything is explicitly set we use that info ...
+		for (Iterator<Entry<String, Set<String>>> it = this.getPermIds().entrySet().iterator(); it.hasNext(); )
 		{
-			changed = rels.add(rel);
-		}
-		else
-		{
-			changed = rels.remove(rel);
+			// ... for each entry ...
+			Entry<String, Set<String>> entry = it.next();
+			
+			// ... extract id and remove null values ...
+			String id = entry.getKey();
+			if (id == null)
+			{
+				it.remove();
+				continue;
+			}
+			
+			// ... resolve object and skip unknowns ...
+			MPerm mperm = MPerm.get(id);
+			if (mperm == null) continue;
+			
+			ret.put(mperm, new MassiveSet<>(entry.getValue()));
 		}
 		
-		this.setPerms(perms);
+		for (MPerm mperm : MPerm.getAll())
+		{
+			// Is already configured?
+			if (ret.containsKey(mperm)) continue;
+			
+			// Add
+			ret.put(mperm, mperm.getStandardIds());
+		}
 		
-		if (changed) this.changed();
+		return ret;
+	}
+	
+	public void setPerms(Map<MPerm, Set<String>> perms)
+	{
+		// Create
+		MassiveMapDef<String, Set<String>> permIds = new MassiveMapDef<>();
+		
+		// Fill
+		for (Entry<MPerm, Set<String>> entry : perms.entrySet())
+		{
+			permIds.put(entry.getKey().getId(), entry.getValue());
+		}
+		
+		// Set
+		this.setPermIds(permIds);
+	}
+	
+	// -------------------------------------------- //
+	// PERMITTED
+	// -------------------------------------------- //
+	// Being permitted for a perm can have many reasons:
+	// For Players, either their Relation, Faction, Rank or themselves can have been permitted.
+	// For Factions, this can be their relation or themselves being permitted.
+	//
+	// For each selector we need to check if any of the sub-selectors are permitted.
+	
+	private Set<String> getPermittedIds(MPerm perm)
+	{
+		String permId = perm.getId();
+		Set<String> permitted = this.perms.get(permId);
+		return permitted != null ? permitted : perm.getStandardIds();
+	}
+	
+	public Set<MPerm> getPermittedFor(Selector selector)
+	{
+		// Create
+		Set<MPerm> ret = new MassiveSet<>();
+		
+		// Fill
+		for (MPerm perm : MPermColl.get().getAll())
+		{
+			if (this.isPermitted(perm, selector)) ret.add(perm);
+		}
+		
+		// Return
+		return ret;
+	}
+	
+	public void setPermitted(MPerm perm, Selector selector, boolean add)
+	{
+		if (perm == null) throw new NullPointerException("perm");
+		if (selector == null) throw new NullPointerException("selector");
+		
+		// Get Ids
+		String idSelector = selector.getId();
+		String idPerm = perm.getId();
+		
+		// Get perms
+		Map<String, Set<String>> perms = this.getPermIds();
+		Set<String> selectors = perms.get(idPerm);
+		
+		// If new, assign standard ids on first change.
+		if (add && selectors == null) selectors = new MassiveSetDef<>(perm.getStandardIds());
+		
+		// Add || Remove
+		if (add)
+		{
+			selectors.add(idSelector);
+		}
+		else if (selectors != null)
+		{
+			selectors.remove(idSelector);
+		}
+		
+		perms.put(idPerm, selectors);
+		
+		// Changed
+		this.changed();
+	}
+	
+	public void setPermitted(MPerm perm, Selector... selectors)
+	{
+		for (Selector selector : selectors)
+		{
+			this.setPermitted(perm, selector, true);
+		}
+	}
+	
+	public boolean isPermittedAny(MPerm perm, Selector selector)
+	{
+		// Special
+		if (selector instanceof MPlayer && this.isPermittedPlayer(perm, (MPlayer)selector)) return true;
+		if (selector instanceof Faction && this.isPermittedFaction(perm, (Faction)selector)) return true;
+		
+		// Default
+		return this.isPermitted(perm, selector);
+	}
+	
+	private boolean isPermittedFaction(MPerm perm, Faction faction)
+	{
+		return this.isPermittedAny(perm, faction, faction.getRelationTo(this));
+	}
+	
+	private boolean isPermittedPlayer(MPerm perm, MPlayer mplayer)
+	{
+		// TODO: Add Rank in the future
+		return this.isPermittedAny(perm, mplayer, mplayer.getFaction(), mplayer.getRelationTo(this));
+	}
+	
+	private boolean isPermittedAny(MPerm perm, Selector... selectors)
+	{
+		for (Selector selector : selectors)
+		{
+			if (this.isPermitted(perm, selector)) return true;
+		}
+		return false;
+	}
+	
+	public boolean isPermitted(MPerm perm, Selector selector)
+	{
+		if (perm == null) throw new NullPointerException("perm");
+		if (selector == null) throw new NullPointerException("selector");
+		
+		// Is specifically granted?
+		Set<String> selectors = this.getPermIds().get(perm.getId());
+		if (selectors != null) return selectors.contains(selector.getId());
+		
+		// Is standard?
+		return selector instanceof Rel && perm.getStandard().contains(selector);
+	}
+	
+	// -------------------------------------------- //
+	// PERMITTED > VISUAL
+	// -------------------------------------------- //
+	
+	public List<Mson> getPermittedShow(MPerm perm, RelationParticipator relationParticipator)
+	{
+		// Resolve Permitted
+		Map<SelectorType, List<Selector>> permitted = this.resolvePermitted(perm);
+		
+		// Return show
+		return this.getPermittedShow(perm, permitted, relationParticipator);
+	}
+	
+	public Mson getPermittedLine(MPerm perm, RelationParticipator relationParticipator)
+	{
+		// Create
+		Mson ret = Mson.EMPTY;
+		Map<SelectorType, List<Selector>> permitted = this.resolvePermitted(perm);
+		
+		// Fill > Ranks
+		List<Selector> ranks = permitted.get(SelectorType.RANK);
+		if (ranks != null)
+		{
+			Mson rankMson = Mson.EMPTY;
+			for (Selector selector : ranks)
+			{
+				Rel rank = (Rel) selector;
+				// TODO: Change this to number after ranks are creatable
+				Mson mson = Mson.mson(String.valueOf(rank.getName().charAt(0)));
+				rankMson = rankMson.add(mson);
+			}
+			
+			ret = ret.add(rankMson.color(ChatColor.DARK_GREEN));
+		}
+		
+		// Fill > Relations
+		List<Selector> relations = permitted.get(SelectorType.RELATION);
+		if (relations != null)
+		{
+			Mson relMson = Mson.EMPTY;
+			for (Selector selector : relations)
+			{
+				Rel rel = (Rel) selector;
+				Mson mson = Mson.mson(String.valueOf(rel.getName().charAt(0)));
+				relMson = relMson.add(mson);
+			}
+			
+			ret = ret.add(relMson.color(ChatColor.LIGHT_PURPLE));
+		}
+		
+		// Fill > Factions
+		List<Selector> factions = permitted.get(SelectorType.FACTION);
+		if (factions != null) ret = ret.add(Mson.mson("F").color(ChatColor.GREEN));
+		
+		// Fill > Factions
+		List<Selector> players = permitted.get(SelectorType.PLAYER);
+		if (players != null) ret = ret.add(Mson.mson("P").color(ChatColor.WHITE));
+		
+		// Fill > Name
+		ret = ret.add(Mson.SPACE).add(Mson.mson(perm.getName()).uppercaseFirst().color(ChatColor.YELLOW));
+		
+		// Fill > Show
+		ret = ret.command(CmdFactions.get().cmdFactionsPerm.cmdFactionsPermShow, perm.getId());
+		List<String> showLines = Mson.toPlain(this.getPermittedShow(perm, permitted, relationParticipator), true);
+		showLines.add(ret.getTooltip());
+		ret = ret.tooltip(showLines);
+		
+		// Return
+		return ret;
+	}
+	
+	private Map<SelectorType, List<Selector>> resolvePermitted(MPerm perm)
+	{
+		// Create
+		Map<SelectorType, List<Selector>> ret = new MassiveMap<>();
+		
+		// Fill
+		TypeSelector type = TypeSelector.get();
+		for (String id : this.getPermittedIds(perm))
+		{
+			Selector selector = type.readSafe(id, null);
+			if (selector == null) throw new IllegalStateException("Selector id " + id + "wasn't resolvable.");
+			
+			SelectorType selectorType = selector.getType();
+			List<Selector> selectors = ret.get(selectorType);
+			if (selectors == null)
+			{
+				selectors = new MassiveList<>(selector);
+				ret.put(selectorType, selectors);
+			}
+			else
+			{
+				selectors.add(selector);
+			}
+		}
+		
+		// Return
+		return ret;
+	}
+	
+	private List<Mson> getPermittedShow(MPerm perm, Map<SelectorType, List<Selector>> permitted, RelationParticipator relationParticipator)
+	{
+		String factionName = this.describeTo(relationParticipator, true);
+		Mson header = Txt.titleize(factionName + " " + perm.getDesc(true, true));
+		Mson ranks = getResolveSection("Ranks: ", permitted.get(SelectorType.RANK), TypeRel.get());
+		Mson relations = getResolveSection("Relations: ", permitted.get(SelectorType.RELATION), TypeRel.get());
+		Mson factions = getResolveSection("Factions: ", permitted.get(SelectorType.FACTION), TypeFaction.get());
+		Mson players = getResolveSection("Players: ", permitted.get(SelectorType.PLAYER), TypeMPlayer.get());
+		
+		return new MassiveList<>(header, ranks, relations, factions, players);
+	}
+	
+	@SuppressWarnings("unchecked")
+	private static <E> Mson getResolveSection(String header, List<Selector> resolve, Type<E> type)
+	{
+		Mson heading = Mson.mson(header).color(ChatColor.YELLOW);
+		if (resolve == null) return heading;
+		
+		List<Mson> ret = new MassiveList<>();
+		for (Selector selector : resolve)
+		{
+			E element = (E) selector;
+			ret.add(type.getVisualMson(element));
+		}
+		
+		return heading.add(Mson.implode(ret, Mson.mson(", ")));
+	}
+	
+	// -------------------------------------------- //
+	// FIELD: factionBans
+	// -------------------------------------------- //
+	
+	// Raw
+	public EntityInternalMap<FactionBan> getFactionBans()
+	{
+		return factionBans;
+	}
+	
+	// Finer
+	public boolean isFactionBannedInherited(Selector selector)
+	{
+		if (selector instanceof Faction)
+		{
+			if (this.isFactionBanned(((Faction) selector).getRelationTo(this))) return true;
+		}
+		else if (selector instanceof MPlayer)
+		{
+			MPlayer mplayer = (MPlayer) selector;
+			if (this.isFactionBanned(mplayer.getRelationTo(this)) || this.isFactionBanned(mplayer.getFaction())) return true;
+		}
+		
+		return this.isFactionBanned(selector);
+	}
+	
+	private boolean isFactionBanned(Selector selector)
+	{
+		return this.factionBans.containsKey(selector.getId());
+	}
+	
+	// -------------------------------------------- //
+	// OVERRIDE: Selector
+	// -------------------------------------------- //
+	
+	@Override
+	public SelectorType getType()
+	{
+		return SelectorType.FACTION;
 	}
 	
 	// -------------------------------------------- //

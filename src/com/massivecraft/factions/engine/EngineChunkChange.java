@@ -171,7 +171,7 @@ public class EngineChunkChange extends Engine
 			for (Faction nearbyFaction : nearbyFactions)
 			{
 				if (claimnear.has(newFaction, nearbyFaction)) continue;
-				mplayer.message(claimnear.createDeniedMessage(mplayer, nearbyFaction));
+				claimnear.sendDeniedMessage(mplayer, nearbyFaction);
 				event.setCancelled(true);
 				return;
 			}

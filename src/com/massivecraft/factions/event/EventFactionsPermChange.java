@@ -1,6 +1,6 @@
 package com.massivecraft.factions.event;
 
-import com.massivecraft.factions.Rel;
+import com.massivecraft.factions.Selector;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MPerm;
 import org.bukkit.command.CommandSender;
@@ -26,8 +26,8 @@ public class EventFactionsPermChange extends EventFactionsAbstractSender
 	private final MPerm perm;
 	public MPerm getPerm() { return this.perm; }
 	
-	private final Rel rel;
-	public Rel getRel() { return this.rel; }
+	private final Selector selector;
+	public Selector getSelector() { return this.selector; }
 	
 	private boolean newValue;
 	public boolean getNewValue() { return this.newValue; }
@@ -37,12 +37,12 @@ public class EventFactionsPermChange extends EventFactionsAbstractSender
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public EventFactionsPermChange(CommandSender sender, Faction faction, MPerm perm, Rel rel, boolean newValue)
+	public EventFactionsPermChange(CommandSender sender, Faction faction, MPerm perm, Selector selector, boolean newValue)
 	{
 		super(sender);
 		this.faction = faction;
 		this.perm = perm;
-		this.rel = rel;
+		this.selector = selector;
 		this.newValue = newValue;
 	}
 	

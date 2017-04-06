@@ -14,6 +14,10 @@ permissions:
   factions.access.faction: {description: grant faction access, with the proper fperm, default: false}
   factions.access.player: {description: grant player access, with the proper fperm, default: false}
   factions.access.view: {description: view access, default: false}
+  factions.ban: {description: manage faction bans, default: false}
+  factions.ban.add: {description: add faction bans, default: false}
+  factions.ban.list: {description: list faction bans, default: false}
+  factions.ban.remove: {description: remove faction bans, default: false}
   factions.override: {description: enable override mode, default: false}
   factions.basecommand: {description: use factions base command, default: false}
   factions.claim: {description: claim faction territory, default: false}
@@ -55,9 +59,12 @@ permissions:
   factions.motd: {description: faction motd, default: false}
   factions.open: {description: set if invitation is required to join, default: false}
   factions.perm: {description: change faction permissions, default: false}
+  factions.perm.add: {description: add perm to selector, default: false}
+  factions.perm.copy: {description: copy perms, default: false}
+  factions.perm.for: {description: list perms for a selector, default: false}
   factions.perm.list: {description: list perms, default: false}
-  factions.perm.set: {description: set perms, default: false}
-  factions.perm.show: {description: show perms, default: false}
+  factions.perm.remove: {description: remove perm from a selector, default: false}
+  factions.perm.show: {description: show a perm, default: false}
   factions.player: {description: show player information}
   factions.powerboost: {description: manage powerboost, default: false}
   factions.powerboost.faction: {description: show faction powerboost, default: false}
@@ -88,6 +95,7 @@ permissions:
   factions.unclaim.all: {description: unclaim all faction land, default: false}
   factions.unsethome: {description: unset faction home, default: false}
   factions.unstuck: {description: teleport to nearest wilderness, default: false}
+  factions.used: {description: set used faction, default: false}
   factions.config: {description: edit the factions config, default: false}
   factions.clean: {description: clean the factions database, default: false}
   factions.version: {description: see plugin version, default: false}
@@ -217,6 +225,10 @@ permissions:
       factions.access.player: true
       factions.access.view: true
       factions.basecommand: true
+      factions.ban: true
+      factions.ban.add: true
+      factions.ban.list: true
+      factions.ban.remove: true
       factions.claim: true
       factions.claim.one: true
       factions.claim.auto: true
@@ -257,8 +269,11 @@ permissions:
       factions.officer: true
       factions.open: true
       factions.perm: true
+      factions.perm.add: true
+      factions.perm.copy: true
+      factions.perm.for: true
       factions.perm.list: true
-      factions.perm.set: true
+      factions.perm.remove: true
       factions.perm.show: true
       factions.player: true
       factions.promote: true

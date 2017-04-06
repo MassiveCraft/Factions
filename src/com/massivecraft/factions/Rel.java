@@ -9,7 +9,7 @@ import org.bukkit.ChatColor;
 import java.util.Collections;
 import java.util.Set;
 
-public enum Rel implements Colorized, Named
+public enum Rel implements Colorized, Named, Selector
 {
 	// -------------------------------------------- //
 	// ENUM
@@ -101,6 +101,18 @@ public enum Rel implements Colorized, Named
 	public ChatColor getColor()
 	{
 		return MConf.get().colorMember;
+	}
+	
+	@Override
+	public String getId()
+	{
+		return this.name().toLowerCase();
+	}
+	
+	@Override
+	public SelectorType getType()
+	{
+		return isRank() ? SelectorType.RANK : SelectorType.RELATION;
 	}
 	
 	// -------------------------------------------- //

@@ -6,6 +6,7 @@ import com.massivecraft.factions.FactionsParticipator;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.RelationParticipator;
+import com.massivecraft.factions.SelectorType;
 import com.massivecraft.factions.event.EventFactionsChunkChangeType;
 import com.massivecraft.factions.event.EventFactionsChunksChange;
 import com.massivecraft.factions.event.EventFactionsDisband;
@@ -166,6 +167,9 @@ public class MPlayer extends SenderEntity<MPlayer> implements FactionsParticipat
 	// Does this player use titles for territory info?
 	// Null means default specified in MConf.
 	private Boolean territoryInfoTitles = null;
+	
+	private String usedFactionId = null;
+	private transient Faction usedFaction = null;
 
 	// The Faction this player is currently autoclaiming for.
 	// Null means the player isn't auto claiming.
@@ -577,7 +581,43 @@ public class MPlayer extends SenderEntity<MPlayer> implements FactionsParticipat
 		// Mark as changed
 		this.changed();
 	}
-
+	
+	// -------------------------------------------- //
+	// FIELD: usedFactionId
+	// -------------------------------------------- //
+	
+	public String getUsedFactionId()
+	{
+		return usedFactionId;
+	}
+	
+	public void setUsedFactionId(String usedFactionId)
+	{
+		// Detect Nochange
+		if (MUtil.equals(this.usedFactionId, usedFactionId)) return;
+		
+		// Apply
+		this.usedFactionId = usedFactionId;
+		
+		// Mark as changed
+		this.changed();
+	}
+	
+	public Faction getUsedFaction()
+	{
+		if (this.usedFaction != null) return this.usedFaction;
+		if (this.usedFactionId == null) return this.getFaction();
+		
+		this.usedFaction = Faction.get(this.getUsedFactionId());
+		return usedFaction;
+	}
+	
+	public void setUsedFaction(Faction usedFaction)
+	{
+		this.usedFaction = usedFaction;
+		if (usedFaction != null) this.setUsedFactionId(usedFaction.getId());
+	}
+	
 	// -------------------------------------------- //
 	// TITLE, NAME, FACTION NAME AND CHAT
 	// -------------------------------------------- //
@@ -634,6 +674,16 @@ public class MPlayer extends SenderEntity<MPlayer> implements FactionsParticipat
 	public String getNameAndTitle(MPlayer mplayer)
 	{
 		return this.getNameAndTitle(this.getColorTo(mplayer).toString());
+	}
+	
+	// -------------------------------------------- //
+	// OVERRIDE: Selector
+	// -------------------------------------------- //
+	
+	@Override
+	public SelectorType getType()
+	{
+		return SelectorType.PLAYER;
 	}
 
 	// -------------------------------------------- //

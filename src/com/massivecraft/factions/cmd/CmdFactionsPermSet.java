@@ -1,35 +1,44 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Rel;
-import com.massivecraft.factions.cmd.type.TypeFaction;
+import com.massivecraft.factions.Selector;
+import com.massivecraft.factions.cmd.req.RequirementHasMPerm;
 import com.massivecraft.factions.cmd.type.TypeMPerm;
-import com.massivecraft.factions.cmd.type.TypeRel;
+import com.massivecraft.factions.cmd.type.TypeSelector;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MPerm;
-import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.event.EventFactionsPermChange;
+import com.massivecraft.massivecore.Button;
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.command.type.primitive.TypeBooleanYes;
-import com.massivecraft.massivecore.util.Txt;
+import com.massivecraft.massivecore.mson.Mson;
+import org.bukkit.ChatColor;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class CmdFactionsPermSet extends FactionsCommand
+public abstract class CmdFactionsPermSet extends FactionsCommand
 {
+	// -------------------------------------------- //
+	// FIELDS
+	// -------------------------------------------- //
+	
+	private boolean add;
+	public boolean isAdd() { return this.add; }
+	
 	// -------------------------------------------- //
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public CmdFactionsPermSet()
+	public CmdFactionsPermSet(boolean add)
 	{
+		// Add/Remove
+		this.add = add;
+		
 		// Parameters
-		this.addParameter(TypeMPerm.get(), "perm");
-		this.addParameter(TypeRel.get(), "relation");
-		this.addParameter(TypeBooleanYes.get(), "yes/no");
-		this.addParameter(TypeFaction.get(), "faction", "you");
+		this.addParameter(TypeMPerm.get(), "permission");
+		this.addParameter(TypeSelector.get(), "selector");
+		
+		// Requirements
+		this.addRequirements(RequirementHasMPerm.get(MPerm.getPermPerms()));
 	}
-
+	
 	// -------------------------------------------- //
 	// OVERRIDE
 	// -------------------------------------------- //
@@ -37,62 +46,56 @@ public class CmdFactionsPermSet extends FactionsCommand
 	@Override
 	public void perform() throws MassiveException
 	{
-		// Args
+		// Parameter
 		MPerm perm = this.readArg();
-		Rel rel = this.readArg();
-		Boolean value = this.readArg();
-		Faction faction = this.readArg(msenderFaction);
-		
-		// Do the sender have the right to change perms for this faction?
-		if ( ! MPerm.getPermPerms().has(msender, faction, true)) return;
+		Selector selector = this.readArg();
+		Faction faction = msender.getUsedFaction();
+		boolean adding = this.isAdd();
 		
 		// Is this perm editable?
-		if ( ! msender.isOverriding() && ! perm.isEditable())
+		if (!msender.isOverriding() && !perm.isEditable())
 		{
 			msg("<b>The perm <h>%s <b>is not editable.", perm.getName());
 			return;
 		}
 		
-		// Event
-		EventFactionsPermChange event = new EventFactionsPermChange(sender, faction, perm, rel, value);
-		event.run();
-		if (event.isCancelled()) return;
-		value = event.getNewValue();
+		// Visuals
+		String visualSelector = TypeSelector.get().getVisual(selector);
+		String visualFaction = faction.describeTo(msender);
+		String visualPerm = perm.getDesc(true, false);
 		
 		// No change
-		if (faction.getPermitted(perm).contains(rel) == value)
+		if (faction.isPermitted(perm, selector) == adding)
 		{
-			msg("%s <i>already has %s <i>set to %s <i>for %s<i>.", faction.describeTo(msender), perm.getDesc(true, false), Txt.parse(value ? "<g>YES" : "<b>NOO"), rel.getColor() + rel.getDescPlayerMany());
+			String already = "already";
+			if (!adding) already += " not";
+			msg("%s <i>is %s permitted for faction %s<i> and perm %s<i>.", visualSelector, already, visualFaction, visualPerm);
 			return;
 		}
 		
-		// Apply
-		faction.setRelationPermitted(perm, rel, value);
+		// Event
+		EventFactionsPermChange event = new EventFactionsPermChange(sender, faction, perm, selector, adding);
+		event.run();
+		if (event.isCancelled()) return;
+		adding = event.getNewValue();
 		
 		// The following is to make sure the leader always has the right to change perms if that is our goal.
-		if (perm == MPerm.getPermPerms() && MPerm.getPermPerms().getStandard().contains(Rel.LEADER))
+		if (perm == MPerm.getPermPerms() && MPerm.getPermPerms().getStandard().contains(Rel.LEADER) && !adding)
 		{
-			faction.setRelationPermitted(MPerm.getPermPerms(), Rel.LEADER, true);
+			throw new MassiveException().setMsg("<b>You are not allowed to remove the leader from the perm <h>perms<b>.");
 		}
 		
-		// Create messages
-		List<Object> messages = new ArrayList<>();
+		// Apply
+		faction.setPermitted(perm, selector, adding);
 		
-		// Inform sender
-		messages.add(Txt.titleize("Perm for " + faction.describeTo(msender, true)));
-		messages.add(MPerm.getStateHeaders());
-		messages.add(Txt.parse(perm.getStateInfo(faction.getPermitted(perm), true)));
-		message(messages);
-		
-		// Inform faction (their message is slighly different)
-		List<MPlayer> recipients = faction.getMPlayers();
-		recipients.remove(msender);
-		
-		for (MPlayer recipient : recipients)
-		{
-			recipient.msg("<h>%s <i>set a perm for <h>%s<i>.", msender.describeTo(recipient, true), faction.describeTo(recipient, true));
-			recipient.message(messages);
-		}
+		// Inform
+		String addRemove = adding ? "added" : "removed";
+		Mson button = new Button()
+			.setName("Show")
+			.setCommand(CmdFactions.get().cmdFactionsPerm.cmdFactionsPermShow)
+			.setArgs(perm.getId())
+			.render();
+		faction.sendMessage(mson(visualSelector, " was ", addRemove, " to the perm ", visualPerm, ". ", button).color(ChatColor.YELLOW));
 	}
 	
 }

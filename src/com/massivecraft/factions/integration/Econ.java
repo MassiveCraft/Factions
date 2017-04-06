@@ -1,6 +1,7 @@
 package com.massivecraft.factions.integration;
 
 import com.massivecraft.factions.EconomyParticipator;
+import com.massivecraft.factions.Selector;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.entity.MPerm;
@@ -86,11 +87,7 @@ public class Econ
 		if (me == fMe && fMe == fYou) return true;
 		
 		// Factions can be controlled by those that have permissions
-		if (you instanceof Faction)
-		{
-			if (me instanceof Faction && mperm.has((Faction)me, fYou)) return true;
-			if (me instanceof MPlayer && mperm.has((MPlayer)me, fYou, false)) return true;
-		}
+		if (you instanceof Faction && me instanceof Selector && mperm.has((Selector) me, fYou)) return true;
 		
 		// Otherwise you may not! ;,,;
 		return false;

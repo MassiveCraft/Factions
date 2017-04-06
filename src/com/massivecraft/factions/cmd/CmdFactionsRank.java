@@ -84,7 +84,7 @@ public class CmdFactionsRank extends FactionsCommand
 		this.ensureAllowed();
 		
 		if (factionChange)
-		{	
+		{
 			this.changeFaction();
 		}
 		
@@ -109,7 +109,7 @@ public class CmdFactionsRank extends FactionsCommand
 		
 		if ( ! set)
 		{
-			this.unregisterFields();			
+			this.unregisterFields();
 		}
 	}
 
@@ -264,7 +264,7 @@ public class CmdFactionsRank extends FactionsCommand
 	// -------------------------------------------- //
 	
 	private void changeFaction() throws MassiveException
-	{	
+	{
 		// Don't change a leader to a new faction.
 		if (targetRank == Rel.LEADER)
 		{

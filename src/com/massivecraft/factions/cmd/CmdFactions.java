@@ -59,6 +59,7 @@ public class CmdFactions extends FactionsCommand
 	public CmdFactionsRelationOld cmdFactionsRelationOldNeutral = new CmdFactionsRelationOld("neutral");
 	public CmdFactionsRelationOld cmdFactionsRelationOldEnemy = new CmdFactionsRelationOld("enemy");
 	public CmdFactionsPerm cmdFactionsPerm = new CmdFactionsPerm();
+	public CmdFactionsBan cmdFactionsBan = new CmdFactionsBan();
 	public CmdFactionsFlag cmdFactionsFlag = new CmdFactionsFlag();
 	public CmdFactionsUnstuck cmdFactionsUnstuck = new CmdFactionsUnstuck();
 	public CmdFactionsExpansions cmdFactionsExpansions = new CmdFactionsExpansions();
@@ -70,6 +71,7 @@ public class CmdFactions extends FactionsCommand
 	public CmdFactionsSetpower cmdFactionsSetpower = new CmdFactionsSetpower();
 	public CmdFactionsConfig cmdFactionsConfig = new CmdFactionsConfig();
 	public CmdFactionsClean cmdFactionsClean = new CmdFactionsClean();
+	public CmdFactionsUsed cmdFactionsUsed = new CmdFactionsUsed();
 	public MassiveCommandVersion cmdFactionsVersion = new MassiveCommandVersion(Factions.get()).setAliases("v", "version").addRequirements(RequirementHasPerm.get(Perm.VERSION));
 	
 	// -------------------------------------------- //
