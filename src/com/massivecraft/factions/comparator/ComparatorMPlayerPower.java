@@ -2,10 +2,9 @@ package com.massivecraft.factions.comparator;
 
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.massivecore.Named;
+import com.massivecraft.massivecore.comparator.ComparatorAbstract;
 
-import java.util.Comparator;
-
-public class ComparatorMPlayerPower implements Comparator<MPlayer>, Named
+public class ComparatorMPlayerPower extends ComparatorAbstract<MPlayer> implements Named
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -15,7 +14,7 @@ public class ComparatorMPlayerPower implements Comparator<MPlayer>, Named
 	public static ComparatorMPlayerPower get() { return i; }
 	
 	// -------------------------------------------- //
-	// OVERRIDE: NAMED
+	// OVERRIDE
 	// -------------------------------------------- //
 	
 	@Override
@@ -24,32 +23,15 @@ public class ComparatorMPlayerPower implements Comparator<MPlayer>, Named
 		return "Power";
 	}
 	
-	// -------------------------------------------- //
-	// OVERRIDE: COMPARATOR
-	// -------------------------------------------- //
-	
 	@Override
-	public int compare(MPlayer m1, MPlayer m2)
+	public int compareInner(MPlayer m1, MPlayer m2)
 	{
-		int ret = 0;
-		
-		// Null
-		if (m1 == null && m2 == null) return 0;
-		else if (m1 == null) return -1;
-		else if (m2 == null) return +1;
-
 		// Power
-		int p1 = m1.getPowerRounded();
-		int p2 = m2.getPowerRounded();
-		ret = p1 - p2;
+		int ret = m1.getPowerRounded() - m2.getPowerRounded();
 		if (ret != 0) return ret;
 		
 		// MaxPower
-		int max1 = m1.getPowerMaxRounded();
-		int max2 = m2.getPowerMaxRounded();
-		ret = max1 - max2;
-			
-		return ret;
+		return m1.getPowerMaxRounded() - m2.getPowerMaxRounded();
 	}
 
 }

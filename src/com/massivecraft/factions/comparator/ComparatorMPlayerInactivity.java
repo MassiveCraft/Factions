@@ -2,10 +2,9 @@ package com.massivecraft.factions.comparator;
 
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.massivecore.Named;
+import com.massivecraft.massivecore.comparator.ComparatorAbstract;
 
-import java.util.Comparator;
-
-public class ComparatorMPlayerInactivity implements Comparator<MPlayer>, Named
+public class ComparatorMPlayerInactivity extends ComparatorAbstract<MPlayer> implements Named
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -15,7 +14,7 @@ public class ComparatorMPlayerInactivity implements Comparator<MPlayer>, Named
 	public static ComparatorMPlayerInactivity get() { return i; }
 	
 	// -------------------------------------------- //
-	// OVERRIDE: NAMED
+	// OVERRIDE
 	// -------------------------------------------- //
 	
 	@Override
@@ -24,18 +23,9 @@ public class ComparatorMPlayerInactivity implements Comparator<MPlayer>, Named
 		return "Time";
 	}
 	
-	// -------------------------------------------- //
-	// OVERRIDE: COMPARATOR
-	// -------------------------------------------- //
-	
 	@Override
-	public int compare(MPlayer m1, MPlayer m2)
+	public int compareInner(MPlayer m1, MPlayer m2)
 	{
-		// Null
-		if (m1 == null && m2 == null) return 0;
-		else if (m1 == null) return -1;
-		else if (m2 == null) return +1;
-
 		// Online
 		boolean o1 = m1.isOnline();
 		boolean o2 = m2.isOnline();

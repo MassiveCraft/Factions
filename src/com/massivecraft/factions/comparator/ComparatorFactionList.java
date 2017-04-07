@@ -1,14 +1,14 @@
 package com.massivecraft.factions.comparator;
 
 import com.massivecraft.factions.entity.Faction;
+import com.massivecraft.massivecore.comparator.ComparatorAbstract;
 import com.massivecraft.massivecore.comparator.ComparatorComparable;
 import com.massivecraft.massivecore.util.IdUtil;
 import org.bukkit.command.CommandSender;
 
 import java.lang.ref.WeakReference;
-import java.util.Comparator;
 
-public class ComparatorFactionList implements Comparator<Faction>
+public class ComparatorFactionList extends ComparatorAbstract<Faction>
 {
 	// -------------------------------------------- //
 	// FIELDS
@@ -28,28 +28,19 @@ public class ComparatorFactionList implements Comparator<Faction>
 	}
 
 	// -------------------------------------------- //
-	// OVERRIDE: COMPARATOR
+	// OVERRIDE
 	// -------------------------------------------- //
 	
 	@Override
-	public int compare(Faction f1, Faction f2)
+	public int compareInner(Faction f1, Faction f2)
 	{
-		int ret = 0;
-		
-		// Null
-		if (f1 == null && f2 == null) ret = 0;
-		if (f1 == null) ret = -1;
-		if (f2 == null) ret = +1;
-		if (ret != 0) return ret;
-		
 		// None a.k.a. Wilderness
-		if (f1.isNone() && f2.isNone()) ret = 0;
-		if (f1.isNone()) ret = -1;
-		if (f2.isNone()) ret = +1;
-		if (ret != 0) return ret;
+		if (f1.isNone() && f2.isNone()) return 0;
+		if (f1.isNone()) return -1;
+		if (f2.isNone()) return 1;
 		
 		// Players Online
-		ret = f2.getMPlayersWhereOnlineTo(this.getWatcher()).size() - f1.getMPlayersWhereOnlineTo(this.getWatcher()).size();
+		int ret = f2.getMPlayersWhereOnlineTo(this.getWatcher()).size() - f1.getMPlayersWhereOnlineTo(this.getWatcher()).size();
 		if (ret != 0) return ret;
 		
 		// Players Total
