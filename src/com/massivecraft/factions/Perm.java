@@ -1,9 +1,8 @@
 package com.massivecraft.factions;
 
-import org.bukkit.permissions.Permissible;
-
 import com.massivecraft.massivecore.Identified;
 import com.massivecraft.massivecore.util.PermissionUtil;
+import org.bukkit.permissions.Permissible;
 
 public enum Perm implements Identified
 {
@@ -61,6 +60,9 @@ public enum Perm implements Identified
 	PERM_SHOW,
 	PLAYER,
 	POWERBOOST,
+	POWERBOOST_PLAYER,
+	POWERBOOST_FACTION,
+	POWERBOOST_SET,
 	RANK,
 	RANK_SHOW,
 	RANK_ACTION,
@@ -87,6 +89,7 @@ public enum Perm implements Identified
 	UNSETHOME,
 	UNSTUCK,
 	CONFIG,
+	CLEAN,
 	VERSION,
 	
 	// END OF LIST

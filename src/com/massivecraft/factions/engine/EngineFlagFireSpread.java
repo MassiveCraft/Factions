@@ -1,5 +1,10 @@
 package com.massivecraft.factions.engine;
 
+import com.massivecraft.factions.entity.BoardColl;
+import com.massivecraft.factions.entity.Faction;
+import com.massivecraft.factions.entity.MFlag;
+import com.massivecraft.massivecore.Engine;
+import com.massivecraft.massivecore.ps.PS;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.event.Cancellable;
@@ -9,12 +14,6 @@ import org.bukkit.event.block.BlockBurnEvent;
 import org.bukkit.event.block.BlockIgniteEvent;
 import org.bukkit.event.block.BlockIgniteEvent.IgniteCause;
 import org.bukkit.event.block.BlockSpreadEvent;
-
-import com.massivecraft.factions.entity.BoardColl;
-import com.massivecraft.factions.entity.Faction;
-import com.massivecraft.factions.entity.MFlag;
-import com.massivecraft.massivecore.Engine;
-import com.massivecraft.massivecore.ps.PS;
 
 public class EngineFlagFireSpread extends Engine
 {

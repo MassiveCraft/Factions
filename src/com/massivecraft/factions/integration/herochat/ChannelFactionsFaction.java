@@ -1,13 +1,12 @@
 package com.massivecraft.factions.integration.herochat;
 
+import com.massivecraft.factions.Rel;
+import com.massivecraft.factions.entity.MConf;
+import org.bukkit.ChatColor;
+
 import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
-
-import org.bukkit.ChatColor;
-
-import com.massivecraft.factions.Rel;
-import com.massivecraft.factions.entity.MConf;
 
 public class ChannelFactionsFaction extends ChannelFactionsAbstract
 {
@@ -29,7 +28,7 @@ public class ChannelFactionsFaction extends ChannelFactionsAbstract
 	@Override public void setDistance(int distance) { MConf.get().herochatFactionDistance = distance; }
 	
 	@Override public void addWorld(String world) { MConf.get().herochatFactionWorlds.add(world); }
-	@Override public Set<String> getWorlds() { return new HashSet<String>(MConf.get().herochatFactionWorlds); }
+	@Override public Set<String> getWorlds() { return new HashSet<>(MConf.get().herochatFactionWorlds); }
 	@Override public void setWorlds(Set<String> worlds) { MConf.get().herochatFactionWorlds = worlds; }
 	
 	@Override public boolean isShortcutAllowed() { return MConf.get().herochatFactionIsShortcutAllowed; }

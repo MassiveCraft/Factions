@@ -1,7 +1,5 @@
 package com.massivecraft.factions.cmd;
 
-import org.bukkit.ChatColor;
-
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.cmd.type.TypeMPlayer;
 import com.massivecraft.factions.entity.MPerm;
@@ -10,6 +8,7 @@ import com.massivecraft.factions.event.EventFactionsTitleChange;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.command.type.primitive.TypeString;
 import com.massivecraft.massivecore.util.Txt;
+import org.bukkit.ChatColor;
 
 public class CmdFactionsTitle extends FactionsCommand
 {

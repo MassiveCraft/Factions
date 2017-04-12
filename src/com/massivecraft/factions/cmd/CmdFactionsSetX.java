@@ -1,11 +1,11 @@
 package com.massivecraft.factions.cmd;
 
-import java.util.Set;
-
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.FactionColl;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.ps.PS;
+
+import java.util.Set;
 
 public abstract class CmdFactionsSetX extends FactionsCommand
 {

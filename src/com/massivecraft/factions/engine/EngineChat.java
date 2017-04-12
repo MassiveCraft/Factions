@@ -1,5 +1,11 @@
 package com.massivecraft.factions.engine;
 
+import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.chat.ChatFormatter;
+import com.massivecraft.factions.entity.MConf;
+import com.massivecraft.massivecore.Engine;
+import com.massivecraft.massivecore.event.EventMassiveCorePlayerToRecipientChat;
+import com.massivecraft.massivecore.util.MUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -8,13 +14,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.EventExecutor;
-
-import com.massivecraft.factions.Factions;
-import com.massivecraft.factions.chat.ChatFormatter;
-import com.massivecraft.factions.entity.MConf;
-import com.massivecraft.massivecore.Engine;
-import com.massivecraft.massivecore.event.EventMassiveCorePlayerToRecipientChat;
-import com.massivecraft.massivecore.util.MUtil;
 
 public class EngineChat extends Engine
 {

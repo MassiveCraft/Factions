@@ -1,18 +1,18 @@
 package com.massivecraft.factions.entity;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.massivecore.store.Coll;
 import com.massivecraft.massivecore.util.Txt;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class FactionColl extends Coll<Faction>
 {
@@ -45,38 +45,6 @@ public class FactionColl extends Coll<Faction>
 		if (!active) return;
 		
 		this.createSpecialFactions();
-	}
-	
-	@Override
-	public Faction get(Object oid)
-	{
-		Faction ret = super.get(oid);
-		
-		// We should only trigger automatic clean if the whole database system is initialized.
-		// A cleaning can only be successful if all data is available.
-		// Example Reason: When creating the special factions for the first time "createSpecialFactions" a clean would be triggered otherwise.
-		if (ret == null && Factions.get().isDatabaseInitialized())
-		{
-			String message = Txt.parse("<b>Non existing factionId <h>%s <b>requested. <i>Cleaning all boards and mplayers.", this.fixId(oid));
-			Factions.get().log(message);
-			
-			BoardColl.get().clean();
-			MPlayerColl.get().clean();
-		}
-		
-		return ret;
-	}
-	
-	// -------------------------------------------- //
-	// INDEX
-	// -------------------------------------------- //
-	
-	public void reindexMPlayers()
-	{
-		for (Faction faction : this.getAll())
-		{
-			faction.reindexMPlayers();
-		}
 	}
 	
 	// -------------------------------------------- //
@@ -293,7 +261,7 @@ public class FactionColl extends Coll<Faction>
 	public ArrayList<String> validateName(String str)
 	{
 		// Create
-		ArrayList<String> errors = new ArrayList<String>();
+		ArrayList<String> errors = new ArrayList<>();
 		
 		// Fill
 		// Check minimum length
@@ -342,7 +310,7 @@ public class FactionColl extends Coll<Faction>
 	public Map<Rel, List<String>> getRelationNames(Faction faction, Set<Rel> rels)
 	{
 		// Create
-		Map<Rel, List<String>> ret = new LinkedHashMap<Rel, List<String>>();
+		Map<Rel, List<String>> ret = new LinkedHashMap<>();
 		MFlag flagPeaceful = MFlag.getFlagPeaceful();
 		boolean peaceful = faction.getFlag(flagPeaceful);
 		for (Rel rel : rels)

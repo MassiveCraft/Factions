@@ -1,15 +1,15 @@
 package com.massivecraft.factions.integration;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import com.massivecraft.factions.EconomyParticipator;
+import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.factions.entity.MPlayer;
-import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.util.RelationUtil;
 import com.massivecraft.massivecore.money.Money;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class Econ
 {
@@ -160,7 +160,7 @@ public class Econ
 	
 	public static Set<MPlayer> getMPlayers(EconomyParticipator ep)
 	{
-		Set<MPlayer> mplayers = new HashSet<MPlayer>();
+		Set<MPlayer> mplayers = new HashSet<>();
 		
 		if (ep == null)
 		{
@@ -180,7 +180,7 @@ public class Econ
 	
 	public static void sendTransferInfo(EconomyParticipator invoker, EconomyParticipator from, EconomyParticipator to, double amount)
 	{
-		Set<MPlayer> recipients = new HashSet<MPlayer>();
+		Set<MPlayer> recipients = new HashSet<>();
 		recipients.addAll(getMPlayers(invoker));
 		recipients.addAll(getMPlayers(from));
 		recipients.addAll(getMPlayers(to));

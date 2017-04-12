@@ -1,5 +1,13 @@
 package com.massivecraft.factions.entity;
 
+import com.massivecraft.factions.RelationParticipator;
+import com.massivecraft.factions.TerritoryAccess;
+import com.massivecraft.massivecore.collections.MassiveMap;
+import com.massivecraft.massivecore.collections.MassiveSet;
+import com.massivecraft.massivecore.ps.PS;
+import com.massivecraft.massivecore.store.Coll;
+import com.massivecraft.massivecore.util.MUtil;
+
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -8,14 +16,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-
-import com.massivecraft.factions.RelationParticipator;
-import com.massivecraft.factions.TerritoryAccess;
-import com.massivecraft.massivecore.collections.MassiveMap;
-import com.massivecraft.massivecore.collections.MassiveSet;
-import com.massivecraft.massivecore.ps.PS;
-import com.massivecraft.massivecore.store.Coll;
-import com.massivecraft.massivecore.util.MUtil;
 
 public class BoardColl extends Coll<Board> implements BoardInterface
 {
@@ -117,22 +117,13 @@ public class BoardColl extends Coll<Board> implements BoardInterface
 		}
 	}
 	
-	@Override
-	public void clean()
-	{
-		for (Board board : this.getAll())
-		{
-			board.clean();
-		}
-	}
-	
 	// CHUNKS
 	
 	@Override
 	public Set<PS> getChunks(Faction faction)
 	{
 		// Create
-		Set<PS> ret = new HashSet<PS>();
+		Set<PS> ret = new HashSet<>();
 		
 		// Fill
 		for (Board board : this.getAll())
@@ -148,7 +139,7 @@ public class BoardColl extends Coll<Board> implements BoardInterface
 	public Set<PS> getChunks(String factionId)
 	{
 		// Create
-		Set<PS> ret = new HashSet<PS>();
+		Set<PS> ret = new HashSet<>();
 		
 		// Fill
 		for (Board board : this.getAll())
@@ -194,7 +185,7 @@ public class BoardColl extends Coll<Board> implements BoardInterface
 		}
 		
 		// Enforce create
-		if (ret == null) ret = new MassiveMap<Faction, Set<PS>>();
+		if (ret == null) ret = new MassiveMap<>();
 		
 		// Return
 		return ret;
@@ -249,7 +240,7 @@ public class BoardColl extends Coll<Board> implements BoardInterface
 			}
 		}
 		
-		if (ret == null) ret = new MassiveMap<Faction, Integer>();
+		if (ret == null) ret = new MassiveMap<>();
 		return ret;
 	}
 	
@@ -360,7 +351,7 @@ public class BoardColl extends Coll<Board> implements BoardInterface
 		psChunk = psChunk.getChunk(true);
 		
 		// Create
-		Set<PS> ret = new LinkedHashSet<PS>();
+		Set<PS> ret = new LinkedHashSet<>();
 		if (distance < 0) return ret;
 		
 		// Fill
@@ -391,7 +382,7 @@ public class BoardColl extends Coll<Board> implements BoardInterface
 		if (chunks == null) throw new NullPointerException("chunks");
 		
 		// Create
-		Set<PS> ret = new LinkedHashSet<PS>();
+		Set<PS> ret = new LinkedHashSet<>();
 		
 		if (distance < 0) return ret;
 		
@@ -411,7 +402,7 @@ public class BoardColl extends Coll<Board> implements BoardInterface
 		if (chunks == null) throw new NullPointerException("chunks");
 		
 		// Create
-		Set<Faction> ret = new LinkedHashSet<Faction>();
+		Set<Faction> ret = new LinkedHashSet<>();
 		
 		// Fill
 		for (PS chunk : chunks)
@@ -428,7 +419,7 @@ public class BoardColl extends Coll<Board> implements BoardInterface
 	public static Map<PS, Faction> getChunkFaction(Collection<PS> chunks)
 	{
 		// Create
-		Map<PS, Faction> ret = new LinkedHashMap<PS, Faction>();
+		Map<PS, Faction> ret = new LinkedHashMap<>();
 		
 		// Fill
 		Faction none = FactionColl.get().getNone();

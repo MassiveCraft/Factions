@@ -1,15 +1,14 @@
-package com.massivecraft.factions;
+package com.massivecraft.factions.predicate;
+
+import com.massivecraft.factions.entity.Faction;
+import com.massivecraft.factions.entity.MPlayer;
+import com.massivecraft.massivecore.predicate.Predicate;
+import com.massivecraft.massivecore.util.MUtil;
+import org.bukkit.command.CommandSender;
 
 import java.io.Serializable;
 
-import org.bukkit.command.CommandSender;
-
-import com.massivecraft.factions.entity.MPlayer;
-import com.massivecraft.factions.entity.Faction;
-import com.massivecraft.massivecore.predicate.Predicate;
-import com.massivecraft.massivecore.util.MUtil;
-
-public class FactionEqualsPredicate implements Predicate<CommandSender>, Serializable
+public class PredicateCommandSenderFaction implements Predicate<CommandSender>, Serializable
 {
 	private static final long serialVersionUID = 1L;
 	
@@ -24,7 +23,7 @@ public class FactionEqualsPredicate implements Predicate<CommandSender>, Seriali
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public FactionEqualsPredicate(Faction faction)
+	public PredicateCommandSenderFaction(Faction faction)
 	{
 		this.factionId = faction.getId();
 	}
@@ -39,7 +38,7 @@ public class FactionEqualsPredicate implements Predicate<CommandSender>, Seriali
 		if (MUtil.isntSender(sender)) return false;
 		
 		MPlayer mplayer = MPlayer.get(sender);
-		return this.factionId.equals(mplayer.getFactionId());
+		return this.factionId.equals(mplayer.getFaction().getId());
 	}
 
 }

@@ -1,10 +1,18 @@
 package com.massivecraft.factions.util;
 
-import java.util.List;
-
 import com.massivecraft.massivecore.collections.MassiveList;
 
-import static com.massivecraft.factions.util.AsciiCompassDirection.*;
+import java.util.List;
+
+import static com.massivecraft.factions.util.AsciiCompassDirection.E;
+import static com.massivecraft.factions.util.AsciiCompassDirection.N;
+import static com.massivecraft.factions.util.AsciiCompassDirection.NE;
+import static com.massivecraft.factions.util.AsciiCompassDirection.NONE;
+import static com.massivecraft.factions.util.AsciiCompassDirection.NW;
+import static com.massivecraft.factions.util.AsciiCompassDirection.S;
+import static com.massivecraft.factions.util.AsciiCompassDirection.SE;
+import static com.massivecraft.factions.util.AsciiCompassDirection.SW;
+import static com.massivecraft.factions.util.AsciiCompassDirection.W;
 
 public class AsciiCompass
 {

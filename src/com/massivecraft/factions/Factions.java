@@ -1,10 +1,7 @@
 package com.massivecraft.factions;
 
-import org.bukkit.ChatColor;
-
 import com.massivecraft.factions.adapter.BoardAdapter;
 import com.massivecraft.factions.adapter.BoardMapAdapter;
-import com.massivecraft.factions.adapter.FactionPreprocessAdapter;
 import com.massivecraft.factions.adapter.RelAdapter;
 import com.massivecraft.factions.adapter.TerritoryAccessAdapter;
 import com.massivecraft.factions.chat.modifier.ChatModifierLc;
@@ -47,12 +44,12 @@ import com.massivecraft.factions.engine.EngineTerritoryShield;
 import com.massivecraft.factions.engine.EngineVisualizations;
 import com.massivecraft.factions.entity.Board;
 import com.massivecraft.factions.entity.BoardColl;
-import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.FactionColl;
 import com.massivecraft.factions.entity.MConfColl;
 import com.massivecraft.factions.entity.MFlagColl;
 import com.massivecraft.factions.entity.MPermColl;
 import com.massivecraft.factions.entity.MPlayerColl;
+import com.massivecraft.factions.entity.migrator.MigratorMConf001EnumerationUtil;
 import com.massivecraft.factions.event.EventFactionsChunkChangeType;
 import com.massivecraft.factions.integration.V19.IntegrationV19;
 import com.massivecraft.factions.integration.herochat.IntegrationHerochat;
@@ -64,15 +61,11 @@ import com.massivecraft.factions.task.TaskEconLandReward;
 import com.massivecraft.factions.task.TaskFlagPermCreate;
 import com.massivecraft.factions.task.TaskPlayerDataRemove;
 import com.massivecraft.factions.task.TaskPlayerPowerUpdate;
-import com.massivecraft.factions.update.UpdateUtil;
-import com.massivecraft.massivecore.Aspect;
-import com.massivecraft.massivecore.AspectColl;
 import com.massivecraft.massivecore.MassivePlugin;
-import com.massivecraft.massivecore.Multiverse;
 import com.massivecraft.massivecore.command.type.RegistryType;
 import com.massivecraft.massivecore.util.MUtil;
-import com.massivecraft.massivecore.xlib.gson.Gson;
 import com.massivecraft.massivecore.xlib.gson.GsonBuilder;
+import org.bukkit.ChatColor;
 
 public class Factions extends MassivePlugin
 {
@@ -96,34 +89,15 @@ public class Factions extends MassivePlugin
 	
 	private static Factions i;
 	public static Factions get() { return i; }
-	public Factions()
-	{
-		Factions.i = this;
-		
-		// Version Synchronized
-		this.setVersionSynchronized(true);
-	}
+	public Factions() { Factions.i = this; }
 	
 	// -------------------------------------------- //
 	// FIELDS
 	// -------------------------------------------- //
 	
-	// Aspects
-	// TODO: Remove in the future when the update has been removed.
-	private Aspect aspect;
-	public Aspect getAspect() { return this.aspect; }
-	public Multiverse getMultiverse() { return this.getAspect().getMultiverse(); }
-	
-	// Database Initialized
-	private boolean databaseInitialized;
-	public boolean isDatabaseInitialized() { return this.databaseInitialized; }
-	
 	// Mixins
 	@Deprecated public PowerMixin getPowerMixin() { return PowerMixin.get(); }
 	@Deprecated public void setPowerMixin(PowerMixin powerMixin) { PowerMixin.get().setInstance(powerMixin); }
-	
-	// Gson without preprocessors
-	public final Gson gsonWithoutPreprocessors = this.getGsonBuilderWithoutPreprocessors().create();
 	
 	// -------------------------------------------- //
 	// OVERRIDE
@@ -132,14 +106,6 @@ public class Factions extends MassivePlugin
 	@Override
 	public void onEnableInner()
 	{
-		// Initialize Aspects
-		this.aspect = AspectColl.get().get(Const.ASPECT, true);
-		this.aspect.register();
-		this.aspect.setDesc(
-			"<i>If the factions system even is enabled and how it's configured.",
-			"<i>What factions exists and what players belong to them."
-		);
-		
 		// Register types
 		RegistryType.register(Rel.class, TypeRel.get());
 		RegistryType.register(EventFactionsChunkChangeType.class, TypeFactionChunkChangeType.get());
@@ -147,26 +113,28 @@ public class Factions extends MassivePlugin
 		// Register Faction accountId Extractor
 		// TODO: Perhaps this should be placed in the econ integration somewhere?
 		MUtil.registerExtractor(String.class, "accountId", ExtractorFactionAccountId.get());
-
-		// Initialize Database
-		this.databaseInitialized = false;
-		MFlagColl.get().setActive(true);
-		MPermColl.get().setActive(true);
-		MConfColl.get().setActive(true);
-		
-		UpdateUtil.update();
-		
-		MPlayerColl.get().setActive(true);
-		FactionColl.get().setActive(true);
-		BoardColl.get().setActive(true);
-		
-		UpdateUtil.updateSpecialIds();
-		
-		FactionColl.get().reindexMPlayers();
-		this.databaseInitialized = true;
 		
 		// Activate
 		this.activate(
+			// Migrator
+			MigratorMConf001EnumerationUtil.class,
+			
+			// Coll
+			// MConf should always be activated first for all plugins. It's simply a standard. The config should have no dependencies.
+			// MFlag and MPerm are both dependency free.
+			// Next we activate Faction, MPlayer and Board. The order is carefully chosen based on foreign keys and indexing direction.
+			// MPlayer --> Faction
+			// We actually only have an index that we maintain for the MPlayer --> Faction one.
+			// The Board could currently be activated in any order but the current placement is an educated guess.
+			// In the future we might want to find all chunks from the faction or something similar.
+			// We also have the /f access system where the player can be granted specific access, possibly supporting the idea of such a reverse index.
+			MConfColl.class,
+			MFlagColl.class,
+			MPermColl.class,
+			FactionColl.class,
+			MPlayerColl.class,
+			BoardColl.class,
+			
 			// Command
 			CmdFactions.class,
 		
@@ -228,21 +196,14 @@ public class Factions extends MassivePlugin
 		);
 	}
 	
-	public GsonBuilder getGsonBuilderWithoutPreprocessors()
+	@Override
+	public GsonBuilder getGsonBuilder()
 	{
 		return super.getGsonBuilder()
 		.registerTypeAdapter(TerritoryAccess.class, TerritoryAccessAdapter.get())
 		.registerTypeAdapter(Board.class, BoardAdapter.get())
 		.registerTypeAdapter(Board.MAP_TYPE, BoardMapAdapter.get())
 		.registerTypeAdapter(Rel.class, RelAdapter.get())
-		;
-	}
-	
-	@Override
-	public GsonBuilder getGsonBuilder()
-	{
-		return this.getGsonBuilderWithoutPreprocessors()
-		.registerTypeAdapter(Faction.class, FactionPreprocessAdapter.get())
 		;
 	}
 	

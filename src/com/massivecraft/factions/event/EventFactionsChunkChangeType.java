@@ -1,9 +1,8 @@
 package com.massivecraft.factions.event;
 
-import org.bukkit.ChatColor;
-
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.massivecore.Colorized;
+import org.bukkit.ChatColor;
 
 public enum EventFactionsChunkChangeType implements Colorized
 {

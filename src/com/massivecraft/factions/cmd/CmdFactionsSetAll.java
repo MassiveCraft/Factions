@@ -1,9 +1,5 @@
 package com.massivecraft.factions.cmd;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.entity.Board;
 import com.massivecraft.factions.entity.BoardColl;
@@ -13,6 +9,10 @@ import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.mixin.MixinWorld;
 import com.massivecraft.massivecore.ps.PS;
 import com.massivecraft.massivecore.util.MUtil;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
 
 public class CmdFactionsSetAll extends CmdFactionsSetXAll

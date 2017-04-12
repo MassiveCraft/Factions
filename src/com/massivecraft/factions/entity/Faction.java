@@ -1,37 +1,19 @@
 package com.massivecraft.factions.entity;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-import java.util.TreeSet;
-
-import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
-import com.massivecraft.factions.EconomyParticipator;
-import com.massivecraft.factions.FactionEqualsPredicate;
 import com.massivecraft.factions.Factions;
-import com.massivecraft.factions.Lang;
-import com.massivecraft.factions.PredicateRole;
+import com.massivecraft.factions.FactionsIndex;
+import com.massivecraft.factions.FactionsParticipator;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.RelationParticipator;
+import com.massivecraft.factions.predicate.PredicateCommandSenderFaction;
+import com.massivecraft.factions.predicate.PredicateMPlayerRole;
 import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.factions.util.RelationUtil;
-import com.massivecraft.massivecore.Named;
 import com.massivecraft.massivecore.collections.MassiveList;
+import com.massivecraft.massivecore.collections.MassiveMap;
 import com.massivecraft.massivecore.collections.MassiveMapDef;
 import com.massivecraft.massivecore.collections.MassiveSet;
-import com.massivecraft.massivecore.collections.MassiveTreeSetDef;
-import com.massivecraft.massivecore.comparator.ComparatorCaseInsensitive;
+import com.massivecraft.massivecore.collections.MassiveSetDef;
 import com.massivecraft.massivecore.mixin.MixinMessage;
 import com.massivecraft.massivecore.money.Money;
 import com.massivecraft.massivecore.predicate.Predicate;
@@ -43,9 +25,28 @@ import com.massivecraft.massivecore.store.SenderColl;
 import com.massivecraft.massivecore.util.IdUtil;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.Txt;
+import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
-public class Faction extends Entity<Faction> implements EconomyParticipator, Named
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+
+public class Faction extends Entity<Faction> implements FactionsParticipator
 {
+	// -------------------------------------------- //
+	// CONSTANTS
+	// -------------------------------------------- //
+	
+	public static final transient String NODESCRIPTION = Txt.parse("<em><silver>no description set");
+	public static final transient String NOMOTD = Txt.parse("<em><silver>no message of the day set");
+	
 	// -------------------------------------------- //
 	// META
 	// -------------------------------------------- //
@@ -79,9 +80,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator, Nam
 	@Override
 	public void preDetach(String id)
 	{
-		// The database must be fully inited.
-		// We may move factions around during upgrades.
-		if (!Factions.get().isDatabaseInitialized()) return;
+		if (!this.isLive()) return;
 		
 		// NOTE: Existence check is required for compatibility with some plugins.
 		// If they have money ...
@@ -90,12 +89,6 @@ public class Faction extends Entity<Faction> implements EconomyParticipator, Nam
 			// ... remove it.
 			Money.set(this, null, 0);	
 		}
-		
-		// Clean the board
-		BoardColl.get().clean();
-		
-		// Clean the mplayers
-		MPlayerColl.get().clean();
 	}
 	
 	// -------------------------------------------- //
@@ -142,19 +135,19 @@ public class Faction extends Entity<Faction> implements EconomyParticipator, Nam
 	// This is the ids of the invited players.
 	// They are actually "senderIds" since you can invite "@console" to your faction.
 	// Null means no one is invited
-	private MassiveTreeSetDef<String, ComparatorCaseInsensitive> invitedPlayerIds = new MassiveTreeSetDef<String, ComparatorCaseInsensitive>(ComparatorCaseInsensitive.get());
+	private MassiveSetDef<String> invitedPlayerIds = new MassiveSetDef<>();
 	
 	// The keys in this map are factionIds.
 	// Null means no special relation whishes.
-	private MassiveMapDef<String, Rel> relationWishes = new MassiveMapDef<String, Rel>();
+	private MassiveMapDef<String, Rel> relationWishes = new MassiveMapDef<>();
 	
 	// The flag overrides are modifications to the default values.
 	// Null means default.
-	private MassiveMapDef<String, Boolean> flags = new MassiveMapDef<String, Boolean>();
+	private MassiveMapDef<String, Boolean> flags = new MassiveMapDef<>();
 
 	// The perm overrides are modifications to the default values.
 	// Null means default.
-	private MassiveMapDef<String, Set<Rel>> perms = new MassiveMapDef<String, Set<Rel>>();
+	private MassiveMapDef<String, Set<Rel>> perms = new MassiveMapDef<>();
 	
 	// -------------------------------------------- //
 	// FIELD: id
@@ -238,7 +231,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator, Nam
 	public String getDescription()
 	{
 		if (this.hasDescription()) return this.description;
-		return Lang.FACTION_NODESCRIPTION;
+		return NODESCRIPTION;
 	}
 	
 	public void setDescription(String description)
@@ -248,8 +241,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator, Nam
 		if (target != null)
 		{
 			target = target.trim();
-			// This code should be kept for a while to clean out the previous default text that was actually stored in the database.
-			if (target.length() == 0 || target.equals("Default faction description :("))
+			if (target.isEmpty())
 			{
 				target = null;
 			}
@@ -279,7 +271,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator, Nam
 	public String getMotd()
 	{
 		if (this.hasMotd()) return Txt.parse(this.motd);
-		return Lang.FACTION_NOMOTD;
+		return NOMOTD;
 	}
 	
 	public void setMotd(String description)
@@ -289,7 +281,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator, Nam
 		if (target != null)
 		{
 			target = target.trim();
-			if (target.length() == 0)
+			if (target.isEmpty())
 			{
 				target = null;
 			}
@@ -401,7 +393,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator, Nam
 	// -------------------------------------------- //
 	
 	// RAW
-	
+	@Override
 	public double getPowerBoost()
 	{
 		Double ret = this.powerBoost;
@@ -409,6 +401,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator, Nam
 		return ret;
 	}
 	
+	@Override
 	public void setPowerBoost(Double powerBoost)
 	{
 		// Clean input
@@ -458,7 +451,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator, Nam
 	
 	// RAW
 	
-	public TreeSet<String> getInvitedPlayerIds()
+	public Set<String> getInvitedPlayerIds()
 	{
 		return this.invitedPlayerIds;
 	}
@@ -466,14 +459,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator, Nam
 	public void setInvitedPlayerIds(Collection<String> invitedPlayerIds)
 	{
 		// Clean input
-		MassiveTreeSetDef<String, ComparatorCaseInsensitive> target = new MassiveTreeSetDef<String, ComparatorCaseInsensitive>(ComparatorCaseInsensitive.get());
-		if (invitedPlayerIds != null)
-		{
-			for (String invitedPlayerId : invitedPlayerIds)
-			{
-				target.add(invitedPlayerId.toLowerCase());
-			}
-		}
+		MassiveSetDef<String> target = new MassiveSetDef<>(invitedPlayerIds);
 		
 		// Detect Nochange
 		if (MUtil.equals(this.invitedPlayerIds, target)) return;
@@ -499,7 +485,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator, Nam
 	
 	public boolean setInvited(String playerId, boolean invited)
 	{
-		List<String> invitedPlayerIds = new ArrayList<String>(this.getInvitedPlayerIds());
+		List<String> invitedPlayerIds = new MassiveList<>(this.getInvitedPlayerIds());
 		boolean ret;
 		if (invited)
 		{
@@ -511,7 +497,6 @@ public class Faction extends Entity<Faction> implements EconomyParticipator, Nam
 		}
 		this.setInvitedPlayerIds(invitedPlayerIds);
 		return ret;
-		
 	}
 	
 	public void setInvited(MPlayer mplayer, boolean invited)
@@ -521,13 +506,14 @@ public class Faction extends Entity<Faction> implements EconomyParticipator, Nam
 	
 	public List<MPlayer> getInvitedMPlayers()
 	{
-		List<MPlayer> mplayers = new ArrayList<MPlayer>();
+		List<MPlayer> mplayers = new MassiveList<>();
 		
 		for (String id : this.getInvitedPlayerIds())
 		{	
 			MPlayer mplayer = MPlayer.get(id);
 			mplayers.add(mplayer);
 		}
+		
 		return mplayers;
 	}
 	
@@ -545,7 +531,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator, Nam
 	public void setRelationWishes(Map<String, Rel> relationWishes)
 	{
 		// Clean input
-		MassiveMapDef<String, Rel> target = new MassiveMapDef<String, Rel>(relationWishes);
+		MassiveMapDef<String, Rel> target = new MassiveMapDef<>(relationWishes);
 		
 		// Detect Nochange
 		if (MUtil.equals(this.relationWishes, target)) return;
@@ -599,7 +585,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator, Nam
 	public Map<MFlag, Boolean> getFlags()
 	{
 		// We start with default values ...
-		Map<MFlag, Boolean> ret = new LinkedHashMap<MFlag, Boolean>();
+		Map<MFlag, Boolean> ret = new MassiveMap<>();
 		for (MFlag mflag : MFlag.getAll())
 		{
 			ret.put(mflag, mflag.isStandard());
@@ -633,7 +619,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator, Nam
 	
 	public void setFlags(Map<MFlag, Boolean> flags)
 	{
-		Map<String, Boolean> flagIds = new LinkedHashMap<String, Boolean>();
+		Map<String, Boolean> flagIds = new MassiveMap<>();
 		for (Entry<MFlag, Boolean> entry : flags.entrySet())
 		{
 			flagIds.put(entry.getKey().getId(), entry.getValue());
@@ -644,7 +630,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator, Nam
 	public void setFlagIds(Map<String, Boolean> flagIds)
 	{
 		// Clean input
-		MassiveMapDef<String, Boolean> target = new MassiveMapDef<String, Boolean>();
+		MassiveMapDef<String, Boolean> target = new MassiveMapDef<>();
 		for (Entry<String, Boolean> entry : flagIds.entrySet())
 		{
 			String key = entry.getKey();
@@ -661,7 +647,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator, Nam
 		if (MUtil.equals(this.flags, target)) return;
 		
 		// Apply
-		this.flags = new MassiveMapDef<String, Boolean>(target);
+		this.flags = new MassiveMapDef<>(target);
 		
 		// Mark as changed
 		this.changed();
@@ -725,10 +711,10 @@ public class Faction extends Entity<Faction> implements EconomyParticipator, Nam
 	public Map<MPerm, Set<Rel>> getPerms()
 	{
 		// We start with default values ...
-		Map<MPerm, Set<Rel>> ret = new LinkedHashMap<MPerm, Set<Rel>>();
+		Map<MPerm, Set<Rel>> ret = new MassiveMap<>();
 		for (MPerm mperm : MPerm.getAll())
 		{
-			ret.put(mperm, new LinkedHashSet<Rel>(mperm.getStandard()));
+			ret.put(mperm, new MassiveSet<>(mperm.getStandard()));
 		}
 		
 		// ... and if anything is explicitly set we use that info ...
@@ -750,7 +736,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator, Nam
 			MPerm mperm = MPerm.get(id);
 			if (mperm == null) continue;
 			
-			ret.put(mperm, new LinkedHashSet<Rel>(entry.getValue()));
+			ret.put(mperm, new MassiveSet<>(entry.getValue()));
 		}
 		
 		return ret;
@@ -758,7 +744,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator, Nam
 	
 	public void setPerms(Map<MPerm, Set<Rel>> perms)
 	{
-		Map<String, Set<Rel>> permIds = new LinkedHashMap<String, Set<Rel>>();
+		Map<String, Set<Rel>> permIds = new MassiveMap<>();
 		for (Entry<MPerm, Set<Rel>> entry : perms.entrySet())
 		{
 			permIds.put(entry.getKey().getId(), entry.getValue());
@@ -769,7 +755,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator, Nam
 	public void setPermIds(Map<String, Set<Rel>> perms)
 	{
 		// Clean input
-		MassiveMapDef<String, Set<Rel>> target = new MassiveMapDef<String, Set<Rel>>();
+		MassiveMapDef<String, Set<Rel>> target = new MassiveMapDef<>();
 		for (Entry<String, Set<Rel>> entry : perms.entrySet())
 		{
 			String key = entry.getKey();
@@ -867,7 +853,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator, Nam
 	
 	public void setPermittedRelations(MPerm perm, Rel... rels)
 	{
-		Set<Rel> temp = new HashSet<Rel>();
+		Set<Rel> temp = new HashSet<>();
 		temp.addAll(Arrays.asList(rels));
 		this.setPermittedRelations(perm, temp);
 	}
@@ -942,12 +928,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator, Nam
 			ret += mplayer.getPower();
 		}
 		
-		double factionPowerMax = MConf.get().factionPowerMax;
-		if (factionPowerMax > 0 && ret > factionPowerMax)
-		{
-			ret = factionPowerMax;
-		}
-		
+		ret = this.limitWithPowerMax(ret);
 		ret += this.getPowerBoost();
 		
 		return ret;
@@ -963,15 +944,18 @@ public class Faction extends Entity<Faction> implements EconomyParticipator, Nam
 			ret += mplayer.getPowerMax();
 		}
 		
-		double factionPowerMax = MConf.get().factionPowerMax;
-		if (factionPowerMax > 0 && ret > factionPowerMax)
-		{
-			ret = factionPowerMax;
-		}
-		
+		ret = this.limitWithPowerMax(ret);
 		ret += this.getPowerBoost();
 		
 		return ret;
+	}
+	
+	private double limitWithPowerMax(double power)
+	{
+		// NOTE: 0.0 powerMax means there is no max power
+		double powerMax = MConf.get().factionPowerMax;
+		
+		return powerMax <= 0 || power < powerMax ? power : powerMax;
 	}
 	
 	public int getPowerRounded()
@@ -1011,44 +995,9 @@ public class Faction extends Entity<Faction> implements EconomyParticipator, Nam
 	// FOREIGN KEY: MPLAYER
 	// -------------------------------------------- //
 	
-	protected transient Set<MPlayer> mplayers = new MassiveSet<MPlayer>();
-	
-	public void reindexMPlayers()
-	{
-		this.mplayers.clear();
-		
-		String factionId = this.getId();
-		if (factionId == null) return;
-		
-		for (MPlayer mplayer : MPlayerColl.get().getAll())
-		{
-			if (!MUtil.equals(factionId, mplayer.getFactionId())) continue;
-			this.mplayers.add(mplayer);
-		}
-	}
-	
-	// TODO: Even though this check method removeds the invalid entries it's not a true solution.
-	// TODO: Find the bug causing non-attached MPlayers to be present in the index.
-	private void checkMPlayerIndex()
-	{
-		Iterator<MPlayer> iter = this.mplayers.iterator();
-		while (iter.hasNext())
-		{
-			MPlayer mplayer = iter.next();
-			if (!mplayer.attached())
-			{
-				String msg = Txt.parse("<rose>WARN: <i>Faction <h>%s <i>aka <h>%s <i>had unattached mplayer in index:", this.getName(), this.getId());
-				Factions.get().log(msg);
-				Factions.get().log(Factions.get().getGson().toJson(mplayer));
-				iter.remove();
-			}
-		}
-	}
-	
 	public List<MPlayer> getMPlayers()
 	{
-		this.checkMPlayerIndex();
-		return new ArrayList<MPlayer>(this.mplayers);
+		return new MassiveList<>(FactionsIndex.get().getMPlayers(this));
 	}
 	
 	public List<MPlayer> getMPlayersWhere(Predicate<? super MPlayer> predicate)
@@ -1073,7 +1022,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator, Nam
 	
 	public List<MPlayer> getMPlayersWhereRole(Rel role)
 	{
-		return this.getMPlayersWhere(PredicateRole.get(role));
+		return this.getMPlayersWhere(PredicateMPlayerRole.get(role));
 	}
 	
 	public MPlayer getLeader()
@@ -1086,7 +1035,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator, Nam
 	public List<CommandSender> getOnlineCommandSenders()
 	{
 		// Create Ret
-		List<CommandSender> ret = new ArrayList<CommandSender>();
+		List<CommandSender> ret = new MassiveList<>();
 		
 		// Fill Ret
 		for (CommandSender sender : IdUtil.getLocalSenders())
@@ -1106,7 +1055,7 @@ public class Faction extends Entity<Faction> implements EconomyParticipator, Nam
 	public List<Player> getOnlinePlayers()
 	{
 		// Create Ret
-		List<Player> ret = new ArrayList<Player>();
+		List<Player> ret = new MassiveList<>();
 		
 		// Fill Ret
 		for (Player player : MUtil.getOnlinePlayers())
@@ -1224,34 +1173,34 @@ public class Faction extends Entity<Faction> implements EconomyParticipator, Nam
 	
 	public boolean sendMessage(Object message)
 	{
-		return MixinMessage.get().messagePredicate(new FactionEqualsPredicate(this), message);
+		return MixinMessage.get().messagePredicate(new PredicateCommandSenderFaction(this), message);
 	}
 	
 	public boolean sendMessage(Object... messages)
 	{
-		return MixinMessage.get().messagePredicate(new FactionEqualsPredicate(this), messages);
+		return MixinMessage.get().messagePredicate(new PredicateCommandSenderFaction(this), messages);
 	}
 	
 	public boolean sendMessage(Collection<Object> messages)
 	{
-		return MixinMessage.get().messagePredicate(new FactionEqualsPredicate(this), messages);
+		return MixinMessage.get().messagePredicate(new PredicateCommandSenderFaction(this), messages);
 	}
 	
 	// CONVENIENCE MSG
 	
 	public boolean msg(String msg)
 	{
-		return MixinMessage.get().msgPredicate(new FactionEqualsPredicate(this), msg);
+		return MixinMessage.get().msgPredicate(new PredicateCommandSenderFaction(this), msg);
 	}
 	
 	public boolean msg(String msg, Object... args)
 	{
-		return MixinMessage.get().msgPredicate(new FactionEqualsPredicate(this), msg, args);
+		return MixinMessage.get().msgPredicate(new PredicateCommandSenderFaction(this), msg, args);
 	}
 	
 	public boolean msg(Collection<String> msgs)
 	{
-		return MixinMessage.get().msgPredicate(new FactionEqualsPredicate(this), msgs);
+		return MixinMessage.get().msgPredicate(new PredicateCommandSenderFaction(this), msgs);
 	}
 	
 }

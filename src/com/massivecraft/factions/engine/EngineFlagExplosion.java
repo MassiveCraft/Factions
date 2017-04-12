@@ -1,11 +1,10 @@
 package com.massivecraft.factions.engine;
 
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
-
+import com.massivecraft.factions.entity.BoardColl;
+import com.massivecraft.factions.entity.Faction;
+import com.massivecraft.factions.util.EnumerationUtil;
+import com.massivecraft.massivecore.Engine;
+import com.massivecraft.massivecore.ps.PS;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -19,11 +18,11 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.hanging.HangingBreakEvent;
 import org.bukkit.event.hanging.HangingBreakEvent.RemoveCause;
 
-import com.massivecraft.factions.entity.BoardColl;
-import com.massivecraft.factions.entity.Faction;
-import com.massivecraft.factions.entity.MConf;
-import com.massivecraft.massivecore.Engine;
-import com.massivecraft.massivecore.ps.PS;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 public class EngineFlagExplosion extends Engine
 {
@@ -62,7 +61,7 @@ public class EngineFlagExplosion extends Engine
 		if ( ! DAMAGE_CAUSE_EXPLOSIONS.contains(event.getCause())) return;
 
 		// ... an entity that is modified on damage ...
-		if ( ! MConf.get().entityTypesEditOnDamage.contains(event.getEntityType())) return;
+		if ( ! EnumerationUtil.isEntityTypeEditOnDamage(event.getEntityType())) return;
 
 		// ... and the faction has explosions disabled ...
 		if (BoardColl.get().getFactionAt(PS.valueOf(event.getEntity())).isExplosionsAllowed()) return;
@@ -80,7 +79,7 @@ public class EngineFlagExplosion extends Engine
 		// Current allowed
 		Boolean allowed = true;
 		// Caching to speed things up.
-		Map<Faction, Boolean> faction2allowed = new HashMap<Faction, Boolean>();
+		Map<Faction, Boolean> faction2allowed = new HashMap<>();
 
 		// If an explosion occurs at a location ...
 		Location location = event.getLocation();

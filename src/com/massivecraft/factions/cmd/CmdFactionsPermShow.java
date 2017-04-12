@@ -1,9 +1,5 @@
 package com.massivecraft.factions.cmd;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 import com.massivecraft.factions.cmd.type.TypeFaction;
 import com.massivecraft.factions.cmd.type.TypeMPerm;
 import com.massivecraft.factions.entity.Faction;
@@ -11,6 +7,10 @@ import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.command.type.container.TypeSet;
 import com.massivecraft.massivecore.util.Txt;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public class CmdFactionsPermShow extends FactionsCommand
 {

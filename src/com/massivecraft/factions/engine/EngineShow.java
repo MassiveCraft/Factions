@@ -13,7 +13,7 @@ import com.massivecraft.massivecore.command.type.container.TypeSet;
 import com.massivecraft.massivecore.pager.Pager;
 import com.massivecraft.massivecore.pager.Stringifier;
 import com.massivecraft.massivecore.util.Txt;
-import com.massivecraft.factions.PlayerRoleComparator;
+import com.massivecraft.factions.comparator.ComparatorMPlayerRole;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.entity.MFlag;
@@ -106,7 +106,7 @@ public class EngineShow extends Engine
 
 			// FLAGS
 			// We display all editable and non default ones. The rest we skip.
-			List<String> flagDescs = new LinkedList<String>();
+			List<String> flagDescs = new LinkedList<>();
 			for (Entry<MFlag, Boolean> entry : faction.getFlags().entrySet())
 			{
 				final MFlag mflag = entry.getKey();
@@ -137,7 +137,7 @@ public class EngineShow extends Engine
 			if (Econ.isEnabled())
 			{
 				// LANDVALUES
-				List<String> landvalueLines = new LinkedList<String>();
+				List<String> landvalueLines = new LinkedList<>();
 				long landCount = faction.getLandCount();
 				for (EventFactionsChunkChangeType type : EventFactionsChunkChangeType.values())
 				{
@@ -171,13 +171,13 @@ public class EngineShow extends Engine
 		}
 
 		// FOLLOWERS
-		List<String> followerLines = new ArrayList<String>();
+		List<String> followerLines = new ArrayList<>();
 
-		List<String> followerNamesOnline = new ArrayList<String>();
-		List<String> followerNamesOffline = new ArrayList<String>();
+		List<String> followerNamesOnline = new ArrayList<>();
+		List<String> followerNamesOffline = new ArrayList<>();
 
 		List<MPlayer> followers = faction.getMPlayers();
-		Collections.sort(followers, PlayerRoleComparator.get());
+		Collections.sort(followers, ComparatorMPlayerRole.get());
 		for (MPlayer follower : followers)
 		{
 			if (follower.isOnline(sender))
@@ -268,7 +268,7 @@ public class EngineShow extends Engine
 
 	public static List<String> table(List<String> strings, int cols)
 	{
-		List<String> ret = new ArrayList<String>();
+		List<String> ret = new ArrayList<>();
 
 		StringBuilder row = new StringBuilder();
 		int count = 0;

@@ -1,22 +1,10 @@
 package com.massivecraft.factions.entity;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.entity.EntityType;
-import org.bukkit.event.EventPriority;
-
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.engine.EngineChat;
 import com.massivecraft.factions.event.EventFactionsChunkChangeType;
-import com.massivecraft.massivecore.collections.BackstringEnumSet;
+import com.massivecraft.massivecore.collections.BackstringSet;
 import com.massivecraft.massivecore.collections.WorldExceptionSet;
 import com.massivecraft.massivecore.command.editor.annotation.EditorName;
 import com.massivecraft.massivecore.command.editor.annotation.EditorType;
@@ -25,6 +13,17 @@ import com.massivecraft.massivecore.command.type.TypeMillisDiff;
 import com.massivecraft.massivecore.store.Entity;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.TimeUnit;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.entity.EntityType;
+import org.bukkit.event.EventPriority;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 @EditorName("config")
 public class MConf extends Entity<MConf>
@@ -45,13 +44,23 @@ public class MConf extends Entity<MConf>
 	{
 		super.load(that);
 		
-		if (!Factions.get().isDatabaseInitialized()) return this;
-		
-		EngineChat.get().setActive(false);
-		EngineChat.get().setActive(true);
+		// Reactivate EngineChat if currently active.
+		// This way some event listeners are registered with the correct priority based on the config.
+		EngineChat engine = EngineChat.get();
+		if (engine.isActive())
+		{
+			engine.setActive(false);
+			engine.setActive(true);
+		}
 		
 		return this;
 	}
+	
+	// -------------------------------------------- //
+	// VERSION
+	// -------------------------------------------- //
+	
+	public int version = 1;
 	
 	// -------------------------------------------- //
 	// COMMAND ALIASES
@@ -80,7 +89,7 @@ public class MConf extends Entity<MConf>
 	// Add player names here who should bypass all protections.
 	// Should /not/ be used for admins. There is "/f adminmode" for that.
 	// This is for other plugins/mods that use a fake player to take actions, which shouldn't be subject to our protections.
-	public Set<String> playersWhoBypassAllProtection = new LinkedHashSet<String>();
+	public Set<String> playersWhoBypassAllProtection = new LinkedHashSet<>();
 	
 	// -------------------------------------------- //
 	// TASKS
@@ -116,19 +125,6 @@ public class MConf extends Entity<MConf>
 		4 * TimeUnit.MILLIS_PER_WEEK, 10 * TimeUnit.MILLIS_PER_DAY, // +10 days after 4 weeks
 		2 * TimeUnit.MILLIS_PER_WEEK,  5 * TimeUnit.MILLIS_PER_DAY  // +5 days after 2 weeks
 	);
-	
-	// -------------------------------------------- //
-	// SPECIAL FACTION IDS
-	// -------------------------------------------- //
-	// These are a deprecated remnant from the universe system.
-	// We needed these to understand the difference between wilderness in different universes.
-	// Now that we are back to one universe only, we can have static names like simply "none", "safezone" and "warzone".
-	// Previously we set them to UUID.randomUUID().toString() but now we set them to null.
-	// If the value is set we use it to update map entries and then set it to null really quick.
-	
-	public String factionIdNone = null;
-	public String factionIdSafezone = null;
-	public String factionIdWarzone = null;
 	
 	// -------------------------------------------- //
 	// DEFAULTS
@@ -342,7 +338,7 @@ public class MConf extends Entity<MConf>
 	
 	// A list of commands to block for members of permanent factions.
 	// I don't really understand the user case for this option.
-	public List<String> denyCommandsPermanentFactionMember = new ArrayList<String>();
+	public List<String> denyCommandsPermanentFactionMember = new ArrayList<>();
 
 	// Lists of commands to deny depending on your relation to the current faction territory.
 	// You may for example not type /home (might be the plugin Essentials) in the territory of your enemies.
@@ -573,186 +569,45 @@ public class MConf extends Entity<MConf>
 	// -------------------------------------------- //
 	// ENUMERATIONS
 	// -------------------------------------------- //
-	
-	// These values are fine for most standard bukkit/spigot servers.
-	// If you however are using Forge with mods that add new container types you might want to add them here.
+	// In this configuration section you can add support for Forge mods that add new Materials and EntityTypes.
 	// This way they can be protected in Faction territory.
+	// Use the "UPPER_CASE_NAME" for the Material or EntityType in question.
+	// If you are running a regular Spigot server you don't have to edit this section.
+	// In fact all of these sets can be empty on regular Spigot servers without any risk.
 	
 	// Interacting with these materials when they are already placed in the terrain results in an edit.
-
-	public BackstringEnumSet<Material> materialsTrustCantBreak = new BackstringEnumSet<Material>(Material.class,
-		"OBSIDIAN", // Minecraft 1.?
-		"MOB_SPAWNER", // Minecraft 1.?
-		"TNT", // Minecraft 1.5
-		"MONSTER_EGG", // Minecraft 1.5
-		"FLINT_AND_STEEL", // Minecraft 1.5
-		"HOPPER", // Minecraft 1.?
-		"DISPENSER" // Minecraft 1.?
-	);
+	public BackstringSet<Material> materialsEditOnInteract = new BackstringSet<>(Material.class);
 	
-	public BackstringEnumSet<Material> materialsTrustCantPlace = new BackstringEnumSet<Material>(Material.class,
-		"OBSIDIAN", // Minecraft 1.?
-		"TNT", // Minecraft 1.5
-		"MONSTER_EGG", // Minecraft 1.5
-		"FLINT_AND_STEEL", // Minecraft 1.5
-		"DISPENSER" // Minecraft 1.?
-	);
+	// Interacting with these materials when they are already placed in the terrain results in an edit.
+	public BackstringSet<Material> materialsTrustedCantBreak = new BackstringSet<>(Material.class);
 	
-	public BackstringEnumSet<Material> materialsEditOnInteract = new BackstringEnumSet<Material>(Material.class,
-		"DIODE_BLOCK_OFF", // Minecraft 1.?
-		"DIODE_BLOCK_ON", // Minecraft 1.?
-		"NOTE_BLOCK", // Minecraft 1.?
-		"CAULDRON", // Minecraft 1.?
-		"SOIL", // Minecraft 1.?
-		"DAYLIGHT_DETECTOR", // Minecraft 1.5
-		"DAYLIGHT_DETECTOR_INVERTED", // Minecraft 1.5
-		"REDSTONE_COMPARATOR_OFF", // Minecraft 1.?
-		"REDSTONE_COMPARATOR_ON" // Minecraft 1.?
-	);
+	// Interacting with these materials when they are already placed in the terrain results in an edit.
+	public BackstringSet<Material> materialsTrustedCantPlace = new BackstringSet<>(Material.class);
+	
 	// Interacting with the the terrain holding this item in hand results in an edit.
 	// There's no need to add all block materials here. Only special items other than blocks.
-	public BackstringEnumSet<Material> materialsEditTools = new BackstringEnumSet<Material>(Material.class,
-		"FIREBALL", // Minecraft 1.?
-		"FLINT_AND_STEEL", // Minecraft 1.?
-		"BUCKET", // Minecraft 1.?
-		"WATER_BUCKET", // Minecraft 1.?
-		"LAVA_BUCKET", // Minecraft 1.?
-		"ARMOR_STAND", // Minecraft 1.8
-		"END_CRYSTAL" // Minecraft 1.10
-	);
-	
-	// The duplication bug found in Spigot 1.8 protocol patch
-	// https://github.com/MassiveCraft/Factions/issues/693
-	public BackstringEnumSet<Material> materialsEditToolsDupeBug = new BackstringEnumSet<Material>(Material.class,
-		"CHEST", // Minecraft 1.?
-		"SIGN_POST", // Minecraft 1.?
-		"TRAPPED_CHEST", // Minecraft 1.?
-		"SIGN", // Minecraft 1.?
-		"WOOD_DOOR", // Minecraft 1.?
-		"IRON_DOOR" // Minecraft 1.?
-	);
+	public BackstringSet<Material> materialsEditTools = new BackstringSet<>(Material.class);
 	
 	// Interacting with these materials placed in the terrain results in door toggling.
-	public BackstringEnumSet<Material> materialsDoor = new BackstringEnumSet<Material>(Material.class,
-		"WOODEN_DOOR", // Minecraft 1.?
-		"ACACIA_DOOR", // Minecraft 1.8
-		"BIRCH_DOOR", // Minecraft 1.8
-		"DARK_OAK_DOOR", // Minecraft 1.8
-		"JUNGLE_DOOR", // Minecraft 1.8
-		"SPRUCE_DOOR", // Minecraft 1.8
-		"TRAP_DOOR", // Minecraft 1.?
-		"FENCE_GATE", // Minecraft 1.?
-		"ACACIA_FENCE_GATE", // Minecraft 1.8
-		"BIRCH_FENCE_GATE", // Minecraft 1.8
-		"DARK_OAK_FENCE_GATE", // Minecraft 1.8
-		"JUNGLE_FENCE_GATE", // Minecraft 1.8
-		"SPRUCE_FENCE_GATE" // Minecraft 1.8
-	);
+	public BackstringSet<Material> materialsDoor = new BackstringSet<>(Material.class);
 	
 	// Interacting with these materials placed in the terrain results in opening a container.
-	public BackstringEnumSet<Material> materialsContainer = new BackstringEnumSet<Material>(Material.class,
-		"DISPENSER", // Minecraft 1.?
-		"CHEST", // Minecraft 1.?
-		"FURNACE", // Minecraft 1.?
-		"BURNING_FURNACE", // Minecraft 1.?
-		"JUKEBOX", // Minecraft 1.?
-		"BREWING_STAND", // Minecraft 1.?
-		"ENCHANTMENT_TABLE", // Minecraft 1.?
-		"ANVIL", // Minecraft 1.?
-		"BEACON", // Minecraft 1.?
-		"TRAPPED_CHEST", // Minecraft 1.?
-		"HOPPER", // Minecraft 1.?
-		"DROPPER", // Minecraft 1.?
-		
-		// The various shulker boxes, they had to make each one a different material -.-
-		"BLACK_SHULKER_BOX", // Minecraft 1.11
-		"BLUE_SHULKER_BOX", // Minecraft 1.11
-		"BROWN_SHULKER_BOX", // Minecraft 1.11
-		"CYAN_SHULKER_BOX", // Minecraft 1.11
-		"GRAY_SHULKER_BOX", // Minecraft 1.11
-		"GREEN_SHULKER_BOX", // Minecraft 1.11
-		"LIGHT_BLUE_SHULKER_BOX", // Minecraft 1.11
-		"LIME_SHULKER_BOX", // Minecraft 1.11
-		"MAGENTA_SHULKER_BOX", // Minecraft 1.11
-		"ORANGE_SHULKER_BOX", // Minecraft 1.11
-		"PINK_SHULKER_BOX", // Minecraft 1.11
-		"PURPLE_SHULKER_BOX", // Minecraft 1.11
-		"RED_SHULKER_BOX", // Minecraft 1.11
-		"SILVER_SHULKER_BOX", // Minecraft 1.11
-		"WHITE_SHULKER_BOX", // Minecraft 1.11
-		"YELLOW_SHULKER_BOX" // Minecraft 1.11
-	);
+	public BackstringSet<Material> materialsContainer = new BackstringSet<>(Material.class);
 	
 	// Interacting with these entities results in an edit.
-	public BackstringEnumSet<EntityType> entityTypesEditOnInteract = new BackstringEnumSet<EntityType>(EntityType.class,
-		"ITEM_FRAME", // Minecraft 1.?
-		"ARMOR_STAND" // Minecraft 1.8
-	);
+	public BackstringSet<EntityType> entityTypesEditOnInteract = new BackstringSet<>(EntityType.class);
 	
 	// Damaging these entities results in an edit.
-	public BackstringEnumSet<EntityType> entityTypesEditOnDamage = new BackstringEnumSet<EntityType>(EntityType.class,
-		"ITEM_FRAME", // Minecraft 1.?
-		"ARMOR_STAND", // Minecraft 1.8
-		"ENDER_CRYSTAL" // Minecraft 1.10
-	);
+	public BackstringSet<EntityType> entityTypesEditOnDamage = new BackstringSet<>(EntityType.class);
 	
 	// Interacting with these entities results in opening a container.
-	public BackstringEnumSet<EntityType> entityTypesContainer = new BackstringEnumSet<EntityType>(EntityType.class,
-		"MINECART_CHEST", // Minecraft 1.?
-		"MINECART_HOPPER" // Minecraft 1.?
-	);
+	public BackstringSet<EntityType> entityTypesContainer = new BackstringSet<>(EntityType.class);
 	
 	// The complete list of entities considered to be monsters.
-	public BackstringEnumSet<EntityType> entityTypesMonsters = new BackstringEnumSet<EntityType>(EntityType.class,
-		"BLAZE", // Minecraft 1.?
-		"CAVE_SPIDER", // Minecraft 1.?
-		"CREEPER", // Minecraft 1.?
-		"ELDER_GUARDIAN", // minecraft 1.11
-		"ENDERMAN", // Minecraft 1.?
-		"ENDERMITE", // Minecraft 1.8
-		"ENDER_DRAGON", // Minecraft 1.?
-		"EVOKER", // Minecraft 1.11
-		"GUARDIAN", // Minecraft 1.8
-		"GHAST", // Minecraft 1.?
-		"GIANT", // Minecraft 1.?
-		"HUSK", // Minecraft 1.11
-		"MAGMA_CUBE", // Minecraft 1.?
-		"PIG_ZOMBIE", // Minecraft 1.?
-		"POLAR_BEAR", // Minecraft 1.10
-		"SILVERFISH", // Minecraft 1.?
-		"SHULKER", // Minecraft 1.10
-		"SKELETON", // Minecraft 1.?
-		"SLIME", // Minecraft 1.?
-		"SPIDER", // Minecraft 1.?
-		"STRAY", // Minecraft 1.11
-		"VINDICATOR", // Minecraft 1.11
-		"VEX", // Minecraft 1.11
-		"WITCH", // Minecraft 1.?
-		"WITHER", // Minecraft 1.?
-		"WITHER_SKELETON", // Minecraft 1.11
-		"ZOMBIE", // Minecraft 1.?
-		"ZOMBIE_VILLAGER" // Minecraft 1.11
-	);
+	public BackstringSet<EntityType> entityTypesMonsters = new BackstringSet<>(EntityType.class);
 	
 	// List of entities considered to be animals.
-	public BackstringEnumSet<EntityType> entityTypesAnimals = new BackstringEnumSet<EntityType>(EntityType.class,
-		"BAT", // Minecraft 1.?
-		"CHICKEN", // Minecraft 1.?
-		"COW", // Minecraft 1.?
-		"DONKEY", // Minecraft 1.11
-		"HORSE", // Minecraft 1.?
-		"LLAMA", // Minecraft 1.11
-		"MULE", // Minecraft 1.11
-		"MUSHROOM_COW", // Minecraft 1.?
-		"OCELOT", // Minecraft 1.?
-		"PIG", // Minecraft 1.?
-		"RABBIT", // Minecraft 1.?
-		"SHEEP", // Minecraft 1.?
-		"SKELETON_HORSE", // Minecraft 1.11
-		"SQUID", // Minecraft 1.?
-		"WOLF", // Minecraft 1.?
-		"ZOMBIE_HORSE" // Minecraft 1.11
-	);
+	public BackstringSet<EntityType> entityTypesAnimals = new BackstringSet<>(EntityType.class);
 	
 	// -------------------------------------------- //
 	// INTEGRATION: HeroChat
@@ -774,7 +629,7 @@ public class MConf extends Entity<MConf>
 	public boolean herochatFactionIsShortcutAllowed = false;
 	public boolean herochatFactionCrossWorld = true;
 	public boolean herochatFactionMuted = false;
-	public Set<String> herochatFactionWorlds = new HashSet<String>();
+	public Set<String> herochatFactionWorlds = new HashSet<>();
 	
 	// The Allies Channel
 	public String herochatAlliesName = "Allies";
@@ -785,7 +640,7 @@ public class MConf extends Entity<MConf>
 	public boolean herochatAlliesIsShortcutAllowed = false;
 	public boolean herochatAlliesCrossWorld = true;
 	public boolean herochatAlliesMuted = false;
-	public Set<String> herochatAlliesWorlds = new HashSet<String>();
+	public Set<String> herochatAlliesWorlds = new HashSet<>();
 	
 	// -------------------------------------------- //
 	// INTEGRATION: LWC

@@ -1,11 +1,10 @@
 package com.massivecraft.factions.event;
 
+import com.massivecraft.factions.engine.DisallowCause;
+import com.massivecraft.factions.entity.MPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-
-import com.massivecraft.factions.engine.DisallowCause;
-import com.massivecraft.factions.entity.MPlayer;
 
 /**
  * This event is fired when PVP is disallowed between players due to any rules in Factions.

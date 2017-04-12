@@ -1,10 +1,9 @@
 package com.massivecraft.factions.chat;
 
-import java.util.Map;
-
+import com.massivecraft.massivecore.collections.MassiveMap;
 import org.bukkit.command.CommandSender;
 
-import com.massivecraft.massivecore.collections.MassiveMap;
+import java.util.Map;
 
 public abstract class ChatModifier extends ChatActive
 {

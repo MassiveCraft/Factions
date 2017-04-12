@@ -1,18 +1,18 @@
-package com.massivecraft.factions;
-
-import java.util.Comparator;
+package com.massivecraft.factions.comparator;
 
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.massivecore.Named;
 
-public class PlayerInactivityComparator implements Comparator<MPlayer>, Named
+import java.util.Comparator;
+
+public class ComparatorMPlayerPower implements Comparator<MPlayer>, Named
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static PlayerInactivityComparator i = new PlayerInactivityComparator();
-	public static PlayerInactivityComparator get() { return i; }
+	private static ComparatorMPlayerPower i = new ComparatorMPlayerPower();
+	public static ComparatorMPlayerPower get() { return i; }
 	
 	// -------------------------------------------- //
 	// OVERRIDE: NAMED
@@ -21,7 +21,7 @@ public class PlayerInactivityComparator implements Comparator<MPlayer>, Named
 	@Override
 	public String getName()
 	{
-		return "Time";
+		return "Power";
 	}
 	
 	// -------------------------------------------- //
@@ -31,24 +31,25 @@ public class PlayerInactivityComparator implements Comparator<MPlayer>, Named
 	@Override
 	public int compare(MPlayer m1, MPlayer m2)
 	{
+		int ret = 0;
+		
 		// Null
 		if (m1 == null && m2 == null) return 0;
 		else if (m1 == null) return -1;
 		else if (m2 == null) return +1;
 
-		// Online
-		boolean o1 = m1.isOnline();
-		boolean o2 = m2.isOnline();
+		// Power
+		int p1 = m1.getPowerRounded();
+		int p2 = m2.getPowerRounded();
+		ret = p1 - p2;
+		if (ret != 0) return ret;
 		
-		if (o1 && o2) return 0;
-		else if (o1) return -1;
-		else if (o2) return +1;
-		
-		// Inactivity Time
-		long r1 = m1.getLastActivityMillis();
-		long r2 = m2.getLastActivityMillis();
-		
-		return (int) (r1 - r2);
+		// MaxPower
+		int max1 = m1.getPowerMaxRounded();
+		int max2 = m2.getPowerMaxRounded();
+		ret = max1 - max2;
+			
+		return ret;
 	}
-	
+
 }
