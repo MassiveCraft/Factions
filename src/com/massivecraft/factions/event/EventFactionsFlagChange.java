@@ -1,10 +1,9 @@
 package com.massivecraft.factions.event;
 
-import org.bukkit.command.CommandSender;
-import org.bukkit.event.HandlerList;
-
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MFlag;
+import org.bukkit.command.CommandSender;
+import org.bukkit.event.HandlerList;
 
 public class EventFactionsFlagChange extends EventFactionsAbstractSender
 {	

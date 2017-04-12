@@ -1,15 +1,14 @@
-package com.massivecraft.factions;
-
-import java.lang.ref.WeakReference;
-import java.util.Comparator;
-
-import org.bukkit.command.CommandSender;
+package com.massivecraft.factions.comparator;
 
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.massivecore.comparator.ComparatorComparable;
 import com.massivecraft.massivecore.util.IdUtil;
+import org.bukkit.command.CommandSender;
 
-public class FactionListComparator implements Comparator<Faction>
+import java.lang.ref.WeakReference;
+import java.util.Comparator;
+
+public class ComparatorFactionList implements Comparator<Faction>
 {
 	// -------------------------------------------- //
 	// FIELDS
@@ -22,8 +21,8 @@ public class FactionListComparator implements Comparator<Faction>
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 
-	public static FactionListComparator get(Object watcherObject) { return new FactionListComparator(watcherObject); }
-	public FactionListComparator(Object watcherObject)
+	public static ComparatorFactionList get(Object watcherObject) { return new ComparatorFactionList(watcherObject); }
+	public ComparatorFactionList(Object watcherObject)
 	{
 		this.watcher = new WeakReference<>(IdUtil.getSender(watcherObject));
 	}

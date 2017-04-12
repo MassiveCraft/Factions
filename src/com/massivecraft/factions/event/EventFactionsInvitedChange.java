@@ -1,10 +1,9 @@
 package com.massivecraft.factions.event;
 
+import com.massivecraft.factions.entity.Faction;
+import com.massivecraft.factions.entity.MPlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.HandlerList;
-
-import com.massivecraft.factions.entity.MPlayer;
-import com.massivecraft.factions.entity.Faction;
 
 public class EventFactionsInvitedChange extends EventFactionsAbstractSender
 {

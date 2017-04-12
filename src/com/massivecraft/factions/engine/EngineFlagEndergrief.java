@@ -1,16 +1,15 @@
 package com.massivecraft.factions.engine;
 
-import org.bukkit.entity.Enderman;
-import org.bukkit.entity.Entity;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.entity.EntityChangeBlockEvent;
-
 import com.massivecraft.factions.entity.BoardColl;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MFlag;
 import com.massivecraft.massivecore.Engine;
 import com.massivecraft.massivecore.ps.PS;
+import org.bukkit.entity.Enderman;
+import org.bukkit.entity.Entity;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.entity.EntityChangeBlockEvent;
 
 public class EngineFlagEndergrief extends Engine
 {

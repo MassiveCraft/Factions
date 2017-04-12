@@ -1,12 +1,12 @@
 package com.massivecraft.factions.chat;
 
+import org.bukkit.command.CommandSender;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.bukkit.command.CommandSender;
 
 /**
  * The ChatFormater is a system offered by factions for tag parsing.
@@ -55,7 +55,7 @@ public class ChatFormatter
 			String[] parts = submatch.split(ESC_SEPARATOR);
 
 			// The modifier ids are something like ["lp", "rp"] and tagId something like "sender"
-			List<String> modifierIds = new ArrayList<String>(Arrays.asList(parts));
+			List<String> modifierIds = new ArrayList<>(Arrays.asList(parts));
 			String tagId = modifierIds.remove(0);
 			
 			// Fetch tag for the id

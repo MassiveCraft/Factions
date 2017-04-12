@@ -1,11 +1,5 @@
 package com.massivecraft.factions.cmd;
 
-import java.util.List;
-import java.util.Map.Entry;
-import java.util.Set;
-
-import org.bukkit.Bukkit;
-
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.cmd.type.TypeFaction;
@@ -20,6 +14,11 @@ import com.massivecraft.massivecore.command.type.container.TypeSet;
 import com.massivecraft.massivecore.pager.Pager;
 import com.massivecraft.massivecore.pager.Stringifier;
 import com.massivecraft.massivecore.util.Txt;
+import org.bukkit.Bukkit;
+
+import java.util.List;
+import java.util.Map.Entry;
+import java.util.Set;
 
 public class CmdFactionsRelationList extends FactionsCommand
 {
@@ -27,7 +26,7 @@ public class CmdFactionsRelationList extends FactionsCommand
 	// COSTANTS
 	// -------------------------------------------- //
 
-	public static final Set<Rel> RELEVANT_RELATIONS = new MassiveSet<Rel>(Rel.ENEMY, Rel.TRUCE, Rel.ALLY, Rel.SISTER);
+	public static final Set<Rel> RELEVANT_RELATIONS = new MassiveSet<>(Rel.ENEMY, Rel.TRUCE, Rel.ALLY, Rel.SISTER);
 	public static final String SEPERATOR = Txt.parse("<silver>: ");
 
 	// -------------------------------------------- //
@@ -55,7 +54,7 @@ public class CmdFactionsRelationList extends FactionsCommand
 		final Set<Rel> relations = this.readArg(RELEVANT_RELATIONS);
 
 		// Pager Create
-		final Pager<String> pager = new Pager<String>(this, "", page, new Stringifier<String>()
+		final Pager<String> pager = new Pager<>(this, "", page, new Stringifier<String>()
 		{
 			@Override
 			public String toString(String item, int index)

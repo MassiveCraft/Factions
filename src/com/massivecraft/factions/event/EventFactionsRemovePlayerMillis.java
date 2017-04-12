@@ -1,15 +1,14 @@
 package com.massivecraft.factions.event;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-
-import org.bukkit.event.HandlerList;
-
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.massivecore.event.EventMassiveCore;
+import org.bukkit.event.HandlerList;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 public class EventFactionsRemovePlayerMillis extends EventMassiveCore
 {
@@ -32,7 +31,7 @@ public class EventFactionsRemovePlayerMillis extends EventMassiveCore
 	public long getMillis() { return this.millis; }
 	public void setMillis(long millis) { this.millis = millis; }
 	
-	private Map<String, Long> causeMillis = new LinkedHashMap<String, Long>();
+	private Map<String, Long> causeMillis = new LinkedHashMap<>();
 	public Map<String, Long> getCauseMillis() { return this.causeMillis; }
 	
 	// -------------------------------------------- //

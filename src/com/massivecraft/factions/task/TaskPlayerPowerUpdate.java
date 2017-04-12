@@ -1,7 +1,5 @@
 package com.massivecraft.factions.task;
 
-import org.bukkit.entity.Player;
-
 import com.massivecraft.factions.entity.BoardColl;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MConf;
@@ -13,6 +11,7 @@ import com.massivecraft.massivecore.ModuloRepeatTask;
 import com.massivecraft.massivecore.ps.PS;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.TimeUnit;
+import org.bukkit.entity.Player;
 
 public class TaskPlayerPowerUpdate extends ModuloRepeatTask
 {

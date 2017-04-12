@@ -1,8 +1,5 @@
 package com.massivecraft.factions.cmd;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
@@ -19,6 +16,9 @@ import com.massivecraft.factions.event.EventFactionsMembershipChange.MembershipC
 import com.massivecraft.factions.event.EventFactionsRankChange;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.util.Txt;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class CmdFactionsRank extends FactionsCommand
 {
@@ -284,7 +284,7 @@ public class CmdFactionsRank extends FactionsCommand
 		endFaction.setInvited(target, false);
 
 		// Create recipients
-		Set<MPlayer> recipients = new HashSet<MPlayer>();
+		Set<MPlayer> recipients = new HashSet<>();
 		recipients.addAll(targetFaction.getMPlayersWhereOnline(true));
 		recipients.addAll(endFaction.getMPlayersWhereOnline(true));
 		recipients.add(msender);
@@ -369,7 +369,7 @@ public class CmdFactionsRank extends FactionsCommand
 		}
 
 		// Create recipients
-		Set<MPlayer> recipients = new HashSet<MPlayer>();
+		Set<MPlayer> recipients = new HashSet<>();
 		recipients.addAll(targetFaction.getMPlayers());
 		recipients.add(msender);
 		

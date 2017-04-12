@@ -1,12 +1,11 @@
 package com.massivecraft.factions.cmd.req;
 
-import org.bukkit.command.CommandSender;
-
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.massivecore.command.MassiveCommand;
 import com.massivecraft.massivecore.command.requirement.RequirementAbstract;
 import com.massivecraft.massivecore.util.Txt;
+import org.bukkit.command.CommandSender;
 
 public class ReqBankCommandsEnabled extends RequirementAbstract
 {

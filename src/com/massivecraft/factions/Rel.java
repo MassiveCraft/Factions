@@ -1,14 +1,13 @@
 package com.massivecraft.factions;
 
-import java.util.Collections;
-import java.util.Set;
-
-import org.bukkit.ChatColor;
-
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.massivecore.Colorized;
 import com.massivecraft.massivecore.Named;
 import com.massivecraft.massivecore.collections.MassiveSet;
+import org.bukkit.ChatColor;
+
+import java.util.Collections;
+import java.util.Set;
 
 public enum Rel implements Colorized, Named
 {
@@ -101,7 +100,7 @@ public enum Rel implements Colorized, Named
 		this.descPlayerMany = descPlayerMany;
 		this.descFactionOne = descFactionOne;
 		this.descFactionMany = descFactionMany;
-		this.names = Collections.unmodifiableSet(new MassiveSet<String>(names));
+		this.names = Collections.unmodifiableSet(new MassiveSet<>(names));
 	}
 	
 	// -------------------------------------------- //

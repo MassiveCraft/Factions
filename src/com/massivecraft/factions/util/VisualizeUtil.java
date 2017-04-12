@@ -1,5 +1,9 @@
 package com.massivecraft.factions.util;
 
+import org.bukkit.Location;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -8,17 +12,13 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.UUID;
 
-import org.bukkit.Location;
-import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
-
 // TODO: Only send blocks in visual range
 // TODO: Only send blocks that where changed when clearing?
 // TODO: Create packed queue to avoid freezes.
 
 public class VisualizeUtil
 {
-	protected static Map<UUID, Set<Location>> playerLocations = new HashMap<UUID, Set<Location>>();
+	protected static Map<UUID, Set<Location>> playerLocations = new HashMap<>();
 	public static Set<Location> getPlayerLocations(Player player)
 	{
 		return getPlayerLocations(player.getUniqueId());
@@ -28,7 +28,7 @@ public class VisualizeUtil
 		Set<Location> ret = playerLocations.get(uuid);
 		if (ret == null)
 		{
-			ret = new HashSet<Location>();
+			ret = new HashSet<>();
 			playerLocations.put(uuid, ret);
 		}
 		return ret;

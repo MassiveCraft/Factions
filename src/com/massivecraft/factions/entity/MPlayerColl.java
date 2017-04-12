@@ -1,15 +1,10 @@
 package com.massivecraft.factions.entity;
 
-import java.util.Collection;
-import java.util.Map.Entry;
-
-import org.bukkit.Bukkit;
-
 import com.massivecraft.factions.Factions;
 import com.massivecraft.massivecore.store.SenderColl;
-import com.massivecraft.massivecore.util.IdUtil;
-import com.massivecraft.massivecore.util.Txt;
-import com.massivecraft.massivecore.xlib.gson.JsonObject;
+import org.bukkit.Bukkit;
+
+import java.util.Collection;
 
 public class MPlayerColl extends SenderColl<MPlayer>
 {
@@ -31,75 +26,8 @@ public class MPlayerColl extends SenderColl<MPlayer>
 	}
 	
 	// -------------------------------------------- //
-	// UPDATE FACTION INDEXES
-	// -------------------------------------------- //
-	
-	@Override
-	public synchronized MPlayer removeAtLocalFixed(String id)
-	{
-		if (!Factions.get().isDatabaseInitialized()) return super.removeAtLocalFixed(id);
-		
-		MPlayer mplayer = this.id2entity.get(id);
-		
-		if (mplayer != null)
-		{
-			String beforeId = mplayer.getFactionId();
-			String afterId = null;
-			mplayer.updateFactionIndexes(beforeId, afterId);
-		}
-		
-		return super.removeAtLocalFixed(id);
-	}
-	
-	@Override
-	public synchronized void loadFromRemoteFixed(String id, Entry<JsonObject, Long> remoteEntry)
-	{
-		if (!Factions.get().isDatabaseInitialized())
-		{
-			super.loadFromRemoteFixed(id, remoteEntry);
-			return;
-		}
-		
-		MPlayer mplayer = null;
-		
-		// Before
-		String beforeId = null;
-		if (mplayer == null) mplayer = this.id2entity.get(id);
-		if (mplayer != null) beforeId = mplayer.getFactionId();
-		
-		// Super
-		super.loadFromRemoteFixed(id, remoteEntry);
-		
-		// After
-		String afterId = null;
-		if (mplayer == null) mplayer = this.id2entity.get(id);
-		if (mplayer != null) afterId = mplayer.getFactionId();
-		
-		// Perform
-		if (mplayer != null) mplayer.updateFactionIndexes(beforeId, afterId);
-	}
-	
-	// -------------------------------------------- //
 	// EXTRAS
 	// -------------------------------------------- //
-	
-	public void clean()
-	{
-		// For each player ...
-		for (MPlayer mplayer : this.getAll())
-		{
-			// ... who doesn't have a valid faction ...
-			String factionId = mplayer.getFactionId();
-			if (FactionColl.get().containsId(factionId)) continue;
-			
-			// ... reset their faction data ...
-			mplayer.resetFactionData();
-			
-			// ... and log.
-			String message = Txt.parse("<i>Reset data for <h>%s <i>. Unknown factionId <h>%s", mplayer.getDisplayName(IdUtil.getConsole()), factionId);
-			Factions.get().log(message);
-		}
-	}
 	
 	public void considerRemovePlayerMillis()
 	{

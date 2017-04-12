@@ -1,12 +1,11 @@
 package com.massivecraft.factions.event;
 
-import java.util.Map;
-
+import com.massivecraft.massivecore.collections.MassiveTreeMap;
+import com.massivecraft.massivecore.comparator.ComparatorCaseInsensitive;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.HandlerList;
 
-import com.massivecraft.massivecore.collections.MassiveTreeMap;
-import com.massivecraft.massivecore.comparator.ComparatorCaseInsensitive;
+import java.util.Map;
 
 public class EventFactionsExpansions extends EventFactionsAbstractSender
 {
@@ -22,7 +21,7 @@ public class EventFactionsExpansions extends EventFactionsAbstractSender
 	// FIELDS
 	// -------------------------------------------- //
 	
-	private final MassiveTreeMap<String, Boolean, ComparatorCaseInsensitive> expansions = new MassiveTreeMap<String, Boolean, ComparatorCaseInsensitive>(ComparatorCaseInsensitive.get());
+	private final MassiveTreeMap<String, Boolean, ComparatorCaseInsensitive> expansions = new MassiveTreeMap<>(ComparatorCaseInsensitive.get());
 	public Map<String, Boolean> getExpansions() { return this.expansions; }
 	
 	// -------------------------------------------- //

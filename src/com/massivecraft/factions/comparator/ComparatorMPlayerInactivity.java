@@ -1,18 +1,18 @@
-package com.massivecraft.factions;
-
-import java.util.Comparator;
+package com.massivecraft.factions.comparator;
 
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.massivecore.Named;
 
-public class PlayerRoleComparator implements Comparator<MPlayer>, Named
+import java.util.Comparator;
+
+public class ComparatorMPlayerInactivity implements Comparator<MPlayer>, Named
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static PlayerRoleComparator i = new PlayerRoleComparator();
-	public static PlayerRoleComparator get() { return i; }
+	private static ComparatorMPlayerInactivity i = new ComparatorMPlayerInactivity();
+	public static ComparatorMPlayerInactivity get() { return i; }
 	
 	// -------------------------------------------- //
 	// OVERRIDE: NAMED
@@ -21,7 +21,7 @@ public class PlayerRoleComparator implements Comparator<MPlayer>, Named
 	@Override
 	public String getName()
 	{
-		return "Rank";
+		return "Time";
 	}
 	
 	// -------------------------------------------- //
@@ -35,13 +35,20 @@ public class PlayerRoleComparator implements Comparator<MPlayer>, Named
 		if (m1 == null && m2 == null) return 0;
 		else if (m1 == null) return -1;
 		else if (m2 == null) return +1;
+
+		// Online
+		boolean o1 = m1.isOnline();
+		boolean o2 = m2.isOnline();
 		
-		// Rank
-		Rel r1 = m1.getRole();
-		Rel r2 = m2.getRole();
-		return r2.getValue() - r1.getValue();
+		if (o1 && o2) return 0;
+		else if (o1) return -1;
+		else if (o2) return +1;
+		
+		// Inactivity Time
+		long r1 = m1.getLastActivityMillis();
+		long r2 = m2.getLastActivityMillis();
+		
+		return (int) (r1 - r2);
 	}
-
-
-
+	
 }

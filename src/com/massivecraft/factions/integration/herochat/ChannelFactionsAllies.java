@@ -1,12 +1,11 @@
 package com.massivecraft.factions.integration.herochat;
 
-import java.util.EnumSet;
-import java.util.Set;
-
-import org.bukkit.ChatColor;
-
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.entity.MConf;
+import org.bukkit.ChatColor;
+
+import java.util.EnumSet;
+import java.util.Set;
 
 public class ChannelFactionsAllies extends ChannelFactionsAbstract
 {

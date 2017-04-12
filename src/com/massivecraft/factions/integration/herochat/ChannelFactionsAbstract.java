@@ -1,19 +1,5 @@
 package com.massivecraft.factions.integration.herochat;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import net.milkbowl.vault.chat.Chat;
-
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.World;
-import org.bukkit.entity.Player;
-
 import com.dthielke.herochat.Channel;
 import com.dthielke.herochat.ChannelChatEvent;
 import com.dthielke.herochat.ChannelStorage;
@@ -23,9 +9,21 @@ import com.dthielke.herochat.Herochat;
 import com.dthielke.herochat.MessageFormatSupplier;
 import com.dthielke.herochat.MessageNotFoundException;
 import com.massivecraft.factions.Rel;
-import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.entity.Faction;
+import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.massivecore.util.MUtil;
+import net.milkbowl.vault.chat.Chat;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.World;
+import org.bukkit.entity.Player;
+
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public abstract class ChannelFactionsAbstract implements Channel
 {
@@ -99,7 +97,7 @@ public abstract class ChannelFactionsAbstract implements Channel
 	@Override
 	public Set<Chatter> getMembers()
 	{
-		Set<Chatter> ret = new HashSet<Chatter>();
+		Set<Chatter> ret = new HashSet<>();
 		for (Chatter chatter : Herochat.getChatterManager().getChatters())
 		{
 			if(chatter.hasChannel(this)) ret.add(chatter);
@@ -202,7 +200,7 @@ public abstract class ChannelFactionsAbstract implements Channel
 	{
 		message = this.applyFormat(this.getFormatSupplier().getEmoteFormat(), "").replace("%2$s", message);
 		
-		Set<Player> recipients = new HashSet<Player>();
+		Set<Player> recipients = new HashSet<>();
 		for (Chatter member : this.getMembers())
 		{
 			recipients.add(member.getPlayer());
@@ -227,7 +225,7 @@ public abstract class ChannelFactionsAbstract implements Channel
 	
 	public Set<Player> getRecipients(Player sender)
 	{
-		Set<Player> ret = new HashSet<Player>();
+		Set<Player> ret = new HashSet<>();
 		
 		MPlayer fsender = MPlayer.get(sender);
 		Faction faction = fsender.getFaction();

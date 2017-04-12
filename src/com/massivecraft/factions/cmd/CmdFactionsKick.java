@@ -1,7 +1,5 @@
 package com.massivecraft.factions.cmd;
 
-import org.bukkit.ChatColor;
-
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.cmd.type.TypeMPlayer;
@@ -14,6 +12,7 @@ import com.massivecraft.factions.event.EventFactionsMembershipChange;
 import com.massivecraft.factions.event.EventFactionsMembershipChange.MembershipChangeReason;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.util.IdUtil;
+import org.bukkit.ChatColor;
 
 public class CmdFactionsKick extends FactionsCommand
 {

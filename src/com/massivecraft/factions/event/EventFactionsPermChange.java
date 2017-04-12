@@ -1,11 +1,10 @@
 package com.massivecraft.factions.event;
 
-import org.bukkit.command.CommandSender;
-import org.bukkit.event.HandlerList;
-
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MPerm;
+import org.bukkit.command.CommandSender;
+import org.bukkit.event.HandlerList;
 
 public class EventFactionsPermChange extends EventFactionsAbstractSender
 {	

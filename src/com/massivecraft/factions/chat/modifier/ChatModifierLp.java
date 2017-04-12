@@ -1,8 +1,7 @@
 package com.massivecraft.factions.chat.modifier;
 
-import org.bukkit.command.CommandSender;
-
 import com.massivecraft.factions.chat.ChatModifier;
+import org.bukkit.command.CommandSender;
 
 
 public class ChatModifierLp extends ChatModifier

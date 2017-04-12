@@ -79,7 +79,7 @@ public enum AsciiCompassDirection
 		if (degrees < 0) degrees += 360;
 		
 		// Get ordinal
-		int ordinal = (int) Math.floor(degrees / 45);;
+		int ordinal = (int) Math.floor(degrees / 45);
 		
 		// Return
 		return AsciiCompassDirection.values()[ordinal];

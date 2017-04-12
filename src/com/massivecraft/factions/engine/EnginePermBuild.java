@@ -1,7 +1,19 @@
 package com.massivecraft.factions.engine;
 
-import java.util.Map;
-
+import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.TerritoryAccess;
+import com.massivecraft.factions.entity.Board;
+import com.massivecraft.factions.entity.BoardColl;
+import com.massivecraft.factions.entity.Faction;
+import com.massivecraft.factions.entity.FactionColl;
+import com.massivecraft.factions.entity.MConf;
+import com.massivecraft.factions.entity.MPerm;
+import com.massivecraft.factions.entity.MPlayer;
+import com.massivecraft.factions.integration.spigot.IntegrationSpigot;
+import com.massivecraft.factions.util.EnumerationUtil;
+import com.massivecraft.massivecore.Engine;
+import com.massivecraft.massivecore.ps.PS;
+import com.massivecraft.massivecore.util.MUtil;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -28,19 +40,7 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
-import com.massivecraft.factions.Factions;
-import com.massivecraft.factions.TerritoryAccess;
-import com.massivecraft.factions.entity.Board;
-import com.massivecraft.factions.entity.BoardColl;
-import com.massivecraft.factions.entity.Faction;
-import com.massivecraft.factions.entity.FactionColl;
-import com.massivecraft.factions.entity.MConf;
-import com.massivecraft.factions.entity.MPerm;
-import com.massivecraft.factions.entity.MPlayer;
-import com.massivecraft.factions.integration.spigot.IntegrationSpigot;
-import com.massivecraft.massivecore.Engine;
-import com.massivecraft.massivecore.ps.PS;
-import com.massivecraft.massivecore.util.MUtil;
+import java.util.Map;
 
 public class EnginePermBuild extends Engine
 {
@@ -64,7 +64,7 @@ public class EnginePermBuild extends Engine
 		if (MConf.get().playersWhoBypassAllProtection.contains(name)) return true;
 
 		if (mplayer.isOverriding()) return true;
-
+		
 		if (!MPerm.getPermBuild().has(mplayer, ps, false) && MPerm.getPermPainbuild().has(mplayer, ps, false))
 		{
 			if (verboose)
@@ -85,7 +85,7 @@ public class EnginePermBuild extends Engine
 
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void blockBuild(BlockPlaceEvent event)
-	{
+	{				
 		if (!event.canBuild()) return;
 
 		boolean verboose = ! isFake(event);
@@ -317,7 +317,7 @@ public class EnginePermBuild extends Engine
 		// ... damages an entity which is edited on damage ...
 		Entity edamagee = event.getEntity();
 		if (edamagee == null) return;
-		if ( ! MConf.get().entityTypesEditOnDamage.contains(edamagee.getType())) return;
+		if ( ! EnumerationUtil.isEntityTypeEditOnDamage(edamagee.getType())) return;
 
 		// ... and the player can't build there ...
 		if (canPlayerBuildAt(player, PS.valueOf(edamagee.getLocation()), true)) return;
@@ -334,18 +334,19 @@ public class EnginePermBuild extends Engine
 		
 		Block block = event.getClickedBlock();
 		Player player = event.getPlayer();
+		Block relative = block.getRelative(event.getBlockFace());
 
 		if (block == null) return;  // clicked in air, apparently
-
-		if ( ! canPlayerUseBlock(player, block, true))
+		
+		if (event.getAction() != Action.RIGHT_CLICK_BLOCK) return;  // only interested on right-clicks for below
+		
+		if ( ! playerTrustedCantPlace(player, PS.valueOf(relative), event.getMaterial(), true))
 		{
 			event.setCancelled(true);
 			return;
 		}
 
-		if (event.getAction() != Action.RIGHT_CLICK_BLOCK) return;  // only interested on right-clicks for below
-
-		if ( ! playerTrustedCantPlace(player, PS.valueOf(block), event.getMaterial(), true))
+		if ( ! canPlayerUseBlock(player, block, true))
 		{
 			event.setCancelled(true);
 			return;
@@ -361,8 +362,8 @@ public class EnginePermBuild extends Engine
 	public static boolean playerCanUseItemHere(Player player, PS ps, Material material, boolean verboose)
 	{
 		if (MUtil.isntPlayer(player)) return true;
-
-		if ( ! MConf.get().materialsEditTools.contains(material) && ! MConf.get().materialsEditToolsDupeBug.contains(material)) return true;
+		
+		if ( ! EnumerationUtil.isMaterialEditTool(material)) return true;
 
 		String name = player.getName();
 		if (MConf.get().playersWhoBypassAllProtection.contains(name)) return true;
@@ -386,11 +387,11 @@ public class EnginePermBuild extends Engine
 		PS ps = PS.valueOf(block);
 		Material material = block.getType();
 
-		if (MConf.get().materialsEditOnInteract.contains(material) && ! MPerm.getPermBuild().has(me, ps, verboose)) return false;
-		if (MConf.get().materialsTrustCantPlace.contains(material) && ! MPerm.getPermTrusted().has(me, ps, verboose)) return false;
-		if (MConf.get().materialsTrustCantBreak.contains(material) && ! MPerm.getPermTrusted().has(me, ps, verboose)) return false;
-		if (MConf.get().materialsContainer.contains(material) && ! MPerm.getPermContainer().has(me, ps, verboose)) return false;
-		if (MConf.get().materialsDoor.contains(material) && ! MPerm.getPermDoor().has(me, ps, verboose)) return false;
+		if (EnumerationUtil.isMaterialTrustedCantBreak(material) && ! MPerm.getPermTrusted().has(me, ps, verboose)) return false;
+		if (EnumerationUtil.isMaterialTrustedCantPlace(material) && ! MPerm.getPermTrusted().has(me, ps, verboose)) return false;
+		if (EnumerationUtil.isMaterialEditOnInteract(material) && ! MPerm.getPermBuild().has(me, ps, verboose)) return false;
+		if (EnumerationUtil.isMaterialContainer(material) && ! MPerm.getPermContainer().has(me, ps, verboose)) return false;
+		if (EnumerationUtil.isMaterialDoor(material) && ! MPerm.getPermDoor().has(me, ps, verboose)) return false;
 		if (material == Material.STONE_BUTTON && ! MPerm.getPermButton().has(me, ps, verboose)) return false;
 		if (material == Material.LEVER && ! MPerm.getPermLever().has(me, ps, verboose)) return false;
 		if (material == Material.SPONGE && ! MPerm.getPermBuild().has(me, ps, verboose)) return false;
@@ -401,7 +402,7 @@ public class EnginePermBuild extends Engine
 	{
 		if (MUtil.isntPlayer(player)) return true;
 		
-		if ( ! MConf.get().materialsTrustCantBreak.contains(material)) return true;
+		if ( ! EnumerationUtil.isMaterialTrustedCantBreak(material)) return true;
 		
 		String name = player.getName();
 		if (MConf.get().playersWhoBypassAllProtection.contains(name)) return true;
@@ -416,7 +417,7 @@ public class EnginePermBuild extends Engine
 	{
 		if (MUtil.isntPlayer(player)) return true;
 		
-		if ( ! MConf.get().materialsTrustCantPlace.contains(material)) return true;
+		if ( ! EnumerationUtil.isMaterialTrustedCantBreak(material)) return true;
 		
 		String name = player.getName();
 		if (MConf.get().playersWhoBypassAllProtection.contains(name)) return true;
@@ -466,10 +467,10 @@ public class EnginePermBuild extends Engine
 		if (me.isOverriding()) return true;
 
 		// ... check container entity rights ...
-		if (MConf.get().entityTypesContainer.contains(type) && ! MPerm.getPermContainer().has(me, ps, verboose)) return false;
+		if (EnumerationUtil.isEntityTypeContainer(type) && ! MPerm.getPermContainer().has(me, ps, verboose)) return false;
 
 		// ... check build entity rights ...
-		if (MConf.get().entityTypesEditOnInteract.contains(type) && ! MPerm.getPermBuild().has(me, ps, verboose)) return false;
+		if (EnumerationUtil.isEntityTypeEditOnInteract(type) && ! MPerm.getPermBuild().has(me, ps, verboose)) return false;
 
 		// ... otherwise we may use the entity.
 		return true;

@@ -128,7 +128,7 @@ public class EngineWorldGuard extends Engine
 		ProtectedCuboidRegion region = new ProtectedCuboidRegion(regionName, minChunk, maxChunk);
 		
 		Map<String, ProtectedRegion> regionMap = regionManager.getRegions(); 
-		List<ProtectedRegion> regionList = new ArrayList<ProtectedRegion>(regionMap.values());
+		List<ProtectedRegion> regionList = new ArrayList<>(regionMap.values());
 		
 		// Let's find what we've overlapped
 		List<ProtectedRegion> overlapRegions = region.getIntersectingRegions(regionList);

@@ -1,13 +1,13 @@
 package com.massivecraft.factions.cmd;
 
-import java.util.List;
-
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.massivecore.command.MassiveCommandDeprecated;
 import com.massivecraft.massivecore.command.MassiveCommandVersion;
 import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
+
+import java.util.List;
 
 public class CmdFactions extends FactionsCommand
 {
@@ -73,6 +73,7 @@ public class CmdFactions extends FactionsCommand
 	public CmdFactionsPowerBoost cmdFactionsPowerBoost = new CmdFactionsPowerBoost();
 	public CmdFactionsSetpower cmdFactionsSetpower = new CmdFactionsSetpower();
 	public CmdFactionsConfig cmdFactionsConfig = new CmdFactionsConfig();
+	public CmdFactionsClean cmdFactionsClean = new CmdFactionsClean();
 	public MassiveCommandVersion cmdFactionsVersion = new MassiveCommandVersion(Factions.get()).setAliases("v", "version").addRequirements(RequirementHasPerm.get(Perm.VERSION));
 	
 	// -------------------------------------------- //
@@ -133,6 +134,7 @@ public class CmdFactions extends FactionsCommand
 		this.addChild(this.cmdFactionsPowerBoost);
 		this.addChild(this.cmdFactionsSetpower);
 		this.addChild(this.cmdFactionsConfig);
+		this.addChild(this.cmdFactionsClean);
 		this.addChild(this.cmdFactionsVersion);
 		
 		// Deprecated Commands

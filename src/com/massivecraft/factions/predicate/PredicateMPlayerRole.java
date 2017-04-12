@@ -1,9 +1,10 @@
-package com.massivecraft.factions;
+package com.massivecraft.factions.predicate;
 
+import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.massivecore.predicate.Predicate;
 
-public class PredicateRole implements Predicate<MPlayer>
+public class PredicateMPlayerRole implements Predicate<MPlayer>
 {
 	// -------------------------------------------- //
 	// FIELDS
@@ -16,8 +17,8 @@ public class PredicateRole implements Predicate<MPlayer>
 	// INSTANCE AND CONTRUCT
 	// -------------------------------------------- //
 	
-	public static PredicateRole get(Rel role) { return new PredicateRole(role); }
-	public PredicateRole(Rel role)
+	public static PredicateMPlayerRole get(Rel role) { return new PredicateMPlayerRole(role); }
+	public PredicateMPlayerRole(Rel role)
 	{
 		this.role = role;
 	}

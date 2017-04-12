@@ -1,9 +1,8 @@
 package com.massivecraft.factions.event;
 
+import com.massivecraft.factions.entity.MPlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.HandlerList;
-
-import com.massivecraft.factions.entity.MPlayer;
 
 public class EventFactionsTitleChange extends EventFactionsAbstractSender
 {	

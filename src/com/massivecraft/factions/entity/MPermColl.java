@@ -1,9 +1,9 @@
 package com.massivecraft.factions.entity;
 
+import com.massivecraft.massivecore.store.Coll;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import com.massivecraft.massivecore.store.Coll;
 
 public class MPermColl extends Coll<MPerm>
 {
@@ -47,7 +47,7 @@ public class MPermColl extends Coll<MPerm>
 	public List<MPerm> getAll(boolean registered)
 	{
 		// Create
-		List<MPerm> ret = new ArrayList<MPerm>();
+		List<MPerm> ret = new ArrayList<>();
 		
 		// Fill
 		for (MPerm mperm : this.getAll())

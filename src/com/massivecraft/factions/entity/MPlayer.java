@@ -1,18 +1,8 @@
 package com.massivecraft.factions.entity;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map.Entry;
-import java.util.Set;
-
-import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
-import com.massivecraft.factions.EconomyParticipator;
 import com.massivecraft.factions.Factions;
-import com.massivecraft.factions.Lang;
+import com.massivecraft.factions.FactionsIndex;
+import com.massivecraft.factions.FactionsParticipator;
 import com.massivecraft.factions.Perm;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.RelationParticipator;
@@ -20,8 +10,8 @@ import com.massivecraft.factions.event.EventFactionsChunkChangeType;
 import com.massivecraft.factions.event.EventFactionsChunksChange;
 import com.massivecraft.factions.event.EventFactionsDisband;
 import com.massivecraft.factions.event.EventFactionsMembershipChange;
-import com.massivecraft.factions.event.EventFactionsRemovePlayerMillis;
 import com.massivecraft.factions.event.EventFactionsMembershipChange.MembershipChangeReason;
+import com.massivecraft.factions.event.EventFactionsRemovePlayerMillis;
 import com.massivecraft.factions.mixin.PowerMixin;
 import com.massivecraft.factions.util.RelationUtil;
 import com.massivecraft.massivecore.mixin.MixinSenderPs;
@@ -33,9 +23,25 @@ import com.massivecraft.massivecore.util.IdUtil;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.Txt;
 import com.massivecraft.massivecore.xlib.gson.annotations.SerializedName;
+import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
-public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipator
+import java.lang.ref.WeakReference;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map.Entry;
+import java.util.Set;
+
+public class MPlayer extends SenderEntity<MPlayer> implements FactionsParticipator
 {
+	// -------------------------------------------- //
+	// META
+	// -------------------------------------------- //
+	
+	public static final transient String NOTITLE = Txt.parse("<em><silver>no title set");
+	
 	// -------------------------------------------- //
 	// META
 	// -------------------------------------------- //
@@ -89,42 +95,16 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 	// UPDATE FACTION INDEXES
 	// -------------------------------------------- //
 
-	public void updateFactionIndexes(String beforeId, String afterId)
-	{
-		// Really?
-		if (!Factions.get().isDatabaseInitialized()) return;
-		if (!this.attached()) return;
-
-		// Fix IDs
-		if (beforeId == null) beforeId = MConf.get().defaultPlayerFactionId;
-		if (afterId == null) afterId = MConf.get().defaultPlayerFactionId;
-
-		// NoChange
-		if (MUtil.equals(beforeId, afterId)) return;
-
-		// Resolve
-		Faction before = FactionColl.get().get(beforeId, false);
-		Faction after = FactionColl.get().get(afterId, false);
-
-		// Apply
-		if (before != null) before.mplayers.remove(this);
-		if (after != null) after.mplayers.add(this);
-	}
-
 	@Override
 	public void postAttach(String id)
 	{
-		String beforeId = null;
-		String afterId = this.getFactionId();
-		this.updateFactionIndexes(beforeId, afterId);
+		FactionsIndex.get().update(this);
 	}
 
 	@Override
 	public void preDetach(String id)
 	{
-		String before = this.getFactionId();
-		String after = null;
-		this.updateFactionIndexes(before, after);
+		FactionsIndex.get().update(this);
 	}
 
 	// -------------------------------------------- //
@@ -187,13 +167,20 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 	// Null means default specified in MConf.
 	private Boolean territoryInfoTitles = null;
 
-	// The id for the faction this player is currently autoclaiming for.
+	// The Faction this player is currently autoclaiming for.
 	// Null means the player isn't auto claiming.
 	// NOTE: This field will not be saved to the database ever.
-	private transient Faction autoClaimFaction = null;
+	private transient WeakReference<Faction> autoClaimFaction = new WeakReference<>(null);
 
-	public Faction getAutoClaimFaction() { return this.autoClaimFaction; }
-	public void setAutoClaimFaction(Faction autoClaimFaction) { this.autoClaimFaction = autoClaimFaction; }
+	public Faction getAutoClaimFaction()
+	{
+		if (this.isFactionOrphan()) return null;
+		Faction ret = this.autoClaimFaction.get();
+		if (ret == null) return null;
+		if (ret.detached()) return null;
+		return ret;
+	}
+	public void setAutoClaimFaction(Faction autoClaimFaction) { this.autoClaimFaction = new WeakReference<>(autoClaimFaction); }
 
 	// Does the player have /f seechunk activated?
 	// NOTE: This field will not be saved to the database ever.
@@ -246,31 +233,43 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 	// -------------------------------------------- //
 	// FIELD: factionId
 	// -------------------------------------------- //
-
-	@Deprecated
-	public String getDefaultFactionId()
+	
+	private Faction getFactionInternal()
 	{
-		return MConf.get().defaultPlayerFactionId;
+		String effectiveFactionId = this.convertGet(this.factionId, MConf.get().defaultPlayerFactionId);
+		return Faction.get(effectiveFactionId);
+	}
+	
+	public boolean isFactionOrphan()
+	{
+		return this.getFactionInternal() == null;
 	}
 
-	// This method never returns null
+	@Deprecated
 	public String getFactionId()
 	{
-		if (this.factionId == null) return MConf.get().defaultPlayerFactionId;
-		return this.factionId;
+		return this.getFaction().getId();
 	}
 
 	// This method never returns null
 	public Faction getFaction()
 	{
-		Faction ret = Faction.get(this.getFactionId());
-		if (ret == null) ret = Faction.get(MConf.get().defaultPlayerFactionId);
+		Faction ret;
+		
+		ret = this.getFactionInternal();
+		
+		// Adopt orphans
+		if (ret == null)
+		{
+			ret = FactionColl.get().getNone();
+		}
+		
 		return ret;
 	}
-
+	
 	public boolean hasFaction()
 	{
-		return !this.getFactionId().equals(Factions.ID_NONE);
+		return !this.getFaction().isNone();
 	}
 
 	// This setter is so long because it search for default/null case and takes
@@ -289,18 +288,8 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 		// Apply
 		this.factionId = afterId;
 
-		// Must be attached and initialized
-		if (!this.attached()) return;
-		if (!Factions.get().isDatabaseInitialized()) return;
-
-		if (beforeId == null) beforeId = MConf.get().defaultPlayerFactionId;
-
-		// Update index
-		Faction before = Faction.get(beforeId);
-		Faction after = this.getFaction();
-
-		if (before != null) before.mplayers.remove(this);
-		if (after != null) after.mplayers.add(this);
+		// Index
+		FactionsIndex.get().update(this);
 
 		// Mark as changed
 		this.changed();
@@ -315,14 +304,10 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 	// FIELD: role
 	// -------------------------------------------- //
 
-	@Deprecated
-	public Rel getDefaultRole()
-	{
-		return MConf.get().defaultPlayerRole;
-	}
-
 	public Rel getRole()
 	{
+		if (this.isFactionOrphan()) return Rel.RECRUIT;
+		
 		if (this.role == null) return MConf.get().defaultPlayerRole;
 		return this.role;
 	}
@@ -345,16 +330,21 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 	// -------------------------------------------- //
 	// FIELD: title
 	// -------------------------------------------- //
-
+	// TODO: Improve upon the has and get stuff.
+	// TODO: Has should depend on get. Visualisation should be done elsewhere.
+	
 	public boolean hasTitle()
 	{
-		return this.title != null;
+		return !this.isFactionOrphan() && this.title != null;
 	}
 
 	public String getTitle()
 	{
+		if (this.isFactionOrphan()) return NOTITLE;
+		
 		if (this.hasTitle()) return this.title;
-		return Lang.PLAYER_NOTITLE;
+		
+		return NOTITLE;
 	}
 
 	public void setTitle(String title)
@@ -368,15 +358,6 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 			{
 				target = null;
 			}
-		}
-
-		// NOTE: That we parse the title here is considered part of the 1.8 -->
-		// 2.0 migration.
-		// This should be removed once the migration phase is considered to be
-		// over.
-		if (target != null)
-		{
-			target = Txt.parse(target);
 		}
 
 		// Detect Nochange
@@ -393,6 +374,7 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 	// FIELD: powerBoost
 	// -------------------------------------------- //
 
+	@Override
 	public double getPowerBoost()
 	{
 		Double ret = this.powerBoost;
@@ -400,6 +382,7 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 		return ret;
 	}
 
+	@Override
 	public void setPowerBoost(Double powerBoost)
 	{
 		// Clean input
@@ -924,7 +907,7 @@ public class MPlayer extends SenderEntity<MPlayer> implements EconomyParticipato
 
 	public static Set<MPlayer> getClaimInformees(MPlayer msender, Faction... factions)
 	{
-		Set<MPlayer> ret = new HashSet<MPlayer>();
+		Set<MPlayer> ret = new HashSet<>();
 
 		if (msender != null) ret.add(msender);
 

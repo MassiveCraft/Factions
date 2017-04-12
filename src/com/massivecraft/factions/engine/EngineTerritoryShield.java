@@ -1,17 +1,16 @@
 package com.massivecraft.factions.engine;
 
-import java.text.MessageFormat;
-
+import com.massivecraft.factions.entity.MConf;
+import com.massivecraft.factions.entity.MPlayer;
+import com.massivecraft.massivecore.Engine;
+import com.massivecraft.massivecore.util.MUtil;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
-import com.massivecraft.factions.entity.MConf;
-import com.massivecraft.factions.entity.MPlayer;
-import com.massivecraft.massivecore.Engine;
-import com.massivecraft.massivecore.util.MUtil;
+import java.text.MessageFormat;
 
 public class EngineTerritoryShield extends Engine
 {

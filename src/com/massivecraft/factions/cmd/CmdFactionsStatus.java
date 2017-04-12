@@ -1,11 +1,6 @@
 package com.massivecraft.factions.cmd;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedHashMap;
-import java.util.List;
-
-import com.massivecraft.factions.PlayerInactivityComparator;
+import com.massivecraft.factions.comparator.ComparatorMPlayerInactivity;
 import com.massivecraft.factions.cmd.type.TypeFaction;
 import com.massivecraft.factions.cmd.type.TypeSortMPlayer;
 import com.massivecraft.factions.entity.Faction;
@@ -18,6 +13,11 @@ import com.massivecraft.massivecore.pager.Stringifier;
 import com.massivecraft.massivecore.util.TimeDiffUtil;
 import com.massivecraft.massivecore.util.TimeUnit;
 import com.massivecraft.massivecore.util.Txt;
+
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedHashMap;
+import java.util.List;
 
 public class CmdFactionsStatus extends FactionsCommand
 {
@@ -43,7 +43,7 @@ public class CmdFactionsStatus extends FactionsCommand
 		// Args
 		int page = this.readArg();
 		Faction faction = this.readArg(msenderFaction);
-		Comparator<MPlayer> sortedBy = this.readArg(PlayerInactivityComparator.get());
+		Comparator<MPlayer> sortedBy = this.readArg(ComparatorMPlayerInactivity.get());
 
 		// MPerm
 		if ( ! MPerm.getPermStatus().has(msender, faction, true)) return;
@@ -54,7 +54,8 @@ public class CmdFactionsStatus extends FactionsCommand
 		
 		// Pager Create
 		String title = Txt.parse("<i>Status of %s<i>.", faction.describeTo(msender, true));
-		final Pager<MPlayer> pager = new Pager<MPlayer>(this, title, page, mplayers, new Stringifier<MPlayer>(){
+		final Pager<MPlayer> pager = new Pager<>(this, title, page, mplayers, new Stringifier<MPlayer>()
+		{
 			@Override
 			public String toString(MPlayer mplayer, int index)
 			{
@@ -86,7 +87,7 @@ public class CmdFactionsStatus extends FactionsCommand
 				{
 					color = "<red>";
 				}
-			
+				
 				String power = Txt.parse("<i>Power: %s%.0f<gray>/<green>%.0f", Txt.parse(color), currentPower, maxPower);
 				
 				// Time

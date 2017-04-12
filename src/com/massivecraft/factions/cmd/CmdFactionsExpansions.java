@@ -1,9 +1,9 @@
 package com.massivecraft.factions.cmd;
 
-import java.util.Map.Entry;
-
 import com.massivecraft.factions.event.EventFactionsExpansions;
 import com.massivecraft.massivecore.util.Txt;
+
+import java.util.Map.Entry;
 
 public class CmdFactionsExpansions extends FactionsCommand
 {

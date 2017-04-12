@@ -1,10 +1,5 @@
 package com.massivecraft.factions.engine;
 
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.entity.PlayerDeathEvent;
-
 import com.massivecraft.factions.entity.BoardColl;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MConf;
@@ -16,6 +11,10 @@ import com.massivecraft.massivecore.Engine;
 import com.massivecraft.massivecore.ps.PS;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.PlayerUtil;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.entity.PlayerDeathEvent;
 
 public class EnginePower extends Engine
 {

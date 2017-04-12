@@ -1,7 +1,5 @@
 package com.massivecraft.factions.cmd;
 
-import java.util.ArrayList;
-
 import com.massivecraft.factions.cmd.type.TypeFaction;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.FactionColl;
@@ -10,6 +8,8 @@ import com.massivecraft.factions.event.EventFactionsNameChange;
 import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.command.type.primitive.TypeString;
+
+import java.util.ArrayList;
 
 public class CmdFactionsName extends FactionsCommand
 {
@@ -45,7 +45,7 @@ public class CmdFactionsName extends FactionsCommand
 			return;
 		}
 
-		ArrayList<String> errors = new ArrayList<String>();
+		ArrayList<String> errors = new ArrayList<>();
 		errors.addAll(FactionColl.get().validateName(newName));
 		if (errors.size() > 0)
 		{

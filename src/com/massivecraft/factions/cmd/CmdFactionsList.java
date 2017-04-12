@@ -1,11 +1,6 @@
 package com.massivecraft.factions.cmd;
 
-import java.util.List;
-
-import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
-
-import com.massivecraft.factions.FactionListComparator;
+import com.massivecraft.factions.comparator.ComparatorFactionList;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.FactionColl;
@@ -15,6 +10,10 @@ import com.massivecraft.massivecore.command.Parameter;
 import com.massivecraft.massivecore.pager.Pager;
 import com.massivecraft.massivecore.pager.Stringifier;
 import com.massivecraft.massivecore.util.Txt;
+import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
+
+import java.util.List;
 
 public class CmdFactionsList extends FactionsCommand
 {
@@ -72,7 +71,7 @@ public class CmdFactionsList extends FactionsCommand
 			public void run()
 			{
 				// Pager Items
-				final List<Faction> factions = FactionColl.get().getAll(FactionListComparator.get(sender));
+				final List<Faction> factions = FactionColl.get().getAll(ComparatorFactionList.get(sender));
 				pager.setItems(factions);
 				
 				// Pager Message

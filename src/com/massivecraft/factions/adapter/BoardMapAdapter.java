@@ -1,10 +1,6 @@
 package com.massivecraft.factions.adapter;
 
-import java.lang.reflect.Type;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.concurrent.ConcurrentSkipListMap;
-
+import com.massivecraft.factions.TerritoryAccess;
 import com.massivecraft.massivecore.ps.PS;
 import com.massivecraft.massivecore.xlib.gson.JsonDeserializationContext;
 import com.massivecraft.massivecore.xlib.gson.JsonDeserializer;
@@ -13,7 +9,11 @@ import com.massivecraft.massivecore.xlib.gson.JsonObject;
 import com.massivecraft.massivecore.xlib.gson.JsonParseException;
 import com.massivecraft.massivecore.xlib.gson.JsonSerializationContext;
 import com.massivecraft.massivecore.xlib.gson.JsonSerializer;
-import com.massivecraft.factions.TerritoryAccess;
+
+import java.lang.reflect.Type;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentSkipListMap;
 
 public class BoardMapAdapter implements JsonDeserializer<Map<PS, TerritoryAccess>>, JsonSerializer<Map<PS, TerritoryAccess>>
 {
@@ -31,7 +31,7 @@ public class BoardMapAdapter implements JsonDeserializer<Map<PS, TerritoryAccess
 	@Override
 	public Map<PS, TerritoryAccess> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException
 	{
-		Map<PS, TerritoryAccess> ret = new ConcurrentSkipListMap<PS, TerritoryAccess>();
+		Map<PS, TerritoryAccess> ret = new ConcurrentSkipListMap<>();
 		
 		JsonObject jsonObject = json.getAsJsonObject();
 		
