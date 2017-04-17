@@ -1,15 +1,32 @@
 package com.massivecraft.factions.cmd;
 
+import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.entity.MPerm;
+import com.massivecraft.factions.entity.MPermColl;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.command.Parameter;
-import com.massivecraft.massivecore.util.Txt;
+import com.massivecraft.massivecore.pager.Pager;
+import com.massivecraft.massivecore.pager.Stringifier;
+import com.massivecraft.massivecore.predicate.Predicate;
+import org.bukkit.Bukkit;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class CmdFactionsPermList extends FactionsCommand
 {
+	// -------------------------------------------- //
+	// REUSABLE PREDICATE
+	// -------------------------------------------- //
+	
+	private static final Predicate<MPerm> PREDICATE_MPERM_VISIBLE = new Predicate<MPerm>()
+	{
+		@Override
+		public boolean apply(MPerm mperm)
+		{
+			return mperm.isVisible();
+		}
+	};
+	
 	// -------------------------------------------- //
 	// CONSTRUCT
 	// -------------------------------------------- //
@@ -27,20 +44,37 @@ public class CmdFactionsPermList extends FactionsCommand
 	@Override
 	public void perform() throws MassiveException
 	{
-		// Args
+		// Parameter
 		int page = this.readArg();
 		
-		// Create messages
-		List<String> messages = new ArrayList<>();
-		
-		for (MPerm perm : MPerm.getAll())
+		// Pager create
+		String title = String.format("Perms for %s", msenderFaction.describeTo(msender));
+		final Pager<MPerm> pager = new Pager<>(this, title, page, new Stringifier<MPerm>()
 		{
-			if ( ! perm.isVisible() && ! msender.isOverriding()) continue;
-			messages.add(perm.getDesc(true, true));
-		}
+			@Override
+			public String toString(MPerm mperm, int index)
+			{
+				return mperm.getDesc(true, true);
+			}
+		});
 		
-		// Send messages
-		message(Txt.getPage(messages, page, "Available Faction Perms", this));
+		final Predicate<MPerm> predicate = msender.isOverriding() ? null : PREDICATE_MPERM_VISIBLE;
+		
+		Bukkit.getScheduler().runTaskAsynchronously(Factions.get(), new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				// Get items
+				List<MPerm> items = MPermColl.get().getAll(predicate);
+				
+				// Pager items
+				pager.setItems(items);
+				
+				// Pager message
+				pager.message();
+			}
+		});
 	}
 
 }
