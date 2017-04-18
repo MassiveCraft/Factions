@@ -521,9 +521,7 @@ public class MConf extends Entity<MConf>
 	public boolean logFactionKick = true;
 	public boolean logFactionLeave = true;
 	public boolean logLandClaims = true;
-	public boolean logLandUnclaims = true;
 	public boolean logMoneyTransactions = true;
-	public boolean logPlayerCommands = true;
 	
 	// -------------------------------------------- //
 	// ENUMERATIONS
@@ -682,6 +680,5 @@ public class MConf extends Entity<MConf>
 	// That costs should the faciton bank take care of?
 	// If you set this to false the player executing the command will pay instead.
 	public boolean bankFactionPaysCosts = true;
-	public boolean bankFactionPaysLandCosts = true;
 
 }
