@@ -70,7 +70,7 @@ public class MPlayer extends SenderEntity<MPlayer> implements FactionsParticipat
 
 		return this;
 	}
-
+	
 	// -------------------------------------------- //
 	// IS DEFAULT
 	// -------------------------------------------- //

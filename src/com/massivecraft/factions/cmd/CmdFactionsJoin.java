@@ -117,7 +117,7 @@ public class CmdFactionsJoin extends FactionsCommand
 		mplayer.resetFactionData();
 		mplayer.setFaction(faction);
 		
-		faction.setInvited(mplayer, false);
+		faction.uninvite(mplayer);
 
 		// Derplog
 		if (MConf.get().logFactionJoin)

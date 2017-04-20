@@ -1,12 +1,14 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.cmd.type.TypeMPlayer;
+import com.massivecraft.factions.entity.Invitation;
 import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.event.EventFactionsInvitedChange;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.command.type.container.TypeSet;
 import com.massivecraft.massivecore.mson.Mson;
+import com.massivecraft.massivecore.util.IdUtil;
 import com.massivecraft.massivecore.util.Txt;
 import org.bukkit.ChatColor;
 
@@ -33,6 +35,9 @@ public class CmdFactionsInviteAdd extends FactionsCommand
 	{
 		// Args
 		Collection<MPlayer> mplayers = this.readArg();
+		
+		String senderId = IdUtil.getId(sender);
+		long creationMillis = System.currentTimeMillis();
 		
 		// MPerm
 		if ( ! MPerm.getPermInvite().has(msender, msenderFaction, true)) return;
@@ -62,7 +67,8 @@ public class CmdFactionsInviteAdd extends FactionsCommand
 				msenderFaction.msg("%s<i> invited %s<i> to your faction.", msender.describeTo(msenderFaction, true), mplayer.describeTo(msenderFaction));
 				
 				// Apply
-				msenderFaction.setInvited(mplayer, true);
+				Invitation invitation = new Invitation(senderId, creationMillis);
+				msenderFaction.invite(mplayer.getId(), invitation);
 				msenderFaction.changed();
 			}
 			else

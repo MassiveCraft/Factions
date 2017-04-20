@@ -281,7 +281,7 @@ public class CmdFactionsRank extends FactionsCommand
 		target.setFaction(endFaction);
 		
 		// No longer invited.
-		endFaction.setInvited(target, false);
+		endFaction.uninvite(target);
 
 		// Create recipients
 		Set<MPlayer> recipients = new HashSet<>();

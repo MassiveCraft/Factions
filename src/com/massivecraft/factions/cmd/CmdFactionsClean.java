@@ -6,13 +6,14 @@ import com.massivecraft.factions.entity.Board;
 import com.massivecraft.factions.entity.BoardColl;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.FactionColl;
+import com.massivecraft.factions.entity.Invitation;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.entity.MPlayerColl;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.ps.PS;
+import com.massivecraft.massivecore.store.EntityInternalMap;
 import com.massivecraft.massivecore.util.Txt;
 
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
@@ -70,11 +71,11 @@ public class CmdFactionsClean extends FactionsCommand
 		
 		for (Faction faction : FactionColl.get().getAll())
 		{
-			Collection<String> invitedPlayerIds = faction.getInvitedPlayerIds();
-			if (invitedPlayerIds.isEmpty()) continue;
+			EntityInternalMap<Invitation> invitations = faction.getInvitations();
+			if (invitations.isEmpty()) continue;
 			
-			ret += invitedPlayerIds.size();
-			invitedPlayerIds.clear();
+			ret += invitations.size();
+			invitations.clear();
 			faction.changed();
 		}
 		

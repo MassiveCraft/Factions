@@ -92,7 +92,7 @@ public class CmdFactionsKick extends FactionsCommand
 		{
 			mplayerFaction.promoteNewLeader();
 		}
-		mplayerFaction.setInvited(mplayer, false);
+		mplayerFaction.uninvite(mplayer);
 		mplayer.resetFactionData();
 	}
 	

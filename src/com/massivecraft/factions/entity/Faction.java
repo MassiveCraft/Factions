@@ -13,7 +13,6 @@ import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.collections.MassiveMap;
 import com.massivecraft.massivecore.collections.MassiveMapDef;
 import com.massivecraft.massivecore.collections.MassiveSet;
-import com.massivecraft.massivecore.collections.MassiveSetDef;
 import com.massivecraft.massivecore.mixin.MixinMessage;
 import com.massivecraft.massivecore.money.Money;
 import com.massivecraft.massivecore.predicate.Predicate;
@@ -21,6 +20,7 @@ import com.massivecraft.massivecore.predicate.PredicateAnd;
 import com.massivecraft.massivecore.predicate.PredicateVisibleTo;
 import com.massivecraft.massivecore.ps.PS;
 import com.massivecraft.massivecore.store.Entity;
+import com.massivecraft.massivecore.store.EntityInternalMap;
 import com.massivecraft.massivecore.store.SenderColl;
 import com.massivecraft.massivecore.util.IdUtil;
 import com.massivecraft.massivecore.util.MUtil;
@@ -70,7 +70,7 @@ public class Faction extends Entity<Faction> implements FactionsParticipator
 		this.setCreatedAtMillis(that.createdAtMillis);
 		this.setHome(that.home);
 		this.setPowerBoost(that.powerBoost);
-		this.setInvitedPlayerIds(that.invitedPlayerIds);
+		this.invitations.load(that.invitations);
 		this.setRelationWishes(that.relationWishes);
 		this.setFlagIds(that.flags);
 		this.setPermIds(that.perms);
@@ -91,6 +91,12 @@ public class Faction extends Entity<Faction> implements FactionsParticipator
 			Money.set(this, null, 0);	
 		}
 	}
+	
+	// -------------------------------------------- //
+	// VERSION
+	// -------------------------------------------- //
+	
+	public int version = 1;
 	
 	// -------------------------------------------- //
 	// FIELDS: RAW
@@ -136,7 +142,7 @@ public class Faction extends Entity<Faction> implements FactionsParticipator
 	// This is the ids of the invited players.
 	// They are actually "senderIds" since you can invite "@console" to your faction.
 	// Null means no one is invited
-	private MassiveSetDef<String> invitedPlayerIds = new MassiveSetDef<>();
+	private EntityInternalMap<Invitation> invitations = new EntityInternalMap<>(this, Invitation.class);
 	
 	// The keys in this map are factionIds.
 	// Null means no special relation whishes.
@@ -436,31 +442,14 @@ public class Faction extends Entity<Faction> implements FactionsParticipator
 	
 	// RAW
 	
-	public Set<String> getInvitedPlayerIds()
-	{
-		return this.invitedPlayerIds;
-	}
 	
-	public void setInvitedPlayerIds(Collection<String> invitedPlayerIds)
-	{
-		// Clean input
-		MassiveSetDef<String> target = new MassiveSetDef<>(invitedPlayerIds);
-		
-		// Detect Nochange
-		if (MUtil.equals(this.invitedPlayerIds, target)) return;
-		
-		// Apply
-		this.invitedPlayerIds = target;
-		
-		// Mark as changed
-		this.changed();
-	}
+	public EntityInternalMap<Invitation> getInvitations() { return this.invitations; }
 	
 	// FINER
 	
 	public boolean isInvited(String playerId)
 	{
-		return this.getInvitedPlayerIds().contains(playerId);
+		return this.getInvitations().containsKey(playerId);
 	}
 	
 	public boolean isInvited(MPlayer mplayer)
@@ -468,38 +457,20 @@ public class Faction extends Entity<Faction> implements FactionsParticipator
 		return this.isInvited(mplayer.getId());
 	}
 	
-	public boolean setInvited(String playerId, boolean invited)
+	public boolean uninvite(String playerId)
 	{
-		List<String> invitedPlayerIds = new MassiveList<>(this.getInvitedPlayerIds());
-		boolean ret;
-		if (invited)
-		{
-			ret = invitedPlayerIds.add(playerId);
-		}
-		else
-		{
-			ret = invitedPlayerIds.remove(playerId);
-		}
-		this.setInvitedPlayerIds(invitedPlayerIds);
-		return ret;
+		return this.getInvitations().remove(playerId) != null;
 	}
 	
-	public void setInvited(MPlayer mplayer, boolean invited)
+	public boolean uninvite(MPlayer mplayer)
 	{
-		this.setInvited(mplayer.getId(), invited);
+		return uninvite(mplayer.getId());
 	}
 	
-	public List<MPlayer> getInvitedMPlayers()
+	public void invite(String playerId, Invitation invitation)
 	{
-		List<MPlayer> mplayers = new MassiveList<>();
-		
-		for (String id : this.getInvitedPlayerIds())
-		{	
-			MPlayer mplayer = MPlayer.get(id);
-			mplayers.add(mplayer);
-		}
-		
-		return mplayers;
+		uninvite(playerId);
+		this.invitations.attach(invitation, playerId);
 	}
 	
 	// -------------------------------------------- //

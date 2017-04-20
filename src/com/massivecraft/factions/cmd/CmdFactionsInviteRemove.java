@@ -39,15 +39,18 @@ public class CmdFactionsInviteRemove extends FactionsCommand
 		// Args
 		if ("all".equalsIgnoreCase(this.argAt(0)))
 		{
-			List<MPlayer> invitedPlayers = msenderFaction.getInvitedMPlayers();
+			Set<String> ids = msenderFaction.getInvitations().keySet();
 			// Doesn't show up if list is empty. Test at home if it worked.
-			if (invitedPlayers == null || invitedPlayers.isEmpty())
+			if (ids == null || ids.isEmpty())
 			{
-				msg("<b>Your faction has not invited anyone.");
-				return;
+				throw new MassiveException().addMsg("<b>No one is invited to your faction.");
 			}
 			all = true;
-			mplayers.addAll(invitedPlayers);
+			
+			for (String id : ids)
+			{
+				mplayers.add(MPlayer.get(id));
+			}
 		}
 		else
 		{
@@ -98,7 +101,7 @@ public class CmdFactionsInviteRemove extends FactionsCommand
 				}
 				
 				// Apply
-				msenderFaction.setInvited(mplayer, false);
+				msenderFaction.uninvite(msender);
 				
 				// If all, we do this at last. So we only do it once.
 				if (! all) msenderFaction.changed();
