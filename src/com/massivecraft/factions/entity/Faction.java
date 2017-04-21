@@ -237,15 +237,7 @@ public class Faction extends Entity<Faction> implements FactionsParticipator
 	public void setDescription(String description)
 	{
 		// Clean input
-		String target = description;
-		if (target != null)
-		{
-			target = target.trim();
-			if (target.isEmpty())
-			{
-				target = null;
-			}
-		}
+		String target = clean(description);
 		
 		// Detect Nochange
 		if (MUtil.equals(this.description, target)) return;
@@ -270,22 +262,14 @@ public class Faction extends Entity<Faction> implements FactionsParticipator
 	
 	public String getMotd()
 	{
-		if (this.hasMotd()) return Txt.parse(this.motd);
+		if (this.hasMotd()) return this.motd;
 		return NOMOTD;
 	}
 	
-	public void setMotd(String description)
+	public void setMotd(String motd)
 	{
 		// Clean input
-		String target = description;
-		if (target != null)
-		{
-			target = target.trim();
-			if (target.isEmpty())
-			{
-				target = null;
-			}
-		}
+		String target = clean(motd);
 		
 		// Detect Nochange
 		if (MUtil.equals(this.motd, target)) return;
@@ -1201,6 +1185,22 @@ public class Faction extends Entity<Faction> implements FactionsParticipator
 	public boolean msg(Collection<String> msgs)
 	{
 		return MixinMessage.get().msgPredicate(new PredicateCommandSenderFaction(this), msgs);
+	}
+	
+	// -------------------------------------------- //
+	// UTIL
+	// -------------------------------------------- //
+	
+	// FIXME this probably needs to be moved elsewhere
+	public static String clean(String message)
+	{
+		String target = message;
+		if (target == null) return null;
+		
+		target = target.trim();
+		if (target.isEmpty()) target = null;
+		
+		return target;
 	}
 	
 }

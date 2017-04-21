@@ -1,10 +1,11 @@
 package com.massivecraft.factions.cmd;
 
+import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.event.EventFactionsMotdChange;
-import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.MassiveException;
+import com.massivecraft.massivecore.command.type.TypeNullable;
 import com.massivecraft.massivecore.command.type.primitive.TypeString;
 import com.massivecraft.massivecore.mixin.MixinDisplayName;
 import com.massivecraft.massivecore.util.MUtil;
@@ -19,7 +20,7 @@ public class CmdFactionsMotd extends FactionsCommand
 	public CmdFactionsMotd()
 	{
 		// Parameters
-		this.addParameter(TypeString.get(), "new", "read", true);
+		this.addParameter(TypeNullable.get(TypeString.get()), "new", "read", true);
 	}
 
 	// -------------------------------------------- //
@@ -30,25 +31,21 @@ public class CmdFactionsMotd extends FactionsCommand
 	public void perform() throws MassiveException
 	{	
 		// Read
-		if ( ! this.argIsSet(0))
+		if (!this.argIsSet(0))
 		{
 			message(msenderFaction.getMotdMessages());
 			return;
 		}
 		
 		// MPerm
-		if ( ! MPerm.getPermMotd().has(msender, msenderFaction, true)) return;
+		if (!MPerm.getPermMotd().has(msender, msenderFaction, true)) return;
 		
 		// Args
 		String target = this.readArg();
-		target = target.trim();
-		target = Txt.parse(target);
 		
-		// Removal
-		if (target != null && MassiveCore.NOTHING_REMOVE.contains(target))
-		{
-			target = null;
-		}
+		// Clean input
+		target = Faction.clean(target);
+		target = Txt.parse(target);
 
 		// Get Old
 		String old = null;
@@ -57,14 +54,10 @@ public class CmdFactionsMotd extends FactionsCommand
 			old = msenderFaction.getMotd();
 		}
 		
-		// Target Desc
-		String targetDesc = target;
-		if (targetDesc == null) targetDesc = Txt.parse("<silver>nothing");
-		
 		// NoChange
 		if (MUtil.equals(old, target))
 		{
-			msg("<i>The motd for %s <i>is already: <h>%s", msenderFaction.describeTo(msender, true), target);
+			msg("<i>The motd for %s <i>is already: <h>%s", msenderFaction.describeTo(msender, true), old == null ? Txt.parse("<silver>none") : old);
 			return;
 		}
 

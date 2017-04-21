@@ -350,15 +350,7 @@ public class MPlayer extends SenderEntity<MPlayer> implements FactionsParticipat
 	public void setTitle(String title)
 	{
 		// Clean input
-		String target = title;
-		if (target != null)
-		{
-			target = target.trim();
-			if (target.length() == 0)
-			{
-				target = null;
-			}
-		}
+		String target = Faction.clean(title);
 
 		// Detect Nochange
 		if (MUtil.equals(this.title, target)) return;
