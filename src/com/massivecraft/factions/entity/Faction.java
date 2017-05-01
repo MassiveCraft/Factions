@@ -31,6 +31,7 @@ import org.bukkit.entity.Player;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -984,14 +985,14 @@ public class Faction extends Entity<Faction> implements FactionsParticipator
 		return new MassiveList<>(FactionsIndex.get().getMPlayers(this));
 	}
 	
+	public List<MPlayer> getMPlayers(Predicate<? super MPlayer> where, Comparator<? super MPlayer> orderby, Integer limit, Integer offset)
+	{
+		return MUtil.transform(this.getMPlayers(), where, orderby, limit, offset);
+	}
+	
 	public List<MPlayer> getMPlayersWhere(Predicate<? super MPlayer> predicate)
 	{
-		List<MPlayer> ret = this.getMPlayers();
-		for (Iterator<MPlayer> it = ret.iterator(); it.hasNext();)
-		{
-			if ( ! predicate.apply(it.next())) it.remove();
-		}
-		return ret;
+		return this.getMPlayers(predicate, null, null, null);
 	}
 	
 	public List<MPlayer> getMPlayersWhereOnline(boolean online)
