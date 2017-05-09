@@ -237,8 +237,7 @@ public class Faction extends Entity<Faction> implements FactionsParticipator
 	
 	public String getDescription()
 	{
-		if (this.hasDescription()) return this.description;
-		return NODESCRIPTION;
+		return this.description;
 	}
 	
 	public void setDescription(String description)
@@ -256,6 +255,15 @@ public class Faction extends Entity<Faction> implements FactionsParticipator
 		this.changed();
 	}
 	
+	// FINER
+	
+	public String getDescriptionDesc()
+	{
+		String motd = this.getDescription();
+		if (motd == null) motd = NODESCRIPTION;
+		return motd;
+	}
+	
 	// -------------------------------------------- //
 	// FIELD: motd
 	// -------------------------------------------- //
@@ -269,8 +277,7 @@ public class Faction extends Entity<Faction> implements FactionsParticipator
 	
 	public String getMotd()
 	{
-		if (this.hasMotd()) return this.motd;
-		return NOMOTD;
+		return this.motd;
 	}
 	
 	public void setMotd(String motd)
@@ -290,6 +297,17 @@ public class Faction extends Entity<Faction> implements FactionsParticipator
 	
 	// FINER
 	
+	public String getMotdDesc()
+	{
+		return getMotdDesc(this.getMotd());
+	}
+	
+	private static String getMotdDesc(String motd)
+	{
+		if (motd == null) motd = NOMOTD;
+		return motd;
+	}
+	
 	public List<Object> getMotdMessages()
 	{
 		// Create
@@ -300,7 +318,7 @@ public class Faction extends Entity<Faction> implements FactionsParticipator
 		title = Txt.titleize(title);
 		ret.add(title);
 		
-		String motd = Txt.parse("<i>" + this.getMotd());
+		String motd = Txt.parse("<i>") + this.getMotdDesc();
 		ret.add(motd);
 		
 		ret.add("");

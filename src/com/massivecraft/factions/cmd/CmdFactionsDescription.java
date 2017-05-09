@@ -48,7 +48,7 @@ public class CmdFactionsDescription extends FactionsCommand
 		// Inform
 		for (MPlayer follower : msenderFaction.getMPlayers())
 		{
-			follower.msg("<i>%s <i>set your faction description to:\n%s", MixinDisplayName.get().getDisplayName(sender, follower), msenderFaction.getDescription());
+			follower.msg("<i>%s <i>set your faction description to:\n%s", MixinDisplayName.get().getDisplayName(sender, follower), msenderFaction.getDescriptionDesc());
 		}
 	}
 	

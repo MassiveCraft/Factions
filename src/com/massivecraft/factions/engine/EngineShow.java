@@ -59,7 +59,7 @@ public class EngineShow extends Engine
 		}
 
 		// DESCRIPTION
-		show(idPriorityLiness, Const.SHOW_ID_FACTION_DESCRIPTION, Const.SHOW_PRIORITY_FACTION_DESCRIPTION, "Description", faction.getDescription());
+		show(idPriorityLiness, Const.SHOW_ID_FACTION_DESCRIPTION, Const.SHOW_PRIORITY_FACTION_DESCRIPTION, "Description", faction.getDescriptionDesc());
 
 		// SECTION: NORMAL
 		if (normal)

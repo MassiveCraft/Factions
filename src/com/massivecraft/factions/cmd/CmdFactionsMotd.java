@@ -1,6 +1,5 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MPerm;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.event.EventFactionsMotdChange;
@@ -42,22 +41,17 @@ public class CmdFactionsMotd extends FactionsCommand
 		
 		// Args
 		String target = this.readArg();
-		
-		// Clean input
-		target = Faction.clean(target);
+
+		target = target.trim();
 		target = Txt.parse(target);
 
 		// Get Old
-		String old = null;
-		if (msenderFaction.hasMotd())
-		{
-			old = msenderFaction.getMotd();
-		}
+		String old = msenderFaction.getMotd();
 		
 		// NoChange
 		if (MUtil.equals(old, target))
 		{
-			msg("<i>The motd for %s <i>is already: <h>%s", msenderFaction.describeTo(msender, true), old == null ? Txt.parse("<silver>none") : old);
+			msg("<i>The motd for %s <i>is already: <h>%s", msenderFaction.describeTo(msender, true), msenderFaction.getMotdDesc());
 			return;
 		}
 
@@ -73,7 +67,7 @@ public class CmdFactionsMotd extends FactionsCommand
 		// Inform
 		for (MPlayer follower : msenderFaction.getMPlayers())
 		{
-			follower.msg("<i>%s <i>set your faction motd to:\n%s", MixinDisplayName.get().getDisplayName(sender, follower), msenderFaction.getMotd());
+			follower.msg("<i>%s <i>set your faction motd to:\n%s", MixinDisplayName.get().getDisplayName(sender, follower), msenderFaction.getMotdDesc());
 		}
 	}
 	

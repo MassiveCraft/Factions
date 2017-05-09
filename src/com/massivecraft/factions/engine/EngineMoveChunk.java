@@ -114,7 +114,7 @@ public class EngineMoveChunk extends Engine
 
 		string = string.replace("{name}", faction.getName());
 		string = string.replace("{relcolor}", faction.getColorTo(mplayer).toString());
-		string = string.replace("{desc}", faction.getDescription());
+		string = string.replace("{desc}", faction.getDescriptionDesc());
 
 		return string;
 	}
