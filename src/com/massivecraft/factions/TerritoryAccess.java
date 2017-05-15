@@ -80,9 +80,11 @@ public class TerritoryAccess
 	// FIELDS: DIRECT
 	// -------------------------------------------- //
 	
+	// This method intentionally returns null if the Faction no longer exists.
+	// In Board we don't even return this TerritoryAccess if that is the case.
 	public Faction getHostFaction()
 	{
-		return FactionColl.get().get(this.getHostFactionId());
+		return Faction.get(this.getHostFactionId());
 	}
 	
 	public Set<MPlayer> getGrantedMPlayers()
@@ -108,7 +110,9 @@ public class TerritoryAccess
 		// Fill
 		for (String factionId : this.getFactionIds())
 		{
-			ret.add(FactionColl.get().get(factionId));
+			Faction faction = Faction.get(factionId);
+			if (faction == null) continue;
+			ret.add(faction);
 		}
 		
 		// Return
