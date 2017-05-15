@@ -92,7 +92,7 @@ public class Board extends Entity<Board> implements BoardInterface
 		if (ps == null) return null;
 		ps = ps.getChunkCoords(true);
 		TerritoryAccess ret = this.map.get(ps);
-		if (ret == null) ret = TerritoryAccess.valueOf(Factions.ID_NONE);
+		if (ret == null || ret.getHostFaction() == null) ret = TerritoryAccess.valueOf(Factions.ID_NONE);
 		return ret;
 	}
 	
