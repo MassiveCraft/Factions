@@ -854,10 +854,10 @@ public class MPlayer extends SenderEntity<MPlayer> implements FactionsParticipat
 		if (sender == null)
 		{
 			msg("<b>ERROR: Your \"CommandSender Link\" has been severed.");
-			msg("<b>It's likely that you are using Cauldron.");
-			msg("<b>We do currently not support Cauldron.");
-			msg("<b>We would love to but lack time to develop support ourselves.");
-			msg("<g>Do you know how to code? Please send us a pull request <3, sorry.");
+			msg("<b>It's likely that you are using Cauldron, KCauldron or Thermos.");
+			msg("<b>We do not support forge-bukkit hybrid servers natively.");
+			msg("<b>MarkehMe (Author of FactionsPlus) has been kind enough to make an addon plugin to do this.");
+			msg("<g>Download it here: https://github.com/MarkehMe/MassiveCoreForgeFixes/releases.");
 			return false;
 		}
 		EventFactionsChunksChange event = new EventFactionsChunksChange(sender, chunks, newFaction);
