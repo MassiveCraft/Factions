@@ -68,14 +68,14 @@ public class CmdFactionsRelationSet extends FactionsCommand
 		// inform the other faction of your request
 		else
 		{
-			MassiveCommand command = CmdFactions.get().cmdFactionsRelation.cmdFactionsRelationSet;
+			MassiveCommand command = CmdFactions.get();
 			String colorOne = newRelation.getColor() + newRelation.getDescFactionOne();
 
 			// Mson creation
 			Mson factionsRelationshipChange = mson(
 				Mson.parse("%s<i> wishes to be %s.", msenderFaction.describeTo(otherFaction, true), colorOne),
 				Mson.SPACE,
-				mson("[Accept]").color(ChatColor.AQUA).command(command, msenderFaction.getName(), newRelation.name())
+				mson("[Accept]").color(ChatColor.AQUA).command(command, newRelation.name(), msenderFaction.getName())
 			);
 			
 			otherFaction.sendMessage(factionsRelationshipChange);
