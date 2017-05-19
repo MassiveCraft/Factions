@@ -60,7 +60,7 @@ public class MConf extends Entity<MConf>
 	// VERSION
 	// -------------------------------------------- //
 	
-	public int version = 1;
+	public int version = 2;
 	
 	// -------------------------------------------- //
 	// COMMAND ALIASES
@@ -111,17 +111,17 @@ public class MConf extends Entity<MConf>
 	
 	// The Default
 	@EditorType(TypeMillisDiff.class)
-	public long removePlayerMillisDefault = 10 * TimeUnit.MILLIS_PER_DAY; // 10 days
+	public long playercleanToleranceMillis = 10 * TimeUnit.MILLIS_PER_DAY; // 10 days
 	
 	// Player Age Bonus
 	@EditorTypeInner({TypeMillisDiff.class, TypeMillisDiff.class})
-	public Map<Long, Long> removePlayerMillisPlayerAgeToBonus = MUtil.map(
+	public Map<Long, Long> playercleanToleranceMillisPlayerAgeToBonus = MUtil.map(
 		2 * TimeUnit.MILLIS_PER_WEEK, 10 * TimeUnit.MILLIS_PER_DAY  // +10 days after 2 weeks
 	);
 	
 	// Faction Age Bonus
 	@EditorTypeInner({TypeMillisDiff.class, TypeMillisDiff.class})
-	public Map<Long, Long> removePlayerMillisFactionAgeToBonus = MUtil.map(
+	public Map<Long, Long> playercleanToleranceMillisFactionAgeToBonus = MUtil.map(
 		4 * TimeUnit.MILLIS_PER_WEEK, 10 * TimeUnit.MILLIS_PER_DAY, // +10 days after 4 weeks
 		2 * TimeUnit.MILLIS_PER_WEEK,  5 * TimeUnit.MILLIS_PER_DAY  // +5 days after 2 weeks
 	);

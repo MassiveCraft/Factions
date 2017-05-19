@@ -11,7 +11,6 @@ import com.massivecraft.factions.event.EventFactionsChunksChange;
 import com.massivecraft.factions.event.EventFactionsDisband;
 import com.massivecraft.factions.event.EventFactionsMembershipChange;
 import com.massivecraft.factions.event.EventFactionsMembershipChange.MembershipChangeReason;
-import com.massivecraft.factions.event.EventFactionsRemovePlayerMillis;
 import com.massivecraft.factions.mixin.PowerMixin;
 import com.massivecraft.factions.util.RelationUtil;
 import com.massivecraft.massivecore.mixin.MixinSenderPs;
@@ -19,6 +18,7 @@ import com.massivecraft.massivecore.mixin.MixinTitle;
 import com.massivecraft.massivecore.ps.PS;
 import com.massivecraft.massivecore.ps.PSFormatHumanSpace;
 import com.massivecraft.massivecore.store.SenderEntity;
+import com.massivecraft.massivecore.store.inactive.Inactive;
 import com.massivecraft.massivecore.util.IdUtil;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.Txt;
@@ -34,7 +34,7 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.Set;
 
-public class MPlayer extends SenderEntity<MPlayer> implements FactionsParticipator
+public class MPlayer extends SenderEntity<MPlayer> implements FactionsParticipator, Inactive
 {
 	// -------------------------------------------- //
 	// META
@@ -701,57 +701,7 @@ public class MPlayer extends SenderEntity<MPlayer> implements FactionsParticipat
 		if (ps == null) return false;
 		return BoardColl.get().getFactionAt(ps).getRelationTo(this) == Rel.ENEMY;
 	}
-
-	// -------------------------------------------- //
-	// INACTIVITY TIMEOUT
-	// -------------------------------------------- //
-
-	public long getRemovePlayerMillis(boolean async)
-	{
-		EventFactionsRemovePlayerMillis event = new EventFactionsRemovePlayerMillis(async, this);
-		event.run();
-		return event.getMillis();
-	}
-
-	public boolean considerRemovePlayerMillis(boolean async)
-	{
-		// This may or may not be required.
-		// Some users have been reporting a loop issue with the same player
-		// detaching over and over again.
-		// Maybe skipping ahead if the player is detached will solve the issue.
-		if (this.detached()) return false;
-
-		// Get the last activity millis.
-		long lastActivityMillis = this.getLastActivityMillis();
-
-		// Consider
-		long toleranceMillis = this.getRemovePlayerMillis(async);
-		if (System.currentTimeMillis() - lastActivityMillis <= toleranceMillis) return false;
-
-		// Inform
-		if (MConf.get().logFactionLeave || MConf.get().logFactionKick)
-		{
-			Factions.get().log("Player " + this.getName() + " was auto-removed due to inactivity.");
-		}
-
-		// Apply
-
-		// Promote a new leader if required.
-		if (this.getRole() == Rel.LEADER)
-		{
-			Faction faction = this.getFaction();
-			if (faction != null)
-			{
-				this.getFaction().promoteNewLeader();
-			}
-		}
-
-		this.leave();
-		this.detach();
-
-		return true;
-	}
-
+	
 	// -------------------------------------------- //
 	// ACTIONS
 	// -------------------------------------------- //

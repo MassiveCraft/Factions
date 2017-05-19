@@ -351,6 +351,16 @@ public class Faction extends Entity<Faction> implements FactionsParticipator
 		this.changed();
 	}
 	
+	public long getAge()
+	{
+		return this.getAge(System.currentTimeMillis());
+	}
+	
+	public long getAge(long now)
+	{
+		return now - this.getCreatedAtMillis();
+	}
+	
 	// -------------------------------------------- //
 	// FIELD: home
 	// -------------------------------------------- //
