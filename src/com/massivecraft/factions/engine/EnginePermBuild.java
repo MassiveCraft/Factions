@@ -249,34 +249,40 @@ public class EnginePermBuild extends Engine
 
 		// Prepare fields
 		Block fromBlock = event.getBlock();
-		int fromCX = fromBlock.getX() >> 4;
-		int fromCZ = fromBlock.getZ() >> 4;
-		BlockFace face = event.getFace();
-		int toCX = (fromBlock.getX() + face.getModX()) >> 4;
-		int toCZ = (fromBlock.getZ() + face.getModZ()) >> 4;
+		int fromChunkX = fromBlock.getX() >> 4;
+		int fromChunkZ = fromBlock.getZ() >> 4;
+		BlockFace blockFace = event.getFace();
+		int toChunkX = (fromBlock.getX() + blockFace.getModX()) >> 4;
+		int toChunkZ = (fromBlock.getZ() + blockFace.getModZ()) >> 4;
 
 		// If a liquid (or dragon egg) moves from one chunk to another ...
-		if (toCX == fromCX && toCZ == fromCZ) return;
+		if (toChunkX == fromChunkX && toChunkZ == fromChunkZ) return;
 
 		Board board = BoardColl.get().getFixed(fromBlock.getWorld().getName().toLowerCase(), false);
 		if (board == null) return;
 		Map<PS, TerritoryAccess> map = board.getMapRaw();
 		if (map.isEmpty()) return;
 
-		PS fromPs = PS.valueOf(fromCX, fromCZ);
-		PS toPs = PS.valueOf(toCX, toCZ);
-		TerritoryAccess fromTa = map.get(fromPs);
-		TerritoryAccess toTa = map.get(toPs);
-		String fromId = fromTa != null ? fromTa.getHostFactionId() : Factions.ID_NONE;
-		String toId = toTa != null ? toTa.getHostFactionId() : Factions.ID_NONE;
+		PS fromPs = PS.valueOf(fromChunkX, fromChunkZ);
+		PS toPs = PS.valueOf(toChunkX, toChunkZ);
+		TerritoryAccess fromTerritoryAccess = map.get(fromPs);
+		TerritoryAccess toTerritoryAccess = map.get(toPs);
+		String fromFactionId = fromTerritoryAccess != null ? fromTerritoryAccess.getHostFactionId() : Factions.ID_NONE;
+		String toFactionId = toTerritoryAccess != null ? toTerritoryAccess.getHostFactionId() : Factions.ID_NONE;
 
 		// ... and the chunks belong to different factions ...
-		if (toId.equals(fromId)) return;
-
+		if (toFactionId.equals(fromFactionId)) return;
+		
+		Faction fromFaction = FactionColl.get().getFixed(fromFactionId);
+		if (fromFaction == null) fromFaction = FactionColl.get().getNone();
+		
+		Faction toFaction = FactionColl.get().getFixed(toFactionId);
+		if (toFaction == null) toFaction = FactionColl.get().getNone();
+		
+		if (toFaction == fromFaction) return;
+		
 		// ... and the faction "from" can not build at "to" ...
-		Faction fromFac = FactionColl.get().getFixed(fromId);
-		Faction toFac = FactionColl.get().getFixed(toId);
-		if (MPerm.getPermBuild().has(fromFac, toFac)) return;
+		if (MPerm.getPermBuild().has(fromFaction, toFaction)) return;
 
 		// ... cancel!
 		event.setCancelled(true);
