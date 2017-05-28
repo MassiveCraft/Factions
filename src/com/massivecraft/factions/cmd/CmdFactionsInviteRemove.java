@@ -101,7 +101,7 @@ public class CmdFactionsInviteRemove extends FactionsCommand
 				}
 				
 				// Apply
-				msenderFaction.uninvite(msender);
+				msenderFaction.uninvite(mplayer);
 				
 				// If all, we do this at last. So we only do it once.
 				if (! all) msenderFaction.changed();
