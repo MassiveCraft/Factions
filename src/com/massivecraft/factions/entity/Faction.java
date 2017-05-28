@@ -459,6 +459,7 @@ public class Faction extends Entity<Faction> implements FactionsParticipator
 	
 	public boolean uninvite(String playerId)
 	{
+		System.out.println(playerId);
 		return this.getInvitations().detachId(playerId) != null;
 	}
 	

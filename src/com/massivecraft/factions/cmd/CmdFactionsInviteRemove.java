@@ -75,7 +75,7 @@ public class CmdFactionsInviteRemove extends FactionsCommand
 				);
 				
 				// Inform
-				msg("%s<i> is already a member of %s<i>.", mplayer.getName(), msenderFaction.getName());
+				msg("%s<i> is already a member of %s<i>.", mplayer.getName(), msenderFaction.getName(msender));
 				message(kick);
 				continue;
 			}

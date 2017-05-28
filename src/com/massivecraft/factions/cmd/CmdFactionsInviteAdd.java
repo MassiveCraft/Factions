@@ -47,7 +47,7 @@ public class CmdFactionsInviteAdd extends FactionsCommand
 			// Already member?
 			if (mplayer.getFaction() == msenderFaction)
 			{
-				msg("%s<i> is already a member of %s<i>.", mplayer.getName(), msenderFaction.getName());
+				msg("%s<i> is already a member of %s<i>.", mplayer.getName(), msenderFaction.getName(msender));
 				continue;
 			}
 			
@@ -83,7 +83,7 @@ public class CmdFactionsInviteAdd extends FactionsCommand
 				);
 				
 				// Inform
-				msg("%s <i>is already invited to %s<i>.", mplayer.getName(), msenderFaction.getName());
+				msg("%s <i>is already invited to %s<i>.", mplayer.getName(), msenderFaction.getName(msender));
 				message(remove);
 			}
 		}
