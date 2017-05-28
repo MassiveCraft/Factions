@@ -10,12 +10,14 @@ import com.massivecraft.factions.entity.Invitation;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.entity.MPlayerColl;
 import com.massivecraft.massivecore.MassiveException;
+import com.massivecraft.massivecore.collections.MassiveSet;
 import com.massivecraft.massivecore.ps.PS;
 import com.massivecraft.massivecore.store.EntityInternalMap;
 import com.massivecraft.massivecore.util.Txt;
 
 import java.util.Iterator;
 import java.util.Map.Entry;
+import java.util.Set;
 
 public class CmdFactionsClean extends FactionsCommand
 {
@@ -75,7 +77,12 @@ public class CmdFactionsClean extends FactionsCommand
 			if (invitations.isEmpty()) continue;
 			
 			ret += invitations.size();
-			invitations.clear();
+			Set<String> invitationIds = new MassiveSet<>(invitations.keySet());
+			for (String inviteId : invitationIds)
+			{
+				invitations.detachIdFixed(inviteId);
+			}
+			
 			faction.changed();
 		}
 		

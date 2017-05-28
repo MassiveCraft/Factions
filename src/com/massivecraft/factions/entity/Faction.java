@@ -459,7 +459,7 @@ public class Faction extends Entity<Faction> implements FactionsParticipator
 	
 	public boolean uninvite(String playerId)
 	{
-		return this.getInvitations().remove(playerId) != null;
+		return this.getInvitations().detachIdFixed(playerId) != null;
 	}
 	
 	public boolean uninvite(MPlayer mplayer)
