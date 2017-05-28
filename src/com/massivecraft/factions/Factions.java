@@ -69,7 +69,6 @@ public class Factions extends MassivePlugin
 		// Activate
 		this.activateAuto();
 		this.activate(this.getClassesActive("chat", ChatActive.class));
-
 	}
 
 	@Override
