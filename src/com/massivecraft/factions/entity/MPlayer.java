@@ -853,12 +853,24 @@ public class MPlayer extends SenderEntity<MPlayer> implements FactionsParticipat
 		CommandSender sender = this.getSender();
 		if (sender == null)
 		{
-			msg("<b>ERROR: Your \"CommandSender Link\" has been severed.");
-			msg("<b>It's likely that you are using Cauldron.");
-			msg("<b>We do currently not support Cauldron.");
-			msg("<b>We would love to but lack time to develop support ourselves.");
-			msg("<g>Do you know how to code? Please send us a pull request <3, sorry.");
-			return false;
+                        for(Player p : Bukkit.getServer().getOnlinePlayers())
+                        {
+                            if(this.getUuid().equals(p.getUniqueId()) || this.getName().equals(p.getName()))
+                            {
+                                this.sender = p;
+                                sender = p;
+                                break;
+                            }
+                        }
+			if (sender == null)
+                        {
+    				msg("<b>ERROR: Your \"CommandSender Link\" has been severed.");
+				msg("<b>It's likely that you are using KCauldron.");
+				msg("<b>We do currently not support KCauldron.");
+				msg("<b>We would love to but lack time to develop support ourselves.");
+				msg("<g>Do you know how to code? Please send us a pull request <3, sorry.");;
+                            return false;
+                        }
 		}
 		EventFactionsChunksChange event = new EventFactionsChunksChange(sender, chunks, newFaction);
 		event.run();
