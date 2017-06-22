@@ -133,7 +133,7 @@ public abstract class MPlugin extends JavaPlugin {
                     while ((read = defLangStream.read(bytes)) != -1) {
                         out.write(bytes, 0, read);
                     }
-                    YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defLangStream);
+                    YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(new BufferedReader(new InputStreamReader(defLangStream)));
                     TL.setFile(defConfig);
                 }
             } catch (IOException e) {
