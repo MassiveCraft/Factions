@@ -11,6 +11,7 @@ import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.event.EventFactionsHomeTeleport;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.command.requirement.RequirementIsPlayer;
+import com.massivecraft.massivecore.mixin.MixinMessage;
 import com.massivecraft.massivecore.mixin.MixinTeleport;
 import com.massivecraft.massivecore.mixin.TeleporterException;
 import com.massivecraft.massivecore.ps.PS;
@@ -148,7 +149,8 @@ public class CmdFactionsHome extends FactionsCommandHome
 		}
 		catch (TeleporterException e)
 		{
-			me.sendMessage(e.getMessage());
+			String message = e.getMessage();
+			MixinMessage.get().messageOne(me, message);
 		}
 	}
 	

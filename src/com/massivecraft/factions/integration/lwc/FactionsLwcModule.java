@@ -10,6 +10,7 @@ import com.massivecraft.factions.engine.EnginePermBuild;
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.massivecore.SoundEffect;
+import com.massivecraft.massivecore.mixin.MixinMessage;
 import com.massivecraft.massivecore.ps.PS;
 import com.massivecraft.massivecore.util.IdUtil;
 import com.massivecraft.massivecore.util.SmokeUtil;
@@ -97,7 +98,7 @@ public class FactionsLwcModule extends JavaModule
 		// ... and inform.
 		Player player = event.getPlayer();
 		String message = Txt.parse("<i>Factions removed <h>%s's <i>LWC. They lacked build rights.", mowner.getDisplayName(player));
-		player.sendMessage(message);
+		MixinMessage.get().messageOne(player, message);
 	}
 	
 }

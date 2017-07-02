@@ -7,6 +7,7 @@ import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.massivecore.Engine;
+import com.massivecraft.massivecore.mixin.MixinMessage;
 import com.massivecraft.massivecore.mixin.MixinTitle;
 import com.massivecraft.massivecore.ps.PS;
 import com.massivecraft.massivecore.util.MUtil;
@@ -77,7 +78,7 @@ public class EngineMoveChunk extends Engine
 			else
 			{
 				String message = parseTerritoryInfo(MConf.get().territoryInfoChat, mplayer, factionTo);
-				player.sendMessage(message);
+				MixinMessage.get().messageOne(player, message);
 			}
 		}
 

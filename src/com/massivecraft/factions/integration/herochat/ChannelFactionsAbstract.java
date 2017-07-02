@@ -11,6 +11,7 @@ import com.dthielke.herochat.MessageNotFoundException;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MPlayer;
+import com.massivecraft.massivecore.mixin.MixinMessage;
 import com.massivecraft.massivecore.util.MUtil;
 import net.milkbowl.vault.chat.Chat;
 import org.bukkit.Bukkit;
@@ -112,7 +113,8 @@ public abstract class ChannelFactionsAbstract implements Channel
 		message = applyFormat(this.getFormatSupplier().getAnnounceFormat(), "").replace("%2$s", colorized);
 		for (Chatter member : this.getMembers())
 		{
-			member.getPlayer().sendMessage(message);
+			Player player = member.getPlayer();
+			MixinMessage.get().messageOne(player, message);
 		}
 		Herochat.logChat(ChatColor.stripColor(message));
 	}
@@ -210,7 +212,7 @@ public abstract class ChannelFactionsAbstract implements Channel
 		
 		for (Player recipient : recipients)
 		{
-			recipient.sendMessage(message);
+			MixinMessage.get().messageOne(recipient, message);
 		}
 	}
 	
@@ -256,7 +258,7 @@ public abstract class ChannelFactionsAbstract implements Channel
 		String msg = String.format(format, new Object[] { player.getDisplayName(), event.getMessage() });
 		for (Player recipient : recipients)
 		{
-			recipient.sendMessage(msg);
+			MixinMessage.get().messageOne(recipient, msg);
 		}
 		
 		Bukkit.getPluginManager().callEvent(new ChatCompleteEvent(sender, this, msg));
@@ -362,7 +364,8 @@ public abstract class ChannelFactionsAbstract implements Channel
 	{
 		for (Chatter member : this.getMembers())
 		{
-			member.getPlayer().sendMessage(rawMessage);
+			Player player = member.getPlayer();
+			MixinMessage.get().messageOne(player, rawMessage);
 		}
 	}
 }
