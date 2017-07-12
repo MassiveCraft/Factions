@@ -207,41 +207,6 @@ public class FactionColl extends Coll<Faction>
 		}
 	}
 	
-	// -------------------------------------------- //
-	// FACTION NAME
-	// -------------------------------------------- //
-	
-	public ArrayList<String> validateName(String str)
-	{
-		// Create
-		ArrayList<String> errors = new ArrayList<>();
-		
-		// Fill
-		// Check minimum length
-		if (MiscUtil.getComparisonString(str).length() < MConf.get().factionNameLengthMin)
-		{
-			errors.add(Txt.parse("<i>The faction name can't be shorter than <h>%s<i> chars.", MConf.get().factionNameLengthMin));
-		}
-		
-		// Check maximum length
-		if (str.length() > MConf.get().factionNameLengthMax)
-		{
-			errors.add(Txt.parse("<i>The faction name can't be longer than <h>%s<i> chars.", MConf.get().factionNameLengthMax));
-		}
-		
-		// Check characters used
-		for (char c : str.toCharArray())
-		{
-			if (!MiscUtil.substanceChars.contains(String.valueOf(c)))
-			{
-				errors.add(Txt.parse("<i>Faction name must be alphanumeric. \"<h>%s<i>\" is not allowed.", c));
-			}
-		}
-		
-		// Return
-		return errors;
-	}
-	
 	@Override
 	public Faction getByName(String name)
 	{

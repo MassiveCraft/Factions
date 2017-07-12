@@ -1,6 +1,7 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.cmd.type.TypeFaction;
+import com.massivecraft.factions.cmd.type.TypeFactionNameLenient;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.FactionColl;
 import com.massivecraft.factions.entity.MPerm;
@@ -20,7 +21,7 @@ public class CmdFactionsName extends FactionsCommand
 	public CmdFactionsName()
 	{
 		// Parameters
-		this.addParameter(TypeString.get(), "new name");
+		this.addParameter(TypeFactionNameLenient.get(), "new name");
 		this.addParameter(TypeFaction.get(), "faction", "you");
 	}
 
@@ -38,21 +39,6 @@ public class CmdFactionsName extends FactionsCommand
 		// MPerm
 		if ( ! MPerm.getPermName().has(msender, faction, true)) return;
 		
-		// TODO does not first test cover selfcase?
-		if (FactionColl.get().isNameTaken(newName) && ! MiscUtil.getComparisonString(newName).equals(faction.getComparisonName()))
-		{
-			msg("<b>That name is already taken");
-			return;
-		}
-
-		ArrayList<String> errors = new ArrayList<>();
-		errors.addAll(FactionColl.get().validateName(newName));
-		if (errors.size() > 0)
-		{
-			message(errors);
-			return;
-		}
-
 		// Event
 		EventFactionsNameChange event = new EventFactionsNameChange(sender, faction, newName);
 		event.run();

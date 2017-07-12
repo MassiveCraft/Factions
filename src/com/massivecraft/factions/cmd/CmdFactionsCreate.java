@@ -3,6 +3,7 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.cmd.req.ReqHasntFaction;
+import com.massivecraft.factions.cmd.type.TypeFactionNameStrict;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.FactionColl;
 import com.massivecraft.factions.entity.MConf;
@@ -10,12 +11,9 @@ import com.massivecraft.factions.event.EventFactionsCreate;
 import com.massivecraft.factions.event.EventFactionsMembershipChange;
 import com.massivecraft.factions.event.EventFactionsMembershipChange.MembershipChangeReason;
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.command.type.primitive.TypeString;
 import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.store.MStore;
 import org.bukkit.ChatColor;
-
-import java.util.ArrayList;
 
 public class CmdFactionsCreate extends FactionsCommand
 {
@@ -27,14 +25,14 @@ public class CmdFactionsCreate extends FactionsCommand
 	{
 		// Aliases
 		this.addAliases("new");
-
+		
 		// Parameters
-		this.addParameter(TypeString.get(), "name");
-
+		this.addParameter(TypeFactionNameStrict.get(), "name");
+		
 		// Requirements
 		this.addRequirements(ReqHasntFaction.get());
 	}
-
+	
 	// -------------------------------------------- //
 	// OVERRIDE
 	// -------------------------------------------- //
@@ -45,20 +43,6 @@ public class CmdFactionsCreate extends FactionsCommand
 		// Args
 		String newName = this.readArg();
 		
-		// Verify
-		if (FactionColl.get().isNameTaken(newName))
-		{
-			msg("<b>That name is already in use.");
-			return;
-		}
-		
-		ArrayList<String> nameValidationErrors = FactionColl.get().validateName(newName);
-		if (nameValidationErrors.size() > 0)
-		{
-			message(nameValidationErrors);
-			return;
-		}
-
 		// Pre-Generate Id
 		String factionId = MStore.createId();
 		
@@ -81,11 +65,11 @@ public class CmdFactionsCreate extends FactionsCommand
 		// Inform
 		msg("<i>You created the faction %s", faction.getName(msender));
 		message(Mson.mson(mson("You should now: ").color(ChatColor.YELLOW), CmdFactions.get().cmdFactionsDescription.getTemplate()));
-
+		
 		// Log
 		if (MConf.get().logFactionCreate)
 		{
-			Factions.get().log(msender.getName()+" created a new faction: "+newName);
+			Factions.get().log(msender.getName() + " created a new faction: " + newName);
 		}
 	}
 	
