@@ -1,7 +1,6 @@
 package com.massivecraft.factions.engine;
 
 import com.massivecraft.factions.AccessStatus;
-import com.massivecraft.factions.Const;
 import com.massivecraft.factions.TerritoryAccess;
 import com.massivecraft.factions.entity.BoardColl;
 import com.massivecraft.factions.entity.Faction;
@@ -9,7 +8,6 @@ import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.util.AsciiMap;
 import com.massivecraft.massivecore.Engine;
-import com.massivecraft.massivecore.mixin.MixinMessage;
 import com.massivecraft.massivecore.mixin.MixinTitle;
 import com.massivecraft.massivecore.ps.PS;
 import com.massivecraft.massivecore.util.MUtil;
