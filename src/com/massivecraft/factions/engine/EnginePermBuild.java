@@ -105,7 +105,7 @@ public class EnginePermBuild extends Engine
 	
 	public static Boolean useBlock(Player player, Block block, boolean verboose, Cancellable cancellable)
 	{
-		return protect(ProtectCase.USE_BLOCK, verboose, player, PS.valueOf(block), block, cancellable);
+		return protect(ProtectCase.USE_BLOCK, verboose, player, PS.valueOf(block), block.getType(), cancellable);
 	}
 	
 	// -------------------------------------------- //
