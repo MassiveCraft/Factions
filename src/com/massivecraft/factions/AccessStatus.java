@@ -11,7 +11,7 @@ public enum AccessStatus implements Colorized
 	// ENUM
 	// -------------------------------------------- //
 	
-	STANDARD(ChatColor.WHITE, null),
+	STANDARD(ChatColor.YELLOW, null),
 	ELEVATED(ChatColor.GREEN, true),
 	DECREASED(ChatColor.RED, false),
 	
