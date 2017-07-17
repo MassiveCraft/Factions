@@ -1,6 +1,5 @@
 package com.massivecraft.factions.engine;
 
-import com.massivecraft.factions.Const;
 import com.massivecraft.factions.comparator.ComparatorMPlayerRole;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MConf;
@@ -31,6 +30,31 @@ import java.util.Map.Entry;
 public class EngineShow extends Engine
 {
 	// -------------------------------------------- //
+	// CONSTANTS
+	// -------------------------------------------- //
+	
+	public static final String BASENAME = "factions";
+	public static final String BASENAME_ = BASENAME+"_";
+	
+	public static final String SHOW_ID_FACTION_ID = BASENAME_ + "id";
+	public static final String SHOW_ID_FACTION_DESCRIPTION = BASENAME_ + "description";
+	public static final String SHOW_ID_FACTION_AGE = BASENAME_ + "age";
+	public static final String SHOW_ID_FACTION_FLAGS = BASENAME_ + "flags";
+	public static final String SHOW_ID_FACTION_POWER = BASENAME_ + "power";
+	public static final String SHOW_ID_FACTION_LANDVALUES = BASENAME_ + "landvalue";
+	public static final String SHOW_ID_FACTION_BANK = BASENAME_ + "bank";
+	public static final String SHOW_ID_FACTION_FOLLOWERS = BASENAME_ + "followers";
+	
+	public static final int SHOW_PRIORITY_FACTION_ID = 1000;
+	public static final int SHOW_PRIORITY_FACTION_DESCRIPTION = 2000;
+	public static final int SHOW_PRIORITY_FACTION_AGE = 3000;
+	public static final int SHOW_PRIORITY_FACTION_FLAGS = 4000;
+	public static final int SHOW_PRIORITY_FACTION_POWER = 5000;
+	public static final int SHOW_PRIORITY_FACTION_LANDVALUES = 6000;
+	public static final int SHOW_PRIORITY_FACTION_BANK = 7000;
+	public static final int SHOW_PRIORITY_FACTION_FOLLOWERS = 9000;
+	
+	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
@@ -55,11 +79,11 @@ public class EngineShow extends Engine
 		// ID
 		if (mplayer.isOverriding())
 		{
-			show(idPriorityLiness, Const.SHOW_ID_FACTION_ID, Const.SHOW_PRIORITY_FACTION_ID, "ID", faction.getId());
+			show(idPriorityLiness, SHOW_ID_FACTION_ID, SHOW_PRIORITY_FACTION_ID, "ID", faction.getId());
 		}
 
 		// DESCRIPTION
-		show(idPriorityLiness, Const.SHOW_ID_FACTION_DESCRIPTION, Const.SHOW_PRIORITY_FACTION_DESCRIPTION, "Description", faction.getDescriptionDesc());
+		show(idPriorityLiness, SHOW_ID_FACTION_DESCRIPTION, SHOW_PRIORITY_FACTION_DESCRIPTION, "Description", faction.getDescriptionDesc());
 
 		// SECTION: NORMAL
 		if (normal)
@@ -68,7 +92,7 @@ public class EngineShow extends Engine
 			long ageMillis = faction.getCreatedAtMillis() - System.currentTimeMillis();
 			LinkedHashMap<TimeUnit, Long> ageUnitcounts = TimeDiffUtil.limit(TimeDiffUtil.unitcounts(ageMillis, TimeUnit.getAllButMillis()), 3);
 			String ageDesc = TimeDiffUtil.formatedVerboose(ageUnitcounts, "<i>");
-			show(idPriorityLiness, Const.SHOW_ID_FACTION_AGE, Const.SHOW_PRIORITY_FACTION_AGE, "Age", ageDesc);
+			show(idPriorityLiness, SHOW_ID_FACTION_AGE, SHOW_PRIORITY_FACTION_AGE, "Age", ageDesc);
 
 			// FLAGS
 			// We display all editable and non default ones. The rest we skip.
@@ -91,13 +115,13 @@ public class EngineShow extends Engine
 			{
 				flagsDesc = Txt.implode(flagDescs, Txt.parse(" <i>| "));
 			}
-			show(idPriorityLiness, Const.SHOW_ID_FACTION_FLAGS, Const.SHOW_PRIORITY_FACTION_FLAGS, "Flags", flagsDesc);
+			show(idPriorityLiness, SHOW_ID_FACTION_FLAGS, SHOW_PRIORITY_FACTION_FLAGS, "Flags", flagsDesc);
 
 			// POWER
 			double powerBoost = faction.getPowerBoost();
 			String boost = (powerBoost == 0.0) ? "" : (powerBoost > 0.0 ? " (bonus: " : " (penalty: ") + powerBoost + ")";
 			String powerDesc = Txt.parse("%d/%d/%d%s", faction.getLandCount(), faction.getPowerRounded(), faction.getPowerMaxRounded(), boost);
-			show(idPriorityLiness, Const.SHOW_ID_FACTION_POWER, Const.SHOW_PRIORITY_FACTION_POWER, "Land / Power / Maxpower", powerDesc);
+			show(idPriorityLiness, SHOW_ID_FACTION_POWER, SHOW_PRIORITY_FACTION_POWER, "Land / Power / Maxpower", powerDesc);
 
 			// SECTION: ECON
 			if (Econ.isEnabled())
@@ -124,14 +148,14 @@ public class EngineShow extends Engine
 					String line = show(key, value);
 					landvalueLines.add(line);
 				}
-				idPriorityLiness.put(Const.SHOW_ID_FACTION_LANDVALUES, new PriorityLines(Const.SHOW_PRIORITY_FACTION_LANDVALUES, landvalueLines));
+				idPriorityLiness.put(SHOW_ID_FACTION_LANDVALUES, new PriorityLines(SHOW_PRIORITY_FACTION_LANDVALUES, landvalueLines));
 
 				// BANK
 				if (MConf.get().bankEnabled)
 				{
 					double bank = Money.get(faction);
 					String bankDesc = Txt.parse("<h>%s", Money.format(bank, true));
-					show(idPriorityLiness, Const.SHOW_ID_FACTION_BANK, Const.SHOW_PRIORITY_FACTION_BANK, "Bank", bankDesc);
+					show(idPriorityLiness, SHOW_ID_FACTION_BANK, SHOW_PRIORITY_FACTION_BANK, "Bank", bankDesc);
 				}
 			}
 		}
@@ -181,7 +205,7 @@ public class EngineShow extends Engine
 				followerLines.addAll(table(followerNamesOffline, tableCols));
 			}
 		}
-		idPriorityLiness.put(Const.SHOW_ID_FACTION_FOLLOWERS, new PriorityLines(Const.SHOW_PRIORITY_FACTION_FOLLOWERS, followerLines));
+		idPriorityLiness.put(SHOW_ID_FACTION_FOLLOWERS, new PriorityLines(SHOW_PRIORITY_FACTION_FOLLOWERS, followerLines));
 	}
 
 	public static String show(String key, String value)
