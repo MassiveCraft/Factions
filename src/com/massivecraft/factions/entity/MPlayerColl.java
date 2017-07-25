@@ -12,7 +12,7 @@ public class MPlayerColl extends SenderColl<MPlayer>
 	public static MPlayerColl get() { return i; }
 	public MPlayerColl()
 	{
-		this.setPlayercleanTaskEnabled(true);
+		this.setCleanTaskEnabled(true);
 	}
 
 	// -------------------------------------------- //
@@ -30,9 +30,9 @@ public class MPlayerColl extends SenderColl<MPlayer>
 	// -------------------------------------------- //
 	
 	@Override
-	public long getPlayercleanToleranceMillis()
+	public long getCleanInactivityToleranceMillis()
 	{
-		return MConf.get().playercleanToleranceMillis;
+		return MConf.get().cleanInactivityToleranceMillis;
 	}
 
 }

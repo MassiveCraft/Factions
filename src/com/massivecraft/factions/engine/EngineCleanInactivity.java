@@ -5,28 +5,28 @@ import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.entity.MPlayerColl;
 import com.massivecraft.massivecore.Engine;
-import com.massivecraft.massivecore.event.EventMassiveCorePlayercleanToleranceMillis;
+import com.massivecraft.massivecore.event.EventMassiveCorePlayerCleanInactivityToleranceMillis;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 
 import java.util.Map;
 import java.util.Map.Entry;
 
-public class EnginePlayerclean extends Engine
+public class EngineCleanInactivity extends Engine
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static EnginePlayerclean i = new EnginePlayerclean();
-	public static EnginePlayerclean get() { return i; }
+	private static EngineCleanInactivity i = new EngineCleanInactivity();
+	public static EngineCleanInactivity get() { return i; }
 	
 	// -------------------------------------------- //
 	// REMOVE PLAYER MILLIS
 	// -------------------------------------------- //
 	
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-	public void ageBonus(EventMassiveCorePlayercleanToleranceMillis event)
+	public void ageBonus(EventMassiveCorePlayerCleanInactivityToleranceMillis event)
 	{
 		if (event.getColl() != MPlayerColl.get()) return;
 		
@@ -34,7 +34,7 @@ public class EnginePlayerclean extends Engine
 		applyFactionAgeBonus(event);
 	}
 	
-	public void applyPlayerAgeBonus(EventMassiveCorePlayercleanToleranceMillis event)
+	public void applyPlayerAgeBonus(EventMassiveCorePlayerCleanInactivityToleranceMillis event)
 	{
 		// Calculate First Played
 		Long firstPlayed = event.getEntity().getFirstPlayed();
@@ -45,14 +45,14 @@ public class EnginePlayerclean extends Engine
 		}
 		
 		// Calculate the Bonus!
-		Long bonus = calculateBonus(age, MConf.get().playercleanToleranceMillisPlayerAgeToBonus);
+		Long bonus = calculateBonus(age, MConf.get().cleanInactivityToleranceMillisPlayerAgeToBonus);
 		if (bonus == null) return;
 		
 		// Apply
 		event.getToleranceCauseMillis().put("Player Age Bonus", bonus);
 	}
 	
-	public void applyFactionAgeBonus(EventMassiveCorePlayercleanToleranceMillis event)
+	public void applyFactionAgeBonus(EventMassiveCorePlayerCleanInactivityToleranceMillis event)
 	{
 		// Calculate Faction Age
 		Faction faction = ((MPlayer)event.getEntity()).getFaction();
@@ -63,7 +63,7 @@ public class EnginePlayerclean extends Engine
 		}
 		
 		// Calculate the Bonus!
-		Long bonus = calculateBonus(age, MConf.get().playercleanToleranceMillisFactionAgeToBonus);
+		Long bonus = calculateBonus(age, MConf.get().cleanInactivityToleranceMillisFactionAgeToBonus);
 		if (bonus == null) return;
 		
 		// Apply

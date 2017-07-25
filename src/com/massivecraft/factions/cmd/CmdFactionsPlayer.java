@@ -5,7 +5,7 @@ import com.massivecraft.factions.entity.MConf;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.Progressbar;
-import com.massivecraft.massivecore.event.EventMassiveCorePlayercleanToleranceMillis;
+import com.massivecraft.massivecore.event.EventMassiveCorePlayerCleanInactivityToleranceMillis;
 import com.massivecraft.massivecore.util.TimeDiffUtil;
 import com.massivecraft.massivecore.util.TimeUnit;
 import com.massivecraft.massivecore.util.Txt;
@@ -80,9 +80,9 @@ public class CmdFactionsPlayer extends FactionsCommand
 		msg("<a>Power per Death: <v>%.2f", mplayer.getPowerPerDeath());
 		
 		// Display automatic kick / remove info if the system is in use
-		if (MConf.get().playercleanToleranceMillis <= 0) return;
+		if (MConf.get().cleanInactivityToleranceMillis <= 0) return;
 		
-		EventMassiveCorePlayercleanToleranceMillis event = new EventMassiveCorePlayercleanToleranceMillis(mplayer);
+		EventMassiveCorePlayerCleanInactivityToleranceMillis event = new EventMassiveCorePlayerCleanInactivityToleranceMillis(mplayer.getLastActivityMillis(), mplayer);
 		event.run();
 		msg("<i>Automatic removal after %s <i>of inactivity:", format(event.getToleranceMillis()));
 		for (Entry<String, Long> causeMillis : event.getToleranceCauseMillis().entrySet())

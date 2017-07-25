@@ -18,7 +18,6 @@ import com.massivecraft.massivecore.mixin.MixinTitle;
 import com.massivecraft.massivecore.ps.PS;
 import com.massivecraft.massivecore.ps.PSFormatHumanSpace;
 import com.massivecraft.massivecore.store.SenderEntity;
-import com.massivecraft.massivecore.store.inactive.Inactive;
 import com.massivecraft.massivecore.util.IdUtil;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.Txt;
@@ -34,7 +33,7 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.Set;
 
-public class MPlayer extends SenderEntity<MPlayer> implements FactionsParticipator, Inactive
+public class MPlayer extends SenderEntity<MPlayer> implements FactionsParticipator
 {
 	// -------------------------------------------- //
 	// META
@@ -78,7 +77,7 @@ public class MPlayer extends SenderEntity<MPlayer> implements FactionsParticipat
 	@Override
 	public boolean isDefault()
 	{
-		// Last activity millis is data we use for clearing out inactive players. So it does not in itself make the player data worth keeping.
+		// Last activity millis is data we use for clearing out cleanable players. So it does not in itself make the player data worth keeping.
 		if (this.hasFaction()) return false;
 		// Role means nothing without a faction.
 		// Title means nothing without a faction.
@@ -106,6 +105,17 @@ public class MPlayer extends SenderEntity<MPlayer> implements FactionsParticipat
 	{
 		FactionsIndex.get().update(this);
 	}
+	
+	@Override
+	public void preClean()
+	{
+		if (this.getRole() == Rel.LEADER)
+		{
+			this.getFaction().promoteNewLeader();
+		}
+		
+		this.leave();
+	}
 
 	// -------------------------------------------- //
 	// FIELDS: RAW
@@ -114,9 +124,9 @@ public class MPlayer extends SenderEntity<MPlayer> implements FactionsParticipat
 	// Each field has it's own section further down since just the getter and setter logic takes up quite some place.
 
 	// The last known time of explicit player activity, such as login or logout.
-	// This value is most importantly used for removing inactive players.
+	// This value is most importantly used for removing cleanable players.
 	// For that reason it defaults to the current time.
-	// Really inactive players will be considered newly active when upgrading Factions from 2.6 --> 2.7.
+	// Really cleanable players will be considered newly active when upgrading Factions from 2.6 --> 2.7.
 	// There is actually more than one reason we store this data ourselves and don't use the OfflinePlayer#getLastPlayed.
 	// 1. I don't trust that method. It's been very buggy or even completely broken in previous Bukkit versions.
 	// 2. The method depends on the player.dat files being present.
@@ -229,7 +239,13 @@ public class MPlayer extends SenderEntity<MPlayer> implements FactionsParticipat
 	{
 		this.setLastActivityMillis(System.currentTimeMillis());
 	}
-
+	
+	@Override
+	public boolean shouldBeCleaned(long now)
+	{
+		return this.shouldBeCleaned(now, this.lastActivityMillis);
+	}
+	
 	// -------------------------------------------- //
 	// FIELD: factionId
 	// -------------------------------------------- //

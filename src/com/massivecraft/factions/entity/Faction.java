@@ -88,7 +88,7 @@ public class Faction extends Entity<Faction> implements FactionsParticipator
 		if (Money.exists(this))
 		{
 			// ... remove it.
-			Money.set(this, null, 0);	
+			Money.set(this, null, 0, "Factions");
 		}
 	}
 	
