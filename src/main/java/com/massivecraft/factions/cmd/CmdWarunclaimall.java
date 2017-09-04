@@ -6,6 +6,8 @@ import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
+import org.bukkit.Bukkit;
+import org.bukkit.World;
 
 public class CmdWarunclaimall extends FCommand {
 
@@ -14,7 +16,7 @@ public class CmdWarunclaimall extends FCommand {
         this.aliases.add("wardeclaimall");
 
         //this.requiredArgs.add("");
-        //this.optionalArgs.put("", "");
+        this.optionalArgs.put("world", "all");
 
         this.permission = Permission.MANAGE_WAR_ZONE.node;
         this.disableOnLock = true;
@@ -27,8 +29,20 @@ public class CmdWarunclaimall extends FCommand {
 
     @Override
     public void perform() {
-        Board.getInstance().unclaimAll(Factions.getInstance().getWarZone().getId());
-        msg(TL.COMMAND_WARUNCLAIMALL_SUCCESS);
+        String worldName = argAsString(0);
+        World world = null;
+
+        if (worldName != null) {
+            world = Bukkit.getWorld(worldName);
+        }
+
+        String id = Factions.getInstance().getWarZone().getId();
+
+        if (world == null) {
+            Board.getInstance().unclaimAll(id);
+        } else {
+            Board.getInstance().unclaimAllInWorld(id, world);
+        }
 
         if (Conf.logLandUnclaims) {
             P.p.log(TL.COMMAND_WARUNCLAIMALL_LOG.format(fme.getName()));

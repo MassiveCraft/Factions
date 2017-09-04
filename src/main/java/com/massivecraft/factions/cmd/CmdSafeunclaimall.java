@@ -6,6 +6,8 @@ import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
+import org.bukkit.Bukkit;
+import org.bukkit.World;
 
 public class CmdSafeunclaimall extends FCommand {
 
@@ -14,7 +16,7 @@ public class CmdSafeunclaimall extends FCommand {
         this.aliases.add("safedeclaimall");
 
         //this.requiredArgs.add("");
-        //this.optionalArgs.put("radius", "0");
+        this.optionalArgs.put("world", "all");
 
         this.permission = Permission.MANAGE_SAFE_ZONE.node;
         this.disableOnLock = true;
@@ -28,7 +30,21 @@ public class CmdSafeunclaimall extends FCommand {
 
     @Override
     public void perform() {
-        Board.getInstance().unclaimAll(Factions.getInstance().getSafeZone().getId());
+        String worldName = argAsString(0);
+        World world = null;
+
+        if (worldName != null) {
+            world = Bukkit.getWorld(worldName);
+        }
+
+        String id = Factions.getInstance().getSafeZone().getId();
+
+        if (world == null) {
+            Board.getInstance().unclaimAll(id);
+        } else {
+            Board.getInstance().unclaimAllInWorld(id, world);
+        }
+
         msg(TL.COMMAND_SAFEUNCLAIMALL_UNCLAIMED);
 
         if (Conf.logLandUnclaims) {

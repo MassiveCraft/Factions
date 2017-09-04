@@ -7,6 +7,7 @@ import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.util.AsciiCompass;
 import com.massivecraft.factions.util.LazyLocation;
 import org.bukkit.ChatColor;
+import org.bukkit.World;
 
 import java.util.*;
 import java.util.Map.Entry;
@@ -133,6 +134,14 @@ public abstract class MemoryBoard extends Board {
             faction.clearWarps();
         }
         clean(factionId);
+    }
+
+    public void unclaimAllInWorld(String factionId, World world) {
+        for (FLocation loc : getAllClaims(factionId)) {
+            if (loc.getWorldName().equals(world.getName())) {
+                removeAt(loc);
+            }
+        }
     }
 
     public void clean(String factionId) {
