@@ -168,8 +168,9 @@ public class EnginePermBuild extends Engine
 
 	// For some reason onPlayerInteract() sometimes misses bucket events depending on distance
 	// (something like 2-3 blocks away isn't detected), but these separate bucket events below always fire without fail
+
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-	public void useItem(PlayerBucketEmptyEvent event) { useItem(event.getPlayer(), event.getBlockClicked(), event.getBucket(), event); }
+	public void useItem(PlayerBucketEmptyEvent event) { useItem(event.getPlayer(), event.getBlockClicked().getRelative(event.getBlockFace()), event.getBucket(), event); }
 	
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void useItem(PlayerBucketFillEvent event) { useItem(event.getPlayer(), event.getBlockClicked(), event.getBucket(), event); }
