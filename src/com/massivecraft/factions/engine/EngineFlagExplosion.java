@@ -9,6 +9,7 @@ import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Wither;
+import org.bukkit.event.Cancellable;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
@@ -18,9 +19,11 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.hanging.HangingBreakEvent;
 import org.bukkit.event.hanging.HangingBreakEvent.RemoveCause;
 
+import java.util.Collection;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -69,36 +72,38 @@ public class EngineFlagExplosion extends Engine
 		// ... then cancel!
 		event.setCancelled(true);
 	}
-
+	
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void blockExplosion(EntityExplodeEvent event)
 	{
-		// Prepare some variables:
-		// Current faction
-		Faction faction = null;
-		// Current allowed
-		Boolean allowed = true;
+		Location location = event.getLocation();
+		Cancellable cancellable = event;
+		Collection<Block> blocks = event.blockList();
+		
+		blockExplosion(location, cancellable, blocks);
+	}
+	
+	// Note that this method is used by EngineV18 for the BlockExplodeEvent
+	public void blockExplosion(Location location, Cancellable cancellable, Collection<Block> blocks)
+	{
 		// Caching to speed things up.
 		Map<Faction, Boolean> faction2allowed = new HashMap<>();
-
-		// If an explosion occurs at a location ...
-		Location location = event.getLocation();
-
+		
 		// Check the entity. Are explosions disabled there?
-		faction = BoardColl.get().getFactionAt(PS.valueOf(location));
-		allowed = faction.isExplosionsAllowed();
-		if (allowed == false)
+		Faction faction = BoardColl.get().getFactionAt(PS.valueOf(location));
+		Boolean allowed = faction.isExplosionsAllowed();
+		if (!allowed)
 		{
-			event.setCancelled(true);
+			cancellable.setCancelled(true);
 			return;
 		}
 		faction2allowed.put(faction, allowed);
-
+		
 		// Individually check the flag state for each block
-		Iterator<Block> iter = event.blockList().iterator();
-		while (iter.hasNext())
+		Iterator<Block> iterator = blocks.iterator();
+		while (iterator.hasNext())
 		{
-			Block block = iter.next();
+			Block block = iterator.next();
 			faction = BoardColl.get().getFactionAt(PS.valueOf(block));
 			allowed = faction2allowed.get(faction);
 			if (allowed == null)
@@ -106,8 +111,8 @@ public class EngineFlagExplosion extends Engine
 				allowed = faction.isExplosionsAllowed();
 				faction2allowed.put(faction, allowed);
 			}
-
-			if (allowed == false) iter.remove();
+			
+			if (!allowed) iterator.remove();
 		}
 	}
 
