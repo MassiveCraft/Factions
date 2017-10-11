@@ -188,7 +188,7 @@ public class FactionColl extends Coll<Faction>
 			int landCount = faction.getLandCount();
 			
 			// ... and if the faction isn't peaceful and has land ...
-			if (faction.getFlag(flagPeaceful) || landCount > 0) continue;
+			if (landCount == 0 || faction.getFlag(flagPeaceful)) continue;
 			
 			// ... get the faction's members ...
 			List<MPlayer> players = faction.getMPlayers();
