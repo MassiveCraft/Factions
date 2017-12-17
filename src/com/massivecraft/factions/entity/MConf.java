@@ -60,7 +60,7 @@ public class MConf extends Entity<MConf>
 	// VERSION
 	// -------------------------------------------- //
 	
-	public int version = 2;
+	public int version = 3;
 	
 	// -------------------------------------------- //
 	// COMMAND ALIASES

@@ -15,9 +15,9 @@ public class MigratorMConf002CleanInactivity extends MigratorRoot
 	private MigratorMConf002CleanInactivity()
 	{
 		super(MConf.class);
-		this.addInnerMigrator(MigratorFieldRename.get("removePlayerMillisDefault", "cleanInactivityToleranceMillis"));
-		this.addInnerMigrator(MigratorFieldRename.get("removePlayerMillisPlayerAgeToBonus", "cleanInactivityToleranceMillisPlayerAgeToBonus"));
-		this.addInnerMigrator(MigratorFieldRename.get("removePlayerMillisFactionAgeToBonus", "cleanInactivityToleranceMillisFactionAgeToBonus"));
+		this.addInnerMigrator(MigratorFieldRename.get("removePlayerMillisDefault", "playercleanToleranceMillis"));
+		this.addInnerMigrator(MigratorFieldRename.get("removePlayerMillisPlayerAgeToBonus", "playercleanToleranceMillisPlayerAgeToBonus"));
+		this.addInnerMigrator(MigratorFieldRename.get("removePlayerMillisFactionAgeToBonus", "playercleanToleranceMillisFactionAgeToBonus"));
 	}
 	
 }
