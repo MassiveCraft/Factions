@@ -1,6 +1,7 @@
 package com.massivecraft.factions;
 
 import com.massivecraft.factions.zcore.persist.json.JSONBoard;
+import org.bukkit.World;
 
 import java.util.ArrayList;
 import java.util.Set;
@@ -42,6 +43,8 @@ public abstract class Board {
     public abstract void clearOwnershipAt(FLocation flocation);
 
     public abstract void unclaimAll(String factionId);
+
+    public abstract void unclaimAllInWorld(String factionId, World world);
 
     // Is this coord NOT completely surrounded by coords claimed by the same faction?
     // Simpler: Is there any nearby coord with a faction other than the faction here?
