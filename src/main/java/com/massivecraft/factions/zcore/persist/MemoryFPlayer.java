@@ -686,17 +686,21 @@ public abstract class MemoryFPlayer implements FPlayer {
     public boolean canClaimForFaction(Faction forFaction) {
         return this.isAdminBypassing() || !forFaction.isWilderness() && (forFaction == this.getFaction() && this.getRole().isAtLeast(Role.MODERATOR)) || (forFaction.isSafeZone() && Permission.MANAGE_SAFE_ZONE.has(getPlayer())) || (forFaction.isWarZone() && Permission.MANAGE_WAR_ZONE.has(getPlayer()));
     }
-
     public boolean canClaimForFactionAtLocation(Faction forFaction, Location location, boolean notifyFailure) {
-        String error = null;
         FLocation flocation = new FLocation(location);
+        
+        return canClaimForFactionAtLocation(forFaction, flocation, notifyFailure);
+    }
+
+    public boolean canClaimForFactionAtLocation(Faction forFaction, FLocation flocation, boolean notifyFailure) {
+        String error = null;
         Faction myFaction = getFaction();
         Faction currentFaction = Board.getInstance().getFactionAt(flocation);
         int ownedLand = forFaction.getLandRounded();
         int factionBuffer = P.p.getConfig().getInt("hcf.buffer-zone", 0);
         int worldBuffer = P.p.getConfig().getInt("world-border.buffer", 0);
 
-        if (Conf.worldGuardChecking && Worldguard.checkForRegionsInChunk(location)) {
+        if (Conf.worldGuardChecking && Worldguard.checkForRegionsInChunk(flocation)) {
             // Checks for WorldGuard regions in the chunk attempting to be claimed
             error = P.p.txt.parse(TL.CLAIM_PROTECTED.toString());
         } else if (Conf.worldsNoClaiming.contains(flocation.getWorldName())) {
