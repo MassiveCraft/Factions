@@ -35,13 +35,13 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     protected transient long lastPlayerLoggedOffTime;
     protected double money;
     protected double powerBoost;
-    protected Map<String, Relation> relationWish = new HashMap<String, Relation>();
-    protected Map<FLocation, Set<String>> claimOwnership = new ConcurrentHashMap<FLocation, Set<String>>();
-    protected transient Set<FPlayer> fplayers = new HashSet<FPlayer>();
-    protected Set<String> invites = new HashSet<String>();
-    protected HashMap<String, List<String>> announcements = new HashMap<String, List<String>>();
-    protected ConcurrentHashMap<String, LazyLocation> warps = new ConcurrentHashMap<String, LazyLocation>();
-    protected ConcurrentHashMap<String, String> warpPasswords = new ConcurrentHashMap<String, String>();
+    protected Map<String, Relation> relationWish = new HashMap<>();
+    protected Map<FLocation, Set<String>> claimOwnership = new ConcurrentHashMap<>();
+    protected transient Set<FPlayer> fplayers = new HashSet<>();
+    protected Set<String> invites = new HashSet<>();
+    protected HashMap<String, List<String>> announcements = new HashMap<>();
+    protected ConcurrentHashMap<String, LazyLocation> warps = new ConcurrentHashMap<>();
+    protected ConcurrentHashMap<String, String> warpPasswords = new ConcurrentHashMap<>();
     private long lastDeath;
     protected int maxVaults;
 
@@ -284,11 +284,8 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
     public boolean isPowerFrozen() {
         int freezeSeconds = P.p.getConfig().getInt("hcf.powerfreeze", 0);
-        if (freezeSeconds == 0) {
-            return false;
-        }
+        return freezeSeconds != 0 && System.currentTimeMillis() - lastDeath < freezeSeconds * 1000;
 
-        return System.currentTimeMillis() - lastDeath < freezeSeconds * 1000;
     }
 
     public void setLastDeath(long time) {
@@ -354,7 +351,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         powerBoost = old.powerBoost;
         relationWish = old.relationWish;
         claimOwnership = old.claimOwnership;
-        fplayers = new HashSet<FPlayer>();
+        fplayers = new HashSet<>();
         invites = old.invites;
         announcements = old.announcements;
     }
@@ -540,11 +537,11 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     public Set<FPlayer> getFPlayers() {
         // return a shallow copy of the FPlayer list, to prevent tampering and
         // concurrency issues
-        return new HashSet<FPlayer>(fplayers);
+        return new HashSet<>(fplayers);
     }
 
     public Set<FPlayer> getFPlayersWhereOnline(boolean online) {
-        Set<FPlayer> ret = new HashSet<FPlayer>();
+        Set<FPlayer> ret = new HashSet<>();
         if (!this.isNormal()) {
             return ret;
         }
@@ -572,7 +569,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
 
     public ArrayList<FPlayer> getFPlayersWhereRole(Role role) {
-        ArrayList<FPlayer> ret = new ArrayList<FPlayer>();
+        ArrayList<FPlayer> ret = new ArrayList<>();
         if (!this.isNormal()) {
             return ret;
         }
@@ -587,7 +584,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
 
     public ArrayList<Player> getOnlinePlayers() {
-        ArrayList<Player> ret = new ArrayList<Player>();
+        ArrayList<Player> ret = new ArrayList<>();
         if (this.isPlayerFreeType()) {
             return ret;
         }
@@ -763,16 +760,13 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
             return false;
         }
         Set<String> ownerData = claimOwnership.get(loc);
-        if (ownerData == null) {
-            return false;
-        }
-        return ownerData.contains(player.getId());
+        return ownerData != null && ownerData.contains(player.getId());
     }
 
     public void setPlayerAsOwner(FPlayer player, FLocation loc) {
         Set<String> ownerData = claimOwnership.get(loc);
         if (ownerData == null) {
-            ownerData = new HashSet<String>();
+            ownerData = new HashSet<>();
         }
         ownerData.add(player.getId());
         claimOwnership.put(loc, ownerData);
@@ -797,18 +791,17 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
             return "";
         }
 
-        String ownerList = "";
+        StringBuilder ownerList = new StringBuilder();
 
-        Iterator<String> iter = ownerData.iterator();
-        while (iter.hasNext()) {
-            if (!ownerList.isEmpty()) {
-                ownerList += ", ";
+        for (String anOwnerData : ownerData) {
+            if (ownerList.length() > 0) {
+                ownerList.append(", ");
             }
-            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(iter.next()));
+            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(anOwnerData));
             //TODO:TL
-            ownerList += offlinePlayer != null ? offlinePlayer.getName() : "null player";
+            ownerList.append(offlinePlayer != null ? offlinePlayer.getName() : "null player");
         }
-        return ownerList;
+        return ownerList.toString();
     }
 
     public boolean playerHasOwnershipRights(FPlayer fplayer, FLocation loc) {

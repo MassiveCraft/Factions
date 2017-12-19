@@ -10,7 +10,7 @@ import java.util.*;
 
 public class Conf {
 
-    public static List<String> baseCommandAliases = new ArrayList<String>();
+    public static List<String> baseCommandAliases = new ArrayList<>();
     public static boolean allowNoSlashCommand = true;
 
     // Colors
@@ -145,14 +145,14 @@ public class Conf {
     public static int actionDeniedPainAmount = 1;
 
     // commands which will be prevented if the player is a member of a permanent faction
-    public static Set<String> permanentFactionMemberDenyCommands = new LinkedHashSet<String>();
+    public static Set<String> permanentFactionMemberDenyCommands = new LinkedHashSet<>();
 
     // commands which will be prevented when in claimed territory of another faction
-    public static Set<String> territoryNeutralDenyCommands = new LinkedHashSet<String>();
-    public static Set<String> territoryEnemyDenyCommands = new LinkedHashSet<String>();
-    public static Set<String> territoryAllyDenyCommands = new LinkedHashSet<String>();
-    public static Set<String> warzoneDenyCommands = new LinkedHashSet<String>();
-    public static Set<String> wildernessDenyCommands = new LinkedHashSet<String>();
+    public static Set<String> territoryNeutralDenyCommands = new LinkedHashSet<>();
+    public static Set<String> territoryEnemyDenyCommands = new LinkedHashSet<>();
+    public static Set<String> territoryAllyDenyCommands = new LinkedHashSet<>();
+    public static Set<String> warzoneDenyCommands = new LinkedHashSet<>();
+    public static Set<String> wildernessDenyCommands = new LinkedHashSet<>();
 
     public static boolean territoryDenyBuild = true;
     public static boolean territoryDenyBuildWhenOffline = true;
@@ -309,12 +309,12 @@ public class Conf {
     // If empty all regions are shown.
     // Specify Faction either by name or UUID.
     // To show all regions on a given world, add 'world:<worldname>' to the list.
-    public static Set<String> dynmapVisibleFactions = new HashSet<String>();
+    public static Set<String> dynmapVisibleFactions = new HashSet<>();
 
     // Optional setting to hide specific Factions.
     // Specify Faction either by name or UUID.
     // To hide all regions on a given world, add 'world:<worldname>' to the list.
-    public static Set<String> dynmapHiddenFactions = new HashSet<String>();
+    public static Set<String> dynmapHiddenFactions = new HashSet<>();
 
     // Region Style
     public static final transient String DYNMAP_STYLE_LINE_COLOR = "#00FF00";
@@ -349,12 +349,12 @@ public class Conf {
     public static boolean bankFactionPaysLandCosts = true; //The faction pays for land claiming costs.
 
     // mainly for other plugins/mods that use a fake player to take actions, which shouldn't be subject to our protections
-    public static Set<String> playersWhoBypassAllProtection = new LinkedHashSet<String>();
+    public static Set<String> playersWhoBypassAllProtection = new LinkedHashSet<>();
 
-    public static Set<String> worldsNoClaiming = new LinkedHashSet<String>();
-    public static Set<String> worldsNoPowerLoss = new LinkedHashSet<String>();
-    public static Set<String> worldsIgnorePvP = new LinkedHashSet<String>();
-    public static Set<String> worldsNoWildernessProtection = new LinkedHashSet<String>();
+    public static Set<String> worldsNoClaiming = new LinkedHashSet<>();
+    public static Set<String> worldsNoPowerLoss = new LinkedHashSet<>();
+    public static Set<String> worldsIgnorePvP = new LinkedHashSet<>();
+    public static Set<String> worldsNoWildernessProtection = new LinkedHashSet<>();
 
     // faction-<factionId>
     public static String vaultPrefix = "faction-%s";

@@ -53,7 +53,7 @@ public class CmdHelp extends FCommand {
         ConfigurationSection help = P.p.getConfig().getConfigurationSection("help");
         if (help == null) {
             help = P.p.getConfig().createSection("help"); // create new help section
-            List<String> error = new ArrayList<String>();
+            List<String> error = new ArrayList<>();
             error.add("&cUpdate help messages in config.yml!");
             error.add("&cSet use-old-help for legacy help messages");
             help.set("'1'", error); // add default error messages
@@ -76,10 +76,10 @@ public class CmdHelp extends FCommand {
     public ArrayList<ArrayList<String>> helpPages;
 
     public void updateHelp() {
-        helpPages = new ArrayList<ArrayList<String>>();
+        helpPages = new ArrayList<>();
         ArrayList<String> pageLines;
 
-        pageLines = new ArrayList<String>();
+        pageLines = new ArrayList<>();
         pageLines.add(p.cmdBase.cmdHelp.getUseageTemplate(true));
         pageLines.add(p.cmdBase.cmdList.getUseageTemplate(true));
         pageLines.add(p.cmdBase.cmdShow.getUseageTemplate(true));
@@ -92,7 +92,7 @@ public class CmdHelp extends FCommand {
         pageLines.add(p.txt.parse(TL.COMMAND_HELP_NEXTCREATE.toString()));
         helpPages.add(pageLines);
 
-        pageLines = new ArrayList<String>();
+        pageLines = new ArrayList<>();
         pageLines.add(p.cmdBase.cmdCreate.getUseageTemplate(true));
         pageLines.add(p.cmdBase.cmdDescription.getUseageTemplate(true));
         pageLines.add(p.cmdBase.cmdTag.getUseageTemplate(true));
@@ -105,7 +105,7 @@ public class CmdHelp extends FCommand {
         helpPages.add(pageLines);
 
         if (Econ.isSetup() && Conf.econEnabled && Conf.bankEnabled) {
-            pageLines = new ArrayList<String>();
+            pageLines = new ArrayList<>();
             pageLines.add("");
             pageLines.add(p.txt.parse(TL.COMMAND_HELP_BANK_1.toString()));
             pageLines.add(p.txt.parse(TL.COMMAND_HELP_BANK_2.toString()));
@@ -118,7 +118,7 @@ public class CmdHelp extends FCommand {
             helpPages.add(pageLines);
         }
 
-        pageLines = new ArrayList<String>();
+        pageLines = new ArrayList<>();
         pageLines.add(p.cmdBase.cmdClaim.getUseageTemplate(true));
         pageLines.add(p.cmdBase.cmdAutoClaim.getUseageTemplate(true));
         pageLines.add(p.cmdBase.cmdUnclaim.getUseageTemplate(true));
@@ -133,7 +133,7 @@ public class CmdHelp extends FCommand {
         pageLines.add(p.txt.parse(TL.COMMAND_HELP_PLAYERTITLES.toString()));
         helpPages.add(pageLines);
 
-        pageLines = new ArrayList<String>();
+        pageLines = new ArrayList<>();
         pageLines.add(p.cmdBase.cmdMap.getUseageTemplate(true));
         pageLines.add(p.cmdBase.cmdBoom.getUseageTemplate(true));
         pageLines.add(p.cmdBase.cmdOwner.getUseageTemplate(true));
@@ -143,7 +143,7 @@ public class CmdHelp extends FCommand {
         pageLines.add(p.txt.parse(TL.COMMAND_HELP_OWNERSHIP_3.toString()));
         helpPages.add(pageLines);
 
-        pageLines = new ArrayList<String>();
+        pageLines = new ArrayList<>();
         pageLines.add(p.cmdBase.cmdDisband.getUseageTemplate(true));
         pageLines.add("");
         pageLines.add(p.cmdBase.cmdRelationAlly.getUseageTemplate(true));
@@ -155,7 +155,7 @@ public class CmdHelp extends FCommand {
         pageLines.add(p.txt.parse(TL.COMMAND_HELP_RELATIONS_4.toString()));
         helpPages.add(pageLines);
 
-        pageLines = new ArrayList<String>();
+        pageLines = new ArrayList<>();
         pageLines.add(p.txt.parse(TL.COMMAND_HELP_RELATIONS_5.toString()));
         pageLines.add(p.txt.parse(TL.COMMAND_HELP_RELATIONS_6.toString()));
         pageLines.add(p.txt.parse(TL.COMMAND_HELP_RELATIONS_7.toString()));
@@ -167,7 +167,7 @@ public class CmdHelp extends FCommand {
         pageLines.add(p.txt.parse(TL.COMMAND_HELP_RELATIONS_13.toString()));
         helpPages.add(pageLines);
 
-        pageLines = new ArrayList<String>();
+        pageLines = new ArrayList<>();
         pageLines.add(p.txt.parse(TL.COMMAND_HELP_PERMISSIONS_1.toString()));
         pageLines.add(p.txt.parse(TL.COMMAND_HELP_PERMISSIONS_2.toString()));
         pageLines.add(p.txt.parse(TL.COMMAND_HELP_PERMISSIONS_3.toString()));
@@ -179,7 +179,7 @@ public class CmdHelp extends FCommand {
         pageLines.add(p.txt.parse(TL.COMMAND_HELP_PERMISSIONS_9.toString()));
         helpPages.add(pageLines);
 
-        pageLines = new ArrayList<String>();
+        pageLines = new ArrayList<>();
         pageLines.add(TL.COMMAND_HELP_MOAR_1.toString());
         pageLines.add(p.cmdBase.cmdBypass.getUseageTemplate(true));
         pageLines.add(p.txt.parse(TL.COMMAND_HELP_ADMIN_1.toString()));
@@ -192,7 +192,7 @@ public class CmdHelp extends FCommand {
         pageLines.add(p.cmdBase.cmdPeaceful.getUseageTemplate(true));
         helpPages.add(pageLines);
 
-        pageLines = new ArrayList<String>();
+        pageLines = new ArrayList<>();
         pageLines.add(p.txt.parse(TL.COMMAND_HELP_MOAR_2.toString()));
         pageLines.add(p.cmdBase.cmdChatSpy.getUseageTemplate(true));
         pageLines.add(p.cmdBase.cmdPermanent.getUseageTemplate(true));
@@ -201,7 +201,7 @@ public class CmdHelp extends FCommand {
         pageLines.add(p.cmdBase.cmdConfig.getUseageTemplate(true));
         helpPages.add(pageLines);
 
-        pageLines = new ArrayList<String>();
+        pageLines = new ArrayList<>();
         pageLines.add(p.txt.parse(TL.COMMAND_HELP_MOAR_3.toString()));
         pageLines.add(p.cmdBase.cmdLock.getUseageTemplate(true));
         pageLines.add(p.cmdBase.cmdReload.getUseageTemplate(true));

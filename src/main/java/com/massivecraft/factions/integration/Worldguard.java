@@ -82,10 +82,7 @@ public class Worldguard {
         World world = loc.getWorld();
         Vector pt = toVector(loc);
 
-        if (wg.getRegionManager(world).getApplicableRegions(pt).size() > 0) {
-            return wg.canBuild(player, loc);
-        }
-        return false;
+        return wg.getRegionManager(world).getApplicableRegions(pt).size() > 0 && wg.canBuild(player, loc);
     }
 
     // Check for Regions in chunk the chunk
@@ -125,17 +122,13 @@ public class Worldguard {
         RegionManager regionManager = wg.getRegionManager(world);
         ProtectedCuboidRegion region = new ProtectedCuboidRegion("wgfactionoverlapcheck", minChunk, maxChunk);
         Map<String, ProtectedRegion> allregions = regionManager.getRegions();
-        Collection<ProtectedRegion> allregionslist = new ArrayList<ProtectedRegion>(allregions.values());
+        Collection<ProtectedRegion> allregionslist = new ArrayList<>(allregions.values());
         List<ProtectedRegion> overlaps;
         boolean foundregions = false;
 
         try {
             overlaps = region.getIntersectingRegions(allregionslist);
-            if (overlaps == null || overlaps.isEmpty()) {
-                foundregions = false;
-            } else {
-                foundregions = true;
-            }
+            foundregions = overlaps != null && !overlaps.isEmpty();
         } catch (Exception e) {
             e.printStackTrace();
         }

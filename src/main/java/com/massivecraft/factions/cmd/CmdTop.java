@@ -140,7 +140,7 @@ public class CmdTop extends FCommand {
             msg(TL.COMMAND_TOP_INVALID, criteria);
         }
 
-        ArrayList<String> lines = new ArrayList<String>();
+        ArrayList<String> lines = new ArrayList<>();
 
         final int pageheight = 9;
         int pagenumber = this.argAsInt(1, 1);

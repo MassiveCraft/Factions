@@ -236,7 +236,7 @@ public enum TagReplacer {
      * @return a list of all the variables with this type
      */
     protected static List<TagReplacer> getByType(TagType type) {
-        List<TagReplacer> tagReplacers = new ArrayList<TagReplacer>();
+        List<TagReplacer> tagReplacers = new ArrayList<>();
         for (TagReplacer tagReplacer : TagReplacer.values()) {
             if (type == TagType.FANCY) {
                 if (tagReplacer.type == TagType.FANCY) {

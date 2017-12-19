@@ -23,7 +23,7 @@ public class JSONBoard extends MemoryBoard {
     // -------------------------------------------- //
 
     public Map<String, Map<String, String>> dumpAsSaveFormat() {
-        Map<String, Map<String, String>> worldCoordIds = new HashMap<String, Map<String, String>>();
+        Map<String, Map<String, String>> worldCoordIds = new HashMap<>();
 
         String worldName, coords;
         String id;

@@ -24,7 +24,7 @@ public class MapFLocToStringSetTypeAdapter implements JsonDeserializer<Map<FLoca
                 return null;
             }
 
-            Map<FLocation, Set<String>> locationMap = new ConcurrentHashMap<FLocation, Set<String>>();
+            Map<FLocation, Set<String>> locationMap = new ConcurrentHashMap<>();
             Set<String> nameSet;
             Iterator<JsonElement> iter;
             String worldName;
@@ -38,7 +38,7 @@ public class MapFLocToStringSetTypeAdapter implements JsonDeserializer<Map<FLoca
                     x = Integer.parseInt(coords[0]);
                     z = Integer.parseInt(coords[1]);
 
-                    nameSet = new HashSet<String>();
+                    nameSet = new HashSet<>();
                     iter = entry2.getValue().getAsJsonArray().iterator();
                     while (iter.hasNext()) {
                         nameSet.add(iter.next().getAsString());

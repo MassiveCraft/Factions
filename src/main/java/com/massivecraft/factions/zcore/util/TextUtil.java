@@ -13,7 +13,7 @@ public class TextUtil {
     public Map<String, String> tags;
 
     public TextUtil() {
-        this.tags = new HashMap<String, String>();
+        this.tags = new HashMap<>();
     }
 
     // -------------------------------------------- //
@@ -187,7 +187,7 @@ public class TextUtil {
     }
 
     public ArrayList<String> getPage(List<String> lines, int pageHumanBased, String title) {
-        ArrayList<String> ret = new ArrayList<String>();
+        ArrayList<String> ret = new ArrayList<>();
         int pageZeroBased = pageHumanBased - 1;
         int pageheight = 9;
         int pagecount = (lines.size() / pageheight) + 1;

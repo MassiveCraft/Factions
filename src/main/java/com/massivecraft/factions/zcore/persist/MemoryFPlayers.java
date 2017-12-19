@@ -12,7 +12,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentSkipListMap;
 
 public abstract class MemoryFPlayers extends FPlayers {
-    public Map<String, FPlayer> fPlayers = new ConcurrentSkipListMap<String, FPlayer>(String.CASE_INSENSITIVE_ORDER);
+    public Map<String, FPlayer> fPlayers = new ConcurrentSkipListMap<>(String.CASE_INSENSITIVE_ORDER);
 
     public void clean() {
         for (FPlayer fplayer : this.fPlayers.values()) {
@@ -24,7 +24,7 @@ public abstract class MemoryFPlayers extends FPlayers {
     }
 
     public Collection<FPlayer> getOnlinePlayers() {
-        Set<FPlayer> entities = new HashSet<FPlayer>();
+        Set<FPlayer> entities = new HashSet<>();
         for (Player player : Bukkit.getServer().getOnlinePlayers()) {
             entities.add(this.getByPlayer(player));
         }
@@ -38,7 +38,7 @@ public abstract class MemoryFPlayers extends FPlayers {
 
     @Override
     public List<FPlayer> getAllFPlayers() {
-        return new ArrayList<FPlayer>(fPlayers.values());
+        return new ArrayList<>(fPlayers.values());
     }
 
     @Override

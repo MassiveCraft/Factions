@@ -18,7 +18,7 @@ public class BufferedObjective {
     private final String baseName;
 
     private Objective current;
-    private List<Team> currentTeams = new ArrayList<Team>();
+    private List<Team> currentTeams = new ArrayList<>();
     private String title;
     private DisplaySlot displaySlot;
 
@@ -26,7 +26,7 @@ public class BufferedObjective {
     private int teamPtr;
     private boolean requiresUpdate = false;
 
-    private final Map<Integer, String> contents = new HashMap<Integer, String>();
+    private final Map<Integer, String> contents = new HashMap<>();
 
     static {
         // Check for long line support.
@@ -113,7 +113,7 @@ public class BufferedObjective {
         Objective buffer = scoreboard.registerNewObjective(getNextObjectiveName(), "dummy");
         buffer.setDisplayName(title);
 
-        List<Team> bufferTeams = new ArrayList<Team>();
+        List<Team> bufferTeams = new ArrayList<>();
 
         for (Map.Entry<Integer, String> entry : contents.entrySet()) {
             if (entry.getValue().length() > 16) {

@@ -12,7 +12,7 @@ import java.util.Map.Entry;
 
 public class PermUtil {
 
-    public Map<String, String> permissionDescriptions = new HashMap<String, String>();
+    public Map<String, String> permissionDescriptions = new HashMap<>();
 
     protected MPlugin p;
 

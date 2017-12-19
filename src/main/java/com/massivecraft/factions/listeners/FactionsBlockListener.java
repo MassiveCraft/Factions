@@ -91,7 +91,6 @@ public class FactionsBlockListener implements Listener {
         // if potentially pushing into air/water/lava in another territory, we need to check it out
         if ((targetBlock.isEmpty() || targetBlock.isLiquid()) && !canPistonMoveBlock(pistonFaction, targetBlock.getLocation())) {
             event.setCancelled(true);
-            return;
         }
 
 		/*
@@ -126,7 +125,6 @@ public class FactionsBlockListener implements Listener {
 
         if (!canPistonMoveBlock(pistonFaction, targetLoc)) {
             event.setCancelled(true);
-            return;
         }
     }
 
@@ -161,32 +159,19 @@ public class FactionsBlockListener implements Listener {
         }
 
         if (otherFaction.isWilderness()) {
-            if (!Conf.wildernessDenyBuild || Conf.worldsNoWildernessProtection.contains(target.getWorld().getName())) {
-                return true;
-            }
+            return !Conf.wildernessDenyBuild || Conf.worldsNoWildernessProtection.contains(target.getWorld().getName());
 
-            return false;
         } else if (otherFaction.isSafeZone()) {
-            if (!Conf.safeZoneDenyBuild) {
-                return true;
-            }
+            return !Conf.safeZoneDenyBuild;
 
-            return false;
         } else if (otherFaction.isWarZone()) {
-            if (!Conf.warZoneDenyBuild) {
-                return true;
-            }
+            return !Conf.warZoneDenyBuild;
 
-            return false;
         }
 
         Relation rel = pistonFaction.getRelationTo(otherFaction);
 
-        if (rel.confDenyBuild(otherFaction.hasPlayersOnline())) {
-            return false;
-        }
-
-        return true;
+        return !rel.confDenyBuild(otherFaction.hasPlayersOnline());
     }
 
     public static boolean playerCanBuildDestroyBlock(Player player, Location location, String action, boolean justCheck) {

@@ -116,7 +116,7 @@ public class CmdHome extends FCommand {
             public void run() {
                 // Create a smoke effect
                 if (Conf.homesTeleportCommandSmokeEffectEnabled) {
-                    List<Location> smokeLocations = new ArrayList<Location>();
+                    List<Location> smokeLocations = new ArrayList<>();
                     smokeLocations.add(loc);
                     smokeLocations.add(loc.add(0, 1, 0));
                     smokeLocations.add(CmdHome.this.myFaction.getHome());

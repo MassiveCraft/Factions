@@ -27,7 +27,7 @@ public class CmdAutoHelp extends MCommand<P> {
         }
         MCommand<?> pcmd = this.commandChain.get(this.commandChain.size() - 1);
 
-        ArrayList<String> lines = new ArrayList<String>();
+        ArrayList<String> lines = new ArrayList<>();
 
         lines.addAll(pcmd.helpLong);
 

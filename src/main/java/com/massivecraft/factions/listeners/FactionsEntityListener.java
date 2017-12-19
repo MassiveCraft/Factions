@@ -177,7 +177,7 @@ public class FactionsEntityListener implements Listener {
             Block center = loc.getBlock();
             if (center.isLiquid()) {
                 // a single surrounding block in all 6 directions is broken if the material is weak enough
-                List<Block> targets = new ArrayList<Block>();
+                List<Block> targets = new ArrayList<>();
                 targets.add(center.getRelative(0, 0, 1));
                 targets.add(center.getRelative(0, 0, -1));
                 targets.add(center.getRelative(0, 1, 0));
@@ -202,10 +202,9 @@ public class FactionsEntityListener implements Listener {
         if (!this.canDamagerHurtDamagee(sub, false)) {
             event.setCancelled(true);
         }
-        sub = null;
     }
 
-    private static final Set<PotionEffectType> badPotionEffects = new LinkedHashSet<PotionEffectType>(Arrays.asList(PotionEffectType.BLINDNESS, PotionEffectType.CONFUSION, PotionEffectType.HARM, PotionEffectType.HUNGER, PotionEffectType.POISON, PotionEffectType.SLOW, PotionEffectType.SLOW_DIGGING, PotionEffectType.WEAKNESS, PotionEffectType.WITHER));
+    private static final Set<PotionEffectType> badPotionEffects = new LinkedHashSet<>(Arrays.asList(PotionEffectType.BLINDNESS, PotionEffectType.CONFUSION, PotionEffectType.HARM, PotionEffectType.HUNGER, PotionEffectType.POISON, PotionEffectType.SLOW, PotionEffectType.SLOW_DIGGING, PotionEffectType.WEAKNESS, PotionEffectType.WITHER));
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onPotionSplashEvent(PotionSplashEvent event) {
@@ -236,14 +235,11 @@ public class FactionsEntityListener implements Listener {
         }
 
         // scan through affected entities to make sure they're all valid targets
-        Iterator<LivingEntity> iter = event.getAffectedEntities().iterator();
-        while (iter.hasNext()) {
-            LivingEntity target = iter.next();
+        for (LivingEntity target : event.getAffectedEntities()) {
             EntityDamageByEntityEvent sub = new EntityDamageByEntityEvent((Entity) thrower, target, EntityDamageEvent.DamageCause.CUSTOM, 0);
             if (!this.canDamagerHurtDamagee(sub, true)) {
                 event.setIntensity(target, 0.0);  // affected entity list doesn't accept modification (so no iter.remove()), but this works
             }
-            sub = null;
         }
     }
 
@@ -251,10 +247,7 @@ public class FactionsEntityListener implements Listener {
         if (!(damagee instanceof Player)) {
             return false;
         }
-        if (Board.getInstance().getFactionAt(new FLocation(damagee.getLocation())).isSafeZone()) {
-            return true;
-        }
-        return false;
+        return Board.getInstance().getFactionAt(new FLocation(damagee.getLocation())).isSafeZone();
     }
 
     public boolean canDamagerHurtDamagee(EntityDamageByEntityEvent sub) {

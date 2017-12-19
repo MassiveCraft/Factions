@@ -120,8 +120,7 @@ public class Persist {
         }
 
         try {
-            T instance = p.gson.fromJson(content, clazz);
-            return instance;
+            return p.gson.fromJson(content, clazz);
         } catch (Exception ex) {    // output the error message rather than full stack trace; error parsing the file, most likely
             p.log(Level.WARNING, ex.getMessage());
         }

@@ -20,9 +20,6 @@ public class JSONFPlayer extends MemoryFPlayer {
     }
 
     public boolean shouldBeSaved() {
-        if (!this.hasFaction() && (this.getPowerRounded() == this.getPowerMaxRounded() || this.getPowerRounded() == (int) Math.round(Conf.powerPlayerStarting))) {
-            return false;
-        }
-        return true;
+        return this.hasFaction() || (this.getPowerRounded() != this.getPowerMaxRounded() && this.getPowerRounded() != (int) Math.round(Conf.powerPlayerStarting));
     }
 }

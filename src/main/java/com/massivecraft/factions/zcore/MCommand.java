@@ -73,7 +73,7 @@ public abstract class MCommand<T extends MPlugin> {
     public Player me; // Will only be set when the sender is a player
     public boolean senderIsConsole;
     public List<String> args; // Will contain the arguments, or and empty list if there are none.
-    public List<MCommand<?>> commandChain = new ArrayList<MCommand<?>>(); // The command chain used to execute this command
+    public List<MCommand<?>> commandChain = new ArrayList<>(); // The command chain used to execute this command
 
     public MCommand(T p) {
         this.p = p;
@@ -82,14 +82,14 @@ public abstract class MCommand<T extends MPlugin> {
 
         this.allowNoSlashAccess = false;
 
-        this.subCommands = new ArrayList<MCommand<?>>();
-        this.aliases = new ArrayList<String>();
+        this.subCommands = new ArrayList<>();
+        this.aliases = new ArrayList<>();
 
-        this.requiredArgs = new ArrayList<String>();
-        this.optionalArgs = new LinkedHashMap<String, String>();
+        this.requiredArgs = new ArrayList<>();
+        this.optionalArgs = new LinkedHashMap<>();
 
         this.helpShort = null;
-        this.helpLong = new ArrayList<String>();
+        this.helpLong = new ArrayList<>();
         this.visibility = CommandVisibility.VISIBLE;
     }
 
@@ -210,7 +210,7 @@ public abstract class MCommand<T extends MPlugin> {
 
         ret.append(TextUtil.implode(this.aliases, ","));
 
-        List<String> args = new ArrayList<String>();
+        List<String> args = new ArrayList<>();
 
         for (String requiredArg : this.requiredArgs) {
             args.add("<" + requiredArg + ">");
@@ -280,7 +280,7 @@ public abstract class MCommand<T extends MPlugin> {
     }
 
     public List<String> getToolTips(FPlayer player) {
-        List<String> lines = new ArrayList<String>();
+        List<String> lines = new ArrayList<>();
         for (String s : p.getConfig().getStringList("tooltips.show")) {
             lines.add(ChatColor.translateAlternateColorCodes('&', replaceFPlayerTags(s, player)));
         }
@@ -288,7 +288,7 @@ public abstract class MCommand<T extends MPlugin> {
     }
 
     public List<String> getToolTips(Faction faction) {
-        List<String> lines = new ArrayList<String>();
+        List<String> lines = new ArrayList<>();
         for (String s : p.getConfig().getStringList("tooltips.list")) {
             lines.add(ChatColor.translateAlternateColorCodes('&', replaceFactionTags(s, faction)));
         }

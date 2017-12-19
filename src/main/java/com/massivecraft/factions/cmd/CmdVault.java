@@ -8,8 +8,6 @@ import com.drtshock.playervaults.vaultmanagement.VaultViewInfo;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 

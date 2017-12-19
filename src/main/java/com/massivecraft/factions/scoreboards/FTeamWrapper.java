@@ -10,15 +10,15 @@ import org.bukkit.scoreboard.Team;
 import java.util.*;
 
 public class FTeamWrapper {
-    private static final Map<Faction, FTeamWrapper> wrappers = new HashMap<Faction, FTeamWrapper>();
-    private static final List<FScoreboard> tracking = new ArrayList<FScoreboard>();
+    private static final Map<Faction, FTeamWrapper> wrappers = new HashMap<>();
+    private static final List<FScoreboard> tracking = new ArrayList<>();
     private static int factionTeamPtr;
-    private static final Set<Faction> updating = new HashSet<Faction>();
+    private static final Set<Faction> updating = new HashSet<>();
 
-    private final Map<FScoreboard, Team> teams = new HashMap<FScoreboard, Team>();
+    private final Map<FScoreboard, Team> teams = new HashMap<>();
     private final String teamName;
     private final Faction faction;
-    private final Set<OfflinePlayer> members = new HashSet<OfflinePlayer>();
+    private final Set<OfflinePlayer> members = new HashSet<>();
 
     public static void applyUpdatesLater(final Faction faction) {
         if (!FScoreboard.isSupportedByServer()) {
@@ -194,7 +194,7 @@ public class FTeamWrapper {
     }
 
     private Set<OfflinePlayer> getPlayers() {
-        return new HashSet<OfflinePlayer>(this.members);
+        return new HashSet<>(this.members);
     }
 
     private void unregister() {

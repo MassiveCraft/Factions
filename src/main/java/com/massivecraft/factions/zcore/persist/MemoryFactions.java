@@ -13,7 +13,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 public abstract class MemoryFactions extends Factions {
-    public final Map<String, Faction> factions = new ConcurrentHashMap<String, Faction>();
+    public final Map<String, Faction> factions = new ConcurrentHashMap<>();
     public int nextId = 1;
 
     public void load() {
@@ -134,7 +134,7 @@ public abstract class MemoryFactions extends Factions {
     }
 
     public Set<String> getFactionTags() {
-        Set<String> tags = new HashSet<String>();
+        Set<String> tags = new HashSet<>();
         for (Faction faction : factions.values()) {
             tags.add(faction.getTag());
         }
@@ -149,7 +149,7 @@ public abstract class MemoryFactions extends Factions {
 
     @Override
     public ArrayList<Faction> getAllFactions() {
-        return new ArrayList<Faction>(factions.values());
+        return new ArrayList<>(factions.values());
     }
 
     @Override

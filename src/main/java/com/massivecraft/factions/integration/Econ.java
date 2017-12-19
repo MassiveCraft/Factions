@@ -207,7 +207,7 @@ public class Econ {
     }
 
     public static Set<FPlayer> getFplayers(EconomyParticipator ep) {
-        Set<FPlayer> fplayers = new HashSet<FPlayer>();
+        Set<FPlayer> fplayers = new HashSet<>();
 
         if (ep != null) {
             if (ep instanceof FPlayer) {
@@ -221,7 +221,7 @@ public class Econ {
     }
 
     public static void sendTransferInfo(EconomyParticipator invoker, EconomyParticipator from, EconomyParticipator to, double amount) {
-        Set<FPlayer> recipients = new HashSet<FPlayer>();
+        Set<FPlayer> recipients = new HashSet<>();
         recipients.addAll(getFplayers(invoker));
         recipients.addAll(getFplayers(from));
         recipients.addAll(getFplayers(to));

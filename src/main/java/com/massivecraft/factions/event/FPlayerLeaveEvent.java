@@ -34,10 +34,7 @@ public class FPlayerLeaveEvent extends FactionPlayerEvent implements Cancellable
 
     @Override
     public void setCancelled(boolean c) {
-        if (reason == PlayerLeaveReason.DISBAND || reason == PlayerLeaveReason.RESET) {
-            cancelled = false; // Don't let them cancel factions disbanding.
-        } else {
-            cancelled = c;
-        }
+        // Don't let them cancel factions disbanding.
+        cancelled = reason != PlayerLeaveReason.DISBAND && reason != PlayerLeaveReason.RESET && c;
     }
 }

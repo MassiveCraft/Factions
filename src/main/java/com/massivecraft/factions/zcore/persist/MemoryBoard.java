@@ -104,10 +104,8 @@ public abstract class MemoryBoard extends Board {
     }
 
     public Set<FLocation> getAllClaims(String factionId) {
-        Set<FLocation> locs = new HashSet<FLocation>();
-        Iterator<Entry<FLocation, String>> iter = flocationIds.entrySet().iterator();
-        while (iter.hasNext()) {
-            Entry<FLocation, String> entry = iter.next();
+        Set<FLocation> locs = new HashSet<>();
+        for (Entry<FLocation, String> entry : flocationIds.entrySet()) {
             if (entry.getValue().equals(factionId)) {
                 locs.add(entry.getKey());
             }
@@ -227,9 +225,7 @@ public abstract class MemoryBoard extends Board {
     public int getFactionCoordCountInWorld(Faction faction, String worldName) {
         String factionId = faction.getId();
         int ret = 0;
-        Iterator<Entry<FLocation, String>> iter = flocationIds.entrySet().iterator();
-        while (iter.hasNext()) {
-            Entry<FLocation, String> entry = iter.next();
+        for (Entry<FLocation, String> entry : flocationIds.entrySet()) {
             if (entry.getValue().equals(factionId) && entry.getKey().getWorldName().equals(worldName)) {
                 ret += 1;
             }
@@ -246,7 +242,7 @@ public abstract class MemoryBoard extends Board {
      * of decreasing z
      */
     public ArrayList<String> getMap(Faction faction, FLocation flocation, double inDegrees) {
-        ArrayList<String> ret = new ArrayList<String>();
+        ArrayList<String> ret = new ArrayList<>();
         Faction factionLoc = getFactionAt(flocation);
         ret.add(P.p.txt.titleize("(" + flocation.getCoordString() + ") " + factionLoc.getTag(faction)));
 
@@ -260,26 +256,26 @@ public abstract class MemoryBoard extends Board {
             height--;
         }
 
-        Map<String, Character> fList = new HashMap<String, Character>();
+        Map<String, Character> fList = new HashMap<>();
         int chrIdx = 0;
 
         // For each row
         for (int dz = 0; dz < height; dz++) {
             // Draw and add that row
-            String row = "";
+            StringBuilder row = new StringBuilder();
             for (int dx = 0; dx < width; dx++) {
                 if (dx == halfWidth && dz == halfHeight) {
-                    row += ChatColor.AQUA + "+";
+                    row.append(ChatColor.AQUA + "+");
                 } else {
                     FLocation flocationHere = topLeft.getRelative(dx, dz);
                     Faction factionHere = getFactionAt(flocationHere);
                     Relation relation = faction.getRelationTo(factionHere);
                     if (factionHere.isWilderness()) {
-                        row += ChatColor.GRAY + "-";
+                        row.append(ChatColor.GRAY + "-");
                     } else if (factionHere.isSafeZone()) {
-                        row += Conf.colorPeaceful + "+";
+                        row.append(Conf.colorPeaceful).append("+");
                     } else if (factionHere.isWarZone()) {
-                        row += ChatColor.DARK_RED + "+";
+                        row.append(ChatColor.DARK_RED + "+");
                     } else if (factionHere == faction ||
                                        factionHere == factionLoc ||
                                        relation.isAtLeast(Relation.ALLY) ||
@@ -289,13 +285,13 @@ public abstract class MemoryBoard extends Board {
                             fList.put(factionHere.getTag(), Conf.mapKeyChrs[Math.min(chrIdx++, Conf.mapKeyChrs.length - 1)]);
                         }
                         char tag = fList.get(factionHere.getTag());
-                        row += factionHere.getColorTo(faction) + "" + tag;
+                        row.append(factionHere.getColorTo(faction)).append("").append(tag);
                     } else {
-                        row += ChatColor.GRAY + "-";
+                        row.append(ChatColor.GRAY + "-");
                     }
                 }
             }
-            ret.add(row);
+            ret.add(row.toString());
         }
 
         // Get the compass
@@ -308,11 +304,11 @@ public abstract class MemoryBoard extends Board {
 
         // Add the faction key
         if (Conf.showMapFactionKey) {
-            String fRow = "";
+            StringBuilder fRow = new StringBuilder();
             for (String key : fList.keySet()) {
-                fRow += String.format("%s%s: %s ", ChatColor.GRAY, fList.get(key), key);
+                fRow.append(String.format("%s%s: %s ", ChatColor.GRAY, fList.get(key), key));
             }
-            ret.add(fRow);
+            ret.add(fRow.toString());
         }
 
         return ret;

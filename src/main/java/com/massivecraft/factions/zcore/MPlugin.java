@@ -52,17 +52,17 @@ public abstract class MPlugin extends JavaPlugin {
     private MPluginSecretPlayerListener mPluginSecretPlayerListener;
 
     // Our stored base commands
-    private List<MCommand<?>> baseCommands = new ArrayList<MCommand<?>>();
+    private List<MCommand<?>> baseCommands = new ArrayList<>();
 
     public List<MCommand<?>> getBaseCommands() {
         return this.baseCommands;
     }
 
     // holds f stuck start times
-    private Map<UUID, Long> timers = new HashMap<UUID, Long>();
+    private Map<UUID, Long> timers = new HashMap<>();
 
     //holds f stuck taskids
-    public Map<UUID, Integer> stuckMap = new HashMap<UUID, Integer>();
+    public Map<UUID, Integer> stuckMap = new HashMap<>();
 
     // -------------------------------------------- //
     // ENABLE
@@ -214,7 +214,7 @@ public abstract class MPlugin extends JavaPlugin {
 
     // These are not supposed to be used directly.
     // They are loaded and used through the TextUtil instance for the plugin.
-    public Map<String, String> rawTags = new LinkedHashMap<String, String>();
+    public Map<String, String> rawTags = new LinkedHashMap<>();
 
     public void addRawTags() {
         this.rawTags.put("l", "<green>"); // logo
@@ -277,7 +277,7 @@ public abstract class MPlugin extends JavaPlugin {
                 }
 
                 if (commandString.startsWith(alias + " ") || commandString.equals(alias)) {
-                    final List<String> args = new ArrayList<String>(Arrays.asList(commandString.split("\\s+")));
+                    final List<String> args = new ArrayList<>(Arrays.asList(commandString.split("\\s+")));
                     args.remove(0);
 
                     if (testOnly) {

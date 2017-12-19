@@ -11,7 +11,7 @@ public enum ChatMode {
     public final int value;
     public final TL nicename;
 
-    private ChatMode(final int value, final TL nicename) {
+    ChatMode(final int value, final TL nicename) {
         this.value = value;
         this.nicename = nicename;
     }

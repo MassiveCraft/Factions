@@ -144,7 +144,7 @@ public class EngineDynmap {
 
     // Thread Safe / Asynchronous: Yes
     public Map<String, TempMarker> createHomes() {
-        Map<String, TempMarker> ret = new HashMap<String, TempMarker>();
+        Map<String, TempMarker> ret = new HashMap<>();
 
         // Loop current factions
         for (Faction faction : Factions.getInstance().getAllFactions()) {
@@ -176,7 +176,7 @@ public class EngineDynmap {
     // This method places out the faction home markers into the factions markerset.
     public void updateHomes(Map<String, TempMarker> homes) {
         // Put all current faction markers in a map
-        Map<String, Marker> markers = new HashMap<String, Marker>();
+        Map<String, Marker> markers = new HashMap<>();
         for (Marker marker : this.markerset.getMarkers()) {
             markers.put(marker.getMarkerID(), marker);
         }
@@ -220,7 +220,7 @@ public class EngineDynmap {
     // Thread Safe: YES
     public Map<String, Map<Faction, Set<FLocation>>> createWorldFactionChunks() {
         // Create map "world name --> faction --> set of chunk coords"
-        Map<String, Map<Faction, Set<FLocation>>> worldFactionChunks = new HashMap<String, Map<Faction, Set<FLocation>>>();
+        Map<String, Map<Faction, Set<FLocation>>> worldFactionChunks = new HashMap<>();
 
         // Note: The board is the world. The board id is the world name.
         MemoryBoard board = (MemoryBoard) Board.getInstance();
@@ -231,13 +231,13 @@ public class EngineDynmap {
 
             Map<Faction, Set<FLocation>> factionChunks = worldFactionChunks.get(world);
             if (factionChunks == null) {
-                factionChunks = new HashMap<Faction, Set<FLocation>>();
+                factionChunks = new HashMap<>();
                 worldFactionChunks.put(world, factionChunks);
             }
 
             Set<FLocation> factionTerritory = factionChunks.get(chunkOwner);
             if (factionTerritory == null) {
-                factionTerritory = new HashSet<FLocation>();
+                factionTerritory = new HashSet<>();
                 factionChunks.put(chunkOwner, factionTerritory);
             }
 
@@ -249,7 +249,7 @@ public class EngineDynmap {
 
     // Thread Safe: YES
     public Map<String, TempAreaMarker> createAreas(Map<String, Map<Faction, Set<FLocation>>> worldFactionChunks) {
-        Map<String, TempAreaMarker> ret = new HashMap<String, TempAreaMarker>();
+        Map<String, TempAreaMarker> ret = new HashMap<>();
 
         // For each world
         for (Entry<String, Map<Faction, Set<FLocation>>> entry : worldFactionChunks.entrySet()) {
@@ -272,7 +272,7 @@ public class EngineDynmap {
     // Handle specific faction on specific world
     // "handle faction on world"
     public Map<String, TempAreaMarker> createAreas(String world, Faction faction, Set<FLocation> chunks) {
-        Map<String, TempAreaMarker> ret = new HashMap<String, TempAreaMarker>();
+        Map<String, TempAreaMarker> ret = new HashMap<>();
 
         // If the faction is visible ...
         if (!isVisible(faction, world)) {
@@ -295,7 +295,7 @@ public class EngineDynmap {
 
         // Loop through chunks: set flags on chunk map
         TileFlags allChunkFlags = new TileFlags();
-        LinkedList<FLocation> allChunks = new LinkedList<FLocation>();
+        LinkedList<FLocation> allChunks = new LinkedList<>();
         for (FLocation chunk : chunks) {
             allChunkFlags.setFlag((int) chunk.getX(), (int) chunk.getZ(), true); // Set flag for chunk
             allChunks.addLast(chunk);
@@ -316,7 +316,7 @@ public class EngineDynmap {
                 // If we need to start shape, and this block is not part of one yet
                 if (ourChunkFlags == null && allChunkFlags.getFlag(chunkX, chunkZ)) {
                     ourChunkFlags = new TileFlags(); // Create map for shape
-                    ourChunks = new LinkedList<FLocation>();
+                    ourChunks = new LinkedList<>();
                     floodFillTarget(allChunkFlags, ourChunkFlags, chunkX, chunkZ); // Copy shape
                     ourChunks.add(chunk); // Add it to our chunk list
                     minimumX = chunkX;
@@ -335,7 +335,7 @@ public class EngineDynmap {
                 // Else, keep it in the list for the next polygon
                 else {
                     if (newChunks == null) {
-                        newChunks = new LinkedList<FLocation>();
+                        newChunks = new LinkedList<>();
                     }
                     newChunks.add(chunk);
                 }
@@ -354,7 +354,7 @@ public class EngineDynmap {
             int currentX = minimumX;
             int currentZ = minimumZ;
             Direction direction = Direction.XPLUS;
-            ArrayList<int[]> linelist = new ArrayList<int[]>();
+            ArrayList<int[]> linelist = new ArrayList<>();
             linelist.add(new int[]{initialX, initialZ}); // Add start point
             while ((currentX != initialX) || (currentZ != initialZ) || (direction != Direction.ZMINUS)) {
                 switch (direction) {
@@ -452,7 +452,7 @@ public class EngineDynmap {
     // Thread Safe: NO
     public void updateAreas(Map<String, TempAreaMarker> areas) {
         // Map Current
-        Map<String, AreaMarker> markers = new HashMap<String, AreaMarker>();
+        Map<String, AreaMarker> markers = new HashMap<>();
         for (AreaMarker marker : this.markerset.getAreaMarkers()) {
             markers.put(marker.getMarkerID(), marker);
         }
@@ -510,7 +510,7 @@ public class EngineDynmap {
             return null;
         }
 
-        Set<String> ret = new HashSet<String>();
+        Set<String> ret = new HashSet<>();
 
         for (FPlayer fplayer : faction.getFPlayers()) {
             // NOTE: We add both UUID and name. This might be a good idea for future proofing.
@@ -527,7 +527,7 @@ public class EngineDynmap {
             return null;
         }
 
-        Map<String, Set<String>> ret = new HashMap<String, Set<String>>();
+        Map<String, Set<String>> ret = new HashMap<>();
 
         for (Faction faction : Factions.getInstance().getAllFactions()) {
             String playersetId = createPlayersetId(faction);
@@ -654,14 +654,14 @@ public class EngineDynmap {
     }
 
     public static String getHtmlPlayerString(Collection<FPlayer> playersOfficersList) {
-        String ret = "";
+        StringBuilder ret = new StringBuilder();
         for (FPlayer fplayer : playersOfficersList) {
             if (ret.length() > 0) {
-                ret += ", ";
+                ret.append(", ");
             }
-            ret += getHtmlPlayerName(fplayer);
+            ret.append(getHtmlPlayerName(fplayer));
         }
-        return ret;
+        return ret.toString();
     }
 
     public static String getHtmlPlayerName(FPlayer fplayer) {
@@ -707,11 +707,7 @@ public class EngineDynmap {
             return false;
         }
 
-        if (hidden.contains(factionId) || hidden.contains(factionName) || hidden.contains("world:" + world)) {
-            return false;
-        }
-
-        return true;
+        return !hidden.contains(factionId) && !hidden.contains(factionName) && !hidden.contains("world:" + world);
     }
 
     // Thread Safe / Asynchronous: Yes
@@ -750,7 +746,7 @@ public class EngineDynmap {
     // Find all contiguous blocks, set in target and clear in source
     private int floodFillTarget(TileFlags source, TileFlags destination, int x, int y) {
         int cnt = 0;
-        ArrayDeque<int[]> stack = new ArrayDeque<int[]>();
+        ArrayDeque<int[]> stack = new ArrayDeque<>();
         stack.push(new int[]{x, y});
 
         while (!stack.isEmpty()) {

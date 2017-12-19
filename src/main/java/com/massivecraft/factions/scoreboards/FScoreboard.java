@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class FScoreboard {
-    private static final Map<FPlayer, FScoreboard> fscoreboards = new HashMap<FPlayer, FScoreboard>();
+    private static final Map<FPlayer, FScoreboard> fscoreboards = new HashMap<>();
 
     private final Scoreboard scoreboard;
     private final FPlayer fplayer;

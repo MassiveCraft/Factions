@@ -16,7 +16,7 @@ import java.util.Set;
 
 public class CmdConfig extends FCommand {
 
-    private static HashMap<String, String> properFieldNames = new HashMap<String, String>();
+    private static HashMap<String, String> properFieldNames = new HashMap<>();
 
     public CmdConfig() {
         super();
@@ -41,8 +41,8 @@ public class CmdConfig extends FCommand {
         // that way, if the person using this command messes up the capitalization, we can fix that
         if (properFieldNames.isEmpty()) {
             Field[] fields = Conf.class.getDeclaredFields();
-            for (int i = 0; i < fields.length; i++) {
-                properFieldNames.put(fields[i].getName().toLowerCase(), fields[i].getName());
+            for (Field field : fields) {
+                properFieldNames.put(field.getName().toLowerCase(), field.getName());
             }
         }
 
@@ -59,9 +59,9 @@ public class CmdConfig extends FCommand {
 
         String success;
 
-        String value = args.get(1);
+        StringBuilder value = new StringBuilder(args.get(1));
         for (int i = 2; i < args.size(); i++) {
-            value += ' ' + args.get(i);
+            value.append(' ').append(args.get(i));
         }
 
         try {
@@ -69,7 +69,7 @@ public class CmdConfig extends FCommand {
 
             // boolean
             if (target.getType() == boolean.class) {
-                boolean targetValue = this.strAsBool(value);
+                boolean targetValue = this.strAsBool(value.toString());
                 target.setBoolean(null, targetValue);
 
                 if (targetValue) {
@@ -82,7 +82,7 @@ public class CmdConfig extends FCommand {
             // int
             else if (target.getType() == int.class) {
                 try {
-                    int intVal = Integer.parseInt(value);
+                    int intVal = Integer.parseInt(value.toString());
                     target.setInt(null, intVal);
                     success = "\"" + fieldName + TL.COMMAND_CONFIG_OPTIONSET.toString() + intVal + ".";
                 } catch (NumberFormatException ex) {
@@ -94,7 +94,7 @@ public class CmdConfig extends FCommand {
             // long
             else if (target.getType() == long.class) {
                 try {
-                    long longVal = Long.parseLong(value);
+                    long longVal = Long.parseLong(value.toString());
                     target.setLong(null, longVal);
                     success = "\"" + fieldName + TL.COMMAND_CONFIG_OPTIONSET.toString() + longVal + ".";
                 } catch (NumberFormatException ex) {
@@ -106,7 +106,7 @@ public class CmdConfig extends FCommand {
             // double
             else if (target.getType() == double.class) {
                 try {
-                    double doubleVal = Double.parseDouble(value);
+                    double doubleVal = Double.parseDouble(value.toString());
                     target.setDouble(null, doubleVal);
                     success = "\"" + fieldName + TL.COMMAND_CONFIG_OPTIONSET.toString() + doubleVal + ".";
                 } catch (NumberFormatException ex) {
@@ -118,7 +118,7 @@ public class CmdConfig extends FCommand {
             // float
             else if (target.getType() == float.class) {
                 try {
-                    float floatVal = Float.parseFloat(value);
+                    float floatVal = Float.parseFloat(value.toString());
                     target.setFloat(null, floatVal);
                     success = "\"" + fieldName + TL.COMMAND_CONFIG_OPTIONSET.toString() + floatVal + ".";
                 } catch (NumberFormatException ex) {
@@ -129,7 +129,7 @@ public class CmdConfig extends FCommand {
 
             // String
             else if (target.getType() == String.class) {
-                target.set(null, value);
+                target.set(null, value.toString());
                 success = "\"" + fieldName + TL.COMMAND_CONFIG_OPTIONSET.toString() + value + "\".";
             }
 
@@ -137,16 +137,16 @@ public class CmdConfig extends FCommand {
             else if (target.getType() == ChatColor.class) {
                 ChatColor newColor = null;
                 try {
-                    newColor = ChatColor.valueOf(value.toUpperCase());
+                    newColor = ChatColor.valueOf(value.toString().toUpperCase());
                 } catch (IllegalArgumentException ex) {
 
                 }
                 if (newColor == null) {
-                    sendMessage(TL.COMMAND_CONFIG_INVALID_COLOUR.format(fieldName, value.toUpperCase()));
+                    sendMessage(TL.COMMAND_CONFIG_INVALID_COLOUR.format(fieldName, value.toString().toUpperCase()));
                     return;
                 }
                 target.set(null, newColor);
-                success = "\"" + fieldName + TL.COMMAND_CONFIG_COLOURSET.toString() + value.toUpperCase() + "\".";
+                success = "\"" + fieldName + TL.COMMAND_CONFIG_COLOURSET.toString() + value.toString().toUpperCase() + "\".";
             }
 
             // Set<?> or other parameterized collection
@@ -164,12 +164,12 @@ public class CmdConfig extends FCommand {
                 else if (innerType == Material.class) {
                     Material newMat = null;
                     try {
-                        newMat = Material.valueOf(value.toUpperCase());
+                        newMat = Material.valueOf(value.toString().toUpperCase());
                     } catch (IllegalArgumentException ex) {
 
                     }
                     if (newMat == null) {
-                        sendMessage(TL.COMMAND_CONFIG_INVALID_MATERIAL.format(fieldName, value.toUpperCase()));
+                        sendMessage(TL.COMMAND_CONFIG_INVALID_MATERIAL.format(fieldName, value.toString().toUpperCase()));
                         return;
                     }
 
@@ -179,13 +179,13 @@ public class CmdConfig extends FCommand {
                     if (matSet.contains(newMat)) {
                         matSet.remove(newMat);
                         target.set(null, matSet);
-                        success = TL.COMMAND_CONFIG_MATERIAL_REMOVED.format(fieldName, value.toUpperCase());
+                        success = TL.COMMAND_CONFIG_MATERIAL_REMOVED.format(fieldName, value.toString().toUpperCase());
                     }
                     // Material not present yet, add it
                     else {
                         matSet.add(newMat);
                         target.set(null, matSet);
-                        success = TL.COMMAND_CONFIG_MATERIAL_ADDED.format(fieldName, value.toUpperCase());
+                        success = TL.COMMAND_CONFIG_MATERIAL_ADDED.format(fieldName, value.toString().toUpperCase());
                     }
                 }
 
@@ -194,16 +194,16 @@ public class CmdConfig extends FCommand {
                     @SuppressWarnings("unchecked") Set<String> stringSet = (Set<String>) target.get(null);
 
                     // String already present, so remove it
-                    if (stringSet.contains(value)) {
-                        stringSet.remove(value);
+                    if (stringSet.contains(value.toString())) {
+                        stringSet.remove(value.toString());
                         target.set(null, stringSet);
-                        success = TL.COMMAND_CONFIG_SET_REMOVED.format(fieldName, value);
+                        success = TL.COMMAND_CONFIG_SET_REMOVED.format(fieldName, value.toString());
                     }
                     // String not present yet, add it
                     else {
-                        stringSet.add(value);
+                        stringSet.add(value.toString());
                         target.set(null, stringSet);
-                        success = TL.COMMAND_CONFIG_SET_ADDED.format(fieldName, value);
+                        success = TL.COMMAND_CONFIG_SET_ADDED.format(fieldName, value.toString());
                     }
                 }
 
@@ -223,7 +223,7 @@ public class CmdConfig extends FCommand {
             sendMessage(TL.COMMAND_CONFIG_ERROR_MATCHING.format(fieldName));
             return;
         } catch (IllegalAccessException ex) {
-            sendMessage(TL.COMMAND_CONFIG_ERROR_SETTING.format(fieldName, value));
+            sendMessage(TL.COMMAND_CONFIG_ERROR_SETTING.format(fieldName, value.toString()));
             return;
         }
 

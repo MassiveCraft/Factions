@@ -15,7 +15,7 @@ public enum Relation {
     public final int value;
     public final String nicename;
 
-    private Relation(final int value, final String nicename) {
+    Relation(final int value, final String nicename) {
         this.value = value;
         this.nicename = nicename;
     }

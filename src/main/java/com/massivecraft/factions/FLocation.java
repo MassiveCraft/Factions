@@ -192,7 +192,7 @@ public class FLocation implements Serializable {
     public Set<FLocation> getCircle(double radius) {
         double radiusSquared = radius * radius;
 
-        Set<FLocation> ret = new LinkedHashSet<FLocation>();
+        Set<FLocation> ret = new LinkedHashSet<>();
         if (radius <= 0) {
             return ret;
         }
@@ -215,7 +215,7 @@ public class FLocation implements Serializable {
     }
 
     public static HashSet<FLocation> getArea(FLocation from, FLocation to) {
-        HashSet<FLocation> ret = new HashSet<FLocation>();
+        HashSet<FLocation> ret = new HashSet<>();
 
         for (long x : MiscUtil.range(from.getX(), to.getX())) {
             for (long z : MiscUtil.range(from.getZ(), to.getZ())) {

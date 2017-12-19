@@ -819,7 +819,7 @@ public abstract class MemoryFPlayer implements FPlayer {
         }
 
         // announce success
-        Set<FPlayer> informTheseFPlayers = new HashSet<FPlayer>();
+        Set<FPlayer> informTheseFPlayers = new HashSet<>();
         informTheseFPlayers.add(this);
         informTheseFPlayers.addAll(forFaction.getFPlayersWhereOnline(true));
         for (FPlayer fp : informTheseFPlayers) {
@@ -836,10 +836,7 @@ public abstract class MemoryFPlayer implements FPlayer {
     }
 
     public boolean shouldBeSaved() {
-        if (!this.hasFaction() && (this.getPowerRounded() == this.getPowerMaxRounded() || this.getPowerRounded() == (int) Math.round(Conf.powerPlayerStarting))) {
-            return false;
-        }
-        return true;
+        return this.hasFaction() || (this.getPowerRounded() != this.getPowerMaxRounded() && this.getPowerRounded() != (int) Math.round(Conf.powerPlayerStarting));
     }
 
     public void msg(String str, Object... args) {

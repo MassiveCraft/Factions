@@ -55,7 +55,7 @@ public class JSONFPlayers extends MemoryFPlayers {
     }
 
     public void forceSave(boolean sync) {
-        final Map<String, JSONFPlayer> entitiesThatShouldBeSaved = new HashMap<String, JSONFPlayer>();
+        final Map<String, JSONFPlayer> entitiesThatShouldBeSaved = new HashMap<>();
         for (FPlayer entity : this.fPlayers.values()) {
             if (((MemoryFPlayer) entity).shouldBeSaved()) {
                 entitiesThatShouldBeSaved.put(entity.getId(), (JSONFPlayer) entity);
@@ -81,7 +81,7 @@ public class JSONFPlayers extends MemoryFPlayers {
 
     private Map<String, JSONFPlayer> loadCore() {
         if (!this.file.exists()) {
-            return new HashMap<String, JSONFPlayer>();
+            return new HashMap<>();
         }
 
         String content = DiscUtil.readCatch(this.file);
@@ -91,8 +91,8 @@ public class JSONFPlayers extends MemoryFPlayers {
 
         Map<String, JSONFPlayer> data = this.gson.fromJson(content, new TypeToken<Map<String, JSONFPlayer>>() {
         }.getType());
-        Set<String> list = new HashSet<String>();
-        Set<String> invalidList = new HashSet<String>();
+        Set<String> list = new HashSet<>();
+        Set<String> invalidList = new HashSet<>();
         for (Entry<String, JSONFPlayer> entry : data.entrySet()) {
             String key = entry.getKey();
             entry.getValue().setId(key);
@@ -117,12 +117,12 @@ public class JSONFPlayers extends MemoryFPlayers {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            saveCore(file, (Map<String, JSONFPlayer>) data, true);
+            saveCore(file, data, true);
             Bukkit.getLogger().log(Level.INFO, "Backed up your old data at " + file.getAbsolutePath());
 
             // Start fetching those UUIDs
             Bukkit.getLogger().log(Level.INFO, "Please wait while Factions converts " + list.size() + " old player names to UUID. This may take a while.");
-            UUIDFetcher fetcher = new UUIDFetcher(new ArrayList<String>(list));
+            UUIDFetcher fetcher = new UUIDFetcher(new ArrayList<>(list));
             try {
                 Map<String, UUID> response = fetcher.call();
                 for (String s : list) {
@@ -161,11 +161,11 @@ public class JSONFPlayers extends MemoryFPlayers {
                 Bukkit.getLogger().log(Level.INFO, "While converting we found names that either don't have a UUID or aren't players and removed them from storage.");
                 Bukkit.getLogger().log(Level.INFO, "The following names were detected as being invalid: " + StringUtils.join(invalidList, ", "));
             }
-            saveCore(this.file, (Map<String, JSONFPlayer>) data, true); // Update the
+            saveCore(this.file, data, true); // Update the
             // flatfile
             Bukkit.getLogger().log(Level.INFO, "Done converting players.json to UUID.");
         }
-        return (Map<String, JSONFPlayer>) data;
+        return data;
     }
 
     private boolean doesKeyNeedMigration(String key) {

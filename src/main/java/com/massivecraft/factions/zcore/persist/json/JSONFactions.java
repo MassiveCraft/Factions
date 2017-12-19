@@ -49,7 +49,7 @@ public class JSONFactions extends MemoryFactions {
     }
 
     public void forceSave(boolean sync) {
-        final Map<String, JSONFaction> entitiesThatShouldBeSaved = new HashMap<String, JSONFaction>();
+        final Map<String, JSONFaction> entitiesThatShouldBeSaved = new HashMap<>();
         for (Faction entity : this.factions.values()) {
             entitiesThatShouldBeSaved.put(entity.getId(), (JSONFaction) entity);
         }
@@ -74,7 +74,7 @@ public class JSONFactions extends MemoryFactions {
 
     private Map<String, JSONFaction> loadCore() {
         if (!this.file.exists()) {
-            return new HashMap<String, JSONFaction>();
+            return new HashMap<>();
         }
 
         String content = DiscUtil.readCatch(this.file);
@@ -112,7 +112,7 @@ public class JSONFactions extends MemoryFactions {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            saveCore(file, (Map<String, JSONFaction>) data, true);
+            saveCore(file, data, true);
             Bukkit.getLogger().log(Level.INFO, "Backed up your old data at " + file.getAbsolutePath());
 
             Bukkit.getLogger().log(Level.INFO, "Please wait while Factions converts " + needsUpdate + " old player names to UUID. This may take a while.");
@@ -128,7 +128,7 @@ public class JSONFactions extends MemoryFactions {
                     Set<String> list = whichKeysNeedMigration(set);
 
                     if (list.size() > 0) {
-                        UUIDFetcher fetcher = new UUIDFetcher(new ArrayList<String>(list));
+                        UUIDFetcher fetcher = new UUIDFetcher(new ArrayList<>(list));
                         try {
                             Map<String, UUID> response = fetcher.call();
                             for (String value : response.keySet()) {
@@ -155,7 +155,7 @@ public class JSONFactions extends MemoryFactions {
                 Set<String> list = whichKeysNeedMigration(invites);
 
                 if (list.size() > 0) {
-                    UUIDFetcher fetcher = new UUIDFetcher(new ArrayList<String>(list));
+                    UUIDFetcher fetcher = new UUIDFetcher(new ArrayList<>(list));
                     try {
                         Map<String, UUID> response = fetcher.call();
                         for (String value : response.keySet()) {
@@ -172,14 +172,14 @@ public class JSONFactions extends MemoryFactions {
                 }
             }
 
-            saveCore(this.file, (Map<String, JSONFaction>) data, true); // Update the flatfile
+            saveCore(this.file, data, true); // Update the flatfile
             Bukkit.getLogger().log(Level.INFO, "Done converting factions.json to UUID.");
         }
         return data;
     }
 
     private Set<String> whichKeysNeedMigration(Set<String> keys) {
-        HashSet<String> list = new HashSet<String>();
+        HashSet<String> list = new HashSet<>();
         for (String value : keys) {
             if (!value.matches("[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}")) {
                 // Not a valid UUID..
@@ -236,8 +236,7 @@ public class JSONFactions extends MemoryFactions {
 
     @Override
     public Faction generateFactionObject(String id) {
-        Faction faction = new JSONFaction(id);
-        return faction;
+        return new JSONFaction(id);
     }
 
     @Override

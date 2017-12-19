@@ -124,7 +124,7 @@ public class TagUtil {
      * @return list of fancy messages to send
      */
     protected static List<FancyMessage> getFancy(Faction target, FPlayer fme, TagReplacer type, String prefix) {
-        List<FancyMessage> fancyMessages = new ArrayList<FancyMessage>();
+        List<FancyMessage> fancyMessages = new ArrayList<>();
         boolean minimal = P.p.getConfig().getBoolean("minimal-show", false);
 
         switch (type) {
@@ -212,7 +212,7 @@ public class TagUtil {
      * @return list of tooltips for a fancy message
      */
     private static List<String> tipFaction(Faction faction) {
-        List<String> lines = new ArrayList<String>();
+        List<String> lines = new ArrayList<>();
         for (String line : P.p.getConfig().getStringList("tooltips.list")) {
             lines.add(ChatColor.translateAlternateColorCodes('&', TagUtil.parsePlain(faction, line)));
         }
@@ -227,7 +227,7 @@ public class TagUtil {
      * @return list of tooltips for a fancy message
      */
     private static List<String> tipPlayer(FPlayer fplayer) {
-        List<String> lines = new ArrayList<String>();
+        List<String> lines = new ArrayList<>();
         for (String line : P.p.getConfig().getStringList("tooltips.show")) {
             lines.add(ChatColor.translateAlternateColorCodes('&', TagUtil.parsePlain(fplayer, line)));
         }

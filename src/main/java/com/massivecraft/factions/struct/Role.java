@@ -12,7 +12,7 @@ public enum Role {
     public final String nicename;
     public final TL translation;
 
-    private Role(final int value, final TL translation) {
+    Role(final int value, final TL translation) {
         this.value = value;
         this.nicename = translation.toString();
         this.translation = translation;

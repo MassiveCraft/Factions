@@ -91,7 +91,7 @@ public class CmdList extends FCommand {
             }
         });
 
-        ArrayList<String> lines = new ArrayList<String>();
+        ArrayList<String> lines = new ArrayList<>();
 
         factionList.add(0, Factions.getInstance().getNone());
 

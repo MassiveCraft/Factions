@@ -29,7 +29,7 @@ public class FDefaultSidebar extends FSidebarProvider {
         List<String> lines = P.p.getConfig().getStringList(list);
 
         if (lines == null || lines.isEmpty()) {
-            return new ArrayList<String>();
+            return new ArrayList<>();
         }
 
         ListIterator<String> it = lines.listIterator();
