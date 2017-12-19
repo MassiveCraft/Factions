@@ -44,7 +44,7 @@ portals:
 ### Hard Core Settings ###
 
 # Warps
-# What should be the max amount of warps that a Factoin can set?
+# What should be the max amount of warps that a Faction can set?
 max-warps: 5
 
 # This is the cost section for warps.
