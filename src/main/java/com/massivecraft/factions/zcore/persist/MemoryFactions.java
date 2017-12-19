@@ -13,7 +13,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 public abstract class MemoryFactions extends Factions {
-    public Map<String, Faction> factions = new ConcurrentHashMap<String, Faction>();
+    public final Map<String, Faction> factions = new ConcurrentHashMap<String, Faction>();
     public int nextId = 1;
 
     public void load() {
