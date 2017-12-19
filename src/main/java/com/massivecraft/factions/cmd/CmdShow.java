@@ -28,7 +28,7 @@ public class CmdShow extends FCommand {
         defaults.add("<a>Founded: <i>{create-date}");
         defaults.add("<a>This faction is permanent, remaining even with no members.");
         defaults.add("<a>Land value: <i>{land-value} {land-refund}");
-        defaults.add("<a>Balance: <i>{balance}");
+        defaults.add("<a>Balance: <i>{faction-balance}");
         defaults.add("<a>Allies(<i>{allies}<a>/<i>{max-allies}<a>): {allies-list}");
         defaults.add("<a>Online: (<i>{online}<a>/<i>{members}<a>): {online-list}");
         defaults.add("<a>Offline: (<i>{offline}<a>/<i>{members}<a>): {offline-list}");
