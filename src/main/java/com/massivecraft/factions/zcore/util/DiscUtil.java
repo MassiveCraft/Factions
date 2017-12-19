@@ -59,7 +59,6 @@ public class DiscUtil {
     private static HashMap<String, Lock> locks = new HashMap<String, Lock>();
 
     public static boolean writeCatch(final File file, final String content, boolean sync) {
-        final byte[] bytes = utf8(content);
         String name = file.getName();
         final Lock lock;
 
@@ -75,9 +74,7 @@ public class DiscUtil {
         if (sync) {
             lock.lock();
             try {
-                FileOutputStream out = new FileOutputStream(file);
-                out.write(bytes);
-                out.close();
+                write(file, content);
             } catch (IOException e) {
                 e.printStackTrace();
             } finally {
@@ -89,9 +86,7 @@ public class DiscUtil {
                 public void run() {
                     lock.lock();
                     try {
-                        FileOutputStream out = new FileOutputStream(file);
-                        out.write(bytes);
-                        out.close();
+                        write(file, content);
                     } catch (IOException e) {
                         e.printStackTrace();
                     } finally {
