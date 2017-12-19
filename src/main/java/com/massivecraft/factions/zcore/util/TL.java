@@ -177,13 +177,14 @@ public enum TL {
     COMMAND_DISBAND_DESCRIPTION("Disband a faction"),
 
     COMMAND_FWARP_CLICKTOWARP("Click to warp!"),
-    COMMAND_FWARP_COMMANDFORMAT("<i>/f warp <warpname>"),
+    COMMAND_FWARP_COMMANDFORMAT("<i>/f warp <warpname> [password]"),
     COMMAND_FWARP_WARPED("<i>Warped to <a>%1$s"),
     COMMAND_FWARP_INVALID("<i>Couldn't find warp <a>%1$s"),
     COMMAND_FWARP_TOWARP("to warp"),
     COMMAND_FWARP_FORWARPING("for warping"),
     COMMAND_FWARP_WARPS("Warps: "),
     COMMAND_FWARP_DESCRIPTION("Teleport to a faction warp"),
+    COMMAND_FWARP_INVALID_PASSWORD("&4Invalid password!"),
 
     COMMAND_HELP_404("<b>This page does not exist"),
     COMMAND_HELP_NEXTCREATE("<i>Learn how to create a faction on the next page."),
@@ -421,7 +422,7 @@ public enum TL {
 
     COMMAND_SETFWARP_NOTCLAIMED("<i>You can only set warps in your faction territory."),
     COMMAND_SETFWARP_LIMIT("<i>Your Faction already has the max amount of warps set <a>(%1$d)."),
-    COMMAND_SETFWARP_SET("<i>Set warp <a>%1$s <i>to your location."),
+    COMMAND_SETFWARP_SET("<i>Set warp <a>%1$s and password <c>'%2$s' <i>to your location."),
     COMMAND_SETFWARP_TOSET("to set warp"),
     COMMAND_SETFWARP_FORSET("for setting warp"),
     COMMAND_SETFWARP_DESCRIPTION("Set a faction warp"),

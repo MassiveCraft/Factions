@@ -23,6 +23,12 @@ public interface Faction extends EconomyParticipator {
 
     public boolean isWarp(String name);
 
+    public boolean hasWarpPassword(String warp);
+
+    public boolean isWarpPassword(String warp, String password);
+
+    public void setWarpPassword(String warp, String password);
+
     public boolean removeWarp(String name);
 
     public void clearWarps();

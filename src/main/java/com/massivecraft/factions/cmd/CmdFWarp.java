@@ -22,6 +22,7 @@ public class CmdFWarp extends FCommand {
         this.aliases.add("warp");
         this.aliases.add("warps");
         this.optionalArgs.put("warpname", "warpname");
+        this.optionalArgs.put("password", "password");
 
         this.permission = Permission.WARP.node;
         this.senderMustBeMember = true;
@@ -38,11 +39,21 @@ public class CmdFWarp extends FCommand {
                 msg.then(s + " ").tooltip(TL.COMMAND_FWARP_CLICKTOWARP.toString()).command("/" + Conf.baseCommandAliases.get(0) + " warp " + s).color(ChatColor.WHITE);
             }
             sendFancyMessage(msg);
-        } else if (args.size() > 1) {
+        } else if (args.size() > 2) {
             fme.msg(TL.COMMAND_FWARP_COMMANDFORMAT);
         } else {
             final String warpName = argAsString(0);
+            final String passwordAttempt = argAsString(1);
+
             if (myFaction.isWarp(argAsString(0))) {
+
+                // Check if requires password and if so, check if valid. CASE SENSITIVE
+                if (myFaction.hasWarpPassword(warpName) && !myFaction.isWarpPassword(warpName, passwordAttempt)) {
+                    fme.msg(TL.COMMAND_FWARP_INVALID_PASSWORD);
+                    return;
+                }
+
+                // Check transaction AFTER password check.
                 if (!transact(fme)) {
                     return;
                 }

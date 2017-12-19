@@ -41,6 +41,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     protected Set<String> invites = new HashSet<String>();
     protected HashMap<String, List<String>> announcements = new HashMap<String, List<String>>();
     protected ConcurrentHashMap<String, LazyLocation> warps = new ConcurrentHashMap<String, LazyLocation>();
+    protected ConcurrentHashMap<String, String> warpPasswords = new ConcurrentHashMap<String, String>();
     private long lastDeath;
     protected int maxVaults;
 
@@ -90,6 +91,18 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
     public boolean removeWarp(String name) {
         return warps.remove(name) != null;
+    }
+
+    public boolean isWarpPassword(String warp, String password) {
+        return hasWarpPassword(warp) && warpPasswords.get(warp.toLowerCase()).equals(password);
+    }
+
+    public boolean hasWarpPassword(String warp) {
+        return warpPasswords.containsKey(warp.toLowerCase());
+    }
+
+    public void setWarpPassword(String warp, String password) {
+        warpPasswords.put(warp.toLowerCase(), password);
     }
 
     public void clearWarps() {

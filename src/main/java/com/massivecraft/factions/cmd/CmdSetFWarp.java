@@ -14,6 +14,7 @@ public class CmdSetFWarp extends FCommand {
         this.aliases.add("setwarp");
         this.aliases.add("sw");
         this.requiredArgs.add("warp name");
+        this.optionalArgs.put("password", "password");
         this.senderMustBeMember = true;
         this.senderMustBeModerator = true;
         this.senderMustBePlayer = true;
@@ -38,9 +39,14 @@ public class CmdSetFWarp extends FCommand {
         }
 
         String warp = argAsString(0);
+        String password = argAsString(1);
+
         LazyLocation loc = new LazyLocation(fme.getPlayer().getLocation());
         myFaction.setWarp(warp, loc);
-        fme.msg(TL.COMMAND_SETFWARP_SET, warp);
+        if (password != null) {
+            myFaction.setWarpPassword(warp, password);
+        }
+        fme.msg(TL.COMMAND_SETFWARP_SET, warp, password != null ? password : "");
     }
 
     private boolean transact(FPlayer player) {
