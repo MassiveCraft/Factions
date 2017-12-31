@@ -58,6 +58,7 @@ public class P extends MPlugin {
     public CmdAutoHelp cmdAutoHelp;
 
     private boolean hookedPlayervaults;
+    private PlaceholderAPIManager placeholderAPIManager;
 
     public P() {
         p = this;
@@ -116,8 +117,18 @@ public class P extends MPlugin {
         // since some other plugins execute commands directly through this command interface, provide it
         this.getCommand(this.refCommand).setExecutor(this);
 
+        setupPlaceholderAPI();
         postEnable();
         this.loadSuccessful = true;
+    }
+
+    private void setupPlaceholderAPI() {
+        Plugin plugin = getServer().getPluginManager().getPlugin("PlaceholderAPI");
+        if (plugin != null && plugin.isEnabled()) {
+            this.placeholderAPIManager = new PlaceholderAPIManager();
+            this.placeholderAPIManager.hook();
+            log(Level.INFO, "Found PlaceholderAPI. Adding hooks.");
+        }
     }
 
     private boolean setupPermissions() {
