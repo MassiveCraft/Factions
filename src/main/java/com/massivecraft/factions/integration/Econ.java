@@ -8,6 +8,7 @@ import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.RelationUtil;
+import com.massivecraft.factions.zcore.util.TL;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.Bukkit;
@@ -340,9 +341,8 @@ public class Econ {
         }
     }
 
-    // format money string based on server's set currency type, like "24 gold" or "$24.50"
     public static String moneyString(double amount) {
-        return econ.format(amount);
+        return format.format(amount);
     }
 
     // calculate the cost for claiming land
@@ -387,7 +387,7 @@ public class Econ {
         return econ.getBalance(account);
     }
 
-    private static final DecimalFormat format = new DecimalFormat("#,###");
+    private static final DecimalFormat format = new DecimalFormat(TL.ECON_FORMAT.toString());
 
     public static String getFriendlyBalance(UUID uuid) {
         OfflinePlayer offline = Bukkit.getOfflinePlayer(uuid);

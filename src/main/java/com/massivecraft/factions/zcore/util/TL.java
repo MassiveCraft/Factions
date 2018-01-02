@@ -629,6 +629,7 @@ public enum TL {
      */
 
     ECON_OFF("no %s"), // no balance, no value, no refund, etc
+    ECON_FORMAT("###,###.###"),
 
     /**
      * Relations
