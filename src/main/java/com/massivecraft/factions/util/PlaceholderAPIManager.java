@@ -66,12 +66,12 @@ public class PlaceholderAPIManager extends EZPlaceholderHook {
             case "faction_powerboost":
                 double powerBoost = faction.getPowerBoost();
                 return (powerBoost == 0.0) ? "" : (powerBoost > 0.0 ? TL.COMMAND_SHOW_BONUS.toString() : TL.COMMAND_SHOW_PENALTY.toString() + powerBoost + ")");
-            case "leader":
+            case "faction_leader":
                 FPlayer fAdmin = faction.getFPlayerAdmin();
                 return fAdmin == null ? "Server" : fAdmin.getName().substring(0, fAdmin.getName().length() > 14 ? 13 : fAdmin.getName().length());
-            case "warps":
+            case "faction_warps":
                 return String.valueOf(faction.getWarps().size());
-            case "raidable":
+            case "faction_raidable":
                 boolean raid = P.p.getConfig().getBoolean("hcf.raidable", false) && faction.getLandRounded() >= faction.getPowerRounded();
                 return raid ? TL.RAIDABLE_TRUE.toString() : TL.RAIDABLE_FALSE.toString();
             case "faction_home_world":
@@ -102,6 +102,8 @@ public class PlaceholderAPIManager extends EZPlaceholderHook {
                 return String.valueOf(faction.getKills());
             case "faction_deaths":
                 return String.valueOf(faction.getDeaths());
+            case "faction_maxvaults":
+                return String.valueOf(faction.getMaxVaults());
         }
 
         return null;
