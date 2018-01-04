@@ -63,11 +63,11 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         if (!announcements.containsKey(fPlayer.getId())) {
             return;
         }
-        fPlayer.sendMessage(ChatColor.LIGHT_PURPLE + "--Unread Faction Announcements--");
+        fPlayer.msg(TL.FACTIONS_ANNOUNCEMENT_TOP);
         for (String s : announcements.get(fPlayer.getPlayer().getUniqueId().toString())) {
             fPlayer.sendMessage(s);
         }
-        fPlayer.sendMessage(ChatColor.LIGHT_PURPLE + "--Unread Faction Announcements--");
+        fPlayer.msg(TL.FACTIONS_ANNOUNCEMENT_BOTTOM);
         announcements.remove(fPlayer.getId());
     }
 
