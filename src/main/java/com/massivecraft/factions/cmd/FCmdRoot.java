@@ -42,6 +42,7 @@ public class FCmdRoot extends FCommand {
     public CmdRelationAlly cmdRelationAlly = new CmdRelationAlly();
     public CmdRelationEnemy cmdRelationEnemy = new CmdRelationEnemy();
     public CmdRelationNeutral cmdRelationNeutral = new CmdRelationNeutral();
+    public CmdRelationTruce cmdRelationTruce = new CmdRelationTruce();
     public CmdReload cmdReload = new CmdReload();
     public CmdSafeunclaimall cmdSafeunclaimall = new CmdSafeunclaimall();
     public CmdSaveAll cmdSaveAll = new CmdSaveAll();
@@ -127,6 +128,7 @@ public class FCmdRoot extends FCommand {
         this.addSubCommand(this.cmdRelationAlly);
         this.addSubCommand(this.cmdRelationEnemy);
         this.addSubCommand(this.cmdRelationNeutral);
+        this.addSubCommand(this.cmdRelationTruce);
         this.addSubCommand(this.cmdReload);
         this.addSubCommand(this.cmdSafeunclaimall);
         this.addSubCommand(this.cmdSaveAll);
