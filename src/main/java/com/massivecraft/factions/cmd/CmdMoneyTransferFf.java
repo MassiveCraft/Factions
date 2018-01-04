@@ -7,6 +7,7 @@ import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 
 
 public class CmdMoneyTransferFf extends FCommand {
@@ -43,7 +44,8 @@ public class CmdMoneyTransferFf extends FCommand {
         boolean success = Econ.transferMoney(fme, from, to, amount);
 
         if (success && Conf.logMoneyTransactions) {
-            P.p.log(ChatColor.stripColor(P.p.txt.parse(TL.COMMAND_MONEYTRANSFERFF_TRANSFER.toString(), fme.getName(), Econ.moneyString(amount), from.describeTo(null), to.describeTo(null))));
+            String name = sender instanceof Player ? fme.getName() : sender.getName();
+            P.p.log(ChatColor.stripColor(P.p.txt.parse(TL.COMMAND_MONEYTRANSFERFF_TRANSFER.toString(), name, Econ.moneyString(amount), from.describeTo(null), to.describeTo(null))));
         }
     }
 
