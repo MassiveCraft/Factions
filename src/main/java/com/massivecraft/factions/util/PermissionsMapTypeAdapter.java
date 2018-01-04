@@ -44,7 +44,7 @@ public class PermissionsMapTypeAdapter implements JsonDeserializer<Map<Relation,
 
         } catch (Exception ex) {
             ex.printStackTrace();
-            P.p.log(Level.WARNING, "Error encountered while deserializing a Map of FLocations to String Sets.");
+            P.p.log(Level.WARNING, "Error encountered while deserializing a PermissionsMap.");
             return null;
         }
     }
