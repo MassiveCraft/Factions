@@ -4,6 +4,8 @@ import com.massivecraft.factions.*;
 import com.massivecraft.factions.integration.Worldguard;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
+import com.massivecraft.factions.zcore.fperms.Access;
+import com.massivecraft.factions.zcore.fperms.Action;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -145,7 +147,7 @@ public class FactionsBlockListener implements Listener {
         }
 
         // Check if they have build permissions here. If not, block this from happening.
-        if (!playerCanBuildDestroyBlock(player, location, "frost walk", justCheck)) {
+        if (!playerCanBuildDestroyBlock(player, location, "frostwalk", justCheck)) {
             event.setCancelled(true);
         }
     }
@@ -248,6 +250,12 @@ public class FactionsBlockListener implements Listener {
             if (!deny) {
                 me.msg("<b>It is painful to try to " + action + " in the territory of " + otherFaction.getTag(myFaction));
             }
+        }
+
+        Access access = otherFaction.hasPerm(me, Action.valueOf(action));
+        if (access != null && access != Access.UNDEFINED) {
+            // TODO: Update this once new access values are added other than just allow / deny.
+            return access == Access.ALLOW;
         }
 
         // cancel building/destroying in other territory?

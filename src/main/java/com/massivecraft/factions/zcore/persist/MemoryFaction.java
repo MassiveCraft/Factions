@@ -10,6 +10,8 @@ import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.LazyLocation;
 import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.factions.util.RelationUtil;
+import com.massivecraft.factions.zcore.fperms.Access;
+import com.massivecraft.factions.zcore.fperms.Action;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -20,6 +22,7 @@ import org.bukkit.entity.Player;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
 
 public abstract class MemoryFaction implements Faction, EconomyParticipator {
     protected String id = null;
@@ -44,6 +47,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     protected ConcurrentHashMap<String, String> warpPasswords = new ConcurrentHashMap<>();
     private long lastDeath;
     protected int maxVaults;
+    protected Map<Relation, Map<Action, Access>> permissions = new HashMap<>();
 
     public HashMap<String, List<String>> getAnnouncements() {
         return this.announcements;
@@ -315,6 +319,45 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
 
     // -------------------------------------------- //
+    // F Permissions stuff
+    // -------------------------------------------- //
+
+
+    public Access hasPerm(FPlayer fPlayer, Action action) {
+        Relation relation = fPlayer.getRelationTo(this);
+        Map<Action, Access> accessMap = permissions.get(relation);
+        if (accessMap != null && accessMap.containsKey(action)) {
+            return accessMap.get(action);
+        }
+
+        return null;
+    }
+
+    public void setPermission(Relation relation, Action action, Access access) {
+        Map<Action, Access> accessMap = permissions.get(relation);
+        if (accessMap == null) {
+            accessMap = new HashMap<>();
+        }
+
+        accessMap.put(action, access);
+    }
+
+    public void resetPerms() {
+        P.p.log(Level.WARNING, "Resetting permissions for Faction: " + tag);
+
+        // First populate a map with undefined as the permission for each action.
+        Map<Action, Access> freshMap = new HashMap<>();
+        for (Action action : Action.values()) {
+            freshMap.put(action, Access.UNDEFINED);
+        }
+
+        // Put the map in there for each relation.
+        for (Relation relation : Relation.values()) {
+            permissions.put(relation, freshMap);
+        }
+    }
+
+    // -------------------------------------------- //
     // Construct
     // -------------------------------------------- //
     public MemoryFaction() {
@@ -333,6 +376,8 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         this.powerBoost = 0.0;
         this.foundedDate = System.currentTimeMillis();
         this.maxVaults = Conf.defaultMaxVaults;
+
+        resetPerms(); // Reset on new Faction so it has default values.
     }
 
     public MemoryFaction(MemoryFaction old) {
@@ -354,6 +399,8 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         fplayers = new HashSet<>();
         invites = old.invites;
         announcements = old.announcements;
+
+        resetPerms(); // Reset on new Faction so it has default values.
     }
 
     // -------------------------------------------- //

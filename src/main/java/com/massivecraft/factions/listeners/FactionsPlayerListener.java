@@ -10,6 +10,7 @@ import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.VisualizeUtil;
+import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.persist.MemoryFPlayer;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TextUtil;
@@ -353,6 +354,13 @@ public class FactionsPlayerListener implements Listener {
         Faction myFaction = me.getFaction();
         Relation rel = myFaction.getRelationTo(otherFaction);
 
+
+        Access access = otherFaction.hasPerm(me, com.massivecraft.factions.zcore.fperms.Action.valueOf("items"));
+        if (access != null && access != Access.UNDEFINED) {
+            // TODO: Update this once new access values are added other than just allow / deny.
+            return access == Access.ALLOW;
+        }
+
         // Cancel if we are not in our own territory
         if (rel.confDenyUseage()) {
             if (!justCheck) {
@@ -400,8 +408,8 @@ public class FactionsPlayerListener implements Listener {
         // Dupe fix.
         Faction myFaction = me.getFaction();
         Relation rel = myFaction.getRelationTo(otherFaction);
-        if (!rel.isMember() || !otherFaction.playerHasOwnershipRights(me, loc) && player.getItemInHand() != null) {
-            switch (player.getItemInHand().getType()) {
+        if (!rel.isMember() || !otherFaction.playerHasOwnershipRights(me, loc) && player.getInventory().getItemInMainHand() != null) {
+            switch (player.getInventory().getItemInMainHand().getType()) {
                 case CHEST:
                 case SIGN_POST:
                 case TRAPPED_CHEST:
@@ -412,6 +420,12 @@ public class FactionsPlayerListener implements Listener {
                 default:
                     break;
             }
+        }
+
+        Access access = otherFaction.hasPerm(me, com.massivecraft.factions.zcore.fperms.Action.BUILD);
+        if (access != null && access != Access.UNDEFINED) {
+            // TODO: Update this once new access values are added other than just allow / deny.
+            return access == Access.ALLOW;
         }
 
         // We only care about some material types.
