@@ -19,4 +19,10 @@ public enum Access {
 
         return null;
     }
+
+
+    @Override
+    public String toString() {
+        return name();
+    }
 }

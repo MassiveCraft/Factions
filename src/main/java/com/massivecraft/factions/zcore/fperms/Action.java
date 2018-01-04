@@ -48,4 +48,9 @@ public enum Action {
 
         return null;
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }
