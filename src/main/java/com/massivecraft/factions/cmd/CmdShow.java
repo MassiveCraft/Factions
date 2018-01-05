@@ -54,7 +54,7 @@ public class CmdShow extends FCommand {
             return;
         }
 
-        if (!fme.getPlayer().hasPermission("factions.show.bypassexempt")
+        if (fme != null && !fme.getPlayer().hasPermission("factions.show.bypassexempt")
                 && P.p.getConfig().getStringList("show-exempt").contains(faction.getTag())) {
             msg(TL.COMMAND_SHOW_EXEMPT);
             return;

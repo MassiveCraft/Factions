@@ -14,8 +14,7 @@ public class FPromoteCommand extends FCommand {
     public FPromoteCommand() {
         super();
 
-        this.optionalArgs.put("player name", "name");
-        //this.optionalArgs.put("", "");
+        this.requiredArgs.add("player");
 
         this.permission = Permission.MOD.node;
         this.disableOnLock = true;
@@ -44,7 +43,6 @@ public class FPromoteCommand extends FCommand {
         // Well this is messy.
         if (access == null || access == Access.UNDEFINED) {
             if (!assertMinRole(Role.MODERATOR)) {
-                msg(TL.COMMAND_NOACCESS);
                 return;
             }
         } else if (access == Access.DENY) {
@@ -59,13 +57,15 @@ public class FPromoteCommand extends FCommand {
             return;
         }
 
+        String action = relative > 0 ? TL.COMMAND_PROMOTE_PROMOTED.toString() : TL.COMMAND_PROMOTE_DEMOTED.toString();
+
         // Success!
         target.setRole(promotion);
         if (target.isOnline()) {
-            target.msg(TL.COMMAND_PROMOTE_TARGET, promotion.nicename);
+            target.msg(TL.COMMAND_PROMOTE_TARGET, action, promotion.nicename);
         }
 
-        target.msg(TL.COMMAND_PROMOTE_SUCCESS, target.getName(), promotion.nicename);
+        fme.msg(TL.COMMAND_PROMOTE_SUCCESS, action, target.getName(), promotion.nicename);
     }
 
     @Override

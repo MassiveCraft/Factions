@@ -47,8 +47,8 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     protected ConcurrentHashMap<String, String> warpPasswords = new ConcurrentHashMap<>();
     private long lastDeath;
     protected int maxVaults;
-    protected Map<Relation, Map<Action, Access>> permissions = new HashMap<>();
     protected Role defaultRole;
+    protected Map<Relation, Map<Action, Access>> permissions = new HashMap<>();
 
     public HashMap<String, List<String>> getAnnouncements() {
         return this.announcements;
@@ -579,12 +579,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
 
     public boolean addFPlayer(FPlayer fplayer) {
-        if (!this.isPlayerFreeType() && fplayers.add(fplayer)) {
-            fplayer.setRole(defaultRole); // set default role on join.
-            return true;
-        }
-
-        return false;
+        return !this.isPlayerFreeType() && fplayers.add(fplayer);
     }
 
     public boolean removeFPlayer(FPlayer fplayer) {

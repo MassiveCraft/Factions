@@ -375,8 +375,10 @@ public enum TL {
     COMMAND_PERMANENT_REVOKE("removed permanent status from"),
     COMMAND_PERMANENT_YOURS("%1$s has %2$s your faction"),
     COMMAND_PERMANENT_OTHER("%s<i> has %s the faction '%s<i>'."),
-    COMMAND_PROMOTE_TARGET("You've been promoted to %1$s"),
-    COMMAND_PROMOTE_SUCCESS("You successfully promoted %1$s to %2$s"),
+    COMMAND_PROMOTE_TARGET("You've been %1$s to %2$s"),
+    COMMAND_PROMOTE_SUCCESS("You successfully %1$s %2$s to %3$s"),
+    COMMAND_PROMOTE_PROMOTED("promoted"),
+    COMMAND_PROMOTE_DEMOTED("demoted"),
 
     COMMAND_PERMANENTPOWER_DESCRIPTION("Toggle faction power permanence"), //TODO: This a real word?
     COMMAND_PERMANENTPOWER_GRANT("added permanentpower status to"),

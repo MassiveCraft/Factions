@@ -101,6 +101,7 @@ public class CmdJoin extends FCommand {
         fplayer.resetFactionData();
         fplayer.setFaction(faction);
         faction.deinvite(fplayer);
+        fme.setRole(faction.getDefaultRole());
 
         if (Conf.logFactionJoin) {
             if (samePlayer) {

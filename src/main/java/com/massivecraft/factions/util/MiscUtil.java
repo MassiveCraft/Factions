@@ -85,6 +85,7 @@ public class MiscUtil {
         List<FPlayer> admins = new ArrayList<>();
         List<FPlayer> moderators = new ArrayList<>();
         List<FPlayer> normal = new ArrayList<>();
+        List<FPlayer> recruit = new ArrayList<>();
 
         for (FPlayer player : players) {
             switch (player.getRole()) {
@@ -99,6 +100,10 @@ public class MiscUtil {
                 case NORMAL:
                     normal.add(player);
                     break;
+
+                case RECRUIT:
+                    recruit.add(player);
+                    break;
             }
         }
 
@@ -106,6 +111,7 @@ public class MiscUtil {
         ret.addAll(admins);
         ret.addAll(moderators);
         ret.addAll(normal);
+        ret.addAll(recruit);
         return ret;
     }
 }

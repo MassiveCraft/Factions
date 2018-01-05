@@ -15,7 +15,6 @@ public class CmdSetDefaultRole extends FCommand {
         this.aliases.add("def");
         this.requiredArgs.add("role");
 
-        this.senderMustBeMember = true;
         this.senderMustBeAdmin = true;
         this.senderMustBePlayer = true;
 
