@@ -7,6 +7,7 @@ public enum Access {
 
     /**
      * Case insensitive check for access.
+     *
      * @param check
      * @return
      */

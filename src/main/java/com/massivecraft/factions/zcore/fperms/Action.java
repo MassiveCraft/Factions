@@ -37,6 +37,7 @@ public enum Action {
 
     /**
      * Case insensitive check for action.
+     *
      * @param check
      * @return
      */

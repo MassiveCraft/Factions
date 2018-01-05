@@ -4,7 +4,6 @@ import com.massivecraft.factions.*;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.zcore.util.TL;
-import com.massivecraft.factions.zcore.util.TagUtil;
 import me.clip.placeholderapi.external.EZPlaceholderHook;
 import org.apache.commons.lang.time.DurationFormatUtils;
 import org.bukkit.Bukkit;
@@ -21,7 +20,7 @@ public class PlaceholderAPIManager extends EZPlaceholderHook {
 
     @Override
     public String onPlaceholderRequest(Player player, String placeholder) {
-        if(player == null || placeholder == null) {
+        if (player == null || placeholder == null) {
             return "";
         }
 
@@ -46,7 +45,7 @@ public class PlaceholderAPIManager extends EZPlaceholderHook {
                 return String.valueOf(fPlayer.getKills());
             case "player_deaths":
                 return String.valueOf(fPlayer.getDeaths());
-                // Then Faction stuff
+            // Then Faction stuff
             case "faction_name":
                 return faction.getTag();
             case "faction_power":

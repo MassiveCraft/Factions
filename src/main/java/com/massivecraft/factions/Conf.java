@@ -287,19 +287,19 @@ public class Conf {
 
     // Format for popup - substitute values for macros
     public static String dynmapDescription =
-        "<div class=\"infowindow\">\n"
-          + "<span style=\"font-weight: bold; font-size: 150%;\">%name%</span><br>\n"
-          + "<span style=\"font-style: italic; font-size: 110%;\">%description%</span><br>"
-          + "<br>\n"
-          + "<span style=\"font-weight: bold;\">Leader:</span> %players.leader%<br>\n"
-          + "<span style=\"font-weight: bold;\">Admins:</span> %players.admins.count%<br>\n"
-          + "<span style=\"font-weight: bold;\">Moderators:</span> %players.moderators.count%<br>\n"
-          + "<span style=\"font-weight: bold;\">Members:</span> %players.normals.count%<br>\n"
-          + "<span style=\"font-weight: bold;\">TOTAL:</span> %players.count%<br>\n"
-          + "</br>\n"
-          + "<span style=\"font-weight: bold;\">Bank:</span> %money%<br>\n"
-          + "<br>\n"
-      + "</div>";
+            "<div class=\"infowindow\">\n"
+                    + "<span style=\"font-weight: bold; font-size: 150%;\">%name%</span><br>\n"
+                    + "<span style=\"font-style: italic; font-size: 110%;\">%description%</span><br>"
+                    + "<br>\n"
+                    + "<span style=\"font-weight: bold;\">Leader:</span> %players.leader%<br>\n"
+                    + "<span style=\"font-weight: bold;\">Admins:</span> %players.admins.count%<br>\n"
+                    + "<span style=\"font-weight: bold;\">Moderators:</span> %players.moderators.count%<br>\n"
+                    + "<span style=\"font-weight: bold;\">Members:</span> %players.normals.count%<br>\n"
+                    + "<span style=\"font-weight: bold;\">TOTAL:</span> %players.count%<br>\n"
+                    + "</br>\n"
+                    + "<span style=\"font-weight: bold;\">Bank:</span> %money%<br>\n"
+                    + "<br>\n"
+                    + "</div>";
 
     // Enable the %money% macro. Only do this if you know your economy manager is thread-safe.
     public static boolean dynmapDescriptionMoney = false;

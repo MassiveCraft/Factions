@@ -591,7 +591,6 @@ public abstract class MemoryFPlayer implements FPlayer {
      * Check if the scoreboard should be shown. Simple method to be used by above method.
      *
      * @param toShow Faction to be shown.
-     *
      * @return true if should show, otherwise false.
      */
     public boolean showInfoBoard(Faction toShow) {
@@ -686,9 +685,10 @@ public abstract class MemoryFPlayer implements FPlayer {
     public boolean canClaimForFaction(Faction forFaction) {
         return this.isAdminBypassing() || !forFaction.isWilderness() && (forFaction == this.getFaction() && this.getRole().isAtLeast(Role.MODERATOR)) || (forFaction.isSafeZone() && Permission.MANAGE_SAFE_ZONE.has(getPlayer())) || (forFaction.isWarZone() && Permission.MANAGE_WAR_ZONE.has(getPlayer()));
     }
+
     public boolean canClaimForFactionAtLocation(Faction forFaction, Location location, boolean notifyFailure) {
         FLocation flocation = new FLocation(location);
-        
+
         return canClaimForFactionAtLocation(forFaction, flocation, notifyFailure);
     }
 

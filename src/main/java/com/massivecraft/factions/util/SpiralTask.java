@@ -94,9 +94,9 @@ public abstract class SpiralTask implements Runnable {
 
 
 
-/*
- * Below are the guts of the class, which you normally wouldn't need to mess with.
- */
+    /*
+     * Below are the guts of the class, which you normally wouldn't need to mess with.
+     */
 
     public final void setTaskID(int ID) {
         if (ID == -1) {

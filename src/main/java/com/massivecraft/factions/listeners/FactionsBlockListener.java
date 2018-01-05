@@ -95,11 +95,11 @@ public class FactionsBlockListener implements Listener {
             event.setCancelled(true);
         }
 
-		/*
+        /*
          * note that I originally was testing the territory of each affected block, but since I found that pistons can only push
-		 * up to 12 blocks and the width of any territory is 16 blocks, it should be safe (and much more lightweight) to test
-		 * only the final target block as done above
-		 */
+         * up to 12 blocks and the width of any territory is 16 blocks, it should be safe (and much more lightweight) to test
+         * only the final target block as done above
+         */
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)

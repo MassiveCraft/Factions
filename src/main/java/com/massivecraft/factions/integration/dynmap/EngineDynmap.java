@@ -574,9 +574,9 @@ public class EngineDynmap {
             PlayerSet set = this.markerApi.getPlayerSet(setId);
             if (set == null) {
                 set = this.markerApi.createPlayerSet(setId, // id
-                                                            true, // symmetric
-                                                            playerIds, // players
-                                                            false // persistent
+                        true, // symmetric
+                        playerIds, // players
+                        false // persistent
                 );
             }
             if (set == null) {

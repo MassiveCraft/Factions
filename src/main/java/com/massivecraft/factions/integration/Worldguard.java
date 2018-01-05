@@ -89,19 +89,19 @@ public class Worldguard {
     // Returns:
     //   True: Regions found within chunk
     //   False: No regions found within chunk
-    
+
     public static boolean checkForRegionsInChunk(FLocation floc) {
-    	Chunk chunk = floc.getWorld().getChunkAt((int) floc.getX(), (int) floc.getZ());
-        
-    	return checkForRegionsInChunk(chunk);
-    }
-    
-    public static boolean checkForRegionsInChunk(Location loc) {
-        Chunk chunk = loc.getWorld().getChunkAt(loc);
-        
+        Chunk chunk = floc.getWorld().getChunkAt((int) floc.getX(), (int) floc.getZ());
+
         return checkForRegionsInChunk(chunk);
     }
-    
+
+    public static boolean checkForRegionsInChunk(Location loc) {
+        Chunk chunk = loc.getWorld().getChunkAt(loc);
+
+        return checkForRegionsInChunk(chunk);
+    }
+
     public static boolean checkForRegionsInChunk(Chunk chunk) {
         if (!enabled) {
             // No WG hooks so we'll always bypass this check.

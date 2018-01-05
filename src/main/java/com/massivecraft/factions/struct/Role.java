@@ -39,7 +39,8 @@ public enum Role {
                 return NORMAL;
             case 2:
                 return MODERATOR;
-            case 3: return ADMIN;
+            case 3:
+                return ADMIN;
         }
 
         return null;
@@ -68,7 +69,7 @@ public enum Role {
         return this.nicename;
     }
 
-    public TL getTranslation(){
+    public TL getTranslation() {
         return translation;
     }
 

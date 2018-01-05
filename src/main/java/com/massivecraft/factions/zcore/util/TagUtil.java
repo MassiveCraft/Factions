@@ -23,7 +23,6 @@ public class TagUtil {
      *
      * @param faction for faction
      * @param line    raw line from config with variables to replace for
-     *
      * @return clean line
      */
     public static String parsePlain(Faction faction, String line) {
@@ -40,7 +39,6 @@ public class TagUtil {
      *
      * @param fplayer for player
      * @param line    raw line from config with variables to replace for
-     *
      * @return clean line
      */
     public static String parsePlain(FPlayer fplayer, String line) {
@@ -62,7 +60,6 @@ public class TagUtil {
      * @param faction for faction
      * @param fplayer from player
      * @param line    raw line from config with variables to replace for
-     *
      * @return clean line
      */
     public static String parsePlain(Faction faction, FPlayer fplayer, String line) {
@@ -85,7 +82,6 @@ public class TagUtil {
      * @param faction for faction (viewers faction)
      * @param fme     for player (viewer)
      * @param line    fancy message prefix
-     *
      * @return
      */
     public static List<FancyMessage> parseFancy(Faction faction, FPlayer fme, String line) {
@@ -102,7 +98,6 @@ public class TagUtil {
      * Checks if a line has fancy variables
      *
      * @param line raw line from config with variables
-     *
      * @return if the line has fancy variables
      */
     public static boolean hasFancy(String line) {
@@ -120,7 +115,6 @@ public class TagUtil {
      * @param target Faction to get relate from
      * @param fme    Player to relate to
      * @param prefix First part of the fancy message
-     *
      * @return list of fancy messages to send
      */
     protected static List<FancyMessage> getFancy(Faction target, FPlayer fme, TagReplacer type, String prefix) {
@@ -208,7 +202,6 @@ public class TagUtil {
      * Parses tooltip variables from config <br> Supports variables for factions only (type 2)
      *
      * @param faction faction to tooltip for
-     *
      * @return list of tooltips for a fancy message
      */
     private static List<String> tipFaction(Faction faction) {
@@ -223,7 +216,6 @@ public class TagUtil {
      * Parses tooltip variables from config <br> Supports variables for players and factions (types 1 and 2)
      *
      * @param fplayer player to tooltip for
-     *
      * @return list of tooltips for a fancy message
      */
     private static List<String> tipPlayer(FPlayer fplayer) {

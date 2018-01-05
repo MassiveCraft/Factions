@@ -72,8 +72,8 @@ public class TempAreaMarker {
 
         // Line Style
         if (marker.getLineWeight() != this.lineWeight ||
-                    marker.getLineOpacity() != this.lineOpacity ||
-                    marker.getLineColor() != this.lineColor) {
+                marker.getLineOpacity() != this.lineOpacity ||
+                marker.getLineColor() != this.lineColor) {
             marker.setLineStyle(this.lineWeight, this.lineOpacity, this.lineColor);
         }
 

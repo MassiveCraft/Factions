@@ -28,7 +28,6 @@ public class LandUnclaimEvent extends FactionPlayerEvent implements Cancellable 
      * Get the id of the faction.
      *
      * @return id of faction as String
-     *
      * @deprecated use getFaction().getId() instead.
      */
     @Deprecated
@@ -40,7 +39,6 @@ public class LandUnclaimEvent extends FactionPlayerEvent implements Cancellable 
      * Get the tag of the faction.
      *
      * @return tag of faction as String
-     *
      * @deprecated use getFaction().getTag() instead.
      */
     @Deprecated
@@ -52,7 +50,6 @@ public class LandUnclaimEvent extends FactionPlayerEvent implements Cancellable 
      * Get the Player involved in the event.
      *
      * @return Player from FPlayer.
-     *
      * @deprecated use getfPlayer().getPlayer() instead.
      */
     @Deprecated

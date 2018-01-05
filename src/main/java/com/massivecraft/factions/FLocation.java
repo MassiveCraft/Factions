@@ -22,7 +22,8 @@ public class FLocation implements Serializable {
         try {
             Class.forName("org.bukkit.WorldBorder");
             worldBorderClassPresent = true;
-        } catch (ClassNotFoundException ignored) {}
+        } catch (ClassNotFoundException ignored) {
+        }
 
         worldBorderSupport = worldBorderClassPresent;
     }

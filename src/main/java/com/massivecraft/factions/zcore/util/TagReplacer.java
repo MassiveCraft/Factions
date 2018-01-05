@@ -128,7 +128,6 @@ public enum TagReplacer {
      *
      * @param fac Target faction
      * @param fp  Target player (can be null)
-     *
      * @return the value for this enum!
      */
     protected String getValue(Faction fac, FPlayer fp) {
@@ -232,7 +231,6 @@ public enum TagReplacer {
      * Returns a list of all the variables we can use for this type<br>
      *
      * @param type the type we want
-     *
      * @return a list of all the variables with this type
      */
     protected static List<TagReplacer> getByType(TagType type) {
@@ -252,7 +250,6 @@ public enum TagReplacer {
     /**
      * @param original raw line with variables
      * @param value    what to replace var in raw line with
-     *
      * @return the string with the new value
      */
     public String replace(String original, String value) {
@@ -261,7 +258,6 @@ public enum TagReplacer {
 
     /**
      * @param toSearch raw line with variables
-     *
      * @return if the raw line contains this enums variable
      */
     public boolean contains(String toSearch) {
