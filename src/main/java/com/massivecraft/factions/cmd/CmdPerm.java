@@ -7,6 +7,10 @@ import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.Action;
 import com.massivecraft.factions.zcore.util.TL;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 public class CmdPerm extends FCommand {
 
     public CmdPerm() {
@@ -42,25 +46,51 @@ public class CmdPerm extends FCommand {
             return;
         }
 
-        Relation relation = Relation.fromString(argAsString(0));
-        Action action = Action.fromString(argAsString(1));
+        Set<Relation> relations = new HashSet<>();
+        Set<Action> actions = new HashSet<>();
+
+        boolean allRelations = argAsString(0).equalsIgnoreCase("all");
+        boolean allActions = argAsString(1).equalsIgnoreCase("all");
+
+        if (allRelations) {
+            relations.addAll(Arrays.asList(Relation.values()));
+        } else {
+            Relation relation = Relation.fromString(argAsString(0));
+            if (relation == null) {
+                fme.msg(TL.COMMAND_PERM_INVALID_RELATION);
+                return;
+            }
+
+            relations.add(relation);
+        }
+
+        if (allActions) {
+            actions.addAll(Arrays.asList(Action.values()));
+        } else {
+            Action action = Action.fromString(argAsString(1));
+            if (action == null) {
+                fme.msg(TL.COMMAND_PERM_INVALID_ACTION);
+                return;
+            }
+
+            actions.add(action);
+        }
+
         Access access = Access.fromString(argAsString(2));
-        if (relation == null) {
-            fme.msg(TL.COMMAND_PERM_INVALID_RELATION);
-            return;
-        }
-        if (action == null) {
-            fme.msg(TL.COMMAND_PERM_INVALID_ACTION);
-            return;
-        }
+
         if (access == null) {
             fme.msg(TL.COMMAND_PERM_INVALID_ACCESS);
             return;
         }
 
-        fme.getFaction().setPermission(relation, action, access);
-        fme.msg(TL.COMMAND_PERM_SET, action.getName(), relation.nicename, access.name());
-        P.p.log(String.format(TL.COMMAND_PERM_SET.toString(), action.getName(), relation.nicename, access.name()) + " for faction " + fme.getTag());
+        for (Relation relation : relations) {
+            for (Action action : actions) {
+                fme.getFaction().setPermission(relation, action, access);
+            }
+        }
+
+        fme.msg(TL.COMMAND_PERM_SET, argAsString(1), access.name(), argAsString(0));
+        P.p.log(String.format(TL.COMMAND_PERM_SET.toString(), argAsString(1), access.name(), argAsString(0)) + " for faction " + fme.getTag());
     }
 
     @Override
