@@ -219,6 +219,10 @@ public interface Faction extends EconomyParticipator {
     // promotes new leader, or disbands faction if no other members left
     public void promoteNewLeader();
 
+    public Role getDefaultRole();
+
+    public void setDefaultRole(Role role);
+
     // ----------------------------------------------//
     // Messages
     // ----------------------------------------------//

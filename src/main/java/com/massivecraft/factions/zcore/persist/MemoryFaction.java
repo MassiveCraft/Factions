@@ -48,6 +48,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     private long lastDeath;
     protected int maxVaults;
     protected Map<Relation, Map<Action, Access>> permissions = new HashMap<>();
+    protected Role defaultRole;
 
     public HashMap<String, List<String>> getAnnouncements() {
         return this.announcements;
@@ -357,6 +358,14 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         }
     }
 
+    public Role getDefaultRole() {
+        return this.defaultRole;
+    }
+
+    public void setDefaultRole(Role role) {
+        this.defaultRole = role;
+    }
+
     // -------------------------------------------- //
     // Construct
     // -------------------------------------------- //
@@ -376,6 +385,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         this.powerBoost = 0.0;
         this.foundedDate = System.currentTimeMillis();
         this.maxVaults = Conf.defaultMaxVaults;
+        this.defaultRole = Role.NORMAL;
 
         resetPerms(); // Reset on new Faction so it has default values.
     }
@@ -399,6 +409,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         fplayers = new HashSet<>();
         invites = old.invites;
         announcements = old.announcements;
+        this.defaultRole = Role.NORMAL;
 
         resetPerms(); // Reset on new Faction so it has default values.
     }
@@ -568,7 +579,12 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
 
     public boolean addFPlayer(FPlayer fplayer) {
-        return !this.isPlayerFreeType() && fplayers.add(fplayer);
+        if (!this.isPlayerFreeType() && fplayers.add(fplayer)) {
+            fplayer.setRole(defaultRole); // set default role on join.
+            return true;
+        }
+
+        return false;
     }
 
     public boolean removeFPlayer(FPlayer fplayer) {

@@ -45,6 +45,24 @@ public enum Role {
         return null;
     }
 
+    public static Role fromString(String check) {
+        switch (check.toLowerCase()) {
+            case "admin":
+                return ADMIN;
+            case "mod":
+            case "moderator":
+                return MODERATOR;
+            case "normal":
+            case "member":
+                return NORMAL;
+            case "recruit":
+            case "rec":
+                return RECRUIT;
+        }
+
+        return null;
+    }
+
     @Override
     public String toString() {
         return this.nicename;

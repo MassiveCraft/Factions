@@ -434,6 +434,11 @@ public enum TL {
 
     COMMAND_SCOREBOARD_DESCRIPTION("Scoreboardy things"),
 
+    COMMAND_SETDEFAULTROLE_DESCRIPTION("/f defaultrole <role> - set your Faction's default role."),
+    COMMAND_SETDEFAULTROLE_NOTTHATROLE("You cannot set the default to admin."),
+    COMMAND_SETDEFAULTROLE_SUCCESS("Set default role of your faction to %1$s"),
+    COMMAND_SETDEFAULTROLE_INVALIDROLE("Couldn't find matching role for %1$s"),
+
     COMMAND_SETFWARP_NOTCLAIMED("<i>You can only set warps in your faction territory."),
     COMMAND_SETFWARP_LIMIT("<i>Your Faction already has the max amount of warps set <a>(%1$d)."),
     COMMAND_SETFWARP_SET("<i>Set warp <a>%1$s and password <c>'%2$s' <i>to your location."),
