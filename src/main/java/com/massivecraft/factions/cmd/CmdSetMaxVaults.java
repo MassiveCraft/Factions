@@ -27,12 +27,12 @@ public class CmdSetMaxVaults extends FCommand {
     public void perform() {
         Faction targetFaction = argAsFaction(0);
         int value = argAsInt(1, -1);
-        if(value < 0) {
+        if (value < 0) {
             sender.sendMessage(ChatColor.RED + "Number must be greater than 0.");
             return;
         }
 
-        if(targetFaction == null) {
+        if (targetFaction == null) {
             sender.sendMessage(ChatColor.RED + "Couldn't find Faction: " + ChatColor.YELLOW + argAsString(0));
             return;
         }

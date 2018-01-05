@@ -355,7 +355,7 @@ public class FactionsPlayerListener implements Listener {
         Relation rel = myFaction.getRelationTo(otherFaction);
 
 
-        Access access = otherFaction.hasPerm(me, com.massivecraft.factions.zcore.fperms.Action.valueOf("items"));
+        Access access = otherFaction.getAccess(me, com.massivecraft.factions.zcore.fperms.Action.valueOf("items"));
         if (access != null && access != Access.UNDEFINED) {
             // TODO: Update this once new access values are added other than just allow / deny.
             return access == Access.ALLOW;
@@ -422,7 +422,7 @@ public class FactionsPlayerListener implements Listener {
             }
         }
 
-        Access access = otherFaction.hasPerm(me, com.massivecraft.factions.zcore.fperms.Action.BUILD);
+        Access access = otherFaction.getAccess(me, com.massivecraft.factions.zcore.fperms.Action.BUILD);
         if (access != null && access != Access.UNDEFINED) {
             // TODO: Update this once new access values are added other than just allow / deny.
             return access == Access.ALLOW;

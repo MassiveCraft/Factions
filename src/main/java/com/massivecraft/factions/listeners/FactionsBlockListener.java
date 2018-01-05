@@ -252,7 +252,7 @@ public class FactionsBlockListener implements Listener {
             }
         }
 
-        Access access = otherFaction.hasPerm(me, Action.valueOf(action));
+        Access access = otherFaction.getAccess(me, Action.valueOf(action));
         if (access != null && access != Access.UNDEFINED) {
             // TODO: Update this once new access values are added other than just allow / deny.
             return access == Access.ALLOW;

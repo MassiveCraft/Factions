@@ -375,12 +375,20 @@ public enum TL {
     COMMAND_PERMANENT_REVOKE("removed permanent status from"),
     COMMAND_PERMANENT_YOURS("%1$s has %2$s your faction"),
     COMMAND_PERMANENT_OTHER("%s<i> has %s the faction '%s<i>'."),
+    COMMAND_PROMOTE_TARGET("You've been promoted to %1$s"),
+    COMMAND_PROMOTE_SUCCESS("You successfully promoted %1$s to %2$s"),
 
     COMMAND_PERMANENTPOWER_DESCRIPTION("Toggle faction power permanence"), //TODO: This a real word?
     COMMAND_PERMANENTPOWER_GRANT("added permanentpower status to"),
     COMMAND_PERMANENTPOWER_REVOKE("removed permanentpower status from"),
     COMMAND_PERMANENTPOWER_SUCCESS("<i>You %s <h>%s<i>."),
     COMMAND_PERMANENTPOWER_FACTION("%s<i> %s your faction"),
+
+    COMMAND_PROMOTE_DESCRIPTION("/f promote <name>"),
+    COMMAND_PROMOTE_WRONGFACTION("%1$s is not part of your faction."),
+    COMMAND_NOACCESS("You don't have access to that."),
+    COMMAND_PROMOTE_NOTTHATPLAYER("That player cannot be promoted."),
+
 
     COMMAND_POWER_TOSHOW("to show player power info"),
     COMMAND_POWER_FORSHOW("for showing player power info"),
@@ -657,6 +665,7 @@ public enum TL {
     ROLE_ADMIN("admin"),
     ROLE_MODERATOR("moderator"),
     ROLE_NORMAL("normal member"),
+    ROLE_RECRUIT("recruit"),
 
     /**
      * Region types.

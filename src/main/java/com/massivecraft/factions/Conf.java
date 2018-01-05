@@ -36,6 +36,8 @@ public class Conf {
 
     public static String prefixAdmin = "**";
     public static String prefixMod = "*";
+    public static String prefixRecruit = "-";
+    public static String prefixNormal = "+";
 
     public static int factionTagLengthMin = 3;
     public static int factionTagLengthMax = 10;

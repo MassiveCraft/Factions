@@ -17,6 +17,7 @@ public enum Action {
     TERRITORY("territory"),
     ACCESS("access"),
     DISBAND("disband"),
+    PROMOTE("promote"),
     PERMS("perms");
 
     private String name;

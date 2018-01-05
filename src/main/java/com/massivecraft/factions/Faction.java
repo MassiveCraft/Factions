@@ -138,7 +138,7 @@ public interface Faction extends EconomyParticipator {
 
     public int getDeaths();
 
-    public Access hasPerm(FPlayer fPlayer, Action perm);
+    public Access getAccess(FPlayer fPlayer, Action perm);
 
     public void setPermission(Relation relation, Action action, Access access);
 

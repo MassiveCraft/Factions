@@ -323,7 +323,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     // -------------------------------------------- //
 
 
-    public Access hasPerm(FPlayer fPlayer, Action action) {
+    public Access getAccess(FPlayer fPlayer, Action action) {
         Relation relation = fPlayer.getRelationTo(this);
         Map<Action, Access> accessMap = permissions.get(relation);
         if (accessMap != null && accessMap.containsKey(action)) {
@@ -569,12 +569,10 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
     public boolean addFPlayer(FPlayer fplayer) {
         return !this.isPlayerFreeType() && fplayers.add(fplayer);
-
     }
 
     public boolean removeFPlayer(FPlayer fplayer) {
         return !this.isPlayerFreeType() && fplayers.remove(fplayer);
-
     }
 
     public int getSize() {
