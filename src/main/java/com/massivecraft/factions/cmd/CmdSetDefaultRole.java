@@ -30,6 +30,11 @@ public class CmdSetDefaultRole extends FCommand {
             return;
         }
 
+        if (target == Role.ADMIN) {
+            msg(TL.COMMAND_SETDEFAULTROLE_NOTTHATROLE, argAsString(0));
+            return;
+        }
+
         myFaction.setDefaultRole(target);
         msg(TL.COMMAND_SETDEFAULTROLE_SUCCESS, target.nicename);
     }
