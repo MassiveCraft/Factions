@@ -16,7 +16,7 @@ public class FPromoteCommand extends FCommand {
 
         this.requiredArgs.add("player");
 
-        this.permission = Permission.MOD.node;
+        this.permission = Permission.PROMOTE.node;
         this.disableOnLock = true;
 
         senderMustBePlayer = true;

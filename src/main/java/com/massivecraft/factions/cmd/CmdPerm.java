@@ -20,7 +20,7 @@ public class CmdPerm extends FCommand {
         this.optionalArgs.put("action", "action");
         this.optionalArgs.put("access", "access");
 
-        this.permission = Permission.SET_PEACEFUL.node;
+        this.permission = Permission.PERMISSIONS.node;
         this.disableOnLock = false;
 
         senderMustBePlayer = true;

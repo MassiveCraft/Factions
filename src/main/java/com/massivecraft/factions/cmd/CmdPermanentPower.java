@@ -11,7 +11,7 @@ public class CmdPermanentPower extends FCommand {
         this.aliases.add("permanentpower");
 
         this.requiredArgs.add("faction");
-        this.optionalArgs.put("power", "reset");
+        this.requiredArgs.add("power");
 
         this.permission = Permission.SET_PERMANENTPOWER.node;
         this.disableOnLock = true;
