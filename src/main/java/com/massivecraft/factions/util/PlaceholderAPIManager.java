@@ -50,15 +50,15 @@ public class PlaceholderAPIManager extends EZPlaceholderHook {
                 return faction.getTag();
             case "faction_power":
                 return String.valueOf(faction.getPowerRounded());
-            case "faction_description":
-                return faction.getDescription();
             case "faction_powermax":
                 return String.valueOf(faction.getPowerMaxRounded());
+            case "faction_description":
+                return faction.getDescription();
             case "faction_claims":
                 return String.valueOf(faction.getAllClaims().size());
             case "faction_founded":
                 return String.valueOf(TL.sdf.format(faction.getFoundedDate()));
-            case "faction_joning":
+            case "faction_joining":
                 return (faction.getOpen() ? TL.COMMAND_SHOW_UNINVITED.toString() : TL.COMMAND_SHOW_INVITATION.toString());
             case "faction_peaceful":
                 return faction.isPeaceful() ? Conf.colorNeutral + TL.COMMAND_SHOW_PEACEFUL.toString() : "";
@@ -91,6 +91,8 @@ public class PlaceholderAPIManager extends EZPlaceholderHook {
                 return String.valueOf(faction.getRelationCount(Relation.ALLY));
             case "faction_enemies":
                 return String.valueOf(faction.getRelationCount(Relation.ENEMY));
+            case "faction_truces":
+                return String.valueOf(faction.getRelationCount(Relation.TRUCE));
             case "faction_online":
                 return String.valueOf(faction.getOnlinePlayers().size());
             case "faction_offline":

@@ -23,6 +23,7 @@ public enum TagReplacer {
     ALLIES_LIST(TagType.FANCY, "{allies-list}"),
     ONLINE_LIST(TagType.FANCY, "{online-list}"),
     ENEMIES_LIST(TagType.FANCY, "{enemies-list}"),
+    TRUCES_LIST(TagType.FANCY, "{truces-list}"),
     OFFLINE_LIST(TagType.FANCY, "{offline-list}"),
 
     /**
@@ -64,6 +65,7 @@ public enum TagReplacer {
     BANK_BALANCE(TagType.FACTION, "{faction-balance}"),
     ALLIES_COUNT(TagType.FACTION, "{allies}"),
     ENEMIES_COUNT(TagType.FACTION, "{enemies}"),
+    TRUCES_COUNT(TagType.FACTION, "{truces}"),
     ONLINE_COUNT(TagType.FACTION, "{online}"),
     OFFLINE_COUNT(TagType.FACTION, "{offline}"),
     FACTION_SIZE(TagType.FACTION, "{members}"),
@@ -76,6 +78,7 @@ public enum TagReplacer {
     MAX_WARPS(TagType.GENERAL, "{max-warps}"),
     MAX_ALLIES(TagType.GENERAL, "{max-allies}"),
     MAX_ENEMIES(TagType.GENERAL, "{max-enemies}"),
+    MAX_TRUCES(TagType.GENERAL, "{max-truces}"),
     FACTIONLESS(TagType.GENERAL, "{factionless}"),
     TOTAL_ONLINE(TagType.GENERAL, "{total-online}");
 
@@ -115,6 +118,11 @@ public enum TagReplacer {
             case MAX_ENEMIES:
                 if (P.p.getConfig().getBoolean("max-relations.enabled", true)) {
                     return String.valueOf(P.p.getConfig().getInt("max-relations.enemy", 10));
+                }
+                return TL.GENERIC_INFINITY.toString();
+            case MAX_TRUCES:
+                if (P.p.getConfig().getBoolean("max-relations.enabled", true)) {
+                    return String.valueOf(P.p.getConfig().getInt("max-relations.truce", 10));
                 }
                 return TL.GENERIC_INFINITY.toString();
             case MAX_WARPS:
@@ -213,6 +221,8 @@ public enum TagReplacer {
                 return String.valueOf(fac.getRelationCount(Relation.ALLY));
             case ENEMIES_COUNT:
                 return String.valueOf(fac.getRelationCount(Relation.ENEMY));
+            case TRUCES_COUNT:
+                return String.valueOf(fac.getRelationCount(Relation.TRUCE));
             case ONLINE_COUNT:
                 return String.valueOf(fac.getOnlinePlayers().size());
             case OFFLINE_COUNT:
