@@ -134,6 +134,10 @@ public class P extends MPlugin {
         }
     }
 
+    public boolean isPlaceholderAPIHooked() {
+        return this.placeholderAPIManager != null;
+    }
+
     private boolean setupPermissions() {
         try {
             RegisteredServiceProvider<Permission> rsp = getServer().getServicesManager().getRegistration(Permission.class);

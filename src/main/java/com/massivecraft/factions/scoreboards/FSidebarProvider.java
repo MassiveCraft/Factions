@@ -5,6 +5,7 @@ import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TagUtil;
+import me.clip.placeholderapi.PlaceholderAPI;
 
 import java.util.List;
 
@@ -19,6 +20,10 @@ public abstract class FSidebarProvider {
     }
 
     public String replaceTags(Faction faction, FPlayer fPlayer, String s) {
+        // Run through Placeholder API first
+        if (P.p.isPlaceholderAPIHooked() && fPlayer.isOnline()) {
+            s = PlaceholderAPI.setPlaceholders(fPlayer.getPlayer(), s);
+        }
         return qualityAssure(TagUtil.parsePlain(faction, fPlayer, s));
     }
 
