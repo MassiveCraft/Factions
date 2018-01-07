@@ -61,7 +61,8 @@ public class P extends MPlugin {
     public CmdAutoHelp cmdAutoHelp;
 
     private boolean hookedPlayervaults;
-    private PlaceholderAPIManager placeholderAPIManager;
+    private ClipPlaceholderAPIManager clipPlaceholderAPIManager;
+    private boolean mvdwPlaceholderAPIManager = false;
 
     public P() {
         p = this;
@@ -126,16 +127,26 @@ public class P extends MPlugin {
     }
 
     private void setupPlaceholderAPI() {
-        Plugin plugin = getServer().getPluginManager().getPlugin("PlaceholderAPI");
-        if (plugin != null && plugin.isEnabled()) {
-            this.placeholderAPIManager = new PlaceholderAPIManager();
-            this.placeholderAPIManager.hook();
-            log(Level.INFO, "Found PlaceholderAPI. Adding hooks.");
+        Plugin clip = getServer().getPluginManager().getPlugin("PlaceholderAPI");
+        if (clip != null && clip.isEnabled()) {
+            this.clipPlaceholderAPIManager = new ClipPlaceholderAPIManager();
+            this.clipPlaceholderAPIManager.hook();
+            log(Level.INFO, "Found Clip's PlaceholderAPI. Adding hooks.");
+        }
+
+        Plugin mvdw = getServer().getPluginManager().getPlugin("MVdWPlaceholderAPI");
+        if (mvdw != null && mvdw.isEnabled()) {
+            this.mvdwPlaceholderAPIManager = true;
+            log(Level.INFO, "Found MVdWPlaceholderAPI. Adding hooks.");
         }
     }
 
-    public boolean isPlaceholderAPIHooked() {
-        return this.placeholderAPIManager != null;
+    public boolean isClipPlaceholderAPIHooked() {
+        return this.clipPlaceholderAPIManager != null;
+    }
+
+    public boolean isMVdWPlaceholderAPIHooked() {
+        return this.mvdwPlaceholderAPIManager;
     }
 
     private boolean setupPermissions() {

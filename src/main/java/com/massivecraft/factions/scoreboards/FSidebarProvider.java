@@ -21,8 +21,11 @@ public abstract class FSidebarProvider {
 
     public String replaceTags(Faction faction, FPlayer fPlayer, String s) {
         // Run through Placeholder API first
-        if (P.p.isPlaceholderAPIHooked() && fPlayer.isOnline()) {
+        if (P.p.isClipPlaceholderAPIHooked() && fPlayer.isOnline()) {
             s = PlaceholderAPI.setPlaceholders(fPlayer.getPlayer(), s);
+        }
+        if (P.p.isMVdWPlaceholderAPIHooked() && fPlayer.isOnline()) {
+            s = be.maximvdw.placeholderapi.PlaceholderAPI.replacePlaceholders(fPlayer.getPlayer(), s);
         }
         return qualityAssure(TagUtil.parsePlain(faction, fPlayer, s));
     }

@@ -12,9 +12,9 @@ import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
-public class PlaceholderAPIManager extends EZPlaceholderHook {
+public class ClipPlaceholderAPIManager extends EZPlaceholderHook {
 
-    public PlaceholderAPIManager() {
+    public ClipPlaceholderAPIManager() {
         super(P.p, "factionsuuid");
     }
 
