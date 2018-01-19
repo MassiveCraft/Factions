@@ -5,6 +5,7 @@ import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.engine.EngineChat;
 import com.massivecraft.factions.event.EventFactionsChunkChangeType;
 import com.massivecraft.massivecore.collections.BackstringSet;
+import com.massivecraft.massivecore.collections.MassiveSet;
 import com.massivecraft.massivecore.collections.WorldExceptionSet;
 import com.massivecraft.massivecore.command.editor.annotation.EditorName;
 import com.massivecraft.massivecore.command.editor.annotation.EditorType;
@@ -89,7 +90,7 @@ public class MConf extends Entity<MConf>
 	// Add player names here who should bypass all protections.
 	// Should /not/ be used for admins. There is "/f adminmode" for that.
 	// This is for other plugins/mods that use a fake player to take actions, which shouldn't be subject to our protections.
-	public Set<String> playersWhoBypassAllProtection = new LinkedHashSet<>();
+	public Set<String> playersWhoBypassAllProtection = new MassiveSet<>();
 	
 	// -------------------------------------------- //
 	// TASKS

@@ -4,6 +4,7 @@ import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.util.MiscUtil;
+import com.massivecraft.massivecore.collections.MassiveMap;
 import com.massivecraft.massivecore.store.Coll;
 import com.massivecraft.massivecore.util.Txt;
 
@@ -228,7 +229,7 @@ public class FactionColl extends Coll<Faction>
 	public Map<Rel, List<String>> getRelationNames(Faction faction, Set<Rel> rels)
 	{
 		// Create
-		Map<Rel, List<String>> ret = new LinkedHashMap<>();
+		Map<Rel, List<String>> ret = new MassiveMap<>();
 		MFlag flagPeaceful = MFlag.getFlagPeaceful();
 		boolean peaceful = faction.getFlag(flagPeaceful);
 		for (Rel rel : rels)
