@@ -19,6 +19,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
@@ -31,13 +32,16 @@ import org.bukkit.event.block.BlockPistonExtendEvent;
 import org.bukkit.event.block.BlockPistonRetractEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.block.SignChangeEvent;
+import org.bukkit.event.entity.EntityCombustByEntityEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.hanging.HangingPlaceEvent;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerBucketFillEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.projectiles.ProjectileSource;
 
 import java.util.Map;
 
@@ -207,6 +211,26 @@ public class EnginePermBuild extends Engine
 		
 		// ... and the player can't build there, cancel the event
 		build(player, entity.getLocation().getBlock(), event);
+	}
+	
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void combustEntity(EntityCombustByEntityEvent event) {
+		
+		// If a burning projectile ...
+		if (!(event.getCombuster() instanceof Projectile)) return;
+		Projectile entityProjectile = (Projectile)event.getCombuster();
+		
+		// ... fired by a player ...
+		ProjectileSource projectileSource = entityProjectile.getShooter();
+		if (MUtil.isntPlayer(projectileSource)) return;
+		
+		// ... and hits an entity which is edited on damage (and thus likely to burn) ...
+		Entity entityTarget = event.getEntity();
+		if (entityTarget == null || !EnumerationUtil.isEntityTypeEditOnDamage(entityTarget.getType())) return;
+
+		// ... and the player can't build there, cancel the event
+		Block block = entityTarget.getLocation().getBlock();
+		protect(ProtectCase.BUILD, false, projectileSource, PS.valueOf(block), block, event);
 	}
 	
 	// -------------------------------------------- //
