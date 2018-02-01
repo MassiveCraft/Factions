@@ -6,11 +6,11 @@ import org.bukkit.ChatColor;
 
 
 public enum Relation {
-    MEMBER(4, "member"),
-    ALLY(3, "ally"),
-    TRUCE(2, "truce"),
-    NEUTRAL(1, "neutral"),
-    ENEMY(0, "enemy");
+    MEMBER(4, TL.RELATION_MEMBER_SINGULAR.toString()),
+    ALLY(3, TL.RELATION_ALLY_SINGULAR.toString()),
+    TRUCE(2, TL.RELATION_TRUCE_SINGULAR.toString()),
+    NEUTRAL(1, TL.RELATION_NEUTRAL_SINGULAR.toString()),
+    ENEMY(0, TL.RELATION_ENEMY_SINGULAR.toString());
 
     public final int value;
     public final String nicename;
@@ -27,13 +27,13 @@ public enum Relation {
 
     public static Relation fromString(String s) {
         // Because Java 6 doesn't allow String switches :(
-        if (s.equalsIgnoreCase("member")) {
+        if (s.equalsIgnoreCase(MEMBER.nicename)) {
             return MEMBER;
-        } else if (s.equalsIgnoreCase("ally")) {
+        } else if (s.equalsIgnoreCase(ALLY.nicename)) {
             return ALLY;
-        } else if (s.equalsIgnoreCase("truce")) {
+        } else if (s.equalsIgnoreCase(TRUCE.nicename)) {
             return TRUCE;
-        } else if (s.equalsIgnoreCase("enemy")) {
+        } else if (s.equalsIgnoreCase(ENEMY.nicename)) {
             return ENEMY;
         } else {
             return NEUTRAL; // If they somehow mess things up, go back to default behavior.
