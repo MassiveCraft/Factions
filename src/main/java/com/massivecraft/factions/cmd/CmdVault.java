@@ -69,7 +69,7 @@ public class CmdVault extends FCommand {
         } // end listing vaults.
 
         // Attempt to open vault.
-        if (VaultOperations.openOtherVault(player, vaultName, String.valueOf(number))) {
+        if (VaultOperations.openOtherVault(player, null, String.valueOf(number))) {
             // Success
             PlayerVaults.getInstance().getInVault().put(player.getUniqueId().toString(), new VaultViewInfo(vaultName, number));
         }
