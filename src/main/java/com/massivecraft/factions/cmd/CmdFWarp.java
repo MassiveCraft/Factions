@@ -4,8 +4,11 @@ import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.LazyLocation;
 import com.massivecraft.factions.util.WarmUpUtil;
+import com.massivecraft.factions.zcore.fperms.Access;
+import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
 import mkremins.fanciful.FancyMessage;
 import org.bukkit.Bukkit;
@@ -32,6 +35,15 @@ public class CmdFWarp extends FCommand {
     @Override
     public void perform() {
         //TODO: check if in combat.
+
+        // Check for access first.
+        Access access = myFaction.getAccess(fme, PermissableAction.WARP);
+
+        if (access == Access.DENY) {
+            fme.msg(TL.GENERIC_NOPERMISSION, "warp");
+            return;
+        }
+
         if (args.size() == 0) {
             FancyMessage msg = new FancyMessage(TL.COMMAND_FWARP_WARPS.toString()).color(ChatColor.GOLD);
             Map<String, LazyLocation> warps = myFaction.getWarps();

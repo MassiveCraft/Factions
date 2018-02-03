@@ -4,20 +4,27 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
+import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.LazyLocation;
+import com.massivecraft.factions.zcore.fperms.Access;
+import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdSetFWarp extends FCommand {
 
     public CmdSetFWarp() {
         super();
+
         this.aliases.add("setwarp");
         this.aliases.add("sw");
+
         this.requiredArgs.add("warp name");
         this.optionalArgs.put("password", "password");
+
         this.senderMustBeMember = true;
-        this.senderMustBeModerator = true;
+        this.senderMustBeModerator = false;
         this.senderMustBePlayer = true;
+
         this.permission = Permission.SETWARP.node;
     }
 
@@ -25,6 +32,14 @@ public class CmdSetFWarp extends FCommand {
     public void perform() {
         if (!(fme.getRelationToLocation() == Relation.MEMBER)) {
             fme.msg(TL.COMMAND_SETFWARP_NOTCLAIMED);
+            return;
+        }
+
+        Access access = myFaction.getAccess(fme, PermissableAction.SETWARP);
+        // This statement allows us to check if they've specifically denied it, or default to
+        // the old setting of allowing moderators to set warps.
+        if (access == Access.DENY || (access == Access.UNDEFINED && !assertMinRole(Role.MODERATOR))) {
+            fme.msg(TL.GENERIC_NOPERMISSION, "set warp");
             return;
         }
 
