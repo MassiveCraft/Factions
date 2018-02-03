@@ -326,6 +326,10 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
 
     public Access getAccess(Permissable permissable, Action action) {
+        if (permissable == null || action == null) {
+            return null;
+        }
+
         Map<Action, Access> accessMap = permissions.get(permissable);
         if (accessMap != null && accessMap.containsKey(action)) {
             return accessMap.get(action);
@@ -342,6 +346,10 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
      * @return
      */
     public Access getAccess(FPlayer player, Action action) {
+        if (player == null || action == null) {
+            return null;
+        }
+
         Permissable perm;
 
         if (player.getFaction() == this) {
@@ -366,7 +374,6 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
         accessMap.put(action, access);
     }
-
 
     public void resetPerms() {
         P.p.log(Level.WARNING, "Resetting permissions for Faction: " + tag);
