@@ -7,6 +7,8 @@ import com.massivecraft.factions.P;
 import com.massivecraft.factions.event.FPlayerLeaveEvent;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.zcore.fperms.Access;
+import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
 import mkremins.fanciful.FancyMessage;
 import org.bukkit.Bukkit;
@@ -26,7 +28,7 @@ public class CmdKick extends FCommand {
 
         senderMustBePlayer = true;
         senderMustBeMember = false;
-        senderMustBeModerator = true;
+        senderMustBeModerator = false;
         senderMustBeAdmin = false;
     }
 
@@ -65,12 +67,20 @@ public class CmdKick extends FCommand {
 
         // players with admin-level "disband" permission can bypass these requirements
         if (!Permission.KICK_ANY.has(sender)) {
+
+            Access access = myFaction.getAccess(fme, PermissableAction.INVITE);
+            if (access == Access.DENY || (access == Access.UNDEFINED && !assertMinRole(Role.MODERATOR))) {
+                fme.msg(TL.GENERIC_NOPERMISSION, "kick");
+                return;
+            }
+
             if (toKickFaction != myFaction) {
                 msg(TL.COMMAND_KICK_NOTMEMBER, toKick.describeTo(fme, true), myFaction.describeTo(fme));
                 return;
             }
 
-            if (toKick.getRole().value >= fme.getRole().value) {
+            // Check for Access before we check for Role.
+            if (access != Access.ALLOW && toKick.getRole().value >= fme.getRole().value) {
                 msg(TL.COMMAND_KICK_INSUFFICIENTRANK);
                 return;
             }
