@@ -6,6 +6,8 @@ import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.zcore.fperms.Access;
+import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdSethome extends FCommand {
@@ -37,9 +39,16 @@ public class CmdSethome extends FCommand {
             return;
         }
 
+        Access access = faction.getAccess(fme, PermissableAction.SETHOME);
+        if (access == Access.DENY) {
+            fme.msg(TL.GENERIC_NOPERMISSION, "sethome");
+            return;
+        }
+
         // Can the player set the home for this faction?
-        if (faction == myFaction) {
-            if (!Permission.SETHOME_ANY.has(sender) && !assertMinRole(Role.MODERATOR)) {
+        // Check for ALLOW access as well before we check for role.
+        if (faction == myFaction && access != Access.ALLOW) {
+            if (!Permission.SETHOME_ANY.has(sender) && !(Role.MODERATOR.value > fme.getRole().value)) {
                 return;
             }
         } else {

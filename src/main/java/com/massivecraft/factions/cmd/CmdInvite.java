@@ -3,6 +3,9 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.zcore.fperms.Access;
+import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
 import mkremins.fanciful.FancyMessage;
 import org.bukkit.ChatColor;
@@ -22,7 +25,7 @@ public class CmdInvite extends FCommand {
 
         senderMustBePlayer = true;
         senderMustBeMember = false;
-        senderMustBeModerator = true;
+        senderMustBeModerator = false;
         senderMustBeAdmin = false;
     }
 
@@ -41,6 +44,12 @@ public class CmdInvite extends FCommand {
 
         // if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
         if (!payForCommand(Conf.econCostInvite, TL.COMMAND_INVITE_TOINVITE.toString(), TL.COMMAND_INVITE_FORINVITE.toString())) {
+            return;
+        }
+
+        Access access = myFaction.getAccess(you, PermissableAction.INVITE);
+        if (access == Access.DENY || (access == Access.UNDEFINED && !assertMinRole(Role.MODERATOR))) {
+            fme.msg(TL.GENERIC_NOPERMISSION, "invite");
             return;
         }
 
