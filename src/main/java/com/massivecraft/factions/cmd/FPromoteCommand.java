@@ -4,7 +4,7 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.fperms.Access;
-import com.massivecraft.factions.zcore.fperms.Action;
+import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
 
 public class FPromoteCommand extends FCommand {
@@ -38,7 +38,7 @@ public class FPromoteCommand extends FCommand {
             return;
         }
 
-        Access access = myFaction.getAccess(fme.getRole(), Action.PROMOTE);
+        Access access = myFaction.getAccess(fme.getRole(), PermissableAction.PROMOTE);
 
         // Well this is messy.
         if (access == null || access == Access.UNDEFINED) {

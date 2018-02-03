@@ -11,7 +11,7 @@ import com.massivecraft.factions.util.LazyLocation;
 import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.factions.util.RelationUtil;
 import com.massivecraft.factions.zcore.fperms.Access;
-import com.massivecraft.factions.zcore.fperms.Action;
+import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.fperms.Permissable;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
@@ -49,7 +49,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     private long lastDeath;
     protected int maxVaults;
     protected Role defaultRole;
-    protected Map<Permissable, Map<Action, Access>> permissions = new HashMap<>();
+    protected Map<Permissable, Map<PermissableAction, Access>> permissions = new HashMap<>();
 
     public HashMap<String, List<String>> getAnnouncements() {
         return this.announcements;
@@ -325,29 +325,29 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     // -------------------------------------------- //
 
 
-    public Access getAccess(Permissable permissable, Action action) {
-        if (permissable == null || action == null) {
-            return null;
+    public Access getAccess(Permissable permissable, PermissableAction permissableAction) {
+        if (permissable == null || permissableAction == null) {
+            return Access.UNDEFINED;
         }
 
-        Map<Action, Access> accessMap = permissions.get(permissable);
-        if (accessMap != null && accessMap.containsKey(action)) {
-            return accessMap.get(action);
+        Map<PermissableAction, Access> accessMap = permissions.get(permissable);
+        if (accessMap != null && accessMap.containsKey(permissableAction)) {
+            return accessMap.get(permissableAction);
         }
 
-        return null;
+        return Access.UNDEFINED;
     }
 
     /**
      * Get the Access of a player. Will use player's Role if they are a faction member. Otherwise, uses their Relation.
      *
      * @param player
-     * @param action
+     * @param permissableAction
      * @return
      */
-    public Access getAccess(FPlayer player, Action action) {
-        if (player == null || action == null) {
-            return null;
+    public Access getAccess(FPlayer player, PermissableAction permissableAction) {
+        if (player == null || permissableAction == null) {
+            return Access.UNDEFINED;
         }
 
         Permissable perm;
@@ -358,21 +358,21 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
             perm = player.getFaction().getRelationTo(this);
         }
 
-        Map<Action, Access> accessMap = permissions.get(perm);
-        if (accessMap != null && accessMap.containsKey(action)) {
-            return accessMap.get(action);
+        Map<PermissableAction, Access> accessMap = permissions.get(perm);
+        if (accessMap != null && accessMap.containsKey(permissableAction)) {
+            return accessMap.get(permissableAction);
         }
 
-        return null;
+        return Access.UNDEFINED;
     }
 
-    public void setPermission(Permissable permissable, Action action, Access access) {
-        Map<Action, Access> accessMap = permissions.get(permissable);
+    public void setPermission(Permissable permissable, PermissableAction permissableAction, Access access) {
+        Map<PermissableAction, Access> accessMap = permissions.get(permissable);
         if (accessMap == null) {
             accessMap = new HashMap<>();
         }
 
-        accessMap.put(action, access);
+        accessMap.put(permissableAction, access);
     }
 
     public void resetPerms() {
@@ -381,9 +381,9 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         permissions.clear();
 
         // First populate a map with undefined as the permission for each action.
-        Map<Action, Access> freshMap = new HashMap<>();
-        for (Action action : Action.values()) {
-            freshMap.put(action, Access.UNDEFINED);
+        Map<PermissableAction, Access> freshMap = new HashMap<>();
+        for (PermissableAction permissableAction : PermissableAction.values()) {
+            freshMap.put(permissableAction, Access.UNDEFINED);
         }
 
         // Put the map in there for each relation.

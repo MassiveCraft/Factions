@@ -4,7 +4,7 @@ import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.zcore.fperms.Access;
-import com.massivecraft.factions.zcore.fperms.Action;
+import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
 
 import java.util.Arrays;
@@ -47,7 +47,7 @@ public class CmdPerm extends FCommand {
         }
 
         Set<Relation> relations = new HashSet<>();
-        Set<Action> actions = new HashSet<>();
+        Set<PermissableAction> permissableActions = new HashSet<>();
 
         boolean allRelations = argAsString(0).equalsIgnoreCase("all");
         boolean allActions = argAsString(1).equalsIgnoreCase("all");
@@ -65,15 +65,15 @@ public class CmdPerm extends FCommand {
         }
 
         if (allActions) {
-            actions.addAll(Arrays.asList(Action.values()));
+            permissableActions.addAll(Arrays.asList(PermissableAction.values()));
         } else {
-            Action action = Action.fromString(argAsString(1));
-            if (action == null) {
+            PermissableAction permissableAction = PermissableAction.fromString(argAsString(1));
+            if (permissableAction == null) {
                 fme.msg(TL.COMMAND_PERM_INVALID_ACTION);
                 return;
             }
 
-            actions.add(action);
+            permissableActions.add(permissableAction);
         }
 
         Access access = Access.fromString(argAsString(2));
@@ -84,8 +84,8 @@ public class CmdPerm extends FCommand {
         }
 
         for (Relation relation : relations) {
-            for (Action action : actions) {
-                fme.getFaction().setPermission(relation, action, access);
+            for (PermissableAction permissableAction : permissableActions) {
+                fme.getFaction().setPermission(relation, permissableAction, access);
             }
         }
 

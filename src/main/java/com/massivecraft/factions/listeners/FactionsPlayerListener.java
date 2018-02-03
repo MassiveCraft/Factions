@@ -11,6 +11,7 @@ import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.VisualizeUtil;
 import com.massivecraft.factions.zcore.fperms.Access;
+import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.persist.MemoryFPlayer;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TextUtil;
@@ -32,10 +33,9 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Level;
 
-
 public class FactionsPlayerListener implements Listener {
 
-    public P p;
+    private P p;
 
     public FactionsPlayerListener(P p) {
         this.p = p;
@@ -355,7 +355,7 @@ public class FactionsPlayerListener implements Listener {
         Relation rel = myFaction.getRelationTo(otherFaction);
 
 
-        Access access = otherFaction.getAccess(me, com.massivecraft.factions.zcore.fperms.Action.ITEM);
+        Access access = otherFaction.getAccess(me, PermissableAction.ITEM);
         if (access != null && access != Access.UNDEFINED) {
             // TODO: Update this once new access values are added other than just allow / deny.
             return access == Access.ALLOW;
@@ -422,10 +422,36 @@ public class FactionsPlayerListener implements Listener {
             }
         }
 
-        Access access = otherFaction.getAccess(me, com.massivecraft.factions.zcore.fperms.Action.BUILD);
-        if (access != null && access != Access.UNDEFINED) {
-            // TODO: Update this once new access values are added other than just allow / deny.
-            return access == Access.ALLOW;
+        PermissableAction action = null;
+
+        switch (block.getType()) {
+            case LEVER:
+                action = PermissableAction.LEVER;
+                break;
+            case STONE_BUTTON:
+            case WOOD_BUTTON:
+                action = PermissableAction.BUTTON;
+                break;
+            case DARK_OAK_DOOR:
+            case ACACIA_DOOR:
+            case BIRCH_DOOR:
+            case IRON_DOOR:
+            case JUNGLE_DOOR:
+            case SPRUCE_DOOR:
+            case TRAP_DOOR:
+            case WOOD_DOOR:
+            case WOODEN_DOOR:
+                action = PermissableAction.DOOR;
+                break;
+            default:
+                break;
+        }
+
+        // F PERM check runs through before other checks.
+        Access access = otherFaction.getAccess(me, action);
+        if (access == null || access == Access.DENY) {
+            me.msg(TL.GENERIC_NOPERMISSION, action);
+            return false;
         }
 
         // We only care about some material types.
