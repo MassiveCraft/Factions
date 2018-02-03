@@ -1,11 +1,12 @@
 package com.massivecraft.factions.struct;
 
 import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.zcore.fperms.Permissable;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.ChatColor;
 
 
-public enum Relation {
+public enum Relation implements Permissable {
     MEMBER(4, TL.RELATION_MEMBER_SINGULAR.toString()),
     ALLY(3, TL.RELATION_ALLY_SINGULAR.toString()),
     TRUCE(2, TL.RELATION_TRUCE_SINGULAR.toString()),

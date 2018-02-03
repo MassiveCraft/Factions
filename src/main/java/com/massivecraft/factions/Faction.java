@@ -7,6 +7,7 @@ import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.LazyLocation;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.Action;
+import com.massivecraft.factions.zcore.fperms.Permissable;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -138,9 +139,11 @@ public interface Faction extends EconomyParticipator {
 
     public int getDeaths();
 
-    public Access getAccess(FPlayer fPlayer, Action perm);
+    public Access getAccess(Permissable permissable, Action action);
 
-    public void setPermission(Relation relation, Action action, Access access);
+    public Access getAccess(FPlayer player, Action action);
+
+    public void setPermission(Permissable permissable, Action action, Access access);
 
     public void resetPerms();
 

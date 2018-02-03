@@ -38,7 +38,7 @@ public class FPromoteCommand extends FCommand {
             return;
         }
 
-        Access access = myFaction.getAccess(fme, Action.PROMOTE);
+        Access access = myFaction.getAccess(fme.getRole(), Action.PROMOTE);
 
         // Well this is messy.
         if (access == null || access == Access.UNDEFINED) {

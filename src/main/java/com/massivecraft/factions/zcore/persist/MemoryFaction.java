@@ -12,6 +12,7 @@ import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.factions.util.RelationUtil;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.Action;
+import com.massivecraft.factions.zcore.fperms.Permissable;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -48,7 +49,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     private long lastDeath;
     protected int maxVaults;
     protected Role defaultRole;
-    protected Map<Relation, Map<Action, Access>> permissions = new HashMap<>();
+    protected Map<Permissable, Map<Action, Access>> permissions = new HashMap<>();
 
     public HashMap<String, List<String>> getAnnouncements() {
         return this.announcements;
@@ -324,9 +325,8 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     // -------------------------------------------- //
 
 
-    public Access getAccess(FPlayer fPlayer, Action action) {
-        Relation relation = fPlayer.getRelationTo(this);
-        Map<Action, Access> accessMap = permissions.get(relation);
+    public Access getAccess(Permissable permissable, Action action) {
+        Map<Action, Access> accessMap = permissions.get(permissable);
         if (accessMap != null && accessMap.containsKey(action)) {
             return accessMap.get(action);
         }
@@ -334,8 +334,32 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         return null;
     }
 
-    public void setPermission(Relation relation, Action action, Access access) {
-        Map<Action, Access> accessMap = permissions.get(relation);
+    /**
+     * Get the Access of a player. Will use player's Role if they are a faction member. Otherwise, uses their Relation.
+     *
+     * @param player
+     * @param action
+     * @return
+     */
+    public Access getAccess(FPlayer player, Action action) {
+        Permissable perm;
+
+        if (player.getFaction() == this) {
+            perm = player.getRole();
+        } else {
+            perm = player.getFaction().getRelationTo(this);
+        }
+
+        Map<Action, Access> accessMap = permissions.get(perm);
+        if (accessMap != null && accessMap.containsKey(action)) {
+            return accessMap.get(action);
+        }
+
+        return null;
+    }
+
+    public void setPermission(Permissable permissable, Action action, Access access) {
+        Map<Action, Access> accessMap = permissions.get(permissable);
         if (accessMap == null) {
             accessMap = new HashMap<>();
         }
@@ -343,8 +367,11 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         accessMap.put(action, access);
     }
 
+
     public void resetPerms() {
         P.p.log(Level.WARNING, "Resetting permissions for Faction: " + tag);
+
+        permissions.clear();
 
         // First populate a map with undefined as the permission for each action.
         Map<Action, Access> freshMap = new HashMap<>();
@@ -355,6 +382,13 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         // Put the map in there for each relation.
         for (Relation relation : Relation.values()) {
             permissions.put(relation, freshMap);
+        }
+
+        // And each role.
+        for (Role role : Role.values()) {
+            if (role != Role.ADMIN) {
+                permissions.put(role, freshMap);
+            }
         }
     }
 
