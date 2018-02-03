@@ -443,6 +443,11 @@ public class FactionsPlayerListener implements Listener {
             case WOODEN_DOOR:
                 action = PermissableAction.DOOR;
                 break;
+            case CHEST:
+            case ENDER_CHEST:
+            case TRAPPED_CHEST:
+                action = PermissableAction.CONTAINER;
+                break;
             default:
                 break;
         }
