@@ -5,6 +5,9 @@ import com.massivecraft.factions.P;
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.zcore.fperms.Access;
+import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.ChatColor;
 
@@ -33,6 +36,13 @@ public class CmdMoneyWithdraw extends FCommand {
         if (faction == null) {
             return;
         }
+
+        Access access = myFaction.getAccess(fme, PermissableAction.WITHDRAW);
+        if (access == Access.DENY) {
+            fme.msg(TL.GENERIC_NOPERMISSION, "withdraw");
+            return;
+        }
+
         boolean success = Econ.transferMoney(fme, faction, fme, amount);
 
         if (success && Conf.logMoneyTransactions) {

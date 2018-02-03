@@ -68,7 +68,7 @@ public class CmdKick extends FCommand {
         // players with admin-level "disband" permission can bypass these requirements
         if (!Permission.KICK_ANY.has(sender)) {
 
-            Access access = myFaction.getAccess(fme, PermissableAction.INVITE);
+            Access access = myFaction.getAccess(fme, PermissableAction.KICK);
             if (access == Access.DENY || (access == Access.UNDEFINED && !assertMinRole(Role.MODERATOR))) {
                 fme.msg(TL.GENERIC_NOPERMISSION, "kick");
                 return;
