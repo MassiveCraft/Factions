@@ -399,6 +399,14 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         }
     }
 
+    /**
+     * Read only map of Permissions.
+     * @return
+     */
+    public Map<Permissable, Map<PermissableAction, Access>> getPermissions() {
+        return Collections.unmodifiableMap(permissions);
+    }
+
     public Role getDefaultRole() {
         return this.defaultRole;
     }

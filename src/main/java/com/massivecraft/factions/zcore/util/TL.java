@@ -364,11 +364,12 @@ public enum TL {
     COMMAND_PEACEFUL_GRANT("granted peaceful status to"),
     COMMAND_PEACEFUL_REVOKE("removed peaceful status from"),
 
-    COMMAND_PERM_DESCRIPTION("Edit or list your Faction's permissions."),
+    COMMAND_PERM_DESCRIPTION("&6Edit or list your Faction's permissions."),
     COMMAND_PERM_INVALID_RELATION("Invalid relation defined. Try something like 'ally'"),
     COMMAND_PERM_INVALID_ACCESS("Invalid access defined. Try something like 'allow'"),
     COMMAND_PERM_INVALID_ACTION("Invalid action defined. Try something like 'build'"),
     COMMAND_PERM_SET("Set permission %1$s to %2$s for relation %3$s"),
+    COMMAND_PERM_TOP("RCT MEM OFF ALLY TRUCE NEUT ENEMY"),
 
     COMMAND_PERMANENT_DESCRIPTION("Toggles a faction's permanence"), //TODO: Real word?
     COMMAND_PERMANENT_GRANT("added permanent status to"),

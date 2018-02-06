@@ -147,6 +147,8 @@ public interface Faction extends EconomyParticipator {
 
     public void resetPerms();
 
+    public Map<Permissable, Map<PermissableAction, Access>> getPermissions();
+
     // -------------------------------
     // Relation and relation colors
     // -------------------------------

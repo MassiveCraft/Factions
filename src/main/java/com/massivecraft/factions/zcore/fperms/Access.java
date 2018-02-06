@@ -1,9 +1,17 @@
 package com.massivecraft.factions.zcore.fperms;
 
+import org.bukkit.ChatColor;
+
 public enum Access {
-    ALLOW,
-    DENY,
-    UNDEFINED;
+    ALLOW("&aALLOW"),
+    DENY("&4DENY"),
+    UNDEFINED("&7UND");
+
+    private String name;
+
+    Access(String name) {
+        this.name = name;
+    }
 
     /**
      * Case insensitive check for access.
@@ -19,6 +27,10 @@ public enum Access {
         }
 
         return null;
+    }
+
+    public String getName() {
+        return ChatColor.translateAlternateColorCodes('&', this.name);
     }
 
 
