@@ -3,7 +3,9 @@ package com.massivecraft.factions.util;
 import com.google.gson.*;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Relation;
+import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.fperms.Access;
+import com.massivecraft.factions.zcore.fperms.Permissable;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 
 import java.lang.reflect.Type;
@@ -12,10 +14,10 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 
-public class PermissionsMapTypeAdapter implements JsonDeserializer<Map<Relation, Map<PermissableAction, Access>>> {
+public class PermissionsMapTypeAdapter implements JsonDeserializer<Map<Permissable, Map<PermissableAction, Access>>> {
 
     @Override
-    public Map<Relation, Map<PermissableAction, Access>> deserialize(JsonElement json, Type type, JsonDeserializationContext context) throws JsonParseException {
+    public Map<Permissable, Map<PermissableAction, Access>> deserialize(JsonElement json, Type type, JsonDeserializationContext context) throws JsonParseException {
 
         try {
             JsonObject obj = json.getAsJsonObject();
@@ -23,11 +25,15 @@ public class PermissionsMapTypeAdapter implements JsonDeserializer<Map<Relation,
                 return null;
             }
 
-            Map<Relation, Map<PermissableAction, Access>> permissionsMap = new ConcurrentHashMap<>();
+            Map<Permissable, Map<PermissableAction, Access>> permissionsMap = new ConcurrentHashMap<>();
 
             // Top level is Relation
             for (Map.Entry<String, JsonElement> entry : obj.entrySet()) {
-                Relation relation = Relation.fromString(entry.getKey());
+                Permissable permissable = getPermissable(entry.getKey());
+
+                if (permissable == null) {
+                    continue;
+                }
 
                 // Second level is the map between action -> access
                 for (Map.Entry<String, JsonElement> entry2 : entry.getValue().getAsJsonObject().entrySet()) {
@@ -36,16 +42,32 @@ public class PermissionsMapTypeAdapter implements JsonDeserializer<Map<Relation,
                     Access access = Access.fromString(entry2.getValue().getAsString());
                     accessMap.put(permissableAction, access);
 
-                    permissionsMap.put(relation, accessMap);
+                    permissionsMap.put(permissable, accessMap);
                 }
             }
 
             return permissionsMap;
 
         } catch (Exception ex) {
-            ex.printStackTrace();
             P.p.log(Level.WARNING, "Error encountered while deserializing a PermissionsMap.");
+            ex.printStackTrace();
             return null;
         }
+    }
+
+    private Permissable getPermissable(String s) {
+        try {
+            return Relation.fromString(s);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            return Role.fromString(s);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 }
