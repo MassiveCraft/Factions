@@ -332,7 +332,8 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
         Map<PermissableAction, Access> accessMap = permissions.get(permissable);
         if (accessMap != null && accessMap.containsKey(permissableAction)) {
-            return accessMap.get(permissableAction);
+            Access access = accessMap.get(permissableAction);
+            return access != null ? access : Access.UNDEFINED;
         }
 
         return Access.UNDEFINED;
@@ -377,26 +378,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
     public void resetPerms() {
         P.p.log(Level.WARNING, "Resetting permissions for Faction: " + tag);
-
         permissions.clear();
-
-        // First populate a map with undefined as the permission for each action.
-        Map<PermissableAction, Access> freshMap = new HashMap<>();
-        for (PermissableAction permissableAction : PermissableAction.values()) {
-            freshMap.put(permissableAction, Access.UNDEFINED);
-        }
-
-        // Put the map in there for each relation.
-        for (Relation relation : Relation.values()) {
-            permissions.put(relation, freshMap);
-        }
-
-        // And each role.
-        for (Role role : Role.values()) {
-            if (role != Role.ADMIN) {
-                permissions.put(role, freshMap);
-            }
-        }
     }
 
     /**
