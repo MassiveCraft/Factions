@@ -99,6 +99,7 @@ permissions:
       factions.top: true
       factions.togglealliancechat: true
       factions.vault: true
+      factions.permissions: true
   factions.admin:
     description: hand over your admin rights
   factions.admin.any:
