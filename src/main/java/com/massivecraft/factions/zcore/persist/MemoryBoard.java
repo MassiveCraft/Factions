@@ -6,6 +6,10 @@ import com.massivecraft.factions.*;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.util.AsciiCompass;
 import com.massivecraft.factions.util.LazyLocation;
+import com.massivecraft.factions.zcore.util.TL;
+import com.massivecraft.factions.zcore.util.TagReplacer;
+import com.massivecraft.factions.zcore.util.TagUtil;
+import mkremins.fanciful.FancyMessage;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 
@@ -240,10 +244,19 @@ public abstract class MemoryBoard extends Board {
      * The map is relative to a coord and a faction north is in the direction of decreasing x east is in the direction
      * of decreasing z
      */
-    public ArrayList<String> getMap(Faction faction, FLocation flocation, double inDegrees) {
-        ArrayList<String> ret = new ArrayList<>();
+    public ArrayList<FancyMessage> getMap(FPlayer fplayer, FLocation flocation, double inDegrees) {
+        Faction faction = fplayer.getFaction();
+        ArrayList<FancyMessage> ret = new ArrayList<>();
         Faction factionLoc = getFactionAt(flocation);
-        ret.add(P.p.txt.titleize("(" + flocation.getCoordString() + ") " + factionLoc.getTag(faction)));
+        ret.add(new FancyMessage(P.p.txt.titleize("(" + flocation.getCoordString() + ") " + factionLoc.getTag(fplayer))));
+
+        // Get the compass
+        ArrayList<String> asciiCompass = AsciiCompass.getAsciiCompass(inDegrees, ChatColor.RED, P.p.txt.parse("<a>"));
+
+        // Add the compass
+        ret.add(new FancyMessage(asciiCompass.get(0)));
+        ret.add(new FancyMessage(asciiCompass.get(1)));
+        ret.add(new FancyMessage(asciiCompass.get(2)));
 
         int halfWidth = Conf.mapWidth / 2;
         int halfHeight = Conf.mapHeight / 2;
@@ -261,53 +274,96 @@ public abstract class MemoryBoard extends Board {
         // For each row
         for (int dz = 0; dz < height; dz++) {
             // Draw and add that row
-            StringBuilder row = new StringBuilder();
+            FancyMessage row = new FancyMessage("");
             for (int dx = 0; dx < width; dx++) {
                 if (dx == halfWidth && dz == halfHeight) {
-                    row.append(ChatColor.AQUA + "+");
+                    row.then("+").color(ChatColor.AQUA);
                 } else {
                     FLocation flocationHere = topLeft.getRelative(dx, dz);
                     Faction factionHere = getFactionAt(flocationHere);
-                    Relation relation = faction.getRelationTo(factionHere);
+                    Relation relation = fplayer.getRelationTo(factionHere);
                     if (factionHere.isWilderness()) {
-                        row.append(ChatColor.GRAY + "-");
+                        row.then("-").color(ChatColor.GRAY);
                     } else if (factionHere.isSafeZone()) {
-                        row.append(Conf.colorPeaceful).append("+");
+                        row.then("+").color(Conf.colorPeaceful);
                     } else if (factionHere.isWarZone()) {
-                        row.append(ChatColor.DARK_RED + "+");
-                    } else if (factionHere == faction ||
-                            factionHere == factionLoc ||
-                            relation.isAtLeast(Relation.ALLY) ||
+                        row.then("+").color(ChatColor.DARK_RED);
+                    } else if (factionHere == faction || factionHere == factionLoc || relation.isAtLeast(Relation.ALLY) ||
                             (Conf.showNeutralFactionsOnMap && relation.equals(Relation.NEUTRAL)) ||
                             (Conf.showEnemyFactionsOnMap && relation.equals(Relation.ENEMY))) {
                         if (!fList.containsKey(factionHere.getTag())) {
                             fList.put(factionHere.getTag(), Conf.mapKeyChrs[Math.min(chrIdx++, Conf.mapKeyChrs.length - 1)]);
                         }
                         char tag = fList.get(factionHere.getTag());
-                        row.append(factionHere.getColorTo(faction)).append("").append(tag);
+
+                        row.then(String.valueOf(tag)).color(factionHere.getColorTo(faction)).tooltip(getToolTip(factionHere, fplayer));
                     } else {
-                        row.append(ChatColor.GRAY + "-");
+                        row.then("-").color(ChatColor.GRAY);
                     }
                 }
             }
-            ret.add(row.toString());
+            ret.add(row);
         }
-
-        // Get the compass
-        ArrayList<String> asciiCompass = AsciiCompass.getAsciiCompass(inDegrees, ChatColor.RED, P.p.txt.parse("<a>"));
-
-        // Add the compass
-        ret.set(1, asciiCompass.get(0) + ret.get(1).substring(3 * 3));
-        ret.set(2, asciiCompass.get(1) + ret.get(2).substring(3 * 3));
-        ret.set(3, asciiCompass.get(2) + ret.get(3).substring(3 * 3));
 
         // Add the faction key
         if (Conf.showMapFactionKey) {
-            StringBuilder fRow = new StringBuilder();
+            FancyMessage fRow = new FancyMessage("");
             for (String key : fList.keySet()) {
-                fRow.append(String.format("%s%s: %s ", ChatColor.GRAY, fList.get(key), key));
+                fRow.then(String.format("%s: %s ", fList.get(key), key)).color(ChatColor.GRAY);
             }
-            ret.add(fRow.toString());
+            ret.add(fRow);
+        }
+
+        return ret;
+    }
+
+    private List<String> getToolTip(Faction faction, FPlayer to) {
+        List<String> ret = new ArrayList<>();
+        List<String> show = P.p.getConfig().getStringList("show");
+
+        if (!faction.isNormal()) {
+            String tag = faction.getTag(to);
+            // send header and that's all
+            String header = show.get(0);
+            if (TagReplacer.HEADER.contains(header)) {
+                ret.add(P.p.txt.titleize(tag));
+            } else {
+                ret.add(P.p.txt.parse(TagReplacer.FACTION.replace(header, tag)));
+            }
+            return ret; // we only show header for non-normal factions
+        }
+
+        for (String raw : show) {
+            // Hack to get rid of the extra underscores in title normally used to center tag
+            if(raw.contains("{header}")) {
+                raw = raw.replace("{header}", faction.getTag(to));
+            }
+
+            String parsed = TagUtil.parsePlain(faction, to, raw); // use relations
+            if (parsed == null) {
+                continue; // Due to minimal f show.
+            }
+
+            if (TagUtil.hasFancy(parsed)) {
+                List<FancyMessage> fancy = TagUtil.parseFancy(faction, to, parsed);
+                if (fancy != null) {
+                    for(FancyMessage msg : fancy) {
+                    ret.add((P.p.txt.parse(msg.toOldMessageFormat())));
+                    }
+                }
+                continue;
+            }
+
+            if (!parsed.contains("{notFrozen}") && !parsed.contains("{notPermanent}")) {
+                if (parsed.contains("{ig}")) {
+                    // replaces all variables with no home TL
+                    parsed = parsed.substring(0, parsed.indexOf("{ig}")) + TL.COMMAND_SHOW_NOHOME.toString();
+                }
+                if (parsed.contains("%")) {
+                    parsed = parsed.replaceAll("%", ""); // Just in case it got in there before we disallowed it.
+                }
+                ret.add(P.p.txt.parse(parsed));
+            }
         }
 
         return ret;

@@ -20,8 +20,7 @@ public enum PermissableAction {
     PROMOTE("promote"),
     PERMS("perms"),
     SETWARP("setwarp"),
-    WARP("warp"),
-    ;
+    WARP("warp"),;
 
     private String name;
 

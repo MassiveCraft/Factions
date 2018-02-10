@@ -180,7 +180,7 @@ public class FactionsPlayerListener implements Listener {
                     P.p.log(Level.WARNING, "%s tried to show a faction map too soon and triggered exploit blocker.", player.getName());
                 }
             } else {
-                me.sendMessage(Board.getInstance().getMap(me.getFaction(), to, player.getLocation().getYaw()));
+                me.sendFancyMessage(Board.getInstance().getMap(me, to, player.getLocation().getYaw()));
                 showTimes.put(player.getUniqueId(), System.currentTimeMillis() + P.p.getConfig().getLong("findfactionsexploit.cooldown", 2000));
             }
         } else {

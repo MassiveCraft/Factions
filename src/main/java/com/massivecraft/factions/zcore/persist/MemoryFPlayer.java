@@ -17,6 +17,7 @@ import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.RelationUtil;
 import com.massivecraft.factions.util.WarmUpUtil;
 import com.massivecraft.factions.zcore.util.TL;
+import mkremins.fanciful.FancyMessage;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 
@@ -891,6 +892,27 @@ public abstract class MemoryFPlayer implements FPlayer {
             this.sendMessage(msg);
         }
     }
+
+    public void sendFancyMessage(FancyMessage message) {
+        Player player = getPlayer();
+        if (player == null || !player.isOnGround()) {
+            return;
+        }
+
+        message.send(player);
+    }
+
+    public void sendFancyMessage(List<FancyMessage> messages) {
+        Player player = getPlayer();
+        if (player == null || !player.isOnGround()) {
+            return;
+        }
+
+        for (FancyMessage msg : messages) {
+            msg.send(player);
+        }
+    }
+
 
     public String getNameAndTitle(FPlayer fplayer) {
         return this.getColorTo(fplayer) + this.getNameAndTitle();
