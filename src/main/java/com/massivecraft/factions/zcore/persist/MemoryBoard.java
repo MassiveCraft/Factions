@@ -335,7 +335,7 @@ public abstract class MemoryBoard extends Board {
 
         for (String raw : show) {
             // Hack to get rid of the extra underscores in title normally used to center tag
-            if(raw.contains("{header}")) {
+            if (raw.contains("{header}")) {
                 raw = raw.replace("{header}", faction.getTag(to));
             }
 
@@ -347,8 +347,8 @@ public abstract class MemoryBoard extends Board {
             if (TagUtil.hasFancy(parsed)) {
                 List<FancyMessage> fancy = TagUtil.parseFancy(faction, to, parsed);
                 if (fancy != null) {
-                    for(FancyMessage msg : fancy) {
-                    ret.add((P.p.txt.parse(msg.toOldMessageFormat())));
+                    for (FancyMessage msg : fancy) {
+                        ret.add((P.p.txt.parse(msg.toOldMessageFormat())));
                     }
                 }
                 continue;
