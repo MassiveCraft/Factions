@@ -253,11 +253,6 @@ public abstract class MemoryBoard extends Board {
         // Get the compass
         ArrayList<String> asciiCompass = AsciiCompass.getAsciiCompass(inDegrees, ChatColor.RED, P.p.txt.parse("<a>"));
 
-        // Add the compass
-        ret.add(new FancyMessage(asciiCompass.get(0)));
-        ret.add(new FancyMessage(asciiCompass.get(1)));
-        ret.add(new FancyMessage(asciiCompass.get(2)));
-
         int halfWidth = Conf.mapWidth / 2;
         // Use player's value for height
         int halfHeight = fplayer.getMapHeight() / 2;
@@ -276,7 +271,11 @@ public abstract class MemoryBoard extends Board {
         for (int dz = 0; dz < height; dz++) {
             // Draw and add that row
             FancyMessage row = new FancyMessage("");
-            for (int dx = 0; dx < width; dx++) {
+
+            if (dz < 3) {
+                row.then(asciiCompass.get(dz));
+            }
+            for (int dx = (dz < 3 ? 6 : 3); dx < width; dx++) {
                 if (dx == halfWidth && dz == halfHeight) {
                     row.then("+").color(ChatColor.AQUA);
                 } else {
