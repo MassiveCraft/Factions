@@ -295,8 +295,9 @@ public enum TL {
     COMMAND_MAP_UPDATE_DISABLED("<i>Map auto update <red>DISABLED."),
     COMMAND_MAP_DESCRIPTION("Show the territory map, and set optional auto update"),
 
-    COMMAND_MAPHEIGHT_DESCRIPTION("Update the lines that /f map sends"),
-    COMMAND_MAPHEIGHT_SET("Set /f map lines to %1$d"),
+    COMMAND_MAPHEIGHT_DESCRIPTION("&eUpdate the lines that /f map sends"),
+    COMMAND_MAPHEIGHT_SET("&eSet /f map lines to &a%1$d"),
+    COMMAND_MAPHEIGHT_CURRENT("&eCurrent mapheight: &a%1$d"),
 
     COMMAND_MOD_CANDIDATES("Players you can promote: "),
     COMMAND_MOD_CLICKTOPROMOTE("Click to promote "),

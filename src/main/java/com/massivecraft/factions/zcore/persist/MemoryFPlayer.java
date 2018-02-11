@@ -59,7 +59,7 @@ public abstract class MemoryFPlayer implements FPlayer {
     protected boolean isAdminBypassing = false;
     protected int kills, deaths;
     protected boolean willAutoLeave = true;
-    protected int mapHeight;
+    protected int mapHeight = 8; // default to old value
 
     protected transient FLocation lastStoodAt = new FLocation(); // Where did this player stand the last time we checked?
     protected transient boolean mapAutoUpdating;

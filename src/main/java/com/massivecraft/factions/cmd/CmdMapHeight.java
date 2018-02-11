@@ -11,7 +11,7 @@ public class CmdMapHeight extends FCommand {
         this.aliases.add("mapheight");
         this.aliases.add("mh");
 
-        this.requiredArgs.add("height");
+        this.optionalArgs.put("height", "height");
 
         this.permission = Permission.MAPHEIGHT.node;
 
@@ -20,18 +20,18 @@ public class CmdMapHeight extends FCommand {
 
     @Override
     public void perform() {
-        int height = argAsInt(0, -1);
-
-        if (height == -1) {
-            fme.sendMessage(TL.COMMAND_MAPHEIGHT_DESCRIPTION.toString());
+        if (args.size() == 0) {
+            fme.sendMessage(TL.COMMAND_MAPHEIGHT_CURRENT.format(fme.getMapHeight()));
             return;
         }
+
+        int height = argAsInt(0);
 
         fme.setMapHeight(height);
         fme.sendMessage(TL.COMMAND_MAPHEIGHT_SET.format(height));
     }
 
-        @Override
+    @Override
     public TL getUsageTranslation() {
         return TL.COMMAND_MAPHEIGHT_DESCRIPTION;
     }
