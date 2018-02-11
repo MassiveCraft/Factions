@@ -28,7 +28,7 @@ public class CmdMapHeight extends FCommand {
         int height = argAsInt(0);
 
         fme.setMapHeight(height);
-        fme.sendMessage(TL.COMMAND_MAPHEIGHT_SET.format(height));
+        fme.sendMessage(TL.COMMAND_MAPHEIGHT_SET.format(fme.getMapHeight()));
     }
 
     @Override

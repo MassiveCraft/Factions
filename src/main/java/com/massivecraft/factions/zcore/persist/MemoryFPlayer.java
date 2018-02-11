@@ -921,7 +921,7 @@ public abstract class MemoryFPlayer implements FPlayer {
     }
 
     public void setMapHeight(int height) {
-        this.mapHeight = height;
+        this.mapHeight = height > Conf.mapHeight * 2 ? Conf.mapHeight * 2 : height;
     }
 
     public String getNameAndTitle(FPlayer fplayer) {
