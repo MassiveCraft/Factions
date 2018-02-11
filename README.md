@@ -33,7 +33,7 @@ FactionsUUID versioning: `U<major>.<minor>.<patch>-<tag>`
 
 Usage
 ---------
-<b>Read the full userguide here: [http://massivecraft.com/dev/factions](http://massivecraft.com/dev/factions)</b>
+<b>Read the full userguide here: [Factions Wiki](https://github.com/drtshock/Factions/wiki)</b>
 
 The chat console command is:
 
