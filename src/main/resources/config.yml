@@ -250,6 +250,25 @@ minimal-show: false
 show-exempt:
   - Put_faction_tag_here
 
+
+# THIS IS FOR /f map tool tips.
+
+# You can use any variable here, including fancy messages. Color codes and or tags work fine.
+# Lines that arent defined wont be sent (home not set, faction not peaceful / permanent, dtr freeze)
+map:
+  # First line can be {header} for default header, or any string (we recommend &m for smooth lines ;p)
+  - '{header}'
+  - '<a>Description: <i>{description}'
+  - '<a>Joining: <i>{joining}    {peaceful}'
+  - '<a>Land / Power / Maxpower: <i> {chunks}/{power}/{maxPower}'
+  - '<a>Founded: <i>{create-date}'
+  - '<a>This faction is permanent, remaining even with no members.' # only shows if faction is permanent
+  - '<a>Land value: <i>{land-value} {land-refund}'
+  - '<a>Balance: <i>{balance}'
+  - '<a>Allies(<i>{allies}<a>/<i>{max-allies}<a>): {allies-list} '
+  - '<a>Online: (<i>{online}<a>/<i>{members}<a>): {online-list}'
+  - '<a>Offline: (<i>{offline}<a>/<i>{members}<a>): {offline-list}'
+
 ############################################################
 # +------------------------------------------------------+ #
 # |                Configurable /f list                  | #

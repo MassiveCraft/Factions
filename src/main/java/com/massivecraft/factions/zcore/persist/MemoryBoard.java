@@ -320,7 +320,7 @@ public abstract class MemoryBoard extends Board {
 
     private List<String> getToolTip(Faction faction, FPlayer to) {
         List<String> ret = new ArrayList<>();
-        List<String> show = P.p.getConfig().getStringList("show");
+        List<String> show = P.p.getConfig().getStringList("map");
 
         if (!faction.isNormal()) {
             String tag = faction.getTag(to);
