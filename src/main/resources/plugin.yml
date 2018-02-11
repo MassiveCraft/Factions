@@ -99,6 +99,7 @@ permissions:
       factions.top: true
       factions.togglealliancechat: true
       factions.vault: true
+      factions.mapheight: true
   factions.admin:
     description: hand over your admin rights
   factions.admin.any:
@@ -274,3 +275,5 @@ permissions:
     description: Access faction vault.
   factions.setmaxvault:
     description: Set a faction's max vaults.
+  factions.mapheight:
+    description: Set your /f map height.

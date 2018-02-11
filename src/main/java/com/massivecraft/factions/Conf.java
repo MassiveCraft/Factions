@@ -364,8 +364,9 @@ public class Conf {
 
     public static Backend backEnd = Backend.JSON;
 
-    public static transient int mapHeight = 8;
-    public static transient int mapWidth = 39;
+    // Taller and wider for "bigger f map"
+    public static transient int mapHeight = 17;
+    public static transient int mapWidth = 49;
     public static transient char[] mapKeyChrs = "\\/#$%=&^ABCDEFGHJKLMNOPQRSTUVWXYZ1234567890abcdeghjmnopqrsuvwxyz?".toCharArray();
 
     static {

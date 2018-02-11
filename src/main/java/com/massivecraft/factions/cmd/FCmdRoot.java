@@ -74,6 +74,7 @@ public class FCmdRoot extends FCommand {
     public CmdPromote cmdPromote = new CmdPromote();
     public CmdDemote cmdDemote = new CmdDemote();
     public CmdSetDefaultRole cmdSetDefaultRole = new CmdSetDefaultRole();
+    public CmdMapHeight cmdMapHeight = new CmdMapHeight();
 
     public FCmdRoot() {
         super();
@@ -162,6 +163,7 @@ public class FCmdRoot extends FCommand {
         this.addSubCommand(this.cmdPromote);
         this.addSubCommand(this.cmdDemote);
         this.addSubCommand(this.cmdSetDefaultRole);
+        this.addSubCommand(this.cmdMapHeight);
         if (P.p.isHookedPlayervaults()) {
             P.p.log("Found playervaults hook, adding /f vault and /f setmaxvault commands.");
             this.addSubCommand(new CmdSetMaxVaults());

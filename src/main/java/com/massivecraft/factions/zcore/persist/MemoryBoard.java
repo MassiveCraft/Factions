@@ -259,7 +259,8 @@ public abstract class MemoryBoard extends Board {
         ret.add(new FancyMessage(asciiCompass.get(2)));
 
         int halfWidth = Conf.mapWidth / 2;
-        int halfHeight = Conf.mapHeight / 2;
+        // Use player's value for height
+        int halfHeight = fplayer.getMapHeight() / 2;
         FLocation topLeft = flocation.getRelative(-halfWidth, -halfHeight);
         int width = halfWidth * 2 + 1;
         int height = halfHeight * 2 + 1;

@@ -38,6 +38,7 @@ public enum Permission {
     LIST("list"),
     LOCK("lock"),
     MAP("map"),
+    MAPHEIGHT("mapheight"),
     MOD("mod"),
     MOD_ANY("mod.any"),
     MODIFY_POWER("modifypower"),
