@@ -5,6 +5,7 @@ import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.fperms.Access;
+import com.massivecraft.factions.zcore.fperms.Permissable;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
 
@@ -47,22 +48,23 @@ public class CmdPerm extends FCommand {
             return;
         }
 
-        Set<Relation> relations = new HashSet<>();
+        Set<Permissable> permissables = new HashSet<>();
         Set<PermissableAction> permissableActions = new HashSet<>();
 
         boolean allRelations = argAsString(0).equalsIgnoreCase("all");
         boolean allActions = argAsString(1).equalsIgnoreCase("all");
 
         if (allRelations) {
-            relations.addAll(Arrays.asList(Relation.values()));
+            permissables.addAll(myFaction.getPermissions().keySet());
         } else {
-            Relation relation = Relation.fromString(argAsString(0));
-            if (relation == null) {
+            Permissable permissable = getPermissable(argAsString(0));
+
+            if (permissable == null) {
                 fme.msg(TL.COMMAND_PERM_INVALID_RELATION);
                 return;
             }
 
-            relations.add(relation);
+            permissables.add(permissable);
         }
 
         if (allActions) {
@@ -84,14 +86,27 @@ public class CmdPerm extends FCommand {
             return;
         }
 
-        for (Relation relation : relations) {
+        for (Permissable permissable : permissables) {
             for (PermissableAction permissableAction : permissableActions) {
-                fme.getFaction().setPermission(relation, permissableAction, access);
+                fme.getFaction().setPermission(permissable, permissableAction, access);
             }
         }
 
         fme.msg(TL.COMMAND_PERM_SET, argAsString(1), access.name(), argAsString(0));
         P.p.log(String.format(TL.COMMAND_PERM_SET.toString(), argAsString(1), access.name(), argAsString(0)) + " for faction " + fme.getTag());
+    }
+
+    private Permissable getPermissable(String name) {
+        try {
+            return Relation.valueOf(name.toUpperCase());
+        } catch (Exception e) {
+        }
+        try {
+            return Role.valueOf(name.toUpperCase());
+        } catch (Exception e) {
+        }
+
+        return null;
     }
 
     private List<String> getLines() {
