@@ -17,6 +17,7 @@ public enum Permission {
     CHAT("chat"),
     CHATSPY("chatspy"),
     CLAIM("claim"),
+    CLAIMAT("claimat"),
     CLAIM_LINE("claim.line"),
     CLAIM_RADIUS("claim.radius"),
     CONFIG("config"),

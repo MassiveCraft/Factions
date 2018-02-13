@@ -3,6 +3,7 @@ package com.massivecraft.factions.zcore.persist;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.massivecraft.factions.*;
+import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.util.AsciiCompass;
 import com.massivecraft.factions.util.LazyLocation;
@@ -277,13 +278,18 @@ public abstract class MemoryBoard extends Board {
             }
             for (int dx = (dz < 3 ? 6 : 3); dx < width; dx++) {
                 if (dx == halfWidth && dz == halfHeight) {
-                    row.then("+").color(ChatColor.AQUA);
+                    row.then("+").color(ChatColor.AQUA).tooltip(TL.CLAIM_YOUAREHERE.toString());
                 } else {
                     FLocation flocationHere = topLeft.getRelative(dx, dz);
                     Faction factionHere = getFactionAt(flocationHere);
                     Relation relation = fplayer.getRelationTo(factionHere);
                     if (factionHere.isWilderness()) {
-                        row.then("-").color(ChatColor.GRAY);
+                        row.then("-") .color(ChatColor.GRAY);
+                        // Check for claimat position and if so, let them claim at ;D
+                        if (fplayer.getPlayer().hasPermission(Permission.CLAIMAT.node)) {
+                                row.tooltip(TL.CLAIM_CLICK_TO_CLAIM.format(dx, dz))
+                                    .command(String.format("/f claimat %s %d %d", flocation.getWorldName(), dx, dz));
+                        }
                     } else if (factionHere.isSafeZone()) {
                         row.then("+").color(Conf.colorPeaceful);
                     } else if (factionHere.isWarZone()) {

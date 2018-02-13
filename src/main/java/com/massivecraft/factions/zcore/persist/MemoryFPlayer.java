@@ -691,9 +691,7 @@ public abstract class MemoryFPlayer implements FPlayer {
     }
 
     public boolean canClaimForFactionAtLocation(Faction forFaction, Location location, boolean notifyFailure) {
-        FLocation flocation = new FLocation(location);
-
-        return canClaimForFactionAtLocation(forFaction, flocation, notifyFailure);
+        return canClaimForFactionAtLocation(forFaction, new FLocation(location), notifyFailure);
     }
 
     public boolean canClaimForFactionAtLocation(Faction forFaction, FLocation flocation, boolean notifyFailure) {
@@ -771,15 +769,18 @@ public abstract class MemoryFPlayer implements FPlayer {
     }
 
     public boolean attemptClaim(Faction forFaction, Location location, boolean notifyFailure) {
+        return attemptClaim(forFaction, new FLocation(location), notifyFailure);
+    }
+
+        public boolean attemptClaim(Faction forFaction, FLocation flocation, boolean notifyFailure) {
         // notifyFailure is false if called by auto-claim; no need to notify on every failure for it
         // return value is false on failure, true on success
 
-        FLocation flocation = new FLocation(location);
         Faction currentFaction = Board.getInstance().getFactionAt(flocation);
 
         int ownedLand = forFaction.getLandRounded();
 
-        if (!this.canClaimForFactionAtLocation(forFaction, location, notifyFailure)) {
+        if (!this.canClaimForFactionAtLocation(forFaction, flocation, notifyFailure)) {
             return false;
         }
 

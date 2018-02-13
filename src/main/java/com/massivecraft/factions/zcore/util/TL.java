@@ -602,6 +602,9 @@ public enum TL {
     CLAIM_TOOCLOSETOOTHERFACTION("<i>Your claim is too close to another Faction. Buffer required is %d"),
     CLAIM_OUTSIDEWORLDBORDER("<i>Your claim is outside the border."),
     CLAIM_OUTSIDEBORDERBUFFER("<i>Your claim is outside the border. %d chunks away world edge required."),
+    CLAIM_CLICK_TO_CLAIM("Click to try to claim &2(%1$d, %2$d)"),
+    CLAIM_YOUAREHERE("You are here"),
+
     /**
      * More generic, or less easily categorisable translations, which may apply to more than one class
      */
