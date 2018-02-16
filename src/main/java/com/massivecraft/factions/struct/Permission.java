@@ -75,6 +75,7 @@ public enum Permission {
     STUCK("stuck"),
     TAG("tag"),
     TITLE("title"),
+    TITLE_COLOR("title.color"),
     TOGGLE_ALLIANCE_CHAT("togglealliancechat"),
     UNCLAIM("unclaim"),
     UNCLAIM_ALL("unclaimall"),

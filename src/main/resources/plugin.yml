@@ -51,10 +51,11 @@ permissions:
       factions.show.bypassexempt: true
   factions.kit.fullplayer:
     default: true
-    description: Can also create new factions.
+    description: Can also create new factions and use title colors.
     children:
       factions.kit.halfplayer: true
       factions.create: true
+      factions.title.color: true
   factions.kit.halfplayer:
     description: Can do all but create factions.
     children:
@@ -239,6 +240,8 @@ permissions:
     description: change the faction tag
   factions.title:
     description: set or remove a players title
+  factions.title.color:
+    description: set yours or other player's titles to be colored.
   factions.version:
     description: see the version of the plugin
   factions.unclaim:

@@ -42,7 +42,7 @@ public class CmdTitle extends FCommand {
             return;
         }
 
-        you.setTitle(title);
+        you.setTitle(sender, title);
 
         // Inform
         myFaction.msg(TL.COMMAND_TITLE_CHANGED, fme.describeTo(myFaction, true), you.describeTo(myFaction, true));

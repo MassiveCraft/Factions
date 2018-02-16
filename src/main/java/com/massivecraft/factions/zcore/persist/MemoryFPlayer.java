@@ -19,6 +19,7 @@ import com.massivecraft.factions.util.WarmUpUtil;
 import com.massivecraft.factions.zcore.util.TL;
 import mkremins.fanciful.FancyMessage;
 import org.bukkit.*;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.HashSet;
@@ -351,7 +352,12 @@ public abstract class MemoryFPlayer implements FPlayer {
         return this.hasFaction() ? title : TL.NOFACTION_PREFIX.toString();
     }
 
-    public void setTitle(String title) {
+    public void setTitle(CommandSender sender, String title) {
+        // Check if the setter has it.
+        if (sender.hasPermission(Permission.TITLE_COLOR.node)) {
+            title = ChatColor.translateAlternateColorCodes('&', title);
+        }
+
         this.title = title;
     }
 

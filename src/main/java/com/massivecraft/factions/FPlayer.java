@@ -9,6 +9,7 @@ import com.massivecraft.factions.util.WarmUpUtil;
 import mkremins.fanciful.FancyMessage;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.List;
@@ -115,7 +116,7 @@ public interface FPlayer extends EconomyParticipator {
 
     public String getTitle();
 
-    public void setTitle(String title);
+    public void setTitle(CommandSender sender, String title);
 
     public String getName();
 
