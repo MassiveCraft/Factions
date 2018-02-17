@@ -112,6 +112,8 @@ scoreboard:
 # The title of the scoreboard will be the Faction's tag and colored according to the relation with the player's Faction.
 # Commenting this section out will cause the info to appear in chat as the plugin originally did.
   finfo-enabled: false # Default to false to keep original functionality.
+
+  # SUPPORTS PLACEHOLDERS
   finfo:
     - "&6Power"
     - "{power}"
@@ -137,6 +139,7 @@ scoreboard:
   #   The scoreboard needs to be enabled for this to work.
   default-prefixes: true
 
+# SUPPORTS PLACEHOLDERS
   default:
     - "&6Your Faction"
     - "{faction}"
@@ -229,6 +232,8 @@ hcf:
 
 # You can use any variable here, including fancy messages. Color codes and or tags work fine.
 # Lines that arent defined wont be sent (home not set, faction not peaceful / permanent, dtr freeze)
+
+# SUPPORTS PLACEHOLDERS
 show:
   # First line can be {header} for default header, or any string (we recommend &m for smooth lines ;p)
   - '{header}'
