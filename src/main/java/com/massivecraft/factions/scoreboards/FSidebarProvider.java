@@ -5,7 +5,6 @@ import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TagUtil;
-import me.clip.placeholderapi.PlaceholderAPI;
 
 import java.util.List;
 
@@ -16,17 +15,15 @@ public abstract class FSidebarProvider {
     public abstract List<String> getLines(FPlayer fplayer);
 
     public String replaceTags(FPlayer fPlayer, String s) {
+        s = TagUtil.parsePlaceholders(fPlayer.getPlayer(), s);
+
         return qualityAssure(TagUtil.parsePlain(fPlayer, s));
     }
 
     public String replaceTags(Faction faction, FPlayer fPlayer, String s) {
         // Run through Placeholder API first
-        if (P.p.isClipPlaceholderAPIHooked() && fPlayer.isOnline()) {
-            s = PlaceholderAPI.setPlaceholders(fPlayer.getPlayer(), s);
-        }
-        if (P.p.isMVdWPlaceholderAPIHooked() && fPlayer.isOnline()) {
-            s = be.maximvdw.placeholderapi.PlaceholderAPI.replacePlaceholders(fPlayer.getPlayer(), s);
-        }
+        s = TagUtil.parsePlaceholders(fPlayer.getPlayer(), s);
+
         return qualityAssure(TagUtil.parsePlain(faction, fPlayer, s));
     }
 
