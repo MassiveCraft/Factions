@@ -6,8 +6,10 @@ import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.util.MiscUtil;
+import me.clip.placeholderapi.PlaceholderAPI;
 import mkremins.fanciful.FancyMessage;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -92,6 +94,18 @@ public class TagUtil {
             }
         }
         return null;
+    }
+
+    public static String parsePlaceholders(Player player, String line) {
+        if (P.p.isClipPlaceholderAPIHooked() && player.isOnline()) {
+            line = PlaceholderAPI.setPlaceholders(player, line);
+        }
+
+        if (P.p.isMVdWPlaceholderAPIHooked() && player.isOnline()) {
+            line = be.maximvdw.placeholderapi.PlaceholderAPI.replacePlaceholders(player, line);
+        }
+
+        return line;
     }
 
     /**

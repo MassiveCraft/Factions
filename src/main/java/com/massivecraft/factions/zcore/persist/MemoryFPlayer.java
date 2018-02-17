@@ -70,7 +70,6 @@ public abstract class MemoryFPlayer implements FPlayer {
     protected transient boolean loginPvpDisabled;
     protected transient long lastFrostwalkerMessage;
 
-
     public void login() {
         this.kills = getPlayer().getStatistic(Statistic.PLAYER_KILLS);
         this.deaths = getPlayer().getStatistic(Statistic.DEATHS);
@@ -304,7 +303,6 @@ public abstract class MemoryFPlayer implements FPlayer {
     public long getLastLoginTime() {
         return lastLoginTime;
     }
-
 
     public void setLastLoginTime(long lastLoginTime) {
         losePowerFromBeingOffline();
@@ -928,7 +926,7 @@ public abstract class MemoryFPlayer implements FPlayer {
     }
 
     public void setMapHeight(int height) {
-        this.mapHeight = height > Conf.mapHeight * 2 ? Conf.mapHeight * 2 : height;
+        this.mapHeight = height > (Conf.mapHeight * 2) ? (Conf.mapHeight * 2) : height;
     }
 
     public String getNameAndTitle(FPlayer fplayer) {

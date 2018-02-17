@@ -89,7 +89,7 @@ tooltips:
     - "&6Last Seen: &f{lastSeen}"
     - "&6Power: &f{power}"
     - "&6Rank: &f{group}"
-    - "&6Balance: &a${player-balance}"
+    - "&6Balance: &a${balance}"
 
 # Configuration section for Scoreboards
 # This will allow you to completely customize how your scoreboards look.

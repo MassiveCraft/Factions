@@ -7,6 +7,7 @@ import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TagReplacer;
 import com.massivecraft.factions.zcore.util.TagUtil;
+import me.clip.placeholderapi.PlaceholderAPI;
 import mkremins.fanciful.FancyMessage;
 
 import java.util.ArrayList;
@@ -87,6 +88,9 @@ public class CmdShow extends FCommand {
             if (parsed == null) {
                 continue; // Due to minimal f show.
             }
+
+            parsed = TagUtil.parsePlaceholders(fme.getPlayer(), parsed);
+
             if (TagUtil.hasFancy(parsed)) {
                 List<FancyMessage> fancy = TagUtil.parseFancy(faction, fme, parsed);
                 if (fancy != null) {
