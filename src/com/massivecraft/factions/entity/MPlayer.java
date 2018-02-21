@@ -17,6 +17,8 @@ import com.massivecraft.massivecore.mixin.MixinSenderPs;
 import com.massivecraft.massivecore.mixin.MixinTitle;
 import com.massivecraft.massivecore.ps.PS;
 import com.massivecraft.massivecore.ps.PSFormatHumanSpace;
+import com.massivecraft.massivecore.store.Coll;
+import com.massivecraft.massivecore.store.Modification;
 import com.massivecraft.massivecore.store.SenderEntity;
 import com.massivecraft.massivecore.util.IdUtil;
 import com.massivecraft.massivecore.util.MUtil;
@@ -30,6 +32,7 @@ import java.lang.ref.WeakReference;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
@@ -214,7 +217,7 @@ public class MPlayer extends SenderEntity<MPlayer> implements FactionsParticipat
 	// -------------------------------------------- //
 	// FIELD: lastActivityMillis
 	// -------------------------------------------- //
-
+	
 	public long getLastActivityMillis()
 	{
 		return this.lastActivityMillis;
@@ -222,17 +225,7 @@ public class MPlayer extends SenderEntity<MPlayer> implements FactionsParticipat
 
 	public void setLastActivityMillis(long lastActivityMillis)
 	{
-		// Clean input
-		long target = lastActivityMillis;
-
-		// Detect Nochange
-		if (MUtil.equals(this.lastActivityMillis, target)) return;
-
-		// Apply
-		this.lastActivityMillis = target;
-
-		// Mark as changed
-		this.changed();
+		this.lastActivityMillis = convertSet(lastActivityMillis, this.lastActivityMillis, null);
 	}
 
 	public void setLastActivityMillis()
