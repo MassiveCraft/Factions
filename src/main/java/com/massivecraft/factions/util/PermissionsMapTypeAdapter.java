@@ -34,16 +34,15 @@ public class PermissionsMapTypeAdapter implements JsonDeserializer<Map<Permissab
                 if (permissable == null) {
                     continue;
                 }
-
+				
                 // Second level is the map between action -> access
+				Map<PermissableAction, Access> accessMap = new HashMap<>();
                 for (Map.Entry<String, JsonElement> entry2 : entry.getValue().getAsJsonObject().entrySet()) {
-                    Map<PermissableAction, Access> accessMap = new HashMap<>();
                     PermissableAction permissableAction = PermissableAction.fromString(entry2.getKey());
                     Access access = Access.fromString(entry2.getValue().getAsString());
                     accessMap.put(permissableAction, access);
-
-                    permissionsMap.put(permissable, accessMap);
                 }
+				permissionsMap.put(permissable, accessMap);
             }
 
             return permissionsMap;
