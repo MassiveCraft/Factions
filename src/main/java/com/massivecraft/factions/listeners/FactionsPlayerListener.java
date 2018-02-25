@@ -408,8 +408,8 @@ public class FactionsPlayerListener implements Listener {
         // Dupe fix.
         Faction myFaction = me.getFaction();
         Relation rel = myFaction.getRelationTo(otherFaction);
-        if (!rel.isMember() || !otherFaction.playerHasOwnershipRights(me, loc) && player.getInventory().getItemInMainHand() != null) {
-            switch (player.getInventory().getItemInMainHand().getType()) {
+        if (!rel.isMember() || !otherFaction.playerHasOwnershipRights(me, loc) && player.getItemInHand() != null) {
+            switch (player.getItemInHand().getType()) {
                 case CHEST:
                 case SIGN_POST:
                 case TRAPPED_CHEST:
