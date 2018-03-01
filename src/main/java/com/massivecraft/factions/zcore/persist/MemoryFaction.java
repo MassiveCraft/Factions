@@ -4,6 +4,7 @@ import com.massivecraft.factions.*;
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.iface.RelationParticipator;
 import com.massivecraft.factions.integration.Econ;
+import com.massivecraft.factions.struct.BanInfo;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
@@ -50,6 +51,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     protected int maxVaults;
     protected Role defaultRole;
     protected Map<Permissable, Map<PermissableAction, Access>> permissions = new HashMap<>();
+    protected Set<BanInfo> bans = new HashSet<>();
 
     public HashMap<String, List<String>> getAnnouncements() {
         return this.announcements;
@@ -145,6 +147,34 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
     public boolean isInvited(FPlayer fplayer) {
         return this.invites.contains(fplayer.getId());
+    }
+
+    public void ban(FPlayer target, FPlayer banner) {
+        BanInfo info = new BanInfo(banner.getId(), target.getId(), System.currentTimeMillis());
+        this.bans.add(info);
+    }
+
+    public void unban(FPlayer player) {
+        Iterator<BanInfo> iter = bans.iterator();
+        while (iter.hasNext()) {
+            if (iter.next().getBanned().equalsIgnoreCase(player.getId())) {
+                iter.remove();
+            }
+        }
+    }
+
+    public boolean isBanned(FPlayer player) {
+        for (BanInfo info : bans) {
+            if (info.getBanned().equalsIgnoreCase(player.getId())) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public Set<BanInfo> getBannedPlayers() {
+        return this.bans;
     }
 
     public boolean getOpen() {

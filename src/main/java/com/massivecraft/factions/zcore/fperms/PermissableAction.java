@@ -1,6 +1,7 @@
 package com.massivecraft.factions.zcore.fperms;
 
 public enum PermissableAction {
+    BAN("ban"),
     BUILD("build"),
     DESTROY("destroy"),
     FROST_WALK("frostwalk"),

@@ -244,6 +244,7 @@ show:
   - '<a>This faction is permanent, remaining even with no members.' # only shows if faction is permanent
   - '<a>Land value: <i>{land-value} {land-refund}'
   - '<a>Balance: <i>{balance}'
+  - '<a>Bans: <i>{faction-bancount}'
   - '<a>Allies(<i>{allies}<a>/<i>{max-allies}<a>): {allies-list} '
   - '<a>Online: (<i>{online}<a>/<i>{members}<a>): {online-list}'
   - '<a>Offline: (<i>{offline}<a>/<i>{members}<a>): {offline-list}'
@@ -372,6 +373,7 @@ help:
 #  - {world}, {x}, {y}, {z} : Faction home variables. You don't need to use them all.
 #  - {faction-kills} : # of kills the faction has
 #  - {faction-deaths}: # of deaths the faction has
+#  - {faction-bancount} : # of bans the faction has
 # General variables. Can be used anywhere.
 # - {total-online}  : Total # of players on the server
 # - {max-warps}     : Max # of warps a faction can set

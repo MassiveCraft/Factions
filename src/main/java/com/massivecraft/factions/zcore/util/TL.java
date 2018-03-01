@@ -75,6 +75,15 @@ public enum TL {
 
     COMMAND_AUTOHELP_HELPFOR("Help for command \""),
 
+    COMMAND_BAN_DESCRIPTION("Ban players from joining your Faction."),
+    COMMAND_BAN_TARGET("&cYou were banned from &7%1$s"), // banned player perspective
+    COMMAND_BAN_BANNED("&e%1$s &cbanned &7%2$s"),
+
+    COMMAND_BANLIST_DESCRIPTION("View a Faction's ban list"),
+    COMMAND_BANLIST_HEADER("&6There are &c%d&6 bans for %s"),
+    COMMAND_BANLIST_ENTRY("&7%d. &c%s &r- &a%s &r- &e%s"),
+    COMMAND_BANLIST_NOFACTION("&4You are not in a Faction."),
+
     COMMAND_BOOM_PEACEFULONLY("<b>This command is only usable by factions which are specifically designated as peaceful."),
     COMMAND_BOOM_TOTOGGLE("to toggle explosions"),
     COMMAND_BOOM_FORTOGGLE("for toggling explosions"),
@@ -244,6 +253,7 @@ public enum TL {
     COMMAND_INVITE_INVITED("%1$s<i> invited %2$s<i> to your faction."),
     COMMAND_INVITE_ALREADYMEMBER("%1$s<i> is already a member of %2$s"),
     COMMAND_INVITE_DESCRIPTION("Invite a player to your faction"),
+    COMMAND_INVITE_BANNED("&7%1$s &cis banned from your Faction. Not sending an invite."),
 
     COMMAND_JOIN_CANNOTFORCE("<b>You do not have permission to move other players into a faction."),
     COMMAND_JOIN_SYSTEMFACTION("<b>Players may only join normal factions. This is a system faction."),
@@ -261,6 +271,7 @@ public enum TL {
     COMMAND_JOIN_JOINEDLOG("%1$s joined the faction %2$s."),
     COMMAND_JOIN_MOVEDLOG("%1$s moved the player %2$s into the faction %3$s."),
     COMMAND_JOIN_DESCRIPTION("Join a faction"),
+    COMMAND_JOIN_BANNED("&cYou are banned from %1$s &c:("),
 
     COMMAND_KICK_CANDIDATES("Players you can kick: "),
     COMMAND_KICK_CLICKTOKICK("Click to kick "),
@@ -533,6 +544,11 @@ public enum TL {
     COMMAND_TOP_TOP("Top Factions by %s. Page %d/%d"),
     COMMAND_TOP_LINE("%d. &6%s: &c%s"), // Rank. Faction: Value
     COMMAND_TOP_INVALID("Could not sort by %s. Try balance, online, members, power or land."),
+
+    COMMAND_UNBAN_DESCRIPTION("Unban someone from your Faction"),
+    COMMAND_UNBAN_NOTBANNED("&7%s &cisn't banned. Not doing anything."),
+    COMMAND_UNBAN_UNBANNED("&e%1$s &cunbanned &7%2$s"),
+    COMMAND_UNBAN_TARGET("&aYou were unbanned from &r%s"),
 
     COMMAND_UNCLAIM_SAFEZONE_SUCCESS("<i>Safe zone was unclaimed."),
     COMMAND_UNCLAIM_SAFEZONE_NOPERM("<b>This is a safe zone. You lack permissions to unclaim."),

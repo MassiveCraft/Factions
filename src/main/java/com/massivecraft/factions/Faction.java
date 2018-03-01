@@ -2,6 +2,7 @@ package com.massivecraft.factions;
 
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.iface.RelationParticipator;
+import com.massivecraft.factions.struct.BanInfo;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.LazyLocation;
@@ -55,6 +56,14 @@ public interface Faction extends EconomyParticipator {
     public void deinvite(FPlayer fplayer);
 
     public boolean isInvited(FPlayer fplayer);
+
+    public void ban(FPlayer target, FPlayer banner);
+
+    public void unban(FPlayer player);
+
+    public boolean isBanned(FPlayer player);
+
+    public Set<BanInfo> getBannedPlayers();
 
     public boolean getOpen();
 

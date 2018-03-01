@@ -13,6 +13,7 @@ public enum Permission {
     ANNOUNCE("announce"),
     AUTOCLAIM("autoclaim"),
     AUTO_LEAVE_BYPASS("autoleavebypass"),
+    BAN("ban"),
     BYPASS("bypass"),
     CHAT("chat"),
     CHATSPY("chatspy"),

@@ -79,6 +79,12 @@ public class CmdJoin extends FCommand {
             return;
         }
 
+        // Check for ban
+        if (!fme.isAdminBypassing() && faction.isBanned(fme)) {
+            fme.msg(TL.COMMAND_JOIN_BANNED, faction.getTag(fme));
+            return;
+        }
+
         // trigger the join event (cancellable)
         FPlayerJoinEvent joinEvent = new FPlayerJoinEvent(FPlayers.getInstance().getByPlayer(me), faction, FPlayerJoinEvent.PlayerJoinReason.COMMAND);
         Bukkit.getServer().getPluginManager().callEvent(joinEvent);

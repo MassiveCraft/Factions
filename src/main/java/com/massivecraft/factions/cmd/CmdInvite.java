@@ -31,13 +31,13 @@ public class CmdInvite extends FCommand {
 
     @Override
     public void perform() {
-        FPlayer you = this.argAsBestFPlayerMatch(0);
-        if (you == null) {
+        FPlayer target = this.argAsBestFPlayerMatch(0);
+        if (target == null) {
             return;
         }
 
-        if (you.getFaction() == myFaction) {
-            msg(TL.COMMAND_INVITE_ALREADYMEMBER, you.getName(), myFaction.getTag());
+        if (target.getFaction() == myFaction) {
+            msg(TL.COMMAND_INVITE_ALREADYMEMBER, target.getName(), myFaction.getTag());
             msg(TL.GENERIC_YOUMAYWANT.toString() + p.cmdBase.cmdKick.getUseageTemplate(false));
             return;
         }
@@ -47,32 +47,37 @@ public class CmdInvite extends FCommand {
             return;
         }
 
-        Access access = myFaction.getAccess(you, PermissableAction.INVITE);
+        Access access = myFaction.getAccess(target, PermissableAction.INVITE);
         if (access == Access.DENY || (access == Access.UNDEFINED && !assertMinRole(Role.MODERATOR))) {
             fme.msg(TL.GENERIC_NOPERMISSION, "invite");
             return;
         }
 
-        myFaction.invite(you);
-        if (!you.isOnline()) {
+        if (myFaction.isBanned(target)) {
+            fme.msg(TL.COMMAND_INVITE_BANNED, target.getName());
+            return;
+        }
+
+        myFaction.invite(target);
+        if (!target.isOnline()) {
             return;
         }
 
         // Tooltips, colors, and commands only apply to the string immediately before it.
-        FancyMessage message = new FancyMessage(fme.describeTo(you, true))
+        FancyMessage message = new FancyMessage(fme.describeTo(target, true))
                 .tooltip(TL.COMMAND_INVITE_CLICKTOJOIN.toString())
                 .command("/" + Conf.baseCommandAliases.get(0) + " join " + myFaction.getTag())
                 .then(TL.COMMAND_INVITE_INVITEDYOU.toString())
                 .color(ChatColor.YELLOW)
                 .tooltip(TL.COMMAND_INVITE_CLICKTOJOIN.toString())
                 .command("/" + Conf.baseCommandAliases.get(0) + " join " + myFaction.getTag())
-                .then(myFaction.describeTo(you)).tooltip(TL.COMMAND_INVITE_CLICKTOJOIN.toString())
+                .then(myFaction.describeTo(target)).tooltip(TL.COMMAND_INVITE_CLICKTOJOIN.toString())
                 .command("/" + Conf.baseCommandAliases.get(0) + " join " + myFaction.getTag());
 
-        message.send(you.getPlayer());
+        message.send(target.getPlayer());
 
         //you.msg("%s<i> invited you to %s", fme.describeTo(you, true), myFaction.describeTo(you));
-        myFaction.msg(TL.COMMAND_INVITE_INVITED, fme.describeTo(myFaction, true), you.describeTo(myFaction));
+        myFaction.msg(TL.COMMAND_INVITE_INVITED, fme.describeTo(myFaction, true), target.describeTo(myFaction));
     }
 
     @Override
