@@ -113,6 +113,11 @@ public abstract class MemoryFPlayer implements FPlayer {
     }
 
     public Role getRole() {
+        // Hack to fix null roles..
+        if (role == null) {
+            this.role = Role.NORMAL;
+        }
+
         return this.role;
     }
 
@@ -776,7 +781,7 @@ public abstract class MemoryFPlayer implements FPlayer {
         return attemptClaim(forFaction, new FLocation(location), notifyFailure);
     }
 
-        public boolean attemptClaim(Faction forFaction, FLocation flocation, boolean notifyFailure) {
+    public boolean attemptClaim(Faction forFaction, FLocation flocation, boolean notifyFailure) {
         // notifyFailure is false if called by auto-claim; no need to notify on every failure for it
         // return value is false on failure, true on success
 
