@@ -243,7 +243,7 @@ show:
   - '<a>Founded: <i>{create-date}'
   - '<a>This faction is permanent, remaining even with no members.' # only shows if faction is permanent
   - '<a>Land value: <i>{land-value} {land-refund}'
-  - '<a>Balance: <i>{balance}'
+  - '<a>Balance: <i>{faction-balance}'
   - '<a>Bans: <i>{faction-bancount}'
   - '<a>Allies(<i>{allies}<a>/<i>{max-allies}<a>): {allies-list} '
   - '<a>Online: (<i>{online}<a>/<i>{members}<a>): {online-list}'
