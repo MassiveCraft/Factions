@@ -284,10 +284,10 @@ public abstract class MemoryBoard extends Board {
                     Faction factionHere = getFactionAt(flocationHere);
                     Relation relation = fplayer.getRelationTo(factionHere);
                     if (factionHere.isWilderness()) {
-                        row.then("-") .color(ChatColor.GRAY);
+                        row.then("-").color(ChatColor.GRAY);
                         // Check for claimat position and if so, let them claim at ;D
                         if (fplayer.getPlayer().hasPermission(Permission.CLAIMAT.node)) {
-                                row.tooltip(TL.CLAIM_CLICK_TO_CLAIM.format(dx, dz))
+                            row.tooltip(TL.CLAIM_CLICK_TO_CLAIM.format(dx, dz))
                                     .command(String.format("/f claimat %s %d %d", flocation.getWorldName(), dx, dz));
                         }
                     } else if (factionHere.isSafeZone()) {

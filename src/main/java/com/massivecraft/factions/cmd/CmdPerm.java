@@ -11,7 +11,9 @@ import com.massivecraft.factions.zcore.fperms.gui.PermissableActionGUI;
 import com.massivecraft.factions.zcore.fperms.gui.PermissableRelationGUI;
 import com.massivecraft.factions.zcore.util.TL;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 public class CmdPerm extends FCommand {
 

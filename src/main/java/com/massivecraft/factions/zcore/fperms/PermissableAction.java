@@ -10,6 +10,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 
 public enum PermissableAction {
     BAN("ban"),
@@ -72,15 +73,21 @@ public enum PermissableAction {
 
     // Utility method to build items for F Perm GUI
     public ItemStack buildItem(FPlayer fme, Permissable permissable) {
-        final ConfigurationSection ACTION_CONFIG = P.p.getConfig().getConfigurationSection("fperm-gui.action");
+        final ConfigurationSection section = P.p.getConfig().getConfigurationSection("fperm-gui.action");
 
-        String displayName = replacePlaceholers(ACTION_CONFIG.getString("placeholder-item.name"), fme, permissable);
+        if (section == null) {
+            P.p.log(Level.WARNING, "Attempted to build f perm GUI but config section not present.");
+            P.p.log(Level.WARNING, "Copy your config, allow the section to generate, then copy it back to your old config.");
+            return new ItemStack(Material.AIR);
+        }
+
+        String displayName = replacePlaceholers(section.getString("placeholder-item.name"), fme, permissable);
         List<String> lore = new ArrayList<>();
 
-        if (ACTION_CONFIG.getString("materials." + name().toLowerCase().replace('_', '-')) == null) {
+        if (section.getString("materials." + name().toLowerCase().replace('_', '-')) == null) {
             return null;
         }
-        Material material = Material.matchMaterial(ACTION_CONFIG.getString("materials." + name().toLowerCase().replace('_', '-')));
+        Material material = Material.matchMaterial(section.getString("materials." + name().toLowerCase().replace('_', '-')));
         if (material == null) {
             material = Material.STAINED_CLAY;
         }
@@ -91,8 +98,9 @@ public enum PermissableAction {
         }
         DyeColor dyeColor = null;
         try {
-            dyeColor = DyeColor.valueOf(ACTION_CONFIG.getString("access." + access.name().toLowerCase()));
-        } catch (Exception exception) {}
+            dyeColor = DyeColor.valueOf(section.getString("access." + access.name().toLowerCase()));
+        } catch (Exception exception) {
+        }
 
         ItemStack item = new ItemStack(material);
         ItemMeta itemMeta = item.getItemMeta();
@@ -101,7 +109,7 @@ public enum PermissableAction {
             item.setDurability(dyeColor.getWoolData());
         }
 
-        for (String loreLine : ACTION_CONFIG.getStringList("placeholder-item.lore")) {
+        for (String loreLine : section.getStringList("placeholder-item.lore")) {
             lore.add(replacePlaceholers(loreLine, fme, permissable));
         }
 
