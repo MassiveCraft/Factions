@@ -3,6 +3,7 @@ package com.massivecraft.factions.util;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.P;
+import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Creature;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.logging.Level;
 
 public class MiscUtil {
 
@@ -88,6 +90,13 @@ public class MiscUtil {
         List<FPlayer> recruit = new ArrayList<>();
 
         for (FPlayer player : players) {
+
+            // Fix for some data being broken when we added the recruit rank.
+            if (player.getRole() == null) {
+                player.setRole(Role.NORMAL);
+                P.p.log(Level.WARNING, String.format("Player %s had null role. Setting them to normal. This isn't good D:", player.getName()));
+            }
+
             switch (player.getRole()) {
                 case ADMIN:
                     admins.add(player);
