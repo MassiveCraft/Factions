@@ -412,7 +412,7 @@ public abstract class MemoryFPlayer implements FPlayer {
     // These are injected into the format of global chat messages.
 
     public String getChatTag() {
-        return this.hasFaction() ? String.format(Conf.chatTagFormat, this.role.getPrefix() + this.getTag()) : TL.NOFACTION_PREFIX.toString();
+        return this.hasFaction() ? String.format(Conf.chatTagFormat, this.getRole().getPrefix() + this.getTag()) : TL.NOFACTION_PREFIX.toString();
     }
 
     // Colored Chat Tag
