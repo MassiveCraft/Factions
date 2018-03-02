@@ -922,7 +922,7 @@ public abstract class MemoryFPlayer implements FPlayer {
     }
 
     public int getMapHeight() {
-        if (this.mapHeight == 0) {
+        if (this.mapHeight < 1) {
             this.mapHeight = Conf.mapHeight;
         }
 
