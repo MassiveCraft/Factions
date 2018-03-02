@@ -3,14 +3,16 @@ package com.massivecraft.factions.zcore.fperms;
 import org.bukkit.ChatColor;
 
 public enum Access {
-    ALLOW("&aALLOW"),
-    DENY("&4DENY"),
-    UNDEFINED("&7UND");
+    ALLOW("Allow", ChatColor.GREEN),
+    DENY("Deny", ChatColor.DARK_RED),
+    UNDEFINED("Undefined", ChatColor.GRAY);
 
     private String name;
+    private ChatColor color;
 
-    Access(String name) {
+    Access(String name, ChatColor color) {
         this.name = name;
+        this.color = color;
     }
 
     /**
@@ -30,12 +32,16 @@ public enum Access {
     }
 
     public String getName() {
-        return ChatColor.translateAlternateColorCodes('&', this.name);
+        return this.name;
     }
 
+    public ChatColor getColor() {
+        return color;
+    }
 
     @Override
     public String toString() {
         return name();
     }
+
 }
