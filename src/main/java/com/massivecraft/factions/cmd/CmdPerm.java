@@ -40,10 +40,16 @@ public class CmdPerm extends FCommand {
     @Override
     public void perform() {
         if (args.size() == 0) {
-            me.openInventory(new PermissableRelationGUI(fme).getInventory());
+            PermissableRelationGUI gui = new PermissableRelationGUI(fme);
+            gui.build();
+
+            me.openInventory(gui.getInventory());
             return;
         } else if (args.size() == 1 && getPermissable(argAsString(0)) != null) {
-            me.openInventory(new PermissableActionGUI(fme, getPermissable(argAsString(0))).getInventory());
+            PermissableActionGUI gui = new PermissableActionGUI(fme, getPermissable(argAsString(0)));
+            gui.build();
+
+            me.openInventory(gui.getInventory());
             return;
         }
 

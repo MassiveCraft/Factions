@@ -31,24 +31,34 @@ public class PermissableRelationGUI implements InventoryHolder, PermissionGUI {
 
     private HashMap<Integer, Permissable> relationSlots = new HashMap<>();
 
-    private final ConfigurationSection RELATION_CONFIG = P.p.getConfig().getConfigurationSection("fperm-gui.relation");
+    private final ConfigurationSection section;
 
 
     public PermissableRelationGUI(FPlayer fme) {
         this.fme = fme;
+        this.section = P.p.getConfig().getConfigurationSection("fperm-gui.relation");
+    }
+
+    public void build() {
+        if (section == null) {
+            P.p.log(Level.WARNING, "Attempted to build f perm GUI but config section not present.");
+            P.p.log(Level.WARNING, "Copy your config, allow the section to generate, then copy it back to your old config.");
+            return;
+        }
 
         // Build basic Inventory info
-        guiSize = RELATION_CONFIG.getInt("rows", 3);
+        guiSize = section.getInt("rows", 3);
         if (guiSize > 5) {
             guiSize = 5;
             P.p.log(Level.INFO, "Relation GUI size out of bounds, defaulting to 5");
         }
+
         guiSize *= 9;
-        String guiName = ChatColor.translateAlternateColorCodes('&', RELATION_CONFIG.getString("name", "FactionPermissions"));
+        String guiName = ChatColor.translateAlternateColorCodes('&', section.getString("name", "FactionPermissions"));
         relationGUI = Bukkit.createInventory(this, guiSize, guiName);
 
-        for (String key : RELATION_CONFIG.getConfigurationSection("slots").getKeys(false)) {
-            int slot = RELATION_CONFIG.getInt("slots." + key);
+        for (String key : section.getConfigurationSection("slots").getKeys(false)) {
+            int slot = section.getInt("slots." + key);
             if (slot + 1 > guiSize && slot > 0) {
                 P.p.log(Level.WARNING, "Invalid slot of " + key.toUpperCase() + " in relation GUI skipping it");
                 continue;
@@ -109,7 +119,13 @@ public class PermissableRelationGUI implements InventoryHolder, PermissionGUI {
     }
 
     private void buildDummyItems() {
-        for (String key : RELATION_CONFIG.getConfigurationSection("dummy-items").getKeys(false)) {
+        if (section == null) {
+            P.p.log(Level.WARNING, "Attempted to build f perm GUI but config section not present.");
+            P.p.log(Level.WARNING, "Copy your config, allow the section to generate, then copy it back to your old config.");
+            return;
+        }
+
+        for (String key : section.getConfigurationSection("dummy-items").getKeys(false)) {
             int dummyId;
             try {
                 dummyId = Integer.parseInt(key);
@@ -123,7 +139,7 @@ public class PermissableRelationGUI implements InventoryHolder, PermissionGUI {
                 continue;
             }
 
-            List<Integer> dummySlots = RELATION_CONFIG.getIntegerList("dummy-items." + key);
+            List<Integer> dummySlots = section.getIntegerList("dummy-items." + key);
             for (Integer slot : dummySlots) {
                 if (slot + 1 > guiSize || slot < 0) {
                     P.p.log(Level.WARNING, "Invalid slot: " + slot + " for dummy item: " + key);
@@ -135,9 +151,15 @@ public class PermissableRelationGUI implements InventoryHolder, PermissionGUI {
     }
 
     private ItemStack buildDummyItem(int id) {
-        final ConfigurationSection DUMMY_CONFIG = P.p.getConfig().getConfigurationSection("fperm-gui.dummy-items." + id);
+        final ConfigurationSection dummySection = P.p.getConfig().getConfigurationSection("fperm-gui.dummy-items." + id);
 
-        Material material = Material.matchMaterial(DUMMY_CONFIG.getString("material", ""));
+        if (dummySection == null) {
+            P.p.log(Level.WARNING, "Attempted to build f perm GUI but config section not present.");
+            P.p.log(Level.WARNING, "Copy your config, allow the section to generate, then copy it back to your old config.");
+            return new ItemStack(Material.AIR);
+        }
+
+        Material material = Material.matchMaterial(dummySection.getString("material", ""));
         if (material == null) {
             P.p.log(Level.WARNING, "Invalid material for dummy item: " + id);
             return null;
@@ -147,7 +169,7 @@ public class PermissableRelationGUI implements InventoryHolder, PermissionGUI {
 
         DyeColor color;
         try {
-            color = DyeColor.valueOf(DUMMY_CONFIG.getString("color", ""));
+            color = DyeColor.valueOf(dummySection.getString("color", ""));
         } catch (Exception exception) {
             color = null;
         }
@@ -157,10 +179,10 @@ public class PermissableRelationGUI implements InventoryHolder, PermissionGUI {
 
         ItemMeta itemMeta = itemStack.getItemMeta();
 
-        itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', DUMMY_CONFIG.getString("name", " ")));
+        itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', dummySection.getString("name", " ")));
 
         List<String> lore = new ArrayList<>();
-        for (String loreLine : DUMMY_CONFIG.getStringList("lore")) {
+        for (String loreLine : dummySection.getStringList("lore")) {
             lore.add(ChatColor.translateAlternateColorCodes('&', loreLine));
         }
         itemMeta.setLore(lore);

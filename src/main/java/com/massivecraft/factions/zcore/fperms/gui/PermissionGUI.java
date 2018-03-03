@@ -6,6 +6,8 @@ public interface PermissionGUI {
 
     public void onClick(int slot, ClickType action);
 
+    public void build();
+
     public enum SpecialItem {
         BACK,
         RELATION;
