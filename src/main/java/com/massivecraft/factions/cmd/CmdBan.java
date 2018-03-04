@@ -6,6 +6,7 @@ import com.massivecraft.factions.event.FPlayerLeaveEvent;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.fperms.Access;
+import com.massivecraft.factions.zcore.fperms.Permissable;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
@@ -37,10 +38,10 @@ public class CmdBan extends FCommand {
             return;
         }
 
-        // Can the player set the home for this faction?
+        // Can the player ban for this faction?
         // Check for ALLOW access as well before we check for role.
         if (access != Access.ALLOW) {
-            if (!Permission.BAN.has(sender) && !(assertMinRole(Role.MODERATOR))) {
+            if (!Permission.BAN.has(sender, true) || !assertMinRole(Role.MODERATOR)) {
                 return;
             }
         } else {
@@ -53,6 +54,16 @@ public class CmdBan extends FCommand {
         FPlayer target = argAsFPlayer(0);
         if (target == null) {
             return; // the above method sends a message if fails to find someone.
+        }
+
+        if (fme == target) {
+            // You may not ban yourself
+            fme.msg(TL.COMMAND_BAN_SELF);
+            return;
+        } else if (target.getFaction() == myFaction && target.getRole().value >= fme.getRole().value) {
+            // You may not ban someone that has same or higher faction rank
+            fme.msg(TL.COMMAND_BAN_INSUFFICIENTRANK, target.getName());
+            return;
         }
 
         // Ban the user.
