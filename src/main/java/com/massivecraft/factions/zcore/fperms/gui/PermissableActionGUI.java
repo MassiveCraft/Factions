@@ -114,7 +114,10 @@ public class PermissableActionGUI implements InventoryHolder, PermissionGUI {
     public void onClick(int slot, ClickType click) {
         if (specialSlots.containsKey(slot)) {
             if (specialSlots.get(slot) == SpecialItem.BACK) {
-                fme.getPlayer().openInventory(new PermissableRelationGUI(fme).getInventory());
+                PermissableRelationGUI relationGUI = new PermissableRelationGUI(fme);
+                relationGUI.build();
+
+                fme.getPlayer().openInventory(relationGUI.getInventory());
             }
             return;
         }

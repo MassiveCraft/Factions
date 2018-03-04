@@ -87,7 +87,10 @@ public class PermissableRelationGUI implements InventoryHolder, PermissionGUI {
             return;
         }
 
-        fme.getPlayer().openInventory(new PermissableActionGUI(fme, relationSlots.get(slot)).getInventory());
+        PermissableActionGUI actionGUI = new PermissableActionGUI(fme, relationSlots.get(slot));
+        actionGUI.build();
+
+        fme.getPlayer().openInventory(actionGUI.getInventory());
     }
 
     private Permissable getPermissable(String name) {
