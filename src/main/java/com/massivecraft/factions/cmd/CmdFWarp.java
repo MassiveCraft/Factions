@@ -6,6 +6,7 @@ import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.LazyLocation;
 import com.massivecraft.factions.util.WarmUpUtil;
+import com.massivecraft.factions.util.WarpGUI;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
@@ -44,12 +45,10 @@ public class CmdFWarp extends FCommand {
         }
 
         if (args.size() == 0) {
-            FancyMessage msg = new FancyMessage(TL.COMMAND_FWARP_WARPS.toString()).color(ChatColor.GOLD);
-            Map<String, LazyLocation> warps = myFaction.getWarps();
-            for (String s : warps.keySet()) {
-                msg.then(s + " ").tooltip(TL.COMMAND_FWARP_CLICKTOWARP.toString()).command("/" + Conf.baseCommandAliases.get(0) + " warp " + s).color(ChatColor.WHITE);
-            }
-            sendFancyMessage(msg);
+            WarpGUI warpGUI = new WarpGUI(fme);
+            warpGUI.build();
+
+            me.openInventory(warpGUI.getInventory());
         } else if (args.size() > 2) {
             fme.msg(TL.COMMAND_FWARP_COMMANDFORMAT);
         } else {

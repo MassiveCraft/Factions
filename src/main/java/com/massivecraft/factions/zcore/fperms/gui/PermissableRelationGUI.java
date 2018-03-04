@@ -4,6 +4,7 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.util.FactionGUI;
 import com.massivecraft.factions.zcore.fperms.Permissable;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -22,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 
-public class PermissableRelationGUI implements InventoryHolder, PermissionGUI {
+public class PermissableRelationGUI implements InventoryHolder, FactionGUI {
 
     private Inventory relationGUI;
     private FPlayer fme;

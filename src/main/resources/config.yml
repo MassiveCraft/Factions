@@ -518,6 +518,63 @@ fperm-gui:
       name: ' '
       lore:
       -
+############################################################
+# +------------------------------------------------------+ #
+# |                  Faction Warp GUI                    | #
+# +------------------------------------------------------+ #
+############################################################
+
+fwarp-gui:
+  name: "Faction Warps"
+  rows: 3
+  warp-slots:
+    - 11
+    - 12
+    - 13
+    - 14
+    - 15
+  dummy-slots:
+    '0':
+    - 0
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    - 6
+    - 7
+    - 8
+    - 9
+    - 10
+    - 16
+    - 17
+    - 18
+    - 19
+    - 20
+    - 21
+    - 22
+    - 23
+    - 24
+    - 25
+    - 26
+  warp-item:
+    material: STONE
+    name: "&8[&5&l{warp}&8]"
+    # {warp-protected} Warp protection by password, Enabled & Disabled
+    # {warp-cost} Warp cost
+    lore:
+     - "&8Password: &l{warp-protected}"
+     - "&8Cost: &l{warp-cost}"
+  # Dummy Items
+  dummy-items:
+    # Dummy Item id, used to set the slots above
+    '0':
+      material: STAINED_GLASS_PANE
+      # Color will only work on colorable materials
+      color: BLACK
+      name: ' '
+      lore:
+      -
 
 ############################################################
 # +------------------------------------------------------+ #

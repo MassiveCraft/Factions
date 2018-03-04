@@ -2,6 +2,7 @@ package com.massivecraft.factions.zcore.fperms.gui;
 
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.P;
+import com.massivecraft.factions.util.FactionGUI;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.Permissable;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
@@ -20,7 +21,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.*;
 import java.util.logging.Level;
 
-public class PermissableActionGUI implements InventoryHolder, PermissionGUI {
+public class PermissableActionGUI implements InventoryHolder, FactionGUI {
 
     private Inventory actionGUI;
     private FPlayer fme;
@@ -270,6 +271,24 @@ public class PermissableActionGUI implements InventoryHolder, PermissionGUI {
         itemStack.setItemMeta(itemMeta);
 
         return itemStack;
+    }
+
+    public enum SpecialItem {
+        BACK,
+        RELATION;
+
+        static boolean isSpecial(String string) {
+            return fromString(string) != null;
+        }
+
+        static SpecialItem fromString(String string) {
+            for (SpecialItem specialItem : SpecialItem.values()) {
+                if (string.equalsIgnoreCase(specialItem.name())) {
+                    return specialItem;
+                }
+            }
+            return null;
+        }
     }
 
 }

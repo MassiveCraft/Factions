@@ -196,6 +196,7 @@ public enum TL {
     COMMAND_FWARP_WARPS("Warps: "),
     COMMAND_FWARP_DESCRIPTION("Teleport to a faction warp"),
     COMMAND_FWARP_INVALID_PASSWORD("&4Invalid password!"),
+    COMMAND_FWARP_PASSWORD_REQUIRED("&cThis faction warp requires a password, use command instead"),
 
     COMMAND_HELP_404("<b>This page does not exist"),
     COMMAND_HELP_NEXTCREATE("<i>Learn how to create a faction on the next page."),

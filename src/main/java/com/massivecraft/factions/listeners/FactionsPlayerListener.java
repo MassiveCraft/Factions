@@ -12,7 +12,7 @@ import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.VisualizeUtil;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
-import com.massivecraft.factions.zcore.fperms.gui.PermissionGUI;
+import com.massivecraft.factions.util.FactionGUI;
 import com.massivecraft.factions.zcore.persist.MemoryFPlayer;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TextUtil;
@@ -609,15 +609,15 @@ public class FactionsPlayerListener implements Listener {
         if (event.getClickedInventory() == null) {
             return;
         }
-        if (event.getClickedInventory().getHolder() instanceof PermissionGUI) {
+        if (event.getClickedInventory().getHolder() instanceof FactionGUI) {
             event.setCancelled(true);
-            ((PermissionGUI) event.getClickedInventory().getHolder()).onClick(event.getRawSlot(), event.getClick());
+            ((FactionGUI) event.getClickedInventory().getHolder()).onClick(event.getRawSlot(), event.getClick());
         }
     }
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerMoveGUI(InventoryDragEvent event) {
-        if (event.getInventory().getHolder() instanceof PermissionGUI) {
+        if (event.getInventory().getHolder() instanceof FactionGUI) {
             event.setCancelled(true);
         }
     }
