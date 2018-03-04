@@ -98,6 +98,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
 
     public boolean removeWarp(String name) {
+        warpPasswords.remove(name); // remove password no matter what.
         return warps.remove(name) != null;
     }
 
