@@ -22,7 +22,6 @@ public enum Role implements Permissable {
     public final int value;
     public final String nicename;
     public final TL translation;
-    private final ConfigurationSection RELATION_CONFIG = P.p.getConfig().getConfigurationSection("fperm-gui.relation");
 
 
     Role(final int value, final TL translation) {

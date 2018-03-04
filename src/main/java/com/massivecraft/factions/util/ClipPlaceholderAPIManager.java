@@ -45,6 +45,8 @@ public class ClipPlaceholderAPIManager extends EZPlaceholderHook {
                 return String.valueOf(fPlayer.getKills());
             case "player_deaths":
                 return String.valueOf(fPlayer.getDeaths());
+            case "player_role":
+                return fPlayer.hasFaction() ? fPlayer.getRole().getPrefix() : "";
             // Then Faction stuff
             case "faction_name":
                 return faction.getTag();
