@@ -102,6 +102,7 @@ permissions:
       factions.vault: true
       factions.mapheight: true
       factions.ban: true
+      factions.fly: true
   factions.admin:
     description: hand over your admin rights
   factions.admin.any:
