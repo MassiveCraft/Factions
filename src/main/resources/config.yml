@@ -58,6 +58,10 @@ warp-cost:
   delwarp: 5
   warp: 5
 
+# Faction Fly
+# Enable Faction Fly:
+enable-faction-flight: true
+
 # Pistons
 # Should we disable pistons in Faction territory? This will prevent people from doing something like:
 # http://i.gyazo.com/6a1a31222e58a5d60ff341c13f6a8404.gif
@@ -160,6 +164,8 @@ warmups:
   f-home: 0
   # Delay for /f warp
   f-warp: 0
+  # Delay for /f fly
+  f-fly: 0
 
 ######################################################
 #################### HCF Features ####################

@@ -283,3 +283,5 @@ permissions:
     description: Set your /f map height.
   factions.ban:
     description: Ban players from Factions
+  factions.flight:
+    description: Allow use of /f fly

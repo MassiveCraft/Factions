@@ -102,9 +102,11 @@ public class FactionsEntityListener implements Listener {
 
             if (damagee != null && damagee instanceof Player) {
                 cancelFStuckTeleport((Player) damagee);
+                cancelFFly((Player) damagee);
             }
             if (damager instanceof Player) {
                 cancelFStuckTeleport((Player) damager);
+                cancelFFly((Player) damager);
             }
         } else if (Conf.safeZonePreventAllDamageToPlayers && isPlayerInSafeZone(event.getEntity())) {
             // Players can not take any damage in a Safe Zone
@@ -121,6 +123,17 @@ public class FactionsEntityListener implements Listener {
                 me.clearWarmup();
                 me.msg(TL.WARMUPS_CANCELLED);
             }
+        }
+    }
+
+    private void cancelFFly(Player player) {
+        if (player == null) {
+            return;
+        }
+
+        FPlayer fPlayer = FPlayers.getInstance().getByPlayer(player);
+        if (fPlayer.isFlying()) {
+            fPlayer.setFFlying(false, true);
         }
     }
 

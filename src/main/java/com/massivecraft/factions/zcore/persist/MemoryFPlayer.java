@@ -16,6 +16,8 @@ import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.RelationUtil;
 import com.massivecraft.factions.util.WarmUpUtil;
+import com.massivecraft.factions.zcore.fperms.Access;
+import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
 import mkremins.fanciful.FancyMessage;
 import org.bukkit.*;
@@ -61,6 +63,7 @@ public abstract class MemoryFPlayer implements FPlayer {
     protected int kills, deaths;
     protected boolean willAutoLeave = true;
     protected int mapHeight = 8; // default to old value
+    protected boolean isFlying = false;
 
     protected transient FLocation lastStoodAt = new FLocation(); // Where did this player stand the last time we checked?
     protected transient boolean mapAutoUpdating;
@@ -877,6 +880,43 @@ public abstract class MemoryFPlayer implements FPlayer {
 
     public boolean isOffline() {
         return !isOnline();
+    }
+
+    public boolean isFlying() {
+        return isFlying;
+    }
+
+    public void setFlying(boolean fly) {
+        setFFlying(fly, false);
+    }
+
+    public void setFFlying(boolean fly, boolean damage) {
+        getPlayer().setAllowFlight(fly);
+        getPlayer().setFlying(fly);
+
+        if (!damage) {
+            msg(TL.COMMAND_FLY_CHANGE, fly ? "enabled" : "disabled");
+        } else {
+            msg(TL.COMMAND_FLY_DAMAGE);
+        }
+        isFlying = fly;
+    }
+
+    public boolean canFlyAtLocation() {
+        return canFlyAtLocation(lastStoodAt);
+    }
+
+    public boolean canFlyAtLocation(FLocation location) {
+        Faction faction = Board.getInstance().getFactionAt(location);
+        if (faction.isWilderness() || faction.isSafeZone() || faction.isWarZone()) {
+            return false;
+        }
+        if (faction == getFaction() && getRole() == Role.ADMIN) {
+            return true;
+        }
+
+        Access access = faction.getAccess(this, PermissableAction.FLIGHT);
+        return access != null && access == Access.ALLOW;
     }
 
     // -------------------------------------------- //
