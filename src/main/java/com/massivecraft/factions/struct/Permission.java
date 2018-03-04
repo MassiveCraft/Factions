@@ -28,6 +28,7 @@ public enum Permission {
     DESCRIPTION("description"),
     DISBAND("disband"),
     DISBAND_ANY("disband.any"),
+    FLY("fly"),
     HELP("help"),
     HOME("home"),
     INVITE("invite"),
@@ -87,8 +88,7 @@ public enum Permission {
     TOP("top"),
     VAULT("vault"),
     SETMAXVAULTS("setmaxvaults"),
-    WARP("warp"),
-    FLIGHT("flight");
+    WARP("warp");
 
     public final String node;
 
