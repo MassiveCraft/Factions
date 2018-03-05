@@ -144,6 +144,10 @@ public class PermissableRelationGUI implements InventoryHolder, FactionGUI {
                 continue;
             }
 
+            ItemMeta meta = dummyItem.getItemMeta();
+            meta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
+            dummyItem.setItemMeta(meta);
+
             List<Integer> dummySlots = section.getIntegerList("dummy-items." + key);
             for (Integer slot : dummySlots) {
                 if (slot + 1 > guiSize || slot < 0) {

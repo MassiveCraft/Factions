@@ -5,6 +5,7 @@ import com.massivecraft.factions.P;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -34,8 +35,7 @@ public enum PermissableAction {
     PERMS("perms"),
     SETWARP("setwarp"),
     WARP("warp"),
-    FLIGHT("fly"),
-    ;
+    FLIGHT("fly"),;
 
     private String name;
 
@@ -115,6 +115,7 @@ public enum PermissableAction {
             lore.add(replacePlaceholers(loreLine, fme, permissable));
         }
 
+        itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
         itemMeta.setDisplayName(displayName);
         itemMeta.setLore(lore);
         item.setItemMeta(itemMeta);

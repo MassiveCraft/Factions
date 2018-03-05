@@ -189,7 +189,9 @@ public class PermissableActionGUI implements InventoryHolder, FactionGUI {
                 for (String loreLine : backButtonConfig.getStringList("lore")) {
                     lore.add(ChatColor.translateAlternateColorCodes('&', loreLine));
                 }
+
                 backButtonMeta.setLore(lore);
+                backButtonMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
 
                 backButton.setItemMeta(backButtonMeta);
 
@@ -219,6 +221,10 @@ public class PermissableActionGUI implements InventoryHolder, FactionGUI {
             if (dummyItem == null) {
                 continue;
             }
+
+            ItemMeta meta = dummyItem.getItemMeta();
+            meta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
+            dummyItem.setItemMeta(meta);
 
             List<Integer> dummySlots = section.getIntegerList("dummy-items." + key);
             for (Integer slot : dummySlots) {
@@ -267,8 +273,8 @@ public class PermissableActionGUI implements InventoryHolder, FactionGUI {
         for (String loreLine : dummySection.getStringList("lore")) {
             lore.add(ChatColor.translateAlternateColorCodes('&', loreLine));
         }
-        itemMeta.setLore(lore);
 
+        itemMeta.setLore(lore);
         itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
 
         itemStack.setItemMeta(itemMeta);
