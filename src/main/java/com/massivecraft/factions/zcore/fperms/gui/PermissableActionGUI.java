@@ -15,6 +15,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -267,6 +268,8 @@ public class PermissableActionGUI implements InventoryHolder, FactionGUI {
             lore.add(ChatColor.translateAlternateColorCodes('&', loreLine));
         }
         itemMeta.setLore(lore);
+
+        itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
 
         itemStack.setItemMeta(itemMeta);
 
