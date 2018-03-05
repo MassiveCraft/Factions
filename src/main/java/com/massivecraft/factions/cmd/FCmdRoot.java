@@ -3,8 +3,10 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.zcore.util.TL;
+import org.bukkit.Bukkit;
 
 import java.util.Collections;
+import java.util.logging.Level;
 
 public class FCmdRoot extends FCommand {
 
@@ -163,7 +165,6 @@ public class FCmdRoot extends FCommand {
         this.addSubCommand(this.cmdModifyPower);
         this.addSubCommand(this.cmdLogins);
         this.addSubCommand(this.cmdClaimLine);
-        this.addSubCommand(this.cmdTop);
         this.addSubCommand(this.cmdAHome);
         this.addSubCommand(this.cmdPerm);
         this.addSubCommand(this.cmdPromote);
@@ -174,6 +175,11 @@ public class FCmdRoot extends FCommand {
         this.addSubCommand(this.cmdban);
         this.addSubCommand(this.cmdUnban);
         this.addSubCommand(this.cmdbanlist);
+        if (Bukkit.getServer().getPluginManager().isPluginEnabled("FactionsTop")) {
+            P.p.log(Level.INFO, "Found FactionsTop plugin. Disabling our own /f top command.");
+        } else {
+            this.addSubCommand(this.cmdTop);
+        }
         if (P.p.isHookedPlayervaults()) {
             P.p.log("Found playervaults hook, adding /f vault and /f setmaxvault commands.");
             this.addSubCommand(new CmdSetMaxVaults());
