@@ -225,7 +225,12 @@ public enum TagReplacer {
             case TRUCES_COUNT:
                 return String.valueOf(fac.getRelationCount(Relation.TRUCE));
             case ONLINE_COUNT:
-                return String.valueOf(fac.getOnlinePlayers().size());
+                if (fp != null && fp.isOnline()) {
+                    return String.valueOf(fac.getFPlayersWhereOnline(true, fp).size());
+                } else {
+                    // Only console should ever get here.
+                    return String.valueOf(fac.getFPlayers().size());
+                }
             case OFFLINE_COUNT:
                 return String.valueOf(fac.getFPlayers().size() - fac.getOnlinePlayers().size());
             case FACTION_SIZE:

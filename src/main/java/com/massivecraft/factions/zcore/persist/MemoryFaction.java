@@ -696,6 +696,33 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         return ret;
     }
 
+    public Set<FPlayer> getFPlayersWhereOnline(boolean online, FPlayer viewer) {
+        Set<FPlayer> ret = new HashSet<>();
+        if (!this.isNormal()) {
+            return ret;
+        }
+
+        for (FPlayer viewed : fplayers) {
+            // Add if their online status is what we want
+            if (viewed.isOnline() == online) {
+                // If we want online, check to see if we are able to see this player
+                // This checks if they are in vanish.
+                if (online
+                        && viewed.getPlayer() != null
+                        && viewer.getPlayer() != null
+                        && viewer.getPlayer().canSee(viewed.getPlayer())) {
+                    ret.add(viewed);
+                    // If we want offline, just add them.
+                    // Prob a better way to do this but idk.
+                } else if (!online) {
+                    ret.add(viewed);
+                }
+            }
+        }
+
+        return ret;
+    }
+
     public FPlayer getFPlayerAdmin() {
         if (!this.isNormal()) {
             return null;

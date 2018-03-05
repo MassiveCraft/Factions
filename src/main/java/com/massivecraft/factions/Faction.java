@@ -217,6 +217,8 @@ public interface Faction extends EconomyParticipator {
 
     public Set<FPlayer> getFPlayersWhereOnline(boolean online);
 
+    public Set<FPlayer> getFPlayersWhereOnline(boolean online, FPlayer viewer);
+
     public FPlayer getFPlayerAdmin();
 
     public ArrayList<FPlayer> getFPlayersWhereRole(Role role);

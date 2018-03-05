@@ -199,7 +199,7 @@ public class TagUtil {
             case ONLINE_LIST:
                 FancyMessage currentOnline = P.p.txt.parseFancy(prefix);
                 boolean firstOnline = true;
-                for (FPlayer p : MiscUtil.rankOrder(target.getFPlayersWhereOnline(true))) {
+                for (FPlayer p : MiscUtil.rankOrder(target.getFPlayersWhereOnline(true, fme))) {
                     if (fme.getPlayer() != null && !fme.getPlayer().canSee(p.getPlayer())) {
                         continue; // skip
                     }
