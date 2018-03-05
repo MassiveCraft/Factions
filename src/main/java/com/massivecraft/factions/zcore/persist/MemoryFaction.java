@@ -397,10 +397,6 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         return Access.UNDEFINED;
     }
 
-    public Map<Permissable, Map<PermissableAction, Access>> getAccessMap() {
-        return Collections.unmodifiableMap(permissions);
-    }
-
     public void setPermission(Permissable permissable, PermissableAction permissableAction, Access access) {
         Map<PermissableAction, Access> accessMap = permissions.get(permissable);
         if (accessMap == null) {
@@ -423,13 +419,13 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
         // Put the map in there for each relation.
         for (Relation relation : Relation.values()) {
-            permissions.put(relation, freshMap);
+            permissions.put(relation, new HashMap<>(freshMap));
         }
 
         // And each role.
         for (Role role : Role.values()) {
             if (role != Role.ADMIN) {
-                permissions.put(role, freshMap);
+                permissions.put(role, new HashMap<>(freshMap));
             }
         }
     }
