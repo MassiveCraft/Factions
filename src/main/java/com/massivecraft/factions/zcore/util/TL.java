@@ -106,6 +106,7 @@ public enum TL {
     COMMAND_CHAT_MODE_ALLIANCE("<i>Alliance only chat mode."),
     COMMAND_CHAT_MODE_TRUCE("<i>Truce only chat mode."),
     COMMAND_CHAT_MODE_FACTION("<i>Faction only chat mode."),
+    COMMAND_CHAT_MODE_MOD("<i>Mod only chat mode."),
 
     COMMAND_CHATSPY_ENABLE("<i>You have enabled chat spying mode."),
     COMMAND_CHATSPY_ENABLELOG(" has ENABLED chat spying mode."),
@@ -674,6 +675,7 @@ public enum TL {
     /**
      * Chat modes
      */
+    CHAT_MOD("mod chat"),
     CHAT_FACTION("faction chat"),
     CHAT_ALLIANCE("alliance chat"),
     CHAT_TRUCE("truce chat"),

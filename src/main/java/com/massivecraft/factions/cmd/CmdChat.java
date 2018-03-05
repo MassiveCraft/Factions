@@ -36,7 +36,9 @@ public class CmdChat extends FCommand {
 
         if (modeString != null) {
             modeString = modeString.toLowerCase();
-            if (modeString.startsWith("p")) {
+            if (modeString.startsWith("m")) {
+                modeTarget = ChatMode.MOD;
+            } else if (modeString.startsWith("p")) {
                 modeTarget = ChatMode.PUBLIC;
             } else if (modeString.startsWith("a")) {
                 modeTarget = ChatMode.ALLIANCE;
@@ -52,7 +54,9 @@ public class CmdChat extends FCommand {
 
         fme.setChatMode(modeTarget);
 
-        if (fme.getChatMode() == ChatMode.PUBLIC) {
+        if (fme.getChatMode() == ChatMode.MOD) {
+            msg(TL.COMMAND_CHAT_MODE_MOD);
+        } else if (fme.getChatMode() == ChatMode.PUBLIC) {
             msg(TL.COMMAND_CHAT_MODE_PUBLIC);
         } else if (fme.getChatMode() == ChatMode.ALLIANCE) {
             msg(TL.COMMAND_CHAT_MODE_ALLIANCE);

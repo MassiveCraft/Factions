@@ -74,6 +74,7 @@ public class Conf {
     public static String factionChatFormat = "%s:" + ChatColor.WHITE + " %s";
     public static String allianceChatFormat = ChatColor.LIGHT_PURPLE + "%s:" + ChatColor.WHITE + " %s";
     public static String truceChatFormat = ChatColor.DARK_PURPLE + "%s:" + ChatColor.WHITE + " %s";
+    public static String modChatFormat = ChatColor.RED + "%s:" + ChatColor.WHITE + " %s";
 
     public static boolean broadcastDescriptionChanges = false;
     public static boolean broadcastTagChanges = false;
