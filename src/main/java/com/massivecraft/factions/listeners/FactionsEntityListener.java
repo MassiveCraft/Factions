@@ -111,6 +111,12 @@ public class FactionsEntityListener implements Listener {
         } else if (Conf.safeZonePreventAllDamageToPlayers && isPlayerInSafeZone(event.getEntity())) {
             // Players can not take any damage in a Safe Zone
             event.setCancelled(true);
+        } else if (event.getCause() == EntityDamageEvent.DamageCause.FALL && event.getEntity() instanceof Player) {
+            Player player = (Player) event.getEntity();
+            FPlayer fPlayer = FPlayers.getInstance().getByPlayer(player);
+            if (fPlayer != null && !fPlayer.shouldTakeFallDamage()) {
+                event.setCancelled(true); // Falling after /f fly
+            }
         }
 
         // entity took generic damage?

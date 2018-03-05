@@ -72,6 +72,7 @@ public abstract class MemoryFPlayer implements FPlayer {
     protected transient boolean autoWarZoneEnabled;
     protected transient boolean loginPvpDisabled;
     protected transient long lastFrostwalkerMessage;
+    protected transient boolean shouldTakeFallDamage = true;
 
     public void login() {
         this.kills = getPlayer().getStatistic(Statistic.PLAYER_KILLS);
@@ -891,14 +892,36 @@ public abstract class MemoryFPlayer implements FPlayer {
     }
 
     public void setFFlying(boolean fly, boolean damage) {
-        getPlayer().setAllowFlight(fly);
-        getPlayer().setFlying(fly);
+        Player player = getPlayer();
+        if (player != null) {
+            player.setAllowFlight(fly);
+            player.setFlying(fly);
+        }
 
         if (!damage) {
             msg(TL.COMMAND_FLY_CHANGE, fly ? "enabled" : "disabled");
         } else {
             msg(TL.COMMAND_FLY_DAMAGE);
         }
+
+        // If leaving fly mode, don't let them take fall damage for x seconds.
+        if (!fly) {
+            int cooldown = P.p.getConfig().getInt("fly-falldamage-cooldown", 3);
+
+            // If the value is 0 or lower, make them take fall damage.
+            // Otherwise, start a timer and have this cancel after a few seconds.
+            // Short task so we're just doing it in method. Not clean but eh.
+            if (cooldown > 0) {
+                this.shouldTakeFallDamage = false;
+                Bukkit.getScheduler().runTaskLater(P.p, new Runnable() {
+                    @Override
+                    public void run() {
+                        shouldTakeFallDamage = true;
+                    }
+                }, 20L * cooldown);
+            }
+        }
+
         isFlying = fly;
     }
 
@@ -917,6 +940,14 @@ public abstract class MemoryFPlayer implements FPlayer {
 
         Access access = faction.getAccess(this, PermissableAction.FLIGHT);
         return access != null && access == Access.ALLOW;
+    }
+
+    public boolean shouldTakeFallDamage() {
+        return this.shouldTakeFallDamage;
+    }
+
+    public void setTakeFallDamage(boolean fallDamage) {
+        this.shouldTakeFallDamage = fallDamage;
     }
 
     // -------------------------------------------- //

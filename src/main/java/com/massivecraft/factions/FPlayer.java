@@ -55,6 +55,10 @@ public interface FPlayer extends EconomyParticipator {
 
     public void setRole(Role role);
 
+    public boolean shouldTakeFallDamage();
+
+    public void setTakeFallDamage(boolean fallDamage);
+
     public double getPowerBoost();
 
     public void setPowerBoost(double powerBoost);
