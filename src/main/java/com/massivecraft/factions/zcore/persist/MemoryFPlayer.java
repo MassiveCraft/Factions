@@ -938,7 +938,7 @@ public abstract class MemoryFPlayer implements FPlayer {
             return true;
         }
 
-        Access access = faction.getAccess(this, PermissableAction.FLIGHT);
+        Access access = faction.getAccess(this, PermissableAction.FLY);
         return access != null && access == Access.ALLOW;
     }
 

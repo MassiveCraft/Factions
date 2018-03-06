@@ -34,7 +34,7 @@ public class CmdPerm extends FCommand {
         senderMustBePlayer = true;
         senderMustBeMember = true;
         senderMustBeModerator = false;
-        senderMustBeAdmin = false;
+        senderMustBeAdmin = true;
     }
 
     @Override

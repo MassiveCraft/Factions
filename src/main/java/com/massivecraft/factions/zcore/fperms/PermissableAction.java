@@ -32,10 +32,9 @@ public enum PermissableAction {
     ACCESS("access"),
     DISBAND("disband"),
     PROMOTE("promote"),
-    PERMS("perms"),
     SETWARP("setwarp"),
     WARP("warp"),
-    FLIGHT("fly"),;
+    FLY("fly"),;
 
     private String name;
 
