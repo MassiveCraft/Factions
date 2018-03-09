@@ -45,15 +45,16 @@ public class CmdSethome extends FCommand {
             return;
         }
 
-        // Can the player set the home for this faction?
-        // Check for ALLOW access as well before we check for role.
-        if (faction == myFaction && access != Access.ALLOW) {
-            if (!Permission.SETHOME_ANY.has(sender, true) || !assertMinRole(Role.MODERATOR)) {
-                return;
-            }
-        } else {
-            if (!Permission.SETHOME_ANY.has(sender, true)) {
-                return;
+        // If player does not have allow run extra permission checks
+        if (access != Access.ALLOW) {
+            if (faction == myFaction) {
+                if (!assertMinRole(Role.MODERATOR)) {
+                    return;
+                }
+            } else {
+                if (!Permission.SETHOME_ANY.has(sender, true)) {
+                    return;
+                }
             }
         }
 

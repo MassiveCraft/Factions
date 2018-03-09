@@ -104,7 +104,6 @@ public enum Role implements Permissable {
         return "";
     }
 
-
     // Utility method to build items for F Perm GUI
     @Override
     public ItemStack buildItem() {
@@ -113,7 +112,7 @@ public enum Role implements Permissable {
         String displayName = replacePlaceholders(RELATION_CONFIG.getString("placeholder-item.name", ""));
         List<String> lore = new ArrayList<>();
 
-        Material material = Material.matchMaterial(RELATION_CONFIG.getString("materials." + name().toLowerCase()));
+        Material material = Material.matchMaterial(RELATION_CONFIG.getString("materials." + name().toLowerCase(), "STAINED_CLAY"));
         if (material == null) {
             return null;
         }

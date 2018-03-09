@@ -419,7 +419,9 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
         // Put the map in there for each relation.
         for (Relation relation : Relation.values()) {
-            permissions.put(relation, new HashMap<>(freshMap));
+            if (relation != Relation.MEMBER) {
+                permissions.put(relation, new HashMap<>(freshMap));
+            }
         }
 
         // And each role.

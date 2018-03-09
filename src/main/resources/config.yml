@@ -379,7 +379,7 @@ fperm-gui:
     # Note: Slots start at 0 and end at one less that GUI size
     slots:
       recruit: 10
-      member: 11
+      normal: 11
       moderator: 12
       truce: 13
       ally: 14
@@ -388,7 +388,7 @@ fperm-gui:
     # Material to be displayed
     materials:
       recruit: WOOD_SWORD
-      member: STONE_SWORD
+      normal: STONE_SWORD
       moderator: IRON_SWORD
       truce: IRON_AXE
       ally: DIAMOND_SWORD

@@ -96,16 +96,13 @@ public class PermissableRelationGUI implements InventoryHolder, FactionGUI {
     }
 
     private Permissable getPermissable(String name) {
-        try {
-            return Relation.valueOf(name.toUpperCase());
-        } catch (Exception e) {
+        if (Role.fromString(name.toUpperCase()) != null) {
+            return Role.fromString(name.toUpperCase());
+        } else if (Relation.fromString(name.toUpperCase()) != null) {
+            return Relation.fromString(name.toUpperCase());
+        } else {
+            return null;
         }
-        try {
-            return Role.valueOf(name.toUpperCase());
-        } catch (Exception e) {
-        }
-
-        return null;
     }
 
     private void buildItems() {
