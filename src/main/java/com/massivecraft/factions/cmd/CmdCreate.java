@@ -55,13 +55,6 @@ public class CmdCreate extends FCommand {
             return;
         }
 
-        // trigger the faction creation event (cancellable)
-        FactionCreateEvent createEvent = new FactionCreateEvent(me, tag);
-        Bukkit.getServer().getPluginManager().callEvent(createEvent);
-        if (createEvent.isCancelled()) {
-            return;
-        }
-
         // then make 'em pay (if applicable)
         if (!payForCommand(Conf.econCostCreate, TL.COMMAND_CREATE_TOCREATE, TL.COMMAND_CREATE_FORCREATE)) {
             return;
@@ -86,6 +79,10 @@ public class CmdCreate extends FCommand {
         // finish setting up the FPlayer
         fme.setRole(Role.ADMIN);
         fme.setFaction(faction);
+
+        // trigger the faction creation event
+        FactionCreateEvent createEvent = new FactionCreateEvent(me, tag, faction);
+        Bukkit.getServer().getPluginManager().callEvent(createEvent);
 
         for (FPlayer follower : FPlayers.getInstance().getOnlinePlayers()) {
             follower.msg(TL.COMMAND_CREATE_CREATED, fme.describeTo(follower, true), faction.getTag(follower));
