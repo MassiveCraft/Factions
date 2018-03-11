@@ -251,6 +251,7 @@ public class FactionsPlayerListener implements Listener {
         }
 
         if (!canPlayerUseBlock(player, block, false)) {
+            System.out.println("Cancelling " + player.getName() + " " + block.getType().name());
             event.setCancelled(true);
             if (Conf.handleExploitInteractionSpam) {
                 String name = player.getName();
@@ -318,6 +319,11 @@ public class FactionsPlayerListener implements Listener {
             return true;
         }
 
+        Access access = otherFaction.getAccess(me, PermissableAction.ITEM);
+        if (access != null && access != Access.UNDEFINED) {
+            return access == Access.ALLOW;
+        }
+
         if (otherFaction.hasPlayersOnline()) {
             if (!Conf.territoryDenyUseageMaterials.contains(material)) {
                 return true; // Item isn't one we're preventing for online factions.
@@ -363,13 +369,6 @@ public class FactionsPlayerListener implements Listener {
         Faction myFaction = me.getFaction();
         Relation rel = myFaction.getRelationTo(otherFaction);
 
-
-        Access access = otherFaction.getAccess(me, PermissableAction.ITEM);
-        if (access != null && access != Access.UNDEFINED) {
-            // TODO: Update this once new access values are added other than just allow / deny.
-            return access == Access.ALLOW;
-        }
-
         // Cancel if we are not in our own territory
         if (rel.confDenyUseage()) {
             if (!justCheck) {
@@ -414,23 +413,6 @@ public class FactionsPlayerListener implements Listener {
             return true;
         }
 
-        // Dupe fix.
-        Faction myFaction = me.getFaction();
-        Relation rel = myFaction.getRelationTo(otherFaction);
-        if (!rel.isMember() || !otherFaction.playerHasOwnershipRights(me, loc) && player.getItemInHand() != null) {
-            switch (player.getItemInHand().getType()) {
-                case CHEST:
-                case SIGN_POST:
-                case TRAPPED_CHEST:
-                case SIGN:
-                case WOOD_DOOR:
-                case IRON_DOOR:
-                    return false;
-                default:
-                    break;
-            }
-        }
-
         PermissableAction action = null;
 
         switch (block.getType()) {
@@ -466,6 +448,23 @@ public class FactionsPlayerListener implements Listener {
         if (access == null || access == Access.DENY) {
             me.msg(TL.GENERIC_NOPERMISSION, action);
             return false;
+        }
+
+        // Dupe fix.
+        Faction myFaction = me.getFaction();
+        Relation rel = myFaction.getRelationTo(otherFaction);
+        if (!rel.isMember() || !otherFaction.playerHasOwnershipRights(me, loc) && player.getItemInHand() != null) {
+            switch (player.getItemInHand().getType()) {
+                case CHEST:
+                case SIGN_POST:
+                case TRAPPED_CHEST:
+                case SIGN:
+                case WOOD_DOOR:
+                case IRON_DOOR:
+                    return false;
+                default:
+                    break;
+            }
         }
 
         // We only care about some material types.
