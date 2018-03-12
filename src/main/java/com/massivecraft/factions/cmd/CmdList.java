@@ -50,7 +50,7 @@ public class CmdList extends FCommand {
         factionList.remove(Factions.getInstance().getWarZone());
 
         // remove exempt factions
-        if (!fme.getPlayer().hasPermission("factions.show.bypassexempt")) {
+        if (!sender.hasPermission("factions.show.bypassexempt")) {
             List<String> exemptFactions = P.p.getConfig().getStringList("show-exempt");
             Iterator<Faction> factionIterator = factionList.iterator();
             while (factionIterator.hasNext()) {
