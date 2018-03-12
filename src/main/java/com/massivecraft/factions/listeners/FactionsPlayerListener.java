@@ -440,6 +440,10 @@ public class FactionsPlayerListener implements Listener {
                 action = PermissableAction.CONTAINER;
                 break;
             default:
+                // Check for doors that might have diff material name in old version.
+                if (block.getType().name().contains("DOOR")) {
+                    action = PermissableAction.DOOR;
+                }
                 break;
         }
 
