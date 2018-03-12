@@ -88,9 +88,11 @@ public class CmdShow extends FCommand {
                 continue; // Due to minimal f show.
             }
 
-            parsed = TagUtil.parsePlaceholders(fme.getPlayer(), parsed);
+            if (fme != null) {
+                parsed = TagUtil.parsePlaceholders(fme.getPlayer(), parsed);
+            }
 
-            if (TagUtil.hasFancy(parsed)) {
+            if (fme != null && TagUtil.hasFancy(parsed)) {
                 List<FancyMessage> fancy = TagUtil.parseFancy(faction, fme, parsed);
                 if (fancy != null) {
                     sendFancyMessage(fancy);
