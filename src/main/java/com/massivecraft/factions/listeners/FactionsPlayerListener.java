@@ -319,11 +319,6 @@ public class FactionsPlayerListener implements Listener {
             return true;
         }
 
-        Access access = otherFaction.getAccess(me, PermissableAction.ITEM);
-        if (access != null && access != Access.UNDEFINED) {
-            return access == Access.ALLOW;
-        }
-
         if (otherFaction.hasPlayersOnline()) {
             if (!Conf.territoryDenyUseageMaterials.contains(material)) {
                 return true; // Item isn't one we're preventing for online factions.
@@ -364,6 +359,11 @@ public class FactionsPlayerListener implements Listener {
             }
 
             return false;
+        }
+
+        Access access = otherFaction.getAccess(me, PermissableAction.ITEM);
+        if (access != null && access != Access.UNDEFINED) {
+            return access == Access.ALLOW;
         }
 
         Faction myFaction = me.getFaction();
