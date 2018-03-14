@@ -119,7 +119,7 @@ public class FactionsChatListener implements Listener {
         String msg = event.getMessage();
         String eventFormat = event.getFormat();
         FPlayer me = FPlayers.getInstance().getByPlayer(talkingPlayer);
-        int InsertIndex;
+        int InsertIndex = Conf.chatTagInsertIndex;
 
         if (!Conf.chatTagReplaceString.isEmpty() && eventFormat.contains(Conf.chatTagReplaceString)) {
             // we're using the "replace" method of inserting the faction tags
@@ -136,12 +136,8 @@ public class FactionsChatListener implements Listener {
         } else if (!Conf.chatTagInsertBeforeString.isEmpty() && eventFormat.contains(Conf.chatTagInsertBeforeString)) {
             // we're using the "insert before string" method
             InsertIndex = eventFormat.indexOf(Conf.chatTagInsertBeforeString);
-        } else {
-            // we'll fall back to using the index place method
-            InsertIndex = Conf.chatTagInsertIndex;
-            if (InsertIndex > eventFormat.length()) {
-                return;
-            }
+        } else if (!Conf.alwaysShowChatTag){
+            return;
         }
 
         String formatStart = eventFormat.substring(0, InsertIndex) + ((Conf.chatTagPadBefore && !me.getChatTag().isEmpty()) ? " " : "");
