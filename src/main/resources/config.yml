@@ -72,6 +72,18 @@ fly-falldamage-cooldown: 3
 # http://i.gyazo.com/6a1a31222e58a5d60ff341c13f6a8404.gif
 disable-pistons-in-territory: false
 
+# Should we send titles when players enter Factions?
+# This is the same as finfo.titles and can be shown in conjunction with scoreboard and chat if necessary.
+# If you only want to show titles when entering territory,
+# leave this true and set scoreboard.finfo.titles and scoreboard.alsosendchat to false.
+enter-titles:
+  enabled: true
+  fade-in: 10
+  stay: 70
+  fade-out: 20
+  also-show-chat: false
+
+
 # ToolTips
 # This section is to configure tooltips for things like /f list
 tooltips:

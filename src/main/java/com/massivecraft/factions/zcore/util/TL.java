@@ -772,6 +772,8 @@ public enum TL {
     SAFEZONE_DESCRIPTION("safezone-description", "Free from pvp and monsters."),
     TOGGLE_SB("toggle-sb", "You now have scoreboards set to {value}"),
     FACTION_LEAVE("faction-leave", "<a>Leaving %1$s, <a>Entering %2$s"),
+    FACTION_ENTER_TITLE("faction-enter-title", ""),
+    FACTION_ENTER_SUBTITLE("faction-enter-subtitle", "%s"),
     FACTIONS_ANNOUNCEMENT_TOP("faction-announcement-top", "&d--Unread Faction Announcements--"),
     FACTIONS_ANNOUNCEMENT_BOTTOM("faction-announcement-bottom", "&d--Unread Faction Announcements--"),
     DEFAULT_PREFIX("default-prefix", "{relationcolor}[{faction}] &r"),

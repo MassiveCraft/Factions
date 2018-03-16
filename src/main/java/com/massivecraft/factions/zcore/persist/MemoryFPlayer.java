@@ -594,7 +594,24 @@ public abstract class MemoryFPlayer implements FPlayer {
 
     public void sendFactionHereMessage(Faction from) {
         Faction toShow = Board.getInstance().getFactionAt(getLastStoodAt());
+        boolean showTitle = P.p.getConfig().getBoolean("enter-titles.enabled", true);
         boolean showChat = true;
+        Player player = getPlayer();
+
+        if (showTitle && player != null) {
+            int in = P.p.getConfig().getInt("enter-titles.fade-in", 10);
+            int stay = P.p.getConfig().getInt("enter-titles.stay", 70);
+            int out = P.p.getConfig().getInt("enter-titles.fade-out", 20);
+            String title = TL.FACTION_ENTER_TITLE.format(this);
+            String sub = TL.FACTION_ENTER_SUBTITLE.format(toShow.getTag(this));
+
+            // We send null instead of empty because Spigot won't touch the title if it's null, but clears if empty.
+            // We're just trying to be as unintrusive as possible.
+            player.sendTitle(title.isEmpty() ? null : title, sub.isEmpty() ? null : sub, in, stay, out);
+
+            showChat = P.p.getConfig().getBoolean("enter-titles.also-show-chat", false);
+        }
+
         if (showInfoBoard(toShow)) {
             FScoreboard.get(this).setTemporarySidebar(new FInfoSidebar(toShow));
             showChat = P.p.getConfig().getBoolean("scoreboard.also-send-chat", true);
