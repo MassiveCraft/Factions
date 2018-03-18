@@ -22,12 +22,6 @@ public class CmdFly extends FCommand {
 
     @Override
     public void perform() {
-        // Disabled by default.
-        if (!P.p.getConfig().getBoolean("enable-faction-flight", false)) {
-            fme.msg(TL.COMMAND_FLY_DISABLED);
-            return;
-        }
-
         if (args.size() == 0) {
             if (!fme.canFlyAtLocation() && !fme.isFlying()) {
                 Faction factionAtLocation = Board.getInstance().getFactionAt(fme.getLastStoodAt());

@@ -117,7 +117,6 @@ public class FCmdRoot extends FCommand {
         this.addSubCommand(this.cmdDeinvite);
         this.addSubCommand(this.cmdDescription);
         this.addSubCommand(this.cmdDisband);
-        this.addSubCommand(this.cmdFly);
         this.addSubCommand(this.cmdHelp);
         this.addSubCommand(this.cmdHome);
         this.addSubCommand(this.cmdInvite);
@@ -185,6 +184,14 @@ public class FCmdRoot extends FCommand {
             this.addSubCommand(new CmdSetMaxVaults());
             this.addSubCommand(new CmdVault());
         }
+
+        if (P.p.getConfig().getBoolean("enable-faction-flight", false)) {
+            this.addSubCommand(this.cmdFly);
+            P.p.log(Level.INFO, "Enabling /f fly command");
+        } else {
+            P.p.log(Level.WARNING, "Faction flight set to false in config.yml. Not enabling /f fly command.");
+        }
+
     }
 
     @Override
