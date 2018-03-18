@@ -1,5 +1,6 @@
 package com.massivecraft.factions;
 
+import com.earth2me.essentials.IEssentials;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.massivecraft.factions.cmd.CmdAutoHelp;
@@ -33,7 +34,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
-
 
 public class P extends MPlugin {
 
@@ -78,8 +78,19 @@ public class P extends MPlugin {
 
         // Load Conf from disk
         Conf.load();
-        Essentials.setup();
+
+        // Check for Essentials
+        IEssentials ess = Essentials.setup();
+
+        // We set the option to TRUE by default in the config.yml for new users,
+        // BUT we leave it set to false for users updating that haven't added it to their config.
+        if (ess != null && getConfig().getBoolean("delete-ess-homes", false)) {
+            P.p.log(Level.INFO, "Found Essentials. We'll delete player homes in their old Faction's when kicked.");
+            getServer().getPluginManager().registerEvents(new EssentialsListener(ess), this);
+        }
+
         hookedPlayervaults = setupPlayervaults();
+
         FPlayers.getInstance().load();
         Factions.getInstance().load();
         for (FPlayer fPlayer : FPlayers.getInstance().getAllFPlayers()) {

@@ -20,6 +20,12 @@ findfactionsexploit:
   cooldown: 2000 # in miliseconds. 2000 = 2 seconds.
   log: false
 
+
+# Essentials Hook
+# Should we delete player homes that they set via Essentials when they leave a Faction if they have homes set in that
+# Faction's territory?
+delete-ess-homes: true
+
 ### Hard Core Settings ###
 # Many of the features that are / are to come in this section have been requested by
 #   people in relation to HCF servers. All settings are set to the normal Factions
