@@ -399,15 +399,17 @@ fperm-gui:
       recruit: 10
       normal: 11
       moderator: 12
-      truce: 13
-      ally: 14
-      enemy: 15
-      neutral: 16
+      coleader: 13
+      truce: 14
+      ally: 15
+      enemy: 16
+      neutral: 17
     # Material to be displayed
     materials:
       recruit: WOOD_SWORD
       normal: STONE_SWORD
       moderator: IRON_SWORD
+      coleader: SPONGE
       truce: IRON_AXE
       ally: DIAMOND_SWORD
       enemy: DIAMOND_AXE
