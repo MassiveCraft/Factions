@@ -956,7 +956,9 @@ public abstract class MemoryFPlayer implements FPlayer {
         }
 
         Access access = faction.getAccess(this, PermissableAction.FLY);
-        return access != null && access == Access.ALLOW;
+        // True if access is somehow null (should never happen), true if access is undefinied (let everyone fly by default)
+        // or if access is set (allow or deny), true if allow.
+        return access == null || access == Access.UNDEFINED || access == Access.ALLOW;
     }
 
     public boolean shouldTakeFallDamage() {
