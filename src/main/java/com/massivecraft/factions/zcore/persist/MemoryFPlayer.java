@@ -607,9 +607,9 @@ public abstract class MemoryFPlayer implements FPlayer {
 
             // We send null instead of empty because Spigot won't touch the title if it's null, but clears if empty.
             // We're just trying to be as unintrusive as possible.
-            player.sendTitle(title.isEmpty() ? null : title, sub.isEmpty() ? null : sub, in, stay, out);
+            player.sendTitle(title, sub, in, stay, out);
 
-            showChat = P.p.getConfig().getBoolean("enter-titles.also-show-chat", false);
+            showChat = P.p.getConfig().getBoolean("enter-titles.also-show-chat", true);
         }
 
         if (showInfoBoard(toShow)) {
