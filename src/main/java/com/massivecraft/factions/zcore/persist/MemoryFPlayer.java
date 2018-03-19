@@ -924,16 +924,19 @@ public abstract class MemoryFPlayer implements FPlayer {
         // If leaving fly mode, don't let them take fall damage for x seconds.
         if (!fly) {
             int cooldown = P.p.getConfig().getInt("fly-falldamage-cooldown", 3);
+            System.out.println("Setting falldamage cooldown.");
 
             // If the value is 0 or lower, make them take fall damage.
             // Otherwise, start a timer and have this cancel after a few seconds.
             // Short task so we're just doing it in method. Not clean but eh.
             if (cooldown > 0) {
-                this.shouldTakeFallDamage = false;
+                setTakeFallDamage(false);
+                System.out.println("Fall damage: false");
                 Bukkit.getScheduler().runTaskLater(P.p, new Runnable() {
                     @Override
                     public void run() {
-                        shouldTakeFallDamage = true;
+                        setTakeFallDamage(true);
+                        System.out.println("Fall damage: true");
                     }
                 }, 20L * cooldown);
             }

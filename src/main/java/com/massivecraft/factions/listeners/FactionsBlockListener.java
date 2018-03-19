@@ -6,6 +6,7 @@ import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
+import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -255,7 +256,12 @@ public class FactionsBlockListener implements Listener {
         Access access = otherFaction.getAccess(me, PermissableAction.fromString(action));
         if (access != null && access != Access.UNDEFINED) {
             // TODO: Update this once new access values are added other than just allow / deny.
-            return access == Access.ALLOW;
+            if (access == Access.DENY) {
+                me.msg(TL.GENERIC_NOPERMISSION, action);
+                return false;
+            }
+
+            return true; // has to be allow
         }
 
         // cancel building/destroying in other territory?
