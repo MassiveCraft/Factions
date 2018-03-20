@@ -4,7 +4,8 @@ import com.massivecraft.factions.*;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.zcore.util.TL;
-import me.clip.placeholderapi.external.EZPlaceholderHook;
+import me.clip.placeholderapi.expansion.Relational;
+import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.apache.commons.lang.time.DurationFormatUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -12,10 +13,48 @@ import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
-public class ClipPlaceholderAPIManager extends EZPlaceholderHook {
+public class ClipPlaceholderAPIManager extends PlaceholderExpansion implements Relational {
 
-    public ClipPlaceholderAPIManager() {
-        super(P.p, "factionsuuid");
+    // Identifier for this expansion
+    @Override
+    public String getIdentifier() {
+        return "factionsuuid";
+    }
+
+    // Idk......
+    @Override
+    public String getAuthor() {
+        return "FactionsUUID";
+    }
+
+    // Since we are registering this expansion from the dependency, this can be null
+    @Override
+    public String getPlugin() {
+        return null;
+    }
+
+    // Return the plugin version since this expansion is bundled with the dependency
+    @Override
+    public String getVersion() {
+        return P.p.getDescription().getVersion();
+    }
+
+    // Relational placeholders
+    @Override
+    public String onPlaceholderRequest(Player p1, Player p2, String placeholder) {
+        if (p1 == null || p2 == null || placeholder == null) return "";
+        FPlayer fp1 = FPlayers.getInstance().getByPlayer(p1);
+        FPlayer fp2 = FPlayers.getInstance().getByPlayer(p2);
+        if (fp1 == null || fp2 == null) return "";
+        switch (placeholder) {
+            case "relation":
+                String c = fp1.getRelationTo(fp2).nicename;
+                return c != null ? c : "";
+            case "relation_color":
+                ChatColor clr = fp1.getColorTo(fp2);
+                return clr != null ? clr.toString() : "";
+        }
+        return null;
     }
 
     @Override

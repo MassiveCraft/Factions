@@ -141,8 +141,9 @@ public class P extends MPlugin {
         Plugin clip = getServer().getPluginManager().getPlugin("PlaceholderAPI");
         if (clip != null && clip.isEnabled()) {
             this.clipPlaceholderAPIManager = new ClipPlaceholderAPIManager();
-            this.clipPlaceholderAPIManager.hook();
-            log(Level.INFO, "Found Clip's PlaceholderAPI. Adding hooks.");
+            if (this.clipPlaceholderAPIManager.register()) {
+                log(Level.INFO, "Successfully registered placeholders with PlaceholderAPI.");
+            }
         }
 
         Plugin mvdw = getServer().getPluginManager().getPlugin("MVdWPlaceholderAPI");
