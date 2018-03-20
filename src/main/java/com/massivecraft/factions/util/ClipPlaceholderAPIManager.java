@@ -4,8 +4,8 @@ import com.massivecraft.factions.*;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.zcore.util.TL;
-import me.clip.placeholderapi.expansion.Relational;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
+import me.clip.placeholderapi.expansion.Relational;
 import org.apache.commons.lang.time.DurationFormatUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -21,10 +21,9 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion implements R
         return "factionsuuid";
     }
 
-    // Idk......
     @Override
     public String getAuthor() {
-        return "FactionsUUID";
+        return "drtshock";
     }
 
     // Since we are registering this expansion from the dependency, this can be null
@@ -42,18 +41,25 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion implements R
     // Relational placeholders
     @Override
     public String onPlaceholderRequest(Player p1, Player p2, String placeholder) {
-        if (p1 == null || p2 == null || placeholder == null) return "";
+        if (p1 == null || p2 == null || placeholder == null) {
+            return "";
+        }
+
         FPlayer fp1 = FPlayers.getInstance().getByPlayer(p1);
         FPlayer fp2 = FPlayers.getInstance().getByPlayer(p2);
-        if (fp1 == null || fp2 == null) return "";
+        if (fp1 == null || fp2 == null) {
+            return "";
+        }
+
         switch (placeholder) {
             case "relation":
-                String c = fp1.getRelationTo(fp2).nicename;
-                return c != null ? c : "";
+                String relationName = fp1.getRelationTo(fp2).nicename;
+                return relationName != null ? relationName : "";
             case "relation_color":
-                ChatColor clr = fp1.getColorTo(fp2);
-                return clr != null ? clr.toString() : "";
+                ChatColor color = fp1.getColorTo(fp2);
+                return color != null ? color.toString() : "";
         }
+
         return null;
     }
 
