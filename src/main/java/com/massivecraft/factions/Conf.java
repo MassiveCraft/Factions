@@ -21,6 +21,8 @@ public class Conf {
     public static ChatColor colorEnemy = ChatColor.RED;
 
     public static ChatColor colorPeaceful = ChatColor.GOLD;
+    public static ChatColor colorWilderness = ChatColor.GRAY;
+    public static ChatColor colorSafezone = ChatColor.GOLD;
     public static ChatColor colorWar = ChatColor.DARK_RED;
 
     // Power

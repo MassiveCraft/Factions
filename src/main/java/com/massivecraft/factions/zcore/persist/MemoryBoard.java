@@ -284,7 +284,7 @@ public abstract class MemoryBoard extends Board {
                     Faction factionHere = getFactionAt(flocationHere);
                     Relation relation = fplayer.getRelationTo(factionHere);
                     if (factionHere.isWilderness()) {
-                        row.then("-").color(ChatColor.GRAY);
+                        row.then("-").color(Conf.colorWilderness);
                         // Check for claimat permission and if so, let them claim at ;D
                         // TODO: TEMP DISABLED UNTIL FIXED PROPERLY :(
                         if (false) { //fplayer.getPlayer().hasPermission(Permission.CLAIMAT.node)) {
@@ -292,9 +292,9 @@ public abstract class MemoryBoard extends Board {
                                     .command(String.format("/f claimat %s %d %d", flocation.getWorldName(), dx, dz));
                         }
                     } else if (factionHere.isSafeZone()) {
-                        row.then("+").color(Conf.colorPeaceful);
+                        row.then("+").color(Conf.colorSafezone);
                     } else if (factionHere.isWarZone()) {
-                        row.then("+").color(ChatColor.DARK_RED);
+                        row.then("+").color(Conf.colorWar);
                     } else if (factionHere == faction || factionHere == factionLoc || relation.isAtLeast(Relation.ALLY) ||
                             (Conf.showNeutralFactionsOnMap && relation.equals(Relation.NEUTRAL)) ||
                             (Conf.showEnemyFactionsOnMap && relation.equals(Relation.ENEMY))) {
