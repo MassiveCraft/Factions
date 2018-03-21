@@ -9,10 +9,10 @@ import com.massivecraft.factions.scoreboards.sidebar.FDefaultSidebar;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.util.FactionGUI;
 import com.massivecraft.factions.util.VisualizeUtil;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
-import com.massivecraft.factions.util.FactionGUI;
 import com.massivecraft.factions.zcore.persist.MemoryFPlayer;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TextUtil;
@@ -517,6 +517,18 @@ public class FactionsPlayerListener implements Listener {
                 (Conf.homesRespawnFromNoPowerLossWorlds || !Conf.worldsNoPowerLoss.contains(event.getPlayer().getWorld().getName()))) {
             event.setRespawnLocation(home);
         }
+    }
+
+    @EventHandler
+    public void onTeleport(PlayerTeleportEvent event) {
+        FPlayer me = FPlayers.getInstance().getByPlayer(event.getPlayer());
+        FLocation to = new FLocation(event.getTo());
+
+        // Check the location they're teleporting to and check if they can fly there.
+        if (!me.isAdminBypassing() && me.isFlying() && !me.canFlyAtLocation(to)) {
+            me.setFFlying(false, false);
+        }
+
     }
 
     // For some reason onPlayerInteract() sometimes misses bucket events depending on distance (something like 2-3 blocks away isn't detected),
