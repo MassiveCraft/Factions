@@ -803,8 +803,12 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
         FPlayer oldLeader = this.getFPlayerAdmin();
 
-        // get list of moderators, or list of normal members if there are no moderators
-        ArrayList<FPlayer> replacements = this.getFPlayersWhereRole(Role.MODERATOR);
+        // get list of coleaders, or mods, or list of normal members if there are no moderators
+        ArrayList<FPlayer> replacements = this.getFPlayersWhereRole(Role.COLEADER);
+        if (replacements == null || replacements.isEmpty()) {
+            replacements = this.getFPlayersWhereRole(Role.MODERATOR);
+        }
+
         if (replacements == null || replacements.isEmpty()) {
             replacements = this.getFPlayersWhereRole(Role.NORMAL);
         }
