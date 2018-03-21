@@ -405,7 +405,7 @@ public class FactionsEntityListener implements Listener {
         }
 
         // You can never hurt faction members or allies
-        if (relation.isMember() || relation.isAlly()) {
+        if (relation.isMember() || relation.isAlly() || relation.isTruce()) {
             if (notify) {
                 attacker.msg(TL.PLAYER_PVP_CANTHURT, defender.describeTo(attacker));
             }
