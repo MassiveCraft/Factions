@@ -703,6 +703,7 @@ public abstract class MemoryFPlayer implements FPlayer {
 
         myFaction.removeAnnouncements(this);
         this.resetFactionData();
+        setFFlying(false, false);
 
         if (myFaction.isNormal() && !perm && myFaction.getFPlayers().isEmpty()) {
             // Remove this faction
