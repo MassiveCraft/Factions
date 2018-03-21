@@ -42,6 +42,8 @@ public class Conf {
     public static String prefixNormal = "+";
     public static String prefixRecruit = "-";
 
+    public static boolean allowMultipleColeaders = false;
+
     public static int factionTagLengthMin = 3;
     public static int factionTagLengthMax = 10;
     public static boolean factionTagForceUpperCase = false;

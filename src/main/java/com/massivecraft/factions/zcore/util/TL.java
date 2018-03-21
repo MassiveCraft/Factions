@@ -124,6 +124,19 @@ public enum TL {
     COMMAND_CLAIMLINE_ABOVEMAX("&cThe maximum limit for claim line is &c%s&c."),
     COMMAND_CLAIMLINE_NOTVALID("%s&c is not a cardinal direction. You may use &dnorth&c, &deast&c, &dsouth &cor &dwest&c."),
 
+    COMMAND_COLEADER_CANDIDATES("Players you can promote: "),
+    COMMAND_COLEADER_CLICKTOPROMOTE("Click to promote "),
+    COMMAND_COLEADER_NOTMEMBER("%1$s&c is not a member in your faction."),
+    COMMAND_COLEADER_NOTADMIN("&cYou are not the faction admin."),
+    COMMAND_COLEADER_SELF("&cThe target player musn't be yourself."),
+    COMMAND_COLEADER_TARGETISADMIN("&cThe target player is a faction admin. Demote them first."),
+    COMMAND_COLEADER_REVOKES("&eYou have removed coleader status from %1$s&e."),
+    COMMAND_COLEADER_REVOKED("%1$s&e is no longer coleader in your faction."),
+    COMMAND_COLEADER_PROMOTES("%1$s&e was promoted to coleader in your faction."),
+    COMMAND_COLEADER_PROMOTED("&eYou have promoted %1$s&e to coleader."),
+    COMMAND_COLEADER_DESCRIPTION("Give or revoke coleader rights"),
+    COMMAND_COLEADER_ALREADY_COLEADER("The faction already has a coleader. There can only be 1."),
+
     COMMAND_CONFIG_NOEXIST("&cNo configuration setting \"&d%1$s&c\" exists."),
     COMMAND_CONFIG_SET_TRUE("\" option set to true (enabled)."),
     COMMAND_CONFIG_SET_FALSE("\" option set to false (disabled)."),
@@ -416,7 +429,6 @@ public enum TL {
     COMMAND_PROMOTE_WRONGFACTION("%1$s is not part of your faction."),
     COMMAND_NOACCESS("You don't have access to that."),
     COMMAND_PROMOTE_NOTTHATPLAYER("That player cannot be promoted."),
-
 
     COMMAND_POWER_TOSHOW("to show player power info"),
     COMMAND_POWER_FORSHOW("for showing player power info"),

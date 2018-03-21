@@ -98,8 +98,9 @@ public abstract class FCommand extends MCommand<P> {
             return false;
         }
 
-        if (this.senderMustBeAdmin && !fme.getRole().isAtLeast(Role.ADMIN)) {
-            sender.sendMessage(p.txt.parse("<b>Only faction admins can %s.", this.getHelpShort()));
+        // FactionsUUID - allow coleaders to execute things.
+        if (this.senderMustBeAdmin && !fme.getRole().isAtLeast(Role.COLEADER)) {
+            sender.sendMessage(p.txt.parse("<b>Only faction coleaders and admins can %s.", this.getHelpShort()));
             return false;
         }
 

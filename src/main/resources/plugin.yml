@@ -103,6 +103,7 @@ permissions:
       factions.mapheight: true
       factions.ban: true
       factions.fly: true
+      factions.coleader: true
   factions.admin:
     description: hand over your admin rights
   factions.admin.any:
@@ -286,3 +287,5 @@ permissions:
     description: Ban players from Factions
   factions.fly:
     description: Allow use of /f fly
+  factions.coleader:
+    description: Allow use of /f coleader <target>

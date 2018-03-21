@@ -82,6 +82,7 @@ public class FCmdRoot extends FCommand {
     public CmdBan cmdban = new CmdBan();
     public CmdUnban cmdUnban = new CmdUnban();
     public CmdBanlist cmdbanlist = new CmdBanlist();
+    public CmdColeader cmdColeader = new CmdColeader();
 
     public FCmdRoot() {
         super();
@@ -174,6 +175,7 @@ public class FCmdRoot extends FCommand {
         this.addSubCommand(this.cmdban);
         this.addSubCommand(this.cmdUnban);
         this.addSubCommand(this.cmdbanlist);
+        this.addSubCommand(this.cmdColeader);
         if (Bukkit.getServer().getPluginManager().isPluginEnabled("FactionsTop")) {
             P.p.log(Level.INFO, "Found FactionsTop plugin. Disabling our own /f top command.");
         } else {

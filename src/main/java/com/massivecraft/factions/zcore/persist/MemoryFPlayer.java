@@ -956,7 +956,7 @@ public abstract class MemoryFPlayer implements FPlayer {
 
         // Admins can always fly in their territory.
         // admin bypass (ops) can fly as well.
-        if (isAdminBypassing || (faction == getFaction() && getRole() == Role.ADMIN)) {
+        if (isAdminBypassing || (faction == getFaction() && getRole().isAtLeast(Role.COLEADER))) {
             return true;
         }
 

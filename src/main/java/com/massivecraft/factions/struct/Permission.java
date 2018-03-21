@@ -21,6 +21,8 @@ public enum Permission {
     CLAIMAT("claimat"),
     CLAIM_LINE("claim.line"),
     CLAIM_RADIUS("claim.radius"),
+    COLEADER("coleader"),
+    COLEADER_ANY("coleader.any"),
     CONFIG("config"),
     CREATE("create"),
     DEFAULTRANK("defaultrank"),
