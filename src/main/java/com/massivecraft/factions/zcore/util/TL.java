@@ -429,6 +429,7 @@ public enum TL {
     COMMAND_PROMOTE_WRONGFACTION("%1$s is not part of your faction."),
     COMMAND_NOACCESS("You don't have access to that."),
     COMMAND_PROMOTE_NOTTHATPLAYER("That player cannot be promoted."),
+    COMMAND_PROMOTE_NOT_ALLOWED("You can't promote or demote that player."),
 
     COMMAND_POWER_TOSHOW("to show player power info"),
     COMMAND_POWER_FORSHOW("for showing player power info"),
