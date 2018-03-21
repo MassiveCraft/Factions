@@ -15,6 +15,7 @@ import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.RelationUtil;
+import com.massivecraft.factions.util.TitleAPI;
 import com.massivecraft.factions.util.WarmUpUtil;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
@@ -607,7 +608,7 @@ public abstract class MemoryFPlayer implements FPlayer {
 
             // We send null instead of empty because Spigot won't touch the title if it's null, but clears if empty.
             // We're just trying to be as unintrusive as possible.
-            player.sendTitle(title, sub, in, stay, out);
+            TitleAPI.getInstance().sendTitle(player, title, sub, in, stay, out);
 
             showChat = P.p.getConfig().getBoolean("enter-titles.also-show-chat", true);
         }

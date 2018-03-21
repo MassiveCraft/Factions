@@ -132,6 +132,7 @@ public class P extends MPlugin {
         // since some other plugins execute commands directly through this command interface, provide it
         this.getCommand(this.refCommand).setExecutor(this);
 
+        new TitleAPI();
         setupPlaceholderAPI();
         postEnable();
         this.loadSuccessful = true;
