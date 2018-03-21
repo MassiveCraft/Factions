@@ -160,6 +160,12 @@ public class Conf {
     public static Set<String> warzoneDenyCommands = new LinkedHashSet<>();
     public static Set<String> wildernessDenyCommands = new LinkedHashSet<>();
 
+    public static boolean defaultFlyPermEnemy = false;
+    public static boolean defaultFlyPermNeutral = false;
+    public static boolean defaultFlyPermTruce = false;
+    public static boolean defaultFlyPermAlly = true;
+    public static boolean defaultFlyPermMember = true;
+
     public static boolean territoryDenyBuild = true;
     public static boolean territoryDenyBuildWhenOffline = true;
     public static boolean territoryPainBuild = false;

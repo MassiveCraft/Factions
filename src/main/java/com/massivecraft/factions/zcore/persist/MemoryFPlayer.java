@@ -951,14 +951,36 @@ public abstract class MemoryFPlayer implements FPlayer {
         if (faction.isWilderness() || faction.isSafeZone() || faction.isWarZone()) {
             return false;
         }
-        if (faction == getFaction() && getRole() == Role.ADMIN) {
+
+        // Admins can always fly in their territory.
+        // admin bypass (ops) can fly as well.
+        if (isAdminBypassing || (faction == getFaction() && getRole() == Role.ADMIN)) {
             return true;
         }
 
         Access access = faction.getAccess(this, PermissableAction.FLY);
-        // True if access is somehow null (should never happen), true if access is undefinied (let everyone fly by default)
-        // or if access is set (allow or deny), true if allow.
-        return access == null || access == Access.UNDEFINED || access == Access.ALLOW;
+
+        if (access == null || access == Access.UNDEFINED) {
+
+            // If access is null or undefined, we'll default to the conf.json
+            switch (faction.getRelationTo(getFaction())) {
+                case ENEMY:
+                    return Conf.defaultFlyPermEnemy;
+                case ALLY:
+                    return Conf.defaultFlyPermAlly;
+                case NEUTRAL:
+                    return Conf.defaultFlyPermNeutral;
+                case TRUCE:
+                    return Conf.defaultFlyPermTruce;
+                case MEMBER:
+                    return Conf.defaultFlyPermMember;
+                default:
+                    return false; // should never reach.
+            }
+
+        }
+
+        return access == Access.ALLOW;
     }
 
     public boolean shouldTakeFallDamage() {
