@@ -70,9 +70,10 @@ enable-faction-flight: true
 
 # Faction Near
 f-near:
-  radius: 64
-  player: "&a&l{role} &a{role-prefix}{name}"
-  playerlist: "&eNear: {players-nearby}"
+  # Making this radius larger increases lag, do so at your own risk
+  # If on a high radius it is advised to add a cooldown to the command
+  # Also using {distance} placeholder in the lang would cause more lag on a bigger radius
+  radius: 20
 
 # If a player leaves fly (out of territory or took damage)
 # how long should they not take fall damage for?

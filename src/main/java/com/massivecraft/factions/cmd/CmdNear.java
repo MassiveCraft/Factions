@@ -5,9 +5,7 @@ import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
-import com.massivecraft.factions.zcore.util.TagReplacer;
 import com.massivecraft.factions.zcore.util.TagUtil;
-import com.massivecraft.factions.zcore.util.TextUtil;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
@@ -28,7 +26,7 @@ public class CmdNear extends FCommand {
 
     @Override
     public void perform() {
-        int radius = P.p.getConfig().getInt("f-near.radius", 64);
+        int radius = P.p.getConfig().getInt("f-near.radius", 20);
         List<Entity> nearbyEntities = me.getNearbyEntities(radius, radius, radius);
         List<FPlayer> nearbyMembers = new ArrayList<>();
 
@@ -42,27 +40,34 @@ public class CmdNear extends FCommand {
         }
 
         StringBuilder playerMessageBuilder = new StringBuilder();
-        String playerMessage = P.p.getConfig().getString("f-near.player", "&a&l{role} &a{role-prefix}{name}");
+        String playerMessage = TL.COMMAND_NEAR_PLAYER.toString();
         for (FPlayer member : nearbyMembers) {
             playerMessageBuilder.append(parsePlaceholders(member, playerMessage));
         }
+        // Append none text if no players where found
+        if (playerMessageBuilder.toString().isEmpty()) {
+            playerMessageBuilder.append(TL.COMMAND_NEAR_NONE);
+        }
 
-        String finalMessage = TextUtil.parseColor(P.p.getConfig().getString("f-near.playerlist", "&eNear: {players-nearby}"));
-        finalMessage = finalMessage.replace("{players-nearby}", playerMessageBuilder.toString());
-        fme.msg(finalMessage);
+        fme.msg(TL.COMMAND_NEAR_PLAYERLIST.toString().replace("{players-nearby}", playerMessageBuilder.toString()));
     }
 
     private String parsePlaceholders(FPlayer target, String string) {
-        string = TextUtil.parseColor(string);
         string = TagUtil.parsePlain(target, string);
         string = TagUtil.parsePlaceholders(target.getPlayer(), string);
         string = string.replace("{role}", target.getRole().toString());
-        return string.replace("{role-prefix}", target.getRole().getPrefix());
+        string = string.replace("{role-prefix}", target.getRole().getPrefix());
+        // Only run distance calculation if needed
+        if (string.contains("{distance}")) {
+            double distance = Math.round(fme.getPlayer().getLocation().distance(target.getPlayer().getLocation()));
+            string = string.replace("{distance}", distance + "");
+        }
+        return string;
     }
 
     @Override
     public TL getUsageTranslation() {
-        return null;
+        return TL.COMMAND_NEAR_DESCRIPTION;
     }
 
 }
