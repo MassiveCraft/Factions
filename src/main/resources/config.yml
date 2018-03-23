@@ -68,6 +68,12 @@ warp-cost:
 # Enable Faction Fly:
 enable-faction-flight: true
 
+# Faction Near
+f-near:
+  radius: 64
+  player: "&a&l{role} &a{role-prefix}{name}"
+  playerlist: "&eNear: {players-nearby}"
+
 # If a player leaves fly (out of territory or took damage)
 # how long should they not take fall damage for?
 # Set to 0 to have them always take fall damage.
