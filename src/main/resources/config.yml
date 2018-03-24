@@ -68,17 +68,17 @@ warp-cost:
 # Enable Faction Fly:
 enable-faction-flight: true
 
+# If a player leaves fly (out of territory or took damage)
+# how long should they not take fall damage for?
+# Set to 0 to have them always take fall damage.
+fly-falldamage-cooldown: 3
+
 # Faction Near
 f-near:
   # Making this radius larger increases lag, do so at your own risk
   # If on a high radius it is advised to add a cooldown to the command
   # Also using {distance} placeholder in the lang would cause more lag on a bigger radius
   radius: 20
-
-# If a player leaves fly (out of territory or took damage)
-# how long should they not take fall damage for?
-# Set to 0 to have them always take fall damage.
-fly-falldamage-cooldown: 3
 
 # Pistons
 # Should we disable pistons in Faction territory? This will prevent people from doing something like:

@@ -59,7 +59,7 @@ public class CmdNear extends FCommand {
         string = string.replace("{role-prefix}", target.getRole().getPrefix());
         // Only run distance calculation if needed
         if (string.contains("{distance}")) {
-            double distance = Math.round(fme.getPlayer().getLocation().distance(target.getPlayer().getLocation()));
+            double distance = Math.round(me.getLocation().distance(target.getPlayer().getLocation()));
             string = string.replace("{distance}", distance + "");
         }
         return string;
