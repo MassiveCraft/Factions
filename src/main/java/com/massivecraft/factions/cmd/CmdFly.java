@@ -4,6 +4,7 @@ import com.massivecraft.factions.Board;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.util.FlightDisableUtil;
 import com.massivecraft.factions.util.WarmUpUtil;
 import com.massivecraft.factions.zcore.util.TL;
 
@@ -23,30 +24,28 @@ public class CmdFly extends FCommand {
     @Override
     public void perform() {
         if (args.size() == 0) {
-            if (!fme.canFlyAtLocation() && !fme.isFlying()) {
-                Faction factionAtLocation = Board.getInstance().getFactionAt(fme.getLastStoodAt());
-                fme.msg(TL.COMMAND_FLY_NO_ACCESS, factionAtLocation.getTag(fme));
-                return;
-            }
-
             toggleFlight(!fme.isFlying());
         } else if (args.size() == 1) {
-            if (!fme.canFlyAtLocation() && argAsBool(0)) {
-                Faction factionAtLocation = Board.getInstance().getFactionAt(fme.getLastStoodAt());
-                fme.msg(TL.COMMAND_FLY_NO_ACCESS, factionAtLocation.getTag(fme));
-                return;
-            }
-
             toggleFlight(argAsBool(0));
         }
     }
 
     private void toggleFlight(final boolean toggle) {
+        // If false do nothing besides set
         if (!toggle) {
             fme.setFlying(false);
             return;
         }
-        
+        // Do checks if true
+        if (!fme.canFlyAtLocation()) {
+            Faction factionAtLocation = Board.getInstance().getFactionAt(fme.getLastStoodAt());
+            fme.msg(TL.COMMAND_FLY_NO_ACCESS, factionAtLocation.getTag(fme));
+            return;
+        } else if (FlightDisableUtil.enemiesNearby(fme, P.p.getConfig().getInt("f-fly.enemy-radius", 7))) {
+            fme.msg(TL.COMMAND_FLY_ENEMY_NEARBY);
+            return;
+        }
+
         this.doWarmUp(WarmUpUtil.Warmup.FLIGHT, TL.WARMUPS_NOTIFY_FLIGHT, "Fly", new Runnable() {
             @Override
             public void run() {

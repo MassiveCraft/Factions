@@ -201,11 +201,12 @@ public enum TL {
     COMMAND_DISBAND_HOLDINGS("&eYou have been given the disbanded faction's bank, totaling %1$s."),
     COMMAND_DISBAND_DESCRIPTION("Disband a faction"),
 
-    COMMAND_FLY_DISABLED("&cSorry, Faction flight is disabled on this server"),
     COMMAND_FLY_DESCRIPTION("Enter or leave Faction flight mode"),
     COMMAND_FLY_CHANGE("&eFaction flight &d%1$s"),
     COMMAND_FLY_DAMAGE("&eFaction flight &ddisabled&e due to entering combat"),
     COMMAND_FLY_NO_ACCESS("&cCannot fly in territory of %1$s"),
+    COMMAND_FLY_ENEMY_NEARBY("&cCannot enable fly, enemy nearby"),
+    COMMAND_FLY_ENEMY_DISABLE("&cEnemy nearby, disabling fly"),
 
     COMMAND_FWARP_CLICKTOWARP("Click to warp!"),
     COMMAND_FWARP_COMMANDFORMAT("&e/f warp <warpname> [password]"),

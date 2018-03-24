@@ -925,7 +925,7 @@ public abstract class MemoryFPlayer implements FPlayer {
 
         // If leaving fly mode, don't let them take fall damage for x seconds.
         if (!fly) {
-            int cooldown = P.p.getConfig().getInt("fly-falldamage-cooldown", 3);
+            int cooldown = P.p.getConfig().getInt("f-fly.falldamage-cooldown", 3);
 
             // If the value is 0 or lower, make them take fall damage.
             // Otherwise, start a timer and have this cancel after a few seconds.
