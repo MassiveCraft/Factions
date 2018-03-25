@@ -187,7 +187,7 @@ public class FCmdRoot extends FCommand {
             this.addSubCommand(new CmdVault());
         }
 
-        if (P.p.getConfig().getBoolean("enable-faction-flight", false)) {
+        if (P.p.getConfig().getBoolean("f-fly.enable", false)) {
             this.addSubCommand(this.cmdFly);
             P.p.log(Level.INFO, "Enabling /f fly command");
         } else {

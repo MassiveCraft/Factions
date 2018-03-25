@@ -26,6 +26,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
@@ -132,6 +133,7 @@ public class P extends MPlugin {
         // since some other plugins execute commands directly through this command interface, provide it
         this.getCommand(this.refCommand).setExecutor(this);
 
+        new FlightDisableUtil().runTaskTimer(this, 0, 20);
         new TitleAPI();
         setupPlaceholderAPI();
         postEnable();

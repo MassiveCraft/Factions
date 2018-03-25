@@ -178,8 +178,8 @@ public class FactionsPlayerListener implements Listener {
         Faction factionTo = Board.getInstance().getFactionAt(to);
         boolean changedFaction = (factionFrom != factionTo);
 
-        if (p.getConfig().getBoolean("enable-faction-flight", false) && changedFaction) {
-            if (!me.canFlyAtLocation() && me.isFlying()) {
+        if (p.getConfig().getBoolean("f-fly.enable", false) && changedFaction) {
+            if (!me.isAdminBypassing() && me.isFlying() && !me.canFlyAtLocation()) {
                 me.setFlying(false);
             }
         }
@@ -525,7 +525,7 @@ public class FactionsPlayerListener implements Listener {
         FLocation to = new FLocation(event.getTo());
 
         // Check the location they're teleporting to and check if they can fly there.
-        if (!me.isAdminBypassing() && me.isFlying() && !me.canFlyAtLocation(to)) {
+        if (p.getConfig().getBoolean("f-fly.enable", false) && !me.isAdminBypassing() && me.isFlying() && !me.canFlyAtLocation(to)) {
             me.setFFlying(false, false);
         }
 
