@@ -109,7 +109,7 @@ public abstract class MemoryBoard extends Board {
         for (Entity entity : flocation.getChunk().getEntities()) {
             if (entity instanceof Player) {
                 FPlayer fPlayer = FPlayers.getInstance().getByPlayer((Player) entity);
-                if (fPlayer.isFlying()) {
+                if (!fPlayer.isAdminBypassing() && fPlayer.isFlying()) {
                     fPlayer.setFlying(false);
                 }
             }
