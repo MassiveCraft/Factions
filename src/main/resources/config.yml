@@ -104,6 +104,15 @@ enter-titles:
   fade-out: 20
   also-show-chat: false
 
+# /f seechunk options
+# Get a list of particle effects here:
+# https://github.com/DarkBlade12/ParticleEffect/blob/master/src/main/java/com/darkblade12/particleeffect/ParticleEffect.java
+see-chunk:
+  # If disabled, it will use fake blocks like before (can cause client side lag)
+  particles: true
+  particle: "BARRIER"
+  # How long should we show these particles? No idea the units, 10 just seemed good.
+  length: 10
 
 # ToolTips
 # This section is to configure tooltips for things like /f list
