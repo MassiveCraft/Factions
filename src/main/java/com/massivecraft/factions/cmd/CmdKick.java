@@ -99,6 +99,14 @@ public class CmdKick extends FCommand {
             }
         }
 
+        Access access = myFaction.getAccess(fme, PermissableAction.KICK);
+        // This statement allows us to check if they've specifically denied it, or default to
+        // the old setting of allowing moderators to set warps.
+        if (access == Access.DENY || (access == Access.UNDEFINED && !assertMinRole(Role.MODERATOR))) {
+            fme.msg(TL.GENERIC_NOPERMISSION, "set warp");
+            return;
+        }
+
         // if economy is enabled, they're not on the bypass list, and this command has a cost set, make sure they can pay
         if (!canAffordCommand(Conf.econCostKick, TL.COMMAND_KICK_TOKICK.toString())) {
             return;
