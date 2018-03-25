@@ -85,6 +85,7 @@ public class MiscUtil {
 
     public static Iterable<FPlayer> rankOrder(Iterable<FPlayer> players) {
         List<FPlayer> admins = new ArrayList<>();
+        List<FPlayer> coleaders = new ArrayList<>();
         List<FPlayer> moderators = new ArrayList<>();
         List<FPlayer> normal = new ArrayList<>();
         List<FPlayer> recruit = new ArrayList<>();
@@ -100,6 +101,10 @@ public class MiscUtil {
             switch (player.getRole()) {
                 case ADMIN:
                     admins.add(player);
+                    break;
+
+                case COLEADER:
+                    coleaders.add(player);
                     break;
 
                 case MODERATOR:
@@ -118,6 +123,7 @@ public class MiscUtil {
 
         List<FPlayer> ret = new ArrayList<>();
         ret.addAll(admins);
+        ret.addAll(coleaders);
         ret.addAll(moderators);
         ret.addAll(normal);
         ret.addAll(recruit);
