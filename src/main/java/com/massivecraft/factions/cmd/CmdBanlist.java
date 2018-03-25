@@ -42,6 +42,11 @@ public class CmdBanlist extends FCommand {
             return;
         }
 
+        if (target == null) {
+            sender.sendMessage(TL.COMMAND_BANLIST_INVALID.format(argAsString(0)));
+            return;
+        }
+
         List<String> lines = new ArrayList<>();
         lines.add(TL.COMMAND_BANLIST_HEADER.format(target.getBannedPlayers().size(), target.getTag(myFaction)));
         int i = 1;

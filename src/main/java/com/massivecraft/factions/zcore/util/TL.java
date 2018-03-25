@@ -85,6 +85,7 @@ public enum TL {
     COMMAND_BANLIST_HEADER("&6There are &c%d&6 bans for %s"),
     COMMAND_BANLIST_ENTRY("&7%d. &c%s &r- &a%s &r- &e%s"),
     COMMAND_BANLIST_NOFACTION("&4You are not in a Faction."),
+    COMMAND_BANLIST_INVALID("We couldn't find a Faction by the name %s"),
 
     COMMAND_BOOM_PEACEFULONLY("&cThis command is only usable by factions which are specifically designated as peaceful."),
     COMMAND_BOOM_TOTOGGLE("to toggle explosions"),
