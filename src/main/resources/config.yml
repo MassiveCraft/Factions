@@ -81,6 +81,13 @@ f-fly:
   # In seconds
   radius-check: 1
 
+# Faction Near
+f-near:
+  # Making this radius larger increases lag, do so at your own risk
+  # If on a high radius it is advised to add a cooldown to the command
+  # Also using {distance} placeholder in the lang would cause more lag on a bigger radius
+  radius: 20
+
 # Pistons
 # Should we disable pistons in Faction territory? This will prevent people from doing something like:
 # http://i.gyazo.com/6a1a31222e58a5d60ff341c13f6a8404.gif

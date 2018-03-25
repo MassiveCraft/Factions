@@ -104,6 +104,7 @@ permissions:
       factions.ban: true
       factions.fly: true
       factions.coleader: true
+      factions.near: true
   factions.admin:
     description: hand over your admin rights
   factions.admin.any:
@@ -289,3 +290,5 @@ permissions:
     description: Allow use of /f fly
   factions.coleader:
     description: Allow use of /f coleader <target>
+  factions.near:
+    description: Allow use of /f near to show nearby faction members

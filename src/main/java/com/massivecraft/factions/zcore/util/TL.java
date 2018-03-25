@@ -370,6 +370,11 @@ public enum TL {
     COMMAND_MONEYWITHDRAW_DESCRIPTION("Withdraw money"),
     COMMAND_MONEYWITHDRAW_WITHDRAW("%1$s withdrew %2$s from the faction bank: %3$s"),
 
+    COMMAND_NEAR_DESCRIPTION("Show nearby faction members"),
+    COMMAND_NEAR_PLAYER("&a&l{role-prefix}&8{name} (&d{distance}m&8)"),
+    COMMAND_NEAR_PLAYERLIST("&eNear: {players-nearby}"),
+    COMMAND_NEAR_NONE("&8None"),
+
     COMMAND_OPEN_TOOPEN("to open or close the faction"),
     COMMAND_OPEN_FOROPEN("for opening or closing the faction"),
     COMMAND_OPEN_OPEN("open"),
