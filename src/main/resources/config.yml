@@ -76,6 +76,10 @@ f-fly:
   # Set to 0 if wanted disable
   # Note: Will produce lag at higher numbers
   enemy-radius: 7
+  # Frequency Check
+  # How frequent should we check if an enemy is nearby?
+  # In seconds
+  radius-check: 1
 
 # Pistons
 # Should we disable pistons in Faction territory? This will prevent people from doing something like:
