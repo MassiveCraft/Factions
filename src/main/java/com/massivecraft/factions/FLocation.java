@@ -94,6 +94,10 @@ public class FLocation implements Serializable {
         return "" + x + "," + z;
     }
 
+    public Chunk getChunk() {
+        return new Location(getWorld(), chunkToBlock(x), 0, chunkToBlock(z)).getChunk();
+    }
+
     @Override
     public String toString() {
         return "[" + this.getWorldName() + "," + this.getCoordString() + "]";

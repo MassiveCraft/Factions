@@ -13,6 +13,8 @@ import com.massivecraft.factions.zcore.util.TagUtil;
 import mkremins.fanciful.FancyMessage;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 
 import java.util.*;
 import java.util.Map.Entry;
@@ -102,6 +104,14 @@ public abstract class MemoryBoard extends Board {
         while (it.hasNext()) {
             if (flocation.isInChunk(it.next().getLocation())) {
                 it.remove();
+            }
+        }
+        for (Entity entity : flocation.getChunk().getEntities()) {
+            if (entity instanceof Player) {
+                FPlayer fPlayer = FPlayers.getInstance().getByPlayer((Player) entity);
+                if (fPlayer.isFlying()) {
+                    fPlayer.setFlying(false);
+                }
             }
         }
         clearOwnershipAt(flocation);
