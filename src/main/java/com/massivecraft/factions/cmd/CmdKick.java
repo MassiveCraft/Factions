@@ -101,9 +101,9 @@ public class CmdKick extends FCommand {
 
         Access access = myFaction.getAccess(fme, PermissableAction.KICK);
         // This statement allows us to check if they've specifically denied it, or default to
-        // the old setting of allowing moderators to set warps.
+        // the old setting of allowing moderators to kick
         if (access == Access.DENY || (access == Access.UNDEFINED && !assertMinRole(Role.MODERATOR))) {
-            fme.msg(TL.GENERIC_NOPERMISSION, "set warp");
+            fme.msg(TL.GENERIC_NOPERMISSION, "kick");
             return;
         }
 
