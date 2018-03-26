@@ -31,12 +31,17 @@ public enum ChatMode {
     }
 
     public ChatMode getNext() {
-        if (this == PUBLIC) {
-            return ALLIANCE;
+        switch (this) {
+            case PUBLIC:
+                return TRUCE;
+            case TRUCE:
+                return ALLIANCE;
+            case ALLIANCE:
+                return FACTION;
+            case FACTION:
+                return MOD;
+            default:
+                return PUBLIC;
         }
-        if (this == ALLIANCE) {
-            return FACTION;
-        }
-        return PUBLIC;
     }
 }

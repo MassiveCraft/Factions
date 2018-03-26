@@ -45,7 +45,7 @@ public class FactionsChatListener implements Listener {
                 }
             }
 
-            Bukkit.getLogger().log(Level.INFO, ChatColor.stripColor("Mod Chat: " + message));
+            Bukkit.getLogger().log(Level.INFO, ChatColor.stripColor("ModChat " + myFaction.getTag() + ": " + message));
 
             event.setCancelled(true);
         } else if (chat == ChatMode.FACTION) {

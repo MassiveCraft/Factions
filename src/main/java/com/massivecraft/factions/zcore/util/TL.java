@@ -100,7 +100,8 @@ public enum TL {
     COMMAND_BYPASS_DESCRIPTION("Enable admin bypass mode"),
 
     COMMAND_CHAT_DISABLED("&cThe built in chat channels are disabled on this server."),
-    COMMAND_CHAT_INVALIDMODE("&cUnrecognised chat mode. &ePlease enter either 'a','f' or 'p'"),
+    COMMAND_CHAT_INVALIDMODE("&cUnrecognised chat mode. &ePlease enter either 'a','f','m','t' or 'p'"),
+    COMMAND_CHAT_INSUFFICIENTRANK("&cYou must be at least moderator to enter this chat."),
     COMMAND_CHAT_DESCRIPTION("Change chat mode"),
 
     COMMAND_CHAT_MODE_PUBLIC("&ePublic chat mode."),

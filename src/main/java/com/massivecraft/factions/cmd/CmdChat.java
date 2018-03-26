@@ -3,6 +3,7 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdChat extends FCommand {
@@ -34,10 +35,22 @@ public class CmdChat extends FCommand {
         String modeString = this.argAsString(0);
         ChatMode modeTarget = fme.getChatMode().getNext();
 
+        // If player is cycling through chat modes
+        // and he is not atleast a moderator get next one
+        if (modeString == null && modeTarget == ChatMode.MOD) {
+            if (!fme.getRole().isAtLeast(Role.MODERATOR)) {
+                modeTarget = modeTarget.getNext();
+            }
+        }
+
         if (modeString != null) {
             modeString = modeString.toLowerCase();
             if (modeString.startsWith("m")) {
                 modeTarget = ChatMode.MOD;
+                if (!fme.getRole().isAtLeast(Role.MODERATOR)) {
+                    fme.msg(TL.COMMAND_CHAT_INSUFFICIENTRANK);
+                    return;
+                }
             } else if (modeString.startsWith("p")) {
                 modeTarget = ChatMode.PUBLIC;
             } else if (modeString.startsWith("a")) {
