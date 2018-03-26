@@ -53,14 +53,14 @@ public class FPromoteCommand extends FCommand {
         Role current = target.getRole();
         Role promotion = Role.getRelative(current, +relative);
 
-        // Don't allow people to control people that are below them.
-        if (current.value >= fme.getRole().value) {
-            fme.msg(TL.COMMAND_PROMOTE_NOT_ALLOWED);
+        if (promotion == null) {
+            fme.msg(TL.COMMAND_PROMOTE_NOTTHATPLAYER);
             return;
         }
 
-        if (promotion == null) {
-            fme.msg(TL.COMMAND_PROMOTE_NOTTHATPLAYER);
+        // Don't allow people to promote people to their same or higher rnak.
+        if (fme.getRole().value <= promotion.value) {
+            fme.msg(TL.COMMAND_PROMOTE_NOT_ALLOWED);
             return;
         }
 
