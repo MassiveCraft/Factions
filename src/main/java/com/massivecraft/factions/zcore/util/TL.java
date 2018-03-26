@@ -212,7 +212,7 @@ public enum TL {
     COMMAND_FWARP_CLICKTOWARP("Click to warp!"),
     COMMAND_FWARP_COMMANDFORMAT("&e/f warp <warpname> [password]"),
     COMMAND_FWARP_WARPED("&eWarped to &6%1$s"),
-    COMMAND_FWARP_INVALID("&eCouldn't find warp &6%1$s"),
+    COMMAND_FWARP_INVALID_WARP("&eCouldn't find warp &6%1$s"),
     COMMAND_FWARP_TOWARP("to warp"),
     COMMAND_FWARP_FORWARPING("for warping"),
     COMMAND_FWARP_WARPS("Warps: "),
