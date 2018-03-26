@@ -38,7 +38,11 @@ public class CmdMoneyBalance extends FCommand {
             return;
         }
 
-        Econ.sendBalanceInfo(fme, faction);
+        if (fme != null) {
+            Econ.sendBalanceInfo(fme, faction);
+        } else {
+            Econ.sendBalanceInfo(sender, faction);
+        }
     }
 
     @Override

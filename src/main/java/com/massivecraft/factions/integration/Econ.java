@@ -13,6 +13,7 @@ import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
 import java.text.DecimalFormat;
@@ -88,6 +89,14 @@ public class Econ {
         to.msg("<a>%s's<i> balance is <h>%s<i>.", about.describeTo(to, true), Econ.moneyString(econ.getBalance(about.getAccountId())));
     }
 
+    public static void sendBalanceInfo(CommandSender to, Faction about) {
+        if (!shouldBeUsed()) {
+            P.p.log(Level.WARNING, "Vault does not appear to be hooked into an economy plugin.");
+            return;
+        }
+        to.sendMessage(String.format("%s's balance is %s.", about.getTag(), Econ.moneyString(econ.getBalance(about.getAccountId()))));
+    }
+
     public static boolean canIControllYou(EconomyParticipator i, EconomyParticipator you) {
         Faction fI = RelationUtil.getFaction(i);
         Faction fYou = RelationUtil.getFaction(you);
@@ -135,6 +144,7 @@ public class Econ {
 
     public static boolean transferMoney(EconomyParticipator invoker, EconomyParticipator from, EconomyParticipator to, double amount, boolean notify) {
         if (!shouldBeUsed()) {
+            invoker.msg(TL.ECON_OFF);
             return false;
         }
 
@@ -180,6 +190,12 @@ public class Econ {
                 invoker.msg("<h>%s<b> can't afford to transfer <h>%s<b> to %s<b>.", from.describeTo(invoker, true), moneyString(amount), to.describeTo(invoker));
             }
 
+            return false;
+        }
+
+        // Check if the new balance is over Essential's money cap.
+        if (Essentials.isOverBalCap(to, econ.getBalance(toAcc) + amount)) {
+            invoker.msg(TL.ECON_OVER_BAL_CAP, amount);
             return false;
         }
 

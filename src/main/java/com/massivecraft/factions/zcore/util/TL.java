@@ -707,6 +707,8 @@ public enum TL {
 
     ECON_OFF("no %s"), // no balance, no value, no refund, etc
     ECON_FORMAT("###,###.###"),
+    ECON_DISABLED("Faction econ is disabled."),
+    ECON_OVER_BAL_CAP("&4The amount &e%s &4is over Essentials' balance cap."),
 
     /**
      * Relations
