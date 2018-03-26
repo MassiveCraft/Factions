@@ -288,7 +288,10 @@ public abstract class MemoryBoard extends Board {
             }
             for (int dx = (dz < 3 ? 6 : 3); dx < width; dx++) {
                 if (dx == halfWidth && dz == halfHeight) {
-                    row.then("+").color(ChatColor.AQUA).tooltip(TL.CLAIM_YOUAREHERE.toString());
+                    row.then("+").color(ChatColor.AQUA);
+                    if(false) {
+                        row.tooltip(TL.CLAIM_YOUAREHERE.toString());
+                    }
                 } else {
                     FLocation flocationHere = topLeft.getRelative(dx, dz);
                     Faction factionHere = getFactionAt(flocationHere);
@@ -313,7 +316,10 @@ public abstract class MemoryBoard extends Board {
                         }
                         char tag = fList.get(factionHere.getTag());
 
-                        row.then(String.valueOf(tag)).color(factionHere.getColorTo(faction)).tooltip(getToolTip(factionHere, fplayer));
+                        row.then(String.valueOf(tag)).color(factionHere.getColorTo(faction));
+                        if(false) {
+                            row.tooltip(getToolTip(factionHere, fplayer));
+                        }
                     } else {
                         row.then("-").color(ChatColor.GRAY);
                     }
