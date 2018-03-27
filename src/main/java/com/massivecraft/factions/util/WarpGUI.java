@@ -6,6 +6,7 @@ import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.zcore.util.TL;
+import com.massivecraft.factions.zcore.util.TagUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
@@ -57,7 +58,7 @@ public class WarpGUI implements InventoryHolder, FactionGUI {
         }
 
         guiSize *= 9;
-        String guiName = ChatColor.translateAlternateColorCodes('&', section.getString("name", "FactionPermissions"));
+        String guiName = parse(section.getString("name", "FactionPermissions"));
         warpGUI = Bukkit.createInventory(this, guiSize, guiName);
 
         maxWarps = P.p.getConfig().getInt("max-warps", 5);
@@ -174,7 +175,7 @@ public class WarpGUI implements InventoryHolder, FactionGUI {
     }
 
     private String replacePlaceholers(String string, String warp, Faction faction) {
-        string = ChatColor.translateAlternateColorCodes('&', string);
+        string = parse(string);
         string = string.replace("{warp}", warp);
         string = string.replace("{warp-protected}", faction.hasWarpPassword(warp) ? "Enabled" : "Disabled");
         string = string.replace("{warp-cost}", !P.p.getConfig().getBoolean("warp-cost.enabled", false) ? "Disabled" : Integer.toString(P.p.getConfig().getInt("warp-cost.warp", 5)));
@@ -239,17 +240,24 @@ public class WarpGUI implements InventoryHolder, FactionGUI {
 
         itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
 
-        itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', dummySection.getString("name", " ")));
+        itemMeta.setDisplayName(parse(dummySection.getString("name", " ")));
 
         List<String> lore = new ArrayList<>();
         for (String loreLine : dummySection.getStringList("lore")) {
-            lore.add(ChatColor.translateAlternateColorCodes('&', loreLine));
+            lore.add(parse(loreLine));
         }
         itemMeta.setLore(lore);
 
         itemStack.setItemMeta(itemMeta);
 
         return itemStack;
+    }
+
+    private String parse(String string) {
+        string = ChatColor.translateAlternateColorCodes('&', string);
+        string = TagUtil.parsePlain(fme, string);
+        string = TagUtil.parsePlain(fme.getFaction(), string);
+        return TagUtil.parsePlaceholders(fme.getPlayer(), string);
     }
 
 }

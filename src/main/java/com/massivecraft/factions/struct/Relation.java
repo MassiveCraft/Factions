@@ -1,9 +1,11 @@
 package com.massivecraft.factions.struct;
 
 import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.zcore.fperms.Permissable;
 import com.massivecraft.factions.zcore.util.TL;
+import com.massivecraft.factions.zcore.util.TagUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -196,10 +198,10 @@ public enum Relation implements Permissable {
 
     // Utility method to build items for F Perm GUI
     @Override
-    public ItemStack buildItem() {
+    public ItemStack buildItem(FPlayer fme) {
         final ConfigurationSection RELATION_CONFIG = P.p.getConfig().getConfigurationSection("fperm-gui.relation");
 
-        String displayName = replacePlaceholders(RELATION_CONFIG.getString("placeholder-item.name", ""));
+        String displayName = replacePlaceholders(RELATION_CONFIG.getString("placeholder-item.name", ""), fme);
         List<String> lore = new ArrayList<>();
 
         Material material = Material.matchMaterial(RELATION_CONFIG.getString("materials." + name().toLowerCase()));
@@ -211,7 +213,7 @@ public enum Relation implements Permissable {
         ItemMeta itemMeta = item.getItemMeta();
 
         for (String loreLine : RELATION_CONFIG.getStringList("placeholder-item.lore")) {
-            lore.add(replacePlaceholders(loreLine));
+            lore.add(replacePlaceholders(loreLine, fme));
         }
 
         itemMeta.setDisplayName(displayName);
@@ -222,8 +224,10 @@ public enum Relation implements Permissable {
         return item;
     }
 
-    public String replacePlaceholders(String string) {
+    public String replacePlaceholders(String string, FPlayer fme) {
         string = ChatColor.translateAlternateColorCodes('&', string);
+        string = TagUtil.parsePlain(fme, string);
+        string =  TagUtil.parsePlain(fme.getFaction(), string);
 
         String permissableName = nicename.substring(0, 1).toUpperCase() + nicename.substring(1);
 

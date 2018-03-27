@@ -6,6 +6,8 @@ import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.FactionGUI;
 import com.massivecraft.factions.zcore.fperms.Permissable;
+import com.massivecraft.factions.zcore.util.TagUtil;
+import com.massivecraft.factions.zcore.util.TextUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
@@ -109,7 +111,7 @@ public class PermissableRelationGUI implements InventoryHolder, FactionGUI {
         for (Map.Entry<Integer, Permissable> entry : relationSlots.entrySet()) {
             Permissable permissable = entry.getValue();
 
-            ItemStack item = permissable.buildItem();
+            ItemStack item = permissable.buildItem(fme);
 
             if (item == null) {
                 P.p.log(Level.WARNING, "Invalid material for " + permissable.toString().toUpperCase() + " skipping it");
@@ -185,11 +187,11 @@ public class PermissableRelationGUI implements InventoryHolder, FactionGUI {
 
         ItemMeta itemMeta = itemStack.getItemMeta();
 
-        itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', dummySection.getString("name", " ")));
+        itemMeta.setDisplayName(parse(dummySection.getString("name", " ")));
 
         List<String> lore = new ArrayList<>();
         for (String loreLine : dummySection.getStringList("lore")) {
-            lore.add(ChatColor.translateAlternateColorCodes('&', loreLine));
+            lore.add(parse(loreLine));
         }
         itemMeta.setLore(lore);
 
@@ -198,6 +200,13 @@ public class PermissableRelationGUI implements InventoryHolder, FactionGUI {
         itemStack.setItemMeta(itemMeta);
 
         return itemStack;
+    }
+
+    private String parse(String string) {
+        string = ChatColor.translateAlternateColorCodes('&', string);
+        string = TagUtil.parsePlain(fme, string);
+        string = TagUtil.parsePlain(fme.getFaction(), string);
+        return TagUtil.parsePlaceholders(fme.getPlayer(), string);
     }
 
 }

@@ -7,6 +7,7 @@ import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.Permissable;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
+import com.massivecraft.factions.zcore.util.TagUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
@@ -57,7 +58,7 @@ public class PermissableActionGUI implements InventoryHolder, FactionGUI {
         }
 
         guiSize *= 9;
-        String guiName = ChatColor.translateAlternateColorCodes('&', section.getString("name", "FactionPerms"));
+        String guiName = parse(section.getString("name", "Faction Permissions"));
         actionGUI = Bukkit.createInventory(this, guiSize, guiName);
 
         for (String key : section.getConfigurationSection("slots").getKeys(false)) {
@@ -177,17 +178,17 @@ public class PermissableActionGUI implements InventoryHolder, FactionGUI {
 
         switch (specialItem) {
             case RELATION:
-                return permissable.buildItem();
+                return permissable.buildItem(fme);
             case BACK:
                 ConfigurationSection backButtonConfig = P.p.getConfig().getConfigurationSection("fperm-gui.back-item");
 
                 ItemStack backButton = new ItemStack(Material.matchMaterial(backButtonConfig.getString("material")));
                 ItemMeta backButtonMeta = backButton.getItemMeta();
 
-                backButtonMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', backButtonConfig.getString("name")));
+                backButtonMeta.setDisplayName(parse(backButtonConfig.getString("name", "Back")));
                 List<String> lore = new ArrayList<>();
                 for (String loreLine : backButtonConfig.getStringList("lore")) {
-                    lore.add(ChatColor.translateAlternateColorCodes('&', loreLine));
+                    lore.add(parse(loreLine));
                 }
 
                 backButtonMeta.setLore(lore);
@@ -267,11 +268,11 @@ public class PermissableActionGUI implements InventoryHolder, FactionGUI {
 
         ItemMeta itemMeta = itemStack.getItemMeta();
 
-        itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', dummySection.getString("name", " ")));
+        itemMeta.setDisplayName(parse(dummySection.getString("name", " ")));
 
         List<String> lore = new ArrayList<>();
         for (String loreLine : dummySection.getStringList("lore")) {
-            lore.add(ChatColor.translateAlternateColorCodes('&', loreLine));
+            lore.add(parse(loreLine));
         }
 
         itemMeta.setLore(lore);
@@ -282,6 +283,13 @@ public class PermissableActionGUI implements InventoryHolder, FactionGUI {
         return itemStack;
     }
 
+    private String parse(String string) {
+        string = ChatColor.translateAlternateColorCodes('&', string);
+        string = TagUtil.parsePlain(fme, string);
+        string = TagUtil.parsePlain(fme.getFaction(), string);
+        return TagUtil.parsePlaceholders(fme.getPlayer(), string);
+    }
+    
     public enum SpecialItem {
         BACK,
         RELATION;
