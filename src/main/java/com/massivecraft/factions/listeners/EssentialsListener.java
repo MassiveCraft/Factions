@@ -41,8 +41,9 @@ public class EssentialsListener implements Listener {
             Location loc = user.getHome(homeName);
             FLocation floc = new FLocation(loc);
 
+            Faction factionAt = Board.getInstance().getFactionAt(floc);
             // We're only going to remove homes in territory that belongs to THEIR faction.
-            if (Board.getInstance().getFactionAt(floc).equals(faction)) {
+            if (factionAt.equals(faction) && factionAt.isNormal()) {
                 user.delHome(homeName);
                 P.p.log(Level.INFO, "FactionLeaveEvent: Removing home %s, player %s, in territory of %s",
                         homeName, event.getfPlayer().getName(), faction.getTag());
