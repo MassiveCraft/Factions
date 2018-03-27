@@ -298,12 +298,6 @@ public abstract class MemoryBoard extends Board {
                     Relation relation = fplayer.getRelationTo(factionHere);
                     if (factionHere.isWilderness()) {
                         row.then("-").color(Conf.colorWilderness);
-                        // Check for claimat permission and if so, let them claim at ;D
-                        // TODO: TEMP DISABLED UNTIL FIXED PROPERLY :(
-                        if (false) { //fplayer.getPlayer().hasPermission(Permission.CLAIMAT.node)) {
-                            row.tooltip(TL.CLAIM_CLICK_TO_CLAIM.format(dx, dz))
-                                    .command(String.format("/f claimat %s %d %d", flocation.getWorldName(), dx, dz));
-                        }
                     } else if (factionHere.isSafeZone()) {
                         row.then("+").color(Conf.colorSafezone);
                     } else if (factionHere.isWarZone()) {
@@ -315,11 +309,7 @@ public abstract class MemoryBoard extends Board {
                             fList.put(factionHere.getTag(), Conf.mapKeyChrs[Math.min(chrIdx++, Conf.mapKeyChrs.length - 1)]);
                         }
                         char tag = fList.get(factionHere.getTag());
-
                         row.then(String.valueOf(tag)).color(factionHere.getColorTo(faction));
-                        if(false) {
-                            row.tooltip(getToolTip(factionHere, fplayer));
-                        }
                     } else {
                         row.then("-").color(ChatColor.GRAY);
                     }
