@@ -833,7 +833,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
             Factions.getInstance().removeFaction(getId());
         } else { // promote new faction admin
             if (oldLeader != null) {
-                oldLeader.setRole(Role.NORMAL);
+                oldLeader.setRole(Role.COLEADER);
             }
             replacements.get(0).setRole(Role.ADMIN);
             //TODO:TL
