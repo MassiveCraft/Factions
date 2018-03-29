@@ -78,6 +78,7 @@ public enum TL {
     COMMAND_BAN_DESCRIPTION("Ban players from joining your Faction."),
     COMMAND_BAN_TARGET("&cYou were banned from &7%1$s"), // banned player perspective
     COMMAND_BAN_BANNED("&e%1$s &cbanned &7%2$s"),
+    COMMAND_BAN_ALREADYBANNED("&c%1$s is already banned"),
     COMMAND_BAN_SELF("&cYou may not ban yourself"),
     COMMAND_BAN_INSUFFICIENTRANK("&cYour rank is too low to ban &7%1$s"),
 
