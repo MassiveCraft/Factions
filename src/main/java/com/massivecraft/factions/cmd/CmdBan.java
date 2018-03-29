@@ -3,6 +3,7 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.event.FPlayerLeaveEvent;
+import com.massivecraft.factions.struct.BanInfo;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.fperms.Access;
@@ -66,6 +67,14 @@ public class CmdBan extends FCommand {
             return;
         }
 
+        // Check if the user is already banned
+        for (BanInfo banInfo : myFaction.getBannedPlayers()) {
+            if (banInfo.getBanned().equals(target.getId())) {
+                fme.msg(TL.COMMAND_BAN_TARGET_ALREADYBANNED, target.getName());
+                return;
+            }
+        }
+
         // Ban the user.
         myFaction.ban(target, fme);
         myFaction.deinvite(target); // can't hurt
@@ -88,7 +97,7 @@ public class CmdBan extends FCommand {
         }
 
         // Lets inform the people!
-        target.msg(TL.COMMAND_BAN_TARGET, myFaction.getTag(target.getFaction()));
+        target.msg(TL.COMMAND_BAN_TARGET_BANNED, myFaction.getTag(target.getFaction()));
         myFaction.msg(TL.COMMAND_BAN_BANNED, fme.getName(), target.getName());
     }
 
