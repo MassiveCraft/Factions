@@ -70,7 +70,7 @@ public class CmdBan extends FCommand {
         // Check if the user is already banned
         for (BanInfo banInfo : myFaction.getBannedPlayers()) {
             if (banInfo.getBanned().equals(target.getId())) {
-                fme.msg(TL.COMMAND_BAN_TARGET_ALREADYBANNED, target.getName());
+                fme.msg(TL.COMMAND_BAN_ALREADYBANNED, target.getName());
                 return;
             }
         }
@@ -97,7 +97,7 @@ public class CmdBan extends FCommand {
         }
 
         // Lets inform the people!
-        target.msg(TL.COMMAND_BAN_TARGET_BANNED, myFaction.getTag(target.getFaction()));
+        target.msg(TL.COMMAND_BAN_BANNED, myFaction.getTag(target.getFaction()));
         myFaction.msg(TL.COMMAND_BAN_BANNED, fme.getName(), target.getName());
     }
 
