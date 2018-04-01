@@ -253,17 +253,6 @@ public class FactionsBlockListener implements Listener {
             }
         }
 
-        Access access = otherFaction.getAccess(me, PermissableAction.fromString(action));
-        if (access != null && access != Access.UNDEFINED) {
-            // TODO: Update this once new access values are added other than just allow / deny.
-            if (access == Access.DENY) {
-                me.msg(TL.GENERIC_NOPERMISSION, action);
-                return false;
-            }
-
-            return true; // has to be allow
-        }
-
         // cancel building/destroying in other territory?
         if (deny) {
             if (!justCheck) {
@@ -289,6 +278,17 @@ public class FactionsBlockListener implements Listener {
 
                 return false;
             }
+        }
+
+        Access access = otherFaction.getAccess(me, PermissableAction.fromString(action));
+        if (access != null && access != Access.UNDEFINED) {
+            // TODO: Update this once new access values are added other than just allow / deny.
+            if (access == Access.DENY) {
+                me.msg(TL.GENERIC_NOPERMISSION, action);
+                return false;
+            }
+
+            return true; // has to be allow
         }
 
         return true;
