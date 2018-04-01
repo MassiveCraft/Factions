@@ -38,6 +38,11 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion implements R
         return P.p.getDescription().getVersion();
     }
 
+    @Override
+    public boolean persist() {
+        return true;
+    }
+
     // Relational placeholders
     @Override
     public String onPlaceholderRequest(Player p1, Player p2, String placeholder) {
