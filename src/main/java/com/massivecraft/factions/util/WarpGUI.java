@@ -2,16 +2,24 @@ package com.massivecraft.factions.util;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TagUtil;
+import com.massivecraft.factions.zcore.util.TextUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.conversations.ConversationAbandonedEvent;
+import org.bukkit.conversations.ConversationAbandonedListener;
+import org.bukkit.conversations.ConversationContext;
+import org.bukkit.conversations.ConversationFactory;
+import org.bukkit.conversations.InactivityConversationCanceller;
+import org.bukkit.conversations.ManuallyAbandonedConversationCanceller;
+import org.bukkit.conversations.Prompt;
+import org.bukkit.conversations.StringPrompt;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.Inventory;
@@ -23,7 +31,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.*;
 import java.util.logging.Level;
 
-public class WarpGUI implements InventoryHolder, FactionGUI {
+public class WarpGUI implements InventoryHolder, FactionGUI, ConversationAbandonedListener {
 
     private Inventory warpGUI;
     private FPlayer fme;
@@ -105,7 +113,17 @@ public class WarpGUI implements InventoryHolder, FactionGUI {
                     doWarmup(warp);
                 }
             } else {
-                fme.msg(TL.COMMAND_FWARP_PASSWORD_REQUIRED);
+                HashMap<Object, Object> sessionData = new HashMap<>();
+                sessionData.put("warp", warp);
+                ConversationFactory inputFactory = new ConversationFactory(P.p)
+                        .withModality(false)
+                        .withLocalEcho(false)
+                        .withInitialSessionData(sessionData)
+                        .withFirstPrompt(new PasswordPrompt())
+                        .addConversationAbandonedListener(this)
+                        .withTimeout(section.getInt("password-timeout", 5));
+
+                inputFactory.buildConversation(fme.getPlayer()).begin();
             }
         }
     }
@@ -149,7 +167,7 @@ public class WarpGUI implements InventoryHolder, FactionGUI {
             return new ItemStack(Material.AIR);
         }
 
-        String displayName = replacePlaceholers(warpItemSection.getString("name"), warp, fme.getFaction());
+        String displayName = replacePlaceholers(warpItemSection.getString("name"), warp);
         List<String> lore = new ArrayList<>();
 
         if (warpItemSection.getString("material") == null) {
@@ -164,7 +182,7 @@ public class WarpGUI implements InventoryHolder, FactionGUI {
         ItemMeta itemMeta = item.getItemMeta();
 
         for (String loreLine : warpItemSection.getStringList("lore")) {
-            lore.add(replacePlaceholers(loreLine, warp, fme.getFaction()));
+            lore.add(replacePlaceholers(loreLine, warp));
         }
 
         itemMeta.setDisplayName(displayName);
@@ -174,11 +192,15 @@ public class WarpGUI implements InventoryHolder, FactionGUI {
         return item;
     }
 
-    private String replacePlaceholers(String string, String warp, Faction faction) {
-        string = parse(string);
+    private String replacePlaceholers(String string, String warp) {
+        string = TextUtil.parseColor(string);
         string = string.replace("{warp}", warp);
-        string = string.replace("{warp-protected}", faction.hasWarpPassword(warp) ? "Enabled" : "Disabled");
         string = string.replace("{warp-cost}", !P.p.getConfig().getBoolean("warp-cost.enabled", false) ? "Disabled" : Integer.toString(P.p.getConfig().getInt("warp-cost.warp", 5)));
+        if (fme.getFaction().hasWarpPassword(warp)) {
+            string = string.replace("{warp-protected}", section.getString("password-protected-lore", "You will be prompted for a password"));
+        } else {
+            string = string.replace("{warp-protected}", section.getString("not-password-protected-lore", "Warp is not password protected"));
+        }
         return string;
     }
 
@@ -258,6 +280,38 @@ public class WarpGUI implements InventoryHolder, FactionGUI {
         string = TagUtil.parsePlain(fme, string);
         string = TagUtil.parsePlain(fme.getFaction(), string);
         return TagUtil.parsePlaceholders(fme.getPlayer(), string);
+    }
+
+    @Override
+    public void conversationAbandoned(ConversationAbandonedEvent abandonedEvent) {
+        if (abandonedEvent.getCanceller() instanceof ManuallyAbandonedConversationCanceller ||
+                abandonedEvent.getCanceller() instanceof InactivityConversationCanceller) {
+            fme.msg(TL.COMMAND_FWARP_PASSWORD_CANCEL);
+        }
+    }
+
+    private class PasswordPrompt extends StringPrompt {
+
+        @Override
+        public String getPromptText(ConversationContext context) {
+            return TL.COMMAND_FWARP_PASSWORD_REQUIRED.toString();
+        }
+
+        @Override
+        public Prompt acceptInput(ConversationContext context, String input) {
+            String warp = (String) context.getSessionData("warp");
+            if (fme.getFaction().isWarpPassword(warp, input)) {
+                // Valid Password, make em pay
+                if (transact(fme)) {
+                    doWarmup(warp);
+                }
+            } else {
+                // Invalid Password
+                fme.msg(TL.COMMAND_FWARP_INVALID_PASSWORD);
+            }
+            return END_OF_CONVERSATION;
+        }
+
     }
 
 }
