@@ -55,16 +55,16 @@ public class CmdSeeChunk extends FCommand {
         blockZ = chunkZ * 16;
         showPillar(me, world, blockX, blockZ);
 
-        blockX = chunkX * 16 + 15;
+        blockX = chunkX * 16 + 16;
         blockZ = chunkZ * 16;
         showPillar(me, world, blockX, blockZ);
 
         blockX = chunkX * 16;
-        blockZ = chunkZ * 16 + 15;
+        blockZ = chunkZ * 16 + 16;
         showPillar(me, world, blockX, blockZ);
 
-        blockX = chunkX * 16 + 15;
-        blockZ = chunkZ * 16 + 15;
+        blockX = chunkX * 16 + 16;
+        blockZ = chunkZ * 16 + 16;
         showPillar(me, world, blockX, blockZ);
     }
 
