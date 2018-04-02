@@ -51,6 +51,10 @@
                             <pattern>com.darkblade12</pattern>
                             <shadedPattern>com.massivecraft.factions.shade.com.darkblade12</shadedPattern>
                         </relocation>
+                        <relocation>
+                            <pattern>net.amoebaman.util</pattern>
+                            <shadedPattern>com.massivecraft.factions.shade.net.amoebaman.util</shadedPattern>
+                        </relocation>
                     </relocations>
                 </configuration>
                 <executions>
