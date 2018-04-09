@@ -688,6 +688,11 @@ public enum TL {
     GENERIC_PLACEHOLDER("<This is a placeholder for a message you should not see>"),
 
     /**
+     * Clip placeholder stuff
+     */
+    PLACEHOLDER_ROLE_NAME("None"),
+
+    /**
      * ASCII compass (for chat map)
      */
     COMPASS_SHORT_NORTH("N"),

@@ -97,6 +97,8 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion implements R
                 return String.valueOf(fPlayer.getDeaths());
             case "player_role":
                 return fPlayer.hasFaction() ? fPlayer.getRole().getPrefix() : "";
+            case "player_role_name":
+                return fPlayer.hasFaction() ? fPlayer.getRole().getTranslation().toString() : TL.PLACEHOLDER_ROLE_NAME.toString();
             // Then Faction stuff
             case "faction_name":
                 return fPlayer.hasFaction() ? faction.getTag() : "";
