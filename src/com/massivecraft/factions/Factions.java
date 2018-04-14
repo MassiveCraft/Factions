@@ -20,6 +20,7 @@ import com.massivecraft.factions.mixin.PowerMixin;
 import com.massivecraft.massivecore.MassivePlugin;
 import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.command.type.RegistryType;
+import com.massivecraft.massivecore.store.migrator.MigratorUtil;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.xlib.gson.GsonBuilder;
 import org.bukkit.ChatColor;
@@ -72,6 +73,8 @@ public class Factions extends MassivePlugin
 		// Register Faction accountId Extractor
 		// TODO: Perhaps this should be placed in the econ integration somewhere?
 		MUtil.registerExtractor(String.class, "accountId", ExtractorFactionAccountId.get());
+
+		MigratorUtil.addJsonRepresentation(Board.class, Board.MAP_TYPE);
 
 		// Activate
 		this.activateAuto();
