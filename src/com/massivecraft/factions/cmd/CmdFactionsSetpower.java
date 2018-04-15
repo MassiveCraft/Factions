@@ -18,7 +18,7 @@ public class CmdFactionsSetpower extends FactionsCommand
 	public CmdFactionsSetpower()
 	{
 		// Aliases
-		this.addAliases("sp", "setpower");
+		this.addAliases("sp");
 		
 		// Parameters
 		this.addParameter(TypeMPlayer.get(), "player");
