@@ -77,8 +77,8 @@ f-fly:
   # Note: Will produce lag at higher numbers
   enemy-radius: 7
   # Frequency Check
-  # How frequent should we check if an enemy is nearby?
-  # In seconds
+  # How frequent should we check if an enemy is nearby? In seconds (Supports decimals)
+  # Note: Use 0 to disable
   radius-check: 1
 
 # Faction Near

@@ -133,10 +133,13 @@ public class P extends MPlugin {
         // since some other plugins execute commands directly through this command interface, provide it
         this.getCommand(this.refCommand).setExecutor(this);
 
-        if (getConfig().getBoolean("f-fly.enabled", false)) {
-            int delay = getConfig().getInt("f-fly.radius-check", 1) * 20;
-            new FlightDisableUtil().runTaskTimer(this, 0, delay);
-            log(Level.INFO, "Enabling enemy radius check for f fly every {} seconds", delay);
+        if (getConfig().getBoolean("f-fly.enable", false)) {
+            double delay = getConfig().getDouble("f-fly.radius-check", 1) * 20;
+            // Only run FlightUtil if not 0
+            if (delay != 0) {
+                new FlightDisableUtil().runTaskTimer(this, 0, (long) delay);
+                log(Level.INFO, "Enabling enemy radius check for f fly every %1s seconds", delay / 20);
+            }
         }
 
         new TitleAPI();
