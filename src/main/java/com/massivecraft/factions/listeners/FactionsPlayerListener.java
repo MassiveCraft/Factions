@@ -526,7 +526,7 @@ public class FactionsPlayerListener implements Listener {
 
         // Check the location they're teleporting to and check if they can fly there.
         if (p.getConfig().getBoolean("f-fly.enable", false) && !me.isAdminBypassing() && me.isFlying() && !me.canFlyAtLocation(to)) {
-            me.setFFlying(false, false);
+            me.setFlying(false, false);
         }
 
     }

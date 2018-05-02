@@ -698,7 +698,7 @@ public abstract class MemoryFPlayer implements FPlayer {
 
         myFaction.removeAnnouncements(this);
         this.resetFactionData();
-        setFFlying(false, false);
+        setFlying(false, false);
 
         if (myFaction.isNormal() && !perm && myFaction.getFPlayers().isEmpty()) {
             // Remove this faction
@@ -902,10 +902,10 @@ public abstract class MemoryFPlayer implements FPlayer {
     }
 
     public void setFlying(boolean fly) {
-        setFFlying(fly, false);
+        setFlying(fly, false);
     }
 
-    public void setFFlying(boolean fly, boolean damage) {
+    public void setFlying(boolean fly, boolean damage) {
         Player player = getPlayer();
         if (player != null) {
             player.setAllowFlight(fly);
@@ -945,8 +945,12 @@ public abstract class MemoryFPlayer implements FPlayer {
 
     public boolean canFlyAtLocation(FLocation location) {
         Faction faction = Board.getInstance().getFactionAt(location);
-        if (faction.isWilderness() || faction.isSafeZone() || faction.isWarZone()) {
-            return false;
+        if (faction.isWilderness()) {
+            return Permission.FLY_WILDERNESS.has(getPlayer());
+        } else if (faction.isSafeZone()) {
+            return Permission.FLY_SAFEZONE.has(getPlayer());
+        } else if (faction.isWarZone()) {
+            return Permission.FLY_WARZONE.has(getPlayer());
         }
 
         // Admins can always fly in their territory.

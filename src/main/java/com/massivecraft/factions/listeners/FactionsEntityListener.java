@@ -139,7 +139,7 @@ public class FactionsEntityListener implements Listener {
 
         FPlayer fPlayer = FPlayers.getInstance().getByPlayer(player);
         if (fPlayer.isFlying()) {
-            fPlayer.setFFlying(false, true);
+            fPlayer.setFlying(false, true);
         }
     }
 
