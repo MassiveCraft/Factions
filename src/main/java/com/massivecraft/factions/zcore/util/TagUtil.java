@@ -97,6 +97,10 @@ public class TagUtil {
     }
 
     public static String parsePlaceholders(Player player, String line) {
+        if (player == null || line == null) {
+            return line;
+        }
+
         if (P.p.isClipPlaceholderAPIHooked() && player.isOnline()) {
             line = PlaceholderAPI.setPlaceholders(player, line);
         }

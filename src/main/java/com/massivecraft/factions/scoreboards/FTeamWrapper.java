@@ -2,6 +2,7 @@ package com.massivecraft.factions.scoreboards;
 
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.zcore.util.TL;
+import com.massivecraft.factions.zcore.util.TagUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.scoreboard.Scoreboard;
@@ -169,6 +170,7 @@ public class FTeamWrapper {
             Team team = teams.get(fboard);
 
             String prefix = TL.DEFAULT_PREFIX.toString();
+            prefix = TagUtil.parsePlaceholders(fplayer.getPlayer(), prefix);
             prefix = prefix.replace("{relationcolor}", faction.getRelationTo(fplayer).getColor().toString());
             prefix = prefix.replace("{faction}", faction.getTag().substring(0, Math.min("{faction}".length() + 16 - prefix.length(), faction.getTag().length())));
             if (team.getPrefix() == null || !team.getPrefix().equals(prefix)) {
