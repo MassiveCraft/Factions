@@ -11,6 +11,7 @@ import com.massivecraft.massivecore.command.editor.annotation.EditorName;
 import com.massivecraft.massivecore.command.editor.annotation.EditorType;
 import com.massivecraft.massivecore.command.editor.annotation.EditorTypeInner;
 import com.massivecraft.massivecore.command.type.TypeMillisDiff;
+import com.massivecraft.massivecore.command.type.TypeStringCommand;
 import com.massivecraft.massivecore.store.Entity;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.TimeUnit;
@@ -335,6 +336,7 @@ public class MConf extends Entity<MConf>
 	
 	// A list of commands to block for members of permanent factions.
 	// I don't really understand the user case for this option.
+	@EditorTypeInner(TypeStringCommand.class)
 	public List<String> denyCommandsPermanentFactionMember = new ArrayList<>();
 
 	// Lists of commands to deny depending on your relation to the current faction territory.
