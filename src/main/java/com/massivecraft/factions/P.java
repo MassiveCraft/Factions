@@ -65,6 +65,8 @@ public class P extends MPlugin {
     private ClipPlaceholderAPIManager clipPlaceholderAPIManager;
     private boolean mvdwPlaceholderAPIManager = false;
 
+    public SeeChunkUtil seeChunkUtil;
+
     public P() {
         p = this;
     }
@@ -140,6 +142,11 @@ public class P extends MPlugin {
                 new FlightDisableUtil().runTaskTimer(this, 0, (long) delay);
                 log(Level.INFO, "Enabling enemy radius check for f fly every %1s seconds", delay / 20);
             }
+        }
+        if (P.p.getConfig().getBoolean("see-chunk.particles", true)) {
+            double delay = Math.floor(getConfig().getDouble("f-fly.radius-check", 0.75) * 20);
+            seeChunkUtil = new SeeChunkUtil();
+            seeChunkUtil.runTaskTimer(this, 0, (long) delay);
         }
 
         new TitleAPI();

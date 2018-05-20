@@ -62,6 +62,7 @@ public abstract class MemoryFPlayer implements FPlayer {
     protected boolean willAutoLeave = true;
     protected int mapHeight = 8; // default to old value
     protected boolean isFlying = false;
+    protected boolean seeingChunk = false;
 
     protected transient FLocation lastStoodAt = new FLocation(); // Where did this player stand the last time we checked?
     protected transient boolean mapAutoUpdating;
@@ -990,6 +991,15 @@ public abstract class MemoryFPlayer implements FPlayer {
 
     public void setTakeFallDamage(boolean fallDamage) {
         this.shouldTakeFallDamage = fallDamage;
+    }
+
+    public boolean isSeeingChunk() {
+        return seeingChunk;
+    }
+
+    public void setSeeingChunk(boolean seeingChunk) {
+        this.seeingChunk = seeingChunk;
+        P.p.seeChunkUtil.updatePlayerInfo(UUID.fromString(getId()), seeingChunk);
     }
 
     // -------------------------------------------- //

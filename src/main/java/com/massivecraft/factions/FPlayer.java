@@ -276,6 +276,10 @@ public interface FPlayer extends EconomyParticipator {
 
     public boolean canFlyAtLocation(FLocation location);
 
+    public boolean isSeeingChunk();
+
+    public void setSeeingChunk(boolean seeingChunk);
+
     // -------------------------------
     // Warmups
     // -------------------------------

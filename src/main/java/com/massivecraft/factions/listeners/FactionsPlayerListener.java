@@ -103,6 +103,8 @@ public class FactionsPlayerListener implements Listener {
         // If they have the permission, don't let them autoleave. Bad inverted setter :\
         me.setAutoLeave(!player.hasPermission(Permission.AUTO_LEAVE_BYPASS.node));
         me.setTakeFallDamage(true);
+
+        P.p.seeChunkUtil.updatePlayerInfo(UUID.fromString(me.getId()), me.isSeeingChunk());
     }
 
     @EventHandler(priority = EventPriority.NORMAL)
@@ -137,6 +139,8 @@ public class FactionsPlayerListener implements Listener {
         }
 
         FScoreboard.remove(me);
+
+        P.p.seeChunkUtil.updatePlayerInfo(UUID.fromString(me.getId()), false);
     }
 
     // Holds the next time a player can have a map shown.

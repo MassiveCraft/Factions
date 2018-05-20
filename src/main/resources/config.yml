@@ -110,9 +110,12 @@ enter-titles:
 see-chunk:
   # If disabled, it will use fake blocks like before (can cause client side lag)
   particles: true
-  particle: "BARRIER"
-  # How long should we show these particles? No idea the units, 10 just seemed good.
-  length: 10
+  particle: "REDSTONE"
+  # If the above particle is compatible with coloring we will color
+  # it based on the current chunk's faction
+  relational-color: true
+  # How often should we update the particles to the current player's location?
+  particle-update-time: 0.75
 
 # ToolTips
 # This section is to configure tooltips for things like /f list
