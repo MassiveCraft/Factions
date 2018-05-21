@@ -527,6 +527,7 @@ public class FactionsPlayerListener implements Listener {
     public void onTeleport(PlayerTeleportEvent event) {
         FPlayer me = FPlayers.getInstance().getByPlayer(event.getPlayer());
         FLocation to = new FLocation(event.getTo());
+        me.setLastStoodAt(to);
 
         // Check the location they're teleporting to and check if they can fly there.
         if (p.getConfig().getBoolean("f-fly.enable", false) && !me.isAdminBypassing() && me.isFlying() && !me.canFlyAtLocation(to)) {
