@@ -67,6 +67,7 @@ permissions:
   factions.rank.show: {description: show rank, default: false}
   factions.rank.action: {description: change rank, default: false}
   factions.relation: {description: manage faction relations, default: false}
+  factions.relation.check: {description: check relation between two factions, default: false}
   factions.relation.list: {description: list all factions with certain relation, default: false}
   factions.relation.set: {description: set relation wish to another faction, default: false}
   factions.relation.wishes: {description: list the relation wishes, default: false}
@@ -156,6 +157,7 @@ permissions:
       factions.powerboost.set: true
       factions.promote: true
       factions.relation: true
+      factions.relation.check: true
       factions.relation.list: true
       factions.relation.set: true
       factions.relation.wishes: true
@@ -269,6 +271,7 @@ permissions:
       factions.rank.show: true
       factions.rank.action: true
       factions.relation: true
+      factions.relation.check: true
       factions.relation.list: true
       factions.relation.set: true
       factions.relation.wishes: true
