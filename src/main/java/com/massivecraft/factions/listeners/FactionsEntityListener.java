@@ -204,7 +204,7 @@ public class FactionsEntityListener implements Listener {
                 targets.add(center.getRelative(1, 0, 0));
                 targets.add(center.getRelative(-1, 0, 0));
                 for (Block target : targets) {
-                    int id = target.getTypeId();
+                    int id = target.getType().getId();
                     // ignore air, bedrock, water, lava, obsidian, enchanting table, etc.... too bad we can't get a blast resistance value through Bukkit yet
                     if (id != 0 && (id < 7 || id > 11) && id != 49 && id != 90 && id != 116 && id != 119 && id != 120 && id != 130) {
                         target.breakNaturally();

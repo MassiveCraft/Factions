@@ -161,10 +161,6 @@ public class TextUtil {
         return material.toString().replace('_', ' ').toLowerCase();
     }
 
-    public static String getMaterialName(int materialId) {
-        return getMaterialName(Material.getMaterial(materialId));
-    }
-
     // -------------------------------------------- //
     // Paging and chrome-tools like titleize
     // -------------------------------------------- //

@@ -99,8 +99,8 @@ public class SeeChunkUtil extends BukkitRunnable {
                     effect.display(color, loc, player);
                 }
             } else {
-                int typeId = blockY % 5 == 0 ? Material.REDSTONE_LAMP_ON.getId() : Material.STAINED_GLASS.getId();
-                VisualizeUtil.addLocation(player, loc, typeId);
+                Material mat = blockY % 5 == 0 ? Material.REDSTONE_LAMP : Material.GLASS_PANE;
+                VisualizeUtil.addLocation(player, loc, mat);
             }
         }
     }

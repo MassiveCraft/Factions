@@ -1,6 +1,7 @@
 package com.massivecraft.factions.util;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
@@ -25,42 +26,36 @@ public class VisualizeUtil {
     }
 
     @SuppressWarnings("deprecation")
-    public static void addLocation(Player player, Location location, int typeId, byte data) {
+    public static void addLocation(Player player, Location location, Material material) {
         getPlayerLocations(player).add(location);
-        player.sendBlockChange(location, typeId, data);
+        player.sendBlockChange(location, material, (byte) 0);
     }
 
     @SuppressWarnings("deprecation")
-    public static void addLocation(Player player, Location location, int typeId) {
-        getPlayerLocations(player).add(location);
-        player.sendBlockChange(location, typeId, (byte) 0);
-    }
-
-    @SuppressWarnings("deprecation")
-    public static void addLocations(Player player, Map<Location, Integer> locationMaterialIds) {
+    public static void addLocations(Player player, Map<Location, Material> locationMaterialIds) {
         Set<Location> ploc = getPlayerLocations(player);
-        for (Entry<Location, Integer> entry : locationMaterialIds.entrySet()) {
+        for (Entry<Location, Material> entry : locationMaterialIds.entrySet()) {
             ploc.add(entry.getKey());
             player.sendBlockChange(entry.getKey(), entry.getValue(), (byte) 0);
         }
     }
 
     @SuppressWarnings("deprecation")
-    public static void addLocations(Player player, Collection<Location> locations, int typeId) {
+    public static void addLocations(Player player, Collection<Location> locations, Material material) {
         Set<Location> ploc = getPlayerLocations(player);
         for (Location location : locations) {
             ploc.add(location);
-            player.sendBlockChange(location, typeId, (byte) 0);
+            player.sendBlockChange(location, material, (byte) 0);
         }
     }
 
     @SuppressWarnings("deprecation")
-    public static void addBlocks(Player player, Collection<Block> blocks, int typeId) {
+    public static void addBlocks(Player player, Collection<Block> blocks, Material material) {
         Set<Location> ploc = getPlayerLocations(player);
         for (Block block : blocks) {
             Location location = block.getLocation();
             ploc.add(location);
-            player.sendBlockChange(location, typeId, (byte) 0);
+            player.sendBlockChange(location, material, (byte) 0);
         }
     }
 
@@ -72,7 +67,7 @@ public class VisualizeUtil {
         }
         for (Location location : locations) {
             Block block = location.getWorld().getBlockAt(location);
-            player.sendBlockChange(location, block.getTypeId(), block.getData());
+            player.sendBlockChange(location, block.getType(), block.getData());
         }
         locations.clear();
     }

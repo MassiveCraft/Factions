@@ -3,6 +3,7 @@ version: ${project.version}-b${build.number}
 main: com.massivecraft.factions.P
 authors: [Olof Larsson, Brett Flannigan, drtshock]
 softdepend: [PlayerVaults, PlaceholderAPI, MVdWPlaceholderAPI, PermissionsEx, Permissions, Essentials, EssentialsChat, HeroChat, iChat, LocalAreaChat, LWC, nChat, ChatManager, CAPI, AuthMe, Vault, Spout, WorldEdit, WorldGuard, AuthDB, CaptureThePoints, CombatTag, dynmap, FactionsTop]
+api-version: 1.13
 commands:
   factions:
     description: Reference command for Factions.

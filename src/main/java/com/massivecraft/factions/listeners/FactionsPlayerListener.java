@@ -425,7 +425,12 @@ public class FactionsPlayerListener implements Listener {
                 action = PermissableAction.LEVER;
                 break;
             case STONE_BUTTON:
-            case WOOD_BUTTON:
+            case BIRCH_BUTTON:
+            case ACACIA_BUTTON:
+            case DARK_OAK_BUTTON:
+            case JUNGLE_BUTTON:
+            case OAK_BUTTON:
+            case SPRUCE_BUTTON:
                 action = PermissableAction.BUTTON;
                 break;
             case DARK_OAK_DOOR:
@@ -434,9 +439,14 @@ public class FactionsPlayerListener implements Listener {
             case IRON_DOOR:
             case JUNGLE_DOOR:
             case SPRUCE_DOOR:
-            case TRAP_DOOR:
-            case WOOD_DOOR:
-            case WOODEN_DOOR:
+            case ACACIA_TRAPDOOR:
+            case OAK_DOOR:
+            case BIRCH_TRAPDOOR:
+            case DARK_OAK_TRAPDOOR:
+            case IRON_TRAPDOOR:
+            case JUNGLE_TRAPDOOR:
+            case OAK_TRAPDOOR:
+            case SPRUCE_TRAPDOOR:
                 action = PermissableAction.DOOR;
                 break;
             case CHEST:
@@ -465,10 +475,14 @@ public class FactionsPlayerListener implements Listener {
         if (!rel.isMember() || !otherFaction.playerHasOwnershipRights(me, loc) && player.getItemInHand() != null) {
             switch (player.getItemInHand().getType()) {
                 case CHEST:
-                case SIGN_POST:
-                case TRAPPED_CHEST:
                 case SIGN:
-                case WOOD_DOOR:
+                case TRAPPED_CHEST:
+                case DARK_OAK_DOOR:
+                case ACACIA_DOOR:
+                case BIRCH_DOOR:
+                case JUNGLE_DOOR:
+                case OAK_DOOR:
+                case SPRUCE_DOOR:
                 case IRON_DOOR:
                     return false;
                 default:
@@ -490,7 +504,7 @@ public class FactionsPlayerListener implements Listener {
         // You may use any block unless it is another faction's territory...
         if (rel.isNeutral() || (rel.isEnemy() && Conf.territoryEnemyProtectMaterials) || (rel.isAlly() && Conf.territoryAllyProtectMaterials) || (rel.isTruce() && Conf.territoryTruceProtectMaterials)) {
             if (!justCheck) {
-                me.msg(TL.PLAYER_USE_TERRITORY, (material == Material.SOIL ? "trample " : "use ") + TextUtil.getMaterialName(material), otherFaction.getTag(myFaction));
+                me.msg(TL.PLAYER_USE_TERRITORY, (material == Material.FARMLAND ? "trample " : "use ") + TextUtil.getMaterialName(material), otherFaction.getTag(myFaction));
             }
 
             return false;
