@@ -182,14 +182,17 @@ public class FactionsPlayerListener implements Listener {
         Faction factionTo = Board.getInstance().getFactionAt(to);
         boolean changedFaction = (factionFrom != factionTo);
 
-        if (p.getConfig().getBoolean("f-fly.enable", false) && changedFaction) {
-            if (!me.isAdminBypassing() && me.isFlying() && !me.canFlyAtLocation()) {
+        if (p.getConfig().getBoolean("f-fly.enable", false) && changedFaction && !me.isAdminBypassing()) {
+            boolean canFly = me.canFlyAtLocation();
+            if (me.isFlying() && !canFly) {
                 me.setFlying(false);
+            } else if (me.isAutoFlying() && !me.isFlying() && canFly) {
+                me.setFlying(true);
             }
         }
 
         if (me.isMapAutoUpdating()) {
-            if (showTimes.containsKey(player.getUniqueId()) && (showTimes.get(player.getUniqueId()) > System.currentTimeMillis())) {
+            if (showTimes.containsKey(player.getUniqueId()) && (showTimes.get(player.getUniqueId()) > System.currentTimeMillis()) && !me.isFlying()) {
                 if (P.p.getConfig().getBoolean("findfactionsexploit.log", false)) {
                     P.p.log(Level.WARNING, "%s tried to show a faction map too soon and triggered exploit blocker.", player.getName());
                 }
@@ -544,8 +547,13 @@ public class FactionsPlayerListener implements Listener {
         me.setLastStoodAt(to);
 
         // Check the location they're teleporting to and check if they can fly there.
-        if (p.getConfig().getBoolean("f-fly.enable", false) && !me.isAdminBypassing() && me.isFlying() && !me.canFlyAtLocation(to)) {
-            me.setFlying(false, false);
+        if (p.getConfig().getBoolean("f-fly.enable", false) && !me.isAdminBypassing()) {
+            boolean canFly = me.canFlyAtLocation(to);
+            if (me.isFlying() && !canFly) {
+                me.setFlying(false, false);
+            } else if (me.isAutoFlying() && !me.isFlying() && canFly) {
+                me.setFlying(true);
+            }
         }
 
     }

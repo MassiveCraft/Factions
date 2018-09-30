@@ -31,6 +31,7 @@ public enum Permission {
     DISBAND("disband"),
     DISBAND_ANY("disband.any"),
     FLY("fly"),
+    FLY_AUTO("fly.auto"),
     FLY_WILDERNESS("fly.wilderness"),
     FLY_SAFEZONE("fly.safezone"),
     FLY_WARZONE("fly.warzone"),
