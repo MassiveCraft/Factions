@@ -288,6 +288,8 @@ permissions:
     description: Ban players from Factions
   factions.fly:
     description: Allow use of /f fly
+  factions.fly.auto:
+    description: Allow use of /f fly auto
   factions.coleader:
     description: Allow use of /f coleader <target>
   factions.near:

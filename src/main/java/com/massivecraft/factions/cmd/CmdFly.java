@@ -14,7 +14,7 @@ public class CmdFly extends FCommand {
         super();
         this.aliases.add("fly");
 
-        this.optionalArgs.put("on/off", "flip");
+        this.optionalArgs.put("on/off/auto", "flip");
 
         this.permission = Permission.FLY.node;
         this.senderMustBeMember = true;
@@ -24,13 +24,21 @@ public class CmdFly extends FCommand {
     @Override
     public void perform() {
         if (args.size() == 0) {
-            toggleFlight(!fme.isFlying());
+            toggleFlight(!fme.isFlying(), true);
         } else if (args.size() == 1) {
-            toggleFlight(argAsBool(0));
+            if (argAsString(0).equalsIgnoreCase("auto")) {
+                // Player Wants to AutoFly
+                if (Permission.FLY_AUTO.has(me, true)) {
+                    fme.setAutoFlying(!fme.isAutoFlying());
+                    toggleFlight(fme.isAutoFlying(), false);
+                }
+            } else {
+                toggleFlight(argAsBool(0), true);
+            }
         }
     }
 
-    private void toggleFlight(final boolean toggle) {
+    private void toggleFlight(final boolean toggle, boolean notify) {
         // If false do nothing besides set
         if (!toggle) {
             fme.setFlying(false);
@@ -38,11 +46,15 @@ public class CmdFly extends FCommand {
         }
         // Do checks if true
         if (!fme.canFlyAtLocation()) {
-            Faction factionAtLocation = Board.getInstance().getFactionAt(fme.getLastStoodAt());
-            fme.msg(TL.COMMAND_FLY_NO_ACCESS, factionAtLocation.getTag(fme));
+            if (notify) {
+                Faction factionAtLocation = Board.getInstance().getFactionAt(fme.getLastStoodAt());
+                fme.msg(TL.COMMAND_FLY_NO_ACCESS, factionAtLocation.getTag(fme));
+            }
             return;
         } else if (FlightDisableUtil.enemiesNearby(fme, P.p.getConfig().getInt("f-fly.enemy-radius", 7))) {
-            fme.msg(TL.COMMAND_FLY_ENEMY_NEARBY);
+            if (notify) {
+                fme.msg(TL.COMMAND_FLY_ENEMY_NEARBY);
+            }
             return;
         }
 

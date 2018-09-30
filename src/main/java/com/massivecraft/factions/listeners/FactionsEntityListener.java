@@ -94,13 +94,14 @@ public class FactionsEntityListener implements Listener {
             EntityDamageByEntityEvent sub = (EntityDamageByEntityEvent) event;
             if (!this.canDamagerHurtDamagee(sub, true)) {
                 event.setCancelled(true);
+                return;
             }
             // event is not cancelled by factions
 
             Entity damagee = sub.getEntity();
             Entity damager = sub.getDamager();
 
-            if (damagee != null && damagee instanceof Player) {
+            if (damagee instanceof Player) {
                 cancelFStuckTeleport((Player) damagee);
                 cancelFFly((Player) damagee);
             }
@@ -125,6 +126,9 @@ public class FactionsEntityListener implements Listener {
             Player player = (Player) entity;
             FPlayer me = FPlayers.getInstance().getByPlayer(player);
             cancelFStuckTeleport(player);
+            if (p.getConfig().getBoolean("f-fly.disable-generic-damage", false)) {
+                cancelFFly(player);
+            }
             if (me.isWarmingUp()) {
                 me.clearWarmup();
                 me.msg(TL.WARMUPS_CANCELLED);
@@ -140,6 +144,9 @@ public class FactionsEntityListener implements Listener {
         FPlayer fPlayer = FPlayers.getInstance().getByPlayer(player);
         if (fPlayer.isFlying()) {
             fPlayer.setFlying(false, true);
+            if (fPlayer.isAutoFlying()) {
+                fPlayer.setAutoFlying(false);
+            }
         }
     }
 

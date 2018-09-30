@@ -80,6 +80,8 @@ f-fly:
   # How frequent should we check if an enemy is nearby? In seconds (Supports decimals)
   # Note: Use 0 to disable
   radius-check: 1
+  # Should we disable flight if the player has suffered generic damage
+  disable-generic-damage: false
 
 # Faction Near
 f-near:

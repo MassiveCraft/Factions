@@ -21,6 +21,9 @@ public class FlightDisableUtil extends BukkitRunnable {
                 if (enemiesNearby(pilot, 5)) {
                     pilot.msg(TL.COMMAND_FLY_ENEMY_DISABLE);
                     pilot.setFlying(false);
+                    if (pilot.isAutoFlying()) {
+                        pilot.setAutoFlying(false);
+                    }
                 }
             }
         }
