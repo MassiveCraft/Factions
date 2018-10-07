@@ -101,7 +101,7 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion implements R
                 return fPlayer.hasFaction() ? fPlayer.getRole().getTranslation().toString() : TL.PLACEHOLDER_ROLE_NAME.toString();
             // Then Faction stuff
             case "faction_name":
-                return fPlayer.hasFaction() ? faction.getTag() : "";
+                return fPlayer.hasFaction() ? faction.getTag() : TL.NOFACTION_PREFIX.toString();
             case "faction_power":
                 return String.valueOf(faction.getPowerRounded());
             case "faction_powermax":
