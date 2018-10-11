@@ -27,12 +27,12 @@ public class MaterialDb {
 
     private static MaterialDb instance;
 
-    public boolean legacy;
+    public boolean legacy = true;
     private MaterialProvider provider;
 
     public MaterialDb() {
-        load();
         instance = this;
+        load();
     }
 
     public Material get(String name) {
@@ -41,19 +41,19 @@ public class MaterialDb {
 
     public void load() {
         try {
-            int version = Integer.parseInt(Bukkit.getVersion().split(".")[1]);
-            legacy = version <= 12;
+            String versionString = Bukkit.getVersion();
+            String version = versionString.substring(versionString.indexOf('.') + 1, versionString.lastIndexOf('.'));
+            legacy = Integer.parseInt(version) < 13;
         } catch (NumberFormatException e) {
             // Issue formatting major version integer... uhm
             legacy = true;
         }
 
-        provider = new MaterialProvider(this);
 
-        InputStreamReader reader = new InputStreamReader(getClass().getResourceAsStream("materials.json"));
+        InputStreamReader reader = new InputStreamReader(P.p.getResource("materials.json"));
         Type typeToken = new TypeToken<HashMap<String, MaterialProvider.MaterialData>>(){}.getType();
         HashMap<String, MaterialProvider.MaterialData> materialData = P.p.gson.fromJson(reader, typeToken);
-        provider.setMaterialData(materialData);
+        provider = new MaterialProvider(materialData);
     }
 
     public static MaterialDb getInstance() {

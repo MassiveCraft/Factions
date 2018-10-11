@@ -1,28 +1,32 @@
 package com.massivecraft.factions.util.material;
 
+import com.google.gson.annotations.SerializedName;
+import com.massivecraft.factions.P;
 import org.bukkit.Material;
 
 import java.util.HashMap;
+import java.util.logging.Level;
 
 public class MaterialProvider {
 
-    private MaterialDb db;
-    private HashMap<String, MaterialData> materialData;
+    protected HashMap<String, MaterialData> materialData;
 
-    public MaterialProvider(MaterialDb db) {
-        this.db = db;
+    public MaterialProvider(HashMap<String, MaterialData> materialData) {
+        this.materialData = materialData;
     }
 
     public Material resolve(String name) {
-        return materialData.get(name).get();
-    }
-
-    public void setMaterialData(HashMap<String, MaterialData> materialData) {
-        this.materialData = materialData;
+        Material material = materialData.get(name).get();
+        if (material == null) {
+            P.p.log(Level.WARNING,"Invalid Material: " + name.toUpperCase());
+            return Material.AIR;
+        }
+        return material;
     }
 
     public class MaterialData {
 
+        @SerializedName("material")
         private String name;
         private String legacy;
 
@@ -32,13 +36,23 @@ public class MaterialProvider {
         }
 
         public Material get() {
-            if (!db.legacy) {
+            if (!MaterialDb.getInstance().legacy) {
                 return Material.matchMaterial(name);
             } else {
+                if (legacy == null) {
+                    return null;
+                }
                 return Material.matchMaterial(legacy);
             }
         }
 
+        @Override
+        public String toString() {
+            return "MaterialData{" +
+                    "name='" + name + '\'' +
+                    ", legacy='" + legacy + '\'' +
+                    '}';
+        }
     }
 
 }
