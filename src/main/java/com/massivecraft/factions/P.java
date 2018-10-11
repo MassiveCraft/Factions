@@ -12,6 +12,8 @@ import com.massivecraft.factions.integration.dynmap.EngineDynmap;
 import com.massivecraft.factions.listeners.*;
 import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.util.*;
+import com.massivecraft.factions.util.material.MaterialDb;
+import com.massivecraft.factions.util.material.MaterialProvider;
 import com.massivecraft.factions.zcore.MPlugin;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.Permissable;
@@ -26,7 +28,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
@@ -79,6 +80,8 @@ public class P extends MPlugin {
         this.loadSuccessful = false;
         saveDefaultConfig();
 
+        // Load Material database
+        new MaterialDb();
         // Load Conf from disk
         Conf.load();
 
