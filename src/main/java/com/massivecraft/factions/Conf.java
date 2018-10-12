@@ -1,7 +1,9 @@
 package com.massivecraft.factions;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Sets;
 import com.massivecraft.factions.integration.dynmap.DynmapStyle;
+import com.massivecraft.factions.util.material.FactionMaterial;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
@@ -240,7 +242,7 @@ public class Conf {
 
     public static boolean pistonProtectionThroughDenyBuild = true;
 
-    public static Set<Material> territoryProtectedMaterials = EnumSet.noneOf(Material.class);
+    public static Set<FactionMaterial> territoryProtectedMaterials = Sets.newHashSet();
     public static Set<Material> territoryDenyUseageMaterials = EnumSet.noneOf(Material.class);
     public static Set<Material> territoryProtectedMaterialsWhenOffline = EnumSet.noneOf(Material.class);
     public static Set<Material> territoryDenyUseageMaterialsWhenOffline = EnumSet.noneOf(Material.class);
@@ -392,7 +394,7 @@ public class Conf {
         territoryEnemyDenyCommands.add("tpaccept");
         territoryEnemyDenyCommands.add("tpa");
 
-        territoryProtectedMaterials.add(Material.DARK_OAK_DOOR);
+        territoryProtectedMaterials.add(new FactionMaterial("DARK_OAK_DOOR"));/*
         territoryProtectedMaterials.add(Material.BIRCH_DOOR);
         territoryProtectedMaterials.add(Material.ACACIA_DOOR);
         territoryProtectedMaterials.add(Material.IRON_DOOR);
@@ -494,7 +496,7 @@ public class Conf {
         safeZoneNerfedCreatureTypes.add(EntityType.WITCH);
         safeZoneNerfedCreatureTypes.add(EntityType.WITHER);
         safeZoneNerfedCreatureTypes.add(EntityType.ZOMBIE);
-        safeZoneNerfedCreatureTypes.add(EntityType.ELDER_GUARDIAN);
+        safeZoneNerfedCreatureTypes.add(EntityType.ELDER_GUARDIAN);*/
     }
 
     // -------------------------------------------- //

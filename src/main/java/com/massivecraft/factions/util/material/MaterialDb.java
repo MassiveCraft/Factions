@@ -1,6 +1,7 @@
 package com.massivecraft.factions.util.material;
 
 import com.google.gson.reflect.TypeToken;
+import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.P;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -54,6 +55,10 @@ public class MaterialDb {
         Type typeToken = new TypeToken<HashMap<String, MaterialProvider.MaterialData>>(){}.getType();
         HashMap<String, MaterialProvider.MaterialData> materialData = P.p.gson.fromJson(reader, typeToken);
         provider = new MaterialProvider(materialData);
+    }
+
+    public void testMaterials() {
+        P.p.log(Conf.territoryProtectedMaterials);
     }
 
     public static MaterialDb getInstance() {

@@ -18,7 +18,7 @@ public class MaterialProvider {
     public Material resolve(String name) {
         Material material = materialData.get(name).get();
         if (material == null) {
-            P.p.log(Level.WARNING,"Invalid Material: " + name.toUpperCase());
+            P.p.log(Level.WARNING, "Invalid Material: " + name.toUpperCase());
             return Material.AIR;
         }
         return material;

@@ -11,6 +11,7 @@ import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.FactionGUI;
 import com.massivecraft.factions.util.VisualizeUtil;
+import com.massivecraft.factions.util.material.FactionMaterial;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.persist.MemoryFPlayer;
@@ -495,7 +496,7 @@ public class FactionsPlayerListener implements Listener {
 
         // We only care about some material types.
         if (otherFaction.hasPlayersOnline()) {
-            if (!Conf.territoryProtectedMaterials.contains(material)) {
+            if (!Conf.territoryProtectedMaterials.contains(new FactionMaterial(material))) {
                 return true;
             }
         } else {
