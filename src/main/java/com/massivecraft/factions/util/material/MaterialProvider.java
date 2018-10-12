@@ -9,9 +9,9 @@ import java.util.logging.Level;
 
 public class MaterialProvider {
 
-    protected HashMap<String, MaterialData> materialData;
+    private HashMap<String, MaterialData> materialData;
 
-    public MaterialProvider(HashMap<String, MaterialData> materialData) {
+    MaterialProvider(HashMap<String, MaterialData> materialData) {
         this.materialData = materialData;
     }
 
@@ -22,6 +22,15 @@ public class MaterialProvider {
             return Material.AIR;
         }
         return material;
+    }
+
+    public String fromLegacy(String legacy) {
+        for (MaterialData data : materialData.values()) {
+            if (data.legacy.equalsIgnoreCase(legacy)) {
+                return data.name;
+            }
+        }
+        return null;
     }
 
     public class MaterialData {

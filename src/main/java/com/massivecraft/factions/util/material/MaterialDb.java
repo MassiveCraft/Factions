@@ -29,36 +29,34 @@ public class MaterialDb {
     private static MaterialDb instance;
 
     public boolean legacy = true;
-    private MaterialProvider provider;
+    public MaterialProvider provider;
 
-    public MaterialDb() {
-        instance = this;
-        load();
-    }
+    private MaterialDb() {}
 
     public Material get(String name) {
         return provider.resolve(name);
     }
 
-    public void load() {
+    public static void load() {
+        instance = new MaterialDb();
         try {
             String versionString = Bukkit.getVersion();
             String version = versionString.substring(versionString.indexOf('.') + 1, versionString.lastIndexOf('.'));
-            legacy = Integer.parseInt(version) < 13;
+            instance.legacy = Integer.parseInt(version) < 13;
         } catch (NumberFormatException e) {
             // Issue formatting major version integer... uhm
-            legacy = true;
+            instance.legacy = true;
         }
 
 
         InputStreamReader reader = new InputStreamReader(P.p.getResource("materials.json"));
         Type typeToken = new TypeToken<HashMap<String, MaterialProvider.MaterialData>>(){}.getType();
         HashMap<String, MaterialProvider.MaterialData> materialData = P.p.gson.fromJson(reader, typeToken);
-        provider = new MaterialProvider(materialData);
+        instance.provider = new MaterialProvider(materialData);
     }
 
     public void testMaterials() {
-        P.p.log(Conf.territoryProtectedMaterials);
+        // TODO: Do some Material tests
     }
 
     public static MaterialDb getInstance() {

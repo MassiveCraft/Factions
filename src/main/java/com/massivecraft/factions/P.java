@@ -83,7 +83,7 @@ public class P extends MPlugin {
         saveDefaultConfig();
 
         // Load Material database
-        new MaterialDb();
+        MaterialDb.load();
         // Load Conf from disk
         Conf.load();
         MaterialDb.getInstance().testMaterials();

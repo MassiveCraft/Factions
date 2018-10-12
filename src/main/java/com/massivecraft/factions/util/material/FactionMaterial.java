@@ -2,8 +2,6 @@ package com.massivecraft.factions.util.material;
 
 import org.bukkit.Material;
 
-import java.util.Objects;
-
 public class FactionMaterial {
 
     private String name;
@@ -13,7 +11,12 @@ public class FactionMaterial {
     }
 
     public FactionMaterial(Material material) {
-        this.name = material.name();
+        // If we are using Legacy we need to change the name to the 1.13 equivalent
+        if (MaterialDb.getInstance().legacy) {
+            this.name = MaterialDb.getInstance().provider.fromLegacy(material.name());
+        } else {
+            this.name = material.name();
+        }
     }
 
     public Material get() {
@@ -34,12 +37,13 @@ public class FactionMaterial {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         FactionMaterial that = (FactionMaterial) o;
-        return Objects.equals(name, that.name);
+        // Compare provided Materials instead of the name as different names might provide same materials
+        return get() == that.get();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name);
+        // Use material hashCode instead of name
+        return get().hashCode();
     }
-
 }
