@@ -40,7 +40,7 @@
         "material": "ACACIA_SAPLING"
     },
     "ACACIA_SLAB": {
-        "legacy": "WOODEN_SLAB",
+        "legacy": "WOOD_STEP",
         "material": "ACACIA_SLAB"
     },
     "ACACIA_STAIRS": {
@@ -180,7 +180,7 @@
         "material": "BIRCH_SAPLING"
     },
     "BIRCH_SLAB": {
-        "legacy": "WOODEN_SLAB",
+        "legacy": "WOOD_STEP",
         "material": "BIRCH_SLAB"
     },
     "BIRCH_STAIRS": {
@@ -368,7 +368,7 @@
         "material": "BRICKS"
     },
     "BRICK_SLAB": {
-        "legacy": "STONE_SLAB",
+        "legacy": "STEP",
         "material": "BRICK_SLAB"
     },
     "BRICK_STAIRS": {
@@ -595,7 +595,7 @@
         "material": "COBBLESTONE"
     },
     "COBBLESTONE_SLAB": {
-        "legacy": "STONE_SLAB",
+        "legacy": "STEP",
         "material": "COBBLESTONE_SLAB"
     },
     "COBBLESTONE_STAIRS": {
@@ -816,7 +816,7 @@
         "material": "DARK_OAK_SAPLING"
     },
     "DARK_OAK_SLAB": {
-        "legacy": "WOODEN_SLAB",
+        "legacy": "WOOD_STEP",
         "material": "DARK_OAK_SLAB"
     },
     "DARK_OAK_STAIRS": {
@@ -1603,7 +1603,7 @@
         "material": "JUNGLE_SAPLING"
     },
     "JUNGLE_SLAB": {
-        "legacy": "WOODEN_SLAB",
+        "legacy": "WOOD_STEP",
         "material": "JUNGLE_SLAB"
     },
     "JUNGLE_STAIRS": {
@@ -2064,7 +2064,7 @@
         "material": "NETHER_BRICK_FENCE"
     },
     "NETHER_BRICK_SLAB": {
-        "legacy": "STONE_SLAB",
+        "legacy": "STEP",
         "material": "NETHER_BRICK_SLAB"
     },
     "NETHER_BRICK_STAIRS": {
@@ -2136,7 +2136,7 @@
         "material": "OAK_SAPLING"
     },
     "OAK_SLAB": {
-        "legacy": "WOODEN_SLAB",
+        "legacy": "WOOD_STEP",
         "material": "OAK_SLAB"
     },
     "OAK_STAIRS": {
@@ -2601,7 +2601,7 @@
         "material": "QUARTZ_PILLAR"
     },
     "QUARTZ_SLAB": {
-        "legacy": "STONE_SLAB",
+        "legacy": "STEP",
         "material": "QUARTZ_SLAB"
     },
     "QUARTZ_STAIRS": {
@@ -2785,7 +2785,7 @@
         "material": "SANDSTONE"
     },
     "SANDSTONE_SLAB": {
-        "legacy": "STONE_SLAB",
+        "legacy": "STEP",
         "material": "SANDSTONE_SLAB"
     },
     "SANDSTONE_STAIRS": {
@@ -2960,7 +2960,7 @@
         "material": "SPRUCE_SAPLING"
     },
     "SPRUCE_SLAB": {
-        "legacy": "WOODEN_SLAB",
+        "legacy": "WOOD_STEP",
         "material": "SPRUCE_SLAB"
     },
     "SPRUCE_STAIRS": {
@@ -2999,7 +2999,7 @@
         "material": "STONE_BRICKS"
     },
     "STONE_BRICK_SLAB": {
-        "legacy": "STONE_SLAB",
+        "legacy": "STEP",
         "material": "STONE_BRICK_SLAB"
     },
     "STONE_BRICK_STAIRS": {
@@ -3027,7 +3027,7 @@
         "material": "STONE_SHOVEL"
     },
     "STONE_SLAB": {
-        "legacy": "STONE_SLAB",
+        "legacy": "STEP",
         "material": "STONE_SLAB"
     },
     "STONE_SWORD": {
@@ -3224,7 +3224,7 @@
         "material": "WHEAT"
     },
     "WHEAT_SEEDS": {
-        "legacy": "WHEAT_SEEDS",
+        "legacy": "SEEDS",
         "material": "WHEAT_SEEDS"
     },
     "WHITE_BANNER": {
@@ -3264,7 +3264,7 @@
         "material": "WHITE_STAINED_GLASS_PANE"
     },
     "WHITE_TERRACOTTA": {
-        "legacy": "TERRACOTTA",
+        "legacy": "STAINED_CLAY",
         "material": "WHITE_TERRACOTTA"
     },
     "WHITE_TULIP": {

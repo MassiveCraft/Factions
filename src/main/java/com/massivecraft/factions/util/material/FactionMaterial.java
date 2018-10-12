@@ -37,6 +37,11 @@ public class FactionMaterial {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         FactionMaterial that = (FactionMaterial) o;
+        // If the MaterialDb is null then it means that Conf is initializing, wait it out.
+        // We may not ask the Db for a Material so use the name instead.
+        if (MaterialDb.getInstance() == null) {
+            return name.equals(that.name);
+        }
         // Compare provided Materials instead of the name as different names might provide same materials
         return get() == that.get();
     }
@@ -44,6 +49,9 @@ public class FactionMaterial {
     @Override
     public int hashCode() {
         // Use material hashCode instead of name
+        if (MaterialDb.getInstance() == null) {
+            return name.hashCode();
+        }
         return get().hashCode();
     }
 }

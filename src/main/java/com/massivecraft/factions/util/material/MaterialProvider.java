@@ -9,7 +9,7 @@ import java.util.logging.Level;
 
 public class MaterialProvider {
 
-    private HashMap<String, MaterialData> materialData;
+    protected HashMap<String, MaterialData> materialData;
 
     MaterialProvider(HashMap<String, MaterialData> materialData) {
         this.materialData = materialData;
@@ -18,7 +18,8 @@ public class MaterialProvider {
     public Material resolve(String name) {
         Material material = materialData.get(name).get();
         if (material == null) {
-            P.p.log(Level.WARNING, "Invalid Material: " + name.toUpperCase());
+            // Could not create Material from provided String, return Air
+            P.p.log(Level.WARNING, "Invalid material: " + name.toUpperCase());
             return Material.AIR;
         }
         return material;
@@ -49,7 +50,8 @@ public class MaterialProvider {
                 return Material.matchMaterial(name);
             } else {
                 if (legacy == null) {
-                    return null;
+                    // Fallback to the 1.13 name
+                    return Material.matchMaterial(name);
                 }
                 return Material.matchMaterial(legacy);
             }
