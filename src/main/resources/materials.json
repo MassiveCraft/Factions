@@ -8,15 +8,12 @@
         "material": "ACACIA_BUTTON"
     },
     "ACACIA_DOOR": {
-        "legacy": "ACACIA_DOOR",
         "material": "ACACIA_DOOR"
     },
     "ACACIA_FENCE": {
-        "legacy": "ACACIA_FENCE",
         "material": "ACACIA_FENCE"
     },
     "ACACIA_FENCE_GATE": {
-        "legacy": "ACACIA_FENCE_GATE",
         "material": "ACACIA_FENCE_GATE"
     },
     "ACACIA_LEAVES": {
@@ -44,7 +41,6 @@
         "material": "ACACIA_SLAB"
     },
     "ACACIA_STAIRS": {
-        "legacy": "ACACIA_STAIRS",
         "material": "ACACIA_STAIRS"
     },
     "ACACIA_TRAPDOOR": {
@@ -56,11 +52,9 @@
         "material": "ACACIA_WOOD"
     },
     "ACTIVATOR_RAIL": {
-        "legacy": "ACTIVATOR_RAIL",
         "material": "ACTIVATOR_RAIL"
     },
     "AIR": {
-        "legacy": "AIR",
         "material": "AIR"
     },
     "ALLIUM": {
@@ -72,19 +66,15 @@
         "material": "ANDESITE"
     },
     "ANVIL": {
-        "legacy": "ANVIL",
         "material": "ANVIL"
     },
     "APPLE": {
-        "legacy": "APPLE",
         "material": "APPLE"
     },
     "ARMOR_STAND": {
-        "legacy": "ARMOR_STAND",
         "material": "ARMOR_STAND"
     },
     "ARROW": {
-        "legacy": "ARROW",
         "material": "ARROW"
     },
     "ATTACHED_MELON_STEM": {
@@ -100,11 +90,9 @@
         "material": "AZURE_BLUET"
     },
     "BAKED_POTATO": {
-        "legacy": "BAKED_POTATO",
         "material": "BAKED_POTATO"
     },
     "BARRIER": {
-        "legacy": "BARRIER",
         "material": "BARRIER"
     },
     "BAT_SPAWN_EGG": {
@@ -112,11 +100,9 @@
         "material": "BAT_SPAWN_EGG"
     },
     "BEACON": {
-        "legacy": "BEACON",
         "material": "BEACON"
     },
     "BEDROCK": {
-        "legacy": "BEDROCK",
         "material": "BEDROCK"
     },
     "BEEF": {
@@ -124,7 +110,6 @@
         "material": "BEEF"
     },
     "BEETROOT": {
-        "legacy": "BEETROOT",
         "material": "BEETROOT"
     },
     "BEETROOTS": {
@@ -132,11 +117,9 @@
         "material": "BEETROOTS"
     },
     "BEETROOT_SEEDS": {
-        "legacy": "BEETROOT_SEEDS",
         "material": "BEETROOT_SEEDS"
     },
     "BEETROOT_SOUP": {
-        "legacy": "BEETROOT_SOUP",
         "material": "BEETROOT_SOUP"
     },
     "BIRCH_BOAT": {
@@ -148,15 +131,12 @@
         "material": "BIRCH_BUTTON"
     },
     "BIRCH_DOOR": {
-        "legacy": "BIRCH_DOOR",
         "material": "BIRCH_DOOR"
     },
     "BIRCH_FENCE": {
-        "legacy": "BIRCH_FENCE",
         "material": "BIRCH_FENCE"
     },
     "BIRCH_FENCE_GATE": {
-        "legacy": "BIRCH_FENCE_GATE",
         "material": "BIRCH_FENCE_GATE"
     },
     "BIRCH_LEAVES": {
@@ -216,11 +196,9 @@
         "material": "BLACK_CONCRETE_POWDER"
     },
     "BLACK_GLAZED_TERRACOTTA": {
-        "legacy": "BLACK_GLAZED_TERRACOTTA",
         "material": "BLACK_GLAZED_TERRACOTTA"
     },
     "BLACK_SHULKER_BOX": {
-        "legacy": "BLACK_SHULKER_BOX",
         "material": "BLACK_SHULKER_BOX"
     },
     "BLACK_STAINED_GLASS": {
@@ -244,11 +222,9 @@
         "material": "BLACK_WOOL"
     },
     "BLAZE_POWDER": {
-        "legacy": "BLAZE_POWDER",
         "material": "BLAZE_POWDER"
     },
     "BLAZE_ROD": {
-        "legacy": "BLAZE_ROD",
         "material": "BLAZE_ROD"
     },
     "BLAZE_SPAWN_EGG": {
@@ -276,7 +252,6 @@
         "material": "BLUE_CONCRETE_POWDER"
     },
     "BLUE_GLAZED_TERRACOTTA": {
-        "legacy": "BLUE_GLAZED_TERRACOTTA",
         "material": "BLUE_GLAZED_TERRACOTTA"
     },
     "BLUE_ICE": {
@@ -288,7 +263,6 @@
         "material": "BLUE_ORCHID"
     },
     "BLUE_SHULKER_BOX": {
-        "legacy": "BLUE_SHULKER_BOX",
         "material": "BLUE_SHULKER_BOX"
     },
     "BLUE_STAINED_GLASS": {
@@ -312,11 +286,9 @@
         "material": "BLUE_WOOL"
     },
     "BONE": {
-        "legacy": "BONE",
         "material": "BONE"
     },
     "BONE_BLOCK": {
-        "legacy": "BONE_BLOCK",
         "material": "BONE_BLOCK"
     },
     "BONE_MEAL": {
@@ -324,19 +296,15 @@
         "material": "BONE_MEAL"
     },
     "BOOK": {
-        "legacy": "BOOK",
         "material": "BOOK"
     },
     "BOOKSHELF": {
-        "legacy": "BOOKSHELF",
         "material": "BOOKSHELF"
     },
     "BOW": {
-        "legacy": "BOW",
         "material": "BOW"
     },
     "BOWL": {
-        "legacy": "BOWL",
         "material": "BOWL"
     },
     "BRAIN_CORAL": {
@@ -352,11 +320,9 @@
         "material": "BRAIN_CORAL_WALL_FAN"
     },
     "BREAD": {
-        "legacy": "BREAD",
         "material": "BREAD"
     },
     "BREWING_STAND": {
-        "legacy": "BREWING_STAND",
         "material": "BREWING_STAND"
     },
     "BRICK": {
@@ -372,7 +338,6 @@
         "material": "BRICK_SLAB"
     },
     "BRICK_STAIRS": {
-        "legacy": "BRICK_STAIRS",
         "material": "BRICK_STAIRS"
     },
     "BROWN_BANNER": {
@@ -396,11 +361,9 @@
         "material": "BROWN_CONCRETE_POWDER"
     },
     "BROWN_GLAZED_TERRACOTTA": {
-        "legacy": "BROWN_GLAZED_TERRACOTTA",
         "material": "BROWN_GLAZED_TERRACOTTA"
     },
     "BROWN_MUSHROOM": {
-        "legacy": "BROWN_MUSHROOM",
         "material": "BROWN_MUSHROOM"
     },
     "BROWN_MUSHROOM_BLOCK": {
@@ -408,7 +371,6 @@
         "material": "BROWN_MUSHROOM_BLOCK"
     },
     "BROWN_SHULKER_BOX": {
-        "legacy": "BROWN_SHULKER_BOX",
         "material": "BROWN_SHULKER_BOX"
     },
     "BROWN_STAINED_GLASS": {
@@ -447,11 +409,9 @@
         "material": "BUBBLE_CORAL_WALL_FAN"
     },
     "BUCKET": {
-        "legacy": "BUCKET",
         "material": "BUCKET"
     },
     "CACTUS": {
-        "legacy": "CACTUS",
         "material": "CACTUS"
     },
     "CACTUS_GREEN": {
@@ -459,7 +419,6 @@
         "material": "CACTUS_GREEN"
     },
     "CAKE": {
-        "legacy": "CAKE",
         "material": "CAKE"
     },
     "CARROT": {
@@ -479,7 +438,6 @@
         "material": "CARVED_PUMPKIN"
     },
     "CAULDRON": {
-        "legacy": "CAULDRON",
         "material": "CAULDRON"
     },
     "CAVE_AIR": {
@@ -491,19 +449,15 @@
         "material": "CAVE_SPIDER_SPAWN_EGG"
     },
     "CHAINMAIL_BOOTS": {
-        "legacy": "CHAINMAIL_BOOTS",
         "material": "CHAINMAIL_BOOTS"
     },
     "CHAINMAIL_CHESTPLATE": {
-        "legacy": "CHAINMAIL_CHESTPLATE",
         "material": "CHAINMAIL_CHESTPLATE"
     },
     "CHAINMAIL_HELMET": {
-        "legacy": "CHAINMAIL_HELMET",
         "material": "CHAINMAIL_HELMET"
     },
     "CHAINMAIL_LEGGINGS": {
-        "legacy": "CHAINMAIL_LEGGINGS",
         "material": "CHAINMAIL_LEGGINGS"
     },
     "CHAIN_COMMAND_BLOCK": {
@@ -515,7 +469,6 @@
         "material": "CHARCOAL"
     },
     "CHEST": {
-        "legacy": "CHEST",
         "material": "CHEST"
     },
     "CHEST_MINECART": {
@@ -551,23 +504,18 @@
         "material": "CHISELED_STONE_BRICKS"
     },
     "CHORUS_FLOWER": {
-        "legacy": "CHORUS_FLOWER",
         "material": "CHORUS_FLOWER"
     },
     "CHORUS_FRUIT": {
-        "legacy": "CHORUS_FRUIT",
         "material": "CHORUS_FRUIT"
     },
     "CHORUS_PLANT": {
-        "legacy": "CHORUS_PLANT",
         "material": "CHORUS_PLANT"
     },
     "CLAY": {
-        "legacy": "CLAY",
         "material": "CLAY"
     },
     "CLAY_BALL": {
-        "legacy": "CLAY_BALL",
         "material": "CLAY_BALL"
     },
     "CLOCK": {
@@ -575,15 +523,12 @@
         "material": "CLOCK"
     },
     "COAL": {
-        "legacy": "COAL",
         "material": "COAL"
     },
     "COAL_BLOCK": {
-        "legacy": "COAL_BLOCK",
         "material": "COAL_BLOCK"
     },
     "COAL_ORE": {
-        "legacy": "COAL_ORE",
         "material": "COAL_ORE"
     },
     "COARSE_DIRT": {
@@ -591,7 +536,6 @@
         "material": "COARSE_DIRT"
     },
     "COBBLESTONE": {
-        "legacy": "COBBLESTONE",
         "material": "COBBLESTONE"
     },
     "COBBLESTONE_SLAB": {
@@ -599,7 +543,6 @@
         "material": "COBBLESTONE_SLAB"
     },
     "COBBLESTONE_STAIRS": {
-        "legacy": "COBBLESTONE_STAIRS",
         "material": "COBBLESTONE_STAIRS"
     },
     "COBBLESTONE_WALL": {
@@ -611,7 +554,6 @@
         "material": "COBWEB"
     },
     "COCOA": {
-        "legacy": "COCOA",
         "material": "COCOA"
     },
     "COCOA_BEANS": {
@@ -643,18 +585,15 @@
         "material": "COMPARATOR"
     },
     "COMPASS": {
-        "legacy": "COMPASS",
         "material": "COMPASS"
     },
     "CONDUIT": {
         "material": "CONDUIT"
     },
     "COOKED_BEEF": {
-        "legacy": "COOKED_BEEF",
         "material": "COOKED_BEEF"
     },
     "COOKED_CHICKEN": {
-        "legacy": "COOKED_CHICKEN",
         "material": "COOKED_CHICKEN"
     },
     "COOKED_COD": {
@@ -662,7 +601,6 @@
         "material": "COOKED_COD"
     },
     "COOKED_MUTTON": {
-        "legacy": "COOKED_MUTTON",
         "material": "COOKED_MUTTON"
     },
     "COOKED_PORKCHOP": {
@@ -670,7 +608,6 @@
         "material": "COOKED_PORKCHOP"
     },
     "COOKED_RABBIT": {
-        "legacy": "COOKED_RABBIT",
         "material": "COOKED_RABBIT"
     },
     "COOKED_SALMON": {
@@ -678,7 +615,6 @@
         "material": "COOKED_SALMON"
     },
     "COOKIE": {
-        "legacy": "COOKIE",
         "material": "COOKIE"
     },
     "COW_SPAWN_EGG": {
@@ -736,11 +672,9 @@
         "material": "CYAN_DYE"
     },
     "CYAN_GLAZED_TERRACOTTA": {
-        "legacy": "CYAN_GLAZED_TERRACOTTA",
         "material": "CYAN_GLAZED_TERRACOTTA"
     },
     "CYAN_SHULKER_BOX": {
-        "legacy": "CYAN_SHULKER_BOX",
         "material": "CYAN_SHULKER_BOX"
     },
     "CYAN_STAINED_GLASS": {
@@ -784,15 +718,12 @@
         "material": "DARK_OAK_BUTTON"
     },
     "DARK_OAK_DOOR": {
-        "legacy": "DARK_OAK_DOOR",
         "material": "DARK_OAK_DOOR"
     },
     "DARK_OAK_FENCE": {
-        "legacy": "DARK_OAK_FENCE",
         "material": "DARK_OAK_FENCE"
     },
     "DARK_OAK_FENCE_GATE": {
-        "legacy": "DARK_OAK_FENCE_GATE",
         "material": "DARK_OAK_FENCE_GATE"
     },
     "DARK_OAK_LEAVES": {
@@ -820,7 +751,6 @@
         "material": "DARK_OAK_SLAB"
     },
     "DARK_OAK_STAIRS": {
-        "legacy": "DARK_OAK_STAIRS",
         "material": "DARK_OAK_STAIRS"
     },
     "DARK_OAK_TRAPDOOR": {
@@ -842,7 +772,6 @@
         "material": "DARK_PRISMARINE_STAIRS"
     },
     "DAYLIGHT_DETECTOR": {
-        "legacy": "DAYLIGHT_DETECTOR",
         "material": "DAYLIGHT_DETECTOR"
     },
     "DEAD_BRAIN_CORAL": {
@@ -870,7 +799,6 @@
         "material": "DEAD_BUBBLE_CORAL_WALL_FAN"
     },
     "DEAD_BUSH": {
-        "legacy": "DEAD_BUSH",
         "material": "DEAD_BUSH"
     },
     "DEAD_FIRE_CORAL": {
@@ -914,35 +842,27 @@
         "material": "DEBUG_STICK"
     },
     "DETECTOR_RAIL": {
-        "legacy": "DETECTOR_RAIL",
         "material": "DETECTOR_RAIL"
     },
     "DIAMOND": {
-        "legacy": "DIAMOND",
         "material": "DIAMOND"
     },
     "DIAMOND_AXE": {
-        "legacy": "DIAMOND_AXE",
         "material": "DIAMOND_AXE"
     },
     "DIAMOND_BLOCK": {
-        "legacy": "DIAMOND_BLOCK",
         "material": "DIAMOND_BLOCK"
     },
     "DIAMOND_BOOTS": {
-        "legacy": "DIAMOND_BOOTS",
         "material": "DIAMOND_BOOTS"
     },
     "DIAMOND_CHESTPLATE": {
-        "legacy": "DIAMOND_CHESTPLATE",
         "material": "DIAMOND_CHESTPLATE"
     },
     "DIAMOND_HELMET": {
-        "legacy": "DIAMOND_HELMET",
         "material": "DIAMOND_HELMET"
     },
     "DIAMOND_HOE": {
-        "legacy": "DIAMOND_HOE",
         "material": "DIAMOND_HOE"
     },
     "DIAMOND_HORSE_ARMOR": {
@@ -950,15 +870,12 @@
         "material": "DIAMOND_HORSE_ARMOR"
     },
     "DIAMOND_LEGGINGS": {
-        "legacy": "DIAMOND_LEGGINGS",
         "material": "DIAMOND_LEGGINGS"
     },
     "DIAMOND_ORE": {
-        "legacy": "DIAMOND_ORE",
         "material": "DIAMOND_ORE"
     },
     "DIAMOND_PICKAXE": {
-        "legacy": "DIAMOND_PICKAXE",
         "material": "DIAMOND_PICKAXE"
     },
     "DIAMOND_SHOVEL": {
@@ -966,7 +883,6 @@
         "material": "DIAMOND_SHOVEL"
     },
     "DIAMOND_SWORD": {
-        "legacy": "DIAMOND_SWORD",
         "material": "DIAMOND_SWORD"
     },
     "DIORITE": {
@@ -974,11 +890,9 @@
         "material": "DIORITE"
     },
     "DIRT": {
-        "legacy": "DIRT",
         "material": "DIRT"
     },
     "DISPENSER": {
-        "legacy": "DISPENSER",
         "material": "DISPENSER"
     },
     "DOLPHIN_SPAWN_EGG": {
@@ -994,7 +908,6 @@
         "material": "DRAGON_BREATH"
     },
     "DRAGON_EGG": {
-        "legacy": "DRAGON_EGG",
         "material": "DRAGON_EGG"
     },
     "DRAGON_HEAD": {
@@ -1012,7 +925,6 @@
         "material": "DRIED_KELP_BLOCK"
     },
     "DROPPER": {
-        "legacy": "DROPPER",
         "material": "DROPPER"
     },
     "DROWNED_SPAWN_EGG": {
@@ -1020,7 +932,6 @@
         "material": "DROWNED_SPAWN_EGG"
     },
     "EGG": {
-        "legacy": "EGG",
         "material": "EGG"
     },
     "ELDER_GUARDIAN_SPAWN_EGG": {
@@ -1028,23 +939,18 @@
         "material": "ELDER_GUARDIAN_SPAWN_EGG"
     },
     "ELYTRA": {
-        "legacy": "ELYTRA",
         "material": "ELYTRA"
     },
     "EMERALD": {
-        "legacy": "EMERALD",
         "material": "EMERALD"
     },
     "EMERALD_BLOCK": {
-        "legacy": "EMERALD_BLOCK",
         "material": "EMERALD_BLOCK"
     },
     "EMERALD_ORE": {
-        "legacy": "EMERALD_ORE",
         "material": "EMERALD_ORE"
     },
     "ENCHANTED_BOOK": {
-        "legacy": "ENCHANTED_BOOK",
         "material": "ENCHANTED_BOOK"
     },
     "ENCHANTED_GOLDEN_APPLE": {
@@ -1064,7 +970,6 @@
         "material": "ENDERMITE_SPAWN_EGG"
     },
     "ENDER_CHEST": {
-        "legacy": "ENDER_CHEST",
         "material": "ENDER_CHEST"
     },
     "ENDER_EYE": {
@@ -1072,15 +977,12 @@
         "material": "ENDER_EYE"
     },
     "ENDER_PEARL": {
-        "legacy": "ENDER_PEARL",
         "material": "ENDER_PEARL"
     },
     "END_CRYSTAL": {
-        "legacy": "END_CRYSTAL",
         "material": "END_CRYSTAL"
     },
     "END_GATEWAY": {
-        "legacy": "END_GATEWAY",
         "material": "END_GATEWAY"
     },
     "END_PORTAL": {
@@ -1092,7 +994,6 @@
         "material": "END_PORTAL_FRAME"
     },
     "END_ROD": {
-        "legacy": "END_ROD",
         "material": "END_ROD"
     },
     "END_STONE": {
@@ -1116,11 +1017,9 @@
         "material": "FARMLAND"
     },
     "FEATHER": {
-        "legacy": "FEATHER",
         "material": "FEATHER"
     },
     "FERMENTED_SPIDER_EYE": {
-        "legacy": "FERMENTED_SPIDER_EYE",
         "material": "FERMENTED_SPIDER_EYE"
     },
     "FERN": {
@@ -1132,7 +1031,6 @@
         "material": "FILLED_MAP"
     },
     "FIRE": {
-        "legacy": "FIRE",
         "material": "FIRE"
     },
     "FIREWORK_ROCKET": {
@@ -1160,27 +1058,21 @@
         "material": "FIRE_CORAL_WALL_FAN"
     },
     "FISHING_ROD": {
-        "legacy": "FISHING_ROD",
         "material": "FISHING_ROD"
     },
     "FLINT": {
-        "legacy": "FLINT",
         "material": "FLINT"
     },
     "FLINT_AND_STEEL": {
-        "legacy": "FLINT_AND_STEEL",
         "material": "FLINT_AND_STEEL"
     },
     "FLOWER_POT": {
-        "legacy": "FLOWER_POT",
         "material": "FLOWER_POT"
     },
     "FROSTED_ICE": {
-        "legacy": "FROSTED_ICE",
         "material": "FROSTED_ICE"
     },
     "FURNACE": {
-        "legacy": "FURNACE",
         "material": "FURNACE"
     },
     "FURNACE_MINECART": {
@@ -1192,15 +1084,12 @@
         "material": "GHAST_SPAWN_EGG"
     },
     "GHAST_TEAR": {
-        "legacy": "GHAST_TEAR",
         "material": "GHAST_TEAR"
     },
     "GLASS": {
-        "legacy": "GLASS",
         "material": "GLASS"
     },
     "GLASS_BOTTLE": {
-        "legacy": "GLASS_BOTTLE",
         "material": "GLASS_BOTTLE"
     },
     "GLASS_PANE": {
@@ -1212,15 +1101,12 @@
         "material": "GLISTERING_MELON_SLICE"
     },
     "GLOWSTONE": {
-        "legacy": "GLOWSTONE",
         "material": "GLOWSTONE"
     },
     "GLOWSTONE_DUST": {
-        "legacy": "GLOWSTONE_DUST",
         "material": "GLOWSTONE_DUST"
     },
     "GOLDEN_APPLE": {
-        "legacy": "GOLDEN_APPLE",
         "material": "GOLDEN_APPLE"
     },
     "GOLDEN_AXE": {
@@ -1232,7 +1118,6 @@
         "material": "GOLDEN_BOOTS"
     },
     "GOLDEN_CARROT": {
-        "legacy": "GOLDEN_CARROT",
         "material": "GOLDEN_CARROT"
     },
     "GOLDEN_CHESTPLATE": {
@@ -1268,19 +1153,15 @@
         "material": "GOLDEN_SWORD"
     },
     "GOLD_BLOCK": {
-        "legacy": "GOLD_BLOCK",
         "material": "GOLD_BLOCK"
     },
     "GOLD_INGOT": {
-        "legacy": "GOLD_INGOT",
         "material": "GOLD_INGOT"
     },
     "GOLD_NUGGET": {
-        "legacy": "GOLD_NUGGET",
         "material": "GOLD_NUGGET"
     },
     "GOLD_ORE": {
-        "legacy": "GOLD_ORE",
         "material": "GOLD_ORE"
     },
     "GRANITE": {
@@ -1288,7 +1169,6 @@
         "material": "GRANITE"
     },
     "GRASS": {
-        "legacy": "GRASS",
         "material": "GRASS"
     },
     "GRASS_BLOCK": {
@@ -1296,11 +1176,9 @@
         "material": "GRASS_BLOCK"
     },
     "GRASS_PATH": {
-        "legacy": "GRASS_PATH",
         "material": "GRASS_PATH"
     },
     "GRAVEL": {
-        "legacy": "GRAVEL",
         "material": "GRAVEL"
     },
     "GRAY_BANNER": {
@@ -1328,11 +1206,9 @@
         "material": "GRAY_DYE"
     },
     "GRAY_GLAZED_TERRACOTTA": {
-        "legacy": "GRAY_GLAZED_TERRACOTTA",
         "material": "GRAY_GLAZED_TERRACOTTA"
     },
     "GRAY_SHULKER_BOX": {
-        "legacy": "GRAY_SHULKER_BOX",
         "material": "GRAY_SHULKER_BOX"
     },
     "GRAY_STAINED_GLASS": {
@@ -1376,11 +1252,9 @@
         "material": "GREEN_CONCRETE_POWDER"
     },
     "GREEN_GLAZED_TERRACOTTA": {
-        "legacy": "GREEN_GLAZED_TERRACOTTA",
         "material": "GREEN_GLAZED_TERRACOTTA"
     },
     "GREEN_SHULKER_BOX": {
-        "legacy": "GREEN_SHULKER_BOX",
         "material": "GREEN_SHULKER_BOX"
     },
     "GREEN_STAINED_GLASS": {
@@ -1412,7 +1286,6 @@
         "material": "GUNPOWDER"
     },
     "HAY_BLOCK": {
-        "legacy": "HAY_BLOCK",
         "material": "HAY_BLOCK"
     },
     "HEART_OF_THE_SEA": {
@@ -1423,11 +1296,9 @@
         "material": "HEAVY_WEIGHTED_PRESSURE_PLATE"
     },
     "HOPPER": {
-        "legacy": "HOPPER",
         "material": "HOPPER"
     },
     "HOPPER_MINECART": {
-        "legacy": "HOPPER_MINECART",
         "material": "HOPPER_MINECART"
     },
     "HORN_CORAL": {
@@ -1451,7 +1322,6 @@
         "material": "HUSK_SPAWN_EGG"
     },
     "ICE": {
-        "legacy": "ICE",
         "material": "ICE"
     },
     "INFESTED_CHISELED_STONE_BRICKS": {
@@ -1483,7 +1353,6 @@
         "material": "INK_SAC"
     },
     "IRON_AXE": {
-        "legacy": "IRON_AXE",
         "material": "IRON_AXE"
     },
     "IRON_BARS": {
@@ -1491,27 +1360,21 @@
         "material": "IRON_BARS"
     },
     "IRON_BLOCK": {
-        "legacy": "IRON_BLOCK",
         "material": "IRON_BLOCK"
     },
     "IRON_BOOTS": {
-        "legacy": "IRON_BOOTS",
         "material": "IRON_BOOTS"
     },
     "IRON_CHESTPLATE": {
-        "legacy": "IRON_CHESTPLATE",
         "material": "IRON_CHESTPLATE"
     },
     "IRON_DOOR": {
-        "legacy": "IRON_DOOR",
         "material": "IRON_DOOR"
     },
     "IRON_HELMET": {
-        "legacy": "IRON_HELMET",
         "material": "IRON_HELMET"
     },
     "IRON_HOE": {
-        "legacy": "IRON_HOE",
         "material": "IRON_HOE"
     },
     "IRON_HORSE_ARMOR": {
@@ -1519,23 +1382,18 @@
         "material": "IRON_HORSE_ARMOR"
     },
     "IRON_INGOT": {
-        "legacy": "IRON_INGOT",
         "material": "IRON_INGOT"
     },
     "IRON_LEGGINGS": {
-        "legacy": "IRON_LEGGINGS",
         "material": "IRON_LEGGINGS"
     },
     "IRON_NUGGET": {
-        "legacy": "IRON_NUGGET",
         "material": "IRON_NUGGET"
     },
     "IRON_ORE": {
-        "legacy": "IRON_ORE",
         "material": "IRON_ORE"
     },
     "IRON_PICKAXE": {
-        "legacy": "IRON_PICKAXE",
         "material": "IRON_PICKAXE"
     },
     "IRON_SHOVEL": {
@@ -1543,23 +1401,18 @@
         "material": "IRON_SHOVEL"
     },
     "IRON_SWORD": {
-        "legacy": "IRON_SWORD",
         "material": "IRON_SWORD"
     },
     "IRON_TRAPDOOR": {
-        "legacy": "IRON_TRAPDOOR",
         "material": "IRON_TRAPDOOR"
     },
     "ITEM_FRAME": {
-        "legacy": "ITEM_FRAME",
         "material": "ITEM_FRAME"
     },
     "JACK_O_LANTERN": {
-        "legacy": "JACK_O_LANTERN",
         "material": "JACK_O_LANTERN"
     },
     "JUKEBOX": {
-        "legacy": "JUKEBOX",
         "material": "JUKEBOX"
     },
     "JUNGLE_BOAT": {
@@ -1571,15 +1424,12 @@
         "material": "JUNGLE_BUTTON"
     },
     "JUNGLE_DOOR": {
-        "legacy": "JUNGLE_DOOR",
         "material": "JUNGLE_DOOR"
     },
     "JUNGLE_FENCE": {
-        "legacy": "JUNGLE_FENCE",
         "material": "JUNGLE_FENCE"
     },
     "JUNGLE_FENCE_GATE": {
-        "legacy": "JUNGLE_FENCE_GATE",
         "material": "JUNGLE_FENCE_GATE"
     },
     "JUNGLE_LEAVES": {
@@ -1625,15 +1475,12 @@
         "material": "KELP_PLANT"
     },
     "KNOWLEDGE_BOOK": {
-        "legacy": "KNOWLEDGE_BOOK",
         "material": "KNOWLEDGE_BOOK"
     },
     "LADDER": {
-        "legacy": "LADDER",
         "material": "LADDER"
     },
     "LAPIS_BLOCK": {
-        "legacy": "LAPIS_BLOCK",
         "material": "LAPIS_BLOCK"
     },
     "LAPIS_LAZULI": {
@@ -1641,7 +1488,6 @@
         "material": "LAPIS_LAZULI"
     },
     "LAPIS_ORE": {
-        "legacy": "LAPIS_ORE",
         "material": "LAPIS_ORE"
     },
     "LARGE_FERN": {
@@ -1649,11 +1495,9 @@
         "material": "LARGE_FERN"
     },
     "LAVA": {
-        "legacy": "LAVA",
         "material": "LAVA"
     },
     "LAVA_BUCKET": {
-        "legacy": "LAVA_BUCKET",
         "material": "LAVA_BUCKET"
     },
     "LEAD": {
@@ -1661,27 +1505,21 @@
         "material": "LEAD"
     },
     "LEATHER": {
-        "legacy": "LEATHER",
         "material": "LEATHER"
     },
     "LEATHER_BOOTS": {
-        "legacy": "LEATHER_BOOTS",
         "material": "LEATHER_BOOTS"
     },
     "LEATHER_CHESTPLATE": {
-        "legacy": "LEATHER_CHESTPLATE",
         "material": "LEATHER_CHESTPLATE"
     },
     "LEATHER_HELMET": {
-        "legacy": "LEATHER_HELMET",
         "material": "LEATHER_HELMET"
     },
     "LEATHER_LEGGINGS": {
-        "legacy": "LEATHER_LEGGINGS",
         "material": "LEATHER_LEGGINGS"
     },
     "LEVER": {
-        "legacy": "LEVER",
         "material": "LEVER"
     },
     "LIGHT_BLUE_BANNER": {
@@ -1709,11 +1547,9 @@
         "material": "LIGHT_BLUE_DYE"
     },
     "LIGHT_BLUE_GLAZED_TERRACOTTA": {
-        "legacy": "LIGHT_BLUE_GLAZED_TERRACOTTA",
         "material": "LIGHT_BLUE_GLAZED_TERRACOTTA"
     },
     "LIGHT_BLUE_SHULKER_BOX": {
-        "legacy": "LIGHT_BLUE_SHULKER_BOX",
         "material": "LIGHT_BLUE_SHULKER_BOX"
     },
     "LIGHT_BLUE_STAINED_GLASS": {
@@ -1825,11 +1661,9 @@
         "material": "LIME_DYE"
     },
     "LIME_GLAZED_TERRACOTTA": {
-        "legacy": "LIME_GLAZED_TERRACOTTA",
         "material": "LIME_GLAZED_TERRACOTTA"
     },
     "LIME_SHULKER_BOX": {
-        "legacy": "LIME_SHULKER_BOX",
         "material": "LIME_SHULKER_BOX"
     },
     "LIME_STAINED_GLASS": {
@@ -1853,7 +1687,6 @@
         "material": "LIME_WOOL"
     },
     "LINGERING_POTION": {
-        "legacy": "LINGERING_POTION",
         "material": "LINGERING_POTION"
     },
     "LLAMA_SPAWN_EGG": {
@@ -1885,11 +1718,9 @@
         "material": "MAGENTA_DYE"
     },
     "MAGENTA_GLAZED_TERRACOTTA": {
-        "legacy": "MAGENTA_GLAZED_TERRACOTTA",
         "material": "MAGENTA_GLAZED_TERRACOTTA"
     },
     "MAGENTA_SHULKER_BOX": {
-        "legacy": "MAGENTA_SHULKER_BOX",
         "material": "MAGENTA_SHULKER_BOX"
     },
     "MAGENTA_STAINED_GLASS": {
@@ -1917,7 +1748,6 @@
         "material": "MAGMA_BLOCK"
     },
     "MAGMA_CREAM": {
-        "legacy": "MAGMA_CREAM",
         "material": "MAGMA_CREAM"
     },
     "MAGMA_CUBE_SPAWN_EGG": {
@@ -1925,7 +1755,6 @@
         "material": "MAGMA_CUBE_SPAWN_EGG"
     },
     "MAP": {
-        "legacy": "MAP",
         "material": "MAP"
     },
     "MELON": {
@@ -1933,7 +1762,6 @@
         "material": "MELON"
     },
     "MELON_SEEDS": {
-        "legacy": "MELON_SEEDS",
         "material": "MELON_SEEDS"
     },
     "MELON_SLICE": {
@@ -1941,15 +1769,12 @@
         "material": "MELON_SLICE"
     },
     "MELON_STEM": {
-        "legacy": "MELON_STEM",
         "material": "MELON_STEM"
     },
     "MILK_BUCKET": {
-        "legacy": "MILK_BUCKET",
         "material": "MILK_BUCKET"
     },
     "MINECART": {
-        "legacy": "MINECART",
         "material": "MINECART"
     },
     "MOOSHROOM_SPAWN_EGG": {
@@ -1957,7 +1782,6 @@
         "material": "MOOSHROOM_SPAWN_EGG"
     },
     "MOSSY_COBBLESTONE": {
-        "legacy": "MOSSY_COBBLESTONE",
         "material": "MOSSY_COBBLESTONE"
     },
     "MOSSY_COBBLESTONE_WALL": {
@@ -2033,7 +1857,6 @@
         "material": "MUSIC_DISC_WARD"
     },
     "MUTTON": {
-        "legacy": "MUTTON",
         "material": "MUTTON"
     },
     "MYCELIUM": {
@@ -2041,14 +1864,12 @@
         "material": "MYCELIUM"
     },
     "NAME_TAG": {
-        "legacy": "NAME_TAG",
         "material": "NAME_TAG"
     },
     "NAUTILUS_SHELL": {
         "material": "NAUTILUS_SHELL"
     },
     "NETHERRACK": {
-        "legacy": "NETHERRACK",
         "material": "NETHERRACK"
     },
     "NETHER_BRICK": {
@@ -2068,7 +1889,6 @@
         "material": "NETHER_BRICK_SLAB"
     },
     "NETHER_BRICK_STAIRS": {
-        "legacy": "NETHER_BRICK_STAIRS",
         "material": "NETHER_BRICK_STAIRS"
     },
     "NETHER_PORTAL": {
@@ -2080,7 +1900,6 @@
         "material": "NETHER_QUARTZ_ORE"
     },
     "NETHER_STAR": {
-        "legacy": "NETHER_STAR",
         "material": "NETHER_STAR"
     },
     "NETHER_WART": {
@@ -2088,11 +1907,9 @@
         "material": "NETHER_WART"
     },
     "NETHER_WART_BLOCK": {
-        "legacy": "NETHER_WART_BLOCK",
         "material": "NETHER_WART_BLOCK"
     },
     "NOTE_BLOCK": {
-        "legacy": "NOTE_BLOCK",
         "material": "NOTE_BLOCK"
     },
     "OAK_BOAT": {
@@ -2152,11 +1969,9 @@
         "material": "OAK_WOOD"
     },
     "OBSERVER": {
-        "legacy": "OBSERVER",
         "material": "OBSERVER"
     },
     "OBSIDIAN": {
-        "legacy": "OBSIDIAN",
         "material": "OBSIDIAN"
     },
     "OCELOT_SPAWN_EGG": {
@@ -2188,11 +2003,9 @@
         "material": "ORANGE_DYE"
     },
     "ORANGE_GLAZED_TERRACOTTA": {
-        "legacy": "ORANGE_GLAZED_TERRACOTTA",
         "material": "ORANGE_GLAZED_TERRACOTTA"
     },
     "ORANGE_SHULKER_BOX": {
-        "legacy": "ORANGE_SHULKER_BOX",
         "material": "ORANGE_SHULKER_BOX"
     },
     "ORANGE_STAINED_GLASS": {
@@ -2224,15 +2037,12 @@
         "material": "OXEYE_DAISY"
     },
     "PACKED_ICE": {
-        "legacy": "PACKED_ICE",
         "material": "PACKED_ICE"
     },
     "PAINTING": {
-        "legacy": "PAINTING",
         "material": "PAINTING"
     },
     "PAPER": {
-        "legacy": "PAPER",
         "material": "PAPER"
     },
     "PARROT_SPAWN_EGG": {
@@ -2282,11 +2092,9 @@
         "material": "PINK_DYE"
     },
     "PINK_GLAZED_TERRACOTTA": {
-        "legacy": "PINK_GLAZED_TERRACOTTA",
         "material": "PINK_GLAZED_TERRACOTTA"
     },
     "PINK_SHULKER_BOX": {
-        "legacy": "PINK_SHULKER_BOX",
         "material": "PINK_SHULKER_BOX"
     },
     "PINK_STAINED_GLASS": {
@@ -2334,7 +2142,6 @@
         "material": "PODZOL"
     },
     "POISONOUS_POTATO": {
-        "legacy": "POISONOUS_POTATO",
         "material": "POISONOUS_POTATO"
     },
     "POLAR_BEAR_SPAWN_EGG": {
@@ -2374,7 +2181,6 @@
         "material": "POTATOES"
     },
     "POTION": {
-        "legacy": "POTION",
         "material": "POTION"
     },
     "POTTED_ACACIA_SAPLING": {
@@ -2462,11 +2268,9 @@
         "material": "POTTED_WHITE_TULIP"
     },
     "POWERED_RAIL": {
-        "legacy": "POWERED_RAIL",
         "material": "POWERED_RAIL"
     },
     "PRISMARINE": {
-        "legacy": "PRISMARINE",
         "material": "PRISMARINE"
     },
     "PRISMARINE_BRICKS": {
@@ -2480,11 +2284,9 @@
         "material": "PRISMARINE_BRICK_STAIRS"
     },
     "PRISMARINE_CRYSTALS": {
-        "legacy": "PRISMARINE_CRYSTALS",
         "material": "PRISMARINE_CRYSTALS"
     },
     "PRISMARINE_SHARD": {
-        "legacy": "PRISMARINE_SHARD",
         "material": "PRISMARINE_SHARD"
     },
     "PRISMARINE_SLAB": {
@@ -2505,19 +2307,15 @@
         "material": "PUFFERFISH_SPAWN_EGG"
     },
     "PUMPKIN": {
-        "legacy": "PUMPKIN",
         "material": "PUMPKIN"
     },
     "PUMPKIN_PIE": {
-        "legacy": "PUMPKIN_PIE",
         "material": "PUMPKIN_PIE"
     },
     "PUMPKIN_SEEDS": {
-        "legacy": "PUMPKIN_SEEDS",
         "material": "PUMPKIN_SEEDS"
     },
     "PUMPKIN_STEM": {
-        "legacy": "PUMPKIN_STEM",
         "material": "PUMPKIN_STEM"
     },
     "PURPLE_BANNER": {
@@ -2545,11 +2343,9 @@
         "material": "PURPLE_DYE"
     },
     "PURPLE_GLAZED_TERRACOTTA": {
-        "legacy": "PURPLE_GLAZED_TERRACOTTA",
         "material": "PURPLE_GLAZED_TERRACOTTA"
     },
     "PURPLE_SHULKER_BOX": {
-        "legacy": "PURPLE_SHULKER_BOX",
         "material": "PURPLE_SHULKER_BOX"
     },
     "PURPLE_STAINED_GLASS": {
@@ -2573,27 +2369,21 @@
         "material": "PURPLE_WOOL"
     },
     "PURPUR_BLOCK": {
-        "legacy": "PURPUR_BLOCK",
         "material": "PURPUR_BLOCK"
     },
     "PURPUR_PILLAR": {
-        "legacy": "PURPUR_PILLAR",
         "material": "PURPUR_PILLAR"
     },
     "PURPUR_SLAB": {
-        "legacy": "PURPUR_SLAB",
         "material": "PURPUR_SLAB"
     },
     "PURPUR_STAIRS": {
-        "legacy": "PURPUR_STAIRS",
         "material": "PURPUR_STAIRS"
     },
     "QUARTZ": {
-        "legacy": "QUARTZ",
         "material": "QUARTZ"
     },
     "QUARTZ_BLOCK": {
-        "legacy": "QUARTZ_BLOCK",
         "material": "QUARTZ_BLOCK"
     },
     "QUARTZ_PILLAR": {
@@ -2605,19 +2395,15 @@
         "material": "QUARTZ_SLAB"
     },
     "QUARTZ_STAIRS": {
-        "legacy": "QUARTZ_STAIRS",
         "material": "QUARTZ_STAIRS"
     },
     "RABBIT": {
-        "legacy": "RABBIT",
         "material": "RABBIT"
     },
     "RABBIT_FOOT": {
-        "legacy": "RABBIT_FOOT",
         "material": "RABBIT_FOOT"
     },
     "RABBIT_HIDE": {
-        "legacy": "RABBIT_HIDE",
         "material": "RABBIT_HIDE"
     },
     "RABBIT_SPAWN_EGG": {
@@ -2625,7 +2411,6 @@
         "material": "RABBIT_SPAWN_EGG"
     },
     "RABBIT_STEW": {
-        "legacy": "RABBIT_STEW",
         "material": "RABBIT_STEW"
     },
     "RAIL": {
@@ -2633,11 +2418,9 @@
         "material": "RAIL"
     },
     "REDSTONE": {
-        "legacy": "REDSTONE",
         "material": "REDSTONE"
     },
     "REDSTONE_BLOCK": {
-        "legacy": "REDSTONE_BLOCK",
         "material": "REDSTONE_BLOCK"
     },
     "REDSTONE_LAMP": {
@@ -2645,7 +2428,6 @@
         "material": "REDSTONE_LAMP"
     },
     "REDSTONE_ORE": {
-        "legacy": "REDSTONE_ORE",
         "material": "REDSTONE_ORE"
     },
     "REDSTONE_TORCH": {
@@ -2657,7 +2439,6 @@
         "material": "REDSTONE_WALL_TORCH"
     },
     "REDSTONE_WIRE": {
-        "legacy": "REDSTONE_WIRE",
         "material": "REDSTONE_WIRE"
     },
     "RED_BANNER": {
@@ -2681,11 +2462,9 @@
         "material": "RED_CONCRETE_POWDER"
     },
     "RED_GLAZED_TERRACOTTA": {
-        "legacy": "RED_GLAZED_TERRACOTTA",
         "material": "RED_GLAZED_TERRACOTTA"
     },
     "RED_MUSHROOM": {
-        "legacy": "RED_MUSHROOM",
         "material": "RED_MUSHROOM"
     },
     "RED_MUSHROOM_BLOCK": {
@@ -2701,7 +2480,6 @@
         "material": "RED_SAND"
     },
     "RED_SANDSTONE": {
-        "legacy": "RED_SANDSTONE",
         "material": "RED_SANDSTONE"
     },
     "RED_SANDSTONE_SLAB": {
@@ -2709,11 +2487,9 @@
         "material": "RED_SANDSTONE_SLAB"
     },
     "RED_SANDSTONE_STAIRS": {
-        "legacy": "RED_SANDSTONE_STAIRS",
         "material": "RED_SANDSTONE_STAIRS"
     },
     "RED_SHULKER_BOX": {
-        "legacy": "RED_SHULKER_BOX",
         "material": "RED_SHULKER_BOX"
     },
     "RED_STAINED_GLASS": {
@@ -2757,11 +2533,9 @@
         "material": "ROSE_RED"
     },
     "ROTTEN_FLESH": {
-        "legacy": "ROTTEN_FLESH",
         "material": "ROTTEN_FLESH"
     },
     "SADDLE": {
-        "legacy": "SADDLE",
         "material": "SADDLE"
     },
     "SALMON": {
@@ -2777,11 +2551,9 @@
         "material": "SALMON_SPAWN_EGG"
     },
     "SAND": {
-        "legacy": "SAND",
         "material": "SAND"
     },
     "SANDSTONE": {
-        "legacy": "SANDSTONE",
         "material": "SANDSTONE"
     },
     "SANDSTONE_SLAB": {
@@ -2789,7 +2561,6 @@
         "material": "SANDSTONE_SLAB"
     },
     "SANDSTONE_STAIRS": {
-        "legacy": "SANDSTONE_STAIRS",
         "material": "SANDSTONE_STAIRS"
     },
     "SCUTE": {
@@ -2799,14 +2570,12 @@
         "material": "SEAGRASS"
     },
     "SEA_LANTERN": {
-        "legacy": "SEA_LANTERN",
         "material": "SEA_LANTERN"
     },
     "SEA_PICKLE": {
         "material": "SEA_PICKLE"
     },
     "SHEARS": {
-        "legacy": "SHEARS",
         "material": "SHEARS"
     },
     "SHEEP_SPAWN_EGG": {
@@ -2814,7 +2583,6 @@
         "material": "SHEEP_SPAWN_EGG"
     },
     "SHIELD": {
-        "legacy": "SHIELD",
         "material": "SHIELD"
     },
     "SHULKER_BOX": {
@@ -2822,7 +2590,6 @@
         "material": "SHULKER_BOX"
     },
     "SHULKER_SHELL": {
-        "legacy": "SHULKER_SHELL",
         "material": "SHULKER_SHELL"
     },
     "SHULKER_SPAWN_EGG": {
@@ -2830,7 +2597,6 @@
         "material": "SHULKER_SPAWN_EGG"
     },
     "SIGN": {
-        "legacy": "SIGN",
         "material": "SIGN"
     },
     "SILVERFISH_SPAWN_EGG": {
@@ -2854,11 +2620,9 @@
         "material": "SKELETON_WALL_SKULL"
     },
     "SLIME_BALL": {
-        "legacy": "SLIME_BALL",
         "material": "SLIME_BALL"
     },
     "SLIME_BLOCK": {
-        "legacy": "SLIME_BLOCK",
         "material": "SLIME_BLOCK"
     },
     "SLIME_SPAWN_EGG": {
@@ -2880,7 +2644,6 @@
         "material": "SMOOTH_STONE"
     },
     "SNOW": {
-        "legacy": "SNOW",
         "material": "SNOW"
     },
     "SNOWBALL": {
@@ -2888,11 +2651,9 @@
         "material": "SNOWBALL"
     },
     "SNOW_BLOCK": {
-        "legacy": "SNOW_BLOCK",
         "material": "SNOW_BLOCK"
     },
     "SOUL_SAND": {
-        "legacy": "SOUL_SAND",
         "material": "SOUL_SAND"
     },
     "SPAWNER": {
@@ -2900,11 +2661,9 @@
         "material": "SPAWNER"
     },
     "SPECTRAL_ARROW": {
-        "legacy": "SPECTRAL_ARROW",
         "material": "SPECTRAL_ARROW"
     },
     "SPIDER_EYE": {
-        "legacy": "SPIDER_EYE",
         "material": "SPIDER_EYE"
     },
     "SPIDER_SPAWN_EGG": {
@@ -2912,11 +2671,9 @@
         "material": "SPIDER_SPAWN_EGG"
     },
     "SPLASH_POTION": {
-        "legacy": "SPLASH_POTION",
         "material": "SPLASH_POTION"
     },
     "SPONGE": {
-        "legacy": "SPONGE",
         "material": "SPONGE"
     },
     "SPRUCE_BOAT": {
@@ -2928,15 +2685,12 @@
         "material": "SPRUCE_BUTTON"
     },
     "SPRUCE_DOOR": {
-        "legacy": "SPRUCE_DOOR",
         "material": "SPRUCE_DOOR"
     },
     "SPRUCE_FENCE": {
-        "legacy": "SPRUCE_FENCE",
         "material": "SPRUCE_FENCE"
     },
     "SPRUCE_FENCE_GATE": {
-        "legacy": "SPRUCE_FENCE_GATE",
         "material": "SPRUCE_FENCE_GATE"
     },
     "SPRUCE_LEAVES": {
@@ -2980,7 +2734,6 @@
         "material": "SQUID_SPAWN_EGG"
     },
     "STICK": {
-        "legacy": "STICK",
         "material": "STICK"
     },
     "STICKY_PISTON": {
@@ -2991,7 +2744,6 @@
         "material": "STONE"
     },
     "STONE_AXE": {
-        "legacy": "STONE_AXE",
         "material": "STONE_AXE"
     },
     "STONE_BRICKS": {
@@ -3007,15 +2759,12 @@
         "material": "STONE_BRICK_STAIRS"
     },
     "STONE_BUTTON": {
-        "legacy": "STONE_BUTTON",
         "material": "STONE_BUTTON"
     },
     "STONE_HOE": {
-        "legacy": "STONE_HOE",
         "material": "STONE_HOE"
     },
     "STONE_PICKAXE": {
-        "legacy": "STONE_PICKAXE",
         "material": "STONE_PICKAXE"
     },
     "STONE_PRESSURE_PLATE": {
@@ -3031,7 +2780,6 @@
         "material": "STONE_SLAB"
     },
     "STONE_SWORD": {
-        "legacy": "STONE_SWORD",
         "material": "STONE_SWORD"
     },
     "STRAY_SPAWN_EGG": {
@@ -3039,7 +2787,6 @@
         "material": "STRAY_SPAWN_EGG"
     },
     "STRING": {
-        "legacy": "STRING",
         "material": "STRING"
     },
     "STRIPPED_ACACIA_LOG": {
@@ -3079,19 +2826,15 @@
         "material": "STRIPPED_SPRUCE_WOOD"
     },
     "STRUCTURE_BLOCK": {
-        "legacy": "STRUCTURE_BLOCK",
         "material": "STRUCTURE_BLOCK"
     },
     "STRUCTURE_VOID": {
-        "legacy": "STRUCTURE_VOID",
         "material": "STRUCTURE_VOID"
     },
     "SUGAR": {
-        "legacy": "SUGAR",
         "material": "SUGAR"
     },
     "SUGAR_CANE": {
-        "legacy": "SUGAR_CANE",
         "material": "SUGAR_CANE"
     },
     "SUNFLOWER": {
@@ -3110,11 +2853,9 @@
         "material": "TERRACOTTA"
     },
     "TIPPED_ARROW": {
-        "legacy": "TIPPED_ARROW",
         "material": "TIPPED_ARROW"
     },
     "TNT": {
-        "legacy": "TNT",
         "material": "TNT"
     },
     "TNT_MINECART": {
@@ -3122,7 +2863,6 @@
         "material": "TNT_MINECART"
     },
     "TORCH": {
-        "legacy": "TORCH",
         "material": "TORCH"
     },
     "TOTEM_OF_UNDYING": {
@@ -3130,18 +2870,15 @@
         "material": "TOTEM_OF_UNDYING"
     },
     "TRAPPED_CHEST": {
-        "legacy": "TRAPPED_CHEST",
         "material": "TRAPPED_CHEST"
     },
     "TRIDENT": {
         "material": "TRIDENT"
     },
     "TRIPWIRE": {
-        "legacy": "TRIPWIRE",
         "material": "TRIPWIRE"
     },
     "TRIPWIRE_HOOK": {
-        "legacy": "TRIPWIRE_HOOK",
         "material": "TRIPWIRE_HOOK"
     },
     "TROPICAL_FISH": {
@@ -3192,7 +2929,6 @@
         "material": "VINDICATOR_SPAWN_EGG"
     },
     "VINE": {
-        "legacy": "VINE",
         "material": "VINE"
     },
     "VOID_AIR": {
@@ -3200,7 +2936,6 @@
         "material": "VOID_AIR"
     },
     "WALL_SIGN": {
-        "legacy": "WALL_SIGN",
         "material": "WALL_SIGN"
     },
     "WALL_TORCH": {
@@ -3208,11 +2943,9 @@
         "material": "WALL_TORCH"
     },
     "WATER": {
-        "legacy": "WATER",
         "material": "WATER"
     },
     "WATER_BUCKET": {
-        "legacy": "WATER_BUCKET",
         "material": "WATER_BUCKET"
     },
     "WET_SPONGE": {
@@ -3220,7 +2953,6 @@
         "material": "WET_SPONGE"
     },
     "WHEAT": {
-        "legacy": "WHEAT",
         "material": "WHEAT"
     },
     "WHEAT_SEEDS": {
@@ -3248,11 +2980,9 @@
         "material": "WHITE_CONCRETE_POWDER"
     },
     "WHITE_GLAZED_TERRACOTTA": {
-        "legacy": "WHITE_GLAZED_TERRACOTTA",
         "material": "WHITE_GLAZED_TERRACOTTA"
     },
     "WHITE_SHULKER_BOX": {
-        "legacy": "WHITE_SHULKER_BOX",
         "material": "WHITE_SHULKER_BOX"
     },
     "WHITE_STAINED_GLASS": {
@@ -3324,7 +3054,6 @@
         "material": "WRITABLE_BOOK"
     },
     "WRITTEN_BOOK": {
-        "legacy": "WRITTEN_BOOK",
         "material": "WRITTEN_BOOK"
     },
     "YELLOW_BANNER": {
@@ -3348,11 +3077,9 @@
         "material": "YELLOW_CONCRETE_POWDER"
     },
     "YELLOW_GLAZED_TERRACOTTA": {
-        "legacy": "YELLOW_GLAZED_TERRACOTTA",
         "material": "YELLOW_GLAZED_TERRACOTTA"
     },
     "YELLOW_SHULKER_BOX": {
-        "legacy": "YELLOW_SHULKER_BOX",
         "material": "YELLOW_SHULKER_BOX"
     },
     "YELLOW_STAINED_GLASS": {
