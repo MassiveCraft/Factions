@@ -39,6 +39,9 @@ public class MaterialProvider {
         for (MaterialData data : materialData.values()) {
             if (data.legacy != null && data.legacy.equalsIgnoreCase(legacy)) {
                 return data.name;
+            } else if (data.name.equalsIgnoreCase(legacy)) {
+                // If legacy doesn't match but name does return it
+                return data.name;
             }
         }
         return null;
