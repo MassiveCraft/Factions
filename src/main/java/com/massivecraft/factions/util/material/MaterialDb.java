@@ -47,7 +47,6 @@ public class MaterialDb {
             // Issue formatting major version integer... uhm
             instance.legacy = true;
         }
-        P.p.log("Running material provider in %1s mode", instance.legacy ? "LEGACY" : "STANDARD");
 
         InputStreamReader reader = new InputStreamReader(P.p.getResource("materials.json"));
         Type typeToken = new TypeToken<HashMap<String, MaterialProvider.MaterialData>>(){}.getType();
@@ -55,14 +54,8 @@ public class MaterialDb {
         instance.provider = new MaterialProvider(materialData);
     }
 
-    public void testMaterials() {
+    public void test() {
         // TODO: Do some Material tests
-        /*
-        for (String name : provider.materialData.keySet()) {
-            get(name);
-        }
-        P.p.log("Finished Testing MaterialDb");
-        */
     }
 
     public static MaterialDb getInstance() {

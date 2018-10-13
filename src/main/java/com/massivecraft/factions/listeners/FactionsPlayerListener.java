@@ -496,7 +496,7 @@ public class FactionsPlayerListener implements Listener {
 
         // We only care about some material types.
         if (otherFaction.hasPlayersOnline()) {
-            if (!Conf.territoryProtectedMaterials.contains(new FactionMaterial(material))) {
+            if (!Conf.territoryProtectedMaterials.contains(material)) {
                 return true;
             }
         } else {

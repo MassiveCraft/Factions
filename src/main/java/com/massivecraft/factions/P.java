@@ -14,8 +14,8 @@ import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.util.*;
 import com.massivecraft.factions.util.material.FactionMaterial;
 import com.massivecraft.factions.util.material.MaterialDb;
-import com.massivecraft.factions.util.material.MaterialProvider;
-import com.massivecraft.factions.util.material.MaterialTypeAdapter;
+import com.massivecraft.factions.util.material.adapter.FactionMaterialAdapter;
+import com.massivecraft.factions.util.material.adapter.MaterialAdapter;
 import com.massivecraft.factions.zcore.MPlugin;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.Permissable;
@@ -23,6 +23,7 @@ import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TextUtil;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -76,17 +77,18 @@ public class P extends MPlugin {
 
     @Override
     public void onEnable() {
+        // Load Material database
+        MaterialDb.load();
         if (!preEnable()) {
             return;
         }
         this.loadSuccessful = false;
         saveDefaultConfig();
 
-        // Load Material database
-        MaterialDb.load();
         // Load Conf from disk
         Conf.load();
-        MaterialDb.getInstance().testMaterials();
+        P.p.log("Running material provider in %1s mode", MaterialDb.getInstance().legacy ? "LEGACY" : "STANDARD");
+        MaterialDb.getInstance().test();
 
         // Check for Essentials
         IEssentials ess = Essentials.setup();
@@ -210,7 +212,10 @@ public class P extends MPlugin {
         Type accessTypeAdatper = new TypeToken<Map<Permissable, Map<PermissableAction, Access>>>() {
         }.getType();
 
-        Type materialTypeAdapter = new TypeToken<FactionMaterial>(){
+        Type factionMaterialType = new TypeToken<FactionMaterial>(){
+        }.getType();
+
+        Type materialType = new TypeToken<Material>(){
         }.getType();
 
         return new GsonBuilder()
@@ -218,7 +223,8 @@ public class P extends MPlugin {
                 .disableHtmlEscaping()
                 .enableComplexMapKeySerialization()
                 .excludeFieldsWithModifiers(Modifier.TRANSIENT, Modifier.VOLATILE)
-                .registerTypeAdapter(materialTypeAdapter, new MaterialTypeAdapter())
+                .registerTypeAdapter(factionMaterialType, new FactionMaterialAdapter())
+                .registerTypeAdapter(materialType, new MaterialAdapter())
                 .registerTypeAdapter(accessTypeAdatper, new PermissionsMapTypeAdapter())
                 .registerTypeAdapter(LazyLocation.class, new MyLocationTypeAdapter())
                 .registerTypeAdapter(mapFLocToStringSetType, new MapFLocToStringSetTypeAdapter())

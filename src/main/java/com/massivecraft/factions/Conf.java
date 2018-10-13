@@ -242,7 +242,7 @@ public class Conf {
 
     public static boolean pistonProtectionThroughDenyBuild = true;
 
-    public static Set<FactionMaterial> territoryProtectedMaterials = Sets.newHashSet();
+    public static Set<Material> territoryProtectedMaterials = Sets.newHashSet();
     public static Set<Material> territoryDenyUseageMaterials = EnumSet.noneOf(Material.class);
     public static Set<Material> territoryProtectedMaterialsWhenOffline = EnumSet.noneOf(Material.class);
     public static Set<Material> territoryDenyUseageMaterialsWhenOffline = EnumSet.noneOf(Material.class);
@@ -394,92 +394,91 @@ public class Conf {
         territoryEnemyDenyCommands.add("tpaccept");
         territoryEnemyDenyCommands.add("tpa");
 
-        territoryProtectedMaterials.add(new FactionMaterial("DARK_OAK_DOOR"));/*
-        territoryProtectedMaterials.add(Material.BIRCH_DOOR);
-        territoryProtectedMaterials.add(Material.ACACIA_DOOR);
-        territoryProtectedMaterials.add(Material.IRON_DOOR);
-        territoryProtectedMaterials.add(Material.JUNGLE_DOOR);
-        territoryProtectedMaterials.add(Material.OAK_DOOR);
-        territoryProtectedMaterials.add(Material.SPRUCE_DOOR);
+        territoryProtectedMaterials.add(FactionMaterial.constant("BIRCH_DOOR").get());
+        territoryProtectedMaterials.add(FactionMaterial.constant("ACACIA_DOOR").get());
+        territoryProtectedMaterials.add(FactionMaterial.constant("IRON_DOOR").get());
+        territoryProtectedMaterials.add(FactionMaterial.constant("JUNGLE_DOOR").get());
+        territoryProtectedMaterials.add(FactionMaterial.constant("OAK_DOOR").get());
+        territoryProtectedMaterials.add(FactionMaterial.constant("SPRUCE_DOOR").get());
 
-        territoryProtectedMaterials.add(Material.ACACIA_TRAPDOOR);
-        territoryProtectedMaterials.add(Material.BIRCH_TRAPDOOR);
-        territoryProtectedMaterials.add(Material.DARK_OAK_TRAPDOOR);
-        territoryProtectedMaterials.add(Material.IRON_TRAPDOOR);
-        territoryProtectedMaterials.add(Material.JUNGLE_TRAPDOOR);
-        territoryProtectedMaterials.add(Material.OAK_TRAPDOOR);
-        territoryProtectedMaterials.add(Material.SPRUCE_TRAPDOOR);
+        territoryProtectedMaterials.add(FactionMaterial.constant("ACACIA_TRAPDOOR").get());
+        territoryProtectedMaterials.add(FactionMaterial.constant("BIRCH_TRAPDOOR").get());
+        territoryProtectedMaterials.add(FactionMaterial.constant("DARK_OAK_TRAPDOOR").get());
+        territoryProtectedMaterials.add(FactionMaterial.constant("IRON_TRAPDOOR").get());
+        territoryProtectedMaterials.add(FactionMaterial.constant("JUNGLE_TRAPDOOR").get());
+        territoryProtectedMaterials.add(FactionMaterial.constant("OAK_TRAPDOOR").get());
+        territoryProtectedMaterials.add(FactionMaterial.constant("SPRUCE_TRAPDOOR").get());
 
-        territoryProtectedMaterials.add(Material.ACACIA_FENCE);
-        territoryProtectedMaterials.add(Material.BIRCH_FENCE);
-        territoryProtectedMaterials.add(Material.DARK_OAK_FENCE);
-        territoryProtectedMaterials.add(Material.OAK_FENCE);
-        territoryProtectedMaterials.add(Material.NETHER_BRICK_FENCE);
-        territoryProtectedMaterials.add(Material.SPRUCE_FENCE);
+        territoryProtectedMaterials.add(FactionMaterial.constant("ACACIA_FENCE").get());
+        territoryProtectedMaterials.add(FactionMaterial.constant("BIRCH_FENCE").get());
+        territoryProtectedMaterials.add(FactionMaterial.constant("DARK_OAK_FENCE").get());
+        territoryProtectedMaterials.add(FactionMaterial.constant("OAK_FENCE").get());
+        territoryProtectedMaterials.add(FactionMaterial.constant("NETHER_BRICK_FENCE").get());
+        territoryProtectedMaterials.add(FactionMaterial.constant("SPRUCE_FENCE").get());
 
-        territoryProtectedMaterials.add(Material.DISPENSER);
-        territoryProtectedMaterials.add(Material.CHEST);
-        territoryProtectedMaterials.add(Material.FURNACE);
-        territoryProtectedMaterials.add(Material.REPEATER);
-        territoryProtectedMaterials.add(Material.JUKEBOX);
-        territoryProtectedMaterials.add(Material.BREWING_STAND);
-        territoryProtectedMaterials.add(Material.ENCHANTING_TABLE);
-        territoryProtectedMaterials.add(Material.CAULDRON);
-        territoryProtectedMaterials.add(Material.FARMLAND);
-        territoryProtectedMaterials.add(Material.BEACON);
-        territoryProtectedMaterials.add(Material.ANVIL);
-        territoryProtectedMaterials.add(Material.TRAPPED_CHEST);
-        territoryProtectedMaterials.add(Material.DROPPER);
-        territoryProtectedMaterials.add(Material.HOPPER);
+        territoryProtectedMaterials.add(FactionMaterial.constant("DISPENSER").get());
+        territoryProtectedMaterials.add(FactionMaterial.constant("CHEST").get());
+        territoryProtectedMaterials.add(FactionMaterial.constant("FURNACE").get());
+        territoryProtectedMaterials.add(FactionMaterial.constant("REPEATER").get());
+        territoryProtectedMaterials.add(FactionMaterial.constant("JUKEBOX").get());
+        territoryProtectedMaterials.add(FactionMaterial.constant("BREWING_STAND").get());
+        territoryProtectedMaterials.add(FactionMaterial.constant("ENCHANTING_TABLE").get());
+        territoryProtectedMaterials.add(FactionMaterial.constant("CAULDRON").get());
+        territoryProtectedMaterials.add(FactionMaterial.constant("FARMLAND").get());
+        territoryProtectedMaterials.add(FactionMaterial.constant("BEACON").get());
+        territoryProtectedMaterials.add(FactionMaterial.constant("ANVIL").get());
+        territoryProtectedMaterials.add(FactionMaterial.constant("TRAPPED_CHEST").get());
+        territoryProtectedMaterials.add(FactionMaterial.constant("DROPPER").get());
+        territoryProtectedMaterials.add(FactionMaterial.constant("HOPPER").get());
 
-        territoryDenyUseageMaterials.add(Material.FIRE_CHARGE);
-        territoryDenyUseageMaterials.add(Material.FLINT_AND_STEEL);
-        territoryDenyUseageMaterials.add(Material.BUCKET);
-        territoryDenyUseageMaterials.add(Material.WATER_BUCKET);
-        territoryDenyUseageMaterials.add(Material.LAVA_BUCKET);
+        territoryDenyUseageMaterials.add(FactionMaterial.constant("FIRE_CHARGE").get());
+        territoryDenyUseageMaterials.add(FactionMaterial.constant("FLINT_AND_STEEL").get());
+        territoryDenyUseageMaterials.add(FactionMaterial.constant("BUCKET").get());
+        territoryDenyUseageMaterials.add(FactionMaterial.constant("WATER_BUCKET").get());
+        territoryDenyUseageMaterials.add(FactionMaterial.constant("LAVA_BUCKET").get());
 
-        territoryProtectedMaterialsWhenOffline.add(Material.DARK_OAK_DOOR);
-        territoryProtectedMaterialsWhenOffline.add(Material.BIRCH_DOOR);
-        territoryProtectedMaterialsWhenOffline.add(Material.ACACIA_DOOR);
-        territoryProtectedMaterialsWhenOffline.add(Material.IRON_DOOR);
-        territoryProtectedMaterialsWhenOffline.add(Material.JUNGLE_DOOR);
-        territoryProtectedMaterialsWhenOffline.add(Material.OAK_DOOR);
-        territoryProtectedMaterialsWhenOffline.add(Material.SPRUCE_DOOR);
+        territoryProtectedMaterialsWhenOffline.add(FactionMaterial.constant("DARK_OAK_DOOR").get());
+        territoryProtectedMaterialsWhenOffline.add(FactionMaterial.constant("BIRCH_DOOR").get());
+        territoryProtectedMaterialsWhenOffline.add(FactionMaterial.constant("ACACIA_DOOR").get());
+        territoryProtectedMaterialsWhenOffline.add(FactionMaterial.constant("IRON_DOOR").get());
+        territoryProtectedMaterialsWhenOffline.add(FactionMaterial.constant("JUNGLE_DOOR").get());
+        territoryProtectedMaterialsWhenOffline.add(FactionMaterial.constant("OAK_DOOR").get());
+        territoryProtectedMaterialsWhenOffline.add(FactionMaterial.constant("SPRUCE_DOOR").get());
 
-        territoryProtectedMaterialsWhenOffline.add(Material.ACACIA_TRAPDOOR);
-        territoryProtectedMaterialsWhenOffline.add(Material.BIRCH_TRAPDOOR);
-        territoryProtectedMaterialsWhenOffline.add(Material.DARK_OAK_TRAPDOOR);
-        territoryProtectedMaterialsWhenOffline.add(Material.IRON_TRAPDOOR);
-        territoryProtectedMaterialsWhenOffline.add(Material.JUNGLE_TRAPDOOR);
-        territoryProtectedMaterialsWhenOffline.add(Material.OAK_TRAPDOOR);
-        territoryProtectedMaterialsWhenOffline.add(Material.SPRUCE_TRAPDOOR);
+        territoryProtectedMaterialsWhenOffline.add(FactionMaterial.constant("ACACIA_TRAPDOOR").get());
+        territoryProtectedMaterialsWhenOffline.add(FactionMaterial.constant("BIRCH_TRAPDOOR").get());
+        territoryProtectedMaterialsWhenOffline.add(FactionMaterial.constant("DARK_OAK_TRAPDOOR").get());
+        territoryProtectedMaterialsWhenOffline.add(FactionMaterial.constant("IRON_TRAPDOOR").get());
+        territoryProtectedMaterialsWhenOffline.add(FactionMaterial.constant("JUNGLE_TRAPDOOR").get());
+        territoryProtectedMaterialsWhenOffline.add(FactionMaterial.constant("OAK_TRAPDOOR").get());
+        territoryProtectedMaterialsWhenOffline.add(FactionMaterial.constant("SPRUCE_TRAPDOOR").get());
 
-        territoryProtectedMaterialsWhenOffline.add(Material.ACACIA_FENCE);
-        territoryProtectedMaterialsWhenOffline.add(Material.BIRCH_FENCE);
-        territoryProtectedMaterialsWhenOffline.add(Material.DARK_OAK_FENCE);
-        territoryProtectedMaterialsWhenOffline.add(Material.OAK_FENCE);
-        territoryProtectedMaterialsWhenOffline.add(Material.NETHER_BRICK_FENCE);
-        territoryProtectedMaterialsWhenOffline.add(Material.SPRUCE_FENCE);
-        territoryProtectedMaterialsWhenOffline.add(Material.DISPENSER);
-        territoryProtectedMaterialsWhenOffline.add(Material.CHEST);
-        territoryProtectedMaterialsWhenOffline.add(Material.FURNACE);
-        territoryProtectedMaterialsWhenOffline.add(Material.REPEATER);
-        territoryProtectedMaterialsWhenOffline.add(Material.JUKEBOX);
-        territoryProtectedMaterialsWhenOffline.add(Material.BREWING_STAND);
-        territoryProtectedMaterialsWhenOffline.add(Material.ENCHANTING_TABLE);
-        territoryProtectedMaterialsWhenOffline.add(Material.CAULDRON);
-        territoryProtectedMaterialsWhenOffline.add(Material.FARMLAND);
-        territoryProtectedMaterialsWhenOffline.add(Material.BEACON);
-        territoryProtectedMaterialsWhenOffline.add(Material.ANVIL);
-        territoryProtectedMaterialsWhenOffline.add(Material.TRAPPED_CHEST);
-        territoryProtectedMaterialsWhenOffline.add(Material.DROPPER);
-        territoryProtectedMaterialsWhenOffline.add(Material.HOPPER);
+        territoryProtectedMaterialsWhenOffline.add(FactionMaterial.constant("ACACIA_FENCE").get());
+        territoryProtectedMaterialsWhenOffline.add(FactionMaterial.constant("BIRCH_FENCE").get());
+        territoryProtectedMaterialsWhenOffline.add(FactionMaterial.constant("DARK_OAK_FENCE").get());
+        territoryProtectedMaterialsWhenOffline.add(FactionMaterial.constant("OAK_FENCE").get());
+        territoryProtectedMaterialsWhenOffline.add(FactionMaterial.constant("NETHER_BRICK_FENCE").get());
+        territoryProtectedMaterialsWhenOffline.add(FactionMaterial.constant("SPRUCE_FENCE").get());
+        territoryProtectedMaterialsWhenOffline.add(FactionMaterial.constant("DISPENSER").get());
+        territoryProtectedMaterialsWhenOffline.add(FactionMaterial.constant("CHEST").get());
+        territoryProtectedMaterialsWhenOffline.add(FactionMaterial.constant("FURNACE").get());
+        territoryProtectedMaterialsWhenOffline.add(FactionMaterial.constant("REPEATER").get());
+        territoryProtectedMaterialsWhenOffline.add(FactionMaterial.constant("JUKEBOX").get());
+        territoryProtectedMaterialsWhenOffline.add(FactionMaterial.constant("BREWING_STAND").get());
+        territoryProtectedMaterialsWhenOffline.add(FactionMaterial.constant("ENCHANTING_TABLE").get());
+        territoryProtectedMaterialsWhenOffline.add(FactionMaterial.constant("CAULDRON").get());
+        territoryProtectedMaterialsWhenOffline.add(FactionMaterial.constant("FARMLAND").get());
+        territoryProtectedMaterialsWhenOffline.add(FactionMaterial.constant("BEACON").get());
+        territoryProtectedMaterialsWhenOffline.add(FactionMaterial.constant("ANVIL").get());
+        territoryProtectedMaterialsWhenOffline.add(FactionMaterial.constant("TRAPPED_CHEST").get());
+        territoryProtectedMaterialsWhenOffline.add(FactionMaterial.constant("DROPPER").get());
+        territoryProtectedMaterialsWhenOffline.add(FactionMaterial.constant("HOPPER").get());
 
-        territoryDenyUseageMaterialsWhenOffline.add(Material.FIRE_CHARGE);
-        territoryDenyUseageMaterialsWhenOffline.add(Material.FLINT_AND_STEEL);
-        territoryDenyUseageMaterialsWhenOffline.add(Material.BUCKET);
-        territoryDenyUseageMaterialsWhenOffline.add(Material.WATER_BUCKET);
-        territoryDenyUseageMaterialsWhenOffline.add(Material.LAVA_BUCKET);
+        territoryDenyUseageMaterialsWhenOffline.add(FactionMaterial.constant("FIRE_CHARGE").get());
+        territoryDenyUseageMaterialsWhenOffline.add(FactionMaterial.constant("FLINT_AND_STEEL").get());
+        territoryDenyUseageMaterialsWhenOffline.add(FactionMaterial.constant("BUCKET").get());
+        territoryDenyUseageMaterialsWhenOffline.add(FactionMaterial.constant("WATER_BUCKET").get());
+        territoryDenyUseageMaterialsWhenOffline.add(FactionMaterial.constant("LAVA_BUCKET").get());
 
         safeZoneNerfedCreatureTypes.add(EntityType.BLAZE);
         safeZoneNerfedCreatureTypes.add(EntityType.CAVE_SPIDER);
@@ -496,7 +495,7 @@ public class Conf {
         safeZoneNerfedCreatureTypes.add(EntityType.WITCH);
         safeZoneNerfedCreatureTypes.add(EntityType.WITHER);
         safeZoneNerfedCreatureTypes.add(EntityType.ZOMBIE);
-        safeZoneNerfedCreatureTypes.add(EntityType.ELDER_GUARDIAN);*/
+        safeZoneNerfedCreatureTypes.add(EntityType.ELDER_GUARDIAN);
     }
 
     // -------------------------------------------- //

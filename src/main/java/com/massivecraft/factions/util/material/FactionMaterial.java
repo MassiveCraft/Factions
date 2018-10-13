@@ -6,17 +6,36 @@ public class FactionMaterial {
 
     private String name;
 
-    public FactionMaterial(String name) {
-        this.name = name;
+    private FactionMaterial(String name, boolean legacy) {
+        if (legacy && MaterialDb.getInstance().legacy) {
+            // If we are using Legacy we need to change the name to the 1.13 equivalent
+            this.name = MaterialDb.getInstance().provider.fromLegacy(name);
+        } else {
+            this.name = name;
+        }
     }
 
-    public FactionMaterial(Material material) {
-        // If we are using Legacy we need to change the name to the 1.13 equivalent
+    private FactionMaterial(Material material) {
         if (MaterialDb.getInstance().legacy) {
             this.name = MaterialDb.getInstance().provider.fromLegacy(material.name());
         } else {
             this.name = material.name();
         }
+    }
+
+    // Build FactionMaterial with only 1.13 name
+    public static FactionMaterial constant(String name) {
+        return new FactionMaterial(name, false);
+    }
+
+    // Build FactionMaterial from legacy name (if in legacy mode)
+    public static FactionMaterial legacy(String name) {
+        return new FactionMaterial(name, true);
+    }
+
+    // Build using Material provided
+    public static FactionMaterial material(Material material) {
+        return new FactionMaterial(material);
     }
 
     public Material get() {

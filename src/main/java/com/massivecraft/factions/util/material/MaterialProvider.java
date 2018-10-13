@@ -16,10 +16,20 @@ public class MaterialProvider {
     }
 
     public Material resolve(String name) {
+        if (name == null) {
+            P.p.log("Null Material, Skipping");
+            return Material.AIR;
+        }
+
+        if (!materialData.containsKey(name)) {
+            P.p.log(Level.INFO, "Material does not exist: " + name.toUpperCase());
+            return Material.AIR;
+        }
+
         Material material = materialData.get(name).get();
         if (material == null) {
             // Could not create Material from provided String, return Air
-            P.p.log(Level.WARNING, "Invalid material: " + name.toUpperCase());
+            P.p.log(Level.INFO, "Invalid Material: " + name.toUpperCase());
             return Material.AIR;
         }
         return material;
@@ -27,7 +37,7 @@ public class MaterialProvider {
 
     public String fromLegacy(String legacy) {
         for (MaterialData data : materialData.values()) {
-            if (data.legacy.equalsIgnoreCase(legacy)) {
+            if (data.legacy != null && data.legacy.equalsIgnoreCase(legacy)) {
                 return data.name;
             }
         }
