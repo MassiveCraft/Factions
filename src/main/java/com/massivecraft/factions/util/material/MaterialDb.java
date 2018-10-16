@@ -1,7 +1,6 @@
 package com.massivecraft.factions.util.material;
 
 import com.google.gson.reflect.TypeToken;
-import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.P;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -20,7 +19,7 @@ public class MaterialDb {
     Useful as we don't really need extra metadata for stuff like territory block breaking checking.
 
         "ACACIA_BOAT": {
-            "name": "ACACIA_BOAT",
+            "material": "ACACIA_BOAT",
             "legacy": "BOAT_ACACIA"
         }
 

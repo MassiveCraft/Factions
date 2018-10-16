@@ -17,7 +17,7 @@ public class MaterialProvider {
 
     public Material resolve(String name) {
         if (name == null) {
-            P.p.log("Null Material, Skipping");
+            P.p.log("Null material name, Skipping");
             return Material.AIR;
         }
 
@@ -29,7 +29,7 @@ public class MaterialProvider {
         Material material = materialData.get(name).get();
         if (material == null) {
             // Could not create Material from provided String, return Air
-            P.p.log(Level.INFO, "Invalid Material: " + name.toUpperCase());
+            P.p.log(Level.INFO, "Invalid material: " + name.toUpperCase());
             return Material.AIR;
         }
         return material;
