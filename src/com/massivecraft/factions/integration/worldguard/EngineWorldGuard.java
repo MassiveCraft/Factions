@@ -44,14 +44,7 @@ public class EngineWorldGuard extends Engine
 	@Override
 	public void setActiveInner(boolean active)
 	{
-		if (active)
-		{
-			this.worldGuard = WGBukkit.getPlugin();
-		}
-		else
-		{
 			this.worldGuard = null;
-		}
 	}
 	
 	// -------------------------------------------- //
