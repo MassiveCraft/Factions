@@ -385,7 +385,7 @@ public class Conf {
     static {
         baseCommandAliases.add("f");
 
-        territoryEnemyDenyCommands.add("home");
+        /*territoryEnemyDenyCommands.add("home");
         territoryEnemyDenyCommands.add("sethome");
         territoryEnemyDenyCommands.add("spawn");
         territoryEnemyDenyCommands.add("tpahere");
@@ -494,7 +494,7 @@ public class Conf {
         safeZoneNerfedCreatureTypes.add(EntityType.WITCH);
         safeZoneNerfedCreatureTypes.add(EntityType.WITHER);
         safeZoneNerfedCreatureTypes.add(EntityType.ZOMBIE);
-        safeZoneNerfedCreatureTypes.add(EntityType.ELDER_GUARDIAN);
+        safeZoneNerfedCreatureTypes.add(EntityType.ELDER_GUARDIAN);*/
     }
 
     // -------------------------------------------- //

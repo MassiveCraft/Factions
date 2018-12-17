@@ -3,6 +3,7 @@ package com.massivecraft.factions.cmd;
 import com.drtshock.playervaults.PlayerVaults;
 import com.drtshock.playervaults.translations.Lang;
 import com.drtshock.playervaults.vaultmanagement.UUIDVaultManager;
+import com.drtshock.playervaults.vaultmanagement.VaultManager;
 import com.drtshock.playervaults.vaultmanagement.VaultOperations;
 import com.drtshock.playervaults.vaultmanagement.VaultViewInfo;
 import com.massivecraft.factions.Conf;
@@ -54,7 +55,7 @@ public class CmdVault extends FCommand {
         if (number < 1) {
             // Message about which vaults that Faction has.
             // List the target
-            YamlConfiguration file = UUIDVaultManager.getInstance().getPlayerVaultFile(vaultName);
+            YamlConfiguration file = VaultManager.getInstance().getPlayerVaultFile(vaultName, false);
             if (file == null) {
                 sender.sendMessage(Lang.TITLE.toString() + Lang.VAULT_DOES_NOT_EXIST.toString());
             } else {
@@ -69,7 +70,7 @@ public class CmdVault extends FCommand {
         } // end listing vaults.
 
         // Attempt to open vault.
-        if (VaultOperations.openOtherVault(player, null, String.valueOf(number))) {
+        if (VaultOperations.openOtherVault(player, vaultName, String.valueOf(number))) {
             // Success
             PlayerVaults.getInstance().getInVault().put(player.getUniqueId().toString(), new VaultViewInfo(vaultName, number));
         }
