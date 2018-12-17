@@ -12,6 +12,9 @@ import com.massivecraft.factions.integration.dynmap.EngineDynmap;
 import com.massivecraft.factions.listeners.*;
 import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.util.*;
+import com.massivecraft.factions.util.particle.BukkitParticleProvider;
+import com.massivecraft.factions.util.particle.PacketParticleProvider;
+import com.massivecraft.factions.util.particle.ParticleProvider;
 import com.massivecraft.factions.zcore.MPlugin;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.Permissable;
@@ -66,6 +69,7 @@ public class P extends MPlugin {
     private boolean mvdwPlaceholderAPIManager = false;
 
     public SeeChunkUtil seeChunkUtil;
+    public ParticleProvider particleProvider;
 
     public P() {
         p = this;
@@ -134,6 +138,13 @@ public class P extends MPlugin {
 
         // since some other plugins execute commands directly through this command interface, provide it
         this.getCommand(this.refCommand).setExecutor(this);
+
+        if (Bukkit.getVersion().contains("1.8")) {
+            particleProvider = new PacketParticleProvider();
+        } else {
+            particleProvider = new BukkitParticleProvider();
+        }
+        log(Level.INFO, "Using %1s as a particle provider", particleProvider.name());
 
         if (getConfig().getBoolean("f-fly.enable", false)) {
             double delay = getConfig().getDouble("f-fly.radius-check", 1) * 20;
