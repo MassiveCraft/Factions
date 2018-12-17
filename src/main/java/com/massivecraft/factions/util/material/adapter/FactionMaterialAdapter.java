@@ -16,7 +16,7 @@ public class FactionMaterialAdapter extends TypeAdapter<FactionMaterial> {
 
     @Override
     public FactionMaterial read(JsonReader in) throws IOException {
-        return FactionMaterial.constant(in.nextString());
+        return FactionMaterial.from(in.nextString());
     }
 
 }

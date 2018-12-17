@@ -508,7 +508,7 @@ public class FactionsPlayerListener implements Listener {
         // You may use any block unless it is another faction's territory...
         if (rel.isNeutral() || (rel.isEnemy() && Conf.territoryEnemyProtectMaterials) || (rel.isAlly() && Conf.territoryAllyProtectMaterials) || (rel.isTruce() && Conf.territoryTruceProtectMaterials)) {
             if (!justCheck) {
-                me.msg(TL.PLAYER_USE_TERRITORY, (material == FactionMaterial.constant("FARMLAND").get() ? "trample " : "use ") + TextUtil.getMaterialName(material), otherFaction.getTag(myFaction));
+                me.msg(TL.PLAYER_USE_TERRITORY, (material == FactionMaterial.from("FARMLAND").get() ? "trample " : "use ") + TextUtil.getMaterialName(material), otherFaction.getTag(myFaction));
             }
 
             return false;

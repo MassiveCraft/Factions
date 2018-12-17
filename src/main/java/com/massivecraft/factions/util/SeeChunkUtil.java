@@ -100,7 +100,7 @@ public class SeeChunkUtil extends BukkitRunnable {
                     effect.display(color, loc, player);
                 }
             } else {
-                Material mat = blockY % 5 == 0 ? FactionMaterial.constant("REDSTONE_LAMP").get() : FactionMaterial.constant("GLASS_PANE").get();
+                Material mat = blockY % 5 == 0 ? FactionMaterial.from("REDSTONE_LAMP").get() : FactionMaterial.from("GLASS_PANE").get();
                 VisualizeUtil.addLocation(player, loc, mat);
             }
         }

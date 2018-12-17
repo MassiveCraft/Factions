@@ -35,6 +35,11 @@ public class MaterialProvider {
         return material;
     }
 
+    public boolean isLegacy(String legacy) {
+        // If we don't have it as key then it is Legacy or doesn't exist
+        return !materialData.containsKey(legacy);
+    }
+
     public String fromLegacy(String legacy) {
         for (MaterialData data : materialData.values()) {
             if (data.legacy != null && data.legacy.equalsIgnoreCase(legacy)) {

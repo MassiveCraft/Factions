@@ -1,15 +1,21 @@
 package com.massivecraft.factions.util.material;
 
+import com.massivecraft.factions.P;
 import org.bukkit.Material;
+
+import java.util.logging.Level;
 
 public class FactionMaterial {
 
     private String name;
 
-    private FactionMaterial(String name, boolean legacy) {
-        if (legacy && MaterialDb.getInstance().legacy) {
-            // If we are using Legacy we need to change the name to the 1.13 equivalent
+    private FactionMaterial(String name) {
+        if (MaterialDb.getInstance().provider.isLegacy(name)) {
+            // If the name is legacy attempt to match it to 1.13 name and store that
             this.name = MaterialDb.getInstance().provider.fromLegacy(name);
+            if (this.name == null) {
+                P.p.log(Level.WARNING, "Material " + name + "does not exist");
+            }
         } else {
             this.name = name;
         }
@@ -23,14 +29,9 @@ public class FactionMaterial {
         }
     }
 
-    // Build FactionMaterial with only 1.13 name
-    public static FactionMaterial constant(String name) {
-        return new FactionMaterial(name, false);
-    }
-
-    // Build FactionMaterial from legacy name (if in legacy mode)
-    public static FactionMaterial legacy(String name) {
-        return new FactionMaterial(name, true);
+    // Build FactionMaterial with 1.13 or 1.12 name
+    public static FactionMaterial from(String name) {
+        return new FactionMaterial(name);
     }
 
     // Build using Material provided

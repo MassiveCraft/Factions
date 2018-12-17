@@ -19,7 +19,7 @@ public class MaterialAdapter extends TypeAdapter<Material> {
 
     @Override
     public Material read(JsonReader in) throws IOException {
-        return FactionMaterial.constant(in.nextString()).get();
+        return FactionMaterial.from(in.nextString()).get();
     }
 
 }

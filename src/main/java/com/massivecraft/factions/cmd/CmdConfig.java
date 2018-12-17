@@ -163,7 +163,7 @@ public class CmdConfig extends FCommand {
 
                 // Set<Material>
                 else if (innerType == Material.class) {
-                    Material newMat = FactionMaterial.constant(value.toString().toUpperCase()).get();
+                    Material newMat = FactionMaterial.from(value.toString().toUpperCase()).get();
 
                     if (newMat == null || newMat == Material.AIR) {
                         sendMessage(TL.COMMAND_CONFIG_INVALID_MATERIAL.format(fieldName, value.toString().toUpperCase()));
