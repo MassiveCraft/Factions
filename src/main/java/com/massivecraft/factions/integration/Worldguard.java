@@ -2,45 +2,34 @@ package com.massivecraft.factions.integration;
 
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.P;
-import com.sk89q.worldedit.BlockVector;
-import com.sk89q.worldedit.Vector;
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldedit.math.BlockVector3;
+import com.sk89q.worldguard.LocalPlayer;
+import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
-import com.sk89q.worldguard.protection.flags.DefaultFlag;
+import com.sk89q.worldguard.protection.flags.Flags;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+import com.sk89q.worldguard.protection.regions.RegionContainer;
+import com.sk89q.worldguard.protection.regions.RegionQuery;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-
-import static com.sk89q.worldguard.bukkit.BukkitUtil.toVector;
-
-/*
- *  Worldguard Region Checking
- *  Author: Spathizilla
- */
-
 public class Worldguard {
 
-    private static WorldGuardPlugin wg;
     private static boolean enabled = false;
 
     public static void init(Plugin plugin) {
         Plugin wgplug = plugin.getServer().getPluginManager().getPlugin("WorldGuard");
-        if (wgplug == null || !(wgplug instanceof WorldGuardPlugin)) {
+        if (wgplug == null) {
             enabled = false;
-            wg = null;
             P.p.log("Could not hook to WorldGuard. WorldGuard checks are disabled.");
         } else {
-            wg = (WorldGuardPlugin) wgplug;
             enabled = true;
             P.p.log("Successfully hooked to WorldGuard.");
         }
@@ -60,13 +49,11 @@ public class Worldguard {
             return true;
         }
 
-        Location loc = player.getLocation();
-        World world = loc.getWorld();
-        Vector pt = toVector(loc);
+        LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapPlayer(player);
+        RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
+        RegionQuery query = container.createQuery();
 
-        RegionManager regionManager = wg.getRegionManager(world);
-        ApplicableRegionSet set = regionManager.getApplicableRegions(pt);
-        return set.allows(DefaultFlag.PVP);
+        return query.testState(localPlayer.getLocation(), localPlayer, Flags.PVP);
     }
 
     // Check if player can build at location by worldguards rules.
@@ -79,32 +66,24 @@ public class Worldguard {
             return false;
         }
 
-        World world = loc.getWorld();
-        Vector pt = toVector(loc);
+        LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapPlayer(player);
+        RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
+        RegionQuery query = container.createQuery();
 
-        return wg.getRegionManager(world).getApplicableRegions(pt).size() > 0 && wg.canBuild(player, loc);
+        return query.testBuild(localPlayer.getLocation(), localPlayer);
     }
 
-    // Check for Regions in chunk the chunk
-    // Returns:
-    //   True: Regions found within chunk
-    //   False: No regions found within chunk
-
-    public static boolean checkForRegionsInChunk(FLocation floc) {
-        Chunk chunk = floc.getWorld().getChunkAt((int) floc.getX(), (int) floc.getZ());
-
-        return checkForRegionsInChunk(chunk);
-    }
-
-    public static boolean checkForRegionsInChunk(Location loc) {
-        Chunk chunk = loc.getWorld().getChunkAt(loc);
-
-        return checkForRegionsInChunk(chunk);
-    }
-
-    public static boolean checkForRegionsInChunk(Chunk chunk) {
+    public static boolean checkForRegionsInChunk(FLocation flocation) {
         if (!enabled) {
             // No WG hooks so we'll always bypass this check.
+            return false;
+        }
+
+        Chunk chunk = flocation.getChunk();
+
+        RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
+        RegionManager regions = container.get(BukkitAdapter.adapt(chunk.getWorld()));
+        if (regions == null){
             return false;
         }
 
@@ -116,23 +95,11 @@ public class Worldguard {
 
         int worldHeight = world.getMaxHeight(); // Allow for heights other than default
 
-        BlockVector minChunk = new BlockVector(minChunkX, 0, minChunkZ);
-        BlockVector maxChunk = new BlockVector(maxChunkX, worldHeight, maxChunkZ);
+        BlockVector3 min = BlockVector3.at(minChunkX, 0, minChunkZ);
+        BlockVector3 max = BlockVector3.at(maxChunkX, worldHeight, maxChunkZ);
+        ProtectedRegion region = new ProtectedCuboidRegion("wgregionflagcheckforfactions", min, max);
+        ApplicableRegionSet set = regions.getApplicableRegions(region);
 
-        RegionManager regionManager = wg.getRegionManager(world);
-        ProtectedCuboidRegion region = new ProtectedCuboidRegion("wgfactionoverlapcheck", minChunk, maxChunk);
-        Map<String, ProtectedRegion> allregions = regionManager.getRegions();
-        Collection<ProtectedRegion> allregionslist = new ArrayList<>(allregions.values());
-        List<ProtectedRegion> overlaps;
-        boolean foundregions = false;
-
-        try {
-            overlaps = region.getIntersectingRegions(allregionslist);
-            foundregions = overlaps != null && !overlaps.isEmpty();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return foundregions;
+        return set.size() > 1;
     }
 }
