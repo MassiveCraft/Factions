@@ -100,6 +100,6 @@ public class Worldguard {
         ProtectedRegion region = new ProtectedCuboidRegion("wgregionflagcheckforfactions", min, max);
         ApplicableRegionSet set = regions.getApplicableRegions(region);
 
-        return set.size() > 1;
+        return set.size() > 0;
     }
 }
