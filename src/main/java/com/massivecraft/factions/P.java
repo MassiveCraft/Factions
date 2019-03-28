@@ -12,6 +12,10 @@ import com.massivecraft.factions.integration.dynmap.EngineDynmap;
 import com.massivecraft.factions.listeners.*;
 import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.util.*;
+import com.massivecraft.factions.util.material.FactionMaterial;
+import com.massivecraft.factions.util.material.MaterialDb;
+import com.massivecraft.factions.util.material.adapter.FactionMaterialAdapter;
+import com.massivecraft.factions.util.material.adapter.MaterialAdapter;
 import com.massivecraft.factions.util.particle.BukkitParticleProvider;
 import com.massivecraft.factions.util.particle.PacketParticleProvider;
 import com.massivecraft.factions.util.particle.ParticleProvider;
@@ -22,6 +26,7 @@ import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TextUtil;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -29,7 +34,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
@@ -77,6 +81,8 @@ public class P extends MPlugin {
 
     @Override
     public void onEnable() {
+        // Load Material database
+        MaterialDb.load();
         if (!preEnable()) {
             return;
         }
@@ -85,6 +91,8 @@ public class P extends MPlugin {
 
         // Load Conf from disk
         Conf.load();
+        P.p.log("Running material provider in %1s mode", MaterialDb.getInstance().legacy ? "LEGACY" : "STANDARD");
+        MaterialDb.getInstance().test();
 
         // Check for Essentials
         IEssentials ess = Essentials.setup();
@@ -215,7 +223,23 @@ public class P extends MPlugin {
         Type accessTypeAdatper = new TypeToken<Map<Permissable, Map<PermissableAction, Access>>>() {
         }.getType();
 
-        return new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().enableComplexMapKeySerialization().excludeFieldsWithModifiers(Modifier.TRANSIENT, Modifier.VOLATILE).registerTypeAdapter(accessTypeAdatper, new PermissionsMapTypeAdapter()).registerTypeAdapter(LazyLocation.class, new MyLocationTypeAdapter()).registerTypeAdapter(mapFLocToStringSetType, new MapFLocToStringSetTypeAdapter()).registerTypeAdapterFactory(EnumTypeAdapter.ENUM_FACTORY);
+        Type factionMaterialType = new TypeToken<FactionMaterial>(){
+        }.getType();
+
+        Type materialType = new TypeToken<Material>(){
+        }.getType();
+
+        return new GsonBuilder()
+                .setPrettyPrinting()
+                .disableHtmlEscaping()
+                .enableComplexMapKeySerialization()
+                .excludeFieldsWithModifiers(Modifier.TRANSIENT, Modifier.VOLATILE)
+                .registerTypeAdapter(factionMaterialType, new FactionMaterialAdapter())
+                .registerTypeAdapter(materialType, new MaterialAdapter())
+                .registerTypeAdapter(accessTypeAdatper, new PermissionsMapTypeAdapter())
+                .registerTypeAdapter(LazyLocation.class, new MyLocationTypeAdapter())
+                .registerTypeAdapter(mapFLocToStringSetType, new MapFLocToStringSetTypeAdapter())
+                .registerTypeAdapterFactory(EnumTypeAdapter.ENUM_FACTORY);
     }
 
     @Override

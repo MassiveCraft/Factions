@@ -1,0 +1,3129 @@
+{
+    "ACACIA_BOAT": {
+        "legacy": "BOAT_ACACIA",
+        "material": "ACACIA_BOAT"
+    },
+    "ACACIA_BUTTON": {
+        "legacy": "WOOD_BUTTON",
+        "material": "ACACIA_BUTTON"
+    },
+    "ACACIA_DOOR": {
+        "material": "ACACIA_DOOR"
+    },
+    "ACACIA_FENCE": {
+        "material": "ACACIA_FENCE"
+    },
+    "ACACIA_FENCE_GATE": {
+        "material": "ACACIA_FENCE_GATE"
+    },
+    "ACACIA_LEAVES": {
+        "legacy": "LEAVES_2",
+        "material": "ACACIA_LEAVES"
+    },
+    "ACACIA_LOG": {
+        "legacy": "LOG_2",
+        "material": "ACACIA_LOG"
+    },
+    "ACACIA_PLANKS": {
+        "legacy": "WOOD",
+        "material": "ACACIA_PLANKS"
+    },
+    "ACACIA_PRESSURE_PLATE": {
+        "legacy": "WOOD_PLATE",
+        "material": "ACACIA_PRESSURE_PLATE"
+    },
+    "ACACIA_SAPLING": {
+        "legacy": "SAPLING",
+        "material": "ACACIA_SAPLING"
+    },
+    "ACACIA_SLAB": {
+        "legacy": "WOOD_STEP",
+        "material": "ACACIA_SLAB"
+    },
+    "ACACIA_STAIRS": {
+        "material": "ACACIA_STAIRS"
+    },
+    "ACACIA_TRAPDOOR": {
+        "legacy": "TRAP_DOOR",
+        "material": "ACACIA_TRAPDOOR"
+    },
+    "ACACIA_WOOD": {
+        "legacy": "LOG_2",
+        "material": "ACACIA_WOOD"
+    },
+    "ACTIVATOR_RAIL": {
+        "material": "ACTIVATOR_RAIL"
+    },
+    "AIR": {
+        "material": "AIR"
+    },
+    "ALLIUM": {
+        "legacy": "RED_ROSE",
+        "material": "ALLIUM"
+    },
+    "ANDESITE": {
+        "legacy": "STONE",
+        "material": "ANDESITE"
+    },
+    "ANVIL": {
+        "material": "ANVIL"
+    },
+    "APPLE": {
+        "material": "APPLE"
+    },
+    "ARMOR_STAND": {
+        "material": "ARMOR_STAND"
+    },
+    "ARROW": {
+        "material": "ARROW"
+    },
+    "ATTACHED_MELON_STEM": {
+        "legacy": "MELON_STEM",
+        "material": "ATTACHED_MELON_STEM"
+    },
+    "ATTACHED_PUMPKIN_STEM": {
+        "legacy": "PUMPKIN_STEM",
+        "material": "ATTACHED_PUMPKIN_STEM"
+    },
+    "AZURE_BLUET": {
+        "legacy": "RED_ROSE",
+        "material": "AZURE_BLUET"
+    },
+    "BAKED_POTATO": {
+        "material": "BAKED_POTATO"
+    },
+    "BARRIER": {
+        "material": "BARRIER"
+    },
+    "BAT_SPAWN_EGG": {
+        "legacy": "MONSTER_EGG",
+        "material": "BAT_SPAWN_EGG"
+    },
+    "BEACON": {
+        "material": "BEACON"
+    },
+    "BEDROCK": {
+        "material": "BEDROCK"
+    },
+    "BEEF": {
+        "legacy": "RAW_BEEF",
+        "material": "BEEF"
+    },
+    "BEETROOT": {
+        "material": "BEETROOT"
+    },
+    "BEETROOTS": {
+        "legacy": "BEETROOT",
+        "material": "BEETROOTS"
+    },
+    "BEETROOT_SEEDS": {
+        "material": "BEETROOT_SEEDS"
+    },
+    "BEETROOT_SOUP": {
+        "material": "BEETROOT_SOUP"
+    },
+    "BIRCH_BOAT": {
+        "legacy": "BOAT_BIRCH",
+        "material": "BIRCH_BOAT"
+    },
+    "BIRCH_BUTTON": {
+        "legacy": "WOOD_BUTTON",
+        "material": "BIRCH_BUTTON"
+    },
+    "BIRCH_DOOR": {
+        "material": "BIRCH_DOOR"
+    },
+    "BIRCH_FENCE": {
+        "material": "BIRCH_FENCE"
+    },
+    "BIRCH_FENCE_GATE": {
+        "material": "BIRCH_FENCE_GATE"
+    },
+    "BIRCH_LEAVES": {
+        "legacy": "LEAVES",
+        "material": "BIRCH_LEAVES"
+    },
+    "BIRCH_LOG": {
+        "legacy": "LOG",
+        "material": "BIRCH_LOG"
+    },
+    "BIRCH_PLANKS": {
+        "legacy": "WOOD",
+        "material": "BIRCH_PLANKS"
+    },
+    "BIRCH_PRESSURE_PLATE": {
+        "legacy": "WOOD_PLATE",
+        "material": "BIRCH_PRESSURE_PLATE"
+    },
+    "BIRCH_SAPLING": {
+        "legacy": "SAPLING",
+        "material": "BIRCH_SAPLING"
+    },
+    "BIRCH_SLAB": {
+        "legacy": "WOOD_STEP",
+        "material": "BIRCH_SLAB"
+    },
+    "BIRCH_STAIRS": {
+        "legacy": "BIRCH_WOOD_STAIRS",
+        "material": "BIRCH_STAIRS"
+    },
+    "BIRCH_TRAPDOOR": {
+        "legacy": "TRAP_DOOR",
+        "material": "BIRCH_TRAPDOOR"
+    },
+    "BIRCH_WOOD": {
+        "legacy": "LOG",
+        "material": "BIRCH_WOOD"
+    },
+    "BLACK_BANNER": {
+        "legacy": "BANNER",
+        "material": "BLACK_BANNER"
+    },
+    "BLACK_BED": {
+        "legacy": "BED",
+        "material": "BLACK_BED"
+    },
+    "BLACK_CARPET": {
+        "legacy": "CARPET",
+        "material": "BLACK_CARPET"
+    },
+    "BLACK_CONCRETE": {
+        "legacy": "CONCRETE",
+        "material": "BLACK_CONCRETE"
+    },
+    "BLACK_CONCRETE_POWDER": {
+        "legacy": "CONCRETE_POWDER",
+        "material": "BLACK_CONCRETE_POWDER"
+    },
+    "BLACK_GLAZED_TERRACOTTA": {
+        "material": "BLACK_GLAZED_TERRACOTTA"
+    },
+    "BLACK_SHULKER_BOX": {
+        "material": "BLACK_SHULKER_BOX"
+    },
+    "BLACK_STAINED_GLASS": {
+        "legacy": "STAINED_GLASS",
+        "material": "BLACK_STAINED_GLASS"
+    },
+    "BLACK_STAINED_GLASS_PANE": {
+        "legacy": "STAINED_GLASS_PANE",
+        "material": "BLACK_STAINED_GLASS_PANE"
+    },
+    "BLACK_TERRACOTTA": {
+        "legacy": "STAINED_CLAY",
+        "material": "BLACK_TERRACOTTA"
+    },
+    "BLACK_WALL_BANNER": {
+        "legacy": "WALL_BANNER",
+        "material": "BLACK_WALL_BANNER"
+    },
+    "BLACK_WOOL": {
+        "legacy": "WOOL",
+        "material": "BLACK_WOOL"
+    },
+    "BLAZE_POWDER": {
+        "material": "BLAZE_POWDER"
+    },
+    "BLAZE_ROD": {
+        "material": "BLAZE_ROD"
+    },
+    "BLAZE_SPAWN_EGG": {
+        "legacy": "MONSTER_EGG",
+        "material": "BLAZE_SPAWN_EGG"
+    },
+    "BLUE_BANNER": {
+        "legacy": "BANNER",
+        "material": "BLUE_BANNER"
+    },
+    "BLUE_BED": {
+        "legacy": "BED",
+        "material": "BLUE_BED"
+    },
+    "BLUE_CARPET": {
+        "legacy": "CARPET",
+        "material": "BLUE_CARPET"
+    },
+    "BLUE_CONCRETE": {
+        "legacy": "CONCRETE",
+        "material": "BLUE_CONCRETE"
+    },
+    "BLUE_CONCRETE_POWDER": {
+        "legacy": "CONCRETE_POWDER",
+        "material": "BLUE_CONCRETE_POWDER"
+    },
+    "BLUE_GLAZED_TERRACOTTA": {
+        "material": "BLUE_GLAZED_TERRACOTTA"
+    },
+    "BLUE_ICE": {
+        "legacy": "PACKED_ICE",
+        "material": "BLUE_ICE"
+    },
+    "BLUE_ORCHID": {
+        "legacy": "RED_ROSE",
+        "material": "BLUE_ORCHID"
+    },
+    "BLUE_SHULKER_BOX": {
+        "material": "BLUE_SHULKER_BOX"
+    },
+    "BLUE_STAINED_GLASS": {
+        "legacy": "STAINED_GLASS",
+        "material": "BLUE_STAINED_GLASS"
+    },
+    "BLUE_STAINED_GLASS_PANE": {
+        "legacy": "STAINED_GLASS_PANE",
+        "material": "BLUE_STAINED_GLASS_PANE"
+    },
+    "BLUE_TERRACOTTA": {
+        "legacy": "STAINED_CLAY",
+        "material": "BLUE_TERRACOTTA"
+    },
+    "BLUE_WALL_BANNER": {
+        "legacy": "WALL_BANNER",
+        "material": "BLUE_WALL_BANNER"
+    },
+    "BLUE_WOOL": {
+        "legacy": "WOOL",
+        "material": "BLUE_WOOL"
+    },
+    "BONE": {
+        "material": "BONE"
+    },
+    "BONE_BLOCK": {
+        "material": "BONE_BLOCK"
+    },
+    "BONE_MEAL": {
+        "legacy": "INK_SACK",
+        "material": "BONE_MEAL"
+    },
+    "BOOK": {
+        "material": "BOOK"
+    },
+    "BOOKSHELF": {
+        "material": "BOOKSHELF"
+    },
+    "BOW": {
+        "material": "BOW"
+    },
+    "BOWL": {
+        "material": "BOWL"
+    },
+    "BRAIN_CORAL": {
+        "material": "BRAIN_CORAL"
+    },
+    "BRAIN_CORAL_BLOCK": {
+        "material": "BRAIN_CORAL_BLOCK"
+    },
+    "BRAIN_CORAL_FAN": {
+        "material": "BRAIN_CORAL_FAN"
+    },
+    "BRAIN_CORAL_WALL_FAN": {
+        "material": "BRAIN_CORAL_WALL_FAN"
+    },
+    "BREAD": {
+        "material": "BREAD"
+    },
+    "BREWING_STAND": {
+        "material": "BREWING_STAND"
+    },
+    "BRICK": {
+        "legacy": "CLAY_BRICK",
+        "material": "BRICK"
+    },
+    "BRICKS": {
+        "legacy": "BRICK",
+        "material": "BRICKS"
+    },
+    "BRICK_SLAB": {
+        "legacy": "STEP",
+        "material": "BRICK_SLAB"
+    },
+    "BRICK_STAIRS": {
+        "material": "BRICK_STAIRS"
+    },
+    "BROWN_BANNER": {
+        "legacy": "BANNER",
+        "material": "BROWN_BANNER"
+    },
+    "BROWN_BED": {
+        "legacy": "BED",
+        "material": "BROWN_BED"
+    },
+    "BROWN_CARPET": {
+        "legacy": "CARPET",
+        "material": "BROWN_CARPET"
+    },
+    "BROWN_CONCRETE": {
+        "legacy": "CONCRETE",
+        "material": "BROWN_CONCRETE"
+    },
+    "BROWN_CONCRETE_POWDER": {
+        "legacy": "CONCRETE_POWDER",
+        "material": "BROWN_CONCRETE_POWDER"
+    },
+    "BROWN_GLAZED_TERRACOTTA": {
+        "material": "BROWN_GLAZED_TERRACOTTA"
+    },
+    "BROWN_MUSHROOM": {
+        "material": "BROWN_MUSHROOM"
+    },
+    "BROWN_MUSHROOM_BLOCK": {
+        "legacy": "BROWN_MUSHROOM",
+        "material": "BROWN_MUSHROOM_BLOCK"
+    },
+    "BROWN_SHULKER_BOX": {
+        "material": "BROWN_SHULKER_BOX"
+    },
+    "BROWN_STAINED_GLASS": {
+        "legacy": "STAINED_GLASS",
+        "material": "BROWN_STAINED_GLASS"
+    },
+    "BROWN_STAINED_GLASS_PANE": {
+        "legacy": "STAINED_GLASS_PANE",
+        "material": "BROWN_STAINED_GLASS_PANE"
+    },
+    "BROWN_TERRACOTTA": {
+        "legacy": "STAINED_CLAY",
+        "material": "BROWN_TERRACOTTA"
+    },
+    "BROWN_WALL_BANNER": {
+        "legacy": "WALL_BANNER",
+        "material": "BROWN_WALL_BANNER"
+    },
+    "BROWN_WOOL": {
+        "legacy": "WOOL",
+        "material": "BROWN_WOOL"
+    },
+    "BUBBLE_COLUMN": {
+        "material": "BUBBLE_COLUMN"
+    },
+    "BUBBLE_CORAL": {
+        "material": "BUBBLE_CORAL"
+    },
+    "BUBBLE_CORAL_BLOCK": {
+        "material": "BUBBLE_CORAL_BLOCK"
+    },
+    "BUBBLE_CORAL_FAN": {
+        "material": "BUBBLE_CORAL_FAN"
+    },
+    "BUBBLE_CORAL_WALL_FAN": {
+        "material": "BUBBLE_CORAL_WALL_FAN"
+    },
+    "BUCKET": {
+        "material": "BUCKET"
+    },
+    "CACTUS": {
+        "material": "CACTUS"
+    },
+    "CACTUS_GREEN": {
+        "legacy": "INK_SACK",
+        "material": "CACTUS_GREEN"
+    },
+    "CAKE": {
+        "material": "CAKE"
+    },
+    "CARROT": {
+        "legacy": "CARROT_ITEM",
+        "material": "CARROT"
+    },
+    "CARROTS": {
+        "legacy": "CARROT",
+        "material": "CARROTS"
+    },
+    "CARROT_ON_A_STICK": {
+        "legacy": "CARROT_STICK",
+        "material": "CARROT_ON_A_STICK"
+    },
+    "CARVED_PUMPKIN": {
+        "legacy": "PUMPKIN",
+        "material": "CARVED_PUMPKIN"
+    },
+    "CAULDRON": {
+        "material": "CAULDRON"
+    },
+    "CAVE_AIR": {
+        "legacy": "AIR",
+        "material": "CAVE_AIR"
+    },
+    "CAVE_SPIDER_SPAWN_EGG": {
+        "legacy": "MONSTER_EGG",
+        "material": "CAVE_SPIDER_SPAWN_EGG"
+    },
+    "CHAINMAIL_BOOTS": {
+        "material": "CHAINMAIL_BOOTS"
+    },
+    "CHAINMAIL_CHESTPLATE": {
+        "material": "CHAINMAIL_CHESTPLATE"
+    },
+    "CHAINMAIL_HELMET": {
+        "material": "CHAINMAIL_HELMET"
+    },
+    "CHAINMAIL_LEGGINGS": {
+        "material": "CHAINMAIL_LEGGINGS"
+    },
+    "CHAIN_COMMAND_BLOCK": {
+        "legacy": "COMMAND_CHAIN",
+        "material": "CHAIN_COMMAND_BLOCK"
+    },
+    "CHARCOAL": {
+        "legacy": "COAL",
+        "material": "CHARCOAL"
+    },
+    "CHEST": {
+        "material": "CHEST"
+    },
+    "CHEST_MINECART": {
+        "legacy": "STORAGE_MINECART",
+        "material": "CHEST_MINECART"
+    },
+    "CHICKEN": {
+        "legacy": "RAW_CHICKEN",
+        "material": "CHICKEN"
+    },
+    "CHICKEN_SPAWN_EGG": {
+        "legacy": "MONSTER_EGG",
+        "material": "CHICKEN_SPAWN_EGG"
+    },
+    "CHIPPED_ANVIL": {
+        "legacy": "ANVIL",
+        "material": "CHIPPED_ANVIL"
+    },
+    "CHISELED_QUARTZ_BLOCK": {
+        "legacy": "QUARTZ_BLOCK",
+        "material": "CHISELED_QUARTZ_BLOCK"
+    },
+    "CHISELED_RED_SANDSTONE": {
+        "legacy": "RED_SANDSTONE",
+        "material": "CHISELED_RED_SANDSTONE"
+    },
+    "CHISELED_SANDSTONE": {
+        "legacy": "SANDSTONE",
+        "material": "CHISELED_SANDSTONE"
+    },
+    "CHISELED_STONE_BRICKS": {
+        "legacy": "SMOOTH_BRICK",
+        "material": "CHISELED_STONE_BRICKS"
+    },
+    "CHORUS_FLOWER": {
+        "material": "CHORUS_FLOWER"
+    },
+    "CHORUS_FRUIT": {
+        "material": "CHORUS_FRUIT"
+    },
+    "CHORUS_PLANT": {
+        "material": "CHORUS_PLANT"
+    },
+    "CLAY": {
+        "material": "CLAY"
+    },
+    "CLAY_BALL": {
+        "material": "CLAY_BALL"
+    },
+    "CLOCK": {
+        "legacy": "WATCH",
+        "material": "CLOCK"
+    },
+    "COAL": {
+        "material": "COAL"
+    },
+    "COAL_BLOCK": {
+        "material": "COAL_BLOCK"
+    },
+    "COAL_ORE": {
+        "material": "COAL_ORE"
+    },
+    "COARSE_DIRT": {
+        "legacy": "DIRT",
+        "material": "COARSE_DIRT"
+    },
+    "COBBLESTONE": {
+        "material": "COBBLESTONE"
+    },
+    "COBBLESTONE_SLAB": {
+        "legacy": "STEP",
+        "material": "COBBLESTONE_SLAB"
+    },
+    "COBBLESTONE_STAIRS": {
+        "material": "COBBLESTONE_STAIRS"
+    },
+    "COBBLESTONE_WALL": {
+        "legacy": "COBBLE_WALL",
+        "material": "COBBLESTONE_WALL"
+    },
+    "COBWEB": {
+        "legacy": "WEB",
+        "material": "COBWEB"
+    },
+    "COCOA": {
+        "material": "COCOA"
+    },
+    "COCOA_BEANS": {
+        "legacy": "INK_SACK",
+        "material": "COCOA_BEANS"
+    },
+    "COD": {
+        "legacy": "RAW_FISH",
+        "material": "COD"
+    },
+    "COD_BUCKET": {
+        "legacy": "BUCKET",
+        "material": "COD_BUCKET"
+    },
+    "COD_SPAWN_EGG": {
+        "legacy": "MONSTER_EGG",
+        "material": "COD_SPAWN_EGG"
+    },
+    "COMMAND_BLOCK": {
+        "legacy": "COMMAND",
+        "material": "COMMAND_BLOCK"
+    },
+    "COMMAND_BLOCK_MINECART": {
+        "legacy": "COMMAND_MINECART",
+        "material": "COMMAND_BLOCK_MINECART"
+    },
+    "COMPARATOR": {
+        "legacy": "REDSTONE_COMPARATOR",
+        "material": "COMPARATOR"
+    },
+    "COMPASS": {
+        "material": "COMPASS"
+    },
+    "CONDUIT": {
+        "material": "CONDUIT"
+    },
+    "COOKED_BEEF": {
+        "material": "COOKED_BEEF"
+    },
+    "COOKED_CHICKEN": {
+        "material": "COOKED_CHICKEN"
+    },
+    "COOKED_COD": {
+        "legacy": "COOKED_FISH",
+        "material": "COOKED_COD"
+    },
+    "COOKED_MUTTON": {
+        "material": "COOKED_MUTTON"
+    },
+    "COOKED_PORKCHOP": {
+        "legacy": "GRILLED_PORK",
+        "material": "COOKED_PORKCHOP"
+    },
+    "COOKED_RABBIT": {
+        "material": "COOKED_RABBIT"
+    },
+    "COOKED_SALMON": {
+        "legacy": "COOKED_FISH",
+        "material": "COOKED_SALMON"
+    },
+    "COOKIE": {
+        "material": "COOKIE"
+    },
+    "COW_SPAWN_EGG": {
+        "legacy": "MONSTER_EGG",
+        "material": "COW_SPAWN_EGG"
+    },
+    "CRACKED_STONE_BRICKS": {
+        "legacy": "SMOOTH_BRICK",
+        "material": "CRACKED_STONE_BRICKS"
+    },
+    "CRAFTING_TABLE": {
+        "legacy": "WORKBENCH",
+        "material": "CRAFTING_TABLE"
+    },
+    "CREEPER_HEAD": {
+        "legacy": "SKULL",
+        "material": "CREEPER_HEAD"
+    },
+    "CREEPER_SPAWN_EGG": {
+        "legacy": "MONSTER_EGG",
+        "material": "CREEPER_SPAWN_EGG"
+    },
+    "CREEPER_WALL_HEAD": {
+        "legacy": "SKULL",
+        "material": "CREEPER_WALL_HEAD"
+    },
+    "CUT_RED_SANDSTONE": {
+        "material": "CUT_RED_SANDSTONE"
+    },
+    "CUT_SANDSTONE": {
+        "material": "CUT_SANDSTONE"
+    },
+    "CYAN_BANNER": {
+        "legacy": "BANNER",
+        "material": "CYAN_BANNER"
+    },
+    "CYAN_BED": {
+        "legacy": "BED",
+        "material": "CYAN_BED"
+    },
+    "CYAN_CARPET": {
+        "legacy": "CARPET",
+        "material": "CYAN_CARPET"
+    },
+    "CYAN_CONCRETE": {
+        "legacy": "CONCRETE",
+        "material": "CYAN_CONCRETE"
+    },
+    "CYAN_CONCRETE_POWDER": {
+        "legacy": "CONCRETE_POWDER",
+        "material": "CYAN_CONCRETE_POWDER"
+    },
+    "CYAN_DYE": {
+        "legacy": "INK_SACK",
+        "material": "CYAN_DYE"
+    },
+    "CYAN_GLAZED_TERRACOTTA": {
+        "material": "CYAN_GLAZED_TERRACOTTA"
+    },
+    "CYAN_SHULKER_BOX": {
+        "material": "CYAN_SHULKER_BOX"
+    },
+    "CYAN_STAINED_GLASS": {
+        "legacy": "STAINED_GLASS",
+        "material": "CYAN_STAINED_GLASS"
+    },
+    "CYAN_STAINED_GLASS_PANE": {
+        "legacy": "STAINED_GLASS_PANE",
+        "material": "CYAN_STAINED_GLASS_PANE"
+    },
+    "CYAN_TERRACOTTA": {
+        "legacy": "STAINED_CLAY",
+        "material": "CYAN_TERRACOTTA"
+    },
+    "CYAN_WALL_BANNER": {
+        "legacy": "WALL_BANNER",
+        "material": "CYAN_WALL_BANNER"
+    },
+    "CYAN_WOOL": {
+        "legacy": "WOOL",
+        "material": "CYAN_WOOL"
+    },
+    "DAMAGED_ANVIL": {
+        "legacy": "ANVIL",
+        "material": "DAMAGED_ANVIL"
+    },
+    "DANDELION": {
+        "legacy": "YELLOW_FLOWER",
+        "material": "DANDELION"
+    },
+    "DANDELION_YELLOW": {
+        "legacy": "INK_SACK",
+        "material": "DANDELION_YELLOW"
+    },
+    "DARK_OAK_BOAT": {
+        "legacy": "BOAT_DARK_OAK",
+        "material": "DARK_OAK_BOAT"
+    },
+    "DARK_OAK_BUTTON": {
+        "legacy": "WOOD_BUTTON",
+        "material": "DARK_OAK_BUTTON"
+    },
+    "DARK_OAK_DOOR": {
+        "material": "DARK_OAK_DOOR"
+    },
+    "DARK_OAK_FENCE": {
+        "material": "DARK_OAK_FENCE"
+    },
+    "DARK_OAK_FENCE_GATE": {
+        "material": "DARK_OAK_FENCE_GATE"
+    },
+    "DARK_OAK_LEAVES": {
+        "legacy": "LEAVES_2",
+        "material": "DARK_OAK_LEAVES"
+    },
+    "DARK_OAK_LOG": {
+        "legacy": "LOG_2",
+        "material": "DARK_OAK_LOG"
+    },
+    "DARK_OAK_PLANKS": {
+        "legacy": "WOOD",
+        "material": "DARK_OAK_PLANKS"
+    },
+    "DARK_OAK_PRESSURE_PLATE": {
+        "legacy": "WOOD_PLATE",
+        "material": "DARK_OAK_PRESSURE_PLATE"
+    },
+    "DARK_OAK_SAPLING": {
+        "legacy": "SAPLING",
+        "material": "DARK_OAK_SAPLING"
+    },
+    "DARK_OAK_SLAB": {
+        "legacy": "WOOD_STEP",
+        "material": "DARK_OAK_SLAB"
+    },
+    "DARK_OAK_STAIRS": {
+        "material": "DARK_OAK_STAIRS"
+    },
+    "DARK_OAK_TRAPDOOR": {
+        "legacy": "TRAP_DOOR",
+        "material": "DARK_OAK_TRAPDOOR"
+    },
+    "DARK_OAK_WOOD": {
+        "legacy": "LOG_2",
+        "material": "DARK_OAK_WOOD"
+    },
+    "DARK_PRISMARINE": {
+        "legacy": "PRISMARINE",
+        "material": "DARK_PRISMARINE"
+    },
+    "DARK_PRISMARINE_SLAB": {
+        "material": "DARK_PRISMARINE_SLAB"
+    },
+    "DARK_PRISMARINE_STAIRS": {
+        "material": "DARK_PRISMARINE_STAIRS"
+    },
+    "DAYLIGHT_DETECTOR": {
+        "material": "DAYLIGHT_DETECTOR"
+    },
+    "DEAD_BRAIN_CORAL": {
+        "material": "DEAD_BRAIN_CORAL"
+    },
+    "DEAD_BRAIN_CORAL_BLOCK": {
+        "material": "DEAD_BRAIN_CORAL_BLOCK"
+    },
+    "DEAD_BRAIN_CORAL_FAN": {
+        "material": "DEAD_BRAIN_CORAL_FAN"
+    },
+    "DEAD_BRAIN_CORAL_WALL_FAN": {
+        "material": "DEAD_BRAIN_CORAL_WALL_FAN"
+    },
+    "DEAD_BUBBLE_CORAL": {
+        "material": "DEAD_BUBBLE_CORAL"
+    },
+    "DEAD_BUBBLE_CORAL_BLOCK": {
+        "material": "DEAD_BUBBLE_CORAL_BLOCK"
+    },
+    "DEAD_BUBBLE_CORAL_FAN": {
+        "material": "DEAD_BUBBLE_CORAL_FAN"
+    },
+    "DEAD_BUBBLE_CORAL_WALL_FAN": {
+        "material": "DEAD_BUBBLE_CORAL_WALL_FAN"
+    },
+    "DEAD_BUSH": {
+        "material": "DEAD_BUSH"
+    },
+    "DEAD_FIRE_CORAL": {
+        "material": "DEAD_FIRE_CORAL"
+    },
+    "DEAD_FIRE_CORAL_BLOCK": {
+        "material": "DEAD_FIRE_CORAL_BLOCK"
+    },
+    "DEAD_FIRE_CORAL_FAN": {
+        "material": "DEAD_FIRE_CORAL_FAN"
+    },
+    "DEAD_FIRE_CORAL_WALL_FAN": {
+        "material": "DEAD_FIRE_CORAL_WALL_FAN"
+    },
+    "DEAD_HORN_CORAL": {
+        "material": "DEAD_HORN_CORAL"
+    },
+    "DEAD_HORN_CORAL_BLOCK": {
+        "material": "DEAD_HORN_CORAL_BLOCK"
+    },
+    "DEAD_HORN_CORAL_FAN": {
+        "material": "DEAD_HORN_CORAL_FAN"
+    },
+    "DEAD_HORN_CORAL_WALL_FAN": {
+        "material": "DEAD_HORN_CORAL_WALL_FAN"
+    },
+    "DEAD_TUBE_CORAL": {
+        "material": "DEAD_TUBE_CORAL"
+    },
+    "DEAD_TUBE_CORAL_BLOCK": {
+        "material": "DEAD_TUBE_CORAL_BLOCK"
+    },
+    "DEAD_TUBE_CORAL_FAN": {
+        "material": "DEAD_TUBE_CORAL_FAN"
+    },
+    "DEAD_TUBE_CORAL_WALL_FAN": {
+        "material": "DEAD_TUBE_CORAL_WALL_FAN"
+    },
+    "DEBUG_STICK": {
+        "legacy": "STICK",
+        "material": "DEBUG_STICK"
+    },
+    "DETECTOR_RAIL": {
+        "material": "DETECTOR_RAIL"
+    },
+    "DIAMOND": {
+        "material": "DIAMOND"
+    },
+    "DIAMOND_AXE": {
+        "material": "DIAMOND_AXE"
+    },
+    "DIAMOND_BLOCK": {
+        "material": "DIAMOND_BLOCK"
+    },
+    "DIAMOND_BOOTS": {
+        "material": "DIAMOND_BOOTS"
+    },
+    "DIAMOND_CHESTPLATE": {
+        "material": "DIAMOND_CHESTPLATE"
+    },
+    "DIAMOND_HELMET": {
+        "material": "DIAMOND_HELMET"
+    },
+    "DIAMOND_HOE": {
+        "material": "DIAMOND_HOE"
+    },
+    "DIAMOND_HORSE_ARMOR": {
+        "legacy": "DIAMOND_BARDING",
+        "material": "DIAMOND_HORSE_ARMOR"
+    },
+    "DIAMOND_LEGGINGS": {
+        "material": "DIAMOND_LEGGINGS"
+    },
+    "DIAMOND_ORE": {
+        "material": "DIAMOND_ORE"
+    },
+    "DIAMOND_PICKAXE": {
+        "material": "DIAMOND_PICKAXE"
+    },
+    "DIAMOND_SHOVEL": {
+        "legacy": "DIAMOND_SPADE",
+        "material": "DIAMOND_SHOVEL"
+    },
+    "DIAMOND_SWORD": {
+        "material": "DIAMOND_SWORD"
+    },
+    "DIORITE": {
+        "legacy": "STONE",
+        "material": "DIORITE"
+    },
+    "DIRT": {
+        "material": "DIRT"
+    },
+    "DISPENSER": {
+        "material": "DISPENSER"
+    },
+    "DOLPHIN_SPAWN_EGG": {
+        "legacy": "MONSTER_EGG",
+        "material": "DOLPHIN_SPAWN_EGG"
+    },
+    "DONKEY_SPAWN_EGG": {
+        "legacy": "MONSTER_EGG",
+        "material": "DONKEY_SPAWN_EGG"
+    },
+    "DRAGON_BREATH": {
+        "legacy": "DRAGONS_BREATH",
+        "material": "DRAGON_BREATH"
+    },
+    "DRAGON_EGG": {
+        "material": "DRAGON_EGG"
+    },
+    "DRAGON_HEAD": {
+        "legacy": "SKULL",
+        "material": "DRAGON_HEAD"
+    },
+    "DRAGON_WALL_HEAD": {
+        "legacy": "SKULL",
+        "material": "DRAGON_WALL_HEAD"
+    },
+    "DRIED_KELP": {
+        "material": "DRIED_KELP"
+    },
+    "DRIED_KELP_BLOCK": {
+        "material": "DRIED_KELP_BLOCK"
+    },
+    "DROPPER": {
+        "material": "DROPPER"
+    },
+    "DROWNED_SPAWN_EGG": {
+        "legacy": "MONSTER_EGG",
+        "material": "DROWNED_SPAWN_EGG"
+    },
+    "EGG": {
+        "material": "EGG"
+    },
+    "ELDER_GUARDIAN_SPAWN_EGG": {
+        "legacy": "MONSTER_EGG",
+        "material": "ELDER_GUARDIAN_SPAWN_EGG"
+    },
+    "ELYTRA": {
+        "material": "ELYTRA"
+    },
+    "EMERALD": {
+        "material": "EMERALD"
+    },
+    "EMERALD_BLOCK": {
+        "material": "EMERALD_BLOCK"
+    },
+    "EMERALD_ORE": {
+        "material": "EMERALD_ORE"
+    },
+    "ENCHANTED_BOOK": {
+        "material": "ENCHANTED_BOOK"
+    },
+    "ENCHANTED_GOLDEN_APPLE": {
+        "legacy": "GOLDEN_APPLE",
+        "material": "ENCHANTED_GOLDEN_APPLE"
+    },
+    "ENCHANTING_TABLE": {
+        "legacy": "ENCHANTMENT_TABLE",
+        "material": "ENCHANTING_TABLE"
+    },
+    "ENDERMAN_SPAWN_EGG": {
+        "legacy": "MONSTER_EGG",
+        "material": "ENDERMAN_SPAWN_EGG"
+    },
+    "ENDERMITE_SPAWN_EGG": {
+        "legacy": "MONSTER_EGG",
+        "material": "ENDERMITE_SPAWN_EGG"
+    },
+    "ENDER_CHEST": {
+        "material": "ENDER_CHEST"
+    },
+    "ENDER_EYE": {
+        "legacy": "EYE_OF_ENDER",
+        "material": "ENDER_EYE"
+    },
+    "ENDER_PEARL": {
+        "material": "ENDER_PEARL"
+    },
+    "END_CRYSTAL": {
+        "material": "END_CRYSTAL"
+    },
+    "END_GATEWAY": {
+        "material": "END_GATEWAY"
+    },
+    "END_PORTAL": {
+        "legacy": "ENDER_PORTAL",
+        "material": "END_PORTAL"
+    },
+    "END_PORTAL_FRAME": {
+        "legacy": "ENDER_PORTAL_FRAME",
+        "material": "END_PORTAL_FRAME"
+    },
+    "END_ROD": {
+        "material": "END_ROD"
+    },
+    "END_STONE": {
+        "legacy": "ENDER_STONE",
+        "material": "END_STONE"
+    },
+    "END_STONE_BRICKS": {
+        "legacy": "END_BRICKS",
+        "material": "END_STONE_BRICKS"
+    },
+    "EVOKER_SPAWN_EGG": {
+        "legacy": "MONSTER_EGG",
+        "material": "EVOKER_SPAWN_EGG"
+    },
+    "EXPERIENCE_BOTTLE": {
+        "legacy": "EXP_BOTTLE",
+        "material": "EXPERIENCE_BOTTLE"
+    },
+    "FARMLAND": {
+        "legacy": "SOIL",
+        "material": "FARMLAND"
+    },
+    "FEATHER": {
+        "material": "FEATHER"
+    },
+    "FERMENTED_SPIDER_EYE": {
+        "material": "FERMENTED_SPIDER_EYE"
+    },
+    "FERN": {
+        "legacy": "LONG_GRASS",
+        "material": "FERN"
+    },
+    "FILLED_MAP": {
+        "legacy": "MAP",
+        "material": "FILLED_MAP"
+    },
+    "FIRE": {
+        "material": "FIRE"
+    },
+    "FIREWORK_ROCKET": {
+        "legacy": "FIREWORK",
+        "material": "FIREWORK_ROCKET"
+    },
+    "FIREWORK_STAR": {
+        "legacy": "FIREWORK_CHARGE",
+        "material": "FIREWORK_STAR"
+    },
+    "FIRE_CHARGE": {
+        "legacy": "FIREBALL",
+        "material": "FIRE_CHARGE"
+    },
+    "FIRE_CORAL": {
+        "material": "FIRE_CORAL"
+    },
+    "FIRE_CORAL_BLOCK": {
+        "material": "FIRE_CORAL_BLOCK"
+    },
+    "FIRE_CORAL_FAN": {
+        "material": "FIRE_CORAL_FAN"
+    },
+    "FIRE_CORAL_WALL_FAN": {
+        "material": "FIRE_CORAL_WALL_FAN"
+    },
+    "FISHING_ROD": {
+        "material": "FISHING_ROD"
+    },
+    "FLINT": {
+        "material": "FLINT"
+    },
+    "FLINT_AND_STEEL": {
+        "material": "FLINT_AND_STEEL"
+    },
+    "FLOWER_POT": {
+        "material": "FLOWER_POT"
+    },
+    "FROSTED_ICE": {
+        "material": "FROSTED_ICE"
+    },
+    "FURNACE": {
+        "material": "FURNACE"
+    },
+    "FURNACE_MINECART": {
+        "legacy": "POWERED_MINECART",
+        "material": "FURNACE_MINECART"
+    },
+    "GHAST_SPAWN_EGG": {
+        "legacy": "MONSTER_EGG",
+        "material": "GHAST_SPAWN_EGG"
+    },
+    "GHAST_TEAR": {
+        "material": "GHAST_TEAR"
+    },
+    "GLASS": {
+        "material": "GLASS"
+    },
+    "GLASS_BOTTLE": {
+        "material": "GLASS_BOTTLE"
+    },
+    "GLASS_PANE": {
+        "legacy": "THIN_GLASS",
+        "material": "GLASS_PANE"
+    },
+    "GLISTERING_MELON_SLICE": {
+        "legacy": "SPECKLED_MELON",
+        "material": "GLISTERING_MELON_SLICE"
+    },
+    "GLOWSTONE": {
+        "material": "GLOWSTONE"
+    },
+    "GLOWSTONE_DUST": {
+        "material": "GLOWSTONE_DUST"
+    },
+    "GOLDEN_APPLE": {
+        "material": "GOLDEN_APPLE"
+    },
+    "GOLDEN_AXE": {
+        "legacy": "GOLD_AXE",
+        "material": "GOLDEN_AXE"
+    },
+    "GOLDEN_BOOTS": {
+        "legacy": "GOLD_BOOTS",
+        "material": "GOLDEN_BOOTS"
+    },
+    "GOLDEN_CARROT": {
+        "material": "GOLDEN_CARROT"
+    },
+    "GOLDEN_CHESTPLATE": {
+        "legacy": "GOLD_CHESTPLATE",
+        "material": "GOLDEN_CHESTPLATE"
+    },
+    "GOLDEN_HELMET": {
+        "legacy": "GOLD_HELMET",
+        "material": "GOLDEN_HELMET"
+    },
+    "GOLDEN_HOE": {
+        "legacy": "GOLD_HOE",
+        "material": "GOLDEN_HOE"
+    },
+    "GOLDEN_HORSE_ARMOR": {
+        "legacy": "GOLD_BARDING",
+        "material": "GOLDEN_HORSE_ARMOR"
+    },
+    "GOLDEN_LEGGINGS": {
+        "legacy": "GOLD_LEGGINGS",
+        "material": "GOLDEN_LEGGINGS"
+    },
+    "GOLDEN_PICKAXE": {
+        "legacy": "GOLD_PICKAXE",
+        "material": "GOLDEN_PICKAXE"
+    },
+    "GOLDEN_SHOVEL": {
+        "legacy": "GOLD_SPADE",
+        "material": "GOLDEN_SHOVEL"
+    },
+    "GOLDEN_SWORD": {
+        "legacy": "GOLD_SWORD",
+        "material": "GOLDEN_SWORD"
+    },
+    "GOLD_BLOCK": {
+        "material": "GOLD_BLOCK"
+    },
+    "GOLD_INGOT": {
+        "material": "GOLD_INGOT"
+    },
+    "GOLD_NUGGET": {
+        "material": "GOLD_NUGGET"
+    },
+    "GOLD_ORE": {
+        "material": "GOLD_ORE"
+    },
+    "GRANITE": {
+        "legacy": "STONE",
+        "material": "GRANITE"
+    },
+    "GRASS": {
+        "material": "GRASS"
+    },
+    "GRASS_BLOCK": {
+        "legacy": "GRASS",
+        "material": "GRASS_BLOCK"
+    },
+    "GRASS_PATH": {
+        "material": "GRASS_PATH"
+    },
+    "GRAVEL": {
+        "material": "GRAVEL"
+    },
+    "GRAY_BANNER": {
+        "legacy": "BANNER",
+        "material": "GRAY_BANNER"
+    },
+    "GRAY_BED": {
+        "legacy": "BED",
+        "material": "GRAY_BED"
+    },
+    "GRAY_CARPET": {
+        "legacy": "CARPET",
+        "material": "GRAY_CARPET"
+    },
+    "GRAY_CONCRETE": {
+        "legacy": "CONCRETE",
+        "material": "GRAY_CONCRETE"
+    },
+    "GRAY_CONCRETE_POWDER": {
+        "legacy": "CONCRETE_POWDER",
+        "material": "GRAY_CONCRETE_POWDER"
+    },
+    "GRAY_DYE": {
+        "legacy": "INK_SACK",
+        "material": "GRAY_DYE"
+    },
+    "GRAY_GLAZED_TERRACOTTA": {
+        "material": "GRAY_GLAZED_TERRACOTTA"
+    },
+    "GRAY_SHULKER_BOX": {
+        "material": "GRAY_SHULKER_BOX"
+    },
+    "GRAY_STAINED_GLASS": {
+        "legacy": "STAINED_GLASS",
+        "material": "GRAY_STAINED_GLASS"
+    },
+    "GRAY_STAINED_GLASS_PANE": {
+        "legacy": "STAINED_GLASS_PANE",
+        "material": "GRAY_STAINED_GLASS_PANE"
+    },
+    "GRAY_TERRACOTTA": {
+        "legacy": "STAINED_CLAY",
+        "material": "GRAY_TERRACOTTA"
+    },
+    "GRAY_WALL_BANNER": {
+        "legacy": "WALL_BANNER",
+        "material": "GRAY_WALL_BANNER"
+    },
+    "GRAY_WOOL": {
+        "legacy": "WOOL",
+        "material": "GRAY_WOOL"
+    },
+    "GREEN_BANNER": {
+        "legacy": "BANNER",
+        "material": "GREEN_BANNER"
+    },
+    "GREEN_BED": {
+        "legacy": "BED",
+        "material": "GREEN_BED"
+    },
+    "GREEN_CARPET": {
+        "legacy": "CARPET",
+        "material": "GREEN_CARPET"
+    },
+    "GREEN_CONCRETE": {
+        "legacy": "CONCRETE",
+        "material": "GREEN_CONCRETE"
+    },
+    "GREEN_CONCRETE_POWDER": {
+        "legacy": "CONCRETE_POWDER",
+        "material": "GREEN_CONCRETE_POWDER"
+    },
+    "GREEN_GLAZED_TERRACOTTA": {
+        "material": "GREEN_GLAZED_TERRACOTTA"
+    },
+    "GREEN_SHULKER_BOX": {
+        "material": "GREEN_SHULKER_BOX"
+    },
+    "GREEN_STAINED_GLASS": {
+        "legacy": "STAINED_GLASS",
+        "material": "GREEN_STAINED_GLASS"
+    },
+    "GREEN_STAINED_GLASS_PANE": {
+        "legacy": "STAINED_GLASS_PANE",
+        "material": "GREEN_STAINED_GLASS_PANE"
+    },
+    "GREEN_TERRACOTTA": {
+        "legacy": "STAINED_CLAY",
+        "material": "GREEN_TERRACOTTA"
+    },
+    "GREEN_WALL_BANNER": {
+        "legacy": "WALL_BANNER",
+        "material": "GREEN_WALL_BANNER"
+    },
+    "GREEN_WOOL": {
+        "legacy": "WOOL",
+        "material": "GREEN_WOOL"
+    },
+    "GUARDIAN_SPAWN_EGG": {
+        "legacy": "MONSTER_EGG",
+        "material": "GUARDIAN_SPAWN_EGG"
+    },
+    "GUNPOWDER": {
+        "legacy": "SULPHUR",
+        "material": "GUNPOWDER"
+    },
+    "HAY_BLOCK": {
+        "material": "HAY_BLOCK"
+    },
+    "HEART_OF_THE_SEA": {
+        "material": "HEART_OF_THE_SEA"
+    },
+    "HEAVY_WEIGHTED_PRESSURE_PLATE": {
+        "legacy": "IRON_PLATE",
+        "material": "HEAVY_WEIGHTED_PRESSURE_PLATE"
+    },
+    "HOPPER": {
+        "material": "HOPPER"
+    },
+    "HOPPER_MINECART": {
+        "material": "HOPPER_MINECART"
+    },
+    "HORN_CORAL": {
+        "material": "HORN_CORAL"
+    },
+    "HORN_CORAL_BLOCK": {
+        "material": "HORN_CORAL_BLOCK"
+    },
+    "HORN_CORAL_FAN": {
+        "material": "HORN_CORAL_FAN"
+    },
+    "HORN_CORAL_WALL_FAN": {
+        "material": "HORN_CORAL_WALL_FAN"
+    },
+    "HORSE_SPAWN_EGG": {
+        "legacy": "MONSTER_EGG",
+        "material": "HORSE_SPAWN_EGG"
+    },
+    "HUSK_SPAWN_EGG": {
+        "legacy": "MONSTER_EGG",
+        "material": "HUSK_SPAWN_EGG"
+    },
+    "ICE": {
+        "material": "ICE"
+    },
+    "INFESTED_CHISELED_STONE_BRICKS": {
+        "legacy": "MONSTER_EGGS",
+        "material": "INFESTED_CHISELED_STONE_BRICKS"
+    },
+    "INFESTED_COBBLESTONE": {
+        "legacy": "MONSTER_EGGS",
+        "material": "INFESTED_COBBLESTONE"
+    },
+    "INFESTED_CRACKED_STONE_BRICKS": {
+        "legacy": "MONSTER_EGGS",
+        "material": "INFESTED_CRACKED_STONE_BRICKS"
+    },
+    "INFESTED_MOSSY_STONE_BRICKS": {
+        "legacy": "MONSTER_EGGS",
+        "material": "INFESTED_MOSSY_STONE_BRICKS"
+    },
+    "INFESTED_STONE": {
+        "legacy": "MONSTER_EGGS",
+        "material": "INFESTED_STONE"
+    },
+    "INFESTED_STONE_BRICKS": {
+        "legacy": "MONSTER_EGGS",
+        "material": "INFESTED_STONE_BRICKS"
+    },
+    "INK_SAC": {
+        "legacy": "INK_SACK",
+        "material": "INK_SAC"
+    },
+    "IRON_AXE": {
+        "material": "IRON_AXE"
+    },
+    "IRON_BARS": {
+        "legacy": "IRON_FENCE",
+        "material": "IRON_BARS"
+    },
+    "IRON_BLOCK": {
+        "material": "IRON_BLOCK"
+    },
+    "IRON_BOOTS": {
+        "material": "IRON_BOOTS"
+    },
+    "IRON_CHESTPLATE": {
+        "material": "IRON_CHESTPLATE"
+    },
+    "IRON_DOOR": {
+        "material": "IRON_DOOR"
+    },
+    "IRON_HELMET": {
+        "material": "IRON_HELMET"
+    },
+    "IRON_HOE": {
+        "material": "IRON_HOE"
+    },
+    "IRON_HORSE_ARMOR": {
+        "legacy": "IRON_BARDING",
+        "material": "IRON_HORSE_ARMOR"
+    },
+    "IRON_INGOT": {
+        "material": "IRON_INGOT"
+    },
+    "IRON_LEGGINGS": {
+        "material": "IRON_LEGGINGS"
+    },
+    "IRON_NUGGET": {
+        "material": "IRON_NUGGET"
+    },
+    "IRON_ORE": {
+        "material": "IRON_ORE"
+    },
+    "IRON_PICKAXE": {
+        "material": "IRON_PICKAXE"
+    },
+    "IRON_SHOVEL": {
+        "legacy": "IRON_SPADE",
+        "material": "IRON_SHOVEL"
+    },
+    "IRON_SWORD": {
+        "material": "IRON_SWORD"
+    },
+    "IRON_TRAPDOOR": {
+        "material": "IRON_TRAPDOOR"
+    },
+    "ITEM_FRAME": {
+        "material": "ITEM_FRAME"
+    },
+    "JACK_O_LANTERN": {
+        "material": "JACK_O_LANTERN"
+    },
+    "JUKEBOX": {
+        "material": "JUKEBOX"
+    },
+    "JUNGLE_BOAT": {
+        "legacy": "BOAT_JUNGLE",
+        "material": "JUNGLE_BOAT"
+    },
+    "JUNGLE_BUTTON": {
+        "legacy": "WOOD_BUTTON",
+        "material": "JUNGLE_BUTTON"
+    },
+    "JUNGLE_DOOR": {
+        "material": "JUNGLE_DOOR"
+    },
+    "JUNGLE_FENCE": {
+        "material": "JUNGLE_FENCE"
+    },
+    "JUNGLE_FENCE_GATE": {
+        "material": "JUNGLE_FENCE_GATE"
+    },
+    "JUNGLE_LEAVES": {
+        "legacy": "LEAVES",
+        "material": "JUNGLE_LEAVES"
+    },
+    "JUNGLE_LOG": {
+        "legacy": "LOG",
+        "material": "JUNGLE_LOG"
+    },
+    "JUNGLE_PLANKS": {
+        "legacy": "WOOD",
+        "material": "JUNGLE_PLANKS"
+    },
+    "JUNGLE_PRESSURE_PLATE": {
+        "legacy": "WOOD_PLATE",
+        "material": "JUNGLE_PRESSURE_PLATE"
+    },
+    "JUNGLE_SAPLING": {
+        "legacy": "SAPLING",
+        "material": "JUNGLE_SAPLING"
+    },
+    "JUNGLE_SLAB": {
+        "legacy": "WOOD_STEP",
+        "material": "JUNGLE_SLAB"
+    },
+    "JUNGLE_STAIRS": {
+        "legacy": "JUNGLE_WOOD_STAIRS",
+        "material": "JUNGLE_STAIRS"
+    },
+    "JUNGLE_TRAPDOOR": {
+        "legacy": "TRAP_DOOR",
+        "material": "JUNGLE_TRAPDOOR"
+    },
+    "JUNGLE_WOOD": {
+        "legacy": "LOG",
+        "material": "JUNGLE_WOOD"
+    },
+    "KELP": {
+        "material": "KELP"
+    },
+    "KELP_PLANT": {
+        "material": "KELP_PLANT"
+    },
+    "KNOWLEDGE_BOOK": {
+        "material": "KNOWLEDGE_BOOK"
+    },
+    "LADDER": {
+        "material": "LADDER"
+    },
+    "LAPIS_BLOCK": {
+        "material": "LAPIS_BLOCK"
+    },
+    "LAPIS_LAZULI": {
+        "legacy": "INK_SACK",
+        "material": "LAPIS_LAZULI"
+    },
+    "LAPIS_ORE": {
+        "material": "LAPIS_ORE"
+    },
+    "LARGE_FERN": {
+        "legacy": "DOUBLE_PLANT",
+        "material": "LARGE_FERN"
+    },
+    "LAVA": {
+        "material": "LAVA"
+    },
+    "LAVA_BUCKET": {
+        "material": "LAVA_BUCKET"
+    },
+    "LEAD": {
+        "legacy": "LEASH",
+        "material": "LEAD"
+    },
+    "LEATHER": {
+        "material": "LEATHER"
+    },
+    "LEATHER_BOOTS": {
+        "material": "LEATHER_BOOTS"
+    },
+    "LEATHER_CHESTPLATE": {
+        "material": "LEATHER_CHESTPLATE"
+    },
+    "LEATHER_HELMET": {
+        "material": "LEATHER_HELMET"
+    },
+    "LEATHER_LEGGINGS": {
+        "material": "LEATHER_LEGGINGS"
+    },
+    "LEVER": {
+        "material": "LEVER"
+    },
+    "LIGHT_BLUE_BANNER": {
+        "legacy": "BANNER",
+        "material": "LIGHT_BLUE_BANNER"
+    },
+    "LIGHT_BLUE_BED": {
+        "legacy": "BED",
+        "material": "LIGHT_BLUE_BED"
+    },
+    "LIGHT_BLUE_CARPET": {
+        "legacy": "CARPET",
+        "material": "LIGHT_BLUE_CARPET"
+    },
+    "LIGHT_BLUE_CONCRETE": {
+        "legacy": "CONCRETE",
+        "material": "LIGHT_BLUE_CONCRETE"
+    },
+    "LIGHT_BLUE_CONCRETE_POWDER": {
+        "legacy": "CONCRETE_POWDER",
+        "material": "LIGHT_BLUE_CONCRETE_POWDER"
+    },
+    "LIGHT_BLUE_DYE": {
+        "legacy": "INK_SACK",
+        "material": "LIGHT_BLUE_DYE"
+    },
+    "LIGHT_BLUE_GLAZED_TERRACOTTA": {
+        "material": "LIGHT_BLUE_GLAZED_TERRACOTTA"
+    },
+    "LIGHT_BLUE_SHULKER_BOX": {
+        "material": "LIGHT_BLUE_SHULKER_BOX"
+    },
+    "LIGHT_BLUE_STAINED_GLASS": {
+        "legacy": "STAINED_GLASS",
+        "material": "LIGHT_BLUE_STAINED_GLASS"
+    },
+    "LIGHT_BLUE_STAINED_GLASS_PANE": {
+        "legacy": "STAINED_GLASS_PANE",
+        "material": "LIGHT_BLUE_STAINED_GLASS_PANE"
+    },
+    "LIGHT_BLUE_TERRACOTTA": {
+        "legacy": "STAINED_CLAY",
+        "material": "LIGHT_BLUE_TERRACOTTA"
+    },
+    "LIGHT_BLUE_WALL_BANNER": {
+        "legacy": "BANNER",
+        "material": "LIGHT_BLUE_WALL_BANNER"
+    },
+    "LIGHT_BLUE_WOOL": {
+        "legacy": "WOOL",
+        "material": "LIGHT_BLUE_WOOL"
+    },
+    "LIGHT_GRAY_BANNER": {
+        "legacy": "BANNER",
+        "material": "LIGHT_GRAY_BANNER"
+    },
+    "LIGHT_GRAY_BED": {
+        "legacy": "BED",
+        "material": "LIGHT_GRAY_BED"
+    },
+    "LIGHT_GRAY_CARPET": {
+        "legacy": "CARPET",
+        "material": "LIGHT_GRAY_CARPET"
+    },
+    "LIGHT_GRAY_CONCRETE": {
+        "legacy": "CONCRETE",
+        "material": "LIGHT_GRAY_CONCRETE"
+    },
+    "LIGHT_GRAY_CONCRETE_POWDER": {
+        "legacy": "CONCRETE_POWDER",
+        "material": "LIGHT_GRAY_CONCRETE_POWDER"
+    },
+    "LIGHT_GRAY_DYE": {
+        "legacy": "INK_SACK",
+        "material": "LIGHT_GRAY_DYE"
+    },
+    "LIGHT_GRAY_GLAZED_TERRACOTTA": {
+        "legacy": "SILVER_GLAZED_TERRACOTTA",
+        "material": "LIGHT_GRAY_GLAZED_TERRACOTTA"
+    },
+    "LIGHT_GRAY_SHULKER_BOX": {
+        "legacy": "SILVER_SHULKER_BOX",
+        "material": "LIGHT_GRAY_SHULKER_BOX"
+    },
+    "LIGHT_GRAY_STAINED_GLASS": {
+        "legacy": "STAINED_GLASS",
+        "material": "LIGHT_GRAY_STAINED_GLASS"
+    },
+    "LIGHT_GRAY_STAINED_GLASS_PANE": {
+        "legacy": "STAINED_GLASS_PANE",
+        "material": "LIGHT_GRAY_STAINED_GLASS_PANE"
+    },
+    "LIGHT_GRAY_TERRACOTTA": {
+        "legacy": "STAINED_CLAY",
+        "material": "LIGHT_GRAY_TERRACOTTA"
+    },
+    "LIGHT_GRAY_WALL_BANNER": {
+        "legacy": "WALL_BANNER",
+        "material": "LIGHT_GRAY_WALL_BANNER"
+    },
+    "LIGHT_GRAY_WOOL": {
+        "legacy": "WOOL",
+        "material": "LIGHT_GRAY_WOOL"
+    },
+    "LIGHT_WEIGHTED_PRESSURE_PLATE": {
+        "legacy": "GOLD_PLATE",
+        "material": "LIGHT_WEIGHTED_PRESSURE_PLATE"
+    },
+    "LILAC": {
+        "legacy": "DOUBLE_PLANT",
+        "material": "LILAC"
+    },
+    "LILY_PAD": {
+        "legacy": "WATER_LILY",
+        "material": "LILY_PAD"
+    },
+    "LIME_BANNER": {
+        "legacy": "BANNER",
+        "material": "LIME_BANNER"
+    },
+    "LIME_BED": {
+        "legacy": "BED",
+        "material": "LIME_BED"
+    },
+    "LIME_CARPET": {
+        "legacy": "CARPET",
+        "material": "LIME_CARPET"
+    },
+    "LIME_CONCRETE": {
+        "legacy": "CONCRETE",
+        "material": "LIME_CONCRETE"
+    },
+    "LIME_CONCRETE_POWDER": {
+        "legacy": "CONCRETE_POWDER",
+        "material": "LIME_CONCRETE_POWDER"
+    },
+    "LIME_DYE": {
+        "legacy": "INK_SACK",
+        "material": "LIME_DYE"
+    },
+    "LIME_GLAZED_TERRACOTTA": {
+        "material": "LIME_GLAZED_TERRACOTTA"
+    },
+    "LIME_SHULKER_BOX": {
+        "material": "LIME_SHULKER_BOX"
+    },
+    "LIME_STAINED_GLASS": {
+        "legacy": "STAINED_GLASS",
+        "material": "LIME_STAINED_GLASS"
+    },
+    "LIME_STAINED_GLASS_PANE": {
+        "legacy": "STAINED_GLASS_PANE",
+        "material": "LIME_STAINED_GLASS_PANE"
+    },
+    "LIME_TERRACOTTA": {
+        "legacy": "STAINED_CLAY",
+        "material": "LIME_TERRACOTTA"
+    },
+    "LIME_WALL_BANNER": {
+        "legacy": "WALL_BANNER",
+        "material": "LIME_WALL_BANNER"
+    },
+    "LIME_WOOL": {
+        "legacy": "WOOL",
+        "material": "LIME_WOOL"
+    },
+    "LINGERING_POTION": {
+        "material": "LINGERING_POTION"
+    },
+    "LLAMA_SPAWN_EGG": {
+        "legacy": "MONSTER_EGG",
+        "material": "LLAMA_SPAWN_EGG"
+    },
+    "MAGENTA_BANNER": {
+        "legacy": "BANNER",
+        "material": "MAGENTA_BANNER"
+    },
+    "MAGENTA_BED": {
+        "legacy": "BED",
+        "material": "MAGENTA_BED"
+    },
+    "MAGENTA_CARPET": {
+        "legacy": "CARPET",
+        "material": "MAGENTA_CARPET"
+    },
+    "MAGENTA_CONCRETE": {
+        "legacy": "CONCRETE",
+        "material": "MAGENTA_CONCRETE"
+    },
+    "MAGENTA_CONCRETE_POWDER": {
+        "legacy": "CONCRETE_POWDER",
+        "material": "MAGENTA_CONCRETE_POWDER"
+    },
+    "MAGENTA_DYE": {
+        "legacy": "INK_SACK",
+        "material": "MAGENTA_DYE"
+    },
+    "MAGENTA_GLAZED_TERRACOTTA": {
+        "material": "MAGENTA_GLAZED_TERRACOTTA"
+    },
+    "MAGENTA_SHULKER_BOX": {
+        "material": "MAGENTA_SHULKER_BOX"
+    },
+    "MAGENTA_STAINED_GLASS": {
+        "legacy": "STAINED_GLASS",
+        "material": "MAGENTA_STAINED_GLASS"
+    },
+    "MAGENTA_STAINED_GLASS_PANE": {
+        "legacy": "STAINED_GLASS_PANE",
+        "material": "MAGENTA_STAINED_GLASS_PANE"
+    },
+    "MAGENTA_TERRACOTTA": {
+        "legacy": "STAINED_CLAY",
+        "material": "MAGENTA_TERRACOTTA"
+    },
+    "MAGENTA_WALL_BANNER": {
+        "legacy": "WALL_BANNER",
+        "material": "MAGENTA_WALL_BANNER"
+    },
+    "MAGENTA_WOOL": {
+        "legacy": "WOOL",
+        "material": "MAGENTA_WOOL"
+    },
+    "MAGMA_BLOCK": {
+        "legacy": "MAGMA",
+        "material": "MAGMA_BLOCK"
+    },
+    "MAGMA_CREAM": {
+        "material": "MAGMA_CREAM"
+    },
+    "MAGMA_CUBE_SPAWN_EGG": {
+        "legacy": "MONSTER_EGG",
+        "material": "MAGMA_CUBE_SPAWN_EGG"
+    },
+    "MAP": {
+        "material": "MAP"
+    },
+    "MELON": {
+        "legacy": "MELON_BLOCK",
+        "material": "MELON"
+    },
+    "MELON_SEEDS": {
+        "material": "MELON_SEEDS"
+    },
+    "MELON_SLICE": {
+        "legacy": "MELON",
+        "material": "MELON_SLICE"
+    },
+    "MELON_STEM": {
+        "material": "MELON_STEM"
+    },
+    "MILK_BUCKET": {
+        "material": "MILK_BUCKET"
+    },
+    "MINECART": {
+        "material": "MINECART"
+    },
+    "MOOSHROOM_SPAWN_EGG": {
+        "legacy": "MONSTER_EGG",
+        "material": "MOOSHROOM_SPAWN_EGG"
+    },
+    "MOSSY_COBBLESTONE": {
+        "material": "MOSSY_COBBLESTONE"
+    },
+    "MOSSY_COBBLESTONE_WALL": {
+        "legacy": "COBBLE_WALL",
+        "material": "MOSSY_COBBLESTONE_WALL"
+    },
+    "MOSSY_STONE_BRICKS": {
+        "legacy": "SMOOTH_BRICK",
+        "material": "MOSSY_STONE_BRICKS"
+    },
+    "MOVING_PISTON": {
+        "legacy": "PISTON_MOVING_PIECE",
+        "material": "MOVING_PISTON"
+    },
+    "MULE_SPAWN_EGG": {
+        "legacy": "MONSTER_EGG",
+        "material": "MULE_SPAWN_EGG"
+    },
+    "MUSHROOM_STEM": {
+        "legacy": "HUGE_MUSHROOM_1",
+        "material": "MUSHROOM_STEM"
+    },
+    "MUSHROOM_STEW": {
+        "legacy": "MUSHROOM_SOUP",
+        "material": "MUSHROOM_STEW"
+    },
+    "MUSIC_DISC_11": {
+        "legacy": "GOLD_RECORD",
+        "material": "MUSIC_DISC_11"
+    },
+    "MUSIC_DISC_13": {
+        "legacy": "GREEN_RECORD",
+        "material": "MUSIC_DISC_13"
+    },
+    "MUSIC_DISC_BLOCKS": {
+        "legacy": "RECORD_3",
+        "material": "MUSIC_DISC_BLOCKS"
+    },
+    "MUSIC_DISC_CAT": {
+        "legacy": "RECORD_4",
+        "material": "MUSIC_DISC_CAT"
+    },
+    "MUSIC_DISC_CHIRP": {
+        "legacy": "RECORD_5",
+        "material": "MUSIC_DISC_CHIRP"
+    },
+    "MUSIC_DISC_FAR": {
+        "legacy": "RECORD_6",
+        "material": "MUSIC_DISC_FAR"
+    },
+    "MUSIC_DISC_MALL": {
+        "legacy": "RECORD_7",
+        "material": "MUSIC_DISC_MALL"
+    },
+    "MUSIC_DISC_MELLOHI": {
+        "legacy": "RECORD_8",
+        "material": "MUSIC_DISC_MELLOHI"
+    },
+    "MUSIC_DISC_STAL": {
+        "legacy": "RECORD_9",
+        "material": "MUSIC_DISC_STAL"
+    },
+    "MUSIC_DISC_STRAD": {
+        "legacy": "RECORD_10",
+        "material": "MUSIC_DISC_STRAD"
+    },
+    "MUSIC_DISC_WAIT": {
+        "legacy": "RECORD_11",
+        "material": "MUSIC_DISC_WAIT"
+    },
+    "MUSIC_DISC_WARD": {
+        "legacy": "RECORD_12",
+        "material": "MUSIC_DISC_WARD"
+    },
+    "MUTTON": {
+        "material": "MUTTON"
+    },
+    "MYCELIUM": {
+        "legacy": "MYCEL",
+        "material": "MYCELIUM"
+    },
+    "NAME_TAG": {
+        "material": "NAME_TAG"
+    },
+    "NAUTILUS_SHELL": {
+        "material": "NAUTILUS_SHELL"
+    },
+    "NETHERRACK": {
+        "material": "NETHERRACK"
+    },
+    "NETHER_BRICK": {
+        "legacy": "NETHER_BRICK_ITEM",
+        "material": "NETHER_BRICK"
+    },
+    "NETHER_BRICKS": {
+        "legacy": "NETHER_BRICK",
+        "material": "NETHER_BRICKS"
+    },
+    "NETHER_BRICK_FENCE": {
+        "legacy": "NETHER_FENCE",
+        "material": "NETHER_BRICK_FENCE"
+    },
+    "NETHER_BRICK_SLAB": {
+        "legacy": "STEP",
+        "material": "NETHER_BRICK_SLAB"
+    },
+    "NETHER_BRICK_STAIRS": {
+        "material": "NETHER_BRICK_STAIRS"
+    },
+    "NETHER_PORTAL": {
+        "legacy": "PORTAL",
+        "material": "NETHER_PORTAL"
+    },
+    "NETHER_QUARTZ_ORE": {
+        "legacy": "QUARTZ_ORE",
+        "material": "NETHER_QUARTZ_ORE"
+    },
+    "NETHER_STAR": {
+        "material": "NETHER_STAR"
+    },
+    "NETHER_WART": {
+        "legacy": "NETHER_STALK",
+        "material": "NETHER_WART"
+    },
+    "NETHER_WART_BLOCK": {
+        "material": "NETHER_WART_BLOCK"
+    },
+    "NOTE_BLOCK": {
+        "material": "NOTE_BLOCK"
+    },
+    "OAK_BOAT": {
+        "legacy": "BOAT",
+        "material": "OAK_BOAT"
+    },
+    "OAK_BUTTON": {
+        "legacy": "WOOD_BUTTON",
+        "material": "OAK_BUTTON"
+    },
+    "OAK_DOOR": {
+        "legacy": "WOODEN_DOOR",
+        "material": "OAK_DOOR"
+    },
+    "OAK_FENCE": {
+        "legacy": "FENCE",
+        "material": "OAK_FENCE"
+    },
+    "OAK_FENCE_GATE": {
+        "legacy": "FENCE_GATE",
+        "material": "OAK_FENCE_GATE"
+    },
+    "OAK_LEAVES": {
+        "legacy": "LEAVES",
+        "material": "OAK_LEAVES"
+    },
+    "OAK_LOG": {
+        "legacy": "LOG",
+        "material": "OAK_LOG"
+    },
+    "OAK_PLANKS": {
+        "legacy": "WOOD",
+        "material": "OAK_PLANKS"
+    },
+    "OAK_PRESSURE_PLATE": {
+        "legacy": "WOOD_PLATE",
+        "material": "OAK_PRESSURE_PLATE"
+    },
+    "OAK_SAPLING": {
+        "legacy": "SAPLING",
+        "material": "OAK_SAPLING"
+    },
+    "OAK_SLAB": {
+        "legacy": "WOOD_STEP",
+        "material": "OAK_SLAB"
+    },
+    "OAK_STAIRS": {
+        "legacy": "WOOD_STAIRS",
+        "material": "OAK_STAIRS"
+    },
+    "OAK_TRAPDOOR": {
+        "legacy": "TRAP_DOOR",
+        "material": "OAK_TRAPDOOR"
+    },
+    "OAK_WOOD": {
+        "legacy": "LOG",
+        "material": "OAK_WOOD"
+    },
+    "OBSERVER": {
+        "material": "OBSERVER"
+    },
+    "OBSIDIAN": {
+        "material": "OBSIDIAN"
+    },
+    "OCELOT_SPAWN_EGG": {
+        "legacy": "RECORD_12",
+        "material": "OCELOT_SPAWN_EGG"
+    },
+    "ORANGE_BANNER": {
+        "legacy": "BANNER",
+        "material": "ORANGE_BANNER"
+    },
+    "ORANGE_BED": {
+        "legacy": "BED",
+        "material": "ORANGE_BED"
+    },
+    "ORANGE_CARPET": {
+        "legacy": "CARPET",
+        "material": "ORANGE_CARPET"
+    },
+    "ORANGE_CONCRETE": {
+        "legacy": "CONCRETE",
+        "material": "ORANGE_CONCRETE"
+    },
+    "ORANGE_CONCRETE_POWDER": {
+        "legacy": "CONCRETE_POWDER",
+        "material": "ORANGE_CONCRETE_POWDER"
+    },
+    "ORANGE_DYE": {
+        "legacy": "INK_SACK",
+        "material": "ORANGE_DYE"
+    },
+    "ORANGE_GLAZED_TERRACOTTA": {
+        "material": "ORANGE_GLAZED_TERRACOTTA"
+    },
+    "ORANGE_SHULKER_BOX": {
+        "material": "ORANGE_SHULKER_BOX"
+    },
+    "ORANGE_STAINED_GLASS": {
+        "legacy": "STAINED_GLASS",
+        "material": "ORANGE_STAINED_GLASS"
+    },
+    "ORANGE_STAINED_GLASS_PANE": {
+        "legacy": "STAINED_GLASS_PANE",
+        "material": "ORANGE_STAINED_GLASS_PANE"
+    },
+    "ORANGE_TERRACOTTA": {
+        "legacy": "STAINED_CLAY",
+        "material": "ORANGE_TERRACOTTA"
+    },
+    "ORANGE_TULIP": {
+        "legacy": "RED_ROSE",
+        "material": "ORANGE_TULIP"
+    },
+    "ORANGE_WALL_BANNER": {
+        "legacy": "WALL_BANNER",
+        "material": "ORANGE_WALL_BANNER"
+    },
+    "ORANGE_WOOL": {
+        "legacy": "WOOL",
+        "material": "ORANGE_WOOL"
+    },
+    "OXEYE_DAISY": {
+        "legacy": "RED_ROSE",
+        "material": "OXEYE_DAISY"
+    },
+    "PACKED_ICE": {
+        "material": "PACKED_ICE"
+    },
+    "PAINTING": {
+        "material": "PAINTING"
+    },
+    "PAPER": {
+        "material": "PAPER"
+    },
+    "PARROT_SPAWN_EGG": {
+        "legacy": "MONSTER_EGG",
+        "material": "PARROT_SPAWN_EGG"
+    },
+    "PEONY": {
+        "legacy": "DOUBLE_PLANT",
+        "material": "PEONY"
+    },
+    "PETRIFIED_OAK_SLAB": {
+        "material": "PETRIFIED_OAK_SLAB"
+    },
+    "PHANTOM_MEMBRANE": {
+        "material": "PHANTOM_MEMBRANE"
+    },
+    "PHANTOM_SPAWN_EGG": {
+        "legacy": "MONSTER_EGG",
+        "material": "PHANTOM_SPAWN_EGG"
+    },
+    "PIG_SPAWN_EGG": {
+        "legacy": "MONSTER_EGG",
+        "material": "PIG_SPAWN_EGG"
+    },
+    "PINK_BANNER": {
+        "legacy": "BANNER",
+        "material": "PINK_BANNER"
+    },
+    "PINK_BED": {
+        "legacy": "BED",
+        "material": "PINK_BED"
+    },
+    "PINK_CARPET": {
+        "legacy": "CARPET",
+        "material": "PINK_CARPET"
+    },
+    "PINK_CONCRETE": {
+        "legacy": "CONCRETE",
+        "material": "PINK_CONCRETE"
+    },
+    "PINK_CONCRETE_POWDER": {
+        "legacy": "CONCRETE_POWDER",
+        "material": "PINK_CONCRETE_POWDER"
+    },
+    "PINK_DYE": {
+        "legacy": "INK_SACK",
+        "material": "PINK_DYE"
+    },
+    "PINK_GLAZED_TERRACOTTA": {
+        "material": "PINK_GLAZED_TERRACOTTA"
+    },
+    "PINK_SHULKER_BOX": {
+        "material": "PINK_SHULKER_BOX"
+    },
+    "PINK_STAINED_GLASS": {
+        "legacy": "STAINED_GLASS",
+        "material": "PINK_STAINED_GLASS"
+    },
+    "PINK_STAINED_GLASS_PANE": {
+        "legacy": "STAINED_GLASS_PANE",
+        "material": "PINK_STAINED_GLASS_PANE"
+    },
+    "PINK_TERRACOTTA": {
+        "legacy": "STAINED_CLAY",
+        "material": "PINK_TERRACOTTA"
+    },
+    "PINK_TULIP": {
+        "legacy": "RED_ROSE",
+        "material": "PINK_TULIP"
+    },
+    "PINK_WALL_BANNER": {
+        "legacy": "WALL_BANNER",
+        "material": "PINK_WALL_BANNER"
+    },
+    "PINK_WOOL": {
+        "legacy": "WOOL",
+        "material": "PINK_WOOL"
+    },
+    "PISTON": {
+        "legacy": "PISTON_BASE",
+        "material": "PISTON"
+    },
+    "PISTON_HEAD": {
+        "legacy": "PISTON_EXTENSION",
+        "material": "PISTON_HEAD"
+    },
+    "PLAYER_HEAD": {
+        "legacy": "SKULL",
+        "material": "PLAYER_HEAD"
+    },
+    "PLAYER_WALL_HEAD": {
+        "legacy": "SKULL",
+        "material": "PLAYER_WALL_HEAD"
+    },
+    "PODZOL": {
+        "legacy": "DIRT",
+        "material": "PODZOL"
+    },
+    "POISONOUS_POTATO": {
+        "material": "POISONOUS_POTATO"
+    },
+    "POLAR_BEAR_SPAWN_EGG": {
+        "legacy": "MONSTER_EGG",
+        "material": "POLAR_BEAR_SPAWN_EGG"
+    },
+    "POLISHED_ANDESITE": {
+        "legacy": "STONE",
+        "material": "POLISHED_ANDESITE"
+    },
+    "POLISHED_DIORITE": {
+        "legacy": "STONE",
+        "material": "POLISHED_DIORITE"
+    },
+    "POLISHED_GRANITE": {
+        "legacy": "STONE",
+        "material": "POLISHED_GRANITE"
+    },
+    "POPPED_CHORUS_FRUIT": {
+        "legacy": "CHORUS_FRUIT_POPPED",
+        "material": "POPPED_CHORUS_FRUIT"
+    },
+    "POPPY": {
+        "legacy": "RED_ROSE",
+        "material": "POPPY"
+    },
+    "PORKCHOP": {
+        "legacy": "PORK",
+        "material": "PORKCHOP"
+    },
+    "POTATO": {
+        "legacy": "POTATO_ITEM",
+        "material": "POTATO"
+    },
+    "POTATOES": {
+        "legacy": "POTATO",
+        "material": "POTATOES"
+    },
+    "POTION": {
+        "material": "POTION"
+    },
+    "POTTED_ACACIA_SAPLING": {
+        "legacy": "FLOWER_POT",
+        "material": "POTTED_ACACIA_SAPLING"
+    },
+    "POTTED_ALLIUM": {
+        "legacy": "FLOWER_POT",
+        "material": "POTTED_ALLIUM"
+    },
+    "POTTED_AZURE_BLUET": {
+        "legacy": "FLOWER_POT",
+        "material": "POTTED_AZURE_BLUET"
+    },
+    "POTTED_BIRCH_SAPLING": {
+        "legacy": "FLOWER_POT",
+        "material": "POTTED_BIRCH_SAPLING"
+    },
+    "POTTED_BLUE_ORCHID": {
+        "legacy": "FLOWER_POT",
+        "material": "POTTED_BLUE_ORCHID"
+    },
+    "POTTED_BROWN_MUSHROOM": {
+        "legacy": "FLOWER_POT",
+        "material": "POTTED_BROWN_MUSHROOM"
+    },
+    "POTTED_CACTUS": {
+        "legacy": "FLOWER_POT",
+        "material": "POTTED_CACTUS"
+    },
+    "POTTED_DANDELION": {
+        "legacy": "FLOWER_POT",
+        "material": "POTTED_DANDELION"
+    },
+    "POTTED_DARK_OAK_SAPLING": {
+        "legacy": "FLOWER_POT",
+        "material": "POTTED_DARK_OAK_SAPLING"
+    },
+    "POTTED_DEAD_BUSH": {
+        "legacy": "FLOWER_POT",
+        "material": "POTTED_DEAD_BUSH"
+    },
+    "POTTED_FERN": {
+        "legacy": "FLOWER_POT",
+        "material": "POTTED_FERN"
+    },
+    "POTTED_JUNGLE_SAPLING": {
+        "legacy": "FLOWER_POT",
+        "material": "POTTED_JUNGLE_SAPLING"
+    },
+    "POTTED_OAK_SAPLING": {
+        "legacy": "FLOWER_POT",
+        "material": "POTTED_OAK_SAPLING"
+    },
+    "POTTED_ORANGE_TULIP": {
+        "legacy": "FLOWER_POT",
+        "material": "POTTED_ORANGE_TULIP"
+    },
+    "POTTED_OXEYE_DAISY": {
+        "legacy": "FLOWER_POT",
+        "material": "POTTED_OXEYE_DAISY"
+    },
+    "POTTED_PINK_TULIP": {
+        "legacy": "FLOWER_POT",
+        "material": "POTTED_PINK_TULIP"
+    },
+    "POTTED_POPPY": {
+        "legacy": "FLOWER_POT",
+        "material": "POTTED_POPPY"
+    },
+    "POTTED_RED_MUSHROOM": {
+        "legacy": "FLOWER_POT",
+        "material": "POTTED_RED_MUSHROOM"
+    },
+    "POTTED_RED_TULIP": {
+        "legacy": "FLOWER_POT",
+        "material": "POTTED_RED_TULIP"
+    },
+    "POTTED_SPRUCE_SAPLING": {
+        "legacy": "FLOWER_POT",
+        "material": "POTTED_SPRUCE_SAPLING"
+    },
+    "POTTED_WHITE_TULIP": {
+        "legacy": "FLOWER_POT",
+        "material": "POTTED_WHITE_TULIP"
+    },
+    "POWERED_RAIL": {
+        "material": "POWERED_RAIL"
+    },
+    "PRISMARINE": {
+        "material": "PRISMARINE"
+    },
+    "PRISMARINE_BRICKS": {
+        "legacy": "PRISMARINE",
+        "material": "PRISMARINE_BRICKS"
+    },
+    "PRISMARINE_BRICK_SLAB": {
+        "material": "PRISMARINE_BRICK_SLAB"
+    },
+    "PRISMARINE_BRICK_STAIRS": {
+        "material": "PRISMARINE_BRICK_STAIRS"
+    },
+    "PRISMARINE_CRYSTALS": {
+        "material": "PRISMARINE_CRYSTALS"
+    },
+    "PRISMARINE_SHARD": {
+        "material": "PRISMARINE_SHARD"
+    },
+    "PRISMARINE_SLAB": {
+        "material": "PRISMARINE_SLAB"
+    },
+    "PRISMARINE_STAIRS": {
+        "material": "PRISMARINE_STAIRS"
+    },
+    "PUFFERFISH": {
+        "legacy": "RAW_FISH",
+        "material": "PUFFERFISH"
+    },
+    "PUFFERFISH_BUCKET": {
+        "material": "PUFFERFISH_BUCKET"
+    },
+    "PUFFERFISH_SPAWN_EGG": {
+        "legacy": "MONSTER_EGG",
+        "material": "PUFFERFISH_SPAWN_EGG"
+    },
+    "PUMPKIN": {
+        "material": "PUMPKIN"
+    },
+    "PUMPKIN_PIE": {
+        "material": "PUMPKIN_PIE"
+    },
+    "PUMPKIN_SEEDS": {
+        "material": "PUMPKIN_SEEDS"
+    },
+    "PUMPKIN_STEM": {
+        "material": "PUMPKIN_STEM"
+    },
+    "PURPLE_BANNER": {
+        "legacy": "BANNER",
+        "material": "PURPLE_BANNER"
+    },
+    "PURPLE_BED": {
+        "legacy": "BED",
+        "material": "PURPLE_BED"
+    },
+    "PURPLE_CARPET": {
+        "legacy": "CARPET",
+        "material": "PURPLE_CARPET"
+    },
+    "PURPLE_CONCRETE": {
+        "legacy": "CONCRETE",
+        "material": "PURPLE_CONCRETE"
+    },
+    "PURPLE_CONCRETE_POWDER": {
+        "legacy": "CONCRETE_POWDER",
+        "material": "PURPLE_CONCRETE_POWDER"
+    },
+    "PURPLE_DYE": {
+        "legacy": "INK_SACK",
+        "material": "PURPLE_DYE"
+    },
+    "PURPLE_GLAZED_TERRACOTTA": {
+        "material": "PURPLE_GLAZED_TERRACOTTA"
+    },
+    "PURPLE_SHULKER_BOX": {
+        "material": "PURPLE_SHULKER_BOX"
+    },
+    "PURPLE_STAINED_GLASS": {
+        "legacy": "STAINED_GLASS",
+        "material": "PURPLE_STAINED_GLASS"
+    },
+    "PURPLE_STAINED_GLASS_PANE": {
+        "legacy": "STAINED_GLASS_PANE",
+        "material": "PURPLE_STAINED_GLASS_PANE"
+    },
+    "PURPLE_TERRACOTTA": {
+        "legacy": "STAINED_CLAY",
+        "material": "PURPLE_TERRACOTTA"
+    },
+    "PURPLE_WALL_BANNER": {
+        "legacy": "WALL_BANNER",
+        "material": "PURPLE_WALL_BANNER"
+    },
+    "PURPLE_WOOL": {
+        "legacy": "WOOL",
+        "material": "PURPLE_WOOL"
+    },
+    "PURPUR_BLOCK": {
+        "material": "PURPUR_BLOCK"
+    },
+    "PURPUR_PILLAR": {
+        "material": "PURPUR_PILLAR"
+    },
+    "PURPUR_SLAB": {
+        "material": "PURPUR_SLAB"
+    },
+    "PURPUR_STAIRS": {
+        "material": "PURPUR_STAIRS"
+    },
+    "QUARTZ": {
+        "material": "QUARTZ"
+    },
+    "QUARTZ_BLOCK": {
+        "material": "QUARTZ_BLOCK"
+    },
+    "QUARTZ_PILLAR": {
+        "legacy": "QUARTZ_BLOCK",
+        "material": "QUARTZ_PILLAR"
+    },
+    "QUARTZ_SLAB": {
+        "legacy": "STEP",
+        "material": "QUARTZ_SLAB"
+    },
+    "QUARTZ_STAIRS": {
+        "material": "QUARTZ_STAIRS"
+    },
+    "RABBIT": {
+        "material": "RABBIT"
+    },
+    "RABBIT_FOOT": {
+        "material": "RABBIT_FOOT"
+    },
+    "RABBIT_HIDE": {
+        "material": "RABBIT_HIDE"
+    },
+    "RABBIT_SPAWN_EGG": {
+        "legacy": "MONSTER_EGG",
+        "material": "RABBIT_SPAWN_EGG"
+    },
+    "RABBIT_STEW": {
+        "material": "RABBIT_STEW"
+    },
+    "RAIL": {
+        "legacy": "RAILS",
+        "material": "RAIL"
+    },
+    "REDSTONE": {
+        "material": "REDSTONE"
+    },
+    "REDSTONE_BLOCK": {
+        "material": "REDSTONE_BLOCK"
+    },
+    "REDSTONE_LAMP": {
+        "legacy": "REDSTONE_LAMP_ON",
+        "material": "REDSTONE_LAMP"
+    },
+    "REDSTONE_ORE": {
+        "material": "REDSTONE_ORE"
+    },
+    "REDSTONE_TORCH": {
+        "legacy": "REDSTONE_TORCH_ON",
+        "material": "REDSTONE_TORCH"
+    },
+    "REDSTONE_WALL_TORCH": {
+        "legacy": "REDSTONE_TORCH_ON",
+        "material": "REDSTONE_WALL_TORCH"
+    },
+    "REDSTONE_WIRE": {
+        "material": "REDSTONE_WIRE"
+    },
+    "RED_BANNER": {
+        "legacy": "BANNER",
+        "material": "RED_BANNER"
+    },
+    "RED_BED": {
+        "legacy": "BED",
+        "material": "RED_BED"
+    },
+    "RED_CARPET": {
+        "legacy": "CARPET",
+        "material": "RED_CARPET"
+    },
+    "RED_CONCRETE": {
+        "legacy": "CONCRETE",
+        "material": "RED_CONCRETE"
+    },
+    "RED_CONCRETE_POWDER": {
+        "legacy": "CONCRETE_POWDER",
+        "material": "RED_CONCRETE_POWDER"
+    },
+    "RED_GLAZED_TERRACOTTA": {
+        "material": "RED_GLAZED_TERRACOTTA"
+    },
+    "RED_MUSHROOM": {
+        "material": "RED_MUSHROOM"
+    },
+    "RED_MUSHROOM_BLOCK": {
+        "legacy": "RED_MUSHROOM",
+        "material": "RED_MUSHROOM_BLOCK"
+    },
+    "RED_NETHER_BRICKS": {
+        "legacy": "RED_NETHER_BRICK",
+        "material": "RED_NETHER_BRICKS"
+    },
+    "RED_SAND": {
+        "legacy": "SAND",
+        "material": "RED_SAND"
+    },
+    "RED_SANDSTONE": {
+        "material": "RED_SANDSTONE"
+    },
+    "RED_SANDSTONE_SLAB": {
+        "legacy": "STONE_SLAB2",
+        "material": "RED_SANDSTONE_SLAB"
+    },
+    "RED_SANDSTONE_STAIRS": {
+        "material": "RED_SANDSTONE_STAIRS"
+    },
+    "RED_SHULKER_BOX": {
+        "material": "RED_SHULKER_BOX"
+    },
+    "RED_STAINED_GLASS": {
+        "legacy": "STAINED_GLASS",
+        "material": "RED_STAINED_GLASS"
+    },
+    "RED_STAINED_GLASS_PANE": {
+        "legacy": "STAINED_GLASS_PANE",
+        "material": "RED_STAINED_GLASS_PANE"
+    },
+    "RED_TERRACOTTA": {
+        "legacy": "STAINED_CLAY",
+        "material": "RED_TERRACOTTA"
+    },
+    "RED_TULIP": {
+        "legacy": "RED_ROSE",
+        "material": "RED_TULIP"
+    },
+    "RED_WALL_BANNER": {
+        "legacy": "WALL_BANNER",
+        "material": "RED_WALL_BANNER"
+    },
+    "RED_WOOL": {
+        "legacy": "WOOL",
+        "material": "RED_WOOL"
+    },
+    "REPEATER": {
+        "legacy": "DIODE",
+        "material": "REPEATER"
+    },
+    "REPEATING_COMMAND_BLOCK": {
+        "legacy": "COMMAND_REPEATING",
+        "material": "REPEATING_COMMAND_BLOCK"
+    },
+    "ROSE_BUSH": {
+        "legacy": "DOUBLE_PLANT",
+        "material": "ROSE_BUSH"
+    },
+    "ROSE_RED": {
+        "legacy": "INK_SACK",
+        "material": "ROSE_RED"
+    },
+    "ROTTEN_FLESH": {
+        "material": "ROTTEN_FLESH"
+    },
+    "SADDLE": {
+        "material": "SADDLE"
+    },
+    "SALMON": {
+        "legacy": "RAW_FISH",
+        "material": "SALMON"
+    },
+    "SALMON_BUCKET": {
+        "legacy": "BUCKET",
+        "material": "SALMON_BUCKET"
+    },
+    "SALMON_SPAWN_EGG": {
+        "legacy": "MONSTER_EGG",
+        "material": "SALMON_SPAWN_EGG"
+    },
+    "SAND": {
+        "material": "SAND"
+    },
+    "SANDSTONE": {
+        "material": "SANDSTONE"
+    },
+    "SANDSTONE_SLAB": {
+        "legacy": "STEP",
+        "material": "SANDSTONE_SLAB"
+    },
+    "SANDSTONE_STAIRS": {
+        "material": "SANDSTONE_STAIRS"
+    },
+    "SCUTE": {
+        "material": "SCUTE"
+    },
+    "SEAGRASS": {
+        "material": "SEAGRASS"
+    },
+    "SEA_LANTERN": {
+        "material": "SEA_LANTERN"
+    },
+    "SEA_PICKLE": {
+        "material": "SEA_PICKLE"
+    },
+    "SHEARS": {
+        "material": "SHEARS"
+    },
+    "SHEEP_SPAWN_EGG": {
+        "legacy": "MONSTER_EGG",
+        "material": "SHEEP_SPAWN_EGG"
+    },
+    "SHIELD": {
+        "material": "SHIELD"
+    },
+    "SHULKER_BOX": {
+        "legacy": "PURPLE_SHULKER_BOX",
+        "material": "SHULKER_BOX"
+    },
+    "SHULKER_SHELL": {
+        "material": "SHULKER_SHELL"
+    },
+    "SHULKER_SPAWN_EGG": {
+        "legacy": "MONSTER_EGG",
+        "material": "SHULKER_SPAWN_EGG"
+    },
+    "SIGN": {
+        "material": "SIGN"
+    },
+    "SILVERFISH_SPAWN_EGG": {
+        "legacy": "MONSTER_EGG",
+        "material": "SILVERFISH_SPAWN_EGG"
+    },
+    "SKELETON_HORSE_SPAWN_EGG": {
+        "legacy": "MONSTER_EGG",
+        "material": "SKELETON_HORSE_SPAWN_EGG"
+    },
+    "SKELETON_SKULL": {
+        "legacy": "SKULL",
+        "material": "SKELETON_SKULL"
+    },
+    "SKELETON_SPAWN_EGG": {
+        "legacy": "MONSTER_EGG",
+        "material": "SKELETON_SPAWN_EGG"
+    },
+    "SKELETON_WALL_SKULL": {
+        "legacy": "SKULL",
+        "material": "SKELETON_WALL_SKULL"
+    },
+    "SLIME_BALL": {
+        "material": "SLIME_BALL"
+    },
+    "SLIME_BLOCK": {
+        "material": "SLIME_BLOCK"
+    },
+    "SLIME_SPAWN_EGG": {
+        "legacy": "MONSTER_EGG",
+        "material": "SLIME_SPAWN_EGG"
+    },
+    "SMOOTH_QUARTZ": {
+        "material": "SMOOTH_QUARTZ"
+    },
+    "SMOOTH_RED_SANDSTONE": {
+        "legacy": "RED_SANDSTONE",
+        "material": "SMOOTH_RED_SANDSTONE"
+    },
+    "SMOOTH_SANDSTONE": {
+        "legacy": "SANDSTONE",
+        "material": "SMOOTH_SANDSTONE"
+    },
+    "SMOOTH_STONE": {
+        "material": "SMOOTH_STONE"
+    },
+    "SNOW": {
+        "material": "SNOW"
+    },
+    "SNOWBALL": {
+        "legacy": "SNOW_BALL",
+        "material": "SNOWBALL"
+    },
+    "SNOW_BLOCK": {
+        "material": "SNOW_BLOCK"
+    },
+    "SOUL_SAND": {
+        "material": "SOUL_SAND"
+    },
+    "SPAWNER": {
+        "legacy": "MOB_SPAWNER",
+        "material": "SPAWNER"
+    },
+    "SPECTRAL_ARROW": {
+        "material": "SPECTRAL_ARROW"
+    },
+    "SPIDER_EYE": {
+        "material": "SPIDER_EYE"
+    },
+    "SPIDER_SPAWN_EGG": {
+        "legacy": "MONSTER_EGG",
+        "material": "SPIDER_SPAWN_EGG"
+    },
+    "SPLASH_POTION": {
+        "material": "SPLASH_POTION"
+    },
+    "SPONGE": {
+        "material": "SPONGE"
+    },
+    "SPRUCE_BOAT": {
+        "legacy": "BOAT_SPRUCE",
+        "material": "SPRUCE_BOAT"
+    },
+    "SPRUCE_BUTTON": {
+        "legacy": "WOOD_BUTTON",
+        "material": "SPRUCE_BUTTON"
+    },
+    "SPRUCE_DOOR": {
+        "material": "SPRUCE_DOOR"
+    },
+    "SPRUCE_FENCE": {
+        "material": "SPRUCE_FENCE"
+    },
+    "SPRUCE_FENCE_GATE": {
+        "material": "SPRUCE_FENCE_GATE"
+    },
+    "SPRUCE_LEAVES": {
+        "legacy": "LEAVES",
+        "material": "SPRUCE_LEAVES"
+    },
+    "SPRUCE_LOG": {
+        "legacy": "LOG",
+        "material": "SPRUCE_LOG"
+    },
+    "SPRUCE_PLANKS": {
+        "legacy": "WOOD",
+        "material": "SPRUCE_PLANKS"
+    },
+    "SPRUCE_PRESSURE_PLATE": {
+        "legacy": "WOOD_PLATE",
+        "material": "SPRUCE_PRESSURE_PLATE"
+    },
+    "SPRUCE_SAPLING": {
+        "legacy": "SAPLING",
+        "material": "SPRUCE_SAPLING"
+    },
+    "SPRUCE_SLAB": {
+        "legacy": "WOOD_STEP",
+        "material": "SPRUCE_SLAB"
+    },
+    "SPRUCE_STAIRS": {
+        "legacy": "SPRUCE_WOOD_STAIRS",
+        "material": "SPRUCE_STAIRS"
+    },
+    "SPRUCE_TRAPDOOR": {
+        "legacy": "TRAP_DOOR",
+        "material": "SPRUCE_TRAPDOOR"
+    },
+    "SPRUCE_WOOD": {
+        "legacy": "LOG",
+        "material": "SPRUCE_WOOD"
+    },
+    "SQUID_SPAWN_EGG": {
+        "legacy": "MONSTER_EGG",
+        "material": "SQUID_SPAWN_EGG"
+    },
+    "STICK": {
+        "material": "STICK"
+    },
+    "STICKY_PISTON": {
+        "legacy": "PISTON_STICKY_BASE",
+        "material": "STICKY_PISTON"
+    },
+    "STONE": {
+        "material": "STONE"
+    },
+    "STONE_AXE": {
+        "material": "STONE_AXE"
+    },
+    "STONE_BRICKS": {
+        "legacy": "SMOOTH_BRICK",
+        "material": "STONE_BRICKS"
+    },
+    "STONE_BRICK_SLAB": {
+        "legacy": "STEP",
+        "material": "STONE_BRICK_SLAB"
+    },
+    "STONE_BRICK_STAIRS": {
+        "legacy": "SMOOTH_STAIRS",
+        "material": "STONE_BRICK_STAIRS"
+    },
+    "STONE_BUTTON": {
+        "material": "STONE_BUTTON"
+    },
+    "STONE_HOE": {
+        "material": "STONE_HOE"
+    },
+    "STONE_PICKAXE": {
+        "material": "STONE_PICKAXE"
+    },
+    "STONE_PRESSURE_PLATE": {
+        "legacy": "STONE_PLATE",
+        "material": "STONE_PRESSURE_PLATE"
+    },
+    "STONE_SHOVEL": {
+        "legacy": "STONE_SPADE",
+        "material": "STONE_SHOVEL"
+    },
+    "STONE_SLAB": {
+        "legacy": "STEP",
+        "material": "STONE_SLAB"
+    },
+    "STONE_SWORD": {
+        "material": "STONE_SWORD"
+    },
+    "STRAY_SPAWN_EGG": {
+        "legacy": "MONSTER_EGG",
+        "material": "STRAY_SPAWN_EGG"
+    },
+    "STRING": {
+        "material": "STRING"
+    },
+    "STRIPPED_ACACIA_LOG": {
+        "material": "STRIPPED_ACACIA_LOG"
+    },
+    "STRIPPED_ACACIA_WOOD": {
+        "material": "STRIPPED_ACACIA_WOOD"
+    },
+    "STRIPPED_BIRCH_LOG": {
+        "material": "STRIPPED_BIRCH_LOG"
+    },
+    "STRIPPED_BIRCH_WOOD": {
+        "material": "STRIPPED_BIRCH_WOOD"
+    },
+    "STRIPPED_DARK_OAK_LOG": {
+        "material": "STRIPPED_DARK_OAK_LOG"
+    },
+    "STRIPPED_DARK_OAK_WOOD": {
+        "material": "STRIPPED_DARK_OAK_WOOD"
+    },
+    "STRIPPED_JUNGLE_LOG": {
+        "material": "STRIPPED_JUNGLE_LOG"
+    },
+    "STRIPPED_JUNGLE_WOOD": {
+        "material": "STRIPPED_JUNGLE_WOOD"
+    },
+    "STRIPPED_OAK_LOG": {
+        "material": "STRIPPED_OAK_LOG"
+    },
+    "STRIPPED_OAK_WOOD": {
+        "material": "STRIPPED_OAK_WOOD"
+    },
+    "STRIPPED_SPRUCE_LOG": {
+        "material": "STRIPPED_SPRUCE_LOG"
+    },
+    "STRIPPED_SPRUCE_WOOD": {
+        "material": "STRIPPED_SPRUCE_WOOD"
+    },
+    "STRUCTURE_BLOCK": {
+        "material": "STRUCTURE_BLOCK"
+    },
+    "STRUCTURE_VOID": {
+        "material": "STRUCTURE_VOID"
+    },
+    "SUGAR": {
+        "material": "SUGAR"
+    },
+    "SUGAR_CANE": {
+        "material": "SUGAR_CANE"
+    },
+    "SUNFLOWER": {
+        "legacy": "DOUBLE_PLANT",
+        "material": "SUNFLOWER"
+    },
+    "TALL_GRASS": {
+        "legacy": "DOUBLE_PLANT",
+        "material": "TALL_GRASS"
+    },
+    "TALL_SEAGRASS": {
+        "material": "TALL_SEAGRASS"
+    },
+    "TERRACOTTA": {
+        "legacy": "HARD_CLAY",
+        "material": "TERRACOTTA"
+    },
+    "TIPPED_ARROW": {
+        "material": "TIPPED_ARROW"
+    },
+    "TNT": {
+        "material": "TNT"
+    },
+    "TNT_MINECART": {
+        "legacy": "EXPLOSIVE_MINECART",
+        "material": "TNT_MINECART"
+    },
+    "TORCH": {
+        "material": "TORCH"
+    },
+    "TOTEM_OF_UNDYING": {
+        "legacy": "TOTEM",
+        "material": "TOTEM_OF_UNDYING"
+    },
+    "TRAPPED_CHEST": {
+        "material": "TRAPPED_CHEST"
+    },
+    "TRIDENT": {
+        "material": "TRIDENT"
+    },
+    "TRIPWIRE": {
+        "material": "TRIPWIRE"
+    },
+    "TRIPWIRE_HOOK": {
+        "material": "TRIPWIRE_HOOK"
+    },
+    "TROPICAL_FISH": {
+        "legacy": "RAW_FISH",
+        "material": "TROPICAL_FISH"
+    },
+    "TROPICAL_FISH_BUCKET": {
+        "legacy": "BUCKET",
+        "material": "TROPICAL_FISH_BUCKET"
+    },
+    "TROPICAL_FISH_SPAWN_EGG": {
+        "legacy": "MONSTER_EGG",
+        "material": "TROPICAL_FISH_SPAWN_EGG"
+    },
+    "TUBE_CORAL": {
+        "material": "TUBE_CORAL"
+    },
+    "TUBE_CORAL_BLOCK": {
+        "material": "TUBE_CORAL_BLOCK"
+    },
+    "TUBE_CORAL_FAN": {
+        "material": "TUBE_CORAL_FAN"
+    },
+    "TUBE_CORAL_WALL_FAN": {
+        "material": "TUBE_CORAL_WALL_FAN"
+    },
+    "TURTLE_EGG": {
+        "legacy": "MONSTER_EGG",
+        "material": "TURTLE_EGG"
+    },
+    "TURTLE_HELMET": {
+        "material": "TURTLE_HELMET"
+    },
+    "TURTLE_SPAWN_EGG": {
+        "legacy": "MONSTER_EGG",
+        "material": "TURTLE_SPAWN_EGG"
+    },
+    "VEX_SPAWN_EGG": {
+        "legacy": "MONSTER_EGG",
+        "material": "VEX_SPAWN_EGG"
+    },
+    "VILLAGER_SPAWN_EGG": {
+        "legacy": "MONSTER_EGG",
+        "material": "VILLAGER_SPAWN_EGG"
+    },
+    "VINDICATOR_SPAWN_EGG": {
+        "legacy": "MONSTER_EGG",
+        "material": "VINDICATOR_SPAWN_EGG"
+    },
+    "VINE": {
+        "material": "VINE"
+    },
+    "VOID_AIR": {
+        "legacy": "AIR",
+        "material": "VOID_AIR"
+    },
+    "WALL_SIGN": {
+        "material": "WALL_SIGN"
+    },
+    "WALL_TORCH": {
+        "legacy": "TORCH",
+        "material": "WALL_TORCH"
+    },
+    "WATER": {
+        "material": "WATER"
+    },
+    "WATER_BUCKET": {
+        "material": "WATER_BUCKET"
+    },
+    "WET_SPONGE": {
+        "legacy": "SPONGE",
+        "material": "WET_SPONGE"
+    },
+    "WHEAT": {
+        "material": "WHEAT"
+    },
+    "WHEAT_SEEDS": {
+        "legacy": "SEEDS",
+        "material": "WHEAT_SEEDS"
+    },
+    "WHITE_BANNER": {
+        "legacy": "BANNER",
+        "material": "WHITE_BANNER"
+    },
+    "WHITE_BED": {
+        "legacy": "BED",
+        "material": "WHITE_BED"
+    },
+    "WHITE_CARPET": {
+        "legacy": "CARPET",
+        "material": "WHITE_CARPET"
+    },
+    "WHITE_CONCRETE": {
+        "legacy": "CONCRETE",
+        "material": "WHITE_CONCRETE"
+    },
+    "WHITE_CONCRETE_POWDER": {
+        "legacy": "CONCRETE_POWDER",
+        "material": "WHITE_CONCRETE_POWDER"
+    },
+    "WHITE_GLAZED_TERRACOTTA": {
+        "material": "WHITE_GLAZED_TERRACOTTA"
+    },
+    "WHITE_SHULKER_BOX": {
+        "material": "WHITE_SHULKER_BOX"
+    },
+    "WHITE_STAINED_GLASS": {
+        "legacy": "STAINED_GLASS",
+        "material": "WHITE_STAINED_GLASS"
+    },
+    "WHITE_STAINED_GLASS_PANE": {
+        "legacy": "STAINED_GLASS_PANE",
+        "material": "WHITE_STAINED_GLASS_PANE"
+    },
+    "WHITE_TERRACOTTA": {
+        "legacy": "STAINED_CLAY",
+        "material": "WHITE_TERRACOTTA"
+    },
+    "WHITE_TULIP": {
+        "legacy": "RED_ROSE",
+        "material": "WHITE_TULIP"
+    },
+    "WHITE_WALL_BANNER": {
+        "legacy": "WALL_BANNER",
+        "material": "WHITE_WALL_BANNER"
+    },
+    "WHITE_WOOL": {
+        "legacy": "WOOL",
+        "material": "WHITE_WOOL"
+    },
+    "WITCH_SPAWN_EGG": {
+        "legacy": "MONSTER_EGG",
+        "material": "WITCH_SPAWN_EGG"
+    },
+    "WITHER_SKELETON_SKULL": {
+        "legacy": "SKULL",
+        "material": "WITHER_SKELETON_SKULL"
+    },
+    "WITHER_SKELETON_SPAWN_EGG": {
+        "legacy": "MONSTER_EGG",
+        "material": "WITHER_SKELETON_SPAWN_EGG"
+    },
+    "WITHER_SKELETON_WALL_SKULL": {
+        "legacy": "SKULL",
+        "material": "WITHER_SKELETON_WALL_SKULL"
+    },
+    "WOLF_SPAWN_EGG": {
+        "legacy": "MONSTER_EGG",
+        "material": "WOLF_SPAWN_EGG"
+    },
+    "WOODEN_AXE": {
+        "legacy": "WOOD_AXE",
+        "material": "WOODEN_AXE"
+    },
+    "WOODEN_HOE": {
+        "legacy": "WOOD_HOE",
+        "material": "WOODEN_HOE"
+    },
+    "WOODEN_PICKAXE": {
+        "legacy": "WOOD_PICKAXE",
+        "material": "WOODEN_PICKAXE"
+    },
+    "WOODEN_SHOVEL": {
+        "legacy": "WOOD_SPADE",
+        "material": "WOODEN_SHOVEL"
+    },
+    "WOODEN_SWORD": {
+        "legacy": "WOOD_SWORD",
+        "material": "WOODEN_SWORD"
+    },
+    "WRITABLE_BOOK": {
+        "legacy": "BOOK_AND_QUILL",
+        "material": "WRITABLE_BOOK"
+    },
+    "WRITTEN_BOOK": {
+        "material": "WRITTEN_BOOK"
+    },
+    "YELLOW_BANNER": {
+        "legacy": "BANNER",
+        "material": "YELLOW_BANNER"
+    },
+    "YELLOW_BED": {
+        "legacy": "BED",
+        "material": "YELLOW_BED"
+    },
+    "YELLOW_CARPET": {
+        "legacy": "CARPET",
+        "material": "YELLOW_CARPET"
+    },
+    "YELLOW_CONCRETE": {
+        "legacy": "CONCRETE",
+        "material": "YELLOW_CONCRETE"
+    },
+    "YELLOW_CONCRETE_POWDER": {
+        "legacy": "CONCRETE_POWDER",
+        "material": "YELLOW_CONCRETE_POWDER"
+    },
+    "YELLOW_GLAZED_TERRACOTTA": {
+        "material": "YELLOW_GLAZED_TERRACOTTA"
+    },
+    "YELLOW_SHULKER_BOX": {
+        "material": "YELLOW_SHULKER_BOX"
+    },
+    "YELLOW_STAINED_GLASS": {
+        "legacy": "STAINED_GLASS",
+        "material": "YELLOW_STAINED_GLASS"
+    },
+    "YELLOW_STAINED_GLASS_PANE": {
+        "legacy": "STAINED_GLASS_PANE",
+        "material": "YELLOW_STAINED_GLASS_PANE"
+    },
+    "YELLOW_TERRACOTTA": {
+        "legacy": "STAINED_CLAY",
+        "material": "YELLOW_TERRACOTTA"
+    },
+    "YELLOW_WALL_BANNER": {
+        "legacy": "WALL_BANNER",
+        "material": "YELLOW_WALL_BANNER"
+    },
+    "YELLOW_WOOL": {
+        "legacy": "WOOL",
+        "material": "YELLOW_WOOL"
+    },
+    "ZOMBIE_HEAD": {
+        "legacy": "SKULL",
+        "material": "ZOMBIE_HEAD"
+    },
+    "ZOMBIE_HORSE_SPAWN_EGG": {
+        "legacy": "MONSTER_EGG",
+        "material": "ZOMBIE_HORSE_SPAWN_EGG"
+    },
+    "ZOMBIE_PIGMAN_SPAWN_EGG": {
+        "legacy": "MONSTER_EGG",
+        "material": "ZOMBIE_PIGMAN_SPAWN_EGG"
+    },
+    "ZOMBIE_SPAWN_EGG": {
+        "legacy": "MONSTER_EGG",
+        "material": "ZOMBIE_SPAWN_EGG"
+    },
+    "ZOMBIE_VILLAGER_SPAWN_EGG": {
+        "legacy": "MONSTER_EGG",
+        "material": "ZOMBIE_VILLAGER_SPAWN_EGG"
+    },
+    "ZOMBIE_WALL_HEAD": {
+        "legacy": "SKULL",
+        "material": "ZOMBIE_WALL_HEAD"
+    }
+}
