@@ -8,6 +8,7 @@ import org.bukkit.Material;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.util.HashMap;
+import java.util.logging.Level;
 
 public class MaterialDb {
 
@@ -42,6 +43,7 @@ public class MaterialDb {
             String versionString = Bukkit.getVersion();
             String version = versionString.substring(versionString.indexOf('.') + 1, versionString.lastIndexOf('.'));
             instance.legacy = Integer.parseInt(version) < 13;
+            P.p.getLogger().info(String.format("Using legacy support for materials: %s", instance.legacy));
         } catch (NumberFormatException e) {
             // Issue formatting major version integer... uhm
             instance.legacy = true;
@@ -50,6 +52,7 @@ public class MaterialDb {
         InputStreamReader reader = new InputStreamReader(P.p.getResource("materials.json"));
         Type typeToken = new TypeToken<HashMap<String, MaterialProvider.MaterialData>>(){}.getType();
         HashMap<String, MaterialProvider.MaterialData> materialData = P.p.gson.fromJson(reader, typeToken);
+        P.p.getLogger().info(String.format("Found %s material mappings in the materials.json file.", materialData.keySet().size()));
         instance.provider = new MaterialProvider(materialData);
     }
 
