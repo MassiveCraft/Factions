@@ -8,7 +8,6 @@ import org.bukkit.Material;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.util.HashMap;
-import java.util.logging.Level;
 
 public class MaterialDb {
 
@@ -31,14 +30,12 @@ public class MaterialDb {
     public boolean legacy = true;
     public MaterialProvider provider;
 
-    private MaterialDb() {}
+    private MaterialDb() {
+    }
 
     public Material get(String name) {
         return provider.resolve(name);
     }
-
-    // [21:05:48 INFO]: vs: git-Spigot-fe3ab0d-162bda9 (MC: 1.13)
-    // sub: 13 or 13.2
 
     public static void load() {
         instance = new MaterialDb();
@@ -55,7 +52,8 @@ public class MaterialDb {
         }
 
         InputStreamReader reader = new InputStreamReader(P.p.getResource("materials.json"));
-        Type typeToken = new TypeToken<HashMap<String, MaterialProvider.MaterialData>>(){}.getType();
+        Type typeToken = new TypeToken<HashMap<String, MaterialProvider.MaterialData>>() {
+        }.getType();
         HashMap<String, MaterialProvider.MaterialData> materialData = P.p.gson.fromJson(reader, typeToken);
         P.p.getLogger().info(String.format("Found %s material mappings in the materials.json file.", materialData.keySet().size()));
         instance.provider = new MaterialProvider(materialData);
