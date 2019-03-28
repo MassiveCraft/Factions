@@ -3,6 +3,7 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.util.material.FactionMaterial;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -162,13 +163,9 @@ public class CmdConfig extends FCommand {
 
                 // Set<Material>
                 else if (innerType == Material.class) {
-                    Material newMat = null;
-                    try {
-                        newMat = Material.valueOf(value.toString().toUpperCase());
-                    } catch (IllegalArgumentException ex) {
+                    Material newMat = FactionMaterial.from(value.toString().toUpperCase()).get();
 
-                    }
-                    if (newMat == null) {
+                    if (newMat == null || newMat == Material.AIR) {
                         sendMessage(TL.COMMAND_CONFIG_INVALID_MATERIAL.format(fieldName, value.toString().toUpperCase()));
                         return;
                     }
