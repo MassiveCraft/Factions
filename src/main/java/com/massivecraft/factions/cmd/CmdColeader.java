@@ -18,23 +18,20 @@ public class CmdColeader extends FCommand {
         this.aliases.add("cl");
         this.aliases.add("setcl");
 
-        this.optionalArgs.put("player name", "name");
+        this.optionalArgs.put("player", "player");
 
-        this.permission = Permission.COLEADER.node;
-        this.disableOnLock = true;
-
-        senderMustBePlayer = false;
-        senderMustBeMember = true;
-        senderMustBeModerator = false;
-        senderMustBeAdmin = true;
+        this.requirements = new CommandRequirements.Builder(Permission.COLEADER)
+                .memberOnly()
+                .withRole(Role.ADMIN)
+                .build();
     }
 
     @Override
-    public void perform() {
-        FPlayer target = this.argAsBestFPlayerMatch(0);
+    public void perform(CommandContext context) {
+        FPlayer target = context.argAsBestFPlayerMatch(0);
         if (target == null) {
             FancyMessage msg = new FancyMessage(TL.COMMAND_COLEADER_CANDIDATES.toString()).color(ChatColor.GOLD);
-            for (FPlayer player : myFaction.getFPlayersWhereRole(Role.MODERATOR)) {
+            for (FPlayer player : context.faction.getFPlayersWhereRole(Role.MODERATOR)) {
                 String s = player.getName();
 
                 msg.then(s + " ").color(ChatColor.WHITE)
@@ -42,30 +39,30 @@ public class CmdColeader extends FCommand {
                         .command("/" + Conf.baseCommandAliases.get(0) + " coleader " + s);
             }
 
-            sendFancyMessage(msg);
+            context.sendFancyMessage(msg);
             return;
         }
 
-        boolean permAny = Permission.COLEADER_ANY.has(sender, false);
+        boolean permAny = Permission.COLEADER_ANY.has(context.sender, false);
         Faction targetFaction = target.getFaction();
 
-        if (targetFaction != myFaction && !permAny) {
-            msg(TL.COMMAND_COLEADER_NOTMEMBER, target.describeTo(fme, true));
+        if (targetFaction != context.faction && !permAny) {
+            context.msg(TL.COMMAND_COLEADER_NOTMEMBER, target.describeTo(context.fPlayer, true));
             return;
         }
 
-        if (fme != null && fme.getRole() != Role.ADMIN && !permAny) {
-            msg(TL.COMMAND_COLEADER_NOTADMIN);
+        if (context.fPlayer != null && context.fPlayer.getRole() != Role.ADMIN && !permAny) {
+            context.msg(TL.COMMAND_COLEADER_NOTADMIN);
             return;
         }
 
-        if (target == fme && !permAny) {
-            msg(TL.COMMAND_COLEADER_SELF);
+        if (target == context.fPlayer && !permAny) {
+            context.msg(TL.COMMAND_COLEADER_SELF);
             return;
         }
 
         if (target.getRole() == Role.ADMIN) {
-            msg(TL.COMMAND_COLEADER_TARGETISADMIN);
+            context.msg(TL.COMMAND_COLEADER_TARGETISADMIN);
             return;
         }
 
@@ -73,20 +70,20 @@ public class CmdColeader extends FCommand {
             // Revoke
             target.setRole(Role.MODERATOR);
             targetFaction.msg(TL.COMMAND_COLEADER_REVOKED, target.describeTo(targetFaction, true));
-            msg(TL.COMMAND_COLEADER_REVOKES, target.describeTo(fme, true));
+            context.msg(TL.COMMAND_COLEADER_REVOKES, target.describeTo(context.fPlayer, true));
             return;
         }
 
         // Check to see if we should allow multiple coleaders or not.
         if (!Conf.allowMultipleColeaders && !targetFaction.getFPlayersWhereRole(Role.COLEADER).isEmpty()) {
-            msg(TL.COMMAND_COLEADER_ALREADY_COLEADER);
+            context.msg(TL.COMMAND_COLEADER_ALREADY_COLEADER);
             return;
         }
 
         // Give
         target.setRole(Role.COLEADER);
         targetFaction.msg(TL.COMMAND_COLEADER_PROMOTED, target.describeTo(targetFaction, true));
-        msg(TL.COMMAND_COLEADER_PROMOTES, target.describeTo(fme, true));
+        context.msg(TL.COMMAND_COLEADER_PROMOTES, target.describeTo(context.fPlayer, true));
     }
 
     @Override

@@ -20,31 +20,25 @@ public class CmdStuck extends FCommand {
         this.aliases.add("stuck");
         this.aliases.add("halp!"); // halp! c:
 
-        this.permission = Permission.STUCK.node;
-        this.disableOnLock = true;
-
-        senderMustBePlayer = false;
-        senderMustBeMember = false;
-        senderMustBeModerator = false;
-        senderMustBeAdmin = false;
+        this.requirements = new CommandRequirements.Builder(Permission.STUCK).build();
     }
 
     @Override
-    public void perform() {
-        final Player player = fme.getPlayer();
+    public void perform(final CommandContext context) {
+        final Player player =context.fPlayer.getPlayer();
         final Location sentAt = player.getLocation();
-        final FLocation chunk = fme.getLastStoodAt();
+        final FLocation chunk =context.fPlayer.getLastStoodAt();
         final long delay = P.p.getConfig().getLong("hcf.stuck.delay", 30);
         final int radius = P.p.getConfig().getInt("hcf.stuck.radius", 10);
 
         if (P.p.getStuckMap().containsKey(player.getUniqueId())) {
             long wait = P.p.getTimers().get(player.getUniqueId()) - System.currentTimeMillis();
             String time = DurationFormatUtils.formatDuration(wait, TL.COMMAND_STUCK_TIMEFORMAT.toString(), true);
-            msg(TL.COMMAND_STUCK_EXISTS, time);
+            context.msg(TL.COMMAND_STUCK_EXISTS, time);
         } else {
 
             // if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-            if (!payForCommand(Conf.econCostStuck, TL.COMMAND_STUCK_TOSTUCK.format(fme.getName()), TL.COMMAND_STUCK_FORSTUCK.format(fme.getName()))) {
+            if (!context.payForCommand(Conf.econCostStuck, TL.COMMAND_STUCK_TOSTUCK.format(context.fPlayer.getName()), TL.COMMAND_STUCK_FORSTUCK.format(context.fPlayer.getName()))) {
                 return;
             }
 
@@ -59,7 +53,7 @@ public class CmdStuck extends FCommand {
                     // check for world difference or radius exceeding
                     final World world = chunk.getWorld();
                     if (world.getUID() != player.getWorld().getUID() || sentAt.distance(player.getLocation()) > radius) {
-                        msg(TL.COMMAND_STUCK_OUTSIDE.format(radius));
+                        context.msg(TL.COMMAND_STUCK_OUTSIDE.format(radius));
                         P.p.getTimers().remove(player.getUniqueId());
                         P.p.getStuckMap().remove(player.getUniqueId());
                         return;
@@ -67,7 +61,7 @@ public class CmdStuck extends FCommand {
 
                     final Board board = Board.getInstance();
                     // spiral task to find nearest wilderness chunk
-                    new SpiralTask(new FLocation(me), radius * 2) {
+                    new SpiralTask(new FLocation(context.player), radius * 2) {
 
                         @Override
                         public boolean work() {
@@ -78,7 +72,7 @@ public class CmdStuck extends FCommand {
                                 int cz = FLocation.chunkToBlock((int) chunk.getZ());
                                 int y = world.getHighestBlockYAt(cx, cz);
                                 Location tp = new Location(world, cx, y, cz);
-                                msg(TL.COMMAND_STUCK_TELEPORT, tp.getBlockX(), tp.getBlockY(), tp.getBlockZ());
+                                context.msg(TL.COMMAND_STUCK_TELEPORT, tp.getBlockX(), tp.getBlockY(), tp.getBlockZ());
                                 P.p.getTimers().remove(player.getUniqueId());
                                 P.p.getStuckMap().remove(player.getUniqueId());
                                 if (!Essentials.handleTeleport(player, tp)) {
@@ -97,7 +91,7 @@ public class CmdStuck extends FCommand {
             P.p.getTimers().put(player.getUniqueId(), System.currentTimeMillis() + (delay * 1000));
             long wait = P.p.getTimers().get(player.getUniqueId()) - System.currentTimeMillis();
             String time = DurationFormatUtils.formatDuration(wait, TL.COMMAND_STUCK_TIMEFORMAT.toString(), true);
-            msg(TL.COMMAND_STUCK_START, time);
+            context.msg(TL.COMMAND_STUCK_START, time);
             P.p.getStuckMap().put(player.getUniqueId(), id);
         }
     }

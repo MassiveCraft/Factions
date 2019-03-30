@@ -12,15 +12,10 @@ public class CmdToggleAllianceChat extends FCommand {
         this.aliases.add("togglealliancechat");
         this.aliases.add("ac");
 
-        this.disableOnLock = false;
-
-        this.permission = Permission.TOGGLE_ALLIANCE_CHAT.node;
-        this.disableOnLock = false;
-
-        senderMustBePlayer = true;
-        senderMustBeMember = true;
-        senderMustBeModerator = false;
-        senderMustBeAdmin = false;
+        this.requirements = new CommandRequirements.Builder(Permission.TOGGLE_ALLIANCE_CHAT)
+                .memberOnly()
+                .noDisableOnLock()
+                .build();
     }
 
     @Override
@@ -29,15 +24,15 @@ public class CmdToggleAllianceChat extends FCommand {
     }
 
     @Override
-    public void perform() {
+    public void perform(CommandContext context) {
         if (!Conf.factionOnlyChat) {
-            msg(TL.COMMAND_CHAT_DISABLED.toString());
+            context.msg(TL.COMMAND_CHAT_DISABLED.toString());
             return;
         }
 
-        boolean ignoring = fme.isIgnoreAllianceChat();
+        boolean ignoring = context.fPlayer.isIgnoreAllianceChat();
 
-        msg(ignoring ? TL.COMMAND_TOGGLEALLIANCECHAT_UNIGNORE : TL.COMMAND_TOGGLEALLIANCECHAT_IGNORE);
-        fme.setIgnoreAllianceChat(!ignoring);
+        context.msg(ignoring ? TL.COMMAND_TOGGLEALLIANCECHAT_UNIGNORE : TL.COMMAND_TOGGLEALLIANCECHAT_IGNORE);
+        context.fPlayer.setIgnoreAllianceChat(!ignoring);
     }
 }

@@ -25,19 +25,12 @@ public class CmdConfig extends FCommand {
 
         this.requiredArgs.add("setting");
         this.requiredArgs.add("value");
-        this.errorOnToManyArgs = false;
 
-        this.permission = Permission.CONFIG.node;
-        this.disableOnLock = true;
-
-        senderMustBePlayer = false;
-        senderMustBeMember = false;
-        senderMustBeModerator = false;
-        senderMustBeAdmin = false;
+        this.requirements = new CommandRequirements.Builder(Permission.CONFIG).noErrorOnManyArgs().build();
     }
 
     @Override
-    public void perform() {
+    public void perform(CommandContext context) {
         // store a lookup map of lowercase field names paired with proper capitalization field names
         // that way, if the person using this command messes up the capitalization, we can fix that
         if (properFieldNames.isEmpty()) {
@@ -47,22 +40,22 @@ public class CmdConfig extends FCommand {
             }
         }
 
-        String field = this.argAsString(0).toLowerCase();
+        String field = context.argAsString(0).toLowerCase();
         if (field.startsWith("\"") && field.endsWith("\"")) {
             field = field.substring(1, field.length() - 1);
         }
         String fieldName = properFieldNames.get(field);
 
         if (fieldName == null || fieldName.isEmpty()) {
-            msg(TL.COMMAND_CONFIG_NOEXIST, field);
+            context.msg(TL.COMMAND_CONFIG_NOEXIST, field);
             return;
         }
 
         String success;
 
-        StringBuilder value = new StringBuilder(args.get(1));
-        for (int i = 2; i < args.size(); i++) {
-            value.append(' ').append(args.get(i));
+        StringBuilder value = new StringBuilder(context.args.get(1));
+        for (int i = 2; i < context.args.size(); i++) {
+            value.append(' ').append(context.args.get(i));
         }
 
         try {
@@ -70,7 +63,7 @@ public class CmdConfig extends FCommand {
 
             // boolean
             if (target.getType() == boolean.class) {
-                boolean targetValue = this.strAsBool(value.toString());
+                boolean targetValue = context.strAsBool(value.toString());
                 target.setBoolean(null, targetValue);
 
                 if (targetValue) {
@@ -87,7 +80,7 @@ public class CmdConfig extends FCommand {
                     target.setInt(null, intVal);
                     success = "\"" + fieldName + TL.COMMAND_CONFIG_OPTIONSET.toString() + intVal + ".";
                 } catch (NumberFormatException ex) {
-                    sendMessage(TL.COMMAND_CONFIG_INTREQUIRED.format(fieldName));
+                    context.sendMessage(TL.COMMAND_CONFIG_INTREQUIRED.format(fieldName));
                     return;
                 }
             }
@@ -99,7 +92,7 @@ public class CmdConfig extends FCommand {
                     target.setLong(null, longVal);
                     success = "\"" + fieldName + TL.COMMAND_CONFIG_OPTIONSET.toString() + longVal + ".";
                 } catch (NumberFormatException ex) {
-                    sendMessage(TL.COMMAND_CONFIG_LONGREQUIRED.format(fieldName));
+                    context.sendMessage(TL.COMMAND_CONFIG_LONGREQUIRED.format(fieldName));
                     return;
                 }
             }
@@ -111,7 +104,7 @@ public class CmdConfig extends FCommand {
                     target.setDouble(null, doubleVal);
                     success = "\"" + fieldName + TL.COMMAND_CONFIG_OPTIONSET.toString() + doubleVal + ".";
                 } catch (NumberFormatException ex) {
-                    sendMessage(TL.COMMAND_CONFIG_DOUBLEREQUIRED.format(fieldName));
+                    context.sendMessage(TL.COMMAND_CONFIG_DOUBLEREQUIRED.format(fieldName));
                     return;
                 }
             }
@@ -123,7 +116,7 @@ public class CmdConfig extends FCommand {
                     target.setFloat(null, floatVal);
                     success = "\"" + fieldName + TL.COMMAND_CONFIG_OPTIONSET.toString() + floatVal + ".";
                 } catch (NumberFormatException ex) {
-                    sendMessage(TL.COMMAND_CONFIG_FLOATREQUIRED.format(fieldName));
+                    context.sendMessage(TL.COMMAND_CONFIG_FLOATREQUIRED.format(fieldName));
                     return;
                 }
             }
@@ -143,7 +136,7 @@ public class CmdConfig extends FCommand {
 
                 }
                 if (newColor == null) {
-                    sendMessage(TL.COMMAND_CONFIG_INVALID_COLOUR.format(fieldName, value.toString().toUpperCase()));
+                    context.sendMessage(TL.COMMAND_CONFIG_INVALID_COLOUR.format(fieldName, value.toString().toUpperCase()));
                     return;
                 }
                 target.set(null, newColor);
@@ -157,7 +150,7 @@ public class CmdConfig extends FCommand {
 
                 // not a Set, somehow, and that should be the only collection we're using in Conf.java
                 if (targSet.getRawType() != Set.class) {
-                    sendMessage(TL.COMMAND_CONFIG_INVALID_COLLECTION.format(fieldName));
+                    context.sendMessage(TL.COMMAND_CONFIG_INVALID_COLLECTION.format(fieldName));
                     return;
                 }
 
@@ -166,7 +159,7 @@ public class CmdConfig extends FCommand {
                     Material newMat = FactionMaterial.from(value.toString().toUpperCase()).get();
 
                     if (newMat == null || newMat == Material.AIR) {
-                        sendMessage(TL.COMMAND_CONFIG_INVALID_MATERIAL.format(fieldName, value.toString().toUpperCase()));
+                        context.sendMessage(TL.COMMAND_CONFIG_INVALID_MATERIAL.format(fieldName, value.toString().toUpperCase()));
                         return;
                     }
 
@@ -206,28 +199,28 @@ public class CmdConfig extends FCommand {
 
                 // Set of unknown type
                 else {
-                    sendMessage(TL.COMMAND_CONFIG_INVALID_TYPESET.format(fieldName));
+                    context.sendMessage(TL.COMMAND_CONFIG_INVALID_TYPESET.format(fieldName));
                     return;
                 }
             }
 
             // unknown type
             else {
-                sendMessage(TL.COMMAND_CONFIG_ERROR_TYPE.format(fieldName, target.getClass().getName()));
+                context.sendMessage(TL.COMMAND_CONFIG_ERROR_TYPE.format(fieldName, target.getClass().getName()));
                 return;
             }
         } catch (NoSuchFieldException ex) {
-            sendMessage(TL.COMMAND_CONFIG_ERROR_MATCHING.format(fieldName));
+            context.sendMessage(TL.COMMAND_CONFIG_ERROR_MATCHING.format(fieldName));
             return;
         } catch (IllegalAccessException ex) {
-            sendMessage(TL.COMMAND_CONFIG_ERROR_SETTING.format(fieldName, value.toString()));
+            context.sendMessage(TL.COMMAND_CONFIG_ERROR_SETTING.format(fieldName, value.toString()));
             return;
         }
 
         if (!success.isEmpty()) {
-            if (sender instanceof Player) {
-                sendMessage(success);
-                P.p.log(success + TL.COMMAND_CONFIG_LOG.format((Player) sender));
+            if (context.sender instanceof Player) {
+                context.sendMessage(success);
+                P.p.log(success + TL.COMMAND_CONFIG_LOG.format((Player) context.sender));
             } else  // using P.p.log() instead of sendMessage if run from server console so that "[Factions v#.#.#]" is prepended in server log
             {
                 P.p.log(success);

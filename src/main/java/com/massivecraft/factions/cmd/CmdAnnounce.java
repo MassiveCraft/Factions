@@ -2,7 +2,11 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.util.TL;
+import com.mojang.brigadier.arguments.StringArgumentType;
+import com.mojang.brigadier.builder.ArgumentBuilder;
+import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -15,34 +19,39 @@ public class CmdAnnounce extends FCommand {
         this.aliases.add("announce");
 
         this.requiredArgs.add("message");
-        this.errorOnToManyArgs = false;
 
-        this.permission = Permission.ANNOUNCE.node;
-        this.disableOnLock = false;
-
-        senderMustBePlayer = true;
-        senderMustBeMember = true;
-        senderMustBeModerator = true;
+        this.requirements = new CommandRequirements.Builder(Permission.ANNOUNCE).memberOnly().withRole(Role.MODERATOR)
+                .noErrorOnManyArgs()
+                .noDisableOnLock()
+                .brigadier(AnnounceBrigadier.class)
+                .build();
     }
 
     @Override
-    public void perform() {
-        String prefix = ChatColor.GREEN + myFaction.getTag() + ChatColor.YELLOW + " [" + ChatColor.GRAY + me.getName() + ChatColor.YELLOW + "] " + ChatColor.RESET;
-        String message = StringUtils.join(args, " ");
+    public void perform(CommandContext context) {
+        String prefix = ChatColor.GREEN + context.faction.getTag() + ChatColor.YELLOW + " [" + ChatColor.GRAY + context.player.getName() + ChatColor.YELLOW + "] " + ChatColor.RESET;
+        String message = StringUtils.join(context.args, " ");
 
-        for (Player player : myFaction.getOnlinePlayers()) {
+        for (Player player : context.faction.getOnlinePlayers()) {
             player.sendMessage(prefix + message);
         }
 
         // Add for offline players.
-        for (FPlayer fp : myFaction.getFPlayersWhereOnline(false)) {
-            myFaction.addAnnouncement(fp, prefix + message);
+        for (FPlayer fp : context.faction.getFPlayersWhereOnline(false)) {
+            context.faction.addAnnouncement(fp, prefix + message);
         }
     }
 
     @Override
     public TL getUsageTranslation() {
         return TL.COMMAND_ANNOUNCE_DESCRIPTION;
+    }
+
+    protected class AnnounceBrigadier implements BrigadierProvider {
+        @Override
+        public ArgumentBuilder<Object, ?> get(ArgumentBuilder<Object, ?> parent) {
+            return parent.then(RequiredArgumentBuilder.argument("message", StringArgumentType.greedyString()));
+        }
     }
 
 }

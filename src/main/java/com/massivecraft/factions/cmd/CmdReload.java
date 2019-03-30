@@ -11,24 +11,18 @@ public class CmdReload extends FCommand {
         super();
         this.aliases.add("reload");
 
-        this.permission = Permission.RELOAD.node;
-        this.disableOnLock = false;
-
-        senderMustBePlayer = false;
-        senderMustBeMember = false;
-        senderMustBeModerator = false;
-        senderMustBeAdmin = false;
+        this.requirements = new CommandRequirements.Builder(Permission.RELOAD).noDisableOnLock().build();
     }
 
     @Override
-    public void perform() {
+    public void perform(CommandContext context) {
         long timeInitStart = System.currentTimeMillis();
         Conf.load();
         P.p.reloadConfig();
         P.p.loadLang();
         long timeReload = (System.currentTimeMillis() - timeInitStart);
 
-        msg(TL.COMMAND_RELOAD_TIME, timeReload);
+        context.msg(TL.COMMAND_RELOAD_TIME, timeReload);
     }
 
     @Override

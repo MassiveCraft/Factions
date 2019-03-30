@@ -18,22 +18,21 @@ public class CmdNear extends FCommand {
         super();
         this.aliases.add("near");
 
-        this.permission = Permission.NEAR.node;
-
-        senderMustBePlayer = true;
-        senderMustBeMember = true;
+        this.requirements = new CommandRequirements.Builder(Permission.NEAR)
+                .memberOnly()
+                .build();
     }
 
     @Override
-    public void perform() {
+    public void perform(CommandContext context) {
         int radius = P.p.getConfig().getInt("f-near.radius", 20);
-        List<Entity> nearbyEntities = me.getNearbyEntities(radius, radius, radius);
+        List<Entity> nearbyEntities = context.player.getNearbyEntities(radius, radius, radius);
         List<FPlayer> nearbyMembers = new ArrayList<>();
 
         for (Entity entity : nearbyEntities) {
             if (entity instanceof Player) {
                 FPlayer target = FPlayers.getInstance().getByPlayer((Player) entity);
-                if (target.getFaction() == fme.getFaction()) {
+                if (target.getFaction() ==context.fPlayer.getFaction()) {
                     nearbyMembers.add(target);
                 }
             }
@@ -49,7 +48,7 @@ public class CmdNear extends FCommand {
             playerMessageBuilder.append(TL.COMMAND_NEAR_NONE);
         }
 
-        fme.msg(TL.COMMAND_NEAR_PLAYERLIST.toString().replace("{players-nearby}", playerMessageBuilder.toString()));
+        context.msg(TL.COMMAND_NEAR_PLAYERLIST.toString().replace("{players-nearby}", playerMessageBuilder.toString()));
     }
 
     private String parsePlaceholders(FPlayer target, String string) {
@@ -59,7 +58,7 @@ public class CmdNear extends FCommand {
         string = string.replace("{role-prefix}", target.getRole().getPrefix());
         // Only run distance calculation if needed
         if (string.contains("{distance}")) {
-            double distance = Math.round(me.getLocation().distance(target.getPlayer().getLocation()));
+            double distance = Math.round(target.getPlayer().getLocation().distance(target.getPlayer().getLocation()));
             string = string.replace("{distance}", distance + "");
         }
         return string;

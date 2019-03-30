@@ -16,22 +16,15 @@ public class CmdLock extends FCommand {
         super();
         this.aliases.add("lock");
 
-        //this.requiredArgs.add("");
         this.optionalArgs.put("on/off", "flip");
 
-        this.permission = Permission.LOCK.node;
-        this.disableOnLock = false;
-
-        senderMustBePlayer = false;
-        senderMustBeMember = false;
-        senderMustBeModerator = false;
-        senderMustBeAdmin = false;
+        this.requirements = new CommandRequirements.Builder(Permission.LOCK).noDisableOnLock().build();
     }
 
     @Override
-    public void perform() {
-        p.setLocked(this.argAsBool(0, !p.getLocked()));
-        msg(p.getLocked() ? TL.COMMAND_LOCK_LOCKED : TL.COMMAND_LOCK_UNLOCKED);
+    public void perform(CommandContext context) {
+        p.setLocked(context.argAsBool(0, !p.getLocked()));
+        context.msg(p.getLocked() ? TL.COMMAND_LOCK_LOCKED : TL.COMMAND_LOCK_UNLOCKED);
     }
 
     @Override

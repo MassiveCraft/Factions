@@ -17,29 +17,23 @@ public class CmdModifyPower extends FCommand {
         this.requiredArgs.add("name");
         this.requiredArgs.add("power");
 
-        this.permission = Permission.MODIFY_POWER.node; // admin only perm.
-
-        // Let's not require anything and let console modify this as well.
-        this.senderMustBeAdmin = false;
-        this.senderMustBePlayer = false;
-        this.senderMustBeMember = false;
-        this.senderMustBeModerator = false;
+        this.requirements = new CommandRequirements.Builder(Permission.MODIFY_POWER).build();
     }
 
     @Override
-    public void perform() {
+    public void perform(CommandContext context) {
         // /f modify <name> #
-        FPlayer player = argAsBestFPlayerMatch(0);
-        Double number = argAsDouble(1); // returns null if not a Double.
+        FPlayer player = context.argAsBestFPlayerMatch(0);
+        Double number = context.argAsDouble(1); // returns null if not a Double.
 
         if (player == null || number == null) {
-            sender.sendMessage(getHelpShort());
+            context.sender.sendMessage(getHelpShort());
             return;
         }
 
         player.alterPower(number);
         int newPower = player.getPowerRounded(); // int so we don't have super long doubles.
-        msg(TL.COMMAND_MODIFYPOWER_ADDED, number, player.getName(), newPower);
+        context.msg(TL.COMMAND_MODIFYPOWER_ADDED, number, player.getName(), newPower);
     }
 
     @Override

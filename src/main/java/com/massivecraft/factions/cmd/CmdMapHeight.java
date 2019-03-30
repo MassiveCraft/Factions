@@ -13,22 +13,22 @@ public class CmdMapHeight extends FCommand {
 
         this.optionalArgs.put("height", "height");
 
-        this.permission = Permission.MAPHEIGHT.node;
-
-        this.senderMustBePlayer = true;
+        this.requirements = new CommandRequirements.Builder(Permission.MAPHEIGHT)
+                .playerOnly()
+                .build();
     }
 
     @Override
-    public void perform() {
-        if (args.size() == 0) {
-            fme.sendMessage(TL.COMMAND_MAPHEIGHT_CURRENT.format(fme.getMapHeight()));
+    public void perform(CommandContext context) {
+        if (context.args.size() == 0) {
+           context.fPlayer.sendMessage(TL.COMMAND_MAPHEIGHT_CURRENT.format(context.fPlayer.getMapHeight()));
             return;
         }
 
-        int height = argAsInt(0);
+        int height = context.argAsInt(0);
 
-        fme.setMapHeight(height);
-        fme.sendMessage(TL.COMMAND_MAPHEIGHT_SET.format(fme.getMapHeight()));
+       context.fPlayer.setMapHeight(height);
+       context.fPlayer.sendMessage(TL.COMMAND_MAPHEIGHT_SET.format(context.fPlayer.getMapHeight()));
     }
 
     @Override

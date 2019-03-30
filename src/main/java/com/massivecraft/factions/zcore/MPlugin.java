@@ -7,6 +7,7 @@ import com.massivecraft.factions.Board;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.cmd.FCommand;
 import com.massivecraft.factions.zcore.persist.SaveTask;
 import com.massivecraft.factions.zcore.util.PermUtil;
 import com.massivecraft.factions.zcore.util.Persist;
@@ -52,11 +53,12 @@ public abstract class MPlugin extends JavaPlugin {
     private MPluginSecretPlayerListener mPluginSecretPlayerListener;
 
     // Our stored base commands
-    private List<MCommand<?>> baseCommands = new ArrayList<>();
+    /*
+    private List<FCommand> baseCommands = new ArrayList<>();
 
     public List<MCommand<?>> getBaseCommands() {
         return this.baseCommands;
-    }
+    }*/
 
     // holds f stuck start times
     private Map<UUID, Long> timers = new HashMap<>();
@@ -252,58 +254,6 @@ public abstract class MPlugin extends JavaPlugin {
     // can be overridden by P method, to provide option
     public boolean logPlayerCommands() {
         return true;
-    }
-
-    public boolean handleCommand(CommandSender sender, String commandString, boolean testOnly) {
-        return handleCommand(sender, commandString, testOnly, false);
-    }
-
-    public boolean handleCommand(final CommandSender sender, String commandString, boolean testOnly, boolean async) {
-        boolean noSlash = true;
-        if (commandString.startsWith("/")) {
-            noSlash = false;
-            commandString = commandString.substring(1);
-        }
-
-        for (final MCommand<?> command : this.getBaseCommands()) {
-            if (noSlash && !command.allowNoSlashAccess) {
-                continue;
-            }
-
-            for (String alias : command.aliases) {
-                // disallow double-space after alias, so specific commands can be prevented (preventing "f home" won't prevent "f  home")
-                if (commandString.startsWith(alias + "  ")) {
-                    return false;
-                }
-
-                if (commandString.startsWith(alias + " ") || commandString.equals(alias)) {
-                    final List<String> args = new ArrayList<>(Arrays.asList(commandString.split("\\s+")));
-                    args.remove(0);
-
-                    if (testOnly) {
-                        return true;
-                    }
-
-                    if (async) {
-                        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
-                            @Override
-                            public void run() {
-                                command.execute(sender, args);
-                            }
-                        });
-                    } else {
-                        command.execute(sender, args);
-                    }
-
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    public boolean handleCommand(CommandSender sender, String commandString) {
-        return this.handleCommand(sender, commandString, false);
     }
 
     // -------------------------------------------- //

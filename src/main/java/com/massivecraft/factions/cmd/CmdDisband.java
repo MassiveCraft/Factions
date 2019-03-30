@@ -17,48 +17,41 @@ public class CmdDisband extends FCommand {
         super();
         this.aliases.add("disband");
 
-        //this.requiredArgs.add("");
-        this.optionalArgs.put("faction tag", "yours");
+        this.optionalArgs.put("faction", "yours");
 
-        this.permission = Permission.DISBAND.node;
-        this.disableOnLock = true;
-
-        senderMustBePlayer = false;
-        senderMustBeMember = false;
-        senderMustBeModerator = false;
-        senderMustBeAdmin = false;
+        this.requirements = new CommandRequirements.Builder(Permission.DISBAND).build();
     }
 
     @Override
-    public void perform() {
+    public void perform(CommandContext context) {
         // The faction, default to your own.. but null if console sender.
-        Faction faction = this.argAsFaction(0, fme == null ? null : myFaction);
+        Faction faction = context.argAsFaction(0, context.fPlayer == null ? null : context.faction);
         if (faction == null) {
             return;
         }
 
-        boolean isMyFaction = fme != null && faction == myFaction;
+        boolean isfaction = context.fPlayer != null && faction == context.faction;
 
-        if (isMyFaction) {
-            if (!assertMinRole(Role.ADMIN)) {
+        if (isfaction) {
+            if (!context.assertMinRole(Role.ADMIN)) {
                 return;
             }
         } else {
-            if (!Permission.DISBAND_ANY.has(sender, true)) {
+            if (!Permission.DISBAND_ANY.has(context.sender, true)) {
                 return;
             }
         }
 
         if (!faction.isNormal()) {
-            msg(TL.COMMAND_DISBAND_IMMUTABLE.toString());
+            context.msg(TL.COMMAND_DISBAND_IMMUTABLE.toString());
             return;
         }
         if (faction.isPermanent()) {
-            msg(TL.COMMAND_DISBAND_MARKEDPERMANENT.toString());
+            context.msg(TL.COMMAND_DISBAND_MARKEDPERMANENT.toString());
             return;
         }
 
-        FactionDisbandEvent disbandEvent = new FactionDisbandEvent(me, faction.getId());
+        FactionDisbandEvent disbandEvent = new FactionDisbandEvent(context.player, faction.getId());
         Bukkit.getServer().getPluginManager().callEvent(disbandEvent);
         if (disbandEvent.isCancelled()) {
             return;
@@ -71,7 +64,7 @@ public class CmdDisband extends FCommand {
 
         // Inform all players
         for (FPlayer fplayer : FPlayers.getInstance().getOnlinePlayers()) {
-            String who = senderIsConsole ? TL.GENERIC_SERVERADMIN.toString() : fme.describeTo(fplayer);
+            String who = context.player == null ? TL.GENERIC_SERVERADMIN.toString() : context.fPlayer.describeTo(fplayer);
             if (fplayer.getFaction() == faction) {
                 fplayer.msg(TL.COMMAND_DISBAND_BROADCAST_YOURS, who);
             } else {
@@ -80,19 +73,19 @@ public class CmdDisband extends FCommand {
         }
         if (Conf.logFactionDisband) {
             //TODO: Format this correctly and translate.
-            P.p.log("The faction " + faction.getTag() + " (" + faction.getId() + ") was disbanded by " + (senderIsConsole ? "console command" : fme.getName()) + ".");
+            P.p.log("The faction " + faction.getTag() + " (" + faction.getId() + ") was disbanded by " + (context.player == null ? "console command" : context.fPlayer.getName()) + ".");
         }
 
-        if (Econ.shouldBeUsed() && !senderIsConsole) {
+        if (Econ.shouldBeUsed() && context.player != null) {
             //Give all the faction's money to the disbander
             double amount = Econ.getBalance(faction.getAccountId());
-            Econ.transferMoney(fme, faction, fme, amount, false);
+            Econ.transferMoney(context.fPlayer, faction, context.fPlayer, amount, false);
 
             if (amount > 0.0) {
                 String amountString = Econ.moneyString(amount);
-                msg(TL.COMMAND_DISBAND_HOLDINGS, amountString);
+                context.msg(TL.COMMAND_DISBAND_HOLDINGS, amountString);
                 //TODO: Format this correctly and translate
-                P.p.log(fme.getName() + " has been given bank holdings of " + amountString + " from disbanding " + faction.getTag() + ".");
+                P.p.log(context.fPlayer.getName() + " has been given bank holdings of " + amountString + " from disbanding " + faction.getTag() + ".");
             }
         }
 

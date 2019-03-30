@@ -15,13 +15,13 @@ public class CmdConvert extends FCommand {
     }
 
     @Override
-    public void perform() {
-        if (!(this.sender instanceof ConsoleCommandSender)) {
-            this.sender.sendMessage(TL.GENERIC_CONSOLEONLY.toString());
+    public void perform(CommandContext context) {
+        if (!(context.sender instanceof ConsoleCommandSender)) {
+            context.sender.sendMessage(TL.GENERIC_CONSOLEONLY.toString());
         }
-        Backend nb = Backend.valueOf(this.argAsString(0).toUpperCase());
+        Backend nb = Backend.valueOf(context.argAsString(0).toUpperCase());
         if (nb == Conf.backEnd) {
-            this.sender.sendMessage(TL.COMMAND_CONVERT_BACKEND_RUNNING.toString());
+            context.sender.sendMessage(TL.COMMAND_CONVERT_BACKEND_RUNNING.toString());
             return;
         }
         switch (nb) {
@@ -29,7 +29,7 @@ public class CmdConvert extends FCommand {
                 FactionsJSON.convertTo();
                 break;
             default:
-                this.sender.sendMessage(TL.COMMAND_CONVERT_BACKEND_INVALID.toString());
+                context.sender.sendMessage(TL.COMMAND_CONVERT_BACKEND_INVALID.toString());
                 return;
 
         }

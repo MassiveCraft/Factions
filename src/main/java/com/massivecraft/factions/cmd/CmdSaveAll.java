@@ -14,25 +14,16 @@ public class CmdSaveAll extends FCommand {
         this.aliases.add("saveall");
         this.aliases.add("save");
 
-        //this.requiredArgs.add("");
-        //this.optionalArgs.put("", "");
-
-        this.permission = Permission.SAVE.node;
-        this.disableOnLock = false;
-
-        senderMustBePlayer = false;
-        senderMustBeMember = false;
-        senderMustBeModerator = false;
-        senderMustBeAdmin = false;
+        this.requirements = new CommandRequirements.Builder(Permission.SAVE).noDisableOnLock().build();
     }
 
     @Override
-    public void perform() {
+    public void perform(CommandContext context) {
         FPlayers.getInstance().forceSave(false);
         Factions.getInstance().forceSave(false);
         Board.getInstance().forceSave(false);
         Conf.save();
-        msg(TL.COMMAND_SAVEALL_SUCCESS);
+        context.msg(TL.COMMAND_SAVEALL_SUCCESS);
     }
 
     @Override

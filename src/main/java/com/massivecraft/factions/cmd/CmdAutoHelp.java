@@ -2,15 +2,13 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.zcore.CommandVisibility;
-import com.massivecraft.factions.zcore.MCommand;
 import com.massivecraft.factions.zcore.util.TL;
 
 import java.util.ArrayList;
 
-public class CmdAutoHelp extends MCommand<P> {
+public class CmdAutoHelp extends FCommand {
 
     public CmdAutoHelp() {
-        super(P.p);
         this.aliases.add("?");
         this.aliases.add("h");
         this.aliases.add("help");
@@ -21,23 +19,23 @@ public class CmdAutoHelp extends MCommand<P> {
     }
 
     @Override
-    public void perform() {
+    public void perform(CommandContext context) {
         if (this.commandChain.size() == 0) {
             return;
         }
-        MCommand<?> pcmd = this.commandChain.get(this.commandChain.size() - 1);
+        FCommand pcmd = this.commandChain.get(this.commandChain.size() - 1);
 
         ArrayList<String> lines = new ArrayList<>();
 
         lines.addAll(pcmd.helpLong);
 
-        for (MCommand<?> scmd : pcmd.subCommands) {
-            if (scmd.visibility == CommandVisibility.VISIBLE || (scmd.visibility == CommandVisibility.SECRET && scmd.validSenderPermissions(sender, false))) {
+        for (FCommand scmd : pcmd.subCommands) {
+            if (scmd.visibility == CommandVisibility.VISIBLE) {
                 lines.add(scmd.getUseageTemplate(this.commandChain, true));
             }
         }
 
-        sendMessage(p.txt.getPage(lines, this.argAsInt(0, 1), TL.COMMAND_AUTOHELP_HELPFOR.toString() + pcmd.aliases.get(0) + "\""));
+        context.sendMessage(P.p.txt.getPage(lines, context.argAsInt(0, 1), TL.COMMAND_AUTOHELP_HELPFOR.toString() + pcmd.aliases.get(0) + "\""));
     }
 
     @Override

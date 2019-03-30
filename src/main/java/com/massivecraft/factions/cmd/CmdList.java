@@ -25,22 +25,15 @@ public class CmdList extends FCommand {
         defaults[1] = "<i>Factionless<i> {factionless} online";
         defaults[2] = "<a>{faction} <i>{online} / {members} online, <a>Land / Power / Maxpower: <i>{chunks}/{power}/{maxPower}";
 
-        //this.requiredArgs.add("");
         this.optionalArgs.put("page", "1");
 
-        this.permission = Permission.LIST.node;
-        this.disableOnLock = false;
-
-        senderMustBePlayer = false;
-        senderMustBeMember = false;
-        senderMustBeModerator = false;
-        senderMustBeAdmin = false;
+        this.requirements = new CommandRequirements.Builder(Permission.LIST).build();
     }
 
     @Override
-    public void perform() {
+    public void perform(CommandContext context) {
         // if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-        if (!payForCommand(Conf.econCostList, "to list the factions", "for listing the factions")) {
+        if (!context.payForCommand(Conf.econCostList, "to list the factions", "for listing the factions")) {
             return;
         }
 
@@ -50,7 +43,7 @@ public class CmdList extends FCommand {
         factionList.remove(Factions.getInstance().getWarZone());
 
         // remove exempt factions
-        if (!sender.hasPermission("factions.show.bypassexempt")) {
+        if (!context.sender.hasPermission("factions.show.bypassexempt")) {
             List<String> exemptFactions = P.p.getConfig().getStringList("show-exempt");
             Iterator<Faction> factionIterator = factionList.iterator();
             while (factionIterator.hasNext()) {
@@ -96,7 +89,7 @@ public class CmdList extends FCommand {
         factionList.add(0, Factions.getInstance().getNone());
 
         final int pageheight = 9;
-        int pagenumber = this.argAsInt(0, 1);
+        int pagenumber = context.argAsInt(0, 1);
         int pagecount = (factionList.size() / pageheight) + 1;
         if (pagenumber > pagecount) {
             pagenumber = pagecount;
@@ -119,9 +112,9 @@ public class CmdList extends FCommand {
                 lines.add(p.txt.parse(TagUtil.parsePlain(faction, p.getConfig().getString("list.factionless", defaults[1]))));
                 continue;
             }
-            lines.add(p.txt.parse(TagUtil.parsePlain(faction, fme, p.getConfig().getString("list.entry", defaults[2]))));
+            lines.add(p.txt.parse(TagUtil.parsePlain(faction,context.fPlayer, p.getConfig().getString("list.entry", defaults[2]))));
         }
-        sendMessage(lines);
+        context.sendMessage(lines);
     }
 
     @Override

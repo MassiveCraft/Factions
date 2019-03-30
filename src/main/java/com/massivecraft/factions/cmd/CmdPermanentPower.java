@@ -13,23 +13,17 @@ public class CmdPermanentPower extends FCommand {
         this.requiredArgs.add("faction");
         this.requiredArgs.add("power");
 
-        this.permission = Permission.SET_PERMANENTPOWER.node;
-        this.disableOnLock = true;
-
-        senderMustBePlayer = false;
-        senderMustBeMember = false;
-        senderMustBeModerator = false;
-        senderMustBeAdmin = false;
+        this.requirements = new CommandRequirements.Builder(Permission.SET_PERMANENTPOWER).build();
     }
 
     @Override
-    public void perform() {
-        Faction targetFaction = this.argAsFaction(0);
+    public void perform(CommandContext context) {
+        Faction targetFaction = context.argAsFaction(0);
         if (targetFaction == null) {
             return;
         }
 
-        Integer targetPower = this.argAsInt(1);
+        Integer targetPower = context.argAsInt(1);
 
         targetFaction.setPermanentPower(targetPower);
 
@@ -39,14 +33,14 @@ public class CmdPermanentPower extends FCommand {
         }
 
         // Inform sender
-        msg(TL.COMMAND_PERMANENTPOWER_SUCCESS, change, targetFaction.describeTo(fme));
+        context.msg(TL.COMMAND_PERMANENTPOWER_SUCCESS, change, targetFaction.describeTo(context.fPlayer));
 
         // Inform all other players
         for (FPlayer fplayer : targetFaction.getFPlayersWhereOnline(true)) {
-            if (fplayer == fme) {
+            if (fplayer == context.fPlayer) {
                 continue;
             }
-            String blame = (fme == null ? TL.GENERIC_SERVERADMIN.toString() : fme.describeTo(fplayer, true));
+            String blame = (context.fPlayer == null ? TL.GENERIC_SERVERADMIN.toString() : context.fPlayer.describeTo(fplayer, true));
             fplayer.msg(TL.COMMAND_PERMANENTPOWER_FACTION, blame, change);
         }
     }

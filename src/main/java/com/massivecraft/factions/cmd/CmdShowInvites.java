@@ -12,23 +12,23 @@ public class CmdShowInvites extends FCommand {
 
     public CmdShowInvites() {
         super();
-        aliases.add("showinvites");
-        permission = Permission.SHOW_INVITES.node;
+        this.aliases.add("showinvites");
 
-        senderMustBePlayer = true;
-        senderMustBeMember = true;
+        this.requirements = new CommandRequirements.Builder(Permission.SHOW_INVITES)
+                .memberOnly()
+                .build();
     }
 
     @Override
-    public void perform() {
+    public void perform(CommandContext context) {
         FancyMessage msg = new FancyMessage(TL.COMMAND_SHOWINVITES_PENDING.toString()).color(ChatColor.GOLD);
-        for (String id : myFaction.getInvites()) {
+        for (String id : context.faction.getInvites()) {
             FPlayer fp = FPlayers.getInstance().getById(id);
             String name = fp != null ? fp.getName() : id;
             msg.then(name + " ").color(ChatColor.WHITE).tooltip(TL.COMMAND_SHOWINVITES_CLICKTOREVOKE.format(name)).command("/" + Conf.baseCommandAliases.get(0) + " deinvite " + name);
         }
 
-        sendFancyMessage(msg);
+        context.sendFancyMessage(msg);
     }
 
     @Override

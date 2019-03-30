@@ -11,32 +11,29 @@ public class CmdSeeChunk extends FCommand {
 
     public CmdSeeChunk() {
         super();
-        aliases.add("seechunk");
-        aliases.add("sc");
+        this.aliases.add("seechunk");
+        this.aliases.add("sc");
 
-        permission = Permission.SEECHUNK.node;
-
-        senderMustBePlayer = true;
-        senderMustBeMember = false;
-        senderMustBeModerator = false;
-        senderMustBeAdmin = false;
+        this.requirements = new CommandRequirements.Builder(Permission.SEECHUNK)
+                .playerOnly()
+                .build();
 
         useParticles = P.p.getConfig().getBoolean("see-chunk.particles", true);
     }
 
     @Override
-    public void perform() {
+    public void perform(CommandContext context) {
         if (useParticles) {
             boolean toggle = false;
-            if (args.size() == 0) {
-                toggle = !fme.isSeeingChunk();
-            } else if (args.size() == 1) {
-                toggle = argAsBool(0);
+            if (context.args.size() == 0) {
+                toggle = !context.fPlayer.isSeeingChunk();
+            } else if (context.args.size() == 1) {
+                toggle = context.argAsBool(0);
             }
-            fme.setSeeingChunk(toggle);
-            fme.msg(TL.COMMAND_SEECHUNK_TOGGLE, toggle ? "enabled" : "disabled");
+            context.fPlayer.setSeeingChunk(toggle);
+            context.msg(TL.COMMAND_SEECHUNK_TOGGLE, toggle ? "enabled" : "disabled");
         } else {
-            SeeChunkUtil.showPillars(me, fme, null, false);
+            SeeChunkUtil.showPillars(context.player, context.fPlayer, null, false);
         }
     }
 

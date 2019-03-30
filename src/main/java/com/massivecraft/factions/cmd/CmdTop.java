@@ -19,21 +19,14 @@ public class CmdTop extends FCommand {
         this.aliases.add("top");
         this.aliases.add("t");
 
-        //this.requiredArgs.add("");
         this.requiredArgs.add("criteria");
         this.optionalArgs.put("page", "1");
 
-        this.permission = Permission.TOP.node;
-        this.disableOnLock = false;
-
-        senderMustBePlayer = false;
-        senderMustBeMember = false;
-        senderMustBeModerator = false;
-        senderMustBeAdmin = false;
+        this.requirements = new CommandRequirements.Builder(Permission.TOP).noDisableOnLock().build();
     }
 
     @Override
-    public void perform() {
+    public void perform(CommandContext context) {
         // Can sort by: money, members, online, allies, enemies, power, land.
         // Get all Factions and remove non player ones.
         ArrayList<Faction> factionList = Factions.getInstance().getAllFactions();
@@ -41,7 +34,7 @@ public class CmdTop extends FCommand {
         factionList.remove(Factions.getInstance().getSafeZone());
         factionList.remove(Factions.getInstance().getWarZone());
 
-        String criteria = argAsString(0);
+        String criteria = context.argAsString(0);
 
         // TODO: Better way to sort?
         if (criteria.equalsIgnoreCase("members")) {
@@ -137,13 +130,13 @@ public class CmdTop extends FCommand {
                 }
             });
         } else {
-            msg(TL.COMMAND_TOP_INVALID, criteria);
+            context.msg(TL.COMMAND_TOP_INVALID, criteria);
         }
 
         ArrayList<String> lines = new ArrayList<>();
 
         final int pageheight = 9;
-        int pagenumber = this.argAsInt(1, 1);
+        int pagenumber = context.argAsInt(1, 1);
         int pagecount = (factionList.size() / pageheight) + 1;
         if (pagenumber > pagecount) {
             pagenumber = pagecount;
@@ -161,12 +154,12 @@ public class CmdTop extends FCommand {
         int rank = 1;
         for (Faction faction : factionList.subList(start, end)) {
             // Get the relation color if player is executing this.
-            String fac = sender instanceof Player ? faction.getRelationTo(fme).getColor() + faction.getTag() : faction.getTag();
+            String fac = context.sender instanceof Player ? faction.getRelationTo(context.fPlayer).getColor() + faction.getTag() : faction.getTag();
             lines.add(TL.COMMAND_TOP_LINE.format(rank, fac, getValue(faction, criteria)));
             rank++;
         }
 
-        sendMessage(lines);
+        context.sendMessage(lines);
     }
 
     private String getValue(Faction faction, String criteria) {

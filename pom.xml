@@ -38,6 +38,11 @@
                 <version>2.4.3</version>
                 <configuration>
                     <createDependencyReducedPom>false</createDependencyReducedPom>
+                    <artifactSet>
+                        <excludes>
+                            <exclude>com.mojang:brigadier</exclude>
+                        </excludes>
+                    </artifactSet>
                     <relocations>
                         <relocation>
                             <pattern>mkremins.fanciful</pattern>
@@ -54,6 +59,10 @@
                         <relocation>
                             <pattern>net.amoebaman.util</pattern>
                             <shadedPattern>com.massivecraft.factions.shade.net.amoebaman.util</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>me.lucko.commodore</pattern>
+                            <shadedPattern>com.massivecraft.factions.shade.commodore</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>
@@ -367,6 +376,12 @@
             <artifactId>particleeffect</artifactId>
             <version>1.8.0-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>me.lucko</groupId>
+            <artifactId>commodore</artifactId>
+            <version>1.3</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
     <repositories>
@@ -397,6 +412,11 @@
         <repository>
             <id>mvdw-software</id>
             <url>http://repo.mvdw-software.be/content/groups/public/</url>
+        </repository>
+        <repository>
+            <id>minecraft-libraries</id>
+            <name>Minecraft Libraries</name>
+            <url>https://libraries.minecraft.net</url>
         </repository>
     </repositories>
 </project>

@@ -17,37 +17,30 @@ public class CmdHelp extends FCommand {
         super();
         this.aliases.add("help");
         this.aliases.add("h");
-        this.aliases.add("?");
 
         //this.requiredArgs.add("");
         this.optionalArgs.put("page", "1");
 
-        this.permission = Permission.HELP.node;
-        this.disableOnLock = false;
-
-        senderMustBePlayer = false;
-        senderMustBeMember = false;
-        senderMustBeModerator = false;
-        senderMustBeAdmin = false;
+        this.requirements = new CommandRequirements.Builder(Permission.HELP).noDisableOnLock().build();
     }
 
     @Override
-    public void perform() {
+    public void perform(CommandContext context) {
         if (P.p.getConfig().getBoolean("use-old-help", true)) {
             if (helpPages == null) {
                 updateHelp();
             }
 
-            int page = this.argAsInt(0, 1);
-            sendMessage(p.txt.titleize("Factions Help (" + page + "/" + helpPages.size() + ")"));
+            int page = context.argAsInt(0, 1);
+            context.sendMessage(p.txt.titleize("Factions Help (" + page + "/" + helpPages.size() + ")"));
 
             page -= 1;
 
             if (page < 0 || page >= helpPages.size()) {
-                msg(TL.COMMAND_HELP_404.format(String.valueOf(page)));
+                context.msg(TL.COMMAND_HELP_404.format(String.valueOf(page)));
                 return;
             }
-            sendMessage(helpPages.get(page));
+            context.sendMessage(helpPages.get(page));
             return;
         }
         ConfigurationSection help = P.p.getConfig().getConfigurationSection("help");
@@ -58,14 +51,14 @@ public class CmdHelp extends FCommand {
             error.add("&cSet use-old-help for legacy help messages");
             help.set("'1'", error); // add default error messages
         }
-        String pageArg = this.argAsString(0, "1");
+        String pageArg = context.argAsString(0, "1");
         List<String> page = help.getStringList(pageArg);
         if (page == null || page.isEmpty()) {
-            msg(TL.COMMAND_HELP_404.format(pageArg));
+            context.msg(TL.COMMAND_HELP_404.format(pageArg));
             return;
         }
         for (String helpLine : page) {
-            sendMessage(P.p.txt.parse(helpLine));
+            context.sendMessage(P.p.txt.parse(helpLine));
         }
     }
 

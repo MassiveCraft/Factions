@@ -11,16 +11,17 @@ public class CmdLogins extends FCommand {
         this.aliases.add("logins");
         this.aliases.add("logout");
         this.aliases.add("logouts");
-        this.senderMustBePlayer = true;
-        this.senderMustBeMember = true;
-        this.permission = Permission.MONITOR_LOGINS.node;
+
+        this.requirements = new CommandRequirements.Builder(Permission.MONITOR_LOGINS)
+                .memberOnly()
+                .build();
     }
 
     @Override
-    public void perform() {
-        boolean monitor = fme.isMonitoringJoins();
-        fme.msg(TL.COMMAND_LOGINS_TOGGLE, String.valueOf(!monitor));
-        fme.setMonitorJoins(!monitor);
+    public void perform(CommandContext context) {
+        boolean monitor = context.fPlayer.isMonitoringJoins();
+        context.msg(TL.COMMAND_LOGINS_TOGGLE, String.valueOf(!monitor));
+        context.fPlayer.setMonitorJoins(!monitor);
     }
 
     @Override

@@ -14,21 +14,14 @@ public class CmdPermanent extends FCommand {
         super();
         this.aliases.add("permanent");
 
-        this.requiredArgs.add("faction tag");
-        //this.optionalArgs.put("", "");
+        this.requiredArgs.add("faction");
 
-        this.permission = Permission.SET_PERMANENT.node;
-        this.disableOnLock = true;
-
-        senderMustBePlayer = false;
-        senderMustBeMember = false;
-        senderMustBeModerator = false;
-        senderMustBeAdmin = false;
+        this.requirements = new CommandRequirements.Builder(Permission.SET_PERMANENT).build();
     }
 
     @Override
-    public void perform() {
-        Faction faction = this.argAsFaction(0);
+    public void perform(CommandContext context) {
+        Faction faction = context.argAsFaction(0);
         if (faction == null) {
             return;
         }
@@ -42,11 +35,11 @@ public class CmdPermanent extends FCommand {
             faction.setPermanent(true);
         }
 
-        P.p.log((fme == null ? "A server admin" : fme.getName()) + " " + change + " the faction \"" + faction.getTag() + "\".");
+        P.p.log((context.fPlayer == null ? "A server admin" : context.fPlayer.getName()) + " " + change + " the faction \"" + faction.getTag() + "\".");
 
         // Inform all players
         for (FPlayer fplayer : FPlayers.getInstance().getOnlinePlayers()) {
-            String blame = (fme == null ? TL.GENERIC_SERVERADMIN.toString() : fme.describeTo(fplayer, true));
+            String blame = (context.fPlayer == null ? TL.GENERIC_SERVERADMIN.toString() : context.fPlayer.describeTo(fplayer, true));
             if (fplayer.getFaction() == faction) {
                 fplayer.msg(TL.COMMAND_PERMANENT_YOURS, blame, change);
             } else {

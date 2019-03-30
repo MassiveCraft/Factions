@@ -13,7 +13,6 @@ import java.util.*;
 public class Conf {
 
     public static List<String> baseCommandAliases = new ArrayList<>();
-    public static boolean allowNoSlashCommand = true;
 
     // Colors
     public static ChatColor colorMember = ChatColor.GREEN;

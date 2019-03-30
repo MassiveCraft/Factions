@@ -5,6 +5,8 @@ import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.util.TL;
+import com.mojang.brigadier.builder.ArgumentBuilder;
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 
 public class CmdChat extends FCommand {
 
@@ -13,32 +15,29 @@ public class CmdChat extends FCommand {
         this.aliases.add("c");
         this.aliases.add("chat");
 
-        //this.requiredArgs.add("");
         this.optionalArgs.put("mode", "next");
 
-        this.permission = Permission.CHAT.node;
-        this.disableOnLock = false;
-
-        senderMustBePlayer = true;
-        senderMustBeMember = true;
-        senderMustBeModerator = false;
-        senderMustBeAdmin = false;
+        this.requirements = new CommandRequirements.Builder(Permission.CHAT)
+                .memberOnly()
+                .noDisableOnLock()
+                .brigadier(ChatBrigadier.class)
+                .build();
     }
 
     @Override
-    public void perform() {
+    public void perform(CommandContext context) {
         if (!Conf.factionOnlyChat) {
-            msg(TL.COMMAND_CHAT_DISABLED.toString());
+            context.msg(TL.COMMAND_CHAT_DISABLED.toString());
             return;
         }
 
-        String modeString = this.argAsString(0);
-        ChatMode modeTarget = fme.getChatMode().getNext();
+        String modeString = context.argAsString(0);
+        ChatMode modeTarget = context.fPlayer.getChatMode().getNext();
 
         // If player is cycling through chat modes
         // and he is not atleast a moderator get next one
         if (modeString == null && modeTarget == ChatMode.MOD) {
-            if (!fme.getRole().isAtLeast(Role.MODERATOR)) {
+            if (!context.fPlayer.getRole().isAtLeast(Role.MODERATOR)) {
                 modeTarget = modeTarget.getNext();
             }
         }
@@ -47,8 +46,8 @@ public class CmdChat extends FCommand {
             modeString = modeString.toLowerCase();
             if (modeString.startsWith("m")) {
                 modeTarget = ChatMode.MOD;
-                if (!fme.getRole().isAtLeast(Role.MODERATOR)) {
-                    fme.msg(TL.COMMAND_CHAT_INSUFFICIENTRANK);
+                if (!context.fPlayer.getRole().isAtLeast(Role.MODERATOR)) {
+                    context.msg(TL.COMMAND_CHAT_INSUFFICIENTRANK);
                     return;
                 }
             } else if (modeString.startsWith("p")) {
@@ -60,23 +59,23 @@ public class CmdChat extends FCommand {
             } else if (modeString.startsWith("t")) {
                 modeTarget = ChatMode.TRUCE;
             } else {
-                msg(TL.COMMAND_CHAT_INVALIDMODE);
+                context.msg(TL.COMMAND_CHAT_INVALIDMODE);
                 return;
             }
         }
 
-        fme.setChatMode(modeTarget);
+        context.fPlayer.setChatMode(modeTarget);
 
-        if (fme.getChatMode() == ChatMode.MOD) {
-            msg(TL.COMMAND_CHAT_MODE_MOD);
-        } else if (fme.getChatMode() == ChatMode.PUBLIC) {
-            msg(TL.COMMAND_CHAT_MODE_PUBLIC);
-        } else if (fme.getChatMode() == ChatMode.ALLIANCE) {
-            msg(TL.COMMAND_CHAT_MODE_ALLIANCE);
-        } else if (fme.getChatMode() == ChatMode.TRUCE) {
-            msg(TL.COMMAND_CHAT_MODE_TRUCE);
+        if (context.fPlayer.getChatMode() == ChatMode.MOD) {
+            context.msg(TL.COMMAND_CHAT_MODE_MOD);
+        } else if (context.fPlayer.getChatMode() == ChatMode.PUBLIC) {
+            context.msg(TL.COMMAND_CHAT_MODE_PUBLIC);
+        } else if (context.fPlayer.getChatMode() == ChatMode.ALLIANCE) {
+            context.msg(TL.COMMAND_CHAT_MODE_ALLIANCE);
+        } else if (context.fPlayer.getChatMode() == ChatMode.TRUCE) {
+            context.msg(TL.COMMAND_CHAT_MODE_TRUCE);
         } else {
-            msg(TL.COMMAND_CHAT_MODE_FACTION);
+            context.msg(TL.COMMAND_CHAT_MODE_FACTION);
         }
     }
 
@@ -84,4 +83,16 @@ public class CmdChat extends FCommand {
     public TL getUsageTranslation() {
         return TL.COMMAND_CHAT_DESCRIPTION;
     }
+
+    protected class ChatBrigadier implements BrigadierProvider {
+        @Override
+        public ArgumentBuilder<Object, ?> get(ArgumentBuilder<Object, ?> parent) {
+            return parent.then(LiteralArgumentBuilder.literal("public"))
+                    .then(LiteralArgumentBuilder.literal("mod"))
+                    .then(LiteralArgumentBuilder.literal("alliance"))
+                    .then(LiteralArgumentBuilder.literal("faction"))
+                    .then(LiteralArgumentBuilder.literal("truce"));
+        }
+    } 
+
 }

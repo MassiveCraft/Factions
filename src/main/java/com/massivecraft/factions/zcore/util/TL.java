@@ -668,6 +668,7 @@ public enum TL {
     GENERIC_DOTHAT("do that"),  //Ugh nuke this from high orbit
     GENERIC_NOPLAYERMATCH("&cNo player match found for \"&3%1$s&c\"."),
     GENERIC_NOPLAYERFOUND("&cNo player \"&3%1$s&c\" could not be found."),
+    GENERIC_NOFACTIONMATCH("&cNo player match found for \"&3%1$s&c\"."),
     GENERIC_ARGS_TOOFEW("&cToo few arguments. &eUse like this:"),
     GENERIC_ARGS_TOOMANY("&cStrange argument \"&3%1$s&c\". &eUse the command like this:"),
     GENERIC_DEFAULTDESCRIPTION("Default faction description :("),
@@ -680,6 +681,7 @@ public enum TL {
     GENERIC_INFINITY("∞"),
     GENERIC_CONSOLEONLY("This command cannot be run as a player."),
     GENERIC_PLAYERONLY("&cThis command can only be used by ingame players."),
+    GENERIC_MEMBERONLY("&cYou are not member of any faction."),
     GENERIC_ASKYOURLEADER("&e Ask your leader to:"),
     GENERIC_YOUSHOULD("&eYou should:"),
     GENERIC_YOUMAYWANT("&eYou may want to: "),

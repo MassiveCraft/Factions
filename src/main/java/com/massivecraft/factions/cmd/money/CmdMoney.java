@@ -1,9 +1,11 @@
-package com.massivecraft.factions.cmd;
+package com.massivecraft.factions.cmd.money;
 
 import com.massivecraft.factions.P;
+import com.massivecraft.factions.cmd.CommandContext;
+import com.massivecraft.factions.cmd.FCommand;
 import com.massivecraft.factions.zcore.util.TL;
 
-public class CmdMoney extends FCommand {
+public class CmdMoney extends MoneyCommand {
 
     public CmdMoneyBalance cmdMoneyBalance = new CmdMoneyBalance();
     public CmdMoneyDeposit cmdMoneyDeposit = new CmdMoneyDeposit();
@@ -16,16 +18,6 @@ public class CmdMoney extends FCommand {
         super();
         this.aliases.add("money");
 
-        //this.requiredArgs.add("");
-        //this.optionalArgs.put("","")
-
-        this.isMoneyCommand = true;
-
-        senderMustBePlayer = false;
-        senderMustBeMember = false;
-        senderMustBeModerator = false;
-        senderMustBeAdmin = false;
-
         this.helpLong.add(p.txt.parseTags(TL.COMMAND_MONEY_LONG.toString()));
 
         this.addSubCommand(this.cmdMoneyBalance);
@@ -37,9 +29,9 @@ public class CmdMoney extends FCommand {
     }
 
     @Override
-    public void perform() {
+    public void perform(CommandContext context) {
         this.commandChain.add(this);
-        P.p.cmdAutoHelp.execute(this.sender, this.args, this.commandChain);
+        P.p.cmdAutoHelp.execute(context, this.commandChain);
     }
 
     @Override

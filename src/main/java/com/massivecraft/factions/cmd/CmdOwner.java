@@ -12,91 +12,86 @@ public class CmdOwner extends FCommand {
         super();
         this.aliases.add("owner");
 
-        //this.requiredArgs.add("");
-        this.optionalArgs.put("player name", "you");
+        this.optionalArgs.put("player", "you");
 
-        this.permission = Permission.OWNER.node;
-        this.disableOnLock = true;
-
-        senderMustBePlayer = true;
-        senderMustBeMember = false;
-        senderMustBeModerator = false;
-        senderMustBeAdmin = false;
+        this.requirements = new CommandRequirements.Builder(Permission.OWNER)
+                .playerOnly()
+                .build();
     }
 
     // TODO: Fix colors!
 
     @Override
-    public void perform() {
-        boolean hasBypass = fme.isAdminBypassing();
+    public void perform(CommandContext context) {
+        boolean hasBypass =context.fPlayer.isAdminBypassing();
 
-        if (!hasBypass && !assertHasFaction()) {
+        if (!hasBypass && !context.assertHasFaction()) {
             return;
         }
 
         if (!Conf.ownedAreasEnabled) {
-            fme.msg(TL.COMMAND_OWNER_DISABLED);
+            context.msg(TL.COMMAND_OWNER_DISABLED);
             return;
         }
 
-        if (!hasBypass && Conf.ownedAreasLimitPerFaction > 0 && myFaction.getCountOfClaimsWithOwners() >= Conf.ownedAreasLimitPerFaction) {
-            fme.msg(TL.COMMAND_OWNER_LIMIT, Conf.ownedAreasLimitPerFaction);
+        if (!hasBypass && Conf.ownedAreasLimitPerFaction > 0 && context.faction.getCountOfClaimsWithOwners() >= Conf.ownedAreasLimitPerFaction) {
+            context.msg(TL.COMMAND_OWNER_LIMIT, Conf.ownedAreasLimitPerFaction);
             return;
         }
 
-        if (!hasBypass && !assertMinRole(Conf.ownedAreasModeratorsCanSet ? Role.MODERATOR : Role.ADMIN)) {
+        if (!hasBypass && !context.assertMinRole(Conf.ownedAreasModeratorsCanSet ? Role.MODERATOR : Role.ADMIN)) {
             return;
         }
 
-        FLocation flocation = new FLocation(fme);
+        FLocation flocation = new FLocation(context.fPlayer);
 
         Faction factionHere = Board.getInstance().getFactionAt(flocation);
-        if (factionHere != myFaction) {
+        if (factionHere != context.faction) {
             if (!factionHere.isNormal()) {
-                fme.msg(TL.COMMAND_OWNER_NOTCLAIMED);
+                context.msg(TL.COMMAND_OWNER_NOTCLAIMED);
                 return;
             }
 
             if (!hasBypass) {
-                fme.msg(TL.COMMAND_OWNER_WRONGFACTION);
+                context.msg(TL.COMMAND_OWNER_WRONGFACTION);
                 return;
             }
 
         }
 
-        FPlayer target = this.argAsBestFPlayerMatch(0, fme);
+        FPlayer target = context.argAsBestFPlayerMatch(0,context.fPlayer);
         if (target == null) {
             return;
         }
 
         String playerName = target.getName();
 
-        if (target.getFaction() != myFaction) {
-            fme.msg(TL.COMMAND_OWNER_NOTMEMBER, playerName);
+        if (target.getFaction() != context.faction) {
+            context.msg(TL.COMMAND_OWNER_NOTMEMBER, playerName);
             return;
         }
 
         // if no player name was passed, and this claim does already have owners set, clear them
-        if (args.isEmpty() && myFaction.doesLocationHaveOwnersSet(flocation)) {
-            myFaction.clearClaimOwnership(flocation);
-            fme.msg(TL.COMMAND_OWNER_CLEARED);
+        if (context.args.isEmpty() && context.faction.doesLocationHaveOwnersSet(flocation)) {
+            context.faction.clearClaimOwnership(flocation);
+            context.msg(TL.COMMAND_OWNER_CLEARED);
             return;
         }
 
-        if (myFaction.isPlayerInOwnerList(target, flocation)) {
-            myFaction.removePlayerAsOwner(target, flocation);
-            fme.msg(TL.COMMAND_OWNER_REMOVED, playerName);
+        if (context.faction.isPlayerInOwnerList(target, flocation)) {
+            context.faction.removePlayerAsOwner(target, flocation);
+            context.msg(TL.COMMAND_OWNER_REMOVED, playerName);
             return;
         }
 
         // if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-        if (!payForCommand(Conf.econCostOwner, TL.COMMAND_OWNER_TOSET, TL.COMMAND_OWNER_FORSET)) {
+        if (!context.payForCommand(Conf.econCostOwner, TL.COMMAND_OWNER_TOSET, TL.COMMAND_OWNER_FORSET)) {
             return;
         }
 
-        myFaction.setPlayerAsOwner(target, flocation);
+        context.faction.setPlayerAsOwner(target, flocation);
 
-        fme.msg(TL.COMMAND_OWNER_ADDED, playerName);
+        context.msg(TL.COMMAND_OWNER_ADDED, playerName);
     }
 
     @Override

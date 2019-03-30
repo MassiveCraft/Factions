@@ -1,4 +1,4 @@
-package com.massivecraft.factions.cmd;
+package com.massivecraft.factions.cmd.relations;
 
 import com.massivecraft.factions.struct.Relation;
 

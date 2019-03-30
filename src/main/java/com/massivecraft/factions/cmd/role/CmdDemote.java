@@ -1,4 +1,4 @@
-package com.massivecraft.factions.cmd;
+package com.massivecraft.factions.cmd.role;
 
 public class CmdDemote extends FPromoteCommand {
 

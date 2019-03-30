@@ -16,52 +16,52 @@ public class CmdFly extends FCommand {
 
         this.optionalArgs.put("on/off/auto", "flip");
 
-        this.permission = Permission.FLY.node;
-        this.senderMustBeMember = true;
-        this.senderMustBeModerator = false;
+        this.requirements = new CommandRequirements.Builder(Permission.FLY)
+                .memberOnly()
+                .build();
     }
 
     @Override
-    public void perform() {
-        if (args.size() == 0) {
-            toggleFlight(!fme.isFlying(), true);
-        } else if (args.size() == 1) {
-            if (argAsString(0).equalsIgnoreCase("auto")) {
+    public void perform(CommandContext context) {
+        if (context.args.size() == 0) {
+            toggleFlight(context, !context.fPlayer.isFlying(), true);
+        } else if (context.args.size() == 1) {
+            if (context.argAsString(0).equalsIgnoreCase("auto")) {
                 // Player Wants to AutoFly
-                if (Permission.FLY_AUTO.has(me, true)) {
-                    fme.setAutoFlying(!fme.isAutoFlying());
-                    toggleFlight(fme.isAutoFlying(), false);
+                if (Permission.FLY_AUTO.has(context.player, true)) {
+                    context.fPlayer.setAutoFlying(!context.fPlayer.isAutoFlying());
+                    toggleFlight(context, context.fPlayer.isAutoFlying(), false);
                 }
             } else {
-                toggleFlight(argAsBool(0), true);
+                toggleFlight(context, context.argAsBool(0), true);
             }
         }
     }
 
-    private void toggleFlight(final boolean toggle, boolean notify) {
+    private void toggleFlight(final CommandContext context, final boolean toggle, boolean notify) {
         // If false do nothing besides set
         if (!toggle) {
-            fme.setFlying(false);
+            context.fPlayer.setFlying(false);
             return;
         }
         // Do checks if true
-        if (!fme.canFlyAtLocation()) {
+        if (!context.fPlayer.canFlyAtLocation()) {
             if (notify) {
-                Faction factionAtLocation = Board.getInstance().getFactionAt(fme.getLastStoodAt());
-                fme.msg(TL.COMMAND_FLY_NO_ACCESS, factionAtLocation.getTag(fme));
+                Faction factionAtLocation = Board.getInstance().getFactionAt(context.fPlayer.getLastStoodAt());
+                context.msg(TL.COMMAND_FLY_NO_ACCESS, factionAtLocation.getTag(context.fPlayer));
             }
             return;
-        } else if (FlightDisableUtil.enemiesNearby(fme, P.p.getConfig().getInt("f-fly.enemy-radius", 7))) {
+        } else if (FlightDisableUtil.enemiesNearby(context.fPlayer, P.p.getConfig().getInt("f-fly.enemy-radius", 7))) {
             if (notify) {
-                fme.msg(TL.COMMAND_FLY_ENEMY_NEARBY);
+                context.msg(TL.COMMAND_FLY_ENEMY_NEARBY);
             }
             return;
         }
 
-        this.doWarmUp(WarmUpUtil.Warmup.FLIGHT, TL.WARMUPS_NOTIFY_FLIGHT, "Fly", new Runnable() {
+        context.doWarmUp(WarmUpUtil.Warmup.FLIGHT, TL.WARMUPS_NOTIFY_FLIGHT, "Fly", new Runnable() {
             @Override
             public void run() {
-                fme.setFlying(true);
+                context.fPlayer.setFlying(true);
             }
         }, this.p.getConfig().getLong("warmups.f-fly", 0));
     }

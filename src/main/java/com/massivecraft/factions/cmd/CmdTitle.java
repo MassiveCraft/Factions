@@ -3,6 +3,7 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TextUtil;
 
@@ -11,43 +12,40 @@ public class CmdTitle extends FCommand {
     public CmdTitle() {
         this.aliases.add("title");
 
-        this.requiredArgs.add("player name");
-        this.optionalArgs.put("title", "");
+        this.requiredArgs.add("player");
+        this.optionalArgs.put("title", "title");
 
-        this.permission = Permission.TITLE.node;
-        this.disableOnLock = true;
-
-        senderMustBePlayer = true;
-        senderMustBeMember = false;
-        senderMustBeModerator = true;
-        senderMustBeAdmin = false;
+        this.requirements = new CommandRequirements.Builder(Permission.TITLE)
+                .memberOnly()
+                .withRole(Role.MODERATOR)
+                .build();
     }
 
     @Override
-    public void perform() {
-        FPlayer you = this.argAsBestFPlayerMatch(0);
+    public void perform(CommandContext context) {
+        FPlayer you = context.argAsBestFPlayerMatch(0);
         if (you == null) {
             return;
         }
 
-        args.remove(0);
-        String title = TextUtil.implode(args, " ");
+        context.args.remove(0);
+        String title = TextUtil.implode(context.args, " ");
 
         title = title.replaceAll(",", "");
 
-        if (!canIAdministerYou(fme, you)) {
+        if (!context.canIAdministerYou(context.fPlayer, you)) {
             return;
         }
 
         // if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-        if (!payForCommand(Conf.econCostTitle, TL.COMMAND_TITLE_TOCHANGE, TL.COMMAND_TITLE_FORCHANGE)) {
+        if (!context.payForCommand(Conf.econCostTitle, TL.COMMAND_TITLE_TOCHANGE, TL.COMMAND_TITLE_FORCHANGE)) {
             return;
         }
 
-        you.setTitle(sender, title);
+        you.setTitle(context.sender, title);
 
         // Inform
-        myFaction.msg(TL.COMMAND_TITLE_CHANGED, fme.describeTo(myFaction, true), you.describeTo(myFaction, true));
+        context.faction.msg(TL.COMMAND_TITLE_CHANGED,context.fPlayer.describeTo(context.faction, true), you.describeTo(context.faction, true));
     }
 
     @Override

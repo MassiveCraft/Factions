@@ -13,54 +13,48 @@ public class CmdOwnerList extends FCommand {
         super();
         this.aliases.add("ownerlist");
 
-        //this.requiredArgs.add("");
-        //this.optionalArgs.put("", "");
-
-        this.permission = Permission.OWNERLIST.node;
-        this.disableOnLock = false;
-
-        senderMustBePlayer = true;
-        senderMustBeMember = false;
-        senderMustBeModerator = false;
-        senderMustBeAdmin = false;
+        this.requirements = new CommandRequirements.Builder(Permission.OWNERLIST)
+                .playerOnly()
+                .noDisableOnLock()
+                .build();
     }
 
     @Override
-    public void perform() {
-        boolean hasBypass = fme.isAdminBypassing();
+    public void perform(CommandContext context) {
+        boolean hasBypass =context.fPlayer.isAdminBypassing();
 
-        if (!hasBypass && !assertHasFaction()) {
+        if (!hasBypass && !context.assertHasFaction()) {
             return;
         }
 
         if (!Conf.ownedAreasEnabled) {
-            fme.msg(TL.COMMAND_OWNERLIST_DISABLED);
+            context.msg(TL.COMMAND_OWNERLIST_DISABLED);
             return;
         }
 
-        FLocation flocation = new FLocation(fme);
+        FLocation flocation = new FLocation(context.fPlayer);
 
-        if (Board.getInstance().getFactionAt(flocation) != myFaction) {
+        if (Board.getInstance().getFactionAt(flocation) != context.faction) {
             if (!hasBypass) {
-                fme.msg(TL.COMMAND_OWNERLIST_WRONGFACTION);
+                context.msg(TL.COMMAND_OWNERLIST_WRONGFACTION);
                 return;
             }
             //TODO: This code won't ever be called.
-            myFaction = Board.getInstance().getFactionAt(flocation);
-            if (!myFaction.isNormal()) {
-                fme.msg(TL.COMMAND_OWNERLIST_NOTCLAIMED);
+            context.faction = Board.getInstance().getFactionAt(flocation);
+            if (!context.faction.isNormal()) {
+                context.msg(TL.COMMAND_OWNERLIST_NOTCLAIMED);
                 return;
             }
         }
 
-        String owners = myFaction.getOwnerListString(flocation);
+        String owners = context.faction.getOwnerListString(flocation);
 
         if (owners == null || owners.isEmpty()) {
-            fme.msg(TL.COMMAND_OWNERLIST_NONE);
+            context.msg(TL.COMMAND_OWNERLIST_NONE);
             return;
         }
 
-        fme.msg(TL.COMMAND_OWNERLIST_OWNERS, owners);
+        context.msg(TL.COMMAND_OWNERLIST_OWNERS, owners);
     }
 
     @Override

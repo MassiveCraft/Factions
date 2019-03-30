@@ -1,9 +1,11 @@
-package com.massivecraft.factions.cmd;
+package com.massivecraft.factions.cmd.role;
 
 import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.cmd.CommandContext;
+import com.massivecraft.factions.cmd.CommandRequirements;
+import com.massivecraft.factions.cmd.FCommand;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
-import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
 
@@ -16,37 +18,22 @@ public class FPromoteCommand extends FCommand {
 
         this.requiredArgs.add("player");
 
-        this.permission = Permission.PROMOTE.node;
-        this.disableOnLock = true;
-
-        senderMustBePlayer = true;
-        senderMustBeMember = true;
-        senderMustBeModerator = false;
-        senderMustBeAdmin = false;
+        this.requirements = new CommandRequirements.Builder(Permission.PROMOTE)
+                .memberOnly()
+                .withAction(PermissableAction.PROMOTE)
+                .build();
     }
 
     @Override
-    public void perform() {
-        FPlayer target = this.argAsBestFPlayerMatch(0);
+    public void perform(CommandContext context) {
+        FPlayer target = context.argAsBestFPlayerMatch(0);
         if (target == null) {
-            msg(TL.GENERIC_NOPLAYERFOUND, this.argAsString(0));
+            context.msg(TL.GENERIC_NOPLAYERFOUND, context.argAsString(0));
             return;
         }
 
-        if (!target.getFaction().equals(myFaction)) {
-            msg(TL.COMMAND_PROMOTE_WRONGFACTION, target.getName());
-            return;
-        }
-
-        Access access = myFaction.getAccess(fme.getRole(), PermissableAction.PROMOTE);
-
-        // Well this is messy.
-        if (access == null || access == Access.UNDEFINED) {
-            if (!assertMinRole(Role.MODERATOR)) {
-                return;
-            }
-        } else if (access == Access.DENY) {
-            msg(TL.COMMAND_NOACCESS);
+        if (!target.getFaction().equals(context.faction)) {
+            context.msg(TL.COMMAND_PROMOTE_WRONGFACTION, target.getName());
             return;
         }
 
@@ -54,13 +41,13 @@ public class FPromoteCommand extends FCommand {
         Role promotion = Role.getRelative(current, +relative);
 
         if (promotion == null) {
-            fme.msg(TL.COMMAND_PROMOTE_NOTTHATPLAYER);
+            context.msg(TL.COMMAND_PROMOTE_NOTTHATPLAYER);
             return;
         }
 
         // Don't allow people to promote people to their same or higher rnak.
-        if (fme.getRole().value <= promotion.value) {
-            fme.msg(TL.COMMAND_PROMOTE_NOT_ALLOWED);
+        if (context.fPlayer.getRole().value <= promotion.value) {
+            context.msg(TL.COMMAND_PROMOTE_NOT_ALLOWED);
             return;
         }
 
@@ -72,7 +59,7 @@ public class FPromoteCommand extends FCommand {
             target.msg(TL.COMMAND_PROMOTE_TARGET, action, promotion.nicename);
         }
 
-        fme.msg(TL.COMMAND_PROMOTE_SUCCESS, action, target.getName(), promotion.nicename);
+        context.msg(TL.COMMAND_PROMOTE_SUCCESS, action, target.getName(), promotion.nicename);
     }
 
     @Override

@@ -37,10 +37,7 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Level;
 
 public class P extends MPlugin {
@@ -123,7 +120,7 @@ public class P extends MPlugin {
         // Add Base Commands
         this.cmdBase = new FCmdRoot();
         this.cmdAutoHelp = new CmdAutoHelp();
-        this.getBaseCommands().add(cmdBase);
+        //this.getBaseCommands().add(cmdBase);
 
         Econ.setup();
         setupPermissions();
@@ -145,7 +142,7 @@ public class P extends MPlugin {
         getServer().getPluginManager().registerEvents(new FactionsBlockListener(this), this);
 
         // since some other plugins execute commands directly through this command interface, provide it
-        this.getCommand(this.refCommand).setExecutor(this);
+        this.getCommand(refCommand).setExecutor(cmdBase);
 
         if (Bukkit.getVersion().contains("1.8")) {
             particleProvider = new PacketParticleProvider();
@@ -281,23 +278,6 @@ public class P extends MPlugin {
         return Conf.logPlayerCommands;
     }
 
-    @Override
-    public boolean handleCommand(CommandSender sender, String commandString, boolean testOnly) {
-        return sender instanceof Player && FactionsPlayerListener.preventCommand(commandString, (Player) sender) || super.handleCommand(sender, commandString, testOnly);
-    }
-
-    @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] split) {
-        if (split.length == 0) {
-            return handleCommand(sender, "/f help", false);
-        }
-
-        // otherwise, needs to be handled; presumably another plugin directly ran the command
-        String cmd = Conf.baseCommandAliases.isEmpty() ? "/f" : "/" + Conf.baseCommandAliases.get(0);
-        return handleCommand(sender, cmd + " " + TextUtil.implode(Arrays.asList(split), " "), false);
-    }
-
-
     // -------------------------------------------- //
     // Functions for other plugins to hook into
     // -------------------------------------------- //
@@ -335,7 +315,7 @@ public class P extends MPlugin {
     // TODO: GET THIS BACK AND WORKING
 
     public boolean isFactionsCommand(String check) {
-        return !(check == null || check.isEmpty()) && this.handleCommand(null, check, true);
+        return !(check == null || check.isEmpty()); //&& this.handleCommand(null, check, true);
     }
 
     // Get a player's faction tag (faction name), mainly for usage by chat plugins for local/channel chat

@@ -11,21 +11,12 @@ public class CmdVersion extends FCommand {
         this.aliases.add("version");
         this.aliases.add("ver");
 
-        //this.requiredArgs.add("");
-        //this.optionalArgs.put("", "");
-
-        this.permission = Permission.VERSION.node;
-        this.disableOnLock = false;
-
-        senderMustBePlayer = false;
-        senderMustBeMember = false;
-        senderMustBeModerator = false;
-        senderMustBeAdmin = false;
+        this.requirements = new CommandRequirements.Builder(Permission.VERSION).noDisableOnLock().build();
     }
 
     @Override
-    public void perform() {
-        msg(TL.COMMAND_VERSION_VERSION, P.p.getDescription().getFullName());
+    public void perform(CommandContext context) {
+        context.msg(TL.COMMAND_VERSION_VERSION, P.p.getDescription().getFullName());
     }
 
     @Override

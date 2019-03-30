@@ -12,25 +12,22 @@ public class CmdChatSpy extends FCommand {
 
         this.optionalArgs.put("on/off", "flip");
 
-        this.permission = Permission.CHATSPY.node;
-        this.disableOnLock = false;
-
-        senderMustBePlayer = true;
-        senderMustBeMember = false;
-        senderMustBeModerator = false;
-        senderMustBeAdmin = false;
+        this.requirements = new CommandRequirements.Builder(Permission.CHATSPY)
+                .playerOnly()
+                .noDisableOnLock()
+                .build();
     }
 
     @Override
-    public void perform() {
-        fme.setSpyingChat(this.argAsBool(0, !fme.isSpyingChat()));
+    public void perform(CommandContext context) {
+        context.fPlayer.setSpyingChat(context.argAsBool(0, !context.fPlayer.isSpyingChat()));
 
-        if (fme.isSpyingChat()) {
-            fme.msg(TL.COMMAND_CHATSPY_ENABLE);
-            P.p.log(fme.getName() + TL.COMMAND_CHATSPY_ENABLELOG.toString());
+        if (context.fPlayer.isSpyingChat()) {
+            context.fPlayer.msg(TL.COMMAND_CHATSPY_ENABLE);
+            P.p.log(context.fPlayer.getName() + TL.COMMAND_CHATSPY_ENABLELOG.toString());
         } else {
-            fme.msg(TL.COMMAND_CHATSPY_DISABLE);
-            P.p.log(fme.getName() + TL.COMMAND_CHATSPY_DISABLELOG.toString());
+            context.fPlayer.msg(TL.COMMAND_CHATSPY_DISABLE);
+            P.p.log(context.fPlayer.getName() + TL.COMMAND_CHATSPY_DISABLELOG.toString());
         }
     }
 
