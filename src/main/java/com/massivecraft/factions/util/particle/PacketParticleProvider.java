@@ -47,6 +47,12 @@ public class PacketParticleProvider implements ParticleProvider<ParticleEffect> 
 
     @Override
     public ParticleEffect effectFromString(String string) {
+        for (ParticleEffect effect : ParticleEffect.values()) {
+            if (effect.name().equalsIgnoreCase(string)) {
+                return effect;
+            }
+        }
+        // If none of the Enum name matches fallback to the other names
         return ParticleEffect.fromName(string);
     }
 
