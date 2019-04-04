@@ -144,7 +144,7 @@ public class P extends MPlugin {
         // since some other plugins execute commands directly through this command interface, provide it
         this.getCommand(refCommand).setExecutor(cmdBase);
 
-        if (Bukkit.getVersion().contains("1.8")) {
+        if (Bukkit.getVersion().contains("1.8") || Bukkit.getVersion().contains("1.7")) {
             particleProvider = new PacketParticleProvider();
         } else {
             particleProvider = new BukkitParticleProvider();
