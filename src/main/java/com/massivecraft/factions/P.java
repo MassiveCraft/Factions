@@ -134,6 +134,21 @@ public class P extends MPlugin {
         // start up task which runs the autoLeaveAfterDaysOfInactivity routine
         startAutoLeaveTask(false);
 
+        // Run before initializing listeners to handle reloads properly.
+        if (Bukkit.getVersion().contains("1.8") || Bukkit.getVersion().contains("1.7")) {
+            particleProvider = new PacketParticleProvider();
+        } else {
+            particleProvider = new BukkitParticleProvider();
+        }
+        log(Level.INFO, "Using %1s as a particle provider", particleProvider.name());
+
+        if (P.p.getConfig().getBoolean("see-chunk.particles", true)) {
+            double delay = Math.floor(getConfig().getDouble("f-fly.radius-check", 0.75) * 20);
+            seeChunkUtil = new SeeChunkUtil();
+            seeChunkUtil.runTaskTimer(this, 0, (long) delay);
+        }
+        // End run before registering event handlers.
+
         // Register Event Handlers
         getServer().getPluginManager().registerEvents(new FactionsPlayerListener(this), this);
         getServer().getPluginManager().registerEvents(new FactionsChatListener(this), this);
@@ -144,13 +159,6 @@ public class P extends MPlugin {
         // since some other plugins execute commands directly through this command interface, provide it
         this.getCommand(refCommand).setExecutor(cmdBase);
 
-        if (Bukkit.getVersion().contains("1.8") || Bukkit.getVersion().contains("1.7")) {
-            particleProvider = new PacketParticleProvider();
-        } else {
-            particleProvider = new BukkitParticleProvider();
-        }
-        log(Level.INFO, "Using %1s as a particle provider", particleProvider.name());
-
         if (getConfig().getBoolean("f-fly.enable", false)) {
             double delay = getConfig().getDouble("f-fly.radius-check", 1) * 20;
             // Only run FlightUtil if not 0
@@ -158,11 +166,6 @@ public class P extends MPlugin {
                 new FlightDisableUtil().runTaskTimer(this, 0, (long) delay);
                 log(Level.INFO, "Enabling enemy radius check for f fly every %1s seconds", delay / 20);
             }
-        }
-        if (P.p.getConfig().getBoolean("see-chunk.particles", true)) {
-            double delay = Math.floor(getConfig().getDouble("f-fly.radius-check", 0.75) * 20);
-            seeChunkUtil = new SeeChunkUtil();
-            seeChunkUtil.runTaskTimer(this, 0, (long) delay);
         }
 
         new TitleAPI();
