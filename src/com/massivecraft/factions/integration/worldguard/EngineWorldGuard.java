@@ -6,9 +6,10 @@ import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.event.EventFactionsChunksChange;
 import com.massivecraft.massivecore.Engine;
 import com.massivecraft.massivecore.ps.PS;
-import com.sk89q.worldedit.BlockVector;
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldguard.LocalPlayer;
-import com.sk89q.worldguard.bukkit.WGBukkit;
+import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.GlobalProtectedRegion;
@@ -46,7 +47,7 @@ public class EngineWorldGuard extends Engine
 	{
 		if (active)
 		{
-			this.worldGuard = WGBukkit.getPlugin();
+			this.worldGuard = WorldGuardPlugin.inst();
 		}
 		else
 		{
@@ -119,11 +120,11 @@ public class EngineWorldGuard extends Engine
 		
 		int worldHeight = ps.asBukkitWorld().getMaxHeight();
 		
-		BlockVector minChunk = new BlockVector(minChunkX, 0, minChunkZ);
-		BlockVector maxChunk = new BlockVector(maxChunkX, worldHeight, maxChunkZ);
+		BlockVector3 minChunk = BlockVector3.at(minChunkX, 0, minChunkZ);
+		BlockVector3 maxChunk = BlockVector3.at(maxChunkX, worldHeight, maxChunkZ);
 		
-		RegionManager regionManager = this.worldGuard.getRegionManager(ps.asBukkitWorld());
-		
+		RegionManager regionManager = WorldGuard.getInstance().getPlatform().getRegionContainer().get(BukkitAdapter.adapt(ps.asBukkitWorld()));
+
 		String regionName = "factions_temp";
 		ProtectedCuboidRegion region = new ProtectedCuboidRegion(regionName, minChunk, maxChunk);
 		
