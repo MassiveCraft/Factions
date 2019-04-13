@@ -244,6 +244,12 @@ public class FactionsBlockListener implements Listener {
         boolean pain = !justCheck && rel.confPainBuild(online);
         boolean deny = rel.confDenyBuild(online);
 
+        // If the faction hasn't: defined access or denied, fallback to config values
+        Access access = otherFaction.getAccess(me, PermissableAction.fromString(action));
+        if (access == Access.ALLOW) {
+            return true;
+        }
+
         // hurt the player for building/destroying in other territory?
         if (pain) {
             player.damage(Conf.actionDeniedPainAmount);
@@ -278,17 +284,6 @@ public class FactionsBlockListener implements Listener {
 
                 return false;
             }
-        }
-
-        Access access = otherFaction.getAccess(me, PermissableAction.fromString(action));
-        if (access != null && access != Access.UNDEFINED) {
-            // TODO: Update this once new access values are added other than just allow / deny.
-            if (access == Access.DENY) {
-                me.msg(TL.GENERIC_NOPERMISSION, action);
-                return false;
-            }
-
-            return true; // has to be allow
         }
 
         return true;
