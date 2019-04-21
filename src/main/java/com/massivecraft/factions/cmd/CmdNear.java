@@ -41,7 +41,7 @@ public class CmdNear extends FCommand {
         StringBuilder playerMessageBuilder = new StringBuilder();
         String playerMessage = TL.COMMAND_NEAR_PLAYER.toString();
         for (FPlayer member : nearbyMembers) {
-            playerMessageBuilder.append(parsePlaceholders(member, playerMessage));
+            playerMessageBuilder.append(parsePlaceholders(context.fPlayer, member, playerMessage));
         }
         // Append none text if no players where found
         if (playerMessageBuilder.toString().isEmpty()) {
@@ -51,14 +51,14 @@ public class CmdNear extends FCommand {
         context.msg(TL.COMMAND_NEAR_PLAYERLIST.toString().replace("{players-nearby}", playerMessageBuilder.toString()));
     }
 
-    private String parsePlaceholders(FPlayer target, String string) {
+    private String parsePlaceholders(FPlayer user, FPlayer target, String string) {
         string = TagUtil.parsePlain(target, string);
         string = TagUtil.parsePlaceholders(target.getPlayer(), string);
         string = string.replace("{role}", target.getRole().toString());
         string = string.replace("{role-prefix}", target.getRole().getPrefix());
         // Only run distance calculation if needed
         if (string.contains("{distance}")) {
-            double distance = Math.round(target.getPlayer().getLocation().distance(target.getPlayer().getLocation()));
+            double distance = Math.round(user.getPlayer().getLocation().distance(target.getPlayer().getLocation()));
             string = string.replace("{distance}", distance + "");
         }
         return string;

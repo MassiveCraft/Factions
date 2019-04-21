@@ -50,7 +50,7 @@ public class CommandRequirements {
             // Is Player
             if (!context.fPlayer.hasFaction() && memberOnly) {
                 if (informIfNot) {
-                    context.sender.sendMessage(ChatColor.YELLOW + "You are not member of any faction.");
+                    context.msg(TL.GENERIC_MEMBERONLY);
                 }
                 return false;
             }
@@ -64,7 +64,7 @@ public class CommandRequirements {
                 Access access = context.faction.getAccess(context.fPlayer, action);
                 if (access == Access.DENY) {
                     if (informIfNot) {
-                        context.fPlayer.msg(TL.GENERIC_NOPERMISSION, action.getName());
+                        context.msg(TL.GENERIC_NOPERMISSION, action.getName());
                     }
                     return false;
                 }
@@ -73,12 +73,18 @@ public class CommandRequirements {
                     // They have undefined assert their role
                     if (role != null && !context.fPlayer.getRole().isAtLeast(role)) {
                         // They do not fullfill the role
+                        if (informIfNot) {
+                            context.msg(TL.GENERIC_YOUMUSTBE, role.translation);
+                        }
                         return false;
                     }
                 }
                 // They have been explicitly allowed
                 return true;
             } else {
+                if ((role != null && !context.fPlayer.getRole().isAtLeast(role)) && informIfNot) {
+                    context.msg(TL.GENERIC_YOUMUSTBE, role.translation);
+                }
                 return role == null || context.fPlayer.getRole().isAtLeast(role);
             }
         } else {

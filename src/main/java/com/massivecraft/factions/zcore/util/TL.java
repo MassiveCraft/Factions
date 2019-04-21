@@ -685,6 +685,7 @@ public enum TL {
     GENERIC_ASKYOURLEADER("&e Ask your leader to:"),
     GENERIC_YOUSHOULD("&eYou should:"),
     GENERIC_YOUMAYWANT("&eYou may want to: "),
+    GENERIC_YOUMUSTBE("&cYou must be &d%s&c."),
     GENERIC_TRANSLATION_VERSION("Translation: %1$s(%2$s,%3$s) State: %4$s"),
     GENERIC_TRANSLATION_CONTRIBUTORS("Translation contributors: %1$s"),
     GENERIC_TRANSLATION_RESPONSIBLE("Responsible for translation: %1$s"),
