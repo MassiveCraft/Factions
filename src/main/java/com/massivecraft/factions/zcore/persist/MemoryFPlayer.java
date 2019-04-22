@@ -7,7 +7,7 @@ import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.iface.RelationParticipator;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.integration.Essentials;
-import com.massivecraft.factions.integration.Worldguard;
+import com.massivecraft.factions.integration.Worldguard7;
 import com.massivecraft.factions.scoreboards.FScoreboard;
 import com.massivecraft.factions.scoreboards.sidebar.FInfoSidebar;
 import com.massivecraft.factions.struct.ChatMode;
@@ -731,7 +731,7 @@ public abstract class MemoryFPlayer implements FPlayer {
         int factionBuffer = P.p.getConfig().getInt("hcf.buffer-zone", 0);
         int worldBuffer = P.p.getConfig().getInt("world-border.buffer", 0);
 
-        if (Conf.worldGuardChecking && Worldguard.checkForRegionsInChunk(flocation)) {
+        if (Conf.worldGuardChecking && P.p.getWorldguard() != null && P.p.getWorldguard().checkForRegionsInChunk(flocation)) {
             // Checks for WorldGuard regions in the chunk attempting to be claimed
             error = P.p.txt.parse(TL.CLAIM_PROTECTED.toString());
         } else if (Conf.worldsNoClaiming.contains(flocation.getWorldName())) {

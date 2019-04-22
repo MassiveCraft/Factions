@@ -1,7 +1,6 @@
 package com.massivecraft.factions.integration;
 
 import com.massivecraft.factions.FLocation;
-import com.massivecraft.factions.P;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldguard.LocalPlayer;
@@ -18,37 +17,14 @@ import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 
-public class Worldguard {
-
-    private static boolean enabled = false;
-
-    public static void init(Plugin plugin) {
-        Plugin wgplug = plugin.getServer().getPluginManager().getPlugin("WorldGuard");
-        if (wgplug == null) {
-            enabled = false;
-            P.p.log("Could not hook to WorldGuard. WorldGuard checks are disabled.");
-        } else {
-            enabled = true;
-            P.p.log("Successfully hooked to WorldGuard.");
-        }
-    }
-
-    public static boolean isEnabled() {
-        return enabled;
-    }
+public class Worldguard7 implements IWorldguard {
 
     // PVP Flag check
     // Returns:
     //   True: PVP is allowed
     //   False: PVP is disallowed
-    public static boolean isPVP(Player player) {
-        if (!enabled) {
-            // No WG hooks so we'll always bypass this check.
-            return true;
-        }
-
+    public boolean isPVP(Player player) {
         LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapPlayer(player);
         RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
         RegionQuery query = container.createQuery();
@@ -60,12 +36,7 @@ public class Worldguard {
     // Returns:
     //	True: Player can build in the region.
     //	False: Player can not build in the region.
-    public static boolean playerCanBuild(Player player, Location loc) {
-        if (!enabled) {
-            // No WG hooks so we'll always bypass this check.
-            return false;
-        }
-
+    public boolean playerCanBuild(Player player, Location loc) {
         LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapPlayer(player);
         RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
         RegionQuery query = container.createQuery();
@@ -73,17 +44,12 @@ public class Worldguard {
         return query.testBuild(localPlayer.getLocation(), localPlayer);
     }
 
-    public static boolean checkForRegionsInChunk(FLocation flocation) {
-        if (!enabled) {
-            // No WG hooks so we'll always bypass this check.
-            return false;
-        }
-
+    public boolean checkForRegionsInChunk(FLocation flocation) {
         Chunk chunk = flocation.getChunk();
 
         RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
         RegionManager regions = container.get(BukkitAdapter.adapt(chunk.getWorld()));
-        if (regions == null){
+        if (regions == null) {
             return false;
         }
 

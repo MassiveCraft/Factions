@@ -5,9 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.massivecraft.factions.cmd.CmdAutoHelp;
 import com.massivecraft.factions.cmd.FCmdRoot;
-import com.massivecraft.factions.integration.Econ;
-import com.massivecraft.factions.integration.Essentials;
-import com.massivecraft.factions.integration.Worldguard;
+import com.massivecraft.factions.integration.*;
 import com.massivecraft.factions.integration.dynmap.EngineDynmap;
 import com.massivecraft.factions.listeners.*;
 import com.massivecraft.factions.struct.ChatMode;
@@ -23,13 +21,10 @@ import com.massivecraft.factions.zcore.MPlugin;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.Permissable;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
-import com.massivecraft.factions.zcore.util.TextUtil;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.Plugin;
@@ -37,7 +32,9 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 
 public class P extends MPlugin {
@@ -71,6 +68,7 @@ public class P extends MPlugin {
 
     public SeeChunkUtil seeChunkUtil;
     public ParticleProvider particleProvider;
+    public IWorldguard worldguard;
 
     public P() {
         p = this;
@@ -125,9 +123,7 @@ public class P extends MPlugin {
         Econ.setup();
         setupPermissions();
 
-        if (Conf.worldGuardChecking || Conf.worldGuardBuildPriority) {
-            Worldguard.init(this);
-        }
+        loadWorldguard();
 
         EngineDynmap.getInstance().init();
 
@@ -172,6 +168,33 @@ public class P extends MPlugin {
         setupPlaceholderAPI();
         postEnable();
         this.loadSuccessful = true;
+    }
+
+    private void loadWorldguard() {
+        if (!Conf.worldGuardChecking && !Conf.worldGuardBuildPriority) {
+            log(Level.INFO, "Not enabling WorldGuard check since no options for it are enabled.");
+            return;
+        }
+
+        Plugin plugin = getServer().getPluginManager().getPlugin("WorldGuard");
+        if (plugin != null) {
+            String version = plugin.getDescription().getVersion();
+            if (version.startsWith("6")) {
+                this.worldguard = new Worldguard6();
+                log(Level.INFO, "Found support for WorldGuard version " + version);
+            } else if (version.startsWith("7")) {
+                this.worldguard = new Worldguard7();
+                log(Level.INFO, "Found support for WorldGuard version " + version);
+            } else {
+                P.p.log(Level.WARNING, "Loaded WorldGuard but couldn't support this version: " + version);
+            }
+        } else {
+            P.p.log(Level.WARNING, "WorldGuard checks were turned in on conf.json, but WorldGuard isn't present on the server.");
+        }
+    }
+
+    public IWorldguard getWorldguard() {
+        return this.worldguard;
     }
 
     private void setupPlaceholderAPI() {
@@ -223,10 +246,10 @@ public class P extends MPlugin {
         Type accessTypeAdatper = new TypeToken<Map<Permissable, Map<PermissableAction, Access>>>() {
         }.getType();
 
-        Type factionMaterialType = new TypeToken<FactionMaterial>(){
+        Type factionMaterialType = new TypeToken<FactionMaterial>() {
         }.getType();
 
-        Type materialType = new TypeToken<Material>(){
+        Type materialType = new TypeToken<Material>() {
         }.getType();
 
         return new GsonBuilder()
