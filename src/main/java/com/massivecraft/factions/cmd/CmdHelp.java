@@ -28,7 +28,7 @@ public class CmdHelp extends FCommand {
     public void perform(CommandContext context) {
         if (P.p.getConfig().getBoolean("use-old-help", true)) {
             if (helpPages == null) {
-                updateHelp();
+                updateHelp(context);
             }
 
             int page = context.argAsInt(0, 1);
@@ -68,33 +68,33 @@ public class CmdHelp extends FCommand {
 
     public ArrayList<ArrayList<String>> helpPages;
 
-    public void updateHelp() {
+    public void updateHelp(CommandContext context) {
         helpPages = new ArrayList<>();
         ArrayList<String> pageLines;
 
         pageLines = new ArrayList<>();
-        pageLines.add(p.cmdBase.cmdHelp.getUseageTemplate(true));
-        pageLines.add(p.cmdBase.cmdList.getUseageTemplate(true));
-        pageLines.add(p.cmdBase.cmdShow.getUseageTemplate(true));
-        pageLines.add(p.cmdBase.cmdPower.getUseageTemplate(true));
-        pageLines.add(p.cmdBase.cmdJoin.getUseageTemplate(true));
-        pageLines.add(p.cmdBase.cmdLeave.getUseageTemplate(true));
-        pageLines.add(p.cmdBase.cmdChat.getUseageTemplate(true));
-        pageLines.add(p.cmdBase.cmdToggleAllianceChat.getUseageTemplate(true));
-        pageLines.add(p.cmdBase.cmdHome.getUseageTemplate(true));
+        pageLines.add(p.cmdBase.cmdHelp.getUseageTemplate(context, true));
+        pageLines.add(p.cmdBase.cmdList.getUseageTemplate(context, true));
+        pageLines.add(p.cmdBase.cmdShow.getUseageTemplate(context, true));
+        pageLines.add(p.cmdBase.cmdPower.getUseageTemplate(context, true));
+        pageLines.add(p.cmdBase.cmdJoin.getUseageTemplate(context, true));
+        pageLines.add(p.cmdBase.cmdLeave.getUseageTemplate(context, true));
+        pageLines.add(p.cmdBase.cmdChat.getUseageTemplate(context, true));
+        pageLines.add(p.cmdBase.cmdToggleAllianceChat.getUseageTemplate(context, true));
+        pageLines.add(p.cmdBase.cmdHome.getUseageTemplate(context, true));
         pageLines.add(p.txt.parse(TL.COMMAND_HELP_NEXTCREATE.toString()));
         helpPages.add(pageLines);
 
         pageLines = new ArrayList<>();
-        pageLines.add(p.cmdBase.cmdCreate.getUseageTemplate(true));
-        pageLines.add(p.cmdBase.cmdDescription.getUseageTemplate(true));
-        pageLines.add(p.cmdBase.cmdTag.getUseageTemplate(true));
+        pageLines.add(p.cmdBase.cmdCreate.getUseageTemplate(context, true));
+        pageLines.add(p.cmdBase.cmdDescription.getUseageTemplate(context, true));
+        pageLines.add(p.cmdBase.cmdTag.getUseageTemplate(context, true));
         pageLines.add(p.txt.parse(TL.COMMAND_HELP_INVITATIONS.toString()));
-        pageLines.add(p.cmdBase.cmdOpen.getUseageTemplate(true));
-        pageLines.add(p.cmdBase.cmdInvite.getUseageTemplate(true));
-        pageLines.add(p.cmdBase.cmdDeinvite.getUseageTemplate(true));
+        pageLines.add(p.cmdBase.cmdOpen.getUseageTemplate(context, true));
+        pageLines.add(p.cmdBase.cmdInvite.getUseageTemplate(context, true));
+        pageLines.add(p.cmdBase.cmdDeinvite.getUseageTemplate(context, true));
         pageLines.add(p.txt.parse(TL.COMMAND_HELP_HOME.toString()));
-        pageLines.add(p.cmdBase.cmdSethome.getUseageTemplate(true));
+        pageLines.add(p.cmdBase.cmdSethome.getUseageTemplate(context, true));
         helpPages.add(pageLines);
 
         if (Econ.isSetup() && Conf.econEnabled && Conf.bankEnabled) {
@@ -104,7 +104,7 @@ public class CmdHelp extends FCommand {
             pageLines.add(p.txt.parse(TL.COMMAND_HELP_BANK_2.toString()));
             pageLines.add(p.txt.parse(TL.COMMAND_HELP_BANK_3.toString()));
             pageLines.add("");
-            pageLines.add(p.cmdBase.cmdMoney.getUseageTemplate(true));
+            pageLines.add(p.cmdBase.cmdMoney.getUseageTemplate(context, true));
             pageLines.add("");
             pageLines.add("");
             pageLines.add("");
@@ -112,36 +112,36 @@ public class CmdHelp extends FCommand {
         }
 
         pageLines = new ArrayList<>();
-        pageLines.add(p.cmdBase.cmdClaim.getUseageTemplate(true));
-        pageLines.add(p.cmdBase.cmdAutoClaim.getUseageTemplate(true));
-        pageLines.add(p.cmdBase.cmdUnclaim.getUseageTemplate(true));
-        pageLines.add(p.cmdBase.cmdUnclaimall.getUseageTemplate(true));
-        pageLines.add(p.cmdBase.cmdKick.getUseageTemplate(true));
-        pageLines.add(p.cmdBase.cmdMod.getUseageTemplate(true));
-        pageLines.add(p.cmdBase.cmdAdmin.getUseageTemplate(true));
-        pageLines.add(p.cmdBase.cmdTitle.getUseageTemplate(true));
-        pageLines.add(p.cmdBase.cmdSB.getUseageTemplate(true));
-        pageLines.add(p.cmdBase.cmdSeeChunk.getUseageTemplate(true));
-        pageLines.add(p.cmdBase.cmdStatus.getUseageTemplate(true));
+        pageLines.add(p.cmdBase.cmdClaim.getUseageTemplate(context, true));
+        pageLines.add(p.cmdBase.cmdAutoClaim.getUseageTemplate(context, true));
+        pageLines.add(p.cmdBase.cmdUnclaim.getUseageTemplate(context, true));
+        pageLines.add(p.cmdBase.cmdUnclaimall.getUseageTemplate(context, true));
+        pageLines.add(p.cmdBase.cmdKick.getUseageTemplate(context, true));
+        pageLines.add(p.cmdBase.cmdMod.getUseageTemplate(context, true));
+        pageLines.add(p.cmdBase.cmdAdmin.getUseageTemplate(context, true));
+        pageLines.add(p.cmdBase.cmdTitle.getUseageTemplate(context, true));
+        pageLines.add(p.cmdBase.cmdSB.getUseageTemplate(context, true));
+        pageLines.add(p.cmdBase.cmdSeeChunk.getUseageTemplate(context, true));
+        pageLines.add(p.cmdBase.cmdStatus.getUseageTemplate(context, true));
         pageLines.add(p.txt.parse(TL.COMMAND_HELP_PLAYERTITLES.toString()));
         helpPages.add(pageLines);
 
         pageLines = new ArrayList<>();
-        pageLines.add(p.cmdBase.cmdMap.getUseageTemplate(true));
-        pageLines.add(p.cmdBase.cmdBoom.getUseageTemplate(true));
-        pageLines.add(p.cmdBase.cmdOwner.getUseageTemplate(true));
-        pageLines.add(p.cmdBase.cmdOwnerList.getUseageTemplate(true));
+        pageLines.add(p.cmdBase.cmdMap.getUseageTemplate(context, true));
+        pageLines.add(p.cmdBase.cmdBoom.getUseageTemplate(context, true));
+        pageLines.add(p.cmdBase.cmdOwner.getUseageTemplate(context, true));
+        pageLines.add(p.cmdBase.cmdOwnerList.getUseageTemplate(context, true));
         pageLines.add(p.txt.parse(TL.COMMAND_HELP_OWNERSHIP_1.toString()));
         pageLines.add(p.txt.parse(TL.COMMAND_HELP_OWNERSHIP_2.toString()));
         pageLines.add(p.txt.parse(TL.COMMAND_HELP_OWNERSHIP_3.toString()));
         helpPages.add(pageLines);
 
         pageLines = new ArrayList<>();
-        pageLines.add(p.cmdBase.cmdDisband.getUseageTemplate(true));
+        pageLines.add(p.cmdBase.cmdDisband.getUseageTemplate(context, true));
         pageLines.add("");
-        pageLines.add(p.cmdBase.cmdRelationAlly.getUseageTemplate(true));
-        pageLines.add(p.cmdBase.cmdRelationNeutral.getUseageTemplate(true));
-        pageLines.add(p.cmdBase.cmdRelationEnemy.getUseageTemplate(true));
+        pageLines.add(p.cmdBase.cmdRelationAlly.getUseageTemplate(context, true));
+        pageLines.add(p.cmdBase.cmdRelationNeutral.getUseageTemplate(context, true));
+        pageLines.add(p.cmdBase.cmdRelationEnemy.getUseageTemplate(context, true));
         pageLines.add(p.txt.parse(TL.COMMAND_HELP_RELATIONS_1.toString()));
         pageLines.add(p.txt.parse(TL.COMMAND_HELP_RELATIONS_2.toString()));
         pageLines.add(p.txt.parse(TL.COMMAND_HELP_RELATIONS_3.toString()));
@@ -174,32 +174,32 @@ public class CmdHelp extends FCommand {
 
         pageLines = new ArrayList<>();
         pageLines.add(TL.COMMAND_HELP_MOAR_1.toString());
-        pageLines.add(p.cmdBase.cmdBypass.getUseageTemplate(true));
+        pageLines.add(p.cmdBase.cmdBypass.getUseageTemplate(context, true));
         pageLines.add(p.txt.parse(TL.COMMAND_HELP_ADMIN_1.toString()));
         pageLines.add(p.txt.parse(TL.COMMAND_HELP_ADMIN_2.toString()));
         pageLines.add(p.txt.parse(TL.COMMAND_HELP_ADMIN_3.toString()));
-        pageLines.add(p.cmdBase.cmdSafeunclaimall.getUseageTemplate(true));
-        pageLines.add(p.cmdBase.cmdWarunclaimall.getUseageTemplate(true));
+        pageLines.add(p.cmdBase.cmdSafeunclaimall.getUseageTemplate(context, true));
+        pageLines.add(p.cmdBase.cmdWarunclaimall.getUseageTemplate(context, true));
         //TODO:TL
-        pageLines.add(p.txt.parse("<i>Note: " + p.cmdBase.cmdUnclaim.getUseageTemplate(false) + P.p.txt.parse("<i>") + " works on safe/war zones as well."));
-        pageLines.add(p.cmdBase.cmdPeaceful.getUseageTemplate(true));
+        pageLines.add(p.txt.parse("<i>Note: " + p.cmdBase.cmdUnclaim.getUseageTemplate(context, false) + P.p.txt.parse("<i>") + " works on safe/war zones as well."));
+        pageLines.add(p.cmdBase.cmdPeaceful.getUseageTemplate(context, true));
         helpPages.add(pageLines);
 
         pageLines = new ArrayList<>();
         pageLines.add(p.txt.parse(TL.COMMAND_HELP_MOAR_2.toString()));
-        pageLines.add(p.cmdBase.cmdChatSpy.getUseageTemplate(true));
-        pageLines.add(p.cmdBase.cmdPermanent.getUseageTemplate(true));
-        pageLines.add(p.cmdBase.cmdPermanentPower.getUseageTemplate(true));
-        pageLines.add(p.cmdBase.cmdPowerBoost.getUseageTemplate(true));
-        pageLines.add(p.cmdBase.cmdConfig.getUseageTemplate(true));
+        pageLines.add(p.cmdBase.cmdChatSpy.getUseageTemplate(context, true));
+        pageLines.add(p.cmdBase.cmdPermanent.getUseageTemplate(context, true));
+        pageLines.add(p.cmdBase.cmdPermanentPower.getUseageTemplate(context, true));
+        pageLines.add(p.cmdBase.cmdPowerBoost.getUseageTemplate(context, true));
+        pageLines.add(p.cmdBase.cmdConfig.getUseageTemplate(context, true));
         helpPages.add(pageLines);
 
         pageLines = new ArrayList<>();
         pageLines.add(p.txt.parse(TL.COMMAND_HELP_MOAR_3.toString()));
-        pageLines.add(p.cmdBase.cmdLock.getUseageTemplate(true));
-        pageLines.add(p.cmdBase.cmdReload.getUseageTemplate(true));
-        pageLines.add(p.cmdBase.cmdSaveAll.getUseageTemplate(true));
-        pageLines.add(p.cmdBase.cmdVersion.getUseageTemplate(true));
+        pageLines.add(p.cmdBase.cmdLock.getUseageTemplate(context, true));
+        pageLines.add(p.cmdBase.cmdReload.getUseageTemplate(context, true));
+        pageLines.add(p.cmdBase.cmdSaveAll.getUseageTemplate(context, true));
+        pageLines.add(p.cmdBase.cmdVersion.getUseageTemplate(context, true));
         helpPages.add(pageLines);
     }
 

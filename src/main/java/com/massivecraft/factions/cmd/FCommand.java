@@ -27,9 +27,6 @@ public abstract class FCommand {
 
     // Requirements to execute this command
     public CommandRequirements requirements;
-    
-    // To be moved to context
-    public List<FCommand> commandChain = new ArrayList<>(); // The command chain used to execute this command
 
     public FCommand() {
         p = P.p;
@@ -49,14 +46,14 @@ public abstract class FCommand {
 
     public abstract void perform(CommandContext context);
 
-    public void execute(CommandContext context, List<FCommand> commandChain) {
+    public void execute(CommandContext context) {
         // Is there a matching sub command?
         if (context.args.size() > 0) {
             for (FCommand subCommand : this.subCommands) {
                 if (subCommand.aliases.contains(context.args.get(0).toLowerCase())) {
                     context.args.remove(0);
-                    commandChain.add(this);
-                    subCommand.execute(context, commandChain);
+                    context.commandChain.add(this);
+                    subCommand.execute(context);
                     return;
                 }
             }
@@ -89,7 +86,7 @@ public abstract class FCommand {
         if (context.args.size() < this.requiredArgs.size()) {
             if (context.sender != null) {
                 context.msg(TL.GENERIC_ARGS_TOOFEW);
-                context.sender.sendMessage(this.getUseageTemplate());
+                context.sender.sendMessage(this.getUseageTemplate(context));
             }
             return false;
         }
@@ -99,7 +96,7 @@ public abstract class FCommand {
                 // Get the to many string slice
                 List<String> theToMany = context.args.subList(this.requiredArgs.size() + this.optionalArgs.size(), context.args.size());
                 context.msg(TL.GENERIC_ARGS_TOOMANY, TextUtil.implode(theToMany, " "));
-                context.sender.sendMessage(this.getUseageTemplate());
+                context.sender.sendMessage(this.getUseageTemplate(context));
             }
             return false;
         }
@@ -112,8 +109,6 @@ public abstract class FCommand {
     public List<FCommand> subCommands;
 
     public void addSubCommand(FCommand subCommand) {
-        subCommand.commandChain.addAll(this.commandChain);
-        subCommand.commandChain.add(this);
         this.subCommands.add(subCommand);
     }
 
@@ -204,16 +199,15 @@ public abstract class FCommand {
         }
         return s;
     }
-
     /*
-        Help and Usage information
-     */
-    public String getUseageTemplate(List<FCommand> commandChain, boolean addShortHelp) {
+    Help and Usage information
+ */
+    public String getUseageTemplate(CommandContext context, boolean addShortHelp) {
         StringBuilder ret = new StringBuilder();
         ret.append(P.p.txt.parseTags("<c>"));
         ret.append('/');
 
-        for (FCommand fc : commandChain) {
+        for (FCommand fc : context.commandChain) {
             ret.append(TextUtil.implode(fc.aliases, ","));
             ret.append(' ');
         }
@@ -249,13 +243,8 @@ public abstract class FCommand {
         return ret.toString();
     }
 
-    public String getUseageTemplate(boolean addShortHelp) {
-        return getUseageTemplate(this.commandChain, addShortHelp);
+    public String getUseageTemplate(CommandContext context) {
+        return getUseageTemplate(context, false);
     }
-
-    public String getUseageTemplate() {
-        return getUseageTemplate(false);
-    }
-
 
 }

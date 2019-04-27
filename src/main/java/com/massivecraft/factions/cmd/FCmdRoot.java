@@ -208,13 +208,13 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
 
     @Override
     public void perform(CommandContext context) {
-        this.commandChain.add(this);
-        this.cmdHelp.execute(context, this.commandChain);
+        context.commandChain.add(this);
+        this.cmdHelp.execute(context);
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        this.execute(new CommandContext(sender, new ArrayList<>(Arrays.asList(args)), label), new ArrayList<FCommand>());
+        this.execute(new CommandContext(sender, new ArrayList<>(Arrays.asList(args)), label));
         return true;
     }
 

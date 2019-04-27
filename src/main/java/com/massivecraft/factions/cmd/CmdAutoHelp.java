@@ -20,10 +20,10 @@ public class CmdAutoHelp extends FCommand {
 
     @Override
     public void perform(CommandContext context) {
-        if (this.commandChain.size() == 0) {
+        if (context.commandChain.size() == 0) {
             return;
         }
-        FCommand pcmd = this.commandChain.get(this.commandChain.size() - 1);
+        FCommand pcmd = context.commandChain.get(context.commandChain.size() - 1);
 
         ArrayList<String> lines = new ArrayList<>();
 
@@ -31,7 +31,7 @@ public class CmdAutoHelp extends FCommand {
 
         for (FCommand scmd : pcmd.subCommands) {
             if (scmd.visibility == CommandVisibility.VISIBLE) {
-                lines.add(scmd.getUseageTemplate(this.commandChain, true));
+                lines.add(scmd.getUseageTemplate(context, true));
             }
         }
 

@@ -41,7 +41,7 @@ public class CmdDeinvite extends FCommand {
 
         if (you.getFaction() == context.faction) {
             context.msg(TL.COMMAND_DEINVITE_ALREADYMEMBER, you.getName(), context.faction.getTag());
-            context.msg(TL.COMMAND_DEINVITE_MIGHTWANT, p.cmdBase.cmdKick.getUseageTemplate(false));
+            context.msg(TL.COMMAND_DEINVITE_MIGHTWANT, p.cmdBase.cmdKick.getUseageTemplate(context));
             return;
         }
 

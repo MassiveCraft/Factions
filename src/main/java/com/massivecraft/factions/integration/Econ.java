@@ -51,7 +51,7 @@ public class Econ {
             P.p.log("NOTE: Economy is disabled. You can enable it with the command: f config econEnabled true");
         }
 
-        P.p.cmdBase.cmdHelp.updateHelp();
+        //P.p.cmdBase.cmdHelp.updateHelp();
     }
 
     public static boolean shouldBeUsed() {
