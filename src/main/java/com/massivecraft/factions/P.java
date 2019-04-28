@@ -133,7 +133,7 @@ public class P extends MPlugin {
         startAutoLeaveTask(false);
 
         // Run before initializing listeners to handle reloads properly.
-        if (!Bukkit.getVersion().contains("1.13")) {
+        if (!Bukkit.getVersion().contains("1.13") && !Bukkit.getVersion().contains("1.14")) {
             particleProvider = new PacketParticleProvider();
         } else {
             particleProvider = new BukkitParticleProvider();
