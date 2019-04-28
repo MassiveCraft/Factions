@@ -1,5 +1,6 @@
 package com.massivecraft.factions;
 
+import com.darkblade12.particleeffect.ParticleEffect;
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.iface.RelationParticipator;
 import com.massivecraft.factions.struct.ChatMode;
@@ -283,6 +284,14 @@ public interface FPlayer extends EconomyParticipator {
     public boolean isSeeingChunk();
 
     public void setSeeingChunk(boolean seeingChunk);
+
+    public boolean getFlyTrailsState();
+
+    public void setFlyTrailsState(boolean state);
+
+    public String getFlyTrailsEffect();
+
+    public void setFlyTrailsEffect(String effect);
 
     // -------------------------------
     // Warmups

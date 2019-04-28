@@ -98,6 +98,7 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
     public CmdBanlist cmdbanlist = new CmdBanlist();
     public CmdColeader cmdColeader = new CmdColeader();
     public CmdNear cmdNear = new CmdNear();
+    public CmdTrail cmdTrail = new CmdTrail();
 
     public FCmdRoot() {
         super();
@@ -196,6 +197,7 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
 
         if (P.p.getConfig().getBoolean("f-fly.enable", false)) {
             this.addSubCommand(this.cmdFly);
+            this.addSubCommand(this.cmdTrail);
             P.p.log(Level.INFO, "Enabling /f fly command");
         } else {
             P.p.log(Level.WARNING, "Faction flight set to false in config.yml. Not enabling /f fly command.");

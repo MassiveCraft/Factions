@@ -212,6 +212,12 @@ public enum TL {
     COMMAND_FLY_ENEMY_NEARBY("&cCannot enable fly, enemy nearby"),
     COMMAND_FLY_ENEMY_DISABLE("&cEnemy nearby, disabling fly"),
 
+    COMMAND_FLYTRAILS_DESCRIPTION("Enabled or change fly trails"),
+    COMMAND_FLYTRAILS_PARTICLE_INVALID("&cInvalid particle effect"),
+    COMMAND_FLYTRAILS_PARTICLE_PERMS("&cInsufficient permission to use &d%1s"),
+    COMMAND_FLYTRAILS_PARTICLE_CHANGE("&eFaction flight trail effect set to &d%1s"),
+    COMMAND_FLYTRAILS_CHANGE("&eFaction flight trail &d%1s"),
+
     COMMAND_FWARP_CLICKTOWARP("Click to warp!"),
     COMMAND_FWARP_COMMANDFORMAT("&e/f warp <warpname> [password]"),
     COMMAND_FWARP_WARPED("&eWarped to &6%1$s"),
