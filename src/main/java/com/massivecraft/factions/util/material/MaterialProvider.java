@@ -52,6 +52,10 @@ public class MaterialProvider {
         return null;
     }
 
+    public boolean isSign(Material mat) {
+        return mat.name().toUpperCase().contains("SIGN");
+    }
+
     public class MaterialData {
 
         @SerializedName("material")

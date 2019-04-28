@@ -8,6 +8,8 @@ import com.massivecraft.factions.cmd.FCmdRoot;
 import com.massivecraft.factions.integration.*;
 import com.massivecraft.factions.integration.dynmap.EngineDynmap;
 import com.massivecraft.factions.listeners.*;
+import com.massivecraft.factions.listeners.versionspecific.PortalListenerLegacy;
+import com.massivecraft.factions.listeners.versionspecific.PortalListener_114;
 import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.util.*;
 import com.massivecraft.factions.util.material.FactionMaterial;
@@ -151,6 +153,15 @@ public class P extends MPlugin {
         getServer().getPluginManager().registerEvents(new FactionsEntityListener(this), this);
         getServer().getPluginManager().registerEvents(new FactionsExploitListener(), this);
         getServer().getPluginManager().registerEvents(new FactionsBlockListener(this), this);
+
+        // Version specific portal listener check.
+        if (Bukkit.getVersion().contains("1.14")) {
+            getServer().getPluginManager().registerEvents(new PortalListener_114(), this);
+            P.p.log(Level.WARNING, "Using 1.14 portal support. This means that we'll block ALL portals from being " +
+                    "created in anything but wilderness.");
+        } else {
+            getServer().getPluginManager().registerEvents(new PortalListenerLegacy(), this);
+        }
 
         // since some other plugins execute commands directly through this command interface, provide it
         this.getCommand(refCommand).setExecutor(cmdBase);

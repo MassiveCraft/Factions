@@ -7,7 +7,6 @@ import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.TravelAgent;
 import org.bukkit.block.Block;
 import org.bukkit.entity.*;
 import org.bukkit.entity.minecart.ExplosiveMinecart;
@@ -19,7 +18,7 @@ import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.hanging.HangingBreakEvent;
 import org.bukkit.event.hanging.HangingBreakEvent.RemoveCause;
 import org.bukkit.event.hanging.HangingPlaceEvent;
-import org.bukkit.event.player.PlayerPortalEvent;
+import org.bukkit.event.world.PortalCreateEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.projectiles.ProjectileSource;
@@ -546,6 +545,21 @@ public class FactionsEntityListener implements Listener {
         }
     }
 
+    /*
+
+    We have to disable this event for now because TravelAgents were removed in 1.14.
+    See https://www.spigotmc.org/threads/bukkit-craftbukkit-spigot-bungeecord-1-14-development-builds.369724/
+
+    The options are:
+    1. PlayerPortalEvent, which doesn't let us know anything about the portal so we can't stop a player from
+    creating a portal at a location they aren't allowed to.
+    2. PortalCreateEvent, which doesn't give us any information about the player that makes the portal, so we can't
+    stop specific players from creating portals in Faction land.
+
+    So for now, we'll temporarily block ALL portals from being created in anything but wilderness.
+    Spigot mentioned that TravelAgent might come back, so we'll leave this commented out here for now.
+    See PortalListenerLegacy and PortalListener_114 for version specific implementations.
+
     @EventHandler
     public void onTravel(PlayerPortalEvent event) {
         if (!P.p.getConfig().getBoolean("portals.limit", false)) {
@@ -573,6 +587,7 @@ public class FactionsEntityListener implements Listener {
             }
         }
     }
+    */
 
     private boolean stopEndermanBlockManipulation(Location loc) {
         if (loc == null) {

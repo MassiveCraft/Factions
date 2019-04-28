@@ -12,6 +12,7 @@ import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.FactionGUI;
 import com.massivecraft.factions.util.VisualizeUtil;
 import com.massivecraft.factions.util.material.FactionMaterial;
+import com.massivecraft.factions.util.material.MaterialDb;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.persist.MemoryFPlayer;
@@ -310,7 +311,7 @@ public class FactionsPlayerListener implements Listener {
     }
 
 
-    public static boolean playerCanUseItemHere(Player player, Location location, Material material, boolean justCheck) {
+    public boolean playerCanUseItemHere(Player player, Location location, Material material, boolean justCheck) {
         String name = player.getName();
         if (Conf.playersWhoBypassAllProtection.contains(name)) {
             return true;
@@ -399,7 +400,7 @@ public class FactionsPlayerListener implements Listener {
         return true;
     }
 
-    public static boolean canPlayerUseBlock(Player player, Block block, boolean justCheck) {
+    public boolean canPlayerUseBlock(Player player, Block block, boolean justCheck) {
         if (Conf.playersWhoBypassAllProtection.contains(player.getName())) {
             return true;
         }
@@ -476,21 +477,12 @@ public class FactionsPlayerListener implements Listener {
         // Dupe fix.
         Faction myFaction = me.getFaction();
         Relation rel = myFaction.getRelationTo(otherFaction);
-        if (!rel.isMember() || !otherFaction.playerHasOwnershipRights(me, loc) && player.getItemInHand() != null) {
-            switch (player.getItemInHand().getType()) {
-                case CHEST:
-                case SIGN:
-                case TRAPPED_CHEST:
-                case DARK_OAK_DOOR:
-                case ACACIA_DOOR:
-                case BIRCH_DOOR:
-                case JUNGLE_DOOR:
-                case OAK_DOOR:
-                case SPRUCE_DOOR:
-                case IRON_DOOR:
-                    return false;
-                default:
-                    break;
+        if (!rel.isMember() || !otherFaction.playerHasOwnershipRights(me, loc)) {
+            Material mainHand = player.getItemInHand().getType();
+
+            // Check if material is at risk for dupe in either hand.
+            if (isDupeMaterial(mainHand)) {
+                return false;
             }
         }
 
@@ -524,6 +516,29 @@ public class FactionsPlayerListener implements Listener {
         }
 
         return true;
+    }
+
+    private boolean isDupeMaterial(Material material) {
+        if (MaterialDb.getInstance().provider.isSign(material)) {
+            return true;
+        }
+
+        switch (material) {
+            case CHEST:
+            case TRAPPED_CHEST:
+            case DARK_OAK_DOOR:
+            case ACACIA_DOOR:
+            case BIRCH_DOOR:
+            case JUNGLE_DOOR:
+            case OAK_DOOR:
+            case SPRUCE_DOOR:
+            case IRON_DOOR:
+                return true;
+            default:
+                break;
+        }
+
+        return false;
     }
 
     @EventHandler(priority = EventPriority.HIGH)
