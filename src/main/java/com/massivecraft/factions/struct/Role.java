@@ -117,6 +117,11 @@ public enum Role implements Permissable {
         return "";
     }
 
+    @Override
+    public ChatColor getColor() {
+        return Relation.MEMBER.getColor();
+    }
+
     // Utility method to build items for F Perm GUI
     @Override
     public ItemStack buildItem(FPlayer fme) {

@@ -5,8 +5,9 @@ import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.WarmUpUtil;
-import com.massivecraft.factions.util.WarpGUI;
+import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
+import com.massivecraft.factions.zcore.gui.warp.WarpGUI;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -31,14 +32,19 @@ public class CmdFWarp extends FCommand {
 
     @Override
     public void perform(CommandContext context) {
-        //TODO: check if in combat.
-        if (context.args.size() == 0) {
-            WarpGUI warpGUI = new WarpGUI(context.fPlayer);
-            warpGUI.build();
+        // TODO: check if in combat.
+        Access access = context.faction.getAccess(context.fPlayer, PermissableAction.WARP);
 
-            context.player.openInventory(warpGUI.getInventory());
+        if (access == Access.DENY) {
+            context.msg(TL.GENERIC_NOPERMISSION, "warp");
+            return;
+        }
+
+        if (context.args.size() == 0) {
+            WarpGUI ui = new WarpGUI(context.fPlayer);
+            ui.open();
         } else if (context.args.size() > 2) {
-            context.fPlayer.msg(TL.COMMAND_FWARP_COMMANDFORMAT);
+            context.msg(TL.COMMAND_FWARP_COMMANDFORMAT);
         } else {
             final String warpName = context.argAsString(0);
             final String passwordAttempt = context.argAsString(1);

@@ -23,6 +23,7 @@ import com.massivecraft.factions.zcore.MPlugin;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.Permissable;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
+import com.massivecraft.factions.zcore.gui.FactionGUIHandler;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -145,6 +146,7 @@ public class P extends MPlugin {
             seeChunkUtil = new SeeChunkUtil();
             seeChunkUtil.runTaskTimer(this, 0, (long) delay);
         }
+        FactionGUIHandler.start();
         // End run before registering event handlers.
 
         // Register Event Handlers

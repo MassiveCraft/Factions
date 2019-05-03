@@ -509,7 +509,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
 
     // -------------------------------
-    // Understand the types
+    // Understand the type
     // -------------------------------
 
     public boolean isNormal() {

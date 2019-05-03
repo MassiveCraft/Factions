@@ -1,6 +1,7 @@
 package com.massivecraft.factions.zcore.fperms;
 
 import com.massivecraft.factions.FPlayer;
+import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
 
 public interface Permissable {
@@ -10,5 +11,7 @@ public interface Permissable {
     public String replacePlaceholders(String string, FPlayer fme);
 
     public String name();
+
+    public ChatColor getColor();
 
 }

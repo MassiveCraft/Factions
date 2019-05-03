@@ -9,12 +9,12 @@ import com.massivecraft.factions.scoreboards.sidebar.FDefaultSidebar;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
-import com.massivecraft.factions.util.FactionGUI;
 import com.massivecraft.factions.util.VisualizeUtil;
 import com.massivecraft.factions.util.material.FactionMaterial;
 import com.massivecraft.factions.util.material.MaterialDb;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
+import com.massivecraft.factions.zcore.gui.FactionGUI;
 import com.massivecraft.factions.zcore.persist.MemoryFPlayer;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TextUtil;
@@ -676,7 +676,8 @@ public class FactionsPlayerListener implements Listener {
         }
         if (event.getClickedInventory().getHolder() instanceof FactionGUI) {
             event.setCancelled(true);
-            ((FactionGUI) event.getClickedInventory().getHolder()).onClick(event.getRawSlot(), event.getClick());
+            FactionGUI ui = (FactionGUI) event.getClickedInventory().getHolder();
+            ui.click(event.getRawSlot(), event.getClick());
         }
     }
 
