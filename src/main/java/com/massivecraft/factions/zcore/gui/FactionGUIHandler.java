@@ -6,6 +6,7 @@ import com.massivecraft.factions.zcore.gui.items.ItemGUI;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.HashMap;
+import java.util.logging.Level;
 
 /**
  *  Loads and caches config values as ItemGUI
@@ -28,6 +29,10 @@ public class FactionGUIHandler {
     }
 
     public void build() {
+        if (P.p.getConfig().contains("gui")) {
+            P.p.log(Level.SEVERE, "Your config GUI section is outdated, because of this it will no work, please update your config");
+        }
+
         // Globals
         ConfigurationSection globalSection = P.p.getConfig().getConfigurationSection("gui.global");
         if (globalSection != null) {

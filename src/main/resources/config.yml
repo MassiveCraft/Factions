@@ -403,11 +403,12 @@ help:
 
 ############################################################
 # +------------------------------------------------------+ #
-# |                     Faction UI                       | #
+# |                    Faction GUI                       | #
 # +------------------------------------------------------+ #
 ############################################################
 
-# Global Faction UI stuff.
+# Global Faction GUI stuff.
+# Wiki: https://github.com/drtshock/Factions/wiki/GUIs
 gui:
   # These items may be used as 'base' anywhere and all values can be replaced
   global:
