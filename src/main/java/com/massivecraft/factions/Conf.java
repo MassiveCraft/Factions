@@ -416,6 +416,13 @@ public class Conf {
         territoryProtectedMaterials.add(FactionMaterial.from("NETHER_BRICK_FENCE").get());
         territoryProtectedMaterials.add(FactionMaterial.from("SPRUCE_FENCE").get());
 
+        territoryProtectedMaterials.add(FactionMaterial.from("OAK_FENCE_GATE").get());
+        territoryProtectedMaterials.add(FactionMaterial.from("SPRUCE_FENCE_GATE").get());
+        territoryProtectedMaterials.add(FactionMaterial.from("BIRCH_FENCE_GATE").get());
+        territoryProtectedMaterials.add(FactionMaterial.from("JUNGLE_FENCE_GATE").get());
+        territoryProtectedMaterials.add(FactionMaterial.from("ACACIA_FENCE_GATE").get());
+        territoryProtectedMaterials.add(FactionMaterial.from("DARK_OAK_FENCE_GATE").get());
+
         territoryProtectedMaterials.add(FactionMaterial.from("DISPENSER").get());
         territoryProtectedMaterials.add(FactionMaterial.from("CHEST").get());
         territoryProtectedMaterials.add(FactionMaterial.from("FURNACE").get());
@@ -473,6 +480,12 @@ public class Conf {
         territoryProtectedMaterialsWhenOffline.add(FactionMaterial.from("TRAPPED_CHEST").get());
         territoryProtectedMaterialsWhenOffline.add(FactionMaterial.from("DROPPER").get());
         territoryProtectedMaterialsWhenOffline.add(FactionMaterial.from("HOPPER").get());
+        territoryProtectedMaterialsWhenOffline.add(FactionMaterial.from("OAK_FENCE_GATE").get());
+        territoryProtectedMaterialsWhenOffline.add(FactionMaterial.from("SPRUCE_FENCE_GATE").get());
+        territoryProtectedMaterialsWhenOffline.add(FactionMaterial.from("BIRCH_FENCE_GATE").get());
+        territoryProtectedMaterialsWhenOffline.add(FactionMaterial.from("JUNGLE_FENCE_GATE").get());
+        territoryProtectedMaterialsWhenOffline.add(FactionMaterial.from("ACACIA_FENCE_GATE").get());
+        territoryProtectedMaterialsWhenOffline.add(FactionMaterial.from("DARK_OAK_FENCE_GATE").get());
 
         territoryDenyUseageMaterialsWhenOffline.add(FactionMaterial.from("FIRE_CHARGE").get());
         territoryDenyUseageMaterialsWhenOffline.add(FactionMaterial.from("FLINT_AND_STEEL").get());
