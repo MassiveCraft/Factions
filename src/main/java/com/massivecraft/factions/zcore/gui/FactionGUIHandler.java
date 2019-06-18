@@ -29,7 +29,7 @@ public class FactionGUIHandler {
     }
 
     public void build() {
-        if (P.p.getConfig().contains("gui")) {
+        if (!P.p.getConfig().contains("gui")) {
             P.p.log(Level.SEVERE, "Your config GUI section is outdated, because of this it will not work, please update your config");
         }
 
