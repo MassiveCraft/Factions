@@ -170,6 +170,7 @@ public class P extends MPlugin {
         //this.getBaseCommands().add(cmdBase);
 
         Econ.setup();
+        LWCFeatures.setup();
         setupPermissions();
 
         loadWorldguard();

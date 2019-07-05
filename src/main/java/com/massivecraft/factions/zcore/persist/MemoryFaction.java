@@ -4,6 +4,7 @@ import com.massivecraft.factions.*;
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.iface.RelationParticipator;
 import com.massivecraft.factions.integration.Econ;
+import com.massivecraft.factions.integration.LWCFeatures;
 import com.massivecraft.factions.struct.BanInfo;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
@@ -882,6 +883,9 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
 
     public void clearClaimOwnership(FLocation loc) {
+        if (LWCFeatures.getEnabled() && Conf.onUnclaimResetLwcLocks) {
+            LWCFeatures.clearAllChests(loc);
+        }
         claimOwnership.remove(loc);
     }
 
@@ -907,6 +911,9 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
             }
 
             if (ownerData.isEmpty()) {
+                if (LWCFeatures.getEnabled() && Conf.onUnclaimResetLwcLocks) {
+                    LWCFeatures.clearAllChests(entry.getKey());
+                }
                 claimOwnership.remove(entry.getKey());
             }
         }

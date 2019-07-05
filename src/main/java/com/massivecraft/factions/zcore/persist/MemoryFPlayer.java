@@ -8,6 +8,7 @@ import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.iface.RelationParticipator;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.integration.Essentials;
+import com.massivecraft.factions.integration.LWCFeatures;
 import com.massivecraft.factions.integration.Worldguard7;
 import com.massivecraft.factions.scoreboards.FScoreboard;
 import com.massivecraft.factions.scoreboards.sidebar.FInfoSidebar;
@@ -855,6 +856,10 @@ public abstract class MemoryFPlayer implements FPlayer {
         if (currentFaction.isNormal() && currentFaction.hasLandInflation()) {
             // Give them money for over claiming.
             Econ.modifyMoney(payee, Conf.econOverclaimRewardMultiplier, TL.CLAIM_TOOVERCLAIM.toString(), TL.CLAIM_FOROVERCLAIM.toString());
+        }
+
+        if (LWCFeatures.getEnabled() && forFaction.isNormal() && Conf.onCaptureResetLwcLocks) {
+            LWCFeatures.clearOtherChests(flocation, this.getFaction());
         }
 
         // announce success
