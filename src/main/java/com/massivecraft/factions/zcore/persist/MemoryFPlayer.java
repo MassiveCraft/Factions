@@ -858,7 +858,7 @@ public abstract class MemoryFPlayer implements FPlayer {
             Econ.modifyMoney(payee, Conf.econOverclaimRewardMultiplier, TL.CLAIM_TOOVERCLAIM.toString(), TL.CLAIM_FOROVERCLAIM.toString());
         }
 
-        if (LWCFeatures.getEnabled() && forFaction.isNormal() && Conf.onCaptureResetLwcLocks) {
+        if (LWCFeatures.getEnabled() && forFaction.isNormal() && P.p.getConfig().getBoolean("lwc.reset-locks-capture", false)) {
             LWCFeatures.clearOtherChests(flocation, this.getFaction());
         }
 

@@ -22,11 +22,11 @@ public class LWCFeatures {
         if (test == null || !test.isEnabled()) return;
 
         lwc = ((LWCPlugin) test).getLWC();
-        P.p.log("Successfully hooked into LWC!" + (Conf.lwcIntegration ? "" : " Integration is currently disabled, though (\"lwcIntegration\")."));
+        P.p.log("Successfully hooked into LWC!" + (P.p.getConfig().getBoolean("lwc.integration", false) ? "" : " Integration is currently disabled (\"lwc.integration\")."));
     }
 
     public static boolean getEnabled() {
-        return Conf.lwcIntegration && lwc != null;
+        return P.p.getConfig().getBoolean("lwc.integration", false) && lwc != null;
     }
 
     public static void clearOtherChests(FLocation flocation, Faction faction) {

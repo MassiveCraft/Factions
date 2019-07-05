@@ -98,11 +98,6 @@ public class Conf {
     public static boolean worldGuardChecking = false;
     public static boolean worldGuardBuildPriority = false;
 
-    //LWC
-    public static boolean lwcIntegration = true;
-    public static boolean onUnclaimResetLwcLocks = true;
-    public static boolean onCaptureResetLwcLocks = true;
-
     // server logging options
     public static boolean logFactionCreate = true;
     public static boolean logFactionDisband = true;
