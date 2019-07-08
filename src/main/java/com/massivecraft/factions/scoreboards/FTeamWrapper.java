@@ -5,6 +5,7 @@ import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TagUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
@@ -36,13 +37,13 @@ public class FTeamWrapper {
 
 
         if (updating.add(faction)) {
-            Bukkit.getScheduler().runTask(P.p, new Runnable() {
+            new BukkitRunnable() {
                 @Override
                 public void run() {
                     updating.remove(faction);
                     applyUpdates(faction);
                 }
-            });
+            }.runTask(P.p);
         }
     }
 

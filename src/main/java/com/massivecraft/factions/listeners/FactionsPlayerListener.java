@@ -30,6 +30,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.*;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.NumberConversions;
 
 import java.util.HashMap;
@@ -68,14 +69,14 @@ public class FactionsPlayerListener implements Listener {
         me.login(); // set kills / deaths
 
         // Check for Faction announcements. Let's delay this so they actually see it.
-        Bukkit.getScheduler().runTaskLater(P.p, new Runnable() {
+        new BukkitRunnable() {
             @Override
             public void run() {
                 if (me.isOnline()) {
                     me.getFaction().sendUnreadAnnouncements(me);
                 }
             }
-        }, 33L); // Don't ask me why.
+        }.runTaskLater(P.p, 33L); // Don't ask me why.
 
         if (P.p.getConfig().getBoolean("scoreboard.default-enabled", false)) {
             FScoreboard.init(me);

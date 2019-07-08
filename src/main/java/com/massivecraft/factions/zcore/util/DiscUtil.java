@@ -1,7 +1,7 @@
 package com.massivecraft.factions.zcore.util;
 
 import com.massivecraft.factions.P;
-import org.bukkit.Bukkit;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.*;
 import java.util.HashMap;
@@ -81,7 +81,7 @@ public class DiscUtil {
                 lock.unlock();
             }
         } else {
-            Bukkit.getScheduler().runTaskAsynchronously(P.p, new Runnable() {
+            new BukkitRunnable() {
                 @Override
                 public void run() {
                     lock.lock();
@@ -93,7 +93,7 @@ public class DiscUtil {
                         lock.unlock();
                     }
                 }
-            });
+            }.runTaskAsynchronously(P.p);
         }
 
         return true; // don't really care but for some reason this is a boolean.

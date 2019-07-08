@@ -42,7 +42,7 @@ public class CmdStuck extends FCommand {
                 return;
             }
 
-            final int id = Bukkit.getScheduler().runTaskLater(P.p, new BukkitRunnable() {
+            final int id = new BukkitRunnable() {
 
                 @Override
                 public void run() {
@@ -86,7 +86,7 @@ public class CmdStuck extends FCommand {
                         }
                     };
                 }
-            }, delay * 20).getTaskId();
+            }.runTaskLater(P.p, delay * 20).getTaskId();
 
             P.p.getTimers().put(player.getUniqueId(), System.currentTimeMillis() + (delay * 1000));
             long wait = P.p.getTimers().get(player.getUniqueId()) - System.currentTimeMillis();

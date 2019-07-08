@@ -25,6 +25,7 @@ import mkremins.fanciful.FancyMessage;
 import org.bukkit.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
 
@@ -933,12 +934,12 @@ public abstract class MemoryFPlayer implements FPlayer {
             // Short task so we're just doing it in method. Not clean but eh.
             if (cooldown > 0) {
                 setTakeFallDamage(false);
-                Bukkit.getScheduler().runTaskLater(P.p, new Runnable() {
+                new BukkitRunnable() {
                     @Override
                     public void run() {
                         setTakeFallDamage(true);
                     }
-                }, 20L * cooldown);
+                }.runTaskLater(P.p, 20L * cooldown);
             }
         }
 
