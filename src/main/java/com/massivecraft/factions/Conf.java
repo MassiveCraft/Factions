@@ -511,6 +511,7 @@ public class Conf {
         safeZoneNerfedCreatureTypes.add(EntityType.WITCH);
         safeZoneNerfedCreatureTypes.add(EntityType.WITHER);
         safeZoneNerfedCreatureTypes.add(EntityType.ZOMBIE);
+        safeZoneNerfedCreatureTypes.add(EntityType.ZOMBIE_VILLAGER);
         if (P.getVersion() >= 900) {
             safeZoneNerfedCreatureTypes.add(EntityType.SHULKER);
         }
