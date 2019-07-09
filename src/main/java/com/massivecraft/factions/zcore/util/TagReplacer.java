@@ -199,8 +199,16 @@ public enum TagReplacer {
             case CREATE_DATE:
                 return TL.sdf.format(fac.getFoundedDate());
             case RAIDABLE:
-                boolean raid = P.p.getConfig().getBoolean("hcf.raidable", false) && fac.getLandRounded() >= fac.getPowerRounded();
-                return raid ? TL.RAIDABLE_TRUE.toString() : TL.RAIDABLE_FALSE.toString();
+                if (P.p.getConfig().getBoolean("hcf.raidable", false)) {
+                    boolean raidable = fac.getLandRounded() >= fac.getPowerRounded();
+                    String str = raidable ? TL.RAIDABLE_TRUE.toString() : TL.RAIDABLE_FALSE.toString();
+                    if (P.p.getConfig().getBoolean("hcf.dtr", false)) {
+                        int dtr = raidable ? 0 : (int) Math.ceil(((double) (fac.getPowerRounded() - fac.getLandRounded())) / Conf.powerPerDeath);
+                        str += ' ' + TL.COMMAND_SHOW_DEATHS_TIL_RAIDABLE.format(dtr);
+                    }
+                    return str;
+                }
+                return null;
             case HOME_WORLD:
                 return fac.hasHome() ? fac.getHome().getWorld().getName() : minimal ? null : "{ig}";
             case HOME_X:

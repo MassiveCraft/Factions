@@ -263,7 +263,7 @@ world-border:
 hcf:
   raidable: false
 
-  # DTR (death til raidable) will be in /f show if enabled. Configure the message in the lang.yml
+  # DTR (death til raidable) will be in /f show with [raidable] if enabled. Configure the message in the lang.yml
   dtr: false
 
   # Should we allow Factions to over claim if they are raidable (above has no effect on this)?
@@ -299,7 +299,7 @@ hcf:
 ############################################################
 
 # You can use any variable here, including fancy messages. Color codes and or tags work fine.
-# Lines that arent defined wont be sent (home not set, faction not peaceful / permanent, dtr freeze)
+# Lines that aren't defined wont be sent (home not set, faction not peaceful / permanent, dtr freeze)
 
 # SUPPORTS PLACEHOLDERS
 show:
@@ -308,6 +308,7 @@ show:
   - '<a>Description: <i>{description}'
   - '<a>Joining: <i>{joining}    {peaceful}'
   - '<a>Land / Power / Maxpower: <i> {chunks}/{power}/{maxPower}'
+  - '<a>Raidable: [raidable]'
   - '<a>Founded: <i>{create-date}'
   - '<a>This faction is permanent, remaining even with no members.' # only shows if faction is permanent
   - '<a>Land value: <i>{land-value} {land-refund}'
