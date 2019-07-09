@@ -483,9 +483,12 @@ public class Conf {
         safeZoneNerfedCreatureTypes.add(EntityType.BLAZE);
         safeZoneNerfedCreatureTypes.add(EntityType.CAVE_SPIDER);
         safeZoneNerfedCreatureTypes.add(EntityType.CREEPER);
+        safeZoneNerfedCreatureTypes.add(EntityType.ELDER_GUARDIAN);
         safeZoneNerfedCreatureTypes.add(EntityType.ENDER_DRAGON);
+        safeZoneNerfedCreatureTypes.add(EntityType.ENDERMITE);
         safeZoneNerfedCreatureTypes.add(EntityType.ENDERMAN);
         safeZoneNerfedCreatureTypes.add(EntityType.GHAST);
+        safeZoneNerfedCreatureTypes.add(EntityType.GUARDIAN);
         safeZoneNerfedCreatureTypes.add(EntityType.MAGMA_CUBE);
         safeZoneNerfedCreatureTypes.add(EntityType.PIG_ZOMBIE);
         safeZoneNerfedCreatureTypes.add(EntityType.SILVERFISH);
@@ -495,7 +498,26 @@ public class Conf {
         safeZoneNerfedCreatureTypes.add(EntityType.WITCH);
         safeZoneNerfedCreatureTypes.add(EntityType.WITHER);
         safeZoneNerfedCreatureTypes.add(EntityType.ZOMBIE);
-        //safeZoneNerfedCreatureTypes.add(EntityType.ELDER_GUARDIAN);
+        if (P.getVersion() >= 900) {
+            safeZoneNerfedCreatureTypes.add(EntityType.SHULKER);
+        }
+        if (P.getVersion() >= 1000) {
+            safeZoneNerfedCreatureTypes.add(EntityType.HUSK);
+            safeZoneNerfedCreatureTypes.add(EntityType.STRAY);
+        }
+        if (P.getVersion() >= 1100) {
+            safeZoneNerfedCreatureTypes.add(EntityType.EVOKER);
+            safeZoneNerfedCreatureTypes.add(EntityType.VEX);
+            safeZoneNerfedCreatureTypes.add(EntityType.VINDICATOR);
+        }
+        if (P.getVersion() >= 1300) {
+            safeZoneNerfedCreatureTypes.add(EntityType.DROWNED);
+            safeZoneNerfedCreatureTypes.add(EntityType.PHANTOM);
+        }
+        if (P.getVersion() >= 1400) {
+            safeZoneNerfedCreatureTypes.add(EntityType.PILLAGER);
+            safeZoneNerfedCreatureTypes.add(EntityType.RAVAGER);
+        }
     }
 
     // -------------------------------------------- //
