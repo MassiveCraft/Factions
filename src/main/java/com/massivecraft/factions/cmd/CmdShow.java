@@ -25,7 +25,7 @@ public class CmdShow extends FCommand {
         defaults.add("<a>Description: <i>{description}");
         defaults.add("<a>Joining: <i>{joining}    {peaceful}");
         defaults.add("<a>Land / Power / Maxpower: <i> {chunks} / {power} / {maxPower}");
-        defaults.add("<a>Raidable: [raidable]");
+        defaults.add("<a>Raidable: {raidable}");
         defaults.add("<a>Founded: <i>{create-date}");
         defaults.add("<a>This faction is permanent, remaining even with no members.");
         defaults.add("<a>Land value: <i>{land-value} {land-refund}");

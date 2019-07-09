@@ -308,7 +308,7 @@ show:
   - '<a>Description: <i>{description}'
   - '<a>Joining: <i>{joining}    {peaceful}'
   - '<a>Land / Power / Maxpower: <i> {chunks}/{power}/{maxPower}'
-  - '<a>Raidable: [raidable]'
+  - '<a>Raidable: {raidable}'
   - '<a>Founded: <i>{create-date}'
   - '<a>This faction is permanent, remaining even with no members.' # only shows if faction is permanent
   - '<a>Land value: <i>{land-value} {land-refund}'
