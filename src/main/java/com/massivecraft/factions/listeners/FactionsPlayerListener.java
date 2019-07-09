@@ -18,7 +18,6 @@ import com.massivecraft.factions.zcore.gui.FactionGUI;
 import com.massivecraft.factions.zcore.persist.MemoryFPlayer;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TextUtil;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -248,6 +247,22 @@ public class FactionsPlayerListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+    public void onPlayerInteract(PlayerInteractEntityEvent event) {
+        Material material = null;
+        switch (event.getRightClicked().getType()) {
+            case ARMOR_STAND:
+                material = Material.ARMOR_STAND;
+                break;
+            case ITEM_FRAME:
+                material = Material.ITEM_FRAME;
+                break;
+        }
+        if (material != null && !playerCanUseItemHere(event.getPlayer(), event.getRightClicked().getLocation(), material, false)) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onPlayerInteract(PlayerInteractEvent event) {
         // only need to check right-clicks and physical as of MC 1.4+; good performance boost
         if (event.getAction() != Action.RIGHT_CLICK_BLOCK && event.getAction() != Action.PHYSICAL) {
@@ -464,6 +479,8 @@ public class FactionsPlayerListener implements Listener {
             case GRINDSTONE:
             case SMOKER:
             case STONECUTTER:
+            case ARMOR_STAND:
+            case ITEM_FRAME:
                 action = PermissableAction.CONTAINER;
                 break;
             default:
