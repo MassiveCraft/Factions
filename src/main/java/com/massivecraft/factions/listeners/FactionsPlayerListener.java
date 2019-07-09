@@ -142,7 +142,9 @@ public class FactionsPlayerListener implements Listener {
 
         FScoreboard.remove(me);
 
-        P.p.seeChunkUtil.updatePlayerInfo(UUID.fromString(me.getId()), false);
+        if (P.p.seeChunkUtil != null) {
+            P.p.seeChunkUtil.updatePlayerInfo(UUID.fromString(me.getId()), false);
+        }
     }
 
     // Holds the next time a player can have a map shown.
