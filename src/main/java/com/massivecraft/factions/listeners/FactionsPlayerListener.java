@@ -458,6 +458,12 @@ public class FactionsPlayerListener implements Listener {
             case CHEST:
             case ENDER_CHEST:
             case TRAPPED_CHEST:
+            case BARREL:
+            case BLAST_FURNACE:
+            case CARTOGRAPHY_TABLE:
+            case GRINDSTONE:
+            case SMOKER:
+            case STONECUTTER:
                 action = PermissableAction.CONTAINER;
                 break;
             default:
