@@ -247,6 +247,9 @@ public class FactionsBlockListener implements Listener {
         Access access = otherFaction.getAccess(me, PermissableAction.fromString(action));
         if (access == Access.ALLOW) {
             return true;
+        } else if (access == Access.DENY) {
+            me.msg("<b>You can't " + action + " in the territory of " + otherFaction.getTag(myFaction));
+            return false;
         }
 
         // hurt the player for building/destroying in other territory?

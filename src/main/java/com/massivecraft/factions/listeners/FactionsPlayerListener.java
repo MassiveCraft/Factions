@@ -473,6 +473,8 @@ public class FactionsPlayerListener implements Listener {
         if (access == null || access == Access.DENY) {
             me.msg(TL.GENERIC_NOPERMISSION, action);
             return false;
+        } else if (access == Access.ALLOW) {
+            return true; // explicitly allowed
         }
 
         // Dupe fix.
