@@ -39,6 +39,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class P extends MPlugin {
 
@@ -46,6 +48,11 @@ public class P extends MPlugin {
     // Single 4 life.
     public static P p;
     public static Permission perms = null;
+    private static int version;
+
+    public static int getVersion() {
+        return version;
+    }
 
     // Persistence related
     private boolean locked = false;
@@ -79,6 +86,27 @@ public class P extends MPlugin {
 
     @Override
     public void onEnable() {
+        // Version party
+        Pattern versionPattern = Pattern.compile("1\\.(\\d{1,2})(?:\\.(\\d{1,2}))?");
+        Matcher versionMatcher = versionPattern.matcher(this.getServer().getVersion());
+        P.p.log("Factions UUID!");
+        P.p.log("");
+        P.p.log(this.getServer().getVersion());
+        Integer versionInteger = null;
+        if (versionMatcher.find()) {
+            try {
+                versionInteger = (Integer.parseInt(versionMatcher.group(1))*100) + Integer.parseInt(versionMatcher.group(2));
+                P.p.log("Detected Minecraft " + versionMatcher.group());
+            } catch (NumberFormatException ignored) {
+                ignored.printStackTrace();
+            }
+        }
+        if (versionInteger == null) {
+            P.p.log("Could not identify version. Going with least supported version, 1.8.8. Please let us know what version of Minecraft you're running and we'll fix it!");
+            versionInteger = 808;
+        }
+        version = versionInteger;
+
         // Load Material database
         MaterialDb.load();
         if (!preEnable()) {
