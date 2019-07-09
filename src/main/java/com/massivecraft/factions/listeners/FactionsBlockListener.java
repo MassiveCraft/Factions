@@ -97,7 +97,7 @@ public class FactionsBlockListener implements Listener {
 
         /*
          * note that I originally was testing the territory of each affected block, but since I found that pistons can only push
-         * up to 12 blocks and the width of any territory is 16 blocks, it should be safe (and much more lightweight) to shouldCancel
+         * up to 12 blocks and the width of any territory is 16 blocks, it should be safe (and much more lightweight) to test
          * only the final target block as done above
          */
     }

@@ -98,11 +98,10 @@ public class P extends MPlugin {
                 versionInteger = (Integer.parseInt(versionMatcher.group(1)) * 100) + Integer.parseInt(versionMatcher.group(2));
                 P.p.log("Detected Minecraft " + versionMatcher.group());
             } catch (NumberFormatException ignored) {
-                ignored.printStackTrace();
             }
         }
         if (versionInteger == null) {
-            P.p.log("Could not identify version. Going with least supported version, 1.8.8. Please let us know what version of Minecraft you're running and we'll fix it!");
+            P.p.log(Level.WARNING, "Could not identify version. Going with least supported version, 1.8.8. Please let us know what version of Minecraft you're running and we'll fix it!");
             versionInteger = 808;
         }
         version = versionInteger;
