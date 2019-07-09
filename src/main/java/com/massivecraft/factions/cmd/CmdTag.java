@@ -29,7 +29,7 @@ public class CmdTag extends FCommand {
     public void perform(CommandContext context) {
         String tag = context.argAsString(0);
 
-        // TODO does not first test cover selfcase?
+        // TODO does not first shouldCancel cover selfcase?
         if (Factions.getInstance().isTagTaken(tag) && !MiscUtil.getComparisonString(tag).equals(context.faction.getComparisonTag())) {
             context.msg(TL.COMMAND_TAG_TAKEN);
             return;

@@ -39,17 +39,8 @@ public class MaterialDb {
 
     public static void load() {
         instance = new MaterialDb();
-        try {
-            String serverVersion = Bukkit.getServer().getVersion();
-            String version = serverVersion.substring(serverVersion.indexOf('.') + 1).replaceAll("\\)", "");
-            String major = version.length() > 2 ? version.substring(0, version.lastIndexOf('.')) : version;
-
-            instance.legacy = Integer.parseInt(major) < 13;
-            P.p.getLogger().info(String.format("Using legacy support for materials: %s", instance.legacy));
-        } catch (NumberFormatException e) {
-            // Issue formatting major version integer... uhm
-            instance.legacy = true;
-        }
+        instance.legacy = P.getVersion() < 1300; // Before 1.13
+        P.p.getLogger().info(String.format("Using legacy support for materials: %s", instance.legacy));
 
         InputStreamReader reader = new InputStreamReader(P.p.getResource("materials.json"));
         Type typeToken = new TypeToken<HashMap<String, MaterialProvider.MaterialData>>() {

@@ -8,6 +8,7 @@ import com.massivecraft.factions.cmd.FCmdRoot;
 import com.massivecraft.factions.integration.*;
 import com.massivecraft.factions.integration.dynmap.EngineDynmap;
 import com.massivecraft.factions.listeners.*;
+import com.massivecraft.factions.listeners.versionspecific.PortalHandler;
 import com.massivecraft.factions.listeners.versionspecific.PortalListenerLegacy;
 import com.massivecraft.factions.listeners.versionspecific.PortalListener_114;
 import com.massivecraft.factions.struct.ChatMode;
@@ -91,11 +92,10 @@ public class P extends MPlugin {
         Matcher versionMatcher = versionPattern.matcher(this.getServer().getVersion());
         P.p.log("Factions UUID!");
         P.p.log("");
-        P.p.log(this.getServer().getVersion());
         Integer versionInteger = null;
         if (versionMatcher.find()) {
             try {
-                versionInteger = (Integer.parseInt(versionMatcher.group(1))*100) + Integer.parseInt(versionMatcher.group(2));
+                versionInteger = (Integer.parseInt(versionMatcher.group(1)) * 100) + Integer.parseInt(versionMatcher.group(2));
                 P.p.log("Detected Minecraft " + versionMatcher.group());
             } catch (NumberFormatException ignored) {
                 ignored.printStackTrace();
@@ -162,7 +162,7 @@ public class P extends MPlugin {
         startAutoLeaveTask(false);
 
         // Run before initializing listeners to handle reloads properly.
-        if (!Bukkit.getVersion().contains("1.13") && !Bukkit.getVersion().contains("1.14")) {
+        if (version < 1300) { // Before 1.13
             particleProvider = new PacketParticleProvider();
         } else {
             particleProvider = new BukkitParticleProvider();
@@ -185,12 +185,12 @@ public class P extends MPlugin {
         getServer().getPluginManager().registerEvents(new FactionsBlockListener(this), this);
 
         // Version specific portal listener check.
-        if (Bukkit.getVersion().contains("1.14")) {
+        if (version >= 1400) { // Starting with 1.14
             getServer().getPluginManager().registerEvents(new PortalListener_114(), this);
             P.p.log(Level.WARNING, "Using 1.14 portal support. This means that we'll block ALL portals from being " +
                     "created in anything but wilderness.");
         } else {
-            getServer().getPluginManager().registerEvents(new PortalListenerLegacy(), this);
+            getServer().getPluginManager().registerEvents(new PortalListenerLegacy(new PortalHandler()), this);
         }
 
         // since some other plugins execute commands directly through this command interface, provide it
