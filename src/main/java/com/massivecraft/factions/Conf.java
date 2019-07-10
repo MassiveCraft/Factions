@@ -496,7 +496,6 @@ public class Conf {
         safeZoneNerfedCreatureTypes.add(EntityType.BLAZE);
         safeZoneNerfedCreatureTypes.add(EntityType.CAVE_SPIDER);
         safeZoneNerfedCreatureTypes.add(EntityType.CREEPER);
-        safeZoneNerfedCreatureTypes.add(EntityType.ELDER_GUARDIAN);
         safeZoneNerfedCreatureTypes.add(EntityType.ENDER_DRAGON);
         safeZoneNerfedCreatureTypes.add(EntityType.ENDERMITE);
         safeZoneNerfedCreatureTypes.add(EntityType.ENDERMAN);
@@ -511,7 +510,6 @@ public class Conf {
         safeZoneNerfedCreatureTypes.add(EntityType.WITCH);
         safeZoneNerfedCreatureTypes.add(EntityType.WITHER);
         safeZoneNerfedCreatureTypes.add(EntityType.ZOMBIE);
-        safeZoneNerfedCreatureTypes.add(EntityType.ZOMBIE_VILLAGER);
         if (P.getVersion() >= 900) {
             safeZoneNerfedCreatureTypes.add(EntityType.SHULKER);
         }
@@ -520,9 +518,11 @@ public class Conf {
             safeZoneNerfedCreatureTypes.add(EntityType.STRAY);
         }
         if (P.getVersion() >= 1100) {
+            safeZoneNerfedCreatureTypes.add(EntityType.ELDER_GUARDIAN);
             safeZoneNerfedCreatureTypes.add(EntityType.EVOKER);
             safeZoneNerfedCreatureTypes.add(EntityType.VEX);
             safeZoneNerfedCreatureTypes.add(EntityType.VINDICATOR);
+            safeZoneNerfedCreatureTypes.add(EntityType.ZOMBIE_VILLAGER);
         }
         if (P.getVersion() >= 1300) {
             safeZoneNerfedCreatureTypes.add(EntityType.DROWNED);
