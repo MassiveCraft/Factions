@@ -1,6 +1,7 @@
 package com.massivecraft.factions;
 
 import com.earth2me.essentials.IEssentials;
+import com.google.common.base.Charsets;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.massivecraft.factions.cmd.CmdAutoHelp;
@@ -34,9 +35,14 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
+import java.io.IOException;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
+import java.nio.file.Files;
+import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
@@ -87,6 +93,16 @@ public class P extends MPlugin {
 
     @Override
     public void onEnable() {
+        try {
+            List<String> allLines = Files.readAllLines(this.getDataFolder().toPath().resolve("config.yml"), Charsets.UTF_8);
+            if (allLines.size() > 3 && allLines.get(2).contains("ive support")) {
+                List<String> list = new ArrayList<>(allLines);
+                list.set(2, "# Live support http://factions-support.cf");
+                Files.write(this.getDataFolder().toPath().resolve("config.yml"), list, Charsets.UTF_8, StandardOpenOption.TRUNCATE_EXISTING);
+            }
+        } catch (IOException ignored) { // I tried!
+        }
+
         // Version party
         Pattern versionPattern = Pattern.compile("1\\.(\\d{1,2})(?:\\.(\\d{1,2}))?");
         Matcher versionMatcher = versionPattern.matcher(this.getServer().getVersion());
