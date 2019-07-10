@@ -2,11 +2,11 @@ package com.massivecraft.factions.integration;
 
 import com.griefcraft.lwc.LWC;
 import com.griefcraft.lwc.LWCPlugin;
+import com.griefcraft.util.config.ConfigurationNode;
 import com.massivecraft.factions.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.plugin.Plugin;
@@ -37,7 +37,7 @@ public class LWCFeatures {
         List<Block> chests = new LinkedList<Block>();
 
         for (int x = 0; x < blocks.length; x++) {
-            if (blocks[x].getType() == Material.CHEST || blocks[x].getType().name() == "BARREL") {
+            if (isProtectedBlock(blocks[x].getBlock())) {
                 chests.add(blocks[x].getBlock());
             }
         }
@@ -58,7 +58,7 @@ public class LWCFeatures {
         List<Block> chests = new LinkedList<Block>();
 
         for (int x = 0; x < blocks.length; x++) {
-            if (blocks[x].getType() == Material.CHEST || blocks[x].getType().name() == "BARREL") {
+            if (isProtectedBlock(blocks[x].getBlock())) {
                 chests.add(blocks[x].getBlock());
             }
         }
@@ -68,5 +68,14 @@ public class LWCFeatures {
                 lwc.findProtection(chests.get(x)).remove();
             }
         }
+    }
+
+    private static boolean isProtectedBlock(Block block) {
+        boolean bProtected = false;
+        String blockName = block.getType().name().toLowerCase();
+        ConfigurationNode bConf = lwc.getConfiguration().getNode("protections.blocks." + blockName);
+        if (bConf != null) bProtected = true;
+
+        return bProtected;
     }
 }

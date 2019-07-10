@@ -114,12 +114,6 @@
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>com.griefcraft.lwc</groupId>
-            <artifactId>Modern-LWC</artifactId>
-            <version>2.1.4</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
             <groupId>net.milkbowl.vault</groupId>
             <artifactId>VaultAPI</artifactId>
             <version>1.6</version>
