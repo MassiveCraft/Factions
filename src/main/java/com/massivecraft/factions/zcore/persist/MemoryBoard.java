@@ -165,12 +165,11 @@ public abstract class MemoryBoard extends Board {
                 Entry<FLocation, String> entry = iter.next();
                 if (entry.getValue().equals(factionId)) {
                     LWCFeatures.clearAllChests(entry.getKey());
-                    iter.remove();
                 }
             }
-        } else {
-            flocationIds.removeFaction(factionId);
         }
+
+        flocationIds.removeFaction(factionId);
     }
 
     // Is this coord NOT completely surrounded by coords claimed by the same faction?
