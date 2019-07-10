@@ -7,18 +7,17 @@ import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.*;
 import org.bukkit.entity.minecart.ExplosiveMinecart;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.hanging.HangingBreakEvent;
 import org.bukkit.event.hanging.HangingBreakEvent.RemoveCause;
 import org.bukkit.event.hanging.HangingPlaceEvent;
-import org.bukkit.event.world.PortalCreateEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.projectiles.ProjectileSource;
@@ -26,7 +25,7 @@ import org.bukkit.projectiles.ProjectileSource;
 import java.util.*;
 
 
-public class FactionsEntityListener implements Listener {
+public class FactionsEntityListener extends AbstractListener {
 
     public P p;
 
@@ -283,6 +282,33 @@ public class FactionsEntityListener implements Listener {
         Entity damager = sub.getDamager();
         Entity damagee = sub.getEntity();
 
+        // for damage caused by projectiles, getDamager() returns the projectile... what we need to know is the source
+        if (damager instanceof Projectile) {
+            Projectile projectile = (Projectile) damager;
+
+            if (!(projectile.getShooter() instanceof Entity)) {
+                return true;
+            }
+
+            damager = (Entity) projectile.getShooter();
+        }
+
+        if (damager instanceof Player) {
+            Player player = (Player) damager;
+            Material material = null;
+            switch (sub.getEntity().getType()) {
+                case ITEM_FRAME:
+                    material = Material.ITEM_FRAME;
+                    break;
+                case ARMOR_STAND:
+                    material = Material.ARMOR_STAND;
+                    break;
+            }
+            if (material != null && !canPlayerUseBlock(player, material, damagee.getLocation(), false)) {
+                return false;
+            }
+        }
+
         if (!(damagee instanceof Player)) {
             return true;
         }
@@ -296,19 +322,7 @@ public class FactionsEntityListener implements Listener {
         Location defenderLoc = defender.getPlayer().getLocation();
         Faction defLocFaction = Board.getInstance().getFactionAt(new FLocation(defenderLoc));
 
-        // for damage caused by projectiles, getDamager() returns the projectile... what we need to know is the source
-        if (damager instanceof Projectile) {
-            Projectile projectile = (Projectile) damager;
-
-            if (!(projectile.getShooter() instanceof Entity)) {
-                return true;
-            }
-
-            damager = (Entity) projectile.getShooter();
-        }
-
-        if (damager == damagee)  // ender pearl usage and other self-inflicted damage
-        {
+        if (damager == damagee) {  // ender pearl usage and other self-inflicted damage
             return true;
         }
 

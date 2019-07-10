@@ -10,8 +10,6 @@ import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.VisualizeUtil;
-import com.massivecraft.factions.util.material.FactionMaterial;
-import com.massivecraft.factions.util.material.MaterialDb;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.gui.FactionGUI;
@@ -21,10 +19,10 @@ import com.massivecraft.factions.zcore.util.TextUtil;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
@@ -38,7 +36,8 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Level;
 
-public class FactionsPlayerListener implements Listener {
+
+public class FactionsPlayerListener extends AbstractListener {
 
     private P p;
 
@@ -250,16 +249,16 @@ public class FactionsPlayerListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onPlayerInteract(PlayerInteractEntityEvent event) {
-        Material material = null;
-        switch (event.getRightClicked().getType()) {
-            case ARMOR_STAND:
-                material = Material.ARMOR_STAND;
-                break;
-            case ITEM_FRAME:
-                material = Material.ITEM_FRAME;
-                break;
+        if (event.getRightClicked().getType() == EntityType.ITEM_FRAME) {
+            if (!canPlayerUseBlock(event.getPlayer(), Material.ITEM_FRAME, event.getRightClicked().getLocation(), false)) {
+                event.setCancelled(true);
+            }
         }
-        if (material != null && !playerCanUseItemHere(event.getPlayer(), event.getRightClicked().getLocation(), material, false)) {
+    }
+
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+    public void onPlayerInteract(PlayerArmorStandManipulateEvent event) {
+        if (!canPlayerUseBlock(event.getPlayer(), Material.ARMOR_STAND, event.getRightClicked().getLocation(), false)) {
             event.setCancelled(true);
         }
     }
@@ -278,8 +277,7 @@ public class FactionsPlayerListener implements Listener {
             return;  // clicked in air, apparently
         }
 
-        if (!canPlayerUseBlock(player, block, false)) {
-            System.out.println("Cancelling " + player.getName() + " " + block.getType().name());
+        if (!canPlayerUseBlock(player, block.getType(), block.getLocation(), false)) {
             event.setCancelled(true);
             if (Conf.handleExploitInteractionSpam) {
                 String name = player.getName();
@@ -416,157 +414,6 @@ public class FactionsPlayerListener implements Listener {
         }
 
         return true;
-    }
-
-    public boolean canPlayerUseBlock(Player player, Block block, boolean justCheck) {
-        if (Conf.playersWhoBypassAllProtection.contains(player.getName())) {
-            return true;
-        }
-
-        FPlayer me = FPlayers.getInstance().getByPlayer(player);
-        if (me.isAdminBypassing()) {
-            return true;
-        }
-
-        Material material = block.getType();
-        FLocation loc = new FLocation(block);
-        Faction otherFaction = Board.getInstance().getFactionAt(loc);
-
-        // no door/chest/whatever protection in wilderness, war zones, or safe zones
-        if (!otherFaction.isNormal()) {
-            return true;
-        }
-
-        if (P.p.getConfig().getBoolean("hcf.raidable", false) && otherFaction.getLandRounded() >= otherFaction.getPowerRounded()) {
-            return true;
-        }
-
-        PermissableAction action = null;
-
-        switch (block.getType()) {
-            case LEVER:
-                action = PermissableAction.LEVER;
-                break;
-            case STONE_BUTTON:
-            case BIRCH_BUTTON:
-            case ACACIA_BUTTON:
-            case DARK_OAK_BUTTON:
-            case JUNGLE_BUTTON:
-            case OAK_BUTTON:
-            case SPRUCE_BUTTON:
-                action = PermissableAction.BUTTON;
-                break;
-            case DARK_OAK_DOOR:
-            case ACACIA_DOOR:
-            case BIRCH_DOOR:
-            case IRON_DOOR:
-            case JUNGLE_DOOR:
-            case SPRUCE_DOOR:
-            case ACACIA_TRAPDOOR:
-            case OAK_DOOR:
-            case BIRCH_TRAPDOOR:
-            case DARK_OAK_TRAPDOOR:
-            case IRON_TRAPDOOR:
-            case JUNGLE_TRAPDOOR:
-            case OAK_TRAPDOOR:
-            case SPRUCE_TRAPDOOR:
-                action = PermissableAction.DOOR;
-                break;
-            case CHEST:
-            case ENDER_CHEST:
-            case TRAPPED_CHEST:
-            case BARREL:
-            case BLAST_FURNACE:
-            case CARTOGRAPHY_TABLE:
-            case GRINDSTONE:
-            case SMOKER:
-            case STONECUTTER:
-            case ARMOR_STAND:
-            case ITEM_FRAME:
-                action = PermissableAction.CONTAINER;
-                break;
-            default:
-                // Check for doors that might have diff material name in old version.
-                if (block.getType().name().contains("DOOR")) {
-                    action = PermissableAction.DOOR;
-                }
-                break;
-        }
-
-        // F PERM check runs through before other checks.
-        Access access = otherFaction.getAccess(me, action);
-        if (access == null || access == Access.DENY) {
-            me.msg(TL.GENERIC_NOPERMISSION, action);
-            return false;
-        } else if (access == Access.ALLOW) {
-            return true; // explicitly allowed
-        }
-
-        // Dupe fix.
-        Faction myFaction = me.getFaction();
-        Relation rel = myFaction.getRelationTo(otherFaction);
-        if (!rel.isMember() || !otherFaction.playerHasOwnershipRights(me, loc)) {
-            Material mainHand = player.getItemInHand().getType();
-
-            // Check if material is at risk for dupe in either hand.
-            if (isDupeMaterial(mainHand)) {
-                return false;
-            }
-        }
-
-        // We only care about some material types.
-        if (otherFaction.hasPlayersOnline()) {
-            if (!Conf.territoryProtectedMaterials.contains(material)) {
-                return true;
-            }
-        } else {
-            if (!Conf.territoryProtectedMaterialsWhenOffline.contains(material)) {
-                return true;
-            }
-        }
-
-        // You may use any block unless it is another faction's territory...
-        if (rel.isNeutral() || (rel.isEnemy() && Conf.territoryEnemyProtectMaterials) || (rel.isAlly() && Conf.territoryAllyProtectMaterials) || (rel.isTruce() && Conf.territoryTruceProtectMaterials)) {
-            if (!justCheck) {
-                me.msg(TL.PLAYER_USE_TERRITORY, (material == FactionMaterial.from("FARMLAND").get() ? "trample " : "use ") + TextUtil.getMaterialName(material), otherFaction.getTag(myFaction));
-            }
-
-            return false;
-        }
-
-        // Also cancel if player doesn't have ownership rights for this claim
-        if (Conf.ownedAreasEnabled && Conf.ownedAreaProtectMaterials && !otherFaction.playerHasOwnershipRights(me, loc)) {
-            if (!justCheck) {
-                me.msg(TL.PLAYER_USE_OWNED, TextUtil.getMaterialName(material), otherFaction.getOwnerListString(loc));
-            }
-
-            return false;
-        }
-
-        return true;
-    }
-
-    private boolean isDupeMaterial(Material material) {
-        if (MaterialDb.getInstance().provider.isSign(material)) {
-            return true;
-        }
-
-        switch (material) {
-            case CHEST:
-            case TRAPPED_CHEST:
-            case DARK_OAK_DOOR:
-            case ACACIA_DOOR:
-            case BIRCH_DOOR:
-            case JUNGLE_DOOR:
-            case OAK_DOOR:
-            case SPRUCE_DOOR:
-            case IRON_DOOR:
-                return true;
-            default:
-                break;
-        }
-
-        return false;
     }
 
     @EventHandler(priority = EventPriority.HIGH)
