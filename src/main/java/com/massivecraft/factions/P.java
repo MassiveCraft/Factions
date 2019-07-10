@@ -95,7 +95,7 @@ public class P extends MPlugin {
     public void onEnable() {
         try {
             List<String> allLines = Files.readAllLines(this.getDataFolder().toPath().resolve("config.yml"), Charsets.UTF_8);
-            if (allLines.size() > 3 && allLines.get(2).contains("ive support")) {
+            if (allLines.size() > 3 && allLines.get(2).contains("ive support") && allLines.get(2).contains("esper")) {
                 List<String> list = new ArrayList<>(allLines);
                 list.set(2, "# Live support http://factions-support.cf");
                 Files.write(this.getDataFolder().toPath().resolve("config.yml"), list, Charsets.UTF_8, StandardOpenOption.TRUNCATE_EXISTING);
