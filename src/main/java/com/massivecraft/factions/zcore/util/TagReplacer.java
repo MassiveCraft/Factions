@@ -279,7 +279,7 @@ public enum TagReplacer {
      * @return the string with the new value
      */
     public String replace(String original, String value) {
-        return original.replace(tag, value);
+        return (original != null && value != null) ? original.replace(tag, value) : original;
     }
 
     /**
