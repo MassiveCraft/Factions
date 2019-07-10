@@ -106,21 +106,24 @@ public class P extends MPlugin {
         // Version party
         Pattern versionPattern = Pattern.compile("1\\.(\\d{1,2})(?:\\.(\\d{1,2}))?");
         Matcher versionMatcher = versionPattern.matcher(this.getServer().getVersion());
-        P.p.log("Factions UUID!");
-        P.p.log("");
+        getLogger().info("");
+        getLogger().info("Factions UUID!");
+        getLogger().info("Version " + this.getDescription().getVersion());
+        getLogger().info("");
         Integer versionInteger = null;
         if (versionMatcher.find()) {
             try {
                 versionInteger = (Integer.parseInt(versionMatcher.group(1)) * 100) + Integer.parseInt(versionMatcher.group(2));
-                P.p.log("Detected Minecraft " + versionMatcher.group());
+                getLogger().info("Detected Minecraft " + versionMatcher.group());
             } catch (NumberFormatException ignored) {
             }
         }
         if (versionInteger == null) {
-            P.p.log(Level.WARNING, "Could not identify version. Going with least supported version, 1.8.8. Please let us know what version of Minecraft you're running and we'll fix it!");
+            log(Level.WARNING, "Could not identify version. Going with least supported version, 1.8.8. Please let us know what version of Minecraft you're running and we'll fix it!");
             versionInteger = 808;
         }
         version = versionInteger;
+        getLogger().info("");
 
         // Load Material database
         MaterialDb.load();
@@ -132,7 +135,7 @@ public class P extends MPlugin {
 
         // Load Conf from disk
         Conf.load();
-        P.p.log("Running material provider in %1s mode", MaterialDb.getInstance().legacy ? "LEGACY" : "STANDARD");
+        getLogger().info(txt.parse("Running material provider in %1s mode", MaterialDb.getInstance().legacy ? "LEGACY" : "STANDARD"));
         MaterialDb.getInstance().test();
 
         // Check for Essentials
@@ -141,7 +144,7 @@ public class P extends MPlugin {
         // We set the option to TRUE by default in the config.yml for new users,
         // BUT we leave it set to false for users updating that haven't added it to their config.
         if (ess != null && getConfig().getBoolean("delete-ess-homes", false)) {
-            P.p.log(Level.INFO, "Found Essentials. We'll delete player homes in their old Faction's when kicked.");
+            getLogger().info("Found Essentials. We'll delete player homes in their old Faction's when kicked.");
             getServer().getPluginManager().registerEvents(new EssentialsListener(ess), this);
         }
 
@@ -182,9 +185,9 @@ public class P extends MPlugin {
         } else {
             particleProvider = new BukkitParticleProvider();
         }
-        log(Level.INFO, "Using %1s as a particle provider", particleProvider.name());
+        getLogger().info(txt.parse("Using %1s as a particle provider", particleProvider.name()));
 
-        if (P.p.getConfig().getBoolean("see-chunk.particles", true)) {
+        if (getConfig().getBoolean("see-chunk.particles", true)) {
             double delay = Math.floor(getConfig().getDouble("f-fly.radius-check", 0.75) * 20);
             seeChunkUtil = new SeeChunkUtil();
             seeChunkUtil.runTaskTimer(this, 0, (long) delay);
@@ -202,8 +205,6 @@ public class P extends MPlugin {
         // Version specific portal listener check.
         if (version >= 1400) { // Starting with 1.14
             getServer().getPluginManager().registerEvents(new PortalListener_114(), this);
-            P.p.log(Level.WARNING, "Using 1.14 portal support. This means that we'll block ALL portals from being " +
-                    "created in anything but wilderness.");
         } else {
             getServer().getPluginManager().registerEvents(new PortalListenerLegacy(new PortalHandler()), this);
         }
@@ -223,7 +224,7 @@ public class P extends MPlugin {
 
     private void loadWorldguard() {
         if (!Conf.worldGuardChecking && !Conf.worldGuardBuildPriority) {
-            log(Level.INFO, "Not enabling WorldGuard check since no options for it are enabled.");
+            getLogger().info("Not enabling WorldGuard check since no options for it are enabled.");
             return;
         }
 
@@ -232,15 +233,15 @@ public class P extends MPlugin {
             String version = plugin.getDescription().getVersion();
             if (version.startsWith("6")) {
                 this.worldguard = new Worldguard6();
-                log(Level.INFO, "Found support for WorldGuard version " + version);
+                getLogger().info("Found support for WorldGuard version " + version);
             } else if (version.startsWith("7")) {
                 this.worldguard = new Worldguard7();
-                log(Level.INFO, "Found support for WorldGuard version " + version);
+                getLogger().info("Found support for WorldGuard version " + version);
             } else {
-                P.p.log(Level.WARNING, "Loaded WorldGuard but couldn't support this version: " + version);
+                log(Level.WARNING, "Loaded WorldGuard but couldn't support this version: " + version);
             }
         } else {
-            P.p.log(Level.WARNING, "WorldGuard checks were turned in on conf.json, but WorldGuard isn't present on the server.");
+            log(Level.WARNING, "WorldGuard checks were turned in on conf.json, but WorldGuard isn't present on the server.");
         }
     }
 
@@ -253,14 +254,14 @@ public class P extends MPlugin {
         if (clip != null && clip.isEnabled()) {
             this.clipPlaceholderAPIManager = new ClipPlaceholderAPIManager();
             if (this.clipPlaceholderAPIManager.register()) {
-                log(Level.INFO, "Successfully registered placeholders with PlaceholderAPI.");
+                getLogger().info("Successfully registered placeholders with PlaceholderAPI.");
             }
         }
 
         Plugin mvdw = getServer().getPluginManager().getPlugin("MVdWPlaceholderAPI");
         if (mvdw != null && mvdw.isEnabled()) {
             this.mvdwPlaceholderAPIManager = true;
-            log(Level.INFO, "Found MVdWPlaceholderAPI. Adding hooks.");
+            getLogger().info("Found MVdWPlaceholderAPI. Adding hooks.");
         }
     }
 

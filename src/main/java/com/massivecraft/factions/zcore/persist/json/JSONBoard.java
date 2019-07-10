@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
+import java.util.logging.Level;
 
 
 public class JSONBoard extends MemoryBoard {
@@ -71,10 +72,10 @@ public class JSONBoard extends MemoryBoard {
     }
 
     public boolean load() {
-        P.p.log("Loading board from disk");
+        P.p.getLogger().info("Loading board from disk");
 
         if (!file.exists()) {
-            P.p.log("No board to load from disk. Creating new file.");
+            P.p.getLogger().info("No board to load from disk. Creating new file.");
             forceSave();
             return true;
         }
@@ -84,10 +85,10 @@ public class JSONBoard extends MemoryBoard {
             }.getType();
             Map<String, Map<String, String>> worldCoordIds = P.p.gson.fromJson(DiscUtil.read(file), type);
             loadFromSaveFormat(worldCoordIds);
-            P.p.log("Loaded " + flocationIds.size() + " board locations");
+            P.p.getLogger().info("Loaded " + flocationIds.size() + " board locations");
         } catch (Exception e) {
             e.printStackTrace();
-            P.p.log("Failed to load the board from disk.");
+            P.p.log(Level.SEVERE, "Failed to load the board from disk.");
             return false;
         }
 

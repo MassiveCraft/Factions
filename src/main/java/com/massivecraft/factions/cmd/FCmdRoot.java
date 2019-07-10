@@ -185,12 +185,12 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
         this.addSubCommand(this.cmdColeader);
         this.addSubCommand(this.cmdNear);
         if (Bukkit.getServer().getPluginManager().isPluginEnabled("FactionsTop")) {
-            P.p.log(Level.INFO, "Found FactionsTop plugin. Disabling our own /f top command.");
+            P.p.getLogger().info("Found FactionsTop plugin. Disabling our own /f top command.");
         } else {
             this.addSubCommand(this.cmdTop);
         }
         if (P.p.isHookedPlayervaults()) {
-            P.p.log("Found playervaults hook, adding /f vault and /f setmaxvault commands.");
+            P.p.getLogger().info("Found playervaults hook, adding /f vault and /f setmaxvault commands.");
             this.addSubCommand(new CmdSetMaxVaults());
             this.addSubCommand(new CmdVault());
         }
@@ -198,9 +198,9 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
         if (P.p.getConfig().getBoolean("f-fly.enable", false)) {
             this.addSubCommand(this.cmdFly);
             this.addSubCommand(this.cmdTrail);
-            P.p.log(Level.INFO, "Enabling /f fly command");
+            P.p.getLogger().info("Enabling /f fly command");
         } else {
-            P.p.log(Level.WARNING, "Faction flight set to false in config.yml. Not enabling /f fly command.");
+            P.p.getLogger().info("Faction flight set to false in config.yml. Not enabling /f fly command.");
         }
 
         if (CommodoreProvider.isSupported()) {

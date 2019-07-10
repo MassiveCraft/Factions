@@ -76,7 +76,7 @@ public class JSONFPlayers extends MemoryFPlayers {
         }
         this.fPlayers.clear();
         this.fPlayers.putAll(fplayers);
-        P.p.log("Loaded " + fPlayers.size() + " players");
+        P.p.getLogger().info("Loaded " + fPlayers.size() + " players");
     }
 
     private Map<String, JSONFPlayer> loadCore() {

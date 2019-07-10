@@ -10,7 +10,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
-import java.util.logging.Level;
 
 @SuppressWarnings("unchecked")
 public class SeeChunkUtil extends BukkitRunnable {
@@ -24,7 +23,7 @@ public class SeeChunkUtil extends BukkitRunnable {
         this.effect = P.p.particleProvider.effectFromString(effectName);
         this.useColor = P.p.getConfig().getBoolean("see-chunk.relational-useColor", true);
 
-        P.p.log(Level.INFO, "Using %s as the ParticleEffect for /f sc", P.p.particleProvider.effectName(effect));
+        P.p.getLogger().info(P.p.txt.parse("Using %s as the ParticleEffect for /f sc", P.p.particleProvider.effectName(effect)));
     }
 
     @Override

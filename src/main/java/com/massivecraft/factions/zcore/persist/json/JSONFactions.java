@@ -69,7 +69,7 @@ public class JSONFactions extends MemoryFactions {
         this.factions.putAll(factions);
 
         super.load();
-        P.p.log("Loaded " + factions.size() + " Factions");
+        P.p.getLogger().info("Loaded " + factions.size() + " Factions");
     }
 
     private Map<String, JSONFaction> loadCore() {

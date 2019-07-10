@@ -72,7 +72,7 @@ public abstract class MPlugin extends JavaPlugin {
     private long timeEnableStart;
 
     public boolean preEnable() {
-        log("=== ENABLE START ===");
+        getLogger().info("=== Starting up! ===");
         timeEnableStart = System.currentTimeMillis();
 
         // Ensure basefolder exists!
@@ -112,7 +112,7 @@ public abstract class MPlugin extends JavaPlugin {
     }
 
     public void postEnable() {
-        log("=== ENABLE DONE (Took " + (System.currentTimeMillis() - timeEnableStart) + "ms) ===");
+        getLogger().info("=== Ready to go after " + (System.currentTimeMillis() - timeEnableStart) + "ms! ===");
     }
 
     public void loadLang() {

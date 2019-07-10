@@ -25,9 +25,9 @@ public class TitleAPI {
         try {
             Player.class.getMethod("sendTitle", String.class, String.class, int.class, int.class, int.class);
             supportsAPI = true;
-            P.p.log(Level.INFO, "Found API support for sending player titles :D");
+            P.p.getLogger().info("Found API support for sending player titles :D");
         } catch (NoSuchMethodException e) {
-            P.p.log(Level.WARNING, "Didn't find API support for sending titles :( Will attempt reflection. No promises.");
+            P.p.getLogger().info("Didn't find API support for sending titles :( Will attempt reflection. No promises.");
         }
     }
 

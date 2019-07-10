@@ -34,21 +34,21 @@ public class Econ {
         String integrationFail = "Economy integration is " + (Conf.econEnabled ? "enabled, but" : "disabled, and") + " the plugin \"Vault\" ";
 
         if (Bukkit.getServer().getPluginManager().getPlugin("Vault") == null) {
-            P.p.log(integrationFail + "is not installed.");
+            P.p.getLogger().info(integrationFail + "is not installed.");
             return;
         }
 
         RegisteredServiceProvider<Economy> rsp = Bukkit.getServer().getServicesManager().getRegistration(Economy.class);
         if (rsp == null) {
-            P.p.log(integrationFail + "is not hooked into an economy plugin.");
+            P.p.getLogger().info(integrationFail + "is not hooked into an economy plugin.");
             return;
         }
         econ = rsp.getProvider();
 
-        P.p.log("Economy integration through Vault plugin successful.");
+        P.p.getLogger().info("Economy integration through Vault plugin successful.");
 
         if (!Conf.econEnabled) {
-            P.p.log("NOTE: Economy is disabled. You can enable it with the command: f config econEnabled true");
+            P.p.getLogger().info("NOTE: Economy is disabled. You can enable it with the command: f config econEnabled true");
         }
 
         //P.p.cmdBase.cmdHelp.updateHelp();
