@@ -19,7 +19,7 @@ public class LWCFeatures {
 
     public static void setup() {
         Plugin test = Bukkit.getServer().getPluginManager().getPlugin("LWC");
-        if (test == null || !test.isEnabled()) return;
+        if (!(test instanceof LWCPlugin) || !test.isEnabled()) return;
 
         lwc = ((LWCPlugin) test).getLWC();
         P.p.log("Successfully hooked into LWC!" + (P.p.getConfig().getBoolean("lwc.integration", false) ? "" : " Integration is currently disabled (\"lwc.integration\")."));
