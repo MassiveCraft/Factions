@@ -781,6 +781,8 @@ public enum TL {
     PLAYER_COMMAND_ALLY("&cYou can't use the command '%s' in ally territory."),
     PLAYER_COMMAND_WILDERNESS("&cYou can't use the command '%s' in the wilderness."),
 
+    PLAYER_PORTAL_NOTALLOWED("&cDestination portal can't be created there."),
+
     PLAYER_POWER_NOLOSS_PEACEFUL("&eYou didn't lose any power since you are in a peaceful faction."),
     PLAYER_POWER_NOLOSS_WORLD("&eYou didn't lose any power due to the world you died in."),
     PLAYER_POWER_NOLOSS_WILDERNESS("&eYou didn't lose any power since you were in the wilderness."),

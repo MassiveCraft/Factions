@@ -559,50 +559,6 @@ public class FactionsEntityListener extends AbstractListener {
         }
     }
 
-    /*
-
-    We have to disable this event for now because TravelAgents were removed in 1.14.
-    See https://www.spigotmc.org/threads/bukkit-craftbukkit-spigot-bungeecord-1-14-development-builds.369724/
-
-    The options are:
-    1. PlayerPortalEvent, which doesn't let us know anything about the portal so we can't stop a player from
-    creating a portal at a location they aren't allowed to.
-    2. PortalCreateEvent, which doesn't give us any information about the player that makes the portal, so we can't
-    stop specific players from creating portals in Faction land.
-
-    So for now, we'll temporarily block ALL portals from being created in anything but wilderness.
-    Spigot mentioned that TravelAgent might come back, so we'll leave this commented out here for now.
-    See PortalListenerLegacy and PortalListener_114 for version specific implementations.
-
-    @EventHandler
-    public void onTravel(PlayerPortalEvent event) {
-        if (!P.p.getConfig().getBoolean("portals.limit", false)) {
-            return; // Don't do anything if they don't want us to.
-        }
-
-        TravelAgent agent = event.getPortalTravelAgent();
-
-        // If they aren't able to find a portal, it'll try to create one.
-        if (event.useTravelAgent() && agent.getCanCreatePortal() && agent.findPortal(event.getTo()) == null) {
-            FLocation loc = new FLocation(event.getTo());
-            Faction faction = Board.getInstance().getFactionAt(loc);
-            if (faction.isWilderness()) {
-                return; // We don't care about wilderness.
-            } else if (!faction.isNormal() && !event.getPlayer().isOp()) {
-                // Don't let non ops make portals in safezone or warzone.
-                event.setCancelled(true);
-                return;
-            }
-
-            FPlayer fp = FPlayers.getInstance().getByPlayer(event.getPlayer());
-            String mininumRelation = P.p.getConfig().getString("portals.minimum-relation", "MEMBER"); // Defaults to Neutral if typed wrong.
-            if (!fp.getFaction().getRelationTo(faction).isAtLeast(Relation.fromString(mininumRelation))) {
-                event.setCancelled(true);
-            }
-        }
-    }
-    */
-
     private boolean stopEndermanBlockManipulation(Location loc) {
         if (loc == null) {
             return false;
