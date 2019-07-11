@@ -859,7 +859,7 @@ public abstract class MemoryFPlayer implements FPlayer {
         }
 
         if (LWCFeatures.getEnabled() && forFaction.isNormal() && P.p.getConfig().getBoolean("lwc.reset-locks-capture", false)) {
-            LWCFeatures.clearOtherChests(flocation, this.getFaction());
+            LWCFeatures.clearOtherLocks(flocation, this.getFaction());
         }
 
         // announce success

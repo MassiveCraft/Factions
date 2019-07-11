@@ -164,7 +164,7 @@ public abstract class MemoryBoard extends Board {
             while (iter.hasNext()) {
                 Entry<FLocation, String> entry = iter.next();
                 if (entry.getValue().equals(factionId)) {
-                    LWCFeatures.clearAllChests(entry.getKey());
+                    LWCFeatures.clearAllLocks(entry.getKey());
                 }
             }
         }
@@ -230,7 +230,7 @@ public abstract class MemoryBoard extends Board {
             Entry<FLocation, String> entry = iter.next();
             if (!Factions.getInstance().isValidFactionId(entry.getValue())) {
                 if (LWCFeatures.getEnabled() && P.p.getConfig().getBoolean("lwc.reset-locks-unclaim", false)) {
-                    LWCFeatures.clearAllChests(entry.getKey());
+                    LWCFeatures.clearAllLocks(entry.getKey());
                 }
                 P.p.log("Board cleaner removed " + entry.getValue() + " from " + entry.getKey());
                 iter.remove();

@@ -884,7 +884,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
     public void clearClaimOwnership(FLocation loc) {
         if (LWCFeatures.getEnabled() && P.p.getConfig().getBoolean("lwc.reset-locks-unclaim", false)) {
-            LWCFeatures.clearAllChests(loc);
+            LWCFeatures.clearAllLocks(loc);
         }
         claimOwnership.remove(loc);
     }
@@ -912,7 +912,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
             if (ownerData.isEmpty()) {
                 if (LWCFeatures.getEnabled() && P.p.getConfig().getBoolean("lwc.reset-locks-unclaim", false)) {
-                    LWCFeatures.clearAllChests(entry.getKey());
+                    LWCFeatures.clearAllLocks(entry.getKey());
                 }
                 claimOwnership.remove(entry.getKey());
             }

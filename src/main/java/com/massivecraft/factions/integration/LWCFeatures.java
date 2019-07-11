@@ -29,53 +29,44 @@ public class LWCFeatures {
         return P.p.getConfig().getBoolean("lwc.integration", false) && lwc != null;
     }
 
-    public static void clearOtherChests(FLocation flocation, Faction faction) {
+    public static void clearOtherLocks(FLocation flocation, Faction faction) {
         Location location = new Location(Bukkit.getWorld(flocation.getWorldName()), flocation.getX() * 16, 5, flocation.getZ() * 16);
         if (location.getWorld() == null) return;  // world not loaded or something? cancel out to prevent error
         Chunk chunk = location.getChunk();
         BlockState[] blocks = chunk.getTileEntities();
-        List<Block> chests = new LinkedList<Block>();
+        List<Block> lwcBlocks = new LinkedList<Block>();
 
         for (int x = 0; x < blocks.length; x++) {
-            if (isProtectedBlock(blocks[x].getBlock())) {
-                chests.add(blocks[x].getBlock());
+            if (lwc.isProtectable(blocks[x])) {
+                lwcBlocks.add(blocks[x].getBlock());
             }
         }
 
-        for (int x = 0; x < chests.size(); x++) {
-            if (lwc.findProtection(chests.get(x)) != null) {
-                if (!faction.getFPlayers().contains(FPlayers.getInstance().getByPlayer(Bukkit.getServer().getPlayer(lwc.findProtection(chests.get(x)).getOwner()))))
-                    lwc.findProtection(chests.get(x)).remove();
+        for (int x = 0; x < lwcBlocks.size(); x++) {
+            if (lwc.findProtection(lwcBlocks.get(x)) != null) {
+                if (!faction.getFPlayers().contains(FPlayers.getInstance().getByPlayer(Bukkit.getServer().getPlayer(lwc.findProtection(lwcBlocks.get(x)).getOwner()))))
+                    lwc.findProtection(lwcBlocks.get(x)).remove();
             }
         }
     }
 
-    public static void clearAllChests(FLocation flocation) {
+    public static void clearAllLocks(FLocation flocation) {
         Location location = new Location(Bukkit.getWorld(flocation.getWorldName()), flocation.getX() * 16, 5, flocation.getZ() * 16);
         if (location.getWorld() == null) return;  // world not loaded or something? cancel out to prevent error
         Chunk chunk = location.getChunk();
         BlockState[] blocks = chunk.getTileEntities();
-        List<Block> chests = new LinkedList<Block>();
+        List<Block> lwcBlocks = new LinkedList<Block>();
 
         for (int x = 0; x < blocks.length; x++) {
-            if (isProtectedBlock(blocks[x].getBlock())) {
-                chests.add(blocks[x].getBlock());
+            if (lwc.isProtectable(blocks[x])) {
+                lwcBlocks.add(blocks[x].getBlock());
             }
         }
 
-        for (int x = 0; x < chests.size(); x++) {
-            if (lwc.findProtection(chests.get(x)) != null) {
-                lwc.findProtection(chests.get(x)).remove();
+        for (int x = 0; x < lwcBlocks.size(); x++) {
+            if (lwc.findProtection(lwcBlocks.get(x)) != null) {
+                lwc.findProtection(lwcBlocks.get(x)).remove();
             }
         }
-    }
-
-    private static boolean isProtectedBlock(Block block) {
-        boolean bProtected = false;
-        String blockName = block.getType().name().toLowerCase();
-        ConfigurationNode bConf = lwc.getConfiguration().getNode("protections.blocks." + blockName);
-        if (bConf != null) bProtected = true;
-
-        return bProtected;
     }
 }
