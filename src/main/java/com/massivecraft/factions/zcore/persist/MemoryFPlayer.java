@@ -1,6 +1,5 @@
 package com.massivecraft.factions.zcore.persist;
 
-import com.darkblade12.particleeffect.ParticleEffect;
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.event.FPlayerLeaveEvent;
 import com.massivecraft.factions.event.LandClaimEvent;
@@ -8,8 +7,7 @@ import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.iface.RelationParticipator;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.integration.Essentials;
-import com.massivecraft.factions.integration.LWCFeatures;
-import com.massivecraft.factions.integration.Worldguard7;
+import com.massivecraft.factions.integration.LWC;
 import com.massivecraft.factions.scoreboards.FScoreboard;
 import com.massivecraft.factions.scoreboards.sidebar.FInfoSidebar;
 import com.massivecraft.factions.struct.ChatMode;
@@ -858,8 +856,8 @@ public abstract class MemoryFPlayer implements FPlayer {
             Econ.modifyMoney(payee, Conf.econOverclaimRewardMultiplier, TL.CLAIM_TOOVERCLAIM.toString(), TL.CLAIM_FOROVERCLAIM.toString());
         }
 
-        if (LWCFeatures.getEnabled() && forFaction.isNormal() && P.p.getConfig().getBoolean("lwc.reset-locks-capture", false)) {
-            LWCFeatures.clearOtherLocks(flocation, this.getFaction());
+        if (LWC.getEnabled() && forFaction.isNormal() && P.p.getConfig().getBoolean("lwc.reset-locks-capture", false)) {
+            LWC.clearOtherLocks(flocation, this.getFaction());
         }
 
         // announce success

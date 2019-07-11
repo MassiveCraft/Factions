@@ -3,8 +3,7 @@ package com.massivecraft.factions.zcore.persist;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.massivecraft.factions.*;
-import com.massivecraft.factions.integration.LWCFeatures;
-import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.integration.LWC;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.util.AsciiCompass;
 import com.massivecraft.factions.util.LazyLocation;
@@ -159,12 +158,12 @@ public abstract class MemoryBoard extends Board {
     }
 
     public void clean(String factionId) {
-        if (LWCFeatures.getEnabled() && P.p.getConfig().getBoolean("lwc.reset-locks-unclaim", false)) {
+        if (LWC.getEnabled() && P.p.getConfig().getBoolean("lwc.reset-locks-unclaim", false)) {
             Iterator<Entry<FLocation, String>> iter = flocationIds.entrySet().iterator();
             while (iter.hasNext()) {
                 Entry<FLocation, String> entry = iter.next();
                 if (entry.getValue().equals(factionId)) {
-                    LWCFeatures.clearAllLocks(entry.getKey());
+                    LWC.clearAllLocks(entry.getKey());
                 }
             }
         }
@@ -229,8 +228,8 @@ public abstract class MemoryBoard extends Board {
         while (iter.hasNext()) {
             Entry<FLocation, String> entry = iter.next();
             if (!Factions.getInstance().isValidFactionId(entry.getValue())) {
-                if (LWCFeatures.getEnabled() && P.p.getConfig().getBoolean("lwc.reset-locks-unclaim", false)) {
-                    LWCFeatures.clearAllLocks(entry.getKey());
+                if (LWC.getEnabled() && P.p.getConfig().getBoolean("lwc.reset-locks-unclaim", false)) {
+                    LWC.clearAllLocks(entry.getKey());
                 }
                 P.p.log("Board cleaner removed " + entry.getValue() + " from " + entry.getKey());
                 iter.remove();

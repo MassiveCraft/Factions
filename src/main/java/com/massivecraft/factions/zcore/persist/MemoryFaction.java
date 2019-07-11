@@ -4,7 +4,7 @@ import com.massivecraft.factions.*;
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.iface.RelationParticipator;
 import com.massivecraft.factions.integration.Econ;
-import com.massivecraft.factions.integration.LWCFeatures;
+import com.massivecraft.factions.integration.LWC;
 import com.massivecraft.factions.struct.BanInfo;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
@@ -883,8 +883,8 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
 
     public void clearClaimOwnership(FLocation loc) {
-        if (LWCFeatures.getEnabled() && P.p.getConfig().getBoolean("lwc.reset-locks-unclaim", false)) {
-            LWCFeatures.clearAllLocks(loc);
+        if (LWC.getEnabled() && P.p.getConfig().getBoolean("lwc.reset-locks-unclaim", false)) {
+            LWC.clearAllLocks(loc);
         }
         claimOwnership.remove(loc);
     }
@@ -911,8 +911,8 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
             }
 
             if (ownerData.isEmpty()) {
-                if (LWCFeatures.getEnabled() && P.p.getConfig().getBoolean("lwc.reset-locks-unclaim", false)) {
-                    LWCFeatures.clearAllLocks(entry.getKey());
+                if (LWC.getEnabled() && P.p.getConfig().getBoolean("lwc.reset-locks-unclaim", false)) {
+                    LWC.clearAllLocks(entry.getKey());
                 }
                 claimOwnership.remove(entry.getKey());
             }
