@@ -105,14 +105,14 @@ public abstract class FRelationCommand extends FCommand {
     }
 
     private boolean hasMaxRelations(Faction them, Relation targetRelation, CommandContext context) {
-        int max = P.p.getConfig().getInt("max-relations." + targetRelation.toString(), -1);
         if (P.p.getConfig().getBoolean("max-relations.enabled", false)) {
+            int max = P.p.getConfig().getInt("max-relations." + targetRelation.toString(), -1);
             if (max != -1) {
                 if (context.faction.getRelationCount(targetRelation) >= max) {
                     context.msg(TL.COMMAND_RELATIONS_EXCEEDS_ME, max, targetRelation.getPluralTranslation());
                     return true;
                 }
-                if (them.getRelationCount(targetRelation) > max) {
+                if (them.getRelationCount(targetRelation) >= max) {
                     context.msg(TL.COMMAND_RELATIONS_EXCEEDS_THEY, max, targetRelation.getPluralTranslation());
                     return true;
                 }
