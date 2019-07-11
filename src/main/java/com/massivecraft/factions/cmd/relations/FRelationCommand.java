@@ -20,8 +20,10 @@ public abstract class FRelationCommand extends FCommand {
 
     public Relation targetRelation;
 
-    public FRelationCommand() {
+    public FRelationCommand(Relation targetRelation, String alias) {
         super();
+        this.targetRelation = targetRelation;
+        this.aliases.add(alias);
         this.requiredArgs.add("faction tag");
 
         this.requirements = new CommandRequirements.Builder(Permission.RELATION)
