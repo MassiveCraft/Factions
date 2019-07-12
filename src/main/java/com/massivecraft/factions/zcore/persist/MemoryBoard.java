@@ -344,57 +344,5 @@ public abstract class MemoryBoard extends Board {
         return ret;
     }
 
-    private List<String> getToolTip(Faction faction, FPlayer to) {
-        List<String> ret = new ArrayList<>();
-        List<String> show = P.p.getConfig().getStringList("map");
-
-        if (!faction.isNormal()) {
-            String tag = faction.getTag(to);
-            // send header and that's all
-            String header = show.get(0);
-            if (TagReplacer.HEADER.contains(header)) {
-                ret.add(P.p.txt.titleize(tag));
-            } else {
-                ret.add(P.p.txt.parse(TagReplacer.FACTION.replace(header, tag)));
-            }
-            return ret; // we only show header for non-normal factions
-        }
-
-        for (String raw : show) {
-            // Hack to get rid of the extra underscores in title normally used to center tag
-            if (raw.contains("{header}")) {
-                raw = raw.replace("{header}", faction.getTag(to));
-            }
-
-            String parsed = TagUtil.parsePlain(faction, to, raw); // use relations
-            if (parsed == null) {
-                continue; // Due to minimal f show.
-            }
-
-            if (TagUtil.hasFancy(parsed)) {
-                List<FancyMessage> fancy = TagUtil.parseFancy(faction, to, parsed);
-                if (fancy != null) {
-                    for (FancyMessage msg : fancy) {
-                        ret.add((P.p.txt.parse(msg.toOldMessageFormat())));
-                    }
-                }
-                continue;
-            }
-
-            if (!parsed.contains("{notFrozen}") && !parsed.contains("{notPermanent}")) {
-                if (parsed.contains("{ig}")) {
-                    // replaces all variables with no home TL
-                    parsed = parsed.substring(0, parsed.indexOf("{ig}")) + TL.COMMAND_SHOW_NOHOME.toString();
-                }
-                if (parsed.contains("%")) {
-                    parsed = parsed.replaceAll("%", ""); // Just in case it got in there before we disallowed it.
-                }
-                ret.add(P.p.txt.parse(parsed));
-            }
-        }
-
-        return ret;
-    }
-
     public abstract void convertFrom(MemoryBoard old);
 }
