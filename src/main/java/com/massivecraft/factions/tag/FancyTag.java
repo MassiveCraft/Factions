@@ -4,6 +4,7 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.P;
+import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.factions.util.TriFunction;
 import mkremins.fanciful.FancyMessage;
@@ -14,72 +15,9 @@ import java.util.Collections;
 import java.util.List;
 
 public enum FancyTag implements Tag {
-    ALLIES_LIST("{allies-list}", (target, fme, prefix) -> {
-        List<FancyMessage> fancyMessages = new ArrayList<>();
-        FancyMessage currentAllies = P.p.txt.parseFancy(prefix);
-        boolean firstAlly = true;
-        for (Faction otherFaction : Factions.getInstance().getAllFactions()) {
-            if (otherFaction == target) {
-                continue;
-            }
-            String s = otherFaction.getTag(fme);
-            if (otherFaction.getRelationTo(target).isAlly()) {
-                currentAllies.then(firstAlly ? s : ", " + s);
-                currentAllies.tooltip(tipFaction(otherFaction)).color(fme.getColorTo(otherFaction));
-                firstAlly = false;
-                if (currentAllies.toJSONString().length() > ARBITRARY_LIMIT) {
-                    fancyMessages.add(currentAllies);
-                    currentAllies = new FancyMessage("");
-                }
-            }
-        }
-        fancyMessages.add(currentAllies);
-        return firstAlly && Tag.isMinimalShow() ? null : fancyMessages;
-    }),
-    ENEMIES_LIST("{enemies-list}", (target, fme, prefix) -> {
-        List<FancyMessage> fancyMessages = new ArrayList<>();
-        FancyMessage currentEnemies = P.p.txt.parseFancy(prefix);
-        boolean firstEnemy = true;
-        for (Faction otherFaction : Factions.getInstance().getAllFactions()) {
-            if (otherFaction == target) {
-                continue;
-            }
-            String s = otherFaction.getTag(fme);
-            if (otherFaction.getRelationTo(target).isEnemy()) {
-                currentEnemies.then(firstEnemy ? s : ", " + s);
-                currentEnemies.tooltip(tipFaction(otherFaction)).color(fme.getColorTo(otherFaction));
-                firstEnemy = false;
-                if (currentEnemies.toJSONString().length() > ARBITRARY_LIMIT) {
-                    fancyMessages.add(currentEnemies);
-                    currentEnemies = new FancyMessage("");
-                }
-            }
-        }
-        fancyMessages.add(currentEnemies);
-        return firstEnemy && Tag.isMinimalShow() ? null : fancyMessages;
-    }),
-    TRUCES_LIST("{truces-list}", (target, fme, prefix) -> {
-        List<FancyMessage> fancyMessages = new ArrayList<>();
-        FancyMessage currentTruces = P.p.txt.parseFancy(prefix);
-        boolean firstTruce = true;
-        for (Faction otherFaction : Factions.getInstance().getAllFactions()) {
-            if (otherFaction == target) {
-                continue;
-            }
-            String s = otherFaction.getTag(fme);
-            if (otherFaction.getRelationTo(target).isTruce()) {
-                currentTruces.then(firstTruce ? s : ", " + s);
-                currentTruces.tooltip(tipFaction(otherFaction)).color(fme.getColorTo(otherFaction));
-                firstTruce = false;
-                if (currentTruces.toJSONString().length() > ARBITRARY_LIMIT) {
-                    fancyMessages.add(currentTruces);
-                    currentTruces = new FancyMessage("");
-                }
-            }
-        }
-        fancyMessages.add(currentTruces);
-        return firstTruce && Tag.isMinimalShow() ? null : fancyMessages;
-    }),
+    ALLIES_LIST("{allies-list}", (target, fme, prefix) -> processRelation(prefix, target, fme, Relation.ALLY)),
+    ENEMIES_LIST("{enemies-list}", (target, fme, prefix) -> processRelation(prefix, target, fme, Relation.ENEMY)),
+    TRUCES_LIST("{truces-list}", (target, fme, prefix) -> processRelation(prefix, target, fme, Relation.TRUCE)),
     ONLINE_LIST("{online-list}", (target, fme, prefix) -> {
         List<FancyMessage> fancyMessages = new ArrayList<>();
         FancyMessage currentOnline = P.p.txt.parseFancy(prefix);
@@ -124,6 +62,29 @@ public enum FancyTag implements Tag {
 
     private final String tag;
     private final TriFunction<Faction, FPlayer, String, List<FancyMessage>> function;
+
+    private static List<FancyMessage> processRelation(String prefix, Faction faction, FPlayer fPlayer, Relation relation) {
+        List<FancyMessage> fancyMessages = new ArrayList<>();
+        FancyMessage message = P.p.txt.parseFancy(prefix);
+        boolean first = true;
+        for (Faction otherFaction : Factions.getInstance().getAllFactions()) {
+            if (otherFaction == faction) {
+                continue;
+            }
+            String s = otherFaction.getTag(fPlayer);
+            if (otherFaction.getRelationTo(faction) == relation) {
+                message.then(first ? s : ", " + s);
+                message.tooltip(tipFaction(otherFaction)).color(fPlayer.getColorTo(otherFaction));
+                first = false;
+                if (message.toJSONString().length() > ARBITRARY_LIMIT) {
+                    fancyMessages.add(message);
+                    message = new FancyMessage("");
+                }
+            }
+        }
+        fancyMessages.add(message);
+        return first && Tag.isMinimalShow() ? null : fancyMessages;
+    }
 
     public static List<FancyMessage> parse(String text, Faction faction, FPlayer player) {
         for (FancyTag tag : FancyTag.values()) {
