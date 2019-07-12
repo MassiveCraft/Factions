@@ -1,6 +1,7 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Permission;
@@ -9,9 +10,19 @@ import com.massivecraft.factions.tag.FancyTag;
 import com.massivecraft.factions.tag.Tag;
 import com.massivecraft.factions.zcore.util.TL;
 import mkremins.fanciful.FancyMessage;
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class CmdShow extends FCommand {
 
@@ -79,6 +90,7 @@ public class CmdShow extends FCommand {
             return; // we only show header for non-normal factions
         }
 
+        List<String> messageList = new ArrayList<>();
         for (String raw : show) {
             String parsed = Tag.parsePlain(faction,context.fPlayer, raw); // use relations
             if (parsed == null) {
@@ -89,22 +101,91 @@ public class CmdShow extends FCommand {
                 parsed = Tag.parsePlaceholders(context.fPlayer.getPlayer(), parsed);
             }
 
-            if (context.fPlayer != null && FancyTag.anyMatch(parsed)) {
-                List<FancyMessage> fancy = FancyTag.parse(parsed, faction, context.fPlayer);
-                if (fancy != null) {
-                    context.sendFancyMessage(fancy);
-                }
-                continue;
-            }
             if (!parsed.contains("{notFrozen}") && !parsed.contains("{notPermanent}")) {
                 if (parsed.contains("{ig}")) {
                     // replaces all variables with no home TL
                     parsed = parsed.substring(0, parsed.indexOf("{ig}")) + TL.COMMAND_SHOW_NOHOME.toString();
                 }
-                if (parsed.contains("%")) {
-                    parsed = parsed.replaceAll("%", ""); // Just in case it got in there before we disallowed it.
+                parsed = parsed.replace("%", ""); // Just in case it got in there before we disallowed it.
+                messageList.add(parsed); // TODO context.msg(p.txt.parse)
+            }
+        }
+        if (context.fPlayer != null && this.groupPresent()) {
+            new GroupGetter(messageList, context.fPlayer, faction).runTaskAsynchronously(P.p);
+        } else {
+            this.sendMessages(messageList, context.sender, faction, context.fPlayer);
+        }
+    }
+
+    private void sendMessages(List<String> messageList, CommandSender recipient, Faction faction, FPlayer player) {
+        this.sendMessages(messageList, recipient, faction, player);
+    }
+
+    private void sendMessages(List<String> messageList, CommandSender recipient, Faction faction, FPlayer player, Map<UUID, String> groupMap) {
+        for (String parsed : messageList) {
+            if (player != null && FancyTag.anyMatch(parsed)) {
+                List<FancyMessage> fancy = FancyTag.parse(parsed, faction, player, groupMap);
+                if (fancy != null) {
+                    for (FancyMessage fancyMessage : fancy) {
+                        fancyMessage.send(recipient);
+                    }
                 }
-                context.msg(p.txt.parse(parsed));
+            } else {
+                recipient.sendMessage(P.p.txt.parse(parsed));
+            }
+        }
+    }
+
+    private boolean groupPresent() {
+        for (String line : P.p.getConfig().getStringList("tooltips.show")) {
+            if (line.contains("{group}")) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private class GroupGetter extends BukkitRunnable {
+        private List<String> messageList;
+        private FPlayer sender;
+        private Faction faction;
+        private Set<OfflinePlayer> players;
+
+        private GroupGetter(List<String> messageList, FPlayer sender, Faction faction) {
+            this.messageList = messageList;
+            this.sender = sender;
+            this.faction = faction;
+            this.players = faction.getFPlayers().stream().map(fp-> Bukkit.getOfflinePlayer(UUID.fromString(fp.getId()))).collect(Collectors.toSet());
+        }
+
+        @Override
+        public void run() {
+            Map<UUID, String> map = new HashMap<>();
+            for (OfflinePlayer player : this.players) {
+                map.put(player.getUniqueId(), P.p.getPrimaryGroup(player));
+            }
+            new Sender(this.messageList, this.sender, this.faction, map).runTask(P.p);
+        }
+    }
+
+    private class Sender extends  BukkitRunnable {
+        private List<String> messageList;
+        private FPlayer sender;
+        private Faction faction;
+        private Map<UUID, String> map;
+
+        private Sender(List<String> messageList, FPlayer sender, Faction faction, Map<UUID, String> map) {
+            this.messageList = messageList;
+            this.sender = sender;
+            this.faction = faction;
+            this.map = map;
+        }
+
+        @Override
+        public void run() {
+            Player player = Bukkit.getPlayerExact(sender.getName());
+            if (player != null) {
+                CmdShow.this.sendMessages(messageList, player, faction, sender, map);
             }
         }
     }

@@ -648,7 +648,7 @@ lwc:
 #  - {online-list}  : Lists all online members with tooltips
 #  - {offline-list} : Lists all offline members with tooltips
 # Player variables. Can be used in tooltips.show, scoreboards, or /f show
-#  - {group}     : Players group
+#  - {group}     : Players group (/f show only)
 #  - {name}      : Players name
 #  - {lastSeen}  : Last time player was seen (if offline), or just 'Online'
 #  - {balance} : Players balance

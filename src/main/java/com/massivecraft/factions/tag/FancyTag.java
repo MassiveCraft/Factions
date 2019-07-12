@@ -6,19 +6,21 @@ import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.util.MiscUtil;
-import com.massivecraft.factions.util.TriFunction;
+import com.massivecraft.factions.util.QuadFunction;
 import mkremins.fanciful.FancyMessage;
 import org.bukkit.ChatColor;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 public enum FancyTag implements Tag {
-    ALLIES_LIST("{allies-list}", (target, fme, prefix) -> processRelation(prefix, target, fme, Relation.ALLY)),
-    ENEMIES_LIST("{enemies-list}", (target, fme, prefix) -> processRelation(prefix, target, fme, Relation.ENEMY)),
-    TRUCES_LIST("{truces-list}", (target, fme, prefix) -> processRelation(prefix, target, fme, Relation.TRUCE)),
-    ONLINE_LIST("{online-list}", (target, fme, prefix) -> {
+    ALLIES_LIST("{allies-list}", (target, fme, prefix, gm) -> processRelation(prefix, target, fme, Relation.ALLY)),
+    ENEMIES_LIST("{enemies-list}", (target, fme, prefix, gm) -> processRelation(prefix, target, fme, Relation.ENEMY)),
+    TRUCES_LIST("{truces-list}", (target, fme, prefix, gm) -> processRelation(prefix, target, fme, Relation.TRUCE)),
+    ONLINE_LIST("{online-list}", (target, fme, prefix, gm) -> {
         List<FancyMessage> fancyMessages = new ArrayList<>();
         FancyMessage currentOnline = P.p.txt.parseFancy(prefix);
         boolean firstOnline = true;
@@ -28,7 +30,7 @@ public enum FancyTag implements Tag {
             }
             String name = p.getNameAndTitle();
             currentOnline.then(firstOnline ? name : ", " + name);
-            currentOnline.tooltip(tipPlayer(p)).color(fme.getColorTo(p));
+            currentOnline.tooltip(tipPlayer(p, gm)).color(fme.getColorTo(p));
             firstOnline = false;
             if (currentOnline.toJSONString().length() > ARBITRARY_LIMIT) {
                 fancyMessages.add(currentOnline);
@@ -38,7 +40,7 @@ public enum FancyTag implements Tag {
         fancyMessages.add(currentOnline);
         return firstOnline && Tag.isMinimalShow() ? null : fancyMessages;
     }),
-    OFFLINE_LIST("{offline-list}", (target, fme, prefix) -> {
+    OFFLINE_LIST("{offline-list}", (target, fme, prefix, gm) -> {
         List<FancyMessage> fancyMessages = new ArrayList<>();
         FancyMessage currentOffline = P.p.txt.parseFancy(prefix);
         boolean firstOffline = true;
@@ -47,7 +49,7 @@ public enum FancyTag implements Tag {
             // Also make sure to add players that are online BUT can't be seen.
             if (!p.isOnline() || (fme.getPlayer() != null && p.isOnline() && !fme.getPlayer().canSee(p.getPlayer()))) {
                 currentOffline.then(firstOffline ? name : ", " + name);
-                currentOffline.tooltip(tipPlayer(p)).color(fme.getColorTo(p));
+                currentOffline.tooltip(tipPlayer(p, gm)).color(fme.getColorTo(p));
                 firstOffline = false;
                 if (currentOffline.toJSONString().length() > ARBITRARY_LIMIT) {
                     fancyMessages.add(currentOffline);
@@ -61,7 +63,7 @@ public enum FancyTag implements Tag {
     ;
 
     private final String tag;
-    private final TriFunction<Faction, FPlayer, String, List<FancyMessage>> function;
+    private final QuadFunction<Faction, FPlayer, String, Map<UUID, String>, List<FancyMessage>> function;
 
     private static List<FancyMessage> processRelation(String prefix, Faction faction, FPlayer fPlayer, Relation relation) {
         List<FancyMessage> fancyMessages = new ArrayList<>();
@@ -86,10 +88,10 @@ public enum FancyTag implements Tag {
         return first && Tag.isMinimalShow() ? null : fancyMessages;
     }
 
-    public static List<FancyMessage> parse(String text, Faction faction, FPlayer player) {
+    public static List<FancyMessage> parse(String text, Faction faction, FPlayer player, Map<UUID, String> groupMap) {
         for (FancyTag tag : FancyTag.values()) {
             if (tag.foundInString(text)) {
-                return tag.getMessage(text, faction, player);
+                return tag.getMessage(text, faction, player, groupMap);
             }
         }
         return Collections.EMPTY_LIST; // We really shouldn't be here.
@@ -124,15 +126,17 @@ public enum FancyTag implements Tag {
      * @param fplayer player to tooltip for
      * @return list of tooltips for a fancy message
      */
-    private static List<String> tipPlayer(FPlayer fplayer) {
+    private static List<String> tipPlayer(FPlayer fplayer, Map<UUID, String> groupMap) {
         List<String> lines = new ArrayList<>();
         for (String line : P.p.getConfig().getStringList("tooltips.show")) {
-            lines.add(ChatColor.translateAlternateColorCodes('&', Tag.parsePlain(fplayer, line)));
+            String newLine = (groupMap != null && groupMap.containsKey(UUID.fromString(fplayer.getId()))) ?
+                    line.replace("{group}", groupMap.get(UUID.fromString(fplayer.getId()))) : line;
+            lines.add(ChatColor.translateAlternateColorCodes('&', Tag.parsePlain(fplayer, newLine)));
         }
         return lines;
     }
 
-    FancyTag(String tag, TriFunction<Faction, FPlayer, String, List<FancyMessage>> function) {
+    FancyTag(String tag, QuadFunction<Faction, FPlayer, String, Map<UUID, String>, List<FancyMessage>> function) {
         this.tag = tag;
         this.function = function;
     }
@@ -147,10 +151,10 @@ public enum FancyTag implements Tag {
         return test != null && test.contains(this.tag);
     }
 
-    public List<FancyMessage> getMessage(String text, Faction faction, FPlayer player) {
+    public List<FancyMessage> getMessage(String text, Faction faction, FPlayer player, Map<UUID, String> groupMap) {
         if (!this.foundInString(text)) {
             return Collections.EMPTY_LIST; // We really, really shouldn't be here.
         }
-        return this.function.apply(faction, player, text.replace(this.getTag(), ""));
+        return this.function.apply(faction, player, text.replace(this.getTag(), ""), groupMap);
     }
 }
