@@ -5,7 +5,6 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.zcore.fperms.Permissable;
 import com.massivecraft.factions.zcore.util.TL;
-import com.massivecraft.factions.zcore.util.TagUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;

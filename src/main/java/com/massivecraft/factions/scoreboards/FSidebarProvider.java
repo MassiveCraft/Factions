@@ -3,8 +3,8 @@ package com.massivecraft.factions.scoreboards;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.P;
+import com.massivecraft.factions.tag.Tag;
 import com.massivecraft.factions.zcore.util.TL;
-import com.massivecraft.factions.zcore.util.TagUtil;
 
 import java.util.List;
 
@@ -15,16 +15,16 @@ public abstract class FSidebarProvider {
     public abstract List<String> getLines(FPlayer fplayer);
 
     public String replaceTags(FPlayer fPlayer, String s) {
-        s = TagUtil.parsePlaceholders(fPlayer.getPlayer(), s);
+        s = Tag.parsePlaceholders(fPlayer.getPlayer(), s);
 
-        return qualityAssure(TagUtil.parsePlain(fPlayer, s));
+        return qualityAssure(Tag.parsePlain(fPlayer, s));
     }
 
     public String replaceTags(Faction faction, FPlayer fPlayer, String s) {
         // Run through Placeholder API first
-        s = TagUtil.parsePlaceholders(fPlayer.getPlayer(), s);
+        s = Tag.parsePlaceholders(fPlayer.getPlayer(), s);
 
-        return qualityAssure(TagUtil.parsePlain(faction, fPlayer, s));
+        return qualityAssure(Tag.parsePlain(faction, fPlayer, s));
     }
 
     private String qualityAssure(String line) {

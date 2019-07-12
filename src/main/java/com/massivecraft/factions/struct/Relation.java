@@ -3,9 +3,9 @@ package com.massivecraft.factions.struct;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.P;
+import com.massivecraft.factions.tag.Tag;
 import com.massivecraft.factions.zcore.fperms.Permissable;
 import com.massivecraft.factions.zcore.util.TL;
-import com.massivecraft.factions.zcore.util.TagUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -226,8 +226,8 @@ public enum Relation implements Permissable {
 
     public String replacePlaceholders(String string, FPlayer fme) {
         string = ChatColor.translateAlternateColorCodes('&', string);
-        string = TagUtil.parsePlain(fme, string);
-        string =  TagUtil.parsePlain(fme.getFaction(), string);
+        string = Tag.parsePlain(fme, string);
+        string =  Tag.parsePlain(fme.getFaction(), string);
 
         String permissableName = nicename.substring(0, 1).toUpperCase() + nicename.substring(1);
 

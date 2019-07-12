@@ -4,8 +4,8 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.tag.Tag;
 import com.massivecraft.factions.zcore.util.TL;
-import com.massivecraft.factions.zcore.util.TagUtil;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
@@ -52,8 +52,8 @@ public class CmdNear extends FCommand {
     }
 
     private String parsePlaceholders(FPlayer user, FPlayer target, String string) {
-        string = TagUtil.parsePlain(target, string);
-        string = TagUtil.parsePlaceholders(target.getPlayer(), string);
+        string = Tag.parsePlain(target, string);
+        string = Tag.parsePlaceholders(target.getPlayer(), string);
         string = string.replace("{role}", target.getRole().toString());
         string = string.replace("{role-prefix}", target.getRole().getPrefix());
         // Only run distance calculation if needed

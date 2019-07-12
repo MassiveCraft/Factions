@@ -8,8 +8,6 @@ import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.util.AsciiCompass;
 import com.massivecraft.factions.util.LazyLocation;
 import com.massivecraft.factions.zcore.util.TL;
-import com.massivecraft.factions.zcore.util.TagReplacer;
-import com.massivecraft.factions.zcore.util.TagUtil;
 import mkremins.fanciful.FancyMessage;
 import org.bukkit.ChatColor;
 import org.bukkit.World;

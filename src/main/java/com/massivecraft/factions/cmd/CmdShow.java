@@ -4,9 +4,10 @@ import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.tag.FactionTag;
+import com.massivecraft.factions.tag.FancyTag;
+import com.massivecraft.factions.tag.Tag;
 import com.massivecraft.factions.zcore.util.TL;
-import com.massivecraft.factions.zcore.util.TagReplacer;
-import com.massivecraft.factions.zcore.util.TagUtil;
 import mkremins.fanciful.FancyMessage;
 
 import java.util.ArrayList;
@@ -70,26 +71,26 @@ public class CmdShow extends FCommand {
             String tag = faction.getTag(context.fPlayer);
             // send header and that's all
             String header = show.get(0);
-            if (TagReplacer.HEADER.contains(header)) {
+            if (FactionTag.HEADER.foundInString(header)) {
                 context.msg(p.txt.titleize(tag));
             } else {
-                context.msg(p.txt.parse(TagReplacer.FACTION.replace(header, tag)));
+                context.msg(p.txt.parse(header.replace(FactionTag.FACTION.getTag(), tag)));
             }
             return; // we only show header for non-normal factions
         }
 
         for (String raw : show) {
-            String parsed = TagUtil.parsePlain(faction,context.fPlayer, raw); // use relations
+            String parsed = Tag.parsePlain(faction,context.fPlayer, raw); // use relations
             if (parsed == null) {
                 continue; // Due to minimal f show.
             }
 
             if (context.fPlayer != null) {
-                parsed = TagUtil.parsePlaceholders(context.fPlayer.getPlayer(), parsed);
+                parsed = Tag.parsePlaceholders(context.fPlayer.getPlayer(), parsed);
             }
 
-            if (context.fPlayer != null && TagUtil.hasFancy(parsed)) {
-                List<FancyMessage> fancy = TagUtil.parseFancy(faction,context.fPlayer, parsed);
+            if (context.fPlayer != null && FancyTag.anyMatch(parsed)) {
+                List<FancyMessage> fancy = FancyTag.parse(parsed, faction, context.fPlayer);
                 if (fancy != null) {
                     context.sendFancyMessage(fancy);
                 }

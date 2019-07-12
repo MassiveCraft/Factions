@@ -2,9 +2,9 @@ package com.massivecraft.factions.zcore.gui;
 
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.P;
+import com.massivecraft.factions.tag.Tag;
 import com.massivecraft.factions.zcore.gui.items.DynamicItem;
 import com.massivecraft.factions.zcore.gui.items.ItemGUI;
-import com.massivecraft.factions.zcore.util.TagUtil;
 import com.massivecraft.factions.zcore.util.TextUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
@@ -205,9 +205,9 @@ public abstract class FactionGUI<T> implements InventoryHolder {
 
     protected String parseDefault(String toParse) {
         toParse = TextUtil.parseColor(toParse);
-        toParse = TagUtil.parsePlain(user, toParse);
-        toParse = TagUtil.parsePlain(user.getFaction(), toParse);
-        return TagUtil.parsePlaceholders(user.getPlayer(), toParse);
+        toParse = Tag.parsePlain(user, toParse);
+        toParse = Tag.parsePlain(user.getFaction(), toParse);
+        return Tag.parsePlaceholders(user.getPlayer(), toParse);
     }
 
     @Override

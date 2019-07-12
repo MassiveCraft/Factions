@@ -5,8 +5,8 @@ import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.tag.Tag;
 import com.massivecraft.factions.zcore.util.TL;
-import com.massivecraft.factions.zcore.util.TagUtil;
 
 import java.util.*;
 
@@ -109,10 +109,10 @@ public class CmdList extends FCommand {
 
         for (Faction faction : factionList.subList(start, end)) {
             if (faction.isWilderness()) {
-                lines.add(p.txt.parse(TagUtil.parsePlain(faction, p.getConfig().getString("list.factionless", defaults[1]))));
+                lines.add(p.txt.parse(Tag.parsePlain(faction, p.getConfig().getString("list.factionless", defaults[1]))));
                 continue;
             }
-            lines.add(p.txt.parse(TagUtil.parsePlain(faction,context.fPlayer, p.getConfig().getString("list.entry", defaults[2]))));
+            lines.add(p.txt.parse(Tag.parsePlain(faction,context.fPlayer, p.getConfig().getString("list.entry", defaults[2]))));
         }
         context.sendMessage(lines);
     }
