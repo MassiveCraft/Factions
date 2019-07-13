@@ -81,6 +81,62 @@ public class EnumerationUtil
 	{
 		return MATERIALS_DOOR.contains(material) || MConf.get().materialsDoor.contains(material);
 	}
+
+	// -------------------------------------------- //
+	// MATERIAL GLASS_PANE
+	// -------------------------------------------- //
+
+	// Interacting with these materials placed in the terrain results in door toggling.
+	public static final BackstringSet<Material> MATERIALS_GLASS_PANE = new BackstringSet<>(Material.class,
+			Material.GLASS_PANE,
+			Material.BLACK_STAINED_GLASS_PANE,
+			Material.BLUE_STAINED_GLASS_PANE,
+			Material.BROWN_STAINED_GLASS_PANE,
+			Material.CYAN_STAINED_GLASS_PANE,
+			Material.GRAY_STAINED_GLASS_PANE,
+			Material.GREEN_STAINED_GLASS_PANE,
+			Material.LIGHT_BLUE_STAINED_GLASS_PANE,
+			Material.LIGHT_GRAY_STAINED_GLASS_PANE,
+			Material.LIME_STAINED_GLASS_PANE,
+			Material.MAGENTA_STAINED_GLASS_PANE,
+			Material.ORANGE_STAINED_GLASS_PANE,
+			Material.PINK_STAINED_GLASS_PANE,
+			Material.PURPLE_STAINED_GLASS_PANE,
+			Material.RED_STAINED_GLASS_PANE,
+			Material.WHITE_STAINED_GLASS_PANE
+	);
+
+	public static boolean isMaterialGlassPane(Material material)
+	{
+		return MATERIALS_GLASS_PANE.contains(material) || MConf.get().materialsGlassPane.contains(material);
+	}
+
+	// -------------------------------------------- //
+	// MATERIAL FENCE
+	// -------------------------------------------- //
+
+	// Interacting with these materials placed in the terrain results in door toggling.
+	public static final BackstringSet<Material> MATERIALS_FENCE = new BackstringSet<>(Material.class,
+			Material.NETHER_BRICK_FENCE,
+			Material.ACACIA_FENCE,
+			Material.BIRCH_FENCE,
+			Material.DARK_OAK_FENCE,
+			Material.JUNGLE_FENCE,
+			Material.OAK_FENCE,
+			Material.SPRUCE_FENCE,
+			Material.COBBLESTONE_WALL,
+			Material.MOSSY_COBBLESTONE_WALL,
+			Material.ACACIA_FENCE_GATE,
+			Material.BIRCH_FENCE_GATE,
+			Material.DARK_OAK_FENCE_GATE,
+			Material.JUNGLE_FENCE_GATE,
+			Material.OAK_FENCE_GATE
+	);
+
+	public static boolean isMaterialFence(Material material)
+	{
+		return MATERIALS_FENCE.contains(material) || MConf.get().materialsFence.contains(material);
+	}
 	
 	// -------------------------------------------- //
 	// MATERIAL CONTAINER

@@ -68,8 +68,8 @@ public class CmdFactionsSeeChunkOld extends FactionsCommand
 		{
 			Location loc = new Location(world, blockX, blockY, blockZ);
 			if (loc.getBlock().getType() != Material.AIR) continue;
-			int typeId = blockY % 5 == 0 ? Material.GLOWSTONE.getId() : Material.GLASS.getId();
-			VisualizeUtil.addLocation(player, loc, typeId);
+			Material type = blockY % 5 == 0 ? Material.GLOWSTONE : Material.GLASS;
+			VisualizeUtil.addLocation(player, loc, type);
 		}
 	}
 	

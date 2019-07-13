@@ -542,6 +542,12 @@ public class MConf extends Entity<MConf>
 	
 	// Interacting with these materials placed in the terrain results in door toggling.
 	public BackstringSet<Material> materialsDoor = new BackstringSet<>(Material.class);
+
+	// Interacting with these materials placed in the terrain results in IDK.
+	public BackstringSet<Material> materialsGlassPane = new BackstringSet<>(Material.class);
+
+	// Interacting with these materials placed in the terrain results in IDK.
+	public BackstringSet<Material> materialsFence = new BackstringSet<>(Material.class);
 	
 	// Interacting with these materials placed in the terrain results in opening a container.
 	public BackstringSet<Material> materialsContainer = new BackstringSet<>(Material.class);

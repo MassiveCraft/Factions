@@ -1,5 +1,6 @@
 main: ${project.groupId}.${project.name}
 name: ${project.name}
+api-version: 1.13
 version: ${project.version}
 website: ${project.url}
 description: ${project.description}
