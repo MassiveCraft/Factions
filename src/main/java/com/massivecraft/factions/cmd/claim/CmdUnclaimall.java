@@ -40,14 +40,14 @@ public class CmdUnclaimall extends FCommand {
             }
         }
 
-        LandUnclaimAllEvent unclaimAllEvent = new LandUnclaimAllEvent(context.faction,context.fPlayer);
+        LandUnclaimAllEvent unclaimAllEvent = new LandUnclaimAllEvent(context.faction, context.fPlayer);
         Bukkit.getServer().getPluginManager().callEvent(unclaimAllEvent);
         if (unclaimAllEvent.isCancelled()) {
             return;
         }
 
         Board.getInstance().unclaimAll(context.faction.getId());
-        context.faction.msg(TL.COMMAND_UNCLAIMALL_UNCLAIMED,context.fPlayer.describeTo(context.faction, true));
+        context.faction.msg(TL.COMMAND_UNCLAIMALL_UNCLAIMED, context.fPlayer.describeTo(context.faction, true));
 
         if (Conf.logLandUnclaims) {
             P.p.log(TL.COMMAND_UNCLAIMALL_LOG.format(context.fPlayer.getName(), context.faction.getTag()));

@@ -42,7 +42,7 @@ public class PacketParticleProvider implements ParticleProvider<ParticleEffect> 
 
     @Override
     public void playerSpawn(Player player, ParticleEffect particleEffect, Location location, ParticleColor color) {
-        playerSpawn(player, particleEffect, location, 0 ,1, color.getOffsetX(), color.getOffsetY(), color.getOffsetZ());
+        playerSpawn(player, particleEffect, location, 0, 1, color.getOffsetX(), color.getOffsetY(), color.getOffsetZ());
     }
 
     @Override

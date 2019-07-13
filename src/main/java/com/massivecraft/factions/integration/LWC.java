@@ -2,7 +2,10 @@ package com.massivecraft.factions.integration;
 
 import com.griefcraft.lwc.LWCPlugin;
 import com.griefcraft.model.Protection;
-import com.massivecraft.factions.*;
+import com.massivecraft.factions.FLocation;
+import com.massivecraft.factions.FPlayers;
+import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.P;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;

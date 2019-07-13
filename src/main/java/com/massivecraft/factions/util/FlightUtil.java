@@ -24,7 +24,7 @@ public class FlightUtil {
         double enemyCheck = P.p.getConfig().getDouble("f-fly.radius-check", 1) * 20;
         if (enemyCheck > 0) {
             enemiesTask = new EnemiesTask();
-            enemiesTask.runTaskTimer(P.p,0, (long) enemyCheck);
+            enemiesTask.runTaskTimer(P.p, 0, (long) enemyCheck);
         }
 
         double spawnRate = P.p.getConfig().getDouble("f-fly.trails.spawn-rate", 0) * 20;

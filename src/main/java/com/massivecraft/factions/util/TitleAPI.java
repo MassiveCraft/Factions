@@ -34,8 +34,8 @@ public class TitleAPI {
      * Send a title to player
      *
      * @param player      Player to send the title to
-     * @param title        The text displayed in the title
-     * @param subtitle        The text displayed in the subtitle
+     * @param title       The text displayed in the title
+     * @param subtitle    The text displayed in the subtitle
      * @param fadeInTime  The time the title takes to fade in
      * @param showTime    The time the title is displayed
      * @param fadeOutTime The time the title takes to fade out

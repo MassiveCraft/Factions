@@ -219,7 +219,8 @@ public abstract class FactionGUI<T> implements InventoryHolder {
         user.getPlayer().openInventory(getInventory());
     }
 
-    public interface Dynamic {}
+    public interface Dynamic {
+    }
 
     public interface Backable {
 

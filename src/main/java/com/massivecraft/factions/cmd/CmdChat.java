@@ -93,6 +93,6 @@ public class CmdChat extends FCommand {
                     .then(LiteralArgumentBuilder.literal("faction"))
                     .then(LiteralArgumentBuilder.literal("truce"));
         }
-    } 
+    }
 
 }

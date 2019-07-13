@@ -1,18 +1,17 @@
 package com.massivecraft.factions.cmd;
 
-import java.lang.reflect.Constructor;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 import com.massivecraft.factions.P;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.tree.CommandNode;
-
 import me.lucko.commodore.Commodore;
 import me.lucko.commodore.CommodoreProvider;
+
+import java.lang.reflect.Constructor;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class BrigadierManager {
 
@@ -65,14 +64,14 @@ public class BrigadierManager {
                     // Optional without default
                     if (optionalEntry.getKey().equalsIgnoreCase(optionalEntry.getValue())) {
                         optional = RequiredArgumentBuilder.argument(":" + optionalEntry.getKey(), StringArgumentType.word());
-                    // Optional with default, explain
+                        // Optional with default, explain
                     } else {
                         optional = RequiredArgumentBuilder.argument(optionalEntry.getKey() + "|" + optionalEntry.getValue(), StringArgumentType.word());
                     }
-                    
+
                     stack.add(optional);
                 }
-                
+
                 // Reverse the stack and apply .then()
                 RequiredArgumentBuilder<Object, ?> previous = null;
                 for (int i = stack.size() - 1; i >= 0; i--) {
@@ -82,7 +81,7 @@ public class BrigadierManager {
                         previous = stack.get(i).then(previous);
                     }
                 }
-                
+
                 if (previous == null) {
                     brigadier.then(literal);
                 } else {
@@ -91,5 +90,5 @@ public class BrigadierManager {
             }
         }
     }
-    
+
 }

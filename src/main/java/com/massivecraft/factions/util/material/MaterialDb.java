@@ -2,7 +2,6 @@ package com.massivecraft.factions.util.material;
 
 import com.google.gson.reflect.TypeToken;
 import com.massivecraft.factions.P;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 
 import java.io.InputStreamReader;

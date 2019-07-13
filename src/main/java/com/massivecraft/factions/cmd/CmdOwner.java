@@ -23,7 +23,7 @@ public class CmdOwner extends FCommand {
 
     @Override
     public void perform(CommandContext context) {
-        boolean hasBypass =context.fPlayer.isAdminBypassing();
+        boolean hasBypass = context.fPlayer.isAdminBypassing();
 
         if (!hasBypass && !context.assertHasFaction()) {
             return;
@@ -59,7 +59,7 @@ public class CmdOwner extends FCommand {
 
         }
 
-        FPlayer target = context.argAsBestFPlayerMatch(0,context.fPlayer);
+        FPlayer target = context.argAsBestFPlayerMatch(0, context.fPlayer);
         if (target == null) {
             return;
         }

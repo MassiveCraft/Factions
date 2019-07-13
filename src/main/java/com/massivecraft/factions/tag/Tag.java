@@ -13,7 +13,7 @@ public interface Tag {
      * Replaces all variables in a plain raw line for a faction
      *
      * @param faction for faction
-     * @param line raw line from config with variables to replace for
+     * @param line    raw line from config with variables to replace for
      * @return clean line
      */
     static String parsePlain(Faction faction, String line) {
@@ -24,7 +24,7 @@ public interface Tag {
      * Replaces all variables in a plain raw line for a player
      *
      * @param fplayer for player
-     * @param line raw line from config with variables to replace for
+     * @param line    raw line from config with variables to replace for
      * @return clean line
      */
     static String parsePlain(FPlayer fplayer, String line) {
@@ -36,7 +36,7 @@ public interface Tag {
      *
      * @param faction for faction
      * @param fplayer from player
-     * @param line raw line from config with variables to replace for
+     * @param line    raw line from config with variables to replace for
      * @return clean line
      */
     static String parsePlain(Faction faction, FPlayer fplayer, String line) {

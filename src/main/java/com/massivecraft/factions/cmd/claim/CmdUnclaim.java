@@ -98,7 +98,7 @@ public class CmdUnclaim extends FCommand {
         }
 
         if (context.fPlayer.isAdminBypassing()) {
-            LandUnclaimEvent unclaimEvent = new LandUnclaimEvent(target, targetFaction,context.fPlayer);
+            LandUnclaimEvent unclaimEvent = new LandUnclaimEvent(target, targetFaction, context.fPlayer);
             Bukkit.getServer().getPluginManager().callEvent(unclaimEvent);
             if (unclaimEvent.isCancelled()) {
                 return false;
@@ -106,7 +106,7 @@ public class CmdUnclaim extends FCommand {
 
             Board.getInstance().removeAt(target);
 
-            targetFaction.msg(TL.COMMAND_UNCLAIM_UNCLAIMED,context.fPlayer.describeTo(targetFaction, true));
+            targetFaction.msg(TL.COMMAND_UNCLAIM_UNCLAIMED, context.fPlayer.describeTo(targetFaction, true));
             context.msg(TL.COMMAND_UNCLAIM_UNCLAIMS);
 
             if (Conf.logLandUnclaims) {
@@ -130,7 +130,7 @@ public class CmdUnclaim extends FCommand {
             return false;
         }
 
-        LandUnclaimEvent unclaimEvent = new LandUnclaimEvent(target, targetFaction,context.fPlayer);
+        LandUnclaimEvent unclaimEvent = new LandUnclaimEvent(target, targetFaction, context.fPlayer);
         Bukkit.getServer().getPluginManager().callEvent(unclaimEvent);
         if (unclaimEvent.isCancelled()) {
             return false;
@@ -151,7 +151,7 @@ public class CmdUnclaim extends FCommand {
         }
 
         Board.getInstance().removeAt(target);
-        context.faction.msg(TL.COMMAND_UNCLAIM_FACTIONUNCLAIMED,context.fPlayer.describeTo(context.faction, true));
+        context.faction.msg(TL.COMMAND_UNCLAIM_FACTIONUNCLAIMED, context.fPlayer.describeTo(context.faction, true));
 
         if (Conf.logLandUnclaims) {
             P.p.log(TL.COMMAND_UNCLAIM_LOG.format(context.fPlayer.getName(), target.getCoordString(), targetFaction.getTag()));

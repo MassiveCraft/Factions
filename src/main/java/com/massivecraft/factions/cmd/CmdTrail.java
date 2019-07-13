@@ -1,6 +1,5 @@
 package com.massivecraft.factions.cmd;
 
-import com.darkblade12.particleeffect.ParticleEffect;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
 

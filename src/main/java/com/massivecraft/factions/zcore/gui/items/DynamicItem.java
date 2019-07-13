@@ -5,13 +5,13 @@ import org.bukkit.configuration.ConfigurationSection;
 import java.util.HashMap;
 
 /**
- *  DynamicItem uses ItemGUI merges to handle
- *  specific states in some UI menus, for example
- *
- *  PermissableActionGUI handles individual actions
- *  that have states related to the user
- *  these can change depending on what the UI and the config
- *  provide to this class
+ * DynamicItem uses ItemGUI merges to handle
+ * specific states in some UI menus, for example
+ * <p>
+ * PermissableActionGUI handles individual actions
+ * that have states related to the user
+ * these can change depending on what the UI and the config
+ * provide to this class
  */
 public class DynamicItem extends ItemGUI {
 

@@ -53,7 +53,7 @@ public class CmdMap extends FCommand {
     }
 
     public void showMap(CommandContext context) {
-        context.sendFancyMessage(Board.getInstance().getMap(context.fPlayer, new FLocation(context.fPlayer),context.fPlayer.getPlayer().getLocation().getYaw()));
+        context.sendFancyMessage(Board.getInstance().getMap(context.fPlayer, new FLocation(context.fPlayer), context.fPlayer.getPlayer().getLocation().getYaw()));
     }
 
     @Override

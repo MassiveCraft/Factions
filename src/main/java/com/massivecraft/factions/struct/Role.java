@@ -55,7 +55,7 @@ public enum Role implements Permissable {
                 return MODERATOR;
             case 3:
                 return COLEADER;
-            case 4 :
+            case 4:
                 return ADMIN;
         }
 

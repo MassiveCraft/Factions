@@ -45,7 +45,7 @@ public class CmdTitle extends FCommand {
         you.setTitle(context.sender, title);
 
         // Inform
-        context.faction.msg(TL.COMMAND_TITLE_CHANGED,context.fPlayer.describeTo(context.faction, true), you.describeTo(context.faction, true));
+        context.faction.msg(TL.COMMAND_TITLE_CHANGED, context.fPlayer.describeTo(context.faction, true), you.describeTo(context.faction, true));
     }
 
     @Override

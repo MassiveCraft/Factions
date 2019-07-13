@@ -9,8 +9,8 @@ import java.util.HashMap;
 import java.util.logging.Level;
 
 /**
- *  Loads and caches config values as ItemGUI
- *  instances, and then provides them to UI menus
+ * Loads and caches config values as ItemGUI
+ * instances, and then provides them to UI menus
  */
 public class FactionGUIHandler {
 

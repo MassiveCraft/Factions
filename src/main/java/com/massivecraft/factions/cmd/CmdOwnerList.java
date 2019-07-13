@@ -21,7 +21,7 @@ public class CmdOwnerList extends FCommand {
 
     @Override
     public void perform(CommandContext context) {
-        boolean hasBypass =context.fPlayer.isAdminBypassing();
+        boolean hasBypass = context.fPlayer.isAdminBypassing();
 
         if (!hasBypass && !context.assertHasFaction()) {
             return;

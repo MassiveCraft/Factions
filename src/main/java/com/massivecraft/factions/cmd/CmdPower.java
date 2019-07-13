@@ -19,7 +19,7 @@ public class CmdPower extends FCommand {
 
     @Override
     public void perform(CommandContext context) {
-        FPlayer target = context.argAsBestFPlayerMatch(0,context.fPlayer);
+        FPlayer target = context.argAsBestFPlayerMatch(0, context.fPlayer);
         if (target == null) {
             return;
         }

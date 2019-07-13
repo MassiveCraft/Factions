@@ -16,12 +16,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class CmdShow extends FCommand {
@@ -92,7 +87,7 @@ public class CmdShow extends FCommand {
 
         List<String> messageList = new ArrayList<>();
         for (String raw : show) {
-            String parsed = Tag.parsePlain(faction,context.fPlayer, raw); // use relations
+            String parsed = Tag.parsePlain(faction, context.fPlayer, raw); // use relations
             if (parsed == null) {
                 continue; // Due to minimal f show.
             }
@@ -155,7 +150,7 @@ public class CmdShow extends FCommand {
             this.messageList = messageList;
             this.sender = sender;
             this.faction = faction;
-            this.players = faction.getFPlayers().stream().map(fp-> Bukkit.getOfflinePlayer(UUID.fromString(fp.getId()))).collect(Collectors.toSet());
+            this.players = faction.getFPlayers().stream().map(fp -> Bukkit.getOfflinePlayer(UUID.fromString(fp.getId()))).collect(Collectors.toSet());
         }
 
         @Override

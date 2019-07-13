@@ -22,15 +22,15 @@ public class ParticleColor {
         if (red == 0) {
             return Float.MIN_VALUE;
         }
-        return red/255;
+        return red / 255;
     }
 
     public float getOffsetY() {
-        return green/255;
+        return green / 255;
     }
 
     public float getOffsetZ() {
-        return blue/255;
+        return blue / 255;
     }
 
     // Why Spigot?

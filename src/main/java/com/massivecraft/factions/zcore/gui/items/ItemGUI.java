@@ -13,10 +13,10 @@ import java.util.List;
 import java.util.logging.Level;
 
 /**
- *  This class implements an easy way to map
- *  config values like: materials, lore, name, color
- *  to a respective ItemStack, also has utility methods
- *  to merge, clone, etc
+ * This class implements an easy way to map
+ * config values like: materials, lore, name, color
+ * to a respective ItemStack, also has utility methods
+ * to merge, clone, etc
  */
 public class ItemGUI {
 

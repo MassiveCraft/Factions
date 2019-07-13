@@ -41,10 +41,10 @@ public class CmdMoneyWithdraw extends MoneyCommand {
             return;
         }
 
-        boolean success = Econ.transferMoney(context.fPlayer, faction,context.fPlayer, amount);
+        boolean success = Econ.transferMoney(context.fPlayer, faction, context.fPlayer, amount);
 
         if (success && Conf.logMoneyTransactions) {
-            P.p.log(ChatColor.stripColor(P.p.txt.parse(TL.COMMAND_MONEYWITHDRAW_WITHDRAW.toString(),context.fPlayer.getName(), Econ.moneyString(amount), faction.describeTo(null))));
+            P.p.log(ChatColor.stripColor(P.p.txt.parse(TL.COMMAND_MONEYWITHDRAW_WITHDRAW.toString(), context.fPlayer.getName(), Econ.moneyString(amount), faction.describeTo(null))));
         }
     }
 

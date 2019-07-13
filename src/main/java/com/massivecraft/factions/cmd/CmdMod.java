@@ -53,7 +53,7 @@ public class CmdMod extends FCommand {
             return;
         }
 
-        if (you ==context.fPlayer && !permAny) {
+        if (you == context.fPlayer && !permAny) {
             context.msg(TL.COMMAND_MOD_SELF);
             return;
         }

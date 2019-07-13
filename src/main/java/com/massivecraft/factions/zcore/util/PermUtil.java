@@ -7,7 +7,6 @@ import org.bukkit.permissions.Permission;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 
 
 public class PermUtil {

@@ -227,7 +227,7 @@ public enum Relation implements Permissable {
     public String replacePlaceholders(String string, FPlayer fme) {
         string = ChatColor.translateAlternateColorCodes('&', string);
         string = Tag.parsePlain(fme, string);
-        string =  Tag.parsePlain(fme.getFaction(), string);
+        string = Tag.parsePlain(fme.getFaction(), string);
 
         String permissableName = nicename.substring(0, 1).toUpperCase() + nicename.substring(1);
 

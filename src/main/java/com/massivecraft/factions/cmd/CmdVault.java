@@ -11,7 +11,6 @@ import com.massivecraft.factions.zcore.util.TL;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
-
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
@@ -64,7 +63,7 @@ public class CmdVault extends FCommand {
                     sb.append(key.replace("vault", "")).append(" ");
                 }
 
-                context.sender.sendMessage(Lang.TITLE.toString() + Lang.EXISTING_VAULTS.toString().replaceAll("%p",context.fPlayer.getTag()).replaceAll("%v", sb.toString().trim()));
+                context.sender.sendMessage(Lang.TITLE.toString() + Lang.EXISTING_VAULTS.toString().replaceAll("%p", context.fPlayer.getTag()).replaceAll("%v", sb.toString().trim()));
             }
             return;
         } // end listing vaults.

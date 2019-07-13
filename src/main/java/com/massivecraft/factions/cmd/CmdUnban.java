@@ -35,7 +35,7 @@ public class CmdUnban extends FCommand {
 
         context.faction.unban(target);
 
-        context.faction.msg(TL.COMMAND_UNBAN_UNBANNED,context.fPlayer.getName(), target.getName());
+        context.faction.msg(TL.COMMAND_UNBAN_UNBANNED, context.fPlayer.getName(), target.getName());
         target.msg(TL.COMMAND_UNBAN_TARGET, context.faction.getTag(target));
     }
 

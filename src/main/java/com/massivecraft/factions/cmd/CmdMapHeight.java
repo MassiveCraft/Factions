@@ -21,14 +21,14 @@ public class CmdMapHeight extends FCommand {
     @Override
     public void perform(CommandContext context) {
         if (context.args.size() == 0) {
-           context.fPlayer.sendMessage(TL.COMMAND_MAPHEIGHT_CURRENT.format(context.fPlayer.getMapHeight()));
+            context.fPlayer.sendMessage(TL.COMMAND_MAPHEIGHT_CURRENT.format(context.fPlayer.getMapHeight()));
             return;
         }
 
         int height = context.argAsInt(0);
 
-       context.fPlayer.setMapHeight(height);
-       context.fPlayer.sendMessage(TL.COMMAND_MAPHEIGHT_SET.format(context.fPlayer.getMapHeight()));
+        context.fPlayer.setMapHeight(height);
+        context.fPlayer.sendMessage(TL.COMMAND_MAPHEIGHT_SET.format(context.fPlayer.getMapHeight()));
     }
 
     @Override

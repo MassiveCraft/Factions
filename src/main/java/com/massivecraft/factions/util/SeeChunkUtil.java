@@ -1,8 +1,8 @@
 package com.massivecraft.factions.util;
 
 import com.massivecraft.factions.*;
-import com.massivecraft.factions.util.particle.ParticleColor;
 import com.massivecraft.factions.util.material.FactionMaterial;
+import com.massivecraft.factions.util.particle.ParticleColor;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;

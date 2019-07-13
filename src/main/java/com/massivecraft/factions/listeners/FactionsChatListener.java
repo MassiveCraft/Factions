@@ -4,8 +4,6 @@ import com.massivecraft.factions.*;
 import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
-import com.massivecraft.factions.util.WarmUpUtil;
-import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -138,7 +136,7 @@ public class FactionsChatListener implements Listener {
         } else if (!Conf.chatTagInsertBeforeString.isEmpty() && eventFormat.contains(Conf.chatTagInsertBeforeString)) {
             // we're using the "insert before string" method
             InsertIndex = eventFormat.indexOf(Conf.chatTagInsertBeforeString);
-        } else if (!Conf.alwaysShowChatTag){
+        } else if (!Conf.alwaysShowChatTag) {
             return;
         }
 

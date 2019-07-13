@@ -32,7 +32,7 @@ public class CmdNear extends FCommand {
         for (Entity entity : nearbyEntities) {
             if (entity instanceof Player) {
                 FPlayer target = FPlayers.getInstance().getByPlayer((Player) entity);
-                if (target.getFaction() ==context.fPlayer.getFaction()) {
+                if (target.getFaction() == context.fPlayer.getFaction()) {
                     nearbyMembers.add(target);
                 }
             }

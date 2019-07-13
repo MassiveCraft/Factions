@@ -1,11 +1,6 @@
 package com.massivecraft.factions.listeners.versionspecific;
 
-import com.massivecraft.factions.Board;
-import com.massivecraft.factions.FLocation;
-import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.FPlayers;
-import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.*;
 import com.massivecraft.factions.struct.Relation;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;

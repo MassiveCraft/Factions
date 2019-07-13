@@ -112,7 +112,7 @@ public class CmdList extends FCommand {
                 lines.add(p.txt.parse(Tag.parsePlain(faction, p.getConfig().getString("list.factionless", defaults[1]))));
                 continue;
             }
-            lines.add(p.txt.parse(Tag.parsePlain(faction,context.fPlayer, p.getConfig().getString("list.entry", defaults[2]))));
+            lines.add(p.txt.parse(Tag.parsePlain(faction, context.fPlayer, p.getConfig().getString("list.entry", defaults[2]))));
         }
         context.sendMessage(lines);
     }

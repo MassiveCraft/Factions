@@ -35,7 +35,8 @@ public enum PermissableAction {
     PROMOTE("promote"),
     SETWARP("setwarp"),
     WARP("warp"),
-    FLY("fly"),;
+    FLY("fly"),
+    ;
 
     private String name;
 

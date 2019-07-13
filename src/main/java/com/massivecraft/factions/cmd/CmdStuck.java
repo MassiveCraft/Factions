@@ -6,7 +6,6 @@ import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.SpiralTask;
 import com.massivecraft.factions.zcore.util.TL;
 import org.apache.commons.lang.time.DurationFormatUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -25,9 +24,9 @@ public class CmdStuck extends FCommand {
 
     @Override
     public void perform(final CommandContext context) {
-        final Player player =context.fPlayer.getPlayer();
+        final Player player = context.fPlayer.getPlayer();
         final Location sentAt = player.getLocation();
-        final FLocation chunk =context.fPlayer.getLastStoodAt();
+        final FLocation chunk = context.fPlayer.getLastStoodAt();
         final long delay = P.p.getConfig().getLong("hcf.stuck.delay", 30);
         final int radius = P.p.getConfig().getInt("hcf.stuck.radius", 10);
 
