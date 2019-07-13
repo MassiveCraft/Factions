@@ -15,8 +15,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 
-import static com.massivecraft.factions.zcore.util.TL.ROLE_NORMAL;
-
 public class PermissionsMapTypeAdapter implements JsonDeserializer<Map<Permissable, Map<PermissableAction, Access>>> {
 
     @Override
@@ -98,4 +96,3 @@ public class PermissionsMapTypeAdapter implements JsonDeserializer<Map<Permissab
     }
 
 }
-

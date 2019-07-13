@@ -11,8 +11,6 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-import java.math.BigDecimal;
-
 public class Essentials {
 
     private static IEssentials essentials;

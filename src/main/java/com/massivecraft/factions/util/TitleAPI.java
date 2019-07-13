@@ -7,7 +7,6 @@ import org.bukkit.entity.Player;
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
 
 /**
  * With help from https://www.spigotmc.org/threads/send-titles-to-players-using-spigot-1-8-1-11-2.48819/

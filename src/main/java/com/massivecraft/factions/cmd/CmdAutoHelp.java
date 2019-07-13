@@ -33,6 +33,7 @@ public class CmdAutoHelp extends FCommand {
             if (scmd.visibility == CommandVisibility.VISIBLE) {
                 lines.add(scmd.getUseageTemplate(context, true));
             }
+            // TODO deal with other visibilities
         }
 
         context.sendMessage(P.p.txt.getPage(lines, context.argAsInt(0, 1), TL.COMMAND_AUTOHELP_HELPFOR.toString() + pcmd.aliases.get(0) + "\""));

@@ -1,7 +1,6 @@
 package com.massivecraft.factions.listeners;
 
 import com.massivecraft.factions.*;
-import com.massivecraft.factions.integration.Worldguard7;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.zcore.fperms.Access;

@@ -208,31 +208,4 @@ public class TextUtil {
 
         return ret;
     }
-
-    public static String getBestStartWithCI(Collection<String> candidates, String start) {
-        String ret = null;
-        int best = 0;
-
-        start = start.toLowerCase();
-        int minlength = start.length();
-        for (String candidate : candidates) {
-            if (candidate.length() < minlength) {
-                continue;
-            }
-            if (!candidate.toLowerCase().startsWith(start)) {
-                continue;
-            }
-
-            // The closer to zero the better
-            int lendiff = candidate.length() - minlength;
-            if (lendiff == 0) {
-                return candidate;
-            }
-            if (lendiff < best || best == 0) {
-                best = lendiff;
-                ret = candidate;
-            }
-        }
-        return ret;
-    }
 }

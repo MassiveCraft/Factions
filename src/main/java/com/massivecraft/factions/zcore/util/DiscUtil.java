@@ -4,18 +4,13 @@ import com.massivecraft.factions.P;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class DiscUtil {
-
-    // -------------------------------------------- //
-    // CONSTANTS
-    // -------------------------------------------- //
-
-    private final static String UTF8 = "UTF-8";
 
     // -------------------------------------------- //
     // BYTE
@@ -45,11 +40,11 @@ public class DiscUtil {
     // -------------------------------------------- //
 
     public static void write(File file, String content) throws IOException {
-        writeBytes(file, utf8(content));
+        writeBytes(file, content.getBytes(StandardCharsets.UTF_8));
     }
 
     public static String read(File file) throws IOException {
-        return utf8(readBytes(file));
+        return new String(readBytes(file), StandardCharsets.UTF_8);
     }
 
     // -------------------------------------------- //
@@ -106,27 +101,4 @@ public class DiscUtil {
             return null;
         }
     }
-
-    // -------------------------------------------- //
-    // UTF8 ENCODE AND DECODE
-    // -------------------------------------------- //
-
-    public static byte[] utf8(String string) {
-        try {
-            return string.getBytes(UTF8);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    public static String utf8(byte[] bytes) {
-        try {
-            return new String(bytes, UTF8);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
 }

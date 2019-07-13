@@ -9,8 +9,8 @@ import org.bukkit.event.Cancellable;
  */
 public class FPlayerJoinEvent extends FactionPlayerEvent implements Cancellable {
 
-    PlayerJoinReason reason;
-    boolean cancelled = false;
+    private PlayerJoinReason reason;
+    private boolean cancelled = false;
 
     public enum PlayerJoinReason {
         CREATE, LEADER, COMMAND
