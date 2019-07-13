@@ -78,12 +78,19 @@ public abstract class AbstractListener implements Listener {
             case ENDER_CHEST:
             case TRAPPED_CHEST:
             case BARREL:
+            case FURNACE:
+            case DROPPER:
+            case DISPENSER:
+            case HOPPER:
             case BLAST_FURNACE:
+            case CAULDRON:
+            case BREWING_STAND:
             case CARTOGRAPHY_TABLE:
             case GRINDSTONE:
             case SMOKER:
             case STONECUTTER:
             case ITEM_FRAME:
+            case JUKEBOX:
             case ARMOR_STAND:
                 action = PermissableAction.CONTAINER;
                 break;
@@ -91,6 +98,10 @@ public abstract class AbstractListener implements Listener {
                 // Check for doors that might have diff material name in old version.
                 if (material.name().contains("DOOR")) {
                     action = PermissableAction.DOOR;
+                }
+                // Lazier than checking all the combinations
+                if (material.name().contains("SHULKER_BOX") || material.name().contains("ANVIL")) {
+                    action = PermissableAction.CONTAINER;
                 }
                 break;
         }
