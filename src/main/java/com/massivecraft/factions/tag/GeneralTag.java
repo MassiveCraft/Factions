@@ -52,6 +52,6 @@ public enum GeneralTag implements Tag {
             return text;
         }
         String result = this.supplier.get();
-        return result == null ? text : text.replace(this.tag, result);
+        return result == null ? null : text.replace(this.tag, result);
     }
 }

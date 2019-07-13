@@ -76,7 +76,7 @@ public enum FancyTag implements Tag {
             String s = otherFaction.getTag(fPlayer);
             if (otherFaction.getRelationTo(faction) == relation) {
                 message.then(first ? s : ", " + s);
-                message.tooltip(tipFaction(otherFaction)).color(fPlayer.getColorTo(otherFaction));
+                message.tooltip(tipFaction(otherFaction, fPlayer)).color(fPlayer.getColorTo(otherFaction));
                 first = false;
                 if (message.toJSONString().length() > ARBITRARY_LIMIT) {
                     fancyMessages.add(message);
@@ -112,10 +112,14 @@ public enum FancyTag implements Tag {
      * @param faction faction to tooltip for
      * @return list of tooltips for a fancy message
      */
-    private static List<String> tipFaction(Faction faction) {
+    private static List<String> tipFaction(Faction faction, FPlayer player) {
         List<String> lines = new ArrayList<>();
         for (String line : P.p.getConfig().getStringList("tooltips.list")) {
-            lines.add(ChatColor.translateAlternateColorCodes('&', Tag.parsePlain(faction, line)));
+            String string = Tag.parsePlain(faction, player, line);
+            if (string == null) {
+                continue;
+            }
+            lines.add(ChatColor.translateAlternateColorCodes('&', string));
         }
         return lines;
     }
@@ -129,9 +133,23 @@ public enum FancyTag implements Tag {
     private static List<String> tipPlayer(FPlayer fplayer, Map<UUID, String> groupMap) {
         List<String> lines = new ArrayList<>();
         for (String line : P.p.getConfig().getStringList("tooltips.show")) {
-            String newLine = (groupMap != null && groupMap.containsKey(UUID.fromString(fplayer.getId()))) ?
-                    line.replace("{group}", groupMap.get(UUID.fromString(fplayer.getId()))) : line;
-            lines.add(ChatColor.translateAlternateColorCodes('&', Tag.parsePlain(fplayer, newLine)));
+            String newLine = line;
+            everythingOnYourWayOut:
+            if (line.contains("{group}")) {
+                if (groupMap != null) {
+                    String group = groupMap.get(UUID.fromString(fplayer.getId()));
+                    if (!group.trim().isEmpty()) {
+                        newLine = newLine.replace("{group}", group);
+                        break everythingOnYourWayOut;
+                    }
+                }
+                continue;
+            }
+            String string = Tag.parsePlain(fplayer, newLine);
+            if (string == null) {
+                continue;
+            }
+            lines.add(ChatColor.translateAlternateColorCodes('&', string));
         }
         return lines;
     }

@@ -118,7 +118,7 @@ public class CmdShow extends FCommand {
     }
 
     private void sendMessages(List<String> messageList, CommandSender recipient, Faction faction, FPlayer player) {
-        this.sendMessages(messageList, recipient, faction, player);
+        this.sendMessages(messageList, recipient, faction, player, null);
     }
 
     private void sendMessages(List<String> messageList, CommandSender recipient, Faction faction, FPlayer player, Map<UUID, String> groupMap) {
@@ -168,7 +168,7 @@ public class CmdShow extends FCommand {
         }
     }
 
-    private class Sender extends  BukkitRunnable {
+    private class Sender extends BukkitRunnable {
         private List<String> messageList;
         private FPlayer sender;
         private Faction faction;

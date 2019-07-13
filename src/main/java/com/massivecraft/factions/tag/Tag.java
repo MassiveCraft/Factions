@@ -16,7 +16,7 @@ public interface Tag {
      * @param line raw line from config with variables to replace for
      * @return clean line
      */
-    public static String parsePlain(Faction faction, String line) {
+    static String parsePlain(Faction faction, String line) {
         return GeneralTag.parse(FactionTag.parse(line, faction));
     }
 
@@ -27,7 +27,7 @@ public interface Tag {
      * @param line raw line from config with variables to replace for
      * @return clean line
      */
-    public static String parsePlain(FPlayer fplayer, String line) {
+    static String parsePlain(FPlayer fplayer, String line) {
         return parsePlain(fplayer.getFaction(), fplayer, line);
     }
 
@@ -39,11 +39,11 @@ public interface Tag {
      * @param line raw line from config with variables to replace for
      * @return clean line
      */
-    public static String parsePlain(Faction faction, FPlayer fplayer, String line) {
+    static String parsePlain(Faction faction, FPlayer fplayer, String line) {
         return GeneralTag.parse(PlayerTag.parse(FactionTag.parse(line, faction, fplayer), fplayer));
     }
 
-    public static String parsePlaceholders(Player player, String line) {
+    static String parsePlaceholders(Player player, String line) {
         if (player == null || line == null) {
             return line;
         }

@@ -121,7 +121,7 @@ public enum FactionTag implements Tag {
             return this.replace(text, faction);
         }
         String result = this.biFunction.apply(faction, player);
-        return result == null ? text : text.replace(this.tag, result);
+        return result == null ? null : text.replace(this.tag, result);
     }
 
     public String replace(String text, Faction faction) {
@@ -129,6 +129,6 @@ public enum FactionTag implements Tag {
             return text;
         }
         String result = this.function.apply(faction);
-        return result == null ? text : text.replace(this.tag, result);
+        return result == null ? null : text.replace(this.tag, result);
     }
 }
