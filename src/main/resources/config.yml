@@ -357,7 +357,7 @@ list:
   # You can use any variables here
   factionless: '<i>Factionless<i> {factionless} online'
   # You can use any variable here
-  entry: '<a>{faction} <i>{online} / {members} online, <a>Land / Power / Maxpower: <i>{chunks}/{power}/{maxPower}'
+  entry: '<a>{faction-relation-color}{faction} <i>{online} / {members} online, <a>Land / Power / Maxpower: <i>{chunks}/{power}/{maxPower}'
 
 ############################################################
 # +------------------------------------------------------+ #
@@ -657,6 +657,7 @@ lwc:
 # Faction variables. Can be used in tooltips.list, scoreboards, or /f show
 #  - {header}    : Default factions header (ex. /f show)
 #  - {faction}   : Factions tag (if none, uses lang.yml for factionless name)
+#  - {faction-relation-color} : Factions color relative to the viewer
 #  - {joining}   : How to join this faction
 #  - {power}     : Factions deaths until raidable value
 #  - {power-boost}  : DTR Symbol based on current DTR (max, regen, frozen, raidable)

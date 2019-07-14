@@ -30,6 +30,7 @@ public enum FactionTag implements Tag {
     }),
     JOINING("{joining}", (fac) -> (fac.getOpen() ? TL.COMMAND_SHOW_UNINVITED.toString() : TL.COMMAND_SHOW_INVITATION.toString())),
     FACTION("{faction}", (Function<Faction, String>) Faction::getTag),
+    FACTION_RELATION_COLOR("{faction-relation-color}", (fac, fp) -> fp.getColorTo(fac).toString()),
     HOME_WORLD("{world}", (fac) -> fac.hasHome() ? fac.getHome().getWorld().getName() : Tag.isMinimalShow() ? null : "{ig}"),
     RAIDABLE("{raidable}", (fac) -> {
         if (P.p.getConfig().getBoolean("hcf.raidable", false)) {
