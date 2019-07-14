@@ -80,7 +80,9 @@ public class CmdShow extends FCommand {
             if (FactionTag.HEADER.foundInString(header)) {
                 context.msg(p.txt.titleize(tag));
             } else {
-                context.msg(p.txt.parse(header.replace(FactionTag.FACTION.getTag(), tag)));
+                String message = header.replace(FactionTag.FACTION.getTag(), tag);
+                message = Tag.parsePlain(faction, context.fPlayer, message);
+                context.msg(p.txt.parse(message));
             }
             return; // we only show header for non-normal factions
         }
@@ -102,7 +104,7 @@ public class CmdShow extends FCommand {
                     parsed = parsed.substring(0, parsed.indexOf("{ig}")) + TL.COMMAND_SHOW_NOHOME.toString();
                 }
                 parsed = parsed.replace("%", ""); // Just in case it got in there before we disallowed it.
-                messageList.add(parsed); // TODO context.msg(p.txt.parse)
+                messageList.add(parsed);
             }
         }
         if (context.fPlayer != null && this.groupPresent()) {
