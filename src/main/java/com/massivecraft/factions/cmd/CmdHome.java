@@ -31,6 +31,22 @@ public class CmdHome extends FCommand {
     @Override
     public void perform(final CommandContext context) {
         // TODO: Hide this command on help also.
+
+        Faction targetFaction = context.argAsFaction(0, context.fPlayer == null ? null : context.faction);
+
+        if (targetFaction != context.faction) {
+            if (context.fPlayer.isAdminBypassing()) {
+                if (targetFaction.hasHome()) {
+                    context.player.teleport(targetFaction.getHome());
+                } else {
+                    context.fPlayer.msg(TL.COMMAND_HOME_NOHOME.toString());
+                }
+            } else {
+                context.fPlayer.msg(TL.COMMAND_HOME_SELFONLY.toString());
+            }
+            return;
+        }
+
         if (!Conf.homesEnabled) {
             context.fPlayer.msg(TL.COMMAND_HOME_DISABLED);
             return;

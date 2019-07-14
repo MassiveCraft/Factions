@@ -271,6 +271,7 @@ public enum TL {
     COMMAND_HELP_MOAR_3("&eEven more commands for server admins:"),
     COMMAND_HELP_DESCRIPTION("Display a help page"),
 
+    COMMAND_HOME_SELFONLY("&cSorry, you cannot teleport to another faction's home"),
     COMMAND_HOME_DISABLED("&cSorry, Faction homes are disabled on this server."),
     COMMAND_HOME_TELEPORTDISABLED("&cSorry, the ability to teleport to Faction homes is disabled on this server."),
     COMMAND_HOME_NOHOME("&cYour faction does not have a home. "),
