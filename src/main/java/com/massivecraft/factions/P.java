@@ -209,9 +209,7 @@ public class P extends MPlugin {
         // since some other plugins execute commands directly through this command interface, provide it
         this.getCommand(refCommand).setExecutor(cmdBase);
 
-        if (getConfig().getBoolean("f-fly.enable", false)) {
-            FlightUtil.start();
-        }
+        FlightUtil.start();
 
         new TitleAPI();
         setupPlaceholderAPI();
