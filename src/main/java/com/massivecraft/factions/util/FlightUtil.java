@@ -17,8 +17,8 @@ public class FlightUtil {
 
     private static FlightUtil instance;
 
-    public EnemiesTask enemiesTask;
-    public ParticleTrailsTask trailsTask;
+    private EnemiesTask enemiesTask;
+    private ParticleTrailsTask trailsTask;
 
     private FlightUtil() {
         double enemyCheck = P.p.getConfig().getDouble("f-fly.radius-check", 1) * 20;
@@ -40,6 +40,14 @@ public class FlightUtil {
 
     public static FlightUtil instance() {
         return instance;
+    }
+
+    public boolean enemiesNearby(FPlayer target, int radius) {
+        if (this.enemiesTask == null) {
+            return false;
+        } else {
+            return this.enemiesTask.enemiesNearby(target, radius);
+        }
     }
 
     public class EnemiesTask extends BukkitRunnable {

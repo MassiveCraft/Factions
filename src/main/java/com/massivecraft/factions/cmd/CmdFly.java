@@ -7,6 +7,7 @@ import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.FlightUtil;
 import com.massivecraft.factions.util.WarmUpUtil;
 import com.massivecraft.factions.zcore.util.TL;
+import org.slf4j.event.Level;
 
 public class CmdFly extends FCommand {
 
@@ -51,10 +52,11 @@ public class CmdFly extends FCommand {
                 context.msg(TL.COMMAND_FLY_NO_ACCESS, factionAtLocation.getTag(context.fPlayer));
             }
             return;
-        } else if (FlightUtil.instance().enemiesTask.enemiesNearby(context.fPlayer, P.p.getConfig().getInt("f-fly.enemy-radius", 7))) {
+        } else if (FlightUtil.instance().enemiesNearby(context.fPlayer, P.p.getConfig().getInt("f-fly.enemy-radius", 7))) {
             if (notify) {
                 context.msg(TL.COMMAND_FLY_ENEMY_NEARBY);
             }
+            return;
         }
 
         context.doWarmUp(WarmUpUtil.Warmup.FLIGHT, TL.WARMUPS_NOTIFY_FLIGHT, "Fly", new Runnable() {
