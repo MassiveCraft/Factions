@@ -64,7 +64,7 @@ public enum FactionTag implements Tag {
             return String.valueOf(fac.getFPlayersWhereOnline(true, fp).size());
         } else {
             // Only console should ever get here.
-            return String.valueOf(fac.getFPlayers().size());
+            return String.valueOf(fac.getFPlayersWhereOnline(true).size());
         }
     }),
     OFFLINE_COUNT("{offline}", (fac) -> String.valueOf(fac.getFPlayers().size() - fac.getOnlinePlayers().size())),
