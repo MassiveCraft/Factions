@@ -19,7 +19,6 @@ import com.massivecraft.factions.zcore.util.TextUtil;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -249,10 +248,24 @@ public class FactionsPlayerListener extends AbstractListener {
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onPlayerInteract(PlayerInteractEntityEvent event) {
-        if (event.getRightClicked().getType() == EntityType.ITEM_FRAME) {
-            if (!canPlayerUseBlock(event.getPlayer(), Material.ITEM_FRAME, event.getRightClicked().getLocation(), false)) {
-                event.setCancelled(true);
-            }
+        switch (event.getRightClicked().getType()) {
+            case ITEM_FRAME:
+                if (!canPlayerUseBlock(event.getPlayer(), Material.ITEM_FRAME, event.getRightClicked().getLocation(), false)) {
+                    event.setCancelled(true);
+                }
+                break;
+            case HORSE:
+            case SKELETON_HORSE:
+            case ZOMBIE_HORSE:
+            case DONKEY:
+            case MULE:
+            case LLAMA:
+            case TRADER_LLAMA:
+            case PIG:
+                if (!this.playerCanInteractHere(event.getPlayer(), event.getRightClicked().getLocation())) {
+                    event.setCancelled(true);
+                }
+                break;
         }
     }
 
@@ -324,6 +337,69 @@ public class FactionsPlayerListener extends AbstractListener {
             lastAttempt = Now;
             return attempts;
         }
+    }
+
+    // TODO I feel terrible about this.
+    public boolean playerCanInteractHere(Player player, Location location) {
+        String name = player.getName();
+        if (Conf.playersWhoBypassAllProtection.contains(name)) {
+            return true;
+        }
+
+        FPlayer me = FPlayers.getInstance().getByPlayer(player);
+        if (me.isAdminBypassing()) {
+            return true;
+        }
+
+        FLocation loc = new FLocation(location);
+        Faction otherFaction = Board.getInstance().getFactionAt(loc);
+
+        if (P.p.getConfig().getBoolean("hcf.raidable", false) && otherFaction.getLandRounded() >= otherFaction.getPowerRounded()) {
+            return true;
+        }
+
+        if (otherFaction.isWilderness()) {
+            if (!Conf.wildernessDenyUseage || Conf.worldsNoWildernessProtection.contains(location.getWorld().getName())) {
+                return true; // This is not faction territory. Use whatever you like here.
+            }
+            me.msg(TL.PLAYER_USE_WILDERNESS, "this");
+            return false;
+        } else if (otherFaction.isSafeZone()) {
+            if (!Conf.safeZoneDenyUseage || Permission.MANAGE_SAFE_ZONE.has(player)) {
+                return true;
+            }
+            me.msg(TL.PLAYER_USE_SAFEZONE, "this");
+            return false;
+        } else if (otherFaction.isWarZone()) {
+            if (!Conf.warZoneDenyUseage || Permission.MANAGE_WAR_ZONE.has(player)) {
+                return true;
+            }
+            me.msg(TL.PLAYER_USE_WARZONE, "this");
+
+            return false;
+        }
+
+        Access access = otherFaction.getAccess(me, PermissableAction.ITEM);
+        if (access != null && access != Access.UNDEFINED) {
+            return access == Access.ALLOW;
+        }
+
+        Faction myFaction = me.getFaction();
+        Relation rel = myFaction.getRelationTo(otherFaction);
+
+        // Cancel if we are not in our own territory
+        if (rel.confDenyUseage()) {
+            me.msg(TL.PLAYER_USE_TERRITORY, "this", otherFaction.getTag(myFaction));
+            return false;
+        }
+
+        // Also cancel if player doesn't have ownership rights for this claim
+        if (Conf.ownedAreasEnabled && Conf.ownedAreaDenyUseage && !otherFaction.playerHasOwnershipRights(me, loc)) {
+            me.msg(TL.PLAYER_USE_OWNED, "this", otherFaction.getOwnerListString(loc));
+            return false;
+        }
+
+        return true;
     }
 
 
