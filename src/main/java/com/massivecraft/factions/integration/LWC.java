@@ -29,7 +29,11 @@ public class LWC {
     }
 
     public static boolean getEnabled() {
-        return P.p.getConfig().getBoolean("lwc.integration", false) && lwc != null;
+        return lwc != null && P.p.getConfig().getBoolean("lwc.integration", false);
+    }
+
+    public static Plugin getLWC() {
+        return lwc == null ? null : lwc.getPlugin();
     }
 
     public static void clearOtherLocks(FLocation flocation, Faction faction) {

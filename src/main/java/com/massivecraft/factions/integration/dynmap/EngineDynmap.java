@@ -52,6 +52,15 @@ public class EngineDynmap {
     public DynmapAPI dynmapApi;
     public MarkerAPI markerApi;
     public MarkerSet markerset;
+    private boolean enabled;
+
+    public boolean isRunning() {
+        return enabled;
+    }
+
+    public String getVersion() {
+        return this.dynmapApi == null ? null : this.dynmapApi.getDynmapVersion();
+    }
 
     public void init() {
         Plugin dynmap = Bukkit.getServer().getPluginManager().getPlugin("dynmap");
@@ -59,6 +68,8 @@ public class EngineDynmap {
         if (dynmap == null || !dynmap.isEnabled()) {
             return;
         }
+
+        this.dynmapApi = (DynmapAPI) dynmap;
 
         // Should we even use dynmap?
         if (!Conf.dynmapUse) {
@@ -92,6 +103,8 @@ public class EngineDynmap {
                 updatePlayersets(playerSets);
             }
         }, 100L, 100L);
+
+        this.enabled = true;
     }
 
     // Thread Safe / Asynchronous: No

@@ -6,10 +6,12 @@ import org.bukkit.entity.Player;
 
 public interface IWorldguard {
 
-    public boolean isPVP(Player player);
+    boolean isPVP(Player player);
 
-    public boolean playerCanBuild(Player player, Location loc);
+    boolean playerCanBuild(Player player, Location loc);
 
-    public boolean checkForRegionsInChunk(FLocation flocation);
+    boolean checkForRegionsInChunk(FLocation flocation);
+
+    String getVersion();
 
 }

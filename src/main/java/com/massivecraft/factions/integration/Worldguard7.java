@@ -68,4 +68,8 @@ public class Worldguard7 implements IWorldguard {
 
         return set.size() > 0;
     }
+
+    public String getVersion() {
+        return WorldGuardPlugin.inst().getDescription().getVersion();
+    }
 }

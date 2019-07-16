@@ -52,4 +52,8 @@ public class Essentials {
 
         return amount > essentials.getSettings().getMaxMoney().doubleValue();
     }
+
+    public static Plugin getEssentials() {
+        return essentials;
+    }
 }

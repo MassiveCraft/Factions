@@ -6,6 +6,9 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.massivecraft.factions.cmd.CmdAutoHelp;
 import com.massivecraft.factions.cmd.FCmdRoot;
+import com.massivecraft.factions.event.FactionCreateEvent;
+import com.massivecraft.factions.event.FactionEvent;
+import com.massivecraft.factions.event.FactionRelationEvent;
 import com.massivecraft.factions.integration.*;
 import com.massivecraft.factions.integration.dynmap.EngineDynmap;
 import com.massivecraft.factions.listeners.*;
@@ -31,8 +34,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.RegisteredListener;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
 import java.io.IOException;
@@ -41,9 +46,12 @@ import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
 import java.util.*;
+import java.util.concurrent.Callable;
+import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class P extends MPlugin {
 
@@ -82,6 +90,8 @@ public class P extends MPlugin {
     public SeeChunkUtil seeChunkUtil;
     public ParticleProvider particleProvider;
     public IWorldguard worldguard;
+
+    private Metrics metrics;
 
     public P() {
         p = this;
@@ -215,8 +225,150 @@ public class P extends MPlugin {
 
         new TitleAPI();
         setupPlaceholderAPI();
+
+        // Grand metrics adventure!
+        this.setupMetrics();
+
         postEnable();
         this.loadSuccessful = true;
+    }
+
+    private void setupMetrics() {
+        this.metrics = new Metrics(this);
+
+        // Version
+        String verString = this.getDescription().getVersion().replace("${build.number}", "selfbuilt");
+        Pattern verPattern = Pattern.compile("U([\\d.]+)-b(.*)");
+        Matcher matcher = verPattern.matcher(verString);
+        final String fuuidVersion;
+        final String fuuidBuild;
+        if (matcher.find()) {
+            fuuidVersion = matcher.group(1);
+            fuuidBuild = matcher.group(2);
+        } else {
+            fuuidVersion = "Unknown";
+            fuuidBuild = null;
+        }
+        this.metricsDrillPie("fuuid_version", () -> {
+            Map<String, Map<String, Integer>> map = new HashMap<>();
+            Map<String, Integer> entry = new HashMap<>();
+            entry.put(fuuidBuild, 1);
+            map.put(fuuidVersion, entry);
+            return map;
+        });
+
+        // Essentials
+        Plugin ess = Essentials.getEssentials();
+        this.metricsDrillPie("essentials", () -> this.metricsPluginInfo(ess));
+        if (ess != null) {
+            this.metricsSimplePie("essentials_delete_homes", () -> "" + getConfig().getBoolean("delete-ess-homes", false));
+            this.metricsSimplePie("essentials_home_teleport", () -> "" + Conf.homesTeleportCommandEssentialsIntegration);
+        }
+
+        // LWC
+        Plugin lwc = LWC.getLWC();
+        this.metricsDrillPie("lwc", () -> this.metricsPluginInfo(lwc));
+        if (lwc != null) {
+            boolean enabled = getConfig().getBoolean("lwc.integration", false);
+            this.metricsSimplePie("lwc_integration", () -> "" + enabled);
+            if (enabled) {
+                this.metricsSimplePie("lwc_reset_locks_unclaim", () -> "" + getConfig().getBoolean("lwc.reset-locks-unclaim", false));
+                this.metricsSimplePie("lwc_reset_locks_capture", () -> "" + getConfig().getBoolean("lwc.reset-locks-capture", false));
+            }
+        }
+
+        // Vault
+        Plugin vault = Bukkit.getServer().getPluginManager().getPlugin("Vault");
+        this.metricsDrillPie("vault", () -> this.metricsPluginInfo(vault));
+        if (vault != null) {
+            this.metricsDrillPie("vault_perms", () -> this.metricsInfo(perms, perms::getName));
+            this.metricsDrillPie("vault_econ", () -> {
+                Map<String, Map<String, Integer>> map = new HashMap<>();
+                Map<String, Integer> entry = new HashMap<>();
+                entry.put(Econ.getEcon() == null ? "none" : Econ.getEcon().getName(), 1);
+                map.put((Conf.econEnabled && Econ.getEcon() != null) ? "enabled" : "disabled", entry);
+                return map;
+            });
+        }
+
+        // WorldGuard
+        IWorldguard wg = this.getWorldguard();
+        String wgVersion = wg == null ? "nope" : wg.getVersion();
+        this.metricsDrillPie("worldguard", () -> this.metricsInfo(wg, () -> wgVersion));
+
+        // Dynmap
+        String dynmapVersion = EngineDynmap.getInstance().getVersion();
+        boolean dynmapEnabled = EngineDynmap.getInstance().isRunning();
+        this.metricsDrillPie("dynmap", () -> {
+            Map<String, Map<String, Integer>> map = new HashMap<>();
+            Map<String, Integer> entry = new HashMap<>();
+            entry.put(dynmapVersion == null ? "none" : dynmapVersion, 1);
+            map.put(dynmapEnabled ? "enabled" : "disabled", entry);
+            return map;
+        });
+
+        // Clip Placeholder
+        Plugin clipPlugin = getServer().getPluginManager().getPlugin("PlaceholderAPI");
+        this.metricsDrillPie("clipplaceholder", () -> this.metricsPluginInfo(clipPlugin));
+
+        // MVdW Placeholder
+        Plugin mvdw = getServer().getPluginManager().getPlugin("MVdWPlaceholderAPI");
+        this.metricsDrillPie("mvdwplaceholder", () -> this.metricsPluginInfo(mvdw));
+
+        // Overall stats
+        this.metricsLine("factions", () -> Factions.getInstance().getAllFactions().size() - 3);
+        this.metricsSimplePie("scoreboard", () -> "" + getConfig().getBoolean("scoreboard.default-enabled", false));
+
+        // Event listeners
+        this.metricsDrillPie("event_listeners", () -> {
+            Set<Plugin> pluginsListening = this.getPlugins(FactionEvent.getHandlerList(), FactionCreateEvent.getHandlerList(), FactionRelationEvent.getHandlerList());
+            Map<String, Map<String, Integer>> map = new HashMap<>();
+            for (Plugin plugin : pluginsListening) {
+                if (plugin.getName().equalsIgnoreCase("factions")) {
+                    continue;
+                }
+                Map<String, Integer> entry = new HashMap<>();
+                entry.put(plugin.getDescription().getVersion(), 1);
+                map.put(plugin.getName(), entry);
+            }
+            return map;
+        });
+    }
+
+    private Set<Plugin> getPlugins(HandlerList... handlerLists) {
+        Set<Plugin> plugins = new HashSet<>();
+        for (HandlerList handlerList : handlerLists) {
+            plugins.addAll(this.getPlugins(handlerList));
+        }
+        return plugins;
+    }
+
+    private Set<Plugin> getPlugins(HandlerList handlerList) {
+        return Arrays.stream(handlerList.getRegisteredListeners()).map(RegisteredListener::getPlugin).collect(Collectors.toSet());
+    }
+
+    private void metricsLine(String name, Callable<Integer> callable) {
+        this.metrics.addCustomChart(new Metrics.SingleLineChart(name, callable));
+    }
+
+    private void metricsDrillPie(String name, Callable<Map<String, Map<String, Integer>>> callable) {
+        this.metrics.addCustomChart(new Metrics.DrilldownPie(name, callable));
+    }
+
+    private void metricsSimplePie(String name, Callable<String> callable) {
+        this.metrics.addCustomChart(new Metrics.SimplePie(name, callable));
+    }
+
+    private Map<String, Map<String, Integer>> metricsPluginInfo(Plugin plugin) {
+        return this.metricsInfo(plugin, () -> plugin.getDescription().getVersion());
+    }
+
+    private Map<String, Map<String, Integer>> metricsInfo(Object plugin, Supplier<String> versionGetter) {
+        Map<String, Map<String, Integer>> map = new HashMap<>();
+        Map<String, Integer> entry = new HashMap<>();
+        entry.put(plugin == null ? "nope" : versionGetter.get(), 1);
+        map.put(plugin == null ? "absent" : "present", entry);
+        return map;
     }
 
     private void loadWorldguard() {
