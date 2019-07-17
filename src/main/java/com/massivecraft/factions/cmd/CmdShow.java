@@ -1,13 +1,12 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.Conf;
-import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.*;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.tag.FactionTag;
 import com.massivecraft.factions.tag.FancyTag;
 import com.massivecraft.factions.tag.Tag;
+import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.factions.zcore.util.TL;
 import mkremins.fanciful.FancyMessage;
 import org.bukkit.Bukkit;
@@ -119,18 +118,65 @@ public class CmdShow extends FCommand {
     }
 
     private void sendMessages(List<String> messageList, CommandSender recipient, Faction faction, FPlayer player, Map<UUID, String> groupMap) {
+        FancyTag tag;
         for (String parsed : messageList) {
-            if (player != null && FancyTag.anyMatch(parsed)) {
-                List<FancyMessage> fancy = FancyTag.parse(parsed, faction, player, groupMap);
-                if (fancy != null) {
-                    for (FancyMessage fancyMessage : fancy) {
-                        fancyMessage.send(recipient);
+            if ((tag = FancyTag.getMatch(parsed)) != null) {
+                if (player != null) {
+                    List<FancyMessage> fancy = FancyTag.parse(parsed, faction, player, groupMap);
+                    if (fancy != null) {
+                        for (FancyMessage fancyMessage : fancy) {
+                            fancyMessage.send(recipient);
+                        }
+                    }
+                } else {
+                    StringBuilder builder = new StringBuilder();
+                    builder.append(parsed.replace(tag.getTag(), ""));
+                    switch (tag) {
+                        case ONLINE_LIST:
+                            this.onOffLineMessage(builder, recipient, faction, true);
+                            break;
+                        case OFFLINE_LIST:
+                            this.onOffLineMessage(builder, recipient, faction, false);
+                            break;
+                        case ALLIES_LIST:
+                            this.relationMessage(builder, recipient, faction, Relation.ALLY);
+                            break;
+                        case ENEMIES_LIST:
+                            this.relationMessage(builder, recipient, faction, Relation.ENEMY);
+                            break;
+                        case TRUCES_LIST:
+                            this.relationMessage(builder, recipient, faction, Relation.TRUCE);
+                            break;
+                        default:
+                            // NO
                     }
                 }
             } else {
                 recipient.sendMessage(P.p.txt.parse(parsed));
             }
         }
+    }
+
+    private void onOffLineMessage(StringBuilder builder, CommandSender recipient, Faction faction, boolean online) {
+        boolean first = true;
+        for (FPlayer p : MiscUtil.rankOrder(faction.getFPlayersWhereOnline(online))) {
+            String name = p.getNameAndTitle();
+            builder.append(first ? name : ", " + name);
+            first = false;
+        }
+        recipient.sendMessage(P.p.txt.parse(builder.toString()));
+    }
+
+    private void relationMessage(StringBuilder builder, CommandSender recipient, Faction faction, Relation relation) {
+        boolean first = true;
+        for (Faction otherFaction : Factions.getInstance().getAllFactions()) {
+            if (otherFaction != faction && otherFaction.getRelationTo(faction) == relation) {
+                String s = otherFaction.getTag();
+                builder.append(first ? s : ", " + s);
+                first = false;
+            }
+        }
+        recipient.sendMessage(P.p.txt.parse(builder.toString()));
     }
 
     private boolean groupPresent() {

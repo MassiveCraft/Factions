@@ -94,12 +94,16 @@ public enum FancyTag implements Tag {
     }
 
     public static boolean anyMatch(String text) {
+        return getMatch(text) != null;
+    }
+
+    public static FancyTag getMatch(String text) {
         for (FancyTag tag : FancyTag.values()) {
             if (tag.foundInString(text)) {
-                return true;
+                return tag;
             }
         }
-        return false;
+        return null;
     }
 
     /**
