@@ -250,7 +250,7 @@ public class P extends MPlugin {
             fuuidBuild = matcher.group(2);
         } else {
             fuuidVersion = "Unknown";
-            fuuidBuild = "Unknown";
+            fuuidBuild = verString;
         }
         this.metricsDrillPie("fuuid_version", () -> {
             Map<String, Map<String, Integer>> map = new HashMap<>();
