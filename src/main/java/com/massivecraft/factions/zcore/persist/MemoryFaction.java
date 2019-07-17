@@ -412,23 +412,21 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
         permissions.clear();
 
-        // First populate a map with undefined as the permission for each action.
-        Map<PermissableAction, Access> freshMap = new HashMap<>();
-        for (PermissableAction permissableAction : PermissableAction.values()) {
-            freshMap.put(permissableAction, Access.UNDEFINED);
-        }
-
-        // Put the map in there for each relation.
         for (Relation relation : Relation.values()) {
             if (relation != Relation.MEMBER) {
-                permissions.put(relation, new HashMap<>(freshMap));
+                permissions.put(relation, new HashMap<>());
+            }
+        }
+        for (Role role : Role.values()) {
+            if (role != Role.ADMIN) {
+                permissions.put(role, new HashMap<>());
             }
         }
 
-        // And each role.
-        for (Role role : Role.values()) {
-            if (role != Role.ADMIN) {
-                permissions.put(role, new HashMap<>(freshMap));
+        for (Map.Entry<Permissable, Map<PermissableAction, Access>> entry : permissions.entrySet()) {
+            Map<PermissableAction, Access> defMap = Conf.defaultPermissions.get(entry.getKey());
+            for (PermissableAction permissableAction : PermissableAction.values()) {
+                entry.getValue().computeIfAbsent(permissableAction, k -> defMap == null ? Access.UNDEFINED : defMap.getOrDefault(k, Access.UNDEFINED));
             }
         }
     }

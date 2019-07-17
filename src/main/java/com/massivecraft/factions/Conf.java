@@ -3,7 +3,12 @@ package com.massivecraft.factions;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Sets;
 import com.massivecraft.factions.integration.dynmap.DynmapStyle;
+import com.massivecraft.factions.struct.Relation;
+import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.material.FactionMaterial;
+import com.massivecraft.factions.zcore.fperms.Access;
+import com.massivecraft.factions.zcore.fperms.Permissable;
+import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
@@ -382,9 +387,12 @@ public class Conf {
     // Taller and wider for "bigger f map"
     public static int mapHeight = 17;
     public static int mapWidth = 49;
+
+    public static Map<Permissable, Map<PermissableAction, Access>> defaultPermissions = new HashMap<>();
+
     public static transient char[] mapKeyChrs = "\\/#$%=&^ABCDEFGHJKLMNOPQRSTUVWXYZ1234567890abcdeghjmnopqrsuvwxyz?".toCharArray();
 
-    static {
+    public static void preLoad() {
         baseCommandAliases.add("f");
 
         territoryEnemyDenyCommands.add("home");
@@ -531,6 +539,26 @@ public class Conf {
         if (P.getVersion() >= 1400) {
             safeZoneNerfedCreatureTypes.add(EntityType.PILLAGER);
             safeZoneNerfedCreatureTypes.add(EntityType.RAVAGER);
+        }
+
+        // First populate a map with undefined as the permission for each action.
+        Map<PermissableAction, Access> freshMap = new HashMap<>();
+        for (PermissableAction permissableAction : PermissableAction.values()) {
+            freshMap.put(permissableAction, Access.UNDEFINED);
+        }
+
+        // Put the map in there for each relation.
+        for (Relation relation : Relation.values()) {
+            if (relation != Relation.MEMBER) {
+                defaultPermissions.put(relation, new HashMap<>(freshMap));
+            }
+        }
+
+        // And each role.
+        for (Role role : Role.values()) {
+            if (role != Role.ADMIN) {
+                defaultPermissions.put(role, new HashMap<>(freshMap));
+            }
         }
     }
 
