@@ -4,7 +4,7 @@
 
     <groupId>com.massivecraft</groupId>
     <artifactId>Factions-aggregator</artifactId>
-    <version>1.6.9.5-U0.4.2</version>
+    <version>1.6.9.5-U0.4.3</version>
     <packaging>pom</packaging>
 
     <name>Factions Aggregator Project</name>
