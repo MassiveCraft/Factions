@@ -738,7 +738,7 @@ public abstract class MemoryFPlayer implements FPlayer {
         int factionBuffer = P.p.getConfig().getInt("hcf.buffer-zone", 0);
         int worldBuffer = P.p.getConfig().getInt("world-border.buffer", 0);
 
-        if (Conf.worldGuardChecking && P.p.getWorldguard() != null && P.p.getWorldguard().checkForRegionsInChunk(flocation)) {
+        if (Conf.worldGuardChecking && P.p.getWorldguard() != null && P.p.getWorldguard().checkForRegionsInChunk(flocation.getChunk())) {
             // Checks for WorldGuard regions in the chunk attempting to be claimed
             error = P.p.txt.parse(TL.CLAIM_PROTECTED.toString());
         } else if (Conf.worldsNoClaiming.contains(flocation.getWorldName())) {

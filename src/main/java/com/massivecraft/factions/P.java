@@ -384,7 +384,7 @@ public class P extends MPlugin {
         if (plugin != null) {
             String version = plugin.getDescription().getVersion();
             if (version.startsWith("6")) {
-                this.worldguard = new Worldguard6();
+                this.worldguard = new Worldguard6(plugin);
                 getLogger().info("Found support for WorldGuard version " + version);
             } else if (version.startsWith("7")) {
                 this.worldguard = new Worldguard7();

@@ -44,9 +44,7 @@ public class Worldguard7 implements IWorldguard {
         return query.testBuild(localPlayer.getLocation(), localPlayer);
     }
 
-    public boolean checkForRegionsInChunk(FLocation flocation) {
-        Chunk chunk = flocation.getChunk();
-
+    public boolean checkForRegionsInChunk(Chunk chunk) {
         RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
         RegionManager regions = container.get(BukkitAdapter.adapt(chunk.getWorld()));
         if (regions == null) {
