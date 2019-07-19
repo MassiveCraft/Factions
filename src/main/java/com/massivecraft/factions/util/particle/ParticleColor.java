@@ -41,33 +41,27 @@ public class ParticleColor {
             case BLACK:
                 return new ParticleColor(Color.BLACK);
             case BLUE:
-                return new ParticleColor(Color.BLUE);
             case DARK_AQUA:
-                return new ParticleColor(Color.BLUE);
             case DARK_BLUE:
                 return new ParticleColor(Color.BLUE);
             case DARK_GRAY:
+            case GRAY:
                 return new ParticleColor(Color.GRAY);
             case DARK_GREEN:
                 return new ParticleColor(Color.GREEN);
             case DARK_PURPLE:
-                return new ParticleColor(Color.PURPLE);
-            case DARK_RED:
-                return new ParticleColor(Color.RED);
-            case GOLD:
-                return new ParticleColor(Color.YELLOW);
-            case GRAY:
-                return new ParticleColor(Color.GRAY);
-            case GREEN:
-                return new ParticleColor(Color.LIME);
             case LIGHT_PURPLE:
                 return new ParticleColor(Color.PURPLE);
+            case DARK_RED:
             case RED:
                 return new ParticleColor(Color.RED);
-            case WHITE:
-                return new ParticleColor(Color.WHITE);
+            case GOLD:
             case YELLOW:
                 return new ParticleColor(Color.YELLOW);
+            case GREEN:
+                return new ParticleColor(Color.LIME);
+            case WHITE:
+                return new ParticleColor(Color.WHITE);
             default:
                 break;
         }

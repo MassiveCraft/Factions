@@ -1,10 +1,11 @@
 package com.massivecraft.factions.tag;
 
-import com.google.common.base.Supplier;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
+
+import java.util.function.Supplier;
 
 public enum GeneralTag implements Tag {
     MAX_WARPS("{max-warps}", () -> String.valueOf(P.p.getConfig().getInt("max-warps", 5))),

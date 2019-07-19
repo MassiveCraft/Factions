@@ -34,7 +34,7 @@ public class JSONBoard extends MemoryBoard {
             coords = entry.getKey().getCoordString();
             id = entry.getValue();
             if (!worldCoordIds.containsKey(worldName)) {
-                worldCoordIds.put(worldName, new TreeMap<String, String>());
+                worldCoordIds.put(worldName, new TreeMap<>());
             }
 
             worldCoordIds.get(worldName).put(coords, id);

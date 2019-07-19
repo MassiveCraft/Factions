@@ -21,9 +21,6 @@ public class PortalHandler implements PortalListenerBase {
 
         FPlayer fp = FPlayers.getInstance().getByPlayer(player);
         String mininumRelation = P.p.getConfig().getString("portals.minimum-relation", "MEMBER"); // Defaults to Neutral if typed wrong.
-        if (!fp.getFaction().getRelationTo(faction).isAtLeast(Relation.fromString(mininumRelation))) {
-            return true;
-        }
-        return false;
+        return !fp.getFaction().getRelationTo(faction).isAtLeast(Relation.fromString(mininumRelation));
     }
 }

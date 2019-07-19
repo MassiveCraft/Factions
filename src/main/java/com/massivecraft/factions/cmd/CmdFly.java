@@ -7,7 +7,6 @@ import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.FlightUtil;
 import com.massivecraft.factions.util.WarmUpUtil;
 import com.massivecraft.factions.zcore.util.TL;
-import org.slf4j.event.Level;
 
 public class CmdFly extends FCommand {
 
@@ -59,12 +58,8 @@ public class CmdFly extends FCommand {
             return;
         }
 
-        context.doWarmUp(WarmUpUtil.Warmup.FLIGHT, TL.WARMUPS_NOTIFY_FLIGHT, "Fly", new Runnable() {
-            @Override
-            public void run() {
-                context.fPlayer.setFlying(true);
-            }
-        }, this.p.getConfig().getLong("warmups.f-fly", 0));
+        context.doWarmUp(WarmUpUtil.Warmup.FLIGHT, TL.WARMUPS_NOTIFY_FLIGHT, "Fly", () ->
+                context.fPlayer.setFlying(true), this.p.getConfig().getLong("warmups.f-fly", 0));
     }
 
     @Override

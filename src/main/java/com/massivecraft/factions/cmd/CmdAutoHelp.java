@@ -25,9 +25,7 @@ public class CmdAutoHelp extends FCommand {
         }
         FCommand pcmd = context.commandChain.get(context.commandChain.size() - 1);
 
-        ArrayList<String> lines = new ArrayList<>();
-
-        lines.addAll(pcmd.helpLong);
+        ArrayList<String> lines = new ArrayList<>(pcmd.helpLong);
 
         for (FCommand scmd : pcmd.subCommands) {
             if (scmd.visibility == CommandVisibility.VISIBLE) {

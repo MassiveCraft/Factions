@@ -6,12 +6,12 @@ import org.bukkit.inventory.ItemStack;
 
 public interface Permissable {
 
-    public ItemStack buildItem(FPlayer fme);
+    ItemStack buildItem(FPlayer fme);
 
-    public String replacePlaceholders(String string, FPlayer fme);
+    String replacePlaceholders(String string, FPlayer fme);
 
-    public String name();
+    String name();
 
-    public ChatColor getColor();
+    ChatColor getColor();
 
 }

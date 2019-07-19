@@ -8,7 +8,11 @@ import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.tag.Tag;
 import com.massivecraft.factions.zcore.util.TL;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.List;
+import java.util.function.Function;
 
 
 public class CmdList extends FCommand {
@@ -45,44 +49,14 @@ public class CmdList extends FCommand {
         // remove exempt factions
         if (!context.sender.hasPermission("factions.show.bypassexempt")) {
             List<String> exemptFactions = P.p.getConfig().getStringList("show-exempt");
-            Iterator<Faction> factionIterator = factionList.iterator();
-            while (factionIterator.hasNext()) {
-                Faction next = factionIterator.next();
-                if (exemptFactions.contains(next.getTag())) {
-                    factionIterator.remove();
-                }
-            }
+            factionList.removeIf(next -> exemptFactions.contains(next.getTag()));
         }
 
         // Sort by total followers first
-        Collections.sort(factionList, new Comparator<Faction>() {
-            @Override
-            public int compare(Faction f1, Faction f2) {
-                int f1Size = f1.getFPlayers().size();
-                int f2Size = f2.getFPlayers().size();
-                if (f1Size < f2Size) {
-                    return 1;
-                } else if (f1Size > f2Size) {
-                    return -1;
-                }
-                return 0;
-            }
-        });
+        factionList.sort(this.compare(Faction::getFPlayers));
 
         // Then sort by how many members are online now
-        Collections.sort(factionList, new Comparator<Faction>() {
-            @Override
-            public int compare(Faction f1, Faction f2) {
-                int f1Size = f1.getFPlayersWhereOnline(true).size();
-                int f2Size = f2.getFPlayersWhereOnline(true).size();
-                if (f1Size < f2Size) {
-                    return 1;
-                } else if (f1Size > f2Size) {
-                    return -1;
-                }
-                return 0;
-            }
-        });
+        factionList.sort(this.compare(f -> f.getFPlayersWhereOnline(true)));
 
         ArrayList<String> lines = new ArrayList<>();
 
@@ -115,6 +89,19 @@ public class CmdList extends FCommand {
             lines.add(p.txt.parse(Tag.parsePlain(faction, context.fPlayer, p.getConfig().getString("list.entry", defaults[2]))));
         }
         context.sendMessage(lines);
+    }
+
+    private Comparator<Faction> compare(Function<Faction, ? extends Collection<?>> func) {
+        return (f1, f2) -> {
+            int f1Size = func.apply(f1).size();
+            int f2Size = func.apply(f2).size();
+            if (f1Size < f2Size) {
+                return 1;
+            } else if (f1Size > f2Size) {
+                return -1;
+            }
+            return 0;
+        };
     }
 
     @Override

@@ -62,7 +62,7 @@ public class PowerLossEvent extends FactionPlayerEvent implements Cancellable {
     /**
      * Set the power loss message.
      *
-     * @param message
+     * @param message message
      */
     public void setMessage(String message) {
         this.message = message;

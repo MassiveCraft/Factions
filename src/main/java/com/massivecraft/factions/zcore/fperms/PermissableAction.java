@@ -56,8 +56,8 @@ public enum PermissableAction {
     /**
      * Case insensitive check for action.
      *
-     * @param check
-     * @return
+     * @param check check
+     * @return permissible
      */
     public static PermissableAction fromString(String check) {
         for (PermissableAction permissableAction : values()) {

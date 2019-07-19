@@ -59,7 +59,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
 
     public void addAnnouncement(FPlayer fPlayer, String msg) {
-        List<String> list = announcements.containsKey(fPlayer.getId()) ? announcements.get(fPlayer.getId()) : new ArrayList<String>();
+        List<String> list = announcements.containsKey(fPlayer.getId()) ? announcements.get(fPlayer.getId()) : new ArrayList<>();
         list.add(msg);
         announcements.put(fPlayer.getId(), list);
     }
@@ -77,9 +77,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
 
     public void removeAnnouncements(FPlayer fPlayer) {
-        if (announcements.containsKey(fPlayer.getId())) {
-            announcements.remove(fPlayer.getId());
-        }
+        announcements.remove(fPlayer.getId());
     }
 
     public ConcurrentHashMap<String, LazyLocation> getWarps() {
@@ -157,12 +155,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
 
     public void unban(FPlayer player) {
-        Iterator<BanInfo> iter = bans.iterator();
-        while (iter.hasNext()) {
-            if (iter.next().getBanned().equalsIgnoreCase(player.getId())) {
-                iter.remove();
-            }
-        }
+        bans.removeIf(banInfo -> banInfo.getBanned().equalsIgnoreCase(player.getId()));
     }
 
     public boolean isBanned(FPlayer player) {
@@ -373,9 +366,9 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     /**
      * Get the Access of a player. Will use player's Role if they are a faction member. Otherwise, uses their Relation.
      *
-     * @param player
-     * @param permissableAction
-     * @return
+     * @param player            player
+     * @param permissableAction permissible
+     * @return player's access
      */
     public Access getAccess(FPlayer player, PermissableAction permissableAction) {
         if (player == null || permissableAction == null) {
@@ -434,7 +427,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     /**
      * Read only map of Permissions.
      *
-     * @return
+     * @return map of permissions
      */
     public Map<Permissable, Map<PermissableAction, Access>> getPermissions() {
         return Collections.unmodifiableMap(permissions);
@@ -901,12 +894,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
                 continue;
             }
 
-            Iterator<String> iter = ownerData.iterator();
-            while (iter.hasNext()) {
-                if (iter.next().equals(player.getId())) {
-                    iter.remove();
-                }
-            }
+            ownerData.removeIf(s -> s.equals(player.getId()));
 
             if (ownerData.isEmpty()) {
                 if (LWC.getEnabled() && P.p.getConfig().getBoolean("lwc.reset-locks-unclaim", false)) {

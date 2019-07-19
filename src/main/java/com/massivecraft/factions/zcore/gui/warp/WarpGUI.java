@@ -130,14 +130,11 @@ public class WarpGUI extends FactionGUI<Integer> implements FactionGUI.Dynamic {
     }
 
     private void doWarmup(final String warp) {
-        WarmUpUtil.process(user, WarmUpUtil.Warmup.WARP, TL.WARMUPS_NOTIFY_TELEPORT, warp, new Runnable() {
-            @Override
-            public void run() {
-                Player player = Bukkit.getPlayer(user.getPlayer().getUniqueId());
-                if (player != null) {
-                    player.teleport(user.getFaction().getWarp(warp).getLocation());
-                    user.msg(TL.COMMAND_FWARP_WARPED, warp);
-                }
+        WarmUpUtil.process(user, WarmUpUtil.Warmup.WARP, TL.WARMUPS_NOTIFY_TELEPORT, warp, () -> {
+            Player player = Bukkit.getPlayer(user.getPlayer().getUniqueId());
+            if (player != null) {
+                player.teleport(user.getFaction().getWarp(warp).getLocation());
+                user.msg(TL.COMMAND_FWARP_WARPED, warp);
             }
         }, P.p.getConfig().getLong("warmups.f-warp", 0));
     }

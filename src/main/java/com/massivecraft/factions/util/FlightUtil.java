@@ -18,7 +18,6 @@ public class FlightUtil {
     private static FlightUtil instance;
 
     private EnemiesTask enemiesTask;
-    private ParticleTrailsTask trailsTask;
 
     private FlightUtil() {
         double enemyCheck = P.p.getConfig().getDouble("f-fly.radius-check", 1) * 20;
@@ -29,8 +28,7 @@ public class FlightUtil {
 
         double spawnRate = P.p.getConfig().getDouble("f-fly.trails.spawn-rate", 0) * 20;
         if (spawnRate > 0) {
-            trailsTask = new ParticleTrailsTask();
-            trailsTask.runTaskTimer(P.p, 0, (long) spawnRate);
+            new ParticleTrailsTask().runTaskTimer(P.p, 0, (long) spawnRate);
         }
     }
 

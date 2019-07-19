@@ -111,7 +111,7 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion implements R
             case "faction_claims":
                 return String.valueOf(faction.getAllClaims().size());
             case "faction_founded":
-                return String.valueOf(TL.sdf.format(faction.getFoundedDate()));
+                return TL.sdf.format(faction.getFoundedDate());
             case "faction_joining":
                 return (faction.getOpen() ? TL.COMMAND_SHOW_UNINVITED.toString() : TL.COMMAND_SHOW_INVITATION.toString());
             case "faction_peaceful":

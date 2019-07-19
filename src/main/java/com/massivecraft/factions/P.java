@@ -16,8 +16,6 @@ import com.massivecraft.factions.listeners.versionspecific.PortalHandler;
 import com.massivecraft.factions.listeners.versionspecific.PortalListenerLegacy;
 import com.massivecraft.factions.listeners.versionspecific.PortalListener_114;
 import com.massivecraft.factions.struct.ChatMode;
-import com.massivecraft.factions.struct.Relation;
-import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.*;
 import com.massivecraft.factions.util.material.FactionMaterial;
 import com.massivecraft.factions.util.material.MaterialDb;

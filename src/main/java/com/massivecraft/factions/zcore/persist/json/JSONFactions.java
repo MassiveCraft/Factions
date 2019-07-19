@@ -1,6 +1,5 @@
 package com.massivecraft.factions.zcore.persist.json;
 
-import com.google.common.base.Function;
 import com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -241,12 +240,7 @@ public class JSONFactions extends MemoryFactions {
 
     @Override
     public void convertFrom(MemoryFactions old) {
-        this.factions.putAll(Maps.transformValues(old.factions, new Function<Faction, JSONFaction>() {
-            @Override
-            public JSONFaction apply(Faction arg0) {
-                return new JSONFaction((MemoryFaction) arg0);
-            }
-        }));
+        this.factions.putAll(Maps.transformValues(old.factions, faction -> new JSONFaction((MemoryFaction) faction)));
         this.nextId = old.nextId;
         forceSave();
         Factions.instance = this;

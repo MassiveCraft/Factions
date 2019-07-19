@@ -62,14 +62,11 @@ public class CmdFWarp extends FCommand {
                 }
                 final FPlayer fPlayer = context.fPlayer;
                 final UUID uuid = context.fPlayer.getPlayer().getUniqueId();
-                context.doWarmUp(WarmUpUtil.Warmup.WARP, TL.WARMUPS_NOTIFY_TELEPORT, warpName, new Runnable() {
-                    @Override
-                    public void run() {
-                        Player player = Bukkit.getPlayer(uuid);
-                        if (player != null) {
-                            player.teleport(fPlayer.getFaction().getWarp(warpName).getLocation());
-                            fPlayer.msg(TL.COMMAND_FWARP_WARPED, warpName);
-                        }
+                context.doWarmUp(WarmUpUtil.Warmup.WARP, TL.WARMUPS_NOTIFY_TELEPORT, warpName, () -> {
+                    Player player = Bukkit.getPlayer(uuid);
+                    if (player != null) {
+                        player.teleport(fPlayer.getFaction().getWarp(warpName).getLocation());
+                        fPlayer.msg(TL.COMMAND_FWARP_WARPED, warpName);
                     }
                 }, this.p.getConfig().getLong("warmups.f-warp", 0));
             } else {

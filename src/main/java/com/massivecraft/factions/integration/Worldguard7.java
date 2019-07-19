@@ -1,6 +1,5 @@
 package com.massivecraft.factions.integration;
 
-import com.massivecraft.factions.FLocation;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldguard.LocalPlayer;

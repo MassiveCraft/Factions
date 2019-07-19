@@ -17,12 +17,7 @@ public class VisualizeUtil {
     }
 
     public static Set<Location> getPlayerLocations(UUID uuid) {
-        Set<Location> ret = playerLocations.get(uuid);
-        if (ret == null) {
-            ret = new HashSet<>();
-            playerLocations.put(uuid, ret);
-        }
-        return ret;
+        return playerLocations.computeIfAbsent(uuid, k -> new HashSet<>());
     }
 
     @SuppressWarnings("deprecation")

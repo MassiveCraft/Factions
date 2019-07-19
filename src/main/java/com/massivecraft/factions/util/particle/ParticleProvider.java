@@ -11,7 +11,7 @@ public interface ParticleProvider<Effect> {
 
     void playerSpawn(Player player, Effect effect, Location location, int count);
 
-    public void spawn(Effect effect, Location location, int count, double speed, double offsetX, double offsetY, double offsetZ);
+    void spawn(Effect effect, Location location, int count, double speed, double offsetX, double offsetY, double offsetZ);
 
     void playerSpawn(Player player, Effect effect, Location location, int count, double speed, double offsetX, double offsetY, double offsetZ);
 

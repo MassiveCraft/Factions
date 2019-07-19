@@ -1,6 +1,5 @@
 package com.massivecraft.factions.zcore.persist.json;
 
-import com.google.common.base.Function;
 import com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -40,12 +39,7 @@ public class JSONFPlayers extends MemoryFPlayers {
     }
 
     public void convertFrom(MemoryFPlayers old) {
-        this.fPlayers.putAll(Maps.transformValues(old.fPlayers, new Function<FPlayer, JSONFPlayer>() {
-            @Override
-            public JSONFPlayer apply(FPlayer arg0) {
-                return new JSONFPlayer((MemoryFPlayer) arg0);
-            }
-        }));
+        this.fPlayers.putAll(Maps.transformValues(old.fPlayers, faction -> new JSONFPlayer((MemoryFPlayer) faction)));
         forceSave();
         FPlayers.instance = this;
     }
@@ -171,11 +165,9 @@ public class JSONFPlayers extends MemoryFPlayers {
     private boolean doesKeyNeedMigration(String key) {
         if (!key.matches("[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}")) {
             // Not a valid UUID..
-            if (key.matches("[a-zA-Z0-9_]{2,16}")) {
-                // Valid playername, we'll mark this as one for conversion
-                // to UUID
-                return true;
-            }
+            // Valid playername, we'll mark this as one for conversion
+            // to UUID
+            return key.matches("[a-zA-Z0-9_]{2,16}");
         }
         return false;
     }

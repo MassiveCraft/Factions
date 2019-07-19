@@ -6,7 +6,6 @@ import com.massivecraft.factions.*;
 import com.massivecraft.factions.integration.LWC;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.util.AsciiCompass;
-import com.massivecraft.factions.util.LazyLocation;
 import com.massivecraft.factions.zcore.util.TL;
 import mkremins.fanciful.FancyMessage;
 import org.bukkit.ChatColor;
@@ -98,12 +97,7 @@ public abstract class MemoryBoard extends Board {
 
     public void removeAt(FLocation flocation) {
         Faction faction = getFactionAt(flocation);
-        Iterator<LazyLocation> it = faction.getWarps().values().iterator();
-        while (it.hasNext()) {
-            if (flocation.isInChunk(it.next().getLocation())) {
-                it.remove();
-            }
-        }
+        faction.getWarps().values().removeIf(lazyLocation -> flocation.isInChunk(lazyLocation.getLocation()));
         for (Entity entity : flocation.getChunk().getEntities()) {
             if (entity instanceof Player) {
                 FPlayer fPlayer = FPlayers.getInstance().getByPlayer((Player) entity);
@@ -157,9 +151,7 @@ public abstract class MemoryBoard extends Board {
 
     public void clean(String factionId) {
         if (LWC.getEnabled() && P.p.getConfig().getBoolean("lwc.reset-locks-unclaim", false)) {
-            Iterator<Entry<FLocation, String>> iter = flocationIds.entrySet().iterator();
-            while (iter.hasNext()) {
-                Entry<FLocation, String> entry = iter.next();
+            for (Entry<FLocation, String> entry : flocationIds.entrySet()) {
                 if (entry.getValue().equals(factionId)) {
                     LWC.clearAllLocks(entry.getKey());
                 }

@@ -18,8 +18,8 @@ public enum Access {
     /**
      * Case insensitive check for access.
      *
-     * @param check
-     * @return
+     * @param check check
+     * @return access
      */
     public static Access fromString(String check) {
         for (Access access : values()) {

@@ -10,8 +10,8 @@ import java.util.logging.Level;
 
 public class AutoLeaveProcessTask extends BukkitRunnable {
 
-    private transient boolean readyToGo = false;
-    private transient boolean finished = false;
+    private transient boolean readyToGo;
+    private transient boolean finished;
     private transient ListIterator<FPlayer> iterator;
     private transient double toleranceMillis;
 

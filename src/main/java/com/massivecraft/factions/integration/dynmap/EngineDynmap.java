@@ -81,27 +81,24 @@ public class EngineDynmap {
         }
 
         // Shedule non thread safe sync at the end!
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(P.p, new Runnable() {
-            @Override
-            public void run() {
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(P.p, () -> {
 
-                final Map<String, TempMarker> homes = createHomes();
-                final Map<String, TempAreaMarker> areas = createAreas();
-                final Map<String, Set<String>> playerSets = createPlayersets();
+            final Map<String, TempMarker> homes = createHomes();
+            final Map<String, TempAreaMarker> areas = createAreas();
+            final Map<String, Set<String>> playerSets = createPlayersets();
 
-                if (!updateCore()) {
-                    return;
-                }
-
-                // createLayer() is thread safe but it makes use of fields set in updateCore() so we must have it after.
-                if (!updateLayer(createLayer())) {
-                    return;
-                }
-
-                updateHomes(homes);
-                updateAreas(areas);
-                updatePlayersets(playerSets);
+            if (!updateCore()) {
+                return;
             }
+
+            // createLayer() is thread safe but it makes use of fields set in updateCore() so we must have it after.
+            if (!updateLayer(createLayer())) {
+                return;
+            }
+
+            updateHomes(homes);
+            updateAreas(areas);
+            updatePlayersets(playerSets);
         }, 100L, 100L);
 
         this.enabled = true;
@@ -242,17 +239,9 @@ public class EngineDynmap {
             String world = entry.getKey().getWorldName();
             Faction chunkOwner = Factions.getInstance().getFactionById(entry.getValue());
 
-            Map<Faction, Set<FLocation>> factionChunks = worldFactionChunks.get(world);
-            if (factionChunks == null) {
-                factionChunks = new HashMap<>();
-                worldFactionChunks.put(world, factionChunks);
-            }
+            Map<Faction, Set<FLocation>> factionChunks = worldFactionChunks.computeIfAbsent(world, k -> new HashMap<>());
 
-            Set<FLocation> factionTerritory = factionChunks.get(chunkOwner);
-            if (factionTerritory == null) {
-                factionTerritory = new HashSet<>();
-                factionChunks.put(chunkOwner, factionTerritory);
-            }
+            Set<FLocation> factionTerritory = factionChunks.computeIfAbsent(chunkOwner, k -> new HashSet<>());
 
             factionTerritory.add(entry.getKey());
         }
