@@ -249,6 +249,7 @@ max-relations:
   enemy: 10
 
 # WorldBorder support
+# This is for Minecraft's built-in command. To get your current border: /minecraft:worldborder get
 # A buffer of 0 means faction claims can go right up to the border of the world.
 # The buffer is in chunks, so 1 as a buffer means an entire chunk of buffer between 
 # the border of the world and what can be claimed to factions
