@@ -119,7 +119,10 @@ public class P extends MPlugin {
         Integer versionInteger = null;
         if (versionMatcher.find()) {
             try {
-                versionInteger = (Integer.parseInt(versionMatcher.group(1)) * 100) + Integer.parseInt(versionMatcher.group(2));
+                int minor = Integer.parseInt(versionMatcher.group(1));
+                String patchS = versionMatcher.group(2);
+                int patch = (patchS == null || patchS.isEmpty()) ? 0 : Integer.parseInt(patchS);
+                versionInteger = (minor * 100) + patch;
                 getLogger().info("Detected Minecraft " + versionMatcher.group());
             } catch (NumberFormatException ignored) {
             }
